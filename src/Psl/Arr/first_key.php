@@ -8,13 +8,13 @@ namespace Psl\Arr;
  * Get the first key of an array, if the array is empty, null will be returned.
  *
  * @psalm-template Tk as array-key
- * @psalm-template Tv
  *
- * @psalm-param array<Tk, Tv> $array
+ * @psalm-param array<Tk, mixed> $array
  *
- * @psalm-return null|Tk
+ * @psalm-return Tk|null
  *
- * @psalm-suppress MissingReturnType
+ * @psalm-ignore-nullable-return
+ * @psalm-pure
  */
 function first_key(array $array)
 {

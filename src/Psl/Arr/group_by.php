@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use Psl;
+use Psl\Str;
+
 /**
  * Returns a new array where
  *  - keys are the results of the given function called on the given values.
@@ -40,6 +43,12 @@ function group_by(iterable $values, callable $key_func): array
         if (null === $key) {
             continue;
         }
+
+        Psl\invariant(
+            Str\is_string($key) || is_numeric($key),
+            'Expected $key_func to return a value of type array-key, value of type (%s) returned.',
+            gettype($key)
+        );
 
         $result[$key] = $result[$key] ?? [];
         $result[$key][] = $value;

@@ -21,7 +21,7 @@ use Psl\Iter;
  */
 function sort(iterable $iterable, ?callable $comparator = null): array
 {
-    $arr = Iter\to_array($iterable);
+    $arr = Iter\to_array_with_keys($iterable);
     if (null !== $comparator) {
         \usort($arr, $comparator);
     } else {

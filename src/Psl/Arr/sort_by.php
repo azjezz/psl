@@ -35,14 +35,12 @@ function sort_by(iterable $iterable, callable $scalar_func, ?callable $comparato
         \asort($order_by);
     }
 
-    return Iter\to_array_with_keys(Iter\map_with_key(
+    return Iter\to_array(Iter\map_with_key(
         $order_by,
         /**
          * @psalm-param Tk $k
          * @psalm-param Ts $_
          */
-        static function ($k, $_) use ($values) {
-            return $values[$k];
-        }
+        fn ($k, $_) => $values[$k]
     ));
 }

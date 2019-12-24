@@ -16,11 +16,11 @@ use Psl\Iter;
  * @psalm-template Tv
  * @psalm-template Ts
  *
- * @psalm-param iterable<Tk, Tv> $iterable
- * @psalm-param (callable(Tv): Ts) $scalar_func
- * @psalm-param null|(callable(Ts, Ts): int) $comparator
+ * @psalm-param    iterable<Tk, Tv> $iterable
+ * @psalm-param    (callable(Tv): Ts) $scalar_func
+ * @psalm-param    null|(callable(Ts, Ts): int) $comparator
  *
- * @plsam-return array<Tk, Tv>
+ * @plsam-return   array<Tk, Tv>
  */
 function sort_with_keys_by(iterable $iterable, callable $scalar_func, ?callable $comparator = null): array
 {
@@ -30,44 +30,37 @@ function sort_with_keys_by(iterable $iterable, callable $scalar_func, ?callable 
              * @psalm-param array{0: Ts, 1: Tv} $a
              * @psalm-param array{0: Ts, 1: Tv} $b
              */
-            static function ($a, $b) use ($comparator): int {
-                return $comparator($a[0], $b[0]);
-            };
+            fn ($a, $b): int => $comparator($a[0], $b[0]);
     } else {
         $tuple_comparator =
             /**
              * @psalm-param array{0: Ts, 1: Tv} $a
              * @psalm-param array{0: Ts, 1: Tv} $b
              */
-            static function ($a, $b): int {
-                return $a[0] <=> $b[0];
-            };
+            fn ($a, $b): int => $a[0] <=> $b[0];
     }
 
-    $result = Iter\map(
+    $result = Iter\map_with_key(
         sort_with_keys(
             Iter\map(
                 $iterable,
                 /**
-                 * @psalm-param Tv $value
+                 * @psalm-param  Tv $value
                  *
                  * @psalm-return array{0: Ts, 1: Tv}
                  */
-                static function ($value) use ($scalar_func): array {
-                    return [$scalar_func($value), $value];
-                }
+                fn ($value) => [$scalar_func($value), $value],
             ),
             $tuple_comparator
         ),
         /**
-         * @psalm-param array{0: Ts, 1: Tv} $t
+         * @psalm-param  Tk                     $k
+         * @psalm-param  array{0: Ts, 1: Tv}    $v
          *
          * @psalm-return Tv
          */
-        static function ($t) {
-            return $t[1];
-        }
+        fn ($k, $v) => $v[1]
     );
 
-    return Iter\to_array($result);
+    return Iter\to_array_with_keys($result);
 }

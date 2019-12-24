@@ -8,13 +8,13 @@
          bootstrap="vendor/autoload.php"
 >
     <php>
-        <ini name="error_reporting" value="-1" />
-        <server name="APP_ENV" value="test" force="true" />
+        <ini name="error_reporting" value="-1"/>
+        <server name="APP_ENV" value="test" force="true"/>
     </php>
 
     <testsuites>
-        <testsuite name="PHP Standard Library Test Suite">
-            <directory>tests</directory>
+        <testsuite name="Psl Arr">
+            <directory>tests/Psl/Arr</directory>
         </testsuite>
     </testsuites>
 
