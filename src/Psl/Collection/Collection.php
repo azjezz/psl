@@ -8,13 +8,13 @@ namespace Psl\Collection;
  * Collection is the primary collection interface for mutable collections.
  *
  * Assuming you want the ability to clear out your collection, you would implement this (or a child of this)
- * interface. Otherwise, you can implement MutableCollection only.
+ * interface. Otherwise, you can implement OutputCollection only.
  * If your collection to be immutable, implement ConstCollection only instead.
  *
  * @psalm-template Tv
  *
  * @template-extends ConstCollection<Tv>
- * @template-extends MutableCollection<Tv>
+ * @template-extends OutputCollection<Tv>
  */
 interface Collection extends ConstCollection, OutputCollection
 {
