@@ -1,0 +1,13 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\Iter;
+
+/**
+ * @psalm-assert-if-true empty $value
+ */
+function is_empty(iterable $iterable): bool
+{
+    return 0 === count($iterable);
+}

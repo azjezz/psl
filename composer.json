@@ -1,0 +1,34 @@
+{
+    "name": "azjezz/psl",
+    "description": "PHP Standard Library",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "azjezz",
+            "email": "azjezz@protonmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4",
+        "symfony/polyfill": "^1.12"
+    },
+    "require-dev": {
+        "vimeo/psalm": "dev-master",
+        "phpunit/phpunit": "^8.5",
+        "friendsofphp/php-cs-fixer": "^2.16"
+    },
+    "autoload": {
+        "psr-4": {
+            "Psl\\": "src/Psl"
+        },
+        "files": [
+            "src/bootstrap.php"
+        ]
+    },
+    "scripts": {
+        "type-check": "psalm",
+        "test": "phpunit",
+        "cs-fix": "php-cs-fixer fix"
+    }
+}
