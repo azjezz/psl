@@ -1,0 +1,21 @@
+dist: trusty
+language: php
+
+os:
+  - linux
+
+php:
+  - '7.4'
+  - nightly
+
+jobs:
+  allow_failures:
+    - php: nightly
+
+install:
+  - composer install
+
+script:
+  - php vendor/bin/php-cs-fixer fix --dry-run -vvv
+  - php vendor/bin/psalm
+  - php vendor/bin/phpunit
