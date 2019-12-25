@@ -16,6 +16,9 @@
         <testsuite name="Psl Arr">
             <directory>tests/Psl/Arr</directory>
         </testsuite>
+        <testsuite name="Psl Random">
+            <directory>tests/Psl/Random</directory>
+        </testsuite>
     </testsuites>
 
     <filter>
