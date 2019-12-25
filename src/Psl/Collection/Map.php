@@ -251,7 +251,7 @@ final class Map implements MutableMap
      * The keys will remain unchanged from the current `Map` to the
      * returned `Map`.
      *
-     * @psalm-tempalte Tu
+     * @psalm-template Tu
      *
      * @psalm-param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                               `Map` values
@@ -285,7 +285,7 @@ final class Map implements MutableMap
      * The keys will remain unchanged from this `Map` to the returned
      * `Map`. The keys are only used to help in the mapping operation.
      *
-     * @psalm-tempalte Tu
+     * @psalm-template Tu
      *
      * @psalm-param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                                   `Map` keys and values

@@ -191,7 +191,7 @@ final class ImmMap implements ConstMap
      * The keys will remain unchanged from the current `ImmMap` to the
      * returned `ImmMap`.
      *
-     * @psalm-tempalte Tu
+     * @psalm-template Tu
      *
      * @psalm-param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                               `ImmMap` values
@@ -225,7 +225,7 @@ final class ImmMap implements ConstMap
      * The keys will remain unchanged from this `ImmMap` to the returned
      * `ImmMap`. The keys are only used to help in the mapping operation.
      *
-     * @psalm-tempalte Tu
+     * @psalm-template Tu
      *
      * @psalm-param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                                   `ImmMap` keys and values
