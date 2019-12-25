@@ -550,18 +550,19 @@ final class Map implements MutableMap
     }
 
     /**
-     * Returns a `MutableVector` that is the concatenation of the values of the
+     * Returns a `Vector` that is the concatenation of the values of the
      * current `Map` and the values of the provided `iterable`.
      *
      * The provided `iterable` is concatenated to the end of the current
-     * `Map` to produce the returned `MutableVector`.
+     * `Map` to produce the returned `Vector`.
      *
      * @psalm-template Tu of Tv
      *
      * @psalm-param iterable<Tu> $iterable - The `iterable` to concatenate to the current
      *                               `Map`
      *
-     * @psalm-return Vector<Tu> - The integer-indexed concatenated `MutableVector`
+     * @psalm-return Vector<Tv>
+     * @return Vector - The integer-indexed concatenated `Vector`
      */
     public function concat(iterable $iterable): Vector
     {

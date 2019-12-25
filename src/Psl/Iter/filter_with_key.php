@@ -32,8 +32,10 @@ function filter_with_key(iterable $iterable, ?callable $predicate = null): itera
         /**
          * @psalm-param Tk $k
          * @psalm-param Tv $v
+         *
+         * @return bool
          */
-        fn ($k, $v) => Psl\Internal\boolean($k) && Psl\Internal\boolean($v);
+        fn ($k, $v) => Psl\Internal\boolean($v);
 
     foreach ($iterable as $k => $v) {
         if ($predicate($k, $v)) {

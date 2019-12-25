@@ -17,10 +17,11 @@ use Psl\Str;
  * @psalm-template Tv
  * @psalm-template Ts as array-key
  *
- * @psalm-param    iterable<Tk, Tv>    $iterable
+ * @psalm-param iterable<Tk, Tv>    $iterable
  * @psalm-param (callable(Tv): Ts)  $scalar_func
  *
- * @psalm-return   array<Tk, Tv>
+ * @psalm-return array<Tk, Tv>
+ * @return array
  */
 function unique_by(iterable $iterable, callable $scalar_func): array
 {

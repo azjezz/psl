@@ -69,6 +69,7 @@ final class ImmMap implements ConstMap
      * Get an array copy of the the collection.
      *
      * @psalm-return array<Tk, Tv>
+     * @return array
      */
     public function toArray(): array
     {
@@ -517,18 +518,19 @@ final class ImmMap implements ConstMap
     }
 
     /**
-     * Returns a `MutableVector` that is the concatenation of the values of the
+     * Returns a `Vector` that is the concatenation of the values of the
      * current `ImmMap` and the values of the provided `iterable`.
      *
      * The provided `iterable` is concatenated to the end of the current
-     * `ImmMap` to produce the returned `MutableVector`.
+     * `ImmMap` to produce the returned `Vector`.
      *
      * @psalm-template Tu of Tv
      *
      * @psalm-param iterable<Tu> $iterable - The `iterable` to concatenate to the current
      *                               `ImmMap`
      *
-     * @psalm-return Vector<Tu> - The integer-indexed concatenated `MutableVector`
+     * @psalm-return Vector<Tv>
+     * @return Vector - The integer-indexed concatenated `Vector`
      */
     public function concat(iterable $iterable): Vector
     {

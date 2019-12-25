@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Random;
 
-use Psl\Str;
-use Psl\Random;
-use Psl\Exception;
 use PHPUnit\Framework\TestCase;
+use Psl\Exception;
+use Psl\Random;
+use Psl\Str;
 
 class StringTest extends TestCase
 {

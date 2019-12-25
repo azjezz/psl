@@ -14,9 +14,10 @@ use Psl\Str;
  *
  * @psalm-template Tv as array-key
  *
- * @psalm-param    iterable<Tv> $values
+ * @psalm-param iterable<Tv> $values
  *
- * @psalm-return   array<Tv, int>
+ * @psalm-return array<Tv|Tv, int>
+ * @return int[]
  */
 function count_values(iterable $values): array
 {
