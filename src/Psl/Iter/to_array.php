@@ -7,11 +7,11 @@ namespace Psl\Iter;
 /**
  * Copy the iterable into an array.
  *
- * @psalm-template T
+ * @psalm-template Tv
  *
- * @psalm-param iterable<T> $iterable
+ * @psalm-param iterable<Tv> $iterable
  *
- * @psalm-return array<int, T>
+ * @psalm-return array<int, Tv>
  */
 function to_array(iterable $iterable): array
 {

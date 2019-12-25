@@ -105,9 +105,7 @@ final class Map implements MutableMap
              *
              * @psalm-return Pair<Tk, Tv>
              */
-            static function ($k, $v): Pair {
-                return new Pair($k, $v);
-            }
+            fn ($k, $v) => new Pair($k, $v),
         )->values();
     }
 

@@ -21,10 +21,10 @@ use Psl;
  * @psalm-template Tk as array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv>            $iterable
- * @psalm-param null|(callable(Tk, Tv): bool)   $predicate
+ * @psalm-param    iterable<Tk, Tv>            $iterable
+ * @psalm-param    null|(callable(Tk, Tv): bool)   $predicate
  *
- * @psalm-return iterable<Tk, Tv>
+ * @psalm-return   iterable<Tk, Tv>
  */
 function filter_with_key(iterable $iterable, ?callable $predicate = null): iterable
 {
@@ -33,9 +33,7 @@ function filter_with_key(iterable $iterable, ?callable $predicate = null): itera
          * @psalm-param Tk $k
          * @psalm-param Tv $v
          */
-        static function ($k, $v): bool {
-            return Psl\Internal\boolean($k) && Psl\Internal\boolean($v);
-        };
+        fn ($k, $v) => Psl\Internal\boolean($k) && Psl\Internal\boolean($v);
 
     foreach ($iterable as $k => $v) {
         if ($predicate($k, $v)) {

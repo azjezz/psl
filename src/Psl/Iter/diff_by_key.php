@@ -32,9 +32,7 @@ function diff_by_key(iterable $first, iterable $second, iterable ...$rest): iter
     $result = filter_keys(
         $first,
         /** @psalm-param Tk1 $key */
-        static function ($key) use ($union) {
-            return !contains_key($union, $key);
-        }
+        fn ($key) => !contains_key($union, $key)
     );
 
     return $result;
