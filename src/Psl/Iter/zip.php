@@ -23,9 +23,9 @@ namespace Psl\Iter;
  * @psalm-template Tk as array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv>    ...$iterables
+ * @psalm-param    iterable<Tk, Tv>    ...$iterables
  *
- * @psalm-return iterable<array<int, Tk>, array<int, Tv>>
+ * @psalm-return   iterable<array<int, Tk>, array<int, Tv>>
  */
 function zip(iterable ...$iterables): iterable
 {
@@ -37,25 +37,17 @@ function zip(iterable ...$iterables): iterable
     $iterators = to_array(map(
         $iterables,
         /**
-         * @psalm-param iterable<Tk, Tv>    $iterable
+         * @psalm-param  iterable<Tk, Tv>    $iterable
          *
          * @psalm-return Iterator<Tk, Tv>
          */
-        static function (iterable $iterable): Iterator {
-            return new Iterator($iterable);
-        }
+        fn ($iterable) => new Iterator($iterable),
     ));
 
     for (
-        apply($iterators, static function (\Iterator $iterator): void {
-            $iterator->rewind();
-        });
-        all($iterators, static function (\Iterator $iterator): bool {
-            return $iterator->valid();
-        });
-        apply($iterators, static function (\Iterator $iterator): void {
-            $iterator->next();
-        })
+        apply($iterators, fn (\Iterator $iterator) => $iterator->rewind());
+        all($iterators, fn (\Iterator $iterator) => $iterator->valid());
+        apply($iterators, fn (\Iterator $iterator) => $iterator->next())
     ) {
         /** @psalm-var array<int, Tk> $keys */
         $keys = to_array(map($iterators,
@@ -64,10 +56,7 @@ function zip(iterable ...$iterables): iterable
              *
              * @psalm-return Tk
              */
-            static function (\Iterator $iterator) {
-                /** @psalm-var Tk */
-                return $iterator->key();
-            }
+            fn (\Iterator $iterator) => $iterator->key(),
         ));
 
         /** @psalm-var array<int, Tv> $values */
@@ -76,10 +65,7 @@ function zip(iterable ...$iterables): iterable
              * @psalm-param \Iterator<Tk, Tv> $iterator
              * @psalm-return Tv
              */
-            static function (\Iterator $iterator) {
-                /** @psalm-var Tv */
-                return $iterator->current();
-            }
+            fn (\Iterator $iterator) => $iterator->current(),
         ));
 
         yield $keys => $values;
