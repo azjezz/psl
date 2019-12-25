@@ -22,7 +22,7 @@ use Psl\Random;
  */
 function random(array $values)
 {
-    Psl\invariant(!Iter\is_empty($values), 'Expected non-empty-array');
+    Psl\invariant(!Iter\is_empty($values), 'Expected non-empty-array.');
 
     /** @psalm-var array<int, Tv> $shuffled */
     $shuffled = shuffle($values);

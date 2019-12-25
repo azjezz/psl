@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
-use Psl\Iter;
-
 /**
  * Merges multiple iterables into a new array. In the case of duplicate
  * keys, later values will overwrite the previous ones.
@@ -20,22 +18,12 @@ use Psl\Iter;
  * @psalm-template Tk as array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv> $first
- * @psalm-param iterable<Tk, Tv> ...$rest
- *
- * @psalm-return array<Tk, Tv>
- *
- * @psalm-suppress InvalidReturnType
- * @psalm-suppress InvalidReturnStatement
+ * @psalm-param    iterable<Tk, Tv> $first
+ * @psalm-param    iterable<iterable<Tk, Tv>> $rest
+ * @psalm-return   array<Tk, Tv>
  */
 function merge(iterable $first, iterable ...$rest): array
 {
-    $result = is_array($first) ? $first : Iter\to_array_with_keys($first);
-    foreach ($rest as $iterable) {
-        foreach ($iterable as $k => $v) {
-            $result[$k] = $v;
-        }
-    }
-
-    return $result;
+    /** @psalm-var array<Tk, Tv> */
+    return flatten([$first, ...$rest]);
 }

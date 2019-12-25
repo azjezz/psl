@@ -19,9 +19,9 @@ use Psl\Iter;
  *
  * @psalm-return array<Tk, Tv>
  */
-function sort_by_key(iterable $traversable, ?callable $comparator = null): array
+function sort_by_key(iterable $iterable, ?callable $comparator = null): array
 {
-    $result = Iter\to_array($traversable);
+    $result = Iter\to_array_with_keys($iterable);
     if ($comparator) {
         \uksort($result, $comparator);
     } else {

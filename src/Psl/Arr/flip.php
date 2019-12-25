@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use Psl;
+use Psl\Str;
+
 /**
  * Flips the keys and values of an iterable. In case of
  * duplicate values, later keys will overwrite the previous ones.
@@ -16,14 +19,20 @@ namespace Psl\Arr;
  * @psalm-template Tk as array-key
  * @psalm-template Tv as array-key
  *
- * @psalm-param array<Tk, Tv> $array
+ * @psalm-param iterable<Tk, Tv> $iterable
  *
  * @psalm-return array<Tv, Tk>
  */
-function flip(array $array): array
+function flip(iterable $iterable): array
 {
     $result = [];
-    foreach ($array as $k => $v) {
+    foreach ($iterable as $k => $v) {
+        Psl\invariant(
+            Str\is_string($v) || is_numeric($v),
+            'Expected all values to be of type array-key, value of type (%s) provided.',
+            gettype($v)
+        );
+
         $result[$v] = $k;
     }
 

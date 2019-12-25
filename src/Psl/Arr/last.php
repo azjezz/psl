@@ -15,8 +15,6 @@ namespace Psl\Arr;
  * @psalm-return null|Tv
  *
  * @psalm-pure
- *
- * @psalm-suppress MissingReturnType
  */
 function last(array $array)
 {

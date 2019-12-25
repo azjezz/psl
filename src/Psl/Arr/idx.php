@@ -22,15 +22,17 @@ namespace Psl\Arr;
  * @psalm-template Tk as array-key
  * @psalm-template Tv
  *
- * @psalm-param array<Tk, Tv>   $array
- * @psalm-param Tk              $index
- * @psalm-param null|Tv         $default
+ * @psalm-param    array<Tk, Tv>   $array
+ * @psalm-param    Tk              $index
+ * @psalm-param    null|Tv         $default
  *
- * @psalm-return null|Tv
- *
- * @psalm-suppress MissingReturnType
+ * @psalm-return   null|Tv
  */
 function idx(array $array, $index, $default = null)
 {
-    return contains_key($array, $index) ? $array[$index] : $default;
+    if (contains_key($array, $index)) {
+        return $array[$index];
+    }
+
+    return $default;
 }
