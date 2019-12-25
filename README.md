@@ -1,9 +1,5 @@
 # Psl - PHP Standard Library
 
-Psl is a standard library for PHP, inspired by [hhvm/hsl](https://github.com/hhvm/hsl).
-
-The goal of Psl is to provide a consistent, centralized, well-typed set of APIs for PHP programmers.
-
 [![Build Status](https://travis-ci.org/azjezz/psl.svg?branch=master)](https://travis-ci.org/azjezz/psl)
 [![Scrutinizer Build Status](https://scrutinizer-ci.com/g/azjezz/psl/badges/build.png?b=master)](https://scrutinizer-ci.com/g/azjezz/psl/build-status/master)
 [![Coverage Status](https://coveralls.io/repos/github/azjezz/psl/badge.svg?branch=master)](https://coveralls.io/github/azjezz/psl?branch=master)
@@ -12,6 +8,10 @@ The goal of Psl is to provide a consistent, centralized, well-typed set of APIs 
 [![Total Downloads](https://poser.pugx.org/azjezz/psl/d/total.svg)](https://packagist.org/packages/azjezz/psl)
 [![Latest Stable Version](https://poser.pugx.org/azjezz/psl/v/stable.svg)](https://packagist.org/packages/azjezz/psl)
 [![License](https://poser.pugx.org/azjezz/psl/license.svg)](https://packagist.org/packages/azjezz/psl)
+
+Psl is a standard library for PHP, inspired by [hhvm/hsl](https://github.com/hhvm/hsl).
+
+The goal of Psl is to provide a consistent, centralized, well-typed set of APIs for PHP programmers.
 
 ## Example
 ```php
