@@ -13,9 +13,15 @@ jobs:
     - php: nightly
 
 install:
+  - composer self-update
+  - composer --version
+  - php -v
   - composer install
 
 script:
   - php vendor/bin/php-cs-fixer fix --dry-run -vvv
   - php vendor/bin/psalm
   - php vendor/bin/phpunit
+
+after_script:
+  - composer coveralls
