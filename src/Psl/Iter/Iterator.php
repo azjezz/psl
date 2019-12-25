@@ -16,7 +16,7 @@ use Psl;
  *
  * @template-implements \SeekableIterator<TKey, TValue>
  */
-class Iterator implements \SeekableIterator, \Countable
+final class Iterator implements \SeekableIterator, \Countable
 {
     /**
      * @psalm-var array{0: array<int, TKey>, 1: array<int, TValue>}

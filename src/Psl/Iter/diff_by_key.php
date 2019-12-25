@@ -7,15 +7,14 @@ namespace Psl\Iter;
 use Psl\Arr;
 
 /**
- * @psalm-template Tk1 as array-key
- * @psalm-template Tk2 as array-key
+ * @psalm-template Tk as array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk1, Tv>       $first
- * @psalm-param iterable<Tk2, mixed>    $second
- * @psalm-param iterable<Tk2, mixed>    ...$rest
+ * @psalm-param iterable<Tk, Tv>       $first
+ * @psalm-param iterable<Tk, mixed>    $second
+ * @psalm-param iterable<Tk, mixed>    ...$rest
  *
- * @psalm-return iterable<Tk1, Tv>
+ * @psalm-return iterable<Tk, Tv>
  */
 function diff_by_key(iterable $first, iterable $second, iterable ...$rest): iterable
 {
@@ -27,13 +26,11 @@ function diff_by_key(iterable $first, iterable $second, iterable ...$rest): iter
         return $first;
     }
 
-    $union = Arr\merge($second, ...$rest);
-    /** @psalm-var iterable<Tk1, Tv> $result */
-    $result = filter_keys(
-        $first,
-        /** @psalm-param Tk1 $key */
-        fn ($key) => !contains_key($union, $key)
-    );
-
-    return $result;
+    $other = Arr\flatten([$second, ...$rest]);
+    /** @psalm-var iterable<Tk1, Tv> */
+    foreach ($first as $k => $v) {
+        if (!contains_key($other, $k)) {
+            yield $k => $v;
+        }
+    }
 }

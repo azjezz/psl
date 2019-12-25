@@ -21,5 +21,5 @@ use Psl\Arr;
  */
 function contains_key(iterable $iterable, $key): bool
 {
-    return Arr\contains_key(to_array($iterable), $key);
+    return Arr\contains_key(to_array_with_keys($iterable), $key);
 }

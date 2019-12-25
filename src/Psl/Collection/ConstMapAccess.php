@@ -13,7 +13,7 @@ namespace Psl\Collection;
  * @psalm-template Tk
  * @psalm-template Tv
  *
- * @template-extends ConstSetAccess<Tk, Tv>
+ * @template-extends ConstSetAccess<Tk>
  * @template-extends ConstIndexAccess<Tk, Tv>
  */
 interface ConstMapAccess extends ConstSetAccess, ConstIndexAccess

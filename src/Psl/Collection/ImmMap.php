@@ -35,8 +35,9 @@ final class ImmMap implements ConstMap
      * Get access to the items in the collection.
      *
      * @psalm-return iterable<int, Pair<Tk, Tv>>
+     * @return Pair[]
      */
-    public function items(): iterable
+    public function items(): Vector
     {
         return $this->mapWithKey(
             /**
@@ -345,7 +346,7 @@ final class ImmMap implements ConstMap
         $other = new ImmVector($iterable);
         $i = 0;
         foreach ($this->elements as [$k, $v]) {
-            if ($other->containsKey($i)) {
+            if (!$other->containsKey($i)) {
                 break;
             }
 

@@ -31,9 +31,9 @@ final class Vector implements MutableVector
     /**
      * Get access to the items in the collection.
      *
-     * @psalm-return iterable<int, Tv>
+     * @psalm-return array<int, Tv>
      */
-    public function items(): iterable
+    public function items(): array
     {
         return $this->immutable->items();
     }
@@ -475,7 +475,7 @@ final class Vector implements MutableVector
     {
         /** @var array<int, Tv> $arr */
         $arr = $this->toArray();
-        Psl\invariant(Arr\contains_key($arr, $k), 'Key (%d) is out-of-bound. If you want to add a value even if a key is not present, use `addAll()`', $k);
+        Psl\invariant(Arr\contains_key($arr, $k), 'Key (%d) is out-of-bound. If you want to add a value even if a key is not present, use `add()`.', $k);
         $arr[$k] = $v;
         $this->immutable = new ImmVector($arr);
 
@@ -502,7 +502,7 @@ final class Vector implements MutableVector
         /** @var array<int, Tv> $arr */
         $arr = $this->toArray();
         foreach ($iterable as $k => $v) {
-            Psl\invariant(Arr\contains_key($arr, $k), 'Key (%d) is out-of-bound. If you want to add a value even if a key is not present, use `addAll()`', $k);
+            Psl\invariant(Arr\contains_key($arr, $k), 'Key (%d) is out-of-bound. If you want to add a value even if a key is not present, use `addAll()`.', $k);
 
             $arr[$k] = $v;
         }
@@ -535,5 +535,15 @@ final class Vector implements MutableVector
         }
 
         return $this;
+    }
+
+    /**
+     * Returns a deep, immutable copy (`ImmVector`) of this `Vector`.
+     *
+     * @psalm-return ImmVector<Tv> - an `ImmVector` that is a deep copy of this `Vector`
+     */
+    public function immutable(): ImmVector
+    {
+        return clone $this->immutable;
     }
 }
