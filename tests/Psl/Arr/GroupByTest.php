@@ -11,9 +11,6 @@ use Psl\Exception;
 use Psl\Iter;
 use Psl\Str;
 
-/**
- * @covers \Psl\Arr\group_by
- */
 class GroupByTest extends TestCase
 {
     /**

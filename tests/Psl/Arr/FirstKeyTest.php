@@ -7,9 +7,6 @@ namespace Psl\Tests\Arr;
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 
-/**
- * @covers \Psl\Arr\first_key
- */
 class FirstKeyTest extends TestCase
 {
     /**

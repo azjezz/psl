@@ -9,9 +9,6 @@ use Psl\Arr;
 use Psl\Collection;
 use Psl\Iter;
 
-/**
- * @covers \Psl\Arr\sort
- */
 class SortTest extends TestCase
 {
     /**

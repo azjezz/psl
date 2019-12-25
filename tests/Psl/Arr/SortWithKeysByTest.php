@@ -9,9 +9,6 @@ use Psl\Arr;
 use Psl\Collection;
 use Psl\Str;
 
-/**
- * @covers \Psl\Arr\sort_with_keys_by
- */
 class SortWithKeysByTest extends TestCase
 {
     /**

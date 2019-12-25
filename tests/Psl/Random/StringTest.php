@@ -9,9 +9,6 @@ use Psl\Random;
 use Psl\Exception;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Psl\Random\string
- */
 class StringTest extends TestCase
 {
     public function testString(): void

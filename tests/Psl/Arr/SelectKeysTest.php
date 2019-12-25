@@ -7,9 +7,6 @@ namespace Psl\Tests\Arr;
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 
-/**
- * @covers \Psl\Arr\select_keys
- */
 class SelectKeysTest extends TestCase
 {
     /**

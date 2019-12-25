@@ -10,9 +10,6 @@ use Psl\Collection;
 use Psl\Exception;
 use Psl\Iter;
 
-/**
- * @covers \Psl\Arr\count_values
- */
 class CountValuesTest extends TestCase
 {
     /**

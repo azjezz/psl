@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 use Psl\Str;
 
-/**
- * @covers \Psl\Arr\sort_by_key
- */
 class SortByKeyTest extends TestCase
 {
     /**

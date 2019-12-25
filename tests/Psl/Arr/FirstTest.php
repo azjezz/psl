@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 use Psl\Iter;
 
-/**
- * @covers \Psl\Arr\first
- */
 class FirstTest extends TestCase
 {
     /**

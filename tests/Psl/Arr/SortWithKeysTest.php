@@ -9,9 +9,6 @@ use Psl\Arr;
 use Psl\Collection;
 use Psl\Iter;
 
-/**
- * @covers \Psl\Arr\sort_with_keys
- */
 class SortWithKeysTest extends TestCase
 {
     /**

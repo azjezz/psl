@@ -9,9 +9,6 @@ use Psl\Arr;
 use Psl\Collection;
 use Psl\Str;
 
-/**
- * @covers \Psl\Arr\partition
- */
 class PartitionTest extends TestCase
 {
     /**

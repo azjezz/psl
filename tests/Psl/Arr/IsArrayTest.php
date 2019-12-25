@@ -7,9 +7,6 @@ namespace Psl\Tests\Arr;
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 
-/**
- * @covers \Psl\Arr\is_array
- */
 class IsArrayTest extends TestCase
 {
     /**

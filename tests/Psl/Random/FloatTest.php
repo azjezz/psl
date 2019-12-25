@@ -7,9 +7,6 @@ namespace Psl\Tests\Random;
 use PHPUnit\Framework\TestCase;
 use Psl\Random;
 
-/**
- * @covers \Psl\Random\float
- */
 class FloatTest extends TestCase
 {
     public function testFloat(): void

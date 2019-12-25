@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 use Psl\Collection;
 
-/**
- * @covers \Psl\Arr\unique
- */
 class UniqueTest extends TestCase
 {
     public function testUnique(): void

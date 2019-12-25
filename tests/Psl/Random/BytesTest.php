@@ -9,9 +9,6 @@ use Psl\Exception;
 use Psl\Random;
 use Psl\Str;
 
-/**
- * @covers \Psl\Random\bytes
- */
 class BytesTest extends TestCase
 {
     public function testBytes(): void

@@ -9,9 +9,6 @@ use Psl\Arr;
 use Psl\Exception;
 use Psl\Iter;
 
-/**
- * @covers \Psl\Arr\firstx
- */
 class FirstxTest extends TestCase
 {
     /**

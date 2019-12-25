@@ -9,9 +9,6 @@ use Psl\Exception;
 use Psl\Math;
 use Psl\Random;
 
-/**
- * @covers \Psl\Random\int
- */
 class IntTest extends TestCase
 {
     public function testInt(): void
