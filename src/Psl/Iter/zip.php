@@ -50,7 +50,8 @@ function zip(iterable ...$iterables): iterable
         apply($iterators, fn (\Iterator $iterator) => $iterator->next())
     ) {
         /** @psalm-var array<int, Tk> $keys */
-        $keys = to_array(map($iterators,
+        $keys = to_array(map(
+            $iterators,
             /**
              * @psalm-param \Iterator<Tk, Tv> $iterator
              *
@@ -60,7 +61,8 @@ function zip(iterable ...$iterables): iterable
         ));
 
         /** @psalm-var array<int, Tv> $values */
-        $values = to_array(map($iterators,
+        $values = to_array(map(
+            $iterators,
             /**
              * @psalm-param \Iterator<Tk, Tv> $iterator
              * @psalm-return Tv

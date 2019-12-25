@@ -17,6 +17,7 @@ use Psl\Str;
  * @psalm-param iterable<Tv> $values
  *
  * @psalm-return array<Tv|Tv, int>
+ *
  * @return int[]
  */
 function count_values(iterable $values): array

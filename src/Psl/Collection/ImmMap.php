@@ -530,6 +530,7 @@ final class ImmMap implements ConstMap
      *                               `ImmMap`
      *
      * @psalm-return Vector<Tv>
+     *
      * @return Vector - The integer-indexed concatenated `Vector`
      */
     public function concat(iterable $iterable): Vector

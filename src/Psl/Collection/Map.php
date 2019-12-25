@@ -562,6 +562,7 @@ final class Map implements MutableMap
      *                               `Map`
      *
      * @psalm-return Vector<Tv>
+     *
      * @return Vector - The integer-indexed concatenated `Vector`
      */
     public function concat(iterable $iterable): Vector
