@@ -18,6 +18,11 @@ class BytesTest extends TestCase
         self::assertSame(32, Str\Byte\length($random));
     }
 
+    public function testBytesEarlyReturnForZeroLength(): void
+    {
+        self::assertSame('', Random\bytes(0));
+    }
+
     public function testBytesThrowsForNegativeLength(): void
     {
         $this->expectException(Exception\InvariantViolationException::class);

@@ -31,6 +31,11 @@ class StringTest extends TestCase
         }
     }
 
+    public function testStringEarlyReturnForZeroLength(): void
+    {
+        self::assertSame('', Random\string(0));
+    }
+
     public function testStringThrowsForNegativeLength(): void
     {
         $this->expectException(Exception\InvariantViolationException::class);
