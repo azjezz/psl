@@ -40,19 +40,21 @@ function sort_with_keys_by(iterable $iterable, callable $scalar_func, ?callable 
             fn ($a, $b): int => $a[0] <=> $b[0];
     }
 
-    $result = Iter\map_with_key(
-        sort_with_keys(
-            Iter\map(
-                $iterable,
-                /**
-                 * @psalm-param  Tv $value
-                 *
-                 * @psalm-return array{0: Ts, 1: Tv}
-                 */
-                fn ($value) => [$scalar_func($value), $value],
-            ),
-            $tuple_comparator
+    $sorted = sort_with_keys(
+        Iter\map(
+            $iterable,
+            /**
+             * @psalm-param  Tv $value
+             *
+             * @psalm-return array{0: Ts, 1: Tv}
+             */
+            fn ($value) => [$scalar_func($value), $value],
         ),
+        $tuple_comparator
+    );
+
+    $result = Iter\map_with_key(
+        $sorted,
         /**
          * @psalm-param  Tk                     $k
          * @psalm-param  array{0: Ts, 1: Tv}    $v
