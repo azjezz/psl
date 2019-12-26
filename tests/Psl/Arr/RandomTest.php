@@ -19,6 +19,14 @@ class RandomTest extends TestCase
         static::assertContains($value, $values);
     }
 
+    public function testRandomWithOneItem(): void
+    {
+        $values = ['a'];
+        $value = Arr\random($values);
+
+        static::assertSame('a', $value);
+    }
+
     public function testRandomThrowsWhenTheGivenArrayIsEmpty(): void
     {
         $this->expectException(Exception\InvariantViolationException::class);
