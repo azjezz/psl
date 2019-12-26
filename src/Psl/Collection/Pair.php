@@ -90,7 +90,7 @@ final class Pair implements ConstVector
      */
     public function containsKey($k): bool
     {
-        return 1 === $k || 2 === $k;
+        return 0 === $k || 1 === $k;
     }
 
     /**

@@ -24,8 +24,8 @@ use Psl\Iter;
  * are being removed. When a new key is added or an element is removed, all
  * iterators that point to the `Map` shall be considered invalid.
  *
- * @psalm-template Tk as array-key
- * @psalm-template Tv
+ * @psalm-template      Tk as array-key
+ * @psalm-template      Tv
  *
  * @template-implements MutableMap<Tk, Tv>
  */
@@ -55,6 +55,7 @@ final class Map implements MutableMap
      */
     public function add($value): Map
     {
+        Psl\invariant($value instanceof Pair, 'Expected $value to be instance of %s, %s given.', Pair::class, gettype($value));
         $this->elements[] = [$value->first(), $value->last()];
 
         /** @var Map<Tk, Tv> */
@@ -64,13 +65,14 @@ final class Map implements MutableMap
     /**
      * For every element in the provided iterable, append a value into the current map.
      *
-     * @psalm-param iterable<Pair<Tk, Tv>> $values
+     * @psalm-param  iterable<Pair<Tk, Tv>> $values
      *
      * @psalm-return Map<Tk, Tv>
      */
     public function addAll(iterable $values): Map
     {
         foreach ($values as $pair) {
+            Psl\invariant($pair instanceof Pair, 'Expected $iterable to only contain instances of %s, %s given.', Pair::class, gettype($pair));
             $this->elements[] = [$pair->first(), $pair->last()];
         }
 
@@ -95,16 +97,17 @@ final class Map implements MutableMap
      * Get access to the items in the collection.
      *
      * @psalm-return iterable<int, Pair<Tk, Tv>>
+     * @return Pair[]
      */
-    public function items(): iterable
+    public function items(): Vector
     {
         return $this->mapWithKey(
-            /**
-             * @psalm-param Tk $k
-             * @psalm-param Tv $v
-             *
-             * @psalm-return Pair<Tk, Tv>
-             */
+        /**
+         * @psalm-param  Tk $k
+         * @psalm-param  Tv $v
+         *
+         * @psalm-return Pair<Tk, Tv>
+         */
             fn ($k, $v) => new Pair($k, $v),
         )->values();
     }
@@ -143,7 +146,7 @@ final class Map implements MutableMap
     /**
      * Returns the value at the specified key in the current collection.
      *
-     * @psalm-param Tk $k
+     * @psalm-param  Tk $k
      *
      * @psalm-return Tv
      */
@@ -196,7 +199,7 @@ final class Map implements MutableMap
      *
      * This function is interchangeable with `containsKey()`.
      *
-     * @psalm-param Tk $m
+     * @psalm-param  Tk $m
      *
      * @psalm-return bool - `true` if the value is in the current `Map`; `false` otherwise
      */
@@ -256,7 +259,7 @@ final class Map implements MutableMap
      * @psalm-param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                               `Map` values
      *
-     * @psalm-return Map<Tk, Tu> - a `Map` containing key/value pairs after a user-specified
+     * @psalm-return   Map<Tk, Tu> - a `Map` containing key/value pairs after a user-specified
      *                 operation is applied
      */
     public function map(callable $fn): Map
@@ -290,7 +293,7 @@ final class Map implements MutableMap
      * @psalm-param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                                   `Map` keys and values
      *
-     * @psalm-return Map<Tk, Tu> - a `Map` containing the values after a user-specified
+     * @psalm-return   Map<Tk, Tu> - a `Map` containing the values after a user-specified
      *                 operation on the current `Map`'s keys and values is
      *                 applied
      */
@@ -379,10 +382,10 @@ final class Map implements MutableMap
      *
      * @psalm-template Tu
      *
-     * @psalm-param iterable<Tu> $iterable - The `iterable` to use to combine with the
+     * @psalm-param    iterable<Tu> $iterable - The `iterable` to use to combine with the
      *                               elements of the current `Map`
      *
-     * @psalm-return Map<Tk, Pair<Tv, Tu>> - The `Map` that combines the values of the current
+     * @psalm-return   Map<Tk, Pair<Tv, Tu>> - The `Map` that combines the values of the current
      *                 `Map` with the provided `iterable`
      */
     public function zip(iterable $iterable): Map
@@ -393,7 +396,7 @@ final class Map implements MutableMap
         $other = new ImmVector($iterable);
         $i = 0;
         foreach ($this->elements as [$k, $v]) {
-            if ($other->containsKey($i)) {
+            if (!$other->containsKey($i)) {
                 break;
             }
 
@@ -413,7 +416,7 @@ final class Map implements MutableMap
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @psalm-param int $n - The last element that will be included in the `Map`
+     * @psalm-param  int $n - The last element that will be included in the `Map`
      *
      * @psalm-return Map<Tk, Tv> - A `Map` that is a proper subset of the current
      *                 `Map` up to `n` elements
@@ -460,7 +463,7 @@ final class Map implements MutableMap
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @psalm-param int $n - The last element to be skipped; the `$n+1` element will be the
+     * @psalm-param  int $n - The last element to be skipped; the `$n+1` element will be the
      *               first one in the returned `Map`
      *
      * @psalm-return Map<Tk, Tv> - A `Map` that is a proper subset of the current
@@ -515,9 +518,9 @@ final class Map implements MutableMap
      * The returned `Map` will always be a proper subset of the current
      * `Map`.
      *
-     * @psalm-param int $start - The starting key location of the current `Map` for
+     * @psalm-param  int $start - The starting key location of the current `Map` for
      *                   the featured `Map`
-     * @psalm-param int $len   - The length of the returned `Map`
+     * @psalm-param  int $len   - The length of the returned `Map`
      *
      * @psalm-return Map<Tk, Tv> - A `Map` that is a proper subset of the current
      *                     `Map` starting at `$start` up to but not including the
@@ -558,10 +561,10 @@ final class Map implements MutableMap
      *
      * @psalm-template Tu of Tv
      *
-     * @psalm-param iterable<Tu> $iterable - The `iterable` to concatenate to the current
+     * @psalm-param    iterable<Tu> $iterable - The `iterable` to concatenate to the current
      *                               `Map`
      *
-     * @psalm-return Vector<Tv>
+     * @psalm-return   Vector<Tv>
      *
      * @return Vector - The integer-indexed concatenated `Vector`
      */
@@ -639,7 +642,7 @@ final class Map implements MutableMap
      * Future changes made to the current `Map` ARE reflected in the returned
      * `Map`, and vice-versa.
      *
-     * @psalm-param Tk $k - The key to remove
+     * @psalm-param  Tk $k - The key to remove
      *
      * @psalm-return Map<Tk, Tv> - Returns itself
      */
@@ -664,7 +667,7 @@ final class Map implements MutableMap
      * Returns a new `Map` with the keys that are in the current `Map`, but not
      * in the provided `iterable`.
      *
-     * @psalm-param iterable<Tk, Tv> $iterable - The `iterable` on which to compare the keys
+     * @psalm-param  iterable<Tk, Tv> $iterable - The `iterable` on which to compare the keys
      *
      * @psalm-return Map<Tk, Tv> - A `Map` containing the keys (and associated values) of the
      *                 current `Map` that are not in the `iterable`
@@ -700,13 +703,17 @@ final class Map implements MutableMap
      * Future changes made to the current `Map` ARE reflected in the returned
      * `Map`, and vice-versa.
      *
-     * @psalm-param Tk $k - The key to which we will set the value
-     * @psalm-param Tv $v - The value to set
+     * @psalm-param  Tk $k - The key to which we will set the value
+     * @psalm-param  Tv $v - The value to set
      *
      * @psalm-return Map<Tk, Tv> - Returns itself
      */
     public function set($k, $v): Map
     {
+        if ($this->contains($k)) {
+            $this->remove($k);
+        }
+
         $this->elements[] = [$k, $v];
 
         /** @var Map<Tk, Tv> */
@@ -726,7 +733,7 @@ final class Map implements MutableMap
      * Future changes made to the current `Map` ARE reflected in the returned
      * `Map`, and vice-versa.
      *
-     * @psalm-param iterable<Tk, Tv> $iterable - The `iterable` with the new values to set
+     * @psalm-param  iterable<Tk, Tv> $iterable - The `iterable` with the new values to set
      *
      * @psalm-return Map<Tk, Tv> - Returns itself
      */
@@ -748,7 +755,7 @@ final class Map implements MutableMap
      * Future changes made to the current `Map` ARE reflected in the returned
      * `Map`, and vice-versa.
      *
-     * @psalm-param Tk $k - The key to remove
+     * @psalm-param  Tk $k - The key to remove
      *
      * @psalm-return Map<Tk, Tv> - Returns itself
      */

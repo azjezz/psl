@@ -16,6 +16,8 @@ const ALPHABET_BASE64_URL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy
 /**
  * Verifies that the `$offset` is within plus/minus `$length`. Returns the
  * offset as a positive integer.
+ *
+ * @codeCoverageIgnore
  */
 function validate_offset(int $offset, int $length): int
 {
@@ -33,6 +35,8 @@ function validate_offset(int $offset, int $length): int
 /**
  * Verifies that the `$offset` is not less than minus `$length`. Returns the
  * offset as a positive integer.
+ *
+ * @codeCoverageIgnore
  */
 function validate_offset_lower_bound(int $offset, int $length): int
 {
@@ -49,6 +53,8 @@ function validate_offset_lower_bound(int $offset, int $length): int
 
 /**
  * @param mixed $val
+ *
+ * @codeCoverageIgnore
  */
 function boolean($val): bool
 {

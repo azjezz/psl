@@ -19,6 +19,9 @@
         <testsuite name="Psl Random">
             <directory>tests/Psl/Random</directory>
         </testsuite>
+        <testsuite name="Psl Collection">
+            <directory>tests/Psl/Collection</directory>
+        </testsuite>
     </testsuites>
 
     <logging>

@@ -31,9 +31,9 @@ final class ImmVector implements ConstVector
     /**
      * Get access to the items in the collection.
      *
-     * @psalm-return iterable<int, Tv>
+     * @psalm-return array<int, Tv>
      */
-    public function items(): iterable
+    public function items(): array
     {
         return $this->items;
     }
@@ -112,7 +112,7 @@ final class ImmVector implements ConstVector
      */
     public function filterWithKey(callable $fn): ImmVector
     {
-        return new ImmVector(Iter\filter_keys($this->items, $fn));
+        return new ImmVector(Iter\filter_with_key($this->items, $fn));
     }
 
     /**
@@ -427,5 +427,15 @@ final class ImmVector implements ConstVector
     {
         /** @psalm-var array<int, Tv> $items */
         return $this->items;
+    }
+
+    /**
+     * Returns a deep, mutable copy (`Vector`) of this `ImmVector`.
+     *
+     * @psalm-return Vector<Tv> - a `Vector` that is a deep copy of this `ImmVector`
+     */
+    public function mutable(): Vector
+    {
+        return new Vector($this->toArray());
     }
 }
