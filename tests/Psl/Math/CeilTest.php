@@ -5,8 +5,45 @@ declare(strict_types=1);
 namespace Psl\Tests\Math;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Math;
 
 class CeilTest extends TestCase
 {
-    // TODO: add tests.
+    /**
+     * @dataProvider provideData
+     */
+    public function testCiel(float $expected, float $number): void
+    {
+        self::assertSame($expected, Math\ceil($number));
+    }
+
+    public function provideData(): array
+    {
+        return [
+            [
+                5.0,
+                5.0
+            ],
+
+            [
+                5.0,
+                4.8
+            ],
+
+            [
+                0.0,
+                0.0
+            ],
+
+            [
+                1.0,
+                0.4
+            ],
+
+            [
+                -6.0,
+                -6.5
+            ]
+        ];
+    }
 }

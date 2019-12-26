@@ -5,8 +5,45 @@ declare(strict_types=1);
 namespace Psl\Tests\Math;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Math;
 
 class FloorTest extends TestCase
 {
-    // TODO: add tests.
+    /**
+     * @dataProvider provideData
+     */
+    public function testFloor(float $expected, float $number): void
+    {
+        self::assertSame($expected, Math\floor($number));
+    }
+
+    public function provideData(): array
+    {
+        return [
+            [
+                4,
+                4.3,
+            ],
+
+            [
+                9,
+                9.9,
+            ],
+
+            [
+                3,
+                Math\PI
+            ],
+
+            [
+                -4,
+                -Math\PI
+            ],
+
+            [
+                2,
+                Math\E
+            ]
+        ];
+    }
 }

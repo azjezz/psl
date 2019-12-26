@@ -10,6 +10,14 @@ use Psl\Str\Byte;
 /**
  * Converts the given string in the given base to an int, assuming letters a-z
  * are used for digits when `$from_base` > 10.
+ *
+ *  Example:
+ *
+ *      Math\from_base('10', 2)
+ *      => Int(2)
+ *
+ *      Math\from_base('ff', 15)
+ *      => Int(255)
  */
 function from_base(string $number, int $from_base): int
 {
