@@ -5,8 +5,45 @@ declare(strict_types=1);
 namespace Psl\Tests\Math;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Iter;
+use Psl\Math;
 
 class MaxvaTest extends TestCase
 {
-    // TODO: add tests.
+    /**
+     * @dataProvider provideData
+     */
+    public function testMaxva($expected, $first, $second, ...$rest): void
+    {
+        self::assertSame($expected, Math\maxva($first, $second, ...$rest));
+    }
+
+    public function provideData(): array
+    {
+        return [
+            [
+                10,
+                10,
+                5,
+                ...Iter\range(0, 9, 2)
+            ],
+
+            [
+                18,
+                18,
+                15,
+                ...Iter\to_array(Iter\range(0, 10)),
+                15
+            ],
+
+            [
+                64,
+                19,
+                15,
+                ...Iter\range(0, 45, 5),
+                52,
+                64
+            ]
+        ];
+    }
 }

@@ -21,6 +21,9 @@ const UINT16_MAX = 65535;
 
 const PI = 3.141592653589793238462643;
 
+/**
+ * The base of the natural system of logarithms, or approximately 2.7182818284590452353602875.
+ */
 const E = 2.7182818284590452353602875;
 
 const INFINITY = \INF;

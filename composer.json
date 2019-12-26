@@ -11,6 +11,7 @@
     ],
     "require": {
         "php": "^7.4",
+        "ext-bcmath": "*",
         "symfony/polyfill": "^1.12"
     },
     "require-dev": {
