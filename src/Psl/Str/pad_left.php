@@ -17,25 +17,30 @@ use Psl;
  * Example:
  *
  *      Str\pad_left('Ay', 4)
- *      => Str('    Ay')
+ *      => Str('  Ay')
  *
- *      Str\pad_left('ay', 1, 'A')
+ *      Str\pad_left('ay', 3, 'A')
  *      => Str('Aay')
  *
  *      Str\pad_left('eet', 4, 'Yeeeee')
- *      => Str('Yeeeeet')
+ *      => Str('Yeet')
  *
- *      Str\pad_left('مرحبا', 5, 'ا')
- *      => Str('مرحباااااا')
+ *      Str\pad_left('مرحبا', 8, 'م')
+ *      => Str('ممممرحبا')
  */
 function pad_left(string $string, int $total_length, string $pad_string = ' '): string
 {
     Psl\invariant('' !== $pad_string, 'Expected non-empty pad string.');
     Psl\invariant($total_length >= 0, 'Expected non-negative total length.');
 
-    return Byte\pad_left(
-        $string,
-        Byte\length($string) - length($string) + $total_length,
-        $pad_string
-    );
+    while (length($string) < $total_length) {
+        $remaining = $total_length - length($string);
+        if ($remaining <= length($pad_string)) {
+            $pad_string = slice($pad_string, 0, $remaining);
+        }
+
+        $string = $pad_string . $string;
+    }
+
+    return $string;
 }

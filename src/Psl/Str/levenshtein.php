@@ -26,13 +26,11 @@ function levenshtein(string $str1, string $str2, ?int $cost_of_insertion = null,
         return \levenshtein($str1, $str2);
     }
 
-    if (null !== $cost_of_deletion && null !== $cost_of_insertion && null !== $cost_of_replacement) {
-        return \levenshtein($str1, $str2, $cost_of_insertion, $cost_of_replacement, $cost_of_deletion);
-    }
-
     // https://github.com/php/php-src/blob/623911f993f39ebbe75abe2771fc89faf6b15b9b/ext/standard/levenshtein.c#L101
-    Psl\invariant_violation('Expected either all costs to be supplied, or non.');
+    Psl\invariant(
+        null !== $cost_of_deletion && null !== $cost_of_insertion && null !== $cost_of_replacement,
+        'Expected either all costs to be supplied, or non.'
+    );
 
-    // satisfy PhpStorm
-    return 0;
+    return \levenshtein($str1, $str2, $cost_of_insertion, $cost_of_replacement, $cost_of_deletion);
 }
