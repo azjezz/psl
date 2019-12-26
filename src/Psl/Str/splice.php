@@ -14,13 +14,15 @@ use Psl;
  * remainder of the string will be replaced. If the length is zero, the
  * replacement will be inserted at the offset.
  */
-function splice(string $string, string $replacement, int $offset, ?int $length = null): string
+function splice(string $string, string $replacement, int $offset = 0, ?int $length = null): string
 {
     Psl\invariant(null === $length || $length >= 0, 'Expected non-negative length.');
-    $offset = Psl\Internal\validate_offset($offset, length($string));
+    $total_length = length($string);
+    $offset = Psl\Internal\validate_offset($offset, $total_length);
 
-    $offset = $offset ? \strlen(slice($string, 0, $offset)) : 0;
-    $length = $length ? \strlen(slice($string, $offset, $length)) : $length;
+    if (null === $length || ($offset + $length) >= $total_length) {
+        return slice($string, 0, $offset) . $replacement;
+    }
 
-    return \substr_replace($string, $replacement, $offset, $length ?? \PHP_INT_MAX);
+    return slice($string, 0, $offset) . $replacement . slice($string, $offset + $length);
 }

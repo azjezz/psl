@@ -9,5 +9,23 @@ use Psl\Str;
 
 class ToIntTest extends TestCase
 {
-    // TODO: add tests.
+    /**
+     * @dataProvider provideData
+     */
+    public function testToInt(?int $expected, string $string): void
+    {
+        self::assertSame($expected, Str\to_int($string));
+    }
+
+    public function provideData(): array
+    {
+        return [
+            [null, 'hello'],
+            [1, '1'],
+            [525, '525'],
+            [0, '0'],
+            [null, '0e'],
+            [null, '12e1'],
+        ];
+    }
 }

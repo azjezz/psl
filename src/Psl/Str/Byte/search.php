@@ -19,5 +19,9 @@ function search(string $haystack, string $needle, int $offset = 0): ?int
 {
     $offset = Psl\Internal\validate_offset($offset, length($haystack));
 
+    if ('' === $needle) {
+        return null;
+    }
+
     return false === ($pos = \strpos($haystack, $needle, $offset)) ? null : $pos;
 }

@@ -19,5 +19,9 @@ function search_ci(string $haystack, string $needle, int $offset = 0): ?int
 {
     $offset = Psl\Internal\validate_offset($offset, length($haystack));
 
+    if ('' === $needle) {
+        return null;
+    }
+
     return false === ($pos = \stripos($haystack, $needle, $offset)) ? null : $pos;
 }

@@ -16,10 +16,14 @@ use Psl;
  *                  will be one character in length.
  *                  If the $chunk_size length exceeds the length of string, the entire string is returned
  *                  as the first (and only) array element.
+ *                  If the given string is empty, and empty array will be returned.
  */
 function chunk(string $string, int $chunk_size = 1): array
 {
     Psl\invariant($chunk_size >= 1, 'Expected positive chunk size.');
+    if ('' === $string) {
+        return [];
+    }
 
     return \str_split($string, $chunk_size);
 }

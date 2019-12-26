@@ -9,5 +9,21 @@ use Psl\Str;
 
 class ReplaceTest extends TestCase
 {
-    // TODO: add tests.
+    /**
+     * @dataProvider provideData
+     */
+    public function testReplace(string $expected, string $haystack, string $needle, string $replacement): void
+    {
+        self::assertSame($expected, Str\replace($haystack, $needle, $replacement));
+    }
+
+    public function provideData(): array
+    {
+        return [
+            ['Hello, you!', 'Hello, you!', 'You', 'World', ],
+            ['Hello, World!', 'Hello, You!', 'You', 'World', ],
+            ['مرحبا بكم', 'مرحبا سيف', 'سيف', 'بكم'],
+            ['foo', 'foo', 'bar', 'baz'],
+        ];
+    }
 }

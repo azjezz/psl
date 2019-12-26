@@ -9,5 +9,30 @@ use Psl\Str;
 
 class UppercaseTest extends TestCase
 {
-    // TODO: add tests.
+    /**
+     * @dataProvider provideData
+     */
+    public function testUppercase(string $expected, string $str): void
+    {
+        self::assertSame($expected, Str\uppercase($str));
+    }
+
+    public function provideData(): array
+    {
+        return [
+            ['HELLO', 'hello'],
+            ['HELLO', 'helLO'],
+            ['HELLO', 'Hello'],
+            ['HÉLLÖ, WÔRLD!', 'héllö, wôrld!'],
+            ['SS', 'ß'],
+            ['ẞ', 'ẞ'],
+            ['🤷 🔥', '🤷 🔥'],
+            ['سيف', 'سيف'],
+            ['1337', '1337'],
+            ['你好', '你好'],
+            ['こんにちは世界', 'こんにちは世界'],
+            ['สวัสดี', 'สวัสดี'],
+            ['ؤخى', 'ؤخى']
+        ];
+    }
 }

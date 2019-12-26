@@ -9,5 +9,9 @@ namespace Psl\Str\Byte;
  */
 function starts_with_ci(string $str, string $prefix): bool
 {
+    if ('' === $prefix) {
+        return false;
+    }
+
     return 0 === \strncasecmp($str, $prefix, length($prefix));
 }

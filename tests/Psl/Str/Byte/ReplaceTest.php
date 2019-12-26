@@ -5,8 +5,25 @@ declare(strict_types=1);
 namespace Psl\Tests\Str\Byte;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Str\Byte;
 
 class ReplaceTest extends TestCase
 {
-    // TODO: add tests.
+    /**
+     * @dataProvider provideData
+     */
+    public function testReplace(string $expected, string $haystack, string $needle, string $replacement): void
+    {
+        self::assertSame($expected, Byte\replace($haystack, $needle, $replacement));
+    }
+
+    public function provideData(): array
+    {
+        return [
+            ['Hello, you!', 'Hello, you!', 'You', 'World', ],
+            ['Hello, World!', 'Hello, You!', 'You', 'World', ],
+            ['مرحبا بكم', 'مرحبا سيف', 'سيف', 'بكم'],
+            ['foo', 'foo', 'bar', 'baz'],
+        ];
+    }
 }

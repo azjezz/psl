@@ -22,6 +22,7 @@ class MetaphoneTest extends TestCase
         return [
             ['HL', 'hello'],
             ['HLWRLT', 'Hello, World !!', 10],
+            ['PPLLNKTBTSTNWLLWSFNTX0R', 'People linked by destiny will always find each other.'],
             ['', 'سيف'],
             ['', '1337'],
         ];

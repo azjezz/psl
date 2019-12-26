@@ -23,7 +23,7 @@ use Psl;
  *      => Str('Ayyyy')
  *
  *      Str\pad_right('Yee', 4, 't')
- *      => Str('Yeeeeet')
+ *      => Str('Yeet')
  *
  *      Str\pad_right('مرحبا', 8, 'ا')
  *      => Str('مرحباااا')

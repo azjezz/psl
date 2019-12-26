@@ -23,6 +23,7 @@ class CapitalizeWordsTest extends TestCase
         return [
             ['Hello', 'hello', ],
             ['Hello, World', 'hello, world'],
+            ['Ḫello, Ꝡorld', 'ḫello, ꝡorld'],
             ['Alpha', 'Alpha', ],
             ['مرحبا بكم', 'مرحبا بكم', ],
             ['Foo, Bar, And Baz', 'foo, bar, and baz']

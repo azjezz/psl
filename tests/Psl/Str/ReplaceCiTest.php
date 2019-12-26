@@ -9,5 +9,21 @@ use Psl\Str;
 
 class ReplaceCiTest extends TestCase
 {
-    // TODO: add tests.
+    /**
+     * @dataProvider provideData
+     */
+    public function testReplaceCi(string $expected, string $haystack, string $needle, string $replacement): void
+    {
+        self::assertSame($expected, Str\replace_ci($haystack, $needle, $replacement));
+    }
+
+    public function provideData(): array
+    {
+        return [
+            ['Hello, World!', 'Hello, you!', 'You', 'World', ],
+            ['Hello, World!', 'Hello, You!', 'You', 'World', ],
+            ['مرحبا بكم', 'مرحبا سيف', 'سيف', 'بكم'],
+            ['foo', 'foo', 'bar', 'baz'],
+        ];
+    }
 }

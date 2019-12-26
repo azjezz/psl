@@ -5,8 +5,57 @@ declare(strict_types=1);
 namespace Psl\Tests\Str\Byte;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Str\Byte;
 
 class TrimRightTest extends TestCase
 {
-    // TODO: add tests.
+
+    /**
+     * @dataProvider provideData
+     */
+    public function testTrimRight(string $expected, string $string, ?string $chars = null): void
+    {
+        self::assertSame($expected, Byte\trim_right($string, $chars));
+    }
+
+    public function provideData(): array
+    {
+        return [
+            [
+                "    Hello     World\t!!!",
+                "    Hello     World\t!!!\n",
+                null,
+            ],
+            [
+                "    Hello     World\t!!!\n",
+                "    Hello     World\t!!!\n",
+                ' ',
+            ],
+            [
+                "    Hello     World\t!!!",
+                "    Hello     World\t!!!\n",
+                "\n",
+            ],
+            [
+                "    Hello     World\t",
+                "    Hello     World\t!!!\n",
+                "\n!",
+            ],
+            [
+                '    Hello     World',
+                "    Hello     World\t!!!\n",
+                "\n!\t",
+            ],
+            [
+                "    Hello     World\t",
+                "    Hello     World\t!!!\n",
+                " \n!",
+            ],
+            [
+                "    Hello     World\t!!!  \n",
+                "    Hello     World\t!!!  \n",
+                ' ',
+            ],
+        ];
+    }
 }

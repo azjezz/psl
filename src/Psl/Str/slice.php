@@ -17,7 +17,12 @@ use Psl;
 function slice(string $string, int $offset, ?int $length = null): string
 {
     Psl\invariant(null === $length || $length >= 0, 'Expected non-negative length.');
-    $offset = Psl\Internal\validate_offset($offset, length($string));
+    $string_length = length($string);
+    $offset = Psl\Internal\validate_offset($offset, $string_length);
+
+    if (0 === $offset && (null === $length || $string_length <= $length)) {
+        return $string;
+    }
 
     return false === ($result = \mb_substr($string, $offset, $length, encoding($string))) ? '' : $result;
 }

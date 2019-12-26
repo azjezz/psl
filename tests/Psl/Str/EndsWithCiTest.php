@@ -14,17 +14,24 @@ class EndsWithCiTest extends TestCase
      */
     public function testEndsWithCi(bool $expected, string $haystack, string $suffix): void
     {
-        self::assertSame($expected, Str\ends_with_ci($haystack, $suffix));
+        if (null === Str\search_ci($haystack, $suffix)) {
+            self::assertFalse(Str\ends_with_ci($haystack, $suffix));
+        } else {
+            self::assertSame($expected, Str\ends_with_ci($haystack, $suffix));
+        }
     }
 
     public function provideData(): array
     {
         return [
+            [true, 'Hello', 'Hello'],
             [true, 'Hello, World', 'world', ],
+            [true, 'Hello, WorlḐ', 'worlḑ', ],
             [false, 'T U N I S I A', 'e', ],
             [true, 'تونس', 'س'],
-            [true, 'Hello, World', '', ],
+            [false, 'Hello, World', '', ],
             [false, 'hello, world', 'hey', ],
+            [false, 'hello, world', 'hello cruel world'],
             [true, 'azjezz', 'z', ],
             [true, 'مرحبا بكم', 'بكم', ],
         ];

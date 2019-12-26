@@ -5,8 +5,28 @@ declare(strict_types=1);
 namespace Psl\Tests\Str\Byte;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Str\Byte;
 
 class SplitTest extends TestCase
 {
-    // TODO: add tests.
+    /**
+     * @dataProvider provideData
+     */
+    public function testSplit(array $expected, string $string, string $delimiter, ?int $length = null): void
+    {
+        self::assertSame($expected, Byte\split($string, $delimiter, $length));
+    }
+
+    public function provideData(): array
+    {
+        return [
+            [[], '', '', 1],
+            [['H', 'e', 'l', 'l', 'o'], 'Hello', ''],
+            [['Hello'], 'Hello', '', 1],
+            [['H', 'ello'], 'Hello', '', 2],
+            [['Hello, World!'], 'Hello, World!', ' ', 1],
+            [['Hello,', 'World!'], 'Hello, World!', ' '],
+            [['Hello,', 'World!'], 'Hello, World!', ' ', 2],
+        ];
+    }
 }

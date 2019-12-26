@@ -22,7 +22,7 @@ function search_last(string $haystack, string $needle, int $offset = 0): ?int
     }
 
     $haystack_length = length($haystack);
-    Psl\invariant($offset >= -$haystack_length && $offset <= $haystack_length, 'Offset is out-of-bounds.');
+    Psl\invariant($offset >= -$haystack_length && $offset <= $haystack_length, 'Offset is out-of-bound.');
 
     return false === ($pos = \mb_strrpos($haystack, $needle, $offset)) ? null : $pos;
 }

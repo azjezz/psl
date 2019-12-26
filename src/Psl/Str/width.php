@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Str;
 
 /**
- * Return width of string.
+ * Return width of length.
  */
 function width(string $str): int
 {

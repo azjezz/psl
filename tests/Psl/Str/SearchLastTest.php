@@ -9,5 +9,25 @@ use Psl\Str;
 
 class SearchLastTest extends TestCase
 {
-    // TODO: add tests.
+    /**
+     * @dataProvider provideData
+     */
+    public function testSearchLast(?int $expected, string $haystack, string $needle, int $offset = 0): void
+    {
+        self::assertSame($expected, Str\search_last($haystack, $needle, $offset));
+    }
+
+    public function provideData(): array
+    {
+        return [
+            [null, 'Hello, you!', 'You', ],
+            [7, 'Hello, You!', 'You', ],
+            [null, 'Ho! Ho! Ho!', 'ho', ],
+            [8, 'Ho! Ho! Ho!', 'Ho', ],
+            [7, 'Hello, You!', 'You', 5],
+            [null, 'Hello, World!', 'You', 5],
+            [6, 'مرحبا سيف', 'سيف', 4],
+            [null, 'foo', 'bar', 2],
+        ];
+    }
 }

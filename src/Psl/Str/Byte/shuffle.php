@@ -9,7 +9,7 @@ namespace Psl\Str\Byte;
  */
 function shuffle(string $string): string
 {
-    if (length($string) >= 1) {
+    if (length($string) < 1) {
         return $string;
     }
 

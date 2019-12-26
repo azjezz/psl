@@ -9,10 +9,25 @@ use Psl\Str;
 
 class LengthTest extends TestCase
 {
-    public function testLength():void
+    /**
+     * @dataProvider provideData
+     */
+    public function testLength(int $expected, string $str): void
     {
-        self::assertSame(6, Str\length('azjezz'));
-        self::assertSame(4, Str\length('تونس'));
-        self::assertSame(3, Str\length('سيف'));
+        self::assertSame($expected, Str\length($str));
+    }
+
+    public function provideData(): array
+    {
+        return [
+            [6, 'azjezz'],
+            [4, 'تونس'],
+            [3, 'سيف'],
+            [7, 'こんにちは世界'],
+            [3, '🥇🥈🥉'],
+            [2, '你好'],
+            [6, 'สวัสดี'],
+            [3, 'ؤخى']
+        ];
     }
 }

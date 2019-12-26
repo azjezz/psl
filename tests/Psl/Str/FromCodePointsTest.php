@@ -21,6 +21,6 @@ class FromCodePointsTest extends TestCase
 
         self::assertSame('ς', Str\from_code_points(962));
 
-        self::assertSame(Str\chr(0x10000 + 1), Str\from_code_points(0x10000 + 1));
+        self::assertSame("\u{10001}", Str\from_code_points(65537));
     }
 }

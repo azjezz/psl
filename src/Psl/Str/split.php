@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Str;
 
 use Psl;
-use Psl\Arr;
+use Psl\Math;
 
 /**
  * Returns an array containing the string split on the given delimiter. The vec
@@ -18,6 +18,7 @@ use Psl\Arr;
  */
 function split(string $string, string $delimiter, ?int $limit = null): array
 {
+    Psl\invariant(null === $limit || $limit >= 1, 'Expected positive limit');
     if ('' === $delimiter) {
         if (null === $limit || $limit >= length($string)) {
             /** @var array<int, string> $result */
@@ -30,7 +31,6 @@ function split(string $string, string $delimiter, ?int $limit = null): array
             return [$string];
         }
 
-        Psl\invariant($limit > 1, 'Expected positive limit.');
         /** @var array<int, string> $result */
         $result = chunk(slice($string, 0, $limit - 1));
         $result[] = slice($string, $limit - 1);
@@ -38,15 +38,22 @@ function split(string $string, string $delimiter, ?int $limit = null): array
         return $result;
     }
 
-    if (null === $limit) {
-        /** @var array<int, string> $result */
-        $result = \explode($delimiter, $string);
-    } else {
-        /** @var array<int, string> $result */
-        $result = \explode($delimiter, $string, $limit);
+    $limit ??= Math\INT64_MAX;
+
+    $tail = $string;
+    $chunks = [];
+
+    $position = search($tail, $delimiter);
+    while (1 < $limit && null !== $position) {
+        $result = slice($tail, 0, $position);
+        $chunks[] = $result;
+        $tail = slice($tail, length($result) + length($delimiter));
+
+        $limit--;
+        $position = search($tail, $delimiter);
     }
 
-    Psl\invariant(Arr\is_array($result), 'Unexpected error');
+    $chunks[] = $tail;
 
-    return $result;
+    return $chunks;
 }
