@@ -5,8 +5,26 @@ declare(strict_types=1);
 namespace Psl\Tests\Str\Byte;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Str\Byte;
 
 class OrdTest extends TestCase
 {
-    // TODO: add tests.
+    /**
+     * @dataProvider provideData
+     */
+    public function testOrd(int $expected, string $value): void
+    {
+        self::assertSame($expected, Byte\ord($value));
+    }
+
+    public function provideData(): array
+    {
+        return [
+            [217, 'م'],
+            [48, '0'],
+            [38, '&'],
+            [216, 'ا'],
+            [65, 'A'],
+        ];
+    }
 }

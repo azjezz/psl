@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace Psl\Tests\Str;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Str;
 
 class FoldTest extends TestCase
 {
-    // TODO: add tests.
+    public function testFold(): void
+    {
+        self::assertSame('ssoo', Str\fold('ẞOO'));
+    }
 }

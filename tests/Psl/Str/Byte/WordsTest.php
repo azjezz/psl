@@ -5,8 +5,30 @@ declare(strict_types=1);
 namespace Psl\Tests\Str\Byte;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Str\Byte;
 
 class WordsTest extends TestCase
 {
-    // TODO: add tests.
+
+    /**
+     * @dataProvider provideData
+     */
+    public function testWords(array $expected, string $string, ?string $extra_chars = null): void
+    {
+        self::assertSame($expected, Byte\words($string, $extra_chars));
+    }
+
+    public function provideData(): array
+    {
+        return [
+            [[], ''],
+            [['Hello'], 'Hello'],
+            [['Hello'], 'Hello', ' '],
+            [[0 => 'Hello', 7 => 'World'], 'Hello, World!'],
+            [[0 => 'Hello', 6 => ' World'], 'Hello, World!', ' '],
+            [[0 => 'Hello', 7 => 'World!'], 'Hello, World!', '!'],
+            [[0 => 'Hello,', 7 => 'World!'], 'Hello, World!', '!,'],
+            [[0 => 'Hello, World!'], 'Hello, World!', '!, '],
+        ];
+    }
 }

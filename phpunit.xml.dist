@@ -25,6 +25,9 @@
         <testsuite name="Psl Random">
             <directory>tests/Psl/Random</directory>
         </testsuite>
+        <testsuite name="Psl Str">
+            <directory>tests/Psl/Str</directory>
+        </testsuite>
     </testsuites>
 
     <logging>

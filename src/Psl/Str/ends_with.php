@@ -34,13 +34,20 @@ function ends_with(
     string $string,
     string $suffix
 ): bool {
-    if (is_empty($suffix)) {
+    if ($suffix === $string) {
         return true;
     }
 
-    if (!\preg_match('//u', $suffix)) {
+    $suffix_length = length($suffix);
+    $total_length = length($string);
+    if ($suffix_length > $total_length) {
         return false;
     }
 
-    return Byte\length($string) - Byte\length($suffix) === Byte\search_last($string, $suffix);
+    $position = search_last($string, $suffix);
+    if (null === $position) {
+        return false;
+    }
+
+    return $position + $suffix_length === $total_length;
 }

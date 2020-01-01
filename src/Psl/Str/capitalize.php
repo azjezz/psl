@@ -26,5 +26,9 @@ namespace Psl\Str;
  */
 function capitalize(string $string): string
 {
+    if ('' === $string) {
+        return '';
+    }
+
     return concat(uppercase(slice($string, 0, 1)), slice($string, 1, length($string)));
 }

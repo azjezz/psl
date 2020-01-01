@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace Psl\Str\Byte;
 
-use Psl\Arr;
-
 /**
  * Returns the 'haystack' string with all occurrences of the keys of
  * `$replacements` replaced by the corresponding values.
  *
- * @param array<string, string> $replacements
+ * @param iterable<string, string> $replacements
  */
-function replace_every(
-    string $haystack,
-    array $replacements
-): string {
-    return \str_replace(
-        Arr\keys($replacements),
-        Arr\values($replacements),
-        $haystack
-    );
+function replace_every(string $haystack, iterable $replacements): string
+{
+    $search = [];
+    $replace = [];
+    foreach ($replacements as $k => $v) {
+        $search[] = $k;
+        $replace[] = $v;
+    }
+
+    return \str_replace($search, $replace, $haystack);
 }

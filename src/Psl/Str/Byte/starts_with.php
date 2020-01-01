@@ -9,5 +9,9 @@ namespace Psl\Str\Byte;
  */
 function starts_with(string $str, string $prefix): bool
 {
+    if ('' === $prefix) {
+        return false;
+    }
+
     return 0 === \strncmp($str, $prefix, length($prefix));
 }

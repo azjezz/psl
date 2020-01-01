@@ -12,13 +12,13 @@ namespace Psl\Str;
  *
  * Example:
  *
- *      Str\capitalize('hello, world!')
+ *      Str\capitalize_words('hello, world!')
  *      => Str('Hello, World!')
  *
- *      Str\capitalize('Hello, world!')
+ *      Str\capitalize_words('Hello, world!')
  *      => Str('Hello, World!')
  *
- *      Str\capitalize('مرحبا بكم')
+ *      Str\capitalize_words('مرحبا بكم')
  *      => Str('مرحبا بكم')
  */
 function capitalize_words(string $string): string

@@ -5,8 +5,30 @@ declare(strict_types=1);
 namespace Psl\Tests\Str;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Str;
 
 class EndsWithTest extends TestCase
 {
-    // TODO: add tests.
+    /**
+     * @dataProvider provideData
+     */
+    public function testEndsWith(bool $expected, string $haystack, string $suffix): void
+    {
+        self::assertSame($expected, Str\ends_with($haystack, $suffix));
+    }
+
+    public function provideData(): array
+    {
+        return [
+            [true, 'Hello', 'Hello'],
+            [false, 'Hello, World', 'world', ],
+            [false, 'T U N I S I A', 'e', ],
+            [true, 'تونس', 'س'],
+            [false, 'Hello, World', '', ],
+            [false, 'Hello, World', 'Hello, cruel world!', ],
+            [false, 'hello, world', 'hey', ],
+            [true, 'azjezz', 'z', ],
+            [true, 'مرحبا بكم', 'بكم', ],
+        ];
+    }
 }
