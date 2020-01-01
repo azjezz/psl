@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Generator;
 use Psl;
 
 /**
@@ -21,12 +22,12 @@ use Psl;
  * @psalm-template Tk as array-key
  * @psalm-template Tv
  *
- * @psalm-param    iterable<Tk, Tv>            $iterable
- * @psalm-param    null|(callable(Tk, Tv): bool)   $predicate
+ * @psalm-param iterable<Tk, Tv>            $iterable
+ * @psalm-param null|(callable(Tk, Tv): bool)   $predicate
  *
- * @psalm-return   iterable<Tk, Tv>
+ * @psalm-return Generator<Tk, Tv, mixed, void>
  */
-function filter_with_key(iterable $iterable, ?callable $predicate = null): iterable
+function filter_with_key(iterable $iterable, ?callable $predicate = null): Generator
 {
     $predicate = $predicate ??
         /**

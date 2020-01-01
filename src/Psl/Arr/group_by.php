@@ -33,7 +33,8 @@ use Psl\Str;
  * @psalm-param iterable<Tv>        $values
  * @psalm-param (callable(Tv): ?Tk) $key_func
  *
- * @psalm-return array<Tk, array<Tv>>
+ * @psalm-return array<Tk, list<Tv>>
+ * @return mixed[][]
  */
 function group_by(iterable $values, callable $key_func): array
 {

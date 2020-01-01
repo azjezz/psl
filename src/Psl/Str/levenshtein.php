@@ -19,6 +19,8 @@ use Psl;
  * @return int this function returns the Levenshtein-Distance between the
  *             two argument strings or -1, if one of the argument strings
  *             is longer than the limit of 255 characters
+ *
+ * @psalm-suppress PossiblyNullArgument
  */
 function levenshtein(string $str1, string $str2, ?int $cost_of_insertion = null, ?int $cost_of_replacement = null, ?int $cost_of_deletion = null): int
 {

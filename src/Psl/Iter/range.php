@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Generator;
 use Psl;
 
 /**
@@ -32,14 +33,14 @@ use Psl;
  * @psalm-param null|T  $step  Step between numbers (defaults to 1 if $start smaller
  *                              $end and to -1 if $start greater $end)
  *
- * @psalm-return iterable<T>
- *
+ * @psalm-return Generator<int, T, mixed, void>
  * @psalm-pure
  *
  * @see https://github.com/vimeo/psalm/issues/2152#issuecomment-533363310
+ *
  * @psalm-suppress MixedOperand
  */
-function range($start, $end, $step = null): iterable
+function range($start, $end, $step = null): Generator
 {
     if ((float) $start === (float) $end) {
         yield $start;

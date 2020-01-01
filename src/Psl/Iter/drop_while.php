@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Generator;
+
 /**
  * Drops items from an iterable until the predicate fails for the first time.
  *
@@ -21,9 +23,9 @@ namespace Psl\Iter;
  * @psalm-param iterable<Tk, Tv>    $iterable Iterable to drop values from
  * @psalm-param (callable(Tv): bool) $predicate
  *
- * @psalm-return iterable<Tk, Tv>
+ * @psalm-return Generator<Tk, Tv, mixed, void>
  */
-function drop_while(iterable $iterable, callable $predicate): iterable
+function drop_while(iterable $iterable, callable $predicate): Generator
 {
     $failed = false;
     foreach ($iterable as $key => $value) {

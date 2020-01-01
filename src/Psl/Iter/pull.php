@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Generator;
+
 /**
  * Returns a new iterable where:
  *  - values are the result of calling `$value_func` on the original value
@@ -21,6 +23,10 @@ namespace Psl\Iter;
  *          64 => 'H', 124 => 'I', 256 => 'J', 512 => 'K', 1024 => 'L'
  *      )
  *
+ *
+ * k as array-key
+ * v
+ *
  * @psalm-template T
  * @psalm-template Tk as array-key
  * @psalm-template Tv
@@ -29,9 +35,9 @@ namespace Psl\Iter;
  * @psalm-param (callable(T): Tv) $value_func
  * @psalm-param (callable(T): Tk) $key_func
  *
- * @psalm-return iterable<Tk, Tv>
+ * @psalm-return Generator<Tk, Tv, mixed, void>
  */
-function pull(iterable $iterable, callable $value_func, callable $key_func): iterable
+function pull(iterable $iterable, callable $value_func, callable $key_func): Generator
 {
     foreach ($iterable as $value) {
         yield $key_func($value) => $value_func($value);

@@ -12,9 +12,10 @@ namespace Psl\Arr;
  *
  * @psalm-param array<Tk, Tv> $arr
  *
- * @psalm-return array<int, Tk>
- *
+ * @psalm-return list<Tk>
  * @psalm-pure
+ *
+ * @return array-key[]
  */
 function keys(array $arr): array
 {

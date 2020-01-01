@@ -20,7 +20,6 @@ function median(iterable $numbers): ?float
         return null;
     }
 
-    /** @var int $middle_index */
     $middle_index = div($count, 2);
     if (0 === $count % 2) {
         return mean(

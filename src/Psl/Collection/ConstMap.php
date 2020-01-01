@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Psl\Collection;
 
+use IteratorAggregate;
+
 /**
  * Interface ConstMap.
  *
- * @psalm-template Tk as array-key
- * @psalm-template Tv
+ * @template Tk as array-key
+ * @template Tv
  *
- * @template-extends ConstCollection<Pair<Tk, Tv>>
- * @template-extends ConstMapAccess<Tk, Tv>
- * @template-extends \IteratorAggregate<Tk, Tv>
+ * @extends ConstCollection<Pair<Tk, Tv>>
+ * @extends ConstMapAccess<Tk, Tv>
+ * @extends IteratorAggregate<Tk, Tv>
  */
-interface ConstMap extends ConstCollection, ConstMapAccess, \IteratorAggregate
+interface ConstMap extends ConstCollection, ConstMapAccess, IteratorAggregate
 {
 }

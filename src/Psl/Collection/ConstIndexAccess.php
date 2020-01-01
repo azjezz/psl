@@ -7,8 +7,8 @@ namespace Psl\Collection;
 /**
  * The interface for all keyed collections to enable access its values.
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  */
 interface ConstIndexAccess
 {

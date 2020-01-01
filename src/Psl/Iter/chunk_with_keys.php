@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Generator;
 use Psl;
 
 /**
@@ -20,9 +21,9 @@ use Psl;
  * @psalm-param iterable<Tk, Tv> $iterable The iterable to chunk
  * @psalm-param int              $size     The size of each chunk
  *
- * @psalm-return iterable<array<Tk, Tv>> An iterator of arrays
+ * @psalm-return Generator<int, array<Tk, Tv>, mixed, void>
  */
-function chunk_with_keys(iterable $iterable, int $size): iterable
+function chunk_with_keys(iterable $iterable, int $size): Generator
 {
     Psl\invariant($size > 0, 'Chunk size must be positive');
 

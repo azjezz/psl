@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Generator;
+
 /**
  * Returns a new iterable where:
  *  - values are the result of calling `$value_func` on the original value/key
@@ -30,9 +32,9 @@ namespace Psl\Iter;
  * @psalm-param (callable(Tk1, Tv1): Tv2)   $value_func
  * @psalm-param (callable(Tk1, Tv1): Tk2)   $key_func
  *
- * @psalm-return iterable<Tk2, Tv2>
+ * @psalm-return Generator<Tk2, Tv2, mixed, void>
  */
-function pull_with_key(iterable $iterable, callable $value_func, callable $key_func): iterable
+function pull_with_key(iterable $iterable, callable $value_func, callable $key_func): Generator
 {
     foreach ($iterable as $key => $value) {
         yield $key_func($key, $value) => $value_func($key, $value);

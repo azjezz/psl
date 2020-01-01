@@ -38,14 +38,12 @@ function string(int $length, ?string $alphabet = null): string
             // Unpack 8 bits
             /** @var array<int, int> $v */
             $v = \unpack('C', $data[$i]);
-            /** @var int $unpacked_data */
             $unpacked_data = ($unpacked_data << 8) | $v[1];
             $unpacked_bits += 8;
 
             // While we have enough bits to select a character from the alphabet, keep
             // consuming the random data
             for (; $unpacked_bits >= $bits && $length > 0; $unpacked_bits -= $bits) {
-                /** @var int $index */
                 $index = ($unpacked_data & ((1 << $bits) - 1));
                 $unpacked_data >>= $bits;
                 // Unfortunately, the alphabet size is not necessarily a power of two.

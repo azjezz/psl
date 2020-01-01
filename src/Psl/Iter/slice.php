@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Generator;
 use Psl;
 
 /**
@@ -25,9 +26,10 @@ use Psl;
  * @psalm-param int                 $length Length (if not specified all remaining values from the
  *                                      iterable are used)
  *
- * @psalm-return iterable<Tk, Tv>
+ * @psalm-return Generator<Tk, Tv, mixed, void>
+ * @return Generator
  */
-function slice(iterable $iterable, int $start, ?int $length = null): iterable
+function slice(iterable $iterable, int $start, ?int $length = null): Generator
 {
     Psl\invariant($start >= 0, 'Start offset must be non-negative');
     Psl\invariant(null === $length || $length >= 0, 'Length must be non-negative');

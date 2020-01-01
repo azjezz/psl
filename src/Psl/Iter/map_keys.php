@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Generator;
+
 /**
  * Applies a mapping function to all keys of an iterator.
  *
@@ -23,9 +25,9 @@ namespace Psl\Iter;
  * @psalm-param iterable<Tk1, Tv>    $iterable Iterable to be mapped over
  * @psalm-param (callable(Tk1): Tk2)   $function
  *
- * @psalm-return iterable<Tk2, Tv>
+ * @psalm-return Generator<Tk2, Tv, mixed, void>
  */
-function map_keys(iterable $iterable, callable $function): iterable
+function map_keys(iterable $iterable, callable $function): Generator
 {
     foreach ($iterable as $key => $value) {
         yield $function($key) => $value;

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Generator;
+
 /**
  * Intermediate values of reducing iterable using a function.
  *
@@ -21,9 +23,9 @@ namespace Psl\Iter;
  * @psalm-param (callable(?Ts, Tk, Tv): Ts)     $function
  * @psalm-param null|Ts                         $initial
  *
- * @psalm-return iterable<Ts>
+ * @psalm-return Generator<int, Ts, mixed, void>
  */
-function reductions(iterable $iterable, callable $function, $initial = null): iterable
+function reductions(iterable $iterable, callable $function, $initial = null): Generator
 {
     $accumulator = $initial;
     foreach ($iterable as $k => $v) {

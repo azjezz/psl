@@ -18,6 +18,10 @@ use Psl\Iter;
  * @psalm-param null|(callable(Tv, Tv): int) $comparator
  *
  * @plsam-return array<Tk, Tv>
+ *
+ * @return array
+ *
+ * @psalm-return array<int, mixed>
  */
 function sort(iterable $iterable, ?callable $comparator = null): array
 {

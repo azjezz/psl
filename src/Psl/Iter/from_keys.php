@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Generator;
+
 /**
  * Returns a new dict where each value is the result of calling the given
  * function on the corresponding key.
@@ -14,9 +16,9 @@ namespace Psl\Iter;
  * @psalm-param iterable<Tk>        $keys
  * @psalm-param (callable(Tk): Tv)  $value_func
  *
- * @psalm-return iterable<Tk, Tv>
+ * @psalm-return Generator<Tk, Tv, mixed, void>
  */
-function from_keys(iterable $keys, callable $value_func): iterable
+function from_keys(iterable $keys, callable $value_func): Generator
 {
     foreach ($keys as $key) {
         yield $key => $value_func($key);

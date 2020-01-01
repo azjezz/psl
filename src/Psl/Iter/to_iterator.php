@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Iterator as IteratorInterface;
+use IteratorAggregate;
+
 /**
  * Copy the iterable into an Iterator.
  *
@@ -12,18 +15,18 @@ namespace Psl\Iter;
  *
  * @psalm-param iterable<Tk, Tv> $iterable
  *
- * @psalm-return \Iterator<Tk, Tv>
+ * @psalm-return IteratorInterface<Tk, Tv>
  */
-function to_iterator(iterable $iterable): \Iterator
+function to_iterator(iterable $iterable): IteratorInterface
 {
-    if ($iterable instanceof \Iterator) {
-        /** @var \Iterator<Tk, Tv> $iterator */
+    if ($iterable instanceof IteratorInterface) {
+        /** @var IteratorInterface<Tk, Tv> $iterator */
         $iterator = $iterable;
-    } elseif ($iterable instanceof \IteratorAggregate) {
-        /** @var \Iterator<Tk, Tv> $iterator */
+    } elseif ($iterable instanceof IteratorAggregate) {
+        /** @var IteratorInterface<Tk, Tv> $iterator */
         $iterator = $iterable->getIterator();
     } else {
-        /** @var \Iterator<Tk, Tv> $iterator */
+        /** @var IteratorInterface<Tk, Tv> $iterator */
         $iterator = new Iterator($iterable);
     }
 

@@ -7,9 +7,9 @@ namespace Psl\Collection;
 /**
  * The interface for mutable `Set`s to enable removal of its values.
  *
- * @psalm-template Tv as array-key
+ * @template Tv as array-key
  *
- * @template-extends ConstSetAccess<Tv>
+ * @extends ConstSetAccess<Tv>
  */
 interface SetAccess extends ConstSetAccess
 {

@@ -7,7 +7,7 @@ namespace Psl\Collection;
 /**
  * The interface implemented for a mutable collection type so that values can be added to it.
  *
- * @psalm-template Tv
+ * @template Tv
  */
 interface OutputCollection
 {

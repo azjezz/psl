@@ -8,10 +8,10 @@ namespace Psl\Collection;
  * The interface for mutable, keyed collections to enable setting and removing
  * keys.
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @template-extends ConstIndexAccess<Tk, Tv>
+ * @extends ConstIndexAccess<Tk, Tv>
  */
 interface IndexAccess extends ConstIndexAccess
 {

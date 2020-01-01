@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Generator;
+
 /**
  * Converts an iterable of key and value pairs, into an iterable of entries.
  *
@@ -12,9 +14,9 @@ namespace Psl\Iter;
  *
  * @psalm-param iterable<Tk, Tv>    $iterable
  *
- * @psalm-return iterable<array{0: Tk, 1: Tv}>
+ * @psalm-return Generator<int, array{0: Tk, 1: Tv}, mixed, void>
  */
-function enumerate(iterable $iterable): iterable
+function enumerate(iterable $iterable): Generator
 {
     foreach ($iterable as $k => $v) {
         yield [$k, $v];

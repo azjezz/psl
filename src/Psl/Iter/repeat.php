@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Generator;
 use Psl;
 use Psl\Math;
 
@@ -24,11 +25,10 @@ use Psl\Math;
  * @psalm-param T   $value Value to repeat
  * @psalm-param int $num   Number of repetitions (defaults to INF)
  *
- * @psalm-return iterable<T>
- *
+ * @psalm-return Generator<int, T, mixed, void>
  * @psalm-pure
  */
-function repeat($value, ?int $num = null): iterable
+function repeat($value, ?int $num = null): Generator
 {
     Psl\invariant(null === $num || $num >= 0, 'Number of repetitions must be non-negative');
 

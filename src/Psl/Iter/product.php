@@ -55,13 +55,10 @@ function product(iterable ...$iterables): iterable
                 return;
             }
 
-            /** @psalm-var Tk */
             $keyTuple[$i] = $iterators[$i]->key();
-            /** @psalm-var Tv */
             $valueTuple[$i] = $iterators[$i]->current();
         }
 
-        /** @psalm-var Tv */
         foreach ($iterators[$i] as $keyTuple[$i] => $valueTuple[$i]) {
             yield $keyTuple => $valueTuple;
         }
@@ -69,9 +66,7 @@ function product(iterable ...$iterables): iterable
         while (--$i >= 0) {
             $iterators[$i]->next();
             if ($iterators[$i]->valid()) {
-                /** @psalm-var Tk */
                 $keyTuple[$i] = $iterators[$i]->key();
-                /** @psalm-var Tv */
                 $valueTuple[$i] = $iterators[$i]->current();
                 continue 2;
             }

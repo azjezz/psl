@@ -12,7 +12,6 @@ namespace Psl\Math;
 function sum(iterable $numbers): int
 {
     $result = 0;
-    /** @var int $number */
     foreach ($numbers as $number) {
         $result += $number;
     }
