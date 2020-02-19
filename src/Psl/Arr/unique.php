@@ -7,7 +7,7 @@ namespace Psl\Arr;
 /**
  * Returns a new array in which each value appears exactly once.
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
  * @psalm-param iterable<Tk, Tv>    $iterable

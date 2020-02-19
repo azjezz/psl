@@ -19,7 +19,7 @@ namespace Psl\Iter;
  *      Iter\reduce(Iter\range(1, 5), fn($accumulator, $value) => $accumulator * $value, 1)
  *      => 120
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  * @psalm-template Ts
  *

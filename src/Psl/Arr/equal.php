@@ -10,7 +10,7 @@ use Psl\Iter;
  * Returns whether the two given arrays have the same entries, using strict
  * equality. To guarantee equality of order as well as contents, use `===`.
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
  * @psalm-param array<Tk, Tv> $array

@@ -7,7 +7,7 @@ namespace Psl\Collection;
 /**
  * The interface for mutable `Set`s to enable removal of its values.
  *
- * @template Tv as array-key
+ * @template Tv of array-key
  *
  * @extends ConstSetAccess<Tv>
  */

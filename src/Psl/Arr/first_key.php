@@ -7,7 +7,7 @@ namespace Psl\Arr;
 /**
  * Get the first key of an array, if the array is empty, null will be returned.
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  *
  * @psalm-param array<Tk, mixed> $array
  *

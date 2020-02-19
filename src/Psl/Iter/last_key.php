@@ -9,7 +9,7 @@ use Psl\Arr;
 /**
  * Get the last key of an iterable, if the iterable is empty, null will be returned.
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
  * @psalm-param array<Tk, Tv> $array

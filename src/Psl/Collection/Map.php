@@ -24,7 +24,7 @@ use Psl\Iter;
  * are being removed. When a new key is added or an element is removed, all
  * iterators that point to the `Map` shall be considered invalid.
  *
- * @template      Tk as array-key
+ * @template      Tk of array-key
  * @template      Tv
  *
  * @implements MutableMap<Tk, Tv>

@@ -11,7 +11,7 @@ use Psl\Iter;
  * optional comparator function isn't provided, the values will be sorted in
  * ascending order ( maintains index association ).
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
  * @psalm-param iterable<Tk, Tv> $iterable

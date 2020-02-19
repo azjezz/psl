@@ -7,7 +7,7 @@ namespace Psl\Collection;
 /**
  * The interface for all Sets to enable access its values.
  *
- * @template Tv as array-key
+ * @template Tv of array-key
  */
 interface ConstSetAccess
 {

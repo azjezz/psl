@@ -10,7 +10,7 @@ use Generator;
  * Returns a new dict formed by merging the iterable elements of the
  * given iterable.
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
  * @psalm-param iterable<iterable<Tk, Tv>> $iterables

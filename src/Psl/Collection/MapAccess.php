@@ -11,7 +11,7 @@ namespace Psl\Collection;
  * defined in its parent interfaces. But you could theoretically use this
  * interface for parameter and return type annotations.
  *
- * @template Tk as array-key
+ * @template Tk of array-key
  * @template Tv
  *
  * @extends ConstMapAccess<Tk, Tv>

@@ -8,7 +8,7 @@ use Psl;
 use Psl\Iter;
 
 /**
- * @template Tk as array-key
+ * @template Tk of array-key
  * @template Tv
  *
  * @implements ConstMap<Tk, Tv>

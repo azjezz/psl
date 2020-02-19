@@ -26,8 +26,8 @@ use Generator;
  *         24 => ['id' => 24, 'name' => 'bar']
  *     )
  *
- * @psalm-template Tk1 as array-key
- * @psalm-template Tk2 as array-key
+ * @psalm-template Tk1 of array-key
+ * @psalm-template Tk2 of array-key
  * @psalm-template Tv
  *
  * @psalm-param iterable<Tk1, Tv>    $iterable Iterable to reindex
