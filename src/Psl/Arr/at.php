@@ -10,7 +10,7 @@ use Psl;
  * Retrieve a value from the array using the given key.
  * If the key doesn't exist, an InvariantViolationException will be thrown.
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
  * @psalm-param array<Tk, Tv> $array

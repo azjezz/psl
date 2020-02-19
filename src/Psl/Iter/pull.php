@@ -24,11 +24,11 @@ use Generator;
  *      )
  *
  *
- * k as array-key
+ * k of array-key
  * v
  *
  * @psalm-template T
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
  * @psalm-param iterable<T> $iterable

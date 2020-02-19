@@ -11,7 +11,7 @@ use Psl\Random;
 /**
  * Retrieve a random value from a non-empty array.
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
  * @psalm-param array<Tk, Tv> $values

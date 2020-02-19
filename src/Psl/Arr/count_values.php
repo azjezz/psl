@@ -12,7 +12,7 @@ use Psl\Str;
  * Returns a new array mapping each value to the number of times it appears
  * in the given iterable.
  *
- * @psalm-template Tv as array-key
+ * @psalm-template Tv of array-key
  *
  * @psalm-param iterable<Tv> $values
  *

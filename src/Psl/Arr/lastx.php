@@ -10,7 +10,7 @@ use Psl;
  * Get the last value of an array, If the array is empty, an InvariantViolationException
  * will be thrown.
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
  * @psalm-param array<Tk, Tv> $array

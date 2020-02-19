@@ -18,7 +18,7 @@ use Generator;
  *     Iter\map([1, 2, 3, 4, 5], fn($i) => $i * 2);
  *     => Iter(2, 4, 6, 8, 10)
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  * @psalm-template T
  *

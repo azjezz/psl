@@ -17,7 +17,7 @@ use Psl;
  *      Arr\shuffle('a' => 1, 'b' => 2, 'c' => 3)
  *      => Arr(2, 3, 1)
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
  * @psalm-param array<Tk, Tv> $array

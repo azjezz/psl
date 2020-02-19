@@ -22,7 +22,7 @@ use Generator;
  *         Arr(2, 2, 2) => Arr(3, 6, 9)
  *     )
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
  * @psalm-param iterable<Tk, Tv>    ...$iterables

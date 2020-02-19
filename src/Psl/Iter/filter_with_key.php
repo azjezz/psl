@@ -19,7 +19,7 @@ use Psl;
  *      Iter\filter(['foo', 'bar', 'baz', 'qux'], fn($key, $value) => $key > 1 && Str\contains($value, 'a'));
  *      => Iter('baz')
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
  * @psalm-param iterable<Tk, Tv>            $iterable

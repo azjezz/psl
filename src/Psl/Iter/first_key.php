@@ -22,7 +22,7 @@ use Psl\Arr;
  *      Iter\first_key([])
  *      => Null
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
  * @psalm-param iterable<Tk, Tv> $iterable

@@ -7,7 +7,7 @@ namespace Psl\Iter;
 /**
  * Copy the iterable into an array with keys.
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
  * @psalm-param iterable<Tk, Tv> $iterable

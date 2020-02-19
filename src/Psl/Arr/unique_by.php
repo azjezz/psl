@@ -13,9 +13,9 @@ use Psl\Str;
  * value's uniqueness is determined by transforming it to a scalar via the
  * given function.
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
- * @psalm-template Ts as array-key
+ * @psalm-template Ts of array-key
  *
  * @psalm-param iterable<Tk, Tv>    $iterable
  * @psalm-param (callable(Tv): Ts)  $scalar_func

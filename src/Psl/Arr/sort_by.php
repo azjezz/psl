@@ -12,7 +12,7 @@ use Psl\Iter;
  * comparator function isn't provided, the values will be sorted in ascending
  * order of scalar key.
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  * @psalm-template Ts
  *

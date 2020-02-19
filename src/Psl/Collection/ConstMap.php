@@ -9,7 +9,7 @@ use IteratorAggregate;
 /**
  * Interface ConstMap.
  *
- * @template Tk as array-key
+ * @template Tk of array-key
  * @template Tv
  *
  * @extends ConstCollection<Pair<Tk, Tv>>

@@ -23,9 +23,9 @@ use Generator;
  *          70 => 'H', 131 => 'I', 264 => 'J', 521 => 'K', 1034 => 'L'
  *      )
  *
- * @psalm-template Tk1 as array-key
+ * @psalm-template Tk1 of array-key
  * @psalm-template Tv1
- * @psalm-template Tk2 as array-key
+ * @psalm-template Tk2 of array-key
  * @psalm-template Tv2
  *
  * @psalm-param iterable<Tk1, Tv1>          $iterable

@@ -16,8 +16,8 @@ use Psl\Str;
  *      Iter\flip(['a' => 1, 'b' => 2, 'c' => 3])
  *      => Iter(1 => 'a', 2 => 'b', 3 => 'c')
  *
- * @psalm-template Tk as array-key
- * @psalm-template Tv as array-key
+ * @psalm-template Tk of array-key
+ * @psalm-template Tv of array-key
  *
  * @psalm-param iterable<Tk, Tv> $iterable
  *

@@ -10,7 +10,7 @@ use Generator;
  * Returns a new dict where each value is the result of calling the given
  * function on the corresponding key.
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
  * @psalm-param iterable<Tk>        $keys

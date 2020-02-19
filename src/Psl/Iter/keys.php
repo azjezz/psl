@@ -14,7 +14,7 @@ use Generator;
  *      Iter\keys(['a' => 0, 'b' => 1, 'c' => 2])
  *      => Iter('a', 'b', 'c')
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
  * @psalm-param iterable<Tk, Tv> $iterable Iterable to get keys from

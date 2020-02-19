@@ -15,7 +15,7 @@ namespace Psl\Arr;
  *      Arr\merge([0 => 1, 1 => 2], [2 => 9, 3 => 8])
  *      => Arr(0 => 1, 1 => 2, 2 => 9, 3 => 8)
  *
- * @psalm-template Tk as array-key
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
  * @psalm-param    iterable<Tk, Tv> $first

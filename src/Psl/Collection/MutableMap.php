@@ -7,7 +7,7 @@ namespace Psl\Collection;
 /**
  * Represents a write-enabled (mutable) sequence of key/value pairs (ie. map).
  *
- * @template Tk as array-key
+ * @template Tk of array-key
  * @template Tv
  *
  * @extends ConstMap<Tk, Tv>
