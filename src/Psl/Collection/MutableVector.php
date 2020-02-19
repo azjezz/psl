@@ -8,11 +8,11 @@ namespace Psl\Collection;
  * Represents a write-enabled (mutable) sequence of values, indexed by integers
  * (i.e., a vector).
  *
- * @psalm-template Tv
+ * @template Tv
  *
- * @template-extends ConstVector<Tv>
- * @template-extends IndexAccess<int, Tv>
- * @template-extends Collection<Tv>
+ * @extends ConstVector<Tv>
+ * @extends IndexAccess<int, Tv>
+ * @extends Collection<Tv>
  */
 interface MutableVector extends ConstVector, IndexAccess, Collection
 {
@@ -207,4 +207,11 @@ interface MutableVector extends ConstVector, IndexAccess, Collection
      * @psalm-return MutableVector<Tu> - The concatenated `MutableVector`.
      */
     public function concat(iterable $iterable): MutableVector;
+
+    /**
+     * Returns a deep, immutable copy (`ImmVector`) of this `MutableVector`.
+     *
+     * @psalm-return ImmVector<Tv> - an `ImmVector` that is a deep copy of this `MutableVector`
+     */
+    public function immutable(): ImmVector;
 }

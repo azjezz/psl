@@ -17,7 +17,6 @@ use Psl\Str;
  * @psalm-param iterable<Tv> $values
  *
  * @psalm-return array<Tv|Tv, int>
- *
  * @return int[]
  */
 function count_values(iterable $values): array
@@ -27,7 +26,6 @@ function count_values(iterable $values): array
     /** @psalm-var array<Tv, int> $result */
     $result = [];
 
-    /** @psalm-var Tv $value */
     foreach ($values as $value) {
         Psl\invariant(
             Str\is_string($value) || is_numeric($value),

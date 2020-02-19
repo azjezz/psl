@@ -12,7 +12,8 @@ namespace Psl\Arr;
  * @psalm-param iterable<T> $iterable
  * @psalm-param (callable(T): bool) $predicate
  *
- * @psalm-return array{0: array<int, T>, 1: array<int, T>}
+ * @psalm-return array{0: list<T>, 1: list<T>}
+ * @return mixed[][]
  */
 function partition(iterable $iterable, callable $predicate): array
 {

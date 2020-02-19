@@ -15,7 +15,7 @@
         "symfony/polyfill": "^1.12"
     },
     "require-dev": {
-        "vimeo/psalm": "dev-master",
+        "vimeo/psalm": "^3.8",
         "phpunit/phpunit": "^8.5",
         "friendsofphp/php-cs-fixer": "^2.16",
         "php-coveralls/php-coveralls": "^2.2"
@@ -29,9 +29,12 @@
         ]
     },
     "scripts": {
-        "type-check": "psalm",
-        "test": "phpunit",
-        "cs-fix": "php-cs-fixer fix",
-        "coveralls": "php-coveralls -v"
+        "cs:fix": "php-cs-fixer fix",
+        "cs:check": "php-cs-fixer fix --dry-run -vvv",
+        "type:fix": "psalm --alter --issues=all",
+        "type:check": "psalm --debug",
+        "type:coverage": "psalm --shepherd",
+        "test:unit": "phpunit",
+        "code:coverage": "php-coveralls -v"
     }
 }

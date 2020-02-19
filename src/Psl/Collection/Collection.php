@@ -11,10 +11,10 @@ namespace Psl\Collection;
  * interface. Otherwise, you can implement OutputCollection only.
  * If your collection to be immutable, implement ConstCollection only instead.
  *
- * @psalm-template Tv
+ * @template Tv
  *
- * @template-extends ConstCollection<Tv>
- * @template-extends OutputCollection<Tv>
+ * @extends ConstCollection<Tv>
+ * @extends OutputCollection<Tv>
  */
 interface Collection extends ConstCollection, OutputCollection
 {

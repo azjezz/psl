@@ -7,11 +7,11 @@ namespace Psl\Collection;
 /**
  * The interface for all Vectors to enable access its values.
  *
- * @psalm-template Tv
+ * @template Tv
  *
- * @template-extends ConstCollection<Tv>
- * @template-extends ConstIndexAccess<int, Tv>
- * @template-extends \IteratorAggregate<Tv>
+ * @extends ConstCollection<Tv>
+ * @extends ConstIndexAccess<int, Tv>
+ * @extends \IteratorAggregate<Tv>
  */
 interface ConstVector extends ConstCollection, ConstIndexAccess, \IteratorAggregate
 {

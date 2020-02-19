@@ -26,7 +26,6 @@ function max_by(iterable $values, callable $num_func)
     $max_num = null;
     foreach ($values as $value) {
         $value_num = $num_func($value);
-        Psl\invariant(\is_numeric($value_num), 'Expected $num_func to return a numeric value, %s returned.', \gettype($value_num));
         if (null === $max_num || $value_num >= $max_num) {
             $max = $value;
             $max_num = $value_num;

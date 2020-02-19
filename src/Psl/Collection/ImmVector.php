@@ -8,9 +8,9 @@ use Psl\Arr;
 use Psl\Iter;
 
 /**
- * @psalm-template Tv
+ * @template Tv
  *
- * @template-implements ConstVector<Tv>
+ * @implements ConstVector<Tv>
  */
 final class ImmVector implements ConstVector
 {
@@ -427,15 +427,5 @@ final class ImmVector implements ConstVector
     {
         /** @psalm-var array<int, Tv> $items */
         return $this->items;
-    }
-
-    /**
-     * Returns a deep, mutable copy (`Vector`) of this `ImmVector`.
-     *
-     * @psalm-return Vector<Tv> - a `Vector` that is a deep copy of this `ImmVector`
-     */
-    public function mutable(): Vector
-    {
-        return new Vector($this->toArray());
     }
 }

@@ -10,7 +10,7 @@ namespace Psl\Collection;
  *
  * Every concrete class indirectly implements this interface.
  *
- * @psalm-template Tv
+ * @template Tv
  */
 interface ConstCollection extends \Countable
 {

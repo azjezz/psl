@@ -25,25 +25,31 @@ use Psl\Str;
  */
 function unique_by(iterable $iterable, callable $scalar_func): array
 {
+    /** @psalm-var array<Tk, Tv> $iterable */
     $iterable = Iter\to_array_with_keys($iterable);
+    /** @psalm-var array<Tk, Ts> $unique */
     $unique = [];
     foreach ($iterable as $k => $v) {
+        /** @psalm-var Ts $scalar */
         $scalar = $scalar_func($v);
-        Psl\invariant(
-            Str\is_string($scalar) || is_numeric($scalar),
-            'Expected return value of $scalar_func to be of type array-key, value of type (%s) returned.',
-            gettype($scalar)
-        );
 
         if (!contains($unique, $scalar)) {
             $unique[$k] = $scalar;
         }
     }
 
-    return Iter\to_array_with_keys(
-        Iter\map_with_key(
-            $unique,
-            fn ($k, $v) => $iterable[$k]
-        )
+    /** @psalm-var \Generator<Tk, Tv, mixed, void> $unique */
+    $unique = Iter\map_with_key(
+        $unique,
+        /**
+         * @psalm-param Tk $k
+         * @psalm-param Ts $v
+         *
+         * @psalm-return Tv
+         */
+        fn ($k, $v) => $iterable[$k]
     );
+
+    /** @psalm-var array<Tk, Tv> */
+    return Iter\to_array_with_keys($unique);
 }

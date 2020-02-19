@@ -11,12 +11,12 @@ namespace Psl\Collection;
  * defined in its parent interfaces. But you could theoretically use this
  * interface for parameter and return type annotations.
  *
- * @psalm-template Tk as array-key
- * @psalm-template Tv
+ * @template Tk as array-key
+ * @template Tv
  *
- * @template-extends ConstMapAccess<Tk, Tv>
- * @template-extends SetAccess<Tk>
- * @template-extends IndexAccess<Tk, Tv>
+ * @extends ConstMapAccess<Tk, Tv>
+ * @extends SetAccess<Tk>
+ * @extends IndexAccess<Tk, Tv>
  */
 interface MapAccess extends ConstMapAccess, SetAccess, IndexAccess
 {

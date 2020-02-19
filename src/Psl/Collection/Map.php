@@ -24,10 +24,10 @@ use Psl\Iter;
  * are being removed. When a new key is added or an element is removed, all
  * iterators that point to the `Map` shall be considered invalid.
  *
- * @psalm-template      Tk as array-key
- * @psalm-template      Tv
+ * @template      Tk as array-key
+ * @template      Tv
  *
- * @template-implements MutableMap<Tk, Tv>
+ * @implements MutableMap<Tk, Tv>
  */
 final class Map implements MutableMap
 {

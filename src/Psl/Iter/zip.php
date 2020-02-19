@@ -4,30 +4,32 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Generator;
+
 /**
- *  Zips the iterables that were passed as arguments.
+ * Zips the iterables that were passed as arguments.
  *
- * Afterwards keys and values will be arrays containing the keys/values of
- * the individual iterables. This function stops as soon as the first iterable
- * becomes invalid.
+ *  Afterwards keys and values will be arrays containing the keys/values of
+ *  the individual iterables. This function stops as soon as the first iterable
+ *  becomes invalid.
  *
- * Examples:
+ *  Examples:
  *
- *      Iter\zip([1, 2, 3], [4, 5, 6], [7, 8, 9, 10])
- *      => Iter(
- *          Arr(0, 0, 0) => Arr(1, 4, 7),
- *          Arr(1, 1, 1) => Arr(2, 5, 8),
- *          Arr(2, 2, 2) => Arr(3, 6, 9)
- *      )
+ *     Iter\zip([1, 2, 3], [4, 5, 6], [7, 8, 9, 10])
+ *     => Iter(
+ *         Arr(0, 0, 0) => Arr(1, 4, 7),
+ *         Arr(1, 1, 1) => Arr(2, 5, 8),
+ *         Arr(2, 2, 2) => Arr(3, 6, 9)
+ *     )
  *
  * @psalm-template Tk as array-key
  * @psalm-template Tv
  *
- * @psalm-param    iterable<Tk, Tv>    ...$iterables
+ * @psalm-param iterable<Tk, Tv>    ...$iterables
  *
- * @psalm-return   iterable<array<int, Tk>, array<int, Tv>>
+ * @psalm-return Generator<array<int, Tk>, array<int, Tv>, mixed, void>
  */
-function zip(iterable ...$iterables): iterable
+function zip(iterable ...$iterables): Generator
 {
     if (0 === count($iterables)) {
         return;

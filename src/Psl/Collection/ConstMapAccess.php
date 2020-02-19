@@ -10,11 +10,11 @@ namespace Psl\Collection;
  * This interface provides no new methods as all current access for Maps are defined in its parent interfaces.
  * But you could theoretically use this interface for parameter and return type annotations.
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @template-extends ConstSetAccess<Tk>
- * @template-extends ConstIndexAccess<Tk, Tv>
+ * @extends ConstSetAccess<Tk>
+ * @extends ConstIndexAccess<Tk, Tv>
  */
 interface ConstMapAccess extends ConstSetAccess, ConstIndexAccess
 {

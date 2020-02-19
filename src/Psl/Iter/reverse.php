@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-function reverse(iterable $iterable): iterable
+use Generator;
+
+/**
+ * @return Generator
+ *
+ * @psalm-return Generator<int, mixed, mixed, void>
+ */
+function reverse(iterable $iterable): Generator
 {
     $size = count($iterable);
     if (0 === $size) {

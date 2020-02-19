@@ -16,6 +16,10 @@ namespace Psl\Arr;
  * @psalm-param iterable<Tk>    $keys
  *
  * @param array $keys
+ *
+ * @return mixed[]
+ *
+ * @psalm-return array<Tk, Tv>
  */
 function select_keys(array $array, iterable $keys): array
 {

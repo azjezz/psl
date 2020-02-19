@@ -24,10 +24,10 @@ use Psl\Iter;
  * You may notice that many methods affecting the instance of Pair return an ImmVector --
  * Pairs are essentially backed by 2-element ImmVectors.
  *
- * @psalm-template Ta
- * @psalm-template Tb
+ * @template Ta
+ * @template Tb
  *
- * @template-implements ConstVector<Ta|Tb>
+ * @implements ConstVector<Ta|Tb>
  */
 final class Pair implements ConstVector
 {

@@ -9,9 +9,9 @@ use Psl\Arr;
 use Psl\Iter;
 
 /**
- * @psalm-template Tv
+ * @template Tv
  *
- * @template-implements MutableVector<Tv>
+ * @implements MutableVector<Tv>
  */
 final class Vector implements MutableVector
 {

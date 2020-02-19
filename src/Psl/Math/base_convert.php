@@ -32,7 +32,6 @@ function base_convert(string $value, int $from_base, int $to_base): string
 
     $from_alphabet = Byte\slice(Str\ALPHABET_ALPHANUMERIC, 0, $from_base);
     $result_decimal = '0';
-    /** @var string $place_value */
     $place_value = \bcpow((string)$from_base, (string)(Byte\length($value) - 1));
     /** @var string $digit */
     foreach (Byte\chunk($value) as $digit) {

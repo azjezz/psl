@@ -7,12 +7,12 @@ namespace Psl\Collection;
 /**
  * Represents a write-enabled (mutable) sequence of key/value pairs (ie. map).
  *
- * @psalm-template Tk as array-key
- * @psalm-template Tv
+ * @template Tk as array-key
+ * @template Tv
  *
- * @template-extends ConstMap<Tk, Tv>
- * @template-extends Collection<Pair<Tk, Tv>>
- * @template-extends MapAccess<Tk, Tv>
+ * @extends ConstMap<Tk, Tv>
+ * @extends Collection<Pair<Tk, Tv>>
+ * @extends MapAccess<Tk, Tv>
  */
 interface MutableMap extends ConstMap, Collection, MapAccess
 {
@@ -271,4 +271,12 @@ interface MutableMap extends ConstMap, Collection, MapAccess
      *                 `MutableMap` is empty
      */
     public function lastKey();
+
+
+    /**
+     * Returns a deep, immutable copy (`ImmMap`) of this `MutableMap`.
+     *
+     * @psalm-return ImmMap<Tk, Tv> - an `ImmMap` that is a deep copy of this `MutableMap`
+     */
+    public function immutable(): ImmMap;
 }

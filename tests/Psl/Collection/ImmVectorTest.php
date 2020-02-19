@@ -293,20 +293,11 @@ class ImmVectorTest extends TestCase
         self::assertNull($vector->lastKey());
     }
 
-    public function testImmutable(): void
-    {
-        $vector = new Collection\ImmVector(['foo' => 1, 'bar' => 2, 'baz' => 3, 'qux' => 4]);
-        $mutable = $vector->mutable();
-
-        self::assertSame($vector->toArray(), $mutable->toArray());
-    }
-
     public function testGetIterator(): void
     {
         $vector = new Collection\ImmVector(Iter\range(1, 10));
 
         $iterator = $vector->getIterator();
-        self::assertInstanceOf(Iter\Iterator::class, $iterator);
 
         $array = \iterator_to_array($iterator);
         self::assertSame([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], $array);

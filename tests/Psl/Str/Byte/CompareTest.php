@@ -18,7 +18,7 @@ class CompareTest extends TestCase
 
         if (0 === $expected) {
             self::assertSame(0, $diff);
-        } else if (0 > $expected) {
+        } elseif (0 > $expected) {
             self::assertLessThanOrEqual(-1, $diff);
         } else {
             self::assertGreaterThanOrEqual(1, $diff);

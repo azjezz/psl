@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Closure;
+use Generator;
+
 /**
  * Returns a new iterable containing only the keys for which the given predicate
  * returns `true`. The default predicate is casting the key to boolean.
@@ -22,11 +25,12 @@ namespace Psl\Iter;
  * @psalm-param iterable<Tk, Tv>            $iterable
  * @psalm-param null|(callable(Tk): bool)   $predicate
  *
- * @psalm-return iterable<Tk, Tv>
+ * @psalm-return Generator<Tk, Tv, mixed, void>
  */
-function filter_keys(iterable $iterable, ?callable $predicate = null): iterable
+function filter_keys(iterable $iterable, ?callable $predicate = null): Generator
 {
-    $predicate = $predicate ?? \Closure::fromCallable('Psl\Internal\boolean');
+    /** @psalm-var (callable(Tk): bool) $predicate */
+    $predicate = $predicate ?? Closure::fromCallable('Psl\Internal\boolean');
     foreach ($iterable as $k => $v) {
         if ($predicate($k)) {
             yield $k => $v;

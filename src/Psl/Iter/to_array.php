@@ -11,7 +11,7 @@ namespace Psl\Iter;
  *
  * @psalm-param iterable<Tv> $iterable
  *
- * @psalm-return array<int, Tv>
+ * @psalm-return list<Tv>
  */
 function to_array(iterable $iterable): array
 {

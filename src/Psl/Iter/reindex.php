@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Generator;
+
 /**
  * Re-indexes an array by applying a function to all values of an iterator and
  * using the returned value as the new key/index.
@@ -31,9 +33,9 @@ namespace Psl\Iter;
  * @psalm-param iterable<Tk1, Tv>    $iterable Iterable to reindex
  * @psalm-param (callable(Tv): Tk2)   $function
  *
- * @psalm-return iterable<Tk2, Tv>
+ * @psalm-return Generator<Tk2, Tv, mixed, void>
  */
-function reindex(iterable $iterable, callable $function): iterable
+function reindex(iterable $iterable, callable $function): Generator
 {
     foreach ($iterable as $value) {
         yield $function($value) => $value;

@@ -10,9 +10,9 @@ namespace Psl\Iter;
  *
  * @psalm-param iterable<Tk, Tv> $iterable
  *
- * @psalm-return \Iterator<Tk, Tv>
+ * @psalm-return Iterator<Tk, Tv>
  */
-function rewindable(iterable $iterable): \Iterator
+function rewindable(iterable $iterable): Iterator
 {
     return new Iterator($iterable);
 }
