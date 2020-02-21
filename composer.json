@@ -15,7 +15,7 @@
         "symfony/polyfill": "^1.12"
     },
     "require-dev": {
-        "vimeo/psalm": "^3.8",
+        "vimeo/psalm": "dev-master",
         "phpunit/phpunit": "^8.5",
         "friendsofphp/php-cs-fixer": "^2.16",
         "php-coveralls/php-coveralls": "^2.2"
@@ -27,6 +27,11 @@
         "files": [
             "src/bootstrap.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Psl\\Tests\\": "tests/Psl"
+        }
     },
     "scripts": {
         "cs:fix": "php-cs-fixer fix",

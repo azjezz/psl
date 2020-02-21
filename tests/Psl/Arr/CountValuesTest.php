@@ -37,7 +37,7 @@ class CountValuesTest extends TestCase
                     new Collection\Vector(['foo', 'bar', 'baz']),
                     new Collection\Map([1 => 'foo']),
                     (fn () => yield 'baz')(),
-                    new Collection\Pair('baz', 'baz'),
+                    new Collection\MutableVector(['baz', 'baz']),
                 ),
             ],
             [

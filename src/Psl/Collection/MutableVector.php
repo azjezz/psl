@@ -4,90 +4,251 @@ declare(strict_types=1);
 
 namespace Psl\Collection;
 
+use Psl;
+use Psl\Arr;
+use Psl\Iter;
+
 /**
- * Represents a write-enabled (mutable) sequence of values, indexed by integers
- * (i.e., a vector).
+ * @template   T
  *
- * @template Tv
- *
- * @extends ConstVector<Tv>
- * @extends IndexAccess<int, Tv>
- * @extends Collection<Tv>
+ * @extends    AbstractVector<T>
+ * @implements IMutableVector<T>
  */
-interface MutableVector extends ConstVector, IndexAccess, Collection
+final class MutableVector extends AbstractVector implements IMutableVector
 {
     /**
-     * Returns a MutableVector containing the values of the current MutableVector that meet a supplied
-     * condition.
+     * Stores a value into the current vector with the specified key,
+     * overwriting the previous value associated with the key.
      *
-     * @psalm-param (callable(Tv): bool) $fn
+     * If the key is not present, an exception is thrown. If you want to add
+     * a value even if a key is not present, use `add()`.
      *
-     * @psalm-return MutableVector<Tv>
+     * It returns the current vector, meaning changes made to the current
+     * vector will be reflected in the returned vector.
+     *
+     * @psalm-param  int $k - The key to which we will set the value
+     * @psalm-param  T   $v - The value to set
+     *
+     * @psalm-return MutableVector<T> - Returns itself
      */
-    public function filter(callable $fn): MutableVector;
+    public function set($k, $v): MutableVector
+    {
+        Psl\invariant($this->contains($k), 'Key (%s) is out-of-bound.', $k);
+
+        $this->elements[$k] = $v;
+
+        return $this;
+    }
 
     /**
-     * Returns a MutableVector containing the values of the current MutableVector that meet a supplied
-     * condition applied to its keys and values.
+     * For every element in the provided `iterable`, stores a value into the
+     * current vector associated with each key, overwriting the previous value
+     * associated with the key.
      *
-     * @psalm-param (callable(int, Tv): bool) $fn
+     * If the key is not present, an exception is thrown. If you want to add
+     * a value even if a key is not present, use `addAll()`.
      *
-     * @psalm-return MutableVector<Tv>
+     * It the current vector, meaning changes made to the current vector
+     * will be reflected in the returned vector.
+     *
+     * @psalm-param  iterable<int, T> $iterable - The `iterable` with the new values to set
+     *
+     * @psalm-return MutableVector<T> - Returns itself
      */
-    public function filterWithKey(callable $fn): MutableVector;
+    public function setAll(iterable $iterable): MutableVector
+    {
+        foreach ($iterable as $k => $v) {
+            $this->set($k, $v);
+        }
+
+        return $this;
+    }
 
     /**
-     * Returns a MutableVector containing the values of the current
-     * MutableVector. Essentially a copy of the current MutableVector.
+     * Removes the specified key (and associated value) from the current
+     * vector.
      *
-     * @psalm-return MutableVector<Tv>
+     * If the key is not in the current vector, the current vector is
+     * unchanged.
+     *
+     * This will cause elements with higher keys to be assigned a new key that is one less
+     * than their previous key.
+     *
+     * That is, values with keys $k + 1 to n - 1 will be given new keys $k to n - 2, where n is
+     * the length of the current MutableVector before the call to remove().
+     *
+     * @psalm-param  int $k - The key to remove
+     *
+     * @psalm-return MutableVector<T> - Returns itself
      */
-    public function values(): MutableVector;
+    public function remove($k): MutableVector
+    {
+        if ($this->contains($k)) {
+            unset($this->elements[$k]);
+            $this->elements = Arr\values($this->elements);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Removes all items from the vector.
+     *
+     * @psalm-return MutableVector<T> - Returns itself
+     */
+    public function clear(): MutableVector
+    {
+        $this->elements = [];
+
+        return $this;
+    }
+
+    /**
+     * Add a value to the vector and return the vector itself.
+     *
+     * @psalm-param  T $v - The value to add
+     *
+     * @psalm-return MutableVector<T> - Returns itself
+     */
+    public function add($v): MutableVector
+    {
+        $this->elements[] = $v;
+
+        return $this;
+    }
+
+    /**
+     * For every element in the provided iterable, add the value into the current vector.
+     *
+     * @psalm-param  iterable<T> $iterable - The `iterable` with the new values to add
+     *
+     * @psalm-return MutableVector<T> - Returns itself
+     */
+    public function addAll(iterable $iterable): MutableVector
+    {
+        foreach ($iterable as $item) {
+            $this->add($item);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns a `MutableVector` containing the values of the current
+     * `MutableVector`.
+     *
+     * @psalm-return MutableVector<T>
+     */
+    public function values(): MutableVector
+    {
+        return new MutableVector(Arr\values($this->elements));
+    }
 
     /**
      * Returns a `MutableVector` containing the keys of the current `MutableVector`.
      *
      * @psalm-return MutableVector<int>
      */
-    public function keys(): MutableVector;
+    public function keys(): MutableVector
+    {
+        return new MutableVector(Arr\keys($this->elements));
+    }
 
     /**
-     * Returns a `MutableVector` containing the values after an operation has been
-     * applied to each value in the current `MutableVector`.
+     * Returns a `MutableVector` containing the values of the current `MutableVector`
+     * that meet a supplied condition.
      *
-     * Every value in the current `MutableVector` is affected by a call to `map()`,
-     * unlike `filter()` where only values that meet a certain criteria are
-     * affected.
+     * Only values that meet a certain criteria are affected by a call to
+     * `filter()`, while all values are affected by a call to `map()`.
+     *
+     * The keys associated with the current `MutableVector` remain unchanged in the
+     * returned `MutableVector`.
+     *
+     * @psalm-param (callable(T): bool) $fn - The callback containing the condition to apply to the current
+     *                                 `MutableVector` values
+     *
+     * @psalm-return MutableVector<T> - a MutableVector containing the values after a user-specified condition
+     *                        is applied
+     */
+    public function filter(callable $fn): MutableVector
+    {
+        return new MutableVector(Iter\filter($this->elements, $fn));
+    }
+
+    /**
+     * Returns a `MutableVector` containing the values of the current `MutableVector`
+     * that meet a supplied condition applied to its keys and values.
+     *
+     * Only keys and values that meet a certain criteria are affected by a call
+     * to `filterWithKey()`, while all values are affected by a call to
+     * `mapWithKey()`.
+     *
+     * The keys associated with the current `MutableVector` remain unchanged in the
+     * returned `MutableVector`; the keys will be used in the filtering process only.
+     *
+     * @psalm-param (callable(int, T): bool) $fn - The callback containing the condition to apply to the current
+     *                                     `MutableVector` keys and values
+     *
+     * @psalm-return MutableVector<T> - a `MutableVector` containing the values after a user-specified
+     *                        condition is applied to the keys and values of the current
+     *                        `MutableVector`
+     */
+    public function filterWithKey(callable $fn): MutableVector
+    {
+        return new MutableVector(Iter\filter_with_key($this->elements, $fn));
+    }
+
+    /**
+     * Returns a `MutableVector` after an operation has been applied to each value
+     * in the current `MutableVector`.
+     *
+     * Every value in the current Map is affected by a call to `map()`, unlike
+     * `filter()` where only values that meet a certain criteria are affected.
+     *
+     * The keys will remain unchanged from the current `MutableVector` to the
+     * returned `MutableVector`.
      *
      * @psalm-template Tu
      *
-     * @psalm-param (callable(Tv): Tu) $fn
+     * @psalm-param (callable(T): Tu) $fn - The callback containing the operation to apply to the current
+     *                               `MutableVector` values
      *
-     * @psalm-return MutableVector<Tu>
+     * @psalm-return   MutableVector<Tu> - a `MutableVector` containing key/value pairs after a user-specified
+     *                        operation is applied
      */
-    public function map(callable $fn): MutableVector;
+    public function map(callable $fn): MutableVector
+    {
+        return new MutableVector(Iter\map($this->elements, $fn));
+    }
 
     /**
-     * Returns a `MutableVector` containing the values after an operation has been
-     * applied to each key and value in the current `MutableVector`.
+     * Returns a `MutableVector` after an operation has been applied to each key and
+     * value in the current `MutableVector`.
      *
      * Every key and value in the current `MutableVector` is affected by a call to
      * `mapWithKey()`, unlike `filterWithKey()` where only values that meet a
      * certain criteria are affected.
      *
+     * The keys will remain unchanged from this `MutableVector` to the returned
+     * `MutableVector`. The keys are only used to help in the mapping operation.
+     *
      * @psalm-template Tu
      *
-     * @psalm-param (callable(int, Tv): Tu) $fn - The callback containing the operation to apply to the
-     *              `MutableVector` keys and values.
+     * @psalm-param (callable(int, T): Tu) $fn - The callback containing the operation to apply to the current
+     *                                   `MutableVector` keys and values
      *
-     * @psalm-return MutableVector<Tu> - a `MutableVector` containing the values after a user-specified
-     *           operation on the current Vector's keys and values is applied.
+     * @psalm-return   MutableVector<Tu> - a `MutableVector` containing the values after a user-specified
+     *                        operation on the current `MutableVector`'s keys and values is
+     *                        applied
      */
-    public function mapWithKey(callable $fn): MutableVector;
+    public function mapWithKey(callable $fn): MutableVector
+    {
+        return new MutableVector(Iter\map_with_key($this->elements, $fn));
+    }
 
     /**
-     * Returns a `MutableVector` where each element is a `Pair` that combines the
-     * element of the current `MutableVector` and the provided `iterable`.
+     * Returns a `MutableVector` where each element is a `array{0: Tv, 1: Tu}` that combines the
+     * element of the current `IVector` and the provided `iterable`.
      *
      * If the number of elements of the `MutableVector` are not equal to the
      * number of elements in the `iterable`, then only the combined elements
@@ -96,13 +257,28 @@ interface MutableVector extends ConstVector, IndexAccess, Collection
      *
      * @psalm-template Tu
      *
-     * @psalm-param iterable<Tu> - The `iterable` to use to combine with the
-     *                       elements of this `MutableVector`.
+     * @psalm-param    iterable<Tu> $iterable - The `iterable` to use to combine with the
+     *                       elements of this `IVector`.
      *
-     * @psalm-return MutableVector<Pair<Tv, Tu>> - The `MutableVector` that combines the values of the current
+     * @psalm-return   MutableVector<array{0: T, 1: Tu}> - The `MutableVector` that combines the values of the current
      *           `MutableVector` with the provided `iterable`.
      */
-    public function zip(iterable $iterable): MutableVector;
+    public function zip(iterable $iterable): MutableVector
+    {
+        $iterable = Iter\to_array($iterable);
+
+        /** @psalm-var array<int, array{0: T, 1: Tu}> $values */
+        $values = [];
+        for ($i = 0; $i < $this->count(); $i++) {
+            if (!Arr\contains_key($iterable, $i)) {
+                break;
+            }
+
+            $values[] = [$this->at($i), $iterable[$i]];
+        }
+
+        return new MutableVector($values);
+    }
 
     /**
      * Returns a `MutableVector` containing the first `n` values of the current
@@ -116,10 +292,13 @@ interface MutableVector extends ConstVector, IndexAccess, Collection
      * @psalm-param $n - The last element that will be included in the returned
      *             `MutableVector`
      *
-     * @psalm-return MutableVector<Tv> - A `MutableVector` that is a proper subset of the current
+     * @psalm-return MutableVector<T> - A `MutableVector` that is a proper subset of the current
      *           `MutableVector` up to `n` elements.
      */
-    public function take(int $n): MutableVector;
+    public function take(int $n): MutableVector
+    {
+        return new MutableVector(Iter\take($this->elements, $n));
+    }
 
     /**
      * Returns a `MutableVector` containing the values of the current `MutableVector`
@@ -129,31 +308,37 @@ interface MutableVector extends ConstVector, IndexAccess, Collection
      * The returned `MutableVector` will always be a proper subset of the current
      * `MutableVector`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback that is used to determine the stopping
+     * @psalm-param (callable(T): bool) $fn - The callback that is used to determine the stopping
      *              condition.
      *
-     * @psalm-return MutableVector<Tv> - A `MutableVector` that is a proper subset of the current
+     * @psalm-return MutableVector<T> - A `MutableVector` that is a proper subset of the current
      *           `MutableVector` up until the callback returns `false`.
      */
-    public function takeWhile(callable $fn): MutableVector;
+    public function takeWhile(callable $fn): MutableVector
+    {
+        return new MutableVector(Iter\take_while($this->elements, $fn));
+    }
 
     /**
      * Returns a `MutableVector` containing the values after the `n`-th element of
      * the current `MutableVector`.
      *
      * The returned `MutableVector` will always be a proper subset of the current
-     * `MutableVector`.
+     * `IVector`.
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @psalm-param int $n - The last element to be skipped; the $n+1 element will be the
+     * @psalm-param  int $n - The last element to be skipped; the $n+1 element will be the
      *             first one in the returned `MutableVector`.
      *
-     * @psalm-return MutableVector<Tv> - A `MutableVector` that is a proper subset of the current
+     * @psalm-return MutableVector<T> - A `MutableVector` that is a proper subset of the current
      *           `MutableVector` containing values after the specified `n`-th
      *           element.
      */
-    public function drop(int $n): MutableVector;
+    public function drop(int $n): MutableVector
+    {
+        return new MutableVector(Iter\drop($this->elements, $n));
+    }
 
     /**
      * Returns a `MutableVector` containing the values of the current `MutableVector`
@@ -163,13 +348,16 @@ interface MutableVector extends ConstVector, IndexAccess, Collection
      * The returned `MutableVector` will always be a proper subset of the current
      * `MutableVector`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback used to determine the starting element for the
+     * @psalm-param (callable(T): bool) $fn - The callback used to determine the starting element for the
      *              returned `MutableVector`.
      *
-     * @psalm-return MutableVector<Tv> - A `MutableVector` that is a proper subset of the current
+     * @psalm-return MutableVector<T> - A `MutableVector` that is a proper subset of the current
      *           `MutableVector` starting after the callback returns `true`.
      */
-    public function dropWhile(callable $fn): MutableVector;
+    public function dropWhile(callable $fn): MutableVector
+    {
+        return new MutableVector(Iter\drop_while($this->elements, $fn));
+    }
 
     /**
      * Returns a subset of the current `MutableVector` starting from a given key up
@@ -182,36 +370,16 @@ interface MutableVector extends ConstVector, IndexAccess, Collection
      * The returned `MutableVector` will always be a proper subset of this
      * `MutableVector`.
      *
-     * @psalm-param int $start - The starting key of this Vector to begin the returned
+     * @psalm-param  int $start - The starting key of this Vector to begin the returned
      *                   `MutableVector`
-     * @psalm-param int $len   - The length of the returned `MutableVector`
+     * @psalm-param  int $len   - The length of the returned `MutableVector`
      *
-     * @psalm-return MutableVector<Tv> - A `MutableVector` that is a proper subset of the current
+     * @psalm-return MutableVector<T> - A `MutableVector` that is a proper subset of the current
      *           `MutableVector` starting at `$start` up to but not including the
      *           element `$start + $len`.
      */
-    public function slice(int $start, int $len): MutableVector;
-
-    /**
-     * Returns a `MutableVector` that is the concatenation of the values of the
-     * current `MutableVector` and the values of the provided `iterable`.
-     *
-     * The values of the provided `iterable` is concatenated to the end of the
-     * current `MutableVector` to produce the returned `MutableVector`.
-     *
-     * @psalm-template Tu of Tv
-     *
-     * @psalm-param iterable<Tu> $iterable - The `iterable` to concatenate to the current
-     *                       `MutableVector`.
-     *
-     * @psalm-return MutableVector<Tu> - The concatenated `MutableVector`.
-     */
-    public function concat(iterable $iterable): MutableVector;
-
-    /**
-     * Returns a deep, immutable copy (`ImmVector`) of this `MutableVector`.
-     *
-     * @psalm-return ImmVector<Tv> - an `ImmVector` that is a deep copy of this `MutableVector`
-     */
-    public function immutable(): ImmVector;
+    public function slice(int $start, int $len): MutableVector
+    {
+        return new MutableVector(Iter\slice($this->elements, $start, $len));
+    }
 }

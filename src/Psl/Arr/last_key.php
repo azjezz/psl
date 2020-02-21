@@ -13,8 +13,6 @@ namespace Psl\Arr;
  * @psalm-param array<Tk, Tv> $array
  *
  * @psalm-return null|Tk
- *
- * @psalm-suppress MissingReturnType
  */
 function last_key(array $array)
 {

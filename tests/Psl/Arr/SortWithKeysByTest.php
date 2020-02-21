@@ -22,11 +22,11 @@ class SortWithKeysByTest extends TestCase
     public function provideData(): array
     {
         $a = new Collection\Vector([1, 2]);
-        $b = new Collection\ImmVector([1, 2, 3, 4]);
+        $b = new Collection\MutableVector([1, 2, 3, 4]);
         $c = new Collection\Map(['a' => 'foo', 'b' => 'bar', 'c' => 'baz', 'd' => 'qux', 'e' => 'lax']);
         $expected = [2 => $a, 0 => $b, 1 => $c];
         $iterable = [$b, $c, $a];
-        $scalar_fun = fn (Collection\ConstCollection $collection) => $collection->count();
+        $scalar_fun = fn (Collection\ICollection $collection) => $collection->count();
 
         return [
             [

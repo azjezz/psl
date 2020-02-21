@@ -26,7 +26,7 @@ class MergeTest extends TestCase
 
                 new Collection\Map(['a' => 'foo', 'b' => 'bar']),
                 ['a' => 'b'],
-                new Collection\ImmMap(['b' => 'c', 'c' => 'd']),
+                new Collection\MutableMap(['b' => 'c', 'c' => 'd']),
                 (fn () => yield 'd' => 'baz')(),
                 (fn () => yield 'd' => 'e')(),
             ],
