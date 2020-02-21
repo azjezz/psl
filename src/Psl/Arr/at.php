@@ -22,7 +22,7 @@ use Psl;
  */
 function at(array $array, $key)
 {
-    Psl\invariant(contains_key($array, $key), 'Key (%s) is out-of-bound.', (string) $key);
+    Psl\invariant(contains_key($array, $key), 'Key (%s) is out-of-bound.', $key);
 
     /** @psalm-var Tv */
     return $array[$key];

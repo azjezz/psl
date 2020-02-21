@@ -27,7 +27,7 @@ class GroupByTest extends TestCase
             [
                 [7 => [2], 8 => [3], 9 => [4], 10 => [5], 11 => [6], 12 => [7, 8, 9, 10]],
                 Iter\range(0, 10),
-                fn ($i) => $i < 2 ? null : (($i >= 7) ? 12 : $i + 5),
+                fn ($i) => $i < 2 ? null : (($i >= 7) ? 12 : ($i + 5)),
             ],
 
             [
@@ -51,7 +51,7 @@ class GroupByTest extends TestCase
 
         Arr\group_by(
             Iter\range(0, 5),
-            fn ($x) => new Collection\Pair($x, $x)
+            fn ($x) => new Collection\Vector([$x, $x])
         );
     }
 }

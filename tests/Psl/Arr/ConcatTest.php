@@ -31,7 +31,7 @@ class ConcatTest extends TestCase
                 ['foo', 'bar', 'baz', 'qux'],
                 new Collection\Map(['foo']),
                 new Collection\Vector(['bar']),
-                new Collection\Pair('baz', 'qux'),
+                new Collection\MutableVector(['baz', 'qux']),
             ],
             [
                 [1, 2, 3],
@@ -42,8 +42,8 @@ class ConcatTest extends TestCase
                 ['a'],
                 (fn () => yield 'b')(),
                 new Collection\Map(['c']),
-                new Collection\Vector(['d']),
-                new Collection\ImmVector(['e']),
+                new Collection\MutableVector(['d']),
+                new Collection\Vector(['e']),
             ],
         ];
     }

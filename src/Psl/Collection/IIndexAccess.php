@@ -7,10 +7,10 @@ namespace Psl\Collection;
 /**
  * The interface for all keyed collections to enable access its values.
  *
- * @template Tk
+ * @template Tk of array-key
  * @template Tv
  */
-interface ConstIndexAccess
+interface IIndexAccess
 {
     /**
      * Returns the value at the specified key in the current collection.
@@ -26,7 +26,7 @@ interface ConstIndexAccess
      *
      * @psalm-param Tk $k
      */
-    public function containsKey($k): bool;
+    public function contains($k): bool;
 
     /**
      * Returns the value at the specified key in the current collection.

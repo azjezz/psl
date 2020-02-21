@@ -27,7 +27,6 @@ use Psl;
  *                                      iterable are used)
  *
  * @psalm-return Generator<Tk, Tv, mixed, void>
- * @return Generator
  */
 function slice(iterable $iterable, int $start, ?int $length = null): Generator
 {

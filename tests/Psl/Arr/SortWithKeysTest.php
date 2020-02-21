@@ -29,7 +29,7 @@ class SortWithKeysTest extends TestCase
 
             [
                 [8, 9, 10],
-                new Collection\ImmVector(Iter\range(8, 10)),
+                new Collection\MutableVector(Iter\range(8, 10)),
                 fn (int $a, int $b) => $a <=> $b ? -1 : 1,
             ],
 

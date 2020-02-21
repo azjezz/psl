@@ -4,79 +4,38 @@ declare(strict_types=1);
 
 namespace Psl\Collection;
 
+use Psl;
+use Psl\Iter;
+
 /**
- * Represents a write-enabled (mutable) sequence of key/value pairs (ie. map).
+ * @template   Tk of array-key
+ * @template   Tv
  *
- * @template Tk of array-key
- * @template Tv
- *
- * @extends ConstMap<Tk, Tv>
- * @extends Collection<Pair<Tk, Tv>>
- * @extends MapAccess<Tk, Tv>
+ * @extends    AbstractMap<Tk, Tv>
+ * @implements IMutableMap<Tk, Tv>
  */
-interface MutableMap extends ConstMap, Collection, MapAccess
+final class MutableMap extends AbstractMap implements IMutableMap
 {
     /**
      * Returns a `MutableVector` containing the values of the current
      * `MutableMap`.
      *
-     * The indices of the `MutableVector will be integer-indexed starting from 0,
-     * no matter the keys of the `MutableMap`.
-     *
-     * @psalm-return MutableVector<Tv> - a `MutableVector` containing the values of the current
-     *                           `MutableMap`
+     * @psalm-return MutableVector<Tv>
      */
-    public function values(): MutableVector;
+    public function values(): MutableVector
+    {
+        return new MutableVector(Iter\values($this->elements));
+    }
 
     /**
      * Returns a `MutableVector` containing the keys of the current `MutableMap`.
      *
-     * @psalm-return MutableVector<Tk> - a `MutableVector` containing the keys of the current
-     *                           `MutableMap`
+     * @psalm-return MutableVector<Tk>
      */
-    public function keys(): MutableVector;
-
-    /**
-     * Returns a `MutableMap` after an operation has been applied to each value
-     * in the current `MutableMap`.
-     *
-     * Every value in the current Map is affected by a call to `map()`, unlike
-     * `filter()` where only values that meet a certain criteria are affected.
-     *
-     * The keys will remain unchanged from the current `MutableMap` to the
-     * returned `MutableMap`.
-     *
-     * @psalm-template Tu
-     *
-     * @psalm-param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
-     *                               `MutableMap` values
-     *
-     * @psalm-return MutableMap<Tk, Tu> - a `MutableMap` containing key/value pairs after a user-specified
-     *                        operation is applied
-     */
-    public function map(callable $fn): MutableMap;
-
-    /**
-     * Returns a `MutableMap` after an operation has been applied to each key and
-     * value in the current `MutableMap`.
-     *
-     * Every key and value in the current `MutableMap` is affected by a call to
-     * `mapWithKey()`, unlike `filterWithKey()` where only values that meet a
-     * certain criteria are affected.
-     *
-     * The keys will remain unchanged from this `MutableMap` to the returned
-     * `MutableMap`. The keys are only used to help in the mapping operation.
-     *
-     * @psalm-template Tu
-     *
-     * @psalm-param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
-     *                                   `MutableMap` keys and values
-     *
-     * @psalm-return MutableMap<Tk, Tu> - a `MutableMap` containing the values after a user-specified
-     *                        operation on the current `MutableMap`'s keys and values is
-     *                        applied
-     */
-    public function mapWithKey(callable $fn): MutableMap;
+    public function keys(): MutableVector
+    {
+        return new MutableVector(Iter\keys($this->elements));
+    }
 
     /**
      * Returns a `MutableMap` containing the values of the current `MutableMap`
@@ -91,10 +50,13 @@ interface MutableMap extends ConstMap, Collection, MapAccess
      * @psalm-param (callable(Tv): bool) $fn - The callback containing the condition to apply to the current
      *                                 `MutableMap` values
      *
-     * @psalm-return MutableMap<Tk, Tv> - a Map containing the values after a user-specified condition
+     * @psalm-return MutableMap<Tk, Tv> - a MutableMap containing the values after a user-specified condition
      *                        is applied
      */
-    public function filter(callable $fn): MutableMap;
+    public function filter(callable $fn): MutableMap
+    {
+        return new MutableMap(Iter\filter($this->elements, $fn));
+    }
 
     /**
      * Returns a `MutableMap` containing the values of the current `MutableMap`
@@ -114,32 +76,99 @@ interface MutableMap extends ConstMap, Collection, MapAccess
      *                        condition is applied to the keys and values of the current
      *                        `MutableMap`
      */
-    public function filterWithKey(callable $fn): MutableMap;
+    public function filterWithKey(callable $fn): MutableMap
+    {
+        return new MutableMap(Iter\filter_with_key($this->elements, $fn));
+    }
 
     /**
-     * Returns a `MutableMap` where each value is a `Pair` that combines the
-     * value of the current `MutableMap` and the provided `iterable`.
+     * Returns a `MutableMap` after an operation has been applied to each value
+     * in the current `MutableMap`.
      *
-     * If the number of values of the current `MutableMap` are not equal to the
-     * number of elements in the `iterable`, then only the combined elements
-     * up to and including the final element of the one with the least number of
-     * elements is included.
+     * Every value in the current Map is affected by a call to `map()`, unlike
+     * `filter()` where only values that meet a certain criteria are affected.
      *
-     * The keys associated with the current `MutableMap` remain unchanged in the
+     * The keys will remain unchanged from the current `MutableMap` to the
      * returned `MutableMap`.
      *
      * @psalm-template Tu
      *
-     * @psalm-param iterable<Tu> $iterable - The `iterable` to use to combine with the
-     *                               elements of the current `MutableMap`
+     * @psalm-param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
+     *                               `MutableMap` values
      *
-     * @psalm-return MutableMap<Tk, Pair<Tv, Tu>> - The `MutableMap` that combines the values of the current
-     *                        `MutableMap` with the provided `iterable`
+     * @psalm-return   MutableMap<Tk, Tu> - a `MutableMap` containing key/value pairs after a user-specified
+     *                        operation is applied
      */
-    public function zip(iterable $iterable): MutableMap;
+    public function map(callable $fn): MutableMap
+    {
+        return new MutableMap(Iter\map($this->elements, $fn));
+    }
 
     /**
-     * Returns a `MutableMap` containing the first `n` key/values of the current
+     * Returns a `MutableMap` after an operation has been applied to each key and
+     * value in the current `MutableMap`.
+     *
+     * Every key and value in the current `MutableMap` is affected by a call to
+     * `mapWithKey()`, unlike `filterWithKey()` where only values that meet a
+     * certain criteria are affected.
+     *
+     * The keys will remain unchanged from this `MutableMap` to the returned
+     * `MutableMap`. The keys are only used to help in the mapping operation.
+     *
+     * @psalm-template Tu
+     *
+     * @psalm-param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
+     *                                   `MutableMap` keys and values
+     *
+     * @psalm-return   MutableMap<Tk, Tu> - a `MutableMap` containing the values after a user-specified
+     *                        operation on the current `MutableMap`'s keys and values is
+     *                        applied
+     */
+    public function mapWithKey(callable $fn): MutableMap
+    {
+        return new MutableMap(Iter\map_with_key($this->elements, $fn));
+    }
+
+    /**
+     * Returns a `MutableMap` where each element is a `array{0: Tv, 1: Tu}` that combines the
+     * element of the current `MutableMap` and the provided `iterable`.
+     *
+     * If the number of elements of the `MutableMap` are not equal to the
+     * number of elements in the `iterable`, then only the combined elements
+     * up to and including the final element of the one with the least number of
+     * elements is included.
+     *
+     * @psalm-template Tu
+     *
+     * @psalm-param    iterable<Tu> $iterable - The `iterable` to use to combine with the
+     *                       elements of this `MutableMap`.
+     *
+     * @psalm-return   MutableMap<Tk, array{0: Tv, 1: Tu}> - The `MutableMap` that combines the values of the current
+     *           `MutableMap` with the provided `iterable`.
+     */
+    public function zip(iterable $iterable): MutableMap
+    {
+        /** @var array<Tk, array{0: Tv, 1: Tu}> $elements */
+        $elements = [];
+
+        foreach ($this->elements as $k => $v) {
+            /** @var Tu|null $u */
+            $u = Iter\first($iterable);
+            if (null === $u) {
+                break;
+            }
+
+            /** @var iterable<int, Tu> $iterable */
+            $iterable = Iter\drop($iterable, 1);
+
+            $elements[$k] = [$v, $u];
+        }
+
+        return new MutableMap($elements);
+    }
+
+    /**
+     * Returns a `MutableMap` containing the first `n` values of the current
      * `MutableMap`.
      *
      * The returned `MutableMap` will always be a proper subset of the current
@@ -147,27 +176,35 @@ interface MutableMap extends ConstMap, Collection, MapAccess
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @psalm-param int $n - The last element that will be included in the `MutableMap`
+     * @psalm-param $n - The last element that will be included in the returned
+     *             `MutableMap`
      *
      * @psalm-return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
-     *                        `MutableMap` up to `n` elements
+     *           `MutableMap` up to `n` elements.
      */
-    public function take(int $n): MutableMap;
+    public function take(int $n): MutableMap
+    {
+        return new MutableMap(Iter\take($this->elements, $n));
+    }
 
     /**
-     * Returns a `MutableMap` containing the keys and values of the current
-     * `MutableMap` up to but not including the first value that produces `false`
-     * when passed to the specified callback.
+     * Returns a `MutableMap` containing the values of the current `MutableMap`
+     * up to but not including the first value that produces `false` when passed
+     * to the specified callback.
      *
      * The returned `MutableMap` will always be a proper subset of the current
      * `MutableMap`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback that is used to determine the stopping condition
+     * @psalm-param (callable(Tv): bool) $fn - The callback that is used to determine the stopping
+     *              condition.
      *
      * @psalm-return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
-     *                        `MutableMap` up until the callback returns `false`
+     *           `MutableMap` up until the callback returns `false`.
      */
-    public function takeWhile(callable $fn): MutableMap;
+    public function takeWhile(callable $fn): MutableMap
+    {
+        return new MutableMap(Iter\take_while($this->elements, $fn));
+    }
 
     /**
      * Returns a `MutableMap` containing the values after the `n`-th element of
@@ -178,14 +215,17 @@ interface MutableMap extends ConstMap, Collection, MapAccess
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @psalm-param int $n - The last element to be skipped; the `$n+1` element will be the
-     *               first one in the returned `MutableMap`
+     * @psalm-param  int $n - The last element to be skipped; the $n+1 element will be the
+     *             first one in the returned `MutableMap`.
      *
      * @psalm-return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
-     *                        `MutableMap` containing values after the specified `n`-th
-     *                        element
+     *           `MutableMap` containing values after the specified `n`-th
+     *           element.
      */
-    public function drop(int $n): MutableMap;
+    public function drop(int $n): MutableMap
+    {
+        return new MutableMap(Iter\drop($this->elements, $n));
+    }
 
     /**
      * Returns a `MutableMap` containing the values of the current `MutableMap`
@@ -195,88 +235,152 @@ interface MutableMap extends ConstMap, Collection, MapAccess
      * The returned `MutableMap` will always be a proper subset of the current
      * `MutableMap`.
      *
-     * @psalm-param (callable(Tk): bool) $fn - The callback used to determine the starting element for the
-     *                                 current `MutableMap`
+     * @psalm-param (callable(Tv): bool) $fn - The callback used to determine the starting element for the
+     *              returned `MutableMap`.
      *
      * @psalm-return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
-     *                        `MutableMap` starting after the callback returns `true`
+     *           `MutableMap` starting after the callback returns `true`.
      */
-    public function dropWhile(callable $fn): MutableMap;
+    public function dropWhile(callable $fn): MutableMap
+    {
+        return new MutableMap(Iter\drop_while($this->elements, $fn));
+    }
 
     /**
-     * Returns a subset of the current `MutableMap` starting from a given key
-     * location up to, but not including, the element at the provided length from
-     * the starting key location.
+     * Returns a subset of the current `MutableMap` starting from a given key up
+     * to, but not including, the element at the provided length from the starting
+     * key.
      *
-     * `$start` is 0-based. `$len` is 1-based. So `slice(0, 2)` would return the
-     * keys and values at key location 0 and 1.
+     * `$start` is 0-based. $len is 1-based. So `slice(0, 2)` would return the
+     * elements at key 0 and 1.
      *
-     * The returned `MutableMap` will always be a proper subset of the current
+     * The returned `MutableMap` will always be a proper subset of this
      * `MutableMap`.
      *
-     * @psalm-param int $start - The starting key location of the current `MutableMap` for
-     *                   the featured `MutableMap`
-     * @psalm-param int $len   - The length of the returned `MutableMap`
+     * @psalm-param  int $start - The starting key of this Vector to begin the returned
+     *                   `MutableMap`
+     * @psalm-param  int $len   - The length of the returned `MutableMap`
      *
      * @psalm-return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
-     *                     `MutableMap` starting at `$start` up to but not including the
-     *                     element `$start + $len`
+     *           `MutableMap` starting at `$start` up to but not including the
+     *           element `$start + $len`.
      */
-    public function slice(int $start, int $len): MutableMap;
+    public function slice(int $start, int $len): MutableMap
+    {
+        return new MutableMap(Iter\slice($this->elements, $start, $len));
+    }
 
     /**
-     * Returns a `MutableVector` that is the concatenation of the values of the
-     * current `MutableMap` and the values of the provided `iterable`.
+     * Stores a value into the current map with the specified key,
+     * overwriting the previous value associated with the key.
      *
-     * The provided `iterable` is concatenated to the end of the current
-     * `MutableMap` to produce the returned `MutableVector`.
+     * If the key is not present, an exception is thrown. If you want to add
+     * a value even if a key is not present, use `add()`.
      *
-     * @psalm-template Tu of Tv
+     * It returns the current map, meaning changes made to the current
+     * map will be reflected in the returned map.
      *
-     * @psalm-param iterable<Tu> $iterable - The `iterable` to concatenate to the current
-     *                               `MutableMap`
+     * @psalm-param  Tk $k - The key to which we will set the value
+     * @psalm-param  Tv $v - The value to set
      *
-     * @psalm-return MutableVector<Tu> - The integer-indexed concatenated `MutableVector`
+     * @psalm-return MutableMap<Tk, Tv> - Returns itself
      */
-    public function concat(iterable $iterable): MutableVector;
+    public function set($k, $v): MutableMap
+    {
+        Psl\invariant($this->contains($k), 'Key (%s) is out-of-bound.', $k);
+
+        $this->elements[$k] = $v;
+
+        return $this;
+    }
 
     /**
-     * Returns the first value in the current `MutableMap`.
+     * For every element in the provided `iterable`, stores a value into the
+     * current map associated with each key, overwriting the previous value
+     * associated with the key.
      *
-     * @psalm-return Tv|null - The first value in the current `MutableMap`,  or `null` if the
-     *                 `MutableMap` is empty
+     * If the key is not present, an exception is thrown. If you want to add
+     * a value even if a key is not present, use `addAll()`.
+     *
+     * It the current map, meaning changes made to the current map
+     * will be reflected in the returned map.
+     *
+     * @psalm-param  iterable<Tk, Tv> $iterable - The `iterable` with the new values to set
+     *
+     * @psalm-return MutableMap<Tk, Tv> - Returns itself
      */
-    public function first();
+    public function setAll(iterable $iterable): MutableMap
+    {
+        foreach ($iterable as $k => $v) {
+            $this->set($k, $v);
+        }
+
+        return $this;
+    }
 
     /**
-     * Returns the first key in the current `MutableMap`.
+     * Add a value to the map and return the map itself.
      *
-     * @psalm-return Tk|null - The first key in the current `MutableMap`, or `null` if the
-     *                 `MutableMap` is empty
+     * @psalm-param  Tk $k - The key to which we will add the value
+     * @psalm-param  Tv $v - The value to set
+     *
+     * @psalm-return MutableMap<Tk, Tv> - Returns itself
      */
-    public function firstKey();
+    public function add($k, $v): MutableMap
+    {
+        $this->elements[$k] = $v;
+
+        return $this;
+    }
 
     /**
-     * Returns the last value in the current `MutableMap`.
+     * For every element in the provided iterable, add the value into the current map.
      *
-     * @psalm-return Tv|null - The last value in the current `MutableMap`, or `null` if the
-     *                 `MutableMap` is empty
+     * @psalm-param  iterable<Tk, Tv> $iterable - The `iterable` with the new values to add
+     *
+     * @psalm-return MutableMap<Tk, Tv> - Returns itself
      */
-    public function last();
+    public function addAll(iterable $iterable): MutableMap
+    {
+        foreach ($iterable as $k => $v) {
+            $this->add($k, $v);
+        }
+
+        return $this;
+    }
 
     /**
-     * Returns the last key in the current `MutableMap`.
+     * Removes the specified key (and associated value) from the current
+     * map.
      *
-     * @psalm-return Tk|null - The last key in the current `MutableMap`, or null if the
-     *                 `MutableMap` is empty
+     * If the key is not in the current map, the current map is
+     * unchanged.
+     *
+     * It the current map, meaning changes made to the current map
+     * will be reflected in the returned map.
+     *
+     * @psalm-param  Tk $k - The key to remove
+     *
+     * @psalm-return MutableMap<Tk, Tv> - Returns itself
      */
-    public function lastKey();
+    public function remove($k): MutableMap
+    {
+        if ($this->contains($k)) {
+            unset($this->elements[$k]);
+        }
 
+        return $this;
+    }
 
     /**
-     * Returns a deep, immutable copy (`ImmMap`) of this `MutableMap`.
+     * Removes all items from the map.
      *
-     * @psalm-return ImmMap<Tk, Tv> - an `ImmMap` that is a deep copy of this `MutableMap`
+     * @psalm-return MutableMap<Tk, Tv>
      */
-    public function immutable(): ImmMap;
+    public function clear(): MutableMap
+    {
+        $this->elements = [];
+
+        return $this;
+    }
 }

@@ -13,8 +13,4 @@
             <file name="src/bootstrap.php"/>
         </ignoreFiles>
     </projectFiles>
-
-    <issueHandlers>
-        <LessSpecificReturnType errorLevel="info" />
-    </issueHandlers>
 </psalm>
