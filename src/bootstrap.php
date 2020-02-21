@@ -180,6 +180,7 @@ function __bootstrap(): void
         '/Psl/Iter/reverse.php',
         '/Psl/Iter/drop.php',
         '/Psl/Iter/enumerate.php',
+        '/Psl/Gen/rewindable.php',
         '/Psl/Arr/firstx.php',
         '/Psl/Arr/sort_with_keys_by.php',
         '/Psl/Arr/values.php',
