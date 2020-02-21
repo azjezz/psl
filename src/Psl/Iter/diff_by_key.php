@@ -4,35 +4,21 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Generator;
-
-use Psl\Arr;
+use Psl\Gen;
 
 /**
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv>       $first
- * @psalm-param iterable<Tk, mixed>    $second
- * @psalm-param iterable<Tk, mixed>    ...$rest
+ * @psalm-param    iterable<Tk, Tv>       $first
+ * @psalm-param    iterable<Tk, mixed>    $second
+ * @psalm-param    iterable<Tk, mixed>    ...$rest
  *
- * @psalm-return Generator<Tk, iterable<Tk, Tv>, mixed, array<empty, empty>|iterable<Tk, Tv>>
+ * @psalm-return   Iterator<Tk, iterable<Tk, Tv>>
+ *
+ * @see            Gen\diff_by_key()
  */
-function diff_by_key(iterable $first, iterable $second, iterable ...$rest): Generator
+function diff_by_key(iterable $first, iterable $second, iterable ...$rest): Iterator
 {
-    if (is_empty($first)) {
-        return [];
-    }
-
-    if (is_empty($second) && is_empty($rest)) {
-        return $first;
-    }
-
-    $other = Arr\flatten([$second, ...$rest]);
-    /** @psalm-var iterable<Tk, Tv> */
-    foreach ($first as $k => $v) {
-        if (!contains_key($other, $k)) {
-            yield $k => $v;
-        }
-    }
+    return new Iterator(Gen\diff_by_key($first, $second, ...$rest));
 }

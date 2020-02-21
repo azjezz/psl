@@ -9,12 +9,11 @@ namespace Psl\Arr;
  *
  * @psalm-template T
  *
- * @psalm-param array<mixed, T> $arr
+ * @psalm-param    array<array-key, T> $arr
  *
- * @psalm-return list<T>
+ * @psalm-return   list<T>
+ *
  * @psalm-pure
- *
- * @return mixed[]
  */
 function values(array $arr): array
 {

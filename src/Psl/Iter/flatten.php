@@ -4,24 +4,22 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Generator;
+use Psl\Gen;
 
 /**
- * Returns a new dict formed by merging the iterable elements of the
+ * Returns an iterator formed by merging the iterable elements of the
  * given iterable.
  *
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<iterable<Tk, Tv>> $iterables
+ * @psalm-param    iterable<iterable<Tk, Tv>> $iterables
  *
- * @psalm-return Generator<Tk, Tv, mixed, void>
+ * @psalm-return   Iterator<Tk, Tv>
+ *
+ * @see            Gen\flatten()
  */
-function flatten(iterable $iterables): Generator
+function flatten(iterable $iterables): Iterator
 {
-    foreach ($iterables as $iterable) {
-        foreach ($iterable as $key => $value) {
-            yield $key => $value;
-        }
-    }
+    return new Iterator(Gen\flatten($iterables));
 }

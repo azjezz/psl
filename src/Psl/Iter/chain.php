@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Generator;
+use Psl\Gen;
 
 /**
  * Chains the iterables that were passed as arguments.
@@ -20,13 +20,13 @@ use Generator;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv> ...$iterables Iterables to chain
+ * @psalm-param    iterable<Tk, Tv> ...$iterables Iterables to chain
  *
- * @psalm-return Generator<Tk, Tv, mixed, void>
+ * @psalm-return   Iterator<Tk, Tv>
+ *
+ * @see            Gen\chain()
  */
-function chain(iterable ...$iterables): Generator
+function chain(iterable ...$iterables): Iterator
 {
-    foreach ($iterables as $iterable) {
-        yield from $iterable;
-    }
+    return new Iterator(Gen\chain(...$iterables));
 }

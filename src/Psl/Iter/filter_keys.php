@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Closure;
-use Generator;
+use Psl\Gen;
 
 /**
  * Returns a new iterable containing only the keys for which the given predicate
@@ -22,18 +21,14 @@ use Generator;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv>            $iterable
- * @psalm-param null|(callable(Tk): bool)   $predicate
+ * @psalm-param    iterable<Tk, Tv>            $iterable
+ * @psalm-param    null|(callable(Tk): bool)   $predicate
  *
- * @psalm-return Generator<Tk, Tv, mixed, void>
+ * @psalm-return   Iterator<Tk, Tv>
+ *
+ * @see            Gen\filter_keys()
  */
-function filter_keys(iterable $iterable, ?callable $predicate = null): Generator
+function filter_keys(iterable $iterable, ?callable $predicate = null): Iterator
 {
-    /** @psalm-var (callable(Tk): bool) $predicate */
-    $predicate = $predicate ?? Closure::fromCallable('Psl\Internal\boolean');
-    foreach ($iterable as $k => $v) {
-        if ($predicate($k)) {
-            yield $k => $v;
-        }
-    }
+    return new Iterator(Gen\filter_keys($iterable, $predicate));
 }

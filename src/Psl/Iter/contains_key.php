@@ -12,12 +12,14 @@ use Psl\Arr;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv> $iterable,
- * @psalm-param Tk               $key
+ * @psalm-param    iterable<Tk, Tv> $iterable,
+ * @psalm-param    Tk               $key
  *
- * @psalm-return bool
+ * @psalm-return   bool
  *
  * @psalm-pure
+ *
+ * @see            Arr\contains_key()
  */
 function contains_key(iterable $iterable, $key): bool
 {

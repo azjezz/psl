@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Generator;
-use Psl;
+use Psl\Gen;
 
 /**
  * Takes a slice from an iterable.
@@ -15,37 +14,22 @@ use Psl;
  *      Iter\slice([-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5], 5)
  *      => iter(0, 1, 2, 3, 4, 5)
  *
- *      IterIter\slice([-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5], 5, 3)
+ *      Iter\slice([-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5], 5, 3)
  *      => Iter(0, 1, 2, 3)
  *
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk,Tv>     $iterable Iterable to take the slice from
- * @psalm-param int                 $start Start offset
- * @psalm-param int                 $length Length (if not specified all remaining values from the
+ * @psalm-param    iterable<Tk,Tv>     $iterable Iterable to take the slice from
+ * @psalm-param    int                 $start Start offset
+ * @psalm-param    int                 $length Length (if not specified all remaining values from the
  *                                      iterable are used)
  *
- * @psalm-return Generator<Tk, Tv, mixed, void>
+ * @psalm-return   Iterator<Tk, Tv>
+ *
+ * @see            Gen\slice()
  */
-function slice(iterable $iterable, int $start, ?int $length = null): Generator
+function slice(iterable $iterable, int $start, ?int $length = null): Iterator
 {
-    Psl\invariant($start >= 0, 'Start offset must be non-negative');
-    Psl\invariant(null === $length || $length >= 0, 'Length must be non-negative');
-    if (0 === $length) {
-        return;
-    }
-
-    $i = 0;
-
-    foreach ($iterable as $key => $value) {
-        if ($i++ < $start) {
-            continue;
-        }
-
-        yield $key => $value;
-        if (null !== $length && $i >= $start + $length) {
-            break;
-        }
-    }
+    return new Iterator(Gen\slice($iterable, $start, $length));
 }

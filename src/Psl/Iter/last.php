@@ -12,9 +12,11 @@ use Psl\Arr;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param array<Tk, Tv> $array
+ * @psalm-param    array<Tk, Tv> $array
  *
- * @psalm-return null|Tv
+ * @psalm-return   null|Tv
+ *
+ * @see            Arr\last()
  */
 function last(iterable $iterable)
 {

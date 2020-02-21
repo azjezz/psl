@@ -19,10 +19,10 @@ namespace Psl\Iter;
  *          fn($iterator) => $iterator->rewind(),
  *      );
  *
- * @psalm-template T
+ * @psalm-template  T
  *
- * @psalm-param iterable<T>         $iterable Iterable to apply on
- * @psalm-param (callable(T): void) $function Apply function
+ * @psalm-param     iterable<T>         $iterable Iterable to apply on
+ * @psalm-param     (callable(T): void) $function Apply function
  */
 function apply(iterable $iterable, callable $function): void
 {

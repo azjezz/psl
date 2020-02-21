@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Generator;
+use Psl\Gen;
 
 /**
  * Flips the keys and values of an iterable.
@@ -17,13 +17,13 @@ use Generator;
  * @psalm-template Tk
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv> $iterable
+ * @psalm-param    iterable<Tk, Tv> $iterable
  *
- * @psalm-return Generator<Tv, Tk, mixed, void>
+ * @psalm-return   Iterator<Tv, Tk>
+ *
+ * @see            Gen\flip()
  */
-function flip(iterable $iterable): Generator
+function flip(iterable $iterable): Iterator
 {
-    foreach ($iterable as $k => $v) {
-        yield $v => $k;
-    }
+    return new Iterator(Gen\flip($iterable));
 }

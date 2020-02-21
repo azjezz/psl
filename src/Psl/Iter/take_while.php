@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Generator;
+use Psl\Gen;
 
 /**
  * Takes items from an iterable until the predicate fails for the first time.
@@ -15,23 +15,17 @@ use Generator;
  * Examples:
  *
  *      Iter\take_while([3, 1, 4, -1, 5], fn($i) => $i > 0)
- *      => iter(3, 1, 4)
+ *      => Iter(3, 1, 4)
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @psalm-template  Tk of array-key
+ * @psalm-template  Tv
  *
- * @psalm-param iterable<Tk, Tv>    $iterable Iterable to take values from
- * @psalm-param (callable(Tv): bool) $predicate
+ * @psalm-param     iterable<Tk, Tv>        $iterable Iterable to take values from
+ * @psalm-param     (callable(Tv): bool)    $predicate
  *
- * @psalm-return Generator<Tk, Tv, mixed, void>
+ * @psalm-return    Iterator<Tk, Tv>
  */
-function take_while(iterable $iterable, callable $predicate): Generator
+function take_while(iterable $iterable, callable $predicate): Iterator
 {
-    foreach ($iterable as $key => $value) {
-        if (!$predicate($value)) {
-            return;
-        }
-
-        yield $key => $value;
-    }
+    return new Iterator(Gen\take_while($iterable, $predicate));
 }

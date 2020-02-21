@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Generator;
+use Psl\Gen;
 
 /**
  * Drops items from an iterable until the predicate fails for the first time.
@@ -20,21 +20,14 @@ use Generator;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv>    $iterable Iterable to drop values from
- * @psalm-param (callable(Tv): bool) $predicate
+ * @psalm-param    iterable<Tk, Tv>     $iterable Iterable to drop values from
+ * @psalm-param    (callable(Tv): bool) $predicate
  *
- * @psalm-return Generator<Tk, Tv, mixed, void>
+ * @psalm-return   Iterator<Tk, Tv>
+ *
+ * @see            Gen\drop_while()
  */
-function drop_while(iterable $iterable, callable $predicate): Generator
+function drop_while(iterable $iterable, callable $predicate): Iterator
 {
-    $failed = false;
-    foreach ($iterable as $key => $value) {
-        if (!$failed && !$predicate($value)) {
-            $failed = true;
-        }
-
-        if ($failed) {
-            yield $key => $value;
-        }
-    }
+    return new Iterator(Gen\drop_while($iterable, $predicate));
 }

@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Generator;
-use Psl;
+use Psl\Gen;
 
 /**
- * Creates an iterable containing all numbers between the start and end value
+ * Creates an iterator containing all numbers between the start and end value
  * (inclusive) with a certain step.
  *
  * Examples:
@@ -27,46 +26,19 @@ use Psl;
  *
  * @psalm-template T as numeric
  *
- * @psalm-param T       $start First number (inclusive)
- * @psalm-param T       $end   Last number (inclusive, but doesn't have to be part of
+ * @psalm-param    T       $start First number (inclusive)
+ * @psalm-param    T       $end   Last number (inclusive, but doesn't have to be part of
  *                              resulting range if $step steps over it)
- * @psalm-param null|T  $step  Step between numbers (defaults to 1 if $start smaller
+ * @psalm-param    null|T  $step  Step between numbers (defaults to 1 if $start smaller
  *                              $end and to -1 if $start greater $end)
  *
- * @psalm-return Generator<int, T, mixed, void>
+ * @psalm-return   Iterator<int, T>
+ *
  * @psalm-pure
  *
- * @see https://github.com/vimeo/psalm/issues/2152#issuecomment-533363310
- *
- * @psalm-suppress MixedOperand
+ * @see            Gen\range()
  */
-function range($start, $end, $step = null): Generator
+function range($start, $end, $step = null): Iterator
 {
-    if ((float) $start === (float) $end) {
-        yield $start;
-    } elseif ($start < $end) {
-        if (null === $step) {
-            /** @psalm-var T $step */
-            $step = 1;
-        } else {
-            Psl\invariant($step > 0, 'If start < end, the step must be positive');
-        }
-
-        /** @psalm-var T $i */
-        for ($i = $start; $i <= $end; $i += $step) {
-            yield $i;
-        }
-    } else {
-        if (null === $step) {
-            /** @psalm-var T $step */
-            $step = -1;
-        } else {
-            Psl\invariant($step < 0, 'If start > end, the step must be negative');
-        }
-
-        /** @psalm-var T $i */
-        for ($i = $start; $i >= $end; $i += $step) {
-            yield $i;
-        }
-    }
+    return new Iterator(Gen\range($start, $end, $step));
 }

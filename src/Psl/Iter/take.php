@@ -10,12 +10,11 @@ namespace Psl\Iter;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv> $iterable
+ * @psalm-param    iterable<Tk, Tv> $iterable
  *
- * @psalm-return iterable<Tk, Tv>
+ * @psalm-return   Iterator<Tk, Tv>
  */
-function take(iterable $iterable, int $n): iterable
+function take(iterable $iterable, int $n): Iterator
 {
-    /** @psalm-var iterable<Tk, Tv> */
     return slice($iterable, 0, $n);
 }

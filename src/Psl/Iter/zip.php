@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Generator;
+use Psl\Gen;
 
 /**
  * Zips the iterables that were passed as arguments.
@@ -25,53 +25,13 @@ use Generator;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv>    ...$iterables
+ * @psalm-param    iterable<Tk, Tv>    ...$iterables
  *
- * @psalm-return Generator<array<int, Tk>, array<int, Tv>, mixed, void>
+ * @psalm-return   Iterator<array<int, Tk>, array<int, Tv>>
+ *
+ * @see            Gen\zip()
  */
-function zip(iterable ...$iterables): Generator
+function zip(iterable ...$iterables): Iterator
 {
-    if (0 === count($iterables)) {
-        return;
-    }
-
-    /** @psalm-var iterable<Iterator<Tk, Tv>> $iterators */
-    $iterators = to_array(map(
-        $iterables,
-        /**
-         * @psalm-param  iterable<Tk, Tv>    $iterable
-         *
-         * @psalm-return Iterator<Tk, Tv>
-         */
-        fn ($iterable) => new Iterator($iterable),
-    ));
-
-    for (
-        apply($iterators, fn (\Iterator $iterator) => $iterator->rewind());
-        all($iterators, fn (\Iterator $iterator) => $iterator->valid());
-        apply($iterators, fn (\Iterator $iterator) => $iterator->next())
-    ) {
-        /** @psalm-var array<int, Tk> $keys */
-        $keys = to_array(map(
-            $iterators,
-            /**
-             * @psalm-param \Iterator<Tk, Tv> $iterator
-             *
-             * @psalm-return Tk
-             */
-            fn (\Iterator $iterator) => $iterator->key(),
-        ));
-
-        /** @psalm-var array<int, Tv> $values */
-        $values = to_array(map(
-            $iterators,
-            /**
-             * @psalm-param \Iterator<Tk, Tv> $iterator
-             * @psalm-return Tv
-             */
-            fn (\Iterator $iterator) => $iterator->current(),
-        ));
-
-        yield $keys => $values;
-    }
+    return new Iterator(Gen\zip(...$iterables));
 }
