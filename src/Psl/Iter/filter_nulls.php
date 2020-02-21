@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Generator;
+use Psl\Gen;
 
 /**
  * Filter out null values from the given iterable.
@@ -15,15 +15,13 @@ use Generator;
  *
  * @psalm-template T
  *
- * @psalm-param iterable<null|T> $iterable
+ * @psalm-param    iterable<null|T> $iterable
  *
- * @psalm-return Generator<int, T, mixed, void>
+ * @psalm-return   Iterator<int, T>
+ *
+ * @see            Gen\filter_nulls()
  */
-function filter_nulls(iterable $iterable): Generator
+function filter_nulls(iterable $iterable): Iterator
 {
-    foreach ($iterable as $value) {
-        if (null !== $value) {
-            yield $value;
-        }
-    }
+    return new Iterator(Gen\filter_nulls($iterable));
 }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Psl\Arr;
-
 /**
  * Determines whether a value is an iterable.
  *
@@ -24,11 +22,11 @@ use Psl\Arr;
  *     Iter\is_iterable(new stdClass())
  *     => Bool(false)
  *
- * @psalm-param mixed $value
+ * @psalm-param          mixed $value
  *
- * @psalm-assert-if-true iterable<array-key,mixed> $value
+ * @psalm-assert-if-true iterable<array-key, mixed> $value
  */
 function is_iterable($value): bool
 {
-    return Arr\is_array($value) || $value instanceof \Traversable;
+    return \is_iterable($value);
 }

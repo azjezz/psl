@@ -15,13 +15,14 @@ namespace Psl\Iter;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk,Tv>     $iterable Iterable to drop the elements from
- * @psalm-param int                 $num Number of elements to drop from the start
+ * @psalm-param    iterable<Tk,Tv>     $iterable Iterable to drop the elements from
+ * @psalm-param    int                 $num Number of elements to drop from the start
  *
- * @psalm-return iterable<Tk,Tv>
+ * @psalm-return   Iterator<Tk,Tv>
+ *
+ * @see            slice()
  */
-function drop(iterable $iterable, int $num): iterable
+function drop(iterable $iterable, int $num): Iterator
 {
-    /** @psalm-var iterable<Tk, Tv> */
     return slice($iterable, $num);
 }

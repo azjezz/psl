@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Generator;
-use Psl;
+use Psl\Gen;
 
 /**
- * Returns a new iterable containing only the keys and values for which the given predicate
+ * Returns an iterator containing only the keys and values for which the given predicate
  * returns `true`. The default predicate is casting both they key and the value to boolean.
  *
  * Example:
@@ -22,25 +21,14 @@ use Psl;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv>            $iterable
- * @psalm-param null|(callable(Tk, Tv): bool)   $predicate
+ * @psalm-param    iterable<Tk, Tv>                 $iterable
+ * @psalm-param    null|(callable(Tk, Tv): bool)    $predicate
  *
- * @psalm-return Generator<Tk, Tv, mixed, void>
+ * @psalm-return   Iterator<Tk, Tv>
+ *
+ * @see            Gen\filter_with_key()
  */
-function filter_with_key(iterable $iterable, ?callable $predicate = null): Generator
+function filter_with_key(iterable $iterable, ?callable $predicate = null): Iterator
 {
-    $predicate = $predicate ??
-        /**
-         * @psalm-param Tk $k
-         * @psalm-param Tv $v
-         *
-         * @return bool
-         */
-        fn ($k, $v) => Psl\Internal\boolean($v);
-
-    foreach ($iterable as $k => $v) {
-        if ($predicate($k, $v)) {
-            yield $k => $v;
-        }
-    }
+    return new Iterator(Gen\filter_with_key($iterable, $predicate));
 }

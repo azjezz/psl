@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Generator;
+use Psl\Gen;
 
 /**
- * Converts an iterable of key and value pairs, into an iterable of entries.
+ * Converts an iterable of key and value pairs, into an iterator of entries.
  *
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv>    $iterable
+ * @psalm-param    iterable<Tk, Tv>    $iterable
  *
- * @psalm-return Generator<int, array{0: Tk, 1: Tv}, mixed, void>
+ * @psalm-return   Iterator<int, array{0: Tk, 1: Tv}>
+ *
+ * @see            Gen\enumerate()
  */
-function enumerate(iterable $iterable): Generator
+function enumerate(iterable $iterable): Iterator
 {
-    foreach ($iterable as $k => $v) {
-        yield [$k, $v];
-    }
+    return new Iterator(Gen\enumerate($iterable));
 }

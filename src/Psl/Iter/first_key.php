@@ -25,9 +25,11 @@ use Psl\Arr;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv> $iterable
+ * @psalm-param    iterable<Tk, Tv> $iterable
  *
- * @psalm-return null|Tk
+ * @psalm-return   null|Tk
+ *
+ * @see            Arr\first_key()
  */
 function first_key(iterable $iterable)
 {

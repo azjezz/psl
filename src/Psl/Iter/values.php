@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Generator;
+use Psl\Gen;
 
 /**
  * Returns the values of an iterable, making the keys continuously indexed.
@@ -20,13 +20,13 @@ use Generator;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv> $iterable Iterable to get values from
+ * @psalm-param    iterable<Tk, Tv> $iterable Iterable to get values from
  *
- * @psalm-return Generator<int, Tv, mixed, void>
+ * @psalm-return   Iterator<int, Tv>
+ *
+ * @see            Gen\values()
  */
-function values(iterable $iterable): Generator
+function values(iterable $iterable): Iterator
 {
-    foreach ($iterable as $value) {
-        yield $value;
-    }
+    return new Iterator(Gen\values($iterable));
 }

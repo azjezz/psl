@@ -11,15 +11,18 @@ use Psl;
  *
  * You can use this class to turn any iterable into a seekable, rewindable, countable iterator.
  *
- * @template-covariant TKey
- * @template-covariant TValue
+ * Note: if you want to turn a generator into a rewindable iterator, its recommended to use Gen\rewindable instead,
+ *          Otherwise the given generator will be exhausted immediately.
  *
- * @template-implements \SeekableIterator<TKey, TValue>
+ * @template-covariant Tk
+ * @template-covariant Tv
+ *
+ * @template-implements \SeekableIterator<Tk, Tv>
  */
 final class Iterator implements \SeekableIterator, \Countable
 {
     /**
-     * @psalm-var array{0: array<int, TKey>, 1: array<int, TValue>}
+     * @psalm-var array{0: array<int, Tk>, 1: array<int, Tv>}
      */
     private array $data = [[], []];
 
@@ -28,7 +31,7 @@ final class Iterator implements \SeekableIterator, \Countable
     private int $count;
 
     /**
-     * @psalm-param iterable<TKey, TValue> $iterable
+     * @psalm-param iterable<Tk, Tv> $iterable
      */
     public function __construct(iterable $iterable)
     {
@@ -43,7 +46,7 @@ final class Iterator implements \SeekableIterator, \Countable
     /**
      * Return the current element.
      *
-     * @psalm-return TValue
+     * @psalm-return Tv
      */
     public function current()
     {
@@ -63,7 +66,7 @@ final class Iterator implements \SeekableIterator, \Countable
     /**
      * Return the key of the current element.
      *
-     * @psalm-return TKey
+     * @psalm-return Tk
      */
     public function key()
     {

@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Generator;
+use Psl\Gen;
 
 /**
- * Returns a new dict where each mapping is defined by the given key/value
+ * Returns an iterator where each mapping is defined by the given key/value
  * tuples.
  *
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<array{0: Tk, 1: Tv}> $entries
+ * @psalm-param    iterable<array{0: Tk, 1: Tv}> $entries
  *
- * @psalm-return Generator<Tk, Tv, mixed, void>
+ * @psalm-return   Iterator<Tk, Tv>
+ *
+ * @see            Gen\from_entries()
  */
-function from_entries(iterable $entries): Generator
+function from_entries(iterable $entries): Iterator
 {
-    foreach ($entries as [$key, $value]) {
-        yield $key => $value;
-    }
+    return new Iterator(Gen\from_entries($entries));
 }

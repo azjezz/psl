@@ -129,6 +129,7 @@ function __bootstrap(): void
         '/Psl/Math/constants.php',
         '/Psl/Math/min_by.php',
         '/Psl/invariant.php',
+
         '/Psl/Iter/pull.php',
         '/Psl/Iter/count.php',
         '/Psl/Iter/values.php',
@@ -144,7 +145,6 @@ function __bootstrap(): void
         '/Psl/Iter/is_empty.php',
         '/Psl/Iter/take_while.php',
         '/Psl/Iter/search.php',
-        '/Psl/Iter/rewindable.php',
         '/Psl/Iter/from_keys.php',
         '/Psl/Iter/contains_key.php',
         '/Psl/Iter/from_entires.php',
@@ -180,7 +180,39 @@ function __bootstrap(): void
         '/Psl/Iter/reverse.php',
         '/Psl/Iter/drop.php',
         '/Psl/Iter/enumerate.php',
+        '/Psl/Gen/pull.php',
+        '/Psl/Gen/values.php',
+        '/Psl/Gen/reductions.php',
+        '/Psl/Gen/pull_with_key.php',
+        '/Psl/Gen/map_with_key.php',
+        '/Psl/Gen/map.php',
+        '/Psl/Gen/slice.php',
+        '/Psl/Gen/take_while.php',
+        '/Psl/Gen/from_keys.php',
+        '/Psl/Gen/from_entires.php',
+        '/Psl/Gen/keys.php',
+        '/Psl/Gen/drop_while.php',
+        '/Psl/Gen/reindex.php',
         '/Psl/Gen/rewindable.php',
+        '/Psl/Gen/flip.php',
+        '/Psl/Gen/diff_by_key.php',
+        '/Psl/Gen/product.php',
+        '/Psl/Gen/chunk_with_keys.php',
+        '/Psl/Gen/chunk.php',
+        '/Psl/Gen/filter.php',
+        '/Psl/Gen/filter_nulls.php',
+        '/Psl/Gen/chain.php',
+        '/Psl/Gen/filter_with_key.php',
+        '/Psl/Gen/repeat.php',
+        '/Psl/Gen/flatten.php',
+        '/Psl/Gen/zip.php',
+        '/Psl/Gen/map_keys.php',
+        '/Psl/Gen/filter_keys.php',
+        '/Psl/Gen/take.php',
+        '/Psl/Gen/range.php',
+        '/Psl/Gen/reverse.php',
+        '/Psl/Gen/drop.php',
+        '/Psl/Gen/enumerate.php',
         '/Psl/Arr/firstx.php',
         '/Psl/Arr/sort_with_keys_by.php',
         '/Psl/Arr/values.php',
@@ -222,7 +254,11 @@ function __bootstrap(): void
 
     $booted = true;
     foreach ($files as $file) {
-        require_once __DIR__ . '/' . $file;
+        if (!\file_exists(__DIR__.'/'.$file)) {
+            \var_dump($file);
+        } else {
+            require_once __DIR__ . '/' . $file;
+        }
     }
 }
 

@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Generator;
-use Psl;
-use Psl\Math;
+use Psl\Gen;
 
 /**
  * Repeat an element a given number of times. By default the element is repeated
@@ -22,18 +20,16 @@ use Psl\Math;
  *
  * @psalm-template T
  *
- * @psalm-param T   $value Value to repeat
- * @psalm-param int $num   Number of repetitions (defaults to INF)
+ * @psalm-param    T   $value Value to repeat
+ * @psalm-param    int $num   Number of repetitions (defaults to INF)
  *
- * @psalm-return Generator<int, T, mixed, void>
+ * @psalm-return   Iterator<int, T>
+ *
  * @psalm-pure
+ *
+ * @see            Gen\repeat()
  */
-function repeat($value, ?int $num = null): Generator
+function repeat($value, ?int $num = null): Iterator
 {
-    Psl\invariant(null === $num || $num >= 0, 'Number of repetitions must be non-negative');
-
-    $num = $num ?? Math\INFINITY;
-    for ($i = 0; $i < $num; ++$i) {
-        yield $value;
-    }
+    return new Iterator(Gen\repeat($value, $num));
 }

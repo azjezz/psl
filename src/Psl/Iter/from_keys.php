@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Generator;
+use Psl\Gen;
 
 /**
- * Returns a new dict where each value is the result of calling the given
+ * Returns an iterator where each value is the result of calling the given
  * function on the corresponding key.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @psalm-template  Tk of array-key
+ * @psalm-template  Tv
  *
- * @psalm-param iterable<Tk>        $keys
- * @psalm-param (callable(Tk): Tv)  $value_func
+ * @psalm-param     iterable<Tk>        $keys
+ * @psalm-param     (callable(Tk): Tv)  $value_func
  *
- * @psalm-return Generator<Tk, Tv, mixed, void>
+ * @psalm-return    Iterator<Tk, Tv>
+ *
+ * @see             Gen\from_keys()
  */
-function from_keys(iterable $keys, callable $value_func): Generator
+function from_keys(iterable $keys, callable $value_func): Iterator
 {
-    foreach ($keys as $key) {
-        yield $key => $value_func($key);
-    }
+    return new Iterator(Gen\from_keys($keys, $value_func));
 }

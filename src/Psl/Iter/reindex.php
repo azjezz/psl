@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Generator;
+use Psl\Gen;
 
 /**
  * Re-indexes an array by applying a function to all values of an iterator and
@@ -26,18 +26,18 @@ use Generator;
  *         24 => ['id' => 24, 'name' => 'bar']
  *     )
  *
- * @psalm-template Tk1 of array-key
- * @psalm-template Tk2 of array-key
- * @psalm-template Tv
+ * @psalm-template  Tk1 of array-key
+ * @psalm-template  Tk2 of array-key
+ * @psalm-template  Tv
  *
- * @psalm-param iterable<Tk1, Tv>    $iterable Iterable to reindex
- * @psalm-param (callable(Tv): Tk2)   $function
+ * @psalm-param     iterable<Tk1, Tv>       $iterable Iterable to reindex
+ * @psalm-param     (callable(Tv): Tk2)     $function
  *
- * @psalm-return Generator<Tk2, Tv, mixed, void>
+ * @psalm-return    Iterator<Tk2, Tv>
+ *
+ * @see             Gen\reindex()
  */
-function reindex(iterable $iterable, callable $function): Generator
+function reindex(iterable $iterable, callable $function): Iterator
 {
-    foreach ($iterable as $value) {
-        yield $function($value) => $value;
-    }
+    return new Iterator(Gen\reindex($iterable, $function));
 }

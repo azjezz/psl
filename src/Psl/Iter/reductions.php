@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Generator;
+use Psl\Gen;
 
 /**
  * Intermediate values of reducing iterable using a function.
@@ -13,23 +13,21 @@ use Generator;
  * iterator value and returns a new accumulator. The accumulator is initialized
  * to $initial.
  *
- * Reductions yield each accumulator along the way.
+ * Reductions returns an iterator with each accumulator along the way.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
- * @psalm-template Ts
+ * @psalm-template  Tk of array-key
+ * @psalm-template  Tv
+ * @psalm-template  Ts
  *
- * @psalm-param iterable<Tk, Tv>                $iterable
- * @psalm-param (callable(?Ts, Tk, Tv): Ts)     $function
- * @psalm-param null|Ts                         $initial
+ * @psalm-param     iterable<Tk, Tv>                $iterable
+ * @psalm-param     (callable(?Ts, Tk, Tv): Ts)     $function
+ * @psalm-param     null|Ts                         $initial
  *
- * @psalm-return Generator<int, Ts, mixed, void>
+ * @psalm-return    Iterator<int, Ts>
+ *
+ * @see             Gen\reductions()
  */
-function reductions(iterable $iterable, callable $function, $initial = null): Generator
+function reductions(iterable $iterable, callable $function, $initial = null): Iterator
 {
-    $accumulator = $initial;
-    foreach ($iterable as $k => $v) {
-        $accumulator = $function($accumulator, $k, $v);
-        yield $accumulator;
-    }
+    return new Iterator(Gen\reductions($iterable, $function, $initial));
 }

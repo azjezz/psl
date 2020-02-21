@@ -24,13 +24,13 @@ namespace Psl\Iter;
  */
 function count(iterable $iterable): int
 {
-    if ($iterable instanceof \Countable) {
-        return $iterable->count();
+    if (\is_countable($iterable)) {
+        return \count($iterable);
     }
 
     $count = 0;
-    /** @psalm-var mixed $v */
-    foreach ($iterable as $v) {
+    /** @psalm-var mixed $_ */
+    foreach ($iterable as $_) {
         ++$count;
     }
 
