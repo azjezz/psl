@@ -16,6 +16,7 @@ function __bootstrap(): void
         '/Psl/Random/float.php',
         '/Psl/Random/bytes.php',
         '/Psl/internal.php',
+        '/Psl/sequence.php',
         '/Psl/Str/replace_every_ci.php',
         '/Psl/Str/ends_with_ci.php',
         '/Psl/Str/pad_left.php',
@@ -129,7 +130,6 @@ function __bootstrap(): void
         '/Psl/Math/constants.php',
         '/Psl/Math/min_by.php',
         '/Psl/invariant.php',
-
         '/Psl/Iter/pull.php',
         '/Psl/Iter/count.php',
         '/Psl/Iter/values.php',
@@ -245,7 +245,6 @@ function __bootstrap(): void
         '/Psl/Arr/count_values.php',
         '/Psl/Arr/merge.php',
         '/Psl/Arr/shuffle.php',
-        '/bootstrap.php',
     ];
 
     if ($booted) {
@@ -254,11 +253,7 @@ function __bootstrap(): void
 
     $booted = true;
     foreach ($files as $file) {
-        if (!\file_exists(__DIR__.'/'.$file)) {
-            \var_dump($file);
-        } else {
-            require_once __DIR__ . '/' . $file;
-        }
+        require_once __DIR__ . '/' . $file;
     }
 }
 
