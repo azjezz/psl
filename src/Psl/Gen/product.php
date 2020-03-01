@@ -35,7 +35,7 @@ function product(iterable ...$iterables): iterable
     /** @psalm-var array<int, Iter\Iterator<Tk, Tv>> $iterators */
     $iterators = Iter\to_array(Iter\map(
         $iterables,
-        fn(iterable $iterable) => new Iter\Iterator($iterable)
+        fn (iterable $iterable) => new Iter\Iterator($iterable)
     ));
 
     $numIterators = count($iterators);

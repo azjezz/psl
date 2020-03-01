@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Gen;
 
-use Psl\Iter;
 use Generator;
+use Psl\Iter;
 
 /**
  * Reverse the given iterable.

@@ -13,14 +13,6 @@ namespace Psl\Internal;
  */
 final class Loader
 {
-    private const TypeConstant = 1;
-    private const TypeFunction = 2;
-    private const TypeInterface = 4;
-    private const TypeTrait = 8;
-    private const TypeClass = 16;
-
-    private const TypeClassish = self::TypeInterface | self::TypeTrait | self::TypeClass;
-
     public const Constants = [
         'Psl\Internal\ALPHABET_BASE64',
         'Psl\Internal\ALPHABET_BASE64_URL',
@@ -315,6 +307,13 @@ final class Loader
         'Psl\Asio\WrappedException',
         'Psl\Asio\WrappedResult',
     ];
+    private const TypeConstant = 1;
+    private const TypeFunction = 2;
+    private const TypeInterface = 4;
+    private const TypeTrait = 8;
+    private const TypeClass = 16;
+
+    private const TypeClassish = self::TypeInterface | self::TypeTrait | self::TypeClass;
 
     private function __construct()
     {
@@ -324,7 +323,7 @@ final class Loader
     {
         if (!\function_exists(self::Functions[0])) {
             self::preload();
-        } else if (!\defined(self::Constants[0])) {
+        } elseif (!\defined(self::Constants[0])) {
             self::loadConstants();
         }
     }
@@ -332,7 +331,7 @@ final class Loader
     public static function preload(): void
     {
         static::loadConstants();
-        static::autoload(static function(): void {
+        static::autoload(static function (): void {
             static::loadFunctions();
             static::loadInterfaces();
             static::loadTraits();
@@ -342,7 +341,7 @@ final class Loader
 
     private static function autoload(callable $callback): void
     {
-        $loader = static function(string $classname): ?bool {
+        $loader = static function (string $classname): ?bool {
             if ('P' === $classname[0] && 0 === \strpos($classname, 'Psl\\')) {
                 require_once static::getFile($classname, self::TypeClassish);
 
@@ -424,7 +423,7 @@ final class Loader
         $lastSeparatorPosition = \strrpos($typename, '\\');
         $namespace = substr($typename, 0, $lastSeparatorPosition);
 
-        if ($type === ($type & self::TypeClassish) || ($type === ($type & self::TypeFunction))) {
+        if (($type & self::TypeClassish) === $type || (($type & self::TypeFunction) === $type)) {
             $file = \substr($typename, $lastSeparatorPosition + 1) . '.php';
         } else {
             $file = 'constants.php';

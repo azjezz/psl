@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Psl\Tests\Asio;
 
-use Psl\Asio\WrappedResult;
 use PHPUnit\Framework\TestCase;
+use Psl\Asio\WrappedResult;
 use Psl\Exception\InvariantViolationException;
 
 class WrappedResultTest extends TestCase

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Asio;
 
-use Psl\Asio\WrappedException;
 use PHPUnit\Framework\TestCase;
+use Psl\Asio\WrappedException;
 
 class WrappedExceptionTest extends TestCase
 {
