@@ -41,8 +41,9 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory>src</directory>
             <exclude>
+                <file>src/preload.php</file>
                 <file>src/bootstrap.php</file>
-                <file>src/Psl/internal.php</file>
+                <directory>src/Psl/Internal</directory>
                 <file>src/Psl/Str/constants.php</file>
                 <file>src/Psl/Math/constants.php</file>
             </exclude>
