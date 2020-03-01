@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Gen;
 
+use Generator;
+use Iterator;
 use Psl;
 use Psl\Iter;
-use Iterator;
-use Generator;
 
 /**
  * @template   Tk
@@ -91,7 +91,7 @@ final class RewindableGenerator implements Iterator
         $valid = $this->iterator->valid();
         if (!$valid && $this->iterator instanceof Generator) {
             /** @psalm-var (Closure(): Generator<Tk, Tv, mixed, void>) $generator */
-            $generator = function(): Generator {
+            $generator = function (): Generator {
                 foreach ($this->cache as [$k, $v]) {
                     yield $k => $v;
                 }

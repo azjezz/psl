@@ -24,19 +24,6 @@ final class MutableMapTest extends AbstractMapTest
      */
     protected string $vectorClass = MutableVector::class;
 
-    /**
-     * @template     Tk of array-key
-     * @template     Tv
-     *
-     * @psalm-param  iterable<Tk, Tv> $items
-     *
-     * @psalm-return MutableMap<Tk, Tv>
-     */
-    protected function create(iterable $items): MutableMap
-    {
-        return new MutableMap($items);
-    }
-
     public function testClear(): void
     {
         $map = $this->create(['foo' => 'bar']);
@@ -157,5 +144,18 @@ final class MutableMapTest extends AbstractMapTest
         $this->assertSame('qux', $map->get('baz'));
         $this->assertNull($map->get('foo'));
         $this->assertNull($map->get('bar'));
+    }
+
+    /**
+     * @template     Tk of array-key
+     * @template     Tv
+     *
+     * @psalm-param  iterable<Tk, Tv> $items
+     *
+     * @psalm-return MutableMap<Tk, Tv>
+     */
+    protected function create(iterable $items): MutableMap
+    {
+        return new MutableMap($items);
     }
 }

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Collection;
 
-use Psl\Str;
+use PHPUnit\Framework\TestCase;
 use Psl\Collection\IMap;
 use Psl\Collection\IVector;
-use PHPUnit\Framework\TestCase;
 use Psl\Exception\InvariantViolationException;
+use Psl\Str;
 
 /**
  * @covers \Psl\Collection\AbstractMap
@@ -29,16 +29,6 @@ abstract class AbstractMapTest extends TestCase
      * @psalm-var class-string<IVector>
      */
     protected string $vectorClass = IVector::class;
-
-    /**
-     * @template     Tk of array-key
-     * @template     Tv
-     *
-     * @psalm-param  iterable<Tk, Tv> $items
-     *
-     * @psalm-return IMap<Tk, Tv>
-     */
-    abstract protected function create(iterable $items): IMap;
 
     public function testIsEmpty(): void
     {
@@ -116,7 +106,7 @@ abstract class AbstractMapTest extends TestCase
             3 => 'qux',
         ]);
 
-        $filtered = $map->filter(fn(string $item) => Str\contains($item, 'b'));
+        $filtered = $map->filter(fn (string $item) => Str\contains($item, 'b'));
 
         $this->assertInstanceOf($this->mapClass, $filtered);
         $this->assertNotSame($map, $filtered);
@@ -133,7 +123,7 @@ abstract class AbstractMapTest extends TestCase
             3 => 'qux',
         ]);
 
-        $filtered = $map->filter(fn(string $item) => Str\contains($item, 'hello'));
+        $filtered = $map->filter(fn (string $item) => Str\contains($item, 'hello'));
 
         $this->assertInstanceOf($this->mapClass, $filtered);
         $this->assertNotContains('bar', $filtered);
@@ -152,7 +142,7 @@ abstract class AbstractMapTest extends TestCase
             3 => 'qux',
         ]);
 
-        $filtered = $map->filterWithKey(fn(int $k, string $v) => $v === 'foo' || $k === 3);
+        $filtered = $map->filterWithKey(fn (int $k, string $v) => 'foo' === $v || 3 === $k);
 
         $this->assertInstanceOf($this->mapClass, $filtered);
         $this->assertNotSame($map, $filtered);
@@ -169,7 +159,7 @@ abstract class AbstractMapTest extends TestCase
             3 => 'qux',
         ]);
 
-        $filtered = $map->filterWithKey(fn(int $k, string $v) => $k === 4);
+        $filtered = $map->filterWithKey(fn (int $k, string $v) => 4 === $k);
 
         $this->assertInstanceOf($this->mapClass, $filtered);
         $this->assertNotContains('bar', $filtered);
@@ -188,7 +178,7 @@ abstract class AbstractMapTest extends TestCase
             3 => 'qux',
         ]);
 
-        $mapped = $map->map(fn(string $item) => Str\uppercase($item));
+        $mapped = $map->map(fn (string $item) => Str\uppercase($item));
 
         $this->assertInstanceOf($this->mapClass, $mapped);
         $this->assertSame([
@@ -207,7 +197,7 @@ abstract class AbstractMapTest extends TestCase
             3 => 'qux',
         ]);
 
-        $mapped = $map->map(fn(string $item) => $item);
+        $mapped = $map->map(fn (string $item) => $item);
 
         $this->assertInstanceOf($this->mapClass, $mapped);
         $this->assertNotSame($map, $mapped);
@@ -224,7 +214,7 @@ abstract class AbstractMapTest extends TestCase
             3 => 'qux',
         ]);
 
-        $mapped = $map->mapWithKey(fn(int $k, string $v) => Str\format('%s ( %d )', $v, $k));
+        $mapped = $map->mapWithKey(fn (int $k, string $v) => Str\format('%s ( %d )', $v, $k));
 
         $this->assertInstanceOf($this->mapClass, $mapped);
         $this->assertSame([
@@ -243,14 +233,14 @@ abstract class AbstractMapTest extends TestCase
             3 => 'qux',
         ]);
 
-        $mapped = $map->mapWithKey(fn(int $k, string $v) => $k);
+        $mapped = $map->mapWithKey(fn (int $k, string $v) => $k);
 
         $this->assertInstanceOf($this->mapClass, $mapped);
         $this->assertNotSame($map, $mapped);
         $this->assertSame($map->keys()->toArray(), $mapped->toArray());
         $this->assertCount(4, $mapped);
 
-        $mapped = $map->mapWithKey(fn(int $k, string $v) => $v);
+        $mapped = $map->mapWithKey(fn (int $k, string $v) => $v);
 
         $this->assertInstanceOf($this->mapClass, $mapped);
         $this->assertNotSame($map, $mapped);
@@ -398,26 +388,26 @@ abstract class AbstractMapTest extends TestCase
     public function testTakeWhile(): void
     {
         $map = $this->create([]);
-        $rest = $map->takeWhile(fn($v) => false);
+        $rest = $map->takeWhile(fn ($v) => false);
         $this->assertInstanceOf($this->mapClass, $rest);
         $this->assertNotSame($map, $rest);
         $this->assertCount(0, $rest);
 
         $map = $this->create([]);
-        $rest = $map->takeWhile(fn($v) => true);
+        $rest = $map->takeWhile(fn ($v) => true);
         $this->assertInstanceOf($this->mapClass, $rest);
         $this->assertNotSame($map, $rest);
         $this->assertCount(0, $rest);
 
         $map = $this->create(['foo' => 'bar', 'baz' => 'qux']);
-        $rest = $map->takeWhile(fn($v) => true);
+        $rest = $map->takeWhile(fn ($v) => true);
         $this->assertInstanceOf($this->mapClass, $rest);
         $this->assertNotSame($map, $rest);
         $this->assertCount(2, $rest);
         $this->assertSame($map->toArray(), $rest->toArray());
 
         $map = $this->create(['foo' => 'bar', 'baz' => 'qux']);
-        $rest = $map->takeWhile(fn($v) => $v === 'bar');
+        $rest = $map->takeWhile(fn ($v) => 'bar' === $v);
         $this->assertInstanceOf($this->mapClass, $rest);
         $this->assertNotSame($map, $rest);
         $this->assertCount(1, $rest);
@@ -456,32 +446,32 @@ abstract class AbstractMapTest extends TestCase
     public function testDropWhile(): void
     {
         $map = $this->create([]);
-        $rest = $map->dropWhile(fn($v) => true);
+        $rest = $map->dropWhile(fn ($v) => true);
         $this->assertInstanceOf($this->mapClass, $rest);
         $this->assertNotSame($map, $rest);
         $this->assertCount(0, $rest);
 
         $map = $this->create([]);
-        $rest = $map->dropWhile(fn($v) => false);
+        $rest = $map->dropWhile(fn ($v) => false);
         $this->assertInstanceOf($this->mapClass, $rest);
         $this->assertNotSame($map, $rest);
         $this->assertCount(0, $rest);
 
         $map = $this->create(['foo' => 'bar', 'baz' => 'qux']);
-        $rest = $map->dropWhile(fn($v) => true);
+        $rest = $map->dropWhile(fn ($v) => true);
         $this->assertInstanceOf($this->mapClass, $rest);
         $this->assertNotSame($map, $rest);
         $this->assertCount(0, $rest);
 
         $map = $this->create(['foo' => 'bar', 'baz' => 'qux']);
-        $rest = $map->dropWhile(fn($v) => false);
+        $rest = $map->dropWhile(fn ($v) => false);
         $this->assertInstanceOf($this->mapClass, $rest);
         $this->assertNotSame($map, $rest);
         $this->assertCount(2, $rest);
         $this->assertSame($map->toArray(), $rest->toArray());
 
         $map = $this->create(['foo' => 'bar', 'baz' => 'qux']);
-        $rest = $map->dropWhile(fn($v) => $v === 'bar');
+        $rest = $map->dropWhile(fn ($v) => 'bar' === $v);
         $this->assertInstanceOf($this->mapClass, $rest);
         $this->assertNotSame($map, $rest);
         $this->assertCount(1, $rest);
@@ -558,4 +548,14 @@ abstract class AbstractMapTest extends TestCase
         $this->assertSame('world', $map->get('bar'));
         $this->assertNull($map->get('baz'));
     }
+
+    /**
+     * @template     Tk of array-key
+     * @template     Tv
+     *
+     * @psalm-param  iterable<Tk, Tv> $items
+     *
+     * @psalm-return IMap<Tk, Tv>
+     */
+    abstract protected function create(iterable $items): IMap;
 }

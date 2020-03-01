@@ -11,7 +11,8 @@ namespace Psl\Collection;
  * @extends IMap<Tk, Tv>
  * @extends IMutableAccessibleCollection<Tk, Tv>
  */
-interface IMutableMap extends IMap, IMutableAccessibleCollection {
+interface IMutableMap extends IMap, IMutableAccessibleCollection
+{
     /**
      * Returns a `IMutableVector` containing the values of the current
      * `IMutableMap`.

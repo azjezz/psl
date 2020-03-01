@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Asio;
 
+use Exception;
 use Psl;
 use Psl\Str;
-use Exception;
 
 /**
  * Represents the result of failed operation.

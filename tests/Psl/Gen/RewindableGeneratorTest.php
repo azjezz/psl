@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Gen;
 
-use Psl\Gen;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection\MutableVector;
+use Psl\Gen;
 
 class RewindableGeneratorTest extends TestCase
 {
@@ -14,7 +14,7 @@ class RewindableGeneratorTest extends TestCase
     {
         $spy = new MutableVector([]);
 
-        $generator = (static function() use ($spy): iterable {
+        $generator = (static function () use ($spy): iterable {
             for ($i = 0; $i < 3; $i++) {
                 $spy->add('generator (' . $i . ')');
 
@@ -69,7 +69,7 @@ class RewindableGeneratorTest extends TestCase
     {
         $spy = new MutableVector([]);
 
-        $generator = (static function() use ($spy): iterable {
+        $generator = (static function () use ($spy): iterable {
             for ($i = 0; $i < 3; $i++) {
                 $spy->add($e = 'generator (' . $i . ')');
                 yield $i;

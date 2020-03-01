@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tests\Collection;
 
 use Psl\Collection\Map;
-use Psl\Collection\Vector;
 use Psl\Collection\MutableVector;
+use Psl\Collection\Vector;
 use Psl\Exception\InvariantViolationException;
 
 final class MutableVectorTest extends AbstractVectorTest
@@ -17,18 +17,6 @@ final class MutableVectorTest extends AbstractVectorTest
      * @psalm-var class-string<MutableVector>
      */
     protected string $vectorClass = MutableVector::class;
-
-    /**
-     * @template     T
-     *
-     * @psalm-param  iterable<T> $items
-     *
-     * @psalm-return MutableVector<T>
-     */
-    protected function create(iterable $items): MutableVector
-    {
-        return new MutableVector($items);
-    }
 
     public function testClear(): void
     {
@@ -150,5 +138,16 @@ final class MutableVectorTest extends AbstractVectorTest
         $this->assertCount(1, $vector);
         $this->assertSame('baz', $vector->get(0));
     }
-}
 
+    /**
+     * @template     T
+     *
+     * @psalm-param  iterable<T> $items
+     *
+     * @psalm-return MutableVector<T>
+     */
+    protected function create(iterable $items): MutableVector
+    {
+        return new MutableVector($items);
+    }
+}

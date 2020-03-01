@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Collection;
 
-use Psl\Str;
-use Psl\Collection\IVector;
 use PHPUnit\Framework\TestCase;
+use Psl\Collection\IVector;
 use Psl\Exception\InvariantViolationException;
+use Psl\Str;
 
 /**
  * @covers \Psl\Collection\AbstractVector
@@ -21,15 +21,6 @@ abstract class AbstractVectorTest extends TestCase
      * @psalm-var class-string<IVector>
      */
     protected string $vectorClass = IVector::class;
-
-    /**
-     * @template     T
-     *
-     * @psalm-param  iterable<T> $items
-     *
-     * @psalm-return IVector<T>
-     */
-    abstract protected function create(iterable $items): IVector;
 
     public function testIsEmpty(): void
     {
@@ -103,7 +94,7 @@ abstract class AbstractVectorTest extends TestCase
             'qux',
         ]);
 
-        $filtered = $vector->filter(fn(string $item) => Str\contains($item, 'b'));
+        $filtered = $vector->filter(fn (string $item) => Str\contains($item, 'b'));
 
         $this->assertInstanceOf($this->vectorClass, $filtered);
         $this->assertNotSame($vector, $filtered);
@@ -120,7 +111,7 @@ abstract class AbstractVectorTest extends TestCase
             'qux',
         ]);
 
-        $filtered = $vector->filter(fn(string $item) => Str\contains($item, 'hello'));
+        $filtered = $vector->filter(fn (string $item) => Str\contains($item, 'hello'));
 
         $this->assertInstanceOf($this->vectorClass, $filtered);
         $this->assertNotContains('bar', $filtered);
@@ -139,7 +130,7 @@ abstract class AbstractVectorTest extends TestCase
             'qux',
         ]);
 
-        $filtered = $vector->filterWithKey(fn(int $k, string $v) => $v === 'foo' || $k === 3);
+        $filtered = $vector->filterWithKey(fn (int $k, string $v) => 'foo' === $v || 3 === $k);
 
         $this->assertInstanceOf($this->vectorClass, $filtered);
         $this->assertNotSame($vector, $filtered);
@@ -156,7 +147,7 @@ abstract class AbstractVectorTest extends TestCase
             'qux',
         ]);
 
-        $filtered = $vector->filterWithKey(fn(int $k, string $v) => $k === 4);
+        $filtered = $vector->filterWithKey(fn (int $k, string $v) => 4 === $k);
 
         $this->assertInstanceOf($this->vectorClass, $filtered);
         $this->assertNotContains('bar', $filtered);
@@ -175,7 +166,7 @@ abstract class AbstractVectorTest extends TestCase
             'qux',
         ]);
 
-        $mapped = $vector->map(fn(string $item) => Str\uppercase($item));
+        $mapped = $vector->map(fn (string $item) => Str\uppercase($item));
 
         $this->assertInstanceOf($this->vectorClass, $mapped);
         $this->assertSame([
@@ -194,7 +185,7 @@ abstract class AbstractVectorTest extends TestCase
             'qux',
         ]);
 
-        $mapped = $vector->map(fn(string $item) => $item);
+        $mapped = $vector->map(fn (string $item) => $item);
 
         $this->assertInstanceOf($this->vectorClass, $mapped);
         $this->assertNotSame($vector, $mapped);
@@ -211,7 +202,7 @@ abstract class AbstractVectorTest extends TestCase
             3 => 'qux',
         ]);
 
-        $mapped = $vector->mapWithKey(fn(int $k, string $v) => Str\format('%s ( %d )', $v, $k));
+        $mapped = $vector->mapWithKey(fn (int $k, string $v) => Str\format('%s ( %d )', $v, $k));
 
         $this->assertInstanceOf($this->vectorClass, $mapped);
         $this->assertSame([
@@ -230,14 +221,14 @@ abstract class AbstractVectorTest extends TestCase
             'qux',
         ]);
 
-        $mapped = $vector->mapWithKey(fn(int $k, string $v) => $k);
+        $mapped = $vector->mapWithKey(fn (int $k, string $v) => $k);
 
         $this->assertInstanceOf($this->vectorClass, $mapped);
         $this->assertNotSame($vector, $mapped);
         $this->assertSame($vector->keys()->toArray(), $mapped->toArray());
         $this->assertCount(4, $mapped);
 
-        $mapped = $vector->mapWithKey(fn(int $k, string $v) => $v);
+        $mapped = $vector->mapWithKey(fn (int $k, string $v) => $v);
 
         $this->assertInstanceOf($this->vectorClass, $mapped);
         $this->assertNotSame($vector, $mapped);
@@ -385,26 +376,26 @@ abstract class AbstractVectorTest extends TestCase
     public function testTakeWhile(): void
     {
         $vector = $this->create([]);
-        $rest = $vector->takeWhile(fn($v) => false);
+        $rest = $vector->takeWhile(fn ($v) => false);
         $this->assertInstanceOf($this->vectorClass, $rest);
         $this->assertNotSame($vector, $rest);
         $this->assertCount(0, $rest);
 
         $vector = $this->create([]);
-        $rest = $vector->takeWhile(fn($v) => true);
+        $rest = $vector->takeWhile(fn ($v) => true);
         $this->assertInstanceOf($this->vectorClass, $rest);
         $this->assertNotSame($vector, $rest);
         $this->assertCount(0, $rest);
 
         $vector = $this->create(['bar', 'qux']);
-        $rest = $vector->takeWhile(fn($v) => true);
+        $rest = $vector->takeWhile(fn ($v) => true);
         $this->assertInstanceOf($this->vectorClass, $rest);
         $this->assertNotSame($vector, $rest);
         $this->assertCount(2, $rest);
         $this->assertSame($vector->toArray(), $rest->toArray());
 
         $vector = $this->create(['bar', 'qux']);
-        $rest = $vector->takeWhile(fn($v) => $v === 'bar');
+        $rest = $vector->takeWhile(fn ($v) => 'bar' === $v);
         $this->assertInstanceOf($this->vectorClass, $rest);
         $this->assertNotSame($vector, $rest);
         $this->assertCount(1, $rest);
@@ -443,32 +434,32 @@ abstract class AbstractVectorTest extends TestCase
     public function testDropWhile(): void
     {
         $vector = $this->create([]);
-        $rest = $vector->dropWhile(fn($v) => true);
+        $rest = $vector->dropWhile(fn ($v) => true);
         $this->assertInstanceOf($this->vectorClass, $rest);
         $this->assertNotSame($vector, $rest);
         $this->assertCount(0, $rest);
 
         $vector = $this->create([]);
-        $rest = $vector->dropWhile(fn($v) => false);
+        $rest = $vector->dropWhile(fn ($v) => false);
         $this->assertInstanceOf($this->vectorClass, $rest);
         $this->assertNotSame($vector, $rest);
         $this->assertCount(0, $rest);
 
         $vector = $this->create(['bar', 'qux']);
-        $rest = $vector->dropWhile(fn($v) => true);
+        $rest = $vector->dropWhile(fn ($v) => true);
         $this->assertInstanceOf($this->vectorClass, $rest);
         $this->assertNotSame($vector, $rest);
         $this->assertCount(0, $rest);
 
         $vector = $this->create(['bar', 'qux']);
-        $rest = $vector->dropWhile(fn($v) => false);
+        $rest = $vector->dropWhile(fn ($v) => false);
         $this->assertInstanceOf($this->vectorClass, $rest);
         $this->assertNotSame($vector, $rest);
         $this->assertCount(2, $rest);
         $this->assertSame($vector->toArray(), $rest->toArray());
 
         $vector = $this->create(['bar', 'qux']);
-        $rest = $vector->dropWhile(fn($v) => $v === 'bar');
+        $rest = $vector->dropWhile(fn ($v) => 'bar' === $v);
         $this->assertInstanceOf($this->vectorClass, $rest);
         $this->assertNotSame($vector, $rest);
         $this->assertCount(1, $rest);
@@ -545,4 +536,13 @@ abstract class AbstractVectorTest extends TestCase
         $this->assertSame('world', $vector->get(1));
         $this->assertNull($vector->get(2));
     }
+
+    /**
+     * @template     T
+     *
+     * @psalm-param  iterable<T> $items
+     *
+     * @psalm-return IVector<T>
+     */
+    abstract protected function create(iterable $items): IVector;
 }
