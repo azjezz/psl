@@ -26,7 +26,7 @@ namespace Psl\Str;
  *      Str\format('%s is %d character(s) long.', 'س', Str\length('س'));
  *      => Str('س is 1 character(s) long.')
  *
- * @psalm-param int|float|string|bool  ...$args
+ * @psalm-param int|float|string  ...$args
  *
  * @return string a string produced according to the formatting string
  *                format

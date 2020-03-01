@@ -11,6 +11,7 @@ function __bootstrap(): void
 {
     static $booted = false;
     static $files = [
+        'Psl/Asio/wrap.php',
         '/Psl/Random/string.php',
         '/Psl/Random/int.php',
         '/Psl/Random/float.php',

@@ -60,3 +60,15 @@ function boolean($val): bool
 {
     return (bool) $val;
 }
+
+/**
+ * @param mixed $value
+ *
+ * @return string
+ *
+ * @codeCoverageIgnore
+ */
+function type($value): string
+{
+    return \is_object($value) ? \get_class($value) : \gettype($value);
+}
