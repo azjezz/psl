@@ -8,9 +8,7 @@ jobs:
   include:
     - php: 7.4
     - php: nightly
-      env: IGNORE_PLATFORM_REQS=true
-    - php: 7.4
-      env: CS_CHECK=true
+      env: NIGHTLY_BUILD=true
     - php: 7.4
       env: TYPE_CHECK=true
 
@@ -18,20 +16,17 @@ jobs:
     - php: 7.4
       env: TYPE_CHECK=true
 
-    - php: 7.4
-      env: CS_CHECK=true
-
   fast_finish: true
 
 install:
   - php --version
   - composer self-update
   - composer --version
-  - if [[ $IGNORE_PLATFORM_REQS = 'true' ]]; then composer install --ignore-platform-reqs; else composer install; fi
+  - if [[ $NIGHTLY_BUILD = 'true' ]]; then composer install --ignore-platform-reqs; else composer install; fi
 
 script:
   - composer test:unit
-  - if [[ $CS_CHECK = 'true' ]]; then composer cs:check; fi
+  - if [[ $NIGHTLY_BUILD != 'true' ]]; then composer cs:check; fi
   - if [[ $TYPE_CHECK = 'true' ]]; then composer type:check; fi
 
 after_script:
