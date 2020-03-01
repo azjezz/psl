@@ -16,6 +16,9 @@
         <testsuite name="Psl Arr">
             <directory>tests/Psl/Arr</directory>
         </testsuite>
+        <testsuite name="Psl Asio">
+            <directory>tests/Psl/Asio</directory>
+        </testsuite>
         <testsuite name="Psl Collection">
             <directory>tests/Psl/Collection</directory>
         </testsuite>

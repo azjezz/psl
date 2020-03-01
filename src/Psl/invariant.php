@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl;
 
 /**
- * @psalm-param int|float|string|bool  ...$args
+ * @psalm-param int|float|string  ...$args
  *
  * @psalm-assert true $fact
  */
@@ -17,9 +17,11 @@ function invariant(bool $fact, string $message, ...$args): void
 }
 
 /**
- * @psalm-param int|float|string|bool  ...$args
+ * @psalm-param int|float|string  ...$args
  *
- * @pslam-return no-return
+ * @psalm-return no-return
+ *
+ * @throws Exception\InvariantViolationException
  */
 function invariant_violation(string $format, ...$args): void
 {
