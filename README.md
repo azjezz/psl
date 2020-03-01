@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/azjezz/psl.svg?branch=master)](https://travis-ci.org/azjezz/psl)
 [![Scrutinizer Build Status](https://scrutinizer-ci.com/g/azjezz/psl/badges/build.png?b=master)](https://scrutinizer-ci.com/g/azjezz/psl/build-status/master)
 [![Coverage Status](https://coveralls.io/repos/github/azjezz/psl/badge.svg?branch=master)](https://coveralls.io/github/azjezz/psl?branch=master)
+[![Type Coverage](https://shepherd.dev/github/azjezz/psl/coverage.svg)](https://shepherd.dev/github/azjezz/psl)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/azjezz/psl/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/azjezz/psl/?branch=master)
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/azjezz/psl/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
 [![Total Downloads](https://poser.pugx.org/azjezz/psl/d/total.svg)](https://packagist.org/packages/azjezz/psl)
