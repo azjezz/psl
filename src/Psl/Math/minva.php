@@ -7,7 +7,7 @@ namespace Psl\Math;
 /**
  * Returns the smallest of all input numbers.
  *
- * @psalm-template T as int|float
+ * @psalm-template T of int|float
  *
  * @psalm-param T $first
  * @psalm-param T $second

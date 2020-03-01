@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
-use Psl\Iter;
-
 /**
  * Returns whether the two given arrays have the same entries, using strict
  * equality. To guarantee equality of order as well as contents, use `===`.
@@ -24,7 +22,7 @@ function equal(array $array, array $array2): bool
         return true;
     }
 
-    if (Iter\count($array) !== Iter\count($array2)) {
+    if (\count($array) !== \count($array2)) {
         return false;
     }
 

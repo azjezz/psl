@@ -11,16 +11,14 @@ use Psl\Iter;
  *
  * @psalm-template T
  *
- * @psalm-param iterable<T> $first
- * @psalm-param iterable<T> ...$rest
+ * @psalm-param iterable<T>         $first
+ * @psalm-param list<iterable<T>>   $rest
  *
- * @psalm-return array<int, T>
- *
- * @psalm-suppress InvalidReturnType
+ * @psalm-return list<T>
  */
 function concat(iterable $first, iterable ...$rest): array
 {
-    /** @psalm-var array<int, T> $result */
+    /** @psalm-var list<T> $result */
     $result = Iter\to_array($first);
     foreach ($rest as $iterable) {
         foreach ($iterable as $value) {

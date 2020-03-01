@@ -24,35 +24,34 @@ use Psl\Iter;
  */
 function sort_with_keys_by(iterable $iterable, callable $scalar_func, ?callable $comparator = null): array
 {
-    if (null !== $comparator) {
-        $tuple_comparator =
-            /**
-             * @psalm-param array{0: Ts, 1: Tv} $a
-             * @psalm-param array{0: Ts, 1: Tv} $b
-             */
-            fn ($a, $b): int => $comparator($a[0], $b[0]);
-    } else {
-        $tuple_comparator =
-            /**
-             * @psalm-param array{0: Ts, 1: Tv} $a
-             * @psalm-param array{0: Ts, 1: Tv} $b
-             */
-            fn ($a, $b): int => $a[0] <=> $b[0];
-    }
+    $comparator ??=
+        /**
+         * @psalm-param Ts $a
+         * @psalm-param Ts $b
+         */
+        fn ($a, $b): int => $a <=> $b;
 
-    $sorted = sort_with_keys(
-        Iter\map(
-            $iterable,
-            /**
-             * @psalm-param  Tv $value
-             *
-             * @psalm-return array{0: Ts, 1: Tv}
-             */
-            fn ($value) => [$scalar_func($value), $value],
-        ),
-        $tuple_comparator
+    $tuple_comparator =
+        /**
+         * @psalm-param array{0: Ts, 1: Tv} $a
+         * @psalm-param array{0: Ts, 1: Tv} $b
+         */
+        fn ($a, $b): int => $comparator($a[0], $b[0]);
+
+    /**
+     * @psalm-var Iter\Iterator<Tk, array{0: Ts, 1: Tv}> $tuples
+     */
+    $tuples = Iter\map(
+        $iterable,
+        /**
+         * @psalm-param  Tv $value
+         *
+         * @psalm-return array{0: Ts, 1: Tv}
+         */
+        fn ($value) => [$scalar_func($value), $value],
     );
 
+    $sorted = sort_with_keys($tuples, $tuple_comparator);
     $result = Iter\map_with_key(
         $sorted,
         /**

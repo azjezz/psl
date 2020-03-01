@@ -25,9 +25,9 @@ use Psl\Gen;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param    iterable<Tk, Tv>    ...$iterables
+ * @psalm-param    list<iterable<Tk, Tv>>   $iterables
  *
- * @psalm-return   Iterator<array<int, Tk>, array<int, Tv>>
+ * @psalm-return   Iterator<list<Tk>, list<Tv>>
  *
  * @see            Gen\zip()
  */

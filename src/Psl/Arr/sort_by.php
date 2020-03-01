@@ -20,7 +20,7 @@ use Psl\Iter;
  * @psalm-param (callable(Tv): Ts) $scalar_func
  * @psalm-param null|(callable(Ts, Ts): int) $comparator
  *
- * @plsam-return array<int, Tv>
+ * @plsam-return list<Tv>
  */
 function sort_by(iterable $iterable, callable $scalar_func, ?callable $comparator = null): array
 {

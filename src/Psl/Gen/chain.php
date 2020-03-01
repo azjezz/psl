@@ -17,10 +17,10 @@ use Generator;
  *     Gen\chain(Gen\range(0, 5), Gen\range(6, 10), Gen\range(11, 15))
  *     => Gen(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
  *
- * @psalm-template Tk of array-key
+ * @psalm-template Tk
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv> ...$iterables Iterables to chain
+ * @psalm-param list<iterable<Tk, Tv>> $iterables Iterables to chain
  *
  * @psalm-return Generator<Tk, Tv, mixed, void>
  */

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Gen;
 
+use Generator;
+
 /**
  * Drops the first n items from an iterable.
  *
@@ -20,7 +22,7 @@ namespace Psl\Gen;
  *
  * @psalm-return Generator<Tk, Tv, mixed, void>
  */
-function drop(iterable $iterable, int $num): iterable
+function drop(iterable $iterable, int $num): Generator
 {
     return slice($iterable, $num);
 }

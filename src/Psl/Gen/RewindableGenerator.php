@@ -33,7 +33,7 @@ final class RewindableGenerator implements Iterator
     private bool $cached = false;
 
     /**
-     * @psalm-param Generator<Tk, Tv, mixed, void> $generator
+     * @psalm-param Generator<Tk, Tv, mixed, mixed> $generator
      */
     public function __construct(Generator $generator)
     {

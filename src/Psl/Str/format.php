@@ -28,6 +28,8 @@ namespace Psl\Str;
  *
  * @psalm-param int|float|string  ...$args
  *
+ * @psalm-pure
+ *
  * @return string a string produced according to the formatting string
  *                format
  */

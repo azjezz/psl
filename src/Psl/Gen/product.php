@@ -24,15 +24,15 @@ use Psl\Iter;
  * @psalm-template Tk
  * @psalm-template Tv
  *
- * @psalm-param    iterable<Tk, Tv> ...$iterables Iterables to combine
+ * @psalm-param    list<iterable<Tk, Tv>> $iterables Iterables to combine
  *
- * @psalm-return   iterable<array<int, Tk>, array<int, Tv>>
+ * @psalm-return   iterable<list<Tk>, list<Tv>>
  *
  * @psalm-suppress MixedReturnTypeCoercion
  */
 function product(iterable ...$iterables): iterable
 {
-    /** @psalm-var array<int, Iter\Iterator<Tk, Tv>> $iterators */
+    /** @psalm-var list<Iter\Iterator<Tk, Tv>> $iterators */
     $iterators = Iter\to_array(Iter\map(
         $iterables,
         fn (iterable $iterable) => new Iter\Iterator($iterable)
@@ -40,14 +40,14 @@ function product(iterable ...$iterables): iterable
 
     $numIterators = count($iterators);
     if (0 === $numIterators) {
-        /** @plsam-var iterable<array<int, Tk>, array<int, Tv>> */
+        /** @plsam-var iterable<list<Tk>, list<Tv>> */
         yield [] => [];
 
         return;
     }
 
-    /** @psalm-var array<int, Tk|null> $keyTuple */
-    /** @psalm-var array<int, Tv|null> $valueTuple */
+    /** @psalm-var list<Tk|null> $keyTuple */
+    /** @psalm-var list<Tv|null> $valueTuple */
     $keyTuple = Arr\fill(null, 0, $numIterators);
     $valueTuple = Arr\fill(null, 0, $numIterators);
     $i = -1;
@@ -63,7 +63,7 @@ function product(iterable ...$iterables): iterable
         }
 
         foreach ($iterators[$i] as $keyTuple[$i] => $valueTuple[$i]) {
-            yield $keyTuple => $valueTuple;
+            yield Iter\to_array($keyTuple) => Iter\to_array($valueTuple);
         }
 
         while (--$i >= 0) {

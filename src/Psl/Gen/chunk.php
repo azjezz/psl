@@ -29,7 +29,7 @@ function chunk(iterable $iterable, int $size): Generator
 {
     Psl\invariant($size > 0, 'Chunk size must be positive');
 
-    /** @var list<T> $chunk */
+    /** @psalm-var list<T> $chunk */
     $chunk = [];
     $count = 0;
     foreach ($iterable as $value) {

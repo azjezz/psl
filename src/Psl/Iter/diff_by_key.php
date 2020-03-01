@@ -14,7 +14,7 @@ use Psl\Gen;
  * @psalm-param    iterable<Tk, mixed>    $second
  * @psalm-param    iterable<Tk, mixed>    ...$rest
  *
- * @psalm-return   Iterator<Tk, iterable<Tk, Tv>>
+ * @psalm-return   Iterator<Tk, Tv>
  *
  * @see            Gen\diff_by_key()
  */

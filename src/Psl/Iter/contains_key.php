@@ -9,19 +9,21 @@ use Psl\Arr;
 /**
  * Returns true if the given iterable contains the key.
  *
- * @psalm-template Tk of array-key
+ * @psalm-template Tk
  * @psalm-template Tv
  *
  * @psalm-param    iterable<Tk, Tv> $iterable,
  * @psalm-param    Tk               $key
  *
  * @psalm-return   bool
- *
- * @psalm-pure
- *
- * @see            Arr\contains_key()
  */
 function contains_key(iterable $iterable, $key): bool
 {
-    return Arr\contains_key(to_array_with_keys($iterable), $key);
+    foreach ($iterable as $k => $v) {
+        if ($key === $k) {
+            return true;
+        }
+    }
+
+    return false;
 }

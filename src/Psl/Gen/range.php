@@ -25,7 +25,7 @@ use Psl;
  *     Gen\range(3.0, 0.0, -0.5)
  *     => Gen(3.0, 2.5, 2.0, 1.5, 1.0, 0.5, 0.0)
  *
- * @psalm-template T as numeric
+ * @psalm-template T of int|float
  *
  * @psalm-param T       $start First number (inclusive)
  * @psalm-param T       $end   Last number (inclusive, but doesn't have to be part of
@@ -34,11 +34,12 @@ use Psl;
  *                              $end and to -1 if $start greater $end)
  *
  * @psalm-return Generator<int, T, mixed, void>
+ *
  * @psalm-pure
  *
  * @see https://github.com/vimeo/psalm/issues/2152#issuecomment-533363310
- *
  * @psalm-suppress MixedOperand
+ * @psalm-suppress InvalidReturnType
  */
 function range($start, $end, $step = null): Generator
 {

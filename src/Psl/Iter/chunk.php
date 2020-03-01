@@ -19,7 +19,7 @@ use Psl\Gen;
  * @psalm-param    iterable<T> $iterable The iterable to chunk
  * @psalm-param    int         $size     The size of each chunk
  *
- * @psalm-return   Iterator<int, T>
+ * @psalm-return   Iterator<int, list<T>>
  *
  * @see            Gen\chunk()
  */

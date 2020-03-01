@@ -14,14 +14,12 @@ use Psl\Iter;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv> $iterable
- * @psalm-param null|(callable(Tv, Tv): int) $comparator
- *
- * @plsam-return array<Tk, Tv>
+ * @psalm-param iterable<Tk, Tv>                $iterable
+ * @psalm-param null|(callable(Tv, Tv): int)    $comparator
  *
  * @return array
  *
- * @psalm-return array<int, mixed>
+ * @psalm-return list<Tv>
  */
 function sort(iterable $iterable, ?callable $comparator = null): array
 {

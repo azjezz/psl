@@ -10,10 +10,13 @@ use Psl\Iter;
 /**
  * Returns the median of the given numbers.
  *
- * @pslam-param iterable<numeric> $numbers
+ * @pslam-param iterable<int|float> $numbers
  */
 function median(iterable $numbers): ?float
 {
+    /** @psalm-var list<int|float> $numbers */
+    $numbers = Iter\to_array($numbers);
+    /** @psalm-var list<int|float> $numbers */
     $numbers = Arr\sort($numbers);
     $count = Iter\count($numbers);
     if (0 === $count) {

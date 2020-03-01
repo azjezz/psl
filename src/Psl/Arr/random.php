@@ -24,7 +24,7 @@ function random(array $values)
 {
     Psl\invariant(!Iter\is_empty($values), 'Expected non-empty-array.');
 
-    /** @psalm-var array<int, Tv> $shuffled */
+    /** @psalm-var list<Tv> $shuffled */
     $shuffled = shuffle($values);
     $size = Iter\count($values);
     if (1 === $size) {

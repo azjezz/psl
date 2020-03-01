@@ -11,10 +11,167 @@ use Psl\Iter;
 /**
  * @template   T
  *
- * @extends    AbstractVector<T>
+ * @implements IVector<T>
  */
-final class Vector extends AbstractVector
+final class Vector implements IVector
 {
+    /**
+     * @psalm-var array<int, T> $elements
+     */
+    protected array $elements = [];
+
+    /**
+     * Vector constructor.
+     *
+     * @psalm-param iterable<T> $elements
+     */
+    public function __construct(iterable $elements)
+    {
+        foreach ($elements as $element) {
+            $this->elements[] = $element;
+        }
+    }
+
+    /**
+     * Returns the first value in the current collection.
+     *
+     * @psalm-return null|T - The first value in the current collection, or `null` if the
+     *           current collection is empty.
+     */
+    public function first()
+    {
+        return Iter\first($this->elements);
+    }
+
+    /**
+     * Returns the last value in the current collection.
+     *
+     * @psalm-return null|T - The last value in the current collection, or `null` if the
+     *           current collection is empty.
+     */
+    public function last()
+    {
+        return Iter\last($this->elements);
+    }
+
+    /**
+     * Retrieve an external iterator
+     *
+     * @psalm-return Iter\Iterator<int, T>
+     */
+    public function getIterator(): Iter\Iterator
+    {
+        return new Iter\Iterator($this->elements);
+    }
+
+    /**
+     * Is the map empty?
+     */
+    public function isEmpty(): bool
+    {
+        return 0 === $this->count();
+    }
+
+    /**
+     * Get the number of items in the current map.
+     */
+    public function count(): int
+    {
+        return Iter\count($this->elements);
+    }
+
+    /**
+     * Get an array copy of the current map.
+     *
+     * @psalm-return list<T>
+     *
+     * @psalm-pure
+     */
+    public function toArray(): array
+    {
+        return Arr\values($this->elements);
+    }
+
+    /**
+     * Returns the value at the specified key in the current map.
+     *
+     * @psalm-param  int $k
+     *
+     * @psalm-return T
+     */
+    public function at($k)
+    {
+        return Arr\at($this->elements, $k);
+    }
+
+    /**
+     * Determines if the specified key is in the current map.
+     *
+     * @psalm-param int $k
+     */
+    public function contains($k): bool
+    {
+        return Iter\contains_key($this->elements, $k);
+    }
+
+    /**
+     * Returns the value at the specified key in the current map.
+     *
+     * @psalm-param  int $k
+     *
+     * @psalm-return T|null
+     */
+    public function get($k)
+    {
+        return Arr\idx($this->elements, $k);
+    }
+
+    /**
+     * Returns the first key in the current `AbstractVector`.
+     *
+     * @psalm-return null|int - The first key in the current `AbstractVector`, or `null` if the
+     *                  current `AbstractVector` is empty
+     */
+    public function firstKey(): ?int
+    {
+        /** @var int|null $key */
+        $key = Arr\first_key($this->elements);
+
+        return $key;
+    }
+
+    /**
+     * Returns the last key in the current `AbstractVector`.
+     *
+     * @psalm-return null|int - The last key in the current `AbstractVector`, or `null` if the
+     *                  current `AbstractVector` is empty
+     */
+    public function lastKey(): ?int
+    {
+        return Arr\last_key($this->elements);
+    }
+
+    /**
+     * Returns the index of the first element that matches the search value.
+     *
+     * If no element matches the search value, this function returns null.
+     *
+     * @psalm-param  T $search_value - The value that will be search for in the current
+     *                        collection.
+     *
+     * @psalm-return null|int - The key (index) where that value is found; null if it is not found
+     */
+    public function linearSearch($search_value): ?int
+    {
+        foreach ($this->elements as $key => $element) {
+            if ($search_value === $element) {
+                return $key;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Returns a `Vector` containing the values of the current
      * `Vector`.
@@ -33,7 +190,7 @@ final class Vector extends AbstractVector
      */
     public function keys(): Vector
     {
-        /** @var array<int, int> $keys */
+        /** @psalm-var list<int> $keys */
         $keys = Arr\keys($this->elements);
 
         return new Vector($keys);

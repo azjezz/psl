@@ -31,14 +31,17 @@ function base_convert(string $value, int $from_base, int $to_base): string
     Psl\invariant($to_base >= 2 && $to_base <= 36, 'Expected $to_base to be between 2 and 36, got %d', $to_base);
 
     $from_alphabet = Byte\slice(Str\ALPHABET_ALPHANUMERIC, 0, $from_base);
+    /** @var numeric-string $result_decimal */
     $result_decimal = '0';
+    /** @var numeric-string $place_value */
     $place_value = \bcpow((string)$from_base, (string)(Byte\length($value) - 1));
     /** @var string $digit */
     foreach (Byte\chunk($value) as $digit) {
         $digit_numeric = Byte\search_ci($from_alphabet, $digit);
         Psl\invariant(null !== $digit_numeric, 'Invalid digit %s in base %d', $digit, $from_base);
         $result_decimal = \bcadd($result_decimal, \bcmul((string)$digit_numeric, $place_value));
-        /** @var string $place_value */
+        Psl\invariant(is_numeric($result_decimal), 'Unexpected error.');
+        /** @var numeric-string $place_value */
         $place_value = \bcdiv($place_value, (string)$from_base);
     }
 
@@ -50,7 +53,7 @@ function base_convert(string $value, int $from_base, int $to_base): string
     $result = '';
     do {
         $result = $to_alphabet[(int)\bcmod($result_decimal, (string)$to_base)] . $result;
-        /** @var string $result_decimal */
+        /** @var numeric-string $result_decimal */
         $result_decimal = \bcdiv($result_decimal, (string)$to_base);
     } while (\bccomp($result_decimal, '0') > 0);
 
