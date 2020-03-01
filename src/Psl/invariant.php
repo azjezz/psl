@@ -15,15 +15,3 @@ function invariant(bool $fact, string $message, ...$args): void
         invariant_violation($message, ...$args);
     }
 }
-
-/**
- * @psalm-param int|float|string  ...$args
- *
- * @psalm-return no-return
- *
- * @throws Exception\InvariantViolationException
- */
-function invariant_violation(string $format, ...$args): void
-{
-    throw new Exception\InvariantViolationException(Str\format($format, ...$args));
-}

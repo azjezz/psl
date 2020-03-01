@@ -6,4 +6,4 @@ namespace Psl;
 
 require_once __DIR__ . '/Psl/Internal/Loader.php';
 
-Internal\Loader::bootstrap();
+Internal\Loader::preload();
