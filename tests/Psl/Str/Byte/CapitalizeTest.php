@@ -25,7 +25,6 @@ class CapitalizeTest extends TestCase
             ['Hello, world', 'hello, world'],
             ['Alpha', 'Alpha', ],
             ['Héllö, wôrld!', 'héllö, wôrld!'],
-            ['ḫéllö, wôrld!', 'ḫéllö, wôrld!'],
             ['ßoo', 'ßoo'],
         ];
     }
