@@ -12,6 +12,11 @@ jobs:
 
   fast_finish: true
 
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+
 install:
   - php --version
   - composer self-update
