@@ -34,6 +34,7 @@
         <file name="src/Psl/Arr/group_by.php" />
         <file name="src/Psl/Arr/idx.php" />
         <file name="src/Psl/Arr/is_array.php" />
+        <file name="src/Psl/Arr/is_arraykey.php" />
         <file name="src/Psl/Arr/keys.php" />
         <file name="src/Psl/Arr/last.php" />
         <file name="src/Psl/Arr/last_key.php" />

@@ -62,6 +62,7 @@ final class Loader
         'Psl\Arr\group_by',
         'Psl\Arr\idx',
         'Psl\Arr\is_array',
+        'Psl\Arr\is_arraykey',
         'Psl\Arr\keys',
         'Psl\Arr\last',
         'Psl\Arr\last_key',
