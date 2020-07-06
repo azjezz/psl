@@ -42,7 +42,7 @@ foo([95, 96, null, 98]);
 
 ## Installation
 
-This package doesn't not have a stable release yet, but you can still install it using composer :
+This package doesn't have a stable release yet, but you can still install it using composer :
 
 ```console
 $ composer require azjezz/psl:dev-develop
