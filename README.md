@@ -28,9 +28,12 @@ use Psl\Iter;
  */
 function foo(iterable $codes): string
 {
-    return Str\join(Iter\map(
-        Iter\filter_nulls($codes), fn($i) => Str\chr($i),
-    ), ', ');
+    /** @var Iter\Iterator<int> $codes */
+    $codes = Iter\filter_nulls($codes);
+    /** @var Iter\Iterator<string> $chars */
+    $chars = Iter\map($codes, fn(int $code): string => Str\chr($code));
+
+    return Str\join($chars, ', ');
 }
 
 foo([95, 96, null, 98]);
