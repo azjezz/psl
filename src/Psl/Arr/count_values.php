@@ -27,6 +27,7 @@ function count_values(iterable $values): array
     $result = [];
 
     foreach ($values as $value) {
+        Psl\invariant(is_arraykey($value), 'Expected all values to be of type array-key, value of type (%s) provided.', gettype($value));
         /** @psalm-var int $count */
         $count = idx($result, $value, 0);
         $result[$value] = $count + 1;

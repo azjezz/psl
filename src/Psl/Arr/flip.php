@@ -26,6 +26,7 @@ function flip(iterable $iterable): array
 {
     $result = [];
     foreach ($iterable as $k => $v) {
+        Psl\invariant(is_arraykey($v), 'Expected all values to be of type array-key, value of type (%s) provided.', gettype($v));
         $result[$v] = $k;
     }
 
