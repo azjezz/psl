@@ -14,8 +14,8 @@ use Psl\Iter;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv> $iterable
- * @psalm-param null|(callable(Tv, Tv): int) $comparator
+ * @psalm-param iterable<Tk, Tv>                $iterable
+ * @psalm-param null|(callable(Tv, Tv): int)    $comparator
  *
  * @plsam-return array<Tk, Tv>
  */

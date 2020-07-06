@@ -19,7 +19,7 @@ use Psl;
  */
 function chr(int $ascii): string
 {
-    /** @var string $char */
+    /** @var string|false $char */
     $char = \mb_chr($ascii, 'UTF-8');
 
     Psl\invariant(is_string($char), 'Unexpected Error.');

@@ -4,6 +4,18 @@ declare(strict_types=1);
 
 namespace Psl\Internal;
 
+use function class_exists;
+use function defined;
+use function dirname;
+use function function_exists;
+use function interface_exists;
+use function spl_autoload_register;
+use function spl_autoload_unregister;
+use function str_replace;
+use function strrpos;
+use function substr;
+use function trait_exists;
+
 /**
  * This class SHOULD NOT use any Psl functions, or classes.
  *
@@ -296,9 +308,6 @@ final class Loader
     public const Classes = [
         'Psl\Exception\InvariantViolationException',
         'Psl\Iter\Iterator',
-        'Psl\Collection\AbstractAccessibleCollection',
-        'Psl\Collection\AbstractVector',
-        'Psl\Collection\AbstractMap',
         'Psl\Collection\Vector',
         'Psl\Collection\MutableVector',
         'Psl\Collection\Map',
@@ -321,9 +330,9 @@ final class Loader
 
     public static function bootstrap(): void
     {
-        if (!\function_exists(self::Functions[0])) {
+        if (!function_exists(self::Functions[0])) {
             self::preload();
-        } elseif (!\defined(self::Constants[0])) {
+        } elseif (!defined(self::Constants[0])) {
             self::loadConstants();
         }
     }
@@ -351,15 +360,15 @@ final class Loader
             return null;
         };
 
-        \spl_autoload_register($loader);
+        spl_autoload_register($loader);
         $callback();
-        \spl_autoload_unregister($loader);
+        spl_autoload_unregister($loader);
     }
 
     private static function loadConstants(): void
     {
         foreach (self::Constants as $constant) {
-            if (\defined($constant)) {
+            if (defined($constant)) {
                 continue;
             }
 
@@ -370,7 +379,7 @@ final class Loader
     private static function loadFunctions(): void
     {
         foreach (self::Functions as $function) {
-            if (\function_exists($function)) {
+            if (function_exists($function)) {
                 continue;
             }
 
@@ -381,7 +390,7 @@ final class Loader
     private static function loadInterfaces(): void
     {
         foreach (self::Interfaces as $interface) {
-            if (\interface_exists($interface)) {
+            if (interface_exists($interface)) {
                 continue;
             }
 
@@ -392,7 +401,7 @@ final class Loader
     private static function loadTraits(): void
     {
         foreach (self::Traits as $trait) {
-            if (\trait_exists($trait)) {
+            if (trait_exists($trait)) {
                 continue;
             }
 
@@ -403,7 +412,7 @@ final class Loader
     private static function loadClasses(): void
     {
         foreach (self::Classes as $class) {
-            if (\class_exists($class)) {
+            if (class_exists($class)) {
                 continue;
             }
 
@@ -420,17 +429,17 @@ final class Loader
 
     private static function getFile(string $typename, int $type): string
     {
-        $lastSeparatorPosition = \strrpos($typename, '\\');
+        $lastSeparatorPosition = strrpos($typename, '\\');
         $namespace = substr($typename, 0, $lastSeparatorPosition);
 
         if (($type & self::TypeClassish) === $type || (($type & self::TypeFunction) === $type)) {
-            $file = \substr($typename, $lastSeparatorPosition + 1) . '.php';
+            $file = substr($typename, $lastSeparatorPosition + 1) . '.php';
         } else {
             $file = 'constants.php';
         }
 
-        $file = \str_replace('\\', '/', $namespace) . '/' . $file;
+        $file = str_replace('\\', '/', $namespace) . '/' . $file;
 
-        return \dirname(__DIR__, 2) . '/' . $file;
+        return dirname(__DIR__, 2) . '/' . $file;
     }
 }

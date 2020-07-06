@@ -25,7 +25,7 @@ use Psl;
  *
  * @psalm-param int $chunk_size maximum length of the chunk
  *
- * @psalm-return array<int, string> if $chunk_size parameter is specified, the returned array will be broken down
+ * @psalm-return list<string> if $chunk_size parameter is specified, the returned array will be broken down
  *                  into chunks with each being $chunk_size in length, otherwise each chunk
  *                  will be one character in length.
  *                  If the $chunk_size length exceeds the length of string, the entire string is returned
@@ -40,7 +40,7 @@ function chunk(string $string, int $chunk_size = 1): array
 
     Psl\invariant(65535 >= $chunk_size, 'Maximum chunk length must not exceed 65535.');
 
-    /** @var array<int, string> $result */
+    /** @psalm-var list<string> $result */
     $result = mb_str_split($string, $chunk_size, encoding($string));
 
     return $result;

@@ -12,7 +12,7 @@ use Psl\Arr;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param    array<Tk, Tv> $array
+ * @psalm-param    array<Tk, Tv> $iterable
  *
  * @psalm-return   null|Tv
  *

@@ -20,7 +20,7 @@ use Psl\Gen;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param    iterable<Tk, Tv> ...$iterables Iterables to chain
+ * @psalm-param    list<iterable<Tk, Tv>> $iterables Iterables to chain
  *
  * @psalm-return   Iterator<Tk, Tv>
  *

@@ -24,7 +24,7 @@ use Psl\Gen;
  *     Iter\range(3.0, 0.0, -0.5)
  *     => Iter(3.0, 2.5, 2.0, 1.5, 1.0, 0.5, 0.0)
  *
- * @psalm-template T as numeric
+ * @psalm-template T of int|float
  *
  * @psalm-param    T       $start First number (inclusive)
  * @psalm-param    T       $end   Last number (inclusive, but doesn't have to be part of
@@ -33,8 +33,6 @@ use Psl\Gen;
  *                              $end and to -1 if $start greater $end)
  *
  * @psalm-return   Iterator<int, T>
- *
- * @psalm-pure
  *
  * @see            Gen\range()
  */

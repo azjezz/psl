@@ -18,7 +18,7 @@ use Psl;
  *      Gen\slice([-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5], 5, 3)
  *      => Gen(0, 1, 2, 3)
  *
- * @psalm-template Tk of array-key
+ * @psalm-template Tk
  * @psalm-template Tv
  *
  * @psalm-param iterable<Tk,Tv>     $iterable Iterable to take the slice from

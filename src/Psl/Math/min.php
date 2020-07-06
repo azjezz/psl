@@ -8,7 +8,7 @@ namespace Psl\Math;
  * Returns the smallest element of the given Traversable, or null if the
  * Traversable is empty.
  *
- * @psalm-template T as numeric
+ * @psalm-template T of int|float
  *
  * @psalm-param iterable<T> $numbers
  *

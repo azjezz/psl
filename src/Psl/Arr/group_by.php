@@ -45,12 +45,6 @@ function group_by(iterable $values, callable $key_func): array
             continue;
         }
 
-        Psl\invariant(
-            Str\is_string($key) || is_numeric($key),
-            'Expected $key_func to return a value of type array-key, value of type (%s) returned.',
-            gettype($key)
-        );
-
         $result[$key] = $result[$key] ?? [];
         $result[$key][] = $value;
     }

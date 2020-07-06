@@ -18,7 +18,7 @@ use Psl;
  *
  * @psalm-return Tv
  *
- * @psalm-suppress MissingReturnType
+ * @psalm-pure
  */
 function at(array $array, $key)
 {

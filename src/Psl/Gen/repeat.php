@@ -26,12 +26,14 @@ use Psl\Math;
  * @psalm-param int $num   Number of repetitions (defaults to INF)
  *
  * @psalm-return Generator<int, T, mixed, void>
+ *
  * @psalm-pure
  */
 function repeat($value, ?int $num = null): Generator
 {
     Psl\invariant(null === $num || $num >= 0, 'Number of repetitions must be non-negative');
 
+    /** @var int $num */
     $num ??= Math\INFINITY;
     for ($i = 0; $i < $num; ++$i) {
         yield $value;

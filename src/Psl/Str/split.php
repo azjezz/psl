@@ -14,24 +14,20 @@ use Psl\Math;
  * If the limit is provided, the array will only contain that many elements, where
  * the last element is the remainder of the string.
  *
- * @psalm-return array<int, string>
+ * @psalm-return list<string>
  */
 function split(string $string, string $delimiter, ?int $limit = null): array
 {
     Psl\invariant(null === $limit || $limit >= 1, 'Expected positive limit');
     if ('' === $delimiter) {
         if (null === $limit || $limit >= length($string)) {
-            /** @var array<int, string> $result */
-            $result = chunk($string);
-
-            return $result;
+            return chunk($string);
         }
 
         if (1 === $limit) {
             return [$string];
         }
 
-        /** @var array<int, string> $result */
         $result = chunk(slice($string, 0, $limit - 1));
         $result[] = slice($string, $limit - 1);
 

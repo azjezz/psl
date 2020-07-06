@@ -37,7 +37,7 @@
         "cs:fix": "php-cs-fixer fix",
         "cs:check": "php-cs-fixer fix --dry-run -vvv",
         "type:fix": "psalm --alter --issues=all",
-        "type:check": "psalm --debug",
+        "type:check": "psalm",
         "type:coverage": "psalm --shepherd",
         "test:unit": "phpunit",
         "code:coverage": "php-coveralls -v"

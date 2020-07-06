@@ -9,6 +9,8 @@ namespace Psl;
  *
  * @psalm-return no-return
  *
+ * @psalm-pure
+ *
  * @throws Exception\InvariantViolationException
  */
 function invariant_violation(string $format, ...$args): void

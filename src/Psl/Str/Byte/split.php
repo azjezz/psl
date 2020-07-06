@@ -14,16 +14,13 @@ use Psl\Arr;
  * If the limit is provided, the array will only contain that many elements, where
  * the last element is the remainder of the string.
  *
- * @psalm-return array<int, string>
+ * @psalm-return list<string>
  */
 function split(string $string, string $delimiter, ?int $limit = null): array
 {
     if ('' === $delimiter) {
         if (null === $limit || $limit >= length($string)) {
-            /** @var array<int, string> $result */
-            $result = chunk($string);
-
-            return $result;
+            return chunk($string);
         }
 
         if (1 === $limit) {
@@ -31,7 +28,6 @@ function split(string $string, string $delimiter, ?int $limit = null): array
         }
 
         Psl\invariant($limit > 1, 'Expected positive limit.');
-        /** @var array<int, string> $result */
         $result = chunk(slice($string, 0, $limit - 1));
         $result[] = slice($string, $limit - 1);
 
@@ -39,15 +35,14 @@ function split(string $string, string $delimiter, ?int $limit = null): array
     }
 
     if (null === $limit) {
-        /** @var array<int, string> $result */
+        /** @psalm-var list<string>|false $result */
         $result = \explode($delimiter, $string);
     } else {
-        /** @var array<int, string> $result */
+        /** @psalm-var list<string>|false $result */
         $result = \explode($delimiter, $string, $limit);
     }
 
     Psl\invariant(Arr\is_array($result), 'Unexpected error');
 
-    /* @var array<int, string> $result */
     return $result;
 }

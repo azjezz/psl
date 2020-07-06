@@ -12,7 +12,7 @@ namespace Psl\Iter;
  *      Iter\drop([1, 2, 3, 4, 5], 3)
  *      => Iter(4, 5)
  *
- * @psalm-template Tk of array-key
+ * @psalm-template Tk
  * @psalm-template Tv
  *
  * @psalm-param    iterable<Tk,Tv>     $iterable Iterable to drop the elements from
