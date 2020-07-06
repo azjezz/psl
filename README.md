@@ -1,11 +1,11 @@
 # Psl - PHP Standard Library
 
-[![Build Status](https://travis-ci.org/azjezz/psl.svg?branch=master)](https://travis-ci.org/azjezz/psl)
-[![Scrutinizer Build Status](https://scrutinizer-ci.com/g/azjezz/psl/badges/build.png?b=master)](https://scrutinizer-ci.com/g/azjezz/psl/build-status/master)
-[![Coverage Status](https://coveralls.io/repos/github/azjezz/psl/badge.svg?branch=master)](https://coveralls.io/github/azjezz/psl?branch=master)
+[![Build Status](https://travis-ci.org/azjezz/psl.svg?branch=develop)](https://travis-ci.org/azjezz/psl)
+[![Scrutinizer Build Status](https://scrutinizer-ci.com/g/azjezz/psl/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/azjezz/psl/build-status/develop)
+[![Coverage Status](https://coveralls.io/repos/github/azjezz/psl/badge.svg?branch=develop)](https://coveralls.io/github/azjezz/psl?branch=develop)
 [![Type Coverage](https://shepherd.dev/github/azjezz/psl/coverage.svg)](https://shepherd.dev/github/azjezz/psl)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/azjezz/psl/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/azjezz/psl/?branch=master)
-[![Code Intelligence Status](https://scrutinizer-ci.com/g/azjezz/psl/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/azjezz/psl/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/azjezz/psl/?branch=develop)
+[![Code Intelligence Status](https://scrutinizer-ci.com/g/azjezz/psl/badges/code-intelligence.svg?b=develop)](https://scrutinizer-ci.com/code-intelligence)
 [![Total Downloads](https://poser.pugx.org/azjezz/psl/d/total.svg)](https://packagist.org/packages/azjezz/psl)
 [![Latest Stable Version](https://poser.pugx.org/azjezz/psl/v/stable.svg)](https://packagist.org/packages/azjezz/psl)
 [![License](https://poser.pugx.org/azjezz/psl/license.svg)](https://packagist.org/packages/azjezz/psl)
@@ -42,7 +42,7 @@ foo([95, 96, null, 98]);
 This package doesn't not have a stable release yet, but you can still install it using composer :
 
 ```console
-$ composer require azjezz/psl:dev-master
+$ composer require azjezz/psl:dev-develop
 ```
 
 ## Documentation
