@@ -30,7 +30,7 @@ function string(int $length, ?string $alphabet = null): string
 
     $ret = '';
     while ($length > 0) {
-        $urandom_length = (int) Math\ceil(2 * $length * $bits / 8.0);
+        $urandom_length = (int) Math\ceil((float) (2 * $length * $bits) / 8.0);
         $data = bytes($urandom_length);
         $unpacked_data = 0;
         $unpacked_bits = 0;

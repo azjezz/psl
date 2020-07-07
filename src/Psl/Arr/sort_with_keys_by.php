@@ -52,6 +52,10 @@ function sort_with_keys_by(iterable $iterable, callable $scalar_func, ?callable 
     );
 
     $sorted = sort_with_keys($tuples, $tuple_comparator);
+    /**
+     * @psalm-suppress InvalidArgument
+     * @psalm-suppress MixedArgumentTypeCoercion
+     */
     $result = Iter\map_with_key(
         $sorted,
         /**
