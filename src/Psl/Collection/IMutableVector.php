@@ -30,7 +30,7 @@ interface IMutableVector extends IVector, IMutableAccessibleCollection
     /**
      * Returns a `IMutableVector` containing the keys of the current `IMutableVector`.
      *
-     * @psalm-return IMutableVector<T>
+     * @psalm-return IMutableVector<int>
      */
     public function keys(): IMutableVector;
 

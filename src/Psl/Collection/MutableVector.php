@@ -305,7 +305,10 @@ final class MutableVector implements IMutableVector
      */
     public function keys(): MutableVector
     {
-        return new MutableVector(Arr\keys($this->elements));
+        /** @psalm-var list<int> $keys */
+        $keys = Arr\keys($this->elements);
+
+        return new MutableVector($keys);
     }
 
     /**
