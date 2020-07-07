@@ -56,4 +56,14 @@ class CountValuesTest extends TestCase
             ],
         ];
     }
+
+    public function testCountThrowsForNonArrayKeyValues(): void
+    {
+        $this->expectException(Exception\InvariantViolationException::class);
+        $this->expectExceptionMessage('Expected all values to be of type array-key, value of type (object) provided.');
+
+        Arr\count_values([
+            new Collection\Map([]),
+        ]);
+    }
 }

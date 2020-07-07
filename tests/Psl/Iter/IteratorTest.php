@@ -5,41 +5,31 @@ declare(strict_types=1);
 namespace Psl\Tests\Iter;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Exception\InvariantViolationException;
+use Psl\Iter;
 
 class IteratorTest extends TestCase
 {
-    public function testCurrent(): void
-    {
-        // TODO: write tests for Iterator::current
-    }
-
-    public function testNext(): void
-    {
-        // TODO: write tests for Iterator::next
-    }
-
-    public function testKey(): void
-    {
-        // TODO: write tests for Iterator::key
-    }
-
-    public function testValid(): void
-    {
-        // TODO: write tests for Iterator::valid
-    }
-
-    public function testRewind(): void
-    {
-        // TODO: write tests for Iterator::rewind
-    }
-
     public function testSeek(): void
     {
-        // TODO: write tests for Iterator::seek
+        $iterator = new Iter\Iterator([1, 2, 3, 4, 5]);
+
+        $this->assertSame(1, $iterator->current());
+        $iterator->next();
+        $this->assertSame(2, $iterator->current());
+        $iterator->next();
+
+        $iterator->seek(0);
+        $this->assertSame(1, $iterator->current());
     }
 
-    public function testCount(): void
+    public function testSeekThrowsForOutOfBoundIndex(): void
     {
-        // TODO: write tests for Iterator::count
+        $iterator = new Iter\Iterator([1, 2, 3, 4, 5]);
+
+        $this->expectException(InvariantViolationException::class);
+        $this->expectExceptionMessage('Position (30) is out-of-bound.');
+
+        $iterator->seek(30);
     }
 }
