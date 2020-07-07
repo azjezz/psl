@@ -38,8 +38,10 @@ use Psl;
  * @psalm-pure
  *
  * @see https://github.com/vimeo/psalm/issues/2152#issuecomment-533363310
- * @psalm-suppress MixedOperand
  * @psalm-suppress InvalidReturnType
+ * @psalm-suppress InvalidOperand
+ * @psalm-suppress RedundantConditionGivenDocblockType
+ * @psalm-suppress DocblockTypeContradiction
  */
 function range($start, $end, $step = null): Generator
 {
@@ -53,8 +55,10 @@ function range($start, $end, $step = null): Generator
             Psl\invariant($step > 0, 'If start < end, the step must be positive');
         }
 
-        /** @psalm-var T $i */
+        Psl\invariant(is_int($step) || is_float($step), '$step must be either an integer or a float.');
         for ($i = $start; $i <= $end; $i += $step) {
+            Psl\invariant(is_int($i) || is_float($i), '$i must be either an integer or a float.');
+            Psl\invariant(is_int($step) || is_float($step), '$step must be either an integer or a float.');
             yield $i;
         }
     } else {
@@ -65,8 +69,10 @@ function range($start, $end, $step = null): Generator
             Psl\invariant($step < 0, 'If start > end, the step must be negative');
         }
 
-        /** @psalm-var T $i */
+        Psl\invariant(is_int($step) || is_float($step), '$step must be either an integer or a float.');
         for ($i = $start; $i >= $end; $i += $step) {
+            Psl\invariant(is_int($i) || is_float($i), '$i must be either an integer or a float.');
+            Psl\invariant(is_int($step) || is_float($step), '$step must be either an integer or a float.');
             yield $i;
         }
     }
