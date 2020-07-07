@@ -27,8 +27,6 @@ use Psl\Iter;
  * @psalm-param    list<iterable<Tk, Tv>> $iterables Iterables to combine
  *
  * @psalm-return   iterable<list<Tk>, list<Tv>>
- *
- * @psalm-suppress MixedReturnTypeCoercion
  */
 function product(iterable ...$iterables): iterable
 {

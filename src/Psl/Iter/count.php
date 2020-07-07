@@ -20,17 +20,19 @@ namespace Psl\Iter;
  *      Iter\count(Iter\flatten([[1, 2, 3], [4], [5, 6], [7, 8]]))
  *      => Int(8)
  *
- * @psalm-param iterable $iterable
+ * @psalm-template T
+ *
+ * @psalm-param iterable<T> $iterable
  */
 function count(iterable $iterable): int
 {
     if (\is_countable($iterable)) {
-        /** @var array|\Countable $iterable */
+        /** @var array<array-key, T>|\Countable $iterable */
         return \count($iterable);
     }
 
     $count = 0;
-    /** @psalm-var mixed $_ */
+    /** @psalm-var T $_ */
     foreach ($iterable as $_) {
         ++$count;
     }

@@ -17,8 +17,6 @@ use Psl\Random;
  * @psalm-param array<Tk, Tv> $values
  *
  * @psalm-return Tv
- *
- * @psalm-suppress MissingReturnType
  */
 function random(array $values)
 {
