@@ -16,6 +16,8 @@ use Psl\Arr;
  * @psalm-param iterable<Tk, Tv> $iterable
  *
  * @psalm-return Tv
+ *
+ * @throws Psl\Exception\InvariantViolationException If $iterable is empty.
  */
 function random(iterable $iterable)
 {

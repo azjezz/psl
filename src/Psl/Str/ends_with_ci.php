@@ -44,6 +44,7 @@ function ends_with_ci(
         return false;
     }
 
+    /** @psalm-suppress MissingThrowsDocblock - we don't supply $offset */
     $position = search_last_ci($string, $suffix);
     if (null === $position) {
         return false;

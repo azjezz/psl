@@ -30,18 +30,18 @@ use Psl;
  *                  will be one character in length.
  *                  If the $chunk_size length exceeds the length of string, the entire string is returned
  *                  as the first (and only) array element.
+ *
+ * @throws Psl\Exception\InvariantViolationException If the given $chunk_size is negative or above the limit ( 65535 ).
  */
 function chunk(string $string, int $chunk_size = 1): array
 {
-    Psl\invariant($chunk_size >= 1, 'Expected positive chunk size.');
+    Psl\invariant($chunk_size >= 1, 'Expected a non-negative chunk size.');
     if ('' === $string) {
         return [];
     }
 
     Psl\invariant(65535 >= $chunk_size, 'Maximum chunk length must not exceed 65535.');
 
-    /** @psalm-var list<string> $result */
-    $result = mb_str_split($string, $chunk_size, encoding($string));
-
-    return $result;
+    /** @psalm-var list<string> */
+    return mb_str_split($string, $chunk_size, encoding($string));
 }

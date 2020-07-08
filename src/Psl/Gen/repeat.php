@@ -28,6 +28,8 @@ use Psl\Math;
  * @psalm-return Generator<int, T, mixed, void>
  *
  * @psalm-pure
+ *
+ * @throws Psl\Exception\InvariantViolationException If $num is negative.
  */
 function repeat($value, ?int $num = null): Generator
 {

@@ -44,10 +44,12 @@ final class RewindableGenerator implements Iterator
      * Return the current element.
      *
      * @psalm-return Tv
+     *
+     * @throws Psl\Exception\InvariantViolationException If the iterator is invalid.
      */
     public function current()
     {
-        Psl\invariant($this->valid(), 'Invalid Iterator');
+        Psl\invariant($this->valid(), 'Invalid iterator');
         $value = $this->iterator->current();
         if ($this->iterator instanceof Generator && !$this->cached) {
             $this->cached = true;
@@ -70,10 +72,12 @@ final class RewindableGenerator implements Iterator
      * Return the key of the current element.
      *
      * @psalm-return Tk
+     *
+     * @throws Psl\Exception\InvariantViolationException If the iterator is invalid.
      */
     public function key()
     {
-        Psl\invariant($this->valid(), 'Invalid Iterator');
+        Psl\invariant($this->valid(), 'Invalid iterator');
         $key = $this->iterator->key();
         if ($this->iterator instanceof Generator && !$this->cached) {
             $this->cached = true;

@@ -11,6 +11,8 @@ use Psl;
  * offset as a positive integer.
  *
  * @codeCoverageIgnore
+ *
+ * @throws Psl\Exception\InvariantViolationException If the offset is out-of-bounds.
  */
 function validate_offset(int $offset, int $length): int
 {

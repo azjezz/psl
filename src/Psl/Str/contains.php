@@ -33,6 +33,8 @@ use Psl;
  *
  *      Str\contains('سيف', 'س')
  *      => Bool(true)
+ *
+ * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
  */
 function contains(string $haystack, string $needle, int $offset = 0): bool
 {

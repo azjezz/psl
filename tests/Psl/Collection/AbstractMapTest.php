@@ -520,7 +520,7 @@ abstract class AbstractMapTest extends TestCase
         $this->assertSame('world', $map->at('bar'));
 
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Key (baz) is out-of-bound.');
+        $this->expectExceptionMessage('Key (baz) is out-of-bounds.');
 
         $map->at('baz');
     }

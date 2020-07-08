@@ -30,5 +30,6 @@ function capitalize(string $string): string
         return '';
     }
 
+    /** @psalm-suppress MissingThrowsDocblock - $offset is within-bounds */
     return concat(uppercase(slice($string, 0, 1)), slice($string, 1, length($string)));
 }

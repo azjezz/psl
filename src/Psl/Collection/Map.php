@@ -17,7 +17,7 @@ use Psl\Iter;
 final class Map implements IMap
 {
     /**
-     * @var array<Tk, Tv> $elements
+     * @psalm-var array<Tk, Tv> $elements
      */
     protected array $elements;
 
@@ -138,6 +138,8 @@ final class Map implements IMap
      * @psalm-param  Tk $k
      *
      * @psalm-return Tv
+     *
+     * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
      */
     public function at($k)
     {
@@ -299,17 +301,17 @@ final class Map implements IMap
      */
     public function zip(iterable $iterable): Map
     {
-        /** @var array<Tk, array{0: Tv, 1: Tu}> $elements */
+        /** @psalm-var array<Tk, array{0: Tv, 1: Tu}> $elements */
         $elements = [];
 
         foreach ($this->elements as $k => $v) {
-            /** @var Tu|null $u */
+            /** @psalm-var Tu|null $u */
             $u = Iter\first($iterable);
             if (null === $u) {
                 break;
             }
 
-            /** @var iterable<int, Tu> $iterable */
+            /** @psalm-var iterable<int, Tu> $iterable */
             $iterable = Iter\drop($iterable, 1);
 
             $elements[$k] = [$v, $u];
@@ -332,6 +334,8 @@ final class Map implements IMap
      *
      * @psalm-return Map<Tk, Tv> - A `Map` that is a proper subset of the current
      *           `Map` up to `n` elements.
+     *
+     * @throws Psl\Exception\InvariantViolationException If $n is negative.
      */
     public function take(int $n): Map
     {
@@ -370,8 +374,9 @@ final class Map implements IMap
      *             first one in the returned `Map`.
      *
      * @psalm-return Map<Tk, Tv> - A `Map` that is a proper subset of the current
-     *           `Map` containing values after the specified `n`-th
-     *           element.
+     *           `Map` containing values after the specified `n`-th element.
+     *
+     * @throws Psl\Exception\InvariantViolationException If $n is negative.
      */
     public function drop(int $n): Map
     {
@@ -415,6 +420,8 @@ final class Map implements IMap
      * @psalm-return Map<Tk, Tv> - A `Map` that is a proper subset of the current
      *           `Map` starting at `$start` up to but not including the
      *           element `$start + $len`.
+     *
+     * @throws Psl\Exception\InvariantViolationException If $start or $len are negative.
      */
     public function slice(int $start, int $len): Map
     {

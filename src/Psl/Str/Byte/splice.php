@@ -13,10 +13,12 @@ use Psl;
  * If the length is omitted or exceeds the upper bound of the string, the
  * remainder of the string will be replaced. If the length is zero, the
  * replacement will be inserted at the offset.
+ *
+ * @throws Psl\Exception\InvariantViolationException If $length is negative, or $offset is out-of-bounds.
  */
 function splice(string $string, string $replacement, int $offset, ?int $length = null): string
 {
-    Psl\invariant(null === $length || $length >= 0, 'Expected non-negative length.');
+    Psl\invariant(null === $length || $length >= 0, 'Expected a non-negative length.');
     $offset = Psl\Internal\validate_offset($offset, length($string));
 
     return null === $length

@@ -22,10 +22,12 @@ use Psl;
  * @psalm-param int              $size     The size of each chunk
  *
  * @psalm-return Generator<int, array<Tk, Tv>, mixed, void>
+ *
+ * @throws Psl\Exception\InvariantViolationException If $size is negative.
  */
 function chunk_with_keys(iterable $iterable, int $size): Generator
 {
-    Psl\invariant($size > 0, 'Chunk size must be positive');
+    Psl\invariant($size > 0, 'Expected a non-negative size.');
 
     $chunk = [];
     $count = 0;

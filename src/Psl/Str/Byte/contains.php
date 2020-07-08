@@ -13,6 +13,8 @@ use Psl;
  * offset is negative, the search will begin that many characters from the end
  * of the string. If the offset is out-of-bounds, a ViolationException will be
  * thrown.
+ *
+ * @throws Psl\Exception\InvariantViolationException If $offset is out-of-bounds.
  */
 function contains(string $haystack, string $needle, int $offset = 0): bool
 {

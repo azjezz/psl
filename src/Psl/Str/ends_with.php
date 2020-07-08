@@ -44,6 +44,7 @@ function ends_with(
         return false;
     }
 
+    /** @psalm-suppress MissingThrowsDocblock - we don't supply $offset */
     $position = search_last($string, $suffix);
     if (null === $position) {
         return false;

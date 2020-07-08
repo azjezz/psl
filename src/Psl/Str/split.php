@@ -15,10 +15,12 @@ use Psl\Math;
  * the last element is the remainder of the string.
  *
  * @psalm-return list<string>
+ *
+ * @throws Psl\Exception\InvariantViolationException If a negative $limit is given.
  */
 function split(string $string, string $delimiter, ?int $limit = null): array
 {
-    Psl\invariant(null === $limit || $limit >= 1, 'Expected positive limit');
+    Psl\invariant(null === $limit || $limit >= 1, 'Expected a non-negative limit');
     if ('' === $delimiter) {
         if (null === $limit || $limit >= length($string)) {
             return chunk($string);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Psl;
 use Psl\Gen;
 
 /**
@@ -28,6 +29,8 @@ use Psl\Gen;
  * @psalm-return   Iterator<Tk, Tv>
  *
  * @see            Gen\slice()
+ *
+ * @throws Psl\Exception\InvariantViolationException If the $start offset or $length are negative
  */
 function slice(iterable $iterable, int $start, ?int $length = null): Iterator
 {

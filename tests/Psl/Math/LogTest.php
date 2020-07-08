@@ -50,7 +50,7 @@ class LogTest extends TestCase
     public function testNegativeInputThrows(): void
     {
         $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected positive number for log, got -45');
+        $this->expectExceptionMessage('Expected a non-negative number.');
 
         Math\log(-45);
     }
@@ -58,7 +58,7 @@ class LogTest extends TestCase
     public function testNonPositiveBaseThrows(): void
     {
         $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected positive base for log, got 0.0');
+        $this->expectExceptionMessage('Expected a non-negative base.');
 
         Math\log(4.4, 0.0);
     }
@@ -66,7 +66,7 @@ class LogTest extends TestCase
     public function testBaseOneThrowsForUndefinedLogarithm(): void
     {
         $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Logarithm undefined for base 1');
+        $this->expectExceptionMessage('Logarithm undefined for base 1.');
 
         Math\log(4.4, 1.0);
     }

@@ -17,7 +17,7 @@ use Psl\Iter;
 final class MutableMap implements IMutableMap
 {
     /**
-     * @var array<Tk, Tv> $elements
+     * @psalm-var array<Tk, Tv> $elements
      */
     protected array $elements;
 
@@ -138,6 +138,8 @@ final class MutableMap implements IMutableMap
      * @psalm-param  Tk $k
      *
      * @psalm-return Tv
+     *
+     * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
      */
     public function at($k)
     {
@@ -331,6 +333,8 @@ final class MutableMap implements IMutableMap
      *
      * @psalm-return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
      *           `MutableMap` up to `n` elements.
+     *
+     * @throws Psl\Exception\InvariantViolationException If $n is negative.
      */
     public function take(int $n): MutableMap
     {
@@ -371,6 +375,8 @@ final class MutableMap implements IMutableMap
      * @psalm-return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
      *           `MutableMap` containing values after the specified `n`-th
      *           element.
+     *
+     * @throws Psl\Exception\InvariantViolationException If $n is negative.
      */
     public function drop(int $n): MutableMap
     {
@@ -414,6 +420,8 @@ final class MutableMap implements IMutableMap
      * @psalm-return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
      *           `MutableMap` starting at `$start` up to but not including the
      *           element `$start + $len`.
+     *
+     * @throws Psl\Exception\InvariantViolationException If $start or $len are negative.
      */
     public function slice(int $start, int $len): MutableMap
     {
@@ -434,10 +442,12 @@ final class MutableMap implements IMutableMap
      * @psalm-param  Tv $v - The value to set
      *
      * @psalm-return MutableMap<Tk, Tv> - Returns itself
+     *
+     * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
      */
     public function set($k, $v): MutableMap
     {
-        Psl\invariant($this->contains($k), 'Key (%s) is out-of-bound.', $k);
+        Psl\invariant($this->contains($k), 'Key (%s) is out-of-bounds.', $k);
 
         $this->elements[$k] = $v;
 

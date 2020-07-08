@@ -7,6 +7,10 @@
         phpVersion="7.4"
         allowPhpStormGenerics="true"
         allowStringToStandInForClass="true"
+        rememberPropertyAssignmentsAfterCall="false"
+        skipChecksOnUnresolvableIncludes="false"
+        checkForThrowsDocblock="true"
+        checkForThrowsInGlobalScope="true"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="https://getpsalm.org/schema/config"
         xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
@@ -16,6 +20,7 @@
         <ignoreFiles>
             <directory name="vendor" />
             <file name="src/bootstrap.php"/>
+            <file name="src/preload.php"/>
             <file name="src/Psl/Internal/Loader.php"/>
         </ignoreFiles>
     </projectFiles>
@@ -265,28 +270,25 @@
     </stubs>
 
     <issueHandlers>
-        <LessSpecificReturnType errorLevel="error"/>
+        <DuplicateFunction errorLevel="suppress" />
 
+        <LessSpecificReturnType errorLevel="error"/>
         <DeprecatedMethod errorLevel="error"/>
         <DeprecatedProperty errorLevel="error"/>
         <DeprecatedClass errorLevel="error"/>
         <DeprecatedConstant errorLevel="error"/>
         <DeprecatedInterface errorLevel="error"/>
         <DeprecatedTrait errorLevel="error"/>
-
-        <ForbiddenCode errorLevel="suppress"/>
-
-        <InternalMethod errorLevel="suppress"/>
+        <ForbiddenCode errorLevel="error"/>
+        <InternalMethod errorLevel="error"/>
         <InternalProperty errorLevel="error"/>
         <InternalClass errorLevel="error"/>
-
         <MissingClosureReturnType errorLevel="error"/>
         <MissingReturnType errorLevel="error"/>
         <MissingPropertyType errorLevel="error"/>
         <InvalidDocblock errorLevel="error"/>
         <MisplacedRequiredParam errorLevel="error"/>
-
-        <PropertyNotSetInConstructor errorLevel="suppress"/>
+        <PropertyNotSetInConstructor errorLevel="error"/>
         <MissingConstructor errorLevel="error"/>
         <MissingClosureParamType errorLevel="error"/>
         <MissingParamType errorLevel="error"/>
@@ -295,7 +297,6 @@
         <RedundantConditionGivenDocblockType errorLevel="error"/>
         <RawObjectIteration errorLevel="error"/>
         <InvalidStringClass errorLevel="error"/>
-
-        <UnresolvableInclude errorLevel="suppress"/>
+        <UnresolvableInclude errorLevel="error"/>
     </issueHandlers>
 </psalm>

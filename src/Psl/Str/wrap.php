@@ -15,6 +15,8 @@ use Psl;
  *                      a word that is larger than the given width, it is broken apart.
  *
  * @return string the given string wrapped at the specified column
+ *
+ * @throws Psl\Exception\InvariantViolationException If $break is empty, or $width is 0 and $cut is set to true.
  */
 function wrap(string $string, int $width = 75, string $break = "\n", bool $cut = false): string
 {

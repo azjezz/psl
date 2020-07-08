@@ -51,7 +51,7 @@ class ToBaseTest extends TestCase
     public function testNegativeValueThrows(): void
     {
         $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected non-negative base conversion input, got -5');
+        $this->expectExceptionMessage('Expected a non-negative number.');
 
         Math\to_base(-5, 16);
     }

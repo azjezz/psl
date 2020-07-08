@@ -12,8 +12,9 @@ use Psl;
  *
  * An optional offset determines where in the haystack the search begins. If the
  * offset is negative, the search will begin that many characters from the end
- * of the string. If the offset is out-of-bounds, an InvariantViolationException will be
- * thrown.
+ * of the string.
+ *
+ * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
  */
 function search(string $haystack, string $needle, int $offset = 0): ?int
 {

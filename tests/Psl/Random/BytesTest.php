@@ -26,7 +26,7 @@ class BytesTest extends TestCase
     public function testBytesThrowsForNegativeLength(): void
     {
         $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected positive length, got -1');
+        $this->expectExceptionMessage('Expected a non-negative length.');
 
         Random\bytes(-1);
     }

@@ -27,12 +27,15 @@ use Psl;
  *                                      iterable are used)
  *
  * @psalm-return Generator<Tk, Tv, mixed, void>
+ *
+ * @throws Psl\Exception\InvariantViolationException If the $start offset or $length are negative
  */
 function slice(iterable $iterable, int $start, ?int $length = null): Generator
 {
     Psl\invariant($start >= 0, 'Start offset must be non-negative');
     Psl\invariant(null === $length || $length >= 0, 'Length must be non-negative');
     if (0 === $length) {
+        /** @psalm-suppress InvalidReturnStatement */
         return;
     }
 

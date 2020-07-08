@@ -508,7 +508,7 @@ abstract class AbstractVectorTest extends TestCase
         $this->assertSame('world', $vector->at(1));
 
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Key (2) is out-of-bound.');
+        $this->expectExceptionMessage('Key (2) is out-of-bounds.');
 
         $vector->at(2);
     }

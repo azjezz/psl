@@ -18,6 +18,8 @@ use Psl;
  * @psalm-return Tv
  *
  * @psalm-pure
+ *
+ * @throws Psl\Exception\InvariantViolationException If $array is empty.
  */
 function lastx(array $array)
 {

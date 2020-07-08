@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Psl;
 use Psl\Gen;
 
 /**
@@ -33,6 +34,8 @@ use Psl\Gen;
  *                              $end and to -1 if $start greater $end)
  *
  * @psalm-return   Iterator<int, T>
+ *
+ * @throws Psl\Exception\InvariantViolationException If $start < $end, and $step is negative.
  *
  * @see            Gen\range()
  */

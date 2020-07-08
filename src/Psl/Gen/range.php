@@ -42,6 +42,8 @@ use Psl;
  * @psalm-suppress InvalidOperand
  * @psalm-suppress RedundantConditionGivenDocblockType
  * @psalm-suppress DocblockTypeContradiction
+ *
+ * @throws Psl\Exception\InvariantViolationException If $start < $end, and $step is negative.
  */
 function range($start, $end, $step = null): Generator
 {

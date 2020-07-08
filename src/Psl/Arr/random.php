@@ -17,19 +17,21 @@ use Psl\Random;
  * @psalm-param array<Tk, Tv> $values
  *
  * @psalm-return Tv
+ *
+ * @throws Psl\Exception\InvariantViolationException If $values is empty.
  */
 function random(array $values)
 {
-    Psl\invariant(!Iter\is_empty($values), 'Expected non-empty-array.');
+    Psl\invariant(!Iter\is_empty($values), 'Expected a non-empty-array.');
 
     /** @psalm-var list<Tv> $shuffled */
-    $shuffled = shuffle($values);
+    $shuffled = namespace\shuffle($values);
     $size = Iter\count($values);
     if (1 === $size) {
         /** @psalm-var Tv */
         return $shuffled[0];
     }
 
-    /** @psalm-var Tv */
+    /** @psalm-suppress MissingThrowsDocblock */
     return at($shuffled, Random\int(0, $size - 1));
 }

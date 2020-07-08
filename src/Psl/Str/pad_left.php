@@ -27,11 +27,13 @@ use Psl;
  *
  *      Str\pad_left('مرحبا', 8, 'م')
  *      => Str('ممممرحبا')
+ *
+ * @throws Psl\Exception\InvariantViolationException If the $pad_string is empty, or a negative $total_length is given.
  */
 function pad_left(string $string, int $total_length, string $pad_string = ' '): string
 {
-    Psl\invariant('' !== $pad_string, 'Expected non-empty pad string.');
-    Psl\invariant($total_length >= 0, 'Expected non-negative total length.');
+    Psl\invariant('' !== $pad_string, 'Expected a non-empty pad string.');
+    Psl\invariant($total_length >= 0, 'Expected a non-negative total length.');
 
     while (length($string) < $total_length) {
         $remaining = $total_length - length($string);
