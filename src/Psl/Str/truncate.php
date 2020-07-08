@@ -17,6 +17,8 @@ use Psl;
  *
  * @return string The truncated string. If trim_marker is set,
  *                trim_marker is appended to the return value.
+ *
+ * @throws Psl\Exception\InvariantViolationException If the offset is out-of-bounds.
  */
 function truncate(string $str, int $offset, int $width, ?string $trim_marker = null): string
 {

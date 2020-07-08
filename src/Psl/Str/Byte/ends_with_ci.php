@@ -9,6 +9,7 @@ namespace Psl\Str\Byte;
  */
 function ends_with_ci(string $string, string $suffix): bool
 {
+    /** @psalm-suppress MissingThrowsDocblock - we don't supply $offset. */
     if (null === search_ci($string, $suffix)) {
         return false;
     }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Countable;
 use Psl;
+use SeekableIterator;
 
 /**
  * A SeekableIterator implementation that support any type of keys.
@@ -17,9 +19,9 @@ use Psl;
  * @template-covariant Tk
  * @template-covariant Tv
  *
- * @template-implements \SeekableIterator<Tk, Tv>
+ * @template-implements SeekableIterator<Tk, Tv>
  */
-final class Iterator implements \SeekableIterator, \Countable
+final class Iterator implements SeekableIterator, Countable
 {
     /**
      * @psalm-var array{0: array<int, Tk>, 1: array<int, Tv>}
@@ -47,6 +49,8 @@ final class Iterator implements \SeekableIterator, \Countable
      * Return the current element.
      *
      * @psalm-return Tv
+     *
+     * @throws Psl\Exception\InvariantViolationException If the iterator is invalid.
      */
     public function current()
     {
@@ -67,10 +71,12 @@ final class Iterator implements \SeekableIterator, \Countable
      * Return the key of the current element.
      *
      * @psalm-return Tk
+     *
+     * @throws Psl\Exception\InvariantViolationException If the iterator is invalid.
      */
     public function key()
     {
-        Psl\invariant($this->valid(), 'Invalid Iterator');
+        Psl\invariant($this->valid(), 'Invalid iterator');
 
         return $this->data[0][$this->position];
     }
@@ -95,10 +101,12 @@ final class Iterator implements \SeekableIterator, \Countable
      * Seeks to a position.
      *
      * @param int $position
+     *
+     * @throws Psl\Exception\InvariantViolationException If $position is out-of-bounds.
      */
     public function seek($position): void
     {
-        Psl\invariant($position >= 0 && $position < $this->count(), 'Position (%d) is out-of-bound.', $position);
+        Psl\invariant($position >= 0 && $position < $this->count(), 'Position is out-of-bounds.');
 
         $this->position = (int) $position;
     }

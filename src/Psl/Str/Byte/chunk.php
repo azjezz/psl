@@ -17,10 +17,12 @@ use Psl;
  *                  If the $chunk_size length exceeds the length of string, the entire string is returned
  *                  as the first (and only) array element.
  *                  If the given string is empty, and empty array will be returned.
+ *
+ * @throws Psl\Exception\InvariantViolationException If $chunk_size is negative.
  */
 function chunk(string $string, int $chunk_size = 1): array
 {
-    Psl\invariant($chunk_size >= 1, 'Expected positive chunk size.');
+    Psl\invariant($chunk_size >= 1, 'Expected a non-negative chunk size.');
     if ('' === $string) {
         return [];
     }

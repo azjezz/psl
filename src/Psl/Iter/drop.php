@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Psl;
+
 /**
  * Drops the first n items from an iterable.
  *
@@ -15,14 +17,16 @@ namespace Psl\Iter;
  * @psalm-template Tk
  * @psalm-template Tv
  *
- * @psalm-param    iterable<Tk,Tv>     $iterable Iterable to drop the elements from
- * @psalm-param    int                 $num Number of elements to drop from the start
+ * @psalm-param    iterable<Tk, Tv>    $iterable    Iterable to drop the elements from
+ * @psalm-param    int                 $n           Number of elements to drop from the start
  *
  * @psalm-return   Iterator<Tk,Tv>
  *
  * @see            slice()
+ *
+ * @throws Psl\Exception\InvariantViolationException If the $n is negative
  */
-function drop(iterable $iterable, int $num): Iterator
+function drop(iterable $iterable, int $n): Iterator
 {
-    return slice($iterable, $num);
+    return slice($iterable, $n);
 }

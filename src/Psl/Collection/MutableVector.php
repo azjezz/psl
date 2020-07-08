@@ -96,6 +96,8 @@ final class MutableVector implements IMutableVector
      * @psalm-param  int $k
      *
      * @psalm-return T
+     *
+     * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
      */
     public function at($k)
     {
@@ -184,10 +186,12 @@ final class MutableVector implements IMutableVector
      * @psalm-param  T   $v - The value to set
      *
      * @psalm-return MutableVector<T> - Returns itself
+     *
+     * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
      */
     public function set($k, $v): MutableVector
     {
-        Psl\invariant($this->contains($k), 'Key (%s) is out-of-bound.', $k);
+        Psl\invariant($this->contains($k), 'Key (%s) is out-of-bounds.', $k);
 
         $this->elements[$k] = $v;
 
@@ -451,6 +455,8 @@ final class MutableVector implements IMutableVector
      *
      * @psalm-return MutableVector<T> - A `MutableVector` that is a proper subset of the current
      *           `MutableVector` up to `n` elements.
+     *
+     * @throws Psl\Exception\InvariantViolationException If $n is negative.
      */
     public function take(int $n): MutableVector
     {
@@ -491,6 +497,8 @@ final class MutableVector implements IMutableVector
      * @psalm-return MutableVector<T> - A `MutableVector` that is a proper subset of the current
      *           `MutableVector` containing values after the specified `n`-th
      *           element.
+     *
+     * @throws Psl\Exception\InvariantViolationException If $n is negative.
      */
     public function drop(int $n): MutableVector
     {
@@ -534,6 +542,8 @@ final class MutableVector implements IMutableVector
      * @psalm-return MutableVector<T> - A `MutableVector` that is a proper subset of the current
      *           `MutableVector` starting at `$start` up to but not including the
      *           element `$start + $len`.
+     *
+     * @throws Psl\Exception\InvariantViolationException If $start or $len are negative.
      */
     public function slice(int $start, int $len): MutableVector
     {

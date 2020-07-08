@@ -24,6 +24,6 @@ function last(array $array)
         return null;
     }
 
-    /** @psalm-var null|Tv */
+    /** @psalm-suppress MissingThrowsDocblock - we are sure that $last is within-bounds. */
     return at($array, $last);
 }

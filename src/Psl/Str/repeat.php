@@ -18,10 +18,12 @@ use Psl;
  *
  *      Str\repeat('?', 5)
  *      => Str('?????')
+ *
+ * @throws Psl\Exception\InvariantViolationException If $multiplier is negative.
  */
 function repeat(string $string, int $multiplier): string
 {
-    Psl\invariant($multiplier >= 0, 'Expected non-negative multiplier');
+    Psl\invariant($multiplier >= 0, 'Expected a non-negative multiplier');
 
     return \str_repeat($string, $multiplier);
 }

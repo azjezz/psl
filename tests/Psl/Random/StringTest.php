@@ -39,7 +39,7 @@ class StringTest extends TestCase
     public function testStringThrowsForNegativeLength(): void
     {
         $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected positive length, got -1');
+        $this->expectExceptionMessage('Expected a non-negative length.');
 
         Random\string(-1);
     }

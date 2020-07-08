@@ -9,5 +9,6 @@ namespace Psl\Str;
  */
 function starts_with(string $str, string $prefix): bool
 {
+    /** @psalm-suppress MissingThrowsDocblock - we don't supply $offset */
     return 0 === search($str, $prefix);
 }

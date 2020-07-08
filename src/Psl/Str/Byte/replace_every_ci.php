@@ -14,9 +14,9 @@ use Psl\Arr;
  */
 function replace_every_ci(string $haystack, iterable $replacements): string
 {
-    /** @var list<string> $search */
+    /** @psalm-var list<string> $search */
     $search = [];
-    /** @var list<string> $replace */
+    /** @psalm-var list<string> $replace */
     $replace = [];
     foreach ($replacements as $k => $v) {
         $search[] = $k;

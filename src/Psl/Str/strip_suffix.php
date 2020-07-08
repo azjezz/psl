@@ -14,5 +14,6 @@ function strip_suffix(string $string, string $suffix): string
         return $string;
     }
 
+    /** @psalm-suppress MissingThrowsDocblock - we are sure that the $offset is positive */
     return slice($string, 0, length($string) - length($suffix));
 }

@@ -10,11 +10,13 @@ use Psl\Str;
 /**
  * Converts the given non-negative number into the given base, using letters a-z
  * for digits when then given base is > 10.
+ *
+ * @throws Psl\Exception\InvariantViolationException If $to_base is outside the [2, 36] range, or $number is negative.
  */
 function to_base(int $number, int $base): string
 {
     Psl\invariant($base >= 2 && $base <= 36, 'Expected $to_base to be between 2 and 36, got %d', $base);
-    Psl\invariant($number >= 0, 'Expected non-negative base conversion input, got %d', $number);
+    Psl\invariant($number >= 0, 'Expected a non-negative number.', $number);
     $result = '';
     do {
         $quotient = div($number, $base);

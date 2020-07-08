@@ -53,7 +53,7 @@ final class MutableMapTest extends AbstractMapTest
         $this->assertSame('baz', $map->at('baz'));
 
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Key (qux) is out-of-bound.');
+        $this->expectExceptionMessage('Key (qux) is out-of-bounds.');
 
         $map->set('qux', 'qux');
     }
@@ -79,7 +79,7 @@ final class MutableMapTest extends AbstractMapTest
         $this->assertSame('baz', $map->at('baz'));
 
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Key (qux) is out-of-bound.');
+        $this->expectExceptionMessage('Key (qux) is out-of-bounds.');
 
         $map->setAll(['qux' => 'qux']);
     }

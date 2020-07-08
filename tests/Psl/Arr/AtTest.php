@@ -31,7 +31,7 @@ class AtTest extends TestCase
     public function testAtThrowsForOutOfBoundKey(): void
     {
         $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Key (5) is out-of-bound.');
+        $this->expectExceptionMessage('Key (5) is out-of-bounds.');
 
         Arr\at([], 5);
     }

@@ -15,10 +15,13 @@ use Psl\Str\Byte;
  *
  * If the alphabet argument is not specified, the returned string will be composed of
  * the alphanumeric characters.
+ *
+ * @throws Psl\Exception\InvariantViolationException If a negative $length is given, or $alphabet length is outside the [2^1, 2^56] range.
+ * @throws Psl\Exception\RuntimeException If it was not possible to gather sufficient entropy.
  */
 function string(int $length, ?string $alphabet = null): string
 {
-    Psl\invariant($length >= 0, 'Expected positive length, got %d', $length);
+    Psl\invariant($length >= 0, 'Expected a non-negative length.', $length);
     if (0 === $length) {
         return '';
     }
@@ -31,7 +34,7 @@ function string(int $length, ?string $alphabet = null): string
     $ret = '';
     while ($length > 0) {
         $urandom_length = (int) Math\ceil((float) (2 * $length * $bits) / 8.0);
-        $data = bytes($urandom_length);
+        $data = namespace\bytes($urandom_length);
         $unpacked_data = 0;
         $unpacked_bits = 0;
         for ($i = 0; $i < $urandom_length && $length > 0; ++$i) {

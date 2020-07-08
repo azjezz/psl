@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Psl;
 use Psl\Gen;
 
 /**
@@ -23,6 +24,8 @@ use Psl\Gen;
  * @psalm-return   Iterator<int, array<Tk, Tv>>
  *
  * @see            Gen\chunk_with_keys()
+ *
+ * @throws Psl\Exception\InvariantViolationException If $size is negative.
  */
 function chunk_with_keys(iterable $iterable, int $size): Iterator
 {

@@ -98,6 +98,8 @@ final class Vector implements IVector
      * @psalm-param  int $k
      *
      * @psalm-return T
+     *
+     * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
      */
     public function at($k)
     {
@@ -336,6 +338,8 @@ final class Vector implements IVector
      *
      * @psalm-return Vector<T> - A `Vector` that is a proper subset of the current
      *           `Vector` up to `n` elements.
+     *
+     * @throws Psl\Exception\InvariantViolationException If $n is negative.
      */
     public function take(int $n): Vector
     {
@@ -376,6 +380,8 @@ final class Vector implements IVector
      * @psalm-return Vector<T> - A `Vector` that is a proper subset of the current
      *           `Vector` containing values after the specified `n`-th
      *           element.
+     *
+     * @throws Psl\Exception\InvariantViolationException If $n is negative.
      */
     public function drop(int $n): Vector
     {
@@ -419,6 +425,8 @@ final class Vector implements IVector
      * @psalm-return Vector<T> - A `Vector` that is a proper subset of the current
      *           `Vector` starting at `$start` up to but not including the
      *           element `$start + $len`.
+     *
+     * @throws Psl\Exception\InvariantViolationException If $start or $len are negative.
      */
     public function slice(int $start, int $len): Vector
     {

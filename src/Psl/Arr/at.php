@@ -19,10 +19,12 @@ use Psl;
  * @psalm-return Tv
  *
  * @psalm-pure
+ *
+ * @throws Psl\Exception\InvariantViolationException If $key is out-of-bounds.
  */
 function at(array $array, $key)
 {
-    Psl\invariant(contains_key($array, $key), 'Key (%s) is out-of-bound.', $key);
+    Psl\invariant(contains_key($array, $key), 'Key (%s) is out-of-bounds.', $key);
 
     /** @psalm-var Tv */
     return $array[$key];

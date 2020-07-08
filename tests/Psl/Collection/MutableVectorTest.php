@@ -47,7 +47,7 @@ final class MutableVectorTest extends AbstractVectorTest
         $this->assertSame('baz', $vector->at(2));
 
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Key (3) is out-of-bound.');
+        $this->expectExceptionMessage('Key (3) is out-of-bounds.');
 
         $vector->set(3, 'qux');
     }
@@ -73,7 +73,7 @@ final class MutableVectorTest extends AbstractVectorTest
         $this->assertSame('baz', $vector->at(2));
 
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Key (3) is out-of-bound.');
+        $this->expectExceptionMessage('Key (3) is out-of-bounds.');
 
         $vector->setAll([3 => 'qux']);
     }

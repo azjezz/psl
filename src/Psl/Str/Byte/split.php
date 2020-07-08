@@ -15,6 +15,8 @@ use Psl\Arr;
  * the last element is the remainder of the string.
  *
  * @psalm-return list<string>
+ *
+ * @throws Psl\Exception\InvariantViolationException If $limit is negative.
  */
 function split(string $string, string $delimiter, ?int $limit = null): array
 {
@@ -27,7 +29,7 @@ function split(string $string, string $delimiter, ?int $limit = null): array
             return [$string];
         }
 
-        Psl\invariant($limit > 1, 'Expected positive limit.');
+        Psl\invariant($limit > 1, 'Expected a non-negative limit.');
         $result = chunk(slice($string, 0, $limit - 1));
         $result[] = slice($string, $limit - 1);
 

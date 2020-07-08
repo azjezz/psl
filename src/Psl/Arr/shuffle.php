@@ -27,6 +27,7 @@ use Psl;
 function shuffle(array $array): array
 {
     $shuffled = \shuffle($array);
+    /** @psalm-suppress MissingThrowsDocblock */
     Psl\invariant($shuffled, 'Unexpected error');
 
     return $array;

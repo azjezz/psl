@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Psl;
 use Psl\Gen;
 
 /**
@@ -22,6 +23,8 @@ use Psl\Gen;
  * @psalm-return   Iterator<int, list<T>>
  *
  * @see            Gen\chunk()
+ *
+ * @throws Psl\Exception\InvariantViolationException If $size is negative.
  */
 function chunk(iterable $iterable, int $size): Iterator
 {

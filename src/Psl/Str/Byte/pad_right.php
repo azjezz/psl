@@ -13,11 +13,13 @@ use Psl;
  * If the length of the input string plus the pad string exceeds the total
  * length, the pad string will be truncated. If the total length is less than or
  * equal to the length of the input string, no padding will occur.
+ *
+ * @throws Psl\Exception\InvariantViolationException If $pad_string is empty, or $total_length is negative.
  */
 function pad_right(string $string, int $total_length, string $pad_string = ' '): string
 {
-    Psl\invariant('' !== $pad_string, 'Expected non-empty pad string.');
-    Psl\invariant($total_length >= 0, 'Expected non-negative total length.');
+    Psl\invariant('' !== $pad_string, 'Expected a non-empty pad string.');
+    Psl\invariant($total_length >= 0, 'Expected a non-negative total length.');
 
     return \str_pad($string, $total_length, $pad_string, \STR_PAD_RIGHT);
 }

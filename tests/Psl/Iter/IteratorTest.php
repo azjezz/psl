@@ -28,7 +28,7 @@ class IteratorTest extends TestCase
         $iterator = new Iter\Iterator([1, 2, 3, 4, 5]);
 
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Position (30) is out-of-bound.');
+        $this->expectExceptionMessage('Position (30) is out-of-bounds.');
 
         $iterator->seek(30);
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Gen;
 
 use Generator;
+use Psl;
 
 /**
  * Drops the first n items from an iterable.
@@ -17,12 +18,14 @@ use Generator;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk,Tv>     $iterable Iterable to drop the elements from
- * @psalm-param int                 $num Number of elements to drop from the start
+ * @psalm-param iterable<Tk, Tv>    $iterable   Iterable to drop the elements from
+ * @psalm-param int                 $n          Number of elements to drop from the start
  *
  * @psalm-return Generator<Tk, Tv, mixed, void>
+ *
+ * @throws Psl\Exception\InvariantViolationException If the $n is negative
  */
-function drop(iterable $iterable, int $num): Generator
+function drop(iterable $iterable, int $n): Generator
 {
-    return slice($iterable, $num);
+    return slice($iterable, $n);
 }

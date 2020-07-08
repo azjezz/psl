@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Psl;
 use Psl\Gen;
 
 /**
@@ -26,6 +27,8 @@ use Psl\Gen;
  * @psalm-return   Iterator<int, T>
  *
  * @see            Gen\repeat()
+ *
+ * @throws Psl\Exception\InvariantViolationException If $num is negative.
  */
 function repeat($value, int $num): Iterator
 {
