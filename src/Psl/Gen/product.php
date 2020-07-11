@@ -38,7 +38,7 @@ function product(iterable ...$iterables): iterable
 
     $numIterators = count($iterators);
     if (0 === $numIterators) {
-        /** @plsam-var iterable<list<Tk>, list<Tv>> */
+        /** @psalm-var iterable<list<Tk>, list<Tv>> */
         yield [] => [];
 
         return;
