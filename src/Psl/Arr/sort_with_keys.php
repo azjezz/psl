@@ -17,7 +17,7 @@ use Psl\Iter;
  * @psalm-param iterable<Tk, Tv>                $iterable
  * @psalm-param null|(callable(Tv, Tv): int)    $comparator
  *
- * @plsam-return array<Tk, Tv>
+ * @psalm-return array<Tk, Tv>
  */
 function sort_with_keys(iterable $iterable, ?callable $comparator = null): array
 {
