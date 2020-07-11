@@ -19,7 +19,8 @@
         "vimeo/psalm": "dev-master",
         "phpunit/phpunit": "^8.5",
         "friendsofphp/php-cs-fixer": "^2.16",
-        "php-coveralls/php-coveralls": "^2.2"
+        "php-coveralls/php-coveralls": "^2.2",
+        "roave/security-advisories": "dev-master"
     },
     "autoload": {
         "psr-4": {
@@ -41,6 +42,16 @@
         "type:check": "psalm",
         "type:coverage": "psalm --shepherd",
         "test:unit": "phpunit",
-        "code:coverage": "php-coveralls -v"
+        "code:coverage": "php-coveralls -v",
+        "security:analysis": "psalm --taint-analysis",
+        "check": [
+            "@cs:check",
+            "@type:check",
+            "@security:analysis",
+            "@test:unit"
+        ]
+    },
+    "config": {
+        "process-timeout": 1200
     }
 }
