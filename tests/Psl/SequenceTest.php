@@ -14,7 +14,7 @@ class SequenceTest extends TestCase
      */
     public function testSequence(array $args, $expected): void
     {
-        $this->assertSame($expected, Psl\sequence(...$args));
+        self::assertSame($expected, Psl\sequence(...$args));
     }
 
     public function provideData(): iterable

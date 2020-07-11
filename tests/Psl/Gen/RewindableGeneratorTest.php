@@ -30,7 +30,7 @@ class RewindableGeneratorTest extends TestCase
                 /**
                  * Assert supports non-array-key keys. ( in this case, keys are arrays )
                  */
-                $this->assertSame(['foo', 'bar'], $k);
+                self::assertSame(['foo', 'bar'], $k);
             }
         }
 
@@ -46,7 +46,7 @@ class RewindableGeneratorTest extends TestCase
          *  - The iterator is capable of rewinding a generator.
          *  - The generator is not exhausted immediately on construction.
          */
-        $this->assertSame([
+        self::assertSame([
             'generator (0)',
             'foreach (0)',
             'generator (1)',
@@ -97,7 +97,7 @@ class RewindableGeneratorTest extends TestCase
             $spy->add('for (' . $rewindable->current() . ')');
         }
 
-        $this->assertSame([
+        self::assertSame([
             'generator (0)',
             'foreach (0)',
             'do while (0)',

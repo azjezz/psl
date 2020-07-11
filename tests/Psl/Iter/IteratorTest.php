@@ -14,13 +14,13 @@ class IteratorTest extends TestCase
     {
         $iterator = new Iter\Iterator([1, 2, 3, 4, 5]);
 
-        $this->assertSame(1, $iterator->current());
+        self::assertSame(1, $iterator->current());
         $iterator->next();
-        $this->assertSame(2, $iterator->current());
+        self::assertSame(2, $iterator->current());
         $iterator->next();
 
         $iterator->seek(0);
-        $this->assertSame(1, $iterator->current());
+        self::assertSame(1, $iterator->current());
     }
 
     public function testSeekThrowsForOutOfBoundIndex(): void

@@ -13,19 +13,19 @@ class WrappedResultTest extends TestCase
     public function testIsSucceeded(): void
     {
         $wrapper = new WrappedResult('hello');
-        $this->assertTrue($wrapper->isSucceeded());
+        self::assertTrue($wrapper->isSucceeded());
     }
 
     public function testIsFailed(): void
     {
         $wrapper = new WrappedResult('hello');
-        $this->assertFalse($wrapper->isFailed());
+        self::assertFalse($wrapper->isFailed());
     }
 
     public function testGetResult(): void
     {
         $wrapper = new WrappedResult('hello');
-        $this->assertSame('hello', $wrapper->getResult());
+        self::assertSame('hello', $wrapper->getResult());
     }
 
     public function testGetException(): void

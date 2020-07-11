@@ -29,8 +29,8 @@ final class MutableMapTest extends AbstractMapTest
         $map = $this->create(['foo' => 'bar']);
         $cleared = $map->clear();
 
-        $this->assertSame($cleared, $map);
-        $this->assertCount(0, $map);
+        self::assertSame($cleared, $map);
+        self::assertCount(0, $map);
     }
 
     public function testSet(): void
@@ -46,11 +46,11 @@ final class MutableMapTest extends AbstractMapTest
             ->set('bar', 'bar')
             ->set('baz', 'baz');
 
-        $this->assertSame($modified, $map);
+        self::assertSame($modified, $map);
 
-        $this->assertSame('foo', $map->at('foo'));
-        $this->assertSame('bar', $map->at('bar'));
-        $this->assertSame('baz', $map->at('baz'));
+        self::assertSame('foo', $map->at('foo'));
+        self::assertSame('bar', $map->at('bar'));
+        self::assertSame('baz', $map->at('baz'));
 
         $this->expectException(InvariantViolationException::class);
         $this->expectExceptionMessage('Key (qux) is out-of-bounds.');
@@ -72,11 +72,11 @@ final class MutableMapTest extends AbstractMapTest
             'baz' => 'baz',
         ]));
 
-        $this->assertSame($modified, $map);
+        self::assertSame($modified, $map);
 
-        $this->assertSame('foo', $map->at('foo'));
-        $this->assertSame('bar', $map->at('bar'));
-        $this->assertSame('baz', $map->at('baz'));
+        self::assertSame('foo', $map->at('foo'));
+        self::assertSame('bar', $map->at('bar'));
+        self::assertSame('baz', $map->at('baz'));
 
         $this->expectException(InvariantViolationException::class);
         $this->expectExceptionMessage('Key (qux) is out-of-bounds.');
@@ -97,12 +97,12 @@ final class MutableMapTest extends AbstractMapTest
             ->add('baz', 'baz')
             ->add('qux', 'qux');
 
-        $this->assertSame($modified, $map);
+        self::assertSame($modified, $map);
 
-        $this->assertSame('foo', $map->at('foo'));
-        $this->assertSame('bar', $map->at('bar'));
-        $this->assertSame('baz', $map->at('baz'));
-        $this->assertSame('qux', $map->at('qux'));
+        self::assertSame('foo', $map->at('foo'));
+        self::assertSame('bar', $map->at('bar'));
+        self::assertSame('baz', $map->at('baz'));
+        self::assertSame('qux', $map->at('qux'));
     }
 
     public function testAddAll(): void
@@ -119,12 +119,12 @@ final class MutableMapTest extends AbstractMapTest
             'qux' => 'qux',
         ]);
 
-        $this->assertSame($modified, $map);
+        self::assertSame($modified, $map);
 
-        $this->assertSame('foo', $map->at('foo'));
-        $this->assertSame('bar', $map->at('bar'));
-        $this->assertSame('baz', $map->at('baz'));
-        $this->assertSame('qux', $map->at('qux'));
+        self::assertSame('foo', $map->at('foo'));
+        self::assertSame('bar', $map->at('bar'));
+        self::assertSame('baz', $map->at('baz'));
+        self::assertSame('qux', $map->at('qux'));
     }
 
     public function testRemove(): void
@@ -139,11 +139,11 @@ final class MutableMapTest extends AbstractMapTest
             ->remove('foo')
             ->remove('bar');
 
-        $this->assertSame($modified, $map);
-        $this->assertCount(1, $map);
-        $this->assertSame('qux', $map->get('baz'));
-        $this->assertNull($map->get('foo'));
-        $this->assertNull($map->get('bar'));
+        self::assertSame($modified, $map);
+        self::assertCount(1, $map);
+        self::assertSame('qux', $map->get('baz'));
+        self::assertNull($map->get('foo'));
+        self::assertNull($map->get('bar'));
     }
 
     /**
