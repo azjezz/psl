@@ -27,6 +27,7 @@ script:
   - composer test:unit
   - if [[ $NIGHTLY_BUILD != 'true' ]]; then composer cs:check; fi
   - if [[ $NIGHTLY_BUILD != 'true' ]]; then composer type:check; fi
+  - if [[ $NIGHTLY_BUILD != 'true' ]]; then composer security:analysis; fi
 
 after_script:
   - if [[ $NIGHTLY_BUILD != 'true' ]]; then composer code:coverage; fi
