@@ -12,13 +12,13 @@ class WrappedExceptionTest extends TestCase
     public function testIsSucceeded(): void
     {
         $wrapper = new WrappedException(new \Exception('foo'));
-        $this->assertFalse($wrapper->isSucceeded());
+        self::assertFalse($wrapper->isSucceeded());
     }
 
     public function testIsFailed(): void
     {
         $wrapper = new WrappedException(new \Exception('foo'));
-        $this->assertTrue($wrapper->isFailed());
+        self::assertTrue($wrapper->isFailed());
     }
 
     public function testGetResult(): void
@@ -35,6 +35,6 @@ class WrappedExceptionTest extends TestCase
         $exception = new \Exception('bar');
         $wrapper = new WrappedException($exception);
         $e = $wrapper->getException();
-        $this->assertSame($exception, $e);
+        self::assertSame($exception, $e);
     }
 }

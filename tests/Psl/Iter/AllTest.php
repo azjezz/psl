@@ -14,7 +14,7 @@ class AllTest extends TestCase
      */
     public function testAll(bool $expected, iterable $iterable, callable $predicate): void
     {
-        $this->assertSame($expected, Iter\all($iterable, $predicate));
+        self::assertSame($expected, Iter\all($iterable, $predicate));
     }
 
     public function provideData(): iterable

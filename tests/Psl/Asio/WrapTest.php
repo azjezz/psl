@@ -16,9 +16,9 @@ class WrapTest extends TestCase
         $wrapper = Asio\wrap(static function () use ($exception): void {
             throw $exception;
         });
-        $this->assertFalse($wrapper->isSucceeded());
-        $this->assertTrue($wrapper->isFailed());
-        $this->assertSame($exception, $wrapper->getException());
+        self::assertFalse($wrapper->isSucceeded());
+        self::assertTrue($wrapper->isFailed());
+        self::assertSame($exception, $wrapper->getException());
 
         $this->expectExceptionObject($exception);
 
@@ -30,9 +30,9 @@ class WrapTest extends TestCase
         $wrapper = Asio\wrap(static function (): string {
             return 'foo';
         });
-        $this->assertTrue($wrapper->isSucceeded());
-        $this->assertFalse($wrapper->isFailed());
-        $this->assertSame('foo', $wrapper->getResult());
+        self::assertTrue($wrapper->isSucceeded());
+        self::assertFalse($wrapper->isFailed());
+        self::assertSame('foo', $wrapper->getResult());
 
         $this->expectException(InvariantViolationException::class);
         $this->expectExceptionMessage('No exception thrown');

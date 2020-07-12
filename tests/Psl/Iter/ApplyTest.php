@@ -15,6 +15,6 @@ class ApplyTest extends TestCase
         $vec = new MutableVector([]);
         Iter\apply([1, 2, 3], fn (int $i) => $vec->add($i));
 
-        $this->assertSame([1, 2, 3], $vec->toArray());
+        self::assertSame([1, 2, 3], $vec->toArray());
     }
 }

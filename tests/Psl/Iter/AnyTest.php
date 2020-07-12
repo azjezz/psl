@@ -14,7 +14,7 @@ class AnyTest extends TestCase
      */
     public function testAny(bool $expected, iterable $iterable, callable $predicate): void
     {
-        $this->assertSame($expected, Iter\any($iterable, $predicate));
+        self::assertSame($expected, Iter\any($iterable, $predicate));
     }
 
     public function provideData(): iterable
