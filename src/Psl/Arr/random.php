@@ -6,7 +6,7 @@ namespace Psl\Arr;
 
 use Psl;
 use Psl\Iter;
-use Psl\Random;
+use Psl\PseudoRandom;
 
 /**
  * Retrieve a random value from a non-empty array.
@@ -33,5 +33,5 @@ function random(array $values)
     }
 
     /** @psalm-suppress MissingThrowsDocblock */
-    return at($shuffled, Random\int(0, $size - 1));
+    return at($shuffled, PseudoRandom\int(0, $size - 1));
 }

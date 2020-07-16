@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Psl\Tests\Random;
+namespace Psl\Tests\SecureRandom;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Exception;
-use Psl\Random;
+use Psl\SecureRandom;
 use Psl\Str;
 
 class BytesTest extends TestCase
 {
     public function testBytes(): void
     {
-        $random = Random\bytes(32);
+        $random = SecureRandom\bytes(32);
 
         self::assertSame(32, Str\Byte\length($random));
     }
 
     public function testBytesEarlyReturnForZeroLength(): void
     {
-        self::assertSame('', Random\bytes(0));
+        self::assertSame('', SecureRandom\bytes(0));
     }
 
     public function testBytesThrowsForNegativeLength(): void
@@ -28,6 +28,6 @@ class BytesTest extends TestCase
         $this->expectException(Exception\InvariantViolationException::class);
         $this->expectExceptionMessage('Expected a non-negative length.');
 
-        Random\bytes(-1);
+        SecureRandom\bytes(-1);
     }
 }

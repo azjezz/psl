@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Psl\Tests\Random;
+namespace Psl\Tests\SecureRandom;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Exception;
-use Psl\Random;
+use Psl\SecureRandom;
 use Psl\Str;
 
 class StringTest extends TestCase
 {
     public function testString(): void
     {
-        $random = Random\string(32);
+        $random = SecureRandom\string(32);
 
         self::assertSame(32, Str\length($random));
         foreach (Str\chunk($random) as $char) {
@@ -23,7 +23,7 @@ class StringTest extends TestCase
 
     public function testStringWithSpecificChars(): void
     {
-        $random = Random\string(32, 'abc');
+        $random = SecureRandom\string(32, 'abc');
 
         self::assertSame(32, Str\length($random));
         foreach (Str\chunk($random) as $char) {
@@ -33,7 +33,7 @@ class StringTest extends TestCase
 
     public function testStringEarlyReturnForZeroLength(): void
     {
-        self::assertSame('', Random\string(0));
+        self::assertSame('', SecureRandom\string(0));
     }
 
     public function testStringThrowsForNegativeLength(): void
@@ -41,7 +41,7 @@ class StringTest extends TestCase
         $this->expectException(Exception\InvariantViolationException::class);
         $this->expectExceptionMessage('Expected a non-negative length.');
 
-        Random\string(-1);
+        SecureRandom\string(-1);
     }
 
     public function testStringAlphabetMin(): void
@@ -49,7 +49,7 @@ class StringTest extends TestCase
         $this->expectException(Exception\InvariantViolationException::class);
         $this->expectExceptionMessage('Expected $alphabet\'s length to be in [2^1, 2^56]');
 
-        Random\string(32, 'a');
+        SecureRandom\string(32, 'a');
     }
 
     //  public function testStringAlphabetMax(): void
