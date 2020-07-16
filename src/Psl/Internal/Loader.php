@@ -25,7 +25,7 @@ use function trait_exists;
  */
 final class Loader
 {
-    public const Constants = [
+    public const CONSTANTS = [
         'Psl\Internal\ALPHABET_BASE64',
         'Psl\Internal\ALPHABET_BASE64_URL',
         'Psl\Math\INT64_MAX',
@@ -46,7 +46,7 @@ final class Loader
         'Psl\Str\ALPHABET_ALPHANUMERIC',
     ];
 
-    public const Functions = [
+    public const FUNCTIONS = [
         'Psl\Arr\at',
         'Psl\Arr\concat',
         'Psl\Arr\contains',
@@ -289,7 +289,7 @@ final class Loader
         'Psl\sequence',
     ];
 
-    public const Interfaces = [
+    public const INTERFACES = [
         'Psl\Exception\ExceptionInterface',
         'Psl\Asio\IResultOrExceptionWrapper',
         'Psl\Collection\ICollection',
@@ -304,11 +304,11 @@ final class Loader
         'Psl\Collection\IMutableMap',
     ];
 
-    public const Traits = [
+    public const TRAITS = [
 
     ];
 
-    public const Classes = [
+    public const CLASSES = [
         'Psl\Exception\InvariantViolationException',
         'Psl\Iter\Iterator',
         'Psl\Collection\Vector',
@@ -319,13 +319,18 @@ final class Loader
         'Psl\Asio\WrappedException',
         'Psl\Asio\WrappedResult',
     ];
-    private const TypeConstant = 1;
-    private const TypeFunction = 2;
-    private const TypeInterface = 4;
-    private const TypeTrait = 8;
-    private const TypeClass = 16;
 
-    private const TypeClassish = self::TypeInterface | self::TypeTrait | self::TypeClass;
+    private const TYPE_CONSTANTS = 1;
+
+    private const TYPE_FUNCTION = 2;
+
+    private const TYPE_INTERFACE = 4;
+
+    private const TYPE_TRAIT = 8;
+
+    private const TYPE_CLASS = 16;
+
+    private const TYPE_CLASSISH = self::TYPE_INTERFACE | self::TYPE_TRAIT | self::TYPE_CLASS;
 
     private function __construct()
     {
@@ -333,9 +338,9 @@ final class Loader
 
     public static function bootstrap(): void
     {
-        if (!function_exists(self::Functions[0])) {
+        if (!function_exists(self::FUNCTIONS[0])) {
             self::preload();
-        } elseif (!defined(self::Constants[0])) {
+        } elseif (!defined(self::CONSTANTS[0])) {
             self::loadConstants();
         }
     }
@@ -351,11 +356,18 @@ final class Loader
         });
     }
 
+    private static function load(string $typename, int $type): void
+    {
+        $file = self::getFile($typename, $type);
+
+        require_once $file;
+    }
+
     private static function autoload(callable $callback): void
     {
         $loader = static function (string $classname): ?bool {
             if ('P' === $classname[0] && 0 === \strpos($classname, 'Psl\\')) {
-                require_once static::getFile($classname, self::TypeClassish);
+                require_once static::getFile($classname, self::TYPE_CLASSISH);
 
                 return true;
             }
@@ -370,64 +382,57 @@ final class Loader
 
     private static function loadConstants(): void
     {
-        foreach (self::Constants as $constant) {
+        foreach (self::CONSTANTS as $constant) {
             if (defined($constant)) {
                 continue;
             }
 
-            self::load($constant, self::TypeConstant);
+            self::load($constant, self::TYPE_CONSTANTS);
         }
     }
 
     private static function loadFunctions(): void
     {
-        foreach (self::Functions as $function) {
+        foreach (self::FUNCTIONS as $function) {
             if (function_exists($function)) {
                 continue;
             }
 
-            self::load($function, self::TypeFunction);
+            self::load($function, self::TYPE_FUNCTION);
         }
     }
 
     private static function loadInterfaces(): void
     {
-        foreach (self::Interfaces as $interface) {
+        foreach (self::INTERFACES as $interface) {
             if (interface_exists($interface)) {
                 continue;
             }
 
-            self::load($interface, self::TypeInterface);
+            self::load($interface, self::TYPE_INTERFACE);
         }
     }
 
     private static function loadTraits(): void
     {
-        foreach (self::Traits as $trait) {
+        foreach (self::TRAITS as $trait) {
             if (trait_exists($trait)) {
                 continue;
             }
 
-            self::load($trait, self::TypeTrait);
+            self::load($trait, self::TYPE_TRAIT);
         }
     }
 
     private static function loadClasses(): void
     {
-        foreach (self::Classes as $class) {
+        foreach (self::CLASSES as $class) {
             if (class_exists($class)) {
                 continue;
             }
 
-            self::load($class, self::TypeClass);
+            self::load($class, self::TYPE_CLASS);
         }
-    }
-
-    private static function load(string $typename, int $type): void
-    {
-        $file = self::getFile($typename, $type);
-
-        require_once $file;
     }
 
     private static function getFile(string $typename, int $type): string
@@ -435,7 +440,7 @@ final class Loader
         $lastSeparatorPosition = strrpos($typename, '\\');
         $namespace = substr($typename, 0, $lastSeparatorPosition);
 
-        if (($type & self::TypeClassish) === $type || (($type & self::TypeFunction) === $type)) {
+        if (($type & self::TYPE_CLASSISH) === $type || (($type & self::TYPE_FUNCTION) === $type)) {
             $file = substr($typename, $lastSeparatorPosition + 1) . '.php';
         } else {
             $file = 'constants.php';
