@@ -25,11 +25,20 @@ function diff_by_key(iterable $first, iterable $second, iterable ...$rest): Gene
         return;
     }
 
-    if (Iter\is_empty($second) && Iter\is_empty($rest)) {
+    if (
+        Iter\is_empty($second) &&
+        Iter\all(
+            $rest,
+            /**
+             * @psalm-param iterable<Tk, mixed> $iter
+             */
+            fn (iterable $iter): bool => Iter\is_empty($iter)
+        )
+    ) {
         yield from $first;
     }
 
-    // We don't use arrays here to ensure we allow the usage of non-arraykey indexs.
+    // We don't use arrays here to ensure we allow the usage of non-arraykey indexes.
     /** @psalm-var Generator<Tk, mixed, mixed, void> $second */
     $second = ((fn (iterable $iterable): Generator => yield from $iterable)($second));
     /** @psalm-var Generator<iterable<Tk, mixed>, mixed, mixed, void> $generator */

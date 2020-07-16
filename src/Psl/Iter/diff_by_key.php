@@ -7,7 +7,7 @@ namespace Psl\Iter;
 use Psl\Gen;
 
 /**
- * @psalm-template Tk of array-key
+ * @psalm-template Tk
  * @psalm-template Tv
  *
  * @psalm-param    iterable<Tk, Tv>       $first
