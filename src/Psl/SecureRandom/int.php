@@ -2,26 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Psl\Random;
+namespace Psl\SecureRandom;
 
 use Psl;
+use Psl\Math;
 use Psl\Str;
 
 /**
- * Returns a cryptographically secure random bytes.
+ * Returns a cryptographically secure random integer in the range in the given range.
  *
- * @throws Psl\Exception\InvariantViolationException If $length is negative.
+ * @throws Psl\Exception\InvariantViolationException If $min > $max
  * @throws Psl\Exception\RuntimeException If it was not possible to gather sufficient entropy.
  */
-function bytes(int $length): string
+function int(int $min = Math\INT64_MIN, int $max = Math\INT64_MAX): int
 {
-    Psl\invariant($length >= 0, 'Expected a non-negative length.');
-    if (0 === $length) {
-        return '';
-    }
+    Psl\invariant($min <= $max, 'Expected $min (%d) to be less than or equal to $max (%d).', $min, $max);
 
     try {
-        return \random_bytes($length);
+        return \random_int($min, $max);
     } catch (\Exception $e) {
         $code = $e->getCode();
         if (Str\is_string($code)) {

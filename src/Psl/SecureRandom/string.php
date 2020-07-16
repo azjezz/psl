@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Psl\Random;
+namespace Psl\SecureRandom;
 
 use Psl;
 use Psl\Math;
