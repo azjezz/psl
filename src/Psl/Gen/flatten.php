@@ -10,7 +10,7 @@ use Generator;
  * Returns a generator formed by merging the iterable elements of the
  * given iterable.
  *
- * @psalm-template Tk of array-key
+ * @psalm-template Tk
  * @psalm-template Tv
  *
  * @psalm-param iterable<iterable<Tk, Tv>> $iterables
