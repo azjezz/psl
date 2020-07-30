@@ -287,6 +287,22 @@ final class Loader
         'Psl\invariant',
         'Psl\invariant_violation',
         'Psl\sequence',
+        'Psl\Type\arr',
+        'Psl\Type\array_key',
+        'Psl\Type\bool',
+        'Psl\Type\float',
+        'Psl\Type\int',
+        'Psl\Type\intersection',
+        'Psl\Type\iterable',
+        'Psl\Type\mixed',
+        'Psl\Type\null',
+        'Psl\Type\nullable',
+        'Psl\Type\num',
+        'Psl\Type\object',
+        'Psl\Type\resource',
+        'Psl\Type\string',
+        'Psl\Type\scalar',
+        'Psl\Type\union',
     ];
 
     public const INTERFACES = [
@@ -302,10 +318,29 @@ final class Loader
         'Psl\Collection\IMutableVector',
         'Psl\Collection\IMap',
         'Psl\Collection\IMutableMap',
+        'Psl\Type\Internal\ArrayKeyType',
+        'Psl\Type\Internal\ArrayType',
+        'Psl\Type\Internal\BoolType',
+        'Psl\Type\Internal\FloatType',
+        'Psl\Type\Internal\IntersectionType',
+        'Psl\Type\Internal\IntType',
+        'Psl\Type\Internal\IterableType',
+        'Psl\Type\Internal\MixedType',
+        'Psl\Type\Internal\NullType',
+        'Psl\Type\Internal\NumType',
+        'Psl\Type\Internal\ObjectType',
+        'Psl\Type\Internal\ResourceType',
+        'Psl\Type\Internal\StringType',
+        'Psl\Type\Internal\UnionType',
+        'Psl\Type\Exception\TypeTrace',
+        'Psl\Type\Exception\TypeAssertException',
+        'Psl\Type\Exception\TypeCoercionException',
+        'Psl\Type\Exception\TypeException',
+        'Psl\Type\Type',
     ];
 
     public const TRAITS = [
-
+        'Psl\Type\Internal\TypeTraceTrait',
     ];
 
     public const CLASSES = [

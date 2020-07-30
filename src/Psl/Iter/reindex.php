@@ -26,8 +26,8 @@ use Psl\Gen;
  *         24 => ['id' => 24, 'name' => 'bar']
  *     )
  *
- * @psalm-template  Tk1 of array-key
- * @psalm-template  Tk2 of array-key
+ * @psalm-template  Tk1
+ * @psalm-template  Tk2
  * @psalm-template  Tv
  *
  * @psalm-param     iterable<Tk1, Tv>       $iterable Iterable to reindex
