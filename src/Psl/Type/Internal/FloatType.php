@@ -59,6 +59,8 @@ final class FloatType extends Type
      *
      * @psalm-return float
      *
+     * @psalm-assert float $value
+     *
      * @throws TypeAssertException
      */
     public function assert($value): float

@@ -24,7 +24,7 @@ namespace Psl\Iter;
  *
  * @psalm-param          mixed $value
  *
- * @psalm-assert-if-true iterable<array-key, mixed> $value
+ * @psalm-assert-if-true iterable<mixed, mixed> $value
  */
 function is_iterable($value): bool
 {

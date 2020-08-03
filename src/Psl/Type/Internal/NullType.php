@@ -32,6 +32,8 @@ final class NullType extends Type
     /**
      * @psalm-param mixed $value
      *
+     * @psalm-assert null $value
+     *
      * @psalm-return null
      */
     public function assert($value)

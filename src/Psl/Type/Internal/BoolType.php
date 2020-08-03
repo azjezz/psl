@@ -40,6 +40,8 @@ final class BoolType extends Type
     /**
      * @psalm-return bool
      *
+     * @psalm-assert bool $value
+     *
      * @throws TypeAssertException
      */
     public function assert($value): bool

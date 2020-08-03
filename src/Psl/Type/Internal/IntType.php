@@ -56,6 +56,8 @@ final class IntType extends Type
      *
      * @psalm-return int
      *
+     * @psalm-assert int $value
+     *
      * @throws TypeAssertException
      */
     public function assert($value): int

@@ -90,6 +90,8 @@ final class IterableType extends Type
      *
      * @psalm-return iterable<Tk, Tv>
      *
+     * @psalm-assert iterable<Tk, Tv> $value
+     *
      * @throws TypeAssertException
      */
     public function assert($value): iterable

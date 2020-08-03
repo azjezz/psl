@@ -45,6 +45,8 @@ final class StringType extends Type
      *
      * @psalm-return string
      *
+     * @psalm-assert string $value
+     *
      * @throws TypeAssertException
      */
     public function assert($value): string

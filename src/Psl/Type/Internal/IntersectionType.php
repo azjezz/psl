@@ -87,6 +87,8 @@ final class IntersectionType extends Type
      *
      * @psalm-return Tl&Tr
      *
+     * @psalm-assert Tl&Tr $value
+     *
      * @throws TypeAssertException
      */
     public function assert($value)

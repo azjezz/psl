@@ -26,6 +26,8 @@ final class MixedType extends Type
     /**
      * @psalm-param mixed $value
      *
+     * @psalm-assert mixed $value
+     *
      * @psalm-return mixed
      */
     public function assert($value)

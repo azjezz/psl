@@ -30,6 +30,8 @@ abstract class Type
      *
      * @psalm-return T
      *
+     * @psalm-assert T $value
+     *
      * @throws TypeAssertException
      */
     abstract public function assert($value);

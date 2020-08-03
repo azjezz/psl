@@ -52,6 +52,8 @@ final class ObjectType extends Type
      *
      * @psalm-return T
      *
+     * @psalm-assert T $value
+     *
      * @throws TypeAssertException
      */
     public function assert($value): object
