@@ -17,7 +17,7 @@ use Psl\Iter;
  *      Str\join(['Hello', 'World'], ', ')
  *      => Str('Hello, World')
  *
- * @param string[] $pieces the array of strings to implode
+ * @param iterable<string> $pieces the array of strings to implode
  *
  * @return string a string containing a string representation of all the array
  *                elements in the same order, with the glue string between each element

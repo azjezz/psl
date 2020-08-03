@@ -1,0 +1,57 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\Tests\Type\Exception;
+
+use PHPUnit\Framework\TestCase;
+use Psl\Arr;
+use Psl\Collection;
+use Psl\Str;
+use Psl\Type;
+
+class TypeAssertExceptionTest extends TestCase
+{
+    public function testIncorrectIterableKey(): void
+    {
+        $type = Type\iterable(Type\int(), Type\object(Collection\ICollection::class));
+
+        try {
+            $type->assert([
+                'hello' => new Collection\Vector([1, 2, 3])
+            ]);
+
+            self::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\TypeAssertException::class));
+        } catch (Type\Exception\TypeAssertException $e) {
+            static::assertSame('int', $e->getExpectedType());
+            static::assertSame('string', $e->getActualType());
+            static::assertSame('Expected "int", got "string".', $e->getMessage());
+
+            $trace = $e->getTypeTrace();
+            $frames = $trace->getFrames();
+
+            static::assertCount(1, $frames);
+            static::assertSame('iterable<int, _>', Arr\first($frames));
+        }
+    }
+
+    public function testIncorrectResourceType(): void
+    {
+        $type = Type\resource('curl');
+
+        try {
+            $type->assert(STDIN);
+
+            self::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\TypeAssertException::class));
+        } catch (Type\Exception\TypeAssertException $e) {
+            static::assertSame('resource<curl>', $e->getExpectedType());
+            static::assertSame('resource<stream>', $e->getActualType());
+            static::assertSame('Expected "resource<curl>", got "resource<stream>".', $e->getMessage());
+
+            $trace = $e->getTypeTrace();
+            $frames = $trace->getFrames();
+
+            static::assertCount(0, $frames);
+        }
+    }
+}
