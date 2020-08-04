@@ -26,6 +26,7 @@ install:
 
 test_script:
   - php composer.phar test:unit
+  - php composer.phar test:mutation
   - php composer.phar cs:check
   - php composer.phar type:check
   - php composer.phar security:analysis

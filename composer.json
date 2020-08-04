@@ -19,7 +19,8 @@
         "phpunit/phpunit": "^8.5",
         "friendsofphp/php-cs-fixer": "^2.16",
         "php-coveralls/php-coveralls": "^2.2",
-        "roave/security-advisories": "dev-master"
+        "roave/security-advisories": "dev-master",
+        "infection/infection": "^0.16.4"
     },
     "autoload": {
         "psr-4": {
@@ -40,6 +41,7 @@
         "type:check": "psalm",
         "type:coverage": "psalm --shepherd",
         "test:unit": "phpunit",
+        "test:mutation": "infection --test-framework-options='--testsuite=psl' --ansi",
         "code:coverage": "php-coveralls -v",
         "security:analysis": "psalm --taint-analysis",
         "check": [

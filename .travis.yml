@@ -25,6 +25,7 @@ install:
 
 script:
   - composer test:unit
+  - if [[ $NIGHTLY_BUILD != 'true' ]]; then composer test:mutation; fi
   - if [[ $NIGHTLY_BUILD != 'true' ]]; then composer cs:check; fi
   - if [[ $NIGHTLY_BUILD != 'true' ]]; then composer type:check; fi
   - if [[ $NIGHTLY_BUILD != 'true' ]]; then composer security:analysis; fi
