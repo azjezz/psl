@@ -5,8 +5,26 @@ declare(strict_types=1);
 namespace Psl\Tests\Iter;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Iter;
 
 class IsEmptyTest extends TestCase
 {
-    // TODO: add tests.
+    /**
+     * @dataProvider provideData
+     */
+    public function testIsEmpty(bool $expected, iterable $iterable): void
+    {
+        self::assertSame($expected, Iter\is_empty($iterable));
+    }
+
+    public function provideData(): iterable
+    {
+        yield [true, []];
+        yield [true, Iter\from_entries([])];
+        yield [true, (fn () => yield from [])()];
+
+        yield [false, [null]];
+        yield [false, [false]];
+        yield [false, ['hello', 'world']];
+    }
 }

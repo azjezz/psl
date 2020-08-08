@@ -22,17 +22,18 @@ use Psl\Arr;
  *      Iter\first_key([])
  *      => Null
  *
- * @psalm-template Tk of array-key
+ * @psalm-template Tk
  * @psalm-template Tv
  *
  * @psalm-param    iterable<Tk, Tv> $iterable
  *
  * @psalm-return   null|Tk
- *
- * @see            Arr\first_key()
  */
 function first_key(iterable $iterable)
 {
-    /** @psalm-var null|Tk */
-    return Arr\first_key(to_array_with_keys($iterable));
+    foreach ($iterable as $k => $_) {
+        return $k;
+    }
+
+    return null;
 }
