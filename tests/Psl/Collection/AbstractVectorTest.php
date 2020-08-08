@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Collection;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Collection\IVector;
+use Psl\Collection\VectorInterface;
 use Psl\Exception\InvariantViolationException;
 use Psl\Str;
 
@@ -20,7 +20,7 @@ abstract class AbstractVectorTest extends TestCase
      *
      * @psalm-var class-string<IVector>
      */
-    protected string $vectorClass = IVector::class;
+    protected string $vectorClass = VectorInterface::class;
 
     public function testIsEmpty(): void
     {
@@ -544,5 +544,5 @@ abstract class AbstractVectorTest extends TestCase
      *
      * @psalm-return IVector<T>
      */
-    abstract protected function create(iterable $items): IVector;
+    abstract protected function create(iterable $items): VectorInterface;
 }

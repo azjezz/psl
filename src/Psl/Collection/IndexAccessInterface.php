@@ -10,7 +10,7 @@ namespace Psl\Collection;
  * @template Tk of array-key
  * @template Tv
  */
-interface IIndexAccess
+interface IndexAccessInterface
 {
     /**
      * Returns the value at the specified key in the current collection.

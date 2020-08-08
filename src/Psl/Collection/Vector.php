@@ -11,9 +11,9 @@ use Psl\Iter;
 /**
  * @template   T
  *
- * @implements IVector<T>
+ * @implements VectorInterface<T>
  */
-final class Vector implements IVector
+final class Vector implements VectorInterface
 {
     /**
      * @psalm-var array<int, T> $elements
@@ -303,7 +303,7 @@ final class Vector implements IVector
 
     /**
      * Returns a `Vector` where each element is a `array{0: Tv, 1: Tu}` that combines the
-     * element of the current `IVector` and the provided `iterable`.
+     * element of the current `VectorInterface` and the provided `iterable`.
      *
      * If the number of elements of the `Vector` are not equal to the
      * number of elements in the `iterable`, then only the combined elements
@@ -313,7 +313,7 @@ final class Vector implements IVector
      * @psalm-template Tu
      *
      * @psalm-param    iterable<Tu> $iterable - The `iterable` to use to combine with the
-     *                       elements of this `IVector`.
+     *                       elements of this `VectorInterface`.
      *
      * @psalm-return   Vector<array{0: T, 1: Tu}> - The `Vector` that combines the values of the current
      *           `Vector` with the provided `iterable`.
@@ -381,7 +381,7 @@ final class Vector implements IVector
      * the current `Vector`.
      *
      * The returned `Vector` will always be a proper subset of the current
-     * `IVector`.
+     * `VectorInterface`.
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *

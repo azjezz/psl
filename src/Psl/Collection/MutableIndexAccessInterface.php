@@ -11,9 +11,9 @@ namespace Psl\Collection;
  * @template Tk of array-key
  * @template Tv
  *
- * @extends IIndexAccess<Tk, Tv>
+ * @extends IndexAccessInterface<Tk, Tv>
  */
-interface IMutableIndexAccess extends IIndexAccess
+interface MutableIndexAccessInterface extends IndexAccessInterface
 {
     /**
      * Stores a value into the current collection with the specified key,
@@ -25,9 +25,9 @@ interface IMutableIndexAccess extends IIndexAccess
      * @psalm-param Tk $k - The key to which we will set the value
      * @psalm-param Tv $v - The value to set
      *
-     * @psalm-return IMutableIndexAccess<Tk, Tv> - Returns itself
+     * @psalm-return MutableIndexAccessInterface<Tk, Tv> - Returns itself
      */
-    public function set($k, $v): IMutableIndexAccess;
+    public function set($k, $v): MutableIndexAccessInterface;
 
     /**
      * For every element in the provided `iterable`, stores a value into the
@@ -39,9 +39,9 @@ interface IMutableIndexAccess extends IIndexAccess
      *
      * @psalm-param iterable<Tk, Tv> $iterable - The `iterable` with the new values to set
      *
-     * @psalm-return IMutableIndexAccess<Tk, Tv> - Returns itself
+     * @psalm-return MutableIndexAccessInterface<Tk, Tv> - Returns itself
      */
-    public function setAll(iterable $iterable): IMutableIndexAccess;
+    public function setAll(iterable $iterable): MutableIndexAccessInterface;
 
     /**
      * Removes the specified key (and associated value) from the current
@@ -55,7 +55,7 @@ interface IMutableIndexAccess extends IIndexAccess
      *
      * @psalm-param Tk $k - The key to remove
      *
-     * @psalm-return IMutableIndexAccess<Tk, Tv> - Returns itself
+     * @psalm-return MutableIndexAccessInterface<Tk, Tv> - Returns itself
      */
-    public function remove($k): IMutableIndexAccess;
+    public function remove($k): MutableIndexAccessInterface;
 }

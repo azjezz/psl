@@ -12,9 +12,9 @@ use Psl\Iter;
  * @template Tk of array-key
  * @template Tv
  *
- * @implements IMap<Tk, Tv>
+ * @implements MapInterface<Tk, Tv>
  */
-final class Map implements IMap
+final class Map implements MapInterface
 {
     /**
      * @psalm-var array<Tk, Tv> $elements
