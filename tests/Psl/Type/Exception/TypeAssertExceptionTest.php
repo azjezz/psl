@@ -14,7 +14,7 @@ class TypeAssertExceptionTest extends TestCase
 {
     public function testIncorrectIterableKey(): void
     {
-        $type = Type\iterable(Type\int(), Type\object(Collection\ICollection::class));
+        $type = Type\iterable(Type\int(), Type\object(Collection\CollectionInterface::class));
 
         try {
             $type->assert([

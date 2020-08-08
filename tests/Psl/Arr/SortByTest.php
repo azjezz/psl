@@ -26,7 +26,7 @@ class SortByTest extends TestCase
         $c = new Collection\Map(['a' => 'foo', 'b' => 'bar', 'c' => 'baz', 'd' => 'qux', 'e' => 'lax']);
         $expected = [$a, $b, $c];
         $iterable = [$b, $c, $a];
-        $scalar_fun = fn (Collection\ICollection $collection) => $collection->count();
+        $scalar_fun = fn (Collection\CollectionInterface $collection) => $collection->count();
 
         return [
             [

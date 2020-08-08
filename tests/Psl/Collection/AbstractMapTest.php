@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tests\Collection;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Collection\IMap;
-use Psl\Collection\IVector;
+use Psl\Collection\MapInterface;
+use Psl\Collection\VectorInterface;
 use Psl\Exception\InvariantViolationException;
 use Psl\Str;
 
@@ -21,14 +21,14 @@ abstract class AbstractMapTest extends TestCase
      *
      * @psalm-var class-string<IMap>
      */
-    protected string $mapClass = IMap::class;
+    protected string $mapClass = MapInterface::class;
 
     /**
      * The Vector class used for values, keys .. etc.
      *
      * @psalm-var class-string<IVector>
      */
-    protected string $vectorClass = IVector::class;
+    protected string $vectorClass = VectorInterface::class;
 
     public function testIsEmpty(): void
     {
@@ -557,5 +557,5 @@ abstract class AbstractMapTest extends TestCase
      *
      * @psalm-return IMap<Tk, Tv>
      */
-    abstract protected function create(iterable $items): IMap;
+    abstract protected function create(iterable $items): MapInterface;
 }

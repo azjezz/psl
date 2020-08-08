@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Type;
 
-use Psl\Collection\ICollection;
-use Psl\Collection\IIndexAccess;
+use Psl\Collection\CollectionInterface;
+use Psl\Collection\IndexAccessInterface;
 use Psl\Type;
 
 class IntersectionTypeTest extends TypeTest
@@ -44,16 +44,16 @@ class IntersectionTypeTest extends TypeTest
 
     public function getToStringExamples(): iterable
     {
-        yield [Type\intersection(Type\object(IIndexAccess::class), Type\object(ICollection::class)), 'Psl\Collection\IIndexAccess&Psl\Collection\ICollection'];
+        yield [Type\intersection(Type\object(IndexAccessInterface::class), Type\object(CollectionInterface::class)), 'Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface'];
 
         yield [Type\intersection(
-            Type\object(IIndexAccess::class),
-            Type\union(Type\object(ICollection::class), Type\object(\Iterator::class))
-        ), 'Psl\Collection\IIndexAccess&(Psl\Collection\ICollection|Iterator)'];
+            Type\object(IndexAccessInterface::class),
+            Type\union(Type\object(CollectionInterface::class), Type\object(\Iterator::class))
+        ), 'Psl\Collection\IndexAccessInterface&(Psl\Collection\CollectionInterface|Iterator)'];
 
         yield [Type\intersection(
-            Type\union(Type\object(ICollection::class), Type\object(\Iterator::class)),
-            Type\object(IIndexAccess::class)
-        ), '(Psl\Collection\ICollection|Iterator)&Psl\Collection\IIndexAccess'];
+            Type\union(Type\object(CollectionInterface::class), Type\object(\Iterator::class)),
+            Type\object(IndexAccessInterface::class)
+        ), '(Psl\Collection\CollectionInterface|Iterator)&Psl\Collection\IndexAccessInterface'];
     }
 }
