@@ -133,6 +133,16 @@ final class MutableMap implements IMutableMap
     }
 
     /**
+     * Get an array copy of the current map.
+     *
+     * @psalm-return array<Tk, Tv>
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
+    /**
      * Returns the value at the specified key in the current map.
      *
      * @psalm-param  Tk $k
