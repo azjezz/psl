@@ -65,7 +65,7 @@ final class MutableVector implements IMutableVector
     }
 
     /**
-     * Is the map empty?
+     * Is the vector empty?
      */
     public function isEmpty(): bool
     {
@@ -73,7 +73,7 @@ final class MutableVector implements IMutableVector
     }
 
     /**
-     * Get the number of items in the current map.
+     * Get the number of items in the current vector.
      */
     public function count(): int
     {
@@ -81,7 +81,7 @@ final class MutableVector implements IMutableVector
     }
 
     /**
-     * Get an array copy of the current map.
+     * Get an array copy of the current vector.
      *
      * @psalm-return list<T>
      */
@@ -91,7 +91,17 @@ final class MutableVector implements IMutableVector
     }
 
     /**
-     * Returns the value at the specified key in the current map.
+     * Get an array copy of the current vector.
+     *
+     * @psalm-return list<T>
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
+    /**
+     * Returns the value at the specified key in the current vector.
      *
      * @psalm-param  int $k
      *
@@ -105,7 +115,7 @@ final class MutableVector implements IMutableVector
     }
 
     /**
-     * Determines if the specified key is in the current map.
+     * Determines if the specified key is in the current vector.
      *
      * @psalm-param int $k
      */
@@ -115,7 +125,7 @@ final class MutableVector implements IMutableVector
     }
 
     /**
-     * Returns the value at the specified key in the current map.
+     * Returns the value at the specified key in the current vector.
      *
      * @psalm-param  int $k
      *

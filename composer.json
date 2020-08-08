@@ -12,7 +12,8 @@
     "require": {
         "php": "^7.4",
         "ext-bcmath": "*",
-        "ext-mbstring": "*"
+        "ext-mbstring": "*",
+        "ext-json": "*"
     },
     "require-dev": {
         "vimeo/psalm": "dev-master",

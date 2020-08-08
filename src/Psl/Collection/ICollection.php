@@ -6,6 +6,7 @@ namespace Psl\Collection;
 
 use Countable;
 use IteratorAggregate;
+use JsonSerializable;
 
 /**
  * The base interface implemented for a ICollection type.
@@ -17,7 +18,7 @@ use IteratorAggregate;
  *
  * @extends IteratorAggregate<Tk, Tv>
  */
-interface ICollection extends Countable, IteratorAggregate
+interface ICollection extends Countable, IteratorAggregate, JsonSerializable
 {
     /**
      * Is the ICollection empty?
@@ -35,6 +36,13 @@ interface ICollection extends Countable, IteratorAggregate
      * @psalm-return array<Tk, Tv>
      */
     public function toArray(): array;
+
+    /**
+     * Get an array copy of the current collection.
+     *
+     * @psalm-return array<Tk, Tv>
+     */
+    public function jsonSerialize(): array;
 
     /**
      * Returns a `ICollection` containing the values of the current `ICollection`

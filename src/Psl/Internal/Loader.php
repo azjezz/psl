@@ -303,10 +303,16 @@ final class Loader
         'Psl\Type\string',
         'Psl\Type\scalar',
         'Psl\Type\union',
+        'Psl\Json\encode',
+        'Psl\Json\decode',
+        'Psl\Json\typed',
     ];
 
     public const INTERFACES = [
         'Psl\Exception\ExceptionInterface',
+        'Psl\Exception\InvalidArgumentException',
+        'Psl\Exception\RuntimeException',
+        'Psl\Exception\InvariantViolationException',
         'Psl\Asio\IResultOrExceptionWrapper',
         'Psl\Collection\ICollection',
         'Psl\Collection\IIndexAccess',
@@ -337,6 +343,8 @@ final class Loader
         'Psl\Type\Exception\TypeCoercionException',
         'Psl\Type\Exception\TypeException',
         'Psl\Type\Type',
+        'Psl\Json\Exception\JsonDecodeException',
+        'Psl\Json\Exception\JsonEncodeException',
     ];
 
     public const TRAITS = [
