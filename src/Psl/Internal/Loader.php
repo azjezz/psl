@@ -402,7 +402,7 @@ final class Loader
     {
         $loader = static function (string $classname): ?bool {
             if ('P' === $classname[0] && 0 === \strpos($classname, 'Psl\\')) {
-                require_once static::getFile($classname, self::TYPE_CLASSISH);
+                static::load($classname, self::TYPE_CLASSISH);
 
                 return true;
             }
