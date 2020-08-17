@@ -22,6 +22,7 @@ function bytes(int $length): string
 
     try {
         return \random_bytes($length);
+        // @codeCoverageIgnoreStart
     } catch (\Exception $e) {
         $code = $e->getCode();
         if (Str\is_string($code)) {
@@ -29,5 +30,6 @@ function bytes(int $length): string
         }
 
         throw new Psl\Exception\RuntimeException('Unable to gather sufficient entropy.', $code, $e);
+        // @codeCoverageIgnoreEnd
     }
 }

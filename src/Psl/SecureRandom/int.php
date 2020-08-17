@@ -20,6 +20,7 @@ function int(int $min = Math\INT64_MIN, int $max = Math\INT64_MAX): int
 
     try {
         return \random_int($min, $max);
+        // @codeCoverageIgnoreStart
     } catch (\Exception $e) {
         $code = $e->getCode();
         if (Str\is_string($code)) {
@@ -27,5 +28,6 @@ function int(int $min = Math\INT64_MIN, int $max = Math\INT64_MAX): int
         }
 
         throw new Psl\Exception\RuntimeException('Unable to gather sufficient entropy.', $code, $e);
+        // @codeCoverageIgnoreEnd
     }
 }
