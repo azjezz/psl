@@ -26,7 +26,7 @@ use Psl\Iter;
  * @psalm-template Tk
  * @psalm-template Tv
  *
- * @psalm-param list<iterable<Tk, Tv>>  $iterables
+ * @psalm-param iterable<iterable<Tk, Tv>>  $iterables
  *
  * @psalm-return Generator<list<Tk>, list<Tv>, mixed, void>
  */
@@ -68,6 +68,7 @@ function zip(iterable ...$iterables): Generator
             $iterators,
             /**
              * @psalm-param Iter\Iterator<Tk, Tv> $iterator
+             *
              * @psalm-return Tv
              */
             fn (Iter\Iterator $iterator) => $iterator->current(),

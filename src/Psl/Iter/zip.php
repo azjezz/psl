@@ -22,10 +22,10 @@ use Psl\Gen;
  *         Arr(2, 2, 2) => Arr(3, 6, 9)
  *     )
  *
- * @psalm-template Tk of array-key
+ * @psalm-template Tk
  * @psalm-template Tv
  *
- * @psalm-param    list<iterable<Tk, Tv>>   $iterables
+ * @psalm-param    iterable<iterable<Tk, Tv>> $iterables
  *
  * @psalm-return   Iterator<list<Tk>, list<Tv>>
  *
