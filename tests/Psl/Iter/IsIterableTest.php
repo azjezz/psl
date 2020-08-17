@@ -12,12 +12,12 @@ class IsIterableTest extends TestCase
     /**
      * @dataProvider provideIsIterableData
      */
-    public function testIsIterable($expected, $value): void
+    public function testIsIterable($value, bool $expected): void
     {
         self::assertSame($expected, Iter\is_iterable($value));
     }
 
-    private function provideIsIterableData(): iterable
+    public function provideIsIterableData(): iterable
     {
         yield [false, false];
         yield [true, false];
