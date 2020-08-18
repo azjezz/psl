@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Iter;
 
-use Psl\Iter;
 use PHPUnit\Framework\TestCase;
+use Psl\Iter;
 
 class IsIterableTest extends TestCase
 {
@@ -26,6 +26,6 @@ class IsIterableTest extends TestCase
         yield [Iter\to_iterator([1, 2]), true];
         yield [$this, false];
         yield [STDIN, false];
-        yield [(fn() => yield false)(), true];
+        yield [(fn () => yield false)(), true];
     }
 }

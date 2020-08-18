@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Iter;
 
-use Psl\Iter;
 use PHPUnit\Framework\TestCase;
+use Psl\Iter;
 
 class ToIteratorTest extends TestCase
 {

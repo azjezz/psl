@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tests\Iter;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Iter;
 use Psl\Collection;
+use Psl\Iter;
 
 class ToArrayWithKeysTest extends TestCase
 {
