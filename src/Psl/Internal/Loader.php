@@ -290,6 +290,17 @@ final class Loader
         'Psl\Json\encode',
         'Psl\Json\decode',
         'Psl\Json\typed',
+        'Psl\Env\args',
+        'Psl\Env\current_dir',
+        'Psl\Env\current_exec',
+        'Psl\Env\get_var',
+        'Psl\Env\get_vars',
+        'Psl\Env\join_paths',
+        'Psl\Env\remove_var',
+        'Psl\Env\set_current_dir',
+        'Psl\Env\set_var',
+        'Psl\Env\split_paths',
+        'Psl\Env\temp_dir',
     ];
 
     public const INTERFACES = [
