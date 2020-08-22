@@ -17,7 +17,7 @@ use Generator;
  *      Gen\drop_while([3, 1, 4, -1, 5], fn($i) => $i > 0)
  *      => Gen(-1, 5)
  *
- * @psalm-template Tk of array-key
+ * @psalm-template Tk
  * @psalm-template Tv
  *
  * @psalm-param iterable<Tk, Tv>    $iterable Iterable to drop values from

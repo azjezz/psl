@@ -17,7 +17,7 @@ use Generator;
  *     Gen\map_with_key([1, 2, 3, 4, 5], fn($k, $v) => $k + $v);
  *     => Gen(1, 3, 5, 7, 9)
  *
- * @psalm-template Tk of array-key
+ * @psalm-template Tk
  * @psalm-template Tv
  * @psalm-template T
  *

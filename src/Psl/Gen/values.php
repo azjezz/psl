@@ -17,7 +17,7 @@ use Generator;
  *      Gen\values([17 => 1, 42 => 2, -2 => 100])
  *      => Gen(1, 42, 100)
  *
- * @psalm-template Tk of array-key
+ * @psalm-template Tk
  * @psalm-template Tv
  *
  * @psalm-param iterable<Tk, Tv> $iterable Iterable to get values from

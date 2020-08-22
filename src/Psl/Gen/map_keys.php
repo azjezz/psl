@@ -18,8 +18,8 @@ use Generator;
  *     Gen\map_keys([0 => 1, 1 => 2, 2 => 3, 3 => 4, 4 => 5], fn($i) => $i * 2);
  *     => Gen(0 => 1, 2 => 2, 4 => 3, 6 => 4, 8 => 5)
  *
- * @psalm-template Tk1 of array-key
- * @psalm-template Tk2 of array-key
+ * @psalm-template Tk1
+ * @psalm-template Tk2
  * @psalm-template Tv
  *
  * @psalm-param iterable<Tk1, Tv>    $iterable Iterable to be mapped over
