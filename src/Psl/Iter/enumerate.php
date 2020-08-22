@@ -9,7 +9,7 @@ use Psl\Gen;
 /**
  * Converts an iterable of key and value pairs, into an iterator of entries.
  *
- * @psalm-template Tk of array-key
+ * @psalm-template Tk
  * @psalm-template Tv
  *
  * @psalm-param    iterable<Tk, Tv>    $iterable

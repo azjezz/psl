@@ -15,7 +15,7 @@ use Psl\Gen;
  *
  * Reductions returns an iterator with each accumulator along the way.
  *
- * @psalm-template  Tk of array-key
+ * @psalm-template  Tk
  * @psalm-template  Tv
  * @psalm-template  Ts
  *

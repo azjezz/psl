@@ -17,7 +17,7 @@ use Psl\Gen;
  *      Iter\values([17 => 1, 42 => 2, -2 => 100])
  *      => Iter(0 => 1, 1 => 42, 2 => 100)
  *
- * @psalm-template Tk of array-key
+ * @psalm-template Tk
  * @psalm-template Tv
  *
  * @psalm-param    iterable<Tk, Tv> $iterable Iterable to get values from

@@ -18,7 +18,7 @@ use Psl\Gen;
  *      Iter\filter(['foo', 'bar', 'baz', 'qux'], fn($value) => Str\contains($value, 'a'));
  *      => Iter('bar', 'baz')
  *
- * @psalm-template Tk of array-key
+ * @psalm-template Tk
  * @psalm-template Tv
  *
  * @psalm-param    iterable<Tk, Tv>            $iterable

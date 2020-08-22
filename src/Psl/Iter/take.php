@@ -9,7 +9,7 @@ use Psl;
 /**
  * Take the first n elements from an iterable.
  *
- * @psalm-template Tk of array-key
+ * @psalm-template Tk
  * @psalm-template Tv
  *
  * @psalm-param    iterable<Tk, Tv> $iterable

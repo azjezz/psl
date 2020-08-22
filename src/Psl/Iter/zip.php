@@ -25,7 +25,7 @@ use Psl\Gen;
  * @psalm-template Tk
  * @psalm-template Tv
  *
- * @psalm-param    iterable<iterable<Tk, Tv>> $iterables
+ * @psalm-param    iterable<Tk, Tv> ...$iterables
  *
  * @psalm-return   Iterator<list<Tk>, list<Tv>>
  *

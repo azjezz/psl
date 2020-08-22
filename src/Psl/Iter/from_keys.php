@@ -10,7 +10,7 @@ use Psl\Gen;
  * Returns an iterator where each value is the result of calling the given
  * function on the corresponding key.
  *
- * @psalm-template  Tk of array-key
+ * @psalm-template  Tk
  * @psalm-template  Tv
  *
  * @psalm-param     iterable<Tk>        $keys

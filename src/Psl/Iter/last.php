@@ -7,7 +7,7 @@ namespace Psl\Iter;
 /**
  * Get the last value of an iterable, if the iterable is empty, returns null.
  *
- * @psalm-template Tk of array-key
+ * @psalm-template Tk
  * @psalm-template Tv
  *
  * @psalm-param    iterable<Tk, Tv> $iterable
