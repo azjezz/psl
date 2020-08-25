@@ -14,6 +14,8 @@ use Psl;
  * remainder of the string will be replaced. If the length is zero, the
  * replacement will be inserted at the offset.
  *
+ * @psalm-pure
+ *
  * @throws Psl\Exception\InvariantViolationException If a negative $length is given.
  */
 function splice(string $string, string $replacement, int $offset = 0, ?int $length = null): string

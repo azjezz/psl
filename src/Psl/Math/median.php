@@ -18,11 +18,12 @@ function median(iterable $numbers): ?float
     $numbers = Iter\to_array($numbers);
     /** @psalm-var list<int|float> $numbers */
     $numbers = Arr\sort($numbers);
-    $count = Iter\count($numbers);
+    $count = Arr\count($numbers);
     if (0 === $count) {
         return null;
     }
 
+    /** @psalm-suppress MissingThrowsDocblock */
     $middle_index = div($count, 2);
     if (0 === $count % 2) {
         return mean(

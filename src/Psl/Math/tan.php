@@ -6,6 +6,8 @@ namespace Psl\Math;
 
 /**
  * Return the tangent of the given number.
+ *
+ * @psalm-pure
  */
 function tan(float $num): float
 {

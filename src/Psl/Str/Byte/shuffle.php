@@ -6,6 +6,8 @@ namespace Psl\Str\Byte;
 
 /**
  * Randomly shuffles a string.
+ *
+ * @psalm-pure
  */
 function shuffle(string $string): string
 {

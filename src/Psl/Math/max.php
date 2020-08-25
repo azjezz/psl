@@ -13,6 +13,8 @@ namespace Psl\Math;
  * @psalm-param iterable<T> $numbers
  *
  * @psalm-return null|T
+ *
+ * @psalm-pure
  */
 function max(iterable $numbers)
 {

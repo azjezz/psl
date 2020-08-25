@@ -17,6 +17,8 @@ final class Vector implements VectorInterface
 {
     /**
      * @psalm-var array<int, T> $elements
+     *
+     * @psalm-readonly
      */
     protected array $elements = [];
 

@@ -14,6 +14,8 @@ namespace Psl\Str;
  *
  *      Str\ord('ل')
  *      => Int(1604)
+ *
+ * @psalm-pure
  */
 function ord(string $char): int
 {

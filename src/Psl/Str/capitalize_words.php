@@ -20,6 +20,8 @@ namespace Psl\Str;
  *
  *      Str\capitalize_words('مرحبا بكم')
  *      => Str('مرحبا بكم')
+ *
+ * @psalm-pure
  */
 function capitalize_words(string $string): string
 {

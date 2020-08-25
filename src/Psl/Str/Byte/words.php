@@ -11,6 +11,8 @@ namespace Psl\Str\Byte;
  *
  * @return array<int, string>   an associative array, where the key is the numeric position of
  *                    the word inside the string and the value is the actual word itself
+ *
+ * @psalm-pure
  */
 function words(string $string, ?string $characters_list = null): array
 {

@@ -23,9 +23,10 @@ namespace Psl\Str;
  *      => Bool(false)
  *
  * @psalm-assert-if-false string $string
+ *
+ * @psalm-pure
  */
-function is_empty(
-    ?string $string
-): bool {
+function is_empty(?string $string): bool
+{
     return null === $string || '' === $string;
 }

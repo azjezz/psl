@@ -6,6 +6,8 @@ namespace Psl\Str;
 
 /**
  * Returns the given string as an integer, or null if the string isn't numeric.
+ *
+ * @psalm-pure
  */
 function to_int(string $string): ?int
 {

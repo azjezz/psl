@@ -14,6 +14,8 @@ namespace Psl\Math;
  * @psalm-param T ...$rest
  *
  * @psalm-return T
+ *
+ * @psalm-pure
  */
 function minva($first, $second, ...$rest)
 {

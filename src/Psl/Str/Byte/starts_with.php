@@ -6,6 +6,8 @@ namespace Psl\Str\Byte;
 
 /**
  * Returns whether the string starts with the given prefix.
+ *
+ * @psalm-pure
  */
 function starts_with(string $str, string $prefix): bool
 {

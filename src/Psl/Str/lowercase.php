@@ -22,6 +22,8 @@ namespace Psl\Str;
  *
  *      Str\contains('سيف')
  *      => Str('سيف')
+ *
+ * @psalm-pure
  */
 function lowercase(string $lowercase): string
 {

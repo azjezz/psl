@@ -10,6 +10,8 @@ namespace Psl\Str;
  * If `$decimals` is provided, the string will contain that many decimal places.
  * The optional `$decimal_point` and `$thousands_separator` arguments define the
  * strings used for decimals and commas, respectively.
+ *
+ * @psalm-pure
  */
 function format_number(float $number, int $decimals = 0, string $decimal_point = '.', string $thousands_separator = ','): string
 {

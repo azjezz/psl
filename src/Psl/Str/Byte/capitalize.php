@@ -9,6 +9,8 @@ namespace Psl\Str\Byte;
  *
  * If the first character is already capitalized or isn't alphabetic, the string
  * will be unchanged.
+ *
+ * @psalm-pure
  */
 function capitalize(string $string): string
 {

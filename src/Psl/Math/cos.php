@@ -14,6 +14,8 @@ namespace Psl\Math;
  *
  *      Math\ceil(1.0)
  *      => Float(0.5403023058681398)
+ *
+ * @psalm-pure
  */
 function cos(float $num): float
 {

@@ -14,6 +14,8 @@ use Psl;
  * length, the pad string will be truncated. If the total length is less than or
  * equal to the length of the input string, no padding will occur.
  *
+ * @psalm-pure
+ *
  * @throws Psl\Exception\InvariantViolationException If $pad_string is empty, or $total_length is negative.
  */
 function pad_right(string $string, int $total_length, string $pad_string = ' '): string

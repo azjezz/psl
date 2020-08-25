@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl\Iter;
-
 /**
  * Join array elements with a string.
  *
@@ -17,12 +15,14 @@ use Psl\Iter;
  *      Str\join(['Hello', 'World'], ', ')
  *      => Str('Hello, World')
  *
- * @param iterable<string> $pieces the array of strings to implode
+ * @psalm-param list<string> $pieces the array of strings to implode
  *
  * @return string a string containing a string representation of all the array
  *                elements in the same order, with the glue string between each element
+ *
+ * @psalm-pure
  */
-function join(iterable $pieces, string $glue): string
+function join(array $pieces, string $glue): string
 {
-    return \implode($glue, Iter\to_array($pieces));
+    return \implode($glue, $pieces);
 }

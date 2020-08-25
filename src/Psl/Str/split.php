@@ -16,6 +16,8 @@ use Psl\Math;
  *
  * @psalm-return list<string>
  *
+ * @psalm-pure
+ *
  * @throws Psl\Exception\InvariantViolationException If a negative $limit is given.
  */
 function split(string $string, string $delimiter, ?int $limit = null): array

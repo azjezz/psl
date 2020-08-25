@@ -8,6 +8,8 @@ namespace Psl\Str\Byte;
  * Returns < 0 if `$string1` is less than `$string2`, > 0 if `$string1` is
  * greater than `$string2`, and 0 if they are equal (case-insensitive).
  *
+ * @psalm-pure
+ *
  * @param int|null $length number of characters to use in the comparison,
  *                         or null to compare the whole string
  */

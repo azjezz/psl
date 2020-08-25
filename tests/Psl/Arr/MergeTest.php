@@ -24,11 +24,11 @@ class MergeTest extends TestCase
             [
                 ['a' => 'b', 'b' => 'c', 'c' => 'd', 'd' => 'e'],
 
-                new Collection\Map(['a' => 'foo', 'b' => 'bar']),
+                ['a' => 'foo', 'b' => 'bar'],
                 ['a' => 'b'],
-                new Collection\MutableMap(['b' => 'c', 'c' => 'd']),
-                (fn () => yield 'd' => 'baz')(),
-                (fn () => yield 'd' => 'e')(),
+                ['b' => 'c', 'c' => 'd'],
+                ['d' => 'baz'],
+                ['d' => 'e'],
             ],
 
             [

@@ -10,6 +10,8 @@ namespace Psl\Arr;
  * @psalm-param mixed   $var
  *
  * @psalm-assert-if-true array<array-key,mixed> $var
+ *
+ * @psalm-pure
  */
 function is_array($var): bool
 {

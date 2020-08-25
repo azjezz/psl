@@ -11,6 +11,8 @@ use Psl\Arr;
  * `$replacements` replaced by the corresponding values (case-insensitive).
  *
  * @psalm-param iterable<string, string> $replacements
+ *
+ * @psalm-pure
  */
 function replace_every_ci(string $haystack, iterable $replacements): string
 {

@@ -16,6 +16,8 @@ use Psl;
  *
  *      Str\chr(1604)
  *      => Str('ل')
+ *
+ * @psalm-pure
  */
 function chr(int $ascii): string
 {

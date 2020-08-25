@@ -11,6 +11,8 @@ use Psl;
  *
  * @param float|int $number
  *
+ * @psalm-pure
+ *
  * @throws Psl\Exception\InvariantViolationException If $number is negative.
  */
 function sqrt(float $number): float

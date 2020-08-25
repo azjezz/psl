@@ -6,6 +6,8 @@ namespace Psl\Str\Byte;
 
 /**
  * Returns whether the string starts with the given prefix (case-insensitive).
+ *
+ * @psalm-pure
  */
 function starts_with_ci(string $str, string $prefix): bool
 {

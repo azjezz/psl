@@ -14,6 +14,8 @@ use Psl;
  * offset is negative, the search will begin that many characters from the end
  * of the string.
  *
+ * @psalm-pure
+ *
  * @throws Psl\Exception\InvariantViolationException If $offset is out-of-bounds.
  */
 function search_ci(string $haystack, string $needle, int $offset = 0): ?int

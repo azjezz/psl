@@ -31,6 +31,8 @@ use Psl;
  *                  If the $chunk_size length exceeds the length of string, the entire string is returned
  *                  as the first (and only) array element.
  *
+ * @psalm-pure
+ *
  * @throws Psl\Exception\InvariantViolationException If the given $chunk_size is negative or above the limit ( 65535 ).
  */
 function chunk(string $string, int $chunk_size = 1): array

@@ -19,6 +19,8 @@ use Psl;
  *      Str\repeat('?', 5)
  *      => Str('?????')
  *
+ * @psalm-pure
+ *
  * @throws Psl\Exception\InvariantViolationException If $multiplier is negative.
  */
 function repeat(string $string, int $multiplier): string

@@ -10,6 +10,8 @@ use Psl;
  * Verifies that the `$offset` is within plus/minus `$length`. Returns the
  * offset as a positive integer.
  *
+ * @psalm-pure
+ *
  * @codeCoverageIgnore
  *
  * @throws Psl\Exception\InvariantViolationException If the offset is out-of-bounds.

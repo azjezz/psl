@@ -9,6 +9,8 @@ namespace Psl\Internal;
  *
  * @return string
  *
+ * @psalm-pure
+ *
  * @codeCoverageIgnore
  *
  * @internal

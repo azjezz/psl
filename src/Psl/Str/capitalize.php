@@ -23,6 +23,8 @@ namespace Psl\Str;
  *
  *      Str\capitalize('1337')
  *      => Str('1337)
+ *
+ * @psalm-pure
  */
 function capitalize(string $string): string
 {

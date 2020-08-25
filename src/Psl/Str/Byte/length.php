@@ -6,6 +6,8 @@ namespace Psl\Str\Byte;
 
 /**
  * Returns the length of the given string, i.e. the number of bytes.
+ *
+ * @psalm-pure
  */
 function length(string $str): int
 {

@@ -9,6 +9,8 @@ use Psl;
 /**
  * Returns the logarithm base of the given number.
  *
+ * @psalm-pure
+ *
  * @throws Psl\Exception\InvariantViolationException If $num or $base are negative, or $base is equal to 1.0.
  */
 function log(float $num, ?float $base = null): float

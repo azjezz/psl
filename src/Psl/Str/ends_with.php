@@ -29,11 +29,11 @@ namespace Psl\Str;
  *
  *      Str\ends_with('تونس', 'ش')
  *      => Bool(false)
+ *
+ * @psalm-pure
  */
-function ends_with(
-    string $string,
-    string $suffix
-): bool {
+function ends_with(string $string, string $suffix): bool
+{
     if ($suffix === $string) {
         return true;
     }

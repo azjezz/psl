@@ -17,6 +17,8 @@ namespace Psl\Str;
  *
  *      Str\length('تونس')
  *      => Int(4)
+ *
+ * @psalm-pure
  */
 function length(string $str): int
 {

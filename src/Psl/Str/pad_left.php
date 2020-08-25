@@ -28,6 +28,8 @@ use Psl;
  *      Str\pad_left('مرحبا', 8, 'م')
  *      => Str('ممممرحبا')
  *
+ * @psalm-pure
+ *
  * @throws Psl\Exception\InvariantViolationException If the $pad_string is empty, or a negative $total_length is given.
  */
 function pad_left(string $string, int $total_length, string $pad_string = ' '): string

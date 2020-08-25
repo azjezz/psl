@@ -25,6 +25,8 @@ namespace Psl\Math;
  * @psalm-param (callable(T): numeric) $num_func
  *
  * @psalm-return null|T
+ *
+ * @psalm-pure
  */
 function min_by(iterable $values, callable $num_func)
 {

@@ -11,6 +11,8 @@ namespace Psl\Math;
  * the nearest tenth whereas a precision of -1 rounds to the nearst nearest.
  *
  * @param float|int $value
+ *
+ * @psalm-pure
  */
 function round(float $value, int $precision = 0): float
 {

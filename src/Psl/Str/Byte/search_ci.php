@@ -15,6 +15,8 @@ use Psl;
  * of the string. If the offset is out-of-bounds, a InvariantViolationException will be
  * thrown.
  *
+ * @psalm-pure
+ *
  * @throws Psl\Exception\InvariantViolationException If $offset is out-of-bounds.
  */
 function search_ci(string $haystack, string $needle, int $offset = 0): ?int

@@ -8,6 +8,8 @@ namespace Psl\Math;
  * Returns the integer sum of the values of the given iterable.
  *
  * @psalm-param iterable<int> $numbers
+ *
+ * @psalm-pure
  */
 function sum(iterable $numbers): int
 {

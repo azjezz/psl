@@ -6,6 +6,8 @@ namespace Psl\Str\Byte;
 
 /**
  * Returns whether the string ends with the given suffix (case-insensitive).
+ *
+ * @psalm-pure
  */
 function ends_with_ci(string $string, string $suffix): bool
 {

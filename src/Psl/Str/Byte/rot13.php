@@ -6,6 +6,8 @@ namespace Psl\Str\Byte;
 
 /**
  * Perform the rot13 transform on a string.
+ *
+ * @psalm-pure
  */
 function rot13(string $string): string
 {

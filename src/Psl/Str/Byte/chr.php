@@ -6,6 +6,8 @@ namespace Psl\Str\Byte;
 
 /**
  * Return a specific character.
+ *
+ * @psalm-pure
  */
 function chr(int $ascii): string
 {

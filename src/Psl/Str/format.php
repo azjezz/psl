@@ -32,6 +32,8 @@ namespace Psl\Str;
  *
  * @return string a string produced according to the formatting string
  *                format
+ *
+ * @psalm-pure
  */
 function format(string $format, ...$args): string
 {

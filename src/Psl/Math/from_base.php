@@ -19,6 +19,8 @@ use Psl\Str\Byte;
  *      Math\from_base('ff', 15)
  *      => Int(255)
  *
+ * @psalm-pure
+ *
  * @throws Psl\Exception\InvariantViolationException If $number is empty, $from_base is outside the [2, 36] range, or $number is invalid.
  */
 function from_base(string $number, int $from_base): int
@@ -26,6 +28,7 @@ function from_base(string $number, int $from_base): int
     Psl\invariant('' !== $number, 'Unexpected empty string, expected number in base %d', $from_base);
     Psl\invariant($from_base >= 2 && $from_base <= 36, 'Expected $from_base to be between 2 and 36, got %d', $from_base);
 
+    /** @psalm-suppress MissingThrowsDocblock */
     $limit = div(INT64_MAX, $from_base);
     $result = 0;
     /** @var string $digit */

@@ -19,6 +19,8 @@ use Psl;
  * @psalm-param (callable(T): numeric) $num_func
  *
  * @psalm-return null|T
+ *
+ * @psalm-pure
  */
 function max_by(iterable $values, callable $num_func)
 {

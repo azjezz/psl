@@ -21,6 +21,8 @@ namespace Psl\Str;
  * @param mixed $value
  *
  * @psalm-assert-if-true string $value
+ *
+ * @psalm-pure
  */
 function is_string($value): bool
 {

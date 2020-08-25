@@ -23,6 +23,8 @@ use Psl;
  * @psalm-param array<Tk, Tv> $array
  *
  * @psalm-return list<Tv> the shuffled array.
+ *
+ * @psalm-pure
  */
 function shuffle(array $array): array
 {

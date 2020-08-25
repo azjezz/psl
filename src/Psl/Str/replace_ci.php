@@ -7,6 +7,8 @@ namespace Psl\Str;
 /**
  * Returns the 'haystack' string with all occurrences of `$needle` replaced by
  * `$replacement` (case-insensitive).
+ *
+ * @psalm-pure
  */
 function replace_ci(string $haystack, string $needle, string $replacement): string
 {

@@ -10,14 +10,21 @@ use Psl\Iter;
  * Returns true if the given iterable contains the value. Strict equality is
  * used.
  *
- * @see Iter\contains()
+ * @psalm-template Tk
+ * @psalm-template Tv
  *
- * @psalm-template T
+ * @psalm-param array<Tk, Tv>   $array
+ * @psalm-param Tk              $value
  *
- * @psalm-param iterable<T>    $iterable
- * @psalm-param T           $value
+ * @psalm-pure
  */
-function contains(iterable $iterable, $value): bool
+function contains(array $array, $value): bool
 {
-    return Iter\contains($iterable, $value);
+    foreach ($array as $v) {
+        if ($value === $v) {
+            return true;
+        }
+    }
+
+    return false;
 }

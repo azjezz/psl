@@ -19,15 +19,15 @@ namespace Psl\Arr;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<iterable<Tk, Tv>> $iterables
+ * @psalm-param array<array<Tk, Tv>> $arrays
  *
  * @psalm-return array<Tk, Tv>
  */
-function flatten(iterable $iterables): array
+function flatten(array $arrays): array
 {
     $result = [];
-    foreach ($iterables as $iterable) {
-        foreach ($iterable as $key => $value) {
+    foreach ($arrays as $array) {
+        foreach ($array as $key => $value) {
             $result[$key] = $value;
         }
     }

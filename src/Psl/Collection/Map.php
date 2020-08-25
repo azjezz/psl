@@ -18,6 +18,8 @@ final class Map implements MapInterface
 {
     /**
      * @psalm-var array<Tk, Tv> $elements
+     *
+     * @psalm-readonly
      */
     protected array $elements;
 

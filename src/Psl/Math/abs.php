@@ -24,7 +24,10 @@ namespace Psl\Math;
  *
  * @psalm-return T
  *
+ * @psalm-pure
+ *
  * @see https://github.com/vimeo/psalm/issues/2152
+ *
  * @psalm-suppress InvalidReturnType
  * @psalm-suppress InvalidReturnStatement
  */

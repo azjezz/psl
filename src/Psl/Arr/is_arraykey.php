@@ -12,6 +12,8 @@ use Psl\Str;
  * @psalm-param mixed   $key
  *
  * @psalm-assert-if-true array-key $key
+ *
+ * @psalm-pure
  */
 function is_arraykey($key): bool
 {

@@ -15,6 +15,8 @@ use Psl\Str;
  *
  * @return mixed
  *
+ * @psalm-pure
+ *
  * @throws Exception\JsonDecodeException If an error occurred.
  */
 function decode(string $json, bool $assoc = true)

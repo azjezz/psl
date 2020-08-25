@@ -14,6 +14,8 @@ use Psl;
  * string. If the length is zero, the empty string will be returned. If the
  * offset is out-of-bounds, an InvariantViolationException will be thrown.
  *
+ * @psalm-pure
+ *
  * @throws Psl\Exception\InvariantViolationException If $length is negative, or the $offset is out-of-bounds.
  */
 function slice(string $string, int $offset, ?int $length = null): string

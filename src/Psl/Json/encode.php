@@ -18,6 +18,8 @@ use Psl\Str;
  *
  * @param mixed $value
  *
+ * @psalm-pure
+ *
  * @throws Exception\JsonEncodeException If an error occurred.
  */
 function encode($value, bool $pretty = false, int $flags = 0): string

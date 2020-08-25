@@ -13,6 +13,8 @@ namespace Psl\Str\Byte;
  *                      a word that is larger than the given width, it is broken apart.
  *
  * @return string the given string wrapped at the specified column
+ *
+ * @psalm-pure
  */
 function wrap(string $str, int $width = 75, string $break = "\n", bool $cut = false): string
 {

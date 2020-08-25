@@ -10,9 +10,11 @@ use Psl;
  * Returns the 'haystack' string with all occurrences of the keys of
  * `$replacements` replaced by the corresponding values (case-insensitive).
  *
- * @psalm-param iterable<string, string> $replacements
+ * @psalm-param array<string, string> $replacements
+ *
+ * @psalm-pure
  */
-function replace_every_ci(string $haystack, iterable $replacements): string
+function replace_every_ci(string $haystack, array $replacements): string
 {
     foreach ($replacements as $needle => $replacement) {
         if ('' === $needle || null === search_ci($haystack, $needle)) {

@@ -14,6 +14,8 @@ namespace Psl\Math;
  *
  *      Math\exp(5.7)
  *      => Float(298.8674009670603)
+ *
+ * @psalm-pure
  */
 function exp(float $num): float
 {

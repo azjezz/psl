@@ -11,6 +11,8 @@ namespace Psl\Str;
  *                      The default value of 0 means no restriction.
  *
  * @return string|null the metaphone key as a string, or NULL on failure
+ *
+ * @psalm-pure
  */
 function metaphone(string $str, int $phonemes = 0): ?string
 {

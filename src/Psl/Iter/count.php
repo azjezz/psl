@@ -27,7 +27,6 @@ namespace Psl\Iter;
 function count(iterable $iterable): int
 {
     if (\is_countable($iterable)) {
-        /** @var array<array-key, T>|\Countable $iterable */
         return \count($iterable);
     }
 

@@ -6,6 +6,8 @@ namespace Psl\Str;
 
 /**
  * Return width of length.
+ *
+ * @psalm-pure
  */
 function width(string $str): int
 {

@@ -18,6 +18,8 @@ use Psl;
  *                  as the first (and only) array element.
  *                  If the given string is empty, and empty array will be returned.
  *
+ * @psalm-pure
+ *
  * @throws Psl\Exception\InvariantViolationException If $chunk_size is negative.
  */
 function chunk(string $string, int $chunk_size = 1): array

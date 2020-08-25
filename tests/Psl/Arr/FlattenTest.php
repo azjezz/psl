@@ -13,9 +13,9 @@ class FlattenTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testFlatten(array $expected, iterable $iterables): void
+    public function testFlatten(array $expected, array $arrays): void
     {
-        self::assertSame($expected, Arr\flatten($iterables));
+        self::assertSame($expected, Arr\flatten($arrays));
     }
 
     public function provideData(): array
@@ -24,13 +24,13 @@ class FlattenTest extends TestCase
             [
                 ['a' => 'b', 'b' => 'c', 'c' => 'd', 'd' => 'e'],
 
-                new Collection\Vector([
-                    new Collection\Map(['a' => 'foo', 'b' => 'bar']),
+                [
+                    ['a' => 'foo', 'b' => 'bar'],
                     ['a' => 'b'],
-                    new Collection\MutableMap(['b' => 'c', 'c' => 'd']),
-                    (fn () => yield 'd' => 'baz')(),
-                    (fn () => yield 'd' => 'e')(),
-                ]),
+                    ['b' => 'c', 'c' => 'd'],
+                    ['d' => 'baz'],
+                    ['d' => 'e'],
+                ],
             ],
 
             [
