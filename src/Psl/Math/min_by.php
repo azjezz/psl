@@ -21,14 +21,14 @@ namespace Psl\Math;
  *
  * @psalm-template T
  *
- * @psalm-param iterable<T> $values
+ * @psalm-param list<T> $values
  * @psalm-param (callable(T): numeric) $num_func
  *
  * @psalm-return null|T
  *
  * @psalm-pure
  */
-function min_by(iterable $values, callable $num_func)
+function min_by(array $values, callable $num_func)
 {
     $min = null;
     $min_num = null;

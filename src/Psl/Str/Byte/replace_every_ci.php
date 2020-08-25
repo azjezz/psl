@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace Psl\Str\Byte;
 
-use Psl\Arr;
-
 /**
  * Returns the 'haystack' string with all occurrences of the keys of
  * `$replacements` replaced by the corresponding values (case-insensitive).
  *
- * @psalm-param iterable<string, string> $replacements
+ * @psalm-param array<string, string> $replacements
  *
  * @psalm-pure
  */
-function replace_every_ci(string $haystack, iterable $replacements): string
+function replace_every_ci(string $haystack, array $replacements): string
 {
     /** @psalm-var list<string> $search */
     $search = [];

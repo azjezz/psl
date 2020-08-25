@@ -10,13 +10,13 @@ namespace Psl\Math;
  *
  * @psalm-template T of int|float
  *
- * @psalm-param iterable<T> $numbers
+ * @psalm-param list<T> $numbers
  *
  * @psalm-return null|T
  *
  * @psalm-pure
  */
-function max(iterable $numbers)
+function max(array $numbers)
 {
     $max = null;
     foreach ($numbers as $number) {

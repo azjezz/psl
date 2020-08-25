@@ -86,8 +86,6 @@ final class Vector implements VectorInterface
      * Get an array copy of the current vector.
      *
      * @psalm-return list<T>
-     *
-     * @psalm-pure
      */
     public function toArray(): array
     {

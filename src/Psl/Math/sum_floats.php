@@ -7,11 +7,11 @@ namespace Psl\Math;
 /**
  * Returns the float sum of the values of the given iterable.
  *
- * @psalm-param iterable<numeric> $numbers
+ * @psalm-param list<numeric> $numbers
  *
  * @psalm-pure
  */
-function sum_floats(iterable $numbers): float
+function sum_floats(array $numbers): float
 {
     $result = 0.0;
     foreach ($numbers as $number) {
