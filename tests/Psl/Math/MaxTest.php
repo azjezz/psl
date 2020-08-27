@@ -13,7 +13,7 @@ class MaxTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testMax($expected, iterable $numbers): void
+    public function testMax($expected, array $numbers): void
     {
         self::assertSame($expected, Math\max($numbers));
     }
@@ -23,12 +23,12 @@ class MaxTest extends TestCase
         return [
             [
                 10,
-                Iter\range(0, 10, 2)
+                [0, 2, 4, 6, 8, 10],
             ],
 
             [
                 15,
-                [...Iter\to_array(Iter\range(0, 10)), 15]
+                [0, 2, 4, 6, 8, 10, 15],
             ],
 
             [

@@ -14,7 +14,7 @@ class MinTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testMin($expected, iterable $numbers): void
+    public function testMin($expected, array $numbers): void
     {
         self::assertSame($expected, Math\min($numbers));
     }
@@ -24,12 +24,12 @@ class MinTest extends TestCase
         return [
             [
                 0,
-                Iter\range(0, 10, 2)
+                [...Iter\range(0, 10, 2)]
             ],
 
             [
                 4,
-                [...Iter\to_array(Iter\range(5, 10)), 4]
+                [...Iter\range(5, 10), 4]
             ],
 
             [

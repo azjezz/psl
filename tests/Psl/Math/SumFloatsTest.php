@@ -13,7 +13,7 @@ class SumFloatsTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testSumFloats(float $expected, iterable $numbers): void
+    public function testSumFloats(float $expected, array $numbers): void
     {
         self::assertSame($expected, Math\sum_floats($numbers));
     }

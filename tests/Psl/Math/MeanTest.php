@@ -14,7 +14,7 @@ class MeanTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testMean($expected, iterable $numbers): void
+    public function testMean($expected, array $numbers): void
     {
         self::assertSame($expected, Math\mean($numbers));
     }
@@ -27,7 +27,11 @@ class MeanTest extends TestCase
                 [
                     10,
                     5,
-                    ...Iter\range(0, 9, 2),
+                    0,
+                    2,
+                    4,
+                    6,
+                    8,
                 ],
             ],
 
@@ -36,7 +40,17 @@ class MeanTest extends TestCase
                 [
                     18,
                     15,
-                    ...Iter\to_array(Iter\range(0, 10)),
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
                     15,
                 ],
             ],
@@ -46,7 +60,16 @@ class MeanTest extends TestCase
                 [
                     19,
                     15,
-                    ...Iter\range(0, 45, 5),
+                    0,
+                    5,
+                    10,
+                    15,
+                    20,
+                    25,
+                    30,
+                    35,
+                    40,
+                    45,
                     52,
                     64,
                 ],
@@ -56,7 +79,6 @@ class MeanTest extends TestCase
                 100.0,
                 Arr\fill(100, 0, 100)
             ],
-
 
             [
                 null,

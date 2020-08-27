@@ -14,7 +14,7 @@ class MinByTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testMinBy($expected, iterable $values, callable $fun): void
+    public function testMinBy($expected, array $values, callable $fun): void
     {
         self::assertSame($expected, Math\min_by($values, $fun));
     }
@@ -40,7 +40,7 @@ class MinByTest extends TestCase
 
             [
                 0,
-                Iter\range(0, 9),
+                [...Iter\range(0, 9)],
                 fn ($i) => $i
             ],
 

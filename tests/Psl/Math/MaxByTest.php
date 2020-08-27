@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Math;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Iter;
+use Psl\Arr;
 use Psl\Math;
 use Psl\Str;
 
@@ -14,7 +14,7 @@ class MaxByTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testMaxBy($expected, iterable $values, callable $fun): void
+    public function testMaxBy($expected, array $values, callable $fun): void
     {
         self::assertSame($expected, Math\max_by($values, $fun));
     }
@@ -35,12 +35,12 @@ class MaxByTest extends TestCase
                     ['foo', 'bar'],
                     ['foo', 'bar', 'baz']
                 ],
-                fn ($arr) => Iter\count($arr)
+                fn ($arr) => Arr\count($arr)
             ],
 
             [
                 9,
-                Iter\range(0, 9),
+                [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
                 fn ($i) => $i
             ],
 

@@ -14,7 +14,7 @@ class MedianTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testMedian($expected, iterable $numbers): void
+    public function testMedian($expected, array $numbers): void
     {
         self::assertSame($expected, Math\median($numbers));
     }
@@ -36,7 +36,7 @@ class MedianTest extends TestCase
                 [
                     18,
                     15,
-                    ...Iter\to_array(Iter\range(0, 10)),
+                    ...Iter\range(0, 10),
                     15,
                 ],
             ],
