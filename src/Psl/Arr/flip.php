@@ -12,8 +12,8 @@ use Psl;
  *
  * Examples:
  *
- *      Iter\flip(['a' => 1, 'b' => 2, 'c' => 3])
- *      => Iter(1 => 'a', 2 => 'b', 3 => 'c')
+ *      Arr\flip(['a' => 1, 'b' => 2, 'c' => 3])
+ *      => Arr(1 => 'a', 2 => 'b', 3 => 'c')
  *
  * @psalm-template Tk of array-key
  * @psalm-template Tv of array-key

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
-use Psl\Iter;
-
 /**
  * Returns a new array sorted by some scalar property of each value of the given
  * array, which is computed by the given function. If the optional

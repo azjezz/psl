@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Psl\Arr;
 
 use Psl;
-use Psl\Iter;
-use Psl\Str;
 
 /**
  * Returns a new array in which each value appears exactly once, where the
