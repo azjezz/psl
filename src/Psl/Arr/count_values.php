@@ -5,24 +5,21 @@ declare(strict_types=1);
 namespace Psl\Arr;
 
 use Psl;
-use Psl\Iter;
-use Psl\Str;
 
 /**
  * Returns a new array mapping each value to the number of times it appears
- * in the given iterable.
+ * in the given array.
  *
  * @psalm-template T of array-key
  *
- * @psalm-param iterable<T> $values
+ * @psalm-param list<T> $values
  *
  * @psalm-return array<T, int>
- * @return int[]
+ *
+ * @psalm-pure
  */
-function count_values(iterable $values): array
+function count_values(array $values): array
 {
-    /** @psalm-var list<T> $values */
-    $values = Iter\to_array($values);
     /** @psalm-var array<T, int> $result */
     $result = [];
 

@@ -12,7 +12,7 @@ class SelectKeysTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testSelectKeys(array $result, array $array, iterable $keys): void
+    public function testSelectKeys(array $result, array $array, array $keys): void
     {
         self::assertSame($result, Arr\select_keys($array, $keys));
     }

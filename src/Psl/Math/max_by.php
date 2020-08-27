@@ -15,8 +15,8 @@ use Psl;
  *
  * @psalm-template T
  *
- * @psalm-param list<T> $values
- * @psalm-param (callable(T): numeric) $num_func
+ * @psalm-param list<T>                     $values
+ * @psalm-param (pure-callable(T): numeric) $num_func
  *
  * @psalm-return null|T
  *

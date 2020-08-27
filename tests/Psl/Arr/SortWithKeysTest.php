@@ -14,9 +14,9 @@ class SortWithKeysTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testSort(array $expected, iterable $iterable, ?callable $comparator = null): void
+    public function testSort(array $expected, array $array, ?callable $comparator = null): void
     {
-        static::assertSame($expected, Arr\sort_with_keys($iterable, $comparator));
+        static::assertSame($expected, Arr\sort_with_keys($array, $comparator));
     }
 
     public function provideData(): array
@@ -24,12 +24,12 @@ class SortWithKeysTest extends TestCase
         return [
             [
                 [1 => 'a', 2 => 'b', 0 => 'c'],
-                new Collection\Vector(['c', 'a', 'b']),
+                ['c', 'a', 'b'],
             ],
 
             [
                 [8, 9, 10],
-                new Collection\MutableVector(Iter\range(8, 10)),
+                [8, 9, 10],
                 fn (int $a, int $b) => $a <=> $b ? -1 : 1,
             ],
 

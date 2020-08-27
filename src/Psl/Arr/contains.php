@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
-use Psl\Iter;
-
 /**
- * Returns true if the given iterable contains the value. Strict equality is
+ * Returns true if the given array contains the value. Strict equality is
  * used.
  *
  * @psalm-template Tk

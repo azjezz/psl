@@ -4,30 +4,28 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
-use Psl\Iter;
-
 /**
- * Returns a new array sorted by the keys of the given iterable. If the
+ * Returns a new array sorted by the keys of the given array. If the
  * optional comparator function isn't provided, the keys will be sorted in
  * ascending order.
  *
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv> $iterable
- * @psalm-param null|(callable(Tk, Tk): int) $comparator
+ * @psalm-param array<Tk, Tv>                       $array
+ * @psalm-param null|(pure-callable(Tk, Tk): int)   $comparator
  *
  * @psalm-return array<Tk, Tv>
+ *
+ * @psalm-pure
  */
-function sort_by_key(iterable $iterable, ?callable $comparator = null): array
+function sort_by_key(array $array, ?callable $comparator = null): array
 {
-    $result = Iter\to_array_with_keys($iterable);
     if ($comparator) {
-        \uksort($result, $comparator);
+        \uksort($array, $comparator);
     } else {
-        \ksort($result);
+        \ksort($array);
     }
 
-    /** @psalm-var array<Tk, Tv> $result  */
-    return $result;
+    return $array;
 }

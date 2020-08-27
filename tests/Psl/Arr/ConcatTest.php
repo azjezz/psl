@@ -13,7 +13,7 @@ class ConcatTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testConcat(array $expected, iterable $first, iterable ...$other): void
+    public function testConcat(array $expected, array $first, array ...$other): void
     {
         static::assertSame($expected, Arr\concat($first, ...$other));
     }
@@ -29,21 +29,13 @@ class ConcatTest extends TestCase
             ],
             [
                 ['foo', 'bar', 'baz', 'qux'],
-                new Collection\Map(['foo']),
-                new Collection\Vector(['bar']),
-                new Collection\MutableVector(['baz', 'qux']),
+                ['foo'],
+                ['bar'],
+                ['baz', 'qux'],
             ],
             [
                 [1, 2, 3],
                 [1, 2, 3],
-            ],
-            [
-                ['a', 'b', 'c', 'd', 'e'],
-                ['a'],
-                (fn () => yield 'b')(),
-                new Collection\Map(['c']),
-                new Collection\MutableVector(['d']),
-                new Collection\Vector(['e']),
             ],
         ];
     }

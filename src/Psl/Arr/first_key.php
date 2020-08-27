@@ -13,7 +13,6 @@ namespace Psl\Arr;
  *
  * @psalm-return Tk|null
  *
- * @psalm-ignore-nullable-return
  * @psalm-pure
  */
 function first_key(array $array)

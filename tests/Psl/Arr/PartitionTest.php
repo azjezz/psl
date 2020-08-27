@@ -6,7 +6,6 @@ namespace Psl\Tests\Arr;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
-use Psl\Collection;
 use Psl\Str;
 
 class PartitionTest extends TestCase
@@ -14,9 +13,9 @@ class PartitionTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testPartition(array $expected, iterable $iterable, callable $predicate): void
+    public function testPartition(array $expected, array $array, callable $predicate): void
     {
-        self::assertSame($expected, Arr\partition($iterable, $predicate));
+        self::assertSame($expected, Arr\partition($array, $predicate));
     }
 
     public function provideData(): array
@@ -24,13 +23,13 @@ class PartitionTest extends TestCase
         return [
             [
                 [['bar', 'baz'], ['foo', 'qux']],
-                new Collection\Vector(['foo', 'bar', 'baz', 'qux']),
+                ['foo', 'bar', 'baz', 'qux'],
                 fn (string $str) => Str\starts_with($str, 'b'),
             ],
 
             [
                 [['bar', 'baz'], ['foo', 'qux']],
-                new Collection\Map(['foo', 'bar', 'baz', 'qux']),
+                ['foo', 'bar', 'baz', 'qux'],
                 fn (string $str) => Str\starts_with($str, 'b'),
             ],
 
@@ -42,13 +41,13 @@ class PartitionTest extends TestCase
 
             [
                 [[], ['foo', 'bar', 'baz', 'qux']],
-                new Collection\Map(['foo', 'bar', 'baz', 'qux']),
+                ['foo', 'bar', 'baz', 'qux'],
                 fn (string $str) => false,
             ],
 
             [
                 [['foo', 'bar', 'baz', 'qux'], []],
-                new Collection\Map(['foo', 'bar', 'baz', 'qux']),
+                ['foo', 'bar', 'baz', 'qux'],
                 fn (string $str) => true,
             ],
         ];

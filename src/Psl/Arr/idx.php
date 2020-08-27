@@ -27,6 +27,8 @@ namespace Psl\Arr;
  * @psalm-param    null|Tv         $default
  *
  * @psalm-return   null|Tv
+ *
+ * @psalm-pure
  */
 function idx(array $array, $index, $default = null)
 {

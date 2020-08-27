@@ -17,19 +17,18 @@ use Psl\Str;
  * @psalm-template Tv
  * @psalm-template Ts of array-key
  *
- * @psalm-param iterable<Tk, Tv>    $iterable
- * @psalm-param (callable(Tv): Ts)  $scalar_func
+ * @psalm-param array<Tk, Tv>           $array
+ * @psalm-param (pure-callable(Tv): Ts) $scalar_func
  *
  * @psalm-return array<Tk, Tv>
- * @return array
+ *
+ * @psalm-pure
  */
-function unique_by(iterable $iterable, callable $scalar_func): array
+function unique_by(array $array, callable $scalar_func): array
 {
-    /** @psalm-var array<Tk, Tv> $iterable */
-    $iterable = Iter\to_array_with_keys($iterable);
     /** @psalm-var array<Tk, Ts> $unique */
     $unique = [];
-    foreach ($iterable as $k => $v) {
+    foreach ($array as $k => $v) {
         /** @psalm-var Ts $scalar */
         $scalar = $scalar_func($v);
 
@@ -38,18 +37,11 @@ function unique_by(iterable $iterable, callable $scalar_func): array
         }
     }
 
-    /** @psalm-var \Generator<Tk, Tv, mixed, void> $unique */
-    $unique = Iter\map_with_key(
-        $unique,
-        /**
-         * @psalm-param Tk $k
-         * @psalm-param Ts $v
-         *
-         * @psalm-return Tv
-         */
-        fn ($k, $v) => $iterable[$k]
-    );
+    /** @psalm-var array<Tk, Tv> $result */
+    $result = [];
+    foreach ($unique as $k => $_) {
+        $result[$k] = $array[$k];
+    }
 
-    /** @psalm-var array<Tk, Tv> */
-    return Iter\to_array_with_keys($unique);
+    return $result;
 }

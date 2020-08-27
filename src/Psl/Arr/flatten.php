@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Arr;
 
 /**
- * Returns a new array formed by merging the iterable elements of the
- * given iterable. In the case of duplicate keys, later values will overwrite
+ * Returns a new array formed by merging the array elements of the
+ * given array. In the case of duplicate keys, later values will overwrite
  * the previous ones.
  *
  * Example:
@@ -22,6 +22,8 @@ namespace Psl\Arr;
  * @psalm-param array<array<Tk, Tv>> $arrays
  *
  * @psalm-return array<Tk, Tv>
+ *
+ * @psalm-pure
  */
 function flatten(array $arrays): array
 {

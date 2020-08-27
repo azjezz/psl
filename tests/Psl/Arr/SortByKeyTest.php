@@ -13,9 +13,9 @@ class SortByKeyTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testSortByKey(array $expected, iterable $iterable, ?callable $comparator = null): void
+    public function testSortByKey(array $expected, array $array, ?callable $comparator = null): void
     {
-        self::assertSame($expected, Arr\sort_by_key($iterable, $comparator));
+        self::assertSame($expected, Arr\sort_by_key($array, $comparator));
     }
 
     public function provideData(): array

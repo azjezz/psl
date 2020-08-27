@@ -13,9 +13,9 @@ class UniqueByTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testUniqueBy(array $expected, iterable $iterable, callable $scalar_fun): void
+    public function testUniqueBy(array $expected, array $array, callable $scalar_fun): void
     {
-        static::assertSame($expected, Arr\unique_by($iterable, $scalar_fun));
+        static::assertSame($expected, Arr\unique_by($array, $scalar_fun));
     }
 
     public function provideData(): array
@@ -24,13 +24,13 @@ class UniqueByTest extends TestCase
             [
                 [0 => 'a', 4 => 'saif'],
                 ['a', 'b', 'c', 'd', 'saif', 'jack'],
-                fn ($value) => Str\length($value),
+                fn (string $value): int => Str\length($value),
             ],
 
             [
                 [0 => 'foo', 2 => 'bar', 4 => '@baz'],
                 ['foo', '@foo', 'bar', '@bar', '@baz'],
-                fn ($value) => Str\replace($value, '@', ''),
+                fn (string $value): string => Str\replace($value, '@', ''),
             ],
         ];
     }

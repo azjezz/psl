@@ -13,9 +13,9 @@ class MergeTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testMerge(array $expected, iterable $iterable, iterable ...$iterables): void
+    public function testMerge(array $expected, array $array, array ...$arrays): void
     {
-        self::assertSame($expected, Arr\merge($iterable, ...$iterables));
+        self::assertSame($expected, Arr\merge($array, ...$arrays));
     }
 
     public function provideData(): array

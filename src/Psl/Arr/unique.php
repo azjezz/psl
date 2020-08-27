@@ -10,16 +10,18 @@ namespace Psl\Arr;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv>    $iterable
+ * @psalm-param array<Tk, Tv>   $array
  *
  * @psalm-return array<Tk, Tv>
+ *
+ * @psalm-pure
  */
-function unique(iterable $iterable): array
+function unique(array $array): array
 {
     /** @psalm-var array<Tk, Tv> $unique */
     $unique = [];
 
-    foreach ($iterable as $k => $value) {
+    foreach ($array as $k => $value) {
         if (!contains($unique, $value)) {
             $unique[$k] = $value;
         }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Arr;
 
 /**
- * Merges multiple iterables into a new array. In the case of duplicate
+ * Merges multiple arrays into a new array. In the case of duplicate
  * keys, later values will overwrite the previous ones.
  *
  * Example:
@@ -20,9 +20,12 @@ namespace Psl\Arr;
  *
  * @psalm-param    array<Tk, Tv>        $first
  * @psalm-param    list<array<Tk, Tv>>  $rest
+ *
  * @psalm-return   array<Tk, Tv>
+ *
+ * @psalm-pure
  */
-function merge(iterable $first, array ...$rest): array
+function merge(array $first, array ...$rest): array
 {
     /** @psalm-var list<array<Tk, Tv>> $arrays */
     $arrays = [$first, ...$rest];

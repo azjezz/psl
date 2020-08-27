@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Arr;
 
 use Psl;
-use Psl\Iter;
 use Psl\PseudoRandom;
 
 /**
@@ -22,11 +21,11 @@ use Psl\PseudoRandom;
  */
 function random(array $values)
 {
-    Psl\invariant(!Iter\is_empty($values), 'Expected a non-empty-array.');
+    Psl\invariant(0 !== count($values), 'Expected a non-empty-array.');
 
     /** @psalm-var list<Tv> $shuffled */
     $shuffled = namespace\shuffle($values);
-    $size = Iter\count($values);
+    $size = namespace\count($values);
     if (1 === $size) {
         /** @psalm-var Tv */
         return $shuffled[0];

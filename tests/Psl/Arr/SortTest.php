@@ -6,17 +6,15 @@ namespace Psl\Tests\Arr;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
-use Psl\Collection;
-use Psl\Iter;
 
 class SortTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
-    public function testSort(array $expected, iterable $iterable, ?callable $comparator = null): void
+    public function testSort(array $expected, array $array, ?callable $comparator = null): void
     {
-        static::assertSame($expected, Arr\sort($iterable, $comparator));
+        static::assertSame($expected, Arr\sort($array, $comparator));
     }
 
     public function provideData(): array
@@ -24,12 +22,20 @@ class SortTest extends TestCase
         return [
             [
                 ['a', 'b', 'c'],
-                new Collection\Vector(['c', 'a', 'b']),
+                ['c', 'a', 'b'],
             ],
 
             [
                 [8, 9, 10],
-                new Collection\MutableVector(Iter\range(8, 10)),
+                [8, 9, 10],
+                /**
+                 * @param int $a
+                 * @param int $b
+                 *
+                 * @return int
+                 *
+                 * @psalm-pure
+                 */
                 fn (int $a, int $b) => $a <=> $b ? -1 : 1,
             ],
 

@@ -16,7 +16,7 @@ class GroupByTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testGroupBy(array $expected, iterable $values, callable $callable): void
+    public function testGroupBy(array $expected, array $values, callable $callable): void
     {
         self::assertSame($expected, Arr\group_by($values, $callable));
     }
@@ -26,19 +26,19 @@ class GroupByTest extends TestCase
         return [
             [
                 [7 => [2], 8 => [3], 9 => [4], 10 => [5], 11 => [6], 12 => [7, 8, 9, 10]],
-                Iter\range(0, 10),
+                [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                 fn ($i) => $i < 2 ? null : (($i >= 7) ? 12 : ($i + 5)),
             ],
 
             [
                 [7 => [2], 8 => [3], 9 => [4], 10 => [5], 11 => [6], 12 => [7], 13 => [8], 14 => [9], 15 => [10]],
-                Iter\range(0, 10),
+                [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                 fn ($i) => $i < 2 ? null : $i + 5,
             ],
 
             [
                 ['username' => ['@azjezz', '@fabpot', '@blacksun'], 'name' => ['Saif Eddin', 'Fabien', 'Gabrielle']],
-                new Collection\Vector(['@azjezz', 'Saif Eddin', '@fabpot', 'Fabien', '@blacksun', 'Gabrielle']),
+                ['@azjezz', 'Saif Eddin', '@fabpot', 'Fabien', '@blacksun', 'Gabrielle'],
                 fn ($name) => Str\starts_with($name, '@') ? 'username' : 'name',
             ],
         ];
@@ -50,7 +50,7 @@ class GroupByTest extends TestCase
         $this->expectExceptionMessage('Expected $key_func to return a value of type array-key, value of type (object) returned.');
 
         Arr\group_by(
-            Iter\range(0, 5),
+            [0, 1, 2, 3, 4, 5],
             fn ($x) => new Collection\Vector([$x, $x])
         );
     }

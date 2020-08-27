@@ -8,7 +8,7 @@ use Psl\Iter;
 
 /**
  * Returns a new array sorted by some scalar property of each value of the given
- * iterable, which is computed by the given function. If the optional
+ * array, which is computed by the given function. If the optional
  * comparator function isn't provided, the values will be sorted in ascending
  * order of scalar key.
  *
@@ -16,18 +16,22 @@ use Psl\Iter;
  * @psalm-template Tv
  * @psalm-template Ts
  *
- * @psalm-param    iterable<Tk, Tv> $iterable
- * @psalm-param    (callable(Tv): Ts) $scalar_func
- * @psalm-param    null|(callable(Ts, Ts): int) $comparator
+ * @psalm-param    array<Tk, Tv> $array
+ * @psalm-param    (pure-callable(Tv): Ts) $scalar_func
+ * @psalm-param    null|(pure-callable(Ts, Ts): int) $comparator
  *
  * @psalm-return   array<Tk, Tv>
+ *
+ * @psalm-pure
  */
-function sort_with_keys_by(iterable $iterable, callable $scalar_func, ?callable $comparator = null): array
+function sort_with_keys_by(array $array, callable $scalar_func, ?callable $comparator = null): array
 {
     $comparator ??=
         /**
          * @psalm-param Ts $a
          * @psalm-param Ts $b
+         *
+         * @psalm-pure
          */
         fn ($a, $b): int => $a <=> $b;
 
@@ -35,37 +39,29 @@ function sort_with_keys_by(iterable $iterable, callable $scalar_func, ?callable 
         /**
          * @psalm-param array{0: Ts, 1: Tv} $a
          * @psalm-param array{0: Ts, 1: Tv} $b
+         *
+         * @psalm-pure
          */
         fn ($a, $b): int => $comparator($a[0], $b[0]);
 
     /**
-     * @psalm-var Iter\Iterator<Tk, array{0: Ts, 1: Tv}> $tuples
+     * @psalm-var array<Tk, array{0: Ts, 1: Tv}> $tuples
      */
-    $tuples = Iter\map(
-        $iterable,
-        /**
-         * @psalm-param  Tv $value
-         *
-         * @psalm-return array{0: Ts, 1: Tv}
-         */
-        fn ($value) => [$scalar_func($value), $value],
-    );
+    $tuples = [];
+    foreach ($array as $k => $v) {
+        $tuples[$k] = [$scalar_func($v), $v];
+    }
 
-    $sorted = sort_with_keys($tuples, $tuple_comparator);
     /**
-     * @psalm-suppress InvalidArgument
-     * @psalm-suppress MixedArgumentTypeCoercion
+     * @psalm-var array<Tk, array{0: Ts, 1: Tv}> $sorted
      */
-    $result = Iter\map_with_key(
-        $sorted,
-        /**
-         * @psalm-param  Tk                     $k
-         * @psalm-param  array{0: Ts, 1: Tv}    $v
-         *
-         * @psalm-return Tv
-         */
-        fn ($k, $v) => $v[1]
-    );
+    $sorted = sort_with_keys($tuples, $tuple_comparator);
 
-    return Iter\to_array_with_keys($result);
+    /** @var array<Tk, Tv> $result */
+    $result = [];
+    foreach ($sorted as $k => $v) {
+        $result[$k] = $v[1];
+    }
+
+    return $result;
 }

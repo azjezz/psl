@@ -25,6 +25,8 @@ namespace Psl\Arr;
  * @psalm-template Tv
  *
  * @psalm-param array<Tk, Tv> $array
+ *
+ * @psalm-pure
  */
 function count(array $array): int
 {
