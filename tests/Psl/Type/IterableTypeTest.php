@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Type;
 
-use Psl\Gen;
 use Psl\Iter;
 use Psl\Str;
 use Psl\Type;
@@ -23,7 +22,7 @@ class IterableTypeTest extends TypeTest
     {
         yield [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]];
         yield [Iter\range(1, 10), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]];
-        yield [Gen\range(1, 10), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]];
+        yield [Iter\range(1, 10), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]];
 
         yield [
             Iter\map(Iter\range(1, 10), fn (int $value): string => (string) $value),

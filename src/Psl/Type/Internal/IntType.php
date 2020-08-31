@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Psl\Str;
+use Psl\Type;
 use Psl\Type\Exception\TypeAssertException;
 use Psl\Type\Exception\TypeCoercionException;
-use Psl\Type\Type;
 
 /**
- * @extends Type<int>
+ * @extends Type\Type<int>
  *
  * @internal
  */
-final class IntType extends Type
+final class IntType extends Type\Type
 {
     /**
      * @psalm-param mixed $value
@@ -25,11 +25,11 @@ final class IntType extends Type
      */
     public function coerce($value): int
     {
-        if (is_int($value)) {
+        if (Type\is_int($value)) {
             return $value;
         }
 
-        if (Str\is_string($value) || (is_object($value) && method_exists($value, '__toString'))) {
+        if (Type\is_string($value) || (Type\is_object($value) && method_exists($value, '__toString'))) {
             $str = (string)$value;
             $int = Str\to_int($str);
             if (null !== $int) {
@@ -62,7 +62,7 @@ final class IntType extends Type
      */
     public function assert($value): int
     {
-        if (is_int($value)) {
+        if (Type\is_int($value)) {
             return $value;
         }
 

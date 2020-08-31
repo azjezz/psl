@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Psl\Tests\Arr;
+namespace Psl\Tests\Type;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Arr;
+use Psl\Type;
 
 class IsArrayTest extends TestCase
 {
@@ -14,7 +14,7 @@ class IsArrayTest extends TestCase
      */
     public function testIsArray(bool $expected, $value): void
     {
-        static::assertSame($expected, Arr\is_array($value));
+        static::assertSame($expected, Type\is_array($value));
     }
 
     public function provideData(): array

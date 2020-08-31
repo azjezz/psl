@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Psl\Tests\Iter;
+namespace Psl\Tests\Type;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
+use Psl\Type;
 
 class IsIterableTest extends TestCase
 {
@@ -14,7 +15,7 @@ class IsIterableTest extends TestCase
      */
     public function testIsIterable($value, bool $expected): void
     {
-        self::assertSame($expected, Iter\is_iterable($value));
+        self::assertSame($expected, Type\is_iterable($value));
     }
 
     public function provideIsIterableData(): iterable

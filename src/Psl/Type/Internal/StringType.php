@@ -7,14 +7,14 @@ namespace Psl\Type\Internal;
 use Psl\Str;
 use Psl\Type\Exception\TypeAssertException;
 use Psl\Type\Exception\TypeCoercionException;
-use Psl\Type\Type;
+use Psl\Type;
 
 /**
- * @extends Type<string>
+ * @extends Type\Type<string>
  *
  * @internal
  */
-final class StringType extends Type
+final class StringType extends Type\Type
 {
     /**
      * @psalm-param mixed $value
@@ -25,15 +25,15 @@ final class StringType extends Type
      */
     public function coerce($value): string
     {
-        if (Str\is_string($value)) {
+        if (Type\is_string($value)) {
             return $value;
         }
 
-        if (is_int($value)) {
+        if (Type\is_int($value)) {
             return (string)$value;
         }
 
-        if (is_object($value) && method_exists($value, '__toString')) {
+        if (Type\is_object($value) && method_exists($value, '__toString')) {
             return (string)$value;
         }
 
@@ -51,7 +51,7 @@ final class StringType extends Type
      */
     public function assert($value): string
     {
-        if (Str\is_string($value)) {
+        if (Type\is_string($value)) {
             return $value;
         }
 

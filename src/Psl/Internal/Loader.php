@@ -12,6 +12,7 @@ use function interface_exists;
 use function spl_autoload_register;
 use function spl_autoload_unregister;
 use function str_replace;
+use function strpos;
 use function strrpos;
 use function substr;
 use function trait_exists;
@@ -63,8 +64,6 @@ final class Loader
         'Psl\Arr\flip',
         'Psl\Arr\group_by',
         'Psl\Arr\idx',
-        'Psl\Arr\is_array',
-        'Psl\Arr\is_arraykey',
         'Psl\Arr\keys',
         'Psl\Arr\last',
         'Psl\Arr\last_key',
@@ -145,7 +144,6 @@ final class Loader
         'Psl\Iter\from_entries',
         'Psl\Iter\from_keys',
         'Psl\Iter\is_empty',
-        'Psl\Iter\is_iterable',
         'Psl\Iter\keys',
         'Psl\Iter\last',
         'Psl\Iter\last_key',
@@ -255,7 +253,6 @@ final class Loader
         'Psl\Str\format_number',
         'Psl\Str\from_code_points',
         'Psl\Str\is_empty',
-        'Psl\Str\is_string',
         'Psl\Str\join',
         'Psl\Str\length',
         'Psl\Str\levenshtein',
@@ -307,6 +304,20 @@ final class Loader
         'Psl\Type\string',
         'Psl\Type\scalar',
         'Psl\Type\union',
+        'Psl\Type\is_array',
+        'Psl\Type\is_arraykey',
+        'Psl\Type\is_bool',
+        'Psl\Type\is_callable',
+        'Psl\Type\is_float',
+        'Psl\Type\is_instanceof',
+        'Psl\Type\is_int',
+        'Psl\Type\is_iterable',
+        'Psl\Type\is_nan',
+        'Psl\Type\is_null',
+        'Psl\Type\is_numeric',
+        'Psl\Type\is_resource',
+        'Psl\Type\is_scalar',
+        'Psl\Type\is_string',
         'Psl\Json\encode',
         'Psl\Json\decode',
         'Psl\Json\typed',
@@ -413,7 +424,7 @@ final class Loader
     private static function autoload(callable $callback): void
     {
         $loader = static function (string $classname): ?bool {
-            if ('P' === $classname[0] && 0 === \strpos($classname, 'Psl\\')) {
+            if ('P' === $classname[0] && 0 === strpos($classname, 'Psl\\')) {
                 static::load($classname, self::TYPE_CLASSISH);
 
                 return true;

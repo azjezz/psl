@@ -22,7 +22,7 @@ namespace Psl\Str;
  *      Str\is_empty('hello')
  *      => Bool(false)
  *
- * @psalm-assert-if-false string $string
+ * @psalm-assert-if-false non-empty-string $string
  *
  * @psalm-pure
  */

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Arr;
 
 use Psl;
+use Psl\Type;
 
 /**
  * Flips the keys and values of an array. In case of
@@ -26,7 +27,7 @@ function flip(array $array): array
 {
     $result = [];
     foreach ($array as $k => $v) {
-        Psl\invariant(is_arraykey($v), 'Expected all values to be of type array-key, value of type (%s) provided.', gettype($v));
+        Psl\invariant(Type\is_arraykey($v), 'Expected all values to be of type array-key, value of type (%s) provided.', gettype($v));
         $result[$v] = $k;
     }
 

@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use function ctype_digit;
-use Psl\Str;
+use Psl\Type;
 use Psl\Type\Exception\TypeAssertException;
 use Psl\Type\Exception\TypeCoercionException;
-use Psl\Type\Type;
 
 /**
- * @extends Type<float>
+ * @extends Type\Type<float>
  *
  * @internal
  */
-final class FloatType extends Type
+final class FloatType extends Type\Type
 {
     private const TYPE = 'float';
 
@@ -28,15 +27,15 @@ final class FloatType extends Type
      */
     public function coerce($value): float
     {
-        if (is_float($value)) {
+        if (Type\is_float($value)) {
             return $value;
         }
 
-        if (is_int($value)) {
+        if (Type\is_int($value)) {
             return $value;
         }
 
-        if (Str\is_string($value) || (is_object($value) && method_exists($value, '__toString'))) {
+        if (Type\is_string($value) || (Type\is_object($value) && method_exists($value, '__toString'))) {
             $str = (string) $value;
             if ('' === $str) {
                 throw TypeCoercionException::withValue($value, $this->toString(), $this->getTrace());
@@ -65,7 +64,7 @@ final class FloatType extends Type
      */
     public function assert($value): float
     {
-        if (is_float($value)) {
+        if (Type\is_float($value)) {
             return $value;
         }
 

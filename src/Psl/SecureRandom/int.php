@@ -7,6 +7,7 @@ namespace Psl\SecureRandom;
 use Psl;
 use Psl\Math;
 use Psl\Str;
+use Psl\Type;
 
 /**
  * Returns a cryptographically secure random integer in the range in the given range.
@@ -23,7 +24,7 @@ function int(int $min = Math\INT64_MIN, int $max = Math\INT64_MAX): int
         // @codeCoverageIgnoreStart
     } catch (\Exception $e) {
         $code = $e->getCode();
-        if (Str\is_string($code)) {
+        if (Type\is_string($code)) {
             $code = Str\to_int($code) ?? 0;
         }
 

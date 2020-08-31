@@ -6,6 +6,7 @@ namespace Psl\Arr;
 
 use Psl;
 use Psl\Str;
+use Psl\Type;
 
 /**
  * Returns a new array where
@@ -49,7 +50,7 @@ function group_by(array $values, callable $key_func): array
             continue;
         }
 
-        Psl\invariant(is_arraykey($key), 'Expected $key_func to return a value of type array-key, value of type (%s) returned.', gettype($key));
+        Psl\invariant(Type\is_arraykey($key), 'Expected $key_func to return a value of type array-key, value of type (%s) returned.', gettype($key));
         /** @psalm-var Tk $key */
         $result[$key] = $result[$key] ?? [];
         $result[$key][] = $value;

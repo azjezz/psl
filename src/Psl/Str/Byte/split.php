@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Str\Byte;
 
 use Psl;
-use Psl\Arr;
+use Psl\Type;
 
 /**
  * Returns an array containing the string split on the given delimiter. The vec
@@ -46,7 +46,7 @@ function split(string $string, string $delimiter, ?int $limit = null): array
         $result = \explode($delimiter, $string, $limit);
     }
 
-    Psl\invariant(Arr\is_array($result), 'Unexpected error');
+    Psl\invariant(Type\is_array($result), 'Unexpected error');
 
     return $result;
 }

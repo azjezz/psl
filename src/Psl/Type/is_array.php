@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Psl\Arr;
+namespace Psl\Type;
 
 /**
  * Finds whether a variable is an array.
  *
- * @psalm-param mixed   $var
+ * @psalm-param mixed $var
  *
  * @psalm-assert-if-true array<array-key,mixed> $var
  *

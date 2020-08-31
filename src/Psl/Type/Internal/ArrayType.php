@@ -7,37 +7,37 @@ namespace Psl\Type\Internal;
 use Psl\Arr;
 use Psl\Iter;
 use Psl\Str;
+use Psl\Type;
 use Psl\Type\Exception\TypeAssertException;
 use Psl\Type\Exception\TypeCoercionException;
-use Psl\Type\Type;
 
 /**
  * @template Tk of array-key
  * @template Tv
  *
- * @extends Type<array<Tk, Tv>>
+ * @extends Type\Type<array<Tk, Tv>>
  *
  * @internal
  */
-final class ArrayType extends Type
+final class ArrayType extends Type\Type
 {
     /**
-     * @psalm-var Type<Tk>
+     * @psalm-var Type\Type<Tk>
      */
-    private Type $key_type;
+    private Type\Type $key_type;
 
     /**
-     * @psalm-var Type<Tv>
+     * @psalm-var Type\Type<Tv>
      */
-    private Type $value_type;
+    private Type\Type $value_type;
 
     /**
-     * @psalm-param Type<Tk> $key_type
-     * @psalm-param Type<Tv> $value_type
+     * @psalm-param Type\Type<Tk> $key_type
+     * @psalm-param Type\Type<Tv> $value_type
      */
     public function __construct(
-        Type $key_type,
-        Type $value_type
+        Type\Type $key_type,
+        Type\Type $value_type
     ) {
         $this->key_type = $key_type;
         $this->value_type = $value_type;
@@ -52,13 +52,13 @@ final class ArrayType extends Type
      */
     public function coerce($value): array
     {
-        if (Iter\is_iterable($value)) {
+        if (Type\is_iterable($value)) {
             $key_trace = $this->getTrace()->withFrame(Str\format('array<%s, _>', $this->key_type->toString()));
             $value_trace = $this->getTrace()->withFrame(Str\format('array<_, %s>', $this->value_type->toString()));
 
-            /** @psalm-var Type<Tk> $key_type */
+            /** @psalm-var Type\Type<Tk> $key_type */
             $key_type = $this->key_type->withTrace($key_trace);
-            /** @psalm-var Type<Tv> $value_type */
+            /** @psalm-var Type\Type<Tv> $value_type */
             $value_type = $this->value_type->withTrace($value_trace);
 
             /**
@@ -99,13 +99,13 @@ final class ArrayType extends Type
      */
     public function assert($value): array
     {
-        if (Arr\is_array($value)) {
+        if (Type\is_array($value)) {
             $key_trace = $this->getTrace()->withFrame(Str\format('array<%s, _>', $this->key_type->toString()));
             $value_trace = $this->getTrace()->withFrame(Str\format('array<_, %s>', $this->value_type->toString()));
 
-            /** @psalm-var Type<Tk> $key_type */
+            /** @psalm-var Type\Type<Tk> $key_type */
             $key_type = $this->key_type->withTrace($key_trace);
-            /** @psalm-var Type<Tv> $value_type */
+            /** @psalm-var Type\Type<Tv> $value_type */
             $value_type = $this->value_type->withTrace($value_trace);
 
             /**

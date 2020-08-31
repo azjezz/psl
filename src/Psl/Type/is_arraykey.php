@@ -2,14 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Psl\Arr;
-
-use Psl\Str;
+namespace Psl\Type;
 
 /**
  * Finds whether a variable is an array key.
  *
- * @psalm-param mixed   $key
+ * @psalm-param mixed $key
  *
  * @psalm-assert-if-true array-key $key
  *
@@ -17,5 +15,5 @@ use Psl\Str;
  */
 function is_arraykey($key): bool
 {
-    return Str\is_string($key) || is_int($key);
+    return namespace\is_string($key) || namespace\is_int($key);
 }

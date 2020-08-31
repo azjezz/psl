@@ -6,6 +6,7 @@ namespace Psl\SecureRandom;
 
 use Psl;
 use Psl\Str;
+use Psl\Type;
 
 /**
  * Returns a cryptographically secure random bytes.
@@ -25,7 +26,7 @@ function bytes(int $length): string
         // @codeCoverageIgnoreStart
     } catch (\Exception $e) {
         $code = $e->getCode();
-        if (Str\is_string($code)) {
+        if (Type\is_string($code)) {
             $code = Str\to_int($code) ?? 0;
         }
 
