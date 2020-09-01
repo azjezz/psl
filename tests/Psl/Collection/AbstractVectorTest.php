@@ -63,6 +63,15 @@ abstract class AbstractVectorTest extends TestCase
         self::assertCount(0, $values);
     }
 
+    public function testJsonSerialize(): void
+    {
+        $vector = $this->create(['foo', 'bar', 'baz']);
+
+        $array = $vector->jsonSerialize();
+
+        static::assertSame(['foo', 'bar', 'baz'], $array);
+    }
+
     public function testKeys(): void
     {
         $vector = $this->create([

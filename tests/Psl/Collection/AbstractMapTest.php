@@ -75,6 +75,23 @@ abstract class AbstractMapTest extends TestCase
         self::assertCount(0, $values);
     }
 
+    public function testJsonSerialize(): void
+    {
+        $map = $this->create([
+            'foo' => 1,
+            'bar' => 2,
+            'baz' => 3,
+        ]);
+
+        $array = $map->jsonSerialize();
+
+        static::assertSame([
+            'foo' => 1,
+            'bar' => 2,
+            'baz' => 3,
+        ], $array);
+    }
+
     public function testKeys(): void
     {
         $map = $this->create([
