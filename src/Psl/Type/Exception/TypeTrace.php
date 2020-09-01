@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Type\Exception;
 
+/**
+ * @psalm-immutable
+ */
 final class TypeTrace
 {
     /**
-     * @var string[]
+     * @psalm-var list<string> $frames
      */
     private array $frames = [];
 
@@ -20,7 +23,7 @@ final class TypeTrace
     }
 
     /**
-     * @return string[]
+     * @psalm-return list<string>
      */
     public function getFrames(): array
     {
