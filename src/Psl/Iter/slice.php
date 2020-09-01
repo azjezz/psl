@@ -17,7 +17,7 @@ use Psl\Internal;
  *      => Iter(0, 1, 2, 3, 4, 5)
  *
  *      Iter\slice([-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5], 5, 3)
- *      => Iter(0, 1, 2, 3)
+ *      => Iter(0, 1, 2)
  *
  * @psalm-template Tk
  * @psalm-template Tv
@@ -32,8 +32,8 @@ use Psl\Internal;
  */
 function slice(iterable $iterable, int $start, ?int $length = null): Iterator
 {
-    Psl\invariant($start >= 0, 'Start offset must be non-negative');
-    Psl\invariant(null === $length || $length >= 0, 'Length must be non-negative');
+    Psl\invariant($start >= 0, 'Start offset must be non-negative.');
+    Psl\invariant(null === $length || $length >= 0, 'Length must be non-negative.');
 
     return Internal\lazy_iterator(static function () use ($iterable, $start, $length): Generator {
         if (0 === $length) {

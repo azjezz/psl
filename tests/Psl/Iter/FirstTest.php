@@ -13,7 +13,7 @@ class FirstTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testFirstKey($expected, iterable $iterable): void
+    public function testFirst($expected, iterable $iterable): void
     {
         $result = Iter\first($iterable);
 
@@ -24,11 +24,11 @@ class FirstTest extends TestCase
     {
         yield [null, []];
         yield [null, new \SplDoublyLinkedList()];
-        yield ['b', ['a' => 'b']];
+        yield ['b', ['a' => 'b', 'c' => 'd']];
         yield ['a', ['a', 'b']];
         yield ['a', new Collection\Vector(['a', 'b'])];
-        yield ['b', new Collection\Vector(['a' => 'b'])];
-        yield ['b', new Collection\Map(['a' => 'b'])];
+        yield ['b', new Collection\Vector(['b'])];
+        yield ['b', new Collection\Map(['a' => 'b', 'c' => 'd'])];
         yield [null, (static function () {
             yield null => null;
         })()];

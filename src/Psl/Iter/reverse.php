@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
+use Psl\Arr;
 use Psl\Internal;
 
 /**
@@ -23,18 +24,14 @@ use Psl\Internal;
 function reverse(iterable $iterable): Iterator
 {
     return Internal\lazy_iterator(static function () use ($iterable): Generator {
-        $size = count($iterable);
+        $values = to_array($iterable);
+        $size = Arr\count($values);
         if (0 === $size) {
             return;
         }
 
-        $values = to_array($iterable);
-        for ($lo = 0, $hi = $size - 1; $lo < $hi; $lo++, $hi--) {
-            yield $values[$hi];
-        }
-
-        for (; $lo >= 0; --$lo) {
-            yield $values[$lo];
+        for($i = $size - 1; $i >= 0; $i--) {
+            yield $values[$i];
         }
     });
 }

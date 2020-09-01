@@ -35,7 +35,7 @@ function product(iterable ...$iterables): Iterator
         /** @psalm-var list<Iterator<Tk, Tv>> $iterators */
         $iterators = to_array(map(
             $iterables,
-            fn (iterable $iterable) => new Iterator((fn () => yield from $iterable)())
+            fn (iterable $iterable) => Iterator::create($iterable)
         ));
 
         $numIterators = count($iterators);
@@ -54,9 +54,11 @@ function product(iterable ...$iterables): Iterator
         while (true) {
             while (++$i < $numIterators - 1) {
                 $iterators[$i]->rewind();
+                // @codeCoverageIgnoreStart
                 if (!$iterators[$i]->valid()) {
                     return;
                 }
+                // @codeCoverageIgnoreEnd
 
                 $keyTuple[$i] = $iterators[$i]->key();
                 $valueTuple[$i] = $iterators[$i]->current();

@@ -5,8 +5,29 @@ declare(strict_types=1);
 namespace Psl\Tests\Iter;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Iter;
 
 class LastKeyTest extends TestCase
 {
-    // TODO: add tests.
+    /**
+     * @dataProvider provideData
+     */
+    public function testLastKey($expected, iterable $iterable): void
+    {
+        $result = Iter\last_key($iterable);
+
+        self::assertSame($expected, $result);
+    }
+
+    public function provideData(): iterable
+    {
+        yield [3, [1, 2, 3, 4]];
+        yield [3, Iter\to_iterator([1, 2, 3, 4])];
+        yield [3, Iter\range(1, 4)];
+        yield [4, Iter\range(4, 8)];
+        yield [null, []];
+        yield [0, [null]];
+        yield [1, [null, null]];
+        yield [[1, 2], (fn() => yield [1, 2] => 'hello')()];
+    }
 }

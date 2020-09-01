@@ -40,6 +40,14 @@ use Psl\Internal;
  */
 function range($start, $end, $step = null): Iterator
 {
+    if ($start < $end) {
+        Psl\invariant($step === null || $step > 0, 'If start < end, the step must be positive.');
+    }
+    
+    if ($start > $end) {
+        Psl\invariant($step === null || $step < 0, 'If start > end, the step must be negative.');
+    }
+
     return Internal\lazy_iterator(
         /**
          * @return Generator<int, T, mixed, void>
@@ -58,8 +66,6 @@ function range($start, $end, $step = null): Iterator
                 if (null === $step) {
                     /** @psalm-var T $step */
                     $step = 1;
-                } else {
-                    Psl\invariant($step > 0, 'If start < end, the step must be positive');
                 }
 
                 Psl\invariant(is_int($step) || is_float($step), '$step must be either an integer or a float.');
@@ -72,8 +78,6 @@ function range($start, $end, $step = null): Iterator
                 if (null === $step) {
                     /** @psalm-var T $step */
                     $step = -1;
-                } else {
-                    Psl\invariant($step < 0, 'If start > end, the step must be negative');
                 }
 
                 Psl\invariant(is_int($step) || is_float($step), '$step must be either an integer or a float.');

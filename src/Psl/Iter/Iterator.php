@@ -56,6 +56,10 @@ final class Iterator implements SeekableIterator, Countable
      */
     public static function create(iterable  $iterable): Iterator
     {
+        if ($iterable instanceof Generator) {
+            return new self($iterable);
+        }
+
         /**
          * @psalm-var (callable(): Generator<Tsk, Tsv, mixed, void>) $factory
          */
@@ -143,7 +147,8 @@ final class Iterator implements SeekableIterator, Countable
      */
     public function rewind(): void
     {
-        $this->position = 0;
+        /** @psalm-suppress MissingThrowsDocblock - 0 is within bound. */
+        $this->seek(0);
     }
 
     /**
@@ -152,16 +157,15 @@ final class Iterator implements SeekableIterator, Countable
     public function seek(int $position): void
     {
         Psl\invariant($position >= 0, 'Position is out-of-bounds.');
-
-        if ($position <= $this->position) {
+        if (0 === $position || $position <= $this->position) {
             $this->position = $position;
             return;
         }
 
         if ($this->generator) {
             while ($this->position !== $position) {
-                Psl\invariant($this->generator->valid(), 'Position is out-of-bounds.');
                 $this->next();
+                Psl\invariant($this->valid(), 'Position is out-of-bounds.');
             }
 
             return;
