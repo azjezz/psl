@@ -6,9 +6,9 @@ namespace Psl\Type\Internal;
 
 use Psl\Iter;
 use Psl\Str;
+use Psl\Type;
 use Psl\Type\Exception\TypeAssertException;
 use Psl\Type\Exception\TypeCoercionException;
-use Psl\Type;
 
 /**
  * @template Tk
