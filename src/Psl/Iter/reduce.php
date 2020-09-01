@@ -25,9 +25,9 @@ namespace Psl\Iter;
  *
  * @psalm-param iterable<Tk, Tv>                $iterable
  * @psalm-param (callable(?Ts, Tk, Tv): Ts)     $function
- * @psalm-param null|Ts                         $initial
+ * @psalm-param Ts|null                         $initial
  *
- * @psalm-return null|Ts
+ * @psalm-return Ts|null
  */
 function reduce(iterable $iterable, callable $function, $initial = null)
 {

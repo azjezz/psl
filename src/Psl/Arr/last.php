@@ -12,13 +12,13 @@ namespace Psl\Arr;
  *
  * @psalm-param array<Tk, Tv> $array
  *
- * @psalm-return null|Tv
+ * @psalm-return Tv|null
  *
  * @psalm-pure
  */
 function last(array $array)
 {
-    /** @psalm-var null|Tk $last */
+    /** @psalm-var Tk|null $last */
     $last = last_key($array);
     if (null === $last) {
         return null;

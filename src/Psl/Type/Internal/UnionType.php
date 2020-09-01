@@ -52,19 +52,19 @@ class UnionType extends Type
     {
         try {
             return $this->assert($value);
-        } catch (TypeAssertException $_e) {
+        } catch (TypeAssertException $_exception) {
             // ignore
         }
 
         try {
             return $this->left_type_spec->coerce($value);
-        } catch (TypeCoercionException $_e) {
+        } catch (TypeCoercionException $_exception) {
             // ignore
         }
 
         try {
             return $this->right_type_spec->coerce($value);
-        } catch (TypeCoercionException $_e) {
+        } catch (TypeCoercionException $_exception) {
             // ignore
         }
 
@@ -84,13 +84,13 @@ class UnionType extends Type
     {
         try {
             return $this->left_type_spec->assert($value);
-        } catch (TypeAssertException $_e) {
+        } catch (TypeAssertException $_exception) {
             // ignore
         }
 
         try {
             return $this->right_type_spec->assert($value);
-        } catch (TypeAssertException $_e) {
+        } catch (TypeAssertException $_exception) {
             // ignore
         }
 

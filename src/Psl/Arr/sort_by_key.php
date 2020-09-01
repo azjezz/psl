@@ -13,7 +13,7 @@ namespace Psl\Arr;
  * @psalm-template Tv
  *
  * @psalm-param array<Tk, Tv>                       $array
- * @psalm-param null|(pure-callable(Tk, Tk): int)   $comparator
+ * @psalm-param (pure-callable(Tk, Tk): int)|null   $comparator
  *
  * @psalm-return array<Tk, Tv>
  *

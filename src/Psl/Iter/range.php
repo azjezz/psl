@@ -31,7 +31,7 @@ use Psl\Internal;
  * @psalm-param T       $start First number (inclusive)
  * @psalm-param T       $end   Last number (inclusive, but doesn't have to be part of
  *                              resulting range if $step steps over it)
- * @psalm-param null|T  $step  Step between numbers (defaults to 1 if $start smaller
+ * @psalm-param T|null  $step  Step between numbers (defaults to 1 if $start smaller
  *                              $end and to -1 if $start greater $end)
  *
  * @psalm-return Iterator<int, T>

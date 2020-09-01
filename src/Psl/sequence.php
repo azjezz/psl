@@ -11,7 +11,7 @@ namespace Psl;
  *
  * @psalm-param    T ...$args
  *
- * @psalm-return   null|T
+ * @psalm-return   T|null
  */
 function sequence(...$args)
 {

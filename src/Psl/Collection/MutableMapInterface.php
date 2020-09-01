@@ -111,7 +111,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
     /**
      * Returns the first value in the current `MutableMapInterface`.
      *
-     * @psalm-return null|Tv - The first value in the current `MutableMapInterface`, or `null` if the
+     * @psalm-return Tv|null - The first value in the current `MutableMapInterface`, or `null` if the
      *           current `MutableMapInterface` is empty.
      */
     public function first();
@@ -119,7 +119,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
     /**
      * Returns the first key in the current `MutableMapInterface`.
      *
-     * @psalm-return null|Tk - The first key in the current `MutableMapInterface`, or `null` if the
+     * @psalm-return Tk|null - The first key in the current `MutableMapInterface`, or `null` if the
      *                  current `MutableMapInterface` is empty
      */
     public function firstKey();
@@ -127,7 +127,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
     /**
      * Returns the last value in the current `MutableMapInterface`.
      *
-     * @psalm-return null|Tv - The last value in the current `MutableMapInterface`, or `null` if the
+     * @psalm-return Tv|null - The last value in the current `MutableMapInterface`, or `null` if the
      *           current `MutableMapInterface` is empty.
      */
     public function last();
@@ -135,7 +135,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
     /**
      * Returns the last key in the current `MutableMapInterface`.
      *
-     * @psalm-return null|Tk - The last key in the current `MutableMapInterface`, or `null` if the
+     * @psalm-return Tk|null - The last key in the current `MutableMapInterface`, or `null` if the
      *                  current `MutableMapInterface` is empty
      */
     public function lastKey();
@@ -148,7 +148,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @psalm-param Tv $search_value - The value that will be search for in the current
      *                        `MutableMapInterface`.
      *
-     * @psalm-return null|Tk - The key (index) where that value is found; null if it is not found
+     * @psalm-return Tk|null - The key (index) where that value is found; null if it is not found
      */
     public function linearSearch($search_value);
 

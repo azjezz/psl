@@ -16,7 +16,7 @@ use Psl\Internal;
  *
  * @psalm-template T
  *
- * @psalm-param iterable<null|T> $iterable
+ * @psalm-param iterable<T|null> $iterable
  *
  * @psalm-return Iterator<int, T>
  */

@@ -53,29 +53,25 @@ final class IntersectionType extends Type
     {
         try {
             return $this->assert($value);
-        } catch (TypeAssertException $_e) {
+        } catch (TypeAssertException $_exception) {
             // ignore
         }
 
         try {
             /** @psalm-var Tl $value */
             $value = $this->left_type_spec->coerce($value);
-            /** @psalm-var Tl&Tr $value */
-            $value = $this->right_type_spec->assert($value);
-
-            return $value;
-        } catch (TypeException $_e) {
+            /** @psalm-var Tl&Tr */
+            return $this->right_type_spec->assert($value);
+        } catch (TypeException $_exception) {
             // ignore
         }
 
         try {
             /** @psalm-var Tr $value */
             $value = $this->right_type_spec->coerce($value);
-            /** @psalm-var Tr&Tl $value */
-            $value = $this->left_type_spec->assert($value);
-
-            return $value;
-        } catch (TypeException $_e) {
+            /** @psalm-var Tr&Tl */
+            return $this->left_type_spec->assert($value);
+        } catch (TypeException $_exception) {
             // ignore
         }
 
@@ -96,11 +92,9 @@ final class IntersectionType extends Type
         try {
             /** @psalm-var Tl $value */
             $value = $this->left_type_spec->assert($value);
-            /** @psalm-var Tl&Tr $value */
-            $value = $this->right_type_spec->assert($value);
-
-            return $value;
-        } catch (TypeAssertException $_e) {
+            /** @psalm-var Tl&Tr */
+            return $this->right_type_spec->assert($value);
+        } catch (TypeAssertException $_exception) {
             throw TypeAssertException::withValue($value, $this->toString(), $this->getTrace());
         }
     }

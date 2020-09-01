@@ -26,7 +26,7 @@ use Psl\Internal;
  * @psalm-template Tv
  *
  * @psalm-param iterable<Tk, Tv>            $iterable
- * @psalm-param null|(callable(Tk): bool)   $predicate
+ * @psalm-param (callable(Tk): bool)|null   $predicate
  *
  * @psalm-return Iterator<Tk, Tv>
  */

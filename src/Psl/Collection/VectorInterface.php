@@ -141,7 +141,7 @@ interface VectorInterface extends AccessibleCollectionInterface
     /**
      * Returns the first value in the current `VectorInterface`.
      *
-     * @psalm-return null|T - The first value in the current `VectorInterface`, or `null` if the
+     * @psalm-return T|null - The first value in the current `VectorInterface`, or `null` if the
      *           current `VectorInterface` is empty.
      */
     public function first();
@@ -149,7 +149,7 @@ interface VectorInterface extends AccessibleCollectionInterface
     /**
      * Returns the first key in the current `VectorInterface`.
      *
-     * @psalm-return null|int - The first key in the current `VectorInterface`, or `null` if the
+     * @psalm-return int|null - The first key in the current `VectorInterface`, or `null` if the
      *                  current `VectorInterface` is empty
      */
     public function firstKey(): ?int;
@@ -157,7 +157,7 @@ interface VectorInterface extends AccessibleCollectionInterface
     /**
      * Returns the last value in the current `VectorInterface`.
      *
-     * @psalm-return null|T - The last value in the current `VectorInterface`, or `null` if the
+     * @psalm-return T|null - The last value in the current `VectorInterface`, or `null` if the
      *           current `VectorInterface` is empty.
      */
     public function last();
@@ -165,7 +165,7 @@ interface VectorInterface extends AccessibleCollectionInterface
     /**
      * Returns the last key in the current `VectorInterface`.
      *
-     * @psalm-return null|int - The last key in the current `VectorInterface`, or `null` if the
+     * @psalm-return int|null - The last key in the current `VectorInterface`, or `null` if the
      *                  current `VectorInterface` is empty
      */
     public function lastKey(): ?int;
@@ -178,7 +178,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * @psalm-param  T $search_value - The value that will be search for in the current
      *                        `VectorInterface`.
      *
-     * @psalm-return null|int - The key (index) where that value is found; null if it is not found
+     * @psalm-return int|null - The key (index) where that value is found; null if it is not found
      */
     public function linearSearch($search_value): ?int;
 

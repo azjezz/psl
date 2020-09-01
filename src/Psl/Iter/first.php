@@ -22,7 +22,7 @@ namespace Psl\Iter;
  *
  * @psalm-param iterable<T> $iterable
  *
- * @psalm-return null|T
+ * @psalm-return T|null
  */
 function first(iterable $iterable)
 {

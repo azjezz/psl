@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
+use function mb_ord;
+
 /**
  * Return ASCII value of character.
  *
@@ -19,8 +21,5 @@ namespace Psl\Str;
  */
 function ord(string $char): int
 {
-    /** @var int $ascii */
-    $ascii = \mb_ord($char, encoding($char));
-
-    return $ascii;
+    return mb_ord($char, encoding($char));
 }

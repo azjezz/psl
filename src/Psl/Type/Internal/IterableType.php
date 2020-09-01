@@ -76,10 +76,7 @@ final class IterableType extends Type\Type
                 $entries[] = [$k, $v];
             }
 
-            /** @psalm-var Iter\Iterator<Tk, Tv> $iterator */
-            $iterator = Iter\from_entries($entries);
-
-            return $iterator;
+            return Iter\from_entries($entries);
         }
 
         throw TypeCoercionException::withValue($value, $this->toString(), $this->getTrace());
@@ -121,10 +118,7 @@ final class IterableType extends Type\Type
                 $entries[] = [$k, $v];
             }
 
-            /** @psalm-var Iter\Iterator<Tk, Tv> $iterator */
-            $iterator = Iter\from_entries($entries);
-
-            return $iterator;
+            return Iter\from_entries($entries);
         }
 
         throw TypeAssertException::withValue($value, $this->toString(), $this->getTrace());

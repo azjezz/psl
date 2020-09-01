@@ -9,9 +9,9 @@ namespace Psl\Type;
  *
  * @psalm-param Type<T> $spec
  *
- * @psalm-return Type<null|T>
+ * @psalm-return Type<T|null>
  */
 function nullable(Type $spec): Type
 {
-    return new Internal\UnionType(null(), $spec);
+    return new Internal\UnionType($spec, null());
 }

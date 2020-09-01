@@ -12,7 +12,7 @@ namespace Psl\Math;
  *
  * @psalm-param list<T> $numbers
  *
- * @psalm-return null|T
+ * @psalm-return T|null
  *
  * @psalm-pure
  */

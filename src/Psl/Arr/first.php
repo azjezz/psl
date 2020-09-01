@@ -12,15 +12,15 @@ namespace Psl\Arr;
  *
  * @psalm-param array<Tk, Tv> $array
  *
- * @psalm-return null|Tv
+ * @psalm-return Tv|null
  *
  * @psalm-pure
  */
 function first(array $array)
 {
-    /** @psalm-var null|Tk $first */
+    /** @psalm-var Tk|null $first */
     $first = first_key($array);
 
-    /** @psalm-var null|Tv */
+    /** @psalm-var Tv|null */
     return null !== $first ? at($array, $first) : null;
 }

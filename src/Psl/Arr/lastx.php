@@ -23,7 +23,7 @@ use Psl;
  */
 function lastx(array $array)
 {
-    /** @psalm-var null|Tk $last */
+    /** @psalm-var Tk|null $last */
     $last = last_key($array);
     Psl\invariant(null !== $last, 'Expected a non-empty array.');
 

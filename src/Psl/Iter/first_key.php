@@ -27,7 +27,7 @@ use Psl\Arr;
  *
  * @psalm-param    iterable<Tk, Tv> $iterable
  *
- * @psalm-return   null|Tk
+ * @psalm-return   Tk|null
  */
 function first_key(iterable $iterable)
 {

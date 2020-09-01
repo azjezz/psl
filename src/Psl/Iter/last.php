@@ -12,7 +12,7 @@ namespace Psl\Iter;
  *
  * @psalm-param    iterable<Tk, Tv> $iterable
  *
- * @psalm-return   null|Tv
+ * @psalm-return   Tv|null
  */
 function last(iterable $iterable)
 {

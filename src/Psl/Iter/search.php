@@ -21,7 +21,7 @@ namespace Psl\Iter;
  * @psalm-param iterable<T>         $iterable  The iterable to search
  * @psalm-param (callable(T): bool) $predicate
  *
- * @psalm-return null|T
+ * @psalm-return T|null
  */
 function search(iterable $iterable, callable $predicate)
 {

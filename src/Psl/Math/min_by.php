@@ -24,7 +24,7 @@ namespace Psl\Math;
  * @psalm-param list<T>                     $values
  * @psalm-param (pure-callable(T): numeric) $num_func
  *
- * @psalm-return null|T
+ * @psalm-return T|null
  *
  * @psalm-pure
  */

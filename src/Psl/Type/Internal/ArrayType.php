@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
-use Psl\Arr;
 use Psl\Iter;
 use Psl\Str;
 use Psl\Type;

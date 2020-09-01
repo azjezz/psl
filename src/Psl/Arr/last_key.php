@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use function array_key_last;
+
 /**
  * Get the last key of an array, if the array is empty, null will be returned.
  *
@@ -12,12 +14,12 @@ namespace Psl\Arr;
  *
  * @psalm-param array<Tk, Tv> $array
  *
- * @psalm-return null|Tk
+ * @psalm-return Tk|null
  *
  * @psalm-pure
  */
 function last_key(array $array)
 {
-    /** @psalm-var null|Tk */
-    return \array_key_last($array);
+    /** @psalm-var Tk|null */
+    return array_key_last($array);
 }

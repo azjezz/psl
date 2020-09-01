@@ -23,7 +23,7 @@ use Psl\Internal;
  *
  * @psalm-param iterable<Tk, Tv>                $iterable
  * @psalm-param (callable(?Ts, Tk, Tv): Ts)     $function
- * @psalm-param null|Ts                         $initial
+ * @psalm-param Ts|null                         $initial
  *
  * @psalm-return Iterator<int, Ts>
  */

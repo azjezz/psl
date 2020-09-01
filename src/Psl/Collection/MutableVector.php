@@ -18,7 +18,7 @@ final class MutableVector implements MutableVectorInterface
     /**
      * @psalm-var array<int, T> $elements
      */
-    protected array $elements = [];
+    private array $elements = [];
 
     /**
      * Vector constructor.
@@ -35,7 +35,7 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Returns the first value in the current collection.
      *
-     * @psalm-return null|T - The first value in the current collection, or `null` if the
+     * @psalm-return T|null - The first value in the current collection, or `null` if the
      *           current collection is empty.
      */
     public function first()
@@ -46,7 +46,7 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Returns the last value in the current collection.
      *
-     * @psalm-return null|T - The last value in the current collection, or `null` if the
+     * @psalm-return T|null - The last value in the current collection, or `null` if the
      *           current collection is empty.
      */
     public function last()
@@ -139,7 +139,7 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Returns the first key in the current `AbstractVector`.
      *
-     * @psalm-return null|int - The first key in the current `AbstractVector`, or `null` if the
+     * @psalm-return int|null - The first key in the current `AbstractVector`, or `null` if the
      *                  current `AbstractVector` is empty
      */
     public function firstKey(): ?int
@@ -153,7 +153,7 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Returns the last key in the current `AbstractVector`.
      *
-     * @psalm-return null|int - The last key in the current `AbstractVector`, or `null` if the
+     * @psalm-return int|null - The last key in the current `AbstractVector`, or `null` if the
      *                  current `AbstractVector` is empty
      */
     public function lastKey(): ?int
@@ -169,7 +169,7 @@ final class MutableVector implements MutableVectorInterface
      * @psalm-param  T $search_value - The value that will be search for in the current
      *                        collection.
      *
-     * @psalm-return null|int - The key (index) where that value is found; null if it is not found
+     * @psalm-return int|null - The key (index) where that value is found; null if it is not found
      */
     public function linearSearch($search_value): ?int
     {

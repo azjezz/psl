@@ -115,7 +115,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
     /**
      * Returns the first value in the current `AccessibleCollectionInterface`.
      *
-     * @psalm-return null|Tv - The first value in the current `AccessibleCollectionInterface`, or `null` if the
+     * @psalm-return Tv|null - The first value in the current `AccessibleCollectionInterface`, or `null` if the
      *           current `AccessibleCollectionInterface` is empty.
      */
     public function first();
@@ -123,7 +123,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
     /**
      * Returns the first key in the current `AccessibleCollectionInterface`.
      *
-     * @psalm-return null|Tk - The first key in the current `AccessibleCollectionInterface`, or `null` if the
+     * @psalm-return Tk|null - The first key in the current `AccessibleCollectionInterface`, or `null` if the
      *                  current `AccessibleCollectionInterface` is empty
      */
     public function firstKey();
@@ -131,7 +131,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
     /**
      * Returns the last value in the current `AccessibleCollectionInterface`.
      *
-     * @psalm-return null|Tv - The last value in the current `AccessibleCollectionInterface`, or `null` if the
+     * @psalm-return Tv|null - The last value in the current `AccessibleCollectionInterface`, or `null` if the
      *           current `AccessibleCollectionInterface` is empty.
      */
     public function last();
@@ -139,7 +139,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
     /**
      * Returns the last key in the current `AccessibleCollectionInterface`.
      *
-     * @psalm-return null|Tk - The last key in the current `AccessibleCollectionInterface`, or `null` if the
+     * @psalm-return Tk|null - The last key in the current `AccessibleCollectionInterface`, or `null` if the
      *                  current `AccessibleCollectionInterface` is empty
      */
     public function lastKey();
@@ -152,7 +152,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * @psalm-param Tv $search_value - The value that will be search for in the current
      *                        `AccessibleCollectionInterface`.
      *
-     * @psalm-return null|Tk - The key (index) where that value is found; null if it is not found
+     * @psalm-return Tk|null - The key (index) where that value is found; null if it is not found
      */
     public function linearSearch($search_value);
 

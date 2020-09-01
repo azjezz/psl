@@ -54,7 +54,7 @@ final class Iterator implements SeekableIterator, Countable
      *
      * @psalm-return Iterator<Tsk, Tsv>
      */
-    public static function create(iterable  $iterable): Iterator
+    public static function create(iterable $iterable): Iterator
     {
         if ($iterable instanceof Generator) {
             return new self($iterable);
@@ -117,7 +117,7 @@ final class Iterator implements SeekableIterator, Countable
         if (!Arr\contains_key($this->entries, $this->position)) {
             $this->progress();
         }
-    
+
         return $this->entries[$this->position][0];
     }
 

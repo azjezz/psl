@@ -19,7 +19,7 @@ final class MutableMap implements MutableMapInterface
     /**
      * @psalm-var array<Tk, Tv> $elements
      */
-    protected array $elements;
+    private array $elements;
 
     /**
      * AbstractMap constructor.
@@ -34,7 +34,7 @@ final class MutableMap implements MutableMapInterface
     /**
      * Returns the first value in the current collection.
      *
-     * @psalm-return null|Tv - The first value in the current collection, or `null` if the
+     * @psalm-return Tv|null - The first value in the current collection, or `null` if the
      *           current collection is empty.
      */
     public function first()
@@ -45,7 +45,7 @@ final class MutableMap implements MutableMapInterface
     /**
      * Returns the first key in the current collection.
      *
-     * @psalm-return null|Tk - The first key in the current collection, or `null` if the
+     * @psalm-return Tk|null - The first key in the current collection, or `null` if the
      *                  current collection is empty
      */
     public function firstKey()
@@ -56,7 +56,7 @@ final class MutableMap implements MutableMapInterface
     /**
      * Returns the last value in the current collection.
      *
-     * @psalm-return null|Tv - The last value in the current collection, or `null` if the
+     * @psalm-return Tv|null - The last value in the current collection, or `null` if the
      *           current collection is empty.
      */
     public function last()
@@ -67,7 +67,7 @@ final class MutableMap implements MutableMapInterface
     /**
      * Returns the last key in the current collection.
      *
-     * @psalm-return null|Tk - The last key in the current collection, or `null` if the
+     * @psalm-return Tk|null - The last key in the current collection, or `null` if the
      *                  current collection is empty
      */
     public function lastKey()
@@ -83,7 +83,7 @@ final class MutableMap implements MutableMapInterface
      * @psalm-param  Tv $search_value - The value that will be search for in the current
      *                        collection.
      *
-     * @psalm-return null|Tk - The key (index) where that value is found; null if it is not found
+     * @psalm-return Tk|null - The key (index) where that value is found; null if it is not found
      */
     public function linearSearch($search_value)
     {
