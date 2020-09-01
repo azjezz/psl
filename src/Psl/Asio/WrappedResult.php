@@ -47,6 +47,8 @@ final class WrappedResult implements IResultOrExceptionWrapper
      * @throws Psl\Exception\InvariantViolationException
      *
      * @psalm-return no-return
+     *
+     * @codeCoverageIgnore 
      */
     public function getException(): Exception
     {
