@@ -19,8 +19,8 @@ class ReduceTest extends TestCase
 
     public function provideData(): iterable
     {
-        yield [null, [], fn($accumulator, $k, $v) => $accumulator, null];
-        yield [6, [1, 2, 3], fn($accumulator, $k, $v) => $accumulator + $v, 0];
-        yield [6, Iter\to_iterator([1, 2, 3]), fn($accumulator, $k, $v) => $accumulator + $v, 0];
+        yield [null, [], fn ($accumulator, $k, $v) => $accumulator, null];
+        yield [6, [1, 2, 3], fn ($accumulator, $k, $v) => $accumulator + $v, 0];
+        yield [6, Iter\to_iterator([1, 2, 3]), fn ($accumulator, $k, $v) => $accumulator + $v, 0];
     }
 }

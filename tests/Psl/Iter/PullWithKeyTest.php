@@ -14,8 +14,8 @@ class PullWithKeyTest extends TestCase
     {
         $result = Iter\pull_with_key(
             Iter\range(0, 10),
-            fn($k, $v) => Str\chr($v + $k + 65),
-            fn($k, $v) => 2**($v+$k)
+            fn ($k, $v) => Str\chr($v + $k + 65),
+            fn ($k, $v) => 2 ** ($v + $k)
         );
 
         self::assertSame([

@@ -11,7 +11,7 @@ class ReverseTest extends TestCase
 {
     public function testReverse(): void
     {
-       $result =  Iter\reverse(['foo', 'bar', 'baz', 'qux']);
+        $result = Iter\reverse(['foo', 'bar', 'baz', 'qux']);
 
         self::assertSame(['qux', 'baz', 'bar', 'foo'], Iter\to_array_with_keys($result));
     }

@@ -20,7 +20,7 @@ class IsCallableTest extends TestCase
 
     public function provideData(): iterable
     {
-        yield [true, fn() => 'hello'];
+        yield [true, fn () => 'hello'];
         yield [true, [$this, 'provideData']];
         yield [true, 'Psl\Type\is_callable'];
         yield [false, [$this, 'non_existent_method']];

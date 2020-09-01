@@ -41,11 +41,11 @@ use Psl\Internal;
 function range($start, $end, $step = null): Iterator
 {
     if ($start < $end) {
-        Psl\invariant($step === null || $step > 0, 'If start < end, the step must be positive.');
+        Psl\invariant(null === $step || $step > 0, 'If start < end, the step must be positive.');
     }
     
     if ($start > $end) {
-        Psl\invariant($step === null || $step < 0, 'If start > end, the step must be negative.');
+        Psl\invariant(null === $step || $step < 0, 'If start > end, the step must be negative.');
     }
 
     return Internal\lazy_iterator(

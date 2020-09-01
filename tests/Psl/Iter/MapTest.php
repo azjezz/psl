@@ -21,11 +21,11 @@ class MapTest extends TestCase
 
     public function provideData(): iterable
     {
-        yield [[1, 2, 3], [1, 2, 3], fn(int $v): int => $v];
-        yield [[2, 4, 6], [1, 2, 3], fn(int $v): int => $v * 2];
-        yield [['1', '2', '3'], [1, 2, 3], fn(int $v): string => (string) $v];
-        yield [[], [], fn(int $k): string => (string) $v];
-        yield [[], Iter\Iterator::create([]), fn(int $v): string => (string) $v];
-        yield [['1', '2'], Iter\Iterator::create([1, 2]), fn(int $v): string => (string) $v];
+        yield [[1, 2, 3], [1, 2, 3], fn (int $v): int => $v];
+        yield [[2, 4, 6], [1, 2, 3], fn (int $v): int => $v * 2];
+        yield [['1', '2', '3'], [1, 2, 3], fn (int $v): string => (string) $v];
+        yield [[], [], fn (int $k): string => (string) $v];
+        yield [[], Iter\Iterator::create([]), fn (int $v): string => (string) $v];
+        yield [['1', '2'], Iter\Iterator::create([1, 2]), fn (int $v): string => (string) $v];
     }
 }

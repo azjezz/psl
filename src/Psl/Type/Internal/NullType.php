@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Psl\Type;
 use Psl\Type\Exception\TypeAssertException;
 use Psl\Type\Exception\TypeCoercionException;
-use Psl\Type;
 
 /**
  * @extends Type\Type<null>

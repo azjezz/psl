@@ -14,8 +14,8 @@ class PullTest extends TestCase
     {
         $result = Iter\pull(
             Iter\range(0, 10),
-            fn($i) => Str\chr($i + 65),
-            fn($i) => 2**$i
+            fn ($i) => Str\chr($i + 65),
+            fn ($i) => 2 ** $i
         );
 
         self::assertSame([

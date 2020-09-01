@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tests\Iter;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Iter;
 use Psl;
+use Psl\Iter;
 
 class SliceTest extends TestCase
 {
@@ -31,7 +31,7 @@ class SliceTest extends TestCase
         self::assertSame([], Iter\to_array($result));
     }
 
-    public function testSliceThrowsIfStartIsNegative(): void 
+    public function testSliceThrowsIfStartIsNegative(): void
     {
         $this->expectException(Psl\Exception\InvariantViolationException::class);
         $this->expectExceptionMessage('Start offset must be non-negative.');
@@ -39,7 +39,7 @@ class SliceTest extends TestCase
         Iter\slice([1, 2, 3], -3);
     }
 
-    public function testSliceThrowsIfLengthIsNegative(): void 
+    public function testSliceThrowsIfLengthIsNegative(): void
     {
         $this->expectException(Psl\Exception\InvariantViolationException::class);
         $this->expectExceptionMessage('Length must be non-negative.');

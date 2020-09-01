@@ -30,7 +30,7 @@ function reverse(iterable $iterable): Iterator
             return;
         }
 
-        for($i = $size - 1; $i >= 0; $i--) {
+        for ($i = $size - 1; $i >= 0; $i--) {
             yield $values[$i];
         }
     });

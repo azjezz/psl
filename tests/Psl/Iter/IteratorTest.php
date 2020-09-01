@@ -13,7 +13,7 @@ class IteratorTest extends TestCase
 {
     public function testCreateFromGenerator(): void
     {
-        $iterator = Iter\Iterator::create((fn() => yield from [1, 2, 3])());
+        $iterator = Iter\Iterator::create((fn () => yield from [1, 2, 3])());
         
         static::assertCount(3, $iterator);
     }
