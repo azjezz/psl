@@ -15,5 +15,5 @@ namespace Psl\Type;
  */
 function is_callable($var): bool
 {
-    return \is_callable($var);
+    return \is_callable($var, false);
 }

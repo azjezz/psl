@@ -6,14 +6,14 @@ namespace Psl\Type\Internal;
 
 use Psl\Type\Exception\TypeAssertException;
 use Psl\Type\Exception\TypeCoercionException;
-use Psl\Type\Type;
+use Psl\Type;
 
 /**
- * @extends Type<bool>
+ * @extends Type\Type<bool>
  *
  * @internal
  */
-final class BoolType extends Type
+final class BoolType extends Type\Type
 {
     /**
      * @psalm-return bool
@@ -22,7 +22,7 @@ final class BoolType extends Type
      */
     public function coerce($value): bool
     {
-        if (is_bool($value)) {
+        if (Type\is_bool($value)) {
             return $value;
         }
 
@@ -46,7 +46,7 @@ final class BoolType extends Type
      */
     public function assert($value): bool
     {
-        if (is_bool($value)) {
+        if (Type\is_bool($value)) {
             return $value;
         }
 

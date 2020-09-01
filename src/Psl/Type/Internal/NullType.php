@@ -6,14 +6,14 @@ namespace Psl\Type\Internal;
 
 use Psl\Type\Exception\TypeAssertException;
 use Psl\Type\Exception\TypeCoercionException;
-use Psl\Type\Type;
+use Psl\Type;
 
 /**
- * @extends Type<null>
+ * @extends Type\Type<null>
  *
  * @internal
  */
-final class NullType extends Type
+final class NullType extends Type\Type
 {
     /**
      * @psalm-param mixed $value
@@ -22,7 +22,7 @@ final class NullType extends Type
      */
     public function coerce($value)
     {
-        if (null === $value) {
+        if (Type\is_null($value)) {
             return null;
         }
 
@@ -38,7 +38,7 @@ final class NullType extends Type
      */
     public function assert($value)
     {
-        if (null === $value) {
+        if (Type\is_null($value)) {
             return null;
         }
 

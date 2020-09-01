@@ -10,7 +10,7 @@ use Psl\Type;
 
 class IsStringTest extends TestCase
 {
-    public function testIsEmpty(): void
+    public function testIsString(): void
     {
         self::assertTrue(Type\is_string(''));
         self::assertTrue(Type\is_string(Str\chr(0)));

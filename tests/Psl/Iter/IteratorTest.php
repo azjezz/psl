@@ -11,6 +11,13 @@ use Psl\Iter;
 
 class IteratorTest extends TestCase
 {
+    public function testCreateFromGenerator(): void
+    {
+        $iterator = Iter\Iterator::create((fn() => yield from [1, 2, 3])());
+        
+        static::assertCount(3, $iterator);
+    }
+
     public function testSeek(): void
     {
         $iterator = new Iter\Iterator((fn () => yield from [1, 2, 3, 4, 5])());
@@ -22,6 +29,19 @@ class IteratorTest extends TestCase
 
         $iterator->seek(0);
         self::assertSame(1, $iterator->current());
+
+        $iterator->seek(4);
+        self::assertSame(5, $iterator->current());
+
+        self::assertSame(5, $iterator->count());
+
+        $iterator->seek(1);
+        self::assertSame(2, $iterator->current());
+
+        $iterator->seek(4);
+        self::assertSame(5, $iterator->current());
+
+        self::assertSame(5, $iterator->count());
     }
 
     public function testSeekThrowsForOutOfBoundIndex(): void

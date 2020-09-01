@@ -7,14 +7,14 @@ namespace Psl\Type\Internal;
 use Psl\Str;
 use Psl\Type\Exception\TypeAssertException;
 use Psl\Type\Exception\TypeCoercionException;
-use Psl\Type\Type;
+use Psl\Type;
 
 /**
- * @extends Type<resource>
+ * @extends Type\Type<resource>
  *
  * @internal
  */
-final class ResourceType extends Type
+final class ResourceType extends Type\Type
 {
     private ?string $kind;
 
@@ -32,7 +32,7 @@ final class ResourceType extends Type
      */
     public function coerce($value)
     {
-        if (is_resource($value)) {
+        if (Type\is_resource($value)) {
             $kind = $this->kind;
             if (null === $kind) {
                 return $value;
@@ -57,7 +57,7 @@ final class ResourceType extends Type
      */
     public function assert($value)
     {
-        if (is_resource($value)) {
+        if (Type\is_resource($value)) {
             $kind = $this->kind;
             if (null === $kind) {
                 return $value;
@@ -73,7 +73,7 @@ final class ResourceType extends Type
 
     public function toString(): string
     {
-        if (null === $this->kind) {
+        if (Type\is_null($this->kind)) {
             return 'resource';
         }
 
