@@ -43,7 +43,7 @@ function range($start, $end, $step = null): Iterator
     return Internal\lazy_iterator(
         /**
          * @return Generator<int, T, mixed, void>
-         * 
+         *
          * @see https://github.com/vimeo/psalm/issues/2152#issuecomment-533363310
          *
          * @psalm-suppress InvalidReturnType
@@ -52,36 +52,37 @@ function range($start, $end, $step = null): Iterator
          * @psalm-suppress DocblockTypeContradiction
          */
         static function () use ($start, $end, $step): Generator {
-        if ((float) $start === (float) $end) {
-            yield $start;
-        } elseif ($start < $end) {
-            if (null === $step) {
-                /** @psalm-var T $step */
-                $step = 1;
-            } else {
-                Psl\invariant($step > 0, 'If start < end, the step must be positive');
-            }
+            if ((float) $start === (float) $end) {
+                yield $start;
+            } elseif ($start < $end) {
+                if (null === $step) {
+                    /** @psalm-var T $step */
+                    $step = 1;
+                } else {
+                    Psl\invariant($step > 0, 'If start < end, the step must be positive');
+                }
 
-            Psl\invariant(is_int($step) || is_float($step), '$step must be either an integer or a float.');
-            for ($i = $start; $i <= $end; $i += $step) {
-                Psl\invariant(is_int($i) || is_float($i), '$i must be either an integer or a float.');
                 Psl\invariant(is_int($step) || is_float($step), '$step must be either an integer or a float.');
-                yield $i;
-            }
-        } else {
-            if (null === $step) {
-                /** @psalm-var T $step */
-                $step = -1;
+                for ($i = $start; $i <= $end; $i += $step) {
+                    Psl\invariant(is_int($i) || is_float($i), '$i must be either an integer or a float.');
+                    Psl\invariant(is_int($step) || is_float($step), '$step must be either an integer or a float.');
+                    yield $i;
+                }
             } else {
-                Psl\invariant($step < 0, 'If start > end, the step must be negative');
-            }
+                if (null === $step) {
+                    /** @psalm-var T $step */
+                    $step = -1;
+                } else {
+                    Psl\invariant($step < 0, 'If start > end, the step must be negative');
+                }
 
-            Psl\invariant(is_int($step) || is_float($step), '$step must be either an integer or a float.');
-            for ($i = $start; $i >= $end; $i += $step) {
-                Psl\invariant(is_int($i) || is_float($i), '$i must be either an integer or a float.');
                 Psl\invariant(is_int($step) || is_float($step), '$step must be either an integer or a float.');
-                yield $i;
+                for ($i = $start; $i >= $end; $i += $step) {
+                    Psl\invariant(is_int($i) || is_float($i), '$i must be either an integer or a float.');
+                    Psl\invariant(is_int($step) || is_float($step), '$step must be either an integer or a float.');
+                    yield $i;
+                }
             }
         }
-    });
+    );
 }

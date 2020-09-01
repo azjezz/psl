@@ -159,7 +159,7 @@ final class Iterator implements SeekableIterator, Countable
         }
 
         if ($this->generator) {
-            while($this->position !== $position) {
+            while ($this->position !== $position) {
                 Psl\invariant($this->generator->valid(), 'Position is out-of-bounds.');
                 $this->next();
             }
