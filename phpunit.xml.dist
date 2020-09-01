@@ -9,7 +9,6 @@
 >
     <php>
         <ini name="error_reporting" value="-1"/>
-        <server name="APP_ENV" value="test" force="true"/>
     </php>
 
     <testsuites>
@@ -29,6 +28,7 @@
                 <file>src/preload.php</file>
                 <file>src/bootstrap.php</file>
                 <directory>src/Psl/Internal</directory>
+                <directory>src/Psl/Exception</directory>
                 <file>src/Psl/Str/constants.php</file>
                 <file>src/Psl/Math/constants.php</file>
             </exclude>
