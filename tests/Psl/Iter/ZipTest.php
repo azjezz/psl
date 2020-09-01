@@ -38,4 +38,11 @@ class ZipTest extends TestCase
         static::assertSame([2, 2, 2], $k);
         static::assertSame([3, 7, 12], $v);
     }
+    
+    public function testZipWithZeroIterables(): void
+    {
+        $result = Iter\zip(...[]);
+        
+        self::assertCount(0, $result);
+    }
 }
