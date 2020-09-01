@@ -12,9 +12,9 @@ use Psl;
  * @psalm-template Tk
  * @psalm-template Tv
  *
- * @psalm-param    iterable<Tk, Tv> $iterable
+ * @psalm-param iterable<Tk, Tv> $iterable
  *
- * @psalm-return   Iterator<Tk, Tv>
+ * @psalm-return Iterator<Tk, Tv>
  *
  * @throws Psl\Exception\InvariantViolationException If the $n is negative
  */

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Psl\Gen;
+use Generator;
+use Psl\Internal;
 
 /**
  * Returns the keys of an iterable.
@@ -17,13 +18,15 @@ use Psl\Gen;
  * @psalm-template Tk
  * @psalm-template Tv
  *
- * @psalm-param    iterable<Tk, Tv> $iterable Iterable to get keys from
+ * @psalm-param iterable<Tk, Tv> $iterable Iterable to get keys from
  *
- * @psalm-return   Iterator<int, Tk>
- *
- * @see            Gen\keys()
+ * @psalm-return Iterator<int, Tk>
  */
 function keys(iterable $iterable): Iterator
 {
-    return new Iterator(Gen\keys($iterable));
+    return Internal\lazy_iterator(static function () use ($iterable): Generator {
+        foreach ($iterable as $key => $_) {
+            yield $key;
+        }
+    });
 }

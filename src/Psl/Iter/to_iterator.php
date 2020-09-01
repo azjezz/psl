@@ -18,5 +18,5 @@ namespace Psl\Iter;
  */
 function to_iterator(iterable $iterable): Iterator
 {
-    return new Iterator($iterable);
+    return Iterator::create($iterable);
 }

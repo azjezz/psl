@@ -5,44 +5,63 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Countable;
+use Generator;
 use Psl;
+use Psl\Arr;
 use SeekableIterator;
 
 /**
- * A SeekableIterator implementation that support any type of keys.
+ * @template   Tk
+ * @template   Tv
  *
- * You can use this class to turn any iterable into a seekable, rewindable, countable iterator.
- *
- * Note: if you want to turn a generator into a rewindable iterator, its recommended to use Gen\rewindable instead,
- *          Otherwise the given generator will be exhausted immediately.
- *
- * @template-covariant Tk
- * @template-covariant Tv
- *
- * @template-implements SeekableIterator<Tk, Tv>
+ * @implements SeekableIterator<Tk, Tv>
  */
 final class Iterator implements SeekableIterator, Countable
 {
     /**
-     * @psalm-var array{0: array<int, Tk>, 1: array<int, Tv>}
+     * @psalm-var Generator<Tk, Tv, mixed, mixed>
      */
-    private array $data = [[], []];
-
-    private int $position = 0;
-
-    private int $count;
+    private ?Generator $generator;
 
     /**
-     * @psalm-param iterable<Tk, Tv> $iterable
+     * @psalm-var array<int, array{0: Tk, 1: Tv}>
      */
-    public function __construct(iterable $iterable)
-    {
-        foreach ($iterable as $k => $v) {
-            $this->data[0][] = $k;
-            $this->data[1][] = $v;
-        }
+    private array $entries = [];
 
-        $this->count = count($this->data[0]);
+    /**
+     * Whether or not the current value/key pair has been added to the local entries.
+     */
+    private bool $saved = false;
+
+    /**
+     * Current cursor position for the local entries.
+     */
+    private int $position = 0;
+
+    /**
+     * @psalm-param Generator<Tk, Tv, mixed, mixed> $generator
+     */
+    public function __construct(Generator $generator)
+    {
+        $this->generator = $generator;
+    }
+
+    /**
+     * @psalm-template Tsk
+     * @psalm-template Tsv
+     *
+     * @psalm-param iterable<Tsk, Tsv> $iterable
+     *
+     * @psalm-return Iterator<Tsk, Tsv>
+     */
+    public static function create(iterable  $iterable): Iterator
+    {
+        /**
+         * @psalm-var (callable(): Generator<Tsk, Tsv, mixed, void>) $factory
+         */
+        $factory = fn (): Generator => yield from $iterable;
+
+        return new self($factory());
     }
 
     /**
@@ -54,9 +73,12 @@ final class Iterator implements SeekableIterator, Countable
      */
     public function current()
     {
-        Psl\invariant($this->valid(), 'Invalid Iterator');
+        Psl\invariant($this->valid(), 'Invalid iterator');
+        if (!Arr\contains_key($this->entries, $this->position)) {
+            $this->progress();
+        }
 
-        return $this->data[1][$this->position];
+        return $this->entries[$this->position][1];
     }
 
     /**
@@ -64,7 +86,18 @@ final class Iterator implements SeekableIterator, Countable
      */
     public function next(): void
     {
-        ++$this->position;
+        $this->position++;
+        if (null === $this->generator || !$this->generator->valid() || Arr\contains_key($this->entries, $this->position + 1)) {
+            return;
+        }
+
+        $this->progress();
+        $this->saved = false;
+        if ($this->generator) {
+            $this->generator->next();
+        }
+
+        $this->progress();
     }
 
     /**
@@ -77,8 +110,11 @@ final class Iterator implements SeekableIterator, Countable
     public function key()
     {
         Psl\invariant($this->valid(), 'Invalid iterator');
-
-        return $this->data[0][$this->position];
+        if (!Arr\contains_key($this->entries, $this->position)) {
+            $this->progress();
+        }
+    
+        return $this->entries[$this->position][0];
     }
 
     /**
@@ -86,7 +122,20 @@ final class Iterator implements SeekableIterator, Countable
      */
     public function valid(): bool
     {
-        return $this->position >= 0 && $this->position < $this->count();
+        if (Arr\contains_key($this->entries, $this->position)) {
+            return true;
+        }
+
+        if (null === $this->generator) {
+            return false;
+        }
+
+        if ($this->generator->valid()) {
+            return true;
+        }
+
+        $this->generator = null;
+        return false;
     }
 
     /**
@@ -98,21 +147,61 @@ final class Iterator implements SeekableIterator, Countable
     }
 
     /**
-     * Seeks to a position.
-     *
-     * @param int $position
-     *
      * @throws Psl\Exception\InvariantViolationException If $position is out-of-bounds.
      */
-    public function seek($position): void
+    public function seek(int $position): void
     {
-        Psl\invariant($position >= 0 && $position < $this->count(), 'Position is out-of-bounds.');
+        Psl\invariant($position >= 0, 'Position is out-of-bounds.');
 
-        $this->position = (int) $position;
+        if ($position <= $this->position) {
+            $this->position = $position;
+            return;
+        }
+
+        if ($this->generator) {
+            while($this->position !== $position) {
+                Psl\invariant($this->generator->valid(), 'Position is out-of-bounds.');
+                $this->next();
+            }
+
+            return;
+        }
+
+        Psl\invariant($position < $this->count(), 'Position is out-of-bounds.');
+
+        $this->position = $position;
     }
 
     public function count(): int
     {
-        return $this->count;
+        if ($this->generator) {
+            $this->exhaust();
+        }
+
+        return Arr\count($this->entries);
+    }
+
+    private function exhaust(): void
+    {
+        if ($this->generator) {
+            if ($this->generator->valid()) {
+                foreach ($this->generator as $key => $value) {
+                    $this->entries[] = [$key, $value];
+                }
+            }
+
+            $this->generator = null;
+        }
+    }
+
+    /**
+     * Save the current key and value to the local entries if the generator is stil valid.
+     */
+    private function progress(): void
+    {
+        if ($this->generator && $this->generator->valid() && !$this->saved) {
+            $this->entries[] = [$this->generator->key(), $this->generator->current()];
+            $this->saved = true;
+        }
     }
 }

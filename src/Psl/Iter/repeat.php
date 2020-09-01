@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Generator;
 use Psl;
-use Psl\Gen;
+use Psl\Internal;
+use Psl\Math;
 
 /**
  * Repeat an element a given number of times. By default the element is repeated
@@ -14,23 +16,32 @@ use Psl\Gen;
  * Examples:
  *
  *     Iter\repeat(42, 5)
- *     => iter(42, 42, 42, 42, 42)
+ *     => Iter(42, 42, 42, 42, 42)
  *
- *     Iter\repeat(1, 6)
- *     => iter(1, 1, 1, 1, 1, 1)
+ *     Iter\repeat(1)
+ *     => Iter(1, 1, 1, 1, 1, 1, 1, 1, 1, ...)
  *
  * @psalm-template T
  *
- * @psalm-param    T   $value Value to repeat
- * @psalm-param    int $num   Number of repetitions
+ * @psalm-param T   $value Value to repeat
+ * @psalm-param int $num   Number of repetitions (defaults to INF)
  *
- * @psalm-return   Iterator<int, T>
- *
- * @see            Gen\repeat()
+ * @psalm-return Iterator<int, T>
  *
  * @throws Psl\Exception\InvariantViolationException If $num is negative.
  */
-function repeat($value, int $num): Iterator
+function repeat($value, ?int $num = null): Iterator
 {
-    return new Iterator(Gen\repeat($value, $num));
+    Psl\invariant(null === $num || $num >= 0, 'Number of repetitions must be non-negative');
+
+    return Internal\lazy_iterator(static function () use($value, $num): Generator {
+        if (null === $num) {
+            /** @var int $num */
+            $num = Math\INFINITY;
+        }
+
+        for ($i = 0; $i < $num; ++$i) {
+            yield $value;
+        }
+    });
 }

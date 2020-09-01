@@ -9,7 +9,7 @@ namespace Psl\Type;
  *
  * @psalm-template T
  *
- * @psalm-param class-name<T> $class
+ * @psalm-param class-string<T> $class
  *
  * @psalm-assert-if-true T $object
  *

@@ -15,7 +15,7 @@ class FlipTest extends TestCase
         $a = new Collection\MutableVector(['a', 'b']);
         $b = new Collection\MutableVector(['c', 'd']);
 
-        $iterable = new Iter\Iterator(['a' => $a, 'b' => $b]);
+        $iterable = Iter\Iterator::create(['a' => $a, 'b' => $b]);
 
         static::assertSame('a', Iter\first_key($iterable));
         static::assertSame($a, Iter\first($iterable));

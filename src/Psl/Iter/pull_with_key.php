@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Psl\Gen;
+use Generator;
+use Psl\Internal;
 
 /**
  * Returns an iterator where:
@@ -23,20 +24,22 @@ use Psl\Gen;
  *          70 => 'H', 131 => 'I', 264 => 'J', 521 => 'K', 1034 => 'L'
  *      )
  *
- * @psalm-template  Tk1
- * @psalm-template  Tv1
- * @psalm-template  Tk2
- * @psalm-template  Tv2
+ * @psalm-template Tk1
+ * @psalm-template Tv1
+ * @psalm-template Tk2
+ * @psalm-template Tv2
  *
- * @psalm-param     iterable<Tk1, Tv1>          $iterable
- * @psalm-param     (callable(Tk1, Tv1): Tv2)   $value_func
- * @psalm-param     (callable(Tk1, Tv1): Tk2)   $key_func
+ * @psalm-param iterable<Tk1, Tv1>          $iterable
+ * @psalm-param (callable(Tk1, Tv1): Tv2)   $value_func
+ * @psalm-param (callable(Tk1, Tv1): Tk2)   $key_func
  *
- * @psalm-return    Iterator<Tk2, Tv2>
- *
- * @see             Gen\pull_with_key()
+ * @psalm-return Iterator<Tk2, Tv2>
  */
 function pull_with_key(iterable $iterable, callable $value_func, callable $key_func): Iterator
 {
-    return new Iterator(Gen\pull_with_key($iterable, $value_func, $key_func));
+    return Internal\lazy_iterator(static function () use ($iterable, $value_func, $key_func): Generator {
+        foreach ($iterable as $key => $value) {
+            yield $key_func($key, $value) => $value_func($key, $value);
+        }
+    });
 }

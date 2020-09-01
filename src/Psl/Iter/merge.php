@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Psl\Gen;
-
 /**
- * Merges multiple iterables into a new iterator.
+ * Merges multiple iterables into a lazy iterator.
  *
  * Example:
  *      Iter\merge([1, 2], [9, 8])
@@ -19,14 +17,17 @@ use Psl\Gen;
  * @psalm-template Tk
  * @psalm-template Tv
  *
- * @psalm-param    iterable<Tk, Tv> $first
- * @psalm-param    iterable<iterable<Tk, Tv>> $rest
+ * @psalm-param iterable<Tk, Tv> $first
+ * @psalm-param iterable<Tk, Tv> ...$rest
  *
  * @psalm-return Iterator<Tk, Tv>
- *
- * @see Gen\merge()
  */
 function merge(iterable $first, iterable ...$rest): Iterator
 {
-    return new Iterator(Gen\merge($first, ...$rest));
+    $iterables = [$first];
+    foreach ($rest as $iterable) {
+        $iterables[] = $iterable;
+    }
+
+    return flatten($iterables);
 }

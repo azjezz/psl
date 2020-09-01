@@ -27,10 +27,10 @@ class FilterTest extends TestCase
         yield  [['a', 'b'], ['a', 'b'], fn (string $_): bool => true];
         yield  [['a'], ['a', 'b'], fn (string $v): bool => 'b' !== $v];
 
-        yield  [['a', 'b'], new Iter\Iterator(['a', 'b'])];
-        yield  [[], new Iter\Iterator(['a', 'b']), fn () => false];
-        yield  [['a', 'b'], new Iter\Iterator(['a', 'b']), fn (string $_): bool => true];
-        yield  [['a'], new Iter\Iterator(['a', 'b']), fn (string $v): bool => 'b' !== $v];
+        yield  [['a', 'b'], Iter\Iterator::create(['a', 'b'])];
+        yield  [[], Iter\Iterator::create(['a', 'b']), fn () => false];
+        yield  [['a', 'b'], Iter\Iterator::create(['a', 'b']), fn (string $_): bool => true];
+        yield  [['a'], Iter\Iterator::create(['a', 'b']), fn (string $v): bool => 'b' !== $v];
 
         yield  [['a', 'b'], (static function () {
             yield 'a';

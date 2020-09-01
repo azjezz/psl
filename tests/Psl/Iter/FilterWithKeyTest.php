@@ -35,10 +35,10 @@ class FilterWithKeyTest extends TestCase
         yield  [[], new \SplFixedArray(0)];
         yield  [['a', 'b'], new Collection\Vector(['a', 'b'])];
         yield  [[], new Collection\Map(['a', 'b']), fn (int $_k, string $_v) => false];
-        yield  [['a', 'b'], new Iter\Iterator(['a', 'b']), fn (int $_k, string $_v): bool => true];
+        yield  [['a', 'b'], Iter\Iterator::create(['a', 'b']), fn (int $_k, string $_v): bool => true];
         yield  [['a'], new Collection\MutableMap(['a', 'b']), fn (int $k, string $v): bool => 'b' !== $v];
         yield  [[], new Collection\MutableVector(['a', 'b']), fn (int $k, string $v): bool => 'b' !== $v && 0 !== $k];
-        yield  [['a'], new Iter\Iterator(['a', 'b']), fn (int $k, string $v): bool => 'b' !== $v && 1 !== $k];
+        yield  [['a'], Iter\Iterator::create(['a', 'b']), fn (int $k, string $v): bool => 'b' !== $v && 1 !== $k];
         yield  [[], new \ArrayIterator(['a', 'b']), fn (int $k, string $v): bool => 'a' !== $v && 1 !== $k];
         yield  [[1 => 'b'], new \ArrayObject(['a', 'b']), fn (int $k, string $v): bool => 'a' !== $v && 0 !== $k];
 

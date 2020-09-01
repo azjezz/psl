@@ -4,30 +4,40 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Psl\Gen;
+use Generator;
+use Psl\Internal;
 
 /**
  * Drops items from an iterable until the predicate fails for the first time.
  *
  * This means that all elements after (and including) the first element on
- * which the predicate fails will be returned.
+ * which the predicate fails will be yield.
  *
  * Examples:
  *
- *      Iter\drop_while([3, 1, 4, -1, 5], fm($i) => $i > 0)
+ *      Iter\drop_while([3, 1, 4, -1, 5], fn($i) => $i > 0)
  *      => Iter(-1, 5)
  *
  * @psalm-template Tk
  * @psalm-template Tv
  *
- * @psalm-param    iterable<Tk, Tv>     $iterable Iterable to drop values from
- * @psalm-param    (callable(Tv): bool) $predicate
+ * @psalm-param iterable<Tk, Tv>    $iterable Iterable to drop values from
+ * @psalm-param (callable(Tv): bool) $predicate
  *
- * @psalm-return   Iterator<Tk, Tv>
- *
- * @see            Gen\drop_while()
+ * @psalm-return Iterator<Tk, Tv>
  */
 function drop_while(iterable $iterable, callable $predicate): Iterator
 {
-    return new Iterator(Gen\drop_while($iterable, $predicate));
+    return Internal\lazy_iterator(static function () use ($iterable, $predicate) {
+        $failed = false;
+        foreach ($iterable as $key => $value) {
+            if (!$failed && !$predicate($value)) {
+                $failed = true;
+            }
+
+            if ($failed) {
+                yield $key => $value;
+            }
+        }
+    });
 }

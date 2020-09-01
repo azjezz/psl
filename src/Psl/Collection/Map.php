@@ -105,7 +105,7 @@ final class Map implements MapInterface
      */
     public function getIterator(): Iter\Iterator
     {
-        return new Iter\Iterator($this->elements);
+        return Iter\Iterator::create($this->elements);
     }
 
     /**

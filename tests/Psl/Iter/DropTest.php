@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Tests\Iter;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Gen;
 use Psl\Iter;
 
 class DropTest extends TestCase
@@ -32,9 +31,9 @@ class DropTest extends TestCase
         yield [[2 => 3, 3 => 4, 4 => 5], Iter\range(1, 5), 2];
         yield [[], Iter\range(1, 5), 5];
 
-        yield [[1, 2, 3, 4, 5], Gen\range(1, 5), 0];
-        yield [[3 => 4, 4 => 5], Gen\range(1, 5), 3];
-        yield [[2 => 3, 3 => 4, 4 => 5], Gen\range(1, 5), 2];
-        yield [[], Gen\range(1, 5), 5];
+        yield [[1, 2, 3, 4, 5], Iter\range(1, 5), 0];
+        yield [[3 => 4, 4 => 5], Iter\range(1, 5), 3];
+        yield [[2 => 3, 3 => 4, 4 => 5], Iter\range(1, 5), 2];
+        yield [[], Iter\range(1, 5), 5];
     }
 }

@@ -4,30 +4,36 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Psl\Gen;
+use Generator;
+use Psl\Internal;
 
 /**
  * Intermediate values of reducing iterable using a function.
  *
  * The reduction function is passed an accumulator value and the current
- * iterator value and returns a new accumulator. The accumulator is initialized
- * to $initial.
+ * iterator value and returns a new accumulator.
  *
- * Reductions returns an iterator with each accumulator along the way.
+ * The accumulator is initialized to $initial.
  *
- * @psalm-template  Tk
- * @psalm-template  Tv
- * @psalm-template  Ts
+ * Reductions yield each accumulator along the way.
  *
- * @psalm-param     iterable<Tk, Tv>                $iterable
- * @psalm-param     (callable(?Ts, Tk, Tv): Ts)     $function
- * @psalm-param     null|Ts                         $initial
+ * @psalm-template Tk
+ * @psalm-template Tv
+ * @psalm-template Ts
  *
- * @psalm-return    Iterator<int, Ts>
+ * @psalm-param iterable<Tk, Tv>                $iterable
+ * @psalm-param (callable(?Ts, Tk, Tv): Ts)     $function
+ * @psalm-param null|Ts                         $initial
  *
- * @see             Gen\reductions()
+ * @psalm-return Iterator<int, Ts>
  */
 function reductions(iterable $iterable, callable $function, $initial = null): Iterator
 {
-    return new Iterator(Gen\reductions($iterable, $function, $initial));
+    return Internal\lazy_iterator(static function () use ($iterable, $function, $initial): Generator {
+        $accumulator = $initial;
+        foreach ($iterable as $k => $v) {
+            $accumulator = $function($accumulator, $k, $v);
+            yield $accumulator;
+        }
+    });
 }

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Psl\Gen;
+use Generator;
+use Psl\Internal;
 
 /**
  * Returns an iterator where:
@@ -24,19 +25,21 @@ use Psl\Gen;
  *      )
  *
  *
- * @psalm-template  T
- * @psalm-template  Tk
- * @psalm-template  Tv
+ * @psalm-template T
+ * @psalm-template Tk
+ * @psalm-template Tv
  *
- * @psalm-param     iterable<T>         $iterable
- * @psalm-param     (callable(T): Tv)   $value_func
- * @psalm-param     (callable(T): Tk)   $key_func
+ * @psalm-param iterable<T>         $iterable
+ * @psalm-param (callable(T): Tv)   $value_func
+ * @psalm-param (callable(T): Tk)   $key_func
  *
- * @psalm-return    Iterator<Tk, Tv>
- *
- * @see             Gen\pull()
+ * @psalm-return Iterator<Tk, Tv>
  */
 function pull(iterable $iterable, callable $value_func, callable $key_func): Iterator
 {
-    return new Iterator(Gen\pull($iterable, $value_func, $key_func));
+    return Internal\lazy_iterator(static function () use ($iterable, $value_func, $key_func): Generator {
+        foreach ($iterable as $value) {
+            yield $key_func($value) => $value_func($value);
+        }
+    });
 }

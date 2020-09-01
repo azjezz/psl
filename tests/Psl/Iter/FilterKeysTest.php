@@ -27,10 +27,10 @@ class FilterKeysTest extends TestCase
         yield  [['a', 'b'], ['a', 'b'], fn (int $_): bool => true];
         yield  [['a'], ['a', 'b'], fn (int $k): bool => 1 !== $k];
 
-        yield  [[1 => 'b'], new Iter\Iterator(['a', 'b'])];
-        yield  [[], new Iter\Iterator(['a', 'b']), fn () => false];
-        yield  [['a', 'b'], new Iter\Iterator(['a', 'b']), fn (int $_): bool => true];
-        yield  [['a'], new Iter\Iterator(['a', 'b']), fn (int $k): bool => 1 !== $k];
+        yield  [[1 => 'b'], Iter\Iterator::create(['a', 'b'])];
+        yield  [[], Iter\Iterator::create(['a', 'b']), fn () => false];
+        yield  [['a', 'b'], Iter\Iterator::create(['a', 'b']), fn (int $_): bool => true];
+        yield  [['a'], Iter\Iterator::create(['a', 'b']), fn (int $k): bool => 1 !== $k];
 
         yield  [[1 => 'b'], (static function () {
             yield 'a';

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Psl\Gen;
+use Generator;
+use Psl\Arr;
+use Psl\Internal;
 
 /**
  * Returns the cartesian product of iterables that were passed as arguments.
@@ -23,13 +25,57 @@ use Psl\Gen;
  * @psalm-template Tk
  * @psalm-template Tv
  *
- * @psalm-param    list<iterable<Tk, Tv>>   $iterables Iterables to combine
+ * @psalm-param iterable<Tk, Tv> ...$iterables Iterables to combine
  *
- * @psalm-return   Iterator<list<Tk>, list<Tv>>
- *
- * @see            Gen\product()
+ * @psalm-return Iterator<list<Tk>, list<Tv>>
  */
 function product(iterable ...$iterables): Iterator
 {
-    return new Iterator(Gen\product(...$iterables));
+    return Internal\lazy_iterator(static function () use ($iterables): Generator {
+        /** @psalm-var list<Iterator<Tk, Tv>> $iterators */
+        $iterators = to_array(map(
+            $iterables,
+            fn (iterable $iterable) => new Iterator((fn () => yield from $iterable)())
+        ));
+
+        $numIterators = count($iterators);
+        if (0 === $numIterators) {
+            /** @psalm-var iterable<list<Tk>, list<Tv>> */
+            yield [] => [];
+
+            return;
+        }
+
+        /** @psalm-var list<Tk|null> $keyTuple */
+        /** @psalm-var list<Tv|null> $valueTuple */
+        $keyTuple = Arr\fill(null, 0, $numIterators);
+        $valueTuple = Arr\fill(null, 0, $numIterators);
+        $i = -1;
+        while (true) {
+            while (++$i < $numIterators - 1) {
+                $iterators[$i]->rewind();
+                if (!$iterators[$i]->valid()) {
+                    return;
+                }
+
+                $keyTuple[$i] = $iterators[$i]->key();
+                $valueTuple[$i] = $iterators[$i]->current();
+            }
+
+            foreach ($iterators[$i] as $keyTuple[$i] => $valueTuple[$i]) {
+                yield to_array($keyTuple) => to_array($valueTuple);
+            }
+
+            while (--$i >= 0) {
+                $iterators[$i]->next();
+                if ($iterators[$i]->valid()) {
+                    $keyTuple[$i] = $iterators[$i]->key();
+                    $valueTuple[$i] = $iterators[$i]->current();
+                    continue 2;
+                }
+            }
+
+            return;
+        }
+    });
 }

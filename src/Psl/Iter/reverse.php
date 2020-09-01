@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Psl\Gen;
+use Generator;
+use Psl\Internal;
 
 /**
  * Reverse the given iterable.
@@ -18,10 +19,22 @@ use Psl\Gen;
  * @psalm-param    iterable<T> $iterable The iterable to reverse.
  *
  * @psalm-return   Iterator<int, T>
- *
- * @see            Gen\reverse()
  */
 function reverse(iterable $iterable): Iterator
 {
-    return new Iterator(Gen\reverse($iterable));
+    return Internal\lazy_iterator(static function () use ($iterable): Generator {
+        $size = count($iterable);
+        if (0 === $size) {
+            return;
+        }
+
+        $values = to_array($iterable);
+        for ($lo = 0, $hi = $size - 1; $lo < $hi; $lo++, $hi--) {
+            yield $values[$hi];
+        }
+
+        for (; $lo >= 0; --$lo) {
+            yield $values[$lo];
+        }
+    });
 }

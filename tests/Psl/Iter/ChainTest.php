@@ -13,8 +13,8 @@ class ChainTest extends TestCase
     public function testChain(): void
     {
         static::assertCount(0, Iter\chain());
-        static::assertCount(0, Iter\chain([], new Iter\Iterator([])));
-        static::assertCount(0, Iter\chain([], new Iter\Iterator([])));
+        static::assertCount(0, Iter\chain([], Iter\Iterator::create([])));
+        static::assertCount(0, Iter\chain([], Iter\Iterator::create([])));
 
         /** @var Iter\Iterator<int, int> $chain */
         $chain = Iter\chain(

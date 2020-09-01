@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Psl\Gen;
+namespace Psl\Iter;
 
 use Generator;
 
@@ -15,9 +15,9 @@ use Generator;
  *
  * @psalm-param    Generator<Tk, Tv, mixed, mixed> $generator
  *
- * @psalm-return   RewindableGenerator<Tk, Tv>
+ * @psalm-return   Iterator<Tk, Tv>
  */
-function rewindable(Generator $generator): RewindableGenerator
+function rewindable(Generator $generator): Iterator
 {
-    return new RewindableGenerator($generator);
+    return new Iterator($generator);
 }

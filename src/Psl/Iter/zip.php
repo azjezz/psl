@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Psl\Gen;
+use Generator;
+use Psl\Internal;
 
 /**
  * Zips the iterables that were passed as arguments.
  *
- *  Afterwards keys and values will be arrays containing the keys/values of
- *  the individual iterables. This function stops as soon as the first iterable
- *  becomes invalid.
+ * Afterwards keys and values will be arrays containing the keys/values of
+ * the individual iterables.
+ *
+ * This function stops as soon as the first iterable becomes invalid.
  *
  *  Examples:
  *
@@ -25,13 +27,56 @@ use Psl\Gen;
  * @psalm-template Tk
  * @psalm-template Tv
  *
- * @psalm-param    iterable<Tk, Tv> ...$iterables
+ * @psalm-param iterable<Tk, Tv> ...$iterables
  *
- * @psalm-return   Iterator<list<Tk>, list<Tv>>
- *
- * @see            Gen\zip()
+ * @psalm-return Iterator<list<Tk>, list<Tv>>
  */
 function zip(iterable ...$iterables): Iterator
 {
-    return new Iterator(Gen\zip(...$iterables));
+    return Internal\lazy_iterator(static function () use ($iterables): Generator {
+        if (0 === count($iterables)) {
+            return;
+        }
+
+        /** @psalm-var list<Iterator<Tk, Tv>> $iterators */
+        $iterators = to_array(map(
+            $iterables,
+            /**
+             * @psalm-param  iterable<Tk, Tv>    $iterable
+             *
+             * @psalm-return Iterator<Tk, Tv>
+             */
+            fn ($iterable) => new Iterator((fn () => yield from $iterable)()),
+        ));
+
+        for (
+            apply($iterators, fn (Iterator $iterator) => $iterator->rewind());
+            all($iterators, fn (Iterator $iterator) => $iterator->valid());
+            apply($iterators, fn (Iterator $iterator) => $iterator->next())
+        ) {
+            /** @psalm-var list<Tk> $keys */
+            $keys = to_array(map(
+                $iterators,
+                /**
+                 * @psalm-param Iterator<Tk, Tv> $iterator
+                 *
+                 * @psalm-return Tk
+                 */
+                fn (Iterator $iterator) => $iterator->key(),
+            ));
+
+            /** @psalm-var list<Tv> $values */
+            $values = to_array(map(
+                $iterators,
+                /**
+                 * @psalm-param Iterator<Tk, Tv> $iterator
+                 *
+                 * @psalm-return Tv
+                 */
+                fn (Iterator $iterator) => $iterator->current(),
+            ));
+
+            yield $keys => $values;
+        }
+    });
 }

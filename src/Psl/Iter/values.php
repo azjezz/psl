@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Psl\Gen;
+use Generator;
+use Psl\Internal;
 
 /**
- * Returns the values of an iterable, making the keys continuously indexed.
+ * return a lazy iterator containing the values of an iterable,
+ * making the keys continuously indexed.
  *
  * Examples:
  *
@@ -15,18 +17,20 @@ use Psl\Gen;
  *      => Iter('foo', 'bar', 'baz')
  *
  *      Iter\values([17 => 1, 42 => 2, -2 => 100])
- *      => Iter(0 => 1, 1 => 42, 2 => 100)
+ *      => Iter(1, 42, 100)
  *
  * @psalm-template Tk
  * @psalm-template Tv
  *
- * @psalm-param    iterable<Tk, Tv> $iterable Iterable to get values from
+ * @psalm-param iterable<Tk, Tv> $iterable Iterable to get values from
  *
- * @psalm-return   Iterator<int, Tv>
- *
- * @see            Gen\values()
+ * @psalm-return Iterator<int, Tv>
  */
 function values(iterable $iterable): Iterator
 {
-    return new Iterator(Gen\values($iterable));
+    return Internal\lazy_iterator(static function () use ($iterable): Generator {
+        foreach ($iterable as $value) {
+            yield $value;
+        }
+    });
 }
