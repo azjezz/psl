@@ -1,0 +1,29 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\Tests\Arr;
+
+use PHPUnit\Framework\TestCase;
+use Psl\Arr;
+
+class MapTest extends TestCase
+{
+    /**
+     * @dataProvider provideData
+     */
+    public function testMap(array $expected, array $array, callable $function): void
+    {
+        $result = Arr\map($array, $function);
+
+        self::assertSame($expected, $result);
+    }
+
+    public function provideData(): iterable
+    {
+        yield [[1, 2, 3], [1, 2, 3], fn (int $v): int => $v];
+        yield [[2, 4, 6], [1, 2, 3], fn (int $v): int => $v * 2];
+        yield [['1', '2', '3'], [1, 2, 3], fn (int $v): string => (string)$v];
+        yield [[], [], fn (int $k): string => (string)$v];
+    }
+}
