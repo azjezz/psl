@@ -41,6 +41,6 @@ class NullableTypeTest extends TypeTest
 
     public function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'null|string'];
+        yield [$this->getType(), 'string|null'];
     }
 }
