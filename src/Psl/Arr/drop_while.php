@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Arr;
 
 /**
- * Drops items from an iterable until the predicate fails for the first time.
+ * Drops items from an array until the predicate fails for the first time.
  *
  * This means that all elements after (and including) the first element on
  * which the predicate fails will be included.
