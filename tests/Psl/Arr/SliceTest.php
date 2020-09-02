@@ -14,14 +14,14 @@ class SliceTest extends TestCase
     {
         $result = Arr\slice([-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5], 5);
 
-        self::assertSame([0, 1, 2, 3, 4, 5], $result);
+        self::assertSame([5 => 0, 6 => 1, 7 => 2, 8 => 3, 9 => 4, 10 => 5], $result);
     }
 
     public function testSliceWithLength(): void
     {
         $result = Arr\slice([-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5], 5, 3);
 
-        self::assertSame([0, 1, 2], $result);
+        self::assertSame([5 => 0, 6 => 1, 7 => 2], $result);
     }
 
     public function testSliceWithZeroLength(): void
