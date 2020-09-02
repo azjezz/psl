@@ -40,7 +40,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function first()
     {
-        return Iter\first($this->elements);
+        return Arr\first($this->elements);
     }
 
     /**
@@ -51,7 +51,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function last()
     {
-        return Iter\last($this->elements);
+        return Arr\last($this->elements);
     }
 
     /**
@@ -77,7 +77,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function count(): int
     {
-        return Iter\count($this->elements);
+        return Arr\count($this->elements);
     }
 
     /**
@@ -121,7 +121,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function contains($k): bool
     {
-        return Iter\contains_key($this->elements, $k);
+        return Arr\contains_key($this->elements, $k);
     }
 
     /**
@@ -335,7 +335,7 @@ final class MutableVector implements MutableVectorInterface
      * The keys associated with the current `MutableVector` remain unchanged in the
      * returned `MutableVector`.
      *
-     * @psalm-param (callable(T): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (pure-callable(T): bool) $fn - The callback containing the condition to apply to the current
      *                                 `MutableVector` values
      *
      * @psalm-return MutableVector<T> - a MutableVector containing the values after a user-specified condition
@@ -343,7 +343,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function filter(callable $fn): MutableVector
     {
-        return new MutableVector(Iter\filter($this->elements, $fn));
+        return new MutableVector(Arr\filter($this->elements, $fn));
     }
 
     /**
@@ -357,7 +357,7 @@ final class MutableVector implements MutableVectorInterface
      * The keys associated with the current `MutableVector` remain unchanged in the
      * returned `MutableVector`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (callable(int, T): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (pure-callable(int, T): bool) $fn - The callback containing the condition to apply to the current
      *                                     `MutableVector` keys and values
      *
      * @psalm-return MutableVector<T> - a `MutableVector` containing the values after a user-specified
@@ -366,7 +366,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function filterWithKey(callable $fn): MutableVector
     {
-        return new MutableVector(Iter\filter_with_key($this->elements, $fn));
+        return new MutableVector(Arr\filter_with_key($this->elements, $fn));
     }
 
     /**
@@ -381,7 +381,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-template Tu
      *
-     * @psalm-param (callable(T): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (pure-callable(T): Tu) $fn - The callback containing the operation to apply to the current
      *                               `MutableVector` values
      *
      * @psalm-return   MutableVector<Tu> - a `MutableVector` containing key/value pairs after a user-specified
@@ -405,7 +405,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-template Tu
      *
-     * @psalm-param (callable(int, T): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (pure-callable(int, T): Tu) $fn - The callback containing the operation to apply to the current
      *                                   `MutableVector` keys and values
      *
      * @psalm-return   MutableVector<Tu> - a `MutableVector` containing the values after a user-specified
@@ -470,7 +470,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function take(int $n): MutableVector
     {
-        return new MutableVector(Iter\take($this->elements, $n));
+        return new MutableVector(Arr\take($this->elements, $n));
     }
 
     /**
@@ -481,7 +481,7 @@ final class MutableVector implements MutableVectorInterface
      * The returned `MutableVector` will always be a proper subset of the current
      * `MutableVector`.
      *
-     * @psalm-param (callable(T): bool) $fn - The callback that is used to determine the stopping
+     * @psalm-param (pure-callable(T): bool) $fn - The callback that is used to determine the stopping
      *              condition.
      *
      * @psalm-return MutableVector<T> - A `MutableVector` that is a proper subset of the current
@@ -489,7 +489,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function takeWhile(callable $fn): MutableVector
     {
-        return new MutableVector(Iter\take_while($this->elements, $fn));
+        return new MutableVector(Arr\take_while($this->elements, $fn));
     }
 
     /**
@@ -512,7 +512,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function drop(int $n): MutableVector
     {
-        return new MutableVector(Iter\drop($this->elements, $n));
+        return new MutableVector(Arr\drop($this->elements, $n));
     }
 
     /**
@@ -523,7 +523,7 @@ final class MutableVector implements MutableVectorInterface
      * The returned `MutableVector` will always be a proper subset of the current
      * `MutableVector`.
      *
-     * @psalm-param (callable(T): bool) $fn - The callback used to determine the starting element for the
+     * @psalm-param (pure-callable(T): bool) $fn - The callback used to determine the starting element for the
      *              returned `MutableVector`.
      *
      * @psalm-return MutableVector<T> - A `MutableVector` that is a proper subset of the current
@@ -531,7 +531,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function dropWhile(callable $fn): MutableVector
     {
-        return new MutableVector(Iter\drop_while($this->elements, $fn));
+        return new MutableVector(Arr\drop_while($this->elements, $fn));
     }
 
     /**
@@ -557,6 +557,6 @@ final class MutableVector implements MutableVectorInterface
      */
     public function slice(int $start, int $len): MutableVector
     {
-        return new MutableVector(Iter\slice($this->elements, $start, $len));
+        return new MutableVector(Arr\slice($this->elements, $start, $len));
     }
 }

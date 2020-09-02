@@ -42,7 +42,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * The keys associated with the current `AccessibleCollectionInterface` remain unchanged in the
      * returned `AccessibleCollectionInterface`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (pure-callable(Tv): bool) $fn - The callback containing the condition to apply to the current
      *                                 `AccessibleCollectionInterface` values
      *
      * @psalm-return AccessibleCollectionInterface<Tk, Tv> - a AccessibleCollectionInterface containing the values after a user-specified condition
@@ -61,7 +61,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * The keys associated with the current `AccessibleCollectionInterface` remain unchanged in the
      * returned `AccessibleCollectionInterface`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (pure-callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
      *                                     `AccessibleCollectionInterface` keys and values
      *
      * @psalm-return AccessibleCollectionInterface<Tk, Tv> - a `AccessibleCollectionInterface` containing the values after a user-specified
@@ -82,7 +82,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @psalm-template Tu
      *
-     * @psalm-param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (pure-callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                               `AccessibleCollectionInterface` values
      *
      * @psalm-return AccessibleCollectionInterface<Tk, Tu> - a `AccessibleCollectionInterface` containing key/value pairs after a user-specified
@@ -103,7 +103,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @psalm-template Tu
      *
-     * @psalm-param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (pure-callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                                   `AccessibleCollectionInterface` keys and values
      *
      * @psalm-return AccessibleCollectionInterface<Tk, Tu> - a `AccessibleCollectionInterface` containing the values after a user-specified
@@ -200,7 +200,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * The returned `AccessibleCollectionInterface` will always be a proper subset of the current
      * `AccessibleCollectionInterface`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback that is used to determine the stopping
+     * @psalm-param (pure-callable(Tv): bool) $fn - The callback that is used to determine the stopping
      *              condition.
      *
      * @psalm-return AccessibleCollectionInterface<Tk, Tv> - A `AccessibleCollectionInterface` that is a proper subset of the current
@@ -234,7 +234,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * The returned `AccessibleCollectionInterface` will always be a proper subset of the current
      * `AccessibleCollectionInterface`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback used to determine the starting element for the
+     * @psalm-param (pure-callable(Tv): bool) $fn - The callback used to determine the starting element for the
      *              returned `AccessibleCollectionInterface`.
      *
      * @psalm-return AccessibleCollectionInterface<Tk, Tv> - A `AccessibleCollectionInterface` that is a proper subset of the current

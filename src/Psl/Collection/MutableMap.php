@@ -39,7 +39,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function first()
     {
-        return Iter\first($this->elements);
+        return Arr\first($this->elements);
     }
 
     /**
@@ -50,7 +50,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function firstKey()
     {
-        return Iter\first_key($this->elements);
+        return Arr\first_key($this->elements);
     }
 
     /**
@@ -61,7 +61,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function last()
     {
-        return Iter\last($this->elements);
+        return Arr\last($this->elements);
     }
 
     /**
@@ -72,7 +72,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function lastKey()
     {
-        return Iter\last_key($this->elements);
+        return Arr\last_key($this->elements);
     }
 
     /**
@@ -119,7 +119,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function count(): int
     {
-        return Iter\count($this->elements);
+        return Arr\count($this->elements);
     }
 
     /**
@@ -163,7 +163,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function contains($k): bool
     {
-        return Iter\contains_key($this->elements, $k);
+        return Arr\contains_key($this->elements, $k);
     }
 
     /**
@@ -186,7 +186,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function values(): MutableVector
     {
-        return new MutableVector(Iter\values($this->elements));
+        return new MutableVector(Arr\values($this->elements));
     }
 
     /**
@@ -196,7 +196,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function keys(): MutableVector
     {
-        return new MutableVector(Iter\keys($this->elements));
+        return new MutableVector(Arr\keys($this->elements));
     }
 
     /**
@@ -209,7 +209,7 @@ final class MutableMap implements MutableMapInterface
      * The keys associated with the current `MutableMap` remain unchanged in the
      * returned `MutableMap`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (pure-callable(Tv): bool) $fn - The callback containing the condition to apply to the current
      *                                 `MutableMap` values
      *
      * @psalm-return MutableMap<Tk, Tv> - a MutableMap containing the values after a user-specified condition
@@ -217,7 +217,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function filter(callable $fn): MutableMap
     {
-        return new MutableMap(Iter\filter($this->elements, $fn));
+        return new MutableMap(Arr\filter($this->elements, $fn));
     }
 
     /**
@@ -231,7 +231,7 @@ final class MutableMap implements MutableMapInterface
      * The keys associated with the current `MutableMap` remain unchanged in the
      * returned `MutableMap`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (pure-callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
      *                                     `MutableMap` keys and values
      *
      * @psalm-return MutableMap<Tk, Tv> - a `MutableMap` containing the values after a user-specified
@@ -240,7 +240,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function filterWithKey(callable $fn): MutableMap
     {
-        return new MutableMap(Iter\filter_with_key($this->elements, $fn));
+        return new MutableMap(Arr\filter_with_key($this->elements, $fn));
     }
 
     /**
@@ -255,7 +255,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-template Tu
      *
-     * @psalm-param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (pure-callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                               `MutableMap` values
      *
      * @psalm-return   MutableMap<Tk, Tu> - a `MutableMap` containing key/value pairs after a user-specified
@@ -279,7 +279,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-template Tu
      *
-     * @psalm-param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (pure-callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                                   `MutableMap` keys and values
      *
      * @psalm-return   MutableMap<Tk, Tu> - a `MutableMap` containing the values after a user-specified
@@ -348,7 +348,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function take(int $n): MutableMap
     {
-        return new MutableMap(Iter\take($this->elements, $n));
+        return new MutableMap(Arr\take($this->elements, $n));
     }
 
     /**
@@ -359,7 +359,7 @@ final class MutableMap implements MutableMapInterface
      * The returned `MutableMap` will always be a proper subset of the current
      * `MutableMap`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback that is used to determine the stopping
+     * @psalm-param (pure-callable(Tv): bool) $fn - The callback that is used to determine the stopping
      *              condition.
      *
      * @psalm-return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
@@ -367,7 +367,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function takeWhile(callable $fn): MutableMap
     {
-        return new MutableMap(Iter\take_while($this->elements, $fn));
+        return new MutableMap(Arr\take_while($this->elements, $fn));
     }
 
     /**
@@ -390,7 +390,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function drop(int $n): MutableMap
     {
-        return new MutableMap(Iter\drop($this->elements, $n));
+        return new MutableMap(Arr\drop($this->elements, $n));
     }
 
     /**
@@ -401,7 +401,7 @@ final class MutableMap implements MutableMapInterface
      * The returned `MutableMap` will always be a proper subset of the current
      * `MutableMap`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback used to determine the starting element for the
+     * @psalm-param (pure-callable(Tv): bool) $fn - The callback used to determine the starting element for the
      *              returned `MutableMap`.
      *
      * @psalm-return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
@@ -409,7 +409,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function dropWhile(callable $fn): MutableMap
     {
-        return new MutableMap(Iter\drop_while($this->elements, $fn));
+        return new MutableMap(Arr\drop_while($this->elements, $fn));
     }
 
     /**
@@ -435,7 +435,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function slice(int $start, int $len): MutableMap
     {
-        return new MutableMap(Iter\slice($this->elements, $start, $len));
+        return new MutableMap(Arr\slice($this->elements, $start, $len));
     }
 
     /**

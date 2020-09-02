@@ -7,6 +7,7 @@ namespace Psl\Collection;
 use Psl;
 use Psl\Arr;
 use Psl\Iter;
+use Psl\Type;
 
 /**
  * @template Tk of array-key
@@ -30,7 +31,7 @@ final class Map implements MapInterface
      */
     public function __construct(iterable $elements)
     {
-        $this->elements = Iter\to_array_with_keys($elements);
+        $this->elements = Type\is_array($elements) ? $elements : iterator_to_array($elements);
     }
 
     /**
@@ -41,18 +42,18 @@ final class Map implements MapInterface
      */
     public function first()
     {
-        return Iter\first($this->elements);
+        return Arr\first($this->elements);
     }
 
     /**
      * Returns the first key in the current collection.
      *
      * @psalm-return Tk|null - The first key in the current collection, or `null` if the
-     *                  current collection is empty
+     *                  current collection is empty.
      */
     public function firstKey()
     {
-        return Iter\first_key($this->elements);
+        return Arr\first_key($this->elements);
     }
 
     /**
@@ -63,18 +64,18 @@ final class Map implements MapInterface
      */
     public function last()
     {
-        return Iter\last($this->elements);
+        return Arr\last($this->elements);
     }
 
     /**
      * Returns the last key in the current collection.
      *
      * @psalm-return Tk|null - The last key in the current collection, or `null` if the
-     *                  current collection is empty
+     *                  current collection is empty.
      */
     public function lastKey()
     {
-        return Iter\last_key($this->elements);
+        return Arr\last_key($this->elements);
     }
 
     /**
@@ -121,7 +122,7 @@ final class Map implements MapInterface
      */
     public function count(): int
     {
-        return Iter\count($this->elements);
+        return Arr\count($this->elements);
     }
 
     /**
@@ -165,7 +166,7 @@ final class Map implements MapInterface
      */
     public function contains($k): bool
     {
-        return Iter\contains_key($this->elements, $k);
+        return Arr\contains_key($this->elements, $k);
     }
 
     /**
@@ -189,7 +190,7 @@ final class Map implements MapInterface
      */
     public function values(): Vector
     {
-        return new Vector(Iter\values($this->elements));
+        return new Vector(Arr\values($this->elements));
     }
 
     /**
@@ -212,7 +213,7 @@ final class Map implements MapInterface
      * The keys associated with the current `Map` remain unchanged in the
      * returned `Map`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (pure-callable(Tv): bool) $fn - The callback containing the condition to apply to the current
      *                                 `Map` values
      *
      * @psalm-return Map<Tk, Tv> - a Map containing the values after a user-specified condition
@@ -220,7 +221,7 @@ final class Map implements MapInterface
      */
     public function filter(callable $fn): Map
     {
-        return new Map(Iter\filter($this->elements, $fn));
+        return new Map(Arr\filter($this->elements, $fn));
     }
 
     /**
@@ -234,7 +235,7 @@ final class Map implements MapInterface
      * The keys associated with the current `Map` remain unchanged in the
      * returned `Map`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (pure-callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
      *                                     `Map` keys and values
      *
      * @psalm-return Map<Tk, Tv> - a `Map` containing the values after a user-specified
@@ -243,7 +244,7 @@ final class Map implements MapInterface
      */
     public function filterWithKey(callable $fn): Map
     {
-        return new Map(Iter\filter_with_key($this->elements, $fn));
+        return new Map(Arr\filter_with_key($this->elements, $fn));
     }
 
     /**
@@ -258,7 +259,7 @@ final class Map implements MapInterface
      *
      * @psalm-template Tu
      *
-     * @psalm-param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (pure-callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                               `Map` values
      *
      * @psalm-return   Map<Tk, Tu> - a `Map` containing key/value pairs after a user-specified
@@ -282,7 +283,7 @@ final class Map implements MapInterface
      *
      * @psalm-template Tu
      *
-     * @psalm-param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (pure-callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                                   `Map` keys and values
      *
      * @psalm-return   Map<Tk, Tu> - a `Map` containing the values after a user-specified
@@ -351,7 +352,7 @@ final class Map implements MapInterface
      */
     public function take(int $n): Map
     {
-        return new Map(Iter\take($this->elements, $n));
+        return new Map(Arr\take($this->elements, $n));
     }
 
     /**
@@ -362,7 +363,7 @@ final class Map implements MapInterface
      * The returned `Map` will always be a proper subset of the current
      * `Map`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback that is used to determine the stopping
+     * @psalm-param (pure-callable(Tv): bool) $fn - The callback that is used to determine the stopping
      *              condition.
      *
      * @psalm-return Map<Tk, Tv> - A `Map` that is a proper subset of the current
@@ -370,7 +371,7 @@ final class Map implements MapInterface
      */
     public function takeWhile(callable $fn): Map
     {
-        return new Map(Iter\take_while($this->elements, $fn));
+        return new Map(Arr\take_while($this->elements, $fn));
     }
 
     /**
@@ -392,7 +393,7 @@ final class Map implements MapInterface
      */
     public function drop(int $n): Map
     {
-        return new Map(Iter\drop($this->elements, $n));
+        return new Map(Arr\drop($this->elements, $n));
     }
 
     /**
@@ -403,7 +404,7 @@ final class Map implements MapInterface
      * The returned `Map` will always be a proper subset of the current
      * `Map`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback used to determine the starting element for the
+     * @psalm-param (pure-callable(Tv): bool) $fn - The callback used to determine the starting element for the
      *              returned `Map`.
      *
      * @psalm-return Map<Tk, Tv> - A `Map` that is a proper subset of the current
@@ -411,7 +412,7 @@ final class Map implements MapInterface
      */
     public function dropWhile(callable $fn): Map
     {
-        return new Map(Iter\drop_while($this->elements, $fn));
+        return new Map(Arr\drop_while($this->elements, $fn));
     }
 
     /**
@@ -437,6 +438,6 @@ final class Map implements MapInterface
      */
     public function slice(int $start, int $len): Map
     {
-        return new Map(Iter\slice($this->elements, $start, $len));
+        return new Map(Arr\slice($this->elements, $start, $len));
     }
 }

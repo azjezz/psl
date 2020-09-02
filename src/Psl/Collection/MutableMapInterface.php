@@ -38,7 +38,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * The keys associated with the current `MutableMapInterface` remain unchanged in the
      * returned `MutableMapInterface`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (pure-callable(Tv): bool) $fn - The callback containing the condition to apply to the current
      *                                 `MutableMapInterface` values
      *
      * @psalm-return MutableMapInterface<Tk, Tv> - a MutableMapInterface containing the values after a user-specified condition
@@ -57,7 +57,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * The keys associated with the current `MutableMapInterface` remain unchanged in the
      * returned `MutableMapInterface`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (pure-callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
      *                                     `MutableMapInterface` keys and values
      *
      * @psalm-return MutableMapInterface<Tk, Tv> - a `MutableMapInterface` containing the values after a user-specified
@@ -78,7 +78,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-template Tu
      *
-     * @psalm-param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (pure-callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                               `MutableMapInterface` values
      *
      * @psalm-return MutableMapInterface<Tk, Tu> - a `MutableMapInterface` containing key/value pairs after a user-specified
@@ -99,7 +99,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-template Tu
      *
-     * @psalm-param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (pure-callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                                   `MutableMapInterface` keys and values
      *
      * @psalm-return MutableMapInterface<Tk, Tu> - a `MutableMapInterface` containing the values after a user-specified
@@ -196,7 +196,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * The returned `MutableMapInterface` will always be a proper subset of the current
      * `MutableMapInterface`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback that is used to determine the stopping
+     * @psalm-param (pure-callable(Tv): bool) $fn - The callback that is used to determine the stopping
      *              condition.
      *
      * @psalm-return MutableMapInterface<Tk, Tv> - A `MutableMapInterface` that is a proper subset of the current
@@ -230,7 +230,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * The returned `MutableMapInterface` will always be a proper subset of the current
      * `MutableMapInterface`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback used to determine the starting element for the
+     * @psalm-param (pure-callable(Tv): bool) $fn - The callback used to determine the starting element for the
      *              returned `MutableMapInterface`.
      *
      * @psalm-return MutableMapInterface<Tk, Tv> - A `MutableMapInterface` that is a proper subset of the current

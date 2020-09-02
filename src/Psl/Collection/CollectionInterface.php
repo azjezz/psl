@@ -54,7 +54,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * The keys associated with the current `CollectionInterface` remain unchanged in the
      * returned `CollectionInterface`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (pure-callable(Tv): bool) $fn - The callback containing the condition to apply to the current
      *                                 `CollectionInterface` values
      *
      * @psalm-return CollectionInterface<Tk, Tv> - a CollectionInterface containing the values after a user-specified condition
@@ -73,7 +73,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * The keys associated with the current `CollectionInterface` remain unchanged in the
      * returned `CollectionInterface`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (pure-callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
      *                                     `CollectionInterface` keys and values
      *
      * @psalm-return CollectionInterface<Tk, Tv> - a `CollectionInterface` containing the values after a user-specified
@@ -94,7 +94,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *
      * @psalm-template Tu
      *
-     * @psalm-param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (pure-callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                               `CollectionInterface` values
      *
      * @psalm-return CollectionInterface<Tk, Tu> - a `CollectionInterface` containing key/value pairs after a user-specified
@@ -115,7 +115,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *
      * @psalm-template Tu
      *
-     * @psalm-param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (pure-callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                                   `CollectionInterface` keys and values
      *
      * @psalm-return CollectionInterface<Tk, Tu> - a `CollectionInterface` containing the values after a user-specified
@@ -168,7 +168,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * The returned `CollectionInterface` will always be a proper subset of the current
      * `CollectionInterface`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback that is used to determine the stopping
+     * @psalm-param (pure-callable(Tv): bool) $fn - The callback that is used to determine the stopping
      *              condition.
      *
      * @psalm-return CollectionInterface<Tk, Tv> - A `CollectionInterface` that is a proper subset of the current
@@ -202,7 +202,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * The returned `CollectionInterface` will always be a proper subset of the current
      * `CollectionInterface`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback used to determine the starting element for the
+     * @psalm-param (pure-callable(Tv): bool) $fn - The callback used to determine the starting element for the
      *              returned `CollectionInterface`.
      *
      * @psalm-return CollectionInterface<Tk, Tv> - A `CollectionInterface` that is a proper subset of the current

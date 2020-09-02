@@ -44,7 +44,7 @@ interface MutableVectorInterface extends VectorInterface, MutableAccessibleColle
      * The keys associated with the current `MutableVectorInterface` remain unchanged in the
      * returned `MutableVectorInterface`.
      *
-     * @psalm-param (callable(T): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (pure-callable(T): bool) $fn - The callback containing the condition to apply to the current
      *                                 `MutableVectorInterface` values
      *
      * @psalm-return MutableVectorInterface<T> - a MutableVectorInterface containing the values after a user-specified condition
@@ -63,7 +63,7 @@ interface MutableVectorInterface extends VectorInterface, MutableAccessibleColle
      * The keys associated with the current `MutableVectorInterface` remain unchanged in the
      * returned `MutableVectorInterface`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (callable(int, T): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (pure-callable(int, T): bool) $fn - The callback containing the condition to apply to the current
      *                                     `MutableVectorInterface` keys and values
      *
      * @psalm-return MutableVectorInterface<T> - a `MutableVectorInterface` containing the values after a user-specified
@@ -84,7 +84,7 @@ interface MutableVectorInterface extends VectorInterface, MutableAccessibleColle
      *
      * @psalm-template Tu
      *
-     * @psalm-param (callable(T): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (pure-callable(T): Tu) $fn - The callback containing the operation to apply to the current
      *                               `MutableVectorInterface` values
      *
      * @psalm-return   MutableVectorInterface<Tu> - a `MutableVectorInterface` containing key/value pairs after a user-specified
@@ -105,7 +105,7 @@ interface MutableVectorInterface extends VectorInterface, MutableAccessibleColle
      *
      * @psalm-template Tu
      *
-     * @psalm-param (callable(int, T): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (pure-callable(int, T): Tu) $fn - The callback containing the operation to apply to the current
      *                                   `MutableVectorInterface` keys and values
      *
      * @psalm-return   MutableVectorInterface<Tu> - a `MutableVectorInterface` containing the values after a user-specified
@@ -202,7 +202,7 @@ interface MutableVectorInterface extends VectorInterface, MutableAccessibleColle
      * The returned `MutableVectorInterface` will always be a proper subset of the current
      * `MutableVectorInterface`.
      *
-     * @psalm-param (callable(T): bool) $fn - The callback that is used to determine the stopping
+     * @psalm-param (pure-callable(T): bool) $fn - The callback that is used to determine the stopping
      *              condition.
      *
      * @psalm-return MutableVectorInterface<T> - A `MutableVectorInterface` that is a proper subset of the current
@@ -236,7 +236,7 @@ interface MutableVectorInterface extends VectorInterface, MutableAccessibleColle
      * The returned `MutableVectorInterface` will always be a proper subset of the current
      * `MutableVectorInterface`.
      *
-     * @psalm-param (callable(T): bool) $fn - The callback used to determine the starting element for the
+     * @psalm-param (pure-callable(T): bool) $fn - The callback used to determine the starting element for the
      *              returned `MutableVectorInterface`.
      *
      * @psalm-return MutableVectorInterface<T> - A `MutableVectorInterface` that is a proper subset of the current
