@@ -18,6 +18,7 @@
 - [Psl\Fun](./component/fun.md)
 - [Psl\Hash](./component/hash.md)
 - [Psl\Html](./component/html.md)
+- [Psl\IO](./component/io.md)
 - [Psl\Iter](./component/iter.md)
 - [Psl\Json](./component/json.md)
 - [Psl\Math](./component/math.md)

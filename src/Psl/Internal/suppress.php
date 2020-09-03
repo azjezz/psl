@@ -9,11 +9,9 @@ use function error_reporting;
 /**
  * @template T
  *
- * @param (pure-callable(): T) $fun
+ * @param (callable(): T) $fun
  *
  * @return T
- *
- * @pure
  *
  * @internal
  */

@@ -27,10 +27,7 @@ function call_preg(string $function, callable $callable)
     /** @psalm-suppress ImpureFunctionCall */
     error_clear_last();
 
-    /**
-     * @psalm-suppress InvalidArgument - callable is not "pure", because keys() and values()
-     *      are conditionally pure, in this context, we know they are.
-     */
+    /** @psalm-suppress ImpureFunctionCall */
     $result = Internal\suppress($callable);
     $error = get_prec_error($function);
     // @codeCoverageIgnoreStart

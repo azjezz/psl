@@ -512,6 +512,10 @@ final class Loader
         'Psl\Filesystem\get_change_time',
         'Psl\Filesystem\get_modification_time',
         'Psl\Filesystem\get_inode',
+        'Psl\IO\Internal\open',
+        'Psl\IO\input_handle',
+        'Psl\IO\output_handle',
+        'Psl\IO\error_handle',
     ];
 
     public const INTERFACES = [
@@ -540,6 +544,23 @@ final class Loader
         'Psl\SecureRandom\Exception\ExceptionInterface',
         'Psl\Shell\Exception\ExceptionInterface',
         'Psl\Filesystem\Exception\ExceptionInterface',
+        'Psl\IO\Exception\ExceptionInterface',
+        'Psl\IO\CloseHandle',
+        'Psl\IO\CloseReadHandle',
+        'Psl\IO\CloseReadWriteHandle',
+        'Psl\IO\CloseSeekHandle',
+        'Psl\IO\CloseSeekReadHandle',
+        'Psl\IO\CloseSeekReadWriteHandle',
+        'Psl\IO\CloseSeekWriteHandle',
+        'Psl\IO\CloseWriteHandle',
+        'Psl\IO\Handle',
+        'Psl\IO\ReadHandle',
+        'Psl\IO\ReadWriteHandle',
+        'Psl\IO\SeekHandle',
+        'Psl\IO\SeekReadHandle',
+        'Psl\IO\SeekReadWriteHandle',
+        'Psl\IO\SeekWriteHandle',
+        'Psl\IO\WriteHandle',
     ];
 
     public const TRAITS = [];
@@ -603,6 +624,15 @@ final class Loader
         'Psl\Math\Exception\ArithmeticException',
         'Psl\Math\Exception\DivisionByZeroException',
         'Psl\Filesystem\Exception\RuntimeException',
+        'Psl\IO\Exception\AlreadyClosedException',
+        'Psl\IO\Exception\RuntimeException',
+        'Psl\IO\Exception\BlockingException',
+        'Psl\IO\Internal\ResourceHandle',
+        'Psl\IO\Internal\ReadOnlyHandleDecorator',
+        'Psl\IO\Internal\WriteOnlyHandleDecorator',
+        'Psl\IO\Writer',
+        'Psl\IO\Reader',
+        'Psl\IO\MemoryHandle',
     ];
 
     public const TYPE_CONSTANTS = 1;

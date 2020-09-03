@@ -192,6 +192,7 @@ function get_all_components(): array
         'Psl\Fun',
         'Psl\Hash',
         'Psl\Html',
+        'Psl\IO',
         'Psl\Iter',
         'Psl\Json',
         'Psl\Math',
