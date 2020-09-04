@@ -21,6 +21,7 @@ The goal of Psl is to provide a consistent, centralized, well-typed set of APIs 
 
 declare(strict_types=1);
 
+use Psl\Arr;
 use Psl\Str;
 use Psl\Iter;
 
@@ -29,10 +30,12 @@ use Psl\Iter;
  */
 function foo(iterable $codes): string
 {
-    /** @var Iter\Iterator<int> $codes */
-    $codes = Iter\filter_nulls($codes);
-    /** @var Iter\Iterator<string> $chars */
-    $chars = Iter\map($codes, fn(int $code): string => Str\chr($code));
+    /** @var list<?int> $codes */
+    $codes = Iter\to_array($codes);
+    /** @var list<int> $codes */
+    $codes = Arr\filter_nulls($codes);
+    /** @var list<string> $chars */
+    $chars = Arr\map($codes, fn(int $code): string => Str\chr($code));
 
     return Str\join($chars, ', ');
 }
@@ -73,6 +76,16 @@ This is not exhaustive list.
  - If an operation can conceivably operate on either keys or values, the default is to operate on the values - the version that operates on keys should have `_key` suffix (e.g. `Iter\last`, `Iter\last_key`, `Iter\contains`, `Iter\contains_key` )
  - Find-like operations that can fail should return `?T`; a second function should be added with an `x` suffix that uses an invariant to return `T` (e.g. `Arr\last`, `Arr\lastx`)
  - Iterable functions that do an operation based on a user-supplied keying function for each element should be suffixed with `_by` (e.g. `Arr\sort_by`, `Iter\group_by`, `Math\max_by`)
+
+## Sponsors
+
+Thanks to our sponsors and supporters:
+
+
+| JetBrains |
+|---|
+| <a href="https://www.jetbrains.com/?from=PSL ( PHP Standard Library )" title="JetBrains" target="_blank"><img src="https://res.cloudinary.com/azjezz/image/upload/v1599239910/jetbrains_qnyb0o.png" height="120" /></a> |
+
 
 ## License
 
