@@ -16,7 +16,7 @@ use Psl;
  *
  * This function is safe against timing attacks.
  *
- * @psalm-param array{?cost: int}|array{?memory_cost: int, ?time_cost: int, ?threads: int} $options
+ * @psalm-param array{cost?: int}|array{memory_cost?: int, time_cost?: int, threads?: int} $options
  */
 function needs_rehash(string $hash, string $algorithm = DEFAULT_ALGORITHM, array $options = []): bool
 {

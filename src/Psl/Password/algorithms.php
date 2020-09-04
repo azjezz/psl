@@ -12,8 +12,8 @@ namespace Psl\Password;
 function algorithms(): array
 {
     return [
-        BCRYPT_ALGORITHM,
-        ARGON2I_ALGORITHM,
-        ARGON2ID_ALGORITHM,
+        (string) BCRYPT_ALGORITHM,
+        (string) ARGON2I_ALGORITHM,
+        (string) ARGON2ID_ALGORITHM,
     ];
 }
