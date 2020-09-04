@@ -18,15 +18,10 @@ final class PasswordTest extends TestCase
 
         self::assertContains(Password\DEFAULT_ALGORITHM, $algorithms);
         self::assertContains(Password\BCRYPT_ALGORITHM, $algorithms);
-        if (defined('Psl\Password\ARGON2I_ALGORITHM')) {
-            self::assertContains(Password\ARGON2I_ALGORITHM, $algorithms);
-        }
+        self::assertContains(Password\ARGON2I_ALGORITHM, $algorithms);
+        self::assertContains(Password\ARGON2ID_ALGORITHM, $algorithms);
 
-        if (defined('Psl\Password\ARGON2ID_ALGORITHM')) {
-            self::assertContains(Password\ARGON2ID_ALGORITHM, $algorithms);
-        }
-
-        $algos = Arr\map(password_algos(), fn (string $value): string => \PASSWORD_BCRYPT === $value ? Password\BCRYPT_ALGORITHM : $value);
+        $algos = Arr\map(password_algos(), fn(string $value): string => \PASSWORD_BCRYPT === $value ? Password\BCRYPT_ALGORITHM : $value);
 
         self::assertSame($algos, $algorithms);
     }
