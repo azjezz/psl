@@ -3,25 +3,44 @@ build: false
 clone_depth: 1
 clone_folder: C:\projects\psl
 
+environment:
+  # Use this matrix as an example
+  matrix:
+
+    # Specify matrix item for your app
+    - PHP_VERSION: 7.4
+      VC_VERSION: 15
+      BUILD_TYPE: nts-Win32
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+
+  PHP_SDK_VERSION: 2.1.9
+
+  PHP_AVM: https://raw.githubusercontent.com/sergeyklay/php-appveyor/master/php-appveyor.psm1
+
+cache:
+  - 'C:\Downloads -> .appveyor.yml'
+
 platform:
   - x86
   - x64
 
 install:
   - ps: Set-Service wuauserv -StartupType Manual
-  - cinst -y OpenSSL.Light
-  - SET PATH=C:\Program Files\OpenSSL;%PATH%
-  - cinst -y php -version 7.4.3
-  - cd c:\tools\php74
-  - copy php.ini-production php.ini
-  - echo date.timezone="UTC" >> php.ini
-  - echo extension_dir=ext >> php.ini
-  - echo extension=php_openssl.dll >> php.ini
-  - echo extension=php_mbstring.dll >> php.ini
-  - echo extension=php_fileinfo.dll >> php.ini
-  - cd C:\projects\psl
-  - SET PATH=C:\tools\php74;%PATH%
+  - ps: (new-object Net.WebClient).DownloadString($Env:PHP_AVM) | iex
+
+  - ps: InstallPhpSdk     $Env:PHP_SDK_VERSION $Env:VC_VERSION $Env:PLATFORM
+  - ps: InstallPhp        $Env:PHP_VERSION $Env:BUILD_TYPE $Env:VC_VERSION $Env:PLATFORM
+  - ps: InstallPhpDevPack $Env:PHP_VERSION $Env:BUILD_TYPE $Env:VC_VERSION $Env:PLATFORM
+  - ps: InstallComposer
+  - ps: EnablePhpExtension openssl
+  - ps: EnablePhpExtension mbstring
+  - ps: InstallPeclExtension libsodium 2.0.22 $Env:PHP_VERSION $Env:BUILD_TYPE $Env:VC_VERSION $Env:PLATFORM
+  - ps: EnablePhpExtension libsodium
+
+build_script:
   - php -r "readfile('http://getcomposer.org/installer');" | php
+  - php --version
+  - php composer.phar --version
   - php composer.phar install
 
 test_script:
