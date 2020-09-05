@@ -1,7 +1,6 @@
 # Psl - PHP Standard Library
 
 [![TravisCI Build Status](https://travis-ci.org/azjezz/psl.svg?branch=develop)](https://travis-ci.org/azjezz/psl)
-[![Appveyor Build status](https://ci.appveyor.com/api/projects/status/cy8bsj35vgqqm2yt/branch/develop?svg=true)](https://ci.appveyor.com/project/azjezz/psl/branch/develop)
 [![Scrutinizer Build Status](https://scrutinizer-ci.com/g/azjezz/psl/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/azjezz/psl/build-status/develop)
 [![Coverage Status](https://coveralls.io/repos/github/azjezz/psl/badge.svg?branch=develop)](https://coveralls.io/github/azjezz/psl?branch=develop)
 [![Type Coverage](https://shepherd.dev/github/azjezz/psl/coverage.svg)](https://shepherd.dev/github/azjezz/psl)
