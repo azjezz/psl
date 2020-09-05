@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
+use function log as php_log;
 use Psl;
 
 /**
@@ -17,11 +18,11 @@ function log(float $num, ?float $base = null): float
 {
     Psl\invariant($num > 0, 'Expected a non-negative number.');
     if (null === $base) {
-        return \log($num);
+        return php_log($num);
     }
 
     Psl\invariant($base > 0, 'Expected a non-negative base.');
     Psl\invariant(1.0 !== $base, 'Logarithm undefined for base 1.');
 
-    return \log($num, $base);
+    return php_log($num, $base);
 }

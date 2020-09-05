@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\PseudoRandom;
 
+use function mt_rand;
 use Psl;
 use Psl\Math;
 

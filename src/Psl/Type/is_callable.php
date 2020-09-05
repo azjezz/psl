@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
+use function is_callable as php_is_callable;
+
 /**
  * Finds whether a variable is a callable.
  *
@@ -15,5 +17,5 @@ namespace Psl\Type;
  */
 function is_callable($var): bool
 {
-    return \is_callable($var, false);
+    return php_is_callable($var, false);
 }

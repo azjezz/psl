@@ -8,6 +8,7 @@ use Psl;
 use Psl\Math;
 use Psl\Str;
 use Psl\Str\Byte;
+use function unpack;
 
 /**
  * Returns a securely generated random string of the given length. The string is
@@ -40,7 +41,7 @@ function string(int $length, ?string $alphabet = null): string
         for ($i = 0; $i < $urandom_length && $length > 0; ++$i) {
             // Unpack 8 bits
             /** @var array<int, int> $v */
-            $v = \unpack('C', $data[$i]);
+            $v = unpack('C', $data[$i]);
             $unpacked_data = ($unpacked_data << 8) | $v[1];
             $unpacked_bits += 8;
 

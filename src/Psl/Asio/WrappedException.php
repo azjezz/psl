@@ -6,7 +6,6 @@ namespace Psl\Asio;
 
 use Exception;
 use Psl;
-use Psl\Str;
 
 /**
  * Represents the result of failed operation.

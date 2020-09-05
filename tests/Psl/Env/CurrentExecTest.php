@@ -11,6 +11,6 @@ class CurrentExecTest extends TestCase
 {
     public function testCurrentExe(): void
     {
-        self::assertSame(realpath(__DIR__ . '/../../../vendor/phpunit/phpunit/phpunit'), Env\current_exec());
+        self::assertSame(realpath(__DIR__ . '/../../../vendor/bin/phpunit'), Env\current_exec());
     }
 }

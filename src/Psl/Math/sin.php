@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
+use function sin as php_sin;
+
 /**
  * Returns the sine of the given number.
  *
@@ -11,5 +13,5 @@ namespace Psl\Math;
  */
 function sin(float $num): float
 {
-    return \sin($num);
+    return php_sin($num);
 }

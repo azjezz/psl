@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
+use function is_float as php_is_float;
+
 /**
  * Finds whether a variable is a float.
  *
@@ -15,5 +17,5 @@ namespace Psl\Type;
  */
 function is_float($var): bool
 {
-    return \is_float($var);
+    return php_is_float($var);
 }

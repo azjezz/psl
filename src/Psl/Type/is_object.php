@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
+use function is_object as php_is_object;
+
 /**
  * Finds whether a variable is an object.
  *
@@ -15,5 +17,5 @@ namespace Psl\Type;
  */
 function is_object($var): bool
 {
-    return \is_object($var);
+    return php_is_object($var);
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
+use function is_nan as php_is_nan;
+
 /**
  * Finds whether a float is NaN ( not a number ).
  *
@@ -13,5 +15,5 @@ namespace Psl\Type;
  */
 function is_nan(float $var): bool
 {
-    return \is_nan($var);
+    return php_is_nan($var);
 }

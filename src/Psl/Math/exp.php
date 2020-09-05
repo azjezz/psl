@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
+use function exp as php_exp;
+
 /**
  * Returns Math\E to the power of the given number.
  *
@@ -19,5 +21,5 @@ namespace Psl\Math;
  */
 function exp(float $num): float
 {
-    return \exp($num);
+    return php_exp($num);
 }

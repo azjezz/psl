@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
+use function bcadd;
+use function bccomp;
+use function bcdiv;
+use function bcmod;
+use function bcmul;
+use function bcpow;
 use Psl;
 use Psl\Str;
 use Psl\Str\Byte;
@@ -38,15 +44,15 @@ function base_convert(string $value, int $from_base, int $to_base): string
     /** @var numeric-string $result_decimal */
     $result_decimal = '0';
     /** @var numeric-string $place_value */
-    $place_value = \bcpow((string)$from_base, (string)(Byte\length($value) - 1));
+    $place_value = bcpow((string)$from_base, (string)(Byte\length($value) - 1));
     /** @var string $digit */
     foreach (Byte\chunk($value) as $digit) {
         $digit_numeric = Byte\search_ci($from_alphabet, $digit);
         Psl\invariant(null !== $digit_numeric, 'Invalid digit %s in base %d', $digit, $from_base);
-        $result_decimal = \bcadd($result_decimal, \bcmul((string)$digit_numeric, $place_value));
+        $result_decimal = bcadd($result_decimal, bcmul((string)$digit_numeric, $place_value));
         Psl\invariant(is_numeric($result_decimal), 'Unexpected error.');
         /** @var numeric-string $place_value */
-        $place_value = \bcdiv($place_value, (string)$from_base);
+        $place_value = bcdiv($place_value, (string)$from_base);
     }
 
     if (10 === $to_base) {
@@ -56,10 +62,10 @@ function base_convert(string $value, int $from_base, int $to_base): string
     $to_alphabet = Byte\slice(Str\ALPHABET_ALPHANUMERIC, 0, $to_base);
     $result = '';
     do {
-        $result = $to_alphabet[(int)\bcmod($result_decimal, (string)$to_base)] . $result;
+        $result = $to_alphabet[(int)bcmod($result_decimal, (string)$to_base)] . $result;
         /** @var numeric-string $result_decimal */
-        $result_decimal = \bcdiv($result_decimal, (string)$to_base);
-    } while (\bccomp($result_decimal, '0') > 0);
+        $result_decimal = bcdiv($result_decimal, (string)$to_base);
+    } while (bccomp($result_decimal, '0') > 0);
 
     return $result;
 }

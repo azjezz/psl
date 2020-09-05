@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
+use function is_resource as php_is_resource;
+
 /**
  * Finds whether a variable is a resource.
  *
@@ -17,5 +19,5 @@ namespace Psl\Type;
  */
 function is_resource($var): bool
 {
-    return \is_resource($var);
+    return php_is_resource($var);
 }

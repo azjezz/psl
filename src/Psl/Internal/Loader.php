@@ -324,9 +324,6 @@ final class Loader
 
     public const INTERFACES = [
         'Psl\Exception\ExceptionInterface',
-        'Psl\Exception\InvalidArgumentException',
-        'Psl\Exception\RuntimeException',
-        'Psl\Exception\InvariantViolationException',
         'Psl\Asio\IResultOrExceptionWrapper',
         'Psl\Collection\CollectionInterface',
         'Psl\Collection\IndexAccessInterface',
@@ -338,6 +335,24 @@ final class Loader
         'Psl\Collection\MutableVectorInterface',
         'Psl\Collection\MapInterface',
         'Psl\Collection\MutableMapInterface',
+    ];
+
+    public const TRAITS = [
+        'Psl\Type\Internal\TypeTraceTrait',
+    ];
+
+    public const CLASSES = [
+        'Psl\Exception\InvariantViolationException',
+        'Psl\Iter\Iterator',
+        'Psl\Collection\Vector',
+        'Psl\Collection\MutableVector',
+        'Psl\Collection\Map',
+        'Psl\Collection\MutableMap',
+        'Psl\Asio\WrappedException',
+        'Psl\Asio\WrappedResult',
+        'Psl\Exception\InvalidArgumentException',
+        'Psl\Exception\RuntimeException',
+        'Psl\Exception\InvariantViolationException',
         'Psl\Type\Internal\ArrayKeyType',
         'Psl\Type\Internal\ArrayType',
         'Psl\Type\Internal\BoolType',
@@ -359,21 +374,6 @@ final class Loader
         'Psl\Type\Type',
         'Psl\Json\Exception\JsonDecodeException',
         'Psl\Json\Exception\JsonEncodeException',
-    ];
-
-    public const TRAITS = [
-        'Psl\Type\Internal\TypeTraceTrait',
-    ];
-
-    public const CLASSES = [
-        'Psl\Exception\InvariantViolationException',
-        'Psl\Iter\Iterator',
-        'Psl\Collection\Vector',
-        'Psl\Collection\MutableVector',
-        'Psl\Collection\Map',
-        'Psl\Collection\MutableMap',
-        'Psl\Asio\WrappedException',
-        'Psl\Asio\WrappedResult',
     ];
 
     private const TYPE_CONSTANTS = 1;

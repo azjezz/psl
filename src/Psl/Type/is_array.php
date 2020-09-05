@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
+use function is_array as php_is_array;
+
 /**
  * Finds whether a variable is an array.
  *
@@ -15,5 +17,5 @@ namespace Psl\Type;
  */
 function is_array($var): bool
 {
-    return \is_array($var);
+    return php_is_array($var);
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
+use function is_numeric as php_is_numeric;
+
 /**
  * Finds whether a variable is numeric.
  *
@@ -15,5 +17,5 @@ namespace Psl\Type;
  */
 function is_numeric($var): bool
 {
-    return \is_numeric($var);
+    return php_is_numeric($var);
 }

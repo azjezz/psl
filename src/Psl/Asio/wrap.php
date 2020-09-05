@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Asio;
 
+use Exception;
+
 /**
  * Wrap the given callable result in a `WrappedResult`, or `WrappedException` if the callable throws
  * an `Exception`.
@@ -19,7 +21,7 @@ function wrap(callable $fun): IResultOrExceptionWrapper
     try {
         $result = $fun();
         return new WrappedResult($result);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         return new WrappedException($e);
     }
 }

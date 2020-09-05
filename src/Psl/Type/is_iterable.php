@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
+use function is_iterable as php_is_iterable;
+
 /**
  * Finds whether a variable is an iterable.
  *
@@ -15,5 +17,5 @@ namespace Psl\Type;
  */
 function is_iterable($var): bool
 {
-    return \is_iterable($var);
+    return php_is_iterable($var);
 }

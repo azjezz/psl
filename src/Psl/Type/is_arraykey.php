@@ -15,5 +15,5 @@ namespace Psl\Type;
  */
 function is_arraykey($key): bool
 {
-    return is_string($key) || is_int($key);
+    return namespace\is_string($key) || namespace\is_int($key);
 }

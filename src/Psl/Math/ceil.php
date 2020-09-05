@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
+use function ceil as php_ceil;
+
 /**
  * Return the smallest integer value greater than or equal to the given number.
  *
@@ -22,5 +24,5 @@ namespace Psl\Math;
  */
 function ceil(float $float): float
 {
-    return \ceil($float);
+    return php_ceil($float);
 }

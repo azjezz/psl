@@ -7,7 +7,6 @@ namespace Psl\Collection;
 use Psl;
 use Psl\Arr;
 use Psl\Iter;
-use Psl\Type;
 
 /**
  * @template Tk of array-key
@@ -31,7 +30,7 @@ final class Map implements MapInterface
      */
     public function __construct(iterable $elements)
     {
-        $this->elements = Type\is_array($elements) ? $elements : iterator_to_array($elements);
+        $this->elements = Iter\to_array_with_keys($elements);
     }
 
     /**

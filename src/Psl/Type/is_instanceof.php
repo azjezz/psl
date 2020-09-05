@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
+use function is_a;
+
 /**
  * Checks if the object is of this class or has this class as one of its parents.
  *
@@ -17,5 +19,5 @@ namespace Psl\Type;
  */
 function is_instanceof(object $object, string $class): bool
 {
-    return \is_a($object, $class, false);
+    return is_a($object, $class, false);
 }

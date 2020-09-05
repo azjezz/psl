@@ -6,6 +6,7 @@ namespace Psl\Math;
 
 use ArithmeticError;
 use DivisionByZeroError;
+use function intdiv;
 
 /**
  * Returns the result of integer division of the given numerator by the given denominator.
@@ -28,5 +29,5 @@ use DivisionByZeroError;
  */
 function div(int $numerator, int $denominator): int
 {
-    return \intdiv($numerator, $denominator);
+    return intdiv($numerator, $denominator);
 }

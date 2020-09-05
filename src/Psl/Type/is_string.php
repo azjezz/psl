@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
+use function is_string as php_is_string;
+
 /**
  * Finds whether a variable is a string.
  *
@@ -15,5 +17,5 @@ namespace Psl\Type;
  */
 function is_string($var): bool
 {
-    return \is_string($var);
+    return php_is_string($var);
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
+use function is_int as php_is_int;
+
 /**
  * Finds whether a variable is an integer.
  *
@@ -15,5 +17,5 @@ namespace Psl\Type;
  */
 function is_int($var): bool
 {
-    return \is_int($var);
+    return php_is_int($var);
 }

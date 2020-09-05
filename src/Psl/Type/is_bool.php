@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
+use function is_bool as php_is_bool;
+
 /**
  * Finds whether a variable is a boolean.
  *
@@ -15,5 +17,5 @@ namespace Psl\Type;
  */
 function is_bool($var): bool
 {
-    return \is_bool($var);
+    return php_is_bool($var);
 }

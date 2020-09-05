@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
+use function is_scalar as php_is_scalar;
+
 /**
  * Finds whether a variable is a scalar.
  *
@@ -15,5 +17,5 @@ namespace Psl\Type;
  */
 function is_scalar($var): bool
 {
-    return \is_scalar($var);
+    return php_is_scalar($var);
 }

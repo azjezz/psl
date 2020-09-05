@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
+use function cos as php_cos;
+
 /**
  * Return the cosine of the given number.
  *
@@ -19,5 +21,5 @@ namespace Psl\Math;
  */
 function cos(float $num): float
 {
-    return \cos($num);
+    return php_cos($num);
 }

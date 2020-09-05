@@ -24,16 +24,7 @@ function diff_by_key(iterable $first, iterable $second, iterable ...$rest): Iter
             return;
         }
 
-        if (
-            is_empty($second) &&
-            all(
-                $rest,
-                /**
-                 * @psalm-param iterable<Tk, mixed> $iter
-                 */
-                fn (iterable $iter): bool => is_empty($iter)
-            )
-        ) {
+        if (is_empty($second) && all($rest, fn (iterable $iter): bool => is_empty($iter))) {
             yield from $first;
         }
 

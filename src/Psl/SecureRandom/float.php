@@ -15,7 +15,7 @@ use Psl\Math;
 function float(): float
 {
     /** @var float|int $result */
-    $result = int(0, Math\INT53_MAX) / Math\INT53_MAX;
+    $result = namespace\int(0, Math\INT53_MAX) / Math\INT53_MAX;
 
     return (float) $result;
 }

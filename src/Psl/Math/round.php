@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
+use function round as php_round;
+
 /**
  * Returns the given number rounded to the specified precision. A positive
  * precision rounds to the nearest decimal place whereas a negative precision
@@ -16,5 +18,5 @@ namespace Psl\Math;
  */
 function round(float $value, int $precision = 0): float
 {
-    return \round($value, $precision);
+    return php_round($value, $precision);
 }

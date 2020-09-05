@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\SecureRandom;
 
+use Exception;
 use Psl;
 use Psl\Str;
 use Psl\Type;
+use function random_bytes;
 
 /**
  * Returns a cryptographically secure random bytes.
@@ -22,9 +24,9 @@ function bytes(int $length): string
     }
 
     try {
-        return \random_bytes($length);
+        return random_bytes($length);
         // @codeCoverageIgnoreStart
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         $code = $e->getCode();
         if (Type\is_string($code)) {
             $code = Str\to_int($code) ?? 0;
