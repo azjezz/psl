@@ -9,7 +9,8 @@ jobs:
     - php: 7.4
     - php: nightly
       env: NIGHTLY_BUILD=true
-
+  allow_failures:
+    - env: NIGHTLY_BUILD=true
   fast_finish: true
 
 cache:
