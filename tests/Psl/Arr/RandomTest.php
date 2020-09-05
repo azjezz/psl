@@ -13,7 +13,7 @@ class RandomTest extends TestCase
     public function testRandom(): void
     {
         $values = ['a', 'b', 'c'];
-        $value = Arr\random($values);
+        $value  = Arr\random($values);
 
         static::assertNotNull($value);
         static::assertContains($value, $values);
@@ -22,7 +22,7 @@ class RandomTest extends TestCase
     public function testRandomWithOneItem(): void
     {
         $values = ['a'];
-        $value = Arr\random($values);
+        $value  = Arr\random($values);
 
         static::assertSame('a', $value);
     }

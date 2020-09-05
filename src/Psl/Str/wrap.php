@@ -32,26 +32,26 @@ function wrap(string $string, int $width = 75, string $break = "\n", bool $cut =
     Psl\invariant(0 !== $width || !$cut, 'Cannot force cut when width is zero.');
 
     $stringLength = length($string);
-    $breakLength = length($break);
-    $result = '';
-    $lastStart = $lastSpace = 0;
+    $breakLength  = length($break);
+    $result       = '';
+    $lastStart    = $lastSpace = 0;
     for ($current = 0; $current < $stringLength; ++$current) {
-        $char = slice($string, $current, 1);
+        $char          = slice($string, $current, 1);
         $possibleBreak = $char;
         if (1 !== $breakLength) {
             $possibleBreak = slice($string, $current, $breakLength);
         }
 
         if ($possibleBreak === $break) {
-            $result .= slice($string, $lastStart, $current - $lastStart + $breakLength);
-            $current += $breakLength - 1;
+            $result   .= slice($string, $lastStart, $current - $lastStart + $breakLength);
+            $current  += $breakLength - 1;
             $lastStart = $lastSpace = $current + 1;
             continue;
         }
 
         if (' ' === $char) {
             if ($current - $lastStart >= $width) {
-                $result .= slice($string, $lastStart, $current - $lastStart) . $break;
+                $result   .= slice($string, $lastStart, $current - $lastStart) . $break;
                 $lastStart = $current + 1;
             }
             $lastSpace = $current;
@@ -59,13 +59,13 @@ function wrap(string $string, int $width = 75, string $break = "\n", bool $cut =
         }
 
         if ($current - $lastStart >= $width && $cut && $lastStart >= $lastSpace) {
-            $result .= slice($string, $lastStart, $current - $lastStart) . $break;
+            $result   .= slice($string, $lastStart, $current - $lastStart) . $break;
             $lastStart = $lastSpace = $current;
             continue;
         }
 
         if ($current - $lastStart >= $width && $lastStart < $lastSpace) {
-            $result .= slice($string, $lastStart, $lastSpace - $lastStart) . $break;
+            $result   .= slice($string, $lastStart, $lastSpace - $lastStart) . $break;
             $lastStart = ++$lastSpace;
             continue;
         }

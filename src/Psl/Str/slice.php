@@ -22,7 +22,7 @@ function slice(string $string, int $offset, ?int $length = null): string
 {
     Psl\invariant(null === $length || $length >= 0, 'Expected a non-negative length.');
     $string_length = length($string);
-    $offset = Psl\Internal\validate_offset($offset, $string_length);
+    $offset        = Psl\Internal\validate_offset($offset, $string_length);
 
     if (0 === $offset && (null === $length || $string_length <= $length)) {
         return $string;

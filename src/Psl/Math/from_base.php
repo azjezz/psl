@@ -21,15 +21,20 @@ use Psl\Str\Byte;
  *
  * @psalm-pure
  *
- * @throws Psl\Exception\InvariantViolationException If $number is empty, $from_base is outside the [2, 36] range, or $number is invalid.
+ * @throws Psl\Exception\InvariantViolationException If $number is empty, $from_base is outside the [2, 36] range,
+ *      or $number is invalid.
  */
 function from_base(string $number, int $from_base): int
 {
     Psl\invariant('' !== $number, 'Unexpected empty string, expected number in base %d', $from_base);
-    Psl\invariant($from_base >= 2 && $from_base <= 36, 'Expected $from_base to be between 2 and 36, got %d', $from_base);
+    Psl\invariant(
+        $from_base >= 2 && $from_base <= 36,
+        'Expected $from_base to be between 2 and 36, got %d',
+        $from_base
+    );
 
     /** @psalm-suppress MissingThrowsDocblock */
-    $limit = div(INT64_MAX, $from_base);
+    $limit  = div(INT64_MAX, $from_base);
     $result = 0;
     /** @var string $digit */
     foreach (Byte\chunk($number) as $digit) {
@@ -48,7 +53,12 @@ function from_base(string $number, int $from_base): int
         Psl\invariant($dval < $from_base, 'Invalid digit %s in base %d', $digit, $from_base);
         $oldval = $result;
         $result = $from_base * $result + $dval;
-        Psl\invariant($oldval <= $limit && $result >= $oldval, 'Unexpected integer overflow parsing %s from base %d', $number, $from_base);
+        Psl\invariant(
+            $oldval <= $limit && $result >= $oldval,
+            'Unexpected integer overflow parsing %s from base %d',
+            $number,
+            $from_base
+        );
     }
 
     return $result;

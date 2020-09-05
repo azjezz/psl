@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Env;
 
 use Psl;
+
 use function realpath;
 
 /**

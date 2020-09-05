@@ -32,7 +32,7 @@ function split(string $string, string $delimiter, ?int $limit = null): array
         }
 
         Psl\invariant($limit > 1, 'Expected a non-negative limit.');
-        $result = chunk(slice($string, 0, $limit - 1));
+        $result   = chunk(slice($string, 0, $limit - 1));
         $result[] = slice($string, $limit - 1);
 
         return $result;

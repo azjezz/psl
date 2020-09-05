@@ -39,7 +39,7 @@ function ends_with_ci(string $string, string $suffix): bool
     }
 
     $suffix_length = length($suffix);
-    $total_length = length($string);
+    $total_length  = length($string);
     if ($suffix_length > $total_length) {
         return false;
     }

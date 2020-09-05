@@ -17,7 +17,7 @@ trait TypeTraceTrait
 
     final protected function withTrace(TypeTrace $trace): self
     {
-        $new = clone $this;
+        $new        = clone $this;
         $new->trace = $trace;
         return $new;
     }

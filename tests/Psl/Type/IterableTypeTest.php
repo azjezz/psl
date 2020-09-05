@@ -56,7 +56,10 @@ class IterableTypeTest extends TypeTest
         yield [$this->getType(), 'iterable<int, int>'];
         yield [Type\iterable(Type\array_key(), Type\int()), 'iterable<array-key, int>'];
         yield [Type\iterable(Type\array_key(), Type\string()), 'iterable<array-key, string>'];
-        yield [Type\iterable(Type\array_key(), Type\object(Iter\Iterator::class)), 'iterable<array-key, Psl\Iter\Iterator>'];
+        yield [
+            Type\iterable(Type\array_key(), Type\object(Iter\Iterator::class)),
+            'iterable<array-key, Psl\Iter\Iterator>'
+        ];
     }
 
     /**

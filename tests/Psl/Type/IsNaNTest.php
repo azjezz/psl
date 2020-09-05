@@ -12,7 +12,7 @@ class IsNaNTest extends TestCase
 {
     public function testIsNaN(): void
     {
-        self::assertTrue(Type\is_nan(Math\NaN));
+        self::assertTrue(Type\is_nan(Math\NAN));
 
         self::assertFalse(Type\is_nan(Math\INFINITY));
         self::assertFalse(Type\is_nan(5.0));

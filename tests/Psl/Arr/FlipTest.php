@@ -36,7 +36,9 @@ class FlipTest extends TestCase
     public function testFlipThrowsForNonArrayKeyValues(): void
     {
         $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected all values to be of type array-key, value of type (resource) provided.');
+        $this->expectExceptionMessage(
+            'Expected all values to be of type array-key, value of type (resource) provided.'
+        );
 
         Arr\flip([STDOUT]);
     }

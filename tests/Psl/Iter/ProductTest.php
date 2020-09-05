@@ -11,7 +11,7 @@ class ProductTest extends TestCase
 {
     public function testProduct(): void
     {
-        $result = Iter\product(Iter\range(1, 2), Iter\range(3, 4));
+        $result  = Iter\product(Iter\range(1, 2), Iter\range(3, 4));
         $entries = Iter\to_array(Iter\enumerate($result));
 
         self::assertCount(4, $entries);
@@ -24,7 +24,7 @@ class ProductTest extends TestCase
 
     public function testProductEmpty(): void
     {
-        $result = Iter\product(...[]);
+        $result  = Iter\product(...[]);
         $entries = Iter\to_array(Iter\enumerate($result));
 
         self::assertCount(1, $entries);

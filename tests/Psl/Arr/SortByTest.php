@@ -21,11 +21,11 @@ class SortByTest extends TestCase
 
     public function provideData(): array
     {
-        $a = [1, 2];
-        $b = [1, 2, 3, 4];
-        $c = ['a' => 'foo', 'b' => 'bar', 'c' => 'baz', 'd' => 'qux', 'e' => 'lax'];
-        $expected = [$a, $b, $c];
-        $array = [$b, $c, $a];
+        $a          = [1, 2];
+        $b          = [1, 2, 3, 4];
+        $c          = ['a' => 'foo', 'b' => 'bar', 'c' => 'baz', 'd' => 'qux', 'e' => 'lax'];
+        $expected   = [$a, $b, $c];
+        $array      = [$b, $c, $a];
         $scalar_fun =
             /**
              * @param array<array-key, string|int> $arr

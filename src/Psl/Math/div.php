@@ -6,6 +6,7 @@ namespace Psl\Math;
 
 use ArithmeticError;
 use DivisionByZeroError;
+
 use function intdiv;
 
 /**

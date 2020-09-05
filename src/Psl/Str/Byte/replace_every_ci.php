@@ -19,7 +19,7 @@ function replace_every_ci(string $haystack, array $replacements): string
     /** @psalm-var list<string> $replace */
     $replace = [];
     foreach ($replacements as $k => $v) {
-        $search[] = $k;
+        $search[]  = $k;
         $replace[] = $v;
     }
 

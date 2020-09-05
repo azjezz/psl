@@ -19,7 +19,7 @@ abstract class TypeException extends RuntimeException
     ) {
         parent::__construct($message);
 
-        $this->actual = $actual;
+        $this->actual    = $actual;
         $this->typeTrace = $typeTrace;
     }
 

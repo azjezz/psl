@@ -91,7 +91,11 @@ final class Iterator implements SeekableIterator, Countable
     public function next(): void
     {
         $this->position++;
-        if (null === $this->generator || !$this->generator->valid() || Arr\contains_key($this->entries, $this->position + 1)) {
+        if (null === $this->generator || !$this->generator->valid()) {
+            return;
+        }
+
+        if (Arr\contains_key($this->entries, $this->position + 1)) {
             return;
         }
 
@@ -205,7 +209,7 @@ final class Iterator implements SeekableIterator, Countable
     {
         if ($this->generator && $this->generator->valid() && !$this->saved) {
             $this->entries[] = [$this->generator->key(), $this->generator->current()];
-            $this->saved = true;
+            $this->saved     = true;
         }
     }
 }

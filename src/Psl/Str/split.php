@@ -32,7 +32,7 @@ function split(string $string, string $delimiter, ?int $limit = null): array
             return [$string];
         }
 
-        $result = chunk(slice($string, 0, $limit - 1));
+        $result   = chunk(slice($string, 0, $limit - 1));
         $result[] = slice($string, $limit - 1);
 
         return $result;
@@ -40,14 +40,14 @@ function split(string $string, string $delimiter, ?int $limit = null): array
 
     $limit ??= Math\INT64_MAX;
 
-    $tail = $string;
+    $tail   = $string;
     $chunks = [];
 
     $position = search($tail, $delimiter);
     while (1 < $limit && null !== $position) {
-        $result = slice($tail, 0, $position);
+        $result   = slice($tail, 0, $position);
         $chunks[] = $result;
-        $tail = slice($tail, length($result) + length($delimiter));
+        $tail     = slice($tail, length($result) + length($delimiter));
 
         $limit--;
         $position = search($tail, $delimiter);

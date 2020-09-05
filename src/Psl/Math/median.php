@@ -18,7 +18,7 @@ function median(iterable $numbers): ?float
     $numbers = Iter\to_array($numbers);
     /** @psalm-var list<int|float> $numbers */
     $numbers = Arr\sort($numbers);
-    $count = Arr\count($numbers);
+    $count   = Arr\count($numbers);
     if (0 === $count) {
         return null;
     }

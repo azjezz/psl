@@ -13,7 +13,11 @@ namespace Psl\Str;
  *
  * @psalm-pure
  */
-function format_number(float $number, int $decimals = 0, string $decimal_point = '.', string $thousands_separator = ','): string
-{
+function format_number(
+    float $number,
+    int $decimals = 0,
+    string $decimal_point = '.',
+    string $thousands_separator = ','
+): string {
     return \number_format($number, $decimals, $decimal_point, $thousands_separator);
 }

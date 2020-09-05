@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
-use function ctype_digit;
 use Psl\Type;
 use Psl\Type\Exception\TypeAssertException;
 use Psl\Type\Exception\TypeCoercionException;
+
+use function ctype_digit;
 
 /**
  * @extends Type\Type<float>

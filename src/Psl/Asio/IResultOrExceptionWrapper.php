@@ -8,10 +8,11 @@ use Exception;
 use Psl;
 
 /**
- * Represents a result of operation that either has a successful result or the exception object if that operation failed.
+ * Represents a result of operation that either has a successful result or the exception object if
+ * that operation failed.
  *
- * This is an interface. You get generally `IResultOrExceptionWrapper<T>` by calling `wrap<T>()`, passing in the `callable(): T`,
- * and a `WrappedResult<T>` or `WrappedException<Te>` is returned.
+ * This is an interface. You get generally `IResultOrExceptionWrapper<T>` by calling `wrap<T>()`, passing in
+ * the `callable(): T`, and a `WrappedResult<T>` or `WrappedException<Te>` is returned.
  *
  * @template T
  */

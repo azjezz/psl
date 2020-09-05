@@ -13,12 +13,12 @@ class RandomTest extends TestCase
     public function testRandom(): void
     {
         $iterable = [1, 2, 3, 4, 5];
-        $value = Iter\random($iterable);
+        $value    = Iter\random($iterable);
         
         self::assertTrue(Iter\contains($iterable, $value));
 
         $iterable = Iter\to_iterator([1, 2, 3, 4, 5]);
-        $value = Iter\random($iterable);
+        $value    = Iter\random($iterable);
         
         self::assertTrue(Iter\contains($iterable, $value));
     }

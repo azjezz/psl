@@ -12,8 +12,13 @@ class TruncateTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testTruncate(string $expected, string $str, int $offset, int $width, ?string $trim_marker = null): void
-    {
+    public function testTruncate(
+        string $expected,
+        string $str,
+        int $offset,
+        int $width,
+        ?string $trim_marker = null
+    ): void {
         self::assertSame($expected, Str\truncate($str, $offset, $width, $trim_marker));
     }
 

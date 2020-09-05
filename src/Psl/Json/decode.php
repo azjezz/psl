@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Json;
 
-use const JSON_BIGINT_AS_STRING;
-use function json_decode;
-use const JSON_THROW_ON_ERROR;
 use JsonException;
 use Psl\Str;
+
+use function json_decode;
+
+use const JSON_BIGINT_AS_STRING;
+use const JSON_THROW_ON_ERROR;
 
 /**
  * Decode a json encoded string into a dynamic variable.

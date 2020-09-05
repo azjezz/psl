@@ -24,12 +24,12 @@ use Psl;
  */
 function max_by(array $values, callable $num_func)
 {
-    $max = null;
+    $max     = null;
     $max_num = null;
     foreach ($values as $value) {
         $value_num = $num_func($value);
         if (null === $max_num || $value_num >= $max_num) {
-            $max = $value;
+            $max     = $value;
             $max_num = $value_num;
         }
     }

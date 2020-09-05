@@ -47,7 +47,9 @@ class GroupByTest extends TestCase
     public function testGroupByThrowsWhenKeyFunReturnsNonArrayKey(): void
     {
         $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected $key_func to return a value of type array-key, value of type (object) returned.');
+        $this->expectExceptionMessage(
+            'Expected $key_func to return a value of type array-key, value of type (object) returned.'
+        );
 
         Arr\group_by(
             [0, 1, 2, 3, 4, 5],

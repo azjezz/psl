@@ -48,9 +48,9 @@ function product(iterable ...$iterables): Iterator
 
         /** @psalm-var list<Tk|null> $keyTuple */
         /** @psalm-var list<Tv|null> $valueTuple */
-        $keyTuple = Arr\fill(null, 0, $numIterators);
+        $keyTuple   = Arr\fill(null, 0, $numIterators);
         $valueTuple = Arr\fill(null, 0, $numIterators);
-        $i = -1;
+        $i          = -1;
         while (true) {
             while (++$i < $numIterators - 1) {
                 $iterators[$i]->rewind();
@@ -60,7 +60,7 @@ function product(iterable ...$iterables): Iterator
                 }
                 // @codeCoverageIgnoreEnd
 
-                $keyTuple[$i] = $iterators[$i]->key();
+                $keyTuple[$i]   = $iterators[$i]->key();
                 $valueTuple[$i] = $iterators[$i]->current();
             }
 
@@ -71,7 +71,7 @@ function product(iterable ...$iterables): Iterator
             while (--$i >= 0) {
                 $iterators[$i]->next();
                 if ($iterators[$i]->valid()) {
-                    $keyTuple[$i] = $iterators[$i]->key();
+                    $keyTuple[$i]   = $iterators[$i]->key();
                     $valueTuple[$i] = $iterators[$i]->current();
                     continue 2;
                 }

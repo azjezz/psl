@@ -9,8 +9,11 @@ namespace Psl\Str\Byte;
  */
 function reverse(string $string): string
 {
-    for ($lo = 0, $hi = namespace\length($string) - 1; $lo < $hi; $lo++, $hi--) {
-        $temp = $string[$lo];
+    $lo = 0;
+    $hi = namespace\length($string) - 1;
+
+    for (; $lo < $hi; $lo++, $hi--) {
+        $temp        = $string[$lo];
         $string[$lo] = $string[$hi];
         $string[$hi] = $temp;
     }

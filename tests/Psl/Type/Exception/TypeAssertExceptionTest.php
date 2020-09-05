@@ -27,7 +27,7 @@ class TypeAssertExceptionTest extends TestCase
             static::assertSame('string', $e->getActualType());
             static::assertSame('Expected "int", got "string".', $e->getMessage());
 
-            $trace = $e->getTypeTrace();
+            $trace  = $e->getTypeTrace();
             $frames = $trace->getFrames();
 
             static::assertCount(1, $frames);
@@ -48,7 +48,7 @@ class TypeAssertExceptionTest extends TestCase
             static::assertSame('resource<stream>', $e->getActualType());
             static::assertSame('Expected "resource<curl>", got "resource<stream>".', $e->getMessage());
 
-            $trace = $e->getTypeTrace();
+            $trace  = $e->getTypeTrace();
             $frames = $trace->getFrames();
 
             static::assertCount(0, $frames);

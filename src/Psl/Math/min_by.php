@@ -30,12 +30,12 @@ namespace Psl\Math;
  */
 function min_by(array $values, callable $num_func)
 {
-    $min = null;
+    $min     = null;
     $min_num = null;
     foreach ($values as $value) {
         $value_num = $num_func($value);
         if (null === $min_num || $value_num <= $min_num) {
-            $min = $value;
+            $min     = $value;
             $min_num = $value_num;
         }
     }

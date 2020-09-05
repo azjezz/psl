@@ -39,10 +39,10 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * returned `MutableMapInterface`.
      *
      * @psalm-param (pure-callable(Tv): bool) $fn - The callback containing the condition to apply to the current
-     *                                 `MutableMapInterface` values
+     *      `MutableMapInterface` values.
      *
-     * @psalm-return MutableMapInterface<Tk, Tv> - a MutableMapInterface containing the values after a user-specified condition
-     *                        is applied
+     * @psalm-return MutableMapInterface<Tk, Tv> - a MutableMapInterface containing the values after a user-specified
+     *      condition is applied.
      */
     public function filter(callable $fn): MutableMapInterface;
 
@@ -57,12 +57,11 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * The keys associated with the current `MutableMapInterface` remain unchanged in the
      * returned `MutableMapInterface`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (pure-callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
-     *                                     `MutableMapInterface` keys and values
+     * @psalm-param (pure-callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to
+     *      the current `MutableMapInterface` keys and values.
      *
      * @psalm-return MutableMapInterface<Tk, Tv> - a `MutableMapInterface` containing the values after a user-specified
-     *                        condition is applied to the keys and values of the current
-     *                        `MutableMapInterface`
+     *      condition is applied to the keys and values of the current `MutableMapInterface`.
      */
     public function filterWithKey(callable $fn): MutableMapInterface;
 
@@ -79,10 +78,10 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @psalm-template Tu
      *
      * @psalm-param (pure-callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
-     *                               `MutableMapInterface` values
+     *      `MutableMapInterface` values.
      *
-     * @psalm-return MutableMapInterface<Tk, Tu> - a `MutableMapInterface` containing key/value pairs after a user-specified
-     *                        operation is applied
+     * @psalm-return MutableMapInterface<Tk, Tu> - a `MutableMapInterface` containing key/value pairs after
+     *      a user-specified operation is applied.
      */
     public function map(callable $fn): MutableMapInterface;
 
@@ -100,11 +99,10 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @psalm-template Tu
      *
      * @psalm-param (pure-callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
-     *                                   `MutableMapInterface` keys and values
+     *      `MutableMapInterface` keys and values.
      *
      * @psalm-return MutableMapInterface<Tk, Tu> - a `MutableMapInterface` containing the values after a user-specified
-     *                        operation on the current `MutableMapInterface`'s keys and values is
-     *                        applied
+     *      operation on the current `MutableMapInterface`'s keys and values is applied.
      */
     public function mapWithKey(callable $fn): MutableMapInterface;
 
@@ -112,7 +110,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * Returns the first value in the current `MutableMapInterface`.
      *
      * @psalm-return Tv|null - The first value in the current `MutableMapInterface`, or `null` if the
-     *           current `MutableMapInterface` is empty.
+     *      current `MutableMapInterface` is empty.
      */
     public function first();
 
@@ -120,7 +118,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * Returns the first key in the current `MutableMapInterface`.
      *
      * @psalm-return Tk|null - The first key in the current `MutableMapInterface`, or `null` if the
-     *                  current `MutableMapInterface` is empty
+     *      current `MutableMapInterface` is empty
      */
     public function firstKey();
 
@@ -128,7 +126,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * Returns the last value in the current `MutableMapInterface`.
      *
      * @psalm-return Tv|null - The last value in the current `MutableMapInterface`, or `null` if the
-     *           current `MutableMapInterface` is empty.
+     *      current `MutableMapInterface` is empty.
      */
     public function last();
 
@@ -136,7 +134,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * Returns the last key in the current `MutableMapInterface`.
      *
      * @psalm-return Tk|null - The last key in the current `MutableMapInterface`, or `null` if the
-     *                  current `MutableMapInterface` is empty
+     *      current `MutableMapInterface` is empty.
      */
     public function lastKey();
 
@@ -146,9 +144,9 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * If no element matches the search value, this function returns null.
      *
      * @psalm-param Tv $search_value - The value that will be search for in the current
-     *                        `MutableMapInterface`.
+     *      `MutableMapInterface`.
      *
-     * @psalm-return Tk|null - The key (index) where that value is found; null if it is not found
+     * @psalm-return Tk|null - The key (index) where that value is found; null if it is not found.
      */
     public function linearSearch($search_value);
 
@@ -164,10 +162,10 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @psalm-template Tu
      *
      * @psalm-param iterable<Tu> $iterable - The `iterable` to use to combine with the
-     *                       elements of this `MutableMapInterface`.
+     *      elements of this `MutableMapInterface`.
      *
-     * @psalm-return MutableMapInterface<Tk, array{0: Tv, 1: Tu}> - The `MutableMapInterface` that combines the values of the current
-     *           `MutableMapInterface` with the provided `iterable`.
+     * @psalm-return MutableMapInterface<Tk, array{0: Tv, 1: Tu}> - The `MutableMapInterface` that combines
+     *      the values of the current `MutableMapInterface` with the provided `iterable`.
      */
     public function zip(iterable $iterable): MutableMapInterface;
 
@@ -181,10 +179,10 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
      * @psalm-param $n - The last element that will be included in the returned
-     *             `MutableMapInterface`
+     *      `MutableMapInterface`.
      *
      * @psalm-return MutableMapInterface<Tk, Tv> - A `MutableMapInterface` that is a proper subset of the current
-     *           `MutableMapInterface` up to `n` elements.
+     *      `MutableMapInterface` up to `n` elements.
      */
     public function take(int $n): MutableMapInterface;
 
@@ -197,10 +195,10 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * `MutableMapInterface`.
      *
      * @psalm-param (pure-callable(Tv): bool) $fn - The callback that is used to determine the stopping
-     *              condition.
+     *      condition.
      *
      * @psalm-return MutableMapInterface<Tk, Tv> - A `MutableMapInterface` that is a proper subset of the current
-     *           `MutableMapInterface` up until the callback returns `false`.
+     *      `MutableMapInterface` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): MutableMapInterface;
 
@@ -214,11 +212,10 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
      * @psalm-param int $n - The last element to be skipped; the $n+1 element will be the
-     *             first one in the returned `MutableMapInterface`.
+     *      first one in the returned `MutableMapInterface`.
      *
      * @psalm-return MutableMapInterface<Tk, Tv> - A `MutableMapInterface` that is a proper subset of the current
-     *           `MutableMapInterface` containing values after the specified `n`-th
-     *           element.
+     *      `MutableMapInterface` containing values after the specified `n`-th element.
      */
     public function drop(int $n): MutableMapInterface;
 
@@ -231,10 +228,10 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * `MutableMapInterface`.
      *
      * @psalm-param (pure-callable(Tv): bool) $fn - The callback used to determine the starting element for the
-     *              returned `MutableMapInterface`.
+     *      returned `MutableMapInterface`.
      *
      * @psalm-return MutableMapInterface<Tk, Tv> - A `MutableMapInterface` that is a proper subset of the current
-     *           `MutableMapInterface` starting after the callback returns `true`.
+     *      `MutableMapInterface` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): MutableMapInterface;
 
@@ -250,12 +247,11 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * `MutableMapInterface`.
      *
      * @psalm-param int $start - The starting key of this Vector to begin the returned
-     *                   `MutableMapInterface`
-     * @psalm-param int $len   - The length of the returned `MutableMapInterface`
+     *      `MutableMapInterface`.
+     * @psalm-param int $len   - The length of the returned `MutableMapInterface`.
      *
      * @psalm-return MutableMapInterface<Tk, Tv> - A `MutableMapInterface` that is a proper subset of the current
-     *           `MutableMapInterface` starting at `$start` up to but not including the
-     *           element `$start + $len`.
+     *      `MutableMapInterface` starting at `$start` up to but not including the element `$start + $len`.
      */
     public function slice(int $start, int $len): MutableMapInterface;
     
@@ -269,10 +265,10 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * It returns the current collection, meaning changes made to the current
      * collection will be reflected in the returned collection.
      *
-     * @psalm-param Tk $k - The key to which we will set the value
-     * @psalm-param Tv $v - The value to set
+     * @psalm-param Tk $k - The key to which we will set the value.
+     * @psalm-param Tv $v - The value to set.
      *
-     * @psalm-return MutableMapInterface<Tk, Tv> - Returns itself
+     * @psalm-return MutableMapInterface<Tk, Tv> - Returns itself.
      */
     public function set($k, $v): MutableMapInterface;
 
@@ -287,28 +283,28 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * It the current collection, meaning changes made to the current collection
      * will be reflected in the returned collection.
      *
-     * @psalm-param iterable<Tk, Tv> $iterable - The `iterable` with the new values to set
+     * @psalm-param iterable<Tk, Tv> $iterable - The `iterable` with the new values to set.
      *
-     * @psalm-return MutableMapInterface<Tk, Tv> - Returns itself
+     * @psalm-return MutableMapInterface<Tk, Tv> - Returns itself.
      */
     public function setAll(iterable $iterable): MutableMapInterface;
 
     /**
      * Add a value to the collection and return the collection itself.
      *
-     * @psalm-param Tk $k - The key to which we will add the value
-     * @psalm-param Tv $v - The value to set
+     * @psalm-param Tk $k - The key to which we will add the value.
+     * @psalm-param Tv $v - The value to set.
      *
-     * @psalm-return MutableMapInterface<Tk, Tv> - Returns itself
+     * @psalm-return MutableMapInterface<Tk, Tv> - Returns itself.
      */
     public function add($k, $v): MutableMapInterface;
 
     /**
      * For every element in the provided iterable, add the value into the current collection.
      *
-     * @psalm-param iterable<Tk, Tv> $iterable - The `iterable` with the new values to add
+     * @psalm-param iterable<Tk, Tv> $iterable - The `iterable` with the new values to add.
      *
-     * @psalm-return MutableMapInterface<Tk, Tv> - Returns itself
+     * @psalm-return MutableMapInterface<Tk, Tv> - Returns itself.
      */
     public function addAll(iterable $iterable): MutableMapInterface;
 
@@ -322,9 +318,9 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * It the current collection, meaning changes made to the current collection
      * will be reflected in the returned collection.
      *
-     * @psalm-param  Tk $k - The key to remove
+     * @psalm-param  Tk $k - The key to remove.
      *
-     * @psalm-return MutableMapInterface<Tk, Tv> - Returns itself
+     * @psalm-return MutableMapInterface<Tk, Tv> - Returns itself.
      */
     public function remove($k): MutableMapInterface;
 

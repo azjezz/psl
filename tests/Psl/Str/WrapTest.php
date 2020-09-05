@@ -12,8 +12,13 @@ class WrapTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testWrap(string $expected, string $str, int $width = 75, string $break = "\n", bool $cut = false): void
-    {
+    public function testWrap(
+        string $expected,
+        string $str,
+        int $width = 75,
+        string $break = "\n",
+        bool $cut = false
+    ): void {
         self::assertSame($expected, Str\wrap($str, $width, $break, $cut));
     }
 

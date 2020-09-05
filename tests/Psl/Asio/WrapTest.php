@@ -13,7 +13,7 @@ class WrapTest extends TestCase
     public function testWrapException(): void
     {
         $exception = new \Exception('foo');
-        $wrapper = Asio\wrap(static function () use ($exception): void {
+        $wrapper   = Asio\wrap(static function () use ($exception): void {
             throw $exception;
         });
         self::assertFalse($wrapper->isSucceeded());

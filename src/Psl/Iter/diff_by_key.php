@@ -32,7 +32,7 @@ function diff_by_key(iterable $first, iterable $second, iterable ...$rest): Iter
         /** @psalm-var Generator<Tk, mixed, mixed, void> $second */
         $second = ((fn (iterable $iterable): Generator => yield from $iterable)($second));
         /** @psalm-var Generator<iterable<Tk, mixed>, mixed, mixed, void> $generator */
-        $generator = ((static function (Generator $second, iterable ...$rest): Generator {
+        $generator  = ((static function (Generator $second, iterable ...$rest): Generator {
             yield from $second;
             foreach ($rest as $iterable) {
                 yield from $iterable;

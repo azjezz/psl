@@ -14,10 +14,10 @@ namespace Psl\Str\Byte;
  */
 function replace_every(string $haystack, array $replacements): string
 {
-    $search = [];
+    $search  = [];
     $replace = [];
     foreach ($replacements as $k => $v) {
-        $search[] = $k;
+        $search[]  = $k;
         $replace[] = $v;
     }
 

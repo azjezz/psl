@@ -44,7 +44,13 @@ class IntersectionTypeTest extends TypeTest
 
     public function getToStringExamples(): iterable
     {
-        yield [Type\intersection(Type\object(IndexAccessInterface::class), Type\object(CollectionInterface::class)), 'Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface'];
+        yield [
+            Type\intersection(
+                Type\object(IndexAccessInterface::class),
+                Type\object(CollectionInterface::class)
+            ),
+            'Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface'
+        ];
 
         yield [Type\intersection(
             Type\object(IndexAccessInterface::class),

@@ -38,13 +38,13 @@ class MinByTest extends TestCase
                 fn ($arr) => Iter\count($arr)
             ],
 
-            [
+                [
                 0,
                 [...Iter\range(0, 9)],
                 fn ($i) => $i
             ],
 
-            [
+                [
                 null,
                 [],
                 fn ($i) => $i

@@ -38,7 +38,7 @@ final class ArrayType extends Type\Type
         Type\Type $key_type,
         Type\Type $value_type
     ) {
-        $this->key_type = $key_type;
+        $this->key_type   = $key_type;
         $this->value_type = $value_type;
     }
 
@@ -52,7 +52,7 @@ final class ArrayType extends Type\Type
     public function coerce($value): array
     {
         if (Type\is_iterable($value)) {
-            $key_trace = $this->getTrace()->withFrame(Str\format('array<%s, _>', $this->key_type->toString()));
+            $key_trace   = $this->getTrace()->withFrame(Str\format('array<%s, _>', $this->key_type->toString()));
             $value_trace = $this->getTrace()->withFrame(Str\format('array<_, %s>', $this->value_type->toString()));
 
             /** @psalm-var Type\Type<Tk> $key_type */
@@ -72,7 +72,7 @@ final class ArrayType extends Type\Type
                 /** @psalm-var Tk $k */
                 $k = $key_type->coerce($k);
                 /** @psalm-var Tv $v */
-                $v = $value_type->coerce($v);
+                $v         = $value_type->coerce($v);
                 $entries[] = [$k, $v];
             }
 
@@ -99,7 +99,7 @@ final class ArrayType extends Type\Type
     public function assert($value): array
     {
         if (Type\is_array($value)) {
-            $key_trace = $this->getTrace()->withFrame(Str\format('array<%s, _>', $this->key_type->toString()));
+            $key_trace   = $this->getTrace()->withFrame(Str\format('array<%s, _>', $this->key_type->toString()));
             $value_trace = $this->getTrace()->withFrame(Str\format('array<_, %s>', $this->value_type->toString()));
 
             /** @psalm-var Type\Type<Tk> $key_type */
@@ -119,7 +119,7 @@ final class ArrayType extends Type\Type
                 /** @psalm-var Tk $k */
                 $k = $key_type->assert($k);
                 /** @psalm-var Tv $v */
-                $v = $value_type->assert($v);
+                $v         = $value_type->assert($v);
                 $entries[] = [$k, $v];
             }
 

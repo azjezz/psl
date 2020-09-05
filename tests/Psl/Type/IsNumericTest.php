@@ -12,7 +12,7 @@ class IsNumericTest extends TestCase
 {
     public function testIsNumeric(): void
     {
-        self::assertTrue(Type\is_numeric(Math\NaN));
+        self::assertTrue(Type\is_numeric(Math\NAN));
         self::assertTrue(Type\is_numeric(1));
         self::assertTrue(Type\is_numeric(1.0));
         self::assertTrue(Type\is_numeric('1'));

@@ -25,7 +25,7 @@ function reverse(iterable $iterable): Iterator
 {
     return Internal\lazy_iterator(static function () use ($iterable): Generator {
         $values = to_array($iterable);
-        $size = Arr\count($values);
+        $size   = Arr\count($values);
         if (0 === $size) {
             return;
         }

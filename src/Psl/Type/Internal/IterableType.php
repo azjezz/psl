@@ -38,7 +38,7 @@ final class IterableType extends Type\Type
         Type\Type $key_type_spec,
         Type\Type $value_type_spec
     ) {
-        $this->key_type_spec = $key_type_spec;
+        $this->key_type_spec   = $key_type_spec;
         $this->value_type_spec = $value_type_spec;
     }
 
@@ -52,8 +52,10 @@ final class IterableType extends Type\Type
     public function coerce($value): iterable
     {
         if (Type\is_iterable($value)) {
-            $key_trace = $this->getTrace()->withFrame(Str\format('iterable<%s, _>', $this->key_type_spec->toString()));
-            $value_trace = $this->getTrace()->withFrame(Str\format('iterable<_, %s>', $this->value_type_spec->toString()));
+            $key_trace   = $this->getTrace()
+                ->withFrame(Str\format('iterable<%s, _>', $this->key_type_spec->toString()));
+            $value_trace = $this->getTrace()
+                ->withFrame(Str\format('iterable<_, %s>', $this->value_type_spec->toString()));
 
             /** @psalm-var Type\Type<Tk> $key_type_spec */
             $key_type_spec = $this->key_type_spec->withTrace($key_trace);
@@ -72,7 +74,7 @@ final class IterableType extends Type\Type
                 /** @psalm-var Tk $k */
                 $k = $key_type_spec->coerce($k);
                 /** @psalm-var Tv $v */
-                $v = $value_type_spec->coerce($v);
+                $v         = $value_type_spec->coerce($v);
                 $entries[] = [$k, $v];
             }
 
@@ -94,8 +96,10 @@ final class IterableType extends Type\Type
     public function assert($value): iterable
     {
         if (Type\is_iterable($value)) {
-            $key_trace = $this->getTrace()->withFrame(Str\format('iterable<%s, _>', $this->key_type_spec->toString()));
-            $value_trace = $this->getTrace()->withFrame(Str\format('iterable<_, %s>', $this->value_type_spec->toString()));
+            $key_trace   = $this->getTrace()
+                ->withFrame(Str\format('iterable<%s, _>', $this->key_type_spec->toString()));
+            $value_trace = $this->getTrace()
+                ->withFrame(Str\format('iterable<_, %s>', $this->value_type_spec->toString()));
 
             /** @psalm-var Type\Type<Tk> $key_type_spec */
             $key_type_spec = $this->key_type_spec->withTrace($key_trace);
@@ -114,7 +118,7 @@ final class IterableType extends Type\Type
                 /** @psalm-var Tk $k */
                 $k = $key_type_spec->assert($k);
                 /** @psalm-var Tv $v */
-                $v = $value_type_spec->assert($v);
+                $v         = $value_type_spec->assert($v);
                 $entries[] = [$k, $v];
             }
 

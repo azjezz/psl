@@ -42,7 +42,25 @@ class UnionTypeTest extends TypeTest
         yield [Type\union(Type\bool(), Type\union(Type\float(), Type\int())), 'bool|float|int'];
         yield [Type\union(Type\bool(), Type\num()), 'bool|num'];
         yield [Type\union(Type\bool(), Type\array_key()), 'bool|array-key'];
-        yield [Type\union(Type\bool(), Type\intersection(Type\object(IndexAccessInterface::class), Type\object(CollectionInterface::class))), 'bool|(Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface)'];
-        yield [Type\union(Type\intersection(Type\object(IndexAccessInterface::class), Type\object(CollectionInterface::class)), Type\bool()), '(Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface)|bool'];
+        yield [
+            Type\union(
+                Type\bool(),
+                Type\intersection(
+                    Type\object(IndexAccessInterface::class),
+                    Type\object(CollectionInterface::class)
+                )
+            ),
+            'bool|(Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface)'
+        ];
+        yield [
+            Type\union(
+                Type\intersection(
+                    Type\object(IndexAccessInterface::class),
+                    Type\object(CollectionInterface::class)
+                ),
+                Type\bool()
+            ),
+            '(Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface)|bool'
+        ];
     }
 }

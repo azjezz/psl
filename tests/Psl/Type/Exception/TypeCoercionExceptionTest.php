@@ -21,13 +21,16 @@ class TypeCoercionExceptionTest extends TestCase
                 4 => new Collection\Vector([1, 2, 3])
             ]);
 
-            self::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\TypeCoercionException::class));
+            self::fail(Str\format(
+                'Expected "%s" exception to be thrown.',
+                Type\Exception\TypeCoercionException::class
+            ));
         } catch (Type\Exception\TypeCoercionException $e) {
             static::assertSame('bool', $e->getTargetType());
             static::assertSame('int', $e->getActualType());
             static::assertSame('Could not coerce "int" to type "bool".', $e->getMessage());
 
-            $trace = $e->getTypeTrace();
+            $trace  = $e->getTypeTrace();
             $frames = $trace->getFrames();
 
             static::assertCount(1, $frames);
@@ -42,13 +45,19 @@ class TypeCoercionExceptionTest extends TestCase
         try {
             $type->coerce(new Collection\Map(['hello' => 'foo']));
 
-            self::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\TypeCoercionException::class));
+            self::fail(Str\format(
+                'Expected "%s" exception to be thrown.',
+                Type\Exception\TypeCoercionException::class
+            ));
         } catch (Type\Exception\TypeCoercionException $e) {
             static::assertSame('resource<curl>', $e->getTargetType());
             static::assertSame(Collection\Map::class, $e->getActualType());
-            static::assertSame(Str\format('Could not coerce "%s" to type "resource<curl>".', Collection\Map::class), $e->getMessage());
+            static::assertSame(Str\format(
+                'Could not coerce "%s" to type "resource<curl>".',
+                Collection\Map::class
+            ), $e->getMessage());
 
-            $trace = $e->getTypeTrace();
+            $trace  = $e->getTypeTrace();
             $frames = $trace->getFrames();
 
             static::assertCount(0, $frames);

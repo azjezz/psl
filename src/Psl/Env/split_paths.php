@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Env;
 
-use const PATH_SEPARATOR;
 use Psl\Str;
+
+use const PATH_SEPARATOR;
 
 /**
  * Parses input according to platform conventions for the PATH environment variable.

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
-use function log as php_log;
 use Psl;
+
+use function log as php_log;
 
 /**
  * Returns the logarithm base of the given number.

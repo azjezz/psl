@@ -16,7 +16,7 @@ final class TypeTrace
 
     public function withFrame(string $frame): self
     {
-        $self = clone $this;
+        $self           = clone $this;
         $self->frames[] = $frame;
 
         return $self;

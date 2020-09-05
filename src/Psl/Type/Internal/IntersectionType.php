@@ -38,7 +38,7 @@ final class IntersectionType extends Type
         Type $left_type_spec,
         Type $right_type_spec
     ) {
-        $this->left_type_spec = $left_type_spec;
+        $this->left_type_spec  = $left_type_spec;
         $this->right_type_spec = $right_type_spec;
     }
 
@@ -101,7 +101,7 @@ final class IntersectionType extends Type
 
     public function toString(): string
     {
-        $left = $this->left_type_spec->toString();
+        $left  = $this->left_type_spec->toString();
         $right = $this->right_type_spec->toString();
         /** @psalm-suppress MissingThrowsDocblock - offset is within bound. */
         if (Str\contains($left, '|')) {

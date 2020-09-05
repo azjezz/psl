@@ -79,7 +79,7 @@ abstract class AbstractVectorTest extends TestCase
             'bar',
             'baz',
         ]);
-        $keys = $vector->keys();
+        $keys   = $vector->keys();
 
         self::assertInstanceOf($this->vectorClass, $keys);
         self::assertCount(3, $keys);
@@ -88,7 +88,7 @@ abstract class AbstractVectorTest extends TestCase
         self::assertSame(2, $keys->at(2));
 
         $vector = $this->create([]);
-        $keys = $vector->keys();
+        $keys   = $vector->keys();
 
         self::assertInstanceOf($this->vectorClass, $keys);
         self::assertCount(0, $keys);
@@ -362,20 +362,20 @@ abstract class AbstractVectorTest extends TestCase
     public function testTake(): void
     {
         $vector = $this->create([]);
-        $rest = $vector->take(2);
+        $rest   = $vector->take(2);
         self::assertInstanceOf($this->vectorClass, $rest);
         self::assertNotSame($vector, $rest);
         self::assertCount(0, $rest);
 
         $vector = $this->create(['bar', 'qux']);
-        $rest = $vector->take(4);
+        $rest   = $vector->take(4);
         self::assertInstanceOf($this->vectorClass, $rest);
         self::assertNotSame($vector, $rest);
         self::assertCount(2, $rest);
         self::assertSame($vector->toArray(), $rest->toArray());
 
         $vector = $this->create(['bar', 'qux']);
-        $rest = $vector->take(1);
+        $rest   = $vector->take(1);
         self::assertInstanceOf($this->vectorClass, $rest);
         self::assertNotSame($vector, $rest);
         self::assertCount(1, $rest);
@@ -385,26 +385,26 @@ abstract class AbstractVectorTest extends TestCase
     public function testTakeWhile(): void
     {
         $vector = $this->create([]);
-        $rest = $vector->takeWhile(fn ($v) => false);
+        $rest   = $vector->takeWhile(fn ($v) => false);
         self::assertInstanceOf($this->vectorClass, $rest);
         self::assertNotSame($vector, $rest);
         self::assertCount(0, $rest);
 
         $vector = $this->create([]);
-        $rest = $vector->takeWhile(fn ($v) => true);
+        $rest   = $vector->takeWhile(fn ($v) => true);
         self::assertInstanceOf($this->vectorClass, $rest);
         self::assertNotSame($vector, $rest);
         self::assertCount(0, $rest);
 
         $vector = $this->create(['bar', 'qux']);
-        $rest = $vector->takeWhile(fn ($v) => true);
+        $rest   = $vector->takeWhile(fn ($v) => true);
         self::assertInstanceOf($this->vectorClass, $rest);
         self::assertNotSame($vector, $rest);
         self::assertCount(2, $rest);
         self::assertSame($vector->toArray(), $rest->toArray());
 
         $vector = $this->create(['bar', 'qux']);
-        $rest = $vector->takeWhile(fn ($v) => 'bar' === $v);
+        $rest   = $vector->takeWhile(fn ($v) => 'bar' === $v);
         self::assertInstanceOf($this->vectorClass, $rest);
         self::assertNotSame($vector, $rest);
         self::assertCount(1, $rest);
@@ -414,26 +414,26 @@ abstract class AbstractVectorTest extends TestCase
     public function testDrop(): void
     {
         $vector = $this->create([]);
-        $rest = $vector->drop(2);
+        $rest   = $vector->drop(2);
         self::assertInstanceOf($this->vectorClass, $rest);
         self::assertNotSame($vector, $rest);
         self::assertCount(0, $rest);
 
         $vector = $this->create(['bar', 'qux']);
-        $rest = $vector->drop(4);
+        $rest   = $vector->drop(4);
         self::assertInstanceOf($this->vectorClass, $rest);
         self::assertNotSame($vector, $rest);
         self::assertCount(0, $rest);
 
         $vector = $this->create(['bar', 'qux']);
-        $rest = $vector->drop(1);
+        $rest   = $vector->drop(1);
         self::assertInstanceOf($this->vectorClass, $rest);
         self::assertNotSame($vector, $rest);
         self::assertCount(1, $rest);
         self::assertSame('qux', $rest->at(0));
 
         $vector = $this->create(['bar', 'qux']);
-        $rest = $vector->drop(0);
+        $rest   = $vector->drop(0);
         self::assertInstanceOf($this->vectorClass, $rest);
         self::assertNotSame($vector, $rest);
         self::assertCount(2, $rest);
@@ -443,32 +443,32 @@ abstract class AbstractVectorTest extends TestCase
     public function testDropWhile(): void
     {
         $vector = $this->create([]);
-        $rest = $vector->dropWhile(fn ($v) => true);
+        $rest   = $vector->dropWhile(fn ($v) => true);
         self::assertInstanceOf($this->vectorClass, $rest);
         self::assertNotSame($vector, $rest);
         self::assertCount(0, $rest);
 
         $vector = $this->create([]);
-        $rest = $vector->dropWhile(fn ($v) => false);
+        $rest   = $vector->dropWhile(fn ($v) => false);
         self::assertInstanceOf($this->vectorClass, $rest);
         self::assertNotSame($vector, $rest);
         self::assertCount(0, $rest);
 
         $vector = $this->create(['bar', 'qux']);
-        $rest = $vector->dropWhile(fn ($v) => true);
+        $rest   = $vector->dropWhile(fn ($v) => true);
         self::assertInstanceOf($this->vectorClass, $rest);
         self::assertNotSame($vector, $rest);
         self::assertCount(0, $rest);
 
         $vector = $this->create(['bar', 'qux']);
-        $rest = $vector->dropWhile(fn ($v) => false);
+        $rest   = $vector->dropWhile(fn ($v) => false);
         self::assertInstanceOf($this->vectorClass, $rest);
         self::assertNotSame($vector, $rest);
         self::assertCount(2, $rest);
         self::assertSame($vector->toArray(), $rest->toArray());
 
         $vector = $this->create(['bar', 'qux']);
-        $rest = $vector->dropWhile(fn ($v) => 'bar' === $v);
+        $rest   = $vector->dropWhile(fn ($v) => 'bar' === $v);
         self::assertInstanceOf($this->vectorClass, $rest);
         self::assertNotSame($vector, $rest);
         self::assertCount(1, $rest);

@@ -21,11 +21,11 @@ class SortWithKeysByTest extends TestCase
 
     public function provideData(): array
     {
-        $a = [1, 2];
-        $b = [1, 2, 3, 4];
-        $c = ['a' => 'foo', 'b' => 'bar', 'c' => 'baz', 'd' => 'qux', 'e' => 'lax'];
-        $expected = [2 => $a, 0 => $b, 1 => $c];
-        $array = [$b, $c, $a];
+        $a          = [1, 2];
+        $b          = [1, 2, 3, 4];
+        $c          = ['a' => 'foo', 'b' => 'bar', 'c' => 'baz', 'd' => 'qux', 'e' => 'lax'];
+        $expected   = [2 => $a, 0 => $b, 1 => $c];
+        $array      = [$b, $c, $a];
         $scalar_fun = fn ($arr) => Arr\count($arr);
 
         return [

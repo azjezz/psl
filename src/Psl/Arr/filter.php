@@ -34,7 +34,7 @@ function filter(array $array, ?callable $predicate = null): array
 {
     /** @psalm-var (pure-callable(Tv): bool) $predicate */
     $predicate = $predicate ?? Closure::fromCallable('Psl\Internal\boolean');
-    $result = [];
+    $result    = [];
     foreach ($array as $k => $v) {
         if ($predicate($v)) {
             $result[$k] = $v;

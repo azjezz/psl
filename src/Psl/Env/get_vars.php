@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Env;
 
-use function getenv;
 use Psl;
-use Psl\Type;
+
+use function getenv;
 
 /**
  * Returns an iterator of (variable, value) pairs of strings, for all the environment variables of the current process.

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Math;
 
 use Psl;
+
 use function sqrt as php_sqrt;
 
 /**

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
+use const INF;
+use const NAN as PHP_NAN;
+
 const INT64_MAX = 9223372036854775807;
 const INT64_MIN = -1 << 63;
 
@@ -29,9 +32,9 @@ const E = 2.7182818284590452353602875;
 /**
  * @var int
  */
-const INFINITY = \INF;
+const INFINITY = INF;
 
 /**
  * @var float
  */
-const NaN = \NAN;
+const NAN = PHP_NAN;

@@ -20,7 +20,7 @@ final class MutableVectorTest extends AbstractVectorTest
 
     public function testClear(): void
     {
-        $vector = $this->create(['foo', 'bar']);
+        $vector  = $this->create(['foo', 'bar']);
         $cleared = $vector->clear();
 
         self::assertSame($cleared, $vector);

@@ -38,13 +38,13 @@ class MaxByTest extends TestCase
                 fn ($arr) => Arr\count($arr)
             ],
 
-            [
+                [
                 9,
                 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
                 fn ($i) => $i
             ],
 
-            [
+                [
                 null,
                 [],
                 fn ($i) => $i

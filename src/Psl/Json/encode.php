@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Psl\Json;
 
+use JsonException;
+use Psl\Str;
+
 use function json_encode;
+
 use const JSON_PRESERVE_ZERO_FRACTION;
 use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
 use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;
-use JsonException;
-use Psl\Str;
 
 /**
  * Returns a string containing the JSON representation of the supplied value.

@@ -34,7 +34,7 @@ function filter_keys(array $array, ?callable $predicate = null): array
 {
     /** @psalm-var (pure-callable(Tk): bool) $predicate */
     $predicate = $predicate ?? Closure::fromCallable('Psl\Internal\boolean');
-    $result = [];
+    $result    = [];
     foreach ($array as $k => $v) {
         if ($predicate($k)) {
             $result[$k] = $v;

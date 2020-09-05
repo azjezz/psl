@@ -23,9 +23,9 @@ class UniqueTest extends TestCase
 
     public function testUniqueWithObjects(): void
     {
-        $array = Arr\fill('foo', 0, 10);
+        $array  = Arr\fill('foo', 0, 10);
         $object = new Collection\Map([]);
-        $array = Arr\concat($array, Arr\fill($object, 0, 10));
+        $array  = Arr\concat($array, Arr\fill($object, 0, 10));
 
         $unique = Arr\unique($array);
 

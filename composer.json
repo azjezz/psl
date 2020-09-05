@@ -19,9 +19,9 @@
     "require-dev": {
         "vimeo/psalm": "dev-master",
         "phpunit/phpunit": "^9.0",
-        "friendsofphp/php-cs-fixer": "^2.16",
         "php-coveralls/php-coveralls": "^2.2",
-        "roave/security-advisories": "dev-master"
+        "roave/security-advisories": "dev-master",
+        "squizlabs/php_codesniffer": "^3.5"
     },
     "autoload": {
         "psr-4": {
@@ -37,8 +37,8 @@
         }
     },
     "scripts": {
-        "cs:fix": "php-cs-fixer fix",
-        "cs:check": "php-cs-fixer fix --dry-run -vvv",
+        "cs:fix": "phpcbf",
+        "cs:check": "phpcs",
         "type:check": "psalm",
         "type:coverage": "psalm --shepherd",
         "test:unit": "phpunit",

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Psl\Tests\Type;
 
@@ -139,7 +141,7 @@ abstract class TypeTest extends TestCase
 
     protected function stringable(string $value): object
     {
-        return new class($value) {
+        return new class ($value) {
             private string $value;
 
             public function __construct(string $value)

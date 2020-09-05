@@ -26,9 +26,11 @@ function from_code_points(int ...$codes): string
         } elseif (0x800 > $code) {
             $string .= Byte\chr(0xC0 | $code >> 6) . Byte\chr(0x80 | $code & 0x3F);
         } elseif (0x10000 > $code) {
-            $string .= Byte\chr(0xE0 | $code >> 12) . Byte\chr(0x80 | $code >> 6 & 0x3F) . Byte\chr(0x80 | $code & 0x3F);
+            $string .= Byte\chr(0xE0 | $code >> 12) . Byte\chr(0x80 | $code >> 6 & 0x3F);
+            $string .= Byte\chr(0x80 | $code & 0x3F);
         } else {
-            $string .= Byte\chr(0xF0 | $code >> 18) . Byte\chr(0x80 | $code >> 12 & 0x3F) . Byte\chr(0x80 | $code >> 6 & 0x3F) . Byte\chr(0x80 | $code & 0x3F);
+            $string .= Byte\chr(0xF0 | $code >> 18) . Byte\chr(0x80 | $code >> 12 & 0x3F);
+            $string .= Byte\chr(0x80 | $code >> 6 & 0x3F) . Byte\chr(0x80 | $code & 0x3F);
         }
     }
 

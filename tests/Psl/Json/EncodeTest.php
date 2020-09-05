@@ -59,7 +59,7 @@ JSON;
         $this->expectException(Json\Exception\JsonEncodeException::class);
         $this->expectExceptionMessage('Inf and NaN cannot be JSON encoded.');
 
-        Json\encode(Math\NaN);
+        Json\encode(Math\NAN);
     }
 
     public function testEncodeThrowsWithInf(): void

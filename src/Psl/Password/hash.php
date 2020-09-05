@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Password;
 
-use const PASSWORD_BCRYPT;
-use function password_hash;
 use Psl;
 use Psl\Arr;
+
+use function password_hash;
+
+use const PASSWORD_BCRYPT;
 
 /**
  * Creates a password hash.

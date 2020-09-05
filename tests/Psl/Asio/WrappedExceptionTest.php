@@ -24,7 +24,7 @@ class WrappedExceptionTest extends TestCase
     public function testGetResult(): void
     {
         $exception = new \Exception('bar');
-        $wrapper = new WrappedException($exception);
+        $wrapper   = new WrappedException($exception);
 
         $this->expectExceptionObject($exception);
         $wrapper->getResult();
@@ -33,8 +33,8 @@ class WrappedExceptionTest extends TestCase
     public function testGetException(): void
     {
         $exception = new \Exception('bar');
-        $wrapper = new WrappedException($exception);
-        $e = $wrapper->getException();
+        $wrapper   = new WrappedException($exception);
+        $e         = $wrapper->getException();
         self::assertSame($exception, $e);
     }
 }

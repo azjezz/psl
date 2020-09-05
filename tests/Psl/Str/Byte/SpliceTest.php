@@ -12,8 +12,13 @@ class SpliceTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testSplice(string $expected, string $string, string $replacement, int $offset, ?int $length = null): void
-    {
+    public function testSplice(
+        string $expected,
+        string $string,
+        string $replacement,
+        int $offset,
+        ?int $length = null
+    ): void {
         self::assertSame($expected, Byte\splice($string, $replacement, $offset, $length));
     }
 
@@ -28,7 +33,13 @@ class SpliceTest extends TestCase
             ['hello darkness', 'hello ', 'darkness', 6, null, ],
             ['hello darkness', 'hello world', 'darkness', 6, 100, ],
             ['hello darkness', 'hello world', 'darkness', 6, 11, ],
-            ['People linked by destiny will always find each other.', 'People linked by destiny will find each other.', ' always ', 29, 1],
+            [
+                'People linked by destiny will always find each other.',
+                'People linked by destiny will find each other.',
+                ' always ',
+                29,
+                1
+            ],
         ];
     }
 }

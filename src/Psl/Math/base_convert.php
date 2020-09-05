@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
+use Psl;
+use Psl\Str;
+use Psl\Str\Byte;
+
 use function bcadd;
 use function bccomp;
 use function bcdiv;
 use function bcmod;
 use function bcmul;
 use function bcpow;
-use Psl;
-use Psl\Str;
-use Psl\Str\Byte;
 
 /**
  * Converts the given string in base `$from_base` to base `$to_base`, assuming
@@ -32,12 +33,17 @@ use Psl\Str\Byte;
  *
  * @psalm-pure
  *
- * @throws Psl\Exception\InvariantViolationException If $value is empty, $from_base and $to_base are out of the [2, 36] range, or the given value is invalid.
+ * @throws Psl\Exception\InvariantViolationException If $value is empty, $from_base and $to_base are
+ *      out of the [2, 36] range, or the given value is invalid.
  */
 function base_convert(string $value, int $from_base, int $to_base): string
 {
     Psl\invariant('' !== $value, 'Unexpected empty string, expected number in base %d', $from_base);
-    Psl\invariant($from_base >= 2 && $from_base <= 36, 'Expected $from_base to be between 2 and 36, got %d', $from_base);
+    Psl\invariant(
+        $from_base >= 2 && $from_base <= 36,
+        'Expected $from_base to be between 2 and 36, got %d',
+        $from_base
+    );
     Psl\invariant($to_base >= 2 && $to_base <= 36, 'Expected $to_base to be between 2 and 36, got %d', $to_base);
 
     $from_alphabet = Byte\slice(Str\ALPHABET_ALPHANUMERIC, 0, $from_base);
@@ -60,7 +66,7 @@ function base_convert(string $value, int $from_base, int $to_base): string
     }
 
     $to_alphabet = Byte\slice(Str\ALPHABET_ALPHANUMERIC, 0, $to_base);
-    $result = '';
+    $result      = '';
     do {
         $result = $to_alphabet[(int)bcmod($result_decimal, (string)$to_base)] . $result;
         /** @var numeric-string $result_decimal */

@@ -43,7 +43,7 @@ final class Loader
         'Psl\Math\PI',
         'Psl\Math\E',
         'Psl\Math\INFINITY',
-        'Psl\Math\NaN',
+        'Psl\Math\NAN',
         'Psl\Str\ALPHABET',
         'Psl\Str\ALPHABET_ALPHANUMERIC',
         'Psl\Password\DEFAULT_ALGORITHM',

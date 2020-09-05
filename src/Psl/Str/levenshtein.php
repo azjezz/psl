@@ -24,8 +24,13 @@ use Psl;
  *
  * @throws Psl\Exception\InvariantViolationException If neither all, or none of the costs is supplied.
  */
-function levenshtein(string $str1, string $str2, ?int $cost_of_insertion = null, ?int $cost_of_replacement = null, ?int $cost_of_deletion = null): int
-{
+function levenshtein(
+    string $str1,
+    string $str2,
+    ?int $cost_of_insertion = null,
+    ?int $cost_of_replacement = null,
+    ?int $cost_of_deletion = null
+): int {
     if (null === $cost_of_deletion && null === $cost_of_insertion && null === $cost_of_replacement) {
         return \levenshtein($str1, $str2);
     }

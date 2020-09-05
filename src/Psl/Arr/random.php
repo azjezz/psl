@@ -25,7 +25,9 @@ function random(array $values)
 
     /** @psalm-var list<Tv> $shuffled */
     $shuffled = namespace\shuffle($values);
+
     $size = namespace\count($values);
+
     if (1 === $size) {
         /** @psalm-var Tv */
         return $shuffled[0];

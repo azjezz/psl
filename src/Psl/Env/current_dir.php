@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Env;
 
-use function getcwd;
 use Psl;
+
+use function getcwd;
 
 /**
  * Returns the current working directory

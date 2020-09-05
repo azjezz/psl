@@ -26,7 +26,7 @@ final class MutableMapTest extends AbstractMapTest
 
     public function testClear(): void
     {
-        $map = $this->create(['foo' => 'bar']);
+        $map     = $this->create(['foo' => 'bar']);
         $cleared = $map->clear();
 
         self::assertSame($cleared, $map);

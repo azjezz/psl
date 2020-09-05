@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\PseudoRandom;
 
-use function mt_rand;
 use Psl;
 use Psl\Math;
+
+use function mt_rand;
 
 /**
  * Returns a random integer in the range in the given range.

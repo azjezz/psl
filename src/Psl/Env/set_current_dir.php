@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Env;
 
-use function chdir;
 use Psl;
+
+use function chdir;
 
 /**
  * Changes the current working directory to the specified path.
