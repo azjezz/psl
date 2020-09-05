@@ -46,6 +46,8 @@ final class Loader
         'Psl\Math\NaN',
         'Psl\Str\ALPHABET',
         'Psl\Str\ALPHABET_ALPHANUMERIC',
+        'Psl\Password\DEFAULT_ALGORITHM',
+        'Psl\Password\BCRYPT_ALGORITHM',
     ];
 
     public const FUNCTIONS = [
@@ -313,6 +315,11 @@ final class Loader
         'Psl\Env\set_var',
         'Psl\Env\split_paths',
         'Psl\Env\temp_dir',
+        'Psl\Password\algorithms',
+        'Psl\Password\get_information',
+        'Psl\Password\hash',
+        'Psl\Password\needs_rehash',
+        'Psl\Password\verify',
     ];
 
     public const INTERFACES = [

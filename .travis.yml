@@ -1,6 +1,6 @@
 dist: trusty
 language: php
-
+sudo: required
 os:
   - linux
 
@@ -17,7 +17,13 @@ cache:
     - $HOME/.composer/cache/files
 
 
+before_install:
+  - git clone -b stable https://github.com/jedisct1/libsodium.git
+  - cd libsodium && sudo ./configure && sudo make check && sudo make install && cd ..
+
 install:
+  - pecl channel-update pecl.php.net
+  - pecl install libsodium
   - php --version
   - composer self-update
   - composer --version

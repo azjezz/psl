@@ -13,7 +13,8 @@
         "php": "^7.4",
         "ext-bcmath": "*",
         "ext-mbstring": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-sodium": "*"
     },
     "require-dev": {
         "vimeo/psalm": "dev-master",
