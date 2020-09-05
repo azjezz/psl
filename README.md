@@ -61,7 +61,7 @@ Documentation is not available yet.
  - All functions should be typed as strictly as possible
  - The library should be internally consistent
  - References may not be used
- - Arguments should be as general as possible. For example, for `array` functions, prefer `iterable` inputs where practical, falling back to `array` when needed.
+ - Arguments should be as general as possible. For example, for `array` functions, prefer `iterable` inputs where practical, falling back to `array` when needed ( e.g the function should be pure ).
  - Return types should be as specific as possible
  - All files should contain `declare(strict_types=1);`
 
