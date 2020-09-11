@@ -17,6 +17,22 @@ class DivTest extends TestCase
         self::assertSame($expected, Math\div($numerator, $denominator));
     }
 
+    public function testDivByZero(): void
+    {
+        $this->expectException(Math\Exception\DivisionByZeroException::class);
+        $this->expectExceptionMessage('Division by zero.');
+
+        Math\div(10, 0);
+    }
+
+    public function testDivInt64MinByMinusOne(): void
+    {
+        $this->expectException(Math\Exception\ArithmeticException::class);
+        $this->expectExceptionMessage('Division of Math\INT64_MIN by -1 is not an integer.');
+
+        Math\div(Math\INT64_MIN, -1);
+    }
+
     public function provideData(): array
     {
         return[

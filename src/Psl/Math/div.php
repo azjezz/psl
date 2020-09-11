@@ -6,6 +6,7 @@ namespace Psl\Math;
 
 use ArithmeticError;
 use DivisionByZeroError;
+use Psl\Str;
 
 use function intdiv;
 
@@ -25,16 +26,24 @@ use function intdiv;
  *
  * @psalm-pure
  *
- * @throws Exception\ArithmeticException        If the numerator is Math\INT64_MAX and the denominator is -1.
+ * @throws Exception\ArithmeticException        If the numerator is Math\INT64_MIN and the denominator is -1.
  * @throws Exception\DivisionByZeroException    If the denominator is 0.
  */
 function div(int $numerator, int $denominator): int
 {
     try {
         return intdiv($numerator, $denominator);
-    } catch (ArithmeticError $error) {
-        throw new Exception\ArithmeticException($error->getMessage(), $error->getCode(), $error);
     } catch (DivisionByZeroError $error) {
-        throw new Exception\DivisionByZeroException($error->getMessage(), $error->getCode(), $error);
+        throw new Exception\DivisionByZeroException(
+            Str\format('%s.', $error->getMessage()),
+            $error->getCode(),
+            $error
+        );
+    } catch (ArithmeticError $error) {
+        throw new Exception\ArithmeticException(
+            'Division of Math\INT64_MIN by -1 is not an integer.',
+            $error->getCode(),
+            $error
+        );
     }
 }
