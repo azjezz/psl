@@ -368,12 +368,12 @@ final class Loader
         'Psl\Type\Internal\StringType',
         'Psl\Type\Internal\UnionType',
         'Psl\Type\Exception\TypeTrace',
-        'Psl\Type\Exception\TypeAssertException',
-        'Psl\Type\Exception\TypeCoercionException',
-        'Psl\Type\Exception\TypeException',
+        'Psl\Type\Exception\AssertException',
+        'Psl\Type\Exception\CoercionException',
+        'Psl\Type\Exception\Exception',
         'Psl\Type\Type',
-        'Psl\Json\Exception\JsonDecodeException',
-        'Psl\Json\Exception\JsonEncodeException',
+        'Psl\Json\Exception\DecodeException',
+        'Psl\Json\Exception\EncodeException',
     ];
 
     private const TYPE_CONSTANTS = 1;

@@ -19,7 +19,7 @@ use const JSON_THROW_ON_ERROR;
  *
  * @psalm-pure
  *
- * @throws Exception\JsonDecodeException If an error occurred.
+ * @throws Exception\DecodeException If an error occurred.
  */
 function decode(string $json, bool $assoc = true)
 {
@@ -32,7 +32,7 @@ function decode(string $json, bool $assoc = true)
             JSON_BIGINT_AS_STRING | JSON_THROW_ON_ERROR,
         );
     } catch (JsonException $e) {
-        throw new Exception\JsonDecodeException(Str\format('%s.', $e->getMessage()), (int)$e->getCode(), $e);
+        throw new Exception\DecodeException(Str\format('%s.', $e->getMessage()), (int)$e->getCode(), $e);
     }
 
     return $value;

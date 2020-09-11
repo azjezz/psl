@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\SecureRandom;
 
-use Exception;
+use Exception as PHPException;
 use Psl;
 use Psl\Str;
 use Psl\Type;
@@ -14,8 +14,8 @@ use function random_bytes;
 /**
  * Returns a cryptographically secure random bytes.
  *
- * @throws Psl\Exception\InvariantViolationException If $length is negative.
- * @throws Psl\Exception\RuntimeException If it was not possible to gather sufficient entropy.
+ * @throws Exception\InsufficientEntropyException       If it was not possible to gather sufficient entropy.
+ * @throws Psl\Exception\InvariantViolationException    If $length is negative.
  */
 function bytes(int $length): string
 {
@@ -27,13 +27,13 @@ function bytes(int $length): string
     try {
         return random_bytes($length);
         // @codeCoverageIgnoreStart
-    } catch (Exception $e) {
+    } catch (PHPException $e) {
         $code = $e->getCode();
         if (Type\is_string($code)) {
             $code = Str\to_int($code) ?? 0;
         }
 
-        throw new Psl\Exception\RuntimeException('Unable to gather sufficient entropy.', $code, $e);
+        throw new Exception\InsufficientEntropyException('Unable to gather sufficient entropy.', $code, $e);
         // @codeCoverageIgnoreEnd
     }
 }

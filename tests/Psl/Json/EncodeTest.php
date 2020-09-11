@@ -48,7 +48,7 @@ JSON;
 
     public function testEncodeThrowsForMalformedUTF8(): void
     {
-        $this->expectException(Json\Exception\JsonEncodeException::class);
+        $this->expectException(Json\Exception\EncodeException::class);
         $this->expectExceptionMessage('Malformed UTF-8 characters, possibly incorrectly encoded.');
 
         Json\encode(["bad utf\xFF"]);
@@ -56,7 +56,7 @@ JSON;
 
     public function testEncodeThrowsWithNAN(): void
     {
-        $this->expectException(Json\Exception\JsonEncodeException::class);
+        $this->expectException(Json\Exception\EncodeException::class);
         $this->expectExceptionMessage('Inf and NaN cannot be JSON encoded.');
 
         Json\encode(Math\NAN);
@@ -64,7 +64,7 @@ JSON;
 
     public function testEncodeThrowsWithInf(): void
     {
-        $this->expectException(Json\Exception\JsonEncodeException::class);
+        $this->expectException(Json\Exception\EncodeException::class);
         $this->expectExceptionMessage('Inf and NaN cannot be JSON encoded.');
 
         Json\encode(Math\INFINITY);

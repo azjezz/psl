@@ -39,7 +39,7 @@ class ResourceSpecTest extends TypeTest
     {
         $spec = Type\resource('curl');
 
-        $this->expectException(Type\Exception\TypeAssertException::class);
+        $this->expectException(Type\Exception\AssertException::class);
 
         $spec->assert(STDIN);
     }

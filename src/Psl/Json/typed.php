@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Json;
 
-use Psl\Type\Exception\TypeAssertException;
-use Psl\Type\Exception\TypeCoercionException;
+use Psl\Type\Exception\AssertException;
+use Psl\Type\Exception\CoercionException;
 use Psl\Type\Type;
 
 /**
@@ -17,7 +17,7 @@ use Psl\Type\Type;
  *
  * @psalm-return T
  *
- * @throws Exception\JsonDecodeException If an error occurred.
+ * @throws Exception\DecodeException If an error occurred.
  */
 function typed(string $json, Type $type)
 {
@@ -25,12 +25,12 @@ function typed(string $json, Type $type)
 
     try {
         return $type->assert($value);
-    } catch (TypeAssertException $e) {
+    } catch (AssertException $e) {
     }
 
     try {
         return $type->coerce($value);
-    } catch (TypeCoercionException $e) {
-        throw new Exception\JsonDecodeException($e->getMessage(), (int)$e->getCode(), $e);
+    } catch (CoercionException $e) {
+        throw new Exception\DecodeException($e->getMessage(), (int)$e->getCode(), $e);
     }
 }

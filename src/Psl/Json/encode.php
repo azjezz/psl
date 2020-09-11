@@ -22,7 +22,7 @@ use const JSON_UNESCAPED_UNICODE;
  *
  * @psalm-pure
  *
- * @throws Exception\JsonEncodeException If an error occurred.
+ * @throws Exception\EncodeException If an error occurred.
  */
 function encode($value, bool $pretty = false, int $flags = 0): string
 {
@@ -38,7 +38,7 @@ function encode($value, bool $pretty = false, int $flags = 0): string
     try {
         $json = json_encode($value, $flags);
     } catch (JsonException $e) {
-        throw new Exception\JsonEncodeException(Str\format('%s.', $e->getMessage()), (int)$e->getCode(), $e);
+        throw new Exception\EncodeException(Str\format('%s.', $e->getMessage()), (int)$e->getCode(), $e);
     }
 
     return $json;

@@ -6,8 +6,8 @@ namespace Psl\Type\Internal;
 
 use Psl\Str;
 use Psl\Type;
-use Psl\Type\Exception\TypeAssertException;
-use Psl\Type\Exception\TypeCoercionException;
+use Psl\Type\Exception\AssertException;
+use Psl\Type\Exception\CoercionException;
 
 /**
  * @extends Type\Type<resource>
@@ -28,7 +28,7 @@ final class ResourceType extends Type\Type
      *
      * @psalm-return resource
      *
-     * @throws TypeCoercionException
+     * @throws CoercionException
      */
     public function coerce($value)
     {
@@ -43,7 +43,7 @@ final class ResourceType extends Type\Type
             }
         }
 
-        throw TypeCoercionException::withValue($value, $this->toString(), $this->getTrace());
+        throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
     }
 
     /**
@@ -53,7 +53,7 @@ final class ResourceType extends Type\Type
      *
      * @psalm-assert resource $value
      *
-     * @throws TypeAssertException
+     * @throws AssertException
      */
     public function assert($value)
     {
@@ -68,7 +68,7 @@ final class ResourceType extends Type\Type
             }
         }
 
-        throw TypeAssertException::withValue($value, $this->toString(), $this->getTrace());
+        throw AssertException::withValue($value, $this->toString(), $this->getTrace());
     }
 
     public function toString(): string

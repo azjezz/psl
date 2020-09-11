@@ -6,6 +6,6 @@ namespace Psl\Json\Exception;
 
 use Psl\Exception\InvalidArgumentException;
 
-final class JsonEncodeException extends InvalidArgumentException
+final class DecodeException extends InvalidArgumentException implements ExceptionInterface
 {
 }

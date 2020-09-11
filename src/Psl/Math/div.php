@@ -25,10 +25,16 @@ use function intdiv;
  *
  * @psalm-pure
  *
- * @throws DivisionByZeroError If the denominator is 0
- * @throws ArithmeticError If the numerator is Math\INT64_MAX and the denominator is -1
+ * @throws Exception\ArithmeticException        If the numerator is Math\INT64_MAX and the denominator is -1.
+ * @throws Exception\DivisionByZeroException    If the denominator is 0.
  */
 function div(int $numerator, int $denominator): int
 {
-    return intdiv($numerator, $denominator);
+    try {
+        return intdiv($numerator, $denominator);
+    } catch (ArithmeticError $error) {
+        throw new Exception\ArithmeticException($error->getMessage(), $error->getCode(), $error);
+    } catch (DivisionByZeroError $error) {
+        throw new Exception\DivisionByZeroException($error->getMessage(), $error->getCode(), $error);
+    }
 }

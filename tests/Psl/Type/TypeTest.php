@@ -7,8 +7,8 @@ namespace Psl\Tests\Type;
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 use Psl\Iter;
-use Psl\Type\Exception\TypeAssertException;
-use Psl\Type\Exception\TypeCoercionException;
+use Psl\Type\Exception\AssertException;
+use Psl\Type\Exception\CoercionException;
 use Psl\Type\Type;
 
 /**
@@ -97,7 +97,7 @@ abstract class TypeTest extends TestCase
      */
     public function testInvalidCoercion($value): void
     {
-        $this->expectException(TypeCoercionException::class);
+        $this->expectException(CoercionException::class);
 
         $this->getType()->coerce($value);
     }
@@ -117,7 +117,7 @@ abstract class TypeTest extends TestCase
      */
     public function testInvalidAssertion($value): void
     {
-        $this->expectException(TypeAssertException::class);
+        $this->expectException(AssertException::class);
 
         $this->getType()->assert($value);
     }

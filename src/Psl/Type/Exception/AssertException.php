@@ -6,7 +6,7 @@ namespace Psl\Type\Exception;
 
 use Psl\Str;
 
-final class TypeAssertException extends TypeException
+final class AssertException extends Exception
 {
     private string $expected;
 

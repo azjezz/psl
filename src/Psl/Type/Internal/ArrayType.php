@@ -7,8 +7,8 @@ namespace Psl\Type\Internal;
 use Psl\Iter;
 use Psl\Str;
 use Psl\Type;
-use Psl\Type\Exception\TypeAssertException;
-use Psl\Type\Exception\TypeCoercionException;
+use Psl\Type\Exception\AssertException;
+use Psl\Type\Exception\CoercionException;
 
 /**
  * @template Tk of array-key
@@ -47,7 +47,7 @@ final class ArrayType extends Type\Type
      *
      * @psalm-return array<Tk, Tv>
      *
-     * @throws TypeCoercionException
+     * @throws CoercionException
      */
     public function coerce($value): array
     {
@@ -84,7 +84,7 @@ final class ArrayType extends Type\Type
         }
 
 
-        throw TypeCoercionException::withValue($value, $this->toString(), $this->getTrace());
+        throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
     }
 
     /**
@@ -94,7 +94,7 @@ final class ArrayType extends Type\Type
      *
      * @psalm-assert array<Tk, Tv> $value
      *
-     * @throws TypeAssertException
+     * @throws AssertException
      */
     public function assert($value): array
     {
@@ -129,7 +129,7 @@ final class ArrayType extends Type\Type
             return Iter\to_array_with_keys($iterator);
         }
 
-        throw TypeAssertException::withValue($value, $this->toString(), $this->getTrace());
+        throw AssertException::withValue($value, $this->toString(), $this->getTrace());
     }
 
     public function toString(): string

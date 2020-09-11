@@ -31,7 +31,7 @@ class TypedTest extends TestCase
 
     public function testTypedThrowsWhenUnableToCoerce(): void
     {
-        $this->expectException(Json\Exception\JsonDecodeException::class);
+        $this->expectException(Json\Exception\DecodeException::class);
         $this->expectExceptionMessage('Could not coerce "string" to type "int".');
 
         Json\typed('{

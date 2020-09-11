@@ -7,7 +7,7 @@ namespace Psl\Type\Exception;
 use Psl\Exception\RuntimeException;
 use Psl\Str;
 
-abstract class TypeException extends RuntimeException
+abstract class Exception extends RuntimeException
 {
     private TypeTrace $typeTrace;
     private string $actual;

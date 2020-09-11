@@ -7,8 +7,8 @@ namespace Psl\Type\Internal;
 use Psl\Iter;
 use Psl\Str;
 use Psl\Type;
-use Psl\Type\Exception\TypeAssertException;
-use Psl\Type\Exception\TypeCoercionException;
+use Psl\Type\Exception\AssertException;
+use Psl\Type\Exception\CoercionException;
 
 /**
  * @template Tk
@@ -47,7 +47,7 @@ final class IterableType extends Type\Type
      *
      * @psalm-return iterable<Tk, Tv>
      *
-     * @throws TypeCoercionException
+     * @throws CoercionException
      */
     public function coerce($value): iterable
     {
@@ -81,7 +81,7 @@ final class IterableType extends Type\Type
             return Iter\from_entries($entries);
         }
 
-        throw TypeCoercionException::withValue($value, $this->toString(), $this->getTrace());
+        throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
     }
 
     /**
@@ -91,7 +91,7 @@ final class IterableType extends Type\Type
      *
      * @psalm-assert iterable<Tk, Tv> $value
      *
-     * @throws TypeAssertException
+     * @throws AssertException
      */
     public function assert($value): iterable
     {
@@ -125,7 +125,7 @@ final class IterableType extends Type\Type
             return Iter\from_entries($entries);
         }
 
-        throw TypeAssertException::withValue($value, $this->toString(), $this->getTrace());
+        throw AssertException::withValue($value, $this->toString(), $this->getTrace());
     }
 
     public function toString(): string

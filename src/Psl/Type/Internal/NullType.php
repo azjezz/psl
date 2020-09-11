@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Psl\Type;
-use Psl\Type\Exception\TypeAssertException;
-use Psl\Type\Exception\TypeCoercionException;
+use Psl\Type\Exception\AssertException;
+use Psl\Type\Exception\CoercionException;
 
 /**
  * @extends Type\Type<null>
@@ -26,7 +26,7 @@ final class NullType extends Type\Type
             return null;
         }
 
-        throw TypeCoercionException::withValue($value, $this->toString(), $this->getTrace());
+        throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
     }
 
     /**
@@ -42,7 +42,7 @@ final class NullType extends Type\Type
             return null;
         }
 
-        throw TypeAssertException::withValue($value, $this->toString(), $this->getTrace());
+        throw AssertException::withValue($value, $this->toString(), $this->getTrace());
     }
 
     public function toString(): string

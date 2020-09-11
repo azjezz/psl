@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Psl\Str;
-use Psl\Type\Exception\TypeAssertException;
-use Psl\Type\Exception\TypeCoercionException;
+use Psl\Type\Exception\AssertException;
+use Psl\Type\Exception\CoercionException;
 use Psl\Type\Type;
 
 /**
@@ -46,29 +46,29 @@ class UnionType extends Type
      *
      * @psalm-return Tl|Tr
      *
-     * @throws TypeCoercionException
+     * @throws CoercionException
      */
     public function coerce($value)
     {
         try {
             return $this->assert($value);
-        } catch (TypeAssertException $_exception) {
+        } catch (AssertException $_exception) {
             // ignore
         }
 
         try {
             return $this->left_type_spec->coerce($value);
-        } catch (TypeCoercionException $_exception) {
+        } catch (CoercionException $_exception) {
             // ignore
         }
 
         try {
             return $this->right_type_spec->coerce($value);
-        } catch (TypeCoercionException $_exception) {
+        } catch (CoercionException $_exception) {
             // ignore
         }
 
-        throw TypeCoercionException::withValue($value, $this->toString(), $this->getTrace());
+        throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
     }
 
     /**
@@ -78,23 +78,23 @@ class UnionType extends Type
      *
      * @psalm-assert Tl|Tr $value
      *
-     * @throws TypeAssertException
+     * @throws AssertException
      */
     public function assert($value)
     {
         try {
             return $this->left_type_spec->assert($value);
-        } catch (TypeAssertException $_exception) {
+        } catch (AssertException $_exception) {
             // ignore
         }
 
         try {
             return $this->right_type_spec->assert($value);
-        } catch (TypeAssertException $_exception) {
+        } catch (AssertException $_exception) {
             // ignore
         }
 
-        throw TypeAssertException::withValue($value, $this->toString(), $this->getTrace());
+        throw AssertException::withValue($value, $this->toString(), $this->getTrace());
     }
 
     public function toString(): string

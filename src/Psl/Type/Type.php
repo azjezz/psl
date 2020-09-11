@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
-use Psl\Type\Exception\TypeAssertException;
-use Psl\Type\Exception\TypeCoercionException;
+use Psl\Type\Exception\AssertException;
+use Psl\Type\Exception\CoercionException;
 use Psl\Type\Exception\TypeTrace;
 use Psl\Type\Internal\TypeTraceTrait;
 
@@ -21,7 +21,7 @@ abstract class Type
      *
      * @psalm-return T
      *
-     * @throws TypeCoercionException
+     * @throws CoercionException
      */
     abstract public function coerce($value);
 
@@ -32,7 +32,7 @@ abstract class Type
      *
      * @psalm-assert T $value
      *
-     * @throws TypeAssertException
+     * @throws AssertException
      */
     abstract public function assert($value);
 

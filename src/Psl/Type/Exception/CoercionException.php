@@ -6,7 +6,7 @@ namespace Psl\Type\Exception;
 
 use Psl\Str;
 
-final class TypeCoercionException extends TypeException
+final class CoercionException extends Exception
 {
     private string $target;
 

@@ -23,9 +23,9 @@ class TypeCoercionExceptionTest extends TestCase
 
             self::fail(Str\format(
                 'Expected "%s" exception to be thrown.',
-                Type\Exception\TypeCoercionException::class
+                Type\Exception\CoercionException::class
             ));
-        } catch (Type\Exception\TypeCoercionException $e) {
+        } catch (Type\Exception\CoercionException $e) {
             static::assertSame('bool', $e->getTargetType());
             static::assertSame('int', $e->getActualType());
             static::assertSame('Could not coerce "int" to type "bool".', $e->getMessage());
@@ -47,9 +47,9 @@ class TypeCoercionExceptionTest extends TestCase
 
             self::fail(Str\format(
                 'Expected "%s" exception to be thrown.',
-                Type\Exception\TypeCoercionException::class
+                Type\Exception\CoercionException::class
             ));
-        } catch (Type\Exception\TypeCoercionException $e) {
+        } catch (Type\Exception\CoercionException $e) {
             static::assertSame('resource<curl>', $e->getTargetType());
             static::assertSame(Collection\Map::class, $e->getActualType());
             static::assertSame(Str\format(

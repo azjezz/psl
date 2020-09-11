@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
-use Psl\Type\Exception\TypeAssertException;
-use Psl\Type\Exception\TypeCoercionException;
+use Psl\Type\Exception\AssertException;
+use Psl\Type\Exception\CoercionException;
 use Psl\Type\Type;
 
 /**
@@ -36,7 +36,7 @@ final class ObjectType extends Type
      *
      * @psalm-return T
      *
-     * @throws TypeCoercionException
+     * @throws CoercionException
      */
     public function coerce($value): object
     {
@@ -44,7 +44,7 @@ final class ObjectType extends Type
             return $value;
         }
 
-        throw TypeCoercionException::withValue($value, $this->toString(), $this->getTrace());
+        throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
     }
 
     /**
@@ -54,7 +54,7 @@ final class ObjectType extends Type
      *
      * @psalm-assert T $value
      *
-     * @throws TypeAssertException
+     * @throws AssertException
      */
     public function assert($value): object
     {
@@ -62,7 +62,7 @@ final class ObjectType extends Type
             return $value;
         }
 
-        throw TypeAssertException::withValue($value, $this->toString(), $this->getTrace());
+        throw AssertException::withValue($value, $this->toString(), $this->getTrace());
     }
 
     public function toString(): string

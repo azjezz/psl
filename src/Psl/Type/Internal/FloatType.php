@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Psl\Type;
-use Psl\Type\Exception\TypeAssertException;
-use Psl\Type\Exception\TypeCoercionException;
+use Psl\Type\Exception\AssertException;
+use Psl\Type\Exception\CoercionException;
 
 use function ctype_digit;
 
@@ -24,7 +24,7 @@ final class FloatType extends Type\Type
      *
      * @psalm-return float
      *
-     * @throws TypeCoercionException
+     * @throws CoercionException
      */
     public function coerce($value): float
     {
@@ -39,7 +39,7 @@ final class FloatType extends Type\Type
         if (Type\is_string($value) || (Type\is_object($value) && method_exists($value, '__toString'))) {
             $str = (string) $value;
             if ('' === $str) {
-                throw TypeCoercionException::withValue($value, $this->toString(), $this->getTrace());
+                throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
             }
 
             if (ctype_digit($str)) {
@@ -51,7 +51,7 @@ final class FloatType extends Type\Type
             }
         }
 
-        throw TypeCoercionException::withValue($value, $this->toString(), $this->getTrace());
+        throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
     }
 
     /**
@@ -61,7 +61,7 @@ final class FloatType extends Type\Type
      *
      * @psalm-assert float $value
      *
-     * @throws TypeAssertException
+     * @throws AssertException
      */
     public function assert($value): float
     {
@@ -69,7 +69,7 @@ final class FloatType extends Type\Type
             return $value;
         }
 
-        throw TypeAssertException::withValue($value, $this->toString(), $this->getTrace());
+        throw AssertException::withValue($value, $this->toString(), $this->getTrace());
     }
 
     public function toString(): string
