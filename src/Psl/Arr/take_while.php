@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Arr;
 
 /**
- * Takes items from an array until the predicate fails for the first time.
+ * Takes items from an iterable until the predicate fails for the first time.
  *
  * This means that all elements before (and excluding) the first element on
  * which the predicate fails will be included.
@@ -18,17 +18,15 @@ namespace Psl\Arr;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param    array<Tk, Tv>                $array Array to take values from
- * @psalm-param    (pure-callable(Tv): bool)    $predicate
+ * @psalm-param    iterable<Tk, Tv>        $iterable    Iterable to take values from
+ * @psalm-param    (callable(Tv): bool)    $predicate
  *
  * @psalm-return   array<Tk, Tv>
- *
- * @psalm-pure
  */
-function take_while(array $array, callable $predicate): array
+function take_while(iterable $iterable, callable $predicate): array
 {
     $result = [];
-    foreach ($array as $key => $value) {
+    foreach ($iterable as $key => $value) {
         if (!$predicate($value)) {
             return $result;
         }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Arr;
 
 /**
- * Filter out null values from the given array.
+ * Filter out null values from the given iterable.
  *
  * Example:
  *      Arr\filter_nulls([1, null, 5])
@@ -13,17 +13,15 @@ namespace Psl\Arr;
  *
  * @psalm-template T
  *
- * @psalm-param list<T|null> $array
+ * @psalm-param iterable<T|null> $iterable
  *
  * @psalm-return list<T>
- *
- * @psalm-pure
  */
-function filter_nulls(array $array): array
+function filter_nulls(iterable $iterable): array
 {
     /** @psalm-var list<T> $result */
     $result = [];
-    foreach ($array as $value) {
+    foreach ($iterable as $value) {
         if (null !== $value) {
             $result[] = $value;
         }

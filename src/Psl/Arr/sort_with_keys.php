@@ -12,12 +12,10 @@ namespace Psl\Arr;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param array<Tk, Tv>                       $array
- * @psalm-param (pure-callable(Tv, Tv): int)|null   $comparator
+ * @psalm-param array<Tk, Tv>                  $array
+ * @psalm-param (callable(Tv, Tv): int)|null   $comparator
  *
  * @psalm-return array<Tk, Tv>
- *
- * @psalm-pure
  */
 function sort_with_keys(array $array, ?callable $comparator = null): array
 {

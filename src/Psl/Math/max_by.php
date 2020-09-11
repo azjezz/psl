@@ -15,14 +15,12 @@ use Psl;
  *
  * @psalm-template T
  *
- * @psalm-param list<T>                     $values
- * @psalm-param (pure-callable(T): numeric) $num_func
+ * @psalm-param iterable<T>            $values
+ * @psalm-param (callable(T): numeric) $num_func
  *
  * @psalm-return T|null
- *
- * @psalm-pure
  */
-function max_by(array $values, callable $num_func)
+function max_by(iterable $values, callable $num_func)
 {
     $max     = null;
     $max_num = null;

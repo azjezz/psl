@@ -68,7 +68,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * The keys associated with the current `VectorInterface` remain unchanged in the
      * returned `VectorInterface`.
      *
-     * @psalm-param (pure-callable(T): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (callable(T): bool) $fn - The callback containing the condition to apply to the current
      *      `VectorInterface` values.
      *
      * @psalm-return VectorInterface<T> - a VectorInterface containing the values after a user-specified condition
@@ -87,7 +87,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * The keys associated with the current `VectorInterface` remain unchanged in the
      * returned `VectorInterface`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (pure-callable(int, T): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (callable(int, T): bool) $fn - The callback containing the condition to apply to the current
      *      `VectorInterface` keys and values.
      *
      * @psalm-return VectorInterface<T> - a `VectorInterface` containing the values after a user-specified
@@ -107,7 +107,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-template Tu
      *
-     * @psalm-param (pure-callable(T): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (callable(T): Tu) $fn - The callback containing the operation to apply to the current
      *      `VectorInterface` values.
      *
      * @psalm-return   VectorInterface<Tu> - a `VectorInterface` containing key/value pairs after a user-specified
@@ -128,7 +128,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-template Tu
      *
-     * @psalm-param (pure-callable(int, T): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (callable(int, T): Tu) $fn - The callback containing the operation to apply to the current
      *      `VectorInterface` keys and values.
      *
      * @psalm-return   VectorInterface<Tu> - a `VectorInterface` containing the values after a user-specified
@@ -224,7 +224,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * The returned `VectorInterface` will always be a proper subset of the current
      * `VectorInterface`.
      *
-     * @psalm-param (pure-callable(T): bool) $fn - The callback that is used to determine the stopping
+     * @psalm-param (callable(T): bool) $fn - The callback that is used to determine the stopping
      *      condition.
      *
      * @psalm-return VectorInterface<T> - A `VectorInterface` that is a proper subset of the current
@@ -257,7 +257,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * The returned `VectorInterface` will always be a proper subset of the current
      * `VectorInterface`.
      *
-     * @psalm-param (pure-callable(T): bool) $fn - The callback used to determine the starting element for the
+     * @psalm-param (callable(T): bool) $fn - The callback used to determine the starting element for the
      *      returned `VectorInterface`.
      *
      * @psalm-return VectorInterface<T> - A `VectorInterface` that is a proper subset of the current

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use function array_fill;
+
 /**
  * Fill an array with values.
  *
@@ -17,5 +19,5 @@ namespace Psl\Arr;
  */
 function fill($value, int $start_index, int $num): array
 {
-    return \array_fill($start_index, $num, $value);
+    return array_fill($start_index, $num, $value);
 }

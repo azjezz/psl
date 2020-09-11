@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use function sort as php_sort;
+use function usort;
+
 /**
  * Returns a new array sorted by the values of the given array.
  *
@@ -13,8 +16,8 @@ namespace Psl\Arr;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param array<Tk, Tv>                       $array
- * @psalm-param (pure-callable(Tv, Tv): int)|null   $comparator
+ * @psalm-param array<Tk, Tv>                  $array
+ * @psalm-param (callable(Tv, Tv): int)|null   $comparator
  *
  * @return array
  *
@@ -23,9 +26,9 @@ namespace Psl\Arr;
 function sort(array $array, ?callable $comparator = null): array
 {
     if (null !== $comparator) {
-        \usort($array, $comparator);
+        usort($array, $comparator);
     } else {
-        \sort($array);
+        php_sort($array);
     }
 
     return $array;

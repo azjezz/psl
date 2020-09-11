@@ -9,14 +9,12 @@ namespace Psl\Arr;
  *
  * @psalm-template T
  *
- * @psalm-param list<T> $list
- * @psalm-param (pure-callable(T): bool) $predicate
+ * @psalm-param iterable<T>         $list
+ * @psalm-param (callable(T): bool) $predicate
  *
  * @psalm-return array{0: list<T>, 1: list<T>}
- *
- * @psalm-pure
  */
-function partition(array $list, callable $predicate): array
+function partition(iterable $list, callable $predicate): array
 {
     $success = [];
     $failure = [];

@@ -34,14 +34,12 @@ use Psl\Type;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param list<Tv>                    $values
- * @psalm-param (pure-callable(Tv): ?Tk)    $key_func
+ * @psalm-param iterable<Tv>           $values
+ * @psalm-param (callable(Tv): ?Tk)    $key_func
  *
  * @psalm-return array<Tk, list<Tv>>
- *
- * @psalm-pure
  */
-function group_by(array $values, callable $key_func): array
+function group_by(iterable $values, callable $key_func): array
 {
     $result = [];
     foreach ($values as $value) {

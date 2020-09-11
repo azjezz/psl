@@ -13,11 +13,9 @@ namespace Psl\Arr;
  * @psalm-template Tv
  *
  * @psalm-param array<Tk, Tv>                       $array
- * @psalm-param (pure-callable(Tk, Tk): int)|null   $comparator
+ * @psalm-param (callable(Tk, Tk): int)|null        $comparator
  *
  * @psalm-return array<Tk, Tv>
- *
- * @psalm-pure
  */
 function sort_by_key(array $array, ?callable $comparator = null): array
 {

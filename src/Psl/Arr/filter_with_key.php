@@ -26,27 +26,23 @@ use Psl;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param array<Tk, Tv>                       $array
- * @psalm-param (pure-callable(Tk, Tv): bool)|null  $predicate
+ * @psalm-param iterable<Tk, Tv>                $iterable
+ * @psalm-param (callable(Tk, Tv): bool)|null   $predicate
  *
  * @psalm-return array<Tk, Tv>
- *
- * @psalm-pure
  */
-function filter_with_key(array $array, ?callable $predicate = null): array
+function filter_with_key(iterable $iterable, ?callable $predicate = null): array
 {
     $predicate = $predicate ??
         /**
          * @psalm-param Tk $k
          * @psalm-param Tv $v
-         *
-         * @psalm-pure
          */
-        fn ($k, $v): bool => Psl\Internal\boolean($v);
+        static fn ($k, $v): bool => Psl\Internal\boolean($v);
 
     /** @psalm-var array<Tk, Tv> $result */
     $result = [];
-    foreach ($array as $k => $v) {
+    foreach ($iterable as $k => $v) {
         if ($predicate($k, $v)) {
             $result[$k] = $v;
         }

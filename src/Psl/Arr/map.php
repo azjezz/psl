@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl\Arr;
 
 /**
- * Applies a mapping function to all values of an array.
+ * Applies a mapping function to all values of an iterable.
  *
- * The function is passed the current array value and should return a
+ * The function is passed the current iterable value and should return a
  * modified array value.
  *
  * The key is left as-is and not passed to the mapping function.
@@ -21,17 +21,15 @@ namespace Psl\Arr;
  * @psalm-template Tv
  * @psalm-template T
  *
- * @psalm-param array<Tk, Tv>           $array      Array to be mapped over
- * @psalm-param (pure-callable(Tv): T)  $function
+ * @psalm-param iterable<Tk, Tv>   $iterable Iterable to be mapped over
+ * @psalm-param (callable(Tv): T)  $function
  *
  * @psalm-return array<Tk, T>
- *
- * @psalm-pure
  */
-function map(array $array, callable $function): array
+function map(iterable $iterable, callable $function): array
 {
     $result = [];
-    foreach ($array as $key => $value) {
+    foreach ($iterable as $key => $value) {
         $result[$key] = $function($value);
     }
 

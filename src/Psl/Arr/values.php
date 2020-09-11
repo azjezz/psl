@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use function array_values;
+
 /**
  * Return all the values of an array.
  *
@@ -17,5 +19,5 @@ namespace Psl\Arr;
  */
 function values(array $arr): array
 {
-    return \array_values($arr);
+    return array_values($arr);
 }

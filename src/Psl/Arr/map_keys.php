@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Psl\Arr;
 
 /**
- * Applies a mapping function to all keys of an array.
+ * Applies a mapping function to all keys of an iterable.
  *
- * The function is passed the current array key and should return a
- * modified array key.
+ * The function is passed the current iterable key and should return a
+ * modified iterable key.
  *
  * The value is left as-is and not passed to the mapping function.
  *
@@ -21,17 +21,15 @@ namespace Psl\Arr;
  * @psalm-template Tk2 of array-key
  * @psalm-template Tv
  *
- * @psalm-param array<Tk1, Tv>              $array    Array to be mapped over
- * @psalm-param (pure-callable(Tk1): Tk2)   $function
+ * @psalm-param iterable<Tk1, Tv>       $iterable Iterable to be mapped over
+ * @psalm-param (callable(Tk1): Tk2)    $function
  *
  * @psalm-return array<Tk2, Tv>
- *
- * @psalm-pure
  */
-function map_keys(array $array, callable $function): array
+function map_keys(iterable $iterable, callable $function): array
 {
     $result = [];
-    foreach ($array as $key => $value) {
+    foreach ($iterable as $key => $value) {
         $result[$function($key)] = $value;
     }
 

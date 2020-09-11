@@ -9,14 +9,12 @@ namespace Psl\Arr;
  *
  * @psalm-template T
  *
- * @psalm-param list<T>         $first
- * @psalm-param list<list<T>>   $rest
+ * @psalm-param list<T>     $first
+ * @psalm-param iterable<T> ...$rest
  *
  * @psalm-return list<T>
- *
- * @psalm-pure
  */
-function concat(array $first, array ...$rest): array
+function concat(array $first, iterable ...$rest): array
 {
     /** @psalm-var list<T> $first */
     $first = values($first);

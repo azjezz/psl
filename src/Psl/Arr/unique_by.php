@@ -13,20 +13,21 @@ use Psl;
  *
  * @psalm-template Tk of array-key
  * @psalm-template Tv
- * @psalm-template Ts of array-key
+ * @psalm-template Ts
  *
- * @psalm-param array<Tk, Tv>           $array
- * @psalm-param (pure-callable(Tv): Ts) $scalar_func
+ * @psalm-param iterable<Tk, Tv>   $iterable
+ * @psalm-param (callable(Tv): Ts) $scalar_func
  *
  * @psalm-return array<Tk, Tv>
- *
- * @psalm-pure
  */
-function unique_by(array $array, callable $scalar_func): array
+function unique_by(iterable $iterable, callable $scalar_func): array
 {
     /** @psalm-var array<Tk, Ts> $unique */
     $unique = [];
-    foreach ($array as $k => $v) {
+    /** @psalm-var array<Tk, Tv> $original_values */
+    $original_values = [];
+    foreach ($iterable as $k => $v) {
+        $original_values[$k] = $v;
         /** @psalm-var Ts $scalar */
         $scalar = $scalar_func($v);
 
@@ -38,7 +39,7 @@ function unique_by(array $array, callable $scalar_func): array
     /** @psalm-var array<Tk, Tv> $result */
     $result = [];
     foreach ($unique as $k => $_) {
-        $result[$k] = $array[$k];
+        $result[$k] = $original_values[$k];
     }
 
     return $result;

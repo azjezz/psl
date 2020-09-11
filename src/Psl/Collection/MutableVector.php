@@ -335,7 +335,7 @@ final class MutableVector implements MutableVectorInterface
      * The keys associated with the current `MutableVector` remain unchanged in the
      * returned `MutableVector`.
      *
-     * @psalm-param (pure-callable(T): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (callable(T): bool) $fn - The callback containing the condition to apply to the current
      *                                 `MutableVector` values
      *
      * @psalm-return MutableVector<T> - a MutableVector containing the values after a user-specified condition
@@ -357,7 +357,7 @@ final class MutableVector implements MutableVectorInterface
      * The keys associated with the current `MutableVector` remain unchanged in the
      * returned `MutableVector`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (pure-callable(int, T): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (callable(int, T): bool) $fn - The callback containing the condition to apply to the current
      *                                     `MutableVector` keys and values
      *
      * @psalm-return MutableVector<T> - a `MutableVector` containing the values after a user-specified
@@ -381,7 +381,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-template Tu
      *
-     * @psalm-param (pure-callable(T): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (callable(T): Tu) $fn - The callback containing the operation to apply to the current
      *                               `MutableVector` values
      *
      * @psalm-return   MutableVector<Tu> - a `MutableVector` containing key/value pairs after a user-specified
@@ -405,7 +405,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-template Tu
      *
-     * @psalm-param (pure-callable(int, T): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (callable(int, T): Tu) $fn - The callback containing the operation to apply to the current
      *                                   `MutableVector` keys and values
      *
      * @psalm-return   MutableVector<Tu> - a `MutableVector` containing the values after a user-specified
@@ -481,7 +481,7 @@ final class MutableVector implements MutableVectorInterface
      * The returned `MutableVector` will always be a proper subset of the current
      * `MutableVector`.
      *
-     * @psalm-param (pure-callable(T): bool) $fn - The callback that is used to determine the stopping
+     * @psalm-param (callable(T): bool) $fn - The callback that is used to determine the stopping
      *              condition.
      *
      * @psalm-return MutableVector<T> - A `MutableVector` that is a proper subset of the current
@@ -523,7 +523,7 @@ final class MutableVector implements MutableVectorInterface
      * The returned `MutableVector` will always be a proper subset of the current
      * `MutableVector`.
      *
-     * @psalm-param (pure-callable(T): bool) $fn - The callback used to determine the starting element for the
+     * @psalm-param (callable(T): bool) $fn - The callback used to determine the starting element for the
      *              returned `MutableVector`.
      *
      * @psalm-return MutableVector<T> - A `MutableVector` that is a proper subset of the current

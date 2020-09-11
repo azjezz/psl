@@ -209,7 +209,7 @@ final class MutableMap implements MutableMapInterface
      * The keys associated with the current `MutableMap` remain unchanged in the
      * returned `MutableMap`.
      *
-     * @psalm-param (pure-callable(Tv): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (callable(Tv): bool) $fn - The callback containing the condition to apply to the current
      *                                 `MutableMap` values
      *
      * @psalm-return MutableMap<Tk, Tv> - a MutableMap containing the values after a user-specified condition
@@ -231,7 +231,7 @@ final class MutableMap implements MutableMapInterface
      * The keys associated with the current `MutableMap` remain unchanged in the
      * returned `MutableMap`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (pure-callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
      *                                     `MutableMap` keys and values
      *
      * @psalm-return MutableMap<Tk, Tv> - a `MutableMap` containing the values after a user-specified
@@ -255,7 +255,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-template Tu
      *
-     * @psalm-param (pure-callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                               `MutableMap` values
      *
      * @psalm-return   MutableMap<Tk, Tu> - a `MutableMap` containing key/value pairs after a user-specified
@@ -279,7 +279,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-template Tu
      *
-     * @psalm-param (pure-callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                                   `MutableMap` keys and values
      *
      * @psalm-return   MutableMap<Tk, Tu> - a `MutableMap` containing the values after a user-specified
@@ -359,7 +359,7 @@ final class MutableMap implements MutableMapInterface
      * The returned `MutableMap` will always be a proper subset of the current
      * `MutableMap`.
      *
-     * @psalm-param (pure-callable(Tv): bool) $fn - The callback that is used to determine the stopping
+     * @psalm-param (callable(Tv): bool) $fn - The callback that is used to determine the stopping
      *              condition.
      *
      * @psalm-return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
@@ -401,7 +401,7 @@ final class MutableMap implements MutableMapInterface
      * The returned `MutableMap` will always be a proper subset of the current
      * `MutableMap`.
      *
-     * @psalm-param (pure-callable(Tv): bool) $fn - The callback used to determine the starting element for the
+     * @psalm-param (callable(Tv): bool) $fn - The callback used to determine the starting element for the
      *              returned `MutableMap`.
      *
      * @psalm-return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current

@@ -22,7 +22,7 @@ function equal(array $array, array $array2): bool
         return true;
     }
 
-    if (\count($array) !== \count($array2)) {
+    if (count($array) !== count($array2)) {
         return false;
     }
 

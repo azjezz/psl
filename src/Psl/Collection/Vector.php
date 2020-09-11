@@ -219,7 +219,7 @@ final class Vector implements VectorInterface
      * The keys associated with the current `Vector` remain unchanged in the
      * returned `Vector`.
      *
-     * @psalm-param (pure-callable(T): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (callable(T): bool) $fn - The callback containing the condition to apply to the current
      *                                 `Vector` values
      *
      * @psalm-return Vector<T> - a Vector containing the values after a user-specified condition
@@ -241,7 +241,7 @@ final class Vector implements VectorInterface
      * The keys associated with the current `Vector` remain unchanged in the
      * returned `Vector`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (pure-callable(int, T): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (callable(int, T): bool) $fn - The callback containing the condition to apply to the current
      *                                     `Vector` keys and values
      *
      * @psalm-return Vector<T> - a `Vector` containing the values after a user-specified
@@ -265,7 +265,7 @@ final class Vector implements VectorInterface
      *
      * @psalm-template Tu
      *
-     * @psalm-param (pure-callable(T): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (callable(T): Tu) $fn - The callback containing the operation to apply to the current
      *                               `Vector` values
      *
      * @psalm-return   Vector<Tu> - a `Vector` containing key/value pairs after a user-specified
@@ -289,7 +289,7 @@ final class Vector implements VectorInterface
      *
      * @psalm-template Tu
      *
-     * @psalm-param (pure-callable(int, T): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (callable(int, T): Tu) $fn - The callback containing the operation to apply to the current
      *                                   `Vector` keys and values
      *
      * @psalm-return   Vector<Tu> - a `Vector` containing the values after a user-specified
@@ -365,7 +365,7 @@ final class Vector implements VectorInterface
      * The returned `Vector` will always be a proper subset of the current
      * `Vector`.
      *
-     * @psalm-param (pure-callable(T): bool) $fn - The callback that is used to determine the stopping
+     * @psalm-param (callable(T): bool) $fn - The callback that is used to determine the stopping
      *              condition.
      *
      * @psalm-return Vector<T> - A `Vector` that is a proper subset of the current
@@ -407,7 +407,7 @@ final class Vector implements VectorInterface
      * The returned `Vector` will always be a proper subset of the current
      * `Vector`.
      *
-     * @psalm-param (pure-callable(T): bool) $fn - The callback used to determine the starting element for the
+     * @psalm-param (callable(T): bool) $fn - The callback used to determine the starting element for the
      *              returned `Vector`.
      *
      * @psalm-return Vector<T> - A `Vector` that is a proper subset of the current

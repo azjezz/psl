@@ -23,15 +23,12 @@ declare(strict_types=1);
 
 use Psl\Arr;
 use Psl\Str;
-use Psl\Iter;
 
 /**
  * @psalm-param iterable<?int> $codes
  */
 function foo(iterable $codes): string
 {
-    /** @var list<?int> $codes */
-    $codes = Iter\to_array($codes);
     /** @var list<int> $codes */
     $codes = Arr\filter_nulls($codes);
     /** @var list<string> $chars */
@@ -61,7 +58,7 @@ Documentation is not available yet.
  - All functions should be typed as strictly as possible
  - The library should be internally consistent
  - References may not be used
- - Arguments should be as general as possible. For example, for `array` functions, prefer `iterable` inputs where practical, falling back to `array` when needed ( e.g the function should be pure ).
+ - Arguments should be as general as possible. For example, for `array` functions, prefer `iterable` inputs where practical, falling back to `array` when needed.
  - Return types should be as specific as possible
  - All files should contain `declare(strict_types=1);`
 

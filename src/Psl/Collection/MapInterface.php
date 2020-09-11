@@ -37,7 +37,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * The keys associated with the current `MapInterface` remain unchanged in the
      * returned `MapInterface`.
      *
-     * @psalm-param (pure-callable(Tv): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (callable(Tv): bool) $fn - The callback containing the condition to apply to the current
      *                                 `MapInterface` values
      *
      * @psalm-return MapInterface<Tk, Tv> - a MapInterface containing the values after a user-specified condition
@@ -56,7 +56,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * The keys associated with the current `MapInterface` remain unchanged in the
      * returned `MapInterface`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (pure-callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
      *                                     `MapInterface` keys and values
      *
      * @psalm-return MapInterface<Tk, Tv> - a `MapInterface` containing the values after a user-specified
@@ -77,7 +77,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-template Tu
      *
-     * @psalm-param (pure-callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                               `MapInterface` values
      *
      * @psalm-return MapInterface<Tk, Tu> - a `MapInterface` containing key/value pairs after a user-specified
@@ -98,7 +98,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-template Tu
      *
-     * @psalm-param (pure-callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                                   `MapInterface` keys and values
      *
      * @psalm-return MapInterface<Tk, Tu> - a `MapInterface` containing the values after a user-specified
@@ -195,7 +195,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * The returned `MapInterface` will always be a proper subset of the current
      * `MapInterface`.
      *
-     * @psalm-param (pure-callable(Tv): bool) $fn - The callback that is used to determine the stopping
+     * @psalm-param (callable(Tv): bool) $fn - The callback that is used to determine the stopping
      *              condition.
      *
      * @psalm-return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
@@ -229,7 +229,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * The returned `MapInterface` will always be a proper subset of the current
      * `MapInterface`.
      *
-     * @psalm-param (pure-callable(Tv): bool) $fn - The callback used to determine the starting element for the
+     * @psalm-param (callable(Tv): bool) $fn - The callback used to determine the starting element for the
      *              returned `MapInterface`.
      *
      * @psalm-return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current

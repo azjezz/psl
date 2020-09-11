@@ -48,7 +48,7 @@ interface MutableAccessibleCollectionInterface extends
      * The keys associated with the current `MutableAccessibleCollectionInterface` remain unchanged in the
      * returned `MutableAccessibleCollectionInterface`.
      *
-     * @psalm-param (pure-callable(Tv): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (callable(Tv): bool) $fn - The callback containing the condition to apply to the current
      *      `MutableAccessibleCollectionInterface` values.
      *
      * @psalm-return MutableAccessibleCollectionInterface<Tk, Tv> - a Collection containing the values after
@@ -67,7 +67,7 @@ interface MutableAccessibleCollectionInterface extends
      * The keys associated with the current `MutableAccessibleCollectionInterface` remain unchanged in the
      * returned `MutableAccessibleCollectionInterface`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (pure-callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
+     * @psalm-param (callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
      *      `MutableAccessibleCollectionInterface` keys and values.
      *
      * @psalm-return MutableAccessibleCollectionInterface<Tk, Tv> - a `MutableAccessibleCollectionInterface` containing
@@ -88,7 +88,7 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @psalm-template Tu
      *
-     * @psalm-param (pure-callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
      *      `MutableAccessibleCollectionInterface` values.
      *
      * @psalm-return MutableAccessibleCollectionInterface<Tk, Tu> - a `MutableAccessibleCollectionInterface` containing
@@ -109,7 +109,7 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @psalm-template Tu
      *
-     * @psalm-param (pure-callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
+     * @psalm-param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
      *      `MutableAccessibleCollectionInterface` keys and values.
      *
      * @psalm-return MutableAccessibleCollectionInterface<Tk, Tu> - a `MutableAccessibleCollectionInterface` containing
@@ -218,7 +218,7 @@ interface MutableAccessibleCollectionInterface extends
      * The returned `MutableAccessibleCollectionInterface` will always be a proper subset of the current
      * `MutableAccessibleCollectionInterface`.
      *
-     * @psalm-param (pure-callable(Tv): bool) $fn - The callback that is used to determine the stopping
+     * @psalm-param (callable(Tv): bool) $fn - The callback that is used to determine the stopping
      *      condition.
      *
      * @psalm-return MutableAccessibleCollectionInterface<Tk, Tv> - A `MutableAccessibleCollectionInterface` that
@@ -253,7 +253,7 @@ interface MutableAccessibleCollectionInterface extends
      * The returned `MutableAccessibleCollectionInterface` will always be a proper subset of the current
      * `MutableAccessibleCollectionInterface`.
      *
-     * @psalm-param (pure-callable(Tv): bool) $fn - The callback used to determine the starting element for the
+     * @psalm-param (callable(Tv): bool) $fn - The callback used to determine the starting element for the
      *      returned `MutableAccessibleCollectionInterface`.
      *
      * @psalm-return MutableAccessibleCollectionInterface<Tk, Tv> - A `MutableAccessibleCollectionInterface` that

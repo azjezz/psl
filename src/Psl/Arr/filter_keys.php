@@ -23,19 +23,17 @@ use Closure;
  * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param array<Tk, Tv>                   $array
- * @psalm-param (pure-callable(Tk): bool)|null  $predicate
+ * @psalm-param iterable<Tk, Tv>           $iterable
+ * @psalm-param (callable(Tk): bool)|null  $predicate
  *
  * @psalm-return array<Tk, Tv>
- *
- * @psalm-pure
  */
-function filter_keys(array $array, ?callable $predicate = null): array
+function filter_keys(iterable $iterable, ?callable $predicate = null): array
 {
-    /** @psalm-var (pure-callable(Tk): bool) $predicate */
+    /** @psalm-var (callable(Tk): bool) $predicate */
     $predicate = $predicate ?? Closure::fromCallable('Psl\Internal\boolean');
     $result    = [];
-    foreach ($array as $k => $v) {
+    foreach ($iterable as $k => $v) {
         if ($predicate($k)) {
             $result[$k] = $v;
         }
