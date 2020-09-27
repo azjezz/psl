@@ -13,15 +13,17 @@ use Psl;
  * @psalm-param array<string, string> $replacements
  *
  * @psalm-pure
+ *
+ * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function replace_every_ci(string $haystack, array $replacements): string
+function replace_every_ci(string $haystack, array $replacements, ?string $encoding = null): string
 {
     foreach ($replacements as $needle => $replacement) {
-        if ('' === $needle || null === search_ci($haystack, $needle)) {
+        if ('' === $needle || null === search_ci($haystack, $needle, 0, $encoding)) {
             continue;
         }
 
-        $haystack = replace_ci($haystack, $needle, $replacement);
+        $haystack = replace_ci($haystack, $needle, $replacement, $encoding);
     }
 
     return $haystack;

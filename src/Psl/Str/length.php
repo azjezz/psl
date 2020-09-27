@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
+use Psl;
+use Psl\Internal;
+
+use function mb_strlen;
+
 /**
  * Returns the length of the given string, i.e. the number of bytes.
  *
@@ -19,8 +24,10 @@ namespace Psl\Str;
  *      => Int(4)
  *
  * @psalm-pure
+ *
+ * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function length(string $str): int
+function length(string $str, ?string $encoding = null): int
 {
-    return \mb_strlen($str, encoding($str));
+    return mb_strlen($str, Internal\internal_encoding($encoding));
 }

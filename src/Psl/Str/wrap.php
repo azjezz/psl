@@ -19,31 +19,35 @@ use Psl;
  * @psalm-pure
  *
  * @throws Psl\Exception\InvariantViolationException If $break is empty, or $width is 0 and $cut is set to true.
+ * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function wrap(string $string, int $width = 75, string $break = "\n", bool $cut = false): string
-{
+function wrap(
+    string $string,
+    int $width = 75,
+    string $break = "\n",
+    bool $cut = false,
+    ?string $encoding = null
+): string {
     if ('' === $string) {
         return '';
     }
 
-    // if ('' === $break) -> throw
     Psl\invariant('' !== $break, 'Break string cannot be empty.');
-    // if (0 === $width && $cut) -> throw
     Psl\invariant(0 !== $width || !$cut, 'Cannot force cut when width is zero.');
 
-    $stringLength = length($string);
-    $breakLength  = length($break);
+    $stringLength = length($string, $encoding);
+    $breakLength  = length($break, $encoding);
     $result       = '';
     $lastStart    = $lastSpace = 0;
     for ($current = 0; $current < $stringLength; ++$current) {
-        $char          = slice($string, $current, 1);
+        $char          = slice($string, $current, 1, $encoding);
         $possibleBreak = $char;
         if (1 !== $breakLength) {
-            $possibleBreak = slice($string, $current, $breakLength);
+            $possibleBreak = slice($string, $current, $breakLength, $encoding);
         }
 
         if ($possibleBreak === $break) {
-            $result   .= slice($string, $lastStart, $current - $lastStart + $breakLength);
+            $result   .= slice($string, $lastStart, $current - $lastStart + $breakLength, $encoding);
             $current  += $breakLength - 1;
             $lastStart = $lastSpace = $current + 1;
             continue;
@@ -51,7 +55,7 @@ function wrap(string $string, int $width = 75, string $break = "\n", bool $cut =
 
         if (' ' === $char) {
             if ($current - $lastStart >= $width) {
-                $result   .= slice($string, $lastStart, $current - $lastStart) . $break;
+                $result   .= slice($string, $lastStart, $current - $lastStart, $encoding) . $break;
                 $lastStart = $current + 1;
             }
             $lastSpace = $current;
@@ -59,20 +63,20 @@ function wrap(string $string, int $width = 75, string $break = "\n", bool $cut =
         }
 
         if ($current - $lastStart >= $width && $cut && $lastStart >= $lastSpace) {
-            $result   .= slice($string, $lastStart, $current - $lastStart) . $break;
+            $result   .= slice($string, $lastStart, $current - $lastStart, $encoding) . $break;
             $lastStart = $lastSpace = $current;
             continue;
         }
 
         if ($current - $lastStart >= $width && $lastStart < $lastSpace) {
-            $result   .= slice($string, $lastStart, $lastSpace - $lastStart) . $break;
+            $result   .= slice($string, $lastStart, $lastSpace - $lastStart, $encoding) . $break;
             $lastStart = ++$lastSpace;
             continue;
         }
     }
 
     if ($lastStart !== $current) {
-        $result .= slice($string, $lastStart, $current - $lastStart);
+        $result .= slice($string, $lastStart, $current - $lastStart, $encoding);
     }
 
     return $result;

@@ -6,6 +6,8 @@ namespace Psl\Str;
 
 use Psl;
 
+use function str_repeat;
+
 /**
  * Returns the input string repeated `$multiplier` times.
  *
@@ -27,5 +29,5 @@ function repeat(string $string, int $multiplier): string
 {
     Psl\invariant($multiplier >= 0, 'Expected a non-negative multiplier');
 
-    return \str_repeat($string, $multiplier);
+    return str_repeat($string, $multiplier);
 }

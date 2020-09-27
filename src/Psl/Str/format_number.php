@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
+use function number_format;
+
 /**
  * Returns a string representation of the given number with grouped thousands.
  *
@@ -19,5 +21,5 @@ function format_number(
     string $decimal_point = '.',
     string $thousands_separator = ','
 ): string {
-    return \number_format($number, $decimals, $decimal_point, $thousands_separator);
+    return number_format($number, $decimals, $decimal_point, $thousands_separator);
 }

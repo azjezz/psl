@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
+use function vsprintf;
+
 /**
  * Return a formatted string.
  *
@@ -35,5 +37,5 @@ namespace Psl\Str;
  */
 function format(string $format, ...$args): string
 {
-    return \vsprintf($format, $args);
+    return vsprintf($format, $args);
 }

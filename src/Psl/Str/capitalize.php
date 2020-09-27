@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
+use Psl\Exception;
+
 /**
  * Returns the string with the first character capitalized.
  *
@@ -25,13 +27,17 @@ namespace Psl\Str;
  *      => Str('1337)
  *
  * @psalm-pure
+ *
+ * @throws Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function capitalize(string $string): string
+function capitalize(string $string, ?string $encoding = null): string
 {
     if ('' === $string) {
         return '';
     }
 
-    /** @psalm-suppress MissingThrowsDocblock - $offset is within-bounds */
-    return concat(uppercase(slice($string, 0, 1)), slice($string, 1, length($string)));
+    return concat(
+        uppercase(slice($string, 0, 1, $encoding), $encoding),
+        slice($string, 1, length($string, $encoding), $encoding)
+    );
 }

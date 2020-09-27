@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Psl\Str;
 
 use Psl;
+use Psl\Internal;
+
+use function mb_chr;
 
 /**
  * Return a specific character.
@@ -18,11 +21,13 @@ use Psl;
  *      => Str('ل')
  *
  * @psalm-pure
+ *
+ * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function chr(int $ascii): string
+function chr(int $ascii, ?string $encoding = null): string
 {
     /** @var string|false $char */
-    $char = \mb_chr($ascii, 'UTF-8');
+    $char = mb_chr($ascii, Internal\internal_encoding($encoding));
 
     /** @psalm-suppress MissingThrowsDocblock */
     Psl\invariant(is_string($char), 'Unexpected Error.');

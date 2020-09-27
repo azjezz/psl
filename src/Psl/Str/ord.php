@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
+use Psl;
+use Psl\Internal;
+
 use function mb_ord;
 
 /**
@@ -18,8 +21,10 @@ use function mb_ord;
  *      => Int(1604)
  *
  * @psalm-pure
+ *
+ * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function ord(string $char): int
+function ord(string $char, ?string $encoding = null): int
 {
-    return mb_ord($char, encoding($char));
+    return mb_ord($char, Internal\internal_encoding($encoding));
 }

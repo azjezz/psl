@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
+use Psl;
+use Psl\Internal;
+
+use function mb_strtolower;
+
 /**
  * Returns the string with all alphabetic characters converted to lowercase.
  *
@@ -20,12 +25,14 @@ namespace Psl\Str;
  *      Str\lowercase('1337')
  *      => Str('1337')
  *
- *      Str\contains('سيف')
+ *      Str\lowercase('سيف')
  *      => Str('سيف')
  *
  * @psalm-pure
+ *
+ * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function lowercase(string $lowercase): string
+function lowercase(string $lowercase, ?string $encoding = null): string
 {
-    return \mb_strtolower($lowercase, encoding($lowercase));
+    return mb_strtolower($lowercase, Internal\internal_encoding($encoding));
 }

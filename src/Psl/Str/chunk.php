@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Str;
 
 use Psl;
+use Psl\Internal;
 
 /**
  * Returns an array containing the string split into chunks of the given size.
@@ -34,8 +35,9 @@ use Psl;
  * @psalm-pure
  *
  * @throws Psl\Exception\InvariantViolationException If the given $chunk_size is negative or above the limit ( 65535 ).
+ * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function chunk(string $string, int $chunk_size = 1): array
+function chunk(string $string, int $chunk_size = 1, ?string $encoding = null): array
 {
     Psl\invariant($chunk_size >= 1, 'Expected a non-negative chunk size.');
     if ('' === $string) {
@@ -45,5 +47,5 @@ function chunk(string $string, int $chunk_size = 1): array
     Psl\invariant(65535 >= $chunk_size, 'Maximum chunk length must not exceed 65535.');
 
     /** @psalm-var list<string> */
-    return mb_str_split($string, $chunk_size, encoding($string));
+    return mb_str_split($string, $chunk_size, Internal\internal_encoding($encoding));
 }

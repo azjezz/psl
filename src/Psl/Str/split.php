@@ -19,21 +19,22 @@ use Psl\Math;
  * @psalm-pure
  *
  * @throws Psl\Exception\InvariantViolationException If a negative $limit is given.
+ * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function split(string $string, string $delimiter, ?int $limit = null): array
+function split(string $string, string $delimiter, ?int $limit = null, ?string $encoding = null): array
 {
     Psl\invariant(null === $limit || $limit >= 1, 'Expected a non-negative limit');
     if ('' === $delimiter) {
-        if (null === $limit || $limit >= length($string)) {
-            return chunk($string);
+        if (null === $limit || $limit >= length($string, $encoding)) {
+            return chunk($string, 1, $encoding);
         }
 
         if (1 === $limit) {
             return [$string];
         }
 
-        $result   = chunk(slice($string, 0, $limit - 1));
-        $result[] = slice($string, $limit - 1);
+        $result   = chunk(slice($string, 0, $limit - 1, $encoding), 1, $encoding);
+        $result[] = slice($string, $limit - 1, null, $encoding);
 
         return $result;
     }
@@ -43,14 +44,14 @@ function split(string $string, string $delimiter, ?int $limit = null): array
     $tail   = $string;
     $chunks = [];
 
-    $position = search($tail, $delimiter);
+    $position = search($tail, $delimiter, 0, $encoding);
     while (1 < $limit && null !== $position) {
-        $result   = slice($tail, 0, $position);
+        $result   = slice($tail, 0, $position, $encoding);
         $chunks[] = $result;
-        $tail     = slice($tail, length($result) + length($delimiter));
+        $tail     = slice($tail, length($result, $encoding) + length($delimiter, $encoding), null, $encoding);
 
         $limit--;
-        $position = search($tail, $delimiter);
+        $position = search($tail, $delimiter, 0, $encoding);
     }
 
     $chunks[] = $tail;

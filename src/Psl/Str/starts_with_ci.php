@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
+use Psl;
+
 /**
  * Returns whether the string starts with the given prefix (case-insensitive).
  *
  * @psalm-pure
+ *
+ * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function starts_with_ci(string $str, string $prefix): bool
+function starts_with_ci(string $str, string $prefix, ?string $encoding = null): bool
 {
-    /** @psalm-suppress MissingThrowsDocblock - we don't supply $offset */
-    return 0 === search_ci($str, $prefix);
+    return 0 === search_ci($str, $prefix, 0, $encoding);
 }
