@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
+use Psl;
+
 /**
  * Returns whether the string ends with the given suffix (case-insensitive).
  *
@@ -31,21 +33,22 @@ namespace Psl\Str;
  *      => Bool(false)
  *
  * @psalm-pure
+ *
+ * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function ends_with_ci(string $string, string $suffix): bool
+function ends_with_ci(string $string, string $suffix, ?string $encoding = null): bool
 {
     if ($suffix === $string) {
         return true;
     }
 
-    $suffix_length = length($suffix);
-    $total_length  = length($string);
+    $suffix_length = length($suffix, $encoding);
+    $total_length  = length($string, $encoding);
     if ($suffix_length > $total_length) {
         return false;
     }
 
-    /** @psalm-suppress MissingThrowsDocblock - we don't supply $offset */
-    $position = search_last_ci($string, $suffix);
+    $position = search_last_ci($string, $suffix, 0, $encoding);
     if (null === $position) {
         return false;
     }

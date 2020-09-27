@@ -31,16 +31,17 @@ use Psl;
  * @psalm-pure
  *
  * @throws Psl\Exception\InvariantViolationException If the $pad_string is empty, or a negative $total_length is given.
+ * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function pad_right(string $string, int $total_length, string $pad_string = ' '): string
+function pad_right(string $string, int $total_length, string $pad_string = ' ', ?string $encoding = null): string
 {
     Psl\invariant('' !== $pad_string, 'Expected a non-empty pad string.');
     Psl\invariant($total_length >= 0, 'Expected a non-negative total length.');
 
-    while (length($string) < $total_length) {
-        $remaining = $total_length - length($string);
-        if ($remaining <= length($pad_string)) {
-            $pad_string = slice($pad_string, 0, $remaining);
+    while (length($string, $encoding) < $total_length) {
+        $remaining = $total_length - length($string, $encoding);
+        if ($remaining <= length($pad_string, $encoding)) {
+            $pad_string = slice($pad_string, 0, $remaining, $encoding);
         }
 
         $string .= $pad_string;

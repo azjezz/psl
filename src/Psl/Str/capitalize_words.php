@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
+use Psl\Exception;
+use Psl\Internal;
+
+use function mb_convert_case;
+
+use const MB_CASE_TITLE;
+
 /**
  * Returns the string with all words capitalized.
  *
@@ -22,8 +29,10 @@ namespace Psl\Str;
  *      => Str('مرحبا بكم')
  *
  * @psalm-pure
+ *
+ * @throws Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function capitalize_words(string $string): string
+function capitalize_words(string $string, ?string $encoding = null): string
 {
-    return \mb_convert_case($string, \MB_CASE_TITLE, encoding($string));
+    return mb_convert_case($string, MB_CASE_TITLE, Internal\internal_encoding($encoding));
 }

@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Psl\Str;
 
 use Psl;
+use Psl\Internal;
+
+use function mb_strimwidth;
 
 /**
  * Get truncated string with specified width.
@@ -21,10 +24,11 @@ use Psl;
  * @psalm-pure
  *
  * @throws Psl\Exception\InvariantViolationException If the offset is out-of-bounds.
+ * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function truncate(string $str, int $offset, int $width, ?string $trim_marker = null): string
+function truncate(string $str, int $offset, int $width, ?string $trim_marker = null, ?string $encoding = null): string
 {
-    $offset = Psl\Internal\validate_offset($offset, length($str));
+    $offset = Internal\validate_offset($offset, length($str, $encoding));
 
-    return mb_strimwidth($str, $offset, $width, $trim_marker ?? '', encoding($str));
+    return mb_strimwidth($str, $offset, $width, $trim_marker ?? '', Internal\internal_encoding($encoding));
 }

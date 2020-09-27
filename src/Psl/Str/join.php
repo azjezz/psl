@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
+use function implode;
+
 /**
  * Join array elements with a string.
  *
@@ -24,5 +26,5 @@ namespace Psl\Str;
  */
 function join(array $pieces, string $glue): string
 {
-    return \implode($glue, $pieces);
+    return implode($glue, $pieces);
 }

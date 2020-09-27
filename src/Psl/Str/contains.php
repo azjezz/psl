@@ -37,14 +37,15 @@ use Psl;
  * @psalm-pure
  *
  * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
+ * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function contains(string $haystack, string $needle, int $offset = 0): bool
+function contains(string $haystack, string $needle, int $offset = 0, ?string $encoding = null): bool
 {
     if ('' === $needle) {
-        Psl\Internal\validate_offset($offset, length($haystack));
+        Psl\Internal\validate_offset($offset, length($haystack, $encoding));
 
         return true;
     }
 
-    return null !== search($haystack, $needle, $offset);
+    return null !== search($haystack, $needle, $offset, $encoding);
 }

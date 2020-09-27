@@ -17,16 +17,22 @@ use Psl;
  * @psalm-pure
  *
  * @throws Psl\Exception\InvariantViolationException If a negative $length is given.
+ * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function splice(string $string, string $replacement, int $offset = 0, ?int $length = null): string
-{
+function splice(
+    string $string,
+    string $replacement,
+    int $offset = 0,
+    ?int $length = null,
+    ?string $encoding = null
+): string {
     Psl\invariant(null === $length || $length >= 0, 'Expected a non-negative length.');
-    $total_length = length($string);
+    $total_length = length($string, $encoding);
     $offset       = Psl\Internal\validate_offset($offset, $total_length);
 
     if (null === $length || ($offset + $length) >= $total_length) {
-        return slice($string, 0, $offset) . $replacement;
+        return slice($string, 0, $offset, $encoding) . $replacement;
     }
 
-    return slice($string, 0, $offset) . $replacement . slice($string, $offset + $length);
+    return slice($string, 0, $offset, $encoding) . $replacement . slice($string, $offset + $length, null, $encoding);
 }
