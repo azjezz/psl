@@ -335,6 +335,8 @@ final class Loader
         'Psl\Collection\MutableVectorInterface',
         'Psl\Collection\MapInterface',
         'Psl\Collection\MutableMapInterface',
+        'Psl\Observer\SubjectInterface',
+        'Psl\Observer\ObserverInterface',
     ];
 
     public const TRAITS = [
