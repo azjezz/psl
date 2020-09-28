@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Fun;
 use Psl\Str;
 
-class AfterTest extends TestCase
+final class AfterTest extends TestCase
 {
     public function testItCombinesAFunctionToExecuteAFunctionAfterAnotherFunction(): void
     {

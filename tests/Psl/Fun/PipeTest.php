@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Fun;
 use Psl\Str;
 
-class PipeTest extends TestCase
+final class PipeTest extends TestCase
 {
     public function testItCombinesMultipleFunctionToExecutesInOrder(): void
     {
@@ -31,7 +31,6 @@ class PipeTest extends TestCase
         self::assertSame('5!', $x('Hello'));
     }
 
-    /** @test */
     public function testItCanCreateAnEmptyCombination(): void
     {
         $x = Fun\pipe();
