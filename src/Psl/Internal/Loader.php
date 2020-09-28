@@ -95,6 +95,8 @@ final class Loader
         'Psl\Arr\map',
         'Psl\Arr\map_keys',
         'Psl\Arr\map_with_key',
+        'Psl\Fun\after',
+        'Psl\Fun\pipe',
         'Psl\Asio\wrap',
         'Psl\Internal\boolean',
         'Psl\Internal\type',
