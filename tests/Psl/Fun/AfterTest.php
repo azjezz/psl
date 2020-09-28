@@ -6,7 +6,7 @@ namespace Psl\Tests\Fun;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Fun;
-use Psl\Str\Byte;
+use Psl\Str;
 
 class AfterTest extends TestCase
 {
@@ -23,7 +23,7 @@ class AfterTest extends TestCase
     public function testItCombinesAFunctionThatDealWithDifferentTypes(): void
     {
         $x = Fun\after(
-            fn (string $x): int => Byte\length($x),
+            fn (string $x): int => Str\length($x),
             fn (int $z): string => $z . '!'
         );
 

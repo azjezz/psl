@@ -6,7 +6,7 @@ namespace Psl\Tests\Fun;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Fun;
-use Psl\Str\Byte;
+use Psl\Str;
 
 class PipeTest extends TestCase
 {
@@ -24,7 +24,7 @@ class PipeTest extends TestCase
     public function testItCombinesMultipleFunctionsThatDealWithDifferentTypes(): void
     {
         $x = Fun\pipe(
-            fn (string $x): int => Byte\length($x),
+            fn (string $x): int => Str\length($x),
             fn (int $y): string => $y . '!'
         );
 

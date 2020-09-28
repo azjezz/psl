@@ -17,25 +17,27 @@ use function Psl\Iter\reduce;
  *      => $greet('World') === '¡Hello World!';
  *      => $greet('Jim') === '¡Hello Jim!';
  *
- * @psalm-param list<callable(mixed): mixed> $stages
+ * @template T
  *
- * @psalm-return callable(mixed): mixed
+ * @psalm-param callable(T): T ...$stages
+ *
+ * @psalm-return callable(T): T
  *
  * @psalm-pure
  */
 function pipe(callable ...$stages): callable
 {
-    return fn ($input) => reduce(
+    return static fn ($input) => reduce(
         $stages,
         /**
-         * @template IO of mixed
+         * @template IO
          *
          * @param IO $input
          * @param callable(IO): IO $next
          *
          * @return IO
          */
-        fn ($input, int $key, callable $next) => $next($input),
+        static fn ($input, int $key, callable $next) => $next($input),
         $input
     );
 }

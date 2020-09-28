@@ -37,5 +37,5 @@ namespace Psl\Fun;
  */
 function after(callable $first, callable $next): callable
 {
-    return fn ($input) => $next($first($input));
+    return static fn ($input) => $next($first($input));
 }
