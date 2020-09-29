@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Psl\Asio;
+namespace Psl\Result;
 
 use Exception;
 use Psl;
@@ -11,12 +11,12 @@ use Psl;
  * Represents a result of operation that either has a successful result or the exception object if
  * that operation failed.
  *
- * This is an interface. You get generally `IResultOrExceptionWrapper<T>` by calling `wrap<T>()`, passing in
- * the `callable(): T`, and a `WrappedResult<T>` or `WrappedException<Te>` is returned.
+ * This is an interface. You get generally `ResultInterface<T>` by calling `tryResultFrom<T>()`, passing in
+ * the `callable(): T`, and a `Success<T>` or `Failure<Te>` is returned.
  *
  * @template T
  */
-interface IResultOrExceptionWrapper
+interface ResultInterface
 {
     /**
      * Return the result of the operation, or throw underlying exception.

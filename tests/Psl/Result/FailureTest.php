@@ -2,29 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Psl\Tests\Asio;
+namespace Psl\Tests\Result;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Asio\WrappedException;
+use Psl\Result\Failure;
 
-class WrappedExceptionTest extends TestCase
+class FailureTest extends TestCase
 {
     public function testIsSucceeded(): void
     {
-        $wrapper = new WrappedException(new \Exception('foo'));
+        $wrapper = new Failure(new \Exception('foo'));
         self::assertFalse($wrapper->isSucceeded());
     }
 
     public function testIsFailed(): void
     {
-        $wrapper = new WrappedException(new \Exception('foo'));
+        $wrapper = new Failure(new \Exception('foo'));
         self::assertTrue($wrapper->isFailed());
     }
 
     public function testGetResult(): void
     {
         $exception = new \Exception('bar');
-        $wrapper   = new WrappedException($exception);
+        $wrapper   = new Failure($exception);
 
         $this->expectExceptionObject($exception);
         $wrapper->getResult();
@@ -33,7 +33,7 @@ class WrappedExceptionTest extends TestCase
     public function testGetException(): void
     {
         $exception = new \Exception('bar');
-        $wrapper   = new WrappedException($exception);
+        $wrapper   = new Failure($exception);
         $e         = $wrapper->getException();
         self::assertSame($exception, $e);
     }
