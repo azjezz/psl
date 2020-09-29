@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Psl\Tests\Asio;
+namespace Psl\Tests\Result;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Asio;
+use Psl\Result;
 use Psl\Exception\InvariantViolationException;
 
 class WrapTest extends TestCase
@@ -13,7 +13,7 @@ class WrapTest extends TestCase
     public function testWrapException(): void
     {
         $exception = new \Exception('foo');
-        $wrapper   = Asio\wrap(static function () use ($exception): void {
+        $wrapper   = Result\wrap(static function () use ($exception): void {
             throw $exception;
         });
         self::assertFalse($wrapper->isSucceeded());
@@ -27,7 +27,7 @@ class WrapTest extends TestCase
 
     public function testWrapResult(): void
     {
-        $wrapper = Asio\wrap(static function (): string {
+        $wrapper = Result\wrap(static function (): string {
             return 'foo';
         });
         self::assertTrue($wrapper->isSucceeded());

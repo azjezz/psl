@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Psl\Asio;
+namespace Psl\Result;
 
 use Exception;
 use Psl;
@@ -12,9 +12,9 @@ use Psl;
  *
  * @template    T
  *
- * @implements  IResultOrExceptionWrapper<T>
+ * @implements  ResultInterface<T>
  */
-final class WrappedResult implements IResultOrExceptionWrapper
+final class Success implements ResultInterface
 {
     /**
      * @psalm-var T

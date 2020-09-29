@@ -97,7 +97,6 @@ final class Loader
         'Psl\Arr\map_with_key',
         'Psl\Fun\after',
         'Psl\Fun\pipe',
-        'Psl\Asio\wrap',
         'Psl\Internal\boolean',
         'Psl\Internal\type',
         'Psl\Internal\validate_offset',
@@ -179,6 +178,7 @@ final class Loader
         'Psl\Math\sum_floats',
         'Psl\Math\tan',
         'Psl\Math\to_base',
+        'Psl\Result\wrap',
         'Psl\SecureRandom\bytes',
         'Psl\SecureRandom\float',
         'Psl\SecureRandom\int',
@@ -327,7 +327,6 @@ final class Loader
 
     public const INTERFACES = [
         'Psl\Exception\ExceptionInterface',
-        'Psl\Asio\IResultOrExceptionWrapper',
         'Psl\Collection\CollectionInterface',
         'Psl\Collection\IndexAccessInterface',
         'Psl\Collection\MutableCollectionInterface',
@@ -340,6 +339,7 @@ final class Loader
         'Psl\Collection\MutableMapInterface',
         'Psl\Observer\SubjectInterface',
         'Psl\Observer\ObserverInterface',
+        'Psl\Result\ResultInterface',
     ];
 
     public const TRAITS = [
@@ -353,11 +353,11 @@ final class Loader
         'Psl\Collection\MutableVector',
         'Psl\Collection\Map',
         'Psl\Collection\MutableMap',
-        'Psl\Asio\WrappedException',
-        'Psl\Asio\WrappedResult',
         'Psl\Exception\InvalidArgumentException',
         'Psl\Exception\RuntimeException',
         'Psl\Exception\InvariantViolationException',
+        'Psl\Result\Failure',
+        'Psl\Result\Success',
         'Psl\Type\Internal\ArrayKeyType',
         'Psl\Type\Internal\ArrayType',
         'Psl\Type\Internal\BoolType',
