@@ -13,6 +13,9 @@ use Psl\Exception\InvariantViolationException;
  *
  * @psalm-pure
  *
+ * @param bool $fact
+ * @param string $message
+ * @param array $args
  * @throws InvariantViolationException
  */
 function invariant(bool $fact, string $message, ...$args): void

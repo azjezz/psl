@@ -12,6 +12,8 @@ namespace Psl;
  * @psalm-param    T ...$args
  *
  * @psalm-return   T|null
+ * @param array $args
+ * @return mixed|null
  */
 function sequence(...$args)
 {

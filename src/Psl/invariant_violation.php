@@ -11,6 +11,8 @@ namespace Psl;
  *
  * @psalm-pure
  *
+ * @param string $format
+ * @param array $args
  * @throws Exception\InvariantViolationException
  */
 function invariant_violation(string $format, ...$args): void
