@@ -1,4 +1,4 @@
-# Psl - PHP Standard Library
+# Psl - PHP Standard course
 
 [![TravisCI Build Status](https://travis-ci.com/azjezz/psl.svg?branch=develop)](https://travis-ci.com/azjezz/psl)
 [![Scrutinizer Build Status](https://scrutinizer-ci.com/g/azjezz/psl/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/azjezz/psl/build-status/develop)
