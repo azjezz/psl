@@ -73,4 +73,24 @@ final class Success implements ResultInterface
     {
         return false;
     }
+
+    /**
+     * Unwrapping and transforming a result can be done by using the proceed method.
+     * Since this is a success result wrapper, the `$on_success` callback will be triggered.
+     * The callback will receive the result value as an argument, so that you can transform it to anything you want.
+     */
+    public function proceed(callable $on_success, callable $on_failure)
+    {
+        return $on_success($this->value);
+    }
+
+    /**
+     * The method can be used to transform a result into another result.
+     * Since this is a success result wrapper, the `$on_success` callback will be triggered.
+     * The callback will receive the result value as an argument, so that you can use it to create a new result.
+     */
+    public function then(callable $on_success, callable $on_failure): ResultInterface
+    {
+        return wrap(fn () => $on_success($this->value));
+    }
 }
