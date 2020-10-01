@@ -234,6 +234,7 @@ final class Loader
         'Psl\Str\contains_ci',
 		'Psl\Str\detect_encoding',
 		'Psl\Str\convert_encoding',
+		'Psl\Str\is_utf8',
         'Psl\Str\ends_with',
         'Psl\Str\ends_with_ci',
         'Psl\Str\fold',
