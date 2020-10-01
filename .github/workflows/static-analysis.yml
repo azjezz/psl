@@ -1,0 +1,25 @@
+name: "static analysis"
+
+on: ["pull_request", "push"]
+
+jobs:
+  static-analysis:
+    name: "static anaylsis"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "checkout"
+        uses: "actions/checkout@v2"
+
+      - name: "installing PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "7.4"
+          ini-values: memory_limit=-1
+          tools: composer:v2
+          extensions: bcmath, mbstring, intl, sodium, json
+
+      - name: "installing dependencies"
+        run: "composer update --no-interaction --no-progress"
+
+      - name: "running static analysis ( psalm )"
+        run: "vendor/bin/psalm  --output-format=github --shepherd --stats"
