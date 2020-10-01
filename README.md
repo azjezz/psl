@@ -1,6 +1,9 @@
 # Psl - PHP Standard Library
 
-[![TravisCI Build Status](https://travis-ci.com/azjezz/psl.svg?branch=develop)](https://travis-ci.com/azjezz/psl)
+![unit tests status](https://github.com/azjezz/psl/workflows/.github/workflows/unit-tests.yml/badge.svg?branch=develop)
+![static analysis status](https://github.com/azjezz/psl/workflows/.github/workflows/static-analysis.yml/badge.svg?branch=develop)
+![security analysis status](https://github.com/azjezz/psl/workflows/.github/workflows/security-analysis.yml/badge.svg?branch=develop)
+![coding standards status](https://github.com/azjezz/psl/workflows/.github/workflows/coding-standards.yml/badge.svg?branch=develop)
 [![Scrutinizer Build Status](https://scrutinizer-ci.com/g/azjezz/psl/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/azjezz/psl/build-status/develop)
 [![Coverage Status](https://coveralls.io/repos/github/azjezz/psl/badge.svg?branch=develop)](https://coveralls.io/github/azjezz/psl?branch=develop)
 [![Type Coverage](https://shepherd.dev/github/azjezz/psl/coverage.svg)](https://shepherd.dev/github/azjezz/psl)

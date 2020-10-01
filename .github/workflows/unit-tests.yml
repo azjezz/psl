@@ -1,0 +1,56 @@
+name: "unit tests"
+
+on: ["pull_request", "push"]
+
+jobs:
+  unit-tests:
+    name: "unit tests"
+
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        dependencies:
+          - "highest"
+        php-version:
+          - "7.4"
+        operating-system:
+          - "ubuntu-latest"
+
+    steps:
+      - name: "checkout"
+        uses: "actions/checkout@v2"
+
+      - name: "installing PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          coverage: "pcov"
+          php-version: "${{ matrix.php-version }}"
+          ini-values: memory_limit=-1
+          tools: composer:v2, cs2pr
+          extensions: bcmath, mbstring, intl, sodium, json
+
+      - name: "caching dependencies"
+        uses: "actions/cache@v2"
+        with:
+          path: |
+            ~/.composer/cache
+            vendor
+          key: "php-${{ matrix.php-version }}-${{ matrix.dependencies }}"
+          restore-keys: "php-${{ matrix.php-version }}-${{ matrix.dependencies }}"
+
+      - name: "installing lowest dependencies"
+        if: ${{ matrix.dependencies == 'lowest' }}
+        run: "composer update --prefer-lowest --no-interaction --no-progress"
+
+      - name: "installing highest dependencies"
+        if: ${{ matrix.dependencies == 'highest' }}
+        run: "composer update --no-interaction --no-progress"
+
+      - name: "running unit tests ( phpunit )"
+        run: "composer test:unit"
+
+      - name: "sending code coverage data to coveralls"
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: "composer code:coverage"
