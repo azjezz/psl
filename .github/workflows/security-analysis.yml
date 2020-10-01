@@ -15,11 +15,11 @@ jobs:
         with:
           php-version: "7.4"
           ini-values: memory_limit=-1
-          tools: composer:v2
+          tools: composer:v2, cs2pr
           extensions: bcmath, mbstring, intl, sodium, json
 
       - name: "installing dependencies"
         run: "composer update --no-interaction --no-progress"
 
       - name: "running security analysis ( psalm )"
-        run: "composer security:analysis"
+        run: "vendor/bin/psalm  --output-format=github  --taint-analysis"
