@@ -65,4 +65,25 @@ final class Failure implements ResultInterface
     {
         return true;
     }
+
+    /**
+     * Unwrapping and transforming a result can be done by using the proceed method.
+     * Since this is a failed result wrapper, the `$on_failure` callback will be triggered.
+     * The callback will receive the Exception as an argument, so that you can transform it to anything you want.
+     */
+    public function proceed(callable $on_success, callable $on_failure)
+    {
+        return $on_failure($this->exception);
+    }
+
+    /**
+     * The method can be used to transform a result into another result.
+     * Since this is a failure result wrapper, the `$on_failure` callback will be triggered.
+     * The callback will receive the Exception as an argument,
+     * so that you can use it to create a success result or rethrow the Exception.
+     */
+    public function then(callable $on_success, callable $on_failure): ResultInterface
+    {
+        return wrap(fn () => $on_failure($this->exception));
+    }
 }

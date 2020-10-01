@@ -55,4 +55,38 @@ interface ResultInterface
      * @return bool - `true` if the operation failed; `false` otherwise
      */
     public function isFailed(): bool;
+
+    /**
+     * Unwrapping and transforming a result can be done by using the proceed method.
+     * The implementation will either run the `$on_success` or `$on_failure` callback.
+     * The callback will receive the result or Exception as an argument,
+     * so that you can transform it to anything you want.
+     *
+     * @template R
+     *
+     * @psalm-param callable(T): R $on_success
+     * @psalm-param callable(Exception): R $on_failure
+     *
+     * @psalm-return R
+     */
+    public function proceed(callable $on_success, callable $on_failure);
+
+    /**
+     * The method can be used to transform a result into another result.
+     * The implementation will either run the `$on_success` or `$on_failure` callback.
+     * The callback will receive the result value or Exception as an argument,
+     * so that you can transform use it to build a new result.
+     *
+     * This method is compatible with the `PromiseInterface::then()` function from `reactphp/promise`.
+     * You can use it in an async context as long as the package you are using is compatible with reactphp promises.
+     *
+     * @link https://github.com/reactphp/promise#promiseinterfacethen
+     *
+     * @template R
+     * @psalm-param callable(T): R $on_success
+     * @psalm-param callable(Exception): R $on_failure
+     *
+     * @psalm-return ResultInterface<R>
+     */
+    public function then(callable $on_success, callable $on_failure): ResultInterface;
 }
