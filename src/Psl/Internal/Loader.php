@@ -232,7 +232,7 @@ final class Loader
         'Psl\Str\concat',
         'Psl\Str\contains',
         'Psl\Str\contains_ci',
-        'Psl\Str\encoding',
+        'Psl\Str\detect_encoding',
         'Psl\Str\ends_with',
         'Psl\Str\ends_with_ci',
         'Psl\Str\fold',

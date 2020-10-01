@@ -13,7 +13,7 @@ use function mb_detect_encoding;
  *
  * @psalm-pure
  */
-function encoding(string $string): ?string
+function detect_encoding(string $string): ?string
 {
     return mb_detect_encoding($string, null, true) ?: null;
 }

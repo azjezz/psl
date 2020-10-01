@@ -14,7 +14,7 @@ class EncodingTest extends TestCase
      */
     public function testEncoding(?string $expected, string $string): void
     {
-        self::assertSame($expected, Str\encoding($string));
+        self::assertSame($expected, Str\detect_encoding($string));
     }
 
     public function provideData(): array
