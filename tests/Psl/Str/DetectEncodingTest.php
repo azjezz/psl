@@ -12,7 +12,7 @@ class EncodingTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testEncoding(?string $expected, string $string): void
+    public function testDetectEncoding(?string $expected, string $string): void
     {
         self::assertSame($expected, Str\detect_encoding($string));
     }

@@ -7,9 +7,9 @@ namespace Psl\Str;
 use function mb_detect_encoding;
 
 /**
- * Detect the encoding of the giving string.
+ * Detect the UTF-8 encoding of the giving string.
  *
- * @psalm-return null|string The string encoding or null if unable to detect encoding.
+ * @psalm-return bool The detected UTF-8 character encoding or FALSE if the UTF-8 encoding cannot be detected from the given string.
  *
  * @psalm-pure
  */
