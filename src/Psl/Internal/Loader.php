@@ -336,6 +336,20 @@ final class Loader
         'Psl\Hash\equals',
         'Psl\Hash\Hmac\hash',
         'Psl\Hash\Hmac\algorithms',
+        'Psl\Str\Grapheme\contains',
+        'Psl\Str\Grapheme\contains_ci',
+        'Psl\Str\Grapheme\ends_with',
+        'Psl\Str\Grapheme\ends_with_ci',
+        'Psl\Str\Grapheme\length',
+        'Psl\Str\Grapheme\search',
+        'Psl\Str\Grapheme\search_ci',
+        'Psl\Str\Grapheme\search_last',
+        'Psl\Str\Grapheme\search_last_ci',
+        'Psl\Str\Grapheme\slice',
+        'Psl\Str\Grapheme\starts_with',
+        'Psl\Str\Grapheme\starts_with_ci',
+        'Psl\Str\Grapheme\strip_prefix',
+        'Psl\Str\Grapheme\strip_suffix',
     ];
 
     public const INTERFACES = [
