@@ -14,7 +14,8 @@
         "ext-bcmath": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "ext-sodium": "*"
+        "ext-sodium": "*",
+        "ext-intl": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.4",
