@@ -7,7 +7,7 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class EncodingTest extends TestCase
+final class DetectEncodingTest extends TestCase
 {
     /**
      * @dataProvider provideData

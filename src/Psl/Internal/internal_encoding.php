@@ -15,12 +15,11 @@ use function mb_list_encodings;
 /**
  * @psalm-pure
  *
- * @psalm-suppress ImpureFunctionCall
- *
  * @throws Exception\InvariantViolationException If an invalid $encoding is provided.
  */
 function internal_encoding(?string $encoding = null): string
 {
-    Psl\invariant(null === $encoding || in_array($encoding, mb_list_encodings(), true), 'Invalid encoding.');
+    Psl\invariant(null === $encoding || is_encoding_valid($encoding), 'Invalid encoding.');
+    /** @psalm-suppress ImpureFunctionCall */
     return $encoding ?? (Type\is_string($internal_encoding = mb_internal_encoding()) ? $internal_encoding : 'UTF-8');
 }

@@ -105,6 +105,7 @@ final class Loader
         'Psl\Internal\validate_offset_lower_bound',
         'Psl\Internal\lazy_iterator',
         'Psl\Internal\internal_encoding',
+        'Psl\Internal\is_encoding_valid',
         'Psl\Iter\all',
         'Psl\Iter\any',
         'Psl\Iter\apply',
