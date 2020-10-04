@@ -6,6 +6,8 @@ namespace Psl\Str\Byte;
 
 use Psl;
 
+use function strpos;
+
 /**
  * Returns the first position of the 'needle' string in the 'haystack' string,
  * or null if it isn't found.
@@ -27,5 +29,5 @@ function search(string $haystack, string $needle, int $offset = 0): ?int
         return null;
     }
 
-    return false === ($pos = \strpos($haystack, $needle, $offset)) ? null : $pos;
+    return false === ($pos = strpos($haystack, $needle, $offset)) ? null : $pos;
 }

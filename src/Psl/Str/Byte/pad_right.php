@@ -6,6 +6,10 @@ namespace Psl\Str\Byte;
 
 use Psl;
 
+use function str_pad;
+
+use const STR_PAD_RIGHT;
+
 /**
  * Returns the string padded to the total length by appending the `$pad_string`
  * to the right.
@@ -23,5 +27,5 @@ function pad_right(string $string, int $total_length, string $pad_string = ' '):
     Psl\invariant('' !== $pad_string, 'Expected a non-empty pad string.');
     Psl\invariant($total_length >= 0, 'Expected a non-negative total length.');
 
-    return \str_pad($string, $total_length, $pad_string, \STR_PAD_RIGHT);
+    return str_pad($string, $total_length, $pad_string, STR_PAD_RIGHT);
 }

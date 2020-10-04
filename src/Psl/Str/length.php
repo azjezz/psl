@@ -27,7 +27,7 @@ use function mb_strlen;
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function length(string $str, ?string $encoding = null): int
+function length(string $string, ?string $encoding = null): int
 {
-    return mb_strlen($str, Internal\internal_encoding($encoding));
+    return mb_strlen($string, Internal\internal_encoding($encoding));
 }

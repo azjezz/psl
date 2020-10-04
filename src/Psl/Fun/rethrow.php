@@ -10,7 +10,8 @@ use Exception;
  * This method creates a callback that throws the exception passed as argument.
  * It can e.g. be used as a failure callback.
  *
- * @psalm-return callable(Exception): no-return
+ * @psalm-return (callable(Exception): no-return)
+ *
  * @psalm-pure
  */
 function rethrow(): callable

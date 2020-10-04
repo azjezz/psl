@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str\Byte;
 
+use function ucwords;
+
 /**
  * Returns the string with all words capitalized.
  *
@@ -14,5 +16,5 @@ namespace Psl\Str\Byte;
  */
 function capitalize_words(string $string, string $delimiters = " \t\r\n\f\v"): string
 {
-    return \ucwords($string, $delimiters);
+    return ucwords($string, $delimiters);
 }

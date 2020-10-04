@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str\Byte;
 
+use function str_replace;
+
 /**
  * Returns the 'haystack' string with all occurrences of the keys of
  * `$replacements` replaced by the corresponding values.
@@ -21,5 +23,5 @@ function replace_every(string $haystack, array $replacements): string
         $replace[] = $v;
     }
 
-    return \str_replace($search, $replace, $haystack);
+    return str_replace($search, $replace, $haystack);
 }

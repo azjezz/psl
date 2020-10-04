@@ -14,8 +14,8 @@ namespace Psl\Type;
  * @psalm-return Type<Tl|Tr>
  */
 function union(
-    Type $left_type_spec,
-    Type $right_type_spec
+    Type $left_type,
+    Type $right_type
 ): Type {
-    return new Internal\UnionType($left_type_spec, $right_type_spec);
+    return new Internal\UnionType($left_type, $right_type);
 }

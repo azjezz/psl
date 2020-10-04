@@ -6,6 +6,8 @@ namespace Psl\Str\Byte;
 
 use Psl;
 
+use function stripos;
+
 /**
  * Returns the first position of the 'needle' string in the 'haystack' string,
  * or null if it isn't found (case-insensitive).
@@ -27,5 +29,5 @@ function search_ci(string $haystack, string $needle, int $offset = 0): ?int
         return null;
     }
 
-    return false === ($pos = \stripos($haystack, $needle, $offset)) ? null : $pos;
+    return false === ($pos = stripos($haystack, $needle, $offset)) ? null : $pos;
 }

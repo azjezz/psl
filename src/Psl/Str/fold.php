@@ -19,11 +19,11 @@ use Psl\Internal;
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function fold(string $str, ?string $encoding = null): string
+function fold(string $string, ?string $encoding = null): string
 {
     foreach (Internal\CASE_FOLD as $k => $v) {
-        $str = replace($str, $k, $v, $encoding);
+        $string = replace($string, $k, $v, $encoding);
     }
 
-    return lowercase($str, $encoding);
+    return lowercase($string, $encoding);
 }

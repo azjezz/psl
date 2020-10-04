@@ -26,9 +26,14 @@ use function mb_strimwidth;
  * @throws Psl\Exception\InvariantViolationException If the offset is out-of-bounds.
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function truncate(string $str, int $offset, int $width, ?string $trim_marker = null, ?string $encoding = null): string
-{
-    $offset = Internal\validate_offset($offset, length($str, $encoding));
+function truncate(
+    string $string,
+    int $offset,
+    int $width,
+    ?string $trim_marker = null,
+    ?string $encoding = null
+): string {
+    $offset = Internal\validate_offset($offset, length($string, $encoding));
 
-    return mb_strimwidth($str, $offset, $width, $trim_marker ?? '', Internal\internal_encoding($encoding));
+    return mb_strimwidth($string, $offset, $width, $trim_marker ?? '', Internal\internal_encoding($encoding));
 }

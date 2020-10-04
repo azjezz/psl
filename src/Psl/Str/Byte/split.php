@@ -7,6 +7,8 @@ namespace Psl\Str\Byte;
 use Psl;
 use Psl\Type;
 
+use function explode;
+
 /**
  * Returns an array containing the string split on the given delimiter. The vec
  * will not contain the delimiter itself.
@@ -40,10 +42,10 @@ function split(string $string, string $delimiter, ?int $limit = null): array
 
     if (null === $limit) {
         /** @psalm-var list<string>|false $result */
-        $result = \explode($delimiter, $string);
+        $result = explode($delimiter, $string);
     } else {
         /** @psalm-var list<string>|false $result */
-        $result = \explode($delimiter, $string, $limit);
+        $result = explode($delimiter, $string, $limit);
     }
 
     Psl\invariant(Type\is_array($result), 'Unexpected error');

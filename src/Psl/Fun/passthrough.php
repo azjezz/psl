@@ -9,7 +9,9 @@ namespace Psl\Fun;
  * It can e.g. be used as a success callback.
  *
  * @template T
+ *
  * @psalm-return callable(T): T
+ *
  * @psalm-pure
  */
 function passthrough(): callable

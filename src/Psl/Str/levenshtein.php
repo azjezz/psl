@@ -6,6 +6,8 @@ namespace Psl\Str;
 
 use Psl;
 
+use function levenshtein as php_levenshtien;
+
 /**
  * Calculate Levenshtein distance between two strings.
  *
@@ -25,14 +27,14 @@ use Psl;
  * @throws Psl\Exception\InvariantViolationException If neither all, or none of the costs is supplied.
  */
 function levenshtein(
-    string $str1,
-    string $str2,
+    string $source,
+    string $target,
     ?int $cost_of_insertion = null,
     ?int $cost_of_replacement = null,
     ?int $cost_of_deletion = null
 ): int {
     if (null === $cost_of_deletion && null === $cost_of_insertion && null === $cost_of_replacement) {
-        return \levenshtein($str1, $str2);
+        return php_levenshtien($source, $target);
     }
 
     // https://github.com/php/php-src/blob/623911f993f39ebbe75abe2771fc89faf6b15b9b/ext/standard/levenshtein.c#L101
@@ -41,5 +43,5 @@ function levenshtein(
         'Expected either all costs to be supplied, or non.'
     );
 
-    return \levenshtein($str1, $str2, $cost_of_insertion, $cost_of_replacement, $cost_of_deletion);
+    return php_levenshtien($source, $target, $cost_of_insertion, $cost_of_replacement, $cost_of_deletion);
 }

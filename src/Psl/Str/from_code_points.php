@@ -17,10 +17,10 @@ namespace Psl\Str;
  *
  * @psalm-pure
  */
-function from_code_points(int ...$codes): string
+function from_code_points(int ...$code_points): string
 {
     $string = '';
-    foreach ($codes as $code) {
+    foreach ($code_points as $code) {
         if (0x80 > $code %= 0x200000) {
             $string .= Byte\chr($code);
         } elseif (0x800 > $code) {

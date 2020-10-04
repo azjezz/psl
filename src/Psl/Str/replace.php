@@ -6,6 +6,8 @@ namespace Psl\Str;
 
 use Psl;
 
+use function str_replace;
+
 /**
  * Returns the 'haystack' string with all occurrences of `$needle` replaced by
  * `$replacement`.
@@ -20,5 +22,5 @@ function replace(string $haystack, string $needle, string $replacement, ?string 
         return $haystack;
     }
 
-    return \str_replace($needle, $replacement, $haystack);
+    return str_replace($needle, $replacement, $haystack);
 }
