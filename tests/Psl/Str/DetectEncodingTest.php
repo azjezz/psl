@@ -7,14 +7,14 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class EncodingTest extends TestCase
+final class DetectEncodingTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
-    public function testEncoding(?string $expected, string $string): void
+    public function testDetectEncoding(?string $expected, string $string): void
     {
-        self::assertSame($expected, Str\encoding($string));
+        self::assertSame($expected, Str\detect_encoding($string));
     }
 
     public function provideData(): array
