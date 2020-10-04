@@ -53,4 +53,4 @@ jobs:
       - name: "sending code coverage data to coveralls"
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: "composer code:coverage"
+        run: "php vendor/bin/coveralls tests/logs/clover.xml"
