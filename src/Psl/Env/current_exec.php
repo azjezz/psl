@@ -18,10 +18,12 @@ use function realpath;
 function current_exec(): string
 {
     $executable = realpath((string) $_SERVER['SCRIPT_NAME']);
+    // @codeCoverageIgnoreStart
     if (is_link($executable)) {
         /** @var string $executable */
         $executable = readlink($executable);
     }
+    // @codeCoverageIgnoreEnd
 
     return $executable;
 }
