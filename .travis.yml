@@ -23,7 +23,7 @@ install:
   - composer install
 
 script:
-  - composer test:unit
+  - php vendor/bin/phpunit
 
 after_script:
   - composer code:coverage
