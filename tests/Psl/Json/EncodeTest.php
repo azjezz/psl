@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Psl\Json;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Str;
 use Psl\Json;
 use Psl\Math;
+
+use const PHP_EOL;
 
 class EncodeTest extends TestCase
 {
@@ -27,7 +30,7 @@ class EncodeTest extends TestCase
             'license' => 'MIT'
         ], true);
 
-        $json = <<<JSON
+        $json = Str\replace(<<<JSON
 {
     "name": "azjezz/psl",
     "type": "library",
@@ -41,7 +44,7 @@ class EncodeTest extends TestCase
     ],
     "license": "MIT"
 }
-JSON;
+JSON, PHP_EOL,"\n");
 
         self::assertSame($json, $actual);
     }

@@ -7,10 +7,15 @@ namespace Psl\Tests\Env;
 use PHPUnit\Framework\TestCase;
 use Psl\Env;
 
-class CurrentExecTest extends TestCase
+use function realpath;
+
+final class CurrentExecTest extends TestCase
 {
     public function testCurrentExe(): void
     {
-        self::assertSame(realpath(__DIR__ . '/../../../vendor/bin/phpunit'), Env\current_exec());
+        $phpunit = __DIR__ . '/../../../vendor/phpunit/phpunit/phpunit';
+        $phpunit = realpath($phpunit);
+
+        self::assertSame($phpunit, Env\current_exec());
     }
 }
