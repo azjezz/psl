@@ -6,6 +6,8 @@ namespace Psl\Env;
 
 use Psl;
 
+use function is_link;
+use function readlink;
 use function realpath;
 
 /**
@@ -15,5 +17,11 @@ use function realpath;
  */
 function current_exec(): string
 {
-    return realpath((string) $_SERVER['SCRIPT_NAME']);
+    $executable = realpath((string) $_SERVER['SCRIPT_NAME']);
+    if (is_link($executable)) {
+        /** @var string $executable */
+        $executable = readlink($executable);
+    }
+
+    return $executable;
 }
