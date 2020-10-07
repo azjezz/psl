@@ -63,7 +63,7 @@ final class Iterator implements SeekableIterator, Countable
         /**
          * @psalm-var (callable(): Generator<Tsk, Tsv, mixed, void>) $factory
          */
-        $factory = fn (): Generator => yield from $iterable;
+        $factory = static fn (): Generator => yield from $iterable;
 
         return new self($factory());
     }
@@ -77,7 +77,7 @@ final class Iterator implements SeekableIterator, Countable
      */
     public function current()
     {
-        Psl\invariant($this->valid(), 'Invalid iterator');
+        Psl\invariant($this->valid(), 'The Iterator is invalid.');
         if (!Arr\contains_key($this->entries, $this->position)) {
             $this->progress();
         }
@@ -117,7 +117,7 @@ final class Iterator implements SeekableIterator, Countable
      */
     public function key()
     {
-        Psl\invariant($this->valid(), 'Invalid iterator');
+        Psl\invariant($this->valid(), 'The Iterator is invalid.');
         if (!Arr\contains_key($this->entries, $this->position)) {
             $this->progress();
         }

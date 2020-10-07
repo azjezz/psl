@@ -24,9 +24,9 @@ namespace Psl\Arr;
  *
  * @psalm-param    array<Tk, Tv>   $array
  * @psalm-param    Tk              $index
- * @psalm-param    Tv|null         $default
+ * @psalm-param    Tv              $default
  *
- * @psalm-return   Tv|null
+ * @psalm-return   Tv
  *
  * @psalm-pure
  */
