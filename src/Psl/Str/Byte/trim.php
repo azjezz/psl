@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str\Byte;
 
+use function trim as php_trim;
+
 /**
  * Returns the given string with whitespace stripped from the beginning and end.
  *
@@ -15,6 +17,6 @@ namespace Psl\Str\Byte;
 function trim(string $string, ?string $char_mask = null): string
 {
     return null === $char_mask
-        ? \trim($string)
-        : \trim($string, $char_mask);
+        ? php_trim($string)
+        : php_trim($string, $char_mask);
 }

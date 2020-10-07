@@ -9,29 +9,28 @@ namespace Psl\Fun;
  *
  * Example:
  *
- *      $runExpression = Fun\after(
- *          fn($i) => $i +  1,
- *          fn(int $i) => $i * 5
+ *      $run = Fun\after(
+ *          static fn(int $i): int => $i + 1,
+ *          static fn(int $i): int => $i * 5,
  *      );
- *      => $runExpression(1) === 10;
- *      => $runExpression(2) === 15;
- *      => $runExpression(3) === 20;
  *
- *      $greet = Fun\after(
- *          fn($value) => 'Hello' . $value,
- *          fn($value) => $value . '!'
- *      );
- *      => $greet('World') === 'Hello World!';
- *      => $greet('Jim') === 'Hello Jim!';
+ *      $run(1)
+ *      => Int(10)
+ *
+ *      $run(2)
+ *      => Int(15)
+ *
+ *      $run(3)
+ *      => Int(20)
  *
  * @template I
  * @template O
  * @template R
  *
- * @psalm-param callable(I): O $first
- * @psalm-param callable(O): R $next
+ * @psalm-param (callable(I): O) $first
+ * @psalm-param (callable(O): R) $next
  *
- * @psalm-return callable(I): R
+ * @psalm-return (callable(I): R)
  *
  * @psalm-pure
  */

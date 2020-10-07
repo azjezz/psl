@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str\Byte;
 
+use function ucfirst;
+
 /**
  * Returns the string with the first character capitalized.
  *
@@ -14,5 +16,5 @@ namespace Psl\Str\Byte;
  */
 function capitalize(string $string): string
 {
-    return \ucfirst($string);
+    return ucfirst($string);
 }

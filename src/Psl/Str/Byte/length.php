@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Psl\Str\Byte;
 
+use function strlen;
+
 /**
  * Returns the length of the given string, i.e. the number of bytes.
  *
  * @psalm-pure
  */
-function length(string $str): int
+function length(string $string): int
 {
-    return \strlen($str);
+    return strlen($string);
 }

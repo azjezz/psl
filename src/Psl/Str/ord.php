@@ -10,7 +10,7 @@ use Psl\Internal;
 use function mb_ord;
 
 /**
- * Return ASCII value of character.
+ * Get code point of character.
  *
  * Example:
  *
@@ -24,7 +24,7 @@ use function mb_ord;
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function ord(string $char, ?string $encoding = null): int
+function ord(string $character, ?string $encoding = null): int
 {
-    return mb_ord($char, Internal\internal_encoding($encoding));
+    return mb_ord($character, Internal\internal_encoding($encoding));
 }

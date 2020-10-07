@@ -13,7 +13,7 @@ use Psl;
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function starts_with_ci(string $str, string $prefix, ?string $encoding = null): bool
+function starts_with_ci(string $string, string $prefix, ?string $encoding = null): bool
 {
-    return 0 === search_ci($str, $prefix, 0, $encoding);
+    return 0 === search_ci($string, $prefix, 0, $encoding);
 }

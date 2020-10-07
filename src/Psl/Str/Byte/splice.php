@@ -6,6 +6,8 @@ namespace Psl\Str\Byte;
 
 use Psl;
 
+use function substr_replace;
+
 /**
  * Return the string with a slice specified by the offset/length replaced by the
  * given replacement string.
@@ -24,6 +26,6 @@ function splice(string $string, string $replacement, int $offset, ?int $length =
     $offset = Psl\Internal\validate_offset($offset, length($string));
 
     return null === $length
-        ? \substr_replace($string, $replacement, $offset)
-        : \substr_replace($string, $replacement, $offset, $length);
+        ? substr_replace($string, $replacement, $offset)
+        : substr_replace($string, $replacement, $offset, $length);
 }

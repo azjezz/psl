@@ -32,7 +32,7 @@ use function mb_strtolower;
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function lowercase(string $lowercase, ?string $encoding = null): string
+function lowercase(string $string, ?string $encoding = null): string
 {
-    return mb_strtolower($lowercase, Internal\internal_encoding($encoding));
+    return mb_strtolower($string, Internal\internal_encoding($encoding));
 }

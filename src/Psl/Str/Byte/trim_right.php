@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str\Byte;
 
+use function rtrim;
+
 /**
  * Returns the given string with whitespace stripped from the right.
  *
@@ -15,6 +17,6 @@ namespace Psl\Str\Byte;
 function trim_right(string $string, ?string $char_mask = null): string
 {
     return null === $char_mask
-        ? \rtrim($string)
-        : \rtrim($string, $char_mask);
+        ? rtrim($string)
+        : rtrim($string, $char_mask);
 }

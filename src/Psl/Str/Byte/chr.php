@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str\Byte;
 
+use function chr as php_chr;
+
 /**
  * Return a specific character.
  *
@@ -11,5 +13,5 @@ namespace Psl\Str\Byte;
  */
 function chr(int $ascii): string
 {
-    return \chr($ascii);
+    return php_chr($ascii);
 }

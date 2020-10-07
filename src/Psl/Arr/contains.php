@@ -5,18 +5,20 @@ declare(strict_types=1);
 namespace Psl\Arr;
 
 /**
- * Returns true if the given iterable contains the value. Strict equality is
+ * Returns true if the given array contains the value. Strict equality is
  * used.
  *
- * @psalm-template Tk
+ * @psalm-template Tk of array-key
  * @psalm-template Tv
  *
- * @psalm-param iterable<Tk, Tv>    $iterable
- * @psalm-param Tk                  $value
+ * @psalm-param array<Tk, Tv>   $array
+ * @psalm-param Tv              $value
+ *
+ * @psalm-pure
  */
-function contains(iterable $iterable, $value): bool
+function contains(array $array, $value): bool
 {
-    foreach ($iterable as $v) {
+    foreach ($array as $v) {
         if ($value === $v) {
             return true;
         }

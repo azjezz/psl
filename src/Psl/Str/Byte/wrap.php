@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str\Byte;
 
+use function wordwrap;
+
 /**
  * Wraps a string to a given number of characters.
  *
@@ -16,7 +18,7 @@ namespace Psl\Str\Byte;
  *
  * @psalm-pure
  */
-function wrap(string $str, int $width = 75, string $break = "\n", bool $cut = false): string
+function wrap(string $string, int $width = 75, string $break = "\n", bool $cut = false): string
 {
-    return \wordwrap($str, $width, $break, $cut);
+    return wordwrap($string, $width, $break, $cut);
 }

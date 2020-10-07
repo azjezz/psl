@@ -9,7 +9,7 @@ namespace Psl\Str\Byte;
  *
  * @psalm-pure
  */
-function ord(string $char): int
+function ord(string $character): int
 {
-    return \ord($char);
+    return \ord($character);
 }

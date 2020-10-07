@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str\Byte;
 
+use function str_shuffle;
+
 /**
  * Randomly shuffles a string.
  *
@@ -15,5 +17,5 @@ function shuffle(string $string): string
         return $string;
     }
 
-    return \str_shuffle($string);
+    return str_shuffle($string);
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
+use function metaphone as php_metaphone;
+
 /**
  * Calculate the metaphone key of a string.
  *
@@ -14,9 +16,9 @@ namespace Psl\Str;
  *
  * @psalm-pure
  */
-function metaphone(string $str, int $phonemes = 0): ?string
+function metaphone(string $string, int $phonemes = 0): ?string
 {
-    $result = \metaphone($str, $phonemes);
+    $result = php_metaphone($string, $phonemes);
 
     return false === $result ? null : $result;
 }

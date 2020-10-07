@@ -24,10 +24,10 @@ use function mb_chr;
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function chr(int $ascii, ?string $encoding = null): string
+function chr(int $codepoint, ?string $encoding = null): string
 {
     /** @var string|false $char */
-    $char = mb_chr($ascii, Internal\internal_encoding($encoding));
+    $char = mb_chr($codepoint, Internal\internal_encoding($encoding));
 
     /** @psalm-suppress MissingThrowsDocblock */
     Psl\invariant(is_string($char), 'Unexpected Error.');

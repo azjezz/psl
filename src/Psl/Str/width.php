@@ -16,7 +16,7 @@ use function mb_strwidth;
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function width(string $str, ?string $encoding = null): int
+function width(string $string, ?string $encoding = null): int
 {
-    return mb_strwidth($str, Internal\internal_encoding($encoding));
+    return mb_strwidth($string, Internal\internal_encoding($encoding));
 }

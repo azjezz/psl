@@ -8,14 +8,20 @@ use function Psl\Iter\reduce;
 
 /**
  * Performs left-to-right function composition.
- * Example
- *      $pipe = Fun\pipe(
- *          fn($value) => 'Hello' . $value,
- *          fn($value) => $value . '!',
- *          fn($value) => '¡' . $value
+ *
+ * Example:
+ *
+ *      $greet = Fun\pipe(
+ *          static fn(string $value): string => 'Hello' . $value,
+ *          static fn(string $value): string => $value . '!',
+ *          static fn(string $value): string => '¡' . $value
  *      );
- *      => $greet('World') === '¡Hello World!';
- *      => $greet('Jim') === '¡Hello Jim!';
+ *
+ *      $greet('World')
+ *      => Str('¡Hello World!');
+ *
+ *      $greet('Jim')
+ *      => Str('¡Hello Jim!');
  *
  * @template T
  *
@@ -32,10 +38,10 @@ function pipe(callable ...$stages): callable
         /**
          * @template IO
          *
-         * @param IO $input
-         * @param callable(IO): IO $next
+         * @psalm-param IO                  $input
+         * @psalm-param (callable(IO): IO)  $next
          *
-         * @return IO
+         * @psalm-return IO
          */
         static fn ($input, int $key, callable $next) => $next($input),
         $input
