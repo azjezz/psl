@@ -14,6 +14,7 @@ jobs:
           - "highest"
         php-version:
           - "7.4"
+          - "8.0"
         operating-system:
           - "ubuntu-latest"
 
@@ -24,7 +25,6 @@ jobs:
       - name: "installing PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          coverage: "pcov"
           php-version: "${{ matrix.php-version }}"
           ini-values: memory_limit=-1
           tools: composer:v2, cs2pr
@@ -39,13 +39,8 @@ jobs:
           key: "php-${{ matrix.php-version }}-${{ matrix.dependencies }}"
           restore-keys: "php-${{ matrix.php-version }}-${{ matrix.dependencies }}"
 
-      - name: "installing lowest dependencies"
-        if: ${{ matrix.dependencies == 'lowest' }}
-        run: "composer update --prefer-lowest --no-interaction --no-progress"
-
-      - name: "installing highest dependencies"
-        if: ${{ matrix.dependencies == 'highest' }}
-        run: "composer update --no-interaction --no-progress"
+      - name: "installing dependencies"
+        run: "composer install --no-interaction --no-progress --ignore-platform-req php"
 
       - name: "running unit tests ( phpunit )"
         run: "composer test:unit"
