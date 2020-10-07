@@ -11,7 +11,7 @@ use Psl\Math;
 
 use const PHP_EOL;
 
-class EncodeTest extends TestCase
+final class EncodeTest extends TestCase
 {
     public function testEncode(): void
     {
@@ -44,7 +44,7 @@ class EncodeTest extends TestCase
     ],
     "license": "MIT"
 }
-JSON, PHP_EOL,"\n");
+JSON, PHP_EOL, "\n");
 
         self::assertSame($json, $actual);
     }
