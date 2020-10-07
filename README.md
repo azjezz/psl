@@ -1,9 +1,10 @@
 # Psl - PHP Standard Library
 
-![unit tests status](https://github.com/azjezz/psl/workflows/unit%20tests/badge.svg?branch=develop)
-![static analysis status](https://github.com/azjezz/psl/workflows/static%20analysis/badge.svg?branch=develop)
-![security analysis status](https://github.com/azjezz/psl/workflows/security%20analysis/badge.svg?branch=develop)
-![coding standards status](https://github.com/azjezz/psl/workflows/coding%20standards/badge.svg?branch=develop)
+![Unit tests status](https://github.com/azjezz/psl/workflows/unit%20tests/badge.svg?branch=develop)
+![Static analysis status](https://github.com/azjezz/psl/workflows/static%20analysis/badge.svg?branch=develop)
+![Security analysis status](https://github.com/azjezz/psl/workflows/security%20analysis/badge.svg?branch=develop)
+![Coding standards status](https://github.com/azjezz/psl/workflows/coding%20standards/badge.svg?branch=develop)
+[![TravisCI Build Status](https://travis-ci.com/azjezz/psl.svg?branch=develop)](https://travis-ci.com/azjezz/psl)
 [![Scrutinizer Build Status](https://scrutinizer-ci.com/g/azjezz/psl/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/azjezz/psl/build-status/develop)
 [![Coverage Status](https://coveralls.io/repos/github/azjezz/psl/badge.svg?branch=develop)](https://coveralls.io/github/azjezz/psl?branch=develop)
 [![Type Coverage](https://shepherd.dev/github/azjezz/psl/coverage.svg)](https://shepherd.dev/github/azjezz/psl)
