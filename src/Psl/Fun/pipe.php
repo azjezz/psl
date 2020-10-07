@@ -43,7 +43,7 @@ function pipe(callable ...$stages): callable
          *
          * @psalm-return IO
          */
-        static fn ($input, int $key, callable $next) => $next($input),
+        static fn ($input, callable $next) => $next($input),
         $input
     );
 }
