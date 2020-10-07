@@ -10,14 +10,13 @@ jobs:
 
     strategy:
       matrix:
-        dependencies:
-          - "highest"
         php-version:
           - "7.4"
           - "8.0"
         operating-system:
           - "macos-latest"
           - "ubuntu-latest"
+          - "windows-latest"
 
     steps:
       - name: "checkout"
@@ -37,8 +36,8 @@ jobs:
           path: |
             ~/.composer/cache
             vendor
-          key: "php-${{ matrix.php-version }}-${{ matrix.dependencies }}"
-          restore-keys: "php-${{ matrix.php-version }}-${{ matrix.dependencies }}"
+          key: "php-${{ matrix.php-version }}"
+          restore-keys: "php-${{ matrix.php-version }}"
 
       - name: "installing dependencies"
         run: "composer install --no-interaction --no-progress --ignore-platform-req php"
