@@ -49,8 +49,3 @@ jobs:
 
       - name: "running unit tests ( phpunit )"
         run: "composer test:unit"
-
-      - name: "sending code coverage data to coveralls"
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: "php vendor/bin/coveralls tests/logs/clover.xml"
