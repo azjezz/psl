@@ -143,6 +143,8 @@ final class Loader
         'Psl\Iter\random',
         'Psl\Iter\range',
         'Psl\Iter\reduce',
+        'Psl\Iter\reduce_keys',
+        'Psl\Iter\reduce_with_keys',
         'Psl\Iter\reductions',
         'Psl\Iter\reindex',
         'Psl\Iter\repeat',
