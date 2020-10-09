@@ -6,7 +6,6 @@ namespace Psl\Iter;
 
 use Generator;
 use Psl;
-use Psl\Internal;
 
 /**
  * Returns an iterator containing only the keys and values for which the given predicate
@@ -35,7 +34,7 @@ use Psl\Internal;
  */
 function filter_with_key(iterable $iterable, ?callable $predicate = null): Iterator
 {
-    return Internal\lazy_iterator(static function () use ($iterable, $predicate): Generator {
+    return Iterator::from(static function () use ($iterable, $predicate): Generator {
         $predicate = $predicate ??
             /**
              * @psalm-param Tk $k

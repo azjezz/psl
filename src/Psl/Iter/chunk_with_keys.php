@@ -29,7 +29,7 @@ function chunk_with_keys(iterable $iterable, int $size): Iterator
 {
     Psl\invariant($size > 0, 'Expected a non-negative size.');
 
-    return Psl\Internal\lazy_iterator(static function () use ($iterable, $size) {
+    return Iterator::from(static function () use ($iterable, $size): Generator {
         $chunk = [];
         $count = 0;
         foreach ($iterable as $key => $value) {

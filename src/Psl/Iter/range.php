@@ -6,7 +6,6 @@ namespace Psl\Iter;
 
 use Generator;
 use Psl;
-use Psl\Internal;
 
 /**
  * Creates an iterator containing all numbers between the start and end value
@@ -48,7 +47,7 @@ function range($start, $end, $step = null): Iterator
         Psl\invariant(null === $step || $step < 0, 'If start > end, the step must be negative.');
     }
 
-    return Internal\lazy_iterator(
+    return Iterator::from(
         /**
          * @return Generator<int, T, mixed, void>
          *

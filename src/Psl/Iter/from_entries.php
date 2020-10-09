@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
-use Psl\Internal;
 
 /**
  * Returns an iterator where each mapping is defined by the given key/value
@@ -20,7 +19,7 @@ use Psl\Internal;
  */
 function from_entries(iterable $entries): Iterator
 {
-    return Internal\lazy_iterator(static function () use ($entries): Generator {
+    return Iterator::from(static function () use ($entries): Generator {
         foreach ($entries as [$key, $value]) {
             yield $key => $value;
         }

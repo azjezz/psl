@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
-use Psl\Internal;
 
 /**
  * Zips the iterables that were passed as arguments.
@@ -33,7 +32,7 @@ use Psl\Internal;
  */
 function zip(iterable ...$iterables): Iterator
 {
-    return Internal\lazy_iterator(static function () use ($iterables): Generator {
+    return Iterator::from(static function () use ($iterables): Generator {
         if (0 === count($iterables)) {
             return;
         }

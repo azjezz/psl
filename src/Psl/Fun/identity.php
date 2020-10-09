@@ -14,7 +14,7 @@ namespace Psl\Fun;
  *
  * @psalm-pure
  */
-function passthrough(): callable
+function identity(): callable
 {
     return static fn ($result) => $result;
 }

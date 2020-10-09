@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
-use Psl\Internal;
 
 /**
  * Returns an iterator where:
@@ -37,7 +36,7 @@ use Psl\Internal;
  */
 function pull(iterable $iterable, callable $value_func, callable $key_func): Iterator
 {
-    return Internal\lazy_iterator(static function () use ($iterable, $value_func, $key_func): Generator {
+    return Iterator::from(static function () use ($iterable, $value_func, $key_func): Generator {
         foreach ($iterable as $value) {
             yield $key_func($value) => $value_func($value);
         }

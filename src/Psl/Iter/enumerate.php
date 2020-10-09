@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
-use Psl\Internal;
 
 /**
  * Converts an iterable of key and value pairs, into a generator of entries.
@@ -19,7 +18,7 @@ use Psl\Internal;
  */
 function enumerate(iterable $iterable): Iterator
 {
-    return Internal\lazy_iterator(static function () use ($iterable): Generator {
+    return Iterator::from(static function () use ($iterable): Generator {
         foreach ($iterable as $k => $v) {
             yield [$k, $v];
         }

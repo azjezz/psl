@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
-use Psl\Internal;
 
 /**
  * Returns the keys of an iterable.
@@ -24,7 +23,7 @@ use Psl\Internal;
  */
 function keys(iterable $iterable): Iterator
 {
-    return Internal\lazy_iterator(static function () use ($iterable): Generator {
+    return Iterator::from(static function () use ($iterable): Generator {
         foreach ($iterable as $key => $_) {
             yield $key;
         }

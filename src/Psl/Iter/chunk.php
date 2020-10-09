@@ -32,7 +32,7 @@ function chunk(iterable $iterable, int $size): Iterator
     Psl\invariant($size > 0, 'Expected a non-negative size.');
 
     /** @psalm-var Generator<int, list<T>, mixed, void> $generator */
-    return Psl\Internal\lazy_iterator(static function () use ($iterable, $size) {
+    return Iterator::from(static function () use ($iterable, $size): Generator {
         /** @psalm-var list<T> $chunk */
         $chunk = [];
         $count = 0;

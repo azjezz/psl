@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Psl\Internal;
+use Generator;
 
 /**
  * Chains the iterables that were passed as arguments.
@@ -26,7 +26,7 @@ use Psl\Internal;
  */
 function chain(iterable ...$iterables): Iterator
 {
-    return Internal\lazy_iterator(static function () use ($iterables) {
+    return Iterator::from(static function () use ($iterables): Generator {
         foreach ($iterables as $iterable) {
             yield from $iterable;
         }

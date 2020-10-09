@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
-use Psl\Internal;
 
 /**
  * Returns an iterator where each value is the result of calling the given
@@ -21,7 +20,7 @@ use Psl\Internal;
  */
 function from_keys(iterable $keys, callable $value_func): Iterator
 {
-    return Internal\lazy_iterator(static function () use ($keys, $value_func): Generator {
+    return Iterator::from(static function () use ($keys, $value_func): Generator {
         foreach ($keys as $key) {
             yield $key => $value_func($key);
         }

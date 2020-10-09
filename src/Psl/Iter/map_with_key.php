@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
-use Psl\Internal;
 
 /**
  * Applies a mapping function to all values of an iterator.
@@ -29,7 +28,7 @@ use Psl\Internal;
  */
 function map_with_key(iterable $iterable, callable $function): Iterator
 {
-    return Internal\lazy_iterator(static function () use ($iterable, $function): Generator {
+    return Iterator::from(static function () use ($iterable, $function): Generator {
         foreach ($iterable as $key => $value) {
             yield $key => $function($key, $value);
         }

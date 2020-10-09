@@ -56,7 +56,7 @@ class SuccessTest extends TestCase
     {
         $wrapper = new Success('hello');
         $actual    = $wrapper->then(
-            Fun\passthrough(),
+            Fun\identity(),
             Fun\rethrow()
         );
 
