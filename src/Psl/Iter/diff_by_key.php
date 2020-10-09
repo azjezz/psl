@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
-use Psl\Internal;
 
 /**
  * @psalm-template Tk
@@ -19,7 +18,7 @@ use Psl\Internal;
  */
 function diff_by_key(iterable $first, iterable $second, iterable ...$rest): Iterator
 {
-    return Internal\lazy_iterator(static function () use ($first, $second, $rest) {
+    return Iterator::from(static function () use ($first, $second, $rest): Generator {
         if (is_empty($first)) {
             return;
         }

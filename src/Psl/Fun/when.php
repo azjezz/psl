@@ -32,5 +32,5 @@ namespace Psl\Fun;
  */
 function when(callable $condition, callable $then, callable $else): callable
 {
-    return fn ($value) =>  $condition($value) ? $then($value) : $else($value);
+    return static fn ($value) =>  $condition($value) ? $then($value) : $else($value);
 }

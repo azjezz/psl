@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
-use Psl\Internal;
 
 /**
  * Flips the keys and values of an iterable.
@@ -24,7 +23,7 @@ use Psl\Internal;
  */
 function flip(iterable $iterable): Iterator
 {
-    return Internal\lazy_iterator(static function () use ($iterable): Generator {
+    return Iterator::from(static function () use ($iterable): Generator {
         foreach ($iterable as $k => $v) {
             yield $v => $k;
         }

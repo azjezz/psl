@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
-use Psl\Internal;
 
 /**
  * Re-indexes an iterable by applying a function to all its values and
@@ -39,7 +38,7 @@ use Psl\Internal;
  */
 function reindex(iterable $iterable, callable $function): Iterator
 {
-    return Internal\lazy_iterator(static function () use ($iterable, $function): Generator {
+    return Iterator::from(static function () use ($iterable, $function): Generator {
         foreach ($iterable as $value) {
             yield $function($value) => $value;
         }

@@ -7,7 +7,7 @@ namespace Psl\Tests\Fun;
 use PHPUnit\Framework\TestCase;
 use Psl\Fun;
 
-class RethrowTest extends TestCase
+final class RethrowTest extends TestCase
 {
     public function testRethrow(): void
     {

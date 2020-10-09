@@ -6,7 +6,6 @@ namespace Psl\Iter;
 
 use Closure;
 use Generator;
-use Psl\Internal;
 
 /**
  * Returns an iterator containing only the keys for which the given predicate
@@ -32,7 +31,7 @@ use Psl\Internal;
  */
 function filter_keys(iterable $iterable, ?callable $predicate = null): Iterator
 {
-    return Internal\lazy_iterator(static function () use ($iterable, $predicate): Generator {
+    return Iterator::from(static function () use ($iterable, $predicate): Generator {
         /** @psalm-var (callable(Tk): bool) $predicate */
         $predicate = $predicate ?? Closure::fromCallable('Psl\Internal\boolean');
         foreach ($iterable as $k => $v) {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
-use Psl\Internal;
 
 /**
  * Filter out null values from the given iterable.
@@ -22,7 +21,7 @@ use Psl\Internal;
  */
 function filter_nulls(iterable $iterable): Iterator
 {
-    return Internal\lazy_iterator(static function () use ($iterable): Generator {
+    return Iterator::from(static function () use ($iterable): Generator {
         foreach ($iterable as $value) {
             if (null !== $value) {
                 yield $value;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
-use Psl\Internal;
 
 /**
  * Intermediate values of reducing iterable using a function.
@@ -29,7 +28,7 @@ use Psl\Internal;
  */
 function reductions(iterable $iterable, callable $function, $initial = null): Iterator
 {
-    return Internal\lazy_iterator(static function () use ($iterable, $function, $initial): Generator {
+    return Iterator::from(static function () use ($iterable, $function, $initial): Generator {
         $accumulator = $initial;
         foreach ($iterable as $k => $v) {
             $accumulator = $function($accumulator, $k, $v);

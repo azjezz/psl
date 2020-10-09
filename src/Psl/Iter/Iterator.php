@@ -50,6 +50,19 @@ final class Iterator implements SeekableIterator, Countable
      * @psalm-template Tsk
      * @psalm-template Tsv
      *
+     * @psalm-param callable(): iterable<Tsk, Tsv> $factory
+     *
+     * @psalm-return Iterator<Tsk, Tsv>
+     */
+    public static function from(callable $factory): Iterator
+    {
+        return self::create($factory());
+    }
+
+    /**
+     * @psalm-template Tsk
+     * @psalm-template Tsv
+     *
      * @psalm-param iterable<Tsk, Tsv> $iterable
      *
      * @psalm-return Iterator<Tsk, Tsv>

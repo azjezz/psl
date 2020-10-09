@@ -34,7 +34,7 @@ function repeat($value, ?int $num = null): Iterator
 {
     Psl\invariant(null === $num || $num >= 0, 'Number of repetitions must be non-negative.');
 
-    return Internal\lazy_iterator(static function () use ($value, $num): Generator {
+    return Iterator::from(static function () use ($value, $num): Generator {
         if (null === $num) {
             /** @var int $num */
             $num = Math\INFINITY;

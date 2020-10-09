@@ -6,7 +6,6 @@ namespace Psl\Iter;
 
 use Closure;
 use Generator;
-use Psl\Internal;
 
 /**
  * Returns a generator containing only the values for which the given predicate
@@ -30,7 +29,7 @@ use Psl\Internal;
  */
 function filter(iterable $iterable, ?callable $predicate = null): Iterator
 {
-    return Internal\lazy_iterator(static function () use ($iterable, $predicate): Generator {
+    return Iterator::from(static function () use ($iterable, $predicate): Generator {
         /** @psalm-var (callable(Tv): bool) $predicate */
         $predicate = $predicate ?? Closure::fromCallable('Psl\Internal\boolean');
         foreach ($iterable as $k => $v) {

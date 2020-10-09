@@ -6,7 +6,6 @@ namespace Psl\Iter;
 
 use Generator;
 use Psl;
-use Psl\Internal;
 
 /**
  * Takes a slice from an iterable.
@@ -35,7 +34,7 @@ function slice(iterable $iterable, int $start, ?int $length = null): Iterator
     Psl\invariant($start >= 0, 'Start offset must be non-negative.');
     Psl\invariant(null === $length || $length >= 0, 'Length must be non-negative.');
 
-    return Internal\lazy_iterator(static function () use ($iterable, $start, $length): Generator {
+    return Iterator::from(static function () use ($iterable, $start, $length): Generator {
         if (0 === $length) {
             /** @psalm-suppress InvalidReturnStatement */
             return;

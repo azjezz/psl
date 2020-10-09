@@ -6,7 +6,6 @@ namespace Psl\Iter;
 
 use Generator;
 use Psl\Arr;
-use Psl\Internal;
 
 /**
  * Returns the cartesian product of iterables that were passed as arguments.
@@ -31,7 +30,7 @@ use Psl\Internal;
  */
 function product(iterable ...$iterables): Iterator
 {
-    return Internal\lazy_iterator(static function () use ($iterables): Generator {
+    return Iterator::from(static function () use ($iterables): Generator {
         /** @psalm-var list<Iterator<Tk, Tv>> $iterators */
         $iterators = to_array(map(
             $iterables,

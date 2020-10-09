@@ -9,12 +9,19 @@ use Psl\Collection\MutableVector;
 use Psl\Exception\InvariantViolationException;
 use Psl\Iter;
 
-class IteratorTest extends TestCase
+final class IteratorTest extends TestCase
 {
     public function testCreateFromGenerator(): void
     {
-        $iterator = Iter\Iterator::create((fn () => yield from [1, 2, 3])());
+        $iterator = Iter\Iterator::create((static fn () => yield from [1, 2, 3])());
         
+        static::assertCount(3, $iterator);
+    }
+
+    public function testCreateFromFactory(): void
+    {
+        $iterator = Iter\Iterator::from((fn () => yield from [1, 2, 3]));
+
         static::assertCount(3, $iterator);
     }
 

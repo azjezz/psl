@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
-use Psl\Internal;
 
 /**
  * Drops items from an iterable until the predicate fails for the first time.
@@ -28,7 +27,7 @@ use Psl\Internal;
  */
 function drop_while(iterable $iterable, callable $predicate): Iterator
 {
-    return Internal\lazy_iterator(static function () use ($iterable, $predicate) {
+    return Iterator::from(static function () use ($iterable, $predicate): Generator {
         $failed = false;
         foreach ($iterable as $key => $value) {
             if (!$failed && !$predicate($value)) {
