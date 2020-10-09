@@ -336,6 +336,10 @@ final class Loader
         'Psl\Hash\equals',
         'Psl\Hash\Hmac\hash',
         'Psl\Hash\Hmac\algorithms',
+        'Psl\Xml\Internal\detect_errors',
+        'Psl\Xml\Internal\issue_collection_from_xml_errors',
+        'Psl\Xml\Internal\issue_from_xml_error',
+        'Psl\Xml\Internal\issue_level_from_xml_error',
     ];
 
     public const INTERFACES = [
@@ -353,6 +357,7 @@ final class Loader
         'Psl\Observer\SubjectInterface',
         'Psl\Observer\ObserverInterface',
         'Psl\Result\ResultInterface',
+        'Psl\Xml\Exception\ExceptionInterface',
     ];
 
     public const TRAITS = [
@@ -393,6 +398,10 @@ final class Loader
         'Psl\Json\Exception\DecodeException',
         'Psl\Json\Exception\EncodeException',
         'Psl\Hash\Context',
+        'Psl\Xml\Issue\Issue',
+        'Psl\Xml\Issue\IssueCollection',
+        'Psl\Xml\Issue\Level',
+        'Psl\Xml\Exception\XmlException',
     ];
 
     private const TYPE_CONSTANTS = 1;

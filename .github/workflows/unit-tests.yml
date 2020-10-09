@@ -28,7 +28,7 @@ jobs:
           php-version: "${{ matrix.php-version }}"
           ini-values: memory_limit=-1
           tools: composer:v2, cs2pr
-          extensions: bcmath, mbstring, intl, sodium, json
+          extensions: bcmath, mbstring, intl, sodium, json, libxml, simplexml
 
       - name: "caching dependencies"
         uses: "actions/cache@v2"
