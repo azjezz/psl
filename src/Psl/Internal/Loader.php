@@ -99,6 +99,7 @@ final class Loader
         'Psl\Fun\passthrough',
         'Psl\Fun\pipe',
         'Psl\Fun\rethrow',
+        'Psl\Fun\when',
         'Psl\Internal\boolean',
         'Psl\Internal\type',
         'Psl\Internal\validate_offset',
