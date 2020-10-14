@@ -23,3 +23,6 @@ jobs:
 
       - name: "checking coding standards ( codesniffer )"
         run: "composer cs:check"
+
+      - name: "checking coding standards ( php-cs-fixer )"
+        run: "composer cs-fixer:check"
