@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Iter;
 
-class ChainTest extends TestCase
+final class ChainTest extends TestCase
 {
     public function testChain(): void
     {

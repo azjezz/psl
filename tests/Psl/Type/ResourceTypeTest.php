@@ -7,7 +7,7 @@ namespace Psl\Tests\Type;
 use Psl\Math;
 use Psl\Type;
 
-class ResourceTypeTest extends TypeTest
+final class ResourceTypeTest extends TypeTest
 {
     public function getType(): Type\Type
     {
@@ -55,7 +55,7 @@ class ResourceTypeTest extends TypeTest
         }];
         yield [STDIN];
         yield [[]];
-        yield [(fn () => yield 'hello')()];
+        yield [(static fn () => yield 'hello')()];
     }
 
     public function getToStringExamples(): iterable

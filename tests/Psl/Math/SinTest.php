@@ -7,7 +7,7 @@ namespace Psl\Tests\Math;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
-class SinTest extends TestCase
+final class SinTest extends TestCase
 {
 
     /**
@@ -15,7 +15,7 @@ class SinTest extends TestCase
      */
     public function testSin(float $expected, float $number): void
     {
-        self::assertSame($expected, Math\sin($number));
+        static::assertSame($expected, Math\sin($number));
     }
 
     public function provideData(): array

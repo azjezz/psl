@@ -23,13 +23,13 @@ function diff_by_key(iterable $first, iterable $second, iterable ...$rest): Iter
             return;
         }
 
-        if (is_empty($second) && all($rest, fn (iterable $iter): bool => is_empty($iter))) {
+        if (is_empty($second) && all($rest, static fn (iterable $iter): bool => is_empty($iter))) {
             yield from $first;
         }
 
         // We don't use arrays here to ensure we allow the usage of non-arraykey indexes.
         /** @psalm-var Generator<Tk, mixed, mixed, void> $second */
-        $second = ((fn (iterable $iterable): Generator => yield from $iterable)($second));
+        $second = ((static fn (iterable $iterable): Generator => yield from $iterable)($second));
         /** @psalm-var Generator<iterable<Tk, mixed>, mixed, mixed, void> $generator */
         $generator  = ((static function (Generator $second, iterable ...$rest): Generator {
             yield from $second;

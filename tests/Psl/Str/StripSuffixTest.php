@@ -7,7 +7,7 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class StripSuffixTest extends TestCase
+final class StripSuffixTest extends TestCase
 {
 
     /**
@@ -15,7 +15,7 @@ class StripSuffixTest extends TestCase
      */
     public function testStripSuffix(string $expected, string $haystack, string $suffix): void
     {
-        self::assertSame($expected, Str\strip_suffix($haystack, $suffix));
+        static::assertSame($expected, Str\strip_suffix($haystack, $suffix));
     }
 
     public function provideData(): array

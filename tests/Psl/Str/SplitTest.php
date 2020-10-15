@@ -7,14 +7,14 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class SplitTest extends TestCase
+final class SplitTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testSplit(array $expected, string $string, string $delimiter, ?int $length = null): void
     {
-        self::assertSame($expected, Str\split($string, $delimiter, $length));
+        static::assertSame($expected, Str\split($string, $delimiter, $length));
     }
 
     public function provideData(): array

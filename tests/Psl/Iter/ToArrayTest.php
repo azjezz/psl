@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Iter;
 
-class ToArrayTest extends TestCase
+final class ToArrayTest extends TestCase
 {
     /**
      * @dataProvider provideToArrayData
@@ -17,7 +17,7 @@ class ToArrayTest extends TestCase
     {
         $result = Iter\to_array($iterable);
 
-        self::assertSame($expected, $result);
+        static::assertSame($expected, $result);
     }
 
     public function provideToArrayData(): iterable

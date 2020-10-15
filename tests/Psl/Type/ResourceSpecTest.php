@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Type;
 
-use Psl\Math;
 use Psl\Type;
 
-class ResourceSpecTest extends TypeTest
+final class ResourceSpecTest extends TypeTest
 {
     public function getType(): Type\Type
     {
@@ -49,9 +48,9 @@ class ResourceSpecTest extends TypeTest
         $spec = Type\resource();
 
         $value = $spec->assert(STDIN);
-        self::assertSame(STDIN, $value);
+        static::assertSame(STDIN, $value);
 
         $value = $spec->coerce(STDIN);
-        self::assertSame(STDIN, $value);
+        static::assertSame(STDIN, $value);
     }
 }

@@ -9,18 +9,18 @@ use Psl\Exception;
 use Psl\SecureRandom;
 use Psl\Str;
 
-class BytesTest extends TestCase
+final class BytesTest extends TestCase
 {
     public function testBytes(): void
     {
         $random = SecureRandom\bytes(32);
 
-        self::assertSame(32, Str\Byte\length($random));
+        static::assertSame(32, Str\Byte\length($random));
     }
 
     public function testBytesEarlyReturnForZeroLength(): void
     {
-        self::assertSame('', SecureRandom\bytes(0));
+        static::assertSame('', SecureRandom\bytes(0));
     }
 
     public function testBytesThrowsForNegativeLength(): void

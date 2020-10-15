@@ -7,7 +7,7 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class SearchLastTest extends TestCase
+final class SearchLastTest extends TestCase
 {
 
     /**
@@ -15,7 +15,7 @@ class SearchLastTest extends TestCase
      */
     public function testSearchLast(?int $expected, string $haystack, string $needle, int $offset = 0): void
     {
-        self::assertSame($expected, Byte\search_last($haystack, $needle, $offset));
+        static::assertSame($expected, Byte\search_last($haystack, $needle, $offset));
     }
 
     public function provideData(): array

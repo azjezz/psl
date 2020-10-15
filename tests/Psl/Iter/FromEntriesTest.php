@@ -7,12 +7,12 @@ namespace Psl\Tests\Iter;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 
-class FromEntriesTest extends TestCase
+final class FromEntriesTest extends TestCase
 {
     public function testEmptyEntries(): void
     {
         $actual = Iter\from_entries([]);
-        self::assertCount(0, $actual);
+        static::assertCount(0, $actual);
     }
 
     public function testFromEntries(): void
@@ -24,9 +24,9 @@ class FromEntriesTest extends TestCase
 
         $array = Iter\to_array_with_keys($actual);
 
-        self::assertCount(2, $array);
-        self::assertSame('hello', $array[1]);
-        self::assertSame('world', $array[2]);
+        static::assertCount(2, $array);
+        static::assertSame('hello', $array[1]);
+        static::assertSame('world', $array[2]);
     }
 
     public function testFromEntriesWithNonArrayKeyKeys(): void
@@ -36,10 +36,10 @@ class FromEntriesTest extends TestCase
             [['3', '4'], 'world']
         ]);
 
-        self::assertSame('hello', Iter\first($actual));
-        self::assertSame('world', Iter\last($actual));
+        static::assertSame('hello', Iter\first($actual));
+        static::assertSame('world', Iter\last($actual));
 
-        self::assertSame(['1', '2'], Iter\first_key($actual));
-        self::assertSame(['3', '4'], Iter\last_key($actual));
+        static::assertSame(['1', '2'], Iter\first_key($actual));
+        static::assertSame(['3', '4'], Iter\last_key($actual));
     }
 }

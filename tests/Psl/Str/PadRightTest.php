@@ -7,14 +7,14 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class PadRightTest extends TestCase
+final class PadRightTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testPadRight(string $expected, string $str, int $total_length, string $pad_string = ' '): void
     {
-        self::assertSame($expected, Str\pad_right($str, $total_length, $pad_string));
+        static::assertSame($expected, Str\pad_right($str, $total_length, $pad_string));
     }
 
     public function provideData(): array

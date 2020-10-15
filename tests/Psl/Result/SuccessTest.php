@@ -6,29 +6,28 @@ namespace Psl\Tests\Result;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
+use Psl\Exception\InvariantViolationException;
 use Psl\Fun;
 use Psl\Result\Success;
-use Psl\Exception\InvariantViolationException;
-use stdClass;
 
-class SuccessTest extends TestCase
+final class SuccessTest extends TestCase
 {
     public function testIsSucceeded(): void
     {
         $wrapper = new Success('hello');
-        self::assertTrue($wrapper->isSucceeded());
+        static::assertTrue($wrapper->isSucceeded());
     }
 
     public function testIsFailed(): void
     {
         $wrapper = new Success('hello');
-        self::assertFalse($wrapper->isFailed());
+        static::assertFalse($wrapper->isFailed());
     }
 
     public function testGetResult(): void
     {
         $wrapper = new Success('hello');
-        self::assertSame('hello', $wrapper->getResult());
+        static::assertSame('hello', $wrapper->getResult());
     }
 
     public function testGetException(): void
@@ -49,7 +48,7 @@ class SuccessTest extends TestCase
             static fn (Exception $exception): int => 404
         );
 
-        self::assertSame(200, $actual);
+        static::assertSame(200, $actual);
     }
 
     public function testThenToSuccess(): void
@@ -60,9 +59,9 @@ class SuccessTest extends TestCase
             Fun\rethrow()
         );
 
-        self::assertNotSame($wrapper, $actual);
-        self::assertTrue($actual->isSucceeded());
-        self::assertSame('hello', $actual->getResult());
+        static::assertNotSame($wrapper, $actual);
+        static::assertTrue($actual->isSucceeded());
+        static::assertSame('hello', $actual->getResult());
     }
 
     public function testThenToFailure(): void
@@ -76,7 +75,7 @@ class SuccessTest extends TestCase
             Fun\rethrow()
         );
 
-        self::assertFalse($actual->isSucceeded());
-        self::assertSame($actual->getException(), $exception);
+        static::assertFalse($actual->isSucceeded());
+        static::assertSame($actual->getException(), $exception);
     }
 }

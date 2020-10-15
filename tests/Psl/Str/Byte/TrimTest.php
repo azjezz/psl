@@ -7,14 +7,14 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class TrimTest extends TestCase
+final class TrimTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testTrim(string $expected, string $string, ?string $chars = null): void
     {
-        self::assertSame($expected, Byte\trim($string, $chars));
+        static::assertSame($expected, Byte\trim($string, $chars));
     }
 
     public function provideData(): array

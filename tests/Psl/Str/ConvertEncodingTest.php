@@ -19,7 +19,7 @@ final class ConvertEncodingTest extends TestCase
         string $from_encoding,
         string $to_encoding
     ): void {
-        self::assertSame($expected, Str\convert_encoding($string, $from_encoding, $to_encoding));
+        static::assertSame($expected, Str\convert_encoding($string, $from_encoding, $to_encoding));
     }
 
     public function provideData(): array

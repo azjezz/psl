@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use function ksort;
+use function uksort;
+
 /**
  * Returns a new array sorted by the keys of the given array. If the
  * optional comparator function isn't provided, the keys will be sorted in
@@ -20,9 +23,9 @@ namespace Psl\Arr;
 function sort_by_key(array $array, ?callable $comparator = null): array
 {
     if ($comparator) {
-        \uksort($array, $comparator);
+        uksort($array, $comparator);
     } else {
-        \ksort($array);
+        ksort($array);
     }
 
     return $array;

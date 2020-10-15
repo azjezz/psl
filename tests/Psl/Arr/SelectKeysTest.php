@@ -7,14 +7,14 @@ namespace Psl\Tests\Arr;
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 
-class SelectKeysTest extends TestCase
+final class SelectKeysTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testSelectKeys(array $result, array $array, array $keys): void
     {
-        self::assertSame($result, Arr\select_keys($array, $keys));
+        static::assertSame($result, Arr\select_keys($array, $keys));
     }
 
     public function provideData(): array

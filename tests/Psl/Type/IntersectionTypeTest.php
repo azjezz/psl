@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Type;
 
+use Iterator;
 use Psl\Collection\CollectionInterface;
 use Psl\Collection\IndexAccessInterface;
 use Psl\Type;
 
-class IntersectionTypeTest extends TypeTest
+final class IntersectionTypeTest extends TypeTest
 {
     public function testIntersectionLeft(): void
     {
         $intersection = Type\intersection(Type\array_key(), Type\int());
 
-        self::assertSame(1, $intersection->coerce('1'));
+        static::assertSame(1, $intersection->coerce('1'));
     }
 
     public function getType(): Type\Type
@@ -54,11 +55,11 @@ class IntersectionTypeTest extends TypeTest
 
         yield [Type\intersection(
             Type\object(IndexAccessInterface::class),
-            Type\union(Type\object(CollectionInterface::class), Type\object(\Iterator::class))
+            Type\union(Type\object(CollectionInterface::class), Type\object(Iterator::class))
         ), 'Psl\Collection\IndexAccessInterface&(Psl\Collection\CollectionInterface|Iterator)'];
 
         yield [Type\intersection(
-            Type\union(Type\object(CollectionInterface::class), Type\object(\Iterator::class)),
+            Type\union(Type\object(CollectionInterface::class), Type\object(Iterator::class)),
             Type\object(IndexAccessInterface::class)
         ), '(Psl\Collection\CollectionInterface|Iterator)&Psl\Collection\IndexAccessInterface'];
     }

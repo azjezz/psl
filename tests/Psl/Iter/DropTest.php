@@ -7,7 +7,7 @@ namespace Psl\Tests\Iter;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 
-class DropTest extends TestCase
+final class DropTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -16,7 +16,7 @@ class DropTest extends TestCase
     {
         $result = Iter\drop($iterable, $n);
 
-        self::assertSame($expected, Iter\to_array_with_keys($result));
+        static::assertSame($expected, Iter\to_array_with_keys($result));
     }
 
     public function provideData(): iterable

@@ -17,7 +17,7 @@ final class WhenTest extends TestCase
             static fn(string $name): string => 'Hello ' . $name . '!'
         );
 
-        self::assertSame('Bonjour Jos!', $greet('Jos'));
+        static::assertSame('Bonjour Jos!', $greet('Jos'));
     }
 
     public function testItRunsRightfunction(): void
@@ -28,6 +28,6 @@ final class WhenTest extends TestCase
             static fn(string $name): string => 'Hello ' . $name . '!'
         );
 
-        self::assertSame('Hello World!', $greet('World'));
+        static::assertSame('Hello World!', $greet('World'));
     }
 }

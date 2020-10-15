@@ -35,7 +35,7 @@ function sort_with_keys_by(iterable $iterable, callable $scalar_func, ?callable 
          * @psalm-param array{0: Ts, 1: Tv} $a
          * @psalm-param array{0: Ts, 1: Tv} $b
          */
-        fn ($a, $b): int => $comparator($a[0], $b[0]);
+        static fn ($a, $b): int => $comparator($a[0], $b[0]);
 
     /**
      * @psalm-var array<Tk, array{0: Ts, 1: Tv}> $tuples

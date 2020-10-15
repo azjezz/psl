@@ -7,7 +7,7 @@ namespace Psl\Tests\Type;
 use Psl\Math;
 use Psl\Type;
 
-class FloatTypeTest extends TypeTest
+final class FloatTypeTest extends TypeTest
 {
     public function getType(): Type\Type
     {

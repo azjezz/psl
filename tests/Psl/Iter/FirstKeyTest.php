@@ -7,8 +7,9 @@ namespace Psl\Tests\Iter;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Iter;
+use SplDoublyLinkedList;
 
-class FirstKeyTest extends TestCase
+final class FirstKeyTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -17,13 +18,13 @@ class FirstKeyTest extends TestCase
     {
         $result = Iter\first_key($iterable);
 
-        self::assertSame($expected, $result);
+        static::assertSame($expected, $result);
     }
 
     public function provideData(): iterable
     {
         yield [null, []];
-        yield [null, new \SplDoublyLinkedList()];
+        yield [null, new SplDoublyLinkedList()];
         yield ['a', ['a' => 'b']];
         yield [0, ['a', 'b']];
         yield [0, new Collection\Vector(['a', 'b'])];

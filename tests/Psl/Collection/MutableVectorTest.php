@@ -23,8 +23,8 @@ final class MutableVectorTest extends AbstractVectorTest
         $vector  = $this->create(['foo', 'bar']);
         $cleared = $vector->clear();
 
-        self::assertSame($cleared, $vector);
-        self::assertCount(0, $vector);
+        static::assertSame($cleared, $vector);
+        static::assertCount(0, $vector);
     }
 
     public function testSet(): void
@@ -40,11 +40,11 @@ final class MutableVectorTest extends AbstractVectorTest
             ->set(1, 'bar')
             ->set(2, 'baz');
 
-        self::assertSame($modified, $vector);
+        static::assertSame($modified, $vector);
 
-        self::assertSame('foo', $vector->at(0));
-        self::assertSame('bar', $vector->at(1));
-        self::assertSame('baz', $vector->at(2));
+        static::assertSame('foo', $vector->at(0));
+        static::assertSame('bar', $vector->at(1));
+        static::assertSame('baz', $vector->at(2));
 
         $this->expectException(InvariantViolationException::class);
         $this->expectExceptionMessage('Key (3) is out-of-bounds.');
@@ -66,11 +66,11 @@ final class MutableVectorTest extends AbstractVectorTest
             2 => 'baz',
         ]));
 
-        self::assertSame($modified, $vector);
+        static::assertSame($modified, $vector);
 
-        self::assertSame('foo', $vector->at(0));
-        self::assertSame('bar', $vector->at(1));
-        self::assertSame('baz', $vector->at(2));
+        static::assertSame('foo', $vector->at(0));
+        static::assertSame('bar', $vector->at(1));
+        static::assertSame('baz', $vector->at(2));
 
         $this->expectException(InvariantViolationException::class);
         $this->expectExceptionMessage('Key (3) is out-of-bounds.');
@@ -89,14 +89,14 @@ final class MutableVectorTest extends AbstractVectorTest
             ->add('hello')
             ->add('world');
 
-        self::assertSame($modified, $vector);
+        static::assertSame($modified, $vector);
 
-        self::assertSame('foo', $vector->at(0));
-        self::assertSame('bar', $vector->at(1));
-        self::assertSame('baz', $vector->at(2));
-        self::assertSame('qux', $vector->at(3));
-        self::assertSame('hello', $vector->at(4));
-        self::assertSame('world', $vector->at(5));
+        static::assertSame('foo', $vector->at(0));
+        static::assertSame('bar', $vector->at(1));
+        static::assertSame('baz', $vector->at(2));
+        static::assertSame('qux', $vector->at(3));
+        static::assertSame('hello', $vector->at(4));
+        static::assertSame('world', $vector->at(5));
     }
 
     public function testAddAll(): void
@@ -112,14 +112,14 @@ final class MutableVectorTest extends AbstractVectorTest
                 'world',
             ]));
 
-        self::assertSame($modified, $vector);
+        static::assertSame($modified, $vector);
 
-        self::assertSame('foo', $vector->at(0));
-        self::assertSame('bar', $vector->at(1));
-        self::assertSame('baz', $vector->at(2));
-        self::assertSame('qux', $vector->at(3));
-        self::assertSame('hello', $vector->at(4));
-        self::assertSame('world', $vector->at(5));
+        static::assertSame('foo', $vector->at(0));
+        static::assertSame('bar', $vector->at(1));
+        static::assertSame('baz', $vector->at(2));
+        static::assertSame('qux', $vector->at(3));
+        static::assertSame('hello', $vector->at(4));
+        static::assertSame('world', $vector->at(5));
     }
 
     public function testRemove(): void
@@ -134,9 +134,9 @@ final class MutableVectorTest extends AbstractVectorTest
             ->remove(0)
             ->remove(0);
 
-        self::assertSame($modified, $vector);
-        self::assertCount(1, $vector);
-        self::assertSame('baz', $vector->get(0));
+        static::assertSame($modified, $vector);
+        static::assertCount(1, $vector);
+        static::assertSame('baz', $vector->get(0));
     }
 
     /**

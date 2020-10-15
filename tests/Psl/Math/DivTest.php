@@ -7,14 +7,14 @@ namespace Psl\Tests\Math;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
-class DivTest extends TestCase
+final class DivTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testDiv(int $expected, int $numerator, int $denominator): void
     {
-        self::assertSame($expected, Math\div($numerator, $denominator));
+        static::assertSame($expected, Math\div($numerator, $denominator));
     }
 
     public function testDivByZero(): void

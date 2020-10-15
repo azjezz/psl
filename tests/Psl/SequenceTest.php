@@ -7,14 +7,14 @@ namespace Psl\Tests;
 use PHPUnit\Framework\TestCase;
 use Psl;
 
-class SequenceTest extends TestCase
+final class SequenceTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testSequence(array $args, $expected): void
     {
-        self::assertSame($expected, Psl\sequence(...$args));
+        static::assertSame($expected, Psl\sequence(...$args));
     }
 
     public function provideData(): iterable

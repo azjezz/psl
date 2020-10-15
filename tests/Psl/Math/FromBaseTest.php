@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Psl\Exception;
 use Psl\Math;
 
-class FromBaseTest extends TestCase
+final class FromBaseTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testFromBase(int $expected, string $value, int $from_base): void
     {
-        self::assertSame($expected, Math\from_base($value, $from_base));
+        static::assertSame($expected, Math\from_base($value, $from_base));
     }
 
     public function provideData(): array

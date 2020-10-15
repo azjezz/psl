@@ -7,14 +7,14 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class ReplaceEveryTest extends TestCase
+final class ReplaceEveryTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testReplaceEvery(string $expected, string $haystack, iterable $replacements): void
     {
-        self::assertSame($expected, Byte\replace_every($haystack, $replacements));
+        static::assertSame($expected, Byte\replace_every($haystack, $replacements));
     }
 
     public function provideData(): array

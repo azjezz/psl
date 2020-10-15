@@ -7,7 +7,7 @@ namespace Psl\Json;
 use PHPUnit\Framework\TestCase;
 use Psl\Json;
 
-class DecodeTest extends TestCase
+final class DecodeTest extends TestCase
 {
     public function testDecode(): void
     {
@@ -19,7 +19,7 @@ class DecodeTest extends TestCase
             "license": "MIT"
         }');
 
-        self::assertSame([
+        static::assertSame([
             'name' => 'azjezz/psl',
             'type' => 'library',
             'description' => 'PHP Standard Library.',

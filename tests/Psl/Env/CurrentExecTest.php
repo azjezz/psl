@@ -16,6 +16,6 @@ final class CurrentExecTest extends TestCase
         $phpunit = __DIR__ . '/../../../vendor/phpunit/phpunit/phpunit';
         $phpunit = realpath($phpunit);
 
-        self::assertSame($phpunit, Env\current_exec());
+        static::assertSame($phpunit, Env\current_exec());
     }
 }

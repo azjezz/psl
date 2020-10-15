@@ -45,11 +45,11 @@ function zip(iterable ...$iterables): Iterator
              *
              * @psalm-return Iterator<Tk, Tv>
              */
-            fn ($iterable) => new Iterator((fn () => yield from $iterable)()),
+            static fn ($iterable) => new Iterator((static fn () => yield from $iterable)()),
         ));
 
-        apply($iterators, fn (Iterator $iterator) => $iterator->rewind());
-        while (all($iterators, fn (Iterator $iterator) => $iterator->valid())) {
+        apply($iterators, static fn (Iterator $iterator) => $iterator->rewind());
+        while (all($iterators, static fn (Iterator $iterator) => $iterator->valid())) {
             /** @psalm-var list<Tk> $keys */
             $keys = to_array(map(
                 $iterators,
@@ -58,7 +58,7 @@ function zip(iterable ...$iterables): Iterator
                  *
                  * @psalm-return Tk
                  */
-                fn (Iterator $iterator) => $iterator->key(),
+                static fn (Iterator $iterator) => $iterator->key(),
             ));
 
             /** @psalm-var list<Tv> $values */
@@ -69,12 +69,12 @@ function zip(iterable ...$iterables): Iterator
                  *
                  * @psalm-return Tv
                  */
-                fn (Iterator $iterator) => $iterator->current(),
+                static fn (Iterator $iterator) => $iterator->current(),
             ));
 
             yield $keys => $values;
 
-            apply($iterators, fn (Iterator $iterator) => $iterator->next());
+            apply($iterators, static fn (Iterator $iterator) => $iterator->next());
         }
     });
 }

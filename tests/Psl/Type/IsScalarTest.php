@@ -9,21 +9,21 @@ use Psl\Math;
 use Psl\Str;
 use Psl\Type;
 
-class IsScalarTest extends TestCase
+final class IsScalarTest extends TestCase
 {
     public function testIsScalar(): void
     {
-        self::assertTrue(Type\is_scalar(''));
-        self::assertTrue(Type\is_scalar(Str\chr(0)));
-        self::assertTrue(Type\is_scalar(123));
-        self::assertTrue(Type\is_scalar(0));
-        self::assertTrue(Type\is_scalar(Math\INT16_MAX));
-        self::assertTrue(Type\is_scalar(Math\INFINITY));
-        self::assertTrue(Type\is_scalar(5.0));
-        self::assertTrue(Type\is_scalar(true));
+        static::assertTrue(Type\is_scalar(''));
+        static::assertTrue(Type\is_scalar(Str\chr(0)));
+        static::assertTrue(Type\is_scalar(123));
+        static::assertTrue(Type\is_scalar(0));
+        static::assertTrue(Type\is_scalar(Math\INT16_MAX));
+        static::assertTrue(Type\is_scalar(Math\INFINITY));
+        static::assertTrue(Type\is_scalar(5.0));
+        static::assertTrue(Type\is_scalar(true));
 
-        self::assertFalse(Type\is_scalar(null));
-        self::assertFalse(Type\is_scalar(
+        static::assertFalse(Type\is_scalar(null));
+        static::assertFalse(Type\is_scalar(
             new class {
                 public function __toString(): string
                 {

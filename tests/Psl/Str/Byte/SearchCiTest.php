@@ -7,7 +7,7 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class SearchCiTest extends TestCase
+final class SearchCiTest extends TestCase
 {
 
     /**
@@ -15,7 +15,7 @@ class SearchCiTest extends TestCase
      */
     public function testSearchCi(?int $expected, string $haystack, string $needle, int $offset = 0): void
     {
-        self::assertSame($expected, Byte\search_ci($haystack, $needle, $offset));
+        static::assertSame($expected, Byte\search_ci($haystack, $needle, $offset));
     }
 
     public function provideData(): array

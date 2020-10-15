@@ -6,17 +6,16 @@ namespace Psl\Tests\Math;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
-use Psl\Iter;
 use Psl\Math;
 
-class MeanTest extends TestCase
+final class MeanTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testMean($expected, array $numbers): void
     {
-        self::assertSame($expected, Math\mean($numbers));
+        static::assertSame($expected, Math\mean($numbers));
     }
 
     public function provideData(): array

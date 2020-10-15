@@ -8,7 +8,7 @@ use Psl\Collection;
 use Psl\Collection\CollectionInterface;
 use Psl\Type;
 
-class ObjectTypeTest extends TypeTest
+final class ObjectTypeTest extends TypeTest
 {
     public function getType(): Type\Type
     {

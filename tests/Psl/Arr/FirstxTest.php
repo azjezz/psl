@@ -9,7 +9,7 @@ use Psl\Arr;
 use Psl\Exception;
 use Psl\Iter;
 
-class FirstxTest extends TestCase
+final class FirstxTest extends TestCase
 {
     /**
      * @dataProvider provideData

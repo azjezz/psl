@@ -7,7 +7,7 @@ namespace Psl\Tests\Type;
 use PHPUnit\Framework\TestCase;
 use Psl\Type;
 
-class IsArrayTest extends TestCase
+final class IsArrayTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -32,7 +32,7 @@ class IsArrayTest extends TestCase
 
             [
                 false,
-                (fn () => yield 5)(),
+                (static fn () => yield 5)(),
             ],
 
             [

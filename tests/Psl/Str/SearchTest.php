@@ -7,14 +7,14 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class SearchTest extends TestCase
+final class SearchTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testSearch(?int $expected, string $haystack, string $needle, int $offset = 0): void
     {
-        self::assertSame($expected, Str\search($haystack, $needle, $offset));
+        static::assertSame($expected, Str\search($haystack, $needle, $offset));
     }
 
     public function provideData(): array

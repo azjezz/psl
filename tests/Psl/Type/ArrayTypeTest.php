@@ -8,7 +8,7 @@ use Psl\Iter;
 use Psl\Str;
 use Psl\Type;
 
-class ArrayTypeTest extends TypeTest
+final class ArrayTypeTest extends TypeTest
 {
     public function getType(): Type\Type
     {
@@ -21,15 +21,15 @@ class ArrayTypeTest extends TypeTest
         yield [Iter\range(1, 10), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]];
         yield [Iter\range(1, 10), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]];
         yield [
-            Iter\map(Iter\range(1, 10), fn (int $value): string => (string) $value),
+            Iter\map(Iter\range(1, 10), static fn (int $value): string => (string) $value),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         ];
         yield [
-            Iter\map_keys(Iter\range(1, 10), fn (int $key): string => (string) $key),
+            Iter\map_keys(Iter\range(1, 10), static fn (int $key): string => (string) $key),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         ];
         yield [
-            Iter\map(Iter\range(1, 10), fn (int $value): string => Str\format('00%d', $value)),
+            Iter\map(Iter\range(1, 10), static fn (int $value): string => Str\format('00%d', $value)),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         ];
     }

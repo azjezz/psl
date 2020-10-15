@@ -7,14 +7,14 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class CapitalizeWordsTest extends TestCase
+final class CapitalizeWordsTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testCapitalizeWords(string $expected, string $value): void
     {
-        self::assertSame($expected, Byte\capitalize_words($value));
+        static::assertSame($expected, Byte\capitalize_words($value));
     }
 
     public function provideData(): array

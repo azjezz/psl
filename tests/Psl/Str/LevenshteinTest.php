@@ -7,7 +7,7 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class LevenshteinTest extends TestCase
+final class LevenshteinTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -20,7 +20,7 @@ class LevenshteinTest extends TestCase
         ?int $cor = null,
         ?int $cod = null
     ): void {
-        self::assertSame($expected, Str\levenshtein($a, $b, $coi, $cor, $cod));
+        static::assertSame($expected, Str\levenshtein($a, $b, $coi, $cor, $cod));
     }
 
     public function provideData(): array

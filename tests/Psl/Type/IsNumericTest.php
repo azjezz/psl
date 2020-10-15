@@ -7,21 +7,22 @@ namespace Psl\Tests\Type;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 use Psl\Type;
+use stdClass;
 
-class IsNumericTest extends TestCase
+final class IsNumericTest extends TestCase
 {
     public function testIsNumeric(): void
     {
-        self::assertTrue(Type\is_numeric(Math\NAN));
-        self::assertTrue(Type\is_numeric(1));
-        self::assertTrue(Type\is_numeric(1.0));
-        self::assertTrue(Type\is_numeric('1'));
-        self::assertTrue(Type\is_numeric('1.0'));
-        self::assertTrue(Type\is_numeric(Math\INFINITY));
-        self::assertTrue(Type\is_numeric(5.0));
+        static::assertTrue(Type\is_numeric(Math\NAN));
+        static::assertTrue(Type\is_numeric(1));
+        static::assertTrue(Type\is_numeric(1.0));
+        static::assertTrue(Type\is_numeric('1'));
+        static::assertTrue(Type\is_numeric('1.0'));
+        static::assertTrue(Type\is_numeric(Math\INFINITY));
+        static::assertTrue(Type\is_numeric(5.0));
 
-        self::assertFalse(Type\is_numeric([]));
-        self::assertFalse(Type\is_numeric(new \stdClass()));
-        self::assertFalse(Type\is_numeric('hello'));
+        static::assertFalse(Type\is_numeric([]));
+        static::assertFalse(Type\is_numeric(new stdClass()));
+        static::assertFalse(Type\is_numeric('hello'));
     }
 }

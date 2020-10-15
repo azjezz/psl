@@ -7,7 +7,7 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class ReplaceEveryTest extends TestCase
+final class ReplaceEveryTest extends TestCase
 {
 
     /**
@@ -15,7 +15,7 @@ class ReplaceEveryTest extends TestCase
      */
     public function testReplaceEvery(string $expected, string $haystack, iterable $replacements): void
     {
-        self::assertSame($expected, Str\replace_every($haystack, $replacements));
+        static::assertSame($expected, Str\replace_every($haystack, $replacements));
     }
 
     public function provideData(): array

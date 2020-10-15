@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl;
 use Psl\Exception\InvariantViolationException;
 
-class InvariantTest extends TestCase
+final class InvariantTest extends TestCase
 {
     public function testInvariant(): void
     {

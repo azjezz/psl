@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\DataStructure;
 
-use Psl;
 use Countable;
+use Psl;
 
 /**
  * An interface representing a stack data structure ( LIFO ).

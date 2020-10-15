@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Exception;
 use Psl\Math;
 
-class ToBaseTest extends TestCase
+final class ToBaseTest extends TestCase
 {
 
     /**
@@ -16,7 +16,7 @@ class ToBaseTest extends TestCase
      */
     public function testFromBase(string $expected, int $value, int $to_base): void
     {
-        self::assertSame($expected, Math\to_base($value, $to_base));
+        static::assertSame($expected, Math\to_base($value, $to_base));
     }
 
     public function provideData(): array

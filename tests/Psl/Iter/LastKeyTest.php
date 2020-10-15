@@ -7,7 +7,7 @@ namespace Psl\Tests\Iter;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 
-class LastKeyTest extends TestCase
+final class LastKeyTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -16,7 +16,7 @@ class LastKeyTest extends TestCase
     {
         $result = Iter\last_key($iterable);
 
-        self::assertSame($expected, $result);
+        static::assertSame($expected, $result);
     }
 
     public function provideData(): iterable
@@ -28,6 +28,6 @@ class LastKeyTest extends TestCase
         yield [null, []];
         yield [0, [null]];
         yield [1, [null, null]];
-        yield [[1, 2], (fn () => yield [1, 2] => 'hello')()];
+        yield [[1, 2], (static fn () => yield [1, 2] => 'hello')()];
     }
 }

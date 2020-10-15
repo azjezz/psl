@@ -6,17 +6,16 @@ namespace Psl\Tests\Arr;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
-use Psl\Collection;
 use Psl\Str;
 
-class SortWithKeysByTest extends TestCase
+final class SortWithKeysByTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testSortBy(array $expected, array $array, callable $scalar_fun, ?callable $comp = null): void
     {
-        self::assertSame($expected, Arr\sort_with_keys_by($array, $scalar_fun, $comp));
+        static::assertSame($expected, Arr\sort_with_keys_by($array, $scalar_fun, $comp));
     }
 
     public function provideData(): array
@@ -26,7 +25,7 @@ class SortWithKeysByTest extends TestCase
         $c          = ['a' => 'foo', 'b' => 'bar', 'c' => 'baz', 'd' => 'qux', 'e' => 'lax'];
         $expected   = [2 => $a, 0 => $b, 1 => $c];
         $array      = [$b, $c, $a];
-        $scalar_fun = fn ($arr) => Arr\count($arr);
+        $scalar_fun = static fn ($arr) => Arr\count($arr);
 
         return [
             [
@@ -45,7 +44,7 @@ class SortWithKeysByTest extends TestCase
                  *
                  * @psalm-pure
                  */
-                fn ($v) => $v,
+                static fn ($v) => $v,
             ],
 
             [
@@ -58,7 +57,7 @@ class SortWithKeysByTest extends TestCase
                  *
                  * @psalm-pure
                  */
-                fn ($v) => $v,
+                static fn ($v) => $v,
             ],
 
             [
@@ -71,7 +70,7 @@ class SortWithKeysByTest extends TestCase
                  *
                  * @psalm-pure
                  */
-                fn ($v) => $v,
+                static fn ($v) => $v,
                 /**
                  * @param string $a
                  * @param string $b
@@ -80,7 +79,7 @@ class SortWithKeysByTest extends TestCase
                  *
                  * @psalm-pure
                  */
-                fn (string $a, string $b) => Str\ord($a) > Str\ord($b) ? -1 : 1,
+                static fn (string $a, string $b) => Str\ord($a) > Str\ord($b) ? -1 : 1,
             ],
 
             [
@@ -93,7 +92,7 @@ class SortWithKeysByTest extends TestCase
                  *
                  * @psalm-pure
                  */
-                fn ($v) => $v,
+                static fn ($v) => $v,
             ],
 
             [
@@ -106,7 +105,7 @@ class SortWithKeysByTest extends TestCase
                  *
                  * @psalm-pure
                  */
-                fn ($v) => Str\Byte\reverse($v),
+                static fn ($v) => Str\Byte\reverse($v),
             ],
         ];
     }

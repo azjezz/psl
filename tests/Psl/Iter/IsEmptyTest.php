@@ -7,21 +7,21 @@ namespace Psl\Tests\Iter;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 
-class IsEmptyTest extends TestCase
+final class IsEmptyTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testIsEmpty(bool $expected, iterable $iterable): void
     {
-        self::assertSame($expected, Iter\is_empty($iterable));
+        static::assertSame($expected, Iter\is_empty($iterable));
     }
 
     public function provideData(): iterable
     {
         yield [true, []];
         yield [true, Iter\from_entries([])];
-        yield [true, (fn () => yield from [])()];
+        yield [true, (static fn () => yield from [])()];
 
         yield [false, [null]];
         yield [false, [false]];

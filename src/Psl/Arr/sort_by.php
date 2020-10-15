@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use function asort;
+use function uasort;
+
 /**
  * Returns a new array sorted by some scalar property of each value of the given
  * iterable, which is computed by the given function.
@@ -33,9 +36,9 @@ function sort_by(iterable $iterable, callable $scalar_func, ?callable $comparato
     }
 
     if (null !== $comparator) {
-        \uasort($order_by, $comparator);
+        uasort($order_by, $comparator);
     } else {
-        \asort($order_by);
+        asort($order_by);
     }
 
     $result = [];

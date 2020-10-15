@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 use Psl\Math;
 
-class MinTest extends TestCase
+final class MinTest extends TestCase
 {
 
     /**
@@ -16,7 +16,7 @@ class MinTest extends TestCase
      */
     public function testMin($expected, array $numbers): void
     {
-        self::assertSame($expected, Math\min($numbers));
+        static::assertSame($expected, Math\min($numbers));
     }
 
     public function provideData(): array

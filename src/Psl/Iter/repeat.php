@@ -6,7 +6,6 @@ namespace Psl\Iter;
 
 use Generator;
 use Psl;
-use Psl\Internal;
 use Psl\Math;
 
 /**

@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Iter;
 
-class FlattenTest extends TestCase
+final class FlattenTest extends TestCase
 {
     public function testFlatten(): void
     {
         $result = Iter\flatten([
             [1, 2, 3],
             new Collection\Map(['a' => 'b', 'c' => 'd', 'e' => 'f']),
-            (fn () => yield 'hey' => 'hello')()
+            (static fn () => yield 'hey' => 'hello')()
         ]);
 
         static::assertSame([

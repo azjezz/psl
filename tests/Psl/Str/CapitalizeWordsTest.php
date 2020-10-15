@@ -7,7 +7,7 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class CapitalizeWordsTest extends TestCase
+final class CapitalizeWordsTest extends TestCase
 {
 
     /**
@@ -15,7 +15,7 @@ class CapitalizeWordsTest extends TestCase
      */
     public function testCapitalizeWords(string $expected, string $value): void
     {
-        self::assertSame($expected, Str\capitalize_words($value));
+        static::assertSame($expected, Str\capitalize_words($value));
     }
 
     public function provideData(): array

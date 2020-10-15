@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 use Psl\Str;
 
-class PartitionTest extends TestCase
+final class PartitionTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testPartition(array $expected, array $array, callable $predicate): void
     {
-        self::assertSame($expected, Arr\partition($array, $predicate));
+        static::assertSame($expected, Arr\partition($array, $predicate));
     }
 
     public function provideData(): array
@@ -24,31 +24,31 @@ class PartitionTest extends TestCase
             [
                 [['bar', 'baz'], ['foo', 'qux']],
                 ['foo', 'bar', 'baz', 'qux'],
-                fn (string $str) => Str\starts_with($str, 'b'),
+                static fn (string $str) => Str\starts_with($str, 'b'),
             ],
 
             [
                 [['bar', 'baz'], ['foo', 'qux']],
                 ['foo', 'bar', 'baz', 'qux'],
-                fn (string $str) => Str\starts_with($str, 'b'),
+                static fn (string $str) => Str\starts_with($str, 'b'),
             ],
 
             [
                 [[], []],
                 [],
-                fn ($_) => false,
+                static fn ($_) => false,
             ],
 
             [
                 [[], ['foo', 'bar', 'baz', 'qux']],
                 ['foo', 'bar', 'baz', 'qux'],
-                fn (string $str) => false,
+                static fn (string $str) => false,
             ],
 
             [
                 [['foo', 'bar', 'baz', 'qux'], []],
                 ['foo', 'bar', 'baz', 'qux'],
-                fn (string $str) => true,
+                static fn (string $str) => true,
             ],
         ];
     }

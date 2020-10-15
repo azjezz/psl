@@ -17,7 +17,7 @@ namespace Psl\Iter;
  *          Iter\range(1, 5),
  *          static fn(int $accumulator, int $key, int $value): int => $accumulator + $value,
  *          0,
-  *     )
+ *     )
  *      => 15
  *
  *      Iter\reduce_with_keys(

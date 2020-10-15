@@ -7,14 +7,14 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class StartsWithCiTest extends TestCase
+final class StartsWithCiTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testStartsWithCi(bool $expected, string $haystack, string $prefix): void
     {
-        self::assertSame($expected, Byte\starts_with_ci($haystack, $prefix));
+        static::assertSame($expected, Byte\starts_with_ci($haystack, $prefix));
     }
 
     public function provideData(): array

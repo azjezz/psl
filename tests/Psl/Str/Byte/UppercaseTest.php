@@ -7,7 +7,7 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class UppercaseTest extends TestCase
+final class UppercaseTest extends TestCase
 {
 
     /**
@@ -15,7 +15,7 @@ class UppercaseTest extends TestCase
      */
     public function testUppercase(string $expected, string $str): void
     {
-        self::assertSame($expected, Byte\uppercase($str));
+        static::assertSame($expected, Byte\uppercase($str));
     }
 
     public function provideData(): array

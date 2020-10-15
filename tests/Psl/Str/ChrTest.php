@@ -7,14 +7,14 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class ChrTest extends TestCase
+final class ChrTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testChr(string $expected, int $value): void
     {
-        self::assertSame($expected, Str\chr($value));
+        static::assertSame($expected, Str\chr($value));
     }
 
     public function provideData(): array

@@ -11,6 +11,6 @@ final class ArgsTest extends TestCase
 {
     public function testArgs(): void
     {
-        self::assertSame($GLOBALS['argv'], Env\args());
+        static::assertSame($GLOBALS['argv'], Env\args());
     }
 }

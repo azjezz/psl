@@ -6,9 +6,8 @@ namespace Psl\Tests\Arr;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
-use Psl\Collection;
 
-class ConcatTest extends TestCase
+final class ConcatTest extends TestCase
 {
     /**
      * @dataProvider provideData

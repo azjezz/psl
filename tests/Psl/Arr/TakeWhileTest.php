@@ -7,7 +7,7 @@ namespace Psl\Tests\Arr;
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 
-class TakeWhileTest extends TestCase
+final class TakeWhileTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -16,14 +16,14 @@ class TakeWhileTest extends TestCase
     {
         $result = Arr\take_while($array, $callable);
 
-        self::assertSame($expected, $result);
+        static::assertSame($expected, $result);
     }
 
     public function provideData(): iterable
     {
-        yield [[], [1, 2, 3, 4, 5], fn (int $_): bool => false];
-        yield [[1, 2, 3], [1, 2, 3, 4, 5], fn (int $i) => $i <= 3];
-        yield [[1, 2], [1, 2, 3, 4, 5], fn (int $i) => $i <= 2];
-        yield [[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], fn (int $_) => true];
+        yield [[], [1, 2, 3, 4, 5], static fn (int $_): bool => false];
+        yield [[1, 2, 3], [1, 2, 3, 4, 5], static fn (int $i) => $i <= 3];
+        yield [[1, 2], [1, 2, 3, 4, 5], static fn (int $i) => $i <= 2];
+        yield [[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], static fn (int $_) => true];
     }
 }

@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 use Psl\Type;
 
-class IsIterableTest extends TestCase
+final class IsIterableTest extends TestCase
 {
     /**
      * @dataProvider provideIsIterableData
      */
     public function testIsIterable($value, bool $expected): void
     {
-        self::assertSame($expected, Type\is_iterable($value));
+        static::assertSame($expected, Type\is_iterable($value));
     }
 
     public function provideIsIterableData(): iterable
@@ -27,6 +27,6 @@ class IsIterableTest extends TestCase
         yield [Iter\to_iterator([1, 2]), true];
         yield [$this, false];
         yield [STDIN, false];
-        yield [(fn () => yield false)(), true];
+        yield [(static fn () => yield false)(), true];
     }
 }

@@ -7,14 +7,14 @@ namespace Psl\Tests\Arr;
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 
-class FilterNullsTest extends TestCase
+final class FilterNullsTest extends TestCase
 {
     public function testFilterNulls(): void
     {
-        self::assertCount(0, Arr\filter_nulls([]));
-        self::assertCount(0, Arr\filter_nulls([null, null]));
-        self::assertCount(1, Arr\filter_nulls([null, false]));
-        self::assertCount(1, Arr\filter_nulls([null, 'null']));
-        self::assertCount(1, Arr\filter_nulls(['null']));
+        static::assertCount(0, Arr\filter_nulls([]));
+        static::assertCount(0, Arr\filter_nulls([null, null]));
+        static::assertCount(1, Arr\filter_nulls([null, false]));
+        static::assertCount(1, Arr\filter_nulls([null, 'null']));
+        static::assertCount(1, Arr\filter_nulls(['null']));
     }
 }

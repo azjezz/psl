@@ -6,16 +6,15 @@ namespace Psl\Tests\Arr;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
-use Psl\Collection;
 
-class FlattenTest extends TestCase
+final class FlattenTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testFlatten(array $expected, array $arrays): void
     {
-        self::assertSame($expected, Arr\flatten($arrays));
+        static::assertSame($expected, Arr\flatten($arrays));
     }
 
     public function provideData(): array

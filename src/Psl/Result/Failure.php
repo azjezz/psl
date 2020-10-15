@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Result;
 
 use Exception;
-use Psl;
 
 /**
  * Represents the result of failed operation.

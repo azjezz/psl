@@ -7,7 +7,9 @@ namespace Psl\Tests\Arr;
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 
-class KeysTest extends TestCase
+use function array_keys;
+
+final class KeysTest extends TestCase
 {
     public function testValues(): void
     {
@@ -19,11 +21,11 @@ class KeysTest extends TestCase
 
         $keys = Arr\keys($array);
 
-        self::assertSameSize($keys, $array);
-        self::assertSame($keys, \array_keys($array));
+        static::assertSameSize($keys, $array);
+        static::assertSame($keys, array_keys($array));
 
         foreach ($array as $key => $value) {
-            self::assertTrue(Arr\contains($keys, $key));
+            static::assertTrue(Arr\contains($keys, $key));
         }
     }
 }

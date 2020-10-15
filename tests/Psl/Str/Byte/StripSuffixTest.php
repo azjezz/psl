@@ -7,14 +7,14 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class StripSuffixTest extends TestCase
+final class StripSuffixTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testStripSuffix(string $expected, string $haystack, string $suffix): void
     {
-        self::assertSame($expected, Byte\strip_suffix($haystack, $suffix));
+        static::assertSame($expected, Byte\strip_suffix($haystack, $suffix));
     }
 
     public function provideData(): array

@@ -7,14 +7,14 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class CapitalizeTest extends TestCase
+final class CapitalizeTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testCapitalize(string $expected, string $value): void
     {
-        self::assertSame($expected, Str\capitalize($value));
+        static::assertSame($expected, Str\capitalize($value));
     }
 
     public function provideData(): array

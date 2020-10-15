@@ -7,7 +7,7 @@ namespace Psl\Tests\Env;
 use PHPUnit\Framework\TestCase;
 use Psl\Env;
 
-class TempDirTest extends TestCase
+final class TempDirTest extends TestCase
 {
     public function testTempDir(): void
     {

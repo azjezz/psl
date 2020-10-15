@@ -14,8 +14,8 @@ final class ReproduceTest extends TestCase
 {
     public function testReproduce(): void
     {
-        self::assertSame([1], Iter\to_array((Iter\reproduce(Fun\identity(), 1))));
-        self::assertSame([1, 2, 3], Iter\to_array(Iter\reproduce(Fun\identity(), 3)));
+        static::assertSame([1], Iter\to_array((Iter\reproduce(Fun\identity(), 1))));
+        static::assertSame([1, 2, 3], Iter\to_array(Iter\reproduce(Fun\identity(), 3)));
     }
 
     public function testThrowsIfNumberIsLowerThan1(): void
@@ -31,8 +31,8 @@ final class ReproduceTest extends TestCase
         $result = Iter\reproduce(static fn () => 'hello');
         $result->seek((int) Math\INFINITY);
 
-        self::assertTrue($result->valid());
-        self::assertSame('hello', $result->current());
-        self::assertSame((int) Math\INFINITY, $result->key());
+        static::assertTrue($result->valid());
+        static::assertSame('hello', $result->current());
+        static::assertSame((int) Math\INFINITY, $result->key());
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
-use Generator;
 use Psl;
 
 /**

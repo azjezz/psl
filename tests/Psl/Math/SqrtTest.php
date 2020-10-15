@@ -7,7 +7,7 @@ namespace Psl\Tests\Math;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
-class SqrtTest extends TestCase
+final class SqrtTest extends TestCase
 {
 
     /**
@@ -15,7 +15,7 @@ class SqrtTest extends TestCase
      */
     public function testSqrt(float $expected, float $number): void
     {
-        self::assertSame($expected, Math\sqrt($number));
+        static::assertSame($expected, Math\sqrt($number));
     }
 
     public function provideData(): array

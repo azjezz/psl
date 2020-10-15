@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use function array_keys;
+
 /**
  * Return all the keys of an array.
  *
@@ -18,5 +20,5 @@ namespace Psl\Arr;
  */
 function keys(array $arr): array
 {
-    return \array_keys($arr);
+    return array_keys($arr);
 }

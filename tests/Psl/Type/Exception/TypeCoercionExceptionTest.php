@@ -10,7 +10,7 @@ use Psl\Collection;
 use Psl\Str;
 use Psl\Type;
 
-class TypeCoercionExceptionTest extends TestCase
+final class TypeCoercionExceptionTest extends TestCase
 {
     public function testIncorrectIterableKey(): void
     {
@@ -21,7 +21,7 @@ class TypeCoercionExceptionTest extends TestCase
                 4 => new Collection\Vector([1, 2, 3])
             ]);
 
-            self::fail(Str\format(
+            static::fail(Str\format(
                 'Expected "%s" exception to be thrown.',
                 Type\Exception\CoercionException::class
             ));
@@ -45,7 +45,7 @@ class TypeCoercionExceptionTest extends TestCase
         try {
             $type->coerce(new Collection\Map(['hello' => 'foo']));
 
-            self::fail(Str\format(
+            static::fail(Str\format(
                 'Expected "%s" exception to be thrown.',
                 Type\Exception\CoercionException::class
             ));

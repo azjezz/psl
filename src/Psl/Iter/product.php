@@ -34,7 +34,7 @@ function product(iterable ...$iterables): Iterator
         /** @psalm-var list<Iterator<Tk, Tv>> $iterators */
         $iterators = to_array(map(
             $iterables,
-            fn (iterable $iterable) => Iterator::create($iterable)
+            static fn (iterable $iterable) => Iterator::create($iterable)
         ));
 
         $numIterators = count($iterators);

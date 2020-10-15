@@ -7,29 +7,29 @@ namespace Psl\Tests\Iter;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 
-class AllTest extends TestCase
+final class AllTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testAll(bool $expected, iterable $iterable, callable $predicate): void
     {
-        self::assertSame($expected, Iter\all($iterable, $predicate));
+        static::assertSame($expected, Iter\all($iterable, $predicate));
     }
 
     public function provideData(): iterable
     {
-        yield [false, [false, true, true], fn (bool $value): bool => $value];
-        yield [false, [false, true, true], fn (bool $value): bool => !$value];
-        yield [true, [true, true, true], fn (bool $value): bool => $value];
-        yield [false, [true, true, true], fn (bool $value): bool => !$value];
-        yield [false, [false, false, false], fn (bool $value): bool => $value];
-        yield [true, [false, false, false], fn (bool $value): bool => !$value];
-        yield [true, [false, false, false], fn (bool $value): bool => true];
-        yield [false, [false, false, false], fn (bool $value): bool => false];
-        yield [false, [1, 2, 3], fn (int $i): bool => $i > 3];
-        yield [true, [4, 5, 6], fn (int $i): bool => $i > 3];
-        yield [false, [1, 2, 3, 4, 5, 6], fn (int $i): bool => $i > 3];
-        yield [true, [], fn (bool $value): bool => false];
+        yield [false, [false, true, true], static fn (bool $value): bool => $value];
+        yield [false, [false, true, true], static fn (bool $value): bool => !$value];
+        yield [true, [true, true, true], static fn (bool $value): bool => $value];
+        yield [false, [true, true, true], static fn (bool $value): bool => !$value];
+        yield [false, [false, false, false], static fn (bool $value): bool => $value];
+        yield [true, [false, false, false], static fn (bool $value): bool => !$value];
+        yield [true, [false, false, false], static fn (bool $value): bool => true];
+        yield [false, [false, false, false], static fn (bool $value): bool => false];
+        yield [false, [1, 2, 3], static fn (int $i): bool => $i > 3];
+        yield [true, [4, 5, 6], static fn (int $i): bool => $i > 3];
+        yield [false, [1, 2, 3, 4, 5, 6], static fn (int $i): bool => $i > 3];
+        yield [true, [], static fn (bool $value): bool => false];
     }
 }

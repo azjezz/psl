@@ -7,19 +7,19 @@ namespace Psl\Tests\Iter;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 
-class ReverseTest extends TestCase
+final class ReverseTest extends TestCase
 {
     public function testReverse(): void
     {
         $result = Iter\reverse(['foo', 'bar', 'baz', 'qux']);
 
-        self::assertSame(['qux', 'baz', 'bar', 'foo'], Iter\to_array_with_keys($result));
+        static::assertSame(['qux', 'baz', 'bar', 'foo'], Iter\to_array_with_keys($result));
     }
 
     public function testReverseEarlyReturnForEmptyIterables(): void
     {
         $result = Iter\reverse(Iter\to_iterator([]));
 
-        self::assertSame([], Iter\to_array($result));
+        static::assertSame([], Iter\to_array($result));
     }
 }

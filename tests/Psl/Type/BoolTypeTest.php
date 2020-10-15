@@ -6,7 +6,7 @@ namespace Psl\Tests\Type;
 
 use Psl\Type;
 
-class BoolTypeTest extends TypeTest
+final class BoolTypeTest extends TypeTest
 {
     public function getType(): Type\Type
     {

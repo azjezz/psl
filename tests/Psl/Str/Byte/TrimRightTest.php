@@ -7,7 +7,7 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class TrimRightTest extends TestCase
+final class TrimRightTest extends TestCase
 {
 
     /**
@@ -15,7 +15,7 @@ class TrimRightTest extends TestCase
      */
     public function testTrimRight(string $expected, string $string, ?string $chars = null): void
     {
-        self::assertSame($expected, Byte\trim_right($string, $chars));
+        static::assertSame($expected, Byte\trim_right($string, $chars));
     }
 
     public function provideData(): array

@@ -23,8 +23,5 @@ function convert_encoding(string $string, string $from_encoding, string $to_enco
     Psl\invariant(Internal\is_encoding_valid($from_encoding), '$from_encoding is invalid.');
     Psl\invariant(Internal\is_encoding_valid($to_encoding), '$to_encoding is invalid.');
 
-    $result = mb_convert_encoding($string, $to_encoding, $from_encoding);
-    Psl\invariant(false !== $result, 'Unable to convert $string from $from_encoding to $to_encoding.');
-
-    return $result;
+    return mb_convert_encoding($string, $to_encoding, $from_encoding);
 }

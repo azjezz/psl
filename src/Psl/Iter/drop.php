@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Generator;
 use Psl;
 
 /**

@@ -9,14 +9,14 @@ use Psl\Arr;
 use Psl\Iter;
 use Psl\Math;
 
-class MedianTest extends TestCase
+final class MedianTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testMedian($expected, array $numbers): void
     {
-        self::assertSame($expected, Math\median($numbers));
+        static::assertSame($expected, Math\median($numbers));
     }
 
     public function provideData(): array

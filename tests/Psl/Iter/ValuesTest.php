@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Iter;
 
-class ValuesTest extends TestCase
+final class ValuesTest extends TestCase
 {
     /**
      * @dataProvider provideTestValues

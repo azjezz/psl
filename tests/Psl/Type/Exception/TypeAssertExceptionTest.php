@@ -10,7 +10,7 @@ use Psl\Collection;
 use Psl\Str;
 use Psl\Type;
 
-class TypeAssertExceptionTest extends TestCase
+final class TypeAssertExceptionTest extends TestCase
 {
     public function testIncorrectIterableKey(): void
     {
@@ -21,7 +21,7 @@ class TypeAssertExceptionTest extends TestCase
                 'hello' => new Collection\Vector([1, 2, 3])
             ]);
 
-            self::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
         } catch (Type\Exception\AssertException $e) {
             static::assertSame('int', $e->getExpectedType());
             static::assertSame('string', $e->getActualType());
@@ -42,7 +42,7 @@ class TypeAssertExceptionTest extends TestCase
         try {
             $type->assert(STDIN);
 
-            self::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
         } catch (Type\Exception\AssertException $e) {
             static::assertSame('resource<curl>', $e->getExpectedType());
             static::assertSame('resource<stream>', $e->getActualType());

@@ -9,33 +9,33 @@ use Psl\Exception;
 use Psl\Math;
 use Psl\SecureRandom;
 
-class IntTest extends TestCase
+final class IntTest extends TestCase
 {
     public function testInt(): void
     {
         $random = SecureRandom\int();
 
-        self::assertIsInt($random);
-        self::assertGreaterThanOrEqual(Math\INT64_MIN, $random);
-        self::assertLessThanOrEqual(Math\INT64_MAX, $random);
+        static::assertIsInt($random);
+        static::assertGreaterThanOrEqual(Math\INT64_MIN, $random);
+        static::assertLessThanOrEqual(Math\INT64_MAX, $random);
     }
 
     public function testIntWithASpecificMin(): void
     {
         $random = SecureRandom\int(10);
 
-        self::assertIsInt($random);
-        self::assertGreaterThanOrEqual(10, $random);
-        self::assertLessThanOrEqual(Math\INT64_MAX, $random);
+        static::assertIsInt($random);
+        static::assertGreaterThanOrEqual(10, $random);
+        static::assertLessThanOrEqual(Math\INT64_MAX, $random);
     }
 
     public function testIntWithASpecificRange(): void
     {
         $random = SecureRandom\int(20, 1200);
 
-        self::assertIsInt($random);
-        self::assertGreaterThanOrEqual(20, $random);
-        self::assertLessThanOrEqual(1200, $random);
+        static::assertIsInt($random);
+        static::assertGreaterThanOrEqual(20, $random);
+        static::assertLessThanOrEqual(1200, $random);
     }
 
     public function testIntWithMinGreaterThanMax(): void

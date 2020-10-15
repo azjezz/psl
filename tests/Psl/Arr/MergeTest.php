@@ -6,16 +6,15 @@ namespace Psl\Tests\Arr;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
-use Psl\Collection;
 
-class MergeTest extends TestCase
+final class MergeTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testMerge(array $expected, array $array, array ...$arrays): void
     {
-        self::assertSame($expected, Arr\merge($array, ...$arrays));
+        static::assertSame($expected, Arr\merge($array, ...$arrays));
     }
 
     public function provideData(): array

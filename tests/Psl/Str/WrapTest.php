@@ -7,7 +7,7 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class WrapTest extends TestCase
+final class WrapTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -19,7 +19,7 @@ class WrapTest extends TestCase
         string $break = "\n",
         bool $cut = false
     ): void {
-        self::assertSame($expected, Str\wrap($str, $width, $break, $cut));
+        static::assertSame($expected, Str\wrap($str, $width, $break, $cut));
     }
 
     public function provideData(): array

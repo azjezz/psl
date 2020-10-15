@@ -7,7 +7,7 @@ namespace Psl\Tests\Arr;
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 
-class DropTest extends TestCase
+final class DropTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -16,7 +16,7 @@ class DropTest extends TestCase
     {
         $result = Arr\drop($array, $n);
 
-        self::assertSame($expected, $result);
+        static::assertSame($expected, $result);
     }
 
     public function provideData(): iterable

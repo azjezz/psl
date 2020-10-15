@@ -4,51 +4,50 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Math;
 
+use Generator;
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 use Psl\Math;
 use Psl\Str;
 
-class MaxByTest extends TestCase
+final class MaxByTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testMaxBy($expected, array $values, callable $fun): void
     {
-        self::assertSame($expected, Math\max_by($values, $fun));
+        static::assertSame($expected, Math\max_by($values, $fun));
     }
 
-    public function provideData(): array
+    public function provideData(): Generator
     {
-        return [
+        yield [
+            'bazqux',
+            ['foo', 'bar', 'baz', 'qux', 'foobar', 'bazqux'],
+            static fn ($value) => Str\length($value),
+        ];
+
+        yield [
+            ['foo', 'bar', 'baz'],
             [
-                'bazqux',
-                ['foo', 'bar', 'baz', 'qux', 'foobar', 'bazqux'],
-                fn ($value) => Str\length($value)
+                ['foo'],
+                ['foo', 'bar'],
+                ['foo', 'bar', 'baz']
             ],
+            static fn ($arr) => Arr\count($arr),
+        ];
 
-            [
-                ['foo', 'bar', 'baz'],
-                [
-                    ['foo'],
-                    ['foo', 'bar'],
-                    ['foo', 'bar', 'baz']
-                ],
-                fn ($arr) => Arr\count($arr)
-            ],
+        yield [
+            9,
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            static fn ($i) => $i,
+        ];
 
-                [
-                9,
-                [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-                fn ($i) => $i
-            ],
-
-                [
-                null,
-                [],
-                fn ($i) => $i
-            ]
+        yield [
+            null,
+            [],
+            static fn ($i) => $i,
         ];
     }
 }

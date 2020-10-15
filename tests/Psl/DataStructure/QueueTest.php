@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\DataStructure;
 
+use PHPUnit\Framework\TestCase;
 use Psl;
 use Psl\DataStructure;
-use PHPUnit\Framework\TestCase;
 
 final class QueueTest extends TestCase
 {
@@ -17,12 +17,12 @@ final class QueueTest extends TestCase
         $queue->enqueue('hey');
         $queue->enqueue('hi');
 
-        self::assertCount(3, $queue);
-        self::assertSame('hello', $queue->dequeue());
-        self::assertCount(2, $queue);
-        self::assertSame('hey', $queue->dequeue());
-        self::assertCount(1, $queue);
-        self::assertSame('hi', $queue->dequeue());
+        static::assertCount(3, $queue);
+        static::assertSame('hello', $queue->dequeue());
+        static::assertCount(2, $queue);
+        static::assertSame('hey', $queue->dequeue());
+        static::assertCount(1, $queue);
+        static::assertSame('hi', $queue->dequeue());
     }
 
     public function testPeekDoesNotRemoveTheNode(): void
@@ -32,18 +32,18 @@ final class QueueTest extends TestCase
         $queue->enqueue('hey');
         $queue->enqueue('hi');
 
-        self::assertCount(3, $queue);
-        self::assertSame('hello', $queue->peek());
-        self::assertCount(3, $queue);
-        self::assertSame('hello', $queue->peek());
+        static::assertCount(3, $queue);
+        static::assertSame('hello', $queue->peek());
+        static::assertCount(3, $queue);
+        static::assertSame('hello', $queue->peek());
     }
 
     public function testPeekReturnsNullWhenTheQueueIsEmpty(): void
     {
         $queue = new DataStructure\Queue();
 
-        self::assertCount(0, $queue);
-        self::assertNull($queue->peek());
+        static::assertCount(0, $queue);
+        static::assertNull($queue->peek());
     }
 
     public function testPullDoesRemoveTheNode(): void
@@ -53,22 +53,22 @@ final class QueueTest extends TestCase
         $queue->enqueue('hey');
         $queue->enqueue('hi');
 
-        self::assertCount(3, $queue);
-        self::assertSame('hello', $queue->pull());
-        self::assertCount(2, $queue);
-        self::assertSame('hey', $queue->pull());
-        self::assertCount(1, $queue);
-        self::assertSame('hi', $queue->pull());
-        self::assertCount(0, $queue);
-        self::assertNull($queue->pull());
+        static::assertCount(3, $queue);
+        static::assertSame('hello', $queue->pull());
+        static::assertCount(2, $queue);
+        static::assertSame('hey', $queue->pull());
+        static::assertCount(1, $queue);
+        static::assertSame('hi', $queue->pull());
+        static::assertCount(0, $queue);
+        static::assertNull($queue->pull());
     }
 
     public function testPullReturnsNullWhenTheQueueIsEmpty(): void
     {
         $queue = new DataStructure\Queue();
 
-        self::assertCount(0, $queue);
-        self::assertNull($queue->pull());
+        static::assertCount(0, $queue);
+        static::assertNull($queue->pull());
     }
 
     public function testDequeueThrowsWhenTheQueueIsEmpty(): void

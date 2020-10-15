@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Exception;
 use Psl\Str\Byte;
 
-class SliceTest extends TestCase
+final class SliceTest extends TestCase
 {
 
     /**
@@ -16,7 +16,7 @@ class SliceTest extends TestCase
      */
     public function testSlice(string $expected, string $string, int $offset, ?int $length = null): void
     {
-        self::assertSame($expected, Byte\slice($string, $offset, $length));
+        static::assertSame($expected, Byte\slice($string, $offset, $length));
     }
 
     public function provideData(): array

@@ -7,14 +7,14 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class ChrTest extends TestCase
+final class ChrTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testChr(string $expected, int $value): void
     {
-        self::assertSame($expected, Byte\chr($value));
+        static::assertSame($expected, Byte\chr($value));
     }
 
     public function provideData(): array

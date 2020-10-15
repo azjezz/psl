@@ -7,14 +7,14 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class OrdTest extends TestCase
+final class OrdTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testOrd(int $expected, string $value): void
     {
-        self::assertSame($expected, Byte\ord($value));
+        static::assertSame($expected, Byte\ord($value));
     }
 
     public function provideData(): array

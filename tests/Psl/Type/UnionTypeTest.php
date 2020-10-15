@@ -8,7 +8,7 @@ use Psl\Collection\CollectionInterface;
 use Psl\Collection\IndexAccessInterface;
 use Psl\Type;
 
-class UnionTypeTest extends TypeTest
+final class UnionTypeTest extends TypeTest
 {
     public function getType(): Type\Type
     {

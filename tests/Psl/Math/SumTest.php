@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 use Psl\Math;
 
-class SumTest extends TestCase
+final class SumTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testSum(int $expected, array $numbers): void
     {
-        self::assertSame($expected, Math\sum($numbers));
+        static::assertSame($expected, Math\sum($numbers));
     }
 
     public function provideData(): array

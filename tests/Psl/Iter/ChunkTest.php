@@ -7,7 +7,7 @@ namespace Psl\Tests\Iter;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 
-class ChunkTest extends TestCase
+final class ChunkTest extends TestCase
 {
     /**
      * @psalm-template T
@@ -21,7 +21,7 @@ class ChunkTest extends TestCase
     {
         $chunks = Iter\chunk($iterable, $size);
 
-        self::assertSame($expected, Iter\to_array($chunks));
+        static::assertSame($expected, Iter\to_array($chunks));
     }
 
     public function provideData(): iterable

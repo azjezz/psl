@@ -8,13 +8,13 @@ use PHPUnit\Framework\TestCase;
 use Psl\Math;
 use Psl\Type;
 
-class IsNaNTest extends TestCase
+final class IsNaNTest extends TestCase
 {
     public function testIsNaN(): void
     {
-        self::assertTrue(Type\is_nan(Math\NAN));
+        static::assertTrue(Type\is_nan(Math\NAN));
 
-        self::assertFalse(Type\is_nan(Math\INFINITY));
-        self::assertFalse(Type\is_nan(5.0));
+        static::assertFalse(Type\is_nan(Math\INFINITY));
+        static::assertFalse(Type\is_nan(5.0));
     }
 }
