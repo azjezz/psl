@@ -18,17 +18,17 @@ final class PasswordTest extends TestCase
     {
         $algorithms = Password\algorithms();
 
-        self::assertContains(Password\DEFAULT_ALGORITHM, $algorithms);
-        self::assertContains(Password\BCRYPT_ALGORITHM, $algorithms);
-        self::assertContains(Password\ARGON2I_ALGORITHM, $algorithms);
-        self::assertContains(Password\ARGON2ID_ALGORITHM, $algorithms);
+        static::assertContains(Password\DEFAULT_ALGORITHM, $algorithms);
+        static::assertContains(Password\BCRYPT_ALGORITHM, $algorithms);
+        static::assertContains(Password\ARGON2I_ALGORITHM, $algorithms);
+        static::assertContains(Password\ARGON2ID_ALGORITHM, $algorithms);
 
         $algos = Arr\map(
             password_algos(),
-            fn (string $value): string => PASSWORD_BCRYPT === $value ? Password\BCRYPT_ALGORITHM : $value
+            static fn (string $value): string => PASSWORD_BCRYPT === $value ? Password\BCRYPT_ALGORITHM : $value
         );
 
-        self::assertSame($algos, $algorithms);
+        static::assertSame($algos, $algorithms);
     }
 
     /**
@@ -40,13 +40,13 @@ final class PasswordTest extends TestCase
             'cost' => 8
         ]);
 
-        self::assertTrue(Password\verify($password, $hash));
+        static::assertTrue(Password\verify($password, $hash));
 
         $information = Password\get_information($hash);
-        self::assertSame(Password\BCRYPT_ALGORITHM, $information['algorithm']);
-        self::assertSame(8, $information['options']['cost']);
+        static::assertSame(Password\BCRYPT_ALGORITHM, $information['algorithm']);
+        static::assertSame(8, $information['options']['cost']);
 
-        self::assertFalse(Password\needs_rehash($hash, Password\BCRYPT_ALGORITHM, [
+        static::assertFalse(Password\needs_rehash($hash, Password\BCRYPT_ALGORITHM, [
             'cost' => 8
         ]));
     }
@@ -58,15 +58,15 @@ final class PasswordTest extends TestCase
     {
         $hash = Password\hash($password, Password\ARGON2I_ALGORITHM);
 
-        self::assertTrue(Password\verify($password, $hash));
+        static::assertTrue(Password\verify($password, $hash));
 
         $information = Password\get_information($hash);
-        self::assertSame(Password\ARGON2I_ALGORITHM, $information['algorithm']);
-        self::assertSame(Password\ARGON2_DEFAULT_MEMORY_COST, $information['options']['memory_cost']);
-        self::assertSame(Password\ARGON2_DEFAULT_TIME_COST, $information['options']['time_cost']);
-        self::assertSame(Password\ARGON2_DEFAULT_THREADS, $information['options']['threads']);
+        static::assertSame(Password\ARGON2I_ALGORITHM, $information['algorithm']);
+        static::assertSame(Password\ARGON2_DEFAULT_MEMORY_COST, $information['options']['memory_cost']);
+        static::assertSame(Password\ARGON2_DEFAULT_TIME_COST, $information['options']['time_cost']);
+        static::assertSame(Password\ARGON2_DEFAULT_THREADS, $information['options']['threads']);
 
-        self::assertFalse(Password\needs_rehash($hash, Password\ARGON2I_ALGORITHM));
+        static::assertFalse(Password\needs_rehash($hash, Password\ARGON2I_ALGORITHM));
     }
 
     public function providePasswords(): iterable

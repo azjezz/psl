@@ -7,14 +7,14 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class LengthTest extends TestCase
+final class LengthTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testLength(int $expected, string $str): void
     {
-        self::assertSame($expected, Str\length($str));
+        static::assertSame($expected, Str\length($str));
     }
 
     public function provideData(): array

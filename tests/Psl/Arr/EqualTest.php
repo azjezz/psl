@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 use Psl\Collection;
 
-class EqualTest extends TestCase
+final class EqualTest extends TestCase
 {
     /**
      * @dataProvider provideData

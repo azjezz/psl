@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Iter;
 
-class FlipTest extends TestCase
+final class FlipTest extends TestCase
 {
     public function testFlip(): void
     {

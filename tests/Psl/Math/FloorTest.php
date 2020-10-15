@@ -7,14 +7,14 @@ namespace Psl\Tests\Math;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
-class FloorTest extends TestCase
+final class FloorTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testFloor(float $expected, float $number): void
     {
-        self::assertSame($expected, Math\floor($number));
+        static::assertSame($expected, Math\floor($number));
     }
 
     public function provideData(): array

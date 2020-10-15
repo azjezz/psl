@@ -9,13 +9,13 @@ use Psl;
 use Psl\Iter;
 use Psl\Math;
 
-class RepeatTest extends TestCase
+final class RepeatTest extends TestCase
 {
     public function testRepeat(): void
     {
         $result = Iter\repeat(42, 5);
         
-        self::assertSame([42, 42, 42, 42, 42], Iter\to_array($result));
+        static::assertSame([42, 42, 42, 42, 42], Iter\to_array($result));
     }
 
     public function testRepeatThrowsIfNumIsNegative(): void
@@ -31,8 +31,8 @@ class RepeatTest extends TestCase
         $result = Iter\repeat('hello');
         $result->seek((int) Math\INFINITY);
 
-        self::assertTrue($result->valid());
-        self::assertSame('hello', $result->current());
-        self::assertSame((int) Math\INFINITY, $result->key());
+        static::assertTrue($result->valid());
+        static::assertSame('hello', $result->current());
+        static::assertSame((int) Math\INFINITY, $result->key());
     }
 }

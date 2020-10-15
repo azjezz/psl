@@ -19,7 +19,6 @@ use function usort;
  * @psalm-param array<Tk, Tv>                  $array
  * @psalm-param (callable(Tv, Tv): int)|null   $comparator
  *
- * @return array
  *
  * @psalm-return list<Tv>
  */

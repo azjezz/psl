@@ -7,7 +7,7 @@ namespace Psl\Tests\Iter;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 
-class FilterTest extends TestCase
+final class FilterTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -16,21 +16,21 @@ class FilterTest extends TestCase
     {
         $result = Iter\filter($iterable, $predicate);
 
-        self::assertSame($expected, Iter\to_array_with_keys($result));
+        static::assertSame($expected, Iter\to_array_with_keys($result));
     }
 
     public function provideData(): iterable
     {
         yield  [[], []];
         yield  [['a', 'b'], ['a', 'b']];
-        yield  [[], ['a', 'b'], fn () => false];
-        yield  [['a', 'b'], ['a', 'b'], fn (string $_): bool => true];
-        yield  [['a'], ['a', 'b'], fn (string $v): bool => 'b' !== $v];
+        yield  [[], ['a', 'b'], static fn () => false];
+        yield  [['a', 'b'], ['a', 'b'], static fn (string $_): bool => true];
+        yield  [['a'], ['a', 'b'], static fn (string $v): bool => 'b' !== $v];
 
         yield  [['a', 'b'], Iter\Iterator::create(['a', 'b'])];
-        yield  [[], Iter\Iterator::create(['a', 'b']), fn () => false];
-        yield  [['a', 'b'], Iter\Iterator::create(['a', 'b']), fn (string $_): bool => true];
-        yield  [['a'], Iter\Iterator::create(['a', 'b']), fn (string $v): bool => 'b' !== $v];
+        yield  [[], Iter\Iterator::create(['a', 'b']), static fn () => false];
+        yield  [['a', 'b'], Iter\Iterator::create(['a', 'b']), static fn (string $_): bool => true];
+        yield  [['a'], Iter\Iterator::create(['a', 'b']), static fn (string $v): bool => 'b' !== $v];
 
         yield  [['a', 'b'], (static function () {
             yield 'a';
@@ -39,14 +39,14 @@ class FilterTest extends TestCase
         yield  [[], (static function () {
             yield 'a';
             yield 'b';
-        })(), fn () => false];
+        })(), static fn () => false];
         yield  [['a', 'b'], (static function () {
             yield 'a';
             yield 'b';
-        })(), fn (string $_): bool => true];
+        })(), static fn (string $_): bool => true];
         yield  [['a'], (static function () {
             yield 'a';
             yield 'b';
-        })(), fn (string $v): bool => 'b' !== $v];
+        })(), static fn (string $v): bool => 'b' !== $v];
     }
 }

@@ -7,7 +7,7 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class EndsWithCiTest extends TestCase
+final class EndsWithCiTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -15,9 +15,9 @@ class EndsWithCiTest extends TestCase
     public function testEndsWithCi(bool $expected, string $haystack, string $suffix): void
     {
         if (null === Str\search_ci($haystack, $suffix)) {
-            self::assertFalse(Str\ends_with_ci($haystack, $suffix));
+            static::assertFalse(Str\ends_with_ci($haystack, $suffix));
         } else {
-            self::assertSame($expected, Str\ends_with_ci($haystack, $suffix));
+            static::assertSame($expected, Str\ends_with_ci($haystack, $suffix));
         }
     }
 

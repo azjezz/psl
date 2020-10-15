@@ -7,14 +7,14 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class ReverseTest extends TestCase
+final class ReverseTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testReverse(string $expected, string $input): void
     {
-        self::assertSame($expected, Byte\reverse($input));
+        static::assertSame($expected, Byte\reverse($input));
     }
 
     public function provideData(): array

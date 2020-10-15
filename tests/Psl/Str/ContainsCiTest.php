@@ -7,14 +7,14 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class ContainsCiTest extends TestCase
+final class ContainsCiTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testContainsCi(bool $expected, string $haystack, string $needle, int $offset = 0): void
     {
-        self::assertSame($expected, Str\contains_ci($haystack, $needle, $offset));
+        static::assertSame($expected, Str\contains_ci($haystack, $needle, $offset));
     }
 
     public function provideData(): array

@@ -7,7 +7,7 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class StartsWithCiTest extends TestCase
+final class StartsWithCiTest extends TestCase
 {
 
     /**
@@ -15,7 +15,7 @@ class StartsWithCiTest extends TestCase
      */
     public function testStartsWithCi(bool $expected, string $haystack, string $prefix): void
     {
-        self::assertSame($expected, Str\starts_with_ci($haystack, $prefix));
+        static::assertSame($expected, Str\starts_with_ci($haystack, $prefix));
     }
 
     public function provideData(): array

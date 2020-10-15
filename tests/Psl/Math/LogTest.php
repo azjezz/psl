@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Psl\Exception;
 use Psl\Math;
 
-class LogTest extends TestCase
+final class LogTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testLog(float $expected, float $number, ?float $base = null): void
     {
-        self::assertSame($expected, Math\log($number, $base));
+        static::assertSame($expected, Math\log($number, $base));
     }
 
     public function provideData(): array

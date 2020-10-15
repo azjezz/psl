@@ -7,7 +7,7 @@ namespace Psl\Tests\Iter;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 
-class MergeTest extends TestCase
+final class MergeTest extends TestCase
 {
     public function testMap(): void
     {

@@ -7,7 +7,7 @@ namespace Psl\Tests\Arr;
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 
-class FilterKeysTest extends TestCase
+final class FilterKeysTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -16,15 +16,15 @@ class FilterKeysTest extends TestCase
     {
         $result = Arr\filter_keys($array, $predicate);
 
-        self::assertSame($expected, $result);
+        static::assertSame($expected, $result);
     }
 
     public function provideData(): iterable
     {
         yield  [[], []];
         yield  [[1 => 'b'], ['a', 'b']];
-        yield  [[], ['a', 'b'], fn () => false];
-        yield  [['a', 'b'], ['a', 'b'], fn (int $_): bool => true];
-        yield  [['a'], ['a', 'b'], fn (int $k): bool => 1 !== $k];
+        yield  [[], ['a', 'b'], static fn () => false];
+        yield  [['a', 'b'], ['a', 'b'], static fn (int $_): bool => true];
+        yield  [['a'], ['a', 'b'], static fn (int $k): bool => 1 !== $k];
     }
 }

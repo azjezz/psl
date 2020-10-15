@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 use Psl\Exception;
 
-class RandomTest extends TestCase
+final class RandomTest extends TestCase
 {
     public function testRandom(): void
     {

@@ -7,14 +7,14 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class StripPrefixTest extends TestCase
+final class StripPrefixTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testStripPrefix(string $expected, string $haystack, string $prefix): void
     {
-        self::assertSame($expected, Byte\strip_prefix($haystack, $prefix));
+        static::assertSame($expected, Byte\strip_prefix($haystack, $prefix));
     }
 
     public function provideData(): array

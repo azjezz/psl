@@ -7,7 +7,7 @@ namespace Psl\Tests\Math;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
-class RoundTest extends TestCase
+final class RoundTest extends TestCase
 {
 
     /**
@@ -15,7 +15,7 @@ class RoundTest extends TestCase
      */
     public function testRound(float $expected, float $number, int $precision = 0): void
     {
-        self::assertSame($expected, Math\round($number, $precision));
+        static::assertSame($expected, Math\round($number, $precision));
     }
 
     public function provideData(): array

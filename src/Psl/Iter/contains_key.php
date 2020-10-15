@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Psl\Arr;
-
 /**
  * Returns true if the given iterable contains the key.
  *

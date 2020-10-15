@@ -6,7 +6,7 @@ namespace Psl\Tests\Type;
 
 use Psl\Type;
 
-class ArrayKeyTypeTest extends TypeTest
+final class ArrayKeyTypeTest extends TypeTest
 {
     public function getType(): Type\Type
     {

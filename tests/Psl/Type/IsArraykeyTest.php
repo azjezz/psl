@@ -9,20 +9,20 @@ use Psl\Math;
 use Psl\Str;
 use Psl\Type;
 
-class IsArraykeyTest extends TestCase
+final class IsArraykeyTest extends TestCase
 {
     public function testIsArraykey(): void
     {
-        self::assertTrue(Type\is_arraykey(''));
-        self::assertTrue(Type\is_arraykey(Str\chr(0)));
-        self::assertTrue(Type\is_arraykey(123));
-        self::assertTrue(Type\is_arraykey(0));
-        self::assertTrue(Type\is_arraykey(Math\INT16_MAX));
+        static::assertTrue(Type\is_arraykey(''));
+        static::assertTrue(Type\is_arraykey(Str\chr(0)));
+        static::assertTrue(Type\is_arraykey(123));
+        static::assertTrue(Type\is_arraykey(0));
+        static::assertTrue(Type\is_arraykey(Math\INT16_MAX));
 
-        self::assertFalse(Type\is_arraykey(5.0));
-        self::assertFalse(Type\is_arraykey(true));
-        self::assertFalse(Type\is_arraykey(null));
-        self::assertFalse(Type\is_arraykey(
+        static::assertFalse(Type\is_arraykey(5.0));
+        static::assertFalse(Type\is_arraykey(true));
+        static::assertFalse(Type\is_arraykey(null));
+        static::assertFalse(Type\is_arraykey(
             new class {
                 public function __toString(): string
                 {

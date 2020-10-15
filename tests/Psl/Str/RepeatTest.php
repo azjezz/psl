@@ -7,14 +7,14 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class RepeatTest extends TestCase
+final class RepeatTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testRepeat(string $expected, string $string, int $multiplier): void
     {
-        self::assertSame($expected, Str\repeat($string, $multiplier));
+        static::assertSame($expected, Str\repeat($string, $multiplier));
     }
 
     public function provideData(): array

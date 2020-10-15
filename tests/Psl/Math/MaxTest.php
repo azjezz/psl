@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace Psl\Tests\Math;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Iter;
 use Psl\Math;
 
-class MaxTest extends TestCase
+final class MaxTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testMax($expected, array $numbers): void
     {
-        self::assertSame($expected, Math\max($numbers));
+        static::assertSame($expected, Math\max($numbers));
     }
 
     public function provideData(): array

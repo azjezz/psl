@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use function array_key_first;
+
 /**
  * Get the first key of an array, if the array is empty, null will be returned.
  *
@@ -17,5 +19,5 @@ namespace Psl\Arr;
  */
 function first_key(array $array)
 {
-    return \array_key_first($array);
+    return array_key_first($array);
 }

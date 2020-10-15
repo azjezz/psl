@@ -20,40 +20,40 @@ final class IteratorTest extends TestCase
 
     public function testCreateFromFactory(): void
     {
-        $iterator = Iter\Iterator::from((fn () => yield from [1, 2, 3]));
+        $iterator = Iter\Iterator::from((static fn () => yield from [1, 2, 3]));
 
         static::assertCount(3, $iterator);
     }
 
     public function testSeek(): void
     {
-        $iterator = new Iter\Iterator((fn () => yield from [1, 2, 3, 4, 5])());
+        $iterator = new Iter\Iterator((static fn () => yield from [1, 2, 3, 4, 5])());
 
-        self::assertSame(1, $iterator->current());
+        static::assertSame(1, $iterator->current());
         $iterator->next();
-        self::assertSame(2, $iterator->current());
+        static::assertSame(2, $iterator->current());
         $iterator->next();
 
         $iterator->seek(0);
-        self::assertSame(1, $iterator->current());
+        static::assertSame(1, $iterator->current());
 
         $iterator->seek(4);
-        self::assertSame(5, $iterator->current());
+        static::assertSame(5, $iterator->current());
 
-        self::assertSame(5, $iterator->count());
+        static::assertSame(5, $iterator->count());
 
         $iterator->seek(1);
-        self::assertSame(2, $iterator->current());
+        static::assertSame(2, $iterator->current());
 
         $iterator->seek(4);
-        self::assertSame(5, $iterator->current());
+        static::assertSame(5, $iterator->current());
 
-        self::assertSame(5, $iterator->count());
+        static::assertSame(5, $iterator->count());
     }
 
     public function testSeekThrowsForOutOfBoundIndex(): void
     {
-        $iterator = new Iter\Iterator((fn () => yield from [1, 2, 3, 4, 5])());
+        $iterator = new Iter\Iterator((static fn () => yield from [1, 2, 3, 4, 5])());
 
         $this->expectException(InvariantViolationException::class);
         $this->expectExceptionMessage('Position is out-of-bounds.');
@@ -81,7 +81,7 @@ final class IteratorTest extends TestCase
                 /**
                  * Assert supports non-array-key keys. ( in this case, keys are arrays )
                  */
-                self::assertSame(['foo', 'bar'], $k);
+                static::assertSame(['foo', 'bar'], $k);
             }
         }
 
@@ -97,7 +97,7 @@ final class IteratorTest extends TestCase
          *  - The iterator is capable of rewinding a generator.
          *  - The generator is not exhausted immediately on construction.
          */
-        self::assertSame([
+        static::assertSame([
             'generator (0)',
             'foreach (0)',
             'generator (1)',
@@ -148,7 +148,7 @@ final class IteratorTest extends TestCase
             $spy->add('for (' . $rewindable->current() . ')');
         }
 
-        self::assertSame([
+        static::assertSame([
             'generator (0)',
             'foreach (0)',
             'do while (0)',

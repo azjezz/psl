@@ -14,6 +14,6 @@ final class IdentityTest extends TestCase
         $expected = 'x';
         $identity = Fun\identity();
 
-        self::assertSame($expected, $identity($expected));
+        static::assertSame($expected, $identity($expected));
     }
 }

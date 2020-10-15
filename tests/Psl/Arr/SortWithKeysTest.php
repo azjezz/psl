@@ -6,10 +6,8 @@ namespace Psl\Tests\Arr;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
-use Psl\Collection;
-use Psl\Iter;
 
-class SortWithKeysTest extends TestCase
+final class SortWithKeysTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -30,7 +28,7 @@ class SortWithKeysTest extends TestCase
             [
                 [8, 9, 10],
                 [8, 9, 10],
-                fn (int $a, int $b) => $a <=> $b ? -1 : 1,
+                static fn (int $a, int $b) => $a <=> $b ? -1 : 1,
             ],
 
             [

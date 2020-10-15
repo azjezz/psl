@@ -7,14 +7,14 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class PadLeftTest extends TestCase
+final class PadLeftTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testPadLeft(string $expected, string $str, int $total_length, string $pad_string = ' '): void
     {
-        self::assertSame($expected, Byte\pad_left($str, $total_length, $pad_string));
+        static::assertSame($expected, Byte\pad_left($str, $total_length, $pad_string));
     }
 
     public function provideData(): array

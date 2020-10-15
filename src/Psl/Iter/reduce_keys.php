@@ -17,7 +17,7 @@ namespace Psl\Iter;
  *          Iter\range(1, 5),
  *          static fn(int $accumulator, int $key): int => $accumulator + $key,
  *          0,
-  *     )
+ *     )
  *      => 10
  *
  * @psalm-template Tk

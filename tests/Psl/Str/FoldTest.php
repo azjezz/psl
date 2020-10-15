@@ -7,10 +7,10 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class FoldTest extends TestCase
+final class FoldTest extends TestCase
 {
     public function testFold(): void
     {
-        self::assertSame('ssoo', Str\fold('ẞOO'));
+        static::assertSame('ssoo', Str\fold('ẞOO'));
     }
 }

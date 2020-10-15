@@ -7,7 +7,7 @@ namespace Psl\Tests\Iter;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 
-class ToIteratorTest extends TestCase
+final class ToIteratorTest extends TestCase
 {
     /**
      * @dataProvider provideToIteratorData
@@ -16,8 +16,8 @@ class ToIteratorTest extends TestCase
     {
         $iterator = Iter\to_iterator($array);
 
-        self::assertCount(Iter\count($array), $iterator);
-        self::assertSame($array, Iter\to_array_with_keys($iterator));
+        static::assertCount(Iter\count($array), $iterator);
+        static::assertSame($array, Iter\to_array_with_keys($iterator));
     }
 
     public function provideToIteratorData(): iterable

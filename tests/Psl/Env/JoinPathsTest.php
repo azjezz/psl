@@ -8,11 +8,11 @@ use PHPUnit\Framework\TestCase;
 use Psl\Env;
 use Psl\Str;
 
-class JoinPathsTest extends TestCase
+final class JoinPathsTest extends TestCase
 {
     public function testJoinPaths(): void
     {
-        self::assertSame(Str\format('/home/azjezz%s/tmp', PATH_SEPARATOR), Env\join_paths('/home/azjezz', '/tmp'));
-        self::assertSame('/home/azjezz', Env\join_paths('/home/azjezz'));
+        static::assertSame(Str\format('/home/azjezz%s/tmp', PATH_SEPARATOR), Env\join_paths('/home/azjezz', '/tmp'));
+        static::assertSame('/home/azjezz', Env\join_paths('/home/azjezz'));
     }
 }

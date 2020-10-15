@@ -8,9 +8,8 @@ use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 use Psl\Collection;
 use Psl\Exception;
-use Psl\Iter;
 
-class CountValuesTest extends TestCase
+final class CountValuesTest extends TestCase
 {
     /**
      * @dataProvider provideData

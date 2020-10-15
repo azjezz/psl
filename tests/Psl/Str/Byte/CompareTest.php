@@ -7,7 +7,7 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class CompareTest extends TestCase
+final class CompareTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -17,11 +17,11 @@ class CompareTest extends TestCase
         $diff = Byte\compare($str1, $str2, $length);
 
         if (0 === $expected) {
-            self::assertSame(0, $diff);
+            static::assertSame(0, $diff);
         } elseif (0 > $expected) {
-            self::assertLessThanOrEqual(-1, $diff);
+            static::assertLessThanOrEqual(-1, $diff);
         } else {
-            self::assertGreaterThanOrEqual(1, $diff);
+            static::assertGreaterThanOrEqual(1, $diff);
         }
     }
 

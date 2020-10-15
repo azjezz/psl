@@ -8,17 +8,17 @@ use PHPUnit\Framework\TestCase;
 use Psl\Math;
 use Psl\Type;
 
-class IsIntTest extends TestCase
+final class IsIntTest extends TestCase
 {
     public function testIsInt(): void
     {
-        self::assertTrue(Type\is_int(123));
-        self::assertTrue(Type\is_int(0));
-        self::assertTrue(Type\is_int(Math\INT16_MAX));
+        static::assertTrue(Type\is_int(123));
+        static::assertTrue(Type\is_int(0));
+        static::assertTrue(Type\is_int(Math\INT16_MAX));
 
-        self::assertFalse(Type\is_int('5'));
-        self::assertFalse(Type\is_int(5.0));
-        self::assertFalse(Type\is_int(true));
-        self::assertFalse(Type\is_int(null));
+        static::assertFalse(Type\is_int('5'));
+        static::assertFalse(Type\is_int(5.0));
+        static::assertFalse(Type\is_int(true));
+        static::assertFalse(Type\is_int(null));
     }
 }

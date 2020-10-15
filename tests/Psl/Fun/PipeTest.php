@@ -13,28 +13,28 @@ final class PipeTest extends TestCase
     public function testItCombinesMultipleFunctionToExecutesInOrder(): void
     {
         $x = Fun\pipe(
-            fn (string $x): string => $x . ' world',
-            fn (string $y): string => $y . '?',
-            fn (string $z): string => $z . '!',
+            static fn (string $x): string => $x . ' world',
+            static fn (string $y): string => $y . '?',
+            static fn (string $z): string => $z . '!',
         );
 
-        self::assertSame('Hello world?!', $x('Hello'));
+        static::assertSame('Hello world?!', $x('Hello'));
     }
 
     public function testItCombinesMultipleFunctionsThatDealWithDifferentTypes(): void
     {
         $x = Fun\pipe(
-            fn (string $x): int => Str\length($x),
-            fn (int $y): string => $y . '!'
+            static fn (string $x): int => Str\length($x),
+            static fn (int $y): string => $y . '!'
         );
 
-        self::assertSame('5!', $x('Hello'));
+        static::assertSame('5!', $x('Hello'));
     }
 
     public function testItCanCreateAnEmptyCombination(): void
     {
         $x = Fun\pipe();
 
-        self::assertSame('Hello', $x('Hello'));
+        static::assertSame('Hello', $x('Hello'));
     }
 }

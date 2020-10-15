@@ -7,7 +7,7 @@ namespace Psl\Tests\Arr;
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 
-class ShuffleTest extends TestCase
+final class ShuffleTest extends TestCase
 {
     public function testShuffle(): void
     {
@@ -23,7 +23,7 @@ class ShuffleTest extends TestCase
         static::assertNotSame($shuffled, $array);
 
         foreach ($shuffled as $value) {
-            self::assertTrue(Arr\contains($array, $value));
+            static::assertTrue(Arr\contains($array, $value));
         }
     }
 }

@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 use Psl\Math;
 
-class MaxvaTest extends TestCase
+final class MaxvaTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testMaxva($expected, $first, $second, ...$rest): void
     {
-        self::assertSame($expected, Math\maxva($first, $second, ...$rest));
+        static::assertSame($expected, Math\maxva($first, $second, ...$rest));
     }
 
     public function provideData(): array

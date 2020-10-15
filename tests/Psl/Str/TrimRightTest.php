@@ -7,14 +7,14 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class TrimRightTest extends TestCase
+final class TrimRightTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testTrimRight(string $expected, string $string, ?string $chars = null): void
     {
-        self::assertSame($expected, Str\trim_right($string, $chars));
+        static::assertSame($expected, Str\trim_right($string, $chars));
     }
 
     public function provideData(): array

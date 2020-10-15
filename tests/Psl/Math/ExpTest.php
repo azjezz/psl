@@ -7,14 +7,14 @@ namespace Psl\Tests\Math;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
-class ExpTest extends TestCase
+final class ExpTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testExp(float $expected, float $number): void
     {
-        self::assertSame($expected, Math\exp($number));
+        static::assertSame($expected, Math\exp($number));
     }
 
     public function provideData(): array

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
-use Psl;
-
 /**
  * Returns the largest element of the given iterable, or null if the
  * iterable is empty.

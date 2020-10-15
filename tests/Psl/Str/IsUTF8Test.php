@@ -14,7 +14,7 @@ final class IsUTF8Test extends TestCase
      */
     public function testIsUTF8Test(bool $expected, string $string): void
     {
-        self::assertSame($expected, Str\is_utf8($string));
+        static::assertSame($expected, Str\is_utf8($string));
     }
 
     public function provideData(): array

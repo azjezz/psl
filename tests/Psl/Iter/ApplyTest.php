@@ -8,13 +8,13 @@ use PHPUnit\Framework\TestCase;
 use Psl\Collection\MutableVector;
 use Psl\Iter;
 
-class ApplyTest extends TestCase
+final class ApplyTest extends TestCase
 {
     public function testApply(): void
     {
         $vec = new MutableVector([]);
-        Iter\apply([1, 2, 3], fn (int $i) => $vec->add($i));
+        Iter\apply([1, 2, 3], static fn (int $i) => $vec->add($i));
 
-        self::assertSame([1, 2, 3], $vec->toArray());
+        static::assertSame([1, 2, 3], $vec->toArray());
     }
 }

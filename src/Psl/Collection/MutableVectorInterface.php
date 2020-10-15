@@ -10,7 +10,7 @@ namespace Psl\Collection;
  * @extends  VectorInterface<T>
  * @extends  MutableAccessibleCollectionInterface<int, T>
  */
-interface MutableVectorInterface extends VectorInterface, MutableAccessibleCollectionInterface
+interface MutableVectorInterface extends MutableAccessibleCollectionInterface, VectorInterface
 {
     /**
      * Get an array copy of the current vector.

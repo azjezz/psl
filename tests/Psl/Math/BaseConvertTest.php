@@ -7,14 +7,14 @@ namespace Psl\Tests\Math;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
-class BaseConvertTest extends TestCase
+final class BaseConvertTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testBaseConvert(string $expected, string $value, int $from, int $to): void
     {
-        self::assertSame($expected, Math\base_convert($value, $from, $to));
+        static::assertSame($expected, Math\base_convert($value, $from, $to));
     }
 
     public function provideData(): array

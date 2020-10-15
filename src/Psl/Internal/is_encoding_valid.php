@@ -4,12 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Internal;
 
-use Psl;
-use Psl\Type;
-use Psl\Exception;
-
 use function in_array;
-use function mb_internal_encoding;
 use function mb_list_encodings;
 
 /**

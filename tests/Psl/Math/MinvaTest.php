@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 use Psl\Math;
 
-class MinvaTest extends TestCase
+final class MinvaTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testMainva($expected, $first, $second, ...$rest): void
     {
-        self::assertSame($expected, Math\minva($first, $second, ...$rest));
+        static::assertSame($expected, Math\minva($first, $second, ...$rest));
     }
 
     public function provideData(): array

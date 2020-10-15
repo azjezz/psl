@@ -7,7 +7,7 @@ namespace Psl\Tests\Arr;
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 
-class MapWithKeyTest extends TestCase
+final class MapWithKeyTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -16,14 +16,14 @@ class MapWithKeyTest extends TestCase
     {
         $result = Arr\map_with_key($array, $function);
         
-        self::assertSame($expected, $result);
+        static::assertSame($expected, $result);
     }
 
     public function provideData(): iterable
     {
-        yield [[1, 3, 5], [1, 2, 3], fn (int $k, int $v): int => $k + $v];
-        yield [[0, 4, 16], [1, 2, 3], fn (int $k, int $v): int => $k * (2 ** $v)];
-        yield [['1', '3', '5'], [1, 2, 3], fn (int $k, int $v): string => (string) ($k + $v)];
-        yield [[], [], fn (int $k, int $v): string => (string) ($k + $v)];
+        yield [[1, 3, 5], [1, 2, 3], static fn (int $k, int $v): int => $k + $v];
+        yield [[0, 4, 16], [1, 2, 3], static fn (int $k, int $v): int => $k * (2 ** $v)];
+        yield [['1', '3', '5'], [1, 2, 3], static fn (int $k, int $v): string => (string) ($k + $v)];
+        yield [[], [], static fn (int $k, int $v): string => (string) ($k + $v)];
     }
 }

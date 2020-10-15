@@ -6,11 +6,8 @@ namespace Psl\Tests\Arr;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
-use Psl\Collection;
-use Psl\Exception;
-use Psl\Iter;
 
-class CountTest extends TestCase
+final class CountTest extends TestCase
 {
     /**
      * @dataProvider provideData

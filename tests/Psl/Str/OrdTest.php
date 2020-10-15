@@ -7,14 +7,14 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class OrdTest extends TestCase
+final class OrdTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testOrd(int $expected, string $value): void
     {
-        self::assertSame($expected, Str\ord($value));
+        static::assertSame($expected, Str\ord($value));
     }
 
     public function provideData(): array

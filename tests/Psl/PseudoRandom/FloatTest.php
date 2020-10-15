@@ -7,14 +7,14 @@ namespace Psl\Tests\PseudoRandom;
 use PHPUnit\Framework\TestCase;
 use Psl\PseudoRandom;
 
-class FloatTest extends TestCase
+final class FloatTest extends TestCase
 {
     public function testFloat(): void
     {
         $random = PseudoRandom\float();
 
-        self::assertIsFloat($random);
-        self::assertGreaterThanOrEqual(0, $random);
-        self::assertLessThanOrEqual(1, $random);
+        static::assertIsFloat($random);
+        static::assertGreaterThanOrEqual(0, $random);
+        static::assertLessThanOrEqual(1, $random);
     }
 }

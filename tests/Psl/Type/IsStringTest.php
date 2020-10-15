@@ -8,18 +8,18 @@ use PHPUnit\Framework\TestCase;
 use Psl\Str;
 use Psl\Type;
 
-class IsStringTest extends TestCase
+final class IsStringTest extends TestCase
 {
     public function testIsString(): void
     {
-        self::assertTrue(Type\is_string(''));
-        self::assertTrue(Type\is_string(Str\chr(0)));
+        static::assertTrue(Type\is_string(''));
+        static::assertTrue(Type\is_string(Str\chr(0)));
 
-        self::assertFalse(Type\is_string(5));
-        self::assertFalse(Type\is_string(5.0));
-        self::assertFalse(Type\is_string(true));
-        self::assertFalse(Type\is_string(null));
-        self::assertFalse(Type\is_string(
+        static::assertFalse(Type\is_string(5));
+        static::assertFalse(Type\is_string(5.0));
+        static::assertFalse(Type\is_string(true));
+        static::assertFalse(Type\is_string(null));
+        static::assertFalse(Type\is_string(
             new class {
                 public function __toString(): string
                 {

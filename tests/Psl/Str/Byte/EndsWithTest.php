@@ -7,14 +7,14 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class EndsWithTest extends TestCase
+final class EndsWithTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testEndsWith(bool $expected, string $haystack, string $suffix): void
     {
-        self::assertSame($expected, Byte\ends_with($haystack, $suffix));
+        static::assertSame($expected, Byte\ends_with($haystack, $suffix));
     }
 
     public function provideData(): array

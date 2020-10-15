@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl\Json;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Str;
 use Psl\Json;
 use Psl\Math;
+use Psl\Str;
 
 use const PHP_EOL;
 
@@ -17,7 +17,7 @@ final class EncodeTest extends TestCase
     {
         $actual = Json\encode(['a']);
 
-        self::assertSame('["a"]', $actual);
+        static::assertSame('["a"]', $actual);
     }
 
     public function testPrettyEncode(): void
@@ -46,7 +46,7 @@ final class EncodeTest extends TestCase
 }
 JSON, PHP_EOL, "\n");
 
-        self::assertSame($json, $actual);
+        static::assertSame($json, $actual);
     }
 
     public function testEncodeThrowsForMalformedUTF8(): void
@@ -75,6 +75,6 @@ JSON, PHP_EOL, "\n");
 
     public function testEncodePreserveZeroFraction(): void
     {
-        self::assertSame('1.0', Json\encode(1.0));
+        static::assertSame('1.0', Json\encode(1.0));
     }
 }

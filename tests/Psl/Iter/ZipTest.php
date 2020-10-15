@@ -7,7 +7,7 @@ namespace Psl\Tests\Iter;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 
-class ZipTest extends TestCase
+final class ZipTest extends TestCase
 {
     public function testZip(): void
     {
@@ -43,6 +43,6 @@ class ZipTest extends TestCase
     {
         $result = Iter\zip(...[]);
         
-        self::assertCount(0, $result);
+        static::assertCount(0, $result);
     }
 }

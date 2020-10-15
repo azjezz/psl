@@ -42,7 +42,7 @@ function filter_with_key(iterable $iterable, ?callable $predicate = null): Itera
              *
              * @return bool
              */
-            fn ($k, $v) => Psl\Internal\boolean($v);
+            static fn ($k, $v) => Psl\Internal\boolean($v);
 
         foreach ($iterable as $k => $v) {
             if ($predicate($k, $v)) {

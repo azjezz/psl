@@ -7,7 +7,7 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class SpliceTest extends TestCase
+final class SpliceTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -19,7 +19,7 @@ class SpliceTest extends TestCase
         int $offset,
         ?int $length = null
     ): void {
-        self::assertSame($expected, Byte\splice($string, $replacement, $offset, $length));
+        static::assertSame($expected, Byte\splice($string, $replacement, $offset, $length));
     }
 
     public function provideData(): array

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use function is_countable;
+
 /**
  * Returns the number of elements an iterable contains.
  *
@@ -26,7 +28,7 @@ namespace Psl\Iter;
  */
 function count(iterable $iterable): int
 {
-    if (\is_countable($iterable)) {
+    if (is_countable($iterable)) {
         return \count($iterable);
     }
 

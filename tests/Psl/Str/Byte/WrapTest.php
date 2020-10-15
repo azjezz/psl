@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Psl\Tests\Str\Byte;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Str;
 use Psl\Str\Byte;
 
-class WrapTest extends TestCase
+final class WrapTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -20,7 +19,7 @@ class WrapTest extends TestCase
         string $break = "\n",
         bool $cut = false
     ): void {
-        self::assertSame($expected, Byte\wrap($str, $width, $break, $cut));
+        static::assertSame($expected, Byte\wrap($str, $width, $break, $cut));
     }
 
     public function provideData(): array

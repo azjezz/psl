@@ -9,15 +9,15 @@ use Psl\Exception;
 use Psl\SecureRandom;
 use Psl\Str;
 
-class StringTest extends TestCase
+final class StringTest extends TestCase
 {
     public function testString(): void
     {
         $random = SecureRandom\string(32);
 
-        self::assertSame(32, Str\length($random));
+        static::assertSame(32, Str\length($random));
         foreach (Str\chunk($random) as $char) {
-            self::assertTrue(Str\contains(Str\ALPHABET_ALPHANUMERIC, $char));
+            static::assertTrue(Str\contains(Str\ALPHABET_ALPHANUMERIC, $char));
         }
     }
 
@@ -25,15 +25,15 @@ class StringTest extends TestCase
     {
         $random = SecureRandom\string(32, 'abc');
 
-        self::assertSame(32, Str\length($random));
+        static::assertSame(32, Str\length($random));
         foreach (Str\chunk($random) as $char) {
-            self::assertTrue(Str\contains('abc', $char));
+            static::assertTrue(Str\contains('abc', $char));
         }
     }
 
     public function testStringEarlyReturnForZeroLength(): void
     {
-        self::assertSame('', SecureRandom\string(0));
+        static::assertSame('', SecureRandom\string(0));
     }
 
     public function testStringThrowsForNegativeLength(): void

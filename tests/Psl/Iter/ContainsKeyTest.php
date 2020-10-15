@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Iter;
 
-class ContainsKeyTest extends TestCase
+final class ContainsKeyTest extends TestCase
 {
     /**
      * @psalm-template Tk
@@ -21,7 +21,7 @@ class ContainsKeyTest extends TestCase
      */
     public function testContainsKey(bool $expected, iterable $iterable, $key): void
     {
-        self::assertSame($expected, Iter\contains_key($iterable, $key));
+        static::assertSame($expected, Iter\contains_key($iterable, $key));
     }
 
     public function provideData(): iterable
@@ -38,7 +38,7 @@ class ContainsKeyTest extends TestCase
         yield [true, new Collection\Vector([1, 2]), 0];
         yield [true, new Collection\Vector([1, 2]), 1];
         yield [false, new Collection\Vector([1, 2]), 2];
-        yield [true, (fn () => yield 'foo' => 'bar')(), 'foo'];
-        yield [false, (fn () => yield 'foo' => 'bar')(), 'bar'];
+        yield [true, (static fn () => yield 'foo' => 'bar')(), 'foo'];
+        yield [false, (static fn () => yield 'foo' => 'bar')(), 'bar'];
     }
 }

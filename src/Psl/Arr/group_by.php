@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Arr;
 
 use Psl;
-use Psl\Str;
 use Psl\Type;
 
 /**

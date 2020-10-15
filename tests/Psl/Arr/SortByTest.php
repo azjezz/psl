@@ -6,17 +6,16 @@ namespace Psl\Tests\Arr;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
-use Psl\Collection;
 use Psl\Str;
 
-class SortByTest extends TestCase
+final class SortByTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testSortBy(array $expected, array $array, callable $scalar_fun, ?callable $comp = null): void
     {
-        self::assertSame($expected, Arr\sort_by($array, $scalar_fun, $comp));
+        static::assertSame($expected, Arr\sort_by($array, $scalar_fun, $comp));
     }
 
     public function provideData(): array
@@ -34,7 +33,7 @@ class SortByTest extends TestCase
              *
              * @psalm-pure
              */
-            fn ($arr) => Arr\count($arr);
+            static fn ($arr) => Arr\count($arr);
 
         return [
             [
@@ -53,7 +52,7 @@ class SortByTest extends TestCase
                  *
                  * @psalm-pure
                  */
-                fn ($v) => $v,
+                static fn ($v) => $v,
             ],
 
             [
@@ -66,7 +65,7 @@ class SortByTest extends TestCase
                  *
                  * @psalm-pure
                  */
-                fn ($v) => $v,
+                static fn ($v) => $v,
             ],
 
             [
@@ -79,7 +78,7 @@ class SortByTest extends TestCase
                  *
                  * @psalm-pure
                  */
-                fn ($v) => $v,
+                static fn ($v) => $v,
                 /**
                  * @param string $a
                  * @param string $b
@@ -88,7 +87,7 @@ class SortByTest extends TestCase
                  *
                  * @psalm-pure
                  */
-                fn (string $a, string $b) => Str\ord($a) > Str\ord($b) ? -1 : 1,
+                static fn (string $a, string $b) => Str\ord($a) > Str\ord($b) ? -1 : 1,
             ],
 
             [
@@ -101,7 +100,7 @@ class SortByTest extends TestCase
                  *
                  * @psalm-pure
                  */
-                fn ($v) => $v,
+                static fn ($v) => $v,
             ],
 
             [
@@ -114,7 +113,7 @@ class SortByTest extends TestCase
                  *
                  * @psalm-pure
                  */
-                fn ($v) => Str\Byte\reverse($v),
+                static fn ($v) => Str\Byte\reverse($v),
             ],
         ];
     }

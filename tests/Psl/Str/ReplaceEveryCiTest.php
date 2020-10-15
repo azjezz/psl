@@ -7,14 +7,14 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class ReplaceEveryCiTest extends TestCase
+final class ReplaceEveryCiTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testReplaceEveryCi(string $expected, string $haystack, iterable $replacements): void
     {
-        self::assertSame($expected, Str\replace_every_ci($haystack, $replacements));
+        static::assertSame($expected, Str\replace_every_ci($haystack, $replacements));
     }
 
     public function provideData(): array

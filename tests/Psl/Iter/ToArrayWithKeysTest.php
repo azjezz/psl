@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Iter;
 
-class ToArrayWithKeysTest extends TestCase
+final class ToArrayWithKeysTest extends TestCase
 {
     /**
      * @dataProvider provideToArrayWithKeysData
@@ -17,7 +17,7 @@ class ToArrayWithKeysTest extends TestCase
     {
         $result = Iter\to_array_with_keys($iterable);
 
-        self::assertSame($expected, $result);
+        static::assertSame($expected, $result);
     }
 
     public function provideToArrayWithKeysData(): iterable

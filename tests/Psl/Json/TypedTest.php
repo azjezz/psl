@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Json;
 use Psl\Type;
 
-class TypedTest extends TestCase
+final class TypedTest extends TestCase
 {
     public function testTyped(): void
     {
@@ -20,7 +20,7 @@ class TypedTest extends TestCase
             "license": "MIT"
         }', Type\arr(Type\string(), Type\union(Type\string(), Type\arr(Type\int(), Type\string()))));
 
-        self::assertSame([
+        static::assertSame([
             'name' => 'azjezz/psl',
             'type' => 'library',
             'description' => 'PHP Standard Library.',
@@ -47,13 +47,13 @@ class TypedTest extends TestCase
     {
         $actual = Json\typed('{"foo": "bar"}', Type\arr(Type\string(), Type\string()));
 
-        self::assertSame(['foo' => 'bar'], $actual);
+        static::assertSame(['foo' => 'bar'], $actual);
     }
 
     public function testTypedCoerce(): void
     {
         $actual = Json\typed('{"foo": 123}', Type\arr(Type\string(), Type\string()));
 
-        self::assertSame(['foo' => '123'], $actual);
+        static::assertSame(['foo' => '123'], $actual);
     }
 }

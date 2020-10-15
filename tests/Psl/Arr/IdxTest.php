@@ -7,7 +7,7 @@ namespace Psl\Tests\Arr;
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 
-class IdxTest extends TestCase
+final class IdxTest extends TestCase
 {
     /**
      * @dataProvider provideData

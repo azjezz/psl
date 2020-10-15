@@ -7,14 +7,14 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class ContainsTest extends TestCase
+final class ContainsTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testContains(bool $expected, string $haystack, string $needle, int $offset = 0): void
     {
-        self::assertSame($expected, Byte\contains($haystack, $needle, $offset));
+        static::assertSame($expected, Byte\contains($haystack, $needle, $offset));
     }
 
     public function provideData(): array

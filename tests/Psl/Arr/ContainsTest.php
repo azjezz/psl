@@ -6,9 +6,8 @@ namespace Psl\Tests\Arr;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
-use Psl\Collection;
 
-class ContainsTest extends TestCase
+final class ContainsTest extends TestCase
 {
     /**
      * @dataProvider provideData

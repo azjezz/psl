@@ -32,16 +32,16 @@ abstract class AbstractMapTest extends TestCase
 
     public function testIsEmpty(): void
     {
-        self::assertTrue($this->create([])->isEmpty());
-        self::assertFalse($this->create(['foo' => 'bar'])->isEmpty());
-        self::assertEmpty($this->create(['foo' => null])->isEmpty());
+        static::assertTrue($this->create([])->isEmpty());
+        static::assertFalse($this->create(['foo' => 'bar'])->isEmpty());
+        static::assertEmpty($this->create(['foo' => null])->isEmpty());
     }
 
     public function testCount(): void
     {
-        self::assertCount(0, $this->create([]));
-        self::assertCount(1, $this->create(['foo' => 'bar']));
-        self::assertSame(5, $this->create([
+        static::assertCount(0, $this->create([]));
+        static::assertCount(1, $this->create(['foo' => 'bar']));
+        static::assertSame(5, $this->create([
             1 => 'foo',
             2 => 'bar',
             4 => 'baz',
@@ -60,19 +60,19 @@ abstract class AbstractMapTest extends TestCase
 
         $values = $map->values();
 
-        self::assertInstanceOf($this->vectorClass, $values);
+        static::assertInstanceOf($this->vectorClass, $values);
 
-        self::assertCount(3, $values);
+        static::assertCount(3, $values);
 
-        self::assertSame(1, $values->at(0));
-        self::assertSame(2, $values->at(1));
-        self::assertSame(3, $values->at(2));
+        static::assertSame(1, $values->at(0));
+        static::assertSame(2, $values->at(1));
+        static::assertSame(3, $values->at(2));
 
         $map    = $this->create([]);
         $values = $map->values();
-        self::assertInstanceOf($this->vectorClass, $values);
+        static::assertInstanceOf($this->vectorClass, $values);
 
-        self::assertCount(0, $values);
+        static::assertCount(0, $values);
     }
 
     public function testJsonSerialize(): void
@@ -101,17 +101,17 @@ abstract class AbstractMapTest extends TestCase
         ]);
         $keys = $map->keys();
 
-        self::assertInstanceOf($this->vectorClass, $keys);
-        self::assertCount(3, $keys);
-        self::assertSame('foo', $keys->at(0));
-        self::assertSame('bar', $keys->at(1));
-        self::assertSame('baz', $keys->at(2));
+        static::assertInstanceOf($this->vectorClass, $keys);
+        static::assertCount(3, $keys);
+        static::assertSame('foo', $keys->at(0));
+        static::assertSame('bar', $keys->at(1));
+        static::assertSame('baz', $keys->at(2));
 
         $map  = $this->create([]);
         $keys = $map->keys();
 
-        self::assertInstanceOf($this->vectorClass, $keys);
-        self::assertCount(0, $keys);
+        static::assertInstanceOf($this->vectorClass, $keys);
+        static::assertCount(0, $keys);
     }
 
     public function testFilter(): void
@@ -123,15 +123,15 @@ abstract class AbstractMapTest extends TestCase
             3 => 'qux',
         ]);
 
-        $filtered = $map->filter(fn (string $item) => Str\contains($item, 'b'));
+        $filtered = $map->filter(static fn (string $item) => Str\contains($item, 'b'));
 
-        self::assertInstanceOf($this->mapClass, $filtered);
-        self::assertNotSame($map, $filtered);
-        self::assertContains('bar', $filtered);
-        self::assertContains('baz', $filtered);
-        self::assertNotContains('foo', $filtered);
-        self::assertNotContains('qux', $filtered);
-        self::assertCount(2, $filtered);
+        static::assertInstanceOf($this->mapClass, $filtered);
+        static::assertNotSame($map, $filtered);
+        static::assertContains('bar', $filtered);
+        static::assertContains('baz', $filtered);
+        static::assertNotContains('foo', $filtered);
+        static::assertNotContains('qux', $filtered);
+        static::assertCount(2, $filtered);
 
         $map = $this->create([
             0 => 'foo',
@@ -140,14 +140,14 @@ abstract class AbstractMapTest extends TestCase
             3 => 'qux',
         ]);
 
-        $filtered = $map->filter(fn (string $item) => Str\contains($item, 'hello'));
+        $filtered = $map->filter(static fn (string $item) => Str\contains($item, 'hello'));
 
-        self::assertInstanceOf($this->mapClass, $filtered);
-        self::assertNotContains('bar', $filtered);
-        self::assertNotContains('baz', $filtered);
-        self::assertNotContains('foo', $filtered);
-        self::assertNotContains('qux', $filtered);
-        self::assertCount(0, $filtered);
+        static::assertInstanceOf($this->mapClass, $filtered);
+        static::assertNotContains('bar', $filtered);
+        static::assertNotContains('baz', $filtered);
+        static::assertNotContains('foo', $filtered);
+        static::assertNotContains('qux', $filtered);
+        static::assertCount(0, $filtered);
     }
 
     public function testFilterWithKey(): void
@@ -159,15 +159,15 @@ abstract class AbstractMapTest extends TestCase
             3 => 'qux',
         ]);
 
-        $filtered = $map->filterWithKey(fn (int $k, string $v) => 'foo' === $v || 3 === $k);
+        $filtered = $map->filterWithKey(static fn (int $k, string $v) => 'foo' === $v || 3 === $k);
 
-        self::assertInstanceOf($this->mapClass, $filtered);
-        self::assertNotSame($map, $filtered);
-        self::assertContains('foo', $filtered);
-        self::assertContains('qux', $filtered);
-        self::assertNotContains('bar', $filtered);
-        self::assertNotContains('baz', $filtered);
-        self::assertCount(2, $filtered);
+        static::assertInstanceOf($this->mapClass, $filtered);
+        static::assertNotSame($map, $filtered);
+        static::assertContains('foo', $filtered);
+        static::assertContains('qux', $filtered);
+        static::assertNotContains('bar', $filtered);
+        static::assertNotContains('baz', $filtered);
+        static::assertCount(2, $filtered);
 
         $map = $this->create([
             0 => 'foo',
@@ -176,14 +176,14 @@ abstract class AbstractMapTest extends TestCase
             3 => 'qux',
         ]);
 
-        $filtered = $map->filterWithKey(fn (int $k, string $v) => 4 === $k);
+        $filtered = $map->filterWithKey(static fn (int $k, string $v) => 4 === $k);
 
-        self::assertInstanceOf($this->mapClass, $filtered);
-        self::assertNotContains('bar', $filtered);
-        self::assertNotContains('baz', $filtered);
-        self::assertNotContains('foo', $filtered);
-        self::assertNotContains('qux', $filtered);
-        self::assertCount(0, $filtered);
+        static::assertInstanceOf($this->mapClass, $filtered);
+        static::assertNotContains('bar', $filtered);
+        static::assertNotContains('baz', $filtered);
+        static::assertNotContains('foo', $filtered);
+        static::assertNotContains('qux', $filtered);
+        static::assertCount(0, $filtered);
     }
 
     public function testMap(): void
@@ -195,17 +195,17 @@ abstract class AbstractMapTest extends TestCase
             3 => 'qux',
         ]);
 
-        $mapped = $map->map(fn (string $item) => Str\uppercase($item));
+        $mapped = $map->map(static fn (string $item) => Str\uppercase($item));
 
-        self::assertInstanceOf($this->mapClass, $mapped);
-        self::assertSame([
+        static::assertInstanceOf($this->mapClass, $mapped);
+        static::assertSame([
             0 => 'FOO',
             1 => 'BAR',
             2 => 'BAZ',
             3 => 'QUX',
         ], $mapped->toArray());
-        self::assertNotSame($map, $mapped);
-        self::assertCount(4, $mapped);
+        static::assertNotSame($map, $mapped);
+        static::assertCount(4, $mapped);
 
         $map = $this->create([
             0 => 'foo',
@@ -214,12 +214,12 @@ abstract class AbstractMapTest extends TestCase
             3 => 'qux',
         ]);
 
-        $mapped = $map->map(fn (string $item) => $item);
+        $mapped = $map->map(static fn (string $item) => $item);
 
-        self::assertInstanceOf($this->mapClass, $mapped);
-        self::assertNotSame($map, $mapped);
-        self::assertSame($map->toArray(), $mapped->toArray());
-        self::assertCount(4, $mapped);
+        static::assertInstanceOf($this->mapClass, $mapped);
+        static::assertNotSame($map, $mapped);
+        static::assertSame($map->toArray(), $mapped->toArray());
+        static::assertCount(4, $mapped);
     }
 
     public function testMapWithKey(): void
@@ -231,17 +231,17 @@ abstract class AbstractMapTest extends TestCase
             3 => 'qux',
         ]);
 
-        $mapped = $map->mapWithKey(fn (int $k, string $v) => Str\format('%s ( %d )', $v, $k));
+        $mapped = $map->mapWithKey(static fn (int $k, string $v) => Str\format('%s ( %d )', $v, $k));
 
-        self::assertInstanceOf($this->mapClass, $mapped);
-        self::assertSame([
+        static::assertInstanceOf($this->mapClass, $mapped);
+        static::assertSame([
             0 => 'foo ( 0 )',
             1 => 'bar ( 1 )',
             2 => 'baz ( 2 )',
             3 => 'qux ( 3 )',
         ], $mapped->toArray());
-        self::assertNotSame($map, $mapped);
-        self::assertCount(4, $mapped);
+        static::assertNotSame($map, $mapped);
+        static::assertCount(4, $mapped);
 
         $map = $this->create([
             0 => 'foo',
@@ -250,249 +250,249 @@ abstract class AbstractMapTest extends TestCase
             3 => 'qux',
         ]);
 
-        $mapped = $map->mapWithKey(fn (int $k, string $v) => $k);
+        $mapped = $map->mapWithKey(static fn (int $k, string $v) => $k);
 
-        self::assertInstanceOf($this->mapClass, $mapped);
-        self::assertNotSame($map, $mapped);
-        self::assertSame($map->keys()->toArray(), $mapped->toArray());
-        self::assertCount(4, $mapped);
+        static::assertInstanceOf($this->mapClass, $mapped);
+        static::assertNotSame($map, $mapped);
+        static::assertSame($map->keys()->toArray(), $mapped->toArray());
+        static::assertCount(4, $mapped);
 
-        $mapped = $map->mapWithKey(fn (int $k, string $v) => $v);
+        $mapped = $map->mapWithKey(static fn (int $k, string $v) => $v);
 
-        self::assertInstanceOf($this->mapClass, $mapped);
-        self::assertNotSame($map, $mapped);
-        self::assertSame($map->toArray(), $mapped->toArray());
-        self::assertCount(4, $mapped);
+        static::assertInstanceOf($this->mapClass, $mapped);
+        static::assertNotSame($map, $mapped);
+        static::assertSame($map->toArray(), $mapped->toArray());
+        static::assertCount(4, $mapped);
     }
 
     public function testFirst(): void
     {
         $map = $this->create([]);
-        self::assertNull($map->first());
+        static::assertNull($map->first());
 
         $map = $this->create(['foo' => null]);
-        self::assertNull($map->first());
+        static::assertNull($map->first());
 
         $map = $this->create([0 => 'foo']);
-        self::assertSame('foo', $map->first());
+        static::assertSame('foo', $map->first());
 
         $map = $this->create(['foo' => 'bar', 'baz' => 'qux']);
-        self::assertSame('bar', $map->first());
+        static::assertSame('bar', $map->first());
     }
 
     public function testFirstKey(): void
     {
         $map = $this->create([]);
-        self::assertNull($map->firstKey());
+        static::assertNull($map->firstKey());
 
         $map = $this->create(['foo' => null]);
-        self::assertSame('foo', $map->firstKey());
+        static::assertSame('foo', $map->firstKey());
 
         $map = $this->create([0 => 'foo']);
-        self::assertSame(0, $map->firstKey());
+        static::assertSame(0, $map->firstKey());
 
         $map = $this->create(['foo' => 'bar', 'baz' => 'qux']);
-        self::assertSame('foo', $map->firstKey());
+        static::assertSame('foo', $map->firstKey());
     }
 
     public function testLast(): void
     {
         $map = $this->create([]);
-        self::assertNull($map->last());
+        static::assertNull($map->last());
 
         $map = $this->create(['foo' => null]);
-        self::assertNull($map->last());
+        static::assertNull($map->last());
 
         $map = $this->create([0 => 'foo']);
-        self::assertSame('foo', $map->last());
+        static::assertSame('foo', $map->last());
 
         $map = $this->create(['foo' => 'bar', 'baz' => 'qux']);
-        self::assertSame('qux', $map->last());
+        static::assertSame('qux', $map->last());
     }
 
     public function testLastKey(): void
     {
         $map = $this->create([]);
-        self::assertNull($map->lastKey());
+        static::assertNull($map->lastKey());
 
         $map = $this->create(['foo' => null]);
-        self::assertSame('foo', $map->lastKey());
+        static::assertSame('foo', $map->lastKey());
 
         $map = $this->create([0 => 'foo']);
-        self::assertSame(0, $map->lastKey());
+        static::assertSame(0, $map->lastKey());
 
         $map = $this->create(['foo' => 'bar', 'baz' => 'qux']);
-        self::assertSame('baz', $map->lastKey());
+        static::assertSame('baz', $map->lastKey());
     }
 
     public function testLinearSearch(): void
     {
         $map = $this->create([]);
-        self::assertNull($map->linearSearch('foo'));
+        static::assertNull($map->linearSearch('foo'));
 
         $map = $this->create([
             'foo' => 'bar',
             'baz' => 'qux',
         ]);
-        self::assertSame('foo', $map->linearSearch('bar'));
-        self::assertSame('baz', $map->linearSearch('qux'));
-        self::assertNull($map->linearSearch('foo'));
-        self::assertNull($map->linearSearch('baz'));
+        static::assertSame('foo', $map->linearSearch('bar'));
+        static::assertSame('baz', $map->linearSearch('qux'));
+        static::assertNull($map->linearSearch('foo'));
+        static::assertNull($map->linearSearch('baz'));
     }
 
     public function testZip(): void
     {
         $map    = $this->create([]);
         $zipped = $map->zip([]);
-        self::assertInstanceOf($this->mapClass, $zipped);
-        self::assertCount(0, $zipped);
+        static::assertInstanceOf($this->mapClass, $zipped);
+        static::assertCount(0, $zipped);
 
         $map    = $this->create([]);
         $zipped = $map->zip([1, 2]);
-        self::assertInstanceOf($this->mapClass, $zipped);
-        self::assertCount(0, $zipped);
+        static::assertInstanceOf($this->mapClass, $zipped);
+        static::assertCount(0, $zipped);
 
         $map    = $this->create([1 => 'foo', 2 => 'bar']);
         $zipped = $map->zip([]);
-        self::assertInstanceOf($this->mapClass, $zipped);
-        self::assertCount(0, $zipped);
+        static::assertInstanceOf($this->mapClass, $zipped);
+        static::assertCount(0, $zipped);
 
         $map    = $this->create([1 => 'foo', 2 => 'bar']);
         $zipped = $map->zip(['baz', 'qux']);
-        self::assertInstanceOf($this->mapClass, $zipped);
-        self::assertCount(2, $zipped);
-        self::assertSame(['foo', 'baz'], $zipped->at(1));
-        self::assertSame(['bar', 'qux'], $zipped->at(2));
+        static::assertInstanceOf($this->mapClass, $zipped);
+        static::assertCount(2, $zipped);
+        static::assertSame(['foo', 'baz'], $zipped->at(1));
+        static::assertSame(['bar', 'qux'], $zipped->at(2));
 
         $map    = $this->create([1 => 'foo', 2 => 'bar', 3 => 'baz', 4 => 'qux']);
         $zipped = $map->zip(['hello', 'world']);
-        self::assertInstanceOf($this->mapClass, $zipped);
-        self::assertCount(2, $zipped);
-        self::assertSame(['foo', 'hello'], $zipped->at(1));
-        self::assertSame(['bar', 'world'], $zipped->at(2));
+        static::assertInstanceOf($this->mapClass, $zipped);
+        static::assertCount(2, $zipped);
+        static::assertSame(['foo', 'hello'], $zipped->at(1));
+        static::assertSame(['bar', 'world'], $zipped->at(2));
 
         $map    = $this->create([1 => 'hello', 2 => 'world']);
         $zipped = $map->zip(['foo', 'bar', 'baz', 'qux']);
-        self::assertInstanceOf($this->mapClass, $zipped);
-        self::assertCount(2, $zipped);
-        self::assertSame(['hello', 'foo'], $zipped->at(1));
-        self::assertSame(['world', 'bar'], $zipped->at(2));
+        static::assertInstanceOf($this->mapClass, $zipped);
+        static::assertCount(2, $zipped);
+        static::assertSame(['hello', 'foo'], $zipped->at(1));
+        static::assertSame(['world', 'bar'], $zipped->at(2));
     }
 
     public function testTake(): void
     {
         $map  = $this->create([]);
         $rest = $map->take(2);
-        self::assertInstanceOf($this->mapClass, $rest);
-        self::assertNotSame($map, $rest);
-        self::assertCount(0, $rest);
+        static::assertInstanceOf($this->mapClass, $rest);
+        static::assertNotSame($map, $rest);
+        static::assertCount(0, $rest);
 
         $map  = $this->create(['foo' => 'bar', 'baz' => 'qux']);
         $rest = $map->take(4);
-        self::assertInstanceOf($this->mapClass, $rest);
-        self::assertNotSame($map, $rest);
-        self::assertCount(2, $rest);
-        self::assertSame($map->toArray(), $rest->toArray());
+        static::assertInstanceOf($this->mapClass, $rest);
+        static::assertNotSame($map, $rest);
+        static::assertCount(2, $rest);
+        static::assertSame($map->toArray(), $rest->toArray());
 
         $map  = $this->create(['foo' => 'bar', 'baz' => 'qux']);
         $rest = $map->take(1);
-        self::assertInstanceOf($this->mapClass, $rest);
-        self::assertNotSame($map, $rest);
-        self::assertCount(1, $rest);
-        self::assertSame('bar', $rest->at('foo'));
+        static::assertInstanceOf($this->mapClass, $rest);
+        static::assertNotSame($map, $rest);
+        static::assertCount(1, $rest);
+        static::assertSame('bar', $rest->at('foo'));
     }
 
     public function testTakeWhile(): void
     {
         $map  = $this->create([]);
-        $rest = $map->takeWhile(fn ($v) => false);
-        self::assertInstanceOf($this->mapClass, $rest);
-        self::assertNotSame($map, $rest);
-        self::assertCount(0, $rest);
+        $rest = $map->takeWhile(static fn ($v) => false);
+        static::assertInstanceOf($this->mapClass, $rest);
+        static::assertNotSame($map, $rest);
+        static::assertCount(0, $rest);
 
         $map  = $this->create([]);
-        $rest = $map->takeWhile(fn ($v) => true);
-        self::assertInstanceOf($this->mapClass, $rest);
-        self::assertNotSame($map, $rest);
-        self::assertCount(0, $rest);
+        $rest = $map->takeWhile(static fn ($v) => true);
+        static::assertInstanceOf($this->mapClass, $rest);
+        static::assertNotSame($map, $rest);
+        static::assertCount(0, $rest);
 
         $map  = $this->create(['foo' => 'bar', 'baz' => 'qux']);
-        $rest = $map->takeWhile(fn ($v) => true);
-        self::assertInstanceOf($this->mapClass, $rest);
-        self::assertNotSame($map, $rest);
-        self::assertCount(2, $rest);
-        self::assertSame($map->toArray(), $rest->toArray());
+        $rest = $map->takeWhile(static fn ($v) => true);
+        static::assertInstanceOf($this->mapClass, $rest);
+        static::assertNotSame($map, $rest);
+        static::assertCount(2, $rest);
+        static::assertSame($map->toArray(), $rest->toArray());
 
         $map  = $this->create(['foo' => 'bar', 'baz' => 'qux']);
-        $rest = $map->takeWhile(fn ($v) => 'bar' === $v);
-        self::assertInstanceOf($this->mapClass, $rest);
-        self::assertNotSame($map, $rest);
-        self::assertCount(1, $rest);
-        self::assertSame('bar', $rest->at('foo'));
+        $rest = $map->takeWhile(static fn ($v) => 'bar' === $v);
+        static::assertInstanceOf($this->mapClass, $rest);
+        static::assertNotSame($map, $rest);
+        static::assertCount(1, $rest);
+        static::assertSame('bar', $rest->at('foo'));
     }
 
     public function testDrop(): void
     {
         $map  = $this->create([]);
         $rest = $map->drop(2);
-        self::assertInstanceOf($this->mapClass, $rest);
-        self::assertNotSame($map, $rest);
-        self::assertCount(0, $rest);
+        static::assertInstanceOf($this->mapClass, $rest);
+        static::assertNotSame($map, $rest);
+        static::assertCount(0, $rest);
 
         $map  = $this->create(['foo' => 'bar', 'baz' => 'qux']);
         $rest = $map->drop(4);
-        self::assertInstanceOf($this->mapClass, $rest);
-        self::assertNotSame($map, $rest);
-        self::assertCount(0, $rest);
+        static::assertInstanceOf($this->mapClass, $rest);
+        static::assertNotSame($map, $rest);
+        static::assertCount(0, $rest);
 
         $map  = $this->create(['foo' => 'bar', 'baz' => 'qux']);
         $rest = $map->drop(1);
-        self::assertInstanceOf($this->mapClass, $rest);
-        self::assertNotSame($map, $rest);
-        self::assertCount(1, $rest);
-        self::assertSame('qux', $rest->at('baz'));
+        static::assertInstanceOf($this->mapClass, $rest);
+        static::assertNotSame($map, $rest);
+        static::assertCount(1, $rest);
+        static::assertSame('qux', $rest->at('baz'));
 
         $map  = $this->create(['foo' => 'bar', 'baz' => 'qux']);
         $rest = $map->drop(0);
-        self::assertInstanceOf($this->mapClass, $rest);
-        self::assertNotSame($map, $rest);
-        self::assertCount(2, $rest);
-        self::assertSame($map->toArray(), $rest->toArray());
+        static::assertInstanceOf($this->mapClass, $rest);
+        static::assertNotSame($map, $rest);
+        static::assertCount(2, $rest);
+        static::assertSame($map->toArray(), $rest->toArray());
     }
 
     public function testDropWhile(): void
     {
         $map  = $this->create([]);
-        $rest = $map->dropWhile(fn ($v) => true);
-        self::assertInstanceOf($this->mapClass, $rest);
-        self::assertNotSame($map, $rest);
-        self::assertCount(0, $rest);
+        $rest = $map->dropWhile(static fn ($v) => true);
+        static::assertInstanceOf($this->mapClass, $rest);
+        static::assertNotSame($map, $rest);
+        static::assertCount(0, $rest);
 
         $map  = $this->create([]);
-        $rest = $map->dropWhile(fn ($v) => false);
-        self::assertInstanceOf($this->mapClass, $rest);
-        self::assertNotSame($map, $rest);
-        self::assertCount(0, $rest);
+        $rest = $map->dropWhile(static fn ($v) => false);
+        static::assertInstanceOf($this->mapClass, $rest);
+        static::assertNotSame($map, $rest);
+        static::assertCount(0, $rest);
 
         $map  = $this->create(['foo' => 'bar', 'baz' => 'qux']);
-        $rest = $map->dropWhile(fn ($v) => true);
-        self::assertInstanceOf($this->mapClass, $rest);
-        self::assertNotSame($map, $rest);
-        self::assertCount(0, $rest);
+        $rest = $map->dropWhile(static fn ($v) => true);
+        static::assertInstanceOf($this->mapClass, $rest);
+        static::assertNotSame($map, $rest);
+        static::assertCount(0, $rest);
 
         $map  = $this->create(['foo' => 'bar', 'baz' => 'qux']);
-        $rest = $map->dropWhile(fn ($v) => false);
-        self::assertInstanceOf($this->mapClass, $rest);
-        self::assertNotSame($map, $rest);
-        self::assertCount(2, $rest);
-        self::assertSame($map->toArray(), $rest->toArray());
+        $rest = $map->dropWhile(static fn ($v) => false);
+        static::assertInstanceOf($this->mapClass, $rest);
+        static::assertNotSame($map, $rest);
+        static::assertCount(2, $rest);
+        static::assertSame($map->toArray(), $rest->toArray());
 
         $map  = $this->create(['foo' => 'bar', 'baz' => 'qux']);
-        $rest = $map->dropWhile(fn ($v) => 'bar' === $v);
-        self::assertInstanceOf($this->mapClass, $rest);
-        self::assertNotSame($map, $rest);
-        self::assertCount(1, $rest);
-        self::assertSame('qux', $rest->at('baz'));
+        $rest = $map->dropWhile(static fn ($v) => 'bar' === $v);
+        static::assertInstanceOf($this->mapClass, $rest);
+        static::assertNotSame($map, $rest);
+        static::assertCount(1, $rest);
+        static::assertSame('qux', $rest->at('baz'));
     }
 
     public function testSlice(): void
@@ -509,16 +509,16 @@ abstract class AbstractMapTest extends TestCase
         ]);
 
         $slice1 = $map->slice(0, 1);
-        self::assertInstanceOf($this->mapClass, $slice1);
-        self::assertNotSame($slice1, $map);
-        self::assertCount(1, $slice1);
-        self::assertSame('foo', $slice1->at(0));
+        static::assertInstanceOf($this->mapClass, $slice1);
+        static::assertNotSame($slice1, $map);
+        static::assertCount(1, $slice1);
+        static::assertSame('foo', $slice1->at(0));
 
         $slice2 = $map->slice(2, 4);
-        self::assertInstanceOf($this->mapClass, $slice1);
-        self::assertNotSame($slice2, $map);
-        self::assertCount(4, $slice2);
-        self::assertSame([
+        static::assertInstanceOf($this->mapClass, $slice1);
+        static::assertNotSame($slice2, $map);
+        static::assertCount(4, $slice2);
+        static::assertSame([
             2 => 'bar',
             3 => 'bar',
             4 => 'baz',
@@ -533,8 +533,8 @@ abstract class AbstractMapTest extends TestCase
             'bar' => 'world',
         ]);
 
-        self::assertSame('hello', $map->at('foo'));
-        self::assertSame('world', $map->at('bar'));
+        static::assertSame('hello', $map->at('foo'));
+        static::assertSame('world', $map->at('bar'));
 
         $this->expectException(InvariantViolationException::class);
         $this->expectExceptionMessage('Key (baz) is out-of-bounds.');
@@ -549,9 +549,9 @@ abstract class AbstractMapTest extends TestCase
             'bar' => 'world',
         ]);
 
-        self::assertTrue($map->contains('foo'));
-        self::assertTrue($map->contains('bar'));
-        self::assertFalse($map->contains('baz'));
+        static::assertTrue($map->contains('foo'));
+        static::assertTrue($map->contains('bar'));
+        static::assertFalse($map->contains('baz'));
     }
 
     public function testGet(): void
@@ -561,9 +561,9 @@ abstract class AbstractMapTest extends TestCase
             'bar' => 'world',
         ]);
 
-        self::assertSame('hello', $map->get('foo'));
-        self::assertSame('world', $map->get('bar'));
-        self::assertNull($map->get('baz'));
+        static::assertSame('hello', $map->get('foo'));
+        static::assertSame('world', $map->get('bar'));
+        static::assertNull($map->get('baz'));
     }
 
     /**

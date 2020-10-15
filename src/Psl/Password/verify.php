@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Password;
 
-use Psl;
-
 use function password_verify;
 
 /**

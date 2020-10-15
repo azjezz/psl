@@ -7,14 +7,14 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class LowercaseTest extends TestCase
+final class LowercaseTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testLowercase(string $expected, string $str): void
     {
-        self::assertSame($expected, Byte\lowercase($str));
+        static::assertSame($expected, Byte\lowercase($str));
     }
 
     public function provideData(): array

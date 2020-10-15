@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 use Psl\Exception;
 
-class AtTest extends TestCase
+final class AtTest extends TestCase
 {
     /**
      * @dataProvider provideData

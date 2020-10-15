@@ -7,14 +7,14 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class ToIntTest extends TestCase
+final class ToIntTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testToInt(?int $expected, string $string): void
     {
-        self::assertSame($expected, Str\to_int($string));
+        static::assertSame($expected, Str\to_int($string));
     }
 
     public function provideData(): array

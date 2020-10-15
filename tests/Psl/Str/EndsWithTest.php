@@ -7,14 +7,14 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class EndsWithTest extends TestCase
+final class EndsWithTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testEndsWith(bool $expected, string $haystack, string $suffix): void
     {
-        self::assertSame($expected, Str\ends_with($haystack, $suffix));
+        static::assertSame($expected, Str\ends_with($haystack, $suffix));
     }
 
     public function provideData(): array

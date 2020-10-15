@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 use Psl\Exception;
 
-class FlipTest extends TestCase
+final class FlipTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testFlip(array $expected, $actual): void
     {
-        self::assertSame($expected, Arr\flip($actual));
+        static::assertSame($expected, Arr\flip($actual));
     }
 
     public function provideData(): array

@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 use Psl\Math;
 
-class SumFloatsTest extends TestCase
+final class SumFloatsTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testSumFloats(float $expected, array $numbers): void
     {
-        self::assertSame($expected, Math\sum_floats($numbers));
+        static::assertSame($expected, Math\sum_floats($numbers));
     }
 
     public function provideData(): array
@@ -43,11 +43,11 @@ class SumFloatsTest extends TestCase
             [
                 323.54,
                 [
-                19.5,
-                15.8,
-                ...Iter\range(0.5, 45, 5.98),
-                52.8,
-                64,
+                    19.5,
+                    15.8,
+                    ...Iter\range(0.5, 45, 5.98),
+                    52.8,
+                    64,
                 ]
             ],
         ];

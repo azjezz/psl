@@ -7,7 +7,7 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class ChunkTest extends TestCase
+final class ChunkTest extends TestCase
 {
 
     /**
@@ -15,7 +15,7 @@ class ChunkTest extends TestCase
      */
     public function testCapitalize(array $expected, string $value, int $chunk_size = 1): void
     {
-        self::assertSame($expected, Str\chunk($value, $chunk_size));
+        static::assertSame($expected, Str\chunk($value, $chunk_size));
     }
 
     public function provideData(): array

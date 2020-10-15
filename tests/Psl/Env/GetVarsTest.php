@@ -7,7 +7,7 @@ namespace Psl\Tests\Env;
 use PHPUnit\Framework\TestCase;
 use Psl\Env;
 
-class GetVarsTest extends TestCase
+final class GetVarsTest extends TestCase
 {
     /**
      * @backupGlobals
@@ -16,12 +16,12 @@ class GetVarsTest extends TestCase
     {
         $expected = getenv();
 
-        self::assertSame($expected, Env\get_vars());
+        static::assertSame($expected, Env\get_vars());
 
         Env\set_var('FOO', 'BAR');
 
-        self::assertNotSame($expected, Env\get_vars());
-        self::assertSame(getenv(), Env\get_vars());
+        static::assertNotSame($expected, Env\get_vars());
+        static::assertSame(getenv(), Env\get_vars());
 
         Env\remove_var('FOO');
     }

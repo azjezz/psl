@@ -11,7 +11,6 @@ use function chdir;
 /**
  * Changes the current working directory to the specified path.
  *
- * @param string $directory
  *
  * @throws Psl\Exception\InvariantViolationException If the operation fails.
  */

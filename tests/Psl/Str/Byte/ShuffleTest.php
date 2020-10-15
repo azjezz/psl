@@ -7,7 +7,7 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class ShuffleTest extends TestCase
+final class ShuffleTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -15,10 +15,10 @@ class ShuffleTest extends TestCase
     public function testShuffle(string $str): void
     {
         $shuffled = Byte\shuffle($str);
-        self::assertSame(Byte\length($str), Byte\length($shuffled));
+        static::assertSame(Byte\length($str), Byte\length($shuffled));
 
         if (Byte\length($shuffled) > 1) {
-            self::assertNotSame($str, $shuffled);
+            static::assertNotSame($str, $shuffled);
         }
     }
 

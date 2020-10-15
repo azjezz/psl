@@ -8,20 +8,19 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use Psl\Fun;
 use Psl\Result\Failure;
-use stdClass;
 
-class FailureTest extends TestCase
+final class FailureTest extends TestCase
 {
     public function testIsSucceeded(): void
     {
         $wrapper = new Failure(new Exception('foo'));
-        self::assertFalse($wrapper->isSucceeded());
+        static::assertFalse($wrapper->isSucceeded());
     }
 
     public function testIsFailed(): void
     {
         $wrapper = new Failure(new Exception('foo'));
-        self::assertTrue($wrapper->isFailed());
+        static::assertTrue($wrapper->isFailed());
     }
 
     public function testGetResult(): void
@@ -38,7 +37,7 @@ class FailureTest extends TestCase
         $exception = new Exception('bar');
         $wrapper   = new Failure($exception);
         $e         = $wrapper->getException();
-        self::assertSame($exception, $e);
+        static::assertSame($exception, $e);
     }
 
     public function testProceed(): void
@@ -50,7 +49,7 @@ class FailureTest extends TestCase
             static fn (Exception $exception): int => 404
         );
 
-        self::assertSame(404, $actual);
+        static::assertSame(404, $actual);
     }
 
     public function testThenToSuccess(): void
@@ -59,13 +58,13 @@ class FailureTest extends TestCase
         $wrapper   = new Failure($exception);
         $actual    = $wrapper->then(
             static function () {
-                throw new \Exception('Dont call us, we\'ll call you!');
+                throw new Exception('Dont call us, we\'ll call you!');
             },
             static fn (Exception $exception): string => $exception->getMessage()
         );
 
-        self::assertTrue($actual->isSucceeded());
-        self::assertSame($actual->getResult(), 'bar');
+        static::assertTrue($actual->isSucceeded());
+        static::assertSame($actual->getResult(), 'bar');
     }
 
     public function testThenToFailure(): void
@@ -74,12 +73,12 @@ class FailureTest extends TestCase
         $wrapper   = new Failure($exception);
         $actual    = $wrapper->then(
             static function () {
-                throw new \Exception('Dont call us, we\'ll call you!');
+                throw new Exception('Dont call us, we\'ll call you!');
             },
             Fun\rethrow()
         );
 
-        self::assertFalse($actual->isSucceeded());
-        self::assertSame($actual->getException(), $exception);
+        static::assertFalse($actual->isSucceeded());
+        static::assertSame($actual->getException(), $exception);
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Tests\Type;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Arr;
 use Psl\Iter;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -43,7 +42,7 @@ abstract class TypeTest extends TestCase
     public function getValidValues(): array
     {
         $non_unique = $this->getValidCoercions();
-        $non_unique = Iter\map($non_unique, fn ($tuple) => $tuple[1]);
+        $non_unique = Iter\map($non_unique, static fn ($tuple) => $tuple[1]);
 
         $out = [];
         foreach ($non_unique as $v) {
@@ -88,8 +87,8 @@ abstract class TypeTest extends TestCase
     {
         $actual = $this->getType()->coerce($value);
 
-        self::assertTrue($this->equals($expected, $actual));
-        self::assertTrue($this->equals($actual, $this->getType()->coerce($actual)));
+        static::assertTrue($this->equals($expected, $actual));
+        static::assertTrue($this->equals($actual, $this->getType()->coerce($actual)));
     }
 
     /**
@@ -109,7 +108,7 @@ abstract class TypeTest extends TestCase
     {
         $out = $this->getType()->assert($value);
 
-        self::assertTrue($this->equals($out, $value));
+        static::assertTrue($this->equals($out, $value));
     }
 
     /**
@@ -127,7 +126,7 @@ abstract class TypeTest extends TestCase
      */
     final public function testToString(Type $ts, string $expected): void
     {
-        self::assertSame($expected, $ts->toString());
+        static::assertSame($expected, $ts->toString());
     }
 
     /**

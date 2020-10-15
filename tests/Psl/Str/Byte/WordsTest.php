@@ -7,7 +7,7 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class WordsTest extends TestCase
+final class WordsTest extends TestCase
 {
 
     /**
@@ -15,7 +15,7 @@ class WordsTest extends TestCase
      */
     public function testWords(array $expected, string $string, ?string $extra_chars = null): void
     {
-        self::assertSame($expected, Byte\words($string, $extra_chars));
+        static::assertSame($expected, Byte\words($string, $extra_chars));
     }
 
     public function provideData(): array

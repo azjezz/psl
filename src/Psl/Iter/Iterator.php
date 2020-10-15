@@ -16,7 +16,7 @@ use SeekableIterator;
  *
  * @implements SeekableIterator<Tk, Tv>
  */
-final class Iterator implements SeekableIterator, Countable
+final class Iterator implements Countable, SeekableIterator
 {
     /**
      * @psalm-var Generator<Tk, Tv, mixed, mixed>

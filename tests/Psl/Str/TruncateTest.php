@@ -7,7 +7,7 @@ namespace Psl\Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class TruncateTest extends TestCase
+final class TruncateTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -19,7 +19,7 @@ class TruncateTest extends TestCase
         int $width,
         ?string $trim_marker = null
     ): void {
-        self::assertSame($expected, Str\truncate($str, $offset, $width, $trim_marker));
+        static::assertSame($expected, Str\truncate($str, $offset, $width, $trim_marker));
     }
 
     public function provideData(): array

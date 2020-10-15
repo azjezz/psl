@@ -7,7 +7,7 @@ namespace Psl\Tests\Math;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
-class TanTest extends TestCase
+final class TanTest extends TestCase
 {
 
     /**
@@ -15,7 +15,7 @@ class TanTest extends TestCase
      */
     public function testTan(float $expected, float $number): void
     {
-        self::assertSame($expected, Math\tan($number));
+        static::assertSame($expected, Math\tan($number));
     }
 
     public function provideData(): array

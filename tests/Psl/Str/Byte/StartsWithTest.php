@@ -7,7 +7,7 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class StartsWithTest extends TestCase
+final class StartsWithTest extends TestCase
 {
 
     /**
@@ -15,7 +15,7 @@ class StartsWithTest extends TestCase
      */
     public function testStartsWith(bool $expected, string $haystack, string $prefix): void
     {
-        self::assertSame($expected, Byte\starts_with($haystack, $prefix));
+        static::assertSame($expected, Byte\starts_with($haystack, $prefix));
     }
 
     public function provideData(): array

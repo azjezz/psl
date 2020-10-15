@@ -7,14 +7,14 @@ namespace Psl\Tests\Math;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
-class CeilTest extends TestCase
+final class CeilTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testCiel(float $expected, float $number): void
     {
-        self::assertSame($expected, Math\ceil($number));
+        static::assertSame($expected, Math\ceil($number));
     }
 
     public function provideData(): array

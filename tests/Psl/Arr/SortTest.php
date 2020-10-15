@@ -7,7 +7,7 @@ namespace Psl\Tests\Arr;
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 
-class SortTest extends TestCase
+final class SortTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -36,7 +36,7 @@ class SortTest extends TestCase
                  *
                  * @psalm-pure
                  */
-                fn (int $a, int $b) => $a <=> $b ? -1 : 1,
+                static fn (int $a, int $b) => $a <=> $b ? -1 : 1,
             ],
 
             [

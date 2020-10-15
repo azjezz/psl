@@ -7,14 +7,14 @@ namespace Psl\Tests\Str\Byte;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
-class LengthTest extends TestCase
+final class LengthTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testLength(int $expected, string $str): void
     {
-        self::assertSame($expected, Byte\length($str));
+        static::assertSame($expected, Byte\length($str));
     }
 
     public function provideData(): array

@@ -7,7 +7,7 @@ namespace Psl\Tests\Iter;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 
-class KeysTest extends TestCase
+final class KeysTest extends TestCase
 {
     /**
      * @dataProvider provideData
@@ -16,7 +16,7 @@ class KeysTest extends TestCase
     {
         $result = Iter\keys($iterable);
 
-        self::assertSame($expected, Iter\to_array_with_keys($result));
+        static::assertSame($expected, Iter\to_array_with_keys($result));
     }
 
     public function provideData(): iterable

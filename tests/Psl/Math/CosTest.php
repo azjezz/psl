@@ -7,14 +7,14 @@ namespace Psl\Tests\Math;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
-class CosTest extends TestCase
+final class CosTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testCos(float $expected, float $number): void
     {
-        self::assertSame($expected, Math\cos($number));
+        static::assertSame($expected, Math\cos($number));
     }
 
     public function provideData(): array

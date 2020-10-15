@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Psl\Arr;
 use Psl\Str;
 
-class SortByKeyTest extends TestCase
+final class SortByKeyTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testSortByKey(array $expected, array $array, ?callable $comparator = null): void
     {
-        self::assertSame($expected, Arr\sort_by_key($array, $comparator));
+        static::assertSame($expected, Arr\sort_by_key($array, $comparator));
     }
 
     public function provideData(): array
@@ -30,7 +30,7 @@ class SortByKeyTest extends TestCase
             [
                 ['d' => 'lemon', 'c' => 'apple', 'b' => 'banana', 'a' => 'orange'],
                 ['d' => 'lemon', 'a' => 'orange', 'b' => 'banana', 'c' => 'apple'],
-                fn (string $a, string $b) => Str\ord($a) > Str\ord($b) ? -1 : 1,
+                static fn (string $a, string $b) => Str\ord($a) > Str\ord($b) ? -1 : 1,
             ],
         ];
     }

@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Psl\Exception;
 use Psl\Str;
 
-class SliceTest extends TestCase
+final class SliceTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
     public function testSlice(string $expected, string $string, int $offset, ?int $length = null): void
     {
-        self::assertSame($expected, Str\slice($string, $offset, $length));
+        static::assertSame($expected, Str\slice($string, $offset, $length));
     }
 
     public function provideData(): array
