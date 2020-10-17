@@ -38,17 +38,20 @@
         }
     },
     "scripts": {
-        "cs:fix": "phpcbf",
-        "cs:check": "phpcs",
-        "cs-fixer:fix": "php-cs-fixer fix",
-        "cs-fixer:check": "php-cs-fixer fix --dry-run",
+        "cs:fix": [
+            "phpcbf",
+            "php-cs-fixer fix"
+        ],
+        "cs:check": [
+            "phpcs",
+            "php-cs-fixer fix --dry-run"
+        ],
         "type:check": "psalm",
         "type:coverage": "psalm --shepherd",
         "test:unit": "phpunit",
         "code:coverage": "php-coveralls -v",
         "security:analysis": "psalm --taint-analysis",
         "check": [
-            "@cs-fixer:check",
             "@cs:check",
             "@type:check",
             "@security:analysis",
