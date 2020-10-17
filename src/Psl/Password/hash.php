@@ -26,6 +26,8 @@ use const PASSWORD_BCRYPT;
  * @see ARGON2I_ALGORITHM for the argon2i, and argon2id supported options.
  *
  * @throws Psl\Exception\InvariantViolationException The given algorithm is unsupported.
+ *
+ * @psalm-pure
  */
 function hash(string $password, string $algorithm = DEFAULT_ALGORITHM, array $options = []): string
 {

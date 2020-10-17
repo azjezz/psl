@@ -18,6 +18,8 @@ use function password_get_info;
  *      algorithm: string,
  *      options: array{cost: int}|array{memory_cost: int, time_cost: int, threads: int}
  * }
+ *
+ * @psalm-pure
  */
 function get_information(string $hash): array
 {

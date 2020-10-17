@@ -8,6 +8,8 @@ namespace Psl\Password;
  * Return a complete list of all registered password hashing algorithms.
  *
  * @psalm-return list<string>
+ *
+ * @psalm-pure
  */
 function algorithms(): array
 {
