@@ -43,4 +43,4 @@ jobs:
         run: "composer install --no-interaction --no-progress --ignore-platform-req php"
 
       - name: "running unit tests ( phpunit )"
-        run: "composer test:unit"
+        run: "php vendor/bin/phpunit"

@@ -22,7 +22,7 @@ jobs:
         run: "composer update --no-interaction --no-progress"
 
       - name: "checking coding standards ( codesniffer )"
-        run: "composer cs:check"
+        run: "php vendor/bin/phpcs"
 
       - name: "checking coding standards ( php-cs-fixer )"
-        run: "composer cs-fixer:check"
+        run: "php vendor/bin/php-cs-fixer fix --dry-run --ansi"
