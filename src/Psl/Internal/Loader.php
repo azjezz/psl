@@ -331,6 +331,11 @@ final class Loader
         'Psl\Password\hash',
         'Psl\Password\needs_rehash',
         'Psl\Password\verify',
+        'Psl\Hash\hash',
+        'Psl\Hash\algorithms',
+        'Psl\Hash\equals',
+        'Psl\Hash\Hmac\hash',
+        'Psl\Hash\Hmac\algorithms',
     ];
 
     public const INTERFACES = [
@@ -387,6 +392,7 @@ final class Loader
         'Psl\Type\Type',
         'Psl\Json\Exception\DecodeException',
         'Psl\Json\Exception\EncodeException',
+        'Psl\Hash\Context',
     ];
 
     private const TYPE_CONSTANTS = 1;
