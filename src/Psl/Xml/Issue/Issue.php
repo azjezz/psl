@@ -6,6 +6,9 @@ namespace Psl\Xml\Issue;
 
 use Psl\Str;
 
+/**
+ * @psam-immutable
+ */
 final class Issue
 {
     private Level $level;

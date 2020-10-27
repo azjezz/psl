@@ -11,6 +11,11 @@ use Psl\Iter\Iterator;
 use Psl\Math;
 use Psl\Str;
 
+/**
+ * @template-implements IteratorAggregate<int, Issue>
+ *
+ * @psalm-immutable
+ */
 final class IssueCollection implements Countable, IteratorAggregate
 {
     /**

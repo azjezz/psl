@@ -401,7 +401,7 @@ final class Loader
         'Psl\Xml\Issue\Issue',
         'Psl\Xml\Issue\IssueCollection',
         'Psl\Xml\Issue\Level',
-        'Psl\Xml\Exception\XmlException',
+        'Psl\Xml\Exception\RuntimeException',
     ];
 
     private const TYPE_CONSTANTS = 1;

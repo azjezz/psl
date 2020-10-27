@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Psl\Xml\Exception;
 
 use Exception;
-use Psl\Exception\RuntimeException;
+use Psl\Exception\RuntimeException as PslRuntimeException;
 use Psl\Xml\Issue\IssueCollection;
 
-class XmlException extends RuntimeException implements ExceptionInterface
+final class RuntimeException extends PslRuntimeException implements ExceptionInterface
 {
     private function __construct(string $message, Exception $previous = null)
     {

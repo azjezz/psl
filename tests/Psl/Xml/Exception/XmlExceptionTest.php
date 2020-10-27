@@ -8,11 +8,11 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use Psl\Tests\Xml\Issue\UseIssueTrait;
 use Psl\Xml\Exception\ExceptionInterface;
-use Psl\Xml\Exception\XmlException;
+use Psl\Xml\Exception\RuntimeException;
 use Psl\Xml\Issue\IssueCollection;
 use Psl\Xml\Issue\Level;
 
-final class XmlExceptionTest extends TestCase
+final class RuntimeExceptionTest extends TestCase
 {
     use UseIssueTrait;
 
@@ -21,13 +21,13 @@ final class XmlExceptionTest extends TestCase
         $exception = new Exception('nonono');
         $issues = new IssueCollection(
             $this->createIssue(Level::fatal()),
-            $this->createIssue(Level::warning())
+            $this->createIssue(Level::warning()),
         );
 
-        $this->expectException(XmlException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectException(ExceptionInterface::class);
         $this->expectExceptionMessage($exception->getMessage() . PHP_EOL . $issues->toString());
 
-        throw XmlException::combineExceptionWithIssues($exception, $issues);
+        throw RuntimeException::combineExceptionWithIssues($exception, $issues);
     }
 }
