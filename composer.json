@@ -13,10 +13,12 @@
         "php": "^7.4 || ^8.0",
         "ext-bcmath": "*",
         "ext-json": "*",
+        "ext-libxml": "*",
         "ext-mbstring": "*",
         "ext-sodium": "*"
     },
     "require-dev": {
+        "ext-simplexml": "*",
         "phpunit/phpunit": "^9.4",
         "php-coveralls/php-coveralls": "^2.4",
         "friendsofphp/php-cs-fixer": "^2.16",
