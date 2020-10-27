@@ -8,8 +8,6 @@
 [![Coverage Status](https://coveralls.io/repos/github/azjezz/psl/badge.svg?branch=develop)](https://coveralls.io/github/azjezz/psl?branch=develop)
 [![Type Coverage](https://shepherd.dev/github/azjezz/psl/coverage.svg)](https://shepherd.dev/github/azjezz/psl)
 [![SymfonyInsight](https://insight.symfony.com/projects/1e053a4a-aaab-4a52-9059-c4883bfd46f7/mini.svg)](https://insight.symfony.com/projects/1e053a4a-aaab-4a52-9059-c4883bfd46f7)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/azjezz/psl/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/azjezz/psl/?branch=develop)
-[![Code Intelligence Status](https://scrutinizer-ci.com/g/azjezz/psl/badges/code-intelligence.svg?b=develop)](https://scrutinizer-ci.com/code-intelligence)
 [![Total Downloads](https://poser.pugx.org/azjezz/psl/d/total.svg)](https://packagist.org/packages/azjezz/psl)
 [![Latest Stable Version](https://poser.pugx.org/azjezz/psl/v/stable.svg)](https://packagist.org/packages/azjezz/psl)
 [![License](https://poser.pugx.org/azjezz/psl/license.svg)](https://packagist.org/packages/azjezz/psl)
