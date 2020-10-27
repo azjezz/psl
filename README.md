@@ -5,7 +5,6 @@
 ![Security analysis status](https://github.com/azjezz/psl/workflows/security%20analysis/badge.svg?branch=develop)
 ![Coding standards status](https://github.com/azjezz/psl/workflows/coding%20standards/badge.svg?branch=develop)
 [![TravisCI Build Status](https://travis-ci.com/azjezz/psl.svg?branch=develop)](https://travis-ci.com/azjezz/psl)
-[![Scrutinizer Build Status](https://scrutinizer-ci.com/g/azjezz/psl/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/azjezz/psl/build-status/develop)
 [![Coverage Status](https://coveralls.io/repos/github/azjezz/psl/badge.svg?branch=develop)](https://coveralls.io/github/azjezz/psl?branch=develop)
 [![Type Coverage](https://shepherd.dev/github/azjezz/psl/coverage.svg)](https://shepherd.dev/github/azjezz/psl)
 [![SymfonyInsight](https://insight.symfony.com/projects/1e053a4a-aaab-4a52-9059-c4883bfd46f7/mini.svg)](https://insight.symfony.com/projects/1e053a4a-aaab-4a52-9059-c4883bfd46f7)
