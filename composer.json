@@ -21,7 +21,7 @@
         "ext-simplexml": "*",
         "friendsofphp/php-cs-fixer": "^2.16",
         "php-coveralls/php-coveralls": "^2.2",
-        "phpunit/phpunit": "^9.0",
+        "phpunit/phpunit": "^9.4",
         "roave/security-advisories": "dev-master",
         "squizlabs/php_codesniffer": "^3.5",
         "vimeo/psalm": "^4.0"
