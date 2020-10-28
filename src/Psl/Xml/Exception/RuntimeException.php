@@ -19,6 +19,11 @@ final class RuntimeException extends PslRuntimeException implements ExceptionInt
         );
     }
 
+    public static function fromIssues(string $message, IssueCollection $errors): self
+    {
+        return new self($message . PHP_EOL . $errors->toString());
+    }
+
     public static function combineExceptionWithIssues(Exception $exception, IssueCollection $errors): self
     {
         return new self(

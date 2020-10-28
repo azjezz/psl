@@ -340,6 +340,7 @@ final class Loader
         'Psl\Xml\Internal\issue_collection_from_xml_errors',
         'Psl\Xml\Internal\issue_from_xml_error',
         'Psl\Xml\Internal\issue_level_from_xml_error',
+        'Psl\Xml\Internal\stop_on_first_issue',
     ];
 
     public const INTERFACES = [
@@ -358,6 +359,10 @@ final class Loader
         'Psl\Observer\ObserverInterface',
         'Psl\Result\ResultInterface',
         'Psl\Xml\Exception\ExceptionInterface',
+        'Psl\Xml\Reader\ElementNodeInterface',
+        'Psl\Xml\Reader\NodeSequenceInterface',
+        'Psl\Xml\Reader\ReaderInterface',
+        'Psl\Xml\Reader\ReaderResourceInterface',
     ];
 
     public const TRAITS = [
