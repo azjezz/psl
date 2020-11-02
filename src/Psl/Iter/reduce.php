@@ -24,12 +24,12 @@ namespace Psl\Iter;
  * @psalm-template Ts
  *
  * @psalm-param iterable<Tk, Tv>        $iterable
- * @psalm-param (callable(?Ts, Tv): Ts) $function
- * @psalm-param Ts|null                 $initial
+ * @psalm-param (callable(Ts, Tv): Ts)  $function
+ * @psalm-param Ts                      $initial
  *
- * @psalm-return Ts|null
+ * @psalm-return Ts
  */
-function reduce(iterable $iterable, callable $function, $initial = null)
+function reduce(iterable $iterable, callable $function, $initial)
 {
     $accumulator = $initial;
     foreach ($iterable as $v) {
