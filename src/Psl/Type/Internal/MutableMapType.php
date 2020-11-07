@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Psl\Collection;
 use Psl\Iter;
 use Psl\Str;
 use Psl\Type;
@@ -14,11 +15,11 @@ use Psl\Type\Exception\CoercionException;
  * @template Tk of array-key
  * @template Tv
  *
- * @extends Type\Type<array<Tk, Tv>>
+ * @extends Type\Type<Collection\MutableMapInterface<Tk, Tv>>
  *
  * @internal
  */
-final class ArrayType extends Type\Type
+final class MutableMapType extends Type\Type
 {
     /**
      * @psalm-var Type\Type<Tk>
@@ -38,22 +39,27 @@ final class ArrayType extends Type\Type
         Type\Type $key_type,
         Type\Type $value_type
     ) {
-        $this->key_type   = $key_type;
+        $this->key_type = $key_type;
         $this->value_type = $value_type;
     }
 
     /**
      * @psalm-param mixed $value
      *
-     * @psalm-return array<Tk, Tv>
+     * @psalm-return Collection\MutableMapInterface<Tk, Tv>
      *
      * @throws CoercionException
      */
-    public function coerce($value): array
+    public function coerce($value): Collection\MutableMapInterface
     {
         if (Type\is_iterable($value)) {
-            $key_trace   = $this->getTrace()->withFrame(Str\format('array<%s, _>', $this->key_type->toString()));
-            $value_trace = $this->getTrace()->withFrame(Str\format('array<_, %s>', $this->value_type->toString()));
+            $key_trace = $this->getTrace()->withFrame(
+                Str\format('%s<%s, _>', Collection\MutableMapInterface::class, $this->key_type->toString())
+            );
+
+            $value_trace = $this->getTrace()->withFrame(
+                Str\format('%s<_, %s>', Collection\MutableMapInterface::class, $this->value_type->toString())
+            );
 
             /** @psalm-var Type\Type<Tk> $key_type */
             $key_type = $this->key_type->withTrace($key_trace);
@@ -72,17 +78,16 @@ final class ArrayType extends Type\Type
                 /** @psalm-var Tk $k */
                 $k = $key_type->coerce($k);
                 /** @psalm-var Tv $v */
-                $v         = $value_type->coerce($v);
+                $v = $value_type->coerce($v);
+
                 $entries[] = [$k, $v];
             }
 
             /** @psalm-var Iter\Iterator<Tk, Tv> $iterator */
             $iterator = Iter\from_entries($entries);
 
-            /** @psalm-var array<Tk, Tv> */
-            return Iter\to_array_with_keys($iterator);
+            return new Collection\MutableMap($iterator);
         }
-
 
         throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
     }
@@ -90,17 +95,22 @@ final class ArrayType extends Type\Type
     /**
      * @psalm-param mixed $value
      *
-     * @psalm-return array<Tk, Tv>
+     * @psalm-return Collection\MutableMapInterface<Tk, Tv>
      *
-     * @psalm-assert array<Tk, Tv> $value
+     * @psalm-assert Collection\MutableMapInterface<Tk, Tv> $value
      *
      * @throws AssertException
      */
-    public function assert($value): array
+    public function assert($value): Collection\MutableMapInterface
     {
-        if (Type\is_array($value)) {
-            $key_trace   = $this->getTrace()->withFrame(Str\format('array<%s, _>', $this->key_type->toString()));
-            $value_trace = $this->getTrace()->withFrame(Str\format('array<_, %s>', $this->value_type->toString()));
+        if (Type\is_object($value) && Type\is_instanceof($value, Collection\MutableMapInterface::class)) {
+            $key_trace = $this->getTrace()->withFrame(
+                Str\format('%s<%s, _>', Collection\MutableMapInterface::class, $this->key_type->toString())
+            );
+
+            $value_trace = $this->getTrace()->withFrame(
+                Str\format('%s<_, %s>', Collection\MutableMapInterface::class, $this->value_type->toString())
+            );
 
             /** @psalm-var Type\Type<Tk> $key_type */
             $key_type = $this->key_type->withTrace($key_trace);
@@ -119,14 +129,14 @@ final class ArrayType extends Type\Type
                 /** @psalm-var Tk $k */
                 $k = $key_type->assert($k);
                 /** @psalm-var Tv $v */
-                $v         = $value_type->assert($v);
+                $v = $value_type->assert($v);
                 $entries[] = [$k, $v];
             }
 
             /** @psalm-var Iter\Iterator<Tk, Tv> $iterator */
             $iterator = Iter\from_entries($entries);
 
-            return Iter\to_array_with_keys($iterator);
+            return new Collection\MutableMap($iterator);
         }
 
         throw AssertException::withValue($value, $this->toString(), $this->getTrace());
@@ -134,6 +144,11 @@ final class ArrayType extends Type\Type
 
     public function toString(): string
     {
-        return Str\format('array<%s, %s>', $this->key_type->toString(), $this->value_type->toString());
+        return Str\format(
+            '%s<%s, %s>',
+            Collection\MutableMapInterface::class,
+            $this->key_type->toString(),
+            $this->value_type->toString(),
+        );
     }
 }
