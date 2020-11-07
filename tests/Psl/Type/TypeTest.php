@@ -15,7 +15,6 @@ use Psl\Type\Type;
  */
 abstract class TypeTest extends TestCase
 {
-
     /**
      * @psalm-return Type<T>
      */

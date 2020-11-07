@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
+use Psl\Collection;
+
 /**
  * @template Tk of array-key
  * @template Tv
@@ -11,9 +13,9 @@ namespace Psl\Type;
  * @psalm-param Type<Tk> $key_type
  * @psalm-param Type<Tv> $value_type
  *
- * @psalm-return Type<array<Tk, Tv>>
+ * @psalm-return Type<Collection\MapInterface<Tk, Tv>>
  */
-function arr(Type $key_type, Type $value_type): Type
+function map(Type $key_type, Type $value_type): Type
 {
-    return new Internal\ArrayType($key_type, $value_type);
+    return new Internal\MapType($key_type, $value_type);
 }
