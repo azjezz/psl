@@ -23,8 +23,9 @@ use function password_get_info;
  */
 function get_information(string $hash): array
 {
+    /** @var array{algoName: string, options: array<string, array-key>} $information */
     $information = password_get_info($hash);
-    $algorithm   = (string)$information['algoName'];
+    $algorithm   = $information['algoName'];
     if (BCRYPT_ALGORITHM === $algorithm) {
         return [
             'algorithm' => $algorithm,
