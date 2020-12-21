@@ -13,6 +13,7 @@ namespace Psl\Password;
  */
 function algorithms(): array
 {
+    /** @psalm-var list<string> */
     return [
         BCRYPT_ALGORITHM,
         ARGON2I_ALGORITHM,

@@ -16,8 +16,6 @@ use Psl\Type\Exception\CoercionException;
 final class BoolType extends Type\Type
 {
     /**
-     * @psalm-return bool
-     *
      * @throws CoercionException
      */
     public function coerce($value): bool
@@ -38,8 +36,6 @@ final class BoolType extends Type\Type
     }
 
     /**
-     * @psalm-return bool
-     *
      * @psalm-assert bool $value
      *
      * @throws AssertException
