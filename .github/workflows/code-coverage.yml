@@ -1,0 +1,34 @@
+name: "code coverage"
+
+on: ["pull_request", "push"]
+
+jobs:
+  code-coverage:
+    name: "code coverage"
+
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: "checkout"
+        uses: "actions/checkout@v2"
+
+      - name: "installing PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "8.0"
+          ini-values: memory_limit=-1
+          tools: composer:v2, cs2pr
+          extensions: bcmath, mbstring, intl, sodium, json
+
+      - name: "installing dependencies"
+        run: "composer install --no-interaction --no-progress --ignore-platform-req php"
+
+      - name: "running unit tests ( phpunit )"
+        run: "php vendor/bin/phpunit"
+
+      - name: "sending code coverage to coveralls"
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          composer global require php-coveralls/php-coveralls
+          php-coveralls -x tests/logs/clover.xml -o tests/logs/coveralls-upload.json -v
