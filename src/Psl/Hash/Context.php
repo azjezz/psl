@@ -80,6 +80,8 @@ final class Context
 
     /**
      * Pump data into an active hashing context.
+     *
+     * @psalm-mutation-free
      */
     public function update(string $data): Context
     {
@@ -92,6 +94,8 @@ final class Context
 
     /**
      * Finalize an incremental hash and return resulting digest.
+     *
+     * @psalm-mutation-free
      */
     public function finalize(): string
     {
