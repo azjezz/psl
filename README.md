@@ -44,7 +44,7 @@ foo([95, 96, null, 98]);
 
 ## Installation
 
-This package doesn't have a stable release yet, but you can still install it using composer :
+Supported installation method is via [composer](https://getcomposer.org):
 
 ```console
 $ composer require azjezz/psl
