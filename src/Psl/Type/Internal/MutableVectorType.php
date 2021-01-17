@@ -56,15 +56,13 @@ final class MutableVectorType extends Type\Type
             $values = [];
 
             /**
-             * @psalm-var mixed $v
+             * @psalm-var T $v
              */
             foreach ($value as $v) {
-                /** @psalm-var T $v */
-                $v = $value_type->coerce($v);
-
-                $values[] = $v;
+                $values[] = $value_type->coerce($v);
             }
 
+            /** @var Collection\MutableVector<T> */
             return new Collection\MutableVector($values);
         }
 
@@ -96,15 +94,13 @@ final class MutableVectorType extends Type\Type
             $values = [];
 
             /**
-             * @psalm-var mixed $v
+             * @psalm-var T $v
              */
             foreach ($value as $v) {
-                /** @psalm-var T $v */
-                $v = $value_type->coerce($v);
-
-                $values[] = $v;
+                $values[] = $value_type->coerce($v);
             }
 
+            /** @var Collection\MutableVector<T> */
             return new Collection\MutableVector($values);
         }
 

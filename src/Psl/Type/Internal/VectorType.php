@@ -56,15 +56,13 @@ final class VectorType extends Type\Type
             $values = [];
 
             /**
-             * @psalm-var mixed $v
+             * @psalm-var T $v
              */
             foreach ($value as $v) {
-                /** @psalm-var T $v */
-                $v = $value_type->coerce($v);
-
-                $values[] = $v;
+                $values[] = $value_type->coerce($v);
             }
 
+            /** @var Collection\Vector<T> */
             return new Collection\Vector($values);
         }
 
@@ -96,15 +94,13 @@ final class VectorType extends Type\Type
             $values = [];
 
             /**
-             * @psalm-var mixed $v
+             * @psalm-var T $v
              */
             foreach ($value as $v) {
-                /** @psalm-var T $v */
-                $v = $value_type->coerce($v);
-
-                $values[] = $v;
+                $values[] = $value_type->coerce($v);
             }
 
+            /** @var Collection\Vector<T> */
             return new Collection\Vector($values);
         }
 

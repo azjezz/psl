@@ -57,27 +57,28 @@ final class IterableType extends Type\Type
             $value_trace = $this->getTrace()
                 ->withFrame(Str\format('iterable<_, %s>', $this->value_type_spec->toString()));
 
-            /** @psalm-var Type\Type<Tk> $key_type_spec */
-            $key_type_spec = $this->key_type_spec->withTrace($key_trace);
+            /** @psalm-var Type\Type<Tk> $key_type */
+            $key_type = $this->key_type_spec->withTrace($key_trace);
             /** @psalm-var Type\Type<Tv> $value_type_speec */
-            $value_type_spec = $this->value_type_spec->withTrace($value_trace);
+            $value_type = $this->value_type_spec->withTrace($value_trace);
 
             /**
              * @psalm-var list<array{0: Tk, 1: Tv}> $entries
              */
             $entries = [];
+
             /**
-             * @psalm-var mixed $k
-             * @psalm-var mixed $v
+             * @psalm-var Tk $k
+             * @psalm-var Tv $v
              */
             foreach ($value as $k => $v) {
-                /** @psalm-var Tk $k */
-                $k = $key_type_spec->coerce($k);
-                /** @psalm-var Tv $v */
-                $v         = $value_type_spec->coerce($v);
-                $entries[] = [$k, $v];
+                $entries[] = [
+                    $key_type->coerce($k),
+                    $value_type->coerce($v),
+                ];
             }
 
+            /** @var iterable<Tk, Tv> */
             return Iter\from_entries($entries);
         }
 
@@ -101,27 +102,28 @@ final class IterableType extends Type\Type
             $value_trace = $this->getTrace()
                 ->withFrame(Str\format('iterable<_, %s>', $this->value_type_spec->toString()));
 
-            /** @psalm-var Type\Type<Tk> $key_type_spec */
-            $key_type_spec = $this->key_type_spec->withTrace($key_trace);
-            /** @psalm-var Type\Type<Tv> $value_type_spec */
-            $value_type_spec = $this->value_type_spec->withTrace($value_trace);
+            /** @psalm-var Type\Type<Tk> $key_type */
+            $key_type = $this->key_type_spec->withTrace($key_trace);
+            /** @psalm-var Type\Type<Tv> $value_type */
+            $value_type = $this->value_type_spec->withTrace($value_trace);
 
             /**
              * @psalm-var list<array{0: Tk, 1: Tv}> $entries
              */
             $entries = [];
+
             /**
-             * @psalm-var mixed $k
-             * @psalm-var mixed $v
+             * @psalm-var Tk $k
+             * @psalm-var Tv $v
              */
             foreach ($value as $k => $v) {
-                /** @psalm-var Tk $k */
-                $k = $key_type_spec->assert($k);
-                /** @psalm-var Tv $v */
-                $v         = $value_type_spec->assert($v);
-                $entries[] = [$k, $v];
+                $entries[] = [
+                    $key_type->assert($k),
+                    $value_type->assert($v),
+                ];
             }
 
+            /** @var iterable<Tk, Tv> */
             return Iter\from_entries($entries);
         }
 

@@ -70,22 +70,22 @@ final class MutableMapType extends Type\Type
              * @psalm-var list<array{0: Tk, 1: Tv}> $entries
              */
             $entries = [];
+
             /**
-             * @psalm-var mixed $k
-             * @psalm-var mixed $v
+             * @psalm-var Tk $k
+             * @psalm-var Tv $v
              */
             foreach ($value as $k => $v) {
-                /** @psalm-var Tk $k */
-                $k = $key_type->coerce($k);
-                /** @psalm-var Tv $v */
-                $v = $value_type->coerce($v);
-
-                $entries[] = [$k, $v];
+                $entries[] = [
+                    $key_type->coerce($k),
+                    $value_type->coerce($v),
+                ];
             }
 
             /** @psalm-var Iter\Iterator<Tk, Tv> $iterator */
             $iterator = Iter\from_entries($entries);
 
+            /** @var Collection\MutableMap<Tk, Tv> */
             return new Collection\MutableMap($iterator);
         }
 
@@ -121,21 +121,22 @@ final class MutableMapType extends Type\Type
              * @psalm-var list<array{0: Tk, 1: Tv}> $entries
              */
             $entries = [];
+
             /**
-             * @psalm-var mixed $k
-             * @psalm-var mixed $v
+             * @psalm-var Tk $k
+             * @psalm-var Tv $v
              */
             foreach ($value as $k => $v) {
-                /** @psalm-var Tk $k */
-                $k = $key_type->assert($k);
-                /** @psalm-var Tv $v */
-                $v = $value_type->assert($v);
-                $entries[] = [$k, $v];
+                $entries[] = [
+                    $key_type->assert($k),
+                    $value_type->assert($v),
+                ];
             }
 
             /** @psalm-var Iter\Iterator<Tk, Tv> $iterator */
             $iterator = Iter\from_entries($entries);
 
+            /** @var Collection\MutableMap<Tk, Tv> */
             return new Collection\MutableMap($iterator);
         }
 
