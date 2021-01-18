@@ -163,6 +163,7 @@ final class Loader
         'Psl\Math\abs',
         'Psl\Math\base_convert',
         'Psl\Math\ceil',
+        'Psl\Math\clamp',
         'Psl\Math\cos',
         'Psl\Math\div',
         'Psl\Math\exp',
