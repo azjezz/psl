@@ -12,7 +12,7 @@ use Exception;
  *
  * @template     T
  *
- * @psalm-param  (callable(): T) $fun
+ * @psalm-param  (callable(): (T|ResultInterface<T>)) $fun
  *
  * @psalm-return ResultInterface<T>
  */
@@ -20,7 +20,7 @@ function wrap(callable $fun): ResultInterface
 {
     try {
         $result = $fun();
-        return new Success($result);
+        return $result instanceof ResultInterface ? $result : new Success($result);
     } catch (Exception $e) {
         return new Failure($e);
     }
