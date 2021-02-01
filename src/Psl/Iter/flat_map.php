@@ -12,7 +12,7 @@ namespace Psl\Iter;
  * @psalm-param iterable<Tk, Tv>            $iterable Iterable to be mapped over
  * @psalm-param (callable(Tv): iterable<T>) $mapper
  *
- * @psalm-return iterable<array-key, T>
+ * @psalm-return iterable<int, T>
  */
 function flat_map(iterable $iterable, callable $mapper): iterable
 {
