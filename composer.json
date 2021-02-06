@@ -61,5 +61,10 @@
     "config": {
         "process-timeout": 1200,
         "sort-packages": true
+    },
+    "extra": {
+        "psalm": {
+            "pluginClass": "Psl\\Internal\\Psalm\\Plugin"
+        }
     }
 }

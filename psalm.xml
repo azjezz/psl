@@ -54,4 +54,8 @@
         <InvalidStringClass errorLevel="error"/>
         <UnresolvableInclude errorLevel="error"/>
     </issueHandlers>
+
+    <plugins>
+        <pluginClass class="Psl\Internal\Psalm\Plugin"/>
+    </plugins>
 </psalm>

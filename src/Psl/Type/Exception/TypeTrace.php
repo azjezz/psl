@@ -24,6 +24,8 @@ final class TypeTrace
 
     /**
      * @psalm-return list<string>
+     *
+     * @psalm-mutation-free
      */
     public function getFrames(): array
     {
