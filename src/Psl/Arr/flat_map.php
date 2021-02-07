@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use Psl\Vec;
+
 /**
  * @psalm-template Tk of array-key
  * @psalm-template Tv
@@ -13,15 +15,10 @@ namespace Psl\Arr;
  * @psalm-param (callable(Tv): iterable<T>) $mapper
  *
  * @psalm-return list<T>
+ *
+ * @deprecated since 1.2, use Vec\flat_map instead.
  */
 function flat_map(iterable $iterable, callable $mapper): array
 {
-    $flattened = [];
-    foreach ($iterable as $value) {
-        foreach ($mapper($value) as $item) {
-            $flattened[] = $item;
-        }
-    }
-
-    return $flattened;
+    return Vec\flat_map($iterable, $mapper);
 }

@@ -7,6 +7,7 @@ namespace Psl\Collection;
 use Psl;
 use Psl\Arr;
 use Psl\Iter;
+use Psl\Vec;
 
 /**
  * @template   T
@@ -79,7 +80,7 @@ final class Vector implements VectorInterface
      */
     public function count(): int
     {
-        return Arr\count($this->elements);
+        return Iter\count($this->elements);
     }
 
     /**
@@ -89,7 +90,7 @@ final class Vector implements VectorInterface
      */
     public function toArray(): array
     {
-        return Arr\values($this->elements);
+        return Vec\values($this->elements);
     }
 
 
@@ -203,10 +204,7 @@ final class Vector implements VectorInterface
      */
     public function keys(): Vector
     {
-        /** @psalm-var list<int> $keys */
-        $keys = Arr\keys($this->elements);
-
-        return new Vector($keys);
+        return new Vector(Vec\keys($this->elements));
     }
 
     /**
@@ -320,19 +318,7 @@ final class Vector implements VectorInterface
      */
     public function zip(iterable $iterable): Vector
     {
-        $iterable = Iter\to_array($iterable);
-
-        /** @psalm-var list<array{0: T, 1: Tu}> $values */
-        $values = [];
-        for ($i = 0; $i < $this->count(); $i++) {
-            if (!Arr\contains_key($iterable, $i)) {
-                break;
-            }
-
-            $values[] = [$this->at($i), $iterable[$i]];
-        }
-
-        return new Vector($values);
+        return new Vector(Vec\zip($this, $iterable));
     }
 
     /**

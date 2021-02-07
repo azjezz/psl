@@ -7,6 +7,7 @@ namespace Psl\Iter;
 use Generator;
 use Psl;
 use Psl\Math;
+use Psl\Vec;
 
 /**
  * Repeat an element a given number of times. By default the element is repeated
@@ -28,6 +29,10 @@ use Psl\Math;
  * @psalm-return Iterator<int, T>
  *
  * @throws Psl\Exception\InvariantViolationException If $num is negative.
+ *
+ * @deprecated since 1.2, use Vec\fill instead.
+ *
+ * @see Vec\fill()
  */
 function repeat($value, ?int $num = null): Iterator
 {

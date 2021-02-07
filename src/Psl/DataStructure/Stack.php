@@ -6,6 +6,8 @@ namespace Psl\DataStructure;
 
 use Psl;
 use Psl\Arr;
+use Psl\Iter;
+use Psl\Vec;
 
 /**
  * An basic implementation of a stack data structure ( LIFO ).
@@ -70,7 +72,7 @@ final class Stack implements StackInterface
         Psl\invariant(0 !== $this->count(), 'Cannot pop an item from an empty Stack.');
 
         $tail = Arr\lastx($this->items);
-        $this->items = Arr\values(Arr\take($this->items, $this->count() - 1));
+        $this->items = Vec\values(Arr\take($this->items, $this->count() - 1));
 
         return $tail;
     }
@@ -80,6 +82,6 @@ final class Stack implements StackInterface
      */
     public function count(): int
     {
-        return Arr\count($this->items);
+        return Iter\count($this->items);
     }
 }

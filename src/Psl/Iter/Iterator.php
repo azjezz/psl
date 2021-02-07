@@ -199,7 +199,7 @@ final class Iterator implements Countable, SeekableIterator
             $this->exhaust();
         }
 
-        return Arr\count($this->entries);
+        return count($this->entries);
     }
 
     private function exhaust(): void
@@ -216,7 +216,7 @@ final class Iterator implements Countable, SeekableIterator
     }
 
     /**
-     * Save the current key and value to the local entries if the generator is stil valid.
+     * Save the current key and value to the local entries if the generator is still valid.
      */
     private function progress(): void
     {

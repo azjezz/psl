@@ -7,6 +7,7 @@ namespace Psl\Collection;
 use Psl;
 use Psl\Arr;
 use Psl\Iter;
+use Psl\Vec;
 
 /**
  * @template   Tk of array-key
@@ -119,7 +120,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function count(): int
     {
-        return Arr\count($this->elements);
+        return Iter\count($this->elements);
     }
 
     /**
@@ -186,7 +187,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function values(): MutableVector
     {
-        return new MutableVector(Arr\values($this->elements));
+        return new MutableVector(Vec\values($this->elements));
     }
 
     /**
@@ -196,7 +197,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function keys(): MutableVector
     {
-        return new MutableVector(Arr\keys($this->elements));
+        return new MutableVector(Vec\keys($this->elements));
     }
 
     /**

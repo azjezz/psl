@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
+use Psl\Vec;
 
 /**
  * Intermediate values of reducing iterable using a function.
@@ -25,6 +26,10 @@ use Generator;
  * @psalm-param Ts|null                         $initial
  *
  * @psalm-return Iterator<int, Ts>
+ *
+ * @deprecated since 1.2, use Vec\reductions instead.
+ *
+ * @see Vec\reductions()
  */
 function reductions(iterable $iterable, callable $function, $initial = null): Iterator
 {

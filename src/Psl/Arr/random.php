@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Psl\Arr;
 
 use Psl;
+use Psl\Iter;
 use Psl\PseudoRandom;
+use Psl\Vec;
 
 /**
  * Retrieve a random value from a non-empty array.
@@ -21,12 +23,13 @@ use Psl\PseudoRandom;
  */
 function random(array $values)
 {
-    Psl\invariant(0 !== count($values), 'Expected a non-empty-array.');
+    $size = Iter\count($values);
+
+    Psl\invariant(0 !== $size, 'Expected a non-empty-array.');
 
     /** @psalm-var list<Tv> $shuffled */
-    $shuffled = namespace\shuffle($values);
+    $shuffled = Vec\shuffle($values);
 
-    $size = namespace\count($values);
 
     if (1 === $size) {
         /** @psalm-var Tv */

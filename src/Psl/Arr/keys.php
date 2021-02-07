@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
-use function array_keys;
+use Psl\Vec;
 
 /**
  * Return all the keys of an array.
@@ -16,9 +16,9 @@ use function array_keys;
  *
  * @psalm-return list<Tk>
  *
- * @psalm-pure
+ * @deprecated since 1.2, use Vec\keys instead.
  */
 function keys(array $arr): array
 {
-    return array_keys($arr);
+    return Vec\keys($arr);
 }

@@ -6,6 +6,7 @@ namespace Psl\Iter;
 
 use Psl;
 use Psl\Arr;
+use Psl\Vec;
 
 /**
  * Retrieve a random value from a non-empty iterable.
@@ -25,7 +26,7 @@ function random(iterable $iterable)
     // this helps us avoids an issue when the iterable is a generator where
     // would exhaust it when calling `is_empty`, which results in an
     // exception at the `to_array` call.
-    $array = to_array($iterable);
+    $array = Vec\values($iterable);
 
     Psl\invariant(!is_empty($array), 'Expected a non-empty iterable.');
 

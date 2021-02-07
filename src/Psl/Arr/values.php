@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use Psl\Vec;
+
 use function array_values;
 
 /**
@@ -16,6 +18,10 @@ use function array_values;
  * @psalm-return   list<T>
  *
  * @psalm-pure
+ *
+ * @deprecated since 1.2, use Vec\values instead.
+ *
+ * @see Vec\values()
  */
 function values(array $arr): array
 {

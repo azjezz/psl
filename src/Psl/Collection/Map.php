@@ -7,6 +7,7 @@ namespace Psl\Collection;
 use Psl;
 use Psl\Arr;
 use Psl\Iter;
+use Psl\Vec;
 
 /**
  * @template Tk of array-key
@@ -121,7 +122,7 @@ final class Map implements MapInterface
      */
     public function count(): int
     {
-        return Arr\count($this->elements);
+        return Iter\count($this->elements);
     }
 
     /**
@@ -189,7 +190,7 @@ final class Map implements MapInterface
      */
     public function values(): Vector
     {
-        return new Vector(Arr\values($this->elements));
+        return new Vector(Vec\values($this->elements));
     }
 
     /**
@@ -199,7 +200,7 @@ final class Map implements MapInterface
      */
     public function keys(): Vector
     {
-        return new Vector(Iter\keys($this->elements));
+        return new Vector(Vec\keys($this->elements));
     }
 
     /**

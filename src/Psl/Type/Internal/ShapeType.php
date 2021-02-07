@@ -9,6 +9,7 @@ use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
+use Psl\Vec;
 
 /**
  * @template Tk of array-key
@@ -86,9 +87,9 @@ final class ShapeType extends Type\Type
     {
         if (Type\is_array($value)) {
             /** @var list<array-key> $value_keys */
-            $value_keys = Arr\sort(Arr\keys($value));
+            $value_keys = Vec\sort(Vec\keys($value));
 
-            $elements = Arr\sort(Arr\keys($this->elements_types));
+            $elements = Vec\sort(Vec\keys($this->elements_types));
             if ($elements !== $value_keys) {
                 throw AssertException::withValue($value, $this->toString(), $this->getTrace());
             }

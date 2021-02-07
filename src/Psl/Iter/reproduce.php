@@ -7,6 +7,7 @@ namespace Psl\Iter;
 use Generator;
 use Psl;
 use Psl\Math;
+use Psl\Vec;
 
 /**
  * Creates an iterator containing all numbers between the start and end value
@@ -25,6 +26,10 @@ use Psl\Math;
  * @psalm-return Iterator<int, T>
  *
  * @throws Psl\Exception\InvariantViolationException If $number < 1
+ *
+ * @deprecated since 1.2, use Vec\reproduce instead.
+ *
+ * @see Vec\reproduce()
  */
 function reproduce(callable $factory, ?int $number = null): Iterator
 {

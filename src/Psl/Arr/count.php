@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use Psl\Iter;
+
 /**
  * Returns the number of elements an array contains.
  *
@@ -27,6 +29,10 @@ namespace Psl\Arr;
  * @psalm-param array<Tk, Tv> $array
  *
  * @psalm-pure
+ *
+ * @deprecated since 1.2, use Iter\count instead.
+ *
+ * @see Iter\count()
  */
 function count(array $array): int
 {

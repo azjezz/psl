@@ -24,6 +24,8 @@ use Psl;
  * @psalm-return Iterator<int, array<Tk, Tv>>
  *
  * @throws Psl\Exception\InvariantViolationException If $size is negative.
+ *
+ * @deprecated since 1.2, use Vec\chunk_with_keys instead.
  */
 function chunk_with_keys(iterable $iterable, int $size): Iterator
 {

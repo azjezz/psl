@@ -6,6 +6,7 @@ namespace Psl\Iter;
 
 use Generator;
 use Psl;
+use Psl\Vec;
 
 /**
  * Chunks an iterable into arrays of the specified size.
@@ -26,27 +27,15 @@ use Psl;
  * @psalm-return Iterator<int, list<T>>
  *
  * @throws Psl\Exception\InvariantViolationException If $size is negative.
+ *
+ * @deprecated since 1.2, use Vec\chunk instead.
  */
 function chunk(iterable $iterable, int $size): Iterator
 {
     Psl\invariant($size > 0, 'Expected a non-negative size.');
 
-    /** @psalm-var Generator<int, list<T>, mixed, void> $generator */
     return Iterator::from(static function () use ($iterable, $size): Generator {
-        /** @psalm-var list<T> $chunk */
-        $chunk = [];
-        $count = 0;
-        foreach ($iterable as $value) {
-            $chunk[] = $value;
-            ++$count;
-            if ($count === $size) {
-                yield $chunk;
-                $count = 0;
-                $chunk = [];
-            }
-        }
-
-        if (0 !== $count) {
+        foreach (Vec\chunk($iterable, $size) as $chunk) {
             yield $chunk;
         }
     });

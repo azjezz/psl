@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
-use Psl;
+use Psl\Vec;
 
 /**
  * Shuffle the given array.
@@ -14,7 +14,7 @@ use Psl;
  *      Arr\shuffle([1, 2, 3])
  *      => Arr(2, 3, 1)
  *
- *      Arr\shuffle('a' => 1, 'b' => 2, 'c' => 3)
+ *      Arr\shuffle(['a' => 1, 'b' => 2, 'c' => 3])
  *      => Arr(2, 3, 1)
  *
  * @psalm-template Tk of array-key
@@ -24,13 +24,11 @@ use Psl;
  *
  * @psalm-return list<Tv> the shuffled array.
  *
- * @psalm-pure
+ * @deprecated since 1.2, use Vec\shuffle instead.
+ *
+ * @see Vec\shuffle()
  */
 function shuffle(array $array): array
 {
-    $shuffled = \shuffle($array);
-    /** @psalm-suppress MissingThrowsDocblock */
-    Psl\invariant($shuffled, 'Unexpected error');
-
-    return $array;
+    return Vec\shuffle($array);
 }

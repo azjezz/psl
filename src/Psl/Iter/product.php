@@ -6,6 +6,7 @@ namespace Psl\Iter;
 
 use Generator;
 use Psl\Arr;
+use Psl\Vec;
 
 /**
  * Returns the cartesian product of iterables that were passed as arguments.
@@ -32,7 +33,7 @@ function product(iterable ...$iterables): Iterator
 {
     return Iterator::from(static function () use ($iterables): Generator {
         /** @psalm-var list<Iterator<Tk, Tv>> $iterators */
-        $iterators = to_array(map(
+        $iterators = Vec\values(map(
             $iterables,
             static fn (iterable $iterable) => Iterator::create($iterable)
         ));
@@ -64,7 +65,7 @@ function product(iterable ...$iterables): Iterator
             }
 
             foreach ($iterators[$i] as $keyTuple[$i] => $valueTuple[$i]) {
-                yield to_array($keyTuple) => to_array($valueTuple);
+                yield Vec\values($keyTuple) => Vec\values($valueTuple);
             }
 
             while (--$i >= 0) {

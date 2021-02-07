@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
+use JetBrains\PhpStorm\Deprecated;
 use Psl;
+use Psl\Vec;
 
 /**
  * Creates an iterator containing all numbers between the start and end value
@@ -36,6 +38,10 @@ use Psl;
  * @psalm-return Iterator<int, T>
  *
  * @throws Psl\Exception\InvariantViolationException If $start < $end, and $step is negative.
+ *
+ * @deprecated since 1.2, use Vec\range instead.
+ *
+ * @see Vec\range($start, $end, $step)
  */
 function range($start, $end, $step = null): Iterator
 {
