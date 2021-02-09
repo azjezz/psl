@@ -50,6 +50,23 @@ Supported installation method is via [composer](https://getcomposer.org):
 $ composer require azjezz/psl
 ```
 
+### Psalm Integration
+
+PSL comes with a [Psalm](https://psalm.dev/) plugin, that improves return type for PSL functions that psalm cannot infer from source code.
+
+To enable the Psalm plugin, add the `Psl\Internal\Psalm\Plugin` class to your psalm configuration file plugins list as follows:
+
+```xml
+<psalm>
+   ...
+   <plugins>
+      ...
+      <pluginClass class="Psl\Internal\Psalm\Plugin"/>
+   </plugins>
+</psalm>
+
+```
+
 ## Documentation
 
 Documentation is not available yet.
