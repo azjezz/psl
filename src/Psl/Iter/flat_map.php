@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Psl\Vec;
+
 /**
  * @psalm-template Tk of array-key
  * @psalm-template Tv
@@ -13,6 +15,10 @@ namespace Psl\Iter;
  * @psalm-param (callable(Tv): iterable<T>) $mapper
  *
  * @psalm-return iterable<int, T>
+ *
+ * @deprecated since 1.2, use Vec\flat_map instead.
+ *
+ * @see Vec\flat_map()
  */
 function flat_map(iterable $iterable, callable $mapper): iterable
 {

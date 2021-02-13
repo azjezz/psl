@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
+use Psl\Vec;
 
 /**
  * Returns the keys of an iterable.
@@ -20,6 +21,10 @@ use Generator;
  * @psalm-param iterable<Tk, Tv> $iterable Iterable to get keys from
  *
  * @psalm-return Iterator<int, Tk>
+ *
+ * @deprecated since 1.2, use Vec\keys instead.
+ *
+ * @see Vec\keys()
  */
 function keys(iterable $iterable): Iterator
 {

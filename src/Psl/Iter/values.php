@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
+use Psl\Vec;
 
 /**
  * return a lazy iterator containing the values of an iterable,
@@ -24,6 +25,10 @@ use Generator;
  * @psalm-param iterable<Tk, Tv> $iterable Iterable to get values from
  *
  * @psalm-return Iterator<int, Tv>
+ *
+ * @deprecated since 1.2, use Vec\values instead.
+ *
+ * @see Vec\values()
  */
 function values(iterable $iterable): Iterator
 {

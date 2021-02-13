@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use Psl\Vec;
+
 /**
  * Filter out null values from the given iterable.
  *
@@ -16,16 +18,10 @@ namespace Psl\Arr;
  * @psalm-param iterable<T|null> $iterable
  *
  * @psalm-return list<T>
+ *
+ * @deprecated since 1.2, use Vec\filter_nulls instead.
  */
 function filter_nulls(iterable $iterable): array
 {
-    /** @psalm-var list<T> $result */
-    $result = [];
-    foreach ($iterable as $value) {
-        if (null !== $value) {
-            $result[] = $value;
-        }
-    }
-
-    return $result;
+    return Vec\filter_nulls($iterable);
 }

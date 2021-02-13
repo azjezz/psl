@@ -6,6 +6,8 @@ namespace Psl\DataStructure;
 
 use Psl;
 use Psl\Arr;
+use Psl\Iter;
+use Psl\Vec;
 
 /**
  * A basic implementation of a queue data structure ( FIFO ).
@@ -70,7 +72,7 @@ final class Queue implements QueueInterface
         Psl\invariant(0 !== $this->count(), 'Cannot dequeue a node from an empty Queue.');
 
         $node = Arr\firstx($this->queue);
-        $this->queue = Arr\values(Arr\drop($this->queue, 1));
+        $this->queue = Vec\values(Arr\drop($this->queue, 1));
 
         return $node;
     }
@@ -80,6 +82,6 @@ final class Queue implements QueueInterface
      */
     public function count(): int
     {
-        return Arr\count($this->queue);
+        return Iter\count($this->queue);
     }
 }

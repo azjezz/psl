@@ -6,7 +6,9 @@ namespace Psl\DataStructure;
 
 use Psl;
 use Psl\Arr;
+use Psl\Iter;
 use Psl\Math;
+use Psl\Vec;
 
 /**
  * @psalm-template T
@@ -45,8 +47,11 @@ final class PriorityQueue implements PriorityQueueInterface
             return null;
         }
 
+        /** @var list<int> $keys */
+        $keys = Vec\keys($this->queue);
+
         // Retrieve the highest priority.
-        $priority = Math\max(Arr\keys($this->queue)) ?? 0;
+        $priority = Math\max($keys) ?? 0;
 
         // Retrieve the list of nodes with the priority `$priority`.
         $nodes = Arr\idx($this->queue, $priority, []);
@@ -101,7 +106,7 @@ final class PriorityQueue implements PriorityQueueInterface
          *
          * @var int $priority
          */
-        $priority = Math\max(Arr\keys($this->queue));
+        $priority = Math\max(Vec\keys($this->queue));
 
         /**
          * Retrieve the list of nodes with the priority `$priority`.
@@ -112,7 +117,7 @@ final class PriorityQueue implements PriorityQueueInterface
 
         // If the list contained only this node,
         // remove the list of nodes with priority `$priority`.
-        if (1 === Arr\count($nodes)) {
+        if (1 === Iter\count($nodes)) {
             unset($this->queue[$priority]);
         } else {
             /**
@@ -120,7 +125,7 @@ final class PriorityQueue implements PriorityQueueInterface
              *
              * @psalm-suppress MissingThrowsDocblock
              */
-            $this->queue[$priority] = Arr\values(Arr\drop($nodes, 1));
+            $this->queue[$priority] = Vec\values(Arr\drop($nodes, 1));
         }
     }
 
@@ -131,7 +136,7 @@ final class PriorityQueue implements PriorityQueueInterface
     {
         $count = 0;
         foreach ($this->queue as $priority => $list) {
-            $count += Arr\count($list);
+            $count += Iter\count($list);
         }
 
         return $count;

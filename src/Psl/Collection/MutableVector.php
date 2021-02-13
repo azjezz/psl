@@ -7,6 +7,7 @@ namespace Psl\Collection;
 use Psl;
 use Psl\Arr;
 use Psl\Iter;
+use Psl\Vec;
 
 /**
  * @template   T
@@ -77,7 +78,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function count(): int
     {
-        return Arr\count($this->elements);
+        return Iter\count($this->elements);
     }
 
     /**
@@ -87,7 +88,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function toArray(): array
     {
-        return Arr\values($this->elements);
+        return Vec\values($this->elements);
     }
 
     /**
@@ -253,7 +254,7 @@ final class MutableVector implements MutableVectorInterface
     {
         if ($this->contains($k)) {
             unset($this->elements[$k]);
-            $this->elements = Arr\values($this->elements);
+            $this->elements = Vec\values($this->elements);
         }
 
         return $this;
@@ -309,7 +310,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function values(): MutableVector
     {
-        return new MutableVector(Arr\values($this->elements));
+        return new MutableVector(Vec\values($this->elements));
     }
 
     /**
@@ -319,10 +320,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function keys(): MutableVector
     {
-        /** @psalm-var list<int> $keys */
-        $keys = Arr\keys($this->elements);
-
-        return new MutableVector($keys);
+        return new MutableVector(Vec\keys($this->elements));
     }
 
     /**
@@ -436,19 +434,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function zip(iterable $iterable): MutableVector
     {
-        $iterable = Iter\to_array($iterable);
-
-        /** @psalm-var list<array{0: T, 1: Tu}> $values */
-        $values = [];
-        for ($i = 0; $i < $this->count(); $i++) {
-            if (!Arr\contains_key($iterable, $i)) {
-                break;
-            }
-
-            $values[] = [$this->at($i), $iterable[$i]];
-        }
-
-        return new MutableVector($values);
+        return new MutableVector(Vec\zip($this, $iterable));
     }
 
     /**

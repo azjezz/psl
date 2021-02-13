@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
+use Psl\Vec;
 
 /**
  * Filter out null values from the given iterable.
@@ -18,6 +19,10 @@ use Generator;
  * @psalm-param iterable<T|null> $iterable
  *
  * @psalm-return Iterator<int, T>
+ *
+ * @deprecated since 1.2, use Vec\filter_nulls instead.
+ *
+ * @see Vec\filter_nulls()
  */
 function filter_nulls(iterable $iterable): Iterator
 {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
+use Psl\Vec;
 
 /**
  * Zips the iterables that were passed as arguments.
@@ -29,6 +30,10 @@ use Generator;
  * @psalm-param iterable<Tk, Tv> ...$iterables
  *
  * @psalm-return Iterator<list<Tk>, list<Tv>>
+ *
+ * @deprecated since 1.2, use Vec\zip instead.
+ *
+ * @see Vec\zip()
  */
 function zip(iterable ...$iterables): Iterator
 {
@@ -38,7 +43,7 @@ function zip(iterable ...$iterables): Iterator
         }
 
         /** @psalm-var list<Iterator<Tk, Tv>> $iterators */
-        $iterators = to_array(map(
+        $iterators = Vec\values(map(
             $iterables,
             /**
              * @psalm-param  iterable<Tk, Tv>    $iterable
@@ -51,7 +56,7 @@ function zip(iterable ...$iterables): Iterator
         apply($iterators, static fn (Iterator $iterator) => $iterator->rewind());
         while (all($iterators, static fn (Iterator $iterator) => $iterator->valid())) {
             /** @psalm-var list<Tk> $keys */
-            $keys = to_array(map(
+            $keys = Vec\values(map(
                 $iterators,
                 /**
                  * @psalm-param Iterator<Tk, Tv> $iterator
@@ -62,7 +67,7 @@ function zip(iterable ...$iterables): Iterator
             ));
 
             /** @psalm-var list<Tv> $values */
-            $values = to_array(map(
+            $values = Vec\values(map(
                 $iterators,
                 /**
                  * @psalm-param Iterator<Tk, Tv> $iterator

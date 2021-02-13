@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
-use Psl\Arr;
+use Psl\Vec;
 
 /**
  * Reverse the given iterable.
@@ -19,12 +19,17 @@ use Psl\Arr;
  * @psalm-param    iterable<T> $iterable The iterable to reverse.
  *
  * @psalm-return   Iterator<int, T>
+ *
+ * @deprecated since 1.2, use Vec\reverse instead.
+ *
+ * @see Vec\reverse()
  */
 function reverse(iterable $iterable): Iterator
 {
     return Iterator::from(static function () use ($iterable): Generator {
-        $values = to_array($iterable);
-        $size   = Arr\count($values);
+        $values = Vec\values($iterable);
+        $size   = namespace\count($values);
+
         if (0 === $size) {
             return;
         }

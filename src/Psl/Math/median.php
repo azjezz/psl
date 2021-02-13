@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
-use Psl\Arr;
 use Psl\Iter;
+use Psl\Vec;
 
 /**
  * Returns the median of the given numbers.
@@ -15,10 +15,10 @@ use Psl\Iter;
 function median(iterable $numbers): ?float
 {
     /** @psalm-var list<int|float> $numbers */
-    $numbers = Iter\to_array($numbers);
+    $numbers = Vec\values($numbers);
     /** @psalm-var list<int|float> $numbers */
-    $numbers = Arr\sort($numbers);
-    $count   = Arr\count($numbers);
+    $numbers = Vec\sort($numbers);
+    $count   = Iter\count($numbers);
     if (0 === $count) {
         return null;
     }
