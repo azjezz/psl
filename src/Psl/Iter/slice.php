@@ -6,6 +6,7 @@ namespace Psl\Iter;
 
 use Generator;
 use Psl;
+use Psl\Dict;
 
 /**
  * Takes a slice from an iterable.
@@ -28,6 +29,10 @@ use Psl;
  * @psalm-return Iterator<Tk, Tv>
  *
  * @throws Psl\Exception\InvariantViolationException If the $start offset or $length are negative
+ *
+ * @deprecated use `Dict\slice` instead.
+ *
+ * @see Dict\slice()
  */
 function slice(iterable $iterable, int $start, ?int $length = null): Iterator
 {

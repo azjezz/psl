@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use Psl\Dict;
+
 /**
  * Returns a new array in which each value appears exactly once, where the
  * value's uniqueness is determined by transforming it to a scalar via the
@@ -17,28 +19,12 @@ namespace Psl\Arr;
  * @psalm-param (callable(Tv): Ts) $scalar_func
  *
  * @psalm-return array<Tk, Tv>
+ *
+ * @deprecated use `Dict\unique_by` instead
+ *
+ * @see Dict\unique_by
  */
 function unique_by(iterable $iterable, callable $scalar_func): array
 {
-    /** @psalm-var array<Tk, Ts> $unique */
-    $unique = [];
-    /** @psalm-var array<Tk, Tv> $original_values */
-    $original_values = [];
-    foreach ($iterable as $k => $v) {
-        $original_values[$k] = $v;
-        /** @psalm-var Ts $scalar */
-        $scalar = $scalar_func($v);
-
-        if (!contains($unique, $scalar)) {
-            $unique[$k] = $scalar;
-        }
-    }
-
-    /** @psalm-var array<Tk, Tv> $result */
-    $result = [];
-    foreach ($unique as $k => $_) {
-        $result[$k] = $original_values[$k];
-    }
-
-    return $result;
+    return Dict\unique_by($iterable, $scalar_func);
 }

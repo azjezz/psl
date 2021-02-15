@@ -6,6 +6,7 @@ namespace Psl\Collection;
 
 use Psl;
 use Psl\Arr;
+use Psl\Dict;
 use Psl\Iter;
 use Psl\Vec;
 
@@ -341,7 +342,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function filter(callable $fn): MutableVector
     {
-        return new MutableVector(Arr\filter($this->elements, $fn));
+        return new MutableVector(Dict\filter($this->elements, $fn));
     }
 
     /**
@@ -364,7 +365,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function filterWithKey(callable $fn): MutableVector
     {
-        return new MutableVector(Arr\filter_with_key($this->elements, $fn));
+        return new MutableVector(Dict\filter_with_key($this->elements, $fn));
     }
 
     /**
@@ -387,7 +388,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function map(callable $fn): MutableVector
     {
-        return new MutableVector(Iter\map($this->elements, $fn));
+        return new MutableVector(Dict\map($this->elements, $fn));
     }
 
     /**
@@ -412,7 +413,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function mapWithKey(callable $fn): MutableVector
     {
-        return new MutableVector(Iter\map_with_key($this->elements, $fn));
+        return new MutableVector(Dict\map_with_key($this->elements, $fn));
     }
 
     /**
@@ -456,7 +457,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function take(int $n): MutableVector
     {
-        return new MutableVector(Arr\take($this->elements, $n));
+        return new MutableVector(Dict\take($this->elements, $n));
     }
 
     /**
@@ -475,7 +476,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function takeWhile(callable $fn): MutableVector
     {
-        return new MutableVector(Arr\take_while($this->elements, $fn));
+        return new MutableVector(Dict\take_while($this->elements, $fn));
     }
 
     /**
@@ -498,7 +499,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function drop(int $n): MutableVector
     {
-        return new MutableVector(Arr\drop($this->elements, $n));
+        return new MutableVector(Dict\drop($this->elements, $n));
     }
 
     /**
@@ -517,7 +518,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function dropWhile(callable $fn): MutableVector
     {
-        return new MutableVector(Arr\drop_while($this->elements, $fn));
+        return new MutableVector(Dict\drop_while($this->elements, $fn));
     }
 
     /**
@@ -543,6 +544,6 @@ final class MutableVector implements MutableVectorInterface
      */
     public function slice(int $start, int $len): MutableVector
     {
-        return new MutableVector(Arr\slice($this->elements, $start, $len));
+        return new MutableVector(Dict\slice($this->elements, $start, $len));
     }
 }

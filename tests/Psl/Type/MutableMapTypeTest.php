@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Psl\Tests\Type;
 
 use Psl\Collection;
+use Psl\Dict;
 use Psl\Iter;
 use Psl\Str;
 use Psl\Type;
+use Psl\Vec;
 
 /**
  * @extends TypeTest<Collection\MutableMapInterface<array-key, mixed>>
@@ -27,27 +29,27 @@ final class MutableMapTypeTest extends TypeTest
         ];
 
         yield [
-            Iter\range(1, 10),
+            Vec\range(1, 10),
             new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
         ];
 
         yield [
-            Iter\range(1, 10),
+            Vec\range(1, 10),
             new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
         ];
 
         yield [
-            Iter\map(Iter\range(1, 10), static fn(int $value): string => (string)$value),
+            Dict\map(Vec\range(1, 10), static fn(int $value): string => (string)$value),
             new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
         ];
 
         yield [
-            Iter\map_keys(Iter\range(1, 10), static fn(int $key): string => (string)$key),
+            Dict\map_keys(Vec\range(1, 10), static fn(int $key): string => (string)$key),
             new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
         ];
 
         yield [
-            Iter\map(Iter\range(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
+            Dict\map(Vec\range(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
             new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
         ];
 

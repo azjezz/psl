@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
+use Psl\Dict;
 
 /**
  * Drops items from an iterable until the predicate fails for the first time.
@@ -24,6 +25,8 @@ use Generator;
  * @psalm-param (callable(Tv): bool) $predicate
  *
  * @psalm-return Iterator<Tk, Tv>
+ *
+ * @deprecated use `Dict\drop_while` instead.
  */
 function drop_while(iterable $iterable, callable $predicate): Iterator
 {

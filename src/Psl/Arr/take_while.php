@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use Psl\Dict;
+
 /**
  * Takes items from an iterable until the predicate fails for the first time.
  *
@@ -22,18 +24,12 @@ namespace Psl\Arr;
  * @psalm-param    (callable(Tv): bool)    $predicate
  *
  * @psalm-return   array<Tk, Tv>
+ *
+ * @deprecated use `Dict\take_while` instead.
+ *
+ * @see Dict\take_while()
  */
 function take_while(iterable $iterable, callable $predicate): array
 {
-    $result = [];
-    foreach ($iterable as $key => $value) {
-        if (!$predicate($value)) {
-            return $result;
-        }
-
-        $result[$key] = $value;
-    }
-
-
-    return $result;
+    return Dict\take_while($iterable, $predicate);
 }

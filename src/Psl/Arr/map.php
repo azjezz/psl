@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use Psl\Dict;
+
 /**
  * Applies a mapping function to all values of an iterable.
  *
@@ -25,13 +27,12 @@ namespace Psl\Arr;
  * @psalm-param (callable(Tv): T)  $function
  *
  * @psalm-return array<Tk, T>
+ *
+ * @deprecated use `Dict\map` instead.
+ *
+ * @see Dict\map()
  */
 function map(iterable $iterable, callable $function): array
 {
-    $result = [];
-    foreach ($iterable as $key => $value) {
-        $result[$key] = $function($value);
-    }
-
-    return $result;
+    return Dict\map($iterable, $function);
 }

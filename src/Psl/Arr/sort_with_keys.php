@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
-use function asort;
-use function uasort;
+use Psl\Dict;
 
 /**
  * Returns a new array sorted by the values of the given array. If the
@@ -19,14 +18,12 @@ use function uasort;
  * @psalm-param (callable(Tv, Tv): int)|null   $comparator
  *
  * @psalm-return array<Tk, Tv>
+ *
+ * @deprecated use `Dict\sort` instead
+ *
+ * @see Dict\sort()
  */
 function sort_with_keys(array $array, ?callable $comparator = null): array
 {
-    if (null !== $comparator) {
-        uasort($array, $comparator);
-    } else {
-        asort($array);
-    }
-
-    return $array;
+    return Dict\sort($array, $comparator);
 }

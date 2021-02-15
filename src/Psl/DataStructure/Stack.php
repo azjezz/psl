@@ -6,6 +6,7 @@ namespace Psl\DataStructure;
 
 use Psl;
 use Psl\Arr;
+use Psl\Dict;
 use Psl\Iter;
 use Psl\Vec;
 
@@ -72,7 +73,7 @@ final class Stack implements StackInterface
         Psl\invariant(0 !== $this->count(), 'Cannot pop an item from an empty Stack.');
 
         $tail = Arr\lastx($this->items);
-        $this->items = Vec\values(Arr\take($this->items, $this->count() - 1));
+        $this->items = Vec\values(Dict\take($this->items, $this->count() - 1));
 
         return $tail;
     }

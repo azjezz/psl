@@ -6,6 +6,7 @@ namespace Psl\DataStructure;
 
 use Psl;
 use Psl\Arr;
+use Psl\Dict;
 use Psl\Iter;
 use Psl\Math;
 use Psl\Vec;
@@ -125,7 +126,7 @@ final class PriorityQueue implements PriorityQueueInterface
              *
              * @psalm-suppress MissingThrowsDocblock
              */
-            $this->queue[$priority] = Vec\values(Arr\drop($nodes, 1));
+            $this->queue[$priority] = Vec\values(Dict\drop($nodes, 1));
         }
     }
 

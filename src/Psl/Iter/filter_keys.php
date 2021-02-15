@@ -6,6 +6,7 @@ namespace Psl\Iter;
 
 use Closure;
 use Generator;
+use Psl\Dict;
 
 /**
  * Returns an iterator containing only the keys for which the given predicate
@@ -28,6 +29,10 @@ use Generator;
  * @psalm-param (callable(Tk): bool)|null   $predicate
  *
  * @psalm-return Iterator<Tk, Tv>
+ *
+ * @deprecated use `Dict\filter_keys` instead.
+ *
+ * @see Dict\filter_keys()
  */
 function filter_keys(iterable $iterable, ?callable $predicate = null): Iterator
 {

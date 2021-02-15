@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
-use Closure;
+use Psl\Dict;
 
 /**
  * Returns an array containing only the values for which the given predicate
@@ -27,17 +27,12 @@ use Closure;
  * @psalm-param (callable(Tv): bool)|null   $predicate
  *
  * @psalm-return array<Tk, Tv>
+ *
+ * @deprecated use `Dict\filter` instead.
+ *
+ * @see Dict\filter()
  */
 function filter(iterable $iterable, ?callable $predicate = null): array
 {
-    /** @psalm-var (callable(Tv): bool) $predicate */
-    $predicate = $predicate ?? Closure::fromCallable('Psl\Internal\boolean');
-    $result    = [];
-    foreach ($iterable as $k => $v) {
-        if ($predicate($v)) {
-            $result[$k] = $v;
-        }
-    }
-
-    return $result;
+    return Dict\filter($iterable, $predicate);
 }

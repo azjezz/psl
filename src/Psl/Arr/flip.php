@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
-use Psl;
-use Psl\Type;
+use Psl\Dict;
 
 /**
  * Flips the keys and values of an array. In case of
@@ -22,20 +21,12 @@ use Psl\Type;
  * @psalm-param array<Tk, Tv> $array
  *
  * @psalm-return array<Tv, Tk>
+ *
+ * @deprecated use `Dict\flip` instead.
+ *
+ * @see Dict\flip
  */
 function flip(array $array): array
 {
-    $result = [];
-    foreach ($array as $k => $v) {
-        Psl\invariant(
-            Type\is_arraykey($v),
-            'Expected all values to be of type array-key, value of type (%s) provided.',
-            gettype($v)
-        );
-
-        $result[$v] = $k;
-    }
-
-    /** @psalm-var array<Tv, Tk> $result*/
-    return $result;
+    return Dict\flip($array);
 }

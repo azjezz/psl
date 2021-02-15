@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
+use Psl\Dict;
 
 /**
  * Re-indexes an iterable by applying a function to all its values and
@@ -35,6 +36,10 @@ use Generator;
  * @psalm-param (callable(Tv): Tk2)   $function
  *
  * @psalm-return Iterator<Tk2, Tv>
+ *
+ * @deprecated use `Dict\reindex` instead.
+ *
+ * @see Dict\reindex()
  */
 function reindex(iterable $iterable, callable $function): Iterator
 {

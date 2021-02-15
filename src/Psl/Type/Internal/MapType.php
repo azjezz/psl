@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Psl\Collection;
-use Psl\Iter;
+use Psl\Dict;
 use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
@@ -81,11 +81,11 @@ final class MapType extends Type\Type
                 ];
             }
 
-            /** @psalm-var Iter\Iterator<Tk, Tv> $iterator */
-            $iterator = Iter\from_entries($entries);
+            /** @psalm-var array<Tk, Tv> $dict */
+            $dict = Dict\from_entries($entries);
 
             /** @var Collection\Map<Tk, Tv> */
-            return new Collection\Map($iterator);
+            return new Collection\Map($dict);
         }
 
         throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
@@ -132,11 +132,11 @@ final class MapType extends Type\Type
                 ];
             }
 
-            /** @psalm-var Iter\Iterator<Tk, Tv> $iterator */
-            $iterator = Iter\from_entries($entries);
+            /** @psalm-var array<Tk, Tv> $dict */
+            $dict = Dict\from_entries($entries);
 
             /** @var Collection\Map<Tk, Tv> */
-            return new Collection\Map($iterator);
+            return new Collection\Map($dict);
         }
 
         throw AssertException::withValue($value, $this->toString(), $this->getTrace());

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Arr;
 
 use Psl;
+use Psl\Dict;
 
 /**
  * Takes a slice from an array.
@@ -28,29 +29,11 @@ use Psl;
  *
  * @throws Psl\Exception\InvariantViolationException If the $start offset or $length are negative
  *
- * @psalm-pure
+ * @deprecated use `Dict\slice()` instead.
+ *
+ * @see Dict\slice()
  */
 function slice(array $array, int $start, ?int $length = null): array
 {
-    Psl\invariant($start >= 0, 'Start offset must be non-negative.');
-    Psl\invariant(null === $length || $length >= 0, 'Length must be non-negative.');
-
-    $result = [];
-    if (0 === $length) {
-        return $result;
-    }
-
-    $i = 0;
-    foreach ($array as $key => $value) {
-        if ($i++ < $start) {
-            continue;
-        }
-
-        $result[$key] = $value;
-        if (null !== $length && $i >= $start + $length) {
-            break;
-        }
-    }
-
-    return $result;
+    return Dict\slice($array, $start, $length);
 }

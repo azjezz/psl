@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
+use Psl\Dict;
 
 /**
  * Applies a mapping function to all values of an iterator.
@@ -25,6 +26,10 @@ use Generator;
  * @psalm-param (callable(Tk,Tv): T)    $function
  *
  * @psalm-return Iterator<Tk, T>
+ *
+ * @deprecated use `Dict\map_with_key` instead.
+ *
+ * @see Dict\map_with_key()
  */
 function map_with_key(iterable $iterable, callable $function): Iterator
 {

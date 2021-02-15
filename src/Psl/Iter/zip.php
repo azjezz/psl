@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
+use Psl\Dict;
 use Psl\Vec;
 
 /**
@@ -43,7 +44,7 @@ function zip(iterable ...$iterables): Iterator
         }
 
         /** @psalm-var list<Iterator<Tk, Tv>> $iterators */
-        $iterators = Vec\values(map(
+        $iterators = Vec\values(Dict\map(
             $iterables,
             /**
              * @psalm-param  iterable<Tk, Tv>    $iterable
@@ -56,7 +57,7 @@ function zip(iterable ...$iterables): Iterator
         apply($iterators, static fn (Iterator $iterator) => $iterator->rewind());
         while (all($iterators, static fn (Iterator $iterator) => $iterator->valid())) {
             /** @psalm-var list<Tk> $keys */
-            $keys = Vec\values(map(
+            $keys = Vec\values(Dict\map(
                 $iterators,
                 /**
                  * @psalm-param Iterator<Tk, Tv> $iterator
@@ -67,7 +68,7 @@ function zip(iterable ...$iterables): Iterator
             ));
 
             /** @psalm-var list<Tv> $values */
-            $values = Vec\values(map(
+            $values = Vec\values(Dict\map(
                 $iterators,
                 /**
                  * @psalm-param Iterator<Tk, Tv> $iterator

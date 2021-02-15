@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
+use Psl\Dict;
 
 /**
  * Returns an iterator where each value is the result of calling the given
@@ -17,6 +18,10 @@ use Generator;
  * @psalm-param (callable(Tk): Tv)  $value_func
  *
  * @psalm-return Iterator<Tk, Tv>
+ *
+ * @deprecated use `Dict\from_keys` instead.
+ *
+ * @see Dict\from_keys()
  */
 function from_keys(iterable $keys, callable $value_func): Iterator
 {

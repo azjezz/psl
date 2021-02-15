@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
+use Psl\Dict;
 
 /**
  * Takes items from an iterable until the predicate fails for the first time.
@@ -24,6 +25,10 @@ use Generator;
  * @psalm-param    (callable(Tv): bool) $predicate
  *
  * @psalm-return   Iterator<Tk, Tv>
+ *
+ * @deprecated use `Dict\take_while` instead.
+ *
+ * @see Dict\take_while()
  */
 function take_while(iterable $iterable, callable $predicate): Iterator
 {

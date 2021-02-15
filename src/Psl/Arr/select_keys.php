@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use Psl\Dict;
+
 /**
  * Returns a new array containing only the keys found in both the input array
  * and the given list. The array will have the same ordering as the
@@ -17,16 +19,11 @@ namespace Psl\Arr;
  *
  * @psalm-return array<Tk, Tv>
  *
- * @psalm-pure
+ * @deprecated use `Dict\select_keys` instead.
+ *
+ * @see Dict\select_keys
  */
 function select_keys(array $array, array $keys): array
 {
-    $result = [];
-    foreach ($keys as $key) {
-        if (contains_key($array, $key)) {
-            $result[$key] = $array[$key];
-        }
-    }
-
-    return $result;
+    return Dict\select_keys($array, $keys);
 }

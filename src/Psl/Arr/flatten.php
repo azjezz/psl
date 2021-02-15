@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use Psl\Dict;
+
 /**
  * Returns a new array formed by merging the iterable elements of the
  * given iterable.
@@ -24,15 +26,12 @@ namespace Psl\Arr;
  * @psalm-param iterable<iterable<Tk, Tv>> $iterables
  *
  * @psalm-return array<Tk, Tv>
+ *
+ * @deprecated use `Dict\flatten` instead.
+ *
+ * @see Dict\flatten
  */
 function flatten(iterable $iterables): array
 {
-    $result = [];
-    foreach ($iterables as $iterable) {
-        foreach ($iterable as $key => $value) {
-            $result[$key] = $value;
-        }
-    }
-
-    return $result;
+    return Dict\flatten($iterables);
 }

@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Psl\Tests\Type;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Iter;
+use Psl\Dict;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 use Psl\Type\Type;
+use Psl\Vec;
 
 /**
  * @template T
@@ -41,7 +42,7 @@ abstract class TypeTest extends TestCase
     public function getValidValues(): array
     {
         $non_unique = $this->getValidCoercions();
-        $non_unique = Iter\map($non_unique, static fn ($tuple) => $tuple[1]);
+        $non_unique = Dict\map($non_unique, static fn ($tuple) => $tuple[1]);
 
         $out = [];
         foreach ($non_unique as $v) {
@@ -63,7 +64,7 @@ abstract class TypeTest extends TestCase
     public function getInvalidValues(): array
     {
         $rows = $this->getInvalidCoercions();
-        $rows = Iter\to_array($rows);
+        $rows = Vec\values($rows);
         foreach ($this->getValidCoercions() as $arr) {
             [$value, $v] = $arr;
             if ($this->equals($v, $value)) {

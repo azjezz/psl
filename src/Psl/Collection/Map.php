@@ -6,6 +6,7 @@ namespace Psl\Collection;
 
 use Psl;
 use Psl\Arr;
+use Psl\Dict;
 use Psl\Iter;
 use Psl\Vec;
 
@@ -31,7 +32,7 @@ final class Map implements MapInterface
      */
     public function __construct(iterable $elements)
     {
-        $this->elements = Iter\to_array_with_keys($elements);
+        $this->elements = Dict\from_iterable($elements);
     }
 
     /**
@@ -221,7 +222,7 @@ final class Map implements MapInterface
      */
     public function filter(callable $fn): Map
     {
-        return new Map(Arr\filter($this->elements, $fn));
+        return new Map(Dict\filter($this->elements, $fn));
     }
 
     /**
@@ -244,7 +245,7 @@ final class Map implements MapInterface
      */
     public function filterWithKey(callable $fn): Map
     {
-        return new Map(Arr\filter_with_key($this->elements, $fn));
+        return new Map(Dict\filter_with_key($this->elements, $fn));
     }
 
     /**
@@ -267,7 +268,7 @@ final class Map implements MapInterface
      */
     public function map(callable $fn): Map
     {
-        return new Map(Iter\map($this->elements, $fn));
+        return new Map(Dict\map($this->elements, $fn));
     }
 
     /**
@@ -292,7 +293,7 @@ final class Map implements MapInterface
      */
     public function mapWithKey(callable $fn): Map
     {
-        return new Map(Iter\map_with_key($this->elements, $fn));
+        return new Map(Dict\map_with_key($this->elements, $fn));
     }
 
     /**
@@ -314,18 +315,20 @@ final class Map implements MapInterface
      */
     public function zip(iterable $iterable): Map
     {
+        $array = Vec\values($iterable);
+
         /** @psalm-var array<Tk, array{0: Tv, 1: Tu}> $elements */
         $elements = [];
 
         foreach ($this->elements as $k => $v) {
             /** @psalm-var Tu|null $u */
-            $u = Iter\first($iterable);
+            $u = Iter\first($array);
             if (null === $u) {
                 break;
             }
 
-            /** @psalm-var iterable<int, Tu> $iterable */
-            $iterable = Iter\drop($iterable, 1);
+            /** @psalm-var iterable<int, Tu> $array */
+            $array = Dict\drop($array, 1);
 
             $elements[$k] = [$v, $u];
         }
@@ -352,7 +355,7 @@ final class Map implements MapInterface
      */
     public function take(int $n): Map
     {
-        return new Map(Arr\take($this->elements, $n));
+        return new Map(Dict\take($this->elements, $n));
     }
 
     /**
@@ -371,7 +374,7 @@ final class Map implements MapInterface
      */
     public function takeWhile(callable $fn): Map
     {
-        return new Map(Arr\take_while($this->elements, $fn));
+        return new Map(Dict\take_while($this->elements, $fn));
     }
 
     /**
@@ -393,7 +396,7 @@ final class Map implements MapInterface
      */
     public function drop(int $n): Map
     {
-        return new Map(Arr\drop($this->elements, $n));
+        return new Map(Dict\drop($this->elements, $n));
     }
 
     /**
@@ -412,7 +415,7 @@ final class Map implements MapInterface
      */
     public function dropWhile(callable $fn): Map
     {
-        return new Map(Arr\drop_while($this->elements, $fn));
+        return new Map(Dict\drop_while($this->elements, $fn));
     }
 
     /**
@@ -438,6 +441,6 @@ final class Map implements MapInterface
      */
     public function slice(int $start, int $len): Map
     {
-        return new Map(Arr\slice($this->elements, $start, $len));
+        return new Map(Dict\slice($this->elements, $start, $len));
     }
 }
