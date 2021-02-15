@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use Psl\Dict;
+
 /**
  * Drops items from an iterable until the predicate fails for the first time.
  *
@@ -22,20 +24,12 @@ namespace Psl\Arr;
  * @psalm-param (callable(Tv): bool)    $predicate
  *
  * @psalm-return array<Tk, Tv>
+ *
+ * @deprecated use `Dict\drop_while` instead.
+ *
+ * @see Dict\drop_while()
  */
 function drop_while(iterable $iterable, callable $predicate): array
 {
-    $result = [];
-    $failed = false;
-    foreach ($iterable as $key => $value) {
-        if (!$failed && !$predicate($value)) {
-            $failed = true;
-        }
-
-        if ($failed) {
-            $result[$key] = $value;
-        }
-    }
-
-    return $result;
+    return Dict\drop_while($iterable, $predicate);
 }

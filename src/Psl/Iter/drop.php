@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Psl;
+use Psl\Dict;
 
 /**
  * Drops the first n items from an iterable.
@@ -23,8 +24,13 @@ use Psl;
  * @psalm-return Iterator<Tk, Tv>
  *
  * @throws Psl\Exception\InvariantViolationException If the $n is negative
+ *
+ * @deprecated use `Dict\drop` instead.
+ *
+ * @see Dict\drop()
  */
 function drop(iterable $iterable, int $n): Iterator
 {
+    /** @psalm-suppress DeprecatedFunction */
     return slice($iterable, $n);
 }

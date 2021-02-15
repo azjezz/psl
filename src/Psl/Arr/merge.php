@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use Psl\Dict;
+
 /**
  * Merges multiple iterables into a new array.
  *
@@ -23,11 +25,15 @@ namespace Psl\Arr;
  * @psalm-param    iterable<Tk, Tv> ...$rest
  *
  * @psalm-return   array<Tk, Tv>
+ *
+ * @deprecated use `Dict\merge` instead.
+ *
+ * @see Dict\merge()
  */
 function merge(iterable $first, iterable ...$rest): array
 {
-    /** @psalm-var list<iterable<Tk, Tv>> $arrays */
-    $arrays = [$first, ...$rest];
+    /** @psalm-var list<iterable<Tk, Tv>> $iterables */
+    $iterables = [$first, ...$rest];
 
-    return flatten($arrays);
+    return Dict\flatten($iterables);
 }

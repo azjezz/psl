@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
+use Psl\Dict;
 
 /**
  * Returns an iterator formed by merging the iterable elements of the
@@ -16,6 +17,10 @@ use Generator;
  * @psalm-param iterable<iterable<Tk, Tv>> $iterables
  *
  * @psalm-return Iterator<Tk, Tv>
+ *
+ * @deprecated use `Dict\flatten` instead.
+ *
+ * @see Dict\flatten()
  */
 function flatten(iterable $iterables): Iterator
 {

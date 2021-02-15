@@ -79,7 +79,15 @@ final class IterableType extends Type\Type
             }
 
             /** @var iterable<Tk, Tv> */
-            return Iter\from_entries($entries);
+            return Iter\Iterator::from((static function () use ($entries) {
+                /**
+                 * @var Tk $key
+                 * @var Tv $value
+                 */
+                foreach ($entries as [$key, $value]) {
+                    yield $key => $value;
+                }
+            }));
         }
 
         throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
@@ -124,7 +132,15 @@ final class IterableType extends Type\Type
             }
 
             /** @var iterable<Tk, Tv> */
-            return Iter\from_entries($entries);
+            return Iter\Iterator::from((static function () use ($entries) {
+                /**
+                 * @var Tk $key
+                 * @var Tv $value
+                 */
+                foreach ($entries as [$key, $value]) {
+                    yield $key => $value;
+                }
+            }));
         }
 
         throw AssertException::withValue($value, $this->toString(), $this->getTrace());

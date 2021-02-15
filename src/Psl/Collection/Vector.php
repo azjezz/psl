@@ -6,6 +6,7 @@ namespace Psl\Collection;
 
 use Psl;
 use Psl\Arr;
+use Psl\Dict;
 use Psl\Iter;
 use Psl\Vec;
 
@@ -225,7 +226,7 @@ final class Vector implements VectorInterface
      */
     public function filter(callable $fn): Vector
     {
-        return new Vector(Arr\filter($this->elements, $fn));
+        return new Vector(Dict\filter($this->elements, $fn));
     }
 
     /**
@@ -248,7 +249,7 @@ final class Vector implements VectorInterface
      */
     public function filterWithKey(callable $fn): Vector
     {
-        return new Vector(Arr\filter_with_key($this->elements, $fn));
+        return new Vector(Dict\filter_with_key($this->elements, $fn));
     }
 
     /**
@@ -271,7 +272,7 @@ final class Vector implements VectorInterface
      */
     public function map(callable $fn): Vector
     {
-        return new Vector(Iter\map($this->elements, $fn));
+        return new Vector(Dict\map($this->elements, $fn));
     }
 
     /**
@@ -296,7 +297,7 @@ final class Vector implements VectorInterface
      */
     public function mapWithKey(callable $fn): Vector
     {
-        return new Vector(Iter\map_with_key($this->elements, $fn));
+        return new Vector(Dict\map_with_key($this->elements, $fn));
     }
 
     /**
@@ -340,7 +341,7 @@ final class Vector implements VectorInterface
      */
     public function take(int $n): Vector
     {
-        return new Vector(Arr\take($this->elements, $n));
+        return new Vector(Dict\take($this->elements, $n));
     }
 
     /**
@@ -359,7 +360,7 @@ final class Vector implements VectorInterface
      */
     public function takeWhile(callable $fn): Vector
     {
-        return new Vector(Arr\take_while($this->elements, $fn));
+        return new Vector(Dict\take_while($this->elements, $fn));
     }
 
     /**
@@ -382,7 +383,7 @@ final class Vector implements VectorInterface
      */
     public function drop(int $n): Vector
     {
-        return new Vector(Arr\drop($this->elements, $n));
+        return new Vector(Dict\drop($this->elements, $n));
     }
 
     /**
@@ -401,7 +402,7 @@ final class Vector implements VectorInterface
      */
     public function dropWhile(callable $fn): Vector
     {
-        return new Vector(Arr\drop_while($this->elements, $fn));
+        return new Vector(Dict\drop_while($this->elements, $fn));
     }
 
     /**
@@ -427,6 +428,6 @@ final class Vector implements VectorInterface
      */
     public function slice(int $start, int $len): Vector
     {
-        return new Vector(Arr\slice($this->elements, $start, $len));
+        return new Vector(Dict\slice($this->elements, $start, $len));
     }
 }

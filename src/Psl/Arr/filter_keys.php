@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
-use Closure;
+use Psl\Dict;
 
 /**
- * Returns an array containing only the keys for which the given predicate
+ * Returns a dict containing only the keys for which the given predicate
  * returns `true`.
  *
  * The default predicate is casting the key to boolean.
@@ -27,17 +27,12 @@ use Closure;
  * @psalm-param (callable(Tk): bool)|null  $predicate
  *
  * @psalm-return array<Tk, Tv>
+ *
+ * @deprecated use `Dict\filter_keys` instead.
+ *
+ * @see Dict\filter_keys()
  */
 function filter_keys(iterable $iterable, ?callable $predicate = null): array
 {
-    /** @psalm-var (callable(Tk): bool) $predicate */
-    $predicate = $predicate ?? Closure::fromCallable('Psl\Internal\boolean');
-    $result    = [];
-    foreach ($iterable as $k => $v) {
-        if ($predicate($k)) {
-            $result[$k] = $v;
-        }
-    }
-
-    return $result;
+    return Dict\filter_keys($iterable, $predicate);
 }

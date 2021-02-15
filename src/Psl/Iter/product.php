@@ -6,6 +6,7 @@ namespace Psl\Iter;
 
 use Generator;
 use Psl\Arr;
+use Psl\Dict;
 use Psl\Vec;
 
 /**
@@ -28,12 +29,14 @@ use Psl\Vec;
  * @psalm-param iterable<Tk, Tv> ...$iterables Iterables to combine
  *
  * @psalm-return Iterator<list<Tk>, list<Tv>>
+ *
+ * @deprecated ( no replacement is provided )
  */
 function product(iterable ...$iterables): Iterator
 {
     return Iterator::from(static function () use ($iterables): Generator {
         /** @psalm-var list<Iterator<Tk, Tv>> $iterators */
-        $iterators = Vec\values(map(
+        $iterators = Vec\values(Dict\map(
             $iterables,
             static fn (iterable $iterable) => Iterator::create($iterable)
         ));

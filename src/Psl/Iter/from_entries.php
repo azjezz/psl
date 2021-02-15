@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
+use Psl\Dict;
 
 /**
  * Returns an iterator where each mapping is defined by the given key/value
@@ -16,6 +17,10 @@ use Generator;
  * @psalm-param iterable<array{0: Tk, 1: Tv}> $entries
  *
  * @psalm-return Iterator<Tk, Tv>
+ *
+ * @deprecated use `Dict\from_entries` instead.
+ *
+ * @see Dict\from_entries()
  */
 function from_entries(iterable $entries): Iterator
 {

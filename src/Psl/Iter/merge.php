@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Psl\Dict;
+
 /**
  * Merges multiple iterables into a lazy iterator.
  *
@@ -21,6 +23,10 @@ namespace Psl\Iter;
  * @psalm-param iterable<Tk, Tv> ...$rest
  *
  * @psalm-return Iterator<Tk, Tv>
+ *
+ * @deprecated use `Dict\merge` instead.
+ *
+ * @see Dict\merge()
  */
 function merge(iterable $first, iterable ...$rest): Iterator
 {
@@ -29,5 +35,6 @@ function merge(iterable $first, iterable ...$rest): Iterator
         $iterables[] = $iterable;
     }
 
+    /** @psalm-suppress DeprecatedFunction */
     return flatten($iterables);
 }

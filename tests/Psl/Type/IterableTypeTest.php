@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Type;
 
+use Psl\Dict;
 use Psl\Iter;
 use Psl\Str;
 use Psl\Type;
+use Psl\Vec;
 
 /**
  * @extends TypeTest<iterable<int, int>>
@@ -21,21 +23,21 @@ final class IterableTypeTest extends TypeTest
     public function getValidCoercions(): iterable
     {
         yield [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]];
-        yield [Iter\range(1, 10), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]];
-        yield [Iter\range(1, 10), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]];
+        yield [Vec\range(1, 10), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]];
+        yield [Vec\range(1, 10), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]];
 
         yield [
-            Iter\map(Iter\range(1, 10), static fn (int $value): string => (string) $value),
+            Dict\map(Vec\range(1, 10), static fn (int $value): string => (string) $value),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         ];
 
         yield [
-            Iter\map_keys(Iter\range(1, 10), static fn (int $key): string => (string) $key),
+            Dict\map_keys(Vec\range(1, 10), static fn (int $key): string => (string) $key),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         ];
 
         yield [
-            Iter\map(Iter\range(1, 10), static fn (int $value): string => Str\format('00%d', $value)),
+            Dict\map(Vec\range(1, 10), static fn (int $value): string => Str\format('00%d', $value)),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         ];
     }
@@ -68,8 +70,8 @@ final class IterableTypeTest extends TypeTest
      */
     protected function equals($a, $b): bool
     {
-        $a = Iter\to_array_with_keys($a);
-        $b = Iter\to_array_with_keys($b);
+        $a = Dict\from_iterable($a);
+        $b = Dict\from_iterable($b);
 
         return $a === $b;
     }

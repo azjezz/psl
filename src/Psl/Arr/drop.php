@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Arr;
 
 use Psl;
+use Psl\Dict;
 
 /**
  * Drops the first n items from an array.
@@ -24,9 +25,11 @@ use Psl;
  *
  * @throws Psl\Exception\InvariantViolationException If the $n is negative
  *
- * @psalm-pure
+ * @deprecated use `Dict\drop` instead.
+ *
+ * @see Dict\drop()
  */
-function drop(array $array, int $n): array
+function drop(iterable $array, int $n): array
 {
-    return slice($array, $n);
+    return Dict\drop($array, $n);
 }

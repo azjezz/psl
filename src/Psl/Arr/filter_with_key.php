@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
-use Psl;
+use Psl\Dict;
 
 /**
  * Returns an array containing only the keys and values for which the given predicate
@@ -30,23 +30,12 @@ use Psl;
  * @psalm-param (callable(Tk, Tv): bool)|null   $predicate
  *
  * @psalm-return array<Tk, Tv>
+ *
+ * @deprecated use `Dict\filter_with_key` instead.
+ *
+ * @see Dict\filter_with_key()
  */
 function filter_with_key(iterable $iterable, ?callable $predicate = null): array
 {
-    $predicate = $predicate ??
-        /**
-         * @psalm-param Tk $k
-         * @psalm-param Tv $v
-         */
-        static fn ($k, $v): bool => Psl\Internal\boolean($v);
-
-    /** @psalm-var array<Tk, Tv> $result */
-    $result = [];
-    foreach ($iterable as $k => $v) {
-        if ($predicate($k, $v)) {
-            $result[$k] = $v;
-        }
-    }
-
-    return $result;
+    return Dict\filter_with_key($iterable, $predicate);
 }

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
-use Psl;
-use Psl\Type;
+use Psl\Dict;
 
 /**
  * Returns a new array where
@@ -37,25 +36,12 @@ use Psl\Type;
  * @psalm-param (callable(Tv): ?Tk)    $key_func
  *
  * @psalm-return array<Tk, list<Tv>>
+ *
+ * @deprecated use Dict\group_by
+ *
+ * @see Dict\group_by
  */
 function group_by(iterable $values, callable $key_func): array
 {
-    $result = [];
-    foreach ($values as $value) {
-        $key = $key_func($value);
-        if (null === $key) {
-            continue;
-        }
-
-        Psl\invariant(
-            Type\is_arraykey($key),
-            'Expected $key_func to return a value of type array-key, value of type (%s) returned.',
-            gettype($key)
-        );
-        /** @psalm-var Tk $key */
-        $result[$key]   = $result[$key] ?? [];
-        $result[$key][] = $value;
-    }
-
-    return $result;
+    return Dict\group_by($values, $key_func);
 }

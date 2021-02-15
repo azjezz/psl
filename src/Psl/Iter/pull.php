@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
+use Psl\Dict;
 
 /**
  * Returns an iterator where:
@@ -33,6 +34,10 @@ use Generator;
  * @psalm-param (callable(T): Tk)   $key_func
  *
  * @psalm-return Iterator<Tk, Tv>
+ *
+ * @deprecated use `Dict\pull` instead.
+ *
+ * @see Dict\pull()
  */
 function pull(iterable $iterable, callable $value_func, callable $key_func): Iterator
 {

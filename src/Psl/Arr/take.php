@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Arr;
 
 use Psl;
+use Psl\Dict;
 
 /**
  * Take the first n elements from an array.
@@ -18,9 +19,11 @@ use Psl;
  *
  * @throws Psl\Exception\InvariantViolationException If the $n is negative
  *
- * @psalm-pure
+ * @deprecated use `Dict\take` instead.
+ *
+ * @see Dict\take()
  */
-function take(array $array, int $n): array
+function take(iterable $array, int $n): array
 {
-    return slice($array, 0, $n);
+    return Dict\take($array, $n);
 }

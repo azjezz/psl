@@ -6,6 +6,7 @@ namespace Psl\Collection;
 
 use Psl;
 use Psl\Arr;
+use Psl\Dict;
 use Psl\Iter;
 use Psl\Vec;
 
@@ -29,7 +30,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function __construct(iterable $elements)
     {
-        $this->elements = Iter\to_array_with_keys($elements);
+        $this->elements = Dict\from_iterable($elements);
     }
 
     /**
@@ -218,7 +219,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function filter(callable $fn): MutableMap
     {
-        return new MutableMap(Arr\filter($this->elements, $fn));
+        return new MutableMap(Dict\filter($this->elements, $fn));
     }
 
     /**
@@ -241,7 +242,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function filterWithKey(callable $fn): MutableMap
     {
-        return new MutableMap(Arr\filter_with_key($this->elements, $fn));
+        return new MutableMap(Dict\filter_with_key($this->elements, $fn));
     }
 
     /**
@@ -264,7 +265,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function map(callable $fn): MutableMap
     {
-        return new MutableMap(Iter\map($this->elements, $fn));
+        return new MutableMap(Dict\map($this->elements, $fn));
     }
 
     /**
@@ -289,7 +290,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function mapWithKey(callable $fn): MutableMap
     {
-        return new MutableMap(Iter\map_with_key($this->elements, $fn));
+        return new MutableMap(Dict\map_with_key($this->elements, $fn));
     }
 
     /**
@@ -311,18 +312,18 @@ final class MutableMap implements MutableMapInterface
      */
     public function zip(iterable $iterable): MutableMap
     {
+        $array = Vec\values($iterable);
         /** @psalm-var array<Tk, array{0: Tv, 1: Tu}> $elements */
         $elements = [];
 
         foreach ($this->elements as $k => $v) {
             /** @psalm-var Tu|null $u */
-            $u = Iter\first($iterable);
+            $u = Iter\first($array);
             if (null === $u) {
                 break;
             }
 
-            /** @psalm-var iterable<Tu> $iterable */
-            $iterable = Iter\drop($iterable, 1);
+            $array = Dict\drop($array, 1);
 
             $elements[$k] = [$v, $u];
         }
@@ -349,7 +350,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function take(int $n): MutableMap
     {
-        return new MutableMap(Arr\take($this->elements, $n));
+        return new MutableMap(Dict\take($this->elements, $n));
     }
 
     /**
@@ -368,7 +369,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function takeWhile(callable $fn): MutableMap
     {
-        return new MutableMap(Arr\take_while($this->elements, $fn));
+        return new MutableMap(Dict\take_while($this->elements, $fn));
     }
 
     /**
@@ -391,7 +392,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function drop(int $n): MutableMap
     {
-        return new MutableMap(Arr\drop($this->elements, $n));
+        return new MutableMap(Dict\drop($this->elements, $n));
     }
 
     /**
@@ -410,7 +411,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function dropWhile(callable $fn): MutableMap
     {
-        return new MutableMap(Arr\drop_while($this->elements, $fn));
+        return new MutableMap(Dict\drop_while($this->elements, $fn));
     }
 
     /**
@@ -436,7 +437,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function slice(int $start, int $len): MutableMap
     {
-        return new MutableMap(Arr\slice($this->elements, $start, $len));
+        return new MutableMap(Dict\slice($this->elements, $start, $len));
     }
 
     /**
