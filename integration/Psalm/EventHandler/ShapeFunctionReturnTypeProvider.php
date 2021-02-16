@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Psl\Internal\Psalm\EventHandler;
+namespace Psl\Integration\Psalm\EventHandler;
 
 use Psalm\Plugin\EventHandler\Event\FunctionReturnTypeProviderEvent;
 use Psalm\Plugin\EventHandler\FunctionReturnTypeProviderInterface;
