@@ -17,6 +17,7 @@
 >
     <projectFiles>
         <directory name="src" />
+        <directory name="integration" />
         <ignoreFiles>
             <directory name="vendor" />
             <file name="src/bootstrap.php"/>
@@ -56,6 +57,6 @@
     </issueHandlers>
 
     <plugins>
-        <pluginClass class="Psl\Internal\Psalm\Plugin"/>
+        <pluginClass class="Psl\Integration\Psalm\Plugin"/>
     </plugins>
 </psalm>

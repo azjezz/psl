@@ -22,18 +22,16 @@ The goal of Psl is to provide a consistent, centralized, well-typed set of APIs 
 
 declare(strict_types=1);
 
-use Psl\Arr;
-use Psl\Str;
+use Psl\{Dict, Str, Vec};
 
 /**
  * @psalm-param iterable<?int> $codes
  */
 function foo(iterable $codes): string
 {
-    /** @var list<int> $codes */
-    $codes = Arr\filter_nulls($codes);
-    /** @var list<string> $chars */
-    $chars = Arr\map($codes, fn(int $code): string => Str\chr($code));
+    $codes = Vec\filter_nulls($codes);
+
+    $chars = Dict\map($codes, fn(int $code): string => Str\chr($code));
 
     return Str\join($chars, ', ');
 }
@@ -61,7 +59,7 @@ To enable the Psalm plugin, add the `Psl\Internal\Psalm\Plugin` class to your ps
    ...
    <plugins>
       ...
-      <pluginClass class="Psl\Internal\Psalm\Plugin"/>
+      <pluginClass class="Psl\Integration\Psalm\Plugin" />
    </plugins>
 </psalm>
 

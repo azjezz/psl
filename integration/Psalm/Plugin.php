@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Psl\Internal\Psalm;
+namespace Psl\Integration\Psalm;
 
 use Psalm\Plugin\PluginEntryPointInterface;
 use Psalm\Plugin\RegistrationInterface;

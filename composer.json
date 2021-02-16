@@ -26,7 +26,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Psl\\": "src/Psl"
+            "Psl\\": "src/Psl",
+            "Psl\\Integration\\": "integration"
         },
         "files": [
             "src/bootstrap.php"
@@ -64,7 +65,11 @@
     },
     "extra": {
         "psalm": {
-            "pluginClass": "Psl\\Internal\\Psalm\\Plugin"
+            "pluginClass": "Psl\\Integration\\Psalm\\Plugin"
+        },
+        "thanks": {
+            "name": "hhvm/hsl",
+            "url": "https://github.com/hhvm/hsl"
         }
     }
 }
