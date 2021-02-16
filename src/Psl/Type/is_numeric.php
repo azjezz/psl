@@ -14,6 +14,8 @@ use function is_numeric as php_is_numeric;
  * @psalm-assert-if-true numeric $var
  *
  * @psalm-pure
+ *
+ * @deprecated use `Type\num()->matches($value)` instead.
  */
 function is_numeric($var): bool
 {

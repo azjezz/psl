@@ -9,6 +9,10 @@ use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
+use function is_int;
+use function is_object;
+use function is_string;
+
 /**
  * @extends Type\Type<int>
  *
@@ -16,6 +20,16 @@ use Psl\Type\Exception\CoercionException;
  */
 final class IntType extends Type\Type
 {
+    /**
+     * @param mixed $value
+     *
+     * @psalm-assert-if-true int $value
+     */
+    public function matches($value): bool
+    {
+        return is_int($value);
+    }
+
     /**
      * @psalm-param mixed $value
      *
@@ -25,11 +39,11 @@ final class IntType extends Type\Type
      */
     public function coerce($value): int
     {
-        if (Type\is_int($value)) {
+        if (is_int($value)) {
             return $value;
         }
 
-        if (Type\is_string($value) || (Type\is_object($value) && method_exists($value, '__toString'))) {
+        if (is_string($value) || (is_object($value) && method_exists($value, '__toString'))) {
             $str = (string)$value;
             $int = Str\to_int($str);
             if (null !== $int) {
@@ -62,7 +76,7 @@ final class IntType extends Type\Type
      */
     public function assert($value): int
     {
-        if (Type\is_int($value)) {
+        if (is_int($value)) {
             return $value;
         }
 

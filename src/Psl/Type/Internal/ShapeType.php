@@ -11,6 +11,10 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 use Psl\Vec;
 
+use function is_array;
+use function is_int;
+use function is_iterable;
+
 /**
  * @template Tk of array-key
  * @template Tv
@@ -20,12 +24,12 @@ use Psl\Vec;
 final class ShapeType extends Type\Type
 {
     /**
-     * @var array<Tk, Type\Type<Tv>> $elements_types
+     * @var array<Tk, Type\TypeInterface<Tv>> $elements_types
      */
     private array $elements_types;
 
     /**
-     * @param array<Tk, Type\Type<Tv>> $elements_types
+     * @param array<Tk, Type\TypeInterface<Tv>> $elements_types
      */
     public function __construct(array $elements_types)
     {
@@ -41,21 +45,21 @@ final class ShapeType extends Type\Type
      */
     public function coerce($value): array
     {
-        if (Type\is_iterable($value)) {
+        if (is_iterable($value)) {
             $array = [];
             /**
              * @var Tk $k
              * @var Tv $v
              */
             foreach ($value as $k => $v) {
-                if (Type\is_arraykey($k)) {
+                if (Type\array_key()->matches($k)) {
                     $array[$k] = $v;
                 }
             }
 
             $result = [];
             foreach ($this->elements_types as $element => $type) {
-                $element_name = Type\is_int($element) ? (string) $element : Str\format('\'%s\'', $element);
+                $element_name = is_int($element) ? (string) $element : Str\format('\'%s\'', $element);
                 $trace =  $this->getTrace()->withFrame('array{' . $element_name . ': _}');
                 /** @var Type\Type<Tv> $type */
                 $type = $type->withTrace($trace);
@@ -85,7 +89,7 @@ final class ShapeType extends Type\Type
      */
     public function assert($value): array
     {
-        if (Type\is_array($value)) {
+        if (is_array($value)) {
             /** @var list<array-key> $value_keys */
             $value_keys = Vec\sort(Vec\keys($value));
 
@@ -96,7 +100,7 @@ final class ShapeType extends Type\Type
 
             $result = [];
             foreach ($this->elements_types as $element => $type) {
-                $element_name = Type\is_int($element) ? (string) $element : Str\format('\'%s\'', $element);
+                $element_name = is_int($element) ? (string) $element : Str\format('\'%s\'', $element);
                 $trace =  $this->getTrace()->withFrame('array{' . $element_name . ': _}');
                 /** @var Type\Type<Tv> $type */
                 $type = $type->withTrace($trace);
@@ -122,7 +126,7 @@ final class ShapeType extends Type\Type
     {
         $nodes = [];
         foreach ($this->elements_types as $element => $type) {
-            $node = Type\is_int($element) ? (string) $element : Str\format('\'%s\'', $element);
+            $node = is_int($element) ? (string) $element : Str\format('\'%s\'', $element);
             $node .= ': ';
             $node .= $type->toString();
 

@@ -16,6 +16,8 @@ use function is_a;
  * @psalm-assert-if-true T $object
  *
  * @psalm-pure
+ *
+ * @deprecated use `Type\object($class)->matches($object)` instead.
  */
 function is_instanceof(object $object, string $class): bool
 {

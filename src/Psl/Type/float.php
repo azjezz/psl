@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl\Type;
 
 /**
- * @psalm-return Type<float>
+ * @psalm-return TypeInterface<float>
  */
-function float(): Type
+function float(): TypeInterface
 {
     return new Internal\FloatType();
 }

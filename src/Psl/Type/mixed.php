@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl\Type;
 
 /**
- * @psalm-return Type<mixed>
+ * @psalm-return TypeInterface<mixed>
  */
-function mixed(): Type
+function mixed(): TypeInterface
 {
     return new Internal\MixedType();
 }

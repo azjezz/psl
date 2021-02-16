@@ -27,7 +27,7 @@ final class ShapeFunctionReturnTypeProvider implements FunctionReturnTypeProvide
 
         $argument = $call_args[0] ?? null;
         if (null === $argument) {
-            return new Type\Union([new Type\Atomic\TGenericObject('Psl\Type\Type', [
+            return new Type\Union([new Type\Atomic\TGenericObject('Psl\Type\TypeInterface', [
                 new Type\Union([
                     new Type\Atomic\TArray([
                         new Type\Union([new Type\Atomic\TArrayKey()]),
@@ -41,7 +41,7 @@ final class ShapeFunctionReturnTypeProvider implements FunctionReturnTypeProvide
         $argument_value = $argument->value;
         $type = $statements_source->getNodeTypeProvider()->getType($argument_value);
         if (null === $type) {
-            return new Type\Union([new Type\Atomic\TGenericObject('Psl\Type\Type', [
+            return new Type\Union([new Type\Atomic\TGenericObject('Psl\Type\TypeInterface', [
                 new Type\Union([
                     new Type\Atomic\TArray([
                         new Type\Union([new Type\Atomic\TArrayKey()]),
@@ -54,7 +54,7 @@ final class ShapeFunctionReturnTypeProvider implements FunctionReturnTypeProvide
         $atomic = $type->getAtomicTypes();
         $argument_shape = $atomic['array'] ?? null;
         if (!$argument_shape instanceof Type\Atomic\TKeyedArray) {
-            return new Type\Union([new Type\Atomic\TGenericObject('Psl\Type\Type', [
+            return new Type\Union([new Type\Atomic\TGenericObject('Psl\Type\TypeInterface', [
                 new Type\Union([
                     new Type\Atomic\TArray([
                         new Type\Union([new Type\Atomic\TArrayKey()]),
@@ -76,7 +76,7 @@ final class ShapeFunctionReturnTypeProvider implements FunctionReturnTypeProvide
             $properties[$name] = $property_type;
         }
 
-        return new Type\Union([new Type\Atomic\TGenericObject('Psl\Type\Type', [
+        return new Type\Union([new Type\Atomic\TGenericObject('Psl\Type\TypeInterface', [
             new Type\Union([
                 new Type\Atomic\TKeyedArray($properties)
             ])
