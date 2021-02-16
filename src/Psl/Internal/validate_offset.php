@@ -15,6 +15,8 @@ use Psl;
  * @codeCoverageIgnore
  *
  * @throws Psl\Exception\InvariantViolationException If the offset is out-of-bounds.
+ *
+ * @internal
  */
 function validate_offset(int $offset, int $length): int
 {

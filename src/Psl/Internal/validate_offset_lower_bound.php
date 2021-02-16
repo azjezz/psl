@@ -13,6 +13,8 @@ use Psl;
  * @psalm-pure
  *
  * @throws Psl\Exception\InvariantViolationException If $offset is out-of-bounds.
+ *
+ * @internal
  */
 function validate_offset_lower_bound(int $offset, int $length): int
 {

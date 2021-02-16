@@ -433,6 +433,10 @@ final class Loader
         'Psl\Str\Grapheme\before_ci',
         'Psl\Str\Grapheme\before_last',
         'Psl\Str\Grapheme\before_last_ci',
+        'Psl\Encoding\Base64\encode',
+        'Psl\Encoding\Base64\decode',
+        'Psl\Encoding\Hex\encode',
+        'Psl\Encoding\Hex\decode',
     ];
 
     public const INTERFACES = [
@@ -450,6 +454,7 @@ final class Loader
         'Psl\Observer\SubjectInterface',
         'Psl\Observer\ObserverInterface',
         'Psl\Result\ResultInterface',
+        'Psl\Encoding\Exception\ExceptionInterface',
     ];
 
     public const TRAITS = [
@@ -495,6 +500,8 @@ final class Loader
         'Psl\Json\Exception\DecodeException',
         'Psl\Json\Exception\EncodeException',
         'Psl\Hash\Context',
+        'Psl\Encoding\Exception\IncorrectPaddingException',
+        'Psl\Encoding\Exception\RangeException',
     ];
 
     private const TYPE_CONSTANTS = 1;
