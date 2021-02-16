@@ -29,9 +29,12 @@ namespace Psl\Arr;
  * @psalm-return   Tv
  *
  * @psalm-pure
+ *
+ * @deprecated use `$array[$index] ?? $default` instead.
  */
 function idx(array $array, $index, $default = null)
 {
+    /** @psalm-suppress DeprecatedFunction */
     if (contains_key($array, $index)) {
         return $array[$index];
     }

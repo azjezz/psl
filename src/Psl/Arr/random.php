@@ -6,8 +6,6 @@ namespace Psl\Arr;
 
 use Psl;
 use Psl\Iter;
-use Psl\PseudoRandom;
-use Psl\Vec;
 
 /**
  * Retrieve a random value from a non-empty array.
@@ -20,22 +18,12 @@ use Psl\Vec;
  * @psalm-return Tv
  *
  * @throws Psl\Exception\InvariantViolationException If $values is empty.
+ *
+ * @deprecated use `Iter\random` instead.
+ *
+ * @see Iter\random()
  */
 function random(array $values)
 {
-    $size = Iter\count($values);
-
-    Psl\invariant(0 !== $size, 'Expected a non-empty-array.');
-
-    /** @psalm-var list<Tv> $shuffled */
-    $shuffled = Vec\shuffle($values);
-
-
-    if (1 === $size) {
-        /** @psalm-var Tv */
-        return $shuffled[0];
-    }
-
-    /** @psalm-suppress MissingThrowsDocblock */
-    return at($shuffled, PseudoRandom\int(0, $size - 1));
+    return Iter\random($values);
 }

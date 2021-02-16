@@ -30,7 +30,7 @@ use Psl\Iter;
  *
  * @psalm-pure
  *
- * @deprecated since 1.2, use Iter\count instead.
+ * @deprecated use Iter\count instead.
  *
  * @see Iter\count()
  */

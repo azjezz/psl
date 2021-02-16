@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Password;
 
 use Psl;
-use Psl\Arr;
+use Psl\Iter;
 
 use function password_hash;
 
@@ -31,10 +31,12 @@ use const PASSWORD_BCRYPT;
  */
 function hash(string $password, string $algorithm = DEFAULT_ALGORITHM, array $options = []): string
 {
-    Psl\invariant(Arr\contains(algorithms(), $algorithm), 'Unsupported algorithm "%s".', $algorithm);
+    /** @psalm-suppress ImpureFunctionCall */
+    Psl\invariant(Iter\contains(algorithms(), $algorithm), 'Unsupported algorithm "%s".', $algorithm);
     if (DEFAULT_ALGORITHM === $algorithm) {
         $algorithm = PASSWORD_BCRYPT;
-        Psl\invariant(!Arr\contains_key($options, 'salt'), 'The "salt" option is not supported.');
+        /** @psalm-suppress ImpureFunctionCall */
+        Psl\invariant(!Iter\contains_key($options, 'salt'), 'The "salt" option is not supported.');
     }
 
     /** @var false|string $hash */

@@ -21,7 +21,7 @@ use Psl\Dict;
  *
  * @deprecated use `Dict\select_keys` instead.
  *
- * @see Dict\select_keys
+ * @see Dict\select_keys()
  */
 function select_keys(array $array, array $keys): array
 {

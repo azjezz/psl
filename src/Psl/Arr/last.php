@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use Psl\Iter;
+
 /**
  * Get the last value of an array, if the array is empty, returns null.
  *
@@ -15,15 +17,21 @@ namespace Psl\Arr;
  * @psalm-return Tv|null
  *
  * @psalm-pure
+ *
+ * @deprecated use `Iter\last` instead.
+ *
+ * @see Iter\last()
  */
 function last(array $array)
 {
-    /** @psalm-var Tk|null $last */
+    /**
+     * @psalm-var Tk|null $last
+     * @psalm-suppress DeprecatedFunction
+     */
     $last = last_key($array);
     if (null === $last) {
         return null;
     }
 
-    /** @psalm-suppress MissingThrowsDocblock - we are sure that $last is within-bounds. */
-    return at($array, $last);
+    return $array[$last];
 }

@@ -7,7 +7,6 @@ namespace Psl\Iter;
 use Countable;
 use Generator;
 use Psl;
-use Psl\Arr;
 use SeekableIterator;
 
 /**
@@ -91,7 +90,7 @@ final class Iterator implements Countable, SeekableIterator
     public function current()
     {
         Psl\invariant($this->valid(), 'The Iterator is invalid.');
-        if (!Arr\contains_key($this->entries, $this->position)) {
+        if (!contains_key($this->entries, $this->position)) {
             $this->progress();
         }
 
@@ -108,7 +107,7 @@ final class Iterator implements Countable, SeekableIterator
             return;
         }
 
-        if (Arr\contains_key($this->entries, $this->position + 1)) {
+        if (contains_key($this->entries, $this->position + 1)) {
             return;
         }
 
@@ -131,7 +130,7 @@ final class Iterator implements Countable, SeekableIterator
     public function key()
     {
         Psl\invariant($this->valid(), 'The Iterator is invalid.');
-        if (!Arr\contains_key($this->entries, $this->position)) {
+        if (!contains_key($this->entries, $this->position)) {
             $this->progress();
         }
 
@@ -143,7 +142,7 @@ final class Iterator implements Countable, SeekableIterator
      */
     public function valid(): bool
     {
-        if (Arr\contains_key($this->entries, $this->position)) {
+        if (contains_key($this->entries, $this->position)) {
             return true;
         }
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use Psl\Iter;
+
 /**
  * Returns true if the given array contains the value. Strict equality is
  * used.
@@ -15,6 +17,10 @@ namespace Psl\Arr;
  * @psalm-param Tv              $value
  *
  * @psalm-pure
+ *
+ * @deprecated use `Iter\contains` instead.
+ *
+ * @see Iter\contains()
  */
 function contains(array $array, $value): bool
 {

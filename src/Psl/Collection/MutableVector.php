@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Collection;
 
 use Psl;
-use Psl\Arr;
 use Psl\Dict;
 use Psl\Iter;
 use Psl\Vec;
@@ -42,7 +41,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function first()
     {
-        return Arr\first($this->elements);
+        return Iter\first($this->elements);
     }
 
     /**
@@ -53,7 +52,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function last()
     {
-        return Arr\last($this->elements);
+        return Iter\last($this->elements);
     }
 
     /**
@@ -113,7 +112,9 @@ final class MutableVector implements MutableVectorInterface
      */
     public function at($k)
     {
-        return Arr\at($this->elements, $k);
+        Psl\invariant($this->contains($k), 'Key (%s) is out-of-bounds.', $k);
+
+        return $this->elements[$k];
     }
 
     /**
@@ -123,7 +124,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function contains($k): bool
     {
-        return Arr\contains_key($this->elements, $k);
+        return Iter\contains_key($this->elements, $k);
     }
 
     /**
@@ -135,7 +136,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function get($k)
     {
-        return Arr\idx($this->elements, $k);
+        return $this->elements[$k] ?? null;
     }
 
     /**
@@ -146,10 +147,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function firstKey(): ?int
     {
-        /** @var int|null $key */
-        $key = Arr\first_key($this->elements);
-
-        return $key;
+        return Iter\first_key($this->elements);
     }
 
     /**
@@ -160,7 +158,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function lastKey(): ?int
     {
-        return Arr\last_key($this->elements);
+        return Iter\last_key($this->elements);
     }
 
     /**

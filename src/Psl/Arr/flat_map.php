@@ -16,7 +16,9 @@ use Psl\Vec;
  *
  * @psalm-return list<T>
  *
- * @deprecated since 1.2, use Vec\flat_map instead.
+ * @deprecated use `Vec\flat_map` instead.
+ *
+ * @see Vec\flat_map()
  */
 function flat_map(iterable $iterable, callable $mapper): array
 {

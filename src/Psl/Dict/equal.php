@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
-use Psl\Arr;
 use Psl\Iter;
 
 /**
@@ -28,7 +27,7 @@ function equal(array $first, array $second): bool
     }
 
     foreach ($first as $k => $v) {
-        if (!Arr\contains_key($second, $k) || $second[$k] !== $v) {
+        if (!Iter\contains_key($second, $k) || $second[$k] !== $v) {
             return false;
         }
     }

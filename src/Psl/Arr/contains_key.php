@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use Psl\Iter;
+
 use function array_key_exists;
 
 /**
@@ -16,6 +18,10 @@ use function array_key_exists;
  * @psalm-param Tk            $key
  *
  * @psalm-pure
+ *
+ * @deprecated use `Iter\contains_key()` instead.
+ *
+ * @see Iter\contains_key()
  */
 function contains_key(array $array, $key): bool
 {

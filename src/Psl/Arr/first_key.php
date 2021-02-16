@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use Psl\Iter;
+
 use function array_key_first;
 
 /**
@@ -16,6 +18,10 @@ use function array_key_first;
  * @psalm-return Tk|null
  *
  * @psalm-pure
+ *
+ * @deprecated use `Iter\first_key` instead.
+ *
+ * @see Iter\first_key()
  */
 function first_key(array $array)
 {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\DataStructure;
 
 use Psl;
-use Psl\Arr;
 use Psl\Dict;
 use Psl\Iter;
 use Psl\Math;
@@ -55,10 +54,10 @@ final class PriorityQueue implements PriorityQueueInterface
         $priority = Math\max($keys) ?? 0;
 
         // Retrieve the list of nodes with the priority `$priority`.
-        $nodes = Arr\idx($this->queue, $priority, []);
+        $nodes = $this->queue[$priority] ?? [];
 
         // Retrieve the first node of the list.
-        return Arr\first($nodes);
+        return Iter\first($nodes);
     }
 
     /**
@@ -111,10 +110,8 @@ final class PriorityQueue implements PriorityQueueInterface
 
         /**
          * Retrieve the list of nodes with the priority `$priority`.
-         *
-         * @psalm-suppress MissingThrowsDocblock
          */
-        $nodes = Arr\at($this->queue, $priority);
+        $nodes = $this->queue[$priority];
 
         // If the list contained only this node,
         // remove the list of nodes with priority `$priority`.

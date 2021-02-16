@@ -24,7 +24,7 @@ use Psl\Dict;
  *
  * @deprecated use `Dict\flip` instead.
  *
- * @see Dict\flip
+ * @see Dict\flip()
  */
 function flip(array $array): array
 {
