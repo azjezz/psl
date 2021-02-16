@@ -9,6 +9,10 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
 use function ctype_digit;
+use function is_float;
+use function is_int;
+use function is_object;
+use function is_string;
 
 /**
  * @extends Type\Type<float>
@@ -17,7 +21,15 @@ use function ctype_digit;
  */
 final class FloatType extends Type\Type
 {
-    private const TYPE = 'float';
+    /**
+     * @param mixed $value
+     *
+     * @psalm-assert-if-true float $value
+     */
+    public function matches($value): bool
+    {
+        return is_float($value);
+    }
 
     /**
      * @psalm-param mixed $value
@@ -28,15 +40,15 @@ final class FloatType extends Type\Type
      */
     public function coerce($value): float
     {
-        if (Type\is_float($value)) {
+        if (is_float($value)) {
             return $value;
         }
 
-        if (Type\is_int($value)) {
+        if (is_int($value)) {
             return $value;
         }
 
-        if (Type\is_string($value) || (Type\is_object($value) && method_exists($value, '__toString'))) {
+        if (is_string($value) || (is_object($value) && method_exists($value, '__toString'))) {
             $str = (string) $value;
             if ('' === $str) {
                 throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
@@ -65,7 +77,7 @@ final class FloatType extends Type\Type
      */
     public function assert($value): float
     {
-        if (Type\is_float($value)) {
+        if (is_float($value)) {
             return $value;
         }
 

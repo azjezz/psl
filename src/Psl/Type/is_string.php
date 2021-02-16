@@ -14,6 +14,8 @@ use function is_string as php_is_string;
  * @psalm-assert-if-true string $var
  *
  * @psalm-pure
+ *
+ * @deprecated use `Type\string()->matches($value)` instead.
  */
 function is_string($var): bool
 {

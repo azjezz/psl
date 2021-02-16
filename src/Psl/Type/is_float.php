@@ -14,6 +14,8 @@ use function is_float as php_is_float;
  * @psalm-assert-if-true float $var
  *
  * @psalm-pure
+ *
+ * @deprecated use `Type\float()->matches($value)` instead.
  */
 function is_float($var): bool
 {

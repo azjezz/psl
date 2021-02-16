@@ -9,9 +9,9 @@ namespace Psl\Type;
  *
  * @psalm-param class-string<T> $classname
  *
- * @psalm-return Type<T>
+ * @psalm-return TypeInterface<T>
  */
-function object(string $classname): Type
+function object(string $classname): TypeInterface
 {
     return new Internal\ObjectType($classname);
 }

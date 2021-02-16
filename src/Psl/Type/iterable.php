@@ -8,12 +8,12 @@ namespace Psl\Type;
  * @template Tk
  * @template Tv
  *
- * @psalm-param Type<Tk> $key_type_spec
- * @psalm-param Type<Tv> $value_type_spec
+ * @psalm-param TypeInterface<Tk> $key_type_spec
+ * @psalm-param TypeInterface<Tv> $value_type_spec
  *
- * @psalm-return Type<iterable<Tk, Tv>>
+ * @psalm-return TypeInterface<iterable<Tk, Tv>>
  */
-function iterable(Type $key_type_spec, Type $value_type_spec): Type
+function iterable(TypeInterface $key_type_spec, TypeInterface $value_type_spec): TypeInterface
 {
     return new Internal\IterableType($key_type_spec, $value_type_spec);
 }

@@ -5,38 +5,49 @@ declare(strict_types=1);
 namespace Psl\Type;
 
 use Psl\Type\Exception\AssertException;
-use Psl\Type\Exception\CoercionException;
-use Psl\Type\Internal\TypeTraceTrait;
+use Psl\Type\Exception\TypeTrace;
 
 /**
  * @template T
+ *
+ * @implements TypeInterface<T>
  */
-abstract class Type
+abstract class Type implements TypeInterface
 {
-    use TypeTraceTrait;
+    private ?TypeTrace $trace = null;
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
-     * @psalm-return T
-     *
-     * @throws CoercionException
+     * @psalm-assert-if-true T $value
      */
-    abstract public function coerce($value);
+    public function matches($value): bool
+    {
+        try {
+            $this->assert($value);
+
+            return true;
+        } catch (AssertException $_e) {
+            return false;
+        }
+    }
+
+    protected function getTrace(): TypeTrace
+    {
+        if (null === $this->trace) {
+            $this->trace = new TypeTrace();
+        }
+
+        return $this->trace;
+    }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return T
-     *
-     * @psalm-assert T $value
-     *
-     * @throws AssertException
+     * @return TypeInterface<T>
      */
-    abstract public function assert($value);
-
-    /**
-     * Returns a string representation of the type.
-     */
-    abstract public function toString(): string;
+    public function withTrace(TypeTrace $trace): TypeInterface
+    {
+        $new        = clone $this;
+        $new->trace = $trace;
+        return $new;
+    }
 }

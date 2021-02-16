@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl\Type;
 
 /**
- * @psalm-return Type<null>
+ * @psalm-return TypeInterface<null>
  */
-function null(): Type
+function null(): TypeInterface
 {
     return new Internal\NullType();
 }

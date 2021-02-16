@@ -9,6 +9,8 @@ use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
+use function is_resource;
+
 /**
  * @extends Type\Type<resource>
  *
@@ -32,7 +34,7 @@ final class ResourceType extends Type\Type
      */
     public function coerce($value)
     {
-        if (Type\is_resource($value)) {
+        if (is_resource($value)) {
             $kind = $this->kind;
             if (null === $kind) {
                 return $value;
@@ -57,7 +59,7 @@ final class ResourceType extends Type\Type
      */
     public function assert($value)
     {
-        if (Type\is_resource($value)) {
+        if (is_resource($value)) {
             $kind = $this->kind;
             if (null === $kind) {
                 return $value;
@@ -73,7 +75,7 @@ final class ResourceType extends Type\Type
 
     public function toString(): string
     {
-        if (Type\is_null($this->kind)) {
+        if (null === $this->kind) {
             return 'resource';
         }
 

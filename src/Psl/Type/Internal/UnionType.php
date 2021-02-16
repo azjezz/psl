@@ -5,40 +5,50 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Psl\Str;
+use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
-use Psl\Type\Type;
 
 /**
  * @template Tl
  * @template Tr
  *
- * @extends Type<Tl|Tr>
+ * @extends Type\Type<Tl|Tr>
  *
  * @internal
  */
-class UnionType extends Type
+class UnionType extends Type\Type
 {
     /**
-     * @psalm-var Type<Tl>
+     * @psalm-var Type\TypeInterface<Tl>
      */
-    private Type $left_type_spec;
+    private Type\TypeInterface $left_type;
 
     /**
-     * @psalm-var Type<Tr>
+     * @psalm-var Type\TypeInterface<Tr>
      */
-    private Type $right_type_spec;
+    private Type\TypeInterface $right_type;
 
     /**
-     * @psalm-param Type<Tl> $left_type_spec
-     * @psalm-param Type<Tr> $right_type_spec
+     * @psalm-param Type\TypeInterface<Tl> $left_type
+     * @psalm-param Type\TypeInterface<Tr> $right_type
      */
     public function __construct(
-        Type $left_type_spec,
-        Type $right_type_spec
+        Type\TypeInterface $left_type,
+        Type\TypeInterface $right_type
     ) {
-        $this->left_type_spec  = $left_type_spec;
-        $this->right_type_spec = $right_type_spec;
+        $this->left_type  = $left_type;
+        $this->right_type = $right_type;
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @psalm-assert-if-true Tl|Tr $value
+     */
+    public function matches($value): bool
+    {
+        return $this->left_type->matches($value) || $this->right_type->matches($value);
     }
 
     /**
@@ -57,13 +67,13 @@ class UnionType extends Type
         }
 
         try {
-            return $this->left_type_spec->coerce($value);
+            return $this->left_type->coerce($value);
         } catch (CoercionException $_exception) {
             // ignore
         }
 
         try {
-            return $this->right_type_spec->coerce($value);
+            return $this->right_type->coerce($value);
         } catch (CoercionException $_exception) {
             // ignore
         }
@@ -83,13 +93,13 @@ class UnionType extends Type
     public function assert($value)
     {
         try {
-            return $this->left_type_spec->assert($value);
+            return $this->left_type->assert($value);
         } catch (AssertException $_exception) {
             // ignore
         }
 
         try {
-            return $this->right_type_spec->assert($value);
+            return $this->right_type->assert($value);
         } catch (AssertException $_exception) {
             // ignore
         }
@@ -99,8 +109,8 @@ class UnionType extends Type
 
     public function toString(): string
     {
-        $left  = $this->left_type_spec->toString();
-        $right = $this->right_type_spec->toString();
+        $left  = $this->left_type->toString();
+        $right = $this->right_type->toString();
         /** @psalm-suppress MissingThrowsDocblock - offset is within bound. */
         if (Str\contains($left, '&')) {
             $left = Str\format('(%s)', $left);

@@ -455,11 +455,10 @@ final class Loader
         'Psl\Observer\ObserverInterface',
         'Psl\Result\ResultInterface',
         'Psl\Encoding\Exception\ExceptionInterface',
+        'Psl\Type\TypeInterface',
     ];
 
-    public const TRAITS = [
-        'Psl\Type\Internal\TypeTraceTrait',
-    ];
+    public const TRAITS = [];
 
     public const CLASSES = [
         'Psl\Exception\InvariantViolationException',

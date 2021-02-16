@@ -14,6 +14,8 @@ use function is_int as php_is_int;
  * @psalm-assert-if-true int $var
  *
  * @psalm-pure
+ *
+ * @deprecated use `Type\int()->matches($value)` instead.
  */
 function is_int($var): bool
 {

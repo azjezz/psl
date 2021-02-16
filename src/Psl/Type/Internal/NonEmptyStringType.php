@@ -9,6 +9,10 @@ use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
+use function is_int;
+use function is_object;
+use function is_string;
+
 /**
  * @extends Type\Type<non-empty-string>
  *
@@ -16,6 +20,16 @@ use Psl\Type\Exception\CoercionException;
  */
 final class NonEmptyStringType extends Type\Type
 {
+    /**
+     * @param mixed $value
+     *
+     * @psalm-assert-if-true non-empty-string $value
+     */
+    public function matches($value): bool
+    {
+        return is_string($value) && !Str\is_empty($value);
+    }
+
     /**
      * @psalm-param mixed $value
      *
@@ -25,11 +39,11 @@ final class NonEmptyStringType extends Type\Type
      */
     public function coerce($value): string
     {
-        if (Type\is_string($value) && !Str\is_empty($value)) {
+        if (is_string($value) && !Str\is_empty($value)) {
             return $value;
         }
 
-        if (Type\is_int($value)) {
+        if (is_int($value)) {
             $str = (string) $value;
             if (!Str\is_empty($str)) {
                 /** @var non-empty-string $str */
@@ -37,7 +51,7 @@ final class NonEmptyStringType extends Type\Type
             }
         }
 
-        if (Type\is_object($value) && method_exists($value, '__toString')) {
+        if (is_object($value) && method_exists($value, '__toString')) {
             $str = (string)$value;
             if (!Str\is_empty($str)) {
                 return $str;
@@ -58,7 +72,7 @@ final class NonEmptyStringType extends Type\Type
      */
     public function assert($value): string
     {
-        if (Type\is_string($value) && !Str\is_empty($value)) {
+        if (is_string($value) && !Str\is_empty($value)) {
             return $value;
         }
 
