@@ -52,7 +52,7 @@ $ composer require azjezz/psl
 
 PSL comes with a [Psalm](https://psalm.dev/) plugin, that improves return type for PSL functions that psalm cannot infer from source code.
 
-To enable the Psalm plugin, add the `Psl\Internal\Psalm\Plugin` class to your psalm configuration file plugins list as follows:
+To enable the Psalm plugin, add the `Psl\Integration\Psalm\Plugin` class to your psalm configuration file plugins list as follows:
 
 ```xml
 <psalm>
