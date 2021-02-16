@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\DataStructure;
 
 use Psl;
-use Psl\Arr;
 use Psl\Dict;
 use Psl\Iter;
 use Psl\Vec;
@@ -42,7 +41,7 @@ final class Queue implements QueueInterface
      */
     public function peek()
     {
-        return Arr\first($this->queue);
+        return Iter\first($this->queue);
     }
 
     /**
@@ -72,7 +71,7 @@ final class Queue implements QueueInterface
     {
         Psl\invariant(0 !== $this->count(), 'Cannot dequeue a node from an empty Queue.');
 
-        $node = Arr\firstx($this->queue);
+        $node = $this->queue[0];
         $this->queue = Vec\values(Dict\drop($this->queue, 1));
 
         return $node;

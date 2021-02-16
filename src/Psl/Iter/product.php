@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
-use Psl\Arr;
 use Psl\Dict;
 use Psl\Vec;
 
@@ -51,8 +50,8 @@ function product(iterable ...$iterables): Iterator
 
         /** @psalm-var list<Tk|null> $keyTuple */
         /** @psalm-var list<Tv|null> $valueTuple */
-        $keyTuple   = Arr\fill(null, 0, $numIterators);
-        $valueTuple = Arr\fill(null, 0, $numIterators);
+        $keyTuple   = Vec\fill($numIterators, null);
+        $valueTuple = Vec\fill($numIterators, null);
         $i          = -1;
         while (true) {
             while (++$i < $numIterators - 1) {

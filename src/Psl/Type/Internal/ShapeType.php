@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
-use Psl\Arr;
+use Psl\Iter;
 use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
@@ -59,7 +59,7 @@ final class ShapeType extends Type\Type
                 $trace =  $this->getTrace()->withFrame('array{' . $element_name . ': _}');
                 /** @var Type\Type<Tv> $type */
                 $type = $type->withTrace($trace);
-                if (Arr\contains_key($array, $element)) {
+                if (Iter\contains_key($array, $element)) {
                     $result[$element] = $type->coerce($array[$element]);
 
                     continue;
@@ -100,7 +100,7 @@ final class ShapeType extends Type\Type
                 $trace =  $this->getTrace()->withFrame('array{' . $element_name . ': _}');
                 /** @var Type\Type<Tv> $type */
                 $type = $type->withTrace($trace);
-                if (Arr\contains_key($value, $element)) {
+                if (Iter\contains_key($value, $element)) {
                     $result[$element] = $type->assert($value[$element]);
 
                     continue;

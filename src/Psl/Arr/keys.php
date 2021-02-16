@@ -16,7 +16,7 @@ use Psl\Vec;
  *
  * @psalm-return list<Tk>
  *
- * @deprecated since 1.2, use Vec\keys instead.
+ * @deprecated use `Vec\keys` instead.
  *
  * @see Vec\keys()
  */

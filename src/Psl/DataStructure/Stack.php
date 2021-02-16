@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\DataStructure;
 
 use Psl;
-use Psl\Arr;
 use Psl\Dict;
 use Psl\Iter;
 use Psl\Vec;
@@ -42,7 +41,7 @@ final class Stack implements StackInterface
      */
     public function peek()
     {
-        return Arr\last($this->items);
+        return Iter\last($this->items);
     }
 
     /**
@@ -70,9 +69,9 @@ final class Stack implements StackInterface
      */
     public function pop()
     {
-        Psl\invariant(0 !== $this->count(), 'Cannot pop an item from an empty Stack.');
+        Psl\invariant(0 !== ($i = $this->count()), 'Cannot pop an item from an empty Stack.');
 
-        $tail = Arr\lastx($this->items);
+        $tail = $this->items[$i - 1];
         $this->items = Vec\values(Dict\take($this->items, $this->count() - 1));
 
         return $tail;

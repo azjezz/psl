@@ -30,7 +30,7 @@ final class RandomTest extends TestCase
     public function testRandomThrowsWhenTheGivenArrayIsEmpty(): void
     {
         $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected a non-empty-array.');
+        $this->expectExceptionMessage('Expected a non-empty iterable.');
 
         Arr\random([]);
     }

@@ -6,7 +6,7 @@ namespace Psl\Hash;
 
 use HashContext;
 use Psl;
-use Psl\Arr;
+use Psl\Iter;
 use Psl\Str;
 
 use function hash_final;
@@ -46,8 +46,9 @@ final class Context
      */
     public static function forAlgorithm(string $algorithm): Context
     {
+        /** @psalm-suppress ImpureFunctionCall */
         Psl\invariant(
-            Arr\contains(algorithms(), $algorithm),
+            Iter\contains(algorithms(), $algorithm),
             'Expected a valid hashing algorithm, "%s" given.',
             $algorithm,
         );
@@ -65,8 +66,9 @@ final class Context
      */
     public static function hmac(string $algorithm, string $key): Context
     {
+        /** @psalm-suppress ImpureFunctionCall */
         Psl\invariant(
-            Arr\contains(Hmac\algorithms(), $algorithm),
+            Iter\contains(Hmac\algorithms(), $algorithm),
             'Expected a hashing algorithms suitable for HMAC, "%s" given.',
             $algorithm
         );

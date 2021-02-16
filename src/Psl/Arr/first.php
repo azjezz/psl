@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Arr;
 
+use Psl\Iter;
+
 /**
  * Get the first value of an array, If the array is empty, null will be returned.
  *
@@ -15,12 +17,22 @@ namespace Psl\Arr;
  * @psalm-return Tv|null
  *
  * @psalm-pure
+ *
+ * @deprecated use `Iter\first()` instead.
+ *
+ * @see Iter\first()
  */
 function first(array $array)
 {
-    /** @psalm-var Tk|null $first */
+    /**
+     * @psalm-var Tk|null $first
+     * @psalm-suppress DeprecatedFunction
+     */
     $first = first_key($array);
 
-    /** @psalm-var Tv|null */
-    return null !== $first ? at($array, $first) : null;
+    if (null === $first) {
+        return null;
+    }
+
+    return $array[$first];
 }

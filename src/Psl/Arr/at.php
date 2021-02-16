@@ -21,9 +21,12 @@ use Psl;
  * @psalm-pure
  *
  * @throws Psl\Exception\InvariantViolationException If $key is out-of-bounds.
+ *
+ * @deprecated use `$array[$key]` instead.
  */
 function at(array $array, $key)
 {
+    /** @psalm-suppress DeprecatedFunction */
     Psl\invariant(contains_key($array, $key), 'Key (%s) is out-of-bounds.', $key);
 
     /** @psalm-var Tv */

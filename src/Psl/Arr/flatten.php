@@ -29,7 +29,7 @@ use Psl\Dict;
  *
  * @deprecated use `Dict\flatten` instead.
  *
- * @see Dict\flatten
+ * @see Dict\flatten()
  */
 function flatten(iterable $iterables): array
 {

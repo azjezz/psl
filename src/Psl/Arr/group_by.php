@@ -37,9 +37,9 @@ use Psl\Dict;
  *
  * @psalm-return array<Tk, list<Tv>>
  *
- * @deprecated use Dict\group_by
+ * @deprecated use `Dict\group_by` instead.
  *
- * @see Dict\group_by
+ * @see Dict\group_by()
  */
 function group_by(iterable $values, callable $key_func): array
 {
