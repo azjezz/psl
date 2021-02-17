@@ -48,7 +48,10 @@ function split(string $string, string $delimiter, ?int $limit = null): array
         $result = explode($delimiter, $string, $limit);
     }
 
-    Psl\invariant(Type\is_array($result), 'Unexpected error');
-
-    return $result;
+    /**
+     * @psalm-suppress MissingThrowsDocblock - should not throw
+     * @psalm-suppress ImpureFunctionCall - see https://github.com/azjezz/psl/issues/130
+     * @psalm-suppress ImpureMethodCall - see https://github.com/azjezz/psl/issues/130
+     */
+    return Type\vec(Type\string())->coerce($result);
 }
