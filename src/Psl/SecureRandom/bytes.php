@@ -29,7 +29,7 @@ function bytes(int $length): string
         // @codeCoverageIgnoreStart
     } catch (PHPException $e) {
         $code = $e->getCode();
-        if (Type\is_string($code)) {
+        if (Type\string()->matches($code)) {
             $code = Str\to_int($code) ?? 0;
         }
 

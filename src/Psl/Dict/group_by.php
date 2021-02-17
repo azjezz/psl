@@ -48,7 +48,7 @@ function group_by(iterable $values, callable $key_func): array
         }
 
         Psl\invariant(
-            Type\is_arraykey($key),
+            Type\array_key()->matches($key),
             'Expected $key_func to return a value of type array-key, value of type (%s) returned.',
             gettype($key)
         );
