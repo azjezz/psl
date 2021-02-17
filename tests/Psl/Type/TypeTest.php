@@ -79,6 +79,26 @@ abstract class TypeTest extends TestCase
 
     /**
      * @psalm-param mixed $value
+     *
+     * @dataProvider getValidValues
+     */
+    final public function testMatches($value): void
+    {
+       static::assertTrue($this->getType()->matches($value));
+    }
+
+    /**
+     * @psalm-param mixed $value
+     *
+     * @dataProvider getInvalidValues
+     */
+    final public function testFalseMatches($value): void
+    {
+        static::assertFalse($this->getType()->matches($value));
+    }
+
+    /**
+     * @psalm-param mixed $value
      * @psalm-param T     $expected
      *
      * @dataProvider getValidCoercions
