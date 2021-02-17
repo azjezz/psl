@@ -24,6 +24,11 @@ final class VecTypeTest extends TypeTest
     public function getValidCoercions(): iterable
     {
         yield [
+            [],
+            []
+        ];
+
+        yield [
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         ];
@@ -61,6 +66,11 @@ final class VecTypeTest extends TypeTest
         yield [
             Dict\map(Vec\range(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        ];
+
+        yield [
+            ['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5],
+            [1, 2, 3, 4, 5]
         ];
     }
 

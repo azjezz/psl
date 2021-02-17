@@ -85,7 +85,7 @@ abstract class TypeTest extends TestCase
      */
     public function testMatches($value): void
     {
-       static::assertTrue($this->getType()->matches($value));
+        static::assertTrue($this->getType()->matches($value));
     }
 
     /**
