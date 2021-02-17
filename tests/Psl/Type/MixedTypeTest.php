@@ -78,4 +78,14 @@ final class MixedTypeTest extends TypeTest
     {
         $this->addToAssertionCount(1);
     }
+
+    /**
+     * @psalm-param mixed $value
+     *
+     * @dataProvider getInvalidValues
+     */
+    public function testInvalidMatches($value): void
+    {
+        $this->addToAssertionCount(1);
+    }
 }
