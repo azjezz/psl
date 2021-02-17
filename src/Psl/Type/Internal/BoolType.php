@@ -8,6 +8,8 @@ use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
+use function is_bool;
+
 /**
  * @extends Type\Type<bool>
  *
@@ -16,11 +18,21 @@ use Psl\Type\Exception\CoercionException;
 final class BoolType extends Type\Type
 {
     /**
+     * @param mixed $value
+     *
+     * @psalm-assert-if-true bool $value
+     */
+    public function matches($value): bool
+    {
+        return is_bool($value);
+    }
+
+    /**
      * @throws CoercionException
      */
     public function coerce($value): bool
     {
-        if (Type\is_bool($value)) {
+        if (is_bool($value)) {
             return $value;
         }
 
@@ -42,7 +54,7 @@ final class BoolType extends Type\Type
      */
     public function assert($value): bool
     {
-        if (Type\is_bool($value)) {
+        if (is_bool($value)) {
             return $value;
         }
 

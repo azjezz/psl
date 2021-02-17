@@ -9,6 +9,7 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 use Psl\Type\Exception\Exception;
 use Psl\Type\Type;
+use Psl\Type\TypeInterface;
 
 /**
  * @template Tl
@@ -21,25 +22,35 @@ use Psl\Type\Type;
 final class IntersectionType extends Type
 {
     /**
-     * @psalm-var Type<Tl>
+     * @psalm-var TypeInterface<Tl>
      */
-    private Type $left_type_spec;
+    private TypeInterface $left_type;
 
     /**
-     * @psalm-var Type<Tr>
+     * @psalm-var TypeInterface<Tr>
      */
-    private Type $right_type_spec;
+    private TypeInterface $right_type;
 
     /**
-     * @psalm-param Type<Tl> $left_type_spec
-     * @psalm-param Type<Tr> $right_type_spec
+     * @psalm-param TypeInterface<Tl> $left_type
+     * @psalm-param TypeInterface<Tr> $right_type
      */
     public function __construct(
-        Type $left_type_spec,
-        Type $right_type_spec
+        TypeInterface $left_type,
+        TypeInterface $right_type
     ) {
-        $this->left_type_spec  = $left_type_spec;
-        $this->right_type_spec = $right_type_spec;
+        $this->left_type  = $left_type;
+        $this->right_type = $right_type;
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @psalm-assert-if-true Tl&Tr $value
+     */
+    public function matches($value): bool
+    {
+        return $this->right_type->matches($value) && $this->left_type->matches($value);
     }
 
     /**
@@ -59,18 +70,18 @@ final class IntersectionType extends Type
 
         try {
             /** @psalm-var Tl $value */
-            $value = $this->left_type_spec->coerce($value);
+            $value = $this->left_type->coerce($value);
             /** @psalm-var Tl&Tr */
-            return $this->right_type_spec->assert($value);
+            return $this->right_type->assert($value);
         } catch (Exception $_exception) {
             // ignore
         }
 
         try {
             /** @psalm-var Tr $value */
-            $value = $this->right_type_spec->coerce($value);
+            $value = $this->right_type->coerce($value);
             /** @psalm-var Tr&Tl */
-            return $this->left_type_spec->assert($value);
+            return $this->left_type->assert($value);
         } catch (Exception $_exception) {
             // ignore
         }
@@ -91,9 +102,9 @@ final class IntersectionType extends Type
     {
         try {
             /** @psalm-var Tl $value */
-            $value = $this->left_type_spec->assert($value);
+            $value = $this->left_type->assert($value);
             /** @psalm-var Tl&Tr */
-            return $this->right_type_spec->assert($value);
+            return $this->right_type->assert($value);
         } catch (AssertException $_exception) {
             throw AssertException::withValue($value, $this->toString(), $this->getTrace());
         }
@@ -101,8 +112,8 @@ final class IntersectionType extends Type
 
     public function toString(): string
     {
-        $left  = $this->left_type_spec->toString();
-        $right = $this->right_type_spec->toString();
+        $left  = $this->left_type->toString();
+        $right = $this->right_type->toString();
         /** @psalm-suppress MissingThrowsDocblock - offset is within bound. */
         if (Str\contains($left, '|')) {
             $left = Str\format('(%s)', $left);

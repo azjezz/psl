@@ -12,8 +12,14 @@ namespace Psl\Type;
  * @psalm-assert-if-true array-key $key
  *
  * @psalm-pure
+ *
+ * @deprecated use `Type\array_key()->matches($value)` instead.
  */
 function is_arraykey($key): bool
 {
-    return is_string($key) || is_int($key);
+    /**
+     * @psalm-suppress ImpureFunctionCall
+     * @psalm-suppress ImpureMethodCall
+     */
+    return array_key()->matches($key);
 }

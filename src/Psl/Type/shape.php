@@ -8,11 +8,11 @@ namespace Psl\Type;
  * @template Tk of array-key
  * @template Tv
  *
- * @param array<Tk, Type<Tv>> $elements
+ * @param array<Tk, TypeInterface<Tv>> $elements
  *
- * @psalm-return Type<array<Tk, Tv>>
+ * @psalm-return TypeInterface<array<Tk, Tv>>
  */
-function shape(array $elements): Type
+function shape(array $elements): TypeInterface
 {
     return new Internal\ShapeType($elements);
 }

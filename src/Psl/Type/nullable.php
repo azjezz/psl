@@ -7,11 +7,11 @@ namespace Psl\Type;
 /**
  * @template T
  *
- * @psalm-param Type<T> $spec
+ * @psalm-param TypeInterface<T> $spec
  *
- * @psalm-return Type<T|null>
+ * @psalm-return TypeInterface<T|null>
  */
-function nullable(Type $spec): Type
+function nullable(TypeInterface $spec): TypeInterface
 {
     return new Internal\UnionType($spec, null());
 }

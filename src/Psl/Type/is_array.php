@@ -14,6 +14,8 @@ use function is_array as php_is_array;
  * @psalm-assert-if-true array<array-key,mixed> $var
  *
  * @psalm-pure
+ *
+ * @deprecated use `Type\dict($kt, $vt)->matches($value)` instead.
  */
 function is_array($var): bool
 {

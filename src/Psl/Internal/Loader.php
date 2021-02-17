@@ -372,6 +372,8 @@ final class Loader
         'Psl\Type\scalar',
         'Psl\Type\shape',
         'Psl\Type\union',
+        'Psl\Type\vec',
+        'Psl\Type\dict',
         'Psl\Type\is_array',
         'Psl\Type\is_arraykey',
         'Psl\Type\is_bool',
@@ -455,11 +457,10 @@ final class Loader
         'Psl\Observer\ObserverInterface',
         'Psl\Result\ResultInterface',
         'Psl\Encoding\Exception\ExceptionInterface',
+        'Psl\Type\TypeInterface',
     ];
 
-    public const TRAITS = [
-        'Psl\Type\Internal\TypeTraceTrait',
-    ];
+    public const TRAITS = [];
 
     public const CLASSES = [
         'Psl\Exception\InvariantViolationException',
@@ -492,6 +493,8 @@ final class Loader
         'Psl\Type\Internal\ShapeType',
         'Psl\Type\Internal\NonEmptyStringType',
         'Psl\Type\Internal\UnionType',
+        'Psl\Type\Internal\VecType',
+        'Psl\Type\Internal\DictType',
         'Psl\Type\Exception\TypeTrace',
         'Psl\Type\Exception\AssertException',
         'Psl\Type\Exception\CoercionException',

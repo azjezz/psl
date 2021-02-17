@@ -16,6 +16,8 @@ use function is_resource as php_is_resource;
  * @psalm-assert-if-true resource $var
  *
  * @psalm-pure
+ *
+ * @deprecated use `Type\resource($type)->matches($value)` instead.
  */
 function is_resource($var): bool
 {

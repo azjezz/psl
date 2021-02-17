@@ -12,6 +12,8 @@ namespace Psl\Type;
  * @psalm-assert-if-true null $var
  *
  * @psalm-pure
+ *
+ * @deprecated use `Type\null()->matches($value)` instead.
  */
 function is_null($var): bool
 {

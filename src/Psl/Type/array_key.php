@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl\Type;
 
 /**
- * @psalm-return Type<array-key>
+ * @psalm-return TypeInterface<array-key>
  */
-function array_key(): Type
+function array_key(): TypeInterface
 {
     return new Internal\ArrayKeyType();
 }

@@ -29,7 +29,7 @@ function flip(iterable $iterable): array
     $result = [];
     foreach ($iterable as $key => $value) {
         Psl\invariant(
-            Type\is_arraykey($value),
+            Type\array_key()->matches($value),
             'Expected all values to be of type array-key, value of type (%s) provided.',
             gettype($value)
         );

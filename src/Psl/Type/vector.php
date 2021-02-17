@@ -9,11 +9,11 @@ use Psl\Collection;
 /**
  * @template T
  *
- * @psalm-param Type<T> $value_type
+ * @psalm-param TypeInterface<T> $value_type
  *
- * @psalm-return Type<Collection\VectorInterface<T>>
+ * @psalm-return TypeInterface<Collection\VectorInterface<T>>
  */
-function vector(Type $value_type): Type
+function vector(TypeInterface $value_type): TypeInterface
 {
     return new Internal\VectorType($value_type);
 }

@@ -10,6 +10,9 @@ use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
+use function is_iterable;
+use function is_object;
+
 /**
  * @template T
  *
@@ -20,15 +23,15 @@ use Psl\Type\Exception\CoercionException;
 final class MutableVectorType extends Type\Type
 {
     /**
-     * @psalm-var Type\Type<T>
+     * @psalm-var Type\TypeInterface<T>
      */
-    private Type\Type $value_type;
+    private Type\TypeInterface $value_type;
 
     /**
-     * @psalm-param Type\Type<T> $value_type
+     * @psalm-param Type\TypeInterface<T> $value_type
      */
     public function __construct(
-        Type\Type $value_type
+        Type\TypeInterface $value_type
     ) {
         $this->value_type = $value_type;
     }
@@ -42,7 +45,7 @@ final class MutableVectorType extends Type\Type
      */
     public function coerce($value): Collection\MutableVectorInterface
     {
-        if (Type\is_iterable($value)) {
+        if (is_iterable($value)) {
             $value_trace = $this->getTrace()->withFrame(
                 Str\format('%s<%s>', Collection\MutableVectorInterface::class, $this->value_type->toString())
             );
@@ -80,7 +83,7 @@ final class MutableVectorType extends Type\Type
      */
     public function assert($value): Collection\MutableVectorInterface
     {
-        if (Type\is_object($value) && Type\is_instanceof($value, Collection\MutableVectorInterface::class)) {
+        if (is_object($value) && $value instanceof Collection\MutableVectorInterface) {
             $value_trace = $this->getTrace()->withFrame(
                 Str\format('%s<%s>', Collection\MutableVectorInterface::class, $this->value_type->toString())
             );

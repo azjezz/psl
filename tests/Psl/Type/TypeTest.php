@@ -9,6 +9,7 @@ use Psl\Dict;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 use Psl\Type\Type;
+use Psl\Type\TypeInterface;
 use Psl\Vec;
 
 /**
@@ -17,9 +18,9 @@ use Psl\Vec;
 abstract class TypeTest extends TestCase
 {
     /**
-     * @psalm-return Type<T>
+     * @psalm-return TypeInterface<T>
      */
-    abstract public function getType(): Type;
+    abstract public function getType(): TypeInterface;
 
     /**
      * @psalm-return iterable<array{0: mixed, 1: T}>
@@ -75,6 +76,26 @@ abstract class TypeTest extends TestCase
         }
 
         return $rows;
+    }
+
+    /**
+     * @psalm-param mixed $value
+     *
+     * @dataProvider getValidValues
+     */
+    public function testMatches($value): void
+    {
+        static::assertTrue($this->getType()->matches($value));
+    }
+
+    /**
+     * @psalm-param mixed $value
+     *
+     * @dataProvider getInvalidValues
+     */
+    public function testInvalidMatches($value): void
+    {
+        static::assertFalse($this->getType()->matches($value));
     }
 
     /**

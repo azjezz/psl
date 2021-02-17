@@ -32,6 +32,16 @@ final class ObjectType extends Type
     }
 
     /**
+     * @param mixed $value
+     *
+     * @psalm-assert-if-true T $value
+     */
+    public function matches($value): bool
+    {
+        return $value instanceof $this->classname;
+    }
+
+    /**
      * @psalm-param mixed $value
      *
      * @psalm-return T

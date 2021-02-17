@@ -11,6 +11,9 @@ use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
+use function is_iterable;
+use function is_object;
+
 /**
  * @template Tk of array-key
  * @template Tv
@@ -22,22 +25,22 @@ use Psl\Type\Exception\CoercionException;
 final class MapType extends Type\Type
 {
     /**
-     * @psalm-var Type\Type<Tk>
+     * @psalm-var Type\TypeInterface<Tk>
      */
-    private Type\Type $key_type;
+    private Type\TypeInterface $key_type;
 
     /**
-     * @psalm-var Type\Type<Tv>
+     * @psalm-var Type\TypeInterface<Tv>
      */
-    private Type\Type $value_type;
+    private Type\TypeInterface $value_type;
 
     /**
-     * @psalm-param Type\Type<Tk> $key_type
-     * @psalm-param Type\Type<Tv> $value_type
+     * @psalm-param Type\TypeInterface<Tk> $key_type
+     * @psalm-param Type\TypeInterface<Tv> $value_type
      */
     public function __construct(
-        Type\Type $key_type,
-        Type\Type $value_type
+        Type\TypeInterface $key_type,
+        Type\TypeInterface $value_type
     ) {
         $this->key_type = $key_type;
         $this->value_type = $value_type;
@@ -52,7 +55,7 @@ final class MapType extends Type\Type
      */
     public function coerce($value): Collection\MapInterface
     {
-        if (Type\is_iterable($value)) {
+        if (is_iterable($value)) {
             $key_trace = $this->getTrace()->withFrame(
                 Str\format('%s<%s, _>', Collection\MapInterface::class, $this->key_type->toString())
             );
@@ -81,11 +84,8 @@ final class MapType extends Type\Type
                 ];
             }
 
-            /** @psalm-var array<Tk, Tv> $dict */
-            $dict = Dict\from_entries($entries);
-
             /** @var Collection\Map<Tk, Tv> */
-            return new Collection\Map($dict);
+            return new Collection\Map(Dict\from_entries($entries));
         }
 
         throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
@@ -102,7 +102,7 @@ final class MapType extends Type\Type
      */
     public function assert($value): Collection\MapInterface
     {
-        if (Type\is_object($value) && Type\is_instanceof($value, Collection\MapInterface::class)) {
+        if (is_object($value) && $value instanceof Collection\MapInterface) {
             $key_trace = $this->getTrace()->withFrame(
                 Str\format('%s<%s, _>', Collection\MapInterface::class, $this->key_type->toString())
             );
@@ -132,11 +132,8 @@ final class MapType extends Type\Type
                 ];
             }
 
-            /** @psalm-var array<Tk, Tv> $dict */
-            $dict = Dict\from_entries($entries);
-
             /** @var Collection\Map<Tk, Tv> */
-            return new Collection\Map($dict);
+            return new Collection\Map(Dict\from_entries($entries));
         }
 
         throw AssertException::withValue($value, $this->toString(), $this->getTrace());

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl\Type;
 
 /**
- * @psalm-return Type<string|bool|int|float>
+ * @psalm-return TypeInterface<string|bool|int|float>
  */
-function scalar(): Type
+function scalar(): TypeInterface
 {
     return new Internal\ScalarType();
 }
