@@ -8,8 +8,6 @@ use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
-use function is_null;
-
 /**
  * @extends Type\Type<null>
  *
@@ -34,7 +32,7 @@ final class NullType extends Type\Type
      */
     public function coerce($value)
     {
-        if (is_null($value)) {
+        if (null === $value) {
             return null;
         }
 
