@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
-use Psl\Collection;
 use Psl\Dict;
 use Psl\Str;
 use Psl\Type;
@@ -12,17 +11,16 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
 use function is_iterable;
-use function is_object;
 
 /**
  * @template Tk of array-key
  * @template Tv
  *
- * @extends Type\Type<Collection\MapInterface<Tk, Tv>>
+ * @extends Type\Type<array<Tk, Tv>>
  *
  * @internal
  */
-final class MapType extends Type\Type
+final class DictType extends Type\Type
 {
     /**
      * @psalm-var Type\TypeInterface<Tk>
@@ -42,37 +40,33 @@ final class MapType extends Type\Type
         Type\TypeInterface $key_type,
         Type\TypeInterface $value_type
     ) {
-        $this->key_type = $key_type;
+        $this->key_type   = $key_type;
         $this->value_type = $value_type;
     }
 
     /**
      * @psalm-param mixed $value
      *
-     * @psalm-return Collection\MapInterface<Tk, Tv>
+     * @psalm-return array<Tk, Tv>
      *
      * @throws CoercionException
      */
-    public function coerce($value): Collection\MapInterface
+    public function coerce($value): array
     {
         if (is_iterable($value)) {
-            $key_trace = $this->getTrace()->withFrame(
-                Str\format('%s<%s, _>', Collection\MapInterface::class, $this->key_type->toString())
-            );
+            $key_trace   = $this->getTrace()
+                ->withFrame(Str\format('array<%s, _>', $this->key_type->toString()));
+            $value_trace = $this->getTrace()
+                ->withFrame(Str\format('array<_, %s>', $this->value_type->toString()));
 
-            $value_trace = $this->getTrace()->withFrame(
-                Str\format('%s<_, %s>', Collection\MapInterface::class, $this->value_type->toString())
-            );
-
-            /** @psalm-var Type\Type<Tk> $key_type */
             $key_type = $this->key_type->withTrace($key_trace);
-            /** @psalm-var Type\Type<Tv> $value_type */
             $value_type = $this->value_type->withTrace($value_trace);
 
             /**
              * @psalm-var list<array{0: Tk, 1: Tv}> $entries
              */
             $entries = [];
+
             /**
              * @psalm-var Tk $k
              * @psalm-var Tv $v
@@ -84,8 +78,7 @@ final class MapType extends Type\Type
                 ];
             }
 
-            /** @var Collection\Map<Tk, Tv> */
-            return new Collection\Map(Dict\from_entries($entries));
+            return Dict\from_entries($entries);
         }
 
         throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
@@ -94,26 +87,21 @@ final class MapType extends Type\Type
     /**
      * @psalm-param mixed $value
      *
-     * @psalm-return Collection\MapInterface<Tk, Tv>
+     * @psalm-return array<Tk, Tv>
      *
-     * @psalm-assert Collection\MapInterface<Tk, Tv> $value
+     * @psalm-assert array<Tk, Tv> $value
      *
      * @throws AssertException
      */
-    public function assert($value): Collection\MapInterface
+    public function assert($value): array
     {
-        if (is_object($value) && $value instanceof Collection\MapInterface) {
-            $key_trace = $this->getTrace()->withFrame(
-                Str\format('%s<%s, _>', Collection\MapInterface::class, $this->key_type->toString())
-            );
+        if (is_iterable($value)) {
+            $key_trace   = $this->getTrace()
+                ->withFrame(Str\format('array<%s, _>', $this->key_type->toString()));
+            $value_trace = $this->getTrace()
+                ->withFrame(Str\format('array<_, %s>', $this->value_type->toString()));
 
-            $value_trace = $this->getTrace()->withFrame(
-                Str\format('%s<_, %s>', Collection\MapInterface::class, $this->value_type->toString())
-            );
-
-            /** @psalm-var Type\Type<Tk> $key_type */
             $key_type = $this->key_type->withTrace($key_trace);
-            /** @psalm-var Type\Type<Tv> $value_type */
             $value_type = $this->value_type->withTrace($value_trace);
 
             /**
@@ -132,8 +120,7 @@ final class MapType extends Type\Type
                 ];
             }
 
-            /** @var Collection\Map<Tk, Tv> */
-            return new Collection\Map(Dict\from_entries($entries));
+            return Dict\from_entries($entries);
         }
 
         throw AssertException::withValue($value, $this->toString(), $this->getTrace());
@@ -141,11 +128,6 @@ final class MapType extends Type\Type
 
     public function toString(): string
     {
-        return Str\format(
-            '%s<%s, %s>',
-            Collection\MapInterface::class,
-            $this->key_type->toString(),
-            $this->value_type->toString(),
-        );
+        return Str\format('array<%s, %s>', $this->key_type->toString(), $this->value_type->toString());
     }
 }
