@@ -82,7 +82,7 @@ abstract class TypeTest extends TestCase
      *
      * @dataProvider getValidValues
      */
-    final public function testMatches($value): void
+    public function testMatches($value): void
     {
        static::assertTrue($this->getType()->matches($value));
     }
@@ -92,7 +92,7 @@ abstract class TypeTest extends TestCase
      *
      * @dataProvider getInvalidValues
      */
-    final public function testFalseMatches($value): void
+    public function testInvalidMatches($value): void
     {
         static::assertFalse($this->getType()->matches($value));
     }
