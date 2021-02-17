@@ -9,6 +9,7 @@ use Psl\Dict;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 use Psl\Type\Type;
+use Psl\Type\TypeInterface;
 use Psl\Vec;
 
 /**
@@ -17,9 +18,9 @@ use Psl\Vec;
 abstract class TypeTest extends TestCase
 {
     /**
-     * @psalm-return Type<T>
+     * @psalm-return TypeInterface<T>
      */
-    abstract public function getType(): Type;
+    abstract public function getType(): TypeInterface;
 
     /**
      * @psalm-return iterable<array{0: mixed, 1: T}>

@@ -11,6 +11,7 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
 use function is_iterable;
+use function is_array;
 
 /**
  * @template Tk of array-key
@@ -95,7 +96,7 @@ final class DictType extends Type\Type
      */
     public function assert($value): array
     {
-        if (is_iterable($value)) {
+        if (is_array($value)) {
             $key_trace   = $this->getTrace()
                 ->withFrame(Str\format('array<%s, _>', $this->key_type->toString()));
             $value_trace = $this->getTrace()
