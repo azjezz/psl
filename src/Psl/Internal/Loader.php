@@ -136,6 +136,7 @@ final class Loader
         'Psl\Fun\when',
         'Psl\Internal\boolean',
         'Psl\Internal\type',
+        'Psl\Internal\suppress',
         'Psl\Internal\validate_offset',
         'Psl\Internal\validate_offset_lower_bound',
         'Psl\Internal\internal_encoding',
@@ -244,6 +245,12 @@ final class Loader
         'Psl\Math\tan',
         'Psl\Math\to_base',
         'Psl\Result\wrap',
+        'Psl\Regex\split',
+        'Psl\Regex\matches',
+        'Psl\Regex\replace',
+        'Psl\Regex\replace_every',
+        'Psl\Regex\Internal\get_prec_error',
+        'Psl\Regex\Internal\call_preg',
         'Psl\SecureRandom\bytes',
         'Psl\SecureRandom\float',
         'Psl\SecureRandom\int',
@@ -464,6 +471,8 @@ final class Loader
         'Psl\Result\ResultInterface',
         'Psl\Encoding\Exception\ExceptionInterface',
         'Psl\Type\TypeInterface',
+        'Psl\Type\Exception\ExceptionInterface',
+        'Psl\Regex\Exception\ExceptionInterface',
     ];
 
     public const TRAITS = [];
@@ -511,6 +520,7 @@ final class Loader
         'Psl\Hash\Context',
         'Psl\Encoding\Exception\IncorrectPaddingException',
         'Psl\Encoding\Exception\RangeException',
+        'Psl\Regex\Exception\InvalidPatternException',
     ];
 
     private const TYPE_CONSTANTS = 1;

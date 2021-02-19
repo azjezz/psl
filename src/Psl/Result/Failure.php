@@ -18,6 +18,8 @@ final class Failure implements ResultInterface
 {
     /**
      * @psalm-var Te
+     *
+     * @readonly
      */
     private Exception $exception;
 
@@ -33,6 +35,8 @@ final class Failure implements ResultInterface
      * Since this is a failed result wrapper, this always throws the exception thrown during the operation.
      *
      * @throws Exception
+     *
+     * @psalm-mutation-free
      */
     public function getResult(): void
     {
@@ -43,6 +47,8 @@ final class Failure implements ResultInterface
      * Since this is a failed result wrapper, this always returns the exception thrown during the operation.
      *
      * @psalm-return Te - The exception thrown during the operation.
+     *
+     * @psalm-mutation-free
      */
     public function getException(): Exception
     {
@@ -51,6 +57,8 @@ final class Failure implements ResultInterface
 
     /**
      * Since this is a failed result wrapper, this always returns `false`.
+     *
+     * @psalm-mutation-free
      */
     public function isSucceeded(): bool
     {
@@ -59,6 +67,8 @@ final class Failure implements ResultInterface
 
     /**
      * Since this is a failed result wrapper, this always returns `true`.
+     *
+     * @psalm-mutation-free
      */
     public function isFailed(): bool
     {
