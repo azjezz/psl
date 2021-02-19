@@ -2,31 +2,31 @@
 
 declare(strict_types=1);
 
-namespace Psl\Dict;
+namespace Psl\Vec;
 
 use Closure;
 
 /**
- * Returns a dict containing only the keys for which the given predicate
+ * Returns a vec containing only the values for which the given predicate
  * returns `true`.
  *
  * The default predicate is casting the key to boolean.
  *
  * Example:
  *
- *      Dict\filter_keys([0 => 'a', 1 => 'b'])
- *      => Dict(1 => 'b')
+ *      Vec\filter_keys([0 => 'a', 1 => 'b'])
+ *      => Vec('b')
  *
- *      Dict\filter_keys([0 => 'a', 1 => 'b', 2 => 'c'], fn(int $key): bool => $key <= 1);
- *      => Dict(0 => 'a', 1 => 'b')
+ *      Vec\filter_keys([0 => 'a', 1 => 'b', 2 => 'c'], fn(int $key): bool => $key <= 1);
+ *      => Vec('a', 'b')
  *
- * @psalm-template Tk of array-key
+ * @psalm-template Tk
  * @psalm-template Tv
  *
  * @psalm-param iterable<Tk, Tv>           $iterable
  * @psalm-param (callable(Tk): bool)|null  $predicate
  *
- * @psalm-return array<Tk, Tv>
+ * @psalm-return list<Tv>
  */
 function filter_keys(iterable $iterable, ?callable $predicate = null): array
 {
@@ -35,7 +35,7 @@ function filter_keys(iterable $iterable, ?callable $predicate = null): array
     $result    = [];
     foreach ($iterable as $k => $v) {
         if ($predicate($k)) {
-            $result[$k] = $v;
+            $result[] = $v;
         }
     }
 

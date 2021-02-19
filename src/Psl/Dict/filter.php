@@ -14,11 +14,11 @@ use Closure;
  *
  * Example:
  *
- *      Arr\filter(['', '0', 'a', 'b'])
- *      => Arr('a', 'b')
+ *      Dict\filter(['', '0', 'a', 'b'])
+ *      => Dict(2 => 'a', 3 => 'b')
  *
- *      Arr\filter(['foo', 'bar', 'baz', 'qux'], fn(string $value): bool => Str\contains($value, 'a'));
- *      => Arr('bar', 'baz')
+ *      Dict\filter(['foo', 'bar', 'baz', 'qux'], fn(string $value): bool => Str\contains($value, 'a'));
+ *      => Dict(1 => 'bar', 2 => 'baz')
  *
  * @psalm-template Tk of array-key
  * @psalm-template Tv

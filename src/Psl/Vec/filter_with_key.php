@@ -2,34 +2,34 @@
 
 declare(strict_types=1);
 
-namespace Psl\Dict;
+namespace Psl\Vec;
 
 use Psl;
 
 /**
- * Returns a dict containing only the keys and values for which the given predicate
+ * Returns a vec containing only the values for which the given predicate
  * returns `true`.
  *
- * The default predicate is casting both they key and the value to boolean.
+ * The default predicate is casting the value to boolean.
  *
  * Example:
  *
- *      Dict\filter_with_key(['a', '0', 'b', 'c'])
- *      => Dict(2 => 'b', 3 => 'c')
+ *      Vec\filter_with_key(['a', '0', 'b', 'c'])
+ *      => Vec('b', 'c')
  *
- *      Dict\filter_with_key(
+ *      Vec\filter_with_key(
  *          ['foo', 'bar', 'baz', 'qux'],
  *          fn(int $key, string $value): bool => $key > 1 && Str\contains($value, 'a')
  *      );
- *      => Dict(2 => 'baz')
+ *      => Vec('baz')
  *
- * @psalm-template Tk of array-key
+ * @psalm-template Tk
  * @psalm-template Tv
  *
  * @psalm-param iterable<Tk, Tv>                $iterable
  * @psalm-param (callable(Tk, Tv): bool)|null   $predicate
  *
- * @psalm-return array<Tk, Tv>
+ * @psalm-return list<Tv>
  */
 function filter_with_key(iterable $iterable, ?callable $predicate = null): array
 {
@@ -40,11 +40,10 @@ function filter_with_key(iterable $iterable, ?callable $predicate = null): array
          */
         static fn ($k, $v): bool => Psl\Internal\boolean($v);
 
-    /** @psalm-var array<Tk, Tv> $result */
     $result = [];
     foreach ($iterable as $k => $v) {
         if ($predicate($k, $v)) {
-            $result[$k] = $v;
+            $result[] = $v;
         }
     }
 
