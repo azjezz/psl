@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
+use Psl\Dict;
 
 /**
  * @psalm-template Tk
@@ -15,6 +16,10 @@ use Generator;
  * @psalm-param iterable<Tk, mixed> ...$rest
  *
  * @psalm-return Iterator<Tk, Tv>
+ *
+ * @deprecated use `Dict\diff_by_key` instead.
+ *
+ * @see Dict\diff_by_key()
  */
 function diff_by_key(iterable $first, iterable $second, iterable ...$rest): Iterator
 {
