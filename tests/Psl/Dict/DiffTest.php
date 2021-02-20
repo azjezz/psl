@@ -1,0 +1,36 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\Tests\Dict;
+
+use PHPUnit\Framework\TestCase;
+use Psl\Dict;
+use Psl\Vec;
+
+final class DiffTest extends TestCase
+{
+    /**
+     * @dataProvider provideData
+     */
+    public function testDiff(array $expected, iterable $first, iterable $second, iterable ...$rest): void
+    {
+        static::assertSame($expected, Dict\diff($first, $second, ...$rest));
+    }
+
+    public function provideData(): iterable
+    {
+        yield [[], [], [], []];
+        yield [[], [], [1, 2, 3]];
+        yield [[], [], [1, 2, 3], []];
+        yield [[], [], [1, 2, 3], [], [4, 5]];
+
+        yield [[1, 2], [1, 2], [], []];
+        yield [[1], [1, 2], ['foo' => 2], []];
+        yield [[1 => 2], [1, 2], [], ['baz' => 1]];
+        yield [[], [1, 2], ['foo' => 2], ['baz' => 1]];
+        yield [[], [1, 2], ['foo' => 2], ['baz' => 1]];
+        yield [[6 => 7, 7 => 8], Vec\range(1, 8), Vec\range(1, 6), []];
+        yield [[7 => 8], Vec\range(1, 8), Vec\range(1, 6), [6 => 7]];
+    }
+}

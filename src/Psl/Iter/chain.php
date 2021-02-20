@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use Generator;
+use Psl\Vec;
 
 /**
  * Chains the iterables that were passed as arguments.
@@ -23,6 +24,10 @@ use Generator;
  * @psalm-param iterable<Tk, Tv> ...$iterables Iterables to chain
  *
  * @psalm-return Iterator<Tk, Tv>
+ *
+ * @deprecated use `Vec\concat` instead.
+ *
+ * @see Vec\concat()
  */
 function chain(iterable ...$iterables): Iterator
 {
