@@ -18,6 +18,8 @@ final class Success implements ResultInterface
 {
     /**
      * @psalm-var T
+     *
+     * @readonly
      */
     private $value;
 
@@ -33,6 +35,8 @@ final class Success implements ResultInterface
      * Since this is a successful result wrapper, this always returns the actual result of the operation.
      *
      * @psalm-return T
+     *
+     * @psalm-mutation-free
      */
     public function getResult()
     {
@@ -48,6 +52,8 @@ final class Success implements ResultInterface
      * @psalm-return no-return
      *
      * @codeCoverageIgnore
+     *
+     * @psalm-mutation-free
      */
     public function getException(): Exception
     {
@@ -58,6 +64,8 @@ final class Success implements ResultInterface
      * Since this is a successful result wrapper, this always returns `true`.
      *
      * @return true
+     *
+     * @psalm-mutation-free
      */
     public function isSucceeded(): bool
     {
@@ -68,6 +76,8 @@ final class Success implements ResultInterface
      * Since this is a successful result wrapper, this always returns `false`.
      *
      * @return false
+     *
+     * @psalm-mutation-free
      */
     public function isFailed(): bool
     {

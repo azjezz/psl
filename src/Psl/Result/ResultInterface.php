@@ -25,6 +25,8 @@ interface ResultInterface
      * - if the operation failed: throw the exception inciting failure.
      *
      * @psalm-return T - The result of the operation upon success
+     *
+     * @psalm-mutation-free
      */
     public function getResult();
 
@@ -35,6 +37,8 @@ interface ResultInterface
      * - if the operation failed: returns the exception indicating failure.
      *
      * @throws Psl\Exception\InvariantViolationException - When the operation succeeded
+     *
+     * @psalm-mutation-free
      */
     public function getException(): Exception;
 
@@ -44,6 +48,8 @@ interface ResultInterface
      * if `isSucceeded()` returns `true`, `isFailed()` returns false.
      *
      * @return bool - `true` if the operation succeeded; `false` otherwise
+     *
+     * @psalm-mutation-free
      */
     public function isSucceeded(): bool;
 
@@ -53,6 +59,8 @@ interface ResultInterface
      * if `isFailed()` returns `true`, `isSucceeded()` returns false.
      *
      * @return bool - `true` if the operation failed; `false` otherwise
+     *
+     * @psalm-mutation-free
      */
     public function isFailed(): bool;
 
