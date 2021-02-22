@@ -456,6 +456,9 @@ final class Loader
         'Psl\Encoding\Base64\decode',
         'Psl\Encoding\Hex\encode',
         'Psl\Encoding\Hex\decode',
+        'Psl\Shell\escape_command',
+        'Psl\Shell\escape_argument',
+        'Psl\Shell\execute',
     ];
 
     public const INTERFACES = [
@@ -477,6 +480,7 @@ final class Loader
         'Psl\Type\TypeInterface',
         'Psl\Type\Exception\ExceptionInterface',
         'Psl\Regex\Exception\ExceptionInterface',
+        'Psl\Shell\Exception\ExceptionInterface',
     ];
 
     public const TRAITS = [];
@@ -525,6 +529,9 @@ final class Loader
         'Psl\Encoding\Exception\IncorrectPaddingException',
         'Psl\Encoding\Exception\RangeException',
         'Psl\Regex\Exception\InvalidPatternException',
+        'Psl\Shell\Exception\FailedExecutionException',
+        'Psl\Shell\Exception\RuntimeException',
+        'Psl\Shell\Exception\PossibleAttackException',
     ];
 
     private const TYPE_CONSTANTS = 1;
