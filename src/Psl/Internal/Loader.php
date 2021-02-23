@@ -48,6 +48,7 @@ final class Loader
         'Psl\Str\ALPHABET_ALPHANUMERIC',
         'Psl\Password\DEFAULT_ALGORITHM',
         'Psl\Password\BCRYPT_ALGORITHM',
+        'Psl\Filesystem\SEPARATOR',
     ];
 
     public const FUNCTIONS = [
@@ -141,6 +142,7 @@ final class Loader
         'Psl\Internal\boolean',
         'Psl\Internal\type',
         'Psl\Internal\suppress',
+        'Psl\Internal\box',
         'Psl\Internal\validate_offset',
         'Psl\Internal\validate_offset_lower_bound',
         'Psl\Internal\internal_encoding',
@@ -465,6 +467,43 @@ final class Loader
         'Psl\Html\decode',
         'Psl\Html\decode_special_characters',
         'Psl\Html\strip_tags',
+        'Psl\Filesystem\Internal\write_file',
+        'Psl\Filesystem\change_group',
+        'Psl\Filesystem\change_owner',
+        'Psl\Filesystem\change_permissions',
+        'Psl\Filesystem\copy',
+        'Psl\Filesystem\create_directory',
+        'Psl\Filesystem\create_file',
+        'Psl\Filesystem\delete_directory',
+        'Psl\Filesystem\delete_file',
+        'Psl\Filesystem\exists',
+        'Psl\Filesystem\file_size',
+        'Psl\Filesystem\get_group',
+        'Psl\Filesystem\get_owner',
+        'Psl\Filesystem\get_permissions',
+        'Psl\Filesystem\get_basename',
+        'Psl\Filesystem\get_directory',
+        'Psl\Filesystem\get_extension',
+        'Psl\Filesystem\get_filename',
+        'Psl\Filesystem\is_directory',
+        'Psl\Filesystem\is_file',
+        'Psl\Filesystem\is_symbolic_link',
+        'Psl\Filesystem\is_readable',
+        'Psl\Filesystem\is_writable',
+        'Psl\Filesystem\canonicalize',
+        'Psl\Filesystem\is_executable',
+        'Psl\Filesystem\read_directory',
+        'Psl\Filesystem\read_file',
+        'Psl\Filesystem\read_symbolic_link',
+        'Psl\Filesystem\append_file',
+        'Psl\Filesystem\write_file',
+        'Psl\Filesystem\create_temporary_file',
+        'Psl\Filesystem\create_hard_link',
+        'Psl\Filesystem\create_symbolic_link',
+        'Psl\Filesystem\get_access_time',
+        'Psl\Filesystem\get_change_time',
+        'Psl\Filesystem\get_modification_time',
+        'Psl\Filesystem\get_inode',
     ];
 
     public const INTERFACES = [
@@ -490,7 +529,9 @@ final class Loader
         'Psl\Type\TypeInterface',
         'Psl\Type\Exception\ExceptionInterface',
         'Psl\Regex\Exception\ExceptionInterface',
+        'Psl\SecureRandom\Exception\ExceptionInterface',
         'Psl\Shell\Exception\ExceptionInterface',
+        'Psl\Filesystem\Exception\ExceptionInterface',
     ];
 
     public const TRAITS = [];
@@ -542,6 +583,7 @@ final class Loader
         'Psl\Hash\Context',
         'Psl\Encoding\Exception\IncorrectPaddingException',
         'Psl\Encoding\Exception\RangeException',
+        'Psl\SecureRandom\Exception\InsufficientEntropyException',
         'Psl\Regex\Exception\InvalidPatternException',
         'Psl\Regex\Exception\RuntimeException',
         'Psl\Shell\Exception\FailedExecutionException',
@@ -549,6 +591,7 @@ final class Loader
         'Psl\Shell\Exception\PossibleAttackException',
         'Psl\Math\Exception\ArithmeticException',
         'Psl\Math\Exception\DivisionByZeroException',
+        'Psl\Filesystem\Exception\RuntimeException',
     ];
 
     private const TYPE_CONSTANTS = 1;

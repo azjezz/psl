@@ -6,12 +6,26 @@
       <directory>src</directory>
     </include>
     <exclude>
+      <!-- Internal -->
       <file>src/preload.php</file>
       <file>src/bootstrap.php</file>
       <directory>src/Psl/Internal</directory>
+
+      <!-- Base Exceptions -->
       <directory>src/Psl/Exception</directory>
+
+      <!-- Constants -->
       <file>src/Psl/Str/constants.php</file>
       <file>src/Psl/Math/constants.php</file>
+      <file>src/Psl/Filesystem/constants.php</file>
+
+      <!-- Things that are not easily tested -->
+      <file>src/Psl/Filesystem/get_group.php</file>
+      <file>src/Psl/Filesystem/change_group.php</file>
+      <file>src/Psl/Filesystem/Internal/change_group.php</file>
+      <file>src/Psl/Filesystem/get_owner.php</file>
+      <file>src/Psl/Filesystem/change_owner.php</file>
+      <file>src/Psl/Filesystem/Internal/change_owner.php</file>
     </exclude>
     <report>
       <clover outputFile="tests/logs/clover.xml"/>

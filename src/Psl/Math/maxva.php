@@ -13,7 +13,8 @@ namespace Psl\Math;
  * @psalm-param T $second
  * @psalm-param T ...$rest
  *
- * @psalm-return T
+ * @return int|float
+ * @psalm-return (T is int ? int : float)
  *
  * @psalm-pure
  */
