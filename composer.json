@@ -26,7 +26,6 @@
     },
     "autoload": {
         "psr-4": {
-            "Psl\\": "src/Psl",
             "Psl\\Integration\\": "integration"
         },
         "files": [
