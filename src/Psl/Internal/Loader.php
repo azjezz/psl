@@ -462,6 +462,9 @@ final class Loader
     ];
 
     public const INTERFACES = [
+        'Psl\DataStructure\PriorityQueueInterface',
+        'Psl\DataStructure\QueueInterface',
+        'Psl\DataStructure\StackInterface',
         'Psl\Exception\ExceptionInterface',
         'Psl\Collection\CollectionInterface',
         'Psl\Collection\IndexAccessInterface',
@@ -476,6 +479,7 @@ final class Loader
         'Psl\Observer\SubjectInterface',
         'Psl\Observer\ObserverInterface',
         'Psl\Result\ResultInterface',
+        'Psl\Math\Exception\ExceptionInterface',
         'Psl\Encoding\Exception\ExceptionInterface',
         'Psl\Type\TypeInterface',
         'Psl\Type\Exception\ExceptionInterface',
@@ -487,6 +491,9 @@ final class Loader
 
     public const CLASSES = [
         'Psl\Exception\InvariantViolationException',
+        'Psl\DataStructure\PriorityQueue',
+        'Psl\DataStructure\Queue',
+        'Psl\DataStructure\Stack',
         'Psl\Iter\Iterator',
         'Psl\Collection\Vector',
         'Psl\Collection\MutableVector',
@@ -518,6 +525,7 @@ final class Loader
         'Psl\Type\Internal\UnionType',
         'Psl\Type\Internal\VecType',
         'Psl\Type\Internal\DictType',
+        'Psl\Type\Internal\ScalarType',
         'Psl\Type\Exception\TypeTrace',
         'Psl\Type\Exception\AssertException',
         'Psl\Type\Exception\CoercionException',
@@ -532,6 +540,8 @@ final class Loader
         'Psl\Shell\Exception\FailedExecutionException',
         'Psl\Shell\Exception\RuntimeException',
         'Psl\Shell\Exception\PossibleAttackException',
+        'Psl\Math\Exception\ArithmeticException',
+        'Psl\Math\Exception\DivisionByZeroException',
     ];
 
     private const TYPE_CONSTANTS = 1;
