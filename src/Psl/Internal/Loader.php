@@ -464,6 +464,7 @@ final class Loader
         'Psl\Html\encode_special_characters',
         'Psl\Html\decode',
         'Psl\Html\decode_special_characters',
+        'Psl\Html\strip_tags',
     ];
 
     public const INTERFACES = [

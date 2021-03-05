@@ -22,6 +22,8 @@ use const ENT_SUBSTITUTE;
  *
  * @throws Exception\InvariantViolationException If $encoding is invalid.
  *
+ * @psalm-taint-escape html
+ *
  * @psalm-pure
  */
 function encode_special_characters(string $html, bool $double_encoding = true, ?string $encoding = null): string

@@ -20,6 +20,8 @@ use const ENT_QUOTES;
  *
  * @throws Exception\InvariantViolationException If $encoding is invalid.
  *
+ * @psalm-taint-escape html
+ *
  * @psalm-pure
  */
 function encode(string $html, bool $double_encoding = true, ?string $encoding = null): string
