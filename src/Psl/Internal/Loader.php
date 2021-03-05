@@ -460,6 +460,10 @@ final class Loader
         'Psl\Shell\escape_command',
         'Psl\Shell\escape_argument',
         'Psl\Shell\execute',
+        'Psl\Html\encode',
+        'Psl\Html\encode_special_characters',
+        'Psl\Html\decode',
+        'Psl\Html\decode_special_characters',
     ];
 
     public const INTERFACES = [
