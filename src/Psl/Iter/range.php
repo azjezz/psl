@@ -61,7 +61,6 @@ function range($start, $end, $step = null): Iterator
          *
          * @psalm-suppress InvalidReturnType
          * @psalm-suppress InvalidOperand
-         * @psalm-suppress RedundantConditionGivenDocblockType
          * @psalm-suppress DocblockTypeContradiction
          */
         static function () use ($start, $end, $step): Generator {
