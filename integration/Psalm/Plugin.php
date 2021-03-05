@@ -10,7 +10,7 @@ use SimpleXMLElement;
 
 /**
  * @deprecated use `php-standard-library/psalm-plugin` package instead.
- * 
+ *
  * @see https://github.com/php-standard-library/psalm-plugin
  */
 final class Plugin implements PluginEntryPointInterface

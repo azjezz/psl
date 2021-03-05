@@ -14,6 +14,6 @@
 
 - [decode](./../../src/Psl/Json/decode.php#L24)
 - [encode](./../../src/Psl/Json/encode.php#L27)
-- [typed](./../../src/Psl/Json/typed.php#L22)
+- [typed](./../../src/Psl/Json/typed.php#L20)
 
 
