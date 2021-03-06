@@ -16,7 +16,7 @@ use Psl\Vec;
  */
 final class MutableMapTypeTest extends TypeTest
 {
-    public function getType(): Type\Type
+    public function getType(): Type\TypeInterface
     {
         return Type\mutable_map(Type\int(), Type\int());
     }

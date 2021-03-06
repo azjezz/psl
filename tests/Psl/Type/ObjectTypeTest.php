@@ -10,7 +10,7 @@ use Psl\Type;
 
 final class ObjectTypeTest extends TypeTest
 {
-    public function getType(): Type\Type
+    public function getType(): Type\TypeInterface
     {
         return Type\object(Collection\CollectionInterface::class);
     }

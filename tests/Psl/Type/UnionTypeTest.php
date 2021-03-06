@@ -10,7 +10,7 @@ use Psl\Type;
 
 final class UnionTypeTest extends TypeTest
 {
-    public function getType(): Type\Type
+    public function getType(): Type\TypeInterface
     {
         return Type\union(Type\int(), Type\bool());
     }

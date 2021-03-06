@@ -11,7 +11,7 @@ use Psl\Type;
 /**
  * @extends TypeTest<array>
  */
-final class ShapeTypeTest extends TypeTest
+final class ShapeAllowUnknownFieldsTypeTest extends TypeTest
 {
     public function getType(): Type\TypeInterface
     {
@@ -26,7 +26,7 @@ final class ShapeTypeTest extends TypeTest
                     'comment' => Type\string()
                 ]))),
             ]))
-        ]);
+        ], true);
     }
 
     public function getValidCoercions(): iterable
@@ -34,6 +34,17 @@ final class ShapeTypeTest extends TypeTest
         yield [
             ['name' => 'saif', 'articles' => new Collection\Vector([])],
             ['name' => 'saif', 'articles' => []]
+        ];
+
+        yield [
+            ['name' => 'saif', 'email' => 'azjezz@example.com', 'articles' => new Collection\Vector([
+                ['title' => 'Foo', 'content' => 'Baz', 'likes' => 0],
+            ])],
+
+            // unknown fields are always last.
+            ['name' => 'saif', 'articles' => [
+                ['title' => 'Foo', 'content' => 'Baz', 'likes' => 0],
+            ],  'email' => 'azjezz@example.com']
         ];
 
         yield [
@@ -114,8 +125,8 @@ final class ShapeTypeTest extends TypeTest
     }
 
     /**
-     * @param Collection\VectorInterface<mixed>|mixed $a
-     * @param Collection\VectorInterface<mixed>|mixed $b
+     * @psalm-param Collection\VectorInterface<mixed>|mixed $a
+     * @psalm-param Collection\VectorInterface<mixed>|mixed $b
      */
     protected function equals($a, $b): bool
     {

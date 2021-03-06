@@ -15,7 +15,7 @@ use Psl\Vec;
  */
 final class IterableTypeTest extends TypeTest
 {
-    public function getType(): Type\Type
+    public function getType(): Type\TypeInterface
     {
         return Type\iterable(Type\int(), Type\int());
     }

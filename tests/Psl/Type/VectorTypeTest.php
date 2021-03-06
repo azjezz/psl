@@ -16,7 +16,7 @@ use Psl\Vec;
  */
 final class VectorTypeTest extends TypeTest
 {
-    public function getType(): Type\Type
+    public function getType(): Type\TypeInterface
     {
         return Type\vector(Type\int());
     }

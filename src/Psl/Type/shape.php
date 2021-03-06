@@ -12,7 +12,7 @@ namespace Psl\Type;
  *
  * @return TypeInterface<array<Tk, Tv>>
  */
-function shape(array $elements): TypeInterface
+function shape(array $elements, bool $allow_unknown_fields = false): TypeInterface
 {
-    return new Internal\ShapeType($elements);
+    return new Internal\ShapeType($elements, $allow_unknown_fields);
 }
