@@ -41,6 +41,11 @@ interface TypeInterface
     public function assert($value);
 
     /**
+     * Return whether this type is optional.
+     */
+    public function isOptional(): bool;
+
+    /**
      * Returns a string representation of the type.
      */
     public function toString(): string;

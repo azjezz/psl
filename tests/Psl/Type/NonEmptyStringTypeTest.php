@@ -14,7 +14,7 @@ final class NonEmptyStringTypeTest extends TypeTest
     /**
      * @return Type\Type<non-empty-string>
      */
-    public function getType(): Type\Type
+    public function getType(): Type\TypeInterface
     {
         return Type\non_empty_string();
     }

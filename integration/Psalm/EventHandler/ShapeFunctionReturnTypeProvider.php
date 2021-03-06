@@ -37,7 +37,6 @@ final class ShapeFunctionReturnTypeProvider implements FunctionReturnTypeProvide
             ])]);
         }
 
-        $type = null;
         $argument_value = $argument->value;
         $type = $statements_source->getNodeTypeProvider()->getType($argument_value);
         if (null === $type) {
@@ -72,6 +71,7 @@ final class ShapeFunctionReturnTypeProvider implements FunctionReturnTypeProvide
             }
 
             $property_type = clone $type->type_params[0];
+            $property_type->possibly_undefined = $value->possibly_undefined;
 
             $properties[$name] = $property_type;
         }

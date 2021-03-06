@@ -16,7 +16,7 @@ use Psl\Vec;
  */
 final class MapTypeTest extends TypeTest
 {
-    public function getType(): Type\Type
+    public function getType(): Type\TypeInterface
     {
         return Type\map(Type\int(), Type\int());
     }

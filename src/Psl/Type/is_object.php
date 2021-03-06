@@ -14,6 +14,8 @@ use function is_object as php_is_object;
  * @psalm-assert-if-true object $var
  *
  * @pure
+ *
+ * @deprecated use `Type\object($classname)->matches($var)` instead.
  */
 function is_object($var): bool
 {

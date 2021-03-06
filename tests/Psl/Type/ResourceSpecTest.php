@@ -8,7 +8,7 @@ use Psl\Type;
 
 final class ResourceSpecTest extends TypeTest
 {
-    public function getType(): Type\Type
+    public function getType(): Type\TypeInterface
     {
         return Type\resource('stream');
     }

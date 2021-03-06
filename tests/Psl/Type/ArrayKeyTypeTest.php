@@ -8,7 +8,7 @@ use Psl\Type;
 
 final class ArrayKeyTypeTest extends TypeTest
 {
-    public function getType(): Type\Type
+    public function getType(): Type\TypeInterface
     {
         return Type\array_key();
     }

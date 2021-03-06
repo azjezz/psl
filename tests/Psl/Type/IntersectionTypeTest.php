@@ -18,7 +18,7 @@ final class IntersectionTypeTest extends TypeTest
         static::assertSame(1, $intersection->coerce('1'));
     }
 
-    public function getType(): Type\Type
+    public function getType(): Type\TypeInterface
     {
         return Type\intersection(Type\int(), Type\array_key());
     }

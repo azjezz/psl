@@ -4,13 +4,22 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Type;
 
+use Psl\Exception\InvariantViolationException;
 use Psl\Type;
 
 final class NullableTypeTest extends TypeTest
 {
-    public function getType(): Type\Type
+    public function getType(): Type\TypeInterface
     {
         return Type\nullable(Type\string());
+    }
+
+    public function testNullableTypeCannotContainOptionalType(): void
+    {
+        $this->expectException(InvariantViolationException::class);
+        $this->expectExceptionMessage('Optional type must be the outermost.');
+
+        Type\nullable(Type\optional(Type\string()));
     }
 
     public function getValidCoercions(): iterable
@@ -41,6 +50,6 @@ final class NullableTypeTest extends TypeTest
 
     public function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'string|null'];
+        yield [$this->getType(), '?string'];
     }
 }

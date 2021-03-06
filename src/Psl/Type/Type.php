@@ -50,4 +50,9 @@ abstract class Type implements TypeInterface
         $new->trace = $trace;
         return $new;
     }
+
+    public function isOptional(): bool
+    {
+        return false;
+    }
 }
