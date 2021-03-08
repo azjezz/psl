@@ -12,7 +12,7 @@ use function mb_convert_encoding;
 /**
  * Convert character encoding of the giving string.
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If either one of $from_encoding and $to_encoding is invalid.
  */

@@ -15,7 +15,7 @@ use Psl;
  *
  * @return string the given string wrapped at the specified column
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $break is empty, $width is 0 and $cut is set to true,
  *  or an invalid $encoding is provided.

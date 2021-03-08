@@ -9,7 +9,7 @@ use function strlen;
 /**
  * Returns the length of the given string, i.e. the number of bytes.
  *
- * @psalm-pure
+ * @pure
  */
 function length(string $string): int
 {

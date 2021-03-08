@@ -9,7 +9,7 @@ use function strtolower;
 /**
  * Returns the string with all alphabetic characters converted to lowercase.
  *
- * @psalm-pure
+ * @pure
  */
 function lowercase(string $string): string
 {

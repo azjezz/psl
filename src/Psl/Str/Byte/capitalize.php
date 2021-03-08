@@ -12,7 +12,7 @@ use function ucfirst;
  * If the first character is already capitalized or isn't alphabetic, the string
  * will be unchanged.
  *
- * @psalm-pure
+ * @pure
  */
 function capitalize(string $string): string
 {

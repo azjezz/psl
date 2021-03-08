@@ -27,7 +27,7 @@ use const PASSWORD_BCRYPT;
  *
  * @throws Psl\Exception\InvariantViolationException The given algorithm is unsupported.
  *
- * @psalm-pure
+ * @pure
  */
 function hash(string $password, string $algorithm = DEFAULT_ALGORITHM, array $options = []): string
 {

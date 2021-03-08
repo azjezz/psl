@@ -14,7 +14,7 @@ use function str_word_count;
  * @return array<int, string> a dict, where the key is the numeric position of
  *  the word inside the string and the value is the actual word itself
  *
- * @psalm-pure
+ * @pure
  */
 function words(string $string, ?string $characters_list = null): array
 {

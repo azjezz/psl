@@ -9,7 +9,7 @@ namespace Psl\Str;
  *
  * @return bool true if the given string is UTF-8 encoded, false otherwise.
  *
- * @psalm-pure
+ * @pure
  */
 function is_utf8(string $string): bool
 {

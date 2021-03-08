@@ -17,7 +17,7 @@ use function array_fill;
  *
  * @return array<int, T>
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Vec\fill` instead.
  *

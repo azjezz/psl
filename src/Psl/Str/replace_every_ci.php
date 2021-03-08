@@ -12,7 +12,7 @@ use Psl;
  *
  * @param array<string, string> $replacements
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */

@@ -13,7 +13,7 @@ use const PATHINFO_FILENAME;
  *
  * @return string the base name of the given path.
  *
- * @psalm-pure
+ * @pure
  */
 function get_filename(string $path): string
 {

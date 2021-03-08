@@ -16,7 +16,7 @@ use Psl\Iter;
  *
  * @return Tv|null
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Iter\first()` instead.
  *

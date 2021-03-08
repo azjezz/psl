@@ -8,7 +8,7 @@ use function in_array;
 use function mb_list_encodings;
 
 /**
- * @psalm-pure
+ * @pure
  */
 function is_encoding_valid(string $encoding): bool
 {

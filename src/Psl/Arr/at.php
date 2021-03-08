@@ -18,7 +18,7 @@ use Psl;
  *
  * @return Tv
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $key is out-of-bounds.
  *

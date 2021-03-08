@@ -26,7 +26,7 @@ use Psl\Exception;
  *      Str\capitalize('1337')
  *      => Str('1337)
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Exception\InvariantViolationException If an invalid $encoding is provided.
  */

@@ -16,7 +16,7 @@ use function stripos;
  * offset is negative, the search will begin that many characters from the end
  * of the string.
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $offset is out-of-bounds.
  */

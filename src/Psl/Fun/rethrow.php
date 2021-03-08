@@ -12,7 +12,7 @@ use Exception;
  *
  * @return (callable(Exception): no-return)
  *
- * @psalm-pure
+ * @pure
  */
 function rethrow(): callable
 {

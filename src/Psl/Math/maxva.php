@@ -15,7 +15,7 @@ namespace Psl\Math;
  *
  * @return T
  *
- * @psalm-pure
+ * @pure
  */
 function maxva($first, $second, ...$rest)
 {

@@ -22,7 +22,7 @@ use function levenshtein as php_levenshtien;
  *  two argument strings or -1, if one of the argument strings
  *  is longer than the limit of 255 characters
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If neither all, or none of the costs is supplied.
  */

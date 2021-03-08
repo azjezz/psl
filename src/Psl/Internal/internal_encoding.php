@@ -11,7 +11,7 @@ use Psl\Type;
 use function mb_internal_encoding;
 
 /**
- * @psalm-pure
+ * @pure
  *
  * @throws Exception\InvariantViolationException If an invalid $encoding is provided.
  */

@@ -20,7 +20,7 @@ use function password_needs_rehash;
  *
  * @param array{cost?: int}|array{memory_cost?: int, time_cost?: int, threads?: int} $options
  *
- * @psalm-pure
+ * @pure
  */
 function needs_rehash(string $hash, string $algorithm = DEFAULT_ALGORITHM, array $options = []): bool
 {

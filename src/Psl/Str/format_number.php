@@ -14,7 +14,7 @@ use function number_format;
  * The optional `$decimal_point` and `$thousands_separator` arguments define the
  * strings used for decimals and commas, respectively.
  *
- * @psalm-pure
+ * @pure
  */
 function format_number(
     float $number,

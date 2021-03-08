@@ -14,7 +14,7 @@ use function preg_match;
  * @throws Exception\InvalidPatternException If $pattern is invalid.
  * @throws Exception\RuntimeException If an internal error accord.
  *
- * @psalm-pure
+ * @pure
  */
 function matches(string $subject, string $pattern, int $offset = 0): bool
 {

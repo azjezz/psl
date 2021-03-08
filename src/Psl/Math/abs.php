@@ -24,7 +24,7 @@ namespace Psl\Math;
  *
  * @return T
  *
- * @psalm-pure
+ * @pure
  *
  * @see https://github.com/vimeo/psalm/issues/2152
  *

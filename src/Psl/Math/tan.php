@@ -9,7 +9,7 @@ use function tan as php_tan;
 /**
  * Return the tangent of the given number.
  *
- * @psalm-pure
+ * @pure
  */
 function tan(float $num): float
 {

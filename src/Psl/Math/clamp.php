@@ -18,7 +18,7 @@ use Psl;
  * @return T
  * @throws Psl\Exception\InvariantViolationException If min is bigger than max
  *
- * @psalm-pure
+ * @pure
  */
 function clamp($number, $min, $max)
 {

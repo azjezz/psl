@@ -14,7 +14,7 @@ use Psl;
  *
  * If the length is zero, the empty string will be returned.
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If a negative $length is given, or $offset is out-of-bounds.
  */

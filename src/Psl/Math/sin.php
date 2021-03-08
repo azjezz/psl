@@ -9,7 +9,7 @@ use function sin as php_sin;
 /**
  * Returns the sine of the given number.
  *
- * @psalm-pure
+ * @pure
  */
 function sin(float $num): float
 {

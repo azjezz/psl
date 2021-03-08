@@ -10,7 +10,7 @@ use Psl;
  * Returns the string with the given suffix removed, or the string itself if
  * it doesn't end with the suffix.
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */

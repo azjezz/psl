@@ -34,7 +34,7 @@ use Psl;
  *      Str\contains('سيف', 'س')
  *      => Bool(true)
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds, or
  *  an invalid $encoding is provided.

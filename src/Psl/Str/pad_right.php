@@ -28,7 +28,7 @@ use Psl;
  *      Str\pad_right('مرحبا', 8, 'ا')
  *      => Str('مرحباااا')
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If the $pad_string is empty, a negative $total_length is given,
  *  or an invalid $encoding is provided.

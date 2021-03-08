@@ -14,7 +14,7 @@ use function round as php_round;
  *
  * @param float|int $value
  *
- * @psalm-pure
+ * @pure
  */
 function round(float $value, int $precision = 0): float
 {

@@ -14,7 +14,7 @@ namespace Psl\Math;
  *
  * @return T|null
  *
- * @psalm-pure
+ * @pure
  */
 function min(array $numbers)
 {

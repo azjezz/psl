@@ -10,7 +10,7 @@ use Psl;
  * Verifies that the `$offset` is within plus/minus `$length`. Returns the
  * offset as a positive integer.
  *
- * @psalm-pure
+ * @pure
  *
  * @codeCoverageIgnore
  *

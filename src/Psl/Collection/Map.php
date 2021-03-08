@@ -44,7 +44,7 @@ final class Map implements MapInterface
      *
      * @return Map<Tsk, Tsv>
      *
-     * @psalm-pure
+     * @pure
      */
     public static function fromArray(array $elements): Map
     {

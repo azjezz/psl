@@ -21,7 +21,7 @@ use function preg_replace;
  * @throws Exception\RuntimeException In case of an unexpected error.
  * @throws Psl\Exception\InvariantViolationException If $limit is negative.
  *
- * @psalm-pure
+ * @pure
  */
 function replace(string $haystack, string $pattern, string $replacement, ?int $limit = null): string
 {

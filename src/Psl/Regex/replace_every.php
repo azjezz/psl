@@ -22,7 +22,7 @@ use function preg_replace;
  * @throws Exception\RuntimeException In case of an unexpected error.
  * @throws Psl\Exception\InvariantViolationException If $limit is negative.
  *
- * @psalm-pure
+ * @pure
  */
 function replace_every(string $haystack, array $replacements, ?int $limit = null): string
 {

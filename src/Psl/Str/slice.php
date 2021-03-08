@@ -17,7 +17,7 @@ use function mb_substr;
  * string. If the length is zero, the empty string will be returned. If the
  * offset is out-of-bounds, an InvariantViolationException will be thrown.
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If a negative $length is given.
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.

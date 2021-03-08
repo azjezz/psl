@@ -22,7 +22,7 @@ use const ENT_QUOTES;
  *
  * @psalm-taint-escape html
  *
- * @psalm-pure
+ * @pure
  */
 function encode(string $html, bool $double_encoding = true, ?string $encoding = null): string
 {

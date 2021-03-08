@@ -17,7 +17,7 @@ use Psl;
  *
  * @return list<T>
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $size is negative.
  */

@@ -12,7 +12,7 @@ use function mb_strtoupper;
 /**
  * Returns the string with all alphabetic characters converted to uppercase.
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */

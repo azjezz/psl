@@ -13,7 +13,7 @@ use function is_callable as php_is_callable;
  *
  * @psalm-assert-if-true callable $var
  *
- * @psalm-pure
+ * @pure
  */
 function is_callable($var): bool
 {

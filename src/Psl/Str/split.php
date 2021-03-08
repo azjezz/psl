@@ -16,7 +16,7 @@ use Psl\Math;
  *
  * @return list<string>
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If a negative $limit is given.
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.

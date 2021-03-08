@@ -22,7 +22,7 @@ use function implode;
  * @return string a string containing a string representation of all the array
  *  elements in the same order, with the glue string between each element
  *
- * @psalm-pure
+ * @pure
  */
 function join(array $pieces, string $glue): string
 {

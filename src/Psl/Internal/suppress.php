@@ -13,7 +13,7 @@ use function error_reporting;
  *
  * @return T
  *
- * @psalm-pure
+ * @pure
  *
  * @internal
  */

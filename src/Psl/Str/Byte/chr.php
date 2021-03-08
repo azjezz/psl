@@ -9,7 +9,7 @@ use function chr as php_chr;
 /**
  * Return a specific character.
  *
- * @psalm-pure
+ * @pure
  */
 function chr(int $ascii): string
 {

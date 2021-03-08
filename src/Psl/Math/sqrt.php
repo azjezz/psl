@@ -13,7 +13,7 @@ use function sqrt as php_sqrt;
  *
  * @param float|int $number
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $number is negative.
  */

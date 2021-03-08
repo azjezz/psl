@@ -31,7 +31,7 @@ use Psl\Internal;
  *  If the $chunk_length length exceeds the length of string, the entire string is returned
  *  as the first (and only) array element.
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If the given $chunk_length is negative or above
  *  the limit ( 65535 ), or an invalid $encoding is provided.

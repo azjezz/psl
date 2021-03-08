@@ -28,7 +28,7 @@ namespace Psl\Arr;
  *
  * @return   Tv
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `$array[$index] ?? $default` instead.
  */

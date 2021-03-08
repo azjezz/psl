@@ -11,7 +11,7 @@ use Psl\Exception\InvariantViolationException;
  *
  * @psalm-assert true $fact
  *
- * @psalm-pure
+ * @pure
  *
  * @throws InvariantViolationException
  */

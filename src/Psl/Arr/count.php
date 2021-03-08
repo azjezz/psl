@@ -28,7 +28,7 @@ use Psl\Iter;
  *
  * @param array<Tk, Tv> $array
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use Iter\count instead.
  *

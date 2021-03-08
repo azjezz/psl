@@ -11,7 +11,7 @@ namespace Psl\Type;
  *
  * @psalm-assert-if-true null $var
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Type\null()->matches($value)` instead.
  */

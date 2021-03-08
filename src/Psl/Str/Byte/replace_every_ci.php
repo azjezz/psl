@@ -12,7 +12,7 @@ use function str_ireplace;
  *
  * @param array<string, string> $replacements
  *
- * @psalm-pure
+ * @pure
  */
 function replace_every_ci(string $haystack, array $replacements): string
 {

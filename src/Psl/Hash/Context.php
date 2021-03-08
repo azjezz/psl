@@ -42,7 +42,7 @@ final class Context
      *
      * @throws Psl\Exception\InvariantViolationException If the given algorithm is unsupported.
      *
-     * @psalm-pure
+     * @pure
      */
     public static function forAlgorithm(string $algorithm): Context
     {
@@ -62,7 +62,7 @@ final class Context
      *
      * @throws Psl\Exception\InvariantViolationException If the given algorithm is unsupported.
      *
-     * @psalm-pure
+     * @pure
      */
     public static function hmac(string $algorithm, string $key): Context
     {

@@ -11,7 +11,7 @@ use function hash_hmac_algos;
  *
  * @return list<string>
  *
- * @psalm-pure
+ * @pure
  */
 function algorithms(): array
 {

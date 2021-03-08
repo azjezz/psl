@@ -32,7 +32,7 @@ namespace Psl\Fun;
  *
  * @return (callable(I): R)
  *
- * @psalm-pure
+ * @pure
  */
 function after(callable $first, callable $next): callable
 {

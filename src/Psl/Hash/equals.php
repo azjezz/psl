@@ -9,7 +9,7 @@ use function hash_equals;
 /**
  * Timing attack safe string comparison.
  *
- * @psalm-pure
+ * @pure
  */
 function equals(string $known_string, string $user_string): bool
 {

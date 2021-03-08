@@ -10,7 +10,7 @@ use Psl;
  * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  *
- * @psalm-pure
+ * @pure
  */
 function after_ci(
     string $haystack,

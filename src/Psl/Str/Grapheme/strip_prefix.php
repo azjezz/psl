@@ -8,7 +8,7 @@ namespace Psl\Str\Grapheme;
  * Returns the string with the given prefix removed, or the string itself if
  * it doesn't start with the prefix.
  *
- * @psalm-pure
+ * @pure
  */
 function strip_prefix(string $string, string $prefix): string
 {

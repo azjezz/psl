@@ -19,7 +19,7 @@ use function vsprintf;
  *
  * @param int|float|string  ...$args
  *
- * @psalm-pure
+ * @pure
  *
  * @return string a string produced according to the $format string.
  */

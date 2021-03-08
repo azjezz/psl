@@ -21,7 +21,7 @@ use function mb_strimwidth;
  * @return string The truncated string. If trim_marker is set,
  *                trim_marker is appended to the return value.
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If the offset is out-of-bounds.
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.

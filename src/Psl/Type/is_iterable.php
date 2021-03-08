@@ -13,7 +13,7 @@ use function is_iterable as php_is_iterable;
  *
  * @psalm-assert-if-true iterable $var
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Type\iterable($kt, $vt)->matches($value)` instead.
  */

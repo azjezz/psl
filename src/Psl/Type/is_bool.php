@@ -13,7 +13,7 @@ use function is_bool as php_is_bool;
  *
  * @psalm-assert-if-true bool $var
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Type\bool()->matches($value)` instead.
  */

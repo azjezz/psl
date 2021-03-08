@@ -13,7 +13,7 @@ use const ENT_SUBSTITUTE;
 /**
  * Convert special HTML entities back to characters.
  *
- * @psalm-pure
+ * @pure
  */
 function decode_special_characters(string $html): string
 {

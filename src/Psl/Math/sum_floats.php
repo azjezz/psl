@@ -9,7 +9,7 @@ namespace Psl\Math;
  *
  * @param list<numeric> $numbers
  *
- * @psalm-pure
+ * @pure
  */
 function sum_floats(array $numbers): float
 {

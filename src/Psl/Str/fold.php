@@ -15,7 +15,7 @@ use Psl\Internal;
  *      Str\fold('ẞ')
  *      => Str('ss')
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */

@@ -12,7 +12,7 @@ namespace Psl\Fun;
  *
  * @return callable(T): T
  *
- * @psalm-pure
+ * @pure
  */
 function identity(): callable
 {

@@ -11,7 +11,7 @@ use function pathinfo;
  *
  * @return string|null the $filename extensions, or null if none.
  *
- * @psalm-pure
+ * @pure
  */
 function get_extension(string $filename): ?string
 {

@@ -17,7 +17,7 @@ use function array_values;
  *
  * @return   list<T>
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated since 1.2, use Vec\values instead.
  *

@@ -17,7 +17,7 @@ use function array_key_first;
  *
  * @return Tk|null
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Iter\first_key` instead.
  *

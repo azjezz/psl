@@ -9,7 +9,7 @@ use function str_shuffle;
 /**
  * Randomly shuffles a string.
  *
- * @psalm-pure
+ * @pure
  */
 function shuffle(string $string): string
 {

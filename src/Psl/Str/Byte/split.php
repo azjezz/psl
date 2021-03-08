@@ -18,7 +18,7 @@ use function explode;
  *
  * @return list<string>
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $limit is negative.
  */

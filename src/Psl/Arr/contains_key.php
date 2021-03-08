@@ -17,7 +17,7 @@ use function array_key_exists;
  * @param array<Tk, Tv> $array
  * @param Tk            $key
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Iter\contains_key()` instead.
  *

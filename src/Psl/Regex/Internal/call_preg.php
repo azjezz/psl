@@ -18,7 +18,7 @@ use Psl\Regex\Exception;
  * @throws Exception\InvalidPatternException
  * @throws Exception\RuntimeException
  *
- * @psalm-pure
+ * @pure
  *
  * @internal
  */

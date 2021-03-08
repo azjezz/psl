@@ -17,7 +17,7 @@ use function exp as php_exp;
  *      Math\exp(5.7)
  *      => Float(298.8674009670603)
  *
- * @psalm-pure
+ * @pure
  */
 function exp(float $num): float
 {

@@ -15,7 +15,7 @@ use function is_a;
  *
  * @psalm-assert-if-true T $object
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Type\object($class)->matches($object)` instead.
  */

@@ -18,7 +18,7 @@ use const ENT_QUOTES;
  *
  * @throws Exception\InvariantViolationException If $encoding is invalid.
  *
- * @psalm-pure
+ * @pure
  */
 function decode(string $html, ?string $encoding = null): string
 {

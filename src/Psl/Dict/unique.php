@@ -23,7 +23,7 @@ function unique(iterable $iterable): array
          *
          * @return    Tv
          *
-         * @psalm-pure
+         * @pure
          */
         static fn($v) => $v
     );

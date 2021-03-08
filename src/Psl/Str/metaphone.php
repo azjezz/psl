@@ -14,7 +14,7 @@ use function metaphone as php_metaphone;
  *
  * @return string|null the metaphone key as a string, or NULL on failure
  *
- * @psalm-pure
+ * @pure
  */
 function metaphone(string $string, int $phonemes = 0): ?string
 {

@@ -24,7 +24,7 @@ use const ENT_SUBSTITUTE;
  *
  * @psalm-taint-escape html
  *
- * @psalm-pure
+ * @pure
  */
 function encode_special_characters(string $html, bool $double_encoding = true, ?string $encoding = null): string
 {

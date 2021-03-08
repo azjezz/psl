@@ -29,7 +29,7 @@ use function Psl\Iter\reduce;
  *
  * @return callable(T): T
  *
- * @psalm-pure
+ * @pure
  */
 function pipe(callable ...$stages): callable
 {

@@ -18,7 +18,7 @@ use function array_key_last;
  *
  * @return Tk|null
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Iter\last_key` instead.
  *

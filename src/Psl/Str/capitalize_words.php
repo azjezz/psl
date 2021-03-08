@@ -28,7 +28,7 @@ use const MB_CASE_TITLE;
  *      Str\capitalize_words('مرحبا بكم')
  *      => Str('مرحبا بكم')
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Exception\InvariantViolationException If an invalid $encoding is provided.
  */

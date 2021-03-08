@@ -13,7 +13,7 @@ use function is_int as php_is_int;
  *
  * @psalm-assert-if-true int $var
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Type\int()->matches($value)` instead.
  */

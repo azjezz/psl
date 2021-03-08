@@ -11,7 +11,7 @@ namespace Psl\Type;
  *
  * @psalm-assert-if-true array-key $key
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Type\array_key()->matches($value)` instead.
  */

@@ -16,7 +16,7 @@ use function mb_detect_encoding;
  *
  * @return null|string The string encoding or null if unable to detect encoding.
  *
- * @psalm-pure
+ * @pure
  */
 function detect_encoding(string $string, ?array $encoding_list = null): ?string
 {

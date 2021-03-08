@@ -18,7 +18,7 @@ use function preg_match;
  *  [A-Z]      [a-z]      [0-9]      +     /
  *  0x41-0x5a, 0x61-0x7a, 0x30-0x39, 0x2b, 0x2f
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Exception\RangeException             If the encoded string contains characters outside
  *                                              the base64 characters range.

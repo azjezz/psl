@@ -13,7 +13,7 @@ use function is_scalar as php_is_scalar;
  *
  * @psalm-assert-if-true scalar $var
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Type\scalar()->matches($value)` instead.
  */

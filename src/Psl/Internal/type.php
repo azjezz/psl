@@ -11,7 +11,7 @@ use function is_object;
 /**
  * @param mixed $value
  *
- * @psalm-pure
+ * @pure
  *
  * @codeCoverageIgnore
  *

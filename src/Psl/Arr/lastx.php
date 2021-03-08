@@ -18,7 +18,7 @@ use Psl\Iter;
  *
  * @return Tv
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $array is empty.
  *

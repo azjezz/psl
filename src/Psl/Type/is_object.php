@@ -13,7 +13,7 @@ use function is_object as php_is_object;
  *
  * @psalm-assert-if-true object $var
  *
- * @psalm-pure
+ * @pure
  */
 function is_object($var): bool
 {

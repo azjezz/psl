@@ -16,7 +16,7 @@ use Psl\Iter;
  * @param array<Tk, Tv>   $array
  * @param Tv              $value
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Iter\contains` instead.
  *

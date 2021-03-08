@@ -9,7 +9,7 @@ use function password_verify;
 /**
  * Checks if the given hash matches the given options.
  *
- * @psalm-pure
+ * @pure
  */
 function verify(string $password, string $hash): bool
 {

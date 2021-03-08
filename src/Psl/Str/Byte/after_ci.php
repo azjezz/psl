@@ -9,7 +9,7 @@ use Psl;
 /**
  * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
  *
- * @psalm-pure
+ * @pure
  */
 function after_ci(
     string $haystack,

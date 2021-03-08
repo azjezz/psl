@@ -28,7 +28,7 @@ use function mb_strtolower;
  *      Str\lowercase('سيف')
  *      => Str('سيف')
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */

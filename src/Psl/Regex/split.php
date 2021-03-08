@@ -24,7 +24,7 @@ use const PREG_SPLIT_NO_EMPTY;
  * @throws Exception\RuntimeException                   In case of an unexpected error.
  * @throws Psl\Exception\InvariantViolationException    If $limit is negative, or equal to 0.
  *
- * @psalm-pure
+ * @pure
  */
 function split(string $subject, string $pattern, ?int $limit = null): array
 {

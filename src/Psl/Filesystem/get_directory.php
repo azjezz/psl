@@ -22,7 +22,7 @@ use function dirname;
  *
  * @throws Psl\Exception\InvariantViolationException If $levels is not a positive integer.
  *
- * @psalm-pure
+ * @pure
  */
 function get_directory(string $path, int $levels = 1): string
 {

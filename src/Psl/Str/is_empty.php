@@ -24,7 +24,7 @@ namespace Psl\Str;
  *
  * @psalm-assert-if-false non-empty-string $string
  *
- * @psalm-pure
+ * @pure
  */
 function is_empty(?string $string): bool
 {

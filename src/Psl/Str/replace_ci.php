@@ -13,7 +13,7 @@ use function preg_split;
  * Returns the '$haystack' string with all occurrences of `$needle` replaced by
  * `$replacement` (case-insensitive).
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */

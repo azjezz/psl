@@ -17,7 +17,7 @@ use const JSON_THROW_ON_ERROR;
  *
  * @return mixed
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Exception\DecodeException If an error occurred.
  */

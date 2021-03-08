@@ -9,7 +9,7 @@ namespace Psl\Math;
  *
  * @param list<int> $numbers
  *
- * @psalm-pure
+ * @pure
  */
 function sum(array $numbers): int
 {

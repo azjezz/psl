@@ -9,7 +9,7 @@ namespace Psl;
  *
  * @return no-return
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Exception\InvariantViolationException
  */

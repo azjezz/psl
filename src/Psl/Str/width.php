@@ -12,7 +12,7 @@ use function mb_strwidth;
 /**
  * Return width of length.
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */

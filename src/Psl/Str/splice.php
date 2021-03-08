@@ -14,7 +14,7 @@ use Psl;
  * remainder of the string will be replaced. If the length is zero, the
  * replacement will be inserted at the offset.
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If a negative $length is given.
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
