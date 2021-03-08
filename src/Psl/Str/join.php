@@ -20,7 +20,7 @@ use function implode;
  * @param list<string> $pieces the array of strings to implode
  *
  * @return string a string containing a string representation of all the array
- *                elements in the same order, with the glue string between each element
+ *  elements in the same order, with the glue string between each element
  *
  * @psalm-pure
  */

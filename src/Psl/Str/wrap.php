@@ -10,16 +10,15 @@ use Psl;
  * Wraps a string to a given number of characters.
  *
  * @param string $break the line is broken using the optional break parameter
- * @param bool   $cut   If the cut is set to true, the string is
- *                      always wrapped at or before the specified width. So if you have
- *                      a word that is larger than the given width, it is broken apart.
+ * @param bool $cut If the cut is set to true, the string is always wrapped at or before the specified width.
+ *  so if you have a word that is larger than the given width, it is broken apart.
  *
  * @return string the given string wrapped at the specified column
  *
  * @psalm-pure
  *
- * @throws Psl\Exception\InvariantViolationException If $break is empty, or $width is 0 and $cut is set to true.
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
+ * @throws Psl\Exception\InvariantViolationException If $break is empty, $width is 0 and $cut is set to true,
+ *  or an invalid $encoding is provided.
  */
 function wrap(
     string $string,

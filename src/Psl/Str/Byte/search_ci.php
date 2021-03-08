@@ -14,8 +14,7 @@ use function stripos;
  *
  * An optional offset determines where in the haystack the search begins. If the
  * offset is negative, the search will begin that many characters from the end
- * of the string. If the offset is out-of-bounds, a InvariantViolationException will be
- * thrown.
+ * of the string.
  *
  * @psalm-pure
  *

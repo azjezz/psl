@@ -19,8 +19,8 @@ use function levenshtein as php_levenshtien;
  * and adaptive than variant one, but not as efficient.
  *
  * @return int this function returns the Levenshtein-Distance between the
- *             two argument strings or -1, if one of the argument strings
- *             is longer than the limit of 255 characters
+ *  two argument strings or -1, if one of the argument strings
+ *  is longer than the limit of 255 characters
  *
  * @psalm-pure
  *

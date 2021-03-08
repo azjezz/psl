@@ -9,12 +9,12 @@ use Psl;
 use function grapheme_strlen;
 
 /**
- * Returns the length of the given string in grapheme units
+ * Returns the length of the given string in grapheme units.
  *
  * @psalm-pure
  *
  * @throws Psl\Exception\InvariantViolationException If unable to convert $string to UTF-16,
- *                                                   or split it into graphemes.
+ *  or split it into graphemes.
  */
 function length(string $string): int
 {

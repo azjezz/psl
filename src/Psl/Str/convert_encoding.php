@@ -14,9 +14,7 @@ use function mb_convert_encoding;
  *
  * @psalm-pure
  *
- * @throws Psl\Exception\InvariantViolationException If $from_encoding is invalid.
- * @throws Psl\Exception\InvariantViolationException If $to_encoding is invalid.
- * @throws Psl\Exception\InvariantViolationException If unable to convert $string form $from_encoding to $to_encoding.
+ * @throws Psl\Exception\InvariantViolationException If either one of $from_encoding and $to_encoding is invalid.
  */
 function convert_encoding(string $string, string $from_encoding, string $to_encoding): string
 {

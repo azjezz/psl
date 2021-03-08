@@ -10,9 +10,9 @@ use Psl;
  * Returns a substring of length `$length` of the given string starting at the
  * `$offset`.
  *
- * If no length is given, the slice will contain the rest of the
- * string. If the length is zero, the empty string will be returned. If the
- * offset is out-of-bounds, an InvariantViolationException will be thrown.
+ * If no length is given, the slice will contain the rest of the string.
+ *
+ * If the length is zero, the empty string will be returned.
  *
  * @psalm-pure
  *

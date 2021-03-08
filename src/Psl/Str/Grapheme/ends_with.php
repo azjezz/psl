@@ -12,7 +12,7 @@ use Psl;
  * @psalm-pure
  *
  * @throws Psl\Exception\InvariantViolationException If unable to convert $string to UTF-16,
- *                                                   or split it into graphemes.
+ *  or split it into graphemes.
  */
 function ends_with(string $string, string $suffix): bool
 {

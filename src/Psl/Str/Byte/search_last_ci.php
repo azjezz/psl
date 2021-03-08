@@ -11,9 +11,10 @@ use Psl;
  * or null if it isn't found (case-insensitive).
  *
  * An optional offset determines where in the haystack (from the beginning) the
- * search begins. If the offset is negative, the search will begin that many
- * characters from the end of the string and go backwards. If the offset is
- * out-of-bounds, an InvariantViolationException will be thrown.
+ * search begins.
+ *
+ * If the offset is negative, the search will begin that many
+ * characters from the end of the string and go backwards.
  *
  * @psalm-pure
  *
