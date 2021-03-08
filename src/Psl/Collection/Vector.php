@@ -218,7 +218,7 @@ final class Vector implements VectorInterface
      * @param T $search_value The value that will be search for in the current
      *  collection.
      *
-     * @return int|null - The key (index) where that value is found; null if it is not found.
+     * @return int|null The key (index) where that value is found; null if it is not found.
      *
      * @psalm-mutation-free
      */
@@ -475,7 +475,7 @@ final class Vector implements VectorInterface
      *  `Vector`.
      * @param null|int $length The length of the returned `Vector`
      *
-     * @return Vector<T> - A `Vector` that is a proper subset of the current
+     * @return Vector<T> A `Vector` that is a proper subset of the current
      *  `Vector` starting at `$start` up to but not including the
      *  element `$start + $length`.
      *

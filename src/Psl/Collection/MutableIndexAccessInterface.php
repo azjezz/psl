@@ -22,10 +22,10 @@ interface MutableIndexAccessInterface extends IndexAccessInterface
      * It returns the current collection, meaning changes made to the current
      * collection will be reflected in the returned collection.
      *
-     * @param Tk $k - The key to which we will set the value
-     * @param Tv $v - The value to set
+     * @param Tk $k The key to which we will set the value
+     * @param Tv $v The value to set
      *
-     * @return MutableIndexAccessInterface<Tk, Tv> - Returns itself
+     * @return MutableIndexAccessInterface<Tk, Tv> Returns itself
      */
     public function set($k, $v): MutableIndexAccessInterface;
 
@@ -37,9 +37,9 @@ interface MutableIndexAccessInterface extends IndexAccessInterface
      * It the current collection, meaning changes made to the current collection
      * will be reflected in the returned collection.
      *
-     * @param iterable<Tk, Tv> $iterable - The `iterable` with the new values to set
+     * @param iterable<Tk, Tv> $iterable The `iterable` with the new values to set
      *
-     * @return MutableIndexAccessInterface<Tk, Tv> - Returns itself
+     * @return MutableIndexAccessInterface<Tk, Tv> Returns itself
      */
     public function setAll(iterable $iterable): MutableIndexAccessInterface;
 
@@ -53,9 +53,9 @@ interface MutableIndexAccessInterface extends IndexAccessInterface
      * It the current collection, meaning changes made to the current collection
      * will be reflected in the returned collection.
      *
-     * @param Tk $k - The key to remove
+     * @param Tk $k The key to remove
      *
-     * @return MutableIndexAccessInterface<Tk, Tv> - Returns itself
+     * @return MutableIndexAccessInterface<Tk, Tv> Returns itself
      */
     public function remove($k): MutableIndexAccessInterface;
 }

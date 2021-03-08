@@ -67,7 +67,7 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Returns the last value in the current `MutableVector`.
      *
-     * @return T|null - The last value in the current `MutableVector`, or `null` if the
+     * @return T|null The last value in the current `MutableVector`, or `null` if the
      *  current `MutableVector` is empty.
      *
      * @psalm-mutation-free
@@ -311,7 +311,7 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Removes all items from the vector.
      *
-     * @return MutableVector<T> - Returns itself
+     * @return MutableVector<T> Returns itself
      */
     public function clear(): MutableVector
     {
@@ -593,7 +593,7 @@ final class MutableVector implements MutableVectorInterface
      *  `MutableVector`.
      * @param null|int $length The length of the returned `MutableVector`
      *
-     * @return MutableVector<T> - A `MutableVector` that is a proper subset of the current
+     * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
      * `MutableVector` starting at `$start` up to but not including the element `$start + $length`.
      *
      * @throws Psl\Exception\InvariantViolationException If $start or $len are negative.
