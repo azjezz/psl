@@ -13,7 +13,6 @@ namespace Psl\Iter;
  * @param    iterable<Tk, Tv> $iterable,
  * @param    Tk               $key
  *
- * @return   bool
  */
 function contains_key(iterable $iterable, $key): bool
 {

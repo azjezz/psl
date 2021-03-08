@@ -32,7 +32,6 @@ final class StringType extends Type\Type
     /**
      * @param mixed $value
      *
-     * @return string
      *
      * @throws CoercionException
      */
@@ -56,7 +55,6 @@ final class StringType extends Type\Type
     /**
      * @param mixed $value
      *
-     * @return string
      *
      * @psalm-assert string $value
      *
