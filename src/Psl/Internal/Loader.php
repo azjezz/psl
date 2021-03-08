@@ -254,7 +254,7 @@ final class Loader
         'Psl\Regex\split',
         'Psl\Regex\matches',
         'Psl\Regex\replace',
-        'Psl\Regex\replace_by',
+        'Psl\Regex\replace_with',
         'Psl\Regex\replace_every',
         'Psl\Regex\Internal\get_prec_error',
         'Psl\Regex\Internal\call_preg',

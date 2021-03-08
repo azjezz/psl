@@ -9,10 +9,10 @@ use function preg_match;
 /**
  * Determine if $subject matches the given $pattern.
  *
- * @param non-empty-string  $pattern    The pattern to match against.
+ * @param non-empty-string $pattern The pattern to match against.
  *
  * @throws Exception\InvalidPatternException If $pattern is invalid.
- * @throws Exception\RuntimeException        If an internal error accord.
+ * @throws Exception\RuntimeException If an internal error accord.
  *
  * @psalm-pure
  */

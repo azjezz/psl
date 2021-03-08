@@ -7,19 +7,19 @@ namespace Psl\Tests\Regex;
 use PHPUnit\Framework\TestCase;
 use Psl\Regex;
 
-final class ReplaceByTest extends TestCase
+final class ReplaceWithTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
-    public function testReplace(
+    public function testReplaceWith(
         string $expected,
         string $subject,
         string $pattern,
         callable $callback,
         ?int $limit = null
     ): void {
-        static::assertSame($expected, Regex\replace_by($subject, $pattern, $callback, $limit));
+        static::assertSame($expected, Regex\replace_with($subject, $pattern, $callback, $limit));
     }
 
     public function provideData(): iterable
@@ -62,7 +62,7 @@ final class ReplaceByTest extends TestCase
         $this->expectException(Regex\Exception\InvalidPatternException::class);
         $this->expectExceptionMessage("No ending delimiter '|' found");
 
-        Regex\replace_by(
+        Regex\replace_with(
             'April 15, 2003',
             '|(\d{2}/\d{2}/)(\d{4})',
             static fn(array $matches): string => $matches[1] . (((int)$matches[2]) + 20)
