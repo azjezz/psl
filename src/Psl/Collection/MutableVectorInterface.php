@@ -16,6 +16,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * Get an array copy of the current vector.
      *
      * @return list<T>
+     *
+     * @psalm-mutation-free
      */
     public function toArray(): array;
 
@@ -24,6 +26,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * `MutableVectorInterface`.
      *
      * @return MutableVectorInterface<T>
+     *
+     * @psalm-mutation-free
      */
     public function values(): MutableVectorInterface;
 
@@ -31,6 +35,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * Returns a `MutableVectorInterface` containing the keys of the current `MutableVectorInterface`.
      *
      * @return MutableVectorInterface<int>
+     *
+     * @psalm-mutation-free
      */
     public function keys(): MutableVectorInterface;
 
@@ -118,6 +124,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @return T|null - The first value in the current `MutableVectorInterface`, or `null` if the
      *      current `MutableVectorInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function first();
 
@@ -126,6 +134,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @return int|null - The first key in the current `MutableVectorInterface`, or `null` if the
      *      current `MutableVectorInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function firstKey(): ?int;
 
@@ -134,6 +144,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @return T|null - The last value in the current `MutableVectorInterface`, or `null` if the
      *      current `MutableVectorInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function last();
 
@@ -142,6 +154,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @return int|null - The last key in the current `MutableVectorInterface`, or `null` if the
      *      current `MutableVectorInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function lastKey(): ?int;
 
@@ -154,6 +168,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *      `MutableVectorInterface`.
      *
      * @return int|null - The key (index) where that value is found; null if it is not found.
+     *
+     * @psalm-mutation-free
      */
     public function linearSearch($search_value): ?int;
 
@@ -173,6 +189,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @return   MutableVectorInterface<array{0: T, 1: Tu}> - The `MutableVectorInterface` that combines the
      *      values of the current `MutableVectorInterface` with the provided `iterable`.
+     *
+     * @psalm-mutation-free
      */
     public function zip(iterable $iterable): MutableVectorInterface;
 
@@ -190,6 +208,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @return MutableVectorInterface<T> - A `MutableVectorInterface` that is a proper subset of the current
      *      `MutableVectorInterface` up to `n` elements.
+     *
+     * @psalm-mutation-free
      */
     public function take(int $n): MutableVectorInterface;
 
@@ -223,6 +243,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @return MutableVectorInterface<T> - A `MutableVectorInterface` that is a proper subset of the current
      *      `MutableVectorInterface` containing values after the specified `n`-th element.
+     *
+     * @psalm-mutation-free
      */
     public function drop(int $n): MutableVectorInterface;
 
@@ -253,14 +275,16 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * The returned `MutableVectorInterface` will always be a proper subset of this
      * `MutableVectorInterface`.
      *
-     * @param  int $start - The starting key of this Vector to begin the returned
+     * @param int $start The starting key of this Vector to begin the returned
      *                   `MutableVectorInterface`
-     * @param  int $len   - The length of the returned `MutableVectorInterface`
+     * @param int $length The length of the returned `MutableVectorInterface`
      *
      * @return MutableVectorInterface<T> - A `MutableVectorInterface` that is a proper subset of the current
      *      `MutableVectorInterface` starting at `$start` up to but not including the element `$start + $len`.
+     *
+     * @psalm-mutation-free
      */
-    public function slice(int $start, int $len): MutableVectorInterface;
+    public function slice(int $start, int $length): MutableVectorInterface;
 
     /**
      * Stores a value into the current vector with the specified key,

@@ -22,11 +22,15 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
 {
     /**
      * Is the CollectionInterface empty?
+     *
+     * @psalm-mutation-free
      */
     public function isEmpty(): bool;
 
     /**
      * Get the number of items in the collection.
+     *
+     * @psalm-mutation-free
      */
     public function count(): int;
 
@@ -34,6 +38,8 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * Get an array copy of the current collection.
      *
      * @return array<Tk, Tv>
+     *
+     * @psalm-mutation-free
      */
     public function toArray(): array;
 
@@ -41,6 +47,8 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * Get an array copy of the current collection.
      *
      * @return array<Tk, Tv>
+     *
+     * @psalm-mutation-free
      */
     public function jsonSerialize(): array;
 
@@ -133,11 +141,13 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *
      * @template Tu
      *
-     * @param iterable<Tu> $iterable - The `iterable` to use to combine with the
-     *      elements of this `CollectionInterface`.
+     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
+     *  elements of this `CollectionInterface`.
      *
      * @return CollectionInterface<Tk, array{0: Tv, 1: Tu}> - The `CollectionInterface` that combines
-     *      the values of the current `CollectionInterface` with the provided `iterable`.
+     *  the values of the current `CollectionInterface` with the provided `iterable`.
+     *
+     * @psalm-mutation-free
      */
     public function zip(iterable $iterable): CollectionInterface;
 
@@ -155,6 +165,8 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *
      * @return CollectionInterface<Tk, Tv> - A `CollectionInterface` that is a proper subset of the current
      *      `CollectionInterface` up to `n` elements.
+     *
+     * @psalm-mutation-free
      */
     public function take(int $n): CollectionInterface;
 
@@ -188,6 +200,8 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *
      * @return CollectionInterface<Tk, Tv> - A `CollectionInterface` that is a proper subset of the current
      *      `CollectionInterface` containing values after the specified `n`-th element.
+     *
+     * @psalm-mutation-free
      */
     public function drop(int $n): CollectionInterface;
 
@@ -218,12 +232,14 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * The returned `CollectionInterface` will always be a proper subset of this
      * `CollectionInterface`.
      *
-     * @param int $start - The starting key of this Vector to begin the returned
+     * @param int $start The starting key of this Vector to begin the returned
      *      `CollectionInterface`.
-     * @param int $len   - The length of the returned `CollectionInterface`.
+     * @param int $length The length of the returned `CollectionInterface`.
      *
      * @return CollectionInterface<Tk, Tv> - A `CollectionInterface` that is a proper subset of the current
-     *      `CollectionInterface` starting at `$start` up to but not including the element `$start + $len`.
+     * `CollectionInterface` starting at `$start` up to but not including the element `$start + $length`.
+     *
+     * @psalm-mutation-free
      */
-    public function slice(int $start, int $len): CollectionInterface;
+    public function slice(int $start, int $length): CollectionInterface;
 }

@@ -8,6 +8,8 @@ use Psl;
 use Psl\Dict;
 use Psl\Iter;
 use Psl\Vec;
+use function array_key_exists;
+use function count;
 
 /**
  * @template Tk of array-key
@@ -35,13 +37,32 @@ final class Map implements MapInterface
     }
 
     /**
+     * @template Tsk of array-key
+     * @template Tsv
+     *
+     * @param array<Tsk, Tsv> $elements
+     *
+     * @return Map<Tsk, Tsv>
+     *
+     * @psalm-pure
+     */
+    public static function fromArray(array $elements): Map
+    {
+        /** @psalm-suppress ImpureMethodCall - conditionally pure */
+        return new self($elements);
+    }
+
+    /**
      * Returns the first value in the current collection.
      *
      * @return Tv|null - The first value in the current collection, or `null` if the
      *           current collection is empty.
+     *
+     * @psalm-mutation-free
      */
     public function first()
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\first($this->elements);
     }
 
@@ -50,9 +71,12 @@ final class Map implements MapInterface
      *
      * @return Tk|null - The first key in the current collection, or `null` if the
      *                  current collection is empty.
+     *
+     * @psalm-mutation-free
      */
     public function firstKey()
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\first_key($this->elements);
     }
 
@@ -61,9 +85,12 @@ final class Map implements MapInterface
      *
      * @return Tv|null - The last value in the current collection, or `null` if the
      *           current collection is empty.
+     *
+     * @psalm-mutation-free
      */
     public function last()
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\last($this->elements);
     }
 
@@ -72,9 +99,12 @@ final class Map implements MapInterface
      *
      * @return Tk|null - The last key in the current collection, or `null` if the
      *                  current collection is empty.
+     *
+     * @psalm-mutation-free
      */
     public function lastKey()
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\last_key($this->elements);
     }
 
@@ -87,6 +117,8 @@ final class Map implements MapInterface
      *                        collection.
      *
      * @return Tk|null - The key (index) where that value is found; null if it is not found
+     *
+     * @psalm-mutation-free
      */
     public function linearSearch($search_value)
     {
@@ -111,6 +143,8 @@ final class Map implements MapInterface
 
     /**
      * Is the map empty?
+     *
+     * @psalm-mutation-free
      */
     public function isEmpty(): bool
     {
@@ -119,9 +153,12 @@ final class Map implements MapInterface
 
     /**
      * Get the number of items in the current map.
+     *
+     * @psalm-mutation-free
      */
     public function count(): int
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\count($this->elements);
     }
 
@@ -129,6 +166,8 @@ final class Map implements MapInterface
      * Get an array copy of the current map.
      *
      * @return array<Tk, Tv>
+     *
+     * @psalm-mutation-free
      */
     public function toArray(): array
     {
@@ -139,6 +178,8 @@ final class Map implements MapInterface
      * Get an array copy of the current map.
      *
      * @return array<Tk, Tv>
+     *
+     * @psalm-mutation-free
      */
     public function jsonSerialize(): array
     {
@@ -153,6 +194,8 @@ final class Map implements MapInterface
      * @return Tv
      *
      * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
+     *
+     * @psalm-mutation-free
      */
     public function at($k)
     {
@@ -165,9 +208,12 @@ final class Map implements MapInterface
      * Determines if the specified key is in the current map.
      *
      * @param Tk $k
+     *
+     * @psalm-mutation-free
      */
     public function contains($k): bool
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\contains_key($this->elements, $k);
     }
 
@@ -177,6 +223,8 @@ final class Map implements MapInterface
      * @param  Tk $k
      *
      * @return Tv|null
+     *
+     * @psalm-mutation-free
      */
     public function get($k)
     {
@@ -189,20 +237,25 @@ final class Map implements MapInterface
      * `Map`.
      *
      * @return Vector<Tv>
+     *
+     * @psalm-mutation-free
      */
     public function values(): Vector
     {
-        return new Vector(Vec\values($this->elements));
+        return Vector::fromArray($this->elements);
     }
 
     /**
      * Returns a `Vector` containing the keys of the current `Map`.
      *
      * @return Vector<Tk>
+     *
+     * @psalm-mutation-free
      */
     public function keys(): Vector
     {
-        return new Vector(Vec\keys($this->elements));
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
+        return Vector::fromArray(Vec\keys($this->elements));
     }
 
     /**
@@ -313,22 +366,31 @@ final class Map implements MapInterface
      *
      * @return   Map<Tk, array{0: Tv, 1: Tu}> - The `Map` that combines the values of the current
      *           `Map` with the provided `iterable`.
+     *
+     * @psalm-mutation-free
      */
     public function zip(iterable $iterable): Map
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         $array = Vec\values($iterable);
 
         /** @var array<Tk, array{0: Tv, 1: Tu}> $elements */
         $elements = [];
 
         foreach ($this->elements as $k => $v) {
-            /** @var Tu|null $u */
+            /**
+             * @psalm-suppress ImpureFunctionCall - conditionally pure
+             * @var Tu|null $u
+             */
             $u = Iter\first($array);
             if (null === $u) {
                 break;
             }
 
-            /** @var iterable<int, Tu> $array */
+            /**
+             * @psalm-suppress ImpureFunctionCall - conditionally pure
+             * @var iterable<int, Tu> $array
+             */
             $array = Dict\drop($array, 1);
 
             $elements[$k] = [$v, $u];
@@ -353,10 +415,12 @@ final class Map implements MapInterface
      *           `Map` up to `n` elements.
      *
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
+     *
+     * @psalm-mutation-free
      */
     public function take(int $n): Map
     {
-        return new Map(Dict\take($this->elements, $n));
+        return $this->slice(0, $n);
     }
 
     /**
@@ -394,10 +458,12 @@ final class Map implements MapInterface
      *           `Map` containing values after the specified `n`-th element.
      *
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
+     *
+     * @psalm-mutation-free
      */
     public function drop(int $n): Map
     {
-        return new Map(Dict\drop($this->elements, $n));
+        return $this->slice($n);
     }
 
     /**
@@ -427,21 +493,24 @@ final class Map implements MapInterface
      * `$start` is 0-based. $len is 1-based. So `slice(0, 2)` would return the
      * elements at key 0 and 1.
      *
-     * The returned `Map` will always be a proper subset of this
-     * `Map`.
+     * The returned `Map` will always be a proper subset of this `Map`.
      *
-     * @param  int $start - The starting key of this Vector to begin the returned
-     *                   `Map`
-     * @param  int $len   - The length of the returned `Map`
+     * @param int $start The starting key of this Vector to begin the returned
+     * `Map`.
+     * @param null|int $length The length of the returned `Map`
      *
      * @return Map<Tk, Tv> - A `Map` that is a proper subset of the current
-     *           `Map` starting at `$start` up to but not including the
-     *           element `$start + $len`.
+     *  `Map` starting at `$start` up to but not including the element `$start + $length`.
      *
-     * @throws Psl\Exception\InvariantViolationException If $start or $len are negative.
+     * @throws Psl\Exception\InvariantViolationException If $start or $length are negative.
+     *
+     * @psalm-mutation-free
      */
-    public function slice(int $start, int $len): Map
+    public function slice(int $start, ?int $length = null): Map
     {
-        return new Map(Dict\slice($this->elements, $start, $len));
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
+        $result = Dict\slice($this->elements, $start, $length);
+
+        return self::fromArray($result);
     }
 }

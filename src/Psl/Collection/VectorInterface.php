@@ -17,6 +17,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      * @param  int $k
      *
      * @return T
+     *
+     * @psalm-mutation-free
      */
     public function at($k);
 
@@ -24,6 +26,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      * Determines if the specified key is in the current vector.
      *
      * @param int $k
+     *
+     * @psalm-mutation-free
      */
     public function contains($k): bool;
 
@@ -33,6 +37,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      * @param  int $k
      *
      * @return T|null
+     *
+     * @psalm-mutation-free
      */
     public function get($k);
 
@@ -40,6 +46,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      * Get an array copy of the current vector.
      *
      * @return list<T>
+     *
+     * @psalm-mutation-free
      */
     public function toArray(): array;
 
@@ -48,6 +56,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      * `VectorInterface`.
      *
      * @return VectorInterface<T>
+     *
+     * @psalm-mutation-free
      */
     public function values(): VectorInterface;
 
@@ -55,6 +65,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      * Returns a `VectorInterface` containing the keys of the current `VectorInterface`.
      *
      * @return VectorInterface<int>
+     *
+     * @psalm-mutation-free
      */
     public function keys(): VectorInterface;
 
@@ -141,6 +153,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @return T|null - The first value in the current `VectorInterface`, or `null` if the
      *      current `VectorInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function first();
 
@@ -149,6 +163,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @return int|null - The first key in the current `VectorInterface`, or `null` if the
      *      current `VectorInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function firstKey(): ?int;
 
@@ -157,6 +173,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @return T|null - The last value in the current `VectorInterface`, or `null` if the
      *      current `VectorInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function last();
 
@@ -165,6 +183,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @return int|null - The last key in the current `VectorInterface`, or `null` if the
      *          current `VectorInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function lastKey(): ?int;
 
@@ -177,6 +197,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      *      `VectorInterface`.
      *
      * @return int|null - The key (index) where that value is found; null if it is not found
+     *
+     * @psalm-mutation-free
      */
     public function linearSearch($search_value): ?int;
 
@@ -196,6 +218,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @return   VectorInterface<array{0: T, 1: Tu}> - The `VectorInterface` that combines the values
      *      of the current `VectorInterface` with the provided `iterable`.
+     *
+     * @psalm-mutation-free
      */
     public function zip(iterable $iterable): VectorInterface;
 
@@ -213,6 +237,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @return VectorInterface<T> - A `VectorInterface` that is a proper subset of the current
      *      `VectorInterface` up to `n` elements.
+     *
+     * @psalm-mutation-free
      */
     public function take(int $n): VectorInterface;
 
@@ -246,6 +272,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @return VectorInterface<T> - A `VectorInterface` that is a proper subset of the current
      *      `VectorInterface` containing values after the specified `n`-th element.
+     *
+     * @psalm-mutation-free
      */
     public function drop(int $n): VectorInterface;
 
@@ -276,12 +304,14 @@ interface VectorInterface extends AccessibleCollectionInterface
      * The returned `VectorInterface` will always be a proper subset of this
      * `VectorInterface`.
      *
-     * @param  int $start - The starting key of this Vector to begin the returned
-     *                   `VectorInterface`
-     * @param  int $len   - The length of the returned `VectorInterface`
+     * @param int $start The starting key of this Vector to begin the returned
+     *  `VectorInterface`.
+     * @param int $length The length of the returned `VectorInterface`.
      *
      * @return VectorInterface<T> - A `VectorInterface` that is a proper subset of the current
-     *      `VectorInterface` starting at `$start` up to but not including the element `$start + $len`.
+     *  `VectorInterface` starting at `$start` up to but not including the element `$start + $length`.
+     *
+     * @psalm-mutation-free
      */
-    public function slice(int $start, int $len): VectorInterface;
+    public function slice(int $start, int $length): VectorInterface;
 }

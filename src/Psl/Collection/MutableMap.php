@@ -10,8 +10,8 @@ use Psl\Iter;
 use Psl\Vec;
 
 /**
- * @template   Tk of array-key
- * @template   Tv
+ * @template Tk of array-key
+ * @template Tv
  *
  * @implements MutableMapInterface<Tk, Tv>
  */
@@ -33,13 +33,32 @@ final class MutableMap implements MutableMapInterface
     }
 
     /**
+     * @template Tsk of array-key
+     * @template Tsv
+     *
+     * @param array<Tsk, Tsv> $elements
+     *
+     * @return MutableMap<Tsk, Tsv>
+     *
+     * @pure
+     */
+    public static function fromArray(array $elements): MutableMap
+    {
+        /** @psalm-suppress ImpureMethodCall - conditionally pure */
+        return new self($elements);
+    }
+
+    /**
      * Returns the first value in the current collection.
      *
      * @return Tv|null - The first value in the current collection, or `null` if the
-     *           current collection is empty.
+     *  current collection is empty.
+     *
+     * @psalm-mutation-free
      */
     public function first()
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\first($this->elements);
     }
 
@@ -47,10 +66,13 @@ final class MutableMap implements MutableMapInterface
      * Returns the first key in the current collection.
      *
      * @return Tk|null - The first key in the current collection, or `null` if the
-     *                  current collection is empty
+     *  current collection is empty.
+     *
+     * @psalm-mutation-free
      */
     public function firstKey()
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\first_key($this->elements);
     }
 
@@ -58,10 +80,13 @@ final class MutableMap implements MutableMapInterface
      * Returns the last value in the current collection.
      *
      * @return Tv|null - The last value in the current collection, or `null` if the
-     *           current collection is empty.
+     *  current collection is empty.
+     *
+     * @psalm-mutation-free
      */
     public function last()
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\last($this->elements);
     }
 
@@ -69,10 +94,13 @@ final class MutableMap implements MutableMapInterface
      * Returns the last key in the current collection.
      *
      * @return Tk|null - The last key in the current collection, or `null` if the
-     *                  current collection is empty
+     *  current collection is empty.
+     *
+     * @psalm-mutation-free
      */
     public function lastKey()
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\last_key($this->elements);
     }
 
@@ -81,10 +109,12 @@ final class MutableMap implements MutableMapInterface
      *
      * If no element matches the search value, this function returns null.
      *
-     * @param  Tv $search_value - The value that will be search for in the current
-     *                        collection.
+     * @param Tv $search_value The value that will be search for in the current
+     *  collection.
      *
-     * @return Tk|null - The key (index) where that value is found; null if it is not found
+     * @return Tk|null - The key (index) where that value is found; null if it is not found.
+     *
+     * @psalm-mutation-free
      */
     public function linearSearch($search_value)
     {
@@ -109,6 +139,8 @@ final class MutableMap implements MutableMapInterface
 
     /**
      * Is the map empty?
+     *
+     * @psalm-mutation-free
      */
     public function isEmpty(): bool
     {
@@ -117,9 +149,12 @@ final class MutableMap implements MutableMapInterface
 
     /**
      * Get the number of items in the current map.
+     *
+     * @psalm-mutation-free
      */
     public function count(): int
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\count($this->elements);
     }
 
@@ -127,6 +162,8 @@ final class MutableMap implements MutableMapInterface
      * Get an array copy of the current map.
      *
      * @return array<Tk, Tv>
+     *
+     * @psalm-mutation-free
      */
     public function toArray(): array
     {
@@ -137,6 +174,8 @@ final class MutableMap implements MutableMapInterface
      * Get an array copy of the current map.
      *
      * @return array<Tk, Tv>
+     *
+     * @psalm-mutation-free
      */
     public function jsonSerialize(): array
     {
@@ -146,11 +185,13 @@ final class MutableMap implements MutableMapInterface
     /**
      * Returns the value at the specified key in the current map.
      *
-     * @param  Tk $k
+     * @param Tk $k
      *
      * @return Tv
      *
      * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
+     *
+     * @psalm-mutation-free
      */
     public function at($k)
     {
@@ -163,18 +204,23 @@ final class MutableMap implements MutableMapInterface
      * Determines if the specified key is in the current map.
      *
      * @param Tk $k
+     *
+     * @psalm-mutation-free
      */
     public function contains($k): bool
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\contains_key($this->elements, $k);
     }
 
     /**
      * Returns the value at the specified key in the current map.
      *
-     * @param  Tk $k
+     * @param Tk $k
      *
      * @return Tv|null
+     *
+     * @psalm-mutation-free
      */
     public function get($k)
     {
@@ -186,20 +232,26 @@ final class MutableMap implements MutableMapInterface
      * `MutableMap`.
      *
      * @return MutableVector<Tv>
+     *
+     * @psalm-mutation-free
      */
     public function values(): MutableVector
     {
-        return new MutableVector(Vec\values($this->elements));
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
+        return MutableVector::fromArray(Vec\values($this->elements));
     }
 
     /**
      * Returns a `MutableVector` containing the keys of the current `MutableMap`.
      *
      * @return MutableVector<Tk>
+     *
+     * @psalm-mutation-free
      */
     public function keys(): MutableVector
     {
-        return new MutableVector(Vec\keys($this->elements));
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
+        return MutableVector::fromArray(Vec\keys($this->elements));
     }
 
     /**
@@ -212,11 +264,11 @@ final class MutableMap implements MutableMapInterface
      * The keys associated with the current `MutableMap` remain unchanged in the
      * returned `MutableMap`.
      *
-     * @param (callable(Tv): bool) $fn - The callback containing the condition to apply to the current
-     *                                 `MutableMap` values
+     * @param (callable(Tv): bool) $fn The callback containing the condition to apply to the current
+     *  `MutableMap` values.
      *
-     * @return MutableMap<Tk, Tv> - a MutableMap containing the values after a user-specified condition
-     *                        is applied
+     * @return MutableMap<Tk, Tv> A MutableMap containing the values after a user-specified condition
+     *  is applied.
      */
     public function filter(callable $fn): MutableMap
     {
@@ -234,12 +286,11 @@ final class MutableMap implements MutableMapInterface
      * The keys associated with the current `MutableMap` remain unchanged in the
      * returned `MutableMap`; the keys will be used in the filtering process only.
      *
-     * @param (callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
-     *                                     `MutableMap` keys and values
+     * @param (callable(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
+     *  `MutableMap` keys and values.
      *
-     * @return MutableMap<Tk, Tv> - a `MutableMap` containing the values after a user-specified
-     *                        condition is applied to the keys and values of the current
-     *                        `MutableMap`
+     * @return MutableMap<Tk, Tv> A `MutableMap` containing the values after a user-specified
+     *  condition is applied to the keys and values of the current `MutableMap`.
      */
     public function filterWithKey(callable $fn): MutableMap
     {
@@ -258,11 +309,11 @@ final class MutableMap implements MutableMapInterface
      *
      * @template Tu
      *
-     * @param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
-     *                               `MutableMap` values
+     * @param (callable(Tv): Tu) $fn The callback containing the operation to apply to the current
+     *  `MutableMap` values.
      *
-     * @return   MutableMap<Tk, Tu> - a `MutableMap` containing key/value pairs after a user-specified
-     *                        operation is applied
+     * @return   MutableMap<Tk, Tu> A `MutableMap` containing key/value pairs after a user-specified
+     *  operation is applied.
      */
     public function map(callable $fn): MutableMap
     {
@@ -282,12 +333,11 @@ final class MutableMap implements MutableMapInterface
      *
      * @template Tu
      *
-     * @param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
-     *                                   `MutableMap` keys and values
+     * @param (callable(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
+     *  `MutableMap` keys and values.
      *
-     * @return   MutableMap<Tk, Tu> - a `MutableMap` containing the values after a user-specified
-     *                        operation on the current `MutableMap`'s keys and values is
-     *                        applied
+     * @return   MutableMap<Tk, Tu> A `MutableMap` containing the values after a user-specified
+     *  operation on the current `MutableMap`'s keys and values is applied.
      */
     public function mapWithKey(callable $fn): MutableMap
     {
@@ -305,31 +355,40 @@ final class MutableMap implements MutableMapInterface
      *
      * @template Tu
      *
-     * @param    iterable<Tu> $iterable - The `iterable` to use to combine with the
-     *                       elements of this `MutableMap`.
+     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
+     *  elements of this `MutableMap`.
      *
-     * @return   MutableMap<Tk, array{0: Tv, 1: Tu}> - The `MutableMap` that combines the values of the current
-     *           `MutableMap` with the provided `iterable`.
+     * @return MutableMap<Tk, array{0: Tv, 1: Tu}> A `MutableMap` that combines the values of the current
+     *  `MutableMap` with the provided `iterable`.
+     *
+     * @psalm-mutation-free
      */
     public function zip(iterable $iterable): MutableMap
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         $array = Vec\values($iterable);
         /** @var array<Tk, array{0: Tv, 1: Tu}> $elements */
         $elements = [];
 
         foreach ($this->elements as $k => $v) {
-            /** @var Tu|null $u */
+            /**
+             * @var Tu|null $u
+             * @psalm-suppress ImpureFunctionCall - conditionally pure
+             */
             $u = Iter\first($array);
             if (null === $u) {
                 break;
             }
 
+            /**
+             * @psalm-suppress ImpureFunctionCall - conditionally pure
+             */
             $array = Dict\drop($array, 1);
 
             $elements[$k] = [$v, $u];
         }
 
-        return new MutableMap($elements);
+        return self::fromArray($elements);
     }
 
     /**
@@ -341,17 +400,19 @@ final class MutableMap implements MutableMapInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param $n - The last element that will be included in the returned
-     *             `MutableMap`
+     * @param int $n The last element that will be included in the returned
+     *  `MutableMap`.
      *
-     * @return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
-     *           `MutableMap` up to `n` elements.
+     * @return MutableMap<Tk, Tv> A `MutableMap` that is a proper subset of the current
+     *  `MutableMap` up to `n` elements.
      *
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
+     *
+     * @psalm-mutation-free
      */
     public function take(int $n): MutableMap
     {
-        return new MutableMap(Dict\take($this->elements, $n));
+        return $this->slice(0, $n);
     }
 
     /**
@@ -362,11 +423,11 @@ final class MutableMap implements MutableMapInterface
      * The returned `MutableMap` will always be a proper subset of the current
      * `MutableMap`.
      *
-     * @param (callable(Tv): bool) $fn - The callback that is used to determine the stopping
-     *              condition.
+     * @param (callable(Tv): bool) $fn The callback that is used to determine the stopping
+     *  condition.
      *
-     * @return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
-     *           `MutableMap` up until the callback returns `false`.
+     * @return MutableMap<Tk, Tv> A `MutableMap` that is a proper subset of the current
+     *  `MutableMap` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): MutableMap
     {
@@ -382,18 +443,20 @@ final class MutableMap implements MutableMapInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param  int $n - The last element to be skipped; the $n+1 element will be the
-     *             first one in the returned `MutableMap`.
+     * @param  int $n The last element to be skipped; the $n+1 element will be the
+     *  first one in the returned `MutableMap`.
      *
-     * @return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
-     *           `MutableMap` containing values after the specified `n`-th
-     *           element.
+     * @return MutableMap<Tk, Tv> A `MutableMap` that is a proper subset of the current
+     *  `MutableMap` containing values after the specified `n`-th element.
      *
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
+     *
+     * @psalm-mutation-free
      */
     public function drop(int $n): MutableMap
     {
-        return new MutableMap(Dict\drop($this->elements, $n));
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
+        return self::fromArray(Dict\drop($this->elements, $n));
     }
 
     /**
@@ -404,11 +467,11 @@ final class MutableMap implements MutableMapInterface
      * The returned `MutableMap` will always be a proper subset of the current
      * `MutableMap`.
      *
-     * @param (callable(Tv): bool) $fn - The callback used to determine the starting element for the
-     *              returned `MutableMap`.
+     * @param (callable(Tv): bool) $fn The callback used to determine the starting element for the
+     *  returned `MutableMap`.
      *
-     * @return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
-     *           `MutableMap` starting after the callback returns `true`.
+     * @return MutableMap<Tk, Tv> A `MutableMap` that is a proper subset of the current
+     *  `MutableMap` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): MutableMap
     {
@@ -426,19 +489,21 @@ final class MutableMap implements MutableMapInterface
      * The returned `MutableMap` will always be a proper subset of this
      * `MutableMap`.
      *
-     * @param  int $start - The starting key of this Vector to begin the returned
-     *                   `MutableMap`
-     * @param  int $len   - The length of the returned `MutableMap`
+     * @param  int $start The starting key of this Vector to begin the returned
+     *  `MutableMap`
+     * @param  null|int $length The length of the returned `MutableMap`
      *
-     * @return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
-     *           `MutableMap` starting at `$start` up to but not including the
-     *           element `$start + $len`.
+     * @return MutableMap<Tk, Tv> A `MutableMap` that is a proper subset of the current
+     *  `MutableMap` starting at `$start` up to but not including the element `$start + $length`.
      *
      * @throws Psl\Exception\InvariantViolationException If $start or $len are negative.
+     *
+     * @psalm-mutation-free
      */
-    public function slice(int $start, int $len): MutableMap
+    public function slice(int $start, ?int $length = null): MutableMap
     {
-        return new MutableMap(Dict\slice($this->elements, $start, $len));
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
+        return self::fromArray(Dict\slice($this->elements, $start, $length));
     }
 
     /**
@@ -451,10 +516,10 @@ final class MutableMap implements MutableMapInterface
      * It returns the current map, meaning changes made to the current
      * map will be reflected in the returned map.
      *
-     * @param  Tk $k - The key to which we will set the value
-     * @param  Tv $v - The value to set
+     * @param Tk $k The key to which we will set the value
+     * @param Tv $v The value to set
      *
-     * @return MutableMap<Tk, Tv> - Returns itself
+     * @return MutableMap<Tk, Tv> Returns itself
      *
      * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
      */
@@ -478,9 +543,9 @@ final class MutableMap implements MutableMapInterface
      * It the current map, meaning changes made to the current map
      * will be reflected in the returned map.
      *
-     * @param  iterable<Tk, Tv> $iterable - The `iterable` with the new values to set
+     * @param  iterable<Tk, Tv> $iterable The `iterable` with the new values to set
      *
-     * @return MutableMap<Tk, Tv> - Returns itself
+     * @return MutableMap<Tk, Tv> Returns itself
      */
     public function setAll(iterable $iterable): MutableMap
     {
@@ -494,10 +559,10 @@ final class MutableMap implements MutableMapInterface
     /**
      * Add a value to the map and return the map itself.
      *
-     * @param  Tk $k - The key to which we will add the value
-     * @param  Tv $v - The value to set
+     * @param Tk $k The key to which we will add the value
+     * @param Tv $v The value to set
      *
-     * @return MutableMap<Tk, Tv> - Returns itself
+     * @return MutableMap<Tk, Tv> Returns itself
      */
     public function add($k, $v): MutableMap
     {
@@ -509,9 +574,9 @@ final class MutableMap implements MutableMapInterface
     /**
      * For every element in the provided iterable, add the value into the current map.
      *
-     * @param  iterable<Tk, Tv> $iterable - The `iterable` with the new values to add
+     * @param iterable<Tk, Tv> $iterable The `iterable` with the new values to add.
      *
-     * @return MutableMap<Tk, Tv> - Returns itself
+     * @return MutableMap<Tk, Tv> Returns itself.
      */
     public function addAll(iterable $iterable): MutableMap
     {
@@ -532,9 +597,9 @@ final class MutableMap implements MutableMapInterface
      * It the current map, meaning changes made to the current map
      * will be reflected in the returned map.
      *
-     * @param  Tk $k - The key to remove
+     * @param  Tk $k The key to remove.
      *
-     * @return MutableMap<Tk, Tv> - Returns itself
+     * @return MutableMap<Tk, Tv> Returns itself.
      */
     public function remove($k): MutableMap
     {

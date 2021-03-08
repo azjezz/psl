@@ -18,6 +18,8 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * `MutableMapInterface`.
      *
      * @return MutableVectorInterface<Tv>
+     *
+     * @psalm-mutation-free
      */
     public function values(): MutableVectorInterface;
 
@@ -25,6 +27,8 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * Returns a `MutableVectorInterface` containing the keys of the current `MutableMapInterface`.
      *
      * @return MutableVectorInterface<Tk>
+     *
+     * @psalm-mutation-free
      */
     public function keys(): MutableVectorInterface;
 
@@ -111,6 +115,8 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @return Tv|null - The first value in the current `MutableMapInterface`, or `null` if the
      *      current `MutableMapInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function first();
 
@@ -119,6 +125,8 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @return Tk|null - The first key in the current `MutableMapInterface`, or `null` if the
      *      current `MutableMapInterface` is empty
+     *
+     * @psalm-mutation-free
      */
     public function firstKey();
 
@@ -127,6 +135,8 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @return Tv|null - The last value in the current `MutableMapInterface`, or `null` if the
      *      current `MutableMapInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function last();
 
@@ -135,6 +145,8 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @return Tk|null - The last key in the current `MutableMapInterface`, or `null` if the
      *      current `MutableMapInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function lastKey();
 
@@ -147,6 +159,8 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *      `MutableMapInterface`.
      *
      * @return Tk|null - The key (index) where that value is found; null if it is not found.
+     *
+     * @psalm-mutation-free
      */
     public function linearSearch($search_value);
 
@@ -161,11 +175,13 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-template Tu
      *
-     * @psalm-param iterable<Tu> $iterable - The `iterable` to use to combine with the
-     *      elements of this `MutableMapInterface`.
+     * @psalm-param iterable<Tu> $iterable The `iterable` to use to combine with the
+     *  elements of this `MutableMapInterface`.
      *
      * @return MutableMapInterface<Tk, array{0: Tv, 1: Tu}> - The `MutableMapInterface` that combines
-     *      the values of the current `MutableMapInterface` with the provided `iterable`.
+     *  the values of the current `MutableMapInterface` with the provided `iterable`.
+     *
+     * @psalm-mutation-free
      */
     public function zip(iterable $iterable): MutableMapInterface;
 
@@ -183,6 +199,8 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @return MutableMapInterface<Tk, Tv> - A `MutableMapInterface` that is a proper subset of the current
      *      `MutableMapInterface` up to `n` elements.
+     *
+     * @psalm-mutation-free
      */
     public function take(int $n): MutableMapInterface;
 
@@ -216,6 +234,8 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @return MutableMapInterface<Tk, Tv> - A `MutableMapInterface` that is a proper subset of the current
      *      `MutableMapInterface` containing values after the specified `n`-th element.
+     *
+     * @psalm-mutation-free
      */
     public function drop(int $n): MutableMapInterface;
 
@@ -246,14 +266,16 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * The returned `MutableMapInterface` will always be a proper subset of this
      * `MutableMapInterface`.
      *
-     * @psalm-param int $start - The starting key of this Vector to begin the returned
-     *      `MutableMapInterface`.
-     * @psalm-param int $len   - The length of the returned `MutableMapInterface`.
+     * @psalm-param int $start The starting key of this Vector to begin the returned
+     *  `MutableMapInterface`.
+     * @psalm-param int $length The length of the returned `MutableMapInterface`.
      *
      * @return MutableMapInterface<Tk, Tv> - A `MutableMapInterface` that is a proper subset of the current
-     *      `MutableMapInterface` starting at `$start` up to but not including the element `$start + $len`.
+     *  `MutableMapInterface` starting at `$start` up to but not including the element `$start + $length`.
+     *
+     * @psalm-mutation-free
      */
-    public function slice(int $start, int $len): MutableMapInterface;
+    public function slice(int $start, int $length): MutableMapInterface;
     
     /**
      * Stores a value into the current collection with the specified key,

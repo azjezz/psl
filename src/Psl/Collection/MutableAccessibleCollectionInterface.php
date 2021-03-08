@@ -27,6 +27,8 @@ interface MutableAccessibleCollectionInterface extends
      * `MutableAccessibleCollectionInterface`.
      *
      * @return MutableAccessibleCollectionInterface<int, Tv>
+     *
+     * @psalm-mutation-free
      */
     public function values(): MutableAccessibleCollectionInterface;
 
@@ -35,6 +37,8 @@ interface MutableAccessibleCollectionInterface extends
      * `MutableAccessibleCollectionInterface`.
      *
      * @return MutableAccessibleCollectionInterface<int, Tk>
+     *
+     * @psalm-mutation-free
      */
     public function keys(): MutableAccessibleCollectionInterface;
 
@@ -191,6 +195,8 @@ interface MutableAccessibleCollectionInterface extends
      * @return MutableAccessibleCollectionInterface<Tk, array{0: Tv, 1: Tu}> - The
      *      `MutableAccessibleCollectionInterface` that combines the values of the current
      *      `MutableAccessibleCollectionInterface` with the provided `iterable`.
+     *
+     * @psalm-mutation-free
      */
     public function zip(iterable $iterable): MutableAccessibleCollectionInterface;
 
@@ -207,6 +213,8 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> - A `MutableAccessibleCollectionInterface` that
      *      is a proper subset of the current `MutableAccessibleCollectionInterface` up to `n` elements.
+     *
+     * @psalm-mutation-free
      */
     public function take(int $n): MutableAccessibleCollectionInterface;
 
@@ -242,6 +250,8 @@ interface MutableAccessibleCollectionInterface extends
      * @return MutableAccessibleCollectionInterface<Tk, Tv> - A `MutableAccessibleCollectionInterface` that
      *      is a proper subset of the current `MutableAccessibleCollectionInterface` containing values after
      *      the specified `n`-th element.
+     *
+     * @psalm-mutation-free
      */
     public function drop(int $n): MutableAccessibleCollectionInterface;
 
@@ -273,13 +283,15 @@ interface MutableAccessibleCollectionInterface extends
      * The returned `MutableAccessibleCollectionInterface` will always be a proper subset of this
      * `MutableAccessibleCollectionInterface`.
      *
-     * @param int $start - The starting key of this Vector to begin the returned
-     *      `MutableAccessibleCollectionInterface`
-     * @param int $len   - The length of the returned `MutableAccessibleCollectionInterface`
+     * @param int $start The starting key of this Vector to begin the returned
+     *  `MutableAccessibleCollectionInterface`
+     * @param int $length The length of the returned `MutableAccessibleCollectionInterface`
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> - A `MutableAccessibleCollectionInterface` that
-     *      is a proper subset of the current `MutableAccessibleCollectionInterface` starting at `$start` up
-     *      to but not including the element `$start + $len`.
+     *  is a proper subset of the current `MutableAccessibleCollectionInterface` starting at `$start` up
+     *  to but not including the element `$start + $length`.
+     *
+     * @psalm-mutation-free
      */
-    public function slice(int $start, int $len): MutableAccessibleCollectionInterface;
+    public function slice(int $start, int $length): MutableAccessibleCollectionInterface;
 }

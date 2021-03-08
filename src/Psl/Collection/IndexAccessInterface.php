@@ -18,6 +18,8 @@ interface IndexAccessInterface
      * @param Tk $k
      *
      * @return Tv
+     *
+     * @psalm-mutation-free
      */
     public function at($k);
 
@@ -25,6 +27,8 @@ interface IndexAccessInterface
      * Determines if the specified key is in the current collection.
      *
      * @param Tk $k
+     *
+     * @psalm-mutation-free
      */
     public function contains($k): bool;
 
@@ -34,6 +38,8 @@ interface IndexAccessInterface
      * @param Tk $k
      *
      * @return Tv|null
+     *
+     * @psalm-mutation-free
      */
     public function get($k);
 }

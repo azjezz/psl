@@ -22,6 +22,8 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * `AccessibleCollectionInterface`.
      *
      * @return AccessibleCollectionInterface<int, Tv>
+     *
+     * @psalm-mutation-free
      */
     public function values(): AccessibleCollectionInterface;
 
@@ -29,6 +31,8 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * Returns a `AccessibleCollectionInterface` containing the keys of the current `AccessibleCollectionInterface`.
      *
      * @return AccessibleCollectionInterface<int, Tk>
+     *
+     * @psalm-mutation-free
      */
     public function keys(): AccessibleCollectionInterface;
 
@@ -117,6 +121,8 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @return Tv|null - The first value in the current `AccessibleCollectionInterface`, or `null` if the
      *      current `AccessibleCollectionInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function first();
 
@@ -125,6 +131,8 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @return Tk|null - The first key in the current `AccessibleCollectionInterface`, or `null` if the
      *      current `AccessibleCollectionInterface` is empty
+     *
+     * @psalm-mutation-free
      */
     public function firstKey();
 
@@ -133,6 +141,8 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @return Tv|null - The last value in the current `AccessibleCollectionInterface`, or `null` if the
      *      current `AccessibleCollectionInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function last();
 
@@ -141,6 +151,8 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @return Tk|null - The last key in the current `AccessibleCollectionInterface`, or `null` if the
      *      current `AccessibleCollectionInterface` is empty
+     *
+     * @psalm-mutation-free
      */
     public function lastKey();
 
@@ -153,6 +165,8 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *      `AccessibleCollectionInterface`.
      *
      * @return Tk|null - The key (index) where that value is found; null if it is not found.
+     *
+     * @psalm-mutation-free
      */
     public function linearSearch($search_value);
 
@@ -167,11 +181,13 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @template Tu
      *
-     * @param iterable<Tu> $iterable - The `iterable` to use to combine with the
-     *      elements of this `AccessibleCollectionInterface`.
+     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
+     *  elements of this `AccessibleCollectionInterface`.
      *
      * @return AccessibleCollectionInterface<Tk, array{0: Tv, 1: Tu}> - The `AccessibleCollectionInterface` that
-     *      combines the values of the current `AccessibleCollectionInterface` with the provided `iterable`.
+     *  combines the values of the current `AccessibleCollectionInterface` with the provided `iterable`.
+     *
+     * @psalm-mutation-free
      */
     public function zip(iterable $iterable): AccessibleCollectionInterface;
 
@@ -189,6 +205,8 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @return AccessibleCollectionInterface<Tk, Tv> - A `AccessibleCollectionInterface` that is a proper
      *      subset of the current `AccessibleCollectionInterface` up to `n` elements.
+     *
+     * @psalm-mutation-free
      */
     public function take(int $n): AccessibleCollectionInterface;
 
@@ -222,6 +240,8 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @return AccessibleCollectionInterface<Tk, Tv> - A `AccessibleCollectionInterface` that is a proper subset
      *      of the current `AccessibleCollectionInterface` containing values after the specified `n`-th element.
+     *
+     * @psalm-mutation-free
      */
     public function drop(int $n): AccessibleCollectionInterface;
 
@@ -252,13 +272,15 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * The returned `AccessibleCollectionInterface` will always be a proper subset of this
      * `AccessibleCollectionInterface`.
      *
-     * @param int $start - The starting key of this Vector to begin the returned
-     *                   `AccessibleCollectionInterface`
-     * @param int $len   - The length of the returned `AccessibleCollectionInterface`
+     * @param int $start The starting key of this Vector to begin the returned
+     *  `AccessibleCollectionInterface`
+     * @param int $length The length of the returned `AccessibleCollectionInterface`
      *
      * @return AccessibleCollectionInterface<Tk, Tv> - A `AccessibleCollectionInterface` that is a proper subset
-     *      of the current `AccessibleCollectionInterface` starting at `$start` up to but not including
-     *      the element `$start + $len`.
+     *  of the current `AccessibleCollectionInterface` starting at `$start` up to but not including
+     *  the element `$start + $length`.
+     *
+     * @psalm-mutation-free
      */
-    public function slice(int $start, int $len): AccessibleCollectionInterface;
+    public function slice(int $start, int $length): AccessibleCollectionInterface;
 }

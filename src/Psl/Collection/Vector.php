@@ -10,7 +10,7 @@ use Psl\Iter;
 use Psl\Vec;
 
 /**
- * @template   T
+ * @template T
  *
  * @implements VectorInterface<T>
  */
@@ -36,24 +36,47 @@ final class Vector implements VectorInterface
     }
 
     /**
-     * Returns the first value in the current collection.
+     * Create a vector from the given $elements array.
      *
-     * @return T|null - The first value in the current collection, or `null` if the
-     *           current collection is empty.
+     * @template Ts
+     *
+     * @param array<array-key, Ts> $elements
+     *
+     * @return Vector<Ts>
+     *
+     * @pure
+     */
+    public static function fromArray(array $elements): Vector
+    {
+        /** @psalm-suppress ImpureMethodCall - safe */
+        return new self($elements);
+    }
+
+    /**
+     * Returns the first value in the current `Vector`.
+     *
+     * @return T|null The first value in the current `Vector`, or `null` if the
+     *  current `Vector` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function first()
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\first($this->elements);
     }
 
     /**
-     * Returns the last value in the current collection.
+     * Returns the last value in the current `Vector`.
      *
-     * @return T|null - The last value in the current collection, or `null` if the
-     *           current collection is empty.
+     * @return T|null The last value in the current `Vector`, or `null` if the
+     *  current `Vector` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function last()
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\last($this->elements);
     }
 
@@ -68,7 +91,9 @@ final class Vector implements VectorInterface
     }
 
     /**
-     * Is the vector empty?
+     * Is the `Vector` empty?
+     *
+     * @psalm-mutation-free
      */
     public function isEmpty(): bool
     {
@@ -76,28 +101,36 @@ final class Vector implements VectorInterface
     }
 
     /**
-     * Get the number of items in the current vector.
+     * Get the number of items in the current `Vector`.
+     *
+     * @psalm-mutation-free
      */
     public function count(): int
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\count($this->elements);
     }
 
     /**
-     * Get an array copy of the current vector.
+     * Get an array copy of the current `Vector`.
      *
      * @return list<T>
+     *
+     * @psalm-mutation-free
      */
     public function toArray(): array
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Vec\values($this->elements);
     }
 
 
     /**
-     * Get an array copy of the current vector.
+     * Get an array copy of the current `Vector`.
      *
      * @return list<T>
+     *
+     * @psalm-mutation-free
      */
     public function jsonSerialize(): array
     {
@@ -105,13 +138,15 @@ final class Vector implements VectorInterface
     }
 
     /**
-     * Returns the value at the specified key in the current vector.
+     * Returns the value at the specified key in the current `Vector`.
      *
-     * @param  int $k
+     * @param int $k
      *
      * @return T
      *
      * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
+     *
+     * @psalm-mutation-free
      */
     public function at($k)
     {
@@ -121,21 +156,26 @@ final class Vector implements VectorInterface
     }
 
     /**
-     * Determines if the specified key is in the current vector.
+     * Determines if the specified key is in the current `Vector`.
      *
      * @param int $k
+     *
+     * @psalm-mutation-free
      */
     public function contains($k): bool
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\contains_key($this->elements, $k);
     }
 
     /**
-     * Returns the value at the specified key in the current vector.
+     * Returns the value at the specified key in the current `Vector`.
      *
-     * @param  int $k
+     * @param int $k
      *
      * @return T|null
+     *
+     * @psalm-mutation-free
      */
     public function get($k)
     {
@@ -143,24 +183,30 @@ final class Vector implements VectorInterface
     }
 
     /**
-     * Returns the first key in the current `AbstractVector`.
+     * Returns the first key in the current `Vector`.
      *
-     * @return int|null - The first key in the current `AbstractVector`, or `null` if the
-     *                  current `AbstractVector` is empty
+     * @return int|null The first key in the current `Vector`, or `null` if the
+     *  current `Vector` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function firstKey(): ?int
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\first_key($this->elements);
     }
 
     /**
-     * Returns the last key in the current `AbstractVector`.
+     * Returns the last key in the current `Vector`.
      *
-     * @return int|null - The last key in the current `AbstractVector`, or `null` if the
-     *                  current `AbstractVector` is empty
+     * @return int|null The last key in the current `Vector`, or `null` if the
+     *  current `Vector` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function lastKey(): ?int
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\last_key($this->elements);
     }
 
@@ -169,10 +215,12 @@ final class Vector implements VectorInterface
      *
      * If no element matches the search value, this function returns null.
      *
-     * @param  T $search_value - The value that will be search for in the current
-     *                        collection.
+     * @param T $search_value The value that will be search for in the current
+     *  collection.
      *
-     * @return int|null - The key (index) where that value is found; null if it is not found
+     * @return int|null - The key (index) where that value is found; null if it is not found.
+     *
+     * @psalm-mutation-free
      */
     public function linearSearch($search_value): ?int
     {
@@ -190,20 +238,25 @@ final class Vector implements VectorInterface
      * `Vector`.
      *
      * @return Vector<T>
+     *
+     * @psalm-mutation-free
      */
     public function values(): Vector
     {
-        return new Vector($this->elements);
+        return Vector::fromArray($this->elements);
     }
 
     /**
      * Returns a `Vector` containing the keys of the current `Vector`.
      *
      * @return Vector<int>
+     *
+     * @psalm-mutation-free
      */
     public function keys(): Vector
     {
-        return new Vector(Vec\keys($this->elements));
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
+        return Vector::fromArray(Vec\keys($this->elements));
     }
 
     /**
@@ -216,11 +269,11 @@ final class Vector implements VectorInterface
      * The keys associated with the current `Vector` remain unchanged in the
      * returned `Vector`.
      *
-     * @param (callable(T): bool) $fn - The callback containing the condition to apply to the current
-     *                                 `Vector` values
+     * @param (callable(T): bool) $fn The callback containing the condition to apply to the current
+     *  `Vector` values.
      *
-     * @return Vector<T> - a Vector containing the values after a user-specified condition
-     *                        is applied
+     * @return Vector<T> a Vector containing the values after a user-specified condition
+     *  is applied.
      */
     public function filter(callable $fn): Vector
     {
@@ -238,12 +291,11 @@ final class Vector implements VectorInterface
      * The keys associated with the current `Vector` remain unchanged in the
      * returned `Vector`; the keys will be used in the filtering process only.
      *
-     * @param (callable(int, T): bool) $fn - The callback containing the condition to apply to the current
-     *                                     `Vector` keys and values
+     * @param (callable(int, T): bool) $fn The callback containing the condition to apply to the current
+     *  `Vector` keys and values.
      *
-     * @return Vector<T> - a `Vector` containing the values after a user-specified
-     *                        condition is applied to the keys and values of the current
-     *                        `Vector`
+     * @return Vector<T> a `Vector` containing the values after a user-specified
+     *  condition is applied to the keys and values of the current `Vector`.
      */
     public function filterWithKey(callable $fn): Vector
     {
@@ -262,11 +314,11 @@ final class Vector implements VectorInterface
      *
      * @template Tu
      *
-     * @param (callable(T): Tu) $fn - The callback containing the operation to apply to the current
-     *                               `Vector` values
+     * @param (callable(T): Tu) $fn The callback containing the operation to apply to the current
+     *  `Vector` values.
      *
-     * @return   Vector<Tu> - a `Vector` containing key/value pairs after a user-specified
-     *                        operation is applied
+     * @return Vector<Tu> a `Vector` containing key/value pairs after a user-specified
+     *  operation is applied.
      */
     public function map(callable $fn): Vector
     {
@@ -286,12 +338,11 @@ final class Vector implements VectorInterface
      *
      * @template Tu
      *
-     * @param (callable(int, T): Tu) $fn - The callback containing the operation to apply to the current
-     *                                   `Vector` keys and values
+     * @param (callable(int, T): Tu) $fn The callback containing the operation to apply to the current
+     *  `Vector` keys and values.
      *
-     * @return   Vector<Tu> - a `Vector` containing the values after a user-specified
-     *                        operation on the current `Vector`'s keys and values is
-     *                        applied
+     * @return Vector<Tu> a `Vector` containing the values after a user-specified
+     *  operation on the current `Vector`'s keys and values is applied.
      */
     public function mapWithKey(callable $fn): Vector
     {
@@ -309,15 +360,18 @@ final class Vector implements VectorInterface
      *
      * @template Tu
      *
-     * @param    iterable<Tu> $iterable - The `iterable` to use to combine with the
-     *                       elements of this `VectorInterface`.
+     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
+     *  elements of this `VectorInterface`.
      *
-     * @return   Vector<array{0: T, 1: Tu}> - The `Vector` that combines the values of the current
-     *           `Vector` with the provided `iterable`.
+     * @return Vector<array{0: T, 1: Tu}> The `Vector` that combines the values of the current
+     *  `Vector` with the provided `iterable`.
+     *
+     * @psalm-mutation-free
      */
     public function zip(iterable $iterable): Vector
     {
-        return new Vector(Vec\zip($this, $iterable));
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
+        return Vector::fromArray(Vec\zip($this, $iterable));
     }
 
     /**
@@ -329,17 +383,19 @@ final class Vector implements VectorInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param $n - The last element that will be included in the returned
-     *             `Vector`
+     * @param $n The last element that will be included in the returned
+     *  `Vector`.
      *
-     * @return Vector<T> - A `Vector` that is a proper subset of the current
-     *           `Vector` up to `n` elements.
+     * @return Vector<T> A `Vector` that is a proper subset of the current
+     *  `Vector` up to `n` elements.
      *
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
+     *
+     * @psalm-mutation-free
      */
     public function take(int $n): Vector
     {
-        return new Vector(Dict\take($this->elements, $n));
+        return $this->slice(0, $n);
     }
 
     /**
@@ -350,11 +406,11 @@ final class Vector implements VectorInterface
      * The returned `Vector` will always be a proper subset of the current
      * `Vector`.
      *
-     * @param (callable(T): bool) $fn - The callback that is used to determine the stopping
-     *              condition.
+     * @param (callable(T): bool) $fn The callback that is used to determine the stopping
+     *  condition.
      *
-     * @return Vector<T> - A `Vector` that is a proper subset of the current
-     *           `Vector` up until the callback returns `false`.
+     * @return Vector<T> A `Vector` that is a proper subset of the current
+     *  `Vector` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): Vector
     {
@@ -370,18 +426,19 @@ final class Vector implements VectorInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param  int $n - The last element to be skipped; the $n+1 element will be the
-     *             first one in the returned `Vector`.
+     * @param int $n The last element to be skipped; the $n+1 element will be the
+     *  first one in the returned `Vector`.
      *
-     * @return Vector<T> - A `Vector` that is a proper subset of the current
-     *           `Vector` containing values after the specified `n`-th
-     *           element.
+     * @return Vector<T> A `Vector` that is a proper subset of the current
+     *  `Vector` containing values after the specified `n`-th element.
      *
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
+     *
+     * @psalm-mutation-free
      */
     public function drop(int $n): Vector
     {
-        return new Vector(Dict\drop($this->elements, $n));
+        return $this->slice($n);
     }
 
     /**
@@ -392,11 +449,11 @@ final class Vector implements VectorInterface
      * The returned `Vector` will always be a proper subset of the current
      * `Vector`.
      *
-     * @param (callable(T): bool) $fn - The callback used to determine the starting element for the
-     *              returned `Vector`.
+     * @param (callable(T): bool) $fn The callback used to determine the starting element for the
+     *  returned `Vector`.
      *
-     * @return Vector<T> - A `Vector` that is a proper subset of the current
-     *           `Vector` starting after the callback returns `true`.
+     * @return Vector<T> A `Vector` that is a proper subset of the current
+     *  `Vector` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): Vector
     {
@@ -414,18 +471,21 @@ final class Vector implements VectorInterface
      * The returned `Vector` will always be a proper subset of this
      * `Vector`.
      *
-     * @param  int $start - The starting key of this Vector to begin the returned
-     *                   `Vector`
-     * @param  int $len   - The length of the returned `Vector`
+     * @param int $start The starting key of this Vector to begin the returned
+     *  `Vector`.
+     * @param null|int $length The length of the returned `Vector`
      *
      * @return Vector<T> - A `Vector` that is a proper subset of the current
-     *           `Vector` starting at `$start` up to but not including the
-     *           element `$start + $len`.
+     *  `Vector` starting at `$start` up to but not including the
+     *  element `$start + $length`.
      *
      * @throws Psl\Exception\InvariantViolationException If $start or $len are negative.
+     *
+     * @psalm-mutation-free
      */
-    public function slice(int $start, int $len): Vector
+    public function slice(int $start, ?int $length = null): Vector
     {
-        return new Vector(Dict\slice($this->elements, $start, $len));
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
+        return self::fromArray(Dict\slice($this->elements, $start, $length));
     }
 }

@@ -17,6 +17,8 @@ interface MapInterface extends AccessibleCollectionInterface
      * `MapInterface`.
      *
      * @return VectorInterface<Tv>
+     *
+     * @psalm-mutation-free
      */
     public function values(): VectorInterface;
 
@@ -24,6 +26,8 @@ interface MapInterface extends AccessibleCollectionInterface
      * Returns a `VectorInterface` containing the keys of the current `MapInterface`.
      *
      * @return VectorInterface<Tk>
+     *
+     * @psalm-mutation-free
      */
     public function keys(): VectorInterface;
 
@@ -112,6 +116,8 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @return Tv|null - The first value in the current `MapInterface`, or `null` if the
      *           current `MapInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function first();
 
@@ -120,6 +126,8 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @return Tk|null - The first key in the current `MapInterface`, or `null` if the
      *                  current `MapInterface` is empty
+     *
+     * @psalm-mutation-free
      */
     public function firstKey();
 
@@ -128,6 +136,8 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @return Tv|null - The last value in the current `MapInterface`, or `null` if the
      *           current `MapInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function last();
 
@@ -135,7 +145,9 @@ interface MapInterface extends AccessibleCollectionInterface
      * Returns the last key in the current `MapInterface`.
      *
      * @return Tk|null - The last key in the current `MapInterface`, or `null` if the
-     *                  current `MapInterface` is empty
+     *                  current `MapInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function lastKey();
 
@@ -148,6 +160,8 @@ interface MapInterface extends AccessibleCollectionInterface
      *                        `MapInterface`.
      *
      * @return Tk|null - The key (index) where that value is found; null if it is not found
+     *
+     * @psalm-mutation-free
      */
     public function linearSearch($search_value);
 
@@ -162,11 +176,13 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @template Tu
      *
-     * @param iterable<Tu> $iterable - The `iterable` to use to combine with the
-     *                       elements of this `MapInterface`.
+     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
+     *  elements of this `MapInterface`.
      *
      * @return MapInterface<Tk, array{0: Tv, 1: Tu}> - The `MapInterface` that combines the values of the current
-     *           `MapInterface` with the provided `iterable`.
+     *  `MapInterface` with the provided `iterable`.
+     *
+     * @psalm-mutation-free
      */
     public function zip(iterable $iterable): MapInterface;
 
@@ -184,6 +200,8 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
      *           `MapInterface` up to `n` elements.
+     *
+     * @psalm-mutation-free
      */
     public function take(int $n): MapInterface;
 
@@ -218,6 +236,8 @@ interface MapInterface extends AccessibleCollectionInterface
      * @return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
      *           `MapInterface` containing values after the specified `n`-th
      *           element.
+     *
+     * @psalm-mutation-free
      */
     public function drop(int $n): MapInterface;
 
@@ -250,11 +270,12 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @param int $start - The starting key of this Vector to begin the returned
      *                   `MapInterface`
-     * @param int $len   - The length of the returned `MapInterface`
+     * @param int $length - The length of the returned `MapInterface`
      *
      * @return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
-     *           `MapInterface` starting at `$start` up to but not including the
-     *           element `$start + $len`.
+     *  `MapInterface` starting at `$start` up to but not including the element `$start + $length`.
+     *
+     * @psalm-mutation-free
      */
-    public function slice(int $start, int $len): MapInterface;
+    public function slice(int $start, int $length): MapInterface;
 }

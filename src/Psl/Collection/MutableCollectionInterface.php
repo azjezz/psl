@@ -113,6 +113,8 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @return MutableCollectionInterface<Tk, array{0: Tv, 1: Tu}> - The `MutableCollectionInterface` that
      *      combines the values of the current `MutableCollectionInterface` with the provided `iterable`.
+     *
+     * @psalm-mutation-free
      */
     public function zip(iterable $iterable): MutableCollectionInterface;
 
@@ -130,6 +132,8 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @return MutableCollectionInterface<Tk, Tv> - A `MutableCollectionInterface` that is a proper
      *      subset of the current `MutableCollectionInterface` up to `n` elements.
+     *
+     * @psalm-mutation-free
      */
     public function take(int $n): MutableCollectionInterface;
 
@@ -164,6 +168,8 @@ interface MutableCollectionInterface extends CollectionInterface
      * @return MutableCollectionInterface<Tk, Tv> - A `MutableCollectionInterface` that is a proper
      *      subset of the current `MutableCollectionInterface` containing values after the specified `n`-th
      *      element.
+     *
+     * @psalm-mutation-free
      */
     public function drop(int $n): MutableCollectionInterface;
 
@@ -194,15 +200,17 @@ interface MutableCollectionInterface extends CollectionInterface
      * The returned `MutableCollectionInterface` will always be a proper subset of this
      * `MutableCollectionInterface`.
      *
-     * @param int $start - The starting key of this Vector to begin the returned
+     * @param int $start The starting key of this Vector to begin the returned
      *      `MutableCollectionInterface`.
-     * @param int $len   - The length of the returned `MutableCollectionInterface`.
+     * @param int $length The length of the returned `MutableCollectionInterface`.
      *
      * @return MutableCollectionInterface<Tk, Tv> - A `MutableCollectionInterface` that is a proper
-     *      subset of the current `MutableCollectionInterface` starting at `$start` up to but not including the
-     *      element `$start + $len`.
+     *  subset of the current `MutableCollectionInterface` starting at `$start` up to but not including the
+     *  element `$start + $length`.
+     *
+     * @psalm-mutation-free
      */
-    public function slice(int $start, int $len): MutableCollectionInterface;
+    public function slice(int $start, int $length): MutableCollectionInterface;
     
     /**
      * Removes all items from the collection.
