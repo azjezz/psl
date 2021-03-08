@@ -14,20 +14,20 @@ use function uasort;
  * If the optional comparator function isn't provided, the values will be sorted
  * in ascending order of scalar key.
  *
- * @psalm-template Tv
- * @psalm-template Ts
+ * @template Tv
+ * @template Ts
  *
- * @psalm-param iterable<Tv>                   $iterable
- * @psalm-param (callable(Tv): Ts)             $scalar_func
- * @psalm-param (callable(Ts, Ts): int)|null   $comparator
+ * @param iterable<Tv>                   $iterable
+ * @param (callable(Tv): Ts)             $scalar_func
+ * @param (callable(Ts, Ts): int)|null   $comparator
  *
- * @psalm-return list<Tv>
+ * @return list<Tv>
  */
 function sort_by(iterable $iterable, callable $scalar_func, ?callable $comparator = null): array
 {
-    /** @psalm-var array<int, Ts> $order_by */
+    /** @var array<int, Ts> $order_by */
     $order_by = [];
-    /** @psalm-var array<int, Tv> $values */
+    /** @var array<int, Tv> $values */
     $original_values = [];
 
     $i = 0;

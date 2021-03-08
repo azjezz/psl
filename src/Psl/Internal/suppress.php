@@ -7,11 +7,11 @@ namespace Psl\Internal;
 use function error_reporting;
 
 /**
- * @psalm-template T
+ * @template T
  *
- * @psalm-param (pure-callable(): T) $fun
+ * @param (pure-callable(): T) $fun
  *
- * @psalm-return T
+ * @return T
  *
  * @psalm-pure
  *

@@ -19,14 +19,14 @@ namespace Psl\Arr;
  *   Arr\contains_key($array, $index) ? $array[$index] : $default;
  * ```
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param    array<Tk, Tv>   $array
- * @psalm-param    Tk              $index
- * @psalm-param    Tv              $default
+ * @param    array<Tk, Tv>   $array
+ * @param    Tk              $index
+ * @param    Tv              $default
  *
- * @psalm-return   Tv
+ * @return   Tv
  *
  * @psalm-pure
  *

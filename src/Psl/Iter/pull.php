@@ -25,15 +25,15 @@ use Psl\Dict;
  *      )
  *
  *
- * @psalm-template T
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template T
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param iterable<T>         $iterable
- * @psalm-param (callable(T): Tv)   $value_func
- * @psalm-param (callable(T): Tk)   $key_func
+ * @param iterable<T>         $iterable
+ * @param (callable(T): Tv)   $value_func
+ * @param (callable(T): Tk)   $key_func
  *
- * @psalm-return Iterator<Tk, Tv>
+ * @return Iterator<Tk, Tv>
  *
  * @deprecated use `Dict\pull` instead.
  *

@@ -22,19 +22,19 @@ use Psl\Vec;
  *      )
  *     => Iter([0, 0] => [1, 3], [0, 1] => [1, 4], [1, 0] => [2, 3], [1, 1] => [2, 4])
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv> ...$iterables Iterables to combine
+ * @param iterable<Tk, Tv> ...$iterables Iterables to combine
  *
- * @psalm-return Iterator<list<Tk>, list<Tv>>
+ * @return Iterator<list<Tk>, list<Tv>>
  *
  * @deprecated ( no replacement is provided )
  */
 function product(iterable ...$iterables): Iterator
 {
     return Iterator::from(static function () use ($iterables): Generator {
-        /** @psalm-var list<Iterator<Tk, Tv>> $iterators */
+        /** @var list<Iterator<Tk, Tv>> $iterators */
         $iterators = Vec\values(Dict\map(
             $iterables,
             static fn (iterable $iterable) => Iterator::create($iterable)
@@ -42,14 +42,14 @@ function product(iterable ...$iterables): Iterator
 
         $numIterators = count($iterators);
         if (0 === $numIterators) {
-            /** @psalm-var iterable<list<Tk>, list<Tv>> */
+            /** @var iterable<list<Tk>, list<Tv>> */
             yield [] => [];
 
             return;
         }
 
-        /** @psalm-var list<Tk|null> $keyTuple */
-        /** @psalm-var list<Tv|null> $valueTuple */
+        /** @var list<Tk|null> $keyTuple */
+        /** @var list<Tv|null> $valueTuple */
         $keyTuple   = Vec\fill($numIterators, null);
         $valueTuple = Vec\fill($numIterators, null);
         $i          = -1;

@@ -18,12 +18,12 @@ use SeekableIterator;
 final class Iterator implements Countable, SeekableIterator
 {
     /**
-     * @psalm-var Generator<Tk, Tv, mixed, mixed>
+     * @var Generator<Tk, Tv, mixed, mixed>
      */
     private ?Generator $generator;
 
     /**
-     * @psalm-var array<int, array{0: Tk, 1: Tv}>
+     * @var array<int, array{0: Tk, 1: Tv}>
      */
     private array $entries = [];
 
@@ -38,7 +38,7 @@ final class Iterator implements Countable, SeekableIterator
     private int $position = 0;
 
     /**
-     * @psalm-param Generator<Tk, Tv, mixed, mixed> $generator
+     * @param Generator<Tk, Tv, mixed, mixed> $generator
      */
     public function __construct(Generator $generator)
     {
@@ -46,12 +46,12 @@ final class Iterator implements Countable, SeekableIterator
     }
 
     /**
-     * @psalm-template Tsk
-     * @psalm-template Tsv
+     * @template Tsk
+     * @template Tsv
      *
-     * @psalm-param callable(): iterable<Tsk, Tsv> $factory
+     * @param callable(): iterable<Tsk, Tsv> $factory
      *
-     * @psalm-return Iterator<Tsk, Tsv>
+     * @return Iterator<Tsk, Tsv>
      */
     public static function from(callable $factory): Iterator
     {
@@ -59,12 +59,12 @@ final class Iterator implements Countable, SeekableIterator
     }
 
     /**
-     * @psalm-template Tsk
-     * @psalm-template Tsv
+     * @template Tsk
+     * @template Tsv
      *
-     * @psalm-param iterable<Tsk, Tsv> $iterable
+     * @param iterable<Tsk, Tsv> $iterable
      *
-     * @psalm-return Iterator<Tsk, Tsv>
+     * @return Iterator<Tsk, Tsv>
      */
     public static function create(iterable $iterable): Iterator
     {
@@ -73,7 +73,7 @@ final class Iterator implements Countable, SeekableIterator
         }
 
         /**
-         * @psalm-var (callable(): Generator<Tsk, Tsv, mixed, void>) $factory
+         * @var (callable(): Generator<Tsk, Tsv, mixed, void>) $factory
          */
         $factory = static fn (): Generator => yield from $iterable;
 
@@ -83,7 +83,7 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Return the current element.
      *
-     * @psalm-return Tv
+     * @return Tv
      *
      * @throws Psl\Exception\InvariantViolationException If the iterator is invalid.
      */
@@ -123,7 +123,7 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Return the key of the current element.
      *
-     * @psalm-return Tk
+     * @return Tk
      *
      * @throws Psl\Exception\InvariantViolationException If the iterator is invalid.
      */

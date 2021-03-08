@@ -10,11 +10,11 @@ use Psl\Dict;
  * Returns whether the two given arrays have the same entries, using strict
  * equality. To guarantee equality of order as well as contents, use `===`.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param array<Tk, Tv> $array
- * @psalm-param array<Tk, Tv> $array2
+ * @param array<Tk, Tv> $array
+ * @param array<Tk, Tv> $array2
  *
  * @deprecated use `Dict\equal` instead.
  *

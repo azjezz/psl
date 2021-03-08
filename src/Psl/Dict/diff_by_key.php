@@ -12,14 +12,14 @@ use function array_diff_key;
 /**
  * Computes the difference of iterables using keys for comparison.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv>    $first
- * @psalm-param iterable<Tk, mixed> $second
- * @psalm-param iterable<Tk, mixed> ...$rest
+ * @param iterable<Tk, Tv>    $first
+ * @param iterable<Tk, mixed> $second
+ * @param iterable<Tk, mixed> ...$rest
  *
- * @psalm-return array<Tk, Tv>
+ * @return array<Tk, Tv>
  */
 function diff_by_key(iterable $first, iterable $second, iterable ...$rest): array
 {

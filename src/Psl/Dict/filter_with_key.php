@@ -23,24 +23,24 @@ use Psl;
  *      );
  *      => Dict(2 => 'baz')
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv>                $iterable
- * @psalm-param (callable(Tk, Tv): bool)|null   $predicate
+ * @param iterable<Tk, Tv>                $iterable
+ * @param (callable(Tk, Tv): bool)|null   $predicate
  *
- * @psalm-return array<Tk, Tv>
+ * @return array<Tk, Tv>
  */
 function filter_with_key(iterable $iterable, ?callable $predicate = null): array
 {
     $predicate = $predicate ??
         /**
-         * @psalm-param Tk $k
-         * @psalm-param Tv $v
+         * @param Tk $k
+         * @param Tv $v
          */
         static fn ($k, $v): bool => Psl\Internal\boolean($v);
 
-    /** @psalm-var array<Tk, Tv> $result */
+    /** @var array<Tk, Tv> $result */
     $result = [];
     foreach ($iterable as $k => $v) {
         if ($predicate($k, $v)) {

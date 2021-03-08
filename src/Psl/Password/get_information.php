@@ -14,7 +14,7 @@ use function password_get_info;
  * When passed in a valid hash created by an algorithm supported by `Psl\Password\hash()`,
  * this function will return an array of information about that hash.
  *
- * @psalm-return array{
+ * @return array{
  *      algorithm: string,
  *      options: array{cost: int}|array{memory_cost: int, time_cost: int, threads: int}
  * }

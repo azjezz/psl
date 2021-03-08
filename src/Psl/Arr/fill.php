@@ -11,11 +11,11 @@ use function array_fill;
 /**
  * Fill an array with values.
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param T $value
+ * @param T $value
  *
- * @psalm-return array<int, T>
+ * @return array<int, T>
  *
  * @psalm-pure
  *

@@ -25,13 +25,13 @@ use Psl\Dict;
  *      );
  *      => Iter('baz')
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv>                $iterable
- * @psalm-param (callable(Tk, Tv): bool)|null   $predicate
+ * @param iterable<Tk, Tv>                $iterable
+ * @param (callable(Tk, Tv): bool)|null   $predicate
  *
- * @psalm-return Iterator<Tk, Tv>
+ * @return Iterator<Tk, Tv>
  *
  * @deprecated use `Dict\filter_with_key` instead.
  *
@@ -42,8 +42,8 @@ function filter_with_key(iterable $iterable, ?callable $predicate = null): Itera
     return Iterator::from(static function () use ($iterable, $predicate): Generator {
         $predicate = $predicate ??
             /**
-             * @psalm-param Tk $k
-             * @psalm-param Tv $v
+             * @param Tk $k
+             * @param Tv $v
              *
              * @return bool
              */

@@ -12,9 +12,9 @@ use function mb_detect_encoding;
 /**
  * Detect the encoding of the giving string.
  *
- * @psalm-param list<string> $encoding_list
+ * @param list<string> $encoding_list
  *
- * @psalm-return null|string The string encoding or null if unable to detect encoding.
+ * @return null|string The string encoding or null if unable to detect encoding.
  *
  * @psalm-pure
  */

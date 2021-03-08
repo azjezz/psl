@@ -21,18 +21,18 @@ interface TypeInterface
     public function matches($value): bool;
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
-     * @psalm-return T
+     * @return T
      *
      * @throws CoercionException
      */
     public function coerce($value);
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
-     * @psalm-return T
+     * @return T
      *
      * @psalm-assert T $value
      *

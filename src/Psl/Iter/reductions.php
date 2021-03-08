@@ -17,15 +17,15 @@ use Psl\Vec;
  *
  * Reductions yield each accumulator along the way.
  *
- * @psalm-template Tk
- * @psalm-template Tv
- * @psalm-template Ts
+ * @template Tk
+ * @template Tv
+ * @template Ts
  *
- * @psalm-param iterable<Tk, Tv>                $iterable
- * @psalm-param (callable(?Ts, Tk, Tv): Ts)     $function
- * @psalm-param Ts|null                         $initial
+ * @param iterable<Tk, Tv>                $iterable
+ * @param (callable(?Ts, Tk, Tv): Ts)     $function
+ * @param Ts|null                         $initial
  *
- * @psalm-return Iterator<int, Ts>
+ * @return Iterator<int, Ts>
  *
  * @deprecated since 1.2, use Vec\reductions instead.
  *

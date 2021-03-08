@@ -55,7 +55,7 @@ function range($start, $end, $step = null): array
 
     if ($start < $end) {
         if (null === $step) {
-            /** @psalm-var T $step */
+            /** @var T $step */
             $step = 1;
         }
 
@@ -73,7 +73,7 @@ function range($start, $end, $step = null): array
     }
 
     if (null === $step) {
-        /** @psalm-var T $step */
+        /** @var T $step */
         $step = -1;
     }
 

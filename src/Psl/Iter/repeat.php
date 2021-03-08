@@ -21,12 +21,12 @@ use Psl\Vec;
  *     Iter\repeat(1)
  *     => Iter(1, 1, 1, 1, 1, 1, 1, 1, 1, ...)
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param T   $value Value to repeat
- * @psalm-param int $num   Number of repetitions (defaults to INF)
+ * @param T   $value Value to repeat
+ * @param int $num   Number of repetitions (defaults to INF)
  *
- * @psalm-return Iterator<int, T>
+ * @return Iterator<int, T>
  *
  * @throws Psl\Exception\InvariantViolationException If $num is negative.
  *

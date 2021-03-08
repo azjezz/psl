@@ -11,11 +11,11 @@ use Psl\Type\TypeInterface;
 /**
  * Decode a json encoded string into a dynamic variable.
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param TypeInterface<T> $type
+ * @param TypeInterface<T> $type
  *
- * @psalm-return T
+ * @return T
  *
  * @throws Exception\DecodeException If an error occurred.
  */

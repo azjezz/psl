@@ -10,13 +10,13 @@ use Psl;
  * Retrieve a value from the array using the given key.
  * If the key doesn't exist, an InvariantViolationException will be thrown.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param array<Tk, Tv> $array
- * @psalm-param Tk $key
+ * @param array<Tk, Tv> $array
+ * @param Tk $key
  *
- * @psalm-return Tv
+ * @return Tv
  *
  * @psalm-pure
  *
@@ -29,6 +29,6 @@ function at(array $array, $key)
     /** @psalm-suppress DeprecatedFunction */
     Psl\invariant(contains_key($array, $key), 'Key (%s) is out-of-bounds.', $key);
 
-    /** @psalm-var Tv */
+    /** @var Tv */
     return $array[$key];
 }

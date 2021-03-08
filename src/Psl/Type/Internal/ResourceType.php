@@ -26,9 +26,9 @@ final class ResourceType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
-     * @psalm-return resource
+     * @return resource
      *
      * @throws CoercionException
      */
@@ -49,9 +49,9 @@ final class ResourceType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
-     * @psalm-return resource
+     * @return resource
      *
      * @psalm-assert resource $value
      *

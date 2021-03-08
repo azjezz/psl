@@ -32,9 +32,9 @@ final class FloatType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
-     * @psalm-return float
+     * @return float
      *
      * @throws CoercionException
      */
@@ -67,9 +67,9 @@ final class FloatType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
-     * @psalm-return float
+     * @return float
      *
      * @psalm-assert float $value
      *

@@ -22,18 +22,18 @@ use Psl\Type\TypeInterface;
 final class IntersectionType extends Type
 {
     /**
-     * @psalm-var TypeInterface<Tl>
+     * @var TypeInterface<Tl>
      */
     private TypeInterface $left_type;
 
     /**
-     * @psalm-var TypeInterface<Tr>
+     * @var TypeInterface<Tr>
      */
     private TypeInterface $right_type;
 
     /**
-     * @psalm-param TypeInterface<Tl> $left_type
-     * @psalm-param TypeInterface<Tr> $right_type
+     * @param TypeInterface<Tl> $left_type
+     * @param TypeInterface<Tr> $right_type
      */
     public function __construct(
         TypeInterface $left_type,
@@ -54,9 +54,9 @@ final class IntersectionType extends Type
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
-     * @psalm-return Tl&Tr
+     * @return Tl&Tr
      *
      * @throws CoercionException
      */
@@ -69,18 +69,18 @@ final class IntersectionType extends Type
         }
 
         try {
-            /** @psalm-var Tl $value */
+            /** @var Tl $value */
             $value = $this->left_type->coerce($value);
-            /** @psalm-var Tl&Tr */
+            /** @var Tl&Tr */
             return $this->right_type->assert($value);
         } catch (Exception $_exception) {
             // ignore
         }
 
         try {
-            /** @psalm-var Tr $value */
+            /** @var Tr $value */
             $value = $this->right_type->coerce($value);
-            /** @psalm-var Tr&Tl */
+            /** @var Tr&Tl */
             return $this->left_type->assert($value);
         } catch (Exception $_exception) {
             // ignore
@@ -90,9 +90,9 @@ final class IntersectionType extends Type
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
-     * @psalm-return Tl&Tr
+     * @return Tl&Tr
      *
      * @psalm-assert Tl&Tr $value
      *
@@ -101,9 +101,9 @@ final class IntersectionType extends Type
     public function assert($value)
     {
         try {
-            /** @psalm-var Tl $value */
+            /** @var Tl $value */
             $value = $this->left_type->assert($value);
-            /** @psalm-var Tl&Tr */
+            /** @var Tl&Tr */
             return $this->right_type->assert($value);
         } catch (AssertException $_exception) {
             throw AssertException::withValue($value, $this->toString(), $this->getTrace());

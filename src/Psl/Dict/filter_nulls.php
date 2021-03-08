@@ -11,12 +11,12 @@ namespace Psl\Dict;
  *      Dict\filter_nulls([1, null, 5])
  *      => Dict(0 => 1, 2 => 5)
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv|null> $iterable
+ * @param iterable<Tk, Tv|null> $iterable
  *
- * @psalm-return array<Tk, Tv>
+ * @return array<Tk, Tv>
  */
 function filter_nulls(iterable $iterable): array
 {

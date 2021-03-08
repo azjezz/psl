@@ -7,12 +7,12 @@ namespace Psl\Iter;
 /**
  * Copy the iterable into an Iterator.
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param    iterable<Tk, Tv> $iterable
+ * @param    iterable<Tk, Tv> $iterable
  *
- * @psalm-return   Iterator<Tk, Tv>
+ * @return   Iterator<Tk, Tv>
  *
  * @see            Iterator
  */

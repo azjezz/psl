@@ -11,24 +11,24 @@ use Psl\Iter;
  * value's uniqueness is determined by transforming it to a scalar via the
  * given function.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
- * @psalm-template Ts
+ * @template Tk of array-key
+ * @template Tv
+ * @template Ts
  *
- * @psalm-param iterable<Tk, Tv>   $iterable
- * @psalm-param (callable(Tv): Ts) $scalar_func
+ * @param iterable<Tk, Tv>   $iterable
+ * @param (callable(Tv): Ts) $scalar_func
  *
- * @psalm-return array<Tk, Tv>
+ * @return array<Tk, Tv>
  */
 function unique_by(iterable $iterable, callable $scalar_func): array
 {
-    /** @psalm-var array<Tk, Ts> $unique */
+    /** @var array<Tk, Ts> $unique */
     $unique = [];
-    /** @psalm-var array<Tk, Tv> $original_values */
+    /** @var array<Tk, Tv> $original_values */
     $original_values = [];
     foreach ($iterable as $k => $v) {
         $original_values[$k] = $v;
-        /** @psalm-var Ts $scalar */
+        /** @var Ts $scalar */
         $scalar = $scalar_func($v);
 
         if (!Iter\contains($unique, $scalar)) {
@@ -36,7 +36,7 @@ function unique_by(iterable $iterable, callable $scalar_func): array
         }
     }
 
-    /** @psalm-var array<Tk, Tv> $result */
+    /** @var array<Tk, Tv> $result */
     $result = [];
     foreach ($unique as $k => $_) {
         $result[$k] = $original_values[$k];

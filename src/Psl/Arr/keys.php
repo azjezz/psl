@@ -9,12 +9,12 @@ use Psl\Vec;
 /**
  * Return all the keys of an array.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param array<Tk, Tv> $arr
+ * @param array<Tk, Tv> $arr
  *
- * @psalm-return list<Tk>
+ * @return list<Tk>
  *
  * @deprecated use `Vec\keys` instead.
  *

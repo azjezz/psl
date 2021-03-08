@@ -20,15 +20,15 @@ namespace Psl\Iter;
  *     )
  *      => 10
  *
- * @psalm-template Tk
- * @psalm-template Tv
- * @psalm-template Ts
+ * @template Tk
+ * @template Tv
+ * @template Ts
  *
- * @psalm-param iterable<Tk, Tv>        $iterable
- * @psalm-param (callable(?Ts, Tk): Ts) $function
- * @psalm-param Ts|null                 $initial
+ * @param iterable<Tk, Tv>        $iterable
+ * @param (callable(?Ts, Tk): Ts) $function
+ * @param Ts|null                 $initial
  *
- * @psalm-return Ts|null
+ * @return Ts|null
  */
 function reduce_keys(iterable $iterable, callable $function, $initial = null)
 {

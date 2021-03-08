@@ -28,14 +28,14 @@ use Psl\Dict;
  *         24 => ['id' => 24, 'name' => 'bar']
  *     )
  *
- * @psalm-template Tk1
- * @psalm-template Tk2
- * @psalm-template Tv
+ * @template Tk1
+ * @template Tk2
+ * @template Tv
  *
- * @psalm-param iterable<Tk1, Tv>     $iterable Iterable to reindex
- * @psalm-param (callable(Tv): Tk2)   $function
+ * @param iterable<Tk1, Tv>     $iterable Iterable to reindex
+ * @param (callable(Tv): Tk2)   $function
  *
- * @psalm-return Iterator<Tk2, Tv>
+ * @return Iterator<Tk2, Tv>
  *
  * @deprecated use `Dict\reindex` instead.
  *

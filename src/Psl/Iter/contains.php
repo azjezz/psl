@@ -19,10 +19,10 @@ namespace Psl\Iter;
  *      Iter\contains(Iterable\range(0, 5), '1')
  *      => false
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param iterable<T> $iterable
- * @psalm-param T           $value
+ * @param iterable<T> $iterable
+ * @param T           $value
  */
 function contains(iterable $iterable, $value): bool
 {

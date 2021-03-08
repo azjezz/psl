@@ -11,15 +11,15 @@ use Psl\Type;
  * Returns a new dict mapping each value to the number of times it appears
  * in the given array.
  *
- * @psalm-template T of array-key
+ * @template T of array-key
  *
- * @psalm-param iterable<T> $values
+ * @param iterable<T> $values
  *
- * @psalm-return array<T, int>
+ * @return array<T, int>
  */
 function count_values(iterable $values): array
 {
-    /** @psalm-var array<T, int> $result */
+    /** @var array<T, int> $result */
     $result = [];
 
     foreach ($values as $value) {
@@ -29,9 +29,9 @@ function count_values(iterable $values): array
             gettype($value)
         );
 
-        /** @psalm-var int $count */
+        /** @var int $count */
         $count = $result[$value] ?? 0;
-        /** @psalm-var T $value */
+        /** @var T $value */
         $result[$value] = $count + 1;
     }
 

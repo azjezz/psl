@@ -24,11 +24,11 @@ namespace Psl\Fun;
  * @template Ti
  * @template To
  *
- * @psalm-param (callable(Ti): bool)   $condition
- * @psalm-param (callable(Ti): To) $then
- * @psalm-param (callable(Ti): To) $else
+ * @param (callable(Ti): bool)   $condition
+ * @param (callable(Ti): To) $then
+ * @param (callable(Ti): To) $else
  *
- * @psalm-return (callable(Ti): To)
+ * @return (callable(Ti): To)
  */
 function when(callable $condition, callable $then, callable $else): callable
 {

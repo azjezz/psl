@@ -24,7 +24,7 @@ interface ResultInterface
      * - if the operation succeeded: return its result.
      * - if the operation failed: throw the exception inciting failure.
      *
-     * @psalm-return T - The result of the operation upon success
+     * @return T - The result of the operation upon success
      *
      * @psalm-mutation-free
      */
@@ -72,10 +72,10 @@ interface ResultInterface
      *
      * @template R
      *
-     * @psalm-param callable(T): R $on_success
-     * @psalm-param callable(Exception): R $on_failure
+     * @param callable(T): R $on_success
+     * @param callable(Exception): R $on_failure
      *
-     * @psalm-return R
+     * @return R
      */
     public function proceed(callable $on_success, callable $on_failure);
 
@@ -91,10 +91,10 @@ interface ResultInterface
      * @link https://github.com/reactphp/promise#promiseinterfacethen
      *
      * @template R
-     * @psalm-param callable(T): R $on_success
-     * @psalm-param callable(Exception): R $on_failure
+     * @param callable(T): R $on_success
+     * @param callable(Exception): R $on_failure
      *
-     * @psalm-return ResultInterface<R>
+     * @return ResultInterface<R>
      */
     public function then(callable $on_success, callable $on_failure): ResultInterface;
 }

@@ -31,9 +31,9 @@ final class NonEmptyStringType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      *
      * @throws CoercionException
      */
@@ -62,9 +62,9 @@ final class NonEmptyStringType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      *
      * @psalm-assert non-empty-string $value
      *

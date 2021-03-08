@@ -10,7 +10,7 @@ use Psl;
  * Returns the 'haystack' string with all occurrences of the keys of
  * `$replacements` replaced by the corresponding values (case-insensitive).
  *
- * @psalm-param array<string, string> $replacements
+ * @param array<string, string> $replacements
  *
  * @psalm-pure
  *

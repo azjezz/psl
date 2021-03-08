@@ -11,11 +11,11 @@ use function array_values;
 /**
  * Return all the values of an array.
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param    array<array-key, T> $arr
+ * @param    array<array-key, T> $arr
  *
- * @psalm-return   list<T>
+ * @return   list<T>
  *
  * @psalm-pure
  *

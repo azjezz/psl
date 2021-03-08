@@ -25,14 +25,14 @@ namespace Psl\Dict;
  *         24 => ['id' => 24, 'name' => 'bar']
  *     )
  *
- * @psalm-template Tk1
- * @psalm-template Tk2 of array-key
- * @psalm-template Tv
+ * @template Tk1
+ * @template Tk2 of array-key
+ * @template Tv
  *
- * @psalm-param iterable<Tk1, Tv>   $iterable Iterable to reindex
- * @psalm-param (callable(Tv): Tk2) $function
+ * @param iterable<Tk1, Tv>   $iterable Iterable to reindex
+ * @param (callable(Tv): Tk2) $function
  *
- * @psalm-return array<Tk2, Tv>
+ * @return array<Tk2, Tv>
  */
 function reindex(iterable $iterable, callable $function): array
 {

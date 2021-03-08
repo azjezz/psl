@@ -11,13 +11,13 @@ use Psl\Dict;
  * optional comparator function isn't provided, the values will be sorted in
  * ascending order ( maintains index association ).
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param array<Tk, Tv>                  $array
- * @psalm-param (callable(Tv, Tv): int)|null   $comparator
+ * @param array<Tk, Tv>                  $array
+ * @param (callable(Tv, Tv): int)|null   $comparator
  *
- * @psalm-return array<Tk, Tv>
+ * @return array<Tk, Tv>
  *
  * @deprecated use `Dict\sort` instead
  *

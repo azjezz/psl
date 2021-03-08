@@ -15,12 +15,12 @@ use Psl\Vec;
  *      Iter\keys(['a' => 0, 'b' => 1, 'c' => 2])
  *      => Iter('a', 'b', 'c')
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv> $iterable Iterable to get keys from
+ * @param iterable<Tk, Tv> $iterable Iterable to get keys from
  *
- * @psalm-return Iterator<int, Tk>
+ * @return Iterator<int, Tk>
  *
  * @deprecated since 1.2, use Vec\keys instead.
  *

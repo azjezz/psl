@@ -9,12 +9,12 @@ use Psl\Iter;
 /**
  * Get the last value of an array, if the array is empty, returns null.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param array<Tk, Tv> $array
+ * @param array<Tk, Tv> $array
  *
- * @psalm-return Tv|null
+ * @return Tv|null
  *
  * @psalm-pure
  *
@@ -25,7 +25,7 @@ use Psl\Iter;
 function last(array $array)
 {
     /**
-     * @psalm-var Tk|null $last
+     * @var Tk|null $last
      * @psalm-suppress DeprecatedFunction
      */
     $last = last_key($array);

@@ -18,13 +18,13 @@ use Psl\Dict;
  *      Arr\merge([0 => 1, 1 => 2], [2 => 9, 3 => 8])
  *      => Arr(0 => 1, 1 => 2, 2 => 9, 3 => 8)
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param    iterable<Tk, Tv> $first
- * @psalm-param    iterable<Tk, Tv> ...$rest
+ * @param    iterable<Tk, Tv> $first
+ * @param    iterable<Tk, Tv> ...$rest
  *
- * @psalm-return   array<Tk, Tv>
+ * @return   array<Tk, Tv>
  *
  * @deprecated use `Dict\merge` instead.
  *
@@ -32,7 +32,7 @@ use Psl\Dict;
  */
 function merge(iterable $first, iterable ...$rest): array
 {
-    /** @psalm-var list<iterable<Tk, Tv>> $iterables */
+    /** @var list<iterable<Tk, Tv>> $iterables */
     $iterables = [$first, ...$rest];
 
     return Dict\flatten($iterables);

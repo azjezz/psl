@@ -16,13 +16,13 @@ use Psl\Dict;
  *      Iter\merge([0 => 1, 1 => 2], [2 => 9, 3 => 8])
  *      => Iter(0 => 1, 1 => 2, 2 => 9, 3 => 8)
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv> $first
- * @psalm-param iterable<Tk, Tv> ...$rest
+ * @param iterable<Tk, Tv> $first
+ * @param iterable<Tk, Tv> ...$rest
  *
- * @psalm-return Iterator<Tk, Tv>
+ * @return Iterator<Tk, Tv>
  *
  * @deprecated use `Dict\merge` instead.
  *

@@ -9,7 +9,7 @@ use function is_int as php_is_int;
 /**
  * Finds whether a variable is an integer.
  *
- * @psalm-param mixed $var
+ * @param mixed $var
  *
  * @psalm-assert-if-true int $var
  *

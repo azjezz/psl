@@ -17,7 +17,7 @@ use Psl\Vec;
 final class Vector implements VectorInterface
 {
     /**
-     * @psalm-var array<int, T> $elements
+     * @var array<int, T> $elements
      *
      * @psalm-readonly
      */
@@ -26,7 +26,7 @@ final class Vector implements VectorInterface
     /**
      * Vector constructor.
      *
-     * @psalm-param iterable<T> $elements
+     * @param iterable<T> $elements
      */
     public function __construct(iterable $elements)
     {
@@ -38,7 +38,7 @@ final class Vector implements VectorInterface
     /**
      * Returns the first value in the current collection.
      *
-     * @psalm-return T|null - The first value in the current collection, or `null` if the
+     * @return T|null - The first value in the current collection, or `null` if the
      *           current collection is empty.
      */
     public function first()
@@ -49,7 +49,7 @@ final class Vector implements VectorInterface
     /**
      * Returns the last value in the current collection.
      *
-     * @psalm-return T|null - The last value in the current collection, or `null` if the
+     * @return T|null - The last value in the current collection, or `null` if the
      *           current collection is empty.
      */
     public function last()
@@ -60,7 +60,7 @@ final class Vector implements VectorInterface
     /**
      * Retrieve an external iterator
      *
-     * @psalm-return Iter\Iterator<int, T>
+     * @return Iter\Iterator<int, T>
      */
     public function getIterator(): Iter\Iterator
     {
@@ -86,7 +86,7 @@ final class Vector implements VectorInterface
     /**
      * Get an array copy of the current vector.
      *
-     * @psalm-return list<T>
+     * @return list<T>
      */
     public function toArray(): array
     {
@@ -97,7 +97,7 @@ final class Vector implements VectorInterface
     /**
      * Get an array copy of the current vector.
      *
-     * @psalm-return list<T>
+     * @return list<T>
      */
     public function jsonSerialize(): array
     {
@@ -107,9 +107,9 @@ final class Vector implements VectorInterface
     /**
      * Returns the value at the specified key in the current vector.
      *
-     * @psalm-param  int $k
+     * @param  int $k
      *
-     * @psalm-return T
+     * @return T
      *
      * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
      */
@@ -123,7 +123,7 @@ final class Vector implements VectorInterface
     /**
      * Determines if the specified key is in the current vector.
      *
-     * @psalm-param int $k
+     * @param int $k
      */
     public function contains($k): bool
     {
@@ -133,9 +133,9 @@ final class Vector implements VectorInterface
     /**
      * Returns the value at the specified key in the current vector.
      *
-     * @psalm-param  int $k
+     * @param  int $k
      *
-     * @psalm-return T|null
+     * @return T|null
      */
     public function get($k)
     {
@@ -145,7 +145,7 @@ final class Vector implements VectorInterface
     /**
      * Returns the first key in the current `AbstractVector`.
      *
-     * @psalm-return int|null - The first key in the current `AbstractVector`, or `null` if the
+     * @return int|null - The first key in the current `AbstractVector`, or `null` if the
      *                  current `AbstractVector` is empty
      */
     public function firstKey(): ?int
@@ -156,7 +156,7 @@ final class Vector implements VectorInterface
     /**
      * Returns the last key in the current `AbstractVector`.
      *
-     * @psalm-return int|null - The last key in the current `AbstractVector`, or `null` if the
+     * @return int|null - The last key in the current `AbstractVector`, or `null` if the
      *                  current `AbstractVector` is empty
      */
     public function lastKey(): ?int
@@ -169,10 +169,10 @@ final class Vector implements VectorInterface
      *
      * If no element matches the search value, this function returns null.
      *
-     * @psalm-param  T $search_value - The value that will be search for in the current
+     * @param  T $search_value - The value that will be search for in the current
      *                        collection.
      *
-     * @psalm-return int|null - The key (index) where that value is found; null if it is not found
+     * @return int|null - The key (index) where that value is found; null if it is not found
      */
     public function linearSearch($search_value): ?int
     {
@@ -189,7 +189,7 @@ final class Vector implements VectorInterface
      * Returns a `Vector` containing the values of the current
      * `Vector`.
      *
-     * @psalm-return Vector<T>
+     * @return Vector<T>
      */
     public function values(): Vector
     {
@@ -199,7 +199,7 @@ final class Vector implements VectorInterface
     /**
      * Returns a `Vector` containing the keys of the current `Vector`.
      *
-     * @psalm-return Vector<int>
+     * @return Vector<int>
      */
     public function keys(): Vector
     {
@@ -216,10 +216,10 @@ final class Vector implements VectorInterface
      * The keys associated with the current `Vector` remain unchanged in the
      * returned `Vector`.
      *
-     * @psalm-param (callable(T): bool) $fn - The callback containing the condition to apply to the current
+     * @param (callable(T): bool) $fn - The callback containing the condition to apply to the current
      *                                 `Vector` values
      *
-     * @psalm-return Vector<T> - a Vector containing the values after a user-specified condition
+     * @return Vector<T> - a Vector containing the values after a user-specified condition
      *                        is applied
      */
     public function filter(callable $fn): Vector
@@ -238,10 +238,10 @@ final class Vector implements VectorInterface
      * The keys associated with the current `Vector` remain unchanged in the
      * returned `Vector`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (callable(int, T): bool) $fn - The callback containing the condition to apply to the current
+     * @param (callable(int, T): bool) $fn - The callback containing the condition to apply to the current
      *                                     `Vector` keys and values
      *
-     * @psalm-return Vector<T> - a `Vector` containing the values after a user-specified
+     * @return Vector<T> - a `Vector` containing the values after a user-specified
      *                        condition is applied to the keys and values of the current
      *                        `Vector`
      */
@@ -260,12 +260,12 @@ final class Vector implements VectorInterface
      * The keys will remain unchanged from the current `Vector` to the
      * returned `Vector`.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param (callable(T): Tu) $fn - The callback containing the operation to apply to the current
+     * @param (callable(T): Tu) $fn - The callback containing the operation to apply to the current
      *                               `Vector` values
      *
-     * @psalm-return   Vector<Tu> - a `Vector` containing key/value pairs after a user-specified
+     * @return   Vector<Tu> - a `Vector` containing key/value pairs after a user-specified
      *                        operation is applied
      */
     public function map(callable $fn): Vector
@@ -284,12 +284,12 @@ final class Vector implements VectorInterface
      * The keys will remain unchanged from this `Vector` to the returned
      * `Vector`. The keys are only used to help in the mapping operation.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param (callable(int, T): Tu) $fn - The callback containing the operation to apply to the current
+     * @param (callable(int, T): Tu) $fn - The callback containing the operation to apply to the current
      *                                   `Vector` keys and values
      *
-     * @psalm-return   Vector<Tu> - a `Vector` containing the values after a user-specified
+     * @return   Vector<Tu> - a `Vector` containing the values after a user-specified
      *                        operation on the current `Vector`'s keys and values is
      *                        applied
      */
@@ -307,12 +307,12 @@ final class Vector implements VectorInterface
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param    iterable<Tu> $iterable - The `iterable` to use to combine with the
+     * @param    iterable<Tu> $iterable - The `iterable` to use to combine with the
      *                       elements of this `VectorInterface`.
      *
-     * @psalm-return   Vector<array{0: T, 1: Tu}> - The `Vector` that combines the values of the current
+     * @return   Vector<array{0: T, 1: Tu}> - The `Vector` that combines the values of the current
      *           `Vector` with the provided `iterable`.
      */
     public function zip(iterable $iterable): Vector
@@ -329,10 +329,10 @@ final class Vector implements VectorInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @psalm-param $n - The last element that will be included in the returned
+     * @param $n - The last element that will be included in the returned
      *             `Vector`
      *
-     * @psalm-return Vector<T> - A `Vector` that is a proper subset of the current
+     * @return Vector<T> - A `Vector` that is a proper subset of the current
      *           `Vector` up to `n` elements.
      *
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
@@ -350,10 +350,10 @@ final class Vector implements VectorInterface
      * The returned `Vector` will always be a proper subset of the current
      * `Vector`.
      *
-     * @psalm-param (callable(T): bool) $fn - The callback that is used to determine the stopping
+     * @param (callable(T): bool) $fn - The callback that is used to determine the stopping
      *              condition.
      *
-     * @psalm-return Vector<T> - A `Vector` that is a proper subset of the current
+     * @return Vector<T> - A `Vector` that is a proper subset of the current
      *           `Vector` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): Vector
@@ -370,10 +370,10 @@ final class Vector implements VectorInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @psalm-param  int $n - The last element to be skipped; the $n+1 element will be the
+     * @param  int $n - The last element to be skipped; the $n+1 element will be the
      *             first one in the returned `Vector`.
      *
-     * @psalm-return Vector<T> - A `Vector` that is a proper subset of the current
+     * @return Vector<T> - A `Vector` that is a proper subset of the current
      *           `Vector` containing values after the specified `n`-th
      *           element.
      *
@@ -392,10 +392,10 @@ final class Vector implements VectorInterface
      * The returned `Vector` will always be a proper subset of the current
      * `Vector`.
      *
-     * @psalm-param (callable(T): bool) $fn - The callback used to determine the starting element for the
+     * @param (callable(T): bool) $fn - The callback used to determine the starting element for the
      *              returned `Vector`.
      *
-     * @psalm-return Vector<T> - A `Vector` that is a proper subset of the current
+     * @return Vector<T> - A `Vector` that is a proper subset of the current
      *           `Vector` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): Vector
@@ -414,11 +414,11 @@ final class Vector implements VectorInterface
      * The returned `Vector` will always be a proper subset of this
      * `Vector`.
      *
-     * @psalm-param  int $start - The starting key of this Vector to begin the returned
+     * @param  int $start - The starting key of this Vector to begin the returned
      *                   `Vector`
-     * @psalm-param  int $len   - The length of the returned `Vector`
+     * @param  int $len   - The length of the returned `Vector`
      *
-     * @psalm-return Vector<T> - A `Vector` that is a proper subset of the current
+     * @return Vector<T> - A `Vector` that is a proper subset of the current
      *           `Vector` starting at `$start` up to but not including the
      *           element `$start + $len`.
      *

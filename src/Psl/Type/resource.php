@@ -7,7 +7,7 @@ namespace Psl\Type;
 /**
  * @param ?string $kind The resource kind, if null, the resource type won't be validated.
  *
- * @psalm-return TypeInterface<resource>
+ * @return TypeInterface<resource>
  */
 function resource(?string $kind = null): TypeInterface
 {

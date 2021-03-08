@@ -7,9 +7,9 @@ namespace Psl\Type;
 /**
  * @template T
  *
- * @psalm-param class-string<T> $classname
+ * @param class-string<T> $classname
  *
- * @psalm-return TypeInterface<T>
+ * @return TypeInterface<T>
  */
 function object(string $classname): TypeInterface
 {

@@ -37,9 +37,9 @@ final class ShapeType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
-     * @psalm-return array<Tk, Tv>
+     * @return array<Tk, Tv>
      *
      * @throws CoercionException
      */
@@ -79,9 +79,9 @@ final class ShapeType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
-     * @psalm-return array<Tk, Tv>
+     * @return array<Tk, Tv>
      *
      * @psalm-assert array<Tk, Tv> $value
      *

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl;
 
 /**
- * @psalm-param  int|float|string  ...$args
+ * @param  int|float|string  ...$args
  *
- * @psalm-return no-return
+ * @return no-return
  *
  * @psalm-pure
  *

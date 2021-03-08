@@ -24,16 +24,16 @@ use Psl\Dict;
  *          4096 => 'M', 16384 => 'O', 65536 => 'Q', 262144 => 'S', 1048576 => 'U'
  *      )
  *
- * @psalm-template Tk1
- * @psalm-template Tv1
- * @psalm-template Tk2
- * @psalm-template Tv2
+ * @template Tk1
+ * @template Tv1
+ * @template Tk2
+ * @template Tv2
  *
- * @psalm-param iterable<Tk1, Tv1>          $iterable
- * @psalm-param (callable(Tk1, Tv1): Tv2)   $value_func
- * @psalm-param (callable(Tk1, Tv1): Tk2)   $key_func
+ * @param iterable<Tk1, Tv1>          $iterable
+ * @param (callable(Tk1, Tv1): Tv2)   $value_func
+ * @param (callable(Tk1, Tv1): Tk2)   $key_func
  *
- * @psalm-return Iterator<Tk2, Tv2>
+ * @return Iterator<Tk2, Tv2>
  *
  * @deprecated use `Dict\pull_with_key` instead.
  *

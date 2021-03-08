@@ -10,7 +10,7 @@ namespace Psl\Type\Exception;
 final class TypeTrace
 {
     /**
-     * @psalm-var list<string> $frames
+     * @var list<string> $frames
      */
     private array $frames = [];
 
@@ -23,7 +23,7 @@ final class TypeTrace
     }
 
     /**
-     * @psalm-return list<string>
+     * @return list<string>
      *
      * @psalm-mutation-free
      */

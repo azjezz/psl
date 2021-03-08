@@ -10,12 +10,12 @@ use Psl\Iter;
 /**
  * Retrieve a random value from a non-empty array.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param array<Tk, Tv> $values
+ * @param array<Tk, Tv> $values
  *
- * @psalm-return Tv
+ * @return Tv
  *
  * @throws Psl\Exception\InvariantViolationException If $values is empty.
  *

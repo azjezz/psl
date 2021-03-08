@@ -11,7 +11,7 @@ use function is_resource as php_is_resource;
  *
  * To verify the resource type, use `Type\resource($type)->assert($var)` instead.
  *
- * @psalm-param mixed $var
+ * @param mixed $var
  *
  * @psalm-assert-if-true resource $var
  *

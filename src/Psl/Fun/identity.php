@@ -10,7 +10,7 @@ namespace Psl\Fun;
  *
  * @template T
  *
- * @psalm-return callable(T): T
+ * @return callable(T): T
  *
  * @psalm-pure
  */

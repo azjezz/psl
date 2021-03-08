@@ -25,12 +25,12 @@ use Psl\Vec;
  *         Arr(2, 2, 2) => Arr(3, 6, 9)
  *     )
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv> ...$iterables
+ * @param iterable<Tk, Tv> ...$iterables
  *
- * @psalm-return Iterator<list<Tk>, list<Tv>>
+ * @return Iterator<list<Tk>, list<Tv>>
  *
  * @deprecated since 1.2, use Vec\zip instead.
  *
@@ -43,37 +43,37 @@ function zip(iterable ...$iterables): Iterator
             return;
         }
 
-        /** @psalm-var list<Iterator<Tk, Tv>> $iterators */
+        /** @var list<Iterator<Tk, Tv>> $iterators */
         $iterators = Vec\values(Dict\map(
             $iterables,
             /**
-             * @psalm-param  iterable<Tk, Tv>    $iterable
+             * @param  iterable<Tk, Tv>    $iterable
              *
-             * @psalm-return Iterator<Tk, Tv>
+             * @return Iterator<Tk, Tv>
              */
             static fn ($iterable) => new Iterator((static fn () => yield from $iterable)()),
         ));
 
         apply($iterators, static fn (Iterator $iterator) => $iterator->rewind());
         while (all($iterators, static fn (Iterator $iterator) => $iterator->valid())) {
-            /** @psalm-var list<Tk> $keys */
+            /** @var list<Tk> $keys */
             $keys = Vec\values(Dict\map(
                 $iterators,
                 /**
-                 * @psalm-param Iterator<Tk, Tv> $iterator
+                 * @param Iterator<Tk, Tv> $iterator
                  *
-                 * @psalm-return Tk
+                 * @return Tk
                  */
                 static fn (Iterator $iterator) => $iterator->key(),
             ));
 
-            /** @psalm-var list<Tv> $values */
+            /** @var list<Tv> $values */
             $values = Vec\values(Dict\map(
                 $iterators,
                 /**
-                 * @psalm-param Iterator<Tk, Tv> $iterator
+                 * @param Iterator<Tk, Tv> $iterator
                  *
-                 * @psalm-return Tv
+                 * @return Tv
                  */
                 static fn (Iterator $iterator) => $iterator->current(),
             ));

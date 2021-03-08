@@ -17,12 +17,12 @@ use Psl\Vec;
  *      Arr\shuffle(['a' => 1, 'b' => 2, 'c' => 3])
  *      => Arr(2, 3, 1)
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param array<Tk, Tv> $array
+ * @param array<Tk, Tv> $array
  *
- * @psalm-return list<Tv> the shuffled array.
+ * @return list<Tv> the shuffled array.
  *
  * @deprecated since 1.2, use Vec\shuffle instead.
  *

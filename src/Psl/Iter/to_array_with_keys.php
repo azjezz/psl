@@ -9,12 +9,12 @@ use Psl\Dict;
 /**
  * Copy the iterable into an array with keys.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param    iterable<Tk, Tv> $iterable
+ * @param    iterable<Tk, Tv> $iterable
  *
- * @psalm-return   array<Tk, Tv>
+ * @return   array<Tk, Tv>
  *
  * @deprecated use `Dict\from_iterable` instead.
  *

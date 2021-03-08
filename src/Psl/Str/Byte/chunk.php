@@ -11,9 +11,9 @@ use function str_split;
 /**
  * Returns an array containing the string split into chunks of the given size.
  *
- * @psalm-param int $chunk_length maximum length of the chunk
+ * @param int $chunk_length maximum length of the chunk
  *
- * @psalm-return list<string> if $chunk_length parameter is specified, the returned array will be broken down
+ * @return list<string> if $chunk_length parameter is specified, the returned array will be broken down
  *                  into chunks with each being $chunk_length in length, otherwise each chunk
  *                  will be one character in length.
  *                  If the $chunk_length length exceeds the length of string, the entire string is returned

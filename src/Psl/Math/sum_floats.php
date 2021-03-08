@@ -7,7 +7,7 @@ namespace Psl\Math;
 /**
  * Returns the float sum of the values of the given iterable.
  *
- * @psalm-param list<numeric> $numbers
+ * @param list<numeric> $numbers
  *
  * @psalm-pure
  */

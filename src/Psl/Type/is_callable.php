@@ -9,7 +9,7 @@ use function is_callable as php_is_callable;
 /**
  * Finds whether a variable is a callable.
  *
- * @psalm-param mixed $var
+ * @param mixed $var
  *
  * @psalm-assert-if-true callable $var
  *

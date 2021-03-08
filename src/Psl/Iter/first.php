@@ -18,11 +18,11 @@ namespace Psl\Iter;
  *      Iter\first([])
  *      => Null
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param iterable<T> $iterable
+ * @param iterable<T> $iterable
  *
- * @psalm-return T|null
+ * @return T|null
  */
 function first(iterable $iterable)
 {

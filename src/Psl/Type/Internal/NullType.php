@@ -26,9 +26,9 @@ final class NullType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
-     * @psalm-return null
+     * @return null
      */
     public function coerce($value)
     {
@@ -40,11 +40,11 @@ final class NullType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
      * @psalm-assert null $value
      *
-     * @psalm-return null
+     * @return null
      */
     public function assert($value)
     {

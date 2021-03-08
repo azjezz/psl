@@ -20,14 +20,14 @@ use Psl\Dict;
  *     Iter\map([1, 2, 3, 4, 5], fn($i) => $i * 2);
  *     => Iter(2, 4, 6, 8, 10)
  *
- * @psalm-template Tk
- * @psalm-template Tv
- * @psalm-template T
+ * @template Tk
+ * @template Tv
+ * @template T
  *
- * @psalm-param iterable<Tk, Tv>    $iterable Iterable to be mapped over
- * @psalm-param (callable(Tv): T)   $function
+ * @param iterable<Tk, Tv>    $iterable Iterable to be mapped over
+ * @param (callable(Tv): T)   $function
  *
- * @psalm-return Iterator<Tk, T>
+ * @return Iterator<Tk, T>
  *
  * @deprecated use `Dict\map` instead.
  *

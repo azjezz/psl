@@ -9,9 +9,9 @@ use function is_a;
 /**
  * Checks if the object is of this class or has this class as one of its parents.
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param class-string<T> $class
+ * @param class-string<T> $class
  *
  * @psalm-assert-if-true T $object
  *

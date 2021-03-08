@@ -10,11 +10,11 @@ use function restore_error_handler;
 use function set_error_handler;
 
 /**
- * @psalm-template T
+ * @template T
  *
- * @psalm-param (callable(): T) $fun
+ * @param (callable(): T) $fun
  *
- * @psalm-return array{0: T, 1: ?string}
+ * @return array{0: T, 1: ?string}
  *
  * @internal
  *

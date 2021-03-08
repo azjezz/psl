@@ -7,12 +7,12 @@ namespace Psl\Iter;
 /**
  * Get the last key of an iterable, if the iterable is empty, null will be returned.
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param    iterable<Tk, Tv> $iterable
+ * @param    iterable<Tk, Tv> $iterable
  *
- * @psalm-return   Tk|null
+ * @return   Tk|null
  */
 function last_key(iterable $iterable)
 {

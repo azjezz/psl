@@ -9,7 +9,7 @@ use function is_nan as php_is_nan;
 /**
  * Finds whether a float is NaN ( not a number ).
  *
- * @psalm-param float $var
+ * @param float $var
  *
  * @psalm-pure
  */

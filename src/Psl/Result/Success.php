@@ -17,14 +17,14 @@ use Psl;
 final class Success implements ResultInterface
 {
     /**
-     * @psalm-var T
+     * @var T
      *
      * @readonly
      */
     private $value;
 
     /**
-     * @psalm-param T $value
+     * @param T $value
      */
     public function __construct($value)
     {
@@ -34,7 +34,7 @@ final class Success implements ResultInterface
     /**
      * Since this is a successful result wrapper, this always returns the actual result of the operation.
      *
-     * @psalm-return T
+     * @return T
      *
      * @psalm-mutation-free
      */
@@ -49,7 +49,7 @@ final class Success implements ResultInterface
      *
      * @throws Psl\Exception\InvariantViolationException
      *
-     * @psalm-return no-return
+     * @return no-return
      *
      * @codeCoverageIgnore
      *

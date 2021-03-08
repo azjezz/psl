@@ -18,14 +18,14 @@ use Psl\Vec;
 final class MutableMap implements MutableMapInterface
 {
     /**
-     * @psalm-var array<Tk, Tv> $elements
+     * @var array<Tk, Tv> $elements
      */
     private array $elements;
 
     /**
      * AbstractMap constructor.
      *
-     * @psalm-param iterable<Tk, Tv> $elements
+     * @param iterable<Tk, Tv> $elements
      */
     public function __construct(iterable $elements)
     {
@@ -35,7 +35,7 @@ final class MutableMap implements MutableMapInterface
     /**
      * Returns the first value in the current collection.
      *
-     * @psalm-return Tv|null - The first value in the current collection, or `null` if the
+     * @return Tv|null - The first value in the current collection, or `null` if the
      *           current collection is empty.
      */
     public function first()
@@ -46,7 +46,7 @@ final class MutableMap implements MutableMapInterface
     /**
      * Returns the first key in the current collection.
      *
-     * @psalm-return Tk|null - The first key in the current collection, or `null` if the
+     * @return Tk|null - The first key in the current collection, or `null` if the
      *                  current collection is empty
      */
     public function firstKey()
@@ -57,7 +57,7 @@ final class MutableMap implements MutableMapInterface
     /**
      * Returns the last value in the current collection.
      *
-     * @psalm-return Tv|null - The last value in the current collection, or `null` if the
+     * @return Tv|null - The last value in the current collection, or `null` if the
      *           current collection is empty.
      */
     public function last()
@@ -68,7 +68,7 @@ final class MutableMap implements MutableMapInterface
     /**
      * Returns the last key in the current collection.
      *
-     * @psalm-return Tk|null - The last key in the current collection, or `null` if the
+     * @return Tk|null - The last key in the current collection, or `null` if the
      *                  current collection is empty
      */
     public function lastKey()
@@ -81,10 +81,10 @@ final class MutableMap implements MutableMapInterface
      *
      * If no element matches the search value, this function returns null.
      *
-     * @psalm-param  Tv $search_value - The value that will be search for in the current
+     * @param  Tv $search_value - The value that will be search for in the current
      *                        collection.
      *
-     * @psalm-return Tk|null - The key (index) where that value is found; null if it is not found
+     * @return Tk|null - The key (index) where that value is found; null if it is not found
      */
     public function linearSearch($search_value)
     {
@@ -100,7 +100,7 @@ final class MutableMap implements MutableMapInterface
     /**
      * Retrieve an external iterator
      *
-     * @psalm-return Iter\Iterator<Tk, Tv>
+     * @return Iter\Iterator<Tk, Tv>
      */
     public function getIterator(): Iter\Iterator
     {
@@ -126,7 +126,7 @@ final class MutableMap implements MutableMapInterface
     /**
      * Get an array copy of the current map.
      *
-     * @psalm-return array<Tk, Tv>
+     * @return array<Tk, Tv>
      */
     public function toArray(): array
     {
@@ -136,7 +136,7 @@ final class MutableMap implements MutableMapInterface
     /**
      * Get an array copy of the current map.
      *
-     * @psalm-return array<Tk, Tv>
+     * @return array<Tk, Tv>
      */
     public function jsonSerialize(): array
     {
@@ -146,9 +146,9 @@ final class MutableMap implements MutableMapInterface
     /**
      * Returns the value at the specified key in the current map.
      *
-     * @psalm-param  Tk $k
+     * @param  Tk $k
      *
-     * @psalm-return Tv
+     * @return Tv
      *
      * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
      */
@@ -162,7 +162,7 @@ final class MutableMap implements MutableMapInterface
     /**
      * Determines if the specified key is in the current map.
      *
-     * @psalm-param Tk $k
+     * @param Tk $k
      */
     public function contains($k): bool
     {
@@ -172,9 +172,9 @@ final class MutableMap implements MutableMapInterface
     /**
      * Returns the value at the specified key in the current map.
      *
-     * @psalm-param  Tk $k
+     * @param  Tk $k
      *
-     * @psalm-return Tv|null
+     * @return Tv|null
      */
     public function get($k)
     {
@@ -185,7 +185,7 @@ final class MutableMap implements MutableMapInterface
      * Returns a `MutableVector` containing the values of the current
      * `MutableMap`.
      *
-     * @psalm-return MutableVector<Tv>
+     * @return MutableVector<Tv>
      */
     public function values(): MutableVector
     {
@@ -195,7 +195,7 @@ final class MutableMap implements MutableMapInterface
     /**
      * Returns a `MutableVector` containing the keys of the current `MutableMap`.
      *
-     * @psalm-return MutableVector<Tk>
+     * @return MutableVector<Tk>
      */
     public function keys(): MutableVector
     {
@@ -212,10 +212,10 @@ final class MutableMap implements MutableMapInterface
      * The keys associated with the current `MutableMap` remain unchanged in the
      * returned `MutableMap`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback containing the condition to apply to the current
+     * @param (callable(Tv): bool) $fn - The callback containing the condition to apply to the current
      *                                 `MutableMap` values
      *
-     * @psalm-return MutableMap<Tk, Tv> - a MutableMap containing the values after a user-specified condition
+     * @return MutableMap<Tk, Tv> - a MutableMap containing the values after a user-specified condition
      *                        is applied
      */
     public function filter(callable $fn): MutableMap
@@ -234,10 +234,10 @@ final class MutableMap implements MutableMapInterface
      * The keys associated with the current `MutableMap` remain unchanged in the
      * returned `MutableMap`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
+     * @param (callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
      *                                     `MutableMap` keys and values
      *
-     * @psalm-return MutableMap<Tk, Tv> - a `MutableMap` containing the values after a user-specified
+     * @return MutableMap<Tk, Tv> - a `MutableMap` containing the values after a user-specified
      *                        condition is applied to the keys and values of the current
      *                        `MutableMap`
      */
@@ -256,12 +256,12 @@ final class MutableMap implements MutableMapInterface
      * The keys will remain unchanged from the current `MutableMap` to the
      * returned `MutableMap`.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
+     * @param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                               `MutableMap` values
      *
-     * @psalm-return   MutableMap<Tk, Tu> - a `MutableMap` containing key/value pairs after a user-specified
+     * @return   MutableMap<Tk, Tu> - a `MutableMap` containing key/value pairs after a user-specified
      *                        operation is applied
      */
     public function map(callable $fn): MutableMap
@@ -280,12 +280,12 @@ final class MutableMap implements MutableMapInterface
      * The keys will remain unchanged from this `MutableMap` to the returned
      * `MutableMap`. The keys are only used to help in the mapping operation.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
+     * @param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                                   `MutableMap` keys and values
      *
-     * @psalm-return   MutableMap<Tk, Tu> - a `MutableMap` containing the values after a user-specified
+     * @return   MutableMap<Tk, Tu> - a `MutableMap` containing the values after a user-specified
      *                        operation on the current `MutableMap`'s keys and values is
      *                        applied
      */
@@ -303,22 +303,22 @@ final class MutableMap implements MutableMapInterface
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param    iterable<Tu> $iterable - The `iterable` to use to combine with the
+     * @param    iterable<Tu> $iterable - The `iterable` to use to combine with the
      *                       elements of this `MutableMap`.
      *
-     * @psalm-return   MutableMap<Tk, array{0: Tv, 1: Tu}> - The `MutableMap` that combines the values of the current
+     * @return   MutableMap<Tk, array{0: Tv, 1: Tu}> - The `MutableMap` that combines the values of the current
      *           `MutableMap` with the provided `iterable`.
      */
     public function zip(iterable $iterable): MutableMap
     {
         $array = Vec\values($iterable);
-        /** @psalm-var array<Tk, array{0: Tv, 1: Tu}> $elements */
+        /** @var array<Tk, array{0: Tv, 1: Tu}> $elements */
         $elements = [];
 
         foreach ($this->elements as $k => $v) {
-            /** @psalm-var Tu|null $u */
+            /** @var Tu|null $u */
             $u = Iter\first($array);
             if (null === $u) {
                 break;
@@ -341,10 +341,10 @@ final class MutableMap implements MutableMapInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @psalm-param $n - The last element that will be included in the returned
+     * @param $n - The last element that will be included in the returned
      *             `MutableMap`
      *
-     * @psalm-return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
+     * @return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
      *           `MutableMap` up to `n` elements.
      *
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
@@ -362,10 +362,10 @@ final class MutableMap implements MutableMapInterface
      * The returned `MutableMap` will always be a proper subset of the current
      * `MutableMap`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback that is used to determine the stopping
+     * @param (callable(Tv): bool) $fn - The callback that is used to determine the stopping
      *              condition.
      *
-     * @psalm-return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
+     * @return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
      *           `MutableMap` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): MutableMap
@@ -382,10 +382,10 @@ final class MutableMap implements MutableMapInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @psalm-param  int $n - The last element to be skipped; the $n+1 element will be the
+     * @param  int $n - The last element to be skipped; the $n+1 element will be the
      *             first one in the returned `MutableMap`.
      *
-     * @psalm-return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
+     * @return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
      *           `MutableMap` containing values after the specified `n`-th
      *           element.
      *
@@ -404,10 +404,10 @@ final class MutableMap implements MutableMapInterface
      * The returned `MutableMap` will always be a proper subset of the current
      * `MutableMap`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback used to determine the starting element for the
+     * @param (callable(Tv): bool) $fn - The callback used to determine the starting element for the
      *              returned `MutableMap`.
      *
-     * @psalm-return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
+     * @return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
      *           `MutableMap` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): MutableMap
@@ -426,11 +426,11 @@ final class MutableMap implements MutableMapInterface
      * The returned `MutableMap` will always be a proper subset of this
      * `MutableMap`.
      *
-     * @psalm-param  int $start - The starting key of this Vector to begin the returned
+     * @param  int $start - The starting key of this Vector to begin the returned
      *                   `MutableMap`
-     * @psalm-param  int $len   - The length of the returned `MutableMap`
+     * @param  int $len   - The length of the returned `MutableMap`
      *
-     * @psalm-return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
+     * @return MutableMap<Tk, Tv> - A `MutableMap` that is a proper subset of the current
      *           `MutableMap` starting at `$start` up to but not including the
      *           element `$start + $len`.
      *
@@ -451,10 +451,10 @@ final class MutableMap implements MutableMapInterface
      * It returns the current map, meaning changes made to the current
      * map will be reflected in the returned map.
      *
-     * @psalm-param  Tk $k - The key to which we will set the value
-     * @psalm-param  Tv $v - The value to set
+     * @param  Tk $k - The key to which we will set the value
+     * @param  Tv $v - The value to set
      *
-     * @psalm-return MutableMap<Tk, Tv> - Returns itself
+     * @return MutableMap<Tk, Tv> - Returns itself
      *
      * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
      */
@@ -478,9 +478,9 @@ final class MutableMap implements MutableMapInterface
      * It the current map, meaning changes made to the current map
      * will be reflected in the returned map.
      *
-     * @psalm-param  iterable<Tk, Tv> $iterable - The `iterable` with the new values to set
+     * @param  iterable<Tk, Tv> $iterable - The `iterable` with the new values to set
      *
-     * @psalm-return MutableMap<Tk, Tv> - Returns itself
+     * @return MutableMap<Tk, Tv> - Returns itself
      */
     public function setAll(iterable $iterable): MutableMap
     {
@@ -494,10 +494,10 @@ final class MutableMap implements MutableMapInterface
     /**
      * Add a value to the map and return the map itself.
      *
-     * @psalm-param  Tk $k - The key to which we will add the value
-     * @psalm-param  Tv $v - The value to set
+     * @param  Tk $k - The key to which we will add the value
+     * @param  Tv $v - The value to set
      *
-     * @psalm-return MutableMap<Tk, Tv> - Returns itself
+     * @return MutableMap<Tk, Tv> - Returns itself
      */
     public function add($k, $v): MutableMap
     {
@@ -509,9 +509,9 @@ final class MutableMap implements MutableMapInterface
     /**
      * For every element in the provided iterable, add the value into the current map.
      *
-     * @psalm-param  iterable<Tk, Tv> $iterable - The `iterable` with the new values to add
+     * @param  iterable<Tk, Tv> $iterable - The `iterable` with the new values to add
      *
-     * @psalm-return MutableMap<Tk, Tv> - Returns itself
+     * @return MutableMap<Tk, Tv> - Returns itself
      */
     public function addAll(iterable $iterable): MutableMap
     {
@@ -532,9 +532,9 @@ final class MutableMap implements MutableMapInterface
      * It the current map, meaning changes made to the current map
      * will be reflected in the returned map.
      *
-     * @psalm-param  Tk $k - The key to remove
+     * @param  Tk $k - The key to remove
      *
-     * @psalm-return MutableMap<Tk, Tv> - Returns itself
+     * @return MutableMap<Tk, Tv> - Returns itself
      */
     public function remove($k): MutableMap
     {
@@ -548,7 +548,7 @@ final class MutableMap implements MutableMapInterface
     /**
      * Removes all items from the map.
      *
-     * @psalm-return MutableMap<Tk, Tv>
+     * @return MutableMap<Tk, Tv>
      */
     public function clear(): MutableMap
     {

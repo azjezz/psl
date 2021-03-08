@@ -20,13 +20,13 @@ use Psl\Dict;
  *      Iter\filter(['foo', 'bar', 'baz', 'qux'], fn($value) => Str\contains($value, 'a'));
  *      => Iter('bar', 'baz')
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv>            $iterable
- * @psalm-param (callable(Tv): bool)|null   $predicate
+ * @param iterable<Tk, Tv>            $iterable
+ * @param (callable(Tv): bool)|null   $predicate
  *
- * @psalm-return Iterator<Tk, Tv>
+ * @return Iterator<Tk, Tv>
  *
  * @deprecated use `Dict\filter` instead.
  *
@@ -35,7 +35,7 @@ use Psl\Dict;
 function filter(iterable $iterable, ?callable $predicate = null): Iterator
 {
     return Iterator::from(static function () use ($iterable, $predicate): Generator {
-        /** @psalm-var (callable(Tv): bool) $predicate */
+        /** @var (callable(Tv): bool) $predicate */
         $predicate = $predicate ?? Closure::fromCallable('Psl\Internal\boolean');
         foreach ($iterable as $k => $v) {
             if ($predicate($v)) {

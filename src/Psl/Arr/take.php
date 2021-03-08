@@ -10,12 +10,12 @@ use Psl\Dict;
 /**
  * Take the first n elements from an array.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param array<Tk, Tv> $array
+ * @param array<Tk, Tv> $array
  *
- * @psalm-return array<Tk, Tv>
+ * @return array<Tk, Tv>
  *
  * @throws Psl\Exception\InvariantViolationException If the $n is negative
  *

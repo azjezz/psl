@@ -11,15 +11,15 @@ namespace Psl\Vec;
  *      Vec\filter_nulls([1, null, 5])
  *      => Vec(1, 5)
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param iterable<T|null> $iterable
+ * @param iterable<T|null> $iterable
  *
- * @psalm-return list<T>
+ * @return list<T>
  */
 function filter_nulls(iterable $iterable): array
 {
-    /** @psalm-var list<T> $result */
+    /** @var list<T> $result */
     $result = [];
     foreach ($iterable as $value) {
         if (null !== $value) {

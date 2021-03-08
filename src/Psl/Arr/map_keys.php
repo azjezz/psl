@@ -19,14 +19,14 @@ use Psl\Dict;
  *     Arr\map_keys([0 => 1, 1 => 2, 2 => 3, 3 => 4, 4 => 5], fn($i) => $i * 2);
  *     => Arr(0 => 1, 2 => 2, 4 => 3, 6 => 4, 8 => 5)
  *
- * @psalm-template Tk1 of array-key
- * @psalm-template Tk2 of array-key
- * @psalm-template Tv
+ * @template Tk1 of array-key
+ * @template Tk2 of array-key
+ * @template Tv
  *
- * @psalm-param iterable<Tk1, Tv>       $iterable Iterable to be mapped over
- * @psalm-param (callable(Tk1): Tk2)    $function
+ * @param iterable<Tk1, Tv>       $iterable Iterable to be mapped over
+ * @param (callable(Tk1): Tk2)    $function
  *
- * @psalm-return array<Tk2, Tv>
+ * @return array<Tk2, Tv>
  *
  * @deprecated use `Dict\map_keys` instead.
  *

@@ -9,7 +9,7 @@ use Psl\Iter;
 /**
  * Return the arithmetic mean of the numbers in the given iterable.
  *
- * @psalm-param iterable<numeric> $numbers
+ * @param iterable<numeric> $numbers
  */
 function mean(iterable $numbers): ?float
 {

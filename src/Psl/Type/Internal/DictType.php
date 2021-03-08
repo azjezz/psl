@@ -24,18 +24,18 @@ use function is_iterable;
 final class DictType extends Type\Type
 {
     /**
-     * @psalm-var Type\TypeInterface<Tk>
+     * @var Type\TypeInterface<Tk>
      */
     private Type\TypeInterface $key_type;
 
     /**
-     * @psalm-var Type\TypeInterface<Tv>
+     * @var Type\TypeInterface<Tv>
      */
     private Type\TypeInterface $value_type;
 
     /**
-     * @psalm-param Type\TypeInterface<Tk> $key_type
-     * @psalm-param Type\TypeInterface<Tv> $value_type
+     * @param Type\TypeInterface<Tk> $key_type
+     * @param Type\TypeInterface<Tv> $value_type
      */
     public function __construct(
         Type\TypeInterface $key_type,
@@ -46,9 +46,9 @@ final class DictType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
-     * @psalm-return array<Tk, Tv>
+     * @return array<Tk, Tv>
      *
      * @throws CoercionException
      */
@@ -64,13 +64,13 @@ final class DictType extends Type\Type
             $value_type = $this->value_type->withTrace($value_trace);
 
             /**
-             * @psalm-var list<array{0: Tk, 1: Tv}> $entries
+             * @var list<array{0: Tk, 1: Tv}> $entries
              */
             $entries = [];
 
             /**
-             * @psalm-var Tk $k
-             * @psalm-var Tv $v
+             * @var Tk $k
+             * @var Tv $v
              */
             foreach ($value as $k => $v) {
                 $entries[] = [
@@ -86,9 +86,9 @@ final class DictType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
-     * @psalm-return array<Tk, Tv>
+     * @return array<Tk, Tv>
      *
      * @psalm-assert array<Tk, Tv> $value
      *
@@ -106,13 +106,13 @@ final class DictType extends Type\Type
             $value_type = $this->value_type->withTrace($value_trace);
 
             /**
-             * @psalm-var list<array{0: Tk, 1: Tv}> $entries
+             * @var list<array{0: Tk, 1: Tv}> $entries
              */
             $entries = [];
 
             /**
-             * @psalm-var Tk $k
-             * @psalm-var Tv $v
+             * @var Tk $k
+             * @var Tv $v
              */
             foreach ($value as $k => $v) {
                 $entries[] = [

@@ -14,7 +14,7 @@ interface PriorityQueueInterface extends QueueInterface
     /**
      * Adds a node to the queue.
      *
-     * @psalm-param T $node
+     * @param T $node
      */
     public function enqueue($node, int $priority = 0): void;
 }

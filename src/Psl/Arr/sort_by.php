@@ -13,14 +13,14 @@ use Psl\Vec;
  * If the optional comparator function isn't provided, the values will be sorted
  * in ascending order of scalar key.
  *
- * @psalm-template Tv
- * @psalm-template Ts
+ * @template Tv
+ * @template Ts
  *
- * @psalm-param iterable<Tv>                   $iterable
- * @psalm-param (callable(Tv): Ts)             $scalar_func
- * @psalm-param (callable(Ts, Ts): int)|null   $comparator
+ * @param iterable<Tv>                   $iterable
+ * @param (callable(Tv): Ts)             $scalar_func
+ * @param (callable(Ts, Ts): int)|null   $comparator
  *
- * @psalm-return list<Tv>
+ * @return list<Tv>
  *
  * @deprecated since 1.2, use Vec\sort_by instead.
  */

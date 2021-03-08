@@ -19,12 +19,12 @@ use Psl\Vec;
  *      Iter\chunk([1, 2, 3, 4, 5], 2)
  *      => Iter([1, 2], [3, 4], [5])
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param iterable<T> $iterable The iterable to chunk
- * @psalm-param int         $size     The size of each chunk
+ * @param iterable<T> $iterable The iterable to chunk
+ * @param int         $size     The size of each chunk
  *
- * @psalm-return Iterator<int, list<T>>
+ * @return Iterator<int, list<T>>
  *
  * @throws Psl\Exception\InvariantViolationException If $size is negative.
  *

@@ -7,14 +7,14 @@ namespace Psl\Arr;
 use Psl\Vec;
 
 /**
- * @psalm-template Tk of array-key
- * @psalm-template Tv
- * @psalm-template T
+ * @template Tk of array-key
+ * @template Tv
+ * @template T
  *
- * @psalm-param iterable<Tk, Tv>            $iterable Iterable to be mapped over
- * @psalm-param (callable(Tv): iterable<T>) $mapper
+ * @param iterable<Tk, Tv>            $iterable Iterable to be mapped over
+ * @param (callable(Tv): iterable<T>) $mapper
  *
- * @psalm-return list<T>
+ * @return list<T>
  *
  * @deprecated use `Vec\flat_map` instead.
  *

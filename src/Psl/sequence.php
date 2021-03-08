@@ -7,11 +7,11 @@ namespace Psl;
 /**
  * This function is a kludge that returns the last argument it receives.
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param    T ...$args
+ * @param    T ...$args
  *
- * @psalm-return   T|null
+ * @return   T|null
  */
 function sequence(...$args)
 {

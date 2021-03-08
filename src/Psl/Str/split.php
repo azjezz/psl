@@ -14,7 +14,7 @@ use Psl\Math;
  * If the limit is provided, the array will only contain that many elements, where
  * the last element is the remainder of the string.
  *
- * @psalm-return list<string>
+ * @return list<string>
  *
  * @psalm-pure
  *

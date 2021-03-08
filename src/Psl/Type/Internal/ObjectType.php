@@ -18,12 +18,12 @@ use Psl\Type\Type;
 final class ObjectType extends Type
 {
     /**
-     * @psalm-var class-string<T> $classname
+     * @var class-string<T> $classname
      */
     private string $classname;
 
     /**
-     * @psalm-param class-string<T> $classname
+     * @param class-string<T> $classname
      */
     public function __construct(
         string $classname
@@ -42,9 +42,9 @@ final class ObjectType extends Type
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
-     * @psalm-return T
+     * @return T
      *
      * @throws CoercionException
      */
@@ -58,9 +58,9 @@ final class ObjectType extends Type
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
-     * @psalm-return T
+     * @return T
      *
      * @psalm-assert T $value
      *

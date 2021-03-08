@@ -27,15 +27,15 @@ use Psl\Vec;
  *     Iter\range(3.0, 0.0, -0.5)
  *     => Iter(3.0, 2.5, 2.0, 1.5, 1.0, 0.5, 0.0)
  *
- * @psalm-template T of int|float
+ * @template T of int|float
  *
- * @psalm-param T       $start First number (inclusive)
- * @psalm-param T       $end   Last number (inclusive, but doesn't have to be part of
+ * @param T       $start First number (inclusive)
+ * @param T       $end   Last number (inclusive, but doesn't have to be part of
  *                              resulting range if $step steps over it)
- * @psalm-param T|null  $step  Step between numbers (defaults to 1 if $start smaller
+ * @param T|null  $step  Step between numbers (defaults to 1 if $start smaller
  *                              $end and to -1 if $start greater $end)
  *
- * @psalm-return Iterator<int, T>
+ * @return Iterator<int, T>
  *
  * @throws Psl\Exception\InvariantViolationException If $start < $end, and $step is negative.
  *
@@ -68,7 +68,7 @@ function range($start, $end, $step = null): Iterator
                 yield $start;
             } elseif ($start < $end) {
                 if (null === $step) {
-                    /** @psalm-var T $step */
+                    /** @var T $step */
                     $step = 1;
                 }
 
@@ -80,7 +80,7 @@ function range($start, $end, $step = null): Iterator
                 }
             } else {
                 if (null === $step) {
-                    /** @psalm-var T $step */
+                    /** @var T $step */
                     $step = -1;
                 }
 

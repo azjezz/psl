@@ -18,7 +18,7 @@ namespace Psl\Dict;
  */
 function merge(iterable $first, iterable ...$rest): array
 {
-    /** @psalm-var list<iterable<Tk, Tv>> $iterables */
+    /** @var list<iterable<Tk, Tv>> $iterables */
     $iterables = [$first, ...$rest];
 
     return flatten($iterables);

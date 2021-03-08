@@ -11,12 +11,12 @@ namespace Psl\Math;
  * The value for comparison is determined by the given function in the case of
  * duplicate numeric keys, later values overwrite the previous ones.
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param iterable<T>            $values
- * @psalm-param (callable(T): numeric) $num_func
+ * @param iterable<T>            $values
+ * @param (callable(T): numeric) $num_func
  *
- * @psalm-return T|null
+ * @return T|null
  */
 function max_by(iterable $values, callable $num_func)
 {

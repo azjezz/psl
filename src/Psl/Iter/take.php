@@ -10,12 +10,12 @@ use Psl\Dict;
 /**
  * Take the first n elements from an iterable.
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv> $iterable
+ * @param iterable<Tk, Tv> $iterable
  *
- * @psalm-return Iterator<Tk, Tv>
+ * @return Iterator<Tk, Tv>
  *
  * @throws Psl\Exception\InvariantViolationException If the $n is negative
  *

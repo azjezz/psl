@@ -11,12 +11,12 @@ use Psl\Iter;
  * Get the first value of an array, If the array is empty, an InvariantViolationException
  * will be thrown.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param array<Tk, Tv> $array
+ * @param array<Tk, Tv> $array
  *
- * @psalm-return Tv
+ * @return Tv
  *
  * @psalm-pure
  *
@@ -29,7 +29,7 @@ use Psl\Iter;
 function firstx(array $array)
 {
     /**
-     * @psalm-var Tk|null $first
+     * @var Tk|null $first
      * @psalm-suppress DeprecatedFunction
      */
     $first = first_key($array);

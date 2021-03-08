@@ -18,11 +18,11 @@ namespace Psl\Math;
  *      Math\abs(-5.5)
  *      => Float(5.5)
  *
- * @psalm-template T of int|float
+ * @template T of int|float
  *
- * @psalm-param T $number
+ * @param T $number
  *
- * @psalm-return T
+ * @return T
  *
  * @psalm-pure
  *

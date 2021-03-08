@@ -20,13 +20,13 @@ use Psl\Dict;
  *      Arr\filter_keys([0 => 'a', 1 => 'b', 2 => 'c'], fn(int $key): bool => $key <= 1);
  *      => Arr(0 => 'a', 1 => 'b')
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv>           $iterable
- * @psalm-param (callable(Tk): bool)|null  $predicate
+ * @param iterable<Tk, Tv>           $iterable
+ * @param (callable(Tk): bool)|null  $predicate
  *
- * @psalm-return array<Tk, Tv>
+ * @return array<Tk, Tv>
  *
  * @deprecated use `Dict\filter_keys` instead.
  *

@@ -7,11 +7,11 @@ namespace Psl\Vec;
 /**
  * Return all the values of an array.
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param    iterable<T> $iterable
+ * @param    iterable<T> $iterable
  *
- * @psalm-return   list<T>
+ * @return   list<T>
  */
 function values(iterable $iterable): array
 {

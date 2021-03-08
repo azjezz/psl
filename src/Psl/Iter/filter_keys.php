@@ -22,13 +22,13 @@ use Psl\Dict;
  *      Iter\filter_keys([0 => 'a', 1 => 'b', 2 => 'c'], fn($key) => $key <= 1);
  *      => Iter(0 => 'a', 1 => 'b')
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv>            $iterable
- * @psalm-param (callable(Tk): bool)|null   $predicate
+ * @param iterable<Tk, Tv>            $iterable
+ * @param (callable(Tk): bool)|null   $predicate
  *
- * @psalm-return Iterator<Tk, Tv>
+ * @return Iterator<Tk, Tv>
  *
  * @deprecated use `Dict\filter_keys` instead.
  *
@@ -37,7 +37,7 @@ use Psl\Dict;
 function filter_keys(iterable $iterable, ?callable $predicate = null): Iterator
 {
     return Iterator::from(static function () use ($iterable, $predicate): Generator {
-        /** @psalm-var (callable(Tk): bool) $predicate */
+        /** @var (callable(Tk): bool) $predicate */
         $predicate = $predicate ?? Closure::fromCallable('Psl\Internal\boolean');
         foreach ($iterable as $k => $v) {
             if ($predicate($k)) {

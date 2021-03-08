@@ -15,13 +15,13 @@ namespace Psl\Dict;
  *      Dict\take_while([3, 1, 4, -1, 5], fn($i) => $i > 0)
  *      => Dict(3, 1, 4)
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param    iterable<Tk, Tv>        $iterable    Iterable to take values from
- * @psalm-param    (callable(Tv): bool)    $predicate
+ * @param    iterable<Tk, Tv>        $iterable    Iterable to take values from
+ * @param    (callable(Tv): bool)    $predicate
  *
- * @psalm-return   array<Tk, Tv>
+ * @return   array<Tk, Tv>
  */
 function take_while(iterable $iterable, callable $predicate): array
 {

@@ -18,12 +18,12 @@ namespace Psl\Iter;
  *      Iter\any(Iter\range(-8, 4), fn($i) => $i > 5)
  *      => Bool(false)
  *
- * @psalm-template  T
+ * @template  T
  *
- * @psalm-param     iterable<T>         $iterable  Iterable to check against the predicate
- * @psalm-param     (callable(T): bool) $predicate
+ * @param     iterable<T>         $iterable  Iterable to check against the predicate
+ * @param     (callable(T): bool) $predicate
  *
- * @psalm-return    bool Whether the predicate matches any value
+ * @return    bool Whether the predicate matches any value
  */
 function any(iterable $iterable, callable $predicate): bool
 {

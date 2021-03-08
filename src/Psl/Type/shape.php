@@ -10,7 +10,7 @@ namespace Psl\Type;
  *
  * @param array<Tk, TypeInterface<Tv>> $elements
  *
- * @psalm-return TypeInterface<array<Tk, Tv>>
+ * @return TypeInterface<array<Tk, Tv>>
  */
 function shape(array $elements): TypeInterface
 {

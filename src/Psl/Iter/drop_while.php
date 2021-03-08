@@ -18,13 +18,13 @@ use Psl\Dict;
  *      Iter\drop_while([3, 1, 4, -1, 5], fn($i) => $i > 0)
  *      => Iter(-1, 5)
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv>    $iterable Iterable to drop values from
- * @psalm-param (callable(Tv): bool) $predicate
+ * @param iterable<Tk, Tv>    $iterable Iterable to drop values from
+ * @param (callable(Tv): bool) $predicate
  *
- * @psalm-return Iterator<Tk, Tv>
+ * @return Iterator<Tk, Tv>
  *
  * @deprecated use `Dict\drop_while` instead.
  */

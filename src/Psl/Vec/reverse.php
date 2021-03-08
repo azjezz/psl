@@ -13,11 +13,11 @@ use Psl\Iter;
  *      Vec\reverse(['foo', 'bar', 'baz', 'qux'])
  *      => Vec('qux', 'baz', 'bar', 'foo')
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param    iterable<T> $iterable The iterable to reverse.
+ * @param    iterable<T> $iterable The iterable to reverse.
  *
- * @psalm-return   list<T>
+ * @return   list<T>
  */
 function reverse(iterable $iterable): array
 {

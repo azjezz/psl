@@ -13,15 +13,15 @@ use Psl\Dict;
  * If the optional comparator function isn't provided, the values will be sorted
  * in ascending order of scalar key.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
- * @psalm-template Ts
+ * @template Tk of array-key
+ * @template Tv
+ * @template Ts
  *
- * @psalm-param    iterable<Tk, Tv>                $iterable
- * @psalm-param    (callable(Tv): Ts)              $scalar_func
- * @psalm-param    (callable(Ts, Ts): int)|null    $comparator
+ * @param    iterable<Tk, Tv>                $iterable
+ * @param    (callable(Tv): Ts)              $scalar_func
+ * @param    (callable(Ts, Ts): int)|null    $comparator
  *
- * @psalm-return   array<Tk, Tv>
+ * @return   array<Tk, Tv>
  *
  * @deprecated use `Dict\sort_by` instead
  *

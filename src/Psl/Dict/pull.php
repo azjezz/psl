@@ -22,16 +22,16 @@ namespace Psl\Dict;
  *      )
  *
  *
- * @psalm-template Tk1
- * @psalm-template Tv1
- * @psalm-template Tk2 of array-key
- * @psalm-template Tv2
+ * @template Tk1
+ * @template Tv1
+ * @template Tk2 of array-key
+ * @template Tv2
  *
- * @psalm-param iterable<Tk1, Tv1>    $iterable
- * @psalm-param (callable(Tv1): Tv2)  $value_func
- * @psalm-param (callable(Tv1): Tk2)  $key_func
+ * @param iterable<Tk1, Tv1>    $iterable
+ * @param (callable(Tv1): Tv2)  $value_func
+ * @param (callable(Tv1): Tk2)  $key_func
  *
- * @psalm-return array<Tk2, Tv2>
+ * @return array<Tk2, Tv2>
  */
 function pull(iterable $iterable, callable $value_func, callable $key_func): array
 {

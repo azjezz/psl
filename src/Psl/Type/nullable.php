@@ -7,9 +7,9 @@ namespace Psl\Type;
 /**
  * @template T
  *
- * @psalm-param TypeInterface<T> $spec
+ * @param TypeInterface<T> $spec
  *
- * @psalm-return TypeInterface<T|null>
+ * @return TypeInterface<T|null>
  */
 function nullable(TypeInterface $spec): TypeInterface
 {
