@@ -33,7 +33,6 @@ use Psl\Vec;
  * @return Iterator<list<Tk>, list<Tv>>
  *
  * @deprecated since 1.2, use Vec\zip instead.
- *
  * @see Vec\zip()
  */
 function zip(iterable ...$iterables): Iterator
@@ -47,7 +46,7 @@ function zip(iterable ...$iterables): Iterator
         $iterators = Vec\values(Dict\map(
             $iterables,
             /**
-             * @param  iterable<Tk, Tv>    $iterable
+             * @param iterable<Tk, Tv> $iterable
              *
              * @return Iterator<Tk, Tv>
              */

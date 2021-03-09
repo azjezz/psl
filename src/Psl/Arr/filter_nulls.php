@@ -20,7 +20,6 @@ use Psl\Vec;
  * @return list<T>
  *
  * @deprecated use `Vec\filter_nulls` instead.
- *
  * @see Vec\filter_nulls()
  */
 function filter_nulls(iterable $iterable): array

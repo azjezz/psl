@@ -11,13 +11,12 @@ use Psl\Vec;
  * @template Tv
  * @template T
  *
- * @param iterable<Tk, Tv>            $iterable Iterable to be mapped over
+ * @param iterable<Tk, Tv> $iterable Iterable to be mapped over
  * @param (callable(Tv): iterable<T>) $mapper
  *
  * @return list<T>
  *
  * @deprecated use `Vec\flat_map` instead.
- *
  * @see Vec\flat_map()
  */
 function flat_map(iterable $iterable, callable $mapper): array

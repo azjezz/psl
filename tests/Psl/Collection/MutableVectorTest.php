@@ -14,7 +14,7 @@ final class MutableVectorTest extends AbstractVectorTest
     /**
      * The Vector class used for values, keys .. etc.
      *
-     * @psalm-var class-string<MutableVector>
+     * @var class-string<MutableVector>
      */
     protected string $vectorClass = MutableVector::class;
 
@@ -142,9 +142,9 @@ final class MutableVectorTest extends AbstractVectorTest
     /**
      * @template     T
      *
-     * @psalm-param  iterable<T> $items
+     * @param iterable<T> $items
      *
-     * @psalm-return MutableVector<T>
+     * @return MutableVector<T>
      */
     protected function create(iterable $items): MutableVector
     {

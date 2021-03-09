@@ -81,10 +81,10 @@ interface VectorInterface extends AccessibleCollectionInterface
      * returned `VectorInterface`.
      *
      * @param (callable(T): bool) $fn The callback containing the condition to apply to the current
-     *  `VectorInterface` values.
+     *                                `VectorInterface` values.
      *
      * @return VectorInterface<T> A VectorInterface containing the values after a user-specified condition
-     *  is applied.
+     *                            is applied.
      */
     public function filter(callable $fn): VectorInterface;
 
@@ -100,10 +100,10 @@ interface VectorInterface extends AccessibleCollectionInterface
      * returned `VectorInterface`; the keys will be used in the filtering process only.
      *
      * @param (callable(int, T): bool) $fn The callback containing the condition to apply to the current
-     *  `VectorInterface` keys and values.
+     *                                     `VectorInterface` keys and values.
      *
      * @return VectorInterface<T> A `VectorInterface` containing the values after a user-specified
-     *  condition is applied to the keys and values of the current `VectorInterface`.
+     *                            condition is applied to the keys and values of the current `VectorInterface`.
      */
     public function filterWithKey(callable $fn): VectorInterface;
 
@@ -120,10 +120,10 @@ interface VectorInterface extends AccessibleCollectionInterface
      * @template Tu
      *
      * @param (callable(T): Tu) $fn The callback containing the operation to apply to the current
-     *  `VectorInterface` values.
+     *                              `VectorInterface` values.
      *
      * @return VectorInterface<Tu> A `VectorInterface` containing key/value pairs after a user-specified
-     *  operation is applied.
+     *                             operation is applied.
      */
     public function map(callable $fn): VectorInterface;
 
@@ -141,10 +141,10 @@ interface VectorInterface extends AccessibleCollectionInterface
      * @template Tu
      *
      * @param (callable(int, T): Tu) $fn The callback containing the operation to apply to the current
-     *  `VectorInterface` keys and values.
+     *                                   `VectorInterface` keys and values.
      *
      * @return VectorInterface<Tu> A `VectorInterface` containing the values after a user-specified
-     *  operation on the current `VectorInterface`'s keys and values is applied.
+     *                             operation on the current `VectorInterface`'s keys and values is applied.
      */
     public function mapWithKey(callable $fn): VectorInterface;
 
@@ -152,7 +152,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * Returns the first value in the current `VectorInterface`.
      *
      * @return T|null The first value in the current `VectorInterface`, or `null` if the
-     *  current `VectorInterface` is empty.
+     *                current `VectorInterface` is empty.
      *
      * @psalm-mutation-free
      */
@@ -162,7 +162,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * Returns the first key in the current `VectorInterface`.
      *
      * @return int|null The first key in the current `VectorInterface`, or `null` if the
-     *  current `VectorInterface` is empty.
+     *                  current `VectorInterface` is empty.
      *
      * @psalm-mutation-free
      */
@@ -172,7 +172,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * Returns the last value in the current `VectorInterface`.
      *
      * @return T|null The last value in the current `VectorInterface`, or `null` if the
-     *  current `VectorInterface` is empty.
+     *                current `VectorInterface` is empty.
      *
      * @psalm-mutation-free
      */
@@ -182,7 +182,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * Returns the last key in the current `VectorInterface`.
      *
      * @return int|null The last key in the current `VectorInterface`, or `null` if the
-     *  current `VectorInterface` is empty.
+     *                  current `VectorInterface` is empty.
      *
      * @psalm-mutation-free
      */
@@ -193,8 +193,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * If no element matches the search value, this function returns null.
      *
-     * @param  T $search_value The value that will be search for in the current
-     *  `VectorInterface`.
+     * @param T $search_value The value that will be search for in the current
+     *                        `VectorInterface`.
      *
      * @return int|null The key (index) where that value is found; null if it is not found
      *
@@ -214,10 +214,10 @@ interface VectorInterface extends AccessibleCollectionInterface
      * @template Tu
      *
      * @param iterable<Tu> $iterable The `iterable` to use to combine with the
-     *  elements of this `VectorInterface`.
+     *                               elements of this `VectorInterface`.
      *
      * @return VectorInterface<array{0: T, 1: Tu}> The `VectorInterface` that combines the values
-     *  of the current `VectorInterface` with the provided `iterable`.
+     *                                  of the current `VectorInterface` with the provided `iterable`.
      *
      * @psalm-mutation-free
      */
@@ -233,10 +233,10 @@ interface VectorInterface extends AccessibleCollectionInterface
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
      * @param int $n The last element that will be included in the returned
-     *  `VectorInterface`.
+     *               `VectorInterface`.
      *
      * @return VectorInterface<T> A `VectorInterface` that is a proper subset of the current
-     *  `VectorInterface` up to `n` elements.
+     *                            `VectorInterface` up to `n` elements.
      *
      * @psalm-mutation-free
      */
@@ -251,10 +251,10 @@ interface VectorInterface extends AccessibleCollectionInterface
      * `VectorInterface`.
      *
      * @param (callable(T): bool) $fn The callback that is used to determine the stopping
-     *  condition.
+     *                                condition.
      *
      * @return VectorInterface<T> A `VectorInterface` that is a proper subset of the current
-     *  `VectorInterface` up until the callback returns `false`.
+     *                            `VectorInterface` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): VectorInterface;
 
@@ -268,10 +268,10 @@ interface VectorInterface extends AccessibleCollectionInterface
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
      * @param int $n The last element to be skipped; the $n+1 element will be the
-     *  first one in the returned `VectorInterface`.
+     *               first one in the returned `VectorInterface`.
      *
      * @return VectorInterface<T> A `VectorInterface` that is a proper subset of the current
-     *  `VectorInterface` containing values after the specified `n`-th element.
+     *                            `VectorInterface` containing values after the specified `n`-th element.
      *
      * @psalm-mutation-free
      */
@@ -286,10 +286,10 @@ interface VectorInterface extends AccessibleCollectionInterface
      * `VectorInterface`.
      *
      * @param (callable(T): bool) $fn The callback used to determine the starting element for the
-     *  returned `VectorInterface`.
+     *                                returned `VectorInterface`.
      *
      * @return VectorInterface<T> A `VectorInterface` that is a proper subset of the current
-     *  `VectorInterface` starting after the callback returns `true`.
+     *                            `VectorInterface` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): VectorInterface;
 
@@ -305,11 +305,11 @@ interface VectorInterface extends AccessibleCollectionInterface
      * `VectorInterface`.
      *
      * @param int $start The starting key of this Vector to begin the returned
-     *  `VectorInterface`.
+     *                   `VectorInterface`.
      * @param int $length The length of the returned `VectorInterface`.
      *
      * @return VectorInterface<T> A `VectorInterface` that is a proper subset of the current
-     *  `VectorInterface` starting at `$start` up to but not including the element `$start + $length`.
+     *                            `VectorInterface` starting at `$start` up to but not including the element `$start + $length`.
      *
      * @psalm-mutation-free
      */

@@ -9,7 +9,7 @@ namespace Psl\Vec;
  *
  * @template T
  *
- * @param list<T>     $first
+ * @param list<T> $first
  * @param iterable<T> ...$rest
  *
  * @return list<T>

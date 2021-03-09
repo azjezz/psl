@@ -21,16 +21,15 @@ use Psl\Dict;
  * @template Tk of array-key
  * @template Tv
  *
- * @param array<Tk,Tv>    $array Array to take the slice from
- * @param int             $start Start offset
- * @param int             $length Length (if not specified all remaining values from the array are used)
- *
- * @return array<Tk, Tv>
+ * @param array<Tk,Tv> $array Array to take the slice from
+ * @param int $start Start offset
+ * @param int $length Length (if not specified all remaining values from the array are used)
  *
  * @throws Psl\Exception\InvariantViolationException If the $start offset or $length are negative
  *
- * @deprecated use `Dict\slice()` instead.
+ * @return array<Tk, Tv>
  *
+ * @deprecated use `Dict\slice()` instead.
  * @see Dict\slice()
  */
 function slice(array $array, int $start, ?int $length = null): array

@@ -17,7 +17,6 @@ use Psl\Dict;
  * @return array<Tk, Tv>
  *
  * @deprecated use `Dict\unique` instead
- *
  * @see Dict\unique
  */
 function unique(iterable $iterable): array

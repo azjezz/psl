@@ -22,16 +22,15 @@ use Psl\Dict;
  * @template Tk
  * @template Tv
  *
- * @param iterable<Tk,Tv>     $iterable Iterable to take the slice from
- * @param int                 $start Start offset
- * @param int                 $length Length (if not specified all remaining values from the iterable are used)
- *
- * @return Iterator<Tk, Tv>
+ * @param iterable<Tk,Tv> $iterable Iterable to take the slice from
+ * @param int $start Start offset
+ * @param int $length Length (if not specified all remaining values from the iterable are used)
  *
  * @throws Psl\Exception\InvariantViolationException If the $start offset or $length are negative
  *
- * @deprecated use `Dict\slice` instead.
+ * @return Iterator<Tk, Tv>
  *
+ * @deprecated use `Dict\slice` instead.
  * @see Dict\slice()
  */
 function slice(iterable $iterable, int $start, ?int $length = null): Iterator

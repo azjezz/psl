@@ -13,14 +13,13 @@ use function array_values;
  *
  * @template T
  *
- * @param    array<array-key, T> $arr
+ * @param array<array-key, T> $arr
  *
- * @return   list<T>
+ * @return list<T>
  *
  * @pure
  *
  * @deprecated since 1.2, use Vec\values instead.
- *
  * @see Vec\values()
  */
 function values(array $arr): array

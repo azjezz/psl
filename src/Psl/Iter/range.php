@@ -29,18 +29,17 @@ use Psl\Vec;
  *
  * @template T of int|float
  *
- * @param T       $start First number (inclusive)
- * @param T       $end   Last number (inclusive, but doesn't have to be part of
- *                              resulting range if $step steps over it)
- * @param T|null  $step  Step between numbers (defaults to 1 if $start smaller
- *                              $end and to -1 if $start greater $end)
- *
- * @return Iterator<int, T>
+ * @param T $start First number (inclusive)
+ * @param T $end Last number (inclusive, but doesn't have to be part of
+ *               resulting range if $step steps over it)
+ * @param T|null $step Step between numbers (defaults to 1 if $start smaller
+ *                     $end and to -1 if $start greater $end)
  *
  * @throws Psl\Exception\InvariantViolationException If $start < $end, and $step is negative.
  *
- * @deprecated since 1.2, use Vec\range instead.
+ * @return Iterator<int, T>
  *
+ * @deprecated since 1.2, use Vec\range instead.
  * @see Vec\range($start, $end, $step)
  */
 function range($start, $end, $step = null): Iterator

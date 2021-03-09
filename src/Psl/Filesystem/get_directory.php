@@ -9,7 +9,7 @@ use Psl;
 use function dirname;
 
 /**
- * Returns a parent directory's path
+ * Returns a parent directory's path.
  *
  * On Windows, both forward slash `/` and back slash `\` are used
  * as directory separator character.
@@ -18,9 +18,9 @@ use function dirname;
  *
  * @param positive-int $levels The number of parent directories to go up.
  *
- * @return string the base name of the given path.
- *
  * @throws Psl\Exception\InvariantViolationException If $levels is not a positive integer.
+ *
+ * @return string the base name of the given path.
  *
  * @pure
  */

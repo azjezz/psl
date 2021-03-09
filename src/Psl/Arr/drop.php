@@ -18,15 +18,14 @@ use Psl\Dict;
  * @template Tk of array-key
  * @template Tv
  *
- * @param array<Tk, Tv>   $array   Array to drop the elements from
- * @param int             $n       Number of elements to drop from the start
- *
- * @return array<Tk, Tv>
+ * @param array<Tk, Tv> $array Array to drop the elements from
+ * @param int $n Number of elements to drop from the start
  *
  * @throws Psl\Exception\InvariantViolationException If the $n is negative
  *
- * @deprecated use `Dict\drop` instead.
+ * @return array<Tk, Tv>
  *
+ * @deprecated use `Dict\drop` instead.
  * @see Dict\drop()
  */
 function drop(iterable $array, int $n): array

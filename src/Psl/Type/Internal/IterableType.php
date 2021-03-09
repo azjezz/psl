@@ -47,9 +47,9 @@ final class IterableType extends Type\Type
     /**
      * @param mixed $value
      *
-     * @return iterable<Tk, Tv>
-     *
      * @throws CoercionException
+     *
+     * @return iterable<Tk, Tv>
      */
     public function coerce($value): iterable
     {
@@ -98,11 +98,11 @@ final class IterableType extends Type\Type
     /**
      * @param mixed $value
      *
+     * @throws AssertException
+     *
      * @return iterable<Tk, Tv>
      *
      * @psalm-assert iterable<Tk, Tv> $value
-     *
-     * @throws AssertException
      */
     public function assert($value): iterable
     {

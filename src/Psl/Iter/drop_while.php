@@ -21,7 +21,7 @@ use Psl\Dict;
  * @template Tk
  * @template Tv
  *
- * @param iterable<Tk, Tv>    $iterable Iterable to drop values from
+ * @param iterable<Tk, Tv> $iterable Iterable to drop values from
  * @param (callable(Tv): bool) $predicate
  *
  * @return Iterator<Tk, Tv>

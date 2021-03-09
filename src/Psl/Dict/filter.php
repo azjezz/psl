@@ -23,8 +23,8 @@ use Closure;
  * @template Tk of array-key
  * @template Tv
  *
- * @param iterable<Tk, Tv>            $iterable
- * @param (callable(Tv): bool)|null   $predicate
+ * @param iterable<Tk, Tv> $iterable
+ * @param (callable(Tv): bool)|null $predicate
  *
  * @return array<Tk, Tv>
  */

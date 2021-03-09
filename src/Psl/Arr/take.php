@@ -15,12 +15,11 @@ use Psl\Dict;
  *
  * @param array<Tk, Tv> $array
  *
- * @return array<Tk, Tv>
- *
  * @throws Psl\Exception\InvariantViolationException If the $n is negative
  *
- * @deprecated use `Dict\take` instead.
+ * @return array<Tk, Tv>
  *
+ * @deprecated use `Dict\take` instead.
  * @see Dict\take()
  */
 function take(iterable $array, int $n): array

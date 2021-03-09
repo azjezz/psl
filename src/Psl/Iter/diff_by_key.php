@@ -11,14 +11,13 @@ use Psl\Dict;
  * @template Tk
  * @template Tv
  *
- * @param iterable<Tk, Tv>    $first
+ * @param iterable<Tk, Tv> $first
  * @param iterable<Tk, mixed> $second
  * @param iterable<Tk, mixed> ...$rest
  *
  * @return Iterator<Tk, Tv>
  *
  * @deprecated use `Dict\diff_by_key` instead.
- *
  * @see Dict\diff_by_key()
  */
 function diff_by_key(iterable $first, iterable $second, iterable ...$rest): Iterator

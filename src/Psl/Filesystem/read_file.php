@@ -13,12 +13,12 @@ use function file_get_contents;
 /**
  * Reads entire file into a string.
  *
- * @param int       $offset The offset where the reading starts.
- * @param null|int  $length Maximum length of data read. The default is to read
- *                          until end of file is reached.
+ * @param int $offset The offset where the reading starts.
+ * @param null|int $length Maximum length of data read. The default is to read
+ *                         until end of file is reached.
  *
  * @throws Psl\Exception\InvariantViolationException If the file specified by
- *  $file does not exist, or is not readable.
+ *                                                   $file does not exist, or is not readable.
  * @throws Exception\RuntimeException If an error
  */
 function read_file(string $file, int $offset = 0, ?int $length = null): string

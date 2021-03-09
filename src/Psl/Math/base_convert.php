@@ -34,7 +34,7 @@ use function bcpow;
  * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $value is empty, $from_base and $to_base are
- *      out of the [2, 36] range, or the given value is invalid.
+ *                                                   out of the [2, 36] range, or the given value is invalid.
  */
 function base_convert(string $value, int $from_base, int $to_base): string
 {

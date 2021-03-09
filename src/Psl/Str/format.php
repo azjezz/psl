@@ -17,7 +17,7 @@ use function vsprintf;
  *      Str\format('%s is %d character(s) long.', 'س', Str\length('س'));
  *      => Str('س is 1 character(s) long.')
  *
- * @param int|float|string  ...$args
+ * @param int|float|string ...$args
  *
  * @pure
  *

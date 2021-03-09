@@ -30,14 +30,14 @@ const PI = 3.141592653589793238462643;
 const E = 2.7182818284590452353602875;
 
 /**
- * The infinite
+ * The infinite.
  *
  * @var int
  */
 const INFINITY = INF;
 
 /**
- * Not A Number
+ * Not A Number.
  *
  * @var float
  */

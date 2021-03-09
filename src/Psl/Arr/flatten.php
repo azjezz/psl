@@ -28,7 +28,6 @@ use Psl\Dict;
  * @return array<Tk, Tv>
  *
  * @deprecated use `Dict\flatten` instead.
- *
  * @see Dict\flatten()
  */
 function flatten(iterable $iterables): array

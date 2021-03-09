@@ -33,7 +33,6 @@ final class IntType extends Type\Type
     /**
      * @param mixed $value
      *
-     *
      * @throws CoercionException
      */
     public function coerce($value): int
@@ -66,7 +65,6 @@ final class IntType extends Type\Type
 
     /**
      * @param mixed $value
-     *
      *
      * @psalm-assert int $value
      *

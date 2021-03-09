@@ -42,9 +42,9 @@ interface QueueInterface extends Countable
     /**
      * Retrieves and removes the node at the head of this queue.
      *
-     * @return T
-     *
      * @throws Psl\Exception\InvariantViolationException If the Queue is invalid.
+     *
+     * @return T
      */
     public function dequeue();
 

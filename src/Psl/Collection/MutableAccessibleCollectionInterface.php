@@ -53,10 +53,10 @@ interface MutableAccessibleCollectionInterface extends
      * returned `MutableAccessibleCollectionInterface`.
      *
      * @param (callable(Tv): bool) $fn The callback containing the condition to apply to the current
-     *  `MutableAccessibleCollectionInterface` values.
+     *                                 `MutableAccessibleCollectionInterface` values.
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` containing
-     *  the values after a user-specified condition is applied.
+     *                                                  the values after a user-specified condition is applied.
      */
     public function filter(callable $fn): MutableAccessibleCollectionInterface;
 
@@ -72,11 +72,11 @@ interface MutableAccessibleCollectionInterface extends
      * returned `MutableAccessibleCollectionInterface`; the keys will be used in the filtering process only.
      *
      * @param (callable(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
-     *  `MutableAccessibleCollectionInterface` keys and values.
+     *                                     `MutableAccessibleCollectionInterface` keys and values.
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` containing
-     *  the values after a user-specified condition is applied to the keys and values of the current
-     *  `MutableAccessibleCollectionInterface`.
+     *                                                  the values after a user-specified condition is applied to the keys and values of the current
+     *                                                  `MutableAccessibleCollectionInterface`.
      */
     public function filterWithKey(callable $fn): MutableAccessibleCollectionInterface;
 
@@ -93,10 +93,10 @@ interface MutableAccessibleCollectionInterface extends
      * @template Tu
      *
      * @param (callable(Tv): Tu) $fn The callback containing the operation to apply to the current
-     *  `MutableAccessibleCollectionInterface` values.
+     *                               `MutableAccessibleCollectionInterface` values.
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tu> A `MutableAccessibleCollectionInterface` containing
-     *  key/value pairs after a user-specified operation is applied.
+     *                                                  key/value pairs after a user-specified operation is applied.
      */
     public function map(callable $fn): MutableAccessibleCollectionInterface;
 
@@ -114,11 +114,11 @@ interface MutableAccessibleCollectionInterface extends
      * @template Tu
      *
      * @param (callable(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
-     *  `MutableAccessibleCollectionInterface` keys and values.
+     *                                   `MutableAccessibleCollectionInterface` keys and values.
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tu> A `MutableAccessibleCollectionInterface` containing
-     *  the values after a user-specified operation on the current `MutableAccessibleCollectionInterface`'s keys
-     *  and values is applied.
+     *                                                  the values after a user-specified operation on the current `MutableAccessibleCollectionInterface`'s keys
+     *                                                  and values is applied.
      */
     public function mapWithKey(callable $fn): MutableAccessibleCollectionInterface;
 
@@ -190,10 +190,10 @@ interface MutableAccessibleCollectionInterface extends
      * @template Tu
      *
      * @param iterable<Tu> $iterable The `iterable` to use to combine with the
-     *  elements of this `MutableAccessibleCollectionInterface`.
+     *                               elements of this `MutableAccessibleCollectionInterface`.
      *
      * @return MutableAccessibleCollectionInterface<Tk, array{0: Tv, 1: Tu}> The `MutableAccessibleCollectionInterface`
-     *  that combines the values of the current `MutableAccessibleCollectionInterface` with the provided `iterable`.
+     *                                                  that combines the values of the current `MutableAccessibleCollectionInterface` with the provided `iterable`.
      *
      * @psalm-mutation-free
      */
@@ -211,7 +211,7 @@ interface MutableAccessibleCollectionInterface extends
      * @param int $n The last element that will be included in the returned `MutableAccessibleCollectionInterface`.
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` that
-     *  is a proper subset of the current `MutableAccessibleCollectionInterface` up to `n` elements.
+     *                                                  is a proper subset of the current `MutableAccessibleCollectionInterface` up to `n` elements.
      *
      * @psalm-mutation-free
      */
@@ -226,11 +226,11 @@ interface MutableAccessibleCollectionInterface extends
      * `MutableAccessibleCollectionInterface`.
      *
      * @param (callable(Tv): bool) $fn The callback that is used to determine the stopping
-     *  condition.
+     *                                 condition.
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` that
-     *  is a proper subset of the current `MutableAccessibleCollectionInterface` up until the callback
-     *  returns `false`.
+     *                                                  is a proper subset of the current `MutableAccessibleCollectionInterface` up until the callback
+     *                                                  returns `false`.
      */
     public function takeWhile(callable $fn): MutableAccessibleCollectionInterface;
 
@@ -244,11 +244,11 @@ interface MutableAccessibleCollectionInterface extends
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
      * @param int $n The last element to be skipped; the $n+1 element will be the
-     *  first one in the returned `MutableAccessibleCollectionInterface`.
+     *               first one in the returned `MutableAccessibleCollectionInterface`.
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` that
-     *  is a proper subset of the current `MutableAccessibleCollectionInterface` containing values after
-     *  the specified `n`-th element.
+     *                                                  is a proper subset of the current `MutableAccessibleCollectionInterface` containing values after
+     *                                                  the specified `n`-th element.
      *
      * @psalm-mutation-free
      */
@@ -263,11 +263,11 @@ interface MutableAccessibleCollectionInterface extends
      * `MutableAccessibleCollectionInterface`.
      *
      * @param (callable(Tv): bool) $fn The callback used to determine the starting element for the
-     *  returned `MutableAccessibleCollectionInterface`.
+     *                                 returned `MutableAccessibleCollectionInterface`.
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` that
-     *  is a proper subset of the current `MutableAccessibleCollectionInterface` starting after the callback
-     *  returns `true`.
+     *                                                  is a proper subset of the current `MutableAccessibleCollectionInterface` starting after the callback
+     *                                                  returns `true`.
      */
     public function dropWhile(callable $fn): MutableAccessibleCollectionInterface;
 
@@ -286,8 +286,8 @@ interface MutableAccessibleCollectionInterface extends
      * @param int $length The length of the returned `MutableAccessibleCollectionInterface`
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> - A `MutableAccessibleCollectionInterface` that
-     *  is a proper subset of the current `MutableAccessibleCollectionInterface` starting at `$start` up
-     *  to but not including the element `$start + $length`.
+     *                                                  is a proper subset of the current `MutableAccessibleCollectionInterface` starting at `$start` up
+     *                                                  to but not including the element `$start + $length`.
      *
      * @psalm-mutation-free
      */

@@ -15,9 +15,9 @@ use Psl\Type\TypeInterface;
  *
  * @param TypeInterface<T> $type
  *
- * @return T
- *
  * @throws Exception\DecodeException If an error occurred.
+ *
+ * @return T
  */
 function typed(string $json, TypeInterface $type)
 {

@@ -21,14 +21,13 @@ use Psl\Vec;
  * @template Tv
  * @template Ts
  *
- * @param iterable<Tk, Tv>                $iterable
- * @param (callable(?Ts, Tk, Tv): Ts)     $function
- * @param Ts|null                         $initial
+ * @param iterable<Tk, Tv> $iterable
+ * @param (callable(?Ts, Tk, Tv): Ts) $function
+ * @param Ts|null $initial
  *
  * @return Iterator<int, Ts>
  *
  * @deprecated since 1.2, use Vec\reductions instead.
- *
  * @see Vec\reductions()
  */
 function reductions(iterable $iterable, callable $function, $initial = null): Iterator

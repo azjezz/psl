@@ -21,14 +21,13 @@ use Psl\Vec;
  * @template T
  *
  * @param (callable(int): T) $factory
- * @param int|null           $number How many times should the factory be executed?
- *
- * @return Iterator<int, T>
+ * @param int|null $number How many times should the factory be executed?
  *
  * @throws Psl\Exception\InvariantViolationException If $number < 1
  *
- * @deprecated since 1.2, use Vec\reproduce instead.
+ * @return Iterator<int, T>
  *
+ * @deprecated since 1.2, use Vec\reproduce instead.
  * @see Vec\reproduce()
  */
 function reproduce(callable $factory, ?int $number = null): Iterator

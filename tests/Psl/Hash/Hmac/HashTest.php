@@ -34,7 +34,7 @@ final class HashTest extends TestCase
     }
 
     /**
-     * @psalm-return Generator<int, array{0: string, 1: string, 2: string, 3: string}, mixed, void>
+     * @return Generator<int, array{0: string, 1: string, 2: string, 3: string}, mixed, void>
      */
     public function provideHashData(): Generator
     {

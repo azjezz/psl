@@ -14,8 +14,8 @@ use Psl\Dict;
  * @template Tk of array-key
  * @template Tv
  *
- * @param array<Tk, Tv>                       $array
- * @param (callable(Tk, Tk): int)|null        $comparator
+ * @param array<Tk, Tv> $array
+ * @param (callable(Tk, Tk): int)|null $comparator
  *
  * @return array<Tk, Tv>
  *

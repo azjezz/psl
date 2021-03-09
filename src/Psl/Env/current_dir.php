@@ -9,7 +9,7 @@ use Psl;
 use function getcwd;
 
 /**
- * Returns the current working directory
+ * Returns the current working directory.
  *
  * @throws Psl\Exception\InvariantViolationException If unable to retrieve the current working directory.
  */

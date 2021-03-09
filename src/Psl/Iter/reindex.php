@@ -32,13 +32,12 @@ use Psl\Dict;
  * @template Tk2
  * @template Tv
  *
- * @param iterable<Tk1, Tv>     $iterable Iterable to reindex
- * @param (callable(Tv): Tk2)   $function
+ * @param iterable<Tk1, Tv> $iterable Iterable to reindex
+ * @param (callable(Tv): Tk2) $function
  *
  * @return Iterator<Tk2, Tv>
  *
  * @deprecated use `Dict\reindex` instead.
- *
  * @see Dict\reindex()
  */
 function reindex(iterable $iterable, callable $function): Iterator

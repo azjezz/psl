@@ -17,7 +17,6 @@ use Psl\Dict;
  * @return array<T, int>
  *
  * @deprecated use `Dict\count_values` instead.
- *
  * @see Dict\count_values()
  */
 function count_values(iterable $values): array

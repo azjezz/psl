@@ -23,7 +23,6 @@ use Psl\Vec;
  * @return Iterator<int, Tk>
  *
  * @deprecated since 1.2, use Vec\keys instead.
- *
  * @see Vec\keys()
  */
 function keys(iterable $iterable): Iterator

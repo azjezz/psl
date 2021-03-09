@@ -26,7 +26,6 @@ use Psl\Vec;
  * @return Iterator<Tk, Tv>
  *
  * @deprecated use `Vec\concat` instead.
- *
  * @see Vec\concat()
  */
 function chain(iterable ...$iterables): Iterator

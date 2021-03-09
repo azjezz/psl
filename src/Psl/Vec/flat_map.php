@@ -8,8 +8,8 @@ namespace Psl\Vec;
  * @template Tv
  * @template Ts
  *
- * @param iterable<Tv>                    $iterable Iterable to be mapped over
- * @param (callable(Tv): iterable<Ts>)    $mapper
+ * @param iterable<Tv> $iterable Iterable to be mapped over
+ * @param (callable(Tv): iterable<Ts>) $mapper
  *
  * @return list<Ts>
  */

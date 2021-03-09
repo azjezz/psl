@@ -12,7 +12,7 @@ use function str_word_count;
  * @param string|null $characters_list A list of additional characters which will be considered as 'word'
  *
  * @return array<int, string> a dict, where the key is the numeric position of
- *  the word inside the string and the value is the actual word itself
+ *                    the word inside the string and the value is the actual word itself
  *
  * @pure
  */

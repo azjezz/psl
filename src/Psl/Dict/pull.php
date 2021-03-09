@@ -21,15 +21,14 @@ namespace Psl\Dict;
  *          64 => 'G', 128 => 'H', 256 => 'I', 512 => 'J', 1024 => 'K'
  *      )
  *
- *
  * @template Tk1
  * @template Tv1
  * @template Tk2 of array-key
  * @template Tv2
  *
- * @param iterable<Tk1, Tv1>    $iterable
- * @param (callable(Tv1): Tv2)  $value_func
- * @param (callable(Tv1): Tk2)  $key_func
+ * @param iterable<Tk1, Tv1> $iterable
+ * @param (callable(Tv1): Tv2) $value_func
+ * @param (callable(Tv1): Tk2) $key_func
  *
  * @return array<Tk2, Tv2>
  */

@@ -14,12 +14,12 @@ use Psl\Math;
  * If the limit is provided, the array will only contain that many elements, where
  * the last element is the remainder of the string.
  *
+ * @throws Psl\Exception\InvariantViolationException If a negative $limit is given.
+ * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
+ *
  * @return list<string>
  *
  * @pure
- *
- * @throws Psl\Exception\InvariantViolationException If a negative $limit is given.
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
 function split(string $string, string $delimiter, ?int $limit = null, ?string $encoding = null): array
 {

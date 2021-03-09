@@ -42,9 +42,9 @@ interface StackInterface extends Countable
     /**
      * Retrieve and removes the most recently added item that was not yet removed.
      *
-     * @return T
-     *
      * @throws Psl\Exception\InvariantViolationException If the stack is empty.
+     *
+     * @return T
      */
     public function pop();
 

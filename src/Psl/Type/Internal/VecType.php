@@ -68,9 +68,9 @@ final class VecType extends Type\Type
     /**
      * @param mixed $value
      *
-     * @return list<Tv>
-     *
      * @throws CoercionException
+     *
+     * @return list<Tv>
      */
     public function coerce($value): iterable
     {
@@ -100,11 +100,11 @@ final class VecType extends Type\Type
     /**
      * @param mixed $value
      *
+     * @throws AssertException
+     *
      * @return list<Tv>
      *
      * @psalm-assert list<Tv> $value
-     *
-     * @throws AssertException
      */
     public function assert($value): array
     {
@@ -120,7 +120,7 @@ final class VecType extends Type\Type
 
             /**
              * @var int $k
-             * @var Tv  $v
+             * @var Tv $v
              */
             foreach ($value as $k => $v) {
                 if ($index !== $k) {

@@ -11,8 +11,8 @@ namespace Psl\Dict;
  * @template Tk
  * @template Tv
  *
- * @param iterable<Tk>        $keys
- * @param (callable(Tk): Tv)  $value_func
+ * @param iterable<Tk> $keys
+ * @param (callable(Tk): Tv) $value_func
  *
  * @return array<Tk, Tv>
  */

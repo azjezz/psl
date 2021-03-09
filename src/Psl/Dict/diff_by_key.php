@@ -15,7 +15,7 @@ use function array_diff_key;
  * @template Tk of array-key
  * @template Tv
  *
- * @param iterable<Tk, Tv>    $first
+ * @param iterable<Tk, Tv> $first
  * @param iterable<Tk, mixed> $second
  * @param iterable<Tk, mixed> ...$rest
  *

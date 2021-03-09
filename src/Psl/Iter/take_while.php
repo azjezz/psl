@@ -21,13 +21,12 @@ use Psl\Dict;
  * @template Tk
  * @template Tv
  *
- * @param    iterable<Tk, Tv>     $iterable Iterable to take values from
- * @param    (callable(Tv): bool) $predicate
+ * @param iterable<Tk, Tv> $iterable Iterable to take values from
+ * @param (callable(Tv): bool) $predicate
  *
- * @return   Iterator<Tk, Tv>
+ * @return Iterator<Tk, Tv>
  *
  * @deprecated use `Dict\take_while` instead.
- *
  * @see Dict\take_while()
  */
 function take_while(iterable $iterable, callable $predicate): Iterator

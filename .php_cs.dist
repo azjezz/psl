@@ -48,5 +48,35 @@ return PhpCsFixer\Config::create()
         'static_lambda' => true,
         'strict_comparison' => true,
         'strict_param' => true,
+        'no_blank_lines_after_phpdoc' => true,
+        'no_empty_phpdoc' => true,
+        'phpdoc_align' => [
+            'align' => 'left',
+        ],
+        'phpdoc_indent' => true,
+        'phpdoc_line_span' => [
+            'const' => 'multi',
+            'property' => 'multi',
+            'method' => 'multi',
+        ],
+        'phpdoc_no_alias_tag' => [
+            'replacements' => [
+                'psalm-var' => 'var',
+                'psalm-template' => 'template',
+                'psalm-param' => 'param',
+                'psalm-return' => 'return',
+            ]
+        ],
+        'phpdoc_order' => true,
+        'phpdoc_scalar' => true,
+        'phpdoc_separation' => true,
+        'phpdoc_summary' => true,
+        'phpdoc_tag_casing' => true,
+        'phpdoc_trim' => true,
+        'phpdoc_trim_consecutive_blank_line_separation' => true,
+        'no_empty_statement' => true,
+        'semicolon_after_instruction' => true,
+        'declare_strict_types' => true,
+        'strict_param' => true,
     ])
 ;

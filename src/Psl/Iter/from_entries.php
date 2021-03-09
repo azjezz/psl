@@ -19,7 +19,6 @@ use Psl\Dict;
  * @return Iterator<Tk, Tv>
  *
  * @deprecated use `Dict\from_entries` instead.
- *
  * @see Dict\from_entries()
  */
 function from_entries(iterable $entries): Iterator

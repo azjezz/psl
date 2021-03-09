@@ -16,8 +16,8 @@ use function uksort;
  * @template Tk of array-key
  * @template Tv
  *
- * @param iterable<Tk, Tv>                $iterable
- * @param (callable(Tk, Tk): int)|null    $comparator
+ * @param iterable<Tk, Tv> $iterable
+ * @param (callable(Tk, Tk): int)|null $comparator
  *
  * @return array<Tk, Tv>
  */

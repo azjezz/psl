@@ -29,14 +29,13 @@ use Psl\Dict;
  * @template Tk2
  * @template Tv2
  *
- * @param iterable<Tk1, Tv1>          $iterable
- * @param (callable(Tk1, Tv1): Tv2)   $value_func
- * @param (callable(Tk1, Tv1): Tk2)   $key_func
+ * @param iterable<Tk1, Tv1> $iterable
+ * @param (callable(Tk1, Tv1): Tv2) $value_func
+ * @param (callable(Tk1, Tv1): Tk2) $key_func
  *
  * @return Iterator<Tk2, Tv2>
  *
  * @deprecated use `Dict\pull_with_key` instead.
- *
  * @see Dict\pull_with_key()
  */
 function pull_with_key(iterable $iterable, callable $value_func, callable $key_func): Iterator

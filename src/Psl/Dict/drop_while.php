@@ -18,8 +18,8 @@ namespace Psl\Dict;
  * @template Tk of array-key
  * @template Tv
  *
- * @param iterable<Tk, Tv>        $iterable Iterable to drop values from
- * @param (callable(Tv): bool)    $predicate
+ * @param iterable<Tk, Tv> $iterable Iterable to drop values from
+ * @param (callable(Tv): bool) $predicate
  *
  * @return array<Tk, Tv>
  */

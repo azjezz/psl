@@ -14,13 +14,12 @@ use Psl\Dict;
  * @template Tk of array-key
  * @template Tv
  *
- * @param array<Tk, Tv>   $array
- * @param list<Tk>        $keys
+ * @param array<Tk, Tv> $array
+ * @param list<Tk> $keys
  *
  * @return array<Tk, Tv>
  *
  * @deprecated use `Dict\select_keys` instead.
- *
  * @see Dict\select_keys()
  */
 function select_keys(array $array, array $keys): array

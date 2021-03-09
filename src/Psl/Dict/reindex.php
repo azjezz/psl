@@ -29,7 +29,7 @@ namespace Psl\Dict;
  * @template Tk2 of array-key
  * @template Tv
  *
- * @param iterable<Tk1, Tv>   $iterable Iterable to reindex
+ * @param iterable<Tk1, Tv> $iterable Iterable to reindex
  * @param (callable(Tv): Tk2) $function
  *
  * @return array<Tk2, Tv>

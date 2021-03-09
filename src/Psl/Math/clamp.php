@@ -15,8 +15,9 @@ use Psl;
  * @param T $min
  * @param T $max
  *
- * @return T
  * @throws Psl\Exception\InvariantViolationException If min is bigger than max
+ *
+ * @return T
  *
  * @pure
  */

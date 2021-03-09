@@ -19,9 +19,9 @@ function unique(iterable $iterable): array
     return unique_by(
         $iterable,
         /**
-         * @param     Tv  $v
+         * @param Tv $v
          *
-         * @return    Tv
+         * @return Tv
          *
          * @pure
          */

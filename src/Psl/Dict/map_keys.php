@@ -21,8 +21,8 @@ namespace Psl\Dict;
  * @template Tk2 of array-key
  * @template Tv
  *
- * @param iterable<Tk1, Tv>       $iterable Iterable to be mapped over
- * @param (callable(Tk1): Tk2)    $function
+ * @param iterable<Tk1, Tv> $iterable Iterable to be mapped over
+ * @param (callable(Tk1): Tk2) $function
  *
  * @return array<Tk2, Tv>
  */

@@ -54,9 +54,9 @@ class UnionType extends Type\Type
     /**
      * @param mixed $value
      *
-     * @return Tl|Tr
-     *
      * @throws CoercionException
+     *
+     * @return Tl|Tr
      */
     public function coerce($value)
     {
@@ -84,11 +84,11 @@ class UnionType extends Type\Type
     /**
      * @param mixed $value
      *
+     * @throws AssertException
+     *
      * @return Tl|Tr
      *
      * @psalm-assert Tl|Tr $value
-     *
-     * @throws AssertException
      */
     public function assert($value)
     {

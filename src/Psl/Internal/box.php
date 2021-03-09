@@ -31,7 +31,6 @@ function box(callable $fun): array
     /**
      * @var string|null $last_message
      */
-
     if (null !== $last_message && Str\contains($last_message, '): ')) {
         $last_message = Str\after(
             Str\lowercase($last_message),

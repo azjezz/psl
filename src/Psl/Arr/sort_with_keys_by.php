@@ -17,14 +17,13 @@ use Psl\Dict;
  * @template Tv
  * @template Ts
  *
- * @param    iterable<Tk, Tv>                $iterable
- * @param    (callable(Tv): Ts)              $scalar_func
- * @param    (callable(Ts, Ts): int)|null    $comparator
+ * @param iterable<Tk, Tv> $iterable
+ * @param (callable(Tv): Ts) $scalar_func
+ * @param (callable(Ts, Ts): int)|null $comparator
  *
- * @return   array<Tk, Tv>
+ * @return array<Tk, Tv>
  *
  * @deprecated use `Dict\sort_by` instead
- *
  * @see Dict\sort_by()
  */
 function sort_with_keys_by(iterable $iterable, callable $scalar_func, ?callable $comparator = null): array

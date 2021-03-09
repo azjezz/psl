@@ -15,12 +15,11 @@ use Psl\Iter;
  *
  * @param array<Tk, Tv> $values
  *
- * @return Tv
- *
  * @throws Psl\Exception\InvariantViolationException If $values is empty.
  *
- * @deprecated use `Iter\random` instead.
+ * @return Tv
  *
+ * @deprecated use `Iter\random` instead.
  * @see Iter\random()
  */
 function random(array $values)

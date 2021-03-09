@@ -20,13 +20,12 @@ use Psl\Dict;
  * @template Tk of array-key
  * @template Tv
  *
- * @param iterable<Tk, Tv>        $iterable Iterable to drop values from
- * @param (callable(Tv): bool)    $predicate
+ * @param iterable<Tk, Tv> $iterable Iterable to drop values from
+ * @param (callable(Tv): bool) $predicate
  *
  * @return array<Tk, Tv>
  *
  * @deprecated use `Dict\drop_while` instead.
- *
  * @see Dict\drop_while()
  */
 function drop_while(iterable $iterable, callable $predicate): array

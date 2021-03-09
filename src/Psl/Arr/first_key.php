@@ -20,7 +20,6 @@ use function array_key_first;
  * @pure
  *
  * @deprecated use `Iter\first_key` instead.
- *
  * @see Iter\first_key()
  */
 function first_key(array $array)

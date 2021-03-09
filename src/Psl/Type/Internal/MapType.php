@@ -49,9 +49,9 @@ final class MapType extends Type\Type
     /**
      * @param mixed $value
      *
-     * @return Collection\MapInterface<Tk, Tv>
-     *
      * @throws CoercionException
+     *
+     * @return Collection\MapInterface<Tk, Tv>
      */
     public function coerce($value): Collection\MapInterface
     {
@@ -94,11 +94,11 @@ final class MapType extends Type\Type
     /**
      * @param mixed $value
      *
+     * @throws AssertException
+     *
      * @return Collection\MapInterface<Tk, Tv>
      *
      * @psalm-assert Collection\MapInterface<Tk, Tv> $value
-     *
-     * @throws AssertException
      */
     public function assert($value): Collection\MapInterface
     {

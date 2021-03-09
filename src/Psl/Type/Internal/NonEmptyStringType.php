@@ -33,9 +33,9 @@ final class NonEmptyStringType extends Type\Type
     /**
      * @param mixed $value
      *
-     * @return non-empty-string
-     *
      * @throws CoercionException
+     *
+     * @return non-empty-string
      */
     public function coerce($value): string
     {
@@ -64,11 +64,11 @@ final class NonEmptyStringType extends Type\Type
     /**
      * @param mixed $value
      *
+     * @throws AssertException
+     *
      * @return non-empty-string
      *
      * @psalm-assert non-empty-string $value
-     *
-     * @throws AssertException
      */
     public function assert($value): string
     {

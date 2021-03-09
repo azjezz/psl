@@ -23,15 +23,14 @@ use Psl\Vec;
  *
  * @template T
  *
- * @param T   $value Value to repeat
- * @param int $num   Number of repetitions (defaults to INF)
- *
- * @return Iterator<int, T>
+ * @param T $value Value to repeat
+ * @param int $num Number of repetitions (defaults to INF)
  *
  * @throws Psl\Exception\InvariantViolationException If $num is negative.
  *
- * @deprecated since 1.2, use Vec\fill instead.
+ * @return Iterator<int, T>
  *
+ * @deprecated since 1.2, use Vec\fill instead.
  * @see Vec\fill()
  */
 function repeat($value, ?int $num = null): Iterator

@@ -13,7 +13,7 @@ use function putenv;
  * Removes an environment variable from the environment of the currently running process.
  *
  * @throws Psl\Exception\InvariantViolationException If $key is empty, or contains an ASCII equals sign `=` or
- *      the NUL character `\0`.
+ *                                                   the NUL character `\0`.
  */
 function remove_var(string $key): void
 {

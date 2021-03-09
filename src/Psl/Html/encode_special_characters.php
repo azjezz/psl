@@ -17,7 +17,7 @@ use const ENT_SUBSTITUTE;
  * Convert special characters to HTML entities.
  *
  * @param bool $double_encoding If set to false, this function will not
- *  encode existing html entities.
+ *                              encode existing html entities.
  * @param string $encoding defines character set used in conversion.
  *
  * @throws Exception\InvariantViolationException If $encoding is invalid.

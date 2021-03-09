@@ -12,7 +12,7 @@ use function strncmp;
  * greater than `$string2`, and 0 if they are equal.
  *
  * @param int|null $length number of characters to use in the comparison,
- *  or null to compare the whole string
+ *                         or null to compare the whole string
  *
  * @pure
  */

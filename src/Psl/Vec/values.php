@@ -9,9 +9,9 @@ namespace Psl\Vec;
  *
  * @template T
  *
- * @param    iterable<T> $iterable
+ * @param iterable<T> $iterable
  *
- * @return   list<T>
+ * @return list<T>
  */
 function values(iterable $iterable): array
 {

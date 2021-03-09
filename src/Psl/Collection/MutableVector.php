@@ -54,7 +54,7 @@ final class MutableVector implements MutableVectorInterface
      * Returns the first value in the current `MutableVector`.
      *
      * @return T|null The first value in the current `MutableVector`, or `null` if the
-     *  current `MutableVector` is empty.
+     *                current `MutableVector` is empty.
      *
      * @psalm-mutation-free
      */
@@ -68,7 +68,7 @@ final class MutableVector implements MutableVectorInterface
      * Returns the last value in the current `MutableVector`.
      *
      * @return T|null The last value in the current `MutableVector`, or `null` if the
-     *  current `MutableVector` is empty.
+     *                current `MutableVector` is empty.
      *
      * @psalm-mutation-free
      */
@@ -79,7 +79,7 @@ final class MutableVector implements MutableVectorInterface
     }
 
     /**
-     * Retrieve an external iterator
+     * Retrieve an external iterator.
      *
      * @return Iter\Iterator<int, T>
      */
@@ -140,9 +140,9 @@ final class MutableVector implements MutableVectorInterface
      *
      * @param int $k
      *
-     * @return T
-     *
      * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
+     *
+     * @return T
      *
      * @psalm-mutation-free
      */
@@ -184,7 +184,7 @@ final class MutableVector implements MutableVectorInterface
      * Returns the first key in the current `MutableVector`.
      *
      * @return int|null The first key in the current `MutableVector`, or `null` if the
-     *  current `MutableVector` is empty.
+     *                  current `MutableVector` is empty.
      *
      * @psalm-mutation-free
      */
@@ -198,7 +198,7 @@ final class MutableVector implements MutableVectorInterface
      * Returns the last key in the current `MutableVector`.
      *
      * @return int|null The last key in the current `MutableVector`, or `null` if the
-     *  current `MutableVector` is empty.
+     *                  current `MutableVector` is empty.
      *
      * @psalm-mutation-free
      */
@@ -214,7 +214,7 @@ final class MutableVector implements MutableVectorInterface
      * If no element matches the search value, this function returns null.
      *
      * @param T $search_value The value that will be search for in the current
-     *  collection.
+     *                        collection.
      *
      * @return int|null The key (index) where that value is found; null if it is not found.
      *
@@ -244,9 +244,9 @@ final class MutableVector implements MutableVectorInterface
      * @param int $k The key to which we will set the value
      * @param T $v The value to set
      *
-     * @return MutableVector<T> returns itself
-     *
      * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
+     *
+     * @return MutableVector<T> returns itself
      */
     public function set($k, $v): MutableVector
     {
@@ -388,10 +388,10 @@ final class MutableVector implements MutableVectorInterface
      * returned `MutableVector`.
      *
      * @param (callable(T): bool) $fn The callback containing the condition to apply to the current
-     *  `MutableVector` values.
+     *                                `MutableVector` values.
      *
      * @return MutableVector<T> A `MutableVector` containing the values after a user-specified condition
-     *  is applied.
+     *                          is applied.
      */
     public function filter(callable $fn): MutableVector
     {
@@ -410,10 +410,10 @@ final class MutableVector implements MutableVectorInterface
      * returned `MutableVector`; the keys will be used in the filtering process only.
      *
      * @param (callable(int, T): bool) $fn The callback containing the condition to apply to the current
-     *  `MutableVector` keys and values.
+     *                                     `MutableVector` keys and values.
      *
      * @return MutableVector<T> A `MutableVector` containing the values after a user-specified
-     *  condition is applied to the keys and values of the current `MutableVector`.
+     *                          condition is applied to the keys and values of the current `MutableVector`.
      */
     public function filterWithKey(callable $fn): MutableVector
     {
@@ -433,10 +433,10 @@ final class MutableVector implements MutableVectorInterface
      * @template Tu
      *
      * @param (callable(T): Tu) $fn The callback containing the operation to apply to the current
-     *  `MutableVector` values.
+     *                              `MutableVector` values.
      *
      * @return MutableVector<Tu> A `MutableVector` containing key/value pairs after a user-specified
-     *  operation is applied.
+     *                           operation is applied.
      */
     public function map(callable $fn): MutableVector
     {
@@ -457,10 +457,10 @@ final class MutableVector implements MutableVectorInterface
      * @template Tu
      *
      * @param (callable(int, T): Tu) $fn The callback containing the operation to apply to the current
-     *  `MutableVector` keys and values
+     *                                   `MutableVector` keys and values
      *
      * @return MutableVector<Tu> A `MutableVector` containing the values after a user-specified
-     *  operation on the current `MutableVector`'s keys and values is applied.
+     *                           operation on the current `MutableVector`'s keys and values is applied.
      */
     public function mapWithKey(callable $fn): MutableVector
     {
@@ -479,10 +479,10 @@ final class MutableVector implements MutableVectorInterface
      * @template Tu
      *
      * @param iterable<Tu> $iterable The `iterable` to use to combine with the
-     *  elements of this `MutableVector`.
+     *                               elements of this `MutableVector`.
      *
      * @return MutableVector<array{0: T, 1: Tu}> The `MutableVector` that combines the values of the current
-     *  `MutableVector` with the provided `iterable`.
+     *                                `MutableVector` with the provided `iterable`.
      *
      * @psalm-mutation-free
      */
@@ -502,12 +502,12 @@ final class MutableVector implements MutableVectorInterface
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
      * @param int $n The last element that will be included in the returned
-     *  `MutableVector`.
-     *
-     * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
-     *  `MutableVector` up to `n` elements.
+     *               `MutableVector`.
      *
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
+     *
+     * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
+     *                          `MutableVector` up to `n` elements.
      *
      * @psalm-mutation-free
      */
@@ -525,10 +525,10 @@ final class MutableVector implements MutableVectorInterface
      * `MutableVector`.
      *
      * @param (callable(T): bool) $fn The callback that is used to determine the stopping
-     *  condition.
+     *                                condition.
      *
      * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
-     *  `MutableVector` up until the callback returns `false`.
+     *                          `MutableVector` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): MutableVector
     {
@@ -545,12 +545,12 @@ final class MutableVector implements MutableVectorInterface
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
      * @param int $n The last element to be skipped; the $n+1 element will be the
-     *  first one in the returned `MutableVector`.
-     *
-     * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
-     *  `MutableVector` containing values after the specified `n`-th element.
+     *               first one in the returned `MutableVector`.
      *
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
+     *
+     * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
+     *                          `MutableVector` containing values after the specified `n`-th element.
      *
      * @psalm-mutation-free
      */
@@ -568,10 +568,10 @@ final class MutableVector implements MutableVectorInterface
      * `MutableVector`.
      *
      * @param (callable(T): bool) $fn The callback used to determine the starting element for the
-     *  returned `MutableVector`.
+     *                                returned `MutableVector`.
      *
      * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
-     *  `MutableVector` starting after the callback returns `true`.
+     *                          `MutableVector` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): MutableVector
     {
@@ -590,13 +590,13 @@ final class MutableVector implements MutableVectorInterface
      * `MutableVector`.
      *
      * @param int $start The starting key of this Vector to begin the returned
-     *  `MutableVector`.
+     *                   `MutableVector`.
      * @param null|int $length The length of the returned `MutableVector`
      *
-     * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
-     * `MutableVector` starting at `$start` up to but not including the element `$start + $length`.
-     *
      * @throws Psl\Exception\InvariantViolationException If $start or $len are negative.
+     *
+     * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
+     *                          `MutableVector` starting at `$start` up to but not including the element `$start + $length`.
      *
      * @psalm-mutation-free
      */

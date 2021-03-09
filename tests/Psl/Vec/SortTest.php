@@ -10,12 +10,10 @@ use Psl\Vec;
 final class SortTest extends TestCase
 {
     /**
-     * @psalm-template T
+     * @template T
      *
-     * @psalm-param list<T>                     $expected
-     * @psalm-param iterable<T>                 $iterable
-     * @psalm-param (callable(T, T): int)|null  $comparator
-     *
+     * @param list<T> $expected
+     * @param (callable(T, T): int)|null $comparator
      *
      * @dataProvider provideData
      */

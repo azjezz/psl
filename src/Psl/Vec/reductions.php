@@ -18,9 +18,9 @@ namespace Psl\Vec;
  * @template Tv
  * @template Ts
  *
- * @param iterable<Tk, Tv>            $iterable
- * @param (callable(Ts, Tk, Tv): Ts)  $function
- * @param Ts                          $initial
+ * @param iterable<Tk, Tv> $iterable
+ * @param (callable(Ts, Tk, Tv): Ts) $function
+ * @param Ts $initial
  *
  * @return list<Ts>
  */

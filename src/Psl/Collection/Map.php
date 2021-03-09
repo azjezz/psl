@@ -56,7 +56,7 @@ final class Map implements MapInterface
      * Returns the first value in the current collection.
      *
      * @return Tv|null The first value in the current collection, or `null` if the
-     *  current collection is empty.
+     *                 current collection is empty.
      *
      * @psalm-mutation-free
      */
@@ -70,7 +70,7 @@ final class Map implements MapInterface
      * Returns the first key in the current collection.
      *
      * @return Tk|null The first key in the current collection, or `null` if the
-     *  current collection is empty.
+     *                 current collection is empty.
      *
      * @psalm-mutation-free
      */
@@ -84,7 +84,7 @@ final class Map implements MapInterface
      * Returns the last value in the current collection.
      *
      * @return Tv|null The last value in the current collection, or `null` if the
-     *  current collection is empty.
+     *                 current collection is empty.
      *
      * @psalm-mutation-free
      */
@@ -98,7 +98,7 @@ final class Map implements MapInterface
      * Returns the last key in the current collection.
      *
      * @return Tk|null The last key in the current collection, or `null` if the
-     *  current collection is empty.
+     *                 current collection is empty.
      *
      * @psalm-mutation-free
      */
@@ -113,8 +113,8 @@ final class Map implements MapInterface
      *
      * If no element matches the search value, this function returns null.
      *
-     * @param  Tv $search_value The value that will be search for in the current
-     *  collection.
+     * @param Tv $search_value The value that will be search for in the current
+     *                         collection.
      *
      * @return Tk|null The key (index) where that value is found; null if it is not found
      *
@@ -132,7 +132,7 @@ final class Map implements MapInterface
     }
 
     /**
-     * Retrieve an external iterator
+     * Retrieve an external iterator.
      *
      * @return Iter\Iterator<Tk, Tv>
      */
@@ -191,9 +191,9 @@ final class Map implements MapInterface
      *
      * @param Tk $k
      *
-     * @return Tv
-     *
      * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
+     *
+     * @return Tv
      *
      * @psalm-mutation-free
      */
@@ -269,10 +269,10 @@ final class Map implements MapInterface
      * returned `Map`.
      *
      * @param (callable(Tv): bool) $fn The callback containing the condition to apply to the current
-     *  `Map` values.
+     *                                 `Map` values.
      *
      * @return Map<Tk, Tv> A Map containing the values after a user-specified condition
-     *  is applied.
+     *                 is applied.
      */
     public function filter(callable $fn): Map
     {
@@ -291,10 +291,10 @@ final class Map implements MapInterface
      * returned `Map`; the keys will be used in the filtering process only.
      *
      * @param (callable(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
-     *  `Map` keys and values.
+     *                                     `Map` keys and values.
      *
      * @return Map<Tk, Tv> A `Map` containing the values after a user-specified
-     *  condition is applied to the keys and values of the current `Map`.
+     *                 condition is applied to the keys and values of the current `Map`.
      */
     public function filterWithKey(callable $fn): Map
     {
@@ -314,10 +314,10 @@ final class Map implements MapInterface
      * @template Tu
      *
      * @param (callable(Tv): Tu) $fn The callback containing the operation to apply to the current
-     *  `Map` values.
+     *                               `Map` values.
      *
-     * @return   Map<Tk, Tu> A `Map` containing key/value pairs after a user-specified
-     *  operation is applied.
+     * @return Map<Tk, Tu> A `Map` containing key/value pairs after a user-specified
+     *                 operation is applied.
      */
     public function map(callable $fn): Map
     {
@@ -338,10 +338,10 @@ final class Map implements MapInterface
      * @template Tu
      *
      * @param (callable(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
-     *  `Map` keys and values.
+     *                                   `Map` keys and values.
      *
      * @return Map<Tk, Tu> A `Map` containing the values after a user-specified
-     *  operation on the current `Map`'s keys and values is applied.
+     *                 operation on the current `Map`'s keys and values is applied.
      */
     public function mapWithKey(callable $fn): Map
     {
@@ -360,10 +360,10 @@ final class Map implements MapInterface
      * @template Tu
      *
      * @param iterable<Tu> $iterable The `iterable` to use to combine with the
-     *  elements of this `Map`.
+     *                               elements of this `Map`.
      *
      * @return Map<Tk, array{0: Tv, 1: Tu}> The `Map` that combines the values of the current
-     *  `Map` with the provided `iterable`.
+     *                 `Map` with the provided `iterable`.
      *
      * @psalm-mutation-free
      */
@@ -378,6 +378,7 @@ final class Map implements MapInterface
         foreach ($this->elements as $k => $v) {
             /**
              * @psalm-suppress ImpureFunctionCall - conditionally pure
+             *
              * @var Tu|null $u
              */
             $u = Iter\first($array);
@@ -387,6 +388,7 @@ final class Map implements MapInterface
 
             /**
              * @psalm-suppress ImpureFunctionCall - conditionally pure
+             *
              * @var iterable<int, Tu> $array
              */
             $array = Dict\drop($array, 1);
@@ -407,12 +409,12 @@ final class Map implements MapInterface
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
      * @param int $n The last element that will be included in the returned
-     *  `Map`.
-     *
-     * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
-     *  `Map` up to `n` elements.
+     *               `Map`.
      *
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
+     *
+     * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
+     *                 `Map` up to `n` elements.
      *
      * @psalm-mutation-free
      */
@@ -430,10 +432,10 @@ final class Map implements MapInterface
      * `Map`.
      *
      * @param (callable(Tv): bool) $fn The callback that is used to determine the stopping
-     *  condition.
+     *                                 condition.
      *
      * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
-     *  `Map` up until the callback returns `false`.
+     *                 `Map` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): Map
     {
@@ -450,12 +452,12 @@ final class Map implements MapInterface
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
      * @param int $n The last element to be skipped; the $n+1 element will be the
-     *  first one in the returned `Map`.
-     *
-     * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
-     *  `Map` containing values after the specified `n`-th element.
+     *               first one in the returned `Map`.
      *
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
+     *
+     * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
+     *                 `Map` containing values after the specified `n`-th element.
      *
      * @psalm-mutation-free
      */
@@ -473,10 +475,10 @@ final class Map implements MapInterface
      * `Map`.
      *
      * @param (callable(Tv): bool) $fn The callback used to determine the starting element for the
-     *  returned `Map`.
+     *                                 returned `Map`.
      *
      * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
-     *  `Map` starting after the callback returns `true`.
+     *                 `Map` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): Map
     {
@@ -494,13 +496,13 @@ final class Map implements MapInterface
      * The returned `Map` will always be a proper subset of this `Map`.
      *
      * @param int $start The starting key of this Vector to begin the returned
-     * `Map`.
+     *                   `Map`.
      * @param null|int $length The length of the returned `Map`
      *
-     * @return Map<Tk, Tv>  A `Map` that is a proper subset of the current
-     *  `Map` starting at `$start` up to but not including the element `$start + $length`.
-     *
      * @throws Psl\Exception\InvariantViolationException If $start or $length are negative.
+     *
+     * @return Map<Tk, Tv>  A `Map` that is a proper subset of the current
+     *                 `Map` starting at `$start` up to but not including the element `$start + $length`.
      *
      * @psalm-mutation-free
      */

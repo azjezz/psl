@@ -42,10 +42,10 @@ interface MapInterface extends AccessibleCollectionInterface
      * returned `MapInterface`.
      *
      * @param (callable(Tv): bool) $fn The callback containing the condition to apply to the current
-     *  `MapInterface` values.
+     *                                 `MapInterface` values.
      *
      * @return MapInterface<Tk, Tv> A MapInterface containing the values after a user-specified condition
-     *  is applied.
+     *                          is applied.
      */
     public function filter(callable $fn): MapInterface;
 
@@ -61,10 +61,10 @@ interface MapInterface extends AccessibleCollectionInterface
      * returned `MapInterface`; the keys will be used in the filtering process only.
      *
      * @param (callable(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
-     *  `MapInterface` keys and values.
+     *                                     `MapInterface` keys and values.
      *
      * @return MapInterface<Tk, Tv> A `MapInterface` containing the values after a user-specified
-     *  condition is applied to the keys and values of the current `MapInterface`.
+     *                          condition is applied to the keys and values of the current `MapInterface`.
      */
     public function filterWithKey(callable $fn): MapInterface;
 
@@ -81,10 +81,10 @@ interface MapInterface extends AccessibleCollectionInterface
      * @template Tu
      *
      * @param (callable(Tv): Tu) $fn The callback containing the operation to apply to the current
-     *  `MapInterface` values.
+     *                               `MapInterface` values.
      *
      * @return MapInterface<Tk, Tu> A `MapInterface` containing key/value pairs after a user-specified
-     *  operation is applied.
+     *                          operation is applied.
      */
     public function map(callable $fn): MapInterface;
 
@@ -102,10 +102,10 @@ interface MapInterface extends AccessibleCollectionInterface
      * @template Tu
      *
      * @param (callable(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
-     *  `MapInterface` keys and values.
+     *                                   `MapInterface` keys and values.
      *
      * @return MapInterface<Tk, Tu> A `MapInterface` containing the values after a user-specified
-     *  operation on the current `MapInterface`'s keys and values is applied.
+     *                          operation on the current `MapInterface`'s keys and values is applied.
      */
     public function mapWithKey(callable $fn): MapInterface;
 
@@ -113,7 +113,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * Returns the first value in the current `MapInterface`.
      *
      * @return Tv|null The first value in the current `MapInterface`, or `null` if the
-     *  current `MapInterface` is empty.
+     *                 current `MapInterface` is empty.
      *
      * @psalm-mutation-free
      */
@@ -123,7 +123,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * Returns the first key in the current `MapInterface`.
      *
      * @return Tk|null The first key in the current `MapInterface`, or `null` if the
-     *  current `MapInterface` is empty.
+     *                 current `MapInterface` is empty.
      *
      * @psalm-mutation-free
      */
@@ -133,7 +133,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * Returns the last value in the current `MapInterface`.
      *
      * @return Tv|null The last value in the current `MapInterface`, or `null` if the
-     *  current `MapInterface` is empty.
+     *                 current `MapInterface` is empty.
      *
      * @psalm-mutation-free
      */
@@ -143,7 +143,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * Returns the last key in the current `MapInterface`.
      *
      * @return Tk|null The last key in the current `MapInterface`, or `null` if the
-     *  current `MapInterface` is empty.
+     *                 current `MapInterface` is empty.
      *
      * @psalm-mutation-free
      */
@@ -155,7 +155,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * If no element matches the search value, this function returns null.
      *
      * @param Tv $search_value The value that will be search for in the current
-     *  `MapInterface`.
+     *                         `MapInterface`.
      *
      * @return Tk|null The key (index) where that value is found; null if it is not found
      *
@@ -175,10 +175,10 @@ interface MapInterface extends AccessibleCollectionInterface
      * @template Tu
      *
      * @param iterable<Tu> $iterable The `iterable` to use to combine with the
-     *  elements of this `MapInterface`.
+     *                               elements of this `MapInterface`.
      *
      * @return MapInterface<Tk, array{0: Tv, 1: Tu}> - The `MapInterface` that combines the values of the current
-     *  `MapInterface` with the provided `iterable`.
+     *                          `MapInterface` with the provided `iterable`.
      *
      * @psalm-mutation-free
      */
@@ -194,10 +194,10 @@ interface MapInterface extends AccessibleCollectionInterface
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
      * @param int $n The last element that will be included in the returned
-     *  `MapInterface`.
+     *               `MapInterface`.
      *
      * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
-     *  `MapInterface` up to `n` elements.
+     *                          `MapInterface` up to `n` elements.
      *
      * @psalm-mutation-free
      */
@@ -212,10 +212,10 @@ interface MapInterface extends AccessibleCollectionInterface
      * `MapInterface`.
      *
      * @param (callable(Tv): bool) $fn The callback that is used to determine the stopping
-     *  condition.
+     *                                 condition.
      *
      * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
-     *  `MapInterface` up until the callback returns `false`.
+     *                          `MapInterface` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): MapInterface;
 
@@ -229,10 +229,10 @@ interface MapInterface extends AccessibleCollectionInterface
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
      * @param int $n - The last element to be skipped; the $n+1 element will be the
-     *  first one in the returned `MapInterface`.
+     *               first one in the returned `MapInterface`.
      *
      * @return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
-     *  `MapInterface` containing values after the specified `n`-th element.
+     *                          `MapInterface` containing values after the specified `n`-th element.
      *
      * @psalm-mutation-free
      */
@@ -247,10 +247,10 @@ interface MapInterface extends AccessibleCollectionInterface
      * `MapInterface`.
      *
      * @param (callable(Tv): bool) $fn The callback used to determine the starting element for the
-     *  returned `MapInterface`.
+     *                                 returned `MapInterface`.
      *
      * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
-     *  `MapInterface` starting after the callback returns `true`.
+     *                          `MapInterface` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): MapInterface;
 
@@ -266,11 +266,11 @@ interface MapInterface extends AccessibleCollectionInterface
      * `MapInterface`.
      *
      * @param int $start The starting key of this Vector to begin the returned
-     *  `MapInterface`
+     *                   `MapInterface`
      * @param int $length The length of the returned `MapInterface`
      *
      * @return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
-     *  `MapInterface` starting at `$start` up to but not including the element `$start + $length`.
+     *                          `MapInterface` starting at `$start` up to but not including the element `$start + $length`.
      *
      * @psalm-mutation-free
      */

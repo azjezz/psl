@@ -16,10 +16,10 @@ use function uasort;
  * @template Tk of array-key
  * @template Tv
  *
- * @param   iterable<Tk, Tv>               $iterable
- * @param   (callable(Tv, Tv): int)|null   $comparator
+ * @param iterable<Tk, Tv> $iterable
+ * @param (callable(Tv, Tv): int)|null $comparator
  *
- * @return  array<Tk, Tv>
+ * @return array<Tk, Tv>
  */
 function sort(iterable $iterable, ?callable $comparator = null): array
 {

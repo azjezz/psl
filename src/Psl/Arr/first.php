@@ -19,7 +19,6 @@ use Psl\Iter;
  * @pure
  *
  * @deprecated use `Iter\first()` instead.
- *
  * @see Iter\first()
  */
 function first(array $array)

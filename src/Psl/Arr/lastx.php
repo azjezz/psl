@@ -16,14 +16,13 @@ use Psl\Iter;
  *
  * @param array<Tk, Tv> $array
  *
+ * @throws Psl\Exception\InvariantViolationException If $array is empty.
+ *
  * @return Tv
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If $array is empty.
- *
  * @deprecated use `Iter\last` instead.
- *
  * @see Iter\last()
  */
 function lastx(array $array)

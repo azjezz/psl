@@ -15,11 +15,11 @@ use Psl;
  *
  * @param T $value
  *
+ * @throws Psl\Exception\InvariantViolationException If $size is negative.
+ *
  * @return list<T>
  *
  * @pure
- *
- * @throws Psl\Exception\InvariantViolationException If $size is negative.
  */
 function fill(int $size, $value): array
 {

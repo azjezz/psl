@@ -21,8 +21,8 @@ namespace Psl\Iter;
  *
  * @template  T
  *
- * @param     iterable<T>         $iterable Iterable to apply on
- * @param     (callable(T): void) $function Apply function
+ * @param iterable<T> $iterable Iterable to apply on
+ * @param (callable(T): void) $function Apply function
  */
 function apply(iterable $iterable, callable $function): void
 {

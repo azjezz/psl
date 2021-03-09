@@ -10,10 +10,10 @@ use Psl\Vec;
 final class ChunkTest extends TestCase
 {
     /**
-     * @psalm-template T
+     * @template T
      *
-     * @psalm-param list<list<T>> $expected
-     * @psalm-param iterable<T> $iterable
+     * @param list<list<T>> $expected
+     * @param iterable<T> $iterable
      *
      * @dataProvider provideData
      */

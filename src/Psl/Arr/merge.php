@@ -21,13 +21,12 @@ use Psl\Dict;
  * @template Tk of array-key
  * @template Tv
  *
- * @param    iterable<Tk, Tv> $first
- * @param    iterable<Tk, Tv> ...$rest
+ * @param iterable<Tk, Tv> $first
+ * @param iterable<Tk, Tv> ...$rest
  *
- * @return   array<Tk, Tv>
+ * @return array<Tk, Tv>
  *
  * @deprecated use `Dict\merge` instead.
- *
  * @see Dict\merge()
  */
 function merge(iterable $first, iterable ...$rest): array

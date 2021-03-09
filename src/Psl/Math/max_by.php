@@ -13,7 +13,7 @@ namespace Psl\Math;
  *
  * @template T
  *
- * @param iterable<T>            $values
+ * @param iterable<T> $values
  * @param (callable(T): numeric) $num_func
  *
  * @return T|null

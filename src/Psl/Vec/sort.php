@@ -15,8 +15,8 @@ use function usort;
  *
  * @template T
  *
- * @param iterable<T>                 $iterable
- * @param (callable(T, T): int)|null  $comparator
+ * @param iterable<T> $iterable
+ * @param (callable(T, T): int)|null $comparator
  *
  * @return list<T>
  */

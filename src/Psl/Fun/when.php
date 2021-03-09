@@ -24,7 +24,7 @@ namespace Psl\Fun;
  * @template Ti
  * @template To
  *
- * @param (callable(Ti): bool)   $condition
+ * @param (callable(Ti): bool) $condition
  * @param (callable(Ti): To) $then
  * @param (callable(Ti): To) $else
  *

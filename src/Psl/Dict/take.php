@@ -12,12 +12,12 @@ use Psl;
  * @template Tk of array-key
  * @template Tv
  *
- * @param iterable<Tk, Tv>    $iterable   Iterable to take the elements from
- * @param int                 $n          Number of elements to take from the start
- *
- * @return array<Tk, Tv>
+ * @param iterable<Tk, Tv> $iterable Iterable to take the elements from
+ * @param int $n Number of elements to take from the start
  *
  * @throws Psl\Exception\InvariantViolationException If the $n is negative
+ *
+ * @return array<Tk, Tv>
  */
 function take(iterable $iterable, int $n): array
 {

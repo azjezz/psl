@@ -23,13 +23,12 @@ use Psl\Dict;
  * @template Tk2 of array-key
  * @template Tv
  *
- * @param iterable<Tk1, Tv>       $iterable Iterable to be mapped over
- * @param (callable(Tk1): Tk2)    $function
+ * @param iterable<Tk1, Tv> $iterable Iterable to be mapped over
+ * @param (callable(Tk1): Tk2) $function
  *
  * @return array<Tk2, Tv>
  *
  * @deprecated use `Dict\map_keys` instead.
- *
  * @see Dict\map()
  */
 function map_keys(iterable $iterable, callable $function): array

@@ -10,9 +10,9 @@ namespace Psl\Iter;
  * @template Tk
  * @template Tv
  *
- * @param    iterable<Tk, Tv> $iterable
+ * @param iterable<Tk, Tv> $iterable
  *
- * @return   Tv|null
+ * @return Tv|null
  */
 function last(iterable $iterable)
 {

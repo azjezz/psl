@@ -20,9 +20,9 @@ use function preg_match;
  *
  * @pure
  *
- * @throws Exception\RangeException             If the encoded string contains characters outside
- *                                              the base64 characters range.
- * @throws Exception\IncorrectPaddingException  If the encoded string has an incorrect padding.
+ * @throws Exception\RangeException If the encoded string contains characters outside
+ *                                  the base64 characters range.
+ * @throws Exception\IncorrectPaddingException If the encoded string has an incorrect padding.
  */
 function decode(string $base64): string
 {

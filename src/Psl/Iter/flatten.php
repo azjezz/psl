@@ -19,7 +19,6 @@ use Psl\Dict;
  * @return Iterator<Tk, Tv>
  *
  * @deprecated use `Dict\flatten` instead.
- *
  * @see Dict\flatten()
  */
 function flatten(iterable $iterables): Iterator

@@ -13,12 +13,11 @@ use Psl\Vec;
  * @template Tk
  * @template Tv
  *
- * @param iterable<Tk, Tv>    $iterable
+ * @param iterable<Tk, Tv> $iterable
  *
  * @return Iterator<int, array{0: Tk, 1: Tv}>
  *
  * @deprecated use `Vec\enumerate` instead.
- *
  * @see Vec\enumerate()
  */
 function enumerate(iterable $iterable): Iterator

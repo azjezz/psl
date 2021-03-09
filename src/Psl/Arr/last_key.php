@@ -21,7 +21,6 @@ use function array_key_last;
  * @pure
  *
  * @deprecated use `Iter\last_key` instead.
- *
  * @see Iter\last_key()
  */
 function last_key(array $array)

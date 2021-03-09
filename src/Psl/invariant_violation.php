@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Psl;
 
 /**
- * @param  int|float|string  ...$args
+ * @param int|float|string ...$args
+ *
+ * @throws Exception\InvariantViolationException
  *
  * @return no-return
  *
  * @pure
- *
- * @throws Exception\InvariantViolationException
  */
 function invariant_violation(string $message, ...$args): void
 {

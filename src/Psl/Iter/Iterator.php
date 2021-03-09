@@ -83,9 +83,9 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Return the current element.
      *
-     * @return Tv
-     *
      * @throws Psl\Exception\InvariantViolationException If the iterator is invalid.
+     *
+     * @return Tv
      */
     public function current()
     {
@@ -123,9 +123,9 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Return the key of the current element.
      *
-     * @return Tk
-     *
      * @throws Psl\Exception\InvariantViolationException If the iterator is invalid.
+     *
+     * @return Tk
      */
     public function key()
     {

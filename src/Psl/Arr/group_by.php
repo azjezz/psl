@@ -32,13 +32,12 @@ use Psl\Dict;
  * @template Tk of array-key
  * @template Tv
  *
- * @param iterable<Tv>           $values
- * @param (callable(Tv): ?Tk)    $key_func
+ * @param iterable<Tv> $values
+ * @param (callable(Tv): ?Tk) $key_func
  *
  * @return array<Tk, list<Tv>>
  *
  * @deprecated use `Dict\group_by` instead.
- *
  * @see Dict\group_by()
  */
 function group_by(iterable $values, callable $key_func): array

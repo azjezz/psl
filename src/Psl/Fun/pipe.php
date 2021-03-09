@@ -38,8 +38,8 @@ function pipe(callable ...$stages): callable
         /**
          * @template IO
          *
-         * @param IO                  $input
-         * @param (callable(IO): IO)  $next
+         * @param IO $input
+         * @param (callable(IO): IO) $next
          *
          * @return IO
          */

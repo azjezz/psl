@@ -13,13 +13,12 @@ use Psl\Iter;
  * @template Tk of array-key
  * @template Tv
  *
- * @param array<Tk, Tv>   $array
- * @param Tv              $value
+ * @param array<Tk, Tv> $array
+ * @param Tv $value
  *
  * @pure
  *
  * @deprecated use `Iter\contains` instead.
- *
  * @see Iter\contains()
  */
 function contains(array $array, $value): bool

@@ -15,12 +15,12 @@ use Psl\Exception\InvariantViolationException;
 final class MutableMapTest extends AbstractMapTest
 {
     /**
-     * @psalm-var class-string<MutableMap>
+     * @var class-string<MutableMap>
      */
     protected string $mapClass = MutableMap::class;
 
     /**
-     * @psalm-var class-string<MutableVector>
+     * @var class-string<MutableVector>
      */
     protected string $vectorClass = MutableVector::class;
 
@@ -150,9 +150,9 @@ final class MutableMapTest extends AbstractMapTest
      * @template     Tk of array-key
      * @template     Tv
      *
-     * @psalm-param  iterable<Tk, Tv> $items
+     * @param iterable<Tk, Tv> $items
      *
-     * @psalm-return MutableMap<Tk, Tv>
+     * @return MutableMap<Tk, Tv>
      */
     protected function create(iterable $items): MutableMap
     {

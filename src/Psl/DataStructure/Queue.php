@@ -19,7 +19,7 @@ use Psl\Vec;
 final class Queue implements QueueInterface
 {
     /**
-     * @var  list<T>
+     * @var list<T>
      */
     private array $queue = [];
 
@@ -63,9 +63,9 @@ final class Queue implements QueueInterface
     /**
      * Dequeues a node from the queue.
      *
-     * @return T
-     *
      * @throws Psl\Exception\InvariantViolationException If the Queue is invalid.
+     *
+     * @return T
      */
     public function dequeue()
     {

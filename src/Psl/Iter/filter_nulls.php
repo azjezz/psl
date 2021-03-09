@@ -21,7 +21,6 @@ use Psl\Vec;
  * @return Iterator<int, T>
  *
  * @deprecated since 1.2, use Vec\filter_nulls instead.
- *
  * @see Vec\filter_nulls()
  */
 function filter_nulls(iterable $iterable): Iterator

@@ -47,10 +47,10 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * returned `AccessibleCollectionInterface`.
      *
      * @param (callable(Tv): bool) $fn The callback containing the condition to apply to the current
-     *  `AccessibleCollectionInterface` values.
+     *                                 `AccessibleCollectionInterface` values.
      *
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` containing the values
-     *  after a user-specified condition is applied.
+     *                                           after a user-specified condition is applied.
      */
     public function filter(callable $fn): AccessibleCollectionInterface;
 
@@ -66,11 +66,11 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * returned `AccessibleCollectionInterface`; the keys will be used in the filtering process only.
      *
      * @param (callable(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
-     *  `AccessibleCollectionInterface` keys and values.
+     *                                     `AccessibleCollectionInterface` keys and values.
      *
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` containing the values
-     *  after a user-specified condition is applied to the keys and values of the current
-     *  `AccessibleCollectionInterface`.
+     *                                           after a user-specified condition is applied to the keys and values of the current
+     *                                           `AccessibleCollectionInterface`.
      */
     public function filterWithKey(callable $fn): AccessibleCollectionInterface;
 
@@ -87,10 +87,10 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * @template Tu
      *
      * @param (callable(Tv): Tu) $fn The callback containing the operation to apply to the current
-     *  `AccessibleCollectionInterface` values.
+     *                               `AccessibleCollectionInterface` values.
      *
      * @return AccessibleCollectionInterface<Tk, Tu> A `AccessibleCollectionInterface` containing key/value
-     *  pairs after a user-specified operation is applied.
+     *                                           pairs after a user-specified operation is applied.
      */
     public function map(callable $fn): AccessibleCollectionInterface;
 
@@ -108,11 +108,11 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * @template Tu
      *
      * @param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
-     *  `AccessibleCollectionInterface` keys and values.
+     *                                   `AccessibleCollectionInterface` keys and values.
      *
      * @return AccessibleCollectionInterface<Tk, Tu> A `AccessibleCollectionInterface` containing the values
-     *  after a user-specified operation on the current `AccessibleCollectionInterface`'s keys and values is
-     *  applied.
+     *                                           after a user-specified operation on the current `AccessibleCollectionInterface`'s keys and values is
+     *                                           applied.
      */
     public function mapWithKey(callable $fn): AccessibleCollectionInterface;
 
@@ -120,7 +120,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * Returns the first value in the current `AccessibleCollectionInterface`.
      *
      * @return Tv|null The first value in the current `AccessibleCollectionInterface`, or `null` if the
-     *  current `AccessibleCollectionInterface` is empty.
+     *                 current `AccessibleCollectionInterface` is empty.
      *
      * @psalm-mutation-free
      */
@@ -130,7 +130,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * Returns the first key in the current `AccessibleCollectionInterface`.
      *
      * @return Tk|null The first key in the current `AccessibleCollectionInterface`, or `null` if the
-     *  current `AccessibleCollectionInterface` is empty.
+     *                 current `AccessibleCollectionInterface` is empty.
      *
      * @psalm-mutation-free
      */
@@ -140,7 +140,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * Returns the last value in the current `AccessibleCollectionInterface`.
      *
      * @return Tv|null The last value in the current `AccessibleCollectionInterface`, or `null` if the
-     *  current `AccessibleCollectionInterface` is empty.
+     *                 current `AccessibleCollectionInterface` is empty.
      *
      * @psalm-mutation-free
      */
@@ -150,7 +150,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * Returns the last key in the current `AccessibleCollectionInterface`.
      *
      * @return Tk|null The last key in the current `AccessibleCollectionInterface`, or `null` if the
-     *  current `AccessibleCollectionInterface` is empty.
+     *                 current `AccessibleCollectionInterface` is empty.
      *
      * @psalm-mutation-free
      */
@@ -162,7 +162,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * If no element matches the search value, this function returns null.
      *
      * @param Tv $search_value The value that will be search for in the current
-     *  `AccessibleCollectionInterface`.
+     *                         `AccessibleCollectionInterface`.
      *
      * @return Tk|null The key (index) where that value is found; null if it is not found.
      *
@@ -182,10 +182,10 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * @template Tu
      *
      * @param iterable<Tu> $iterable The `iterable` to use to combine with the
-     *  elements of this `AccessibleCollectionInterface`.
+     *                               elements of this `AccessibleCollectionInterface`.
      *
      * @return AccessibleCollectionInterface<Tk, array{0: Tv, 1: Tu}> The `AccessibleCollectionInterface` that
-     *  combines the values of the current `AccessibleCollectionInterface` with the provided `iterable`.
+     *                                           combines the values of the current `AccessibleCollectionInterface` with the provided `iterable`.
      *
      * @psalm-mutation-free
      */
@@ -204,7 +204,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *  `AccessibleCollectionInterface`.
      *
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` that is a proper
-     *  subset of the current `AccessibleCollectionInterface` up to `n` elements.
+     *                                           subset of the current `AccessibleCollectionInterface` up to `n` elements.
      *
      * @psalm-mutation-free
      */
@@ -219,10 +219,10 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * `AccessibleCollectionInterface`.
      *
      * @param (callable(Tv): bool) $fn The callback that is used to determine the stopping
-     *  condition.
+     *                                 condition.
      *
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` that is a proper subset
-     *  of the current `AccessibleCollectionInterface` up until the callback returns `false`.
+     *                                           of the current `AccessibleCollectionInterface` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): AccessibleCollectionInterface;
 
@@ -236,10 +236,10 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
      * @param int $n The last element to be skipped; the $n+1 element will be the
-     *  first one in the returned `AccessibleCollectionInterface`.
+     *               first one in the returned `AccessibleCollectionInterface`.
      *
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` that is a proper subset
-     *  of the current `AccessibleCollectionInterface` containing values after the specified `n`-th element.
+     *                                           of the current `AccessibleCollectionInterface` containing values after the specified `n`-th element.
      *
      * @psalm-mutation-free
      */
@@ -254,10 +254,10 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * `AccessibleCollectionInterface`.
      *
      * @param (callable(Tv): bool) $fn The callback used to determine the starting element for the
-     *  returned `AccessibleCollectionInterface`.
+     *                                 returned `AccessibleCollectionInterface`.
      *
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` that is a proper subset
-     *  of the current `AccessibleCollectionInterface` starting after the callback returns `true`.
+     *                                           of the current `AccessibleCollectionInterface` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): AccessibleCollectionInterface;
 
@@ -273,12 +273,12 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * `AccessibleCollectionInterface`.
      *
      * @param int $start The starting key of this Vector to begin the returned
-     *  `AccessibleCollectionInterface`
+     *                   `AccessibleCollectionInterface`
      * @param int $length The length of the returned `AccessibleCollectionInterface`
      *
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` that is a proper subset
-     *  of the current `AccessibleCollectionInterface` starting at `$start` up to but not including
-     *  the element `$start + $length`.
+     *                                           of the current `AccessibleCollectionInterface` starting at `$start` up to but not including
+     *                                           the element `$start + $length`.
      *
      * @psalm-mutation-free
      */

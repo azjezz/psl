@@ -22,11 +22,11 @@ namespace Psl\Arr;
  * @template Tk of array-key
  * @template Tv
  *
- * @param    array<Tk, Tv>   $array
- * @param    Tk              $index
- * @param    Tv              $default
+ * @param array<Tk, Tv> $array
+ * @param Tk $index
+ * @param Tv $default
  *
- * @return   Tv
+ * @return Tv
  *
  * @pure
  *

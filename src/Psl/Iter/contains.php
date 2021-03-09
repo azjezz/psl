@@ -22,7 +22,7 @@ namespace Psl\Iter;
  * @template T
  *
  * @param iterable<T> $iterable
- * @param T           $value
+ * @param T $value
  */
 function contains(iterable $iterable, $value): bool
 {

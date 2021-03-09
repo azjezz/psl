@@ -12,7 +12,7 @@ use Exception;
  *
  * @template     T
  *
- * @param  (callable(): (T|ResultInterface<T>)) $fun
+ * @param (callable(): (T|ResultInterface<T>)) $fun
  *
  * @return ResultInterface<T>
  */

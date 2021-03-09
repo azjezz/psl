@@ -12,19 +12,19 @@ use function mb_strimwidth;
 /**
  * Get truncated string with specified width.
  *
- * @param int         $offset      The start position offset. Number of
- *                                 characters from the beginning of string. (First character is 0)
- * @param int         $width       the width of the desired trim
+ * @param int $offset The start position offset. Number of
+ *                    characters from the beginning of string. (First character is 0)
+ * @param int $width the width of the desired trim
  * @param string|null $trim_marker a string that is added to the end of string
  *                                 when string is truncated
+ *
+ * @throws Psl\Exception\InvariantViolationException If the offset is out-of-bounds.
+ * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  *
  * @return string The truncated string. If trim_marker is set,
  *                trim_marker is appended to the return value.
  *
  * @pure
- *
- * @throws Psl\Exception\InvariantViolationException If the offset is out-of-bounds.
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
 function truncate(
     string $string,

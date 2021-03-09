@@ -20,10 +20,10 @@ namespace Psl\Iter;
  *
  * @template  T
  *
- * @param     iterable<T>         $iterable  Iterable to check against the predicate
- * @param     (callable(T): bool) $predicate
+ * @param iterable<T> $iterable Iterable to check against the predicate
+ * @param (callable(T): bool) $predicate
  *
- * @return    bool Whether the predicate matches any value
+ * @return bool Whether the predicate matches any value
  */
 function any(iterable $iterable, callable $predicate): bool
 {

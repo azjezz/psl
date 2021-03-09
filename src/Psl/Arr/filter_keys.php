@@ -23,13 +23,12 @@ use Psl\Dict;
  * @template Tk of array-key
  * @template Tv
  *
- * @param iterable<Tk, Tv>           $iterable
- * @param (callable(Tk): bool)|null  $predicate
+ * @param iterable<Tk, Tv> $iterable
+ * @param (callable(Tk): bool)|null $predicate
  *
  * @return array<Tk, Tv>
  *
  * @deprecated use `Dict\filter_keys` instead.
- *
  * @see Dict\filter_keys()
  */
 function filter_keys(iterable $iterable, ?callable $predicate = null): array

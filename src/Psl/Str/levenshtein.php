@@ -18,13 +18,13 @@ use function levenshtein as php_levenshtien;
  * the cost of insert, replace and delete operations. This is more general
  * and adaptive than variant one, but not as efficient.
  *
+ * @throws Psl\Exception\InvariantViolationException If neither all, or none of the costs is supplied.
+ *
  * @return int this function returns the Levenshtein-Distance between the
- *  two argument strings or -1, if one of the argument strings
- *  is longer than the limit of 255 characters
+ *             two argument strings or -1, if one of the argument strings
+ *             is longer than the limit of 255 characters
  *
  * @pure
- *
- * @throws Psl\Exception\InvariantViolationException If neither all, or none of the costs is supplied.
  */
 function levenshtein(
     string $source,

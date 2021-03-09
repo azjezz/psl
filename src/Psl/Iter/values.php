@@ -27,7 +27,6 @@ use Psl\Vec;
  * @return Iterator<int, Tv>
  *
  * @deprecated since 1.2, use Vec\values instead.
- *
  * @see Vec\values()
  */
 function values(iterable $iterable): Iterator

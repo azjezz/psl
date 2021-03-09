@@ -26,15 +26,15 @@ use Psl\Internal;
  *
  * @param int $chunk_length maximum length of the chunk
  *
+ * @throws Psl\Exception\InvariantViolationException If the given $chunk_length is negative or above
+ *                                                   the limit ( 65535 ), or an invalid $encoding is provided.
+ *
  * @return list<string> if $chunk_length parameter is specified, the returned array will be broken down
- *  into chunks with each being $chunk_length in length, otherwise each chunk will be one character in length.
- *  If the $chunk_length length exceeds the length of string, the entire string is returned
- *  as the first (and only) array element.
+ *                      into chunks with each being $chunk_length in length, otherwise each chunk will be one character in length.
+ *                      If the $chunk_length length exceeds the length of string, the entire string is returned
+ *                      as the first (and only) array element.
  *
  * @pure
- *
- * @throws Psl\Exception\InvariantViolationException If the given $chunk_length is negative or above
- *  the limit ( 65535 ), or an invalid $encoding is provided.
  */
 function chunk(string $string, int $chunk_length = 1, ?string $encoding = null): array
 {

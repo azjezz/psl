@@ -25,7 +25,6 @@ use Psl\Dict;
  * @return Iterator<Tk, Tv>
  *
  * @deprecated use `Dict\merge` instead.
- *
  * @see Dict\merge()
  */
 function merge(iterable $first, iterable ...$rest): Iterator

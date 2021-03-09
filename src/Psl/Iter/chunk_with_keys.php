@@ -19,11 +19,11 @@ use Psl;
  * @template Tv
  *
  * @param iterable<Tk, Tv> $iterable The iterable to chunk
- * @param int              $size     The size of each chunk
- *
- * @return Iterator<int, array<Tk, Tv>>
+ * @param int $size The size of each chunk
  *
  * @throws Psl\Exception\InvariantViolationException If $size is negative.
+ *
+ * @return Iterator<int, array<Tk, Tv>>
  *
  * @deprecated since 1.2, use Vec\chunk_with_keys instead.
  */

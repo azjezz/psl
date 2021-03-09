@@ -31,7 +31,7 @@ use Psl;
  * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If the $pad_string is empty, a negative $total_length is given,
- *  or an invalid $encoding is provided.
+ *                                                   or an invalid $encoding is provided.
  */
 function pad_right(string $string, int $total_length, string $pad_string = ' ', ?string $encoding = null): string
 {

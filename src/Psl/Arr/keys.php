@@ -17,7 +17,6 @@ use Psl\Vec;
  * @return list<Tk>
  *
  * @deprecated use `Vec\keys` instead.
- *
  * @see Vec\keys()
  */
 function keys(array $arr): array

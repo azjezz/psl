@@ -20,13 +20,13 @@ use Psl;
  * @template Tk of array-key
  * @template Tv
  *
- * @param iterable<Tk,Tv> $iterable   Iterable to take the slice from
- * @param int             $start      Start offset
- * @param int             $length     Length (if not specified all remaining values from the array are used)
- *
- * @return array<Tk, Tv>
+ * @param iterable<Tk,Tv> $iterable Iterable to take the slice from
+ * @param int $start Start offset
+ * @param int $length Length (if not specified all remaining values from the array are used)
  *
  * @throws Psl\Exception\InvariantViolationException If the $start offset or $length are negative
+ *
+ * @return array<Tk, Tv>
  */
 function slice(iterable $iterable, int $start, ?int $length = null): array
 {

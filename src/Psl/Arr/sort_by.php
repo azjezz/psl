@@ -16,9 +16,9 @@ use Psl\Vec;
  * @template Tv
  * @template Ts
  *
- * @param iterable<Tv>                   $iterable
- * @param (callable(Tv): Ts)             $scalar_func
- * @param (callable(Ts, Ts): int)|null   $comparator
+ * @param iterable<Tv> $iterable
+ * @param (callable(Tv): Ts) $scalar_func
+ * @param (callable(Ts, Ts): int)|null $comparator
  *
  * @return list<Tv>
  *

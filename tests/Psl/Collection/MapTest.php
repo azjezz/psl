@@ -13,12 +13,12 @@ use Psl\Collection\Vector;
 final class MapTest extends AbstractMapTest
 {
     /**
-     * @psalm-var class-string<Map>
+     * @var class-string<Map>
      */
     protected string $mapClass = Map::class;
 
     /**
-     * @psalm-var class-string<Vector>
+     * @var class-string<Vector>
      */
     protected string $vectorClass = Vector::class;
 
@@ -26,9 +26,9 @@ final class MapTest extends AbstractMapTest
      * @template     Tk of array-key
      * @template     Tv
      *
-     * @psalm-param  iterable<Tk, Tv> $items
+     * @param iterable<Tk, Tv> $items
      *
-     * @psalm-return Map<Tk, Tv>
+     * @return Map<Tk, Tv>
      */
     protected function create(iterable $items): Map
     {

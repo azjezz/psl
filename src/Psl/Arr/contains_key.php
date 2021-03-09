@@ -15,12 +15,11 @@ use function array_key_exists;
  * @template Tv
  *
  * @param array<Tk, Tv> $array
- * @param Tk            $key
+ * @param Tk $key
  *
  * @pure
  *
  * @deprecated use `Iter\contains_key()` instead.
- *
  * @see Iter\contains_key()
  */
 function contains_key(array $array, $key): bool

@@ -15,11 +15,11 @@ use const JSON_THROW_ON_ERROR;
 /**
  * Decode a json encoded string into a dynamic variable.
  *
+ * @throws Exception\DecodeException If an error occurred.
+ *
  * @return mixed
  *
  * @pure
- *
- * @throws Exception\DecodeException If an error occurred.
  */
 function decode(string $json, bool $assoc = true)
 {

@@ -36,9 +36,9 @@ use Psl;
  * @param T $end
  * @param T|null $step
  *
- * @return list<T>
- *
  * @throws Psl\Exception\InvariantViolationException If $start < $end, and $step is negative.
+ *
+ * @return list<T>
  *
  * @psalm-suppress InvalidReturnType
  * @psalm-suppress InvalidReturnStatement

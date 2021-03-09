@@ -79,9 +79,9 @@ final class PriorityQueue implements PriorityQueueInterface
     /**
      * Dequeues a node from the queue.
      *
-     * @return T
-     *
      * @throws Psl\Exception\InvariantViolationException If the Queue is invalid.
+     *
+     * @return T
      */
     public function dequeue()
     {

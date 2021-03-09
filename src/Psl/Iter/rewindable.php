@@ -13,9 +13,9 @@ use Generator;
  * @template Tk
  * @template Tv
  *
- * @param    Generator<Tk, Tv, mixed, mixed> $generator
+ * @param Generator<Tk, Tv, mixed, mixed> $generator
  *
- * @return   Iterator<Tk, Tv>
+ * @return Iterator<Tk, Tv>
  */
 function rewindable(Generator $generator): Iterator
 {

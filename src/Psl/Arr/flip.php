@@ -23,7 +23,6 @@ use Psl\Dict;
  * @return array<Tv, Tk>
  *
  * @deprecated use `Dict\flip` instead.
- *
  * @see Dict\flip()
  */
 function flip(array $array): array

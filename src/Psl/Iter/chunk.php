@@ -22,11 +22,11 @@ use Psl\Vec;
  * @template T
  *
  * @param iterable<T> $iterable The iterable to chunk
- * @param int         $size     The size of each chunk
- *
- * @return Iterator<int, list<T>>
+ * @param int $size The size of each chunk
  *
  * @throws Psl\Exception\InvariantViolationException If $size is negative.
+ *
+ * @return Iterator<int, list<T>>
  *
  * @deprecated since 1.2, use Vec\chunk instead.
  */

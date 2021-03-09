@@ -19,7 +19,6 @@ use Psl\Iter;
  * @pure
  *
  * @deprecated use `Iter\last` instead.
- *
  * @see Iter\last()
  */
 function last(array $array)

@@ -14,13 +14,12 @@ use Psl\Dict;
  * @template Tk of array-key
  * @template Tv
  *
- * @param array<Tk, Tv>                  $array
- * @param (callable(Tv, Tv): int)|null   $comparator
+ * @param array<Tk, Tv> $array
+ * @param (callable(Tv, Tv): int)|null $comparator
  *
  * @return array<Tk, Tv>
  *
  * @deprecated use `Dict\sort` instead
- *
  * @see Dict\sort()
  */
 function sort_with_keys(array $array, ?callable $comparator = null): array

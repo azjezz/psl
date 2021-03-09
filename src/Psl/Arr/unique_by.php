@@ -15,13 +15,12 @@ use Psl\Dict;
  * @template Tv
  * @template Ts
  *
- * @param iterable<Tk, Tv>   $iterable
+ * @param iterable<Tk, Tv> $iterable
  * @param (callable(Tv): Ts) $scalar_func
  *
  * @return array<Tk, Tv>
  *
  * @deprecated use `Dict\unique_by` instead
- *
  * @see Dict\unique_by
  */
 function unique_by(iterable $iterable, callable $scalar_func): array

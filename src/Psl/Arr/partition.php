@@ -11,13 +11,12 @@ use Psl\Vec;
  *
  * @template T
  *
- * @param iterable<T>         $list
+ * @param iterable<T> $list
  * @param (callable(T): bool) $predicate
  *
  * @return array{0: list<T>, 1: list<T>}
  *
  * @deprecated use `Vec\partition` instead.
- *
  * @see Vec\partition
  */
 function partition(iterable $list, callable $predicate): array

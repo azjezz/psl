@@ -16,11 +16,11 @@ use Psl;
  * @param array<Tk, Tv> $array
  * @param Tk $key
  *
+ * @throws Psl\Exception\InvariantViolationException If $key is out-of-bounds.
+ *
  * @return Tv
  *
  * @pure
- *
- * @throws Psl\Exception\InvariantViolationException If $key is out-of-bounds.
  *
  * @deprecated use `$array[$key]` instead.
  */

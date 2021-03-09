@@ -20,7 +20,6 @@ use function array_fill;
  * @pure
  *
  * @deprecated use `Vec\fill` instead.
- *
  * @see Vec\fill()
  */
 function fill($value, int $start_index, int $num): array

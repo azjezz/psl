@@ -24,9 +24,9 @@ namespace Psl\Iter;
  * @template Tv
  * @template Ts
  *
- * @param iterable<Tk, Tv>        $iterable
+ * @param iterable<Tk, Tv> $iterable
  * @param (callable(?Ts, Tk): Ts) $function
- * @param Ts|null                 $initial
+ * @param Ts|null $initial
  *
  * @return Ts|null
  */

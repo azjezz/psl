@@ -22,8 +22,8 @@ use Closure;
  *
  * @template T
  *
- * @param iterable<T>                 $iterable
- * @param (callable(T): bool)|null    $predicate
+ * @param iterable<T> $iterable
+ * @param (callable(T): bool)|null $predicate
  *
  * @return list<T>
  */

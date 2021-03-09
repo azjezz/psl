@@ -11,11 +11,11 @@ use Psl\Iter;
 final class ContainsKeyTest extends TestCase
 {
     /**
-     * @psalm-template Tk
-     * @psalm-template Tv
+     * @template Tk
+     * @template Tv
      *
-     * @psalm-param iterable<Tk, Tv> $iterable
-     * @psalm-param Tk $key
+     * @param iterable<Tk, Tv> $iterable
+     * @param Tk $key
      *
      * @dataProvider provideData
      */

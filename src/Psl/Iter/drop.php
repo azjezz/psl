@@ -18,15 +18,14 @@ use Psl\Dict;
  * @template Tk
  * @template Tv
  *
- * @param iterable<Tk, Tv>    $iterable   Iterable to drop the elements from
- * @param int                 $n          Number of elements to drop from the start
- *
- * @return Iterator<Tk, Tv>
+ * @param iterable<Tk, Tv> $iterable Iterable to drop the elements from
+ * @param int $n Number of elements to drop from the start
  *
  * @throws Psl\Exception\InvariantViolationException If the $n is negative
  *
- * @deprecated use `Dict\drop` instead.
+ * @return Iterator<Tk, Tv>
  *
+ * @deprecated use `Dict\drop` instead.
  * @see Dict\drop()
  */
 function drop(iterable $iterable, int $n): Iterator

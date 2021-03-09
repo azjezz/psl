@@ -13,16 +13,16 @@ use function str_split;
  *
  * @param int $chunk_length maximum length of the chunk
  *
+ * @throws Psl\Exception\InvariantViolationException If $chunk_length is negative.
+ *
  * @return list<string> if $chunk_length parameter is specified, the returned array will be broken down
- *  into chunks with each being $chunk_length in length, otherwise each chunk
- *  will be one character in length.
- *  If the $chunk_length length exceeds the length of string, the entire string is returned
- *  as the first (and only) array element.
- *  If the given string is empty, and empty array will be returned.
+ *                      into chunks with each being $chunk_length in length, otherwise each chunk
+ *                      will be one character in length.
+ *                      If the $chunk_length length exceeds the length of string, the entire string is returned
+ *                      as the first (and only) array element.
+ *                      If the given string is empty, and empty array will be returned.
  *
  * @pure
- *
- * @throws Psl\Exception\InvariantViolationException If $chunk_length is negative.
  */
 function chunk(string $string, int $chunk_length = 1): array
 {

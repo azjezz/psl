@@ -14,13 +14,12 @@ use Psl\Dict;
  * @template Tk
  * @template Tv
  *
- * @param iterable<Tk>        $keys
- * @param (callable(Tk): Tv)  $value_func
+ * @param iterable<Tk> $keys
+ * @param (callable(Tk): Tv) $value_func
  *
  * @return Iterator<Tk, Tv>
  *
  * @deprecated use `Dict\from_keys` instead.
- *
  * @see Dict\from_keys()
  */
 function from_keys(iterable $keys, callable $value_func): Iterator

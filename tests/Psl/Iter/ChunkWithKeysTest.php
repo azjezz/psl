@@ -10,11 +10,11 @@ use Psl\Iter;
 final class ChunkWithKeysTest extends TestCase
 {
     /**
-     * @psalm-template Tk
-     * @psalm-template Tv
+     * @template Tk
+     * @template Tv
      *
-     * @psalm-param list<array<Tk, Tv>> $expected
-     * @psalm-param iterable<Tk, Tv> $iterable
+     * @param list<array<Tk, Tv>> $expected
+     * @param iterable<Tk, Tv> $iterable
      *
      * @dataProvider provideData
      */

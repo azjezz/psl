@@ -21,7 +21,7 @@ use const LOCK_EX;
  * @param bool $append If true, and $file exists, append $content to $file instead of overwriting it.
  *
  * @throws Psl\Exception\InvariantViolationException If the file specified by
- *  $file does not exist, or is not writeable.
+ *                                                   $file does not exist, or is not writeable.
  * @throws Exception\RuntimeException In case of an error.
  */
 function write_file(string $file, string $content, bool $append): void

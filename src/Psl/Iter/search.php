@@ -18,7 +18,7 @@ namespace Psl\Iter;
  *
  * @template T
  *
- * @param iterable<T>         $iterable  The iterable to search
+ * @param iterable<T> $iterable The iterable to search
  * @param (callable(T): bool) $predicate
  *
  * @return T|null

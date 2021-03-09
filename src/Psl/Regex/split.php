@@ -14,15 +14,15 @@ use const PREG_SPLIT_NO_EMPTY;
 /**
  * Split $subject by $pattern.
  *
- * @param non-empty-string  $pattern    The pattern to split $subject by.
- * @param null|int          $limit      If specified, then only substrings up to limit are
- *                                      returned with the rest of the string being placed in the last substring.
+ * @param non-empty-string $pattern The pattern to split $subject by.
+ * @param null|int $limit If specified, then only substrings up to limit are
+ *                        returned with the rest of the string being placed in the last substring.
+ *
+ * @throws Exception\InvalidPatternException If $pattern is invalid.
+ * @throws Exception\RuntimeException In case of an unexpected error.
+ * @throws Psl\Exception\InvariantViolationException If $limit is negative, or equal to 0.
  *
  * @return list<string>
- *
- * @throws Exception\InvalidPatternException            If $pattern is invalid.
- * @throws Exception\RuntimeException                   In case of an unexpected error.
- * @throws Psl\Exception\InvariantViolationException    If $limit is negative, or equal to 0.
  *
  * @pure
  */

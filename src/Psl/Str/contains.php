@@ -37,7 +37,7 @@ use Psl;
  * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds, or
- *  an invalid $encoding is provided.
+ *                                                   an invalid $encoding is provided.
  */
 function contains(string $haystack, string $needle, int $offset = 0, ?string $encoding = null): bool
 {

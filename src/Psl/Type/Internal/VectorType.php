@@ -39,9 +39,9 @@ final class VectorType extends Type\Type
     /**
      * @param mixed $value
      *
-     * @return Collection\VectorInterface<T>
-     *
      * @throws CoercionException
+     *
+     * @return Collection\VectorInterface<T>
      */
     public function coerce($value): Collection\VectorInterface
     {
@@ -75,11 +75,11 @@ final class VectorType extends Type\Type
     /**
      * @param mixed $value
      *
+     * @throws AssertException
+     *
      * @return Collection\VectorInterface<T>
      *
      * @psalm-assert Collection\VectorInterface<T> $value
-     *
-     * @throws AssertException
      */
     public function assert($value): Collection\VectorInterface
     {

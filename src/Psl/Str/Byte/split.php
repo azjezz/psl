@@ -16,11 +16,11 @@ use function explode;
  * If the limit is provided, the array will only contain that many elements, where
  * the last element is the remainder of the string.
  *
+ * @throws Psl\Exception\InvariantViolationException If $limit is negative.
+ *
  * @return list<string>
  *
  * @pure
- *
- * @throws Psl\Exception\InvariantViolationException If $limit is negative.
  */
 function split(string $string, string $delimiter, ?int $limit = null): array
 {

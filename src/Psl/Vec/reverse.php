@@ -15,9 +15,9 @@ use Psl\Iter;
  *
  * @template T
  *
- * @param    iterable<T> $iterable The iterable to reverse.
+ * @param iterable<T> $iterable The iterable to reverse.
  *
- * @return   list<T>
+ * @return list<T>
  */
 function reverse(iterable $iterable): array
 {

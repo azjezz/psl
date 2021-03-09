@@ -12,12 +12,12 @@ use function preg_replace_callback;
 /**
  * Perform a regular expression search and replace using a callback.
  * Returns the `$haystack` string with all occurrences of `$pattern` replaced using
- * `$callback`
+ * `$callback`.
  *
  * @param non-empty-string $pattern The pattern to search for.
  * @param (callable(array<int, string>): string) $callback The replacement callable.
  * @param null|positive-int $limit The maximum possible replacements for
- * $pattern within $haystack.
+ *                                 $pattern within $haystack.
  *
  * @throws Exception\InvalidPatternException If $pattern is invalid.
  * @throws Exception\RuntimeException In case of an unexpected error.

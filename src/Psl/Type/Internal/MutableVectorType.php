@@ -39,9 +39,9 @@ final class MutableVectorType extends Type\Type
     /**
      * @param mixed $value
      *
-     * @return Collection\MutableVectorInterface<T>
-     *
      * @throws CoercionException
+     *
+     * @return Collection\MutableVectorInterface<T>
      */
     public function coerce($value): Collection\MutableVectorInterface
     {
@@ -75,11 +75,11 @@ final class MutableVectorType extends Type\Type
     /**
      * @param mixed $value
      *
+     * @throws AssertException
+     *
      * @return Collection\MutableVectorInterface<T>
      *
      * @psalm-assert Collection\MutableVectorInterface<T> $value
-     *
-     * @throws AssertException
      */
     public function assert($value): Collection\MutableVectorInterface
     {

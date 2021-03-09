@@ -34,7 +34,6 @@ final class FloatType extends Type\Type
     /**
      * @param mixed $value
      *
-     *
      * @throws CoercionException
      */
     public function coerce($value): float
@@ -67,7 +66,6 @@ final class FloatType extends Type\Type
 
     /**
      * @param mixed $value
-     *
      *
      * @psalm-assert float $value
      *

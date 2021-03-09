@@ -19,14 +19,14 @@ abstract class AbstractMapTest extends TestCase
     /**
      * The Map class being currently tested.
      *
-     * @psalm-var class-string<IMap>
+     * @var class-string<IMap>
      */
     protected string $mapClass = MapInterface::class;
 
     /**
      * The Vector class used for values, keys .. etc.
      *
-     * @psalm-var class-string<IVector>
+     * @var class-string<IVector>
      */
     protected string $vectorClass = VectorInterface::class;
 
@@ -570,9 +570,9 @@ abstract class AbstractMapTest extends TestCase
      * @template     Tk of array-key
      * @template     Tv
      *
-     * @psalm-param  iterable<Tk, Tv> $items
+     * @param iterable<Tk, Tv> $items
      *
-     * @psalm-return IMap<Tk, Tv>
+     * @return IMap<Tk, Tv>
      */
     abstract protected function create(iterable $items): MapInterface;
 }

@@ -16,9 +16,9 @@ use Psl\Vec;
  *
  * @param iterable<Tk, Tv> $iterable
  *
- * @return Tv
- *
  * @throws Psl\Exception\InvariantViolationException If $iterable is empty.
+ *
+ * @return Tv
  */
 function random(iterable $iterable)
 {

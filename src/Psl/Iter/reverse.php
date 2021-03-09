@@ -16,12 +16,11 @@ use Psl\Vec;
  *
  * @template T
  *
- * @param    iterable<T> $iterable The iterable to reverse.
+ * @param iterable<T> $iterable The iterable to reverse.
  *
- * @return   Iterator<int, T>
+ * @return Iterator<int, T>
  *
  * @deprecated since 1.2, use Vec\reverse instead.
- *
  * @see Vec\reverse()
  */
 function reverse(iterable $iterable): Iterator

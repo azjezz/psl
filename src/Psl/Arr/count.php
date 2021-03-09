@@ -31,7 +31,6 @@ use Psl\Iter;
  * @pure
  *
  * @deprecated use Iter\count instead.
- *
  * @see Iter\count()
  */
 function count(array $array): int

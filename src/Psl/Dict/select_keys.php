@@ -15,8 +15,8 @@ use Psl\Iter;
  * @template Tk of array-key
  * @template Tv
  *
- * @param iterable<Tk, Tv>    $iterable
- * @param iterable<Tk>        $keys
+ * @param iterable<Tk, Tv> $iterable
+ * @param iterable<Tk> $keys
  *
  * @return array<Tk, Tv>
  */

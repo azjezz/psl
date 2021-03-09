@@ -12,12 +12,11 @@ use Psl\Dict;
  * @template Tk of array-key
  * @template Tv
  *
- * @param    iterable<Tk, Tv> $iterable
+ * @param iterable<Tk, Tv> $iterable
  *
- * @return   array<Tk, Tv>
+ * @return array<Tk, Tv>
  *
  * @deprecated use `Dict\from_iterable` instead.
- *
  * @see Dict\from_iterable()
  */
 function to_array_with_keys(iterable $iterable): array

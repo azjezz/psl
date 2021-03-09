@@ -49,9 +49,9 @@ final class MutableMapType extends Type\Type
     /**
      * @param mixed $value
      *
-     * @return Collection\MutableMapInterface<Tk, Tv>
-     *
      * @throws CoercionException
+     *
+     * @return Collection\MutableMapInterface<Tk, Tv>
      */
     public function coerce($value): Collection\MutableMapInterface
     {
@@ -98,11 +98,11 @@ final class MutableMapType extends Type\Type
     /**
      * @param mixed $value
      *
+     * @throws AssertException
+     *
      * @return Collection\MutableMapInterface<Tk, Tv>
      *
      * @psalm-assert Collection\MutableMapInterface<Tk, Tv> $value
-     *
-     * @throws AssertException
      */
     public function assert($value): Collection\MutableMapInterface
     {

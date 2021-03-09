@@ -23,20 +23,20 @@ interface TypeInterface
     /**
      * @param mixed $value
      *
-     * @return T
-     *
      * @throws CoercionException
+     *
+     * @return T
      */
     public function coerce($value);
 
     /**
      * @param mixed $value
      *
+     * @throws AssertException
+     *
      * @return T
      *
      * @psalm-assert T $value
-     *
-     * @throws AssertException
      */
     public function assert($value);
 

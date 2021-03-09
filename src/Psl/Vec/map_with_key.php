@@ -19,8 +19,8 @@ namespace Psl\Vec;
  * @template Tv
  * @template T
  *
- * @param iterable<Tk, Tv>       $iterable Iterable to be mapped over
- * @param (callable(Tk,Tv): T)   $function
+ * @param iterable<Tk, Tv> $iterable Iterable to be mapped over
+ * @param (callable(Tk,Tv): T) $function
  *
  * @return list<T>
  */

@@ -15,12 +15,11 @@ use Psl\Dict;
  *
  * @param iterable<Tk, Tv> $iterable
  *
- * @return Iterator<Tk, Tv>
- *
  * @throws Psl\Exception\InvariantViolationException If the $n is negative
  *
- * @deprecated use `Dict\take` instead.
+ * @return Iterator<Tk, Tv>
  *
+ * @deprecated use `Dict\take` instead.
  * @see Dict\take()
  */
 function take(iterable $iterable, int $n): Iterator

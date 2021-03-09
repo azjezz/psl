@@ -18,7 +18,7 @@ use function rmdir;
  *
  * @throws Exception\RuntimeException If unable to delete the directory.
  * @throws Psl\Exception\InvariantViolationException If the directory specified by
- *  $directory does not exist.
+ *                                                   $directory does not exist.
  */
 function delete_directory(string $directory, bool $recursive = false): void
 {

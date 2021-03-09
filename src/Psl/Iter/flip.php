@@ -22,7 +22,6 @@ use Generator;
  * @return Iterator<Tv, Tk>
  *
  * @deprecated use `Dict\flip` instead.
- *
  * @see Dict\flip()
  */
 function flip(iterable $iterable): Iterator

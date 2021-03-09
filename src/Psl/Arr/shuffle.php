@@ -25,7 +25,6 @@ use Psl\Vec;
  * @return list<Tv> the shuffled array.
  *
  * @deprecated since 1.2, use Vec\shuffle instead.
- *
  * @see Vec\shuffle()
  */
 function shuffle(array $array): array

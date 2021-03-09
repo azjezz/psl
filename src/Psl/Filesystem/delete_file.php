@@ -15,7 +15,7 @@ use function unlink;
  *
  * @throws Exception\RuntimeException If unable to delete the file.
  * @throws Psl\Exception\InvariantViolationException If the file specified by
- *  $filename does not exist.
+ *                                                   $filename does not exist.
  */
 function delete_file(string $filename): void
 {

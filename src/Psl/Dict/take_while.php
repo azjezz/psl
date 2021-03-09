@@ -18,10 +18,10 @@ namespace Psl\Dict;
  * @template Tk of array-key
  * @template Tv
  *
- * @param    iterable<Tk, Tv>        $iterable    Iterable to take values from
- * @param    (callable(Tv): bool)    $predicate
+ * @param iterable<Tk, Tv> $iterable Iterable to take values from
+ * @param (callable(Tv): bool) $predicate
  *
- * @return   array<Tk, Tv>
+ * @return array<Tk, Tv>
  */
 function take_while(iterable $iterable, callable $predicate): array
 {

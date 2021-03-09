@@ -10,7 +10,7 @@ namespace Psl\Dict;
  * @template Tk of array-key
  * @template Tv
  *
- * @param iterable<Tk, Tv>    $iterable
+ * @param iterable<Tk, Tv> $iterable
  *
  * @return array<Tk, Tv>
  */

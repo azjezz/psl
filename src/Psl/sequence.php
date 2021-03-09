@@ -9,9 +9,9 @@ namespace Psl;
  *
  * @template T
  *
- * @param    T ...$args
+ * @param T ...$args
  *
- * @return   T|null
+ * @return T|null
  */
 function sequence(...$args)
 {

@@ -15,7 +15,7 @@ use Psl\Iter;
  * @template Tv
  * @template Ts
  *
- * @param iterable<Tk, Tv>   $iterable
+ * @param iterable<Tk, Tv> $iterable
  * @param (callable(Tv): Ts) $scalar_func
  *
  * @return array<Tk, Tv>

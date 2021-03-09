@@ -94,8 +94,8 @@ final class MutableMapTypeTest extends TypeTest
     }
 
     /**
-     * @psalm-param Collection\MutableMapInterface<array-key, mixed>|mixed $a
-     * @psalm-param Collection\MutableMapInterface<array-key, mixed>|mixed $b
+     * @param Collection\MutableMapInterface<array-key, mixed>|mixed $a
+     * @param Collection\MutableMapInterface<array-key, mixed>|mixed $b
      */
     protected function equals($a, $b): bool
     {

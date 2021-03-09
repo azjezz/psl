@@ -91,6 +91,7 @@ interface ResultInterface
      * @link https://github.com/reactphp/promise#promiseinterfacethen
      *
      * @template R
+     *
      * @param callable(T): R $on_success
      * @param callable(Exception): R $on_failure
      *

@@ -17,7 +17,6 @@ use Psl\Dict;
  * @param array<Tk, Tv> $array2
  *
  * @deprecated use `Dict\equal` instead.
- *
  * @see Dict\equal()
  */
 function equal(array $array, array $array2): bool
