@@ -20,7 +20,7 @@ use function mb_chr;
  *      Str\chr(1604)
  *      => Str('ل')
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */

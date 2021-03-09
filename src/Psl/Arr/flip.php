@@ -15,15 +15,14 @@ use Psl\Dict;
  *      Arr\flip(['a' => 1, 'b' => 2, 'c' => 3])
  *      => Arr(1 => 'a', 2 => 'b', 3 => 'c')
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv of array-key
+ * @template Tk of array-key
+ * @template Tv of array-key
  *
- * @psalm-param array<Tk, Tv> $array
+ * @param array<Tk, Tv> $array
  *
- * @psalm-return array<Tv, Tk>
+ * @return array<Tv, Tk>
  *
  * @deprecated use `Dict\flip` instead.
- *
  * @see Dict\flip()
  */
 function flip(array $array): array

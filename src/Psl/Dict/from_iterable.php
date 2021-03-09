@@ -7,12 +7,12 @@ namespace Psl\Dict;
 /**
  * Convert the given iterable to a dict.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv>    $iterable
+ * @param iterable<Tk, Tv> $iterable
  *
- * @psalm-return array<Tk, Tv>
+ * @return array<Tk, Tv>
  */
 function from_iterable(iterable $iterable): array
 {

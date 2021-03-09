@@ -14,9 +14,9 @@ use function readlink;
  * Returns the target of a symbolic link.
  *
  * @throws Psl\Exception\InvariantViolationException If the link specified by
- *  $symbolic_link does not exist, or is not a symbolic link.
+ *                                                   $symbolic_link does not exist, or is not a symbolic link.
  * @throws Exception\RuntimeException If unable to retrieve the target
- *  of $symbolic_link.
+ *                                    of $symbolic_link.
  */
 function read_symbolic_link(string $symbolic_link): string
 {

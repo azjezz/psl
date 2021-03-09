@@ -77,8 +77,8 @@ final class MapTypeTest extends TypeTest
     }
 
     /**
-     * @psalm-param Collection\MapInterface<array-key, mixed>|mixed $a
-     * @psalm-param Collection\MapInterface<array-key, mixed>|mixed $b
+     * @param Collection\MapInterface<array-key, mixed>|mixed $a
+     * @param Collection\MapInterface<array-key, mixed>|mixed $b
      */
     protected function equals($a, $b): bool
     {

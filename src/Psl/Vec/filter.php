@@ -20,16 +20,16 @@ use Closure;
  *      Vec\filter(['foo', 'bar', 'baz', 'qux'], fn(string $value): bool => Str\contains($value, 'a'));
  *      => Vec('bar', 'baz')
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param iterable<T>                 $iterable
- * @psalm-param (callable(T): bool)|null    $predicate
+ * @param iterable<T> $iterable
+ * @param (callable(T): bool)|null $predicate
  *
- * @psalm-return list<T>
+ * @return list<T>
  */
 function filter(iterable $iterable, ?callable $predicate = null): array
 {
-    /** @psalm-var (callable(T): bool) $predicate */
+    /** @var (callable(T): bool) $predicate */
     $predicate = $predicate ?? Closure::fromCallable('Psl\Internal\boolean');
     $result    = [];
     foreach ($iterable as $v) {

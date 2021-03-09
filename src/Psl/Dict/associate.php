@@ -18,9 +18,9 @@ use Psl\Vec;
  * @param iterable<Tk> $keys
  * @param iterable<Tv> $values
  *
- * @return array<Tk, Tv>
- *
  * @throws Psl\Exception\InvariantViolationException If $keys and $values have different length.
+ *
+ * @return array<Tk, Tv>
  */
 function associate(iterable $keys, iterable $values): array
 {

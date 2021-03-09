@@ -9,7 +9,7 @@ use function strncasecmp;
 /**
  * Returns whether the string starts with the given prefix (case-insensitive).
  *
- * @psalm-pure
+ * @pure
  */
 function starts_with_ci(string $string, string $prefix): bool
 {

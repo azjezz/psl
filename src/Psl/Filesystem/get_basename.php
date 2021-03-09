@@ -18,7 +18,7 @@ use function basename as php_basename;
  *
  * @return string the base name of the given path.
  *
- * @psalm-pure
+ * @pure
  */
 function get_basename(string $path, ?string $suffix = null): string
 {

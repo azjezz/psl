@@ -16,11 +16,11 @@ use function explode;
  * If the limit is provided, the array will only contain that many elements, where
  * the last element is the remainder of the string.
  *
- * @psalm-return list<string>
- *
- * @psalm-pure
- *
  * @throws Psl\Exception\InvariantViolationException If $limit is negative.
+ *
+ * @return list<string>
+ *
+ * @pure
  */
 function split(string $string, string $delimiter, ?int $limit = null): array
 {
@@ -41,10 +41,10 @@ function split(string $string, string $delimiter, ?int $limit = null): array
     }
 
     if (null === $limit) {
-        /** @psalm-var list<string>|false $result */
+        /** @var list<string>|false $result */
         $result = explode($delimiter, $string);
     } else {
-        /** @psalm-var list<string>|false $result */
+        /** @var list<string>|false $result */
         $result = explode($delimiter, $string, $limit);
     }
 

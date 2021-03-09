@@ -22,9 +22,9 @@ use function is_countable;
  *      Iter\count(Iter\flatten([[1, 2, 3], [4], [5, 6], [7, 8]]))
  *      => Int(8)
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param iterable<T> $iterable
+ * @param iterable<T> $iterable
  */
 function count(iterable $iterable): int
 {
@@ -33,7 +33,7 @@ function count(iterable $iterable): int
     }
 
     $count = 0;
-    /** @psalm-var T $_ */
+    /** @var T $_ */
     foreach ($iterable as $_) {
         ++$count;
     }

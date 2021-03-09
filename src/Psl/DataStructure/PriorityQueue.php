@@ -11,21 +11,21 @@ use Psl\Math;
 use Psl\Vec;
 
 /**
- * @psalm-template T
+ * @template T
  *
  * @implements PriorityQueueInterface<T>
  */
 final class PriorityQueue implements PriorityQueueInterface
 {
     /**
-     * @psalm-var array<int, list<T>>
+     * @var array<int, list<T>>
      */
     private array $queue = [];
 
     /**
      * Adds a node to the queue.
      *
-     * @psalm-param T $node
+     * @param T $node
      */
     public function enqueue($node, int $priority = 0): void
     {
@@ -39,7 +39,7 @@ final class PriorityQueue implements PriorityQueueInterface
      * Retrieves, but does not remove, the node at the head of this queue,
      * or returns null if this queue is empty.
      *
-     * @psalm-return null|T
+     * @return null|T
      */
     public function peek()
     {
@@ -64,7 +64,7 @@ final class PriorityQueue implements PriorityQueueInterface
      * Retrieves and removes the node at the head of this queue,
      * or returns null if this queue is empty.
      *
-     * @psalm-return null|T
+     * @return null|T
      */
     public function pull()
     {
@@ -79,9 +79,9 @@ final class PriorityQueue implements PriorityQueueInterface
     /**
      * Dequeues a node from the queue.
      *
-     * @psalm-return T
-     *
      * @throws Psl\Exception\InvariantViolationException If the Queue is invalid.
+     *
+     * @return T
      */
     public function dequeue()
     {
@@ -90,7 +90,7 @@ final class PriorityQueue implements PriorityQueueInterface
         /**
          * Peeking into a non-empty queue always results in a value.
          *
-         * @psalm-var T $node
+         * @var T $node
          */
         $node = $this->peek();
 

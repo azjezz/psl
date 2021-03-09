@@ -79,7 +79,7 @@ final class IteratorTest extends TestCase
                 $spy->add('foreach (' . $v . ')');
 
                 /**
-                 * Assert supports non-array-key keys. ( in this case, keys are arrays )
+                 * Assert supports non-array-key keys. ( in this case, keys are arrays ).
                  */
                 static::assertSame(['foo', 'bar'], $k);
             }
@@ -142,7 +142,7 @@ final class IteratorTest extends TestCase
         while ($rewindable->valid()) {
             $spy->add('while (' . $rewindable->current() . ')');
             break;
-        };
+        }
 
         for ($rewindable->rewind(); $rewindable->valid(); $rewindable->next()) {
             $spy->add('for (' . $rewindable->current() . ')');

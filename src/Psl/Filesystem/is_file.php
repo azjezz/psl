@@ -9,7 +9,7 @@ use function is_file as php_is_file;
 /**
  * Check whether $filename is a regular file.
  *
- * @param string $filename  Path to the file.
+ * @param string $filename Path to the file.
  *
  * If $filename is a relative filename, it will be checked relative to
  * the current working directory.

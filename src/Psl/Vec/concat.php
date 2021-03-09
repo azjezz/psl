@@ -7,12 +7,12 @@ namespace Psl\Vec;
 /**
  * Returns a new list formed by concatenating the given lists together.
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param list<T>     $first
- * @psalm-param iterable<T> ...$rest
+ * @param list<T> $first
+ * @param iterable<T> ...$rest
  *
- * @psalm-return list<T>
+ * @return list<T>
  */
 function concat(array $first, iterable ...$rest): array
 {

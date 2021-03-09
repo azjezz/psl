@@ -11,16 +11,15 @@ use function array_fill;
 /**
  * Fill an array with values.
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param T $value
+ * @param T $value
  *
- * @psalm-return array<int, T>
+ * @return array<int, T>
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Vec\fill` instead.
- *
  * @see Vec\fill()
  */
 function fill($value, int $start_index, int $num): array

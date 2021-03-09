@@ -24,19 +24,18 @@ use Psl\Internal;
  *      Str\chunk('مرحبا', 2)
  *      => Arr('مر', 'حب', 'ا')
  *
- * @psalm-param int $chunk_length maximum length of the chunk
+ * @param int $chunk_length maximum length of the chunk
  *
- * @psalm-return list<string> if $chunk_length parameter is specified, the returned array will be broken down
- *                  into chunks with each being $chunk_length in length, otherwise each chunk
- *                  will be one character in length.
- *                  If the $chunk_length length exceeds the length of string, the entire string is returned
- *                  as the first (and only) array element.
+ * @throws Psl\Exception\InvariantViolationException If the given $chunk_length is negative or above
+ *                                                   the limit ( 65535 ), or an invalid $encoding is provided.
  *
- * @psalm-pure
+ * @return list<string> if $chunk_length parameter is specified, the returned array will be broken down
+ *                      into chunks with each being $chunk_length in length, otherwise each chunk will be
+ *                      one character in length.
+ *                      If the $chunk_length length exceeds the length of string, the entire string is returned
+ *                      as the first (and only) array element.
  *
- * @throws Psl\Exception\InvariantViolationException If the given $chunk_length is negative or above the limit
- *                                                   ( 65535 ).
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
+ * @pure
  */
 function chunk(string $string, int $chunk_length = 1, ?string $encoding = null): array
 {
@@ -47,6 +46,6 @@ function chunk(string $string, int $chunk_length = 1, ?string $encoding = null):
 
     Psl\invariant(65535 >= $chunk_length, 'Maximum chunk length must not exceed 65535.');
 
-    /** @psalm-var list<string> */
+    /** @var list<string> */
     return mb_str_split($string, $chunk_length, Internal\internal_encoding($encoding));
 }

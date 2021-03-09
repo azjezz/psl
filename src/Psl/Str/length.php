@@ -23,7 +23,7 @@ use function mb_strlen;
  *      Str\length('تونس')
  *      => Int(4)
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */

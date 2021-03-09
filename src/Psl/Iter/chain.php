@@ -18,15 +18,14 @@ use Psl\Vec;
  *     Iter\chain(Iter\range(0, 5), Iter\range(6, 10), Iter\range(11, 15))
  *     => Iter(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv> ...$iterables Iterables to chain
+ * @param iterable<Tk, Tv> ...$iterables Iterables to chain
  *
- * @psalm-return Iterator<Tk, Tv>
+ * @return Iterator<Tk, Tv>
  *
  * @deprecated use `Vec\concat` instead.
- *
  * @see Vec\concat()
  */
 function chain(iterable ...$iterables): Iterator

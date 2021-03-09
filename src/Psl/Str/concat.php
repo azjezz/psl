@@ -15,7 +15,7 @@ namespace Psl\Str;
  *      Str\concat('foo', ...['a', 'b']);
  *      => Str('fooab')
  *
- * @psalm-pure
+ * @pure
  */
 function concat(string $string, string ...$rest): string
 {

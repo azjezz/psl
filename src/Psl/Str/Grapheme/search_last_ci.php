@@ -13,10 +13,12 @@ use function grapheme_strripos;
  * or null if it isn't found (case-insensitive).
  *
  * An optional offset determines where in the haystack (from the beginning) the
- * search begins. If the offset is negative, the search will begin that many
+ * search begins.
+ *
+ * If the offset is negative, the search will begin that many
  * characters from the end of the string and go backwards.
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If the offset is out-of-bounds.
  */

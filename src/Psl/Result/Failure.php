@@ -17,14 +17,14 @@ use Exception;
 final class Failure implements ResultInterface
 {
     /**
-     * @psalm-var Te
+     * @var Te
      *
      * @readonly
      */
     private Exception $exception;
 
     /**
-     * @psalm-param Te $exception
+     * @param Te $exception
      */
     public function __construct(Exception $exception)
     {
@@ -46,7 +46,7 @@ final class Failure implements ResultInterface
     /**
      * Since this is a failed result wrapper, this always returns the exception thrown during the operation.
      *
-     * @psalm-return Te - The exception thrown during the operation.
+     * @return Te - The exception thrown during the operation.
      *
      * @psalm-mutation-free
      */

@@ -12,7 +12,7 @@ use function ucwords;
  * Words are delimited by space, tab, newline, carriage return, form-feed, and
  * vertical tab by default, but you can specify custom delimiters.
  *
- * @psalm-pure
+ * @pure
  */
 function capitalize_words(string $string, string $delimiters = " \t\r\n\f\v"): string
 {

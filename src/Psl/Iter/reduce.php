@@ -19,15 +19,15 @@ namespace Psl\Iter;
  *      Iter\reduce(Iter\range(1, 5), fn($accumulator, $value) => $accumulator * $value, 1)
  *      => 120
  *
- * @psalm-template Tk
- * @psalm-template Tv
- * @psalm-template Ts
+ * @template Tk
+ * @template Tv
+ * @template Ts
  *
- * @psalm-param iterable<Tk, Tv>        $iterable
- * @psalm-param (callable(Ts, Tv): Ts)  $function
- * @psalm-param Ts                      $initial
+ * @param iterable<Tk, Tv> $iterable
+ * @param (callable(Ts, Tv): Ts) $function
+ * @param Ts $initial
  *
- * @psalm-return Ts
+ * @return Ts
  */
 function reduce(iterable $iterable, callable $function, $initial)
 {

@@ -11,7 +11,7 @@ use function filectime;
 
 /**
  * Get the last time the inode of $filename
- * was changed ( e.g: permission change, ownership change .. etc )
+ * was changed ( e.g: permission change, ownership change .. etc ).
  *
  * @throws Psl\Exception\InvariantViolationException If $filename does not exist.
  * @throws Exception\RuntimeException In case of an error.

@@ -12,10 +12,10 @@ final class ContainsTest extends TestCase
 {
 
     /**
-     * @psalm-template T
+     * @template T
      *
-     * @psalm-param iterable<T> $iterable
-     * @psalm-param T $value
+     * @param iterable<T> $iterable
+     * @param T $value
      *
      * @dataProvider provideData
      */

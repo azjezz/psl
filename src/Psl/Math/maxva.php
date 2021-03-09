@@ -7,22 +7,22 @@ namespace Psl\Math;
 /**
  * Returns the largest of all input numbers.
  *
- * @psalm-template T of int|float
+ * @template T of int|float
  *
- * @psalm-param T $first
- * @psalm-param T $second
- * @psalm-param T ...$rest
+ * @param T $first
+ * @param T $second
+ * @param T ...$rest
  *
- * @return int|float
- * @psalm-return (T is int ? int : float)
+ * @return T
  *
- * @psalm-pure
+ * @pure
  */
 function maxva($first, $second, ...$rest)
 {
     $max = $first > $second ? $first : $second;
     foreach ($rest as $number) {
         if ($number > $max) {
+            /** @var T $max */
             $max = $number;
         }
     }

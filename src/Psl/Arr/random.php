@@ -10,17 +10,16 @@ use Psl\Iter;
 /**
  * Retrieve a random value from a non-empty array.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param array<Tk, Tv> $values
- *
- * @psalm-return Tv
+ * @param array<Tk, Tv> $values
  *
  * @throws Psl\Exception\InvariantViolationException If $values is empty.
  *
- * @deprecated use `Iter\random` instead.
+ * @return Tv
  *
+ * @deprecated use `Iter\random` instead.
  * @see Iter\random()
  */
 function random(array $values)

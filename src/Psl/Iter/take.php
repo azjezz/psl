@@ -10,17 +10,16 @@ use Psl\Dict;
 /**
  * Take the first n elements from an iterable.
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv> $iterable
- *
- * @psalm-return Iterator<Tk, Tv>
+ * @param iterable<Tk, Tv> $iterable
  *
  * @throws Psl\Exception\InvariantViolationException If the $n is negative
  *
- * @deprecated use `Dict\take` instead.
+ * @return Iterator<Tk, Tv>
  *
+ * @deprecated use `Dict\take` instead.
  * @see Dict\take()
  */
 function take(iterable $iterable, int $n): Iterator

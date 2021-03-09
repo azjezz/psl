@@ -30,9 +30,7 @@ final class StringType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return string
+     * @param mixed $value
      *
      * @throws CoercionException
      */
@@ -54,9 +52,7 @@ final class StringType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return string
+     * @param mixed $value
      *
      * @psalm-assert string $value
      *

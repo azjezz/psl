@@ -9,7 +9,7 @@ use function is_link as php_is_link;
 /**
  * Check whether $symbolic_link is a symbolic link.
  *
- * @param string $symbolic_link  Path to the file.
+ * @param string $symbolic_link Path to the file.
  *
  * If $symbolic_link is a relative filename, it will be checked relative to
  * the current working directory.

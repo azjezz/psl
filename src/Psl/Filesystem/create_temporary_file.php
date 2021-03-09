@@ -12,18 +12,16 @@ use Psl\Str;
 /**
  * Create a temporary file.
  *
- * @param string|null $directory    The directory where the temporary filename will be created.
- *                                  If no specified, `Env\temp_dir()` will be used to retrieve
- *                                  the system default temporary directory.
- *
+ * @param string|null $directory The directory where the temporary filename will be created.
+ *                               If no specified, `Env\temp_dir()` will be used to retrieve
+ *                               the system default temporary directory.
  * @param string|null $prefix The prefix of the generated temporary filename.
- *
- * @return string The absolute path to the temporary file.
  *
  * @throws Psl\Exception\InvariantViolationException If $directory doesn't exist or is not writable.
  * @throws Psl\Exception\InvariantViolationException If $prefix contains a directory separator.
- *
  * @throws Exception\RuntimeException If unable to create the file.
+ *
+ * @return string The absolute path to the temporary file.
  */
 function create_temporary_file(?string $directory = null, ?string $prefix = null): string
 {

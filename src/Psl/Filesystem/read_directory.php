@@ -11,10 +11,10 @@ use Psl\Vec;
 /**
  * Return a vec of files and directories inside the specified directory.
  *
- * @return list<string>
- *
  * @throws Psl\Exception\InvariantViolationException If the directory specified by
- *  $directory does not exist, or is not readable.
+ *                                                   $directory does not exist, or is not readable.
+ *
+ * @return list<string>
  */
 function read_directory(string $directory): array
 {

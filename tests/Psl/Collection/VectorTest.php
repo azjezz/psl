@@ -11,16 +11,16 @@ final class VectorTest extends AbstractVectorTest
     /**
      * The Vector class used for values, keys .. etc.
      *
-     * @psalm-var class-string<Vector>
+     * @var class-string<Vector>
      */
     protected string $vectorClass = Vector::class;
 
     /**
      * @template     T
      *
-     * @psalm-param  iterable<T> $items
+     * @param iterable<T> $items
      *
-     * @psalm-return Vector<T>
+     * @return Vector<T>
      */
     protected function create(iterable $items): Vector
     {

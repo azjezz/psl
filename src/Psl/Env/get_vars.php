@@ -9,7 +9,7 @@ use function getenv;
 /**
  * Returns an iterator of (variable, value) pairs of strings, for all the environment variables of the current process.
  *
- * @psalm-return array<string, string>
+ * @return array<string, string>
  */
 function get_vars(): array
 {

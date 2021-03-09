@@ -7,11 +7,11 @@ namespace Psl\Type;
 /**
  * Finds whether a variable is an array key.
  *
- * @psalm-param mixed $key
+ * @param mixed $key
  *
  * @psalm-assert-if-true array-key $key
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Type\array_key()->matches($value)` instead.
  */

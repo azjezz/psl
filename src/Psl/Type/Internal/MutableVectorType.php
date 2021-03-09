@@ -23,12 +23,12 @@ use function is_object;
 final class MutableVectorType extends Type\Type
 {
     /**
-     * @psalm-var Type\TypeInterface<T>
+     * @var Type\TypeInterface<T>
      */
     private Type\TypeInterface $value_type;
 
     /**
-     * @psalm-param Type\TypeInterface<T> $value_type
+     * @param Type\TypeInterface<T> $value_type
      */
     public function __construct(
         Type\TypeInterface $value_type
@@ -37,11 +37,11 @@ final class MutableVectorType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return Collection\MutableVectorInterface<T>
+     * @param mixed $value
      *
      * @throws CoercionException
+     *
+     * @return Collection\MutableVectorInterface<T>
      */
     public function coerce($value): Collection\MutableVectorInterface
     {
@@ -50,16 +50,16 @@ final class MutableVectorType extends Type\Type
                 Str\format('%s<%s>', Collection\MutableVectorInterface::class, $this->value_type->toString())
             );
 
-            /** @psalm-var Type\Type<T> $value_type */
+            /** @var Type\Type<T> $value_type */
             $value_type = $this->value_type->withTrace($value_trace);
 
             /**
-             * @psalm-var list<T> $values
+             * @var list<T> $values
              */
             $values = [];
 
             /**
-             * @psalm-var T $v
+             * @var T $v
              */
             foreach ($value as $v) {
                 $values[] = $value_type->coerce($v);
@@ -73,13 +73,13 @@ final class MutableVectorType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return Collection\MutableVectorInterface<T>
-     *
-     * @psalm-assert Collection\MutableVectorInterface<T> $value
+     * @param mixed $value
      *
      * @throws AssertException
+     *
+     * @return Collection\MutableVectorInterface<T>
+     *
+     * @psalm-assert Collection\MutableVectorInterface<T> $value
      */
     public function assert($value): Collection\MutableVectorInterface
     {
@@ -88,16 +88,16 @@ final class MutableVectorType extends Type\Type
                 Str\format('%s<%s>', Collection\MutableVectorInterface::class, $this->value_type->toString())
             );
 
-            /** @psalm-var Type\Type<T> $value_type */
+            /** @var Type\Type<T> $value_type */
             $value_type = $this->value_type->withTrace($value_trace);
 
             /**
-             * @psalm-var list<T> $values
+             * @var list<T> $values
              */
             $values = [];
 
             /**
-             * @psalm-var T $v
+             * @var T $v
              */
             foreach ($value as $v) {
                 $values[] = $value_type->coerce($v);

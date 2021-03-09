@@ -10,12 +10,12 @@ use Generator;
  * Create a rewindable iterator from the given generator without
  * exhausting the generator immediately.
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param    Generator<Tk, Tv, mixed, mixed> $generator
+ * @param Generator<Tk, Tv, mixed, mixed> $generator
  *
- * @psalm-return   Iterator<Tk, Tv>
+ * @return Iterator<Tk, Tv>
  */
 function rewindable(Generator $generator): Iterator
 {

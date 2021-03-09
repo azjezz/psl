@@ -17,9 +17,9 @@ use Psl;
  *
  * @param iterable<T> $iterable
  *
- * @return list<list<T>>
- *
  * @throws Psl\Exception\InvariantViolationException If $size is negative.
+ *
+ * @return list<list<T>>
  */
 function chunk(iterable $iterable, int $size): array
 {

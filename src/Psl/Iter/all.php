@@ -18,10 +18,10 @@ namespace Psl\Iter;
  *      Iter\all(Iter\range(-5, 5), fn($i) => $i > 0)
  *      => Bool(false)
  *
- * @psalm-template  T
+ * @template  T
  *
- * @psalm-param     iterable<T>             $iterable  Iterable to check against the predicate
- * @psalm-param     (callable(T): bool)     $predicate
+ * @param iterable<T> $iterable Iterable to check against the predicate
+ * @param (callable(T): bool) $predicate
  *
  * @return bool Whether the predicate holds for all values
  */

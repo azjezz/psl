@@ -11,16 +11,15 @@ use Psl\Dict;
  * and the given list. The array will have the same ordering as the
  * `$keys` list.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param array<Tk, Tv>   $array
- * @psalm-param list<Tk>        $keys
+ * @param array<Tk, Tv> $array
+ * @param list<Tk> $keys
  *
- * @psalm-return array<Tk, Tv>
+ * @return array<Tk, Tv>
  *
  * @deprecated use `Dict\select_keys` instead.
- *
  * @see Dict\select_keys()
  */
 function select_keys(array $array, array $keys): array

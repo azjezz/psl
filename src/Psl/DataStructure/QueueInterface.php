@@ -19,7 +19,7 @@ interface QueueInterface extends Countable
     /**
      * Adds a node to the queue.
      *
-     * @psalm-param T $node
+     * @param T $node
      */
     public function enqueue($node): void;
 
@@ -27,7 +27,7 @@ interface QueueInterface extends Countable
      * Retrieves, but does not remove, the node at the head of this queue,
      * or returns null if this queue is empty.
      *
-     * @psalm-return null|T
+     * @return null|T
      */
     public function peek();
 
@@ -35,16 +35,16 @@ interface QueueInterface extends Countable
      * Retrieves and removes the node at the head of this queue,
      * or returns null if this queue is empty.
      *
-     * @psalm-return null|T
+     * @return null|T
      */
     public function pull();
 
     /**
      * Retrieves and removes the node at the head of this queue.
      *
-     * @psalm-return T
-     *
      * @throws Psl\Exception\InvariantViolationException If the Queue is invalid.
+     *
+     * @return T
      */
     public function dequeue();
 

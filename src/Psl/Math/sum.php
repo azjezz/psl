@@ -7,9 +7,9 @@ namespace Psl\Math;
 /**
  * Returns the integer sum of the values of the given iterable.
  *
- * @psalm-param list<int> $numbers
+ * @param list<int> $numbers
  *
- * @psalm-pure
+ * @pure
  */
 function sum(array $numbers): int
 {

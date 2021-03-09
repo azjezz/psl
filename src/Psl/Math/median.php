@@ -14,9 +14,9 @@ use Psl\Vec;
  */
 function median(iterable $numbers): ?float
 {
-    /** @psalm-var list<int|float> $numbers */
+    /** @var list<int|float> $numbers */
     $numbers = Vec\values($numbers);
-    /** @psalm-var list<int|float> $numbers */
+    /** @var list<int|float> $numbers */
     $numbers = Vec\sort($numbers);
     $count   = Iter\count($numbers);
     if (0 === $count) {

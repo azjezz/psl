@@ -15,10 +15,11 @@ use Psl;
  * @param T $min
  * @param T $max
  *
- * @return T
  * @throws Psl\Exception\InvariantViolationException If min is bigger than max
  *
- * @psalm-pure
+ * @return T
+ *
+ * @pure
  */
 function clamp($number, $min, $max)
 {

@@ -10,7 +10,7 @@ use function str_replace;
  * Returns the 'haystack' string with all occurrences of `$needle` replaced by
  * `$replacement`.
  *
- * @psalm-pure
+ * @pure
  */
 function replace(string $haystack, string $needle, string $replacement): string
 {

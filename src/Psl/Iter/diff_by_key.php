@@ -8,17 +8,16 @@ use Generator;
 use Psl\Dict;
 
 /**
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv>    $first
- * @psalm-param iterable<Tk, mixed> $second
- * @psalm-param iterable<Tk, mixed> ...$rest
+ * @param iterable<Tk, Tv> $first
+ * @param iterable<Tk, mixed> $second
+ * @param iterable<Tk, mixed> ...$rest
  *
- * @psalm-return Iterator<Tk, Tv>
+ * @return Iterator<Tk, Tv>
  *
  * @deprecated use `Dict\diff_by_key` instead.
- *
  * @see Dict\diff_by_key()
  */
 function diff_by_key(iterable $first, iterable $second, iterable ...$rest): Iterator
@@ -33,9 +32,9 @@ function diff_by_key(iterable $first, iterable $second, iterable ...$rest): Iter
         }
 
         // We don't use arrays here to ensure we allow the usage of non-arraykey indexes.
-        /** @psalm-var Generator<Tk, mixed, mixed, void> $second */
+        /** @var Generator<Tk, mixed, mixed, void> $second */
         $second = ((static fn (iterable $iterable): Generator => yield from $iterable)($second));
-        /** @psalm-var Generator<iterable<Tk, mixed>, mixed, mixed, void> $generator */
+        /** @var Generator<iterable<Tk, mixed>, mixed, mixed, void> $generator */
         $generator  = ((static function (Generator $second, iterable ...$rest): Generator {
             yield from $second;
             foreach ($rest as $iterable) {

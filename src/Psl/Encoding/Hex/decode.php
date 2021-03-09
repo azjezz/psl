@@ -14,7 +14,7 @@ use Psl\Str;
  *  [0-9]      [a-f]      [A-F]
  *  0x30-0x39, 0x61-0x66, 0x41-0x46
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Exception\RangeException If the hexadecimal string contains characters outside the base16 range,
  *                                  or an odd number of characters.

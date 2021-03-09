@@ -14,14 +14,13 @@ use Psl\Vec;
  *      Iter\filter_nulls([1, null, 5])
  *      => Iter(1, 5)
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param iterable<T|null> $iterable
+ * @param iterable<T|null> $iterable
  *
- * @psalm-return Iterator<int, T>
+ * @return Iterator<int, T>
  *
  * @deprecated since 1.2, use Vec\filter_nulls instead.
- *
  * @see Vec\filter_nulls()
  */
 function filter_nulls(iterable $iterable): Iterator

@@ -9,9 +9,9 @@ use Psl\Collection;
 /**
  * @template T
  *
- * @psalm-param TypeInterface<T> $value_type
+ * @param TypeInterface<T> $value_type
  *
- * @psalm-return TypeInterface<Collection\VectorInterface<T>>
+ * @return TypeInterface<Collection\VectorInterface<T>>
  */
 function vector(TypeInterface $value_type): TypeInterface
 {

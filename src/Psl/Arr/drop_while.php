@@ -17,16 +17,15 @@ use Psl\Dict;
  *      Arr\drop_while([3, 1, 4, -1, 5], fn($i) => $i > 0)
  *      => Arr(-1, 5)
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv>        $iterable Iterable to drop values from
- * @psalm-param (callable(Tv): bool)    $predicate
+ * @param iterable<Tk, Tv> $iterable Iterable to drop values from
+ * @param (callable(Tv): bool) $predicate
  *
- * @psalm-return array<Tk, Tv>
+ * @return array<Tk, Tv>
  *
  * @deprecated use `Dict\drop_while` instead.
- *
  * @see Dict\drop_while()
  */
 function drop_while(iterable $iterable, callable $predicate): array

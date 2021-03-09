@@ -25,11 +25,11 @@ use function Psl\Iter\reduce;
  *
  * @template T
  *
- * @psalm-param callable(T): T ...$stages
+ * @param callable(T): T ...$stages
  *
- * @psalm-return callable(T): T
+ * @return callable(T): T
  *
- * @psalm-pure
+ * @pure
  */
 function pipe(callable ...$stages): callable
 {
@@ -38,10 +38,10 @@ function pipe(callable ...$stages): callable
         /**
          * @template IO
          *
-         * @psalm-param IO                  $input
-         * @psalm-param (callable(IO): IO)  $next
+         * @param IO $input
+         * @param (callable(IO): IO) $next
          *
-         * @psalm-return IO
+         * @return IO
          */
         static fn ($input, callable $next) => $next($input),
         $input

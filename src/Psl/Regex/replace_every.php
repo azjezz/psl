@@ -15,14 +15,14 @@ use function preg_replace;
  * '$replacements' ( patterns ) replaced by the corresponding values.
  *
  * @param array<non-empty-string, string> $replacements A dict where the keys are regular expression patterns,
- *                                                          and the values are the replacements.
+ *                                                      and the values are the replacements.
  * @param null|positive-int $limit The maximum possible replacements for each pattern in $haystack.
  *
  * @throws Exception\InvalidPatternException If any of the patterns is invalid.
  * @throws Exception\RuntimeException In case of an unexpected error.
  * @throws Psl\Exception\InvariantViolationException If $limit is negative.
  *
- * @psalm-pure
+ * @pure
  */
 function replace_every(string $haystack, array $replacements, ?int $limit = null): string
 {

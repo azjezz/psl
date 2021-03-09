@@ -10,21 +10,21 @@ use Psl\Iter;
 use Psl\Vec;
 
 /**
- * @template   T
+ * @template T
  *
  * @implements MutableVectorInterface<T>
  */
 final class MutableVector implements MutableVectorInterface
 {
     /**
-     * @psalm-var array<int, T> $elements
+     * @var array<int, T> $elements
      */
     private array $elements = [];
 
     /**
-     * Vector constructor.
+     * MutableVector constructor.
      *
-     * @psalm-param iterable<T> $elements
+     * @param iterable<T> $elements
      */
     public function __construct(iterable $elements)
     {
@@ -34,39 +34,65 @@ final class MutableVector implements MutableVectorInterface
     }
 
     /**
-     * Returns the first value in the current collection.
+     * Create a vector from the given $elements array.
      *
-     * @psalm-return T|null - The first value in the current collection, or `null` if the
-     *           current collection is empty.
+     * @template Ts
+     *
+     * @param array<array-key, Ts> $elements
+     *
+     * @return MutableVector<Ts>
+     *
+     * @pure
+     */
+    public static function fromArray(array $elements): MutableVector
+    {
+        /** @psalm-suppress ImpureMethodCall - conditionally pure */
+        return new self($elements);
+    }
+
+    /**
+     * Returns the first value in the current `MutableVector`.
+     *
+     * @return T|null The first value in the current `MutableVector`, or `null` if the
+     *                current `MutableVector` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function first()
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\first($this->elements);
     }
 
     /**
-     * Returns the last value in the current collection.
+     * Returns the last value in the current `MutableVector`.
      *
-     * @psalm-return T|null - The last value in the current collection, or `null` if the
-     *           current collection is empty.
+     * @return T|null The last value in the current `MutableVector`, or `null` if the
+     *                current `MutableVector` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function last()
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\last($this->elements);
     }
 
     /**
-     * Retrieve an external iterator
+     * Retrieve an external iterator.
      *
-     * @psalm-return Iter\Iterator<int, T>
+     * @return Iter\Iterator<int, T>
      */
     public function getIterator(): Iter\Iterator
     {
+        /** @psalm-suppress ImpureMethodCall - conditionally pure */
         return Iter\Iterator::create($this->elements);
     }
 
     /**
      * Is the vector empty?
+     *
+     * @psalm-mutation-free
      */
     public function isEmpty(): bool
     {
@@ -74,27 +100,35 @@ final class MutableVector implements MutableVectorInterface
     }
 
     /**
-     * Get the number of items in the current vector.
+     * Get the number of items in the current `MutableVector`.
+     *
+     * @psalm-mutation-free
      */
     public function count(): int
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\count($this->elements);
     }
 
     /**
-     * Get an array copy of the current vector.
+     * Get an array copy of the current `MutableVector`.
      *
-     * @psalm-return list<T>
+     * @return list<T>
+     *
+     * @psalm-mutation-free
      */
     public function toArray(): array
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Vec\values($this->elements);
     }
 
     /**
-     * Get an array copy of the current vector.
+     * Get an array copy of the current `MutableVector`.
      *
-     * @psalm-return list<T>
+     * @return list<T>
+     *
+     * @psalm-mutation-free
      */
     public function jsonSerialize(): array
     {
@@ -102,13 +136,15 @@ final class MutableVector implements MutableVectorInterface
     }
 
     /**
-     * Returns the value at the specified key in the current vector.
+     * Returns the value at the specified key in the current `MutableVector`.
      *
-     * @psalm-param  int $k
-     *
-     * @psalm-return T
+     * @param int $k
      *
      * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
+     *
+     * @return T
+     *
+     * @psalm-mutation-free
      */
     public function at($k)
     {
@@ -118,21 +154,26 @@ final class MutableVector implements MutableVectorInterface
     }
 
     /**
-     * Determines if the specified key is in the current vector.
+     * Determines if the specified key is in the current `MutableVector`.
      *
-     * @psalm-param int $k
+     * @param int $k
+     *
+     * @psalm-mutation-free
      */
     public function contains($k): bool
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\contains_key($this->elements, $k);
     }
 
     /**
-     * Returns the value at the specified key in the current vector.
+     * Returns the value at the specified key in the current `MutableVector`.
      *
-     * @psalm-param  int $k
+     * @param int $k
      *
-     * @psalm-return T|null
+     * @return T|null
+     *
+     * @psalm-mutation-free
      */
     public function get($k)
     {
@@ -140,24 +181,30 @@ final class MutableVector implements MutableVectorInterface
     }
 
     /**
-     * Returns the first key in the current `AbstractVector`.
+     * Returns the first key in the current `MutableVector`.
      *
-     * @psalm-return int|null - The first key in the current `AbstractVector`, or `null` if the
-     *                  current `AbstractVector` is empty
+     * @return int|null The first key in the current `MutableVector`, or `null` if the
+     *                  current `MutableVector` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function firstKey(): ?int
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\first_key($this->elements);
     }
 
     /**
-     * Returns the last key in the current `AbstractVector`.
+     * Returns the last key in the current `MutableVector`.
      *
-     * @psalm-return int|null - The last key in the current `AbstractVector`, or `null` if the
-     *                  current `AbstractVector` is empty
+     * @return int|null The last key in the current `MutableVector`, or `null` if the
+     *                  current `MutableVector` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function lastKey(): ?int
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\last_key($this->elements);
     }
 
@@ -166,10 +213,12 @@ final class MutableVector implements MutableVectorInterface
      *
      * If no element matches the search value, this function returns null.
      *
-     * @psalm-param  T $search_value - The value that will be search for in the current
+     * @param T $search_value The value that will be search for in the current
      *                        collection.
      *
-     * @psalm-return int|null - The key (index) where that value is found; null if it is not found
+     * @return int|null The key (index) where that value is found; null if it is not found.
+     *
+     * @psalm-mutation-free
      */
     public function linearSearch($search_value): ?int
     {
@@ -192,12 +241,12 @@ final class MutableVector implements MutableVectorInterface
      * It returns the current vector, meaning changes made to the current
      * vector will be reflected in the returned vector.
      *
-     * @psalm-param  int $k - The key to which we will set the value
-     * @psalm-param  T   $v - The value to set
-     *
-     * @psalm-return MutableVector<T> - Returns itself
+     * @param int $k The key to which we will set the value
+     * @param T $v The value to set
      *
      * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
+     *
+     * @return MutableVector<T> returns itself
      */
     public function set($k, $v): MutableVector
     {
@@ -219,9 +268,9 @@ final class MutableVector implements MutableVectorInterface
      * It the current vector, meaning changes made to the current vector
      * will be reflected in the returned vector.
      *
-     * @psalm-param  iterable<int, T> $iterable - The `iterable` with the new values to set
+     * @param iterable<int, T> $iterable The `iterable` with the new values to set
      *
-     * @psalm-return MutableVector<T> - Returns itself
+     * @return MutableVector<T> returns itself
      */
     public function setAll(iterable $iterable): MutableVector
     {
@@ -245,9 +294,9 @@ final class MutableVector implements MutableVectorInterface
      * That is, values with keys $k + 1 to n - 1 will be given new keys $k to n - 2, where n is
      * the length of the current MutableVector before the call to remove().
      *
-     * @psalm-param  int $k - The key to remove
+     * @param int $k The key to remove.
      *
-     * @psalm-return MutableVector<T> - Returns itself
+     * @return MutableVector<T> returns itself.
      */
     public function remove($k): MutableVector
     {
@@ -262,7 +311,7 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Removes all items from the vector.
      *
-     * @psalm-return MutableVector<T> - Returns itself
+     * @return MutableVector<T> Returns itself
      */
     public function clear(): MutableVector
     {
@@ -274,9 +323,9 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Add a value to the vector and return the vector itself.
      *
-     * @psalm-param  T $v - The value to add
+     * @param T $v The value to add.
      *
-     * @psalm-return MutableVector<T> - Returns itself
+     * @return MutableVector<T> Returns itself.
      */
     public function add($v): MutableVector
     {
@@ -288,9 +337,9 @@ final class MutableVector implements MutableVectorInterface
     /**
      * For every element in the provided iterable, add the value into the current vector.
      *
-     * @psalm-param  iterable<T> $iterable - The `iterable` with the new values to add
+     * @param iterable<T> $iterable The `iterable` with the new values to add
      *
-     * @psalm-return MutableVector<T> - Returns itself
+     * @return MutableVector<T> returns itself.
      */
     public function addAll(iterable $iterable): MutableVector
     {
@@ -305,21 +354,27 @@ final class MutableVector implements MutableVectorInterface
      * Returns a `MutableVector` containing the values of the current
      * `MutableVector`.
      *
-     * @psalm-return MutableVector<T>
+     * @return MutableVector<T>
+     *
+     * @psalm-mutation-free
      */
     public function values(): MutableVector
     {
-        return new MutableVector(Vec\values($this->elements));
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
+        return MutableVector::fromArray(Vec\values($this->elements));
     }
 
     /**
      * Returns a `MutableVector` containing the keys of the current `MutableVector`.
      *
-     * @psalm-return MutableVector<int>
+     * @return MutableVector<int>
+     *
+     * @psalm-mutation-free
      */
     public function keys(): MutableVector
     {
-        return new MutableVector(Vec\keys($this->elements));
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
+        return MutableVector::fromArray(Vec\keys($this->elements));
     }
 
     /**
@@ -332,11 +387,11 @@ final class MutableVector implements MutableVectorInterface
      * The keys associated with the current `MutableVector` remain unchanged in the
      * returned `MutableVector`.
      *
-     * @psalm-param (callable(T): bool) $fn - The callback containing the condition to apply to the current
-     *                                 `MutableVector` values
+     * @param (callable(T): bool) $fn The callback containing the condition to apply to the current
+     *                                `MutableVector` values.
      *
-     * @psalm-return MutableVector<T> - a MutableVector containing the values after a user-specified condition
-     *                        is applied
+     * @return MutableVector<T> A `MutableVector` containing the values after a user-specified condition
+     *                          is applied.
      */
     public function filter(callable $fn): MutableVector
     {
@@ -354,12 +409,11 @@ final class MutableVector implements MutableVectorInterface
      * The keys associated with the current `MutableVector` remain unchanged in the
      * returned `MutableVector`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (callable(int, T): bool) $fn - The callback containing the condition to apply to the current
-     *                                     `MutableVector` keys and values
+     * @param (callable(int, T): bool) $fn The callback containing the condition to apply to the current
+     *                                     `MutableVector` keys and values.
      *
-     * @psalm-return MutableVector<T> - a `MutableVector` containing the values after a user-specified
-     *                        condition is applied to the keys and values of the current
-     *                        `MutableVector`
+     * @return MutableVector<T> A `MutableVector` containing the values after a user-specified
+     *                          condition is applied to the keys and values of the current `MutableVector`.
      */
     public function filterWithKey(callable $fn): MutableVector
     {
@@ -376,13 +430,13 @@ final class MutableVector implements MutableVectorInterface
      * The keys will remain unchanged from the current `MutableVector` to the
      * returned `MutableVector`.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param (callable(T): Tu) $fn - The callback containing the operation to apply to the current
-     *                               `MutableVector` values
+     * @param (callable(T): Tu) $fn The callback containing the operation to apply to the current
+     *                              `MutableVector` values.
      *
-     * @psalm-return   MutableVector<Tu> - a `MutableVector` containing key/value pairs after a user-specified
-     *                        operation is applied
+     * @return MutableVector<Tu> A `MutableVector` containing key/value pairs after a user-specified
+     *                           operation is applied.
      */
     public function map(callable $fn): MutableVector
     {
@@ -400,14 +454,13 @@ final class MutableVector implements MutableVectorInterface
      * The keys will remain unchanged from this `MutableVector` to the returned
      * `MutableVector`. The keys are only used to help in the mapping operation.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param (callable(int, T): Tu) $fn - The callback containing the operation to apply to the current
+     * @param (callable(int, T): Tu) $fn The callback containing the operation to apply to the current
      *                                   `MutableVector` keys and values
      *
-     * @psalm-return   MutableVector<Tu> - a `MutableVector` containing the values after a user-specified
-     *                        operation on the current `MutableVector`'s keys and values is
-     *                        applied
+     * @return MutableVector<Tu> A `MutableVector` containing the values after a user-specified
+     *                           operation on the current `MutableVector`'s keys and values is applied.
      */
     public function mapWithKey(callable $fn): MutableVector
     {
@@ -423,17 +476,20 @@ final class MutableVector implements MutableVectorInterface
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param    iterable<Tu> $iterable - The `iterable` to use to combine with the
-     *                       elements of this `VectorInterface`.
+     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
+     *                               elements of this `MutableVector`.
      *
-     * @psalm-return   MutableVector<array{0: T, 1: Tu}> - The `MutableVector` that combines the values of the current
-     *           `MutableVector` with the provided `iterable`.
+     * @return MutableVector<array{0: T, 1: Tu}> The `MutableVector` that combines the values of the current
+     *                                `MutableVector` with the provided `iterable`.
+     *
+     * @psalm-mutation-free
      */
     public function zip(iterable $iterable): MutableVector
     {
-        return new MutableVector(Vec\zip($this, $iterable));
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
+        return MutableVector::fromArray(Vec\zip($this, $iterable));
     }
 
     /**
@@ -445,17 +501,19 @@ final class MutableVector implements MutableVectorInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @psalm-param $n - The last element that will be included in the returned
-     *             `MutableVector`
-     *
-     * @psalm-return MutableVector<T> - A `MutableVector` that is a proper subset of the current
-     *           `MutableVector` up to `n` elements.
+     * @param int $n The last element that will be included in the returned
+     *               `MutableVector`.
      *
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
+     *
+     * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
+     *                          `MutableVector` up to `n` elements.
+     *
+     * @psalm-mutation-free
      */
     public function take(int $n): MutableVector
     {
-        return new MutableVector(Dict\take($this->elements, $n));
+        return $this->slice(0, $n);
     }
 
     /**
@@ -466,11 +524,11 @@ final class MutableVector implements MutableVectorInterface
      * The returned `MutableVector` will always be a proper subset of the current
      * `MutableVector`.
      *
-     * @psalm-param (callable(T): bool) $fn - The callback that is used to determine the stopping
-     *              condition.
+     * @param (callable(T): bool) $fn The callback that is used to determine the stopping
+     *                                condition.
      *
-     * @psalm-return MutableVector<T> - A `MutableVector` that is a proper subset of the current
-     *           `MutableVector` up until the callback returns `false`.
+     * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
+     *                          `MutableVector` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): MutableVector
     {
@@ -486,18 +544,19 @@ final class MutableVector implements MutableVectorInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @psalm-param  int $n - The last element to be skipped; the $n+1 element will be the
-     *             first one in the returned `MutableVector`.
-     *
-     * @psalm-return MutableVector<T> - A `MutableVector` that is a proper subset of the current
-     *           `MutableVector` containing values after the specified `n`-th
-     *           element.
+     * @param int $n The last element to be skipped; the $n+1 element will be the
+     *               first one in the returned `MutableVector`.
      *
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
+     *
+     * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
+     *                          `MutableVector` containing values after the specified `n`-th element.
+     *
+     * @psalm-mutation-free
      */
     public function drop(int $n): MutableVector
     {
-        return new MutableVector(Dict\drop($this->elements, $n));
+        return $this->slice($n);
     }
 
     /**
@@ -508,11 +567,11 @@ final class MutableVector implements MutableVectorInterface
      * The returned `MutableVector` will always be a proper subset of the current
      * `MutableVector`.
      *
-     * @psalm-param (callable(T): bool) $fn - The callback used to determine the starting element for the
-     *              returned `MutableVector`.
+     * @param (callable(T): bool) $fn The callback used to determine the starting element for the
+     *                                returned `MutableVector`.
      *
-     * @psalm-return MutableVector<T> - A `MutableVector` that is a proper subset of the current
-     *           `MutableVector` starting after the callback returns `true`.
+     * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
+     *                          `MutableVector` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): MutableVector
     {
@@ -530,18 +589,21 @@ final class MutableVector implements MutableVectorInterface
      * The returned `MutableVector` will always be a proper subset of this
      * `MutableVector`.
      *
-     * @psalm-param  int $start - The starting key of this Vector to begin the returned
-     *                   `MutableVector`
-     * @psalm-param  int $len   - The length of the returned `MutableVector`
-     *
-     * @psalm-return MutableVector<T> - A `MutableVector` that is a proper subset of the current
-     *           `MutableVector` starting at `$start` up to but not including the
-     *           element `$start + $len`.
+     * @param int $start The starting key of this Vector to begin the returned
+     *                   `MutableVector`.
+     * @param null|int $length The length of the returned `MutableVector`
      *
      * @throws Psl\Exception\InvariantViolationException If $start or $len are negative.
+     *
+     * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
+     *                          `MutableVector` starting at `$start` up to but not including
+     *                          the element `$start + $length`.
+     *
+     * @psalm-mutation-free
      */
-    public function slice(int $start, int $len): MutableVector
+    public function slice(int $start, ?int $length = null): MutableVector
     {
-        return new MutableVector(Dict\slice($this->elements, $start, $len));
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
+        return MutableVector::fromArray(Dict\slice($this->elements, $start, $length));
     }
 }

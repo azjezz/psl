@@ -11,7 +11,7 @@ use function strip_tags as php_strip_tags;
  *
  * @param list<string> $allowed_tags tags which should not be stripped.
  *
- * @psalm-pure
+ * @pure
  */
 function strip_tags(string $html, array $allowed_tags = []): string
 {

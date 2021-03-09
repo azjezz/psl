@@ -11,7 +11,7 @@ use function log as php_log;
 /**
  * Returns the logarithm base of the given number.
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $num or $base are negative, or $base is equal to 1.0.
  */

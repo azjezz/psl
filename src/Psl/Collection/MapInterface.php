@@ -16,14 +16,18 @@ interface MapInterface extends AccessibleCollectionInterface
      * Returns a `VectorInterface` containing the values of the current
      * `MapInterface`.
      *
-     * @psalm-return VectorInterface<Tv>
+     * @return VectorInterface<Tv>
+     *
+     * @psalm-mutation-free
      */
     public function values(): VectorInterface;
 
     /**
      * Returns a `VectorInterface` containing the keys of the current `MapInterface`.
      *
-     * @psalm-return VectorInterface<Tk>
+     * @return VectorInterface<Tk>
+     *
+     * @psalm-mutation-free
      */
     public function keys(): VectorInterface;
 
@@ -37,11 +41,11 @@ interface MapInterface extends AccessibleCollectionInterface
      * The keys associated with the current `MapInterface` remain unchanged in the
      * returned `MapInterface`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback containing the condition to apply to the current
-     *                                 `MapInterface` values
+     * @param (callable(Tv): bool) $fn The callback containing the condition to apply to the current
+     *                                 `MapInterface` values.
      *
-     * @psalm-return MapInterface<Tk, Tv> - a MapInterface containing the values after a user-specified condition
-     *                        is applied
+     * @return MapInterface<Tk, Tv> A MapInterface containing the values after a user-specified condition
+     *                          is applied.
      */
     public function filter(callable $fn): MapInterface;
 
@@ -56,12 +60,11 @@ interface MapInterface extends AccessibleCollectionInterface
      * The keys associated with the current `MapInterface` remain unchanged in the
      * returned `MapInterface`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
-     *                                     `MapInterface` keys and values
+     * @param (callable(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
+     *                                     `MapInterface` keys and values.
      *
-     * @psalm-return MapInterface<Tk, Tv> - a `MapInterface` containing the values after a user-specified
-     *                        condition is applied to the keys and values of the current
-     *                        `MapInterface`
+     * @return MapInterface<Tk, Tv> A `MapInterface` containing the values after a user-specified
+     *                          condition is applied to the keys and values of the current `MapInterface`.
      */
     public function filterWithKey(callable $fn): MapInterface;
 
@@ -75,13 +78,13 @@ interface MapInterface extends AccessibleCollectionInterface
      * The keys will remain unchanged from the current `MapInterface` to the
      * returned `MapInterface`.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
-     *                               `MapInterface` values
+     * @param (callable(Tv): Tu) $fn The callback containing the operation to apply to the current
+     *                               `MapInterface` values.
      *
-     * @psalm-return MapInterface<Tk, Tu> - a `MapInterface` containing key/value pairs after a user-specified
-     *                        operation is applied
+     * @return MapInterface<Tk, Tu> A `MapInterface` containing key/value pairs after a user-specified
+     *                          operation is applied.
      */
     public function map(callable $fn): MapInterface;
 
@@ -96,46 +99,53 @@ interface MapInterface extends AccessibleCollectionInterface
      * The keys will remain unchanged from this `MapInterface` to the returned
      * `MapInterface`. The keys are only used to help in the mapping operation.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
-     *                                   `MapInterface` keys and values
+     * @param (callable(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
+     *                                   `MapInterface` keys and values.
      *
-     * @psalm-return MapInterface<Tk, Tu> - a `MapInterface` containing the values after a user-specified
-     *                        operation on the current `MapInterface`'s keys and values is
-     *                        applied
+     * @return MapInterface<Tk, Tu> A `MapInterface` containing the values after a user-specified
+     *                          operation on the current `MapInterface`'s keys and values is applied.
      */
     public function mapWithKey(callable $fn): MapInterface;
 
     /**
      * Returns the first value in the current `MapInterface`.
      *
-     * @psalm-return Tv|null - The first value in the current `MapInterface`, or `null` if the
-     *           current `MapInterface` is empty.
+     * @return Tv|null The first value in the current `MapInterface`, or `null` if the
+     *                 current `MapInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function first();
 
     /**
      * Returns the first key in the current `MapInterface`.
      *
-     * @psalm-return Tk|null - The first key in the current `MapInterface`, or `null` if the
-     *                  current `MapInterface` is empty
+     * @return Tk|null The first key in the current `MapInterface`, or `null` if the
+     *                 current `MapInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function firstKey();
 
     /**
      * Returns the last value in the current `MapInterface`.
      *
-     * @psalm-return Tv|null - The last value in the current `MapInterface`, or `null` if the
-     *           current `MapInterface` is empty.
+     * @return Tv|null The last value in the current `MapInterface`, or `null` if the
+     *                 current `MapInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function last();
 
     /**
      * Returns the last key in the current `MapInterface`.
      *
-     * @psalm-return Tk|null - The last key in the current `MapInterface`, or `null` if the
-     *                  current `MapInterface` is empty
+     * @return Tk|null The last key in the current `MapInterface`, or `null` if the
+     *                 current `MapInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function lastKey();
 
@@ -144,10 +154,12 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * If no element matches the search value, this function returns null.
      *
-     * @psalm-param Tv $search_value - The value that will be search for in the current
-     *                        `MapInterface`.
+     * @param Tv $search_value The value that will be search for in the current
+     *                         `MapInterface`.
      *
-     * @psalm-return Tk|null - The key (index) where that value is found; null if it is not found
+     * @return Tk|null The key (index) where that value is found; null if it is not found
+     *
+     * @psalm-mutation-free
      */
     public function linearSearch($search_value);
 
@@ -160,13 +172,15 @@ interface MapInterface extends AccessibleCollectionInterface
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param iterable<Tu> $iterable - The `iterable` to use to combine with the
-     *                       elements of this `MapInterface`.
+     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
+     *                               elements of this `MapInterface`.
      *
-     * @psalm-return MapInterface<Tk, array{0: Tv, 1: Tu}> - The `MapInterface` that combines the values of the current
-     *           `MapInterface` with the provided `iterable`.
+     * @return MapInterface<Tk, array{0: Tv, 1: Tu}> - The `MapInterface` that combines the values of the current
+     *                          `MapInterface` with the provided `iterable`.
+     *
+     * @psalm-mutation-free
      */
     public function zip(iterable $iterable): MapInterface;
 
@@ -179,11 +193,13 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @psalm-param $n - The last element that will be included in the returned
-     *             `MapInterface`
+     * @param int $n The last element that will be included in the returned
+     *               `MapInterface`.
      *
-     * @psalm-return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
-     *           `MapInterface` up to `n` elements.
+     * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
+     *                          `MapInterface` up to `n` elements.
+     *
+     * @psalm-mutation-free
      */
     public function take(int $n): MapInterface;
 
@@ -195,11 +211,11 @@ interface MapInterface extends AccessibleCollectionInterface
      * The returned `MapInterface` will always be a proper subset of the current
      * `MapInterface`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback that is used to determine the stopping
-     *              condition.
+     * @param (callable(Tv): bool) $fn The callback that is used to determine the stopping
+     *                                 condition.
      *
-     * @psalm-return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
-     *           `MapInterface` up until the callback returns `false`.
+     * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
+     *                          `MapInterface` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): MapInterface;
 
@@ -212,12 +228,13 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @psalm-param int $n - The last element to be skipped; the $n+1 element will be the
-     *             first one in the returned `MapInterface`.
+     * @param int $n - The last element to be skipped; the $n+1 element will be the
+     *               first one in the returned `MapInterface`.
      *
-     * @psalm-return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
-     *           `MapInterface` containing values after the specified `n`-th
-     *           element.
+     * @return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
+     *                          `MapInterface` containing values after the specified `n`-th element.
+     *
+     * @psalm-mutation-free
      */
     public function drop(int $n): MapInterface;
 
@@ -229,11 +246,11 @@ interface MapInterface extends AccessibleCollectionInterface
      * The returned `MapInterface` will always be a proper subset of the current
      * `MapInterface`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback used to determine the starting element for the
-     *              returned `MapInterface`.
+     * @param (callable(Tv): bool) $fn The callback used to determine the starting element for the
+     *                                 returned `MapInterface`.
      *
-     * @psalm-return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
-     *           `MapInterface` starting after the callback returns `true`.
+     * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
+     *                          `MapInterface` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): MapInterface;
 
@@ -248,13 +265,15 @@ interface MapInterface extends AccessibleCollectionInterface
      * The returned `MapInterface` will always be a proper subset of this
      * `MapInterface`.
      *
-     * @psalm-param int $start - The starting key of this Vector to begin the returned
+     * @param int $start The starting key of this Vector to begin the returned
      *                   `MapInterface`
-     * @psalm-param int $len   - The length of the returned `MapInterface`
+     * @param int $length The length of the returned `MapInterface`
      *
-     * @psalm-return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
-     *           `MapInterface` starting at `$start` up to but not including the
-     *           element `$start + $len`.
+     * @return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
+     *                          `MapInterface` starting at `$start` up to but not including
+     *                          the element `$start + $length`.
+     *
+     * @psalm-mutation-free
      */
-    public function slice(int $start, int $len): MapInterface;
+    public function slice(int $start, int $length): MapInterface;
 }

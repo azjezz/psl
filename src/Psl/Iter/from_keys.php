@@ -11,16 +11,15 @@ use Psl\Dict;
  * Returns an iterator where each value is the result of calling the given
  * function on the corresponding key.
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param iterable<Tk>        $keys
- * @psalm-param (callable(Tk): Tv)  $value_func
+ * @param iterable<Tk> $keys
+ * @param (callable(Tk): Tv) $value_func
  *
- * @psalm-return Iterator<Tk, Tv>
+ * @return Iterator<Tk, Tv>
  *
  * @deprecated use `Dict\from_keys` instead.
- *
  * @see Dict\from_keys()
  */
 function from_keys(iterable $keys, callable $value_func): Iterator

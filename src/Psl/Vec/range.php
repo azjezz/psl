@@ -36,9 +36,9 @@ use Psl;
  * @param T $end
  * @param T|null $step
  *
- * @return list<T>
- *
  * @throws Psl\Exception\InvariantViolationException If $start < $end, and $step is negative.
+ *
+ * @return list<T>
  *
  * @psalm-suppress InvalidReturnType
  * @psalm-suppress InvalidReturnStatement
@@ -55,7 +55,7 @@ function range($start, $end, $step = null): array
 
     if ($start < $end) {
         if (null === $step) {
-            /** @psalm-var T $step */
+            /** @var T $step */
             $step = 1;
         }
 
@@ -73,7 +73,7 @@ function range($start, $end, $step = null): array
     }
 
     if (null === $step) {
-        /** @psalm-var T $step */
+        /** @var T $step */
         $step = -1;
     }
 

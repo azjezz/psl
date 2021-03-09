@@ -11,7 +11,7 @@ use Psl;
  *
  * @throws Psl\Exception\InvariantViolationException If the given algorithm is unsupported.
  *
- * @psalm-pure
+ * @pure
  */
 function hash(string $data, string $algorithm): string
 {

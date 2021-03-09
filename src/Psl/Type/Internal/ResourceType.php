@@ -26,11 +26,11 @@ final class ResourceType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return resource
+     * @param mixed $value
      *
      * @throws CoercionException
+     *
+     * @return resource
      */
     public function coerce($value)
     {
@@ -49,13 +49,13 @@ final class ResourceType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return resource
-     *
-     * @psalm-assert resource $value
+     * @param mixed $value
      *
      * @throws AssertException
+     *
+     * @return resource
+     *
+     * @psalm-assert resource $value
      */
     public function assert($value)
     {

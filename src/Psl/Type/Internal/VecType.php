@@ -21,12 +21,12 @@ use function is_iterable;
 final class VecType extends Type\Type
 {
     /**
-     * @psalm-var Type\TypeInterface<Tv>
+     * @var Type\TypeInterface<Tv>
      */
     private Type\TypeInterface $value_type;
 
     /**
-     * @psalm-param Type\TypeInterface<Tv> $value_type
+     * @param Type\TypeInterface<Tv> $value_type
      */
     public function __construct(
         Type\TypeInterface $value_type
@@ -66,11 +66,11 @@ final class VecType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return list<Tv>
+     * @param mixed $value
      *
      * @throws CoercionException
+     *
+     * @return list<Tv>
      */
     public function coerce($value): iterable
     {
@@ -78,15 +78,15 @@ final class VecType extends Type\Type
             $value_trace = $this->getTrace()
                 ->withFrame(Str\format('list<%s>', $this->value_type->toString()));
 
-            /** @psalm-var Type\Type<Tv> $value_type */
+            /** @var Type\Type<Tv> $value_type */
             $value_type = $this->value_type->withTrace($value_trace);
 
             /**
-             * @psalm-var list<Tv> $entries
+             * @var list<Tv> $entries
              */
             $result = [];
 
-            /** @psalm-var Tv $v */
+            /** @var Tv $v */
             foreach ($value as $v) {
                 $result[] = $value_type->coerce($v);
             }
@@ -98,13 +98,13 @@ final class VecType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return list<Tv>
-     *
-     * @psalm-assert list<Tv> $value
+     * @param mixed $value
      *
      * @throws AssertException
+     *
+     * @return list<Tv>
+     *
+     * @psalm-assert list<Tv> $value
      */
     public function assert($value): array
     {
@@ -112,7 +112,7 @@ final class VecType extends Type\Type
             $value_trace = $this->getTrace()
                 ->withFrame(Str\format('list<%s>', $this->value_type->toString()));
 
-            /** @psalm-var Type\Type<Tv> $value_type */
+            /** @var Type\Type<Tv> $value_type */
             $value_type = $this->value_type->withTrace($value_trace);
 
             $result = [];
@@ -120,7 +120,7 @@ final class VecType extends Type\Type
 
             /**
              * @var int $k
-             * @var Tv  $v
+             * @var Tv $v
              */
             foreach ($value as $k => $v) {
                 if ($index !== $k) {

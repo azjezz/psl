@@ -12,7 +12,7 @@ use function trim as php_trim;
  * If the optional character mask isn't provided, the following characters will
  * be stripped: space, tab, newline, carriage return, NUL byte, vertical tab.
  *
- * @psalm-pure
+ * @pure
  */
 function trim(string $string, ?string $char_mask = null): string
 {

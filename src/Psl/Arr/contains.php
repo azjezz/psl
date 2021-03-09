@@ -10,16 +10,15 @@ use Psl\Iter;
  * Returns true if the given array contains the value. Strict equality is
  * used.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param array<Tk, Tv>   $array
- * @psalm-param Tv              $value
+ * @param array<Tk, Tv> $array
+ * @param Tv $value
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Iter\contains` instead.
- *
  * @see Iter\contains()
  */
 function contains(array $array, $value): bool

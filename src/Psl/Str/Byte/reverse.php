@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Str\Byte;
 
 /**
- * @psalm-pure
+ * @pure
  */
 function reverse(string $string): string
 {

@@ -11,16 +11,15 @@ use function array_key_first;
 /**
  * Get the first key of an array, if the array is empty, null will be returned.
  *
- * @psalm-template Tk of array-key
+ * @template Tk of array-key
  *
- * @psalm-param array<Tk, mixed> $array
+ * @param array<Tk, mixed> $array
  *
- * @psalm-return Tk|null
+ * @return Tk|null
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Iter\first_key` instead.
- *
  * @see Iter\first_key()
  */
 function first_key(array $array)

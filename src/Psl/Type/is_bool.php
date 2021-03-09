@@ -9,11 +9,11 @@ use function is_bool as php_is_bool;
 /**
  * Finds whether a variable is a boolean.
  *
- * @psalm-param mixed $var
+ * @param mixed $var
  *
  * @psalm-assert-if-true bool $var
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Type\bool()->matches($value)` instead.
  */

@@ -14,8 +14,8 @@ use function random_bytes;
 /**
  * Returns a cryptographically secure random bytes.
  *
- * @throws Exception\InsufficientEntropyException       If it was not possible to gather sufficient entropy.
- * @throws Psl\Exception\InvariantViolationException    If $length is negative.
+ * @throws Exception\InsufficientEntropyException If it was not possible to gather sufficient entropy.
+ * @throws Psl\Exception\InvariantViolationException If $length is negative.
  */
 function bytes(int $length): string
 {

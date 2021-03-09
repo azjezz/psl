@@ -10,7 +10,7 @@ use function str_ireplace;
  * Returns the 'haystack' string with all occurrences of `$needle` replaced by
  * `$replacement` (case-insensitive).
  *
- * @psalm-pure
+ * @pure
  */
 function replace_ci(string $haystack, string $needle, string $replacement): string
 {

@@ -9,6 +9,8 @@ use Psl\Dict;
 use Psl\Iter;
 use Psl\Vec;
 
+use function count;
+
 /**
  * @template Tk of array-key
  * @template Tv
@@ -18,7 +20,7 @@ use Psl\Vec;
 final class Map implements MapInterface
 {
     /**
-     * @psalm-var array<Tk, Tv> $elements
+     * @var array<Tk, Tv> $elements
      *
      * @psalm-readonly
      */
@@ -27,7 +29,7 @@ final class Map implements MapInterface
     /**
      * AbstractMap constructor.
      *
-     * @psalm-param iterable<Tk, Tv> $elements
+     * @param iterable<Tk, Tv> $elements
      */
     public function __construct(iterable $elements)
     {
@@ -35,46 +37,74 @@ final class Map implements MapInterface
     }
 
     /**
+     * @template Tsk of array-key
+     * @template Tsv
+     *
+     * @param array<Tsk, Tsv> $elements
+     *
+     * @return Map<Tsk, Tsv>
+     *
+     * @pure
+     */
+    public static function fromArray(array $elements): Map
+    {
+        /** @psalm-suppress ImpureMethodCall - conditionally pure */
+        return new self($elements);
+    }
+
+    /**
      * Returns the first value in the current collection.
      *
-     * @psalm-return Tv|null - The first value in the current collection, or `null` if the
-     *           current collection is empty.
+     * @return Tv|null The first value in the current collection, or `null` if the
+     *                 current collection is empty.
+     *
+     * @psalm-mutation-free
      */
     public function first()
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\first($this->elements);
     }
 
     /**
      * Returns the first key in the current collection.
      *
-     * @psalm-return Tk|null - The first key in the current collection, or `null` if the
-     *                  current collection is empty.
+     * @return Tk|null The first key in the current collection, or `null` if the
+     *                 current collection is empty.
+     *
+     * @psalm-mutation-free
      */
     public function firstKey()
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\first_key($this->elements);
     }
 
     /**
      * Returns the last value in the current collection.
      *
-     * @psalm-return Tv|null - The last value in the current collection, or `null` if the
-     *           current collection is empty.
+     * @return Tv|null The last value in the current collection, or `null` if the
+     *                 current collection is empty.
+     *
+     * @psalm-mutation-free
      */
     public function last()
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\last($this->elements);
     }
 
     /**
      * Returns the last key in the current collection.
      *
-     * @psalm-return Tk|null - The last key in the current collection, or `null` if the
-     *                  current collection is empty.
+     * @return Tk|null The last key in the current collection, or `null` if the
+     *                 current collection is empty.
+     *
+     * @psalm-mutation-free
      */
     public function lastKey()
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\last_key($this->elements);
     }
 
@@ -83,10 +113,12 @@ final class Map implements MapInterface
      *
      * If no element matches the search value, this function returns null.
      *
-     * @psalm-param  Tv $search_value - The value that will be search for in the current
-     *                        collection.
+     * @param Tv $search_value The value that will be search for in the current
+     *                         collection.
      *
-     * @psalm-return Tk|null - The key (index) where that value is found; null if it is not found
+     * @return Tk|null The key (index) where that value is found; null if it is not found
+     *
+     * @psalm-mutation-free
      */
     public function linearSearch($search_value)
     {
@@ -100,9 +132,9 @@ final class Map implements MapInterface
     }
 
     /**
-     * Retrieve an external iterator
+     * Retrieve an external iterator.
      *
-     * @psalm-return Iter\Iterator<Tk, Tv>
+     * @return Iter\Iterator<Tk, Tv>
      */
     public function getIterator(): Iter\Iterator
     {
@@ -111,6 +143,8 @@ final class Map implements MapInterface
 
     /**
      * Is the map empty?
+     *
+     * @psalm-mutation-free
      */
     public function isEmpty(): bool
     {
@@ -119,16 +153,21 @@ final class Map implements MapInterface
 
     /**
      * Get the number of items in the current map.
+     *
+     * @psalm-mutation-free
      */
     public function count(): int
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\count($this->elements);
     }
 
     /**
      * Get an array copy of the current map.
      *
-     * @psalm-return array<Tk, Tv>
+     * @return array<Tk, Tv>
+     *
+     * @psalm-mutation-free
      */
     public function toArray(): array
     {
@@ -138,7 +177,9 @@ final class Map implements MapInterface
     /**
      * Get an array copy of the current map.
      *
-     * @psalm-return array<Tk, Tv>
+     * @return array<Tk, Tv>
+     *
+     * @psalm-mutation-free
      */
     public function jsonSerialize(): array
     {
@@ -148,11 +189,13 @@ final class Map implements MapInterface
     /**
      * Returns the value at the specified key in the current map.
      *
-     * @psalm-param  Tk $k
-     *
-     * @psalm-return Tv
+     * @param Tk $k
      *
      * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
+     *
+     * @return Tv
+     *
+     * @psalm-mutation-free
      */
     public function at($k)
     {
@@ -164,19 +207,24 @@ final class Map implements MapInterface
     /**
      * Determines if the specified key is in the current map.
      *
-     * @psalm-param Tk $k
+     * @param Tk $k
+     *
+     * @psalm-mutation-free
      */
     public function contains($k): bool
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\contains_key($this->elements, $k);
     }
 
     /**
      * Returns the value at the specified key in the current map.
      *
-     * @psalm-param  Tk $k
+     * @param Tk $k
      *
-     * @psalm-return Tv|null
+     * @return Tv|null
+     *
+     * @psalm-mutation-free
      */
     public function get($k)
     {
@@ -188,21 +236,26 @@ final class Map implements MapInterface
      * Returns a `Vector` containing the values of the current
      * `Map`.
      *
-     * @psalm-return Vector<Tv>
+     * @return Vector<Tv>
+     *
+     * @psalm-mutation-free
      */
     public function values(): Vector
     {
-        return new Vector(Vec\values($this->elements));
+        return Vector::fromArray($this->elements);
     }
 
     /**
      * Returns a `Vector` containing the keys of the current `Map`.
      *
-     * @psalm-return Vector<Tk>
+     * @return Vector<Tk>
+     *
+     * @psalm-mutation-free
      */
     public function keys(): Vector
     {
-        return new Vector(Vec\keys($this->elements));
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
+        return Vector::fromArray(Vec\keys($this->elements));
     }
 
     /**
@@ -215,11 +268,11 @@ final class Map implements MapInterface
      * The keys associated with the current `Map` remain unchanged in the
      * returned `Map`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback containing the condition to apply to the current
-     *                                 `Map` values
+     * @param (callable(Tv): bool) $fn The callback containing the condition to apply to the current
+     *                                 `Map` values.
      *
-     * @psalm-return Map<Tk, Tv> - a Map containing the values after a user-specified condition
-     *                        is applied
+     * @return Map<Tk, Tv> A Map containing the values after a user-specified condition
+     *                 is applied.
      */
     public function filter(callable $fn): Map
     {
@@ -237,12 +290,11 @@ final class Map implements MapInterface
      * The keys associated with the current `Map` remain unchanged in the
      * returned `Map`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
-     *                                     `Map` keys and values
+     * @param (callable(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
+     *                                     `Map` keys and values.
      *
-     * @psalm-return Map<Tk, Tv> - a `Map` containing the values after a user-specified
-     *                        condition is applied to the keys and values of the current
-     *                        `Map`
+     * @return Map<Tk, Tv> A `Map` containing the values after a user-specified
+     *                 condition is applied to the keys and values of the current `Map`.
      */
     public function filterWithKey(callable $fn): Map
     {
@@ -259,13 +311,13 @@ final class Map implements MapInterface
      * The keys will remain unchanged from the current `Map` to the
      * returned `Map`.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
-     *                               `Map` values
+     * @param (callable(Tv): Tu) $fn The callback containing the operation to apply to the current
+     *                               `Map` values.
      *
-     * @psalm-return   Map<Tk, Tu> - a `Map` containing key/value pairs after a user-specified
-     *                        operation is applied
+     * @return Map<Tk, Tu> A `Map` containing key/value pairs after a user-specified
+     *                 operation is applied.
      */
     public function map(callable $fn): Map
     {
@@ -283,14 +335,13 @@ final class Map implements MapInterface
      * The keys will remain unchanged from this `Map` to the returned
      * `Map`. The keys are only used to help in the mapping operation.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
-     *                                   `Map` keys and values
+     * @param (callable(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
+     *                                   `Map` keys and values.
      *
-     * @psalm-return   Map<Tk, Tu> - a `Map` containing the values after a user-specified
-     *                        operation on the current `Map`'s keys and values is
-     *                        applied
+     * @return Map<Tk, Tu> A `Map` containing the values after a user-specified
+     *                 operation on the current `Map`'s keys and values is applied.
      */
     public function mapWithKey(callable $fn): Map
     {
@@ -306,29 +357,40 @@ final class Map implements MapInterface
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param    iterable<Tu> $iterable - The `iterable` to use to combine with the
-     *                       elements of this `Map`.
+     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
+     *                               elements of this `Map`.
      *
-     * @psalm-return   Map<Tk, array{0: Tv, 1: Tu}> - The `Map` that combines the values of the current
-     *           `Map` with the provided `iterable`.
+     * @return Map<Tk, array{0: Tv, 1: Tu}> The `Map` that combines the values of the current
+     *                 `Map` with the provided `iterable`.
+     *
+     * @psalm-mutation-free
      */
     public function zip(iterable $iterable): Map
     {
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         $array = Vec\values($iterable);
 
-        /** @psalm-var array<Tk, array{0: Tv, 1: Tu}> $elements */
+        /** @var array<Tk, array{0: Tv, 1: Tu}> $elements */
         $elements = [];
 
         foreach ($this->elements as $k => $v) {
-            /** @psalm-var Tu|null $u */
+            /**
+             * @psalm-suppress ImpureFunctionCall - conditionally pure
+             *
+             * @var Tu|null $u
+             */
             $u = Iter\first($array);
             if (null === $u) {
                 break;
             }
 
-            /** @psalm-var iterable<int, Tu> $array */
+            /**
+             * @psalm-suppress ImpureFunctionCall - conditionally pure
+             *
+             * @var iterable<int, Tu> $array
+             */
             $array = Dict\drop($array, 1);
 
             $elements[$k] = [$v, $u];
@@ -346,17 +408,19 @@ final class Map implements MapInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @psalm-param $n - The last element that will be included in the returned
-     *             `Map`
-     *
-     * @psalm-return Map<Tk, Tv> - A `Map` that is a proper subset of the current
-     *           `Map` up to `n` elements.
+     * @param int $n The last element that will be included in the returned
+     *               `Map`.
      *
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
+     *
+     * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
+     *                 `Map` up to `n` elements.
+     *
+     * @psalm-mutation-free
      */
     public function take(int $n): Map
     {
-        return new Map(Dict\take($this->elements, $n));
+        return $this->slice(0, $n);
     }
 
     /**
@@ -367,11 +431,11 @@ final class Map implements MapInterface
      * The returned `Map` will always be a proper subset of the current
      * `Map`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback that is used to determine the stopping
-     *              condition.
+     * @param (callable(Tv): bool) $fn The callback that is used to determine the stopping
+     *                                 condition.
      *
-     * @psalm-return Map<Tk, Tv> - A `Map` that is a proper subset of the current
-     *           `Map` up until the callback returns `false`.
+     * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
+     *                 `Map` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): Map
     {
@@ -387,17 +451,19 @@ final class Map implements MapInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @psalm-param  int $n - The last element to be skipped; the $n+1 element will be the
-     *             first one in the returned `Map`.
-     *
-     * @psalm-return Map<Tk, Tv> - A `Map` that is a proper subset of the current
-     *           `Map` containing values after the specified `n`-th element.
+     * @param int $n The last element to be skipped; the $n+1 element will be the
+     *               first one in the returned `Map`.
      *
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
+     *
+     * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
+     *                 `Map` containing values after the specified `n`-th element.
+     *
+     * @psalm-mutation-free
      */
     public function drop(int $n): Map
     {
-        return new Map(Dict\drop($this->elements, $n));
+        return $this->slice($n);
     }
 
     /**
@@ -408,11 +474,11 @@ final class Map implements MapInterface
      * The returned `Map` will always be a proper subset of the current
      * `Map`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback used to determine the starting element for the
-     *              returned `Map`.
+     * @param (callable(Tv): bool) $fn The callback used to determine the starting element for the
+     *                                 returned `Map`.
      *
-     * @psalm-return Map<Tk, Tv> - A `Map` that is a proper subset of the current
-     *           `Map` starting after the callback returns `true`.
+     * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
+     *                 `Map` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): Map
     {
@@ -427,21 +493,24 @@ final class Map implements MapInterface
      * `$start` is 0-based. $len is 1-based. So `slice(0, 2)` would return the
      * elements at key 0 and 1.
      *
-     * The returned `Map` will always be a proper subset of this
-     * `Map`.
+     * The returned `Map` will always be a proper subset of this `Map`.
      *
-     * @psalm-param  int $start - The starting key of this Vector to begin the returned
-     *                   `Map`
-     * @psalm-param  int $len   - The length of the returned `Map`
+     * @param int $start The starting key of this Vector to begin the returned
+     *                   `Map`.
+     * @param null|int $length The length of the returned `Map`
      *
-     * @psalm-return Map<Tk, Tv> - A `Map` that is a proper subset of the current
-     *           `Map` starting at `$start` up to but not including the
-     *           element `$start + $len`.
+     * @throws Psl\Exception\InvariantViolationException If $start or $length are negative.
      *
-     * @throws Psl\Exception\InvariantViolationException If $start or $len are negative.
+     * @return Map<Tk, Tv>  A `Map` that is a proper subset of the current
+     *                 `Map` starting at `$start` up to but not including the element `$start + $length`.
+     *
+     * @psalm-mutation-free
      */
-    public function slice(int $start, int $len): Map
+    public function slice(int $start, ?int $length = null): Map
     {
-        return new Map(Dict\slice($this->elements, $start, $len));
+        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
+        $result = Dict\slice($this->elements, $start, $length);
+
+        return self::fromArray($result);
     }
 }

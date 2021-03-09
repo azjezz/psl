@@ -9,11 +9,11 @@ use function is_scalar as php_is_scalar;
 /**
  * Finds whether a variable is a scalar.
  *
- * @psalm-param mixed $var
+ * @param mixed $var
  *
  * @psalm-assert-if-true scalar $var
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Type\scalar()->matches($value)` instead.
  */

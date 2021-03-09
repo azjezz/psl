@@ -19,19 +19,18 @@ use Psl\Dict;
  *      Iter\slice([-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5], 5, 3)
  *      => Iter(0, 1, 2)
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param iterable<Tk,Tv>     $iterable Iterable to take the slice from
- * @psalm-param int                 $start Start offset
- * @psalm-param int                 $length Length (if not specified all remaining values from the iterable are used)
- *
- * @psalm-return Iterator<Tk, Tv>
+ * @param iterable<Tk,Tv> $iterable Iterable to take the slice from
+ * @param int $start Start offset
+ * @param int $length Length (if not specified all remaining values from the iterable are used)
  *
  * @throws Psl\Exception\InvariantViolationException If the $start offset or $length are negative
  *
- * @deprecated use `Dict\slice` instead.
+ * @return Iterator<Tk, Tv>
  *
+ * @deprecated use `Dict\slice` instead.
  * @see Dict\slice()
  */
 function slice(iterable $iterable, int $start, ?int $length = null): Iterator

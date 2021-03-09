@@ -20,16 +20,15 @@ use Psl\Dict;
  *      Arr\filter(['foo', 'bar', 'baz', 'qux'], fn(string $value): bool => Str\contains($value, 'a'));
  *      => Arr('bar', 'baz')
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv>            $iterable
- * @psalm-param (callable(Tv): bool)|null   $predicate
+ * @param iterable<Tk, Tv> $iterable
+ * @param (callable(Tv): bool)|null $predicate
  *
- * @psalm-return array<Tk, Tv>
+ * @return array<Tk, Tv>
  *
  * @deprecated use `Dict\filter` instead.
- *
  * @see Dict\filter()
  */
 function filter(iterable $iterable, ?callable $predicate = null): array

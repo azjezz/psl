@@ -15,7 +15,7 @@ use const PREG_NO_ERROR;
 use const PREG_RECURSION_LIMIT_ERROR;
 
 /**
- * @psalm-pure
+ * @pure
  *
  * @return null|array{message: string, code: int, pattern_message: null|string}
  *

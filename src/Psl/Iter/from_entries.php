@@ -11,15 +11,14 @@ use Psl\Dict;
  * Returns an iterator where each mapping is defined by the given key/value
  * tuples.
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param iterable<array{0: Tk, 1: Tv}> $entries
+ * @param iterable<array{0: Tk, 1: Tv}> $entries
  *
- * @psalm-return Iterator<Tk, Tv>
+ * @return Iterator<Tk, Tv>
  *
  * @deprecated use `Dict\from_entries` instead.
- *
  * @see Dict\from_entries()
  */
 function from_entries(iterable $entries): Iterator

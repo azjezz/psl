@@ -8,13 +8,13 @@ namespace Psl\Math;
  * Returns the largest element of the given iterable, or null if the
  * iterable is empty.
  *
- * @psalm-template T of int|float
+ * @template T of int|float
  *
- * @psalm-param list<T> $numbers
+ * @param list<T> $numbers
  *
- * @psalm-return T|null
+ * @return T|null
  *
- * @psalm-pure
+ * @pure
  */
 function max(array $numbers)
 {

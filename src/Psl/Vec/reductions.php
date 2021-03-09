@@ -14,15 +14,15 @@ namespace Psl\Vec;
  *
  * Reductions returns a list of every accumulator throughout the way.
  *
- * @psalm-template Tk
- * @psalm-template Tv
- * @psalm-template Ts
+ * @template Tk
+ * @template Tv
+ * @template Ts
  *
- * @psalm-param iterable<Tk, Tv>            $iterable
- * @psalm-param (callable(Ts, Tk, Tv): Ts)  $function
- * @psalm-param Ts                          $initial
+ * @param iterable<Tk, Tv> $iterable
+ * @param (callable(Ts, Tk, Tv): Ts) $function
+ * @param Ts $initial
  *
- * @psalm-return list<Ts>
+ * @return list<Ts>
  */
 function reductions(iterable $iterable, callable $function, $initial): array
 {

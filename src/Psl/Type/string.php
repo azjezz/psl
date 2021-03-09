@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Type;
 
 /**
- * @psalm-return TypeInterface<string>
+ * @return TypeInterface<string>
  */
 function string(): TypeInterface
 {

@@ -25,18 +25,18 @@ use function is_object;
 final class MapType extends Type\Type
 {
     /**
-     * @psalm-var Type\TypeInterface<Tk>
+     * @var Type\TypeInterface<Tk>
      */
     private Type\TypeInterface $key_type;
 
     /**
-     * @psalm-var Type\TypeInterface<Tv>
+     * @var Type\TypeInterface<Tv>
      */
     private Type\TypeInterface $value_type;
 
     /**
-     * @psalm-param Type\TypeInterface<Tk> $key_type
-     * @psalm-param Type\TypeInterface<Tv> $value_type
+     * @param Type\TypeInterface<Tk> $key_type
+     * @param Type\TypeInterface<Tv> $value_type
      */
     public function __construct(
         Type\TypeInterface $key_type,
@@ -47,11 +47,11 @@ final class MapType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return Collection\MapInterface<Tk, Tv>
+     * @param mixed $value
      *
      * @throws CoercionException
+     *
+     * @return Collection\MapInterface<Tk, Tv>
      */
     public function coerce($value): Collection\MapInterface
     {
@@ -64,18 +64,18 @@ final class MapType extends Type\Type
                 Str\format('%s<_, %s>', Collection\MapInterface::class, $this->value_type->toString())
             );
 
-            /** @psalm-var Type\Type<Tk> $key_type */
+            /** @var Type\Type<Tk> $key_type */
             $key_type = $this->key_type->withTrace($key_trace);
-            /** @psalm-var Type\Type<Tv> $value_type */
+            /** @var Type\Type<Tv> $value_type */
             $value_type = $this->value_type->withTrace($value_trace);
 
             /**
-             * @psalm-var list<array{0: Tk, 1: Tv}> $entries
+             * @var list<array{0: Tk, 1: Tv}> $entries
              */
             $entries = [];
             /**
-             * @psalm-var Tk $k
-             * @psalm-var Tv $v
+             * @var Tk $k
+             * @var Tv $v
              */
             foreach ($value as $k => $v) {
                 $entries[] = [
@@ -92,13 +92,13 @@ final class MapType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return Collection\MapInterface<Tk, Tv>
-     *
-     * @psalm-assert Collection\MapInterface<Tk, Tv> $value
+     * @param mixed $value
      *
      * @throws AssertException
+     *
+     * @return Collection\MapInterface<Tk, Tv>
+     *
+     * @psalm-assert Collection\MapInterface<Tk, Tv> $value
      */
     public function assert($value): Collection\MapInterface
     {
@@ -111,19 +111,19 @@ final class MapType extends Type\Type
                 Str\format('%s<_, %s>', Collection\MapInterface::class, $this->value_type->toString())
             );
 
-            /** @psalm-var Type\Type<Tk> $key_type */
+            /** @var Type\Type<Tk> $key_type */
             $key_type = $this->key_type->withTrace($key_trace);
-            /** @psalm-var Type\Type<Tv> $value_type */
+            /** @var Type\Type<Tv> $value_type */
             $value_type = $this->value_type->withTrace($value_trace);
 
             /**
-             * @psalm-var list<array{0: Tk, 1: Tv}> $entries
+             * @var list<array{0: Tk, 1: Tv}> $entries
              */
             $entries = [];
 
             /**
-             * @psalm-var Tk $k
-             * @psalm-var Tv $v
+             * @var Tk $k
+             * @var Tv $v
              */
             foreach ($value as $k => $v) {
                 $entries[] = [

@@ -37,11 +37,11 @@ final class ShapeType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return array<Tk, Tv>
+     * @param mixed $value
      *
      * @throws CoercionException
+     *
+     * @return array<Tk, Tv>
      */
     public function coerce($value): array
     {
@@ -79,13 +79,13 @@ final class ShapeType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return array<Tk, Tv>
-     *
-     * @psalm-assert array<Tk, Tv> $value
+     * @param mixed $value
      *
      * @throws AssertException
+     *
+     * @return array<Tk, Tv>
+     *
+     * @psalm-assert array<Tk, Tv> $value
      */
     public function assert($value): array
     {

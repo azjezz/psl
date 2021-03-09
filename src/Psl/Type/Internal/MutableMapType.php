@@ -25,18 +25,18 @@ use function is_object;
 final class MutableMapType extends Type\Type
 {
     /**
-     * @psalm-var Type\TypeInterface<Tk>
+     * @var Type\TypeInterface<Tk>
      */
     private Type\TypeInterface $key_type;
 
     /**
-     * @psalm-var Type\TypeInterface<Tv>
+     * @var Type\TypeInterface<Tv>
      */
     private Type\TypeInterface $value_type;
 
     /**
-     * @psalm-param Type\TypeInterface<Tk> $key_type
-     * @psalm-param Type\TypeInterface<Tv> $value_type
+     * @param Type\TypeInterface<Tk> $key_type
+     * @param Type\TypeInterface<Tv> $value_type
      */
     public function __construct(
         Type\TypeInterface $key_type,
@@ -47,11 +47,11 @@ final class MutableMapType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return Collection\MutableMapInterface<Tk, Tv>
+     * @param mixed $value
      *
      * @throws CoercionException
+     *
+     * @return Collection\MutableMapInterface<Tk, Tv>
      */
     public function coerce($value): Collection\MutableMapInterface
     {
@@ -64,19 +64,19 @@ final class MutableMapType extends Type\Type
                 Str\format('%s<_, %s>', Collection\MutableMapInterface::class, $this->value_type->toString())
             );
 
-            /** @psalm-var Type\Type<Tk> $key_type */
+            /** @var Type\Type<Tk> $key_type */
             $key_type = $this->key_type->withTrace($key_trace);
-            /** @psalm-var Type\Type<Tv> $value_type */
+            /** @var Type\Type<Tv> $value_type */
             $value_type = $this->value_type->withTrace($value_trace);
 
             /**
-             * @psalm-var list<array{0: Tk, 1: Tv}> $entries
+             * @var list<array{0: Tk, 1: Tv}> $entries
              */
             $entries = [];
 
             /**
-             * @psalm-var Tk $k
-             * @psalm-var Tv $v
+             * @var Tk $k
+             * @var Tv $v
              */
             foreach ($value as $k => $v) {
                 $entries[] = [
@@ -85,7 +85,7 @@ final class MutableMapType extends Type\Type
                 ];
             }
 
-            /** @psalm-var array<Tk, Tv> $dict */
+            /** @var array<Tk, Tv> $dict */
             $dict = Dict\from_entries($entries);
 
             /** @var Collection\MutableMap<Tk, Tv> */
@@ -96,13 +96,13 @@ final class MutableMapType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return Collection\MutableMapInterface<Tk, Tv>
-     *
-     * @psalm-assert Collection\MutableMapInterface<Tk, Tv> $value
+     * @param mixed $value
      *
      * @throws AssertException
+     *
+     * @return Collection\MutableMapInterface<Tk, Tv>
+     *
+     * @psalm-assert Collection\MutableMapInterface<Tk, Tv> $value
      */
     public function assert($value): Collection\MutableMapInterface
     {
@@ -115,19 +115,19 @@ final class MutableMapType extends Type\Type
                 Str\format('%s<_, %s>', Collection\MutableMapInterface::class, $this->value_type->toString())
             );
 
-            /** @psalm-var Type\Type<Tk> $key_type */
+            /** @var Type\Type<Tk> $key_type */
             $key_type = $this->key_type->withTrace($key_trace);
-            /** @psalm-var Type\Type<Tv> $value_type */
+            /** @var Type\Type<Tv> $value_type */
             $value_type = $this->value_type->withTrace($value_trace);
 
             /**
-             * @psalm-var list<array{0: Tk, 1: Tv}> $entries
+             * @var list<array{0: Tk, 1: Tv}> $entries
              */
             $entries = [];
 
             /**
-             * @psalm-var Tk $k
-             * @psalm-var Tv $v
+             * @var Tk $k
+             * @var Tv $v
              */
             foreach ($value as $k => $v) {
                 $entries[] = [
@@ -136,7 +136,7 @@ final class MutableMapType extends Type\Type
                 ];
             }
 
-            /** @psalm-var array<Tk, Tv> $dict */
+            /** @var array<Tk, Tv> $dict */
             $dict = Dict\from_entries($entries);
 
             /** @var Collection\MutableMap<Tk, Tv> */

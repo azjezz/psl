@@ -14,8 +14,8 @@ use Psl\Vec;
  *
  * @template T
  *
- * @param iterable<T>                 $array
- * @param (callable(T, T): int)|null  $comparator
+ * @param iterable<T> $array
+ * @param (callable(T, T): int)|null $comparator
  *
  * @return list<T>
  *

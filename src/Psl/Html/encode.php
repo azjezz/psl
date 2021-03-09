@@ -15,14 +15,14 @@ use const ENT_QUOTES;
  * Convert all applicable characters to HTML entities.
  *
  * @param bool $double_encoding If set to false, this function will not
- *  encode existing html entities.
+ *                              encode existing html entities.
  * @param string $encoding defines character set used in conversion.
  *
  * @throws Exception\InvariantViolationException If $encoding is invalid.
  *
  * @psalm-taint-escape html
  *
- * @psalm-pure
+ * @pure
  */
 function encode(string $html, bool $double_encoding = true, ?string $encoding = null): string
 {

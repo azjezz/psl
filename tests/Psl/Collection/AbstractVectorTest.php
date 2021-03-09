@@ -18,7 +18,7 @@ abstract class AbstractVectorTest extends TestCase
     /**
      * The Vector class used for values, keys .. etc.
      *
-     * @psalm-var class-string<IVector>
+     * @var class-string<IVector>
      */
     protected string $vectorClass = VectorInterface::class;
 
@@ -549,9 +549,9 @@ abstract class AbstractVectorTest extends TestCase
     /**
      * @template     T
      *
-     * @psalm-param  iterable<T> $items
+     * @param iterable<T> $items
      *
-     * @psalm-return IVector<T>
+     * @return IVector<T>
      */
     abstract protected function create(iterable $items): VectorInterface;
 }

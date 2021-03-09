@@ -10,15 +10,15 @@ use Psl\Regex\Exception;
 /**
  * @template T
  *
- * @param non-empty-string      $function
- * @param (pure-callable(): T)  $callable
- *
- * @return T
+ * @param non-empty-string $function
+ * @param (pure-callable(): T) $callable
  *
  * @throws Exception\InvalidPatternException
  * @throws Exception\RuntimeException
  *
- * @psalm-pure
+ * @return T
+ *
+ * @pure
  *
  * @internal
  */

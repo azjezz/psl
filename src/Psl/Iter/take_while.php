@@ -18,16 +18,15 @@ use Psl\Dict;
  *      Iter\take_while([3, 1, 4, -1, 5], fn($i) => $i > 0)
  *      => Iter(3, 1, 4)
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param    iterable<Tk, Tv>     $iterable Iterable to take values from
- * @psalm-param    (callable(Tv): bool) $predicate
+ * @param iterable<Tk, Tv> $iterable Iterable to take values from
+ * @param (callable(Tv): bool) $predicate
  *
- * @psalm-return   Iterator<Tk, Tv>
+ * @return Iterator<Tk, Tv>
  *
  * @deprecated use `Dict\take_while` instead.
- *
  * @see Dict\take_while()
  */
 function take_while(iterable $iterable, callable $predicate): Iterator

@@ -17,12 +17,12 @@ use Psl\Type;
  *      Dict\flip(['a' => 1, 'b' => 2, 'c' => 3])
  *      => Dict(1 => 'a', 2 => 'b', 3 => 'c')
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv of array-key
+ * @template Tk of array-key
+ * @template Tv of array-key
  *
- * @psalm-param iterable<Tk, Tv> $iterable
+ * @param iterable<Tk, Tv> $iterable
  *
- * @psalm-return array<Tv, Tk>
+ * @return array<Tv, Tk>
  */
 function flip(iterable $iterable): array
 {

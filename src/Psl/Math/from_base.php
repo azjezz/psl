@@ -19,10 +19,10 @@ use Psl\Str\Byte;
  *      Math\from_base('ff', 15)
  *      => Int(255)
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $number is empty, $from_base is outside the [2, 36] range,
- *      or $number is invalid.
+ *                                                   or $number is invalid.
  */
 function from_base(string $number, int $from_base): int
 {

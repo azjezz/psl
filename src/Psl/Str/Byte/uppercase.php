@@ -9,7 +9,7 @@ use function strtoupper;
 /**
  * Returns the string with all alphabetic characters converted to uppercase.
  *
- * @psalm-pure
+ * @pure
  */
 function uppercase(string $string): string
 {

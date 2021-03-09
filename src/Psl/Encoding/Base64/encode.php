@@ -13,7 +13,7 @@ use function base64_encode;
  *  [A-Z]      [a-z]      [0-9]      +     /
  *  0x41-0x5a, 0x61-0x7a, 0x30-0x39, 0x2b, 0x2f
  *
- * @psalm-pure
+ * @pure
  */
 function encode(string $binary): string
 {

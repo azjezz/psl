@@ -11,13 +11,13 @@ use Psl\Type\TypeInterface;
 /**
  * Decode a json encoded string into a dynamic variable.
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param TypeInterface<T> $type
- *
- * @psalm-return T
+ * @param TypeInterface<T> $type
  *
  * @throws Exception\DecodeException If an error occurred.
+ *
+ * @return T
  */
 function typed(string $json, TypeInterface $type)
 {

@@ -18,19 +18,18 @@ use Psl\Dict;
  *      Arr\slice([-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5], 5, 3)
  *      => Arr(0, 1, 2)
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param array<Tk,Tv>    $array Array to take the slice from
- * @psalm-param int             $start Start offset
- * @psalm-param int             $length Length (if not specified all remaining values from the array are used)
- *
- * @psalm-return array<Tk, Tv>
+ * @param array<Tk,Tv> $array Array to take the slice from
+ * @param int $start Start offset
+ * @param int $length Length (if not specified all remaining values from the array are used)
  *
  * @throws Psl\Exception\InvariantViolationException If the $start offset or $length are negative
  *
- * @deprecated use `Dict\slice()` instead.
+ * @return array<Tk, Tv>
  *
+ * @deprecated use `Dict\slice()` instead.
  * @see Dict\slice()
  */
 function slice(array $array, int $start, ?int $length = null): array

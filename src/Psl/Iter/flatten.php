@@ -11,15 +11,14 @@ use Psl\Dict;
  * Returns an iterator formed by merging the iterable elements of the
  * given iterable.
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param iterable<iterable<Tk, Tv>> $iterables
+ * @param iterable<iterable<Tk, Tv>> $iterables
  *
- * @psalm-return Iterator<Tk, Tv>
+ * @return Iterator<Tk, Tv>
  *
  * @deprecated use `Dict\flatten` instead.
- *
  * @see Dict\flatten()
  */
 function flatten(iterable $iterables): Iterator

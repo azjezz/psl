@@ -20,7 +20,7 @@ use function ceil as php_ceil;
  *      Math\ceil(-5.5)
  *      => Float(-5.0)
  *
- * @psalm-pure
+ * @pure
  */
 function ceil(float $float): float
 {

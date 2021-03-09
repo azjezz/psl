@@ -32,7 +32,7 @@ use Psl;
  *      Str\ends_with('تونس', 'ش')
  *      => Bool(false)
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */

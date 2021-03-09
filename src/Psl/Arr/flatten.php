@@ -20,15 +20,14 @@ use Psl\Dict;
  *      Arr\flatten([[0 => 1, 1 => 2], [2 => 9, 3 => 8]])
  *      => Arr(0 => 1, 1 => 2, 2 => 9, 3 => 8)
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param iterable<iterable<Tk, Tv>> $iterables
+ * @param iterable<iterable<Tk, Tv>> $iterables
  *
- * @psalm-return array<Tk, Tv>
+ * @return array<Tk, Tv>
  *
  * @deprecated use `Dict\flatten` instead.
- *
  * @see Dict\flatten()
  */
 function flatten(iterable $iterables): array

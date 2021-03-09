@@ -20,7 +20,7 @@ use function mb_ord;
  *      Str\ord('ل')
  *      => Int(1604)
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */

@@ -11,25 +11,24 @@ use Psl\Iter;
  * Get the last value of an array, If the array is empty, an InvariantViolationException
  * will be thrown.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param array<Tk, Tv> $array
- *
- * @psalm-return Tv
- *
- * @psalm-pure
+ * @param array<Tk, Tv> $array
  *
  * @throws Psl\Exception\InvariantViolationException If $array is empty.
  *
- * @deprecated use `Iter\last` instead.
+ * @return Tv
  *
+ * @pure
+ *
+ * @deprecated use `Iter\last` instead.
  * @see Iter\last()
  */
 function lastx(array $array)
 {
     /**
-     * @psalm-var Tk|null $last
+     * @var Tk|null $last
      * @psalm-suppress DeprecatedFunction
      */
     $last = last_key($array);

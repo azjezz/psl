@@ -9,14 +9,13 @@ use Psl\Vec;
 /**
  * Copy the iterable into an array.
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param    iterable<T> $iterable
+ * @param iterable<T> $iterable
  *
- * @psalm-return   list<T>
+ * @return list<T>
  *
  * @deprecated since 1.2, use Vec\values instead.
- *
  * @see Vec\values()
  */
 function to_array(iterable $iterable): array

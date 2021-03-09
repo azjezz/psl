@@ -7,12 +7,12 @@ namespace Psl\Vec;
 /**
  * Return all the keys of an array.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv> $iterable
+ * @param iterable<Tk, Tv> $iterable
  *
- * @psalm-return list<Tk>
+ * @return list<Tk>
  */
 function keys(iterable $iterable): array
 {

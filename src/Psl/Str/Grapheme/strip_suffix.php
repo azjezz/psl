@@ -8,7 +8,7 @@ namespace Psl\Str\Grapheme;
  * Returns the string with the given suffix removed, or the string itself if
  * it doesn't end with the suffix.
  *
- * @psalm-pure
+ * @pure
  */
 function strip_suffix(string $string, string $suffix): string
 {

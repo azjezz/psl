@@ -17,7 +17,7 @@ use function cos as php_cos;
  *      Math\ceil(1.0)
  *      => Float(0.5403023058681398)
  *
- * @psalm-pure
+ * @pure
  */
 function cos(float $num): float
 {

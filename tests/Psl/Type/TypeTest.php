@@ -18,27 +18,27 @@ use Psl\Vec;
 abstract class TypeTest extends TestCase
 {
     /**
-     * @psalm-return TypeInterface<T>
+     * @return TypeInterface<T>
      */
     abstract public function getType(): TypeInterface;
 
     /**
-     * @psalm-return iterable<array{0: mixed, 1: T}>
+     * @return iterable<array{0: mixed, 1: T}>
      */
     abstract public function getValidCoercions(): iterable;
 
     /**
-     * @psalm-return iterable<array{0: mixed}>
+     * @return iterable<array{0: mixed}>
      */
     abstract public function getInvalidCoercions(): iterable;
 
     /**
-     * @psalm-return iterable<array{0: Type<mixed>, 1: string}>
+     * @return iterable<array{0: Type<mixed>, 1: string}>
      */
     abstract public function getToStringExamples(): iterable;
 
     /**
-     * @psalm-return list<array{0: T}>
+     * @return list<array{0: T}>
      */
     public function getValidValues(): array
     {
@@ -60,7 +60,7 @@ abstract class TypeTest extends TestCase
     }
 
     /**
-     * @psalm-return list<array{0: mixed}>
+     * @return list<array{0: mixed}>
      */
     public function getInvalidValues(): array
     {
@@ -79,7 +79,7 @@ abstract class TypeTest extends TestCase
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
      * @dataProvider getValidValues
      */
@@ -89,7 +89,7 @@ abstract class TypeTest extends TestCase
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
      * @dataProvider getInvalidValues
      */
@@ -99,8 +99,8 @@ abstract class TypeTest extends TestCase
     }
 
     /**
-     * @psalm-param mixed $value
-     * @psalm-param T     $expected
+     * @param mixed $value
+     * @param T $expected
      *
      * @dataProvider getValidCoercions
      */
@@ -151,8 +151,8 @@ abstract class TypeTest extends TestCase
     }
 
     /**
-     * @psalm-param T $a
-     * @psalm-param T $b
+     * @param T $a
+     * @param T $b
      */
     protected function equals($a, $b): bool
     {

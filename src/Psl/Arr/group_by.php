@@ -29,16 +29,15 @@ use Psl\Dict;
  *      )
  *      => Arr(7 => [2], 8 => [3], 9 => [4], 10 => [5], 11 => [6], 12 => [7, 8, 9, 10])
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param iterable<Tv>           $values
- * @psalm-param (callable(Tv): ?Tk)    $key_func
+ * @param iterable<Tv> $values
+ * @param (callable(Tv): ?Tk) $key_func
  *
- * @psalm-return array<Tk, list<Tv>>
+ * @return array<Tk, list<Tv>>
  *
  * @deprecated use `Dict\group_by` instead.
- *
  * @see Dict\group_by()
  */
 function group_by(iterable $values, callable $key_func): array

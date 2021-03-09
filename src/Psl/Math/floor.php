@@ -11,7 +11,7 @@ use function floor as php_floor;
  *
  * @param float|int $num
  *
- * @psalm-pure
+ * @pure
  */
 function floor(float $num): float
 {

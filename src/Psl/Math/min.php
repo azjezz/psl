@@ -8,13 +8,13 @@ namespace Psl\Math;
  * Returns the smallest element of the given Traversable, or null if the
  * Traversable is empty.
  *
- * @psalm-template T of int|float
+ * @template T of int|float
  *
- * @psalm-param list<T> $numbers
+ * @param list<T> $numbers
  *
- * @psalm-return T|null
+ * @return T|null
  *
- * @psalm-pure
+ * @pure
  */
 function min(array $numbers)
 {

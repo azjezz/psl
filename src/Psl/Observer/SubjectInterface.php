@@ -9,7 +9,7 @@ interface SubjectInterface
     /**
      * Subscribe to the given observer.
      *
-     * @psalm-param ObserverInterface<static> $observer
+     * @param ObserverInterface<static> $observer
      */
     public function subscribe(ObserverInterface $observer): void;
 

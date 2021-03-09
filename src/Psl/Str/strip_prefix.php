@@ -10,7 +10,7 @@ use Psl;
  * Returns the string with the given prefix removed, or the string itself if
  * it doesn't start with the prefix.
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */

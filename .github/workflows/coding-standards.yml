@@ -25,4 +25,4 @@ jobs:
         run: "php vendor/bin/phpcs"
 
       - name: "checking coding standards ( php-cs-fixer )"
-        run: "php vendor/bin/php-cs-fixer fix --dry-run --ansi"
+        run: "php vendor/bin/php-cs-fixer fix --dry-run --diff --ansi"

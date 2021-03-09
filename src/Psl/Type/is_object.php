@@ -9,11 +9,11 @@ use function is_object as php_is_object;
 /**
  * Finds whether a variable is an object.
  *
- * @psalm-param mixed $var
+ * @param mixed $var
  *
  * @psalm-assert-if-true object $var
  *
- * @psalm-pure
+ * @pure
  */
 function is_object($var): bool
 {

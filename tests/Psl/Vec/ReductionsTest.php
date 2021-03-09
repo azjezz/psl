@@ -15,9 +15,9 @@ final class ReductionsTest extends TestCase
      * @template Tv
      * @template Ts
      *
-     * @param iterable<Tk, Tv>            $iterable
-     * @param (callable(Ts, Tk, Tv): Ts)  $function
-     * @param Ts                          $initial
+     * @param iterable<Tk, Tv> $iterable
+     * @param (callable(Ts, Tk, Tv): Ts) $function
+     * @param Ts $initial
      *
      * @dataProvider provideData
      */

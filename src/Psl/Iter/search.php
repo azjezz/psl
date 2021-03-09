@@ -16,12 +16,12 @@ namespace Psl\Iter;
  *      Iter\search(['foo', 'bar', 'baz'], fn($v) => 'qux' === $v)
  *      => Null
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param iterable<T>         $iterable  The iterable to search
- * @psalm-param (callable(T): bool) $predicate
+ * @param iterable<T> $iterable The iterable to search
+ * @param (callable(T): bool) $predicate
  *
- * @psalm-return T|null
+ * @return T|null
  */
 function search(iterable $iterable, callable $predicate)
 {

@@ -7,13 +7,13 @@ namespace Psl\Password;
 /**
  * Return a complete list of all registered password hashing algorithms.
  *
- * @psalm-return list<string>
+ * @return list<string>
  *
- * @psalm-pure
+ * @pure
  */
 function algorithms(): array
 {
-    /** @psalm-var list<string> */
+    /** @var list<string> */
     return [
         BCRYPT_ALGORITHM,
         ARGON2I_ALGORITHM,

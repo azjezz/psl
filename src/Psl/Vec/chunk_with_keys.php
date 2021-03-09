@@ -20,9 +20,9 @@ use Psl;
  * @param iterable<Tk, Tv> $iterable The iterable to chunk
  * @param int $size The size of each chunk
  *
- * @return list<array<Tk, Tv>>
- *
  * @throws Psl\Exception\InvariantViolationException If $size is negative.
+ *
+ * @return list<array<Tk, Tv>>
  */
 function chunk_with_keys(iterable $iterable, int $size): array
 {

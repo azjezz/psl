@@ -9,15 +9,15 @@ use Psl;
 /**
  * Take the first n elements from an iterable.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv>    $iterable   Iterable to take the elements from
- * @psalm-param int                 $n          Number of elements to take from the start
- *
- * @psalm-return array<Tk, Tv>
+ * @param iterable<Tk, Tv> $iterable Iterable to take the elements from
+ * @param int $n Number of elements to take from the start
  *
  * @throws Psl\Exception\InvariantViolationException If the $n is negative
+ *
+ * @return array<Tk, Tv>
  */
 function take(iterable $iterable, int $n): array
 {

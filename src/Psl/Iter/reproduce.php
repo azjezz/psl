@@ -18,17 +18,16 @@ use Psl\Vec;
  *     Iter\reproduce(Fun\Identity(), 5)
  *     => Iter(1, 2, 3, 4, 5)
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param (callable(int): T) $factory
- * @psalm-param int|null           $number How many times should the factory be executed?
- *
- * @psalm-return Iterator<int, T>
+ * @param (callable(int): T) $factory
+ * @param int|null $number How many times should the factory be executed?
  *
  * @throws Psl\Exception\InvariantViolationException If $number < 1
  *
- * @deprecated since 1.2, use Vec\reproduce instead.
+ * @return Iterator<int, T>
  *
+ * @deprecated since 1.2, use Vec\reproduce instead.
  * @see Vec\reproduce()
  */
 function reproduce(callable $factory, ?int $number = null): Iterator

@@ -7,11 +7,11 @@ namespace Psl\Hash\Hmac;
 use function hash_hmac_algos;
 
 /**
- * Return a list of registered hashing algorithms suitable for `Psl\Hash\Hmac\hash()`
+ * Return a list of registered hashing algorithms suitable for `Psl\Hash\Hmac\hash()`.
  *
- * @psalm-return list<string>
+ * @return list<string>
  *
- * @psalm-pure
+ * @pure
  */
 function algorithms(): array
 {

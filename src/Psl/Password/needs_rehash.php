@@ -18,9 +18,9 @@ use function password_needs_rehash;
  *
  * This function is safe against timing attacks.
  *
- * @psalm-param array{cost?: int}|array{memory_cost?: int, time_cost?: int, threads?: int} $options
+ * @param array{cost?: int}|array{memory_cost?: int, time_cost?: int, threads?: int} $options
  *
- * @psalm-pure
+ * @pure
  */
 function needs_rehash(string $hash, string $algorithm = DEFAULT_ALGORITHM, array $options = []): bool
 {

@@ -7,7 +7,7 @@ namespace Psl\Str\Byte;
 /**
  * Return ASCII value of character.
  *
- * @psalm-pure
+ * @pure
  */
 function ord(string $character): int
 {

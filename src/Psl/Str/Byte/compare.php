@@ -14,7 +14,7 @@ use function strncmp;
  * @param int|null $length number of characters to use in the comparison,
  *                         or null to compare the whole string
  *
- * @psalm-pure
+ * @pure
  */
 function compare(string $string, string $other, ?int $length = null): int
 {

@@ -10,17 +10,16 @@ use Psl\Dict;
 /**
  * Take the first n elements from an array.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param array<Tk, Tv> $array
- *
- * @psalm-return array<Tk, Tv>
+ * @param array<Tk, Tv> $array
  *
  * @throws Psl\Exception\InvariantViolationException If the $n is negative
  *
- * @deprecated use `Dict\take` instead.
+ * @return array<Tk, Tv>
  *
+ * @deprecated use `Dict\take` instead.
  * @see Dict\take()
  */
 function take(iterable $array, int $n): array

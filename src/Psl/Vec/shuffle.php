@@ -17,11 +17,11 @@ use Psl;
  *      Vec\shuffle(['a' => 1, 'b' => 2, 'c' => 3])
  *      => Vec(2, 3, 1)
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param iterable<T> $iterable
+ * @param iterable<T> $iterable
  *
- * @psalm-return list<T> the shuffled items as a list.
+ * @return list<T> the shuffled items as a list.
  */
 function shuffle(iterable $iterable): array
 {

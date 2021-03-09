@@ -21,7 +21,7 @@ use function str_repeat;
  *      Str\repeat('?', 5)
  *      => Str('?????')
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $multiplier is negative.
  */

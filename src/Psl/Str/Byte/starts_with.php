@@ -9,7 +9,7 @@ use function strncmp;
 /**
  * Returns whether the string starts with the given prefix.
  *
- * @psalm-pure
+ * @pure
  */
 function starts_with(string $string, string $prefix): bool
 {

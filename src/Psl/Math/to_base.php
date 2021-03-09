@@ -11,7 +11,7 @@ use Psl\Str;
  * Converts the given non-negative number into the given base, using letters a-z
  * for digits when then given base is > 10.
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $to_base is outside the [2, 36] range, or $number is negative.
  */

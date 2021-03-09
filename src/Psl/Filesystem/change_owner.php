@@ -14,7 +14,7 @@ use function lchown;
 /**
  * Change the owner of $filename.
  *
- * @throws Exception\RuntimeException   If unable to change the ownership for $filename.
+ * @throws Exception\RuntimeException If unable to change the ownership for $filename.
  * @throws Psl\Exception\InvariantViolationException If $filename does not exist.
  */
 function change_owner(string $filename, int $user): void

@@ -20,12 +20,12 @@ namespace Psl\Iter;
  *      Iter\first_key([])
  *      => Null
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param    iterable<Tk, Tv> $iterable
+ * @param iterable<Tk, Tv> $iterable
  *
- * @psalm-return   Tk|null
+ * @return Tk|null
  */
 function first_key(iterable $iterable)
 {

@@ -17,12 +17,12 @@ use function implode;
  *      Str\join(['Hello', 'World'], ', ')
  *      => Str('Hello, World')
  *
- * @psalm-param list<string> $pieces the array of strings to implode
+ * @param list<string> $pieces the array of strings to implode
  *
  * @return string a string containing a string representation of all the array
  *                elements in the same order, with the glue string between each element
  *
- * @psalm-pure
+ * @pure
  */
 function join(array $pieces, string $glue): string
 {

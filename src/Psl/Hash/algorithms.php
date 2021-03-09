@@ -9,9 +9,9 @@ use function hash_algos;
 /**
  * Return a list of registered hashing algorithms.
  *
- * @psalm-return list<string>
+ * @return list<string>
  *
- * @psalm-pure
+ * @pure
  */
 function algorithms(): array
 {

@@ -22,25 +22,33 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
 {
     /**
      * Is the CollectionInterface empty?
+     *
+     * @psalm-mutation-free
      */
     public function isEmpty(): bool;
 
     /**
      * Get the number of items in the collection.
+     *
+     * @psalm-mutation-free
      */
     public function count(): int;
 
     /**
      * Get an array copy of the current collection.
      *
-     * @psalm-return array<Tk, Tv>
+     * @return array<Tk, Tv>
+     *
+     * @psalm-mutation-free
      */
     public function toArray(): array;
 
     /**
      * Get an array copy of the current collection.
      *
-     * @psalm-return array<Tk, Tv>
+     * @return array<Tk, Tv>
+     *
+     * @psalm-mutation-free
      */
     public function jsonSerialize(): array;
 
@@ -54,11 +62,11 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * The keys associated with the current `CollectionInterface` remain unchanged in the
      * returned `CollectionInterface`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback containing the condition to apply to the current
-     *      `CollectionInterface` values.
+     * @param (callable(Tv): bool) $fn The callback containing the condition to apply to the current
+     *                                 `CollectionInterface` values.
      *
-     * @psalm-return CollectionInterface<Tk, Tv> - a CollectionInterface containing the values after a user-specified
-     *      condition is applied.
+     * @return CollectionInterface<Tk, Tv> A CollectionInterface containing the values after a user-specified
+     *                                 condition is applied.
      */
     public function filter(callable $fn): CollectionInterface;
 
@@ -73,11 +81,11 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * The keys associated with the current `CollectionInterface` remain unchanged in the
      * returned `CollectionInterface`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to the current
-     *      `CollectionInterface` keys and values.
+     * @param (callable(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
+     *                                     `CollectionInterface` keys and values.
      *
-     * @psalm-return CollectionInterface<Tk, Tv> - a `CollectionInterface` containing the values after a user-specified
-     *      condition is applied to the keys and values of the current `CollectionInterface`.
+     * @return CollectionInterface<Tk, Tv> A `CollectionInterface` containing the values after a user-specified
+     *                                 condition is applied to the keys and values of the current `CollectionInterface`.
      */
     public function filterWithKey(callable $fn): CollectionInterface;
 
@@ -91,13 +99,13 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * The keys will remain unchanged from the current `CollectionInterface` to the
      * returned `CollectionInterface`.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
-     *      `CollectionInterface` values.
+     * @param (callable(Tv): Tu) $fn The callback containing the operation to apply to the current
+     *                               `CollectionInterface` values.
      *
-     * @psalm-return CollectionInterface<Tk, Tu> - a `CollectionInterface` containing key/value pairs after
-     *      a user-specified operation is applied.
+     * @return CollectionInterface<Tk, Tu> A `CollectionInterface` containing key/value pairs after
+     *                                 a user-specified operation is applied.
      */
     public function map(callable $fn): CollectionInterface;
 
@@ -112,13 +120,13 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * The keys will remain unchanged from this `CollectionInterface` to the returned
      * `CollectionInterface`. The keys are only used to help in the mapping operation.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param (callable(Tk, Tv): Tu) $fn - The callback containing the operation to apply to the current
-     *      `CollectionInterface` keys and values.
+     * @param (callable(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
+     *                                   `CollectionInterface` keys and values.
      *
-     * @psalm-return CollectionInterface<Tk, Tu> - a `CollectionInterface` containing the values after a user-specified
-     *      operation on the current `CollectionInterface`'s keys and values is applied.
+     * @return CollectionInterface<Tk, Tu> A `CollectionInterface` containing the values after a user-specified
+     *                                 operation on the current `CollectionInterface`'s keys and values is applied.
      */
     public function mapWithKey(callable $fn): CollectionInterface;
 
@@ -131,13 +139,15 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param iterable<Tu> $iterable - The `iterable` to use to combine with the
-     *      elements of this `CollectionInterface`.
+     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
+     *                               elements of this `CollectionInterface`.
      *
-     * @psalm-return CollectionInterface<Tk, array{0: Tv, 1: Tu}> - The `CollectionInterface` that combines
-     *      the values of the current `CollectionInterface` with the provided `iterable`.
+     * @return CollectionInterface<Tk, array{0: Tv, 1: Tu}> The `CollectionInterface` that combines
+     *                                 the values of the current `CollectionInterface` with the provided `iterable`.
+     *
+     * @psalm-mutation-free
      */
     public function zip(iterable $iterable): CollectionInterface;
 
@@ -150,11 +160,13 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @psalm-param $n - The last element that will be included in the returned
-     *      `CollectionInterface`.
+     * @param int $n The last element that will be included in the returned
+     *               `CollectionInterface`.
      *
-     * @psalm-return CollectionInterface<Tk, Tv> - A `CollectionInterface` that is a proper subset of the current
-     *      `CollectionInterface` up to `n` elements.
+     * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
+     *                                 `CollectionInterface` up to `n` elements.
+     *
+     * @psalm-mutation-free
      */
     public function take(int $n): CollectionInterface;
 
@@ -166,11 +178,11 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * The returned `CollectionInterface` will always be a proper subset of the current
      * `CollectionInterface`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback that is used to determine the stopping
-     *      condition.
+     * @param (callable(Tv): bool) $fn The callback that is used to determine the stopping
+     *                                 condition.
      *
-     * @psalm-return CollectionInterface<Tk, Tv> - A `CollectionInterface` that is a proper subset of the current
-     *      `CollectionInterface` up until the callback returns `false`.
+     * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
+     *                                 `CollectionInterface` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): CollectionInterface;
 
@@ -183,11 +195,13 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @psalm-param int $n - The last element to be skipped; the $n+1 element will be the
-     *      first one in the returned `CollectionInterface`.
+     * @param int $n The last element to be skipped; the $n+1 element will be the
+     *               first one in the returned `CollectionInterface`.
      *
-     * @psalm-return CollectionInterface<Tk, Tv> - A `CollectionInterface` that is a proper subset of the current
-     *      `CollectionInterface` containing values after the specified `n`-th element.
+     * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
+     *                                 `CollectionInterface` containing values after the specified `n`-th element.
+     *
+     * @psalm-mutation-free
      */
     public function drop(int $n): CollectionInterface;
 
@@ -199,11 +213,11 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * The returned `CollectionInterface` will always be a proper subset of the current
      * `CollectionInterface`.
      *
-     * @psalm-param (callable(Tv): bool) $fn - The callback used to determine the starting element for the
-     *      returned `CollectionInterface`.
+     * @param (callable(Tv): bool) $fn The callback used to determine the starting element for the
+     *                                 returned `CollectionInterface`.
      *
-     * @psalm-return CollectionInterface<Tk, Tv> - A `CollectionInterface` that is a proper subset of the current
-     *      `CollectionInterface` starting after the callback returns `true`.
+     * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
+     *                                 `CollectionInterface` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): CollectionInterface;
 
@@ -218,12 +232,15 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * The returned `CollectionInterface` will always be a proper subset of this
      * `CollectionInterface`.
      *
-     * @psalm-param int $start - The starting key of this Vector to begin the returned
-     *      `CollectionInterface`.
-     * @psalm-param int $len   - The length of the returned `CollectionInterface`.
+     * @param int $start The starting key of this Vector to begin the returned
+     *                   `CollectionInterface`.
+     * @param int $length The length of the returned `CollectionInterface`.
      *
-     * @psalm-return CollectionInterface<Tk, Tv> - A `CollectionInterface` that is a proper subset of the current
-     *      `CollectionInterface` starting at `$start` up to but not including the element `$start + $len`.
+     * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
+     *                                 `CollectionInterface` starting at `$start` up to but not including
+     *                                 the element `$start + $length`.
+     *
+     * @psalm-mutation-free
      */
-    public function slice(int $start, int $len): CollectionInterface;
+    public function slice(int $start, int $length): CollectionInterface;
 }

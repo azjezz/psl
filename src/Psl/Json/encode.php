@@ -20,7 +20,7 @@ use const JSON_UNESCAPED_UNICODE;
  *
  * @param mixed $value
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Exception\EncodeException If an error occurred.
  */

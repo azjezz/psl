@@ -19,12 +19,12 @@ namespace Psl\Math;
  *      Math\min_by(['a', 'b'], fn($value) => Str\Byte\length($value))
  *      => Str('b')
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param iterable<T>            $values
- * @psalm-param (callable(T): numeric) $num_func
+ * @param iterable<T> $values
+ * @param (callable(T): numeric) $num_func
  *
- * @psalm-return T|null
+ * @return T|null
  */
 function min_by(iterable $values, callable $num_func)
 {

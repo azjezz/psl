@@ -19,7 +19,7 @@ interface StackInterface extends Countable
     /**
      * Adds an item to the stack.
      *
-     * @psalm-param T $item
+     * @param T $item
      */
     public function push($item): void;
 
@@ -27,7 +27,7 @@ interface StackInterface extends Countable
      * Retrieves, but does remove, the most recently added item that was not yet removed,
      * or returns null if this queue is empty.
      *
-     * @psalm-return null|T
+     * @return null|T
      */
     public function peek();
 
@@ -35,16 +35,16 @@ interface StackInterface extends Countable
      * Retrieves and removes the most recently added item that was not yet removed,
      * or returns null if this queue is empty.
      *
-     * @psalm-return null|T
+     * @return null|T
      */
     public function pull();
 
     /**
      * Retrieve and removes the most recently added item that was not yet removed.
      *
-     * @psalm-return T
-     *
      * @throws Psl\Exception\InvariantViolationException If the stack is empty.
+     *
+     * @return T
      */
     public function pop();
 

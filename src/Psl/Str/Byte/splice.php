@@ -16,7 +16,7 @@ use function substr_replace;
  * remainder of the string will be replaced. If the length is zero, the
  * replacement will be inserted at the offset.
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $length is negative, or $offset is out-of-bounds.
  */

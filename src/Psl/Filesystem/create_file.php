@@ -14,9 +14,9 @@ use function touch;
  * Create the file specified by $filename.
  *
  * @param int|null $time The touch time as a Unix timestamp,
- *  If not supplied the current system time is used.
+ *                       If not supplied the current system time is used.
  * @param int|null $access_time The access time as a Unix timestamp,
- *  If not supplied the current system time is used.
+ *                              If not supplied the current system time is used.
  *
  * @throws Exception\RuntimeException If unable to create the file.
  */

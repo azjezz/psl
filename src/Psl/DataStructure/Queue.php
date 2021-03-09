@@ -12,21 +12,21 @@ use Psl\Vec;
 /**
  * A basic implementation of a queue data structure ( FIFO ).
  *
- * @psalm-template T
+ * @template T
  *
  * @implements QueueInterface<T>
  */
 final class Queue implements QueueInterface
 {
     /**
-     * @psalm-var  list<T>
+     * @var list<T>
      */
     private array $queue = [];
 
     /**
      * Adds a node to the queue.
      *
-     * @psalm-param T $node
+     * @param T $node
      */
     public function enqueue($node): void
     {
@@ -37,7 +37,7 @@ final class Queue implements QueueInterface
      * Retrieves, but does not remove, the node at the head of this queue,
      * or returns null if this queue is empty.
      *
-     * @psalm-return null|T
+     * @return null|T
      */
     public function peek()
     {
@@ -48,7 +48,7 @@ final class Queue implements QueueInterface
      * Retrieves and removes the node at the head of this queue,
      * or returns null if this queue is empty.
      *
-     * @psalm-return null|T
+     * @return null|T
      */
     public function pull()
     {
@@ -63,9 +63,9 @@ final class Queue implements QueueInterface
     /**
      * Dequeues a node from the queue.
      *
-     * @psalm-return T
-     *
      * @throws Psl\Exception\InvariantViolationException If the Queue is invalid.
+     *
+     * @return T
      */
     public function dequeue()
     {

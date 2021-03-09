@@ -86,8 +86,8 @@ final class MutableVectorTypeTest extends TypeTest
     }
 
     /**
-     * @psalm-param Collection\MutableVectorInterface<mixed>|mixed $a
-     * @psalm-param Collection\MutableVectorInterface<mixed>|mixed $b
+     * @param Collection\MutableVectorInterface<mixed>|mixed $a
+     * @param Collection\MutableVectorInterface<mixed>|mixed $b
      */
     protected function equals($a, $b): bool
     {

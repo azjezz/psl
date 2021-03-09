@@ -7,13 +7,11 @@ namespace Psl\Iter;
 /**
  * Returns true if the given iterable contains the key.
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param    iterable<Tk, Tv> $iterable,
- * @psalm-param    Tk               $key
- *
- * @psalm-return   bool
+ * @param iterable<Tk, Tv> $iterable,
+ * @param Tk $key
  */
 function contains_key(iterable $iterable, $key): bool
 {

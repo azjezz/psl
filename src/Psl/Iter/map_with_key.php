@@ -18,17 +18,16 @@ use Psl\Dict;
  *     Iter\map_with_key([1, 2, 3, 4, 5], fn($k, $v) => $k + $v);
  *     => Iter(1, 3, 5, 7, 9)
  *
- * @psalm-template Tk
- * @psalm-template Tv
- * @psalm-template T
+ * @template Tk
+ * @template Tv
+ * @template T
  *
- * @psalm-param iterable<Tk, Tv>        $iterable Iterable to be mapped over
- * @psalm-param (callable(Tk,Tv): T)    $function
+ * @param iterable<Tk, Tv> $iterable Iterable to be mapped over
+ * @param (callable(Tk,Tv): T) $function
  *
- * @psalm-return Iterator<Tk, T>
+ * @return Iterator<Tk, T>
  *
  * @deprecated use `Dict\map_with_key` instead.
- *
  * @see Dict\map_with_key()
  */
 function map_with_key(iterable $iterable, callable $function): Iterator

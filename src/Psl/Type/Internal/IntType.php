@@ -31,9 +31,7 @@ final class IntType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return int
+     * @param mixed $value
      *
      * @throws CoercionException
      */
@@ -66,9 +64,7 @@ final class IntType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return int
+     * @param mixed $value
      *
      * @psalm-assert int $value
      *

@@ -9,7 +9,7 @@ use Psl;
 /**
  * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
  *
- * @psalm-pure
+ * @pure
  */
 function after(string $haystack, string $needle, int $offset = 0): ?string
 {

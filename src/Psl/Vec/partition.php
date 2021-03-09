@@ -10,8 +10,8 @@ namespace Psl\Vec;
  *
  * @template T
  *
- * @param iterable<T>           $iterable
- * @param (callable(T): bool)   $predicate
+ * @param iterable<T> $iterable
+ * @param (callable(T): bool) $predicate
  *
  * @return array{0: list<T>, 1: list<T>}
  */

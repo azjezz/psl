@@ -11,17 +11,16 @@ use Psl\Dict;
  * value's uniqueness is determined by transforming it to a scalar via the
  * given function.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
- * @psalm-template Ts
+ * @template Tk of array-key
+ * @template Tv
+ * @template Ts
  *
- * @psalm-param iterable<Tk, Tv>   $iterable
- * @psalm-param (callable(Tv): Ts) $scalar_func
+ * @param iterable<Tk, Tv> $iterable
+ * @param (callable(Tv): Ts) $scalar_func
  *
- * @psalm-return array<Tk, Tv>
+ * @return array<Tk, Tv>
  *
  * @deprecated use `Dict\unique_by` instead
- *
  * @see Dict\unique_by
  */
 function unique_by(iterable $iterable, callable $scalar_func): array

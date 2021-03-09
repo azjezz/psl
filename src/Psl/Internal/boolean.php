@@ -7,7 +7,7 @@ namespace Psl\Internal;
 /**
  * @param mixed $val
  *
- * @psalm-pure
+ * @pure
  *
  * @codeCoverageIgnore
  *

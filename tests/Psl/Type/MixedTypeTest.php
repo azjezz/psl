@@ -80,7 +80,7 @@ final class MixedTypeTest extends TypeTest
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
      * @dataProvider getInvalidValues
      */

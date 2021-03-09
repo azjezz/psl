@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Psl\Vec;
 
 /**
- * @psalm-template Tv
- * @psalm-template Ts
+ * @template Tv
+ * @template Ts
  *
- * @psalm-param iterable<Tv>                    $iterable Iterable to be mapped over
- * @psalm-param (callable(Tv): iterable<Ts>)    $mapper
+ * @param iterable<Tv> $iterable Iterable to be mapped over
+ * @param (callable(Tv): iterable<Ts>) $mapper
  *
- * @psalm-return list<Ts>
+ * @return list<Ts>
  */
 function flat_map(iterable $iterable, callable $mapper): array
 {

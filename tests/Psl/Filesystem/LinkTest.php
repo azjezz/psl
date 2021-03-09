@@ -91,6 +91,8 @@ final class LinkTest extends AbstractFilesystemTest
         Filesystem\create_symbolic_link($file, $symbolic_link);
 
         static::assertTrue(Filesystem\is_directory($directory));
+
+        Filesystem\delete_file($symbolic_link);
     }
 
     public function testHardLink(): void

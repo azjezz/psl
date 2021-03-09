@@ -20,18 +20,18 @@ use Psl\Type\Exception\CoercionException;
 class UnionType extends Type\Type
 {
     /**
-     * @psalm-var Type\TypeInterface<Tl>
+     * @var Type\TypeInterface<Tl>
      */
     private Type\TypeInterface $left_type;
 
     /**
-     * @psalm-var Type\TypeInterface<Tr>
+     * @var Type\TypeInterface<Tr>
      */
     private Type\TypeInterface $right_type;
 
     /**
-     * @psalm-param Type\TypeInterface<Tl> $left_type
-     * @psalm-param Type\TypeInterface<Tr> $right_type
+     * @param Type\TypeInterface<Tl> $left_type
+     * @param Type\TypeInterface<Tr> $right_type
      */
     public function __construct(
         Type\TypeInterface $left_type,
@@ -52,11 +52,11 @@ class UnionType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return Tl|Tr
+     * @param mixed $value
      *
      * @throws CoercionException
+     *
+     * @return Tl|Tr
      */
     public function coerce($value)
     {
@@ -82,13 +82,13 @@ class UnionType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return Tl|Tr
-     *
-     * @psalm-assert Tl|Tr $value
+     * @param mixed $value
      *
      * @throws AssertException
+     *
+     * @return Tl|Tr
+     *
+     * @psalm-assert Tl|Tr $value
      */
     public function assert($value)
     {

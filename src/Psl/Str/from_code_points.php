@@ -15,7 +15,7 @@ namespace Psl\Str;
  *      Str\from_code_points(72, 101, 108, 108, 111)
  *      => Str('Hello')
  *
- * @psalm-pure
+ * @pure
  */
 function from_code_points(int ...$code_points): string
 {

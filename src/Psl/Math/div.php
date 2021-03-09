@@ -24,10 +24,10 @@ use function intdiv;
  *      Math\div(15, 20)
  *      => Int(0)
  *
- * @psalm-pure
+ * @pure
  *
- * @throws Exception\ArithmeticException        If the $numerator is Math\INT64_MIN and the $denominator is -1.
- * @throws Exception\DivisionByZeroException    If the $denominator is 0.
+ * @throws Exception\ArithmeticException If the $numerator is Math\INT64_MIN and the $denominator is -1.
+ * @throws Exception\DivisionByZeroException If the $denominator is 0.
  */
 function div(int $numerator, int $denominator): int
 {

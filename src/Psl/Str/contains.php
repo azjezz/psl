@@ -9,10 +9,10 @@ use Psl;
 /**
  * Returns whether the 'haystack' string contains the 'needle' string.
  *
- * An optional offset determines where in the haystack the search begins. If the
- * offset is negative, the search will begin that many characters from the end
- * of the string. If the offset is out-of-bounds, a ViolationException will be
- * thrown.
+ * An optional offset determines where in the haystack the search begins.
+ *
+ * If the offset is negative, the search will begin that many characters from the end
+ * of the string.
  *
  * Example:
  *
@@ -34,10 +34,10 @@ use Psl;
  *      Str\contains('سيف', 'س')
  *      => Bool(true)
  *
- * @psalm-pure
+ * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
+ * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds, or
+ *                                                   an invalid $encoding is provided.
  */
 function contains(string $haystack, string $needle, int $offset = 0, ?string $encoding = null): bool
 {

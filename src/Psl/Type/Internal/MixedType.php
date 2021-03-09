@@ -24,9 +24,9 @@ final class MixedType extends Type
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
-     * @psalm-return mixed
+     * @return mixed
      */
     public function coerce($value)
     {
@@ -34,11 +34,11 @@ final class MixedType extends Type
     }
 
     /**
-     * @psalm-param mixed $value
+     * @param mixed $value
      *
      * @psalm-assert mixed $value
      *
-     * @psalm-return mixed
+     * @return mixed
      */
     public function assert($value)
     {

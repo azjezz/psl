@@ -27,12 +27,12 @@ namespace Psl\Fun;
  * @template O
  * @template R
  *
- * @psalm-param (callable(I): O) $first
- * @psalm-param (callable(O): R) $next
+ * @param (callable(I): O) $first
+ * @param (callable(O): R) $next
  *
- * @psalm-return (callable(I): R)
+ * @return (callable(I): R)
  *
- * @psalm-pure
+ * @pure
  */
 function after(callable $first, callable $next): callable
 {

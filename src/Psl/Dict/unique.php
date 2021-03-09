@@ -7,23 +7,23 @@ namespace Psl\Dict;
 /**
  * Returns a new dict in which each value appears exactly once.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv> $iterable
+ * @param iterable<Tk, Tv> $iterable
  *
- * @psalm-return array<Tk, Tv>
+ * @return array<Tk, Tv>
  */
 function unique(iterable $iterable): array
 {
     return unique_by(
         $iterable,
         /**
-         * @psalm-param     Tv  $v
+         * @param Tv $v
          *
-         * @psalm-return    Tv
+         * @return Tv
          *
-         * @psalm-pure
+         * @pure
          */
         static fn($v) => $v
     );

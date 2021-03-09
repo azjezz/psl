@@ -18,9 +18,9 @@ use Psl;
  *
  * @param (callable(int): T) $factory
  *
- * @return list<T>
- *
  * @throws Psl\Exception\InvariantViolationException If $size is lower than 1.
+ *
+ * @return list<T>
  */
 function reproduce(int $size, callable $factory): array
 {

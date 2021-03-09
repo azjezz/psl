@@ -11,7 +11,7 @@ namespace Psl\Encoding\Hex;
  *  [0-9]      [a-f]
  *  0x30-0x39, 0x61-0x66
  *
- * @psalm-pure
+ * @pure
  */
 function encode(string $binary): string
 {

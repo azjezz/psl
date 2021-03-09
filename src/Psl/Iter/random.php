@@ -11,14 +11,14 @@ use Psl\Vec;
 /**
  * Retrieve a random value from a non-empty iterable.
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv> $iterable
- *
- * @psalm-return Tv
+ * @param iterable<Tk, Tv> $iterable
  *
  * @throws Psl\Exception\InvariantViolationException If $iterable is empty.
+ *
+ * @return Tv
  */
 function random(iterable $iterable)
 {
@@ -31,11 +31,11 @@ function random(iterable $iterable)
 
     Psl\invariant(0 !== $size, 'Expected a non-empty iterable.');
 
-    /** @psalm-var list<Tv> $shuffled */
+    /** @var list<Tv> $shuffled */
     $shuffled = Vec\shuffle($values);
 
     if (1 === $size) {
-        /** @psalm-var Tv */
+        /** @var Tv */
         return $shuffled[0];
     }
 

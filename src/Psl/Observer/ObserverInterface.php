@@ -12,7 +12,7 @@ interface ObserverInterface
     /**
      * Receive an update from a subject.
      *
-     * @psalm-param T $subject
+     * @param T $subject
      */
     public function update(SubjectInterface $subject): void;
 }

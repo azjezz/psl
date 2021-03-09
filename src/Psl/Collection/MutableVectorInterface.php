@@ -7,15 +7,17 @@ namespace Psl\Collection;
 /**
  * @template T
  *
- * @extends  VectorInterface<T>
- * @extends  MutableAccessibleCollectionInterface<int, T>
+ * @extends VectorInterface<T>
+ * @extends MutableAccessibleCollectionInterface<int, T>
  */
 interface MutableVectorInterface extends MutableAccessibleCollectionInterface, VectorInterface
 {
     /**
      * Get an array copy of the current vector.
      *
-     * @psalm-return list<T>
+     * @return list<T>
+     *
+     * @psalm-mutation-free
      */
     public function toArray(): array;
 
@@ -23,14 +25,18 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * Returns a `MutableVectorInterface` containing the values of the current
      * `MutableVectorInterface`.
      *
-     * @psalm-return MutableVectorInterface<T>
+     * @return MutableVectorInterface<T>
+     *
+     * @psalm-mutation-free
      */
     public function values(): MutableVectorInterface;
 
     /**
      * Returns a `MutableVectorInterface` containing the keys of the current `MutableVectorInterface`.
      *
-     * @psalm-return MutableVectorInterface<int>
+     * @return MutableVectorInterface<int>
+     *
+     * @psalm-mutation-free
      */
     public function keys(): MutableVectorInterface;
 
@@ -44,11 +50,11 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * The keys associated with the current `MutableVectorInterface` remain unchanged in the
      * returned `MutableVectorInterface`.
      *
-     * @psalm-param (callable(T): bool) $fn - The callback containing the condition to apply to the current
-     *                                 `MutableVectorInterface` values
+     * @param (callable(T): bool) $fn The callback containing the condition to apply to the current
+     *                                `MutableVectorInterface` values
      *
-     * @psalm-return MutableVectorInterface<T> - a MutableVectorInterface containing the values after
-     *      a user-specified condition is applied.
+     * @return MutableVectorInterface<T> A MutableVectorInterface containing the values after
+     *                                   a user-specified condition is applied.
      */
     public function filter(callable $fn): MutableVectorInterface;
 
@@ -63,11 +69,12 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * The keys associated with the current `MutableVectorInterface` remain unchanged in the
      * returned `MutableVectorInterface`; the keys will be used in the filtering process only.
      *
-     * @psalm-param (callable(int, T): bool) $fn - The callback containing the condition to apply to the current
-     *                                     `MutableVectorInterface` keys and values
+     * @param (callable(int, T): bool) $fn The callback containing the condition to apply to the current
+     *                                     `MutableVectorInterface` keys and values.
      *
-     * @psalm-return MutableVectorInterface<T> - a `MutableVectorInterface` containing the values after a user-specified
-     *      condition is applied to the keys and values of the current `MutableVectorInterface`.
+     * @return MutableVectorInterface<T> A `MutableVectorInterface` containing the values after a user-specified
+     *                                   condition is applied to the keys and values of the current
+     *                                   `MutableVectorInterface`.
      */
     public function filterWithKey(callable $fn): MutableVectorInterface;
 
@@ -81,13 +88,13 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * The keys will remain unchanged from the current `MutableVectorInterface` to the
      * returned `MutableVectorInterface`.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param (callable(T): Tu) $fn - The callback containing the operation to apply to the current
-     *                               `MutableVectorInterface` values
+     * @param (callable(T): Tu) $fn The callback containing the operation to apply to the current
+     *                              `MutableVectorInterface` values
      *
-     * @psalm-return   MutableVectorInterface<Tu> - a `MutableVectorInterface` containing key/value pairs after
-     *      a user-specified operation is applied.
+     * @return MutableVectorInterface<Tu> A `MutableVectorInterface` containing key/value pairs after
+     *                                    a user-specified operation is applied.
      */
     public function map(callable $fn): MutableVectorInterface;
 
@@ -102,46 +109,54 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * The keys will remain unchanged from this `MutableVectorInterface` to the returned
      * `MutableVectorInterface`. The keys are only used to help in the mapping operation.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param (callable(int, T): Tu) $fn - The callback containing the operation to apply to the current
+     * @param (callable(int, T): Tu) $fn The callback containing the operation to apply to the current
      *                                   `MutableVectorInterface` keys and values
      *
-     * @psalm-return   MutableVectorInterface<Tu> - a `MutableVectorInterface` containing the values after
-     *      a user-specified operation on the current `MutableVectorInterface`'s keys and values is
-     *      applied.
+     * @return MutableVectorInterface<Tu> A `MutableVectorInterface` containing the values after
+     *                                    a user-specified operation on the current `MutableVectorInterface`'s
+     *                                    keys and values is applied.
      */
     public function mapWithKey(callable $fn): MutableVectorInterface;
 
     /**
      * Returns the first value in the current `MutableVectorInterface`.
      *
-     * @psalm-return T|null - The first value in the current `MutableVectorInterface`, or `null` if the
-     *      current `MutableVectorInterface` is empty.
+     * @return T|null The first value in the current `MutableVectorInterface`, or `null` if the
+     *                current `MutableVectorInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function first();
 
     /**
      * Returns the first key in the current `MutableVectorInterface`.
      *
-     * @psalm-return int|null - The first key in the current `MutableVectorInterface`, or `null` if the
-     *      current `MutableVectorInterface` is empty.
+     * @return int|null The first key in the current `MutableVectorInterface`, or `null` if the
+     *                  current `MutableVectorInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function firstKey(): ?int;
 
     /**
      * Returns the last value in the current `MutableVectorInterface`.
      *
-     * @psalm-return T|null - The last value in the current `MutableVectorInterface`, or `null` if the
-     *      current `MutableVectorInterface` is empty.
+     * @return T|null The last value in the current `MutableVectorInterface`, or `null` if the
+     *                current `MutableVectorInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function last();
 
     /**
      * Returns the last key in the current `MutableVectorInterface`.
      *
-     * @psalm-return int|null - The last key in the current `MutableVectorInterface`, or `null` if the
-     *      current `MutableVectorInterface` is empty.
+     * @return int|null The last key in the current `MutableVectorInterface`, or `null` if the
+     *                  current `MutableVectorInterface` is empty.
+     *
+     * @psalm-mutation-free
      */
     public function lastKey(): ?int;
 
@@ -150,10 +165,12 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * If no element matches the search value, this function returns null.
      *
-     * @psalm-param  T $search_value - The value that will be search for in the current
-     *      `MutableVectorInterface`.
+     * @param T $search_value The value that will be search for in the current
+     *                        `MutableVectorInterface`.
      *
-     * @psalm-return int|null - The key (index) where that value is found; null if it is not found.
+     * @return int|null The key (index) where that value is found; null if it is not found.
+     *
+     * @psalm-mutation-free
      */
     public function linearSearch($search_value): ?int;
 
@@ -166,13 +183,16 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @psalm-template Tu
+     * @template Tu
      *
-     * @psalm-param    iterable<Tu> $iterable - The `iterable` to use to combine with the
-     *      elements of this `MutableVectorInterface`.
+     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
+     *                               elements of this `MutableVectorInterface`.
      *
-     * @psalm-return   MutableVectorInterface<array{0: T, 1: Tu}> - The `MutableVectorInterface` that combines the
-     *      values of the current `MutableVectorInterface` with the provided `iterable`.
+     * @return MutableVectorInterface<array{0: T, 1: Tu}> - The `MutableVectorInterface` that combines the
+     *                                         values of the current `MutableVectorInterface` with the provided
+     *                                         `iterable`.
+     *
+     * @psalm-mutation-free
      */
     public function zip(iterable $iterable): MutableVectorInterface;
 
@@ -185,11 +205,13 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @psalm-param $n - The last element that will be included in the returned
-     *      `MutableVectorInterface`.
+     * @param int $n The last element that will be included in the returned
+     *               `MutableVectorInterface`.
      *
-     * @psalm-return MutableVectorInterface<T> - A `MutableVectorInterface` that is a proper subset of the current
-     *      `MutableVectorInterface` up to `n` elements.
+     * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
+     *                                   `MutableVectorInterface` up to `n` elements.
+     *
+     * @psalm-mutation-free
      */
     public function take(int $n): MutableVectorInterface;
 
@@ -201,11 +223,11 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * The returned `MutableVectorInterface` will always be a proper subset of the current
      * `MutableVectorInterface`.
      *
-     * @psalm-param (callable(T): bool) $fn - The callback that is used to determine the stopping
-     *      condition.
+     * @param (callable(T): bool) $fn The callback that is used to determine the stopping
+     *                                condition.
      *
-     * @psalm-return MutableVectorInterface<T> - A `MutableVectorInterface` that is a proper subset of the current
-     *      `MutableVectorInterface` up until the callback returns `false`.
+     * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
+     *                                   `MutableVectorInterface` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): MutableVectorInterface;
 
@@ -218,11 +240,13 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @psalm-param  int $n - The last element to be skipped; the $n+1 element will be the
-     *      first one in the returned `MutableVectorInterface`.
+     * @param int $n The last element to be skipped; the $n+1 element will be the
+     *               first one in the returned `MutableVectorInterface`.
      *
-     * @psalm-return MutableVectorInterface<T> - A `MutableVectorInterface` that is a proper subset of the current
-     *      `MutableVectorInterface` containing values after the specified `n`-th element.
+     * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
+     *                                   `MutableVectorInterface` containing values after the specified `n`-th element.
+     *
+     * @psalm-mutation-free
      */
     public function drop(int $n): MutableVectorInterface;
 
@@ -234,11 +258,11 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * The returned `MutableVectorInterface` will always be a proper subset of the current
      * `MutableVectorInterface`.
      *
-     * @psalm-param (callable(T): bool) $fn - The callback used to determine the starting element for the
-     *      returned `MutableVectorInterface`.
+     * @param (callable(T): bool) $fn The callback used to determine the starting element for the
+     *                                returned `MutableVectorInterface`.
      *
-     * @psalm-return MutableVectorInterface<T> - A `MutableVectorInterface` that is a proper subset of the current
-     *      `MutableVectorInterface` starting after the callback returns `true`.
+     * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
+     *                                   `MutableVectorInterface` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): MutableVectorInterface;
 
@@ -253,14 +277,17 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * The returned `MutableVectorInterface` will always be a proper subset of this
      * `MutableVectorInterface`.
      *
-     * @psalm-param  int $start - The starting key of this Vector to begin the returned
-     *                   `MutableVectorInterface`
-     * @psalm-param  int $len   - The length of the returned `MutableVectorInterface`
+     * @param int $start The starting key of this Vector to begin the returned
+     *                   `MutableVectorInterface`.
+     * @param int $length The length of the returned `MutableVectorInterface`.
      *
-     * @psalm-return MutableVectorInterface<T> - A `MutableVectorInterface` that is a proper subset of the current
-     *      `MutableVectorInterface` starting at `$start` up to but not including the element `$start + $len`.
+     * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
+     *                                   `MutableVectorInterface` starting at `$start` up to but not including
+     *                                   the element `$start + $length`.
+     *
+     * @psalm-mutation-free
      */
-    public function slice(int $start, int $len): MutableVectorInterface;
+    public function slice(int $start, int $length): MutableVectorInterface;
 
     /**
      * Stores a value into the current vector with the specified key,
@@ -272,10 +299,10 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * It returns the current vector, meaning changes made to the current
      * vector will be reflected in the returned vector.
      *
-     * @psalm-param  int $k - The key to which we will set the value
-     * @psalm-param  T   $v - The value to set
+     * @param int $k The key to which we will set the value.
+     * @param T $v The value to set.
      *
-     * @psalm-return MutableVectorInterface<T> - Returns itself
+     * @return MutableVectorInterface<T> Returns itself.
      */
     public function set($k, $v): MutableVectorInterface;
 
@@ -290,9 +317,9 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * It the current vector, meaning changes made to the current vector
      * will be reflected in the returned vector.
      *
-     * @psalm-param  iterable<int, T> $iterable - The `iterable` with the new values to set
+     * @param iterable<int, T> $iterable The `iterable` with the new values to set.
      *
-     * @psalm-return MutableVectorInterface<T> - Returns itself
+     * @return MutableVectorInterface<T> Returns itself.
      */
     public function setAll(iterable $iterable): MutableVectorInterface;
 
@@ -311,34 +338,34 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * If $k is negative, or $k is greater than the largest key in the current Vector, no changes are made.
      *
-     * @psalm-param  int $k - The key to remove
+     * @param int $k The key to remove.
      *
-     * @psalm-return MutableVectorInterface<T> - Returns itself
+     * @return MutableVectorInterface<T> Returns itself.
      */
     public function remove($k): MutableVectorInterface;
 
     /**
      * Removes all items from the vector.
      *
-     * @psalm-return MutableVectorInterface<T>
+     * @return MutableVectorInterface<T>
      */
     public function clear(): MutableVectorInterface;
 
     /**
      * Add a value to the vector and return the vector itself.
      *
-     * @psalm-param  T $v - The value to add
+     * @param T $v The value to add.
      *
-     * @psalm-return MutableVectorInterface<T> - Returns itself
+     * @return MutableVectorInterface<T> Returns itself.
      */
     public function add($v): MutableVectorInterface;
 
     /**
      * For every element in the provided iterable, add the value into the current vector.
      *
-     * @psalm-param  iterable<T> $iterable - The `iterable` with the new values to add
+     * @param iterable<T> $iterable The `iterable` with the new values to add.
      *
-     * @psalm-return MutableVectorInterface<T> - Returns itself
+     * @return MutableVectorInterface<T> Returns itself.
      */
     public function addAll(iterable $iterable): MutableVectorInterface;
 }

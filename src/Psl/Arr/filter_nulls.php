@@ -13,14 +13,13 @@ use Psl\Vec;
  *      Arr\filter_nulls([1, null, 5])
  *      => Arr(1, 5)
  *
- * @psalm-template T
+ * @template T
  *
- * @psalm-param iterable<T|null> $iterable
+ * @param iterable<T|null> $iterable
  *
- * @psalm-return list<T>
+ * @return list<T>
  *
  * @deprecated use `Vec\filter_nulls` instead.
- *
  * @see Vec\filter_nulls()
  */
 function filter_nulls(iterable $iterable): array

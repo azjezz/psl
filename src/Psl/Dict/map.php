@@ -17,14 +17,14 @@ namespace Psl\Dict;
  *     Dict\map([1, 2, 3, 4, 5], fn($i) => $i * 2);
  *     => Dict(2, 4, 6, 8, 10)
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
- * @psalm-template T
+ * @template Tk of array-key
+ * @template Tv
+ * @template T
  *
- * @psalm-param iterable<Tk, Tv>   $iterable Iterable to be mapped over
- * @psalm-param (callable(Tv): T)  $function
+ * @param iterable<Tk, Tv> $iterable Iterable to be mapped over
+ * @param (callable(Tv): T) $function
  *
- * @psalm-return array<Tk, T>
+ * @return array<Tk, T>
  */
 function map(iterable $iterable, callable $function): array
 {

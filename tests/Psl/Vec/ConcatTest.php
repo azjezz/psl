@@ -10,13 +10,13 @@ use Psl\Vec;
 final class ConcatTest extends TestCase
 {
     /**
-     * @psalm-template T
+     * @template T
      *
-     * @psalm-param list<T>     $expected
-     * @psalm-param list<T>     $first
-     * @psalm-param iterable<T> ...$rest
+     * @param list<T> $expected
+     * @param list<T> $first
+     * @param iterable<T> ...$rest
      *
-     * @psalm-return list<T>
+     * @return list<T>
      *
      * @dataProvider provideData
      */

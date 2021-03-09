@@ -9,11 +9,11 @@ use function is_numeric as php_is_numeric;
 /**
  * Finds whether a variable is numeric.
  *
- * @psalm-param mixed $var
+ * @param mixed $var
  *
  * @psalm-assert-if-true numeric $var
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Type\num()->matches($value)` instead.
  */

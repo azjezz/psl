@@ -19,15 +19,14 @@ use Psl\Vec;
  *      Iter\values([17 => 1, 42 => 2, -2 => 100])
  *      => Iter(1, 42, 100)
  *
- * @psalm-template Tk
- * @psalm-template Tv
+ * @template Tk
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv> $iterable Iterable to get values from
+ * @param iterable<Tk, Tv> $iterable Iterable to get values from
  *
- * @psalm-return Iterator<int, Tv>
+ * @return Iterator<int, Tv>
  *
  * @deprecated since 1.2, use Vec\values instead.
- *
  * @see Vec\values()
  */
 function values(iterable $iterable): Iterator

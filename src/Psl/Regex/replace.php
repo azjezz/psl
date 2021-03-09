@@ -15,13 +15,13 @@ use function preg_replace;
  *
  * @param non-empty-string $pattern The pattern to search for.
  * @param null|positive-int $limit The maximum possible replacements for
- * $pattern within $haystack.
+ *                                 $pattern within $haystack.
  *
  * @throws Exception\InvalidPatternException If $pattern is invalid.
  * @throws Exception\RuntimeException In case of an unexpected error.
  * @throws Psl\Exception\InvariantViolationException If $limit is negative.
  *
- * @psalm-pure
+ * @pure
  */
 function replace(string $haystack, string $pattern, string $replacement, ?int $limit = null): string
 {

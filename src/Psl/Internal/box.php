@@ -10,11 +10,11 @@ use function restore_error_handler;
 use function set_error_handler;
 
 /**
- * @psalm-template T
+ * @template T
  *
- * @psalm-param (callable(): T) $fun
+ * @param (callable(): T) $fun
  *
- * @psalm-return array{0: T, 1: ?string}
+ * @return array{0: T, 1: ?string}
  *
  * @internal
  *
@@ -31,7 +31,6 @@ function box(callable $fun): array
     /**
      * @var string|null $last_message
      */
-
     if (null !== $last_message && Str\contains($last_message, '): ')) {
         $last_message = Str\after(
             Str\lowercase($last_message),

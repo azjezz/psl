@@ -9,7 +9,7 @@ use Psl;
 /**
  * Returns whether the string starts with the given prefix.
  *
- * @psalm-pure
+ * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */

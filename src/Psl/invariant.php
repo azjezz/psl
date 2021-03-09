@@ -7,11 +7,11 @@ namespace Psl;
 use Psl\Exception\InvariantViolationException;
 
 /**
- * @psalm-param int|float|string  ...$args
+ * @param int|float|string ...$args
  *
  * @psalm-assert true $fact
  *
- * @psalm-pure
+ * @pure
  *
  * @throws InvariantViolationException
  */

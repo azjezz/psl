@@ -26,9 +26,9 @@ namespace Psl\Dict;
  * @template Tk2 of array-key
  * @template Tv2
  *
- * @param iterable<Tk1, Tv1>          $iterable
- * @param (callable(Tk1, Tv1): Tv2)   $value_func
- * @param (callable(Tk1, Tv1): Tk2)   $key_func
+ * @param iterable<Tk1, Tv1> $iterable
+ * @param (callable(Tk1, Tv1): Tv2) $value_func
+ * @param (callable(Tk1, Tv1): Tk2) $key_func
  *
  * @return array<Tk2, Tv2>
  */

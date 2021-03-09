@@ -13,8 +13,8 @@ final class ChunkWithKeysTest extends TestCase
      * @template Tk
      * @template Tv
      *
-     * @param list<array<Tk, Tv>>   $expected
-     * @param iterable<Tk, Tv>      $iterable
+     * @param list<array<Tk, Tv>> $expected
+     * @param iterable<Tk, Tv> $iterable
      *
      * @dataProvider provideData
      */

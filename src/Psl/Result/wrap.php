@@ -12,9 +12,9 @@ use Exception;
  *
  * @template     T
  *
- * @psalm-param  (callable(): (T|ResultInterface<T>)) $fun
+ * @param (callable(): (T|ResultInterface<T>)) $fun
  *
- * @psalm-return ResultInterface<T>
+ * @return ResultInterface<T>
  */
 function wrap(callable $fun): ResultInterface
 {

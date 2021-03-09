@@ -9,11 +9,11 @@ use function is_string as php_is_string;
 /**
  * Finds whether a variable is a string.
  *
- * @psalm-param mixed $var
+ * @param mixed $var
  *
  * @psalm-assert-if-true string $var
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Type\string()->matches($value)` instead.
  */

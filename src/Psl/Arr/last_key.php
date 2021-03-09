@@ -11,21 +11,20 @@ use function array_key_last;
 /**
  * Get the last key of an array, if the array is empty, null will be returned.
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param array<Tk, Tv> $array
+ * @param array<Tk, Tv> $array
  *
- * @psalm-return Tk|null
+ * @return Tk|null
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use `Iter\last_key` instead.
- *
  * @see Iter\last_key()
  */
 function last_key(array $array)
 {
-    /** @psalm-var Tk|null */
+    /** @var Tk|null */
     return array_key_last($array);
 }

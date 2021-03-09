@@ -15,25 +15,31 @@ interface IndexAccessInterface
     /**
      * Returns the value at the specified key in the current collection.
      *
-     * @psalm-param Tk $k
+     * @param Tk $k
      *
-     * @psalm-return Tv
+     * @return Tv
+     *
+     * @psalm-mutation-free
      */
     public function at($k);
 
     /**
      * Determines if the specified key is in the current collection.
      *
-     * @psalm-param Tk $k
+     * @param Tk $k
+     *
+     * @psalm-mutation-free
      */
     public function contains($k): bool;
 
     /**
      * Returns the value at the specified key in the current collection.
      *
-     * @psalm-param Tk $k
+     * @param Tk $k
      *
-     * @psalm-return Tv|null
+     * @return Tv|null
+     *
+     * @psalm-mutation-free
      */
     public function get($k);
 }

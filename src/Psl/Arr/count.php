@@ -23,15 +23,14 @@ use Psl\Iter;
  *      Arr\count(Arr\flatten([[1, 2, 3], [4], [5, 6], [3 => 7, 4 => 8]]))
  *      => Int(5)
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param array<Tk, Tv> $array
+ * @param array<Tk, Tv> $array
  *
- * @psalm-pure
+ * @pure
  *
  * @deprecated use Iter\count instead.
- *
  * @see Iter\count()
  */
 function count(array $array): int

@@ -20,17 +20,17 @@ use Closure;
  *      Dict\filter(['foo', 'bar', 'baz', 'qux'], fn(string $value): bool => Str\contains($value, 'a'));
  *      => Dict(1 => 'bar', 2 => 'baz')
  *
- * @psalm-template Tk of array-key
- * @psalm-template Tv
+ * @template Tk of array-key
+ * @template Tv
  *
- * @psalm-param iterable<Tk, Tv>            $iterable
- * @psalm-param (callable(Tv): bool)|null   $predicate
+ * @param iterable<Tk, Tv> $iterable
+ * @param (callable(Tv): bool)|null $predicate
  *
- * @psalm-return array<Tk, Tv>
+ * @return array<Tk, Tv>
  */
 function filter(iterable $iterable, ?callable $predicate = null): array
 {
-    /** @psalm-var (callable(Tv): bool) $predicate */
+    /** @var (callable(Tv): bool) $predicate */
     $predicate = $predicate ?? Closure::fromCallable('Psl\Internal\boolean');
     $result    = [];
     foreach ($iterable as $k => $v) {
