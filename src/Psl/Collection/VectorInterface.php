@@ -309,7 +309,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      * @param int $length The length of the returned `VectorInterface`.
      *
      * @return VectorInterface<T> A `VectorInterface` that is a proper subset of the current
-     *                            `VectorInterface` starting at `$start` up to but not including the element `$start + $length`.
+     *                            `VectorInterface` starting at `$start` up to but not including
+     *                            the element `$start + $length`.
      *
      * @psalm-mutation-free
      */

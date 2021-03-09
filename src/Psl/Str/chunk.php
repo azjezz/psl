@@ -30,7 +30,8 @@ use Psl\Internal;
  *                                                   the limit ( 65535 ), or an invalid $encoding is provided.
  *
  * @return list<string> if $chunk_length parameter is specified, the returned array will be broken down
- *                      into chunks with each being $chunk_length in length, otherwise each chunk will be one character in length.
+ *                      into chunks with each being $chunk_length in length, otherwise each chunk will be
+ *                      one character in length.
  *                      If the $chunk_length length exceeds the length of string, the entire string is returned
  *                      as the first (and only) array element.
  *

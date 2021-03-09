@@ -270,7 +270,8 @@ interface MapInterface extends AccessibleCollectionInterface
      * @param int $length The length of the returned `MapInterface`
      *
      * @return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
-     *                          `MapInterface` starting at `$start` up to but not including the element `$start + $length`.
+     *                          `MapInterface` starting at `$start` up to but not including
+     *                          the element `$start + $length`.
      *
      * @psalm-mutation-free
      */

@@ -596,7 +596,8 @@ final class MutableVector implements MutableVectorInterface
      * @throws Psl\Exception\InvariantViolationException If $start or $len are negative.
      *
      * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
-     *                          `MutableVector` starting at `$start` up to but not including the element `$start + $length`.
+     *                          `MutableVector` starting at `$start` up to but not including
+     *                          the element `$start + $length`.
      *
      * @psalm-mutation-free
      */

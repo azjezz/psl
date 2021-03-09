@@ -237,7 +237,8 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * @param int $length The length of the returned `CollectionInterface`.
      *
      * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
-     *                                 `CollectionInterface` starting at `$start` up to but not including the element `$start + $length`.
+     *                                 `CollectionInterface` starting at `$start` up to but not including
+     *                                 the element `$start + $length`.
      *
      * @psalm-mutation-free
      */

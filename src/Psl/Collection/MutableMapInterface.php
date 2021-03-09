@@ -269,7 +269,8 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @param int $length The length of the returned `MutableMapInterface`.
      *
      * @return MutableMapInterface<Tk, Tv> - A `MutableMapInterface` that is a proper subset of the current
-     *                                 `MutableMapInterface` starting at `$start` up to but not including the element `$start + $length`.
+     *                                 `MutableMapInterface` starting at `$start` up to but not including
+     *                                 the element `$start + $length`.
      *
      * @psalm-mutation-free
      */

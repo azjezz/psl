@@ -12,8 +12,9 @@ use function putenv;
 /**
  * Sets the environment variable $key to the value $value for the currently running process.
  *
- * @throws Psl\Exception\InvariantViolationException If $key is empty, contains an ASCII equals sign `=` or
- *                                                   the NUL character `\0`, or when the $value contains the NUL character.
+ * @throws Psl\Exception\InvariantViolationException If $key is empty, contains an ASCII equals sign `=`,
+ *                                                   the NUL character `\0`, or when the $value contains
+ *                                                   the NUL character.
  */
 function set_var(string $key, string $value): void
 {

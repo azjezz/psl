@@ -73,7 +73,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *                                     `MutableVectorInterface` keys and values.
      *
      * @return MutableVectorInterface<T> A `MutableVectorInterface` containing the values after a user-specified
-     *                                   condition is applied to the keys and values of the current `MutableVectorInterface`.
+     *                                   condition is applied to the keys and values of the current
+     *                                   `MutableVectorInterface`.
      */
     public function filterWithKey(callable $fn): MutableVectorInterface;
 
@@ -114,7 +115,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *                                   `MutableVectorInterface` keys and values
      *
      * @return MutableVectorInterface<Tu> A `MutableVectorInterface` containing the values after
-     *                                    a user-specified operation on the current `MutableVectorInterface`'s keys and values is applied.
+     *                                    a user-specified operation on the current `MutableVectorInterface`'s
+     *                                    keys and values is applied.
      */
     public function mapWithKey(callable $fn): MutableVectorInterface;
 
@@ -187,7 +189,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *                               elements of this `MutableVectorInterface`.
      *
      * @return MutableVectorInterface<array{0: T, 1: Tu}> - The `MutableVectorInterface` that combines the
-     *                                         values of the current `MutableVectorInterface` with the provided `iterable`.
+     *                                         values of the current `MutableVectorInterface` with the provided
+     *                                         `iterable`.
      *
      * @psalm-mutation-free
      */
@@ -279,7 +282,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * @param int $length The length of the returned `MutableVectorInterface`.
      *
      * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
-     *                                   `MutableVectorInterface` starting at `$start` up to but not including the element `$start + $length`.
+     *                                   `MutableVectorInterface` starting at `$start` up to but not including
+     *                                   the element `$start + $length`.
      *
      * @psalm-mutation-free
      */
