@@ -44,9 +44,9 @@ final class LiteralScalarType extends Type\Type
     /**
      * @param mixed $value
      *
-     * @return T
-     *
      * @throws CoercionException
+     *
+     * @return T
      */
     public function coerce($value)
     {
@@ -94,7 +94,7 @@ final class LiteralScalarType extends Type\Type
         if ($literal_value === $coerced_value) {
             /**
              * @psalm-suppress InvalidReturnStatement
-             * 
+             *
              * @var T $coerced_value
              */
             return $coerced_value;
