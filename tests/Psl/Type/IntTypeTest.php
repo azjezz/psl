@@ -32,15 +32,15 @@ final class IntTypeTest extends TypeTest
         yield ['07', 7];
         yield ['007', 7];
         yield ['000', 0];
+        yield [1.0, 1];
     }
 
     public function getInvalidCoercions(): iterable
     {
+        yield [1.23];
         yield ['1.23'];
         yield ['1e123'];
         yield [''];
-        yield [1.0];
-        yield [1.23];
         yield [[]];
         yield [[123]];
         yield [null];

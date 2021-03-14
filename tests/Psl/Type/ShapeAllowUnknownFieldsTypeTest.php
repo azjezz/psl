@@ -125,8 +125,8 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTest
     }
 
     /**
-     * @psalm-param Collection\VectorInterface<mixed>|mixed $a
-     * @psalm-param Collection\VectorInterface<mixed>|mixed $b
+     * @param Collection\VectorInterface<mixed>|mixed $a
+     * @param Collection\VectorInterface<mixed>|mixed $b
      */
     protected function equals($a, $b): bool
     {

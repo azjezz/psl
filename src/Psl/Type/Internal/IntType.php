@@ -9,6 +9,7 @@ use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
+use function is_float;
 use function is_int;
 use function is_object;
 use function is_string;
@@ -57,6 +58,14 @@ final class IntType extends Type\Type
             // Exceptional case "000" -(trim)-> "", but we want to return 0
             if ('' === $trimmed && '' !== $str) {
                 return 0;
+            }
+        }
+        
+        if (is_float($value)) {
+            $integer_value = (int) $value;
+            $reconstructed = (float) $integer_value;
+            if ($reconstructed === $value) {
+                return $integer_value;
             }
         }
 

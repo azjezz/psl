@@ -13,6 +13,7 @@ final class NumType extends UnionType
 {
     public function __construct()
     {
+        /** @psalm-suppress MissingThrowsDocblock */
         parent::__construct(new IntType(), new FloatType());
     }
 

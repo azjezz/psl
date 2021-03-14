@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
-use Psl\Dict;
+use Psl;
 use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
@@ -36,11 +36,18 @@ final class DictType extends Type\Type
     /**
      * @param Type\TypeInterface<Tk> $key_type
      * @param Type\TypeInterface<Tv> $value_type
+     *
+     * @throws Psl\Exception\InvariantViolationException If $key_value, or $value_type is optional.
      */
     public function __construct(
         Type\TypeInterface $key_type,
         Type\TypeInterface $value_type
     ) {
+        Psl\invariant(
+            !$key_type->isOptional() && !$value_type->isOptional(),
+            'Optional type must be the outermost.'
+        );
+
         $this->key_type   = $key_type;
         $this->value_type = $value_type;
     }
@@ -63,23 +70,17 @@ final class DictType extends Type\Type
             $key_type = $this->key_type->withTrace($key_trace);
             $value_type = $this->value_type->withTrace($value_trace);
 
-            /**
-             * @var list<array{0: Tk, 1: Tv}> $entries
-             */
-            $entries = [];
+            $result = [];
 
             /**
              * @var Tk $k
              * @var Tv $v
              */
             foreach ($value as $k => $v) {
-                $entries[] = [
-                    $key_type->coerce($k),
-                    $value_type->coerce($v),
-                ];
+                $result[$key_type->coerce($k)] = $value_type->coerce($v);
             }
-
-            return Dict\from_entries($entries);
+            
+            return $result;
         }
 
         throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
@@ -105,23 +106,17 @@ final class DictType extends Type\Type
             $key_type = $this->key_type->withTrace($key_trace);
             $value_type = $this->value_type->withTrace($value_trace);
 
-            /**
-             * @var list<array{0: Tk, 1: Tv}> $entries
-             */
-            $entries = [];
+            $result = [];
 
             /**
              * @var Tk $k
              * @var Tv $v
              */
             foreach ($value as $k => $v) {
-                $entries[] = [
-                    $key_type->assert($k),
-                    $value_type->assert($v),
-                ];
+                $result[$key_type->assert($k)] = $value_type->assert($v);
             }
 
-            return Dict\from_entries($entries);
+            return $result;
         }
 
         throw AssertException::withValue($value, $this->toString(), $this->getTrace());
