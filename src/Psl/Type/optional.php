@@ -7,9 +7,9 @@ namespace Psl\Type;
 /**
  * @template T
  *
- * @psalm-param TypeInterface<T> $inner_type
+ * @param TypeInterface<T> $inner_type
  *
- * @psalm-return TypeInterface<T>
+ * @return TypeInterface<T>
  */
 function optional(TypeInterface $inner_type): TypeInterface
 {

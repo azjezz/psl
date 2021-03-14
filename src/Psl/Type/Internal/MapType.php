@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Psl;
 use Psl\Collection;
 use Psl\Dict;
 use Psl\Str;
@@ -37,11 +38,18 @@ final class MapType extends Type\Type
     /**
      * @param Type\TypeInterface<Tk> $key_type
      * @param Type\TypeInterface<Tv> $value_type
+     *
+     * @throws Psl\Exception\InvariantViolationException If $key_value, or $value_type is optional.
      */
     public function __construct(
         Type\TypeInterface $key_type,
         Type\TypeInterface $value_type
     ) {
+        Psl\invariant(
+            !$key_type->isOptional() && !$value_type->isOptional(),
+            'Optional type must be the outermost.'
+        );
+
         $this->key_type = $key_type;
         $this->value_type = $value_type;
     }

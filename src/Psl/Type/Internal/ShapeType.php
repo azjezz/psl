@@ -43,6 +43,7 @@ final class ShapeType extends Type\Type
      */
     public function coerce($value): array
     {
+        /** @psalm-suppress MissingThrowsDocblock */
         if (Type\iterable(Type\mixed(), Type\mixed())->matches($value)) {
             $array = [];
             /**
@@ -97,6 +98,7 @@ final class ShapeType extends Type\Type
      */
     public function assert($value): array
     {
+        /** @psalm-suppress MissingThrowsDocblock */
         if (Type\dict(Type\array_key(), Type\mixed())->matches($value)) {
             $result = [];
             foreach ($this->elements_types as $element => $type) {

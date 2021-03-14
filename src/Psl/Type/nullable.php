@@ -11,9 +11,9 @@ use Psl;
  *
  * @param TypeInterface<T> $inner_type
  *
- * @return TypeInterface<T|null>
- *
  * @throws Psl\Exception\InvariantViolationException If $inner_type is optional.
+ *
+ * @return TypeInterface<T|null>
  */
 function nullable(TypeInterface $inner_type): TypeInterface
 {

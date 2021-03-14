@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Psl;
 use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
@@ -32,11 +33,18 @@ class UnionType extends Type\Type
     /**
      * @param Type\TypeInterface<Tl> $left_type
      * @param Type\TypeInterface<Tr> $right_type
+     *
+     * @throws Psl\Exception\InvariantViolationException If $left_type, or $right_type is optional.
      */
     public function __construct(
         Type\TypeInterface $left_type,
         Type\TypeInterface $right_type
     ) {
+        Psl\invariant(
+            !$left_type->isOptional() && !$right_type->isOptional(),
+            'Optional type must be the outermost.'
+        );
+
         $this->left_type  = $left_type;
         $this->right_type = $right_type;
     }

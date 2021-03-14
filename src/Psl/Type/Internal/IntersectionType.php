@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Psl;
 use Psl\Str;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -34,11 +35,18 @@ final class IntersectionType extends Type
     /**
      * @param TypeInterface<Tl> $left_type
      * @param TypeInterface<Tr> $right_type
+     *
+     * @throws Psl\Exception\InvariantViolationException If $left_type, or $right_type is optional.
      */
     public function __construct(
         TypeInterface $left_type,
         TypeInterface $right_type
     ) {
+        Psl\invariant(
+            !$left_type->isOptional() && !$right_type->isOptional(),
+            'Optional type must be the outermost.'
+        );
+        
         $this->left_type  = $left_type;
         $this->right_type = $right_type;
     }

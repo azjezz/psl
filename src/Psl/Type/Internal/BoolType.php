@@ -36,11 +36,11 @@ final class BoolType extends Type\Type
             return $value;
         }
 
-        if (0 === $value) {
+        if (0 === $value || '0' === $value) {
             return false;
         }
 
-        if (1 === $value) {
+        if (1 === $value || '1' === $value) {
             return true;
         }
 

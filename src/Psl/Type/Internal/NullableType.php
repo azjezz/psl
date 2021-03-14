@@ -47,11 +47,11 @@ final class NullableType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return T|null
+     * @param mixed $value
      *
      * @throws CoercionException
+     *
+     * @return T|null
      */
     public function coerce($value)
     {
@@ -63,13 +63,13 @@ final class NullableType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return T|null
-     *
-     * @psalm-assert T|null $value
+     * @param mixed $value
      *
      * @throws AssertException
+     *
+     * @return T|null
+     *
+     * @psalm-assert T|null $value
      */
     public function assert($value)
     {

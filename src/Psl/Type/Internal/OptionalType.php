@@ -32,11 +32,11 @@ final class OptionalType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return T
+     * @param mixed $value
      *
      * @throws CoercionException
+     *
+     * @return T
      */
     public function coerce($value)
     {
@@ -44,13 +44,13 @@ final class OptionalType extends Type\Type
     }
 
     /**
-     * @psalm-param mixed $value
-     *
-     * @psalm-return T
-     *
-     * @psalm-assert T $value
+     * @param mixed $value
      *
      * @throws AssertException
+     *
+     * @return T
+     *
+     * @psalm-assert T $value
      */
     public function assert($value)
     {
