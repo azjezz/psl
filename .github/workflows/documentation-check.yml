@@ -18,8 +18,5 @@ jobs:
           tools: composer:v2, cs2pr
           extensions: bcmath, mbstring, intl, sodium, json
 
-      - name: "installing dependencies"
-        run: "composer update --no-interaction --no-progress"
-
       - name: "checking if documentation is up-to-date."
         run: "php docs/documenter.php check"
