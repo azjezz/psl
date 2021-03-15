@@ -11,4 +11,5 @@ Please click through to read the docblock comment details for each of them.
 ---
 
 > This markdown file was generated using `docs/documenter.php`.
+>
 > Any edits to it will likely be lost.

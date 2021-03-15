@@ -80,11 +80,6 @@ function generate_documentation(): string
         $lines[] = get_namespace_documentation($namespace);
     }
 
-    $lines[] = '';
-    $lines[] = '';
-    $lines[] = '---';
-    $lines[] = '> This markdown file was generated using `docs/regenerate.php`. Any edits to it will likely be lost.';
-
     return Str\join($lines, "\n");
 }
 
