@@ -21,7 +21,7 @@ use Psl\Dict;
  *
  * @deprecated use `Dict\sort_by_key`
  *
- * @use Dict\sort_by_key
+ * @see Dict\sort_by_key
  */
 function sort_by_key(array $array, ?callable $comparator = null): array
 {
