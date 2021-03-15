@@ -10,7 +10,7 @@ use Psl\Str;
 use Psl\Type;
 use Psl\Vec;
 
-require_once __DIR__ . "/../vendor/autoload.php";
+require_once __DIR__ . "/../src/bootstrap.php";
 
 (static function (array $args) {
     $documentation_file = __DIR__ . "/README.md";
