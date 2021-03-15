@@ -4,7 +4,7 @@
 ![Static analysis status](https://github.com/azjezz/psl/workflows/static%20analysis/badge.svg)
 ![Security analysis status](https://github.com/azjezz/psl/workflows/security%20analysis/badge.svg)
 ![Coding standards status](https://github.com/azjezz/psl/workflows/coding%20standards/badge.svg)
-[![TravisCI Build Status](https://travis-ci.com/azjezz/psl.svg)](https://travis-ci.com/azjezz/psl)
+![Coding standards status](https://github.com/azjezz/psl/workflows/documentation%20check/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/azjezz/psl/badge.svg)](https://coveralls.io/github/azjezz/psl)
 [![Type Coverage](https://shepherd.dev/github/azjezz/psl/coverage.svg)](https://shepherd.dev/github/azjezz/psl)
 [![SymfonyInsight](https://insight.symfony.com/projects/1e053a4a-aaab-4a52-9059-c4883bfd46f7/mini.svg)](https://insight.symfony.com/projects/1e053a4a-aaab-4a52-9059-c4883bfd46f7)
@@ -67,7 +67,7 @@ To enable the Psalm plugin, add the `Psl\Integration\Psalm\Plugin` class to your
 
 ## Documentation
 
-Documentation is not available yet.
+You can read through the API documentation in [`docs/README.md`](./docs/README.md).
 
 ## Principles
 
