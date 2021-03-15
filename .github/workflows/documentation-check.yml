@@ -1,10 +1,10 @@
-name: "doc check"
+name: "documentation check"
 
 on: ["pull_request", "push"]
 
 jobs:
   doc-check:
-    name: "doc check"
+    name: "documentation check"
     runs-on: "ubuntu-latest"
     steps:
       - name: "checkout"
@@ -21,14 +21,5 @@ jobs:
       - name: "installing dependencies"
         run: "composer update --no-interaction --no-progress"
 
-      - name: "Checking docs are up-to-date"
-        run: "php doc_gen.php check"
-
-    #  - name: "committing built doc"
-    #    uses: EndBug/add-and-commit@v7 # You can change this to use a specific version
-    #    with:
-          # The arguments for the `git add` command (see the paragraph below for more info)
-    #      # Default: '.'
-    #      add: 'docs/index.md'
-
-
+      - name: "checking if documentation is up-to-date."
+        run: "php docs/documenter.php check"
