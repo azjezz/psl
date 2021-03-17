@@ -6,6 +6,8 @@ use Psl\Env;
 use Psl\Filesystem;
 use Psl\Internal\Loader;
 use Psl\Iter;
+use Psl\Regex;
+use Psl\Shell;
 use Psl\Str;
 use Psl\Type;
 use Psl\Vec;
@@ -13,19 +15,15 @@ use Psl\Vec;
 require_once __DIR__ . "/../src/bootstrap.php";
 
 (static function (array $args) {
-    $documentation_file = __DIR__ . "/README.md";
-    $template = Filesystem\read_file(__DIR__ . '/README.template.md');
-    $documentation = Str\replace($template, '{{ api }}', generate_documentation());
-
-    $command = $args[1] ?? 'regenerate';
+    $command = Str\lowercase($args[1] ?? 'regenerate');
     if ('regenerate' === $command) {
-        Filesystem\write_file($documentation_file, $documentation);
+        regenerate_documentation();
 
         exit(0);
     }
 
     if ('check' === $command) {
-        check_if_documentation_is_up_to_date($documentation_file, $documentation);
+        check_documentation_diff();
     }
 
     echo Str\format(
@@ -38,58 +36,49 @@ require_once __DIR__ . "/../src/bootstrap.php";
 })(Env\args());
 
 /**
- * Check if $documentation_file contains $expected_content, line-by-line.
- *
  * @return no-return
  */
-function check_if_documentation_is_up_to_date($documentation_file, $expected_content): void
+function check_documentation_diff(): void
 {
-    $expected_lines = Str\split($expected_content, "\n");
-    $actual_content = Filesystem\read_file($documentation_file);
-    $actual_lines = Str\split($actual_content, "\n");
+    regenerate_documentation();
 
-    if (Iter\count($expected_lines) !== Iter\count($actual_lines)) {
-        echo "Documentation is out of date, please regenerate by running 'php docs/documenter.php'.\n\n";
-        echo "Number of lines don't match.\n";
-        exit(-1);
+    $diff = Shell\execute('git', ['diff', '--color', '--', 'docs/'], Filesystem\canonicalize(__DIR__ . '/..'));
+    if ($diff !== '') {
+        echo $diff;
+        
+        exit(1);
     }
-
-    for ($i = 0, $count = count($expected_lines); $i < $count; ++$i) {
-        if (Str\trim($expected_lines[$i]) !== Str\trim($actual_lines[$i])) {
-            echo "Documentation is out of date, please regenerate by running 'php docs/documenter.php'.\n\n";
-            echo "Difference on line $i:\n";
-            echo "Expected  : " . $expected_lines[$i] . "\n";
-            echo "Actual    : " . $actual_lines[$i] . "\n";
-            exit(-1);
-        }
-    }
-
-    echo "Documentation is up to date.\n";
+    
     exit(0);
 }
 
 /**
  * Return documentation for all namespaces.
  */
-function generate_documentation(): string
+function regenerate_documentation(): void
 {
-    $lines = [];
-    $lines[] = '';
-
-    foreach (get_all_namespaces() as $namespace) {
-        $lines[] = get_namespace_documentation($namespace);
+    $components_documentation = '';
+    $components = get_all_components();
+    foreach ($components as $component) {
+        $components_documentation .= Str\format('- [%s](./component/%s.md)%s', $component, to_filename($component), "\n");
     }
 
-    return Str\join($lines, "\n");
+    $readme_template = Filesystem\read_file(__DIR__ . '/templates/README.template.md');
+    $readme = Str\replace($readme_template, '{{ list }}', $components_documentation);
+    Filesystem\write_file(__DIR__ . '/README.md', $readme);
+
+    foreach ($components as $component) {
+        document_component($component, './../README.md');
+    }
 }
 
 /**
- * Return documentation for the given namespace.
+ * Document the given component.
  */
-function get_namespace_documentation(string $namespace): string
+function document_component(string $component, string $index_link): void
 {
     $lines = [];
-    $lines[] = Str\format('### `%s`', $namespace);
+    $lines[] = Str\format('### `%s` Component', $component);
     $lines[] = '';
 
     /**
@@ -122,7 +111,7 @@ function get_namespace_documentation(string $namespace): string
                 }
 
                 $definition_line = get_symbol_definition_line($symbol, $type);
-                $lines[] = Str\format('- [%s](%s#L%d)%s', $symbol_short_name, $symbol_file, $definition_line, $deprecation_notice);
+                $lines[] = Str\format('- [%s](./.%s#L%d)%s', $symbol_short_name, $symbol_file, $definition_line, $deprecation_notice);
             }
 
             $lines[] = '';
@@ -131,41 +120,50 @@ function get_namespace_documentation(string $namespace): string
         return $lines;
     };
 
-    $directory = './../src/' . Str\replace($namespace, '\\', '/');
-    $symbols = get_direct_namespace_symbols($namespace);
+    $directory = './../src/' . Str\replace($component, '\\', '/');
+    $symbols = get_component_members($component);
 
-    return Str\join(Vec\concat(
-        $lines,
-        $generator($directory, $symbols, Loader::TYPE_CONSTANTS),
-        $generator($directory, $symbols, Loader::TYPE_FUNCTION),
-        $generator($directory, $symbols, Loader::TYPE_INTERFACE),
-        $generator($directory, $symbols, Loader::TYPE_CLASS),
-        $generator($directory, $symbols, Loader::TYPE_TRAIT),
-        ['']
-    ), "\n");
+    $template = Filesystem\read_file(__DIR__ . '/templates/component.template.md');
+    $current_link = Str\format('%s.md', to_filename($component));
+    $current_filename = Str\format('%s/component/%s', __DIR__, $current_link);
+
+    $documentation = Str\replace_every($template, [
+        '{{ index }}' => $index_link,
+        '{{ api }}' => Str\join(Vec\concat(
+            $lines,
+            $generator($directory, $symbols, Loader::TYPE_CONSTANTS),
+            $generator($directory, $symbols, Loader::TYPE_FUNCTION),
+            $generator($directory, $symbols, Loader::TYPE_INTERFACE),
+            $generator($directory, $symbols, Loader::TYPE_CLASS),
+            $generator($directory, $symbols, Loader::TYPE_TRAIT),
+            ['']
+        ), "\n"),
+    ]);
+
+    Filesystem\write_file($current_filename, $documentation);
 }
 
 /**
- * Return a shape contains all direct symbols in the given namespace.
+ * Return a shape contains all direct members in the given component.
  *
  * @return array<int, list<string>>
  */
-function get_direct_namespace_symbols(string $namespace): array
+function get_component_members(string $component): array
 {
     /** @var (callable(list<string>): list<string>) $filter */
-    $filter = static fn(array $list) => Vec\filter(
+    $filter = static fn(array $list) => Vec\sort(Vec\filter(
         $list,
-        static function (string $symbol) use ($namespace): bool {
+        static function (string $member) use ($component): bool {
 
-            if (!Str\starts_with_ci($symbol, $namespace)) {
+            if (!Str\starts_with_ci($member, $component)) {
                 return false;
             }
 
-            $short_symbol_name = Type\string()->assert(Str\after_ci($symbol, $namespace . '\\'));
+            $short_member_name = Type\string()->assert(Str\after_ci($member, $component . '\\'));
 
-            return !Str\contains($short_symbol_name, '\\');
+            return !Str\contains($short_member_name, '\\');
         }
-    );
+    ));
 
     return [
         Loader::TYPE_CONSTANTS => $filter(Loader::CONSTANTS),
@@ -179,9 +177,9 @@ function get_direct_namespace_symbols(string $namespace): array
 /**
  * @return list<string>
  */
-function get_all_namespaces(): array
+function get_all_components(): array
 {
-    return [
+    $components = [
         'Psl',
         'Psl\Arr',
         'Psl\Collection',
@@ -210,12 +208,15 @@ function get_all_namespaces(): array
         'Psl\Type',
         'Psl\Vec',
     ];
+
+    return Vec\sort($components);
 }
 
 /**
  * Return the name of the symbol type.
  */
-function get_symbol_type_name(int $type): string {
+function get_symbol_type_name(int $type): string
+{
     switch ($type) {
         case Loader::TYPE_CONSTANTS:
             return 'Constants';
@@ -246,4 +247,25 @@ function get_symbol_definition_line(string $symbol, int $type): int
     }
 
     return $reflection->getStartLine();
+}
+
+/**
+ * Convert the given namespace to a filename.
+ *
+ * Example:
+ *      to_filename('Psl\SecureRandom')
+ *      => Str('secure-random')
+ *
+ *      to_filename('Psl\Str\Byte')
+ *      => Str('str-byte')
+ */
+function to_filename(string $namespace): string
+{
+    return Str\lowercase(Regex\replace(
+        Regex\replace(
+            Str\replace(Str\strip_prefix($namespace, 'Psl\\'), '\\', '-'),
+            '/(\p{Lu}+)(\p{Lu}\p{Ll})/u', '\1-\2',
+        ),
+        '/([\p{Ll}0-9])(\p{Lu})/u', '\1-\2',
+    ));
 }
