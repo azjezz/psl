@@ -1,4 +1,10 @@
-[previous](psl.md)
+<!--
+    This markdown file was generated using `docs/documenter.php`.
+
+    Any edits to it will likely be lost.
+-->
+
+[*index](./../README.md)
 
 ---
 
@@ -53,9 +59,3 @@
 - [map_with_key](./../../src/Psl/Arr/map_with_key.php#L34) ( deprecated )
 
 
-
----
-
-> This markdown file was generated using `docs/documenter.php`.
->
-> Any edits to it will likely be lost.

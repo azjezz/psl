@@ -1,4 +1,10 @@
-[previous](secure-random.md)
+<!--
+    This markdown file was generated using `docs/documenter.php`.
+
+    Any edits to it will likely be lost.
+-->
+
+[*index](./../README.md)
 
 ---
 
@@ -11,9 +17,3 @@
 - [execute](./../../src/Psl/Shell/execute.php#L37)
 
 
-
----
-
-> This markdown file was generated using `docs/documenter.php`.
->
-> Any edits to it will likely be lost.

@@ -1,4 +1,10 @@
-[previous](html.md)
+<!--
+    This markdown file was generated using `docs/documenter.php`.
+
+    Any edits to it will likely be lost.
+-->
+
+[*index](./../README.md)
 
 ---
 
@@ -67,9 +73,3 @@
 - [Iterator](./../../src/Psl/Iter/Iterator.php#L18)
 
 
-
----
-
-> This markdown file was generated using `docs/documenter.php`.
->
-> Any edits to it will likely be lost.

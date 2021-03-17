@@ -1,4 +1,10 @@
-[previous](filesystem.md)
+<!--
+    This markdown file was generated using `docs/documenter.php`.
+
+    Any edits to it will likely be lost.
+-->
+
+[*index](./../README.md)
 
 ---
 
@@ -13,9 +19,3 @@
 - [when](./../../src/Psl/Fun/when.php#L33)
 
 
-
----
-
-> This markdown file was generated using `docs/documenter.php`.
->
-> Any edits to it will likely be lost.

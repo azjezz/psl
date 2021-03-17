@@ -1,4 +1,10 @@
-[previous](regex.md)
+<!--
+    This markdown file was generated using `docs/documenter.php`.
+
+    Any edits to it will likely be lost.
+-->
+
+[*index](./../README.md)
 
 ---
 
@@ -18,9 +24,3 @@
 - [Success](./../../src/Psl/Result/Success.php#L17)
 
 
-
----
-
-> This markdown file was generated using `docs/documenter.php`.
->
-> Any edits to it will likely be lost.

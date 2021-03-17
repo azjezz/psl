@@ -1,4 +1,10 @@
-[previous](iter.md)
+<!--
+    This markdown file was generated using `docs/documenter.php`.
+
+    Any edits to it will likely be lost.
+-->
+
+[*index](./../README.md)
 
 ---
 
@@ -11,9 +17,3 @@
 - [typed](./../../src/Psl/Json/typed.php#L22)
 
 
-
----
-
-> This markdown file was generated using `docs/documenter.php`.
->
-> Any edits to it will likely be lost.

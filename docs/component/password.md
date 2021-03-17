@@ -1,4 +1,10 @@
-[previous](observer.md)
+<!--
+    This markdown file was generated using `docs/documenter.php`.
+
+    Any edits to it will likely be lost.
+-->
+
+[*index](./../README.md)
 
 ---
 
@@ -24,9 +30,3 @@
 - [verify](./../../src/Psl/Password/verify.php#L14)
 
 
-
----
-
-> This markdown file was generated using `docs/documenter.php`.
->
-> Any edits to it will likely be lost.

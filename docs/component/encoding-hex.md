@@ -1,4 +1,10 @@
-[previous](encoding-base64.md)
+<!--
+    This markdown file was generated using `docs/documenter.php`.
+
+    Any edits to it will likely be lost.
+-->
+
+[*index](./../README.md)
 
 ---
 
@@ -10,9 +16,3 @@
 - [decode](./../../src/Psl/Encoding/Hex/decode.php#L22)
 
 
-
----
-
-> This markdown file was generated using `docs/documenter.php`.
->
-> Any edits to it will likely be lost.

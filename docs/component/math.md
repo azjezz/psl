@@ -1,4 +1,10 @@
-[previous](json.md)
+<!--
+    This markdown file was generated using `docs/documenter.php`.
+
+    Any edits to it will likely be lost.
+-->
+
+[*index](./../README.md)
 
 ---
 
@@ -50,9 +56,3 @@
 - [to_base](./../../src/Psl/Math/to_base.php#L18)
 
 
-
----
-
-> This markdown file was generated using `docs/documenter.php`.
->
-> Any edits to it will likely be lost.

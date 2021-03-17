@@ -1,4 +1,10 @@
-[previous](str-grapheme.md)
+<!--
+    This markdown file was generated using `docs/documenter.php`.
+
+    Any edits to it will likely be lost.
+-->
+
+[*index](./../README.md)
 
 ---
 
@@ -56,9 +62,3 @@
 - [Type](./../../src/Psl/Type/Type.php#L15)
 
 
-
----
-
-> This markdown file was generated using `docs/documenter.php`.
->
-> Any edits to it will likely be lost.

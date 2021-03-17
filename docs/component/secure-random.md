@@ -1,4 +1,10 @@
-[previous](result.md)
+<!--
+    This markdown file was generated using `docs/documenter.php`.
+
+    Any edits to it will likely be lost.
+-->
+
+[*index](./../README.md)
 
 ---
 
@@ -12,9 +18,3 @@
 - [string](./../../src/Psl/SecureRandom/string.php#L25)
 
 
-
----
-
-> This markdown file was generated using `docs/documenter.php`.
->
-> Any edits to it will likely be lost.

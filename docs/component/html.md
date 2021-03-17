@@ -1,4 +1,10 @@
-[previous](hash.md)
+<!--
+    This markdown file was generated using `docs/documenter.php`.
+
+    Any edits to it will likely be lost.
+-->
+
+[*index](./../README.md)
 
 ---
 
@@ -13,9 +19,3 @@
 - [strip_tags](./../../src/Psl/Html/strip_tags.php#L16)
 
 
-
----
-
-> This markdown file was generated using `docs/documenter.php`.
->
-> Any edits to it will likely be lost.

@@ -1,4 +1,10 @@
-[previous](math.md)
+<!--
+    This markdown file was generated using `docs/documenter.php`.
+
+    Any edits to it will likely be lost.
+-->
+
+[*index](./../README.md)
 
 ---
 
@@ -10,9 +16,3 @@
 - [ObserverInterface](./../../src/Psl/Observer/ObserverInterface.php#L10)
 
 
-
----
-
-> This markdown file was generated using `docs/documenter.php`.
->
-> Any edits to it will likely be lost.

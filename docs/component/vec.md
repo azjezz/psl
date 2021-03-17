@@ -1,4 +1,10 @@
-[previous](type.md)
+<!--
+    This markdown file was generated using `docs/documenter.php`.
+
+    Any edits to it will likely be lost.
+-->
+
+[*index](./../README.md)
 
 ---
 
@@ -31,9 +37,3 @@
 - [zip](./../../src/Psl/Vec/zip.php#L37)
 
 
-
----
-
-> This markdown file was generated using `docs/documenter.php`.
->
-> Any edits to it will likely be lost.

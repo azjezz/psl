@@ -1,4 +1,10 @@
-[previous](encoding-hex.md)
+<!--
+    This markdown file was generated using `docs/documenter.php`.
+
+    Any edits to it will likely be lost.
+-->
+
+[*index](./../README.md)
 
 ---
 
@@ -19,9 +25,3 @@
 - [temp_dir](./../../src/Psl/Env/temp_dir.php#L20)
 
 
-
----
-
-> This markdown file was generated using `docs/documenter.php`.
->
-> Any edits to it will likely be lost.

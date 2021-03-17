@@ -1,6 +1,10 @@
-# Components API
+<!--
+    This markdown file was generated using `docs/documenter.php`.
 
----
+    Any edits to it will likely be lost.
+-->
+
+# Components API
 
 - [Psl](./component/psl.md)
 - [Psl\Arr](./component/arr.md)
@@ -30,9 +34,3 @@
 - [Psl\Type](./component/type.md)
 - [Psl\Vec](./component/vec.md)
 
-
----
-
-> This markdown file was generated using `docs/documenter.php`.
->
-> Any edits to it will likely be lost.

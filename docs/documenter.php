@@ -67,19 +67,15 @@ function regenerate_documentation(): void
     $readme = Str\replace($readme_template, '{{ list }}', $components_documentation);
     Filesystem\write_file(__DIR__ . '/README.md', $readme);
 
-    $previous = './../README.md';
-    $component = null;
     foreach ($components as $component) {
-        $previous = document_component($component, $previous);
+        document_component($component, './../README.md');
     }
 }
 
 /**
  * Document the given component.
- *
- * @return string The document filename relative to docs/component/
  */
-function document_component(string $component, string $previous_link): string
+function document_component(string $component, string $index_link): void
 {
     $lines = [];
     $lines[] = Str\format('### `%s` Component', $component);
@@ -132,7 +128,7 @@ function document_component(string $component, string $previous_link): string
     $current_filename = Str\format('%s/component/%s', __DIR__, $current_link);
 
     $documentation = Str\replace_every($template, [
-        '{{ previous }}' => $previous_link,
+        '{{ index }}' => $index_link,
         '{{ api }}' => Str\join(Vec\concat(
             $lines,
             $generator($directory, $symbols, Loader::TYPE_CONSTANTS),
@@ -145,8 +141,6 @@ function document_component(string $component, string $previous_link): string
     ]);
 
     Filesystem\write_file($current_filename, $documentation);
-
-    return $current_link;
 }
 
 /**

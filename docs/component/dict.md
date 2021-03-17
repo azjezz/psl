@@ -1,4 +1,10 @@
-[previous](data-structure.md)
+<!--
+    This markdown file was generated using `docs/documenter.php`.
+
+    Any edits to it will likely be lost.
+-->
+
+[*index](./../README.md)
 
 ---
 
@@ -45,9 +51,3 @@
 - [intersect_by_key](./../../src/Psl/Dict/intersect_by_key.php#L24)
 
 
-
----
-
-> This markdown file was generated using `docs/documenter.php`.
->
-> Any edits to it will likely be lost.
