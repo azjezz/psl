@@ -1,4 +1,4 @@
-> [previous](html.md)
+[previous](html.md)
 
 ---
 
@@ -70,7 +70,7 @@
 
 ---
 
-> [next](json.md)
+[next](json.md)
 
 ---
 

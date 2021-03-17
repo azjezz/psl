@@ -1,4 +1,4 @@
-> [previous](hash.md)
+[previous](hash.md)
 
 ---
 
@@ -16,7 +16,7 @@
 
 ---
 
-> [next](iter.md)
+[next](iter.md)
 
 ---
 

@@ -1,4 +1,4 @@
-> [previous](secure-random.md)
+[previous](secure-random.md)
 
 ---
 
@@ -14,7 +14,7 @@
 
 ---
 
-> [next](str.md)
+[next](str.md)
 
 ---
 

@@ -1,4 +1,4 @@
-> [previous](arr.md)
+[previous](arr.md)
 
 ---
 
@@ -28,7 +28,7 @@
 
 ---
 
-> [next](data-structure.md)
+[next](data-structure.md)
 
 ---
 

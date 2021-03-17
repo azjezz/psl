@@ -1,4 +1,4 @@
-> [previous](iter.md)
+[previous](iter.md)
 
 ---
 
@@ -14,7 +14,7 @@
 
 ---
 
-> [next](math.md)
+[next](math.md)
 
 ---
 

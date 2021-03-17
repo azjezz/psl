@@ -1,4 +1,4 @@
-> [previous](pseudo-random.md)
+[previous](pseudo-random.md)
 
 ---
 
@@ -16,7 +16,7 @@
 
 ---
 
-> [next](result.md)
+[next](result.md)
 
 ---
 

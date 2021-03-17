@@ -1,4 +1,4 @@
-> [previous](regex.md)
+[previous](regex.md)
 
 ---
 
@@ -21,7 +21,7 @@
 
 ---
 
-> [next](secure-random.md)
+[next](secure-random.md)
 
 ---
 

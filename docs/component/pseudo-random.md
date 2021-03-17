@@ -1,4 +1,4 @@
-> [previous](password.md)
+[previous](password.md)
 
 ---
 
@@ -13,7 +13,7 @@
 
 ---
 
-> [next](regex.md)
+[next](regex.md)
 
 ---
 

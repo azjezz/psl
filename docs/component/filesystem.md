@@ -1,4 +1,4 @@
-> [previous](env.md)
+[previous](env.md)
 
 ---
 
@@ -51,7 +51,7 @@
 
 ---
 
-> [next](fun.md)
+[next](fun.md)
 
 ---
 

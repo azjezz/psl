@@ -1,4 +1,4 @@
-> [previous](observer.md)
+[previous](observer.md)
 
 ---
 
@@ -27,7 +27,7 @@
 
 ---
 
-> [next](pseudo-random.md)
+[next](pseudo-random.md)
 
 ---
 

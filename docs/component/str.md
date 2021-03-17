@@ -1,4 +1,4 @@
-> [previous](shell.md)
+[previous](shell.md)
 
 ---
 
@@ -73,7 +73,7 @@
 
 ---
 
-> [next](str-byte.md)
+[next](str-byte.md)
 
 ---
 

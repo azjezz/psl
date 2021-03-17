@@ -1,4 +1,4 @@
-> [previous](encoding-hex.md)
+[previous](encoding-hex.md)
 
 ---
 
@@ -22,7 +22,7 @@
 
 ---
 
-> [next](filesystem.md)
+[next](filesystem.md)
 
 ---
 

@@ -1,4 +1,4 @@
-> [previous](filesystem.md)
+[previous](filesystem.md)
 
 ---
 
@@ -16,7 +16,7 @@
 
 ---
 
-> [next](hash.md)
+[next](hash.md)
 
 ---
 

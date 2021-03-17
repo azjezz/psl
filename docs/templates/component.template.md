@@ -1,4 +1,4 @@
-> [previous]({{ previous }})
+[previous]({{ previous }})
 
 ---
 
@@ -6,7 +6,7 @@
 
 ---
 
-> [next]({{ next }})
+[next]({{ next }})
 
 ---
 

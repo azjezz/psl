@@ -1,4 +1,4 @@
-> [previous](encoding-base64.md)
+[previous](encoding-base64.md)
 
 ---
 
@@ -13,7 +13,7 @@
 
 ---
 
-> [next](env.md)
+[next](env.md)
 
 ---
 

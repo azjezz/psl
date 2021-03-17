@@ -1,4 +1,4 @@
-> [previous](dict.md)
+[previous](dict.md)
 
 ---
 
@@ -13,7 +13,7 @@
 
 ---
 
-> [next](encoding-hex.md)
+[next](encoding-hex.md)
 
 ---
 

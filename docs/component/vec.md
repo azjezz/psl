@@ -1,4 +1,4 @@
-> [previous](type.md)
+[previous](type.md)
 
 ---
 
@@ -30,6 +30,11 @@
 - [values](./../../src/Psl/Vec/values.php#L16)
 - [zip](./../../src/Psl/Vec/zip.php#L37)
 
+
+
+---
+
+[next]({{ next }})
 
 ---
 

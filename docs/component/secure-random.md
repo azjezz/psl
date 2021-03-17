@@ -1,4 +1,4 @@
-> [previous](result.md)
+[previous](result.md)
 
 ---
 
@@ -15,7 +15,7 @@
 
 ---
 
-> [next](shell.md)
+[next](shell.md)
 
 ---
 

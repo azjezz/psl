@@ -1,4 +1,4 @@
-> [previous](str-grapheme.md)
+[previous](str-grapheme.md)
 
 ---
 
@@ -59,7 +59,7 @@
 
 ---
 
-> [next](vec.md)
+[next](vec.md)
 
 ---
 

@@ -1,4 +1,4 @@
-> [previous](str-byte.md)
+[previous](str-byte.md)
 
 ---
 
@@ -33,7 +33,7 @@
 
 ---
 
-> [next](type.md)
+[next](type.md)
 
 ---
 

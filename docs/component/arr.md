@@ -1,4 +1,4 @@
-> [previous](psl.md)
+[previous](psl.md)
 
 ---
 
@@ -56,7 +56,7 @@
 
 ---
 
-> [next](collection.md)
+[next](collection.md)
 
 ---
 

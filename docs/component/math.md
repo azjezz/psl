@@ -1,4 +1,4 @@
-> [previous](json.md)
+[previous](json.md)
 
 ---
 
@@ -53,7 +53,7 @@
 
 ---
 
-> [next](observer.md)
+[next](observer.md)
 
 ---
 

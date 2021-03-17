@@ -1,4 +1,4 @@
-> [previous](math.md)
+[previous](math.md)
 
 ---
 
@@ -13,7 +13,7 @@
 
 ---
 
-> [next](password.md)
+[next](password.md)
 
 ---
 

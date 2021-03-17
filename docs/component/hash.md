@@ -1,4 +1,4 @@
-> [previous](fun.md)
+[previous](fun.md)
 
 ---
 
@@ -18,7 +18,7 @@
 
 ---
 
-> [next](html.md)
+[next](html.md)
 
 ---
 

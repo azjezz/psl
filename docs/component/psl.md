@@ -1,4 +1,4 @@
-> [previous](./../README.md)
+[previous](./../README.md)
 
 ---
 
@@ -14,7 +14,7 @@
 
 ---
 
-> [next](arr.md)
+[next](arr.md)
 
 ---
 

@@ -1,4 +1,4 @@
-> [previous](data-structure.md)
+[previous](data-structure.md)
 
 ---
 
@@ -48,7 +48,7 @@
 
 ---
 
-> [next](encoding-base64.md)
+[next](encoding-base64.md)
 
 ---
 

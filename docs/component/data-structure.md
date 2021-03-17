@@ -1,4 +1,4 @@
-> [previous](collection.md)
+[previous](collection.md)
 
 ---
 
@@ -20,7 +20,7 @@
 
 ---
 
-> [next](dict.md)
+[next](dict.md)
 
 ---
 
