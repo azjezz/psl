@@ -8,6 +8,12 @@
 
 - [DEFAULT_ALGORITHM](./../../src/Psl/Password/constants.php#L0)
 - [BCRYPT_ALGORITHM](./../../src/Psl/Password/constants.php#L0)
+- [BCRYPT_DEFAULT_COST](./../../src/Psl/Password/constants.php#L0)
+- [ARGON2I_ALGORITHM](./../../src/Psl/Password/constants.php#L0)
+- [ARGON2ID_ALGORITHM](./../../src/Psl/Password/constants.php#L0)
+- [ARGON2_DEFAULT_MEMORY_COST](./../../src/Psl/Password/constants.php#L0)
+- [ARGON2_DEFAULT_TIME_COST](./../../src/Psl/Password/constants.php#L0)
+- [ARGON2_DEFAULT_THREADS](./../../src/Psl/Password/constants.php#L0)
 
 ### `Functions`
 

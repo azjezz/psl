@@ -48,6 +48,12 @@ final class Loader
         'Psl\Str\ALPHABET_ALPHANUMERIC',
         'Psl\Password\DEFAULT_ALGORITHM',
         'Psl\Password\BCRYPT_ALGORITHM',
+        'Psl\Password\BCRYPT_DEFAULT_COST',
+        'Psl\Password\ARGON2I_ALGORITHM',
+        'Psl\Password\ARGON2ID_ALGORITHM',
+        'Psl\Password\ARGON2_DEFAULT_MEMORY_COST',
+        'Psl\Password\ARGON2_DEFAULT_TIME_COST',
+        'Psl\Password\ARGON2_DEFAULT_THREADS',
         'Psl\Filesystem\SEPARATOR',
     ];
 
