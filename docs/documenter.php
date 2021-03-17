@@ -151,7 +151,7 @@ function document_component(string $component, string $index_link): void
 function get_component_members(string $component): array
 {
     /** @var (callable(list<string>): list<string>) $filter */
-    $filter = static fn(array $list) => Vec\filter(
+    $filter = static fn(array $list) => Vec\sort(Vec\filter(
         $list,
         static function (string $member) use ($component): bool {
 
@@ -163,7 +163,7 @@ function get_component_members(string $component): array
 
             return !Str\contains($short_member_name, '\\');
         }
-    );
+    ));
 
     return [
         Loader::TYPE_CONSTANTS => $filter(Loader::CONSTANTS),

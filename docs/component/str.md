@@ -17,6 +17,14 @@
 
 #### `Functions`
 
+- [after](./../../src/Psl/Str/after.php#L15)
+- [after_ci](./../../src/Psl/Str/after_ci.php#L15)
+- [after_last](./../../src/Psl/Str/after_last.php#L15)
+- [after_last_ci](./../../src/Psl/Str/after_last_ci.php#L15)
+- [before](./../../src/Psl/Str/before.php#L15)
+- [before_ci](./../../src/Psl/Str/before_ci.php#L15)
+- [before_last](./../../src/Psl/Str/before_last.php#L15)
+- [before_last_ci](./../../src/Psl/Str/before_last_ci.php#L15)
 - [capitalize](./../../src/Psl/Str/capitalize.php#L33)
 - [capitalize_words](./../../src/Psl/Str/capitalize_words.php#L35)
 - [chr](./../../src/Psl/Str/chr.php#L27)
@@ -24,9 +32,8 @@
 - [concat](./../../src/Psl/Str/concat.php#L20)
 - [contains](./../../src/Psl/Str/contains.php#L42)
 - [contains_ci](./../../src/Psl/Str/contains_ci.php#L42)
-- [detect_encoding](./../../src/Psl/Str/detect_encoding.php#L21)
 - [convert_encoding](./../../src/Psl/Str/convert_encoding.php#L19)
-- [is_utf8](./../../src/Psl/Str/is_utf8.php#L14)
+- [detect_encoding](./../../src/Psl/Str/detect_encoding.php#L21)
 - [ends_with](./../../src/Psl/Str/ends_with.php#L39)
 - [ends_with_ci](./../../src/Psl/Str/ends_with_ci.php#L39)
 - [fold](./../../src/Psl/Str/fold.php#L22)
@@ -34,6 +41,7 @@
 - [format_number](./../../src/Psl/Str/format_number.php#L19)
 - [from_code_points](./../../src/Psl/Str/from_code_points.php#L20)
 - [is_empty](./../../src/Psl/Str/is_empty.php#L29)
+- [is_utf8](./../../src/Psl/Str/is_utf8.php#L14)
 - [join](./../../src/Psl/Str/join.php#L27)
 - [length](./../../src/Psl/Str/length.php#L30)
 - [levenshtein](./../../src/Psl/Str/levenshtein.php#L29)
@@ -66,13 +74,5 @@
 - [uppercase](./../../src/Psl/Str/uppercase.php#L19)
 - [width](./../../src/Psl/Str/width.php#L19)
 - [wrap](./../../src/Psl/Str/wrap.php#L23)
-- [after](./../../src/Psl/Str/after.php#L15)
-- [after_ci](./../../src/Psl/Str/after_ci.php#L15)
-- [after_last](./../../src/Psl/Str/after_last.php#L15)
-- [after_last_ci](./../../src/Psl/Str/after_last_ci.php#L15)
-- [before](./../../src/Psl/Str/before.php#L15)
-- [before_ci](./../../src/Psl/Str/before_ci.php#L15)
-- [before_last](./../../src/Psl/Str/before_last.php#L15)
-- [before_last_ci](./../../src/Psl/Str/before_last_ci.php#L15)
 
 

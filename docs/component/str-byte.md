@@ -12,6 +12,14 @@
 
 #### `Functions`
 
+- [after](./../../src/Psl/Str/Byte/after.php#L14)
+- [after_ci](./../../src/Psl/Str/Byte/after_ci.php#L14)
+- [after_last](./../../src/Psl/Str/Byte/after_last.php#L15)
+- [after_last_ci](./../../src/Psl/Str/Byte/after_last_ci.php#L14)
+- [before](./../../src/Psl/Str/Byte/before.php#L14)
+- [before_ci](./../../src/Psl/Str/Byte/before_ci.php#L14)
+- [before_last](./../../src/Psl/Str/Byte/before_last.php#L14)
+- [before_last_ci](./../../src/Psl/Str/Byte/before_last_ci.php#L14)
 - [capitalize](./../../src/Psl/Str/Byte/capitalize.php#L17)
 - [capitalize_words](./../../src/Psl/Str/Byte/capitalize_words.php#L17)
 - [chr](./../../src/Psl/Str/Byte/chr.php#L14)
@@ -51,13 +59,5 @@
 - [uppercase](./../../src/Psl/Str/Byte/uppercase.php#L14)
 - [words](./../../src/Psl/Str/Byte/words.php#L19)
 - [wrap](./../../src/Psl/Str/Byte/wrap.php#L21)
-- [after](./../../src/Psl/Str/Byte/after.php#L14)
-- [after_ci](./../../src/Psl/Str/Byte/after_ci.php#L14)
-- [after_last](./../../src/Psl/Str/Byte/after_last.php#L15)
-- [after_last_ci](./../../src/Psl/Str/Byte/after_last_ci.php#L14)
-- [before](./../../src/Psl/Str/Byte/before.php#L14)
-- [before_ci](./../../src/Psl/Str/Byte/before_ci.php#L14)
-- [before_last](./../../src/Psl/Str/Byte/before_last.php#L14)
-- [before_last_ci](./../../src/Psl/Str/Byte/before_last_ci.php#L14)
 
 

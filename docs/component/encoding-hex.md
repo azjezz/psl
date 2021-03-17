@@ -12,7 +12,7 @@
 
 #### `Functions`
 
-- [encode](./../../src/Psl/Encoding/Hex/encode.php#L16)
 - [decode](./../../src/Psl/Encoding/Hex/decode.php#L22)
+- [encode](./../../src/Psl/Encoding/Hex/encode.php#L16)
 
 

@@ -12,20 +12,20 @@
 
 #### `Constants`
 
-- [INT64_MAX](./../../src/Psl/Math/constants.php#L0)
-- [INT64_MIN](./../../src/Psl/Math/constants.php#L0)
-- [INT53_MAX](./../../src/Psl/Math/constants.php#L0)
-- [INT53_MIN](./../../src/Psl/Math/constants.php#L0)
-- [INT32_MAX](./../../src/Psl/Math/constants.php#L0)
-- [INT32_MIN](./../../src/Psl/Math/constants.php#L0)
-- [INT16_MAX](./../../src/Psl/Math/constants.php#L0)
-- [INT16_MIN](./../../src/Psl/Math/constants.php#L0)
-- [UINT32_MAX](./../../src/Psl/Math/constants.php#L0)
-- [UINT16_MAX](./../../src/Psl/Math/constants.php#L0)
-- [PI](./../../src/Psl/Math/constants.php#L0)
 - [E](./../../src/Psl/Math/constants.php#L0)
 - [INFINITY](./../../src/Psl/Math/constants.php#L0)
+- [INT16_MAX](./../../src/Psl/Math/constants.php#L0)
+- [INT16_MIN](./../../src/Psl/Math/constants.php#L0)
+- [INT32_MAX](./../../src/Psl/Math/constants.php#L0)
+- [INT32_MIN](./../../src/Psl/Math/constants.php#L0)
+- [INT53_MAX](./../../src/Psl/Math/constants.php#L0)
+- [INT53_MIN](./../../src/Psl/Math/constants.php#L0)
+- [INT64_MAX](./../../src/Psl/Math/constants.php#L0)
+- [INT64_MIN](./../../src/Psl/Math/constants.php#L0)
 - [NAN](./../../src/Psl/Math/constants.php#L0)
+- [PI](./../../src/Psl/Math/constants.php#L0)
+- [UINT16_MAX](./../../src/Psl/Math/constants.php#L0)
+- [UINT32_MAX](./../../src/Psl/Math/constants.php#L0)
 
 #### `Functions`
 

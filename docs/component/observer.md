@@ -12,7 +12,7 @@
 
 #### `Interfaces`
 
-- [SubjectInterface](./../../src/Psl/Observer/SubjectInterface.php#L7)
 - [ObserverInterface](./../../src/Psl/Observer/ObserverInterface.php#L10)
+- [SubjectInterface](./../../src/Psl/Observer/SubjectInterface.php#L7)
 
 
