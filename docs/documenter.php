@@ -72,11 +72,6 @@ function regenerate_documentation(): void
     foreach ($components as $component) {
         $previous = document_component($component, $previous);
     }
-
-    // remove [next]({{ next }}) line from the last component documentation.
-    $last_filename = Str\format('%s/component/%s', __DIR__, $previous);
-    $last_file_content = Filesystem\read_file($last_filename);
-    Filesystem\write_file($last_filename, Str\replace($last_file_content, "\n\n---\n\n> [next]({{ next }})\n", ''));
 }
 
 /**
@@ -133,13 +128,7 @@ function document_component(string $component, string $previous_link): string
     $symbols = get_component_members($component);
 
     $template = Filesystem\read_file(__DIR__ . '/templates/component.template.md');
-    $previous_filename = __DIR__ . '/component/' . $previous_link;
     $current_link = Str\format('%s.md', to_filename($component));
-    if (Filesystem\exists($previous_filename)) {
-        $previous_content = Filesystem\read_file($previous_filename);
-        Filesystem\write_file($previous_filename, Str\replace($previous_content, '{{ next }}', $current_link));
-    }
-
     $current_filename = Str\format('%s/component/%s', __DIR__, $current_link);
 
     $documentation = Str\replace_every($template, [
