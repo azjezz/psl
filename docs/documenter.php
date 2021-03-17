@@ -93,41 +93,36 @@ function get_namespace_documentation(string $namespace): string
     $lines[] = '';
 
     /**
-     * @param array{
-     *  'constants' => list<string>,
-     *  'functions' => list<string>,
-     *  'interface' => list<string>,
-     *  'classes' => list<string>,
-     *  'traits' => list<string>,
-     * } $symbols
-     * @param 'constants'|'functions'|'interfaces'|'classes'|'traits' $type
+     * @param array<int, list<string>> $symbols
      *
      * @return list<string>
      */
     $generator = static function (
         string $directory,
         array $symbols,
-        string $type
+        int $type
     ): array {
         $lines = [];
         if (Iter\count($symbols[$type]) > 0) {
-            $lines[] = Str\format('#### `%s`', Str\uppercase($type));
+            $lines[] = Str\format('#### `%s`', get_symbol_type_name($type));
             $lines[] = '';
 
-            foreach ($symbols[$type] as $function) {
-                $short_name = Str\after_last($function, '\\');
-                if ('constants' === $type) {
-                    $url = Str\format('%s%s%s.php', $directory, Filesystem\SEPARATOR, 'constants');
+            foreach ($symbols[$type] as $symbol) {
+                $symbol_short_name = Str\after_last($symbol, '\\');
+                if (Loader::TYPE_CONSTANTS === $type) {
+                    $symbol_file = Str\format('%s%s%s.php', $directory, Filesystem\SEPARATOR, 'constants');
                 } else {
-                    $url = Str\format('%s%s%s.php', $directory, Filesystem\SEPARATOR, $short_name);
+                    $symbol_file = Str\format('%s%s%s.php', $directory, Filesystem\SEPARATOR, $symbol_short_name);
                 }
 
+                $symbol_file_contents = Filesystem\read_file(Filesystem\canonicalize(__DIR__ . '/' . $symbol_file));
                 $deprecation_notice = '';
-                if (Str\contains(Filesystem\read_file(Filesystem\canonicalize(__DIR__ . '/' . $url)), '@deprecated')) {
+                if (Str\contains($symbol_file_contents, '@deprecated')) {
                     $deprecation_notice .= ' ( deprecated )';
                 }
 
-                $lines[] = Str\format('- [%s](%s)%s', $short_name, $url, $deprecation_notice);
+                $definition_line = get_symbol_definition_line($symbol, $type);
+                $lines[] = Str\format('- [%s](%s#L%d)%s', $symbol_short_name, $symbol_file, $definition_line, $deprecation_notice);
             }
 
             $lines[] = '';
@@ -141,11 +136,11 @@ function get_namespace_documentation(string $namespace): string
 
     return Str\join(Vec\concat(
         $lines,
-        $generator($directory, $symbols, 'constants'),
-        $generator($directory, $symbols, 'functions'),
-        $generator($directory, $symbols, 'interfaces'),
-        $generator($directory, $symbols, 'classes'),
-        $generator($directory, $symbols, 'traits'),
+        $generator($directory, $symbols, Loader::TYPE_CONSTANTS),
+        $generator($directory, $symbols, Loader::TYPE_FUNCTION),
+        $generator($directory, $symbols, Loader::TYPE_INTERFACE),
+        $generator($directory, $symbols, Loader::TYPE_CLASS),
+        $generator($directory, $symbols, Loader::TYPE_TRAIT),
         ['']
     ), "\n");
 }
@@ -153,13 +148,7 @@ function get_namespace_documentation(string $namespace): string
 /**
  * Return a shape contains all direct symbols in the given namespace.
  *
- * @return array{
- *                'constants' => list<string>,
- *                'functions' => list<string>,
- *                'interface' => list<string>,
- *                'classes' => list<string>,
- *                'traits' => list<string>,
- *                }
+ * @return array<int, list<string>>
  */
 function get_direct_namespace_symbols(string $namespace): array
 {
@@ -179,11 +168,11 @@ function get_direct_namespace_symbols(string $namespace): array
     );
 
     return [
-        'constants' => $filter(Loader::CONSTANTS),
-        'functions' => $filter(Loader::FUNCTIONS),
-        'interfaces' => $filter(Loader::INTERFACES),
-        'classes' => $filter(Loader::CLASSES),
-        'traits' => $filter(Loader::TRAITS),
+        Loader::TYPE_CONSTANTS => $filter(Loader::CONSTANTS),
+        Loader::TYPE_FUNCTION => $filter(Loader::FUNCTIONS),
+        Loader::TYPE_INTERFACE => $filter(Loader::INTERFACES),
+        Loader::TYPE_CLASS => $filter(Loader::CLASSES),
+        Loader::TYPE_TRAIT => $filter(Loader::TRAITS),
     ];
 }
 
@@ -221,4 +210,40 @@ function get_all_namespaces(): array
         'Psl\Type',
         'Psl\Vec',
     ];
+}
+
+/**
+ * Return the name of the symbol type.
+ */
+function get_symbol_type_name(int $type): string {
+    switch ($type) {
+        case Loader::TYPE_CONSTANTS:
+            return 'Constants';
+        case Loader::TYPE_FUNCTION:
+            return 'Functions';
+        case Loader::TYPE_INTERFACE:
+            return 'Interfaces';
+        case Loader::TYPE_CLASS:
+            return 'Classes';
+        case Loader::TYPE_TRAIT:
+            return 'Traits';
+    }
+}
+
+/**
+ * Return the line where $symbol is defined.
+ */
+function get_symbol_definition_line(string $symbol, int $type): int
+{
+    if (Loader::TYPE_CONSTANTS === $type) {
+        return 0;
+    }
+
+    if (Loader::TYPE_FUNCTION === $type) {
+        $reflection = new ReflectionFunction($symbol);
+    } else {
+        $reflection = new ReflectionClass($symbol);
+    }
+
+    return $reflection->getStartLine();
 }

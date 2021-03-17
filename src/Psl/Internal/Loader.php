@@ -599,17 +599,17 @@ final class Loader
         'Psl\Filesystem\Exception\RuntimeException',
     ];
 
-    private const TYPE_CONSTANTS = 1;
+    public const TYPE_CONSTANTS = 1;
 
-    private const TYPE_FUNCTION = 2;
+    public const TYPE_FUNCTION = 2;
 
-    private const TYPE_INTERFACE = 4;
+    public const TYPE_INTERFACE = 4;
 
-    private const TYPE_TRAIT = 8;
+    public const TYPE_TRAIT = 8;
 
-    private const TYPE_CLASS = 16;
+    public const TYPE_CLASS = 16;
 
-    private const TYPE_CLASSISH = self::TYPE_INTERFACE | self::TYPE_TRAIT | self::TYPE_CLASS;
+    public const TYPE_CLASSISH = self::TYPE_INTERFACE | self::TYPE_TRAIT | self::TYPE_CLASS;
 
     private function __construct()
     {
