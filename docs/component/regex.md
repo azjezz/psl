@@ -2,9 +2,9 @@
 
 ---
 
-## `Psl\Regex` Component
+### `Psl\Regex` Component
 
-### `Functions`
+#### `Functions`
 
 - [split](./../../src/Psl/Regex/split.php#L29)
 - [matches](./../../src/Psl/Regex/matches.php#L19)
@@ -17,8 +17,6 @@
 ---
 
 [next](result.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

@@ -2,9 +2,9 @@
 
 ---
 
-## `Psl\Str\Byte` Component
+### `Psl\Str\Byte` Component
 
-### `Functions`
+#### `Functions`
 
 - [capitalize](./../../src/Psl/Str/Byte/capitalize.php#L17)
 - [capitalize_words](./../../src/Psl/Str/Byte/capitalize_words.php#L17)
@@ -59,8 +59,6 @@
 ---
 
 [next](str-grapheme.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

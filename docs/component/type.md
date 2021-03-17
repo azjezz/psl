@@ -2,9 +2,9 @@
 
 ---
 
-## `Psl\Type` Component
+### `Psl\Type` Component
 
-### `Functions`
+#### `Functions`
 
 - [map](./../../src/Psl/Type/map.php#L21)
 - [mutable_map](./../../src/Psl/Type/mutable_map.php#L21)
@@ -47,11 +47,11 @@
 - [is_string](./../../src/Psl/Type/is_string.php#L20) ( deprecated )
 - [literal_scalar](./../../src/Psl/Type/literal_scalar.php#L18)
 
-### `Interfaces`
+#### `Interfaces`
 
 - [TypeInterface](./../../src/Psl/Type/TypeInterface.php#L14)
 
-### `Classes`
+#### `Classes`
 
 - [Type](./../../src/Psl/Type/Type.php#L15)
 
@@ -60,8 +60,6 @@
 ---
 
 [next](vec.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

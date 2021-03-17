@@ -2,9 +2,9 @@
 
 ---
 
-## `Psl\Html` Component
+### `Psl\Html` Component
 
-### `Functions`
+#### `Functions`
 
 - [encode](./../../src/Psl/Html/encode.php#L27)
 - [encode_special_characters](./../../src/Psl/Html/encode_special_characters.php#L29)
@@ -17,8 +17,6 @@
 ---
 
 [next](iter.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

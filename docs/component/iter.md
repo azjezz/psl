@@ -2,9 +2,9 @@
 
 ---
 
-## `Psl\Iter` Component
+### `Psl\Iter` Component
 
-### `Functions`
+#### `Functions`
 
 - [all](./../../src/Psl/Iter/all.php#L28)
 - [any](./../../src/Psl/Iter/any.php#L28)
@@ -62,7 +62,7 @@
 - [values](./../../src/Psl/Iter/values.php#L32) ( deprecated )
 - [zip](./../../src/Psl/Iter/zip.php#L38) ( deprecated )
 
-### `Classes`
+#### `Classes`
 
 - [Iterator](./../../src/Psl/Iter/Iterator.php#L18)
 
@@ -71,8 +71,6 @@
 ---
 
 [next](json.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

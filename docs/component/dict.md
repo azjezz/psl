@@ -2,9 +2,9 @@
 
 ---
 
-## `Psl\Dict` Component
+### `Psl\Dict` Component
 
-### `Functions`
+#### `Functions`
 
 - [associate](./../../src/Psl/Dict/associate.php#L25)
 - [count_values](./../../src/Psl/Dict/count_values.php#L20)
@@ -49,8 +49,6 @@
 ---
 
 [next](encoding-base64.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

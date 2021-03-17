@@ -2,9 +2,9 @@
 
 ---
 
-## `Psl\Collection` Component
+### `Psl\Collection` Component
 
-### `Interfaces`
+#### `Interfaces`
 
 - [CollectionInterface](./../../src/Psl/Collection/CollectionInterface.php#L21)
 - [IndexAccessInterface](./../../src/Psl/Collection/IndexAccessInterface.php#L13)
@@ -17,7 +17,7 @@
 - [MapInterface](./../../src/Psl/Collection/MapInterface.php#L13)
 - [MutableMapInterface](./../../src/Psl/Collection/MutableMapInterface.php#L14)
 
-### `Classes`
+#### `Classes`
 
 - [Vector](./../../src/Psl/Collection/Vector.php#L17)
 - [MutableVector](./../../src/Psl/Collection/MutableVector.php#L17)
@@ -29,8 +29,6 @@
 ---
 
 [next](data-structure.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

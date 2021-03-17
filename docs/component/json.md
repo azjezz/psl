@@ -2,9 +2,9 @@
 
 ---
 
-## `Psl\Json` Component
+### `Psl\Json` Component
 
-### `Functions`
+#### `Functions`
 
 - [encode](./../../src/Psl/Json/encode.php#L27)
 - [decode](./../../src/Psl/Json/decode.php#L24)
@@ -15,8 +15,6 @@
 ---
 
 [next](math.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

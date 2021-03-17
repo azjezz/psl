@@ -2,15 +2,15 @@
 
 ---
 
-## `Psl\Hash` Component
+### `Psl\Hash` Component
 
-### `Functions`
+#### `Functions`
 
 - [hash](./../../src/Psl/Hash/hash.php#L16)
 - [algorithms](./../../src/Psl/Hash/algorithms.php#L16)
 - [equals](./../../src/Psl/Hash/equals.php#L14)
 
-### `Classes`
+#### `Classes`
 
 - [Context](./../../src/Psl/Hash/Context.php#L31)
 
@@ -19,8 +19,6 @@
 ---
 
 [next](html.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

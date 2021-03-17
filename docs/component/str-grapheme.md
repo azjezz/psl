@@ -2,9 +2,9 @@
 
 ---
 
-## `Psl\Str\Grapheme` Component
+### `Psl\Str\Grapheme` Component
 
-### `Functions`
+#### `Functions`
 
 - [contains](./../../src/Psl/Str/Grapheme/contains.php#L21)
 - [contains_ci](./../../src/Psl/Str/Grapheme/contains_ci.php#L21)
@@ -34,8 +34,6 @@
 ---
 
 [next](type.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

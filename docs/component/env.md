@@ -2,9 +2,9 @@
 
 ---
 
-## `Psl\Env` Component
+### `Psl\Env` Component
 
-### `Functions`
+#### `Functions`
 
 - [args](./../../src/Psl/Env/args.php#L12)
 - [current_dir](./../../src/Psl/Env/current_dir.php#L16)
@@ -23,8 +23,6 @@
 ---
 
 [next](filesystem.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

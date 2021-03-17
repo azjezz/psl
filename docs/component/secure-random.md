@@ -2,9 +2,9 @@
 
 ---
 
-## `Psl\SecureRandom` Component
+### `Psl\SecureRandom` Component
 
-### `Functions`
+#### `Functions`
 
 - [bytes](./../../src/Psl/SecureRandom/bytes.php#L20)
 - [float](./../../src/Psl/SecureRandom/float.php#L14)
@@ -16,8 +16,6 @@
 ---
 
 [next](shell.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

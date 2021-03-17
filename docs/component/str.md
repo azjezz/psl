@@ -2,14 +2,14 @@
 
 ---
 
-## `Psl\Str` Component
+### `Psl\Str` Component
 
-### `Constants`
+#### `Constants`
 
 - [ALPHABET](./../../src/Psl/Str/constants.php#L0)
 - [ALPHABET_ALPHANUMERIC](./../../src/Psl/Str/constants.php#L0)
 
-### `Functions`
+#### `Functions`
 
 - [capitalize](./../../src/Psl/Str/capitalize.php#L33)
 - [capitalize_words](./../../src/Psl/Str/capitalize_words.php#L35)
@@ -74,8 +74,6 @@
 ---
 
 [next](str-byte.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

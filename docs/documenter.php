@@ -87,7 +87,7 @@ function regenerate_documentation(): void
 function document_component(string $component, string $previous_link): string
 {
     $lines = [];
-    $lines[] = Str\format('## `%s` Component', $component);
+    $lines[] = Str\format('### `%s` Component', $component);
     $lines[] = '';
 
     /**
@@ -102,7 +102,7 @@ function document_component(string $component, string $previous_link): string
     ): array {
         $lines = [];
         if (Iter\count($symbols[$type]) > 0) {
-            $lines[] = Str\format('### `%s`', get_symbol_type_name($type));
+            $lines[] = Str\format('#### `%s`', get_symbol_type_name($type));
             $lines[] = '';
 
             foreach ($symbols[$type] as $symbol) {

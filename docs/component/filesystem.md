@@ -2,13 +2,13 @@
 
 ---
 
-## `Psl\Filesystem` Component
+### `Psl\Filesystem` Component
 
-### `Constants`
+#### `Constants`
 
 - [SEPARATOR](./../../src/Psl/Filesystem/constants.php#L0)
 
-### `Functions`
+#### `Functions`
 
 - [change_group](./../../src/Psl/Filesystem/change_group.php#L20)
 - [change_owner](./../../src/Psl/Filesystem/change_owner.php#L20)
@@ -52,8 +52,6 @@
 ---
 
 [next](fun.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

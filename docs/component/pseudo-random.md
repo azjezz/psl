@@ -2,9 +2,9 @@
 
 ---
 
-## `Psl\PseudoRandom` Component
+### `Psl\PseudoRandom` Component
 
-### `Functions`
+#### `Functions`
 
 - [float](./../../src/Psl/PseudoRandom/float.php#L12)
 - [int](./../../src/Psl/PseudoRandom/int.php#L17)
@@ -14,8 +14,6 @@
 ---
 
 [next](regex.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

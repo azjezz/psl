@@ -2,9 +2,9 @@
 
 ---
 
-## `Psl\Vec` Component
+### `Psl\Vec` Component
 
-### `Functions`
+#### `Functions`
 
 - [chunk](./../../src/Psl/Vec/chunk.php#L24)
 - [chunk_with_keys](./../../src/Psl/Vec/chunk_with_keys.php#L27)
@@ -35,8 +35,6 @@
 ---
 
 [next]({{ next }})
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

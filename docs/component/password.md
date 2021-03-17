@@ -2,9 +2,9 @@
 
 ---
 
-## `Psl\Password` Component
+### `Psl\Password` Component
 
-### `Constants`
+#### `Constants`
 
 - [DEFAULT_ALGORITHM](./../../src/Psl/Password/constants.php#L0)
 - [BCRYPT_ALGORITHM](./../../src/Psl/Password/constants.php#L0)
@@ -15,7 +15,7 @@
 - [ARGON2_DEFAULT_TIME_COST](./../../src/Psl/Password/constants.php#L0)
 - [ARGON2_DEFAULT_THREADS](./../../src/Psl/Password/constants.php#L0)
 
-### `Functions`
+#### `Functions`
 
 - [algorithms](./../../src/Psl/Password/algorithms.php#L14)
 - [get_information](./../../src/Psl/Password/get_information.php#L24)
@@ -28,8 +28,6 @@
 ---
 
 [next](pseudo-random.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

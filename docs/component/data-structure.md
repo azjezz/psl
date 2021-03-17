@@ -2,15 +2,15 @@
 
 ---
 
-## `Psl\DataStructure` Component
+### `Psl\DataStructure` Component
 
-### `Interfaces`
+#### `Interfaces`
 
 - [PriorityQueueInterface](./../../src/Psl/DataStructure/PriorityQueueInterface.php#L12)
 - [QueueInterface](./../../src/Psl/DataStructure/QueueInterface.php#L17)
 - [StackInterface](./../../src/Psl/DataStructure/StackInterface.php#L17)
 
-### `Classes`
+#### `Classes`
 
 - [PriorityQueue](./../../src/Psl/DataStructure/PriorityQueue.php#L18)
 - [Queue](./../../src/Psl/DataStructure/Queue.php#L19)
@@ -21,8 +21,6 @@
 ---
 
 [next](dict.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

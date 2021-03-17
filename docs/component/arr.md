@@ -2,9 +2,9 @@
 
 ---
 
-## `Psl\Arr` Component
+### `Psl\Arr` Component
 
-### `Functions`
+#### `Functions`
 
 - [at](./../../src/Psl/Arr/at.php#L27) ( deprecated )
 - [concat](./../../src/Psl/Arr/concat.php#L22) ( deprecated )
@@ -57,8 +57,6 @@
 ---
 
 [next](collection.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

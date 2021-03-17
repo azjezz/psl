@@ -2,9 +2,9 @@
 
 ---
 
-## `Psl` Component
+### `Psl` Component
 
-### `Functions`
+#### `Functions`
 
 - [invariant](./../../src/Psl/invariant.php#L18)
 - [invariant_violation](./../../src/Psl/invariant_violation.php#L16)
@@ -15,8 +15,6 @@
 ---
 
 [next](arr.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

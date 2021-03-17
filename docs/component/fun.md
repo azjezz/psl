@@ -2,9 +2,9 @@
 
 ---
 
-## `Psl\Fun` Component
+### `Psl\Fun` Component
 
-### `Functions`
+#### `Functions`
 
 - [after](./../../src/Psl/Fun/after.php#L37)
 - [identity](./../../src/Psl/Fun/identity.php#L17)
@@ -17,8 +17,6 @@
 ---
 
 [next](hash.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >

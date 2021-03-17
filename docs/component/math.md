@@ -2,9 +2,9 @@
 
 ---
 
-## `Psl\Math` Component
+### `Psl\Math` Component
 
-### `Constants`
+#### `Constants`
 
 - [INT64_MAX](./../../src/Psl/Math/constants.php#L0)
 - [INT64_MIN](./../../src/Psl/Math/constants.php#L0)
@@ -21,7 +21,7 @@
 - [INFINITY](./../../src/Psl/Math/constants.php#L0)
 - [NAN](./../../src/Psl/Math/constants.php#L0)
 
-### `Functions`
+#### `Functions`
 
 - [abs](./../../src/Psl/Math/abs.php#L34)
 - [base_convert](./../../src/Psl/Math/base_convert.php#L39)
@@ -54,8 +54,6 @@
 ---
 
 [next](observer.md)
-
----
 
 > This markdown file was generated using `docs/documenter.php`.
 >
