@@ -21,12 +21,12 @@ final class ArrayKeyTypeTest extends TypeTest
         yield ['123', '123'];
         yield ['1e23', '1e23'];
         yield [$this->stringable('123'), '123'];
-        yield [1.0, 1];
+        yield [1.0, '1.0'];
+        yield [1.23, '1.23'];
     }
 
     public function getInvalidCoercions(): iterable
     {
-        yield [1.23];
         yield [[]];
         yield [[1]];
         yield [Type\bool()];
