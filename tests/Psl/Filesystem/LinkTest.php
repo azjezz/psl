@@ -79,8 +79,6 @@ final class LinkTest extends AbstractFilesystemTest
 
     public function testSymbolicLinkCreatesDestinationsDirectory(): void
     {
-        self::runOnlyOnLinux();
-
         $directory = Str\join([$this->directory, 'foo'], Filesystem\SEPARATOR);
         $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
         $symbolic_link = Str\join([$directory, 'symbolic.txt'], Filesystem\SEPARATOR);
