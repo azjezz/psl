@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Filesystem;
 
-use PHPUnit\Framework\TestCase;
 use Psl\Env;
 use Psl\Filesystem;
 use Psl\Str;
+use Psl\Tests\IOTestCase;
 use Psl\Type;
 
-use const PHP_OS_FAMILY;
-
-abstract class AbstractFilesystemTest extends TestCase
+abstract class AbstractFilesystemTest extends IOTestCase
 {
     protected string $function;
     protected string $cacheDirectory;
@@ -21,6 +19,8 @@ abstract class AbstractFilesystemTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->cacheDirectory = Type\string()->assert(Filesystem\canonicalize(Str\join([
             __DIR__, '..', '..', '.cache'
         ], Filesystem\SEPARATOR)));
@@ -39,13 +39,6 @@ abstract class AbstractFilesystemTest extends TestCase
         Filesystem\delete_directory($this->directory, true);
 
         static::assertFalse(Filesystem\is_directory($this->directory));
-    }
-
-    protected static function runOnlyOnLinux(): void
-    {
-        if ('Linux' !== PHP_OS_FAMILY) {
-            static::markTestSkipped('Test can only be executed on linux.');
-        }
     }
 
     protected static function runOnlyUsingRoot(): void

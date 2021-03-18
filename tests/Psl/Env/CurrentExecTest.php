@@ -6,15 +6,17 @@ namespace Psl\Tests\Env;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Env;
-
-use function realpath;
+use Psl\Filesystem;
 
 final class CurrentExecTest extends TestCase
 {
     public function testCurrentExe(): void
     {
-        $phpunit = __DIR__ . '/../../../vendor/phpunit/phpunit/phpunit';
-        $phpunit = realpath($phpunit);
+        $phpunit = __DIR__ . '/../../../vendor/bin/phpunit';
+        $phpunit = Filesystem\canonicalize($phpunit);
+        if (PHP_OS_FAMILY !== 'Windows' && Filesystem\is_symbolic_link($phpunit)) {
+            $phpunit = Filesystem\read_symbolic_link($phpunit);
+        }
 
         static::assertSame($phpunit, Env\current_exec());
     }

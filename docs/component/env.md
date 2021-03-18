@@ -14,7 +14,7 @@
 
 - [args](./../../src/Psl/Env/args.php#L12)
 - [current_dir](./../../src/Psl/Env/current_dir.php#L16)
-- [current_exec](./../../src/Psl/Env/current_exec.php#L18)
+- [current_exec](./../../src/Psl/Env/current_exec.php#L12)
 - [get_var](./../../src/Psl/Env/get_var.php#L18)
 - [get_vars](./../../src/Psl/Env/get_vars.php#L14)
 - [join_paths](./../../src/Psl/Env/join_paths.php#L16)
