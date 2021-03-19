@@ -7,7 +7,6 @@
 ![Coding standards status](https://github.com/azjezz/psl/workflows/documentation%20check/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/azjezz/psl/badge.svg)](https://coveralls.io/github/azjezz/psl)
 [![Type Coverage](https://shepherd.dev/github/azjezz/psl/coverage.svg)](https://shepherd.dev/github/azjezz/psl)
-[![SymfonyInsight](https://insight.symfony.com/projects/1e053a4a-aaab-4a52-9059-c4883bfd46f7/mini.svg)](https://insight.symfony.com/projects/1e053a4a-aaab-4a52-9059-c4883bfd46f7)
 [![Total Downloads](https://poser.pugx.org/azjezz/psl/d/total.svg)](https://packagist.org/packages/azjezz/psl)
 [![Latest Stable Version](https://poser.pugx.org/azjezz/psl/v/stable.svg)](https://packagist.org/packages/azjezz/psl)
 [![License](https://poser.pugx.org/azjezz/psl/license.svg)](https://packagist.org/packages/azjezz/psl)
@@ -22,7 +21,7 @@ The goal of Psl is to provide a consistent, centralized, well-typed set of APIs 
 
 declare(strict_types=1);
 
-use Psl\{Dict, Str, Vec};
+use Psl\{Str, Vec};
 
 /**
  * @psalm-param iterable<?int> $codes
@@ -31,7 +30,7 @@ function foo(iterable $codes): string
 {
     $codes = Vec\filter_nulls($codes);
 
-    $chars = Dict\map($codes, fn(int $code): string => Str\chr($code));
+    $chars = Vec\map($codes, fn(int $code): string => Str\chr($code));
 
     return Str\join($chars, ', ');
 }
