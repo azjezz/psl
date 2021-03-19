@@ -14,7 +14,7 @@ use const PHP_SAPI;
  *
  * @codeCoverageIgnore
  */
-function input_handle(): ReadHandle
+function input_handle(): ReadHandleInterface
 {
     if (PHP_SAPI === "cli") {
         return new Internal\ReadOnlyHandleDecorator(

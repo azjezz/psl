@@ -6,16 +6,16 @@ namespace Psl\IO;
 
 use Psl\Vec;
 
-final class Writer implements WriteHandle
+final class Writer implements WriteHandleInterface
 {
-    private WriteHandle $handle;
+    private WriteHandleInterface $handle;
 
-    public function __construct(WriteHandle $handle)
+    public function __construct(WriteHandleInterface $handle)
     {
         $this->handle = $handle;
     }
 
-    public function getHandle(): WriteHandle
+    public function getHandle(): WriteHandleInterface
     {
         return $this->handle;
     }
@@ -43,7 +43,7 @@ final class Writer implements WriteHandle
      * @throws Exception\BlockingException If the handle is a socket or similar, and the write would block.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      *
-     * @see WriteHandle::write()
+     * @see WriteHandleInterface::write()
      */
     public function writeAll(string ...$bytes): int
     {
@@ -79,7 +79,7 @@ final class Writer implements WriteHandle
      * @throws Exception\BlockingException If the handle is a socket or similar, and the write would block.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      *
-     * @see WriteHandle::write()
+     * @see WriteHandleInterface::write()
      */
     public function writeAllLines(string ...$bytes): int
     {

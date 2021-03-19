@@ -8,19 +8,19 @@ use Psl;
 use Psl\Exception\InvariantViolationException;
 use Psl\Str;
 
-final class Reader implements ReadHandle
+final class Reader implements ReadHandleInterface
 {
-    private ReadHandle $handle;
+    private ReadHandleInterface $handle;
 
     private bool $eof = false;
     private string $buffer = '';
 
-    public function __construct(ReadHandle $handle)
+    public function __construct(ReadHandleInterface $handle)
     {
         $this->handle = $handle;
     }
 
-    public function getHandle(): ReadHandle
+    public function getHandle(): ReadHandleInterface
     {
         return $this->handle;
     }

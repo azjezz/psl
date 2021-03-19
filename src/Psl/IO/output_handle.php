@@ -14,7 +14,7 @@ use const PHP_SAPI;
  *
  * @codeCoverageIgnore
  */
-function output_handle(): WriteHandle
+function output_handle(): WriteHandleInterface
 {
     if (PHP_SAPI === "cli") {
         return new Internal\WriteOnlyHandleDecorator(

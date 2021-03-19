@@ -9,7 +9,7 @@ use Psl;
 /**
  * A handle that can have its' position changed.
  */
-interface SeekHandle extends Handle
+interface SeekHandleInterface extends HandleInterface
 {
     /**
      * Move to a specific offset within a handle.

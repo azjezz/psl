@@ -7,7 +7,7 @@ namespace Psl\IO\Internal;
 use Psl;
 use Psl\Exception\InvariantViolationException;
 use Psl\Internal;
-use Psl\IO\CloseSeekReadWriteHandle;
+use Psl\IO\CloseSeekReadWriteHandleInterface;
 use Psl\Type;
 
 use function error_clear_last;
@@ -26,7 +26,7 @@ use function stream_set_blocking;
  *
  * @internal
  */
-final class ResourceHandle implements CloseSeekReadWriteHandle
+final class ResourceHandle implements CloseSeekReadWriteHandleInterface
 {
     /**
      * @var closed-resource|resource|null $resource

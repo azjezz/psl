@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\IO\Internal;
 
-use Psl\IO\WriteHandle;
+use Psl\IO\WriteHandleInterface;
 
 /**
  * A write handle decorator to restrict the type of another handle.
@@ -13,11 +13,11 @@ use Psl\IO\WriteHandle;
  *
  * @internal
  */
-final class WriteOnlyHandleDecorator implements WriteHandle
+final class WriteOnlyHandleDecorator implements WriteHandleInterface
 {
-    private WriteHandle $handle;
+    private WriteHandleInterface $handle;
 
-    public function __construct(WriteHandle $handle)
+    public function __construct(WriteHandleInterface $handle)
     {
         $this->handle = $handle;
     }

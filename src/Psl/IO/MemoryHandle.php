@@ -10,7 +10,7 @@ use Psl\Math;
 use Psl\Str;
 use Psl\Str\Byte;
 
-final class MemoryHandle implements CloseSeekReadWriteHandle
+final class MemoryHandle implements CloseSeekReadWriteHandleInterface
 {
     private string $buffer;
     private int $offset = 0;

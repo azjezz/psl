@@ -7,7 +7,7 @@ namespace Psl\IO;
 /**
  * An interface for a writable Handle.
  */
-interface WriteHandle extends Handle
+interface WriteHandleInterface extends HandleInterface
 {
     /**
      * An immediate unordered write.

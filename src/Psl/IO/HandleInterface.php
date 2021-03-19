@@ -16,8 +16,8 @@ namespace Psl\IO;
  * - Close
  * - Seek
  * - Read
- * - Writ
+ * - Write
  */
-interface Handle
+interface HandleInterface
 {
 }

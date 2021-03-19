@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\IO\Internal;
 
-use Psl\IO\ReadHandle;
+use Psl\IO\ReadHandleInterface;
 
 /**
  * A read handle decorator to restrict the type of another handle.
@@ -13,11 +13,11 @@ use Psl\IO\ReadHandle;
  *
  * @internal
  */
-final class ReadOnlyHandleDecorator implements ReadHandle
+final class ReadOnlyHandleDecorator implements ReadHandleInterface
 {
-    private ReadHandle $handle;
+    private ReadHandleInterface $handle;
 
-    public function __construct(ReadHandle $handle)
+    public function __construct(ReadHandleInterface $handle)
     {
         $this->handle = $handle;
     }

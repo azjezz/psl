@@ -9,7 +9,7 @@ use Psl\Exception\InvariantViolationException;
 /**
  * An `IO\Handle` that is readable.
  */
-interface ReadHandle extends Handle
+interface ReadHandleInterface extends HandleInterface
 {
     /**
      * An immediate, unordered read.

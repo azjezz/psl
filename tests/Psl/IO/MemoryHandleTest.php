@@ -33,27 +33,27 @@ final class MemoryHandleTest extends IOTestCase
     public function provideOperations(): iterable
     {
         yield [
-            static fn(IO\SeekHandle $handle) => $handle->seek(5),
+            static fn(IO\SeekHandleInterface $handle) => $handle->seek(5),
         ];
 
         yield [
-            static fn(IO\SeekHandle $handle) => $handle->tell(),
+            static fn(IO\SeekHandleInterface $handle) => $handle->tell(),
         ];
 
         yield [
-            static fn(IO\WriteHandle $handle) => $handle->write('hello'),
+            static fn(IO\WriteHandleInterface $handle) => $handle->write('hello'),
         ];
 
         yield [
-            static fn(IO\ReadHandle $handle) => $handle->read(),
+            static fn(IO\ReadHandleInterface $handle) => $handle->read(),
         ];
 
         yield [
-            static fn(IO\WriteHandle $handle) => $handle->flush(),
+            static fn(IO\WriteHandleInterface $handle) => $handle->flush(),
         ];
 
         yield [
-            static fn(IO\CloseHandle $handle) => $handle->close(),
+            static fn(IO\CloseHandleInterface $handle) => $handle->close(),
         ];
     }
 

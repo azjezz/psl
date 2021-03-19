@@ -7,7 +7,7 @@ namespace Psl\IO;
 /**
  * A handle that is explicitly closeable.
  */
-interface CloseHandle extends Handle
+interface CloseHandleInterface extends HandleInterface
 {
     /**
      * Close the handle.
