@@ -55,7 +55,6 @@ final class Loader
         'Psl\Password\ARGON2_DEFAULT_TIME_COST',
         'Psl\Password\ARGON2_DEFAULT_THREADS',
         'Psl\Filesystem\SEPARATOR',
-        'Psl\Asio\Internal\STREAM_AWAIT_CLOSED',
         'Psl\Asio\Internal\STREAM_AWAIT_READY',
         'Psl\Asio\Internal\STREAM_AWAIT_TIMEOUT',
         'Psl\Asio\Internal\STREAM_AWAIT_ERROR',
