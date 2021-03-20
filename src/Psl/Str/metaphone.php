@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
+use Psl;
+
 use function metaphone as php_metaphone;
 
 /**
@@ -12,13 +14,15 @@ use function metaphone as php_metaphone;
  * @param int $phonemes This parameter restricts the returned metaphone key to phonemes characters in length.
  *                      the default value of 0 means no restriction.
  *
- * @return string|null the metaphone key as a string, or NULL on failure
+ * @throws Psl\Exception\InvariantViolationException If $phonemes is negative.
+ *
+ * @return string the metaphone key as a string
  *
  * @pure
  */
-function metaphone(string $string, int $phonemes = 0): ?string
+function metaphone(string $string, int $phonemes = 0): string
 {
-    $result = php_metaphone($string, $phonemes);
+    Psl\invariant($phonemes >= 0, 'Expected non-negative phonemes, got %d.', $phonemes);
 
-    return false === $result ? null : $result;
+    return php_metaphone($string, $phonemes);
 }
