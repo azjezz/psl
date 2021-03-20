@@ -46,7 +46,7 @@
 - [length](./../../src/Psl/Str/length.php#L30)
 - [levenshtein](./../../src/Psl/Str/levenshtein.php#L29)
 - [lowercase](./../../src/Psl/Str/lowercase.php#L35)
-- [metaphone](./../../src/Psl/Str/metaphone.php#L19)
+- [metaphone](./../../src/Psl/Str/metaphone.php#L23)
 - [ord](./../../src/Psl/Str/ord.php#L27)
 - [pad_left](./../../src/Psl/Str/pad_left.php#L36)
 - [pad_right](./../../src/Psl/Str/pad_right.php#L36)
