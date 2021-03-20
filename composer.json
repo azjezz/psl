@@ -11,6 +11,7 @@
     ],
     "require": {
         "php": "^7.4 || ^8.0",
+        "ext-fiber": "*",
         "ext-bcmath": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
