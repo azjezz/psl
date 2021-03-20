@@ -55,6 +55,10 @@ final class Loader
         'Psl\Password\ARGON2_DEFAULT_TIME_COST',
         'Psl\Password\ARGON2_DEFAULT_THREADS',
         'Psl\Filesystem\SEPARATOR',
+        'Psl\Asio\Internal\STREAM_AWAIT_CLOSED',
+        'Psl\Asio\Internal\STREAM_AWAIT_READY',
+        'Psl\Asio\Internal\STREAM_AWAIT_TIMEOUT',
+        'Psl\Asio\Internal\STREAM_AWAIT_ERROR',
     ];
 
     public const FUNCTIONS = [
@@ -517,6 +521,21 @@ final class Loader
         'Psl\IO\input_handle',
         'Psl\IO\output_handle',
         'Psl\IO\error_handle',
+        'Psl\Asio\Internal\stream_await_read',
+        'Psl\Asio\Internal\stream_await_write',
+        'Psl\Asio\all',
+        'Psl\Asio\any',
+        'Psl\Asio\async',
+        'Psl\Asio\await',
+        'Psl\Asio\concurrently',
+        'Psl\Asio\defer',
+        'Psl\Asio\first',
+        'Psl\Asio\later',
+        'Psl\Asio\sleep',
+        'Psl\Asio\some',
+        'Psl\Asio\time',
+        'Psl\Asio\timeout',
+        'Psl\Asio\wrap',
     ];
 
     public const INTERFACES = [
@@ -562,6 +581,9 @@ final class Loader
         'Psl\IO\SeekReadWriteHandleInterface',
         'Psl\IO\SeekWriteHandleInterface',
         'Psl\IO\WriteHandleInterface',
+        'Psl\Asio\Internal\Driver\DriverInterface',
+        'Psl\Asio\Awaitable',
+        'Psl\Asio\Exception\ExceptionInterface',
     ];
 
     public const TRAITS = [];
@@ -636,6 +658,18 @@ final class Loader
         'Psl\IO\Writer',
         'Psl\IO\Reader',
         'Psl\IO\MemoryHandle',
+        'Psl\Asio\Internal\Driver\AbstractDriver',
+        'Psl\Asio\Internal\Driver\NativeDriver',
+        'Psl\Asio\Internal\Deferred',
+        'Psl\Asio\Internal\TimerQueue',
+        'Psl\Asio\Internal\Delayed',
+        'Psl\Asio\Internal\EventLoop',
+        'Psl\Asio\Internal\FailedAwaitable',
+        'Psl\Asio\Internal\FinishedAwaitable',
+        'Psl\Asio\Internal\InternalAwaitable',
+        'Psl\Asio\Internal\WaitHandle',
+        'Psl\Asio\Internal\Watcher',
+        'Psl\Asio\Exception\TimeoutException',
     ];
 
     public const TYPE_CONSTANTS = 1;
