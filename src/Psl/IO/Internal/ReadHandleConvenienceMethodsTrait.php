@@ -42,11 +42,7 @@ trait ReadHandleConvenienceMethodsTrait
 
         do {
             $chunk_size = $to_read;
-            /** @var string $chunk */
-            $chunk = Asio\await(Asio\async(fn () => $this->read(
-                $chunk_size,
-                $timer->getRemaining(),
-            )));
+            $chunk = $this->read($chunk_size, $timer->getRemaining());
             $data .= $chunk;
             $to_read -= Str\Byte\length($chunk);
         } while ($to_read > 0 && $chunk !== '');
