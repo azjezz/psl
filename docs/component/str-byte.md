@@ -39,7 +39,7 @@
 - [replace_ci](./../../src/Psl/Str/Byte/replace_ci.php#L15)
 - [replace_every](./../../src/Psl/Str/Byte/replace_every.php#L17)
 - [replace_every_ci](./../../src/Psl/Str/Byte/replace_every_ci.php#L17)
-- [reverse](./../../src/Psl/Str/Byte/reverse.php#L10)
+- [reverse](./../../src/Psl/Str/Byte/reverse.php#L14)
 - [rot13](./../../src/Psl/Str/Byte/rot13.php#L14)
 - [search](./../../src/Psl/Str/Byte/search.php#L23)
 - [search_ci](./../../src/Psl/Str/Byte/search_ci.php#L23)
