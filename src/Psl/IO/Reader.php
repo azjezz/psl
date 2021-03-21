@@ -6,10 +6,13 @@ namespace Psl\IO;
 
 use Psl;
 use Psl\Exception\InvariantViolationException;
+use Psl\Math;
 use Psl\Str;
 
 final class Reader implements ReadHandleInterface
 {
+    use Internal\ReadHandleConvenienceMethodsTrait;
+
     private ReadHandleInterface $handle;
 
     private bool $eof = false;
@@ -28,52 +31,94 @@ final class Reader implements ReadHandleInterface
     /**
      * An immediate, unordered read.
      *
-     * @param int|null $max_bytes the maximum number of bytes to read.
+     * Up to `$max_bytes` may be allocated in a buffer; large values may lead to
+     * unnecessarily hitting the request memory limit.
      *
-     * up to `$max_bytes` may be allocated in a buffer; large values may lead
-     * to unnecessarily hitting the request memory limit.
-     *
-     * @returns string the read data on success, or an empty string if the end of file is reached.
+     * @param ?int $max_bytes the maximum number of bytes to read
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\BlockingException If the handle is a socket or similar, and the read would block.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws InvariantViolationException If $max_bytes is 0.
+     *
+     * @return string the read data on success, or an empty string if the end of file is reached.
+     *
+     * @see ReadHandleInterface::read()
+     * @see ReadHandleInterface::readAll()
      */
-    public function read(?int $max_bytes = null): string
+    public function readImmediately(?int $max_bytes = null): string
     {
-        Psl\invariant($max_bytes === null || $max_bytes >= 0, '$max_bytes must be null, or >= 0');
+        Psl\invariant(
+            $max_bytes === null || $max_bytes > 0,
+            '$max_bytes must be null, or greater than 0',
+        );
 
         if ($this->eof) {
             return '';
         }
 
         if ($this->buffer === '') {
-            $this->buffer = $this->handle->read();
+            $this->buffer = $this->getHandle()->readImmediately();
+            if ($this->buffer === '') {
+                $this->eof = true;
+                return '';
+            }
         }
 
-        if ($this->buffer === '') {
-            $this->eof = true;
-
-            return '';
-        }
-
-        if (null === $max_bytes || $max_bytes >= Str\Byte\length($this->buffer)) {
-            $buffer = $this->buffer;
+        if ($max_bytes === null || $max_bytes >= Str\Byte\length($this->buffer)) {
+            $buf = $this->buffer;
             $this->buffer = '';
-
-            return $buffer;
+            return $buf;
         }
 
-        $buffer = $this->buffer;
-        $this->buffer = Str\Byte\slice($buffer, $max_bytes);
+        $buf = $this->buffer;
+        $this->buffer = Str\Byte\slice($buf, $max_bytes);
 
-        return Str\Byte\slice($buffer, 0, $max_bytes);
+        return Str\Byte\slice($buf, 0, $max_bytes);
     }
 
     /**
-     * @returns string the read data on success,
-     *  or null if the end of file is reached before finding $suffix.
+     * Read from the handle, waiting for data if necessary.
+     *
+     * @param ?int $max_bytes the maximum number of bytes to read
+     *
+     * @throws Exception\AlreadyClosedException If the handle has been already closed.
+     * @throws Exception\BlockingException If the handle is a socket or similar, and the read would block.
+     * @throws Exception\RuntimeException If an error occurred during the operation.
+     * @throws Exception\TimeoutException If $timeout_ms is reached before being able to read from the handle.
+     * @throws InvariantViolationException If $max_bytes is 0.
+     *
+     * @return string the read data on success, or an empty string if the end of file is reached.
+     *
+     * Up to `$max_bytes` may be allocated in a buffer; large values may lead to
+     * unnecessarily hitting the request memory limit.
+     */
+    public function read(?int $max_bytes = null, ?int $timeout_ms = null): string
+    {
+        Psl\invariant($max_bytes === null || $max_bytes >= 0, '$max_bytes must be null, or >= 0');
+        Psl\invariant($timeout_ms === null || $timeout_ms > 0, '$timeout_ms must be null, or > 0');
+
+        if ($this->eof) {
+            return '';
+        }
+
+        if ($this->buffer === '') {
+            $this->fillBuffer(null, $timeout_ms);
+        }
+
+        // We either have a buffer, or reached EOF; either way, behavior matches
+        // read, so just delegate
+        return $this->readImmediately($max_bytes);
+    }
+
+    /**
+     * Read until the specified suffix is seen.
+     *
+     * The trailing suffix is read (so won't be returned by other calls), but is not
+     * included in the return value.
+     *
+     * This call returns null if the suffix is not seen, even if there is other
+     * data.
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\BlockingException If the handle is a socket or similar, and the read would block.
@@ -92,17 +137,20 @@ final class Reader implements ReadHandleInterface
         }
 
         do {
+            // + 1 as it would have been matched in the previous iteration if it
+            // fully fit in the chunk
+            $offset = (int) Math\maxva(0, Str\Byte\length($buf) - $suffix_len + 1);
             $chunk = $this->handle->read();
             if ($chunk === '') {
                 $this->buffer = $buf;
                 return null;
             }
             $buf .= $chunk;
-        } while (!Str\Byte\contains($chunk, $suffix));
+            $idx = Str\Byte\search($buf, $suffix, $offset);
+        } while ($idx === null);
 
-        $idx = Str\Byte\search($buf, $suffix);
-        Psl\invariant($idx !== null, 'Should not have exited loop without suffix');
         $this->buffer = Str\Byte\slice($buf, $idx + $suffix_len);
+
         return Str\Byte\slice($buf, 0, $idx);
     }
 
@@ -117,26 +165,32 @@ final class Reader implements ReadHandleInterface
      *                                    or reached end of file before requested size.
      * @throws InvariantViolationException If $size is not positive.
      */
-    public function readFixedSize(int $size): string
+    public function readFixedSize(int $size, ?int $timeout_ms = null): string
     {
-        /** @psalm-suppress RedundantCondition */
-        Psl\invariant($size > 0, '$size should be a positive integer.');
+        $timer = new Internal\OptionalIncrementalTimeout(
+            $timeout_ms,
+            static function () use (&$data): void {
+                throw new Exception\TimeoutException(Str\format(
+                    "Reached timeout before reading requested amount of data",
+                    $data === '' ? 'any' : 'all',
+                ));
+            },
+        );
 
         while (Str\Byte\length($this->buffer) < $size && !$this->eof) {
-            $chunk = $this->getHandle()->read($size - Str\Byte\length($this->buffer));
-            if ($chunk === '') {
-                $this->eof = true;
-            }
-
-            $this->buffer .= $chunk;
+            $this->fillBuffer(
+                $size - Str\Byte\length($this->buffer),
+                $timer->getRemaining(),
+            );
         }
 
         if ($this->eof) {
-            throw new Exception\RuntimeException('Reached end of file before requested size.', 4);
+            throw new Exception\RuntimeException('Reached end of file before requested size.');
         }
 
         $buffer_size = Str\Byte\length($this->buffer);
-        Psl\invariant($buffer_size >= $size, 'Should have read the requested data or reached EOF');
+        Psl\invariant($buffer_size >= $size, "Should have read the requested data or reached EOF");
+
         if ($size === $buffer_size) {
             $ret = $this->buffer;
             $this->buffer = '';
@@ -149,16 +203,37 @@ final class Reader implements ReadHandleInterface
     }
 
     /**
-     * Read exactly one byte.
+     * Read a single byte from the handle.
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\BlockingException If the handle is a socket or similar, and the read would block.
      * @throws Exception\RuntimeException If an error occurred during the operation, or reached end of file.
+     * @throws Psl\Exception\InvariantViolationException If $timeout_ms is negative.
      */
-    public function readByte(): string
+    public function readByte(?int $timeout_ms = null): string
     {
-        /** @psalm-suppress MissingThrowsDocblock - $size is positive */
-        return $this->readFixedSize(1);
+        Psl\invariant(
+            $timeout_ms === null || $timeout_ms > 0,
+            '$timeout_ms must be null, or > 0',
+        );
+
+        if ($this->buffer === '' && !$this->eof) {
+            $this->fillBuffer(null, $timeout_ms);
+        }
+
+        if ($this->buffer === '') {
+            throw new Exception\RuntimeException('Reached EOF without any more data.');
+        }
+
+        $ret = $this->buffer[0];
+        if ($ret === $this->buffer) {
+            $this->buffer = '';
+            $this->eof = true;
+            return $ret;
+        }
+
+        $this->buffer = Str\Byte\slice($this->buffer, 1);
+        return $ret;
     }
 
     /**
@@ -198,13 +273,37 @@ final class Reader implements ReadHandleInterface
             return false;
         }
 
-        /** @psalm-suppress MissingThrowsDocblock - $size is positive */
-        $this->buffer = $this->handle->read();
-        if ($this->buffer === '') {
-            $this->eof = true;
-            return true;
+        try {
+            // Calling the immediate (but still non-blocking) version as the async
+            // version could wait for the other end to send data - which could lead
+            // to both ends of a pipe/socket waiting on each other.
+            $this->buffer = $this->handle->readImmediately();
+            if ($this->buffer === '') {
+                $this->eof = true;
+                return true;
+            }
+        } catch (Exception\BlockingException $_ex) {
+            return false;
+        } catch (Exception\ExceptionInterface $ex) {
+            // ignore; it'll be thrown again when attempting a real read.
         }
 
         return false;
+    }
+
+    /**
+     * @throws Exception\AlreadyClosedException If the handle has been already closed.
+     * @throws Exception\BlockingException If the handle is a socket or similar, and the read would block.
+     * @throws Exception\RuntimeException If an error occurred during the operation.
+     * @throws Exception\TimeoutException If $timeout_ms is reached before being able to read from the handle.
+     */
+    private function fillBuffer(?int $desired_bytes, ?int $timeout_ms): void
+    {
+        $chunk = $this->handle->read($desired_bytes, $timeout_ms);
+        if ($chunk === '') {
+            $this->eof = true;
+        }
+
+        $this->buffer .= $chunk;
     }
 }

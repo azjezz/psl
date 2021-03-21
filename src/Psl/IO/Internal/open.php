@@ -16,8 +16,11 @@ function open(string $uri, string $mode): ResourceHandle
 {
     return Internal\suppress(static function () use ($uri, $mode) {
         $resource = fopen($uri, $mode);
-
-        Psl\invariant($resource !== false, 'Unable to open resource.');
+        if ($resource === false) {
+            $error = \error_get_last();
+            $message = $error['message'] ?? 'Unable to open resource.';
+            Psl\invariant_violation($message);
+        }
 
         return new ResourceHandle($resource);
     });

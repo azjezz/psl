@@ -20,7 +20,7 @@ final class MemoryHandleTest extends IOTestCase
     {
         $handle = new IO\MemoryHandle('hello');
         $handle->close();
-        
+
         $this->expectException(IO\Exception\AlreadyClosedException::class);
         $this->expectExceptionMessage('Handle has already been closed.');
 
@@ -33,39 +33,32 @@ final class MemoryHandleTest extends IOTestCase
     public function provideOperations(): iterable
     {
         yield [
-            static fn(IO\SeekHandleInterface $handle) => $handle->seek(5),
+            static fn (IO\SeekHandleInterface $handle) => $handle->seek(5),
         ];
 
         yield [
-            static fn(IO\SeekHandleInterface $handle) => $handle->tell(),
+            static fn (IO\SeekHandleInterface $handle) => $handle->tell(),
         ];
 
         yield [
-            static fn(IO\WriteHandleInterface $handle) => $handle->write('hello'),
+            static fn (IO\WriteHandleInterface $handle) => $handle->write('hello'),
         ];
 
         yield [
-            static fn(IO\ReadHandleInterface $handle) => $handle->read(),
+            static fn (IO\ReadHandleInterface $handle) => $handle->read(),
         ];
 
         yield [
-            static fn(IO\WriteHandleInterface $handle) => $handle->flush(),
-        ];
-
-        yield [
-            static fn(IO\CloseHandleInterface $handle) => $handle->close(),
+            static fn (IO\CloseHandleInterface $handle) => $handle->close(),
         ];
     }
 
     public function testMemoryHandle(): void
     {
         $handle = new IO\MemoryHandle('f');
-        $writer = new IO\Writer($handle);
-        
-        static::assertSame($handle, $writer->getHandle());
 
-        $writer->writeLine('Hello, World!');
-        $writer->writeAllLines('', '- Read', '- Write', '- Seek', '- Close');
+        $handle->writeAll('Hello, World!' . "\n");
+        $handle->writeAll("\n- Read\n- Write\n- Seek\n- Close\n");
 
         $handle->seek(0);
         static::assertSame('Hello, World!', $handle->read(13));
@@ -125,20 +118,18 @@ final class MemoryHandleTest extends IOTestCase
     public function testWrite(): void
     {
         $h = new IO\MemoryHandle();
-        $w = new IO\Writer($h);
-        $w->write('foo');
-        $w->flush();
+        $h->write('foo');
 
         static::assertSame('foo', $h->getBuffer());
     }
-    
+
     public function testWriteAfter(): void
     {
         $h = new IO\MemoryHandle('hello');
         $h->seek(20);
-        
+
         $h->write('world');
-        
+
         $h->seek(0);
         static::assertSame('hello', $h->read(5));
         static::assertSame(Str\repeat("\0", 15), $h->read(15));

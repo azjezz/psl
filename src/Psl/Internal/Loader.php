@@ -586,7 +586,10 @@ final class Loader
         'Psl\Asio\Exception\ExceptionInterface',
     ];
 
-    public const TRAITS = [];
+    public const TRAITS = [
+        'Psl\IO\Internal\ReadHandleConvenienceMethodsTrait',
+        'Psl\IO\Internal\WriteHandleConvenienceMethodsTrait',
+    ];
 
     public const CLASSES = [
         'Psl\Exception\InvariantViolationException',
@@ -655,7 +658,6 @@ final class Loader
         'Psl\IO\Internal\ResourceHandle',
         'Psl\IO\Internal\ReadOnlyHandleDecorator',
         'Psl\IO\Internal\WriteOnlyHandleDecorator',
-        'Psl\IO\Writer',
         'Psl\IO\Reader',
         'Psl\IO\MemoryHandle',
         'Psl\Asio\Internal\Driver\AbstractDriver',
@@ -670,6 +672,8 @@ final class Loader
         'Psl\Asio\Internal\WaitHandle',
         'Psl\Asio\Internal\Watcher',
         'Psl\Asio\Exception\TimeoutException',
+        'Psl\IO\Exception\TimeoutException',
+        'Psl\IO\Internal\OptionalIncrementalTimeout',
     ];
 
     public const TYPE_CONSTANTS = 1;

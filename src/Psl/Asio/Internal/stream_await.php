@@ -5,18 +5,19 @@ declare(strict_types=1);
 namespace Psl\Asio\Internal;
 
 use Psl\Asio;
+use Psl\Asio\Awaitable;
 use Throwable;
 
 /**
  * @param resource $resource
  *
- * @return Asio\Awaitable<int>
+ * @return Awaitable<int>
  */
 function stream_await(
     $resource,
     int $flags,
     ?int $timeout = null
-): Asio\Awaitable {
+): Awaitable {
     $watcher = null;
     $operation = Asio\async(static function () use ($resource, $flags, &$watcher): int {
         /** @var Deferred<int> $deferred */

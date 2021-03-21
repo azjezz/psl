@@ -22,11 +22,23 @@ final class ReadOnlyHandleDecorator implements ReadHandleInterface
         $this->handle = $handle;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function read(?int $max_bytes = null): string
+    public function readImmediately(?int $max_bytes = null): string
     {
-        return $this->handle->read($max_bytes);
+        return $this->handle->readImmediately($max_bytes);
+    }
+
+    public function read(?int $max_bytes = null, ?int $timeout_ms = null): string
+    {
+        return $this->handle->read($max_bytes, $timeout_ms);
+    }
+
+    public function readAll(?int $max_bytes = null, ?int $timeout_ms = null): string
+    {
+        return $this->handle->readAll($max_bytes, $timeout_ms);
+    }
+
+    public function readFixedSize(int $size, ?int $timeout_ms = null): string
+    {
+        return $this->handle->readFixedSize($size, $timeout_ms);
     }
 }
