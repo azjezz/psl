@@ -18,7 +18,6 @@ use function fclose;
 use function fseek;
 use function ftell;
 use function fwrite;
-use function stream_get_contents;
 use function stream_get_meta_data;
 use function stream_set_blocking;
 
