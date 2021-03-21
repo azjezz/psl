@@ -7,25 +7,24 @@ namespace Psl\Asio\Internal;
 use Psl\Asio;
 use Throwable;
 
-use function is_resource;
-
 /**
  * @param resource $resource
  *
  * @return Asio\Awaitable<int>
  */
-function stream_await_write(
+function stream_await(
     $resource,
+    int $flags,
     ?int $timeout = null
 ): Asio\Awaitable {
     $watcher = null;
-    $operation = Asio\async(static function () use ($resource, &$watcher): int {
+    $operation = Asio\async(static function () use ($resource, $flags, &$watcher): int {
         /** @var Deferred<int> $deferred */
         $deferred = new Deferred();
         /** @var Asio\Awaitable<int> $awaitable */
         $awaitable = $deferred->awaitable();
 
-        $watcher = EventLoop::onWritable($resource, static function () use (&$resource, &$deferred, &$watcher) {
+        $callback = static function () use (&$deferred, &$watcher): void {
             if (!$deferred) {
                 return;
             }
@@ -33,15 +32,20 @@ function stream_await_write(
             /** @var Deferred<int> $deferred */
             $deferred->finish(STREAM_AWAIT_READY);
 
-            $resource = null;
             $deferred = null;
             if ($watcher) {
                 EventLoop::cancel((string) $watcher);
             }
-            $watcher = null;
-        }, null);
 
-        /** @var int */
+            $watcher = null;
+        };
+
+        if ($flags & STREAM_AWAIT_READ) {
+            $watcher = EventLoop::onReadable($resource, $callback, null);
+        } else {
+            $watcher = EventLoop::onWritable($resource, $callback, null);
+        }
+
         return Asio\await($awaitable);
     });
 
