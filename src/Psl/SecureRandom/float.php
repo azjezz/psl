@@ -14,7 +14,6 @@ use Psl\Math;
 function float(): float
 {
     /**
-     * @var float|int $result
      * @psalm-suppress MissingThrowsDocblock
      */
     $result = namespace\int(0, Math\INT53_MAX) / Math\INT53_MAX;

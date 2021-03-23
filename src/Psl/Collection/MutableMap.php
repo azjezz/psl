@@ -372,7 +372,6 @@ final class MutableMap implements MutableMapInterface
 
         foreach ($this->elements as $k => $v) {
             /**
-             * @var Tu|null $u
              * @psalm-suppress ImpureFunctionCall - conditionally pure
              */
             $u = Iter\first($array);

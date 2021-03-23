@@ -33,7 +33,6 @@ function count(iterable $iterable): int
     }
 
     $count = 0;
-    /** @var T $_ */
     foreach ($iterable as $_) {
         ++$count;
     }

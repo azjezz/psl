@@ -34,7 +34,7 @@
 - [map](./../../src/Psl/Dict/map.php#L29)
 - [map_keys](./../../src/Psl/Dict/map_keys.php#L29)
 - [map_with_key](./../../src/Psl/Dict/map_with_key.php#L29)
-- [merge](./../../src/Psl/Dict/merge.php#L19)
+- [merge](./../../src/Psl/Dict/merge.php#L21)
 - [partition](./../../src/Psl/Dict/partition.php#L19)
 - [partition_with_key](./../../src/Psl/Dict/partition_with_key.php#L19)
 - [pull](./../../src/Psl/Dict/pull.php#L35)

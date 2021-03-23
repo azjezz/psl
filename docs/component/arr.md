@@ -41,7 +41,7 @@
 - [map](./../../src/Psl/Arr/map.php#L34) ( deprecated )
 - [map_keys](./../../src/Psl/Arr/map_keys.php#L34) ( deprecated )
 - [map_with_key](./../../src/Psl/Arr/map_with_key.php#L34) ( deprecated )
-- [merge](./../../src/Psl/Arr/merge.php#L32) ( deprecated )
+- [merge](./../../src/Psl/Arr/merge.php#L34) ( deprecated )
 - [partition](./../../src/Psl/Arr/partition.php#L22) ( deprecated )
 - [random](./../../src/Psl/Arr/random.php#L25) ( deprecated )
 - [select_keys](./../../src/Psl/Arr/select_keys.php#L25) ( deprecated )

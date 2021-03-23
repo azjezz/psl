@@ -93,7 +93,6 @@ final class MutableMapType extends Type\Type
                 ];
             }
 
-            /** @var array<Tk, Tv> $dict */
             $dict = Dict\from_entries($entries);
 
             /** @var Collection\MutableMap<Tk, Tv> */
@@ -144,7 +143,6 @@ final class MutableMapType extends Type\Type
                 ];
             }
 
-            /** @var array<Tk, Tv> $dict */
             $dict = Dict\from_entries($entries);
 
             /** @var Collection\MutableMap<Tk, Tv> */

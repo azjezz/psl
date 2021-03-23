@@ -45,9 +45,6 @@ function sort_by(iterable $iterable, callable $scalar_func, ?callable $comparato
         $tuples[$k] = [$scalar_func($v), $v];
     }
 
-    /**
-     * @var array<Tk, array{0: Ts, 1: Tv}> $sorted
-     */
     $sorted = namespace\sort($tuples, $tuple_comparator);
 
     /** @var array<Tk, Tv> $result */

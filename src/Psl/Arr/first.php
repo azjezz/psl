@@ -24,7 +24,6 @@ use Psl\Iter;
 function first(array $array)
 {
     /**
-     * @var Tk|null $first
      * @psalm-suppress DeprecatedFunction
      */
     $first = first_key($array);

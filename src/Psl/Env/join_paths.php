@@ -12,6 +12,8 @@ use const PATH_SEPARATOR;
  * Joins a collection of paths appropriately for the PATH environment variable.
  *
  * @param string ...$paths
+ *
+ * @no-named-arguments
  */
 function join_paths(string ...$paths): string
 {

@@ -43,7 +43,7 @@
 - [map](./../../src/Psl/Iter/map.php#L35) ( deprecated )
 - [map_keys](./../../src/Psl/Iter/map_keys.php#L35) ( deprecated )
 - [map_with_key](./../../src/Psl/Iter/map_with_key.php#L33) ( deprecated )
-- [merge](./../../src/Psl/Iter/merge.php#L30) ( deprecated )
+- [merge](./../../src/Psl/Iter/merge.php#L32) ( deprecated )
 - [product](./../../src/Psl/Iter/product.php#L34) ( deprecated )
 - [pull](./../../src/Psl/Iter/pull.php#L40) ( deprecated )
 - [pull_with_key](./../../src/Psl/Iter/pull_with_key.php#L41) ( deprecated )

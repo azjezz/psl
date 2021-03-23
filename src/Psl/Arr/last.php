@@ -24,7 +24,6 @@ use Psl\Iter;
 function last(array $array)
 {
     /**
-     * @var Tk|null $last
      * @psalm-suppress DeprecatedFunction
      */
     $last = last_key($array);

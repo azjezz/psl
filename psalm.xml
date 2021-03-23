@@ -59,6 +59,10 @@
         <RedundantCondition errorLevel="suppress"/>
         <RedundantCast errorLevel="suppress"/>
         <RedundantCastGivenDocblockType errorLevel="suppress"/>
+
+        <!-- Not using the result of pure functions is common within PSL -->
+        <!-- e.g: with and Psl\invariant_violations() -->
+        <UnusedFunctionCall errorLevel="suppress" />
     </issueHandlers>
 
     <plugins>

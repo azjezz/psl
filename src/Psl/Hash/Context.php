@@ -87,7 +87,6 @@ final class Context
      */
     public function update(string $data): Context
     {
-        /** @var HashContext $internal_context */
         $internal_context = hash_copy($this->internalContext);
         hash_update($internal_context, $data);
 
@@ -101,7 +100,6 @@ final class Context
      */
     public function finalize(): string
     {
-        /** @var HashContext $internal_context */
         $internal_context = hash_copy($this->internalContext);
 
         return hash_final($internal_context, false);

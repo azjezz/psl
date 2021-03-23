@@ -77,7 +77,6 @@ final class IntersectionType extends Type
         }
 
         try {
-            /** @var Tl $value */
             $value = $this->left_type->coerce($value);
             /** @var Tl&Tr */
             return $this->right_type->assert($value);
@@ -86,7 +85,6 @@ final class IntersectionType extends Type
         }
 
         try {
-            /** @var Tr $value */
             $value = $this->right_type->coerce($value);
             /** @var Tr&Tl */
             return $this->left_type->assert($value);
@@ -109,7 +107,6 @@ final class IntersectionType extends Type
     public function assert($value)
     {
         try {
-            /** @var Tl $value */
             $value = $this->left_type->assert($value);
             /** @var Tl&Tr */
             return $this->right_type->assert($value);
