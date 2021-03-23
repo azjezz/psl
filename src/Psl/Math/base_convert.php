@@ -31,6 +31,8 @@ use function bcpow;
  *      Math\base_convert('2014587925987', 10, 36)
  *      => Str('pphlmw9v')
  *
+ * @param non-empty-string $value
+ *
  * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $value is empty, $from_base and $to_base are
