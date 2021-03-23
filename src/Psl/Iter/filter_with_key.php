@@ -41,12 +41,12 @@ function filter_with_key(iterable $iterable, ?callable $predicate = null): Itera
     return Iterator::from(static function () use ($iterable, $predicate): Generator {
         $predicate = $predicate ??
             /**
-             * @param Tk $k
+             * @param Tk $_k
              * @param Tv $v
              *
              * @return bool
              */
-            static fn ($k, $v) => Psl\Internal\boolean($v);
+            static fn ($_k, $v) => Psl\Internal\boolean($v);
 
         foreach ($iterable as $k => $v) {
             if ($predicate($k, $v)) {

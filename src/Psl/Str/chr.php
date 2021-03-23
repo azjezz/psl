@@ -26,7 +26,6 @@ use function mb_chr;
  */
 function chr(int $codepoint, ?string $encoding = null): string
 {
-    /** @var string|false $char */
     $char = mb_chr($codepoint, Internal\internal_encoding($encoding));
 
     /** @psalm-suppress MissingThrowsDocblock */

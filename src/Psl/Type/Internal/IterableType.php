@@ -90,10 +90,6 @@ final class IterableType extends Type\Type
 
             /** @var iterable<Tk, Tv> */
             return Iter\Iterator::from((static function () use ($entries) {
-                /**
-                 * @var Tk $key
-                 * @var Tv $value
-                 */
                 foreach ($entries as [$key, $value]) {
                     yield $key => $value;
                 }
@@ -143,10 +139,6 @@ final class IterableType extends Type\Type
 
             /** @var iterable<Tk, Tv> */
             return Iter\Iterator::from((static function () use ($entries) {
-                /**
-                 * @var Tk $key
-                 * @var Tv $value
-                 */
                 foreach ($entries as [$key, $value]) {
                     yield $key => $value;
                 }

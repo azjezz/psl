@@ -28,7 +28,6 @@ use Psl\Iter;
 function lastx(array $array)
 {
     /**
-     * @var Tk|null $last
      * @psalm-suppress DeprecatedFunction
      */
     $last = last_key($array);

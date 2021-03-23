@@ -378,8 +378,6 @@ final class Map implements MapInterface
         foreach ($this->elements as $k => $v) {
             /**
              * @psalm-suppress ImpureFunctionCall - conditionally pure
-             *
-             * @var Tu|null $u
              */
             $u = Iter\first($array);
             if (null === $u) {

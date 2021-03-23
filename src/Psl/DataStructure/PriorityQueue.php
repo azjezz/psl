@@ -47,7 +47,6 @@ final class PriorityQueue implements PriorityQueueInterface
             return null;
         }
 
-        /** @var list<int> $keys */
         $keys = Vec\keys($this->queue);
 
         // Retrieve the highest priority.
@@ -133,7 +132,7 @@ final class PriorityQueue implements PriorityQueueInterface
     public function count(): int
     {
         $count = 0;
-        foreach ($this->queue as $priority => $list) {
+        foreach ($this->queue as $_priority => $list) {
             $count += Iter\count($list);
         }
 

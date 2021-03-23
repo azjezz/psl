@@ -22,7 +22,6 @@ function get_var(string $key): ?string
         'Invalid environment variable key provided.'
     );
 
-    /** @var false|string $value */
     $value = getenv($key);
 
     return false === $value ? null : $value;

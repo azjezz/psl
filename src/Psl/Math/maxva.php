@@ -22,7 +22,6 @@ function maxva($first, $second, ...$rest)
     $max = $first > $second ? $first : $second;
     foreach ($rest as $number) {
         if ($number > $max) {
-            /** @var T $max */
             $max = $number;
         }
     }

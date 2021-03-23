@@ -10,13 +10,11 @@ use Psl\Vec;
 /**
  * Returns the median of the given numbers.
  *
- * @pslam-param iterable<int|float> $numbers
+ * @param iterable<int|float> $numbers
  */
 function median(iterable $numbers): ?float
 {
-    /** @var list<int|float> $numbers */
     $numbers = Vec\values($numbers);
-    /** @var list<int|float> $numbers */
     $numbers = Vec\sort($numbers);
     $count   = Iter\count($numbers);
     if (0 === $count) {

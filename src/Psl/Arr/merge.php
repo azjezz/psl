@@ -28,6 +28,8 @@ use Psl\Dict;
  *
  * @deprecated use `Dict\merge` instead.
  * @see Dict\merge()
+ *
+ * @no-named-arguments
  */
 function merge(iterable $first, iterable ...$rest): array
 {
