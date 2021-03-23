@@ -679,6 +679,7 @@ final class Loader
         'Psl\Asio\Internal\InternalAwaitable',
         'Psl\Asio\Internal\WaitHandle',
         'Psl\Asio\Internal\Watcher',
+        'Psl\Asio\Exception\RuntimeException',
         'Psl\Asio\Exception\TimeoutException',
         'Psl\IO\Exception\TimeoutException',
         'Psl\IO\Internal\OptionalIncrementalTimeout',
