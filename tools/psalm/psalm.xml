@@ -43,6 +43,7 @@
         <RedundantCondition errorLevel="suppress" />
         <RedundantCast errorLevel="suppress" />
         <RedundantCastGivenDocblockType errorLevel="suppress" />
+        <StringIncrement errorLevel="suppress" />
     </issueHandlers>
 
     <plugins>
