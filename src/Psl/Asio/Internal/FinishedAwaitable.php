@@ -50,7 +50,7 @@ final class FinishedAwaitable implements Awaitable
     public function onJoin(callable $onJoin): void
     {
         EventLoop::defer(
-            static fn () => $onJoin(null, $this->value),
+            fn () => $onJoin(null, $this->value),
             null
         );
     }
