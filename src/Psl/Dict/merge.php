@@ -15,6 +15,8 @@ namespace Psl\Dict;
  * @param iterable<Tk, Tv> ...$rest
  *
  * @return array<Tk, Tv>
+ *
+ * @no-named-arguments
  */
 function merge(iterable $first, iterable ...$rest): array
 {

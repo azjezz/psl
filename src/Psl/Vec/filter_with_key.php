@@ -35,10 +35,10 @@ function filter_with_key(iterable $iterable, ?callable $predicate = null): array
 {
     $predicate = $predicate ??
         /**
-         * @param Tk $k
+         * @param Tk $_k
          * @param Tv $v
          */
-        static fn ($k, $v): bool => Psl\Internal\boolean($v);
+        static fn ($_k, $v): bool => Psl\Internal\boolean($v);
 
     $result = [];
     foreach ($iterable as $k => $v) {

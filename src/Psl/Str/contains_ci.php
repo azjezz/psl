@@ -42,9 +42,7 @@ use Psl;
 function contains_ci(string $haystack, string $needle, int $offset = 0, ?string $encoding = null): bool
 {
     if ('' === $needle) {
-        Psl\Internal\validate_offset($offset, length($haystack, $encoding));
-
-        return true;
+        return Psl\Internal\validate_offset($offset, length($haystack, $encoding), true);
     }
 
     return null !== search_ci($haystack, $needle, $offset, $encoding);

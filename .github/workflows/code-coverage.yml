@@ -1,6 +1,8 @@
 name: "code coverage"
 
-on: ["pull_request", "push"]
+on: 
+  pull_request: ~
+  push: ~
 
 jobs:
   code-coverage:

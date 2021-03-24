@@ -31,7 +31,6 @@ function random(iterable $iterable)
 
     Psl\invariant(0 !== $size, 'Expected a non-empty iterable.');
 
-    /** @var list<Tv> $shuffled */
     $shuffled = Vec\shuffle($values);
 
     if (1 === $size) {

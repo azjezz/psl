@@ -38,7 +38,6 @@ function from_base(string $number, int $from_base): int
     /** @psalm-suppress MissingThrowsDocblock */
     $limit  = div(INT64_MAX, $from_base);
     $result = 0;
-    /** @var string $digit */
     foreach (Byte\chunk($number) as $digit) {
         $oval = Byte\ord($digit);
         // Branches sorted by guesstimated frequency of use. */

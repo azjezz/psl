@@ -42,7 +42,6 @@ function zip(iterable ...$iterables): Iterator
             return;
         }
 
-        /** @var list<Iterator<Tk, Tv>> $iterators */
         $iterators = Vec\values(Dict\map(
             $iterables,
             /**
@@ -55,7 +54,6 @@ function zip(iterable ...$iterables): Iterator
 
         apply($iterators, static fn (Iterator $iterator) => $iterator->rewind());
         while (all($iterators, static fn (Iterator $iterator) => $iterator->valid())) {
-            /** @var list<Tk> $keys */
             $keys = Vec\values(Dict\map(
                 $iterators,
                 /**
@@ -66,7 +64,6 @@ function zip(iterable ...$iterables): Iterator
                 static fn (Iterator $iterator) => $iterator->key(),
             ));
 
-            /** @var list<Tv> $values */
             $values = Vec\values(Dict\map(
                 $iterators,
                 /**

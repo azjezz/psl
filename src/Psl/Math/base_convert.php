@@ -51,15 +51,13 @@ function base_convert(string $value, int $from_base, int $to_base): string
     $from_alphabet = Byte\slice(Str\ALPHABET_ALPHANUMERIC, 0, $from_base);
     /** @var numeric-string $result_decimal */
     $result_decimal = '0';
-    /** @var numeric-string $place_value */
     $place_value = bcpow((string)$from_base, (string)(Byte\length($value) - 1));
-    /** @var string $digit */
     foreach (Byte\chunk($value) as $digit) {
+        Psl\invariant(is_numeric($place_value), 'Unexpected error.');
         $digit_numeric = Byte\search_ci($from_alphabet, $digit);
         Psl\invariant(null !== $digit_numeric, 'Invalid digit %s in base %d', $digit, $from_base);
         $result_decimal = bcadd($result_decimal, bcmul((string)$digit_numeric, $place_value));
         Psl\invariant(is_numeric($result_decimal), 'Unexpected error.');
-        /** @var numeric-string $place_value */
         $place_value = bcdiv($place_value, (string)$from_base);
     }
 

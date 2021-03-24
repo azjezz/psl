@@ -29,7 +29,6 @@ function count_values(iterable $values): array
             gettype($value)
         );
 
-        /** @var int $count */
         $count = $result[$value] ?? 0;
         /** @var T $value */
         $result[$value] = $count + 1;

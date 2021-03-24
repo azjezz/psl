@@ -28,7 +28,6 @@ function unique_by(iterable $iterable, callable $scalar_func): array
     $original_values = [];
     foreach ($iterable as $k => $v) {
         $original_values[$k] = $v;
-        /** @var Ts $scalar */
         $scalar = $scalar_func($v);
 
         if (!Iter\contains($unique, $scalar)) {

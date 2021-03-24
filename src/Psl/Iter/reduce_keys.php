@@ -33,7 +33,7 @@ namespace Psl\Iter;
 function reduce_keys(iterable $iterable, callable $function, $initial = null)
 {
     $accumulator = $initial;
-    foreach ($iterable as $k => $v) {
+    foreach ($iterable as $k => $_v) {
         $accumulator = $function($accumulator, $k);
     }
 
