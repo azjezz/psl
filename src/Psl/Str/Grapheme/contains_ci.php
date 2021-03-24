@@ -21,9 +21,7 @@ use Psl;
 function contains_ci(string $haystack, string $needle, int $offset = 0): bool
 {
     if ('' === $needle) {
-        Psl\Internal\validate_offset($offset, length($haystack));
-
-        return true;
+        return Psl\Internal\validate_offset($offset, length($haystack), true);
     }
 
     return null !== search_ci($haystack, $needle, $offset);

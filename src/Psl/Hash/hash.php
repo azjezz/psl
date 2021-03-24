@@ -10,6 +10,7 @@ use Psl;
  * Generate a hash value (message digest).
  *
  * @throws Psl\Exception\InvariantViolationException If the given algorithm is unsupported.
+ * @throws Exception\RuntimeException If unable to pump data into the hashing context.
  *
  * @pure
  */

@@ -612,6 +612,8 @@ final class Loader
         'Psl\Type\Type',
         'Psl\Json\Exception\DecodeException',
         'Psl\Json\Exception\EncodeException',
+        'Psl\Hash\Exception\ExceptionInterface',
+        'Psl\Hash\Exception\RuntimeException',
         'Psl\Hash\Context',
         'Psl\Encoding\Exception\IncorrectPaddingException',
         'Psl\Encoding\Exception\RangeException',

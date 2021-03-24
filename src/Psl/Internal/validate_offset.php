@@ -17,8 +17,10 @@ use Psl;
  * @throws Psl\Exception\InvariantViolationException If the offset is out-of-bounds.
  *
  * @internal
+ *
+ * @return ($assert is true ? bool : int)
  */
-function validate_offset(int $offset, int $length): int
+function validate_offset(int $offset, int $length, bool $assert = false)
 {
     $original_offset = $offset;
 
@@ -28,5 +30,9 @@ function validate_offset(int $offset, int $length): int
 
     Psl\invariant($offset >= 0 && $offset <= $length, 'Offset (%d) was out-of-bounds.', $original_offset);
 
-    return $offset;
+    if (!$assert) {
+        return $offset;
+    }
+
+    return true;
 }
