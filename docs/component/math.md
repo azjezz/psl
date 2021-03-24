@@ -30,14 +30,14 @@
 #### `Functions`
 
 - [abs](./../../src/Psl/Math/abs.php#L34)
-- [base_convert](./../../src/Psl/Math/base_convert.php#L39)
+- [base_convert](./../../src/Psl/Math/base_convert.php#L41)
 - [ceil](./../../src/Psl/Math/ceil.php#L25)
 - [clamp](./../../src/Psl/Math/clamp.php#L24)
 - [cos](./../../src/Psl/Math/cos.php#L22)
 - [div](./../../src/Psl/Math/div.php#L32)
 - [exp](./../../src/Psl/Math/exp.php#L22)
 - [floor](./../../src/Psl/Math/floor.php#L16)
-- [from_base](./../../src/Psl/Math/from_base.php#L27)
+- [from_base](./../../src/Psl/Math/from_base.php#L29)
 - [log](./../../src/Psl/Math/log.php#L18)
 - [max](./../../src/Psl/Math/max.php#L19)
 - [max_by](./../../src/Psl/Math/max_by.php#L21)

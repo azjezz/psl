@@ -19,6 +19,8 @@ use Psl\Str\Byte;
  *      Math\from_base('ff', 15)
  *      => Int(255)
  *
+ * @param non-empty-string $number
+ *
  * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $number is empty, $from_base is outside the [2, 36] range,

@@ -18,6 +18,8 @@ use const STR_PAD_RIGHT;
  * length, the pad string will be truncated. If the total length is less than or
  * equal to the length of the input string, no padding will occur.
  *
+ * @param non-empty-string $pad_string
+ *
  * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $pad_string is empty, or $total_length is negative.

@@ -28,6 +28,8 @@ use Psl;
  *      Str\pad_left('مرحبا', 8, 'م')
  *      => Str('ممممرحبا')
  *
+ * @param non-empty-string $pad_string
+ *
  * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If the $pad_string is empty, a negative $total_length is given,
