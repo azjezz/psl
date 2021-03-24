@@ -14,7 +14,7 @@
 
 - [algorithms](./../../src/Psl/Hash/algorithms.php#L16)
 - [equals](./../../src/Psl/Hash/equals.php#L14)
-- [hash](./../../src/Psl/Hash/hash.php#L16)
+- [hash](./../../src/Psl/Hash/hash.php#L17)
 
 #### `Classes`
 
