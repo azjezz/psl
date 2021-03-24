@@ -1,6 +1,8 @@
 name: "security analysis"
 
-on: ["pull_request", "push"]
+on: 
+  pull_request: ~
+  push: ~
 
 jobs:
   security-analysis:

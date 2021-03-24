@@ -84,11 +84,18 @@ final class Context
      * Pump data into an active hashing context.
      *
      * @psalm-mutation-free
+     *
+     * @throws Exception\RuntimeException If unable to pump data into the active hashing context.
      */
     public function update(string $data): Context
     {
         $internal_context = hash_copy($this->internalContext);
-        hash_update($internal_context, $data);
+
+        // @codeCoverageIgnoreStart
+        if (!hash_update($internal_context, $data)) {
+            throw new Exception\RuntimeException('Unable to pump data into the active hashing context.');
+        }
+        // @codeCoverageIgnoreEnd
 
         return new self($internal_context);
     }
