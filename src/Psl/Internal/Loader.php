@@ -136,6 +136,7 @@ final class Loader
         'Psl\Dict\take_while',
         'Psl\Dict\unique',
         'Psl\Dict\unique_by',
+        'Psl\Dict\unique_scalar',
         'Psl\Dict\diff',
         'Psl\Dict\diff_by_key',
         'Psl\Dict\intersect',
