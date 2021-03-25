@@ -19,7 +19,6 @@ use function array_unique;
  */
 function unique_scalar(iterable $iterable): array
 {
-
     if (is_array($iterable)) {
         return array_unique($iterable);
     }
