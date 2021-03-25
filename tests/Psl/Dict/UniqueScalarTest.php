@@ -20,6 +20,7 @@ final class UniqueScalarTest extends TestCase
         $unique = Dict\unique_scalar($array);
 
         static::assertCount(2, $unique);
+        static::assertSame(['foo', 'bar'], $unique);
         static::assertSame('foo', Iter\first($unique));
     }
 }
