@@ -10,9 +10,12 @@ use function array_unique;
 /**
  * Returns a new dict in which each value appears exactly once.
  *
- * @psalm-param iterable<array-key, scalar> $iterable
+ * @template Tk of array-key
+ * @template Tv of scalar
  *
- * @psalm-return array<scalar>
+ * @param iterable<Tk, Tv> $iterable
+ *
+ * @return array<Tk, Tv>
  */
 function unique_scalar(iterable $iterable): array
 {
