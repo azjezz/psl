@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
-use array_unique;
-use is_array;
-
 /**
  * Returns a new dict in which each value appears exactly once.
  *
@@ -19,11 +16,7 @@ use is_array;
  */
 function unique(iterable $iterable): array
 {
-    
-    if (is_array($iterable)) {
-        return array_unique($iterable);
-    }
-    
+
     return unique_by(
         $iterable,
         /**
