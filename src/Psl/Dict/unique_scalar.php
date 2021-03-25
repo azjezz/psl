@@ -8,7 +8,7 @@ use function is_array;
 use function array_unique;
 
 /**
- * Returns a new dict in which each value appears exactly once.
+ * Returns a new dict in which each value appears exactly once. Better performant than `Dict\unique()` when the the values are only scalars
  *
  * @template Tk of array-key
  * @template Tv of scalar
