@@ -49,7 +49,7 @@
 - [slice](./../../src/Psl/Arr/slice.php#L35) ( deprecated )
 - [sort](./../../src/Psl/Arr/sort.php#L24) ( deprecated )
 - [sort_by](./../../src/Psl/Arr/sort_by.php#L27) ( deprecated )
-- [sort_by_key](./../../src/Psl/Arr/sort_by_key.php#L26) ( deprecated )
+- [sort_by_key](./../../src/Psl/Arr/sort_by_key.php#L25) ( deprecated )
 - [sort_with_keys](./../../src/Psl/Arr/sort_with_keys.php#L25) ( deprecated )
 - [sort_with_keys_by](./../../src/Psl/Arr/sort_with_keys_by.php#L29) ( deprecated )
 - [take](./../../src/Psl/Arr/take.php#L25) ( deprecated )
