@@ -27,9 +27,9 @@ function unique_scalar(iterable $iterable): array
     return unique_by(
         $iterable,
         /**
-         * @param     scalar  $v
+         * @param scalar  $v
          *
-         * @return    scalar
+         * @return scalar
          *
          * @pure
          */
