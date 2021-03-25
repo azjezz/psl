@@ -16,7 +16,6 @@ namespace Psl\Dict;
  */
 function unique(iterable $iterable): array
 {
-
     return unique_by(
         $iterable,
         /**
