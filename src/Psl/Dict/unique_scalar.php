@@ -27,11 +27,11 @@ function unique_scalar(iterable $iterable): array
     return unique_by(
         $iterable,
         /**
-         * @psalm-param     scalar  $v
+         * @param     scalar  $v
          *
-         * @psalm-return    scalar
+         * @return    scalar
          *
-         * @psalm-pure
+         * @pure
          */
         static fn($v) => $v
     );
