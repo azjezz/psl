@@ -16,6 +16,11 @@ namespace Psl\Dict;
  */
 function unique(iterable $iterable): array
 {
+    
+    if (\is_array($iterable)) {
+        return \array_unique($iterable);
+    }
+    
     return unique_by(
         $iterable,
         /**
