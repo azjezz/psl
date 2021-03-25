@@ -49,5 +49,6 @@
 - [take_while](./../../src/Psl/Dict/take_while.php#L26)
 - [unique](./../../src/Psl/Dict/unique.php#L17)
 - [unique_by](./../../src/Psl/Dict/unique_by.php#L23)
+- [unique_scalar](./../../src/Psl/Dict/unique_scalar.php#L20)
 
 
