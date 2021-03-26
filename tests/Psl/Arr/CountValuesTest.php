@@ -6,8 +6,6 @@ namespace Psl\Tests\Arr;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Arr;
-use Psl\Collection;
-use Psl\Exception;
 
 final class CountValuesTest extends TestCase
 {
@@ -40,15 +38,5 @@ final class CountValuesTest extends TestCase
                 ),
             ],
         ];
-    }
-
-    public function testCountThrowsForNonArrayKeyValues(): void
-    {
-        $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected all values to be of type array-key, value of type (object) provided.');
-
-        Arr\count_values([
-            new Collection\Map([]),
-        ]);
     }
 }
