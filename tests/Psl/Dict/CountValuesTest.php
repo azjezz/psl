@@ -14,9 +14,9 @@ final class CountValuesTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testCountValues(array $expected, array $array): void
+    public function testCountValues(array $expected, iterable $iterable): void
     {
-        static::assertSame($expected, Dict\count_values($array));
+        static::assertSame($expected, Dict\count_values($iterable));
     }
 
     public function provideData(): array
