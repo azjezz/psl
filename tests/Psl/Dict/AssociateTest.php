@@ -6,6 +6,7 @@ namespace Psl\Tests\Dict;
 
 use PHPUnit\Framework\TestCase;
 use Psl;
+use Psl\Collection;
 use Psl\Dict;
 
 final class AssociateTest extends TestCase
@@ -15,6 +16,14 @@ final class AssociateTest extends TestCase
         static::assertSame(['a' => 1, 'b' => 2, 'c' => 3], Dict\associate(
             ['a', 'b', 'c'],
             [1, 2, 3]
+        ));
+    }
+
+    public function testAssociateCollections(): void
+    {
+        static::assertSame(['a' => 1, 'b' => 2, 'c' => 3], Dict\associate(
+            Collection\Vector::fromArray(['a', 'b', 'c']),
+            Collection\Vector::fromArray([1, 2, 3])
         ));
     }
 

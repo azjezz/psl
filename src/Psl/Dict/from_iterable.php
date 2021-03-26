@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
+use function is_array;
+
 /**
  * Convert the given iterable to a dict.
  *
@@ -16,6 +18,10 @@ namespace Psl\Dict;
  */
 function from_iterable(iterable $iterable): array
 {
+    if (is_array($iterable)) {
+        return $iterable;
+    }
+
     $result = [];
     foreach ($iterable as $key => $value) {
         $result[$key] = $value;

@@ -22,7 +22,7 @@
 - [filter_nulls](./../../src/Psl/Vec/filter_nulls.php#L20)
 - [filter_with_key](./../../src/Psl/Vec/filter_with_key.php#L34)
 - [flat_map](./../../src/Psl/Vec/flat_map.php#L16)
-- [keys](./../../src/Psl/Vec/keys.php#L17)
+- [keys](./../../src/Psl/Vec/keys.php#L20)
 - [map](./../../src/Psl/Vec/map.php#L27)
 - [map_with_key](./../../src/Psl/Vec/map_with_key.php#L27)
 - [partition](./../../src/Psl/Vec/partition.php#L18)
@@ -33,7 +33,7 @@
 - [shuffle](./../../src/Psl/Vec/shuffle.php#L26)
 - [sort](./../../src/Psl/Vec/sort.php#L23)
 - [sort_by](./../../src/Psl/Vec/sort_by.php#L26)
-- [values](./../../src/Psl/Vec/values.php#L16)
+- [values](./../../src/Psl/Vec/values.php#L19)
 - [zip](./../../src/Psl/Vec/zip.php#L37)
 
 

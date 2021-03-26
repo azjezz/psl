@@ -2,19 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Psl\Tests\Arr;
+namespace Psl\Tests\Dict;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Arr;
+use Psl\Collection;
+use Psl\Dict;
+use Psl\Vec;
 
 final class CountValuesTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
-    public function testCountValues(array $expected, array $array): void
+    public function testCountValues(array $expected, iterable $iterable): void
     {
-        static::assertSame($expected, Arr\count_values($array));
+        static::assertSame($expected, Dict\count_values($iterable));
     }
 
     public function provideData(): array
@@ -29,8 +31,12 @@ final class CountValuesTest extends TestCase
                 ['foo', 'bar', 'baz', 'foo', 'baz', 'baz', 'baz', 'baz'],
             ],
             [
+                ['foo' => 2, 'bar' => 1, 'baz' => 5],
+                Collection\Vector::fromArray(['foo', 'bar', 'baz', 'foo', 'baz', 'baz', 'baz', 'baz']),
+            ],
+            [
                 ['foo' => 2, 'bar' => 1, 'baz' => 4],
-                Arr\concat(
+                Vec\concat(
                     ['foo', 'bar', 'baz'],
                     ['foo'],
                     ['baz'],

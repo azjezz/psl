@@ -6,6 +6,9 @@ namespace Psl\Dict;
 
 use Closure;
 
+use function array_filter;
+use function is_array;
+
 /**
  * Returns a dict containing only the values for which the given predicate
  * returns `true`.
@@ -32,6 +35,11 @@ function filter(iterable $iterable, ?callable $predicate = null): array
 {
     /** @var (callable(Tv): bool) $predicate */
     $predicate = $predicate ?? Closure::fromCallable('Psl\Internal\boolean');
+
+    if (is_array($iterable)) {
+        return array_filter($iterable, $predicate);
+    }
+
     $result    = [];
     foreach ($iterable as $k => $v) {
         if ($predicate($v)) {
