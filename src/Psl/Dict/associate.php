@@ -24,17 +24,18 @@ use Psl\Vec;
  */
 function associate(iterable $keys, iterable $values): array
 {
-    $key_vec = Vec\values($keys);
-    $value_vec = Vec\values($values);
+    if (!is_array($keys)) {
+        $keys = Vec\values($keys);
+    }
+
+    if (!is_array($values)) {
+        $values = Vec\values($values);
+    }
 
     Psl\invariant(
-        Iter\count($key_vec) === Iter\count($value_vec),
+        Iter\count($keys) === Iter\count($values),
         'Expected length of $keys and $values to be the same',
     );
 
-    $result = [];
-    foreach ($key_vec as $i => $key) {
-        $result[$key] = $value_vec[$i];
-    }
-    return $result;
+    return array_combine($keys, $values);
 }

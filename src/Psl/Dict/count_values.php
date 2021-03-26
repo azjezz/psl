@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
-use Psl;
-use Psl\Type;
+use Psl\Vec;
+
+use function array_count_values;
+use function is_array;
 
 /**
  * Returns a new dict mapping each value to the number of times it appears
@@ -19,20 +21,9 @@ use Psl\Type;
  */
 function count_values(iterable $values): array
 {
-    /** @var array<T, int> $result */
-    $result = [];
-
-    foreach ($values as $value) {
-        Psl\invariant(
-            Type\array_key()->matches($value),
-            'Expected all values to be of type array-key, value of type (%s) provided.',
-            gettype($value)
-        );
-
-        $count = $result[$value] ?? 0;
-        /** @var T $value */
-        $result[$value] = $count + 1;
+    if (!is_array($values)) {
+        $values = Vec\values($values);
     }
 
-    return $result;
+    return array_count_values($values);
 }

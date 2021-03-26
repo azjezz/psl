@@ -20,13 +20,12 @@ namespace Psl\Dict;
  */
 function filter_nulls(iterable $iterable): array
 {
-    /** @var array<Tk, Tv> $result */
-    $result = [];
-    foreach ($iterable as $key => $value) {
-        if (null !== $value) {
-            $result[$key] = $value;
-        }
-    }
-
-    return $result;
+    /** @var array<Tk, Tv> */
+    return filter(
+        $iterable,
+        /**
+         * @param Tv|null $value
+         */
+        static fn($value): bool => $value !== null
+    );
 }

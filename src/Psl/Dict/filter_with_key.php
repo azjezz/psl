@@ -6,6 +6,11 @@ namespace Psl\Dict;
 
 use Psl;
 
+use function array_filter;
+use function is_array;
+
+use const ARRAY_FILTER_USE_BOTH;
+
 /**
  * Returns a dict containing only the keys and values for which the given predicate
  * returns `true`.
@@ -39,6 +44,18 @@ function filter_with_key(iterable $iterable, ?callable $predicate = null): array
          * @param Tv $v
          */
         static fn ($_k, $v): bool => Psl\Internal\boolean($v);
+
+    if (is_array($iterable)) {
+        return array_filter(
+            $iterable,
+            /**
+             * @param Tv $v
+             * @param Tk $k
+             */
+            static fn ($v, $k): bool => $predicate($k, $v),
+            ARRAY_FILTER_USE_BOTH
+        );
+    }
 
     /** @var array<Tk, Tv> $result */
     $result = [];
