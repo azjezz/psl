@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
+use function array_keys;
+use function is_array;
+
 /**
  * Return all the keys of an array.
  *
@@ -16,6 +19,10 @@ namespace Psl\Vec;
  */
 function keys(iterable $iterable): array
 {
+    if (is_array($iterable)) {
+        return array_keys($iterable);
+    }
+
     $result = [];
     foreach ($iterable as $k => $_v) {
         $result[] = $k;
