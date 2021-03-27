@@ -8,6 +8,11 @@ use Psalm\Plugin\PluginEntryPointInterface;
 use Psalm\Plugin\RegistrationInterface;
 use SimpleXMLElement;
 
+/**
+ * @deprecated use `php-standard-library/psalm-plugin` package instead.
+ * 
+ * @see https://github.com/php-standard-library/psalm-plugin
+ */
 final class Plugin implements PluginEntryPointInterface
 {
     public function __invoke(RegistrationInterface $registration, ?SimpleXMLElement $config = null): void
