@@ -1,8 +1,35 @@
-docs    export-ignore
-tests   export-ignore
-.github export-ignore
+# Autodetect text files
+* text=auto
 
-.php_cs.dist     export-ignore
-.phpcs.xml       export-ignore
-phpunit.xml.dist export-ignore
-psalm.xml        export-ignore
+# ...Unless the name matches the following overriding patterns
+
+# Definitively text files
+*.php  text
+*.css  text
+*.js   text
+*.txt  text
+*.md   text
+*.xml  text
+*.json text
+*.bat  text
+*.sql  text
+*.yml  text
+
+# Ensure those won't be messed up with
+*.png  binary
+*.jpg  binary
+*.gif  binary
+*.ttf  binary
+
+# Ignore some meta files when creating an archive of this repository
+/.github            export-ignore
+/.editorconfig      export-ignore
+/.gitattributes     export-ignore
+/.gitignore         export-ignore
+/tools              export-ignore
+/tests              export-ignore
+/docs               export-ignore
+
+# Avoid merge conflicts in CHANGELOG
+# https://about.gitlab.com/2015/02/10/gitlab-reduced-merge-conflicts-by-90-percent-with-changelog-placeholders/
+/CHANGELOG.md		merge=union

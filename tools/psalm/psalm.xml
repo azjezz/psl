@@ -1,13 +1,12 @@
 <?xml version="1.0"?>
 <psalm totallyTyped="true" resolveFromConfigFile="true" forbidEcho="true" strictBinaryOperands="true" phpVersion="7.4" allowPhpStormGenerics="true" allowStringToStandInForClass="true" rememberPropertyAssignmentsAfterCall="false" skipChecksOnUnresolvableIncludes="false" checkForThrowsDocblock="true" checkForThrowsInGlobalScope="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://getpsalm.org/schema/config" xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd">
     <projectFiles>
-        <directory name="src" />
-        <directory name="integration" />
+        <directory name="../../src" />
+        <directory name="../../integration" />
         <ignoreFiles>
-            <directory name="vendor" />
-            <file name="src/bootstrap.php" />
-            <file name="src/preload.php" />
-            <file name="src/Psl/Internal/Loader.php" />
+            <file name="../../src/bootstrap.php" />
+            <file name="../../src/preload.php" />
+            <file name="../../src/Psl/Internal/Loader.php" />
         </ignoreFiles>
     </projectFiles>
 
@@ -47,6 +46,6 @@
     </issueHandlers>
 
     <plugins>
-        <pluginClass class="Psl\Integration\Psalm\Plugin" />
+        <pluginClass class="Psl\Psalm\Plugin" />
     </plugins>
 </psalm>

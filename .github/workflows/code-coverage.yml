@@ -23,14 +23,11 @@ jobs:
           extensions: bcmath, mbstring, intl, sodium, json
 
       - name: "installing dependencies"
-        run: "composer install --no-interaction --no-progress --ignore-platform-req php"
-
-      - name: "running unit tests ( phpunit )"
-        run: "php vendor/bin/phpunit"
+        run: |
+          make install-root-dependencies
+          make install-unit-tests-dependencies
 
       - name: "sending code coverage to coveralls"
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          composer global require php-coveralls/php-coveralls
-          php-coveralls -x tests/logs/clover.xml -o tests/logs/coveralls-upload.json -v
+        run: make code-coverage
