@@ -16,6 +16,7 @@ Psl is a standard library for PHP, inspired by [hhvm/hsl](https://github.com/hhv
 The goal of Psl is to provide a consistent, centralized, well-typed set of APIs for PHP programmers.
 
 ## Example
+
 ```php
 <?php
 
@@ -43,26 +44,13 @@ foo([95, 96, null, 98]);
 
 Supported installation method is via [composer](https://getcomposer.org):
 
-```console
-$ composer require azjezz/psl
+```shell
+composer require azjezz/psl
 ```
 
 ### Psalm Integration
 
-PSL comes with a [Psalm](https://psalm.dev/) plugin, that improves return type for PSL functions that psalm cannot infer from source code.
-
-To enable the Psalm plugin, add the `Psl\Integration\Psalm\Plugin` class to your psalm configuration file plugins list as follows:
-
-```xml
-<psalm>
-   ...
-   <plugins>
-      ...
-      <pluginClass class="Psl\Integration\Psalm\Plugin" />
-   </plugins>
-</psalm>
-
-```
+Please refer to the [`php-standard-library/psalm-plugin`](https://github.com/php-standard-library/psalm-plugin) repository.
 
 ## Documentation
 
@@ -70,34 +58,31 @@ You can read through the API documentation in [`docs/README.md`](./docs/README.m
 
 ## Principles
 
- - All functions should be typed as strictly as possible
- - The library should be internally consistent
- - References may not be used
- - Arguments should be as general as possible. For example, for `array` functions, prefer `iterable` inputs where practical, falling back to `array` when needed.
- - Return types should be as specific as possible
- - All files should contain `declare(strict_types=1);`
+- All functions should be typed as strictly as possible
+- The library should be internally consistent
+- References may not be used
+- Arguments should be as general as possible. For example, for `array` functions, prefer `iterable` inputs where practical, falling back to `array` when needed.
+- Return types should be as specific as possible
+- All files should contain `declare(strict_types=1);`
 
 ## Consistency Rules
 
 This is not exhaustive list.
 
- - Functions argument order should be consistent within the library
-   - All iterable-related functions take the iterable as the first argument ( e.g. `Iter\map` and `Iter\filter` )
-   - `$haystack`, `$needle`, and `$pattern` are in the same order for all functions that take them
- - Functions should be consistently named.
- - If an operation can conceivably operate on either keys or values, the default is to operate on the values - the version that operates on keys should have `_key` suffix (e.g. `Iter\last`, `Iter\last_key`, `Iter\contains`, `Iter\contains_key` )
- - Find-like operations that can fail should return `?T`; a second function should be added with an `x` suffix that uses an invariant to return `T` (e.g. `Arr\last`, `Arr\lastx`)
- - Iterable functions that do an operation based on a user-supplied keying function for each element should be suffixed with `_by` (e.g. `Arr\sort_by`, `Iter\group_by`, `Math\max_by`)
+- Functions argument order should be consistent within the library
+  - All iterable-related functions take the iterable as the first argument ( e.g. `Iter\map` and `Iter\filter` )
+  - `$haystack`, `$needle`, and `$pattern` are in the same order for all functions that take them
+- Functions should be consistently named.
+- If an operation can conceivably operate on either keys or values, the default is to operate on the values - the version that operates on keys should have `_key` suffix (e.g. `Iter\last`, `Iter\last_key`, `Iter\contains`, `Iter\contains_key` )
+- Iterable functions that do an operation based on a user-supplied keying function for each element should be suffixed with `_by` (e.g. `Arr\sort_by`, `Iter\group_by`, `Math\max_by`)
 
 ## Sponsors
 
 Thanks to our sponsors and supporters:
 
-
 | JetBrains |
 |---|
 | <a href="https://www.jetbrains.com/?from=PSL ( PHP Standard Library )" title="JetBrains" target="_blank"><img src="https://res.cloudinary.com/azjezz/image/upload/v1599239910/jetbrains_qnyb0o.png" height="120" /></a> |
-
 
 ## License
 
