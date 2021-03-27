@@ -1,4 +1,4 @@
-# Psl - PHP Standard Library
+# Psl - PHP Standard Library T
 
 ![Unit tests status](https://github.com/azjezz/psl/workflows/unit%20tests/badge.svg)
 ![Static analysis status](https://github.com/azjezz/psl/workflows/static%20analysis/badge.svg)
