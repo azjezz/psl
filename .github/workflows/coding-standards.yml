@@ -21,10 +21,9 @@ jobs:
           extensions: bcmath, mbstring, intl, sodium, json
 
       - name: "installing dependencies"
-        run: "composer update --no-interaction --no-progress"
+        run: |
+          make install-root-dependencies
+          make install-coding-standard-dependencies
 
-      - name: "checking coding standards ( codesniffer )"
-        run: "php vendor/bin/phpcs"
-
-      - name: "checking coding standards ( php-cs-fixer )"
-        run: "php vendor/bin/php-cs-fixer fix --dry-run --diff --ansi"
+      - name: "checking coding standards"
+        run: make coding-standard-check

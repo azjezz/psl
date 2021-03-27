@@ -3,8 +3,8 @@
          xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
     <description>The coding standard for PHP Standard Library.</description>
 
-    <file>src</file>
-    <file>tests</file>
+    <file>../../src</file>
+    <file>../../tests</file>
 
     <arg name="basepath" value="."/>
     <arg name="colors"/>

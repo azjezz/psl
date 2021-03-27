@@ -1,7 +1,25 @@
-/tests/logs/*
+# phpstorm project files
+.idea
+
+# vs code project files
+.vscode
+
+# composer vendor dir
 /vendor/
+/tools/*/vendor/
 
-composer.lock
+# composer lock file
+/composer.lock
+/tools/*/composer.lock
 
-.php_cs.cache
-.phpunit.result.cache
+# Mac DS_Store files
+.DS_Store
+
+# php-cs-fixer cache
+/.php_cs.cache
+
+# phpunit cache
+/tools/phpunit/.phpunit.result.cache
+
+# test logs
+/tests/logs/*

@@ -4,9 +4,9 @@ return PhpCsFixer\Config::create()
     ->setFinder(
         \Symfony\Component\Finder\Finder::create()
             ->in([
-                __DIR__ . '/src',
-                __DIR__ . '/docs',
-                __DIR__ . '/tests',
+                __DIR__ . '/../../src',
+                __DIR__ . '/../../docs',
+                __DIR__ . '/../../tests',
             ])
     )
     ->setRiskyAllowed(true)

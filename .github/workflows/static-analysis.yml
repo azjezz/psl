@@ -23,7 +23,9 @@ jobs:
           extensions: bcmath, mbstring, intl, sodium, json
 
       - name: "installing dependencies"
-        run: "composer update --no-interaction --no-progress"
+        run: |
+          make install-root-dependencies
+          make install-type-check-dependencies
 
-      - name: "running static analysis ( psalm )"
-        run: "vendor/bin/psalm --shepherd --stats"
+      - name: "running static analysis"
+        run: make type-coverage

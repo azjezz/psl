@@ -42,7 +42,9 @@ jobs:
           restore-keys: "php-${{ matrix.php-version }}"
 
       - name: "installing dependencies"
-        run: "composer install --no-interaction --no-progress --ignore-platform-req php"
+        run: |
+          make install-root-dependencies
+          make install-unit-tests-dependencies
 
-      - name: "running unit tests ( phpunit )"
-        run: "php vendor/bin/phpunit"
+      - name: "running unit tests"
+        run: make unit-tests
