@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Psl\IO\Internal;
+namespace Psl\IO;
 
 use Psl;
 use Psl\Asio;
-use Psl\IO\Exception;
 use Psl\Math;
 use Psl\Str;
 
 /**
- * @require-implements Psl\IO\ReadHandleInterface
+ * @require-implements ReadHandleInterface
  */
 trait ReadHandleConvenienceMethodsTrait
 {
@@ -39,7 +38,7 @@ trait ReadHandleConvenienceMethodsTrait
         $to_read = $max_bytes ?? Math\INT64_MAX;
 
         $data = '';
-        $timer = new OptionalIncrementalTimeout(
+        $timer = new Internal\OptionalIncrementalTimeout(
             $timeout_ms,
             static function () use (&$data): void {
                 throw new Exception\TimeoutException(Str\format(

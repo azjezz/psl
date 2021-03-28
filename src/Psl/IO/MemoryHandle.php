@@ -12,8 +12,8 @@ use Psl\Str\Byte;
 
 final class MemoryHandle implements CloseSeekReadWriteHandleInterface
 {
-    use Internal\WriteHandleConvenienceMethodsTrait;
-    use Internal\ReadHandleConvenienceMethodsTrait;
+    use WriteHandleConvenienceMethodsTrait;
+    use ReadHandleConvenienceMethodsTrait;
 
     private string $buffer;
     private int $offset = 0;

@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Psl\IO\Internal;
+namespace Psl\IO;
 
 use Psl;
 use Psl\Asio;
-use Psl\IO\Exception;
 use Psl\Str;
 
+/**
+ * @require-implements WriteHandleInterface
+ */
 trait WriteHandleConvenienceMethodsTrait
 {
     /**
@@ -42,7 +44,7 @@ trait WriteHandleConvenienceMethodsTrait
         $original_size = Str\Byte\length($bytes);
         $written = 0;
 
-        $timer = new OptionalIncrementalTimeout(
+        $timer = new Internal\OptionalIncrementalTimeout(
             $timeout_ms,
             static function () use (&$written): void {
                 throw new Exception\TimeoutException(Str\format(

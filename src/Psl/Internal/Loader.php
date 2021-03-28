@@ -594,8 +594,8 @@ final class Loader
     ];
 
     public const TRAITS = [
-        'Psl\IO\Internal\ReadHandleConvenienceMethodsTrait',
-        'Psl\IO\Internal\WriteHandleConvenienceMethodsTrait',
+        'Psl\IO\ReadHandleConvenienceMethodsTrait',
+        'Psl\IO\WriteHandleConvenienceMethodsTrait',
     ];
 
     public const CLASSES = [

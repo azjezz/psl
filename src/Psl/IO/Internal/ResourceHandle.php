@@ -8,7 +8,7 @@ use Psl;
 use Psl\Asio;
 use Psl\Exception\InvariantViolationException;
 use Psl\Internal;
-use Psl\IO\CloseSeekReadWriteHandleInterface;
+use Psl\IO;
 use Psl\IO\Exception;
 use Psl\Math;
 use Psl\Type;
@@ -28,13 +28,13 @@ use function stream_set_blocking;
  *
  * @internal
  */
-class ResourceHandle implements CloseSeekReadWriteHandleInterface
+class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
 {
     public const DEFAULT_READ_BUFFER_SIZE = 1024 * 8;
     public const MAXIMUM_READ_BUFFER_SIZE = 21474;
 
-    use ReadHandleConvenienceMethodsTrait;
-    use WriteHandleConvenienceMethodsTrait;
+    use IO\ReadHandleConvenienceMethodsTrait;
+    use IO\WriteHandleConvenienceMethodsTrait;
 
     /**
      * @var closed-resource|resource|null $resource

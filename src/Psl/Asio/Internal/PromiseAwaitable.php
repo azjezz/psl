@@ -14,6 +14,8 @@ use Throwable;
  * @template-implements Promise<T>
  *
  * @internal
+ *
+ * @codeCoverageIgnore
  */
 final class PromiseAwaitable implements Promise
 {

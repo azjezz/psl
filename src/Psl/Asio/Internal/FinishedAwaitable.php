@@ -14,6 +14,8 @@ use Throwable;
  * @template-implements Awaitable<T>
  *
  * @internal
+ *
+ * @codeCoverageIgnore
  */
 final class FinishedAwaitable implements Awaitable
 {

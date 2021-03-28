@@ -11,7 +11,7 @@ use Psl\Str;
 
 final class Reader implements ReadHandleInterface
 {
-    use Internal\ReadHandleConvenienceMethodsTrait;
+    use ReadHandleConvenienceMethodsTrait;
 
     private ReadHandleInterface $handle;
 
