@@ -54,27 +54,11 @@ Please refer to the [`php-standard-library/psalm-plugin`](https://github.com/php
 
 ## Documentation
 
-You can read through the API documentation in [`docs/README.md`](./docs/README.md).
+You can read through the API documentation in [`docs/`](./docs) directory.
 
-## Principles
+## Interested in contributing?
 
-- All functions should be typed as strictly as possible
-- The library should be internally consistent
-- References may not be used
-- Arguments should be as general as possible. For example, for `array` functions, prefer `iterable` inputs where practical, falling back to `array` when needed.
-- Return types should be as specific as possible
-- All files should contain `declare(strict_types=1);`
-
-## Consistency Rules
-
-This is not exhaustive list.
-
-- Functions argument order should be consistent within the library
-  - All iterable-related functions take the iterable as the first argument ( e.g. `Iter\map` and `Iter\filter` )
-  - `$haystack`, `$needle`, and `$pattern` are in the same order for all functions that take them
-- Functions should be consistently named.
-- If an operation can conceivably operate on either keys or values, the default is to operate on the values - the version that operates on keys should have `_key` suffix (e.g. `Iter\last`, `Iter\last_key`, `Iter\contains`, `Iter\contains_key` )
-- Iterable functions that do an operation based on a user-supplied keying function for each element should be suffixed with `_by` (e.g. `Arr\sort_by`, `Iter\group_by`, `Math\max_by`)
+Have a look at [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
 ## Sponsors
 
