@@ -13,11 +13,11 @@ use Throwable;
  * @param resource $resource
  *
  * @return Awaitable<int>
- * 
+ *
  * @psalm-suppress MissingThrowsDocblock
- * 
+ *
  * @internal
- * 
+ *
  * @codeCoverageIgnore
  */
 function stream_await(

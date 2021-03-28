@@ -52,7 +52,7 @@ trait ReadHandleConvenienceMethodsTrait
         do {
             $chunk_size = $to_read;
             $chunk = $this->read($chunk_size, $timer->getRemaining());
-            /** 
+            /**
              * @var string $data
              */
             $data .= $chunk;

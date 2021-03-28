@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Psl\Asio;
 
 use Amp;
-use Error;
-use Psl\Exception;
 
 /**
  * Wait for the given wait handle to finish.

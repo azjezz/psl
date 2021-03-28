@@ -28,7 +28,7 @@ final class AwaitablePromise implements Awaitable
         Promise $promise
     ) {
         $this->promise = $promise;
-        $this->promise->onResolve(function (?\Throwable $throwable, $_result): Promise {
+        $this->promise->onResolve(function (?Throwable $throwable, $_result): Promise {
             if ($throwable) {
                 $this->failed = true;
             } else {
@@ -40,13 +40,12 @@ final class AwaitablePromise implements Awaitable
     }
 
     /**
-     * @psalm-suppress InvalidArgument
-     * @psalm-suppress MixedArgument,MixedAssignment
+     * @psalm-suppress InvalidArgument,MixedArgument,MixedAssignment
      */
     public function onJoin(callable $callback): void
     {
         $this->promise->onResolve(
-            function (?Throwable $throwable, $value) use ($callback): ?Promise {
+            static function (?Throwable $throwable, $value) use ($callback): ?Promise {
                 $result = $callback($throwable, $value);
                 if ($result instanceof Awaitable) {
                     return new PromiseAwaitable($result);

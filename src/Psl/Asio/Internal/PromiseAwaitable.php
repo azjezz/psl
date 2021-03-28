@@ -6,9 +6,10 @@ namespace Psl\Asio\Internal;
 
 use Amp\Promise;
 use Psl\Asio\Awaitable;
+use Throwable;
 
 /**
-             * @template T
+ * @template T
  *
  * @template-implements Promise<T>
  *
@@ -28,8 +29,8 @@ final class PromiseAwaitable implements Promise
     }
 
     /**
-     * @psalm-param (callable(\Throwable|null, mixed):Promise|null) $onResolved
-     * 
+     * @param (callable(Throwable|null, mixed):Promise|null) $onResolved
+     *
      * @psalm-suppress MismatchingDocblockParamType,PossiblyNullFunctionCall
      */
     public function onResolve(callable $onResolved): void
@@ -40,7 +41,7 @@ final class PromiseAwaitable implements Promise
              *
              * @return Awaitable<mixed>
              */
-            static function (?\Throwable $throwable, $value) use ($onResolved): Awaitable {
+            static function (?Throwable $throwable, $value) use ($onResolved): Awaitable {
                 $result = $onResolved($throwable, $value);
                 if ($result instanceof Promise) {
                     return new AwaitablePromise($result);
