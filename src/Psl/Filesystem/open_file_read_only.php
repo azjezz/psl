@@ -13,10 +13,10 @@ use Psl;
  */
 function open_file_read_only(string $filename): ReadFileHandleInterface
 {
-  Psl\invariant(is_file($filename), '$filename is not a file.');
-  Psl\invariant(is_readable($filename), '$filename is not readable.');
+    Psl\invariant(is_file($filename), '$filename is not a file.');
+    Psl\invariant(is_readable($filename), '$filename is not readable.');
 
-  $handle = Internal\open_file($filename, 'r');
+    $handle = Internal\open_file($filename, 'r');
 
-  return new Internal\ReadOnlyHandleDecorator($handle);
+    return new Internal\ReadOnlyHandleDecorator($handle);
 }

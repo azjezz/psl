@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Asio;
 
-use Fiber;
-use Throwable;
+use Amp;
 
 /**
  * Execute the given callable asynchronously.
@@ -18,23 +17,5 @@ use Throwable;
  */
 function async(callable $callable): Awaitable
 {
-    /** @var Internal\WaitHandle<T> */
-    $placeholder = new Internal\WaitHandle();
-
-    $fiber = new Fiber(static function () use ($placeholder, $callable): void {
-        try {
-            $placeholder->finish($callable());
-        } catch (Throwable $exception) {
-            $placeholder->fail($exception);
-        }
-    });
-
-    Internal\EventLoop::defer(
-        static function () use ($fiber): void {
-            $fiber->start();
-        },
-        null
-    );
-
-    return new Internal\InternalAwaitable($placeholder);
+    return new Internal\AwaitablePromise(Amp\async($callable));
 }

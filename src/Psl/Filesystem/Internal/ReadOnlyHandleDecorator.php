@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem\Internal;
 
-use Psl\IO\ReadHandleInterface;
 use Psl\Filesystem;
 
 /**

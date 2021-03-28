@@ -16,7 +16,8 @@
         "ext-json": "*",
         "ext-mbstring": "*",
         "ext-sodium": "*",
-        "ext-intl": "*"
+        "ext-intl": "*",
+        "amphp/amp": "^3.0"
     },
     "autoload": {
         "psr-4": {
@@ -39,5 +40,6 @@
             "name": "hhvm/hsl",
             "url": "https://github.com/hhvm/hsl"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }

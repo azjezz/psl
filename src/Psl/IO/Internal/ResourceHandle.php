@@ -10,8 +10,8 @@ use Psl\Exception\InvariantViolationException;
 use Psl\Internal;
 use Psl\IO\CloseSeekReadWriteHandleInterface;
 use Psl\IO\Exception;
-use Psl\Type;
 use Psl\Math;
+use Psl\Type;
 
 use function error_clear_last;
 use function error_get_last;
@@ -19,6 +19,7 @@ use function fclose;
 use function fseek;
 use function ftell;
 use function fwrite;
+use function stream_get_contents;
 use function stream_get_meta_data;
 use function stream_set_blocking;
 
@@ -212,7 +213,7 @@ class ResourceHandle implements CloseSeekReadWriteHandleInterface
                     $max_bytes ?? ResourceHandle::DEFAULT_READ_BUFFER_SIZE,
                     ResourceHandle::MAXIMUM_READ_BUFFER_SIZE
                 );
-                $result = \stream_get_contents($resource, $max_bytes);
+                $result = stream_get_contents($resource, $max_bytes);
                 if ($result === false) {
                     /** @var array{message: string} $error */
                     $error = error_get_last();

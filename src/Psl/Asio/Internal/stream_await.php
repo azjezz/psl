@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Asio\Internal;
 
+use Amp;
 use Psl\Asio;
 use Psl\Asio\Awaitable;
 use Throwable;
@@ -19,54 +20,55 @@ function stream_await(
     ?int $timeout = null
 ): Awaitable {
     $watcher = null;
-    $operation = Asio\async(static function () use ($resource, $flags, &$watcher): int {
-        /** @var Deferred<int> $deferred */
-        $deferred = new Deferred();
-        /** @var Asio\Awaitable<int> $awaitable */
-        $awaitable = $deferred->awaitable();
+    $operation = Amp\async(static function () use ($resource, $flags, &$watcher): int {
+        /** @var Amp\Deferred<int> $deferred */
+        $deferred = new Amp\Deferred();
+        /** @var Amp\Promise<int> $awaitable */
+        $awaitable = $deferred->promise();
 
         $callback = static function () use (&$deferred, &$watcher): void {
             if (!$deferred) {
                 return;
             }
 
-            /** @var Deferred<int> $deferred */
-            $deferred->finish(STREAM_AWAIT_READY);
+            /** @var Amp\Deferred<int> $deferred */
+            $deferred->resolve(STREAM_AWAIT_READY);
 
             $deferred = null;
             if ($watcher) {
-                EventLoop::cancel((string) $watcher);
+                Amp\Loop::cancel((string) $watcher);
             }
 
             $watcher = null;
         };
 
         if ($flags & STREAM_AWAIT_READ) {
-            $watcher = EventLoop::onReadable($resource, $callback, null);
+            $watcher = Amp\Loop::onReadable($resource, $callback, null);
         } else {
-            $watcher = EventLoop::onWritable($resource, $callback, null);
+            $watcher = Amp\Loop::onWritable($resource, $callback, null);
         }
 
-        return Asio\await($awaitable);
+        return Amp\await($awaitable);
     });
 
     if (null === $timeout) {
-        return $operation;
+        return new AwaitablePromise($operation);
     }
 
     return Asio\async(static function () use ($operation, $timeout, &$watcher): int {
         try {
             /** @var int */
-            return Asio\await(Asio\timeout($operation, $timeout));
-        } catch (Asio\Exception\TimeoutException $e) {
+            return Amp\await(Amp\Promise\timeout($operation, $timeout));
+        } catch (Amp\TimeoutException $e) {
             if ($watcher) {
-                EventLoop::cancel((string) $watcher);
+                Amp\Loop::cancel((string) $watcher);
                 $watcher = null;
             }
+
             return STREAM_AWAIT_TIMEOUT;
         } catch (Throwable $e) {
             if ($watcher) {
-                EventLoop::cancel((string) $watcher);
+                Amp\Loop::cancel((string) $watcher);
                 $watcher = null;
             }
 

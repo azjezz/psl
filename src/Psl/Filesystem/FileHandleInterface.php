@@ -8,8 +8,8 @@ use Psl\IO;
 
 interface FileHandleInterface extends IO\CloseSeekHandleInterface
 {
-  /**
-   * Gets the path to the file.
-   */
-  public function getPath(): string;
+    /**
+     * Gets the path to the file.
+     */
+    public function getPath(): string;
 }

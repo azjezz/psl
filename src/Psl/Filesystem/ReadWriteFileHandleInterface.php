@@ -7,8 +7,8 @@ namespace Psl\Filesystem;
 use Psl\IO;
 
 interface ReadWriteFileHandleInterface extends
-  ReadFileHandleInterface,
-  WriteFileHandleInterface,
-  IO\CloseSeekReadWriteHandleInterface
+    IO\CloseSeekReadWriteHandleInterface,
+    ReadFileHandleInterface,
+    WriteFileHandleInterface
 {
 }

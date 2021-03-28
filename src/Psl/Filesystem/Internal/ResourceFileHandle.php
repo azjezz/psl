@@ -14,23 +14,23 @@ use Psl\Type;
  */
 final class ResourceFileHandle extends IO\Internal\ResourceHandle implements Filesystem\ReadWriteFileHandleInterface
 {
-  private string $path;
+    private string $path;
 
-  /**
-   * @param resource $resource
-   *
-   * @throws Type\Exception\AssertException If $resource is not a resource.
-   * @throws Exception\BlockingException If unable to set the handle resource to non-blocking mode.
-   */
-  public function __construct(string $path, $resource)
-  {
-    parent::__construct($resource);
+    /**
+     * @param resource $resource
+     *
+     * @throws Type\Exception\AssertException If $resource is not a resource.
+     * @throws Exception\BlockingException If unable to set the handle resource to non-blocking mode.
+     */
+    public function __construct(string $path, $resource)
+    {
+        parent::__construct($resource);
 
-    $this->path = $path;
-  }
+        $this->path = $path;
+    }
 
-  public function getPath(): string
-  {
-    return $this->path;
-  }
+    public function getPath(): string
+    {
+        return $this->path;
+    }
 }

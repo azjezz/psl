@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Asio\Internal;
 
+use Amp;
 use Psl\Asio\Awaitable;
 use Throwable;
 
@@ -49,7 +50,7 @@ final class FinishedAwaitable implements Awaitable
 
     public function onJoin(callable $onJoin): void
     {
-        EventLoop::defer(
+        Amp\Loop::defer(
             fn () => $onJoin(null, $this->value),
             null
         );

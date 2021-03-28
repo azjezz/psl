@@ -17,13 +17,13 @@ use Psl\Vec;
  */
 function concurrent(iterable $functions): Awaitable
 {
-    $list = Vec\map(
+    return all(Vec\map(
         $functions,
         /**
          * @param (callable(): T) $callable
+         *
+         * @return Awaitable<T>
          */
         static fn (callable $callable): Awaitable => async($callable)
-    );
-
-    return all($list);
+    ));
 }
