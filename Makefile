@@ -15,11 +15,11 @@ install: install-root-dependencies install-coding-standard-dependencies install-
 
 coding-standard-fix:
 	php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=tools/php-cs-fixer/.php_cs.dist
-	php tools/php-codesniffer/vendor/bin/phpcbf --standard=tools/php-codesniffer/.phpcs.xml
+	php tools/php-codesniffer/vendor/bin/phpcbf --basepath=. --standard=tools/php-codesniffer/.phpcs.xml
 
 coding-standard-check:
 	php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=tools/php-cs-fixer/.php_cs.dist --dry-run
-	php tools/php-codesniffer/vendor/bin/phpcs --standard=tools/php-codesniffer/.phpcs.xml
+	php tools/php-codesniffer/vendor/bin/phpcs --basepath=. --standard=tools/php-codesniffer/.phpcs.xml
 
 type-check:
 	php tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml
