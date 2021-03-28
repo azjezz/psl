@@ -39,7 +39,7 @@ final class FinishedAwaitable implements Awaitable
         try {
             $this->value = null;
         } catch (Throwable $e) {
-            EventLoop::defer(
+            Amp\Loop::defer(
                 static function () use ($e) {
                     throw $e;
                 },

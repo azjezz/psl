@@ -30,5 +30,6 @@ function first(iterable $awaitables): Awaitable
         static fn (Awaitable $awaitable): Amp\Promise => new Internal\PromiseAwaitable($awaitable)
     );
 
+    /** @psalm-suppress MissingThrowsDocblock - $promises is not empty. */
     return new Internal\AwaitablePromise(Amp\Promise\first($promises));
 }

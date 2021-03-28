@@ -15,11 +15,10 @@ use Psl\Exception;
  *
  * @param Awaitable<T> $awaitable
  *
- * @throws Exception\RuntimeException If an internal error occurred.
- *
  * @return T
  */
 function await(Awaitable $awaitable)
 {
+    /** @psalm-suppress MissingThrowsDocblock - not our problem. */
     return Amp\await(new Internal\PromiseAwaitable($awaitable));
 }

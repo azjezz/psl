@@ -16,11 +16,20 @@ use Psl\Str;
 trait ReadHandleConvenienceMethodsTrait
 {
     /**
+     * Read until there is no more data to read.
+     *
+     * It is possible for this to never return, e.g. if called on a pipe or
+     * or socket which the other end keeps open forever. Set a timeout if you
+     * do not want this to happen.
+     *
+     * Up to `$max_bytes` may be allocated in a buffer; large values may lead to
+     * unnecessarily hitting the request memory limit.
+     *
+     * @throws Psl\Exception\InvariantViolationException If $max_bytes is 0, or $timeout_ms is negative.
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\BlockingException If the handle is a socket or similar, and the read would block.
      * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If reached timeout.
-     * @throws InvariantViolationException If $max_bytes is 0, or $timeout_ms is negative.
+     * @throws Exception\TimeoutException If $timeout_ms is reached before being able to read from the handle.
      */
     public function readAll(?int $max_bytes = null, ?int $timeout_ms = null): string
     {
@@ -43,6 +52,9 @@ trait ReadHandleConvenienceMethodsTrait
         do {
             $chunk_size = $to_read;
             $chunk = $this->read($chunk_size, $timer->getRemaining());
+            /** 
+             * @var string $data
+             */
             $data .= $chunk;
             $to_read -= Str\Byte\length($chunk);
         } while ($to_read > 0 && $chunk !== '');
@@ -51,15 +63,20 @@ trait ReadHandleConvenienceMethodsTrait
     }
 
     /**
+     * Read a fixed amount of data.
+     *
+     * It is possible for this to never return, e.g. if called on a pipe or
+     * or socket which the other end keeps open forever. Set a timeout if you
+     * do not want this to happen.
+     *
+     * @throws Psl\Exception\InvariantViolationException If $max_bytes is 0, or $timeout_ms is negative.
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\BlockingException If the handle is a socket or similar, and the read would block.
      * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If reached timeout.
-     * @throws InvariantViolationException If $max_bytes is 0, or $timeout_ms is negative.
+     * @throws Exception\TimeoutException If $timeout_ms is reached before being able to read from the handle.
      */
     public function readFixedSize(int $size, ?int $timeout_ms = null): string
     {
-        /** @var string $data */
         $data = Asio\await(Asio\async(fn () => $this->readAll($size, $timeout_ms)));
         if (Str\Byte\length($data) !== $size) {
             throw new Exception\RuntimeException(Str\format(

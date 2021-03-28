@@ -155,25 +155,26 @@ final class Reader implements ReadHandleInterface
     }
 
     /**
-     * Read fixed amount of bytes specified by $size.
+     * Read a fixed amount of data.
      *
-     * @param positive-int $size The number of bytes to read.
+     * It is possible for this to never return, e.g. if called on a pipe or
+     * or socket which the other end keeps open forever. Set a timeout if you
+     * do not want this to happen.
      *
+     * @throws Psl\Exception\InvariantViolationException If $size is not positive.
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\BlockingException If the handle is a socket or similar, and the read would block.
-     * @throws Exception\RuntimeException If an error occurred during the operation,
-     *                                    or reached end of file before requested size.
-     * @throws InvariantViolationException If $size is not positive.
+     * @throws Exception\RuntimeException If an error occurred during the operation.
+     * @throws Exception\TimeoutException If $timeout_ms is reached before being able to read from the handle.
      */
     public function readFixedSize(int $size, ?int $timeout_ms = null): string
     {
         $timer = new Internal\OptionalIncrementalTimeout(
             $timeout_ms,
-            static function () use (&$data): void {
-                throw new Exception\TimeoutException(Str\format(
+            static function (): void {
+                throw new Exception\TimeoutException(
                     "Reached timeout before reading requested amount of data",
-                    $data === '' ? 'any' : 'all',
-                ));
+                );
             },
         );
 

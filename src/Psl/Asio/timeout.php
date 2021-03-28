@@ -21,6 +21,7 @@ use Amp;
  */
 function timeout(Awaitable $awaitable, int $timeout): Awaitable
 {
+    /** @psalm-suppress MissingThrowsDocblock - it's a promise. */
     return new Internal\AwaitablePromise(
         Amp\Promise\timeout(new Internal\PromiseAwaitable($awaitable), $timeout)
     );

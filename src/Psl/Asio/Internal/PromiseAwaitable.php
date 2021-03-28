@@ -8,7 +8,7 @@ use Amp\Promise;
 use Psl\Asio\Awaitable;
 
 /**
- * @template T
+             * @template T
  *
  * @template-implements Promise<T>
  *
@@ -27,8 +27,27 @@ final class PromiseAwaitable implements Promise
         $this->awaitable = $awaitable;
     }
 
-    public function onResolve(callable $callback): void
+    /**
+     * @psalm-param (callable(\Throwable|null, mixed):Promise|null) $onResolved
+     * 
+     * @psalm-suppress MismatchingDocblockParamType,PossiblyNullFunctionCall
+     */
+    public function onResolve(callable $onResolved): void
     {
-        $this->awaitable->onJoin($callback);
+        $this->awaitable->onJoin(
+            /**
+             * @param T|null $value
+             *
+             * @return Awaitable<mixed>
+             */
+            static function (?\Throwable $throwable, $value) use ($onResolved): Awaitable {
+                $result = $onResolved($throwable, $value);
+                if ($result instanceof Promise) {
+                    return new AwaitablePromise($result);
+                }
+
+                return new FinishedAwaitable();
+            }
+        );
     }
 }

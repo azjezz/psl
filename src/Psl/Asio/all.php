@@ -29,5 +29,6 @@ function all(iterable $awaitables): Awaitable
         static fn (Awaitable $awaitable): Amp\Promise => new Internal\PromiseAwaitable($awaitable)
     );
 
+    /** @psalm-suppress MissingThrowsDocblock - $promises is ... full of promises. */
     return new Internal\AwaitablePromise(Amp\Promise\all($promises));
 }

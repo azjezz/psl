@@ -42,5 +42,6 @@ function some(iterable $awaitables, int $required = 1): Awaitable
         static fn (Awaitable $awaitable): Amp\Promise => new Internal\PromiseAwaitable($awaitable)
     );
 
+    /** @psalm-suppress MissingThrowsDocblock - $promises is ... full of promises. */
     return new Internal\AwaitablePromise(Amp\Promise\all($promises));
 }

@@ -13,6 +13,12 @@ use Throwable;
  * @param resource $resource
  *
  * @return Awaitable<int>
+ * 
+ * @psalm-suppress MissingThrowsDocblock
+ * 
+ * @internal
+ * 
+ * @codeCoverageIgnore
  */
 function stream_await(
     $resource,
@@ -23,7 +29,6 @@ function stream_await(
     $operation = Amp\async(static function () use ($resource, $flags, &$watcher): int {
         /** @var Amp\Deferred<int> $deferred */
         $deferred = new Amp\Deferred();
-        /** @var Amp\Promise<int> $awaitable */
         $awaitable = $deferred->promise();
 
         $callback = static function () use (&$deferred, &$watcher): void {
@@ -48,6 +53,7 @@ function stream_await(
             $watcher = Amp\Loop::onWritable($resource, $callback, null);
         }
 
+        /** @var int */
         return Amp\await($awaitable);
     });
 

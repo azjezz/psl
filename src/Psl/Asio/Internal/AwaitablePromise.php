@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Asio\Internal;
 
+use Amp;
 use Amp\Promise;
 use Psl\Asio\Awaitable;
+use Throwable;
 
 /**
  * @template T
@@ -20,24 +22,39 @@ final class AwaitablePromise implements Awaitable
     private ?bool $failed = null;
 
     /**
-     * @param Promise<T>
+     * @param Promise<T> $promise
      */
     public function __construct(
         Promise $promise
     ) {
         $this->promise = $promise;
-        $this->promise->onResolve(function ($throwable, $result): void {
+        $this->promise->onResolve(function (?\Throwable $throwable, $_result): Promise {
             if ($throwable) {
                 $this->failed = true;
             } else {
                 $this->failed = false;
             }
+
+            return new Amp\Success();
         });
     }
 
+    /**
+     * @psalm-suppress InvalidArgument
+     * @psalm-suppress MixedArgument,MixedAssignment
+     */
     public function onJoin(callable $callback): void
     {
-        $this->promise->onResolve($callback);
+        $this->promise->onResolve(
+            function (?Throwable $throwable, $value) use ($callback): ?Promise {
+                $result = $callback($throwable, $value);
+                if ($result instanceof Awaitable) {
+                    return new PromiseAwaitable($result);
+                }
+
+                return null;
+            }
+        );
     }
 
     public function isSucceeded(): bool
