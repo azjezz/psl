@@ -30,9 +30,6 @@ function intersect(iterable $first, iterable $second, iterable ...$rest): array
     return array_intersect(from_iterable($first), from_iterable($second), ...Vec\map(
         $rest,
         /**
-         * @template Tk of array-key
-         * @template Tv
-         *
          * @param iterable<Tk, Tv> $iterable
          *
          * @return array<Tk, Tv>

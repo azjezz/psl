@@ -36,12 +36,10 @@ function pipe(callable ...$stages): callable
     return static fn ($input) => reduce(
         $stages,
         /**
-         * @template IO
+         * @param T $input
+         * @param (callable(T): T) $next
          *
-         * @param IO $input
-         * @param (callable(IO): IO) $next
-         *
-         * @return IO
+         * @return T
          */
         static fn ($input, callable $next) => $next($input),
         $input
