@@ -45,6 +45,7 @@
 - [num](./../../src/Psl/Type/num.php#L10)
 - [object](./../../src/Psl/Type/object.php#L14)
 - [optional](./../../src/Psl/Type/optional.php#L14)
+- [positive_int](./../../src/Psl/Type/positive_int.php#L10)
 - [resource](./../../src/Psl/Type/resource.php#L12)
 - [scalar](./../../src/Psl/Type/scalar.php#L10)
 - [shape](./../../src/Psl/Type/shape.php#L15)
