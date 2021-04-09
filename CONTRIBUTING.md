@@ -12,6 +12,21 @@ We use GitHub issues to track issues within PSL.
 
 Please ensure your description is clear and has sufficient instructions to be able to reproduce the issue.
 
+## Getting started
+
+Contributing to open-source can be scary. Don't be afraid!
+We are looking forward working together to improve this package!
+
+Here is a small checklist to get you going:
+
+- Discuss the changes you want to make first!
+- Create a fork of this repository.
+- Clone your own repository.
+- Run `make install` to get everything set-up for you.
+- Checkout a new branch and make the changes you want to make. 
+- Run `make check` to verify your code is ok to submit.
+- Submit your Pull Request.
+
 ## Submitting Pull Requests
 
 Before we can merge your Pull-Request here are some guidelines that you need to follow.
