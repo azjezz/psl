@@ -27,7 +27,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Psl\\Tests\\": "tests/Psl"
+            "Psl\\Tests\\": "tests/unit/Psl"
         }
     },
     "extra": {

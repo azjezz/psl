@@ -36,7 +36,7 @@
   </php>
   <testsuites>
     <testsuite name="PHP Standard Library">
-      <directory>../../tests/Psl</directory>
+      <directory>../../tests/unit/</directory>
     </testsuite>
   </testsuites>
   <logging />
