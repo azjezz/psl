@@ -1,6 +1,6 @@
 name: "security analysis"
 
-on: 
+on:
   pull_request: ~
   push: ~
 
@@ -23,7 +23,7 @@ jobs:
       - name: "installing dependencies"
         run: |
           make install-root-dependencies
-          make install-type-check-dependencies
+          make install-static-analysis-dependencies
 
       - name: "running security analysis ( psalm )"
         run: make security-analysis
