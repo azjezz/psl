@@ -77,7 +77,7 @@ for the end user.
 
 PSL is configured to pass the strictest psalm level.
 
-To ensure that your code doesn't contain any type issues, use `make type-check`.
+To ensure that your code doesn't contain any type issues, use `make static-analysis`.
 
 To ensure that your code doesn't introduce any security issues, use `make security-analysis`
 

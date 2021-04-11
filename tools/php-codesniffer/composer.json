@@ -7,6 +7,6 @@
         "ext-json": "*",
         "ext-mbstring": "*",
         "ext-sodium": "*",
-        "squizlabs/php_codesniffer": "^3.5"
+        "squizlabs/php_codesniffer": "^3.6"
     }
 }

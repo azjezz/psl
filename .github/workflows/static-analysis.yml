@@ -1,6 +1,6 @@
 name: "static analysis"
 
-on: 
+on:
   pull_request: ~
   push: ~
   schedule:
@@ -25,7 +25,10 @@ jobs:
       - name: "installing dependencies"
         run: |
           make install-root-dependencies
-          make install-type-check-dependencies
+          make install-static-analysis-dependencies
 
       - name: "running static analysis"
+        run: make static-analysis
+
+      - name: "calculating type coverage"
         run: make type-coverage

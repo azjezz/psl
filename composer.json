@@ -27,7 +27,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Psl\\Tests\\": "tests/Psl"
+            "Psl\\Tests\\StaticAnalysis\\": "tests/static-analysis",
+            "Psl\\Tests\\Unit\\": "tests/unit"
         }
     },
     "extra": {
