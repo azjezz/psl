@@ -1,13 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Psl\Tests\StaticAnalysis\Regex;
 
 use Psl;
 use Psl\Regex;
 
-function take_string(string $_foo): void {}
+function take_string(string $_foo): void
+{
+}
 
-(static function (): void {
+/**
+ * @throws Regex\Exception\ExceptionInterface
+ * @throws Psl\Exception\InvariantViolationException
+ */
+function test(): void
+{
     $subject = 'PHP is the web scripting language of choice.';
     $pattern = '/(php)/i';
 
@@ -18,4 +27,4 @@ function take_string(string $_foo): void {}
 
     take_string($first_match[0]);
     take_string($first_match[1]);
-})();
+}

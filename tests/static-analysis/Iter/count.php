@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Psl\Tests\StaticAnalysis\Iter;
 
 use Psl\Iter;
@@ -45,7 +47,8 @@ function return_array(): array
     return [];
 }
 
-(static function (): void {
+function test(): void
+{
     take_positive_integer(
         Iter\count(return_non_empty_array())
     );
@@ -61,4 +64,4 @@ function return_array(): array
     take_zero(
         Iter\count(return_array())
     );
-})();
+}

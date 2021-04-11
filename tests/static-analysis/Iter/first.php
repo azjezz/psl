@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Psl\Tests\StaticAnalysis\Iter;
 
 use Psl\Iter;
@@ -27,7 +29,8 @@ function return_non_empty_keyed_array(): array
     return [1 => 5, 2 => 4];
 }
 
-(static function (): void {
+function test(): void
+{
     take_integer(
         Iter\first(return_non_empty_integer_list())
     );
@@ -51,4 +54,4 @@ function return_non_empty_keyed_array(): array
     take_integer(
         Iter\first_key(return_non_empty_keyed_array())
     );
-})();
+}
