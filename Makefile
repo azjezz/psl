@@ -23,7 +23,7 @@ coding-standard-check:
 
 static-analysis:
 	php tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml
-	php tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml static-analysis
+	php tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml tests/static-analysis
 
 type-coverage:
 	php tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml --shepherd --stats
