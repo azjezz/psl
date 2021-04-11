@@ -22,7 +22,7 @@ abstract class AbstractFilesystemTest extends IOTestCase
         parent::setUp();
 
         $this->cacheDirectory = Type\string()->assert(Filesystem\canonicalize(Str\join([
-            __DIR__, '..', '..', '.cache'
+            __DIR__, '..', '.cache'
         ], Filesystem\SEPARATOR)));
 
         $this->directory = Str\join([$this->cacheDirectory, $this->function], Filesystem\SEPARATOR);
