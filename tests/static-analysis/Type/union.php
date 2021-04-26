@@ -6,11 +6,11 @@ use Psl\Type;
 
 /**
  * @psalm-suppress UnusedParam
+ *
  * @param 'PENDING'|'PROCESSING'|'COMPLETED'|'ERROR' $state
  */
 function takes_valid_state(string $state): void
 {
-
 }
 
 function test(): void
