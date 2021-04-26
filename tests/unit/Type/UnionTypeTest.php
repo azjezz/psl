@@ -39,7 +39,7 @@ final class UnionTypeTest extends TypeTest
     {
         yield [Type\union(Type\bool(), Type\string()), 'bool|string'];
         yield [Type\union(Type\bool(), Type\float()), 'bool|float'];
-        yield [Type\union(Type\bool(), Type\union(Type\float(), Type\int())), 'bool|float|int'];
+        yield [Type\union(Type\bool(), Type\float(), Type\int()), 'bool|float|int'];
         yield [Type\union(Type\bool(), Type\num()), 'bool|num'];
         yield [Type\union(Type\bool(), Type\array_key()), 'bool|array-key'];
         yield [
@@ -58,9 +58,20 @@ final class UnionTypeTest extends TypeTest
                     Type\object(IndexAccessInterface::class),
                     Type\object(CollectionInterface::class)
                 ),
-                Type\bool()
+                Type\bool(),
+                Type\non_empty_string()
             ),
-            '(Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface)|bool'
+            '((Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface)|bool)|non-empty-string'
+        ];
+        yield [
+            Type\union(
+                Type\null(),
+                Type\vec(Type\positive_int()),
+                Type\literal_scalar('php'),
+                Type\literal_scalar('still'),
+                Type\literal_scalar('alive'),
+            ),
+            'null|list<positive-int>|"php"|"still"|"alive"'
         ];
     }
 }
