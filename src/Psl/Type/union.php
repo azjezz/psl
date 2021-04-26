@@ -7,19 +7,26 @@ namespace Psl\Type;
 use Psl;
 
 /**
- * @template Tl
- * @template Tr
+ * @template T
  *
- * @param TypeInterface<Tl> $first
- * @param TypeInterface<Tr> $second
+ * @param TypeInterface<T> $first
+ * @param TypeInterface<T> $second
+ * @param TypeInterface<T> ...$rest
  *
- * @throws Psl\Exception\InvariantViolationException If $first, or $second is optional.
+ * @throws Psl\Exception\InvariantViolationException If $first, $second or one of $rest is optional.
  *
- * @return TypeInterface<Tl|Tr>
+ * @return TypeInterface<T>
  */
 function union(
     TypeInterface $first,
-    TypeInterface $second
+    TypeInterface $second,
+    TypeInterface ...$rest
 ): TypeInterface {
-    return new Internal\UnionType($first, $second);
+    $accumulated_type = new Internal\UnionType($first, $second);
+
+    foreach ($rest as $type) {
+        $accumulated_type = new Internal\UnionType($accumulated_type, $type);
+    }
+
+    return $accumulated_type;
 }
