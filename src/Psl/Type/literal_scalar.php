@@ -18,7 +18,7 @@ use Psl;
 function literal_scalar($value): TypeInterface
 {
     /** @psalm-suppress MissingThrowsDocblock */
-    union(union(string(), bool()), num())->assert($value);
+    union(string(), bool(), num())->assert($value);
 
     return new Internal\LiteralScalarType($value);
 }
