@@ -15,7 +15,7 @@ use Psl;
  * @param TypeInterface<TSecond> $second
  * @param TypeInterface<TRest> ...$rest
  *
- * @throws Psl\Exception\InvariantViolationException If $first, or $second is optional.
+ * @throws Psl\Exception\InvariantViolationException If $first, $second or one of $rest is optional.
  *
  * @return TypeInterface<TFirst&TSecond&TRest>
  */
