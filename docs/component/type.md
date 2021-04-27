@@ -17,7 +17,7 @@
 - [dict](./../../src/Psl/Type/dict.php#L20)
 - [float](./../../src/Psl/Type/float.php#L10)
 - [int](./../../src/Psl/Type/int.php#L10)
-- [intersection](./../../src/Psl/Type/intersection.php#L20)
+- [intersection](./../../src/Psl/Type/intersection.php#L22)
 - [is_array](./../../src/Psl/Type/is_array.php#L20) ( deprecated )
 - [is_arraykey](./../../src/Psl/Type/is_arraykey.php#L18) ( deprecated )
 - [is_bool](./../../src/Psl/Type/is_bool.php#L20) ( deprecated )
