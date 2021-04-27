@@ -16,6 +16,7 @@ use Psl;
  * @param TypeInterface<TRest> ...$rest
  *
  * @throws Psl\Exception\InvariantViolationException If $first, or $second is optional.
+ *
  * @return TypeInterface<TFirst&TSecond&TRest>
  */
 function intersection(
