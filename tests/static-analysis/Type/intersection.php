@@ -36,9 +36,6 @@ function test(): void
     /** @psalm-suppress MissingThrowsDocblock */
     takes_valid_intersection($old_school_codec->assert('any'));
 
-    /**
-     * @psalm-suppress MissingThrowsDocblock
-     * @psalm-suppress InvalidArgument
-     */
+    /** @psalm-suppress MissingThrowsDocblock */
     takes_valid_intersection($new_codec->assert('any'));
 }
