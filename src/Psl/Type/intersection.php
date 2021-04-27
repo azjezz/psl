@@ -7,19 +7,28 @@ namespace Psl\Type;
 use Psl;
 
 /**
- * @template Tl
- * @template Tr
+ * @template TFirst
+ * @template TSecond
+ * @template TRest
  *
- * @param TypeInterface<Tl> $first
- * @param TypeInterface<Tr> $second
+ * @param TypeInterface<TFirst> $first
+ * @param TypeInterface<TSecond> $second
+ * @param TypeInterface<TRest> ...$rest
  *
  * @throws Psl\Exception\InvariantViolationException If $first, or $second is optional.
- * @return TypeInterface<Tl&Tr>
+ * @return TypeInterface<TFirst&TSecond&TRest>
  */
 function intersection(
     TypeInterface $first,
-    TypeInterface $second
+    TypeInterface $second,
+    TypeInterface ...$rest
 ): TypeInterface {
-    /** @var TypeInterface<Tl&Tr> */
-    return new Internal\IntersectionType($first, $second);
+    $accumulated_type = new Internal\IntersectionType($first, $second);
+
+    foreach ($rest as $type) {
+        $accumulated_type = new Internal\IntersectionType($accumulated_type, $type);
+    }
+
+    /** @var TypeInterface<TFirst&TSecond&TRest> */
+    return $accumulated_type;
 }
