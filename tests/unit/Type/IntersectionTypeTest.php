@@ -13,7 +13,7 @@ final class IntersectionTypeTest extends TypeTest
 {
     public function testIntersectionLeft(): void
     {
-        $intersection = Type\intersection(Type\array_key(), Type\int());
+        $intersection = Type\intersection(Type\array_key(), Type\int(), Type\positive_int());
 
         static::assertSame(1, $intersection->coerce('1'));
     }
@@ -53,14 +53,36 @@ final class IntersectionTypeTest extends TypeTest
             'Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface'
         ];
 
-        yield [Type\intersection(
-            Type\object(IndexAccessInterface::class),
-            Type\union(Type\object(CollectionInterface::class), Type\object(Iterator::class))
-        ), 'Psl\Collection\IndexAccessInterface&(Psl\Collection\CollectionInterface|Iterator)'];
+        yield [
+            Type\intersection(
+                Type\object(IndexAccessInterface::class),
+                Type\union(
+                    Type\object(CollectionInterface::class),
+                    Type\object(Iterator::class)
+                )
+            ),
+            'Psl\Collection\IndexAccessInterface&(Psl\Collection\CollectionInterface|Iterator)'
+        ];
 
-        yield [Type\intersection(
-            Type\union(Type\object(CollectionInterface::class), Type\object(Iterator::class)),
-            Type\object(IndexAccessInterface::class)
-        ), '(Psl\Collection\CollectionInterface|Iterator)&Psl\Collection\IndexAccessInterface'];
+        yield [
+            Type\intersection(
+                Type\union(
+                    Type\object(CollectionInterface::class),
+                    Type\object(Iterator::class)
+                ),
+                Type\object(IndexAccessInterface::class)
+            ),
+            '(Psl\Collection\CollectionInterface|Iterator)&Psl\Collection\IndexAccessInterface'
+        ];
+
+        yield [
+            Type\intersection(
+                Type\object(IndexAccessInterface::class),
+                Type\object(CollectionInterface::class),
+                Type\object(Iterator::class),
+                Type\shape(['id' => Type\string()]),
+            ),
+            'Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface&Iterator&array{\'id\': string}'
+        ];
     }
 }
