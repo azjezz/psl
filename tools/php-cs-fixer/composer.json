@@ -7,6 +7,6 @@
         "ext-json": "*",
         "ext-mbstring": "*",
         "ext-sodium": "*",
-        "friendsofphp/php-cs-fixer": "^2.18"
+        "friendsofphp/php-cs-fixer": "^3.0"
     }
 }
