@@ -17,7 +17,7 @@ use Psl\Type;
  *
  * @return T
  */
-function typed(string $json, Type\TypeInterface $type)
+function typed(string $json, Type\TypeInterface $type): mixed
 {
     try {
         return $type->coerce(decode($json));

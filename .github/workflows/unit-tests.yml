@@ -1,6 +1,6 @@
 name: "unit tests"
 
-on: 
+on:
   pull_request: ~
   push: ~
 
@@ -13,7 +13,6 @@ jobs:
     strategy:
       matrix:
         php-version:
-          - "7.4"
           - "8.0"
         operating-system:
           - "macos-latest"

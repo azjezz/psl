@@ -1,6 +1,6 @@
 <?php
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setFinder(
         \Symfony\Component\Finder\Finder::create()
             ->in([
@@ -25,14 +25,10 @@ return PhpCsFixer\Config::create()
         'list_syntax' => [
             'syntax' => 'short',
         ],
-        'lowercase_constants' => true,
         'multiline_comment_opening_closing' => true,
         'native_function_casing' => true,
         'no_empty_phpdoc' => true,
         'no_leading_import_slash' => true,
-        'no_superfluous_phpdoc_tags' => [
-            'allow_mixed' => true,
-        ],
         'no_unused_imports' => true,
         'no_useless_else' => true,
         'no_useless_return' => true,

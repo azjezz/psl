@@ -24,7 +24,7 @@ namespace Psl\Iter;
  * @param iterable<T> $iterable
  * @param T $value
  */
-function contains(iterable $iterable, $value): bool
+function contains(iterable $iterable, mixed $value): bool
 {
     foreach ($iterable as $v) {
         if ($value === $v) {

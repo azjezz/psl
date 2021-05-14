@@ -18,13 +18,11 @@ use const JSON_UNESCAPED_UNICODE;
 /**
  * Returns a string containing the JSON representation of the supplied value.
  *
- * @param mixed $value
- *
  * @pure
  *
  * @throws Exception\EncodeException If an error occurred.
  */
-function encode($value, bool $pretty = false, int $flags = 0): string
+function encode(mixed $value, bool $pretty = false, int $flags = 0): string
 {
     $flags |= JSON_UNESCAPED_UNICODE
         | JSON_UNESCAPED_SLASHES

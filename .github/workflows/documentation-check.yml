@@ -1,6 +1,6 @@
 name: "documentation check"
 
-on: 
+on:
   pull_request: ~
   push: ~
 
@@ -15,7 +15,7 @@ jobs:
       - name: "installing PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "7.4"
+          php-version: "8.0"
           ini-values: memory_limit=-1
           tools: composer:v2, cs2pr
           extensions: bcmath, mbstring, intl, sodium, json
