@@ -45,10 +45,10 @@ function check_documentation_diff(): void
     $diff = Shell\execute('git', ['diff', '--color', '--', 'docs/'], Filesystem\canonicalize(__DIR__ . '/..'));
     if ($diff !== '') {
         echo $diff;
-        
+
         exit(1);
     }
-    
+
     exit(0);
 }
 
@@ -181,33 +181,36 @@ function get_all_components(): array
 {
     $components = [
         'Psl',
-        'Psl\Arr',
-        'Psl\Collection',
-        'Psl\DataStructure',
-        'Psl\Dict',
-        'Psl\Encoding\Base64',
-        'Psl\Encoding\Hex',
-        'Psl\Env',
-        'Psl\Filesystem',
-        'Psl\Fun',
-        'Psl\Hash',
-        'Psl\Html',
-        'Psl\IO',
-        'Psl\Iter',
-        'Psl\Json',
-        'Psl\Math',
-        'Psl\Observer',
-        'Psl\Password',
-        'Psl\PseudoRandom',
-        'Psl\Regex',
-        'Psl\Result',
-        'Psl\SecureRandom',
-        'Psl\Shell',
-        'Psl\Str',
-        'Psl\Str\Byte',
-        'Psl\Str\Grapheme',
-        'Psl\Type',
-        'Psl\Vec',
+        'Psl\\Arr',
+        'Psl\\Class',
+        'Psl\\Collection',
+        'Psl\\DataStructure',
+        'Psl\\Dict',
+        'Psl\\Encoding\\Base64',
+        'Psl\\Encoding\\Hex',
+        'Psl\\Env',
+        'Psl\\Filesystem',
+        'Psl\\Fun',
+        'Psl\\Hash',
+        'Psl\\Html',
+        'Psl\\Interface',
+        'Psl\\IO',
+        'Psl\\Iter',
+        'Psl\\Json',
+        'Psl\\Math',
+        'Psl\\Observer',
+        'Psl\\Password',
+        'Psl\\PseudoRandom',
+        'Psl\\Regex',
+        'Psl\\Result',
+        'Psl\\SecureRandom',
+        'Psl\\Shell',
+        'Psl\\Str',
+        'Psl\\Str\\Byte',
+        'Psl\\Str\\Grapheme',
+        'Psl\\Trait',
+        'Psl\\Type',
+        'Psl\\Vec',
     ];
 
     return Vec\sort($components);

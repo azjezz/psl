@@ -521,6 +521,16 @@ final class Loader
         'Psl\IO\input_handle',
         'Psl\IO\output_handle',
         'Psl\IO\error_handle',
+        'Psl\Class\exists',
+        'Psl\Class\defined',
+        'Psl\Class\has_constant',
+        'Psl\Class\has_method',
+        'Psl\Class\is_abstract',
+        'Psl\Class\is_final',
+        'Psl\Interface\exists',
+        'Psl\Interface\defined',
+        'Psl\Trait\exists',
+        'Psl\Trait\defined',
     ];
 
     public const INTERFACES = [
