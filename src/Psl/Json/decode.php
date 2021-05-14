@@ -17,11 +17,9 @@ use const JSON_THROW_ON_ERROR;
  *
  * @throws Exception\DecodeException If an error occurred.
  *
- * @return mixed
- *
  * @pure
  */
-function decode(string $json, bool $assoc = true)
+function decode(string $json, bool $assoc = true): mixed
 {
     try {
         /** @var mixed $value */

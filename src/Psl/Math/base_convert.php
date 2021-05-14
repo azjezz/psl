@@ -49,7 +49,6 @@ function base_convert(string $value, int $from_base, int $to_base): string
     Psl\invariant($to_base >= 2 && $to_base <= 36, 'Expected $to_base to be between 2 and 36, got %d', $to_base);
 
     $from_alphabet = Byte\slice(Str\ALPHABET_ALPHANUMERIC, 0, $from_base);
-    /** @var numeric-string $result_decimal */
     $result_decimal = '0';
     $place_value = bcpow((string)$from_base, (string)(Byte\length($value) - 1));
     foreach (Byte\chunk($value) as $digit) {
@@ -69,7 +68,6 @@ function base_convert(string $value, int $from_base, int $to_base): string
     $result      = '';
     do {
         $result = $to_alphabet[(int)bcmod($result_decimal, (string)$to_base)] . $result;
-        /** @var numeric-string $result_decimal */
         $result_decimal = bcdiv($result_decimal, (string)$to_base);
     } while (bccomp($result_decimal, '0') > 0);
 

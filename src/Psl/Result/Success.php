@@ -21,12 +21,12 @@ final class Success implements ResultInterface
      *
      * @readonly
      */
-    private $value;
+    private mixed $value;
 
     /**
      * @param T $value
      */
-    public function __construct($value)
+    public function __construct(mixed $value)
     {
         $this->value = $value;
     }
@@ -38,7 +38,7 @@ final class Success implements ResultInterface
      *
      * @psalm-mutation-free
      */
-    public function getResult()
+    public function getResult(): mixed
     {
         return $this->value;
     }
