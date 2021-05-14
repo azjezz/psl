@@ -8,12 +8,11 @@
 
 ---
 
-### `Psl\Json` Component
+### `Psl\Trait` Component
 
 #### `Functions`
 
-- [decode](./../../src/Psl/Json/decode.php#L22)
-- [encode](./../../src/Psl/Json/encode.php#L25)
-- [typed](./../../src/Psl/Json/typed.php#L20)
+- [defined](./../../src/Psl/Trait/defined.php#L16)
+- [exists](./../../src/Psl/Trait/exists.php#L14)
 
 

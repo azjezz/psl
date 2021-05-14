@@ -8,6 +8,7 @@
 
 - [Psl](./component/psl.md)
 - [Psl\Arr](./component/arr.md)
+- [Psl\Class](./component/class.md)
 - [Psl\Collection](./component/collection.md)
 - [Psl\DataStructure](./component/data-structure.md)
 - [Psl\Dict](./component/dict.md)
@@ -19,6 +20,7 @@
 - [Psl\Hash](./component/hash.md)
 - [Psl\Html](./component/html.md)
 - [Psl\IO](./component/io.md)
+- [Psl\Interface](./component/interface.md)
 - [Psl\Iter](./component/iter.md)
 - [Psl\Json](./component/json.md)
 - [Psl\Math](./component/math.md)
@@ -32,6 +34,7 @@
 - [Psl\Str](./component/str.md)
 - [Psl\Str\Byte](./component/str-byte.md)
 - [Psl\Str\Grapheme](./component/str-grapheme.md)
+- [Psl\Trait](./component/trait.md)
 - [Psl\Type](./component/type.md)
 - [Psl\Vec](./component/vec.md)
 
