@@ -34,7 +34,7 @@
 - [is_scalar](./../../src/Psl/Type/is_scalar.php#L18) ( deprecated )
 - [is_string](./../../src/Psl/Type/is_string.php#L18) ( deprecated )
 - [iterable](./../../src/Psl/Type/iterable.php#L20)
-- [literal_scalar](./../../src/Psl/Type/literal_scalar.php#L18)
+- [literal_scalar](./../../src/Psl/Type/literal_scalar.php#L14)
 - [map](./../../src/Psl/Type/map.php#L21)
 - [mixed](./../../src/Psl/Type/mixed.php#L10)
 - [mutable_map](./../../src/Psl/Type/mutable_map.php#L21)
