@@ -17,6 +17,8 @@ use function random_int;
  *
  * @throws Exception\InsufficientEntropyException If it was not possible to gather sufficient entropy.
  * @throws Psl\Exception\InvariantViolationException If $min > $max.
+ *
+ * @psalm-external-mutation-free
  */
 function int(int $min = Math\INT64_MIN, int $max = Math\INT64_MAX): int
 {

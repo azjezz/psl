@@ -27,6 +27,7 @@
 - [Psl\Observer](./component/observer.md)
 - [Psl\Password](./component/password.md)
 - [Psl\PseudoRandom](./component/pseudo-random.md)
+- [Psl\RandomSequence](./component/random-sequence.md)
 - [Psl\Regex](./component/regex.md)
 - [Psl\Result](./component/result.md)
 - [Psl\SecureRandom](./component/secure-random.md)
