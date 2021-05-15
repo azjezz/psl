@@ -12,8 +12,15 @@ namespace Psl;
  * @param T ...$args
  *
  * @return T|null
+ *
+ * @pure
  */
 function sequence(...$args)
 {
-    return Iter\last($args);
+    $result = null;
+    foreach ($args as $arg) {
+        $result = $arg;
+    }
+
+    return $result;
 }
