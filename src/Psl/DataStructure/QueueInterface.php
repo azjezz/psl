@@ -21,7 +21,7 @@ interface QueueInterface extends Countable
      *
      * @param T $node
      */
-    public function enqueue($node): void;
+    public function enqueue(mixed $node): void;
 
     /**
      * Retrieves, but does not remove, the node at the head of this queue,
@@ -29,7 +29,7 @@ interface QueueInterface extends Countable
      *
      * @return null|T
      */
-    public function peek();
+    public function peek(): mixed;
 
     /**
      * Retrieves and removes the node at the head of this queue,
@@ -37,7 +37,7 @@ interface QueueInterface extends Countable
      *
      * @return null|T
      */
-    public function pull();
+    public function pull(): mixed;
 
     /**
      * Retrieves and removes the node at the head of this queue.
@@ -46,7 +46,7 @@ interface QueueInterface extends Countable
      *
      * @return T
      */
-    public function dequeue();
+    public function dequeue(): mixed;
 
     /**
      * Count the nodes in the queue.

@@ -22,21 +22,17 @@ use function is_string;
 final class IntType extends Type\Type
 {
     /**
-     * @param mixed $value
-     *
      * @psalm-assert-if-true int $value
      */
-    public function matches($value): bool
+    public function matches(mixed $value): bool
     {
         return is_int($value);
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws CoercionException
      */
-    public function coerce($value): int
+    public function coerce(mixed $value): int
     {
         if (is_int($value)) {
             return $value;
@@ -60,7 +56,7 @@ final class IntType extends Type\Type
                 return 0;
             }
         }
-        
+
         if (is_float($value)) {
             $integer_value = (int) $value;
             $reconstructed = (float) $integer_value;
@@ -73,13 +69,11 @@ final class IntType extends Type\Type
     }
 
     /**
-     * @param mixed $value
-     *
      * @psalm-assert int $value
      *
      * @throws AssertException
      */
-    public function assert($value): int
+    public function assert(mixed $value): int
     {
         if (is_int($value)) {
             return $value;

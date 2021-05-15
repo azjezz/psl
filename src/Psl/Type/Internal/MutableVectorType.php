@@ -24,17 +24,12 @@ use function is_object;
 final class MutableVectorType extends Type\Type
 {
     /**
-     * @var Type\TypeInterface<T>
-     */
-    private Type\TypeInterface $value_type;
-
-    /**
      * @param Type\TypeInterface<T> $value_type
      *
      * @throws Psl\Exception\InvariantViolationException If $value_type is optional.
      */
     public function __construct(
-        Type\TypeInterface $value_type
+        private Type\TypeInterface $value_type
     ) {
         Psl\invariant(!$value_type->isOptional(), 'Optional type must be the outermost.');
 
@@ -42,13 +37,11 @@ final class MutableVectorType extends Type\Type
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws CoercionException
      *
      * @return Collection\MutableVectorInterface<T>
      */
-    public function coerce($value): Collection\MutableVectorInterface
+    public function coerce(mixed $value): Collection\MutableVectorInterface
     {
         if (is_iterable($value)) {
             $value_trace = $this->getTrace()->withFrame(
@@ -78,15 +71,13 @@ final class MutableVectorType extends Type\Type
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws AssertException
      *
      * @return Collection\MutableVectorInterface<T>
      *
      * @psalm-assert Collection\MutableVectorInterface<T> $value
      */
-    public function assert($value): Collection\MutableVectorInterface
+    public function assert(mixed $value): Collection\MutableVectorInterface
     {
         if (is_object($value) && $value instanceof Collection\MutableVectorInterface) {
             $value_trace = $this->getTrace()->withFrame(

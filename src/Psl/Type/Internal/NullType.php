@@ -16,21 +16,17 @@ use Psl\Type\Exception\CoercionException;
 final class NullType extends Type\Type
 {
     /**
-     * @param mixed $value
-     *
      * @psalm-assert-if-true null $value
      */
-    public function matches($value): bool
+    public function matches(mixed $value): bool
     {
         return null === $value;
     }
 
     /**
-     * @param mixed $value
-     *
      * @return null
      */
-    public function coerce($value)
+    public function coerce(mixed $value): mixed
     {
         if (null === $value) {
             return null;
@@ -40,13 +36,11 @@ final class NullType extends Type\Type
     }
 
     /**
-     * @param mixed $value
-     *
      * @psalm-assert null $value
      *
      * @return null
      */
-    public function assert($value)
+    public function assert(mixed $value): mixed
     {
         if (null === $value) {
             return null;

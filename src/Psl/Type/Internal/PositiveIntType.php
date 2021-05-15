@@ -22,23 +22,19 @@ use function is_string;
 final class PositiveIntType extends Type\Type
 {
     /**
-     * @param mixed $value
-     *
      * @psalm-assert-if-true positive-int $value
      */
-    public function matches($value): bool
+    public function matches(mixed $value): bool
     {
         return is_int($value) && $value > 0;
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws CoercionException
      *
      * @return positive-int
      */
-    public function coerce($value): int
+    public function coerce(mixed $value): int
     {
         if (is_int($value) && $value > 0) {
             return $value;
@@ -75,15 +71,13 @@ final class PositiveIntType extends Type\Type
     }
 
     /**
-     * @param mixed $value
-     *
      * @psalm-assert positive-int $value
      *
      * @throws AssertException
      *
      * @return positive-int
      */
-    public function assert($value): int
+    public function assert(mixed $value): int
     {
         if (is_int($value) && $value > 0) {
             return $value;

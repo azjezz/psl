@@ -14,31 +14,25 @@ use Psl\Type\Exception\TypeTrace;
 interface TypeInterface
 {
     /**
-     * @param mixed $value
-     *
      * @psalm-assert-if-true T $value
      */
-    public function matches($value): bool;
+    public function matches(mixed $value): bool;
 
     /**
-     * @param mixed $value
-     *
      * @throws CoercionException
      *
      * @return T
      */
-    public function coerce($value);
+    public function coerce(mixed $value);
 
     /**
-     * @param mixed $value
-     *
      * @throws AssertException
      *
      * @return T
      *
      * @psalm-assert T $value
      */
-    public function assert($value);
+    public function assert(mixed $value);
 
     /**
      * Return whether this type is optional.

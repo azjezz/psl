@@ -32,23 +32,19 @@ final class ObjectType extends Type
     }
 
     /**
-     * @param mixed $value
-     *
      * @psalm-assert-if-true T $value
      */
-    public function matches($value): bool
+    public function matches(mixed $value): bool
     {
         return $value instanceof $this->classname;
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws CoercionException
      *
      * @return T
      */
-    public function coerce($value): object
+    public function coerce(mixed $value): object
     {
         if ($value instanceof $this->classname) {
             return $value;
@@ -58,15 +54,13 @@ final class ObjectType extends Type
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws AssertException
      *
      * @return T
      *
      * @psalm-assert T $value
      */
-    public function assert($value): object
+    public function assert(mixed $value): object
     {
         if ($value instanceof $this->classname) {
             return $value;

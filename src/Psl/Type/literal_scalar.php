@@ -15,7 +15,7 @@ use Psl;
  *
  * @return TypeInterface<T>
  */
-function literal_scalar($value): TypeInterface
+function literal_scalar(string|int|float|bool $value): TypeInterface
 {
     /** @psalm-suppress MissingThrowsDocblock */
     union(string(), bool(), num())->assert($value);

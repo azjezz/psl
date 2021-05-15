@@ -7,15 +7,13 @@ namespace Psl\Type;
 /**
  * Finds whether a variable is null.
  *
- * @param mixed $var
- *
  * @psalm-assert-if-true null $var
  *
  * @pure
  *
  * @deprecated use `Type\null()->matches($value)` instead.
  */
-function is_null($var): bool
+function is_null(mixed $var): bool
 {
     return null === $var;
 }

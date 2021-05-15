@@ -19,41 +19,30 @@ use Psl\Type\Exception\CoercionException;
 final class NullableType extends Type\Type
 {
     /**
-     * @var Type\TypeInterface<T>
-     */
-    private Type\TypeInterface $inner;
-
-    /**
      * @param Type\TypeInterface<T> $inner
      *
      * @throws Psl\Exception\InvariantViolationException If $inner is optional.
      */
     public function __construct(
-        Type\TypeInterface $inner
+        private Type\TypeInterface $inner
     ) {
         Psl\invariant(!$inner->isOptional(), 'Optional type must be the outermost.');
-
-        $this->inner = $inner;
     }
 
     /**
-     * @param mixed $value
-     *
      * @psalm-assert-if-true T|null $value
      */
-    public function matches($value): bool
+    public function matches(mixed $value): bool
     {
         return null === $value || $this->inner->matches($value);
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws CoercionException
      *
      * @return T|null
      */
-    public function coerce($value)
+    public function coerce(mixed $value): mixed
     {
         if (null === $value) {
             return null;
@@ -63,15 +52,13 @@ final class NullableType extends Type\Type
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws AssertException
      *
      * @return T|null
      *
      * @psalm-assert T|null $value
      */
-    public function assert($value)
+    public function assert(mixed $value): mixed
     {
         if (null === $value) {
             return null;

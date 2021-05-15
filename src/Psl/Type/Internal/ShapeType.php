@@ -19,29 +19,20 @@ use Psl\Type\Exception\CoercionException;
 final class ShapeType extends Type\Type
 {
     /**
-     * @var array<Tk, Type\TypeInterface<Tv>> $elements_types
-     */
-    private array $elements_types;
-
-    private bool $allow_unknown_fields;
-
-    /**
      * @param array<Tk, Type\TypeInterface<Tv>> $elements_types
      */
-    public function __construct(array $elements_types, bool $allow_unknown_fields = false)
-    {
-        $this->elements_types = $elements_types;
-        $this->allow_unknown_fields = $allow_unknown_fields;
+    public function __construct(
+        private array $elements_types,
+        private bool $allow_unknown_fields = false,
+    ) {
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws CoercionException
      *
      * @return array<Tk, Tv>
      */
-    public function coerce($value): array
+    public function coerce(mixed $value): array
     {
         /** @psalm-suppress MissingThrowsDocblock */
         if (Type\iterable(Type\mixed(), Type\mixed())->matches($value)) {
@@ -88,15 +79,13 @@ final class ShapeType extends Type\Type
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws AssertException
      *
      * @return array<Tk, Tv>
      *
      * @psalm-assert array<Tk, Tv> $value
      */
-    public function assert($value): array
+    public function assert(mixed $value): array
     {
         /** @psalm-suppress MissingThrowsDocblock */
         if (Type\dict(Type\array_key(), Type\mixed())->matches($value)) {
@@ -159,10 +148,7 @@ final class ShapeType extends Type\Type
         return Str\format('array{%s}', Str\join($nodes, ', '));
     }
 
-    /**
-     * @param array-key $element
-     */
-    private function getElementName($element): string
+    private function getElementName(string|int $element): string
     {
         return Type\int()->matches($element) ? (string) $element : Str\format('\'%s\'', $element);
     }
@@ -170,12 +156,11 @@ final class ShapeType extends Type\Type
     /**
      * @template T
      *
-     * @param array-key $element
      * @param Type\TypeInterface<T> $type
      *
      * @return array{0: Type\Exception\TypeTrace, 1: Type\TypeInterface<T>}
      */
-    private function getTypeAndTraceForElement($element, Type\TypeInterface $type): array
+    private function getTypeAndTraceForElement(string|int $element, Type\TypeInterface $type): array
     {
         $element_name = $this->getElementName($element);
         $trace = $this->getTrace()->withFrame('array{' . $element_name . ': _}');

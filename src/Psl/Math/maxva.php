@@ -17,7 +17,7 @@ namespace Psl\Math;
  *
  * @pure
  */
-function maxva($first, $second, ...$rest)
+function maxva(int|float $first, int|float $second, int|float ...$rest): int|float
 {
     $max = $first > $second ? $first : $second;
     foreach ($rest as $number) {

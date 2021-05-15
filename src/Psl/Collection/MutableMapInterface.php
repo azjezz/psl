@@ -118,7 +118,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
-    public function first();
+    public function first(): mixed;
 
     /**
      * Returns the first key in the current `MutableMapInterface`.
@@ -128,7 +128,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
-    public function firstKey();
+    public function firstKey(): int|string|null;
 
     /**
      * Returns the last value in the current `MutableMapInterface`.
@@ -138,7 +138,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
-    public function last();
+    public function last(): mixed;
 
     /**
      * Returns the last key in the current `MutableMapInterface`.
@@ -148,7 +148,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
-    public function lastKey();
+    public function lastKey(): int|string|null;
 
     /**
      * Returns the index of the first element that matches the search value.
@@ -162,7 +162,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
-    public function linearSearch($search_value);
+    public function linearSearch(mixed $search_value): int|string|null;
 
     /**
      * Returns a `MutableMapInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
@@ -275,7 +275,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @psalm-mutation-free
      */
     public function slice(int $start, int $length): MutableMapInterface;
-    
+
     /**
      * Stores a value into the current collection with the specified key,
      * overwriting the previous value associated with the key.
@@ -291,7 +291,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @return MutableMapInterface<Tk, Tv> Returns itself.
      */
-    public function set($k, $v): MutableMapInterface;
+    public function set(int|string $k, mixed $v): MutableMapInterface;
 
     /**
      * For every element in the provided `iterable`, stores a value into the
@@ -318,7 +318,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @return MutableMapInterface<Tk, Tv> Returns itself.
      */
-    public function add($k, $v): MutableMapInterface;
+    public function add(int|string $k, mixed $v): MutableMapInterface;
 
     /**
      * For every element in the provided iterable, add the value into the current collection.
@@ -343,7 +343,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @return MutableMapInterface<Tk, Tv> Returns itself.
      */
-    public function remove($k): MutableMapInterface;
+    public function remove(int|string $k): MutableMapInterface;
 
     /**
      * Removes all items from the collection.

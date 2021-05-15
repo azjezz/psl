@@ -117,7 +117,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function first();
+    public function first(): mixed;
 
     /**
      * Returns the first key in the current `MapInterface`.
@@ -127,7 +127,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function firstKey();
+    public function firstKey(): int|string|null;
 
     /**
      * Returns the last value in the current `MapInterface`.
@@ -137,7 +137,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function last();
+    public function last(): mixed;
 
     /**
      * Returns the last key in the current `MapInterface`.
@@ -147,7 +147,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function lastKey();
+    public function lastKey(): int|string|null;
 
     /**
      * Returns the index of the first element that matches the search value.
@@ -161,7 +161,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function linearSearch($search_value);
+    public function linearSearch(mixed $search_value): int|string|null;
 
     /**
      * Returns a `MapInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the

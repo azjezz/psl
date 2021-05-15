@@ -22,29 +22,20 @@ use function is_iterable;
 final class VecType extends Type\Type
 {
     /**
-     * @var Type\TypeInterface<Tv>
-     */
-    private Type\TypeInterface $value_type;
-
-    /**
      * @param Type\TypeInterface<Tv> $value_type
      *
      * @throws Psl\Exception\InvariantViolationException If $value_type is optional.
      */
     public function __construct(
-        Type\TypeInterface $value_type
+        private Type\TypeInterface $value_type
     ) {
         Psl\invariant(!$value_type->isOptional(), 'Optional type must be the outermost.');
-
-        $this->value_type = $value_type;
     }
 
     /**
-     * @param mixed $value
-     *
      * @psalm-assert-if-true list<Tv> $value
      */
-    public function matches($value): bool
+    public function matches(mixed $value): bool
     {
         if (!is_array($value)) {
             return false;
@@ -71,13 +62,11 @@ final class VecType extends Type\Type
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws CoercionException
      *
      * @return list<Tv>
      */
-    public function coerce($value): iterable
+    public function coerce(mixed $value): iterable
     {
         if (is_iterable($value)) {
             $value_trace = $this->getTrace()
@@ -103,15 +92,13 @@ final class VecType extends Type\Type
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws AssertException
      *
      * @return list<Tv>
      *
      * @psalm-assert list<Tv> $value
      */
-    public function assert($value): array
+    public function assert(mixed $value): array
     {
         if (is_array($value)) {
             $value_trace = $this->getTrace()

@@ -18,11 +18,9 @@ use function is_bool;
 final class BoolType extends Type\Type
 {
     /**
-     * @param mixed $value
-     *
      * @psalm-assert-if-true bool $value
      */
-    public function matches($value): bool
+    public function matches(mixed $value): bool
     {
         return is_bool($value);
     }
@@ -30,7 +28,7 @@ final class BoolType extends Type\Type
     /**
      * @throws CoercionException
      */
-    public function coerce($value): bool
+    public function coerce(mixed $value): bool
     {
         if (is_bool($value)) {
             return $value;
@@ -52,7 +50,7 @@ final class BoolType extends Type\Type
      *
      * @throws AssertException
      */
-    public function assert($value): bool
+    public function assert(mixed $value): bool
     {
         if (is_bool($value)) {
             return $value;

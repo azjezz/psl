@@ -28,7 +28,7 @@ final class Queue implements QueueInterface
      *
      * @param T $node
      */
-    public function enqueue($node): void
+    public function enqueue(mixed $node): void
     {
         $this->queue[] = $node;
     }
@@ -39,7 +39,7 @@ final class Queue implements QueueInterface
      *
      * @return null|T
      */
-    public function peek()
+    public function peek(): mixed
     {
         return Iter\first($this->queue);
     }
@@ -50,7 +50,7 @@ final class Queue implements QueueInterface
      *
      * @return null|T
      */
-    public function pull()
+    public function pull(): mixed
     {
         if (0 === $this->count()) {
             return null;
@@ -67,7 +67,7 @@ final class Queue implements QueueInterface
      *
      * @return T
      */
-    public function dequeue()
+    public function dequeue(): mixed
     {
         Psl\invariant(0 !== $this->count(), 'Cannot dequeue a node from an empty Queue.');
 

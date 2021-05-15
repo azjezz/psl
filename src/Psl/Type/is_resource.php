@@ -11,15 +11,13 @@ use function is_resource as php_is_resource;
  *
  * To verify the resource type, use `Type\resource($type)->assert($var)` instead.
  *
- * @param mixed $var
- *
  * @psalm-assert-if-true resource $var
  *
  * @pure
  *
  * @deprecated use `Type\resource($type)->matches($value)` instead.
  */
-function is_resource($var): bool
+function is_resource(mixed $var): bool
 {
     return php_is_resource($var);
 }

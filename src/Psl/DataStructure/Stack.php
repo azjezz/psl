@@ -28,7 +28,7 @@ final class Stack implements StackInterface
      *
      * @param T $item
      */
-    public function push($item): void
+    public function push(mixed $item): void
     {
         $this->items[] = $item;
     }
@@ -39,7 +39,7 @@ final class Stack implements StackInterface
      *
      * @return null|T
      */
-    public function peek()
+    public function peek(): mixed
     {
         return Iter\last($this->items);
     }
@@ -50,7 +50,7 @@ final class Stack implements StackInterface
      *
      * @return null|T
      */
-    public function pull()
+    public function pull(): mixed
     {
         if (0 === $this->count()) {
             return null;
@@ -67,7 +67,7 @@ final class Stack implements StackInterface
      *
      * @return T
      */
-    public function pop()
+    public function pop(): mixed
     {
         Psl\invariant(0 !== ($i = $this->count()), 'Cannot pop an item from an empty Stack.');
 

@@ -19,36 +19,27 @@ use Psl\Type\Exception\CoercionException;
 final class LiteralScalarType extends Type\Type
 {
     /**
-     * @var T
-     */
-    private $value;
-
-    /**
      * @param T $value
      */
-    public function __construct($value)
-    {
-        $this->value = $value;
+    public function __construct(
+        private string|int|float|bool $value
+    ) {
     }
 
     /**
-     * @param mixed $value
-     *
      * @psalm-assert-if-true T $value
      */
-    public function matches($value): bool
+    public function matches(mixed $value): bool
     {
         return $this->value === $value;
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws CoercionException
      *
      * @return T
      */
-    public function coerce($value)
+    public function coerce(mixed $value): string|int|float|bool
     {
         if ($value === $this->value) {
             /** @var T $value */
@@ -104,13 +95,11 @@ final class LiteralScalarType extends Type\Type
     }
 
     /**
-     * @param mixed $value
-     *
      * @psalm-assert T $value
      *
      * @throws AssertException
      */
-    public function assert($value)
+    public function assert(mixed $value): string|int|float|bool
     {
         if ($this->value === $value) {
             /** @var T */

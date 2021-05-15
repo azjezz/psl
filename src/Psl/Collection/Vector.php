@@ -60,7 +60,7 @@ final class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    public function first()
+    public function first(): mixed
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\first($this->elements);
@@ -74,7 +74,7 @@ final class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    public function last()
+    public function last(): mixed
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\last($this->elements);
@@ -148,7 +148,7 @@ final class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    public function at($k)
+    public function at(string|int $k): mixed
     {
         Psl\invariant($this->contains($k), 'Key (%s) is out-of-bounds.', $k);
 
@@ -162,7 +162,7 @@ final class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    public function contains($k): bool
+    public function contains(int|string $k): bool
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\contains_key($this->elements, $k);
@@ -177,7 +177,7 @@ final class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    public function get($k)
+    public function get(string|int $k): mixed
     {
         return $this->elements[$k] ?? null;
     }
@@ -222,7 +222,7 @@ final class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    public function linearSearch($search_value): ?int
+    public function linearSearch(mixed $search_value): ?int
     {
         foreach ($this->elements as $key => $element) {
             if ($search_value === $element) {

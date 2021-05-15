@@ -31,7 +31,7 @@ namespace Psl\Math;
  * @psalm-suppress InvalidReturnType
  * @psalm-suppress InvalidReturnStatement
  */
-function abs($number)
+function abs(int|float $number): int|float
 {
     return $number < 0 ? -$number : $number;
 }
