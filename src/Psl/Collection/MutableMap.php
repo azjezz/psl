@@ -56,7 +56,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
-    public function first()
+    public function first(): mixed
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\first($this->elements);
@@ -70,7 +70,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
-    public function firstKey()
+    public function firstKey(): int|string|null
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\first_key($this->elements);
@@ -84,7 +84,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
-    public function last()
+    public function last(): mixed
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\last($this->elements);
@@ -98,7 +98,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
-    public function lastKey()
+    public function lastKey(): int|string|null
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\last_key($this->elements);
@@ -116,7 +116,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
-    public function linearSearch($search_value)
+    public function linearSearch(mixed $search_value): int|string|null
     {
         foreach ($this->elements as $key => $element) {
             if ($search_value === $element) {
@@ -193,7 +193,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
-    public function at($k)
+    public function at(string|int $k): mixed
     {
         Psl\invariant($this->contains($k), 'Key (%s) is out-of-bounds.', $k);
 
@@ -207,7 +207,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
-    public function contains($k): bool
+    public function contains(int|string $k): bool
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\contains_key($this->elements, $k);
@@ -222,7 +222,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
-    public function get($k)
+    public function get(string|int $k): mixed
     {
         return $this->elements[$k] ?? null;
     }
@@ -522,7 +522,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @return MutableMap<Tk, Tv> Returns itself
      */
-    public function set($k, $v): MutableMap
+    public function set(int|string $k, mixed $v): MutableMap
     {
         Psl\invariant($this->contains($k), 'Key (%s) is out-of-bounds.', $k);
 
@@ -563,7 +563,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @return MutableMap<Tk, Tv> Returns itself
      */
-    public function add($k, $v): MutableMap
+    public function add(int|string $k, mixed $v): MutableMap
     {
         $this->elements[$k] = $v;
 
@@ -600,7 +600,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @return MutableMap<Tk, Tv> Returns itself.
      */
-    public function remove($k): MutableMap
+    public function remove(int|string $k): MutableMap
     {
         if ($this->contains($k)) {
             unset($this->elements[$k]);

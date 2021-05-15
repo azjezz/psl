@@ -47,7 +47,7 @@ use Psl;
  *
  * @see https://github.com/vimeo/psalm/issues/2152#issuecomment-533363310
  */
-function range($start, $end, $step = null): array
+function range(int|float $start, int|float $end, int|float $step = null): array
 {
     if ((float) $start === (float) $end) {
         return [$start];
@@ -62,10 +62,7 @@ function range($start, $end, $step = null): array
         Psl\invariant($step > 0, 'If $start < $end, then $step must be positive or null.');
 
         $result = [];
-        Psl\invariant(is_int($step) || is_float($step), '$step must be either an integer or a float.');
         for ($i = $start; $i <= $end; $i += $step) {
-            Psl\invariant(is_int($i) || is_float($i), '$i must be either an integer or a float.');
-            Psl\invariant(is_int($step) || is_float($step), '$step must be either an integer or a float.');
             $result[] = $i;
         }
 
@@ -80,10 +77,7 @@ function range($start, $end, $step = null): array
     Psl\invariant($step < 0, 'If $start > $end, then $step must be negative or null.');
 
     $result = [];
-    Psl\invariant(is_int($step) || is_float($step), '$step must be either an integer or a float.');
     for ($i = $start; $i >= $end; $i += $step) {
-        Psl\invariant(is_int($i) || is_float($i), '$i must be either an integer or a float.');
-        Psl\invariant(is_int($step) || is_float($step), '$step must be either an integer or a float.');
         $result[] = $i;
     }
 

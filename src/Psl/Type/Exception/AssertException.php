@@ -22,14 +22,11 @@ final class AssertException extends Exception
         return $this->expected;
     }
 
-    /**
-     * @param mixed $value
-     */
     public static function withValue(
-        $value,
+        mixed $value,
         string $expected_type,
         TypeTrace $trace
     ): self {
-        return new self(static::getDebugType($value), $expected_type, $trace);
+        return new self(self::getDebugType($value), $expected_type, $trace);
     }
 }

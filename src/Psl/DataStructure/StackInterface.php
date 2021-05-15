@@ -21,7 +21,7 @@ interface StackInterface extends Countable
      *
      * @param T $item
      */
-    public function push($item): void;
+    public function push(mixed $item): void;
 
     /**
      * Retrieves, but does remove, the most recently added item that was not yet removed,
@@ -29,7 +29,7 @@ interface StackInterface extends Countable
      *
      * @return null|T
      */
-    public function peek();
+    public function peek(): mixed;
 
     /**
      * Retrieves and removes the most recently added item that was not yet removed,
@@ -37,7 +37,7 @@ interface StackInterface extends Countable
      *
      * @return null|T
      */
-    public function pull();
+    public function pull(): mixed;
 
     /**
      * Retrieve and removes the most recently added item that was not yet removed.
@@ -46,7 +46,7 @@ interface StackInterface extends Countable
      *
      * @return T
      */
-    public function pop();
+    public function pop(): mixed;
 
     /**
      * Count the items in the stack.

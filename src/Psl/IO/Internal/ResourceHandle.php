@@ -39,7 +39,7 @@ final class ResourceHandle implements CloseSeekReadWriteHandleInterface
      * @throws Type\Exception\AssertException If $resource is not a resource.
      * @throws Psl\IO\Exception\BlockingException If unable to set the handle resource to non-blocking mode.
      */
-    public function __construct($resource)
+    public function __construct(mixed $resource)
     {
         $this->resource = Type\resource()->assert($resource);
 
@@ -67,7 +67,7 @@ final class ResourceHandle implements CloseSeekReadWriteHandleInterface
             /**
              * @param resource $resource
              */
-            static function ($resource) use ($bytes) {
+            static function (mixed $resource) use ($bytes) {
                 $metadata = stream_get_meta_data($resource);
                 if ($metadata['blocked']) {
                     throw new Psl\IO\Exception\BlockingException('The handle resource is blocking.');
@@ -95,7 +95,7 @@ final class ResourceHandle implements CloseSeekReadWriteHandleInterface
             /**
              * @param resource $resource
              */
-            static function ($resource) use ($offset) {
+            static function (mixed $resource) use ($offset) {
                 $metadata = stream_get_meta_data($resource);
                 Psl\invariant($metadata['seekable'], 'Stream is not seekable.');
 
@@ -117,7 +117,7 @@ final class ResourceHandle implements CloseSeekReadWriteHandleInterface
             /**
              * @param resource $resource
              */
-            static function ($resource) {
+            static function (mixed $resource): int {
                 $metadata = stream_get_meta_data($resource);
                 Psl\invariant($metadata['seekable'], 'Stream is not seekable.');
 
@@ -145,7 +145,7 @@ final class ResourceHandle implements CloseSeekReadWriteHandleInterface
             /**
              * @param resource $resource
              */
-            static function ($resource) use ($max_bytes) {
+            static function (mixed $resource) use ($max_bytes): string {
                 Psl\invariant($max_bytes === null || $max_bytes > 0, '$max_bytes must be null, or > 0');
                 $metadata = stream_get_meta_data($resource);
                 if ($metadata['blocked']) {
@@ -179,7 +179,7 @@ final class ResourceHandle implements CloseSeekReadWriteHandleInterface
             /**
              * @param resource $resource
              */
-            static function ($resource) {
+            static function (mixed $resource): void {
                 $result = fflush($resource);
                 if ($result === false) {
                     /** @var array{message: string} $error */
@@ -201,7 +201,7 @@ final class ResourceHandle implements CloseSeekReadWriteHandleInterface
             /**
              * @param resource $resource
              */
-            function ($resource) {
+            function (mixed $resource): void {
                 $result = fclose($resource);
                 if ($result === false) {
                     /** @var array{message: string} $error */

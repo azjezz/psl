@@ -58,7 +58,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    public function first()
+    public function first(): mixed
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\first($this->elements);
@@ -72,7 +72,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    public function last()
+    public function last(): mixed
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\last($this->elements);
@@ -146,7 +146,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    public function at($k)
+    public function at(string|int $k): mixed
     {
         Psl\invariant($this->contains($k), 'Key (%s) is out-of-bounds.', $k);
 
@@ -160,7 +160,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    public function contains($k): bool
+    public function contains(int|string $k): bool
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Iter\contains_key($this->elements, $k);
@@ -175,7 +175,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    public function get($k)
+    public function get(string|int $k): mixed
     {
         return $this->elements[$k] ?? null;
     }
@@ -220,7 +220,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    public function linearSearch($search_value): ?int
+    public function linearSearch(mixed $search_value): ?int
     {
         foreach ($this->elements as $key => $element) {
             if ($search_value === $element) {
@@ -230,7 +230,7 @@ final class MutableVector implements MutableVectorInterface
 
         return null;
     }
-    
+
     /**
      * Stores a value into the current vector with the specified key,
      * overwriting the previous value associated with the key.
@@ -248,7 +248,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @return MutableVector<T> returns itself
      */
-    public function set($k, $v): MutableVector
+    public function set(int|string $k, mixed $v): MutableVector
     {
         Psl\invariant($this->contains($k), 'Key (%s) is out-of-bounds.', $k);
 
@@ -298,7 +298,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @return MutableVector<T> returns itself.
      */
-    public function remove($k): MutableVector
+    public function remove(int|string $k): MutableVector
     {
         if ($this->contains($k)) {
             unset($this->elements[$k]);
@@ -327,7 +327,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @return MutableVector<T> Returns itself.
      */
-    public function add($v): MutableVector
+    public function add(mixed $v): MutableVector
     {
         $this->elements[] = $v;
 

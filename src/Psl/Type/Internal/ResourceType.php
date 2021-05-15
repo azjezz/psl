@@ -18,21 +18,17 @@ use function is_resource;
  */
 final class ResourceType extends Type\Type
 {
-    private ?string $kind;
-
-    public function __construct(?string $kind = null)
-    {
-        $this->kind = $kind;
+    public function __construct(
+        private ?string $kind = null
+    ) {
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws CoercionException
      *
      * @return resource
      */
-    public function coerce($value)
+    public function coerce(mixed $value): mixed
     {
         if (is_resource($value)) {
             $kind = $this->kind;
@@ -49,15 +45,13 @@ final class ResourceType extends Type\Type
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws AssertException
      *
      * @return resource
      *
      * @psalm-assert resource $value
      */
-    public function assert($value)
+    public function assert(mixed $value): mixed
     {
         if (is_resource($value)) {
             $kind = $this->kind;

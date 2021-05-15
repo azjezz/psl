@@ -26,42 +26,27 @@ use function is_object;
 final class MapType extends Type\Type
 {
     /**
-     * @var Type\TypeInterface<Tk>
-     */
-    private Type\TypeInterface $key_type;
-
-    /**
-     * @var Type\TypeInterface<Tv>
-     */
-    private Type\TypeInterface $value_type;
-
-    /**
      * @param Type\TypeInterface<Tk> $key_type
      * @param Type\TypeInterface<Tv> $value_type
      *
      * @throws Psl\Exception\InvariantViolationException If $key_value, or $value_type is optional.
      */
     public function __construct(
-        Type\TypeInterface $key_type,
-        Type\TypeInterface $value_type
+        private Type\TypeInterface $key_type,
+        private Type\TypeInterface $value_type
     ) {
         Psl\invariant(
             !$key_type->isOptional() && !$value_type->isOptional(),
             'Optional type must be the outermost.'
         );
-
-        $this->key_type = $key_type;
-        $this->value_type = $value_type;
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws CoercionException
      *
      * @return Collection\MapInterface<Tk, Tv>
      */
-    public function coerce($value): Collection\MapInterface
+    public function coerce(mixed $value): Collection\MapInterface
     {
         if (is_iterable($value)) {
             $key_trace = $this->getTrace()->withFrame(
@@ -100,15 +85,13 @@ final class MapType extends Type\Type
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws AssertException
      *
      * @return Collection\MapInterface<Tk, Tv>
      *
      * @psalm-assert Collection\MapInterface<Tk, Tv> $value
      */
-    public function assert($value): Collection\MapInterface
+    public function assert(mixed $value): Collection\MapInterface
     {
         if (is_object($value) && $value instanceof Collection\MapInterface) {
             $key_trace = $this->getTrace()->withFrame(

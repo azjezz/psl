@@ -14,33 +14,29 @@ use Psl\Type\Type;
 final class MixedType extends Type
 {
     /**
-     * @param mixed $value
-     *
      * @psalm-assert-if-true mixed $value
      */
-    public function matches($value): bool
+    public function matches(mixed $value): bool
     {
         return true;
     }
 
     /**
-     * @param mixed $value
+     * @psalm-assert mixed $value
      *
-     * @return mixed
+     * @psalm-suppress MixedReturnStatement
      */
-    public function coerce($value)
+    public function coerce(mixed $value): mixed
     {
         return $value;
     }
 
     /**
-     * @param mixed $value
-     *
      * @psalm-assert mixed $value
      *
-     * @return mixed
+     * @psalm-suppress MixedReturnStatement
      */
-    public function assert($value)
+    public function assert(mixed $value): mixed
     {
         return $value;
     }

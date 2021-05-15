@@ -27,7 +27,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @param T $node
      */
-    public function enqueue($node, int $priority = 0): void
+    public function enqueue(mixed $node, int $priority = 0): void
     {
         $nodes = $this->queue[$priority] ?? [];
         $nodes[] = $node;
@@ -41,7 +41,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @return null|T
      */
-    public function peek()
+    public function peek(): mixed
     {
         if (0 === $this->count()) {
             return null;
@@ -65,7 +65,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @return null|T
      */
-    public function pull()
+    public function pull(): mixed
     {
         if (0 === $this->count()) {
             return null;
@@ -82,7 +82,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @return T
      */
-    public function dequeue()
+    public function dequeue(): mixed
     {
         Psl\invariant(0 !== $this->count(), 'Cannot dequeue a node from an empty Queue.');
 

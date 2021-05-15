@@ -20,21 +20,17 @@ use function is_string;
 final class StringType extends Type\Type
 {
     /**
-     * @param mixed $value
-     *
      * @psalm-assert-if-true string $value
      */
-    public function matches($value): bool
+    public function matches(mixed $value): bool
     {
         return is_string($value);
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws CoercionException
      */
-    public function coerce($value): string
+    public function coerce(mixed $value): string
     {
         if (is_string($value)) {
             return $value;
@@ -52,13 +48,11 @@ final class StringType extends Type\Type
     }
 
     /**
-     * @param mixed $value
-     *
      * @psalm-assert string $value
      *
      * @throws AssertException
      */
-    public function assert($value): string
+    public function assert(mixed $value): string
     {
         if (is_string($value)) {
             return $value;

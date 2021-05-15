@@ -22,21 +22,17 @@ use function is_string;
 final class FloatType extends Type\Type
 {
     /**
-     * @param mixed $value
-     *
      * @psalm-assert-if-true float $value
      */
-    public function matches($value): bool
+    public function matches(mixed $value): bool
     {
         return is_float($value);
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws CoercionException
      */
-    public function coerce($value): float
+    public function coerce(mixed $value): float
     {
         if (is_float($value)) {
             return $value;
@@ -65,13 +61,11 @@ final class FloatType extends Type\Type
     }
 
     /**
-     * @param mixed $value
-     *
      * @psalm-assert float $value
      *
      * @throws AssertException
      */
-    public function assert($value): float
+    public function assert(mixed $value): float
     {
         if (is_float($value)) {
             return $value;

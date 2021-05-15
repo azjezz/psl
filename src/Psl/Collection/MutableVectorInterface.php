@@ -128,7 +128,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
-    public function first();
+    public function first(): mixed;
 
     /**
      * Returns the first key in the current `MutableVectorInterface`.
@@ -148,7 +148,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
-    public function last();
+    public function last(): mixed;
 
     /**
      * Returns the last key in the current `MutableVectorInterface`.
@@ -172,7 +172,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
-    public function linearSearch($search_value): ?int;
+    public function linearSearch(mixed $search_value): ?int;
 
     /**
      * Returns a `MutableVectorInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
@@ -304,7 +304,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @return MutableVectorInterface<T> Returns itself.
      */
-    public function set($k, $v): MutableVectorInterface;
+    public function set(int|string $k, mixed $v): MutableVectorInterface;
 
     /**
      * For every element in the provided `iterable`, stores a value into the
@@ -342,7 +342,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @return MutableVectorInterface<T> Returns itself.
      */
-    public function remove($k): MutableVectorInterface;
+    public function remove(int|string $k): MutableVectorInterface;
 
     /**
      * Removes all items from the vector.
@@ -358,7 +358,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @return MutableVectorInterface<T> Returns itself.
      */
-    public function add($v): MutableVectorInterface;
+    public function add(mixed $v): MutableVectorInterface;
 
     /**
      * For every element in the provided iterable, add the value into the current vector.

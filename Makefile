@@ -22,8 +22,8 @@ coding-standard-check:
 	php tools/php-codesniffer/vendor/bin/phpcs --basepath=. --standard=tools/php-codesniffer/.phpcs.xml
 
 static-analysis:
-	php tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml
-	php tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml tests/static-analysis
+	php tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml --show-info=true --no-cache
+	php tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml tests/static-analysis --no-cache
 
 type-coverage:
 	php tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml --shepherd --stats

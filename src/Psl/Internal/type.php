@@ -4,20 +4,23 @@ declare(strict_types=1);
 
 namespace Psl\Internal;
 
-use function get_class;
-use function gettype;
-use function is_object;
+use Psl\Str;
+
+use function get_debug_type;
+use function is_resource;
 
 /**
- * @param mixed $value
- *
  * @pure
  *
  * @codeCoverageIgnore
  *
  * @internal
  */
-function type($value): string
+function type(mixed $value): string
 {
-    return is_object($value) ? get_class($value) : gettype($value);
+    if (is_resource($value)) {
+        return Str\format('resource<%s>', get_resource_type($value));
+    }
+
+    return get_debug_type($value);
 }

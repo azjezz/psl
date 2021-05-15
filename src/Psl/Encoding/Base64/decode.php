@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Psl\Encoding\Base64;
 
 use Psl\Encoding\Exception;
+use Psl\Regex;
 use Psl\Str;
 use Psl\Type;
 
 use function base64_decode;
-use function preg_match;
 
 /**
  * Decode a base64-encoded string into raw binary.
@@ -26,7 +26,8 @@ use function preg_match;
  */
 function decode(string $base64): string
 {
-    if (!preg_match('%^[a-zA-Z0-9/+]*={0,2}$%', $base64)) {
+    /** @psalm-suppress MissingThrowsDocblock - pattern is valid */
+    if (!Regex\matches($base64, '%^[a-zA-Z0-9/+]*={0,2}$%')) {
         throw new Exception\RangeException(
             'The given base64 string contains characters outside the base64 range.'
         );

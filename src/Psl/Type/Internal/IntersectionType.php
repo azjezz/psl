@@ -23,56 +23,39 @@ use Psl\Type\TypeInterface;
 final class IntersectionType extends Type
 {
     /**
-     * @var TypeInterface<Tl>
-     */
-    private TypeInterface $left_type;
-
-    /**
-     * @var TypeInterface<Tr>
-     */
-    private TypeInterface $right_type;
-
-    /**
      * @param TypeInterface<Tl> $left_type
      * @param TypeInterface<Tr> $right_type
      *
      * @throws Psl\Exception\InvariantViolationException If $left_type, or $right_type is optional.
      */
     public function __construct(
-        TypeInterface $left_type,
-        TypeInterface $right_type
+        private TypeInterface $left_type,
+        private TypeInterface $right_type
     ) {
         Psl\invariant(
             !$left_type->isOptional() && !$right_type->isOptional(),
             'Optional type must be the outermost.'
         );
-        
-        $this->left_type  = $left_type;
-        $this->right_type = $right_type;
     }
 
     /**
-     * @param mixed $value
-     *
      * @psalm-assert-if-true Tl&Tr $value
      */
-    public function matches($value): bool
+    public function matches(mixed $value): bool
     {
         return $this->right_type->matches($value) && $this->left_type->matches($value);
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws CoercionException
      *
      * @return Tl&Tr
      */
-    public function coerce($value)
+    public function coerce(mixed $value): mixed
     {
         try {
             return $this->assert($value);
-        } catch (AssertException $_exception) {
+        } catch (AssertException) {
             // ignore
         }
 
@@ -80,7 +63,7 @@ final class IntersectionType extends Type
             $value = $this->left_type->coerce($value);
             /** @var Tl&Tr */
             return $this->right_type->assert($value);
-        } catch (Exception $_exception) {
+        } catch (Exception) {
             // ignore
         }
 
@@ -88,7 +71,7 @@ final class IntersectionType extends Type
             $value = $this->right_type->coerce($value);
             /** @var Tr&Tl */
             return $this->left_type->assert($value);
-        } catch (Exception $_exception) {
+        } catch (Exception) {
             // ignore
         }
 
@@ -96,21 +79,19 @@ final class IntersectionType extends Type
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws AssertException
      *
      * @return Tl&Tr
      *
      * @psalm-assert Tl&Tr $value
      */
-    public function assert($value)
+    public function assert(mixed $value): mixed
     {
         try {
             $value = $this->left_type->assert($value);
             /** @var Tl&Tr */
             return $this->right_type->assert($value);
-        } catch (AssertException $_exception) {
+        } catch (AssertException) {
             throw AssertException::withValue($value, $this->toString(), $this->getTrace());
         }
     }

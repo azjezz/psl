@@ -26,14 +26,11 @@ final class CoercionException extends Exception
         return $this->target;
     }
 
-    /**
-     * @param mixed $value
-     */
     public static function withValue(
-        $value,
+        mixed $value,
         string $target,
         TypeTrace $typeTrace
     ): self {
-        return new self(static::getDebugType($value), $target, $typeTrace);
+        return new self(self::getDebugType($value), $target, $typeTrace);
     }
 }

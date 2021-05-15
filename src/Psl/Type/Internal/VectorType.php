@@ -24,31 +24,22 @@ use function is_object;
 final class VectorType extends Type\Type
 {
     /**
-     * @var Type\TypeInterface<T>
-     */
-    private Type\TypeInterface $value_type;
-
-    /**
      * @param Type\TypeInterface<T> $value_type
      *
      * @throws Psl\Exception\InvariantViolationException If $value_type is optional.
      */
     public function __construct(
-        Type\TypeInterface $value_type
+        private Type\TypeInterface $value_type
     ) {
         Psl\invariant(!$value_type->isOptional(), 'Optional type must be the outermost.');
-
-        $this->value_type = $value_type;
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws CoercionException
      *
      * @return Collection\VectorInterface<T>
      */
-    public function coerce($value): Collection\VectorInterface
+    public function coerce(mixed $value): Collection\VectorInterface
     {
         if (is_iterable($value)) {
             $value_trace = $this->getTrace()->withFrame(
@@ -86,7 +77,7 @@ final class VectorType extends Type\Type
      *
      * @psalm-assert Collection\VectorInterface<T> $value
      */
-    public function assert($value): Collection\VectorInterface
+    public function assert(mixed $value): Collection\VectorInterface
     {
         if (is_object($value) && $value instanceof Collection\VectorInterface) {
             $value_trace = $this->getTrace()->withFrame(

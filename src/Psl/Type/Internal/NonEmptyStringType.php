@@ -21,23 +21,19 @@ use function is_string;
 final class NonEmptyStringType extends Type\Type
 {
     /**
-     * @param mixed $value
-     *
      * @psalm-assert-if-true non-empty-string $value
      */
-    public function matches($value): bool
+    public function matches(mixed $value): bool
     {
         return is_string($value) && !Str\is_empty($value);
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws CoercionException
      *
      * @return non-empty-string
      */
-    public function coerce($value): string
+    public function coerce(mixed $value): string
     {
         if (is_string($value) && !Str\is_empty($value)) {
             return $value;
@@ -46,7 +42,6 @@ final class NonEmptyStringType extends Type\Type
         if (is_int($value)) {
             $str = (string) $value;
             if (!Str\is_empty($str)) {
-                /** @var non-empty-string $str */
                 return $str;
             }
         }
@@ -62,15 +57,13 @@ final class NonEmptyStringType extends Type\Type
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws AssertException
      *
      * @return non-empty-string
      *
      * @psalm-assert non-empty-string $value
      */
-    public function assert($value): string
+    public function assert(mixed $value): string
     {
         if (is_string($value) && !Str\is_empty($value)) {
             return $value;

@@ -17,7 +17,7 @@ namespace Psl\Math;
  *
  * @pure
  */
-function minva($first, $second, ...$rest)
+function minva(int|float $first, int|float $second, int|float ...$rest): int|float
 {
     $min = $first < $second ? $first : $second;
     foreach ($rest as $number) {

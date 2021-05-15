@@ -139,7 +139,7 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> Returns itself.
      */
-    public function set($k, $v): MutableAccessibleCollectionInterface;
+    public function set(int|string $k, mixed $v): MutableAccessibleCollectionInterface;
 
     /**
      * For every element in the provided `iterable`, stores a value into the
@@ -172,7 +172,7 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> Returns itself.
      */
-    public function remove($k): MutableAccessibleCollectionInterface;
+    public function remove(int|string $k): MutableAccessibleCollectionInterface;
 
     /**
      * Removes all items from the collection.

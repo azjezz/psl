@@ -20,7 +20,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function at($k);
+    public function at(string|int $k): mixed;
 
     /**
      * Determines if the specified key is in the current vector.
@@ -29,7 +29,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function contains($k): bool;
+    public function contains(int|string $k): bool;
 
     /**
      * Returns the value at the specified key in the current vector.
@@ -40,7 +40,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function get($k);
+    public function get(string|int $k): mixed;
 
     /**
      * Get an array copy of the current vector.
@@ -156,7 +156,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function first();
+    public function first(): mixed;
 
     /**
      * Returns the first key in the current `VectorInterface`.
@@ -176,7 +176,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function last();
+    public function last(): mixed;
 
     /**
      * Returns the last key in the current `VectorInterface`.
@@ -200,7 +200,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function linearSearch($search_value): ?int;
+    public function linearSearch(mixed $search_value): ?int;
 
     /**
      * Returns a `VectorInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the

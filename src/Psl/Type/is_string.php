@@ -9,15 +9,13 @@ use function is_string as php_is_string;
 /**
  * Finds whether a variable is a string.
  *
- * @param mixed $var
- *
  * @psalm-assert-if-true string $var
  *
  * @pure
  *
  * @deprecated use `Type\string()->matches($value)` instead.
  */
-function is_string($var): bool
+function is_string(mixed $var): bool
 {
     return php_is_string($var);
 }

@@ -21,7 +21,7 @@ use Psl;
  *
  * @pure
  */
-function clamp($number, $min, $max)
+function clamp(int|float $number, int|float $min, int|float $max): int|float
 {
     Psl\invariant($min <= $max, 'Expected $min to be lower or equal to $max.');
 

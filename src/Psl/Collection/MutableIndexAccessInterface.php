@@ -27,7 +27,7 @@ interface MutableIndexAccessInterface extends IndexAccessInterface
      *
      * @return MutableIndexAccessInterface<Tk, Tv> Returns itself
      */
-    public function set($k, $v): MutableIndexAccessInterface;
+    public function set(int|string $k, mixed $v): MutableIndexAccessInterface;
 
     /**
      * For every element in the provided `iterable`, stores a value into the
@@ -57,5 +57,5 @@ interface MutableIndexAccessInterface extends IndexAccessInterface
      *
      * @return MutableIndexAccessInterface<Tk, Tv> Returns itself
      */
-    public function remove($k): MutableIndexAccessInterface;
+    public function remove(int|string $k): MutableIndexAccessInterface;
 }
