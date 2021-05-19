@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Vec;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Collection;
 use Psl\Vec;
 
 final class FilterWithKeyTest extends TestCase
@@ -12,9 +13,9 @@ final class FilterWithKeyTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testFilterWithKey(array $expected, array $array, ?callable $predicate = null): void
+    public function testFilterWithKey(array $expected, iterable $iterable, ?callable $predicate = null): void
     {
-        $result = Vec\filter_with_key($array, $predicate);
+        $result = Vec\filter_with_key($iterable, $predicate);
 
         static::assertSame($expected, $result);
     }
@@ -25,6 +26,10 @@ final class FilterWithKeyTest extends TestCase
         yield  [['a', 'b'], ['a', 'b']];
         yield  [[], ['a', 'b'], static fn (int $_k, string $_v) => false];
         yield  [['a', 'b'], ['a', 'b'], static fn (int $_k, string $_v): bool => true];
+        yield  [[], Collection\Vector::fromArray([])];
+        yield  [['a', 'b'], Collection\Vector::fromArray(['a', 'b'])];
+        yield  [[], Collection\Vector::fromArray(['a', 'b']), static fn (int $_k, string $_v) => false];
+        yield  [['a', 'b'], Collection\Vector::fromArray(['a', 'b']), static fn (int $_k, string $_v): bool => true];
         yield  [['a'], ['a', 'b'], static fn (int $k, string $v): bool => 'b' !== $v];
         yield  [[], ['a', 'b'], static fn (int $k, string $v): bool => 'b' !== $v && 0 !== $k];
         yield  [['a'], ['a', 'b'], static fn (int $k, string $v): bool => 'b' !== $v && 1 !== $k];

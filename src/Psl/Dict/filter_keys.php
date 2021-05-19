@@ -39,7 +39,14 @@ function filter_keys(iterable $iterable, ?callable $predicate = null): array
     $predicate = $predicate ?? Closure::fromCallable('Psl\Internal\boolean');
 
     if (is_array($iterable)) {
-        return array_filter($iterable, $predicate, ARRAY_FILTER_USE_KEY);
+        return array_filter(
+            $iterable,
+            /**
+             * @param Tk $k
+             */
+            static fn($k): bool => $predicate($k),
+            ARRAY_FILTER_USE_KEY
+        );
     }
 
     $result    = [];
