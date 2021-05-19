@@ -19,13 +19,12 @@ namespace Psl\Vec;
  */
 function filter_nulls(iterable $iterable): array
 {
-    /** @var list<T> $result */
-    $result = [];
-    foreach ($iterable as $value) {
-        if (null !== $value) {
-            $result[] = $value;
-        }
-    }
-
-    return $result;
+    /** @var list<T> */
+    return filter(
+        $iterable,
+        /**
+         * @param T|null $value
+         */
+        static fn($value): bool => null !== $value
+    );
 }
