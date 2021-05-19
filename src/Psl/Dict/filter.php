@@ -37,7 +37,13 @@ function filter(iterable $iterable, ?callable $predicate = null): array
     $predicate = $predicate ?? Closure::fromCallable('Psl\Internal\boolean');
 
     if (is_array($iterable)) {
-        return array_filter($iterable, $predicate);
+        return array_filter(
+            $iterable,
+            /**
+             * @param Tv $v
+             */
+            static fn($v): bool => $predicate($v)
+        );
     }
 
     $result    = [];

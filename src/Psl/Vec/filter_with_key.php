@@ -6,6 +6,12 @@ namespace Psl\Vec;
 
 use Psl;
 
+use function array_filter;
+use function array_values;
+use function is_array;
+
+use const ARRAY_FILTER_USE_BOTH;
+
 /**
  * Returns a vec containing only the values for which the given predicate
  * returns `true`.
@@ -39,6 +45,18 @@ function filter_with_key(iterable $iterable, ?callable $predicate = null): array
          * @param Tv $v
          */
         static fn ($_k, $v): bool => Psl\Internal\boolean($v);
+
+    if (is_array($iterable)) {
+        return array_values(array_filter(
+            $iterable,
+            /**
+             * @param Tv $v
+             * @param Tk $k
+             */
+            static fn($v, $k): bool => $predicate($k, $v),
+            ARRAY_FILTER_USE_BOTH
+        ));
+    }
 
     $result = [];
     foreach ($iterable as $k => $v) {

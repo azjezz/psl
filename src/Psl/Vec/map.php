@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
+use function array_map;
+use function array_values;
+use function is_array;
+
 /**
  * Applies a mapping function to all values of an iterable.
  *
@@ -26,6 +30,16 @@ namespace Psl\Vec;
  */
 function map(iterable $iterable, callable $function): array
 {
+    if (is_array($iterable)) {
+        return array_values(array_map(
+            /**
+             * @param Tv $v
+             */
+            static fn($v) => $function($v),
+            $iterable
+        ));
+    }
+
     $result = [];
     foreach ($iterable as $value) {
         $result[] = $function($value);
