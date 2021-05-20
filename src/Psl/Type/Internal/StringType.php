@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
+use function is_float;
 use function is_int;
 use function is_object;
 use function is_string;
@@ -42,6 +44,16 @@ final class StringType extends Type\Type
 
         if (is_int($value)) {
             return (string)$value;
+        }
+
+        if (is_float($value)) {
+            $str = Str\trim_right(Str\format('%.14F', $value), '0');
+            /** @psalm-suppress MissingThrowsDocblock */
+            if (Str\ends_with($str, '.')) {
+                $str .= '0';
+            }
+
+            return $str;
         }
 
         if (is_object($value) && method_exists($value, '__toString')) {
