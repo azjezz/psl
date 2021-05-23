@@ -5,6 +5,7 @@
 ![Security analysis status](https://github.com/azjezz/psl/workflows/security%20analysis/badge.svg)
 ![Coding standards status](https://github.com/azjezz/psl/workflows/coding%20standards/badge.svg)
 ![Coding standards status](https://github.com/azjezz/psl/workflows/documentation%20check/badge.svg)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/4228/badge)](https://bestpractices.coreinfrastructure.org/projects/4228)
 [![Coverage Status](https://coveralls.io/repos/github/azjezz/psl/badge.svg)](https://coveralls.io/github/azjezz/psl)
 [![Type Coverage](https://shepherd.dev/github/azjezz/psl/coverage.svg)](https://shepherd.dev/github/azjezz/psl)
 [![Total Downloads](https://poser.pugx.org/azjezz/psl/d/total.svg)](https://packagist.org/packages/azjezz/psl)
