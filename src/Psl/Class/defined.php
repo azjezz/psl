@@ -11,7 +11,7 @@ use function class_exists;
  *
  * @param string $class_name
  *
- * @psalm-assert-if-true class-string $classname
+ * @psalm-assert-if-true class-string $class_name
  *
  * @pure
  */
