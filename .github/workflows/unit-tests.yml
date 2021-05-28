@@ -32,7 +32,7 @@ jobs:
           extensions: bcmath, mbstring, intl, sodium, json
 
       - name: "caching dependencies"
-        uses: "actions/cache@v2.1.5"
+        uses: "actions/cache@v2.1.6"
         with:
           path: |
             ~/.composer/cache
