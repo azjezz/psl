@@ -70,7 +70,7 @@ final class VecType extends Type\Type
     {
         if (is_iterable($value)) {
             $value_trace = $this->getTrace()
-                ->withFrame(Str\format('list<%s>', $this->value_type->toString()));
+                ->withFrame(Str\format('vec<%s>', $this->value_type->toString()));
 
             /** @var Type\Type<Tv> $value_type */
             $value_type = $this->value_type->withTrace($value_trace);
@@ -102,7 +102,7 @@ final class VecType extends Type\Type
     {
         if (is_array($value)) {
             $value_trace = $this->getTrace()
-                ->withFrame(Str\format('list<%s>', $this->value_type->toString()));
+                ->withFrame(Str\format('vec<%s>', $this->value_type->toString()));
 
             /** @var Type\Type<Tv> $value_type */
             $value_type = $this->value_type->withTrace($value_trace);
@@ -131,6 +131,6 @@ final class VecType extends Type\Type
 
     public function toString(): string
     {
-        return Str\format('list<%s>', $this->value_type->toString());
+        return Str\format('vec<%s>', $this->value_type->toString());
     }
 }
