@@ -91,12 +91,12 @@ final class DictTypeTest extends TypeTest
 
     public function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'array<int, int>'];
-        yield [Type\dict(Type\array_key(), Type\int()), 'array<array-key, int>'];
-        yield [Type\dict(Type\array_key(), Type\string()), 'array<array-key, string>'];
+        yield [$this->getType(), 'dict<int, int>'];
+        yield [Type\dict(Type\array_key(), Type\int()), 'dict<array-key, int>'];
+        yield [Type\dict(Type\array_key(), Type\string()), 'dict<array-key, string>'];
         yield [
             Type\dict(Type\array_key(), Type\object(Iter\Iterator::class)),
-            'array<array-key, Psl\Iter\Iterator>'
+            'dict<array-key, Psl\Iter\Iterator>'
         ];
     }
 }
