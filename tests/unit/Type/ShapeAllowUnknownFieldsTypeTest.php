@@ -111,11 +111,11 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTest
     {
         yield [
             $this->getType(),
-            "array{'name': string, 'articles': list<array{" .
+            "array{'name': string, 'articles': vec<array{" .
                 "'title': string, " .
                 "'content': string, " .
                 "'likes': int, " .
-                "'comments'?: list<array{'user': string, 'comment': string}>" .
+                "'comments'?: vec<array{'user': string, 'comment': string}>" .
             "}>}"
         ];
         yield [
