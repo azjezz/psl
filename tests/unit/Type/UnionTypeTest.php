@@ -71,7 +71,7 @@ final class UnionTypeTest extends TypeTest
                 Type\literal_scalar('still'),
                 Type\literal_scalar('alive'),
             ),
-            'null|list<positive-int>|"php"|"still"|"alive"'
+            'null|vec<positive-int>|"php"|"still"|"alive"'
         ];
     }
 }

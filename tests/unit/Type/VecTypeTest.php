@@ -87,11 +87,11 @@ final class VecTypeTest extends TypeTest
 
     public function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'list<int>'];
-        yield [Type\vec(Type\string()), 'list<string>'];
+        yield [$this->getType(), 'vec<int>'];
+        yield [Type\vec(Type\string()), 'vec<string>'];
         yield [
             Type\vec(Type\object(Iter\Iterator::class)),
-            'list<Psl\Iter\Iterator>'
+            'vec<Psl\Iter\Iterator>'
         ];
     }
 }
