@@ -39,6 +39,7 @@
 - [mixed](./../../src/Psl/Type/mixed.php#L10)
 - [mutable_map](./../../src/Psl/Type/mutable_map.php#L21)
 - [mutable_vector](./../../src/Psl/Type/mutable_vector.php#L19)
+- [non_empty_dict](./../../src/Psl/Type/non_empty_dict.php#L20)
 - [non_empty_string](./../../src/Psl/Type/non_empty_string.php#L10)
 - [null](./../../src/Psl/Type/null.php#L10)
 - [nullable](./../../src/Psl/Type/nullable.php#L18)
