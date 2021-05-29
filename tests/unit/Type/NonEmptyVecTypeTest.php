@@ -83,11 +83,11 @@ final class NonEmptyVecTypeTest extends TypeTest
 
     public function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'non-empty-list<int>'];
-        yield [Type\non_empty_vec(Type\string()), 'non-empty-list<string>'];
+        yield [$this->getType(), 'non-empty-vec<int>'];
+        yield [Type\non_empty_vec(Type\string()), 'non-empty-vec<string>'];
         yield [
             Type\non_empty_vec(Type\object(Iter\Iterator::class)),
-            'non-empty-list<Psl\Iter\Iterator>'
+            'non-empty-vec<Psl\Iter\Iterator>'
         ];
     }
 }
