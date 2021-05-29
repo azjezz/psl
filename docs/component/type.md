@@ -40,6 +40,7 @@
 - [mutable_map](./../../src/Psl/Type/mutable_map.php#L21)
 - [mutable_vector](./../../src/Psl/Type/mutable_vector.php#L19)
 - [non_empty_string](./../../src/Psl/Type/non_empty_string.php#L10)
+- [non_empty_vec](./../../src/Psl/Type/non_empty_vec.php#L18)
 - [null](./../../src/Psl/Type/null.php#L10)
 - [nullable](./../../src/Psl/Type/nullable.php#L18)
 - [num](./../../src/Psl/Type/num.php#L10)

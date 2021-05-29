@@ -1,0 +1,21 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\Type;
+
+use Psl;
+
+/**
+ * @template T
+ *
+ * @param TypeInterface<T> $value_type
+ *
+ * @throws Psl\Exception\InvariantViolationException If $value_type is optional.
+ *
+ * @return TypeInterface<non-empty-list<T>>
+ */
+function non_empty_vec(TypeInterface $value_type): TypeInterface
+{
+    return new Internal\NonEmptyVecType($value_type);
+}
