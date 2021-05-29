@@ -48,9 +48,9 @@ final class NonEmptyDictType extends Type\Type
     {
         if (is_iterable($value)) {
             $key_trace   = $this->getTrace()
-                ->withFrame(Str\format('non-empty-array<%s, _>', $this->key_type->toString()));
+                ->withFrame(Str\format('non-empty-dict<%s, _>', $this->key_type->toString()));
             $value_trace = $this->getTrace()
-                ->withFrame(Str\format('non-empty-array<_, %s>', $this->value_type->toString()));
+                ->withFrame(Str\format('non-empty-dict<_, %s>', $this->value_type->toString()));
 
             $key_type = $this->key_type->withTrace($key_trace);
             $value_type = $this->value_type->withTrace($value_trace);
@@ -86,9 +86,9 @@ final class NonEmptyDictType extends Type\Type
     {
         if (is_array($value)) {
             $key_trace   = $this->getTrace()
-                ->withFrame(Str\format('non-empty-array<%s, _>', $this->key_type->toString()));
+                ->withFrame(Str\format('non-empty-dict<%s, _>', $this->key_type->toString()));
             $value_trace = $this->getTrace()
-                ->withFrame(Str\format('non-empty-array<_, %s>', $this->value_type->toString()));
+                ->withFrame(Str\format('non-empty-dict<_, %s>', $this->value_type->toString()));
 
             $key_type = $this->key_type->withTrace($key_trace);
             $value_type = $this->value_type->withTrace($value_trace);
@@ -115,6 +115,6 @@ final class NonEmptyDictType extends Type\Type
 
     public function toString(): string
     {
-        return Str\format('non-empty-array<%s, %s>', $this->key_type->toString(), $this->value_type->toString());
+        return Str\format('non-empty-dict<%s, %s>', $this->key_type->toString(), $this->value_type->toString());
     }
 }

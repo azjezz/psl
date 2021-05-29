@@ -92,12 +92,12 @@ final class NonEmptyDictTypeTest extends TypeTest
 
     public function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'non-empty-array<int, int>'];
-        yield [Type\non_empty_dict(Type\array_key(), Type\int()), 'non-empty-array<array-key, int>'];
-        yield [Type\non_empty_dict(Type\array_key(), Type\string()), 'non-empty-array<array-key, string>'];
+        yield [$this->getType(), 'non-empty-dict<int, int>'];
+        yield [Type\non_empty_dict(Type\array_key(), Type\int()), 'non-empty-dict<array-key, int>'];
+        yield [Type\non_empty_dict(Type\array_key(), Type\string()), 'non-empty-dict<array-key, string>'];
         yield [
             Type\non_empty_dict(Type\array_key(), Type\object(Iter\Iterator::class)),
-            'non-empty-array<array-key, Psl\Iter\Iterator>'
+            'non-empty-dict<array-key, Psl\Iter\Iterator>'
         ];
     }
 }
