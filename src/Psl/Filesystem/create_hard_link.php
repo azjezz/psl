@@ -20,8 +20,8 @@ use function link;
  */
 function create_hard_link(string $source, string $destination): void
 {
-    Psl\invariant(exists($source), '$source file does not exist.');
-    Psl\invariant(is_file($source), '$source is not a file.');
+    Psl\invariant(exists($source), Str\format('Source file "%s" does not exist.', $source));
+    Psl\invariant(is_file($source), Str\format('Source "%s" is not a file.', $source));
 
     $destination_directory = get_directory($destination);
     if (!is_directory($destination_directory)) {

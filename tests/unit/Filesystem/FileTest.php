@@ -42,7 +42,7 @@ final class FileTest extends AbstractFilesystemTest
     public function testTemporaryFileThrowsForNonExistingDirectory(): void
     {
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('$directory is not a directory.');
+        $this->expectExceptionMessage('"' . __FILE__ . '" is not a directory.');
 
         Filesystem\create_temporary_file(__FILE__);
     }
@@ -98,7 +98,7 @@ final class FileTest extends AbstractFilesystemTest
     public function testWriteFileThrowsForDirectories(): void
     {
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('$file is not a file.');
+        $this->expectExceptionMessage('File "' . $this->directory . '" is not a file.');
 
         Filesystem\write_file($this->directory, 'hello');
     }
@@ -110,7 +110,7 @@ final class FileTest extends AbstractFilesystemTest
         Filesystem\change_permissions($file, 0111);
 
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('$file is not writeable.');
+        $this->expectExceptionMessage('File "' . $file . '" is not writeable.');
 
         Filesystem\write_file($file, 'hello');
     }

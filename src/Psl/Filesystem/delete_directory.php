@@ -22,7 +22,7 @@ use function rmdir;
  */
 function delete_directory(string $directory, bool $recursive = false): void
 {
-    Psl\invariant(is_directory($directory), '$directory does not exists.');
+    Psl\invariant(is_directory($directory), Str\format('Directory "%s" does not exist.', $directory));
 
     if ($recursive && !is_symbolic_link($directory)) {
         [$symbolic_nodes, $nodes] = Vec\partition(

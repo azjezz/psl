@@ -17,7 +17,7 @@ use function fileinode;
  */
 function get_inode(string $filename): int
 {
-    Psl\invariant(exists($filename), '$filename does not exists.');
+    Psl\invariant(exists($filename), Str\format('File "%s" does not exist.', $filename));
 
     [$result, $message] = Psl\Internal\box(
         /**

@@ -19,7 +19,7 @@ use function lchown;
  */
 function change_owner(string $filename, int $user): void
 {
-    Psl\invariant(exists($filename), '$filename does not exist.');
+    Psl\invariant(exists($filename), Str\format('File "%s" does not exist.', $filename));
     if (is_symbolic_link($filename)) {
         $fun = static fn(): bool => lchown($filename, $user);
     } else {

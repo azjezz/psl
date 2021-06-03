@@ -36,7 +36,7 @@ final class ReadDirectoryTest extends AbstractFilesystemTest
     public function testReadDirectoryThrowsIfDirectoryDoesNotExist(): void
     {
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('$directory does not exists.');
+        $this->expectExceptionMessage('Directory "' . Env\temp_dir() . '/foo-bar-baz' . '" does not exist.');
 
         Filesystem\read_directory(Env\temp_dir() . '/foo-bar-baz');
     }
@@ -50,7 +50,7 @@ final class ReadDirectoryTest extends AbstractFilesystemTest
         Filesystem\create_file($filename);
 
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('$directory is not a directory.');
+        $this->expectExceptionMessage('Directory "' . $filename . '" is not a directory.');
 
         Filesystem\read_directory($filename);
     }
@@ -60,7 +60,7 @@ final class ReadDirectoryTest extends AbstractFilesystemTest
         Filesystem\change_permissions($this->directory, 0077);
 
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('$directory is not readable.');
+        $this->expectExceptionMessage('Directory "' . $this->directory . '" is not readable.');
 
         try {
             Filesystem\read_directory($this->directory);

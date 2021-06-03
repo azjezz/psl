@@ -18,7 +18,7 @@ use function chmod;
  */
 function change_permissions(string $filename, int $permissions): void
 {
-    Psl\invariant(exists($filename), '$filename does not exist.');
+    Psl\invariant(exists($filename), Str\format('File "%s" does not exist.', $filename));
 
     [$success, $error] = Internal\box(static fn(): bool => chmod($filename, $permissions));
     // @codeCoverageIgnoreStart
