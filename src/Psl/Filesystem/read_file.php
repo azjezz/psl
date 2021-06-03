@@ -23,9 +23,9 @@ use function file_get_contents;
  */
 function read_file(string $file, int $offset = 0, ?int $length = null): string
 {
-    Psl\invariant(exists($file), Str\format('File "%s" does not exist.', $file));
-    Psl\invariant(is_file($file), Str\format('File "%s" is not a file.', $file));
-    Psl\invariant(is_readable($file), Str\format('File "%s" is not readable.', $file));
+    Psl\invariant(exists($file), 'File "%s" does not exist.', $file);
+    Psl\invariant(is_file($file), 'File "%s" is not a file.', $file);
+    Psl\invariant(is_readable($file), 'File "%s" is not readable.', $file);
 
     if (null === $length) {
         [$content, $error] = Internal\box(

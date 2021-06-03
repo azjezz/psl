@@ -19,7 +19,7 @@ use function unlink;
  */
 function delete_file(string $filename): void
 {
-    Psl\invariant(is_file($filename), Str\format('File "%s" does not exist.', $filename));
+    Psl\invariant(is_file($filename), 'File "%s" does not exist.', $filename);
 
     [$result, $error_message] = Internal\box(static fn() => unlink($filename));
     // @codeCoverageIgnoreStart

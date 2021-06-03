@@ -26,8 +26,8 @@ use Psl\Str;
 function create_temporary_file(?string $directory = null, ?string $prefix = null): string
 {
     if (null !== $directory) {
-        Psl\invariant(is_directory($directory), Str\format('Directory "%s" is not a directory.', $directory));
-        Psl\invariant(is_writable($directory), Str\format('Directory "%s" is not writable.', $directory));
+        Psl\invariant(is_directory($directory), 'Directory "%s" is not a directory.', $directory);
+        Psl\invariant(is_writable($directory), 'Directory "%s" is not writable.', $directory);
     } else {
         $directory = Env\temp_dir();
     }

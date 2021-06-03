@@ -16,7 +16,7 @@ use Psl\Str;
  */
 function file_size(string $filename): int
 {
-    Psl\invariant(is_file($filename) && is_readable($filename), Str\format('File "%s" does not exist.', $filename));
+    Psl\invariant(is_file($filename) && is_readable($filename), 'File "%s" does not exist.', $filename);
 
     // @codeCoverageIgnoreStart
     [$size, $message] = Internal\box(static fn() => filesize($filename));

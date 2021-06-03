@@ -17,7 +17,7 @@ use function filegroup;
  */
 function get_group(string $filename): int
 {
-    Psl\invariant(exists($filename), Str\format('File "%s" does not exist.', $filename));
+    Psl\invariant(exists($filename), 'File "%s" does not exist.', $filename);
 
     [$result, $message] = Psl\Internal\box(
         /**
