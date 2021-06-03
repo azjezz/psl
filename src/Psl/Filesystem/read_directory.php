@@ -6,7 +6,6 @@ namespace Psl\Filesystem;
 
 use FilesystemIterator;
 use Psl;
-use Psl\Str;
 use Psl\Vec;
 
 /**
