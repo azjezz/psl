@@ -18,9 +18,9 @@ use Psl\Vec;
  */
 function read_directory(string $directory): array
 {
-    Psl\invariant(exists($directory), '$directory does not exists.');
-    Psl\invariant(is_directory($directory), '$directory is not a directory.');
-    Psl\invariant(is_readable($directory), '$directory is not readable.');
+    Psl\invariant(exists($directory), 'Directory "%s" does not exist.', $directory);
+    Psl\invariant(is_directory($directory), 'Directory "%s" is not a directory.', $directory);
+    Psl\invariant(is_readable($directory), 'Directory "%s" is not readable.', $directory);
 
     /** @var list<string> */
     return Vec\values(new FilesystemIterator(

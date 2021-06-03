@@ -20,8 +20,8 @@ use function readlink;
  */
 function read_symbolic_link(string $symbolic_link): string
 {
-    Psl\invariant(exists($symbolic_link), '$symbolic_link does not exists.');
-    Psl\invariant(is_symbolic_link($symbolic_link), '$symbolic_link is not a symbolic link.');
+    Psl\invariant(exists($symbolic_link), 'Symbolic link "%s" does not exist.', $symbolic_link);
+    Psl\invariant(is_symbolic_link($symbolic_link), 'Symbolic link "%s" is not a symbolic link.', $symbolic_link);
 
     [$result, $message] = Internal\box(
         /**

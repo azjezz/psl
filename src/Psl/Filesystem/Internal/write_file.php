@@ -27,8 +27,8 @@ use const LOCK_EX;
 function write_file(string $file, string $content, bool $append): void
 {
     if (Filesystem\exists($file)) {
-        Psl\invariant(Filesystem\is_file($file), '$file is not a file.');
-        Psl\invariant(Filesystem\is_writable($file), '$file is not writeable.');
+        Psl\invariant(Filesystem\is_file($file), 'File "%s" is not a file.', $file);
+        Psl\invariant(Filesystem\is_writable($file), 'File "%s" is not writeable.', $file);
     } else {
         Filesystem\create_file($file);
     }

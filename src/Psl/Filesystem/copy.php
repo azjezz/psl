@@ -20,7 +20,7 @@ use function stream_copy_to_stream;
  */
 function copy(string $source, string $destination, bool $overwrite = false): void
 {
-    Psl\invariant(is_file($source) && is_readable($source), '$source does not exist or is not readable.');
+    Psl\invariant(is_file($source) && is_readable($source), 'Source "%s" does not exist or is not readable.', $source);
 
     if (!$overwrite && is_file($destination)) {
         return;

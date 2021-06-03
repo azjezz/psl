@@ -18,7 +18,7 @@ use function filemtime;
  */
 function get_modification_time(string $filename): int
 {
-    Psl\invariant(exists($filename), '$filename does not exists.');
+    Psl\invariant(exists($filename), 'File "%s" does not exist.', $filename);
 
     [$result, $message] = Internal\box(
         /**

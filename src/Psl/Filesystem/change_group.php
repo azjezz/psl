@@ -19,7 +19,7 @@ use function lchgrp;
  */
 function change_group(string $filename, int $group): void
 {
-    Psl\invariant(exists($filename), '$filename does not exist.');
+    Psl\invariant(exists($filename), 'File "%s" does not exist.', $filename);
 
     if (is_symbolic_link($filename)) {
         $fun = static fn(): bool => lchgrp($filename, $group);
