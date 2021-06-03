@@ -48,7 +48,7 @@
 - [is_readable](./../../src/Psl/Filesystem/is_readable.php#L20)
 - [is_symbolic_link](./../../src/Psl/Filesystem/is_symbolic_link.php#L19)
 - [is_writable](./../../src/Psl/Filesystem/is_writable.php#L20)
-- [read_directory](./../../src/Psl/Filesystem/read_directory.php#L20)
+- [read_directory](./../../src/Psl/Filesystem/read_directory.php#L19)
 - [read_file](./../../src/Psl/Filesystem/read_file.php#L24)
 - [read_symbolic_link](./../../src/Psl/Filesystem/read_symbolic_link.php#L21)
 - [write_file](./../../src/Psl/Filesystem/write_file.php#L18)
