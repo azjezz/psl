@@ -22,19 +22,18 @@ final class WriteOnlyHandleDecorator implements WriteHandleInterface
         $this->handle = $handle;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function write(string $bytes): int
+    public function writeImmediately(string $bytes): int
     {
-        return $this->handle->write($bytes);
+        return $this->handle->writeImmediately($bytes);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function flush(): void
+    public function write(string $bytes, ?int $timeout_ms = null): int
     {
-        $this->handle->flush();
+        return $this->handle->write($bytes, $timeout_ms);
+    }
+
+    public function writeAll(string $bytes, ?int $timeout_ms = null): void
+    {
+        $this->handle->writeAll($bytes, $timeout_ms);
     }
 }

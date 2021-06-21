@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Psl\IO\Internal;
+namespace Psl\Filesystem\Internal;
 
 use Psl;
+use Psl\Filesystem\ReadWriteFileHandleInterface;
 use Psl\Internal;
 
 use function error_get_last;
@@ -14,16 +15,16 @@ use function error_get_last;
  *
  * @codeCoverageIgnore
  */
-function open(string $uri, string $mode): ResourceHandle
+function open_file(string $filename, string $mode): ReadWriteFileHandleInterface
 {
-    return Internal\suppress(static function () use ($uri, $mode) {
-        $resource = fopen($uri, $mode);
+    return Internal\suppress(static function () use ($filename, $mode) {
+        $resource = fopen($filename, $mode);
         if ($resource === false) {
             $error = error_get_last();
             $message = $error['message'] ?? 'Unable to open resource.';
             Psl\invariant_violation($message);
         }
 
-        return new ResourceHandle($resource);
+        return new ResourceFileHandle($filename, $resource);
     });
 }

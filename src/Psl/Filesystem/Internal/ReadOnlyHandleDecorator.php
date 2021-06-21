@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Psl\IO\Internal;
+namespace Psl\Filesystem\Internal;
 
-use Psl\IO\ReadHandleInterface;
+use Psl\Filesystem;
 
 /**
  * A read handle decorator to restrict the type of another handle.
@@ -13,11 +13,11 @@ use Psl\IO\ReadHandleInterface;
  *
  * @internal
  */
-final class ReadOnlyHandleDecorator implements ReadHandleInterface
+final class ReadOnlyHandleDecorator implements Filesystem\ReadFileHandleInterface
 {
-    private ReadHandleInterface $handle;
+    private Filesystem\ReadFileHandleInterface $handle;
 
-    public function __construct(ReadHandleInterface $handle)
+    public function __construct(Filesystem\ReadFileHandleInterface $handle)
     {
         $this->handle = $handle;
     }
@@ -40,5 +40,25 @@ final class ReadOnlyHandleDecorator implements ReadHandleInterface
     public function readFixedSize(int $size, ?int $timeout_ms = null): string
     {
         return $this->handle->readFixedSize($size, $timeout_ms);
+    }
+
+    public function close(): void
+    {
+        $this->handle->close();
+    }
+
+    public function seek(int $offset): void
+    {
+        $this->handle->seek($offset);
+    }
+
+    public function tell(): int
+    {
+        return $this->handle->tell();
+    }
+
+    public function getPath(): string
+    {
+        return $this->handle->getPath();
     }
 }

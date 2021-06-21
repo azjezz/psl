@@ -55,6 +55,11 @@ final class Loader
         'Psl\Password\ARGON2_DEFAULT_TIME_COST',
         'Psl\Password\ARGON2_DEFAULT_THREADS',
         'Psl\Filesystem\SEPARATOR',
+        'Psl\Asio\Internal\STREAM_AWAIT_READ',
+        'Psl\Asio\Internal\STREAM_AWAIT_WRITE',
+        'Psl\Asio\Internal\STREAM_AWAIT_READY',
+        'Psl\Asio\Internal\STREAM_AWAIT_TIMEOUT',
+        'Psl\Asio\Internal\STREAM_AWAIT_ERROR',
     ];
 
     public const FUNCTIONS = [
@@ -478,6 +483,7 @@ final class Loader
         'Psl\Html\decode_special_characters',
         'Psl\Html\strip_tags',
         'Psl\Filesystem\Internal\write_file',
+        'Psl\Filesystem\Internal\open_file',
         'Psl\Filesystem\change_group',
         'Psl\Filesystem\change_owner',
         'Psl\Filesystem\change_permissions',
@@ -514,10 +520,27 @@ final class Loader
         'Psl\Filesystem\get_change_time',
         'Psl\Filesystem\get_modification_time',
         'Psl\Filesystem\get_inode',
+        'Psl\Filesystem\open_file_read_only',
+        'Psl\Filesystem\open_file_write_only',
+        'Psl\Filesystem\open_file_read_write',
         'Psl\IO\Internal\open',
         'Psl\IO\input_handle',
         'Psl\IO\output_handle',
         'Psl\IO\error_handle',
+        'Psl\Asio\Internal\stream_await',
+        'Psl\Asio\all',
+        'Psl\Asio\any',
+        'Psl\Asio\async',
+        'Psl\Asio\await',
+        'Psl\Asio\concurrently',
+        'Psl\Asio\defer',
+        'Psl\Asio\first',
+        'Psl\Asio\later',
+        'Psl\Asio\sleep',
+        'Psl\Asio\some',
+        'Psl\Asio\time',
+        'Psl\Asio\timeout',
+        'Psl\Asio\wrap',
     ];
 
     public const INTERFACES = [
@@ -546,6 +569,10 @@ final class Loader
         'Psl\SecureRandom\Exception\ExceptionInterface',
         'Psl\Shell\Exception\ExceptionInterface',
         'Psl\Filesystem\Exception\ExceptionInterface',
+        'Psl\Filesystem\FileHandleInterface',
+        'Psl\Filesystem\ReadFileHandleInterface',
+        'Psl\Filesystem\WriteFileHandleInterface',
+        'Psl\Filesystem\ReadWriteFileHandleInterface',
         'Psl\IO\Exception\ExceptionInterface',
         'Psl\IO\CloseHandleInterface',
         'Psl\IO\CloseReadHandleInterface',
@@ -563,9 +590,14 @@ final class Loader
         'Psl\IO\SeekReadWriteHandleInterface',
         'Psl\IO\SeekWriteHandleInterface',
         'Psl\IO\WriteHandleInterface',
+        'Psl\Asio\Awaitable',
+        'Psl\Asio\Exception\ExceptionInterface',
     ];
 
-    public const TRAITS = [];
+    public const TRAITS = [
+        'Psl\IO\ReadHandleConvenienceMethodsTrait',
+        'Psl\IO\WriteHandleConvenienceMethodsTrait',
+    ];
 
     public const CLASSES = [
         'Psl\Exception\InvariantViolationException',
@@ -635,9 +667,19 @@ final class Loader
         'Psl\IO\Internal\ResourceHandle',
         'Psl\IO\Internal\ReadOnlyHandleDecorator',
         'Psl\IO\Internal\WriteOnlyHandleDecorator',
-        'Psl\IO\Writer',
         'Psl\IO\Reader',
         'Psl\IO\MemoryHandle',
+        'Psl\Asio\Internal\PromiseAwaitable',
+        'Psl\Asio\Internal\AwaitablePromise',
+        'Psl\Asio\Internal\FinishedAwaitable',
+        'Psl\Asio\Exception\RuntimeException',
+        'Psl\Asio\Exception\TimeoutException',
+        'Psl\IO\Exception\TimeoutException',
+        'Psl\IO\Internal\OptionalIncrementalTimeout',
+        'Psl\Filesystem\Internal\ResourceFileHandle',
+        'Psl\Filesystem\Internal\ReadOnlyHandleDecorator',
+        'Psl\Filesystem\Internal\WriteOnlyHandleDecorator',
+        'Psl\Filesystem\WriteMode',
     ];
 
     public const TYPE_CONSTANTS = 1;
