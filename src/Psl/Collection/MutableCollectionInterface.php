@@ -220,6 +220,22 @@ interface MutableCollectionInterface extends CollectionInterface
     public function slice(int $start, ?int $length = null): MutableCollectionInterface;
 
     /**
+     * Returns a `MutableCollectionInterface` containing the original `MutableCollectionInterface` split into
+     * chunks of the given size.
+     *
+     * If the original `MutableCollectionInterface` doesn't divide evenly, the final chunk will be
+     * smaller.
+     *
+     * @param positive-int $size The size of each chunk.
+     *
+     * @return MutableCollectionInterface<int, static<Tk, Tv>> A `MutableCollectionInterface` containing the original
+     *                                                         `MutableCollectionInterface` split into chunks of the given size.
+     *
+     * @psalm-mutation-free
+     */
+    public function chunk(int $size): MutableCollectionInterface;
+
+    /**
      * Removes all elements from the collection.
      *
      * @return MutableCollectionInterface<Tk, Tv>

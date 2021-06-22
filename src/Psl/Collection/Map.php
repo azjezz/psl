@@ -496,4 +496,43 @@ final class Map implements MapInterface
 
         return self::fromArray($result);
     }
+
+    /**
+     * Returns a `Vector` containing the original `Map` split into
+     * chunks of the given size.
+     *
+     * If the original `Map` doesn't divide evenly, the final chunk will be smaller.
+     *
+     * @param positive-int $size The size of each chunk.
+     *
+     * @return Vector<Map<Tk, Tv>> A `Vector` containing the original `Map` split into chunks of the given size.
+     *
+     * @psalm-mutation-free
+     */
+    public function chunk(int $size): Vector
+    {
+        /** @psalm-suppress ImpureMethodCall */
+        return $this
+            ->zip($this->keys()->toArray())
+            ->values()
+            ->chunk($size)
+            ->map(
+                /**
+                 * @param Vector<array{0: Tv, 1: Tk}> $vector
+                 *
+                 * @return Map<Tk, Tv>
+                 *
+                 * @pure
+                 */
+                static function (Vector $vector): Map {
+                    /** @var array<Tk, Tv> $array */
+                    $array = [];
+                    foreach ($vector->toArray() as [$v, $k]) {
+                        $array[$k] = $v;
+                    }
+
+                    return Map::fromArray($array);
+                }
+            );
+    }
 }

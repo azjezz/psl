@@ -235,7 +235,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * The returned `CollectionInterface` will always be a proper subset of this
      * `CollectionInterface`.
      *
-     * @param int<0, max> $start The starting key of this Vector to begin the returned
+     * @param int<0, max> $start The starting position of this `CollectionInterface` to begin the returned
      *                           `CollectionInterface`.
      * @param int<0, max> $length The length of the returned `CollectionInterface`.
      *
@@ -246,4 +246,20 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * @psalm-mutation-free
      */
     public function slice(int $start, ?int $length = null): CollectionInterface;
+
+    /**
+     * Returns a `CollectionInterface` containing the original `CollectionInterface` split into
+     * chunks of the given size.
+     *
+     * If the original `CollectionInterface` doesn't divide evenly, the final chunk will be
+     * smaller.
+     *
+     * @param positive-int $size The size of each chunk.
+     *
+     * @return CollectionInterface<int, static<Tk, Tv>> A `CollectionInterface` containing the original
+     *                                                  `CollectionInterface` split into chunks of the given size.
+     *
+     * @psalm-mutation-free
+     */
+    public function chunk(int $size): CollectionInterface;
 }
