@@ -40,7 +40,6 @@
         <!-- Redundant expressions should not be considered errors. -->
         <!-- Sometimes we want to enforce things at runtime, as well using static analysis -->
         <RedundantConditionGivenDocblockType errorLevel="suppress" />
-        <RedundantCondition errorLevel="suppress" />
         <RedundantCast errorLevel="suppress" />
         <RedundantCastGivenDocblockType errorLevel="suppress" />
     </issueHandlers>
