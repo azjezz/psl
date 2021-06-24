@@ -40,6 +40,7 @@ use function bcpow;
  */
 function base_convert(string $value, int $from_base, int $to_base): string
 {
+    /** @psalm-suppress RedundantCondition */
     Psl\invariant('' !== $value, 'Unexpected empty string, expected number in base %d', $from_base);
     Psl\invariant(
         $from_base >= 2 && $from_base <= 36,

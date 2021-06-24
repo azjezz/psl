@@ -31,6 +31,7 @@ function wrap(
         return '';
     }
 
+    /** @psalm-suppress RedundantCondition */
     Psl\invariant('' !== $break, 'Break string cannot be empty.');
     Psl\invariant(0 !== $width || !$cut, 'Cannot force cut when width is zero.');
 

@@ -25,6 +25,7 @@ use function preg_replace;
  */
 function replace(string $haystack, string $pattern, string $replacement, ?int $limit = null): string
 {
+    /** @psalm-suppress RedundantCondition */
     Psl\invariant(null === $limit || $limit >= 1, '$limit must be a positive integer.');
     $limit ??= -1;
 
