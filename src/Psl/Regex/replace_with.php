@@ -15,7 +15,7 @@ use function preg_replace_callback;
  * `$callback`.
  *
  * @param non-empty-string $pattern The pattern to search for.
- * @param (callable(array<int, string>): string) $callback The replacement callable.
+ * @param (callable(string[]): string) $callback The replacement callable.
  * @param null|positive-int $limit The maximum possible replacements for
  *                                 $pattern within $haystack.
  *
