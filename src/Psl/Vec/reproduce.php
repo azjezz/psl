@@ -11,7 +11,7 @@ use Psl;
  *
  * Example:
  *
- *     Vec\reproduce(fn(int $i): int => $i * 2, 5)
+ *     Vec\reproduce(5, fn(int $i): int => $i * 2)
  *     => Vec(2, 4, 6, 8, 10)
  *
  * @template T
