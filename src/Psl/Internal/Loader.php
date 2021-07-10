@@ -143,6 +143,7 @@ final class Loader
         'Psl\Dict\intersect_by_key',
         'Psl\Fun\after',
         'Psl\Fun\identity',
+        'Psl\Fun\lazy',
         'Psl\Fun\pipe',
         'Psl\Fun\rethrow',
         'Psl\Fun\when',
@@ -656,6 +657,7 @@ final class Loader
         'Psl\IO\Writer',
         'Psl\IO\Reader',
         'Psl\IO\MemoryHandle',
+        'Psl\Fun\Internal\LazyEvaluator',
     ];
 
     public const TYPE_CONSTANTS = 1;
