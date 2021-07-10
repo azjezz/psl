@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\IO;
 
+use PHPUnit\Framework\TestCase;
 use Psl\IO;
-use Psl\Tests\Unit\IOTestCase;
 
-final class ReaderTest extends IOTestCase
+final class ReaderTest extends TestCase
 {
     public function testReadingFile(): void
     {
@@ -20,12 +20,12 @@ final class ReaderTest extends IOTestCase
         static::assertSame('', $reader->readLine());
         static::assertSame('declare(strict_types=1);', $reader->readLine());
         static::assertSame('', $reader->readLine());
-        static::assertSame('namespace Psl\Tests\Unit\IO;', $reader->readLine());
+        static::assertSame('namespace Psl\\Tests\\Unit\\IO;', $reader->readLine());
         static::assertSame('', $reader->readLine());
-        static::assertSame('use Psl\IO;', $reader->readLine());
+        static::assertSame('use PHPUnit\\Framework\\TestCase;', $reader->readLine());
 
         static::assertSame('use Psl', $reader->readUntil('\\'));
-        static::assertSame('Tests\Unit\IOTestCase;', $reader->readLine());
+        static::assertSame('IO;', $reader->readLine());
         static::assertSame('', $reader->readLine());
         static::assertSame('final class', $reader->readFixedSize(11));
 

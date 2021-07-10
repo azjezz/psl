@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Shell;
 
+use PHPUnit\Framework\TestCase;
 use Psl\Env;
 use Psl\SecureRandom;
 use Psl\Shell;
-use Psl\Tests\Unit\IOTestCase;
 
 use const PHP_OS_FAMILY;
 
-final class ExecuteTest extends IOTestCase
+final class ExecuteTest extends TestCase
 {
     public function testExecute(): void
     {

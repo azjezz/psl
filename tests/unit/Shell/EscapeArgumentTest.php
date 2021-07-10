@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Shell;
 
+use PHPUnit\Framework\TestCase;
 use Psl\Shell;
-use Psl\Tests\Unit\IOTestCase;
 
-final class EscapeArgumentTest extends IOTestCase
+final class EscapeArgumentTest extends TestCase
 {
     /**
      * @dataProvider provideData
