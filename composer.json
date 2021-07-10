@@ -40,5 +40,8 @@
             "name": "hhvm/hsl",
             "url": "https://github.com/hhvm/hsl"
         }
+    },
+    "suggest": {
+        "php-standard-library/psalm-plugin": "Psalm integration"
     }
 }

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\IO;
 
+use PHPUnit\Framework\TestCase;
 use Psl\IO;
 use Psl\Str;
 use Psl\Str\Byte;
-use Psl\Tests\Unit\IOTestCase;
 
-final class MemoryHandleTest extends IOTestCase
+final class MemoryHandleTest extends TestCase
 {
     /**
      * @param (callable(IO\MemoryHandle): mixed) $operation

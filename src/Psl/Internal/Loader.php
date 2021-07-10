@@ -584,6 +584,7 @@ final class Loader
     public const TRAITS = [];
 
     public const CLASSES = [
+        'Psl\Ref',
         'Psl\Exception\InvariantViolationException',
         'Psl\DataStructure\PriorityQueue',
         'Psl\DataStructure\Queue',

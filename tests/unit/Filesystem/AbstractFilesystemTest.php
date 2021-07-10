@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Filesystem;
 
+use PHPUnit\Framework\TestCase;
 use Psl\Env;
 use Psl\Filesystem;
 use Psl\Str;
-use Psl\Tests\Unit\IOTestCase;
 use Psl\Type;
 
-abstract class AbstractFilesystemTest extends IOTestCase
+abstract class AbstractFilesystemTest extends TestCase
 {
     protected string $function;
     protected string $cacheDirectory;
@@ -19,8 +19,6 @@ abstract class AbstractFilesystemTest extends IOTestCase
 
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->cacheDirectory = Type\string()->assert(Filesystem\canonicalize(Str\join([
             __DIR__, '..', '.cache'
         ], Filesystem\SEPARATOR)));
