@@ -14,7 +14,7 @@
 
 - [bytes](./../../src/Psl/SecureRandom/bytes.php#L20)
 - [float](./../../src/Psl/SecureRandom/float.php#L14)
-- [int](./../../src/Psl/SecureRandom/int.php#L21)
+- [int](./../../src/Psl/SecureRandom/int.php#L23)
 - [string](./../../src/Psl/SecureRandom/string.php#L25)
 
 

@@ -14,25 +14,25 @@ install-unit-tests-dependencies:
 install: install-root-dependencies install-coding-standard-dependencies install-static-analysis-dependencies install-unit-tests-dependencies
 
 coding-standard-fix:
-	php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=tools/php-cs-fixer/.php_cs.dist.php
-	php tools/php-codesniffer/vendor/bin/phpcbf --basepath=. --standard=tools/php-codesniffer/.phpcs.xml
+	./tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=tools/php-cs-fixer/.php_cs.dist.php
+	./tools/php-codesniffer/vendor/bin/phpcbf --basepath=. --standard=tools/php-codesniffer/.phpcs.xml
 
 coding-standard-check:
-	php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=tools/php-cs-fixer/.php_cs.dist.php --dry-run
-	php tools/php-codesniffer/vendor/bin/phpcs --basepath=. --standard=tools/php-codesniffer/.phpcs.xml
+	./tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=tools/php-cs-fixer/.php_cs.dist.php --dry-run
+	./tools/php-codesniffer/vendor/bin/phpcs --basepath=. --standard=tools/php-codesniffer/.phpcs.xml
 
 static-analysis:
-	php tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml --show-info=true --no-cache
-	php tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml tests/static-analysis --no-cache
+	./tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml --show-info=true --no-cache
+	./tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml tests/static-analysis --no-cache
 
 type-coverage:
-	php tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml --shepherd --stats
+	./tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml --shepherd --stats
 
 security-analysis:
-	php tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml --taint-analysis
+	./tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml --taint-analysis
 
 unit-tests:
-	php tools/phpunit/vendor/bin/phpunit -c tools/phpunit/phpunit.xml.dist
+	./tools/phpunit/vendor/bin/phpunit -c tools/phpunit/phpunit.xml.dist
 
 code-coverage: unit-tests
 	composer global require php-coveralls/php-coveralls
