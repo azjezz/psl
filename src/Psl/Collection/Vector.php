@@ -488,4 +488,35 @@ final class Vector implements VectorInterface
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return self::fromArray(Dict\slice($this->elements, $start, $length));
     }
+
+    /**
+     * Returns a `Vector` containing the original `Vector` split into
+     * chunks of the given size.
+     *
+     * If the original `Vector` doesn't divide evenly, the final chunk will be
+     * smaller.
+     *
+     * @param int $size The size of each chunk.
+     *
+     * @return Vector<Vector<T>> A `Vector` containing the original `Vector` split
+     *                           into chunks of the given size.
+     *
+     * @psalm-mutation-free
+     */
+    public function chunk(int $size): Vector
+    {
+        /**
+         * @psalm-suppress MissingThrowsDocblock
+         * @psalm-suppress ImpureFunctionCall
+         */
+        return Vector::fromArray(Vec\map(
+            Vec\chunk($this->toArray(), $size),
+            /**
+             * @param list<T> $chunk
+             *
+             * @return Vector<T>
+             */
+            static fn(array $chunk) => Vector::fromArray($chunk)
+        ));
+    }
 }

@@ -546,6 +546,24 @@ abstract class AbstractVectorTest extends TestCase
         static::assertNull($vector->get(2));
     }
 
+    public function testChunk(): void
+    {
+        $map = $this->create(['foo', 'bar', 'baz']);
+
+        $chunks = $map->chunk(2);
+
+        static::assertCount(2, $chunks);
+        static::assertSame(['foo', 'bar'], $chunks->at(0)->toArray());
+        static::assertSame(['baz'], $chunks->at(1)->toArray());
+
+        $chunks = $map->chunk(1);
+
+        static::assertCount(3, $chunks);
+        static::assertSame(['foo'], $chunks->at(0)->toArray());
+        static::assertSame(['bar'], $chunks->at(1)->toArray());
+        static::assertSame(['baz'], $chunks->at(2)->toArray());
+    }
+
     /**
      * @template     T
      *

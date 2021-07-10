@@ -315,4 +315,20 @@ interface VectorInterface extends AccessibleCollectionInterface
      * @psalm-mutation-free
      */
     public function slice(int $start, int $length): VectorInterface;
+
+    /**
+     * Returns a `VectorInterface` containing the original `VectorInterface` split into
+     * chunks of the given size.
+     *
+     * If the original `VectorInterface` doesn't divide evenly, the final chunk will be
+     * smaller.
+     *
+     * @param int $size The size of each chunk.
+     *
+     * @return VectorInterface<static<T>> A `VectorInterface` containing the original
+     *                                    `VectorInterface` split into chunks of the given size.
+     *
+     * @psalm-mutation-free
+     */
+    public function chunk(int $size): VectorInterface;
 }

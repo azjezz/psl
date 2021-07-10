@@ -290,6 +290,22 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
     public function slice(int $start, int $length): MutableVectorInterface;
 
     /**
+     * Returns a `MutableVectorInterface` containing the original `MutableVectorInterface` split into
+     * chunks of the given size.
+     *
+     * If the original `MutableVectorInterface` doesn't divide evenly, the final chunk will be
+     * smaller.
+     *
+     * @param int $size The size of each chunk.
+     *
+     * @return MutableVectorInterface<static<T>> A `MutableVectorInterface` containing the original
+     *                                           `MutableVectorInterface` split into chunks of the given size.
+     *
+     * @psalm-mutation-free
+     */
+    public function chunk(int $size): MutableVectorInterface;
+
+    /**
      * Stores a value into the current vector with the specified key,
      * overwriting the previous value associated with the key.
      *

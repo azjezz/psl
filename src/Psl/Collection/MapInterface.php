@@ -276,4 +276,20 @@ interface MapInterface extends AccessibleCollectionInterface
      * @psalm-mutation-free
      */
     public function slice(int $start, int $length): MapInterface;
+
+    /**
+     * Returns a `VectorInterface` containing the original `MapInterface` split into
+     * chunks of the given size.
+     *
+     * If the original `MapInterface` doesn't divide evenly, the final chunk will be
+     * smaller.
+     *
+     * @param int $size The size of each chunk.
+     *
+     * @return VectorInterface<static<Tk, Tv>> A `VectorInterface` containing the original
+     *                                    `MapInterface` split into chunks of the given size.
+     *
+     * @psalm-mutation-free
+     */
+    public function chunk(int $size): VectorInterface;
 }

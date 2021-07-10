@@ -298,4 +298,21 @@ interface MutableAccessibleCollectionInterface extends
      * @psalm-mutation-free
      */
     public function slice(int $start, int $length): MutableAccessibleCollectionInterface;
+
+    /**
+     * Returns a `MutableVectorInterface` containing the original `MutableAccessibleCollectionInterface` split into
+     * chunks of the given size.
+     *
+     * If the original `MutableAccessibleCollectionInterface` doesn't divide evenly, the final chunk will be
+     * smaller.
+     *
+     * @param int $size The size of each chunk.
+     *
+     * @return MutableVectorInterface<static<Tk, Tv>> A `MutableVectorInterface` containing the original
+     *                                           `MutableAccessibleCollectionInterface` split into chunks
+     *                                           of the given size.
+     *
+     * @psalm-mutation-free
+     */
+    public function chunk(int $size): MutableVectorInterface;
 }

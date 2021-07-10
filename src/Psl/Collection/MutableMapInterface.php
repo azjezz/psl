@@ -277,6 +277,22 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
     public function slice(int $start, int $length): MutableMapInterface;
 
     /**
+     * Returns a `MutableVectorInterface` containing the original `MutableMapInterface` split into
+     * chunks of the given size.
+     *
+     * If the original `MutableMapInterface` doesn't divide evenly, the final chunk will be
+     * smaller.
+     *
+     * @param int $size The size of each chunk.
+     *
+     * @return MutableVectorInterface<static<Tk, Tv>> A `MutableVectorInterface` containing the original
+     *                                           `MutableMapInterface` split into chunks of the given size.
+     *
+     * @psalm-mutation-free
+     */
+    public function chunk(int $size): MutableVectorInterface;
+
+    /**
      * Stores a value into the current collection with the specified key,
      * overwriting the previous value associated with the key.
      *

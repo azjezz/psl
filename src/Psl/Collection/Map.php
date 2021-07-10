@@ -158,8 +158,7 @@ final class Map implements MapInterface
      */
     public function count(): int
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\count($this->elements);
+        return count($this->elements);
     }
 
     /**
@@ -510,5 +509,47 @@ final class Map implements MapInterface
         $result = Dict\slice($this->elements, $start, $length);
 
         return self::fromArray($result);
+    }
+
+    /**
+     * Returns a `Vector` containing the original `Map` split into
+     * chunks of the given size.
+     *
+     * If the original `Map` doesn't divide evenly, the final chunk will be smaller.
+     *
+     * @param int $size The size of each chunk.
+     *
+     * @return Vector<Map<Tk, Tv>> A `Vector` containing the original `Map` split into
+     *                        chunks of the given size.
+     *
+     * @psalm-mutation-free
+     */
+    public function chunk(int $size): Vector
+    {
+        /** @var Vector<array{0: Tv, 1: Tk}> $entries_vectors */
+        $entries_vectors = $this->zip($this->keys())->values();
+
+        /** @psalm-suppress ImpureMethodCall */
+        return $entries_vectors
+            ->values()
+            ->chunk($size)
+            ->map(
+                /**
+                 * @param Vector<array{0: Tv, 1: Tk}> $vector
+                 *
+                 * @return Map<Tk, Tv>
+                 *
+                 * @pure
+                 */
+                static function (Vector $vector): Map {
+                    /** @var array<Tk, Tv> $array */
+                    $array = [];
+                    foreach ($vector->toArray() as [$v, $k]) {
+                        $array[$k] = $v;
+                    }
+
+                    return Map::fromArray($array);
+                }
+            );
     }
 }

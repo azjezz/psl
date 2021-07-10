@@ -606,4 +606,39 @@ final class MutableVector implements MutableVectorInterface
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return MutableVector::fromArray(Dict\slice($this->elements, $start, $length));
     }
+
+    /**
+     * Returns a `MutableVector` containing the original `MutableVector` split into
+     * chunks of the given size.
+     *
+     * If the original `MutableVector` doesn't divide evenly, the final chunk will be
+     * smaller.
+     *
+     * @param int $size The size of each chunk.
+     *
+     * @return MutableVector<MutableVector<T>> A `MutableVector` containing the original
+     *                                         `MutableVector` split into chunks of the given size.
+     *
+     * @psalm-mutation-free
+     */
+    public function chunk(int $size): MutableVector
+    {
+        /**
+         * @psalm-suppress MissingThrowsDocblock
+         * @psalm-suppress ImpureFunctionCall
+         */
+        return MutableVector::fromArray(Vec\map(
+            /**
+             * @psalm-suppress MissingThrowsDocblock
+             * @psalm-suppress ImpureFunctionCall
+             */
+            Vec\chunk($this->toArray(), $size),
+            /**
+             * @param list<T> $chunk
+             *
+             * @return MutableVector<T>
+             */
+            static fn(array $chunk) => MutableVector::fromArray($chunk)
+        ));
+    }
 }

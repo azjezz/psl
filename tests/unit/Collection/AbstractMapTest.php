@@ -566,6 +566,28 @@ abstract class AbstractMapTest extends TestCase
         static::assertNull($map->get('baz'));
     }
 
+    public function testChunk(): void
+    {
+        $map = $this->create([
+            'foo' => 'hello',
+            'bar' => 'world',
+            'baz' => '!'
+        ]);
+
+        $chunks = $map->chunk(2);
+
+        static::assertCount(2, $chunks);
+        static::assertSame(['foo' => 'hello', 'bar' => 'world'], $chunks->at(0)->toArray());
+        static::assertSame(['baz' => '!'], $chunks->at(1)->toArray());
+
+        $chunks = $map->chunk(1);
+
+        static::assertCount(3, $chunks);
+        static::assertSame(['foo' => 'hello'], $chunks->at(0)->toArray());
+        static::assertSame(['bar' => 'world'], $chunks->at(1)->toArray());
+        static::assertSame(['baz' => '!'], $chunks->at(2)->toArray());
+    }
+
     /**
      * @template     Tk of array-key
      * @template     Tv
