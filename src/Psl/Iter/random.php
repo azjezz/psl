@@ -31,12 +31,10 @@ function random(iterable $iterable)
 
     Psl\invariant(0 !== $size, 'Expected a non-empty iterable.');
 
-    $shuffled = Vec\shuffle($values);
-
     if (1 === $size) {
         /** @var Tv */
-        return $shuffled[0];
+        return $values[0];
     }
 
-    return $shuffled[PseudoRandom\int(0, $size - 1)];
+    return $values[PseudoRandom\int(0, $size - 1)];
 }
