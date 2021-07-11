@@ -28,6 +28,7 @@ use Psl\Str\Byte;
  */
 function from_base(string $number, int $from_base): int
 {
+    /** @psalm-suppress RedundantCondition */
     Psl\invariant('' !== $number, 'Unexpected empty string, expected number in base %d', $from_base);
     Psl\invariant(
         $from_base >= 2 && $from_base <= 36,

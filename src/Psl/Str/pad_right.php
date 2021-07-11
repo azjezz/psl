@@ -37,6 +37,7 @@ use Psl;
  */
 function pad_right(string $string, int $total_length, string $pad_string = ' ', ?string $encoding = null): string
 {
+    /** @psalm-suppress RedundantCondition */
     Psl\invariant('' !== $pad_string, 'Expected a non-empty pad string.');
     Psl\invariant($total_length >= 0, 'Expected a non-negative total length.');
 
