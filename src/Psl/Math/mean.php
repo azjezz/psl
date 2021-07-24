@@ -9,7 +9,7 @@ use Psl\Iter;
 /**
  * Return the arithmetic mean of the numbers in the given iterable.
  *
- * @param iterable<numeric> $numbers
+ * @param iterable<int|float> $numbers
  */
 function mean(iterable $numbers): ?float
 {
@@ -20,8 +20,8 @@ function mean(iterable $numbers): ?float
 
     $mean = 0.0;
     foreach ($numbers as $number) {
-        $mean += $number / $count;
+        $mean += (float)$number / $count;
     }
 
-    return (float) $mean;
+    return $mean;
 }
