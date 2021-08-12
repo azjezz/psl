@@ -45,6 +45,7 @@ function every_match(
     $capture_groups ??= Type\dict(Type\array_key(), Type\string());
 
     try {
+        /** @psalm-suppress InvalidArgument  */
         return Type\vec($capture_groups)->coerce($matching);
     } catch (InvariantViolationException | Type\Exception\CoercionException $e) {
         throw new Exception\RuntimeException('Invalid capture groups', 0, $e);
