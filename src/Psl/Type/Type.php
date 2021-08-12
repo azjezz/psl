@@ -8,7 +8,7 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\TypeTrace;
 
 /**
- * @template T
+ * @template-covariant T
  *
  * @implements TypeInterface<T>
  */
