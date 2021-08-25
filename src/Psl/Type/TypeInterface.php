@@ -9,7 +9,7 @@ use Psl\Type\Exception\CoercionException;
 use Psl\Type\Exception\TypeTrace;
 
 /**
- * @template T
+ * @template-covariant T
  */
 interface TypeInterface
 {

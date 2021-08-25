@@ -19,10 +19,8 @@ use function str_word_count;
 function words(string $string, ?string $characters_list = null): array
 {
     if (null === $characters_list) {
-        /** @var array<int, string> $words */
         $words = str_word_count($string, 2);
     } else {
-        /** @var array<int, string> $words */
         $words = str_word_count($string, 2, $characters_list);
     }
 
