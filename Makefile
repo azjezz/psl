@@ -30,6 +30,12 @@ coding-standard-check:                                                          
 benchmarks:                                                                     ## run benchmarks
 	./tools/phpbench/vendor/bin/phpbench run --config tools/phpbench/phpbench.json
 
+create-benchmark-reference:                                                     ## run benchmarks, mark current run as "reference"
+	./tools/phpbench/vendor/bin/phpbench run --config tools/phpbench/phpbench.json --tag=benchmark_reference
+
+compare-benchmark-to-reference:                                                 ## run benchmarks, compare result to the "reference" run
+	./tools/phpbench/vendor/bin/phpbench run --config tools/phpbench/phpbench.json --ref=benchmark_reference
+
 static-analysis:                                                                ## run static analysis checks
 	./tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml --show-info=true --no-cache
 	./tools/psalm/vendor/bin/psalm -c tools/psalm/psalm.xml tests/static-analysis --no-cache
