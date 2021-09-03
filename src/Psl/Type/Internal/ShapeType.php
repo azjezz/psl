@@ -18,6 +18,9 @@ use Psl\Type\Exception\CoercionException;
  */
 final class ShapeType extends Type\Type
 {
+    /** @var array<string, null> */
+    private array $requiredElements;
+
     /**
      * @param array<Tk, Type\TypeInterface<Tv>> $elements_types
      */
@@ -25,6 +28,10 @@ final class ShapeType extends Type\Type
         private array $elements_types,
         private bool $allow_unknown_fields = false,
     ) {
+        $this->requiredElements = \array_filter(
+            $elements_types,
+            static fn (Type\TypeInterface $element): bool => ! $element->isOptional()
+        );
     }
 
     /**
@@ -33,6 +40,45 @@ final class ShapeType extends Type\Type
      * @return array<Tk, Tv>
      */
     public function coerce(mixed $value): array
+    {
+        // To whom reads this: yes, I hate this stuff as passionately as you do :-)
+        if (! \is_array($value)) {
+            // Fallback to slow implementation - unhappy path
+            return $this->coerceIterable($value);
+        }
+
+        $requiredValues = \array_intersect_key($value, $this->requiredElements);
+
+        if (\array_keys($requiredValues) !== \array_keys($this->requiredElements)) {
+            // Fallback to slow implementation - unhappy path
+            return $this->coerceIterable($value);
+        }
+
+        if (\array_keys($value) !== \array_keys($this->elements_types) && ! $this->allow_unknown_fields) {
+            // Fallback to slow implementation - unhappy path
+            return $this->coerceIterable($value);
+        }
+
+        $validatedValues = \array_intersect_key($value, $this->elements_types);
+
+        try {
+            foreach ($validatedValues as $key => $validatedValue) {
+                $validatedValues[$key] = $this->elements_types[$key]->coerce($validatedValue);
+            }
+        } catch (CoercionException $failed) {
+            // Fallback to slow implementation - unhappy path. Prevents having to eagerly compute traces.
+            $this->coerceIterable($value);
+        }
+
+        return array_merge($value, $validatedValues);
+    }
+
+    /**
+     * @throws CoercionException
+     *
+     * @return array<Tk, Tv>
+     */
+    private function coerceIterable(mixed $value): array
     {
         /** @psalm-suppress MissingThrowsDocblock */
         if (Type\iterable(Type\mixed(), Type\mixed())->matches($value)) {
@@ -150,7 +196,9 @@ final class ShapeType extends Type\Type
 
     private function getElementName(string|int $element): string
     {
-        return Type\int()->matches($element) ? (string) $element : Str\format('\'%s\'', $element);
+        return \is_int($element)
+            ? (string) $element
+            : '\'' . $element . '\'';
     }
 
     /**
