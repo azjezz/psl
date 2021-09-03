@@ -18,7 +18,7 @@ use Psl\Type\Exception\CoercionException;
  */
 final class ShapeType extends Type\Type
 {
-    /** @var array<string, null> */
+    /** @var array<Tk, Type\TypeInterface<Tv>> */
     private array $requiredElements;
 
     /**
