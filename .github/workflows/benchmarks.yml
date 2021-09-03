@@ -1,0 +1,47 @@
+name: "benchmarks"
+
+on:
+  pull_request: ~
+  push: ~
+
+jobs:
+  unit-tests:
+    name: "unit tests"
+
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        php-version:
+          - "8.0"
+        operating-system:
+          - "macos-latest"
+          - "ubuntu-latest"
+
+    steps:
+      - name: "checkout"
+        uses: "actions/checkout@v2"
+
+      - name: "installing PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-version }}"
+          ini-values: memory_limit=-1
+          tools: composer:v2, cs2pr
+          extensions: bcmath, mbstring, intl, sodium, json
+
+      - name: "caching dependencies"
+        uses: "actions/cache@v2.1.6"
+        with:
+          path: |
+            ~/.composer/cache
+            vendor
+          key: "php-${{ matrix.php-version }}"
+          restore-keys: "php-${{ matrix.php-version }}"
+
+      - name: "installing dependencies"
+        run: |
+          make install-static-analysis-dependencies
+
+      - name: "running benchmarks"
+        run: make benchmarks
