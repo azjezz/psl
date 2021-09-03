@@ -60,17 +60,18 @@ final class ShapeType extends Type\Type
         }
 
         $validatedValues = \array_intersect_key($value, $this->elements_types);
+        $allValues = $value;
 
         try {
             foreach ($validatedValues as $key => $validatedValue) {
-                $validatedValues[$key] = $this->elements_types[$key]->coerce($validatedValue);
+                $allValues[$key] = $this->elements_types[$key]->coerce($validatedValue);
             }
         } catch (CoercionException $failed) {
             // Fallback to slow implementation - unhappy path. Prevents having to eagerly compute traces.
             $this->coerceIterable($value);
         }
 
-        return array_merge($value, $validatedValues);
+        return $allValues;
     }
 
     /**
