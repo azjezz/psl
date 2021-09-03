@@ -27,6 +27,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "Psl\\Tests\\Benchmark\\": "tests/benchmark",
             "Psl\\Tests\\StaticAnalysis\\": "tests/static-analysis",
             "Psl\\Tests\\Unit\\": "tests/unit",
             "Psl\\Tests\\Fixture\\": "tests/fixture"
