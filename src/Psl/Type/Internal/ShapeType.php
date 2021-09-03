@@ -47,14 +47,12 @@ final class ShapeType extends Type\Type
             return $this->coerceIterable($value);
         }
 
-        $requiredValues = \array_intersect_key($value, $this->requiredElements);
-
-        if (\array_keys($requiredValues) !== \array_keys($this->requiredElements)) {
+        if (\array_keys(\array_intersect_key($value, $this->requiredElements)) !== \array_keys($this->requiredElements)) {
             // Fallback to slow implementation - unhappy path
             return $this->coerceIterable($value);
         }
 
-        if (\array_keys($value) !== \array_keys($this->elements_types) && ! $this->allow_unknown_fields) {
+        if (! $this->allow_unknown_fields && \array_keys($value) !== \array_keys($this->elements_types)) {
             // Fallback to slow implementation - unhappy path
             return $this->coerceIterable($value);
         }
@@ -65,7 +63,7 @@ final class ShapeType extends Type\Type
             foreach (\array_intersect_key($this->elements_types, $value) as $key => $type) {
                 $coerced[$key] = $type->coerce($value[$key]);
             }
-        } catch (CoercionException $failed) {
+        } catch (CoercionException) {
             // Fallback to slow implementation - unhappy path. Prevents having to eagerly compute traces.
             $this->coerceIterable($value);
         }
