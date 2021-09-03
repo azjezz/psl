@@ -2,6 +2,7 @@
 <psalm totallyTyped="true" forbidEcho="true" strictBinaryOperands="true" phpVersion="8.0" allowStringToStandInForClass="true" rememberPropertyAssignmentsAfterCall="false" checkForThrowsDocblock="true" checkForThrowsInGlobalScope="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://getpsalm.org/schema/config" xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd" errorBaseline="baseline.xml">
     <projectFiles>
         <directory name="../../src" />
+        <directory name="../../tests/benchmark" />
         <directory name="../../integration" />
         <ignoreFiles>
             <file name="../../src/bootstrap.php" />
@@ -9,6 +10,13 @@
             <file name="../../src/Psl/Internal/Loader.php" />
         </ignoreFiles>
     </projectFiles>
+
+    <extraFiles>
+        <!-- because of the structure of this project, it's not possible to
+            autoload phpbench attributes. Until that's fixed via a single `composer.lock`,
+            we can refer to the symbols provided by phpbench, manually -->
+        <directory name="../../tools/phpbench/vendor/phpbench/phpbench/lib/Attributes"/>
+    </extraFiles>
 
     <issueHandlers>
         <DuplicateFunction errorLevel="suppress" />
