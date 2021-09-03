@@ -24,8 +24,7 @@ jobs:
 
       - name: "installing dependencies"
         run: |
-          make install-root-dependencies
-          make install-static-analysis-dependencies
+          make install -j10 -O
 
       - name: "running static analysis"
         run: make static-analysis
