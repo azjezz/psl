@@ -59,19 +59,22 @@ final class ShapeType extends Type\Type
             return $this->coerceIterable($value);
         }
 
-        $validatedValues = \array_intersect_key($value, $this->elements_types);
-        $allValues = $value;
+        $coerced = [];
 
         try {
-            foreach ($validatedValues as $key => $validatedValue) {
-                $allValues[$key] = $this->elements_types[$key]->coerce($validatedValue);
+            foreach (\array_intersect_key($this->elements_types, $value) as $key => $type) {
+                $coerced[$key] = $type->coerce($value[$key]);
             }
         } catch (CoercionException $failed) {
             // Fallback to slow implementation - unhappy path. Prevents having to eagerly compute traces.
             $this->coerceIterable($value);
         }
 
-        return $allValues;
+        foreach (\array_diff_key($value, $this->elements_types) as $key => $additionalValue) {
+            $coerced[$key] = $additionalValue;
+        }
+
+        return $coerced;
     }
 
     /**
