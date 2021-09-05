@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
-use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
+use Stringable;
 
 use function is_int;
-use function is_object;
 use function is_string;
 
 /**
@@ -25,7 +24,8 @@ final class NonEmptyStringType extends Type\Type
      */
     public function matches(mixed $value): bool
     {
-        return is_string($value) && !Str\is_empty($value);
+        return '' !== $value
+            && is_string($value);
     }
 
     /**
@@ -35,20 +35,17 @@ final class NonEmptyStringType extends Type\Type
      */
     public function coerce(mixed $value): string
     {
-        if (is_string($value) && !Str\is_empty($value)) {
+        if ('' !== $value && is_string($value)) {
             return $value;
         }
 
         if (is_int($value)) {
-            $str = (string) $value;
-            if (!Str\is_empty($str)) {
-                return $str;
-            }
+            return (string) $value;
         }
 
-        if (is_object($value) && method_exists($value, '__toString')) {
-            $str = (string)$value;
-            if (!Str\is_empty($str)) {
+        if ($value instanceof Stringable) {
+            $str = (string) $value;
+            if ('' !== $str) {
                 return $str;
             }
         }
@@ -65,7 +62,7 @@ final class NonEmptyStringType extends Type\Type
      */
     public function assert(mixed $value): string
     {
-        if (is_string($value) && !Str\is_empty($value)) {
+        if ('' !== $value && is_string($value)) {
             return $value;
         }
 

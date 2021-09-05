@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
-use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
+use Stringable;
 use function is_float;
 use function is_int;
-use function is_object;
 use function is_string;
+use function ltrim;
 
 /**
  * @extends Type\Type<int>
@@ -38,30 +38,29 @@ final class IntType extends Type\Type
             return $value;
         }
 
-        if (is_string($value) || (is_object($value) && method_exists($value, '__toString'))) {
+        if (is_float($value)) {
+            $integer_value = (int) $value;
+            if (((float) $integer_value) === $value) {
+                return $integer_value;
+            }
+        }
+
+        if (is_string($value) || $value instanceof Stringable) {
             $str = (string)$value;
-            $int = Str\to_int($str);
-            if (null !== $int) {
+            $int = (int)$str;
+            if ($str === (string) $int) {
                 return $int;
             }
 
-            $trimmed = Str\trim_left($str, '0');
-            $int     = Str\to_int($trimmed);
-            if (null !== $int) {
+            $trimmed = ltrim($str, '0');
+            $int     = (int) $trimmed;
+            if ($trimmed === (string) $int) {
                 return $int;
             }
 
             // Exceptional case "000" -(trim)-> "", but we want to return 0
             if ('' === $trimmed && '' !== $str) {
                 return 0;
-            }
-        }
-
-        if (is_float($value)) {
-            $integer_value = (int) $value;
-            $reconstructed = (float) $integer_value;
-            if ($reconstructed === $value) {
-                return $integer_value;
             }
         }
 
