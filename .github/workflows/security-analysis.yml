@@ -22,7 +22,7 @@ jobs:
 
       - name: "installing dependencies"
         run: |
-          make install -j10 -O
+          make install-static-analysis-dependencies -j10 -O
 
       - name: "running security analysis ( psalm )"
         run: make security-analysis
