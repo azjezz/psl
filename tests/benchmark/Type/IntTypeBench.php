@@ -21,6 +21,10 @@ final class IntTypeBench extends GenericTypeBench
                     'type'  => int(),
                     'value' => '123',
                 ],
+                'float' => [
+                    'type'  => int(),
+                    'value' => 123.0,
+                ],
                 'instanceof Stringable (explicit)' => [
                     'type'  => int(),
                     'value' => new ImplicitStringableObject(),
