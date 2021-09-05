@@ -124,4 +124,64 @@ final class ShapeTypeBench
     {
         return $this->complexShapeWithOptionalValues->coerce($this->validStructureWithFurtherValuesIterable);
     }
+
+    public function benchEmptyShapeMatchAgainstEmptyArray(): bool
+    {
+        return $this->emptyShape->matches([]);
+    }
+
+    public function benchEmptyShapeMatchAgainstEmptyIterable(): bool
+    {
+        return $this->emptyShape->matches($this->emptyIterable);
+    }
+
+    public function benchEmptyShapeMatchAgainstNonEmptyArray(): bool
+    {
+        return $this->emptyShape->matches(self::NON_EMPTY_ARRAY);
+    }
+
+    public function benchEmptyShapeMatchAgainstNonEmptyIterable(): bool
+    {
+        return $this->emptyShape->matches($this->nonEmptyIterable);
+    }
+
+    public function benchComplexShapeMatchAgainstValidStructure(): bool
+    {
+        return $this->complexShapeWithOptionalValues->matches(self::VALID_STRUCTURE);
+    }
+
+    public function benchComplexShapeMatchAgainstValidStructureIterable(): bool
+    {
+        return $this->complexShapeWithOptionalValues->matches($this->validStructureIterable);
+    }
+
+    public function benchComplexShapeMatchAgainstValidStructureWithFurtherValues(): bool
+    {
+        return $this->complexShapeWithOptionalValues->matches(self::VALID_STRUCTURE_WITH_FURTHER_VALUES);
+    }
+
+    public function benchComplexShapeMatchAgainstValidStructureWithFurtherValuesIterable(): bool
+    {
+        return $this->complexShapeWithOptionalValues->matches($this->validStructureWithFurtherValuesIterable);
+    }
+
+    public function benchEmptyShapeAssertionAgainstEmptyArray(): void
+    {
+        $this->emptyShape->assert([]);
+    }
+
+    public function benchEmptyShapeAssertionAgainstNonEmptyArray(): void
+    {
+        $this->emptyShape->assert(self::NON_EMPTY_ARRAY);
+    }
+
+    public function benchComplexShapeAssertionAgainstValidStructure(): void
+    {
+        $this->complexShapeWithOptionalValues->assert(self::VALID_STRUCTURE);
+    }
+
+    public function benchComplexShapeAssertionAgainstValidStructureWithFurtherValues(): void
+    {
+        $this->complexShapeWithOptionalValues->assert(self::VALID_STRUCTURE_WITH_FURTHER_VALUES);
+    }
 }
