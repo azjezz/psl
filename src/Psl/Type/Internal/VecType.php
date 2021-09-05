@@ -41,10 +41,6 @@ final class VecType extends Type\Type
             return false;
         }
 
-        if ([] === $value) {
-            return true;
-        }
-
         $index = 0;
         foreach ($value as $k => $v) {
             if ($index !== $k) {
