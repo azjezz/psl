@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Psl;
-use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -46,29 +45,25 @@ final class DictType extends Type\Type
      */
     public function coerce(mixed $value): array
     {
-        if (is_iterable($value)) {
-            $key_trace   = $this->getTrace()
-                ->withFrame(Str\format('dict<%s, _>', $this->key_type->toString()));
-            $value_trace = $this->getTrace()
-                ->withFrame(Str\format('dict<_, %s>', $this->value_type->toString()));
-
-            $key_type = $this->key_type->withTrace($key_trace);
-            $value_type = $this->value_type->withTrace($value_trace);
-
-            $result = [];
-
-            /**
-             * @var Tk $k
-             * @var Tv $v
-             */
-            foreach ($value as $k => $v) {
-                $result[$key_type->coerce($k)] = $value_type->coerce($v);
-            }
-
-            return $result;
+        if (! is_iterable($value)) {
+            throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
         }
 
-        throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+        $trace = $this->getTrace();
+        $key_type = $this->key_type->withTrace($trace->withFrame('dict<' . $this->key_type->toString() . ', _>'));
+        $value_type = $this->value_type->withTrace($trace->withFrame('dict<_, ' . $this->value_type->toString() . ', _>'));
+
+        $result = [];
+
+        /**
+         * @var Tk $k
+         * @var Tv $v
+         */
+        foreach ($value as $k => $v) {
+            $result[$key_type->coerce($k)] = $value_type->coerce($v);
+        }
+
+        return $result;
     }
 
     /**
@@ -80,33 +75,29 @@ final class DictType extends Type\Type
      */
     public function assert(mixed $value): array
     {
-        if (is_array($value)) {
-            $key_trace   = $this->getTrace()
-                ->withFrame(Str\format('dict<%s, _>', $this->key_type->toString()));
-            $value_trace = $this->getTrace()
-                ->withFrame(Str\format('dict<_, %s>', $this->value_type->toString()));
-
-            $key_type = $this->key_type->withTrace($key_trace);
-            $value_type = $this->value_type->withTrace($value_trace);
-
-            $result = [];
-
-            /**
-             * @var Tk $k
-             * @var Tv $v
-             */
-            foreach ($value as $k => $v) {
-                $result[$key_type->assert($k)] = $value_type->assert($v);
-            }
-
-            return $result;
+        if (! is_array($value)) {
+            throw AssertException::withValue($value, $this->toString(), $this->getTrace());
         }
 
-        throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+        $trace = $this->getTrace();
+        $key_type = $this->key_type->withTrace($trace->withFrame('dict<' . $this->key_type->toString() . ', _>'));
+        $value_type = $this->value_type->withTrace($trace->withFrame('dict<_, ' . $this->value_type->toString() . ', _>'));
+
+        $result = [];
+
+        /**
+         * @var Tk $k
+         * @var Tv $v
+         */
+        foreach ($value as $k => $v) {
+            $result[$key_type->assert($k)] = $value_type->assert($v);
+        }
+
+        return $result;
     }
 
     public function toString(): string
     {
-        return Str\format('dict<%s, %s>', $this->key_type->toString(), $this->value_type->toString());
+        return 'dict<' . $this->key_type->toString() . ', ' . $this->value_type->toString() . '>';
     }
 }
