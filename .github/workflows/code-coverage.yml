@@ -1,6 +1,6 @@
 name: "code coverage"
 
-on: 
+on:
   pull_request: ~
   push: ~
 
@@ -24,8 +24,7 @@ jobs:
 
       - name: "installing dependencies"
         run: |
-          make install-root-dependencies
-          make install-unit-tests-dependencies
+          make install-unit-tests-dependencies -j10 -O
 
       - name: "sending code coverage to coveralls"
         env:

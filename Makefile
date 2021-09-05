@@ -4,17 +4,17 @@ help:                                                                           
 install-root-dependencies:                                                      ## install dependencies for the library itself
 	composer update
 
-install-coding-standard-dependencies:                                           ## install dependencies for coding-standard checks tooling
+install-coding-standard-dependencies: install-root-dependencies                 ## install dependencies for coding-standard checks tooling
 	cd tools/php-cs-fixer && composer update --ignore-platform-req php
 	cd tools/php-codesniffer && composer update
 
-install-benchmark-dependencies:                                                 ## install dependencies for benchmark tooling
+install-benchmark-dependencies: install-root-dependencies                       ## install dependencies for benchmark tooling
 	cd tools/phpbench && composer install
 
-install-static-analysis-dependencies:                                           ## install dependencies for static analysis tooling
+install-static-analysis-dependencies: install-root-dependencies install-benchmark-dependencies ## install dependencies for static analysis tooling
 	cd tools/psalm && composer update
 
-install-unit-tests-dependencies:                                                ## install dependencies for the test suite
+install-unit-tests-dependencies: install-root-dependencies                       ## install dependencies for the test suite
 	cd tools/phpunit && composer update
 
 install: install-root-dependencies install-coding-standard-dependencies install-benchmark-dependencies install-static-analysis-dependencies install-unit-tests-dependencies ## install all dependencies for a development environment

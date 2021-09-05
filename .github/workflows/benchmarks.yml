@@ -41,7 +41,7 @@ jobs:
 
       - name: "installing dependencies"
         run: |
-          make install-benchmark-dependencies
+          make install-benchmark-dependencies -j10 -O
 
       - name: "running benchmarks"
         run: make benchmarks
