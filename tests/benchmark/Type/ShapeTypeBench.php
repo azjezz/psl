@@ -10,6 +10,7 @@ use function Psl\Type\mixed;
 use function Psl\Type\optional;
 use function Psl\Type\shape;
 
+/** @psalm-extends GenericTypeBench<\Psl\Type\Internal\ShapeType> */
 final class ShapeTypeBench extends GenericTypeBench
 {
     /** {@inheritDoc} */
@@ -147,6 +148,6 @@ final class ShapeTypeBench extends GenericTypeBench
     public function provideHappyPathMatches(): array
     {
         // As of now, matches ~= coercion in terms of happy path
-        return $this->provideHappyPathCoercion();
+        return $this->provideHappyPathAssertion();
     }
 }
