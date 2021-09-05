@@ -5,183 +5,148 @@ declare(strict_types=1);
 namespace Psl\Tests\Benchmark\Type;
 
 use ArrayIterator;
-use PhpBench\Attributes\BeforeMethods;
 
-use Psl\Type\Exception\CoercionException;
-use Psl\Type\TypeInterface;
 use function Psl\Type\mixed;
 use function Psl\Type\optional;
 use function Psl\Type\shape;
 
-#[BeforeMethods('__construct')]
-final class ShapeTypeBench
+final class ShapeTypeBench extends GenericTypeBench
 {
-    private const NON_EMPTY_ARRAY = ['foo' => 'bar'];
-    private const VALID_STRUCTURE = [
-        'foo' => null,
-        'bar' => null,
-        'baz' => null,
-    ];
-    private const VALID_STRUCTURE_WITH_FURTHER_VALUES = [
-        'foo' => null,
-        'bar' => null,
-        'baz' => null,
-        'tab' => null,
-        'taz' => null,
-        'tar' => null,
-        'waz' => null,
-        'war' => null,
-    ];
-
-    /**
-     * @var TypeInterface<array>
-     */
-    private TypeInterface $emptyShape;
-    /**
-     * @var TypeInterface<array>
-     */
-    private TypeInterface $complexShapeWithOptionalValues;
-    private iterable $emptyIterable;
-    private iterable $nonEmptyIterable;
-    private iterable $validStructureIterable;
-    private iterable $validStructureWithFurtherValuesIterable;
-
-    public function __construct()
+    /** {@inheritDoc} */
+    public function provideHappyPathCoercion(): array
     {
-        $this->emptyShape                     = shape([], true);
-        $this->complexShapeWithOptionalValues = shape([
-            'foo' => mixed(),
-            'bar' => mixed(),
-            'baz' => mixed(),
-            'tab' => optional(mixed()),
-        ], true);
-        $this->emptyIterable = new ArrayIterator([]);
-        $this->nonEmptyIterable = new ArrayIterator(self::NON_EMPTY_ARRAY);
-        $this->validStructureIterable = new ArrayIterator(self::VALID_STRUCTURE);
-        $this->validStructureWithFurtherValuesIterable = new ArrayIterator(self::VALID_STRUCTURE_WITH_FURTHER_VALUES);
+        return [
+            'empty shape, empty array value' => [
+                'type' => shape([], true),
+                'value' => [],
+            ],
+            'empty shape, empty iterable value' => [
+                'type' => shape([], true),
+                'value' => new ArrayIterator([]),
+            ],
+            'empty shape, non-empty array value' => [
+                'type' => shape([], true),
+                'value' => ['foo' => 'bar'],
+            ],
+            'empty shape, non-empty iterable value' => [
+                'type' => shape([], true),
+                'value' => new ArrayIterator(['foo' => 'bar']),
+            ],
+            'complex shape with optional values, minimum array value' => [
+                'type' => shape([
+                    'foo' => mixed(),
+                    'bar' => mixed(),
+                    'baz' => mixed(),
+                    'tab' => optional(mixed()),
+                ], true),
+                'value' => [
+                    'foo' => null,
+                    'bar' => null,
+                    'baz' => null,
+                ],
+            ],
+            'complex shape with optional values, minimum iterable value' => [
+                'type' => shape([
+                    'foo' => mixed(),
+                    'bar' => mixed(),
+                    'baz' => mixed(),
+                    'tab' => optional(mixed()),
+                ], true),
+                'value' => new ArrayIterator([
+                    'foo' => null,
+                    'bar' => null,
+                    'baz' => null,
+                ]),
+            ],
+            'complex shape with optional values, array value with further values' => [
+                'type' => shape([
+                    'foo' => mixed(),
+                    'bar' => mixed(),
+                    'baz' => mixed(),
+                    'tab' => optional(mixed()),
+                ], true),
+                'value' => [
+                    'foo' => null,
+                    'bar' => null,
+                    'baz' => null,
+                    'tab' => null,
+                    'taz' => null,
+                    'tar' => null,
+                    'waz' => null,
+                    'war' => null,
+                ],
+            ],
+            'complex shape with optional values, iterable value with further values' => [
+                'type' => shape([
+                    'foo' => mixed(),
+                    'bar' => mixed(),
+                    'baz' => mixed(),
+                    'tab' => optional(mixed()),
+                ], true),
+                'value' => new ArrayIterator([
+                    'foo' => null,
+                    'bar' => null,
+                    'baz' => null,
+                    'tab' => null,
+                    'taz' => null,
+                    'tar' => null,
+                    'waz' => null,
+                    'war' => null,
+                ]),
+            ],
+        ];
     }
 
-    /**
-     * @throws CoercionException
-     */
-    public function benchEmptyShapeCoercionAgainstEmptyArray(): array
+    /** {@inheritDoc} */
+    public function provideHappyPathAssertion(): array
     {
-        return $this->emptyShape->coerce([]);
+        return [
+            'empty shape, empty array value' => [
+                'type' => shape([], true),
+                'value' => [],
+            ],
+            'empty shape, non-empty array value' => [
+                'type' => shape([], true),
+                'value' => ['foo' => 'bar'],
+            ],
+            'complex shape with optional values, minimum array value' => [
+                'type' => shape([
+                    'foo' => mixed(),
+                    'bar' => mixed(),
+                    'baz' => mixed(),
+                    'tab' => optional(mixed()),
+                ], true),
+                'value' => [
+                    'foo' => null,
+                    'bar' => null,
+                    'baz' => null,
+                ],
+            ],
+            'complex shape with optional values, array value with further values' => [
+                'type' => shape([
+                    'foo' => mixed(),
+                    'bar' => mixed(),
+                    'baz' => mixed(),
+                    'tab' => optional(mixed()),
+                ], true),
+                'value' => [
+                    'foo' => null,
+                    'bar' => null,
+                    'baz' => null,
+                    'tab' => null,
+                    'taz' => null,
+                    'tar' => null,
+                    'waz' => null,
+                    'war' => null,
+                ],
+            ],
+        ];
     }
 
-    /**
-     * @throws CoercionException
-     */
-    public function benchEmptyShapeCoercionAgainstEmptyIterable(): array
+    /** {@inheritDoc} */
+    public function provideHappyPathMatches(): array
     {
-        return $this->emptyShape->coerce($this->emptyIterable);
-    }
-
-    /**
-     * @throws CoercionException
-     */
-    public function benchEmptyShapeCoercionAgainstNonEmptyArray(): array
-    {
-        return $this->emptyShape->coerce(self::NON_EMPTY_ARRAY);
-    }
-
-    /**
-     * @throws CoercionException
-     */
-    public function benchEmptyShapeCoercionAgainstNonEmptyIterable(): array
-    {
-        return $this->emptyShape->coerce($this->nonEmptyIterable);
-    }
-
-    /**
-     * @throws CoercionException
-     */
-    public function benchComplexShapeCoercionAgainstValidStructure(): array
-    {
-        return $this->complexShapeWithOptionalValues->coerce(self::VALID_STRUCTURE);
-    }
-
-    /**
-     * @throws CoercionException
-     */
-    public function benchComplexShapeCoercionAgainstValidStructureIterable(): array
-    {
-        return $this->complexShapeWithOptionalValues->coerce($this->validStructureIterable);
-    }
-
-    /**
-     * @throws CoercionException
-     */
-    public function benchComplexShapeCoercionAgainstValidStructureWithFurtherValues(): array
-    {
-        return $this->complexShapeWithOptionalValues->coerce(self::VALID_STRUCTURE_WITH_FURTHER_VALUES);
-    }
-
-    /**
-     * @throws CoercionException
-     */
-    public function benchComplexShapeCoercionAgainstValidStructureWithFurtherValuesIterable(): array
-    {
-        return $this->complexShapeWithOptionalValues->coerce($this->validStructureWithFurtherValuesIterable);
-    }
-
-    public function benchEmptyShapeMatchAgainstEmptyArray(): bool
-    {
-        return $this->emptyShape->matches([]);
-    }
-
-    public function benchEmptyShapeMatchAgainstEmptyIterable(): bool
-    {
-        return $this->emptyShape->matches($this->emptyIterable);
-    }
-
-    public function benchEmptyShapeMatchAgainstNonEmptyArray(): bool
-    {
-        return $this->emptyShape->matches(self::NON_EMPTY_ARRAY);
-    }
-
-    public function benchEmptyShapeMatchAgainstNonEmptyIterable(): bool
-    {
-        return $this->emptyShape->matches($this->nonEmptyIterable);
-    }
-
-    public function benchComplexShapeMatchAgainstValidStructure(): bool
-    {
-        return $this->complexShapeWithOptionalValues->matches(self::VALID_STRUCTURE);
-    }
-
-    public function benchComplexShapeMatchAgainstValidStructureIterable(): bool
-    {
-        return $this->complexShapeWithOptionalValues->matches($this->validStructureIterable);
-    }
-
-    public function benchComplexShapeMatchAgainstValidStructureWithFurtherValues(): bool
-    {
-        return $this->complexShapeWithOptionalValues->matches(self::VALID_STRUCTURE_WITH_FURTHER_VALUES);
-    }
-
-    public function benchComplexShapeMatchAgainstValidStructureWithFurtherValuesIterable(): bool
-    {
-        return $this->complexShapeWithOptionalValues->matches($this->validStructureWithFurtherValuesIterable);
-    }
-
-    public function benchEmptyShapeAssertionAgainstEmptyArray(): void
-    {
-        $this->emptyShape->assert([]);
-    }
-
-    public function benchEmptyShapeAssertionAgainstNonEmptyArray(): void
-    {
-        $this->emptyShape->assert(self::NON_EMPTY_ARRAY);
-    }
-
-    public function benchComplexShapeAssertionAgainstValidStructure(): void
-    {
-        $this->complexShapeWithOptionalValues->assert(self::VALID_STRUCTURE);
-    }
-
-    public function benchComplexShapeAssertionAgainstValidStructureWithFurtherValues(): void
-    {
-        $this->complexShapeWithOptionalValues->assert(self::VALID_STRUCTURE_WITH_FURTHER_VALUES);
+        // As of now, matches ~= coercion in terms of happy path
+        return $this->provideHappyPathCoercion();
     }
 }
