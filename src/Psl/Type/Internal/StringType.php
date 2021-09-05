@@ -8,8 +8,8 @@ use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
+use Stringable;
 use function is_int;
-use function is_object;
 use function is_string;
 
 /**
@@ -36,12 +36,8 @@ final class StringType extends Type\Type
             return $value;
         }
 
-        if (is_int($value)) {
-            return (string)$value;
-        }
-
-        if (is_object($value) && method_exists($value, '__toString')) {
-            return (string)$value;
+        if (is_int($value) || $value instanceof Stringable) {
+            return (string) $value;
         }
 
         throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
