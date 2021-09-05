@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Tests\Benchmark\Type;
 
 use ArrayIterator;
-
 use function array_combine;
 use function array_fill;
 use function array_map;
@@ -13,8 +12,6 @@ use function Psl\Type\array_key;
 use function Psl\Type\dict;
 use function Psl\Type\int;
 use function Psl\Type\mixed;
-use function Psl\Type\optional;
-use function Psl\Type\shape;
 use function Psl\Type\string;
 
 /** @psalm-extends GenericTypeBench<\Psl\Type\Internal\DictType> */
