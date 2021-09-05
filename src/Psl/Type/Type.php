@@ -32,11 +32,8 @@ abstract class Type implements TypeInterface
 
     protected function getTrace(): TypeTrace
     {
-        if (null === $this->trace) {
-            $this->trace = new TypeTrace();
-        }
-
-        return $this->trace;
+        return $this->trace
+            ?? $this->trace = new TypeTrace();
     }
 
     /**
