@@ -14,7 +14,7 @@ use function Psl\Type\int;
 use function Psl\Type\mixed;
 use function Psl\Type\string;
 
-/** @psalm-extends GenericTypeBench<\Psl\Type\Internal\DictType> */
+/** @extends GenericTypeBench<\Psl\Type\TypeInterface<array>> */
 final class DictTypeBench extends GenericTypeBench
 {
     /** {@inheritDoc} */
@@ -51,7 +51,11 @@ final class DictTypeBench extends GenericTypeBench
         return $this->provideHappyPathAssertion();
     }
 
-    /** @return array<non-empty-string, array{type: \Psl\Type\Internal\DictType, value: array}> */
+    /**
+     * @return array<non-empty-string, array{type: \Psl\Type\TypeInterface<array>, value: array}>
+     *
+     * @psalm-suppress MissingThrowsDocblock this method should never throw
+     */
     private function arrayDataSet(): array
     {
         return [
@@ -98,7 +102,7 @@ final class DictTypeBench extends GenericTypeBench
             'map, large' => [
                 'type' => dict(string(), mixed()),
                 'value' => array_combine(
-                    array_map(static fn (int $key): string => 'key' . $key, range(0, 99)),
+                    array_map(static fn (int $key): string => 'key' . (string) $key, range(0, 99)),
                     array_fill(0, 100, null),
                 ),
             ],
