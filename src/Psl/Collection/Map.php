@@ -9,7 +9,6 @@ use Psl\Dict;
 use Psl\Iter;
 use Psl\Vec;
 
-use function count;
 
 /**
  * @template Tk of array-key
@@ -272,7 +271,7 @@ final class Map implements MapInterface
      *                                 `Map` values.
      *
      * @return Map<Tk, Tv> A Map containing the values after a user-specified condition
-     *                 is applied.
+     *                     is applied.
      */
     public function filter(callable $fn): Map
     {
@@ -294,7 +293,7 @@ final class Map implements MapInterface
      *                                     `Map` keys and values.
      *
      * @return Map<Tk, Tv> A `Map` containing the values after a user-specified
-     *                 condition is applied to the keys and values of the current `Map`.
+     *                     condition is applied to the keys and values of the current `Map`.
      */
     public function filterWithKey(callable $fn): Map
     {
@@ -317,7 +316,7 @@ final class Map implements MapInterface
      *                               `Map` values.
      *
      * @return Map<Tk, Tu> A `Map` containing key/value pairs after a user-specified
-     *                 operation is applied.
+     *                     operation is applied.
      */
     public function map(callable $fn): Map
     {
@@ -341,7 +340,7 @@ final class Map implements MapInterface
      *                                   `Map` keys and values.
      *
      * @return Map<Tk, Tu> A `Map` containing the values after a user-specified
-     *                 operation on the current `Map`'s keys and values is applied.
+     *                     operation on the current `Map`'s keys and values is applied.
      */
     public function mapWithKey(callable $fn): Map
     {
@@ -363,7 +362,7 @@ final class Map implements MapInterface
      *                               elements of this `Map`.
      *
      * @return Map<Tk, array{0: Tv, 1: Tu}> The `Map` that combines the values of the current
-     *                 `Map` with the provided `iterable`.
+     *                                      `Map` with the provided `iterable`.
      *
      * @psalm-mutation-free
      */
@@ -412,7 +411,7 @@ final class Map implements MapInterface
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
      *
      * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
-     *                 `Map` up to `n` elements.
+     *                     `Map` up to `n` elements.
      *
      * @psalm-mutation-free
      */
@@ -433,7 +432,7 @@ final class Map implements MapInterface
      *                                 condition.
      *
      * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
-     *                 `Map` up until the callback returns `false`.
+     *                     `Map` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): Map
     {
@@ -455,7 +454,7 @@ final class Map implements MapInterface
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
      *
      * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
-     *                 `Map` containing values after the specified `n`-th element.
+     *                     `Map` containing values after the specified `n`-th element.
      *
      * @psalm-mutation-free
      */
@@ -476,7 +475,7 @@ final class Map implements MapInterface
      *                                 returned `Map`.
      *
      * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
-     *                 `Map` starting after the callback returns `true`.
+     *                     `Map` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): Map
     {
@@ -499,8 +498,8 @@ final class Map implements MapInterface
      *
      * @throws Psl\Exception\InvariantViolationException If $start or $length are negative.
      *
-     * @return Map<Tk, Tv>  A `Map` that is a proper subset of the current
-     *                 `Map` starting at `$start` up to but not including the element `$start + $length`.
+     * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
+     *                     `Map` starting at `$start` up to but not including the element `$start + $length`.
      *
      * @psalm-mutation-free
      */
