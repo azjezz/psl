@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use ArrayIterator;
 use Psl\Collection;
 use Psl\Iter;
 use Psl\Type;
@@ -42,7 +43,38 @@ final class ShapeTypeTest extends TypeTest
         ]);
     }
 
+    public function testWillConsiderUnknownIterableFieldsWhenCoercing(): void
+    {
+        static::assertEquals(
+            [
+                'defined_key' => 'value',
+                'additional_key' => 'value',
+            ],
+            Type\shape([
+                'defined_key' => Type\mixed(),
+            ], true)
+                ->coerce(new ArrayIterator([
+                    'defined_key' => 'value',
+                    'additional_key' => 'value',
+                ]))
+        );
+    }
+
     public function getValidCoercions(): iterable
+    {
+        foreach ($this->validCoercions() as $row) {
+            yield $row;
+            yield [
+                new ArrayIterator($row[0]),
+                $row[1]
+            ];
+        }
+    }
+
+    /**
+     * @return iterable<array{0: array, 1: T}>
+     */
+    private function validCoercions(): iterable
     {
         yield [
             ['name' => 'saif', 'articles' => new Collection\Vector([])],
