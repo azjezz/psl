@@ -8,7 +8,7 @@ use Psl\Tests\Benchmark\Type\Asset\ExplicitStringableObject;
 use Psl\Tests\Benchmark\Type\Asset\ImplicitStringableObject;
 use function Psl\Type\array_key;
 
-/** @psalm-extends GenericTypeBench<\Psl\Type\Internal\ArrayKeyType> */
+/** @extends GenericTypeBench<\Psl\Type\TypeInterface<array-key>> */
 final class ArrayKeyTypeBench extends GenericTypeBench
 {
     /** {@inheritDoc} */
@@ -41,7 +41,7 @@ final class ArrayKeyTypeBench extends GenericTypeBench
         return $this->strictlyValidDataSet();
     }
 
-    /** @return array<non-empty-string, array{type: \Psl\Type\Internal\DictType, value: array}> */
+    /** @return array<non-empty-string, array{type: \Psl\Type\TypeInterface<array-key>, value: array-key}> */
     private function strictlyValidDataSet(): array
     {
         return [

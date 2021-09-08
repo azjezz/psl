@@ -1,4 +1,6 @@
 {
+    "runner.annotations":     false,
+    "runner.attributes":      true,
     "runner.bootstrap":       "../../vendor/autoload.php",
     "runner.file_pattern":    "*Bench.php",
     "runner.iterations":      5,
