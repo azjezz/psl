@@ -6,9 +6,10 @@ namespace Psl\Tests\Benchmark\Type;
 
 use Psl\Tests\Benchmark\Type\Asset\ExplicitStringableObject;
 use Psl\Tests\Benchmark\Type\Asset\ImplicitStringableObject;
+use function Psl\Type\non_empty_string;
 use function Psl\Type\string;
 
-/** @psalm-extends GenericTypeBench<\Psl\Type\Internal\NonEmptyStringType> */
+/** @extends GenericTypeBench<\Psl\Type\TypeInterface<non-empty-string>> */
 final class NonEmptyStringTypeBench extends GenericTypeBench
 {
     /** {@inheritDoc} */
@@ -18,15 +19,15 @@ final class NonEmptyStringTypeBench extends GenericTypeBench
             $this->strictlyValidDataSet(),
             [
                 'int'    => [
-                    'type'  => string(),
+                    'type'  => non_empty_string(),
                     'value' => 123,
                 ],
                 'instanceof Stringable (explicit)' => [
-                    'type'  => string(),
+                    'type'  => non_empty_string(),
                     'value' => new ImplicitStringableObject(),
                 ],
                 'instanceof Stringable (implicit)' => [
-                    'type'  => string(),
+                    'type'  => non_empty_string(),
                     'value' => new ExplicitStringableObject(),
                 ],
             ]
@@ -45,12 +46,12 @@ final class NonEmptyStringTypeBench extends GenericTypeBench
         return $this->strictlyValidDataSet();
     }
 
-    /** @return array<non-empty-string, array{type: \Psl\Type\Internal\DictType, value: array}> */
+    /** @return array<non-empty-string, array{type: \Psl\Type\TypeInterface<non-empty-string>, value: non-empty-string}> */
     private function strictlyValidDataSet(): array
     {
         return [
             'string' => [
-                'type'  => string(),
+                'type'  => non_empty_string(),
                 'value' => 'foo',
             ],
         ];

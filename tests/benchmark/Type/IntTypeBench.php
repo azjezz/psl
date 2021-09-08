@@ -8,7 +8,7 @@ use Psl\Tests\Benchmark\Type\Asset\ExplicitStringableObject;
 use Psl\Tests\Benchmark\Type\Asset\ImplicitStringableObject;
 use function Psl\Type\int;
 
-/** @psalm-extends GenericTypeBench<\Psl\Type\Internal\IntType> */
+/** @extends GenericTypeBench<\Psl\Type\TypeInterface<int>> */
 final class IntTypeBench extends GenericTypeBench
 {
     /** {@inheritDoc} */
@@ -49,7 +49,7 @@ final class IntTypeBench extends GenericTypeBench
         return $this->strictlyValidDataSet();
     }
 
-    /** @return array<non-empty-string, array{type: \Psl\Type\Internal\DictType, value: array}> */
+    /** @return array<non-empty-string, array{type: \Psl\Type\TypeInterface<int>, value: int}> */
     private function strictlyValidDataSet(): array
     {
         return [

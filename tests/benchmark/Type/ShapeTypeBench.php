@@ -9,7 +9,7 @@ use function Psl\Type\mixed;
 use function Psl\Type\optional;
 use function Psl\Type\shape;
 
-/** @psalm-extends GenericTypeBench<\Psl\Type\Internal\ShapeType> */
+/** @extends GenericTypeBench<\Psl\Type\TypeInterface<array>> */
 final class ShapeTypeBench extends GenericTypeBench
 {
     /** {@inheritDoc} */

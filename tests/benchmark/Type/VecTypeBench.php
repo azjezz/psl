@@ -10,7 +10,7 @@ use function Psl\Type\mixed;
 use function Psl\Type\vec;
 use function range;
 
-/** @psalm-extends GenericTypeBench<\Psl\Type\Internal\VecType> */
+/** @extends GenericTypeBench<\Psl\Type\TypeInterface<list<mixed>>> */
 final class VecTypeBench extends GenericTypeBench
 {
     /** {@inheritDoc} */
@@ -47,7 +47,11 @@ final class VecTypeBench extends GenericTypeBench
         return $this->provideHappyPathAssertion();
     }
 
-    /** @return array<non-empty-string, array{type: \Psl\Type\Internal\DictType, value: array}> */
+    /**
+     * @return array<non-empty-string, array{type: \Psl\Type\TypeInterface<list<mixed>>, value: array}>
+     *
+     * @psalm-suppress MissingThrowsDocblock this block should never throw
+     */
     private function arrayDataSet(): array
     {
         return [

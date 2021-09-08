@@ -6,10 +6,14 @@ namespace Psl\Tests\Benchmark\Type;
 
 use PhpBench\Attributes\ParamProviders;
 
-/** @psalm-type BenchmarkedType of TypeInterface */
+/** @psalm-template BenchmarkedType of \Psl\Type\TypeInterface */
 abstract class GenericTypeBench
 {
-    /** @param array{type: BenchmarkedType, value: mixed} */
+    /**
+     * @param array{type: BenchmarkedType, value: mixed} $input
+     *
+     * @throws \Psl\Type\Exception\CoercionException
+     */
     #[ParamProviders('provideHappyPathCoercion')]
     final public function benchCoerce(array $input): mixed
     {
@@ -19,7 +23,11 @@ abstract class GenericTypeBench
     /** @return array<non-empty-string, array{type: BenchmarkedType, value: mixed}> */
     abstract public function provideHappyPathCoercion(): array;
 
-    /** @param array{type: BenchmarkedType, value: mixed} */
+    /**
+     * @param array{type: BenchmarkedType, value: mixed} $input
+     *
+     * @throws \Psl\Type\Exception\AssertException
+     */
     #[ParamProviders('provideHappyPathAssertion')]
     final public function benchAssert(array $input): void
     {
@@ -29,7 +37,7 @@ abstract class GenericTypeBench
     /** @return array<non-empty-string, array{type: BenchmarkedType, value: mixed}> */
     abstract public function provideHappyPathAssertion(): array;
 
-    /** @param array{type: BenchmarkedType, value: mixed} */
+    /** @param array{type: BenchmarkedType, value: mixed} $input */
     #[ParamProviders('provideHappyPathMatches')]
     final public function benchMatch(array $input): bool
     {
