@@ -36,7 +36,7 @@ final class NonEmptyStringType extends Type\Type
     public function coerce(mixed $value): string
     {
         if ('' !== $value && is_string($value)) {
-            /** @psalm-var non-empty-string $value */
+            /** @var non-empty-string $value */
             return $value;
         }
 
@@ -64,7 +64,7 @@ final class NonEmptyStringType extends Type\Type
     public function assert(mixed $value): string
     {
         if ('' !== $value && is_string($value)) {
-            /** @psalm-var non-empty-string $value */
+            /** @var non-empty-string $value */
             return $value;
         }
 

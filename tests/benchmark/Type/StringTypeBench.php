@@ -11,7 +11,9 @@ use function Psl\Type\string;
 /** @extends GenericTypeBench<\Psl\Type\TypeInterface<string>> */
 final class StringTypeBench extends GenericTypeBench
 {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathCoercion(): array
     {
         return array_merge(
@@ -33,19 +35,25 @@ final class StringTypeBench extends GenericTypeBench
         );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathAssertion(): array
     {
         return $this->strictlyValidDataSet();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathMatches(): array
     {
         return $this->strictlyValidDataSet();
     }
 
-    /** @return array<non-empty-string, array{type: \Psl\Type\TypeInterface<string>, value: string}> */
+    /**
+     * @return array<non-empty-string, array{type: \Psl\Type\TypeInterface<string>, value: string}>
+     */
     private function strictlyValidDataSet(): array
     {
         return [

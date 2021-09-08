@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Psl\Iter;
-use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -27,7 +26,9 @@ use function is_iterable;
  */
 final class ShapeType extends Type\Type
 {
-    /** @var array<Tk, Type\TypeInterface<Tv>> */
+    /**
+     * @var array<Tk, Type\TypeInterface<Tv>>
+     */
     private array $requiredElements;
 
     /**
@@ -83,7 +84,7 @@ final class ShapeType extends Type\Type
             $coerced[$key] = $additionalValue;
         }
 
-        /** @psalm-var array<Tk, Tv> $coerced type inference is broken by additional (unknown) fields */
+        /** @var array<Tk, Tv> $coerced type inference is broken by additional (unknown) fields */
         return $coerced;
     }
 

@@ -12,7 +12,9 @@ use function Psl\Type\string;
 /** @extends GenericTypeBench<\Psl\Type\TypeInterface<non-empty-string>> */
 final class NonEmptyStringTypeBench extends GenericTypeBench
 {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathCoercion(): array
     {
         return array_merge(
@@ -34,19 +36,25 @@ final class NonEmptyStringTypeBench extends GenericTypeBench
         );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathAssertion(): array
     {
         return $this->strictlyValidDataSet();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathMatches(): array
     {
         return $this->strictlyValidDataSet();
     }
 
-    /** @return array<non-empty-string, array{type: \Psl\Type\TypeInterface<non-empty-string>, value: non-empty-string}> */
+    /**
+     * @return array<non-empty-string, array{type: \Psl\Type\TypeInterface<non-empty-string>, value: non-empty-string}>
+     */
     private function strictlyValidDataSet(): array
     {
         return [
