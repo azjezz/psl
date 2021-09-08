@@ -6,6 +6,7 @@ namespace Psl\Tests\Benchmark\Type;
 
 use Psl\Tests\Benchmark\Type\Asset\ExplicitStringableObject;
 use Psl\Tests\Benchmark\Type\Asset\ImplicitStringableObject;
+
 use function Psl\Type\string;
 
 /** @extends GenericTypeBench<\Psl\Type\TypeInterface<string>> */
