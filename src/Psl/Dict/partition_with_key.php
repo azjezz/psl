@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Dict;
 
 /**
- * Returns a 2-tuple containing dicts for which the given predicate returned
+ * Returns a 2-tuple containing dict for which the given predicate returned
  * `true` and `false`, respectively.
  *
  * @template Tk of array-key

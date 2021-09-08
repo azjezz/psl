@@ -267,7 +267,7 @@ final class Loader
         'Psl\Regex\replace',
         'Psl\Regex\replace_with',
         'Psl\Regex\replace_every',
-        'Psl\Regex\Internal\get_prec_error',
+        'Psl\Regex\Internal\get_preg_error',
         'Psl\Regex\Internal\call_preg',
         'Psl\SecureRandom\bytes',
         'Psl\SecureRandom\float',
@@ -693,12 +693,12 @@ final class Loader
 
     public static function preload(): void
     {
-        static::loadConstants();
-        static::autoload(static function (): void {
-            static::loadFunctions();
-            static::loadInterfaces();
-            static::loadTraits();
-            static::loadClasses();
+        self::loadConstants();
+        self::autoload(static function (): void {
+            self::loadFunctions();
+            self::loadInterfaces();
+            self::loadTraits();
+            self::loadClasses();
         });
     }
 

@@ -29,7 +29,7 @@ function call_preg(string $function, callable $callable)
 
     /** @psalm-suppress ImpureFunctionCall */
     $result = Internal\suppress($callable);
-    $error = get_prec_error($function);
+    $error = get_preg_error($function);
     // @codeCoverageIgnoreStart
     if (null !== $error) {
         if (null !== $error['pattern_message']) {

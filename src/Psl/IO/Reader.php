@@ -58,14 +58,13 @@ final class Reader implements ReadHandleInterface
             return '';
         }
 
-        if (null === $max_bytes || $max_bytes >= Str\Byte\length($this->buffer)) {
-            $buffer = $this->buffer;
+        $buffer = $this->buffer;
+        if (null === $max_bytes || $max_bytes >= Str\Byte\length($buffer)) {
             $this->buffer = '';
 
             return $buffer;
         }
 
-        $buffer = $this->buffer;
         $this->buffer = Str\Byte\slice($buffer, $max_bytes);
 
         return Str\Byte\slice($buffer, 0, $max_bytes);

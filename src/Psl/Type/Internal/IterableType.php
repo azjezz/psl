@@ -37,9 +37,6 @@ final class IterableType extends Type\Type
             !$key_type->isOptional() && !$value_type->isOptional(),
             'Optional type must be the outermost.'
         );
-
-        $this->key_type   = $key_type;
-        $this->value_type = $value_type;
     }
 
     /**

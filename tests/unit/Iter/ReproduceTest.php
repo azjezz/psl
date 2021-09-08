@@ -21,7 +21,7 @@ final class ReproduceTest extends TestCase
     public function testThrowsIfNumberIsLowerThan1(): void
     {
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('The number of times you want to reproduct must be at least 1.');
+        $this->expectExceptionMessage('The number of times you want to reproduce must be at least 1.');
 
         Iter\reproduce(Fun\identity(), 0);
     }
