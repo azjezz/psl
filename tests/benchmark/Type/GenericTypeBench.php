@@ -6,7 +6,7 @@ namespace Psl\Tests\Benchmark\Type;
 
 use PhpBench\Attributes\ParamProviders;
 
-/** @psalm-template BenchmarkedType of \Psl\Type\TypeInterface */
+/** @template BenchmarkedType of \Psl\Type\TypeInterface */
 abstract class GenericTypeBench
 {
     /**
@@ -20,7 +20,9 @@ abstract class GenericTypeBench
         return $input['type']->coerce($input['value']);
     }
 
-    /** @return array<non-empty-string, array{type: BenchmarkedType, value: mixed}> */
+    /**
+     * @return array<non-empty-string, array{type: BenchmarkedType, value: mixed}>
+     */
     abstract public function provideHappyPathCoercion(): array;
 
     /**
@@ -34,7 +36,9 @@ abstract class GenericTypeBench
         $input['type']->assert($input['value']);
     }
 
-    /** @return array<non-empty-string, array{type: BenchmarkedType, value: mixed}> */
+    /**
+     * @return array<non-empty-string, array{type: BenchmarkedType, value: mixed}>
+     */
     abstract public function provideHappyPathAssertion(): array;
 
     /** @param array{type: BenchmarkedType, value: mixed} $input */
@@ -44,6 +48,8 @@ abstract class GenericTypeBench
         return $input['type']->matches($input['value']);
     }
 
-    /** @return array<non-empty-string, array{type: BenchmarkedType, value: mixed}> */
+    /**
+     * @return array<non-empty-string, array{type: BenchmarkedType, value: mixed}>
+     */
     abstract public function provideHappyPathMatches(): array;
 }

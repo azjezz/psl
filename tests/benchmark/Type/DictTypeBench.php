@@ -17,7 +17,9 @@ use function Psl\Type\string;
 /** @extends GenericTypeBench<\Psl\Type\TypeInterface<array>> */
 final class DictTypeBench extends GenericTypeBench
 {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathCoercion(): array
     {
         $arraysAndIterables = [];
@@ -33,7 +35,9 @@ final class DictTypeBench extends GenericTypeBench
         return $arraysAndIterables;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathAssertion(): array
     {
         $arraysAndIterables = [];
@@ -45,7 +49,9 @@ final class DictTypeBench extends GenericTypeBench
         return $arraysAndIterables;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathMatches(): array
     {
         return $this->provideHappyPathAssertion();

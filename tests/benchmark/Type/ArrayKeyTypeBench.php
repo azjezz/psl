@@ -11,7 +11,9 @@ use function Psl\Type\array_key;
 /** @extends GenericTypeBench<\Psl\Type\TypeInterface<array-key>> */
 final class ArrayKeyTypeBench extends GenericTypeBench
 {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathCoercion(): array
     {
         return array_merge(
@@ -29,19 +31,25 @@ final class ArrayKeyTypeBench extends GenericTypeBench
         );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathAssertion(): array
     {
         return $this->strictlyValidDataSet();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathMatches(): array
     {
         return $this->strictlyValidDataSet();
     }
 
-    /** @return array<non-empty-string, array{type: \Psl\Type\TypeInterface<array-key>, value: array-key}> */
+    /**
+     * @return array<non-empty-string, array{type: \Psl\Type\TypeInterface<array-key>, value: array-key}>
+     */
     private function strictlyValidDataSet(): array
     {
         return [

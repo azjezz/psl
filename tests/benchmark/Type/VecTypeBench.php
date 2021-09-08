@@ -13,7 +13,9 @@ use function range;
 /** @extends GenericTypeBench<\Psl\Type\TypeInterface<list<mixed>>> */
 final class VecTypeBench extends GenericTypeBench
 {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathCoercion(): array
     {
         $arraysAndIterables = [];
@@ -29,7 +31,9 @@ final class VecTypeBench extends GenericTypeBench
         return $arraysAndIterables;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathAssertion(): array
     {
         $arraysAndIterables = [];
@@ -41,7 +45,9 @@ final class VecTypeBench extends GenericTypeBench
         return $arraysAndIterables;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathMatches(): array
     {
         return $this->provideHappyPathAssertion();
