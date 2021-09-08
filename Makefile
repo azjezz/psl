@@ -6,16 +6,16 @@ install-root-dependencies:                                                      
 
 install-coding-standard-dependencies: install-root-dependencies                 ## install dependencies for coding-standard checks tooling
 	cd tools/php-cs-fixer && composer update --ignore-platform-req php
-	cd tools/php-codesniffer && composer update
+	cd tools/php-codesniffer && composer installe
 
 install-benchmark-dependencies: install-root-dependencies                       ## install dependencies for benchmark tooling
 	cd tools/phpbench && composer install
 
 install-static-analysis-dependencies: install-root-dependencies install-benchmark-dependencies ## install dependencies for static analysis tooling
-	cd tools/psalm && composer update
+	cd tools/psalm && composer install
 
 install-unit-tests-dependencies: install-root-dependencies                       ## install dependencies for the test suite
-	cd tools/phpunit && composer update
+	cd tools/phpunit && composer install
 
 install: install-root-dependencies install-coding-standard-dependencies install-benchmark-dependencies install-static-analysis-dependencies install-unit-tests-dependencies ## install all dependencies for a development environment
 
