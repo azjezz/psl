@@ -51,7 +51,7 @@ final class DictType extends Type\Type
 
         $trace = $this->getTrace();
         $key_type = $this->key_type->withTrace($trace->withFrame('dict<' . $this->key_type->toString() . ', _>'));
-        $value_type = $this->value_type->withTrace($trace->withFrame('dict<_, ' . $this->value_type->toString() . ', _>'));
+        $value_type = $this->value_type->withTrace($trace->withFrame('dict<_, ' . $this->value_type->toString() . '>'));
 
         $result = [];
 
