@@ -5,17 +5,13 @@ declare(strict_types=1);
 namespace Psl\Tests\Benchmark\Type;
 
 use ArrayIterator;
+use Psl\Dict;
+use Psl\Type;
+use Psl\Vec;
 
-use function array_combine;
-use function array_fill;
-use function array_map;
-use function Psl\Type\array_key;
-use function Psl\Type\dict;
-use function Psl\Type\int;
-use function Psl\Type\mixed;
-use function Psl\Type\string;
-
-/** @extends GenericTypeBench<\Psl\Type\TypeInterface<array>> */
+/**
+ * @extends GenericTypeBench<Type\TypeInterface<array>>
+ */
 final class DictTypeBench extends GenericTypeBench
 {
     /**
@@ -59,7 +55,7 @@ final class DictTypeBench extends GenericTypeBench
     }
 
     /**
-     * @return array<non-empty-string, array{type: \Psl\Type\TypeInterface<array>, value: array}>
+     * @return array<non-empty-string, array{type: Type\TypeInterface<array>, value: array}>
      *
      * @psalm-suppress MissingThrowsDocblock this method should never throw
      */
@@ -67,23 +63,23 @@ final class DictTypeBench extends GenericTypeBench
     {
         return [
             'generic array, empty' => [
-                'type' => dict(array_key(), mixed()),
+                'type' => Type\dict(Type\array_key(), Type\mixed()),
                 'value' => [],
             ],
             'generic array, non-empty' => [
-                'type' => dict(array_key(), mixed()),
+                'type' => Type\dict(Type\array_key(), Type\mixed()),
                 'value' => ['foo' => 'bar'],
             ],
             'generic array, large' => [
-                'type' => dict(array_key(), mixed()),
-                'value' => array_fill(0, 100, null),
+                'type' => Type\dict(Type\array_key(), Type\mixed()),
+                'value' => Vec\fill(100, null),
             ],
             'int array, empty' => [
-                'type' => dict(int(), mixed()),
+                'type' => Type\dict(Type\int(), Type\mixed()),
                 'value' => [],
             ],
             'int array, non-empty' => [
-                'type' => dict(int(), mixed()),
+                'type' => Type\dict(Type\int(), Type\mixed()),
                 'value' => [
                     'foo',
                     'bar',
@@ -91,15 +87,15 @@ final class DictTypeBench extends GenericTypeBench
                 ],
             ],
             'int array, large' => [
-                'type' => dict(int(), mixed()),
-                'value' => array_fill(0, 100, null),
+                'type' => Type\dict(Type\int(), Type\mixed()),
+                'value' => Vec\fill(100, null),
             ],
             'map, empty' => [
-                'type' => dict(string(), mixed()),
+                'type' => Type\dict(Type\string(), Type\mixed()),
                 'value' => [],
             ],
             'map, non-empty' => [
-                'type' => dict(string(), mixed()),
+                'type' => Type\dict(Type\string(), Type\mixed()),
                 'value' => [
                     'foo' => 'bar',
                     'baz' => 'tab',
@@ -107,10 +103,10 @@ final class DictTypeBench extends GenericTypeBench
                 ],
             ],
             'map, large' => [
-                'type' => dict(string(), mixed()),
-                'value' => array_combine(
-                    array_map(static fn (int $key): string => 'key' . (string) $key, range(0, 99)),
-                    array_fill(0, 100, null),
+                'type' => Type\dict(Type\string(), Type\mixed()),
+                'value' => Dict\associate(
+                    Vec\map(Vec\range(0, 99), static fn (int $key): string => 'key' . (string) $key),
+                    Vec\fill(100, null),
                 ),
             ],
         ];

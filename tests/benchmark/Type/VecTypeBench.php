@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Psl\Tests\Benchmark\Type;
 
 use ArrayIterator;
+use Psl\Type;
+use Psl\Vec;
 
-use function Psl\Type\int;
-use function Psl\Type\mixed;
-use function Psl\Type\vec;
-use function range;
-
-/** @extends GenericTypeBench<\Psl\Type\TypeInterface<list<mixed>>> */
+/**
+ * @extends GenericTypeBench<Type\TypeInterface<list<mixed>>>
+ */
 final class VecTypeBench extends GenericTypeBench
 {
     /**
@@ -63,11 +62,11 @@ final class VecTypeBench extends GenericTypeBench
     {
         return [
             'mixed, empty' => [
-                'type' => vec(mixed()),
+                'type' => Type\vec(Type\mixed()),
                 'value' => [],
             ],
             'mixed, non-empty' => [
-                'type' => vec(mixed()),
+                'type' => Type\vec(Type\mixed()),
                 'value' => [
                     'foo',
                     'bar',
@@ -75,15 +74,15 @@ final class VecTypeBench extends GenericTypeBench
                 ],
             ],
             'mixed, large' => [
-                'type' => vec(mixed()),
-                'value' => range(0, 100),
+                'type' => Type\vec(Type\mixed()),
+                'value' => Vec\range(0, 100),
             ],
             'int, empty' => [
-                'type' => vec(int()),
+                'type' => Type\vec(Type\int()),
                 'value' => [],
             ],
             'int, non-empty' => [
-                'type' => vec(int()),
+                'type' => Type\vec(Type\int()),
                 'value' => [
                     4,
                     25,

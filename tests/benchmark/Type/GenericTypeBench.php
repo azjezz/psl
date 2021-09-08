@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace Psl\Tests\Benchmark\Type;
 
 use PhpBench\Attributes\ParamProviders;
+use Psl\Type;
 
-/** @template BenchmarkedType of \Psl\Type\TypeInterface */
+/**
+ * @template BenchmarkedType of Type\TypeInterface
+ */
 abstract class GenericTypeBench
 {
     /**
      * @param array{type: BenchmarkedType, value: mixed} $input
      *
-     * @throws \Psl\Type\Exception\CoercionException
+     * @throws Type\Exception\CoercionException
      */
     #[ParamProviders('provideHappyPathCoercion')]
     final public function benchCoerce(array $input): mixed
@@ -28,7 +31,7 @@ abstract class GenericTypeBench
     /**
      * @param array{type: BenchmarkedType, value: mixed} $input
      *
-     * @throws \Psl\Type\Exception\AssertException
+     * @throws Type\Exception\AssertException
      */
     #[ParamProviders('provideHappyPathAssertion')]
     final public function benchAssert(array $input): void

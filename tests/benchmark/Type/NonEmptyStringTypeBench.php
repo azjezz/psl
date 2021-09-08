@@ -6,11 +6,11 @@ namespace Psl\Tests\Benchmark\Type;
 
 use Psl\Tests\Benchmark\Type\Asset\ExplicitStringableObject;
 use Psl\Tests\Benchmark\Type\Asset\ImplicitStringableObject;
+use Psl\Type;
 
-use function Psl\Type\non_empty_string;
-use function Psl\Type\string;
-
-/** @extends GenericTypeBench<\Psl\Type\TypeInterface<non-empty-string>> */
+/**
+ * @extends GenericTypeBench<Type\TypeInterface<non-empty-string>>
+ */
 final class NonEmptyStringTypeBench extends GenericTypeBench
 {
     /**
@@ -22,15 +22,15 @@ final class NonEmptyStringTypeBench extends GenericTypeBench
             $this->strictlyValidDataSet(),
             [
                 'int'    => [
-                    'type'  => non_empty_string(),
+                    'type'  => Type\non_empty_string(),
                     'value' => 123,
                 ],
                 'instanceof Stringable (explicit)' => [
-                    'type'  => non_empty_string(),
+                    'type'  => Type\non_empty_string(),
                     'value' => new ImplicitStringableObject(),
                 ],
                 'instanceof Stringable (implicit)' => [
-                    'type'  => non_empty_string(),
+                    'type'  => Type\non_empty_string(),
                     'value' => new ExplicitStringableObject(),
                 ],
             ]
@@ -60,7 +60,7 @@ final class NonEmptyStringTypeBench extends GenericTypeBench
     {
         return [
             'string' => [
-                'type'  => non_empty_string(),
+                'type'  => Type\non_empty_string(),
                 'value' => 'foo',
             ],
         ];
