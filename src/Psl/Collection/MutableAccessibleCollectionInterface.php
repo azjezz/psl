@@ -196,8 +196,8 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @return MutableAccessibleCollectionInterface<Tk, array{0: Tv, 1: Tu}> The `MutableAccessibleCollectionInterface`
      *                                                                       that combines the values of the current
-     *                                                                       `MutableAccessibleCollectionInterface` with
-     *                                                                       the provided `iterable`.
+     *                                                                       `MutableAccessibleCollectionInterface` with the provided
+     *                                                                       `iterable`.
      *
      * @psalm-mutation-free
      */

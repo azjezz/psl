@@ -65,8 +65,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *                                     the current `MutableMapInterface` keys and values.
      *
      * @return MutableMapInterface<Tk, Tv> - a `MutableMapInterface` containing the values after a user-specified
-     *                                     condition is applied to the keys and values of the current
-     *                                     `MutableMapInterface`.
+     *                                     condition is applied to the keys and values of the current `MutableMapInterface`.
      */
     public function filterWithKey(callable $fn): MutableMapInterface;
 
@@ -180,8 +179,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *                               elements of this `MutableMapInterface`.
      *
      * @return MutableMapInterface<Tk, array{0: Tv, 1: Tu}> - The `MutableMapInterface` that combines
-     *                                                      the values of the current `MutableMapInterface`
-     *                                                      with the provided `iterable`.
+     *                                                      the values of the current `MutableMapInterface` with the provided `iterable`.
      *
      * @psalm-mutation-free
      */

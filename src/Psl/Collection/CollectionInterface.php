@@ -85,8 +85,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *                                     `CollectionInterface` keys and values.
      *
      * @return CollectionInterface<Tk, Tv> A `CollectionInterface` containing the values after a user-specified
-     *                                     condition is applied to the keys and values of
-     *                                     the current `CollectionInterface`.
+     *                                     condition is applied to the keys and values of the current `CollectionInterface`.
      */
     public function filterWithKey(callable $fn): CollectionInterface;
 
@@ -146,8 +145,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *                               elements of this `CollectionInterface`.
      *
      * @return CollectionInterface<Tk, array{0: Tv, 1: Tu}> The `CollectionInterface` that combines
-     *                                                      the values of the current `CollectionInterface`
-     *                                                      with the provided `iterable`.
+     *                                                      the values of the current `CollectionInterface` with the provided `iterable`.
      *
      * @psalm-mutation-free
      */
