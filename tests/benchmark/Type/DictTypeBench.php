@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Benchmark\Type;
 
 use ArrayIterator;
+
 use function array_combine;
 use function array_fill;
 use function array_map;

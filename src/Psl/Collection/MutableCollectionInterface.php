@@ -114,7 +114,8 @@ interface MutableCollectionInterface extends CollectionInterface
      *                               elements of this `MutableCollectionInterface`.
      *
      * @return MutableCollectionInterface<Tk, array{0: Tv, 1: Tu}> The `MutableCollectionInterface` that
-     *                                                             combines the values of the current `MutableCollectionInterface` with
+     *                                                             combines the values of the
+     *                                                             current `MutableCollectionInterface` with
      *                                                             the provided `iterable`.
      *
      * @psalm-mutation-free
@@ -188,7 +189,8 @@ interface MutableCollectionInterface extends CollectionInterface
      *                                 returned `MutableCollectionInterface`.
      *
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` that is a proper subset of the current
-     *                                            `MutableCollectionInterface` starting after the callback returns `true`.
+     *                                            `MutableCollectionInterface` starting after the callback
+     *                                            returns `true`.
      */
     public function dropWhile(callable $fn): MutableCollectionInterface;
 
@@ -214,7 +216,7 @@ interface MutableCollectionInterface extends CollectionInterface
      * @psalm-mutation-free
      */
     public function slice(int $start, int $length): MutableCollectionInterface;
-    
+
     /**
      * Removes all items from the collection.
      *

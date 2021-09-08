@@ -495,7 +495,8 @@ final class MutableMap implements MutableMapInterface
      * @throws Psl\Exception\InvariantViolationException If $start or $len are negative.
      *
      * @return MutableMap<Tk, Tv> A `MutableMap` that is a proper subset of the current
-     *                            `MutableMap` starting at `$start` up to but not including the element `$start + $length`.
+     *                            `MutableMap` starting at `$start` up to but not including the
+     *                            element `$start + $length`.
      *
      * @psalm-mutation-free
      */
