@@ -6,10 +6,11 @@ namespace Psl\Tests\Benchmark\Type;
 
 use Psl\Tests\Benchmark\Type\Asset\ExplicitStringableObject;
 use Psl\Tests\Benchmark\Type\Asset\ImplicitStringableObject;
+use Psl\Type;
 
-use function Psl\Type\int;
-
-/** @extends GenericTypeBench<\Psl\Type\TypeInterface<int>> */
+/**
+ * @extends GenericTypeBench<Type\TypeInterface<int>>
+ */
 final class IntTypeBench extends GenericTypeBench
 {
     /**
@@ -21,19 +22,19 @@ final class IntTypeBench extends GenericTypeBench
             $this->strictlyValidDataSet(),
             [
                 'string' => [
-                    'type'  => int(),
+                    'type'  => Type\int(),
                     'value' => '123',
                 ],
                 'float' => [
-                    'type'  => int(),
+                    'type'  => Type\int(),
                     'value' => 123.0,
                 ],
                 'instanceof Stringable (explicit)' => [
-                    'type'  => int(),
+                    'type'  => Type\int(),
                     'value' => new ImplicitStringableObject(),
                 ],
                 'instanceof Stringable (implicit)' => [
-                    'type'  => int(),
+                    'type'  => Type\int(),
                     'value' => new ExplicitStringableObject(),
                 ],
             ]
@@ -57,13 +58,13 @@ final class IntTypeBench extends GenericTypeBench
     }
 
     /**
-     * @return array<non-empty-string, array{type: \Psl\Type\TypeInterface<int>, value: int}>
+     * @return array<non-empty-string, array{type: Type\TypeInterface<int>, value: int}>
      */
     private function strictlyValidDataSet(): array
     {
         return [
             'int'    => [
-                'type'  => int(),
+                'type'  => Type\int(),
                 'value' => 123,
             ],
         ];

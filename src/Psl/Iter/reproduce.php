@@ -34,7 +34,7 @@ function reproduce(callable $factory, ?int $number = null): Iterator
 {
     /** @var int $max */
     $max = $number ?? Math\INFINITY;
-    Psl\invariant($max >= 1, 'The number of times you want to reproduct must be at least 1.');
+    Psl\invariant($max >= 1, 'The number of times you want to reproduce must be at least 1.');
 
     return Iterator::from(static function () use ($max, $factory): Generator {
         for ($current = 1; $current <= $max; $current++) {

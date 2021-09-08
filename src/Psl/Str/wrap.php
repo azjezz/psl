@@ -70,7 +70,6 @@ function wrap(
         if ($current - $lastStart >= $width && $lastStart < $lastSpace) {
             $result   .= slice($string, $lastStart, $lastSpace - $lastStart, $encoding) . $break;
             $lastStart = ++$lastSpace;
-            continue;
         }
     }
 

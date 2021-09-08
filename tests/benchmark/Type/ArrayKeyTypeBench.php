@@ -6,10 +6,11 @@ namespace Psl\Tests\Benchmark\Type;
 
 use Psl\Tests\Benchmark\Type\Asset\ExplicitStringableObject;
 use Psl\Tests\Benchmark\Type\Asset\ImplicitStringableObject;
+use Psl\Type;
 
-use function Psl\Type\array_key;
-
-/** @extends GenericTypeBench<\Psl\Type\TypeInterface<array-key>> */
+/**
+ * @extends GenericTypeBench<Type\TypeInterface<array-key>>
+ */
 final class ArrayKeyTypeBench extends GenericTypeBench
 {
     /**
@@ -21,11 +22,11 @@ final class ArrayKeyTypeBench extends GenericTypeBench
             $this->strictlyValidDataSet(),
             [
                 'instanceof Stringable (explicit)' => [
-                    'type'  => array_key(),
+                    'type'  => Type\array_key(),
                     'value' => new ImplicitStringableObject(),
                 ],
                 'instanceof Stringable (implicit)' => [
-                    'type'  => array_key(),
+                    'type'  => Type\array_key(),
                     'value' => new ExplicitStringableObject(),
                 ],
             ]
@@ -49,17 +50,17 @@ final class ArrayKeyTypeBench extends GenericTypeBench
     }
 
     /**
-     * @return array<non-empty-string, array{type: \Psl\Type\TypeInterface<array-key>, value: array-key}>
+     * @return array<non-empty-string, array{type: Type\TypeInterface<array-key>, value: array-key}>
      */
     private function strictlyValidDataSet(): array
     {
         return [
             'string' => [
-                'type'  => array_key(),
+                'type'  => Type\array_key(),
                 'value' => 'foo',
             ],
             'int'    => [
-                'type'  => array_key(),
+                'type'  => Type\array_key(),
                 'value' => 123,
             ],
         ];

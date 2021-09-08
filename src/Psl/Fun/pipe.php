@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Fun;
 
-use function Psl\Iter\reduce;
+use Psl\Iter;
 
 /**
  * Performs left-to-right function composition.
@@ -33,7 +33,7 @@ use function Psl\Iter\reduce;
  */
 function pipe(callable ...$stages): callable
 {
-    return static fn ($input) => reduce(
+    return static fn ($input) => Iter\reduce(
         $stages,
         /**
          * @param T $input
@@ -41,7 +41,7 @@ function pipe(callable ...$stages): callable
          *
          * @return T
          */
-        static fn ($input, callable $next) => $next($input),
+        static fn (mixed $input, callable $next): mixed => $next($input),
         $input
     );
 }

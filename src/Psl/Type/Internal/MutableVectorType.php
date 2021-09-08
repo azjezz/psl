@@ -32,8 +32,6 @@ final class MutableVectorType extends Type\Type
         private Type\TypeInterface $value_type
     ) {
         Psl\invariant(!$value_type->isOptional(), 'Optional type must be the outermost.');
-
-        $this->value_type = $value_type;
     }
 
     /**
