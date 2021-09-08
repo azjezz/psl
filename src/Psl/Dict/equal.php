@@ -7,7 +7,7 @@ namespace Psl\Dict;
 use Psl\Iter;
 
 /**
- * Returns whether the two given dicts have the same entries, using strict
+ * Returns whether the two given dict have the same entries, using strict
  * equality. To guarantee equality of order as well as contents, use `===`.
  *
  * @template Tk of array-key
