@@ -15,7 +15,6 @@ jobs:
         php-version:
           - "8.0"
         operating-system:
-          - "macos-latest"
           - "ubuntu-latest"
 
     steps:
