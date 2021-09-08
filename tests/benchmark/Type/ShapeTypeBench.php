@@ -12,7 +12,9 @@ use function Psl\Type\shape;
 /** @extends GenericTypeBench<\Psl\Type\TypeInterface<array>> */
 final class ShapeTypeBench extends GenericTypeBench
 {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathCoercion(): array
     {
         return [
@@ -97,7 +99,9 @@ final class ShapeTypeBench extends GenericTypeBench
         ];
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathAssertion(): array
     {
         return [
@@ -143,7 +147,9 @@ final class ShapeTypeBench extends GenericTypeBench
         ];
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathMatches(): array
     {
         // As of now, matches ~= coercion in terms of happy path

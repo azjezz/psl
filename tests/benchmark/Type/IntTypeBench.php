@@ -11,7 +11,9 @@ use function Psl\Type\int;
 /** @extends GenericTypeBench<\Psl\Type\TypeInterface<int>> */
 final class IntTypeBench extends GenericTypeBench
 {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathCoercion(): array
     {
         return array_merge(
@@ -37,19 +39,25 @@ final class IntTypeBench extends GenericTypeBench
         );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathAssertion(): array
     {
         return $this->strictlyValidDataSet();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function provideHappyPathMatches(): array
     {
         return $this->strictlyValidDataSet();
     }
 
-    /** @return array<non-empty-string, array{type: \Psl\Type\TypeInterface<int>, value: int}> */
+    /**
+     * @return array<non-empty-string, array{type: \Psl\Type\TypeInterface<int>, value: int}>
+     */
     private function strictlyValidDataSet(): array
     {
         return [
