@@ -364,7 +364,7 @@ final class Vector implements VectorInterface
      *                               elements of this `VectorInterface`.
      *
      * @return Vector<array{0: T, 1: Tu}> The `Vector` that combines the values of the current
-     *                         `Vector` with the provided `iterable`.
+     *                                    `Vector` with the provided `iterable`.
      *
      * @psalm-mutation-free
      */

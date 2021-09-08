@@ -46,7 +46,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *                                 `MutableMapInterface` values.
      *
      * @return MutableMapInterface<Tk, Tv> - a MutableMapInterface containing the values after a user-specified
-     *                                 condition is applied.
+     *                                     condition is applied.
      */
     public function filter(callable $fn): MutableMapInterface;
 
@@ -65,7 +65,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *                                     the current `MutableMapInterface` keys and values.
      *
      * @return MutableMapInterface<Tk, Tv> - a `MutableMapInterface` containing the values after a user-specified
-     *                                 condition is applied to the keys and values of the current `MutableMapInterface`.
+     *                                     condition is applied to the keys and values of the current `MutableMapInterface`.
      */
     public function filterWithKey(callable $fn): MutableMapInterface;
 
@@ -85,7 +85,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *                               `MutableMapInterface` values.
      *
      * @return MutableMapInterface<Tk, Tu> - a `MutableMapInterface` containing key/value pairs after
-     *                                 a user-specified operation is applied.
+     *                                     a user-specified operation is applied.
      */
     public function map(callable $fn): MutableMapInterface;
 
@@ -106,7 +106,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *                                   `MutableMapInterface` keys and values.
      *
      * @return MutableMapInterface<Tk, Tu> A `MutableMapInterface` containing the values after a user-specified
-     *                                 operation on the current `MutableMapInterface`'s keys and values is applied.
+     *                                     operation on the current `MutableMapInterface`'s keys and values is applied.
      */
     public function mapWithKey(callable $fn): MutableMapInterface;
 
@@ -179,7 +179,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *                               elements of this `MutableMapInterface`.
      *
      * @return MutableMapInterface<Tk, array{0: Tv, 1: Tu}> - The `MutableMapInterface` that combines
-     *                                 the values of the current `MutableMapInterface` with the provided `iterable`.
+     *                                                      the values of the current `MutableMapInterface` with the provided `iterable`.
      *
      * @psalm-mutation-free
      */
@@ -197,7 +197,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @param int $n The last element that will be included in the returned `MutableMapInterface`.
      *
      * @return MutableMapInterface<Tk, Tv> A `MutableMapInterface` that is a proper subset of the current
-     *                                 `MutableMapInterface` up to `n` elements.
+     *                                     `MutableMapInterface` up to `n` elements.
      *
      * @psalm-mutation-free
      */
@@ -214,7 +214,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @param (callable(Tv): bool) $fn The callback that is used to determine the stopping condition.
      *
      * @return MutableMapInterface<Tk, Tv> A `MutableMapInterface` that is a proper subset of the current
-     *                                 `MutableMapInterface` up until the callback returns `false`.
+     *                                     `MutableMapInterface` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): MutableMapInterface;
 
@@ -231,7 +231,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *               the returned `MutableMapInterface`.
      *
      * @return MutableMapInterface<Tk, Tv> A `MutableMapInterface` that is a proper subset of the current
-     *                                 `MutableMapInterface` containing values after the specified `n`-th element.
+     *                                     `MutableMapInterface` containing values after the specified `n`-th element.
      *
      * @psalm-mutation-free
      */
@@ -249,7 +249,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *                                 returned `MutableMapInterface`.
      *
      * @return MutableMapInterface<Tk, Tv> A `MutableMapInterface` that is a proper subset of the current
-     *                                 `MutableMapInterface` starting after the callback returns `true`.
+     *                                     `MutableMapInterface` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): MutableMapInterface;
 
@@ -269,8 +269,8 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @param int $length The length of the returned `MutableMapInterface`.
      *
      * @return MutableMapInterface<Tk, Tv> - A `MutableMapInterface` that is a proper subset of the current
-     *                                 `MutableMapInterface` starting at `$start` up to but not including
-     *                                 the element `$start + $length`.
+     *                                     `MutableMapInterface` starting at `$start` up to but not including
+     *                                     the element `$start + $length`.
      *
      * @psalm-mutation-free
      */

@@ -66,7 +66,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *                                 `CollectionInterface` values.
      *
      * @return CollectionInterface<Tk, Tv> A CollectionInterface containing the values after a user-specified
-     *                                 condition is applied.
+     *                                     condition is applied.
      */
     public function filter(callable $fn): CollectionInterface;
 
@@ -85,7 +85,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *                                     `CollectionInterface` keys and values.
      *
      * @return CollectionInterface<Tk, Tv> A `CollectionInterface` containing the values after a user-specified
-     *                                 condition is applied to the keys and values of the current `CollectionInterface`.
+     *                                     condition is applied to the keys and values of the current `CollectionInterface`.
      */
     public function filterWithKey(callable $fn): CollectionInterface;
 
@@ -105,7 +105,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *                               `CollectionInterface` values.
      *
      * @return CollectionInterface<Tk, Tu> A `CollectionInterface` containing key/value pairs after
-     *                                 a user-specified operation is applied.
+     *                                     a user-specified operation is applied.
      */
     public function map(callable $fn): CollectionInterface;
 
@@ -126,7 +126,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *                                   `CollectionInterface` keys and values.
      *
      * @return CollectionInterface<Tk, Tu> A `CollectionInterface` containing the values after a user-specified
-     *                                 operation on the current `CollectionInterface`'s keys and values is applied.
+     *                                     operation on the current `CollectionInterface`'s keys and values is applied.
      */
     public function mapWithKey(callable $fn): CollectionInterface;
 
@@ -145,7 +145,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *                               elements of this `CollectionInterface`.
      *
      * @return CollectionInterface<Tk, array{0: Tv, 1: Tu}> The `CollectionInterface` that combines
-     *                                 the values of the current `CollectionInterface` with the provided `iterable`.
+     *                                                      the values of the current `CollectionInterface` with the provided `iterable`.
      *
      * @psalm-mutation-free
      */
@@ -164,7 +164,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *               `CollectionInterface`.
      *
      * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
-     *                                 `CollectionInterface` up to `n` elements.
+     *                                     `CollectionInterface` up to `n` elements.
      *
      * @psalm-mutation-free
      */
@@ -182,7 +182,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *                                 condition.
      *
      * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
-     *                                 `CollectionInterface` up until the callback returns `false`.
+     *                                     `CollectionInterface` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): CollectionInterface;
 
@@ -199,7 +199,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *               first one in the returned `CollectionInterface`.
      *
      * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
-     *                                 `CollectionInterface` containing values after the specified `n`-th element.
+     *                                     `CollectionInterface` containing values after the specified `n`-th element.
      *
      * @psalm-mutation-free
      */
@@ -217,7 +217,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *                                 returned `CollectionInterface`.
      *
      * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
-     *                                 `CollectionInterface` starting after the callback returns `true`.
+     *                                     `CollectionInterface` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): CollectionInterface;
 
@@ -237,8 +237,8 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * @param int $length The length of the returned `CollectionInterface`.
      *
      * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
-     *                                 `CollectionInterface` starting at `$start` up to but not including
-     *                                 the element `$start + $length`.
+     *                                     `CollectionInterface` starting at `$start` up to but not including
+     *                                     the element `$start + $length`.
      *
      * @psalm-mutation-free
      */
