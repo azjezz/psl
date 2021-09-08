@@ -77,10 +77,13 @@ final class ShapeType extends Type\Type
             $this->coerceIterable($value);
         }
 
+        /** @var mixed $additionalValue */
         foreach (array_diff_key($value, $this->elements_types) as $key => $additionalValue) {
+            /** @psalm-suppress MixedAssignment type inference is broken by additional (unknown) fields */
             $coerced[$key] = $additionalValue;
         }
 
+        /** @psalm-var array<Tk, Tv> $coerced type inference is broken by additional (unknown) fields */
         return $coerced;
     }
 
@@ -223,7 +226,7 @@ final class ShapeType extends Type\Type
 
         return [
             $trace,
-            $type->withTrace($trace)
+            $type->withTrace($trace),
         ];
     }
 }
