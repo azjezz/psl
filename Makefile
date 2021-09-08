@@ -6,7 +6,7 @@ install-root-dependencies:                                                      
 
 install-coding-standard-dependencies: install-root-dependencies                 ## install dependencies for coding-standard checks tooling
 	cd tools/php-cs-fixer && composer update --ignore-platform-req php
-	cd tools/php-codesniffer && composer installe
+	cd tools/php-codesniffer && composer install
 
 install-benchmark-dependencies: install-root-dependencies                       ## install dependencies for benchmark tooling
 	cd tools/phpbench && composer install
