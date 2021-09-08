@@ -7,8 +7,8 @@ namespace Psl\Type\Internal;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
-
 use Stringable;
+
 use function is_float;
 use function is_int;
 use function is_string;

@@ -185,8 +185,9 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *                               elements of this `AccessibleCollectionInterface`.
      *
      * @return AccessibleCollectionInterface<Tk, array{0: Tv, 1: Tu}> The `AccessibleCollectionInterface` that
-     *                                                                combines the values of the current `AccessibleCollectionInterface`
-     *                                                                with the provided `iterable`.
+     *                                                                combines the values of the current
+     *                                                                `AccessibleCollectionInterface` with
+     *                                                                the provided `iterable`.
      *
      * @psalm-mutation-free
      */

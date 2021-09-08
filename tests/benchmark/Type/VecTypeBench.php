@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Benchmark\Type;
 
 use ArrayIterator;
+
 use function Psl\Type\int;
 use function Psl\Type\mixed;
 use function Psl\Type\vec;
