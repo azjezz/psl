@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\Fun;
 
 use Generator;
 use PHPUnit\Framework\TestCase;
+use Psl;
 use Psl\Fun;
 use RuntimeException;
 
@@ -47,9 +48,9 @@ final class LazyTest extends TestCase
 
     public function testItCanDealWithNullValues(): void
     {
-        $counter = (object)(['tick' => 0]);
-        $proxy = Fun\lazy(static function () use (&$counter) {
-            $counter->tick++;
+        $counter = new Psl\Ref(0);
+        $proxy = Fun\lazy(static function () use ($counter) {
+            $counter->value++;
             if ($counter->tick > 1) {
                 throw new RuntimeException('The initializer should only be called once');
             }
@@ -93,7 +94,6 @@ final class LazyTest extends TestCase
             }
             return $res;
         };
-
 
         static::assertSame([1, 2, 3], $take($incrementalNumbersStream(), 3));
         static::assertSame([4, 5, 6], $take($incrementalNumbersStream(), 3));
