@@ -51,7 +51,7 @@ final class LazyTest extends TestCase
         $counter = new Psl\Ref(0);
         $proxy = Fun\lazy(static function () use ($counter) {
             $counter->value++;
-            if ($counter->tick > 1) {
+            if ($counter->value > 1) {
                 throw new RuntimeException('The initializer should only be called once');
             }
 
