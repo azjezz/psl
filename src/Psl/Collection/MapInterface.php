@@ -45,7 +45,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *                                 `MapInterface` values.
      *
      * @return MapInterface<Tk, Tv> A MapInterface containing the values after a user-specified condition
-     *                          is applied.
+     *                              is applied.
      */
     public function filter(callable $fn): MapInterface;
 
@@ -64,7 +64,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *                                     `MapInterface` keys and values.
      *
      * @return MapInterface<Tk, Tv> A `MapInterface` containing the values after a user-specified
-     *                          condition is applied to the keys and values of the current `MapInterface`.
+     *                              condition is applied to the keys and values of the current `MapInterface`.
      */
     public function filterWithKey(callable $fn): MapInterface;
 
@@ -84,7 +84,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *                               `MapInterface` values.
      *
      * @return MapInterface<Tk, Tu> A `MapInterface` containing key/value pairs after a user-specified
-     *                          operation is applied.
+     *                              operation is applied.
      */
     public function map(callable $fn): MapInterface;
 
@@ -105,7 +105,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *                                   `MapInterface` keys and values.
      *
      * @return MapInterface<Tk, Tu> A `MapInterface` containing the values after a user-specified
-     *                          operation on the current `MapInterface`'s keys and values is applied.
+     *                              operation on the current `MapInterface`'s keys and values is applied.
      */
     public function mapWithKey(callable $fn): MapInterface;
 
@@ -178,7 +178,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *                               elements of this `MapInterface`.
      *
      * @return MapInterface<Tk, array{0: Tv, 1: Tu}> - The `MapInterface` that combines the values of the current
-     *                          `MapInterface` with the provided `iterable`.
+     *                                               `MapInterface` with the provided `iterable`.
      *
      * @psalm-mutation-free
      */
@@ -197,7 +197,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *               `MapInterface`.
      *
      * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
-     *                          `MapInterface` up to `n` elements.
+     *                              `MapInterface` up to `n` elements.
      *
      * @psalm-mutation-free
      */
@@ -215,7 +215,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *                                 condition.
      *
      * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
-     *                          `MapInterface` up until the callback returns `false`.
+     *                              `MapInterface` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): MapInterface;
 
@@ -232,7 +232,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *               first one in the returned `MapInterface`.
      *
      * @return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
-     *                          `MapInterface` containing values after the specified `n`-th element.
+     *                              `MapInterface` containing values after the specified `n`-th element.
      *
      * @psalm-mutation-free
      */
@@ -250,7 +250,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *                                 returned `MapInterface`.
      *
      * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
-     *                          `MapInterface` starting after the callback returns `true`.
+     *                              `MapInterface` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): MapInterface;
 
@@ -270,8 +270,8 @@ interface MapInterface extends AccessibleCollectionInterface
      * @param int $length The length of the returned `MapInterface`
      *
      * @return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
-     *                          `MapInterface` starting at `$start` up to but not including
-     *                          the element `$start + $length`.
+     *                              `MapInterface` starting at `$start` up to but not including
+     *                              the element `$start + $length`.
      *
      * @psalm-mutation-free
      */

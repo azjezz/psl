@@ -15,6 +15,9 @@ final class FailedExecutionException extends RuntimeException
     private string $stdoutContent;
     private string $stderrContent;
 
+    /**
+     * @psalm-suppress MissingThrowsDocblock
+     */
     public function __construct(string $command, string $stdout_content, string $stderr_content, int $code)
     {
         $message = Str\format(
@@ -29,9 +32,7 @@ STDERR:
 MESSAGE,
             $command,
             $code,
-            /** @psalm-suppress MissingThrowsDocblock  */
             Str\replace($stdout_content, PHP_EOL, PHP_EOL . "    "),
-            /** @psalm-suppress MissingThrowsDocblock  */
             Str\replace($stderr_content, PHP_EOL, PHP_EOL . "    "),
         );
 

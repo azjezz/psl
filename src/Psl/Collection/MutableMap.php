@@ -268,7 +268,7 @@ final class MutableMap implements MutableMapInterface
      *                                 `MutableMap` values.
      *
      * @return MutableMap<Tk, Tv> A MutableMap containing the values after a user-specified condition
-     *                        is applied.
+     *                            is applied.
      */
     public function filter(callable $fn): MutableMap
     {
@@ -290,7 +290,7 @@ final class MutableMap implements MutableMapInterface
      *                                     `MutableMap` keys and values.
      *
      * @return MutableMap<Tk, Tv> A `MutableMap` containing the values after a user-specified
-     *                        condition is applied to the keys and values of the current `MutableMap`.
+     *                            condition is applied to the keys and values of the current `MutableMap`.
      */
     public function filterWithKey(callable $fn): MutableMap
     {
@@ -313,7 +313,7 @@ final class MutableMap implements MutableMapInterface
      *                               `MutableMap` values.
      *
      * @return MutableMap<Tk, Tu> A `MutableMap` containing key/value pairs after a user-specified
-     *                        operation is applied.
+     *                            operation is applied.
      */
     public function map(callable $fn): MutableMap
     {
@@ -337,7 +337,7 @@ final class MutableMap implements MutableMapInterface
      *                                   `MutableMap` keys and values.
      *
      * @return MutableMap<Tk, Tu> A `MutableMap` containing the values after a user-specified
-     *                        operation on the current `MutableMap`'s keys and values is applied.
+     *                            operation on the current `MutableMap`'s keys and values is applied.
      */
     public function mapWithKey(callable $fn): MutableMap
     {
@@ -359,7 +359,7 @@ final class MutableMap implements MutableMapInterface
      *                               elements of this `MutableMap`.
      *
      * @return MutableMap<Tk, array{0: Tv, 1: Tu}> A `MutableMap` that combines the values of the current
-     *                        `MutableMap` with the provided `iterable`.
+     *                                             `MutableMap` with the provided `iterable`.
      *
      * @psalm-mutation-free
      */
@@ -405,7 +405,7 @@ final class MutableMap implements MutableMapInterface
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
      *
      * @return MutableMap<Tk, Tv> A `MutableMap` that is a proper subset of the current
-     *                        `MutableMap` up to `n` elements.
+     *                            `MutableMap` up to `n` elements.
      *
      * @psalm-mutation-free
      */
@@ -426,7 +426,7 @@ final class MutableMap implements MutableMapInterface
      *                                 condition.
      *
      * @return MutableMap<Tk, Tv> A `MutableMap` that is a proper subset of the current
-     *                        `MutableMap` up until the callback returns `false`.
+     *                            `MutableMap` up until the callback returns `false`.
      */
     public function takeWhile(callable $fn): MutableMap
     {
@@ -448,7 +448,7 @@ final class MutableMap implements MutableMapInterface
      * @throws Psl\Exception\InvariantViolationException If $n is negative.
      *
      * @return MutableMap<Tk, Tv> A `MutableMap` that is a proper subset of the current
-     *                        `MutableMap` containing values after the specified `n`-th element.
+     *                            `MutableMap` containing values after the specified `n`-th element.
      *
      * @psalm-mutation-free
      */
@@ -470,7 +470,7 @@ final class MutableMap implements MutableMapInterface
      *                                 returned `MutableMap`.
      *
      * @return MutableMap<Tk, Tv> A `MutableMap` that is a proper subset of the current
-     *                        `MutableMap` starting after the callback returns `true`.
+     *                            `MutableMap` starting after the callback returns `true`.
      */
     public function dropWhile(callable $fn): MutableMap
     {
@@ -495,7 +495,8 @@ final class MutableMap implements MutableMapInterface
      * @throws Psl\Exception\InvariantViolationException If $start or $len are negative.
      *
      * @return MutableMap<Tk, Tv> A `MutableMap` that is a proper subset of the current
-     *                        `MutableMap` starting at `$start` up to but not including the element `$start + $length`.
+     *                            `MutableMap` starting at `$start` up to but not including
+     *                            the element `$start + $length`.
      *
      * @psalm-mutation-free
      */
