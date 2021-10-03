@@ -482,7 +482,7 @@ final class MutableVector implements MutableVectorInterface
      *                               elements of this `MutableVector`.
      *
      * @return MutableVector<array{0: T, 1: Tu}> The `MutableVector` that combines the values of the current
-     *                                `MutableVector` with the provided `iterable`.
+     *                                           `MutableVector` with the provided `iterable`.
      *
      * @psalm-mutation-free
      */

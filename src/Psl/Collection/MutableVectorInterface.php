@@ -189,8 +189,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *                               elements of this `MutableVectorInterface`.
      *
      * @return MutableVectorInterface<array{0: T, 1: Tu}> - The `MutableVectorInterface` that combines the
-     *                                         values of the current `MutableVectorInterface` with the provided
-     *                                         `iterable`.
+     *                                                    values of the current `MutableVectorInterface` with
+     *                                                    the provided `iterable`.
      *
      * @psalm-mutation-free
      */

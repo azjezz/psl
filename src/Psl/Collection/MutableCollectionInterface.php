@@ -33,7 +33,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *                                 `MutableCollectionInterface` values.
      *
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` containing the values
-     *                                        after a user-specified condition is applied.
+     *                                            after a user-specified condition is applied.
      */
     public function filter(callable $fn): MutableCollectionInterface;
 
@@ -52,8 +52,8 @@ interface MutableCollectionInterface extends CollectionInterface
      *                                     `MutableCollectionInterface` keys and values.
      *
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` containing the values after
-     *                                        a user-specified condition is applied to the keys and values of
-     *                                        the current `MutableCollectionInterface`.
+     *                                            a user-specified condition is applied to the keys and values of
+     *                                            the current `MutableCollectionInterface`.
      */
     public function filterWithKey(callable $fn): MutableCollectionInterface;
 
@@ -73,7 +73,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *                               `MutableCollectionInterface` values.
      *
      * @return MutableCollectionInterface<Tk, Tu> A `MutableCollectionInterface` containing key/value pairs
-     *                                        after a user-specified operation is applied.
+     *                                            after a user-specified operation is applied.
      */
     public function map(callable $fn): MutableCollectionInterface;
 
@@ -94,8 +94,8 @@ interface MutableCollectionInterface extends CollectionInterface
      *                                   `MutableCollectionInterface` keys and values.
      *
      * @return MutableCollectionInterface<Tk, Tu> A `MutableCollectionInterface` containing the values
-     *                                        after a user-specified operation on the current
-     *                                        `MutableCollectionInterface`'s keys and values is applied.
+     *                                            after a user-specified operation on the current
+     *                                            `MutableCollectionInterface`'s keys and values is applied.
      */
     public function mapWithKey(callable $fn): MutableCollectionInterface;
 
@@ -114,8 +114,9 @@ interface MutableCollectionInterface extends CollectionInterface
      *                               elements of this `MutableCollectionInterface`.
      *
      * @return MutableCollectionInterface<Tk, array{0: Tv, 1: Tu}> The `MutableCollectionInterface` that
-     *                                        combines the values of the current `MutableCollectionInterface` with
-     *                                        the provided `iterable`.
+     *                                                             combines the values of the current
+     *                                                             `MutableCollectionInterface` with
+     *                                                             the provided `iterable`.
      *
      * @psalm-mutation-free
      */
@@ -133,7 +134,7 @@ interface MutableCollectionInterface extends CollectionInterface
      * @param int $n The last element that will be included in the returned `MutableCollectionInterface`.
      *
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` that is a proper
-     *                                        subset of the current `MutableCollectionInterface` up to `n` elements.
+     *                                            subset of the current `MutableCollectionInterface` up to `n` elements.
      *
      * @psalm-mutation-free
      */
@@ -151,8 +152,8 @@ interface MutableCollectionInterface extends CollectionInterface
      *                                 condition.
      *
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` that is a proper
-     *                                        subset of the current `MutableCollectionInterface` up until
-     *                                        the callback returns `false`.
+     *                                            subset of the current `MutableCollectionInterface` up until
+     *                                            the callback returns `false`.
      */
     public function takeWhile(callable $fn): MutableCollectionInterface;
 
@@ -169,8 +170,8 @@ interface MutableCollectionInterface extends CollectionInterface
      *               first one in the returned `MutableCollectionInterface`.
      *
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` that is a proper
-     *                                        subset of the current `MutableCollectionInterface` containing values
-     *                                        after the specified `n`-th element.
+     *                                            subset of the current `MutableCollectionInterface` containing values
+     *                                            after the specified `n`-th element.
      *
      * @psalm-mutation-free
      */
@@ -188,7 +189,8 @@ interface MutableCollectionInterface extends CollectionInterface
      *                                 returned `MutableCollectionInterface`.
      *
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` that is a proper subset of the current
-     *                                        `MutableCollectionInterface` starting after the callback returns `true`.
+     *                                            `MutableCollectionInterface` starting after the callback returns
+     *                                            `true`.
      */
     public function dropWhile(callable $fn): MutableCollectionInterface;
 
@@ -208,13 +210,13 @@ interface MutableCollectionInterface extends CollectionInterface
      * @param int $length The length of the returned `MutableCollectionInterface`.
      *
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` that is a proper
-     *                                        subset of the current `MutableCollectionInterface` starting
-     *                                        at `$start` up to but not including the element `$start + $length`.
+     *                                            subset of the current `MutableCollectionInterface` starting
+     *                                            at `$start` up to but not including the element `$start + $length`.
      *
      * @psalm-mutation-free
      */
     public function slice(int $start, int $length): MutableCollectionInterface;
-    
+
     /**
      * Removes all items from the collection.
      *

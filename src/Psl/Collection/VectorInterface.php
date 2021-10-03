@@ -217,7 +217,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *                               elements of this `VectorInterface`.
      *
      * @return VectorInterface<array{0: T, 1: Tu}> The `VectorInterface` that combines the values
-     *                                  of the current `VectorInterface` with the provided `iterable`.
+     *                                             of the current `VectorInterface` with the provided `iterable`.
      *
      * @psalm-mutation-free
      */
