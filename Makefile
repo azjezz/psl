@@ -53,4 +53,10 @@ code-coverage: unit-tests                                                       
 	composer global require php-coveralls/php-coveralls
 	php-coveralls -x tests/logs/clover.xml -o tests/logs/coveralls-upload.json -v
 
-check: coding-standard-check static-analysis security-analysis unit-tests       ## run quick checks for local development iterations
+docs-generate:                                                                  ## regenerate docs
+	php docs/documenter.php
+
+docs-check:                                                                     ## checks if docs are up to date
+	php docs/documenter.php check
+
+check: coding-standard-check static-analysis security-analysis unit-tests docs-check  ## run quick checks for local development iterations
