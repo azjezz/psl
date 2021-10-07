@@ -146,6 +146,7 @@ final class Loader
         'Psl\Fun\lazy',
         'Psl\Fun\pipe',
         'Psl\Fun\rethrow',
+        'Psl\Fun\tap',
         'Psl\Fun\when',
         'Psl\Internal\boolean',
         'Psl\Internal\type',
