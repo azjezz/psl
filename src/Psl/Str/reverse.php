@@ -8,7 +8,6 @@ use Psl\Vec;
 
 /**
  * Returns the given string reversed.
- *
  */
 function reverse(string $string, ?string $encoding = null): string
 {
