@@ -55,7 +55,7 @@
 - [replace_ci](./../../src/Psl/Str/replace_ci.php#L20)
 - [replace_every](./../../src/Psl/Str/replace_every.php#L19)
 - [replace_every_ci](./../../src/Psl/Str/replace_every_ci.php#L19)
-- [reverse](./../../src/Psl/Str/reverse.php#L14)
+- [reverse](./../../src/Psl/Str/reverse.php#L13)
 - [search](./../../src/Psl/Str/search.php#L25)
 - [search_ci](./../../src/Psl/Str/search_ci.php#L25)
 - [search_last](./../../src/Psl/Str/search_last.php#L25)
