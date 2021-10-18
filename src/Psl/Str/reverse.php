@@ -14,5 +14,7 @@ use Psl\Vec;
 function reverse(string $string, ?string $encoding = null): string
 {
         $chunks = chunk($string, encoding: $encoding);
+
+        /** @psalm-suppress ImpureFunctionCall */
         return join(Vec\reverse($chunks), '');
 }
