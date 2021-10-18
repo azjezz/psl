@@ -456,6 +456,7 @@ final class Loader
         'Psl\Str\Grapheme\ends_with',
         'Psl\Str\Grapheme\ends_with_ci',
         'Psl\Str\Grapheme\length',
+        'Psl\Str\Grapheme\reverse',
         'Psl\Str\Grapheme\search',
         'Psl\Str\Grapheme\search_ci',
         'Psl\Str\Grapheme\search_last',
