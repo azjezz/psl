@@ -7,7 +7,7 @@ namespace Psl\Tests\Unit\Str;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
-class ReverseTest extends TestCase
+final class ReverseTest extends TestCase
 {
 
     public function provideData(): array
