@@ -353,6 +353,7 @@ final class Loader
         'Psl\Str\replace_ci',
         'Psl\Str\replace_every',
         'Psl\Str\replace_every_ci',
+        'Psl\Str\reverse',
         'Psl\Str\search',
         'Psl\Str\search_ci',
         'Psl\Str\search_last',
