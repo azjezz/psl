@@ -28,4 +28,12 @@ class ReverseTest extends TestCase
     {
         static::assertSame(Psl\Str\Grapheme\reverse($string), $expected);
     }
+
+    public function testFailReverse(): void
+    {
+        $string = Psl\Str\Byte\slice('🐶🐶🐶', 0, 5);
+
+        $this->expectException(Psl\Exception\InvalidArgumentException::class);
+        Psl\Str\Grapheme\reverse($string);
+    }
 }
