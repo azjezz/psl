@@ -14,5 +14,5 @@ use Psl\Vec;
 function reverse(string $string, ?string $encoding = null): string
 {
         $chunks = chunk($string, encoding: $encoding);
-        return join(Vec\reverse($parts), '');
+        return join(Vec\reverse($chunks), '');
 }
