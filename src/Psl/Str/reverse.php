@@ -8,6 +8,8 @@ use Psl\Vec;
 
 /**
  * Returns the given string reversed.
+ *
+ * @psalm-pure
  */
 function reverse(string $string, ?string $encoding = null): string
 {
