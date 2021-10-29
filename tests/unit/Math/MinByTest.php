@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 use Psl\Math;
 use Psl\Str;
+use Psl\Vec;
 
 final class MinByTest extends TestCase
 {
@@ -40,7 +41,7 @@ final class MinByTest extends TestCase
 
         yield [
             0,
-            [...Iter\range(0, 9)],
+            [...Vec\range(0, 9)],
             static fn ($i) => $i,
         ];
 

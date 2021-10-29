@@ -74,4 +74,21 @@ final class UnionTypeTest extends TypeTest
             'null|vec<positive-int>|"php"|"still"|"alive"'
         ];
     }
+
+    public function testLiteralUnions(): void
+    {
+        $type = Type\union(
+            Type\literal_scalar('a'),
+            Type\literal_scalar('b'),
+            Type\literal_scalar('c'),
+            Type\literal_scalar('d'),
+        );
+
+        foreach (['a', 'b', 'c', 'd'] as $item) {
+            static::assertTrue($type->matches($item));
+            static::assertSame($item, $type->assert($item));
+        }
+
+        static::assertFalse($type->matches('e'));
+    }
 }

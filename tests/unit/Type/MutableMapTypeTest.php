@@ -99,11 +99,11 @@ final class MutableMapTypeTest extends TypeTest
      */
     protected function equals($a, $b): bool
     {
-        if (Type\is_object($a) && Type\is_instanceof($a, Collection\MutableMapInterface::class)) {
+        if (Type\object(Collection\MutableMapInterface::class)->matches($a)) {
             $a = $a->toArray();
         }
 
-        if (Type\is_object($b) && Type\is_instanceof($b, Collection\MutableMapInterface::class)) {
+        if (Type\object(Collection\MutableMapInterface::class)->matches($b)) {
             $b = $b->toArray();
         }
 

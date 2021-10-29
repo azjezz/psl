@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Math;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Arr;
 use Psl\Math;
+use Psl\Vec;
 
 final class MeanTest extends TestCase
 {
@@ -76,7 +76,7 @@ final class MeanTest extends TestCase
 
             [
                 100.0,
-                Arr\fill(100, 0, 100)
+                Vec\fill(100, 100)
             ],
 
             [

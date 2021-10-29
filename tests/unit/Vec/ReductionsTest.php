@@ -21,17 +21,35 @@ final class ReductionsTest extends TestCase
      *
      * @dataProvider provideData
      */
-    public function testReductions(array $expected, iterable $iterable, callable $function, $initial): void
+    public function testReductions(array $expected, iterable $iterable, callable $function, mixed $initial): void
     {
-        $result = Vec\reductions($iterable, $function, $initial);
-
-        static::assertSame($expected, Iter\to_array_with_keys($result));
+        static::assertSame($expected, Vec\reductions($iterable, $function, $initial));
     }
 
+    /**
+     * @return iterable<array{0: list<int>, 1: iterable<int>, 2: (function(int, int, int): int)}>
+     */
     public function provideData(): iterable
     {
-        yield [[], [], static fn ($accumulator, $k, $v) => $accumulator, null];
-        yield [[1, 3, 6], [1, 2, 3], static fn ($accumulator, $k, $v) => $accumulator + $v, 0];
-        yield [[1, 3, 6], Iter\to_iterator([1, 2, 3]), static fn ($accumulator, $k, $v) => $accumulator + $v, 0];
+        yield [
+            [],
+            [],
+            static fn (int $accumulator, int $k, int $v): int => $accumulator,
+            0,
+        ];
+
+        yield [
+            [1, 3, 6],
+            [1, 2, 3],
+            static fn (int $accumulator, int $k, int $v): int => $accumulator + $v,
+            0,
+        ];
+
+        yield [
+            [1, 3, 6],
+            Iter\to_iterator([1, 2, 3]),
+            static fn (int $accumulator, int $k, int $v): int => $accumulator + $v,
+            0,
+        ];
     }
 }

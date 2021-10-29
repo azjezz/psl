@@ -29,7 +29,7 @@ namespace Psl\Iter;
  *
  * @return Ts
  */
-function reduce(iterable $iterable, callable $function, $initial)
+function reduce(iterable $iterable, callable $function, mixed $initial): mixed
 {
     $accumulator = $initial;
     foreach ($iterable as $v) {

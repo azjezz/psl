@@ -7,7 +7,6 @@
 # Components API
 
 - [Psl](./component/psl.md)
-- [Psl\Arr](./component/arr.md)
 - [Psl\Class](./component/class.md)
 - [Psl\Collection](./component/collection.md)
 - [Psl\DataStructure](./component/data-structure.md)

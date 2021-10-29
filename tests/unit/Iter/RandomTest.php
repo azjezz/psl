@@ -21,6 +21,10 @@ final class RandomTest extends TestCase
         $value    = Iter\random($iterable);
 
         static::assertTrue(Iter\contains($iterable, $value));
+
+        $value    = Iter\random([1]);
+
+        static::assertSame(1, $value);
     }
 
     public function testRandomWithEmptyIterator(): void

@@ -25,6 +25,19 @@ final class IteratorTest extends TestCase
         static::assertCount(3, $iterator);
     }
 
+    public function testKeyIteration(): void
+    {
+        $iterator = Iter\Iterator::from((static fn () => yield from [1, 2, 3]));
+        $keys = [];
+        while ($iterator->valid()) {
+            $keys[] = $iterator->key();
+
+            $iterator->next();
+        }
+
+        static::assertSame([0, 1, 2], $keys);
+    }
+
     public function testSeek(): void
     {
         $iterator = new Iter\Iterator((static fn () => yield from [1, 2, 3, 4, 5])());

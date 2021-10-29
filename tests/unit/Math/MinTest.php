@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Math;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Iter;
 use Psl\Math;
+use Psl\Vec;
 
 final class MinTest extends TestCase
 {
@@ -24,12 +24,12 @@ final class MinTest extends TestCase
         return [
             [
                 0,
-                [...Iter\range(0, 10, 2)]
+                [...Vec\range(0, 10, 2)]
             ],
 
             [
                 4,
-                [...Iter\range(5, 10), 4]
+                [...Vec\range(5, 10), 4]
             ],
 
             [

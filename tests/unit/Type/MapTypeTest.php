@@ -82,11 +82,11 @@ final class MapTypeTest extends TypeTest
      */
     protected function equals($a, $b): bool
     {
-        if (Type\is_object($a) && Type\is_instanceof($a, Collection\MapInterface::class)) {
+        if (Type\object(Collection\MapInterface::class)->matches($a)) {
             $a = $a->toArray();
         }
 
-        if (Type\is_object($b) && Type\is_instanceof($b, Collection\MapInterface::class)) {
+        if (Type\object(Collection\MapInterface::class)->matches($b)) {
             $b = $b->toArray();
         }
 

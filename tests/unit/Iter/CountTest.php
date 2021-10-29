@@ -7,6 +7,7 @@ namespace Psl\Tests\Unit\Iter;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Iter;
+use Psl\Vec;
 
 final class CountTest extends TestCase
 {
@@ -23,8 +24,8 @@ final class CountTest extends TestCase
         yield [0, []];
         yield [1, [null]];
         yield [3, [1, 2, 3]];
-        yield [10, Iter\range(1, 10)];
+        yield [10, Vec\range(1, 10)];
         yield [1, (static fn () => yield 1 => 2)()];
-        yield [21, new Collection\Vector(Iter\range(0, 100, 5))];
+        yield [21, Collection\Vector::fromArray(Vec\range(0, 100, 5))];
     }
 }

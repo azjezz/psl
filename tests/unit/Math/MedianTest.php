@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Math;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Arr;
-use Psl\Iter;
 use Psl\Math;
+use Psl\Vec;
 
 final class MedianTest extends TestCase
 {
@@ -27,7 +26,7 @@ final class MedianTest extends TestCase
                 [
                     10,
                     5,
-                    ...Iter\range(0, 9, 2),
+                    ...Vec\range(0, 9, 2),
                 ],
             ],
 
@@ -36,7 +35,7 @@ final class MedianTest extends TestCase
                 [
                     18,
                     15,
-                    ...Iter\range(0, 10),
+                    ...Vec\range(0, 10),
                     15,
                 ],
             ],
@@ -46,7 +45,7 @@ final class MedianTest extends TestCase
                 [
                     19,
                     15,
-                    ...Iter\range(0, 45, 5),
+                    ...Vec\range(0, 45, 5),
                     52,
                     64,
                 ],
@@ -54,7 +53,7 @@ final class MedianTest extends TestCase
 
             [
                 100.0,
-                Arr\fill(100, 0, 100)
+                Vec\fill(100, 100)
             ],
 
             [

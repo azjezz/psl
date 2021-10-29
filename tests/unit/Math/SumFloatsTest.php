@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Math;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Iter;
 use Psl\Math;
+use Psl\Vec;
 
 final class SumFloatsTest extends TestCase
 {
@@ -26,7 +26,7 @@ final class SumFloatsTest extends TestCase
                 [
                     10.9,
                     5,
-                    ...Iter\range(0, 9.8798, 0.48),
+                    ...Vec\range(0, 9.8798, 0.48),
                 ],
             ],
 
@@ -35,7 +35,7 @@ final class SumFloatsTest extends TestCase
                 [
                     18,
                     15,
-                    ...Iter\to_array(Iter\range(0, 10)),
+                    ...Vec\range(0, 10),
                     15,
                 ],
             ],
@@ -45,7 +45,7 @@ final class SumFloatsTest extends TestCase
                 [
                     19.5,
                     15.8,
-                    ...Iter\range(0.5, 45, 5.98),
+                    ...Vec\range(0.5, 45, 5.98),
                     52.8,
                     64,
                 ]

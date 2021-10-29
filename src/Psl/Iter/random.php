@@ -24,8 +24,7 @@ function random(iterable $iterable)
 {
     // We convert the iterable to an array before checking if it is empty,
     // this helps us avoids an issue when the iterable is a generator where
-    // would exhaust it when calling `is_empty`, which results in an
-    // exception at the `to_array` call.
+    // would exhaust it when calling `count`
     $values = Vec\values($iterable);
     $size = count($values);
 
