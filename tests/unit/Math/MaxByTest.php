@@ -6,7 +6,7 @@ namespace Psl\Tests\Unit\Math;
 
 use Generator;
 use PHPUnit\Framework\TestCase;
-use Psl\Arr;
+use Psl\Iter;
 use Psl\Math;
 use Psl\Str;
 
@@ -35,7 +35,7 @@ final class MaxByTest extends TestCase
                 ['foo', 'bar'],
                 ['foo', 'bar', 'baz']
             ],
-            static fn ($arr) => Arr\count($arr),
+            static fn ($arr) => Iter\count($arr),
         ];
 
         yield [

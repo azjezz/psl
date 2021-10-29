@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Type\Exception;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Arr;
 use Psl\Collection;
+use Psl\Iter;
 use Psl\Str;
 use Psl\Type;
 
@@ -34,7 +34,7 @@ final class TypeCoercionExceptionTest extends TestCase
             $frames = $trace->getFrames();
 
             static::assertCount(1, $frames);
-            static::assertSame('iterable<bool, _>', Arr\first($frames));
+            static::assertSame('iterable<bool, _>', Iter\first($frames));
         }
     }
 

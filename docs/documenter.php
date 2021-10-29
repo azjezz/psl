@@ -181,7 +181,6 @@ function get_all_components(): array
 {
     $components = [
         'Psl',
-        'Psl\\Arr',
         'Psl\\Class',
         'Psl\\Collection',
         'Psl\\DataStructure',

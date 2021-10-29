@@ -15,9 +15,7 @@ final class KeysTest extends TestCase
      */
     public function testKeys(array $expected, iterable $iterable): void
     {
-        $result = Vec\keys($iterable);
-
-        static::assertSame($expected, Iter\to_array_with_keys($result));
+        static::assertSame($expected, Vec\keys($iterable));
     }
 
     public function provideData(): iterable

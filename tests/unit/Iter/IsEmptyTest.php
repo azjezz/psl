@@ -20,7 +20,7 @@ final class IsEmptyTest extends TestCase
     public function provideData(): iterable
     {
         yield [true, []];
-        yield [true, Iter\from_entries([])];
+        yield [true, Iter\to_iterator([])];
         yield [true, (static fn () => yield from [])()];
 
         yield [false, [null]];

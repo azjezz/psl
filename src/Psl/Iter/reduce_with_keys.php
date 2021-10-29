@@ -32,12 +32,12 @@ namespace Psl\Iter;
  * @template Ts
  *
  * @param iterable<Tk, Tv> $iterable
- * @param (callable(?Ts, Tk, Tv): Ts) $function
- * @param Ts|null $initial
+ * @param (callable(Ts, Tk, Tv): Ts) $function
+ * @param Ts $initial
  *
- * @return Ts|null
+ * @return Ts
  */
-function reduce_with_keys(iterable $iterable, callable $function, $initial = null)
+function reduce_with_keys(iterable $iterable, callable $function, mixed $initial): mixed
 {
     $accumulator = $initial;
     foreach ($iterable as $k => $v) {

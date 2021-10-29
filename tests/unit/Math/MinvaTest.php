@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Math;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Iter;
 use Psl\Math;
+use Psl\Vec;
 
 final class MinvaTest extends TestCase
 {
@@ -25,14 +25,14 @@ final class MinvaTest extends TestCase
                 5,
                 10,
                 5,
-                ...Iter\range(7, 9, 2)
+                ...Vec\range(7, 9, 2)
             ],
 
             [
                 4,
                 18,
                 15,
-                ...Iter\to_array(Iter\range(4, 10)),
+                ...Vec\range(4, 10),
                 15
             ],
 
@@ -40,7 +40,7 @@ final class MinvaTest extends TestCase
                 15,
                 19,
                 15,
-                ...Iter\range(40, 45, 5),
+                ...Vec\range(40, 45, 5),
                 52,
                 64
             ]

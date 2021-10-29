@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\Iter;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
+use Psl\Vec;
 
 final class LastKeyTest extends TestCase
 {
@@ -23,8 +24,9 @@ final class LastKeyTest extends TestCase
     {
         yield [3, [1, 2, 3, 4]];
         yield [3, Iter\to_iterator([1, 2, 3, 4])];
-        yield [3, Iter\range(1, 4)];
-        yield [4, Iter\range(4, 8)];
+        yield [3, Vec\range(1, 4)];
+        yield [4, Vec\range(4, 8)];
+        yield [4, Iter\to_iterator(Vec\range(4, 8))];
         yield [null, []];
         yield [0, [null]];
         yield [1, [null, null]];

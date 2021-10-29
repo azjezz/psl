@@ -91,11 +91,11 @@ final class MutableVectorTypeTest extends TypeTest
      */
     protected function equals($a, $b): bool
     {
-        if (Type\is_object($a) && Type\is_instanceof($a, Collection\MutableVectorInterface::class)) {
+        if (Type\object(Collection\MutableVectorInterface::class)->matches($a)) {
             $a = $a->toArray();
         }
 
-        if (Type\is_object($b) && Type\is_instanceof($b, Collection\MutableVectorInterface::class)) {
+        if (Type\object(Collection\MutableVectorInterface::class)->matches($b)) {
             $b = $b->toArray();
         }
 

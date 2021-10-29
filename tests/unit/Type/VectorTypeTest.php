@@ -91,11 +91,11 @@ final class VectorTypeTest extends TypeTest
      */
     protected function equals($a, $b): bool
     {
-        if (Type\is_object($a) && Type\is_instanceof($a, Collection\VectorInterface::class)) {
+        if (Type\object(Collection\VectorInterface::class)->matches($a)) {
             $a = $a->toArray();
         }
 
-        if (Type\is_object($b) && Type\is_instanceof($b, Collection\VectorInterface::class)) {
+        if (Type\object(Collection\VectorInterface::class)->matches($b)) {
             $b = $b->toArray();
         }
 

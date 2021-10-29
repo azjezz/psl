@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Password;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Arr;
 use Psl\Password;
 use Psl\SecureRandom;
 use Psl\Str;
+use Psl\Vec;
 
 use const PASSWORD_BCRYPT;
 
@@ -23,7 +23,7 @@ final class PasswordTest extends TestCase
         static::assertContains(Password\ARGON2I_ALGORITHM, $algorithms);
         static::assertContains(Password\ARGON2ID_ALGORITHM, $algorithms);
 
-        $algos = Arr\map(
+        $algos = Vec\map(
             password_algos(),
             static fn (string $value): string => PASSWORD_BCRYPT === $value ? Password\BCRYPT_ALGORITHM : $value
         );
