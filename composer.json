@@ -18,9 +18,6 @@
         "ext-intl": "*"
     },
     "autoload": {
-        "psr-4": {
-            "Psl\\Integration\\": "integration"
-        },
         "files": [
             "src/bootstrap.php"
         ]
@@ -34,9 +31,6 @@
         }
     },
     "extra": {
-        "psalm": {
-            "pluginClass": "Psl\\Integration\\Psalm\\Plugin"
-        },
         "thanks": {
             "name": "hhvm/hsl",
             "url": "https://github.com/hhvm/hsl"

@@ -3,7 +3,6 @@
     <projectFiles>
         <directory name="../../src" />
         <directory name="../../tests/benchmark" />
-        <directory name="../../integration" />
         <ignoreFiles>
             <file name="../../src/bootstrap.php" />
             <file name="../../src/preload.php" />
