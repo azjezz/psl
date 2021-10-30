@@ -9,7 +9,7 @@ updates:
       - "Status: Review Needed"
       - "Subject: Dependencies"
     commit-message:
-      prefix: "chore(dependencies)"
+      prefix: "chore(deps)"
     assignees:
       - "azjezz"
 
@@ -22,6 +22,6 @@ updates:
       - "Status: Review Needed"
       - "Subject: Dependencies"
     commit-message:
-      prefix: "chore(github-actions)"
+      prefix: "chore(ga)"
     assignees:
       - "azjezz"
