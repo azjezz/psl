@@ -41,7 +41,7 @@ jobs:
 
       - name: "installing dependencies"
         run: |
-          make install-unit-tests-dependencies -j10
+          make install -j10
 
       - name: "running unit tests"
         run: make unit-tests

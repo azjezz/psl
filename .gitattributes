@@ -26,7 +26,7 @@
 /.editorconfig      export-ignore
 /.gitattributes     export-ignore
 /.gitignore         export-ignore
-/tools              export-ignore
+/config             export-ignore
 /tests              export-ignore
 /docs               export-ignore
 

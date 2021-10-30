@@ -29,7 +29,7 @@ Here is a small checklist to get you going:
 
 ## Submitting Pull Requests
 
-Before we can merge your Pull-Request here are some guidelines that you need to follow.
+Before we can merge your Pull-Request, here are some guidelines that you need to follow.
 
 These guidelines exist not to annoy you, but to keep the code base clean, unified and future proof.
 

@@ -1,11 +1,11 @@
 {
     "runner.annotations":     false,
     "runner.attributes":      true,
-    "runner.bootstrap":       "../../vendor/autoload.php",
+    "runner.bootstrap":       "../vendor/autoload.php",
     "runner.file_pattern":    "*Bench.php",
     "runner.iterations":      5,
     "runner.revs":            10,
-    "runner.path":            "../../tests/benchmark",
+    "runner.path":            "../tests/benchmark",
     "runner.retry_threshold": 5,
     "runner.warmup":          2,
     "report.outputs":         {
