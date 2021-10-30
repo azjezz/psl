@@ -22,7 +22,7 @@ jobs:
 
       - name: "installing dependencies"
         run: |
-          make install-coding-standard-dependencies -j10 -O
+          make install -j10 -O
 
       - name: "checking coding standards"
         run: make coding-standard-check

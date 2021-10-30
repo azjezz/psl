@@ -26,7 +26,7 @@ declare(strict_types=1);
 use Psl\{Str, Vec};
 
 /**
- * @psalm-param iterable<?int> $codes
+ * @param iterable<?int> $codes
  */
 function foo(iterable $codes): string
 {

@@ -12,7 +12,7 @@ final class CurrentExecTest extends TestCase
 {
     public function testCurrentExe(): void
     {
-        $phpunit = __DIR__ . '/../../../tools/phpunit/vendor/bin/phpunit';
+        $phpunit = __DIR__ . '/../../../vendor/bin/phpunit';
         $phpunit = Filesystem\canonicalize($phpunit);
         if (PHP_OS_FAMILY !== 'Windows' && Filesystem\is_symbolic_link($phpunit)) {
             $phpunit = Filesystem\read_symbolic_link($phpunit);

@@ -1,12 +1,14 @@
 <?php
 
+use Symfony\Component\Finder\Finder;
+
 return (new PhpCsFixer\Config())
     ->setFinder(
-        \Symfony\Component\Finder\Finder::create()
+        Finder::create()
             ->in([
-                __DIR__ . '/../../src',
-                __DIR__ . '/../../docs',
-                __DIR__ . '/../../tests',
+                __DIR__ . '/../src',
+                __DIR__ . '/../docs',
+                __DIR__ . '/../tests',
             ])
     )
     ->setRiskyAllowed(true)
@@ -46,7 +48,6 @@ return (new PhpCsFixer\Config())
         'strict_comparison' => true,
         'strict_param' => true,
         'no_blank_lines_after_phpdoc' => true,
-        'no_empty_phpdoc' => true,
         'phpdoc_align' => [
             'align' => 'left',
         ],
@@ -73,7 +74,5 @@ return (new PhpCsFixer\Config())
         'phpdoc_trim_consecutive_blank_line_separation' => true,
         'no_empty_statement' => true,
         'semicolon_after_instruction' => true,
-        'declare_strict_types' => true,
-        'strict_param' => true,
     ])
-;
+    ;
