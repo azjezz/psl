@@ -80,7 +80,7 @@ final class MutableVectorTypeTest extends TypeTest
         yield [$this->getType(), 'Psl\Collection\MutableVectorInterface<int>'];
         yield [Type\mutable_vector(Type\string()), 'Psl\Collection\MutableVectorInterface<string>'];
         yield [
-            Type\mutable_vector(Type\object(Iter\Iterator::class)),
+            Type\mutable_vector(Type\instance_of(Iter\Iterator::class)),
             'Psl\Collection\MutableVectorInterface<Psl\Iter\Iterator>'
         ];
     }
@@ -91,11 +91,11 @@ final class MutableVectorTypeTest extends TypeTest
      */
     protected function equals($a, $b): bool
     {
-        if (Type\object(Collection\MutableVectorInterface::class)->matches($a)) {
+        if (Type\instance_of(Collection\MutableVectorInterface::class)->matches($a)) {
             $a = $a->toArray();
         }
 
-        if (Type\object(Collection\MutableVectorInterface::class)->matches($b)) {
+        if (Type\instance_of(Collection\MutableVectorInterface::class)->matches($b)) {
             $b = $b->toArray();
         }
 

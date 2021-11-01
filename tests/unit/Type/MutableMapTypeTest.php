@@ -88,7 +88,7 @@ final class MutableMapTypeTest extends TypeTest
         ];
 
         yield [
-            Type\mutable_map(Type\array_key(), Type\object(Iter\Iterator::class)),
+            Type\mutable_map(Type\array_key(), Type\instance_of(Iter\Iterator::class)),
             'Psl\Collection\MutableMapInterface<array-key, Psl\Iter\Iterator>'
         ];
     }
@@ -99,11 +99,11 @@ final class MutableMapTypeTest extends TypeTest
      */
     protected function equals($a, $b): bool
     {
-        if (Type\object(Collection\MutableMapInterface::class)->matches($a)) {
+        if (Type\instance_of(Collection\MutableMapInterface::class)->matches($a)) {
             $a = $a->toArray();
         }
 
-        if (Type\object(Collection\MutableMapInterface::class)->matches($b)) {
+        if (Type\instance_of(Collection\MutableMapInterface::class)->matches($b)) {
             $b = $b->toArray();
         }
 

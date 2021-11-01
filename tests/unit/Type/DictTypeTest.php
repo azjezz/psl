@@ -95,7 +95,7 @@ final class DictTypeTest extends TypeTest
         yield [Type\dict(Type\array_key(), Type\int()), 'dict<array-key, int>'];
         yield [Type\dict(Type\array_key(), Type\string()), 'dict<array-key, string>'];
         yield [
-            Type\dict(Type\array_key(), Type\object(Iter\Iterator::class)),
+            Type\dict(Type\array_key(), Type\instance_of(Iter\Iterator::class)),
             'dict<array-key, Psl\Iter\Iterator>'
         ];
     }

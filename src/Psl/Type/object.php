@@ -5,13 +5,9 @@ declare(strict_types=1);
 namespace Psl\Type;
 
 /**
- * @template T
- *
- * @param class-string<T> $classname
- *
- * @return TypeInterface<T>
+ * @return TypeInterface<object>
  */
-function object(string $classname): TypeInterface
+function object(): TypeInterface
 {
-    return new Internal\ObjectType($classname);
+    return new Internal\ObjectType();
 }
