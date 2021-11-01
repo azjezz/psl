@@ -21,6 +21,12 @@
         <type>error</type>
     </rule>
 
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="240"/>
+        </properties>
+    </rule>
+
     <!-- Don't hide tokenizer exceptions -->
     <rule ref="Internal.Tokenizer.Exception">
         <type>error</type>
