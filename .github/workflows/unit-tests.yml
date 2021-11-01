@@ -15,7 +15,7 @@ jobs:
         php-version:
           - "8.1"
         operating-system:
-          - "macos-latest"
+          # - "macos-latest"
           - "ubuntu-latest"
 
     steps:
@@ -44,4 +44,4 @@ jobs:
           make install -j10
 
       - name: "running unit tests"
-        run: make unit-tests
+        run: ./vendor/bin/phpunit -c config/phpunit.xml.dist
