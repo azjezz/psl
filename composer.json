@@ -10,12 +10,13 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "~8.1.0",
         "ext-bcmath": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
         "ext-sodium": "*",
-        "ext-intl": "*"
+        "ext-intl": "*",
+        "revolt/event-loop": "1.x-dev"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.6",

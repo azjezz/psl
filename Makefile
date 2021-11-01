@@ -5,11 +5,11 @@ install:                                                              			## inst
 	composer install
 
 coding-standard-fix:                                                            ## apply automated coding standard fixes
-	./vendor/bin/php-cs-fixer fix --config=config/.php_cs.dist.php
+	PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --config=config/.php_cs.dist.php
 	./vendor/bin/phpcbf --basepath=. --standard=config/.phpcs.xml
 
 coding-standard-check:                                                          ## check coding-standard compliance
-	./vendor/bin/php-cs-fixer fix --config=config/.php_cs.dist.php --dry-run
+	PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --config=config/.php_cs.dist.php --dry-run
 	./vendor/bin/phpcs --basepath=. --standard=config/.phpcs.xml
 
 benchmarks:                                                                     ## run benchmarks
