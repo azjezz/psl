@@ -90,7 +90,7 @@ final class VecTypeTest extends TypeTest
         yield [$this->getType(), 'vec<int>'];
         yield [Type\vec(Type\string()), 'vec<string>'];
         yield [
-            Type\vec(Type\object(Iter\Iterator::class)),
+            Type\vec(Type\instance_of(Iter\Iterator::class)),
             'vec<Psl\Iter\Iterator>'
         ];
     }

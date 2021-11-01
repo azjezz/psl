@@ -8,31 +8,45 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 use Psl\Type\Type;
 
-use function is_object;
-
 /**
- * @extends Type<object>
+ * @template T as object
+ *
+ * @extends Type<T>
  *
  * @internal
  */
-final class ObjectType extends Type
+final class InstanceOfType extends Type
 {
+    /**
+     * @var class-string<T> $classname
+     */
+    private string $classname;
+
+    /**
+     * @param class-string<T> $classname
+     */
+    public function __construct(
+        string $classname
+    ) {
+        $this->classname = $classname;
+    }
+
     /**
      * @psalm-assert-if-true T $value
      */
     public function matches(mixed $value): bool
     {
-        return is_object($value);
+        return $value instanceof $this->classname;
     }
 
     /**
      * @throws CoercionException
      *
-     * @return object
+     * @return T
      */
     public function coerce(mixed $value): object
     {
-        if (is_object($value)) {
+        if ($value instanceof $this->classname) {
             return $value;
         }
 
@@ -42,13 +56,13 @@ final class ObjectType extends Type
     /**
      * @throws AssertException
      *
-     * @return object
+     * @return T
      *
-     * @psalm-assert object $value
+     * @psalm-assert T $value
      */
     public function assert(mixed $value): object
     {
-        if (is_object($value)) {
+        if ($value instanceof $this->classname) {
             return $value;
         }
 
@@ -57,6 +71,6 @@ final class ObjectType extends Type
 
     public function toString(): string
     {
-        return 'object';
+        return $this->classname;
     }
 }

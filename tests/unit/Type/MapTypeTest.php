@@ -71,7 +71,7 @@ final class MapTypeTest extends TypeTest
         yield [Type\map(Type\array_key(), Type\int()), 'Psl\Collection\MapInterface<array-key, int>'];
         yield [Type\map(Type\array_key(), Type\string()), 'Psl\Collection\MapInterface<array-key, string>'];
         yield [
-            Type\map(Type\array_key(), Type\object(Iter\Iterator::class)),
+            Type\map(Type\array_key(), Type\instance_of(Iter\Iterator::class)),
             'Psl\Collection\MapInterface<array-key, Psl\Iter\Iterator>'
         ];
     }
@@ -82,11 +82,11 @@ final class MapTypeTest extends TypeTest
      */
     protected function equals($a, $b): bool
     {
-        if (Type\object(Collection\MapInterface::class)->matches($a)) {
+        if (Type\instance_of(Collection\MapInterface::class)->matches($a)) {
             $a = $a->toArray();
         }
 
-        if (Type\object(Collection\MapInterface::class)->matches($b)) {
+        if (Type\instance_of(Collection\MapInterface::class)->matches($b)) {
             $b = $b->toArray();
         }
 

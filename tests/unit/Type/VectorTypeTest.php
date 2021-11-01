@@ -80,7 +80,7 @@ final class VectorTypeTest extends TypeTest
         yield [$this->getType(), 'Psl\Collection\VectorInterface<int>'];
         yield [Type\vector(Type\string()), 'Psl\Collection\VectorInterface<string>'];
         yield [
-            Type\vector(Type\object(Iter\Iterator::class)),
+            Type\vector(Type\instance_of(Iter\Iterator::class)),
             'Psl\Collection\VectorInterface<Psl\Iter\Iterator>'
         ];
     }
@@ -91,11 +91,11 @@ final class VectorTypeTest extends TypeTest
      */
     protected function equals($a, $b): bool
     {
-        if (Type\object(Collection\VectorInterface::class)->matches($a)) {
+        if (Type\instance_of(Collection\VectorInterface::class)->matches($a)) {
             $a = $a->toArray();
         }
 
-        if (Type\object(Collection\VectorInterface::class)->matches($b)) {
+        if (Type\instance_of(Collection\VectorInterface::class)->matches($b)) {
             $b = $b->toArray();
         }
 

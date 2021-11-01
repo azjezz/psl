@@ -8,11 +8,11 @@ use Psl\Collection;
 use Psl\Collection\CollectionInterface;
 use Psl\Type;
 
-final class ObjectTypeTest extends TypeTest
+final class InstanceOfTypeTest extends TypeTest
 {
     public function getType(): Type\TypeInterface
     {
-        return Type\object();
+        return Type\instance_of(Collection\CollectionInterface::class);
     }
 
     public function getValidCoercions(): iterable
@@ -22,8 +22,6 @@ final class ObjectTypeTest extends TypeTest
         yield [$_ = new Collection\Map([1 => 'hey', 2 => 'hello']), $_];
         yield [$_ = new Collection\MutableMap([1 => 'hey', 2 => 'hello']), $_];
         yield [$_ = $this->createStub(CollectionInterface::class), $_];
-        yield [$_ = new class {
-        }, $_];
     }
 
     public function getInvalidCoercions(): iterable
@@ -31,10 +29,16 @@ final class ObjectTypeTest extends TypeTest
         yield [null];
         yield [STDIN];
         yield ['hello'];
+        yield [$this->stringable('foo')];
+        yield [new class {
+        }];
     }
 
     public function getToStringExamples(): iterable
     {
-        yield [Type\object(), 'object'];
+        yield [Type\instance_of(Collection\MapInterface::class), Collection\MapInterface::class];
+        yield [Type\instance_of(Collection\VectorInterface::class), Collection\VectorInterface::class];
+        yield [Type\instance_of(Collection\Vector::class), Collection\Vector::class];
+        yield [Type\instance_of(Collection\Map::class), Collection\Map::class];
     }
 }

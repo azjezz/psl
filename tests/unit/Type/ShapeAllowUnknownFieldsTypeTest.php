@@ -139,7 +139,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTest
             return parent::equals($a, $b);
         }
 
-        $vector = Type\object(Collection\VectorInterface::class);
+        $vector = Type\instance_of(Collection\VectorInterface::class);
         if ($vector->matches($a['articles'])) {
             $a['articles'] = $a['articles']->toArray();
         }

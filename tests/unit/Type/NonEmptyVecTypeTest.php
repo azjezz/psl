@@ -86,7 +86,7 @@ final class NonEmptyVecTypeTest extends TypeTest
         yield [$this->getType(), 'non-empty-vec<int>'];
         yield [Type\non_empty_vec(Type\string()), 'non-empty-vec<string>'];
         yield [
-            Type\non_empty_vec(Type\object(Iter\Iterator::class)),
+            Type\non_empty_vec(Type\instance_of(Iter\Iterator::class)),
             'non-empty-vec<Psl\Iter\Iterator>'
         ];
     }

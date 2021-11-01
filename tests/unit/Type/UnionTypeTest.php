@@ -46,8 +46,8 @@ final class UnionTypeTest extends TypeTest
             Type\union(
                 Type\bool(),
                 Type\intersection(
-                    Type\object(IndexAccessInterface::class),
-                    Type\object(CollectionInterface::class)
+                    Type\instance_of(IndexAccessInterface::class),
+                    Type\instance_of(CollectionInterface::class)
                 )
             ),
             'bool|(Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface)'
@@ -55,8 +55,8 @@ final class UnionTypeTest extends TypeTest
         yield [
             Type\union(
                 Type\intersection(
-                    Type\object(IndexAccessInterface::class),
-                    Type\object(CollectionInterface::class)
+                    Type\instance_of(IndexAccessInterface::class),
+                    Type\instance_of(CollectionInterface::class)
                 ),
                 Type\bool(),
                 Type\non_empty_string()

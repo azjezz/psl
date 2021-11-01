@@ -14,7 +14,7 @@ final class TypeCoercionExceptionTest extends TestCase
 {
     public function testIncorrectIterableKey(): void
     {
-        $type = Type\iterable(Type\bool(), Type\object(Collection\CollectionInterface::class));
+        $type = Type\iterable(Type\bool(), Type\instance_of(Collection\CollectionInterface::class));
 
         try {
             $type->coerce([
