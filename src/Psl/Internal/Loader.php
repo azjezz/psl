@@ -442,6 +442,17 @@ final class Loader
         'Psl\Interface\defined',
         'Psl\Trait\exists',
         'Psl\Trait\defined',
+        'Psl\Async\run',
+        'Psl\Async\concurrently',
+        'Psl\Async\await',
+        'Psl\Async\any',
+        'Psl\Async\all',
+        'Psl\Async\await_readable',
+        'Psl\Async\await_writable',
+        'Psl\Async\await_signal',
+        'Psl\Async\first',
+        'Psl\Async\later',
+        'Psl\Async\usleep',
     ];
 
     public const INTERFACES = [
@@ -488,6 +499,7 @@ final class Loader
         'Psl\IO\SeekWriteHandleInterface',
         'Psl\IO\WriteHandleInterface',
         'Psl\RandomSequence\SequenceInterface',
+        'Psl\Async\Exception\ExceptionInterface',
     ];
 
     public const TRAITS = [
@@ -573,6 +585,16 @@ final class Loader
         'Psl\RandomSequence\MersenneTwisterSequence',
         'Psl\RandomSequence\MersenneTwisterPHPVariantSequence',
         'Psl\RandomSequence\SecureSequence',
+        'Psl\Async\Exception\CompositeException',
+        'Psl\Async\Exception\RuntimeException',
+        'Psl\Async\Exception\TimeoutException',
+        'Psl\Async\Exception\UnhandledAwaitableException',
+        'Psl\Async\Internal\AwaitableIterator',
+        'Psl\Async\Internal\AwaitableIteratorQueue',
+        'Psl\Async\Internal\State',
+        'Psl\Async\Awaitable',
+        'Psl\Async\Deferred',
+        'Psl\Async\Scheduler',
     ];
 
     public const TYPE_CONSTANTS = 1;
