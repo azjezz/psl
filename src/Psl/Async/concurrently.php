@@ -18,17 +18,15 @@ use Psl\Dict;
  */
 function concurrently(iterable $callables): Awaitable
 {
-    return run(static function () use ($callables): array {
-        $awaitables = Dict\map(
-            $callables,
-            /**
-             * @param callable(): Tv $callable
-             *
-             * @return Awaitable<Tv>
-             */
-            static fn(callable $callable): Awaitable => run($callable),
-        );
+    $awaitables = Dict\map(
+        $callables,
+        /**
+         * @param callable(): Tv $callable
+         *
+         * @return Awaitable<Tv>
+         */
+        static fn(callable $callable): Awaitable => run($callable),
+    );
 
-        return namespace\all($awaitables);
-    });
+    return run(static fn(): array => namespace\all($awaitables));
 }

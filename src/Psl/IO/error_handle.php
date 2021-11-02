@@ -17,8 +17,9 @@ use const PHP_SAPI;
 function error_handle(): ?WriteHandleInterface
 {
     if (PHP_SAPI === "cli") {
-        return new Internal\WriteOnlyHandleDecorator(
-            Internal\open('php://stderr', 'wb')
+        /** @psalm-suppress MissingThrowsDocblock */
+        return new Stream\StreamWriteHandle(
+            Internal\open_resource('php://stderr', 'wb')
         );
     }
 

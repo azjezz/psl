@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\IO\Internal;
 
-use Psl;
 use Psl\Internal;
 
 /**
@@ -14,11 +13,8 @@ use Psl\Internal;
  */
 function open(string $uri, string $mode): ResourceHandle
 {
-    return Internal\suppress(static function () use ($uri, $mode) {
-        $resource = fopen($uri, $mode);
+    $resource = open_resource($uri, $mode);
 
-        Psl\invariant($resource !== false, 'Unable to open resource.');
-
-        return new ResourceHandle($resource);
-    });
+    /** @psalm-suppress MissingThrowsDocblock */
+    return new ResourceHandle($resource, false, false, false);
 }
