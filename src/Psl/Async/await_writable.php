@@ -19,27 +19,31 @@ function await_writable(mixed $resource, bool $reference = true, ?int $timeout_m
 {
     $suspension = Scheduler::createSuspension();
 
+    $timeout_watcher = null;
+    if (null !== $timeout_ms) {
+        $timeout_watcher = Scheduler::delay($timeout_ms, static fn() => $suspension->throw(new Exception\TimeoutException()));
+        Scheduler::unreference($timeout_watcher);
+    }
+
     $watcher = EventLoop::onWritable(
         $resource,
-        static fn(string $_watcher, mixed $resource) => $suspension->resume($resource)
+        static function (string $_watcher, mixed $resource) use ($suspension, $timeout_watcher): void {
+            if (null !== $timeout_watcher) {
+                Scheduler::cancel($timeout_watcher);
+            }
+
+            $suspension->resume($resource);
+        },
     );
 
     if (!$reference) {
         Scheduler::unreference($watcher);
     }
 
-    $timeout_watcher = null;
-    if (null !== $timeout_ms) {
-        $timeout_watcher = Scheduler::delay($timeout_ms, static fn() => $suspension->throw(new Exception\TimeoutException()));
-    }
 
     try {
         $suspension->suspend();
     } finally {
         Scheduler::cancel($watcher);
-
-        if (null !== $timeout_watcher) {
-            Scheduler::cancel($timeout_watcher);
-        }
     }
 }

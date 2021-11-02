@@ -429,9 +429,11 @@ final class Loader
         'Psl\Filesystem\get_modification_time',
         'Psl\Filesystem\get_inode',
         'Psl\IO\Internal\open',
+        'Psl\IO\Internal\open_resource',
         'Psl\IO\input_handle',
         'Psl\IO\output_handle',
         'Psl\IO\error_handle',
+        'Psl\IO\Stream\pipe',
         'Psl\Class\exists',
         'Psl\Class\defined',
         'Psl\Class\has_constant',
@@ -504,6 +506,8 @@ final class Loader
 
     public const TRAITS = [
         'Psl\RandomSequence\Internal\MersenneTwisterTrait',
+        'Psl\IO\ReadHandleConvenienceMethodsTrait',
+        'Psl\IO\WriteHandleConvenienceMethodsTrait',
     ];
 
     public const CLASSES = [
@@ -575,10 +579,8 @@ final class Loader
         'Psl\IO\Exception\AlreadyClosedException',
         'Psl\IO\Exception\RuntimeException',
         'Psl\IO\Exception\BlockingException',
+        'Psl\IO\Exception\TimeoutException',
         'Psl\IO\Internal\ResourceHandle',
-        'Psl\IO\Internal\ReadOnlyHandleDecorator',
-        'Psl\IO\Internal\WriteOnlyHandleDecorator',
-        'Psl\IO\Writer',
         'Psl\IO\Reader',
         'Psl\IO\MemoryHandle',
         'Psl\Fun\Internal\LazyEvaluator',
@@ -595,6 +597,22 @@ final class Loader
         'Psl\Async\Awaitable',
         'Psl\Async\Deferred',
         'Psl\Async\Scheduler',
+        'Psl\IO\Stream\StreamCloseHandle',
+        'Psl\IO\Stream\StreamCloseReadHandle',
+        'Psl\IO\Stream\StreamCloseReadWriteHandle',
+        'Psl\IO\Stream\StreamCloseSeekHandle',
+        'Psl\IO\Stream\StreamCloseSeekReadHandle',
+        'Psl\IO\Stream\StreamCloseSeekReadWriteHandle',
+        'Psl\IO\Stream\StreamCloseSeekWriteHandle',
+        'Psl\IO\Stream\StreamCloseWriteHandle',
+        'Psl\IO\Stream\StreamReadHandle',
+        'Psl\IO\Stream\StreamReadWriteHandle',
+        'Psl\IO\Stream\StreamSeekHandle',
+        'Psl\IO\Stream\StreamSeekReadHandle',
+        'Psl\IO\Stream\StreamSeekReadWriteHandle',
+        'Psl\IO\Stream\StreamSeekWriteHandle',
+        'Psl\IO\Stream\StreamWriteHandle',
+        'Psl\IO\Internal\OptionalIncrementalTimeout',
     ];
 
     public const TYPE_CONSTANTS = 1;

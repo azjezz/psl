@@ -27,7 +27,7 @@
 - [CloseSeekWriteHandleInterface](./../../src/Psl/IO/CloseSeekWriteHandleInterface.php#L7)
 - [CloseWriteHandleInterface](./../../src/Psl/IO/CloseWriteHandleInterface.php#L7)
 - [HandleInterface](./../../src/Psl/IO/HandleInterface.php#L21)
-- [ReadHandleInterface](./../../src/Psl/IO/ReadHandleInterface.php#L12)
+- [ReadHandleInterface](./../../src/Psl/IO/ReadHandleInterface.php#L10)
 - [ReadWriteHandleInterface](./../../src/Psl/IO/ReadWriteHandleInterface.php#L7)
 - [SeekHandleInterface](./../../src/Psl/IO/SeekHandleInterface.php#L12)
 - [SeekReadHandleInterface](./../../src/Psl/IO/SeekReadHandleInterface.php#L7)
@@ -37,8 +37,12 @@
 
 #### `Classes`
 
-- [MemoryHandle](./../../src/Psl/IO/MemoryHandle.php#L13)
-- [Reader](./../../src/Psl/IO/Reader.php#L11)
-- [Writer](./../../src/Psl/IO/Writer.php#L9)
+- [MemoryHandle](./../../src/Psl/IO/MemoryHandle.php#L15)
+- [Reader](./../../src/Psl/IO/Reader.php#L15)
+
+#### `Traits`
+
+- [ReadHandleConvenienceMethodsTrait](./../../src/Psl/IO/ReadHandleConvenienceMethodsTrait.php#L15)
+- [WriteHandleConvenienceMethodsTrait](./../../src/Psl/IO/WriteHandleConvenienceMethodsTrait.php#L16)
 
 

@@ -45,11 +45,19 @@ final class MemoryHandleTest extends TestCase
         ];
 
         yield [
+            static fn(IO\WriteHandleInterface $handle) => $handle->writeAll('hello'),
+        ];
+
+        yield [
             static fn(IO\ReadHandleInterface $handle) => $handle->read(),
         ];
 
         yield [
-            static fn(IO\WriteHandleInterface $handle) => $handle->flush(),
+            static fn(IO\ReadHandleInterface $handle) => $handle->readAll(),
+        ];
+
+        yield [
+            static fn(IO\ReadHandleInterface $handle) => $handle->readImmediately(),
         ];
 
         yield [
@@ -60,12 +68,11 @@ final class MemoryHandleTest extends TestCase
     public function testMemoryHandle(): void
     {
         $handle = new IO\MemoryHandle('f');
-        $writer = new IO\Writer($handle);
 
-        static::assertSame($handle, $writer->getHandle());
-
-        $writer->writeLine('Hello, World!');
-        $writer->writeAllLines('', '- Read', '- Write', '- Seek', '- Close');
+        $handle->writeAll('Hello, World!' . "\n");
+        foreach (['', '- Read', '- Write', '- Seek', '- Close'] as $line) {
+            $handle->writeAll($line . "\n");
+        }
 
         $handle->seek(0);
         static::assertSame('Hello, World!', $handle->read(13));
@@ -125,9 +132,7 @@ final class MemoryHandleTest extends TestCase
     public function testWrite(): void
     {
         $h = new IO\MemoryHandle();
-        $w = new IO\Writer($h);
-        $w->write('foo');
-        $w->flush();
+        $h->writeAll('foo');
 
         static::assertSame('foo', $h->getBuffer());
     }
@@ -140,9 +145,9 @@ final class MemoryHandleTest extends TestCase
         $h->write('world');
 
         $h->seek(0);
-        static::assertSame('hello', $h->read(5));
-        static::assertSame(Str\repeat("\0", 15), $h->read(15));
-        static::assertSame('world', $h->read());
+        static::assertSame('hello', $h->readAll(5));
+        static::assertSame(Str\repeat("\0", 15), $h->readAll(15));
+        static::assertSame('world', $h->readAll());
     }
 
     public function testOverwrite(): void
@@ -150,8 +155,8 @@ final class MemoryHandleTest extends TestCase
         $h = new IO\MemoryHandle('xxxxderp');
         $h->write('herp');
         static::assertSame('herpderp', $h->getBuffer());
-        static::assertSame('derp', $h->read());
+        static::assertSame('derp', $h->readAll());
         $h->seek(0);
-        static::assertSame('herpderp', $h->read());
+        static::assertSame('herpderp', $h->readAll());
     }
 }

@@ -7,50 +7,68 @@ namespace Psl\IO;
 use Psl;
 use Psl\Exception\InvariantViolationException;
 use Psl\Math;
-use Psl\Str;
-use Psl\Str\Byte;
+
+use function str_repeat;
+use function strlen;
+use function substr;
 
 final class MemoryHandle implements CloseSeekReadWriteHandleInterface
 {
+    use WriteHandleConvenienceMethodsTrait;
+    use ReadHandleConvenienceMethodsTrait;
+
     private string $buffer;
     private int $offset = 0;
     private bool $closed = false;
-    
+
     public function __construct(string $buffer = '')
     {
         $this->buffer = $buffer;
     }
 
     /**
-     * An immediate, unordered read.
+     * Read from the handle.
      *
      * @param int|null $max_bytes the maximum number of bytes to read.
      *
-     * up to `$max_bytes` may be allocated in a buffer; large values may lead
-     * to unnecessarily hitting the request memory limit.
-     *
-     * @returns string the read data on success, or an empty string if the end of file is reached.
-     *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws InvariantViolationException If $max_bytes is 0.
+     *
+     * @return string the read data on success, or an empty string if the end of file is reached.
      */
-    public function read(?int $max_bytes = null): string
+    public function readImmediately(?int $max_bytes = null): string
     {
         $this->assertHandleIsOpen();
-        
+
         $max_bytes ??= Math\INT64_MAX;
-        
+
         Psl\invariant($max_bytes > 0, '$max_bytes must be null or positive.');
-        $length = Byte\length($this->buffer);
+        $length = strlen($this->buffer);
         if ($this->offset >= $length) {
             return '';
         }
-        
-        $length = Math\minva($max_bytes, $length - $this->offset);
-        $result = Byte\slice($this->buffer, $this->offset, $length);
+
+        $length -= $this->offset;
+        $length = $length > $max_bytes ? $max_bytes : $length;
+        $result = substr($this->buffer, $this->offset, $length);
         $this->offset += $length;
 
         return $result;
+    }
+
+    /**
+     * Read from the handle.
+     *
+     * @param int|null $max_bytes the maximum number of bytes to read.
+     *
+     * @throws Exception\AlreadyClosedException If the handle has been already closed.
+     * @throws InvariantViolationException If $max_bytes is 0.
+     *
+     * @return string the read data on success, or an empty string if the end of file is reached.
+     */
+    public function read(?int $max_bytes = null, ?int $timeout_ms = null): string
+    {
+        return $this->readImmediately($max_bytes);
     }
 
     /**
@@ -59,8 +77,8 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
      * Offset is relative to the start of the handle - so, the beginning of the
      * handle is always offset 0.
      *
-     * @throws Psl\Exception\InvariantViolationException If $offset is negative.
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
+     * @throws InvariantViolationException If $offset is negative.
      */
     public function seek(int $offset): void
     {
@@ -78,33 +96,32 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
     public function tell(): int
     {
         $this->assertHandleIsOpen();
-        
+
         return $this->offset;
     }
 
     /**
-     * An immediate unordered write.
-     *
-     * @returns int the number of bytes written on success
+     * Write data.
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
+     *
+     * @return int the number of bytes written on success.
      */
-    public function write(string $bytes): int
+    public function writeImmediately(string $bytes, ?int $timeout_ms = null): int
     {
         $this->assertHandleIsOpen();
-        $length = Byte\length($this->buffer);
+        $length = strlen($this->buffer);
         if ($length < $this->offset) {
-            /** @psalm-suppress MissingThrowsDocblock */
-            $this->buffer .= Str\repeat("\0", $this->offset - $length);
+            $this->buffer .= str_repeat("\0", $this->offset - $length);
             $length = $this->offset;
         }
 
-        $bytes_length = Byte\length($bytes);
-        /** @psalm-suppress MissingThrowsDocblock */
-        $new = Byte\slice($this->buffer, 0, $this->offset) . $bytes;
+        $bytes_length = strlen($bytes);
+        $new = substr($this->buffer, 0, $this->offset) . $bytes;
         if ($this->offset < $length) {
-            /** @psalm-suppress MissingThrowsDocblock */
-            $new .= Byte\slice($this->buffer, Math\minva($this->offset + $bytes_length, $length));
+            $offset = $this->offset + $bytes_length;
+            $offset = $offset > $length ? $length : $offset;
+            $new .= substr($this->buffer, $offset);
         }
 
         $this->buffer = $new;
@@ -113,13 +130,15 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
     }
 
     /**
-     * Flush the handle.
+     * Write data.
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
+     *
+     * @return int the number of bytes written on success.
      */
-    public function flush(): void
+    public function write(string $bytes, ?int $timeout_ms = null): int
     {
-        $this->assertHandleIsOpen();
+        return $this->writeImmediately($bytes);
     }
 
     /**
@@ -134,7 +153,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
         $this->closed = true;
         $this->offset = -1;
     }
-    
+
     public function getBuffer(): string
     {
         return $this->buffer;

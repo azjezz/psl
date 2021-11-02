@@ -17,12 +17,14 @@ use const PHP_SAPI;
 function input_handle(): ReadHandleInterface
 {
     if (PHP_SAPI === "cli") {
-        return new Internal\ReadOnlyHandleDecorator(
-            Internal\open('php://stdin', 'rb')
+        /** @psalm-suppress MissingThrowsDocblock */
+        return new Stream\StreamReadHandle(
+            Internal\open_resource('php://stdin', 'rb')
         );
     }
 
-    return new Internal\ReadOnlyHandleDecorator(
-        Internal\open('php://input', 'rb')
+    /** @psalm-suppress MissingThrowsDocblock */
+    return new Stream\StreamReadHandle(
+        Internal\open_resource('php://input', 'rb')
     );
 }
