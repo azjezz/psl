@@ -136,6 +136,7 @@ function document_component(string $component, string $index_link): void
             $generator($directory, $symbols, Loader::TYPE_INTERFACE),
             $generator($directory, $symbols, Loader::TYPE_CLASS),
             $generator($directory, $symbols, Loader::TYPE_TRAIT),
+            $generator($directory, $symbols, Loader::TYPE_ENUM),
             ['']
         ), "\n"),
     ]);
@@ -155,7 +156,7 @@ function get_component_members(string $component): array
         $list,
         static function (string $member) use ($component): bool {
 
-            if (!Str\starts_with_ci($member, $component)) {
+            if (!Str\starts_with_ci($member, $component . '\\')) {
                 return false;
             }
 
@@ -171,6 +172,7 @@ function get_component_members(string $component): array
         Loader::TYPE_INTERFACE => $filter(Loader::INTERFACES),
         Loader::TYPE_CLASS => $filter(Loader::CLASSES),
         Loader::TYPE_TRAIT => $filter(Loader::TRAITS),
+        Loader::TYPE_ENUM => $filter(Loader::ENUMS),
     ];
 }
 
@@ -189,12 +191,14 @@ function get_all_components(): array
         'Psl\\Encoding\\Base64',
         'Psl\\Encoding\\Hex',
         'Psl\\Env',
+        'Psl\\File',
         'Psl\\Filesystem',
         'Psl\\Fun',
         'Psl\\Hash',
         'Psl\\Html',
         'Psl\\Interface',
         'Psl\\IO',
+        'Psl\\IO\\Stream',
         'Psl\\Iter',
         'Psl\\Json',
         'Psl\\Math',
@@ -233,6 +237,8 @@ function get_symbol_type_name(int $type): string
             return 'Classes';
         case Loader::TYPE_TRAIT:
             return 'Traits';
+        case Loader::TYPE_ENUM:
+            return 'Enums';
     }
 }
 
@@ -247,6 +253,8 @@ function get_symbol_definition_line(string $symbol, int $type): int
 
     if (Loader::TYPE_FUNCTION === $type) {
         $reflection = new ReflectionFunction($symbol);
+    } else if (Loader::TYPE_ENUM === $type) {
+        $reflection = new ReflectionEnum($symbol);
     } else {
         $reflection = new ReflectionClass($symbol);
     }

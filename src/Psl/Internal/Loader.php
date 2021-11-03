@@ -455,6 +455,11 @@ final class Loader
         'Psl\Async\first',
         'Psl\Async\later',
         'Psl\Async\usleep',
+        'Psl\File\Internal\open',
+        'Psl\File\open_read_only',
+        'Psl\File\open_write_only',
+        'Psl\File\open_read_write',
+        'Psl\File\temporary',
     ];
 
     public const INTERFACES = [
@@ -502,6 +507,11 @@ final class Loader
         'Psl\IO\WriteHandleInterface',
         'Psl\RandomSequence\SequenceInterface',
         'Psl\Async\Exception\ExceptionInterface',
+        'Psl\File\Exception\ExceptionInterface',
+        'Psl\File\HandleInterface',
+        'Psl\File\ReadHandleInterface',
+        'Psl\File\WriteHandleInterface',
+        'Psl\File\ReadWriteHandleInterface',
     ];
 
     public const TRAITS = [
@@ -613,6 +623,19 @@ final class Loader
         'Psl\IO\Stream\StreamSeekWriteHandle',
         'Psl\IO\Stream\StreamWriteHandle',
         'Psl\IO\Internal\OptionalIncrementalTimeout',
+        'Psl\File\Exception\AlreadyLockedException',
+        'Psl\File\Exception\RuntimeException',
+        'Psl\File\Internal\AbstractHandleWrapper',
+        'Psl\File\Internal\ResourceHandle',
+        'Psl\File\Lock',
+        'Psl\File\ReadHandle',
+        'Psl\File\ReadWriteHandle',
+        'Psl\File\WriteHandle',
+    ];
+
+    public const ENUMS = [
+        'Psl\File\LockType',
+        'Psl\File\WriteMode',
     ];
 
     public const TYPE_CONSTANTS = 1;
@@ -625,7 +648,9 @@ final class Loader
 
     public const TYPE_CLASS = 16;
 
-    public const TYPE_CLASSISH = self::TYPE_INTERFACE | self::TYPE_TRAIT | self::TYPE_CLASS;
+    public const TYPE_ENUM = 32;
+
+    public const TYPE_CLASSISH = self::TYPE_INTERFACE | self::TYPE_TRAIT | self::TYPE_CLASS | self::TYPE_ENUM;
 
     private function __construct()
     {
@@ -648,6 +673,7 @@ final class Loader
             self::loadInterfaces();
             self::loadTraits();
             self::loadClasses();
+            self::loadEnums();
         });
     }
 
@@ -727,6 +753,17 @@ final class Loader
             }
 
             self::load($class, self::TYPE_CLASS);
+        }
+    }
+
+    private static function loadEnums(): void
+    {
+        foreach (self::ENUMS as $enum) {
+            if (enum_exists($enum)) {
+                continue;
+            }
+
+            self::load($enum, self::TYPE_ENUM);
         }
     }
 
