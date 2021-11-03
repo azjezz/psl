@@ -14,7 +14,7 @@ final class WriteHandleTest extends TestCase
     public function testMustCreateExistingFile(): void
     {
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('$path already exists.');
+        $this->expectExceptionMessage('already exists.');
 
         new File\WriteHandle(__FILE__, File\WriteMode::MUST_CREATE);
     }
@@ -22,7 +22,7 @@ final class WriteHandleTest extends TestCase
     public function testAppendToNonExistingFile(): void
     {
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('$path does not exist.');
+        $this->expectExceptionMessage('does not exist.');
 
         $f = new File\WriteHandle(__FILE__ . '.fake', File\WriteMode::APPEND);
         $f->write('g');
@@ -34,7 +34,7 @@ final class WriteHandleTest extends TestCase
         Filesystem\change_permissions($temporary_file, 0555);
 
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('$path is not writable.');
+        $this->expectExceptionMessage('is not writable.');
 
         new File\WriteHandle($temporary_file, File\WriteMode::APPEND);
     }

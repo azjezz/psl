@@ -62,7 +62,7 @@ final class ReadWriteHandleTest extends TestCase
     public function testMustCreateExistingFile(): void
     {
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('$path already exists.');
+        $this->expectExceptionMessage('already exists.');
 
         new File\ReadWriteHandle(__FILE__, File\WriteMode::MUST_CREATE);
     }
@@ -70,7 +70,7 @@ final class ReadWriteHandleTest extends TestCase
     public function testAppendToNonExistingFile(): void
     {
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('$path does not exist.');
+        $this->expectExceptionMessage('does not exist.');
 
         new File\ReadWriteHandle(__FILE__ . '.fake', File\WriteMode::APPEND);
     }
@@ -81,7 +81,7 @@ final class ReadWriteHandleTest extends TestCase
         Filesystem\change_permissions($temporary_file, 0555);
 
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('$path is not writable.');
+        $this->expectExceptionMessage('is not writable.');
 
         new File\ReadWriteHandle($temporary_file, File\WriteMode::APPEND);
     }

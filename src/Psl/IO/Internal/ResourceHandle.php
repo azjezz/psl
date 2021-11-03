@@ -160,6 +160,8 @@ class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
+        Psl\invariant($offset >= 0, '$offset must be a positive-int.');
+
         /** @psalm-suppress PossiblyInvalidArgument */
         $result = @fseek($this->resource, $offset);
         if (0 !== $result) {

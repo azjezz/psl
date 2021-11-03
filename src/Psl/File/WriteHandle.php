@@ -24,21 +24,21 @@ final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteH
     public function __construct(string $path, WriteMode $write_mode = WriteMode::OPEN_OR_CREATE)
     {
         $is_file = Filesystem\is_file($path);
-        Psl\invariant(!Filesystem\exists($path) || $is_file, '$path points to a non-file node.');
+        Psl\invariant(!Filesystem\exists($path) || $is_file, 'File "%s" is not a file.', $path);
 
         $open_or_create = $write_mode === WriteMode::OPEN_OR_CREATE;
         $must_create = $write_mode === WriteMode::MUST_CREATE;
         if ($must_create && $is_file) {
-            Psl\invariant_violation('$path already exists.');
+            Psl\invariant_violation('File "%s" already exists.', $path);
         }
 
         $creating = $open_or_create || $must_create;
         if (!$creating && !$is_file) {
-            Psl\invariant_violation('$path does not exist.');
+            Psl\invariant_violation('File "%s" does not exist.', $path);
         }
 
         if ((!$creating || ($open_or_create && $is_file)) && !Filesystem\is_writable($path)) {
-            Psl\invariant_violation('$path is not writable.');
+            Psl\invariant_violation('File "%s" is not writable.', $path);
         }
 
         /**

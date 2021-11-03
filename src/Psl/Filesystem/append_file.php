@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Psl\Filesystem;
 
 use Psl;
+use Psl\File;
+use Psl\IO;
+use Psl\Str;
 
 /**
  * Append $content to $file.
@@ -17,5 +20,20 @@ use Psl;
  */
 function append_file(string $file, string $content): void
 {
-     Internal\write_file($file, $content, true);
+    try {
+        $handle = File\open_write_only($file, File\WriteMode::APPEND);
+        $lock = $handle->lock(File\LockType::EXCLUSIVE);
+
+        $handle->writeAll($content);
+
+        $lock->release();
+        $handle->close();
+    } catch (File\Exception\ExceptionInterface | IO\Exception\ExceptionInterface $previous) {
+        // @codeCoverageIgnoreStart
+        throw new Exception\RuntimeException(Str\format(
+            'Failed to write to file "%s".',
+            $file,
+        ), 0, $previous);
+        // @codeCoverageIgnoreEnd
+    }
 }

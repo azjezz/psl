@@ -20,5 +20,9 @@ jobs:
           tools: composer:v2, cs2pr
           extensions: bcmath, mbstring, intl, sodium, json
 
+      - name: "installing dependencies"
+        run: |
+          make install -j10 -O
+
       - name: "checking if documentation is up-to-date."
         run: "php docs/documenter.php check"

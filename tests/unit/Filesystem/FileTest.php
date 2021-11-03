@@ -103,6 +103,22 @@ final class FileTest extends AbstractFilesystemTest
         Filesystem\write_file($this->directory, 'hello');
     }
 
+    public function testAppendFileThrowsForDirectories(): void
+    {
+        $this->expectException(InvariantViolationException::class);
+        $this->expectExceptionMessage('File "' . $this->directory . '" is not a file.');
+
+        Filesystem\append_file($this->directory, 'hello');
+    }
+
+    public function testReadFileThrowsForDirectories(): void
+    {
+        $this->expectException(InvariantViolationException::class);
+        $this->expectExceptionMessage('File "' . $this->directory . '" is not a file.');
+
+        Filesystem\read_file($this->directory);
+    }
+
     public function testWriteFileThrowsForNonWritableFiles(): void
     {
         $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
@@ -110,7 +126,7 @@ final class FileTest extends AbstractFilesystemTest
         Filesystem\change_permissions($file, 0111);
 
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('File "' . $file . '" is not writeable.');
+        $this->expectExceptionMessage('File "' . $file . '" is not writable.');
 
         Filesystem\write_file($file, 'hello');
     }
