@@ -582,6 +582,7 @@ final class Loader
         'Psl\Shell\Exception\FailedExecutionException',
         'Psl\Shell\Exception\RuntimeException',
         'Psl\Shell\Exception\PossibleAttackException',
+        'Psl\Shell\Exception\TimeoutException',
         'Psl\Math\Exception\ArithmeticException',
         'Psl\Math\Exception\DivisionByZeroException',
         'Psl\Filesystem\Exception\RuntimeException',

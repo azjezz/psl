@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Psl\Shell;
 
+use Psl\Async;
 use Psl\Dict;
 use Psl\Env;
+use Psl\IO;
+use Psl\IO\Stream;
 use Psl\Str;
 use Psl\Vec;
 
-use function fclose;
 use function is_dir;
 use function is_resource;
 use function proc_close;
 use function proc_open;
-use function stream_get_contents;
 
 /**
  * Execute an external program.
@@ -33,16 +34,29 @@ use function stream_get_contents;
  * @throws Exception\FailedExecutionException In case the command resulted in an exit code other than 0.
  * @throws Exception\PossibleAttackException In case the command being run is suspicious ( e.g: contains NULL byte ).
  * @throws Exception\RuntimeException In case $working_directory doesn't exist, or unable to create a new process.
+ * @throws Exception\TimeoutException If $timeout_ms is reached before being able to read the process stream.
+ * @throws IO\Exception\BlockingException If unable to set the process stream to non-blocking mode.
  */
 function execute(
-    string $command,
-    array $arguments = [],
+    string  $command,
+    array   $arguments = [],
     ?string $working_directory = null,
-    array $environment = [],
-    bool $escape_arguments = true
+    array   $environment = [],
+    bool    $escape_arguments = true,
+    ?int    $timeout_ms = null
 ): string {
     if ($escape_arguments) {
-        $arguments = Vec\map($arguments, static fn(string $argument): string => escape_argument($argument));
+        $arguments = Vec\map(
+            $arguments,
+            /**
+             * @param string $argument
+             *
+             * @return string
+             *
+             * @pure
+             */
+            static fn(string $argument): string => escape_argument($argument)
+        );
     }
 
     $commandline = Str\join([$command, ...$arguments], ' ');
@@ -71,13 +85,27 @@ function execute(
     }
     // @codeCoverageIgnoreEnd
 
-    $stdout_content = stream_get_contents($pipes[1]);
-    $stderr_content = stream_get_contents($pipes[2]);
+    $stdout = new Stream\StreamCloseReadHandle($pipes[1]);
+    $stderr = new Stream\StreamCloseReadHandle($pipes[2]);
 
-    fclose($pipes[1]);
-    fclose($pipes[2]);
+    try {
+        [$stdout_content, $stderr_content] = Async\concurrently([
+            static fn(): string => $stdout->readAll(timeout_ms: $timeout_ms),
+            static fn(): string => $stderr->readAll(timeout_ms: $timeout_ms),
+        ])->await();
+        // @codeCoverageIgnoreStart
+    } catch (IO\Exception\TimeoutException $previous) {
+        throw new Exception\TimeoutException('reached timeout while the process output is still not readable.', 0, $previous);
+        // @codeCoverageIgnoreEnd
+    } finally {
+        /** @psalm-suppress MissingThrowsDocblock */
+        $stdout->close();
+        /** @psalm-suppress MissingThrowsDocblock */
+        $stderr->close();
 
-    $code = proc_close($process);
+        $code = proc_close($process);
+    }
+
     if ($code !== 0) {
         throw new Exception\FailedExecutionException($commandline, $stdout_content, $stderr_content, $code);
     }
