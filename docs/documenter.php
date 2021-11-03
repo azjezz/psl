@@ -12,7 +12,7 @@ use Psl\Str;
 use Psl\Type;
 use Psl\Vec;
 
-require_once __DIR__ . "/../src/bootstrap.php";
+require_once __DIR__ . "/../vendor/autoload.php";
 
 (static function (array $args) {
     $command = Str\lowercase($args[1] ?? 'regenerate');

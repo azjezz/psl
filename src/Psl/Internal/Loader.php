@@ -391,7 +391,6 @@ final class Loader
         'Psl\Html\decode',
         'Psl\Html\decode_special_characters',
         'Psl\Html\strip_tags',
-        'Psl\Filesystem\Internal\write_file',
         'Psl\Filesystem\change_group',
         'Psl\Filesystem\change_owner',
         'Psl\Filesystem\change_permissions',

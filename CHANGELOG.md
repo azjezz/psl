@@ -15,3 +15,4 @@
 * introduced a new `Psl\IO\Stream` component.
 * refactored `Psl\IO` handles API.
 * introduced a new `Psl\File` component.
+* refactor `Psl\Filesystem\write_file`, `Psl\Filesystem\append_file`, and `Psl\Filesystem\read_file` to use `Psl\File` component.

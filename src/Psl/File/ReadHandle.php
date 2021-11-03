@@ -22,8 +22,8 @@ final class ReadHandle extends Internal\AbstractHandleWrapper implements ReadHan
      */
     public function __construct(string $path)
     {
-        Psl\invariant(Filesystem\is_file($path), '$filename is not a file.');
-        Psl\invariant(Filesystem\is_readable($path), '$filename is not readable.');
+        Psl\invariant(Filesystem\is_file($path), 'File "%s" is not a file.', $path);
+        Psl\invariant(Filesystem\is_readable($path), 'File "%s" is not readable.', $path);
 
         $this->readHandle = Internal\open($path, 'r', read: true, write: false);
 
