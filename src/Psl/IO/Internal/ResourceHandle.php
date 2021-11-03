@@ -43,7 +43,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
     /**
      * @var closed-resource|object|resource|null $resource
      */
-    private mixed $resource;
+    protected mixed $resource;
 
     private bool $useSingleRead;
 

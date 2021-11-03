@@ -1,0 +1,21 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\File;
+
+use Psl;
+use Psl\Filesystem;
+use Psl\IO;
+
+/**
+ * Open a file handle for read and write.
+ *
+ * @throws IO\Exception\BlockingException If unable to set the stream to non-blocking mode.
+ * @throws Psl\Exception\InvariantViolationException If $path points to a non-file node, or it not writeable.
+ * @throws Filesystem\Exception\RuntimeException If unable to create $path when it does not exist.
+ */
+function open_read_write(string $path, WriteMode $write_mode = WriteMode::OPEN_OR_CREATE): ReadWriteHandleInterface
+{
+    return new ReadWriteHandle($path, $write_mode);
+}
