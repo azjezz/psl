@@ -12,13 +12,13 @@
 
 #### `Functions`
 
-- [all](./../../src/Psl/Async/all.php#L23)
+- [all](./../../src/Psl/Async/all.php#L21)
 - [any](./../../src/Psl/Async/any.php#L25)
 - [await](./../../src/Psl/Async/await.php#L18)
 - [await_readable](./../../src/Psl/Async/await_readable.php#L18)
 - [await_signal](./../../src/Psl/Async/await_signal.php#L18)
 - [await_writable](./../../src/Psl/Async/await_writable.php#L18)
-- [concurrently](./../../src/Psl/Async/concurrently.php#L19)
+- [concurrent](./../../src/Psl/Async/concurrent.php#L21)
 - [first](./../../src/Psl/Async/first.php#L24)
 - [later](./../../src/Psl/Async/later.php#L14)
 - [run](./../../src/Psl/Async/run.php#L20)
