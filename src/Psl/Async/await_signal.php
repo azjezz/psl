@@ -27,13 +27,7 @@ function await_signal(int $signal, bool $reference = true, ?int $timeout_ms = nu
 
     $watcher = EventLoop::onSignal(
         $signal,
-        static function (string $_watcher, int $signal) use ($suspension, $timeout_watcher): void {
-            if (null !== $timeout_watcher) {
-                Scheduler::cancel($timeout_watcher);
-            }
-
-            $suspension->resume($signal);
-        },
+        static fn() => $suspension->resume($signal),
     );
 
     if (!$reference) {
@@ -44,5 +38,10 @@ function await_signal(int $signal, bool $reference = true, ?int $timeout_ms = nu
         $suspension->suspend();
     } finally {
         Scheduler::cancel($watcher);
+
+        // cancel timeout watcher
+        if (null !== $timeout_watcher) {
+            Scheduler::cancel($timeout_watcher);
+        }
     }
 }

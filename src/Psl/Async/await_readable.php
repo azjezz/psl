@@ -27,13 +27,7 @@ function await_readable(mixed $resource, bool $reference = true, ?int $timeout_m
 
     $watcher = EventLoop::onReadable(
         $resource,
-        static function (string $_watcher, mixed $resource) use ($suspension, $timeout_watcher): void {
-            if (null !== $timeout_watcher) {
-                Scheduler::cancel($timeout_watcher);
-            }
-
-            $suspension->resume($resource);
-        },
+        static fn() => $suspension->resume($resource),
     );
 
     if (!$reference) {
@@ -44,5 +38,10 @@ function await_readable(mixed $resource, bool $reference = true, ?int $timeout_m
         $suspension->suspend();
     } finally {
         Scheduler::cancel($watcher);
+
+        // cancel timeout watcher
+        if (null !== $timeout_watcher) {
+            Scheduler::cancel($timeout_watcher);
+        }
     }
 }
