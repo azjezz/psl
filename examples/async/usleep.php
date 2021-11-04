@@ -9,38 +9,14 @@ use Psl\IO;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-[$read, $write] = IO\pipe();
-
-$output = IO\output_handle();
+$start = time();
 
 Async\concurrent([
-    static function() use($read, $output): void {
-        $output->writeAll("< sleeping.\n");
-
-        Async\usleep(100);
-
-        $output->writeAll("< waiting for content.\n");
-
-        $content = $read->readAll();
-
-        $output->writeAll("< received '$content'.\n");
-        $output->writeAll("< closing.\n");
-
-        $read->close();
-    },
-    static function() use($write, $output): void {
-        $output->writeAll("> sleeping.\n");
-
-        Async\usleep(10000);
-
-        $output->writeAll("> writing.\n");
-
-        $write->writeAll('hello, world');
-
-        $output->write("> written 'hello, world'.\n");
-
-        $output->write("> closing'.\n");
-
-        $write->close();
-    },
+    static fn() => Async\usleep(2_000_000),
+    static fn() => Async\usleep(2_000_000),
+    static fn() => Async\usleep(2_000_000),
 ]);
+
+$duration = time() - $start;
+
+IO\output_handle()->writeAll("duration: $duration.\n");
