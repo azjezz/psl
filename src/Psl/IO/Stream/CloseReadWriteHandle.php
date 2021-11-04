@@ -10,7 +10,7 @@ use Psl\IO\Internal;
 /**
  * @codeCoverageIgnore
  */
-final class StreamCloseReadWriteHandle implements IO\CloseReadWriteHandleInterface
+final class CloseReadWriteHandle implements IO\CloseReadWriteHandleInterface
 {
     use IO\ReadHandleConvenienceMethodsTrait;
     use IO\WriteHandleConvenienceMethodsTrait;

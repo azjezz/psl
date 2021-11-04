@@ -10,12 +10,11 @@ use Psl\IO\Internal;
 /**
  * @codeCoverageIgnore
  */
-final class StreamSeekReadWriteHandle implements IO\SeekReadWriteHandleInterface
+final class SeekWriteHandle implements IO\SeekWriteHandleInterface
 {
-    use IO\ReadHandleConvenienceMethodsTrait;
     use IO\WriteHandleConvenienceMethodsTrait;
 
-    private IO\SeekReadWriteHandleInterface $handle;
+    private IO\SeekWriteHandleInterface $handle;
 
     /**
      * @param resource|object $stream
@@ -24,23 +23,7 @@ final class StreamSeekReadWriteHandle implements IO\SeekReadWriteHandleInterface
      */
     public function __construct(mixed $stream)
     {
-        $this->handle = new Internal\ResourceHandle($stream, read: true, write: true, seek: true);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function readImmediately(?int $max_bytes = null): string
-    {
-        return $this->handle->readImmediately($max_bytes);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function read(?int $max_bytes = null, ?int $timeout_ms = null): string
-    {
-        return $this->handle->read($max_bytes, $timeout_ms);
+        $this->handle = new Internal\ResourceHandle($stream, read: false, write: true, seek: true);
     }
 
     /**

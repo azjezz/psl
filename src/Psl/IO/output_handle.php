@@ -18,13 +18,13 @@ function output_handle(): WriteHandleInterface
 {
     if (PHP_SAPI === "cli") {
         /** @psalm-suppress MissingThrowsDocblock */
-        return new Stream\StreamWriteHandle(
+        return new Stream\WriteHandle(
             Internal\open_resource('php://stdout', 'wb')
         );
     }
 
     /** @psalm-suppress MissingThrowsDocblock */
-    return new Stream\StreamWriteHandle(
+    return new Stream\WriteHandle(
         Internal\open_resource('php://output', 'wb')
     );
 }

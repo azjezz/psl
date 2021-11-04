@@ -10,11 +10,11 @@ use Psl\IO\Internal;
 /**
  * @codeCoverageIgnore
  */
-final class StreamCloseSeekWriteHandle implements IO\CloseSeekWriteHandleInterface
+final class CloseWriteHandle implements IO\CloseWriteHandleInterface
 {
     use IO\WriteHandleConvenienceMethodsTrait;
 
-    private IO\CloseSeekReadWriteHandleInterface $handle;
+    private IO\CloseWriteHandleInterface $handle;
 
     /**
      * @param resource|object $stream
@@ -23,7 +23,7 @@ final class StreamCloseSeekWriteHandle implements IO\CloseSeekWriteHandleInterfa
      */
     public function __construct(mixed $stream)
     {
-        $this->handle = new Internal\ResourceHandle($stream, read: false, write: true, seek: true);
+        $this->handle = new Internal\ResourceHandle($stream, read: false, write: true, seek: false);
     }
 
     /**
@@ -40,22 +40,6 @@ final class StreamCloseSeekWriteHandle implements IO\CloseSeekWriteHandleInterfa
     public function write(string $bytes, ?int $timeout_ms = null): int
     {
         return $this->handle->write($bytes, $timeout_ms);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function seek(int $offset): void
-    {
-        $this->handle->seek($offset);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function tell(): int
-    {
-        return $this->handle->tell();
     }
 
     /**

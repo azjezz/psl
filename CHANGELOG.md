@@ -17,3 +17,4 @@
 * introduced a new `Psl\File` component.
 * refactor `Psl\Filesystem\write_file`, `Psl\Filesystem\append_file`, and `Psl\Filesystem\read_file` to use `Psl\File` component.
 * refactor `Psl\Shell\execute` to use `Psl\IO\Stream` component.
+* introduced a `Psl\IO\pipe(): (Psl\IO\CloseReadHandleInterface, Psl\IO\CloseWriteHandleInterface)` function to create a pair of handles, where writes to the WriteHandle can be read from the ReadHandle.

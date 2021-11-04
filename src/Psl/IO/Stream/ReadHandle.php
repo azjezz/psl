@@ -10,11 +10,11 @@ use Psl\IO\Internal;
 /**
  * @codeCoverageIgnore
  */
-final class StreamCloseReadHandle implements IO\CloseReadHandleInterface
+final class ReadHandle implements IO\ReadHandleInterface
 {
     use IO\ReadHandleConvenienceMethodsTrait;
 
-    private IO\CloseReadHandleInterface $handle;
+    private IO\ReadHandleInterface $handle;
 
     /**
      * @param resource|object $stream
@@ -40,13 +40,5 @@ final class StreamCloseReadHandle implements IO\CloseReadHandleInterface
     public function read(?int $max_bytes = null, ?int $timeout_ms = null): string
     {
         return $this->handle->read($max_bytes, $timeout_ms);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function close(): void
-    {
-        $this->handle->close();
     }
 }
