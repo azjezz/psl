@@ -3,6 +3,8 @@
     <description>The coding standard for PHP Standard Library.</description>
 
     <file>../src</file>
+    <file>../config</file>
+    <file>../config</file>
     <file>../tests</file>
 
     <exclude-pattern>*/src/Psl/File/(WriteMode|LockType).php</exclude-pattern>

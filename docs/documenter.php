@@ -253,7 +253,7 @@ function get_symbol_definition_line(string $symbol, int $type): int
 
     if (Loader::TYPE_FUNCTION === $type) {
         $reflection = new ReflectionFunction($symbol);
-    } else if (Loader::TYPE_ENUM === $type) {
+    } elseif (Loader::TYPE_ENUM === $type) {
         $reflection = new ReflectionEnum($symbol);
     } else {
         $reflection = new ReflectionClass($symbol);
@@ -277,8 +277,10 @@ function to_filename(string $namespace): string
     return Str\lowercase(Regex\replace(
         Regex\replace(
             Str\replace(Str\strip_prefix($namespace, 'Psl\\'), '\\', '-'),
-            '/(\p{Lu}+)(\p{Lu}\p{Ll})/u', '\1-\2',
+            '/(\p{Lu}+)(\p{Lu}\p{Ll})/u',
+            '\1-\2',
         ),
-        '/([\p{Ll}0-9])(\p{Lu})/u', '\1-\2',
+        '/([\p{Ll}0-9])(\p{Lu})/u',
+        '\1-\2',
     ));
 }
