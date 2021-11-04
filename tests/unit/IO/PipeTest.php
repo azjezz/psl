@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Psl\Tests\Unit\IO\Stream;
+namespace Psl\Tests\Unit\IO;
 
 use PHPUnit\Framework\TestCase;
 use Psl;
@@ -13,11 +13,7 @@ final class PipeTest extends TestCase
 {
     public function testReadWrite(): void
     {
-        /**
-         * @var \Psl\IO\Stream\StreamCloseReadHandle $read
-         * @var \Psl\IO\Stream\StreamCloseWriteHandle $write
-         */
-        [$read, $write] = IO\Stream\pipe();
+        [$read, $write] = IO\pipe();
 
         static::assertSame('', $read->readImmediately());
         $write->writeAll('hello');
@@ -37,11 +33,7 @@ final class PipeTest extends TestCase
 
     public function testReadWriteConcurrently(): void
     {
-        /**
-         * @var \Psl\IO\Stream\StreamCloseReadHandle $read
-         * @var \Psl\IO\Stream\StreamCloseWriteHandle $write
-         */
-        [$read, $write] = IO\Stream\pipe();
+        [$read, $write] = IO\pipe();
 
         $spy = new Psl\Ref('');
 
@@ -74,11 +66,7 @@ final class PipeTest extends TestCase
 
     public function testReadFixedSize(): void
     {
-        /**
-         * @var \Psl\IO\Stream\StreamCloseReadHandle $read
-         * @var \Psl\IO\Stream\StreamCloseWriteHandle $write
-         */
-        [$read, $write] = IO\Stream\pipe();
+        [$read, $write] = IO\pipe();
 
         $write->writeAll('');
         $write->writeAll('hello!');
@@ -89,11 +77,7 @@ final class PipeTest extends TestCase
 
     public function testReadFixedSizeFromClosedPipe(): void
     {
-        /**
-         * @var \Psl\IO\Stream\StreamCloseReadHandle $read
-         * @var \Psl\IO\Stream\StreamCloseWriteHandle $write
-         */
-        [$read, $write] = IO\Stream\pipe();
+        [$read, $write] = IO\pipe();
 
         $write->writeAll('');
         $write->writeAll('hello!');
@@ -107,10 +91,7 @@ final class PipeTest extends TestCase
 
     public function testReadAllTimedOut(): void
     {
-        /**
-         * @var \Psl\IO\Stream\StreamCloseReadHandle $read
-         */
-        [$read, $_write] = IO\Stream\pipe();
+        [$read, $_write] = IO\pipe();
 
         $this->expectException(IO\Exception\TimeoutException::class);
         $this->expectExceptionMessage('reached timeout while the handle is still not readable.');

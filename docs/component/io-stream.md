@@ -10,26 +10,22 @@
 
 ### `Psl\IO\Stream` Component
 
-#### `Functions`
-
-- [pipe](./../../src/Psl/IO/Stream/pipe.php#L25)
-
 #### `Classes`
 
-- [StreamCloseHandle](./../../src/Psl/IO/Stream/StreamCloseHandle.php#L13)
-- [StreamCloseReadHandle](./../../src/Psl/IO/Stream/StreamCloseReadHandle.php#L13)
-- [StreamCloseReadWriteHandle](./../../src/Psl/IO/Stream/StreamCloseReadWriteHandle.php#L13)
-- [StreamCloseSeekHandle](./../../src/Psl/IO/Stream/StreamCloseSeekHandle.php#L13)
-- [StreamCloseSeekReadHandle](./../../src/Psl/IO/Stream/StreamCloseSeekReadHandle.php#L13)
-- [StreamCloseSeekReadWriteHandle](./../../src/Psl/IO/Stream/StreamCloseSeekReadWriteHandle.php#L13)
-- [StreamCloseSeekWriteHandle](./../../src/Psl/IO/Stream/StreamCloseSeekWriteHandle.php#L13)
-- [StreamCloseWriteHandle](./../../src/Psl/IO/Stream/StreamCloseWriteHandle.php#L13)
-- [StreamReadHandle](./../../src/Psl/IO/Stream/StreamReadHandle.php#L13)
-- [StreamReadWriteHandle](./../../src/Psl/IO/Stream/StreamReadWriteHandle.php#L13)
-- [StreamSeekHandle](./../../src/Psl/IO/Stream/StreamSeekHandle.php#L13)
-- [StreamSeekReadHandle](./../../src/Psl/IO/Stream/StreamSeekReadHandle.php#L13)
-- [StreamSeekReadWriteHandle](./../../src/Psl/IO/Stream/StreamSeekReadWriteHandle.php#L13)
-- [StreamSeekWriteHandle](./../../src/Psl/IO/Stream/StreamSeekWriteHandle.php#L13)
-- [StreamWriteHandle](./../../src/Psl/IO/Stream/StreamWriteHandle.php#L13)
+- [CloseHandle](./../../src/Psl/IO/Stream/CloseHandle.php#L13)
+- [CloseReadHandle](./../../src/Psl/IO/Stream/CloseReadHandle.php#L13)
+- [CloseReadWriteHandle](./../../src/Psl/IO/Stream/CloseReadWriteHandle.php#L13)
+- [CloseSeekHandle](./../../src/Psl/IO/Stream/CloseSeekHandle.php#L13)
+- [CloseSeekReadHandle](./../../src/Psl/IO/Stream/CloseSeekReadHandle.php#L13)
+- [CloseSeekReadWriteHandle](./../../src/Psl/IO/Stream/CloseSeekReadWriteHandle.php#L13)
+- [CloseSeekWriteHandle](./../../src/Psl/IO/Stream/CloseSeekWriteHandle.php#L13)
+- [CloseWriteHandle](./../../src/Psl/IO/Stream/CloseWriteHandle.php#L13)
+- [ReadHandle](./../../src/Psl/IO/Stream/ReadHandle.php#L13)
+- [ReadWriteHandle](./../../src/Psl/IO/Stream/ReadWriteHandle.php#L13)
+- [SeekHandle](./../../src/Psl/IO/Stream/SeekHandle.php#L13)
+- [SeekReadHandle](./../../src/Psl/IO/Stream/SeekReadHandle.php#L13)
+- [SeekReadWriteHandle](./../../src/Psl/IO/Stream/SeekReadWriteHandle.php#L13)
+- [SeekWriteHandle](./../../src/Psl/IO/Stream/SeekWriteHandle.php#L13)
+- [WriteHandle](./../../src/Psl/IO/Stream/WriteHandle.php#L13)
 
 

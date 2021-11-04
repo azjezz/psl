@@ -10,9 +10,11 @@ use Psl\IO\Internal;
 /**
  * @codeCoverageIgnore
  */
-final class StreamCloseSeekHandle implements IO\CloseSeekHandleInterface
+final class CloseSeekReadHandle implements IO\CloseSeekReadHandleInterface
 {
-    private IO\CloseSeekHandleInterface $handle;
+    use IO\ReadHandleConvenienceMethodsTrait;
+
+    private IO\CloseSeekReadHandleInterface $handle;
 
     /**
      * @param resource|object $stream
@@ -21,7 +23,23 @@ final class StreamCloseSeekHandle implements IO\CloseSeekHandleInterface
      */
     public function __construct(mixed $stream)
     {
-        $this->handle = new Internal\ResourceHandle($stream, read: false, write: false, seek: true);
+        $this->handle = new Internal\ResourceHandle($stream, read: true, write: false, seek: true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function readImmediately(?int $max_bytes = null): string
+    {
+        return $this->handle->readImmediately($max_bytes);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function read(?int $max_bytes = null, ?int $timeout_ms = null): string
+    {
+        return $this->handle->read($max_bytes, $timeout_ms);
     }
 
     /**

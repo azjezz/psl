@@ -10,7 +10,7 @@ use Psl\IO\Internal;
 /**
  * @codeCoverageIgnore
  */
-final class StreamCloseHandle implements IO\CloseHandleInterface
+final class CloseHandle implements IO\CloseHandleInterface
 {
     private IO\CloseHandleInterface $handle;
 

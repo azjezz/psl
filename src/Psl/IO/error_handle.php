@@ -18,7 +18,7 @@ function error_handle(): ?WriteHandleInterface
 {
     if (PHP_SAPI === "cli") {
         /** @psalm-suppress MissingThrowsDocblock */
-        return new Stream\StreamWriteHandle(
+        return new Stream\WriteHandle(
             Internal\open_resource('php://stderr', 'wb')
         );
     }

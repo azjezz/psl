@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Psl\IO\Stream;
+namespace Psl\IO;
 
 use Psl;
 use Psl\Internal;
-use Psl\IO;
 
 use function error_get_last;
 use function stream_socket_pair;
@@ -18,9 +17,9 @@ use const STREAM_SOCK_STREAM;
 /**
  * Create a pair of handles, where writes to the WriteHandle can be read from the ReadHandle.
  *
- * @throws IO\Exception\BlockingException If unable to set one of the handles to non-blocking mode.
+ * @throws Exception\BlockingException If unable to set one of the handles to non-blocking mode.
  *
- * @return array{0: StreamCloseReadHandle, 1: StreamCloseWriteHandle}
+ * @return array{0: CloseReadHandleInterface, 1: CloseWriteHandleInterface}
  */
 function pipe(): array
 {
@@ -43,7 +42,7 @@ function pipe(): array
     );
 
     return [
-        new StreamCloseReadHandle($sockets[0]),
-        new StreamCloseWriteHandle($sockets[1]),
+        new Stream\CloseReadHandle($sockets[0]),
+        new Stream\CloseWriteHandle($sockets[1]),
     ];
 }

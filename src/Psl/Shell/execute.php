@@ -85,8 +85,8 @@ function execute(
     }
     // @codeCoverageIgnoreEnd
 
-    $stdout = new Stream\StreamCloseReadHandle($pipes[1]);
-    $stderr = new Stream\StreamCloseReadHandle($pipes[2]);
+    $stdout = new Stream\CloseReadHandle($pipes[1]);
+    $stderr = new Stream\CloseReadHandle($pipes[2]);
 
     try {
         [$stdout_content, $stderr_content] = Async\concurrently([

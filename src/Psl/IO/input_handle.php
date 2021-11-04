@@ -18,13 +18,13 @@ function input_handle(): ReadHandleInterface
 {
     if (PHP_SAPI === "cli") {
         /** @psalm-suppress MissingThrowsDocblock */
-        return new Stream\StreamReadHandle(
+        return new Stream\ReadHandle(
             Internal\open_resource('php://stdin', 'rb')
         );
     }
 
     /** @psalm-suppress MissingThrowsDocblock */
-    return new Stream\StreamReadHandle(
+    return new Stream\ReadHandle(
         Internal\open_resource('php://input', 'rb')
     );
 }

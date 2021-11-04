@@ -10,9 +10,9 @@ use Psl\IO\Internal;
 /**
  * @codeCoverageIgnore
  */
-final class StreamSeekHandle implements IO\SeekHandleInterface
+final class CloseSeekHandle implements IO\CloseSeekHandleInterface
 {
-    private IO\SeekHandleInterface $handle;
+    private IO\CloseSeekHandleInterface $handle;
 
     /**
      * @param resource|object $stream
@@ -38,5 +38,13 @@ final class StreamSeekHandle implements IO\SeekHandleInterface
     public function tell(): int
     {
         return $this->handle->tell();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function close(): void
+    {
+        $this->handle->close();
     }
 }
