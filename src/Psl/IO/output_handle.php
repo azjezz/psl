@@ -14,17 +14,17 @@ use const PHP_SAPI;
  *
  * @codeCoverageIgnore
  */
-function output_handle(): WriteHandleInterface
+function output_handle(): CloseWriteHandleInterface
 {
     if (PHP_SAPI === "cli") {
         /** @psalm-suppress MissingThrowsDocblock */
-        return new Stream\WriteHandle(
+        return new Stream\CloseWriteHandle(
             Internal\open_resource('php://stdout', 'wb')
         );
     }
 
     /** @psalm-suppress MissingThrowsDocblock */
-    return new Stream\WriteHandle(
+    return new Stream\CloseWriteHandle(
         Internal\open_resource('php://output', 'wb')
     );
 }

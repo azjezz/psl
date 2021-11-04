@@ -14,11 +14,11 @@ use const PHP_SAPI;
  *
  * @codeCoverageIgnore
  */
-function error_handle(): ?WriteHandleInterface
+function error_handle(): ?CloseWriteHandleInterface
 {
     if (PHP_SAPI === "cli") {
         /** @psalm-suppress MissingThrowsDocblock */
-        return new Stream\WriteHandle(
+        return new Stream\CloseWriteHandle(
             Internal\open_resource('php://stderr', 'wb')
         );
     }
