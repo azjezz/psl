@@ -12,11 +12,11 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 $start = time();
 
-Async\concurrently([
+Async\concurrent([
     static fn() => Shell\execute('sleep', ['2']),
     static fn() => Shell\execute('sleep', ['2']),
     static fn() => Shell\execute('sleep', ['1']),
-])->await();
+]);
 
 $duration = time() - $start;
 

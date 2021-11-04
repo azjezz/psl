@@ -12,26 +12,26 @@ final class RunTest extends TestCase
     public function testRun(): void
     {
         $awaitable = Async\run(static function (): string {
-            Async\await(Async\concurrently([
+            Async\concurrent([
                 static fn() => Async\usleep(100),
                 static fn() => Async\usleep(100),
                 static fn() => Async\usleep(100),
-            ]));
+            ]);
 
             return 'hello';
         });
 
-        static::assertSame('hello', $awaitable->await());
+        static::assertSame('hello', Async\await($awaitable));
     }
 
     public function testRunWithTimeout(): void
     {
         $awaitable = Async\run(static function (): string {
-            Async\await(Async\concurrently([
+            Async\concurrent([
                 static fn() => Async\usleep(10_000),
                 static fn() => Async\usleep(10_000),
                 static fn() => Async\usleep(10_000),
-            ]));
+            ]);
 
             return 'hello';
         }, timeout_ms: 20_000);
@@ -42,11 +42,11 @@ final class RunTest extends TestCase
     public function testRunTimedOut(): void
     {
         $awaitable = Async\run(static function (): string {
-            Async\await(Async\concurrently([
+            Async\concurrent([
                 static fn() => Async\usleep(1000),
                 static fn() => Async\usleep(1000),
                 static fn() => Async\usleep(1000),
-            ]));
+            ]);
 
             return 'hello';
         }, timeout_ms: 100);

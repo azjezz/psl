@@ -13,7 +13,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 $output = IO\output_handle();
 
-Async\concurrently([
+Async\concurrent([
     static function() use($read, $output): void {
         $output->writeAll("< sleeping.\n");
 
@@ -43,4 +43,4 @@ Async\concurrently([
 
         $write->close();
     },
-])->await();
+]);

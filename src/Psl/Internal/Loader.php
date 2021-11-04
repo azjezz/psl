@@ -444,7 +444,7 @@ final class Loader
         'Psl\Trait\exists',
         'Psl\Trait\defined',
         'Psl\Async\run',
-        'Psl\Async\concurrently',
+        'Psl\Async\concurrent',
         'Psl\Async\await',
         'Psl\Async\any',
         'Psl\Async\all',

@@ -9,9 +9,7 @@ use Throwable;
 /**
  * Awaits all awaitables to complete concurrently.
  *
- * If one or more awaitables fail, the first exception will be thrown.
- *
- * This function will wait for all awaitables to finish, even if the first one fails.
+ * If one or more awaitables fail, all awaitables will be completed before throwing.
  *
  * @template Tk of array-key
  * @template Tv

@@ -89,10 +89,10 @@ function execute(
     $stderr = new Stream\CloseReadHandle($pipes[2]);
 
     try {
-        [$stdout_content, $stderr_content] = Async\concurrently([
+        [$stdout_content, $stderr_content] = Async\concurrent([
             static fn(): string => $stdout->readAll(timeout_ms: $timeout_ms),
             static fn(): string => $stderr->readAll(timeout_ms: $timeout_ms),
-        ])->await();
+        ]);
         // @codeCoverageIgnoreStart
     } catch (IO\Exception\TimeoutException $previous) {
         throw new Exception\TimeoutException('reached timeout while the process output is still not readable.', 0, $previous);
