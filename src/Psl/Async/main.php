@@ -13,8 +13,6 @@ use Throwable;
  *
  * @param (callable(): int)|(callable(): Awaitable<int>) $callable
  *
- * @return never
- *
  * @codeCoverageIgnore
  */
 function main(callable $callable): never

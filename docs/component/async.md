@@ -21,7 +21,7 @@
 - [concurrent](./../../src/Psl/Async/concurrent.php#L21)
 - [first](./../../src/Psl/Async/first.php#L24)
 - [later](./../../src/Psl/Async/later.php#L14)
-- [main](./../../src/Psl/Async/main.php#L20)
+- [main](./../../src/Psl/Async/main.php#L18)
 - [run](./../../src/Psl/Async/run.php#L20)
 - [usleep](./../../src/Psl/Async/usleep.php#L10)
 
