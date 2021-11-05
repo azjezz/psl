@@ -22,18 +22,18 @@ final class OptionalIncrementalTimeout
     /**
      * @param (callable(): ?int) $handler
      */
-    public function __construct(?int $timeout_ms, callable $handler)
+    public function __construct(?float $timeout, callable $handler)
     {
         $this->handler = $handler;
-        if ($timeout_ms === null) {
+        if ($timeout === null) {
             $this->end = null;
             return;
         }
 
-        $this->end = microtime(true) + (float) $timeout_ms;
+        $this->end = microtime(true) + $timeout;
     }
 
-    public function getRemaining(): ?int
+    public function getRemaining(): ?float
     {
         if ($this->end === null) {
             return null;
@@ -45,6 +45,6 @@ final class OptionalIncrementalTimeout
             return $th();
         }
 
-        return $remaining < 1.0 ? 1 : (int) $remaining;
+        return $remaining;
     }
 }

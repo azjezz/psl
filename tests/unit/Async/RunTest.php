@@ -13,9 +13,9 @@ final class RunTest extends TestCase
     {
         $awaitable = Async\run(static function (): string {
             Async\concurrent([
-                static fn() => Async\usleep(100),
-                static fn() => Async\usleep(100),
-                static fn() => Async\usleep(100),
+                static fn() => Async\sleep(0.001),
+                static fn() => Async\sleep(0.001),
+                static fn() => Async\sleep(0.001),
             ]);
 
             return 'hello';
@@ -28,13 +28,13 @@ final class RunTest extends TestCase
     {
         $awaitable = Async\run(static function (): string {
             Async\concurrent([
-                static fn() => Async\usleep(10_000),
-                static fn() => Async\usleep(10_000),
-                static fn() => Async\usleep(10_000),
+                static fn() => Async\sleep(0.0001),
+                static fn() => Async\sleep(0.0001),
+                static fn() => Async\sleep(0.0001),
             ]);
 
             return 'hello';
-        }, timeout_ms: 20_000);
+        }, timeout: 0.002);
 
         static::assertSame('hello', $awaitable->await());
     }
@@ -43,13 +43,13 @@ final class RunTest extends TestCase
     {
         $awaitable = Async\run(static function (): string {
             Async\concurrent([
-                static fn() => Async\usleep(1000),
-                static fn() => Async\usleep(1000),
-                static fn() => Async\usleep(1000),
+                static fn() => Async\sleep(0.00001),
+                static fn() => Async\sleep(0.00001),
+                static fn() => Async\sleep(0.00001),
             ]);
 
             return 'hello';
-        }, timeout_ms: 100);
+        }, timeout: 0.0001);
 
         $this->expectException(Async\Exception\TimeoutException::class);
 

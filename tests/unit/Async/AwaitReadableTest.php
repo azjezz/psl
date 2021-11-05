@@ -31,7 +31,7 @@ final class AwaitReadableTest extends TestCase
             Async\run(static function () use ($ref, $write_socket) {
                 $ref->value .= '[write:sleep]';
 
-                Async\usleep(1000);
+                Async\sleep(0.001);
 
                 fwrite($write_socket, "hello", 5);
 

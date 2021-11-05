@@ -12,7 +12,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 Async\main(static function (): void {
     try {
-        Shell\execute('sleep', ['1'], timeout_ms: 500000);
+        Shell\execute('sleep', ['1'], timeout: 0.5);
     } catch (Shell\Exception\TimeoutException $exception) {
         IO\output_handle()->write($exception->getMessage() . "\n");
     }

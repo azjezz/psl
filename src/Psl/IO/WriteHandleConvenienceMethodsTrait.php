@@ -31,7 +31,7 @@ trait WriteHandleConvenienceMethodsTrait
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If reached timeout before completing the operation.
      */
-    public function writeAll(string $bytes, ?int $timeout_ms = null): void
+    public function writeAll(string $bytes, ?float $timeout = null): void
     {
         if ($bytes === '') {
             return;
@@ -44,7 +44,7 @@ trait WriteHandleConvenienceMethodsTrait
         $written = new Psl\Ref(0);
 
         $timer = new Internal\OptionalIncrementalTimeout(
-            $timeout_ms,
+            $timeout,
             static function () use ($written): void {
                 // @codeCoverageIgnoreStart
                 throw new Exception\TimeoutException(Str\format(

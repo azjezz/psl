@@ -36,7 +36,7 @@ interface WriteHandleInterface extends HandleInterface
      *
      * @return int the number of bytes written, which may be less than the length of input string.
      */
-    public function write(string $bytes, ?int $timeout_ms = null): int;
+    public function write(string $bytes, ?float $timeout = null): int;
 
     /**
      * Write all of the requested data.
@@ -54,5 +54,5 @@ interface WriteHandleInterface extends HandleInterface
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If reached timeout before completing the operation.
      */
-    public function writeAll(string $bytes, ?int $timeout_ms = null): void;
+    public function writeAll(string $bytes, ?float $timeout = null): void;
 }

@@ -18,7 +18,7 @@ Async\main(static function(): int {
         static function() use($read, $output): void {
             $output->writeAll("< sleeping.\n");
 
-            Async\usleep(100);
+            Async\sleep(0.01);
 
             $output->writeAll("< waiting for content.\n");
 
@@ -32,7 +32,7 @@ Async\main(static function(): int {
         static function() use($write, $output): void {
             $output->writeAll("> sleeping.\n");
 
-            Async\usleep(10000);
+            Async\sleep(0.1);
 
             $output->writeAll("> writing.\n");
 

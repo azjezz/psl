@@ -37,8 +37,8 @@ final class ReadHandle implements IO\ReadHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function read(?int $max_bytes = null, ?int $timeout_ms = null): string
+    public function read(?int $max_bytes = null, ?float $timeout = null): string
     {
-        return $this->handle->read($max_bytes, $timeout_ms);
+        return $this->handle->read($max_bytes, $timeout);
     }
 }

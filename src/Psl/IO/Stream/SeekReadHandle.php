@@ -37,9 +37,9 @@ final class SeekReadHandle implements IO\SeekReadHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function read(?int $max_bytes = null, ?int $timeout_ms = null): string
+    public function read(?int $max_bytes = null, ?float $timeout = null): string
     {
-        return $this->handle->read($max_bytes, $timeout_ms);
+        return $this->handle->read($max_bytes, $timeout);
     }
 
     /**

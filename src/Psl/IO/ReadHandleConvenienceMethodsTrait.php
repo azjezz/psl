@@ -26,16 +26,16 @@ trait ReadHandleConvenienceMethodsTrait
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If $timeout_ms is reached before being able to read from the handle.
+     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    public function readAll(?int $max_bytes = null, ?int $timeout_ms = null): string
+    public function readAll(?int $max_bytes = null, ?float $timeout = null): string
     {
         $to_read = $max_bytes ?? Internal\ResourceHandle::DEFAULT_READ_BUFFER_SIZE;
 
         /** @var Psl\Ref<string> $data */
         $data = new Psl\Ref('');
         $timer = new Internal\OptionalIncrementalTimeout(
-            $timeout_ms,
+            $timeout,
             static function () use ($data): void {
                 // @codeCoverageIgnoreStart
                 throw new Exception\TimeoutException(Str\format(
@@ -66,11 +66,11 @@ trait ReadHandleConvenienceMethodsTrait
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If $timeout_ms is reached before being able to read from the handle.
+     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    public function readFixedSize(int $size, ?int $timeout_ms = null): string
+    public function readFixedSize(int $size, ?float $timeout = null): string
     {
-        $data = $this->readAll($size, $timeout_ms);
+        $data = $this->readAll($size, $timeout);
 
         if (($length = strlen($data)) !== $size) {
             throw new Exception\RuntimeException(Str\format(

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Psl\Async;
 
 /**
- * Non-blocking sleep for the specified number of micro-seconds.
+ * Non-blocking sleep for the specified number of seconds.
  */
-function usleep(int $microseconds): void
+function sleep(float $seconds): void
 {
     $suspension = Scheduler::createSuspension();
-    $watcher = Scheduler::delay($microseconds, static fn () => $suspension->resume(null));
+    $watcher = Scheduler::delay($seconds, static fn () => $suspension->resume(null));
 
     try {
         $suspension->suspend();

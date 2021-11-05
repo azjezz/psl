@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Async;
 
+use Psl\Dict;
 use Throwable;
 
 /**
@@ -37,5 +38,14 @@ function all(iterable $awaitables): array
         throw $errors[0];
     }
 
-    return $values;
+    return Dict\map_with_key(
+        $awaitables,
+        /**
+         * @param Tk $key
+         * @param Awaitable<Tv> $_awaitable
+         *
+         * @retun Tv
+         */
+        static fn(string|int $key, Awaitable $_awaitable): mixed => $values[$key],
+    );
 }

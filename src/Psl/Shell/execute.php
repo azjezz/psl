@@ -34,7 +34,7 @@ use function proc_open;
  * @throws Exception\FailedExecutionException In case the command resulted in an exit code other than 0.
  * @throws Exception\PossibleAttackException In case the command being run is suspicious ( e.g: contains NULL byte ).
  * @throws Exception\RuntimeException In case $working_directory doesn't exist, or unable to create a new process.
- * @throws Exception\TimeoutException If $timeout_ms is reached before being able to read the process stream.
+ * @throws Exception\TimeoutException If $timeout is reached before being able to read the process stream.
  * @throws IO\Exception\BlockingException If unable to set the process stream to non-blocking mode.
  */
 function execute(
@@ -43,7 +43,7 @@ function execute(
     ?string $working_directory = null,
     array   $environment = [],
     bool    $escape_arguments = true,
-    ?int    $timeout_ms = null
+    ?float  $timeout = null
 ): string {
     if ($escape_arguments) {
         $arguments = Vec\map(
@@ -90,8 +90,8 @@ function execute(
 
     try {
         [$stdout_content, $stderr_content] = Async\concurrent([
-            static fn(): string => $stdout->readAll(timeout_ms: $timeout_ms),
-            static fn(): string => $stderr->readAll(timeout_ms: $timeout_ms),
+            static fn(): string => $stdout->readAll(timeout: $timeout),
+            static fn(): string => $stderr->readAll(timeout: $timeout),
         ]);
         // @codeCoverageIgnoreStart
     } catch (IO\Exception\TimeoutException $previous) {

@@ -10,18 +10,18 @@ use Revolt\EventLoop\UnsupportedFeatureException;
 /**
  * Wait for signal in a non-blocking way.
  *
- * @throws Exception\TimeoutException If $timeout_ms is non-null, and the operation timed-out.
+ * @throws Exception\TimeoutException If $timeout is non-null, and the operation timed-out.
  * @throws UnsupportedFeatureException If signal handling is not supported.
  *
  * @codeCoverageIgnore
  */
-function await_signal(int $signal, bool $reference = true, ?int $timeout_ms = null): void
+function await_signal(int $signal, bool $reference = true, ?float $timeout = null): void
 {
     $suspension = Scheduler::createSuspension();
 
     $timeout_watcher = null;
-    if (null !== $timeout_ms) {
-        $timeout_watcher = Scheduler::delay($timeout_ms, static fn() => $suspension->throw(new Exception\TimeoutException()));
+    if (null !== $timeout) {
+        $timeout_watcher = Scheduler::delay($timeout, static fn() => $suspension->throw(new Exception\TimeoutException()));
         Scheduler::unreference($timeout_watcher);
     }
 

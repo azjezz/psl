@@ -17,7 +17,7 @@ use Throwable;
  *
  * @return Awaitable<T>
  */
-function run(callable $callable, ?int $timeout_ms = null): Awaitable
+function run(callable $callable, ?float $timeout = null): Awaitable
 {
     $state = new Internal\State();
 
@@ -26,8 +26,8 @@ function run(callable $callable, ?int $timeout_ms = null): Awaitable
     /** @var Psl\Ref<string|null> $delay_watcher */
     $delay_watcher = new Psl\Ref(null);
 
-    if (null !== $timeout_ms) {
-        $timeout_watcher->value = Scheduler::delay($timeout_ms, static function () use ($state, $delay_watcher, $timeout_watcher): void {
+    if (null !== $timeout) {
+        $timeout_watcher->value = Scheduler::delay($timeout, static function () use ($state, $delay_watcher, $timeout_watcher): void {
             if (null !== $delay_watcher->value) {
                 $delay_watcher_value = $delay_watcher->value;
                 $delay_watcher->value = null;

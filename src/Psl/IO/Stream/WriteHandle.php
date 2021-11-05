@@ -37,8 +37,8 @@ final class WriteHandle implements IO\WriteHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function write(string $bytes, ?int $timeout_ms = null): int
+    public function write(string $bytes, ?float $timeout = null): int
     {
-        return $this->handle->write($bytes, $timeout_ms);
+        return $this->handle->write($bytes, $timeout);
     }
 }

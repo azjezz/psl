@@ -15,17 +15,17 @@ final class AllTest extends TestCase
     {
         $awaitables = [
             'a' => Async\run(static function (): string {
-                Async\usleep(100);
+                Async\sleep(0.003);
 
                 return 'a';
             }),
             'b' => Async\run(static function (): string {
-                Async\usleep(100);
+                Async\sleep(0.001);
 
                 return 'b';
             }),
             'c' => Async\run(static function (): string {
-                Async\usleep(100);
+                Async\sleep(0.01);
 
                 return 'c';
             }),
@@ -43,26 +43,26 @@ final class AllTest extends TestCase
 
         Async\all([
             Async\run(static function (): string {
-                Async\usleep(100);
+                Async\sleep(0.01);
 
                 throw new InvariantViolationException('a');
             }),
             Async\run(static function (): string {
-                Async\usleep(200);
+                Async\sleep(0.02);
 
                 throw new InvariantViolationException('b');
             }),
             Async\run(static function (): string {
-                Async\usleep(300);
+                Async\sleep(0.03);
 
                 return 'c';
             }),
             Async\run(static function (): string {
-                Async\usleep(50);
+                Async\sleep(0.005);
 
                 Async\later();
 
-                Async\usleep(50);
+                Async\sleep(0.005);
 
                 return 'c';
             }),
@@ -81,28 +81,29 @@ final class AllTest extends TestCase
                     throw new InvariantViolationException('a');
                 }),
                 Async\run(static function () use ($ref): void {
-                    Async\usleep(20000);
+                    Async\sleep(0.02);
 
                     $ref->value .= 'b';
 
                     throw new InvariantViolationException('b');
                 }),
                 Async\run(static function () use ($ref): void {
-                    Async\usleep(50000);
+                    Async\sleep(0.05);
 
                     $ref->value .= 'c';
                 }),
                 Async\run(static function () use ($ref): void {
-                    Async\usleep(500);
+                    Async\sleep(0.00005);
 
                     Async\later();
 
-                    Async\usleep(500);
+                    Async\sleep(0.00005);
 
                     $ref->value .= 'd';
                 }),
             ]);
         } catch (InvariantViolationException) {
+            $this->addToAssertionCount(1);
         }
 
         static::assertSame('adbc', $ref->value);

@@ -15,7 +15,7 @@ final class DeferredTest extends TestCase
         $deferred = new Async\Deferred();
 
         $placeholder = Async\run(static function () use ($deferred) {
-            Async\usleep(100);
+            Async\sleep(0.0001);
 
             $deferred->complete('hello');
         });
@@ -34,7 +34,7 @@ final class DeferredTest extends TestCase
         $deferred = new Async\Deferred();
 
         $placeholder = Async\run(static function () use ($deferred) {
-            Async\usleep(100);
+            Async\sleep(0.0001);
 
             $deferred->error(new InvariantViolationException('hello'));
         });

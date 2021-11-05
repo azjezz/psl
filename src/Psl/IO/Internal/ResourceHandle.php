@@ -103,13 +103,13 @@ class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
     /**
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws InvariantViolationException If $timeout_ms is negative.
+     * @throws InvariantViolationException If $timeout is negative.
      */
-    public function write(string $bytes, ?int $timeout_ms = null): int
+    public function write(string $bytes, ?float $timeout = null): int
     {
         Psl\invariant(
-            $timeout_ms === null || $timeout_ms > 0,
-            '$timeout_ms must be null, or > 0',
+            $timeout === null || $timeout > 0,
+            '$timeout must be null, or > 0',
         );
 
         $written = $this->writeImmediately($bytes);
@@ -121,7 +121,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
 
         try {
             /** @psalm-suppress PossiblyInvalidArgument */
-            Async\await_writable($this->resource, timeout_ms: $timeout_ms);
+            Async\await_writable($this->resource, timeout: $timeout);
         } catch (Async\Exception\TimeoutException) {
             throw new Exception\TimeoutException('reached timeout while the handle is still not writable.');
         }
@@ -196,13 +196,13 @@ class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If reached timeout.
-     * @throws InvariantViolationException If $max_bytes is 0, or $timeout_ms is negative.
+     * @throws InvariantViolationException If $max_bytes is 0, or $timeout is negative.
      */
-    public function read(?int $max_bytes = null, ?int $timeout_ms = null): string
+    public function read(?int $max_bytes = null, ?float $timeout = null): string
     {
         Psl\invariant(
-            $timeout_ms === null || $timeout_ms > 0,
-            '$timeout_ms must be null, or > 0',
+            $timeout === null || $timeout > 0,
+            '$timeout must be null, or > 0',
         );
 
         $chunk = $this->readImmediately($max_bytes);
@@ -212,7 +212,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
 
         try {
             /** @psalm-suppress PossiblyInvalidArgument */
-            Async\await_readable($this->resource, timeout_ms: $timeout_ms);
+            Async\await_readable($this->resource, timeout: $timeout);
         } catch (Async\Exception\TimeoutException) {
             throw new Exception\TimeoutException('reached timeout while the handle is still not readable.');
         }

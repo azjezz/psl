@@ -39,7 +39,7 @@ final class PipeTest extends TestCase
 
         $read_result = Async\run(static function () use ($read, $spy): string {
             $spy->value .= '[read:sleep]';
-            Async\usleep(3000);
+            Async\sleep(0.003);
             $spy->value .= '[read:start]';
             $content = $read->readAll(1000);
             $spy->value .= '[read:complete]';
@@ -50,7 +50,7 @@ final class PipeTest extends TestCase
 
         Async\run(static function () use ($write, $spy): void {
             $spy->value .= '[write:sleep]';
-            Async\usleep(3500);
+            Async\sleep(0.0035);
             $spy->value .= '[write:start]';
             $write->writeAll('hello');
             $spy->value .= '[write:complete]';
@@ -96,6 +96,6 @@ final class PipeTest extends TestCase
         $this->expectException(IO\Exception\TimeoutException::class);
         $this->expectExceptionMessage('reached timeout while the handle is still not readable.');
 
-        $read->readAll(timeout_ms: 100);
+        $read->readAll(timeout: 0.001);
     }
 }

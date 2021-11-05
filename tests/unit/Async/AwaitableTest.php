@@ -84,12 +84,12 @@ final class AwaitableTest extends TestCase
             'foo' => Awaitable::complete('foo'),
             'bar' => Awaitable::error(new InvariantViolationException('bar')),
             'baz' => Async\run(static function () {
-                Async\usleep(100);
+                Async\sleep(0.0001);
 
                 throw new InvariantViolationException('baz');
             }),
             'qux' => Async\run(static function () {
-                Async\usleep(200);
+                Async\sleep(0.003);
 
                 return 'qux';
             }),
@@ -131,7 +131,7 @@ final class AwaitableTest extends TestCase
         $generator1 = Async\run(static function (): iterable {
             yield 'foo' => 'foo';
 
-            Async\usleep(300);
+            Async\sleep(0.0003);
 
             yield 'bar' => 'bar';
         });
@@ -139,7 +139,7 @@ final class AwaitableTest extends TestCase
         $generator2 = Async\run(static function (): iterable {
             yield 'baz' => 'baz';
 
-            Async\usleep(100);
+            Async\sleep(0.0001);
 
             yield 'qux' => 'qux';
         });
@@ -147,7 +147,7 @@ final class AwaitableTest extends TestCase
         $generator3 = Async\run(static function () use ($generator1, $generator2): iterable {
             yield 'gen1' => $generator1;
 
-            Async\usleep(200);
+            Async\sleep(0.0002);
 
             yield 'gen2' => $generator2;
         })->await();

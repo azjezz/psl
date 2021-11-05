@@ -33,7 +33,7 @@ Async\main(static function (): int {
 
     $stdout->writeAll('piping from ' . $input_file . ' to ' . $output_file . ' (for max ' . $seconds . ' second(s)) ...' . PHP_EOL);
 
-    Async\Scheduler::delay($seconds * 1000000, $input->close(...));
+    Async\Scheduler::delay($seconds, $input->close(...));
 
     $start = microtime(true);
     $bytes = 0;

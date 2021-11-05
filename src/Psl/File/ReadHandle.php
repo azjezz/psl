@@ -41,8 +41,8 @@ final class ReadHandle extends Internal\AbstractHandleWrapper implements ReadHan
     /**
      * {@inheritDoc}
      */
-    public function read(?int $max_bytes = null, ?int $timeout_ms = null): string
+    public function read(?int $max_bytes = null, ?float $timeout = null): string
     {
-        return $this->readHandle->read($max_bytes, $timeout_ms);
+        return $this->readHandle->read($max_bytes, $timeout);
     }
 }

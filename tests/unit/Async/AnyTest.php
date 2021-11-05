@@ -14,26 +14,26 @@ final class AnyTest extends TestCase
     {
         $result = Async\any([
             Async\run(static function (): string {
-                Async\usleep(100);
+                Async\sleep(0.0001);
 
                 throw new InvariantViolationException('a');
             }),
             Async\run(static function (): string {
-                Async\usleep(200);
+                Async\sleep(0.0002);
 
                 throw new InvariantViolationException('b');
             }),
             Async\run(static function (): string {
-                Async\usleep(300);
+                Async\sleep(0.0003);
 
                 return 'c';
             }),
             Async\run(static function (): string {
-                Async\usleep(50);
+                Async\sleep(0.00005);
 
                 Async\later();
 
-                Async\usleep(50);
+                Async\sleep(0.00005);
 
                 return 'c';
             }),

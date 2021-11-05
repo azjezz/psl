@@ -37,10 +37,10 @@ final class Reader implements ReadHandleInterface
      *                                    or reached end of file before requested size.
      * @throws InvariantViolationException If $size is not positive.
      */
-    public function readFixedSize(int $size, ?int $timeout_ms = null): string
+    public function readFixedSize(int $size, ?float $timeout = null): string
     {
         $timer = new Internal\OptionalIncrementalTimeout(
-            $timeout_ms,
+            $timeout,
             function (): void {
                 // @codeCoverageIgnoreStart
 
@@ -81,11 +81,11 @@ final class Reader implements ReadHandleInterface
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\BlockingException If the handle is a socket or similar, and the read would block.
      * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If $timeout_ms is reached before being able to read from the handle.
+     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    private function fillBuffer(?int $desired_bytes, ?int $timeout_ms): void
+    private function fillBuffer(?int $desired_bytes, ?float $timeout): void
     {
-        $chunk = $this->handle->read($desired_bytes, $timeout_ms);
+        $chunk = $this->handle->read($desired_bytes, $timeout);
         if ($chunk === '') {
             $this->eof = true;
         }
@@ -99,18 +99,18 @@ final class Reader implements ReadHandleInterface
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\BlockingException If the handle is a socket or similar, and the read would block.
      * @throws Exception\RuntimeException If an error occurred during the operation, or reached end of file.
-     * @throws Psl\Exception\InvariantViolationException If $timeout_ms is negative.
+     * @throws Psl\Exception\InvariantViolationException If $timeout is negative.
      */
-    public function readByte(?int $timeout_ms = null): string
+    public function readByte(?float $timeout = null): string
     {
         Psl\invariant(
-            $timeout_ms === null || $timeout_ms > 0,
-            '$timeout_ms must be null, or > 0',
+            $timeout === null || $timeout > 0,
+            '$timeout must be null, or > 0',
         );
 
         if ($this->buffer === '' && !$this->eof) {
             // @codeCoverageIgnoreStart
-            $this->fillBuffer(null, $timeout_ms);
+            $this->fillBuffer(null, $timeout);
             // @codeCoverageIgnoreEnd
         }
 
@@ -203,7 +203,7 @@ final class Reader implements ReadHandleInterface
      * @param ?int $max_bytes the maximum number of bytes to read
      *
      * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If $timeout_ms is reached before being able to read from the handle.
+     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      * @throws InvariantViolationException If $max_bytes is 0.
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\BlockingException If the handle is a socket or similar, and the read would block.
@@ -213,17 +213,17 @@ final class Reader implements ReadHandleInterface
      * Up to `$max_bytes` may be allocated in a buffer; large values may lead to
      * unnecessarily hitting the request memory limit.
      */
-    public function read(?int $max_bytes = null, ?int $timeout_ms = null): string
+    public function read(?int $max_bytes = null, ?float $timeout = null): string
     {
         Psl\invariant($max_bytes === null || $max_bytes >= 0, '$max_bytes must be null, or >= 0');
-        Psl\invariant($timeout_ms === null || $timeout_ms > 0, '$timeout_ms must be null, or > 0');
+        Psl\invariant($timeout === null || $timeout > 0, '$timeout must be null, or > 0');
 
         if ($this->eof) {
             return '';
         }
 
         if ($this->buffer === '') {
-            $this->fillBuffer(null, $timeout_ms);
+            $this->fillBuffer(null, $timeout);
         }
 
         // We either have a buffer, or reached EOF; either way, behavior matches

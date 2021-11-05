@@ -454,7 +454,7 @@ final class Loader
         'Psl\Async\await_signal',
         'Psl\Async\first',
         'Psl\Async\later',
-        'Psl\Async\usleep',
+        'Psl\Async\sleep',
         'Psl\File\Internal\open',
         'Psl\File\open_read_only',
         'Psl\File\open_write_only',

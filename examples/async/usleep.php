@@ -13,9 +13,9 @@ Async\main(static function (): int {
     $start = time();
 
     Async\concurrent([
-        static fn() => Async\usleep(2_000_000),
-        static fn() => Async\usleep(2_000_000),
-        static fn() => Async\usleep(2_000_000),
+        static fn() => Async\sleep(2.0),
+        static fn() => Async\sleep(2.0),
+        static fn() => Async\sleep(2.0),
     ]);
 
     $duration = time() - $start;

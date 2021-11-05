@@ -60,7 +60,7 @@ final class Scheduler
     /**
      * Delay the execution of a callback.
      *
-     * @param int $delay_ms The amount of time, to delay the execution for.
+     * @param float $delay The amount of time, to delay the execution for in seconds.
      * @param (callable(string): void)  $callback   The callback to delay.
      *                                              The `$callbackId` will be invalidated before the callback invocation.
      *
@@ -68,24 +68,24 @@ final class Scheduler
      *
      * @see EventLoop::delay()
      */
-    public static function delay(int $delay_ms, callable $callback): string
+    public static function delay(float $delay, callable $callback): string
     {
-        return EventLoop::delay($delay_ms / 1000000, $callback);
+        return EventLoop::delay($delay, $callback);
     }
 
     /**
      * Repeatedly execute a callback.
      *
-     * @param int $interval_ms The time interval, to wait between executions.
+     * @param int $interval The time interval, to wait between executions in seconds.
      * @param callable(string) $callback The callback to repeat.
      *
      * @return string A unique identifier that can be used to cancel, enable or disable the callback.
      *
      * @see EventLoop::repeat()
      */
-    public static function repeat(int $interval_ms, callable $callback): string
+    public static function repeat(float $interval, callable $callback): string
     {
-        return EventLoop::repeat($interval_ms / 1000000, $callback);
+        return EventLoop::repeat($interval, $callback);
     }
 
     /**

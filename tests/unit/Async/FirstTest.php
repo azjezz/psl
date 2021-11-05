@@ -14,26 +14,26 @@ final class FirstTest extends TestCase
     {
         $result = Async\first([
             Async\run(static function (): string {
-                Async\usleep(100);
+                Async\sleep(0.001);
 
                 return 'a';
             }),
             Async\run(static function (): string {
-                Async\usleep(200);
+                Async\sleep(0.002);
 
                 return 'b';
             }),
             Async\run(static function (): string {
-                Async\usleep(300);
+                Async\sleep(0.003);
 
                 return 'c';
             }),
             Async\run(static function (): string {
-                Async\usleep(50);
+                Async\sleep(0.0005);
 
                 Async\later();
 
-                Async\usleep(50);
+                Async\sleep(0.0005);
 
                 return 'c';
             }),
