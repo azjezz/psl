@@ -81,14 +81,14 @@ final class AllTest extends TestCase
                     throw new InvariantViolationException('a');
                 }),
                 Async\run(static function () use ($ref): void {
-                    Async\usleep(2000);
+                    Async\usleep(20000);
 
                     $ref->value .= 'b';
 
                     throw new InvariantViolationException('b');
                 }),
                 Async\run(static function () use ($ref): void {
-                    Async\usleep(3000);
+                    Async\usleep(50000);
 
                     $ref->value .= 'c';
                 }),

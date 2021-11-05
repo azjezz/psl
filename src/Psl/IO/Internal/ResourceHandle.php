@@ -47,6 +47,8 @@ class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
 
     private bool $useSingleRead;
 
+    private bool $blocks = false;
+
     /**
      * @param resource|object $resource
      *
@@ -71,7 +73,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
         }
 
         $meta = stream_get_meta_data($resource);
-
+        $this->blocks = ($meta['wrapper_type'] ?? '') === 'plainfile';
         if ($seek) {
             $seekable = (bool) $meta['seekable'];
 
@@ -111,7 +113,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
         );
 
         $written = $this->writeImmediately($bytes);
-        if ($written === strlen($bytes)) {
+        if ($this->blocks || $written === strlen($bytes)) {
             return $written;
         }
 
@@ -204,7 +206,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
         );
 
         $chunk = $this->readImmediately($max_bytes);
-        if ('' !== $chunk) {
+        if ('' !== $chunk || $this->blocks) {
             return $chunk;
         }
 
