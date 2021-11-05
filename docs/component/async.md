@@ -12,7 +12,7 @@
 
 #### `Functions`
 
-- [all](./../../src/Psl/Async/all.php#L21)
+- [all](./../../src/Psl/Async/all.php#L22)
 - [any](./../../src/Psl/Async/any.php#L25)
 - [await](./../../src/Psl/Async/await.php#L18)
 - [await_readable](./../../src/Psl/Async/await_readable.php#L18)
@@ -23,7 +23,7 @@
 - [later](./../../src/Psl/Async/later.php#L14)
 - [main](./../../src/Psl/Async/main.php#L18)
 - [run](./../../src/Psl/Async/run.php#L20)
-- [usleep](./../../src/Psl/Async/usleep.php#L10)
+- [sleep](./../../src/Psl/Async/sleep.php#L10)
 
 #### `Classes`
 
