@@ -10,14 +10,18 @@ use Psl\Shell;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-$start = time();
+Async\main(static function (): int {
+    $start = time();
 
-Async\concurrent([
-    static fn() => Shell\execute('sleep', ['2']),
-    static fn() => Shell\execute('sleep', ['2']),
-    static fn() => Shell\execute('sleep', ['1']),
-]);
+    Async\concurrent([
+        static fn() => Shell\execute('sleep', ['2']),
+        static fn() => Shell\execute('sleep', ['2']),
+        static fn() => Shell\execute('sleep', ['1']),
+    ]);
 
-$duration = time() - $start;
+    $duration = time() - $start;
 
-IO\output_handle()->writeAll("duration: $duration.\n");
+    IO\output_handle()->writeAll("duration: $duration.\n");
+
+    return 0;
+});

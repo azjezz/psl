@@ -443,6 +443,7 @@ final class Loader
         'Psl\Interface\defined',
         'Psl\Trait\exists',
         'Psl\Trait\defined',
+        'Psl\Async\main',
         'Psl\Async\run',
         'Psl\Async\concurrent',
         'Psl\Async\await',

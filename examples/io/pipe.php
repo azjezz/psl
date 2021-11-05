@@ -9,38 +9,42 @@ use Psl\IO;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-[$read, $write] = IO\pipe();
+Async\main(static function(): int {
+    [$read, $write] = IO\pipe();
 
-$output = IO\output_handle();
+    $output = IO\output_handle();
 
-Async\concurrent([
-    static function() use($read, $output): void {
-        $output->writeAll("< sleeping.\n");
+    Async\concurrent([
+        static function() use($read, $output): void {
+            $output->writeAll("< sleeping.\n");
 
-        Async\usleep(100);
+            Async\usleep(100);
 
-        $output->writeAll("< waiting for content.\n");
+            $output->writeAll("< waiting for content.\n");
 
-        $content = $read->readAll();
+            $content = $read->readAll();
 
-        $output->writeAll("< received '$content'.\n");
-        $output->writeAll("< closing.\n");
+            $output->writeAll("< received '$content'.\n");
+            $output->writeAll("< closing.\n");
 
-        $read->close();
-    },
-    static function() use($write, $output): void {
-        $output->writeAll("> sleeping.\n");
+            $read->close();
+        },
+        static function() use($write, $output): void {
+            $output->writeAll("> sleeping.\n");
 
-        Async\usleep(10000);
+            Async\usleep(10000);
 
-        $output->writeAll("> writing.\n");
+            $output->writeAll("> writing.\n");
 
-        $write->writeAll('hello, world');
+            $write->writeAll('hello, world');
 
-        $output->write("> written 'hello, world'.\n");
+            $output->write("> written 'hello, world'.\n");
 
-        $output->write("> closing'.\n");
+            $output->write("> closing'.\n");
 
-        $write->close();
-    },
-]);
+            $write->close();
+        },
+    ]);
+
+    return 0;
+});

@@ -16,39 +16,44 @@ use function strlen;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-$args = getopt('i:o:t:');
-$input_file = $args['i'] ?? '/dev/zero';
-$output_file = $args['o'] ?? '/dev/null';
-$seconds = (int)($args['t'] ?? 5);
+Async\main(static function (): int {
 
-// passing file descriptors requires mapping paths (https://bugs.php.net/bug.php?id=53465)
-$input_file = Regex\replace($input_file, '(^/dev/fd/)', 'php://fd/');
-$output_file = Regex\replace($output_file, '(^/dev/fd/)', 'php://fd/');
+    $args = getopt('i:o:t:');
+    $input_file = $args['i'] ?? '/dev/zero';
+    $output_file = $args['o'] ?? '/dev/null';
+    $seconds = (int)($args['t'] ?? 5);
 
-$error_output = IO\error_handle();
-$input = new IO\Stream\CloseReadHandle(fopen($input_file, 'rb'));
-$output = new IO\Stream\CloseWriteHandle(fopen($output_file, 'wb'));
+    // passing file descriptors requires mapping paths (https://bugs.php.net/bug.php?id=53465)
+    $input_file = Regex\replace($input_file, '(^/dev/fd/)', 'php://fd/');
+    $output_file = Regex\replace($output_file, '(^/dev/fd/)', 'php://fd/');
 
-$error_output->writeAll('piping from ' . $input_file . ' to ' . $output_file . ' (for max ' . $seconds . ' second(s)) ...' . PHP_EOL);
+    $stdout = IO\output_handle();
+    $input = new IO\Stream\CloseReadHandle(fopen($input_file, 'rb'));
+    $output = new IO\Stream\CloseWriteHandle(fopen($output_file, 'wb'));
 
-Async\Scheduler::delay($seconds * 1000000, $input->close(...));
+    $stdout->writeAll('piping from ' . $input_file . ' to ' . $output_file . ' (for max ' . $seconds . ' second(s)) ...' . PHP_EOL);
 
-$start = microtime(true);
-$bytes = 0;
+    Async\Scheduler::delay($seconds * 1000000, $input->close(...));
 
-try {
-    while (($chunk = $input->readAll(65536))) {
-        $output->writeAll($chunk);
-        $bytes += strlen($chunk);
+    $start = microtime(true);
+    $bytes = 0;
 
-        Async\later();
+    try {
+        while (($chunk = $input->readAll(65536))) {
+            $output->writeAll($chunk);
+            $bytes += strlen($chunk);
+
+            Async\later();
+        }
+    } catch (IO\Exception\AlreadyClosedException) {
     }
-} catch (IO\Exception\AlreadyClosedException) {
-}
 
-$seconds = microtime(true) - $start;
+    $seconds = microtime(true) - $start;
 
-$bytesFormatted = round($bytes / 1024 / 1024 / $seconds, 1);
+    $bytes_formatted = round($bytes / 1024 / 1024 / $seconds, 1);
 
-$error_output->write('read ' . $bytes . ' byte(s) in ' . round($seconds, 3) . ' second(s) => ' . $bytesFormatted . ' MiB/s' . PHP_EOL);
-$error_output->write('peak memory usage of ' . round(memory_get_peak_usage(true) / 1024 / 1024, 1) . ' MiB' . PHP_EOL);
+    $stdout->writeAll('read ' . $bytes . ' byte(s) in ' . round($seconds, 3) . ' second(s) => ' . $bytes_formatted . ' MiB/s' . PHP_EOL);
+    $stdout->writeAll('peak memory usage of ' . round(memory_get_peak_usage(true) / 1024 / 1024, 1) . ' MiB' . PHP_EOL);
+
+    return 0;
+});

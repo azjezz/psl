@@ -9,14 +9,18 @@ use Psl\IO;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-$start = time();
+Async\main(static function (): int {
+    $start = time();
 
-Async\concurrent([
-    static fn() => Async\usleep(2_000_000),
-    static fn() => Async\usleep(2_000_000),
-    static fn() => Async\usleep(2_000_000),
-]);
+    Async\concurrent([
+        static fn() => Async\usleep(2_000_000),
+        static fn() => Async\usleep(2_000_000),
+        static fn() => Async\usleep(2_000_000),
+    ]);
 
-$duration = time() - $start;
+    $duration = time() - $start;
 
-IO\output_handle()->writeAll("duration: $duration.\n");
+    IO\output_handle()->writeAll("duration: $duration\n");
+
+    return 0;
+});
