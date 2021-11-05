@@ -9,11 +9,9 @@ namespace Psl;
  *
  * @throws Exception\InvariantViolationException
  *
- * @return no-return
- *
  * @pure
  */
-function invariant_violation(string $message, ...$args): void
+function invariant_violation(string $message, ...$args): never
 {
     throw new Exception\InvariantViolationException(Str\format($message, ...$args));
 }

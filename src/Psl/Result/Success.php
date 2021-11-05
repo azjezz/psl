@@ -49,13 +49,11 @@ final class Success implements ResultInterface
      *
      * @throws Psl\Exception\InvariantViolationException
      *
-     * @return no-return
-     *
      * @codeCoverageIgnore
      *
      * @psalm-mutation-free
      */
-    public function getException(): Exception
+    public function getException(): never
     {
         Psl\invariant_violation('No exception thrown from the operation.');
     }
