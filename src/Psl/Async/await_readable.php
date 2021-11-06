@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\Async;
 
+use Psl\Async\Exception\ResourceClosedException;
 use Revolt\EventLoop;
+use Throwable;
+
+use function is_resource;
 
 /**
  * Wait for the given resource to become readable in a non-blocking way.
@@ -12,6 +16,7 @@ use Revolt\EventLoop;
  * @param resource|object $resource
  *
  * @throws Exception\TimeoutException If $timeout is non-null, and the operation timed-out.
+ * @throws Exception\ResourceClosedException If $resource was closed before it became readable.
  *
  * @codeCoverageIgnore
  */
@@ -36,6 +41,16 @@ function await_readable(mixed $resource, bool $reference = true, ?float $timeout
 
     try {
         $suspension->suspend();
+    } catch (Throwable $e) {
+        if (!is_resource($resource)) {
+            throw new ResourceClosedException('Resource was closed before it became readable.');
+        }
+
+        /**
+         * @psalm-suppress MissingThrowsDocblock
+         * @psalm-suppress PossiblyUndefinedVariable
+         */
+        throw $e;
     } finally {
         Scheduler::cancel($watcher);
 
