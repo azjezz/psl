@@ -20,11 +20,11 @@ install-unit-tests-dependencies: install-root-dependencies                      
 install: install-root-dependencies install-coding-standard-dependencies install-benchmark-dependencies install-static-analysis-dependencies install-unit-tests-dependencies ## install all dependencies for a development environment
 
 coding-standard-fix:                                                            ## apply automated coding standard fixes
-	./tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=tools/php-cs-fixer/.php_cs.dist.php
+	PHP_CS_FIXER_IGNORE_ENV=1 ./tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=tools/php-cs-fixer/.php_cs.dist.php
 	./tools/php-codesniffer/vendor/bin/phpcbf --basepath=. --standard=tools/php-codesniffer/.phpcs.xml
 
 coding-standard-check:                                                          ## check coding-standard compliance
-	./tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=tools/php-cs-fixer/.php_cs.dist.php --dry-run
+	PHP_CS_FIXER_IGNORE_ENV=1 ./tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=tools/php-cs-fixer/.php_cs.dist.php --dry-run
 	./tools/php-codesniffer/vendor/bin/phpcs --basepath=. --standard=tools/php-codesniffer/.phpcs.xml
 
 benchmarks:                                                                     ## run benchmarks
