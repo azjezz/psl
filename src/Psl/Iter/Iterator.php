@@ -87,7 +87,7 @@ final class Iterator implements Countable, SeekableIterator
      *
      * @return Tv
      */
-    public function current()
+    public function current(): mixed
     {
         Psl\invariant($this->valid(), 'The Iterator is invalid.');
         if (!contains_key($this->entries, $this->position)) {
@@ -127,7 +127,7 @@ final class Iterator implements Countable, SeekableIterator
      *
      * @return Tk
      */
-    public function key()
+    public function key(): mixed
     {
         Psl\invariant($this->valid(), 'The Iterator is invalid.');
         if (!contains_key($this->entries, $this->position)) {
