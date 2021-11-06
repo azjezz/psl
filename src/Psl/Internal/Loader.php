@@ -602,6 +602,7 @@ final class Loader
         'Psl\Async\Exception\RuntimeException',
         'Psl\Async\Exception\TimeoutException',
         'Psl\Async\Exception\UnhandledAwaitableException',
+        'Psl\Async\Exception\ResourceClosedException',
         'Psl\Async\Internal\AwaitableIterator',
         'Psl\Async\Internal\AwaitableIteratorQueue',
         'Psl\Async\Internal\State',
