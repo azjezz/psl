@@ -470,6 +470,13 @@ final class Loader
         'Psl\Runtime\has_extension',
         'Psl\Runtime\is_debug',
         'Psl\Runtime\is_thread_safe',
+        'Psl\Network\Internal\get_peer_name',
+        'Psl\Network\Internal\get_sock_name',
+        'Psl\Network\Internal\socket_connect',
+        'Psl\Network\Internal\server_listen',
+        'Psl\Network\Internal\socket_accept',
+        'Psl\TCP\connect',
+        'Psl\Unix\connect',
     ];
 
     public const INTERFACES = [
@@ -522,6 +529,11 @@ final class Loader
         'Psl\File\ReadHandleInterface',
         'Psl\File\WriteHandleInterface',
         'Psl\File\ReadWriteHandleInterface',
+        'Psl\Network\Exception\ExceptionInterface',
+        'Psl\Network\SocketInterface',
+        'Psl\Network\ServerInterface',
+        'Psl\TCP\SocketInterface',
+        'Psl\Unix\SocketInterface',
     ];
 
     public const TRAITS = [
@@ -643,12 +655,25 @@ final class Loader
         'Psl\File\ReadHandle',
         'Psl\File\ReadWriteHandle',
         'Psl\File\WriteHandle',
+        'Psl\Network\Exception\TimeoutException',
+        'Psl\Network\Exception\RuntimeException',
+        'Psl\Network\Exception\AlreadyStoppedException',
+        'Psl\Network\Exception\InvalidArgumentException',
+        'Psl\Network\Address',
+        'Psl\Network\SocketOptions',
+        'Psl\TCP\ConnectOptions',
+        'Psl\TCP\ServerOptions',
+        'Psl\TCP\Server',
+        'Psl\TCP\Internal\Socket',
+        'Psl\Unix\Server',
+        'Psl\Unix\Internal\Socket',
     ];
 
     public const ENUMS = [
         'Psl\File\LockType',
         'Psl\File\WriteMode',
         'Psl\Str\Encoding',
+        'Psl\Network\SocketScheme',
     ];
 
     public const TYPE_CONSTANTS = 1;

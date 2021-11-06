@@ -26,6 +26,7 @@
 - [Psl\Iter](./component/iter.md)
 - [Psl\Json](./component/json.md)
 - [Psl\Math](./component/math.md)
+- [Psl\Network](./component/network.md)
 - [Psl\Observer](./component/observer.md)
 - [Psl\Password](./component/password.md)
 - [Psl\PseudoRandom](./component/pseudo-random.md)
@@ -37,7 +38,9 @@
 - [Psl\Str](./component/str.md)
 - [Psl\Str\Byte](./component/str-byte.md)
 - [Psl\Str\Grapheme](./component/str-grapheme.md)
+- [Psl\TCP](./component/tcp.md)
 - [Psl\Trait](./component/trait.md)
 - [Psl\Type](./component/type.md)
+- [Psl\Unix](./component/unix.md)
 - [Psl\Vec](./component/vec.md)
 

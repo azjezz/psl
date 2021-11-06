@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\File;
 
-enum WriteMode: string {
+enum WriteMode: string
+{
     /**
      * Open the file for writing only; place the file pointer at the beginning of
      * the file.

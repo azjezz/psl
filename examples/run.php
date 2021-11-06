@@ -28,6 +28,11 @@ Async\main(static function (): int {
         foreach ($files as $file) {
             $script = Filesystem\get_filename($file);
 
+            if ($script === 'basic-http-server') {
+                // long running process.
+                continue;
+            }
+
             $output->writeAll("- $component/$script   -> started\n");
 
             $awaitables[] = Async\run(static function() use($component, $script, $file): array {

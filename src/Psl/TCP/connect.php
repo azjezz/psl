@@ -1,0 +1,36 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\TCP;
+
+use Psl\Network;
+
+/**
+ * Connect to a socket.
+ *
+ * @param non-empty-string $host
+ * @param positive-int|0 $port
+ *
+ * @throws Network\Exception\RuntimeException If failed to connect to client on the given address.
+ * @throws Network\Exception\TimeoutException If $timeout is non-null, and the operation timed-out.
+ */
+function connect(
+    string $host,
+    int $port = 0,
+    ?ConnectOptions $options = null,
+    ?float $timeout = null,
+): SocketInterface {
+    $options ??= ConnectOptions::create();
+
+    $context = [
+        'socket' => [
+            'tcp_nodelay' => $options->noDelay,
+        ]
+    ];
+
+    $socket = Network\Internal\socket_connect("tcp://{$host}:{$port}", $context, $timeout);
+
+    /** @psalm-suppress MissingThrowsDocblock */
+    return new Internal\Socket($socket);
+}

@@ -202,6 +202,7 @@ function get_all_components(): array
         'Psl\\Iter',
         'Psl\\Json',
         'Psl\\Math',
+        'Psl\\Network',
         'Psl\\Observer',
         'Psl\\Password',
         'Psl\\PseudoRandom',
@@ -213,8 +214,10 @@ function get_all_components(): array
         'Psl\\Str',
         'Psl\\Str\\Byte',
         'Psl\\Str\\Grapheme',
+        'Psl\\TCP',
         'Psl\\Trait',
         'Psl\\Type',
+        'Psl\\Unix',
         'Psl\\Vec',
     ];
 
