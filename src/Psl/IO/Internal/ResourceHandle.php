@@ -124,6 +124,10 @@ class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
             Async\await_writable($this->resource, timeout: $timeout);
         } catch (Async\Exception\TimeoutException) {
             throw new Exception\TimeoutException('reached timeout while the handle is still not writable.');
+        } catch (Async\Exception\ResourceClosedException) {
+            $this->resource = null;
+
+            throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
         return $written + $this->writeImmediately($bytes);
@@ -215,6 +219,10 @@ class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
             Async\await_readable($this->resource, timeout: $timeout);
         } catch (Async\Exception\TimeoutException) {
             throw new Exception\TimeoutException('reached timeout while the handle is still not readable.');
+        } catch (Async\Exception\ResourceClosedException) {
+            $this->resource = null;
+
+            throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
         return $this->readImmediately($max_bytes);
