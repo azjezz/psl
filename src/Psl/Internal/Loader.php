@@ -460,6 +460,16 @@ final class Loader
         'Psl\File\open_write_only',
         'Psl\File\open_read_write',
         'Psl\File\temporary',
+        'Psl\Runtime\get_extensions',
+        'Psl\Runtime\get_sapi',
+        'Psl\Runtime\get_version',
+        'Psl\Runtime\get_version_id',
+        'Psl\Runtime\get_version_details',
+        'Psl\Runtime\get_zend_version',
+        'Psl\Runtime\get_zend_extensions',
+        'Psl\Runtime\has_extension',
+        'Psl\Runtime\is_debug',
+        'Psl\Runtime\is_thread_safe',
     ];
 
     public const INTERFACES = [
