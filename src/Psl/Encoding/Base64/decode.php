@@ -7,7 +7,6 @@ namespace Psl\Encoding\Base64;
 use Psl\Encoding\Exception;
 use Psl\Regex;
 use Psl\Str;
-use Psl\Type;
 
 use function base64_decode;
 
@@ -41,10 +40,6 @@ function decode(string $base64): string
         );
     }
 
-    /**
-     * @psalm-suppress ImpureFunctionCall
-     * @psalm-suppress ImpureMethodCall
-     * @psalm-suppress MissingThrowsDocblock
-     */
-    return Type\string()->assert(base64_decode($base64, true));
+    /** @var string */
+    return base64_decode($base64, true);
 }
