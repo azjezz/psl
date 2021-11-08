@@ -41,13 +41,13 @@ class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
     public const MAXIMUM_READ_BUFFER_SIZE = 786432;
 
     /**
-     * @var closed-resource|object|resource|null $resource
+     * @var object|resource|null $resource
      */
     protected mixed $resource;
 
     private bool $useSingleRead;
 
-    private bool $blocks = false;
+    private bool $blocks;
 
     /**
      * @param resource|object $resource
@@ -120,7 +120,10 @@ class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
         $bytes = substr($bytes, $written);
 
         try {
-            /** @psalm-suppress PossiblyInvalidArgument */
+            /**
+             * @psalm-suppress PossiblyInvalidArgument
+             * @psalm-suppress PossiblyNullArgument - If null, writeImmediately would have thrown.
+             */
             Async\await_writable($this->resource, timeout: $timeout);
         } catch (Async\Exception\TimeoutException) {
             throw new Exception\TimeoutException('reached timeout while the handle is still not writable.');
@@ -215,7 +218,10 @@ class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
         }
 
         try {
-            /** @psalm-suppress PossiblyInvalidArgument */
+            /**
+             * @psalm-suppress PossiblyInvalidArgument
+             * @psalm-suppress PossiblyNullArgument - If null, writeImmediately would have thrown.
+             */
             Async\await_readable($this->resource, timeout: $timeout);
         } catch (Async\Exception\TimeoutException) {
             throw new Exception\TimeoutException('reached timeout while the handle is still not readable.');
@@ -270,14 +276,14 @@ class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
         }
 
         /** @psalm-suppress PossiblyInvalidArgument */
-        $result = @fclose($this->resource);
+        $resource = $this->resource;
+        $this->resource = null;
+        $result = @fclose($resource);
         if ($result === false) {
             /** @var array{message: string} $error */
             $error = error_get_last();
 
             throw new Exception\RuntimeException($error['message'] ?? 'unknown error.');
         }
-
-        $this->resource = null;
     }
 }

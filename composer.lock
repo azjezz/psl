@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fc6a39a308f456100781aa6e8671f7e5",
+    "content-hash": "c7c623324b8411ea1014235b45883124",
     "packages": [
         {
             "name": "revolt/event-loop",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/revoltphp/event-loop.git",
-                "reference": "caa18c929095bb9c07e09d435c0d928a5d68665b"
+                "reference": "70e67dc797a259e1df2bd1130c1105de3cb8d0b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/revoltphp/event-loop/zipball/caa18c929095bb9c07e09d435c0d928a5d68665b",
-                "reference": "caa18c929095bb9c07e09d435c0d928a5d68665b",
+                "url": "https://api.github.com/repos/revoltphp/event-loop/zipball/70e67dc797a259e1df2bd1130c1105de3cb8d0b8",
+                "reference": "70e67dc797a259e1df2bd1130c1105de3cb8d0b8",
                 "shasum": ""
             },
             "require": {
@@ -77,7 +77,7 @@
                 "issues": "https://github.com/revoltphp/event-loop/issues",
                 "source": "https://github.com/revoltphp/event-loop/tree/main"
             },
-            "time": "2021-10-24T17:13:13+00:00"
+            "time": "2021-11-06T05:11:40+00:00"
         }
     ],
     "packages-dev": [
@@ -1450,16 +1450,16 @@
         },
         {
             "name": "phpbench/phpbench",
-            "version": "1.1.3",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpbench/phpbench.git",
-                "reference": "ef567fafb819c1cda41e0fe634f7d42354707469"
+                "reference": "3555dff668e58d25c39d287f3f1bac13a7817b4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpbench/phpbench/zipball/ef567fafb819c1cda41e0fe634f7d42354707469",
-                "reference": "ef567fafb819c1cda41e0fe634f7d42354707469",
+                "url": "https://api.github.com/repos/phpbench/phpbench/zipball/3555dff668e58d25c39d287f3f1bac13a7817b4c",
+                "reference": "3555dff668e58d25c39d287f3f1bac13a7817b4c",
                 "shasum": ""
             },
             "require": {
@@ -1527,7 +1527,7 @@
             "description": "PHP Benchmarking Framework",
             "support": {
                 "issues": "https://github.com/phpbench/phpbench/issues",
-                "source": "https://github.com/phpbench/phpbench/tree/1.1.3"
+                "source": "https://github.com/phpbench/phpbench/tree/1.2.0"
             },
             "funding": [
                 {
@@ -1535,7 +1535,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-10-31T14:40:01+00:00"
+            "time": "2021-11-06T13:52:05+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -2236,20 +2236,20 @@
         },
         {
             "name": "psr/container",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/container.git",
-                "reference": "8622567409010282b7aeebe4bb841fe98b58dcaf"
+                "reference": "513e0666f7216c7459170d56df27dfcefe1689ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/container/zipball/8622567409010282b7aeebe4bb841fe98b58dcaf",
-                "reference": "8622567409010282b7aeebe4bb841fe98b58dcaf",
+                "url": "https://api.github.com/repos/php-fig/container/zipball/513e0666f7216c7459170d56df27dfcefe1689ea",
+                "reference": "513e0666f7216c7459170d56df27dfcefe1689ea",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.0"
+                "php": ">=7.4.0"
             },
             "type": "library",
             "autoload": {
@@ -2278,9 +2278,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-fig/container/issues",
-                "source": "https://github.com/php-fig/container/tree/1.1.1"
+                "source": "https://github.com/php-fig/container/tree/1.1.2"
             },
-            "time": "2021-03-05T17:36:06+00:00"
+            "time": "2021-11-05T16:50:12+00:00"
         },
         {
             "name": "psr/event-dispatcher",

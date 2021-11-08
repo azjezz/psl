@@ -20,3 +20,6 @@
 * introduced a `Psl\IO\pipe(): (Psl\IO\CloseReadHandleInterface, Psl\IO\CloseWriteHandleInterface)` function to create a pair of handles, where writes to the WriteHandle can be read from the ReadHandle.
 * **BC** - `$encoding` argument for `Psl\Str` functions now accepts `Psl\Str\Encoding` instead of `?string`.
 * introduced a new `Psl\Runtime` component.
+* introduced a new `Psl\Network` component.
+* introduced a new `Psl\TCP` component.
+* introduced a new `Psl\Unix` component.
