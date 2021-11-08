@@ -27,8 +27,8 @@
 
 #### `Classes`
 
-- [Awaitable](./../../src/Psl/Async/Awaitable.php#L17)
-- [Deferred](./../../src/Psl/Async/Deferred.php#L13)
+- [Awaitable](./../../src/Psl/Async/Awaitable.php#L25)
+- [Deferred](./../../src/Psl/Async/Deferred.php#L21)
 - [Scheduler](./../../src/Psl/Async/Scheduler.php#L19)
 
 

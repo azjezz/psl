@@ -11,6 +11,14 @@ use Psl\Async\Scheduler;
 use Throwable;
 
 /**
+ * The following class was derived from code of Amphp.
+ *
+ * https://github.com/amphp/amp/blob/ac89b9e2ee04228e064e424056a08590b0cdc7b3/lib/Internal/FutureState.php
+ *
+ * Code subject to the MIT license (https://github.com/amphp/amp/blob/ac89b9e2ee04228e064e424056a08590b0cdc7b3/LICENSE).
+ *
+ * Copyright (c) 2015-2021 Amphp ( https://amphp.org )
+ *
  * @internal
  *
  * @template T
