@@ -209,6 +209,7 @@ function get_all_components(): array
         'Psl\\RandomSequence',
         'Psl\\Regex',
         'Psl\\Result',
+        'Psl\\Runtime',
         'Psl\\SecureRandom',
         'Psl\\Shell',
         'Psl\\Str',
