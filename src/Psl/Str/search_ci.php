@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Str;
 
 use Psl;
-use Psl\Internal;
 
 use function mb_stripos;
 
@@ -20,9 +19,8 @@ use function mb_stripos;
  * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $offset is out-of-bounds.
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function search_ci(string $haystack, string $needle, int $offset = 0, ?string $encoding = null): ?int
+function search_ci(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::UTF_8): ?int
 {
     if ('' === $needle) {
         return null;
@@ -30,7 +28,11 @@ function search_ci(string $haystack, string $needle, int $offset = 0, ?string $e
 
     $offset = Psl\Internal\validate_offset($offset, length($haystack, $encoding));
 
-    return false === ($pos = mb_stripos($haystack, $needle, $offset, Internal\internal_encoding($encoding))) ?
+    /**
+     * @psalm-suppress UndefinedPropertyFetch
+     * @psalm-suppress MixedArgument
+     */
+    return false === ($pos = mb_stripos($haystack, $needle, $offset, $encoding->value)) ?
         null :
         $pos;
 }

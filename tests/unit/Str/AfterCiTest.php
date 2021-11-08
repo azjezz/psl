@@ -17,7 +17,7 @@ final class AfterCiTest extends TestCase
         string $haystack,
         string $needle,
         int $offset,
-        ?string $encoding
+        Str\Encoding $encoding
     ): void {
         static::assertSame($expected, Str\after_ci($haystack, $needle, $offset, $encoding));
     }
@@ -25,21 +25,22 @@ final class AfterCiTest extends TestCase
     public function provideData(): array
     {
         return [
-            [null, '', '',  0, null],
-            ['orld!', 'Hello, World!', 'W', 0, null],
-            ['!', '🤷!', '🤷', 0, null],
-            [null, 'مرحبا بكم', '', 0, null],
-            [null, 'مرحبا بكم', 'ß', 0, null],
-            [', wôrld!', 'héllö, wôrld!', 'héllö', 0, null],
-            [', wôrld!', 'ḫéllö, wôrld!', 'ḫéllö', 0, null],
-            [', wôrld!', 'ḫéllö, wôrld!', 'Ḫéllö', 0, null],
-            [', wôrld!', 'Ḫéllö, wôrld!', 'Ḫéllö', 0, null],
-            [', wôrld!', 'Ḫéllö, wôrld!', 'ḫéllö', 0, null],
-            ['好', '你好', '你', 0, null],
-            ['にちは世界', 'こんにちは世界', 'こん', 0, null],
-            ['สดี', 'สวัสดี', 'วั', 0, null],
-            [', world!', 'Hello, world!', 'o', 0, null],
-            ['rld!', 'Hello, world!', 'o', 7, null],
+            [null, '', '',  0, Str\Encoding::UTF_8],
+            ['orld!', 'Hello, World!', 'W', 0, Str\Encoding::UTF_8],
+            ['!', '🤷!', '🤷', 0, Str\Encoding::UTF_8],
+            [null, 'مرحبا بكم', '', 0, Str\Encoding::UTF_8],
+            [null, 'مرحبا بكم', 'ß', 0, Str\Encoding::UTF_8],
+            [', wôrld!', 'héllö, wôrld!', 'héllö', 0, Str\Encoding::UTF_8],
+            [', wôrld!', 'ḫéllö, wôrld!', 'ḫéllö', 0, Str\Encoding::UTF_8],
+            [', wôrld!', 'ḫéllö, wôrld!', 'Ḫéllö', 0, Str\Encoding::UTF_8],
+            [', wôrld!', 'Ḫéllö, wôrld!', 'Ḫéllö', 0, Str\Encoding::UTF_8],
+            [', wôrld!', 'Ḫéllö, wôrld!', 'ḫéllö', 0, Str\Encoding::UTF_8],
+            ['好', '你好', '你', 0, Str\Encoding::UTF_8],
+            ['にちは世界', 'こんにちは世界', 'こん', 0, Str\Encoding::UTF_8],
+            ['สดี', 'สวัสดี', 'วั', 0, Str\Encoding::UTF_8],
+            [', world!', 'Hello, world!', 'o', 0, Str\Encoding::UTF_8],
+            ['rld!', 'Hello, world!', 'o', 7, Str\Encoding::UTF_8],
+            ['rld!', 'Hello, world!', 'o', 7, Str\Encoding::ASCII],
         ];
     }
 }

@@ -21,7 +21,7 @@ use Psl\Math;
  *
  * @pure
  */
-function split(string $string, string $delimiter, ?int $limit = null, ?string $encoding = null): array
+function split(string $string, string $delimiter, ?int $limit = null, Encoding $encoding = Encoding::UTF_8): array
 {
     Psl\invariant(null === $limit || $limit >= 1, 'Expected a non-negative limit');
     if ('' === $delimiter) {

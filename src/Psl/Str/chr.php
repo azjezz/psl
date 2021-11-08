@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl;
-use Psl\Internal;
-
 use function mb_chr;
 
 /**
@@ -21,15 +18,12 @@ use function mb_chr;
  *      => Str('ل')
  *
  * @pure
- *
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function chr(int $codepoint, ?string $encoding = null): string
+function chr(int $codepoint, Encoding $encoding = Encoding::UTF_8): string
 {
-    $char = mb_chr($codepoint, Internal\internal_encoding($encoding));
-
-    /** @psalm-suppress MissingThrowsDocblock */
-    Psl\invariant(is_string($char), 'Unexpected Error.');
-
-    return $char;
+    /**
+     * @psalm-suppress UndefinedPropertyFetch
+     * @psalm-suppress MixedArgument
+     */
+    return (string) mb_chr($codepoint, $encoding->value);
 }

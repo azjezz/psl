@@ -36,10 +36,9 @@ use Psl;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds, or
- *                                                   an invalid $encoding is provided.
+ * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
  */
-function contains(string $haystack, string $needle, int $offset = 0, ?string $encoding = null): bool
+function contains(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::UTF_8): bool
 {
     if ('' === $needle) {
         return Psl\Internal\validate_offset($offset, length($haystack, $encoding), true);

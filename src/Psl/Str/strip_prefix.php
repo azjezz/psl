@@ -14,7 +14,7 @@ use Psl;
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function strip_prefix(string $string, string $prefix, ?string $encoding = null): string
+function strip_prefix(string $string, string $prefix, Encoding $encoding = Encoding::UTF_8): string
 {
     if ('' === $prefix || !starts_with($string, $prefix, $encoding)) {
         return $string;

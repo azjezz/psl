@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl\Exception;
-
 /**
  * Returns the string with the first character capitalized.
  *
@@ -27,10 +25,8 @@ use Psl\Exception;
  *      => Str('1337)
  *
  * @pure
- *
- * @throws Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function capitalize(string $string, ?string $encoding = null): string
+function capitalize(string $string, Encoding $encoding = Encoding::UTF_8): string
 {
     if ('' === $string) {
         return '';

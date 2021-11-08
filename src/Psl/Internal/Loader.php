@@ -648,6 +648,7 @@ final class Loader
     public const ENUMS = [
         'Psl\File\LockType',
         'Psl\File\WriteMode',
+        'Psl\Str\Encoding',
     ];
 
     public const TYPE_CONSTANTS = 1;

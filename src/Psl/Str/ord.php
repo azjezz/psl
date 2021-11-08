@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Str;
 
 use Psl;
-use Psl\Internal;
 
 use function mb_ord;
 
@@ -24,7 +23,11 @@ use function mb_ord;
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function ord(string $character, ?string $encoding = null): int
+function ord(string $character, Encoding $encoding = Encoding::UTF_8): int
 {
-    return mb_ord($character, Internal\internal_encoding($encoding));
+    /**
+     * @psalm-suppress UndefinedPropertyFetch
+     * @psalm-suppress MixedArgument
+     */
+    return mb_ord($character, $encoding->value);
 }

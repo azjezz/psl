@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl;
-use Psl\Internal;
-
 use function mb_strlen;
 
 /**
@@ -24,10 +21,12 @@ use function mb_strlen;
  *      => Int(4)
  *
  * @pure
- *
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function length(string $string, ?string $encoding = null): int
+function length(string $string, Encoding $encoding = Encoding::UTF_8): int
 {
-    return mb_strlen($string, Internal\internal_encoding($encoding));
+    /**
+     * @psalm-suppress UndefinedPropertyFetch
+     * @psalm-suppress MixedArgument
+     */
+    return mb_strlen($string, $encoding->value);
 }

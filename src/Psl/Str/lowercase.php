@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Str;
 
 use Psl;
-use Psl\Internal;
 
 use function mb_strtolower;
 
@@ -32,7 +31,11 @@ use function mb_strtolower;
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function lowercase(string $string, ?string $encoding = null): string
+function lowercase(string $string, Encoding $encoding = Encoding::UTF_8): string
 {
-    return mb_strtolower($string, Internal\internal_encoding($encoding));
+    /**
+     * @psalm-suppress UndefinedPropertyFetch
+     * @psalm-suppress MixedArgument
+     */
+    return mb_strtolower($string, $encoding->value);
 }

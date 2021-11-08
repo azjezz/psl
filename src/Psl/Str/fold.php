@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl;
 use Psl\Internal;
 
 /**
@@ -16,10 +15,8 @@ use Psl\Internal;
  *      => Str('ss')
  *
  * @pure
- *
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function fold(string $string, ?string $encoding = null): string
+function fold(string $string, Encoding $encoding = Encoding::UTF_8): string
 {
     foreach (Internal\CASE_FOLD as $k => $v) {
         $string = replace($string, $k, $v, $encoding);
