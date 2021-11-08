@@ -17,7 +17,7 @@ use function preg_split;
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function replace_ci(string $haystack, string $needle, string $replacement, ?string $encoding = null): string
+function replace_ci(string $haystack, string $needle, string $replacement, Encoding $encoding = Encoding::UTF_8): string
 {
     if ('' === $needle || null === search_ci($haystack, $needle, 0, $encoding)) {
         return $haystack;

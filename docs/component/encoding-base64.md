@@ -12,7 +12,7 @@
 
 #### `Functions`
 
-- [decode](./../../src/Psl/Encoding/Base64/decode.php#L27)
+- [decode](./../../src/Psl/Encoding/Base64/decode.php#L26)
 - [encode](./../../src/Psl/Encoding/Base64/encode.php#L18)
 
 

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl\Exception;
-use Psl\Internal;
-
 use function mb_convert_case;
 
 use const MB_CASE_TITLE;
@@ -29,10 +26,12 @@ use const MB_CASE_TITLE;
  *      => Str('مرحبا بكم')
  *
  * @pure
- *
- * @throws Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function capitalize_words(string $string, ?string $encoding = null): string
+function capitalize_words(string $string, Encoding $encoding = Encoding::UTF_8): string
 {
-    return mb_convert_case($string, MB_CASE_TITLE, Internal\internal_encoding($encoding));
+    /**
+     * @psalm-suppress UndefinedPropertyFetch
+     * @psalm-suppress MixedArgument
+     */
+    return mb_convert_case($string, MB_CASE_TITLE, $encoding->value);
 }

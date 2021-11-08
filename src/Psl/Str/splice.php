@@ -17,14 +17,13 @@ use Psl;
  * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If a negative $length is given.
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
 function splice(
     string $string,
     string $replacement,
     int $offset = 0,
     ?int $length = null,
-    ?string $encoding = null
+    Encoding $encoding = Encoding::UTF_8
 ): string {
     Psl\invariant(null === $length || $length >= 0, 'Expected a non-negative length.');
     $total_length = length($string, $encoding);

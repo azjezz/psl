@@ -19,7 +19,6 @@ use function mb_strimwidth;
  *                                 when string is truncated
  *
  * @throws Psl\Exception\InvariantViolationException If the offset is out-of-bounds.
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  *
  * @return string The truncated string. If trim_marker is set,
  *                trim_marker is appended to the return value.
@@ -31,9 +30,13 @@ function truncate(
     int $offset,
     int $width,
     ?string $trim_marker = null,
-    ?string $encoding = null
+    Encoding $encoding = Encoding::UTF_8
 ): string {
     $offset = Internal\validate_offset($offset, length($string, $encoding));
 
-    return mb_strimwidth($string, $offset, $width, $trim_marker ?? '', Internal\internal_encoding($encoding));
+    /**
+     * @psalm-suppress UndefinedPropertyFetch
+     * @psalm-suppress MixedArgument
+     */
+    return mb_strimwidth($string, $offset, $width, $trim_marker ?? '', $encoding->value);
 }

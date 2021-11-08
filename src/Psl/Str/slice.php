@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Str;
 
 use Psl;
-use Psl\Internal;
 
 use function mb_substr;
 
@@ -20,9 +19,8 @@ use function mb_substr;
  * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If a negative $length is given.
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function slice(string $string, int $offset, ?int $length = null, ?string $encoding = null): string
+function slice(string $string, int $offset, ?int $length = null, Encoding $encoding = Encoding::UTF_8): string
 {
     Psl\invariant(null === $length || $length >= 0, 'Expected a non-negative length.');
     $string_length = length($string, $encoding);
@@ -32,5 +30,9 @@ function slice(string $string, int $offset, ?int $length = null, ?string $encodi
         return $string;
     }
 
-    return (string) mb_substr($string, $offset, $length, Internal\internal_encoding($encoding));
+    /**
+     * @psalm-suppress UndefinedPropertyFetch
+     * @psalm-suppress MixedArgument
+     */
+    return (string) mb_substr($string, $offset, $length, $encoding->value);
 }

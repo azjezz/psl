@@ -20,7 +20,7 @@ use Psl;
  *
  * @return ($assert is true ? bool : int)
  */
-function validate_offset(int $offset, int $length, bool $assert = false)
+function validate_offset(int $offset, int $length, bool $assert = false): int|bool
 {
     $original_offset = $offset;
 

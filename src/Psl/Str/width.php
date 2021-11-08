@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Str;
 
 use Psl;
-use Psl\Internal;
 
 use function mb_strwidth;
 
@@ -16,7 +15,11 @@ use function mb_strwidth;
  *
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function width(string $string, ?string $encoding = null): int
+function width(string $string, Encoding $encoding = Encoding::UTF_8): int
 {
-    return mb_strwidth($string, Internal\internal_encoding($encoding));
+    /**
+     * @psalm-suppress UndefinedPropertyFetch
+     * @psalm-suppress MixedArgument
+     */
+    return mb_strwidth($string, $encoding->value);
 }

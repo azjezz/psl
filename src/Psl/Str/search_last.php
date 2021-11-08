@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Str;
 
 use Psl;
-use Psl\Internal;
 
 use function mb_strrpos;
 
@@ -22,7 +21,7 @@ use function mb_strrpos;
  * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function search_last(string $haystack, string $needle, int $offset = 0, ?string $encoding = null): ?int
+function search_last(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::UTF_8): ?int
 {
     if ('' === $needle) {
         return null;
@@ -31,7 +30,11 @@ function search_last(string $haystack, string $needle, int $offset = 0, ?string 
     $haystack_length = length($haystack, $encoding);
     Psl\invariant($offset >= -$haystack_length && $offset <= $haystack_length, 'Offset is out-of-bounds.');
 
-    return false === ($pos = mb_strrpos($haystack, $needle, $offset, Internal\internal_encoding($encoding))) ?
+    /**
+     * @psalm-suppress UndefinedPropertyFetch
+     * @psalm-suppress MixedArgument
+     */
+    return false === ($pos = mb_strrpos($haystack, $needle, $offset, $encoding->value)) ?
         null :
         $pos;
 }

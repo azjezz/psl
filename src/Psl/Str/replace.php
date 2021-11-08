@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl;
-
 use function str_replace;
 
 /**
@@ -13,10 +11,8 @@ use function str_replace;
  * `$replacement`.
  *
  * @pure
- *
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
-function replace(string $haystack, string $needle, string $replacement, ?string $encoding = null): string
+function replace(string $haystack, string $needle, string $replacement, Encoding $encoding = Encoding::UTF_8): string
 {
     if ('' === $needle || null === search($haystack, $needle, 0, $encoding)) {
         return $haystack;

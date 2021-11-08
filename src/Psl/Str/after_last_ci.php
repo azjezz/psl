@@ -8,7 +8,6 @@ use Psl;
 
 /**
  * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  *
  * @pure
  */
@@ -16,7 +15,7 @@ function after_last_ci(
     string $haystack,
     string $needle,
     int $offset = 0,
-    ?string $encoding = null
+    Encoding $encoding = Encoding::UTF_8
 ): ?string {
     $position = search_last_ci($haystack, $needle, $offset, $encoding);
     if (null === $position) {
