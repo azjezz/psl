@@ -10,6 +10,7 @@ use Psl\Filesystem\Exception;
 use Psl\Internal;
 use Psl\Str;
 
+use function clearstatcache;
 use function file_put_contents;
 
 use const FILE_APPEND;
@@ -64,4 +65,6 @@ function write_file(string $file, string $content, bool $append): void
         ));
     }
     // @codeCoverageIgnoreEnd
+
+    clearstatcache();
 }
