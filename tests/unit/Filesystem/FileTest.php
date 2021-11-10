@@ -95,6 +95,21 @@ final class FileTest extends AbstractFilesystemTest
         Filesystem\delete_file($file);
     }
 
+    public function testWriteFileClearsFileStat(): void
+    {
+        $file = Filesystem\create_temporary_file();
+
+        Filesystem\write_file($file, 'Hello');
+
+        static::assertSame(5, Filesystem\file_size($file));
+
+        Filesystem\append_file($file, ', World!');
+
+        static::assertSame(13, Filesystem\file_size($file));
+
+        Filesystem\delete_file($file);
+    }
+
     public function testWriteFileThrowsForDirectories(): void
     {
         $this->expectException(InvariantViolationException::class);
