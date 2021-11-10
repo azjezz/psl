@@ -43,9 +43,9 @@ final class RunTest extends TestCase
     {
         $awaitable = Async\run(static function (): string {
             Async\concurrent([
-                static fn() => Async\sleep(0.00001),
-                static fn() => Async\sleep(0.00001),
-                static fn() => Async\sleep(0.00001),
+                static fn() => Async\sleep(1),
+                static fn() => Async\sleep(1),
+                static fn() => Async\sleep(1),
             ]);
 
             return 'hello';
