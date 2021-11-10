@@ -98,4 +98,43 @@ final class PipeTest extends TestCase
 
         $read->readAll(timeout: 0.001);
     }
+
+    public function testReadOnAlreadyClosedPipe(): void
+    {
+        [$read, $_write] = IO\pipe();
+
+        Async\Scheduler::defer(static fn() => $read->close());
+        $b = Async\run(static fn() => $read->readAll());
+
+        $this->expectException(IO\Exception\AlreadyClosedException::class);
+        $this->expectExceptionMessage('Handle has already been closed.');
+
+        // > $b starts
+        // > while waiting for $read to become readable, switch to defer
+        // > defer calls close()
+        // > close() throws in read suspension
+        // > $b fails with the already closed exception.
+
+        $b->await();
+    }
+
+    public function testWriteOnAlreadyClosedPipe(): void
+    {
+        [$_read, $write] = IO\pipe();
+
+        Async\Scheduler::defer(static fn() => $write->close());
+
+        $b = Async\run(static fn() => $write->writeAll('hello'));
+
+        $this->expectException(IO\Exception\AlreadyClosedException::class);
+        $this->expectExceptionMessage('Handle has already been closed.');
+
+        // > $b starts
+        // > while waiting for $write to become writable, switch to defer
+        // > defer calls close()
+        // > close() throws in read suspension
+        // > $b fails with the already closed exception.
+
+        $b->await();
+    }
 }

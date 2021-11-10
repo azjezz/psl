@@ -9,6 +9,8 @@ use Psl\File;
 use Psl\IO;
 use Psl\Str;
 
+use function clearstatcache;
+
 /**
  * Write $content to $file.
  *
@@ -20,6 +22,8 @@ use Psl\Str;
  */
 function write_file(string $file, string $content): void
 {
+    clearstatcache();
+
     try {
         if (namespace\is_file($file)) {
             $mode = File\WriteMode::TRUNCATE;
@@ -34,6 +38,8 @@ function write_file(string $file, string $content): void
 
         $lock->release();
         $handle->close();
+
+        clearstatcache();
     } catch (File\Exception\ExceptionInterface | IO\Exception\ExceptionInterface $previous) {
         // @codeCoverageIgnoreStart
         throw new Exception\RuntimeException(Str\format(
