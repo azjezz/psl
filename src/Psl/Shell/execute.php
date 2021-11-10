@@ -35,7 +35,6 @@ use function proc_open;
  * @throws Exception\PossibleAttackException In case the command being run is suspicious ( e.g: contains NULL byte ).
  * @throws Exception\RuntimeException In case $working_directory doesn't exist, or unable to create a new process.
  * @throws Exception\TimeoutException If $timeout is reached before being able to read the process stream.
- * @throws IO\Exception\BlockingException If unable to set the process stream to non-blocking mode.
  */
 function execute(
     string  $command,

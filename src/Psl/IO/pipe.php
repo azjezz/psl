@@ -17,8 +17,6 @@ use const STREAM_SOCK_STREAM;
 /**
  * Create a pair of handles, where writes to the WriteHandle can be read from the ReadHandle.
  *
- * @throws Exception\BlockingException If unable to set one of the handles to non-blocking mode.
- *
  * @return array{0: CloseReadHandleInterface, 1: CloseWriteHandleInterface}
  */
 function pipe(): array

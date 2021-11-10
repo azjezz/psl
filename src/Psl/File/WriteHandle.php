@@ -17,7 +17,6 @@ final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteH
     /**
      * @param resource|object $stream
      *
-     * @throws IO\Exception\BlockingException If unable to set the stream to non-blocking mode.
      * @throws Psl\Exception\InvariantViolationException If $filename points to a non-file node, or it not writeable.
      * @throws Filesystem\Exception\RuntimeException If unable to create $path when it does not exist.
      */

@@ -13,7 +13,6 @@ interface WriteHandleInterface extends HandleInterface
      * An immediate, unordered write.
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\BlockingException If the handle is a socket or similar, and the write would block.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      *
      * @return int the number of bytes written on success, which may be 0.
@@ -30,7 +29,6 @@ interface WriteHandleInterface extends HandleInterface
      * value and call again if needed.
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\BlockingException If the handle is a socket or similar, and the write would block.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If reached timeout before completing the operation.
      *
@@ -50,7 +48,6 @@ interface WriteHandleInterface extends HandleInterface
      * do not want this to happen.
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\BlockingException If the handle is a socket or similar, and the write would block.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If reached timeout before completing the operation.
      */

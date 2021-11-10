@@ -12,10 +12,10 @@
 
 #### `Functions`
 
-- [open_read_only](./../../src/Psl/File/open_read_only.php#L16)
-- [open_read_write](./../../src/Psl/File/open_read_write.php#L18)
-- [open_write_only](./../../src/Psl/File/open_write_only.php#L18)
-- [temporary](./../../src/Psl/File/temporary.php#L19)
+- [open_read_only](./../../src/Psl/File/open_read_only.php#L14)
+- [open_read_write](./../../src/Psl/File/open_read_write.php#L16)
+- [open_write_only](./../../src/Psl/File/open_write_only.php#L16)
+- [temporary](./../../src/Psl/File/temporary.php#L17)
 
 #### `Interfaces`
 

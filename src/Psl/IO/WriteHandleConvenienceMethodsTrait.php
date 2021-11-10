@@ -27,7 +27,6 @@ trait WriteHandleConvenienceMethodsTrait
      * do not want this to happen.
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\BlockingException If the handle is a socket or similar, and the write would block.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If reached timeout before completing the operation.
      */

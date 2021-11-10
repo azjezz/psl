@@ -11,8 +11,6 @@ use Psl\IO;
  * @internal
  *
  * @codeCoverageIgnore
- *
- * @throws IO\Exception\BlockingException If unable to set the handle resource to non-blocking mode.
  */
 function open(string $filename, string $mode, bool $read, bool $write): ReadWriteHandleInterface
 {

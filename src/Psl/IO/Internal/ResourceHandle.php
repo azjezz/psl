@@ -58,8 +58,6 @@ class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
 
     /**
      * @param resource|object $resource
-     *
-     * @throws Exception\BlockingException If unable to set the handle resource to non-blocking mode.
      */
     public function __construct(mixed $resource, bool $read, bool $write, bool $seek)
     {
@@ -70,17 +68,10 @@ class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
 
         /** @psalm-suppress UnusedFunctionCall */
         stream_set_read_buffer($resource, 0);
-        $result = stream_set_blocking($resource, false);
-        if ($result === false) {
-            $error = error_get_last();
-
-            throw new Exception\BlockingException(
-                $error['message'] ?? 'Unable to set the handle resource to non-blocking mode'
-            );
-        }
+        stream_set_blocking($resource, false);
 
         $meta = stream_get_meta_data($resource);
-        $this->blocks = ($meta['wrapper_type'] ?? '') === 'plainfile';
+        $this->blocks = $meta['blocked'] || ($meta['wrapper_type'] ?? '') === 'plainfile';
         if ($seek) {
             $seekable = (bool)$meta['seekable'];
 

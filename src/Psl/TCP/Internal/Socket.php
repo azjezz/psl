@@ -19,8 +19,6 @@ final class Socket extends Internal\ResourceHandle implements TCP\SocketInterfac
 {
     /**
      * @param resource $resource
-     *
-     * @throws Exception\BlockingException If unable to set the socket resource to non-blocking mode.
      */
     public function __construct($resource)
     {

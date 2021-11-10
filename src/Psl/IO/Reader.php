@@ -32,7 +32,6 @@ final class Reader implements ReadHandleInterface
      * @param int $size The number of bytes to read.
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\BlockingException If the handle is a socket or similar, and the read would block.
      * @throws Exception\RuntimeException If an error occurred during the operation,
      *                                    or reached end of file before requested size.
      * @throws InvariantViolationException If $size is not positive.
@@ -79,7 +78,6 @@ final class Reader implements ReadHandleInterface
 
     /**
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\BlockingException If the handle is a socket or similar, and the read would block.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
@@ -97,7 +95,6 @@ final class Reader implements ReadHandleInterface
      * Read a single byte from the handle.
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\BlockingException If the handle is a socket or similar, and the read would block.
      * @throws Exception\RuntimeException If an error occurred during the operation, or reached end of file.
      * @throws Psl\Exception\InvariantViolationException If $timeout is negative.
      */
@@ -138,7 +135,6 @@ final class Reader implements ReadHandleInterface
      *  or null if the end of file is reached before finding the current line terminator.
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\BlockingException If the handle is a socket or similar, and the read would block.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      */
     public function readLine(): ?string
@@ -163,7 +159,6 @@ final class Reader implements ReadHandleInterface
      * data.
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\BlockingException If the handle is a socket or similar, and the read would block.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      *
      * @psalm-suppress MissingThrowsDocblock
@@ -206,7 +201,6 @@ final class Reader implements ReadHandleInterface
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      * @throws InvariantViolationException If $max_bytes is 0.
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\BlockingException If the handle is a socket or similar, and the read would block.
      *
      * @return string the read data on success, or an empty string if the end of file is reached.
      *
@@ -242,7 +236,6 @@ final class Reader implements ReadHandleInterface
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws InvariantViolationException If $max_bytes is 0.
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\BlockingException If the handle is a socket or similar, and the read would block.
      *
      * @return string the read data on success, or an empty string if the end of file is reached.
      *
@@ -289,7 +282,6 @@ final class Reader implements ReadHandleInterface
     /**
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\BlockingException If the handle is a socket or similar, and the read would block.
      *
      * @return bool true if EOL has been reached, false otherwise.
      */
@@ -313,8 +305,6 @@ final class Reader implements ReadHandleInterface
                 $this->eof = true;
                 return true;
             }
-        } catch (Exception\BlockingException) {
-            return false;
         } catch (Exception\ExceptionInterface) {
             // ignore; it'll be thrown again when attempting a real read.
         }

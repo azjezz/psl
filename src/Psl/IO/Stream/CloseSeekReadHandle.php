@@ -18,8 +18,6 @@ final class CloseSeekReadHandle implements IO\CloseSeekReadHandleInterface
 
     /**
      * @param resource|object $stream
-     *
-     * @throws IO\Exception\BlockingException If unable to set the stream to non-blocking mode.
      */
     public function __construct(mixed $stream)
     {
