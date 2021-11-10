@@ -1,0 +1,53 @@
+name: "examples"
+
+on:
+  pull_request: ~
+  push: ~
+
+jobs:
+  examples:
+    name: "examples"
+
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        php-version:
+          - "8.1"
+        operating-system:
+          - "macos-latest"
+          - "ubuntu-latest"
+          - "windows-latest"
+        extensions:
+          - bcmath, mbstring, intl, sodium, json, uv
+          - bcmath, mbstring, intl, sodium, json, ev
+          - bcmath, mbstring, intl, sodium, json, event
+          - bcmath, mbstring, intl, sodium, json
+
+    steps:
+      - name: "checkout"
+        uses: "actions/checkout@v2"
+
+      - name: "installing PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-version }}"
+          ini-values: memory_limit=-1
+          tools: composer:v2, cs2pr
+          extensions: "${{ matrix.extensions }}"
+
+      - name: "caching dependencies"
+        uses: "actions/cache@v2.1.6"
+        with:
+          path: |
+            ~/.composer/cache
+            vendor
+          key: "php-${{ matrix.php-version }}"
+          restore-keys: "php-${{ matrix.php-version }}"
+
+      - name: "installing dependencies"
+        run: |
+          make install -j10
+
+      - name: "running shell concurrent example"
+        run: php examples/shell/concurrent.php

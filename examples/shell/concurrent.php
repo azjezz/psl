@@ -14,9 +14,13 @@ Async\main(static function (): int {
     $start = time();
 
     Async\concurrent([
-        static fn() => Shell\execute('sleep', ['2']),
-        static fn() => Shell\execute('sleep', ['2']),
-        static fn() => Shell\execute('sleep', ['1']),
+        static fn() => Shell\execute(PHP_BINARY, ['-r', '$t = time(); while(time() < ($t+1)) { echo "."; }']),
+        static fn() => Shell\execute(PHP_BINARY, ['-r', '$t = time(); while(time() < ($t+1)) { echo "."; }']),
+        static fn() => Shell\execute(PHP_BINARY, ['-r', '$t = time(); while(time() < ($t+1)) { echo "."; }']),
+        static fn() => Shell\execute(PHP_BINARY, ['-r', 'echo "."; sleep(1); fclose(STDOUT);']),
+        static fn() => Shell\execute(PHP_BINARY, ['-r', '$t = time(); while(time() < ($t+1)) { echo "."; }']),
+        static fn() => Shell\execute(PHP_BINARY, ['-r', '$t = time(); while(time() < ($t+1)) { echo "."; }']),
+        static fn() => Shell\execute(PHP_BINARY, ['-r', '$t = time(); while(time() < ($t+1)) { echo "."; }']),
     ]);
 
     $duration = time() - $start;

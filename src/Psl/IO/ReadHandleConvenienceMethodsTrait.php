@@ -30,7 +30,7 @@ trait ReadHandleConvenienceMethodsTrait
      */
     public function readAll(?int $max_bytes = null, ?float $timeout = null): string
     {
-        $to_read = $max_bytes ?? Internal\ResourceHandle::DEFAULT_READ_BUFFER_SIZE;
+        $to_read = $max_bytes;
 
         /** @var Psl\Ref<string> $data */
         $data = new Psl\Ref('');
@@ -51,8 +51,10 @@ trait ReadHandleConvenienceMethodsTrait
             /** @psalm-suppress MissingThrowsDocblock */
             $chunk = $this->read($chunk_size, $timer->getRemaining());
             $data->value .= $chunk;
-            $to_read -= strlen($chunk);
-        } while ($to_read > 0 && $chunk !== '');
+            if ($to_read !== null) {
+                $to_read -= strlen($chunk);
+            }
+        } while (($to_read === null || $to_read > 0) && $chunk !== '');
 
         return $data->value;
     }
