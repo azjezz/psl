@@ -138,12 +138,17 @@ final class FileTest extends AbstractFilesystemTest
     {
         $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
         Filesystem\create_file($file);
+        $permissions = Filesystem\get_permissions($file) & 0777;
         Filesystem\change_permissions($file, 0111);
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('File "' . $file . '" is not writable.');
+        try {
+            $this->expectException(InvariantViolationException::class);
+            $this->expectExceptionMessage('File "' . $file . '" is not writable.');
 
-        Filesystem\write_file($file, 'hello');
+            Filesystem\write_file($file, 'hello');
+        } finally {
+            Filesystem\change_permissions($file, $permissions);
+        }
     }
 
     public function testReadFile(): void

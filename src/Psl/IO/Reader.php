@@ -12,6 +12,8 @@ use function strlen;
 use function strpos;
 use function substr;
 
+use const PHP_EOL;
+
 final class Reader implements ReadHandleInterface
 {
     use ReadHandleConvenienceMethodsTrait;
@@ -139,7 +141,7 @@ final class Reader implements ReadHandleInterface
      */
     public function readLine(): ?string
     {
-        $line = $this->readUntil("\n");
+        $line = $this->readUntil(PHP_EOL);
         if (null !== $line) {
             return $line;
         }

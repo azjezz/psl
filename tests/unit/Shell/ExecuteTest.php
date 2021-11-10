@@ -34,6 +34,10 @@ final class ExecuteTest extends TestCase
 
     public function testItThrowsForNULLByte(): void
     {
+        if (PHP_OS_FAMILY === 'Windows') {
+            static::markTestSkipped('Test can only be executed under *nix OS.');
+        }
+
         $this->expectException(Shell\Exception\PossibleAttackException::class);
 
         Shell\execute('php', ["\0"]);
@@ -49,17 +53,21 @@ final class ExecuteTest extends TestCase
 
     public function testCurrentEnvironmentVariablesArePassedDownToTheProcess(): void
     {
-        Env\set_var('FOO', 'BAR');
+        try {
+            Env\set_var('FOO', 'BAR');
 
-        static::assertSame(
-            'BAR',
-            Shell\execute(PHP_BINARY, ['-r', 'echo getenv("FOO");'])
-        );
+            static::assertSame(
+                'BAR',
+                Shell\execute(PHP_BINARY, ['-r', 'echo getenv("FOO");'])
+            );
+        } finally {
+            Env\remove_var('FOO');
+        }
     }
 
     public function testWorkingDirectoryIsUsed(): void
     {
-        if ('Darwin' === PHP_OS_FAMILY) {
+        if ('Darwin' === PHP_OS_FAMILY || PHP_OS_FAMILY === 'Windows') {
             static::markTestSkipped();
         }
 

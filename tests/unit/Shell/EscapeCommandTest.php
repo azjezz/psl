@@ -11,7 +11,6 @@ final class EscapeCommandTest extends TestCase
 {
     public function testEscapeCommand(): void
     {
-
         static::assertSame(
             "Hello, World!",
             Shell\execute(Shell\escape_command(PHP_BINARY), ['-r', 'echo "Hello, World!";'])

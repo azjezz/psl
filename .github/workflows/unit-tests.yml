@@ -17,6 +17,7 @@ jobs:
         operating-system:
           - "macos-latest"
           - "ubuntu-latest"
+          - "windows-latest"
 
     steps:
       - name: "checkout"

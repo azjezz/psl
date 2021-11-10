@@ -15,7 +15,7 @@
 - [error_handle](./../../src/Psl/IO/error_handle.php#L17)
 - [input_handle](./../../src/Psl/IO/input_handle.php#L17)
 - [output_handle](./../../src/Psl/IO/output_handle.php#L17)
-- [pipe](./../../src/Psl/IO/pipe.php#L22)
+- [pipe](./../../src/Psl/IO/pipe.php#L24)
 
 #### `Interfaces`
 
@@ -39,7 +39,7 @@
 #### `Classes`
 
 - [MemoryHandle](./../../src/Psl/IO/MemoryHandle.php#L15)
-- [Reader](./../../src/Psl/IO/Reader.php#L15)
+- [Reader](./../../src/Psl/IO/Reader.php#L17)
 
 #### `Traits`
 

@@ -11,11 +11,18 @@ use Psl\Async;
 use function fwrite;
 use function stream_socket_pair;
 
+use const PHP_OS_FAMILY;
+use const STREAM_IPPROTO_IP;
+use const STREAM_PF_INET;
+use const STREAM_PF_UNIX;
+use const STREAM_SOCK_STREAM;
+
 final class AwaitReadableTest extends TestCase
 {
     public function testAwaitReadable(): void
     {
-        $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
+        $domain = PHP_OS_FAMILY === 'Windows' ? STREAM_PF_INET : STREAM_PF_UNIX;
+        $sockets = stream_socket_pair($domain, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
         $write_socket = $sockets[0];
         $read_socket = $sockets[1];
 

@@ -16,6 +16,12 @@ use Psl\Network;
  */
 function connect(string $path, ?float $timeout = null): SocketInterface
 {
+    // @codeCoverageIgnoreStart
+    if (PHP_OS_FAMILY === 'Windows') {
+        throw new Network\Exception\RuntimeException('Unix socket is not supported on Windows platform.');
+    }
+    // @codeCoverageIgnoreEnd
+
     $socket = Network\Internal\socket_connect("unix://{$path}", timeout: $timeout);
 
     /** @psalm-suppress MissingThrowsDocblock */

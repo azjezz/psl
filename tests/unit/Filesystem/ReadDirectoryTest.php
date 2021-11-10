@@ -10,6 +10,8 @@ use Psl\Filesystem;
 use Psl\Str;
 use Psl\Vec;
 
+use const PHP_OS_FAMILY;
+
 final class ReadDirectoryTest extends AbstractFilesystemTest
 {
     protected string $function = 'read_directory';
@@ -57,6 +59,11 @@ final class ReadDirectoryTest extends AbstractFilesystemTest
 
     public function testReadDirectoryThrowsIfNotReadable(): void
     {
+        if (PHP_OS_FAMILY === 'Windows') {
+            // executable bit on windows.
+            static::markTestSkipped('Test can only be executed under *nix OS.');
+        }
+
         Filesystem\change_permissions($this->directory, 0077);
 
         $this->expectException(InvariantViolationException::class);
