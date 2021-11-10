@@ -13,10 +13,16 @@ use function memory_get_peak_usage;
 use function microtime;
 use function round;
 use function strlen;
+use const PHP_OS_FAMILY;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
 Async\main(static function (): int {
+    if (PHP_OS_FAMILY === 'Windows') {
+        IO\output_handle()->writeAll('This example requires does not support Windows.');
+
+        return 0;
+    }
 
     $args = getopt('i:o:t:');
     $input_file = $args['i'] ?? '/dev/zero';
