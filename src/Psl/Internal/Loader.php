@@ -610,7 +610,6 @@ final class Loader
         'Psl\Filesystem\Exception\RuntimeException',
         'Psl\IO\Exception\AlreadyClosedException',
         'Psl\IO\Exception\RuntimeException',
-        'Psl\IO\Exception\BlockingException',
         'Psl\IO\Exception\TimeoutException',
         'Psl\IO\Internal\ResourceHandle',
         'Psl\IO\Reader',

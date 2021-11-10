@@ -31,8 +31,6 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements File\Re
 
     /**
      * @param resource|object $resource
-     *
-     * @throws Exception\BlockingException If unable to set the handle resource to non-blocking mode.
      */
     public function __construct(string $path, mixed $resource, bool $read, bool $write)
     {

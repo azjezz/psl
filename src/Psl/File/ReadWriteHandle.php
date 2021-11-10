@@ -18,7 +18,6 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
     /**
      * @param resource|object $stream
      *
-     * @throws IO\Exception\BlockingException If unable to set the stream to non-blocking mode.
      * @throws Psl\Exception\InvariantViolationException If $path points to a non-file node, or it not writeable.
      * @throws Filesystem\Exception\RuntimeException If unable to create $path when it does not exist.
      */

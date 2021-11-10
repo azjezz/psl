@@ -17,7 +17,6 @@ final class ReadHandle extends Internal\AbstractHandleWrapper implements ReadHan
     /**
      * @param resource|object $stream
      *
-     * @throws IO\Exception\BlockingException If unable to set the stream to non-blocking mode.
      * @throws Psl\Exception\InvariantViolationException If $path does not point to a file, or is not readable.
      */
     public function __construct(string $path)
