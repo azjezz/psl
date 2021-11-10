@@ -11,10 +11,16 @@ use Psl\Network\Exception;
 use Psl\Unix;
 use Throwable;
 
+use const PHP_OS_FAMILY;
+
 final class ServerTest extends TestCase
 {
     public function testNextConnectionOnStoppedServer(): void
     {
+        if (PHP_OS_FAMILY === 'Windows') {
+            static::markTestSkipped('Unix Server is not supported on Windows platform.');
+        }
+
         $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . ".sock";
         $server = Unix\Server::create($sock);
         $server->stopListening();
@@ -27,6 +33,10 @@ final class ServerTest extends TestCase
 
     public function testGetLocalAddressOnStoppedServer(): void
     {
+        if (PHP_OS_FAMILY === 'Windows') {
+            static::markTestSkipped('Unix Server is not supported on Windows platform.');
+        }
+
         $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . ".sock";
         $server = Unix\Server::create($sock);
         $server->stopListening();
@@ -39,6 +49,10 @@ final class ServerTest extends TestCase
 
     public function testThrowsForPendingOperation(): void
     {
+        if (PHP_OS_FAMILY === 'Windows') {
+            static::markTestSkipped('Unix Server is not supported on Windows platform.');
+        }
+
         $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . ".sock";
         $server = Unix\Server::create($sock);
 

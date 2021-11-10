@@ -9,6 +9,8 @@ use Psl\Dict;
 use Psl\Env;
 use Psl\IO;
 use Psl\IO\Stream;
+use Psl\Regex;
+use Psl\SecureRandom;
 use Psl\Str;
 use Psl\Vec;
 
@@ -16,6 +18,9 @@ use function is_dir;
 use function is_resource;
 use function proc_close;
 use function proc_open;
+use function strpbrk;
+
+use const PHP_OS_FAMILY;
 
 /**
  * Execute an external program.
@@ -65,18 +70,87 @@ function execute(
         throw new Exception\PossibleAttackException('NULL byte detected.');
     }
 
-    $descriptor = [
-        1 => ['pipe', 'w'],
-        2 => ['pipe', 'w'],
-    ];
-
     $environment = Dict\merge(Env\get_vars(), $environment);
-    $working_directory = $working_directory ?? Env\current_dir();
+    $working_directory ??= Env\current_dir();
     if (!is_dir($working_directory)) {
         throw new Exception\RuntimeException('$working_directory does not exist.');
     }
 
-    $process = proc_open($commandline, $descriptor, $pipes, $working_directory, $environment);
+    $options = [];
+    // @codeCoverageIgnoreStart
+    if (PHP_OS_FAMILY === 'Windows') {
+        $variable_cache = [];
+        $variable_count = 0;
+        /** @psalm-suppress MissingThrowsDocblock */
+        $identifier = 'PHP_STANDARD_LIBRARY_TMP_ENV_' . SecureRandom\string(6);
+        /** @psalm-suppress MissingThrowsDocblock */
+        $commandline = Regex\replace_with(
+            $commandline,
+            '/"(?:([^"%!^]*+(?:(?:!LF!|"(?:\^[%!^])?+")[^"%!^]*+)++)|[^"]*+ )"/x',
+            /**
+             * @param array<array-key, string> $m
+             *
+             * @return string
+             */
+            static function (array $m) use (
+                &$environment,
+                &$variable_cache,
+                &$variable_count,
+                $identifier
+            ): string {
+                if (!isset($m[1])) {
+                    return $m[0];
+                }
+
+                /** @var array<string, string> $variable_cache */
+                if (isset($variable_cache[$m[0]])) {
+                    /** @var string */
+                    return $variable_cache[$m[0]];
+                }
+
+                $value = $m[1];
+                if (Str\Byte\contains($value, "\0")) {
+                    $value = Str\Byte\replace($value, "\0", '?');
+                }
+
+                if (false === strpbrk($value, "\"%!\n")) {
+                    return '"' . $value . '"';
+                }
+
+                $value = Str\Byte\replace_every($value, ['!LF!' => "\n", '"^!"' => '!', '"^%"' => '%', '"^^"' => '^', '""' => '"']);
+                $value = '"' . Regex\replace($value, '/(\\\\*)"/', '$1$1\\"') . '"';
+                /**
+                 * @psalm-suppress MixedAssignment
+                 * @psalm-suppress MixedOperand
+                 */
+                $var = $identifier . ++$variable_count;
+
+                /**
+                 * @psalm-suppress MixedArrayAssignment
+                 */
+                $environment[$var] = $value;
+
+                /**
+                 * @psalm-suppress MixedArrayOffset
+                 * @psalm-suppress MixedArrayAssignment
+                 */
+                return $variable_cache[$m[0]] = '!' . $var . '!';
+            },
+        );
+
+        $commandline = 'cmd /V:ON /E:ON /D /C (' . Str\Byte\replace($commandline, "\n", ' ') . ')';
+        $options = [
+            'bypass_shell' => true,
+            'blocking_pipes' => false,
+        ];
+    }
+    // @codeCoverageIgnoreEnd
+    $descriptor = [
+        1 => ['pipe', 'w'],
+        2 => ['pipe', 'w'],
+    ];
+    /** @var array<string, string> $environment */
+    $process = proc_open($commandline, $descriptor, $pipes, $working_directory, $environment, $options);
     // @codeCoverageIgnoreStart
     // not sure how to replicate this, but it can happen \_o.o_/
     if (!is_resource($process)) {

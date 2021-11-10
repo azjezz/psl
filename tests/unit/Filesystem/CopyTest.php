@@ -7,6 +7,8 @@ namespace Psl\Tests\Unit\Filesystem;
 use Psl\Filesystem;
 use Psl\Str;
 
+use const PHP_OS_FAMILY;
+
 final class CopyTest extends AbstractFilesystemTest
 {
     protected string $function = 'copy';
@@ -42,6 +44,10 @@ final class CopyTest extends AbstractFilesystemTest
 
     public function testCopyExecutableBits(): void
     {
+        if (PHP_OS_FAMILY === 'Windows') {
+            static::markTestSkipped('Test can only be executed under *nix OS.');
+        }
+
         $shell_file = Str\join([$this->directory, 'hello.sh'], Filesystem\SEPARATOR);
 
         Filesystem\create_file($shell_file);

@@ -7,12 +7,19 @@ namespace Psl\Tests\Unit\Filesystem;
 use Psl\Filesystem;
 use Psl\Str;
 
+use const PHP_OS_FAMILY;
+
 final class PermissionsTest extends AbstractFilesystemTest
 {
     protected string $function = 'permissions';
 
     public function testChangePermissions(): void
     {
+        if (PHP_OS_FAMILY === 'Windows') {
+            // executable bit on windows.
+            static::markTestSkipped('Test can only be executed under *nix OS.');
+        }
+
         $filename = Str\join([$this->directory, 'foo.txt'], Filesystem\SEPARATOR);
 
         Filesystem\create_file($filename);

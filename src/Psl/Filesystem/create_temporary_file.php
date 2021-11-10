@@ -34,16 +34,16 @@ function create_temporary_file(?string $directory = null, ?string $prefix = null
 
     if (null !== $prefix) {
         Psl\invariant(
-            !Str\contains($prefix, SEPARATOR),
+            !Str\contains($prefix, ((string)SEPARATOR)),
             '$prefix should not contain a directory separator ( "%s" ).',
-            SEPARATOR
+            ((string)SEPARATOR)
         );
     } else {
         $prefix = '';
     }
 
     try {
-        $filename = $directory . '/' . $prefix . SecureRandom\string(8);
+        $filename = $directory . ((string)SEPARATOR) . $prefix . SecureRandom\string(8);
         // @codeCoverageIgnoreStart
     } catch (SecureRandom\Exception\InsufficientEntropyException $e) {
         throw new Exception\RuntimeException('Unable to gather enough entropy to generate filename.', 0, $e);
