@@ -6,19 +6,57 @@ namespace Psl\TCP;
 
 use Psl;
 use Psl\Network;
+use Revolt\EventLoop;
 
+use function error_get_last;
 use function fclose;
+use function stream_socket_accept;
 
 use const PHP_OS_FAMILY;
 
 final class Server implements Network\ServerInterface
 {
     /**
-     * @param resource|null $impl
+     * @var resource|null $impl
      */
-    private function __construct(
-        private mixed $impl
-    ) {
+    private mixed $impl;
+    private ?EventLoop\Suspension $suspension = null;
+    private string $watcher;
+
+    /**
+     * @param resource $impl
+     */
+    private function __construct(mixed $impl)
+    {
+        $this->impl = $impl;
+        $suspension = &$this->suspension;
+        $this->watcher = EventLoop::onReadable(
+            $this->impl,
+            /**
+             * @param resource|object $resource
+             */
+            static function (string $_watcher, mixed $resource) use (&$suspension): void {
+                /**
+                 * @var resource $resource
+                 */
+                $sock = @stream_socket_accept($resource, timeout: 0.0);
+                /** @var \Revolt\EventLoop\Suspension|null $tmp */
+                $tmp = $suspension;
+                $suspension = null;
+                if ($sock !== false) {
+                    $tmp?->resume($sock);
+
+                    return;
+                }
+
+                // @codeCoverageIgnoreStart
+                /** @var array{file: string, line: int, message: string, type: int} $err */
+                $err = error_get_last();
+                $tmp?->throw(new Network\Exception\RuntimeException('Failed to accept incoming connection: ' . $err['message'], $err['type']));
+                // @codeCoverageIgnoreEnd
+            },
+        );
+        EventLoop::disable($this->watcher);
     }
 
     /**
@@ -30,9 +68,9 @@ final class Server implements Network\ServerInterface
      * @throws Psl\Network\Exception\RuntimeException In case failed to listen to on given address.
      */
     public static function create(
-        string $host,
-        int $port = 0,
-        ?ServerOptions  $options = null,
+        string         $host,
+        int            $port = 0,
+        ?ServerOptions $options = null,
     ): self {
         $server_options = $options ?? ServerOptions::create();
         $socket_options = $server_options->socketOptions;
@@ -56,22 +94,27 @@ final class Server implements Network\ServerInterface
      */
     public function nextConnection(): SocketInterface
     {
+        if (null !== $this->suspension) {
+            throw new Network\Exception\RuntimeException('Pending operation.');
+        }
+
         if (null === $this->impl) {
             throw new Network\Exception\AlreadyStoppedException('Server socket has already been stopped.');
         }
 
-        // @codeCoverageIgnoreStart
-        try {
-            /** @psalm-suppress MissingThrowsDocblock */
-            return new Internal\Socket(
-                Network\Internal\socket_accept($this->impl)
-            );
-        } catch (Network\Exception\AlreadyStoppedException $exception) {
-            $this->impl = null;
+        $this->suspension = $suspension = EventLoop::createSuspension();
+        /** @psalm-suppress MissingThrowsDocblock */
+        EventLoop::enable($this->watcher);
 
-            throw $exception;
+        try {
+            /** @var resource $socket */
+            $socket = $suspension->suspend();
+        } finally {
+            EventLoop::disable($this->watcher);
         }
-        // @codeCoverageIgnoreEnd
+
+        /** @psalm-suppress MissingThrowsDocblock */
+        return new Internal\Socket($socket);
     }
 
     /**
@@ -86,6 +129,11 @@ final class Server implements Network\ServerInterface
         return Network\Internal\get_sock_name($this->impl);
     }
 
+    public function __destruct()
+    {
+        $this->stopListening();
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -95,13 +143,18 @@ final class Server implements Network\ServerInterface
             return;
         }
 
+        $suspension = null;
+        if (null !== $this->watcher) {
+            EventLoop::cancel($this->watcher);
+            $suspension = $this->suspension;
+            $this->suspension = null;
+        }
+
         $resource = $this->impl;
         $this->impl = null;
+        /** @psalm-suppress PossiblyNullArgument */
         fclose($resource);
-    }
 
-    public function __destruct()
-    {
-        $this->stopListening();
+        $suspension?->throw(new Network\Exception\AlreadyStoppedException('Server socket has already been stopped.'));
     }
 }

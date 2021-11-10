@@ -16,7 +16,7 @@
 
 #### `Functions`
 
-- [append_file](./../../src/Psl/Filesystem/append_file.php#L21)
+- [append_file](./../../src/Psl/Filesystem/append_file.php#L23)
 - [canonicalize](./../../src/Psl/Filesystem/canonicalize.php#L15)
 - [change_group](./../../src/Psl/Filesystem/change_group.php#L20)
 - [change_owner](./../../src/Psl/Filesystem/change_owner.php#L20)
@@ -51,6 +51,6 @@
 - [read_directory](./../../src/Psl/Filesystem/read_directory.php#L19)
 - [read_file](./../../src/Psl/Filesystem/read_file.php#L23)
 - [read_symbolic_link](./../../src/Psl/Filesystem/read_symbolic_link.php#L21)
-- [write_file](./../../src/Psl/Filesystem/write_file.php#L21)
+- [write_file](./../../src/Psl/Filesystem/write_file.php#L23)
 
 

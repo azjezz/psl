@@ -474,7 +474,6 @@ final class Loader
         'Psl\Network\Internal\get_sock_name',
         'Psl\Network\Internal\socket_connect',
         'Psl\Network\Internal\server_listen',
-        'Psl\Network\Internal\socket_accept',
         'Psl\TCP\connect',
         'Psl\Unix\connect',
     ];

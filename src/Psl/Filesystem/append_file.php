@@ -9,6 +9,8 @@ use Psl\File;
 use Psl\IO;
 use Psl\Str;
 
+use function clearstatcache;
+
 /**
  * Append $content to $file.
  *
@@ -20,6 +22,8 @@ use Psl\Str;
  */
 function append_file(string $file, string $content): void
 {
+    clearstatcache();
+
     try {
         $handle = File\open_write_only($file, File\WriteMode::APPEND);
         $lock = $handle->lock(File\LockType::EXCLUSIVE);
@@ -28,6 +32,8 @@ function append_file(string $file, string $content): void
 
         $lock->release();
         $handle->close();
+
+        clearstatcache();
     } catch (File\Exception\ExceptionInterface | IO\Exception\ExceptionInterface $previous) {
         // @codeCoverageIgnoreStart
         throw new Exception\RuntimeException(Str\format(
