@@ -6,6 +6,6 @@ namespace Psl\File;
 
 use Psl\IO;
 
-interface ReadHandleInterface extends HandleInterface, IO\CloseSeekReadHandleInterface
+interface ReadHandleInterface extends HandleInterface, IO\Stream\CloseSeekReadHandleInterface
 {
 }

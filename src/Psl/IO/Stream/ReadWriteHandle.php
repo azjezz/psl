@@ -10,12 +10,12 @@ use Psl\IO\Internal;
 /**
  * @codeCoverageIgnore
  */
-final class ReadWriteHandle implements IO\ReadWriteHandleInterface
+final class ReadWriteHandle implements ReadWriteHandleInterface
 {
     use IO\ReadHandleConvenienceMethodsTrait;
     use IO\WriteHandleConvenienceMethodsTrait;
 
-    private IO\ReadWriteHandleInterface $handle;
+    private ReadWriteHandleInterface $handle;
 
     /**
      * @param resource|object $stream
@@ -55,5 +55,13 @@ final class ReadWriteHandle implements IO\ReadWriteHandleInterface
     public function write(string $bytes, ?float $timeout = null): int
     {
         return $this->handle->write($bytes, $timeout);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getStream(): mixed
+    {
+        return $this->handle->getStream();
     }
 }

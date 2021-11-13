@@ -10,12 +10,12 @@ use Psl\IO\Internal;
 /**
  * @codeCoverageIgnore
  */
-final class SeekReadWriteHandle implements IO\SeekReadWriteHandleInterface
+final class SeekReadWriteHandle implements SeekReadWriteHandleInterface
 {
     use IO\ReadHandleConvenienceMethodsTrait;
     use IO\WriteHandleConvenienceMethodsTrait;
 
-    private IO\SeekReadWriteHandleInterface $handle;
+    private SeekReadWriteHandleInterface $handle;
 
     /**
      * @param resource|object $stream
@@ -71,5 +71,13 @@ final class SeekReadWriteHandle implements IO\SeekReadWriteHandleInterface
     public function tell(): int
     {
         return $this->handle->tell();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getStream(): mixed
+    {
+        return $this->handle->getStream();
     }
 }

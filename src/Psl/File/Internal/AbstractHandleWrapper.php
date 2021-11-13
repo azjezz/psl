@@ -69,4 +69,12 @@ abstract class AbstractHandleWrapper implements File\HandleInterface
     {
         $this->handle->close();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getStream(): mixed
+    {
+        $this->handle->getStream();
+    }
 }

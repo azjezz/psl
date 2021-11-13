@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
+use Revolt\EventLoop;
+use WeakMap;
+
 use const PHP_SAPI;
 
 /**
@@ -14,14 +17,28 @@ use const PHP_SAPI;
  *
  * @codeCoverageIgnore
  */
-function error_handle(): ?CloseWriteHandleInterface
+function error_handle(): ?Stream\CloseWriteHandleInterface
 {
+    /** @var WeakMap|null $cache */
+    static $cache = null;
+    if (null === $cache) {
+        $cache = new WeakMap();
+    }
+
+    $key = EventLoop::getDriver();
+    if ($cache->offsetExists($key)) {
+        /** @var Stream\CloseWriteHandleInterface|null */
+        return $cache->offsetGet($key);
+    }
+
+    $handle = null;
     if (PHP_SAPI === "cli") {
-        /** @psalm-suppress MissingThrowsDocblock */
-        return new Stream\CloseWriteHandle(
+        $handle = new Stream\CloseWriteHandle(
             Internal\open_resource('php://stderr', 'wb')
         );
     }
 
-    return null;
+    $cache->offsetSet($key, $handle);
+
+    return $handle;
 }

@@ -10,12 +10,12 @@ use Psl\IO\Internal;
 /**
  * @codeCoverageIgnore
  */
-final class CloseSeekReadWriteHandle implements IO\CloseSeekReadWriteHandleInterface
+final class CloseSeekReadWriteHandle implements CloseSeekReadWriteHandleInterface
 {
     use IO\ReadHandleConvenienceMethodsTrait;
     use IO\WriteHandleConvenienceMethodsTrait;
 
-    private IO\CloseSeekReadWriteHandleInterface $handle;
+    private CloseSeekReadWriteHandleInterface $handle;
 
     /**
      * @param resource|object $stream
@@ -79,5 +79,13 @@ final class CloseSeekReadWriteHandle implements IO\CloseSeekReadWriteHandleInter
     public function close(): void
     {
         $this->handle->close();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getStream(): mixed
+    {
+        return $this->handle->getStream();
     }
 }

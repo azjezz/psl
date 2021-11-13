@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Psl\IO\Stream;
 
-use Psl\IO;
 use Psl\IO\Internal;
 
 /**
  * @codeCoverageIgnore
  */
-final class CloseHandle implements IO\CloseHandleInterface
+final class CloseHandle implements CloseHandleInterface
 {
-    private IO\CloseHandleInterface $handle;
+    private CloseHandleInterface $handle;
 
     /**
      * @param resource|object $stream
@@ -28,5 +27,13 @@ final class CloseHandle implements IO\CloseHandleInterface
     public function close(): void
     {
         $this->handle->close();
+    }
+
+    /**
+     * @return object|resource|null
+     */
+    public function getStream(): mixed
+    {
+        return $this->handle->getStream();
     }
 }

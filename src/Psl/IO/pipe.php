@@ -17,9 +17,9 @@ use const STREAM_PF_UNIX;
 use const STREAM_SOCK_STREAM;
 
 /**
- * Create a pair of handles, where writes to the WriteHandle can be read from the ReadHandle.
+ * Create a pair of handles, where writes to the {@see Stream\WriteHandleInterface} can be read from the {@see Stream\ReadHandleInterface}.
  *
- * @return array{0: CloseReadHandleInterface, 1: CloseWriteHandleInterface}
+ * @return array{0: Stream\CloseReadHandleInterface, 1: Stream\CloseWriteHandleInterface}
  */
 function pipe(): array
 {

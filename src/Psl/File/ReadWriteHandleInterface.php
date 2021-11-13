@@ -7,7 +7,7 @@ namespace Psl\File;
 use Psl\IO;
 
 interface ReadWriteHandleInterface extends
-    IO\CloseSeekReadWriteHandleInterface,
+    IO\Stream\CloseSeekReadWriteHandleInterface,
     ReadHandleInterface,
     WriteHandleInterface
 {
