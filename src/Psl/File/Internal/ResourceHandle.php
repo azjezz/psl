@@ -30,11 +30,11 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements File\Re
     private string $path;
 
     /**
-     * @param resource|object $resource
+     * @param resource|object $stream
      */
-    public function __construct(string $path, mixed $resource, bool $read, bool $write)
+    public function __construct(string $path, mixed $stream, bool $read, bool $write)
     {
-        parent::__construct($resource, $read, $write, seek: true);
+        parent::__construct($stream, $read, $write, seek: true);
 
         $this->path = $path;
     }
@@ -52,7 +52,7 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements File\Re
      */
     public function getSize(): int
     {
-        if (null === $this->resource) {
+        if (null === $this->stream) {
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
@@ -64,7 +64,7 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements File\Re
         }
 
         /** @psalm-suppress PossiblyInvalidArgument */
-        $result = @fseek($this->resource, 0, SEEK_END);
+        $result = @fseek($this->stream, 0, SEEK_END);
         if ($result === -1) {
             $error = error_get_last();
 
@@ -103,13 +103,13 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements File\Re
      */
     public function tryLock(LockType $type): Lock
     {
-        if (null === $this->resource) {
+        if (null === $this->stream) {
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
         $operations = LOCK_NB | ($type === LockType::EXCLUSIVE ? LOCK_EX : LOCK_SH);
         /** @psalm-suppress PossiblyInvalidArgument */
-        $success = @flock($this->resource, $operations, $would_block);
+        $success = @flock($this->stream, $operations, $would_block);
         // @codeCoverageIgnoreStart
         if ($would_block) {
             throw new File\Exception\AlreadyLockedException();
@@ -124,14 +124,14 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements File\Re
         }
 
         return new Lock($type, function (): void {
-            if (null === $this->resource) {
+            if (null === $this->stream) {
                 // while closing a handle should unlock it, that is not always the case.
                 // therefore, we should require users to explicitly release the lock before closing the handle.
                 throw new Exception\AlreadyClosedException('Handle was closed before releasing the lock.');
             }
 
             /** @psalm-suppress PossiblyInvalidArgument */
-            if (!@flock($this->resource, LOCK_UN)) {
+            if (!@flock($this->stream, LOCK_UN)) {
                 throw new File\Exception\RuntimeException(Str\format(
                     'Could not release lock for "%s".',
                     $this->getPath(),

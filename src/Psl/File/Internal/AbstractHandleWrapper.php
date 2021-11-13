@@ -75,6 +75,6 @@ abstract class AbstractHandleWrapper implements File\HandleInterface
      */
     public function getStream(): mixed
     {
-        $this->handle->getStream();
+        return $this->handle->getStream();
     }
 }

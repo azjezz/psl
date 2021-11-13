@@ -18,11 +18,11 @@ use Psl\TCP;
 final class Socket extends Internal\ResourceHandle implements TCP\SocketInterface
 {
     /**
-     * @param resource $resource
+     * @param resource $stream
      */
-    public function __construct($resource)
+    public function __construct($stream)
     {
-        parent::__construct($resource, read: true, write: true, seek: false);
+        parent::__construct($stream, read: true, write: true, seek: false);
     }
 
     /**
@@ -30,12 +30,12 @@ final class Socket extends Internal\ResourceHandle implements TCP\SocketInterfac
      */
     public function getLocalAddress(): Address
     {
-        if (null === $this->resource) {
+        if (null === $this->stream) {
             throw new Exception\AlreadyClosedException('Socket handle has already been closed.');
         }
 
         /** @psalm-suppress PossiblyInvalidArgument */
-        return Network\Internal\get_sock_name($this->resource);
+        return Network\Internal\get_sock_name($this->stream);
     }
 
     /**
@@ -43,11 +43,11 @@ final class Socket extends Internal\ResourceHandle implements TCP\SocketInterfac
      */
     public function getPeerAddress(): Address
     {
-        if (null === $this->resource) {
+        if (null === $this->stream) {
             throw new Exception\AlreadyClosedException('Socket handle has already been closed.');
         }
 
         /** @psalm-suppress PossiblyInvalidArgument */
-        return Network\Internal\get_peer_name($this->resource);
+        return Network\Internal\get_peer_name($this->stream);
     }
 }
