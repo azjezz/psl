@@ -33,7 +33,7 @@ use function substr;
  *
  * @codeCoverageIgnore
  */
-class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
+class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
 {
     use IO\ReadHandleConvenienceMethodsTrait;
     use IO\WriteHandleConvenienceMethodsTrait;
@@ -337,5 +337,13 @@ class ResourceHandle implements IO\CloseSeekReadWriteHandleInterface
 
         $this->readSuspension?->throw(throw new Exception\AlreadyClosedException('Handle has already been closed.'));
         $this->writeSuspension?->throw(throw new Exception\AlreadyClosedException('Handle has already been closed.'));
+    }
+
+    /**
+     * @return object|resource|null
+     */
+    public function getStream(): mixed
+    {
+        return $this->resource;
     }
 }

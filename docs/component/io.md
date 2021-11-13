@@ -12,9 +12,9 @@
 
 #### `Functions`
 
-- [error_handle](./../../src/Psl/IO/error_handle.php#L17)
-- [input_handle](./../../src/Psl/IO/input_handle.php#L17)
-- [output_handle](./../../src/Psl/IO/output_handle.php#L17)
+- [error_handle](./../../src/Psl/IO/error_handle.php#L20)
+- [input_handle](./../../src/Psl/IO/input_handle.php#L20)
+- [output_handle](./../../src/Psl/IO/output_handle.php#L20)
 - [pipe](./../../src/Psl/IO/pipe.php#L24)
 
 #### `Interfaces`

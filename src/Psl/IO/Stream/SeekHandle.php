@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Psl\IO\Stream;
 
-use Psl\IO;
 use Psl\IO\Internal;
 
 /**
  * @codeCoverageIgnore
  */
-final class SeekHandle implements IO\SeekHandleInterface
+final class SeekHandle implements SeekHandleInterface
 {
-    private IO\SeekHandleInterface $handle;
+    private SeekHandleInterface $handle;
 
     /**
      * @param resource|object $stream
@@ -36,5 +35,13 @@ final class SeekHandle implements IO\SeekHandleInterface
     public function tell(): int
     {
         return $this->handle->tell();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getStream(): mixed
+    {
+        return $this->handle->getStream();
     }
 }

@@ -28,13 +28,13 @@ final class RunTest extends TestCase
     {
         $awaitable = Async\run(static function (): string {
             Async\concurrent([
-                static fn() => Async\sleep(0.0001),
-                static fn() => Async\sleep(0.0001),
-                static fn() => Async\sleep(0.0001),
+                static fn() => Async\sleep(0.01),
+                static fn() => Async\sleep(0.01),
+                static fn() => Async\sleep(0.01),
             ]);
 
             return 'hello';
-        }, timeout: 0.002);
+        }, timeout: 0.02);
 
         static::assertSame('hello', $awaitable->await());
     }

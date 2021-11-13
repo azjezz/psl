@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Psl\IO\Stream;
 
-use Psl\IO;
 use Psl\IO\Internal;
 
 /**
  * @codeCoverageIgnore
  */
-final class CloseSeekHandle implements IO\CloseSeekHandleInterface
+final class CloseSeekHandle implements CloseSeekHandleInterface
 {
-    private IO\CloseSeekHandleInterface $handle;
+    private CloseSeekHandleInterface $handle;
 
     /**
      * @param resource|object $stream
@@ -44,5 +43,13 @@ final class CloseSeekHandle implements IO\CloseSeekHandleInterface
     public function close(): void
     {
         $this->handle->close();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getStream(): mixed
+    {
+        return $this->handle->getStream();
     }
 }
