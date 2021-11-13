@@ -27,6 +27,9 @@
         "php-standard-library/psalm-plugin": "^1.1.1"
     },
     "autoload": {
+        "psr-4": {
+            "Psl\\": "src/Psl"
+        },
         "files": [
             "src/bootstrap.php"
         ]

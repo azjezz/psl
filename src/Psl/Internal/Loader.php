@@ -694,11 +694,10 @@ final class Loader
 
     public static function bootstrap(): void
     {
-        if (!function_exists(self::FUNCTIONS[0])) {
-            self::preload();
-        } elseif (!defined(self::CONSTANTS[0])) {
-            self::loadConstants();
-        }
+        self::loadConstants();
+        self::autoload(static function (): void {
+            self::loadFunctions();
+        });
     }
 
     public static function preload(): void

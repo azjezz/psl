@@ -21,7 +21,7 @@
                 "shasum": ""
             },
             "require": {
-                "php": ">=8"
+                "php": ">=8.0.7"
             },
             "require-dev": {
                 "ext-json": "*",
@@ -5177,6 +5177,7 @@
                 "issues": "https://github.com/webmozart/path-util/issues",
                 "source": "https://github.com/webmozart/path-util/tree/2.3.0"
             },
+            "abandoned": "symfony/filesystem",
             "time": "2015-12-17T08:42:14+00:00"
         }
     ],
