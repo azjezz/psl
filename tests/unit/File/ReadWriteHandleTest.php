@@ -59,6 +59,21 @@ final class ReadWriteHandleTest extends TestCase
         static::assertSame('derp', $file->read());
     }
 
+    public function testGetStream(): void
+    {
+        $file = File\temporary();
+        $file->writeAll('herpderp');
+
+        $file_stream = $file->getStream();
+        static::assertIsNotClosedResource($file_stream);
+
+        $file->close();
+
+        static::assertIsClosedResource($file_stream);
+
+        static::assertNull($file->getStream());
+    }
+
     public function testMustCreateExistingFile(): void
     {
         $this->expectException(InvariantViolationException::class);
@@ -156,10 +171,6 @@ final class ReadWriteHandleTest extends TestCase
         ];
 
         yield [
-            static fn(File\HandleInterface $handle) => $handle->close(),
-        ];
-
-        yield [
             static fn(File\HandleInterface $handle) => $handle->lock(File\LockType::EXCLUSIVE),
         ];
 
@@ -169,10 +180,6 @@ final class ReadWriteHandleTest extends TestCase
 
         yield [
             static fn(File\HandleInterface $handle) => $handle->getSize(),
-        ];
-
-        yield [
-            static fn(File\HandleInterface $handle) => $handle->close(),
         ];
     }
 }

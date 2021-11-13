@@ -17,6 +17,7 @@ use function fclose;
 use function fseek;
 use function ftell;
 use function fwrite;
+use function is_resource;
 use function str_contains;
 use function stream_get_contents;
 use function stream_get_meta_data;
@@ -42,9 +43,9 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
     public const MAXIMUM_READ_BUFFER_SIZE = 786432;
 
     /**
-     * @var object|resource|null $resource
+     * @var object|resource|null $stream
      */
-    protected mixed $resource;
+    protected mixed $stream;
 
     private bool $useSingleRead;
 
@@ -57,20 +58,20 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
     private ?Suspension $writeSuspension = null;
 
     /**
-     * @param resource|object $resource
+     * @param resource|object $stream
      */
-    public function __construct(mixed $resource, bool $read, bool $write, bool $seek)
+    public function __construct(mixed $stream, bool $read, bool $write, bool $seek)
     {
-        $this->resource = Type\union(
+        $this->stream = Type\union(
             Type\resource('stream'),
             Type\object(),
-        )->assert($resource);
+        )->assert($stream);
 
         /** @psalm-suppress UnusedFunctionCall */
-        stream_set_read_buffer($resource, 0);
-        stream_set_blocking($resource, false);
+        stream_set_read_buffer($stream, 0);
+        stream_set_blocking($stream, false);
 
-        $meta = stream_get_meta_data($resource);
+        $meta = stream_get_meta_data($stream);
         $this->blocks = $meta['blocked'] || ($meta['wrapper_type'] ?? '') === 'plainfile';
         if ($seek) {
             $seekable = (bool)$meta['seekable'];
@@ -84,7 +85,7 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
             Psl\invariant($readable, 'Handle is not readable.');
 
             $suspension = &$this->readSuspension;
-            $this->readWatcher = EventLoop::onReadable($resource, static function () use (&$suspension) {
+            $this->readWatcher = EventLoop::onReadable($stream, static function () use (&$suspension) {
                 /** @var Suspension|null $suspension */
                 $suspension?->resume(null);
             });
@@ -102,7 +103,7 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
             Psl\invariant($writable, 'Handle is not writeable.');
 
             $suspension = &$this->writeSuspension;
-            $this->writeWatcher = EventLoop::onWritable($resource, static function () use (&$suspension) {
+            $this->writeWatcher = EventLoop::onWritable($stream, static function () use (&$suspension) {
                 /** @var Suspension|null $suspension */
                 $suspension?->resume(null);
             });
@@ -175,12 +176,12 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
             throw new Exception\RuntimeException('Pending operation.');
         }
 
-        if (null === $this->resource) {
+        if (!is_resource($this->stream)) {
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
         /** @psalm-suppress PossiblyInvalidArgument */
-        $result = @fwrite($this->resource, $bytes);
+        $result = @fwrite($this->stream, $bytes);
         if ($result === false) {
             $error = error_get_last();
 
@@ -196,14 +197,14 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
      */
     public function seek(int $offset): void
     {
-        if (null === $this->resource) {
+        if (!is_resource($this->stream)) {
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
         Psl\invariant($offset >= 0, '$offset must be a positive-int.');
 
         /** @psalm-suppress PossiblyInvalidArgument */
-        $result = @fseek($this->resource, $offset);
+        $result = @fseek($this->stream, $offset);
         if (0 !== $result) {
             throw new Exception\RuntimeException('Failed to seek the specified position.');
         }
@@ -215,12 +216,12 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
      */
     public function tell(): int
     {
-        if (null === $this->resource) {
+        if (!is_resource($this->stream)) {
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
         /** @psalm-suppress PossiblyInvalidArgument */
-        $result = @ftell($this->resource);
+        $result = @ftell($this->stream);
         if ($result === false) {
             $error = error_get_last();
 
@@ -290,7 +291,7 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
             throw new Exception\RuntimeException('Pending operation.');
         }
 
-        if (null === $this->resource) {
+        if (!is_resource($this->stream)) {
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
@@ -303,7 +304,7 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
         }
 
         /** @psalm-suppress PossiblyInvalidArgument */
-        $result = $this->useSingleRead ? fread($this->resource, $max_bytes) : stream_get_contents($this->resource, $max_bytes);
+        $result = $this->useSingleRead ? fread($this->stream, $max_bytes) : stream_get_contents($this->stream, $max_bytes);
         if ($result === false) {
             /** @var array{message: string} $error */
             $error = error_get_last();
@@ -315,24 +316,25 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
     }
 
     /**
-     * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If unable to close the handle.
      */
     public function close(): void
     {
-        if (null === $this->resource) {
-            throw new Exception\AlreadyClosedException('Handle has already been closed.');
-        }
+        if (is_resource($this->stream)) {
+            /** @psalm-suppress PossiblyInvalidArgument */
+            $stream = $this->stream;
+            $this->stream = null;
+            $result = @fclose($stream);
+            if ($result === false) {
+                /** @var array{message: string} $error */
+                $error = error_get_last();
 
-        /** @psalm-suppress PossiblyInvalidArgument */
-        $resource = $this->resource;
-        $this->resource = null;
-        $result = @fclose($resource);
-        if ($result === false) {
-            /** @var array{message: string} $error */
-            $error = error_get_last();
-
-            throw new Exception\RuntimeException($error['message'] ?? 'unknown error.');
+                throw new Exception\RuntimeException($error['message'] ?? 'unknown error.');
+            }
+        } else {
+            // Stream could be set to a non-null closed-resource,
+            // if manually closed using `fclose($handle->getStream)`.
+            $this->stream = null;
         }
 
         $this->readSuspension?->throw(throw new Exception\AlreadyClosedException('Handle has already been closed.'));
@@ -344,6 +346,11 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
      */
     public function getStream(): mixed
     {
-        return $this->resource;
+        return $this->stream;
+    }
+
+    public function __destruct()
+    {
+        $this->close();
     }
 }
