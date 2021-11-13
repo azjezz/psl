@@ -20,7 +20,9 @@
 - [MutableCollectionInterface](./../../src/Psl/Collection/MutableCollectionInterface.php#L20)
 - [MutableIndexAccessInterface](./../../src/Psl/Collection/MutableIndexAccessInterface.php#L16)
 - [MutableMapInterface](./../../src/Psl/Collection/MutableMapInterface.php#L14)
+- [MutableSetInterface](./../../src/Psl/Collection/MutableSetInterface.php#L12)
 - [MutableVectorInterface](./../../src/Psl/Collection/MutableVectorInterface.php#L13)
+- [SetInterface](./../../src/Psl/Collection/SetInterface.php#L12)
 - [VectorInterface](./../../src/Psl/Collection/VectorInterface.php#L12)
 
 #### `Classes`

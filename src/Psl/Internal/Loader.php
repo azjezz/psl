@@ -493,6 +493,8 @@ final class Loader
         'Psl\Collection\MutableVectorInterface',
         'Psl\Collection\MapInterface',
         'Psl\Collection\MutableMapInterface',
+        'Psl\Collection\SetInterface',
+        'Psl\Collection\MutableSetInterface',
         'Psl\Observer\SubjectInterface',
         'Psl\Observer\ObserverInterface',
         'Psl\Result\ResultInterface',
