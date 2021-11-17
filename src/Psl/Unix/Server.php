@@ -6,7 +6,6 @@ namespace Psl\Unix;
 
 use Psl\Async;
 use Psl\Network;
-use Revolt\EventLoop;
 
 use function error_get_last;
 use function fclose;
@@ -20,10 +19,15 @@ final class Server implements Network\ServerInterface
      * @var resource|null $impl
      */
     private mixed $impl;
+
     /**
      * @var null|Async\Deferred<resource>
      */
     private ?Async\Deferred $deferred = null;
+
+    /**
+     * @var non-empty-string
+     */
     private string $watcher;
 
     /**
@@ -33,7 +37,7 @@ final class Server implements Network\ServerInterface
     {
         $this->impl = $impl;
         $deferred = &$this->deferred;
-        $this->watcher = EventLoop::onReadable(
+        $this->watcher = Async\Scheduler::onReadable(
             $this->impl,
             /**
              * @param resource|object $resource
@@ -58,7 +62,7 @@ final class Server implements Network\ServerInterface
                 // @codeCoverageIgnoreEnd
             },
         );
-        EventLoop::disable($this->watcher);
+        Async\Scheduler::disable($this->watcher);
     }
 
     /**
@@ -99,13 +103,13 @@ final class Server implements Network\ServerInterface
         /** @var Async\Deferred<resource> */
         $this->deferred = new Async\Deferred();
         /** @psalm-suppress MissingThrowsDocblock */
-        EventLoop::enable($this->watcher);
+        Async\Scheduler::enable($this->watcher);
 
         try {
             /** @psalm-suppress PossiblyNullReference */
             return new Internal\Socket($this->deferred->getAwaitable()->await());
         } finally {
-            EventLoop::disable($this->watcher);
+            Async\Scheduler::disable($this->watcher);
             $this->deferred = null;
         }
     }
@@ -134,7 +138,7 @@ final class Server implements Network\ServerInterface
         $resource = $this->impl;
         $deferred = null;
         if (null !== $this->watcher) {
-            EventLoop::cancel($this->watcher);
+            Async\Scheduler::cancel($this->watcher);
             $deferred = $this->deferred;
             $this->deferred = null;
         }

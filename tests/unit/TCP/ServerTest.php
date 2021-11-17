@@ -59,6 +59,7 @@ final class ServerTest extends TestCase
         ]);
 
         static::assertTrue($first->isComplete());
+        $first_connection = $first->await();
 
         $client_two->write('hello');
         $pocket = $second_connection->read(5);
@@ -67,6 +68,7 @@ final class ServerTest extends TestCase
 
         $client_one->close();
         $client_two->close();
+        $first_connection->close();
         $second_connection->close();
 
         $server->stopListening();

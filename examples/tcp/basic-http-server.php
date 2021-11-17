@@ -17,10 +17,7 @@ Async\main(static function (): int {
 
     IO\output_handle()->writeAll("Server is listening on http://localhost:3030\n");
 
-    Async\Scheduler::defer(static function () use ($server) {
-        Async\await_signal(SIGINT);
-        $server->stopListening();
-    });
+    Async\Scheduler::onSignal(SIGINT, $server->stopListening(...));
 
     try {
         while (true) {
@@ -28,15 +25,12 @@ Async\main(static function (): int {
 
             Async\Scheduler::defer(static function() use ($connection) {
                 try {
-                    $stream = $connection->getStream();
-
-                    Async\await_readable($stream);
-                    $connection->read();
+                    $request = $connection->read();
 
                     $connection->writeAll("HTTP/1.1 200 OK\n");
-                    $connection->writeAll("Server: PHP+PSL\n");
+                    $connection->writeAll("Server: PHP-Standard-Library TCP Server - https://github.com/azjezz/psl\n");
                     $connection->writeAll("Connection: close\n");
-                    $connection->writeAll("Content-Type: text/plain\n\n");
+                    $connection->writeAll("Content-Type: text/plain; charset=utf-8\n\n");
                     $connection->writeAll("Hello, World!");
                     $connection->close();
                 } catch (Throwable) {

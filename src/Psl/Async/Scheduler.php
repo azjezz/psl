@@ -33,6 +33,54 @@ final class Scheduler
     }
 
     /**
+     * Execute a callback when a signal is received.
+     *
+     * @param int $signal_number The signal number to monitor.
+     * @param (callable(string, int): void) $callback The callback to execute.
+     *
+     * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
+     *
+     * @see EventLoop::onSignal()
+     */
+    public static function onSignal(int $signal_number, callable $callback): string
+    {
+        /**
+         * @psalm-suppress MissingThrowsDocblock
+         *
+         * @var non-empty-string
+         */
+        return EventLoop::onSignal($signal_number, $callback);
+    }
+
+    /**
+     * Execute a callback when a stream resource becomes readable or is closed for reading.
+     *
+     * @param resource|object $stream The stream to monitor.
+     * @param (callable(string, resource|object): void) $callback   The callback to execute.
+     *
+     * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
+     */
+    public static function onReadable(mixed $stream, callable $callback): string
+    {
+        /** @var non-empty-string */
+        return EventLoop::onReadable($stream, $callback);
+    }
+
+    /**
+     * Execute a callback when a stream resource becomes writable or is closed for writing.
+     *
+     * @param resource|object $stream The stream to monitor.
+     * @param (callable(string, resource|object): void) $callback   The callback to execute.
+     *
+     * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
+     */
+    public static function onWritable(mixed $stream, callable $callback): string
+    {
+        /** @var non-empty-string */
+        return EventLoop::onWritable($stream, $callback);
+    }
+
+    /**
      * Queue a microtask.
      *
      * @see EventLoop::queue()
@@ -46,14 +94,14 @@ final class Scheduler
      * Defer the execution of a callback.
      *
      * @param (callable(string): void)  $callback   The callback to defer.
-     *                                              The `$callbackId` will be invalidated before the callback invocation.
      *
-     * @return string A unique identifier that can be used to cancel, enable or disable the callback.
+     * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
      *
      * @see EventLoop::defer()
      */
     public static function defer(callable $callback): string
     {
+        /** @var non-empty-string */
         return EventLoop::defer($callback);
     }
 
@@ -62,43 +110,46 @@ final class Scheduler
      *
      * @param float $delay The amount of time, to delay the execution for in seconds.
      * @param (callable(string): void)  $callback   The callback to delay.
-     *                                              The `$callbackId` will be invalidated before the callback invocation.
      *
-     * @return string A unique identifier that can be used to cancel, enable or disable the callback.
+     * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
      *
      * @see EventLoop::delay()
      */
     public static function delay(float $delay, callable $callback): string
     {
+        /** @var non-empty-string */
         return EventLoop::delay($delay, $callback);
     }
 
     /**
      * Repeatedly execute a callback.
      *
-     * @param int $interval The time interval, to wait between executions in seconds.
+     * @param float $interval The time interval, to wait between executions in seconds.
      * @param callable(string) $callback The callback to repeat.
      *
-     * @return string A unique identifier that can be used to cancel, enable or disable the callback.
+     * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
      *
      * @see EventLoop::repeat()
      */
     public static function repeat(float $interval, callable $callback): string
     {
+        /** @var non-empty-string */
         return EventLoop::repeat($interval, $callback);
     }
 
     /**
      * Enable a callback to be active starting in the next tick.
      *
+     * @param non-empty-string $identifier The callback identifier.
+     *
      * @throws Psl\Exception\InvariantViolationException If the callback identifier is invalid.
      *
      * @see EventLoop::repeat()
      */
-    public static function enable(string $callbackId): void
+    public static function enable(string $identifier): void
     {
         try {
-            EventLoop::enable($callbackId);
+            EventLoop::enable($identifier);
         } catch (InvalidCallbackError $error) {
             Psl\invariant_violation($error->getMessage());
         }
@@ -107,42 +158,40 @@ final class Scheduler
     /**
      * Disable a callback immediately.
      *
+     * @param string $identifier The callback identifier.
+     *
      * @see EventLoop::disable()
      */
-    public static function disable(string $callbackId): void
+    public static function disable(string $identifier): void
     {
-        EventLoop::disable($callbackId);
+        EventLoop::disable($identifier);
     }
 
     /**
      * Cancel a callback.
      *
-     * This will detach the event loop from all resources that are associated to the callback. After this operation the
-     * callback is permanently invalid. Calling this function MUST NOT fail, even if passed an invalid identifier.
-     *
-     * @param string $callbackId The callback identifier.
+     * @param string $identifier The callback identifier.
      *
      * @see EventLoop::cancel()
      */
-    public static function cancel(string $callbackId): void
+    public static function cancel(string $identifier): void
     {
-        EventLoop::cancel($callbackId);
+        EventLoop::cancel($identifier);
     }
 
     /**
      * Reference a callback.
      *
-     * This will keep the event loop alive whilst the event is still being monitored. Callbacks have this state by
-     * default.
+     * @param non-empty-string $identifier The callback identifier.
      *
      * @throws Psl\Exception\InvariantViolationException If the callback identifier is invalid.
      *
      * @see EventLoop::reference()
      */
-    public static function reference(string $callbackId): void
+    public static function reference(string $identifier): void
     {
         try {
-            EventLoop::reference($callbackId);
+            EventLoop::reference($identifier);
         } catch (InvalidCallbackError $error) {
             Psl\invariant_violation($error->getMessage());
         }
@@ -151,13 +200,12 @@ final class Scheduler
     /**
      * Unreference a callback.
      *
-     * The event loop should exit the run method when only unreferenced callbacks are still being monitored. Callbacks
-     * are all referenced by default.
+     * @param string $identifier The callback identifier.
      *
      * @see EventLoop::unreference()
      */
-    public static function unreference(string $callbackId): void
+    public static function unreference(string $identifier): void
     {
-        EventLoop::unreference($callbackId);
+        EventLoop::unreference($identifier);
     }
 }

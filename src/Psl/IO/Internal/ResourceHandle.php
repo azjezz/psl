@@ -9,7 +9,6 @@ use Psl\Async;
 use Psl\IO;
 use Psl\IO\Exception;
 use Psl\Type;
-use Revolt\EventLoop;
 
 use function error_get_last;
 use function fclose;
@@ -50,8 +49,15 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
 
     private bool $blocks;
 
-    private string $readWatcher = '';
-    private string $writeWatcher = '';
+    /**
+     * @var non-empty-string
+     */
+    private string $readWatcher = 'invalid';
+
+    /**
+     * @var non-empty-string
+     */
+    private string $writeWatcher = 'invalid';
 
     private ?Async\Deferred $readDeferred = null;
     private ?Async\Deferred $writeDeferred = null;
@@ -84,12 +90,12 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
             Psl\invariant($readable, 'Handle is not readable.');
 
             $deferred = &$this->readDeferred;
-            $this->readWatcher = EventLoop::onReadable($stream, static function () use (&$deferred) {
+            $this->readWatcher = Async\Scheduler::onReadable($stream, static function () use (&$deferred) {
                 /** @var Async\Deferred|null $deferred */
                 $deferred?->complete(null);
             });
 
-            EventLoop::disable($this->readWatcher);
+            Async\Scheduler::disable($this->readWatcher);
         }
 
         if ($write) {
@@ -102,12 +108,12 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
             Psl\invariant($writable, 'Handle is not writeable.');
 
             $deferred = &$this->writeDeferred;
-            $this->writeWatcher = EventLoop::onWritable($stream, static function () use (&$deferred) {
+            $this->writeWatcher = Async\Scheduler::onWritable($stream, static function () use (&$deferred) {
                 /** @var Async\Deferred|null $deferred */
                 $deferred?->complete(null);
             });
 
-            EventLoop::disable($this->writeWatcher);
+            Async\Scheduler::disable($this->writeWatcher);
         }
 
         $this->useSingleRead = $meta["stream_type"] === "udp_socket" || $meta["stream_type"] === "STDIO";
@@ -128,11 +134,11 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
         $this->writeDeferred = new Async\Deferred();
         $deferred = &$this->writeDeferred;
         /** @psalm-suppress MissingThrowsDocblock */
-        EventLoop::enable($this->writeWatcher);
+        Async\Scheduler::enable($this->writeWatcher);
         $delay_watcher = null;
         if (null !== $timeout) {
             $timeout = $timeout < 0.0 ? 0.0 : $timeout;
-            $delay_watcher = EventLoop::delay(
+            $delay_watcher = Async\Scheduler::delay(
                 $timeout,
                 static function () use (&$deferred) {
                     /** @var Async\Deferred|null $deferred */
@@ -148,9 +154,9 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
             $deferred->getAwaitable()->await();
         } finally {
             $deferred = null;
-            EventLoop::disable($this->writeWatcher);
+            Async\Scheduler::disable($this->writeWatcher);
             if (null !== $delay_watcher) {
-                EventLoop::cancel($delay_watcher);
+                Async\Scheduler::cancel($delay_watcher);
             }
         }
 
@@ -236,11 +242,11 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
         $this->readDeferred = new Async\Deferred();
         $deferred = &$this->readDeferred;
         /** @psalm-suppress MissingThrowsDocblock */
-        EventLoop::enable($this->readWatcher);
+        Async\Scheduler::enable($this->readWatcher);
         $delay_watcher = null;
         if (null !== $timeout) {
             $timeout = $timeout < 0.0 ? 0.0 : $timeout;
-            $delay_watcher = EventLoop::delay(
+            $delay_watcher = Async\Scheduler::delay(
                 $timeout,
                 static function () use (&$deferred) {
                     /** @var Async\Deferred|null $deferred */
@@ -256,9 +262,9 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
             $deferred->getAwaitable()->await();
         } finally {
             $deferred = null;
-            EventLoop::disable($this->readWatcher);
+            Async\Scheduler::disable($this->readWatcher);
             if (null !== $delay_watcher) {
-                EventLoop::cancel($delay_watcher);
+                Async\Scheduler::cancel($delay_watcher);
             }
         }
 
