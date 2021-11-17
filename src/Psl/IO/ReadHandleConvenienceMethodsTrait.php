@@ -24,6 +24,8 @@ trait ReadHandleConvenienceMethodsTrait
      * Up to `$max_bytes` may be allocated in a buffer; large values may lead to
      * unnecessarily hitting the request memory limit.
      *
+     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
@@ -48,7 +50,10 @@ trait ReadHandleConvenienceMethodsTrait
 
         do {
             $chunk_size = $to_read;
-            /** @psalm-suppress MissingThrowsDocblock */
+            /**
+             * @var positive-int|null $chunk_size
+             * @psalm-suppress UnnecessaryVarAnnotation
+             */
             $chunk = $this->read($chunk_size, $timer->getRemaining());
             $data->value .= $chunk;
             if ($to_read !== null) {
@@ -65,6 +70,8 @@ trait ReadHandleConvenienceMethodsTrait
      * It is possible for this to never return, e.g. if called on a pipe or
      * or socket which the other end keeps open forever. Set a timeout if you
      * do not want this to happen.
+     *
+     * @param positive-int $size the number of bytes to read.
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.

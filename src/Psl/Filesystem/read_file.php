@@ -12,9 +12,9 @@ use Psl\Str;
 /**
  * Reads entire file into a string.
  *
- * @param int $offset The offset where the reading starts.
- * @param null|int $length Maximum length of data read. The default is to read
- *                         until end of file is reached.
+ * @param positive-int|0 $offset The offset where the reading starts.
+ * @param positive-int|null $length Maximum length of data read.
+ *                                  The default is to read until end of file is reached.
  *
  * @throws Psl\Exception\InvariantViolationException If the file specified by
  *                                                   $file does not exist, or is not readable.

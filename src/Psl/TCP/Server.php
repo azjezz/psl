@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\TCP;
 
 use Psl;
+use Psl\Async;
 use Psl\Network;
 use Revolt\EventLoop;
 
@@ -20,7 +21,11 @@ final class Server implements Network\ServerInterface
      * @var resource|null $impl
      */
     private mixed $impl;
-    private ?EventLoop\Suspension $suspension = null;
+
+    /**
+     * @var null|Async\Deferred<resource>
+     */
+    private ?Async\Deferred $deferred = null;
     private string $watcher;
 
     /**
@@ -29,22 +34,18 @@ final class Server implements Network\ServerInterface
     private function __construct(mixed $impl)
     {
         $this->impl = $impl;
-        $suspension = &$this->suspension;
+        $deferred = &$this->deferred;
         $this->watcher = EventLoop::onReadable(
             $this->impl,
             /**
              * @param resource|object $resource
              */
-            static function (string $_watcher, mixed $resource) use (&$suspension): void {
-                /**
-                 * @var resource $resource
-                 */
+            static function (string $_watcher, mixed $resource) use (&$deferred): void {
+                /** @var resource $resource */
                 $sock = @stream_socket_accept($resource, timeout: 0.0);
-                /** @var \Revolt\EventLoop\Suspension|null $tmp */
-                $tmp = $suspension;
-                $suspension = null;
                 if ($sock !== false) {
-                    $tmp?->resume($sock);
+                    /** @var Async\Deferred<resource>|null $deferred */
+                    $deferred?->complete($sock);
 
                     return;
                 }
@@ -52,7 +53,8 @@ final class Server implements Network\ServerInterface
                 // @codeCoverageIgnoreStart
                 /** @var array{file: string, line: int, message: string, type: int} $err */
                 $err = error_get_last();
-                $tmp?->throw(new Network\Exception\RuntimeException('Failed to accept incoming connection: ' . $err['message'], $err['type']));
+                /** @var Async\Deferred<resource>|null $deferred */
+                $deferred?->error(new Network\Exception\RuntimeException('Failed to accept incoming connection: ' . $err['message'], $err['type']));
                 // @codeCoverageIgnoreEnd
             },
         );
@@ -94,27 +96,29 @@ final class Server implements Network\ServerInterface
      */
     public function nextConnection(): SocketInterface
     {
-        if (null !== $this->suspension) {
-            throw new Network\Exception\RuntimeException('Pending operation.');
-        }
+        $this->deferred
+            ?->getAwaitable()
+            ->then(static fn() => null, static fn() => null)
+            ->ignore()
+            ->await();
 
         if (null === $this->impl) {
             throw new Network\Exception\AlreadyStoppedException('Server socket has already been stopped.');
         }
 
-        $this->suspension = $suspension = EventLoop::createSuspension();
+        /** @var Async\Deferred<resource> */
+        $this->deferred =  new Async\Deferred();
+
         /** @psalm-suppress MissingThrowsDocblock */
         EventLoop::enable($this->watcher);
 
         try {
-            /** @var resource $socket */
-            $socket = $suspension->suspend();
+            /** @psalm-suppress PossiblyNullReference */
+            return new Internal\Socket($this->deferred->getAwaitable()->await());
         } finally {
             EventLoop::disable($this->watcher);
+            $this->deferred = null;
         }
-
-        /** @psalm-suppress MissingThrowsDocblock */
-        return new Internal\Socket($socket);
     }
 
     /**
@@ -143,18 +147,18 @@ final class Server implements Network\ServerInterface
             return;
         }
 
-        $suspension = null;
+        $resource = $this->impl;
+
+        $deferred = null;
         if (null !== $this->watcher) {
             EventLoop::cancel($this->watcher);
-            $suspension = $this->suspension;
-            $this->suspension = null;
+            $deferred = $this->deferred;
+            $this->deferred = null;
         }
 
-        $resource = $this->impl;
         $this->impl = null;
-        /** @psalm-suppress PossiblyNullArgument */
         fclose($resource);
 
-        $suspension?->throw(new Network\Exception\AlreadyStoppedException('Server socket has already been stopped.'));
+        $deferred?->error(new Network\Exception\AlreadyStoppedException('Server socket has already been stopped.'));
     }
 }

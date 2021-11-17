@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\IO;
 
 use Psl;
-use Psl\Exception\InvariantViolationException;
 use Psl\Str;
 
 use function strlen;
@@ -29,14 +28,7 @@ final class Reader implements ReadHandleInterface
     }
 
     /**
-     * Read fixed amount of bytes specified by $size.
-     *
-     * @param int $size The number of bytes to read.
-     *
-     * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\RuntimeException If an error occurred during the operation,
-     *                                    or reached end of file before requested size.
-     * @throws InvariantViolationException If $size is not positive.
+     * {@inheritDoc}
      */
     public function readFixedSize(int $size, ?float $timeout = null): string
     {
@@ -53,11 +45,10 @@ final class Reader implements ReadHandleInterface
             },
         );
 
-        while (strlen($this->buffer) < $size && !$this->eof) {
-            $this->fillBuffer(
-                $size - strlen($this->buffer),
-                $timer->getRemaining(),
-            );
+        while (($length = strlen($this->buffer)) < $size && !$this->eof) {
+            /** @var positive-int $to_read */
+            $to_read = $size - $length;
+            $this->fillBuffer($to_read, $timer->getRemaining());
         }
 
         if ($this->eof) {
@@ -65,6 +56,7 @@ final class Reader implements ReadHandleInterface
         }
 
         $buffer_size = strlen($this->buffer);
+        /** @psalm-suppress MissingThrowsDocblock */
         Psl\invariant($buffer_size >= $size, "Should have read the requested data or reached EOF");
 
         if ($size === $buffer_size) {
@@ -79,6 +71,8 @@ final class Reader implements ReadHandleInterface
     }
 
     /**
+     * @param null|positive-int $desired_bytes
+     *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
@@ -98,14 +92,11 @@ final class Reader implements ReadHandleInterface
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation, or reached end of file.
-     * @throws Psl\Exception\InvariantViolationException If $timeout is negative.
      */
     public function readByte(?float $timeout = null): string
     {
-        Psl\invariant(
-            $timeout === null || $timeout > 0,
-            '$timeout must be null, or > 0',
-        );
+        /** @psalm-suppress MissingThrowsDocblock */
+        Psl\invariant($timeout === null || $timeout > 0.0, '$timeout must be null, or > 0');
 
         if ($this->buffer === '' && !$this->eof) {
             // @codeCoverageIgnoreStart
@@ -195,24 +186,12 @@ final class Reader implements ReadHandleInterface
     }
 
     /**
-     * Read from the handle, waiting for data if necessary.
-     *
-     * @param ?int $max_bytes the maximum number of bytes to read
-     *
-     * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
-     * @throws InvariantViolationException If $max_bytes is 0.
-     * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     *
-     * @return string the read data on success, or an empty string if the end of file is reached.
-     *
-     * Up to `$max_bytes` may be allocated in a buffer; large values may lead to
-     * unnecessarily hitting the request memory limit.
+     * {@inheritDoc}
      */
     public function read(?int $max_bytes = null, ?float $timeout = null): string
     {
-        Psl\invariant($max_bytes === null || $max_bytes >= 0, '$max_bytes must be null, or >= 0');
-        Psl\invariant($timeout === null || $timeout > 0, '$timeout must be null, or > 0');
+        /** @psalm-suppress MissingThrowsDocblock */
+        Psl\invariant($timeout === null || $timeout > 0.0, '$timeout must be null, or > 0');
 
         if ($this->eof) {
             return '';
@@ -228,28 +207,14 @@ final class Reader implements ReadHandleInterface
     }
 
     /**
-     * An immediate, unordered read.
-     *
-     * Up to `$max_bytes` may be allocated in a buffer; large values may lead to
-     * unnecessarily hitting the request memory limit.
-     *
-     * @param ?int $max_bytes the maximum number of bytes to read
-     *
-     * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws InvariantViolationException If $max_bytes is 0.
-     * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     *
-     * @return string the read data on success, or an empty string if the end of file is reached.
-     *
-     * @see ReadHandleInterface::read()
-     * @see ReadHandleInterface::readAll()
+     * {@inheritDoc}
      */
     public function readImmediately(?int $max_bytes = null): string
     {
-        Psl\invariant(
-            $max_bytes === null || $max_bytes > 0,
-            '$max_bytes must be null, or greater than 0',
-        );
+        if (null !== $max_bytes) {
+            /** @psalm-suppress MissingThrowsDocblock */
+            Psl\invariant($max_bytes > 0, '$max_bytes must be null, or greater than 0');
+        }
 
         if ($this->eof) {
             return '';

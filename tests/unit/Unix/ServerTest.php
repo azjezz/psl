@@ -9,7 +9,6 @@ use Psl\Async;
 use Psl\Filesystem;
 use Psl\Network\Exception;
 use Psl\Unix;
-use Throwable;
 
 use const PHP_OS_FAMILY;
 
@@ -47,7 +46,7 @@ final class ServerTest extends TestCase
         $server->getLocalAddress();
     }
 
-    public function testThrowsForPendingOperation(): void
+    public function testWaitsForPendingOperation(): void
     {
         if (PHP_OS_FAMILY === 'Windows') {
             static::markTestSkipped('Unix Server is not supported on Windows platform.');
@@ -57,17 +56,23 @@ final class ServerTest extends TestCase
         $server = Unix\Server::create($sock);
 
         $first = Async\run(static fn() => $server->nextConnection());
-        $second = Async\run(static fn() => $server->nextConnection());
 
-        try {
-            $second->await();
-        } catch (Throwable $exception) {
-            static::assertInstanceOf(Exception\RuntimeException::class, $exception);
-            static::assertStringContainsStringIgnoringCase('pending', $exception->getMessage());
-        }
+        [$second_connection, $client_one, $client_two] = Async\concurrent([
+            static fn() => $server->nextConnection(),
+            static fn() => Unix\connect($sock),
+            static fn() => Unix\connect($sock),
+        ]);
 
-        $first->ignore();
-        $second->ignore();
+        static::assertTrue($first->isComplete());
+
+        $client_two->write('hello');
+        $pocket = $second_connection->read(5);
+
+        static::assertSame('hello', $pocket);
+
+        $client_one->close();
+        $client_two->close();
+        $second_connection->close();
 
         $server->stopListening();
     }
