@@ -6,7 +6,6 @@ namespace Psl\IO\Internal;
 
 use Psl;
 use Psl\Async;
-use Psl\Exception\InvariantViolationException;
 use Psl\IO;
 use Psl\IO\Exception;
 use Psl\Type;
@@ -115,17 +114,10 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
     }
 
     /**
-     * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws InvariantViolationException If $timeout is negative.
+     * {@inheritDoc}
      */
     public function write(string $bytes, ?float $timeout = null): int
     {
-        Psl\invariant(
-            $timeout === null || $timeout > 0,
-            '$timeout must be null, or > 0',
-        );
-
         $written = $this->writeImmediately($bytes);
         if ($this->blocks || $written === strlen($bytes)) {
             return $written;
@@ -139,6 +131,7 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
         EventLoop::enable($this->writeWatcher);
         $delay_watcher = null;
         if (null !== $timeout) {
+            $timeout = $timeout < 0.0 ? 0.0 : $timeout;
             $delay_watcher = EventLoop::delay(
                 $timeout,
                 static function () use (&$deferred) {
@@ -165,10 +158,7 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
     }
 
     /**
-     * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\RuntimeException If an error occurred during the operation.
-     *
-     * @psalm-suppress MissingThrowsDocblock
+     * {@inheritDoc}
      */
     public function writeImmediately(string $bytes): int
     {
@@ -191,12 +181,11 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
             throw new Exception\RuntimeException($error['message'] ?? 'unknown error.');
         }
 
-        return $result;
+        return $result >= 0 ? $result : 0;
     }
 
     /**
-     * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\RuntimeException If an error occurred during the operation.
+     * {@inheritDoc}
      */
     public function seek(int $offset): void
     {
@@ -204,7 +193,8 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
-        Psl\invariant($offset >= 0, '$offset must be a positive-int.');
+        /** @psalm-suppress MissingThrowsDocblock */
+        Psl\invariant($offset >= 0, '$offset must be a 0 or positive-int.');
 
         /** @psalm-suppress PossiblyInvalidArgument */
         $result = @fseek($this->stream, $offset);
@@ -214,8 +204,7 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
     }
 
     /**
-     * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\RuntimeException If an error occurred during the operation.
+     * {@inheritDoc}
      */
     public function tell(): int
     {
@@ -231,22 +220,14 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
             throw new Exception\RuntimeException($error['message'] ?? 'unknown error.');
         }
 
-        return $result;
+        return $result >= 0 ? $result : 0;
     }
 
     /**
-     * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If reached timeout.
-     * @throws InvariantViolationException If $max_bytes is 0, or $timeout is negative.
+     * {@inheritDoc}
      */
     public function read(?int $max_bytes = null, ?float $timeout = null): string
     {
-        Psl\invariant(
-            $timeout === null || $timeout > 0,
-            '$timeout must be null, or > 0',
-        );
-
         $chunk = $this->readImmediately($max_bytes);
         if ('' !== $chunk || $this->blocks) {
             return $chunk;
@@ -258,6 +239,7 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
         EventLoop::enable($this->readWatcher);
         $delay_watcher = null;
         if (null !== $timeout) {
+            $timeout = $timeout < 0.0 ? 0.0 : $timeout;
             $delay_watcher = EventLoop::delay(
                 $timeout,
                 static function () use (&$deferred) {
@@ -284,9 +266,7 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
     }
 
     /**
-     * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws InvariantViolationException If $max_bytes is 0.
+     * {@inheritDoc}
      */
     public function readImmediately(?int $max_bytes = null): string
     {
@@ -302,12 +282,13 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
-        Psl\invariant($max_bytes === null || $max_bytes > 0, '$max_bytes must be null, or > 0');
-
         if ($max_bytes === null) {
             $max_bytes = self::DEFAULT_READ_BUFFER_SIZE;
         } elseif ($max_bytes > self::MAXIMUM_READ_BUFFER_SIZE) {
             $max_bytes = self::MAXIMUM_READ_BUFFER_SIZE;
+        } else {
+            /** @psalm-suppress MissingThrowsDocblock */
+            Psl\invariant($max_bytes > 0, '$max_bytes must be null, or > 0');
         }
 
         /** @psalm-suppress PossiblyInvalidArgument */
@@ -323,7 +304,7 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
     }
 
     /**
-     * @throws Exception\RuntimeException If unable to close the handle.
+     * {@inheritDoc}
      */
     public function close(): void
     {

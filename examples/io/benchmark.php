@@ -12,14 +12,13 @@ use function getopt;
 use function memory_get_peak_usage;
 use function microtime;
 use function round;
-use function strlen;
 use const PHP_OS_FAMILY;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
 Async\main(static function (): int {
     if (PHP_OS_FAMILY === 'Windows') {
-        IO\output_handle()->writeAll('This example requires does not support Windows.');
+        IO\output_handle()->writeAll('This example does not support Windows.');
 
         return 0;
     }
@@ -42,12 +41,11 @@ Async\main(static function (): int {
     Async\Scheduler::delay($seconds, $input->close(...));
 
     $start = microtime(true);
-    $bytes = 0;
-
+    $i = 0;
     try {
-        while (($chunk = $input->readAll(65536))) {
+        while ($chunk = $input->readFixedSize(65536)) {
             $output->writeAll($chunk);
-            $bytes += strlen($chunk);
+            $i++;
 
             Async\later();
         }
@@ -55,7 +53,7 @@ Async\main(static function (): int {
     }
 
     $seconds = microtime(true) - $start;
-
+    $bytes = $i * 65536;
     $bytes_formatted = round($bytes / 1024 / 1024 / $seconds, 1);
 
     $stdout->writeAll('read ' . $bytes . ' byte(s) in ' . round($seconds, 3) . ' second(s) => ' . $bytes_formatted . ' MiB/s' . PHP_EOL);

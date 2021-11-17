@@ -59,10 +59,6 @@ final class MemoryHandleTest extends TestCase
         yield [
             static fn(IO\ReadHandleInterface $handle) => $handle->readImmediately(),
         ];
-
-        yield [
-            static fn(IO\CloseHandleInterface $handle) => $handle->close(),
-        ];
     }
 
     public function testMemoryHandle(): void

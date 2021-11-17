@@ -9,7 +9,6 @@ use Psl\Async;
 use Psl\Network;
 use Psl\Network\Exception\AlreadyStoppedException;
 use Psl\TCP;
-use Throwable;
 
 final class ServerTest extends TestCase
 {
@@ -47,22 +46,28 @@ final class ServerTest extends TestCase
         $server->getLocalAddress();
     }
 
-    public function testThrowsForPendingOperation(): void
+    public function testWaitsForPendingOperation(): void
     {
         $server = TCP\Server::create('127.0.0.1');
 
         $first = Async\run(static fn() => $server->nextConnection());
-        $second = Async\run(static fn() => $server->nextConnection());
 
-        try {
-            $second->await();
-        } catch (Throwable $exception) {
-            static::assertInstanceOf(Network\Exception\RuntimeException::class, $exception);
-            static::assertStringContainsStringIgnoringCase('pending', $exception->getMessage());
-        }
+        [$second_connection, $client_one, $client_two] = Async\concurrent([
+            static fn() => $server->nextConnection(),
+            static fn() => TCP\connect('127.0.0.1', $server->getLocalAddress()->port),
+            static fn() => TCP\connect('127.0.0.1', $server->getLocalAddress()->port),
+        ]);
 
-        $first->ignore();
-        $second->ignore();
+        static::assertTrue($first->isComplete());
+
+        $client_two->write('hello');
+        $pocket = $second_connection->read(5);
+
+        static::assertSame('hello', $pocket);
+
+        $client_one->close();
+        $client_two->close();
+        $second_connection->close();
 
         $server->stopListening();
     }

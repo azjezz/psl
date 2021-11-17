@@ -30,7 +30,7 @@
 - [HandleInterface](./../../src/Psl/IO/HandleInterface.php#L21)
 - [ReadHandleInterface](./../../src/Psl/IO/ReadHandleInterface.php#L10)
 - [ReadWriteHandleInterface](./../../src/Psl/IO/ReadWriteHandleInterface.php#L7)
-- [SeekHandleInterface](./../../src/Psl/IO/SeekHandleInterface.php#L12)
+- [SeekHandleInterface](./../../src/Psl/IO/SeekHandleInterface.php#L10)
 - [SeekReadHandleInterface](./../../src/Psl/IO/SeekReadHandleInterface.php#L7)
 - [SeekReadWriteHandleInterface](./../../src/Psl/IO/SeekReadWriteHandleInterface.php#L7)
 - [SeekWriteHandleInterface](./../../src/Psl/IO/SeekWriteHandleInterface.php#L7)
@@ -38,8 +38,8 @@
 
 #### `Classes`
 
-- [MemoryHandle](./../../src/Psl/IO/MemoryHandle.php#L15)
-- [Reader](./../../src/Psl/IO/Reader.php#L17)
+- [MemoryHandle](./../../src/Psl/IO/MemoryHandle.php#L14)
+- [Reader](./../../src/Psl/IO/Reader.php#L16)
 
 #### `Traits`
 

@@ -15,7 +15,7 @@ interface WriteHandleInterface extends HandleInterface
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      *
-     * @return int the number of bytes written on success, which may be 0.
+     * @return positive-int|0 the number of bytes written on success, which may be 0.
      *
      * @see WriteHandleInterface::write()
      * @see WriteHandleInterface::writeAll()
@@ -32,7 +32,7 @@ interface WriteHandleInterface extends HandleInterface
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If reached timeout before completing the operation.
      *
-     * @return int the number of bytes written, which may be less than the length of input string.
+     * @return positive-int|0 the number of bytes written, which may be less than the length of input string.
      */
     public function write(string $bytes, ?float $timeout = null): int;
 
