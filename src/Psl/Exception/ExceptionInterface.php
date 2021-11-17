@@ -6,9 +6,6 @@ namespace Psl\Exception;
 
 use Throwable;
 
-/**
- * @internal
- */
 interface ExceptionInterface extends Throwable
 {
 }

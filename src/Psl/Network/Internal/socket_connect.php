@@ -37,14 +37,33 @@ function socket_connect(string $uri, array $context = [], ?float $timeout = null
             throw new Exception\RuntimeException('Failed to connect to client "' . $uri . '".', $errno);
         }
 
-        try {
-            Async\await_writable($socket, timeout: $timeout);
-        } catch (Async\Exception\TimeoutException | Async\Exception\ResourceClosedException $e) {
-            fclose($socket);
+        $suspension = Async\Scheduler::createSuspension();
 
-            throw new Exception\TimeoutException('Connection to socket timed out.', 0, $e);
+        $write_watcher = '';
+        $timeout_watcher = '';
+        if (null !== $timeout) {
+            $timeout_watcher = Async\Scheduler::delay($timeout, static function () use ($suspension, &$write_watcher, $socket) {
+                /** @var string $write_watcher */
+                Async\Scheduler::cancel($write_watcher);
+
+                fclose($socket);
+
+                $suspension->throw(new Exception\TimeoutException('Connection to socket timed out.'));
+            });
         }
 
-        return $socket;
+        $write_watcher = Async\Scheduler::onWritable($socket, static function () use ($suspension, $socket, $timeout_watcher) {
+            Async\Scheduler::cancel($timeout_watcher);
+
+            $suspension->resume($socket);
+        });
+
+        try {
+            /** @var resource */
+            return $suspension->suspend();
+        } finally {
+            Async\Scheduler::cancel($write_watcher);
+            Async\Scheduler::cancel($timeout_watcher);
+        }
     });
 }
