@@ -23,3 +23,4 @@
 * introduced a new `Psl\Network` component.
 * introduced a new `Psl\TCP` component.
 * introduced a new `Psl\Unix` component.
+* introduced a new `Psl\Channel` component.

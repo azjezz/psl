@@ -50,6 +50,8 @@ interface QueueInterface extends Countable
 
     /**
      * Count the nodes in the queue.
+     *
+     * @return positive-int|0
      */
     public function count(): int;
 }

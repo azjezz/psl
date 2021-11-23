@@ -9,6 +9,8 @@ use Psl\Dict;
 use Psl\Iter;
 use Psl\Vec;
 
+use function count;
+
 /**
  * A basic implementation of a queue data structure ( FIFO ).
  *
@@ -79,9 +81,11 @@ final class Queue implements QueueInterface
 
     /**
      * Count the nodes in the queue.
+     *
+     * @return positive-int|0
      */
     public function count(): int
     {
-        return Iter\count($this->queue);
+        return count($this->queue);
     }
 }

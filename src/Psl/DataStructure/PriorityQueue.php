@@ -10,6 +10,8 @@ use Psl\Iter;
 use Psl\Math;
 use Psl\Vec;
 
+use function count;
+
 /**
  * @template T
  *
@@ -128,14 +130,17 @@ final class PriorityQueue implements PriorityQueueInterface
 
     /**
      * Count the nodes in the queue.
+     *
+     * @return positive-int|0
      */
     public function count(): int
     {
         $count = 0;
         foreach ($this->queue as $_priority => $list) {
-            $count += Iter\count($list);
+            $count += count($list);
         }
 
+        /** @var positive-int|0 */
         return $count;
     }
 }
