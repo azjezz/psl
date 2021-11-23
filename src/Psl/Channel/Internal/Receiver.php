@@ -42,6 +42,8 @@ final class Receiver implements ReceiverInterface
             Async\Scheduler::repeat(0.0001, function (string $identifier): void {
                 if (null === $this->deferred) {
                     Async\Scheduler::cancel($identifier);
+
+                    return;
                 }
 
                 if ($this->state->isClosed()) {
