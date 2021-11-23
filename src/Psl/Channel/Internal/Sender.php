@@ -39,13 +39,7 @@ final class Sender implements SenderInterface
         if ($this->state->isFull()) {
             $this->deferred = new Async\Deferred();
 
-            Async\Scheduler::repeat(0.0001, function (string $identifier): void {
-                if (null === $this->deferred) {
-                    Async\Scheduler::cancel($identifier);
-
-                    return;
-                }
-
+            $identifier = Async\Scheduler::repeat(0.000000001, function (): void {
                 if ($this->state->isClosed()) {
                     /**
                      * Channel has been closed from the receiving side.
@@ -66,9 +60,13 @@ final class Sender implements SenderInterface
                 }
             });
 
-            /** @psalm-suppress PossiblyNullReference */
-            $this->deferred->getAwaitable()->await();
-            $this->deferred = null;
+            try {
+                /** @psalm-suppress PossiblyNullReference */
+                $this->deferred->getAwaitable()->await();
+            } finally {
+                $this->deferred = null;
+                Async\Scheduler::cancel($identifier);
+            }
         }
 
         /** @psalm-suppress MissingThrowsDocblock */
