@@ -476,6 +476,8 @@ final class Loader
         'Psl\Network\Internal\server_listen',
         'Psl\TCP\connect',
         'Psl\Unix\connect',
+        'Psl\Channel\bounded',
+        'Psl\Channel\unbounded',
     ];
 
     public const INTERFACES = [
@@ -533,6 +535,9 @@ final class Loader
         'Psl\Network\ServerInterface',
         'Psl\TCP\SocketInterface',
         'Psl\Unix\SocketInterface',
+        'Psl\Channel\SenderInterface',
+        'Psl\Channel\ReceiverInterface',
+        'Psl\Channel\Exception\ExceptionInterface',
     ];
 
     public const TRAITS = [
@@ -665,6 +670,12 @@ final class Loader
         'Psl\TCP\Internal\Socket',
         'Psl\Unix\Server',
         'Psl\Unix\Internal\Socket',
+        'Psl\Channel\Internal\ChannelState',
+        'Psl\Channel\Internal\Sender',
+        'Psl\Channel\Internal\Receiver',
+        'Psl\Channel\Exception\ClosedChannelException',
+        'Psl\Channel\Exception\EmptyChannelException',
+        'Psl\Channel\Exception\FullChannelException',
     ];
 
     public const ENUMS = [

@@ -18,8 +18,8 @@
 
 #### `Classes`
 
-- [PriorityQueue](./../../src/Psl/DataStructure/PriorityQueue.php#L18)
-- [Queue](./../../src/Psl/DataStructure/Queue.php#L19)
+- [PriorityQueue](./../../src/Psl/DataStructure/PriorityQueue.php#L20)
+- [Queue](./../../src/Psl/DataStructure/Queue.php#L21)
 - [Stack](./../../src/Psl/DataStructure/Stack.php#L19)
 
 

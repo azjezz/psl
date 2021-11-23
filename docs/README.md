@@ -8,6 +8,7 @@
 
 - [Psl](./component/psl.md)
 - [Psl\Async](./component/async.md)
+- [Psl\Channel](./component/channel.md)
 - [Psl\Class](./component/class.md)
 - [Psl\Collection](./component/collection.md)
 - [Psl\DataStructure](./component/data-structure.md)
