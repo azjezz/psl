@@ -6,8 +6,8 @@ namespace Psl\Async\Exception;
 
 final class TimeoutException extends RuntimeException
 {
-    public function __construct(string $message = 'operation timed out.', int $code = 0)
+    public function __construct(string $message = 'operation timed out.')
     {
-        parent::__construct($message, $code);
+        parent::__construct($message);
     }
 }

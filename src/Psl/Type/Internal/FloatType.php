@@ -44,16 +44,14 @@ final class FloatType extends Type\Type
 
         if (is_string($value) || (is_object($value) && method_exists($value, '__toString'))) {
             $str = (string) $value;
-            if ('' === $str) {
-                throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
-            }
+            if ('' !== $str) {
+                if (ctype_digit($str)) {
+                    return (float)$str;
+                }
 
-            if (ctype_digit($str)) {
-                return (float)$str;
-            }
-
-            if (1 === preg_match("/^-?(?:\\d*\\.)?\\d+(?:[eE]\\d+)?$/", $str)) {
-                return (float)$str;
+                if (1 === preg_match("/^-?(?:\\d*\\.)?\\d+(?:[eE]\\d+)?$/", $str)) {
+                    return (float)$str;
+                }
             }
         }
 

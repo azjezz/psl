@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\File;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Env;
 use Psl\Exception\InvariantViolationException;
 use Psl\File;
 use Psl\Filesystem;
 use Psl\IO;
+use Psl\SecureRandom;
 
 final class ReadWriteHandleTest extends TestCase
 {
@@ -87,7 +89,7 @@ final class ReadWriteHandleTest extends TestCase
         $this->expectException(InvariantViolationException::class);
         $this->expectExceptionMessage('does not exist.');
 
-        new File\ReadWriteHandle(__FILE__ . '.fake', File\WriteMode::APPEND);
+        new File\ReadWriteHandle(Env\temp_dir() . '/' . SecureRandom\string(20), File\WriteMode::APPEND);
     }
 
     public function testAppendToANonWritableFile(): void

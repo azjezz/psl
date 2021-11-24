@@ -48,7 +48,7 @@ final class Receiver implements ReceiverInterface
                      */
                     if (!$this->deferred->isComplete()) {
                         /** @psalm-suppress PossiblyNullReference */
-                        $this->deferred->error(Exception\ClosedChannelException::forSending());
+                        $this->deferred->error(Exception\ClosedChannelException::forReceiving());
                     }
 
                     return;
@@ -94,7 +94,7 @@ final class Receiver implements ReceiverInterface
      */
     public function close(): void
     {
-        $this->deferred?->error(Exception\ClosedChannelException::forSending());
+        $this->deferred?->error(Exception\ClosedChannelException::forReceiving());
 
         $this->state->close();
     }

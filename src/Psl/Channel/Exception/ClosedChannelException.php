@@ -17,7 +17,7 @@ use Psl\Exception\RuntimeException;
  */
 final class ClosedChannelException extends RuntimeException implements ExceptionInterface
 {
-    public function __construct(string $message = 'Channel has been closed')
+    public function __construct(string $message)
     {
         parent::__construct($message);
     }

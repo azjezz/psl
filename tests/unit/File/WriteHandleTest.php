@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\File;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Env;
 use Psl\Exception\InvariantViolationException;
 use Psl\File;
 use Psl\Filesystem;
+use Psl\SecureRandom;
 
 final class WriteHandleTest extends TestCase
 {
@@ -24,7 +26,7 @@ final class WriteHandleTest extends TestCase
         $this->expectException(InvariantViolationException::class);
         $this->expectExceptionMessage('does not exist.');
 
-        $f = new File\WriteHandle(__FILE__ . '.fake', File\WriteMode::APPEND);
+        $f = new File\WriteHandle(Env\temp_dir() . '/' . SecureRandom\string(20), File\WriteMode::APPEND);
         $f->write('g');
     }
 

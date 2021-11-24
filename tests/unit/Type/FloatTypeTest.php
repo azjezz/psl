@@ -39,6 +39,7 @@ final class FloatTypeTest extends TypeTest
 
     public function getInvalidCoercions(): iterable
     {
+        yield [''];
         yield ['foo'];
         yield [null];
         yield [false];

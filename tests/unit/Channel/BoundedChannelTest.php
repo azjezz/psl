@@ -151,6 +151,7 @@ final class BoundedChannelTest extends TestCase
         $receiver->close();
 
         $this->expectException(Channel\Exception\ClosedChannelException::class);
+        $this->expectExceptionMessage('Attempted to send a message to a closed channel.');
 
         $sender->send('world');
     }
@@ -170,6 +171,7 @@ final class BoundedChannelTest extends TestCase
         });
 
         $this->expectException(Channel\Exception\ClosedChannelException::class);
+        $this->expectExceptionMessage('Attempted to send a message to a closed channel.');
 
         $sender->send('world');
     }
@@ -185,6 +187,7 @@ final class BoundedChannelTest extends TestCase
         $receiver->close();
 
         $this->expectException(Channel\Exception\ClosedChannelException::class);
+        $this->expectExceptionMessage('Attempted to send a message to a closed channel.');
 
         $sender->trySend('world');
     }
@@ -200,6 +203,7 @@ final class BoundedChannelTest extends TestCase
         $sender->close();
 
         $this->expectException(Channel\Exception\ClosedChannelException::class);
+        $this->expectExceptionMessage('Attempted to receive a message from a closed empty channel.');
 
         $receiver->receive();
     }
@@ -217,6 +221,7 @@ final class BoundedChannelTest extends TestCase
         });
 
         $this->expectException(Channel\Exception\ClosedChannelException::class);
+        $this->expectExceptionMessage('Attempted to receive a message from a closed empty channel.');
 
         $receiver->receive();
     }
@@ -232,6 +237,7 @@ final class BoundedChannelTest extends TestCase
         $sender->close();
 
         $this->expectException(Channel\Exception\ClosedChannelException::class);
+        $this->expectExceptionMessage('Attempted to receive a message from a closed empty channel.');
 
         $receiver->tryReceive();
     }
@@ -262,7 +268,58 @@ final class BoundedChannelTest extends TestCase
         [$receiver, $sender] = Channel\bounded(1);
 
         $this->expectException(Channel\Exception\EmptyChannelException::class);
+        $this->expectExceptionMessage('Attempted to receiver from an empty channel.');
 
         $receiver->tryReceive();
+    }
+
+    public function testSendWaitsForPreviousOperationWhenChannelIsFull(): void
+    {
+        /**
+         * @var Channel\ReceiverInterface<string> $receiver
+         * @var Channel\SenderInterface<string> $sender
+         */
+        [$receiver, $sender] = Channel\bounded(1);
+
+        // fill the channel.
+        $sender->send('foo');
+
+        $one = Async\run(static fn() => $sender->send('bar'));
+        $two = Async\run(static fn() => $sender->send('baz'));
+
+        Async\Scheduler::defer(static function () use ($receiver) {
+            $receiver->receive();
+        });
+
+        Async\Scheduler::defer(static function () use ($receiver) {
+            $receiver->receive();
+        });
+
+        $two->await();
+
+        static::assertTrue($one->isComplete());
+
+        $one->await();
+    }
+
+    public function testReceiveWaitsForPreviousOperationsWhenChannelIsEmpty(): void
+    {
+        /**
+         * @var Channel\ReceiverInterface<string> $receiver
+         * @var Channel\SenderInterface<string> $sender
+         */
+        [$receiver, $sender] = Channel\bounded(1);
+
+        $one = Async\run(static fn() => $receiver->receive());
+        $two = Async\run(static fn() => $receiver->receive());
+
+        Async\Scheduler::defer(static fn() => $sender->send('foo'));
+        Async\Scheduler::defer(static fn() => $sender->send('bar'));
+
+        static::assertSame('bar', $two->await());
+
+        static::assertTrue($one->isComplete());
+
+        static::assertSame('foo', $one->await());
     }
 }
