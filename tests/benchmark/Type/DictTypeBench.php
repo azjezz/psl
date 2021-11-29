@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Benchmark\Type;
 
 use ArrayIterator;
+use PhpBench\Attributes\Groups;
 use Psl\Dict;
 use Psl\Type;
 use Psl\Vec;
@@ -12,6 +13,7 @@ use Psl\Vec;
 /**
  * @extends GenericTypeBench<Type\TypeInterface<array>>
  */
+#[Groups(['type'])]
 final class DictTypeBench extends GenericTypeBench
 {
     /**

@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Psl\Tests\Benchmark\Type;
 
 use ArrayIterator;
+use PhpBench\Attributes\Groups;
 use Psl\Type;
 use Psl\Vec;
 
 /**
  * @extends GenericTypeBench<Type\TypeInterface<list<mixed>>>
  */
+#[Groups(['type'])]
 final class VecTypeBench extends GenericTypeBench
 {
     /**
@@ -54,7 +56,7 @@ final class VecTypeBench extends GenericTypeBench
     }
 
     /**
-     * @return array<non-empty-string, array{type: \Psl\Type\TypeInterface<list<mixed>>, value: array}>
+     * @return array<non-empty-string, array{type: Type\TypeInterface<list<mixed>>, value: array}>
      *
      * @psalm-suppress MissingThrowsDocblock this block should never throw
      */

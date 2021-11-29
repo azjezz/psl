@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Benchmark\Type;
 
+use PhpBench\Attributes\Groups;
 use Psl\Tests\Benchmark\Type\Asset\ExplicitStringableObject;
 use Psl\Tests\Benchmark\Type\Asset\ImplicitStringableObject;
 use Psl\Type;
@@ -11,6 +12,7 @@ use Psl\Type;
 /**
  * @extends GenericTypeBench<Type\TypeInterface<array-key>>
  */
+#[Groups(['type'])]
 final class ArrayKeyTypeBench extends GenericTypeBench
 {
     /**

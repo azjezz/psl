@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Psl\Tests\Benchmark\Type;
 
 use ArrayIterator;
+use PhpBench\Attributes\Groups;
 use Psl\Type;
 
 /**
  * @extends GenericTypeBench<Type\TypeInterface<array>>
  */
+#[Groups(['type'])]
 final class ShapeTypeBench extends GenericTypeBench
 {
     /**

@@ -34,7 +34,7 @@ final class Sender implements SenderInterface
     public function send(mixed $message): void
     {
         // there's a pending operation? wait for it.
-        $this->deferred?->getAwaitable()->then(static fn() => null, static fn() => null)->ignore()->await();
+        $this->deferred?->getAwaitable()->then(static fn() => null, static fn() => null)->await();
 
         if ($this->state->isFull()) {
             $this->deferred = new Async\Deferred();
@@ -42,7 +42,7 @@ final class Sender implements SenderInterface
             $identifier = Async\Scheduler::repeat(0.000000001, function (): void {
                 if ($this->state->isClosed()) {
                     /**
-                     * Channel has been closed from the receiving side.
+                     * Channel has been closed from the receiver side.
                      *
                      * @psalm-suppress PossiblyNullReference
                      */

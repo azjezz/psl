@@ -34,29 +34,27 @@ final class Receiver implements ReceiverInterface
     public function receive(): mixed
     {
         // there's a pending operation? wait for it.
-        $this->deferred?->getAwaitable()->then(static fn() => null, static fn() => null)->ignore()->await();
+        $this->deferred?->getAwaitable()->then(static fn() => null, static fn() => null)->await();
 
         if ($this->state->isEmpty()) {
             $this->deferred = new Async\Deferred();
 
             $identifier = Async\Scheduler::repeat(0.000000001, function (): void {
-                if ($this->state->isClosed()) {
-                    /**
-                     * Channel has been closed from the receiving side.
-                     *
-                     * @psalm-suppress PossiblyNullReference
-                     */
-                    if (!$this->deferred->isComplete()) {
-                        /** @psalm-suppress PossiblyNullReference */
-                        $this->deferred->error(Exception\ClosedChannelException::forReceiving());
-                    }
+                if (!$this->state->isEmpty()) {
+                    /** @psalm-suppress PossiblyNullReference */
+                    $this->deferred->complete(null);
 
                     return;
                 }
 
-                if (!$this->state->isEmpty()) {
+                /**
+                 * Channel has been closed from the sender side.
+                 *
+                 * @psalm-suppress PossiblyNullReference
+                 */
+                if ($this->state->isClosed() && !$this->deferred->isComplete()) {
                     /** @psalm-suppress PossiblyNullReference */
-                    $this->deferred->complete(null);
+                    $this->deferred->error(Exception\ClosedChannelException::forReceiving());
                 }
             });
 
@@ -94,7 +92,9 @@ final class Receiver implements ReceiverInterface
      */
     public function close(): void
     {
-        $this->deferred?->error(Exception\ClosedChannelException::forReceiving());
+        if ($this->state->isEmpty()) {
+            $this->deferred?->error(Exception\ClosedChannelException::forReceiving());
+        }
 
         $this->state->close();
     }
