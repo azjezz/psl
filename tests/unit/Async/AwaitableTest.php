@@ -59,7 +59,7 @@ final class AwaitableTest extends TestCase
 
         unset($awaitable, $state);
 
-        Async\later();
+        Async\Scheduler::run();
     }
 
     public function testDiscardedIgnoredAwaitableError(): void

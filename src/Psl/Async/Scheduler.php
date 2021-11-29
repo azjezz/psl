@@ -6,6 +6,7 @@ namespace Psl\Async;
 
 use Psl;
 use Revolt\EventLoop;
+use Revolt\EventLoop\Driver;
 use Revolt\EventLoop\InvalidCallbackError;
 use Revolt\EventLoop\Suspension;
 
@@ -207,5 +208,35 @@ final class Scheduler
     public static function unreference(string $identifier): void
     {
         EventLoop::unreference($identifier);
+    }
+
+    /**
+     * Run the event loop.
+     *
+     * @see Driver::run()
+     */
+    public static function run(): void
+    {
+        EventLoop::getDriver()->run();
+    }
+
+    /**
+     * Check if the event loop is running.
+     *
+     * @see Driver::isRunning()
+     */
+    public static function isRunning(): bool
+    {
+        return EventLoop::getDriver()->isRunning();
+    }
+
+    /**
+     * Stop the event loop.
+     *
+     * @see Driver::stop()
+     */
+    public static function stop(): void
+    {
+        EventLoop::getDriver()->stop();
     }
 }
