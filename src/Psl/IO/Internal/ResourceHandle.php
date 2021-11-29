@@ -169,11 +169,7 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
     public function writeImmediately(string $bytes): int
     {
         // there's a pending write operation, wait for it first.
-        $this->writeDeferred
-            ?->getAwaitable()
-            ->then(static fn() => null, static fn() => null)
-            ->ignore()
-            ->await();
+        $this->writeDeferred?->getAwaitable()->then(static fn() => null, static fn() => null)->await();
 
         if (!is_resource($this->stream)) {
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
@@ -277,12 +273,7 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
     public function readImmediately(?int $max_bytes = null): string
     {
         // there's a pending read operation, wait for it.
-        $this->readDeferred
-            ?->getAwaitable()
-            ->then(static fn() => null, static fn() => null)
-            ->ignore()
-            ->await()
-        ;
+        $this->readDeferred?->getAwaitable()->then(static fn() => null, static fn() => null)->await();
 
         if (!is_resource($this->stream)) {
             throw new Exception\AlreadyClosedException('Handle has already been closed.');

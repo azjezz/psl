@@ -90,11 +90,7 @@ final class Server implements Network\ServerInterface
      */
     public function nextConnection(): SocketInterface
     {
-        $this->deferred
-            ?->getAwaitable()
-            ->then(static fn() => null, static fn() => null)
-            ->ignore()
-            ->await();
+        $this->deferred?->getAwaitable()->then(static fn() => null, static fn() => null)->await();
 
         if (null === $this->impl) {
             throw new Network\Exception\AlreadyStoppedException('Server socket has already been stopped.');
