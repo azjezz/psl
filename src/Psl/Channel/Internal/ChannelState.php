@@ -6,8 +6,9 @@ namespace Psl\Channel\Internal;
 
 use Psl\Channel\ChannelInterface;
 use Psl\Channel\Exception;
-use Psl\DataStructure\Queue;
-use Psl\DataStructure\QueueInterface;
+
+use function array_shift;
+use function count;
 
 /**
  * @template T
@@ -19,16 +20,15 @@ use Psl\DataStructure\QueueInterface;
 final class ChannelState implements ChannelInterface
 {
     /**
-     * @var QueueInterface<T>
+     * @var array<array-key, T>
      */
-    private QueueInterface $messages;
+    private array $messages = [];
 
     private bool $closed = false;
 
     public function __construct(
         private ?int $capacity = null,
     ) {
-        $this->messages = new Queue();
     }
 
     /**
@@ -60,7 +60,7 @@ final class ChannelState implements ChannelInterface
      */
     public function count(): int
     {
-        return $this->messages->count();
+        return count($this->messages);
     }
 
     /**
@@ -68,11 +68,7 @@ final class ChannelState implements ChannelInterface
      */
     public function isFull(): bool
     {
-        if (null === $this->capacity) {
-            return false;
-        }
-
-        return $this->capacity === $this->count();
+        return $this->capacity && $this->capacity === $this->count();
     }
 
     /**
@@ -80,7 +76,7 @@ final class ChannelState implements ChannelInterface
      */
     public function isEmpty(): bool
     {
-        return 0 === $this->messages->count();
+        return 0 === count($this->messages);
     }
 
     /**
@@ -95,8 +91,8 @@ final class ChannelState implements ChannelInterface
             throw Exception\ClosedChannelException::forSending();
         }
 
-        if (null === $this->capacity || $this->capacity > $this->count()) {
-            $this->messages->enqueue($message);
+        if (null === $this->capacity || $this->capacity > count($this->messages)) {
+            $this->messages[] = $message;
 
             return;
         }
@@ -112,17 +108,14 @@ final class ChannelState implements ChannelInterface
      */
     public function receive(): mixed
     {
-        $empty = 0 === $this->count();
-        $closed = $this->closed;
-        if ($closed && $empty) {
-            throw Exception\ClosedChannelException::forReceiving();
-        }
+        if ([] === $this->messages) {
+            if ($this->closed) {
+                throw Exception\ClosedChannelException::forReceiving();
+            }
 
-        if ($empty) {
             throw Exception\EmptyChannelException::create();
         }
 
-        /** @psalm-suppress MissingThrowsDocblock */
-        return $this->messages->dequeue();
+        return array_shift($this->messages);
     }
 }
