@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<psalm totallyTyped="true" forbidEcho="true" strictBinaryOperands="true" phpVersion="8.1" allowStringToStandInForClass="true" rememberPropertyAssignmentsAfterCall="false" checkForThrowsDocblock="true" checkForThrowsInGlobalScope="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://getpsalm.org/schema/config" xsi:schemaLocation="https://getpsalm.org/schema/config ../vendor/vimeo/psalm/config.xsd" errorBaseline="psalm-baseline.xml">
+<psalm errorLevel="1" forbidEcho="true" strictBinaryOperands="true" phpVersion="8.1" allowStringToStandInForClass="true" rememberPropertyAssignmentsAfterCall="false" checkForThrowsDocblock="true" checkForThrowsInGlobalScope="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://getpsalm.org/schema/config" xsi:schemaLocation="https://getpsalm.org/schema/config ../vendor/vimeo/psalm/config.xsd" errorBaseline="psalm-baseline.xml">
     <projectFiles>
         <directory name="../src" />
         <directory name="../tests/benchmark" />
@@ -11,32 +11,6 @@
     </projectFiles>
 
     <issueHandlers>
-        <DuplicateFunction errorLevel="suppress" />
-
-        <LessSpecificReturnType errorLevel="error" />
-        <DeprecatedMethod errorLevel="error" />
-        <DeprecatedProperty errorLevel="error" />
-        <DeprecatedClass errorLevel="error" />
-        <DeprecatedConstant errorLevel="error" />
-        <DeprecatedInterface errorLevel="error" />
-        <DeprecatedTrait errorLevel="error" />
-        <ForbiddenCode errorLevel="error" />
-        <InternalMethod errorLevel="error" />
-        <InternalProperty errorLevel="error" />
-        <InternalClass errorLevel="error" />
-        <MissingClosureReturnType errorLevel="error" />
-        <MissingReturnType errorLevel="error" />
-        <MissingPropertyType errorLevel="error" />
-        <InvalidDocblock errorLevel="error" />
-        <PropertyNotSetInConstructor errorLevel="error" />
-        <MissingConstructor errorLevel="error" />
-        <MissingClosureParamType errorLevel="error" />
-        <MissingParamType errorLevel="error" />
-        <DocblockTypeContradiction errorLevel="error" />
-        <RawObjectIteration errorLevel="error" />
-        <InvalidStringClass errorLevel="error" />
-        <UnresolvableInclude errorLevel="error" />
-
         <!-- Redundant expressions should not be considered errors. -->
         <!-- Sometimes we want to enforce things at runtime, as well using static analysis -->
         <RedundantConditionGivenDocblockType errorLevel="suppress" />
