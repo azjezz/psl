@@ -7,6 +7,7 @@ namespace Psl\Shell;
 use Psl\Async;
 use Psl\Dict;
 use Psl\Env;
+use Psl\Filesystem;
 use Psl\IO;
 use Psl\IO\Stream;
 use Psl\Regex;
@@ -14,7 +15,6 @@ use Psl\SecureRandom;
 use Psl\Str;
 use Psl\Vec;
 
-use function is_dir;
 use function is_resource;
 use function proc_close;
 use function proc_open;
@@ -72,7 +72,7 @@ function execute(
 
     $environment = Dict\merge(Env\get_vars(), $environment);
     $working_directory ??= Env\current_dir();
-    if (!is_dir($working_directory)) {
+    if (!Filesystem\is_directory($working_directory)) {
         throw new Exception\RuntimeException('$working_directory does not exist.');
     }
 
@@ -117,22 +117,29 @@ function execute(
                     return '"' . $value . '"';
                 }
 
-                $value = Str\Byte\replace_every($value, ['!LF!' => "\n", '"^!"' => '!', '"^%"' => '%', '"^^"' => '^', '""' => '"']);
-                $value = '"' . Regex\replace($value, '/(\\\\*)"/', '$1$1\\"') . '"';
                 /**
-                 * @psalm-suppress MixedAssignment
-                 * @psalm-suppress MixedOperand
+                 * @var string $var
+                 * @var int $variable_count
                  */
-                $var = $identifier . ++$variable_count;
+                $var = $identifier . ((string) ++$variable_count);
 
                 /**
-                 * @psalm-suppress MixedArrayAssignment
+                 * @var array<string, string> $environment
                  */
-                $environment[$var] = $value;
+                $environment[$var] = '"' . Regex\replace(
+                    Str\Byte\replace_every(
+                        $value,
+                        ['!LF!' => "\n", '"^!"' => '!', '"^%"' => '%', '"^^"' => '^', '""' => '"']
+                    ),
+                    '/(\\\\*)"/',
+                    '$1$1\\"',
+                ) . '"';
 
                 /**
                  * @psalm-suppress MixedArrayOffset
                  * @psalm-suppress MixedArrayAssignment
+                 *
+                 * @var string
                  */
                 return $variable_cache[$m[0]] = '!' . $var . '!';
             },
