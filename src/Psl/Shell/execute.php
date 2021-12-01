@@ -143,6 +143,8 @@ function execute(
             'bypass_shell' => true,
             'blocking_pipes' => false,
         ];
+    } else {
+        $commandline = Str\format('exec %s', $commandline);
     }
     // @codeCoverageIgnoreEnd
     $descriptor = [
