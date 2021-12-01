@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
-use Psl\Iter;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -17,6 +16,7 @@ use function implode;
 use function is_array;
 use function is_int;
 use function is_iterable;
+use function is_string;
 
 /**
  * @template Tk of array-key
@@ -40,14 +40,15 @@ final class ShapeType extends Type\Type
     ) {
         $this->requiredElements = array_filter(
             $elements_types,
+            /**
+             * @param Type\TypeInterface<Tv> $element
+             */
             static fn (Type\TypeInterface $element): bool => ! $element->isOptional()
         );
     }
 
     /**
-     * @throws CoercionException
-     *
-     * @return array<Tk, Tv>
+     * {@inheritDoc}
      */
     public function coerce(mixed $value): array
     {
@@ -89,6 +90,8 @@ final class ShapeType extends Type\Type
     }
 
     /**
+     * @param mixed|iterable<Tk, Tv> $value
+     *
      * @throws CoercionException
      *
      * @return array<Tk, Tv>
@@ -99,14 +102,13 @@ final class ShapeType extends Type\Type
             throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
         }
 
-        $arrayKeyType = Type\array_key();
-        $array = [];
         /**
-         * @var Tk $k
-         * @var Tv $v
+         * @var iterable<Tk, Tv> $value
+         * @var array<Tk, Tv> $array
          */
+        $array = [];
         foreach ($value as $k => $v) {
-            if ($arrayKeyType->matches($k)) {
+            if (is_int($k) || is_string($k)) {
                 $array[$k] = $v;
             }
         }
@@ -114,7 +116,7 @@ final class ShapeType extends Type\Type
         $result = [];
         foreach ($this->elements_types as $element => $type) {
             [$trace, $type] = $this->getTypeAndTraceForElement($element, $type);
-            if (Iter\contains_key($array, $element)) {
+            if (isset($array[$element])) {
                 $result[$element] = $type->coerce($array[$element]);
 
                 continue;
@@ -129,7 +131,7 @@ final class ShapeType extends Type\Type
 
         if ($this->allow_unknown_fields) {
             foreach ($array as $k => $v) {
-                if (!Iter\contains_key($result, $k)) {
+                if (!isset($result[$k])) {
                     $result[$k] = $v;
                 }
             }
@@ -140,11 +142,7 @@ final class ShapeType extends Type\Type
     }
 
     /**
-     * @throws AssertException
-     *
-     * @return array<Tk, Tv>
-     *
-     * @psalm-assert array<Tk, Tv> $value
+     * {@inheritDoc}
      */
     public function assert(mixed $value): array
     {
@@ -152,10 +150,14 @@ final class ShapeType extends Type\Type
             throw AssertException::withValue($value, $this->toString(), $this->getTrace());
         }
 
+        /**
+         * @var array<Tk, Tv> $value
+         * @var array<Tk, Tv> $result
+         */
         $result = [];
         foreach ($this->elements_types as $element => $type) {
             [$trace, $type] = $this->getTypeAndTraceForElement($element, $type);
-            if (Iter\contains_key($value, $element)) {
+            if (isset($value[$element])) {
                 $result[$element] = $type->assert($value[$element]);
 
                 continue;
@@ -168,12 +170,8 @@ final class ShapeType extends Type\Type
             throw AssertException::withValue($value, $this->toString(), $trace);
         }
 
-        /**
-         * @var Tk $k
-         * @var Tv $v
-         */
         foreach ($value as $k => $v) {
-            if (!Iter\contains_key($result, $k)) {
+            if (!isset($result[$k])) {
                 if ($this->allow_unknown_fields) {
                     $result[$k] = $v;
                 } else {
@@ -195,6 +193,7 @@ final class ShapeType extends Type\Type
      */
     public function toString(): string
     {
+        /** @var list<string> $nodes */
         $nodes = [];
         foreach ($this->elements_types as $element => $type) {
             $nodes[] = $this->getElementName($element)
