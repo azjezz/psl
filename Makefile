@@ -35,8 +35,7 @@ unit-tests:                                                                     
 	./vendor/bin/phpunit -c config/phpunit.xml.dist
 
 code-coverage: unit-tests                                                       ## generate and upload test coverage metrics to https://coveralls.io/
-	composer global require php-coveralls/php-coveralls
-	php-coveralls -x tests/logs/clover.xml -o tests/logs/coveralls-upload.json -v
+	./vendor/bin/php-coveralls -x tests/logs/clover.xml -o tests/logs/coveralls-upload.json -v
 
 docs-generate:                                                                  ## regenerate docs
 	php docs/documenter.php

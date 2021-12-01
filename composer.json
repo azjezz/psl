@@ -24,7 +24,8 @@
         "phpbench/phpbench": "^1.2.0",
         "phpunit/phpunit": "^9.5.10",
         "vimeo/psalm": "^4.11.2",
-        "php-standard-library/psalm-plugin": "^1.1.1"
+        "php-standard-library/psalm-plugin": "^1.1.1",
+        "php-coveralls/php-coveralls": "^2.5"
     },
     "autoload": {
         "psr-4": {
