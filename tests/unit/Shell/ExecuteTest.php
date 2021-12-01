@@ -67,16 +67,10 @@ final class ExecuteTest extends TestCase
 
     public function testWorkingDirectoryIsUsed(): void
     {
-        if ('Darwin' === PHP_OS_FAMILY || PHP_OS_FAMILY === 'Windows') {
-            static::markTestSkipped();
-        }
-
         $temp = Env\temp_dir();
+        $result = Shell\execute(PHP_BINARY, ['-r', 'echo getcwd();'], $temp);
 
-        static::assertSame(
-            $temp,
-            Shell\execute(PHP_BINARY, ['-r', 'echo getcwd();'], $temp)
-        );
+        static::assertStringEndsWith($temp, $result);
     }
 
     public function testCurrentDirectoryIsUsedByDefault(): void
