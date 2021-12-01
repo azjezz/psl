@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Async;
 
+use Closure;
 use Psl;
 use Revolt\EventLoop;
 use Revolt\EventLoop\Driver;
@@ -37,13 +38,13 @@ final class Scheduler
      * Execute a callback when a signal is received.
      *
      * @param int $signal_number The signal number to monitor.
-     * @param (callable(string, int): void) $callback The callback to execute.
+     * @param (Closure(string, int): void) $callback The callback to execute.
      *
      * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
      *
      * @see EventLoop::onSignal()
      */
-    public static function onSignal(int $signal_number, callable $callback): string
+    public static function onSignal(int $signal_number, Closure $callback): string
     {
         /**
          * @psalm-suppress MissingThrowsDocblock
@@ -57,11 +58,11 @@ final class Scheduler
      * Execute a callback when a stream resource becomes readable or is closed for reading.
      *
      * @param resource|object $stream The stream to monitor.
-     * @param (callable(string, resource|object): void) $callback   The callback to execute.
+     * @param (Closure(string, resource|object): void) $callback   The callback to execute.
      *
      * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
      */
-    public static function onReadable(mixed $stream, callable $callback): string
+    public static function onReadable(mixed $stream, Closure $callback): string
     {
         /** @var non-empty-string */
         return EventLoop::onReadable($stream, $callback);
@@ -71,11 +72,11 @@ final class Scheduler
      * Execute a callback when a stream resource becomes writable or is closed for writing.
      *
      * @param resource|object $stream The stream to monitor.
-     * @param (callable(string, resource|object): void) $callback   The callback to execute.
+     * @param (Closure(string, resource|object): void) $callback   The callback to execute.
      *
      * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
      */
-    public static function onWritable(mixed $stream, callable $callback): string
+    public static function onWritable(mixed $stream, Closure $callback): string
     {
         /** @var non-empty-string */
         return EventLoop::onWritable($stream, $callback);
@@ -86,7 +87,7 @@ final class Scheduler
      *
      * @see EventLoop::queue()
      */
-    public static function queue(callable $callback): void
+    public static function queue(Closure $callback): void
     {
         EventLoop::queue($callback);
     }
@@ -94,13 +95,13 @@ final class Scheduler
     /**
      * Defer the execution of a callback.
      *
-     * @param (callable(string): void)  $callback   The callback to defer.
+     * @param (Closure(string): void)  $callback   The callback to defer.
      *
      * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
      *
      * @see EventLoop::defer()
      */
-    public static function defer(callable $callback): string
+    public static function defer(Closure $callback): string
     {
         /** @var non-empty-string */
         return EventLoop::defer($callback);
@@ -110,13 +111,13 @@ final class Scheduler
      * Delay the execution of a callback.
      *
      * @param float $delay The amount of time, to delay the execution for in seconds.
-     * @param (callable(string): void)  $callback   The callback to delay.
+     * @param (Closure(string): void)   $callback   The callback to delay.
      *
      * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
      *
      * @see EventLoop::delay()
      */
-    public static function delay(float $delay, callable $callback): string
+    public static function delay(float $delay, Closure $callback): string
     {
         /** @var non-empty-string */
         return EventLoop::delay($delay, $callback);
@@ -126,13 +127,13 @@ final class Scheduler
      * Repeatedly execute a callback.
      *
      * @param float $interval The time interval, to wait between executions in seconds.
-     * @param callable(string) $callback The callback to repeat.
+     * @param (Closure(string): void) $callback The callback to repeat.
      *
      * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
      *
      * @see EventLoop::repeat()
      */
-    public static function repeat(float $interval, callable $callback): string
+    public static function repeat(float $interval, Closure $callback): string
     {
         /** @var non-empty-string */
         return EventLoop::repeat($interval, $callback);
