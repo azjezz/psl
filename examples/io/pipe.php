@@ -14,7 +14,7 @@ Async\main(static function(): int {
 
     $output = IO\output_handle();
 
-    Async\concurrent([
+    Async\parallel([
         static function() use($read, $output): void {
             $output->writeAll("< sleeping.\n");
 

@@ -14,7 +14,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 Async\main(static function (): int {
     $output = IO\output_handle();
 
-    Async\concurrent([
+    Async\parallel([
         'server' => static function () use ($output): void {
             $server = TCP\Server::create('localhost', 91337);
             $output->writeAll("< server is listening\n");

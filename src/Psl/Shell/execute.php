@@ -164,7 +164,7 @@ function execute(
     $stderr = new Stream\CloseReadHandle($pipes[2]);
 
     try {
-        [$stdout_content, $stderr_content] = Async\concurrent([
+        [$stdout_content, $stderr_content] = Async\parallel([
             static fn(): string => $stdout->readAll(timeout: $timeout),
             static fn(): string => $stderr->readAll(timeout: $timeout),
         ]);

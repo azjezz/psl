@@ -18,12 +18,16 @@ use Psl;
  * @throws Psl\Exception\InvariantViolationException If $awaitables is empty.
  *
  * @return T
- *
- * @codeCoverageIgnore
  */
 function first(iterable $awaitables): mixed
 {
     foreach (Awaitable::iterate($awaitables) as $first) {
+        foreach ($awaitables as $awaitable) {
+            if ($awaitable !== $first) {
+                $awaitable->ignore();
+            }
+        }
+
         return $first->await();
     }
 

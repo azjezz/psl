@@ -31,13 +31,13 @@ final class PipeTest extends TestCase
         $read->close();
     }
 
-    public function testReadWriteConcurrently(): void
+    public function testReadWriteInParallel(): void
     {
         [$read, $write] = IO\pipe();
 
         $spy = new Psl\Ref('');
 
-        $read_result = Async\run(static function () use ($read, $spy): string {
+        $read_awaitable = Async\run(static function () use ($read, $spy): string {
             $spy->value .= '[read:sleep]';
             Async\sleep(0.003);
             $spy->value .= '[read:start]';
@@ -58,9 +58,9 @@ final class PipeTest extends TestCase
             $spy->value .= '[write:close]';
         })->await();
 
-        $result = $read_result->await();
+        $read_result = $read_awaitable->await();
 
-        static::assertSame('hello', $result);
+        static::assertSame('hello', $read_result);
         static::assertSame('[read:sleep][write:sleep][read:start][write:start][write:complete][write:close][read:complete][read:close]', $spy->value);
     }
 

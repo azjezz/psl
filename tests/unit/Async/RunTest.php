@@ -12,7 +12,7 @@ final class RunTest extends TestCase
     public function testRun(): void
     {
         $awaitable = Async\run(static function (): string {
-            Async\concurrent([
+            Async\parallel([
                 static fn() => Async\sleep(0.001),
                 static fn() => Async\sleep(0.001),
                 static fn() => Async\sleep(0.001),
@@ -27,7 +27,7 @@ final class RunTest extends TestCase
     public function testRunWithTimeout(): void
     {
         $awaitable = Async\run(static function (): string {
-            Async\concurrent([
+            Async\parallel([
                 static fn() => Async\sleep(0.01),
                 static fn() => Async\sleep(0.01),
                 static fn() => Async\sleep(0.01),
@@ -42,7 +42,7 @@ final class RunTest extends TestCase
     public function testRunTimedOut(): void
     {
         $awaitable = Async\run(static function (): string {
-            Async\concurrent([
+            Async\parallel([
                 static fn() => Async\sleep(1),
                 static fn() => Async\sleep(1),
                 static fn() => Async\sleep(1),
