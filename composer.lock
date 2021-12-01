@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2a8394eb68a50c2f55b3bcc56d5dc670",
+    "content-hash": "47cfea9e66be002c3c4562880e20ef2e",
     "packages": [
         {
             "name": "revolt/event-loop",
-            "version": "dev-main",
+            "version": "v0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/revoltphp/event-loop.git",
-                "reference": "2683b2eb2d2f8f5a1a29eabcb7aefd0e6b0c0809"
+                "reference": "498362a78884eb3bdb0a4389d01111d8d250c397"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/revoltphp/event-loop/zipball/2683b2eb2d2f8f5a1a29eabcb7aefd0e6b0c0809",
-                "reference": "2683b2eb2d2f8f5a1a29eabcb7aefd0e6b0c0809",
+                "url": "https://api.github.com/repos/revoltphp/event-loop/zipball/498362a78884eb3bdb0a4389d01111d8d250c397",
+                "reference": "498362a78884eb3bdb0a4389d01111d8d250c397",
                 "shasum": ""
             },
             "require": {
@@ -29,7 +29,6 @@
                 "phpunit/phpunit": "^9",
                 "psalm/phar": "^4.7"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -75,9 +74,9 @@
             ],
             "support": {
                 "issues": "https://github.com/revoltphp/event-loop/issues",
-                "source": "https://github.com/revoltphp/event-loop/tree/main"
+                "source": "https://github.com/revoltphp/event-loop/tree/v0.1.0"
             },
-            "time": "2021-11-25T21:02:56+00:00"
+            "time": "2021-12-01T22:00:41+00:00"
         }
     ],
     "packages-dev": [
@@ -5937,9 +5936,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "revolt/event-loop": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
