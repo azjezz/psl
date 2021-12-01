@@ -24,7 +24,7 @@ Async\main(static function (): int {
 
     $output = IO\output_handle();
 
-    Async\concurrent([
+    Async\parallel([
         'server' => static function () use ($file, $output): void {
             $server = Unix\Server::create($file);
             $output->writeAll("< server is listening\n");

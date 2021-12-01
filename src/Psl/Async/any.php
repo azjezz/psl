@@ -27,7 +27,14 @@ function any(iterable $awaitables): mixed
     $errors = [];
     foreach (Awaitable::iterate($awaitables) as $first) {
         try {
-            return $first->await();
+            $result = $first->await();
+            foreach ($awaitables as $awaitable) {
+                if ($awaitable !== $first) {
+                    $awaitable->ignore();
+                }
+            }
+
+            return $result;
         } catch (Throwable $throwable) {
             $errors[] = $throwable;
         }

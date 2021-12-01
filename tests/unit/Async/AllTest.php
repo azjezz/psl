@@ -42,34 +42,34 @@ final class AllTest extends TestCase
         $this->expectExceptionMessage('a');
 
         Async\all([
-            Async\run(static function (): string {
-                Async\sleep(0.01);
-
-                throw new InvariantViolationException('a');
-            }),
-            Async\run(static function (): string {
-                Async\sleep(0.02);
-
-                throw new InvariantViolationException('b');
-            }),
-            Async\run(static function (): string {
-                Async\sleep(0.03);
-
-                return 'c';
-            }),
-            Async\run(static function (): string {
-                Async\sleep(0.005);
-
-                Async\later();
-
-                Async\sleep(0.005);
-
-                return 'c';
-            }),
+            Async\Awaitable::error(new InvariantViolationException('a')),
+            Async\Awaitable::complete('b'),
+            Async\Awaitable::complete('c'),
         ]);
+
+        Async\Scheduler::run();
     }
 
-    public function testAllAwaitablesAreCompleted(): void
+    public function testAllCompositeException(): void
+    {
+        try {
+            Async\all([
+                Async\Awaitable::error(new InvariantViolationException('a')),
+                Async\Awaitable::error(new InvariantViolationException('b')),
+                Async\Awaitable::complete('c'),
+            ]);
+        } catch (Async\Exception\CompositeException $exception) {
+            $reasons = $exception->getReasons();
+
+            static::assertCount(2, $reasons);
+            static::assertSame('a', $reasons[0]->getMessage());
+            static::assertSame('b', $reasons[1]->getMessage());
+        }
+
+        Async\Scheduler::run();
+    }
+
+    public function testAllAwaitablesAreCompletedAtALaterTime(): void
     {
         $ref = new Psl\Ref('');
 
@@ -102,9 +102,11 @@ final class AllTest extends TestCase
                     $ref->value .= 'd';
                 }),
             ]);
-        } catch (InvariantViolationException) {
-            $this->addToAssertionCount(1);
+        } catch (InvariantViolationException $exception) {
+            static::assertSame('a', $exception->getMessage());
         }
+
+        Async\Scheduler::run();
 
         static::assertSame('adbc', $ref->value);
     }
