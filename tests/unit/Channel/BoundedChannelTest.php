@@ -176,6 +176,23 @@ final class BoundedChannelTest extends TestCase
         $sender->send('world');
     }
 
+    public function testSendThrowsForLateClosedFullChannel(): void
+    {
+        /**
+         * @var Channel\ReceiverInterface<string> $receiver
+         * @var Channel\SenderInterface<string> $sender
+         */
+        [$receiver, $sender] = Channel\bounded(1);
+
+        $sender->send('hello');
+        $receiver->close();
+
+        $this->expectException(Channel\Exception\ClosedChannelException::class);
+        $this->expectExceptionMessage('Attempted to send a message to a closed channel.');
+
+        $sender->send('world');
+    }
+
     public function testTrySendThrowsForClosedChannel(): void
     {
         /**

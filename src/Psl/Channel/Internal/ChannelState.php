@@ -20,6 +20,21 @@ use function count;
 final class ChannelState implements ChannelInterface
 {
     /**
+     * @var list<(callable(): void)>
+     */
+    private array $closeListeners = [];
+
+    /**
+     * @var list<(callable(): void)>
+     */
+    private array $receiveListeners = [];
+
+    /**
+     * @var list<(callable(): void)>
+     */
+    private array $sendListeners = [];
+
+    /**
      * @var array<array-key, T>
      */
     private array $messages = [];
@@ -29,6 +44,30 @@ final class ChannelState implements ChannelInterface
     public function __construct(
         private ?int $capacity = null,
     ) {
+    }
+
+    /**
+     * @param (callable(): void) $listener
+     */
+    public function addCloseListener(callable $listener): void
+    {
+        $this->closeListeners[] = $listener;
+    }
+
+    /**
+     * @param (callable(): void) $listener
+     */
+    public function addSendListener(callable $listener): void
+    {
+        $this->sendListeners[] = $listener;
+    }
+
+    /**
+     * @param (callable(): void) $listener
+     */
+    public function addReceiveListener(callable $listener): void
+    {
+        $this->receiveListeners[] = $listener;
     }
 
     /**
@@ -45,6 +84,10 @@ final class ChannelState implements ChannelInterface
     public function close(): void
     {
         $this->closed = true;
+
+        foreach ($this->closeListeners as $listener) {
+            $listener();
+        }
     }
 
     /**
@@ -93,6 +136,9 @@ final class ChannelState implements ChannelInterface
 
         if (null === $this->capacity || $this->capacity > count($this->messages)) {
             $this->messages[] = $message;
+            foreach ($this->sendListeners as $listener) {
+                $listener();
+            }
 
             return;
         }
@@ -116,6 +162,11 @@ final class ChannelState implements ChannelInterface
             throw Exception\EmptyChannelException::create();
         }
 
-        return array_shift($this->messages);
+        $item = array_shift($this->messages);
+        foreach ($this->receiveListeners as $listener) {
+            $listener();
+        }
+
+        return $item;
     }
 }

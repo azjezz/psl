@@ -16,7 +16,7 @@ use Psl\Channel\SenderInterface;
 final class Sender implements SenderInterface
 {
     /**
-     * @var null|Async\Deferred<T>
+     * @var null|Async\Deferred<null>
      */
     private ?Async\Deferred $deferred = null;
 
@@ -26,6 +26,15 @@ final class Sender implements SenderInterface
     public function __construct(
         private ChannelState $state
     ) {
+        $this->state->addCloseListener(function () {
+            $this->deferred?->error(Exception\ClosedChannelException::forSending());
+            $this->deferred = null;
+        });
+
+        $this->state->addReceiveListener(function () {
+            $this->deferred?->complete(null);
+            $this->deferred = null;
+        });
     }
 
     /**
@@ -34,39 +43,19 @@ final class Sender implements SenderInterface
     public function send(mixed $message): void
     {
         // there's a pending operation? wait for it.
-        $this->deferred?->getAwaitable()->then(static fn() => null, static fn() => null)->await();
+        $this->deferred?->getAwaitable()->await();
+
+        // the channel could have already been closed
+        // so check first, otherwise the event loop will hang, and exit unexpectedly
+        if ($this->state->isClosed()) {
+            throw Exception\ClosedChannelException::forSending();
+        }
 
         if ($this->state->isFull()) {
+            /** @var Async\Deferred<null> */
             $this->deferred = new Async\Deferred();
 
-            $identifier = Async\Scheduler::repeat(0.000000001, function (): void {
-                if ($this->state->isClosed()) {
-                    /**
-                     * Channel has been closed from the receiver side.
-                     *
-                     * @psalm-suppress PossiblyNullReference
-                     */
-                    if (!$this->deferred->isComplete()) {
-                        /** @psalm-suppress PossiblyNullReference */
-                        $this->deferred->error(Exception\ClosedChannelException::forSending());
-                    }
-
-                    return;
-                }
-
-                if (!$this->state->isFull()) {
-                    /** @psalm-suppress PossiblyNullReference */
-                    $this->deferred->complete(null);
-                }
-            });
-
-            try {
-                /** @psalm-suppress PossiblyNullReference */
-                $this->deferred->getAwaitable()->await();
-            } finally {
-                $this->deferred = null;
-                Async\Scheduler::cancel($identifier);
-            }
+            $this->deferred->getAwaitable()->await();
         }
 
         /** @psalm-suppress MissingThrowsDocblock */
@@ -94,8 +83,6 @@ final class Sender implements SenderInterface
      */
     public function close(): void
     {
-        $this->deferred?->error(Exception\ClosedChannelException::forSending());
-
         $this->state->close();
     }
 
