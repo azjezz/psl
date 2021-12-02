@@ -14,6 +14,6 @@ Async\main(static function (): void {
     try {
         Shell\execute('sleep', ['1'], timeout: 0.5);
     } catch (Shell\Exception\TimeoutException $exception) {
-        IO\output_handle()->write($exception->getMessage() . "\n");
+        IO\write_error_line($exception->getMessage());
     }
 });

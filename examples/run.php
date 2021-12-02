@@ -13,8 +13,6 @@ use Psl\Shell;
 require __DIR__ . '/../vendor/autoload.php';
 
 Async\main(static function (): int {
-    $output = IO\output_handle();
-
     $awaitables = [];
     $folders = Filesystem\read_directory(__DIR__);
     foreach ($folders as $folder) {
@@ -33,7 +31,7 @@ Async\main(static function (): int {
                 continue;
             }
 
-            $output->writeAll("- $component/$script   -> started\n");
+            IO\write_error_line('- %s/%s   -> started', $component, $script);
 
             $awaitables[] = Async\run(static function() use($component, $script, $file): array {
                 $start = microtime(true);
@@ -48,7 +46,7 @@ Async\main(static function (): int {
     foreach (Async\Awaitable::iterate($awaitables) as $awaitable) {
         [$component, $script, $duration] = $awaitable->await();
 
-        $output->writeAll("+ $component/$script   -> finished in {$duration}s\n");
+        IO\write_error_line('+ %s/%s   -> finished in %ds', $component, $script, $duration);
     }
 
     return 0;

@@ -13,5 +13,5 @@ require __DIR__ . '/../../vendor/autoload.php';
 Async\main(static function (): void {
     $result = Shell\execute('echo', ['hello']);
 
-    IO\output_handle()->writeAll("result: $result");
+    IO\write_error_line('result: "%s".', $result);
 });

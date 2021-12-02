@@ -24,3 +24,7 @@
 * introduced a new `Psl\TCP` component.
 * introduced a new `Psl\Unix` component.
 * introduced a new `Psl\Channel` component.
+* introduced a new `IO\write()` function.
+* introduced a new `IO\write_line()` function.
+* introduced a new `IO\write_error()` function.
+* introduced a new `IO\write_error_line()` functions.

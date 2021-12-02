@@ -12,34 +12,48 @@ use Psl\TCP;
 require __DIR__ . '/../../vendor/autoload.php';
 
 Async\main(static function (): int {
-    $output = IO\output_handle();
-
     Async\parallel([
-        'server' => static function () use ($output): void {
+        'server' => static function (): void {
             $server = TCP\Server::create('localhost', 91337);
-            $output->writeAll("< server is listening\n");
+
+            IO\write_error_line('< server is listening.');
+
             $connection = $server->nextConnection();
-            $output->writeAll("< connection received\n");
-            $output->writeAll("> awaiting request\n");
+
+            IO\write_error_line('< connection received.');
+            IO\write_error_line('< awaiting request.');
+
             $request = $connection->read();
-            $output->writeAll("< received request: $request\n");
-            $output->writeAll("< sending response\n");
+
+            IO\write_error_line('< received request: "%s".', $request);
+            IO\write_error_line('< sending response.');
+
             $connection->writeAll(Str\reverse($request));
             $connection->close();
-            $output->writeAll("< connection closed\n");
+
+            IO\write_error_line('< connection closed.');
+
             $server->stopListening();
-            $output->writeAll("< server stopped\n");
+
+            IO\write_error_line('< server stopped.');
         },
-        'client' => static function () use ($output): void {
+        'client' => static function (): void {
             $client = TCP\connect('localhost', 91337);
-            $output->writeAll("> client connected\n");
-            $output->writeAll("> sending request\n");
+
+            IO\write_error_line('> client connected');
+            IO\write_error_line('> sending request');
+
             $client->writeAll('Hello, World!');
-            $output->writeAll("> awaiting response\n");
+
+            IO\write_error_line('> awaiting response');
+
             $response = $client->readAll();
-            $output->writeAll("> received response: $response\n");
+
+            IO\write_error_line('> received response: "%s".', $response);
+
             $client->close();
-            $output->writeAll("> client disconnected\n");
+
+            IO\write_error_line('> client disconnected');
         },
     ]);
 
