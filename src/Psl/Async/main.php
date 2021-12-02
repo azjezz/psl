@@ -22,5 +22,7 @@ function main(callable $callable): never
         $result = $result->await();
     }
 
+    Scheduler::run();
+
     exit($result);
 }
