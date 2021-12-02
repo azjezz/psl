@@ -22,4 +22,4 @@ Async\Scheduler::delay(1, static function () use ($sender) {
 
 $message = $receiver->receive();
 
-IO\output_handle()->writeAll($message);
+IO\write_error_line($message);

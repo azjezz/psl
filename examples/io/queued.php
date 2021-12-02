@@ -24,7 +24,7 @@ Async\main(static function(): int {
     Psl\invariant($he->isComplete(), 'First read should have completed before second one.');
     Psl\invariant('llo' === $llo, 'First read should have completed before second one.');
 
-    IO\output_handle()->write($he->await() . $llo);
+    IO\write_error_line($he->await() . $llo);
 
     return 0;
 });

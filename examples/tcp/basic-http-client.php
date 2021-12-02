@@ -23,7 +23,7 @@ function fetch(string $host, string $path): string
 Async\main(static function (): int {
     $response = fetch('example.com', '/');
 
-    IO\output_handle()->writeAll($response);
+    IO\write_error_line($response);
 
     return 0;
 });

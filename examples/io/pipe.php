@@ -12,35 +12,33 @@ require __DIR__ . '/../../vendor/autoload.php';
 Async\main(static function(): int {
     [$read, $write] = IO\pipe();
 
-    $output = IO\output_handle();
-
     Async\parallel([
-        static function() use($read, $output): void {
-            $output->writeAll("< sleeping.\n");
+        static function() use($read): void {
+            IO\write_error_line("< sleeping.");
 
             Async\sleep(0.01);
 
-            $output->writeAll("< waiting for content.\n");
+            IO\write_error_line("< waiting for content.");
 
             $content = $read->readAll();
 
-            $output->writeAll("< received '$content'.\n");
-            $output->writeAll("< closing.\n");
+            IO\write_error_line('< received "%s".', $content);
+            IO\write_error_line("< closing.");
 
             $read->close();
         },
-        static function() use($write, $output): void {
-            $output->writeAll("> sleeping.\n");
+        static function() use($write): void {
+            IO\write_error_line('> sleeping.');
 
             Async\sleep(0.1);
 
-            $output->writeAll("> writing.\n");
+            IO\write_error_line('> writing.');
 
             $write->writeAll('hello, world');
 
-            $output->write("> written 'hello, world'.\n");
+            IO\write_error_line('> written "hello, world".');
 
-            $output->write("> closing'.\n");
+            IO\write_error_line('> closing.');
 
             $write->close();
         },

@@ -18,7 +18,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 Async\main(static function (): int {
     if (PHP_OS_FAMILY === 'Windows') {
-        IO\output_handle()->writeAll('This example does not support Windows.');
+        IO\write_error_line('This example does not support Windows.');
 
         return 0;
     }
@@ -32,11 +32,10 @@ Async\main(static function (): int {
     $input_file = Regex\replace($input_file, '(^/dev/fd/)', 'php://fd/');
     $output_file = Regex\replace($output_file, '(^/dev/fd/)', 'php://fd/');
 
-    $stdout = IO\output_handle();
     $input = new IO\Stream\CloseReadHandle(fopen($input_file, 'rb'));
     $output = new IO\Stream\CloseWriteHandle(fopen($output_file, 'wb'));
 
-    $stdout->writeAll('piping from ' . $input_file . ' to ' . $output_file . ' (for max ' . $seconds . ' second(s)) ...' . PHP_EOL);
+    IO\write_error_line('piping from %s to %s (for max %d second(s)) ...', $input_file, $output_file, $seconds);
 
     Async\Scheduler::delay($seconds, $input->close(...));
 
@@ -56,8 +55,8 @@ Async\main(static function (): int {
     $bytes = $i * 65536;
     $bytes_formatted = round($bytes / 1024 / 1024 / $seconds, 1);
 
-    $stdout->writeAll('read ' . $bytes . ' byte(s) in ' . round($seconds, 3) . ' second(s) => ' . $bytes_formatted . ' MiB/s' . PHP_EOL);
-    $stdout->writeAll('peak memory usage of ' . round(memory_get_peak_usage(true) / 1024 / 1024, 1) . ' MiB' . PHP_EOL);
+    IO\write_error_line('read %d byte(s) in %d second(s) => %dMiB/s', $bytes, round($seconds, 3), $bytes_formatted);
+    IO\write_error_line('peak memory usage of %dMiB', round(memory_get_peak_usage(true) / 1024 / 1024, 1));
 
     return 0;
 });

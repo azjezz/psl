@@ -15,9 +15,10 @@ require __DIR__ . '/../../vendor/autoload.php';
 Async\main(static function (): int {
     $server = TCP\Server::create('localhost', 3030);
 
-    IO\output_handle()->writeAll("Server is listening on http://localhost:3030\n");
+    IO\write_error_line('Server is listening on http://localhost:3030');
 
-    Async\Scheduler::onSignal(SIGINT, $server->stopListening(...));
+    $watcher = Async\Scheduler::onSignal(SIGINT, $server->stopListening(...));
+    Async\Scheduler::unreference($watcher);
 
     try {
         while (true) {
@@ -34,11 +35,13 @@ Async\main(static function (): int {
                     $connection->writeAll("Hello, World!");
                     $connection->close();
                 } catch (Throwable) {
+                    echo 'error';
                 }
             });
         }
     } catch (AlreadyStoppedException) {
-        IO\output_handle()->writeAll("\nGoodbye 👋\n");
+        IO\write_error_line('');
+        IO\write_error_line('Goodbye 👋');
     }
 
     return 0;

@@ -15,41 +15,55 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 Async\main(static function (): int {
     if (PHP_OS_FAMILY === 'Windows') {
-        IO\output_handle()->writeAll('This example requires does not support Windows.');
+        IO\write_error_line('This example requires does not support Windows.');
 
         return 0;
     }
 
     $file = Filesystem\create_temporary_file(prefix: 'psl-examples') . ".sock";
 
-    $output = IO\output_handle();
-
     Async\parallel([
-        'server' => static function () use ($file, $output): void {
+        'server' => static function () use ($file): void {
             $server = Unix\Server::create($file);
-            $output->writeAll("< server is listening\n");
+
+            IO\write_error_line('< server is listening.');
+
             $connection = $server->nextConnection();
-            $output->writeAll("< connection received\n");
-            $output->writeAll("> awaiting request\n");
+
+            IO\write_error_line('< connection received.');
+            IO\write_error_line('< awaiting request.');
+
             $request = $connection->read();
-            $output->writeAll("< received request: $request\n");
-            $output->writeAll("< sending response\n");
+
+            IO\write_error_line('< received request: "%s".', $request);
+            IO\write_error_line('< sending response.');
+
             $connection->writeAll(Str\reverse($request));
             $connection->close();
-            $output->writeAll("< connection closed\n");
+
+            IO\write_error_line('< connection closed.');
+
             $server->stopListening();
-            $output->writeAll("< server stopped\n");
+
+            IO\write_error_line("< server stopped\n");
         },
-        'client' => static function () use ($file, $output): void {
+        'client' => static function () use ($file): void {
             $client = Unix\connect($file);
-            $output->writeAll("> client connected\n");
-            $output->writeAll("> sending request\n");
+
+            IO\write_error_line('> client connected.');
+            IO\write_error_line('> sending request.');
+
             $client->writeAll('Hello, World!');
-            $output->writeAll("> awaiting response\n");
+
+            IO\write_error_line('> awaiting response.');
+
             $response = $client->readAll();
-            $output->writeAll("> received response: $response\n");
+
+            IO\write_error_line('> received response: "%s".', $response);
+
             $client->close();
-            $output->writeAll("> client disconnected\n");
+
+            IO\write_error_line('> client disconnected.');
         },
     ]);
 

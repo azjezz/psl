@@ -24,7 +24,7 @@ Async\main(static function (): int {
 
     $duration = time() - $start;
 
-    IO\output_handle()->writeAll("duration: $duration.\n");
+    IO\write_error_line('duration: %d.', $duration);
 
     return 0;
 });

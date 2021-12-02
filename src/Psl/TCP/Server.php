@@ -106,7 +106,7 @@ final class Server implements Network\ServerInterface
         }
 
         /** @var Async\Deferred<resource> */
-        $this->deferred =  new Async\Deferred();
+        $this->deferred = new Async\Deferred();
 
         /** @psalm-suppress MissingThrowsDocblock */
         Async\Scheduler::enable($this->watcher);
@@ -142,22 +142,18 @@ final class Server implements Network\ServerInterface
      */
     public function stopListening(): void
     {
+        Async\Scheduler::cancel($this->watcher);
+
         if (null === $this->impl) {
             return;
         }
 
         $resource = $this->impl;
-
-        $deferred = null;
-        if (null !== $this->watcher) {
-            Async\Scheduler::cancel($this->watcher);
-            $deferred = $this->deferred;
-            $this->deferred = null;
-        }
-
         $this->impl = null;
         fclose($resource);
 
+        $deferred = $this->deferred;
+        $this->deferred = null;
         $deferred?->error(new Network\Exception\AlreadyStoppedException('Server socket has already been stopped.'));
     }
 }

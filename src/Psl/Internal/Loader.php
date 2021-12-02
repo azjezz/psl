@@ -481,6 +481,10 @@ final class Loader
         'Psl\Unix\connect',
         'Psl\Channel\bounded',
         'Psl\Channel\unbounded',
+        'Psl\IO\write',
+        'Psl\IO\write_line',
+        'Psl\IO\write_error',
+        'Psl\IO\write_error_line',
     ];
 
     public const INTERFACES = [
