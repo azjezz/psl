@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Html;
 
-use Psl\Exception;
 use Psl\Str;
 
 use function htmlspecialchars;
@@ -19,8 +18,6 @@ use const ENT_SUBSTITUTE;
  * @param bool $double_encoding If set to false, this function will not
  *                              encode existing html entities.
  * @param Str\Encoding $encoding defines character set used in conversion.
- *
- * @throws Exception\InvariantViolationException If $encoding is invalid.
  *
  * @psalm-taint-escape html
  *

@@ -12,10 +12,10 @@
 
 #### `Functions`
 
-- [decode](./../../src/Psl/Html/decode.php#L23)
+- [decode](./../../src/Psl/Html/decode.php#L20)
 - [decode_special_characters](./../../src/Psl/Html/decode_special_characters.php#L18)
-- [encode](./../../src/Psl/Html/encode.php#L27)
-- [encode_special_characters](./../../src/Psl/Html/encode_special_characters.php#L29)
+- [encode](./../../src/Psl/Html/encode.php#L24)
+- [encode_special_characters](./../../src/Psl/Html/encode_special_characters.php#L26)
 - [strip_tags](./../../src/Psl/Html/strip_tags.php#L16)
 
 
