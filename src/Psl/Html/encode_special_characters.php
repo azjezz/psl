@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Html;
 
 use Psl\Exception;
-use Psl\Internal;
+use Psl\Str;
 
 use function htmlspecialchars;
 
@@ -18,7 +18,7 @@ use const ENT_SUBSTITUTE;
  *
  * @param bool $double_encoding If set to false, this function will not
  *                              encode existing html entities.
- * @param string $encoding defines character set used in conversion.
+ * @param Str\Encoding $encoding defines character set used in conversion.
  *
  * @throws Exception\InvariantViolationException If $encoding is invalid.
  *
@@ -26,9 +26,7 @@ use const ENT_SUBSTITUTE;
  *
  * @pure
  */
-function encode_special_characters(string $html, bool $double_encoding = true, ?string $encoding = null): string
+function encode_special_characters(string $html, bool $double_encoding = true, Str\Encoding $encoding = Str\Encoding::UTF_8): string
 {
-    $encoding = Internal\internal_encoding($encoding);
-
-    return htmlspecialchars($html, ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE, $encoding, $double_encoding);
+    return htmlspecialchars($html, ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE, $encoding->value, $double_encoding);
 }

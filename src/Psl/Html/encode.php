@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Html;
 
 use Psl\Exception;
-use Psl\Internal;
+use Psl\Str;
 
 use function htmlentities;
 
@@ -16,7 +16,7 @@ use const ENT_QUOTES;
  *
  * @param bool $double_encoding If set to false, this function will not
  *                              encode existing html entities.
- * @param string $encoding defines character set used in conversion.
+ * @param Str\Encoding $encoding defines character set used in conversion.
  *
  * @throws Exception\InvariantViolationException If $encoding is invalid.
  *
@@ -24,9 +24,7 @@ use const ENT_QUOTES;
  *
  * @pure
  */
-function encode(string $html, bool $double_encoding = true, ?string $encoding = null): string
+function encode(string $html, bool $double_encoding = true, Str\Encoding $encoding = Str\Encoding::UTF_8): string
 {
-    $encoding = Internal\internal_encoding($encoding);
-
-    return htmlentities($html, ENT_QUOTES, $encoding, $double_encoding);
+    return htmlentities($html, ENT_QUOTES, $encoding->value, $double_encoding);
 }
