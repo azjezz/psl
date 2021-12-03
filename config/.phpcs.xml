@@ -10,6 +10,7 @@
     <exclude-pattern>*/src/Psl/File/(WriteMode|LockType).php</exclude-pattern>
     <exclude-pattern>*/src/Psl/Network/SocketScheme.php</exclude-pattern>
     <exclude-pattern>*/src/Psl/Str/Encoding.php</exclude-pattern>
+    <exclude-pattern>*/src/Psl/Html/Encoding.php</exclude-pattern>
 
     <arg name="basepath" value="."/>
     <arg name="colors"/>

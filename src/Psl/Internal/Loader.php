@@ -690,6 +690,7 @@ final class Loader
         'Psl\File\WriteMode',
         'Psl\Str\Encoding',
         'Psl\Network\SocketScheme',
+        'Psl\Html\Encoding',
     ];
 
     public const TYPE_CONSTANTS = 1;
