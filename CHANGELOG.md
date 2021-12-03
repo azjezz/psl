@@ -28,3 +28,4 @@
 * introduced a new `IO\write_line()` function.
 * introduced a new `IO\write_error()` function.
 * introduced a new `IO\write_error_line()` functions.
+* **BC** - `$encoding` argument for `Psl\Html` functions now accepts `Psl\Str\Encoding` instead of `?string`.
