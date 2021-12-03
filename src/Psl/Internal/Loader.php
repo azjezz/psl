@@ -383,7 +383,6 @@ final class Loader
         'Psl\Encoding\Base64\decode',
         'Psl\Encoding\Hex\encode',
         'Psl\Encoding\Hex\decode',
-        'Psl\Shell\escape_command',
         'Psl\Shell\escape_argument',
         'Psl\Shell\execute',
         'Psl\Html\encode',

@@ -30,3 +30,4 @@
 * introduced a new `IO\write_error_line()` functions.
 * introduced a new `Psl\Html\Encoding` enum.
 * **BC** - `$encoding` argument for `Psl\Html` functions now accepts `Psl\Html\Encoding` instead of `?string`.
+* **BC** - `Psl\Shell\escape_command` function has been removed, no replacement is available.
