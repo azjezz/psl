@@ -18,9 +18,13 @@ use function unpack;
  * If the alphabet argument is not specified, the returned string will be composed of
  * the alphanumeric characters.
  *
+ * @param 0|positive-int $length The length of the string to generate.
+ *
  * @throws Exception\InsufficientEntropyException If it was not possible to gather sufficient entropy.
  * @throws Psl\Exception\InvariantViolationException If a negative $length is given, or $alphabet length is
  *                                                   outside the [2^1, 2^56] range.
+ *
+ * @psalm-external-mutation-free
  */
 function string(int $length, ?string $alphabet = null): string
 {
@@ -36,6 +40,7 @@ function string(int $length, ?string $alphabet = null): string
 
     $ret = '';
     while ($length > 0) {
+        /** @var 0|positive-int $urandom_length */
         $urandom_length = (int) Math\ceil((float) (2 * $length * $bits) / 8.0);
         $data           = namespace\bytes($urandom_length);
 

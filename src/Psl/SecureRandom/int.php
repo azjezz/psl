@@ -8,12 +8,12 @@ use Exception as PHPException;
 use Psl;
 use Psl\Math;
 use Psl\Str;
-use Psl\Type;
 
+use function is_string;
 use function random_int;
 
 /**
- * Returns a cryptographically secure random integer in the range in the given range.
+ * Returns a cryptographically secure random integer in the given range.
  *
  * @throws Exception\InsufficientEntropyException If it was not possible to gather sufficient entropy.
  * @throws Psl\Exception\InvariantViolationException If $min > $max.
@@ -29,7 +29,7 @@ function int(int $min = Math\INT64_MIN, int $max = Math\INT64_MAX): int
         // @codeCoverageIgnoreStart
     } catch (PHPException $e) {
         $code = $e->getCode();
-        if (Type\string()->matches($code)) {
+        if (is_string($code)) {
             $code = Str\to_int($code) ?? 0;
         }
 

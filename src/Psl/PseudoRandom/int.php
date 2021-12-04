@@ -10,9 +10,11 @@ use Psl\Math;
 use function mt_rand;
 
 /**
- * Returns a random integer in the range in the given range.
+ * Returns a pseudo-random integer in the given range.
  *
  * @throws Psl\Exception\InvariantViolationException If $min > $max
+ *
+ * @psalm-external-mutation-free
  */
 function int(int $min = Math\INT64_MIN, int $max = Math\INT64_MAX): int
 {

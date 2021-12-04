@@ -12,7 +12,7 @@
 
 #### `Functions`
 
-- [float](./../../src/Psl/PseudoRandom/float.php#L12)
-- [int](./../../src/Psl/PseudoRandom/int.php#L17)
+- [float](./../../src/Psl/PseudoRandom/float.php#L14)
+- [int](./../../src/Psl/PseudoRandom/int.php#L19)
 
 

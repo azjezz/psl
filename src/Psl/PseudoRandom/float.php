@@ -7,7 +7,9 @@ namespace Psl\PseudoRandom;
 use Psl\Math;
 
 /**
- * Returns a random float in the range from 0.0 to 1.0.
+ * Returns a pseudo-random float in the range of [0.0, 1.0].
+ *
+ * @psalm-external-mutation-free
  */
 function float(): float
 {
