@@ -9,7 +9,7 @@ namespace Psl\Runtime;
  *
  * @return list<non-empty-string>
  *
- * @pure
+ * @psalm-mutation-free
  */
 function get_zend_extensions(): array
 {

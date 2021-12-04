@@ -12,7 +12,7 @@
 
 #### `Functions`
 
-- [get_extensions](./../../src/Psl/Runtime/get_extensions.php#L12)
+- [get_extensions](./../../src/Psl/Runtime/get_extensions.php#L14)
 - [get_sapi](./../../src/Psl/Runtime/get_sapi.php#L16)
 - [get_version](./../../src/Psl/Runtime/get_version.php#L16)
 - [get_version_details](./../../src/Psl/Runtime/get_version_details.php#L19)
