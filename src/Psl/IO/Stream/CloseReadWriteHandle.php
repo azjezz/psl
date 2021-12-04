@@ -22,7 +22,7 @@ final class CloseReadWriteHandle implements CloseReadWriteHandleInterface
      */
     public function __construct(mixed $stream)
     {
-        $this->handle = new Internal\ResourceHandle($stream, read: true, write: true, seek: false);
+        $this->handle = new Internal\ResourceHandle($stream, read: true, write: true, seek: false, close: true);
     }
 
     /**

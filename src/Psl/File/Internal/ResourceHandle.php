@@ -34,7 +34,7 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements File\Re
      */
     public function __construct(string $path, mixed $stream, bool $read, bool $write)
     {
-        parent::__construct($stream, $read, $write, seek: true);
+        parent::__construct($stream, $read, $write, seek: true, close: true);
 
         $this->path = $path;
     }

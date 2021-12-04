@@ -21,7 +21,7 @@ final class WriteHandle implements WriteHandleInterface
      */
     public function __construct(mixed $stream)
     {
-        $this->handle = new Internal\ResourceHandle($stream, read: false, write: true, seek: false);
+        $this->handle = new Internal\ResourceHandle($stream, read: false, write: true, seek: false, close: false);
     }
 
     /**

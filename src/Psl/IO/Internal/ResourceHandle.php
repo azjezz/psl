@@ -72,7 +72,7 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
     /**
      * @param resource|object $stream
      */
-    public function __construct(mixed $stream, bool $read, bool $write, bool $seek)
+    public function __construct(mixed $stream, bool $read, bool $write, bool $seek, private bool $close)
     {
         $this->stream = Type\union(
             Type\resource('stream'),
@@ -345,7 +345,8 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
             Async\Scheduler::disable($this->readWatcher);
             Async\Scheduler::disable($this->writeWatcher);
 
-            if (is_resource($this->stream)) {
+            // don't close the stream if `$this->close` is false, or if it's already closed.
+            if (is_resource($this->stream) && $this->close) {
                 /** @psalm-suppress PossiblyInvalidArgument */
                 $stream = $this->stream;
                 $this->stream = null;

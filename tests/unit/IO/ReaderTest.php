@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\IO;
 
 use PHPUnit\Framework\TestCase;
+use Psl\File;
 use Psl\IO;
 
 final class ReaderTest extends TestCase
 {
     public function testReadingFile(): void
     {
-        $handle = IO\Internal\open(__FILE__, 'rb+');
+        $handle = File\open_read_only(__FILE__);
         $reader = new IO\Reader($handle);
 
         static::assertSame($handle, $reader->getHandle());
@@ -25,13 +26,12 @@ final class ReaderTest extends TestCase
         static::assertSame('use PHPUnit\\Framework\\TestCase;', $reader->readLine());
 
         static::assertSame('use Psl', $reader->readUntil('\\'));
-        static::assertSame('IO;', $reader->readLine());
+        static::assertSame('File;', $reader->readLine());
+        static::assertSame('use Psl\IO;', $reader->readLine());
         static::assertSame('', $reader->readLine());
         static::assertSame('final class', $reader->readFixedSize(11));
 
-        do {
-            $eof = $handle->read() === '';
-        } while (!$eof);
+        $handle->readAll();
 
         static::assertEmpty($handle->read());
 

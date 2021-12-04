@@ -21,7 +21,7 @@ final class ReadHandle implements ReadHandleInterface
      */
     public function __construct(mixed $stream)
     {
-        $this->handle = new Internal\ResourceHandle($stream, read: true, write: false, seek: false);
+        $this->handle = new Internal\ResourceHandle($stream, read: true, write: false, seek: false, close: false);
     }
 
     /**

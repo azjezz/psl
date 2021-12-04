@@ -426,7 +426,6 @@ final class Loader
         'Psl\Filesystem\get_change_time',
         'Psl\Filesystem\get_modification_time',
         'Psl\Filesystem\get_inode',
-        'Psl\IO\Internal\open',
         'Psl\IO\Internal\open_resource',
         'Psl\IO\input_handle',
         'Psl\IO\output_handle',

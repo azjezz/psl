@@ -21,7 +21,7 @@ final class SeekReadHandle implements SeekReadHandleInterface
      */
     public function __construct(mixed $stream)
     {
-        $this->handle = new Internal\ResourceHandle($stream, read: true, write: false, seek: true);
+        $this->handle = new Internal\ResourceHandle($stream, read: true, write: false, seek: true, close: false);
     }
 
     /**

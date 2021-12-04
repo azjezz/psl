@@ -21,7 +21,7 @@ final class CloseSeekReadHandle implements CloseSeekReadHandleInterface
      */
     public function __construct(mixed $stream)
     {
-        $this->handle = new Internal\ResourceHandle($stream, read: true, write: false, seek: true);
+        $this->handle = new Internal\ResourceHandle($stream, read: true, write: false, seek: true, close: true);
     }
 
     /**

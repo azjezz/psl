@@ -30,7 +30,7 @@ interface HandleInterface extends IO\Stream\CloseSeekHandleInterface
      * waiting for a lock.
      *
      * @throws IO\Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\RuntimeException If an error occurred during the operation.     *
+     * @throws Exception\RuntimeException If an error occurred during the operation.
      *
      * Example:
      *
