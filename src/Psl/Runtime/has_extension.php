@@ -11,7 +11,7 @@ use function extension_loaded;
  *
  * @param non-empty-string $extension
  *
- * @pure
+ * @psalm-mutation-free
  */
 function has_extension(string $extension): bool
 {
