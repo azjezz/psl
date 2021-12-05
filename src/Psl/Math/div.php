@@ -13,17 +13,6 @@ use function intdiv;
 /**
  * Returns the result of integer division of the given numerator by the given denominator.
  *
- * Example:
- *
- *      Math\div(10, 2)
- *      => Int(5)
- *
- *      Math\div(5, 2)
- *      => Int(2)
- *
- *      Math\div(15, 20)
- *      => Int(0)
- *
  * @pure
  *
  * @throws Exception\ArithmeticException If the $numerator is Math\INT64_MIN and the $denominator is -1.

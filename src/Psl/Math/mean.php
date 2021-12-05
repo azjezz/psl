@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
-use Psl\Iter;
+use function count;
 
 /**
- * Return the arithmetic mean of the numbers in the given iterable.
+ * Returns the arithmetic mean of the given numbers in the list.
  *
- * @param iterable<int|float> $numbers
+ * Return null if the given list is empty.
+ *
+ * @param list<int|float> $numbers
+ *
+ * @pure
  */
-function mean(iterable $numbers): ?float
+function mean(array $numbers): ?float
 {
-    $count = (float) Iter\count($numbers);
+    $count = (float) count($numbers);
     if (0.0 === $count) {
         return null;
     }

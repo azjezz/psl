@@ -9,21 +9,21 @@ use Psl;
 use function log as php_log;
 
 /**
- * Returns the logarithm base of the given number.
+ * Returns the logarithm of the given number.
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If $num or $base are negative, or $base is equal to 1.0.
+ * @throws Psl\Exception\InvariantViolationException If $number or $base are negative, or $base is equal to 1.0.
  */
-function log(float $num, ?float $base = null): float
+function log(float $number, ?float $base = null): float
 {
-    Psl\invariant($num > 0, 'Expected a non-negative number.');
+    Psl\invariant($number > 0, 'Expected a positive number.');
     if (null === $base) {
-        return php_log($num);
+        return php_log($number);
     }
 
-    Psl\invariant($base > 0, 'Expected a non-negative base.');
+    Psl\invariant($base > 0, 'Expected a positive base.');
     Psl\invariant(1.0 !== $base, 'Logarithm undefined for base 1.');
 
-    return php_log($num, $base);
+    return php_log($number, $base);
 }

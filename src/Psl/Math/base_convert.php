@@ -20,17 +20,6 @@ use function bcpow;
  * letters a-z are used for digits for bases greater than 10. The conversion is
  * done to arbitrary precision.
  *
- * Example:
- *
- *      Math\base_convert('10', 2, 10)
- *      => Str(2)
- *
- *      Math\base_convert('5497', 10, 2)
- *      => Str('1010101111001')
- *
- *      Math\base_convert('2014587925987', 10, 36)
- *      => Str('pphlmw9v')
- *
  * @param non-empty-string $value
  *
  * @pure

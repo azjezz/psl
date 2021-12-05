@@ -8,22 +8,23 @@ namespace Psl\Math;
  * Returns the largest element of the given iterable, or null if the
  * iterable is empty.
  *
- * The value for comparison is determined by the given function in the case of
- * duplicate numeric keys, later values overwrite the previous ones.
+ * The value for comparison is determined by the given function.
+ *
+ * In the case of duplicate values, later values overwrite previous ones.
  *
  * @template T
  *
- * @param iterable<T> $values
- * @param (callable(T): numeric) $num_func
+ * @param iterable<T> $numbers
+ * @param (callable(T): numeric) $numeric_function
  *
  * @return T|null
  */
-function max_by(iterable $values, callable $num_func)
+function max_by(iterable $numbers, callable $numeric_function): mixed
 {
     $max     = null;
     $max_num = null;
-    foreach ($values as $value) {
-        $value_num = $num_func($value);
+    foreach ($numbers as $value) {
+        $value_num = $numeric_function($value);
         if (null === $max_num || $value_num >= $max_num) {
             $max     = $value;
             $max_num = $value_num;

@@ -7,7 +7,7 @@ namespace Psl\Math;
 use Psl;
 
 /**
- * Returns a number whose value is limited to the given range.
+ * Returns the given number clamped to the given range.
  *
  * @template T of float|int
  *

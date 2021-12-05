@@ -4,19 +4,22 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
-use Psl\Iter;
-use Psl\Vec;
+use function count;
+use function sort;
 
 /**
- * Returns the median of the given numbers.
+ * Returns the median of the given numbers in the list.
  *
- * @param iterable<int|float> $numbers
+ * Returns null if the given iterable is empty.
+ *
+ * @param list<int|float> $numbers
+ *
+ * @pure
  */
-function median(iterable $numbers): ?float
+function median(array $numbers): ?float
 {
-    $numbers = Vec\values($numbers);
-    $numbers = Vec\sort($numbers);
-    $count   = Iter\count($numbers);
+    sort($numbers);
+    $count   = count($numbers);
     if (0 === $count) {
         return null;
     }

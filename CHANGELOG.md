@@ -31,3 +31,9 @@
 * introduced a new `Psl\Html\Encoding` enum.
 * **BC** - `$encoding` argument for `Psl\Html` functions now accepts `Psl\Html\Encoding` instead of `?string`.
 * **BC** - `Psl\Shell\escape_command` function has been removed, no replacement is available.
+* introduced a new `Psl\Math\acos` function.
+* introduced a new `Psl\Math\asin` function.
+* introduced a new `Psl\Math\atan` function.
+* introduced a new `Psl\Math\atan2` function.
+* **BC** - The type of the $numbers argument of `Psl\Math\mean` has changed to `list<int|float>` instead of `iterable<int|float>`.
+* **BC** - The type of the $numbers argument of `Psl\Math\median` has changed to `list<int|float>` instead of `iterable<int|float>`.

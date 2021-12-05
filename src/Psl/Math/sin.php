@@ -11,7 +11,7 @@ use function sin as php_sin;
  *
  * @pure
  */
-function sin(float $num): float
+function sin(float $number): float
 {
-    return php_sin($num);
+    return php_sin($number);
 }

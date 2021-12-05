@@ -8,30 +8,23 @@ namespace Psl\Math;
  * Returns the smallest element of the given iterable, or null if the
  * iterable is empty.
  *
- * The value for comparison is determined by the given function. In the case of
- * duplicate numeric keys, later values overwrite previous ones.
+ * The value for comparison is determined by the given function.
  *
- * Example:
- *
- *      Math\min_by(['a', 'ل'], fn($value) => Str\Byte\length($value))
- *      => Str('a')
- *
- *      Math\min_by(['a', 'b'], fn($value) => Str\Byte\length($value))
- *      => Str('b')
+ * In the case of duplicate values, later values overwrite previous ones.
  *
  * @template T
  *
- * @param iterable<T> $values
- * @param (callable(T): numeric) $num_func
+ * @param iterable<T> $numbers
+ * @param (callable(T): numeric) $numeric_function
  *
  * @return T|null
  */
-function min_by(iterable $values, callable $num_func)
+function min_by(iterable $numbers, callable $numeric_function): mixed
 {
     $min     = null;
     $min_num = null;
-    foreach ($values as $value) {
-        $value_num = $num_func($value);
+    foreach ($numbers as $value) {
+        $value_num = $numeric_function($value);
         if (null === $min_num || $value_num <= $min_num) {
             $min     = $value;
             $min_num = $value_num;

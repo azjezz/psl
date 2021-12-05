@@ -9,9 +9,7 @@ use Psl;
 use function sqrt as php_sqrt;
 
 /**
- * Calculate the square root of the given number.
- *
- * @param float|int $number
+ * Returns the square root of the given number.
  *
  * @pure
  *
@@ -19,7 +17,7 @@ use function sqrt as php_sqrt;
  */
 function sqrt(float $number): float
 {
-    Psl\invariant($number >= 0, 'Expected a non-negative number.', $number);
+    Psl\invariant($number >= 0.0, 'Expected a non-negative number.', $number);
 
     return php_sqrt($number);
 }

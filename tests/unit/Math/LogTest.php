@@ -50,7 +50,7 @@ final class LogTest extends TestCase
     public function testNegativeInputThrows(): void
     {
         $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected a non-negative number.');
+        $this->expectExceptionMessage('Expected a positive number.');
 
         Math\log(-45);
     }
@@ -58,7 +58,7 @@ final class LogTest extends TestCase
     public function testNonPositiveBaseThrows(): void
     {
         $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected a non-negative base.');
+        $this->expectExceptionMessage('Expected a positive base.');
 
         Math\log(4.4, 0.0);
     }

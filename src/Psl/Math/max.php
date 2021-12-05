@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Math;
 
 /**
- * Returns the largest element of the given iterable, or null if the
- * iterable is empty.
+ * Returns the largest element of the given list, or null if the
+ * list is empty.
  *
  * @template T of int|float
  *
@@ -16,7 +16,7 @@ namespace Psl\Math;
  *
  * @pure
  */
-function max(array $numbers)
+function max(array $numbers): null|int|float
 {
     $max = null;
     foreach ($numbers as $number) {

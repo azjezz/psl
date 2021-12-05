@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Math;
 
 /**
- * Returns the smallest element of the given Traversable, or null if the
- * Traversable is empty.
+ * Returns the smallest element of the given list, or null if the
+ * list is empty.
  *
  * @template T of int|float
  *
@@ -16,7 +16,7 @@ namespace Psl\Math;
  *
  * @pure
  */
-function min(array $numbers)
+function min(array $numbers): null|float|int
 {
     $min = null;
     foreach ($numbers as $number) {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Math;
 
 /**
- * Returns the float sum of the values of the given iterable.
+ * Returns the sum of all the given numbers.
  *
  * @param list<int|float> $numbers
  *

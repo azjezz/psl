@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Math;
 
 /**
- * Returns the smallest of all input numbers.
+ * Returns the smallest number of all the given numbers.
  *
  * @template T of int|float
  *

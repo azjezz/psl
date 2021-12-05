@@ -7,19 +7,11 @@ namespace Psl\Math;
 use function exp as php_exp;
 
 /**
- * Returns Math\E to the power of the given number.
- *
- *  Example:
- *
- *      Math\exp(12)
- *      => Float(162754.79141900392)
- *
- *      Math\exp(5.7)
- *      => Float(298.8674009670603)
+ * Returns the exponential of the given number.
  *
  * @pure
  */
-function exp(float $num): float
+function exp(float $number): float
 {
-    return php_exp($num);
+    return php_exp($number);
 }

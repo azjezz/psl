@@ -8,16 +8,8 @@ use Psl;
 use Psl\Str\Byte;
 
 /**
- * Converts the given string in the given base to an int, assuming letters a-z
+ * Converts the given string in base `$from_base` to an integer, assuming letters a-z
  * are used for digits when `$from_base` > 10.
- *
- *  Example:
- *
- *      Math\from_base('10', 2)
- *      => Int(2)
- *
- *      Math\from_base('ff', 15)
- *      => Int(255)
  *
  * @param non-empty-string $number
  *
