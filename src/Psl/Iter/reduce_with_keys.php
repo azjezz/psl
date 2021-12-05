@@ -8,24 +8,9 @@ namespace Psl\Iter;
  * Reduce iterable with both values and keys using a function.
  *
  * The reduction function is passed an accumulator value and the current
- * iterator value and returns a new accumulator. The accumulator is initialized
- * to $initial.
+ * iterator key and value and returns a new accumulator.
  *
- * Examples:
- *
- *      Iter\reduce_with_keys(
- *          Iter\range(1, 5),
- *          static fn(int $accumulator, int $key, int $value): int => $accumulator + $value,
- *          0,
- *     )
- *      => 15
- *
- *      Iter\reduce_with_keys(
- *          Iter\range(1, 5),
- *          static fn(int $accumulator, int $key, int $value): int => $accumulator * $value,
- *          0,
- *     )
- *      => 120
+ * The accumulator is initialized to $initial.
  *
  * @template Tk
  * @template Tv

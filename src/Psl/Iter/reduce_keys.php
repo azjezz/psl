@@ -11,15 +11,6 @@ namespace Psl\Iter;
  * iterator value and returns a new accumulator. The accumulator is initialized
  * to $initial.
  *
- * Examples:
- *
- *      Iter\reduce_keys(
- *          Iter\range(1, 5),
- *          static fn(int $accumulator, int $key): int => $accumulator + $key,
- *          0,
- *     )
- *      => 10
- *
  * @template Tk
  * @template Tv
  * @template Ts

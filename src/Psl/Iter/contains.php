@@ -8,17 +8,6 @@ namespace Psl\Iter;
  * Returns true if the given iterable contains the value. Strict equality is
  * used.
  *
- * Examples:
- *
- *      Iter\contains(['a', 'b'], 'a')
- *      => true
- *
- *      Iter\contains(Iterable\range(0, 5), 1)
- *      => true
- *
- *      Iter\contains(Iterable\range(0, 5), '1')
- *      => false
- *
  * @template T
  *
  * @param iterable<T> $iterable

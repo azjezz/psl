@@ -5,26 +5,17 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 /**
- * Reduce iterable using a function.
+ * Reduces an iterable to a single value.
  *
  * The reduction function is passed an accumulator value and the current
  * iterator value and returns a new accumulator. The accumulator is initialized
  * to $initial.
  *
- * Examples:
- *
- *      Iter\reduce(Iter\range(1, 5), fn($accumulator, $value) => $accumulator + $value, 0)
- *      => 15
- *
- *      Iter\reduce(Iter\range(1, 5), fn($accumulator, $value) => $accumulator * $value, 1)
- *      => 120
- *
- * @template Tk
- * @template Tv
+ * @template T
  * @template Ts
  *
- * @param iterable<Tk, Tv> $iterable
- * @param (callable(Ts, Tv): Ts) $function
+ * @param iterable<T> $iterable
+ * @param (callable(Ts, T): Ts) $function
  * @param Ts $initial
  *
  * @return Ts

@@ -5,18 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 /**
- * Gets the first value of an iterable.
- *
- * Example:
- *
- *      Iter\first(Iter\range(5, 10)
- *      => Int(5)
- *
- *      Iter\first(['a' ,'b'])
- *      => Str('a')
- *
- *      Iter\first([])
- *      => Null
+ * Returns the first element of an iterable, if the iterable is empty, null will be returned.
  *
  * @template T
  *

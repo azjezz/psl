@@ -14,14 +14,6 @@ use function is_countable;
  *
  * If the iterable implements Countable its count() method will be used.
  *
- * Examples:
- *
- *      Iter\count([1, 2, 3])
- *      => Int(3)
- *
- *      Iter\count(Iter\flatten([[1, 2, 3], [4], [5, 6], [7, 8]]))
- *      => Int(8)
- *
  * @template T
  *
  * @param iterable<T> $iterable

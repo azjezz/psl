@@ -46,6 +46,8 @@ final class Iterator implements Countable, SeekableIterator
     }
 
     /**
+     * Create an iterator from a factory.
+     *
      * @template Tsk
      * @template Tsv
      *
@@ -59,6 +61,8 @@ final class Iterator implements Countable, SeekableIterator
     }
 
     /**
+     * Create an iterator from an iterable.
+     *
      * @template Tsk
      * @template Tsv
      *
@@ -98,7 +102,7 @@ final class Iterator implements Countable, SeekableIterator
     }
 
     /**
-     * Move forward to next element.
+     * Move forward to the next element.
      */
     public function next(): void
     {
@@ -168,6 +172,10 @@ final class Iterator implements Countable, SeekableIterator
     }
 
     /**
+     * Seek to the given position.
+     *
+     * @param 0|positive-int $position
+     *
      * @throws Psl\Exception\InvariantViolationException If $position is out-of-bounds.
      */
     public function seek(int $position): void
@@ -192,12 +200,20 @@ final class Iterator implements Countable, SeekableIterator
         $this->position = $position;
     }
 
+    /**
+     * @return 0|positive-int
+     *
+     * @psalm-suppress MoreSpecificReturnType
+     */
     public function count(): int
     {
         if ($this->generator) {
             $this->exhaust();
         }
 
+        /**
+         * @psalm-suppress LessSpecificReturnStatement
+         */
         return count($this->entries);
     }
 

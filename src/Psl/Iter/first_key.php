@@ -5,20 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 /**
- * Gets the first key of an iterable.
- *
- * Example:
- *
- *      Iter\first_key(
- *          Iter\reindex(Iter\range(5, 10), fn($v) => Str\chr(60 + $v))
- *      )
- *      => Str('A')
- *
- *      Iter\first_key(['a' ,'b'])
- *      => Int(0)
- *
- *      Iter\first_key([])
- *      => Null
+ * Returns the first key of an iterable, if the iterable is empty, null will be returned.
  *
  * @template Tk
  * @template Tv

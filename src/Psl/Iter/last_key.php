@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 /**
- * Get the last key of an iterable, if the iterable is empty, null will be returned.
+ * Returns the last key of an iterable, if the iterable is empty, null will be returned.
  *
  * @template Tk
  * @template Tv

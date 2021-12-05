@@ -11,14 +11,13 @@ use Psl\Vec;
 /**
  * Retrieve a random value from a non-empty iterable.
  *
- * @template Tk
- * @template Tv
+ * @template T
  *
- * @param iterable<Tk, Tv> $iterable
+ * @param iterable<T> $iterable
  *
  * @throws Psl\Exception\InvariantViolationException If $iterable is empty.
  *
- * @return Tv
+ * @return T
  */
 function random(iterable $iterable)
 {
@@ -31,7 +30,7 @@ function random(iterable $iterable)
     Psl\invariant(0 !== $size, 'Expected a non-empty iterable.');
 
     if (1 === $size) {
-        /** @var Tv */
+        /** @var T */
         return $values[0];
     }
 
