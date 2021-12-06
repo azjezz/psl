@@ -1834,16 +1834,16 @@
         },
         {
             "name": "phpbench/phpbench",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpbench/phpbench.git",
-                "reference": "3555dff668e58d25c39d287f3f1bac13a7817b4c"
+                "reference": "ac12203f1733493a0611333b81ac3f47f517d850"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpbench/phpbench/zipball/3555dff668e58d25c39d287f3f1bac13a7817b4c",
-                "reference": "3555dff668e58d25c39d287f3f1bac13a7817b4c",
+                "url": "https://api.github.com/repos/phpbench/phpbench/zipball/ac12203f1733493a0611333b81ac3f47f517d850",
+                "reference": "ac12203f1733493a0611333b81ac3f47f517d850",
                 "shasum": ""
             },
             "require": {
@@ -1859,11 +1859,11 @@
                 "phpbench/dom": "~0.3.1",
                 "psr/log": "^1.1",
                 "seld/jsonlint": "^1.1",
-                "symfony/console": "^4.2 || ^5.0",
-                "symfony/filesystem": "^4.2 || ^5.0",
-                "symfony/finder": "^4.2 || ^5.0",
-                "symfony/options-resolver": "^4.2 || ^5.0",
-                "symfony/process": "^4.2 || ^5.0",
+                "symfony/console": "^4.2 || ^5.0  || ^6.0",
+                "symfony/filesystem": "^4.2 || ^5.0 || ^6.0",
+                "symfony/finder": "^4.2 || ^5.0 || ^6.0",
+                "symfony/options-resolver": "^4.2 || ^5.0 || ^6.0",
+                "symfony/process": "^4.2 || ^5.0 || ^6.0",
                 "webmozart/path-util": "^2.3"
             },
             "require-dev": {
@@ -1873,8 +1873,8 @@
                 "phpspec/prophecy": "^1.12",
                 "phpstan/phpstan": "^0.12.7",
                 "phpunit/phpunit": "^8.5.8 || ^9.0",
-                "symfony/error-handler": "^5.2",
-                "symfony/var-dumper": "^4.0 || ^5.0"
+                "symfony/error-handler": "^5.2 || ^6.0",
+                "symfony/var-dumper": "^4.0 || ^5.0 || ^6.0"
             },
             "suggest": {
                 "ext-xdebug": "For Xdebug profiling extension."
@@ -1911,7 +1911,7 @@
             "description": "PHP Benchmarking Framework",
             "support": {
                 "issues": "https://github.com/phpbench/phpbench/issues",
-                "source": "https://github.com/phpbench/phpbench/tree/1.2.0"
+                "source": "https://github.com/phpbench/phpbench/tree/1.2.1"
             },
             "funding": [
                 {
@@ -1919,7 +1919,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-11-06T13:52:05+00:00"
+            "time": "2021-12-04T12:25:52+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
