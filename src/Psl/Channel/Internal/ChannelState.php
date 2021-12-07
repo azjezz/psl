@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Channel\Internal;
 
+use Psl;
 use Psl\Channel\ChannelInterface;
 use Psl\Channel\Exception;
 
@@ -41,9 +42,15 @@ final class ChannelState implements ChannelInterface
 
     private bool $closed = false;
 
+    /**
+     * @param positive-int|null $capacity
+     *
+     * @throws Psl\Exception\InvariantViolationException If $capacity is not a positive integer.
+     */
     public function __construct(
         private ?int $capacity = null,
     ) {
+        Psl\invariant(null === $capacity || $capacity >= 1, '$capacity must be a positive integer.');
     }
 
     /**

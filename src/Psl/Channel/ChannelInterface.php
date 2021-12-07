@@ -13,6 +13,8 @@ interface ChannelInterface extends Countable
 {
     /**
      * Returns the channel capacity if it’s bounded.
+     * 
+     * @return null|positive-int
      *
      * @mutation-free
      */

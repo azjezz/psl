@@ -5,11 +5,36 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Channel;
 
 use PHPUnit\Framework\TestCase;
+use Psl;
 use Psl\Async;
 use Psl\Channel;
 
 final class BoundedChannelTest extends TestCase
 {
+    public function testThrowsForNonPositiveCapacity(): void
+    {
+        $this->expectException(Psl\Exception\InvariantViolationException::class);
+        $this->expectExceptionMessage('$capacity must be a positive integer.');
+
+        /**
+         * @var Channel\ReceiverInterface<string> $receiver
+         * @var Channel\SenderInterface<string> $sender
+         */
+        [$receiver, $sender] = Channel\bounded(0);
+    }
+
+    public function testThrowsForNegativeCapacity(): void
+    {
+        $this->expectException(Psl\Exception\InvariantViolationException::class);
+        $this->expectExceptionMessage('$capacity must be a positive integer.');
+
+        /**
+         * @var Channel\ReceiverInterface<string> $receiver
+         * @var Channel\SenderInterface<string> $sender
+         */
+        [$receiver, $sender] = Channel\bounded(-1);
+    }
+
     public function testCapacity(): void
     {
         /**

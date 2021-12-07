@@ -12,7 +12,7 @@
 
 #### `Functions`
 
-- [bounded](./../../src/Psl/Channel/bounded.php#L18)
+- [bounded](./../../src/Psl/Channel/bounded.php#L22)
 - [unbounded](./../../src/Psl/Channel/unbounded.php#L16)
 
 #### `Interfaces`

@@ -15,6 +15,9 @@ final class CommunicationBench
 {
     public function benchBoundedCommunication(): void
     {
+        /**
+         * @psalm-suppress MissingThrowsDocblock - $capacity is always > 0
+         */
         [$receiver, $sender] = Channel\bounded(10);
 
         Async\Scheduler::defer(static function () use ($receiver) {
@@ -45,6 +48,9 @@ final class CommunicationBench
 
     public function benchUnboundedCommunication(): void
     {
+        /**
+         * @psalm-suppress MissingThrowsDocblock - $capacity is always > 0
+         */
         [$receiver, $sender] = Channel\bounded(10);
 
         Async\Scheduler::defer(static function () use ($receiver) {

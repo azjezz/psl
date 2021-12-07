@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Channel;
 
+use Psl;
+
 /**
  * Creates a bounded channel.
  *
@@ -12,6 +14,8 @@ namespace Psl\Channel;
  * @template T
  *
  * @param positive-int $capacity
+ *
+ * @throws Psl\Exception\InvariantViolationException If $capacity is not a positive integer.
  *
  * @return array{0: ReceiverInterface<T>, 1: SenderInterface<T>}
  */
