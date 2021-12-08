@@ -87,6 +87,7 @@ final class Iterator implements Countable, SeekableIterator
      *
      * @return Tv
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         Psl\invariant($this->valid(), 'The Iterator is invalid.');
@@ -127,6 +128,7 @@ final class Iterator implements Countable, SeekableIterator
      *
      * @return Tk
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         Psl\invariant($this->valid(), 'The Iterator is invalid.');

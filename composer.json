@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^7.4 || ~8.0.0 || ~8.1.0",
         "ext-bcmath": "*",
         "ext-json": "*",
         "ext-mbstring": "*",

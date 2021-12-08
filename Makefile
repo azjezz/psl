@@ -14,11 +14,11 @@ install-unit-tests-dependencies:
 install: install-root-dependencies install-coding-standard-dependencies install-type-check-dependencies install-unit-tests-dependencies
 
 coding-standard-fix:
-	php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=tools/php-cs-fixer/.php_cs.dist
+	PHP_CS_FIXER_IGNORE_ENV=1 php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=tools/php-cs-fixer/.php_cs.dist
 	php tools/php-codesniffer/vendor/bin/phpcbf --basepath=. --standard=tools/php-codesniffer/.phpcs.xml
 
 coding-standard-check:
-	php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=tools/php-cs-fixer/.php_cs.dist --dry-run
+	PHP_CS_FIXER_IGNORE_ENV=1 php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=tools/php-cs-fixer/.php_cs.dist --dry-run
 	php tools/php-codesniffer/vendor/bin/phpcs --basepath=. --standard=tools/php-codesniffer/.phpcs.xml
 
 type-check:
