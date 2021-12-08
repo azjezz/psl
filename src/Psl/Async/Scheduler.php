@@ -220,24 +220,4 @@ final class Scheduler
     {
         EventLoop::getDriver()->run();
     }
-
-    /**
-     * Check if the event loop is running.
-     *
-     * @see Driver::isRunning()
-     */
-    public static function isRunning(): bool
-    {
-        return EventLoop::getDriver()->isRunning();
-    }
-
-    /**
-     * Stop the event loop.
-     *
-     * @see Driver::stop()
-     */
-    public static function stop(): void
-    {
-        EventLoop::getDriver()->stop();
-    }
 }
