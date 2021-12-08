@@ -109,7 +109,6 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
             $length = $this->offset;
         }
 
-        /** @var positive-int|0 $bytes_length */
         $bytes_length = strlen($bytes);
         $new = substr($this->buffer, 0, $this->offset) . $bytes;
         if ($this->offset < $length) {
