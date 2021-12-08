@@ -176,6 +176,17 @@ function execute(
             static fn(): string => $stderr->readAll(timeout: $timeout),
         ]);
         // @codeCoverageIgnoreStart
+    } catch (Async\Exception\CompositeException $exception) {
+        $reasons = $exception->getReasons();
+        if ($reasons[0] instanceof IO\Exception\TimeoutException) {
+            throw new Exception\TimeoutException('reached timeout while the process output is still not readable.', 0, $reasons[0]);
+        }
+
+        if ($reasons[1] instanceof IO\Exception\TimeoutException) {
+            throw new Exception\TimeoutException('reached timeout while the process output is still not readable.', 0, $reasons[1]);
+        }
+
+        throw new Exception\RuntimeException('Failed to reach process output.', 0, $exception ?? null);
     } catch (IO\Exception\TimeoutException $previous) {
         throw new Exception\TimeoutException('reached timeout while the process output is still not readable.', 0, $previous);
         // @codeCoverageIgnoreEnd
