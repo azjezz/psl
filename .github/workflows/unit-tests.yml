@@ -1,6 +1,6 @@
 name: "unit tests"
 
-on: 
+on:
   pull_request: ~
   push: ~
 
@@ -15,6 +15,7 @@ jobs:
         php-version:
           - "7.4"
           - "8.0"
+          - "8.1"
         operating-system:
           - "macos-latest"
           - "ubuntu-latest"
