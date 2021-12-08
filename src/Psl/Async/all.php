@@ -10,18 +10,14 @@ use Throwable;
 /**
  * Awaits all awaitables to complete concurrently.
  *
- * If one awaitable fails, the exception will be thrown immediately, and the result of the callables will be ignored.
- *
- * If multiple awaitables failed at once, a {@see Exception\CompositeException} will be thrown.
- *
- * Once the awaitables have completed, an array containing the results will be returned preserving the original awaitables order.
- *
  * @template Tk of array-key
  * @template Tv
  *
  * @param iterable<Tk, Awaitable<Tv>> $awaitables
  *
- * @return array<Tk, Tv> Unwrapped values with the order preserved.
+ * @throws Exception\CompositeException If multiple awaitables failed at once.
+ *
+ * @return array<Tk, Tv> an array containing the results, preserving the original awaitables order.
  */
 function all(iterable $awaitables): array
 {
