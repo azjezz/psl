@@ -19,7 +19,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Psl\\Integration\\": "integration"
+            "Psl\\Integration\\": "integration",
+            "Psl\\": "src/Psl"
         },
         "files": [
             "src/bootstrap.php"
