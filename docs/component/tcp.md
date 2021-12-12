@@ -14,10 +14,6 @@
 
 - [connect](./../../src/Psl/TCP/connect.php#L18)
 
-#### `Interfaces`
-
-- [SocketInterface](./../../src/Psl/TCP/SocketInterface.php#L9)
-
 #### `Classes`
 
 - [ConnectOptions](./../../src/Psl/TCP/ConnectOptions.php#L7)

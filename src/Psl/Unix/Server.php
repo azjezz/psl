@@ -13,7 +13,7 @@ use function stream_socket_accept;
 
 use const PHP_OS_FAMILY;
 
-final class Server implements Network\ServerInterface
+final class Server implements Network\StreamServerInterface
 {
     /**
      * @var resource|null $impl
@@ -88,7 +88,7 @@ final class Server implements Network\ServerInterface
     /**
      * {@inheritDoc}
      */
-    public function nextConnection(): SocketInterface
+    public function nextConnection(): Network\StreamSocketInterface
     {
         $this->deferred?->getAwaitable()->then(static fn() => null, static fn() => null)->await();
 
@@ -103,7 +103,7 @@ final class Server implements Network\ServerInterface
 
         try {
             /** @psalm-suppress PossiblyNullReference */
-            return new Internal\Socket($this->deferred->getAwaitable()->await());
+            return new Network\Internal\Socket($this->deferred->getAwaitable()->await());
         } finally {
             Async\Scheduler::disable($this->watcher);
             $this->deferred = null;
@@ -122,10 +122,16 @@ final class Server implements Network\ServerInterface
         return Network\Internal\get_sock_name($this->impl);
     }
 
+    public function __destruct()
+    {
+        /** @psalm-suppress MissingThrowsDocblock */
+        $this->close();
+    }
+
     /**
      * {@inheritDoc}
      */
-    public function stopListening(): void
+    public function close(): void
     {
         if (null === $this->impl) {
             return;
@@ -145,8 +151,11 @@ final class Server implements Network\ServerInterface
         $deferred?->error(new Network\Exception\AlreadyStoppedException('Server socket has already been stopped.'));
     }
 
-    public function __destruct()
+    /**
+     * {@inheritDoc}
+     */
+    public function getStream(): mixed
     {
-        $this->stopListening();
+        return $this->impl;
     }
 }

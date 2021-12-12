@@ -22,7 +22,7 @@ final class ServerTest extends TestCase
 
         $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . ".sock";
         $server = Unix\Server::create($sock);
-        $server->stopListening();
+        $server->close();
 
         $this->expectException(Exception\AlreadyStoppedException::class);
         $this->expectExceptionMessage('Server socket has already been stopped.');
@@ -38,7 +38,7 @@ final class ServerTest extends TestCase
 
         $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . ".sock";
         $server = Unix\Server::create($sock);
-        $server->stopListening();
+        $server->close();
 
         $this->expectException(Exception\AlreadyStoppedException::class);
         $this->expectExceptionMessage('Server socket has already been stopped.');
@@ -76,6 +76,31 @@ final class ServerTest extends TestCase
         $first_connection->close();
         $second_connection->close();
 
-        $server->stopListening();
+        $server->close();
+    }
+
+    public function testAccessUnderlyingStream(): void
+    {
+        if (PHP_OS_FAMILY === 'Windows') {
+            static::markTestSkipped('Unix Server is not supported on Windows platform.');
+        }
+
+        $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . ".sock";
+        $server = Unix\Server::create($sock);
+        $stream = $server->getStream();
+        $deferred = new Async\Deferred();
+        $watcher = Async\Scheduler::onReadable($stream, static fn() => $deferred->complete(true));
+        $client = Unix\connect($sock);
+
+        static::assertTrue($deferred->isComplete());
+
+        Async\Scheduler::cancel($watcher);
+        $connection = $server->nextConnection();
+        $client->write('hello');
+
+        static::assertSame('hello', $connection->read(5));
+
+        $client->close();
+        $server->close();
     }
 }

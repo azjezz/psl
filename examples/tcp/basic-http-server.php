@@ -17,7 +17,7 @@ Async\main(static function (): int {
 
     IO\write_error_line('Server is listening on http://localhost:3030');
 
-    $watcher = Async\Scheduler::onSignal(SIGINT, $server->stopListening(...));
+    $watcher = Async\Scheduler::onSignal(SIGINT, $server->close(...));
     Async\Scheduler::unreference($watcher);
 
     try {

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Network;
 
+use Psl\IO;
+
 /**
  * Generic interface for a class able to accept socket connections.
  */
-interface ServerInterface
+interface ServerInterface extends IO\CloseHandleInterface
 {
     /**
      * Retrieve the next pending connection.
@@ -30,5 +32,5 @@ interface ServerInterface
     /**
      * Stop listening; open connection are not closed.
      */
-    public function stopListening(): void;
+    public function close(): void;
 }

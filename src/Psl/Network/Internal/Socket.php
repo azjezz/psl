@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Psl\TCP\Internal;
+namespace Psl\Network\Internal;
 
 use Psl\IO;
 use Psl\IO\Exception;
 use Psl\IO\Internal;
 use Psl\Network;
 use Psl\Network\Address;
-use Psl\TCP;
 
 use function is_resource;
 
@@ -18,7 +17,7 @@ use function is_resource;
  *
  * @codeCoverageIgnore
  */
-final class Socket implements IO\Stream\CloseReadWriteHandleInterface, TCP\SocketInterface
+final class Socket implements Network\StreamSocketInterface
 {
     use IO\WriteHandleConvenienceMethodsTrait;
     use IO\ReadHandleConvenienceMethodsTrait;

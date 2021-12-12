@@ -27,7 +27,7 @@ final class ServerTest extends TestCase
                 )
         );
 
-        $server->stopListening();
+        $server->close();
 
         $this->expectException(AlreadyStoppedException::class);
         $this->expectExceptionMessage('Server socket has already been stopped.');
@@ -38,7 +38,7 @@ final class ServerTest extends TestCase
     public function testGetLocalAddressOnStoppedServer(): void
     {
         $server = TCP\Server::create('127.0.0.1');
-        $server->stopListening();
+        $server->close();
 
         $this->expectException(AlreadyStoppedException::class);
         $this->expectExceptionMessage('Server socket has already been stopped.');
@@ -71,6 +71,26 @@ final class ServerTest extends TestCase
         $first_connection->close();
         $second_connection->close();
 
-        $server->stopListening();
+        $server->close();
+    }
+
+    public function testAccessUnderlyingStream(): void
+    {
+        $server = TCP\Server::create('127.0.0.1');
+        $stream = $server->getStream();
+        $deferred = new Async\Deferred();
+        $watcher = Async\Scheduler::onReadable($stream, static fn() => $deferred->complete(true));
+        $client = TCP\connect('127.0.0.1', $server->getLocalAddress()->port);
+
+        static::assertTrue($deferred->isComplete());
+
+        Async\Scheduler::cancel($watcher);
+        $connection = $server->nextConnection();
+        $client->write('hello');
+
+        static::assertSame('hello', $connection->read(5));
+
+        $client->close();
+        $server->close();
     }
 }

@@ -14,7 +14,7 @@ use Psl\Network;
  * @throws Network\Exception\RuntimeException If failed to connect to client on the given address.
  * @throws Network\Exception\TimeoutException If $timeout is non-null, and the operation timed-out.
  */
-function connect(string $path, ?float $timeout = null): SocketInterface
+function connect(string $path, ?float $timeout = null): Network\StreamSocketInterface
 {
     // @codeCoverageIgnoreStart
     if (PHP_OS_FAMILY === 'Windows') {
@@ -25,5 +25,5 @@ function connect(string $path, ?float $timeout = null): SocketInterface
     $socket = Network\Internal\socket_connect("unix://{$path}", timeout: $timeout);
 
     /** @psalm-suppress MissingThrowsDocblock */
-    return new Internal\Socket($socket);
+    return new Network\Internal\Socket($socket);
 }
