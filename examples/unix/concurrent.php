@@ -43,7 +43,7 @@ Async\main(static function (): int {
 
             IO\write_error_line('< connection closed.');
 
-            $server->stopListening();
+            $server->close();
 
             IO\write_error_line("< server stopped\n");
         },

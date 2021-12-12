@@ -22,7 +22,7 @@ final class ConnectTest extends TestCase
                 self::assertSame('Hello, World!', $request);
                 $connection->writeAll(Str\reverse($request));
                 $connection->close();
-                $server->stopListening();
+                $server->close();
             },
             'client' => static function (): void {
                 $client = TCP\connect(
