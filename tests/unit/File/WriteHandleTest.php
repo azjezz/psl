@@ -48,7 +48,7 @@ final class WriteHandleTest extends TestCase
 
         $handle->writeAll('hello');
         static::assertSame(2, $handle->write(', '));
-        static::assertSame(6, $handle->writeImmediately('world!'));
+        static::assertSame(6, $handle->tryWrite('world!'));
 
         $handle->close();
 

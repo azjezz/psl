@@ -10,7 +10,7 @@ namespace Psl\IO;
 interface ReadHandleInterface extends HandleInterface
 {
     /**
-     * An immediate, unordered read.
+     * Try to read from the handle immediately, without waiting.
      *
      * Up to `$max_bytes` may be allocated in a buffer; large values may lead to
      * unnecessarily hitting the request memory limit.
@@ -20,12 +20,12 @@ interface ReadHandleInterface extends HandleInterface
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      *
-     * @return string the read data on success, or an empty string if the end of file is reached.
+     * @return string the read data on success, or an empty string if the handle is not ready for read, or the end of file is reached.
      *
      * @see ReadHandleInterface::read()
      * @see ReadHandleInterface::readAll()
      */
-    public function readImmediately(?int $max_bytes = null): string;
+    public function tryRead(?int $max_bytes = null): string;
 
     /**
      * Read from the handle, waiting for data if necessary.

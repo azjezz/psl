@@ -15,11 +15,11 @@ final class PipeTest extends TestCase
     {
         [$read, $write] = IO\pipe();
 
-        static::assertSame('', $read->readImmediately());
+        static::assertSame('', $read->tryRead());
         $write->writeAll('hello');
         static::assertSame('hello', $read->read());
 
-        static::assertSame('', $read->readImmediately());
+        static::assertSame('', $read->tryRead());
         $write->writeAll('hello');
         static::assertSame('hello', $read->read());
 

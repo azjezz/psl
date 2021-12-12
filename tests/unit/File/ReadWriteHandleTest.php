@@ -111,7 +111,7 @@ final class ReadWriteHandleTest extends TestCase
         static::assertFalse(Filesystem\is_file($temporary_file));
 
         $handle = File\open_read_write($temporary_file, File\WriteMode::MUST_CREATE);
-        $handle->writeImmediately('hello');
+        $handle->tryWrite('hello');
         $handle->seek(0);
 
         $content = $handle->readAll();
@@ -169,7 +169,7 @@ final class ReadWriteHandleTest extends TestCase
         ];
 
         yield [
-            static fn(File\ReadHandleInterface $handle) => $handle->readImmediately(),
+            static fn(File\ReadHandleInterface $handle) => $handle->tryRead(),
         ];
 
         yield [

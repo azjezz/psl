@@ -27,9 +27,9 @@ final class SeekReadHandle implements SeekReadHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function readImmediately(?int $max_bytes = null): string
+    public function tryRead(?int $max_bytes = null): string
     {
-        return $this->handle->readImmediately($max_bytes);
+        return $this->handle->tryRead($max_bytes);
     }
 
     /**

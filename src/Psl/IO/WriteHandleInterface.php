@@ -10,7 +10,7 @@ namespace Psl\IO;
 interface WriteHandleInterface extends HandleInterface
 {
     /**
-     * An immediate, unordered write.
+     * Try to write to the handle immediately, without waiting.
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
@@ -20,7 +20,7 @@ interface WriteHandleInterface extends HandleInterface
      * @see WriteHandleInterface::write()
      * @see WriteHandleInterface::writeAll()
      */
-    public function writeImmediately(string $bytes): int;
+    public function tryWrite(string $bytes): int;
 
     /**
      * Write data, waiting if necessary.
@@ -39,9 +39,9 @@ interface WriteHandleInterface extends HandleInterface
     /**
      * Write all of the requested data.
      *
-     * A wrapper around `write()` that will:
+     * A wrapper around {@see WriteHandleInterface::write()} that will:
      * - do multiple writes if necessary to write the entire provided buffer
-     * - throws `Exception\RuntimeException` if it is not possible to write all the requested data
+     * - throws {@see Exception\RuntimeException} if it is not possible to write all the requested data
      *
      * It is possible for this to never return, e.g. if called on a pipe or
      * or socket which the other end keeps open forever. Set a timeout if you
