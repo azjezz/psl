@@ -35,9 +35,9 @@ final class Socket implements Network\StreamSocketInterface
     /**
      * {@inheritDoc}
      */
-    public function readImmediately(?int $max_bytes = null): string
+    public function tryRead(?int $max_bytes = null): string
     {
-        return $this->handle->readImmediately($max_bytes);
+        return $this->handle->tryRead($max_bytes);
     }
 
     /**
@@ -51,9 +51,9 @@ final class Socket implements Network\StreamSocketInterface
     /**
      * {@inheritDoc}
      */
-    public function writeImmediately(string $bytes): int
+    public function tryWrite(string $bytes): int
     {
-        return $this->handle->writeImmediately($bytes);
+        return $this->handle->tryWrite($bytes);
     }
 
     /**

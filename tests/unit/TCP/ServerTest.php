@@ -82,6 +82,8 @@ final class ServerTest extends TestCase
         $watcher = Async\Scheduler::onReadable($stream, static fn() => $deferred->complete(true));
         $client = TCP\connect('127.0.0.1', $server->getLocalAddress()->port);
 
+        $deferred->getAwaitable()->await();
+
         static::assertTrue($deferred->isComplete());
 
         Async\Scheduler::cancel($watcher);

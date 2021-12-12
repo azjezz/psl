@@ -37,7 +37,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
      *
      * @return string the read data on success, or an empty string if the end of file is reached.
      */
-    public function readImmediately(?int $max_bytes = null): string
+    public function tryRead(?int $max_bytes = null): string
     {
         $this->assertHandleIsOpen();
 
@@ -72,7 +72,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
      */
     public function read(?int $max_bytes = null, ?float $timeout = null): string
     {
-        return $this->readImmediately($max_bytes);
+        return $this->tryRead($max_bytes);
     }
 
     /**
@@ -100,7 +100,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function writeImmediately(string $bytes, ?float $timeout = null): int
+    public function tryWrite(string $bytes, ?float $timeout = null): int
     {
         $this->assertHandleIsOpen();
         $length = strlen($this->buffer);
@@ -127,7 +127,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
      */
     public function write(string $bytes, ?float $timeout = null): int
     {
-        return $this->writeImmediately($bytes);
+        return $this->tryWrite($bytes);
     }
 
     /**

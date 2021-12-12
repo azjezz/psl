@@ -203,13 +203,13 @@ final class Reader implements ReadHandleInterface
 
         // We either have a buffer, or reached EOF; either way, behavior matches
         // read, so just delegate
-        return $this->readImmediately($max_bytes);
+        return $this->tryRead($max_bytes);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function readImmediately(?int $max_bytes = null): string
+    public function tryRead(?int $max_bytes = null): string
     {
         if (null !== $max_bytes) {
             /** @psalm-suppress MissingThrowsDocblock */
@@ -220,15 +220,13 @@ final class Reader implements ReadHandleInterface
             return '';
         }
 
-        // @codeCoverageIgnoreStart
         if ($this->buffer === '') {
-            $this->buffer = $this->getHandle()->readImmediately();
+            $this->buffer = $this->getHandle()->tryRead();
             if ($this->buffer === '') {
                 $this->eof = true;
                 return '';
             }
         }
-        // @codeCoverageIgnoreEnd
 
         $buffer = $this->buffer;
         if ($max_bytes === null || $max_bytes >= strlen($buffer)) {

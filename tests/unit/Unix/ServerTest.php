@@ -92,6 +92,8 @@ final class ServerTest extends TestCase
         $watcher = Async\Scheduler::onReadable($stream, static fn() => $deferred->complete(true));
         $client = Unix\connect($sock);
 
+        $deferred->getAwaitable()->await();
+
         static::assertTrue($deferred->isComplete());
 
         Async\Scheduler::cancel($watcher);

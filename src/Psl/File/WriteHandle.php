@@ -52,9 +52,9 @@ final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteH
     /**
      * {@inheritDoc}
      */
-    public function writeImmediately(string $bytes): int
+    public function tryWrite(string $bytes): int
     {
-        return $this->writeHandle->writeImmediately($bytes);
+        return $this->writeHandle->tryWrite($bytes);
     }
 
     /**

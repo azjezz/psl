@@ -17,12 +17,12 @@ final class ReadHandleTest extends TestCase
 
         $handle->writeAll('hello');
         static::assertSame(2, $handle->write(', '));
-        static::assertSame(6, $handle->writeImmediately('world!'));
+        static::assertSame(6, $handle->tryWrite('world!'));
 
         $handle->close();
 
         $handle = File\open_read_only($temporary_file);
-        $content = $handle->readImmediately();
+        $content = $handle->tryRead();
 
         static::assertSame('hello, world!', $content);
     }

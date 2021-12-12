@@ -57,9 +57,9 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
     /**
      * {@inheritDoc}
      */
-    public function readImmediately(?int $max_bytes = null): string
+    public function tryRead(?int $max_bytes = null): string
     {
-        return $this->readWriteHandle->readImmediately($max_bytes);
+        return $this->readWriteHandle->tryRead($max_bytes);
     }
 
     /**
@@ -73,9 +73,9 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
     /**
      * {@inheritDoc}
      */
-    public function writeImmediately(string $bytes): int
+    public function tryWrite(string $bytes): int
     {
-        return $this->readWriteHandle->writeImmediately($bytes);
+        return $this->readWriteHandle->tryWrite($bytes);
     }
 
     /**

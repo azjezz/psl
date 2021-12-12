@@ -135,7 +135,7 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
      */
     public function write(string $bytes, ?float $timeout = null): int
     {
-        $written = $this->writeImmediately($bytes);
+        $written = $this->tryWrite($bytes);
         if ($this->blocks || $written === strlen($bytes)) {
             return $written;
         }
@@ -176,13 +176,13 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
             }
         }
 
-        return $written + $this->writeImmediately($bytes);
+        return $written + $this->tryWrite($bytes);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function writeImmediately(string $bytes): int
+    public function tryWrite(string $bytes): int
     {
         // there's a pending write operation, wait for it first.
         $this->writeDeferred?->getAwaitable()->then(static fn() => null, static fn() => null)->await();
@@ -246,7 +246,7 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
      */
     public function read(?int $max_bytes = null, ?float $timeout = null): string
     {
-        $chunk = $this->readImmediately($max_bytes);
+        $chunk = $this->tryRead($max_bytes);
         if ('' !== $chunk || $this->blocks) {
             return $chunk;
         }
@@ -287,13 +287,13 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
             }
         }
 
-        return $this->readImmediately($max_bytes);
+        return $this->tryRead($max_bytes);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function readImmediately(?int $max_bytes = null): string
+    public function tryRead(?int $max_bytes = null): string
     {
         // there's a pending read operation, wait for it.
         $this->readDeferred?->getAwaitable()->then(static fn() => null, static fn() => null)->await();

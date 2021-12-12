@@ -27,9 +27,9 @@ final class SeekWriteHandle implements SeekWriteHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function writeImmediately(string $bytes): int
+    public function tryWrite(string $bytes): int
     {
-        return $this->handle->writeImmediately($bytes);
+        return $this->handle->tryWrite($bytes);
     }
 
     /**

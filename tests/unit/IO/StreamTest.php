@@ -32,7 +32,7 @@ final class StreamTest extends TestCase
 
         $this->expectException(IO\Exception\AlreadyClosedException::class);
 
-        $stream->readImmediately();
+        $stream->tryRead();
     }
 
     public function testCloseWriteHandle(): void
@@ -48,7 +48,7 @@ final class StreamTest extends TestCase
 
         $this->expectException(IO\Exception\AlreadyClosedException::class);
 
-        $stream->writeImmediately('Hello');
+        $stream->tryWrite('Hello');
     }
 
     public function testCloseReadWriteHandle(): void
@@ -82,7 +82,7 @@ final class StreamTest extends TestCase
 
         $this->expectException(IO\Exception\AlreadyClosedException::class);
 
-        $stream->readImmediately();
+        $stream->tryRead();
     }
 
     public function testSeekReadWriteHandle(): void
@@ -97,7 +97,7 @@ final class StreamTest extends TestCase
 
         $this->expectException(IO\Exception\AlreadyClosedException::class);
 
-        $stream->readImmediately();
+        $stream->tryRead();
     }
 
     public function testCloseSeekReadWriteHandle(): void
@@ -112,7 +112,7 @@ final class StreamTest extends TestCase
 
         $this->expectException(IO\Exception\AlreadyClosedException::class);
 
-        $stream->readImmediately();
+        $stream->tryRead();
     }
 
     public function testSeekReadHandle(): void
@@ -128,7 +128,7 @@ final class StreamTest extends TestCase
 
         $this->expectException(IO\Exception\AlreadyClosedException::class);
 
-        $stream->readImmediately();
+        $stream->tryRead();
     }
 
     public function testSeekWriteHandle(): void
@@ -149,6 +149,6 @@ final class StreamTest extends TestCase
 
         $this->expectException(IO\Exception\AlreadyClosedException::class);
 
-        $stream->writeImmediately('hello');
+        $stream->tryWrite('hello');
     }
 }

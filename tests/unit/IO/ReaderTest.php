@@ -10,6 +10,15 @@ use Psl\IO;
 
 final class ReaderTest extends TestCase
 {
+    public function testReadEmptyHandle(): void
+    {
+        $handle = new IO\MemoryHandle();
+        $reader = new IO\Reader($handle);
+
+        static::assertEmpty($reader->tryRead());
+        static::assertTrue($reader->isEndOfFile());
+    }
+
     public function testReadingFile(): void
     {
         $handle = File\open_read_only(__FILE__);
