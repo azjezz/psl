@@ -20,8 +20,8 @@
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.6.1",
-        "friendsofphp/php-cs-fixer": "^3.2.1",
-        "phpbench/phpbench": "^1.2.0",
+        "friendsofphp/php-cs-fixer": "^3.4.0",
+        "phpbench/phpbench": "^1.2.2",
         "phpunit/phpunit": "^9.5.10",
         "vimeo/psalm": "^4.11.2",
         "php-standard-library/psalm-plugin": "^1.1.1",
