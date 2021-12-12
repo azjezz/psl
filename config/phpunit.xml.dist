@@ -28,7 +28,7 @@
       <file>../src/Psl/Filesystem/Internal/change_owner.php</file>
     </exclude>
     <report>
-      <clover outputFile="../tests/logs/clover.xml" />
+      <clover outputFile="../var/clover.xml" />
     </report>
   </coverage>
   <php>

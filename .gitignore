@@ -16,6 +16,3 @@
 
 # phpunit cache
 /config/.phpunit.result.cache
-
-# test logs
-/tests/logs/*

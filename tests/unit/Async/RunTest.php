@@ -52,6 +52,7 @@ final class RunTest extends TestCase
         }, timeout: 0.0001);
 
         $this->expectException(Async\Exception\TimeoutException::class);
+        $this->expectExceptionMessage('operation timed out.');
 
         $awaitable->await();
     }

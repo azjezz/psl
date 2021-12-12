@@ -25,7 +25,8 @@
         "phpunit/phpunit": "^9.5.10",
         "vimeo/psalm": "^4.11.2",
         "php-standard-library/psalm-plugin": "^1.1.1",
-        "php-coveralls/php-coveralls": "^2.5"
+        "php-coveralls/php-coveralls": "^2.5",
+        "roave/infection-static-analysis-plugin": "1.13.x-dev"
     },
     "autoload": {
         "psr-4": {
