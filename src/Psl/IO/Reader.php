@@ -131,10 +131,9 @@ final class Reader implements ReadHandleInterface
             $timeout,
             function (): void {
                 // @codeCoverageIgnoreStart
-                throw new Exception\TimeoutException(Str\format(
-                    "Reached timeout before reading requested amount of data",
-                    $this->buffer === '' ? 'any' : 'all',
-                ));
+                throw new Exception\TimeoutException(
+                    "Reached timeout before encountering reaching the end of the line.",
+                );
                 // @codeCoverageIgnoreEnd
             },
         );
@@ -176,11 +175,11 @@ final class Reader implements ReadHandleInterface
 
         $timer = new Internal\OptionalIncrementalTimeout(
             $timeout,
-            function (): void {
+            function () use($suffix): void {
                 // @codeCoverageIgnoreStart
                 throw new Exception\TimeoutException(Str\format(
-                    "Reached timeout before reading requested amount of data",
-                    $this->buffer === '' ? 'any' : 'all',
+                    "Reached timeout before encountering the suffix (\"%s\").",
+                    $suffix,
                 ));
                 // @codeCoverageIgnoreEnd
             },
