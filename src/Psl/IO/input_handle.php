@@ -17,7 +17,7 @@ use const PHP_SAPI;
  *
  * @codeCoverageIgnore
  */
-function input_handle(): Stream\CloseReadHandleInterface
+function input_handle(): CloseReadStreamHandleInterface
 {
     /** @var WeakMap|null $cache */
     static $cache = null;
@@ -27,16 +27,16 @@ function input_handle(): Stream\CloseReadHandleInterface
 
     $key = EventLoop::getDriver();
     if ($cache->offsetExists($key)) {
-        /** @var Stream\CloseReadHandleInterface */
+        /** @var CloseReadStreamHandleInterface */
         return $cache->offsetGet($key);
     }
 
     if (PHP_SAPI === "cli") {
-        $handle = new Stream\CloseReadHandle(
+        $handle = new CloseReadStreamHandle(
             Internal\open_resource('php://stdin', 'rb')
         );
     } else {
-        $handle = new Stream\CloseReadHandle(
+        $handle = new CloseReadStreamHandle(
             Internal\open_resource('php://input', 'rb')
         );
     }

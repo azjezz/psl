@@ -11,7 +11,7 @@ use Psl\IO;
  *
  * Unlike {@see ServerInterface}, {@see StreamServerInterface} provides access to the underlying server stream.
  */
-interface StreamServerInterface extends IO\Stream\CloseHandleInterface, ServerInterface
+interface StreamServerInterface extends IO\CloseStreamHandleInterface, ServerInterface
 {
     /**
      * {@inheritDoc}

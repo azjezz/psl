@@ -17,7 +17,7 @@ use const PHP_SAPI;
  *
  * @codeCoverageIgnore
  */
-function output_handle(): Stream\CloseWriteHandleInterface
+function output_handle(): CloseWriteStreamHandleInterface
 {
     /** @var WeakMap|null $cache */
     static $cache = null;
@@ -27,16 +27,16 @@ function output_handle(): Stream\CloseWriteHandleInterface
 
     $key = EventLoop::getDriver();
     if ($cache->offsetExists($key)) {
-        /** @var Stream\CloseWriteHandleInterface */
+        /** @var CloseWriteStreamHandleInterface */
         return $cache->offsetGet($key);
     }
 
     if (PHP_SAPI === "cli") {
-        $handle = new Stream\CloseWriteHandle(
+        $handle = new CloseWriteStreamHandle(
             Internal\open_resource('php://stdout', 'wb')
         );
     } else {
-        $handle = new Stream\CloseWriteHandle(
+        $handle = new CloseWriteStreamHandle(
             Internal\open_resource('php://output', 'wb')
         );
     }

@@ -7,14 +7,13 @@ namespace Psl\Tests\Unit\IO;
 use PHPUnit\Framework\TestCase;
 use Psl\File;
 use Psl\IO;
-use Psl\IO\Stream;
 
 final class StreamTest extends TestCase
 {
     public function testReadHandle(): void
     {
         $file = File\open_read_only(__FILE__);
-        $stream = new Stream\ReadHandle($file->getStream());
+        $stream = new IO\ReadStreamHandle($file->getStream());
 
         static::assertSame('<?php', $stream->readAll(5));
 
@@ -24,7 +23,7 @@ final class StreamTest extends TestCase
     public function testCloseReadHandle(): void
     {
         $file = File\open_read_only(__FILE__);
-        $stream = new Stream\CloseReadHandle($file->getStream());
+        $stream = new IO\CloseReadStreamHandle($file->getStream());
 
         static::assertSame('<?php', $stream->readAll(5));
 
@@ -38,7 +37,7 @@ final class StreamTest extends TestCase
     public function testCloseWriteHandle(): void
     {
         $file = File\temporary();
-        $stream = new Stream\CloseWriteHandle($file->getStream());
+        $stream = new IO\CloseWriteStreamHandle($file->getStream());
         $stream->writeAll('<?php');
 
         $file->seek(0);
@@ -54,7 +53,7 @@ final class StreamTest extends TestCase
     public function testCloseReadWriteHandle(): void
     {
         $file = File\temporary();
-        $stream = new Stream\CloseReadWriteHandle($file->getStream());
+        $stream = new IO\CloseReadWriteStreamHandle($file->getStream());
         $stream->writeAll('<?php');
 
         $file->seek(0);
@@ -71,7 +70,7 @@ final class StreamTest extends TestCase
     public function testReadWriteHandle(): void
     {
         $file = File\temporary();
-        $stream = new Stream\ReadWriteHandle($file->getStream());
+        $stream = new IO\ReadWriteStreamHandle($file->getStream());
         $stream->writeAll('<?php');
 
         $file->seek(0);
@@ -88,7 +87,7 @@ final class StreamTest extends TestCase
     public function testSeekReadWriteHandle(): void
     {
         $file = File\temporary();
-        $stream = new Stream\SeekReadWriteHandle($file->getStream());
+        $stream = new IO\SeekReadWriteStreamHandle($file->getStream());
         $stream->writeAll('<?php');
         $stream->seek(0);
         static::assertSame('<?php', $stream->readAll());
@@ -103,7 +102,7 @@ final class StreamTest extends TestCase
     public function testCloseSeekReadWriteHandle(): void
     {
         $file = File\temporary();
-        $stream = new Stream\CloseSeekReadWriteHandle($file->getStream());
+        $stream = new IO\CloseSeekReadWriteStreamHandle($file->getStream());
         $stream->writeAll('<?php');
         $stream->seek(0);
         static::assertSame('<?php', $stream->readAll());
@@ -120,7 +119,7 @@ final class StreamTest extends TestCase
         $file = File\temporary();
         $file->writeAll('<?php');
 
-        $stream = new Stream\SeekReadHandle($file->getStream());
+        $stream = new IO\SeekReadStreamHandle($file->getStream());
         $stream->seek(2);
         static::assertSame('php', $stream->readAll());
 
@@ -136,7 +135,7 @@ final class StreamTest extends TestCase
         $file = File\temporary();
         $file = File\open_write_only($file->getPath());
 
-        $stream = new Stream\SeekWriteHandle($file->getStream());
+        $stream = new IO\SeekWriteStreamHandle($file->getStream());
         $stream->seek(2);
         $stream->writeAll('<?php');
 

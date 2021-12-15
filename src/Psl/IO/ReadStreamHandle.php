@@ -2,27 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Psl\IO\Stream;
+namespace Psl\IO;
 
 use Psl\IO;
-use Psl\IO\Internal;
 
 /**
  * @codeCoverageIgnore
  */
-final class ReadWriteHandle implements ReadWriteHandleInterface
+final class ReadStreamHandle implements ReadStreamHandleInterface
 {
     use IO\ReadHandleConvenienceMethodsTrait;
-    use IO\WriteHandleConvenienceMethodsTrait;
 
-    private ReadWriteHandleInterface $handle;
+    private ReadStreamHandleInterface $handle;
 
     /**
      * @param resource|object $stream
      */
     public function __construct(mixed $stream)
     {
-        $this->handle = new Internal\ResourceHandle($stream, read: true, write: true, seek: false, close: false);
+        $this->handle = new Internal\ResourceHandle($stream, read: true, write: false, seek: false, close: false);
     }
 
     /**
@@ -39,22 +37,6 @@ final class ReadWriteHandle implements ReadWriteHandleInterface
     public function read(?int $max_bytes = null, ?float $timeout = null): string
     {
         return $this->handle->read($max_bytes, $timeout);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function tryWrite(string $bytes): int
-    {
-        return $this->handle->tryWrite($bytes);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function write(string $bytes, ?float $timeout = null): int
-    {
-        return $this->handle->write($bytes, $timeout);
     }
 
     /**

@@ -9,7 +9,6 @@ use Psl\Dict;
 use Psl\Env;
 use Psl\Filesystem;
 use Psl\IO;
-use Psl\IO\Stream;
 use Psl\Regex;
 use Psl\SecureRandom;
 use Psl\Str;
@@ -167,8 +166,8 @@ function execute(
     }
     // @codeCoverageIgnoreEnd
 
-    $stdout = new Stream\CloseReadHandle($pipes[1]);
-    $stderr = new Stream\CloseReadHandle($pipes[2]);
+    $stdout = new IO\CloseReadStreamHandle($pipes[1]);
+    $stderr = new IO\CloseReadStreamHandle($pipes[2]);
 
     try {
         [$stdout_content, $stderr_content] = Async\parallel([

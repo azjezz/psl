@@ -17,13 +17,13 @@ interface ReadHandleInterface extends HandleInterface
      *
      * @param ?positive-int $max_bytes the maximum number of bytes to read
      *
-     * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
+     * @throws Exception\AlreadyClosedException If the handle has been already closed.
      *
      * @return string the read data on success, or an empty string if the handle is not ready for read, or the end of file is reached.
      *
-     * @see ReadHandleInterface::read()
-     * @see ReadHandleInterface::readAll()
+     * @see ReadStreamHandleInterface::read()
+     * @see ReadStreamHandleInterface::readAll()
      */
     public function tryRead(?int $max_bytes = null): string;
 

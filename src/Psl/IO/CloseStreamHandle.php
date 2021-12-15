@@ -2,16 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Psl\IO\Stream;
-
-use Psl\IO\Internal;
+namespace Psl\IO;
 
 /**
  * @codeCoverageIgnore
  */
-final class CloseHandle implements CloseHandleInterface
+final class CloseStreamHandle implements CloseStreamHandleInterface
 {
-    private CloseHandleInterface $handle;
+    private CloseStreamHandleInterface $handle;
 
     /**
      * @param resource|object $stream

@@ -199,7 +199,6 @@ function get_all_components(): array
         'Psl\\Html',
         'Psl\\Interface',
         'Psl\\IO',
-        'Psl\\IO\\Stream',
         'Psl\\Iter',
         'Psl\\Json',
         'Psl\\Math',

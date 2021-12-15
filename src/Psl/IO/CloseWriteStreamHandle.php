@@ -2,19 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Psl\IO\Stream;
+namespace Psl\IO;
 
 use Psl\IO;
-use Psl\IO\Internal;
 
 /**
  * @codeCoverageIgnore
  */
-final class CloseWriteHandle implements CloseWriteHandleInterface
+final class CloseWriteStreamHandle implements CloseWriteStreamHandleInterface
 {
     use IO\WriteHandleConvenienceMethodsTrait;
 
-    private CloseWriteHandleInterface $handle;
+    private CloseWriteStreamHandleInterface $handle;
 
     /**
      * @param resource|object $stream

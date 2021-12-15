@@ -17,9 +17,9 @@ use const STREAM_PF_UNIX;
 use const STREAM_SOCK_STREAM;
 
 /**
- * Create a pair of handles, where writes to the {@see Stream\WriteHandleInterface} can be read from the {@see Stream\ReadHandleInterface}.
+ * Create a pair of handles, where writes to the {@see WriteStreamHandleInterface} can be read from the {@see ReadStreamHandleInterface}.
  *
- * @return array{0: Stream\CloseReadHandleInterface, 1: Stream\CloseWriteHandleInterface}
+ * @return array{0: CloseReadStreamHandleInterface, 1: CloseWriteStreamHandleInterface}
  */
 function pipe(): array
 {
@@ -43,7 +43,7 @@ function pipe(): array
     );
 
     return [
-        new Stream\CloseReadHandle($sockets[0]),
-        new Stream\CloseWriteHandle($sockets[1]),
+        new CloseReadStreamHandle($sockets[0]),
+        new CloseWriteStreamHandle($sockets[1]),
     ];
 }

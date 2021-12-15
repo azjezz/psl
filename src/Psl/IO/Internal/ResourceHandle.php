@@ -31,7 +31,7 @@ use function substr;
  *
  * @codeCoverageIgnore
  */
-class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
+class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
 {
     use IO\ReadHandleConvenienceMethodsTrait;
     use IO\WriteHandleConvenienceMethodsTrait;

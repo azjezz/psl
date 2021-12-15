@@ -2,20 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Psl\IO\Stream;
+namespace Psl\IO;
 
 use Psl\IO;
-use Psl\IO\Internal;
 
 /**
  * @codeCoverageIgnore
  */
-final class SeekReadWriteHandle implements SeekReadWriteHandleInterface
+final class SeekReadWriteStreamHandle implements SeekReadWriteStreamHandleInterface
 {
     use IO\ReadHandleConvenienceMethodsTrait;
     use IO\WriteHandleConvenienceMethodsTrait;
 
-    private SeekReadWriteHandleInterface $handle;
+    private SeekReadWriteStreamHandleInterface $handle;
 
     /**
      * @param resource|object $stream

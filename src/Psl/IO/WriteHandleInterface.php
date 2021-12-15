@@ -12,8 +12,8 @@ interface WriteHandleInterface extends HandleInterface
     /**
      * Try to write to the handle immediately, without waiting.
      *
-     * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
+     * @throws Exception\AlreadyClosedException If the handle has been already closed.
      *
      * @return positive-int|0 the number of bytes written on success, which may be 0.
      *

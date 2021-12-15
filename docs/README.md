@@ -22,7 +22,6 @@
 - [Psl\Hash](./component/hash.md)
 - [Psl\Html](./component/html.md)
 - [Psl\IO](./component/io.md)
-- [Psl\IO\Stream](./component/io-stream.md)
 - [Psl\Interface](./component/interface.md)
 - [Psl\Iter](./component/iter.md)
 - [Psl\Json](./component/json.md)

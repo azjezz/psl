@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Psl\IO\Stream;
+namespace Psl\IO;
 
 use Psl\IO;
 
-interface HandleInterface extends IO\HandleInterface
+interface StreamHandleInterface extends IO\HandleInterface
 {
     /**
      * Return the underlying stream resource or object.

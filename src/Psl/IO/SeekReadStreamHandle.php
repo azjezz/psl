@@ -2,26 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Psl\IO\Stream;
+namespace Psl\IO;
 
 use Psl\IO;
-use Psl\IO\Internal;
 
 /**
  * @codeCoverageIgnore
  */
-final class CloseReadHandle implements CloseReadHandleInterface
+final class SeekReadStreamHandle implements SeekReadStreamHandleInterface
 {
     use IO\ReadHandleConvenienceMethodsTrait;
 
-    private CloseReadHandleInterface $handle;
+    private SeekReadStreamHandleInterface $handle;
 
     /**
      * @param resource|object $stream
      */
     public function __construct(mixed $stream)
     {
-        $this->handle = new Internal\ResourceHandle($stream, read: true, write: false, seek: false, close: true);
+        $this->handle = new Internal\ResourceHandle($stream, read: true, write: false, seek: true, close: false);
     }
 
     /**
@@ -43,9 +42,17 @@ final class CloseReadHandle implements CloseReadHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function close(): void
+    public function seek(int $offset): void
     {
-        $this->handle->close();
+        $this->handle->seek($offset);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function tell(): int
+    {
+        return $this->handle->tell();
     }
 
     /**

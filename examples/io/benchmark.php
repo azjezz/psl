@@ -32,8 +32,8 @@ Async\main(static function (): int {
     $input_file = Regex\replace($input_file, '(^/dev/fd/)', 'php://fd/');
     $output_file = Regex\replace($output_file, '(^/dev/fd/)', 'php://fd/');
 
-    $input = new IO\Stream\CloseReadHandle(fopen($input_file, 'rb'));
-    $output = new IO\Stream\CloseWriteHandle(fopen($output_file, 'wb'));
+    $input = new IO\CloseReadStreamHandle(fopen($input_file, 'rb'));
+    $output = new IO\CloseWriteStreamHandle(fopen($output_file, 'wb'));
 
     IO\write_error_line('piping from %s to %s (for max %d second(s)) ...', $input_file, $output_file, $seconds);
 
