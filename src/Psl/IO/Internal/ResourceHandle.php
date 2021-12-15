@@ -17,7 +17,6 @@ use function ftell;
 use function fwrite;
 use function is_resource;
 use function str_contains;
-use function stream_get_contents;
 use function stream_get_meta_data;
 use function stream_set_blocking;
 use function stream_set_read_buffer;
@@ -44,8 +43,6 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
      * @var object|resource|null $stream
      */
     protected mixed $stream;
-
-    private bool $useSingleRead;
 
     private bool $blocks;
 
@@ -126,8 +123,6 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
 
             Async\Scheduler::disable($this->writeWatcher);
         }
-
-        $this->useSingleRead = $meta["stream_type"] === "udp_socket" || $meta["stream_type"] === "STDIO";
     }
 
     /**
@@ -312,7 +307,7 @@ class ResourceHandle implements IO\Stream\CloseSeekReadWriteHandleInterface
         }
 
         /** @psalm-suppress PossiblyInvalidArgument */
-        $result = $this->useSingleRead ? fread($this->stream, $max_bytes) : stream_get_contents($this->stream, $max_bytes);
+        $result = fread($this->stream, $max_bytes);
         if ($result === false) {
             /** @var array{message: string} $error */
             $error = error_get_last();
