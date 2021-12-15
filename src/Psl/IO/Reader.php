@@ -132,7 +132,7 @@ final class Reader implements ReadHandleInterface
             static function (): void {
                 // @codeCoverageIgnoreStart
                 throw new Exception\TimeoutException(
-                    "Reached timeout before encountering reaching the end of the line.",
+                    "Reached timeout before encountering reaching the current line terminator.",
                 );
                 // @codeCoverageIgnoreEnd
             },
@@ -160,8 +160,6 @@ final class Reader implements ReadHandleInterface
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
-     *
-     * @psalm-suppress MissingThrowsDocblock
      */
     public function readUntil(string $suffix, ?float $timeout = null): ?string
     {
