@@ -36,7 +36,6 @@ final class Reader implements ReadHandleInterface
             $timeout,
             function (): void {
                 // @codeCoverageIgnoreStart
-
                 throw new Exception\TimeoutException(Str\format(
                     "Reached timeout before reading requested amount of data",
                     $this->buffer === '' ? 'any' : 'all',
@@ -92,6 +91,7 @@ final class Reader implements ReadHandleInterface
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation, or reached end of file.
+     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
     public function readByte(?float $timeout = null): string
     {
@@ -99,24 +99,18 @@ final class Reader implements ReadHandleInterface
         Psl\invariant($timeout === null || $timeout > 0.0, '$timeout must be null, or > 0');
 
         if ($this->buffer === '' && !$this->eof) {
-            // @codeCoverageIgnoreStart
             $this->fillBuffer(null, $timeout);
-            // @codeCoverageIgnoreEnd
         }
 
         if ($this->buffer === '') {
-            // @codeCoverageIgnoreStart
             throw new Exception\RuntimeException('Reached EOF without any more data.');
-            // @codeCoverageIgnoreEnd
         }
 
         $ret = $this->buffer[0];
         if ($ret === $this->buffer) {
-            // @codeCoverageIgnoreStart
             $this->buffer = '';
             $this->eof = true;
             return $ret;
-            // @codeCoverageIgnoreEnd
         }
 
         $this->buffer = substr($this->buffer, 1);
@@ -129,16 +123,29 @@ final class Reader implements ReadHandleInterface
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
+     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    public function readLine(): ?string
+    public function readLine(?float $timeout = null): ?string
     {
-        $line = $this->readUntil(PHP_EOL);
+        $timer = new Internal\OptionalIncrementalTimeout(
+            $timeout,
+            function (): void {
+                // @codeCoverageIgnoreStart
+                throw new Exception\TimeoutException(Str\format(
+                    "Reached timeout before reading requested amount of data",
+                    $this->buffer === '' ? 'any' : 'all',
+                ));
+                // @codeCoverageIgnoreEnd
+            },
+        );
+
+        $line = $this->readUntil(PHP_EOL, $timer->getRemaining());
         if (null !== $line) {
             return $line;
         }
 
         /** @psalm-suppress MissingThrowsDocblock - $size is positive */
-        $content = $this->read();
+        $content = $this->read(null, $timer->getRemaining());
         return '' === $content ? null : $content;
     }
 
@@ -153,10 +160,11 @@ final class Reader implements ReadHandleInterface
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
+     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      *
      * @psalm-suppress MissingThrowsDocblock
      */
-    public function readUntil(string $suffix): ?string
+    public function readUntil(string $suffix, ?float $timeout = null): ?string
     {
         $buf = $this->buffer;
         $idx = strpos($buf, $suffix);
@@ -166,12 +174,24 @@ final class Reader implements ReadHandleInterface
             return substr($buf, 0, $idx);
         }
 
+        $timer = new Internal\OptionalIncrementalTimeout(
+            $timeout,
+            function (): void {
+                // @codeCoverageIgnoreStart
+                throw new Exception\TimeoutException(Str\format(
+                    "Reached timeout before reading requested amount of data",
+                    $this->buffer === '' ? 'any' : 'all',
+                ));
+                // @codeCoverageIgnoreEnd
+            },
+        );
+
         do {
             // + 1 as it would have been matched in the previous iteration if it
             // fully fit in the chunk
             $offset = strlen($buf) - $suffix_len + 1;
             $offset = $offset > 0 ? $offset : 0;
-            $chunk = $this->handle->read();
+            $chunk = $this->handle->read(null, $timer->getRemaining());
             if ($chunk === '') {
                 $this->buffer = $buf;
                 return null;
@@ -223,7 +243,6 @@ final class Reader implements ReadHandleInterface
         if ($this->buffer === '') {
             $this->buffer = $this->getHandle()->tryRead();
             if ($this->buffer === '') {
-                $this->eof = true;
                 return '';
             }
         }
@@ -262,9 +281,6 @@ final class Reader implements ReadHandleInterface
 
         // @codeCoverageIgnoreStart
         try {
-            // Calling the immediate (but still non-blocking) version as the async
-            // version could wait for the other end to send data - which could lead
-            // to both ends of a pipe/socket waiting on each other.
             $this->buffer = $this->handle->read();
             if ($this->buffer === '') {
                 $this->eof = true;

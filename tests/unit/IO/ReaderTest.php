@@ -10,6 +10,25 @@ use Psl\IO;
 
 final class ReaderTest extends TestCase
 {
+    public function testReadByteOnAnEmptyBufferFillsTheInternalBufferAndMarksTheReaderAsEOF(): void
+    {
+        $handle = new IO\MemoryHandle('a');
+        $reader = new IO\Reader($handle);
+
+        static::assertSame('a', $reader->readByte());
+        static::assertTrue($reader->isEndOfFile());
+    }
+
+    public function testReadByteOnAnEmptyBufferThrows(): void
+    {
+        $handle = new IO\MemoryHandle();
+        $reader = new IO\Reader($handle);
+
+        $this->expectException(IO\Exception\RuntimeException::class);
+
+        $reader->readByte();
+    }
+
     public function testReadEmptyHandle(): void
     {
         $handle = new IO\MemoryHandle();
