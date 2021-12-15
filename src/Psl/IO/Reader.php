@@ -129,7 +129,7 @@ final class Reader implements ReadHandleInterface
     {
         $timer = new Internal\OptionalIncrementalTimeout(
             $timeout,
-            function (): void {
+            static function (): void {
                 // @codeCoverageIgnoreStart
                 throw new Exception\TimeoutException(
                     "Reached timeout before encountering reaching the end of the line.",
@@ -175,7 +175,7 @@ final class Reader implements ReadHandleInterface
 
         $timer = new Internal\OptionalIncrementalTimeout(
             $timeout,
-            function () use($suffix): void {
+            static function () use ($suffix): void {
                 // @codeCoverageIgnoreStart
                 throw new Exception\TimeoutException(Str\format(
                     "Reached timeout before encountering the suffix (\"%s\").",
