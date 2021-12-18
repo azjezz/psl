@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Async;
 
+use Closure;
 use Psl\Dict;
 
 /**
@@ -12,7 +13,7 @@ use Psl\Dict;
  * @template Tk of array-key
  * @template Tv
  *
- * @param iterable<Tk, (callable(): Tv)> $tasks
+ * @param iterable<Tk, (Closure(): Tv)> $tasks
  *
  * @throws Exception\CompositeException If multiple functions failed at once.
  *
@@ -23,11 +24,11 @@ function parallel(iterable $tasks): array
     $awaitables = Dict\map(
         $tasks,
         /**
-         * @param callable(): Tv $callable
+         * @param (Closure(): Tv) $closure
          *
          * @return Awaitable<Tv>
          */
-        static fn(callable $callable): Awaitable => run($callable),
+        static fn(Closure $closure): Awaitable => run($closure),
     );
 
     return namespace\all($awaitables);

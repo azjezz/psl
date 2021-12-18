@@ -17,11 +17,11 @@
 - [await](./../../src/Psl/Async/await.php#L18)
 - [first](./../../src/Psl/Async/first.php#L22)
 - [later](./../../src/Psl/Async/later.php#L14)
-- [main](./../../src/Psl/Async/main.php#L16)
-- [parallel](./../../src/Psl/Async/parallel.php#L21)
+- [main](./../../src/Psl/Async/main.php#L18)
+- [parallel](./../../src/Psl/Async/parallel.php#L22)
 - [reflect](./../../src/Psl/Async/reflect.php#L25)
-- [run](./../../src/Psl/Async/run.php#L20)
-- [series](./../../src/Psl/Async/series.php#L21)
+- [run](./../../src/Psl/Async/run.php#L21)
+- [series](./../../src/Psl/Async/series.php#L22)
 - [sleep](./../../src/Psl/Async/sleep.php#L10)
 
 #### `Classes`

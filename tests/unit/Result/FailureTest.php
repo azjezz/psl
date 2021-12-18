@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\Result;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
+use Psl;
 use Psl\Fun;
 use Psl\Result\Failure;
 
@@ -80,5 +81,48 @@ final class FailureTest extends TestCase
 
         static::assertFalse($actual->isSucceeded());
         static::assertSame($actual->getException(), $exception);
+    }
+
+    public function testCatch(): void
+    {
+        $exception = new Exception('bar');
+        $wrapper   = new Failure($exception);
+        $actual    = $wrapper->catch(Fun\rethrow());
+
+        static::assertFalse($actual->isSucceeded());
+        static::assertSame($actual->getException(), $exception);
+
+        $exception = new Exception('bar');
+        $wrapper   = new Failure($exception);
+        $actual    = $wrapper->catch(static fn($exception) => $exception);
+
+        static::assertTrue($actual->isSucceeded());
+        static::assertSame($exception, $actual->getResult());
+    }
+
+    public function testMap(): void
+    {
+        $exception = new Exception('bar');
+        $wrapper   = new Failure($exception);
+        $actual    = $wrapper->map(static function () {
+            throw new Exception('Dont call us, we\'ll call you!');
+        });
+
+        static::assertTrue($actual->isFailed());
+        static::assertSame($exception, $actual->getException());
+    }
+
+    public function testAlways(): void
+    {
+        $ref = new Psl\Ref('');
+        $exception = new Exception('bar');
+        $wrapper   = new Failure($exception);
+        $actual    = $wrapper->always(static function () use ($ref) {
+            $ref->value .= 'hello';
+        });
+
+        static::assertTrue($actual->isFailed());
+        static::assertSame($exception, $actual->getException());
+        static::assertSame('hello', $ref->value);
     }
 }

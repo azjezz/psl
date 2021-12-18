@@ -12,6 +12,6 @@
 
 #### `Interfaces`
 
-- [PromiseInterface](./../../src/Psl/Promise/PromiseInterface.php#L12)
+- [PromiseInterface](./../../src/Psl/Promise/PromiseInterface.php#L13)
 
 

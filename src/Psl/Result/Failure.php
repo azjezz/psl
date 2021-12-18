@@ -4,37 +4,31 @@ declare(strict_types=1);
 
 namespace Psl\Result;
 
-use Exception;
+use Closure;
+use Exception as RootException;
 
 /**
  * Represents the result of failed operation.
  *
  * @template    T
- * @template    Te of Exception
+ * @template    Te of RootException
  *
  * @implements  ResultInterface<T>
  */
 final class Failure implements ResultInterface
 {
     /**
-     * @var Te
-     *
-     * @readonly
-     */
-    private Exception $exception;
-
-    /**
      * @param Te $exception
      */
-    public function __construct(Exception $exception)
-    {
-        $this->exception = $exception;
+    public function __construct(
+        private readonly RootException $exception
+    ) {
     }
 
     /**
      * Since this is a failed result wrapper, this always throws the exception thrown during the operation.
      *
-     * @throws Exception
+     * @throws RootException
      *
      * @psalm-mutation-free
      */
@@ -50,7 +44,7 @@ final class Failure implements ResultInterface
      *
      * @psalm-mutation-free
      */
-    public function getException(): Exception
+    public function getException(): RootException
     {
         return $this->exception;
     }
@@ -76,23 +70,76 @@ final class Failure implements ResultInterface
     }
 
     /**
-     * Unwrapping and transforming a result can be done by using the proceed method.
-     * Since this is a failed result wrapper, the `$on_failure` callback will be triggered.
-     * The callback will receive the Exception as an argument, so that you can transform it to anything you want.
+     * {@inheritDoc}
+     *
+     * @template Ts
+     *
+     * @param (Closure(T): Ts) $success
+     * @param (Closure(RootException): Ts) $failure
+     *
+     * @return Ts
      */
-    public function proceed(callable $on_success, callable $on_failure)
+    public function proceed(Closure $success, Closure $failure): mixed
     {
-        return $on_failure($this->exception);
+        return $failure($this->exception);
     }
 
     /**
-     * The method can be used to transform a result into another result.
-     * Since this is a failure result wrapper, the `$on_failure` callback will be triggered.
-     * The callback will receive the Exception as an argument,
-     * so that you can use it to create a success result or rethrow the Exception.
+     * {@inheritDoc}
+     *
+     * @template Ts
+     *
+     * @param (Closure(T): Ts) $success
+     * @param (Closure(RootException): Ts) $failure
+     *
+     * @return ResultInterface<Ts>
      */
-    public function then(callable $on_success, callable $on_failure): ResultInterface
+    public function then(Closure $success, Closure $failure): ResultInterface
     {
-        return wrap(fn () => $on_failure($this->exception));
+        return wrap(fn () => $failure($this->exception));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @template Ts
+     *
+     * @param (Closure(T): Ts) $success
+     *
+     * @return Failure<Ts, Te>
+     */
+    public function map(Closure $success): Failure
+    {
+        return new Failure($this->exception);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @template Ts
+     *
+     * @param (Closure(RootException): Ts) $failure
+     *
+     * @return ResultInterface<Ts>
+     */
+    public function catch(Closure $failure): ResultInterface
+    {
+        return wrap(fn() => $failure($this->exception));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param (Closure(): void) $always
+     *
+     * @return ResultInterface<T>
+     */
+    public function always(Closure $always): ResultInterface
+    {
+        return wrap(function () use ($always) {
+            $always();
+
+            throw $this->exception;
+        });
     }
 }

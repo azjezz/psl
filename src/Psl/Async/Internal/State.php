@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Async\Internal;
 
+use Closure;
 use Exception as RootException;
 use Psl;
 use Psl\Async\Awaitable;
@@ -35,7 +36,7 @@ final class State
     private bool $handled = false;
 
     /**
-     * @var array<string, (callable(?RootException, ?T, string): void)>
+     * @var array<string, (Closure(?RootException, ?T, string): void)>
      */
     private array $callbacks = [];
 
@@ -59,11 +60,11 @@ final class State
      *
      * The callback is invoked directly from the event loop context, so suspension within the callback is not possible.
      *
-     * @param (callable(?RootException, ?T, string): void) $callback Callback invoked on completion of the awaitable.
+     * @param (Closure(?RootException, ?T, string): void) $callback Callback invoked on completion of the awaitable.
      *
      * @return string Identifier that can be used to cancel interest for this awaitable.
      */
-    public function subscribe(callable $callback): string
+    public function subscribe(Closure $callback): string
     {
         /** @psalm-suppress StringIncrement */
         $id = self::$nextId++;

@@ -12,15 +12,15 @@
 
 #### `Functions`
 
-- [wrap](./../../src/Psl/Result/wrap.php#L19)
+- [wrap](./../../src/Psl/Result/wrap.php#L20)
 
 #### `Interfaces`
 
-- [ResultInterface](./../../src/Psl/Result/ResultInterface.php#L19)
+- [ResultInterface](./../../src/Psl/Result/ResultInterface.php#L22)
 
 #### `Classes`
 
-- [Failure](./../../src/Psl/Result/Failure.php#L17)
-- [Success](./../../src/Psl/Result/Success.php#L17)
+- [Failure](./../../src/Psl/Result/Failure.php#L18)
+- [Success](./../../src/Psl/Result/Success.php#L18)
 
 

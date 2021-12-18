@@ -4,19 +4,22 @@ declare(strict_types=1);
 
 namespace Psl\Result;
 
-use Exception;
+use Closure;
+use Exception as RootException;
 use Psl;
 
 /**
  * Represents a result of operation that either has a successful result or the exception object if
  * that operation failed.
  *
- * This is an interface. You get generally `ResultInterface<T>` by calling `tryResultFrom<T>()`, passing in
- * the `callable(): T`, and a `Success<T>` or `Failure<Te>` is returned.
+ * This is an interface. You get generally `ResultInterface<T>` by calling `wrap<T>()`, passing in
+ * the `(Closure(): T)`, and a `Success<T>` or `Failure<Te>` is returned.
  *
  * @template T
+ *
+ * @extends Psl\Promise\PromiseInterface<T>
  */
-interface ResultInterface
+interface ResultInterface extends Psl\Promise\PromiseInterface
 {
     /**
      * Return the result of the operation, or throw underlying exception.
@@ -40,7 +43,7 @@ interface ResultInterface
      *
      * @psalm-mutation-free
      */
-    public function getException(): Exception;
+    public function getException(): RootException;
 
     /**
      * Indicates whether the operation associated with this wrapper existed normally.
@@ -70,32 +73,12 @@ interface ResultInterface
      * The callback will receive the result or Exception as an argument,
      * so that you can transform it to anything you want.
      *
-     * @template R
+     * @template Ts
      *
-     * @param callable(T): R $on_success
-     * @param callable(Exception): R $on_failure
+     * @param (Closure(T): Ts) $success
+     * @param (Closure(RootException): Ts) $failure
      *
-     * @return R
+     * @return Ts
      */
-    public function proceed(callable $on_success, callable $on_failure);
-
-    /**
-     * The method can be used to transform a result into another result.
-     * The implementation will either run the `$on_success` or `$on_failure` callback.
-     * The callback will receive the result value or Exception as an argument,
-     * so that you can transform use it to build a new result.
-     *
-     * This method is compatible with the `PromiseInterface::then()` function from `reactphp/promise`.
-     * You can use it in an async context as long as the package you are using is compatible with reactphp promises.
-     *
-     * @link https://github.com/reactphp/promise#promiseinterfacethen
-     *
-     * @template R
-     *
-     * @param callable(T): R $on_success
-     * @param callable(Exception): R $on_failure
-     *
-     * @return ResultInterface<R>
-     */
-    public function then(callable $on_success, callable $on_failure): ResultInterface;
+    public function proceed(Closure $success, Closure $failure): mixed;
 }

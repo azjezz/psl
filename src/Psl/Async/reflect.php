@@ -10,11 +10,11 @@ use Psl\Result;
 
 /**
  * Wraps the given task in another task that always completes with a {@see Result\Success},
- * or {@see Result\Failure} if the callable throws an {@see Exception}.
+ * or {@see Result\Failure} if the closure throws an {@see Exception}.
  *
  * @template T
  *
- * @param (callable(): T) $task
+ * @param (Closure(): T) $task
  *
  * @return (Closure(): Result\ResultInterface<T>)
  *
@@ -22,7 +22,7 @@ use Psl\Result;
  *
  * @pure
  */
-function reflect(callable $task): Closure
+function reflect(Closure $task): Closure
 {
     return static fn() => Result\wrap($task);
 }

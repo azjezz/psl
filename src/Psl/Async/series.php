@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Async;
 
+use Closure;
 use Psl\Dict;
 
 /**
@@ -14,7 +15,7 @@ use Psl\Dict;
  * @template Tk of array-key
  * @template Tv
  *
- * @param iterable<Tk, (callable(): Tv)> $tasks
+ * @param iterable<Tk, (Closure(): Tv)> $tasks
  *
  * @return array<Tk, Tv>
  */
@@ -23,10 +24,10 @@ function series(iterable $tasks): array
     return Dict\map(
         $tasks,
         /**
-         * @param callable(): Tv $callable
+         * @param (Closure(): Tv) $closure
          *
          * @return Tv
          */
-        static fn(callable $callable): mixed => run($callable)->await(),
+        static fn(Closure $closure): mixed => run($closure)->await(),
     );
 }

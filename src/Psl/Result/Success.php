@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Result;
 
-use Exception;
+use Closure;
+use Exception as RootException;
 use Psl;
 
 /**
@@ -83,22 +84,76 @@ final class Success implements ResultInterface
     }
 
     /**
-     * Unwrapping and transforming a result can be done by using the proceed method.
-     * Since this is a success result wrapper, the `$on_success` callback will be triggered.
-     * The callback will receive the result value as an argument, so that you can transform it to anything you want.
+     * {@inheritDoc}
+     *
+     * @template Ts
+     *
+     * @param (Closure(T): Ts) $success
+     * @param (Closure(RootException): Ts) $failure
+     *
+     * @return Ts
      */
-    public function proceed(callable $on_success, callable $on_failure)
+    public function proceed(Closure $success, Closure $failure): mixed
     {
-        return $on_success($this->value);
+        return $success($this->value);
     }
 
     /**
-     * The method can be used to transform a result into another result.
-     * Since this is a success result wrapper, the `$on_success` callback will be triggered.
-     * The callback will receive the result value as an argument, so that you can use it to create a new result.
+     * {@inheritDoc}
+     *
+     * @template Ts
+     *
+     * @param (Closure(T): Ts) $success
+     * @param (Closure(RootException): Ts) $failure
+     *
+     * @return ResultInterface<Ts>
      */
-    public function then(callable $on_success, callable $on_failure): ResultInterface
+    public function then(Closure $success, Closure $failure): ResultInterface
     {
-        return wrap(fn () => $on_success($this->value));
+        return wrap(fn () => $success($this->value));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @template Ts
+     *
+     * @param (Closure(T): Ts) $success
+     *
+     * @return ResultInterface<Ts>
+     */
+    public function map(Closure $success): ResultInterface
+    {
+        return wrap(fn () => $success($this->value));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @template Ts
+     *
+     * @param (Closure(RootException): Ts) $failure
+     *
+     * @return Success<T>
+     */
+    public function catch(Closure $failure): Success
+    {
+        return new Success($this->value);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param (Closure(): void) $always
+     *
+     * @return ResultInterface<T>
+     */
+    public function always(Closure $always): ResultInterface
+    {
+        return wrap(function () use ($always) {
+            $always();
+
+            return $this->value;
+        });
     }
 }

@@ -26,8 +26,8 @@ interface PromiseInterface
      *
      * @template Ts
      *
-     * @param (Closure(T): Ts) $on_success
-     * @param (Closure(RootException): Ts) $on_failure
+     * @param (Closure(T): Ts) $success
+     * @param (Closure(RootException): Ts) $failure
      *
      * @return PromiseInterface<Ts>
      */
@@ -41,7 +41,7 @@ interface PromiseInterface
      *
      * @template Ts
      *
-     * @param (Closure(T): Ts) $on_success
+     * @param (Closure(T): Ts) $success
      *
      * @return PromiseInterface<Ts>
      */
@@ -55,7 +55,7 @@ interface PromiseInterface
      *
      * @template Ts
      *
-     * @param (Closure(RootException): Ts) $on_failure
+     * @param (Closure(RootException): Ts) $failure
      *
      * @return PromiseInterface<T|Ts>
      */
@@ -68,7 +68,7 @@ interface PromiseInterface
      *
      * If the callback throws, the returned promise will be rejected with the thrown exception.
      *
-     * @param (Closure(RootException): void) $always
+     * @param (Closure(): void) $always
      *
      * @return PromiseInterface<T>
      */

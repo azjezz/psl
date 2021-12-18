@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace Psl\Async;
 
+use Closure;
 use Exception as RootException;
 use Psl;
 use Psl\Async\Exception\TimeoutException;
 
 /**
- * Create a new fiber asynchronously using the given callable.
+ * Create a new fiber asynchronously using the given closure.
  *
  * @template T
  *
- * @param (callable(): T) $callable
+ * @param (Closure(): T) $closure
  *
  * @return Awaitable<T>
  */
-function run(callable $callable, ?float $timeout = null): Awaitable
+function run(Closure $closure, ?float $timeout = null): Awaitable
 {
     $state = new Internal\State();
 
@@ -41,11 +42,11 @@ function run(callable $callable, ?float $timeout = null): Awaitable
         Scheduler::unreference($timeout_watcher->value);
     }
 
-    $delay_watcher->value = Scheduler::defer(static function () use ($callable, $state, $timeout_watcher): void {
+    $delay_watcher->value = Scheduler::defer(static function () use ($closure, $state, $timeout_watcher): void {
         $exception = null;
         $result = null;
         try {
-            $result = $callable();
+            $result = $closure();
         } catch (RootException $exception) {
         }
 
