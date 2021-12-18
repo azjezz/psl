@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Async\Internal;
 
+use Exception as RootException;
 use Psl;
 use Psl\Async\Awaitable;
 use Psl\Iter;
-use Throwable;
 
 /**
  * The following class was derived from code of Amphp.
@@ -59,7 +59,7 @@ final class AwaitableIterator
              * @param Tv|null $_result
              */
             static function (
-                ?Throwable $_error,
+                ?RootException $_error,
                 mixed $_result,
                 string $id
             ) use (
@@ -100,7 +100,7 @@ final class AwaitableIterator
     /**
      * @throws Psl\Exception\InvariantViolationException If the iterator has already been marked as complete.
      */
-    public function error(Throwable $exception): void
+    public function error(RootException $exception): void
     {
         Psl\invariant(null === $this->complete, 'Iterator has already been marked as complete');
 

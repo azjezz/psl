@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Async;
 
+use Exception as RootException;
 use Generator;
 use Psl\Async\Internal\AwaitableIterator;
 use Psl\Async\Internal\State;
-use Throwable;
 
 use function is_array;
 
@@ -68,7 +68,7 @@ final class Awaitable
 
                     /** @psalm-suppress MissingThrowsDocblock */
                     $iterator->complete();
-                } catch (Throwable $exception) {
+                } catch (RootException $exception) {
                     /** @psalm-suppress MissingThrowsDocblock */
                     $iterator->error($exception);
                 }
@@ -102,12 +102,12 @@ final class Awaitable
     /**
      * @return Awaitable<void>
      */
-    public static function error(Throwable $throwable): self
+    public static function error(RootException $exception): self
     {
         /** @var State<void> $state */
         $state = new State();
         /** @psalm-suppress MissingThrowsDocblock */
-        $state->error($throwable);
+        $state->error($exception);
 
         return new self($state);
     }
@@ -129,7 +129,7 @@ final class Awaitable
      * @template Ts
      *
      * @param callable(T): Ts $on_success
-     * @param callable(Throwable): Ts $on_failure
+     * @param callable(RootException): Ts $on_failure
      *
      * @return Awaitable<Ts>
      */
@@ -140,15 +140,15 @@ final class Awaitable
 
         $this->state->subscribe(
             /**
-             * @param null|Throwable $error
+             * @param null|RootException $error
              * @param null|T $value
              */
-            static function (?Throwable $error, mixed $value) use ($state, $on_success, $on_failure): void {
+            static function (?RootException $error, mixed $value) use ($state, $on_success, $on_failure): void {
                 if ($error) {
                     try {
                         $state->complete($on_failure($error));
-                    } catch (Throwable $throwable) {
-                        $state->error($throwable);
+                    } catch (RootException $exception) {
+                        $state->error($exception);
                     }
 
                     return;
@@ -159,7 +159,7 @@ final class Awaitable
                      * @var T $value
                      */
                     $state->complete($on_success($value));
-                } catch (Throwable $exception) {
+                } catch (RootException $exception) {
                     $state->error($exception);
                 }
             },
@@ -182,10 +182,10 @@ final class Awaitable
 
         $this->state->subscribe(
             /**
-             * @param null|Throwable $error
+             * @param null|RootException $error
              * @param null|T $value
              */
-            static function (?Throwable $error, mixed $value) use ($suspension): void {
+            static function (?RootException $error, mixed $value) use ($suspension): void {
                 if ($error) {
                     $suspension->throw($error);
                 } else {

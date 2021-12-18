@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Async;
 
+use Exception as RootException;
 use Psl\Dict;
-use Throwable;
 
 /**
  * Awaits all awaitables to complete concurrently.
@@ -27,7 +27,7 @@ function all(iterable $awaitables): array
     foreach (Awaitable::iterate($awaitables) as $index => $awaitable) {
         try {
             $values[$index] = $awaitable->await();
-        } catch (Throwable $throwable) {
+        } catch (RootException $exception) {
             $errors = [];
             foreach ($awaitables as $original) {
                 if ($original === $awaitable) {
@@ -39,17 +39,17 @@ function all(iterable $awaitables): array
                 } else {
                     try {
                         $original->await();
-                    } catch (Throwable $error) {
+                    } catch (RootException $error) {
                         $errors[] = $error;
                     }
                 }
             }
 
             if ($errors === []) {
-                throw $throwable;
+                throw $exception;
             }
 
-            throw new Exception\CompositeException([$throwable, ...$errors], 'Multiple exceptions thrown while waiting.');
+            throw new Exception\CompositeException([$exception, ...$errors], 'Multiple exceptions thrown while waiting.');
         }
     }
 

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Async;
 
+use Exception as RootException;
 use Psl;
 use Psl\Async\Exception\TimeoutException;
-use Throwable;
 
 /**
  * Create a new fiber asynchronously using the given callable.
@@ -46,8 +46,7 @@ function run(callable $callable, ?float $timeout = null): Awaitable
         $result = null;
         try {
             $result = $callable();
-        } catch (Throwable $throwable) {
-            $exception = $throwable;
+        } catch (RootException $exception) {
         }
 
         if (null !== $timeout_watcher->value) {
