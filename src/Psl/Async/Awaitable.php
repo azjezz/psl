@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Async;
 
+use Closure;
 use Exception as RootException;
 use Generator;
 use Psl\Async\Internal\AwaitableIterator;
 use Psl\Async\Internal\State;
+use Psl\Fun;
+use Psl\Promise\PromiseInterface;
 
 use function is_array;
 
@@ -21,8 +24,10 @@ use function is_array;
  * Copyright (c) 2015-2021 Amphp ( https://amphp.org )
  *
  * @template T
+ *
+ * @implements PromiseInterface<T>
  */
-final class Awaitable
+final class Awaitable implements PromiseInterface
 {
     private State $state;
 
@@ -120,20 +125,18 @@ final class Awaitable
         return $this->state->isComplete();
     }
 
+
     /**
-     * Attaches a callback that is invoked if this awaitable completes.
-     *
-     * The returned awaitable is completed with the return value of the callback,
-     * or errors with an exception thrown from the callback.
+     * {@inheritDoc}
      *
      * @template Ts
      *
-     * @param callable(T): Ts $on_success
-     * @param callable(RootException): Ts $on_failure
+     * @param (Closure(T): Ts) $success
+     * @param (Closure(RootException): Ts) $failure
      *
      * @return Awaitable<Ts>
      */
-    public function then(callable $on_success, callable $on_failure): self
+    public function then(Closure $success, Closure $failure): Awaitable
     {
         /** @var State<Ts> $state */
         $state = new State();
@@ -143,10 +146,10 @@ final class Awaitable
              * @param null|RootException $error
              * @param null|T $value
              */
-            static function (?RootException $error, mixed $value) use ($state, $on_success, $on_failure): void {
+            static function (?RootException $error, mixed $value) use ($state, $success, $failure): void {
                 if ($error) {
                     try {
-                        $state->complete($on_failure($error));
+                        $state->complete($failure($error));
                     } catch (RootException $exception) {
                         $state->error($exception);
                     }
@@ -158,7 +161,7 @@ final class Awaitable
                     /**
                      * @var T $value
                      */
-                    $state->complete($on_success($value));
+                    $state->complete($success($value));
                 } catch (RootException $exception) {
                     $state->error($exception);
                 }
@@ -168,6 +171,75 @@ final class Awaitable
         return new self($state);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @template Ts
+     *
+     * @param (Closure(T): Ts) $success
+     *
+     * @return Awaitable<Ts>
+     */
+    public function map(Closure $success): Awaitable
+    {
+        /**
+         * @psalm-suppress ArgumentTypeCoercion
+         *
+         * Psalm doesn't seem to understand Fun\rethrow().
+         *
+         * @TODO(azjezz): investigate, and see if it is possible to help psalm understand this via the plugin.
+         */
+        return $this->then($success, Fun\rethrow());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @template Ts
+     *
+     * @param (Closure(RootException): Ts) $failure
+     *
+     * @return Awaitable<T|Ts>
+     */
+    public function catch(Closure $failure): Awaitable
+    {
+        /** @var (Closure(T): T) $success */
+        $success = Fun\identity();
+
+        return $this->then($success, $failure);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param (Closure(): void) $always
+     *
+     * @return Awaitable<T>
+     */
+    public function always(Closure $always): Awaitable
+    {
+        /** @var State<T> $state */
+        $state = new State();
+
+        $this->state->subscribe(static function (?RootException $error, mixed $value) use ($state, $always): void {
+            try {
+                $always();
+
+                if ($error) {
+                    $state->error($error);
+                } else {
+                    /**
+                     * @var T $value
+                     */
+                    $state->complete($value);
+                }
+            } catch (RootException $exception) {
+                $state->error($exception);
+            }
+        });
+
+        return new self($state);
+    }
 
     /**
      * Awaits the operation to complete.

@@ -13,7 +13,7 @@
 #### `Functions`
 
 - [after](./../../src/Psl/Fun/after.php#L37)
-- [identity](./../../src/Psl/Fun/identity.php#L17)
+- [identity](./../../src/Psl/Fun/identity.php#L19)
 - [lazy](./../../src/Psl/Fun/lazy.php#L16)
 - [pipe](./../../src/Psl/Fun/pipe.php#L34)
 - [rethrow](./../../src/Psl/Fun/rethrow.php#L17)

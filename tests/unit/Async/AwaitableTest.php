@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Async;
 
 use PHPUnit\Framework\TestCase;
+use Psl;
 use Psl\Async;
 use Psl\Async\Awaitable;
 use Psl\Async\Exception\UnhandledAwaitableException;
@@ -194,5 +195,23 @@ final class AwaitableTest extends TestCase
         ;
 
         static::assertSame('olleh', $awaitable->await());
+    }
+
+    public function testMap(): void
+    {
+        $awaitable = Async\run(static function (): string {
+            return 'hello';
+        });
+
+        $ref = new Psl\Ref('');
+        $awaitable = $awaitable
+            ->map(static fn(string $result) => Str\reverse($result))
+            ->map(static fn(string $result) => throw new InvariantViolationException($result))
+            ->catch(static fn(InvariantViolationException $exception): string => $exception->getMessage())
+            ->always(static fn() => $ref->value = 'hello')
+        ;
+
+        static::assertSame('olleh', $awaitable->await());
+        static::assertSame('hello', $ref->value);
     }
 }
