@@ -512,7 +512,6 @@ final class Loader
         'Psl\Shell\Exception\ExceptionInterface',
         'Psl\Filesystem\Exception\ExceptionInterface',
         'Psl\IO\Exception\ExceptionInterface',
-
         'Psl\IO\CloseHandleInterface',
         'Psl\IO\CloseReadHandleInterface',
         'Psl\IO\CloseReadWriteHandleInterface',
@@ -545,7 +544,6 @@ final class Loader
         'Psl\IO\SeekReadWriteStreamHandleInterface',
         'Psl\IO\SeekWriteStreamHandleInterface',
         'Psl\IO\WriteStreamHandleInterface',
-
         'Psl\RandomSequence\SequenceInterface',
         'Psl\Async\Exception\ExceptionInterface',
         'Psl\File\Exception\ExceptionInterface',
@@ -561,6 +559,7 @@ final class Loader
         'Psl\Channel\SenderInterface',
         'Psl\Channel\ReceiverInterface',
         'Psl\Channel\Exception\ExceptionInterface',
+        'Psl\Promise\PromiseInterface',
     ];
 
     public const TRAITS = [

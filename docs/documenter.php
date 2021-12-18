@@ -205,6 +205,7 @@ function get_all_components(): array
         'Psl\\Network',
         'Psl\\Observer',
         'Psl\\Password',
+        'Psl\\Promise',
         'Psl\\PseudoRandom',
         'Psl\\RandomSequence',
         'Psl\\Regex',
