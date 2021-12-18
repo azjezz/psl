@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace Psl\Fun;
 
-use Psl\Fun\Internal\LazyEvaluator;
+use Closure;
 
 /**
+ * Returns a closure that can be used for lazy evaluation.
+ *
  * @template T
  *
- * @param callable(): T $initializer
+ * @param (Closure(): T) $initializer
  *
- * @return callable(): T
+ * @return (Closure(): T)
  */
-function lazy(callable $initializer): callable
+function lazy(Closure $initializer): callable
 {
-    $evaluator = new LazyEvaluator($initializer);
+    $evaluator = new Internal\LazyEvaluator($initializer);
 
     return static fn() => $evaluator();
 }

@@ -4,33 +4,24 @@ declare(strict_types=1);
 
 namespace Psl\Fun;
 
+use Closure;
+
 /**
- * Creates a callback that can run a left or right function based on a condition.
- *
- * Example:
- *
- *      $greet = Fun\when(
- *          static fn(string $name): bool => $name === 'Jos',
- *          static fn(string $name): string => 'Bonjour Jos!',
- *          static fn(string $name): string => 'Hello ' . $name . '!'
- *      );
- *
- *      $greet('World')
- *      => Str('Hello World!');
- *
- *      $greet('Jos')
- *      => Str('Bonjour Jos!');
+ * Returns a closure that returns the result of the `$then` function if the condition is true,
+ * otherwise the result of the `$else` function.
  *
  * @template Ti
  * @template To
  *
- * @param (callable(Ti): bool) $condition
- * @param (callable(Ti): To) $then
- * @param (callable(Ti): To) $else
+ * @param (Closure(Ti): bool) $condition
+ * @param (Closure(Ti): To) $then
+ * @param (Closure(Ti): To) $else
  *
- * @return (callable(Ti): To)
+ * @return (Closure(Ti): To)
+ *
+ * @pure
  */
-function when(callable $condition, callable $then, callable $else): callable
+function when(Closure $condition, Closure $then, Closure $else): Closure
 {
     return static fn ($value) =>  $condition($value) ? $then($value) : $else($value);
 }

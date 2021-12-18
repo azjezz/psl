@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Fun;
 
+use Closure;
 use Exception;
 
 /**
- * This method creates a callback that throws the exception passed as argument.
- * It can e.g. be used as a failure callback.
+ * Returns a closure that rethrows the exception passed to it.
  *
- * @return (callable(Exception): never)
+ * @return (Closure(Exception): never)
  *
  * @pure
  */

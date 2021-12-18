@@ -7,8 +7,7 @@ namespace Psl\Fun;
 use Closure;
 
 /**
- * This method creates a callback that returns the value passed as argument.
- * It can e.g. be used as a success callback.
+ * Create a closure that returns the value passed to it as an argument.
  *
  * @template T
  *

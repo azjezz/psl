@@ -12,12 +12,12 @@
 
 #### `Functions`
 
-- [after](./../../src/Psl/Fun/after.php#L37)
-- [identity](./../../src/Psl/Fun/identity.php#L19)
-- [lazy](./../../src/Psl/Fun/lazy.php#L16)
-- [pipe](./../../src/Psl/Fun/pipe.php#L34)
+- [after](./../../src/Psl/Fun/after.php#L23)
+- [identity](./../../src/Psl/Fun/identity.php#L18)
+- [lazy](./../../src/Psl/Fun/lazy.php#L18)
+- [pipe](./../../src/Psl/Fun/pipe.php#L21)
 - [rethrow](./../../src/Psl/Fun/rethrow.php#L17)
-- [tap](./../../src/Psl/Fun/tap.php#L54)
-- [when](./../../src/Psl/Fun/when.php#L33)
+- [tap](./../../src/Psl/Fun/tap.php#L20)
+- [when](./../../src/Psl/Fun/when.php#L24)
 
 

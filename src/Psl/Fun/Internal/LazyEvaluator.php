@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Fun\Internal;
 
+use Closure;
+
 /**
  * @internal
  * @template T
@@ -15,19 +17,14 @@ final class LazyEvaluator
      */
     private mixed $instance = null;
 
-    /**
-     * @var callable(): T
-     */
-    private $initializer;
-
     private bool $initialized = false;
 
     /**
-     * @param callable(): T $initializer
+     * @param (Closure(): T) $initializer
      */
-    public function __construct(callable $initializer)
-    {
-        $this->initializer = $initializer;
+    public function __construct(
+        private Closure $initializer
+    ) {
     }
 
     /**

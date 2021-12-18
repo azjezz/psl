@@ -4,37 +4,23 @@ declare(strict_types=1);
 
 namespace Psl\Fun;
 
+use Closure;
+
 /**
- * Returns a function that calls the next function with the result of the first function.
- *
- * Example:
- *
- *      $run = Fun\after(
- *          static fn(int $i): int => $i + 1,
- *          static fn(int $i): int => $i * 5,
- *      );
- *
- *      $run(1)
- *      => Int(10)
- *
- *      $run(2)
- *      => Int(15)
- *
- *      $run(3)
- *      => Int(20)
+ * Returns a closure that calls the next functions with the result of the first one.
  *
  * @template I
  * @template O
  * @template R
  *
- * @param (callable(I): O) $first
- * @param (callable(O): R) $next
+ * @param (Closure(I): O) $first
+ * @param (Closure(O): R) $next
  *
- * @return (callable(I): R)
+ * @return (Closure(I): R)
  *
  * @pure
  */
-function after(callable $first, callable $next): callable
+function after(Closure $first, Closure $next): Closure
 {
     return static fn ($input) => $next($first($input));
 }
