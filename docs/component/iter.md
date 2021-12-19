@@ -33,6 +33,6 @@
 
 #### `Classes`
 
-- [Iterator](./../../src/Psl/Iter/Iterator.php#L18)
+- [Iterator](./../../src/Psl/Iter/Iterator.php#L20)
 
 
