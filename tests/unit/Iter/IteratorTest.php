@@ -129,6 +129,39 @@ final class IteratorTest extends TestCase
         ], $spy->toArray());
     }
 
+    public function testCountWhileIterating(): void
+    {
+        $spy = new MutableVector([]);
+
+        $generator = (static function () use ($spy): iterable {
+            for ($i = 0; $i < 3; $i++) {
+                $spy->add('sending (' . $i . ')');
+
+                yield ['foo', 'bar'] => $i;
+            }
+        })();
+
+        $rewindable = Iter\rewindable($generator);
+        foreach ($rewindable as $key => $value) {
+            $spy->add('count (' . $rewindable->count() . ')');
+            $spy->add('received (' . $value . ')');
+
+            static::assertSame(['foo', 'bar'], $key);
+        }
+
+        static::assertSame([
+            'sending (0)',
+            'sending (1)',
+            'sending (2)',
+            'count (3)',
+            'received (0)',
+            'count (3)',
+            'received (1)',
+            'count (3)',
+            'received (2)',
+        ], $spy->toArray());
+    }
+
     public function testRewindingValidGenerator(): void
     {
         $spy = new MutableVector([]);

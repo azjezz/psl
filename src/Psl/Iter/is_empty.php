@@ -15,5 +15,5 @@ namespace Psl\Iter;
  */
 function is_empty(iterable $iterable): bool
 {
-    return 0 === count($iterable);
+    return 0 === namespace\count($iterable);
 }
