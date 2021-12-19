@@ -62,20 +62,4 @@ final class FromBaseTest extends TestCase
 
         Math\from_base('*', 16);
     }
-
-    public function testEmptyValueThrows(): void
-    {
-        $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Unexpected empty string, expected number in base 16');
-
-        Math\from_base('', 16);
-    }
-
-    public function testInvalidFromBaseThrows(): void
-    {
-        $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected $from_base to be between 2 and 36, got 64');
-
-        Math\from_base('z', 64);
-    }
 }

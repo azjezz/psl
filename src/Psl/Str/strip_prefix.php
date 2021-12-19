@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl;
-
 /**
  * Returns the string with the given prefix removed, or the string itself if
  * it doesn't start with the prefix.
  *
  * @pure
- *
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
 function strip_prefix(string $string, string $prefix, Encoding $encoding = Encoding::UTF_8): string
 {
-    if ('' === $prefix || !starts_with($string, $prefix, $encoding)) {
+    if ($prefix === $string) {
+        return '';
+    }
+
+    if ('' === $prefix || '' === $string || !starts_with($string, $prefix, $encoding)) {
         return $string;
     }
 

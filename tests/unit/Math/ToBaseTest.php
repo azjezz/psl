@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Math;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Exception;
 use Psl\Math;
 
 final class ToBaseTest extends TestCase
@@ -46,21 +45,5 @@ final class ToBaseTest extends TestCase
                 16
             ]
         ];
-    }
-
-    public function testNegativeValueThrows(): void
-    {
-        $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected a non-negative number.');
-
-        Math\to_base(-5, 16);
-    }
-
-    public function testInvalidToBaseThrows(): void
-    {
-        $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected $to_base to be between 2 and 36, got 64');
-
-        Math\to_base(1, 64);
     }
 }

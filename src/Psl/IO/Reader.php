@@ -228,11 +228,6 @@ final class Reader implements ReadHandleInterface
      */
     public function tryRead(?int $max_bytes = null): string
     {
-        if (null !== $max_bytes) {
-            /** @psalm-suppress MissingThrowsDocblock */
-            Psl\invariant($max_bytes > 0, '$max_bytes must be null, or greater than 0');
-        }
-
         if ($this->eof) {
             return '';
         }

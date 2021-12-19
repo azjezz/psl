@@ -14,6 +14,8 @@ use Psl\Math;
  * If the limit is provided, the array will only contain that many elements, where
  * the last element is the remainder of the string.
  *
+ * @param null|positive-int $limit
+ *
  * @throws Psl\Exception\InvariantViolationException If a negative $limit is given.
  * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  *
@@ -23,7 +25,6 @@ use Psl\Math;
  */
 function split(string $string, string $delimiter, ?int $limit = null, Encoding $encoding = Encoding::UTF_8): array
 {
-    Psl\invariant(null === $limit || $limit >= 1, 'Expected a non-negative limit');
     if ('' === $delimiter) {
         if (null === $limit || $limit >= length($string, $encoding)) {
             return chunk($string, 1, $encoding);
@@ -33,6 +34,9 @@ function split(string $string, string $delimiter, ?int $limit = null, Encoding $
             return [$string];
         }
 
+        /**
+         * @psalm-suppress ArgumentTypeCoercion - $limit is int<1, max> here
+         */
         $result   = chunk(slice($string, 0, $limit - 1, $encoding), 1, $encoding);
         $result[] = slice($string, $limit - 1, null, $encoding);
 

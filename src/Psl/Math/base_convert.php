@@ -21,31 +21,22 @@ use function bcpow;
  * done to arbitrary precision.
  *
  * @param non-empty-string $value
+ * @param int<2, 36> $from_base
+ * @param int<2, 36> $to_base
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If $value is empty, $from_base and $to_base are
- *                                                   out of the [2, 36] range, or the given value is invalid.
+ * @throws Psl\Exception\InvariantViolationException If the given value is invalid.
  */
 function base_convert(string $value, int $from_base, int $to_base): string
 {
-    Psl\invariant('' !== $value, 'Unexpected empty string, expected number in base %d', $from_base);
-    Psl\invariant(
-        $from_base >= 2 && $from_base <= 36,
-        'Expected $from_base to be between 2 and 36, got %d',
-        $from_base
-    );
-    Psl\invariant($to_base >= 2 && $to_base <= 36, 'Expected $to_base to be between 2 and 36, got %d', $to_base);
-
     $from_alphabet = Byte\slice(Str\ALPHABET_ALPHANUMERIC, 0, $from_base);
     $result_decimal = '0';
     $place_value = bcpow((string)$from_base, (string)(Byte\length($value) - 1));
     foreach (Byte\chunk($value) as $digit) {
-        Psl\invariant(is_numeric($place_value), 'Unexpected error.');
         $digit_numeric = Byte\search_ci($from_alphabet, $digit);
         Psl\invariant(null !== $digit_numeric, 'Invalid digit %s in base %d', $digit, $from_base);
         $result_decimal = bcadd($result_decimal, bcmul((string)$digit_numeric, $place_value));
-        Psl\invariant(is_numeric($result_decimal), 'Unexpected error.');
         $place_value = bcdiv($place_value, (string)$from_base);
     }
 

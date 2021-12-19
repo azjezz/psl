@@ -40,11 +40,7 @@ final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteH
             Psl\invariant_violation('File "%s" is not writable.', $path);
         }
 
-        /**
-         * @psalm-suppress UndefinedPropertyFetch
-         * @psalm-suppress MixedArgument
-         */
-        $this->writeHandle = Internal\open($path, (string) $write_mode->value, read: false, write: true);
+        $this->writeHandle = Internal\open($path, $write_mode->value, read: false, write: true);
 
         parent::__construct($this->writeHandle);
     }

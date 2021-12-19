@@ -34,7 +34,7 @@
 - [asin](./../../src/Psl/Math/asin.php#L14)
 - [atan](./../../src/Psl/Math/atan.php#L14)
 - [atan2](./../../src/Psl/Math/atan2.php#L14)
-- [base_convert](./../../src/Psl/Math/base_convert.php#L30)
+- [base_convert](./../../src/Psl/Math/base_convert.php#L31)
 - [ceil](./../../src/Psl/Math/ceil.php#L14)
 - [clamp](./../../src/Psl/Math/clamp.php#L24)
 - [cos](./../../src/Psl/Math/cos.php#L14)
@@ -57,6 +57,6 @@
 - [sum](./../../src/Psl/Math/sum.php#L14)
 - [sum_floats](./../../src/Psl/Math/sum_floats.php#L14)
 - [tan](./../../src/Psl/Math/tan.php#L14)
-- [to_base](./../../src/Psl/Math/to_base.php#L23)
+- [to_base](./../../src/Psl/Math/to_base.php#L20)
 
 

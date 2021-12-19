@@ -21,12 +21,11 @@ use function mb_strlen;
  *      => Int(4)
  *
  * @pure
+ *
+ * @return int<0, max>
  */
 function length(string $string, Encoding $encoding = Encoding::UTF_8): int
 {
-    /**
-     * @psalm-suppress UndefinedPropertyFetch
-     * @psalm-suppress MixedArgument
-     */
+    /** @var int<0, max> */
     return mb_strlen($string, $encoding->value);
 }

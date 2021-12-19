@@ -19,7 +19,8 @@ use function mb_strripos;
  * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If the offset is out-of-bounds.
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
+ *
+ * @return null|int<0, max>
  */
 function search_last_ci(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::UTF_8): ?int
 {
@@ -30,10 +31,7 @@ function search_last_ci(string $haystack, string $needle, int $offset = 0, Encod
     $haystack_length = length($haystack, $encoding);
     Psl\invariant($offset >= -$haystack_length && $offset <= $haystack_length, 'Offset is out-of-bounds.');
 
-    /**
-     * @psalm-suppress UndefinedPropertyFetch
-     * @psalm-suppress MixedArgument
-     */
+    /** @var null|int<0, max> */
     return false === ($pos = mb_strripos($haystack, $needle, $offset, $encoding->value)) ?
         null :
         $pos;

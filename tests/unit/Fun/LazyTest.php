@@ -17,6 +17,7 @@ final class LazyTest extends TestCase
     public function testItDoesNotLoadInitializerDuringCreation(): void
     {
         $this->expectNotToPerformAssertions();
+
         Fun\lazy(static function () {
             throw new RuntimeException('nonono');
         });

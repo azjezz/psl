@@ -115,11 +115,11 @@ final class Iterator implements Countable, SeekableIterator
             return;
         }
 
-        $this->progress();
-        $this->saved = false;
-        if ($this->generator) {
-            $this->generator->next();
+        if (!$this->saved) {
+            $this->progress();
         }
+        $this->saved = false;
+        $this->generator?->next();
 
         $this->progress();
     }
@@ -167,20 +167,18 @@ final class Iterator implements Countable, SeekableIterator
      */
     public function rewind(): void
     {
-        /** @psalm-suppress MissingThrowsDocblock - 0 is within bound. */
-        $this->seek(0);
+        $this->position = 0;
     }
 
     /**
      * Seek to the given position.
      *
-     * @param 0|positive-int $position
+     * @param int<0, max> $position
      *
      * @throws Psl\Exception\InvariantViolationException If $position is out-of-bounds.
      */
     public function seek(int $position): void
     {
-        Psl\invariant($position >= 0, 'Position is out-of-bounds.');
         if (0 === $position || $position <= $this->position) {
             $this->position = $position;
             return;

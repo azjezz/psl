@@ -32,7 +32,7 @@ interface WriteHandleInterface extends HandleInterface
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If reached timeout before completing the operation.
      *
-     * @return positive-int|0 the number of bytes written, which may be less than the length of input string.
+     * @return int<0, max> the number of bytes written, which may be less than the length of input string.
      */
     public function write(string $bytes, ?float $timeout = null): int;
 

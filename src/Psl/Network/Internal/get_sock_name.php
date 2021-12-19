@@ -24,6 +24,7 @@ use function substr;
 function get_sock_name(mixed $socket): Network\Address
 {
     error_clear_last();
+    /** @var string|false $result */
     $result = stream_socket_get_name($socket, false);
     if ($result !== false) {
         $separator_position = strrpos($result, ':');
