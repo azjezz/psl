@@ -17,7 +17,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
     use ReadHandleConvenienceMethodsTrait;
 
     /**
-     * @var 0|positive-int
+     * @var int<0, max>
      */
     private int $offset = 0;
     private string $buffer;
@@ -43,9 +43,6 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
 
         if (null === $max_bytes) {
             $max_bytes = Math\INT64_MAX;
-        } else {
-            /** @psalm-suppress MissingThrowsDocblock */
-            Psl\invariant($max_bytes > 0, '$max_bytes must be null or positive.');
         }
 
         $length = strlen($this->buffer);

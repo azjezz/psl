@@ -9,6 +9,8 @@ use Psl;
 use Psl\Async\Awaitable;
 use Psl\Iter;
 
+use function count;
+
 /**
  * The following class was derived from code of Amphp.
  *
@@ -121,8 +123,8 @@ final class AwaitableIterator
     {
         Psl\invariant(null === $this->queue->suspension, 'Concurrent consume() operations are not supported');
 
-        if (Iter\is_empty($this->queue->items)) {
-            if (Iter\is_empty($this->queue->pending) && $this->complete !== null) {
+        if (0 === count($this->queue->items)) {
+            if ($this->complete !== null && 0 === count($this->queue->pending)) {
                 return $this->complete->await();
             }
 
@@ -132,7 +134,7 @@ final class AwaitableIterator
             return $this->queue->suspension->suspend();
         }
 
-        $key = (int) Iter\first_key($this->queue->items);
+        $key = Iter\first_key($this->queue->items);
         $item = $this->queue->items[$key];
 
         unset($this->queue->items[$key]);

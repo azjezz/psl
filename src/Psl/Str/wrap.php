@@ -13,7 +13,7 @@ use Psl;
  * @param bool $cut If the cut is set to true, the string is always wrapped at or before the specified width.
  *                  so if you have a word that is larger than the given width, it is broken apart.
  *
- * @throws Psl\Exception\InvariantViolationException If $break is empty, $width is 0 and $cut is set to true.
+ * @throws Psl\Exception\InvariantViolationException If $width is 0 and $cut is set to true.
  *
  * @return string the given string wrapped at the specified column
  *
@@ -30,50 +30,54 @@ function wrap(
         return '';
     }
 
-    Psl\invariant('' !== $break, 'Break string cannot be empty.');
     Psl\invariant(0 !== $width || !$cut, 'Cannot force cut when width is zero.');
 
-    $stringLength = length($string, $encoding);
-    $breakLength  = length($break, $encoding);
+    $string_length = length($string, $encoding);
+    $break_length  = length($break, $encoding);
     $result       = '';
-    $lastStart    = $lastSpace = 0;
-    for ($current = 0; $current < $stringLength; ++$current) {
+    $last_start    = $last_space = 0;
+    for ($current = 0; $current < $string_length; ++$current) {
         $char          = slice($string, $current, 1, $encoding);
-        $possibleBreak = $char;
-        if (1 !== $breakLength) {
-            $possibleBreak = slice($string, $current, $breakLength, $encoding);
+        $possible_break = $char;
+        if (1 !== $break_length) {
+            $possible_break = slice($string, $current, $break_length, $encoding);
         }
 
-        if ($possibleBreak === $break) {
-            $result   .= slice($string, $lastStart, $current - $lastStart + $breakLength, $encoding);
-            $current  += $breakLength - 1;
-            $lastStart = $lastSpace = $current + 1;
+        if ($possible_break === $break) {
+            /** @psalm-suppress InvalidArgument - length is positive */
+            $result   .= slice($string, $last_start, $current - $last_start + $break_length, $encoding);
+            $current  += $break_length - 1;
+            $last_start = $last_space = $current + 1;
             continue;
         }
 
         if (' ' === $char) {
-            if ($current - $lastStart >= $width) {
-                $result   .= slice($string, $lastStart, $current - $lastStart, $encoding) . $break;
-                $lastStart = $current + 1;
+            if (($length = $current - $last_start) >= $width) {
+                /** @psalm-suppress InvalidArgument - length is positive */
+                $result   .= slice($string, $last_start, $length, $encoding) . $break;
+                $last_start = $current + 1;
             }
-            $lastSpace = $current;
+            $last_space = $current;
             continue;
         }
 
-        if ($current - $lastStart >= $width && $cut && $lastStart >= $lastSpace) {
-            $result   .= slice($string, $lastStart, $current - $lastStart, $encoding) . $break;
-            $lastStart = $lastSpace = $current;
+        if (($length = $current - $last_start) >= $width && $cut && $last_start >= $last_space) {
+            /** @psalm-suppress InvalidArgument - length is positive */
+            $result   .= slice($string, $last_start, $length, $encoding) . $break;
+            $last_start = $last_space = $current;
             continue;
         }
 
-        if ($current - $lastStart >= $width && $lastStart < $lastSpace) {
-            $result   .= slice($string, $lastStart, $lastSpace - $lastStart, $encoding) . $break;
-            $lastStart = ++$lastSpace;
+        if ($current - $last_start >= $width && $last_start < $last_space) {
+            /** @psalm-suppress InvalidArgument - length is positive */
+            $result   .= slice($string, $last_start, $last_space - $last_start, $encoding) . $break;
+            $last_start = ++$last_space;
         }
     }
 
-    if ($lastStart !== $current) {
-        $result .= slice($string, $lastStart, $current - $lastStart, $encoding);
+    if ($last_start !== $current) {
+        /** @psalm-suppress InvalidArgument - length is positive */
+        $result .= slice($string, $last_start, $current - $last_start, $encoding);
     }
 
     return $result;

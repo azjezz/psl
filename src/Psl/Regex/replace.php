@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Regex;
 
-use Psl;
 use Psl\Type;
 
 use function preg_replace;
@@ -19,13 +18,11 @@ use function preg_replace;
  *
  * @throws Exception\InvalidPatternException If $pattern is invalid.
  * @throws Exception\RuntimeException In case of an unexpected error.
- * @throws Psl\Exception\InvariantViolationException If $limit is negative.
  *
  * @pure
  */
 function replace(string $haystack, string $pattern, string $replacement, ?int $limit = null): string
 {
-    Psl\invariant(null === $limit || $limit >= 1, '$limit must be a positive integer.');
     $limit ??= -1;
 
     $result = Internal\call_preg(

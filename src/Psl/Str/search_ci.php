@@ -19,6 +19,8 @@ use function mb_stripos;
  * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $offset is out-of-bounds.
+ *
+ * @return null|int<0, max>
  */
 function search_ci(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::UTF_8): ?int
 {
@@ -28,10 +30,7 @@ function search_ci(string $haystack, string $needle, int $offset = 0, Encoding $
 
     $offset = Psl\Internal\validate_offset($offset, length($haystack, $encoding));
 
-    /**
-     * @psalm-suppress UndefinedPropertyFetch
-     * @psalm-suppress MixedArgument
-     */
+    /** @var null|int<0, max> */
     return false === ($pos = mb_stripos($haystack, $needle, $offset, $encoding->value)) ?
         null :
         $pos;

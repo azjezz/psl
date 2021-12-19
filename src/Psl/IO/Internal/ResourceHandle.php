@@ -83,15 +83,11 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
         $meta = stream_get_meta_data($stream);
         $this->blocks = $meta['blocked'] || ($meta['wrapper_type'] ?? '') === 'plainfile';
         if ($seek) {
-            $seekable = (bool)$meta['seekable'];
-
-            Psl\invariant($seekable, 'Handle is not seekable.');
+            Psl\invariant($meta['seekable'], 'Handle is not seekable.');
         }
 
         if ($read) {
-            $readable = str_contains($meta['mode'], 'r') || str_contains($meta['mode'], '+');
-
-            Psl\invariant($readable, 'Handle is not readable.');
+            Psl\invariant(str_contains($meta['mode'], 'r') || str_contains($meta['mode'], '+'), 'Handle is not readable.');
 
             $deferred = &$this->readDeferred;
             $this->readWatcher = Async\Scheduler::onReadable($stream, static function () use (&$deferred) {
@@ -301,9 +297,6 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
             $max_bytes = self::DEFAULT_READ_BUFFER_SIZE;
         } elseif ($max_bytes > self::MAXIMUM_READ_BUFFER_SIZE) {
             $max_bytes = self::MAXIMUM_READ_BUFFER_SIZE;
-        } else {
-            /** @psalm-suppress MissingThrowsDocblock */
-            Psl\invariant($max_bytes > 0, '$max_bytes must be null, or > 0');
         }
 
         /** @psalm-suppress PossiblyInvalidArgument */

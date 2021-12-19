@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl;
-
 /**
  * Returns the string padded to the total length by appending the `$pad_string`
  * to the right.
@@ -29,18 +27,15 @@ use Psl;
  *      => Str('مرحباااا')
  *
  * @param non-empty-string $pad_string
+ * @param positive-int|0 $total_length
  *
  * @pure
- *
- * @throws Psl\Exception\InvariantViolationException If the $pad_string is empty, a negative $total_length is given.
  */
 function pad_right(string $string, int $total_length, string $pad_string = ' ', Encoding $encoding = Encoding::UTF_8): string
 {
-    Psl\invariant('' !== $pad_string, 'Expected a non-empty pad string.');
-    Psl\invariant($total_length >= 0, 'Expected a non-negative total length.');
-
-    while (length($string, $encoding) < $total_length) {
-        $remaining = $total_length - length($string, $encoding);
+    while (($length = length($string, $encoding)) < $total_length) {
+        /** @var int<0, max> $remaining */
+        $remaining = $total_length - $length;
         if ($remaining <= length($pad_string, $encoding)) {
             $pad_string = slice($pad_string, 0, $remaining, $encoding);
         }

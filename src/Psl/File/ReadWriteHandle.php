@@ -45,11 +45,7 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
             Filesystem\create_file($path);
         }
 
-        /**
-         * @psalm-suppress UndefinedPropertyFetch
-         * @psalm-suppress MixedArgument
-         */
-        $this->readWriteHandle = Internal\open($path, 'r' . ((string) $write_mode->value) . '+', read: true, write: false);
+        $this->readWriteHandle = Internal\open($path, 'r' . ($write_mode->value) . '+', read: true, write: false);
 
         parent::__construct($this->readWriteHandle);
     }

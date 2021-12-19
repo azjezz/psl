@@ -18,7 +18,7 @@ use Psl;
  *
  * @internal
  *
- * @return ($assert is true ? bool : int)
+ * @return ($assert is true ? bool : int<0, max>)
  */
 function validate_offset(int $offset, int $length, bool $assert = false): int|bool
 {

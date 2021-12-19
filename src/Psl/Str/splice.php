@@ -14,9 +14,11 @@ use Psl;
  * remainder of the string will be replaced. If the length is zero, the
  * replacement will be inserted at the offset.
  *
+ * @param null|int<0, max> $length
+ *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If a negative $length is given.
+ * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
  */
 function splice(
     string $string,
@@ -25,7 +27,6 @@ function splice(
     ?int $length = null,
     Encoding $encoding = Encoding::UTF_8
 ): string {
-    Psl\invariant(null === $length || $length >= 0, 'Expected a non-negative length.');
     $total_length = length($string, $encoding);
     $offset       = Psl\Internal\validate_offset($offset, $total_length);
 

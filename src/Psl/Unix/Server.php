@@ -138,13 +138,9 @@ final class Server implements Network\StreamServerInterface
         }
 
         $resource = $this->impl;
-        $deferred = null;
-        if (null !== $this->watcher) {
-            Async\Scheduler::cancel($this->watcher);
-            $deferred = $this->deferred;
-            $this->deferred = null;
-        }
-
+        Async\Scheduler::cancel($this->watcher);
+        $deferred = $this->deferred;
+        $this->deferred = null;
         $this->impl = null;
         fclose($resource);
 
