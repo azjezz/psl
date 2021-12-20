@@ -6,7 +6,6 @@ namespace Psl\Iter;
 
 use Countable;
 use Generator;
-use Psl;
 use SeekableIterator;
 
 use function array_key_exists;
@@ -164,7 +163,7 @@ final class Iterator implements Countable, SeekableIterator
      *
      * @param int<0, max> $position
      *
-     * @throws Psl\Exception\InvariantViolationException If $position is out-of-bounds.
+     * @throws Exception\OutOfBoundsException If $position is out-of-bounds.
      */
     public function seek(int $position): void
     {
@@ -177,14 +176,17 @@ final class Iterator implements Countable, SeekableIterator
             do {
                 $this->save();
                 $this->next();
-                /** @psalm-suppress PossiblyNullReference - ->next() and ->save() don't mutate ->generator. */
-                Psl\invariant($this->generator->valid(), 'Position is out-of-bounds.');
+                if (!$this->generator->valid()) {
+                    throw new Exception\OutOfBoundsException('Position is out-of-bounds.');
+                }
             } while ($this->position < $position);
 
             return;
         }
 
-        Psl\invariant($position < $this->count(), 'Position is out-of-bounds.');
+        if ($position > $this->count()) {
+            throw new Exception\OutOfBoundsException('Position is out-of-bounds.');
+        }
 
         $this->position = $position;
     }

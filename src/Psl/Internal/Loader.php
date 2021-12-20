@@ -560,6 +560,7 @@ final class Loader
         'Psl\Channel\ReceiverInterface',
         'Psl\Channel\Exception\ExceptionInterface',
         'Psl\Promise\PromiseInterface',
+        'Psl\Iter\Exception\ExceptionInterface',
     ];
 
     public const TRAITS = [
@@ -697,6 +698,7 @@ final class Loader
         'Psl\Channel\Exception\ClosedChannelException',
         'Psl\Channel\Exception\EmptyChannelException',
         'Psl\Channel\Exception\FullChannelException',
+        'Psl\Iter\Exception\OutOfBoundsException',
     ];
 
     public const ENUMS = [

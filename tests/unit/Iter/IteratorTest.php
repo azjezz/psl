@@ -6,7 +6,6 @@ namespace Psl\Tests\Unit\Iter;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Collection\MutableVector;
-use Psl\Exception\InvariantViolationException;
 use Psl\Iter;
 
 final class IteratorTest extends TestCase
@@ -68,7 +67,7 @@ final class IteratorTest extends TestCase
     {
         $iterator = new Iter\Iterator((static fn () => yield from [1, 2, 3, 4, 5])());
 
-        $this->expectException(InvariantViolationException::class);
+        $this->expectException(Iter\Exception\OutOfBoundsException::class);
         $this->expectExceptionMessage('Position is out-of-bounds.');
 
         $iterator->seek(30);
