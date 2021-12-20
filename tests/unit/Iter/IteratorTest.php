@@ -74,6 +74,18 @@ final class IteratorTest extends TestCase
         $iterator->seek(30);
     }
 
+    public function testSeekThrowsForPlusOneOutOfBoundIndexWhenCached(): void
+    {
+        $iterator = new Iter\Iterator((static fn () => yield from [1, 2, 3, 4, 5])());
+
+        static::assertSame(5, $iterator->count());
+
+        $this->expectException(Iter\Exception\OutOfBoundsException::class);
+        $this->expectExceptionMessage('Position is out-of-bounds.');
+
+        $iterator->seek(5);
+    }
+
     public function testSeekThrowsForPlusOneOutOfBoundIndex(): void
     {
         $iterator = new Iter\Iterator((static fn () => yield from [1, 2, 3, 4, 5])());

@@ -186,7 +186,7 @@ final class Iterator implements Countable, SeekableIterator
             return;
         }
 
-        if ($position > $this->count()) {
+        if ($position >= $this->count()) {
             throw new Exception\OutOfBoundsException('Position is out-of-bounds.');
         }
 
