@@ -176,7 +176,9 @@ final class Iterator implements Countable, SeekableIterator
             do {
                 $this->save();
                 $this->next();
+                /** @psalm-suppress PossiblyNullReference - ->next() and ->save() don't mutate ->generator. */
                 if (!$this->generator->valid()) {
+                    $this->generator = null;
                     throw new Exception\OutOfBoundsException('Position is out-of-bounds.');
                 }
             } while ($this->position < $position);
