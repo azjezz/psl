@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
-use Psl;
-
 use function array_filter;
 use function is_array;
 
@@ -43,7 +41,7 @@ function filter_with_key(iterable $iterable, ?callable $predicate = null): array
          * @param Tk $_k
          * @param Tv $v
          */
-        static fn ($_k, $v): bool => Psl\Internal\boolean($v);
+        static fn (mixed $_k, mixed $v): bool => (bool)$v;
 
     if (is_array($iterable)) {
         return array_filter(

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
-use Closure;
-
 use function array_filter;
 use function is_array;
 
@@ -36,7 +34,7 @@ use const ARRAY_FILTER_USE_KEY;
 function filter_keys(iterable $iterable, ?callable $predicate = null): array
 {
     /** @var (callable(Tk): bool) $predicate */
-    $predicate = $predicate ?? Closure::fromCallable('Psl\Internal\boolean');
+    $predicate = $predicate ?? static fn(mixed $value): bool => (bool) $value;
 
     if (is_array($iterable)) {
         return array_filter(

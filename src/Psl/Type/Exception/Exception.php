@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Psl\Type\Exception;
 
 use Psl\Exception\RuntimeException;
-use Psl\Internal;
+use Psl\Str;
+
+use function get_debug_type;
 
 abstract class Exception extends RuntimeException implements ExceptionInterface
 {
@@ -35,6 +37,10 @@ abstract class Exception extends RuntimeException implements ExceptionInterface
 
     protected static function getDebugType(mixed $value): string
     {
-        return Internal\type($value);
+        if (is_resource($value)) {
+            return Str\format('resource<%s>', get_resource_type($value));
+        }
+
+        return get_debug_type($value);
     }
 }

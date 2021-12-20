@@ -33,7 +33,7 @@
 - [contains](./../../src/Psl/Str/contains.php#L41)
 - [contains_ci](./../../src/Psl/Str/contains_ci.php#L41)
 - [convert_encoding](./../../src/Psl/Str/convert_encoding.php#L14)
-- [detect_encoding](./../../src/Psl/Str/detect_encoding.php#L21)
+- [detect_encoding](./../../src/Psl/Str/detect_encoding.php#L19)
 - [ends_with](./../../src/Psl/Str/ends_with.php#L35)
 - [ends_with_ci](./../../src/Psl/Str/ends_with_ci.php#L35)
 - [fold](./../../src/Psl/Str/fold.php#L19)

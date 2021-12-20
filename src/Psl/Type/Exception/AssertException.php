@@ -6,6 +6,8 @@ namespace Psl\Type\Exception;
 
 use Psl\Str;
 
+use function get_debug_type;
+
 final class AssertException extends Exception
 {
     private string $expected;
@@ -27,6 +29,6 @@ final class AssertException extends Exception
         string $expected_type,
         TypeTrace $trace
     ): self {
-        return new self(self::getDebugType($value), $expected_type, $trace);
+        return new self(get_debug_type($value), $expected_type, $trace);
     }
 }
