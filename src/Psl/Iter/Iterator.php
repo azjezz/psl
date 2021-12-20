@@ -40,6 +40,13 @@ final class Iterator implements Countable, SeekableIterator
     private int $position = 0;
 
     /**
+     * The size of the generator.
+     *
+     * @var int<0, max>
+     */
+    private ?int $count = null;
+
+    /**
      * @param Generator<Tk, Tv, mixed, mixed> $generator
      */
     public function __construct(Generator $generator)
@@ -221,7 +228,13 @@ final class Iterator implements Countable, SeekableIterator
             $this->generator = null;
         }
 
+        if (null !== $this->count) {
+            return $this->count;
+        }
+
         /** @var int<0, max> */
-        return count($this->entries);
+        $this->count = count($this->entries);
+
+        return $this->count;
     }
 }

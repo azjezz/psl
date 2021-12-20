@@ -10,6 +10,8 @@ use Psl\Filesystem;
 /**
  * Open a file handle for read and write.
  *
+ * @param non-empty-string $path
+ *
  * @throws Psl\Exception\InvariantViolationException If $path points to a non-file node, or it not writeable.
  * @throws Filesystem\Exception\RuntimeException If unable to create $path when it does not exist.
  */

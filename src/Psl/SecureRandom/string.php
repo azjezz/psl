@@ -18,17 +18,15 @@ use function unpack;
  * If the alphabet argument is not specified, the returned string will be composed of
  * the alphanumeric characters.
  *
- * @param 0|positive-int $length The length of the string to generate.
+ * @param int<0, max> $length The length of the string to generate.
  *
  * @throws Exception\InsufficientEntropyException If it was not possible to gather sufficient entropy.
- * @throws Psl\Exception\InvariantViolationException If a negative $length is given, or $alphabet length is
- *                                                   outside the [2^1, 2^56] range.
+ * @throws Psl\Exception\InvariantViolationException If $alphabet length is outside the [2^1, 2^56] range.
  *
  * @psalm-external-mutation-free
  */
 function string(int $length, ?string $alphabet = null): string
 {
-    Psl\invariant($length >= 0, 'Expected a non-negative length.', $length);
     if (0 === $length) {
         return '';
     }

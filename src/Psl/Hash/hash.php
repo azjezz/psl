@@ -9,6 +9,8 @@ use Psl;
 /**
  * Generate a hash value (message digest).
  *
+ * @param non-empty-string $algorithm
+ *
  * @throws Psl\Exception\InvariantViolationException If the given algorithm is unsupported.
  * @throws Exception\RuntimeException If unable to pump data into the hashing context.
  *

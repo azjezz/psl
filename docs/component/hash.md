@@ -14,10 +14,10 @@
 
 - [algorithms](./../../src/Psl/Hash/algorithms.php#L16)
 - [equals](./../../src/Psl/Hash/equals.php#L14)
-- [hash](./../../src/Psl/Hash/hash.php#L17)
+- [hash](./../../src/Psl/Hash/hash.php#L19)
 
 #### `Classes`
 
-- [Context](./../../src/Psl/Hash/Context.php#L31)
+- [Context](./../../src/Psl/Hash/Context.php#L30)
 
 

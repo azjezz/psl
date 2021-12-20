@@ -36,14 +36,6 @@ final class StringTest extends TestCase
         static::assertSame('', SecureRandom\string(0));
     }
 
-    public function testStringThrowsForNegativeLength(): void
-    {
-        $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected a non-negative length.');
-
-        SecureRandom\string(-1);
-    }
-
     public function testStringAlphabetMin(): void
     {
         $this->expectException(Exception\InvariantViolationException::class);
@@ -51,14 +43,4 @@ final class StringTest extends TestCase
 
         SecureRandom\string(32, 'a');
     }
-
-    //  public function testStringAlphabetMax(): void
-    //  {
-    //      $this->markTestSkipped('Memory exhausting');
-    //
-    //      $this->expectException(Exception\InvariantViolationException::class);
-    //      $this->expectExceptionMessage('Expected $alphabet\'s length to be in [2^1, 2^56]');
-    //
-    //      Random\string(32, Str\repeat('a', (2 ** 56) + 1));
-    //  }
 }

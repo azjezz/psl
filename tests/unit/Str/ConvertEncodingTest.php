@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Str;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Exception\InvariantViolationException;
 use Psl\Str;
 
 final class ConvertEncodingTest extends TestCase
@@ -16,8 +15,8 @@ final class ConvertEncodingTest extends TestCase
     public function testConvertEncoding(
         ?string $expected,
         string $string,
-        string $from_encoding,
-        string $to_encoding
+        Str\Encoding $from_encoding,
+        Str\Encoding $to_encoding
     ): void {
         static::assertSame($expected, Str\convert_encoding($string, $from_encoding, $to_encoding));
     }
@@ -25,23 +24,7 @@ final class ConvertEncodingTest extends TestCase
     public function provideData(): array
     {
         return [
-            ['Ã¥Ã¤Ã¶', 'åäö', 'ISO-8859-1', 'UTF-8'],
+            ['Ã¥Ã¤Ã¶', 'åäö', Str\Encoding::ISO_8859_1, Str\Encoding::UTF_8],
         ];
-    }
-
-    public function testConvertEncodingThrowsForInvalidFromEncoding(): void
-    {
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('$from_encoding is invalid.');
-
-        Str\convert_encoding('Hello, World!', 'foobar', 'UTF-8');
-    }
-
-    public function testConvertEncodingThrowsForInvalidToEncoding(): void
-    {
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('$to_encoding is invalid.');
-
-        Str\convert_encoding('Hello, World!', 'ASCII', 'UTF-1337');
     }
 }

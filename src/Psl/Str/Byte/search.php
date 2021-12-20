@@ -19,6 +19,8 @@ use function strpos;
  * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $offset is out-of-bounds.
+ *
+ * @return null|int<0, max>
  */
 function search(string $haystack, string $needle, int $offset = 0): ?int
 {
@@ -28,5 +30,6 @@ function search(string $haystack, string $needle, int $offset = 0): ?int
         return null;
     }
 
+    /** @var null|int<0, max> */
     return false === ($pos = strpos($haystack, $needle, $offset)) ? null : $pos;
 }

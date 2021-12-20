@@ -16,6 +16,9 @@ use function clearstatcache;
  *
  * If $file does not exist, it will be created.
  *
+ * @param non-empty-string $file
+ * @param non-empty-string $content
+ *
  * @throws Psl\Exception\InvariantViolationException If the file specified by
  *                                                   $file is a directory, or is not writeable.
  * @throws Exception\RuntimeException In case of an error.

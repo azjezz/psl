@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
-use Psl;
-
 /**
  * Produce a list of values generated using the given factory.
  *
@@ -16,16 +14,13 @@ use Psl;
  *
  * @template T
  *
+ * @param positive-int $size
  * @param (callable(int): T) $factory
- *
- * @throws Psl\Exception\InvariantViolationException If $size is lower than 1.
  *
  * @return list<T>
  */
 function reproduce(int $size, callable $factory): array
 {
-    Psl\invariant($size >= 1, 'The number of times you want to reproduce must be at least 1.');
-
     $result = [];
     for ($i = 1; $i <= $size; $i++) {
         $result[] = $factory($i);

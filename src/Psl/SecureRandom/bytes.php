@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\SecureRandom;
 
 use Exception as PHPException;
-use Psl;
 use Psl\Str;
 use Psl\Type;
 
@@ -14,16 +13,14 @@ use function random_bytes;
 /**
  * Returns a cryptographically secure random bytes.
  *
- * @param 0|positive-int $length The number of bytes to generate.
+ * @param int<0, max> $length The number of bytes to generate.
  *
  * @throws Exception\InsufficientEntropyException If it was not possible to gather sufficient entropy.
- * @throws Psl\Exception\InvariantViolationException If $length is negative.
  *
  * @psalm-external-mutation-free
  */
 function bytes(int $length): string
 {
-    Psl\invariant($length >= 0, 'Expected a non-negative length.');
     if (0 === $length) {
         return '';
     }

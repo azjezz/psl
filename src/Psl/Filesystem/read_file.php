@@ -12,7 +12,8 @@ use Psl\Str;
 /**
  * Reads entire file into a string.
  *
- * @param positive-int|0 $offset The offset where the reading starts.
+ * @param non-empty-string $file
+ * @param int<0, max> $offset The offset where the reading starts.
  * @param positive-int|null $length Maximum length of data read.
  *                                  The default is to read until end of file is reached.
  *

@@ -17,7 +17,7 @@
 - [apply](./../../src/Psl/Iter/apply.php#L15)
 - [contains](./../../src/Psl/Iter/contains.php#L16)
 - [contains_key](./../../src/Psl/Iter/contains_key.php#L16)
-- [count](./../../src/Psl/Iter/count.php#L21)
+- [count](./../../src/Psl/Iter/count.php#L23)
 - [first](./../../src/Psl/Iter/first.php#L16)
 - [first_key](./../../src/Psl/Iter/first_key.php#L17)
 - [is_empty](./../../src/Psl/Iter/is_empty.php#L16)

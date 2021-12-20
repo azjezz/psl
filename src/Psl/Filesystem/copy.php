@@ -15,12 +15,17 @@ use function stream_copy_to_stream;
 /**
  * Change the group ownership of $filename.
  *
+ * @param non-empty-string $source
+ * @param non-empty-string $destination
+ *
  * @throws Exception\RuntimeException If unable to change the group ownership for $filename.
  * @throws Psl\Exception\InvariantViolationException If $source does not exist or is not readable.
  */
 function copy(string $source, string $destination, bool $overwrite = false): void
 {
-    Psl\invariant(is_file($source) && is_readable($source), 'Source "%s" does not exist or is not readable.', $source);
+    if (!namespace\is_file($source) || !namespace\is_readable($source)) {
+        Psl\invariant_violation('Source "%s" does not exist, or is not readable.', $source);
+    }
 
     if (!$overwrite && is_file($destination)) {
         return;

@@ -14,12 +14,17 @@ use function lchown;
 /**
  * Change the owner of $filename.
  *
+ * @param non-empty-string $filename
+ *
  * @throws Exception\RuntimeException If unable to change the ownership for $filename.
  * @throws Psl\Exception\InvariantViolationException If $filename does not exist.
  */
 function change_owner(string $filename, int $user): void
 {
-    Psl\invariant(exists($filename), 'File "%s" does not exist.', $filename);
+    if (!namespace\exists($filename)) {
+        Psl\invariant_violation('File "%s" does not exist.', $filename);
+    }
+
     if (is_symbolic_link($filename)) {
         $fun = static fn(): bool => lchown($filename, $user);
     } else {

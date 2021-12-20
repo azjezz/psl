@@ -15,8 +15,8 @@ use const PREG_SPLIT_NO_EMPTY;
  * Split $subject by $pattern.
  *
  * @param non-empty-string $pattern The pattern to split $subject by.
- * @param null|int $limit If specified, then only substrings up to limit are
- *                        returned with the rest of the string being placed in the last substring.
+ * @param null|int<0, max> $limit If specified, then only substrings up to limit are
+ *                                returned with the rest of the string being placed in the last substring.
  *
  * @throws Exception\InvalidPatternException If $pattern is invalid.
  * @throws Exception\RuntimeException In case of an unexpected error.
@@ -28,7 +28,6 @@ use const PREG_SPLIT_NO_EMPTY;
  */
 function split(string $subject, string $pattern, ?int $limit = null): array
 {
-    Psl\invariant($limit === null || $limit > 0, '$limit must be a positive integer.');
     $result = Internal\call_preg(
         'preg_split',
         static fn() => preg_split($pattern, $subject, $limit ?? -1, PREG_SPLIT_NO_EMPTY),

@@ -19,6 +19,8 @@ use Psl;
  * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If $offset is out-of-bounds.
+ *
+ * @return null|int<0, max>
  */
 function search_last_ci(string $haystack, string $needle, int $offset = 0): ?int
 {
@@ -29,5 +31,6 @@ function search_last_ci(string $haystack, string $needle, int $offset = 0): ?int
     $haystack_length = length($haystack);
     Psl\invariant($offset >= -$haystack_length && $offset <= $haystack_length, 'Offset is out-of-bounds.');
 
+    /** @var null|int<0, max> */
     return false === ($pos = strripos($haystack, $needle, $offset)) ? null : $pos;
 }

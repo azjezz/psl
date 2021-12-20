@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Filesystem;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Exception\InvariantViolationException;
 use Psl\Filesystem;
 
 final class PathTest extends TestCase
@@ -56,13 +55,5 @@ final class PathTest extends TestCase
             '/home/azjezz/Projects',
             Filesystem\get_directory('/home/azjezz/Projects/psl/src/Psl', 3)
         );
-    }
-
-    public function testGetDirectoryWithNegativeLevelThrows(): void
-    {
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('$levels must be a positive integer, -3 given.');
-
-        Filesystem\get_directory('/home/azjezz/Projects/psl/src/Psl', -3);
     }
 }

@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\Env;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Env;
+use Psl\Exception\InvariantViolationException;
 
 final class GetVarTest extends TestCase
 {
@@ -21,5 +22,21 @@ final class GetVarTest extends TestCase
         static::assertSame('BAR', Env\get_var('FOO'));
 
         Env\remove_var('FOO');
+    }
+
+    public function testRemoveVarThrowsIfTheKeyIsInvalid(): void
+    {
+        $this->expectException(InvariantViolationException::class);
+        $this->expectExceptionMessage('Invalid environment variable key provided.');
+
+        Env\get_var('a=b');
+    }
+
+    public function testRemoveVarThrowsIfTheKeyContainsNUL(): void
+    {
+        $this->expectException(InvariantViolationException::class);
+        $this->expectExceptionMessage('Invalid environment variable key provided.');
+
+        Env\get_var("\0");
     }
 }

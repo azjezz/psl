@@ -18,7 +18,9 @@ use function mt_rand;
  */
 function int(int $min = Math\INT64_MIN, int $max = Math\INT64_MAX): int
 {
-    Psl\invariant($min <= $max, 'Expected $min (%d) to be less than or equal to $max (%d).', $min, $max);
+    if ($min > $max) {
+        Psl\invariant_violation('Expected $min (%d) to be less than or equal to $max (%d).', $min, $max);
+    }
 
     return mt_rand($min, $max);
 }

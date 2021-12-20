@@ -38,7 +38,7 @@ final class ReadDirectoryTest extends AbstractFilesystemTest
     public function testReadDirectoryThrowsIfDirectoryDoesNotExist(): void
     {
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Directory "' . Env\temp_dir() . '/foo-bar-baz' . '" does not exist.');
+        $this->expectExceptionMessage('Directory "' . Env\temp_dir() . '/foo-bar-baz' . '" is not a directory.');
 
         Filesystem\read_directory(Env\temp_dir() . '/foo-bar-baz');
     }

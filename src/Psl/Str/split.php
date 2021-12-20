@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl;
 use Psl\Math;
 
 /**
@@ -15,9 +14,6 @@ use Psl\Math;
  * the last element is the remainder of the string.
  *
  * @param null|positive-int $limit
- *
- * @throws Psl\Exception\InvariantViolationException If a negative $limit is given.
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  *
  * @return list<string>
  *
@@ -34,11 +30,11 @@ function split(string $string, string $delimiter, ?int $limit = null, Encoding $
             return [$string];
         }
 
-        /**
-         * @psalm-suppress ArgumentTypeCoercion - $limit is int<1, max> here
-         */
-        $result   = chunk(slice($string, 0, $limit - 1, $encoding), 1, $encoding);
-        $result[] = slice($string, $limit - 1, null, $encoding);
+        /** @var positive-int $length */
+        $length = $limit - 1;
+
+        $result   = chunk(slice($string, 0, $length, $encoding), 1, $encoding);
+        $result[] = slice($string, $length, null, $encoding);
 
         return $result;
     }
@@ -48,6 +44,11 @@ function split(string $string, string $delimiter, ?int $limit = null, Encoding $
     $tail   = $string;
     $chunks = [];
 
+    /**
+     * $offset is within bounded.
+     *
+     * @psalm-suppress MissingThrowsDocblock
+     */
     $position = search($tail, $delimiter, 0, $encoding);
     while (1 < $limit && null !== $position) {
         $result   = slice($tail, 0, $position, $encoding);
@@ -55,7 +56,12 @@ function split(string $string, string $delimiter, ?int $limit = null, Encoding $
         $tail     = slice($tail, length($result, $encoding) + length($delimiter, $encoding), null, $encoding);
 
         $limit--;
-        $position = search($tail, $delimiter, 0, $encoding);
+        /**
+         * $offset is within bounded.
+         *
+         * @psalm-suppress MissingThrowsDocblock
+         */
+        $position = search($tail, $delimiter, encoding: $encoding);
     }
 
     $chunks[] = $tail;

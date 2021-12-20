@@ -22,7 +22,13 @@ use function random_int;
  */
 function int(int $min = Math\INT64_MIN, int $max = Math\INT64_MAX): int
 {
-    Psl\invariant($min <= $max, 'Expected $min (%d) to be less than or equal to $max (%d).', $min, $max);
+    if ($max < $min) {
+        Psl\invariant_violation('Expected $min (%d) to be less than or equal to $max (%d).', $min, $max);
+    }
+
+    if ($min === $max) {
+        return $min;
+    }
 
     try {
         return random_int($min, $max);

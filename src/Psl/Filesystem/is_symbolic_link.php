@@ -15,6 +15,8 @@ use function is_link as php_is_link;
  * the current working directory.
  *
  * @return bool if the $symbolic_link exists and is a symbolic link, false otherwise.
+ *
+ * @psalm-assert-if-true non-empty-string $symbolic_link
  */
 function is_symbolic_link(string $symbolic_link): bool
 {

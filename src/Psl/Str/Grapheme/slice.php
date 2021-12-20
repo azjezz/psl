@@ -14,13 +14,14 @@ use Psl;
  *
  * If the length is zero, the empty string will be returned.
  *
+ * @param null|int<0, max> $length
+ *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If a negative $length is given, or $offset is out-of-bounds.
+ * @throws Psl\Exception\InvariantViolationException If $offset is out-of-bounds.
  */
 function slice(string $string, int $offset, ?int $length = null): string
 {
-    Psl\invariant(null === $length || $length >= 0, 'Expected a non-negative length.');
     $string_length = length($string);
     $offset        = Psl\Internal\validate_offset($offset, $string_length);
 

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl;
-
 use function mb_strtolower;
 
 /**
@@ -28,14 +26,8 @@ use function mb_strtolower;
  *      => Str('سيف')
  *
  * @pure
- *
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
 function lowercase(string $string, Encoding $encoding = Encoding::UTF_8): string
 {
-    /**
-     * @psalm-suppress UndefinedPropertyFetch
-     * @psalm-suppress MixedArgument
-     */
     return mb_strtolower($string, $encoding->value);
 }

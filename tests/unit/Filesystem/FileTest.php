@@ -11,6 +11,8 @@ use Psl\Str;
 
 use function time;
 
+use const PHP_OS_FAMILY;
+
 final class FileTest extends AbstractFilesystemTest
 {
     protected string $function = 'file';
@@ -178,6 +180,124 @@ final class FileTest extends AbstractFilesystemTest
 
         static::assertSame($modification_time, Filesystem\get_modification_time($file));
         static::assertSame($access_time, Filesystem\get_access_time($file));
+    }
+
+    public function testGetModificationTimeOfNonExistingFile(): void
+    {
+        $filename = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
+
+        $this->expectException(InvariantViolationException::class);
+        $this->expectExceptionMessage('File "' . $filename . '" does not exist.');
+
+        Filesystem\get_modification_time($filename);
+    }
+
+    public function testGetAccessTimeOfNonExistingFile(): void
+    {
+        $filename = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
+
+        $this->expectException(InvariantViolationException::class);
+        $this->expectExceptionMessage('File "' . $filename . '" does not exist.');
+
+        Filesystem\get_access_time($filename);
+    }
+
+    public function testGetChangeTimeOfNonExistingFile(): void
+    {
+        $filename = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
+
+        $this->expectException(InvariantViolationException::class);
+        $this->expectExceptionMessage('File "' . $filename . '" does not exist.');
+
+        Filesystem\get_change_time($filename);
+    }
+
+    public function testGetInodeOfNonExistingFile(): void
+    {
+        $filename = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
+
+        $this->expectException(InvariantViolationException::class);
+        $this->expectExceptionMessage('File "' . $filename . '" does not exist.');
+
+        Filesystem\get_inode($filename);
+    }
+
+    public function testFileSizeThrowsForNonExistingFile(): void
+    {
+        $filename = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
+
+        $this->expectException(InvariantViolationException::class);
+        $this->expectExceptionMessage('File "' . $filename . '" does not exist, or is not readable.');
+
+        Filesystem\file_size($filename);
+    }
+
+    public function testCopyThrowsForNonExistingFile(): void
+    {
+        $filename = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
+
+        $this->expectException(InvariantViolationException::class);
+        $this->expectExceptionMessage('Source "' . $filename . '" does not exist, or is not readable.');
+
+        Filesystem\copy($filename, '/foo/bar');
+    }
+
+    public function testCreateSymbolicLinkThrowsForNonExistingFile(): void
+    {
+        $filename = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
+
+        $this->expectException(InvariantViolationException::class);
+        $this->expectExceptionMessage('Source file "' . $filename . '" does not exist.');
+
+        Filesystem\create_symbolic_link($filename, '/foo/bar');
+    }
+
+    public function testFileSizeThrowsForNonReadableFile(): void
+    {
+        if (PHP_OS_FAMILY === 'Windows') {
+            // executable bit on windows.
+            static::markTestSkipped('Test can only be executed under *nix OS.');
+        }
+
+        $filename = Str\join([$this->directory, 'non-readable.txt'], Filesystem\SEPARATOR);
+        Filesystem\create_file($filename);
+        $permissions = Filesystem\get_permissions($filename) & 0777;
+        Filesystem\change_permissions($filename, 0111);
+
+        static::assertFalse(Filesystem\is_readable($filename));
+
+        $this->expectException(InvariantViolationException::class);
+        $this->expectExceptionMessage('File "' . $filename . '" does not exist, or is not readable.');
+
+        try {
+            Filesystem\file_size($filename);
+        } finally {
+            Filesystem\change_permissions($filename, $permissions);
+        }
+    }
+
+    public function testCopyThrowsForNonReadableFile(): void
+    {
+        if (PHP_OS_FAMILY === 'Windows') {
+            // executable bit on windows.
+            static::markTestSkipped('Test can only be executed under *nix OS.');
+        }
+
+        $filename = Str\join([$this->directory, 'non-readable.txt'], Filesystem\SEPARATOR);
+        Filesystem\create_file($filename);
+        $permissions = Filesystem\get_permissions($filename) & 0777;
+        Filesystem\change_permissions($filename, 0111);
+
+        static::assertFalse(Filesystem\is_readable($filename));
+
+        $this->expectException(InvariantViolationException::class);
+        $this->expectExceptionMessage('Source "' . $filename . '" does not exist, or is not readable.');
+
+        try {
+            Filesystem\copy($filename, '/foo/bar');
+        } finally {
+            Filesystem\change_permissions($filename, $permissions);
+        }
     }
 
     public function testFileAccessTime(): void

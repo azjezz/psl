@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl;
-
 use function preg_quote;
 use function preg_split;
 
@@ -14,8 +12,6 @@ use function preg_split;
  * `$replacement` (case-insensitive).
  *
  * @pure
- *
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  */
 function replace_ci(string $haystack, string $needle, string $replacement, Encoding $encoding = Encoding::UTF_8): string
 {

@@ -44,14 +44,6 @@ final class ContextTest extends TestCase
         Hash\Context::hmac('base64', 'secret');
     }
 
-    public function testHmacThrowsForEmptySecretKey(): void
-    {
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected a non-empty shared secret key.');
-
-        Hash\Context::hmac('sha1', '');
-    }
-
     public function testContextIsImmutable(): void
     {
         $first  = Hash\Context::forAlgorithm('md5');
