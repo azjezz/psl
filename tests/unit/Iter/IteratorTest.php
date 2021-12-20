@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Iter;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection\MutableVector;
 use Psl\Iter;
@@ -71,6 +72,35 @@ final class IteratorTest extends TestCase
         $this->expectExceptionMessage('Position is out-of-bounds.');
 
         $iterator->seek(30);
+    }
+
+    public function testSeekThrowsForPlusOneOutOfBoundIndex(): void
+    {
+        $iterator = new Iter\Iterator((static fn () => yield from [1, 2, 3, 4, 5])());
+
+        $this->expectException(Iter\Exception\OutOfBoundsException::class);
+        $this->expectExceptionMessage('Position is out-of-bounds.');
+
+        $iterator->seek(5);
+    }
+
+    public function testSeekZero(): void
+    {
+        $iterator = new Iter\Iterator((static function () {
+            yield 1;
+
+            throw new Exception('nope');
+
+            yield 2;
+        })());
+
+        foreach ($iterator as $k => $v) {
+            static::assertSame(0, $k);
+            static::assertSame(1, $v);
+            break;
+        }
+
+        $iterator->seek(0);
     }
 
     public function testIterating(): void
