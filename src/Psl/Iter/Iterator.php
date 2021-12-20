@@ -96,13 +96,10 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Return the current element.
      *
-     * @throws Psl\Exception\InvariantViolationException If the iterator is invalid.
-     *
      * @return Tv
      */
     public function current(): mixed
     {
-        Psl\invariant($this->valid(), 'The Iterator is invalid.');
         $this->save();
 
         return $this->entries[$this->position][1];
@@ -145,13 +142,10 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Return the key of the current element.
      *
-     * @throws Psl\Exception\InvariantViolationException If the iterator is invalid.
-     *
      * @return Tk
      */
     public function key(): mixed
     {
-        Psl\invariant($this->valid(), 'The Iterator is invalid.');
         $this->save();
 
         return $this->entries[$this->position][0];
