@@ -20,6 +20,8 @@ use function grapheme_strpos;
  * @pure
  *
  * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
+ *
+ * @return null|int<0, max>
  */
 function search(string $haystack, string $needle, int $offset = 0): ?int
 {
@@ -29,6 +31,7 @@ function search(string $haystack, string $needle, int $offset = 0): ?int
 
     $offset = Psl\Internal\validate_offset($offset, length($haystack));
 
+    /** @var null|int<0, max> */
     return false === ($pos = grapheme_strpos($haystack, $needle, $offset)) ?
         null :
         $pos;

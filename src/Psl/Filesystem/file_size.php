@@ -11,12 +11,16 @@ use Psl\Str;
 /**
  * Ge the size of $filename.
  *
+ * @param non-empty-string $filename
+ *
  * @throws Psl\Exception\InvariantViolationException If $filename does not exist or is not readable.
  * @throws Exception\RuntimeException In case of an error.
  */
 function file_size(string $filename): int
 {
-    Psl\invariant(is_file($filename) && is_readable($filename), 'File "%s" does not exist.', $filename);
+    if (!namespace\is_file($filename) || !namespace\is_readable($filename)) {
+        Psl\invariant_violation('File "%s" does not exist, or is not readable.', $filename);
+    }
 
     // @codeCoverageIgnoreStart
     [$size, $message] = Internal\box(static fn() => filesize($filename));

@@ -12,9 +12,9 @@
 
 #### `Functions`
 
-- [bytes](./../../src/Psl/SecureRandom/bytes.php#L24)
+- [bytes](./../../src/Psl/SecureRandom/bytes.php#L22)
 - [float](./../../src/Psl/SecureRandom/float.php#L16)
 - [int](./../../src/Psl/SecureRandom/int.php#L23)
-- [string](./../../src/Psl/SecureRandom/string.php#L29)
+- [string](./../../src/Psl/SecureRandom/string.php#L28)
 
 

@@ -10,6 +10,9 @@ use Psl\Hash;
 /**
  * Generate a keyed hash value using the HMAC method.
  *
+ * @param non-empty-string $algorithm
+ * @param non-empty-string $key
+ *
  * @throws Psl\Exception\InvariantViolationException If the given algorithm is unsupported.
  * @throws Hash\Exception\RuntimeException If unable to pump data into the hashing context.
  *

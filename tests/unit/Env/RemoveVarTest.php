@@ -34,14 +34,6 @@ final class RemoveVarTest extends TestCase
         Env\remove_var('a=b');
     }
 
-    public function testRemoveVarThrowsIfTheKeyIsEmpty(): void
-    {
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Invalid environment variable key provided.');
-
-        Env\remove_var('');
-    }
-
     public function testRemoveVarThrowsIfTheKeyContainsNUL(): void
     {
         $this->expectException(InvariantViolationException::class);

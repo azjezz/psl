@@ -11,18 +11,24 @@ use Psl\Vec;
 /**
  * Return a vec of files and directories inside the specified directory.
  *
+ * @param non-empty-string $directory
+ *
  * @throws Psl\Exception\InvariantViolationException If the directory specified by
  *                                                   $directory does not exist, or is not readable.
  *
- * @return list<string>
+ * @return list<non-empty-string>
  */
 function read_directory(string $directory): array
 {
-    Psl\invariant(exists($directory), 'Directory "%s" does not exist.', $directory);
-    Psl\invariant(is_directory($directory), 'Directory "%s" is not a directory.', $directory);
-    Psl\invariant(is_readable($directory), 'Directory "%s" is not readable.', $directory);
+    if (!namespace\is_directory($directory)) {
+        Psl\invariant_violation('Directory "%s" is not a directory.', $directory);
+    }
 
-    /** @var list<string> */
+    if (!namespace\is_readable($directory)) {
+        Psl\invariant_violation('Directory "%s" is not readable.', $directory);
+    }
+
+    /** @var list<non-empty-string> */
     return Vec\values(new FilesystemIterator(
         $directory,
         FilesystemIterator::CURRENT_AS_PATHNAME | FilesystemIterator::SKIP_DOTS

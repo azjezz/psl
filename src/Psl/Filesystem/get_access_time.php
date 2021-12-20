@@ -12,12 +12,16 @@ use function fileatime;
 /**
  * Gets last access time of $filename.
  *
+ * @param non-empty-string $filename
+ *
  * @throws Psl\Exception\InvariantViolationException If $filename does not exist.
  * @throws Exception\RuntimeException In case of an error.
  */
 function get_access_time(string $filename): int
 {
-    Psl\invariant(exists($filename), 'File "%s" does not exist.', $filename);
+    if (!namespace\exists($filename)) {
+        Psl\invariant_violation('File "%s" does not exist.', $filename);
+    }
 
     [$result, $message] = Psl\Internal\box(
         /**

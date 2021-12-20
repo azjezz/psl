@@ -13,15 +13,21 @@ use function readlink;
 /**
  * Returns the target of a symbolic link.
  *
- * @throws Psl\Exception\InvariantViolationException If the link specified by
- *                                                   $symbolic_link does not exist, or is not a symbolic link.
- * @throws Exception\RuntimeException If unable to retrieve the target
- *                                    of $symbolic_link.
+ * @param non-empty-string $symbolic_link
+ *
+ * @throws Psl\Exception\InvariantViolationException If the link specified by $symbolic_link does not exist,
+ *                                                   or is not a symbolic link.
+ * @throws Exception\RuntimeException If unable to retrieve the target of $symbolic_link.
  */
 function read_symbolic_link(string $symbolic_link): string
 {
-    Psl\invariant(exists($symbolic_link), 'Symbolic link "%s" does not exist.', $symbolic_link);
-    Psl\invariant(is_symbolic_link($symbolic_link), 'Symbolic link "%s" is not a symbolic link.', $symbolic_link);
+    if (!namespace\exists($symbolic_link)) {
+        Psl\invariant_violation('Symbolic link "%s" does not exist.', $symbolic_link);
+    }
+
+    if (!namespace\is_symbolic_link($symbolic_link)) {
+        Psl\invariant_violation('Symbolic link "%s" is not a symbolic link.', $symbolic_link);
+    }
 
     [$result, $message] = Internal\box(
         /**

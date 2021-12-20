@@ -26,13 +26,6 @@ final class HashTest extends TestCase
         Hmac\hash('Hello', 'base64', 'real-secret');
     }
 
-    public function testHashThrowsForEmptySharedSecret(): void
-    {
-        $this->expectException(InvariantViolationException::class);
-
-        Hmac\hash('Hello', 'sha1', '');
-    }
-
     /**
      * @return Generator<int, array{0: string, 1: string, 2: string, 3: string}, mixed, void>
      */

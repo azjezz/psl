@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Filesystem;
 
+use Psl\Exception\InvariantViolationException;
 use Psl\Filesystem;
 use Psl\Str;
 
@@ -59,5 +60,25 @@ final class PermissionsTest extends AbstractFilesystemTest
         } finally {
             Filesystem\change_permissions($filename, $permissions);
         }
+    }
+
+    public function testChangePermissionsThrowsForNonExistingFile(): void
+    {
+        $filename = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
+
+        $this->expectException(InvariantViolationException::class);
+        $this->expectExceptionMessage('File "' . $filename . '" does not exist.');
+
+        Filesystem\change_permissions($filename, 0111);
+    }
+
+    public function testGetPermissionsThrowsForNonExistingFile(): void
+    {
+        $filename = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
+
+        $this->expectException(InvariantViolationException::class);
+        $this->expectExceptionMessage('File "' . $filename . '" does not exist.');
+
+        Filesystem\get_permissions($filename);
     }
 }

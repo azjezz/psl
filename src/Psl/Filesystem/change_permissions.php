@@ -13,12 +13,16 @@ use function chmod;
 /**
  * Changes mode permission of $filename.
  *
+ * @param non-empty-string $filename
+ *
  * @throws Exception\RuntimeException If unable to change the mode for the given $filename.
  * @throws Psl\Exception\InvariantViolationException If $filename does not exists.
  */
 function change_permissions(string $filename, int $permissions): void
 {
-    Psl\invariant(exists($filename), 'File "%s" does not exist.', $filename);
+    if (!namespace\exists($filename)) {
+        Psl\invariant_violation('File "%s" does not exist.', $filename);
+    }
 
     [$success, $error] = Internal\box(static fn(): bool => chmod($filename, $permissions));
     // @codeCoverageIgnoreStart

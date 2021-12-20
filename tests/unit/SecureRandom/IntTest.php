@@ -38,6 +38,14 @@ final class IntTest extends TestCase
         static::assertLessThanOrEqual(1200, $random);
     }
 
+    public function testIntWithAnEqualRange(): void
+    {
+        $random = SecureRandom\int(20, 20);
+
+        static::assertIsInt($random);
+        static::assertSame(20, $random);
+    }
+
     public function testIntWithMinGreaterThanMax(): void
     {
         $this->expectException(Exception\InvariantViolationException::class);

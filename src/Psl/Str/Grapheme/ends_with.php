@@ -11,7 +11,7 @@ use Psl;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If unable to convert $string to UTF-16,
+ * @throws Psl\Exception\InvariantViolationException If unable to convert $string or $suffix to UTF-16,
  *                                                   or split it into graphemes.
  */
 function ends_with(string $string, string $suffix): bool

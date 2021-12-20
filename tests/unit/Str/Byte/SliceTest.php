@@ -30,13 +30,6 @@ final class SliceTest extends TestCase
         ];
     }
 
-    public function testSliceThrowsForNegativeLength(): void
-    {
-        $this->expectException(Exception\InvariantViolationException::class);
-
-        Byte\slice('Hello', 0, -1);
-    }
-
     public function testSliceThrowsForOutOfBoundOffset(): void
     {
         $this->expectException(Exception\InvariantViolationException::class);

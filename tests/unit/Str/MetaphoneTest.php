@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Str;
 
 use PHPUnit\Framework\TestCase;
-use Psl;
 use Psl\Str;
 
 final class MetaphoneTest extends TestCase
@@ -27,13 +26,5 @@ final class MetaphoneTest extends TestCase
             ['', 'سيف'],
             ['', '1337'],
         ];
-    }
-
-    public function testThrowsIfPhonemeIsNegative(): void
-    {
-        $this->expectException(Psl\Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected non-negative phonemes, got -1.');
-
-        Str\metaphone('foo', -1);
     }
 }

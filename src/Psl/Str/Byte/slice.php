@@ -15,13 +15,14 @@ use function substr;
  * If no length is given, the slice will contain the rest of the
  * string. If the length is zero, the empty string will be returned.
  *
+ * @param int<0, max> $length
+ *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If $length is negative, or the $offset is out-of-bounds.
+ * @throws Psl\Exception\InvariantViolationException If $offset is out-of-bounds.
  */
 function slice(string $string, int $offset, ?int $length = null): string
 {
-    Psl\invariant(null === $length || $length >= 0, 'Expected a non-negative length.');
     $offset = Psl\Internal\validate_offset($offset, length($string));
 
     return null === $length ? substr($string, $offset) : substr($string, $offset, $length);

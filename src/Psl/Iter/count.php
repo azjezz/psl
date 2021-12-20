@@ -17,10 +17,13 @@ use function is_countable;
  * @template T
  *
  * @param iterable<T> $iterable
+ *
+ * @return int<0, max>
  */
 function count(iterable $iterable): int
 {
     if (is_countable($iterable)) {
+        /** @var int<0, max> */
         return \count($iterable);
     }
 

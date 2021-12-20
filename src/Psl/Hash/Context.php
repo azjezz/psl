@@ -6,7 +6,6 @@ namespace Psl\Hash;
 
 use HashContext;
 use Psl;
-use Psl\Iter;
 use Psl\Str;
 
 use function hash_final;
@@ -40,18 +39,18 @@ final class Context
     /**
      * Initialize an incremental hashing context.
      *
+     * @param non-empty-string $algorithm
+     *
      * @throws Psl\Exception\InvariantViolationException If the given algorithm is unsupported.
      *
      * @pure
      */
     public static function forAlgorithm(string $algorithm): Context
     {
-        /** @psalm-suppress ImpureFunctionCall */
-        Psl\invariant(
-            Iter\contains(algorithms(), $algorithm),
-            'Expected a valid hashing algorithm, "%s" given.',
-            $algorithm,
-        );
+        if (!in_array($algorithm, namespace\algorithms(), true)) {
+            Psl\invariant_violation('Expected a valid hashing algorithm, "%s" given.', $algorithm);
+        }
+
         $internal_context = hash_init($algorithm);
 
         return new self($internal_context);
@@ -60,20 +59,19 @@ final class Context
     /**
      * Initialize an incremental HMAC hashing context.
      *
+     * @param non-empty-string $algorithm
+     * @param non-empty-string $key
+     *
      * @throws Psl\Exception\InvariantViolationException If the given algorithm is unsupported.
      *
      * @pure
      */
     public static function hmac(string $algorithm, string $key): Context
     {
-        /** @psalm-suppress ImpureFunctionCall */
-        Psl\invariant(
-            Iter\contains(Hmac\algorithms(), $algorithm),
-            'Expected a hashing algorithms suitable for HMAC, "%s" given.',
-            $algorithm
-        );
 
-        Psl\invariant(!Str\is_empty($key), 'Expected a non-empty shared secret key.');
+        if (!in_array($algorithm, Hmac\algorithms(), true)) {
+            Psl\invariant_violation('Expected a hashing algorithms suitable for HMAC, "%s" given.', $algorithm);
+        }
 
         $internal_context = hash_init($algorithm, HASH_HMAC, $key);
 

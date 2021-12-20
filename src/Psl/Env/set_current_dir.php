@@ -15,5 +15,7 @@ use function chdir;
  */
 function set_current_dir(string $directory): void
 {
-    Psl\invariant(chdir($directory), 'Unable to change directory');
+    if (!@chdir($directory)) {
+        Psl\invariant_violation('Unable to change directory');
+    }
 }

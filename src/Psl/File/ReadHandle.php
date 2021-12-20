@@ -15,7 +15,7 @@ final class ReadHandle extends Internal\AbstractHandleWrapper implements ReadHan
     private ReadHandleInterface $readHandle;
 
     /**
-     * @param resource|object $stream
+     * @param non-empty-string $path
      *
      * @throws Psl\Exception\InvariantViolationException If $path does not point to a file, or is not readable.
      */

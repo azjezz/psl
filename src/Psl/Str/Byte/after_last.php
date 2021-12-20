@@ -8,7 +8,6 @@ use Psl;
 
 /**
  * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
- * @throws Psl\Exception\InvariantViolationException If an invalid $encoding is provided.
  *
  * @pure
  */

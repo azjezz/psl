@@ -13,6 +13,8 @@ use function unlink;
 /**
  * Delete the file specified by $filename.
  *
+ * @param non-empty-string $filename
+ *
  * @throws Exception\RuntimeException If unable to delete the file.
  * @throws Psl\Exception\InvariantViolationException If the file specified by
  *                                                   $filename does not exist.

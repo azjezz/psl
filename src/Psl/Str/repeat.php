@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl;
-
 use function str_repeat;
 
 /**
@@ -21,13 +19,11 @@ use function str_repeat;
  *      Str\repeat('?', 5)
  *      => Str('?????')
  *
- * @pure
+ * @param int<0, max> $multiplier
  *
- * @throws Psl\Exception\InvariantViolationException If $multiplier is negative.
+ * @pure
  */
 function repeat(string $string, int $multiplier): string
 {
-    Psl\invariant($multiplier >= 0, 'Expected a non-negative multiplier');
-
     return str_repeat($string, $multiplier);
 }

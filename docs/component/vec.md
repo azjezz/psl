@@ -28,7 +28,7 @@
 - [partition](./../../src/Psl/Vec/partition.php#L18)
 - [range](./../../src/Psl/Vec/range.php#L51)
 - [reductions](./../../src/Psl/Vec/reductions.php#L27)
-- [reproduce](./../../src/Psl/Vec/reproduce.php#L25)
+- [reproduce](./../../src/Psl/Vec/reproduce.php#L22)
 - [reverse](./../../src/Psl/Vec/reverse.php#L22)
 - [shuffle](./../../src/Psl/Vec/shuffle.php#L26)
 - [sort](./../../src/Psl/Vec/sort.php#L23)

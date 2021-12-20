@@ -21,7 +21,7 @@ use Psl\Str;
  * @throws Psl\Exception\InvariantViolationException If $prefix contains a directory separator.
  * @throws Exception\RuntimeException If unable to create the file.
  *
- * @return string The absolute path to the temporary file.
+ * @return non-empty-string The absolute path to the temporary file.
  */
 function create_temporary_file(?string $directory = null, ?string $prefix = null): string
 {
