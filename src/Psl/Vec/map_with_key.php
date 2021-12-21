@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
+use Closure;
+
 /**
  * Applies a mapping function to all values of an iterable.
  *
@@ -20,11 +22,11 @@ namespace Psl\Vec;
  * @template T
  *
  * @param iterable<Tk, Tv> $iterable Iterable to be mapped over
- * @param (callable(Tk,Tv): T) $function
+ * @param (Closure(Tk,Tv): T) $function
  *
  * @return list<T>
  */
-function map_with_key(iterable $iterable, callable $function): array
+function map_with_key(iterable $iterable, Closure $function): array
 {
     $result = [];
     foreach ($iterable as $key => $value) {

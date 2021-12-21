@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
+use Closure;
+
 /**
  * Returns a new dict ( keyed-array ) sorted by some scalar property of each value
  * of the given iterable, which is computed by the given function.
@@ -16,12 +18,12 @@ namespace Psl\Dict;
  * @template Ts
  *
  * @param iterable<Tk, Tv> $iterable
- * @param (callable(Tv): Ts) $scalar_func
- * @param (callable(Ts, Ts): int)|null $comparator
+ * @param (Closure(Tv): Ts) $scalar_func
+ * @param (Closure(Ts, Ts): int)|null $comparator
  *
  * @return array<Tk, Tv>
  */
-function sort_by(iterable $iterable, callable $scalar_func, ?callable $comparator = null): array
+function sort_by(iterable $iterable, Closure $scalar_func, ?Closure $comparator = null): array
 {
     $comparator ??=
         /**

@@ -32,7 +32,7 @@ function copy(string $source, string $destination, bool $overwrite = false): voi
     }
 
     /**
-     * @psalm-suppress InvalidArgument - callable is not pure..
+     * @psalm-suppress InvalidArgument - Closure is not pure..
      */
     $source_stream = Internal\suppress(static fn() => fopen($source, 'rb'));
     // @codeCoverageIgnoreStart
@@ -42,7 +42,7 @@ function copy(string $source, string $destination, bool $overwrite = false): voi
     // @codeCoverageIgnoreEnd
 
     /**
-     * @psalm-suppress InvalidArgument - callable is not pure..
+     * @psalm-suppress InvalidArgument - Closure is not pure..
      */
     $destination_stream = Internal\suppress(static fn() => fopen($destination, 'wb'));
     // @codeCoverageIgnoreStart

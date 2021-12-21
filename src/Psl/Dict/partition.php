@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
+use Closure;
+
 /**
  * Returns a 2-tuple containing dict for which the given predicate returned
  * `true` and `false`, respectively.
@@ -12,11 +14,11 @@ namespace Psl\Dict;
  * @template Tv
  *
  * @param iterable<Tk, Tv> $iterable
- * @param (callable(Tv): bool) $predicate
+ * @param (Closure(Tv): bool) $predicate
  *
  * @return array{0: array<Tk, Tv>, 1: array<Tk, Tv>}
  */
-function partition(iterable $iterable, callable $predicate): array
+function partition(iterable $iterable, Closure $predicate): array
 {
     $success = [];
     $failure = [];

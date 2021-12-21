@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Collection;
 
+use Closure;
 use Psl\Dict;
 use Psl\Iter;
 use Psl\Vec;
@@ -274,13 +275,13 @@ final class Vector implements VectorInterface
      * The keys associated with the current `Vector` remain unchanged in the
      * returned `Vector`.
      *
-     * @param (callable(T): bool) $fn The callback containing the condition to apply to the current
+     * @param (Closure(T): bool) $fn The callback containing the condition to apply to the current
      *                                `Vector` values.
      *
      * @return Vector<T> a Vector containing the values after a user-specified condition
      *                   is applied.
      */
-    public function filter(callable $fn): Vector
+    public function filter(Closure $fn): Vector
     {
         return new Vector(Dict\filter($this->elements, $fn));
     }
@@ -296,13 +297,13 @@ final class Vector implements VectorInterface
      * The keys associated with the current `Vector` remain unchanged in the
      * returned `Vector`; the keys will be used in the filtering process only.
      *
-     * @param (callable(int, T): bool) $fn The callback containing the condition to apply to the current
+     * @param (Closure(int, T): bool) $fn The callback containing the condition to apply to the current
      *                                     `Vector` keys and values.
      *
      * @return Vector<T> a `Vector` containing the values after a user-specified
      *                   condition is applied to the keys and values of the current `Vector`.
      */
-    public function filterWithKey(callable $fn): Vector
+    public function filterWithKey(Closure $fn): Vector
     {
         return new Vector(Dict\filter_with_key($this->elements, $fn));
     }
@@ -319,13 +320,13 @@ final class Vector implements VectorInterface
      *
      * @template Tu
      *
-     * @param (callable(T): Tu) $fn The callback containing the operation to apply to the current
+     * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
      *                              `Vector` values.
      *
      * @return Vector<Tu> a `Vector` containing key/value pairs after a user-specified
      *                    operation is applied.
      */
-    public function map(callable $fn): Vector
+    public function map(Closure $fn): Vector
     {
         return new Vector(Dict\map($this->elements, $fn));
     }
@@ -343,13 +344,13 @@ final class Vector implements VectorInterface
      *
      * @template Tu
      *
-     * @param (callable(int, T): Tu) $fn The callback containing the operation to apply to the current
+     * @param (Closure(int, T): Tu) $fn The callback containing the operation to apply to the current
      *                                   `Vector` keys and values.
      *
      * @return Vector<Tu> a `Vector` containing the values after a user-specified
      *                    operation on the current `Vector`'s keys and values is applied.
      */
-    public function mapWithKey(callable $fn): Vector
+    public function mapWithKey(Closure $fn): Vector
     {
         return new Vector(Dict\map_with_key($this->elements, $fn));
     }
@@ -408,13 +409,13 @@ final class Vector implements VectorInterface
      * The returned `Vector` will always be a proper subset of the current
      * `Vector`.
      *
-     * @param (callable(T): bool) $fn The callback that is used to determine the stopping
+     * @param (Closure(T): bool) $fn The callback that is used to determine the stopping
      *                                condition.
      *
      * @return Vector<T> A `Vector` that is a proper subset of the current
      *                   `Vector` up until the callback returns `false`.
      */
-    public function takeWhile(callable $fn): Vector
+    public function takeWhile(Closure $fn): Vector
     {
         return new Vector(Dict\take_while($this->elements, $fn));
     }
@@ -449,13 +450,13 @@ final class Vector implements VectorInterface
      * The returned `Vector` will always be a proper subset of the current
      * `Vector`.
      *
-     * @param (callable(T): bool) $fn The callback used to determine the starting element for the
+     * @param (Closure(T): bool) $fn The callback used to determine the starting element for the
      *                                returned `Vector`.
      *
      * @return Vector<T> A `Vector` that is a proper subset of the current
      *                   `Vector` starting after the callback returns `true`.
      */
-    public function dropWhile(callable $fn): Vector
+    public function dropWhile(Closure $fn): Vector
     {
         return new Vector(Dict\drop_while($this->elements, $fn));
     }

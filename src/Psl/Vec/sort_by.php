@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
+use Closure;
+
 use function asort;
 use function uasort;
 
@@ -18,12 +20,12 @@ use function uasort;
  * @template Ts
  *
  * @param iterable<Tv> $iterable
- * @param (callable(Tv): Ts) $scalar_func
- * @param (callable(Ts, Ts): int)|null $comparator
+ * @param (Closure(Tv): Ts) $scalar_func
+ * @param (Closure(Ts, Ts): int)|null $comparator
  *
  * @return list<Tv>
  */
-function sort_by(iterable $iterable, callable $scalar_func, ?callable $comparator = null): array
+function sort_by(iterable $iterable, Closure $scalar_func, ?Closure $comparator = null): array
 {
     /** @var array<int, Ts> $order_by */
     $order_by = [];

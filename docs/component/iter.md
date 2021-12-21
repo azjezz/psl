@@ -12,9 +12,9 @@
 
 #### `Functions`
 
-- [all](./../../src/Psl/Iter/all.php#L18)
-- [any](./../../src/Psl/Iter/any.php#L19)
-- [apply](./../../src/Psl/Iter/apply.php#L15)
+- [all](./../../src/Psl/Iter/all.php#L20)
+- [any](./../../src/Psl/Iter/any.php#L21)
+- [apply](./../../src/Psl/Iter/apply.php#L17)
 - [contains](./../../src/Psl/Iter/contains.php#L16)
 - [contains_key](./../../src/Psl/Iter/contains_key.php#L16)
 - [count](./../../src/Psl/Iter/count.php#L23)
@@ -24,15 +24,15 @@
 - [last](./../../src/Psl/Iter/last.php#L17)
 - [last_key](./../../src/Psl/Iter/last_key.php#L17)
 - [random](./../../src/Psl/Iter/random.php#L22)
-- [reduce](./../../src/Psl/Iter/reduce.php#L23)
-- [reduce_keys](./../../src/Psl/Iter/reduce_keys.php#L24)
-- [reduce_with_keys](./../../src/Psl/Iter/reduce_with_keys.php#L25)
+- [reduce](./../../src/Psl/Iter/reduce.php#L25)
+- [reduce_keys](./../../src/Psl/Iter/reduce_keys.php#L26)
+- [reduce_with_keys](./../../src/Psl/Iter/reduce_with_keys.php#L27)
 - [rewindable](./../../src/Psl/Iter/rewindable.php#L20)
-- [search](./../../src/Psl/Iter/search.php#L26)
+- [search](./../../src/Psl/Iter/search.php#L28)
 - [to_iterator](./../../src/Psl/Iter/to_iterator.php#L19)
 
 #### `Classes`
 
-- [Iterator](./../../src/Psl/Iter/Iterator.php#L19)
+- [Iterator](./../../src/Psl/Iter/Iterator.php#L20)
 
 

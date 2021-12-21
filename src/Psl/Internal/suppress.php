@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace Psl\Internal;
 
+use Closure;
+
 use function error_reporting;
 
 /**
  * @template T
  *
- * @param (callable(): T) $fun
+ * @param (Closure(): T) $fun
  *
  * @return T
  *
  * @internal
  */
-function suppress(callable $fun)
+function suppress(Closure $fun)
 {
     $previous_level = error_reporting(0);
 

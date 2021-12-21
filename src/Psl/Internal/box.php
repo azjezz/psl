@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Internal;
 
+use Closure;
 use Psl\Str;
 
 use function restore_error_handler;
@@ -12,7 +13,7 @@ use function set_error_handler;
 /**
  * @template T
  *
- * @param (callable(): T) $fun
+ * @param (Closure(): T) $fun
  *
  * @return array{0: T, 1: ?string}
  *
@@ -20,7 +21,7 @@ use function set_error_handler;
  *
  * @psalm-suppress MissingThrowsDocblock
  */
-function box(callable $fun): array
+function box(Closure $fun): array
 {
     $last_message = null;
     /** @psalm-suppress InvalidArgument */

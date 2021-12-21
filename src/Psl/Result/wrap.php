@@ -8,7 +8,7 @@ use Closure;
 use Exception;
 
 /**
- * Wrap the given callable result in a `Success`, or `Failure` if the closure throws
+ * Wrap the given closure result in a `Success`, or `Failure` if the closure throws
  * an `Exception`.
  *
  * @template     T

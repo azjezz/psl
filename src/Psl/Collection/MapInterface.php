@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Collection;
 
+use Closure;
+
 /**
  * @template Tk of array-key
  * @template Tv
@@ -41,13 +43,13 @@ interface MapInterface extends AccessibleCollectionInterface
      * The keys associated with the current `MapInterface` remain unchanged in the
      * returned `MapInterface`.
      *
-     * @param (callable(Tv): bool) $fn The callback containing the condition to apply to the current
+     * @param (Closure(Tv): bool) $fn The callback containing the condition to apply to the current
      *                                 `MapInterface` values.
      *
      * @return MapInterface<Tk, Tv> A MapInterface containing the values after a user-specified condition
      *                              is applied.
      */
-    public function filter(callable $fn): MapInterface;
+    public function filter(Closure $fn): MapInterface;
 
     /**
      * Returns a `MapInterface` containing the values of the current `MapInterface`
@@ -60,13 +62,13 @@ interface MapInterface extends AccessibleCollectionInterface
      * The keys associated with the current `MapInterface` remain unchanged in the
      * returned `MapInterface`; the keys will be used in the filtering process only.
      *
-     * @param (callable(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
+     * @param (Closure(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
      *                                     `MapInterface` keys and values.
      *
      * @return MapInterface<Tk, Tv> A `MapInterface` containing the values after a user-specified
      *                              condition is applied to the keys and values of the current `MapInterface`.
      */
-    public function filterWithKey(callable $fn): MapInterface;
+    public function filterWithKey(Closure $fn): MapInterface;
 
     /**
      * Returns a `MapInterface` after an operation has been applied to each value
@@ -80,13 +82,13 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @template Tu
      *
-     * @param (callable(Tv): Tu) $fn The callback containing the operation to apply to the current
+     * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
      *                               `MapInterface` values.
      *
      * @return MapInterface<Tk, Tu> A `MapInterface` containing key/value pairs after a user-specified
      *                              operation is applied.
      */
-    public function map(callable $fn): MapInterface;
+    public function map(Closure $fn): MapInterface;
 
     /**
      * Returns a `MapInterface` after an operation has been applied to each key and
@@ -101,13 +103,13 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @template Tu
      *
-     * @param (callable(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
+     * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
      *                                   `MapInterface` keys and values.
      *
      * @return MapInterface<Tk, Tu> A `MapInterface` containing the values after a user-specified
      *                              operation on the current `MapInterface`'s keys and values is applied.
      */
-    public function mapWithKey(callable $fn): MapInterface;
+    public function mapWithKey(Closure $fn): MapInterface;
 
     /**
      * Returns the first value in the current `MapInterface`.
@@ -210,13 +212,13 @@ interface MapInterface extends AccessibleCollectionInterface
      * The returned `MapInterface` will always be a proper subset of the current
      * `MapInterface`.
      *
-     * @param (callable(Tv): bool) $fn The callback that is used to determine the stopping
+     * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping
      *                                 condition.
      *
      * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
      *                              `MapInterface` up until the callback returns `false`.
      */
-    public function takeWhile(callable $fn): MapInterface;
+    public function takeWhile(Closure $fn): MapInterface;
 
     /**
      * Returns a `MapInterface` containing the values after the `n`-th element of
@@ -245,13 +247,13 @@ interface MapInterface extends AccessibleCollectionInterface
      * The returned `MapInterface` will always be a proper subset of the current
      * `MapInterface`.
      *
-     * @param (callable(Tv): bool) $fn The callback used to determine the starting element for the
+     * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
      *                                 returned `MapInterface`.
      *
      * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
      *                              `MapInterface` starting after the callback returns `true`.
      */
-    public function dropWhile(callable $fn): MapInterface;
+    public function dropWhile(Closure $fn): MapInterface;
 
     /**
      * Returns a subset of the current `MapInterface` starting from a given key up

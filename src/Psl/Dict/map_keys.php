@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
+use Closure;
+
 /**
  * Applies a mapping function to all keys of an iterable.
  *
@@ -22,11 +24,11 @@ namespace Psl\Dict;
  * @template Tv
  *
  * @param iterable<Tk1, Tv> $iterable Iterable to be mapped over
- * @param (callable(Tk1): Tk2) $function
+ * @param (Closure(Tk1): Tk2) $function
  *
  * @return array<Tk2, Tv>
  */
-function map_keys(iterable $iterable, callable $function): array
+function map_keys(iterable $iterable, Closure $function): array
 {
     $result = [];
     foreach ($iterable as $key => $value) {

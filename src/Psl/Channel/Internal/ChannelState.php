@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Channel\Internal;
 
+use Closure;
 use Psl\Channel\ChannelInterface;
 use Psl\Channel\Exception;
 
@@ -20,17 +21,17 @@ use function count;
 final class ChannelState implements ChannelInterface
 {
     /**
-     * @var list<(callable(): void)>
+     * @var list<(Closure(): void)>
      */
     private array $closeListeners = [];
 
     /**
-     * @var list<(callable(): void)>
+     * @var list<(Closure(): void)>
      */
     private array $receiveListeners = [];
 
     /**
-     * @var list<(callable(): void)>
+     * @var list<(Closure(): void)>
      */
     private array $sendListeners = [];
 
@@ -50,25 +51,25 @@ final class ChannelState implements ChannelInterface
     }
 
     /**
-     * @param (callable(): void) $listener
+     * @param (Closure(): void) $listener
      */
-    public function addCloseListener(callable $listener): void
+    public function addCloseListener(Closure $listener): void
     {
         $this->closeListeners[] = $listener;
     }
 
     /**
-     * @param (callable(): void) $listener
+     * @param (Closure(): void) $listener
      */
-    public function addSendListener(callable $listener): void
+    public function addSendListener(Closure $listener): void
     {
         $this->sendListeners[] = $listener;
     }
 
     /**
-     * @param (callable(): void) $listener
+     * @param (Closure(): void) $listener
      */
-    public function addReceiveListener(callable $listener): void
+    public function addReceiveListener(Closure $listener): void
     {
         $this->receiveListeners[] = $listener;
     }

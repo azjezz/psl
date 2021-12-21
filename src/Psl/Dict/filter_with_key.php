@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
+use Closure;
+
 use function array_filter;
 use function is_array;
 
@@ -30,11 +32,11 @@ use const ARRAY_FILTER_USE_BOTH;
  * @template Tv
  *
  * @param iterable<Tk, Tv> $iterable
- * @param (callable(Tk, Tv): bool)|null $predicate
+ * @param (Closure(Tk, Tv): bool)|null $predicate
  *
  * @return array<Tk, Tv>
  */
-function filter_with_key(iterable $iterable, ?callable $predicate = null): array
+function filter_with_key(iterable $iterable, ?Closure $predicate = null): array
 {
     $predicate = $predicate ??
         /**

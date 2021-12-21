@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Closure;
+
 /**
  * Returns true if all values in the iterable satisfy the predicate.
  *
@@ -13,9 +15,9 @@ namespace Psl\Iter;
  * @template  T
  *
  * @param iterable<T> $iterable Iterable to check against the predicate
- * @param (callable(T): bool) $predicate
+ * @param (Closure(T): bool) $predicate
  */
-function all(iterable $iterable, callable $predicate): bool
+function all(iterable $iterable, Closure $predicate): bool
 {
     foreach ($iterable as $value) {
         if (!$predicate($value)) {

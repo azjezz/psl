@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
+use Closure;
 use Psl\Iter;
 
 /**
@@ -16,11 +17,11 @@ use Psl\Iter;
  * @template Ts
  *
  * @param iterable<Tk, Tv> $iterable
- * @param (callable(Tv): Ts) $scalar_func
+ * @param (Closure(Tv): Ts) $scalar_func
  *
  * @return array<Tk, Tv>
  */
-function unique_by(iterable $iterable, callable $scalar_func): array
+function unique_by(iterable $iterable, Closure $scalar_func): array
 {
     /** @var array<Tk, Ts> $unique */
     $unique = [];

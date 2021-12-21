@@ -12,22 +12,22 @@
 
 #### `Interfaces`
 
-- [AccessibleCollectionInterface](./../../src/Psl/Collection/AccessibleCollectionInterface.php#L18)
-- [CollectionInterface](./../../src/Psl/Collection/CollectionInterface.php#L21)
+- [AccessibleCollectionInterface](./../../src/Psl/Collection/AccessibleCollectionInterface.php#L20)
+- [CollectionInterface](./../../src/Psl/Collection/CollectionInterface.php#L22)
 - [IndexAccessInterface](./../../src/Psl/Collection/IndexAccessInterface.php#L13)
-- [MapInterface](./../../src/Psl/Collection/MapInterface.php#L13)
-- [MutableAccessibleCollectionInterface](./../../src/Psl/Collection/MutableAccessibleCollectionInterface.php#L20)
-- [MutableCollectionInterface](./../../src/Psl/Collection/MutableCollectionInterface.php#L20)
+- [MapInterface](./../../src/Psl/Collection/MapInterface.php#L15)
+- [MutableAccessibleCollectionInterface](./../../src/Psl/Collection/MutableAccessibleCollectionInterface.php#L22)
+- [MutableCollectionInterface](./../../src/Psl/Collection/MutableCollectionInterface.php#L22)
 - [MutableIndexAccessInterface](./../../src/Psl/Collection/MutableIndexAccessInterface.php#L16)
-- [MutableMapInterface](./../../src/Psl/Collection/MutableMapInterface.php#L14)
-- [MutableVectorInterface](./../../src/Psl/Collection/MutableVectorInterface.php#L13)
-- [VectorInterface](./../../src/Psl/Collection/VectorInterface.php#L12)
+- [MutableMapInterface](./../../src/Psl/Collection/MutableMapInterface.php#L16)
+- [MutableVectorInterface](./../../src/Psl/Collection/MutableVectorInterface.php#L15)
+- [VectorInterface](./../../src/Psl/Collection/VectorInterface.php#L14)
 
 #### `Classes`
 
-- [Map](./../../src/Psl/Collection/Map.php#L24)
-- [MutableMap](./../../src/Psl/Collection/MutableMap.php#L24)
-- [MutableVector](./../../src/Psl/Collection/MutableVector.php#L22)
-- [Vector](./../../src/Psl/Collection/Vector.php#L21)
+- [Map](./../../src/Psl/Collection/Map.php#L25)
+- [MutableMap](./../../src/Psl/Collection/MutableMap.php#L25)
+- [MutableVector](./../../src/Psl/Collection/MutableVector.php#L23)
+- [Vector](./../../src/Psl/Collection/Vector.php#L22)
 
 

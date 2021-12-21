@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
+use Closure;
+
 /**
  * Drops items from an iterable until the predicate fails for the first time.
  *
@@ -19,11 +21,11 @@ namespace Psl\Dict;
  * @template Tv
  *
  * @param iterable<Tk, Tv> $iterable Iterable to drop values from
- * @param (callable(Tv): bool) $predicate
+ * @param (Closure(Tv): bool) $predicate
  *
  * @return array<Tk, Tv>
  */
-function drop_while(iterable $iterable, callable $predicate): array
+function drop_while(iterable $iterable, Closure $predicate): array
 {
     $result = [];
     $failed = false;

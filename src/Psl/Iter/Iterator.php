@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Closure;
 use Countable;
 use Generator;
 use SeekableIterator;
@@ -59,11 +60,11 @@ final class Iterator implements Countable, SeekableIterator
      * @template Tsk
      * @template Tsv
      *
-     * @param callable(): iterable<Tsk, Tsv> $factory
+     * @param (Closure(): iterable<Tsk, Tsv>) $factory
      *
      * @return Iterator<Tsk, Tsv>
      */
-    public static function from(callable $factory): Iterator
+    public static function from(Closure $factory): Iterator
     {
         return self::create($factory());
     }
@@ -85,7 +86,7 @@ final class Iterator implements Countable, SeekableIterator
         }
 
         /**
-         * @var (callable(): Generator<Tsk, Tsv, mixed, void>) $factory
+         * @var (Closure(): Generator<Tsk, Tsv, mixed, void>) $factory
          */
         $factory = static fn(): Generator => yield from $iterable;
 

@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
+use Closure;
+
 /**
  * @template Tv
  * @template Ts
  *
  * @param iterable<Tv> $iterable Iterable to be mapped over
- * @param (callable(Tv): iterable<Ts>) $mapper
+ * @param (Closure(Tv): iterable<Ts>) $mapper
  *
  * @return list<Ts>
  */
-function flat_map(iterable $iterable, callable $mapper): array
+function flat_map(iterable $iterable, Closure $mapper): array
 {
     $flattened = [];
     foreach ($iterable as $value) {

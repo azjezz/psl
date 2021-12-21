@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Regex;
 
-use Psl\Type;
-
 use function preg_replace;
 
 /**
@@ -30,15 +28,5 @@ function replace(string $haystack, string $pattern, string $replacement, ?int $l
         static fn() => preg_replace($pattern, $replacement, $haystack, $limit),
     );
 
-    // @codeCoverageIgnoreStart
-    try {
-        /**
-         * @psalm-suppress ImpureFunctionCall - see #130
-         * @psalm-suppress ImpureMethodCall -see #130
-         */
-        return Type\string()->assert($result);
-    } catch (Type\Exception\AssertException $e) {
-        throw new Exception\RuntimeException('Unexpected error', 0, $e);
-    }
-    // @codeCoverageIgnoreEnd
+    return (string) $result;
 }

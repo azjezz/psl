@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
+use Closure;
+
 /**
  * Returns a dict where:
  *  - values are the result of calling `$value_func` on the original value
@@ -27,12 +29,12 @@ namespace Psl\Dict;
  * @template Tv2
  *
  * @param iterable<Tk1, Tv1> $iterable
- * @param (callable(Tv1): Tv2) $value_func
- * @param (callable(Tv1): Tk2) $key_func
+ * @param (Closure(Tv1): Tv2) $value_func
+ * @param (Closure(Tv1): Tk2) $key_func
  *
  * @return array<Tk2, Tv2>
  */
-function pull(iterable $iterable, callable $value_func, callable $key_func): array
+function pull(iterable $iterable, Closure $value_func, Closure $key_func): array
 {
     $result = [];
     foreach ($iterable as $value) {

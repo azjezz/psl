@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
+use Closure;
+
 use function array_map;
 use function array_values;
 use function is_array;
@@ -24,11 +26,11 @@ use function is_array;
  * @template T
  *
  * @param iterable<Tk, Tv> $iterable Iterable to be mapped over
- * @param (callable(Tv): T) $function
+ * @param (Closure(Tv): T) $function
  *
  * @return list<T>
  */
-function map(iterable $iterable, callable $function): array
+function map(iterable $iterable, Closure $function): array
 {
     if (is_array($iterable)) {
         return array_values(array_map(

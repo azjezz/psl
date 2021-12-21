@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
+use Closure;
+
 /**
  * Re-indexes an iterable by applying a function to all its values and
  * using the returned value as the new key/index.
@@ -30,11 +32,11 @@ namespace Psl\Dict;
  * @template Tv
  *
  * @param iterable<Tk1, Tv> $iterable Iterable to reindex
- * @param (callable(Tv): Tk2) $function
+ * @param (Closure(Tv): Tk2) $function
  *
  * @return array<Tk2, Tv>
  */
-function reindex(iterable $iterable, callable $function): array
+function reindex(iterable $iterable, Closure $function): array
 {
     $result = [];
     foreach ($iterable as $value) {
