@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Psl\Str\Grapheme;
 
 use Psl;
+use Psl\Str\Exception;
 
 /**
- * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
+ * @throws Exception\OutOfBoundsException If the $offset is out-of-bounds.
+ * @throws Psl\Exception\InvariantViolationException If unable to split $string into grapheme clusters.
  *
  * @pure
  */

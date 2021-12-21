@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Str\Byte;
 
-use Psl;
+use Psl\Str;
 
 /**
  * Returns whether the 'haystack' string contains the 'needle' string.
@@ -16,12 +16,12 @@ use Psl;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If $offset is out-of-bounds.
+ * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
  */
 function contains(string $haystack, string $needle, int $offset = 0): bool
 {
     if ('' === $needle) {
-        return Psl\Internal\validate_offset($offset, length($haystack), true);
+        return Str\Internal\validate_offset($offset, length($haystack), true);
     }
 
     return null !== search($haystack, $needle, $offset);

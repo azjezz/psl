@@ -105,7 +105,7 @@ final class Loader
         'Psl\Fun\when',
         'Psl\Internal\suppress',
         'Psl\Internal\box',
-        'Psl\Internal\validate_offset',
+        'Psl\Str\Internal\validate_offset',
         'Psl\Iter\all',
         'Psl\Iter\any',
         'Psl\Iter\apply',
@@ -556,6 +556,7 @@ final class Loader
         'Psl\Channel\Exception\ExceptionInterface',
         'Psl\Promise\PromiseInterface',
         'Psl\Iter\Exception\ExceptionInterface',
+        'Psl\Str\Exception\ExceptionInterface',
     ];
 
     public const TRAITS = [
@@ -566,7 +567,7 @@ final class Loader
 
     public const CLASSES = [
         'Psl\Ref',
-        'Psl\Exception\InvariantViolationException',
+        'Psl\Exception\OutOfBoundsException',
         'Psl\DataStructure\PriorityQueue',
         'Psl\DataStructure\Queue',
         'Psl\DataStructure\Stack',
@@ -694,6 +695,7 @@ final class Loader
         'Psl\Channel\Exception\EmptyChannelException',
         'Psl\Channel\Exception\FullChannelException',
         'Psl\Iter\Exception\OutOfBoundsException',
+        'Psl\Str\Exception\OutOfBoundsException',
     ];
 
     public const ENUMS = [

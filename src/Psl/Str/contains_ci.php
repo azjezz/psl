@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl;
-
 /**
  * Returns whether the 'haystack' string contains the 'needle' string.
  *
@@ -36,12 +34,12 @@ use Psl;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
+ * @throws Exception\OutOfBoundsException If the $offset is out-of-bounds.
  */
 function contains_ci(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::UTF_8): bool
 {
     if ('' === $needle) {
-        return Psl\Internal\validate_offset($offset, length($haystack, $encoding), true);
+        return Internal\validate_offset($offset, length($haystack, $encoding), true);
     }
 
     return null !== search_ci($haystack, $needle, $offset, $encoding);

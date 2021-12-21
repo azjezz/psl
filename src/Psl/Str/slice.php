@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl;
-
 use function mb_substr;
 
 /**
@@ -18,14 +16,14 @@ use function mb_substr;
  *
  * @param null|int<0, max> $length
  *
- * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
+ * @throws Exception\OutOfBoundsException If the $offset is out-of-bounds.
  *
  * @pure
  */
 function slice(string $string, int $offset, ?int $length = null, Encoding $encoding = Encoding::UTF_8): string
 {
     $string_length = length($string, $encoding);
-    $offset        = Psl\Internal\validate_offset($offset, $string_length);
+    $offset        = Internal\validate_offset($offset, $string_length);
     if (0 === $offset && (null === $length || $string_length <= $length)) {
         return $string;
     }

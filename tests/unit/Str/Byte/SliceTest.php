@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Str\Byte;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Exception;
 use Psl\Str\Byte;
+use Psl\Str\Exception;
 
 final class SliceTest extends TestCase
 {
@@ -32,14 +32,14 @@ final class SliceTest extends TestCase
 
     public function testSliceThrowsForOutOfBoundOffset(): void
     {
-        $this->expectException(Exception\InvariantViolationException::class);
+        $this->expectException(Exception\OutOfBoundsException::class);
 
         Byte\slice('Hello', 10);
     }
 
     public function testSliceThrowsForNegativeOutOfBoundOffset(): void
     {
-        $this->expectException(Exception\InvariantViolationException::class);
+        $this->expectException(Exception\OutOfBoundsException::class);
 
         Byte\slice('hello', -6);
     }

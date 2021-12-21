@@ -40,3 +40,4 @@
 * introduced a new `Psl\Promise` component.
 * **BC** - `Psl\Result\ResultInterface` now implements `Psl\Promise\PromiseInterface`
 * **BC** - `Psl\Type\resource('curl')->toString()` now uses PHP built-in resource kind notation ( i.e: `resource (curl)` ) instead of generic notation ( i.e: `resource<curl>` )
+* **BC** - `Psl\Str`, `Psl\Str\Byte`, and `Psl\Str\Grapheme` functions now throw `Psl\Str\Exception\OutOfBoundsException` instead of `Psl\Exception\InvaraintViolationsException` when `$offset` is out-of-bounds.

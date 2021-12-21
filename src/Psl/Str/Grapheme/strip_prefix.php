@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Str\Grapheme;
 
+use Psl;
+
 /**
  * Returns the string with the given prefix removed, or the string itself if
  * it doesn't start with the prefix.
+ *
+ * @throws Psl\Exception\InvariantViolationException If unable to split $string into grapheme clusters.
  *
  * @pure
  */

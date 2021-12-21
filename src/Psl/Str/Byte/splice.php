@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Str\Byte;
 
-use Psl;
+use Psl\Str;
 
 use function substr_replace;
 
@@ -20,11 +20,11 @@ use function substr_replace;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If $offset is out-of-bounds.
+ * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
  */
 function splice(string $string, string $replacement, int $offset, ?int $length = null): string
 {
-    $offset = Psl\Internal\validate_offset($offset, length($string));
+    $offset = Str\Internal\validate_offset($offset, length($string));
 
     return null === $length
         ? substr_replace($string, $replacement, $offset)

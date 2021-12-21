@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Exception;
 
-class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
+use InvalidArgumentException as InvalidArgumentRootException;
+
+class InvalidArgumentException extends InvalidArgumentRootException implements ExceptionInterface
 {
 }

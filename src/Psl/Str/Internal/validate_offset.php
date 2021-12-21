@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Psl\Internal;
+namespace Psl\Str\Internal;
 
-use Psl;
+use Psl\Str\Exception;
 
 /**
  * Verifies that the `$offset` is within plus/minus `$length`. Returns the
@@ -14,23 +14,30 @@ use Psl;
  *
  * @codeCoverageIgnore
  *
- * @throws Psl\Exception\InvariantViolationException If the offset is out-of-bounds.
+ * @throws Exception\OutOfBoundsException If the offset is out-of-bounds.
  *
  * @internal
  *
- * @return ($assert is true ? bool : int<0, max>)
+ * @return ($assert is true ? true : int<0, max>)
  */
 function validate_offset(int $offset, int $length, bool $assert = false): int|bool
 {
+    if (0 === $offset) {
+        return $assert ? true : $offset;
+    }
+
     $original_offset = $offset;
 
     if ($offset < 0) {
         $offset += $length;
     }
 
-    Psl\invariant($offset >= 0 && $offset <= $length, 'Offset (%d) was out-of-bounds.', $original_offset);
+    if ($offset < 0 || $offset > $length) {
+        throw Exception\OutOfBoundsException::for($original_offset);
+    }
 
     if (!$assert) {
+        /** @var int<0, max> */
         return $offset;
     }
 

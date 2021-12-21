@@ -10,8 +10,7 @@ use Psl;
  * Returns the string with the given suffix removed, or the string itself if
  * it doesn't end with the suffix.
  *
- * @throws Psl\Exception\InvariantViolationException If unable to convert $string, or $suffix to UTF-16,
- *                                                   or split them into graphemes.
+ * @throws Psl\Exception\InvariantViolationException If unable to split $string into grapheme clusters.
  *
  * @pure
  */
