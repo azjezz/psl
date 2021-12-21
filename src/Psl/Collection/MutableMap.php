@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Collection;
 
-use Psl;
 use Psl\Dict;
 use Psl\Iter;
 use Psl\Vec;
+
+use function array_key_exists;
+use function count;
 
 /**
  * @template Tk of array-key
@@ -151,11 +153,13 @@ final class MutableMap implements MutableMapInterface
      * Get the number of items in the current map.
      *
      * @psalm-mutation-free
+     *
+     * @return int<0, max>
      */
     public function count(): int
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\count($this->elements);
+        /** @var int<0, max> */
+        return count($this->elements);
     }
 
     /**
@@ -187,7 +191,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @param Tk $k
      *
-     * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
+     * @throws Exception\OutOfBoundsException If $k is out-of-bounds.
      *
      * @return Tv
      *
@@ -195,7 +199,9 @@ final class MutableMap implements MutableMapInterface
      */
     public function at(string|int $k): mixed
     {
-        Psl\invariant($this->contains($k), 'Key (%s) is out-of-bounds.', $k);
+        if (!array_key_exists($k, $this->elements)) {
+            throw Exception\OutOfBoundsException::for($k);
+        }
 
         return $this->elements[$k];
     }
@@ -209,8 +215,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function contains(int|string $k): bool
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\contains_key($this->elements, $k);
+        return array_key_exists($k, $this->elements);
     }
 
     /**
@@ -399,10 +404,8 @@ final class MutableMap implements MutableMapInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n The last element that will be included in the returned
-     *               `MutableMap`.
-     *
-     * @throws Psl\Exception\InvariantViolationException If $n is negative.
+     * @param int<0, max> $n The last element that will be included in the returned
+     *                       `MutableMap`.
      *
      * @return MutableMap<Tk, Tv> A `MutableMap` that is a proper subset of the current
      *                            `MutableMap` up to `n` elements.
@@ -442,10 +445,8 @@ final class MutableMap implements MutableMapInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n The last element to be skipped; the $n+1 element will be the
-     *               first one in the returned `MutableMap`.
-     *
-     * @throws Psl\Exception\InvariantViolationException If $n is negative.
+     * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
+     *                       first one in the returned `MutableMap`.
      *
      * @return MutableMap<Tk, Tv> A `MutableMap` that is a proper subset of the current
      *                            `MutableMap` containing values after the specified `n`-th element.
@@ -488,11 +489,9 @@ final class MutableMap implements MutableMapInterface
      * The returned `MutableMap` will always be a proper subset of this
      * `MutableMap`.
      *
-     * @param int $start The starting key of this Vector to begin the returned
-     *                   `MutableMap`
-     * @param null|int $length The length of the returned `MutableMap`
-     *
-     * @throws Psl\Exception\InvariantViolationException If $start or $len are negative.
+     * @param int<0, max> $start The starting key of this Vector to begin the returned
+     *                           `MutableMap`
+     * @param null|int<0, max> $length The length of the returned `MutableMap`
      *
      * @return MutableMap<Tk, Tv> A `MutableMap` that is a proper subset of the current
      *                            `MutableMap` starting at `$start` up to but not including the
@@ -519,13 +518,15 @@ final class MutableMap implements MutableMapInterface
      * @param Tk $k The key to which we will set the value
      * @param Tv $v The value to set
      *
-     * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
+     * @throws Exception\OutOfBoundsException If $k is out-of-bounds.
      *
      * @return MutableMap<Tk, Tv> Returns itself
      */
     public function set(int|string $k, mixed $v): MutableMap
     {
-        Psl\invariant($this->contains($k), 'Key (%s) is out-of-bounds.', $k);
+        if (!array_key_exists($k, $this->elements)) {
+            throw Exception\OutOfBoundsException::for($k);
+        }
 
         $this->elements[$k] = $v;
 

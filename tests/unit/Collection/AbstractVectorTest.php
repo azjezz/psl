@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Collection;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Collection;
 use Psl\Collection\VectorInterface;
-use Psl\Exception\InvariantViolationException;
 use Psl\Str;
 
 /**
- * @covers \Psl\Collection\AbstractVector
- * @covers \Psl\Collection\AbstractAccessibleCollection
+ * @covers \Psl\Collection\Vector
+ * @covers \Psl\Collection\MutableVector
  */
 abstract class AbstractVectorTest extends TestCase
 {
     /**
      * The Vector class used for values, keys .. etc.
      *
-     * @var class-string<IVector>
+     * @var class-string<VectorInterface>
      */
     protected string $vectorClass = VectorInterface::class;
 
@@ -516,8 +516,8 @@ abstract class AbstractVectorTest extends TestCase
         static::assertSame('hello', $vector->at(0));
         static::assertSame('world', $vector->at(1));
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Key (2) is out-of-bounds.');
+        $this->expectException(Collection\Exception\OutOfBoundsException::class);
+        $this->expectExceptionMessage('Key (2) was out-of-bounds.');
 
         $vector->at(2);
     }
@@ -551,7 +551,7 @@ abstract class AbstractVectorTest extends TestCase
      *
      * @param iterable<T> $items
      *
-     * @return IVector<T>
+     * @return VectorInterface<T>
      */
     abstract protected function create(iterable $items): VectorInterface;
 }

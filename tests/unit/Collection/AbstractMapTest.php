@@ -5,28 +5,28 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Collection;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Collection;
 use Psl\Collection\MapInterface;
 use Psl\Collection\VectorInterface;
-use Psl\Exception\InvariantViolationException;
 use Psl\Str;
 
 /**
- * @covers \Psl\Collection\AbstractMap
- * @covers \Psl\Collection\AbstractAccessibleCollection
+ * @covers \Psl\Collection\Map
+ * @covers \Psl\Collection\MutableMap
  */
 abstract class AbstractMapTest extends TestCase
 {
     /**
      * The Map class being currently tested.
      *
-     * @var class-string<IMap>
+     * @var class-string<MapInterface>
      */
     protected string $mapClass = MapInterface::class;
 
     /**
      * The Vector class used for values, keys .. etc.
      *
-     * @var class-string<IVector>
+     * @var class-string<VectorInterface>
      */
     protected string $vectorClass = VectorInterface::class;
 
@@ -536,8 +536,8 @@ abstract class AbstractMapTest extends TestCase
         static::assertSame('hello', $map->at('foo'));
         static::assertSame('world', $map->at('bar'));
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Key (baz) is out-of-bounds.');
+        $this->expectException(Collection\Exception\OutOfBoundsException::class);
+        $this->expectExceptionMessage('Key (baz) was out-of-bounds.');
 
         $map->at('baz');
     }
@@ -572,7 +572,7 @@ abstract class AbstractMapTest extends TestCase
      *
      * @param iterable<Tk, Tv> $items
      *
-     * @return IMap<Tk, Tv>
+     * @return MapInterface<Tk, Tv>
      */
     abstract protected function create(iterable $items): MapInterface;
 }

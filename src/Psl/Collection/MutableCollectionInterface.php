@@ -131,7 +131,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n The last element that will be included in the returned `MutableCollectionInterface`.
+     * @param int<0, max> $n The last element that will be included in the returned `MutableCollectionInterface`.
      *
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` that is a proper
      *                                            subset of the current `MutableCollectionInterface` up to `n` elements.
@@ -166,8 +166,8 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n - The last element to be skipped; the $n+1 element will be the
-     *               first one in the returned `MutableCollectionInterface`.
+     * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
+     *                       first one in the returned `MutableCollectionInterface`.
      *
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` that is a proper
      *                                            subset of the current `MutableCollectionInterface` containing values
@@ -205,9 +205,9 @@ interface MutableCollectionInterface extends CollectionInterface
      * The returned `MutableCollectionInterface` will always be a proper subset of this
      * `MutableCollectionInterface`.
      *
-     * @param int $start The starting key of this Vector to begin the returned
-     *                   `MutableCollectionInterface`.
-     * @param int $length The length of the returned `MutableCollectionInterface`.
+     * @param int<0, max> $start The starting key of this Vector to begin the returned
+     *                           `MutableCollectionInterface`.
+     * @param null|int<0, max> $length The length of the returned `MutableCollectionInterface`.
      *
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` that is a proper
      *                                            subset of the current `MutableCollectionInterface` starting
@@ -215,7 +215,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, int $length): MutableCollectionInterface;
+    public function slice(int $start, ?int $length = null): MutableCollectionInterface;
 
     /**
      * Removes all items from the collection.

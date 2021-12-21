@@ -31,6 +31,8 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * Get the number of items in the collection.
      *
      * @psalm-mutation-free
+     *
+     * @return int<0, max>
      */
     public function count(): int;
 
@@ -162,8 +164,8 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n The last element that will be included in the returned
-     *               `CollectionInterface`.
+     * @param int<0, max> $n The last element that will be included in the returned
+     *                       `CollectionInterface`.
      *
      * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
      *                                     `CollectionInterface` up to `n` elements.
@@ -197,8 +199,8 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n The last element to be skipped; the $n+1 element will be the
-     *               first one in the returned `CollectionInterface`.
+     * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
+     *                       first one in the returned `CollectionInterface`.
      *
      * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
      *                                     `CollectionInterface` containing values after the specified `n`-th element.
@@ -234,9 +236,9 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * The returned `CollectionInterface` will always be a proper subset of this
      * `CollectionInterface`.
      *
-     * @param int $start The starting key of this Vector to begin the returned
-     *                   `CollectionInterface`.
-     * @param int $length The length of the returned `CollectionInterface`.
+     * @param int<0, max> $start The starting key of this Vector to begin the returned
+     *                           `CollectionInterface`.
+     * @param int<0, max> $length The length of the returned `CollectionInterface`.
      *
      * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
      *                                     `CollectionInterface` starting at `$start` up to but not including
@@ -244,5 +246,5 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, int $length): CollectionInterface;
+    public function slice(int $start, ?int $length = null): CollectionInterface;
 }

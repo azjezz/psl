@@ -212,7 +212,7 @@ interface MutableAccessibleCollectionInterface extends
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n The last element that will be included in the returned `MutableAccessibleCollectionInterface`.
+     * @param int<0, max> $n The last element that will be included in the returned `MutableAccessibleCollectionInterface`.
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` that is a proper
      *                                                      subset of the current `MutableAccessibleCollectionInterface`
@@ -248,8 +248,8 @@ interface MutableAccessibleCollectionInterface extends
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n The last element to be skipped; the $n+1 element will be the
-     *               first one in the returned `MutableAccessibleCollectionInterface`.
+     * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
+     *                       first one in the returned `MutableAccessibleCollectionInterface`.
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` that is a proper
      *                                                      subset of the current `MutableAccessibleCollectionInterface`
@@ -287,8 +287,8 @@ interface MutableAccessibleCollectionInterface extends
      * The returned `MutableAccessibleCollectionInterface` will always be a proper subset of this
      * `MutableAccessibleCollectionInterface`.
      *
-     * @param int $start The starting key of this Vector to begin the returned `MutableAccessibleCollectionInterface`
-     * @param int $length The length of the returned `MutableAccessibleCollectionInterface`
+     * @param int<0, max> $start The starting key of this Vector to begin the returned `MutableAccessibleCollectionInterface`
+     * @param null|int<0, max> $length The length of the returned `MutableAccessibleCollectionInterface`
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` that is a proper
      *                                                      subset of the current `MutableAccessibleCollectionInterface`
@@ -297,5 +297,5 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, int $length): MutableAccessibleCollectionInterface;
+    public function slice(int $start, ?int $length = null): MutableAccessibleCollectionInterface;
 }

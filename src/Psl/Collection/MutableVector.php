@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Collection;
 
-use Psl;
 use Psl\Dict;
 use Psl\Iter;
 use Psl\Vec;
+
+use function array_key_exists;
+use function count;
 
 /**
  * @template T
@@ -103,11 +105,13 @@ final class MutableVector implements MutableVectorInterface
      * Get the number of items in the current `MutableVector`.
      *
      * @psalm-mutation-free
+     *
+     * @return int<0, max>
      */
     public function count(): int
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\count($this->elements);
+        /** @var int<0, max> */
+        return count($this->elements);
     }
 
     /**
@@ -140,7 +144,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @param int $k
      *
-     * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
+     * @throws Exception\OutOfBoundsException If $k is out-of-bounds.
      *
      * @return T
      *
@@ -148,7 +152,9 @@ final class MutableVector implements MutableVectorInterface
      */
     public function at(string|int $k): mixed
     {
-        Psl\invariant($this->contains($k), 'Key (%s) is out-of-bounds.', $k);
+        if (!array_key_exists($k, $this->elements)) {
+            throw Exception\OutOfBoundsException::for($k);
+        }
 
         return $this->elements[$k];
     }
@@ -162,8 +168,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function contains(int|string $k): bool
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\contains_key($this->elements, $k);
+        return array_key_exists($k, $this->elements);
     }
 
     /**
@@ -244,13 +249,15 @@ final class MutableVector implements MutableVectorInterface
      * @param int $k The key to which we will set the value
      * @param T $v The value to set
      *
-     * @throws Psl\Exception\InvariantViolationException If $k is out-of-bounds.
+     * @throws Exception\OutOfBoundsException If $k is out-of-bounds.
      *
      * @return MutableVector<T> returns itself
      */
     public function set(int|string $k, mixed $v): MutableVector
     {
-        Psl\invariant($this->contains($k), 'Key (%s) is out-of-bounds.', $k);
+        if (!array_key_exists($k, $this->elements)) {
+            throw Exception\OutOfBoundsException::for($k);
+        }
 
         $this->elements[$k] = $v;
 
@@ -501,10 +508,8 @@ final class MutableVector implements MutableVectorInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n The last element that will be included in the returned
-     *               `MutableVector`.
-     *
-     * @throws Psl\Exception\InvariantViolationException If $n is negative.
+     * @param int<0, max> $n The last element that will be included in the returned
+     *                       `MutableVector`.
      *
      * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
      *                          `MutableVector` up to `n` elements.
@@ -544,10 +549,8 @@ final class MutableVector implements MutableVectorInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n The last element to be skipped; the $n+1 element will be the
-     *               first one in the returned `MutableVector`.
-     *
-     * @throws Psl\Exception\InvariantViolationException If $n is negative.
+     * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
+     *                       first one in the returned `MutableVector`.
      *
      * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
      *                          `MutableVector` containing values after the specified `n`-th element.
@@ -589,11 +592,9 @@ final class MutableVector implements MutableVectorInterface
      * The returned `MutableVector` will always be a proper subset of this
      * `MutableVector`.
      *
-     * @param int $start The starting key of this Vector to begin the returned
-     *                   `MutableVector`.
-     * @param null|int $length The length of the returned `MutableVector`
-     *
-     * @throws Psl\Exception\InvariantViolationException If $start or $len are negative.
+     * @param int<0, max> $start The starting key of this Vector to begin the returned
+     *                           `MutableVector`.
+     * @param null|int<0, max> $length The length of the returned `MutableVector`
      *
      * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
      *                          `MutableVector` starting at `$start` up to but not including

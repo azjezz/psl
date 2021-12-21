@@ -202,8 +202,8 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n The last element that will be included in the returned
-     *               `AccessibleCollectionInterface`.
+     * @param int<0, max> $n The last element that will be included in the returned
+     *                       `AccessibleCollectionInterface`.
      *
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` that is a proper
      *                                               subset of the current `AccessibleCollectionInterface` up
@@ -239,8 +239,8 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n The last element to be skipped; the $n+1 element will be the
-     *               first one in the returned `AccessibleCollectionInterface`.
+     * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
+     *                       first one in the returned `AccessibleCollectionInterface`.
      *
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` that is a proper subset
      *                                               of the current `AccessibleCollectionInterface` containing values
@@ -278,9 +278,9 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * The returned `AccessibleCollectionInterface` will always be a proper subset of this
      * `AccessibleCollectionInterface`.
      *
-     * @param int $start The starting key of this Vector to begin the returned
-     *                   `AccessibleCollectionInterface`
-     * @param int $length The length of the returned `AccessibleCollectionInterface`
+     * @param int<0, max> $start The starting key of this Vector to begin the returned
+     *                           `AccessibleCollectionInterface`
+     * @param null|int<0, max> $length The length of the returned `AccessibleCollectionInterface`
      *
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` that is a proper subset
      *                                               of the current `AccessibleCollectionInterface` starting at `$start`
@@ -288,5 +288,5 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, int $length): AccessibleCollectionInterface;
+    public function slice(int $start, ?int $length = null): AccessibleCollectionInterface;
 }

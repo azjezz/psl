@@ -557,6 +557,7 @@ final class Loader
         'Psl\Promise\PromiseInterface',
         'Psl\Iter\Exception\ExceptionInterface',
         'Psl\Str\Exception\ExceptionInterface',
+        'Psl\Collection\Exception\ExceptionInterface',
     ];
 
     public const TRAITS = [
@@ -696,6 +697,7 @@ final class Loader
         'Psl\Channel\Exception\FullChannelException',
         'Psl\Iter\Exception\OutOfBoundsException',
         'Psl\Str\Exception\OutOfBoundsException',
+        'Psl\Collection\Exception\OutOfBoundsException',
     ];
 
     public const ENUMS = [
