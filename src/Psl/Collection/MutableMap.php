@@ -6,9 +6,13 @@ namespace Psl\Collection;
 
 use Psl\Dict;
 use Psl\Iter;
-use Psl\Vec;
 
 use function array_key_exists;
+use function array_key_first;
+use function array_key_last;
+use function array_keys;
+use function array_slice;
+use function array_values;
 use function count;
 
 /**
@@ -20,18 +24,13 @@ use function count;
 final class MutableMap implements MutableMapInterface
 {
     /**
-     * @var array<Tk, Tv> $elements
-     */
-    private array $elements;
-
-    /**
-     * AbstractMap constructor.
+     * @param array<Tk, Tv> $elements
      *
-     * @param iterable<Tk, Tv> $elements
+     * @pure
      */
-    public function __construct(iterable $elements)
-    {
-        $this->elements = Dict\from_iterable($elements);
+    public function __construct(
+        private array $elements
+    ) {
     }
 
     /**
@@ -46,7 +45,6 @@ final class MutableMap implements MutableMapInterface
      */
     public static function fromArray(array $elements): MutableMap
     {
-        /** @psalm-suppress ImpureMethodCall - conditionally pure */
         return new self($elements);
     }
 
@@ -60,8 +58,12 @@ final class MutableMap implements MutableMapInterface
      */
     public function first(): mixed
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\first($this->elements);
+        $key = $this->firstKey();
+        if (null === $key) {
+            return null;
+        }
+
+        return $this->elements[$key];
     }
 
     /**
@@ -74,8 +76,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function firstKey(): int|string|null
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\first_key($this->elements);
+        return array_key_first($this->elements);
     }
 
     /**
@@ -88,8 +89,12 @@ final class MutableMap implements MutableMapInterface
      */
     public function last(): mixed
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\last($this->elements);
+        $key = $this->lastKey();
+        if (null === $key) {
+            return null;
+        }
+
+        return $this->elements[$key];
     }
 
     /**
@@ -102,8 +107,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function lastKey(): int|string|null
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\last_key($this->elements);
+        return array_key_last($this->elements);
     }
 
     /**
@@ -146,11 +150,11 @@ final class MutableMap implements MutableMapInterface
      */
     public function isEmpty(): bool
     {
-        return 0 === $this->count();
+        return [] === $this->elements;
     }
 
     /**
-     * Get the number of items in the current map.
+     * Get the number of elements in the current map.
      *
      * @psalm-mutation-free
      *
@@ -183,7 +187,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function jsonSerialize(): array
     {
-        return $this->toArray();
+        return $this->elements;
     }
 
     /**
@@ -242,8 +246,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function values(): MutableVector
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return MutableVector::fromArray(Vec\values($this->elements));
+        return MutableVector::fromArray(array_values($this->elements));
     }
 
     /**
@@ -255,8 +258,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function keys(): MutableVector
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return MutableVector::fromArray(Vec\keys($this->elements));
+        return MutableVector::fromArray(array_keys($this->elements));
     }
 
     /**
@@ -351,48 +353,41 @@ final class MutableMap implements MutableMapInterface
 
     /**
      * Returns a `MutableMap` where each element is a `array{0: Tv, 1: Tu}` that combines the
-     * element of the current `MutableMap` and the provided `iterable`.
+     * element of the current `MutableMap` and the provided elements.
      *
      * If the number of elements of the `MutableMap` are not equal to the
-     * number of elements in the `iterable`, then only the combined elements
+     * number of elements in `$elements`, then only the combined elements
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
      * @template Tu
      *
-     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
-     *                               elements of this `MutableMap`.
+     * @param array<array-key, Tu> $elements The elements to use to combine with the
+     *                                       elements of this `MutableMap`.
      *
      * @return MutableMap<Tk, array{0: Tv, 1: Tu}> A `MutableMap` that combines the values of the current
-     *                                             `MutableMap` with the provided `iterable`.
+     *                                             `MutableMap` with the provided elements.
      *
      * @psalm-mutation-free
      */
-    public function zip(iterable $iterable): MutableMap
+    public function zip(array $elements): MutableMap
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        $array = Vec\values($iterable);
-        /** @var array<Tk, array{0: Tv, 1: Tu}> $elements */
-        $elements = [];
+        $elements = array_values($elements);
+        /** @var array<Tk, array{0: Tv, 1: Tu}> $result */
+        $result = [];
 
         foreach ($this->elements as $k => $v) {
-            /**
-             * @psalm-suppress ImpureFunctionCall - conditionally pure
-             */
-            $u = Iter\first($array);
+            $u = $elements[0] ?? null;
             if (null === $u) {
                 break;
             }
 
-            /**
-             * @psalm-suppress ImpureFunctionCall - conditionally pure
-             */
-            $array = Dict\drop($array, 1);
+            $elements = array_slice($elements, 1);
 
-            $elements[$k] = [$v, $u];
+            $result[$k] = [$v, $u];
         }
 
-        return self::fromArray($elements);
+        return self::fromArray($result);
     }
 
     /**
@@ -534,7 +529,7 @@ final class MutableMap implements MutableMapInterface
     }
 
     /**
-     * For every element in the provided `iterable`, stores a value into the
+     * For every element in the provided elements, stores a value into the
      * current map associated with each key, overwriting the previous value
      * associated with the key.
      *
@@ -544,13 +539,13 @@ final class MutableMap implements MutableMapInterface
      * It the current map, meaning changes made to the current map
      * will be reflected in the returned map.
      *
-     * @param iterable<Tk, Tv> $iterable The `iterable` with the new values to set
+     * @param array<Tk, Tv> $elements The elements with the new values to set
      *
      * @return MutableMap<Tk, Tv> Returns itself
      */
-    public function setAll(iterable $iterable): MutableMap
+    public function setAll(array $elements): MutableMap
     {
-        foreach ($iterable as $k => $v) {
+        foreach ($elements as $k => $v) {
             $this->set($k, $v);
         }
 
@@ -573,15 +568,15 @@ final class MutableMap implements MutableMapInterface
     }
 
     /**
-     * For every element in the provided iterable, add the value into the current map.
+     * For every element in the provided elements, add the value into the current map.
      *
-     * @param iterable<Tk, Tv> $iterable The `iterable` with the new values to add.
+     * @param array<Tk, Tv> $elements The elements with the new values to add.
      *
      * @return MutableMap<Tk, Tv> Returns itself.
      */
-    public function addAll(iterable $iterable): MutableMap
+    public function addAll(array $elements): MutableMap
     {
-        foreach ($iterable as $k => $v) {
+        foreach ($elements as $k => $v) {
             $this->add($k, $v);
         }
 
@@ -612,7 +607,7 @@ final class MutableMap implements MutableMapInterface
     }
 
     /**
-     * Removes all items from the map.
+     * Removes all elements from the map.
      *
      * @return MutableMap<Tk, Tv>
      */

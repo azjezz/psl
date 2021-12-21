@@ -6,9 +6,13 @@ namespace Psl\Collection;
 
 use Psl\Dict;
 use Psl\Iter;
-use Psl\Vec;
 
 use function array_key_exists;
+use function array_key_first;
+use function array_key_last;
+use function array_keys;
+use function array_slice;
+use function array_values;
 use function count;
 
 /**
@@ -20,20 +24,11 @@ use function count;
 final class Map implements MapInterface
 {
     /**
-     * @var array<Tk, Tv> $elements
-     *
-     * @psalm-readonly
+     * @param array<Tk, Tv> $elements
      */
-    private array $elements;
-
-    /**
-     * AbstractMap constructor.
-     *
-     * @param iterable<Tk, Tv> $elements
-     */
-    public function __construct(iterable $elements)
-    {
-        $this->elements = Dict\from_iterable($elements);
+    public function __construct(
+        private readonly array $elements
+    ) {
     }
 
     /**
@@ -62,8 +57,12 @@ final class Map implements MapInterface
      */
     public function first(): mixed
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\first($this->elements);
+        $key = $this->firstKey();
+        if (null === $key) {
+            return null;
+        }
+
+        return $this->elements[$key];
     }
 
     /**
@@ -76,8 +75,7 @@ final class Map implements MapInterface
      */
     public function firstKey(): int|string|null
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\first_key($this->elements);
+        return array_key_first($this->elements);
     }
 
     /**
@@ -90,8 +88,12 @@ final class Map implements MapInterface
      */
     public function last(): mixed
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\last($this->elements);
+        $key = $this->lastKey();
+        if (null === $key) {
+            return null;
+        }
+
+        return $this->elements[$key];
     }
 
     /**
@@ -104,8 +106,7 @@ final class Map implements MapInterface
      */
     public function lastKey(): int|string|null
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\last_key($this->elements);
+        return array_key_last($this->elements);
     }
 
     /**
@@ -148,11 +149,11 @@ final class Map implements MapInterface
      */
     public function isEmpty(): bool
     {
-        return 0 === $this->count();
+        return [] === $this->elements;
     }
 
     /**
-     * Get the number of items in the current map.
+     * Get the number of elements in the current map.
      *
      * @psalm-mutation-free
      *
@@ -185,7 +186,7 @@ final class Map implements MapInterface
      */
     public function jsonSerialize(): array
     {
-        return $this->toArray();
+        return $this->elements;
     }
 
     /**
@@ -257,8 +258,7 @@ final class Map implements MapInterface
      */
     public function keys(): Vector
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Vector::fromArray(Vec\keys($this->elements));
+        return Vector::fromArray(array_keys($this->elements));
     }
 
     /**
@@ -353,51 +353,38 @@ final class Map implements MapInterface
 
     /**
      * Returns a `Map` where each element is a `array{0: Tv, 1: Tu}` that combines the
-     * element of the current `Map` and the provided `iterable`.
+     * element of the current `Map` and the provided elements.
      *
      * If the number of elements of the `Map` are not equal to the
-     * number of elements in the `iterable`, then only the combined elements
+     * number of elements in `$elements`, then only the combined elements
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
      * @template Tu
      *
-     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
-     *                               elements of this `Map`.
+     * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `Map`.
      *
-     * @return Map<Tk, array{0: Tv, 1: Tu}> The `Map` that combines the values of the current
-     *                                      `Map` with the provided `iterable`.
+     * @return Map<Tk, array{0: Tv, 1: Tu}> The `Map` that combines the values of the current `Map` with the provided elements.
      *
      * @psalm-mutation-free
      */
-    public function zip(iterable $iterable): Map
+    public function zip(array $elements): Map
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        $array = Vec\values($iterable);
-
-        /** @var array<Tk, array{0: Tv, 1: Tu}> $elements */
-        $elements = [];
-
+        $elements = array_values($elements);
+        /** @var array<Tk, array{0: Tv, 1: Tu}> $result */
+        $result = [];
         foreach ($this->elements as $k => $v) {
-            /**
-             * @psalm-suppress ImpureFunctionCall - conditionally pure
-             */
-            $u = Iter\first($array);
+            $u = $elements[0] ?? null;
             if (null === $u) {
                 break;
             }
 
-            /**
-             * @psalm-suppress ImpureFunctionCall - conditionally pure
-             *
-             * @var iterable<int, Tu> $array
-             */
-            $array = Dict\drop($array, 1);
+            $elements = array_slice($elements, 1);
 
-            $elements[$k] = [$v, $u];
+            $result[$k] = [$v, $u];
         }
 
-        return new Map($elements);
+        return new Map($result);
     }
 
     /**

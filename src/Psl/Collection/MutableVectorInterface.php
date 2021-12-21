@@ -176,25 +176,23 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
 
     /**
      * Returns a `MutableVectorInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
-     * element of the current `MutableVectorInterface` and the provided `iterable`.
+     * element of the current `MutableVectorInterface` and the provided elements.
      *
      * If the number of elements of the `MutableVectorInterface` are not equal to the
-     * number of elements in the `iterable`, then only the combined elements
+     * number of elements in `$elements`, then only the combined elements
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
      * @template Tu
      *
-     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
-     *                               elements of this `MutableVectorInterface`.
+     * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `MutableVectorInterface`.
      *
-     * @return MutableVectorInterface<array{0: T, 1: Tu}> - The `MutableVectorInterface` that combines the
-     *                                                    values of the current `MutableVectorInterface` with
-     *                                                    the provided `iterable`.
+     * @return MutableVectorInterface<array{0: T, 1: Tu}> The `MutableVectorInterface` that combines the values of
+     *                                                    the current `MutableVectorInterface` with the provided elements.
      *
      * @psalm-mutation-free
      */
-    public function zip(iterable $iterable): MutableVectorInterface;
+    public function zip(array $elements): MutableVectorInterface;
 
     /**
      * Returns a `MutableVectorInterface` containing the first `n` values of the current
@@ -307,7 +305,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
     public function set(int|string $k, mixed $v): MutableVectorInterface;
 
     /**
-     * For every element in the provided `iterable`, stores a value into the
+     * For every element in the provided elements array, stores a value into the
      * current vector associated with each key, overwriting the previous value
      * associated with the key.
      *
@@ -317,11 +315,11 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * It the current vector, meaning changes made to the current vector
      * will be reflected in the returned vector.
      *
-     * @param iterable<int, T> $iterable The `iterable` with the new values to set.
+     * @param array<int, T> $elements The elements with the new values to set.
      *
      * @return MutableVectorInterface<T> Returns itself.
      */
-    public function setAll(iterable $iterable): MutableVectorInterface;
+    public function setAll(array $elements): MutableVectorInterface;
 
     /**
      * Removes the specified key (and associated value) from the current
@@ -345,7 +343,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
     public function remove(int|string $k): MutableVectorInterface;
 
     /**
-     * Removes all items from the vector.
+     * Removes all elements from the vector.
      *
      * @return MutableVectorInterface<T>
      */
@@ -361,11 +359,11 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
     public function add(mixed $v): MutableVectorInterface;
 
     /**
-     * For every element in the provided iterable, add the value into the current vector.
+     * For every element in the provided elements array, add the value into the current vector.
      *
-     * @param iterable<T> $iterable The `iterable` with the new values to add.
+     * @param array<array-key, T> $elements The elements with the new values to add.
      *
      * @return MutableVectorInterface<T> Returns itself.
      */
-    public function addAll(iterable $iterable): MutableVectorInterface;
+    public function addAll(array $elements): MutableVectorInterface;
 }

@@ -10,10 +10,6 @@ use Psl\Collection\MapInterface;
 use Psl\Collection\VectorInterface;
 use Psl\Str;
 
-/**
- * @covers \Psl\Collection\Map
- * @covers \Psl\Collection\MutableMap
- */
 abstract class AbstractMapTest extends TestCase
 {
     /**

@@ -7,9 +7,6 @@ namespace Psl\Tests\Unit\Collection;
 use Psl\Collection\Map;
 use Psl\Collection\Vector;
 
-/**
- * @covers \Psl\Collection\Map
- */
 final class MapTest extends AbstractMapTest
 {
     /**

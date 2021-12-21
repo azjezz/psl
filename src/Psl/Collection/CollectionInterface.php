@@ -28,7 +28,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
     public function isEmpty(): bool;
 
     /**
-     * Get the number of items in the collection.
+     * Get the number of elements in the collection.
      *
      * @psalm-mutation-free
      *
@@ -135,25 +135,23 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
 
     /**
      * Returns a `CollectionInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
-     * element of the current `CollectionInterface` and the provided `iterable`.
+     * element of the current `CollectionInterface` and the provided elements array.
      *
      * If the number of elements of the `CollectionInterface` are not equal to the
-     * number of elements in the `iterable`, then only the combined elements
+     * number of elements in `$elements`, then only the combined elements
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
      * @template Tu
      *
-     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
-     *                               elements of this `CollectionInterface`.
+     * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `CollectionInterface`.
      *
-     * @return CollectionInterface<Tk, array{0: Tv, 1: Tu}> The `CollectionInterface` that combines
-     *                                                      the values of the current `CollectionInterface` with
-     *                                                      the provided `iterable`.
+     * @return CollectionInterface<Tk, array{0: Tv, 1: Tu}> The `CollectionInterface` that combines the values of
+     *                                                      the current `CollectionInterface` with the provided elements.
      *
      * @psalm-mutation-free
      */
-    public function zip(iterable $iterable): CollectionInterface;
+    public function zip(array $elements): CollectionInterface;
 
     /**
      * Returns a `CollectionInterface` containing the first `n` values of the current

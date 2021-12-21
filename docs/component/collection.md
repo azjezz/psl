@@ -25,9 +25,9 @@
 
 #### `Classes`
 
-- [Map](./../../src/Psl/Collection/Map.php#L20)
-- [MutableMap](./../../src/Psl/Collection/MutableMap.php#L20)
-- [MutableVector](./../../src/Psl/Collection/MutableVector.php#L19)
-- [Vector](./../../src/Psl/Collection/Vector.php#L19)
+- [Map](./../../src/Psl/Collection/Map.php#L24)
+- [MutableMap](./../../src/Psl/Collection/MutableMap.php#L24)
+- [MutableVector](./../../src/Psl/Collection/MutableVector.php#L22)
+- [Vector](./../../src/Psl/Collection/Vector.php#L21)
 
 

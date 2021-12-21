@@ -9,6 +9,8 @@ use Psl\Iter;
 use Psl\Vec;
 
 use function array_key_exists;
+use function array_key_last;
+use function array_keys;
 use function count;
 
 /**
@@ -19,22 +21,21 @@ use function count;
 final class Vector implements VectorInterface
 {
     /**
-     * @var array<int, T> $elements
-     *
-     * @psalm-readonly
+     * @var list<T> $elements
      */
-    private array $elements = [];
+    private readonly array $elements;
 
     /**
-     * Vector constructor.
-     *
-     * @param iterable<T> $elements
+     * @param array<array-key, T> $elements
      */
-    public function __construct(iterable $elements)
+    public function __construct(array $elements)
     {
+        $list = [];
         foreach ($elements as $element) {
-            $this->elements[] = $element;
+            $list[] = $element;
         }
+
+        $this->elements = $list;
     }
 
     /**
@@ -64,8 +65,7 @@ final class Vector implements VectorInterface
      */
     public function first(): mixed
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\first($this->elements);
+        return $this->elements[0] ?? null;
     }
 
     /**
@@ -78,8 +78,12 @@ final class Vector implements VectorInterface
      */
     public function last(): mixed
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\last($this->elements);
+        $key = array_key_last($this->elements);
+        if (null === $key) {
+            return null;
+        }
+
+        return $this->elements[$key];
     }
 
     /**
@@ -99,11 +103,11 @@ final class Vector implements VectorInterface
      */
     public function isEmpty(): bool
     {
-        return 0 === $this->count();
+        return [] === $this->elements;
     }
 
     /**
-     * Get the number of items in the current `Vector`.
+     * Get the number of elements in the current `Vector`.
      *
      * @psalm-mutation-free
      *
@@ -124,8 +128,7 @@ final class Vector implements VectorInterface
      */
     public function toArray(): array
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Vec\values($this->elements);
+        return $this->elements;
     }
 
 
@@ -138,7 +141,7 @@ final class Vector implements VectorInterface
      */
     public function jsonSerialize(): array
     {
-        return $this->toArray();
+        return $this->elements;
     }
 
     /**
@@ -197,8 +200,7 @@ final class Vector implements VectorInterface
      */
     public function firstKey(): ?int
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\first_key($this->elements);
+        return [] === $this->elements ? null : 0;
     }
 
     /**
@@ -211,8 +213,7 @@ final class Vector implements VectorInterface
      */
     public function lastKey(): ?int
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\last_key($this->elements);
+        return array_key_last($this->elements);
     }
 
     /**
@@ -248,7 +249,7 @@ final class Vector implements VectorInterface
      */
     public function values(): Vector
     {
-        return Vector::fromArray($this->elements);
+        return self::fromArray($this->elements);
     }
 
     /**
@@ -260,8 +261,7 @@ final class Vector implements VectorInterface
      */
     public function keys(): Vector
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Vector::fromArray(Vec\keys($this->elements));
+        return self::fromArray(array_keys($this->elements));
     }
 
     /**
@@ -356,27 +356,26 @@ final class Vector implements VectorInterface
 
     /**
      * Returns a `Vector` where each element is a `array{0: Tv, 1: Tu}` that combines the
-     * element of the current `VectorInterface` and the provided `iterable`.
+     * element of the current `VectorInterface` and the provided elements array.
      *
      * If the number of elements of the `Vector` are not equal to the
-     * number of elements in the `iterable`, then only the combined elements
+     * number of elements in `$elements`, then only the combined elements
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
      * @template Tu
      *
-     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
-     *                               elements of this `VectorInterface`.
+     * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `VectorInterface`.
      *
      * @return Vector<array{0: T, 1: Tu}> The `Vector` that combines the values of the current
-     *                                    `Vector` with the provided `iterable`.
+     *                                    `Vector` with the provided elements.
      *
      * @psalm-mutation-free
      */
-    public function zip(iterable $iterable): Vector
+    public function zip(array $elements): Vector
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Vector::fromArray(Vec\zip($this, $iterable));
+        return Vector::fromArray(Vec\zip($this->elements, $elements));
     }
 
     /**
