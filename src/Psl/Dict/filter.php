@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
+use Closure;
+
 use function array_filter;
 use function is_array;
 
@@ -25,13 +27,13 @@ use function is_array;
  * @template Tv
  *
  * @param iterable<Tk, Tv> $iterable
- * @param (callable(Tv): bool)|null $predicate
+ * @param (Closure(Tv): bool)|null $predicate
  *
  * @return array<Tk, Tv>
  */
-function filter(iterable $iterable, ?callable $predicate = null): array
+function filter(iterable $iterable, ?Closure $predicate = null): array
 {
-    /** @var (callable(Tv): bool) $predicate */
+    /** @var (Closure(Tv): bool) $predicate */
     $predicate = $predicate ?? static fn(mixed $value): bool => (bool) $value;
 
     if (is_array($iterable)) {
@@ -40,7 +42,7 @@ function filter(iterable $iterable, ?callable $predicate = null): array
             /**
              * @param Tv $v
              */
-            static fn($v): bool => $predicate($v)
+            static fn(mixed $v): bool => $predicate($v)
         );
     }
 

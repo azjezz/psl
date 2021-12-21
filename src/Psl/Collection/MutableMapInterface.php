@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Collection;
 
+use Closure;
+
 /**
  * @template Tk of array-key
  * @template Tv
@@ -42,13 +44,13 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * The keys associated with the current `MutableMapInterface` remain unchanged in the
      * returned `MutableMapInterface`.
      *
-     * @param (callable(Tv): bool) $fn - The callback containing the condition to apply to the current
+     * @param (Closure(Tv): bool) $fn - The callback containing the condition to apply to the current
      *                                 `MutableMapInterface` values.
      *
      * @return MutableMapInterface<Tk, Tv> - a MutableMapInterface containing the values after a user-specified
      *                                     condition is applied.
      */
-    public function filter(callable $fn): MutableMapInterface;
+    public function filter(Closure $fn): MutableMapInterface;
 
     /**
      * Returns a `MutableMapInterface` containing the values of the current `MutableMapInterface`
@@ -61,14 +63,14 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * The keys associated with the current `MutableMapInterface` remain unchanged in the
      * returned `MutableMapInterface`; the keys will be used in the filtering process only.
      *
-     * @param (callable(Tk, Tv): bool) $fn - The callback containing the condition to apply to
+     * @param (Closure(Tk, Tv): bool) $fn - The callback containing the condition to apply to
      *                                     the current `MutableMapInterface` keys and values.
      *
      * @return MutableMapInterface<Tk, Tv> - a `MutableMapInterface` containing the values after a user-specified
      *                                     condition is applied to the keys and values of the
      *                                     current `MutableMapInterface`.
      */
-    public function filterWithKey(callable $fn): MutableMapInterface;
+    public function filterWithKey(Closure $fn): MutableMapInterface;
 
     /**
      * Returns a `MutableMapInterface` after an operation has been applied to each value
@@ -82,13 +84,13 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @template Tu
      *
-     * @param (callable(Tv): Tu) $fn - The callback containing the operation to apply to the current
+     * @param (Closure(Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                               `MutableMapInterface` values.
      *
      * @return MutableMapInterface<Tk, Tu> - a `MutableMapInterface` containing key/value pairs after
      *                                     a user-specified operation is applied.
      */
-    public function map(callable $fn): MutableMapInterface;
+    public function map(Closure $fn): MutableMapInterface;
 
     /**
      * Returns a `MutableMapInterface` after an operation has been applied to each key and
@@ -103,13 +105,13 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @template Tu
      *
-     * @param (callable(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
+     * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
      *                                   `MutableMapInterface` keys and values.
      *
      * @return MutableMapInterface<Tk, Tu> A `MutableMapInterface` containing the values after a user-specified
      *                                     operation on the current `MutableMapInterface`'s keys and values is applied.
      */
-    public function mapWithKey(callable $fn): MutableMapInterface;
+    public function mapWithKey(Closure $fn): MutableMapInterface;
 
     /**
      * Returns the first value in the current `MutableMapInterface`.
@@ -212,12 +214,12 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * The returned `MutableMapInterface` will always be a proper subset of the current
      * `MutableMapInterface`.
      *
-     * @param (callable(Tv): bool) $fn The callback that is used to determine the stopping condition.
+     * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping condition.
      *
      * @return MutableMapInterface<Tk, Tv> A `MutableMapInterface` that is a proper subset of the current
      *                                     `MutableMapInterface` up until the callback returns `false`.
      */
-    public function takeWhile(callable $fn): MutableMapInterface;
+    public function takeWhile(Closure $fn): MutableMapInterface;
 
     /**
      * Returns a `MutableMapInterface` containing the values after the `n`-th element of
@@ -246,13 +248,13 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * The returned `MutableMapInterface` will always be a proper subset of the current
      * `MutableMapInterface`.
      *
-     * @param (callable(Tv): bool) $fn The callback used to determine the starting element for the
+     * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
      *                                 returned `MutableMapInterface`.
      *
      * @return MutableMapInterface<Tk, Tv> A `MutableMapInterface` that is a proper subset of the current
      *                                     `MutableMapInterface` starting after the callback returns `true`.
      */
-    public function dropWhile(callable $fn): MutableMapInterface;
+    public function dropWhile(Closure $fn): MutableMapInterface;
 
     /**
      * Returns a subset of the current `MutableMapInterface` starting from a given key up

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Collection;
 
+use Closure;
 use Psl\Dict;
 use Psl\Iter;
 use Psl\Vec;
@@ -396,13 +397,13 @@ final class MutableVector implements MutableVectorInterface
      * The keys associated with the current `MutableVector` remain unchanged in the
      * returned `MutableVector`.
      *
-     * @param (callable(T): bool) $fn The callback containing the condition to apply to the current
+     * @param (Closure(T): bool) $fn The callback containing the condition to apply to the current
      *                                `MutableVector` values.
      *
      * @return MutableVector<T> A `MutableVector` containing the values after a user-specified condition
      *                          is applied.
      */
-    public function filter(callable $fn): MutableVector
+    public function filter(Closure $fn): MutableVector
     {
         return new MutableVector(Dict\filter($this->elements, $fn));
     }
@@ -418,13 +419,13 @@ final class MutableVector implements MutableVectorInterface
      * The keys associated with the current `MutableVector` remain unchanged in the
      * returned `MutableVector`; the keys will be used in the filtering process only.
      *
-     * @param (callable(int, T): bool) $fn The callback containing the condition to apply to the current
+     * @param (Closure(int, T): bool) $fn The callback containing the condition to apply to the current
      *                                     `MutableVector` keys and values.
      *
      * @return MutableVector<T> A `MutableVector` containing the values after a user-specified
      *                          condition is applied to the keys and values of the current `MutableVector`.
      */
-    public function filterWithKey(callable $fn): MutableVector
+    public function filterWithKey(Closure $fn): MutableVector
     {
         return new MutableVector(Dict\filter_with_key($this->elements, $fn));
     }
@@ -441,13 +442,13 @@ final class MutableVector implements MutableVectorInterface
      *
      * @template Tu
      *
-     * @param (callable(T): Tu) $fn The callback containing the operation to apply to the current
+     * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
      *                              `MutableVector` values.
      *
      * @return MutableVector<Tu> A `MutableVector` containing key/value pairs after a user-specified
      *                           operation is applied.
      */
-    public function map(callable $fn): MutableVector
+    public function map(Closure $fn): MutableVector
     {
         return new MutableVector(Dict\map($this->elements, $fn));
     }
@@ -465,13 +466,13 @@ final class MutableVector implements MutableVectorInterface
      *
      * @template Tu
      *
-     * @param (callable(int, T): Tu) $fn The callback containing the operation to apply to the current
+     * @param (Closure(int, T): Tu) $fn The callback containing the operation to apply to the current
      *                                   `MutableVector` keys and values
      *
      * @return MutableVector<Tu> A `MutableVector` containing the values after a user-specified
      *                           operation on the current `MutableVector`'s keys and values is applied.
      */
-    public function mapWithKey(callable $fn): MutableVector
+    public function mapWithKey(Closure $fn): MutableVector
     {
         return new MutableVector(Dict\map_with_key($this->elements, $fn));
     }
@@ -530,13 +531,13 @@ final class MutableVector implements MutableVectorInterface
      * The returned `MutableVector` will always be a proper subset of the current
      * `MutableVector`.
      *
-     * @param (callable(T): bool) $fn The callback that is used to determine the stopping
+     * @param (Closure(T): bool) $fn The callback that is used to determine the stopping
      *                                condition.
      *
      * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
      *                          `MutableVector` up until the callback returns `false`.
      */
-    public function takeWhile(callable $fn): MutableVector
+    public function takeWhile(Closure $fn): MutableVector
     {
         return new MutableVector(Dict\take_while($this->elements, $fn));
     }
@@ -571,13 +572,13 @@ final class MutableVector implements MutableVectorInterface
      * The returned `MutableVector` will always be a proper subset of the current
      * `MutableVector`.
      *
-     * @param (callable(T): bool) $fn The callback used to determine the starting element for the
+     * @param (Closure(T): bool) $fn The callback used to determine the starting element for the
      *                                returned `MutableVector`.
      *
      * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
      *                          `MutableVector` starting after the callback returns `true`.
      */
-    public function dropWhile(callable $fn): MutableVector
+    public function dropWhile(Closure $fn): MutableVector
     {
         return new MutableVector(Dict\drop_while($this->elements, $fn));
     }

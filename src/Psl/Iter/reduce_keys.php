@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Closure;
+
 /**
  * Reduce iterable keys using a function.
  *
@@ -16,12 +18,12 @@ namespace Psl\Iter;
  * @template Ts
  *
  * @param iterable<Tk, Tv> $iterable
- * @param (callable(Ts, Tk): Ts) $function
+ * @param (Closure(Ts, Tk): Ts) $function
  * @param Ts $initial
  *
  * @return Ts
  */
-function reduce_keys(iterable $iterable, callable $function, mixed $initial): mixed
+function reduce_keys(iterable $iterable, Closure $function, mixed $initial): mixed
 {
     $accumulator = $initial;
     foreach ($iterable as $k => $_v) {

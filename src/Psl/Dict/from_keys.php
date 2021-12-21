@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
+use Closure;
+
 /**
  * Returns a dict where each value is the result of calling the given
  * function on the corresponding key.
@@ -12,11 +14,11 @@ namespace Psl\Dict;
  * @template Tv
  *
  * @param iterable<Tk> $keys
- * @param (callable(Tk): Tv) $value_func
+ * @param (Closure(Tk): Tv) $value_func
  *
  * @return array<Tk, Tv>
  */
-function from_keys(iterable $keys, callable $value_func): array
+function from_keys(iterable $keys, Closure $value_func): array
 {
     $result = [];
     foreach ($keys as $key) {

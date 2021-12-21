@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Regex\Internal;
 
+use Closure;
 use Psl\Internal;
 use Psl\Regex\Exception;
 
@@ -11,7 +12,7 @@ use Psl\Regex\Exception;
  * @template T
  *
  * @param non-empty-string $function
- * @param (pure-callable(): T) $callable
+ * @param Closure(): T $closure
  *
  * @throws Exception\InvalidPatternException
  * @throws Exception\RuntimeException
@@ -22,13 +23,13 @@ use Psl\Regex\Exception;
  *
  * @internal
  */
-function call_preg(string $function, callable $callable)
+function call_preg(string $function, Closure $closure): mixed
 {
     /** @psalm-suppress ImpureFunctionCall */
     error_clear_last();
 
     /** @psalm-suppress ImpureFunctionCall */
-    $result = Internal\suppress($callable);
+    $result = Internal\suppress($closure);
     $error = get_preg_error($function);
     // @codeCoverageIgnoreStart
     if (null !== $error) {

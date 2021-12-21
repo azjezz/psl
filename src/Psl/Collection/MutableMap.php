@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Collection;
 
+use Closure;
 use Psl\Dict;
 use Psl\Iter;
 
@@ -271,13 +272,13 @@ final class MutableMap implements MutableMapInterface
      * The keys associated with the current `MutableMap` remain unchanged in the
      * returned `MutableMap`.
      *
-     * @param (callable(Tv): bool) $fn The callback containing the condition to apply to the current
+     * @param (Closure(Tv): bool) $fn The callback containing the condition to apply to the current
      *                                 `MutableMap` values.
      *
      * @return MutableMap<Tk, Tv> A MutableMap containing the values after a user-specified condition
      *                            is applied.
      */
-    public function filter(callable $fn): MutableMap
+    public function filter(Closure $fn): MutableMap
     {
         return new MutableMap(Dict\filter($this->elements, $fn));
     }
@@ -293,13 +294,13 @@ final class MutableMap implements MutableMapInterface
      * The keys associated with the current `MutableMap` remain unchanged in the
      * returned `MutableMap`; the keys will be used in the filtering process only.
      *
-     * @param (callable(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
+     * @param (Closure(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
      *                                     `MutableMap` keys and values.
      *
      * @return MutableMap<Tk, Tv> A `MutableMap` containing the values after a user-specified
      *                            condition is applied to the keys and values of the current `MutableMap`.
      */
-    public function filterWithKey(callable $fn): MutableMap
+    public function filterWithKey(Closure $fn): MutableMap
     {
         return new MutableMap(Dict\filter_with_key($this->elements, $fn));
     }
@@ -316,13 +317,13 @@ final class MutableMap implements MutableMapInterface
      *
      * @template Tu
      *
-     * @param (callable(Tv): Tu) $fn The callback containing the operation to apply to the current
+     * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
      *                               `MutableMap` values.
      *
      * @return MutableMap<Tk, Tu> A `MutableMap` containing key/value pairs after a user-specified
      *                            operation is applied.
      */
-    public function map(callable $fn): MutableMap
+    public function map(Closure $fn): MutableMap
     {
         return new MutableMap(Dict\map($this->elements, $fn));
     }
@@ -340,13 +341,13 @@ final class MutableMap implements MutableMapInterface
      *
      * @template Tu
      *
-     * @param (callable(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
+     * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
      *                                   `MutableMap` keys and values.
      *
      * @return MutableMap<Tk, Tu> A `MutableMap` containing the values after a user-specified
      *                            operation on the current `MutableMap`'s keys and values is applied.
      */
-    public function mapWithKey(callable $fn): MutableMap
+    public function mapWithKey(Closure $fn): MutableMap
     {
         return new MutableMap(Dict\map_with_key($this->elements, $fn));
     }
@@ -420,13 +421,13 @@ final class MutableMap implements MutableMapInterface
      * The returned `MutableMap` will always be a proper subset of the current
      * `MutableMap`.
      *
-     * @param (callable(Tv): bool) $fn The callback that is used to determine the stopping
+     * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping
      *                                 condition.
      *
      * @return MutableMap<Tk, Tv> A `MutableMap` that is a proper subset of the current
      *                            `MutableMap` up until the callback returns `false`.
      */
-    public function takeWhile(callable $fn): MutableMap
+    public function takeWhile(Closure $fn): MutableMap
     {
         return new MutableMap(Dict\take_while($this->elements, $fn));
     }
@@ -462,13 +463,13 @@ final class MutableMap implements MutableMapInterface
      * The returned `MutableMap` will always be a proper subset of the current
      * `MutableMap`.
      *
-     * @param (callable(Tv): bool) $fn The callback used to determine the starting element for the
+     * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
      *                                 returned `MutableMap`.
      *
      * @return MutableMap<Tk, Tv> A `MutableMap` that is a proper subset of the current
      *                            `MutableMap` starting after the callback returns `true`.
      */
-    public function dropWhile(callable $fn): MutableMap
+    public function dropWhile(Closure $fn): MutableMap
     {
         return new MutableMap(Dict\drop_while($this->elements, $fn));
     }

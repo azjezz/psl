@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Collection;
 
+use Closure;
 use Psl\Dict;
 use Psl\Iter;
 
@@ -271,13 +272,13 @@ final class Map implements MapInterface
      * The keys associated with the current `Map` remain unchanged in the
      * returned `Map`.
      *
-     * @param (callable(Tv): bool) $fn The callback containing the condition to apply to the current
+     * @param (Closure(Tv): bool) $fn The callback containing the condition to apply to the current
      *                                 `Map` values.
      *
      * @return Map<Tk, Tv> A Map containing the values after a user-specified condition
      *                     is applied.
      */
-    public function filter(callable $fn): Map
+    public function filter(Closure $fn): Map
     {
         return new Map(Dict\filter($this->elements, $fn));
     }
@@ -293,13 +294,13 @@ final class Map implements MapInterface
      * The keys associated with the current `Map` remain unchanged in the
      * returned `Map`; the keys will be used in the filtering process only.
      *
-     * @param (callable(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
+     * @param (Closure(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
      *                                     `Map` keys and values.
      *
      * @return Map<Tk, Tv> A `Map` containing the values after a user-specified
      *                     condition is applied to the keys and values of the current `Map`.
      */
-    public function filterWithKey(callable $fn): Map
+    public function filterWithKey(Closure $fn): Map
     {
         return new Map(Dict\filter_with_key($this->elements, $fn));
     }
@@ -316,13 +317,13 @@ final class Map implements MapInterface
      *
      * @template Tu
      *
-     * @param (callable(Tv): Tu) $fn The callback containing the operation to apply to the current
+     * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
      *                               `Map` values.
      *
      * @return Map<Tk, Tu> A `Map` containing key/value pairs after a user-specified
      *                     operation is applied.
      */
-    public function map(callable $fn): Map
+    public function map(Closure $fn): Map
     {
         return new Map(Dict\map($this->elements, $fn));
     }
@@ -340,13 +341,13 @@ final class Map implements MapInterface
      *
      * @template Tu
      *
-     * @param (callable(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
+     * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
      *                                   `Map` keys and values.
      *
      * @return Map<Tk, Tu> A `Map` containing the values after a user-specified
      *                     operation on the current `Map`'s keys and values is applied.
      */
-    public function mapWithKey(callable $fn): Map
+    public function mapWithKey(Closure $fn): Map
     {
         return new Map(Dict\map_with_key($this->elements, $fn));
     }
@@ -417,13 +418,13 @@ final class Map implements MapInterface
      * The returned `Map` will always be a proper subset of the current
      * `Map`.
      *
-     * @param (callable(Tv): bool) $fn The callback that is used to determine the stopping
+     * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping
      *                                 condition.
      *
      * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
      *                     `Map` up until the callback returns `false`.
      */
-    public function takeWhile(callable $fn): Map
+    public function takeWhile(Closure $fn): Map
     {
         return new Map(Dict\take_while($this->elements, $fn));
     }
@@ -458,13 +459,13 @@ final class Map implements MapInterface
      * The returned `Map` will always be a proper subset of the current
      * `Map`.
      *
-     * @param (callable(Tv): bool) $fn The callback used to determine the starting element for the
+     * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
      *                                 returned `Map`.
      *
      * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
      *                     `Map` starting after the callback returns `true`.
      */
-    public function dropWhile(callable $fn): Map
+    public function dropWhile(Closure $fn): Map
     {
         return new Map(Dict\drop_while($this->elements, $fn));
     }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\IO\Internal;
 
+use Closure;
+
 use function microtime;
 
 /**
@@ -15,14 +17,14 @@ final class OptionalIncrementalTimeout
 {
     private ?float $end;
     /**
-     * @var (callable(): ?int)
+     * @var (Closure(): ?int)
      */
     private $handler;
 
     /**
-     * @param (callable(): ?int) $handler
+     * @param (Closure(): ?int) $handler
      */
-    public function __construct(?float $timeout, callable $handler)
+    public function __construct(?float $timeout, Closure $handler)
     {
         $this->handler = $handler;
         if ($timeout === null) {

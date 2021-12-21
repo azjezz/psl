@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Collection;
 
+use Closure;
+
 /**
  * The base interface implemented for a collection type that you are able to access its values.
  *
@@ -46,13 +48,13 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * The keys associated with the current `AccessibleCollectionInterface` remain unchanged in the
      * returned `AccessibleCollectionInterface`.
      *
-     * @param (callable(Tv): bool) $fn The callback containing the condition to apply to the current
+     * @param (Closure(Tv): bool) $fn The callback containing the condition to apply to the current
      *                                 `AccessibleCollectionInterface` values.
      *
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` containing the values
      *                                               after a user-specified condition is applied.
      */
-    public function filter(callable $fn): AccessibleCollectionInterface;
+    public function filter(Closure $fn): AccessibleCollectionInterface;
 
     /**
      * Returns a `AccessibleCollectionInterface` containing the values of the current `AccessibleCollectionInterface`
@@ -65,14 +67,14 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * The keys associated with the current `AccessibleCollectionInterface` remain unchanged in the
      * returned `AccessibleCollectionInterface`; the keys will be used in the filtering process only.
      *
-     * @param (callable(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
+     * @param (Closure(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
      *                                     `AccessibleCollectionInterface` keys and values.
      *
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` containing the values
      *                                               after a user-specified condition is applied to the keys and values
      *                                               of the current `AccessibleCollectionInterface`.
      */
-    public function filterWithKey(callable $fn): AccessibleCollectionInterface;
+    public function filterWithKey(Closure $fn): AccessibleCollectionInterface;
 
     /**
      * Returns a `AccessibleCollectionInterface` after an operation has been applied to each value
@@ -86,13 +88,13 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @template Tu
      *
-     * @param (callable(Tv): Tu) $fn The callback containing the operation to apply to the current
+     * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
      *                               `AccessibleCollectionInterface` values.
      *
      * @return AccessibleCollectionInterface<Tk, Tu> A `AccessibleCollectionInterface` containing key/value
      *                                               pairs after a user-specified operation is applied.
      */
-    public function map(callable $fn): AccessibleCollectionInterface;
+    public function map(Closure $fn): AccessibleCollectionInterface;
 
     /**
      * Returns a `AccessibleCollectionInterface` after an operation has been applied to each key and
@@ -107,14 +109,14 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @template Tu
      *
-     * @param (callable(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
+     * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
      *                                   `AccessibleCollectionInterface` keys and values.
      *
      * @return AccessibleCollectionInterface<Tk, Tu> A `AccessibleCollectionInterface` containing the values
      *                                               after a user-specified operation on the current
      *                                               `AccessibleCollectionInterface`'s keys and values is  applied.
      */
-    public function mapWithKey(callable $fn): AccessibleCollectionInterface;
+    public function mapWithKey(Closure $fn): AccessibleCollectionInterface;
 
     /**
      * Returns the first value in the current `AccessibleCollectionInterface`.
@@ -218,14 +220,14 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * The returned `AccessibleCollectionInterface` will always be a proper subset of the current
      * `AccessibleCollectionInterface`.
      *
-     * @param (callable(Tv): bool) $fn The callback that is used to determine the stopping
+     * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping
      *                                 condition.
      *
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` that is a proper subset
      *                                               of the current `AccessibleCollectionInterface` up until
      *                                               the callback returns `false`.
      */
-    public function takeWhile(callable $fn): AccessibleCollectionInterface;
+    public function takeWhile(Closure $fn): AccessibleCollectionInterface;
 
     /**
      * Returns a `AccessibleCollectionInterface` containing the values after the `n`-th element of
@@ -255,14 +257,14 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * The returned `AccessibleCollectionInterface` will always be a proper subset of the current
      * `AccessibleCollectionInterface`.
      *
-     * @param (callable(Tv): bool) $fn The callback used to determine the starting element for the
+     * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
      *                                 returned `AccessibleCollectionInterface`.
      *
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` that is a proper subset
      *                                               of the current `AccessibleCollectionInterface` starting after
      *                                               the callback returns `true`.
      */
-    public function dropWhile(callable $fn): AccessibleCollectionInterface;
+    public function dropWhile(Closure $fn): AccessibleCollectionInterface;
 
     /**
      * Returns a subset of the current `AccessibleCollectionInterface` starting from a given key up

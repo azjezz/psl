@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Internal;
 
+use Closure;
+
 use function class_exists;
 use function defined;
 use function dirname;
@@ -753,7 +755,7 @@ final class Loader
         require_once $file;
     }
 
-    private static function autoload(callable $callback): void
+    private static function autoload(Closure $callback): void
     {
         $loader = static function (string $classname): ?bool {
             if ('P' === $classname[0] && 0 === strpos($classname, 'Psl\\')) {

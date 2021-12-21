@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
+use Closure;
+
 /**
  * Intermediate values of reducing iterable using a function.
  *
@@ -19,12 +21,12 @@ namespace Psl\Vec;
  * @template Ts
  *
  * @param iterable<Tk, Tv> $iterable
- * @param (callable(Ts, Tk, Tv): Ts) $function
+ * @param (Closure(Ts, Tk, Tv): Ts) $function
  * @param Ts $initial
  *
  * @return list<Ts>
  */
-function reductions(iterable $iterable, callable $function, $initial): array
+function reductions(iterable $iterable, Closure $function, $initial): array
 {
     $accumulators = [];
     $accumulator = $initial;

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
+use Closure;
+
 use function ksort;
 use function uksort;
 
@@ -17,11 +19,11 @@ use function uksort;
  * @template Tv
  *
  * @param iterable<Tk, Tv> $iterable
- * @param (callable(Tk, Tk): int)|null $comparator
+ * @param (Closure(Tk, Tk): int)|null $comparator
  *
  * @return array<Tk, Tv>
  */
-function sort_by_key(iterable $iterable, ?callable $comparator = null): array
+function sort_by_key(iterable $iterable, ?Closure $comparator = null): array
 {
     $result = [];
     foreach ($iterable as $k => $v) {

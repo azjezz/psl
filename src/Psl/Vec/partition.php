@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
+use Closure;
+
 /**
  * Returns a pair containing lists for which the given predicate returned
  * `true` and `false`, respectively.
@@ -11,11 +13,11 @@ namespace Psl\Vec;
  * @template T
  *
  * @param iterable<T> $iterable
- * @param (callable(T): bool) $predicate
+ * @param (Closure(T): bool) $predicate
  *
  * @return array{0: list<T>, 1: list<T>}
  */
-function partition(iterable $iterable, callable $predicate): array
+function partition(iterable $iterable, Closure $predicate): array
 {
     $success = [];
     $failure = [];

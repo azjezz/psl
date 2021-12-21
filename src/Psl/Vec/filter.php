@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
+use Closure;
+
 use function array_filter;
 use function array_values;
 use function is_array;
@@ -25,13 +27,13 @@ use function is_array;
  * @template T
  *
  * @param iterable<T> $iterable
- * @param (callable(T): bool)|null $predicate
+ * @param (Closure(T): bool)|null $predicate
  *
  * @return list<T>
  */
-function filter(iterable $iterable, ?callable $predicate = null): array
+function filter(iterable $iterable, ?Closure $predicate = null): array
 {
-    /** @var (callable(T): bool) $predicate */
+    /** @var (Closure(T): bool) $predicate */
     $predicate = $predicate ?? static fn(mixed $value): bool => (bool) $value;
     if (is_array($iterable)) {
         return array_values(array_filter(

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Collection;
 
+use Closure;
+
 /**
  * MutableCollectionInterface is the primary collection interface for mutable collections.
  *
@@ -29,13 +31,13 @@ interface MutableCollectionInterface extends CollectionInterface
      * The keys associated with the current `MutableCollectionInterface` remain unchanged in the
      * returned `MutableCollectionInterface`.
      *
-     * @param (callable(Tv): bool) $fn The callback containing the condition to apply to the current
+     * @param (Closure(Tv): bool) $fn The callback containing the condition to apply to the current
      *                                 `MutableCollectionInterface` values.
      *
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` containing the values
      *                                            after a user-specified condition is applied.
      */
-    public function filter(callable $fn): MutableCollectionInterface;
+    public function filter(Closure $fn): MutableCollectionInterface;
 
     /**
      * Returns a `MutableCollectionInterface` containing the values of the current `MutableCollectionInterface`
@@ -48,14 +50,14 @@ interface MutableCollectionInterface extends CollectionInterface
      * The keys associated with the current `MutableCollectionInterface` remain unchanged in the
      * returned `MutableCollectionInterface`; the keys will be used in the filtering process only.
      *
-     * @param (callable(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
+     * @param (Closure(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
      *                                     `MutableCollectionInterface` keys and values.
      *
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` containing the values after
      *                                            a user-specified condition is applied to the keys and values of
      *                                            the current `MutableCollectionInterface`.
      */
-    public function filterWithKey(callable $fn): MutableCollectionInterface;
+    public function filterWithKey(Closure $fn): MutableCollectionInterface;
 
     /**
      * Returns a `MutableCollectionInterface` after an operation has been applied to each value
@@ -69,13 +71,13 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @template Tu
      *
-     * @param (callable(Tv): Tu) $fn The callback containing the operation to apply to the current
+     * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
      *                               `MutableCollectionInterface` values.
      *
      * @return MutableCollectionInterface<Tk, Tu> A `MutableCollectionInterface` containing key/value pairs
      *                                            after a user-specified operation is applied.
      */
-    public function map(callable $fn): MutableCollectionInterface;
+    public function map(Closure $fn): MutableCollectionInterface;
 
     /**
      * Returns a `MutableCollectionInterface` after an operation has been applied to each key and
@@ -90,14 +92,14 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @template Tu
      *
-     * @param (callable(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
+     * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
      *                                   `MutableCollectionInterface` keys and values.
      *
      * @return MutableCollectionInterface<Tk, Tu> A `MutableCollectionInterface` containing the values
      *                                            after a user-specified operation on the current
      *                                            `MutableCollectionInterface`'s keys and values is applied.
      */
-    public function mapWithKey(callable $fn): MutableCollectionInterface;
+    public function mapWithKey(Closure $fn): MutableCollectionInterface;
 
     /**
      * Returns a `MutableCollectionInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
@@ -148,14 +150,14 @@ interface MutableCollectionInterface extends CollectionInterface
      * The returned `MutableCollectionInterface` will always be a proper subset of the current
      * `MutableCollectionInterface`.
      *
-     * @param (callable(Tv): bool) $fn The callback that is used to determine the stopping
+     * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping
      *                                 condition.
      *
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` that is a proper
      *                                            subset of the current `MutableCollectionInterface` up until
      *                                            the callback returns `false`.
      */
-    public function takeWhile(callable $fn): MutableCollectionInterface;
+    public function takeWhile(Closure $fn): MutableCollectionInterface;
 
     /**
      * Returns a `MutableCollectionInterface` containing the values after the `n`-th element of
@@ -185,14 +187,14 @@ interface MutableCollectionInterface extends CollectionInterface
      * The returned `MutableCollectionInterface` will always be a proper subset of the current
      * `MutableCollectionInterface`.
      *
-     * @param (callable(Tv): bool) $fn The callback used to determine the starting element for the
+     * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
      *                                 returned `MutableCollectionInterface`.
      *
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` that is a proper subset of the current
      *                                            `MutableCollectionInterface` starting after the callback
      *                                            returns `true`.
      */
-    public function dropWhile(callable $fn): MutableCollectionInterface;
+    public function dropWhile(Closure $fn): MutableCollectionInterface;
 
     /**
      * Returns a subset of the current `MutableCollectionInterface` starting from a given key up

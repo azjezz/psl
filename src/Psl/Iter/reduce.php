@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use Closure;
+
 /**
  * Reduces an iterable to a single value.
  *
@@ -15,12 +17,12 @@ namespace Psl\Iter;
  * @template Ts
  *
  * @param iterable<T> $iterable
- * @param (callable(Ts, T): Ts) $function
+ * @param (Closure(Ts, T): Ts) $function
  * @param Ts $initial
  *
  * @return Ts
  */
-function reduce(iterable $iterable, callable $function, mixed $initial): mixed
+function reduce(iterable $iterable, Closure $function, mixed $initial): mixed
 {
     $accumulator = $initial;
     foreach ($iterable as $v) {

@@ -15,7 +15,7 @@ use Closure;
  *
  * @return (Closure(): T)
  */
-function lazy(Closure $initializer): callable
+function lazy(Closure $initializer): Closure
 {
     $evaluator = new Internal\LazyEvaluator($initializer);
 

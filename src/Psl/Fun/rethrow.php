@@ -14,7 +14,7 @@ use Exception;
  *
  * @pure
  */
-function rethrow(): callable
+function rethrow(): Closure
 {
     return static function (Exception $exception): never {
         throw $exception;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
+use Closure;
 use Psl;
 use Psl\Type;
 
@@ -34,11 +35,11 @@ use Psl\Type;
  * @template Tv
  *
  * @param iterable<Tv> $values
- * @param (callable(Tv): ?Tk) $key_func
+ * @param (Closure(Tv): ?Tk) $key_func
  *
  * @return array<Tk, list<Tv>>
  */
-function group_by(iterable $values, callable $key_func): array
+function group_by(iterable $values, Closure $key_func): array
 {
     $result = [];
     foreach ($values as $value) {

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Collection;
 
+use Closure;
+
 /**
  * @template T
  *
@@ -50,13 +52,13 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * The keys associated with the current `MutableVectorInterface` remain unchanged in the
      * returned `MutableVectorInterface`.
      *
-     * @param (callable(T): bool) $fn The callback containing the condition to apply to the current
+     * @param (Closure(T): bool) $fn The callback containing the condition to apply to the current
      *                                `MutableVectorInterface` values
      *
      * @return MutableVectorInterface<T> A MutableVectorInterface containing the values after
      *                                   a user-specified condition is applied.
      */
-    public function filter(callable $fn): MutableVectorInterface;
+    public function filter(Closure $fn): MutableVectorInterface;
 
     /**
      * Returns a `MutableVectorInterface` containing the values of the current `MutableVectorInterface`
@@ -69,14 +71,14 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * The keys associated with the current `MutableVectorInterface` remain unchanged in the
      * returned `MutableVectorInterface`; the keys will be used in the filtering process only.
      *
-     * @param (callable(int, T): bool) $fn The callback containing the condition to apply to the current
+     * @param (Closure(int, T): bool) $fn The callback containing the condition to apply to the current
      *                                     `MutableVectorInterface` keys and values.
      *
      * @return MutableVectorInterface<T> A `MutableVectorInterface` containing the values after a user-specified
      *                                   condition is applied to the keys and values of the current
      *                                   `MutableVectorInterface`.
      */
-    public function filterWithKey(callable $fn): MutableVectorInterface;
+    public function filterWithKey(Closure $fn): MutableVectorInterface;
 
     /**
      * Returns a `MutableVectorInterface` after an operation has been applied to each value
@@ -90,13 +92,13 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @template Tu
      *
-     * @param (callable(T): Tu) $fn The callback containing the operation to apply to the current
+     * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
      *                              `MutableVectorInterface` values
      *
      * @return MutableVectorInterface<Tu> A `MutableVectorInterface` containing key/value pairs after
      *                                    a user-specified operation is applied.
      */
-    public function map(callable $fn): MutableVectorInterface;
+    public function map(Closure $fn): MutableVectorInterface;
 
     /**
      * Returns a `MutableVectorInterface` after an operation has been applied to each key and
@@ -111,14 +113,14 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @template Tu
      *
-     * @param (callable(int, T): Tu) $fn The callback containing the operation to apply to the current
+     * @param (Closure(int, T): Tu) $fn The callback containing the operation to apply to the current
      *                                   `MutableVectorInterface` keys and values
      *
      * @return MutableVectorInterface<Tu> A `MutableVectorInterface` containing the values after
      *                                    a user-specified operation on the current `MutableVectorInterface`'s
      *                                    keys and values is applied.
      */
-    public function mapWithKey(callable $fn): MutableVectorInterface;
+    public function mapWithKey(Closure $fn): MutableVectorInterface;
 
     /**
      * Returns the first value in the current `MutableVectorInterface`.
@@ -221,13 +223,13 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * The returned `MutableVectorInterface` will always be a proper subset of the current
      * `MutableVectorInterface`.
      *
-     * @param (callable(T): bool) $fn The callback that is used to determine the stopping
+     * @param (Closure(T): bool) $fn The callback that is used to determine the stopping
      *                                condition.
      *
      * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
      *                                   `MutableVectorInterface` up until the callback returns `false`.
      */
-    public function takeWhile(callable $fn): MutableVectorInterface;
+    public function takeWhile(Closure $fn): MutableVectorInterface;
 
     /**
      * Returns a `MutableVectorInterface` containing the values after the `n`-th element of
@@ -256,13 +258,13 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * The returned `MutableVectorInterface` will always be a proper subset of the current
      * `MutableVectorInterface`.
      *
-     * @param (callable(T): bool) $fn The callback used to determine the starting element for the
+     * @param (Closure(T): bool) $fn The callback used to determine the starting element for the
      *                                returned `MutableVectorInterface`.
      *
      * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
      *                                   `MutableVectorInterface` starting after the callback returns `true`.
      */
-    public function dropWhile(callable $fn): MutableVectorInterface;
+    public function dropWhile(Closure $fn): MutableVectorInterface;
 
     /**
      * Returns a subset of the current `MutableVectorInterface` starting from a given key up

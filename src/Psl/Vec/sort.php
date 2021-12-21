@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
+use Closure;
+
 use function sort as php_sort;
 use function usort;
 
@@ -16,11 +18,11 @@ use function usort;
  * @template T
  *
  * @param iterable<T> $iterable
- * @param (callable(T, T): int)|null $comparator
+ * @param (Closure(T, T): int)|null $comparator
  *
  * @return list<T>
  */
-function sort(iterable $iterable, ?callable $comparator = null): array
+function sort(iterable $iterable, ?Closure $comparator = null): array
 {
     $array = values($iterable);
     if (null !== $comparator) {

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Collection;
 
+use Closure;
+
 /**
  * @template T
  *
@@ -80,13 +82,13 @@ interface VectorInterface extends AccessibleCollectionInterface
      * The keys associated with the current `VectorInterface` remain unchanged in the
      * returned `VectorInterface`.
      *
-     * @param (callable(T): bool) $fn The callback containing the condition to apply to the current
+     * @param (Closure(T): bool) $fn The callback containing the condition to apply to the current
      *                                `VectorInterface` values.
      *
      * @return VectorInterface<T> A VectorInterface containing the values after a user-specified condition
      *                            is applied.
      */
-    public function filter(callable $fn): VectorInterface;
+    public function filter(Closure $fn): VectorInterface;
 
     /**
      * Returns a `VectorInterface` containing the values of the current `VectorInterface`
@@ -99,13 +101,13 @@ interface VectorInterface extends AccessibleCollectionInterface
      * The keys associated with the current `VectorInterface` remain unchanged in the
      * returned `VectorInterface`; the keys will be used in the filtering process only.
      *
-     * @param (callable(int, T): bool) $fn The callback containing the condition to apply to the current
+     * @param (Closure(int, T): bool) $fn The callback containing the condition to apply to the current
      *                                     `VectorInterface` keys and values.
      *
      * @return VectorInterface<T> A `VectorInterface` containing the values after a user-specified
      *                            condition is applied to the keys and values of the current `VectorInterface`.
      */
-    public function filterWithKey(callable $fn): VectorInterface;
+    public function filterWithKey(Closure $fn): VectorInterface;
 
     /**
      * Returns a `VectorInterface` after an operation has been applied to each value
@@ -119,13 +121,13 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @template Tu
      *
-     * @param (callable(T): Tu) $fn The callback containing the operation to apply to the current
+     * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
      *                              `VectorInterface` values.
      *
      * @return VectorInterface<Tu> A `VectorInterface` containing key/value pairs after a user-specified
      *                             operation is applied.
      */
-    public function map(callable $fn): VectorInterface;
+    public function map(Closure $fn): VectorInterface;
 
     /**
      * Returns a `VectorInterface` after an operation has been applied to each key and
@@ -140,13 +142,13 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @template Tu
      *
-     * @param (callable(int, T): Tu) $fn The callback containing the operation to apply to the current
+     * @param (Closure(int, T): Tu) $fn The callback containing the operation to apply to the current
      *                                   `VectorInterface` keys and values.
      *
      * @return VectorInterface<Tu> A `VectorInterface` containing the values after a user-specified
      *                             operation on the current `VectorInterface`'s keys and values is applied.
      */
-    public function mapWithKey(callable $fn): VectorInterface;
+    public function mapWithKey(Closure $fn): VectorInterface;
 
     /**
      * Returns the first value in the current `VectorInterface`.
@@ -249,13 +251,13 @@ interface VectorInterface extends AccessibleCollectionInterface
      * The returned `VectorInterface` will always be a proper subset of the current
      * `VectorInterface`.
      *
-     * @param (callable(T): bool) $fn The callback that is used to determine the stopping
+     * @param (Closure(T): bool) $fn The callback that is used to determine the stopping
      *                                condition.
      *
      * @return VectorInterface<T> A `VectorInterface` that is a proper subset of the current
      *                            `VectorInterface` up until the callback returns `false`.
      */
-    public function takeWhile(callable $fn): VectorInterface;
+    public function takeWhile(Closure $fn): VectorInterface;
 
     /**
      * Returns a `VectorInterface` containing the values after the `n`-th element of
@@ -284,13 +286,13 @@ interface VectorInterface extends AccessibleCollectionInterface
      * The returned `VectorInterface` will always be a proper subset of the current
      * `VectorInterface`.
      *
-     * @param (callable(T): bool) $fn The callback used to determine the starting element for the
+     * @param (Closure(T): bool) $fn The callback used to determine the starting element for the
      *                                returned `VectorInterface`.
      *
      * @return VectorInterface<T> A `VectorInterface` that is a proper subset of the current
      *                            `VectorInterface` starting after the callback returns `true`.
      */
-    public function dropWhile(callable $fn): VectorInterface;
+    public function dropWhile(Closure $fn): VectorInterface;
 
     /**
      * Returns a subset of the current `VectorInterface` starting from a given key up

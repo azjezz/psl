@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
+use Closure;
+
 /**
  * Produce a list of values generated using the given factory.
  *
@@ -15,11 +17,11 @@ namespace Psl\Vec;
  * @template T
  *
  * @param positive-int $size
- * @param (callable(int): T) $factory
+ * @param (Closure(int): T) $factory
  *
  * @return list<T>
  */
-function reproduce(int $size, callable $factory): array
+function reproduce(int $size, Closure $factory): array
 {
     $result = [];
     for ($i = 1; $i <= $size; $i++) {
