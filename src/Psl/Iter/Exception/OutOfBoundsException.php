@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Iter\Exception;
 
-use OutOfBoundsException as OutOfBoundsRootException;
+use Psl\Exception;
 
-final class OutOfBoundsException extends OutOfBoundsRootException implements ExceptionInterface
+final class OutOfBoundsException extends Exception\OutOfBoundsException implements ExceptionInterface
 {
 }

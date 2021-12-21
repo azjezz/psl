@@ -11,8 +11,7 @@ use Psl;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If unable to convert $string or to UTF-16,
- *                                                   or split it into graphemes.
+ * @throws Psl\Exception\InvariantViolationException If unable to split $string into grapheme clusters.
  */
 function ends_with_ci(string $string, string $suffix): bool
 {

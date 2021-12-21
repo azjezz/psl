@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl;
-use Psl\Internal;
-
 use function mb_strimwidth;
 
 /**
@@ -18,7 +15,7 @@ use function mb_strimwidth;
  * @param string|null $trim_marker a string that is added to the end of string
  *                                 when string is truncated
  *
- * @throws Psl\Exception\InvariantViolationException If the offset is out-of-bounds.
+ * @throws Exception\OutOfBoundsException If the offset is out-of-bounds.
  *
  * @return string The truncated string. If trim_marker is set,
  *                trim_marker is appended to the return value.
@@ -34,9 +31,5 @@ function truncate(
 ): string {
     $offset = Internal\validate_offset($offset, length($string, $encoding));
 
-    /**
-     * @psalm-suppress UndefinedPropertyFetch
-     * @psalm-suppress MixedArgument
-     */
     return mb_strimwidth($string, $offset, $width, $trim_marker ?? '', $encoding->value);
 }

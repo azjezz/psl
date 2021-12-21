@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Str\Grapheme;
 
 use Psl;
+use Psl\Str;
 
 /**
  * Returns a substring of length `$length` of the given string starting at the
@@ -18,12 +19,13 @@ use Psl;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If $offset is out-of-bounds.
+ * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
+ * @throws Psl\Exception\InvariantViolationException If unable to split $string into grapheme clusters.
  */
 function slice(string $string, int $offset, ?int $length = null): string
 {
     $string_length = length($string);
-    $offset        = Psl\Internal\validate_offset($offset, $string_length);
+    $offset        = Str\Internal\validate_offset($offset, $string_length);
 
     if (0 === $offset && (null === $length || $string_length <= $length)) {
         return $string;

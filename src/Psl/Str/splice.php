@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl;
-
 /**
  * Return the string with a slice specified by the offset/length replaced by the
  * given replacement string.
@@ -18,7 +16,7 @@ use Psl;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
+ * @throws Exception\OutOfBoundsException If the $offset is out-of-bounds.
  */
 function splice(
     string $string,
@@ -28,7 +26,7 @@ function splice(
     Encoding $encoding = Encoding::UTF_8
 ): string {
     $total_length = length($string, $encoding);
-    $offset       = Psl\Internal\validate_offset($offset, $total_length);
+    $offset       = Internal\validate_offset($offset, $total_length);
 
     if (null === $length || ($offset + $length) >= $total_length) {
         return slice($string, 0, $offset, $encoding) . $replacement;

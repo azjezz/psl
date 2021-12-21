@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Str\Byte;
 
-use Psl;
+use Psl\Str;
 
 use function stripos;
 
@@ -18,13 +18,13 @@ use function stripos;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If $offset is out-of-bounds.
+ * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
  *
  * @return null|int<0, max>
  */
 function search_ci(string $haystack, string $needle, int $offset = 0): ?int
 {
-    $offset = Psl\Internal\validate_offset($offset, length($haystack));
+    $offset = Str\Internal\validate_offset($offset, length($haystack));
 
     if ('' === $needle) {
         return null;

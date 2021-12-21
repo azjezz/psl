@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace Psl\Str\Grapheme;
 
 use Psl;
+use Psl\Str\Exception;
 
 /**
- * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
+ * @throws Exception\OutOfBoundsException If the $offset is out-of-bounds.
+ * @throws Psl\Exception\InvariantViolationException If unable to split $string into grapheme clusters.
  *
  * @pure
  */
-function after_last(
-    string $haystack,
-    string $needle,
-    int $offset = 0
-): ?string {
+function after_last(string $haystack, string $needle, int $offset = 0): ?string
+{
     $position = search_last($haystack, $needle, $offset);
     if (null === $position) {
         return null;

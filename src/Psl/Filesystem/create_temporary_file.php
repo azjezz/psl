@@ -33,11 +33,10 @@ function create_temporary_file(?string $directory = null, ?string $prefix = null
     }
 
     if (null !== $prefix) {
-        Psl\invariant(
-            !Str\contains($prefix, SEPARATOR),
-            '$prefix should not contain a directory separator ( "%s" ).',
-            SEPARATOR
-        );
+        /** @psalm-suppress MissingThrowsDocblock - $offset is within bounds. */
+        if (Str\contains($prefix, SEPARATOR)) {
+            Psl\invariant_violation('$prefix should not contain a directory separator ( "%s" ).', SEPARATOR);
+        }
     } else {
         $prefix = '';
     }

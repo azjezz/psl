@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Str\Byte;
 
-use Psl;
+use Psl\Str;
 
 use function strrpos;
 
@@ -20,7 +20,7 @@ use function strrpos;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If $offset is out-of-bounds.
+ * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
  *
  * @return null|int<0, max>
  */
@@ -30,8 +30,7 @@ function search_last(string $haystack, string $needle, int $offset = 0): ?int
         return null;
     }
 
-    $haystack_length = length($haystack);
-    Psl\invariant($offset >= -$haystack_length && $offset <= $haystack_length, 'Offset is out-of-bounds.');
+    $offset = Str\Internal\validate_offset($offset, length($haystack));
 
     /** @var null|int<0, max> */
     return false === ($pos = strrpos($haystack, $needle, $offset)) ? null : $pos;

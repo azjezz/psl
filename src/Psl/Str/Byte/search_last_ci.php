@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Str\Byte;
 
-use Psl;
+use Psl\Str;
 
 /**
  * Returns the last position of the 'needle' string in the 'haystack' string,
@@ -18,7 +18,7 @@ use Psl;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If $offset is out-of-bounds.
+ * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
  *
  * @return null|int<0, max>
  */
@@ -28,8 +28,7 @@ function search_last_ci(string $haystack, string $needle, int $offset = 0): ?int
         return null;
     }
 
-    $haystack_length = length($haystack);
-    Psl\invariant($offset >= -$haystack_length && $offset <= $haystack_length, 'Offset is out-of-bounds.');
+    $offset = Str\Internal\validate_offset($offset, length($haystack));
 
     /** @var null|int<0, max> */
     return false === ($pos = strripos($haystack, $needle, $offset)) ? null : $pos;

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Str\Grapheme;
 
 use Psl;
+use Psl\Str;
 
 use function grapheme_strpos;
 
@@ -19,7 +20,8 @@ use function grapheme_strpos;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
+ * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
+ * @throws Psl\Exception\InvariantViolationException If unable to split $string into grapheme clusters.
  *
  * @return null|int<0, max>
  */
@@ -29,7 +31,7 @@ function search(string $haystack, string $needle, int $offset = 0): ?int
         return null;
     }
 
-    $offset = Psl\Internal\validate_offset($offset, length($haystack));
+    $offset = Str\Internal\validate_offset($offset, length($haystack));
 
     /** @var null|int<0, max> */
     return false === ($pos = grapheme_strpos($haystack, $needle, $offset)) ?

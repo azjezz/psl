@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Str\Grapheme;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Exception;
+use Psl\Str\Exception;
 use Psl\Str\Grapheme;
 
 final class SliceTest extends TestCase
@@ -41,14 +41,14 @@ final class SliceTest extends TestCase
 
     public function testSliceThrowsForOutOfBoundOffset(): void
     {
-        $this->expectException(Exception\InvariantViolationException::class);
+        $this->expectException(Exception\OutOfBoundsException::class);
 
         Grapheme\slice('Hello', 10);
     }
 
     public function testSliceThrowsForNegativeOutOfBoundOffset(): void
     {
-        $this->expectException(Exception\InvariantViolationException::class);
+        $this->expectException(Exception\OutOfBoundsException::class);
 
         Grapheme\slice('hello', -6);
     }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl;
-
 use function mb_strpos;
 
 /**
@@ -18,7 +16,7 @@ use function mb_strpos;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If the $offset is out-of-bounds.
+ * @throws Exception\OutOfBoundsException If the $offset is out-of-bounds.
  *
  * @return null|int<0, max>
  */
@@ -28,7 +26,7 @@ function search(string $haystack, string $needle, int $offset = 0, Encoding $enc
         return null;
     }
 
-    $offset = Psl\Internal\validate_offset($offset, length($haystack, $encoding));
+    $offset = Internal\validate_offset($offset, length($haystack, $encoding));
 
     /** @var null|int<0, max> */
     return false === ($pos = mb_strpos($haystack, $needle, $offset, $encoding->value)) ?
