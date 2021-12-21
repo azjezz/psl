@@ -232,8 +232,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n The last element that will be included in the returned
-     *               `VectorInterface`.
+     * @param int<0, max> $n The last element that will be included in the returned
+     *                       `VectorInterface`.
      *
      * @return VectorInterface<T> A `VectorInterface` that is a proper subset of the current
      *                            `VectorInterface` up to `n` elements.
@@ -267,8 +267,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n The last element to be skipped; the $n+1 element will be the
-     *               first one in the returned `VectorInterface`.
+     * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
+     *                       first one in the returned `VectorInterface`.
      *
      * @return VectorInterface<T> A `VectorInterface` that is a proper subset of the current
      *                            `VectorInterface` containing values after the specified `n`-th element.
@@ -304,9 +304,9 @@ interface VectorInterface extends AccessibleCollectionInterface
      * The returned `VectorInterface` will always be a proper subset of this
      * `VectorInterface`.
      *
-     * @param int $start The starting key of this Vector to begin the returned
-     *                   `VectorInterface`.
-     * @param int $length The length of the returned `VectorInterface`.
+     * @param int<0, max> $start The starting key of this Vector to begin the returned
+     *                           `VectorInterface`.
+     * @param int<0, max> $length The length of the returned `VectorInterface`.
      *
      * @return VectorInterface<T> A `VectorInterface` that is a proper subset of the current
      *                            `VectorInterface` starting at `$start` up to but not including
@@ -314,5 +314,5 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, int $length): VectorInterface;
+    public function slice(int $start, ?int $length = null): VectorInterface;
 }

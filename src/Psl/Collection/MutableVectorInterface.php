@@ -205,8 +205,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n The last element that will be included in the returned
-     *               `MutableVectorInterface`.
+     * @param int<0, max> $n The last element that will be included in the returned
+     *                       `MutableVectorInterface`.
      *
      * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
      *                                   `MutableVectorInterface` up to `n` elements.
@@ -240,8 +240,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n The last element to be skipped; the $n+1 element will be the
-     *               first one in the returned `MutableVectorInterface`.
+     * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
+     *                       first one in the returned `MutableVectorInterface`.
      *
      * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
      *                                   `MutableVectorInterface` containing values after the specified `n`-th element.
@@ -277,9 +277,9 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * The returned `MutableVectorInterface` will always be a proper subset of this
      * `MutableVectorInterface`.
      *
-     * @param int $start The starting key of this Vector to begin the returned
-     *                   `MutableVectorInterface`.
-     * @param int $length The length of the returned `MutableVectorInterface`.
+     * @param int<0, max> $start The starting key of this Vector to begin the returned
+     *                           `MutableVectorInterface`.
+     * @param null|int<0, max> $length The length of the returned `MutableVectorInterface`.
      *
      * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
      *                                   `MutableVectorInterface` starting at `$start` up to but not including
@@ -287,7 +287,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, int $length): MutableVectorInterface;
+    public function slice(int $start, ?int $length = null): MutableVectorInterface;
 
     /**
      * Stores a value into the current vector with the specified key,

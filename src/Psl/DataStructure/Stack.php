@@ -71,8 +71,10 @@ final class Stack implements StackInterface
     {
         Psl\invariant(0 !== ($i = $this->count()), 'Cannot pop an item from an empty Stack.');
 
-        $tail = $this->items[$i - 1];
-        $this->items = Vec\values(Dict\take($this->items, $this->count() - 1));
+        /** @var int<0, max> $position */
+        $position = $i - 1;
+        $tail = $this->items[$position];
+        $this->items = Vec\values(Dict\take($this->items, $position));
 
         return $tail;
     }

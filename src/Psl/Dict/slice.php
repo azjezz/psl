@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
-use Psl;
-
 /**
  * Takes a slice from an iterable.
  *
@@ -21,18 +19,13 @@ use Psl;
  * @template Tv
  *
  * @param iterable<Tk,Tv> $iterable Iterable to take the slice from
- * @param int $start Start offset
- * @param int $length Length (if not specified all remaining values from the array are used)
- *
- * @throws Psl\Exception\InvariantViolationException If the $start offset or $length are negative
+ * @param int<0, max> $start Start offset
+ * @param null|int<0, max> $length Length (if not specified all remaining values from the array are used)
  *
  * @return array<Tk, Tv>
  */
 function slice(iterable $iterable, int $start, ?int $length = null): array
 {
-    Psl\invariant($start >= 0, 'Start offset must be non-negative.');
-    Psl\invariant(null === $length || $length >= 0, 'Length must be non-negative.');
-
     $result = [];
     if (0 === $length) {
         return $result;

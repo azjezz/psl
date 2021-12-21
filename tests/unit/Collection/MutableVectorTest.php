@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Collection;
 
+use Psl\Collection;
 use Psl\Collection\Map;
 use Psl\Collection\MutableVector;
 use Psl\Collection\Vector;
-use Psl\Exception\InvariantViolationException;
 
 final class MutableVectorTest extends AbstractVectorTest
 {
@@ -46,8 +46,8 @@ final class MutableVectorTest extends AbstractVectorTest
         static::assertSame('bar', $vector->at(1));
         static::assertSame('baz', $vector->at(2));
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Key (3) is out-of-bounds.');
+        $this->expectException(Collection\Exception\OutOfBoundsException::class);
+        $this->expectExceptionMessage('Key (3) was out-of-bounds.');
 
         $vector->set(3, 'qux');
     }
@@ -72,8 +72,8 @@ final class MutableVectorTest extends AbstractVectorTest
         static::assertSame('bar', $vector->at(1));
         static::assertSame('baz', $vector->at(2));
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Key (3) is out-of-bounds.');
+        $this->expectException(Collection\Exception\OutOfBoundsException::class);
+        $this->expectExceptionMessage('Key (3) was out-of-bounds.');
 
         $vector->setAll([3 => 'qux']);
     }

@@ -196,7 +196,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n The last element that will be included in the returned `MutableMapInterface`.
+     * @param int<0, max> $n The last element that will be included in the returned `MutableMapInterface`.
      *
      * @return MutableMapInterface<Tk, Tv> A `MutableMapInterface` that is a proper subset of the current
      *                                     `MutableMapInterface` up to `n` elements.
@@ -229,8 +229,8 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n The last element to be skipped; the $n+1 element will be the first one in
-     *               the returned `MutableMapInterface`.
+     * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the first one in
+     *                       the returned `MutableMapInterface`.
      *
      * @return MutableMapInterface<Tk, Tv> A `MutableMapInterface` that is a proper subset of the current
      *                                     `MutableMapInterface` containing values after the specified `n`-th element.
@@ -266,9 +266,9 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * The returned `MutableMapInterface` will always be a proper subset of this
      * `MutableMapInterface`.
      *
-     * @param int $start The starting key of this Vector to begin the returned
-     *                   `MutableMapInterface`.
-     * @param int $length The length of the returned `MutableMapInterface`.
+     * @param int<0, max> $start The starting key of this Vector to begin the returned
+     *                           `MutableMapInterface`.
+     * @param null|int<0, max> $length The length of the returned `MutableMapInterface`.
      *
      * @return MutableMapInterface<Tk, Tv> - A `MutableMapInterface` that is a proper subset of the current
      *                                     `MutableMapInterface` starting at `$start` up to but not including
@@ -276,7 +276,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, int $length): MutableMapInterface;
+    public function slice(int $start, ?int $length = null): MutableMapInterface;
 
     /**
      * Stores a value into the current collection with the specified key,

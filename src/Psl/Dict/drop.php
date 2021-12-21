@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
-use Psl;
-
 /**
  * Drops the first n items from an iterable.
  *
@@ -18,9 +16,7 @@ use Psl;
  * @template Tv
  *
  * @param iterable<Tk, Tv> $iterable Iterable to drop the elements from
- * @param int $n Number of elements to drop from the start
- *
- * @throws Psl\Exception\InvariantViolationException If the $n is negative
+ * @param int<0, max> $n Number of elements to drop from the start
  *
  * @return array<Tk, Tv>
  */

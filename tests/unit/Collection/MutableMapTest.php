@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Collection;
 
+use Psl\Collection;
 use Psl\Collection\Map;
 use Psl\Collection\MutableMap;
 use Psl\Collection\MutableVector;
-use Psl\Exception\InvariantViolationException;
 
 /**
  * @covers \Psl\Collection\MutableMap
@@ -52,8 +52,8 @@ final class MutableMapTest extends AbstractMapTest
         static::assertSame('bar', $map->at('bar'));
         static::assertSame('baz', $map->at('baz'));
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Key (qux) is out-of-bounds.');
+        $this->expectException(Collection\Exception\OutOfBoundsException::class);
+        $this->expectExceptionMessage('Key (qux) was out-of-bounds.');
 
         $map->set('qux', 'qux');
     }
@@ -78,8 +78,8 @@ final class MutableMapTest extends AbstractMapTest
         static::assertSame('bar', $map->at('bar'));
         static::assertSame('baz', $map->at('baz'));
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Key (qux) is out-of-bounds.');
+        $this->expectException(Collection\Exception\OutOfBoundsException::class);
+        $this->expectExceptionMessage('Key (qux) was out-of-bounds.');
 
         $map->setAll(['qux' => 'qux']);
     }

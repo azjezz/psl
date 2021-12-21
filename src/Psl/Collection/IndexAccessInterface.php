@@ -17,6 +17,8 @@ interface IndexAccessInterface
      *
      * @param Tk $k
      *
+     * @throws Exception\OutOfBoundsException If $k is out-of-bounds.
+     *
      * @return Tv
      *
      * @psalm-mutation-free

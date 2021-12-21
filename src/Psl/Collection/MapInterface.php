@@ -193,8 +193,8 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n The last element that will be included in the returned
-     *               `MapInterface`.
+     * @param int<0, max> $n The last element that will be included in the returned
+     *                       `MapInterface`.
      *
      * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
      *                              `MapInterface` up to `n` elements.
@@ -228,8 +228,8 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * `$n` is 1-based. So the first element is 1, the second 2, etc.
      *
-     * @param int $n - The last element to be skipped; the $n+1 element will be the
-     *               first one in the returned `MapInterface`.
+     * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
+     *                       first one in the returned `MapInterface`.
      *
      * @return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
      *                              `MapInterface` containing values after the specified `n`-th element.
@@ -265,9 +265,9 @@ interface MapInterface extends AccessibleCollectionInterface
      * The returned `MapInterface` will always be a proper subset of this
      * `MapInterface`.
      *
-     * @param int $start The starting key of this Vector to begin the returned
-     *                   `MapInterface`
-     * @param int $length The length of the returned `MapInterface`
+     * @param int<0, max> $start The starting key of this Vector to begin the returned
+     *                           `MapInterface`
+     * @param null|int<0, max> $length The length of the returned `MapInterface`
      *
      * @return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
      *                              `MapInterface` starting at `$start` up to but not including
@@ -275,5 +275,5 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, int $length): MapInterface;
+    public function slice(int $start, ?int $length = null): MapInterface;
 }
