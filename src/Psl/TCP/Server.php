@@ -68,7 +68,7 @@ final class Server implements Network\StreamServerInterface
      * Create a bound and listening instance.
      *
      * @param non-empty-string $host
-     * @param positive-int|0 $port
+     * @param int<0, max> $port
      *
      * @throws Psl\Network\Exception\RuntimeException In case failed to listen to on given address.
      */

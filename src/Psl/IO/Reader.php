@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
-use Psl;
 use Psl\Str;
 
 use function strlen;
@@ -55,9 +54,6 @@ final class Reader implements ReadHandleInterface
         }
 
         $buffer_size = strlen($this->buffer);
-        /** @psalm-suppress MissingThrowsDocblock */
-        Psl\invariant($buffer_size >= $size, "Should have read the requested data or reached EOF");
-
         if ($size === $buffer_size) {
             $ret = $this->buffer;
             $this->buffer = '';
@@ -95,9 +91,6 @@ final class Reader implements ReadHandleInterface
      */
     public function readByte(?float $timeout = null): string
     {
-        /** @psalm-suppress MissingThrowsDocblock */
-        Psl\invariant($timeout === null || $timeout > 0.0, '$timeout must be null, or > 0');
-
         if ($this->buffer === '' && !$this->eof) {
             $this->fillBuffer(null, $timeout);
         }
@@ -207,9 +200,6 @@ final class Reader implements ReadHandleInterface
      */
     public function read(?int $max_bytes = null, ?float $timeout = null): string
     {
-        /** @psalm-suppress MissingThrowsDocblock */
-        Psl\invariant($timeout === null || $timeout > 0.0, '$timeout must be null, or > 0');
-
         if ($this->eof) {
             return '';
         }

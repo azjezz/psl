@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Psl\Dict;
 
 use Psl;
-use Psl\Iter;
 use Psl\Vec;
+
+use function count;
 
 /**
  * Returns a new dict where each element in `$keys` maps to the
@@ -32,10 +33,9 @@ function associate(iterable $keys, iterable $values): array
         $values = Vec\values($values);
     }
 
-    Psl\invariant(
-        Iter\count($keys) === Iter\count($values),
-        'Expected length of $keys and $values to be the same',
-    );
+    if (count($keys) !== count($values)) {
+        Psl\invariant_violation('Expected length of $keys and $values to be the same');
+    }
 
     return array_combine($keys, $values);
 }

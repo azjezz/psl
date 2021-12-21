@@ -131,7 +131,7 @@ final class PriorityQueue implements PriorityQueueInterface
     /**
      * Count the nodes in the queue.
      *
-     * @return positive-int|0
+     * @return int<0, max>
      */
     public function count(): int
     {
@@ -140,7 +140,7 @@ final class PriorityQueue implements PriorityQueueInterface
             $count += count($list);
         }
 
-        /** @var positive-int|0 */
+        /** @var int<0, max> */
         return $count;
     }
 }

@@ -10,7 +10,7 @@ use Psl\Network;
  * Connect to a socket.
  *
  * @param non-empty-string $host
- * @param positive-int|0 $port
+ * @param int<0, max> $port
  *
  * @throws Network\Exception\RuntimeException If failed to connect to client on the given address.
  * @throws Network\Exception\TimeoutException If $timeout is non-null, and the operation timed-out.

@@ -202,9 +202,6 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
-        /** @psalm-suppress MissingThrowsDocblock */
-        Psl\invariant($offset >= 0, '$offset must be a 0 or positive-int.');
-
         /** @psalm-suppress PossiblyInvalidArgument */
         $result = @fseek($this->stream, $offset);
         if (0 !== $result) {

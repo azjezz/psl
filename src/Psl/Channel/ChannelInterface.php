@@ -37,7 +37,7 @@ interface ChannelInterface extends Countable
     /**
      * Returns the number of messages in the channel.
      *
-     * @return positive-int|0
+     * @return int<0, max>
      *
      * @mutation-free
      */

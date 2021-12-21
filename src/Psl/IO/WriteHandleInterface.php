@@ -15,7 +15,7 @@ interface WriteHandleInterface extends HandleInterface
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      *
-     * @return positive-int|0 the number of bytes written on success, which may be 0.
+     * @return int<0, max> the number of bytes written on success, which may be 0.
      *
      * @see WriteHandleInterface::write()
      * @see WriteHandleInterface::writeAll()

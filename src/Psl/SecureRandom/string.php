@@ -38,7 +38,7 @@ function string(int $length, ?string $alphabet = null): string
 
     $ret = '';
     while ($length > 0) {
-        /** @var 0|positive-int $urandom_length */
+        /** @var int<0, max> $urandom_length */
         $urandom_length = (int) Math\ceil((float) (2 * $length * $bits) / 8.0);
         $data           = namespace\bytes($urandom_length);
 

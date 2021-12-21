@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
-use Psl;
 use Psl\Math;
 
 use function str_repeat;
@@ -79,8 +78,6 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
     {
         $this->assertHandleIsOpen();
 
-        /** @psalm-suppress MissingThrowsDocblock */
-        Psl\invariant($offset >= 0, '$offset must be a positive-int.');
         $this->offset = $offset;
     }
 

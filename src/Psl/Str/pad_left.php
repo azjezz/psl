@@ -27,7 +27,7 @@ namespace Psl\Str;
  *      => Str('ممممرحبا')
  *
  * @param non-empty-string $pad_string
- * @param positive-int|0 $total_length
+ * @param int<0, max> $total_length
  *
  * @pure
  */
