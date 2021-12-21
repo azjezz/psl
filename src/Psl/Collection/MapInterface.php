@@ -165,24 +165,23 @@ interface MapInterface extends AccessibleCollectionInterface
 
     /**
      * Returns a `MapInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
-     * element of the current `MapInterface` and the provided `iterable`.
+     * element of the current `MapInterface` and the provided elements.
      *
      * If the number of elements of the `MapInterface` are not equal to the
-     * number of elements in the `iterable`, then only the combined elements
+     * number of elements in `$elements`, then only the combined elements
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
      * @template Tu
      *
-     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
-     *                               elements of this `MapInterface`.
+     * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `MapInterface`.
      *
-     * @return MapInterface<Tk, array{0: Tv, 1: Tu}> - The `MapInterface` that combines the values of the current
-     *                                               `MapInterface` with the provided `iterable`.
+     * @return MapInterface<Tk, array{0: Tv, 1: Tu}> The `MapInterface` that combines the values of the current
+     *                                               `MapInterface` with the provided elements.
      *
      * @psalm-mutation-free
      */
-    public function zip(iterable $iterable): MapInterface;
+    public function zip(array $elements): MapInterface;
 
     /**
      * Returns a `MapInterface` containing the first `n` values of the current

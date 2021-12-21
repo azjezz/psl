@@ -30,18 +30,18 @@ interface MutableIndexAccessInterface extends IndexAccessInterface
     public function set(int|string $k, mixed $v): MutableIndexAccessInterface;
 
     /**
-     * For every element in the provided `iterable`, stores a value into the
+     * For every element in the provided elements array, stores a value into the
      * current collection associated with each key, overwriting the previous value
      * associated with the key.
      *
      * It the current collection, meaning changes made to the current collection
      * will be reflected in the returned collection.
      *
-     * @param iterable<Tk, Tv> $iterable The `iterable` with the new values to set
+     * @param array<Tk, Tv> $elements The elements with the new values to set
      *
      * @return MutableIndexAccessInterface<Tk, Tv> Returns itself
      */
-    public function setAll(iterable $iterable): MutableIndexAccessInterface;
+    public function setAll(array $elements): MutableIndexAccessInterface;
 
     /**
      * Removes the specified key (and associated value) from the current

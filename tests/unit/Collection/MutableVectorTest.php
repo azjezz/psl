@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Collection;
 
 use Psl\Collection;
-use Psl\Collection\Map;
 use Psl\Collection\MutableVector;
-use Psl\Collection\Vector;
 
 final class MutableVectorTest extends AbstractVectorTest
 {
@@ -60,11 +58,11 @@ final class MutableVectorTest extends AbstractVectorTest
             'qux',
         ]);
 
-        $modified = $vector->setAll(new Map([
+        $modified = $vector->setAll([
             0 => 'foo',
             1 => 'bar',
             2 => 'baz',
-        ]));
+        ]);
 
         static::assertSame($modified, $vector);
 
@@ -107,10 +105,10 @@ final class MutableVectorTest extends AbstractVectorTest
         ]);
 
         $modified = $vector
-            ->addAll(new Vector([
+            ->addAll([
                 'hello',
                 'world',
-            ]));
+            ]);
 
         static::assertSame($modified, $vector);
 

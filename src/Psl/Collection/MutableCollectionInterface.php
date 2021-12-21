@@ -101,26 +101,26 @@ interface MutableCollectionInterface extends CollectionInterface
 
     /**
      * Returns a `MutableCollectionInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
-     * element of the current `MutableCollectionInterface` and the provided `iterable`.
+     * element of the current `MutableCollectionInterface` and the provided elements.
      *
      * If the number of elements of the `MutableCollectionInterface` are not equal to the
-     * number of elements in the `iterable`, then only the combined elements
+     * number of elements in `$elements`, then only the combined elements
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
      * @template Tu
      *
-     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
-     *                               elements of this `MutableCollectionInterface`.
+     * @param array<array-key, Tu> $elements The elements to use to combine with the
+     *                                       elements of this `MutableCollectionInterface`.
      *
      * @return MutableCollectionInterface<Tk, array{0: Tv, 1: Tu}> The `MutableCollectionInterface` that
      *                                                             combines the values of the
      *                                                             current `MutableCollectionInterface` with
-     *                                                             the provided `iterable`.
+     *                                                             the provided elements.
      *
      * @psalm-mutation-free
      */
-    public function zip(iterable $iterable): MutableCollectionInterface;
+    public function zip(array $elements): MutableCollectionInterface;
 
     /**
      * Returns a `MutableCollectionInterface` containing the first `n` values of the current
@@ -218,7 +218,7 @@ interface MutableCollectionInterface extends CollectionInterface
     public function slice(int $start, ?int $length = null): MutableCollectionInterface;
 
     /**
-     * Removes all items from the collection.
+     * Removes all elements from the collection.
      *
      * @return MutableCollectionInterface<Tk, Tv>
      */

@@ -9,10 +9,6 @@ use Psl\Collection;
 use Psl\Collection\VectorInterface;
 use Psl\Str;
 
-/**
- * @covers \Psl\Collection\Vector
- * @covers \Psl\Collection\MutableVector
- */
 abstract class AbstractVectorTest extends TestCase
 {
     /**

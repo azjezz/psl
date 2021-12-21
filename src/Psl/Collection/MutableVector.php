@@ -9,6 +9,9 @@ use Psl\Iter;
 use Psl\Vec;
 
 use function array_key_exists;
+use function array_key_last;
+use function array_keys;
+use function array_values;
 use function count;
 
 /**
@@ -19,16 +22,16 @@ use function count;
 final class MutableVector implements MutableVectorInterface
 {
     /**
-     * @var array<int, T> $elements
+     * @var list<T> $elements
      */
     private array $elements = [];
 
     /**
      * MutableVector constructor.
      *
-     * @param iterable<T> $elements
+     * @param array<array-key, T> $elements
      */
-    public function __construct(iterable $elements)
+    public function __construct(array $elements)
     {
         foreach ($elements as $element) {
             $this->elements[] = $element;
@@ -62,8 +65,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function first(): mixed
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\first($this->elements);
+        return $this->elements[0] ?? null;
     }
 
     /**
@@ -76,8 +78,12 @@ final class MutableVector implements MutableVectorInterface
      */
     public function last(): mixed
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\last($this->elements);
+        $key = $this->lastKey();
+        if (null === $key) {
+            return null;
+        }
+
+        return $this->elements[$key];
     }
 
     /**
@@ -98,11 +104,11 @@ final class MutableVector implements MutableVectorInterface
      */
     public function isEmpty(): bool
     {
-        return 0 === $this->count();
+        return [] === $this->elements;
     }
 
     /**
-     * Get the number of items in the current `MutableVector`.
+     * Get the number of elements in the current `MutableVector`.
      *
      * @psalm-mutation-free
      *
@@ -123,8 +129,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function toArray(): array
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Vec\values($this->elements);
+        return $this->elements;
     }
 
     /**
@@ -136,7 +141,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function jsonSerialize(): array
     {
-        return $this->toArray();
+        return $this->elements;
     }
 
     /**
@@ -195,8 +200,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function firstKey(): ?int
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\first_key($this->elements);
+        return [] === $this->elements ? null : 0;
     }
 
     /**
@@ -209,8 +213,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function lastKey(): ?int
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return Iter\last_key($this->elements);
+        return array_key_last($this->elements);
     }
 
     /**
@@ -265,7 +268,7 @@ final class MutableVector implements MutableVectorInterface
     }
 
     /**
-     * For every element in the provided `iterable`, stores a value into the
+     * For every element in the provided elements array, stores a value into the
      * current vector associated with each key, overwriting the previous value
      * associated with the key.
      *
@@ -275,13 +278,13 @@ final class MutableVector implements MutableVectorInterface
      * It the current vector, meaning changes made to the current vector
      * will be reflected in the returned vector.
      *
-     * @param iterable<int, T> $iterable The `iterable` with the new values to set
+     * @param array<int, T> $elements The elements with the new values to set
      *
      * @return MutableVector<T> returns itself
      */
-    public function setAll(iterable $iterable): MutableVector
+    public function setAll(array $elements): MutableVector
     {
-        foreach ($iterable as $k => $v) {
+        foreach ($elements as $k => $v) {
             $this->set($k, $v);
         }
 
@@ -308,15 +311,16 @@ final class MutableVector implements MutableVectorInterface
     public function remove(int|string $k): MutableVector
     {
         if ($this->contains($k)) {
-            unset($this->elements[$k]);
-            $this->elements = Vec\values($this->elements);
+            $elements = $this->elements;
+            unset($elements[$k]);
+            $this->elements = array_values($elements);
         }
 
         return $this;
     }
 
     /**
-     * Removes all items from the vector.
+     * Removes all elements from the vector.
      *
      * @return MutableVector<T> Returns itself
      */
@@ -342,15 +346,15 @@ final class MutableVector implements MutableVectorInterface
     }
 
     /**
-     * For every element in the provided iterable, add the value into the current vector.
+     * For every element in the provided elements array, add the value into the current vector.
      *
-     * @param iterable<T> $iterable The `iterable` with the new values to add
+     * @param array<array-key, T> $elements The elements with the new values to add
      *
      * @return MutableVector<T> returns itself.
      */
-    public function addAll(iterable $iterable): MutableVector
+    public function addAll(array $elements): MutableVector
     {
-        foreach ($iterable as $item) {
+        foreach ($elements as $item) {
             $this->add($item);
         }
 
@@ -367,8 +371,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function values(): MutableVector
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return MutableVector::fromArray(Vec\values($this->elements));
+        return MutableVector::fromArray($this->elements);
     }
 
     /**
@@ -380,8 +383,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function keys(): MutableVector
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return MutableVector::fromArray(Vec\keys($this->elements));
+        return MutableVector::fromArray(array_keys($this->elements));
     }
 
     /**
@@ -476,27 +478,26 @@ final class MutableVector implements MutableVectorInterface
 
     /**
      * Returns a `MutableVector` where each element is a `array{0: Tv, 1: Tu}` that combines the
-     * element of the current `VectorInterface` and the provided `iterable`.
+     * element of the current `VectorInterface` and the provided elements array.
      *
      * If the number of elements of the `MutableVector` are not equal to the
-     * number of elements in the `iterable`, then only the combined elements
+     * number of elements in `$elements`, then only the combined elements
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
      * @template Tu
      *
-     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
-     *                               elements of this `MutableVector`.
+     * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `MutableVector`.
      *
      * @return MutableVector<array{0: T, 1: Tu}> The `MutableVector` that combines the values of the current
-     *                                           `MutableVector` with the provided `iterable`.
+     *                                           `MutableVector` with the provided elements.
      *
      * @psalm-mutation-free
      */
-    public function zip(iterable $iterable): MutableVector
+    public function zip(array $elements): MutableVector
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
-        return MutableVector::fromArray(Vec\zip($this, $iterable));
+        return MutableVector::fromArray(Vec\zip($this->elements, $elements));
     }
 
     /**

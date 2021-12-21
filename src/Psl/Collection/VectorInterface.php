@@ -204,24 +204,23 @@ interface VectorInterface extends AccessibleCollectionInterface
 
     /**
      * Returns a `VectorInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
-     * element of the current `VectorInterface` and the provided `iterable`.
+     * element of the current `VectorInterface` and the provided elements array.
      *
      * If the number of elements of the `VectorInterface` are not equal to the
-     * number of elements in the `iterable`, then only the combined elements
+     * number of elements in `$elements`, then only the combined elements
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
      * @template Tu
      *
-     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
-     *                               elements of this `VectorInterface`.
+     * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `VectorInterface`.
      *
-     * @return VectorInterface<array{0: T, 1: Tu}> The `VectorInterface` that combines the values
-     *                                             of the current `VectorInterface` with the provided `iterable`.
+     * @return VectorInterface<array{0: T, 1: Tu}> The `VectorInterface` that combines the values of
+     *                                             the current `VectorInterface` with the provided elements.
      *
      * @psalm-mutation-free
      */
-    public function zip(iterable $iterable): VectorInterface;
+    public function zip(array $elements): VectorInterface;
 
     /**
      * Returns a `VectorInterface` containing the first `n` values of the current

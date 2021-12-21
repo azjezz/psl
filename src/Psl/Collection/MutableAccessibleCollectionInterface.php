@@ -142,7 +142,7 @@ interface MutableAccessibleCollectionInterface extends
     public function set(int|string $k, mixed $v): MutableAccessibleCollectionInterface;
 
     /**
-     * For every element in the provided `iterable`, stores a value into the
+     * For every element in the provided elements, stores a value into the
      * current collection associated with each key, overwriting the previous value
      * associated with the key.
      *
@@ -152,11 +152,11 @@ interface MutableAccessibleCollectionInterface extends
      * It the current collection, meaning changes made to the current collection
      * will be reflected in the returned collection.
      *
-     * @param iterable<Tk, Tv> $iterable The `iterable` with the new values to set.
+     * @param array<Tk, Tv> $elements The elements with the new values to set.
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> Returns itself.
      */
-    public function setAll(iterable $iterable): MutableAccessibleCollectionInterface;
+    public function setAll(array $elements): MutableAccessibleCollectionInterface;
 
     /**
      * Removes the specified key (and associated value) from the current
@@ -175,7 +175,7 @@ interface MutableAccessibleCollectionInterface extends
     public function remove(int|string $k): MutableAccessibleCollectionInterface;
 
     /**
-     * Removes all items from the collection.
+     * Removes all elements from the collection.
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv>
      */
@@ -183,25 +183,24 @@ interface MutableAccessibleCollectionInterface extends
 
     /**
      * Returns a `MutableAccessibleCollectionInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
-     * element of the current `MutableAccessibleCollectionInterface` and the provided `iterable`.
+     * element of the current `MutableAccessibleCollectionInterface` and the provided elements.
      *
      * If the number of elements of the `MutableAccessibleCollectionInterface` are not equal to the
-     * number of elements in the `iterable`, then only the combined elements up to and including
+     * number of elements in `$elements`, then only the combined elements up to and including
      * the final element of the one with the least number of elements is included.
      *
      * @template Tu
      *
-     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
-     *                               elements of this `MutableAccessibleCollectionInterface`.
+     * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `MutableAccessibleCollectionInterface`.
      *
      * @return MutableAccessibleCollectionInterface<Tk, array{0: Tv, 1: Tu}> The `MutableAccessibleCollectionInterface`
      *                                                                       that combines the values of the current
      *                                                                       `MutableAccessibleCollectionInterface` with
-     *                                                                       the provided `iterable`.
+     *                                                                       the provided elements.
      *
      * @psalm-mutation-free
      */
-    public function zip(iterable $iterable): MutableAccessibleCollectionInterface;
+    public function zip(array $elements): MutableAccessibleCollectionInterface;
 
     /**
      * Returns a `MutableAccessibleCollectionInterface` containing the first `n` values of the current

@@ -167,25 +167,24 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
 
     /**
      * Returns a `MutableMapInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
-     * element of the current `MutableMapInterface` and the provided `iterable`.
+     * element of the current `MutableMapInterface` and the provided elements.
      *
      * If the number of elements of the `MutableMapInterface` are not equal to the
-     * number of elements in the `iterable`, then only the combined elements
+     * number of elements in `$elements`, then only the combined elements
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
      * @template Tu
      *
-     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
-     *                               elements of this `MutableMapInterface`.
+     * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `MutableMapInterface`.
      *
      * @return MutableMapInterface<Tk, array{0: Tv, 1: Tu}> - The `MutableMapInterface` that combines
      *                                                      the values of the current `MutableMapInterface` with
-     *                                                      the provided `iterable`.
+     *                                                      the provided elements.
      *
      * @psalm-mutation-free
      */
-    public function zip(iterable $iterable): MutableMapInterface;
+    public function zip(array $elements): MutableMapInterface;
 
     /**
      * Returns a `MutableMapInterface` containing the first `n` values of the current
@@ -296,7 +295,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
     public function set(int|string $k, mixed $v): MutableMapInterface;
 
     /**
-     * For every element in the provided `iterable`, stores a value into the
+     * For every element in the provided elements, stores a value into the
      * current collection associated with each key, overwriting the previous value
      * associated with the key.
      *
@@ -306,11 +305,11 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * It the current collection, meaning changes made to the current collection
      * will be reflected in the returned collection.
      *
-     * @param iterable<Tk, Tv> $iterable The `iterable` with the new values to set.
+     * @param array<Tk, Tv> $elements The elements with the new values to set.
      *
      * @return MutableMapInterface<Tk, Tv> Returns itself.
      */
-    public function setAll(iterable $iterable): MutableMapInterface;
+    public function setAll(array $elements): MutableMapInterface;
 
     /**
      * Add a value to the collection and return the collection itself.
@@ -323,13 +322,13 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
     public function add(int|string $k, mixed $v): MutableMapInterface;
 
     /**
-     * For every element in the provided iterable, add the value into the current collection.
+     * For every element in the provided elements array, add the value into the current collection.
      *
-     * @param iterable<Tk, Tv> $iterable The `iterable` with the new values to add.
+     * @param array<Tk, Tv> $elements The elements with the new values to add.
      *
      * @return MutableMapInterface<Tk, Tv> Returns itself.
      */
-    public function addAll(iterable $iterable): MutableMapInterface;
+    public function addAll(array $elements): MutableMapInterface;
 
     /**
      * Removes the specified key (and associated value) from the current
@@ -348,7 +347,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
     public function remove(int|string $k): MutableMapInterface;
 
     /**
-     * Removes all items from the collection.
+     * Removes all elements from the collection.
      *
      * @return MutableMapInterface<Tk, Tv>
      */

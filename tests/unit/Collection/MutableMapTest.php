@@ -5,13 +5,9 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Collection;
 
 use Psl\Collection;
-use Psl\Collection\Map;
 use Psl\Collection\MutableMap;
 use Psl\Collection\MutableVector;
 
-/**
- * @covers \Psl\Collection\MutableMap
- */
 final class MutableMapTest extends AbstractMapTest
 {
     /**
@@ -66,11 +62,11 @@ final class MutableMapTest extends AbstractMapTest
             'baz' => 'qux',
         ]);
 
-        $modified = $map->setAll(new Map([
+        $modified = $map->setAll([
             'foo' => 'foo',
             'bar' => 'bar',
             'baz' => 'baz',
-        ]));
+        ]);
 
         static::assertSame($modified, $map);
 

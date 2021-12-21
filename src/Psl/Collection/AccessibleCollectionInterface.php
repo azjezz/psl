@@ -172,26 +172,23 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
 
     /**
      * Returns a `AccessibleCollectionInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
-     * element of the current `AccessibleCollectionInterface` and the provided `iterable`.
+     * element of the current `AccessibleCollectionInterface` and the provided elements array.
      *
      * If the number of elements of the `AccessibleCollectionInterface` are not equal to the
-     * number of elements in the `iterable`, then only the combined elements
+     * number of elements in `$elements`, then only the combined elements
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
      * @template Tu
      *
-     * @param iterable<Tu> $iterable The `iterable` to use to combine with the
-     *                               elements of this `AccessibleCollectionInterface`.
+     * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `AccessibleCollectionInterface`.
      *
-     * @return AccessibleCollectionInterface<Tk, array{0: Tv, 1: Tu}> The `AccessibleCollectionInterface` that
-     *                                                                combines the values of the current
-     *                                                                `AccessibleCollectionInterface` with
-     *                                                                the provided `iterable`.
+     * @return AccessibleCollectionInterface<Tk, array{0: Tv, 1: Tu}> The `AccessibleCollectionInterface` that combines the values of the current
+     *                                                                `AccessibleCollectionInterface` with the provided elements.
      *
      * @psalm-mutation-free
      */
-    public function zip(iterable $iterable): AccessibleCollectionInterface;
+    public function zip(array $elements): AccessibleCollectionInterface;
 
     /**
      * Returns a `AccessibleCollectionInterface` containing the first `n` values of the current
