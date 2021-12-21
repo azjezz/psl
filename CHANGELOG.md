@@ -39,3 +39,4 @@
 * **BC** - The type of the $numbers argument of `Psl\Math\median` has changed to `list<int|float>` instead of `iterable<int|float>`.
 * introduced a new `Psl\Promise` component.
 * **BC** - `Psl\Result\ResultInterface` now implements `Psl\Promise\PromiseInterface`
+* **BC** - `Psl\Type\resource('curl')->toString()` now uses PHP built-in resource kind notation ( i.e: `resource (curl)` ) instead of generic notation ( i.e: `resource<curl>` )

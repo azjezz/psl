@@ -50,10 +50,10 @@ final class TypeCoercionExceptionTest extends TestCase
                 Type\Exception\CoercionException::class
             ));
         } catch (Type\Exception\CoercionException $e) {
-            static::assertSame('resource<curl>', $e->getTargetType());
+            static::assertSame('resource (curl)', $e->getTargetType());
             static::assertSame(Collection\Map::class, $e->getActualType());
             static::assertSame(Str\format(
-                'Could not coerce "%s" to type "resource<curl>".',
+                'Could not coerce "%s" to type "resource (curl)".',
                 Collection\Map::class
             ), $e->getMessage());
 

@@ -6,6 +6,8 @@ namespace Psl\Type\Exception;
 
 use Psl\Str;
 
+use function get_debug_type;
+
 final class CoercionException extends Exception
 {
     private string $target;
@@ -31,6 +33,6 @@ final class CoercionException extends Exception
         string $target,
         TypeTrace $typeTrace
     ): self {
-        return new self(self::getDebugType($value), $target, $typeTrace);
+        return new self(get_debug_type($value), $target, $typeTrace);
     }
 }

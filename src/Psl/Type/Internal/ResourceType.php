@@ -73,6 +73,6 @@ final class ResourceType extends Type\Type
             return 'resource';
         }
 
-        return Str\format('resource<%s>', $this->kind);
+        return Str\format('resource (%s)', $this->kind);
     }
 }

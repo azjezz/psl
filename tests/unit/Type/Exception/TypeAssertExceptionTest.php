@@ -44,9 +44,9 @@ final class TypeAssertExceptionTest extends TestCase
 
             static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
         } catch (Type\Exception\AssertException $e) {
-            static::assertSame('resource<curl>', $e->getExpectedType());
-            static::assertSame('resource<stream>', $e->getActualType());
-            static::assertSame('Expected "resource<curl>", got "resource<stream>".', $e->getMessage());
+            static::assertSame('resource (curl)', $e->getExpectedType());
+            static::assertSame('resource (stream)', $e->getActualType());
+            static::assertSame('Expected "resource (curl)", got "resource (stream)".', $e->getMessage());
 
             $trace  = $e->getTypeTrace();
             $frames = $trace->getFrames();
