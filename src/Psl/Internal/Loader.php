@@ -654,6 +654,7 @@ final class Loader
         'Psl\Async\Internal\AwaitableIteratorQueue',
         'Psl\Async\Internal\State',
         'Psl\Async\Awaitable',
+        'Psl\Async\Semaphore',
         'Psl\Async\Deferred',
         'Psl\Async\Scheduler',
         'Psl\IO\CloseStreamHandle',
