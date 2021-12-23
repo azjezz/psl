@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\DataStructure;
 
-use Psl;
-use Psl\Dict;
-use Psl\Iter;
 use Psl\Math;
-use Psl\Vec;
 
+use function array_keys;
+use function array_shift;
 use function count;
 
 /**
@@ -20,7 +18,7 @@ use function count;
 final class PriorityQueue implements PriorityQueueInterface
 {
     /**
-     * @var array<int, list<T>>
+     * @var array<int, non-empty-list<T>>
      */
     private array $queue = [];
 
@@ -49,7 +47,7 @@ final class PriorityQueue implements PriorityQueueInterface
             return null;
         }
 
-        $keys = Vec\keys($this->queue);
+        $keys = array_keys($this->queue);
 
         // Retrieve the highest priority.
         $priority = Math\max($keys) ?? 0;
@@ -58,7 +56,7 @@ final class PriorityQueue implements PriorityQueueInterface
         $nodes = $this->queue[$priority] ?? [];
 
         // Retrieve the first node of the list.
-        return Iter\first($nodes);
+        return $nodes[0] ?? null;
     }
 
     /**
@@ -69,63 +67,50 @@ final class PriorityQueue implements PriorityQueueInterface
      */
     public function pull(): mixed
     {
-        if (0 === $this->count()) {
+        try {
+            return $this->dequeue();
+        } catch (Exception\UnderflowException) {
             return null;
         }
-
-        /** @psalm-suppress MissingThrowsDocblock - the queue is not empty */
-        return $this->dequeue();
     }
 
     /**
      * Dequeues a node from the queue.
      *
-     * @throws Psl\Exception\InvariantViolationException If the Queue is invalid.
+     * @throws Exception\UnderflowException If the queue is empty.
      *
      * @return T
      */
     public function dequeue(): mixed
     {
-        Psl\invariant(0 !== $this->count(), 'Cannot dequeue a node from an empty Queue.');
+        if (0 === $this->count()) {
+            throw new Exception\UnderflowException('Cannot dequeue a node from an empty queue.');
+        }
 
         /**
-         * Peeking into a non-empty queue always results in a value.
+         * retrieve the highest priority.
          *
-         * @var T $node
+         * @var int
          */
-        $node = $this->peek();
-
-        $this->drop();
-
-        return $node;
-    }
-
-    private function drop(): void
-    {
+        $priority = Math\max(array_keys($this->queue));
         /**
-         * Retrieve the highest priority.
-         *
-         * @var int $priority
-         */
-        $priority = Math\max(Vec\keys($this->queue));
-
-        /**
-         * Retrieve the list of nodes with the priority `$priority`.
+         * retrieve the list of nodes with the priority `$priority`.
          */
         $nodes = $this->queue[$priority];
-
-        // If the list contained only this node,
-        // remove the list of nodes with priority `$priority`.
-        if (1 === Iter\count($nodes)) {
+        /**
+         * shift the first node out.
+         */
+        $node = array_shift($nodes);
+        /**
+         * If the list contained only this node, remove the list of nodes with priority `$priority`.
+         */
+        if ([] === $nodes) {
             unset($this->queue[$priority]);
         } else {
-            /**
-             * otherwise, drop the first node.
-             *
-             * @psalm-suppress MissingThrowsDocblock
-             */
-            $this->queue[$priority] = Vec\values(Dict\drop($nodes, 1));
+            $this->queue[$priority] = $nodes;
         }
+
+        return $node;
     }
 
     /**
@@ -136,7 +121,7 @@ final class PriorityQueue implements PriorityQueueInterface
     public function count(): int
     {
         $count = 0;
-        foreach ($this->queue as $_priority => $list) {
+        foreach ($this->queue as $list) {
             $count += count($list);
         }
 

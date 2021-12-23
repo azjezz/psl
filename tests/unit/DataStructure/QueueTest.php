@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Psl\DataStructure;
+namespace Psl\Tests\Unit\DataStructure;
 
 use PHPUnit\Framework\TestCase;
-use Psl;
 use Psl\DataStructure;
 
 final class QueueTest extends TestCase
@@ -75,8 +74,8 @@ final class QueueTest extends TestCase
     {
         $queue = new DataStructure\Queue();
 
-        $this->expectException(Psl\Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Cannot dequeue a node from an empty Queue.');
+        $this->expectException(DataStructure\Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Cannot dequeue a node from an empty queue.');
 
         $queue->dequeue();
     }

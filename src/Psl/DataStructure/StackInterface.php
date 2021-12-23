@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\DataStructure;
 
 use Countable;
-use Psl;
 
 /**
  * An interface representing a stack data structure ( LIFO ).
@@ -42,7 +41,7 @@ interface StackInterface extends Countable
     /**
      * Retrieve and removes the most recently added item that was not yet removed.
      *
-     * @throws Psl\Exception\InvariantViolationException If the stack is empty.
+     * @throws Exception\UnderflowException If the stack is empty.
      *
      * @return T
      */
@@ -50,6 +49,8 @@ interface StackInterface extends Countable
 
     /**
      * Count the items in the stack.
+     *
+     * @return int<0, max>
      */
     public function count(): int;
 }

@@ -560,6 +560,7 @@ final class Loader
         'Psl\Iter\Exception\ExceptionInterface',
         'Psl\Str\Exception\ExceptionInterface',
         'Psl\Collection\Exception\ExceptionInterface',
+        'Psl\DataStructure\Exception\ExceptionInterface',
     ];
 
     public const TRAITS = [
@@ -570,7 +571,6 @@ final class Loader
 
     public const CLASSES = [
         'Psl\Ref',
-        'Psl\Exception\OutOfBoundsException',
         'Psl\DataStructure\PriorityQueue',
         'Psl\DataStructure\Queue',
         'Psl\DataStructure\Stack',
@@ -582,6 +582,8 @@ final class Loader
         'Psl\Exception\InvalidArgumentException',
         'Psl\Exception\RuntimeException',
         'Psl\Exception\InvariantViolationException',
+        'Psl\Exception\UnderflowException',
+        'Psl\Exception\OutOfBoundsException',
         'Psl\Result\Failure',
         'Psl\Result\Success',
         'Psl\Type\Internal\ArrayKeyType',
@@ -701,6 +703,7 @@ final class Loader
         'Psl\Iter\Exception\OutOfBoundsException',
         'Psl\Str\Exception\OutOfBoundsException',
         'Psl\Collection\Exception\OutOfBoundsException',
+        'Psl\DataStructure\Exception\UnderflowException',
     ];
 
     public const ENUMS = [

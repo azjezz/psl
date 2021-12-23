@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\DataStructure;
 
 use PHPUnit\Framework\TestCase;
-use Psl;
-use Psl\DataStructure\Stack;
+use Psl\DataStructure;
 
 final class StackTest extends TestCase
 {
     public function testPushAndPop(): void
     {
-        $stack = new Stack();
+        $stack = new DataStructure\Stack();
         $stack->push('hello');
         $stack->push('hey');
         $stack->push('hi');
@@ -30,7 +29,7 @@ final class StackTest extends TestCase
 
     public function testPeek(): void
     {
-        $stack = new Stack();
+        $stack = new DataStructure\Stack();
 
         static::assertNull($stack->peek());
 
@@ -38,24 +37,29 @@ final class StackTest extends TestCase
 
         static::assertNotNull($stack->peek());
         static::assertSame('hello', $stack->peek());
+
+        static::assertSame('hello', $stack->pop());
+
+        static::assertNull($stack->peek());
     }
 
     public function testPopThrowsForEmptyStack(): void
     {
-        $stack = new Stack();
+        $stack = new DataStructure\Stack();
         $stack->push('hello');
 
         static::assertSame('hello', $stack->pop());
+        static::assertNull($stack->peek());
 
-        $this->expectException(Psl\Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Cannot pop an item from an empty Stack.');
+        $this->expectException(DataStructure\Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Cannot pop an item from an empty stack.');
 
         $stack->pop();
     }
 
     public function testPullReturnsNullForEmptyStack(): void
     {
-        $stack = new Stack();
+        $stack = new DataStructure\Stack();
         $stack->push('hello');
 
         static::assertSame('hello', $stack->pull());
@@ -64,10 +68,18 @@ final class StackTest extends TestCase
 
     public function testCount(): void
     {
-        $stack = new Stack();
+        $stack = new DataStructure\Stack();
         static::assertSame(0, $stack->count());
 
         $stack->push('hello');
         static::assertSame(1, $stack->count());
+        $stack->pop();
+        static::assertSame(0, $stack->count());
+        $stack->push('hello');
+        $stack->push('hello');
+        $stack->push('hello');
+        static::assertSame(3, $stack->count());
+        $stack->pop();
+        static::assertSame(2, $stack->count());
     }
 }
