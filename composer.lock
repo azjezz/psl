@@ -1404,16 +1404,16 @@
         },
         {
             "name": "infection/infection",
-            "version": "0.25.4",
+            "version": "0.25.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infection/infection.git",
-                "reference": "88dae3c726aab57cc02652d37cf3c90ce003e8d2"
+                "reference": "6844063ee1347c7942734b85ead95ad6226a4a02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infection/infection/zipball/88dae3c726aab57cc02652d37cf3c90ce003e8d2",
-                "reference": "88dae3c726aab57cc02652d37cf3c90ce003e8d2",
+                "url": "https://api.github.com/repos/infection/infection/zipball/6844063ee1347c7942734b85ead95ad6226a4a02",
+                "reference": "6844063ee1347c7942734b85ead95ad6226a4a02",
                 "shasum": ""
             },
             "require": {
@@ -1451,14 +1451,14 @@
                 "helmich/phpunit-json-assert": "^3.0",
                 "phpspec/prophecy-phpunit": "^2.0",
                 "phpstan/extension-installer": "^1.1.0",
-                "phpstan/phpstan": "^0.12.99",
-                "phpstan/phpstan-phpunit": "^0.12.22",
-                "phpstan/phpstan-strict-rules": "^0.12.11",
-                "phpstan/phpstan-webmozart-assert": "^0.12.16",
+                "phpstan/phpstan": "^1.2.0",
+                "phpstan/phpstan-phpunit": "^1.0.0",
+                "phpstan/phpstan-strict-rules": "^1.1.0",
+                "phpstan/phpstan-webmozart-assert": "^1.0.2",
                 "phpunit/phpunit": "^9.3.11",
                 "symfony/phpunit-bridge": "^4.4.18 || ^5.1.10",
                 "symfony/yaml": "^5.0",
-                "thecodingmachine/phpstan-safe-rule": "^1.0.1"
+                "thecodingmachine/phpstan-safe-rule": "^1.1.0"
             },
             "bin": [
                 "bin/infection"
@@ -1514,7 +1514,7 @@
             ],
             "support": {
                 "issues": "https://github.com/infection/infection/issues",
-                "source": "https://github.com/infection/infection/tree/0.25.4"
+                "source": "https://github.com/infection/infection/tree/0.25.5"
             },
             "funding": [
                 {
@@ -1526,7 +1526,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2021-12-07T21:09:14+00:00"
+            "time": "2021-12-16T05:06:28+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -1614,9 +1614,6 @@
             },
             "require": {
                 "php": "^7.1 || ^8.0"
-            },
-            "replace": {
-                "myclabs/deep-copy": "self.version"
             },
             "require-dev": {
                 "doctrine/collections": "^1.0",
@@ -1765,27 +1762,27 @@
         },
         {
             "name": "ocramius/package-versions",
-            "version": "2.4.0",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Ocramius/PackageVersions.git",
-                "reference": "8e96fb9f4671eff86e8e487ff45c49bdc2d2d677"
+                "reference": "deded4228eed848fc5eae2fa0149ceb43afd012a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/8e96fb9f4671eff86e8e487ff45c49bdc2d2d677",
-                "reference": "8e96fb9f4671eff86e8e487ff45c49bdc2d2d677",
+                "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/deded4228eed848fc5eae2fa0149ceb43afd012a",
+                "reference": "deded4228eed848fc5eae2fa0149ceb43afd012a",
                 "shasum": ""
             },
             "require": {
-                "composer-runtime-api": "^2.1.0",
+                "composer-runtime-api": "^2.2.0",
                 "php": "~8.0.0 || ~8.1.0"
             },
             "replace": {
                 "composer/package-versions-deprecated": "*"
             },
             "require-dev": {
-                "composer/composer": "^2.1.8",
+                "composer/composer": "^2.2.0",
                 "doctrine/coding-standard": "^9.0.0",
                 "ext-zip": "^1.15.0",
                 "phpunit/phpunit": "^9.5.9",
@@ -1811,7 +1808,7 @@
             "description": "Provides efficient querying for installed package versions (no runtime IO)",
             "support": {
                 "issues": "https://github.com/Ocramius/PackageVersions/issues",
-                "source": "https://github.com/Ocramius/PackageVersions/tree/2.4.0"
+                "source": "https://github.com/Ocramius/PackageVersions/tree/2.5.0"
             },
             "funding": [
                 {
@@ -1823,7 +1820,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-09-19T02:32:19+00:00"
+            "time": "2021-12-22T12:00:55+00:00"
         },
         {
             "name": "ondram/ci-detector",
@@ -3497,16 +3494,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/infection-static-analysis-plugin.git",
-                "reference": "dc126e8c36638e828e803c64db98bde553ba05b3"
+                "reference": "ff669830c7e1288bafd371347406860f190f8caa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/infection-static-analysis-plugin/zipball/dc126e8c36638e828e803c64db98bde553ba05b3",
-                "reference": "dc126e8c36638e828e803c64db98bde553ba05b3",
+                "url": "https://api.github.com/repos/Roave/infection-static-analysis-plugin/zipball/ff669830c7e1288bafd371347406860f190f8caa",
+                "reference": "ff669830c7e1288bafd371347406860f190f8caa",
                 "shasum": ""
             },
             "require": {
-                "infection/infection": "0.25.4",
+                "infection/infection": "0.25.5",
                 "ocramius/package-versions": "^1.9.0 || ^2.0.0",
                 "php": "~7.4.7|~8.0.0|~8.1.0",
                 "sanmai/later": "^0.1.2",
@@ -3539,9 +3536,9 @@
             "description": "Static analysis on top of mutation testing - prevents escaped mutants from being invalid according to static analysis",
             "support": {
                 "issues": "https://github.com/Roave/infection-static-analysis-plugin/issues",
-                "source": "https://github.com/Roave/infection-static-analysis-plugin/tree/1.13.x"
+                "source": "https://github.com/Roave/infection-static-analysis-plugin/tree/1.13.0"
             },
-            "time": "2021-12-10T08:24:22+00:00"
+            "time": "2021-12-16T08:36:50+00:00"
         },
         {
             "name": "sanmai/later",
@@ -4695,16 +4692,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.6.1",
+            "version": "3.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "f268ca40d54617c6e06757f83f699775c9b3ff2e"
+                "reference": "5e4e71592f69da17871dba6e80dd51bce74a351a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/f268ca40d54617c6e06757f83f699775c9b3ff2e",
-                "reference": "f268ca40d54617c6e06757f83f699775c9b3ff2e",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/5e4e71592f69da17871dba6e80dd51bce74a351a",
+                "reference": "5e4e71592f69da17871dba6e80dd51bce74a351a",
                 "shasum": ""
             },
             "require": {
@@ -4747,7 +4744,7 @@
                 "source": "https://github.com/squizlabs/PHP_CodeSniffer",
                 "wiki": "https://github.com/squizlabs/PHP_CodeSniffer/wiki"
             },
-            "time": "2021-10-11T04:00:11+00:00"
+            "time": "2021-12-12T21:44:58+00:00"
         },
         {
             "name": "symfony/config",
@@ -6694,5 +6691,5 @@
         "ext-intl": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.2.0"
 }

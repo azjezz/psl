@@ -52,5 +52,10 @@
     },
     "suggest": {
         "php-standard-library/psalm-plugin": "Psalm integration"
+    },
+    "config": {
+        "allow-plugins": {
+            "infection/extension-installer": false
+        }
     }
 }

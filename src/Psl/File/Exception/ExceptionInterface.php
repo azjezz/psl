@@ -8,5 +8,4 @@ use Psl\Exception;
 
 interface ExceptionInterface extends Exception\ExceptionInterface
 {
-
 }

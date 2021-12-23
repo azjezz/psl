@@ -9,7 +9,6 @@ use Psl\Math;
 
 final class AsinTest extends TestCase
 {
-
     /**
      * @dataProvider provideData
      */

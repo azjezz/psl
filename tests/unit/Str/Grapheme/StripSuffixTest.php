@@ -9,7 +9,6 @@ use Psl\Str\Grapheme;
 
 final class StripSuffixTest extends TestCase
 {
-
     /**
      * @dataProvider provideData
      */

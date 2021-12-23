@@ -9,7 +9,6 @@ use Psl\Math;
 
 final class SqrtTest extends TestCase
 {
-
     /**
      * @dataProvider provideData
      */

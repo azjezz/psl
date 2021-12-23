@@ -10,7 +10,6 @@ use Psl\Str\Exception;
 
 final class SliceTest extends TestCase
 {
-
     /**
      * @dataProvider provideData
      */

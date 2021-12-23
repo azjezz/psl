@@ -10,7 +10,6 @@ use Psl\Iter;
 
 final class ContainsTest extends TestCase
 {
-
     /**
      * @template T
      *

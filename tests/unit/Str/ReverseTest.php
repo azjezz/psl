@@ -9,7 +9,6 @@ use Psl\Str;
 
 final class ReverseTest extends TestCase
 {
-
     public function provideData(): array
     {
         return [

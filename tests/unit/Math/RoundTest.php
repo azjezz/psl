@@ -9,7 +9,6 @@ use Psl\Math;
 
 final class RoundTest extends TestCase
 {
-
     /**
      * @dataProvider provideData
      */

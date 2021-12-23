@@ -10,7 +10,6 @@ use Psl\Vec;
 
 final class MinTest extends TestCase
 {
-
     /**
      * @dataProvider provideData
      */

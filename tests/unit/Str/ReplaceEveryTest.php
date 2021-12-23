@@ -9,7 +9,6 @@ use Psl\Str;
 
 final class ReplaceEveryTest extends TestCase
 {
-
     /**
      * @dataProvider provideData
      */

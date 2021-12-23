@@ -9,7 +9,6 @@ use Psl\Str;
 
 final class StartsWithCiTest extends TestCase
 {
-
     /**
      * @dataProvider provideData
      */

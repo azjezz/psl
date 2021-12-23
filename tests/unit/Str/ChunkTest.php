@@ -9,7 +9,6 @@ use Psl\Str;
 
 final class ChunkTest extends TestCase
 {
-
     /**
      * @dataProvider provideData
      */

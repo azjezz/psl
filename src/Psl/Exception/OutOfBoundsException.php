@@ -8,5 +8,4 @@ use OutOfBoundsException as OutOfBoundsRootException;
 
 class OutOfBoundsException extends OutOfBoundsRootException implements ExceptionInterface
 {
-
 }

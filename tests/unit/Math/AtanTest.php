@@ -9,7 +9,6 @@ use Psl\Math;
 
 final class AtanTest extends TestCase
 {
-
     /**
      * @dataProvider provideData
      */

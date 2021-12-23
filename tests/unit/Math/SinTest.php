@@ -9,7 +9,6 @@ use Psl\Math;
 
 final class SinTest extends TestCase
 {
-
     /**
      * @dataProvider provideData
      */
