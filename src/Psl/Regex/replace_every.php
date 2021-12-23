@@ -23,12 +23,8 @@ use function preg_replace;
  */
 function replace_every(string $haystack, array $replacements, ?int $limit = null): string
 {
-    $limit ??= -1;
-
-    $result = Internal\call_preg(
+    return (string) Internal\call_preg(
         'preg_replace',
-        static fn() => preg_replace(array_keys($replacements), array_values($replacements), $haystack, $limit),
+        static fn() => preg_replace(array_keys($replacements), array_values($replacements), $haystack, $limit ?? -1),
     );
-
-    return (string) $result;
 }

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Regex;
 
-use Psl;
-use Psl\Type;
-
 use function preg_split;
 
 use const PREG_SPLIT_NO_EMPTY;
@@ -20,7 +17,6 @@ use const PREG_SPLIT_NO_EMPTY;
  *
  * @throws Exception\InvalidPatternException If $pattern is invalid.
  * @throws Exception\RuntimeException In case of an unexpected error.
- * @throws Psl\Exception\InvariantViolationException If $limit is negative, or equal to 0.
  *
  * @return list<string>
  *
@@ -28,20 +24,9 @@ use const PREG_SPLIT_NO_EMPTY;
  */
 function split(string $subject, string $pattern, ?int $limit = null): array
 {
-    $result = Internal\call_preg(
+    /** @var list<string> */
+    return Internal\call_preg(
         'preg_split',
         static fn() => preg_split($pattern, $subject, $limit ?? -1, PREG_SPLIT_NO_EMPTY),
     );
-
-    // @codeCoverageIgnoreStart
-    try {
-        /**
-         * @psalm-suppress ImpureFunctionCall - see #130
-         * @psalm-suppress ImpureMethodCall -see #130
-         */
-        return Type\vec(Type\string())->assert($result);
-    } catch (Type\Exception\AssertException $e) {
-        throw new Exception\RuntimeException('Unexpected error', 0, $e);
-    }
-    // @codeCoverageIgnoreEnd
 }

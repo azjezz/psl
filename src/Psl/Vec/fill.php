@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
-use Psl;
-
 /**
  * Returns a new vec of size `$size` where all the values are `$value`.
  *
@@ -13,18 +11,15 @@ use Psl;
  *
  * @template T
  *
+ * @param int<0, max> $size
  * @param T $value
- *
- * @throws Psl\Exception\InvariantViolationException If $size is negative.
  *
  * @return list<T>
  *
  * @pure
  */
-function fill(int $size, $value): array
+function fill(int $size, mixed $value): array
 {
-    Psl\invariant($size >= 0, 'Expected non-negative fill size, got %d.', $size);
-
     $result = [];
     for ($i = 0; $i < $size; $i++) {
         $result[] = $value;

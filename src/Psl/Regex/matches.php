@@ -19,10 +19,8 @@ use function preg_match;
 function matches(string $subject, string $pattern, int $offset = 0): bool
 {
     $_ = [];
-    $result = Internal\call_preg(
+    return Internal\call_preg(
         'preg_match',
         static fn() => preg_match($pattern, $subject, $_, 0, $offset),
-    );
-
-    return $result === 1;
+    ) === 1;
 }

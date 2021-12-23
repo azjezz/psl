@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
-use Psl;
+use function shuffle as php_shuffle;
 
 /**
  * Shuffle the given iterable items.
@@ -27,9 +27,7 @@ function shuffle(iterable $iterable): array
 {
     $array = namespace\values($iterable);
 
-    $shuffled = \shuffle($array);
-    /** @psalm-suppress MissingThrowsDocblock */
-    Psl\invariant($shuffled, 'unexpected error: unable to shuffle array.');
+    php_shuffle($array);
 
     return $array;
 }

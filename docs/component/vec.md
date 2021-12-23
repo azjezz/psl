@@ -12,11 +12,11 @@
 
 #### `Functions`
 
-- [chunk](./../../src/Psl/Vec/chunk.php#L24)
-- [chunk_with_keys](./../../src/Psl/Vec/chunk_with_keys.php#L27)
+- [chunk](./../../src/Psl/Vec/chunk.php#L21)
+- [chunk_with_keys](./../../src/Psl/Vec/chunk_with_keys.php#L23)
 - [concat](./../../src/Psl/Vec/concat.php#L17)
 - [enumerate](./../../src/Psl/Vec/enumerate.php#L17)
-- [fill](./../../src/Psl/Vec/fill.php#L24)
+- [fill](./../../src/Psl/Vec/fill.php#L21)
 - [filter](./../../src/Psl/Vec/filter.php#L34)
 - [filter_keys](./../../src/Psl/Vec/filter_keys.php#L37)
 - [filter_nulls](./../../src/Psl/Vec/filter_nulls.php#L20)

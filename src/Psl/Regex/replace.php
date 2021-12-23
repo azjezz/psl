@@ -21,12 +21,8 @@ use function preg_replace;
  */
 function replace(string $haystack, string $pattern, string $replacement, ?int $limit = null): string
 {
-    $limit ??= -1;
-
-    $result = Internal\call_preg(
+    return (string) Internal\call_preg(
         'preg_replace',
-        static fn() => preg_replace($pattern, $replacement, $haystack, $limit),
+        static fn() => preg_replace($pattern, $replacement, $haystack, $limit ?? -1),
     );
-
-    return (string) $result;
 }

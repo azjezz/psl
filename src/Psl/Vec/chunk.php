@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
-use Psl;
-
 /**
  * Returns a list containing the original list split into chunks of the given
  * size.
@@ -16,14 +14,12 @@ use Psl;
  * @template T
  *
  * @param iterable<T> $iterable
- *
- * @throws Psl\Exception\InvariantViolationException If $size is negative.
+ * @param positive-int $size
  *
  * @return list<list<T>>
  */
 function chunk(iterable $iterable, int $size): array
 {
-    Psl\invariant($size > 0, 'Expected a non-negative $size.');
     $result = [];
     $ii = 0;
     $chunk_number = -1;

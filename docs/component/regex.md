@@ -19,6 +19,6 @@
 - [replace](./../../src/Psl/Regex/replace.php#L22)
 - [replace_every](./../../src/Psl/Regex/replace_every.php#L24)
 - [replace_with](./../../src/Psl/Regex/replace_with.php#L24)
-- [split](./../../src/Psl/Regex/split.php#L29)
+- [split](./../../src/Psl/Regex/split.php#L25)
 
 
