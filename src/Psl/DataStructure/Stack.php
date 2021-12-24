@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\DataStructure;
 
-use Psl;
-use Psl\Dict;
-use Psl\Iter;
-use Psl\Vec;
+use function array_pop;
+use function count;
 
 /**
  * An basic implementation of a stack data structure ( LIFO ).
@@ -41,7 +39,9 @@ final class Stack implements StackInterface
      */
     public function peek(): mixed
     {
-        return Iter\last($this->items);
+        $items = $this->items;
+
+        return array_pop($items);
     }
 
     /**
@@ -52,38 +52,33 @@ final class Stack implements StackInterface
      */
     public function pull(): mixed
     {
-        if (0 === $this->count()) {
-            return null;
-        }
-
-        /** @psalm-suppress MissingThrowsDocblock - the stack is not empty. */
-        return $this->pop();
+        return array_pop($this->items);
     }
 
     /**
      * Retrieve and removes the most recently added item that was not yet removed.
      *
-     * @throws Psl\Exception\InvariantViolationException If the stack is empty.
+     * @throws Exception\UnderflowException If the stack is empty.
      *
      * @return T
      */
     public function pop(): mixed
     {
-        Psl\invariant(0 !== ($i = $this->count()), 'Cannot pop an item from an empty Stack.');
+        if ([] === $this->items) {
+            throw new Exception\UnderflowException('Cannot pop an item from an empty stack.');
+        }
 
-        /** @var int<0, max> $position */
-        $position = $i - 1;
-        $tail = $this->items[$position];
-        $this->items = Vec\values(Dict\take($this->items, $position));
-
-        return $tail;
+        /** @var T */
+        return array_pop($this->items);
     }
 
     /**
      * Count the items in the stack.
+     *
+     * @return int<0, max>
      */
     public function count(): int
     {
-        return Iter\count($this->items);
+        return count($this->items);
     }
 }

@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\DataStructure;
 
-use Psl;
-use Psl\Dict;
-use Psl\Iter;
-use Psl\Vec;
-
+use function array_shift;
 use function count;
 
 /**
@@ -43,7 +39,7 @@ final class Queue implements QueueInterface
      */
     public function peek(): mixed
     {
-        return Iter\first($this->queue);
+        return $this->queue[0] ?? null;
     }
 
     /**
@@ -54,29 +50,24 @@ final class Queue implements QueueInterface
      */
     public function pull(): mixed
     {
-        if (0 === $this->count()) {
-            return null;
-        }
-
-        /** @psalm-suppress MissingThrowsDocblock - we are sure that the queue is not empty. */
-        return $this->dequeue();
+        return array_shift($this->queue);
     }
 
     /**
      * Dequeues a node from the queue.
      *
-     * @throws Psl\Exception\InvariantViolationException If the Queue is invalid.
+     * @throws Exception\UnderflowException If the queue is empty.
      *
      * @return T
      */
     public function dequeue(): mixed
     {
-        Psl\invariant(0 !== $this->count(), 'Cannot dequeue a node from an empty Queue.');
+        if ([] === $this->queue) {
+            throw new Exception\UnderflowException('Cannot dequeue a node from an empty queue.');
+        }
 
-        $node = $this->queue[0];
-        $this->queue = Vec\values(Dict\drop($this->queue, 1));
-
-        return $node;
+        /** @var T */
+        return array_shift($this->queue);
     }
 
     /**

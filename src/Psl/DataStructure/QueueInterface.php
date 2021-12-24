@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\DataStructure;
 
 use Countable;
-use Psl;
 
 /**
  * An interface representing a queue data structure ( FIFO ).
@@ -42,7 +41,7 @@ interface QueueInterface extends Countable
     /**
      * Retrieves and removes the node at the head of this queue.
      *
-     * @throws Psl\Exception\InvariantViolationException If the Queue is invalid.
+     * @throws Exception\UnderflowException If the queue is empty.
      *
      * @return T
      */

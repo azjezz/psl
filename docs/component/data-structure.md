@@ -13,13 +13,13 @@
 #### `Interfaces`
 
 - [PriorityQueueInterface](./../../src/Psl/DataStructure/PriorityQueueInterface.php#L12)
-- [QueueInterface](./../../src/Psl/DataStructure/QueueInterface.php#L17)
-- [StackInterface](./../../src/Psl/DataStructure/StackInterface.php#L17)
+- [QueueInterface](./../../src/Psl/DataStructure/QueueInterface.php#L16)
+- [StackInterface](./../../src/Psl/DataStructure/StackInterface.php#L16)
 
 #### `Classes`
 
-- [PriorityQueue](./../../src/Psl/DataStructure/PriorityQueue.php#L20)
-- [Queue](./../../src/Psl/DataStructure/Queue.php#L21)
-- [Stack](./../../src/Psl/DataStructure/Stack.php#L19)
+- [PriorityQueue](./../../src/Psl/DataStructure/PriorityQueue.php#L18)
+- [Queue](./../../src/Psl/DataStructure/Queue.php#L17)
+- [Stack](./../../src/Psl/DataStructure/Stack.php#L17)
 
 
