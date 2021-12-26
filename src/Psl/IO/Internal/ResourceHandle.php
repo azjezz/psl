@@ -289,6 +289,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
                 /** @var Suspension $suspension */
                 $suspension->suspend();
             } finally {
+                $suspension = null;
                 Async\Scheduler::disable($this->readWatcher);
                 if (null !== $delay_watcher) {
                     Async\Scheduler::cancel($delay_watcher);

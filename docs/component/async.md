@@ -30,5 +30,6 @@
 - [Deferred](./../../src/Psl/Async/Deferred.php#L21)
 - [Scheduler](./../../src/Psl/Async/Scheduler.php#L21)
 - [Semaphore](./../../src/Psl/Async/Semaphore.php#L23)
+- [Sequence](./../../src/Psl/Async/Sequence.php#L23)
 
 
