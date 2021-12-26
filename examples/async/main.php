@@ -20,7 +20,7 @@ Async\main(static function(): int {
 
   IO\write_error_line('Press Ctrl+C to stop');
 
-  Async\parallel([
+  Async\concurrently([
       static fn(): string => Shell\execute('sleep', ['3']),
       static fn(): string => Shell\execute('echo', ['Hello World!']),
       static fn(): string => Shell\execute('echo', ['Hello World!']),

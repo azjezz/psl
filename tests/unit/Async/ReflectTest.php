@@ -13,7 +13,7 @@ final class ReflectTest extends TestCase
 {
     public function testReflectParallel(): void
     {
-        [$one, $two] = Async\parallel([
+        [$one, $two] = Async\concurrently([
             Async\reflect(static function (): void {
                 Async\sleep(0.0001);
 

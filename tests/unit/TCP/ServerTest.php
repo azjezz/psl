@@ -52,7 +52,7 @@ final class ServerTest extends TestCase
 
         $first = Async\run(static fn() => $server->nextConnection());
 
-        [$second_connection, $client_one, $client_two] = Async\parallel([
+        [$second_connection, $client_one, $client_two] = Async\concurrently([
             static fn() => $server->nextConnection(),
             static fn() => TCP\connect('127.0.0.1', $server->getLocalAddress()->port),
             static fn() => TCP\connect('127.0.0.1', $server->getLocalAddress()->port),

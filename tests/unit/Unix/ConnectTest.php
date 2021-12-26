@@ -22,7 +22,7 @@ final class ConnectTest extends TestCase
 
         $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . ".sock";
 
-        Async\parallel([
+        Async\concurrently([
             'server' => static function () use ($sock): void {
                 $server = Unix\Server::create($sock);
                 self::assertSame("unix://{$sock}", $server->getLocalAddress()->toString());

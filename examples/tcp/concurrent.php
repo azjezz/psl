@@ -12,7 +12,7 @@ use Psl\TCP;
 require __DIR__ . '/../../vendor/autoload.php';
 
 Async\main(static function (): int {
-    Async\parallel([
+    Async\concurrently([
         'server' => static function (): void {
             $server = TCP\Server::create('localhost', 91337);
 

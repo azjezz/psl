@@ -8,7 +8,7 @@ use Closure;
 use Psl\Dict;
 
 /**
- * Run the iterable of functions in parallel, without waiting until the previous function has completed.
+ * Run the iterable of functions concurrently, without waiting until the previous function has completed.
  *
  * @template Tk of array-key
  * @template Tv
@@ -19,7 +19,7 @@ use Psl\Dict;
  *
  * @return array<Tk, Tv> an array containing the results, preserving the original functions order.
  */
-function parallel(iterable $tasks): array
+function concurrently(iterable $tasks): array
 {
     $awaitables = Dict\map(
         $tasks,

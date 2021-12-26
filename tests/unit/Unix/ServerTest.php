@@ -57,7 +57,7 @@ final class ServerTest extends TestCase
 
         $first = Async\run(static fn() => $server->nextConnection());
 
-        [$second_connection, $client_one, $client_two] = Async\parallel([
+        [$second_connection, $client_one, $client_two] = Async\concurrently([
             static fn() => $server->nextConnection(),
             static fn() => Unix\connect($sock),
             static fn() => Unix\connect($sock),

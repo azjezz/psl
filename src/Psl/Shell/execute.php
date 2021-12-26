@@ -170,7 +170,7 @@ function execute(
     $stderr = new IO\CloseReadStreamHandle($pipes[2]);
 
     try {
-        [$stdout_content, $stderr_content] = Async\parallel([
+        [$stdout_content, $stderr_content] = Async\concurrently([
             static fn(): string => $stdout->readAll(timeout: $timeout),
             static fn(): string => $stderr->readAll(timeout: $timeout),
         ]);

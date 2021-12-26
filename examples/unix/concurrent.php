@@ -22,7 +22,7 @@ Async\main(static function (): int {
 
     $file = Filesystem\create_temporary_file(prefix: 'psl-examples') . ".sock";
 
-    Async\parallel([
+    Async\concurrently([
         'server' => static function () use ($file): void {
             $server = Unix\Server::create($file);
 

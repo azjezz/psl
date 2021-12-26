@@ -15,7 +15,7 @@ final class ParallelTest extends TestCase
     {
         $spy = new Psl\Ref('');
 
-        Async\parallel([
+        Async\concurrently([
             static function () use ($spy): void {
                 Async\sleep(0.003);
 
@@ -43,7 +43,7 @@ final class ParallelTest extends TestCase
         $spy = new Psl\Ref('');
 
         try {
-            Async\parallel([
+            Async\concurrently([
                 static function (): void {
                     Async\sleep(0.003);
 
@@ -62,7 +62,7 @@ final class ParallelTest extends TestCase
         }
 
         // wait for all callbacks in the event loop to finish.
-        // including the second callback given to parallel.
+        // including the second callback given to concurrently.
         // this ensures that even after it finishes, the exception will be ignored.
         Async\Scheduler::run();
 

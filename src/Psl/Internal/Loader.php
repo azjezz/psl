@@ -444,7 +444,7 @@ final class Loader
         'Psl\Trait\defined',
         'Psl\Async\main',
         'Psl\Async\run',
-        'Psl\Async\parallel',
+        'Psl\Async\concurrently',
         'Psl\Async\reflect',
         'Psl\Async\series',
         'Psl\Async\await',

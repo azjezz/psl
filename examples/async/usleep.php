@@ -12,7 +12,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 Async\main(static function (): int {
     $start = time();
 
-    Async\parallel([
+    Async\concurrently([
         static fn() => Async\sleep(2.0),
         static fn() => Async\sleep(2.0),
         static fn() => Async\sleep(2.0),
