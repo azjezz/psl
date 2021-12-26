@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Async;
 
 use Closure;
+use Exception;
 use Revolt\EventLoop\Suspension;
 
 use function array_slice;
@@ -65,6 +66,24 @@ final class Semaphore
             }
 
             $this->pending--;
+        }
+    }
+
+    /**
+     * Cancel all pending operations.
+     *
+     * Any pending operation will fail with the given exception.
+     *
+     * Future operations will continue execution as usual.
+     *
+     * @see Semaphore::destroy()
+     */
+    public function cancel(Exception $exception): void
+    {
+        $suspensions = $this->suspensions;
+        $this->suspensions = [];
+        foreach ($suspensions as $suspension) {
+            $suspension->throw($exception);
         }
     }
 }

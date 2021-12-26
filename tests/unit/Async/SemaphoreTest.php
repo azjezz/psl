@@ -112,4 +112,44 @@ final class SemaphoreTest extends TestCase
 
         $awaitable->await();
     }
+
+    public function testCancelingTheSemaphoreAllowsForFutureOperations(): void
+    {
+        /**
+         * @var Async\Semaphore<string, string>
+         */
+        $semaphore = new Async\Semaphore(1, static function (string $input): string {
+            return $input;
+        });
+
+        $semaphore->cancel(new Async\Exception\TimeoutException('The semaphore is destroyed.'));
+
+        static::assertSame('hello', $semaphore->waitFor('hello'));
+    }
+
+    public function testCancelPendingOperationsButNotTheOngoingOne(): void
+    {
+        /**
+         * @var Async\Semaphore<string, string>
+         */
+        $semaphore = new Async\Semaphore(1, static function (string $input): string {
+            Async\sleep(0.04);
+
+            return $input;
+        });
+
+        $one = Async\run(static fn() => $semaphore->waitFor('one'));
+        $two = Async\run(static fn() => $semaphore->waitFor('two'));
+
+        Async\sleep(0.01);
+
+        $semaphore->cancel(new Async\Exception\TimeoutException('The semaphore is destroyed.'));
+
+        static::assertSame('one', $one->await());
+
+        $this->expectException(Async\Exception\TimeoutException::class);
+        $this->expectExceptionMessage('The semaphore is destroyed.');
+
+        $two->await();
+    }
 }
