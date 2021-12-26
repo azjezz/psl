@@ -94,7 +94,7 @@ final class PipeTest extends TestCase
         [$read, $_write] = IO\pipe();
 
         $this->expectException(IO\Exception\TimeoutException::class);
-        $this->expectExceptionMessage('reached timeout while the handle is still not readable.');
+        $this->expectExceptionMessage('Reached timeout while the handle is still not readable.');
 
         $read->readAll(timeout: 0.001);
     }
