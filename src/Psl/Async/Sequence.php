@@ -38,7 +38,7 @@ final class Sequence
     }
 
     /**
-     * Waits for the given `$operation` to complete, after all previous operations have completed.
+     * Run the operation using the given `$input`, after all previous operations have completed.
      *
      * @param Tin $input
      *

@@ -8,7 +8,7 @@ use Closure;
 use Psl\Dict;
 
 /**
- * Run the functions in the tasks collection in series, each one running once the previous function has completed.
+ * Run the functions in the tasks' iterable in series, each one running once the previous function has completed.
  *
  * If any functions in the series throws, no more functions are run, and the exception is immediately thrown.
  *

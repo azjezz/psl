@@ -40,7 +40,9 @@ final class Semaphore
     }
 
     /**
-     * Waits for the given `$operation` to complete, after all previous operations have completed.
+     * Run the operation using the given `$input`.
+     *
+     * If the concurrency limit has been reached, this method will wait until one of the ingoing operations has completed.
      *
      * @param Tin $input
      *
@@ -75,8 +77,6 @@ final class Semaphore
      * Any pending operation will fail with the given exception.
      *
      * Future operations will continue execution as usual.
-     *
-     * @see Semaphore::destroy()
      */
     public function cancel(Exception $exception): void
     {

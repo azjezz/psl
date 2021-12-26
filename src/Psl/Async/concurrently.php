@@ -8,7 +8,7 @@ use Closure;
 use Psl\Dict;
 
 /**
- * Run the iterable of functions concurrently, without waiting until the previous function has completed.
+ * Run the functions in the tasks' iterable concurrently, without waiting until the previous function has completed.
  *
  * @template Tk of array-key
  * @template Tv
