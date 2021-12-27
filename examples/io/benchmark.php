@@ -37,12 +37,12 @@ Async\main(static function (): int {
 
     IO\write_error_line('piping from %s to %s (for max %d second(s)) ...', $input_file, $output_file, $seconds);
 
-    Async\Scheduler::delay($seconds, $input->close(...));
+    Async\Scheduler::delay($seconds, static fn() => $input->close());
 
     $start = microtime(true);
     $i = 0;
     try {
-        while ($chunk = $input->readFixedSize(65536)) {
+        while ($chunk = $input->read(65536)) {
             $output->writeAll($chunk);
             $i++;
 

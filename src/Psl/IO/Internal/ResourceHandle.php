@@ -138,6 +138,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
 
         // block incoming operations.
         $this->writing = true;
+        $delay_watcher = null;
 
         try {
             $written = $this->tryWrite($bytes);
@@ -147,38 +148,28 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
             }
 
             $this->writeSuspension = Async\Scheduler::createSuspension();
-            $suspension = &$this->writeSuspension;
             /** @psalm-suppress MissingThrowsDocblock */
             Async\Scheduler::enable($this->writeWatcher);
-            $delay_watcher = null;
             if (null !== $timeout) {
                 $timeout = $timeout < 0.0 ? 0.0 : $timeout;
                 $delay_watcher = Async\Scheduler::delay(
                     $timeout,
-                    static function () use (&$suspension) {
-                        /** @var Suspension|null $tmp */
-                        $tmp = $suspension;
-                        $suspension = null;
-                        $tmp?->throw(new Exception\TimeoutException('Reached timeout while the handle is still not writable.'));
-                    }
+                    fn () => $this->writeSuspension?->throw(new Exception\TimeoutException('Reached timeout while the handle is still not writable.')),
                 );
 
                 Async\Scheduler::unreference($delay_watcher);
             }
 
-            try {
-                /** @var Suspension $suspension */
-                $suspension->suspend();
-            } finally {
-                $suspension = null;
-                Async\Scheduler::disable($this->writeWatcher);
-                if (null !== $delay_watcher) {
-                    Async\Scheduler::cancel($delay_watcher);
-                }
-            }
+            $this->writeSuspension->suspend();
 
             return $written + $this->tryWrite($remaining_bytes);
         } finally {
+            $this->writeSuspension = null;
+            Async\Scheduler::disable($this->writeWatcher);
+            if (null !== $delay_watcher) {
+                Async\Scheduler::cancel($delay_watcher);
+            }
+
             $suspension = $this->writeQueue[0] ?? null;
             if ($suspension !== null) {
                 $this->writeQueue = array_slice($this->writeQueue, 1);
@@ -259,6 +250,8 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
 
         // block incoming operations.
         $this->reading = true;
+        $delay_watcher = null;
+
         try {
             $chunk = $this->tryRead($max_bytes);
             if ('' !== $chunk || $this->blocks) {
@@ -266,38 +259,30 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
             }
 
             $this->readSuspension = Async\Scheduler::createSuspension();
-            $suspension = &$this->readSuspension;
             /** @psalm-suppress MissingThrowsDocblock */
             Async\Scheduler::enable($this->readWatcher);
-            $delay_watcher = null;
             if (null !== $timeout) {
                 $timeout = $timeout < 0.0 ? 0.0 : $timeout;
                 $delay_watcher = Async\Scheduler::delay(
                     $timeout,
-                    static function () use (&$suspension) {
-                        /** @var Suspension|null $tmp */
-                        $tmp = $suspension;
-                        $suspension = null;
-                        $tmp?->throw(new Exception\TimeoutException('Reached timeout while the handle is still not readable.'));
+                    function () {
+                        $this->readSuspension?->throw(new Exception\TimeoutException('Reached timeout while the handle is still not readable.'));
                     }
                 );
 
                 Async\Scheduler::unreference($delay_watcher);
             }
 
-            try {
-                /** @var Suspension $suspension */
-                $suspension->suspend();
-            } finally {
-                $suspension = null;
-                Async\Scheduler::disable($this->readWatcher);
-                if (null !== $delay_watcher) {
-                    Async\Scheduler::cancel($delay_watcher);
-                }
-            }
+            $this->readSuspension?->suspend();
 
             return $this->tryRead($max_bytes);
         } finally {
+            $this->readSuspension = null;
+            Async\Scheduler::disable($this->readWatcher);
+            if (null !== $delay_watcher) {
+                Async\Scheduler::cancel($delay_watcher);
+            }
+
             $suspension = $this->readQueue[0] ?? null;
             if ($suspension !== null) {
                 $this->readQueue = array_slice($this->readQueue, 1);
