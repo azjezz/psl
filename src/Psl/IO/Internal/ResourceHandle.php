@@ -160,7 +160,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
                 Async\Scheduler::unreference($delay_watcher);
             }
 
-            $this->writeSuspension->suspend();
+            $this->writeSuspension?->suspend();
 
             return $written + $this->tryWrite($remaining_bytes);
         } finally {
