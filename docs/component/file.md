@@ -15,7 +15,9 @@
 - [open_read_only](./../../src/Psl/File/open_read_only.php#L16)
 - [open_read_write](./../../src/Psl/File/open_read_write.php#L18)
 - [open_write_only](./../../src/Psl/File/open_write_only.php#L18)
+- [read](./../../src/Psl/File/read.php#L23)
 - [temporary](./../../src/Psl/File/temporary.php#L22)
+- [write](./../../src/Psl/File/write.php#L24)
 
 #### `Interfaces`
 

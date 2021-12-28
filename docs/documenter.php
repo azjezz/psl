@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Psl\Env;
+use Psl\File;
 use Psl\Filesystem;
 use Psl\Internal\Loader;
 use Psl\Iter;
@@ -63,9 +64,10 @@ function regenerate_documentation(): void
         $components_documentation .= Str\format('- [%s](./component/%s.md)%s', $component, to_filename($component), "\n");
     }
 
-    $readme_template = Filesystem\read_file(__DIR__ . '/templates/README.template.md');
+    $readme_template = File\read(__DIR__ . '/templates/README.template.md');
     $readme = Str\replace($readme_template, '{{ list }}', $components_documentation);
-    Filesystem\write_file(__DIR__ . '/README.md', $readme);
+    $mode = Filesystem\is_file($readme) ? File\WriteMode::TRUNCATE : File\WriteMode::OPEN_OR_CREATE;
+    File\write(__DIR__ . '/README.md', $readme, $mode);
 
     foreach ($components as $component) {
         document_component($component, './../README.md');
@@ -104,7 +106,7 @@ function document_component(string $component, string $index_link): void
                     $symbol_file = Str\format('%s%s%s.php', $directory, Filesystem\SEPARATOR, $symbol_short_name);
                 }
 
-                $symbol_file_contents = Filesystem\read_file(Filesystem\canonicalize(__DIR__ . '/' . $symbol_file));
+                $symbol_file_contents = File\read(Filesystem\canonicalize(__DIR__ . '/' . $symbol_file));
                 $deprecation_notice = '';
                 if (Str\contains($symbol_file_contents, '@deprecated')) {
                     $deprecation_notice .= ' ( deprecated )';
@@ -123,7 +125,7 @@ function document_component(string $component, string $index_link): void
     $directory = './../src/' . Str\replace($component, '\\', '/');
     $symbols = get_component_members($component);
 
-    $template = Filesystem\read_file(__DIR__ . '/templates/component.template.md');
+    $template = File\read(__DIR__ . '/templates/component.template.md');
     $current_link = Str\format('%s.md', to_filename($component));
     $current_filename = Str\format('%s/component/%s', __DIR__, $current_link);
 
@@ -141,7 +143,8 @@ function document_component(string $component, string $index_link): void
         ), "\n"),
     ]);
 
-    Filesystem\write_file($current_filename, $documentation);
+    $mode = Filesystem\is_file($current_filename) ? File\WriteMode::TRUNCATE : File\WriteMode::OPEN_OR_CREATE;
+    File\write($current_filename, $documentation, $mode);
 }
 
 /**
