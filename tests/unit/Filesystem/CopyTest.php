@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Filesystem;
 
+use Psl\File;
 use Psl\Filesystem;
 use Psl\Str;
 
@@ -18,10 +19,10 @@ final class CopyTest extends AbstractFilesystemTest
         $text_file = Str\join([$this->directory, 'hello.txt'], Filesystem\SEPARATOR);
         $markdown_file = Str\join([$this->directory, 'hello.md'], Filesystem\SEPARATOR);
 
-        Filesystem\write_file($text_file, 'Hello, World!');
+        File\write($text_file, 'Hello, World!');
         Filesystem\copy($text_file, $markdown_file);
 
-        static::assertSame('Hello, World!', Filesystem\read_file($markdown_file));
+        static::assertSame('Hello, World!', File\read($markdown_file));
     }
 
     public function testCopyOverwrite(): void
@@ -29,17 +30,17 @@ final class CopyTest extends AbstractFilesystemTest
         $text_file = Str\join([$this->directory, 'hello.txt'], Filesystem\SEPARATOR);
         $markdown_file = Str\join([$this->directory, 'hello.md'], Filesystem\SEPARATOR);
 
-        Filesystem\write_file($text_file, 'Hello, World!');
-        Filesystem\write_file($markdown_file, '# Hello, World!');
+        File\write($text_file, 'Hello, World!');
+        File\write($markdown_file, '# Hello, World!');
         Filesystem\copy($text_file, $markdown_file);
 
-        static::assertSame('Hello, World!', Filesystem\read_file($text_file));
-        static::assertSame('# Hello, World!', Filesystem\read_file($markdown_file));
+        static::assertSame('Hello, World!', File\read($text_file));
+        static::assertSame('# Hello, World!', File\read($markdown_file));
 
         Filesystem\copy($text_file, $markdown_file, true);
 
-        static::assertSame('Hello, World!', Filesystem\read_file($text_file));
-        static::assertSame('Hello, World!', Filesystem\read_file($markdown_file));
+        static::assertSame('Hello, World!', File\read($text_file));
+        static::assertSame('Hello, World!', File\read($markdown_file));
     }
 
     public function testCopyExecutableBits(): void
