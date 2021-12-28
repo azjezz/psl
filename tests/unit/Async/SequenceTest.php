@@ -8,6 +8,8 @@ use PHPUnit\Framework\TestCase;
 use Psl;
 use Psl\Async;
 
+use function microtime;
+
 final class SequenceTest extends TestCase
 {
     public function testItCallsTheOperation(): void
@@ -126,5 +128,29 @@ final class SequenceTest extends TestCase
         $this->expectExceptionMessage('The semaphore is destroyed.');
 
         $two->await();
+    }
+
+    /**
+     * @link https://github.com/azjezz/psl/issues/327
+     */
+    public function testBug327(): void
+    {
+        $sequence = new Async\Sequence(static function (float $value): void {
+            Async\sleep($value);
+        });
+
+        $time = microtime(true);
+
+        Async\concurrently([
+            static function () use ($sequence): void {
+                $sequence->waitFor(0.02);
+                $sequence->waitFor(0.02);
+            },
+            static fn() => $sequence->waitFor(0.02),
+        ]);
+
+        $duration = microtime(true) - $time;
+
+        static::assertEqualsWithDelta(0.06, $duration, 0.004);
     }
 }

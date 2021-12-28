@@ -47,6 +47,8 @@ final class Semaphore
      * @param Tin $input
      *
      * @return Tout
+     *
+     * @see Semaphore::cancel()
      */
     public function waitFor(mixed $input): mixed
     {

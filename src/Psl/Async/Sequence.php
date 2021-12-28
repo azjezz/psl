@@ -44,7 +44,7 @@ final class Sequence
      *
      * @return Tout
      *
-     * @see Semaphore::destroy()
+     * @see Sequence::cancel()
      */
     public function waitFor(mixed $input): mixed
     {
@@ -63,9 +63,9 @@ final class Sequence
             if ($suspension !== null) {
                 $this->suspensions = array_slice($this->suspensions, 1);
                 $suspension->resume();
+            } else {
+                $this->pending = false;
             }
-
-            $this->pending = false;
         }
     }
 
