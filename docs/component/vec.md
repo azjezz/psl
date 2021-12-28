@@ -26,7 +26,7 @@
 - [map](./../../src/Psl/Vec/map.php#L33)
 - [map_with_key](./../../src/Psl/Vec/map_with_key.php#L29)
 - [partition](./../../src/Psl/Vec/partition.php#L20)
-- [range](./../../src/Psl/Vec/range.php#L51)
+- [range](./../../src/Psl/Vec/range.php#L49)
 - [reductions](./../../src/Psl/Vec/reductions.php#L29)
 - [reproduce](./../../src/Psl/Vec/reproduce.php#L24)
 - [reverse](./../../src/Psl/Vec/reverse.php#L22)

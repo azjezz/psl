@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
-use Psl;
-
 /**
  * Returns a new list containing the range of numbers from `$start` to `$end`
  * inclusive, with the step between elements being `$step` if provided, or 1 by
@@ -36,7 +34,7 @@ use Psl;
  * @param T $end
  * @param T|null $step
  *
- * @throws Psl\Exception\InvariantViolationException If $start < $end, and $step is negative.
+ * @throws Exception\LogicException If $start < $end, and $step is negative.
  *
  * @return list<T>
  *
@@ -60,7 +58,9 @@ function range(int|float $start, int|float $end, int|float $step = null): array
             $step = 1;
         }
 
-        Psl\invariant($step > 0, 'If $start < $end, then $step must be positive or null.');
+        if ($step < 0) {
+            throw new Exception\LogicException('If $end is greater than $start, then $step must be positive or null.');
+        }
 
         $result = [];
         for ($i = $start; $i <= $end; $i += $step) {
@@ -75,7 +75,9 @@ function range(int|float $start, int|float $end, int|float $step = null): array
         $step = -1;
     }
 
-    Psl\invariant($step < 0, 'If $start > $end, then $step must be negative or null.');
+    if ($step > 0) {
+        throw new Exception\LogicException('If $start is greater than $end, then $step must be negative or null.');
+    }
 
     $result = [];
     for ($i = $start; $i >= $end; $i += $step) {
