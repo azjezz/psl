@@ -24,22 +24,29 @@ The goal of Psl is to provide a consistent, centralized, well-typed set of APIs 
 
 declare(strict_types=1);
 
-use Psl\{Str, Vec};
+use Psl\Async;
+use Psl\TCP;
+use Psl\IO;
+use Psl\Shell;
+use Psl\Str;
 
-/**
- * @param iterable<?int> $codes
- */
-function foo(iterable $codes): string
-{
-    $codes = Vec\filter_nulls($codes);
+Async\main(static function(): int {
+    IO\write_line('Hello, World!');
 
-    $chars = Vec\map($codes, fn(int $code): string => Str\chr($code));
+    [$version, $connection] = Async\concurrently([
+        static fn() => Shell\execute('php', ['-v']),
+        static fn() => TCP\connect('localhost', 1337),
+    ]);
 
-    return Str\join($chars, ', ');
-}
+    $messages = Str\split($version, "\n");
+    foreach($messages as $message) {
+        $connection->writeAll($message);
+    }
 
-foo([95, 96, null, 98]);
-// 'a, b, d'
+    $connection->close();
+
+    return 0;
+});
 ```
 
 ## Installation
