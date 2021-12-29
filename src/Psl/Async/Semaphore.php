@@ -8,7 +8,7 @@ use Closure;
 use Exception;
 use Revolt\EventLoop\Suspension;
 
-use function array_slice;
+use function array_shift;
 
 /**
  * Run an operation with a limit on number of ongoing asynchronous jobs.
@@ -63,11 +63,8 @@ final class Semaphore
         try {
             return ($this->operation)($input);
         } finally {
-            $suspension = $this->suspensions[0] ?? null;
-            if ($suspension !== null) {
-                $this->suspensions = array_slice($this->suspensions, 1);
-                $suspension->resume();
-            }
+            $suspension = array_shift($this->suspensions);
+            $suspension?->resume();
 
             $this->pending--;
         }
