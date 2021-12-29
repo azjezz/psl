@@ -8,6 +8,7 @@ use Exception as RootException;
 use Psl;
 use Psl\Async\Awaitable;
 
+use function array_shift;
 use function count;
 
 /**
