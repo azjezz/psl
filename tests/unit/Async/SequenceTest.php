@@ -7,6 +7,7 @@ namespace Psl\Tests\Unit\Async;
 use PHPUnit\Framework\TestCase;
 use Psl;
 use Psl\Async;
+use Psl\Str;
 
 use function microtime;
 
@@ -135,7 +136,11 @@ final class SequenceTest extends TestCase
      */
     public function testBug327(): void
     {
-        $sequence = new Async\Sequence(static function (float $value): void {
+        $ref = new Psl\Ref('');
+
+        $sequence = new Async\Sequence(static function (float $value) use ($ref): void {
+            $ref->value .= Str\format('%f', $value);
+
             Async\sleep($value);
         });
 
@@ -151,6 +156,7 @@ final class SequenceTest extends TestCase
 
         $duration = microtime(true) - $time;
 
-        static::assertEqualsWithDelta(0.06, $duration, 0.004);
+        static::assertGreaterThanOrEqual(0.06, $duration);
+        static::assertSame('0.0200000.0200000.020000', $ref->value);
     }
 }
