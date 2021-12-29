@@ -102,8 +102,13 @@ final class State
      */
     public function complete(mixed $result): void
     {
-        Psl\invariant(!$this->complete, 'Operation is no longer pending.');
-        Psl\invariant(!$result instanceof Awaitable, 'Cannot complete with an instance of ' . Awaitable::class);
+        if ($this->complete) {
+            Psl\invariant_violation('Operation is no longer pending.');
+        }
+
+        if ($result instanceof Awaitable) {
+            Psl\invariant_violation('Cannot complete with an instance of ' . Awaitable::class);
+        }
 
         $this->result = $result;
         $this->invokeCallbacks();
@@ -116,7 +121,9 @@ final class State
      */
     public function error(RootException $exception): void
     {
-        Psl\invariant(!$this->complete, 'Operation is no longer pending.');
+        if ($this->complete) {
+            Psl\invariant_violation('Operation is no longer pending.');
+        }
 
         $this->exception = $exception;
         $this->invokeCallbacks();

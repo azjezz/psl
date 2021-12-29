@@ -7,7 +7,6 @@ namespace Psl\Async\Internal;
 use Exception as RootException;
 use Psl;
 use Psl\Async\Awaitable;
-use Psl\Iter;
 
 use function count;
 
@@ -32,7 +31,7 @@ final class AwaitableIterator
     /**
      * @var AwaitableIteratorQueue<Tk, Tv>
      */
-    private AwaitableIteratorQueue $queue;
+    private readonly AwaitableIteratorQueue $queue;
 
     /**
      * @var null|Awaitable<void>|Awaitable<null>|Awaitable<array{0: Tk, 1: Awaitable<Tv>}>
@@ -53,7 +52,9 @@ final class AwaitableIterator
      */
     public function enqueue(State $state, mixed $key, Awaitable $awaitable): void
     {
-        Psl\invariant(null === $this->complete, 'Iterator has already been marked as complete');
+        if (null !== $this->complete) {
+            Psl\invariant_violation('Iterator has already been marked as complete');
+        }
 
         $queue = $this->queue; // Using separate object to avoid a circular reference.
         $id = $state->subscribe(
@@ -89,12 +90,14 @@ final class AwaitableIterator
      */
     public function complete(): void
     {
-        Psl\invariant(null === $this->complete, 'Iterator has already been marked as complete');
+        if (null !== $this->complete) {
+            Psl\invariant_violation('Iterator has already been marked as complete');
+        }
 
         $this->complete = Awaitable::complete(null);
 
         if (!$this->queue->pending && $this->queue->suspension) {
-            $this->queue->suspension->resume(null);
+            $this->queue->suspension->resume();
             $this->queue->suspension = null;
         }
     }
@@ -104,7 +107,9 @@ final class AwaitableIterator
      */
     public function error(RootException $exception): void
     {
-        Psl\invariant(null === $this->complete, 'Iterator has already been marked as complete');
+        if (null !== $this->complete) {
+            Psl\invariant_violation('Iterator has already been marked as complete');
+        }
 
         $this->complete = Awaitable::error($exception);
 
@@ -121,7 +126,9 @@ final class AwaitableIterator
      */
     public function consume(): ?array
     {
-        Psl\invariant(null === $this->queue->suspension, 'Concurrent consume() operations are not supported');
+        if (null !== $this->queue->suspension) {
+            Psl\invariant_violation('Concurrent consume() operations are not supported');
+        }
 
         if (0 === count($this->queue->items)) {
             if ($this->complete !== null && 0 === count($this->queue->pending)) {
@@ -134,13 +141,8 @@ final class AwaitableIterator
             return $this->queue->suspension->suspend();
         }
 
-        $key = Iter\first_key($this->queue->items);
-        $item = $this->queue->items[$key];
-
-        unset($this->queue->items[$key]);
-
         /** @var null|array{0: Tk, 1: Awaitable<Tv>} */
-        return $item;
+        return array_shift($this->queue->items);
     }
 
     public function __destruct()

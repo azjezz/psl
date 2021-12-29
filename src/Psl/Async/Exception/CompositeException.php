@@ -6,8 +6,9 @@ namespace Psl\Async\Exception;
 
 use Exception;
 use Exception as RootException;
-use Psl\Iter;
 use Psl\Str;
+
+use function count;
 
 use const PHP_EOL;
 
@@ -42,7 +43,7 @@ final class CompositeException extends Exception implements ExceptionInterface
      */
     private function generateMessage(array $reasons): string
     {
-        $message = Str\format('"Multiple errors encountered (%d); use "%s::getReasons()" to retrieve the array of exceptions thrown:', Iter\count($reasons), self::class);
+        $message = Str\format('"Multiple errors encountered (%d); use "%s::getReasons()" to retrieve the array of exceptions thrown:', count($reasons), self::class);
 
         foreach ($reasons as $reason) {
             $message .= PHP_EOL . PHP_EOL . $reason::class;

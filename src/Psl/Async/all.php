@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Async;
 
 use Exception as RootException;
-use Psl\Dict;
 
 /**
  * Awaits all awaitables to complete concurrently.
@@ -53,14 +52,10 @@ function all(iterable $awaitables): array
         }
     }
 
-    return Dict\map_with_key(
-        $awaitables,
-        /**
-         * @param Tk $key
-         * @param Awaitable<Tv> $_awaitable
-         *
-         * @retun Tv
-         */
-        static fn(string|int $key, Awaitable $_awaitable): mixed => $values[$key],
-    );
+    $result = [];
+    foreach ($awaitables as $k => $_) {
+        $result[$k] = $values[$k];
+    }
+
+    return $result;
 }

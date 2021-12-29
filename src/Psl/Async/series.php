@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Async;
 
 use Closure;
-use Psl\Dict;
 
 /**
  * Run the functions in the tasks' iterable in series, each one running once the previous function has completed.
@@ -21,13 +20,10 @@ use Psl\Dict;
  */
 function series(iterable $tasks): array
 {
-    return Dict\map(
-        $tasks,
-        /**
-         * @param (Closure(): Tv) $closure
-         *
-         * @return Tv
-         */
-        static fn(Closure $closure): mixed => run($closure)->await(),
-    );
+    $result = [];
+    foreach ($tasks as $key => $task) {
+        $result[$key] = $task();
+    }
+
+    return $result;
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Async;
 
 use Closure;
-use Psl\Dict;
 
 /**
  * Run the functions in the tasks' iterable concurrently, without waiting until the previous function has completed.
@@ -21,15 +20,10 @@ use Psl\Dict;
  */
 function concurrently(iterable $tasks): array
 {
-    $awaitables = Dict\map(
-        $tasks,
-        /**
-         * @param (Closure(): Tv) $closure
-         *
-         * @return Awaitable<Tv>
-         */
-        static fn(Closure $closure): Awaitable => run($closure),
-    );
+    $awaitables = [];
+    foreach ($tasks as $k => $task) {
+        $awaitables[$k] = run($task);
+    }
 
     return namespace\all($awaitables);
 }

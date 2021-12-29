@@ -9,7 +9,6 @@ use Exception as RootException;
 use Generator;
 use Psl\Async\Internal\AwaitableIterator;
 use Psl\Async\Internal\State;
-use Psl\Fun;
 use Psl\Promise\PromiseInterface;
 
 use function is_array;
@@ -182,14 +181,9 @@ final class Awaitable implements PromiseInterface
      */
     public function map(Closure $success): Awaitable
     {
-        /**
-         * @psalm-suppress ArgumentTypeCoercion
-         *
-         * Psalm doesn't seem to understand Fun\rethrow().
-         *
-         * @TODO(azjezz): investigate, and see if it is possible to help psalm understand this via the plugin.
-         */
-        return $this->then($success, Fun\rethrow());
+        return $this->then($success, static function (RootException $exception): never {
+            throw $exception;
+        });
     }
 
     /**
@@ -203,10 +197,17 @@ final class Awaitable implements PromiseInterface
      */
     public function catch(Closure $failure): Awaitable
     {
-        /** @var (Closure(T): T) $success */
-        $success = Fun\identity();
-
-        return $this->then($success, $failure);
+        return $this->then(
+            /**
+             * @param T $value
+             *
+             * @return T
+             */
+            static function (mixed $value): mixed {
+                return $value;
+            },
+            $failure,
+        );
     }
 
     /**
