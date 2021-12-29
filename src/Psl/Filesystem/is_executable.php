@@ -7,17 +7,16 @@ namespace Psl\Filesystem;
 use function is_executable as php_is_executable;
 
 /**
- * Check whether $filename is executable.
+ * Check whether $node is executable.
  *
- * @param string $filename Path to the file.
- *
- * If $filename is a relative filename, it will be checked relative to
+ * If $node is a relative filename, it will be checked relative to
  * the current working directory.
  *
- * @return bool true if the file or directory specified by $filename exists
- *              and is executable, false otherwise.
+ * @param non-empty-string $node
+ *
+ * @return bool true if the file or directory specified by $node exists and is executable, false otherwise.
  */
-function is_executable(string $filename): bool
+function is_executable(string $node): bool
 {
-    return php_is_executable($filename);
+    return php_is_executable($node);
 }

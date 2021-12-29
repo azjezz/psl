@@ -7,16 +7,18 @@ namespace Psl\Filesystem;
 use function file_exists;
 
 /**
- * Check whether $filename exists.
+ * Check whether $node exists.
  *
- * @param string $filename Path to the file.
+ * @param string $node Path to the file.
  *
- * If $filename is a relative filename, it will be checked relative to
+ * If $node is a relative filename, it will be checked relative to
  * the current working directory.
  *
- * @return bool true if $filename exists, false otherwise.
+ * @return bool true if $node exists, false otherwise.
+ *
+ * @psalm-assert-if-true non-empty-string $node
  */
-function exists(string $filename): bool
+function exists(string $node): bool
 {
-    return file_exists($filename);
+    return file_exists($node);
 }

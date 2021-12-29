@@ -4,32 +4,31 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem;
 
-use Psl;
 use Psl\Internal;
 use Psl\Str;
 
 use function chmod;
 
 /**
- * Changes mode permission of $filename.
+ * Changes mode permission of $node.
  *
- * @param non-empty-string $filename
+ * @param non-empty-string $node
  *
- * @throws Exception\RuntimeException If unable to change the mode for the given $filename.
- * @throws Psl\Exception\InvariantViolationException If $filename does not exists.
+ * @throws Exception\RuntimeException If unable to change the mode for the given $node.
+ * @throws Exception\NotFoundException If $node does not exist.
  */
-function change_permissions(string $filename, int $permissions): void
+function change_permissions(string $node, int $permissions): void
 {
-    if (!namespace\exists($filename)) {
-        Psl\invariant_violation('File "%s" does not exist.', $filename);
+    if (!namespace\exists($node)) {
+        throw Exception\NotFoundException::forNode($node);
     }
 
-    [$success, $error] = Internal\box(static fn(): bool => chmod($filename, $permissions));
+    [$success, $error] = Internal\box(static fn(): bool => chmod($node, $permissions));
     // @codeCoverageIgnoreStart
     if (!$success) {
         throw new Exception\RuntimeException(Str\format(
             'Failed to change permissions for file "%s": %s',
-            $filename,
+            $node,
             $error ?? 'internal error.',
         ));
     }

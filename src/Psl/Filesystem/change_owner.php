@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem;
 
-use Psl;
 use Psl\Internal;
 use Psl\Str;
 
@@ -12,30 +11,30 @@ use function chown;
 use function lchown;
 
 /**
- * Change the owner of $filename.
+ * Change the owner of $node.
  *
- * @param non-empty-string $filename
+ * @param non-empty-string $node
  *
- * @throws Exception\RuntimeException If unable to change the ownership for $filename.
- * @throws Psl\Exception\InvariantViolationException If $filename does not exist.
+ * @throws Exception\RuntimeException If unable to change the ownership for $node.
+ * @throws Exception\NotFoundException If $node does not exist.
  */
-function change_owner(string $filename, int $user): void
+function change_owner(string $node, int $user): void
 {
-    if (!namespace\exists($filename)) {
-        Psl\invariant_violation('File "%s" does not exist.', $filename);
+    if (!namespace\exists($node)) {
+        throw Exception\NotFoundException::forNode($node);
     }
 
-    if (is_symbolic_link($filename)) {
-        $fun = static fn(): bool => lchown($filename, $user);
+    if (is_symbolic_link($node)) {
+        $fun = static fn(): bool => lchown($node, $user);
     } else {
-        $fun = static fn(): bool => chown($filename, $user);
+        $fun = static fn(): bool => chown($node, $user);
     }
 
     [$success, $error] = Internal\box($fun);
     if (!$success) {
         throw new Exception\RuntimeException(Str\format(
-            'Failed to change owner for file "%s": %s',
-            $filename,
+            'Failed to change owner for node "%s": %s',
+            $node,
             $error ?? 'internal error.',
         ));
     }

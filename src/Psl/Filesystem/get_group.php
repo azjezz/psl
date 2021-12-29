@@ -10,30 +10,30 @@ use Psl\Str;
 use function filegroup;
 
 /**
- * Get the group of $filename.
+ * Get the group of $node.
  *
- * @param non-empty-string $filename
+ * @param non-empty-string $node
  *
- * @throws Psl\Exception\InvariantViolationException If $filename does not exist.
+ * @throws Exception\NotFoundException If $node is not found.
  * @throws Exception\RuntimeException In case of an error.
  */
-function get_group(string $filename): int
+function get_group(string $node): int
 {
-    if (!namespace\exists($filename)) {
-        Psl\invariant_violation('File "%s" does not exist.', $filename);
+    if (!namespace\exists($node)) {
+        throw Exception\NotFoundException::forNode($node);
     }
 
     [$result, $message] = Psl\Internal\box(
         /**
          * @return false|int
          */
-        static fn() => filegroup($filename)
+        static fn() => filegroup($node)
     );
 
     if (false === $result) {
         throw new Exception\RuntimeException(Str\format(
             'Failed to retrieve group of file "%s": %s',
-            $filename,
+            $node,
             $message ?? 'internal error'
         ));
     }

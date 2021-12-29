@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem;
 
-use Psl;
 use Psl\Internal;
 use Psl\Str;
 
@@ -16,35 +15,36 @@ use function link;
  * @param non-empty-string $source The file to create a hard link for.
  * @param non-empty-string $destination
  *
- * @throws Psl\Exception\InvariantViolationException If $source is not a file, or does not exist.
  * @throws Exception\RuntimeException If unable to create a hard file.
+ * @throws Exception\NotFoundException If $source does not exist.
+ * @throws Exception\NotFileException If $source is not a file.
+ * @throws Exception\NotReadableException If $destination is a non-empty directory, and is non-readable {@see delete_directory()}.
  */
 function create_hard_link(string $source, string $destination): void
 {
     if (!namespace\exists($source)) {
-        Psl\invariant_violation('Source file "%s" does not exist.', $source);
+        throw Exception\NotFoundException::forFile($source);
     }
 
     if (!namespace\is_file($source)) {
-        Psl\invariant_violation('Source "%s" is not a file.', $source);
+        throw Exception\NotFileException::for($source);
     }
 
-    $destination_directory = get_directory($destination);
-    if (!is_directory($destination_directory)) {
-        create_directory($destination_directory);
-    }
-
-    if (exists($destination)) {
-        if (get_inode($destination) === get_inode($source)) {
+    if (namespace\exists($destination)) {
+        if (namespace\get_inode($destination) === namespace\get_inode($source)) {
             // already exists.
             return;
         }
 
-        if (is_directory($destination)) {
-            delete_directory($destination, true);
-        } else {
-            delete_file($destination);
+        try {
+            namespace\delete_directory($destination, true);
+        } catch (Exception\NotDirectoryException) {
+            namespace\delete_file($destination);
         }
+    } else {
+        namespace\create_directory(
+            namespace\get_directory($destination)
+        );
     }
 
     [$result, $error_message] = Internal\box(static fn() => link($source, $destination));

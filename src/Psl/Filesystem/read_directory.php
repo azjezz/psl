@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Filesystem;
 
 use FilesystemIterator;
-use Psl;
 use Psl\Vec;
 
 /**
@@ -13,19 +12,24 @@ use Psl\Vec;
  *
  * @param non-empty-string $directory
  *
- * @throws Psl\Exception\InvariantViolationException If the directory specified by
- *                                                   $directory does not exist, or is not readable.
+ * @throws Exception\NotFoundException If $directory is not found.
+ * @throws Exception\NotDirectoryException If $directory is not a directory.
+ * @throws Exception\NotReadableException If $directory is not readable.
  *
  * @return list<non-empty-string>
  */
 function read_directory(string $directory): array
 {
+    if (!namespace\exists($directory)) {
+        throw Exception\NotFoundException::forDirectory($directory);
+    }
+
     if (!namespace\is_directory($directory)) {
-        Psl\invariant_violation('Directory "%s" is not a directory.', $directory);
+        throw Exception\NotDirectoryException::for($directory);
     }
 
     if (!namespace\is_readable($directory)) {
-        Psl\invariant_violation('Directory "%s" is not readable.', $directory);
+        throw Exception\NotReadableException::forDirectory($directory);
     }
 
     /** @var list<non-empty-string> */

@@ -14,14 +14,15 @@ use function dirname;
  *
  * In other environments, it is the forward slash `/`.
  *
- * @param non-empty-string $path
+ * @param non-empty-string $node
  * @param positive-int $levels The number of parent directories to go up.
  *
- * @return string the base name of the given path.
+ * @return non-empty-string the base name of the given path.
  *
  * @pure
  */
-function get_directory(string $path, int $levels = 1): string
+function get_directory(string $node, int $levels = 1): string
 {
-    return dirname($path, $levels);
+    /** @var non-empty-string */
+    return dirname($node, $levels);
 }

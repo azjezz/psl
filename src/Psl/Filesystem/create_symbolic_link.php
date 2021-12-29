@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem;
 
-use Psl;
 use Psl\Internal;
 use Psl\Str;
 
@@ -17,30 +16,30 @@ use function symlink;
  * @param non-empty-string $destination
  *
  * @throws Exception\RuntimeException If unable to create the symbolic link.
- * @throws Psl\Exception\InvariantViolationException If $source does not exist.
+ * @throws Exception\NotFoundException If $source is not found.
+ * @throws Exception\NotReadableException If $destination is a non-empty directory, and is non-readable {@see delete_directory()}.
  */
 function create_symbolic_link(string $source, string $destination): void
 {
     if (!namespace\exists($source)) {
-        Psl\invariant_violation('Source file "%s" does not exist.', $source);
+        throw Exception\NotFoundException::forNode($source);
     }
 
-    $destination_directory = get_directory($destination);
-    if (!is_directory($destination_directory)) {
-        create_directory($destination_directory);
-    }
+    $destination_directory = namespace\get_directory($destination);
+    namespace\create_directory($destination_directory);
 
-    if (exists($destination)) {
-        if (is_symbolic_link($destination) && read_symbolic_link($destination) === $source) {
-            // already exists.
+    try {
+        if (namespace\read_symbolic_link($destination) === $source) {
             return;
         }
-
-        if (is_directory($destination)) {
-            delete_directory($destination, true);
-        } else {
-            delete_file($destination);
+    } catch (Exception\NotSymbolicLinkException) {
+        try {
+            namespace\delete_directory($destination, true);
+        } catch (Exception\NotDirectoryException) {
+            /** @psalm-suppress MissingThrowsDocblock - $destination is a file. */
+            namespace\delete_file($destination);
         }
+    } catch (Exception\NotFoundException) {
     }
 
     [$result, $error_message] = Internal\box(static fn() => symlink($source, $destination));

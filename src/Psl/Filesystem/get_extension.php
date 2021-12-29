@@ -7,13 +7,16 @@ namespace Psl\Filesystem;
 use function pathinfo;
 
 /**
- * Returns the $filename extension.
+ * Returns the $node extension.
  *
- * @return string|null the $filename extensions, or null if none.
+ * @param non-empty-string $node
+ *
+ * @return non-empty-string|null the $node extensions, or null if none.
  *
  * @pure
  */
-function get_extension(string $filename): ?string
+function get_extension(string $node): ?string
 {
-    return pathinfo($filename)['extension'] ?? null;
+    /** @var non-empty-string|null */
+    return pathinfo($node)['extension'] ?? null;
 }

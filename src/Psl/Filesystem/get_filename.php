@@ -11,11 +11,14 @@ use const PATHINFO_FILENAME;
 /**
  * Returns trailing name component of path.
  *
- * @return string the base name of the given path.
+ * @param non-empty-string $node
+ *
+ * @return non-empty-string the base name of the given path.
  *
  * @pure
  */
-function get_filename(string $path): string
+function get_filename(string $node): string
 {
-    return pathinfo($path, PATHINFO_FILENAME);
+    /** @var non-empty-string */
+    return pathinfo($node, PATHINFO_FILENAME);
 }
