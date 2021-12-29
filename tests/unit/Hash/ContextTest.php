@@ -5,48 +5,31 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Hash;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Exception\InvariantViolationException;
 use Psl\Hash;
 
 final class ContextTest extends TestCase
 {
     public function testForAlgorithm(): void
     {
-        $context = Hash\Context::forAlgorithm('md5')
+        $context = Hash\Context::forAlgorithm(Hash\Algorithm::MD5)
             ->update('The quick brown fox ')
             ->update('jumped over the lazy dog.');
 
         static::assertSame('5c6ffbdd40d9556b73a21e63c3e0e904', $context->finalize());
     }
 
-    public function testForAlgorithmThrowsForInvalidAlgorithm(): void
-    {
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected a valid hashing algorithm, "base64" given.');
-
-        Hash\Context::forAlgorithm('base64');
-    }
-
     public function testHmac(): void
     {
-        $context = Hash\Context::hmac('md5', 'secret')
+        $context = Hash\Context::hmac(Hash\Hmac\Algorithm::MD5, 'secret')
             ->update('The quick brown fox ')
             ->update('jumped over the lazy dog.');
 
         static::assertSame('7eb2b5c37443418fc77c136dd20e859c', $context->finalize());
     }
 
-    public function testHmacThrowsForInvalidAlgorithm(): void
-    {
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected a hashing algorithms suitable for HMAC, "base64" given.');
-
-        Hash\Context::hmac('base64', 'secret');
-    }
-
     public function testContextIsImmutable(): void
     {
-        $first  = Hash\Context::forAlgorithm('md5');
+        $first  = Hash\Context::forAlgorithm(Hash\Algorithm::MD5);
         $second = $first->update('The quick brown fox ');
         $third  = $second->update('jumped over the lazy dog.');
 
@@ -61,7 +44,7 @@ final class ContextTest extends TestCase
 
     public function testContextIsStillValidAfterFinalization(): void
     {
-        $context  = Hash\Context::forAlgorithm('md5')
+        $context  = Hash\Context::forAlgorithm(Hash\Algorithm::MD5)
             ->update('The quick brown fox ')
             ->update('jumped over the lazy dog.');
 

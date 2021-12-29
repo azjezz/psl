@@ -32,14 +32,14 @@ final class TapTest extends TestCase
     {
         $log = new Ref('');
         $result = Fun\pipe(
-            static fn (string $x) => Hash\hash($x, 'md5'),
+            static fn (string $x) => Hash\hash($x, Hash\Algorithm::MD5),
             Fun\tap(static function ($x) use ($log): void {
                 $log->value = $x;
             }),
             static fn (string $x): string => Str\truncate($x, 0, 1),
         )('abc');
 
-        $md5 = Hash\hash('abc', 'md5');
+        $md5 = Hash\hash('abc', Hash\Algorithm::MD5);
         $firstChar = Str\truncate($md5, 0, 1);
 
         static::assertSame($firstChar, $result);

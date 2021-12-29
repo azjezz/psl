@@ -353,10 +353,8 @@ final class Loader
         'Psl\Password\needs_rehash',
         'Psl\Password\verify',
         'Psl\Hash\hash',
-        'Psl\Hash\algorithms',
         'Psl\Hash\equals',
         'Psl\Hash\Hmac\hash',
-        'Psl\Hash\Hmac\algorithms',
         'Psl\Str\Grapheme\contains',
         'Psl\Str\Grapheme\contains_ci',
         'Psl\Str\Grapheme\ends_with',
@@ -721,6 +719,8 @@ final class Loader
         'Psl\Str\Encoding',
         'Psl\Network\SocketScheme',
         'Psl\Html\Encoding',
+        'Psl\Hash\Algorithm',
+        'Psl\Hash\Hmac\Algorithm',
     ];
 
     public const TYPE_CONSTANTS = 1;

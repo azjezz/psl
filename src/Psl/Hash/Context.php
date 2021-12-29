@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Psl\Hash;
 
 use HashContext;
-use Psl;
-use Psl\Str;
 
 use function hash_final;
 use function hash_init;
@@ -39,19 +37,11 @@ final class Context
     /**
      * Initialize an incremental hashing context.
      *
-     * @param non-empty-string $algorithm
-     *
-     * @throws Psl\Exception\InvariantViolationException If the given algorithm is unsupported.
-     *
      * @pure
      */
-    public static function forAlgorithm(string $algorithm): Context
+    public static function forAlgorithm(Algorithm $algorithm): Context
     {
-        if (!in_array($algorithm, namespace\algorithms(), true)) {
-            Psl\invariant_violation('Expected a valid hashing algorithm, "%s" given.', $algorithm);
-        }
-
-        $internal_context = hash_init($algorithm);
+        $internal_context = hash_init($algorithm->value);
 
         return new self($internal_context);
     }
@@ -59,21 +49,13 @@ final class Context
     /**
      * Initialize an incremental HMAC hashing context.
      *
-     * @param non-empty-string $algorithm
      * @param non-empty-string $key
-     *
-     * @throws Psl\Exception\InvariantViolationException If the given algorithm is unsupported.
      *
      * @pure
      */
-    public static function hmac(string $algorithm, string $key): Context
+    public static function hmac(Hmac\Algorithm $algorithm, string $key): Context
     {
-
-        if (!in_array($algorithm, Hmac\algorithms(), true)) {
-            Psl\invariant_violation('Expected a hashing algorithms suitable for HMAC, "%s" given.', $algorithm);
-        }
-
-        $internal_context = hash_init($algorithm, HASH_HMAC, $key);
+        $internal_context = hash_init($algorithm->value, HASH_HMAC, $key);
 
         return new self($internal_context);
     }

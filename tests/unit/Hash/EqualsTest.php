@@ -11,6 +11,9 @@ use Psl\Hash;
 final class EqualsTest extends TestCase
 {
     /**
+     * @param non-empty-string $known_string
+     * @param non-empty-string $user_string
+     *
      * @dataProvider provideEqualsData
      */
     public function testEquals(bool $expected, string $known_string, string $user_string): void
@@ -19,7 +22,7 @@ final class EqualsTest extends TestCase
     }
 
     /**
-     * @return Generator<int, array{0: bool, 1: string, 2: string}, mixed, void>
+     * @return Generator<int, array{0: bool, 1: non-empty-string, 2: non-empty-string}, mixed, void>
      */
     public function provideEqualsData(): Generator
     {

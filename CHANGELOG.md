@@ -55,3 +55,7 @@
   - `Psl\Filesystem\Exception\NotDirectoryException` thrown when attempting a directory operation on a non-directory node.
   - `Psl\Filesystem\Exception\NotSymbolicLinkException` thrown when attempting a symbolic link operation on a non-symbolic link node.
   - `Psl\Filesystem\Exception\NotFoundException` thrown when attempting an operation on a non-existing node.
+* introduced `Psl\Hash\Algorithm` enum.
+* introduced `Psl\Hash\Hmac\Algorithm` enum.
+* **BC** - `Psl\Hash\hash`, and `Psl\Hash\Context::forAlgorithm` now take `Psl\Hash\Algorithm` as an algorithm, rather than a string.
+* **BC** - `Psl\Hash\Hmac\hash`, and `Psl\Hash\Context::hmac` now take `Psl\Hash\Hmac\Algorithm` as an algorithm, rather than a string.
