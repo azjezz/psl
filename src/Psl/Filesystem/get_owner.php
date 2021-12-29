@@ -10,30 +10,24 @@ use Psl\Str;
 use function fileowner;
 
 /**
- * Get the owner of $filename.
+ * Get the owner of $node.
  *
- * @param non-empty-string $filename
+ * @param non-empty-string $node
  *
- * @throws Psl\Exception\InvariantViolationException If $filename does not exist.
+ * @throws Exception\NotFoundException If $node is not found.
  * @throws Exception\RuntimeException In case of an error.
  */
-function get_owner(string $filename): int
+function get_owner(string $node): int
 {
-    if (!namespace\exists($filename)) {
-        Psl\invariant_violation('File "%s" does not exist.', $filename);
+    if (!namespace\exists($node)) {
+        throw Exception\NotFoundException::forNode($node);
     }
 
-    [$result, $message] = Psl\Internal\box(
-        /**
-         * @return false|int
-         */
-        static fn() => fileowner($filename)
-    );
-
+    [$result, $message] = Psl\Internal\box(static fn(): false|int => fileowner($node));
     if (false === $result) {
         throw new Exception\RuntimeException(Str\format(
             'Failed to retrieve owner of file "%s": %s',
-            $filename,
+            $node,
             $message ?? 'internal error'
         ));
     }

@@ -10,31 +10,31 @@ use Psl\Str;
 use function fileatime;
 
 /**
- * Gets last access time of $filename.
+ * Gets last access time of $node.
  *
- * @param non-empty-string $filename
+ * @param non-empty-string $node
  *
- * @throws Psl\Exception\InvariantViolationException If $filename does not exist.
+ * @throws Exception\NotFoundException If $node is not found.
  * @throws Exception\RuntimeException In case of an error.
  */
-function get_access_time(string $filename): int
+function get_access_time(string $node): int
 {
-    if (!namespace\exists($filename)) {
-        Psl\invariant_violation('File "%s" does not exist.', $filename);
+    if (!namespace\exists($node)) {
+        throw Exception\NotFoundException::forNode($node);
     }
 
     [$result, $message] = Psl\Internal\box(
         /**
          * @return false|int
          */
-        static fn() => fileatime($filename)
+        static fn() => fileatime($node)
     );
 
     // @codeCoverageIgnoreStart
     if (false === $result) {
         throw new Exception\RuntimeException(Str\format(
             'Failed to retrieve the access time of "%s": %s',
-            $filename,
+            $node,
             $message ?? 'internal error'
         ));
     }

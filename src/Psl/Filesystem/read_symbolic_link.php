@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem;
 
-use Psl;
 use Psl\Internal;
 use Psl\Str;
 
@@ -15,18 +14,20 @@ use function readlink;
  *
  * @param non-empty-string $symbolic_link
  *
- * @throws Psl\Exception\InvariantViolationException If the link specified by $symbolic_link does not exist,
- *                                                   or is not a symbolic link.
+ * @throws Exception\NotFoundException If $symbolic_link is not found.
+ * @throws Exception\NotSymbolicLinkException If $symbolic_link is not a symbolic link.
  * @throws Exception\RuntimeException If unable to retrieve the target of $symbolic_link.
+ *
+ * @return non-empty-string
  */
 function read_symbolic_link(string $symbolic_link): string
 {
     if (!namespace\exists($symbolic_link)) {
-        Psl\invariant_violation('Symbolic link "%s" does not exist.', $symbolic_link);
+        throw Exception\NotFoundException::forSymbolicLink($symbolic_link);
     }
 
     if (!namespace\is_symbolic_link($symbolic_link)) {
-        Psl\invariant_violation('Symbolic link "%s" is not a symbolic link.', $symbolic_link);
+        throw Exception\NotSymbolicLinkException::for($symbolic_link);
     }
 
     [$result, $message] = Internal\box(
@@ -46,5 +47,6 @@ function read_symbolic_link(string $symbolic_link): string
     }
     // @codeCoverageIgnoreEnd
 
+    /** @var non-empty-string */
     return $result;
 }

@@ -10,32 +10,27 @@ use Psl\Str;
 use function filectime;
 
 /**
- * Get the last time the inode of $filename
+ * Get the last time the inode of $node
  * was changed ( e.g: permission change, ownership change .. etc ).
  *
- * @param non-empty-string $filename
+ * @param non-empty-string $node
  *
- * @throws Psl\Exception\InvariantViolationException If $filename does not exist.
+ * @throws Exception\NotFoundException If $node is not found.
  * @throws Exception\RuntimeException In case of an error.
  */
-function get_change_time(string $filename): int
+function get_change_time(string $node): int
 {
-    if (!namespace\exists($filename)) {
-        Psl\invariant_violation('File "%s" does not exist.', $filename);
+    if (!namespace\exists($node)) {
+        throw Exception\NotFoundException::forNode($node);
     }
 
-    [$result, $message] = Psl\Internal\box(
-        /**
-         * @return false|int
-         */
-        static fn() => filectime($filename)
-    );
+    [$result, $message] = Psl\Internal\box(static fn(): false|int => filectime($node));
 
     // @codeCoverageIgnoreStart
     if (false === $result) {
         throw new Exception\RuntimeException(Str\format(
             'Failed to retrieve the change time of "%s": %s',
-            $filename,
+            $node,
             $message ?? 'internal error'
         ));
     }

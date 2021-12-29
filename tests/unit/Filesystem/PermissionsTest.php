@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Filesystem;
 
-use Psl\Exception\InvariantViolationException;
 use Psl\Filesystem;
 use Psl\Str;
 
@@ -66,8 +65,8 @@ final class PermissionsTest extends AbstractFilesystemTest
     {
         $filename = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('File "' . $filename . '" does not exist.');
+        $this->expectException(Filesystem\Exception\NotFoundException::class);
+        $this->expectExceptionMessage('Node "' . $filename . '" is not found.');
 
         Filesystem\change_permissions($filename, 0111);
     }
@@ -76,8 +75,8 @@ final class PermissionsTest extends AbstractFilesystemTest
     {
         $filename = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('File "' . $filename . '" does not exist.');
+        $this->expectException(Filesystem\Exception\NotFoundException::class);
+        $this->expectExceptionMessage('Node "' . $filename . '" is not found.');
 
         Filesystem\get_permissions($filename);
     }

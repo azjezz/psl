@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Filesystem;
 
 use Psl\Env;
-use Psl\Exception\InvariantViolationException;
 use Psl\Filesystem;
 use Psl\Str;
 
@@ -41,19 +40,27 @@ final class FileTest extends AbstractFilesystemTest
         static::assertSame(Env\temp_dir(), Filesystem\get_directory($file));
     }
 
-    public function testTemporaryFileThrowsForNonExistingDirectory(): void
+    public function testTemporaryFileThrowsForNonDirectoryNode(): void
     {
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('"' . __FILE__ . '" is not a directory.');
+        $this->expectException(Filesystem\Exception\NotDirectoryException::class);
+        $this->expectExceptionMessage('Path "' . __FILE__ . '" does not point to a directory.');
 
         Filesystem\create_temporary_file(__FILE__);
+    }
+
+    public function testTemporaryFileThrowsForNonExistingDirectory(): void
+    {
+        $this->expectException(Filesystem\Exception\NotFoundException::class);
+        $this->expectExceptionMessage('Directory "' . __FILE__ . '/foo" is not found.');
+
+        Filesystem\create_temporary_file(__FILE__ . '/foo');
     }
 
     public function testTemporaryFileThrowsForPrefixWithSeparator(): void
     {
         $prefix = Str\join(['a', 'b'], Filesystem\SEPARATOR);
 
-        $this->expectException(InvariantViolationException::class);
+        $this->expectException(Filesystem\Exception\InvalidArgumentException::class);
         $this->expectExceptionMessage(
             '$prefix should not contain a directory separator ( "' . Filesystem\SEPARATOR . '" ).'
         );
@@ -91,8 +98,8 @@ final class FileTest extends AbstractFilesystemTest
     {
         $filename = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('File "' . $filename . '" does not exist.');
+        $this->expectException(Filesystem\Exception\NotFoundException::class);
+        $this->expectExceptionMessage('Node "' . $filename . '" is not found.');
 
         Filesystem\get_modification_time($filename);
     }
@@ -101,8 +108,8 @@ final class FileTest extends AbstractFilesystemTest
     {
         $filename = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('File "' . $filename . '" does not exist.');
+        $this->expectException(Filesystem\Exception\NotFoundException::class);
+        $this->expectExceptionMessage('Node "' . $filename . '" is not found.');
 
         Filesystem\get_access_time($filename);
     }
@@ -111,8 +118,8 @@ final class FileTest extends AbstractFilesystemTest
     {
         $filename = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('File "' . $filename . '" does not exist.');
+        $this->expectException(Filesystem\Exception\NotFoundException::class);
+        $this->expectExceptionMessage('Node "' . $filename . '" is not found.');
 
         Filesystem\get_change_time($filename);
     }
@@ -121,8 +128,8 @@ final class FileTest extends AbstractFilesystemTest
     {
         $filename = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('File "' . $filename . '" does not exist.');
+        $this->expectException(Filesystem\Exception\NotFoundException::class);
+        $this->expectExceptionMessage('Node "' . $filename . '" is not found.');
 
         Filesystem\get_inode($filename);
     }
@@ -131,28 +138,36 @@ final class FileTest extends AbstractFilesystemTest
     {
         $filename = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('File "' . $filename . '" does not exist, or is not readable.');
+        $this->expectException(Filesystem\Exception\NotFoundException::class);
+        $this->expectExceptionMessage('File "' . $filename . '" is not found.');
 
         Filesystem\file_size($filename);
     }
 
+    public function testFileSizeThrowsForNonFile(): void
+    {
+        $this->expectException(Filesystem\Exception\NotFileException::class);
+        $this->expectExceptionMessage('Path "' . $this->directory . '" does not point to a file.');
+
+        Filesystem\file_size($this->directory);
+    }
+
     public function testCopyThrowsForNonExistingFile(): void
     {
-        $filename = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
+        $file = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Source "' . $filename . '" does not exist, or is not readable.');
+        $this->expectException(Filesystem\Exception\NotFoundException::class);
+        $this->expectExceptionMessage('File "' . $file . '" is not found.');
 
-        Filesystem\copy($filename, '/foo/bar');
+        Filesystem\copy($file, '/foo/bar');
     }
 
     public function testCreateSymbolicLinkThrowsForNonExistingFile(): void
     {
         $filename = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Source file "' . $filename . '" does not exist.');
+        $this->expectException(Filesystem\Exception\NotFoundException::class);
+        $this->expectExceptionMessage('Node "' . $filename . '" is not found.');
 
         Filesystem\create_symbolic_link($filename, '/foo/bar');
     }
@@ -171,8 +186,8 @@ final class FileTest extends AbstractFilesystemTest
 
         static::assertFalse(Filesystem\is_readable($filename));
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('File "' . $filename . '" does not exist, or is not readable.');
+        $this->expectException(Filesystem\Exception\NotReadableException::class);
+        $this->expectExceptionMessage('File "' . $filename . '" is not readable.');
 
         try {
             Filesystem\file_size($filename);
@@ -188,20 +203,21 @@ final class FileTest extends AbstractFilesystemTest
             static::markTestSkipped('Test can only be executed under *nix OS.');
         }
 
-        $filename = Str\join([$this->directory, 'non-readable.txt'], Filesystem\SEPARATOR);
-        Filesystem\create_file($filename);
-        $permissions = Filesystem\get_permissions($filename) & 0777;
-        Filesystem\change_permissions($filename, 0111);
+        $file = Str\join([$this->directory, 'non-readable.txt'], Filesystem\SEPARATOR);
+        Filesystem\create_file($file);
+        $permissions = Filesystem\get_permissions($file) & 0777;
+        Filesystem\change_permissions($file, 0111);
 
-        static::assertFalse(Filesystem\is_readable($filename));
+        static::assertFalse(Filesystem\is_readable($file));
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Source "' . $filename . '" does not exist, or is not readable.');
+
+        $this->expectException(Filesystem\Exception\NotReadableException::class);
+        $this->expectExceptionMessage('File "' . $file . '" is not readable.');
 
         try {
-            Filesystem\copy($filename, '/foo/bar');
+            Filesystem\copy($file, '/foo/bar');
         } finally {
-            Filesystem\change_permissions($filename, $permissions);
+            Filesystem\change_permissions($file, $permissions);
         }
     }
 
@@ -236,5 +252,33 @@ final class FileTest extends AbstractFilesystemTest
         Filesystem\create_file($file);
 
         static::assertEqualsWithDelta(time(), Filesystem\get_change_time($file), 1.0);
+    }
+
+    public function testDeleteFileThrowsWhenFileIsNotFound(): void
+    {
+        $file = Str\join([$this->directory, 'deleted-one.txt'], Filesystem\SEPARATOR);
+
+        static::assertFalse(Filesystem\is_file($file));
+
+        $this->expectException(Filesystem\Exception\NotFoundException::class);
+        $this->expectExceptionMessage('File "' . $file . '" is not found.');
+
+        Filesystem\delete_file($file);
+    }
+
+    public function testDeleteFileThrowsWhenFileIsNotAFile(): void
+    {
+        $directory = Str\join([$this->directory, 'deleted-two'], Filesystem\SEPARATOR);
+
+        Filesystem\create_directory($directory);
+
+        static::assertTrue(Filesystem\exists($directory));
+        static::assertTrue(Filesystem\is_directory($directory));
+        static::assertFalse(Filesystem\is_file($directory));
+
+        $this->expectException(Filesystem\Exception\NotFileException::class);
+        $this->expectExceptionMessage('Path "' . $directory . '" does not point to a file.');
+
+        Filesystem\delete_file($directory);
     }
 }

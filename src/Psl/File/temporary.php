@@ -15,9 +15,13 @@ use Psl\Filesystem;
  *                                         the system default temporary directory.
  * @param non-empty-string|null $prefix The prefix of the generated temporary filename.
  *
+ * @throws Filesystem\Exception\RuntimeException If unable to create the file.
+ * @throws Filesystem\Exception\RuntimeException If unable to create the file.
+ * @throws Filesystem\Exception\NotFoundException If $directory is not found.
+ * @throws Filesystem\Exception\NotDirectoryException If $directory is not a directory.
+ * @throws Filesystem\Exception\InvalidArgumentException If $prefix contains a directory separator.
  * @throws Psl\Exception\InvariantViolationException If $directory doesn't exist or is not writable.
  * @throws Psl\Exception\InvariantViolationException If $prefix contains a directory separator.
- * @throws Filesystem\Exception\RuntimeException If unable to create the file.
  */
 function temporary(?string $directory = null, ?string $prefix = null): ReadWriteHandleInterface
 {

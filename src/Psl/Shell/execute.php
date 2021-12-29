@@ -24,11 +24,11 @@ use const PHP_OS_FAMILY;
 /**
  * Execute an external program.
  *
- * @param string $command The command to execute.
+ * @param non-empty-string $command The command to execute.
  * @param list<string> $arguments The command arguments listed as separate entries.
- * @param null|string $working_directory The initial working directory for the command.
- *                                       This must be an absolute directory path, or null if you want to
- *                                       use the default value ( the current directory )
+ * @param null|non-empty-string $working_directory The initial working directory for the command.
+ *                                                 This must be an absolute directory path, or null if you want to
+ *                                                 use the default value ( the current directory )
  * @param array<string, string> $environment A dict with the environment variables for the command that
  *                                           will be run.
  * @param bool $escape_arguments If set to true ( default ), all $arguments will be escaped using `escape_argument`.

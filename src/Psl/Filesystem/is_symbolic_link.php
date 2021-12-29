@@ -9,16 +9,14 @@ use function is_link as php_is_link;
 /**
  * Check whether $symbolic_link is a symbolic link.
  *
- * @param string $symbolic_link Path to the file.
- *
- * If $symbolic_link is a relative filename, it will be checked relative to
+ * If $node is a relative filename, it will be checked relative to
  * the current working directory.
  *
- * @return bool if the $symbolic_link exists and is a symbolic link, false otherwise.
+ * @param non-empty-string $node
  *
- * @psalm-assert-if-true non-empty-string $symbolic_link
+ * @return bool true if the file or directory specified by $node exists and is a symbolic link, false otherwise.
  */
-function is_symbolic_link(string $symbolic_link): bool
+function is_symbolic_link(string $node): bool
 {
-    return php_is_link($symbolic_link);
+    return php_is_link($node);
 }

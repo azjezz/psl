@@ -47,3 +47,11 @@
   > To preserve the same behavior as the old function, use `Psl\File\write($file, $content, Filesystem\is_file($file) ? File\WriteMode::TRUNCATE : File\WriteMode::OPEN_OR_CREATE)`.
 * **BC** - `Psl\Filesystem\read_file($file, $offset, $length)` function has been removed, use `Psl\File\read($file, $offset, $length)` instead.
 * **BC** - `Psl\Filesystem\append_file($file, $contents)` function has been removed, use `Psl\File\write($file, $contents, File\WriteMode::APPEND)` instead.
+* **BC** - `Psl\Filesystem` functions no longer throw `Psl\Exception\InvariantViolationException`.
+
+  New exceptions:
+  - `Psl\Filesystem\Exception\NotReadableException` thrown when attempting to read from a non-readable node
+  - `Psl\Filesystem\Exception\NotFileException` thrown when attempting a file operation on a non-file node.
+  - `Psl\Filesystem\Exception\NotDirectoryException` thrown when attempting a directory operation on a non-directory node.
+  - `Psl\Filesystem\Exception\NotSymbolicLinkException` thrown when attempting a symbolic link operation on a non-symbolic link node.
+  - `Psl\Filesystem\Exception\NotFoundException` thrown when attempting an operation on a non-existing node.

@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace Psl\Filesystem;
 
 use Psl;
-use Psl\Internal;
+use Psl\File;
+use Psl\IO;
 use Psl\Str;
-
-use function fclose;
-use function fopen;
-use function stream_copy_to_stream;
 
 /**
  * Change the group ownership of $filename.
@@ -19,59 +16,54 @@ use function stream_copy_to_stream;
  * @param non-empty-string $destination
  *
  * @throws Exception\RuntimeException If unable to change the group ownership for $filename.
- * @throws Psl\Exception\InvariantViolationException If $source does not exist or is not readable.
+ * @throws Exception\NotFoundException If $source is not found.
+ * @throws Exception\NotReadableException If $source is not readable.
  */
 function copy(string $source, string $destination, bool $overwrite = false): void
 {
-    if (!namespace\is_file($source) || !namespace\is_readable($source)) {
-        Psl\invariant_violation('Source "%s" does not exist, or is not readable.', $source);
-    }
-
-    if (!$overwrite && is_file($destination)) {
+    $destination_exists = namespace\is_file($destination);
+    if (!$overwrite && $destination_exists) {
         return;
     }
 
-    /**
-     * @psalm-suppress InvalidArgument - Closure is not pure..
-     */
-    $source_stream = Internal\suppress(static fn() => fopen($source, 'rb'));
-    // @codeCoverageIgnoreStart
-    if (false === $source_stream) {
-        throw new Exception\RuntimeException('Failed to open $source file for reading');
+    if (!namespace\is_file($source)) {
+        throw Exception\NotFoundException::forFile($source);
     }
-    // @codeCoverageIgnoreEnd
 
-    /**
-     * @psalm-suppress InvalidArgument - Closure is not pure..
-     */
-    $destination_stream = Internal\suppress(static fn() => fopen($destination, 'wb'));
-    // @codeCoverageIgnoreStart
-    if (false === $destination_stream) {
-        throw new Exception\RuntimeException('Failed to open $destination file for writing.');
+    if (!namespace\is_readable($source)) {
+        throw Exception\NotReadableException::forFile($source);
     }
-    // @codeCoverageIgnoreEnd
 
-    $copied_bytes = stream_copy_to_stream($source_stream, $destination_stream);
-    fclose($source_stream);
-    fclose($destination_stream);
+    $source_lock = null;
+    $destination_lock = null;
+    try {
+        $source_handle = File\open_read_only($source);
+        $destination_handle = File\open_write_only(
+            $destination,
+            $destination_exists ? File\WriteMode::TRUNCATE : File\WriteMode::OPEN_OR_CREATE,
+        );
 
-    $total_bytes = file_size($source);
+        $source_lock = $source_handle->lock(File\LockType::SHARED);
+        $destination_lock = $destination_handle->lock(File\LockType::EXCLUSIVE);
+
+        while ($chunk = $source_handle->read()) {
+            $destination_handle->writeAll($chunk);
+
+            // free memory
+            unset($chunk);
+        }
+        // @codeCoverageIgnoreStart
+    } catch (IO\Exception\ExceptionInterface | File\Exception\ExceptionInterface | Psl\Exception\InvariantViolationException $exception) {
+        throw new Exception\RuntimeException(Str\format('Failed to copy source file "%s" to destination "%s".', $source, $destination), previous: $exception);
+    } finally {
+        // @codeCoverageIgnoreEnd
+        $source_lock?->release();
+        $destination_lock?->release();
+    }
 
     // preserve executable permission bits
     change_permissions(
         $destination,
         get_permissions($destination) | (get_permissions($source) & 0111)
     );
-
-    // @codeCoverageIgnoreStart
-    if ($copied_bytes !== $total_bytes) {
-        throw new Exception\RuntimeException(Str\format(
-            'Failed to copy the whole content of "%s" to "%s" ( %g of %g bytes copied ).',
-            $source,
-            $destination,
-            $copied_bytes,
-            $total_bytes
-        ));
-    }
-    // @codeCoverageIgnoreEnd
 }

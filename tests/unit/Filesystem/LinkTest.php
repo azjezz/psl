@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Filesystem;
 
-use Psl\Exception\InvariantViolationException;
 use Psl\Filesystem;
 use Psl\Str;
 
@@ -113,8 +112,8 @@ final class LinkTest extends AbstractFilesystemTest
     {
         $file = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Symbolic link "' . $file . '" does not exist.');
+        $this->expectException(Filesystem\Exception\NotFoundException::class);
+        $this->expectExceptionMessage('Symbolic link "' . $file . '" is not found.');
 
         Filesystem\read_symbolic_link($file);
     }
@@ -125,8 +124,8 @@ final class LinkTest extends AbstractFilesystemTest
 
         Filesystem\create_file($file);
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Symbolic link "' . $file . '" is not a symbolic link.');
+        $this->expectException(Filesystem\Exception\NotSymbolicLinkException::class);
+        $this->expectExceptionMessage('Path "' . $file . '" does not point to a symbolic link.');
 
         Filesystem\read_symbolic_link($file);
     }
@@ -135,16 +134,16 @@ final class LinkTest extends AbstractFilesystemTest
     {
         $file = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Source file "' . $file . '" does not exist.');
+        $this->expectException(Filesystem\Exception\NotFoundException::class);
+        $this->expectExceptionMessage('File "' . $file . '" is not found.');
 
         Filesystem\create_hard_link($file, '/foo/bar');
     }
 
     public function testCreateHardLinkThrowsIfSourceIsDirectory(): void
     {
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Source "' . $this->directory . '" is not a file.');
+        $this->expectException(Filesystem\Exception\NotFileException::class);
+        $this->expectExceptionMessage('Path "' . $this->directory . '" does not point to a file.');
 
         Filesystem\create_hard_link($this->directory, '/foo/bar');
     }
@@ -174,17 +173,23 @@ final class LinkTest extends AbstractFilesystemTest
         $destination_directory = Str\join([$this->directory, 'foo'], Filesystem\SEPARATOR);
         $hardlink = Str\join([$destination_directory, 'hardlink.txt'], Filesystem\SEPARATOR);
 
-        Filesystem\create_file($file);
+        try {
+            Filesystem\create_file($file);
 
-        static::assertFalse(Filesystem\is_directory($destination_directory));
+            static::assertFalse(Filesystem\is_directory($destination_directory));
 
-        Filesystem\create_hard_link($file, $hardlink);
+            Filesystem\create_hard_link($file, $hardlink);
 
-        static::assertTrue(Filesystem\is_directory($destination_directory));
-        static::assertTrue(Filesystem\exists($hardlink));
-        static::assertFalse(Filesystem\is_symbolic_link($hardlink));
+            static::assertTrue(Filesystem\is_directory($destination_directory));
+            static::assertTrue(Filesystem\exists($hardlink));
+            static::assertFalse(Filesystem\is_symbolic_link($hardlink));
 
-        static::assertSame(Filesystem\get_inode($file), Filesystem\get_inode($hardlink));
+            static::assertSame(Filesystem\get_inode($file), Filesystem\get_inode($hardlink));
+        } finally {
+            Filesystem\delete_file($hardlink);
+            Filesystem\delete_directory($destination_directory, true);
+            Filesystem\delete_file($file);
+        }
     }
 
     public function testHardLinkOverwrite(): void

@@ -7,19 +7,18 @@ namespace Psl\Filesystem;
 use function is_file as php_is_file;
 
 /**
- * Check whether $filename is a regular file.
+ * Check whether $node is a regular file.
  *
- * @param string $filename Path to the file.
- *
- * If $filename is a relative filename, it will be checked relative to
+ * If $node is a relative filename, it will be checked relative to
  * the current working directory.
  *
- * If $filename is a symbolic or hard link then the link
- * will be resolved and checked.
+ * If $node is a symbolic or hard link then the link will be resolved and checked.
  *
- * @return bool true if $filename exists and is a regular file, false otherwise.
+ * @param non-empty-string $node
+ *
+ * @return bool true if $node exists and is a regular file, false otherwise.
  */
-function is_file(string $filename): bool
+function is_file(string $node): bool
 {
-    return php_is_file($filename);
+    return php_is_file($node);
 }

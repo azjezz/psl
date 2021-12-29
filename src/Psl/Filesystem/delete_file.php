@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem;
 
-use Psl;
 use Psl\Internal;
 use Psl\Str;
 
@@ -13,22 +12,28 @@ use function unlink;
 /**
  * Delete the file specified by $filename.
  *
- * @param non-empty-string $filename
+ * @param non-empty-string $file
  *
  * @throws Exception\RuntimeException If unable to delete the file.
- * @throws Psl\Exception\InvariantViolationException If the file specified by
- *                                                   $filename does not exist.
+ * @throws Exception\NotFileException If $file is not a file.
+ * @throws Exception\NotFoundException If $file is not a found.
  */
-function delete_file(string $filename): void
+function delete_file(string $file): void
 {
-    Psl\invariant(is_file($filename), 'File "%s" does not exist.', $filename);
+    if (!namespace\exists($file)) {
+        throw Exception\NotFoundException::forFile($file);
+    }
 
-    [$result, $error_message] = Internal\box(static fn() => unlink($filename));
+    if (!namespace\is_file($file)) {
+        throw Exception\NotFileException::for($file);
+    }
+
+    [$result, $error_message] = Internal\box(static fn(): bool => unlink($file));
     // @codeCoverageIgnoreStart
-    if (false === $result && is_file($filename)) {
+    if (false === $result && namespace\is_file($file)) {
         throw new Exception\RuntimeException(Str\format(
             'Failed to delete file "%s": %s.',
-            $filename,
+            $file,
             $error_message ?? 'internal error'
         ));
     }

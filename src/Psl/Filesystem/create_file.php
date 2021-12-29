@@ -33,15 +33,12 @@ function create_file(string $filename, ?int $time = null, ?int $access_time = nu
         $fun = static fn(): bool => touch($filename, $time, Math\maxva($access_time, $time));
     }
 
-    /** @psalm-suppress MissingThrowsDocblock */
-    $directory = get_directory($filename);
-    if (!is_directory($directory)) {
-        create_directory($directory);
-    }
+    $directory = namespace\get_directory($filename);
+    namespace\create_directory($directory);
 
     [$result, $error_message] = Internal\box($fun);
     // @codeCoverageIgnoreStart
-    if (false === $result && !is_file($filename)) {
+    if (false === $result && !namespace\is_file($filename)) {
         throw new Exception\RuntimeException(Str\format(
             'Failed to create file "%s": %s.',
             $filename,

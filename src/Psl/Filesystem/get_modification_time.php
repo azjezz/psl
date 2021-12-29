@@ -4,38 +4,31 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem;
 
-use Psl;
 use Psl\Internal;
 use Psl\Str;
 
 use function filemtime;
 
 /**
- * Get the last time the content of $filename was modified.
+ * Get the last time the content of $node was modified.
  *
- * @param non-empty-string $filename
+ * @param non-empty-string $node
  *
- * @throws Psl\Exception\InvariantViolationException If $filename does not exist.
+ * @throws Exception\NotFoundException If $node is not found.
  * @throws Exception\RuntimeException In case of an error.
  */
-function get_modification_time(string $filename): int
+function get_modification_time(string $node): int
 {
-    if (!namespace\exists($filename)) {
-        Psl\invariant_violation('File "%s" does not exist.', $filename);
+    if (!namespace\exists($node)) {
+        throw Exception\NotFoundException::forNode($node);
     }
 
-    [$result, $message] = Internal\box(
-        /**
-         * @return false|int
-         */
-        static fn() => filemtime($filename)
-    );
-
+    [$result, $message] = Internal\box(static fn(): false|int => filemtime($node));
     // @codeCoverageIgnoreStart
     if (false === $result) {
         throw new Exception\RuntimeException(Str\format(
             'Failed to retrieve the modification time of "%s": %s',
-            $filename,
+            $node,
             $message ?? 'internal error'
         ));
     }
