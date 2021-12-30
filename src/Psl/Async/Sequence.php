@@ -22,7 +22,7 @@ use function array_slice;
  */
 final class Sequence
 {
-    private bool $pending = false;
+    private bool $busy = false;
 
     /**
      * @var list<Suspension>
@@ -48,13 +48,13 @@ final class Sequence
      */
     public function waitFor(mixed $input): mixed
     {
-        if ($this->pending) {
+        if ($this->busy) {
             $this->suspensions[] = $suspension = Scheduler::createSuspension();
 
             $suspension->suspend();
         }
 
-        $this->pending = true;
+        $this->busy = true;
 
         try {
             return ($this->operation)($input);
@@ -64,7 +64,7 @@ final class Sequence
                 $this->suspensions = array_slice($this->suspensions, 1);
                 $suspension->resume();
             } else {
-                $this->pending = false;
+                $this->busy = false;
             }
         }
     }
@@ -83,5 +83,10 @@ final class Sequence
         foreach ($suspensions as $suspension) {
             $suspension->throw($exception);
         }
+    }
+
+    public function isBusy(): bool
+    {
+        return $this->busy;
     }
 }

@@ -159,4 +159,23 @@ final class SequenceTest extends TestCase
         static::assertGreaterThanOrEqual(0.06, $duration);
         static::assertSame('0.0200000.0200000.020000', $ref->value);
     }
+
+    public function testIsBusy(): void
+    {
+        /**
+         * @var Async\Sequence<string, string>
+         */
+        $s = new Async\Sequence(static function (string $input): string {
+            Async\sleep(0.04);
+
+            return $input;
+        });
+
+        $one = Async\run(static fn() => $s->waitFor('one'));
+        static::assertFalse($s->isBusy());
+        Async\later();
+        static::assertTrue($s->isBusy());
+        $one->await();
+        static::assertFalse($s->isBusy());
+    }
 }

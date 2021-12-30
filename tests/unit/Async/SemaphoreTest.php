@@ -152,4 +152,23 @@ final class SemaphoreTest extends TestCase
 
         $two->await();
     }
+
+    public function testIsBusy(): void
+    {
+        /**
+         * @var Async\Semaphore<string, string>
+         */
+        $semaphore = new Async\Semaphore(1, static function (string $input): string {
+            Async\sleep(0.04);
+
+            return $input;
+        });
+
+        $one = Async\run(static fn() => $semaphore->waitFor('one'));
+        static::assertFalse($semaphore->isBusy());
+        Async\later();
+        static::assertTrue($semaphore->isBusy());
+        $one->await();
+        static::assertFalse($semaphore->isBusy());
+    }
 }

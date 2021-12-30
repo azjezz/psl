@@ -85,4 +85,12 @@ final class Semaphore
             $suspension->throw($exception);
         }
     }
+
+    /**
+     * Check if the semaphore is busy.
+     */
+    public function isBusy(): bool
+    {
+        return $this->pending === $this->concurrencyLimit;
+    }
 }

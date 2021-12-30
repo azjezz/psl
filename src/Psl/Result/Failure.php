@@ -136,7 +136,7 @@ final class Failure implements ResultInterface
      */
     public function always(Closure $always): ResultInterface
     {
-        return wrap(function () use ($always) {
+        return wrap(function () use ($always): never {
             $always();
 
             throw $this->exception;
