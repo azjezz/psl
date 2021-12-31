@@ -79,6 +79,7 @@ final class Semaphore
                 foreach ($this->waits as $suspension) {
                     $suspension->resume();
                 }
+                $this->waits = [];
             }
 
             /** @psalm-suppress InvalidPropertyAssignmentValue - valid */
@@ -170,7 +171,6 @@ final class Semaphore
 
         $suspension = Scheduler::createSuspension();
         $this->waits[] = $suspension;
-
         $suspension->suspend();
     }
 
