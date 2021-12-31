@@ -70,20 +70,20 @@ abstract class AbstractStreamServer implements StreamServerInterface
      */
     public function nextConnection(): Network\StreamSocketInterface
     {
-        if (null !== $this->suspension) {
-            $suspension = Async\Scheduler::createSuspension();
-            $this->queue[] = $suspension;
-            $suspension->suspend();
-        }
-
         if (null === $this->impl) {
             throw new Network\Exception\AlreadyStoppedException('Server socket has already been stopped.');
         }
 
-        $this->suspension = Async\Scheduler::createSuspension();
+        if (null !== $this->suspension) {
+            $suspension = Async\Scheduler::createSuspension();
+            $this->queue[] = $suspension;
+            $suspension->suspend();
+        } else {
+            /** @psalm-suppress MissingThrowsDocblock */
+            Async\Scheduler::enable($this->watcher);
+        }
 
-        /** @psalm-suppress MissingThrowsDocblock */
-        Async\Scheduler::enable($this->watcher);
+        $this->suspension = Async\Scheduler::createSuspension();
 
         try {
             /** @var resource $stream */
@@ -91,11 +91,11 @@ abstract class AbstractStreamServer implements StreamServerInterface
 
             return new Socket($stream);
         } finally {
-            Async\Scheduler::disable($this->watcher);
             $suspension = array_shift($this->queue);
             if (null !== $suspension) {
                 $suspension->resume();
             } else {
+                Async\Scheduler::disable($this->watcher);
                 $this->suspension = null;
             }
         }
