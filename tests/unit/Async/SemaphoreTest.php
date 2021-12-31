@@ -165,10 +165,10 @@ final class SemaphoreTest extends TestCase
         });
 
         $one = Async\run(static fn() => $semaphore->waitFor('one'));
-        static::assertFalse($semaphore->isBusy());
+        static::assertFalse($semaphore->isFull());
         Async\later();
-        static::assertTrue($semaphore->isBusy());
+        static::assertTrue($semaphore->isFull());
         $one->await();
-        static::assertFalse($semaphore->isBusy());
+        static::assertFalse($semaphore->isFull());
     }
 }

@@ -85,6 +85,12 @@ final class Sequence
         }
     }
 
+    /**
+     * Check if the sequence is busy.
+     *
+     * If this method returns `true`, it means future calls to `waitFor` will wait before executing operation.
+     * If this method return `false`, it means future calls to `waitFor` will be executed immediately.
+     */
     public function isBusy(): bool
     {
         return $this->busy;
