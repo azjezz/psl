@@ -153,7 +153,7 @@ final class SemaphoreTest extends TestCase
         $two->await();
     }
 
-    public function testIsBusy(): void
+    public function testSemaphoreStatus(): void
     {
         /**
          * @var Async\Semaphore<string, string>
@@ -165,10 +165,48 @@ final class SemaphoreTest extends TestCase
         });
 
         $one = Async\run(static fn() => $semaphore->waitFor('one'));
+        $two = Async\run(static fn() => $semaphore->waitFor('two'));
         static::assertFalse($semaphore->isFull());
+        static::assertSame(0, $semaphore->getIngoingOperations());
+        static::assertSame(0, $semaphore->getPendingOperations());
+        static::assertFalse($semaphore->hasIngoingOperations());
+        static::assertFalse($semaphore->hasPendingOperations());
         Async\later();
         static::assertTrue($semaphore->isFull());
+        static::assertSame(1, $semaphore->getIngoingOperations());
+        static::assertSame(1, $semaphore->getPendingOperations());
+        static::assertTrue($semaphore->hasPendingOperations());
+        static::assertTrue($semaphore->hasIngoingOperations());
         $one->await();
+        static::assertTrue($semaphore->isFull());
+        static::assertSame(1, $semaphore->getIngoingOperations());
+        static::assertSame(0, $semaphore->getPendingOperations());
+        static::assertTrue($semaphore->hasIngoingOperations());
+        static::assertFalse($semaphore->hasPendingOperations());
+        $two->await();
         static::assertFalse($semaphore->isFull());
+        static::assertSame(0, $semaphore->getIngoingOperations());
+        static::assertSame(0, $semaphore->getPendingOperations());
+        static::assertFalse($semaphore->hasIngoingOperations());
+        static::assertFalse($semaphore->hasPendingOperations());
+    }
+
+    public function testWaitForRoom(): void
+    {
+        /**
+         * @var Async\Semaphore<string, string>
+         */
+        $semaphore = new Async\Semaphore(1, static function (string $input): string {
+            Async\sleep(0.04);
+
+            return $input;
+        });
+
+        $one = Async\run(static fn() => $semaphore->waitFor('one'));
+        Async\later();
+        static::assertFalse($one->isComplete());
+        $semaphore->waitForRoom();
+        static::assertTrue($one->isComplete());
+        static::assertSame('one', $one->await());
     }
 }
