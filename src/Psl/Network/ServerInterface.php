@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Network;
 
+use Generator;
 use Psl\IO;
 
 /**
@@ -20,6 +21,15 @@ interface ServerInterface extends IO\CloseHandleInterface
      * @throws Exception\AlreadyStoppedException In case the server socket has already been closed.
      */
     public function nextConnection(): SocketInterface;
+
+    /**
+     * Return a generator that yield's connections, until the server is closed.
+     *
+     * @throws Exception\RuntimeException In case failed to accept incoming connection.
+     *
+     * @return Generator<null, SocketInterface, void, void>
+     */
+    public function incoming(): Generator;
 
     /**
      * Return the local (listening) address for the server.

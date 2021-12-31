@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Network;
 
+use Generator;
 use Psl\IO;
 
 /**
@@ -17,4 +18,11 @@ interface StreamServerInterface extends IO\CloseStreamHandleInterface, ServerInt
      * {@inheritDoc}
      */
     public function nextConnection(): StreamSocketInterface;
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return Generator<null, StreamSocketInterface, void, void>
+     */
+    public function incoming(): Generator;
 }

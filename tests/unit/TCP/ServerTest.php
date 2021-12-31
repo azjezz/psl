@@ -74,6 +74,22 @@ final class ServerTest extends TestCase
         $server->close();
     }
 
+    public function testIncoming(): void
+    {
+        $server = TCP\Server::create('127.0.0.1');
+        $incoming = $server->incoming();
+        Async\Scheduler::delay(0.01, static fn() => $server->close());
+        Async\Scheduler::defer(static function () use ($server) {
+            TCP\connect('127.0.0.1', $server->getLocalAddress()->port);
+        });
+
+        $connections = [];
+        foreach ($incoming as $connection) {
+            $connections[] = $connection;
+        }
+        static::assertCount(1, $connections);
+    }
+
     public function testAccessUnderlyingStream(): void
     {
         $server = TCP\Server::create('127.0.0.1');

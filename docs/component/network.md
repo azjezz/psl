@@ -12,9 +12,9 @@
 
 #### `Interfaces`
 
-- [ServerInterface](./../../src/Psl/Network/ServerInterface.php#L12)
+- [ServerInterface](./../../src/Psl/Network/ServerInterface.php#L13)
 - [SocketInterface](./../../src/Psl/Network/SocketInterface.php#L15)
-- [StreamServerInterface](./../../src/Psl/Network/StreamServerInterface.php#L14)
+- [StreamServerInterface](./../../src/Psl/Network/StreamServerInterface.php#L15)
 - [StreamSocketInterface](./../../src/Psl/Network/StreamSocketInterface.php#L17)
 
 #### `Classes`

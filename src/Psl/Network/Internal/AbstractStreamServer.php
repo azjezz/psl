@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Network\Internal;
 
+use Generator;
 use Psl\Async;
 use Psl\Network;
 use Psl\Network\StreamServerInterface;
@@ -97,6 +98,21 @@ abstract class AbstractStreamServer implements StreamServerInterface
             } else {
                 $this->suspension = null;
             }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function incoming(): Generator
+    {
+        try {
+            while (true) {
+                // set null as key to prevent PHP from used incremental integer keys.
+                yield null => $this->nextConnection();
+            }
+        } catch (Network\Exception\AlreadyStoppedException) {
+            return;
         }
     }
 
