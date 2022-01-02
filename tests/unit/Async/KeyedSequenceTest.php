@@ -8,11 +8,11 @@ use PHPUnit\Framework\TestCase;
 use Psl;
 use Psl\Async;
 
-final class KeyedSemaphoreTest extends TestCase
+final class KeyedSequenceTest extends TestCase
 {
     public function testItCallsTheOperation(): void
     {
-        $ks = new Async\KeyedSemaphore(1, static function (string $key, int $input): int {
+        $ks = new Async\KeyedSequence(static function (string $key, int $input): int {
             static::assertSame('one', $key);
 
             return $input * 2;
@@ -26,9 +26,9 @@ final class KeyedSemaphoreTest extends TestCase
         $spy = new Psl\Ref([]);
 
         /**
-         * @var Async\KeyedSemaphore<string, array{time: ?float, value: string}, void>
+         * @var Async\KeyedSequence<string, array{time: ?float, value: string}, void>
          */
-        $ks = new Async\KeyedSemaphore(1, static function (string $key, array $data) use ($spy): void {
+        $ks = new Async\KeyedSequence(static function (string $key, array $data) use ($spy): void {
             static::assertSame('operation', $key);
 
             if ($data['time'] !== null) {
@@ -47,39 +47,14 @@ final class KeyedSemaphoreTest extends TestCase
         static::assertSame(['a', 'b', 'c', 'd'], $spy->value);
     }
 
-    public function testOperationWaitsForPendingOperationsWhenLimitIsNotReached(): void
-    {
-        $spy = new Psl\Ref([]);
-
-        /**
-         * @var Async\KeyedSemaphore<string, array{time: ?float, value: string}, void>
-         */
-        $ks = new Async\KeyedSemaphore(2, static function (string $_, array $data) use ($spy): void {
-            if ($data['time'] !== null) {
-                Async\sleep($data['time']);
-            }
-
-            $spy->value[] = $data['value'];
-        });
-
-        Async\run(static fn() => $ks->waitFor('key', ['time' => 0.003, 'value' => 'a']));
-        Async\run(static fn() => $ks->waitFor('key', ['time' => 0.004, 'value' => 'b']));
-        $beforeLast = Async\run(static fn() => $ks->waitFor('key', ['time' => 0.005, 'value' => 'c']));
-        Async\run(static fn() => $ks->waitFor('key', ['time' => null, 'value' => 'd']));
-
-        $beforeLast->await();
-
-        static::assertSame(['a', 'b', 'd', 'c'], $spy->value);
-    }
-
     public function testOperationIsStartedIfLimitIsNotReached(): void
     {
         $spy = new Psl\Ref([]);
 
         /**
-         * @var Async\KeyedSemaphore<string, string, void>
+         * @var Async\KeyedSequence<string, string, void>
          */
-        $ks = new Async\KeyedSemaphore(1, static function (string $_, string $input) use ($spy): void {
+        $ks = new Async\KeyedSequence(static function (string $_, string $input) use ($spy): void {
             $spy->value[] = $input;
 
             Async\sleep(0.002);
@@ -99,16 +74,16 @@ final class KeyedSemaphoreTest extends TestCase
         $spy = new Psl\Ref([]);
 
         /**
-         * @var Async\KeyedSemaphore<string, string, void>
+         * @var Async\KeyedSequence<string, string, void>
          */
-        $semaphore = new Async\KeyedSemaphore(1, static function (string $_, string $input) use ($spy): void {
+        $ks = new Async\KeyedSequence(static function (string $_, string $input) use ($spy): void {
             $spy->value[] = $input;
 
             Async\sleep(0.002);
         });
 
-        Async\run(static fn() => $semaphore->waitFor('x', 'hello'));
-        $awaitable = Async\run(static fn() => $semaphore->waitFor('x', 'world'));
+        Async\run(static fn() => $ks->waitFor('x', 'hello'));
+        $awaitable = Async\run(static fn() => $ks->waitFor('x', 'world'));
 
         Async\sleep(0.001);
 
@@ -120,9 +95,9 @@ final class KeyedSemaphoreTest extends TestCase
     public function testCancelingTheSemaphoreAllowsForFutureOperations(): void
     {
         /**
-         * @var Async\KeyedSemaphore<string, string, string>
+         * @var Async\KeyedSequence<string, string, string>
          */
-        $semaphore = new Async\KeyedSemaphore(1, static function (string $_, string $input): string {
+        $semaphore = new Async\KeyedSequence(static function (string $_, string $input): string {
             return $input;
         });
 
@@ -134,9 +109,9 @@ final class KeyedSemaphoreTest extends TestCase
     public function testCancelPendingOperationsButNotTheOngoingOne(): void
     {
         /**
-         * @var Async\KeyedSemaphore<string, string, string>
+         * @var Async\KeyedSequence<string, string, string>
          */
-        $ks = new Async\KeyedSemaphore(1, static function (string $_, string $input): string {
+        $ks = new Async\KeyedSequence(static function (string $_, string $input): string {
             Async\sleep(0.04);
 
             return $input;
@@ -160,9 +135,9 @@ final class KeyedSemaphoreTest extends TestCase
     public function testCancelAllPendingOperations(): void
     {
         /**
-         * @var Async\KeyedSemaphore<string, string, string>
+         * @var Async\KeyedSequence<string, string, string>
          */
-        $ks = new Async\KeyedSemaphore(1, static function (string $_, string $input): string {
+        $ks = new Async\KeyedSequence(static function (string $_, string $input): string {
             Async\sleep(0.04);
 
             return $input;
@@ -200,9 +175,9 @@ final class KeyedSemaphoreTest extends TestCase
     public function testSemaphoreStatus(): void
     {
         /**
-         * @var Async\KeyedSemaphore<string, string, string>
+         * @var Async\KeyedSequence<string, string, string>
          */
-        $ks = new Async\KeyedSemaphore(1, static function (string $_, string $input): string {
+        $ks = new Async\KeyedSequence(static function (string $_, string $input): string {
             Async\sleep(0.04);
 
             return $input;
@@ -212,7 +187,6 @@ final class KeyedSemaphoreTest extends TestCase
 
         $one = Async\run(static fn() => $ks->waitFor($key, 'one'));
         $two = Async\run(static fn() => $ks->waitFor($key, 'two'));
-        static::assertSame(0, $ks->getIngoingOperations($key));
         static::assertSame(0, $ks->getPendingOperations($key));
         static::assertFalse($ks->hasIngoingOperations($key));
         static::assertFalse($ks->hasPendingOperations($key));
@@ -221,7 +195,6 @@ final class KeyedSemaphoreTest extends TestCase
         static::assertFalse($ks->hasAnyIngoingOperations());
         static::assertFalse($ks->hasAnyPendingOperations());
         Async\later();
-        static::assertSame(1, $ks->getIngoingOperations($key));
         static::assertSame(1, $ks->getPendingOperations($key));
         static::assertTrue($ks->hasPendingOperations($key));
         static::assertTrue($ks->hasIngoingOperations($key));
@@ -230,7 +203,6 @@ final class KeyedSemaphoreTest extends TestCase
         static::assertTrue($ks->hasAnyPendingOperations());
         static::assertTrue($ks->hasAnyIngoingOperations());
         $one->await();
-        static::assertSame(1, $ks->getIngoingOperations($key));
         static::assertSame(0, $ks->getPendingOperations($key));
         static::assertTrue($ks->hasIngoingOperations($key));
         static::assertFalse($ks->hasPendingOperations($key));
@@ -239,7 +211,6 @@ final class KeyedSemaphoreTest extends TestCase
         static::assertTrue($ks->hasAnyIngoingOperations());
         static::assertFalse($ks->hasAnyPendingOperations());
         $two->await();
-        static::assertSame(0, $ks->getIngoingOperations($key));
         static::assertSame(0, $ks->getPendingOperations($key));
         static::assertFalse($ks->hasIngoingOperations($key));
         static::assertFalse($ks->hasPendingOperations($key));
@@ -252,9 +223,9 @@ final class KeyedSemaphoreTest extends TestCase
     public function testWaitForRoom(): void
     {
         /**
-         * @var Async\KeyedSemaphore<string, string, string>
+         * @var Async\KeyedSequence<string, string, string>
          */
-        $ks = new Async\KeyedSemaphore(1, static function (string $_, string $input): string {
+        $ks = new Async\KeyedSequence(static function (string $_, string $input): string {
             Async\sleep(0.04);
             return $input;
         });
@@ -270,13 +241,12 @@ final class KeyedSemaphoreTest extends TestCase
     public function testConcurrencyLimitOnDifferentKeys(): void
     {
         /**
-         * @var Async\KeyedSemaphore<string, string, string>
+         * @var Async\KeyedSequence<string, string, string>
          */
-        $ks = new Async\KeyedSemaphore(1, static function (string $_, string $input): string {
+        $ks = new Async\KeyedSequence(static function (string $_, string $input): string {
             Async\sleep(0.04);
             return $input;
         });
-        static::assertSame(1, $ks->getConcurrencyLimit());
 
         static::assertFalse($ks->hasIngoingOperations('foo'));
         static::assertFalse($ks->hasIngoingOperations('bar'));

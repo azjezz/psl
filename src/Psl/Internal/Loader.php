@@ -664,6 +664,7 @@ final class Loader
         'Psl\Async\Semaphore',
         'Psl\Async\KeyedSemaphore',
         'Psl\Async\Sequence',
+        'Psl\Async\KeyedSequence',
         'Psl\Async\Deferred',
         'Psl\Async\Scheduler',
         'Psl\IO\CloseStreamHandle',

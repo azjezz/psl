@@ -138,6 +138,8 @@ final class SemaphoreTest extends TestCase
             return $input;
         });
 
+        static::assertSame(1, $semaphore->getConcurrencyLimit());
+
         $one = Async\run(static fn() => $semaphore->waitFor('one'));
         $two = Async\run(static fn() => $semaphore->waitFor('two'));
 
@@ -166,32 +168,28 @@ final class SemaphoreTest extends TestCase
 
         $one = Async\run(static fn() => $semaphore->waitFor('one'));
         $two = Async\run(static fn() => $semaphore->waitFor('two'));
-        static::assertFalse($semaphore->hasReachedLimit());
         static::assertSame(0, $semaphore->getIngoingOperations());
         static::assertSame(0, $semaphore->getPendingOperations());
         static::assertFalse($semaphore->hasIngoingOperations());
         static::assertFalse($semaphore->hasPendingOperations());
         Async\later();
-        static::assertTrue($semaphore->hasReachedLimit());
         static::assertSame(1, $semaphore->getIngoingOperations());
         static::assertSame(1, $semaphore->getPendingOperations());
         static::assertTrue($semaphore->hasPendingOperations());
         static::assertTrue($semaphore->hasIngoingOperations());
         $one->await();
-        static::assertTrue($semaphore->hasReachedLimit());
         static::assertSame(1, $semaphore->getIngoingOperations());
         static::assertSame(0, $semaphore->getPendingOperations());
         static::assertTrue($semaphore->hasIngoingOperations());
         static::assertFalse($semaphore->hasPendingOperations());
         $two->await();
-        static::assertFalse($semaphore->hasReachedLimit());
         static::assertSame(0, $semaphore->getIngoingOperations());
         static::assertSame(0, $semaphore->getPendingOperations());
         static::assertFalse($semaphore->hasIngoingOperations());
         static::assertFalse($semaphore->hasPendingOperations());
     }
 
-    public function testWaitForRoom(): void
+    public function testWaitForPending(): void
     {
         /**
          * @var Async\Semaphore<string, string>

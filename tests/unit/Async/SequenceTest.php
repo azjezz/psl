@@ -160,7 +160,7 @@ final class SequenceTest extends TestCase
         static::assertSame('0.0200000.0200000.020000', $ref->value);
     }
 
-    public function testIsBusy(): void
+    public function testStatus(): void
     {
         /**
          * @var Async\Sequence<string, string>
@@ -172,10 +172,53 @@ final class SequenceTest extends TestCase
         });
 
         $one = Async\run(static fn() => $s->waitFor('one'));
-        static::assertFalse($s->isBusy());
+        $two = Async\run(static fn() => $s->waitFor('two'));
+        static::assertFalse($s->hasIngoingOperations());
+        static::assertFalse($s->hasPendingOperations());
+        static::assertSame(0, $s->getPendingOperations());
         Async\later();
-        static::assertTrue($s->isBusy());
+        static::assertTrue($s->hasIngoingOperations());
+        static::assertTrue($s->hasPendingOperations());
+        static::assertSame(1, $s->getPendingOperations());
         $one->await();
-        static::assertFalse($s->isBusy());
+        static::assertTrue($s->hasIngoingOperations());
+        static::assertFalse($s->hasPendingOperations());
+        static::assertSame(0, $s->getPendingOperations());
+        $two->await();
+        static::assertFalse($s->hasIngoingOperations());
+        static::assertFalse($s->hasPendingOperations());
+        static::assertSame(0, $s->getPendingOperations());
+    }
+
+    public function testWaitForPending(): void
+    {
+        /**
+         * @var Async\Sequence<string, string>
+         */
+        $s = new Async\Sequence(static function (string $input): string {
+            Async\sleep(0.04);
+
+            return $input;
+        });
+
+        $one = Async\run(static fn() => $s->waitFor('one'));
+        $two = Async\run(static fn() => $s->waitFor('two'));
+        static::assertFalse($s->hasIngoingOperations());
+        static::assertFalse($s->hasPendingOperations());
+        static::assertSame(0, $s->getPendingOperations());
+        static::assertFalse($one->isComplete());
+        static::assertFalse($two->isComplete());
+        Async\later();
+        static::assertTrue($s->hasIngoingOperations());
+        static::assertTrue($s->hasPendingOperations());
+        static::assertSame(1, $s->getPendingOperations());
+        static::assertFalse($one->isComplete());
+        static::assertFalse($two->isComplete());
+        $s->waitForPending();
+        static::assertFalse($s->hasIngoingOperations());
+        static::assertFalse($s->hasPendingOperations());
+        static::assertSame(0, $s->getPendingOperations());
+        static::assertTrue($one->isComplete());
+        static::assertTrue($two->isComplete());
     }
 }

@@ -158,7 +158,7 @@ final class Semaphore
     }
 
     /**
-     * Wait for all pending operations to start execution.
+     * Wait for all pending operations to finish execution.
      */
     public function waitForPending(): void
     {
@@ -169,16 +169,5 @@ final class Semaphore
         $suspension = Scheduler::createSuspension();
         $this->waits[] = $suspension;
         $suspension->suspend();
-    }
-
-    /**
-     * Check if the semaphore has reached it's limit.
-     *
-     * If this method returns `true`, it means future calls to `waitFor` will wait before executing operation.
-     * If this method return `false`, it means future calls to `waitFor` will be executed immediately.
-     */
-    public function hasReachedLimit(): bool
-    {
-        return $this->ingoing === $this->concurrencyLimit;
     }
 }

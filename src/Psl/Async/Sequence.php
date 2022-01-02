@@ -22,12 +22,17 @@ use function array_slice;
  */
 final class Sequence
 {
-    private bool $busy = false;
+    private bool $ingoing = false;
 
     /**
      * @var list<Suspension>
      */
-    private array $suspensions = [];
+    private array $pending = [];
+
+    /**
+     * @var list<Suspension>
+     */
+    private array $waits = [];
 
     /**
      * @param (Closure(Tin): Tout) $operation
@@ -48,23 +53,28 @@ final class Sequence
      */
     public function waitFor(mixed $input): mixed
     {
-        if ($this->busy) {
-            $this->suspensions[] = $suspension = Scheduler::createSuspension();
+        if ($this->ingoing) {
+            $this->pending[] = $suspension = Scheduler::createSuspension();
 
             $suspension->suspend();
         }
 
-        $this->busy = true;
+        $this->ingoing = true;
 
         try {
             return ($this->operation)($input);
         } finally {
-            $suspension = $this->suspensions[0] ?? null;
+            $suspension = $this->pending[0] ?? null;
             if ($suspension !== null) {
-                $this->suspensions = array_slice($this->suspensions, 1);
+                $this->pending = array_slice($this->pending, 1);
                 $suspension->resume();
             } else {
-                $this->busy = false;
+                foreach ($this->waits as $suspension) {
+                    $suspension->resume();
+                }
+                $this->waits = [];
+
+                $this->ingoing = false;
             }
         }
     }
@@ -78,21 +88,56 @@ final class Sequence
      */
     public function cancel(Exception $exception): void
     {
-        $suspensions = $this->suspensions;
-        $this->suspensions = [];
+        $suspensions = $this->pending;
+        $this->pending = [];
         foreach ($suspensions as $suspension) {
             $suspension->throw($exception);
         }
     }
 
     /**
-     * Check if the sequence is busy.
+     * Get the number of operations pending execution.
      *
-     * If this method returns `true`, it means future calls to `waitFor` will wait before executing operation.
-     * If this method return `false`, it means future calls to `waitFor` will be executed immediately.
+     * @return int<0, max>
      */
-    public function isBusy(): bool
+    public function getPendingOperations(): int
     {
-        return $this->busy;
+        /** @var int<0, max> */
+        return count($this->pending);
+    }
+
+    /**
+     * Check if there's any operations pending execution.
+     *
+     * If this method returns `true`, it means future calls to `waitFor` will wait.
+     */
+    public function hasPendingOperations(): bool
+    {
+        return $this->pending !== [];
+    }
+
+    /**
+     * Check if the sequence has any ingoing operations.
+     *
+     * If this method returns `true`, it means future calls to `waitFor` will wait.
+     * If this method returns `false`, it means future calls to `waitFor` will execute immediately.
+     */
+    public function hasIngoingOperations(): bool
+    {
+        return $this->ingoing;
+    }
+
+    /**
+     * Wait for all pending operations to finish execution.
+     */
+    public function waitForPending(): void
+    {
+        if (!$this->ingoing) {
+            return;
+        }
+
+        $suspension = Scheduler::createSuspension();
+        $this->waits[] = $suspension;
+        $suspension->suspend();
     }
 }
