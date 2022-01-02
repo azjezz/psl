@@ -662,6 +662,7 @@ final class Loader
         'Psl\Async\Internal\State',
         'Psl\Async\Awaitable',
         'Psl\Async\Semaphore',
+        'Psl\Async\KeyedSemaphore',
         'Psl\Async\Sequence',
         'Psl\Async\Deferred',
         'Psl\Async\Scheduler',

@@ -87,7 +87,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
 
         try {
             /** @var resource $stream */
-            $stream = $this->suspension?->suspend();
+            $stream = $this->suspension->suspend();
 
             return new Socket($stream);
         } finally {

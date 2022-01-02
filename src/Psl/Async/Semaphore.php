@@ -175,12 +175,12 @@ final class Semaphore
     }
 
     /**
-     * Check if the semaphore is full.
+     * Check if the semaphore has reached it's limit.
      *
      * If this method returns `true`, it means future calls to `waitFor` will wait before executing operation.
      * If this method return `false`, it means future calls to `waitFor` will be executed immediately.
      */
-    public function isFull(): bool
+    public function hasReachedLimit(): bool
     {
         return $this->ingoing === $this->concurrencyLimit;
     }

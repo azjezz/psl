@@ -1,0 +1,331 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\Tests\Unit\Async;
+
+use PHPUnit\Framework\TestCase;
+use Psl;
+use Psl\Async;
+
+final class KeyedSemaphoreTest extends TestCase
+{
+    public function testItCallsTheOperation(): void
+    {
+        $ks = new Async\KeyedSemaphore(1, static function (string $key, int $input): int {
+            static::assertSame('one', $key);
+
+            return $input * 2;
+        });
+
+        static::assertSame(4, $ks->waitFor('one', 2));
+    }
+
+    public function testSequenceOperationWaitsForPendingOperationsWhenLimitIsNotReached(): void
+    {
+        $spy = new Psl\Ref([]);
+
+        /**
+         * @var Async\KeyedSemaphore<string, array{time: ?float, value: string}, void>
+         */
+        $ks = new Async\KeyedSemaphore(1, static function (string $key, array $data) use ($spy): void {
+            static::assertSame('operation', $key);
+
+            if ($data['time'] !== null) {
+                Async\sleep($data['time']);
+            }
+
+            $spy->value[] = $data['value'];
+        });
+
+        Async\run(static fn() => $ks->waitFor('operation', ['time' => 0.003, 'value' => 'a']));
+        Async\run(static fn() => $ks->waitFor('operation', ['time' => 0.004, 'value' => 'b']));
+        Async\run(static fn() => $ks->waitFor('operation', ['time' => 0.005, 'value' => 'c']));
+        $last = Async\run(static fn() => $ks->waitFor('operation', ['time' => null, 'value' => 'd']));
+        $last->await();
+
+        static::assertSame(['a', 'b', 'c', 'd'], $spy->value);
+    }
+
+    public function testOperationWaitsForPendingOperationsWhenLimitIsNotReached(): void
+    {
+        $spy = new Psl\Ref([]);
+
+        /**
+         * @var Async\KeyedSemaphore<string, array{time: ?float, value: string}, void>
+         */
+        $ks = new Async\KeyedSemaphore(2, static function (string $_, array $data) use ($spy): void {
+            if ($data['time'] !== null) {
+                Async\sleep($data['time']);
+            }
+
+            $spy->value[] = $data['value'];
+        });
+
+        Async\run(static fn() => $ks->waitFor('key', ['time' => 0.003, 'value' => 'a']));
+        Async\run(static fn() => $ks->waitFor('key', ['time' => 0.004, 'value' => 'b']));
+        $beforeLast = Async\run(static fn() => $ks->waitFor('key', ['time' => 0.005, 'value' => 'c']));
+        Async\run(static fn() => $ks->waitFor('key', ['time' => null, 'value' => 'd']));
+
+        $beforeLast->await();
+
+        static::assertSame(['a', 'b', 'd', 'c'], $spy->value);
+    }
+
+    public function testOperationIsStartedIfLimitIsNotReached(): void
+    {
+        $spy = new Psl\Ref([]);
+
+        /**
+         * @var Async\KeyedSemaphore<string, string, void>
+         */
+        $ks = new Async\KeyedSemaphore(1, static function (string $_, string $input) use ($spy): void {
+            $spy->value[] = $input;
+
+            Async\sleep(0.002);
+        });
+
+        $awaitable = Async\run(static fn() => $ks->waitFor('x', 'hello'));
+
+        Async\later();
+
+        static::assertSame(['hello'], $spy->value);
+
+        $awaitable->await();
+    }
+
+    public function testOperationIsNotStartedIfLimitIsReached(): void
+    {
+        $spy = new Psl\Ref([]);
+
+        /**
+         * @var Async\KeyedSemaphore<string, string, void>
+         */
+        $semaphore = new Async\KeyedSemaphore(1, static function (string $_, string $input) use ($spy): void {
+            $spy->value[] = $input;
+
+            Async\sleep(0.002);
+        });
+
+        Async\run(static fn() => $semaphore->waitFor('x', 'hello'));
+        $awaitable = Async\run(static fn() => $semaphore->waitFor('x', 'world'));
+
+        Async\sleep(0.001);
+
+        static::assertNotContains('world', $spy->value);
+
+        $awaitable->await();
+    }
+
+    public function testCancelingTheSemaphoreAllowsForFutureOperations(): void
+    {
+        /**
+         * @var Async\KeyedSemaphore<string, string, string>
+         */
+        $semaphore = new Async\KeyedSemaphore(1, static function (string $_, string $input): string {
+            return $input;
+        });
+
+        $semaphore->cancelAll(new Async\Exception\TimeoutException('The semaphore is destroyed.'));
+
+        static::assertSame('hello', $semaphore->waitFor('x', 'hello'));
+    }
+
+    public function testCancelPendingOperationsButNotTheOngoingOne(): void
+    {
+        /**
+         * @var Async\KeyedSemaphore<string, string, string>
+         */
+        $ks = new Async\KeyedSemaphore(1, static function (string $_, string $input): string {
+            Async\sleep(0.04);
+
+            return $input;
+        });
+
+        $one = Async\run(static fn() => $ks->waitFor('foo', 'one'));
+        $two = Async\run(static fn() => $ks->waitFor('foo', 'two'));
+
+        Async\sleep(0.01);
+
+        $ks->cancel('foo', new Async\Exception\TimeoutException('The semaphore is destroyed.'));
+
+        static::assertSame('one', $one->await());
+
+        $this->expectException(Async\Exception\TimeoutException::class);
+        $this->expectExceptionMessage('The semaphore is destroyed.');
+
+        $two->await();
+    }
+
+    public function testCancelAllPendingOperations(): void
+    {
+        /**
+         * @var Async\KeyedSemaphore<string, string, string>
+         */
+        $ks = new Async\KeyedSemaphore(1, static function (string $_, string $input): string {
+            Async\sleep(0.04);
+
+            return $input;
+        });
+
+        $ingoing = [
+            Async\run(static fn() => $ks->waitFor('foo', 'ingoing')),
+            Async\run(static fn() => $ks->waitFor('bar', 'ingoing')),
+            Async\run(static fn() => $ks->waitFor('baz', 'ingoing'))
+        ];
+
+        $pending = [
+            Async\run(static fn() => $ks->waitFor('foo', 'pending')),
+            Async\run(static fn() => $ks->waitFor('bar', 'pending')),
+            Async\run(static fn() => $ks->waitFor('baz', 'pending'))
+        ];
+
+        Async\sleep(0.01);
+
+        $ks->cancelAll(new Async\Exception\TimeoutException('The semaphore is destroyed.'));
+
+        foreach ($pending as $awaitable) {
+            try {
+                static::assertSame('ingoing', $awaitable->await());
+            } catch (Async\Exception\TimeoutException $e) {
+                static::assertSame('The semaphore is destroyed.', $e->getMessage());
+            }
+        }
+    }
+
+    public function testSemaphoreStatus(): void
+    {
+        /**
+         * @var Async\KeyedSemaphore<string, string, string>
+         */
+        $ks = new Async\KeyedSemaphore(1, static function (string $_, string $input): string {
+            Async\sleep(0.04);
+
+            return $input;
+        });
+
+        $key = 'foo';
+
+        $one = Async\run(static fn() => $ks->waitFor($key, 'one'));
+        $two = Async\run(static fn() => $ks->waitFor($key, 'two'));
+        static::assertFalse($ks->hasReachedLimit($key));
+        static::assertSame(0, $ks->getIngoingOperations($key));
+        static::assertSame(0, $ks->getPendingOperations($key));
+        static::assertFalse($ks->hasIngoingOperations($key));
+        static::assertFalse($ks->hasPendingOperations($key));
+        static::assertSame(0, $ks->getTotalIngoingOperations());
+        static::assertSame(0, $ks->getTotalPendingOperations());
+        static::assertFalse($ks->hasAnyIngoingOperations());
+        static::assertFalse($ks->hasAnyPendingOperations());
+        Async\later();
+        static::assertTrue($ks->hasReachedLimit($key));
+        static::assertSame(1, $ks->getIngoingOperations($key));
+        static::assertSame(1, $ks->getPendingOperations($key));
+        static::assertTrue($ks->hasPendingOperations($key));
+        static::assertTrue($ks->hasIngoingOperations($key));
+        static::assertSame(1, $ks->getTotalIngoingOperations());
+        static::assertSame(1, $ks->getTotalPendingOperations());
+        static::assertTrue($ks->hasAnyPendingOperations());
+        static::assertTrue($ks->hasAnyIngoingOperations());
+        $one->await();
+        static::assertTrue($ks->hasReachedLimit($key));
+        static::assertSame(1, $ks->getIngoingOperations($key));
+        static::assertSame(0, $ks->getPendingOperations($key));
+        static::assertTrue($ks->hasIngoingOperations($key));
+        static::assertFalse($ks->hasPendingOperations($key));
+        static::assertSame(1, $ks->getTotalIngoingOperations());
+        static::assertSame(0, $ks->getTotalPendingOperations());
+        static::assertTrue($ks->hasAnyIngoingOperations());
+        static::assertFalse($ks->hasAnyPendingOperations());
+        $two->await();
+        static::assertFalse($ks->hasReachedLimit($key));
+        static::assertSame(0, $ks->getIngoingOperations($key));
+        static::assertSame(0, $ks->getPendingOperations($key));
+        static::assertFalse($ks->hasIngoingOperations($key));
+        static::assertFalse($ks->hasPendingOperations($key));
+        static::assertSame(0, $ks->getTotalIngoingOperations());
+        static::assertSame(0, $ks->getTotalPendingOperations());
+        static::assertFalse($ks->hasAnyIngoingOperations());
+        static::assertFalse($ks->hasAnyPendingOperations());
+    }
+
+    public function testWaitForRoom(): void
+    {
+        /**
+         * @var Async\KeyedSemaphore<string, string, string>
+         */
+        $ks = new Async\KeyedSemaphore(1, static function (string $_, string $input): string {
+            Async\sleep(0.04);
+            return $input;
+        });
+
+        $one = Async\run(static fn() => $ks->waitFor('foo', 'one'));
+        Async\later();
+        static::assertFalse($one->isComplete());
+        $ks->waitForRoom('foo');
+        static::assertTrue($one->isComplete());
+        static::assertSame('one', $one->await());
+    }
+
+    public function testLimitIsReachedOnDifferentKeys(): void
+    {
+        /**
+         * @var Async\KeyedSemaphore<string, string, string>
+         */
+        $ks = new Async\KeyedSemaphore(1, static function (string $_, string $input): string {
+            Async\sleep(0.04);
+            return $input;
+        });
+
+        static::assertFalse($ks->hasReachedLimit('foo'));
+        static::assertFalse($ks->hasReachedLimit('bar'));
+        static::assertFalse($ks->hasIngoingOperations('foo'));
+        static::assertFalse($ks->hasIngoingOperations('bar'));
+        static::assertFalse($ks->hasPendingOperations('foo'));
+        static::assertFalse($ks->hasPendingOperations('bar'));
+
+        $fooOne = Async\run(static fn() => $ks->waitFor('foo', 'one'));
+        $barOne = Async\run(static fn() => $ks->waitFor('bar', 'one'));
+
+        Async\later();
+
+        static::assertTrue($ks->hasReachedLimit('foo'));
+        static::assertTrue($ks->hasReachedLimit('bar'));
+        static::assertTrue($ks->hasIngoingOperations('foo'));
+        static::assertTrue($ks->hasIngoingOperations('bar'));
+        static::assertFalse($ks->hasPendingOperations('foo'));
+        static::assertFalse($ks->hasPendingOperations('bar'));
+
+        $fooTwo = Async\run(static fn() => $ks->waitFor('foo', 'two'));
+        $barTwo = Async\run(static fn() => $ks->waitFor('bar', 'two'));
+
+        Async\later();
+
+        static::assertTrue($ks->hasReachedLimit('foo'));
+        static::assertTrue($ks->hasReachedLimit('bar'));
+        static::assertTrue($ks->hasIngoingOperations('foo'));
+        static::assertTrue($ks->hasIngoingOperations('bar'));
+        static::assertTrue($ks->hasPendingOperations('foo'));
+        static::assertTrue($ks->hasPendingOperations('bar'));
+
+        static::assertSame('one', $fooOne->await());
+        static::assertSame('one', $barOne->await());
+
+        static::assertTrue($ks->hasReachedLimit('foo'));
+        static::assertTrue($ks->hasReachedLimit('bar'));
+        static::assertTrue($ks->hasIngoingOperations('foo'));
+        static::assertTrue($ks->hasIngoingOperations('bar'));
+        static::assertFalse($ks->hasPendingOperations('foo'));
+        static::assertFalse($ks->hasPendingOperations('bar'));
+
+        static::assertSame('two', $fooTwo->await());
+        static::assertSame('two', $barTwo->await());
+
+        static::assertFalse($ks->hasReachedLimit('foo'));
+        static::assertFalse($ks->hasReachedLimit('bar'));
+        static::assertFalse($ks->hasIngoingOperations('foo'));
+        static::assertFalse($ks->hasIngoingOperations('bar'));
+        static::assertFalse($ks->hasPendingOperations('foo'));
+        static::assertFalse($ks->hasPendingOperations('bar'));
+    }
+}

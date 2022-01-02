@@ -28,6 +28,7 @@
 
 - [Awaitable](./../../src/Psl/Async/Awaitable.php#L29)
 - [Deferred](./../../src/Psl/Async/Deferred.php#L21)
+- [KeyedSemaphore](./../../src/Psl/Async/KeyedSemaphore.php#L27)
 - [Scheduler](./../../src/Psl/Async/Scheduler.php#L21)
 - [Semaphore](./../../src/Psl/Async/Semaphore.php#L24)
 - [Sequence](./../../src/Psl/Async/Sequence.php#L23)
