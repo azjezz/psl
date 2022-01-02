@@ -247,14 +247,13 @@ final class KeyedSemaphore
     }
 
     /**
-     * Wait until there's room for another operation with the given key.
+     * Wait for all pending operations associated with the given key to start execution.
      *
      * If the semaphore is has not reached it's limit for the given key, this method will return immediately.
-     * Otherwise, this method will wait until the number of ingoing operations, is lower than the concurrency limit.
      *
      * @param Tk $key
      */
-    public function waitForRoom(string|int $key): void
+    public function waitForPending(string|int $key): void
     {
         if (!$this->hasReachedLimit($key)) {
             return;

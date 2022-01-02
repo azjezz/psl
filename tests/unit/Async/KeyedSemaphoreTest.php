@@ -262,7 +262,7 @@ final class KeyedSemaphoreTest extends TestCase
         $one = Async\run(static fn() => $ks->waitFor('foo', 'one'));
         Async\later();
         static::assertFalse($one->isComplete());
-        $ks->waitForRoom('foo');
+        $ks->waitForPending('foo');
         static::assertTrue($one->isComplete());
         static::assertSame('one', $one->await());
     }

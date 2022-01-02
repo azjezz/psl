@@ -205,7 +205,7 @@ final class SemaphoreTest extends TestCase
         $one = Async\run(static fn() => $semaphore->waitFor('one'));
         Async\later();
         static::assertFalse($one->isComplete());
-        $semaphore->waitForRoom();
+        $semaphore->waitForPending();
         static::assertTrue($one->isComplete());
         static::assertSame('one', $one->await());
     }

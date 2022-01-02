@@ -158,12 +158,9 @@ final class Semaphore
     }
 
     /**
-     * Wait until there's room for another operation.
-     *
-     * If the semaphore is not full, this method will return immediately.
-     * Otherwise, this method will wait until the number of ingoing operations, is lower than the concurrency limit.
+     * Wait for all pending operations to start execution.
      */
-    public function waitForRoom(): void
+    public function waitForPending(): void
     {
         if ($this->ingoing !== $this->concurrencyLimit) {
             return;

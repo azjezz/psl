@@ -48,7 +48,7 @@ Async\main(static function (): int {
     foreach ($server->incoming() as $connection) {
         Async\Scheduler::defer(static fn() => $semaphore->waitFor($connection));
 
-        $semaphore->waitForRoom();
+        $semaphore->waitForPending();
     }
 
     IO\write_error_line('');
