@@ -2206,26 +2206,26 @@
         },
         {
             "name": "php-standard-library/psalm-plugin",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-standard-library/psalm-plugin.git",
-                "reference": "adab2a073c3d66384da7c700293d43f7f9d43e99"
+                "reference": "30993c5e582e616bc3f866cfbada880fbbeed243"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-standard-library/psalm-plugin/zipball/adab2a073c3d66384da7c700293d43f7f9d43e99",
-                "reference": "adab2a073c3d66384da7c700293d43f7f9d43e99",
+                "url": "https://api.github.com/repos/php-standard-library/psalm-plugin/zipball/30993c5e582e616bc3f866cfbada880fbbeed243",
+                "reference": "30993c5e582e616bc3f866cfbada880fbbeed243",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.4 || ^8.0",
-                "vimeo/psalm": "^4.6"
+                "php": "^7.4 || ^8.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.18",
                 "roave/security-advisories": "dev-master",
-                "squizlabs/php_codesniffer": "^3.5"
+                "squizlabs/php_codesniffer": "^3.5",
+                "vimeo/psalm": "^4.6"
             },
             "type": "psalm-plugin",
             "extra": {
@@ -2251,9 +2251,9 @@
             "description": "Psalm plugin for the PHP Standard Library",
             "support": {
                 "issues": "https://github.com/php-standard-library/psalm-plugin/issues",
-                "source": "https://github.com/php-standard-library/psalm-plugin/tree/1.1.1"
+                "source": "https://github.com/php-standard-library/psalm-plugin/tree/1.1.2"
             },
-            "time": "2021-04-11T12:56:19+00:00"
+            "time": "2022-01-01T18:01:15+00:00"
         },
         {
             "name": "phpbench/container",
