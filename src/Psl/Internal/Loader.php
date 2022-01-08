@@ -718,6 +718,8 @@ final class Loader
         'Psl\File\Exception\NotFoundException',
         'Psl\File\Exception\NotReadableException',
         'Psl\File\Exception\NotWritableException',
+        'Psl\Str\Exception\InvalidArgumentException',
+        'Psl\Str\Exception\LogicException',
     ];
 
     public const ENUMS = [

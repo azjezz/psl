@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str\Grapheme;
 
-use Psl;
 use Psl\Str;
 
 /**
@@ -20,7 +19,7 @@ use Psl\Str;
  * @pure
  *
  * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
- * @throws Psl\Exception\InvariantViolationException If unable to split $string into grapheme clusters.
+ * @throws Str\Exception\InvalidArgumentException If $haystack is not made of grapheme clusters.
  */
 function slice(string $string, int $offset, ?int $length = null): string
 {

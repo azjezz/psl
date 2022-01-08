@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Str\Grapheme;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Exception;
+use Psl\Str\Exception;
 use Psl\Str\Byte;
 use Psl\Str\Grapheme;
 
@@ -35,7 +35,9 @@ class ReverseTest extends TestCase
     {
         $string = Byte\slice('🐶🐶🐶', 0, 5);
 
-        $this->expectException(Exception\InvariantViolationException::class);
+        $this->expectException(Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$string is node made of grapheme clusters.');
+
         Grapheme\reverse($string);
     }
 }

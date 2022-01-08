@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str\Grapheme;
 
-use Psl;
 use Psl\Str;
 
 use function grapheme_strpos;
@@ -21,7 +20,7 @@ use function grapheme_strpos;
  * @pure
  *
  * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
- * @throws Psl\Exception\InvariantViolationException If unable to split $string into grapheme clusters.
+ * @throws Exception\InvalidArgumentException If $string is not made of grapheme clusters.
  *
  * @return null|int<0, max>
  */

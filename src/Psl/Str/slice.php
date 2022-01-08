@@ -12,7 +12,7 @@ use function mb_substr;
  *
  * If no length is given, the slice will contain the rest of the
  * string. If the length is zero, the empty string will be returned. If the
- * offset is out-of-bounds, an InvariantViolationException will be thrown.
+ * offset is out-of-bounds, an `Exception\OutOfBoundsException` will be thrown.
  *
  * @param null|int<0, max> $length
  *

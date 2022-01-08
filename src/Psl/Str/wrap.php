@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl;
-
 /**
  * Wraps a string to a given number of characters.
  *
@@ -13,24 +11,21 @@ use Psl;
  * @param bool $cut If the cut is set to true, the string is always wrapped at or before the specified width.
  *                  so if you have a word that is larger than the given width, it is broken apart.
  *
- * @throws Psl\Exception\InvariantViolationException If $width is 0 and $cut is set to true.
+ * @throws Exception\LogicException If $width is 0 and $cut is set to true.
  *
  * @return string the given string wrapped at the specified column
  *
  * @pure
  */
-function wrap(
-    string $string,
-    int $width = 75,
-    string $break = "\n",
-    bool $cut = false,
-    Encoding $encoding = Encoding::UTF_8
-): string {
+function wrap(string $string, int $width = 75, string $break = "\n", bool $cut = false, Encoding $encoding = Encoding::UTF_8): string
+{
     if ('' === $string) {
         return '';
     }
 
-    Psl\invariant(0 !== $width || !$cut, 'Cannot force cut when width is zero.');
+    if (0 === $width && $cut) {
+        throw new Exception\LogicException('Cannot force cut when width is zero.');
+    }
 
     $string_length = length($string, $encoding);
     $break_length  = length($break, $encoding);

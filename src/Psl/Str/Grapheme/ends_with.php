@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Psl\Str\Grapheme;
 
-use Psl;
+use Psl\Str\Exception;
 
 /**
  * Returns whether the string ends with the given suffix.
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If unable to split $string into grapheme clusters.
+ * @throws Exception\InvalidArgumentException If $string is not made of grapheme clusters.
  */
 function ends_with(string $string, string $suffix): bool
 {

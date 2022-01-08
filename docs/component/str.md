@@ -74,7 +74,7 @@
 - [truncate](./../../src/Psl/Str/truncate.php#L25)
 - [uppercase](./../../src/Psl/Str/uppercase.php#L14)
 - [width](./../../src/Psl/Str/width.php#L14)
-- [wrap](./../../src/Psl/Str/wrap.php#L22)
+- [wrap](./../../src/Psl/Str/wrap.php#L20)
 
 #### `Enums`
 

@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\Str\Grapheme;
 
-use Psl;
 use Psl\Str\Exception;
 
 /**
  * @throws Exception\OutOfBoundsException If the $offset is out-of-bounds.
- * @throws Psl\Exception\InvariantViolationException If unable to split $string into grapheme clusters.
+ * @throws Exception\InvalidArgumentException If $haystack is not made of grapheme clusters.
  *
  * @pure
  */

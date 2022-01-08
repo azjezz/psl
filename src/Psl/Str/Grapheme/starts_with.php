@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Psl\Str\Grapheme;
 
-use Psl;
+use Psl\Str\Exception;
 
 /**
  * Returns whether the string starts with the given prefix.
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If unable to split $string into grapheme clusters.
+ * @throws Exception\InvalidArgumentException If $string is not made of grapheme clusters.
  */
 function starts_with(string $string, string $prefix): bool
 {

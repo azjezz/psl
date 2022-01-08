@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Str\Grapheme;
 
-use Psl;
+use Psl\Str\Exception;
 
 use function grapheme_strlen;
 
@@ -13,14 +13,15 @@ use function grapheme_strlen;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If unable to split $string into grapheme clusters.
+ * @throws Exception\InvalidArgumentException If $string is not made of grapheme clusters.
  */
 function length(string $string): int
 {
     $length = grapheme_strlen($string);
 
-    Psl\invariant(null !== $length, 'unable to convert $string to UTF-16');
-    Psl\invariant(false !== $length, 'unable to split $string into graphemes');
+    if (null === $length || false === $length) {
+        throw new Exception\InvalidArgumentException('$string is node made of grapheme clusters.');
+    }
 
     return $length;
 }

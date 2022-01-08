@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Psl\Str\Grapheme;
 
-use Psl;
+use Psl\Str\Exception;
 
 /**
  * Reverses the string.
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If unable to split $string into grapheme clusters.
+ * @throws Exception\InvalidArgumentException If $string is not made of grapheme clusters.
  */
 function reverse(string $string): string
 {

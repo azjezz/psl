@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Str\Grapheme;
 
-use Psl;
+use Psl\Str\Exception;
 
 /**
  * Returns the string with the given suffix removed, or the string itself if
  * it doesn't end with the suffix.
  *
- * @throws Psl\Exception\InvariantViolationException If unable to split $string into grapheme clusters.
+ * @throws Exception\InvalidArgumentException If $string is not made of grapheme clusters.
  *
  * @pure
  */
