@@ -288,4 +288,20 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * @psalm-mutation-free
      */
     public function slice(int $start, ?int $length = null): AccessibleCollectionInterface;
+
+    /**
+     * Returns a `AccessibleCollectionInterface` containing the original `AccessibleCollectionInterface` split into
+     * chunks of the given size.
+     *
+     * If the original `AccessibleCollectionInterface` doesn't divide evenly, the final chunk will be
+     * smaller.
+     *
+     * @param positive-int $size The size of each chunk.
+     *
+     * @return AccessibleCollectionInterface<int, static<Tk, Tv>> A `AccessibleCollectionInterface` containing the original
+     *                                                            `AccessibleCollectionInterface` split into chunks of the given size.
+     *
+     * @psalm-mutation-free
+     */
+    public function chunk(int $size): AccessibleCollectionInterface;
 }

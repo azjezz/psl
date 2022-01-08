@@ -502,6 +502,47 @@ final class MutableMap implements MutableMapInterface
     }
 
     /**
+     * Returns a `MutableVector` containing the original `MutableMap` split into
+     * chunks of the given size.
+     *
+     * If the original `MutableMap` doesn't divide evenly, the final chunk will be
+     * smaller.
+     *
+     * @param positive-int $size The size of each chunk.
+     *
+     * @return MutableVector<MutableMap<Tk, Tv>> A `MutableVector` containing the original
+     *                                           `MutableMap` split into chunks of the given size.
+     *
+     * @psalm-mutation-free
+     */
+    public function chunk(int $size): MutableVector
+    {
+        /** @psalm-suppress ImpureMethodCall */
+        return $this
+            ->zip($this->keys()->toArray())
+            ->values()
+            ->chunk($size)
+            ->map(
+                /**
+                 * @param MutableVector<array{0: Tv, 1: Tk}> $vector
+                 *
+                 * @return MutableMap<Tk, Tv>
+                 *
+                 * @pure
+                 */
+                static function (MutableVector $vector): MutableMap {
+                    /** @var array<Tk, Tv> $array */
+                    $array = [];
+                    foreach ($vector as [$v, $k]) {
+                        $array[$k] = $v;
+                    }
+
+                    return MutableMap::fromArray($array);
+                }
+            );
+    }
+
+    /**
      * Stores a value into the current map with the specified key,
      * overwriting the previous value associated with the key.
      *
