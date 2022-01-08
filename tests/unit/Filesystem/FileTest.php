@@ -6,11 +6,10 @@ namespace Psl\Tests\Unit\Filesystem;
 
 use Psl\Env;
 use Psl\Filesystem;
+use Psl\OS;
 use Psl\Str;
 
 use function time;
-
-use const PHP_OS_FAMILY;
 
 final class FileTest extends AbstractFilesystemTest
 {
@@ -174,8 +173,7 @@ final class FileTest extends AbstractFilesystemTest
 
     public function testFileSizeThrowsForNonReadableFile(): void
     {
-        if (PHP_OS_FAMILY === 'Windows') {
-            // executable bit on windows.
+        if (OS\is_windows()) {
             static::markTestSkipped('Test can only be executed under *nix OS.');
         }
 
@@ -198,7 +196,7 @@ final class FileTest extends AbstractFilesystemTest
 
     public function testCopyThrowsForNonReadableFile(): void
     {
-        if (PHP_OS_FAMILY === 'Windows') {
+        if (OS\is_windows()) {
             // executable bit on windows.
             static::markTestSkipped('Test can only be executed under *nix OS.');
         }

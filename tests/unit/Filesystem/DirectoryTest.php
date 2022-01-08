@@ -6,10 +6,9 @@ namespace Psl\Tests\Unit\Filesystem;
 
 use Psl\Env;
 use Psl\Filesystem;
+use Psl\OS;
 use Psl\Str;
 use Psl\Vec;
-
-use const PHP_OS_FAMILY;
 
 final class DirectoryTest extends AbstractFilesystemTest
 {
@@ -58,7 +57,7 @@ final class DirectoryTest extends AbstractFilesystemTest
 
     public function testReadDirectoryThrowsIfNotReadable(): void
     {
-        if (PHP_OS_FAMILY === 'Windows') {
+        if (OS\is_windows()) {
             // executable bit on windows.
             static::markTestSkipped('Test can only be executed under *nix OS.');
         }

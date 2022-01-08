@@ -6,11 +6,11 @@ namespace Psl\IO;
 
 use Psl;
 use Psl\Internal;
+use Psl\OS;
 
 use function error_get_last;
 use function stream_socket_pair;
 
-use const PHP_OS_FAMILY;
 use const STREAM_IPPROTO_IP;
 use const STREAM_PF_INET;
 use const STREAM_PF_UNIX;
@@ -28,7 +28,7 @@ function pipe(): array
          * @return array{0: resource, 1: resource}
          */
         static function (): array {
-            $domain = PHP_OS_FAMILY === 'Windows' ? STREAM_PF_INET : STREAM_PF_UNIX;
+            $domain = OS\is_windows() ? STREAM_PF_INET : STREAM_PF_UNIX;
             $sockets = stream_socket_pair($domain, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
             // @codeCoverageIgnoreStart
             if ($sockets === false) {

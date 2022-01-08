@@ -6,10 +6,9 @@ namespace Psl\Tests\Unit\Shell;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Env;
+use Psl\OS;
 use Psl\SecureRandom;
 use Psl\Shell;
-
-use const PHP_OS_FAMILY;
 
 final class ExecuteTest extends TestCase
 {
@@ -34,7 +33,7 @@ final class ExecuteTest extends TestCase
 
     public function testItThrowsForNULLByte(): void
     {
-        if (PHP_OS_FAMILY === 'Windows') {
+        if (OS\is_windows()) {
             static::markTestSkipped('Test can only be executed under *nix OS.');
         }
 

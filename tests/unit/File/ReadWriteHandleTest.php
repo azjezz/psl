@@ -9,6 +9,7 @@ use Psl\Env;
 use Psl\File;
 use Psl\Filesystem;
 use Psl\IO;
+use Psl\OS;
 use Psl\SecureRandom;
 
 final class ReadWriteHandleTest extends TestCase
@@ -97,6 +98,10 @@ final class ReadWriteHandleTest extends TestCase
 
     public function testAppendToANonWritableFile(): void
     {
+        if (OS\is_windows()) {
+            static::markTestSkipped('Permissions are not reliable on windows.');
+        }
+
         $temporary_file = Filesystem\create_temporary_file();
         Filesystem\change_permissions($temporary_file, 0555);
 
@@ -108,6 +113,10 @@ final class ReadWriteHandleTest extends TestCase
 
     public function testOpenNonReadableFile(): void
     {
+        if (OS\is_windows()) {
+            static::markTestSkipped('Permissions are not reliable on windows.');
+        }
+
         $temporary_file = Filesystem\create_temporary_file();
         Filesystem\change_permissions($temporary_file, 0333);
 

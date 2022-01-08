@@ -17,7 +17,7 @@
 #### `Classes`
 
 - [ConnectOptions](./../../src/Psl/TCP/ConnectOptions.php#L7)
-- [Server](./../../src/Psl/TCP/Server.php#L12)
+- [Server](./../../src/Psl/TCP/Server.php#L11)
 - [ServerOptions](./../../src/Psl/TCP/ServerOptions.php#L9)
 
 

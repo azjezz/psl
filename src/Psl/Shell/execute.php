@@ -9,6 +9,7 @@ use Psl\Dict;
 use Psl\Env;
 use Psl\Filesystem;
 use Psl\IO;
+use Psl\OS;
 use Psl\Regex;
 use Psl\SecureRandom;
 use Psl\Str;
@@ -18,8 +19,6 @@ use function is_resource;
 use function proc_close;
 use function proc_open;
 use function strpbrk;
-
-use const PHP_OS_FAMILY;
 
 /**
  * Execute an external program.
@@ -77,7 +76,7 @@ function execute(
 
     $options = [];
     // @codeCoverageIgnoreStart
-    if (PHP_OS_FAMILY === 'Windows') {
+    if (OS\is_windows()) {
         $variable_cache = [];
         $variable_count = 0;
         /** @psalm-suppress MissingThrowsDocblock */

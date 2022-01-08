@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Unix;
 
 use Psl\Network;
+use Psl\OS;
 
 /**
  * Connect to a socket.
@@ -17,7 +18,7 @@ use Psl\Network;
 function connect(string $path, ?float $timeout = null): Network\StreamSocketInterface
 {
     // @codeCoverageIgnoreStart
-    if (PHP_OS_FAMILY === 'Windows') {
+    if (OS\is_windows()) {
         throw new Network\Exception\RuntimeException('Unix socket is not supported on Windows platform.');
     }
     // @codeCoverageIgnoreEnd

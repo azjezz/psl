@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Filesystem;
 
 use Psl\Filesystem;
+use Psl\OS;
 use Psl\Str;
-
-use const PHP_OS_FAMILY;
 
 final class PermissionsTest extends AbstractFilesystemTest
 {
@@ -15,7 +14,7 @@ final class PermissionsTest extends AbstractFilesystemTest
 
     public function testChangePermissions(): void
     {
-        if (PHP_OS_FAMILY === 'Windows') {
+        if (OS\is_windows()) {
             // executable bit on windows.
             static::markTestSkipped('Test can only be executed under *nix OS.');
         }

@@ -8,15 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Psl\Async;
 use Psl\Filesystem;
 use Psl\Network\Exception;
+use Psl\OS;
 use Psl\Unix;
-
-use const PHP_OS_FAMILY;
 
 final class ServerTest extends TestCase
 {
     public function testNextConnectionOnStoppedServer(): void
     {
-        if (PHP_OS_FAMILY === 'Windows') {
+        if (OS\is_windows()) {
             static::markTestSkipped('Unix Server is not supported on Windows platform.');
         }
 
@@ -32,7 +31,7 @@ final class ServerTest extends TestCase
 
     public function testGetLocalAddressOnStoppedServer(): void
     {
-        if (PHP_OS_FAMILY === 'Windows') {
+        if (OS\is_windows()) {
             static::markTestSkipped('Unix Server is not supported on Windows platform.');
         }
 
@@ -48,7 +47,7 @@ final class ServerTest extends TestCase
 
     public function testWaitsForPendingOperation(): void
     {
-        if (PHP_OS_FAMILY === 'Windows') {
+        if (OS\is_windows()) {
             static::markTestSkipped('Unix Server is not supported on Windows platform.');
         }
 
@@ -81,7 +80,7 @@ final class ServerTest extends TestCase
 
     public function testAccessUnderlyingStream(): void
     {
-        if (PHP_OS_FAMILY === 'Windows') {
+        if (OS\is_windows()) {
             static::markTestSkipped('Unix Server is not supported on Windows platform.');
         }
 

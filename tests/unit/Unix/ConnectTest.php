@@ -7,16 +7,15 @@ namespace Psl\Tests\Unit\Unix;
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
 use Psl\Filesystem;
+use Psl\OS;
 use Psl\Str;
 use Psl\Unix;
-
-use const PHP_OS_FAMILY;
 
 final class ConnectTest extends TestCase
 {
     public function testConnect(): void
     {
-        if (PHP_OS_FAMILY === 'Windows') {
+        if (OS\is_windows()) {
             static::markTestSkipped('Unix Server is not supported on Windows platform.');
         }
 

@@ -476,6 +476,9 @@ final class Loader
         'Psl\IO\write_line',
         'Psl\IO\write_error',
         'Psl\IO\write_error_line',
+        'Psl\OS\family',
+        'Psl\OS\is_windows',
+        'Psl\OS\is_darwin',
     ];
 
     public const INTERFACES = [
@@ -730,6 +733,7 @@ final class Loader
         'Psl\Html\Encoding',
         'Psl\Hash\Algorithm',
         'Psl\Hash\Hmac\Algorithm',
+        'Psl\OS\Family',
     ];
 
     public const TYPE_CONSTANTS = 1;

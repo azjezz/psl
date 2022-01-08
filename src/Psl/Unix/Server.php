@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Psl\Unix;
 
 use Psl\Network;
-
-use const PHP_OS_FAMILY;
+use Psl\OS;
 
 final class Server extends Network\Internal\AbstractStreamServer
 {
@@ -20,7 +19,7 @@ final class Server extends Network\Internal\AbstractStreamServer
     public static function create(string $file): self
     {
         // @codeCoverageIgnoreStart
-        if (PHP_OS_FAMILY === 'Windows') {
+        if (OS\is_windows()) {
             throw new Network\Exception\RuntimeException('Unix server is not supported on Windows platform.');
         }
         // @codeCoverageIgnoreEnd

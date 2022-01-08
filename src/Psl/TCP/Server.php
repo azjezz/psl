@@ -6,8 +6,7 @@ namespace Psl\TCP;
 
 use Psl;
 use Psl\Network;
-
-use const PHP_OS_FAMILY;
+use Psl\OS;
 
 final class Server extends Network\Internal\AbstractStreamServer
 {
@@ -29,7 +28,7 @@ final class Server extends Network\Internal\AbstractStreamServer
         $socket_context = [
             'socket' => [
                 'ipv6_v6only' => true,
-                'so_reuseaddr' => PHP_OS_FAMILY === 'Windows' ? $socket_options->portReuse : $socket_options->addressReuse,
+                'so_reuseaddr' => OS\is_windows() ? $socket_options->portReuse : $socket_options->addressReuse,
                 'so_reuseport' => $socket_options->portReuse,
                 'so_broadcast' => $socket_options->broadcast,
                 'tcp_nodelay' => $server_options->noDelay,

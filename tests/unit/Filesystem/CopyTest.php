@@ -6,9 +6,8 @@ namespace Psl\Tests\Unit\Filesystem;
 
 use Psl\File;
 use Psl\Filesystem;
+use Psl\OS;
 use Psl\Str;
-
-use const PHP_OS_FAMILY;
 
 final class CopyTest extends AbstractFilesystemTest
 {
@@ -45,7 +44,7 @@ final class CopyTest extends AbstractFilesystemTest
 
     public function testCopyExecutableBits(): void
     {
-        if (PHP_OS_FAMILY === 'Windows') {
+        if (OS\is_windows()) {
             static::markTestSkipped('Test can only be executed under *nix OS.');
         }
 
