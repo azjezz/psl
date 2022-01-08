@@ -6,7 +6,6 @@ namespace Psl\Tests\Unit\Async;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
-use Psl\Exception\InvariantViolationException;
 
 final class FirstTest extends TestCase
 {
@@ -44,7 +43,8 @@ final class FirstTest extends TestCase
 
     public function testFirstWithNoArguments(): void
     {
-        $this->expectException(InvariantViolationException::class);
+        $this->expectException(Async\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$awaitables must be a non-empty-iterable.');
 
         Async\first([]);
     }

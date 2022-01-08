@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Async;
 
-use Psl;
-
 /**
  * Unwraps the first completed awaitable.
  *
@@ -15,7 +13,7 @@ use Psl;
  *
  * @param iterable<Awaitable<T>> $awaitables
  *
- * @throws Psl\Exception\InvariantViolationException If $awaitables is empty.
+ * @throws Exception\InvalidArgumentException If $awaitables is empty.
  *
  * @return T
  */
@@ -31,5 +29,5 @@ function first(iterable $awaitables): mixed
         return $first->await();
     }
 
-    Psl\invariant_violation('No awaitables were provided.');
+    throw new Exception\InvalidArgumentException('$awaitables must be a non-empty-iterable.');
 }

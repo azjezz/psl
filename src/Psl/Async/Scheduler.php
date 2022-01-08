@@ -144,7 +144,7 @@ final class Scheduler
      *
      * @param non-empty-string $identifier The callback identifier.
      *
-     * @throws Psl\Exception\InvariantViolationException If the callback identifier is invalid.
+     * @throws Exception\InvalidArgumentException If the callback identifier is invalid.
      *
      * @see EventLoop::repeat()
      */
@@ -153,7 +153,7 @@ final class Scheduler
         try {
             EventLoop::enable($identifier);
         } catch (InvalidCallbackError $error) {
-            Psl\invariant_violation($error->getMessage());
+            throw new Exception\InvalidArgumentException($error->getMessage(), previous: $error);
         }
     }
 
@@ -186,7 +186,7 @@ final class Scheduler
      *
      * @param non-empty-string $identifier The callback identifier.
      *
-     * @throws Psl\Exception\InvariantViolationException If the callback identifier is invalid.
+     * @throws Exception\InvalidArgumentException If the callback identifier is invalid.
      *
      * @see EventLoop::reference()
      */
@@ -195,7 +195,7 @@ final class Scheduler
         try {
             EventLoop::reference($identifier);
         } catch (InvalidCallbackError $error) {
-            Psl\invariant_violation($error->getMessage());
+            throw new Exception\InvalidArgumentException($error->getMessage(), previous: $error);
         }
     }
 

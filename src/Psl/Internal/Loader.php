@@ -730,6 +730,7 @@ final class Loader
         'Psl\Math\Exception\InvalidArgumentException',
         'Psl\Iter\Exception\InvalidArgumentException',
         'Psl\PseudoRandom\Exception\InvalidArgumentException',
+        'Psl\Async\Exception\InvalidArgumentException',
     ];
 
     public const ENUMS = [

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Async;
 
 use Exception as RootException;
-use Psl;
 use Psl\Async\Exception\CompositeException;
 
 /**
@@ -17,8 +16,8 @@ use Psl\Async\Exception\CompositeException;
  *
  * @param iterable<Awaitable<T>> $awaitables
  *
- * @throws CompositeException If all $awaitables errored.
- * @throws Psl\Exception\InvariantViolationException If no $awaitables were provided.
+ * @throws Exception\CompositeException If all $awaitables errored.
+ * @throws Exception\InvalidArgumentException If $awaitables is empty.
  *
  * @return T
  */
@@ -40,7 +39,9 @@ function any(iterable $awaitables): mixed
         }
     }
 
-    Psl\invariant([] !== $errors, 'No awaitables were provided.');
+    if ([] === $errors) {
+        throw new Exception\InvalidArgumentException('$awaitables must be a non-empty-iterable.');
+    }
 
     throw new CompositeException($errors);
 }

@@ -181,9 +181,7 @@ final class Awaitable implements PromiseInterface
      */
     public function map(Closure $success): Awaitable
     {
-        return $this->then($success, static function (RootException $exception): never {
-            throw $exception;
-        });
+        return $this->then($success, static fn (RootException $exception) => throw $exception);
     }
 
     /**

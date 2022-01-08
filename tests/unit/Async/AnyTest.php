@@ -44,8 +44,8 @@ final class AnyTest extends TestCase
 
     public function testAnyWithNoArguments(): void
     {
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('No awaitables were provided.');
+        $this->expectException(Async\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$awaitables must be a non-empty-iterable.');
 
         Async\any([]);
     }
