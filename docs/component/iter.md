@@ -23,7 +23,7 @@
 - [is_empty](./../../src/Psl/Iter/is_empty.php#L16)
 - [last](./../../src/Psl/Iter/last.php#L17)
 - [last_key](./../../src/Psl/Iter/last_key.php#L17)
-- [random](./../../src/Psl/Iter/random.php#L22)
+- [random](./../../src/Psl/Iter/random.php#L21)
 - [reduce](./../../src/Psl/Iter/reduce.php#L25)
 - [reduce_keys](./../../src/Psl/Iter/reduce_keys.php#L26)
 - [reduce_with_keys](./../../src/Psl/Iter/reduce_with_keys.php#L27)

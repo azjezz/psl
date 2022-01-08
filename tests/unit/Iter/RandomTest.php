@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Iter;
 
 use PHPUnit\Framework\TestCase;
-use Psl;
 use Psl\Iter;
 
 final class RandomTest extends TestCase
@@ -29,7 +28,7 @@ final class RandomTest extends TestCase
 
     public function testRandomWithEmptyIterator(): void
     {
-        $this->expectException(Psl\Exception\InvariantViolationException::class);
+        $this->expectException(Iter\Exception\InvalidArgumentException::class);
         $this->expectExceptionMessage('Expected a non-empty iterable.');
 
         Iter\random([]);

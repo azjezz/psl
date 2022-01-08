@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
-use Psl;
 use Psl\PseudoRandom;
 use Psl\Vec;
 
@@ -15,7 +14,7 @@ use Psl\Vec;
  *
  * @param iterable<T> $iterable
  *
- * @throws Psl\Exception\InvariantViolationException If $iterable is empty.
+ * @throws Exception\InvalidArgumentException If $iterable is empty.
  *
  * @return T
  */
@@ -26,8 +25,9 @@ function random(iterable $iterable)
     // would exhaust it when calling `count`
     $values = Vec\values($iterable);
     $size = count($values);
-
-    Psl\invariant(0 !== $size, 'Expected a non-empty iterable.');
+    if ($size === 0) {
+        throw new Exception\InvalidArgumentException('Expected a non-empty iterable.');
+    }
 
     if (1 === $size) {
         /** @var T */

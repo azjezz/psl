@@ -728,6 +728,7 @@ final class Loader
         'Psl\Dict\Exception\LogicException',
         'Psl\Math\Exception\OverflowException',
         'Psl\Math\Exception\InvalidArgumentException',
+        'Psl\Iter\Exception\InvalidArgumentException',
         'Psl\PseudoRandom\Exception\InvalidArgumentException',
     ];
 
