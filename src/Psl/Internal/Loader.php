@@ -554,7 +554,6 @@ final class Loader
         'Psl\Vec\Exception\ExceptionInterface',
         'Psl\Dict\Exception\ExceptionInterface',
         'Psl\PseudoRandom\Exception\ExceptionInterface',
-        'Psl\Password\Exception\ExceptionInterface',
     ];
 
     public const TRAITS = [
@@ -723,7 +722,6 @@ final class Loader
         'Psl\Iter\Exception\InvalidArgumentException',
         'Psl\PseudoRandom\Exception\InvalidArgumentException',
         'Psl\Async\Exception\InvalidArgumentException',
-        'Psl\Password\Exception\RuntimeException',
     ];
 
     public const ENUMS = [

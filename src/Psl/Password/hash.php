@@ -15,13 +15,6 @@ use function password_hash;
  */
 function hash(string $password, Algorithm $algorithm = Algorithm::Default, array $options = []): string
 {
-    /** @var false|string $hash */
-    $hash = password_hash($password, $algorithm->getBuiltinConstantValue(), $options);
-    // @codeCoverageIgnoreStart
-    if (false === $hash) {
-        throw new Exception\RuntimeException('Failed to compute the hash for the given password.');
-    }
-    // @codeCoverageIgnoreEnd
-
-    return $hash;
+    /** @psalm-suppress ImpureMethodCall */
+    return password_hash($password, $algorithm->getBuiltinConstantValue(), $options);
 }

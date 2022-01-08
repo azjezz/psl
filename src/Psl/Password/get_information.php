@@ -27,7 +27,7 @@ use const PASSWORD_BCRYPT_DEFAULT_COST;
  */
 function get_information(string $hash): array
 {
-    /** @var array{algoName: string, options: array<string, array-key>} $information */
+    /** @var array{algo: string, options: array<string, array-key>} $information */
     $information = password_get_info($hash);
     $algorithm   = $information['algo'];
     if (PASSWORD_BCRYPT === $algorithm) {

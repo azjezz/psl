@@ -54,6 +54,9 @@ enum Algorithm: string
      */
     case Argon2id = 'argon2id';
 
+    /**
+     * @mutation-free
+     */
     public function getBuiltinConstantValue(): string
     {
         return match ($this) {
