@@ -13,6 +13,7 @@
     <exclude-pattern>*/src/Psl/Html/Encoding.php</exclude-pattern>
     <exclude-pattern>*/src/Psl/Hash/Algorithm.php</exclude-pattern>
     <exclude-pattern>*/src/Psl/Hash/Hmac/Algorithm.php</exclude-pattern>
+    <exclude-pattern>*/src/Psl/OS/OperatingSystemFamily.php</exclude-pattern>
 
     <arg name="basepath" value="."/>
     <arg name="colors"/>

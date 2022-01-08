@@ -14,14 +14,14 @@ final class FamilyTest extends TestCase
     public function testFamily(): void
     {
         if (OS\is_windows()) {
-            static::assertSame(OS\Family::Windows, OS\family());
+            static::assertSame(OS\OperatingSystemFamily::Windows, OS\family());
             static::assertFalse(OS\is_darwin());
         } elseif (OS\is_darwin()) {
-            static::assertSame(OS\Family::Darwin, OS\family());
+            static::assertSame(OS\OperatingSystemFamily::Darwin, OS\family());
             static::assertFalse(OS\is_windows());
         } else {
-            static::assertNotSame(OS\Family::Windows, OS\family());
-            static::assertNotSame(OS\Family::Darwin, OS\family());
+            static::assertNotSame(OS\OperatingSystemFamily::Windows, OS\family());
+            static::assertNotSame(OS\OperatingSystemFamily::Darwin, OS\family());
             static::assertFalse(OS\is_windows());
             static::assertFalse(OS\is_darwin());
         }

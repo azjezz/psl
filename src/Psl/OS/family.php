@@ -8,8 +8,10 @@ use const PHP_OS_FAMILY;
 
 /**
  * Return the operating system family PHP was built for.
+ *
+ * @pure
  */
-function family(): Family
+function family(): OperatingSystemFamily
 {
-    return Family::from(PHP_OS_FAMILY);
+    return OperatingSystemFamily::from(PHP_OS_FAMILY);
 }

@@ -733,7 +733,7 @@ final class Loader
         'Psl\Html\Encoding',
         'Psl\Hash\Algorithm',
         'Psl\Hash\Hmac\Algorithm',
-        'Psl\OS\Family',
+        'Psl\OS\OperatingSystemFamily',
     ];
 
     public const TYPE_CONSTANTS = 1;
