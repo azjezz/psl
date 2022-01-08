@@ -53,7 +53,6 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
             }
         }
 
-        // @codeCoverageIgnoreStart
         if ($creating && !$is_file) {
             try {
                 Filesystem\create_file($file);
@@ -61,7 +60,6 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
                 throw new Exception\RuntimeException(Str\format('Failed to create the file "%s".', $file), previous: $previous);
             }
         }
-        // @codeCoverageIgnoreEnd
 
         $this->readWriteHandle = Internal\open($file, 'r' . ($write_mode->value) . '+', read: true, write: true);
 

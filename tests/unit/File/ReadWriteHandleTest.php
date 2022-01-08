@@ -106,6 +106,40 @@ final class ReadWriteHandleTest extends TestCase
         new File\ReadWriteHandle($temporary_file, File\WriteMode::APPEND);
     }
 
+    public function testOpenNonReadableFile(): void
+    {
+        $temporary_file = Filesystem\create_temporary_file();
+        Filesystem\change_permissions($temporary_file, 0333);
+
+        $this->expectException(File\Exception\NotReadableException::class);
+        $this->expectExceptionMessage('File "' . $temporary_file . '" is not readable.');
+
+        new File\ReadWriteHandle($temporary_file, File\WriteMode::APPEND);
+    }
+
+    public function testThrowsWhenCreatingFile(): void
+    {
+        $temporary_file = Filesystem\create_temporary_file();
+        Filesystem\delete_file($temporary_file);
+        Filesystem\create_directory($temporary_file);
+        Filesystem\change_permissions($temporary_file, 0555);
+
+        $file = $temporary_file . Filesystem\SEPARATOR . 'foo';
+
+        $this->expectException(File\Exception\RuntimeException::class);
+        $this->expectExceptionMessage('Failed to create the file "' . $file . '".');
+
+        new File\ReadWriteHandle($file, File\WriteMode::MUST_CREATE);
+    }
+
+    public function testOpenDirectory(): void
+    {
+        $this->expectException(File\Exception\NotFileException::class);
+        $this->expectExceptionMessage('Path "' . Env\temp_dir() . '" does not point to a file.');
+
+        new File\ReadWriteHandle(Env\temp_dir(), File\WriteMode::APPEND);
+    }
+
     public function testCreateNonExisting(): void
     {
         $temporary_file = Filesystem\create_temporary_file();
