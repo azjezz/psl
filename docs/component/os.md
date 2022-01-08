@@ -12,12 +12,12 @@
 
 #### `Functions`
 
-- [family](./../../src/Psl/OS/family.php#L12)
-- [is_darwin](./../../src/Psl/OS/is_darwin.php#L12)
-- [is_windows](./../../src/Psl/OS/is_windows.php#L12)
+- [family](./../../src/Psl/OS/family.php#L14)
+- [is_darwin](./../../src/Psl/OS/is_darwin.php#L14)
+- [is_windows](./../../src/Psl/OS/is_windows.php#L14)
 
 #### `Enums`
 
-- [Family](./../../src/Psl/OS/Family.php#L7)
+- [OperatingSystemFamily](./../../src/Psl/OS/OperatingSystemFamily.php#L7)
 
 
