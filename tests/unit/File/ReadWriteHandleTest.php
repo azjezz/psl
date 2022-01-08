@@ -128,6 +128,10 @@ final class ReadWriteHandleTest extends TestCase
 
     public function testThrowsWhenCreatingFile(): void
     {
+        if (OS\is_windows()) {
+            static::markTestSkipped('Permissions are not reliable on windows.');
+        }
+
         $temporary_file = Filesystem\create_temporary_file();
         Filesystem\delete_file($temporary_file);
         Filesystem\create_directory($temporary_file);
