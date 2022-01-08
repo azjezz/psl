@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Str\Grapheme;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Str\Exception;
 use Psl\Str\Byte;
+use Psl\Str\Exception;
 use Psl\Str\Grapheme;
 
 class ReverseTest extends TestCase

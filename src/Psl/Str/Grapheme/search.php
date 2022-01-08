@@ -20,7 +20,7 @@ use function grapheme_strpos;
  * @pure
  *
  * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
- * @throws Exception\InvalidArgumentException If $string is not made of grapheme clusters.
+ * @throws Str\Exception\InvalidArgumentException If $haystack is not made of grapheme clusters.
  *
  * @return null|int<0, max>
  */
