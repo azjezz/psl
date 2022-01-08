@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\File;
 
-use Psl;
 use Psl\File;
-use Psl\Filesystem;
 use Psl\IO;
 use Psl\Str;
 
@@ -17,8 +15,10 @@ use function clearstatcache;
  *
  * @param non-empty-string $file
  *
- * @throws Psl\Exception\InvariantViolationException If the file specified by
- *                                                   $file is a directory, or is not writeable.
+ * @throws Exception\NotFileException If $file points to a non-file node on the filesystem.
+ * @throws Exception\AlreadyCreatedException If $file is already created, and $write_mode is {@see WriteMode::MUST_CREATE}.
+ * @throws Exception\NotFoundException If $file does not exist, and $write_mode is {@see WriteMode::TRUNCATE} or {@see WriteMode::APPEND}.
+ * @throws Exception\NotWritableException If $file exists, and is non-writable.
  * @throws Exception\RuntimeException In case of an error.
  */
 function write(string $file, string $content, WriteMode $mode = WriteMode::OPEN_OR_CREATE): void
@@ -35,7 +35,7 @@ function write(string $file, string $content, WriteMode $mode = WriteMode::OPEN_
         $handle->close();
 
         clearstatcache();
-    } catch (IO\Exception\ExceptionInterface | Filesystem\Exception\ExceptionInterface $previous) {
+    } catch (IO\Exception\ExceptionInterface $previous) {
         // @codeCoverageIgnoreStart
         throw new Exception\RuntimeException(Str\format(
             'Failed to write to file "%s".',

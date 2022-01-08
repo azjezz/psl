@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\IO;
 
 use PHPUnit\Framework\TestCase;
 use Psl\File;
+use Psl\Filesystem;
 use Psl\IO;
 
 final class StreamTest extends TestCase
@@ -36,12 +37,13 @@ final class StreamTest extends TestCase
 
     public function testCloseWriteHandle(): void
     {
-        $file = File\temporary();
-        $stream = new IO\CloseWriteStreamHandle($file->getStream());
+        $file = Filesystem\create_temporary_file();
+        $handle = File\open_read_write($file);
+        $stream = new IO\CloseWriteStreamHandle($handle->getStream());
         $stream->writeAll('<?php');
 
-        $file->seek(0);
-        static::assertSame('<?php', $file->readAll(5));
+        $handle->seek(0);
+        static::assertSame('<?php', $handle->readAll(5));
 
         $stream->close();
 
@@ -52,11 +54,12 @@ final class StreamTest extends TestCase
 
     public function testCloseReadWriteHandle(): void
     {
-        $file = File\temporary();
-        $stream = new IO\CloseReadWriteStreamHandle($file->getStream());
+        $file = Filesystem\create_temporary_file();
+        $handle = File\open_read_write($file);
+        $stream = new IO\CloseReadWriteStreamHandle($handle->getStream());
         $stream->writeAll('<?php');
 
-        $file->seek(0);
+        $handle->seek(0);
 
         static::assertSame('<?php', $stream->readAll());
 
@@ -69,15 +72,16 @@ final class StreamTest extends TestCase
 
     public function testReadWriteHandle(): void
     {
-        $file = File\temporary();
-        $stream = new IO\ReadWriteStreamHandle($file->getStream());
+        $file = Filesystem\create_temporary_file();
+        $handle = File\open_read_write($file);
+        $stream = new IO\ReadWriteStreamHandle($handle->getStream());
         $stream->writeAll('<?php');
 
-        $file->seek(0);
+        $handle->seek(0);
 
         static::assertSame('<?php', $stream->readAll());
 
-        $file->close();
+        $handle->close();
 
         $this->expectException(IO\Exception\AlreadyClosedException::class);
 
@@ -86,13 +90,14 @@ final class StreamTest extends TestCase
 
     public function testSeekReadWriteHandle(): void
     {
-        $file = File\temporary();
-        $stream = new IO\SeekReadWriteStreamHandle($file->getStream());
+        $file = Filesystem\create_temporary_file();
+        $handle = File\open_read_write($file);
+        $stream = new IO\SeekReadWriteStreamHandle($handle->getStream());
         $stream->writeAll('<?php');
         $stream->seek(0);
         static::assertSame('<?php', $stream->readAll());
 
-        $file->close();
+        $handle->close();
 
         $this->expectException(IO\Exception\AlreadyClosedException::class);
 
@@ -101,8 +106,9 @@ final class StreamTest extends TestCase
 
     public function testCloseSeekReadWriteHandle(): void
     {
-        $file = File\temporary();
-        $stream = new IO\CloseSeekReadWriteStreamHandle($file->getStream());
+        $file = Filesystem\create_temporary_file();
+        $handle = File\open_read_write($file);
+        $stream = new IO\CloseSeekReadWriteStreamHandle($handle->getStream());
         $stream->writeAll('<?php');
         $stream->seek(0);
         static::assertSame('<?php', $stream->readAll());
@@ -116,14 +122,15 @@ final class StreamTest extends TestCase
 
     public function testSeekReadHandle(): void
     {
-        $file = File\temporary();
-        $file->writeAll('<?php');
+        $file = Filesystem\create_temporary_file();
+        $handle = File\open_read_write($file);
+        $handle->writeAll('<?php');
 
-        $stream = new IO\SeekReadStreamHandle($file->getStream());
+        $stream = new IO\SeekReadStreamHandle($handle->getStream());
         $stream->seek(2);
         static::assertSame('php', $stream->readAll());
 
-        $file->close();
+        $handle->close();
 
         $this->expectException(IO\Exception\AlreadyClosedException::class);
 
@@ -132,19 +139,19 @@ final class StreamTest extends TestCase
 
     public function testSeekWriteHandle(): void
     {
-        $file = File\temporary();
-        $file = File\open_write_only($file->getPath());
+        $file = Filesystem\create_temporary_file();
+        $handle = File\open_write_only($file);
 
-        $stream = new IO\SeekWriteStreamHandle($file->getStream());
+        $stream = new IO\SeekWriteStreamHandle($handle->getStream());
         $stream->seek(2);
         $stream->writeAll('<?php');
 
-        $file->seek(0);
-        $file->close();
+        $handle->seek(0);
+        $handle->close();
 
-        $file = File\open_read_only($file->getPath());
-        static::assertSame("\0\0<?php", $file->readAll());
-        $file->close();
+        $handle = File\open_read_only($file);
+        static::assertSame("\0\0<?php", $handle->readAll());
+        $handle->close();
 
         $this->expectException(IO\Exception\AlreadyClosedException::class);
 

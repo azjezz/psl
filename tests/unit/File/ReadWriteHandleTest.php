@@ -6,7 +6,6 @@ namespace Psl\Tests\Unit\File;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Env;
-use Psl\Exception\InvariantViolationException;
 use Psl\File;
 use Psl\Filesystem;
 use Psl\IO;
@@ -16,78 +15,82 @@ final class ReadWriteHandleTest extends TestCase
 {
     public function testGetPath(): void
     {
-        $file = File\temporary();
-        $path = $file->getPath();
-        $file->close();
+        $file = Filesystem\create_temporary_file();
+        $handle = File\open_read_write($file);
+        $path = $handle->getPath();
+        $handle->close();
 
-        $file = new File\ReadWriteHandle($path);
+        $handle = new File\ReadWriteHandle($file);
 
-        static::assertSame($path, $file->getPath());
+        static::assertSame($path, $handle->getPath());
     }
 
     public function testGetSize(): void
     {
-        $file = File\temporary();
-        $path = $file->getPath();
-        $file->close();
+        $file = Filesystem\create_temporary_file();
+        $handle = File\open_read_write($file);
+        $path = $handle->getPath();
+        $handle->close();
 
-        $file = new File\ReadWriteHandle($path);
+        $handle = new File\ReadWriteHandle($path);
 
-        static::assertSame(0, $file->getSize());
+        static::assertSame(0, $handle->getSize());
 
-        $file->writeAll('hello');
-        $file->seek(3);
+        $handle->writeAll('hello');
+        $handle->seek(3);
 
-        static::assertSame(3, $file->tell());
-        static::assertSame(5, $file->getSize());
-        static::assertSame(3, $file->tell());
+        static::assertSame(3, $handle->tell());
+        static::assertSame(5, $handle->getSize());
+        static::assertSame(3, $handle->tell());
     }
 
     public function testReading(): void
     {
-        $file = File\temporary();
-        $file->writeAll('herpderp');
-        $file->seek(0);
-        static::assertSame('herp', $file->readFixedSize(4));
-        static::assertSame('derp', $file->read());
-        static::assertSame('', $file->read());
-        static::assertSame('', $file->read());
-        static::assertSame(8, $file->tell());
-        $file->seek(0);
-        static::assertSame(0, $file->tell());
-        static::assertSame('herpderp', $file->read());
-        $file->seek(4);
-        static::assertSame(4, $file->tell());
-        static::assertSame('derp', $file->read());
+        $file = Filesystem\create_temporary_file();
+        $handle = File\open_read_write($file);
+        $handle->writeAll('herpderp');
+        $handle->seek(0);
+        static::assertSame('herp', $handle->readFixedSize(4));
+        static::assertSame('derp', $handle->read());
+        static::assertSame('', $handle->read());
+        static::assertSame('', $handle->read());
+        static::assertSame(8, $handle->tell());
+        $handle->seek(0);
+        static::assertSame(0, $handle->tell());
+        static::assertSame('herpderp', $handle->read());
+        $handle->seek(4);
+        static::assertSame(4, $handle->tell());
+        static::assertSame('derp', $handle->read());
     }
 
     public function testGetStream(): void
     {
-        $file = File\temporary();
-        $file->writeAll('herpderp');
+        $file = Filesystem\create_temporary_file();
+        $handle = File\open_read_write($file);
+        $handle->writeAll('herpderp');
 
-        $file_stream = $file->getStream();
+        $file_stream = $handle->getStream();
         static::assertIsNotClosedResource($file_stream);
 
-        $file->close();
+        $handle->close();
 
         static::assertIsClosedResource($file_stream);
 
-        static::assertNull($file->getStream());
+        static::assertNull($handle->getStream());
     }
 
     public function testMustCreateExistingFile(): void
     {
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('already exists.');
+        $this->expectException(File\Exception\AlreadyCreatedException::class);
+        $this->expectExceptionMessage('is already created.');
 
         new File\ReadWriteHandle(__FILE__, File\WriteMode::MUST_CREATE);
     }
 
     public function testAppendToNonExistingFile(): void
     {
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('does not exist.');
+        $this->expectException(File\Exception\NotFoundException::class);
+        $this->expectExceptionMessage('is not found.');
 
         new File\ReadWriteHandle(Env\temp_dir() . '/' . SecureRandom\string(20), File\WriteMode::APPEND);
     }
@@ -97,8 +100,8 @@ final class ReadWriteHandleTest extends TestCase
         $temporary_file = Filesystem\create_temporary_file();
         Filesystem\change_permissions($temporary_file, 0555);
 
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('is not writable.');
+        $this->expectException(File\Exception\NotWritableException::class);
+        $this->expectExceptionMessage('File "' . $temporary_file . '" is not writable.');
 
         new File\ReadWriteHandle($temporary_file, File\WriteMode::APPEND);
     }
@@ -130,13 +133,14 @@ final class ReadWriteHandleTest extends TestCase
      */
     public function testClose(callable $operation): void
     {
-        $file = File\temporary();
-        $file->close();
+        $file = Filesystem\create_temporary_file();
+        $handle = File\open_read_write($file);
+        $handle->close();
 
         $this->expectException(IO\Exception\AlreadyClosedException::class);
         $this->expectExceptionMessage('Handle has already been closed.');
 
-        $operation($file);
+        $operation($handle);
     }
 
     /**

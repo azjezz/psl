@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\File;
 
-use Psl;
 use Psl\IO;
 use Psl\Str;
 
@@ -16,8 +15,9 @@ use Psl\Str;
  * @param positive-int|null $length Maximum length of data read.
  *                                  The default is to read until end of file is reached.
  *
- * @throws Psl\Exception\InvariantViolationException If the file specified by
- *                                                   $file does not exist, or is not readable.
+ * @throws Exception\NotFoundException If $file does not exist.
+ * @throws Exception\NotFileException If $file points to a non-file node on the filesystem.
+ * @throws Exception\NotReadableException If $file exists, and is non-readable.
  * @throws Exception\RuntimeException In case of an error.
  */
 function read(string $file, int $offset = 0, ?int $length = null): string

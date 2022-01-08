@@ -454,7 +454,6 @@ final class Loader
         'Psl\File\open_read_only',
         'Psl\File\open_write_only',
         'Psl\File\open_read_write',
-        'Psl\File\temporary',
         'Psl\Runtime\get_extensions',
         'Psl\Runtime\get_sapi',
         'Psl\Runtime\get_version',
@@ -713,6 +712,12 @@ final class Loader
         'Psl\Collection\Exception\OutOfBoundsException',
         'Psl\DataStructure\Exception\UnderflowException',
         'Psl\Vec\Exception\LogicException',
+        'Psl\File\Exception\AlreadyCreatedException',
+        'Psl\File\Exception\InvalidArgumentException',
+        'Psl\File\Exception\NotFileException',
+        'Psl\File\Exception\NotFoundException',
+        'Psl\File\Exception\NotReadableException',
+        'Psl\File\Exception\NotWritableException',
     ];
 
     public const ENUMS = [

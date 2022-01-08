@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Psl\File;
 
-use Psl;
-use Psl\Filesystem;
-
 /**
  * Open a file handle for write only.
  *
- * @param non-empty-string $filename
+ * @param non-empty-string $file
  *
- * @throws Psl\Exception\InvariantViolationException If $filename points to a non-file node, or it not writeable.
- * @throws Filesystem\Exception\RuntimeException If unable to create $path when it does not exist.
+ * @throws Exception\NotFileException If $file points to a non-file node on the filesystem.
+ * @throws Exception\AlreadyCreatedException If $file is already created, and $write_mode is {@see WriteMode::MUST_CREATE}.
+ * @throws Exception\NotFoundException If $file does not exist, and $write_mode is {@see WriteMode::TRUNCATE} or {@see WriteMode::APPEND}.
+ * @throws Exception\NotWritableException If $file exists, and is non-writable.
+ * @throws Exception\RuntimeException If unable to create the $file if it does not exist.
  */
-function open_write_only(string $filename, WriteMode $mode = WriteMode::OPEN_OR_CREATE): WriteHandleInterface
+function open_write_only(string $file, WriteMode $mode = WriteMode::OPEN_OR_CREATE): WriteHandleInterface
 {
-    return new WriteHandle($filename, $mode);
+    return new WriteHandle($file, $mode);
 }

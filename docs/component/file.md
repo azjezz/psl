@@ -13,10 +13,9 @@
 #### `Functions`
 
 - [open_read_only](./../../src/Psl/File/open_read_only.php#L16)
-- [open_read_write](./../../src/Psl/File/open_read_write.php#L18)
+- [open_read_write](./../../src/Psl/File/open_read_write.php#L19)
 - [open_write_only](./../../src/Psl/File/open_write_only.php#L18)
 - [read](./../../src/Psl/File/read.php#L23)
-- [temporary](./../../src/Psl/File/temporary.php#L26)
 - [write](./../../src/Psl/File/write.php#L24)
 
 #### `Interfaces`
@@ -29,9 +28,9 @@
 #### `Classes`
 
 - [Lock](./../../src/Psl/File/Lock.php#L9)
-- [ReadHandle](./../../src/Psl/File/ReadHandle.php#L11)
+- [ReadHandle](./../../src/Psl/File/ReadHandle.php#L10)
 - [ReadWriteHandle](./../../src/Psl/File/ReadWriteHandle.php#L11)
-- [WriteHandle](./../../src/Psl/File/WriteHandle.php#L11)
+- [WriteHandle](./../../src/Psl/File/WriteHandle.php#L10)
 
 #### `Enums`
 

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\File;
 
-use Psl;
 use Psl\Filesystem;
 use Psl\IO;
+use Psl\Str;
 
 final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements ReadWriteHandleInterface
 {
@@ -16,36 +16,54 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
     private ReadWriteHandleInterface $readWriteHandle;
 
     /**
-     * @param non-empty-string $path
+     * @param non-empty-string $file
      *
-     * @throws Psl\Exception\InvariantViolationException If $path points to a non-file node, or it not writeable.
-     * @throws Filesystem\Exception\RuntimeException If unable to create $path when it does not exist.
+     * @throws Exception\NotFileException If $file points to a non-file node on the filesystem.
+     * @throws Exception\AlreadyCreatedException If $file is already created, and $write_mode is {@see WriteMode::MUST_CREATE}.
+     * @throws Exception\NotFoundException If $file does not exist, and $write_mode is {@see WriteMode::TRUNCATE} or {@see WriteMode::APPEND}.
+     * @throws Exception\NotWritableException If $file exists, and is non-writable
+     * @throws Exception\NotReadableException If $file exists, and is non-readable.
+     * @throws Exception\RuntimeException If unable to create the $file if it does not exist.
      */
-    public function __construct(string $path, WriteMode $write_mode = WriteMode::OPEN_OR_CREATE)
+    public function __construct(string $file, WriteMode $write_mode = WriteMode::OPEN_OR_CREATE)
     {
-        $is_file = Filesystem\is_file($path);
-        Psl\invariant(!Filesystem\exists($path) || $is_file, 'File "%s" is not a file.', $path);
+        $is_file = Filesystem\is_file($file);
+        if (!$is_file && Filesystem\exists($file)) {
+            throw Exception\NotFileException::for($file);
+        }
 
         $open_or_create = $write_mode === WriteMode::OPEN_OR_CREATE;
         $must_create = $write_mode === WriteMode::MUST_CREATE;
         if ($must_create && $is_file) {
-            Psl\invariant_violation('File "%s" already exists.', $path);
+            throw Exception\AlreadyCreatedException::for($file);
         }
 
         $creating = $open_or_create || $must_create;
         if (!$creating && !$is_file) {
-            Psl\invariant_violation('File "%s" does not exist.', $path);
+            throw Exception\NotFoundException::for($file);
         }
 
-        if ((!$creating || ($open_or_create && $is_file)) && !Filesystem\is_writable($path)) {
-            Psl\invariant_violation('File "%s" is not writable.', $path);
+        if ((!$creating || ($open_or_create && $is_file))) {
+            if (!Filesystem\is_writable($file)) {
+                throw Exception\NotWritableException::for($file);
+            }
+
+            if (!Filesystem\is_readable($file)) {
+                throw Exception\NotReadableException::for($file);
+            }
         }
 
+        // @codeCoverageIgnoreStart
         if ($creating && !$is_file) {
-            Filesystem\create_file($path);
+            try {
+                Filesystem\create_file($file);
+            } catch (Filesystem\Exception\RuntimeException $previous) {
+                throw new Exception\RuntimeException(Str\format('Failed to create the file "%s".', $file), previous: $previous);
+            }
         }
+        // @codeCoverageIgnoreEnd
 
-        $this->readWriteHandle = Internal\open($path, 'r' . ($write_mode->value) . '+', read: true, write: true);
+        $this->readWriteHandle = Internal\open($file, 'r' . ($write_mode->value) . '+', read: true, write: true);
 
         parent::__construct($this->readWriteHandle);
     }

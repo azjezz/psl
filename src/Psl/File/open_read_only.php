@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Psl\File;
 
-use Psl;
-
 /**
  * Open a file handle for read only.
  *
- * @param non-empty-string $path
+ * @param non-empty-string $file
  *
- * @throws Psl\Exception\InvariantViolationException If $path does not point to a file, or is not readable. *
+ * @throws Exception\NotFoundException If $file does not exist.
+ * @throws Exception\NotFileException If $file points to a non-file node on the filesystem.
+ * @throws Exception\NotReadableException If $file exists, and is non-readable.
  */
-function open_read_only(string $path): ReadHandleInterface
+function open_read_only(string $file): ReadHandleInterface
 {
-    return new ReadHandle($path);
+    return new ReadHandle($file);
 }

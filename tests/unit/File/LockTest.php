@@ -6,21 +6,23 @@ namespace Psl\Tests\Unit\File;
 
 use PHPUnit\Framework\TestCase;
 use Psl\File;
+use Psl\Filesystem;
 use Psl\IO\Exception\AlreadyClosedException;
 
 final class LockTest extends TestCase
 {
     public function testRelease(): void
     {
-        $file = File\temporary();
+        $file = Filesystem\create_temporary_file();
+        $handle = File\open_read_write($file);
 
-        $lock = $file->lock(File\LockType::EXCLUSIVE);
+        $lock = $handle->lock(File\LockType::EXCLUSIVE);
 
         static::assertSame(File\LockType::EXCLUSIVE, $lock->type);
 
         $lock->release();
 
-        $lock = $file->tryLock(File\LockType::SHARED);
+        $lock = $handle->tryLock(File\LockType::SHARED);
 
         static::assertSame(File\LockType::SHARED, $lock->type);
 
@@ -29,24 +31,26 @@ final class LockTest extends TestCase
 
     public function testLockingClosedFile(): void
     {
-        $file = File\temporary();
-        $file->close();
+        $file = Filesystem\create_temporary_file();
+        $handle = File\open_read_write($file);
+        $handle->close();
 
         $this->expectException(AlreadyClosedException::class);
         $this->expectExceptionMessage('Handle has already been closed.');
 
-        $file->lock(File\LockType::EXCLUSIVE);
+        $handle->lock(File\LockType::EXCLUSIVE);
     }
 
     public function testReleasingALockOnAClosedFile(): void
     {
-        $file = File\temporary();
+        $file = Filesystem\create_temporary_file();
+        $handle = File\open_read_write($file);
 
-        $lock = $file->lock(File\LockType::EXCLUSIVE);
+        $lock = $handle->lock(File\LockType::EXCLUSIVE);
 
         static::assertSame(File\LockType::EXCLUSIVE, $lock->type);
 
-        $file->close();
+        $handle->close();
 
         $this->expectException(AlreadyClosedException::class);
         $this->expectExceptionMessage('Handle was closed before releasing the lock.');
@@ -56,13 +60,14 @@ final class LockTest extends TestCase
 
     public function testReleasingALockOnAClosedFileUsingDestructor(): void
     {
-        $file = File\temporary();
+        $file = Filesystem\create_temporary_file();
+        $handle = File\open_read_write($file);
 
-        $lock = $file->lock(File\LockType::EXCLUSIVE);
+        $lock = $handle->lock(File\LockType::EXCLUSIVE);
 
         static::assertSame(File\LockType::EXCLUSIVE, $lock->type);
 
-        $file->close();
+        $handle->close();
 
         $this->expectException(AlreadyClosedException::class);
         $this->expectExceptionMessage('Handle was closed before releasing the lock.');
@@ -72,20 +77,21 @@ final class LockTest extends TestCase
 
     public function testReleasingASecondTimeAfterClosingTheFile(): void
     {
-        $file = File\temporary();
+        $file = Filesystem\create_temporary_file();
+        $handle = File\open_read_write($file);
 
-        $lock = $file->lock(File\LockType::EXCLUSIVE);
+        $lock = $handle->lock(File\LockType::EXCLUSIVE);
 
         static::assertSame(File\LockType::EXCLUSIVE, $lock->type);
 
         $lock->release();
 
-        $lock = $file->tryLock(File\LockType::SHARED);
+        $lock = $handle->tryLock(File\LockType::SHARED);
 
         static::assertSame(File\LockType::SHARED, $lock->type);
 
         $lock->release();
-        $file->close();
+        $handle->close();
 
         // this should not throw.
         $lock->release();

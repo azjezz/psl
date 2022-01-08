@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\File;
 
-use Psl;
 use Psl\Filesystem;
 use Psl\IO;
 
@@ -15,16 +14,27 @@ final class ReadHandle extends Internal\AbstractHandleWrapper implements ReadHan
     private ReadHandleInterface $readHandle;
 
     /**
-     * @param non-empty-string $path
+     * @param non-empty-string $file
      *
-     * @throws Psl\Exception\InvariantViolationException If $path does not point to a file, or is not readable.
+     * @throws Exception\NotFoundException If $file does not exist.
+     * @throws Exception\NotFileException If $file points to a non-file node on the filesystem.
+     * @throws Exception\NotReadableException If $file exists, and is non-readable.
      */
-    public function __construct(string $path)
+    public function __construct(string $file)
     {
-        Psl\invariant(Filesystem\is_file($path), 'File "%s" is not a file.', $path);
-        Psl\invariant(Filesystem\is_readable($path), 'File "%s" is not readable.', $path);
+        if (!Filesystem\exists($file)) {
+            throw Exception\NotFoundException::for($file);
+        }
 
-        $this->readHandle = Internal\open($path, 'r', read: true, write: false);
+        if (!Filesystem\is_file($file)) {
+            throw Exception\NotFileException::for($file);
+        }
+
+        if (!Filesystem\is_readable($file)) {
+            throw Exception\NotReadableException::for($file);
+        }
+
+        $this->readHandle = Internal\open($file, 'r', read: true, write: false);
 
         parent::__construct($this->readHandle);
     }

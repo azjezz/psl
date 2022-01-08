@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\File;
 
-use Psl\Exception\InvariantViolationException;
 use Psl\File;
 use Psl\Filesystem;
 use Psl\Str;
@@ -54,24 +53,24 @@ final class ReadWriteTest extends AbstractFilesystemTest
 
     public function testWriteFileThrowsForDirectories(): void
     {
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('File "' . $this->directory . '" is not a file.');
+        $this->expectException(File\Exception\NotFileException::class);
+        $this->expectExceptionMessage('Path "' . $this->directory . '" does not point to a file.');
 
         File\write($this->directory, 'hello');
     }
 
     public function testAppendFileThrowsForDirectories(): void
     {
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('File "' . $this->directory . '" is not a file.');
+        $this->expectException(File\Exception\NotFileException::class);
+        $this->expectExceptionMessage('Path "' . $this->directory . '" does not point to a file.');
 
         File\write($this->directory, 'hello', mode: File\WriteMode::APPEND);
     }
 
     public function testReadFileThrowsForDirectories(): void
     {
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('File "' . $this->directory . '" is not a file.');
+        $this->expectException(File\Exception\NotFileException::class);
+        $this->expectExceptionMessage('Path "' . $this->directory . '" does not point to a file.');
 
         File\read($this->directory);
     }
@@ -84,7 +83,7 @@ final class ReadWriteTest extends AbstractFilesystemTest
         Filesystem\change_permissions($file, 0111);
 
         try {
-            $this->expectException(InvariantViolationException::class);
+            $this->expectException(File\Exception\NotWritableException::class);
             $this->expectExceptionMessage('File "' . $file . '" is not writable.');
 
             File\write($file, 'hello');
