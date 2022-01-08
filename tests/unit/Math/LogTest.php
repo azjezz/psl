@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Math;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Exception;
 use Psl\Math;
 
 final class LogTest extends TestCase
@@ -49,24 +48,24 @@ final class LogTest extends TestCase
 
     public function testNegativeInputThrows(): void
     {
-        $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected a positive number.');
+        $this->expectException(Math\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$number must be positive.');
 
         Math\log(-45);
     }
 
     public function testNonPositiveBaseThrows(): void
     {
-        $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected a positive base.');
+        $this->expectException(Math\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$base must be positive.');
 
         Math\log(4.4, 0.0);
     }
 
     public function testBaseOneThrowsForUndefinedLogarithm(): void
     {
-        $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Logarithm undefined for base 1.');
+        $this->expectException(Math\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Logarithm undefined for $base of 1.0.');
 
         Math\log(4.4, 1.0);
     }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
-use Psl;
-
 use function log as php_log;
 
 /**
@@ -13,17 +11,25 @@ use function log as php_log;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If $number or $base are negative, or $base is equal to 1.0.
+ * @throws Exception\InvalidArgumentException If $number or $base are negative, or $base is equal to 1.0.
  */
 function log(float $number, ?float $base = null): float
 {
-    Psl\invariant($number > 0, 'Expected a positive number.');
+    if ($number <= 0) {
+        throw new Exception\InvalidArgumentException('$number must be positive.');
+    }
+
     if (null === $base) {
         return php_log($number);
     }
 
-    Psl\invariant($base > 0, 'Expected a positive base.');
-    Psl\invariant(1.0 !== $base, 'Logarithm undefined for base 1.');
+    if ($base <= 0) {
+        throw new Exception\InvalidArgumentException('$base must be positive.');
+    }
+
+    if ($base === 1.0) {
+        throw new Exception\InvalidArgumentException('Logarithm undefined for $base of 1.0.');
+    }
 
     return php_log($number, $base);
 }

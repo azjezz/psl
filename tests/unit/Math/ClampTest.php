@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Math;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Exception;
 use Psl\Math;
 
 final class ClampTest extends TestCase
@@ -20,7 +19,7 @@ final class ClampTest extends TestCase
 
     public function testInvalidMinMax(): void
     {
-        $this->expectException(Exception\InvariantViolationException::class);
+        $this->expectException(Math\Exception\InvalidArgumentException::class);
         $this->expectExceptionMessage('Expected $min to be lower or equal to $max.');
 
         Math\clamp(10, 20, 10);

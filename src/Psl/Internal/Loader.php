@@ -725,6 +725,8 @@ final class Loader
         'Psl\Str\Exception\InvalidArgumentException',
         'Psl\Str\Exception\LogicException',
         'Psl\Dict\Exception\LogicException',
+        'Psl\Math\Exception\OverflowException',
+        'Psl\Math\Exception\InvalidArgumentException',
     ];
 
     public const ENUMS = [

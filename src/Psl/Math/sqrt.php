@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
-use Psl;
-
 use function sqrt as php_sqrt;
 
 /**
@@ -13,11 +11,13 @@ use function sqrt as php_sqrt;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If $number is negative.
+ * @throws Exception\InvalidArgumentException If $number is negative.
  */
 function sqrt(float $number): float
 {
-    Psl\invariant($number >= 0.0, 'Expected a non-negative number.', $number);
+    if ($number < 0) {
+        throw new Exception\InvalidArgumentException('$number must be a non-negative number.');
+    }
 
     return php_sqrt($number);
 }

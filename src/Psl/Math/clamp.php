@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
-use Psl;
-
 /**
  * Returns the given number clamped to the given range.
  *
@@ -15,7 +13,7 @@ use Psl;
  * @param T $min
  * @param T $max
  *
- * @throws Psl\Exception\InvariantViolationException If min is bigger than max
+ * @throws Exception\InvalidArgumentException If $min is bigger than $max
  *
  * @return T
  *
@@ -23,7 +21,9 @@ use Psl;
  */
 function clamp(int|float $number, int|float $min, int|float $max): int|float
 {
-    Psl\invariant($min <= $max, 'Expected $min to be lower or equal to $max.');
+    if ($max < $min) {
+        throw new Exception\InvalidArgumentException('Expected $min to be lower or equal to $max.');
+    }
 
     if ($number < $min) {
         return $min;

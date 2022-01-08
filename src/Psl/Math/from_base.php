@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
-use Psl;
+use Psl\Str;
 use Psl\Str\Byte;
 
 /**
@@ -16,7 +16,8 @@ use Psl\Str\Byte;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If $number is invalid.
+ * @throws Exception\InvalidArgumentException If $number contains an invalid digit in base $from_base
+ * @throws Exception\OverflowException In case of an integer overflow
  */
 function from_base(string $number, int $from_base): int
 {
@@ -36,15 +37,17 @@ function from_base(string $number, int $from_base): int
             $dval = 99;
         }
 
-        Psl\invariant($dval < $from_base, 'Invalid digit %s in base %d', $digit, $from_base);
+        if ($from_base < $dval) {
+            throw new Exception\InvalidArgumentException(Str\format('Invalid digit %s in base %d', $digit, $from_base));
+        }
+
         $oldval = $result;
         $result = $from_base * $result + $dval;
-        Psl\invariant(
-            $oldval <= $limit && $result >= $oldval,
-            'Unexpected integer overflow parsing %s from base %d',
-            $number,
-            $from_base
-        );
+        if ($oldval > $limit || $oldval > $result) {
+            throw new Exception\OverflowException(
+                Str\format('Unexpected integer overflow parsing %s from base %d', $number, $from_base)
+            );
+        }
     }
 
     return $result;

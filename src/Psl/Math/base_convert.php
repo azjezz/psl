@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
-use Psl;
 use Psl\Str;
 use Psl\Str\Byte;
 
@@ -26,7 +25,7 @@ use function bcpow;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException If the given value is invalid.
+ * @throws Exception\InvalidArgumentException If the given value is invalid.
  */
 function base_convert(string $value, int $from_base, int $to_base): string
 {
@@ -35,7 +34,9 @@ function base_convert(string $value, int $from_base, int $to_base): string
     $place_value = bcpow((string)$from_base, (string)(Byte\length($value) - 1));
     foreach (Byte\chunk($value) as $digit) {
         $digit_numeric = Byte\search_ci($from_alphabet, $digit);
-        Psl\invariant(null !== $digit_numeric, 'Invalid digit %s in base %d', $digit, $from_base);
+        if (null === $digit_numeric) {
+            throw new Exception\InvalidArgumentException(Str\format('Invalid digit %s in base %d', $digit, $from_base));
+        }
         $result_decimal = bcadd($result_decimal, bcmul((string)$digit_numeric, $place_value));
         $place_value = bcdiv($place_value, (string)$from_base);
     }

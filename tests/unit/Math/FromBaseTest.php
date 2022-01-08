@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Math;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Exception;
 use Psl\Math;
+use Psl\Str;
 
 final class FromBaseTest extends TestCase
 {
@@ -49,7 +49,7 @@ final class FromBaseTest extends TestCase
 
     public function testInvalidDigitThrows(): void
     {
-        $this->expectException(Exception\InvariantViolationException::class);
+        $this->expectException(Math\Exception\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid digit Z in base 16');
 
         Math\from_base('Z', 16);
@@ -57,9 +57,19 @@ final class FromBaseTest extends TestCase
 
     public function testSpecialCharThrows(): void
     {
-        $this->expectException(Exception\InvariantViolationException::class);
+        $this->expectException(Math\Exception\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid digit * in base 16');
 
         Math\from_base('*', 16);
+    }
+
+    public function testThrowsForOverflow(): void
+    {
+        $number = Str\repeat('A', 100);
+
+        $this->expectException(Math\Exception\OverflowException::class);
+        $this->expectExceptionMessage('Unexpected integer overflow parsing ' . $number . ' from base 32');
+
+        Math\from_base($number, 32);
     }
 }
