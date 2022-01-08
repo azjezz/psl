@@ -562,6 +562,7 @@ final class Loader
         'Psl\DataStructure\Exception\ExceptionInterface',
         'Psl\Vec\Exception\ExceptionInterface',
         'Psl\Dict\Exception\ExceptionInterface',
+        'Psl\PseudoRandom\Exception\ExceptionInterface',
     ];
 
     public const TRAITS = [
@@ -727,6 +728,7 @@ final class Loader
         'Psl\Dict\Exception\LogicException',
         'Psl\Math\Exception\OverflowException',
         'Psl\Math\Exception\InvalidArgumentException',
+        'Psl\PseudoRandom\Exception\InvalidArgumentException',
     ];
 
     public const ENUMS = [

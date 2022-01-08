@@ -34,5 +34,6 @@ function random(iterable $iterable)
         return $values[0];
     }
 
+    /** @psalm-suppress MissingThrowsDocblock */
     return $values[PseudoRandom\int(0, $size - 1)];
 }

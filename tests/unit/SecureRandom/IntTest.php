@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\SecureRandom;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Exception;
 use Psl\Math;
 use Psl\SecureRandom;
 
@@ -48,7 +47,7 @@ final class IntTest extends TestCase
 
     public function testIntWithMinGreaterThanMax(): void
     {
-        $this->expectException(Exception\InvariantViolationException::class);
+        $this->expectException(SecureRandom\Exception\InvalidArgumentException::class);
         $this->expectExceptionMessage('Expected $min (20) to be less than or equal to $max (5).');
 
         SecureRandom\int(20, 5);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\SecureRandom;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Exception;
 use Psl\SecureRandom;
 use Psl\Str;
 
@@ -38,8 +37,8 @@ final class StringTest extends TestCase
 
     public function testStringAlphabetMin(): void
     {
-        $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage('Expected $alphabet\'s length to be in [2^1, 2^56]');
+        $this->expectException(SecureRandom\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$alphabet\'s length must be in [2^1, 2^56]');
 
         SecureRandom\string(32, 'a');
     }
