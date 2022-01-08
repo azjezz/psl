@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
-use Psl;
-
 /**
  * @template T
  *
  * @param TypeInterface<T> $first
  * @param TypeInterface<T> $second
  * @param TypeInterface<T> ...$rest
- *
- * @throws Psl\Exception\InvariantViolationException If $first, $second or one of $rest is optional.
  *
  * @return TypeInterface<T>
  */

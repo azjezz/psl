@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
-use Psl;
 use Psl\Collection;
 use Psl\Dict;
 use Psl\Str;
@@ -28,17 +27,11 @@ final class MutableMapType extends Type\Type
     /**
      * @param Type\TypeInterface<Tk> $key_type
      * @param Type\TypeInterface<Tv> $value_type
-     *
-     * @throws Psl\Exception\InvariantViolationException If $key_value, or $value_type is optional.
      */
     public function __construct(
-        private Type\TypeInterface $key_type,
-        private Type\TypeInterface $value_type
+        private readonly Type\TypeInterface $key_type,
+        private readonly Type\TypeInterface $value_type
     ) {
-        Psl\invariant(
-            !$key_type->isOptional() && !$value_type->isOptional(),
-            'Optional type must be the outermost.'
-        );
     }
 
     /**
@@ -62,9 +55,7 @@ final class MutableMapType extends Type\Type
             /** @var Type\Type<Tv> $value_type */
             $value_type = $this->value_type->withTrace($value_trace);
 
-            /**
-             * @var list<array{0: Tk, 1: Tv}> $entries
-             */
+            /** @var list<array{Tk, Tv}> $entries */
             $entries = [];
 
             /**
@@ -110,9 +101,7 @@ final class MutableMapType extends Type\Type
             /** @var Type\Type<Tv> $value_type */
             $value_type = $this->value_type->withTrace($value_trace);
 
-            /**
-             * @var list<array{0: Tk, 1: Tv}> $entries
-             */
+            /** @var list<array{Tk, Tv}> $entries */
             $entries = [];
 
             /**

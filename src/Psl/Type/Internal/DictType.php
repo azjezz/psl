@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
-use Psl;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -25,17 +24,11 @@ final class DictType extends Type\Type
     /**
      * @param Type\TypeInterface<Tk> $key_type
      * @param Type\TypeInterface<Tv> $value_type
-     *
-     * @throws Psl\Exception\InvariantViolationException If $key_value, or $value_type is optional.
      */
     public function __construct(
-        private Type\TypeInterface $key_type,
-        private Type\TypeInterface $value_type
+        private readonly Type\TypeInterface $key_type,
+        private readonly Type\TypeInterface $value_type
     ) {
-        Psl\invariant(
-            !$key_type->isOptional() && !$value_type->isOptional(),
-            'Optional type must be the outermost.'
-        );
     }
 
     /**

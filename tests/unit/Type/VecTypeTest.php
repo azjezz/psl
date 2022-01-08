@@ -6,7 +6,6 @@ namespace Psl\Tests\Unit\Type;
 
 use Psl\Collection;
 use Psl\Dict;
-use Psl\Exception\InvariantViolationException;
 use Psl\Iter;
 use Psl\Str;
 use Psl\Type;
@@ -17,14 +16,6 @@ use Psl\Vec;
  */
 final class VecTypeTest extends TypeTest
 {
-    public function testThrowsForInnerOptional(): void
-    {
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Optional type must be the outermost.');
-
-        Type\vec(Type\optional(Type\int()));
-    }
-
     public function getValidCoercions(): iterable
     {
         yield [

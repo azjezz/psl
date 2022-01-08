@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
-use Psl;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -23,13 +22,10 @@ final class VecType extends Type\Type
 {
     /**
      * @param Type\TypeInterface<Tv> $value_type
-     *
-     * @throws Psl\Exception\InvariantViolationException If $value_type is optional.
      */
     public function __construct(
-        private Type\TypeInterface $value_type
+        private readonly Type\TypeInterface $value_type
     ) {
-        Psl\invariant(!$value_type->isOptional(), 'Optional type must be the outermost.');
     }
 
     /**

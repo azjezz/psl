@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
-use Psl;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -20,13 +19,10 @@ final class NullableType extends Type\Type
 {
     /**
      * @param Type\TypeInterface<T> $inner
-     *
-     * @throws Psl\Exception\InvariantViolationException If $inner is optional.
      */
     public function __construct(
-        private Type\TypeInterface $inner
+        private readonly Type\TypeInterface $inner
     ) {
-        Psl\invariant(!$inner->isOptional(), 'Optional type must be the outermost.');
     }
 
     /**

@@ -6,7 +6,6 @@ namespace Psl\Tests\Unit\Type;
 
 use Psl\Collection;
 use Psl\Dict;
-use Psl\Exception\InvariantViolationException;
 use Psl\Iter;
 use Psl\Str;
 use Psl\Type;
@@ -28,14 +27,6 @@ final class DictTypeTest extends TypeTest
         $new_type = $type->withTrace($new_trace);
 
         static::assertNotSame($new_type, $type);
-    }
-
-    public function testThrowsForInnerOptional(): void
-    {
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Optional type must be the outermost.');
-
-        Type\dict(Type\int(), Type\optional(Type\int()));
     }
 
     public function getType(): Type\TypeInterface

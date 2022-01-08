@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Regex;
 
-use Psl\Exception\InvariantViolationException;
 use Psl\Type;
 
 use function preg_match_all;
@@ -47,7 +46,7 @@ function every_match(
     try {
         /** @psalm-suppress InvalidArgument  */
         return Type\vec($capture_groups)->coerce($matching);
-    } catch (InvariantViolationException | Type\Exception\CoercionException $e) {
+    } catch (Type\Exception\CoercionException $e) {
         throw new Exception\RuntimeException('Invalid capture groups', 0, $e);
     }
 }

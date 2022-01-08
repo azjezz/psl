@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
-use Psl;
-
 /**
  * @template Tk
  * @template Tv
  *
  * @param TypeInterface<Tk> $key_type
  * @param TypeInterface<Tv> $value_type
- *
- * @throws Psl\Exception\InvariantViolationException If $key_value, or $value_type is optional.
  *
  * @return TypeInterface<iterable<Tk, Tv>>
  */

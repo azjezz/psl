@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
-use Psl\Exception\InvariantViolationException;
 use Psl\Type;
 
 final class NullableTypeTest extends TypeTest
@@ -12,14 +11,6 @@ final class NullableTypeTest extends TypeTest
     public function getType(): Type\TypeInterface
     {
         return Type\nullable(Type\string());
-    }
-
-    public function testNullableTypeCannotContainOptionalType(): void
-    {
-        $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('Optional type must be the outermost.');
-
-        Type\nullable(Type\optional(Type\string()));
     }
 
     public function getValidCoercions(): iterable
