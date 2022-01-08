@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
-use Psl;
 use Psl\Vec;
 
 use function count;
@@ -19,7 +18,7 @@ use function count;
  * @param iterable<Tk> $keys
  * @param iterable<Tv> $values
  *
- * @throws Psl\Exception\InvariantViolationException If $keys and $values have different length.
+ * @throws Exception\LogicException If $keys and $values have different length.
  *
  * @return array<Tk, Tv>
  */
@@ -33,8 +32,13 @@ function associate(iterable $keys, iterable $values): array
         $values = Vec\values($values);
     }
 
-    if (count($keys) !== count($values)) {
-        Psl\invariant_violation('Expected length of $keys and $values to be the same');
+    $keys_count = count($keys);
+    if ($keys_count !== count($values)) {
+        throw new Exception\LogicException('Expected length of $keys and $values to be the same');
+    }
+
+    if ($keys_count === 0) {
+        return [];
     }
 
     return array_combine($keys, $values);

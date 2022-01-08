@@ -12,7 +12,7 @@
 
 #### `Functions`
 
-- [associate](./../../src/Psl/Dict/associate.php#L26)
+- [associate](./../../src/Psl/Dict/associate.php#L25)
 - [count_values](./../../src/Psl/Dict/count_values.php#L22)
 - [diff](./../../src/Psl/Dict/diff.php#L24)
 - [diff_by_key](./../../src/Psl/Dict/diff_by_key.php#L24)

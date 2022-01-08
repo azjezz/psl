@@ -561,6 +561,7 @@ final class Loader
         'Psl\Collection\Exception\ExceptionInterface',
         'Psl\DataStructure\Exception\ExceptionInterface',
         'Psl\Vec\Exception\ExceptionInterface',
+        'Psl\Dict\Exception\ExceptionInterface',
     ];
 
     public const TRAITS = [
@@ -723,6 +724,7 @@ final class Loader
         'Psl\File\Exception\NotWritableException',
         'Psl\Str\Exception\InvalidArgumentException',
         'Psl\Str\Exception\LogicException',
+        'Psl\Dict\Exception\LogicException',
     ];
 
     public const ENUMS = [

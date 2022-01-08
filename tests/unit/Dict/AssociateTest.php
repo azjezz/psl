@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Dict;
 
 use PHPUnit\Framework\TestCase;
-use Psl;
 use Psl\Collection;
 use Psl\Dict;
 
@@ -19,6 +18,11 @@ final class AssociateTest extends TestCase
         ));
     }
 
+    public function testAssociateEmpty(): void
+    {
+        static::assertSame([], Dict\associate([], []));
+    }
+
     public function testAssociateCollections(): void
     {
         static::assertSame(['a' => 1, 'b' => 2, 'c' => 3], Dict\associate(
@@ -29,7 +33,7 @@ final class AssociateTest extends TestCase
 
     public function testAssociateWithMissingKeys(): void
     {
-        $this->expectException(Psl\Exception\InvariantViolationException::class);
+        $this->expectException(Dict\Exception\LogicException::class);
         $this->expectExceptionMessage('Expected length of $keys and $values to be the same');
 
         Dict\associate(
@@ -40,7 +44,7 @@ final class AssociateTest extends TestCase
 
     public function testAssociateWithMissingValues(): void
     {
-        $this->expectException(Psl\Exception\InvariantViolationException::class);
+        $this->expectException(Dict\Exception\LogicException::class);
         $this->expectExceptionMessage('Expected length of $keys and $values to be the same');
 
         Dict\associate(
