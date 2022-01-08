@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\SecureRandom;
 
-use Psl;
 use Psl\Math;
 use Psl\Str;
 use Psl\Str\Byte;
@@ -21,7 +20,7 @@ use function unpack;
  * @param int<0, max> $length The length of the string to generate.
  *
  * @throws Exception\InsufficientEntropyException If it was not possible to gather sufficient entropy.
- * @throws Psl\Exception\InvariantViolationException If $alphabet length is outside the [2^1, 2^56] range.
+ * @throws Exception\InvalidArgumentException If $alphabet length is outside the [2^1, 2^56] range.
  *
  * @psalm-external-mutation-free
  */
@@ -33,8 +32,11 @@ function string(int $length, ?string $alphabet = null): string
 
     $alphabet      = $alphabet ?? Str\ALPHABET_ALPHANUMERIC;
     $alphabet_size = Byte\length($alphabet);
+    /** @psalm-suppress MissingThrowsDocblock */
     $bits          = (int) Math\ceil(Math\log($alphabet_size, 2.0));
-    Psl\invariant($bits >= 1 && $bits <= 56, 'Expected $alphabet\'s length to be in [2^1, 2^56]');
+    if ($bits < 1 || $bits > 56) {
+        throw new Exception\InvalidArgumentException('$alphabet\'s length must be in [2^1, 2^56]');
+    }
 
     $ret = '';
     while ($length > 0) {
