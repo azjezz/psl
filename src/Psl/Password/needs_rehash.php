@@ -22,7 +22,7 @@ use function password_needs_rehash;
  *
  * @pure
  */
-function needs_rehash(string $hash, string $algorithm = DEFAULT_ALGORITHM, array $options = []): bool
+function needs_rehash(string $hash, Algorithm $algorithm = Algorithm::Default, array $options = []): bool
 {
-    return password_needs_rehash($hash, $algorithm, $options);
+    return password_needs_rehash($hash, $algorithm->getBuiltinConstantValue(), $options);
 }

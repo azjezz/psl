@@ -48,14 +48,6 @@ final class Loader
         'Psl\Math\NAN',
         'Psl\Str\ALPHABET',
         'Psl\Str\ALPHABET_ALPHANUMERIC',
-        'Psl\Password\DEFAULT_ALGORITHM',
-        'Psl\Password\BCRYPT_ALGORITHM',
-        'Psl\Password\BCRYPT_DEFAULT_COST',
-        'Psl\Password\ARGON2I_ALGORITHM',
-        'Psl\Password\ARGON2ID_ALGORITHM',
-        'Psl\Password\ARGON2_DEFAULT_MEMORY_COST',
-        'Psl\Password\ARGON2_DEFAULT_TIME_COST',
-        'Psl\Password\ARGON2_DEFAULT_THREADS',
         'Psl\Filesystem\SEPARATOR',
     ];
 
@@ -347,7 +339,6 @@ final class Loader
         'Psl\Env\set_var',
         'Psl\Env\split_paths',
         'Psl\Env\temp_dir',
-        'Psl\Password\algorithms',
         'Psl\Password\get_information',
         'Psl\Password\hash',
         'Psl\Password\needs_rehash',
@@ -563,6 +554,7 @@ final class Loader
         'Psl\Vec\Exception\ExceptionInterface',
         'Psl\Dict\Exception\ExceptionInterface',
         'Psl\PseudoRandom\Exception\ExceptionInterface',
+        'Psl\Password\Exception\ExceptionInterface',
     ];
 
     public const TRAITS = [
@@ -731,6 +723,7 @@ final class Loader
         'Psl\Iter\Exception\InvalidArgumentException',
         'Psl\PseudoRandom\Exception\InvalidArgumentException',
         'Psl\Async\Exception\InvalidArgumentException',
+        'Psl\Password\Exception\RuntimeException',
     ];
 
     public const ENUMS = [
@@ -742,6 +735,7 @@ final class Loader
         'Psl\Hash\Algorithm',
         'Psl\Hash\Hmac\Algorithm',
         'Psl\OS\OperatingSystemFamily',
+        'Psl\Password\Algorithm',
     ];
 
     public const TYPE_CONSTANTS = 1;

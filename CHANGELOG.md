@@ -61,3 +61,6 @@
 * **BC** - `Psl\Hash\Hmac\hash`, and `Psl\Hash\Context::hmac` now take `Psl\Hash\Hmac\Algorithm` as an algorithm, rather than a string.
 * **BC** - A new method `chunk(positive-int $size): CollectionInterface` has been added to `Psl\Collection\CollectionInterface`.
 * introduced a new `Psl\OS` component.
+* introduced `Psl\Password\Algorithm` enum
+* **BC** - all constants of `Psl\Password` component has been removed.
+* **BC** - function `Psl\Password\algorithms()` have been removed.
