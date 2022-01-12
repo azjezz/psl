@@ -11,6 +11,7 @@ use Psl\IO\Exception;
 use Psl\Type;
 use Revolt\EventLoop\Suspension;
 
+use function array_shift;
 use function array_slice;
 use function error_get_last;
 use function fclose;
@@ -170,13 +171,12 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
                 Async\Scheduler::cancel($delay_watcher);
             }
 
-            $suspension = $this->writeQueue[0] ?? null;
+            $suspension = array_shift($this->writeQueue);
             if ($suspension !== null) {
-                $this->writeQueue = array_slice($this->writeQueue, 1);
                 $suspension->resume();
+            } else {
+                $this->writing = false;
             }
-
-            $this->writing = false;
         }
     }
 
@@ -283,13 +283,12 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
                 Async\Scheduler::cancel($delay_watcher);
             }
 
-            $suspension = $this->readQueue[0] ?? null;
+            $suspension = array_shift($this->readQueue);
             if ($suspension !== null) {
-                $this->readQueue = array_slice($this->readQueue, 1);
                 $suspension->resume();
+            } else {
+                $this->reading = false;
             }
-
-            $this->reading = false;
         }
     }
 
