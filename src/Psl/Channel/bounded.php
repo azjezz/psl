@@ -13,7 +13,7 @@ namespace Psl\Channel;
  *
  * @param positive-int $capacity
  *
- * @return array{0: ReceiverInterface<T>, 1: SenderInterface<T>}
+ * @return array{ReceiverInterface<T>, SenderInterface<T>}
  */
 function bounded(int $capacity): array
 {
