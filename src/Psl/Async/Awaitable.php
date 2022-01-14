@@ -249,7 +249,7 @@ final class Awaitable implements PromiseInterface
      */
     public function await(): mixed
     {
-        $suspension = Scheduler::createSuspension();
+        $suspension = Scheduler::getSuspension();
 
         $this->state->subscribe(
             /**

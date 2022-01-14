@@ -54,7 +54,7 @@ final class Sequence
     public function waitFor(mixed $input): mixed
     {
         if ($this->ingoing) {
-            $this->pending[] = $suspension = Scheduler::createSuspension();
+            $this->pending[] = $suspension = Scheduler::getSuspension();
 
             $suspension->suspend();
         }
@@ -136,7 +136,7 @@ final class Sequence
             return;
         }
 
-        $suspension = Scheduler::createSuspension();
+        $suspension = Scheduler::getSuspension();
         $this->waits[] = $suspension;
         $suspension->suspend();
     }

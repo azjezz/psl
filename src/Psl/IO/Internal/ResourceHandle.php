@@ -131,7 +131,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     {
         // there's a pending read operation, wait for it.
         if ($this->writing) {
-            $suspension = Async\Scheduler::createSuspension();
+            $suspension = Async\Scheduler::getSuspension();
             $this->writeQueue[] = $suspension;
             $suspension->suspend();
         }
@@ -147,7 +147,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
                 return $written;
             }
 
-            $this->writeSuspension = Async\Scheduler::createSuspension();
+            $this->writeSuspension = Async\Scheduler::getSuspension();
             /** @psalm-suppress MissingThrowsDocblock */
             Async\Scheduler::enable($this->writeWatcher);
             if (null !== $timeout) {
@@ -243,7 +243,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     {
         // there's a pending read operation, wait for it.
         if ($this->reading) {
-            $suspension = Async\Scheduler::createSuspension();
+            $suspension = Async\Scheduler::getSuspension();
             $this->readQueue[] = $suspension;
             $suspension->suspend();
         }
@@ -258,7 +258,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
                 return $chunk;
             }
 
-            $this->readSuspension = Async\Scheduler::createSuspension();
+            $this->readSuspension = Async\Scheduler::getSuspension();
             /** @psalm-suppress MissingThrowsDocblock */
             Async\Scheduler::enable($this->readWatcher);
             if (null !== $timeout) {

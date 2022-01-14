@@ -61,7 +61,7 @@ final class KeyedSequence
     public function waitFor(string|int $key, mixed $input): mixed
     {
         if (array_key_exists($key, $this->ingoing)) {
-            $this->pending[$key][] = $suspension = Scheduler::createSuspension();
+            $this->pending[$key][] = $suspension = Scheduler::getSuspension();
 
             $suspension->suspend();
         }
@@ -219,7 +219,7 @@ final class KeyedSequence
             return;
         }
 
-        $suspension = Scheduler::createSuspension();
+        $suspension = Scheduler::getSuspension();
         $this->waits[$key][] = $suspension;
         $suspension->suspend();
     }

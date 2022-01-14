@@ -136,7 +136,7 @@ final class AwaitableIterator
                 return $this->complete->await();
             }
 
-            $this->queue->suspension = Psl\Async\Scheduler::createSuspension();
+            $this->queue->suspension = Psl\Async\Scheduler::getSuspension();
 
             /** @var null|array{0: Tk, 1: Awaitable<Tv>} */
             return $this->queue->suspension->suspend();

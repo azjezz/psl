@@ -27,11 +27,11 @@ final class Scheduler
     /**
      * Create an object used to suspend and resume execution, either within a fiber or from {main}.
      *
-     * @see EventLoop::createSuspension()
+     * @see EventLoop::getSuspension()
      */
-    public static function createSuspension(): Suspension
+    public static function getSuspension(): Suspension
     {
-        return EventLoop::createSuspension();
+        return EventLoop::getSuspension();
     }
 
     /**

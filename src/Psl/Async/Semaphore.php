@@ -62,7 +62,7 @@ final class Semaphore
     public function waitFor(mixed $input): mixed
     {
         if ($this->ingoing === $this->concurrencyLimit) {
-            $this->pending[] = $suspension = Scheduler::createSuspension();
+            $this->pending[] = $suspension = Scheduler::getSuspension();
 
             $suspension->suspend();
         }
@@ -166,7 +166,7 @@ final class Semaphore
             return;
         }
 
-        $suspension = Scheduler::createSuspension();
+        $suspension = Scheduler::getSuspension();
         $this->waits[] = $suspension;
         $suspension->suspend();
     }

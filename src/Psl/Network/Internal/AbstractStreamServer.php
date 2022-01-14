@@ -77,7 +77,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
         }
 
         if (null !== $this->suspension) {
-            $suspension = Async\Scheduler::createSuspension();
+            $suspension = Async\Scheduler::getSuspension();
             $this->queue[] = $suspension;
             $suspension->suspend();
         } else {
@@ -85,7 +85,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
             Async\Scheduler::enable($this->watcher);
         }
 
-        $this->suspension = Async\Scheduler::createSuspension();
+        $this->suspension = Async\Scheduler::getSuspension();
 
         try {
             /** @var resource $stream */

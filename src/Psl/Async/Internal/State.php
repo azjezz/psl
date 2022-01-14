@@ -50,8 +50,7 @@ final class State
     public function __destruct()
     {
         if ($this->exception && !$this->handled) {
-            $exception = Exception\UnhandledAwaitableException::forException($this->exception);
-            Scheduler::queue(static fn () => throw $exception);
+            throw Exception\UnhandledAwaitableException::forException($this->exception);
         }
     }
 

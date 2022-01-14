@@ -67,7 +67,7 @@ final class KeyedSemaphore
     {
         $this->ingoing[$key] = $this->ingoing[$key] ?? 0;
         if ($this->ingoing[$key] === $this->concurrencyLimit) {
-            $this->pending[$key][] = $suspension = Scheduler::createSuspension();
+            $this->pending[$key][] = $suspension = Scheduler::getSuspension();
 
             $suspension->suspend();
         }
@@ -259,7 +259,7 @@ final class KeyedSemaphore
             return;
         }
 
-        $suspension = Scheduler::createSuspension();
+        $suspension = Scheduler::getSuspension();
         $this->waits[$key][] = $suspension;
         $suspension->suspend();
     }

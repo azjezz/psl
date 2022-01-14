@@ -13,7 +13,7 @@ namespace Psl\Async;
  */
 function later(): void
 {
-    $suspension = Scheduler::createSuspension();
+    $suspension = Scheduler::getSuspension();
 
     Scheduler::defer(static fn () => $suspension->resume());
 

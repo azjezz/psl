@@ -37,7 +37,7 @@ function socket_connect(string $uri, array $context = [], ?float $timeout = null
             throw new Exception\RuntimeException('Failed to connect to client "' . $uri . '".', $errno);
         }
 
-        $suspension = Async\Scheduler::createSuspension();
+        $suspension = Async\Scheduler::getSuspension();
 
         $write_watcher = '';
         $timeout_watcher = '';
