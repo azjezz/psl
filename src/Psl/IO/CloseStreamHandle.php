@@ -12,7 +12,7 @@ final class CloseStreamHandle implements CloseStreamHandleInterface
     private CloseStreamHandleInterface $handle;
 
     /**
-     * @param resource|object $stream
+     * @param resource $stream
      */
     public function __construct(mixed $stream)
     {
@@ -28,7 +28,7 @@ final class CloseStreamHandle implements CloseStreamHandleInterface
     }
 
     /**
-     * @return object|resource|null
+     * {@inheritDoc}
      */
     public function getStream(): mixed
     {

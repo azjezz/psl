@@ -17,7 +17,7 @@ final class CloseReadWriteStreamHandle implements CloseReadWriteStreamHandleInte
     private CloseReadWriteStreamHandleInterface $handle;
 
     /**
-     * @param resource|object $stream
+     * @param resource $stream
      */
     public function __construct(mixed $stream)
     {

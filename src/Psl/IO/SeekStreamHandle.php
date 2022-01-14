@@ -12,7 +12,7 @@ final class SeekStreamHandle implements SeekStreamHandleInterface
     private SeekStreamHandleInterface $handle;
 
     /**
-     * @param resource|object $stream
+     * @param resource $stream
      */
     public function __construct(mixed $stream)
     {

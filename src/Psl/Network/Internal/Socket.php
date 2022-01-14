@@ -108,6 +108,7 @@ final class Socket implements Network\StreamSocketInterface
 
     public function __destruct()
     {
+        /** @psalm-suppress MissingThrowsDocblock */
         $this->close();
     }
 }

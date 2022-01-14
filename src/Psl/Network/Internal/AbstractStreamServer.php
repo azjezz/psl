@@ -18,7 +18,7 @@ use function stream_socket_accept;
 abstract class AbstractStreamServer implements StreamServerInterface
 {
     /**
-     * @var resource|null $impl
+     * @var closed-resource|resource|null $impl
      */
     private mixed $impl;
 
@@ -41,12 +41,11 @@ abstract class AbstractStreamServer implements StreamServerInterface
         $this->impl = $impl;
         $suspension = &$this->suspension;
         $this->watcher = Async\Scheduler::onReadable(
-            $this->impl,
+            $impl,
             /**
-             * @param resource|object $resource
+             * @param resource $resource
              */
             static function (string $_watcher, mixed $resource) use (&$suspension): void {
-                /** @var resource $resource */
                 $sock = @stream_socket_accept($resource, timeout: 0.0);
                 if ($sock !== false) {
                     /** @var Suspension $suspension */
@@ -123,7 +122,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
      */
     public function getLocalAddress(): Network\Address
     {
-        if (null === $this->impl) {
+        if (!is_resource($this->impl)) {
             throw new Network\Exception\AlreadyStoppedException('Server socket has already been stopped.');
         }
 
@@ -166,6 +165,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
      */
     public function getStream(): mixed
     {
+        /** @var resource */
         return $this->impl;
     }
 }

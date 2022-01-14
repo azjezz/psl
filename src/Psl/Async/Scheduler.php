@@ -25,7 +25,9 @@ final class Scheduler
     }
 
     /**
-     * Create an object used to suspend and resume execution, either within a fiber or from {main}.
+     * Returns an object used to suspend and resume execution of the current fiber or {main}.
+     *
+     * Calls from the same fiber will return the same suspension object.
      *
      * @see EventLoop::getSuspension()
      */
@@ -57,8 +59,8 @@ final class Scheduler
     /**
      * Execute a callback when a stream resource becomes readable or is closed for reading.
      *
-     * @param resource|object $stream The stream to monitor.
-     * @param (Closure(string, resource|object): void) $callback   The callback to execute.
+     * @param resource $stream The stream to monitor.
+     * @param Closure(string, resource): void $callback The callback to execute.
      *
      * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
      */
@@ -71,8 +73,8 @@ final class Scheduler
     /**
      * Execute a callback when a stream resource becomes writable or is closed for writing.
      *
-     * @param resource|object $stream The stream to monitor.
-     * @param (Closure(string, resource|object): void) $callback   The callback to execute.
+     * @param resource $stream The stream to monitor.
+     * @param Closure(string, resource): void $callback The callback to execute.
      *
      * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
      */
@@ -95,7 +97,7 @@ final class Scheduler
     /**
      * Defer the execution of a callback.
      *
-     * @param (Closure(string): void)  $callback   The callback to defer.
+     * @param Closure(string): void $callback The callback to defer.
      *
      * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
      *
@@ -111,7 +113,7 @@ final class Scheduler
      * Delay the execution of a callback.
      *
      * @param float $delay The amount of time, to delay the execution for in seconds.
-     * @param (Closure(string): void)   $callback   The callback to delay.
+     * @param Closure(string): void $callback The callback to delay.
      *
      * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
      *
@@ -127,7 +129,7 @@ final class Scheduler
      * Repeatedly execute a callback.
      *
      * @param float $interval The time interval, to wait between executions in seconds.
-     * @param (Closure(string): void) $callback The callback to repeat.
+     * @param Closure(string): void $callback The callback to repeat.
      *
      * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
      *

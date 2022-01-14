@@ -13,7 +13,7 @@ interface StreamHandleInterface extends IO\HandleInterface
      *
      * If the stream has been closed, this method will return null.
      *
-     * @return resource|object|null
+     * @return resource|null
      */
     public function getStream(): mixed;
 }

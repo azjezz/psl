@@ -41,7 +41,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     public const MAXIMUM_READ_BUFFER_SIZE = 786432;
 
     /**
-     * @var object|resource|null $stream
+     * @var closed-resource|resource|null $stream
      */
     protected mixed $stream;
 
@@ -70,14 +70,11 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     private array $writeQueue = [];
 
     /**
-     * @param resource|object $stream
+     * @param resource $stream
      */
     public function __construct(mixed $stream, bool $read, bool $write, bool $seek, private bool $close)
     {
-        $this->stream = Type\union(
-            Type\resource('stream'),
-            Type\object(),
-        )->assert($stream);
+        $this->stream = Type\resource('stream')->assert($stream);
 
         /** @psalm-suppress UnusedFunctionCall */
         stream_set_read_buffer($stream, 0);
@@ -321,10 +318,11 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     }
 
     /**
-     * @return object|resource|null
+     * {@inheritDoc}
      */
     public function getStream(): mixed
     {
+        /** @var resource|null */
         return $this->stream;
     }
 

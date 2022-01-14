@@ -30,7 +30,7 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements File\Re
     private string $path;
 
     /**
-     * @param resource|object $stream
+     * @param resource $stream
      */
     public function __construct(string $path, mixed $stream, bool $read, bool $write)
     {

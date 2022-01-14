@@ -47,6 +47,9 @@ final class State
 
     private ?RootException $exception = null;
 
+    /**
+     * @throws Exception\UnhandledAwaitableException
+     */
     public function __destruct()
     {
         if ($this->exception && !$this->handled) {

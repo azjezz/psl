@@ -17,7 +17,7 @@ final class SeekReadWriteStreamHandle implements SeekReadWriteStreamHandleInterf
     private SeekReadWriteStreamHandleInterface $handle;
 
     /**
-     * @param resource|object $stream
+     * @param resource $stream
      */
     public function __construct(mixed $stream)
     {

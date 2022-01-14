@@ -12,7 +12,7 @@ final class CloseSeekStreamHandle implements CloseSeekStreamHandleInterface
     private CloseSeekStreamHandleInterface $handle;
 
     /**
-     * @param resource|object $stream
+     * @param resource $stream
      */
     public function __construct(mixed $stream)
     {
