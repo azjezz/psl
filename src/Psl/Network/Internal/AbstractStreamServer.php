@@ -62,6 +62,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
                 // @codeCoverageIgnoreEnd
             },
         );
+
         Async\Scheduler::disable($this->watcher);
     }
 
@@ -140,7 +141,6 @@ abstract class AbstractStreamServer implements StreamServerInterface
     public function close(): void
     {
         Async\Scheduler::cancel($this->watcher);
-
         if (null === $this->impl) {
             return;
         }
