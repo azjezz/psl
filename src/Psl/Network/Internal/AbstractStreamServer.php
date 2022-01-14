@@ -12,6 +12,7 @@ use Revolt\EventLoop\Suspension;
 
 use function error_get_last;
 use function fclose;
+use function is_resource;
 use function stream_socket_accept;
 
 abstract class AbstractStreamServer implements StreamServerInterface
@@ -147,7 +148,9 @@ abstract class AbstractStreamServer implements StreamServerInterface
 
         $resource = $this->impl;
         $this->impl = null;
-        fclose($resource);
+        if (is_resource($resource)) {
+            fclose($resource);
+        }
 
         $exception = new Network\Exception\AlreadyStoppedException('Server socket has already been stopped.');
         $suspensions = [$this->suspension, ...$this->queue];
