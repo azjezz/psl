@@ -12,7 +12,6 @@ use Psl\Type;
 use Revolt\EventLoop\Suspension;
 
 use function array_shift;
-use function array_slice;
 use function error_get_last;
 use function fclose;
 use function fseek;
@@ -359,11 +358,16 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
                 $this->stream = null;
             }
 
-            $this->readSuspension?->throw(new Exception\AlreadyClosedException('Handle has already been closed.'));
+            $exception = new Exception\AlreadyClosedException('Handle has already been closed.');
+            $suspensions = [$this->readSuspension, $this->writeSuspension, ...$this->readQueue, ...$this->writeQueue];
             $this->readSuspension = null;
-
-            $this->writeSuspension?->throw(new Exception\AlreadyClosedException('Handle has already been closed.'));
             $this->writeSuspension = null;
+            $this->writeQueue = [];
+            $this->readQueue = [];
+
+            foreach ($suspensions as $suspension) {
+                $suspension?->throw($exception);
+            }
         }
     }
 }
