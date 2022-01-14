@@ -105,4 +105,9 @@ final class Socket implements Network\StreamSocketInterface
     {
         $this->handle->close();
     }
+
+    public function __destruct()
+    {
+        $this->close();
+    }
 }

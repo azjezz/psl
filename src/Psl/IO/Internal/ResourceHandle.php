@@ -11,7 +11,7 @@ use Psl\IO\Exception;
 use Psl\Type;
 use Revolt\EventLoop\Suspension;
 
-use function array_shift;
+use function array_slice;
 use function error_get_last;
 use function fclose;
 use function fseek;
@@ -170,12 +170,13 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
                 Async\Scheduler::cancel($delay_watcher);
             }
 
-            $suspension = array_shift($this->writeQueue);
+            $suspension = $this->writeQueue[0] ?? null;
             if ($suspension !== null) {
+                $this->writeQueue = array_slice($this->writeQueue, 1);
                 $suspension->resume();
-            } else {
-                $this->writing = false;
             }
+
+            $this->writing = false;
         }
     }
 
@@ -282,12 +283,13 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
                 Async\Scheduler::cancel($delay_watcher);
             }
 
-            $suspension = array_shift($this->readQueue);
+            $suspension = $this->readQueue[0] ?? null;
             if ($suspension !== null) {
+                $this->readQueue = array_slice($this->readQueue, 1);
                 $suspension->resume();
-            } else {
-                $this->reading = false;
             }
+
+            $this->reading = false;
         }
     }
 
@@ -358,16 +360,11 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
                 $this->stream = null;
             }
 
-            $exception = new Exception\AlreadyClosedException('Handle has already been closed.');
-            $suspensions = [$this->readSuspension, $this->writeSuspension, ...$this->readQueue, ...$this->writeQueue];
+            $this->readSuspension?->throw(new Exception\AlreadyClosedException('Handle has already been closed.'));
             $this->readSuspension = null;
-            $this->writeSuspension = null;
-            $this->writeQueue = [];
-            $this->readQueue = [];
 
-            foreach ($suspensions as $suspension) {
-                $suspension?->throw($exception);
-            }
+            $this->writeSuspension?->throw(new Exception\AlreadyClosedException('Handle has already been closed.'));
+            $this->writeSuspension = null;
         }
     }
 }
