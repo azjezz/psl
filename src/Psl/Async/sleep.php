@@ -10,7 +10,7 @@ namespace Psl\Async;
 function sleep(float $seconds): void
 {
     $suspension = Scheduler::getSuspension();
-    $watcher = Scheduler::delay($seconds, static fn () => $suspension->resume(null));
+    $watcher = Scheduler::delay($seconds, $suspension->resume(...));
 
     try {
         $suspension->suspend();

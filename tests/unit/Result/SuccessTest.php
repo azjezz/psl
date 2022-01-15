@@ -38,7 +38,7 @@ final class SuccessTest extends TestCase
         $this->expectException(InvariantViolationException::class);
         $this->expectExceptionMessage('No exception thrown');
 
-        $wrapper->getException();
+        $wrapper->getThrowable();
     }
 
     public function testProceed(): void
@@ -77,7 +77,7 @@ final class SuccessTest extends TestCase
         );
 
         static::assertFalse($actual->isSucceeded());
-        static::assertSame($actual->getException(), $exception);
+        static::assertSame($actual->getThrowable(), $exception);
     }
 
     public function testCatch(): void
@@ -107,7 +107,7 @@ final class SuccessTest extends TestCase
         static::assertNotSame($wrapper, $actual);
         static::assertFalse($actual->isSucceeded());
         static::assertTrue($actual->isFailed());
-        static::assertSame('bye', $actual->getException()->getMessage());
+        static::assertSame('bye', $actual->getThrowable()->getMessage());
     }
 
     public function testAlways(): void

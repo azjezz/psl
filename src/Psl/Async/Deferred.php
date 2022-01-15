@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Async;
 
-use Exception as RootException;
 use Psl;
+use Throwable;
 
 /**
  * The following class was derived from code of Amphp.
@@ -51,13 +51,13 @@ final class Deferred
     /**
      * Marks the operation as failed.
      *
-     * @param RootException $exception Throwable to indicate the error.
+     * @param Throwable $throwable Throwable to indicate the error.
      *
      * @throws Psl\Exception\InvariantViolationException If the operation is no longer pending.
      */
-    public function error(RootException $exception): void
+    public function error(Throwable $throwable): void
     {
-        $this->state->error($exception);
+        $this->state->error($throwable);
     }
 
     /**

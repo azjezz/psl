@@ -5,48 +5,48 @@ declare(strict_types=1);
 namespace Psl\Result;
 
 use Closure;
-use Exception as RootException;
+use Throwable;
 
 /**
  * Represents the result of failed operation.
  *
  * @template    T
- * @template    Te of RootException
+ * @template    Te of Throwable
  *
  * @implements  ResultInterface<T>
  */
 final class Failure implements ResultInterface
 {
     /**
-     * @param Te $exception
+     * @param Te $throwable
      */
     public function __construct(
-        private readonly RootException $exception
+        private readonly Throwable $throwable
     ) {
     }
 
     /**
-     * Since this is a failed result wrapper, this always throws the exception thrown during the operation.
+     * Since this is a failed result wrapper, this always throws the `Throwable` thrown during the operation.
      *
-     * @throws RootException
+     * @throws Throwable
      *
      * @psalm-mutation-free
      */
     public function getResult(): void
     {
-        throw $this->exception;
+        throw $this->throwable;
     }
 
     /**
-     * Since this is a failed result wrapper, this always returns the exception thrown during the operation.
+     * Since this is a failed result wrapper, this always returns the `Throwable` thrown during the operation.
      *
-     * @return Te - The exception thrown during the operation.
+     * @return Te - The `Throwable` thrown during the operation.
      *
      * @psalm-mutation-free
      */
-    public function getException(): RootException
+    public function getThrowable(): Throwable
     {
-        return $this->exception;
+        return $this->throwable;
     }
 
     /**
@@ -74,14 +74,14 @@ final class Failure implements ResultInterface
      *
      * @template Ts
      *
-     * @param (Closure(T): Ts) $success
-     * @param (Closure(RootException): Ts) $failure
+     * @param Closure(T): Ts $success
+     * @param Closure(Throwable): Ts $failure
      *
      * @return Ts
      */
     public function proceed(Closure $success, Closure $failure): mixed
     {
-        return $failure($this->exception);
+        return $failure($this->throwable);
     }
 
     /**
@@ -89,14 +89,14 @@ final class Failure implements ResultInterface
      *
      * @template Ts
      *
-     * @param (Closure(T): Ts) $success
-     * @param (Closure(RootException): Ts) $failure
+     * @param Closure(T): Ts $success
+     * @param Closure(Throwable): Ts $failure
      *
      * @return ResultInterface<Ts>
      */
     public function then(Closure $success, Closure $failure): ResultInterface
     {
-        return wrap(fn () => $failure($this->exception));
+        return wrap(fn () => $failure($this->throwable));
     }
 
     /**
@@ -104,13 +104,13 @@ final class Failure implements ResultInterface
      *
      * @template Ts
      *
-     * @param (Closure(T): Ts) $success
+     * @param Closure(T): Ts $success
      *
      * @return Failure<Ts, Te>
      */
     public function map(Closure $success): Failure
     {
-        return new Failure($this->exception);
+        return new Failure($this->throwable);
     }
 
     /**
@@ -118,19 +118,19 @@ final class Failure implements ResultInterface
      *
      * @template Ts
      *
-     * @param (Closure(RootException): Ts) $failure
+     * @param Closure(Throwable): Ts $failure
      *
      * @return ResultInterface<Ts>
      */
     public function catch(Closure $failure): ResultInterface
     {
-        return wrap(fn() => $failure($this->exception));
+        return wrap(fn() => $failure($this->throwable));
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param (Closure(): void) $always
+     * @param Closure(): void $always
      *
      * @return ResultInterface<T>
      */
@@ -139,7 +139,7 @@ final class Failure implements ResultInterface
         return wrap(function () use ($always): never {
             $always();
 
-            throw $this->exception;
+            throw $this->throwable;
         });
     }
 }

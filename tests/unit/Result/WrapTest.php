@@ -19,7 +19,7 @@ final class WrapTest extends TestCase
         });
         static::assertFalse($wrapper->isSucceeded());
         static::assertTrue($wrapper->isFailed());
-        static::assertSame($exception, $wrapper->getException());
+        static::assertSame($exception, $wrapper->getThrowable());
 
         $this->expectExceptionObject($exception);
 
@@ -38,7 +38,7 @@ final class WrapTest extends TestCase
         $this->expectException(InvariantViolationException::class);
         $this->expectExceptionMessage('No exception thrown');
 
-        $wrapper->getException();
+        $wrapper->getThrowable();
     }
 
     public function testWrapOtherResult(): void

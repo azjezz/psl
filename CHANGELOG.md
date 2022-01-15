@@ -64,3 +64,6 @@
 * introduced `Psl\Password\Algorithm` enum
 * **BC** - all constants of `Psl\Password` component has been removed.
 * **BC** - function `Psl\Password\algorithms()` have been removed.
+* **BC** - `Psl\Result\ResultInterface::getException()` method has been renamed to `Psl\Result\ResultInterface::getThrowable()`
+* **BC** - `Psl\Result\wrap` function now catches all `Throwable`s instead of only `Exception`s
+

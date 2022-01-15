@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Async;
 
-use Exception as RootException;
 use Psl\Async\Exception\CompositeException;
+use Throwable;
 
 /**
  * Unwraps the first successfully completed awaitable.
@@ -34,7 +34,7 @@ function any(iterable $awaitables): mixed
             }
 
             return $result;
-        } catch (RootException $exception) {
+        } catch (Throwable $exception) {
             $errors[] = $exception;
         }
     }

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Psl\Result;
 
 use Closure;
-use Exception;
+use Throwable;
 
 /**
  * Wrap the given closure result in a `Success`, or `Failure` if the closure throws
- * an `Exception`.
+ * an `Throwable`.
  *
  * @template     T
  *
@@ -22,7 +22,7 @@ function wrap(Closure $closure): ResultInterface
     try {
         $result = $closure();
         return $result instanceof ResultInterface ? $result : new Success($result);
-    } catch (Exception $e) {
+    } catch (Throwable $e) {
         return new Failure($e);
     }
 }

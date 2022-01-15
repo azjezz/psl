@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Async\Exception;
 
 use Exception;
-use Exception as RootException;
 use Psl\Str;
+use Throwable;
 
 use function count;
 
@@ -15,12 +15,12 @@ use const PHP_EOL;
 final class CompositeException extends Exception implements ExceptionInterface
 {
     /**
-     * @var non-empty-array<array-key, RootException>
+     * @var non-empty-array<array-key, Throwable>
      */
     private array $reasons;
 
     /**
-     * @param non-empty-array<array-key, RootException> $reasons Array of exceptions.
+     * @param non-empty-array<array-key, Throwable> $reasons Array of exceptions.
      * @param string|null $message Exception message, defaults to message generated from passed exceptions.
      */
     public function __construct(array $reasons, ?string $message = null)
@@ -31,7 +31,7 @@ final class CompositeException extends Exception implements ExceptionInterface
     }
 
     /**
-     * @return non-empty-array<array-key, RootException>
+     * @return non-empty-array<array-key, Throwable>
      */
     public function getReasons(): array
     {
@@ -39,7 +39,7 @@ final class CompositeException extends Exception implements ExceptionInterface
     }
 
     /**
-     * @param non-empty-array<array-key, RootException> $reasons
+     * @param non-empty-array<array-key, Throwable> $reasons
      */
     private function generateMessage(array $reasons): string
     {

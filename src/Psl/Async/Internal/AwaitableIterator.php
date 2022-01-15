@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Async\Internal;
 
-use Exception as RootException;
 use Psl;
 use Psl\Async\Awaitable;
+use Throwable;
 
 use function array_shift;
 use function count;
@@ -35,7 +35,7 @@ final class AwaitableIterator
     private readonly AwaitableIteratorQueue $queue;
 
     /**
-     * @var null|Awaitable<void>|Awaitable<null>|Awaitable<array{0: Tk, 1: Awaitable<Tv>}>
+     * @var null|Awaitable<void>|Awaitable<null>|Awaitable<array{Tk, Awaitable<Tv>}>
      */
     private ?Awaitable $complete = null;
 
@@ -63,9 +63,9 @@ final class AwaitableIterator
              * @param Tv|null $_result
              */
             static function (
-                ?RootException $_error,
-                mixed $_result,
-                string $id
+                ?Throwable $_error,
+                mixed      $_result,
+                string     $id
             ) use (
                 $key,
                 $awaitable,
@@ -106,7 +106,7 @@ final class AwaitableIterator
     /**
      * @throws Psl\Exception\InvariantViolationException If the iterator has already been marked as complete.
      */
-    public function error(RootException $exception): void
+    public function error(Throwable $exception): void
     {
         if (null !== $this->complete) {
             Psl\invariant_violation('Iterator has already been marked as complete');
@@ -123,7 +123,7 @@ final class AwaitableIterator
     /**
      * @throws Psl\Exception\InvariantViolationException If {@see consume()} is called concurrently.
      *
-     * @return null|array{0: Tk, 1: Awaitable<Tv>}
+     * @return null|array{Tk, Awaitable<Tv>}
      */
     public function consume(): ?array
     {

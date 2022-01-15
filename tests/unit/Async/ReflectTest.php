@@ -27,7 +27,7 @@ final class ReflectTest extends TestCase
         static::assertInstanceOf(Result\Failure::class, $one);
         static::assertInstanceOf(Result\Success::class, $two);
 
-        static::assertSame('failure', $one->getException()->getMessage());
+        static::assertSame('failure', $one->getThrowable()->getMessage());
         static::assertSame('success', $two->getResult());
     }
 }

@@ -37,7 +37,7 @@ final class FailureTest extends TestCase
     {
         $exception = new Exception('bar');
         $wrapper   = new Failure($exception);
-        $e         = $wrapper->getException();
+        $e         = $wrapper->getThrowable();
         static::assertSame($exception, $e);
     }
 
@@ -80,7 +80,7 @@ final class FailureTest extends TestCase
         );
 
         static::assertFalse($actual->isSucceeded());
-        static::assertSame($actual->getException(), $exception);
+        static::assertSame($actual->getThrowable(), $exception);
     }
 
     public function testCatch(): void
@@ -90,7 +90,7 @@ final class FailureTest extends TestCase
         $actual    = $wrapper->catch(Fun\rethrow());
 
         static::assertFalse($actual->isSucceeded());
-        static::assertSame($actual->getException(), $exception);
+        static::assertSame($actual->getThrowable(), $exception);
 
         $exception = new Exception('bar');
         $wrapper   = new Failure($exception);
@@ -109,7 +109,7 @@ final class FailureTest extends TestCase
         });
 
         static::assertTrue($actual->isFailed());
-        static::assertSame($exception, $actual->getException());
+        static::assertSame($exception, $actual->getThrowable());
     }
 
     public function testAlways(): void
@@ -122,7 +122,7 @@ final class FailureTest extends TestCase
         });
 
         static::assertTrue($actual->isFailed());
-        static::assertSame($exception, $actual->getException());
+        static::assertSame($exception, $actual->getThrowable());
         static::assertSame('hello', $ref->value);
     }
 }

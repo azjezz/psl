@@ -54,7 +54,7 @@ final class Success implements ResultInterface
      *
      * @psalm-mutation-free
      */
-    public function getException(): never
+    public function getThrowable(): never
     {
         Psl\invariant_violation('No exception thrown from the operation.');
     }

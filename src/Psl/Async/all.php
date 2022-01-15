@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Async;
 
-use Exception as RootException;
+use Throwable;
 
 /**
  * Awaits all awaitables to complete concurrently.
@@ -26,7 +26,7 @@ function all(iterable $awaitables): array
     foreach (Awaitable::iterate($awaitables) as $index => $awaitable) {
         try {
             $values[$index] = $awaitable->await();
-        } catch (RootException $exception) {
+        } catch (Throwable $exception) {
             $errors = [];
             foreach ($awaitables as $original) {
                 if ($original === $awaitable) {
@@ -38,7 +38,7 @@ function all(iterable $awaitables): array
                 } else {
                     try {
                         $original->await();
-                    } catch (RootException $error) {
+                    } catch (Throwable $error) {
                         $errors[] = $error;
                     }
                 }

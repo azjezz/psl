@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Psl\Result;
 
 use Closure;
-use Exception as RootException;
 use Psl;
+use Throwable;
 
 /**
- * Represents a result of operation that either has a successful result or the exception object if
+ * Represents a result of operation that either has a successful result or the throwable object if
  * that operation failed.
  *
  * This is an interface. You get generally `ResultInterface<T>` by calling `wrap<T>()`, passing in
@@ -22,10 +22,10 @@ use Psl;
 interface ResultInterface extends Psl\Promise\PromiseInterface
 {
     /**
-     * Return the result of the operation, or throw underlying exception.
+     * Return the result of the operation, or throw underlying throwable.
      *
      * - if the operation succeeded: return its result.
-     * - if the operation failed: throw the exception inciting failure.
+     * - if the operation failed: throw the throwable inciting failure.
      *
      * @return T - The result of the operation upon success
      *
@@ -34,16 +34,16 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
     public function getResult();
 
     /**
-     * Return the underlying exception, or fail with a invariant violation exception exception.
+     * Return the underlying throwable, or fail with a invariant violation exception.
      *
      * - if the operation succeeded: fails with a invariant violation exception.
-     * - if the operation failed: returns the exception indicating failure.
+     * - if the operation failed: returns the throwable indicating failure.
      *
      * @throws Psl\Exception\InvariantViolationException - When the operation succeeded
      *
      * @psalm-mutation-free
      */
-    public function getException(): RootException;
+    public function getThrowable(): Throwable;
 
     /**
      * Indicates whether the operation associated with this wrapper existed normally.
@@ -57,7 +57,7 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
     public function isSucceeded(): bool;
 
     /**
-     * Indicates whether the operation associated with this wrapper exited abnormally via an exception of some sort.
+     * Indicates whether the operation associated with this wrapper exited abnormally via a throwable of some sort.
      *
      * if `isFailed()` returns `true`, `isSucceeded()` returns false.
      *
@@ -70,13 +70,13 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
     /**
      * Unwrapping and transforming a result can be done by using the proceed method.
      * The implementation will either run the `$on_success` or `$on_failure` callback.
-     * The callback will receive the result or Exception as an argument,
+     * The callback will receive the result or Throwable as an argument,
      * so that you can transform it to anything you want.
      *
      * @template Ts
      *
      * @param (Closure(T): Ts) $success
-     * @param (Closure(RootException): Ts) $failure
+     * @param (Closure(Throwable): Ts) $failure
      *
      * @return Ts
      */

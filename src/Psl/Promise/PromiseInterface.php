@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Promise;
 
 use Closure;
-use Exception as RootException;
+use Throwable;
 
 /**
  * @template T
@@ -27,7 +27,7 @@ interface PromiseInterface
      * @template Ts
      *
      * @param (Closure(T): Ts) $success
-     * @param (Closure(RootException): Ts) $failure
+     * @param (Closure(Throwable): Ts) $failure
      *
      * @return PromiseInterface<Ts>
      */
@@ -37,7 +37,7 @@ interface PromiseInterface
      * Attaches a callback that is invoked if this promise is fulfilled.
      *
      * The returned promise is resolved with the return value of the callback,
-     * or is rejected with an exception thrown from the callback.
+     * or is rejected with a throwable thrown from the callback.
      *
      * @template Ts
      *
@@ -51,11 +51,11 @@ interface PromiseInterface
      * Attaches a callback that is invoked if this promise is rejected.
      *
      * The returned promise is resolved with the return value of the callback,
-     * or is rejected with an exception thrown from the callback.
+     * or is rejected with a throwable thrown from the callback.
      *
      * @template Ts
      *
-     * @param (Closure(RootException): Ts) $failure
+     * @param (Closure(Throwable): Ts) $failure
      *
      * @return PromiseInterface<T|Ts>
      */
@@ -66,7 +66,7 @@ interface PromiseInterface
      *
      * The returned promise resolves with the same value as this promise once the callback has finished execution.
      *
-     * If the callback throws, the returned promise will be rejected with the thrown exception.
+     * If the callback throws, the returned promise will be rejected with the thrown throwable.
      *
      * @param (Closure(): void) $always
      *

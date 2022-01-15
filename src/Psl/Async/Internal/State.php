@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Psl\Async\Internal;
 
 use Closure;
-use Exception as RootException;
 use Psl;
 use Psl\Async\Awaitable;
 use Psl\Async\Exception;
 use Psl\Async\Scheduler;
+use Throwable;
 
 /**
  * The following class was derived from code of Amphp.
@@ -36,7 +36,7 @@ final class State
     private bool $handled = false;
 
     /**
-     * @var array<string, (Closure(?RootException, ?T, string): void)>
+     * @var array<string, (Closure(?Throwable, ?T, string): void)>
      */
     private array $callbacks = [];
 
@@ -45,15 +45,15 @@ final class State
      */
     private mixed $result = null;
 
-    private ?RootException $exception = null;
+    private ?Throwable $throwable = null;
 
     /**
      * @throws Exception\UnhandledAwaitableException
      */
     public function __destruct()
     {
-        if ($this->exception && !$this->handled) {
-            throw Exception\UnhandledAwaitableException::forException($this->exception);
+        if ($this->throwable && !$this->handled) {
+            throw Exception\UnhandledAwaitableException::forThrowable($this->throwable);
         }
     }
 
@@ -62,7 +62,7 @@ final class State
      *
      * The callback is invoked directly from the event loop context, so suspension within the callback is not possible.
      *
-     * @param (Closure(?RootException, ?T, string): void) $callback Callback invoked on completion of the awaitable.
+     * @param Closure(?Throwable, ?T, string): void $callback Callback invoked on completion of the awaitable.
      *
      * @return string Identifier that can be used to cancel interest for this awaitable.
      */
@@ -74,7 +74,7 @@ final class State
         $this->handled = true;
 
         if ($this->complete) {
-            Scheduler::queue(fn() => $callback($this->exception, $this->result, $id));
+            Scheduler::queue(fn() => $callback($this->throwable, $this->result, $id));
         } else {
             $this->callbacks[$id] = $callback;
         }
@@ -121,18 +121,18 @@ final class State
      *
      * @throws Psl\Exception\InvariantViolationException If the operation is no longer pending.
      */
-    public function error(RootException $exception): void
+    public function error(Throwable $throwable): void
     {
         if ($this->complete) {
             Psl\invariant_violation('Operation is no longer pending.');
         }
 
-        $this->exception = $exception;
+        $this->throwable = $throwable;
         $this->invokeCallbacks();
     }
 
     /**
-     * Suppress the exception thrown to the loop error handler if and operation error is not handled by a callback.
+     * Suppress the `Throwable`s thrown to the loop error handler if and operation error is not handled by a callback.
      */
     public function ignore(): void
     {
@@ -152,7 +152,7 @@ final class State
         $this->complete = true;
 
         foreach ($this->callbacks as $id => $callback) {
-            Scheduler::queue(fn() => $callback($this->exception, $this->result, $id));
+            Scheduler::queue(fn() => $callback($this->throwable, $this->result, $id));
         }
 
         $this->callbacks = [];

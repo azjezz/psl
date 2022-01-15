@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Async;
 
 use Closure;
-use Exception as RootException;
+use Throwable;
 
 /**
  * Create a new fiber asynchronously using the given closure.
@@ -25,7 +25,7 @@ function run(Closure $closure): Awaitable
             $result = $closure();
 
             $state->complete($result);
-        } catch (RootException $exception) {
+        } catch (Throwable $exception) {
             $state->error($exception);
         }
     });

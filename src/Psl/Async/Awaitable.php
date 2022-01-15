@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Psl\Async;
 
 use Closure;
-use Exception as RootException;
 use Generator;
 use Psl\Async\Internal\AwaitableIterator;
 use Psl\Async\Internal\State;
 use Psl\Promise\PromiseInterface;
+use Throwable;
 
 use function is_array;
 
@@ -72,9 +72,9 @@ final class Awaitable implements PromiseInterface
 
                     /** @psalm-suppress MissingThrowsDocblock */
                     $iterator->complete();
-                } catch (RootException $exception) {
+                } catch (Throwable $throwable) {
                     /** @psalm-suppress MissingThrowsDocblock */
-                    $iterator->error($exception);
+                    $iterator->error($throwable);
                 }
                 // @codeCoverageIgnoreEnd
             });
@@ -106,12 +106,12 @@ final class Awaitable implements PromiseInterface
     /**
      * @return Awaitable<void>
      */
-    public static function error(RootException $exception): self
+    public static function error(Throwable $throwable): self
     {
         /** @var State<void> $state */
         $state = new State();
         /** @psalm-suppress MissingThrowsDocblock */
-        $state->error($exception);
+        $state->error($throwable);
 
         return new self($state);
     }
@@ -130,8 +130,8 @@ final class Awaitable implements PromiseInterface
      *
      * @template Ts
      *
-     * @param (Closure(T): Ts) $success
-     * @param (Closure(RootException): Ts) $failure
+     * @param Closure(T): Ts $success
+     * @param Closure(Throwable): Ts $failure
      *
      * @return Awaitable<Ts>
      */
@@ -142,15 +142,15 @@ final class Awaitable implements PromiseInterface
 
         $this->state->subscribe(
             /**
-             * @param null|RootException $error
+             * @param null|Throwable $error
              * @param null|T $value
              */
-            static function (?RootException $error, mixed $value) use ($state, $success, $failure): void {
+            static function (?Throwable $error, mixed $value) use ($state, $success, $failure): void {
                 if ($error) {
                     try {
                         $state->complete($failure($error));
-                    } catch (RootException $exception) {
-                        $state->error($exception);
+                    } catch (Throwable $throwable) {
+                        $state->error($throwable);
                     }
 
                     return;
@@ -161,8 +161,8 @@ final class Awaitable implements PromiseInterface
                      * @var T $value
                      */
                     $state->complete($success($value));
-                } catch (RootException $exception) {
-                    $state->error($exception);
+                } catch (Throwable $throwable) {
+                    $state->error($throwable);
                 }
             },
         );
@@ -175,13 +175,13 @@ final class Awaitable implements PromiseInterface
      *
      * @template Ts
      *
-     * @param (Closure(T): Ts) $success
+     * @param Closure(T): Ts $success
      *
      * @return Awaitable<Ts>
      */
     public function map(Closure $success): Awaitable
     {
-        return $this->then($success, static fn (RootException $exception) => throw $exception);
+        return $this->then($success, static fn (Throwable $throwable) => throw $throwable);
     }
 
     /**
@@ -189,7 +189,7 @@ final class Awaitable implements PromiseInterface
      *
      * @template Ts
      *
-     * @param (Closure(RootException): Ts) $failure
+     * @param Closure(Throwable): Ts $failure
      *
      * @return Awaitable<T|Ts>
      */
@@ -211,7 +211,7 @@ final class Awaitable implements PromiseInterface
     /**
      * {@inheritDoc}
      *
-     * @param (Closure(): void) $always
+     * @param Closure(): void $always
      *
      * @return Awaitable<T>
      */
@@ -220,7 +220,7 @@ final class Awaitable implements PromiseInterface
         /** @var State<T> $state */
         $state = new State();
 
-        $this->state->subscribe(static function (?RootException $error, mixed $value) use ($state, $always): void {
+        $this->state->subscribe(static function (?Throwable $error, mixed $value) use ($state, $always): void {
             try {
                 $always();
 
@@ -232,8 +232,8 @@ final class Awaitable implements PromiseInterface
                      */
                     $state->complete($value);
                 }
-            } catch (RootException $exception) {
-                $state->error($exception);
+            } catch (Throwable $throwable) {
+                $state->error($throwable);
             }
         });
 
@@ -243,7 +243,7 @@ final class Awaitable implements PromiseInterface
     /**
      * Awaits the operation to complete.
      *
-     * Throws an exception if the operation fails.
+     * Throws a `Throwable` if the operation fails.
      *
      * @return T
      */
@@ -253,10 +253,10 @@ final class Awaitable implements PromiseInterface
 
         $this->state->subscribe(
             /**
-             * @param null|RootException $error
+             * @param null|Throwable $error
              * @param null|T $value
              */
-            static function (?RootException $error, mixed $value) use ($suspension): void {
+            static function (?Throwable $error, mixed $value) use ($suspension): void {
                 if ($error) {
                     $suspension->throw($error);
                 } else {
