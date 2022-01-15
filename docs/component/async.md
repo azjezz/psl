@@ -19,7 +19,6 @@
 - [first](./../../src/Psl/Async/first.php#L20)
 - [later](./../../src/Psl/Async/later.php#L14)
 - [main](./../../src/Psl/Async/main.php#L18)
-- [reflect](./../../src/Psl/Async/reflect.php#L25)
 - [run](./../../src/Psl/Async/run.php#L19)
 - [series](./../../src/Psl/Async/series.php#L21)
 - [sleep](./../../src/Psl/Async/sleep.php#L10)

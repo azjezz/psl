@@ -433,7 +433,7 @@ final class Loader
         'Psl\Async\main',
         'Psl\Async\run',
         'Psl\Async\concurrently',
-        'Psl\Async\reflect',
+        'Psl\Result\reflect',
         'Psl\Async\series',
         'Psl\Async\await',
         'Psl\Async\any',

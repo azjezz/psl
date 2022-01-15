@@ -12,6 +12,7 @@
 
 #### `Functions`
 
+- [reflect](./../../src/Psl/Result/reflect.php#L24)
 - [wrap](./../../src/Psl/Result/wrap.php#L20)
 
 #### `Interfaces`

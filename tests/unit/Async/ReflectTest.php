@@ -14,12 +14,12 @@ final class ReflectTest extends TestCase
     public function testReflectParallel(): void
     {
         [$one, $two] = Async\concurrently([
-            Async\reflect(static function (): void {
+            Result\reflect(static function (): void {
                 Async\sleep(0.0001);
 
                 throw new Exception('failure');
             }),
-            Async\reflect(static function (): string {
+            Result\reflect(static function (): string {
                 return 'success';
             }),
         ]);
