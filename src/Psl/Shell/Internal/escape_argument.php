@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Psl\Shell;
+namespace Psl\Shell\Internal;
 
 use Psl\Regex;
 use Psl\Str\Byte;
@@ -13,6 +13,8 @@ use const DIRECTORY_SEPARATOR;
  * Escape a string to be used as a shell argument.
  *
  * @psalm-taint-escape shell
+ *
+ * @internal
  */
 function escape_argument(string $argument): string
 {

@@ -67,3 +67,7 @@
 * **BC** - `Psl\Result\ResultInterface::getException()` method has been renamed to `Psl\Result\ResultInterface::getThrowable()`
 * **BC** - `Psl\Result\wrap` function now catches all `Throwable`s instead of only `Exception`s
 * introduced a new `Psl\Result\reflect` function
+* **BC** - `Psl\Shell\escape_argument` function has been removed, `Shell\execute` arguments are now always escaped.
+* **BC** - `$escape_arguments` argument of `Shell\execute` function has been removed.
+* introduced a new `Psl\Shell\ErrorOutputBehavior` enum
+* added a new `$error_output_behavior` argument to `Shell\execute` function, which can be used to return the command error output content, as well as the standard output content.

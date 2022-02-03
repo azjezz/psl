@@ -15,6 +15,7 @@
     <exclude-pattern>*/src/Psl/Hash/Hmac/Algorithm.php</exclude-pattern>
     <exclude-pattern>*/src/Psl/OS/OperatingSystemFamily.php</exclude-pattern>
     <exclude-pattern>*/src/Psl/Password/Algorithm.php</exclude-pattern>
+    <exclude-pattern>*/src/Psl/Shell/ErrorOutputBehavior.php</exclude-pattern>
 
     <arg name="basepath" value="."/>
     <arg name="colors"/>
