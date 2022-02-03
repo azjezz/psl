@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Psl\IO;
 
 use Generator;
-use Psl\Async;
+use Psl;
 use Psl\Channel;
 use Psl\Result;
 use Psl\Str;
-use Psl;
+use Revolt\EventLoop;
 
 /**
  * Streaming the output of the given read stream handles using a generator.
@@ -39,39 +39,43 @@ function streaming(iterable $handles, ?float $timeout = null): Generator
 {
     /**
      * @psalm-suppress UnnecessaryVarAnnotation
+     *
      * @var Channel\ReceiverInterface<array{T|null, Result\ResultInterface<string>}> $receiver
+     *
      * @psalm-suppress UnnecessaryVarAnnotation
+     *
      * @var Channel\SenderInterface<array{T|null, Result\ResultInterface<string>}> $sender
      */
     [$receiver, $sender] = Channel\unbounded();
 
     /** @var Psl\Ref<array<T, string>> $watchers */
     $watchers = new Psl\Ref([]);
-    foreach ($handles as $k => $handle) {
+    foreach ($handles as $index => $handle) {
         $stream = $handle->getStream();
         if ($stream === null) {
-            throw new Exception\AlreadyClosedException(Str\format('Handle "%s" is already closed.', (string) $k));
+            throw new Exception\AlreadyClosedException(Str\format('Handle "%s" is already closed.', (string) $index));
         }
 
-        $watchers->value[$k] = Async\Scheduler::onReadable($stream, static function (string $watcher) use ($k, $handle, $sender, $watchers): void {
-            $result = Result\wrap($handle->tryRead(...));
-            if ($result->isFailed() || ($result->isSucceeded() && $result->getResult() === '')) {
-                Async\Scheduler::cancel($watcher);
-                unset($watchers->value[$k]);
+        $watchers->value[$index] = EventLoop::onReadable($stream, static function (string $watcher) use ($index, $handle, $sender, $watchers): void {
+            try {
+                $result = Result\wrap($handle->tryRead(...));
+                if ($result->isFailed() || ($result->isSucceeded() && $result->getResult() === '')) {
+                    EventLoop::cancel($watcher);
+                    unset($watchers->value[$index]);
+                }
+
+                $sender->send([$index, $result]);
+            } finally {
                 if ($watchers->value === []) {
                     $sender->close();
                 }
-
-                return;
             }
-
-            $sender->send([$k, $result]);
         });
     }
 
     $timeout_watcher = null;
     if ($timeout !== null) {
-        $timeout_watcher = Async\Scheduler::delay($timeout, static function () use ($sender): void {
+        $timeout_watcher = EventLoop::delay($timeout, static function () use ($sender): void {
             /** @var Result\ResultInterface<string> $failure */
             $failure = new Result\Failure(
                 new Exception\TimeoutException('Reached timeout before being able to read all the handles until the end.')
@@ -83,23 +87,23 @@ function streaming(iterable $handles, ?float $timeout = null): Generator
 
     try {
         while (true) {
-            [$k, $result] = $receiver->receive();
-            if (null === $k || $result->isFailed()) {
+            [$index, $result] = $receiver->receive();
+            if (null === $index || $result->isFailed()) {
                 throw $result->getThrowable();
             }
 
-            yield $k => $result->getResult();
+            yield $index => $result->getResult();
         }
     } catch (Channel\Exception\ClosedChannelException) {
         // completed.
         return;
     } finally {
         if ($timeout_watcher !== null) {
-            Async\Scheduler::cancel($timeout_watcher);
+            EventLoop::cancel($timeout_watcher);
         }
 
         foreach ($watchers->value as $watcher) {
-            Async\Scheduler::cancel($watcher);
+            EventLoop::cancel($watcher);
         }
     }
 }

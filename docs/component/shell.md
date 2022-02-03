@@ -12,7 +12,7 @@
 
 #### `Functions`
 
-- [execute](./../../src/Psl/Shell/execute.php#L42)
+- [execute](./../../src/Psl/Shell/execute.php#L41)
 - [unpack](./../../src/Psl/Shell/unpack.php#L20)
 
 #### `Enums`

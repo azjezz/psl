@@ -155,14 +155,11 @@ function execute(
     $stderr = new IO\CloseReadStreamHandle($pipes[2]);
 
     try {
-        $stdout_content = '';
-        $stderr_content = '';
+        $result = '';
         /** @psalm-suppress MissingThrowsDocblock */
-        foreach (IO\streaming(['out' => $stdout, 'err' => $stderr], $timeout) as $type => $chunk) {
-            if ('out' === $type) {
-                $stdout_content .= $chunk;
-            } else {
-                $stderr_content .= $chunk;
+        foreach (IO\streaming([1 => $stdout, 2 => $stderr], $timeout) as $type => $chunk) {
+            if ($chunk) {
+                $result .= pack('C1N1', $type, Str\Byte\length($chunk)) . $chunk;
             }
         }
     } catch (IO\Exception\TimeoutException $previous) {
@@ -177,29 +174,18 @@ function execute(
     }
 
     if ($code !== 0) {
+        /** @psalm-suppress MissingThrowsDocblock */
+        [$stdout_content, $stderr_content] = namespace\unpack($result);
+
         throw new Exception\FailedExecutionException($commandline, $stdout_content, $stderr_content, $code);
     }
 
     if (ErrorOutputBehavior::Packed === $error_output_behavior) {
-        $result = '';
-        $stdout_length = Str\Byte\length($stdout_content);
-        $stderr_length = Str\Byte\length($stderr_content);
-
-        if ($stdout_length) {
-            $stdout_header = pack('C1N1', 1, $stdout_length);
-
-            $result .= $stdout_header . $stdout_content;
-        }
-
-        if ($stderr_length) {
-            $stderr_header = pack('C1N1', 2, $stderr_length);
-
-            $result .= $stderr_header . $stderr_content;
-        }
-
         return $result;
     }
 
+    /** @psalm-suppress MissingThrowsDocblock */
+    [$stdout_content, $stderr_content] = namespace\unpack($result);
     return match ($error_output_behavior) {
         ErrorOutputBehavior::Prepend => $stderr_content . $stdout_content,
         ErrorOutputBehavior::Append => $stdout_content . $stderr_content,
