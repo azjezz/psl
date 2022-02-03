@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Shell;
 
-use Psl\Async;
 use Psl\Dict;
 use Psl\Env;
 use Psl\Filesystem;
@@ -156,25 +155,18 @@ function execute(
     $stderr = new IO\CloseReadStreamHandle($pipes[2]);
 
     try {
-        [$stdout_content, $stderr_content] = Async\concurrently([
-            static fn(): string => $stdout->readAll(timeout: $timeout),
-            static fn(): string => $stderr->readAll(timeout: $timeout),
-        ]);
-        // @codeCoverageIgnoreStart
-    } catch (Async\Exception\CompositeException $exception) {
-        $reasons = $exception->getReasons();
-        if ($reasons[0] instanceof IO\Exception\TimeoutException) {
-            throw new Exception\TimeoutException('reached timeout while the process output is still not readable.', 0, $reasons[0]);
+        $stdout_content = '';
+        $stderr_content = '';
+        /** @psalm-suppress MissingThrowsDocblock */
+        foreach (IO\streaming(['out' => $stdout, 'err' => $stderr], $timeout) as $type => $chunk) {
+            if ('out' === $type) {
+                $stdout_content .= $chunk;
+            } else {
+                $stderr_content .= $chunk;
+            }
         }
-
-        if ($reasons[1] instanceof IO\Exception\TimeoutException) {
-            throw new Exception\TimeoutException('reached timeout while the process output is still not readable.', 0, $reasons[1]);
-        }
-
-        throw new Exception\RuntimeException('Failed to reach process output.', 0, $exception ?? null);
     } catch (IO\Exception\TimeoutException $previous) {
         throw new Exception\TimeoutException('reached timeout while the process output is still not readable.', 0, $previous);
-        // @codeCoverageIgnoreEnd
     } finally {
         /** @psalm-suppress MissingThrowsDocblock */
         $stdout->close();
