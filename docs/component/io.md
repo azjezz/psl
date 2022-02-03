@@ -16,6 +16,7 @@
 - [input_handle](./../../src/Psl/IO/input_handle.php#L20)
 - [output_handle](./../../src/Psl/IO/output_handle.php#L20)
 - [pipe](./../../src/Psl/IO/pipe.php#L24)
+- [streaming](./../../src/Psl/IO/streaming.php#L37)
 - [write](./../../src/Psl/IO/write.php#L21)
 - [write_error](./../../src/Psl/IO/write_error.php#L23)
 - [write_error_line](./../../src/Psl/IO/write_error_line.php#L23)
