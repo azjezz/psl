@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<psalm totallyTyped="true" forbidEcho="true" strictBinaryOperands="true" phpVersion="8.0" allowStringToStandInForClass="true" rememberPropertyAssignmentsAfterCall="false" checkForThrowsDocblock="true" checkForThrowsInGlobalScope="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://getpsalm.org/schema/config" xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd" errorBaseline="baseline.xml">
+<psalm totallyTyped="true" strictBinaryOperands="true" phpVersion="8.0" allowStringToStandInForClass="true" rememberPropertyAssignmentsAfterCall="false" checkForThrowsDocblock="true" checkForThrowsInGlobalScope="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://getpsalm.org/schema/config" xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd" errorBaseline="baseline.xml">
     <projectFiles>
         <directory name="../../src" />
         <directory name="../../tests/benchmark" />
