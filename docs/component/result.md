@@ -12,6 +12,7 @@
 
 #### `Functions`
 
+- [collect_stats](./../../src/Psl/Result/collect_stats.php#L14)
 - [reflect](./../../src/Psl/Result/reflect.php#L24)
 - [wrap](./../../src/Psl/Result/wrap.php#L20)
 
@@ -22,6 +23,7 @@
 #### `Classes`
 
 - [Failure](./../../src/Psl/Result/Failure.php#L18)
+- [Stats](./../../src/Psl/Result/Stats.php#L10)
 - [Success](./../../src/Psl/Result/Success.php#L18)
 
 
