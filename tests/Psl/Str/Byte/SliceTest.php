@@ -10,7 +10,6 @@ use Psl\Str\Byte;
 
 final class SliceTest extends TestCase
 {
-
     /**
      * @dataProvider provideData
      */

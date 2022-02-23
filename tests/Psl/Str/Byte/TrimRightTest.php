@@ -9,7 +9,6 @@ use Psl\Str\Byte;
 
 final class TrimRightTest extends TestCase
 {
-
     /**
      * @dataProvider provideData
      */

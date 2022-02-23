@@ -9,7 +9,6 @@ use Psl\Str\Byte;
 
 final class SearchLastTest extends TestCase
 {
-
     /**
      * @dataProvider provideData
      */

@@ -10,7 +10,6 @@ use Psl\Math;
 
 final class ToBaseTest extends TestCase
 {
-
     /**
      * @dataProvider provideData
      */

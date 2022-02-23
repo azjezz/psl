@@ -9,7 +9,6 @@ use Psl\Str;
 
 final class CapitalizeWordsTest extends TestCase
 {
-
     /**
      * @dataProvider provideData
      */
