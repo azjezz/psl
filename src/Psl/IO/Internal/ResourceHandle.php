@@ -116,10 +116,10 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
 
         if ($write) {
             $writable = str_contains($meta['mode'], 'x')
-                     || str_contains($meta['mode'], 'w')
-                 || str_contains($meta['mode'], 'c')
-                 || str_contains($meta['mode'], 'a')
-                 || str_contains($meta['mode'], '+');
+                || str_contains($meta['mode'], 'w')
+                || str_contains($meta['mode'], 'c')
+                || str_contains($meta['mode'], 'a')
+                || str_contains($meta['mode'], '+');
 
               Psl\invariant($writable, 'Handle is not writeable.');
 
@@ -233,7 +233,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
      */
     public function read(?int $max_bytes = null, ?float $timeout = null): string
     {
-        Psl\invariant($this->writeSequence !== null, 'The resource handle is not readable.');
+        Psl\invariant($this->readSequence !== null, 'The resource handle is not readable.');
 
         return $this->readSequence->waitFor([$max_bytes, $timeout]);
     }
