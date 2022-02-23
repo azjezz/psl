@@ -7,7 +7,7 @@
         "ext-json": "*",
         "ext-mbstring": "*",
         "ext-sodium": "*",
-        "vimeo/psalm": "dev-master",
+        "vimeo/psalm": "4.x-dev",
         "php-standard-library/psalm-plugin": "^1.0"
     }
 }

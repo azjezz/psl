@@ -10,7 +10,6 @@ use Psl\Math;
 
 final class MinTest extends TestCase
 {
-
     /**
      * @dataProvider provideData
      */

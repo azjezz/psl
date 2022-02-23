@@ -9,7 +9,6 @@ use Psl\Str\Byte;
 
 final class StartsWithTest extends TestCase
 {
-
     /**
      * @dataProvider provideData
      */

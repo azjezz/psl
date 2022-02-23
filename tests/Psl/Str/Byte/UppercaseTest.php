@@ -9,7 +9,6 @@ use Psl\Str\Byte;
 
 final class UppercaseTest extends TestCase
 {
-
     /**
      * @dataProvider provideData
      */
