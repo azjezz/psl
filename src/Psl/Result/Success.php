@@ -150,10 +150,16 @@ final class Success implements ResultInterface
      */
     public function always(Closure $always): ResultInterface
     {
-        return wrap(function () use ($always) {
-            $always();
+        return wrap(
+            /**
+             * @return T
+             */
+            function () use ($always): mixed {
+                $always();
 
-            return $this->value;
-        });
+                /** @var T */
+                return $this->value;
+            },
+        );
     }
 }

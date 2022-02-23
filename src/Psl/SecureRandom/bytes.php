@@ -26,6 +26,7 @@ function bytes(int $length): string
     }
 
     try {
+        /** @var int<1, max> $length */
         return random_bytes($length);
         // @codeCoverageIgnoreStart
     } catch (PHPException $e) {

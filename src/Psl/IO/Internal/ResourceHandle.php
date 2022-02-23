@@ -5,24 +5,24 @@ declare(strict_types=1);
 namespace Psl\IO\Internal;
 
 use Psl;
+use Psl\Type;
 use Psl\Async;
 use Psl\IO;
 use Psl\IO\Exception;
-use Psl\Type;
 use Revolt\EventLoop\Suspension;
 
-use function array_slice;
+use function max;
 use function error_get_last;
 use function fclose;
 use function fseek;
 use function ftell;
 use function fwrite;
 use function is_resource;
-use function str_contains;
 use function stream_get_meta_data;
 use function stream_set_blocking;
 use function stream_set_read_buffer;
 use function substr;
+use function str_contains;
 
 /**
  * @internal
@@ -45,29 +45,17 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
      */
     protected mixed $stream;
 
-    private bool $blocks;
-
     /**
-     * @var non-empty-string
+     * @var null|Async\Sequence<array{null|int, null|float}, string>
      */
-    private string $readWatcher = 'invalid';
-    private bool $reading = false;
+    private ?Async\Sequence $readSequence = null;
     private ?Suspension $readSuspension = null;
-    /**
-     * @var list<Suspension>
-     */
-    private array $readQueue = [];
 
     /**
-     * @var non-empty-string
+     * @var null|Async\Sequence<array{string, null|float}, string>
      */
-    private string $writeWatcher = 'invalid';
-    private bool $writing = false;
+    private ?Async\Sequence $writeSequence = null;
     private ?Suspension $writeSuspension = null;
-    /**
-     * @var list<Suspension>
-     */
-    private array $writeQueue = [];
 
     /**
      * @param resource $stream
@@ -81,7 +69,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
         stream_set_blocking($stream, false);
 
         $meta = stream_get_meta_data($stream);
-        $this->blocks = $meta['blocked'] || ($meta['wrapper_type'] ?? '') === 'plainfile';
+        $blocks = $meta['blocked'] || ($meta['wrapper_type'] ?? '') === 'plainfile';
         if ($seek) {
             Psl\invariant($meta['seekable'], 'Handle is not seekable.');
         }
@@ -89,35 +77,88 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
         if ($read) {
             Psl\invariant(str_contains($meta['mode'], 'r') || str_contains($meta['mode'], '+'), 'Handle is not readable.');
 
-            $suspension = &$this->readSuspension;
-            $this->readWatcher = Async\Scheduler::onReadable($stream, static function () use (&$suspension) {
-                /** @var Suspension|null $tmp */
-                $tmp = $suspension;
-                $suspension = null;
-                $tmp?->resume();
-            });
+            $this->readSequence = new Async\Sequence(function(array $input) use($blocks): string {
+                [$max_bytes, $timeout] = $input;
+                $chunk = $this->tryRead($max_bytes);
+                if ('' !== $chunk || $blocks) {
+                    return $chunk;
+                }
 
-            Async\Scheduler::disable($this->readWatcher);
+                $this->readSuspension = $suspension = Async\Scheduler::getSuspension();
+                $watcher = Async\Scheduler::onReadable($this->stream, static function () use ($suspension) {
+                    $suspension->resume();
+                });
+
+                $delay_watcher = null;
+                if (null !== $timeout) {
+                    $timeout = max($timeout, 0.0);
+                    $delay_watcher = Async\Scheduler::delay(
+                        $timeout,
+                        static fn () => $suspension->throw(new Exception\TimeoutException('Reached timeout while the handle is still not readable.')),
+                    );
+
+                    Async\Scheduler::unreference($delay_watcher);
+                }
+
+                try {
+                    $suspension->suspend();
+
+                    return $this->tryRead($max_bytes);
+                } finally {
+                    $this->readSuspension = null;
+                    Async\Scheduler::disable($watcher);
+                    if (null !== $delay_watcher) {
+                        Async\Scheduler::cancel($delay_watcher);
+                    }
+                }
+            });
         }
 
         if ($write) {
             $writable = str_contains($meta['mode'], 'x')
-                || str_contains($meta['mode'], 'w')
-                || str_contains($meta['mode'], 'c')
-                || str_contains($meta['mode'], 'a')
-                || str_contains($meta['mode'], '+');
+                     || str_contains($meta['mode'], 'w')
+                 || str_contains($meta['mode'], 'c')
+                 || str_contains($meta['mode'], 'a')
+                 || str_contains($meta['mode'], '+');
 
-            Psl\invariant($writable, 'Handle is not writeable.');
+              Psl\invariant($writable, 'Handle is not writeable.');
 
-            $suspension = &$this->writeSuspension;
-            $this->writeWatcher = Async\Scheduler::onWritable($stream, static function () use (&$suspension) {
-                /** @var Suspension|null $tmp */
-                $tmp = $suspension;
-                $suspension = null;
-                $tmp?->resume();
+            $this->writeSequence = new Async\Sequence(function(array $input) use($blocks): int {
+                [$bytes, $timeout] = $input;
+                $written = $this->tryWrite($bytes);
+                $remaining_bytes = substr($bytes, $written);
+                if ($blocks || '' === $remaining_bytes) {
+                    return $written;
+                }
+
+                $this->writeSuspension = $suspension = Async\Scheduler::getSuspension();
+                $watcher = Async\Scheduler::onWritable($this->stream, static function () use ($suspension) {
+                    $suspension->resume();
+                });
+
+                $delay_watcher = null;
+                if (null !== $timeout) {
+                    $timeout = max($timeout, 0.0);
+                    $delay_watcher = Async\Scheduler::delay(
+                        $timeout,
+                        static fn () => $suspension->throw(new Exception\TimeoutException('Reached timeout while the handle is still not readable.')),
+                    );
+
+                    Async\Scheduler::unreference($delay_watcher);
+                }
+
+                try {
+                    $suspension->suspend();
+
+                    return $written + $this->tryWrite($remaining_bytes);
+                } finally {
+                    $this->writeSuspension = null;
+                    Async\Scheduler::disable($watcher);
+                    if (null !== $delay_watcher) {
+                        Async\Scheduler::cancel($delay_watcher);
+                    }
+                }
             });
-
-            Async\Scheduler::disable($this->writeWatcher);
         }
     }
 
@@ -126,55 +167,9 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
      */
     public function write(string $bytes, ?float $timeout = null): int
     {
-        // there's a pending read operation, wait for it.
-        if ($this->writing) {
-            $suspension = Async\Scheduler::getSuspension();
-            $this->writeQueue[] = $suspension;
-            $suspension->suspend();
-        }
+        Psl\invariant($this->writeSequence !== null, 'The resource handle is not writable.');
 
-        // block incoming operations.
-        $this->writing = true;
-        $delay_watcher = null;
-
-        try {
-            $written = $this->tryWrite($bytes);
-            $remaining_bytes = substr($bytes, $written);
-            if ($this->blocks || '' === $remaining_bytes) {
-                return $written;
-            }
-
-            $this->writeSuspension = Async\Scheduler::getSuspension();
-            /** @psalm-suppress MissingThrowsDocblock */
-            Async\Scheduler::enable($this->writeWatcher);
-            if (null !== $timeout) {
-                $timeout = $timeout < 0.0 ? 0.0 : $timeout;
-                $delay_watcher = Async\Scheduler::delay(
-                    $timeout,
-                    fn () => $this->writeSuspension?->throw(new Exception\TimeoutException('Reached timeout while the handle is still not writable.')),
-                );
-
-                Async\Scheduler::unreference($delay_watcher);
-            }
-
-            $this->writeSuspension?->suspend();
-
-            return $written + $this->tryWrite($remaining_bytes);
-        } finally {
-            $this->writeSuspension = null;
-            Async\Scheduler::disable($this->writeWatcher);
-            if (null !== $delay_watcher) {
-                Async\Scheduler::cancel($delay_watcher);
-            }
-
-            $suspension = $this->writeQueue[0] ?? null;
-            if ($suspension !== null) {
-                $this->writeQueue = array_slice($this->writeQueue, 1);
-                $suspension->resume();
-            }
-
-            $this->writing = false;
-        }
+        return $this->writeSequence->waitFor([$bytes, $timeout]);
     }
 
     /**
@@ -194,7 +189,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
             throw new Exception\RuntimeException($error['message'] ?? 'unknown error.');
         }
 
-        return $result >= 0 ? $result : 0;
+        return max($result, 0);
     }
 
     /**
@@ -230,7 +225,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
             throw new Exception\RuntimeException($error['message'] ?? 'unknown error.');
         }
 
-        return $result >= 0 ? $result : 0;
+        return max($result, 0);
     }
 
     /**
@@ -238,56 +233,9 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
      */
     public function read(?int $max_bytes = null, ?float $timeout = null): string
     {
-        // there's a pending read operation, wait for it.
-        if ($this->reading) {
-            $suspension = Async\Scheduler::getSuspension();
-            $this->readQueue[] = $suspension;
-            $suspension->suspend();
-        }
+        Psl\invariant($this->writeSequence !== null, 'The resource handle is not readable.');
 
-        // block incoming operations.
-        $this->reading = true;
-        $delay_watcher = null;
-
-        try {
-            $chunk = $this->tryRead($max_bytes);
-            if ('' !== $chunk || $this->blocks) {
-                return $chunk;
-            }
-
-            $this->readSuspension = Async\Scheduler::getSuspension();
-            /** @psalm-suppress MissingThrowsDocblock */
-            Async\Scheduler::enable($this->readWatcher);
-            if (null !== $timeout) {
-                $timeout = $timeout < 0.0 ? 0.0 : $timeout;
-                $delay_watcher = Async\Scheduler::delay(
-                    $timeout,
-                    function () {
-                        $this->readSuspension?->throw(new Exception\TimeoutException('Reached timeout while the handle is still not readable.'));
-                    }
-                );
-
-                Async\Scheduler::unreference($delay_watcher);
-            }
-
-            $this->readSuspension?->suspend();
-
-            return $this->tryRead($max_bytes);
-        } finally {
-            $this->readSuspension = null;
-            Async\Scheduler::disable($this->readWatcher);
-            if (null !== $delay_watcher) {
-                Async\Scheduler::cancel($delay_watcher);
-            }
-
-            $suspension = $this->readQueue[0] ?? null;
-            if ($suspension !== null) {
-                $this->readQueue = array_slice($this->readQueue, 1);
-                $suspension->resume();
-            }
-
-            $this->reading = false;
-        }
+        return $this->readSequence->waitFor([$max_bytes, $timeout]);
     }
 
     /**
@@ -337,8 +285,13 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     public function close(): void
     {
         if (null !== $this->stream) {
-            Async\Scheduler::disable($this->readWatcher);
-            Async\Scheduler::disable($this->writeWatcher);
+            $exception = new Exception\AlreadyClosedException('Handle has already been closed.');
+
+            $this->readSequence?->cancel($exception);
+            $this->readSuspension?->throw($exception);
+
+            $this->writeSequence?->cancel($exception);
+            $this->writeSuspension?->throw($exception);
 
             // don't close the stream if `$this->close` is false, or if it's already closed.
             if ($this->close && is_resource($this->stream)) {
@@ -357,12 +310,6 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
                 // if manually closed using `fclose($handle->getStream)`.
                 $this->stream = null;
             }
-
-            $this->readSuspension?->throw(new Exception\AlreadyClosedException('Handle has already been closed.'));
-            $this->readSuspension = null;
-
-            $this->writeSuspension?->throw(new Exception\AlreadyClosedException('Handle has already been closed.'));
-            $this->writeSuspension = null;
         }
     }
 }
