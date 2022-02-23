@@ -12,7 +12,6 @@ use Psl\TCP;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-const CONCURRENCY_LIMIT = 50;
 const RESPONSE_FORMAT = <<<HTML
 <!DOCTYPE html>
 <html lang='en'>
