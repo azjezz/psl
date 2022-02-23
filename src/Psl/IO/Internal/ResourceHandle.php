@@ -5,24 +5,24 @@ declare(strict_types=1);
 namespace Psl\IO\Internal;
 
 use Psl;
-use Psl\Type;
 use Psl\Async;
 use Psl\IO;
 use Psl\IO\Exception;
+use Psl\Type;
 use Revolt\EventLoop\Suspension;
 
-use function max;
 use function error_get_last;
 use function fclose;
 use function fseek;
 use function ftell;
 use function fwrite;
 use function is_resource;
+use function max;
+use function str_contains;
 use function stream_get_meta_data;
 use function stream_set_blocking;
 use function stream_set_read_buffer;
 use function substr;
-use function str_contains;
 
 /**
  * @internal
@@ -77,7 +77,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
         if ($read) {
             Psl\invariant(str_contains($meta['mode'], 'r') || str_contains($meta['mode'], '+'), 'Handle is not readable.');
 
-            $this->readSequence = new Async\Sequence(function(array $input) use($blocks): string {
+            $this->readSequence = new Async\Sequence(function (array $input) use ($blocks): string {
                 [$max_bytes, $timeout] = $input;
                 $chunk = $this->tryRead($max_bytes);
                 if ('' !== $chunk || $blocks) {
@@ -123,7 +123,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
 
               Psl\invariant($writable, 'Handle is not writeable.');
 
-            $this->writeSequence = new Async\Sequence(function(array $input) use($blocks): int {
+            $this->writeSequence = new Async\Sequence(function (array $input) use ($blocks): int {
                 [$bytes, $timeout] = $input;
                 $written = $this->tryWrite($bytes);
                 $remaining_bytes = substr($bytes, $written);
