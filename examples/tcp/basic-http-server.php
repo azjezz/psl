@@ -7,8 +7,6 @@ namespace Psl\Example\TCP;
 use Psl\Async;
 use Psl\Html;
 use Psl\IO;
-use Psl\Iter;
-use Psl\Network\StreamSocketInterface;
 use Psl\Str;
 use Psl\TCP;
 
@@ -34,7 +32,7 @@ Async\Scheduler::unreference(Async\Scheduler::onSignal(SIGINT, $server->close(..
 IO\write_error_line('Server is listening on http://localhost:3030');
 IO\write_error_line('Click Ctrl+C to stop the server.');
 
-Iter\apply($server->incoming(), static function (StreamSocketInterface $connection): void {
+foreach ($server->incoming() as $connection) {
     try {
         $request = $connection->read();
         $connection->write("HTTP/1.1 200 OK\nConnection: close\nContent-Type: text/html; charset=utf-8\n\n");
@@ -43,7 +41,7 @@ Iter\apply($server->incoming(), static function (StreamSocketInterface $connecti
     } catch (IO\Exception\ExceptionInterface $e) {
         IO\write_error_line('Error: %s.', $e->getMessage());
     }
-});
+}
 
 IO\write_error_line('');
 IO\write_error_line('Goodbye 👋');

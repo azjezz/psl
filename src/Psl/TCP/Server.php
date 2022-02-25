@@ -37,6 +37,6 @@ final class Server extends Network\Internal\AbstractStreamServer
 
         $socket = Network\Internal\server_listen("tcp://{$host}:{$port}", $socket_context);
 
-        return new self($socket);
+        return new self($socket, $server_options->idleConnections);
     }
 }

@@ -27,8 +27,10 @@ final class Receiver implements ReceiverInterface
         private ChannelState $state
     ) {
         $this->state->addCloseListener(function () {
-            $this->deferred?->error(Exception\ClosedChannelException::forReceiving());
-            $this->deferred = null;
+            if ($this->state->isEmpty()) {
+                $this->deferred?->error(Exception\ClosedChannelException::forReceiving());
+                $this->deferred = null;
+            }
         });
 
         $this->state->addSendListener(function () {
@@ -85,10 +87,6 @@ final class Receiver implements ReceiverInterface
      */
     public function close(): void
     {
-        if ($this->state->isEmpty()) {
-            $this->deferred?->error(Exception\ClosedChannelException::forReceiving());
-        }
-
         $this->state->close();
     }
 

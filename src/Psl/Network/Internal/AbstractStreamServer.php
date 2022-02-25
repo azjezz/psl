@@ -6,17 +6,22 @@ namespace Psl\Network\Internal;
 
 use Generator;
 use Psl\Async;
+use Psl\Channel;
 use Psl\Network;
 use Psl\Network\StreamServerInterface;
-use Revolt\EventLoop\Suspension;
 
 use function error_get_last;
 use function fclose;
 use function is_resource;
 use function stream_socket_accept;
 
+/**
+ * @psalm-suppress UnnecessaryVarAnnotation
+ */
 abstract class AbstractStreamServer implements StreamServerInterface
 {
+    private const IDLE_CONNECTIONS = 1000;
+
     /**
      * @var closed-resource|resource|null $impl
      */
@@ -28,51 +33,41 @@ abstract class AbstractStreamServer implements StreamServerInterface
     private string $watcher;
 
     /**
-     * @var Async\Sequence<mixed, Socket>
+     * @var Channel\ReceiverInterface<array{true, Socket}|array{false, Network\Exception\RuntimeException}>
      */
-    private Async\Sequence $sequence;
-
-    /**
-     * @var null|Suspension<resource>
-     */
-    private ?Suspension $suspension = null;
+    private Channel\ReceiverInterface $receiver;
 
     /**
      * @param resource $impl
+     * @param int<1, max> $idleConnections
      */
-    protected function __construct(mixed $impl)
+    protected function __construct(mixed $impl, int $idleConnections = self::IDLE_CONNECTIONS)
     {
         $this->impl = $impl;
-        $this->watcher = Async\Scheduler::onReadable($this->impl, function ($_watcher, $resource) {
-            $this->suspension?->resume($resource);
-        });
-        $this->sequence = new Async\Sequence(
-            function () {
-                /** @var Suspension<resource> $suspension */
-                $suspension = Async\Scheduler::getSuspension();
-                $this->suspension = $suspension;
+        /**
+         * @var Channel\SenderInterface<array{true, Socket}|array{false, Network\Exception\RuntimeException}> $sender
+         */
+        [$this->receiver, $sender] = Channel\bounded($idleConnections);
+        $this->watcher = Async\Scheduler::onReadable($impl, static function ($watcher, $resource) use ($sender): void {
+            if ($sender->isClosed()) {
+                Async\Scheduler::cancel($watcher);
 
-                Async\Scheduler::enable($this->watcher);
-
-                try {
-                    $sock = @stream_socket_accept($suspension->suspend(), timeout: 0.0);
-                    if ($sock !== false) {
-                        return new Socket($sock);
-                    }
-
-                    // @codeCoverageIgnoreStart
-                    /** @var array{file: string, line: int, message: string, type: int} $err */
-                    $err = error_get_last();
-                    throw new Network\Exception\RuntimeException('Failed to accept incoming connection: ' . $err['message'], $err['type']);
-                    // @codeCoverageIgnoreEnd
-                } finally {
-                    $this->suspension = null;
-                    Async\Scheduler::disable($this->watcher);
-                }
+                return;
             }
-        );
 
-        Async\Scheduler::disable($this->watcher);
+            $sock = @stream_socket_accept($resource, timeout: 0.0);
+            if ($sock !== false) {
+                $sender->send([true, new Socket($sock)]);
+
+                return;
+            }
+
+            // @codeCoverageIgnoreStart
+            /** @var array{file: string, line: int, message: string, type: int} $err */
+            $err = error_get_last();
+            $sender->send([false, new Network\Exception\RuntimeException('Failed to accept incoming connection: ' . $err['message'], $err['type'])]);
+            // @codeCoverageIgnoreEnd
+        });
     }
 
     /**
@@ -80,11 +75,19 @@ abstract class AbstractStreamServer implements StreamServerInterface
      */
     public function nextConnection(): Network\StreamSocketInterface
     {
-        if (null === $this->impl) {
+        try {
+            [$success, $result] = $this->receiver->receive();
+        } catch (Channel\Exception\ClosedChannelException) {
             throw new Network\Exception\AlreadyStoppedException('Server socket has already been stopped.');
         }
 
-        return $this->sequence->waitFor(null);
+        if ($success) {
+            /** @var Socket $result */
+            return $result;
+        }
+
+        /** @var Network\Exception\RuntimeException $result  */
+        throw $result;
     }
 
     /**
@@ -94,10 +97,16 @@ abstract class AbstractStreamServer implements StreamServerInterface
     {
         try {
             while (true) {
-                // set null as key to prevent PHP from used incremental integer keys.
-                yield null => $this->nextConnection();
+                [$success, $result] = $this->receiver->receive();
+                if ($success) {
+                    /** @var Socket $result */
+                    yield null => $result;
+                } else {
+                    /** @var Network\Exception\RuntimeException $result  */
+                    throw $result;
+                }
             }
-        } catch (Network\Exception\AlreadyStoppedException) {
+        } catch (Channel\Exception\ClosedChannelException) {
             return;
         }
     }
@@ -130,13 +139,12 @@ abstract class AbstractStreamServer implements StreamServerInterface
             return;
         }
 
+        $this->receiver->close();
         $resource = $this->impl;
         $this->impl = null;
         if (is_resource($resource)) {
             fclose($resource);
         }
-
-        $this->suspension?->throw(new Network\Exception\AlreadyStoppedException('Server socket has already been stopped.'));
     }
 
     /**
