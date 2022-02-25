@@ -7,8 +7,9 @@ namespace Psl\Example\TCP;
 use Psl\Async;
 use Psl\Html;
 use Psl\IO;
-use Psl\Str;
 use Psl\Iter;
+use Psl\Network\StreamSocketInterface;
+use Psl\Str;
 use Psl\TCP;
 
 require __DIR__ . '/../../vendor/autoload.php';
@@ -33,11 +34,15 @@ Async\Scheduler::unreference(Async\Scheduler::onSignal(SIGINT, $server->close(..
 IO\write_error_line('Server is listening on http://localhost:3030');
 IO\write_error_line('Click Ctrl+C to stop the server.');
 
-Iter\apply($server->incoming(), static function ($connection): void {
-    $request = $connection->read();
-    $connection->write("HTTP/1.1 200 OK\nConnection: close\nContent-Type: text/html; charset=utf-8\n\n");
-    $connection->write(Str\format(RESPONSE_FORMAT, Html\encode_special_characters($request)));
-    $connection->close();
+Iter\apply($server->incoming(), static function (StreamSocketInterface $connection): void {
+    try {
+        $request = $connection->read();
+        $connection->write("HTTP/1.1 200 OK\nConnection: close\nContent-Type: text/html; charset=utf-8\n\n");
+        $connection->write(Str\format(RESPONSE_FORMAT, Html\encode_special_characters($request)));
+        $connection->close();
+    } catch (IO\Exception\ExceptionInterface $e) {
+        IO\write_error_line('Error: %s.', $e->getMessage());
+    }
 });
 
 IO\write_error_line('');

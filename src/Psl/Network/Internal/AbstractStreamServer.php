@@ -22,16 +22,20 @@ abstract class AbstractStreamServer implements StreamServerInterface
      */
     private mixed $impl;
 
-    private ?Suspension $suspension = null;
-    /**
-     * @var list<Suspension>
-     */
-    private array $queue = [];
-
     /**
      * @var non-empty-string
      */
     private string $watcher;
+
+    /**
+     * @var Async\Sequence<mixed, Socket>
+     */
+    private Async\Sequence $sequence;
+
+    /**
+     * @var null|Suspension<resource>
+     */
+    private ?Suspension $suspension = null;
 
     /**
      * @param resource $impl
@@ -39,28 +43,33 @@ abstract class AbstractStreamServer implements StreamServerInterface
     protected function __construct(mixed $impl)
     {
         $this->impl = $impl;
-        $suspension = &$this->suspension;
-        $this->watcher = Async\Scheduler::onReadable(
-            $impl,
-            /**
-             * @param resource $resource
-             */
-            static function (string $_watcher, mixed $resource) use (&$suspension): void {
-                $sock = @stream_socket_accept($resource, timeout: 0.0);
-                if ($sock !== false) {
-                    /** @var Suspension $suspension */
-                    $suspension->resume($sock);
+        $this->watcher = Async\Scheduler::onReadable($this->impl, function ($_watcher, $resource) {
+            $this->suspension?->resume($resource);
+        });
+        $this->sequence = new Async\Sequence(
+            function () {
+                /** @var Suspension<resource> $suspension */
+                $suspension = Async\Scheduler::getSuspension();
+                $this->suspension = $suspension;
 
-                    return;
+                Async\Scheduler::enable($this->watcher);
+
+                try {
+                    $sock = @stream_socket_accept($suspension->suspend(), timeout: 0.0);
+                    if ($sock !== false) {
+                        return new Socket($sock);
+                    }
+
+                    // @codeCoverageIgnoreStart
+                    /** @var array{file: string, line: int, message: string, type: int} $err */
+                    $err = error_get_last();
+                    throw new Network\Exception\RuntimeException('Failed to accept incoming connection: ' . $err['message'], $err['type']);
+                    // @codeCoverageIgnoreEnd
+                } finally {
+                    $this->suspension = null;
+                    Async\Scheduler::disable($this->watcher);
                 }
-
-                // @codeCoverageIgnoreStart
-                /** @var array{file: string, line: int, message: string, type: int} $err */
-                $err = error_get_last();
-                /** @var Suspension $suspension */
-                $suspension->throw(new Network\Exception\RuntimeException('Failed to accept incoming connection: ' . $err['message'], $err['type']));
-                // @codeCoverageIgnoreEnd
-            },
+            }
         );
 
         Async\Scheduler::disable($this->watcher);
@@ -75,31 +84,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
             throw new Network\Exception\AlreadyStoppedException('Server socket has already been stopped.');
         }
 
-        if (null !== $this->suspension) {
-            $suspension = Async\Scheduler::getSuspension();
-            $this->queue[] = $suspension;
-            $suspension->suspend();
-        } else {
-            /** @psalm-suppress MissingThrowsDocblock */
-            Async\Scheduler::enable($this->watcher);
-        }
-
-        $this->suspension = Async\Scheduler::getSuspension();
-
-        try {
-            /** @var resource $stream */
-            $stream = $this->suspension->suspend();
-
-            return new Socket($stream);
-        } finally {
-            $suspension = array_shift($this->queue);
-            if (null !== $suspension) {
-                $suspension->resume();
-            } else {
-                Async\Scheduler::disable($this->watcher);
-                $this->suspension = null;
-            }
-        }
+        return $this->sequence->waitFor(null);
     }
 
     /**
@@ -140,7 +125,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
      */
     public function close(): void
     {
-        Async\Scheduler::cancel($this->watcher);
+        Async\Scheduler::disable($this->watcher);
         if (null === $this->impl) {
             return;
         }
@@ -151,13 +136,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
             fclose($resource);
         }
 
-        $exception = new Network\Exception\AlreadyStoppedException('Server socket has already been stopped.');
-        $suspensions = [$this->suspension, ...$this->queue];
-        $this->suspension = null;
-        $this->queue = [];
-        foreach ($suspensions as $suspension) {
-            $suspension?->throw($exception);
-        }
+        $this->suspension?->throw(new Network\Exception\AlreadyStoppedException('Server socket has already been stopped.'));
     }
 
     /**
