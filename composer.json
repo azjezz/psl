@@ -19,13 +19,13 @@
         "revolt/event-loop": "dev-main"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "^3.6.1",
+        "squizlabs/php_codesniffer": "^3.6.2",
         "friendsofphp/php-cs-fixer": "^3.4.0",
-        "phpbench/phpbench": "^1.2.2",
-        "phpunit/phpunit": "^9.5.10",
-        "vimeo/psalm": "^4.11.2",
-        "php-standard-library/psalm-plugin": "^2.0.0",
-        "php-coveralls/php-coveralls": "^2.5",
+        "phpbench/phpbench": "^1.2.3",
+        "phpunit/phpunit": "^9.5.16",
+        "vimeo/psalm": "^4.21.0",
+        "php-standard-library/psalm-plugin": "^2.0.2",
+        "php-coveralls/php-coveralls": "^2.5.2",
         "roave/infection-static-analysis-plugin": "1.13.x-dev"
     },
     "autoload": {
