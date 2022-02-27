@@ -20,7 +20,7 @@ use function stream_socket_accept;
  */
 abstract class AbstractStreamServer implements StreamServerInterface
 {
-    private const IDLE_CONNECTIONS = 1000;
+    private const DEFAULT_IDLE_CONNECTIONS = 256;
 
     /**
      * @var closed-resource|resource|null $impl
@@ -41,7 +41,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
      * @param resource $impl
      * @param int<1, max> $idleConnections
      */
-    protected function __construct(mixed $impl, int $idleConnections = self::IDLE_CONNECTIONS)
+    protected function __construct(mixed $impl, int $idleConnections = self::DEFAULT_IDLE_CONNECTIONS)
     {
         $this->impl = $impl;
         /**

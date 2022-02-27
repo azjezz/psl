@@ -8,6 +8,8 @@ use Psl\Network;
 
 final class ServerOptions
 {
+    public const DEFAULT_IDLE_CONNECTIONS = 256;
+
     /**
      * @param int<1, max> $idleConnections
      */
@@ -23,7 +25,7 @@ final class ServerOptions
      */
     public static function create(
         bool $noDelay = false,
-        int $idleConnections = 1000,
+        int $idleConnections = self::DEFAULT_IDLE_CONNECTIONS,
         ?Network\SocketOptions $socketOptions = null,
     ): ServerOptions {
         return new self($noDelay, $idleConnections, $socketOptions ?? Network\SocketOptions::create());
