@@ -12,7 +12,7 @@ function take_positive_integer(int $_foo): void
 {
 }
 
-/** @param 0 $_foo */
+/** @param int $_foo */
 function take_zero(int $_foo): void
 {
 }
