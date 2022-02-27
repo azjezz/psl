@@ -7,6 +7,7 @@ namespace Psl\Channel\Internal;
 use Psl\Async;
 use Psl\Channel\Exception;
 use Psl\Channel\ReceiverInterface;
+use Revolt\EventLoop\Suspension;
 
 /**
  * @template T
@@ -16,9 +17,11 @@ use Psl\Channel\ReceiverInterface;
 final class Receiver implements ReceiverInterface
 {
     /**
-     * @var null|Async\Deferred<null>
+     * @var Async\Sequence<mixed, T>
      */
-    private ?Async\Deferred $deferred = null;
+    private Async\Sequence $sequence;
+
+    private null|Suspension $suspension = null;
 
     /**
      * @param ChannelState<T> $state
@@ -26,16 +29,46 @@ final class Receiver implements ReceiverInterface
     public function __construct(
         private ChannelState $state
     ) {
+        $this->sequence = new Async\Sequence(
+            /**
+             * @return T
+             */
+            function () {
+                // check empty before closed as a non-empty closed channel could still be used
+                // for receiving.
+                if ($this->state->isEmpty()) {
+                    // the channel could have already been closed
+                    // so check first, otherwise the event loop will hang, and exit unexpectedly
+                    if ($this->state->isClosed()) {
+                        throw Exception\ClosedChannelException::forReceiving();
+                    }
+
+                    /** @var Suspension<null> */
+                    $this->suspension = Async\Scheduler::getSuspension();
+                    $this->suspension->suspend();
+                }
+
+                /**
+                 * @psalm-suppress MissingThrowsDocblock
+                 *
+                 * @var T
+                 */
+                return $this->state->receive();
+            },
+        );
+
         $this->state->addCloseListener(function () {
             if ($this->state->isEmpty()) {
-                $this->deferred?->error(Exception\ClosedChannelException::forReceiving());
-                $this->deferred = null;
+                $this->sequence->cancel(Exception\ClosedChannelException::forReceiving());
+
+                $this->suspension?->throw(Exception\ClosedChannelException::forReceiving());
+                $this->suspension = null;
             }
         });
 
         $this->state->addSendListener(function () {
-            $this->deferred?->complete(null);
-            $this->deferred = null;
+            $this->suspension?->resume();
+            $this->suspension = null;
         });
     }
 
@@ -44,26 +77,7 @@ final class Receiver implements ReceiverInterface
      */
     public function receive(): mixed
     {
-        // there's a pending operation? wait for it.
-        $this->deferred?->getAwaitable()->await();
-
-        // check empty before closed as a non-empty closed channel could still be used
-        // for receiving.
-        if ($this->state->isEmpty()) {
-            // the channel could have already been closed
-            // so check first, otherwise the event loop will hang, and exit unexpectedly
-            if ($this->state->isClosed()) {
-                throw Exception\ClosedChannelException::forReceiving();
-            }
-
-            /** @var Async\Deferred<null> */
-            $this->deferred = new Async\Deferred();
-
-            $this->deferred->getAwaitable()->await();
-        }
-
-        /** @psalm-suppress MissingThrowsDocblock */
-        return $this->state->receive();
+        return $this->sequence->waitFor(null);
     }
 
     /**
