@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Channel\Internal;
 
-use Psl\Async;
 use Psl\Channel\Exception;
 use Psl\Channel\SenderInterface;
+use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
 
 /**
@@ -37,7 +37,7 @@ final class BoundedSender implements SenderInterface
     public function send(mixed $message): void
     {
         if ($this->suspension) {
-            $this->suspension = $suspension = Async\Scheduler::getSuspension();
+            $this->suspension = $suspension = EventLoop::getSuspension();
             $this->state->waitForSpace($suspension);
             $suspension->suspend();
         }
@@ -45,7 +45,7 @@ final class BoundedSender implements SenderInterface
         try {
             $this->state->send($message);
         } catch (Exception\FullChannelException) {
-            $this->suspension = $suspension = Async\Scheduler::getSuspension();
+            $this->suspension = $suspension = EventLoop::getSuspension();
             $this->state->waitForSpace($suspension);
             $suspension->suspend();
 

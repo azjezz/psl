@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Channel\Internal;
 
-use Psl\Async;
 use Psl\Channel\Exception;
 use Psl\Channel\ReceiverInterface;
+use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
 
 /**
@@ -37,7 +37,7 @@ final class BoundedReceiver implements ReceiverInterface
     public function receive(): mixed
     {
         if ($this->suspension) {
-            $this->suspension = $suspension = Async\Scheduler::getSuspension();
+            $this->suspension = $suspension = EventLoop::getSuspension();
             $this->state->waitForMessage($suspension);
             $suspension->suspend();
         }
@@ -45,7 +45,7 @@ final class BoundedReceiver implements ReceiverInterface
         try {
             return $this->state->receive();
         } catch (Exception\EmptyChannelException) {
-            $this->suspension = $suspension = Async\Scheduler::getSuspension();
+            $this->suspension = $suspension = EventLoop::getSuspension();
             $this->state->waitForMessage($suspension);
             $suspension->suspend();
 
