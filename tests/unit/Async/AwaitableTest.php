@@ -65,7 +65,10 @@ final class AwaitableTest extends TestCase
         } catch (UncaughtThrowable $throwable) {
             $previous = $throwable->getPrevious();
             static::assertInstanceOf(UnhandledAwaitableException::class, $previous);
-            static::assertSame('Unhandled awaitable error "Psl\Exception\InvariantViolationException", make sure to call `Awaitable::await()` before the awaitable is destroyed, or call `Awaitable::ignore()` to ignore exceptions.', $previous->getMessage());
+            static::assertSame(
+                'Unhandled awaitable error "Psl\Exception\InvariantViolationException", make sure to call `Awaitable::await()` before the awaitable is destroyed, or call `Awaitable::ignore()` to ignore exceptions.',
+                $previous->getMessage(),
+            );
         }
     }
 
