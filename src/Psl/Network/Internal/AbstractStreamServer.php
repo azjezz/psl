@@ -49,24 +49,24 @@ abstract class AbstractStreamServer implements StreamServerInterface
          */
         [$this->receiver, $sender] = Channel\bounded($idleConnections);
         $this->watcher = Async\Scheduler::onReadable($impl, static function ($watcher, $resource) use ($sender): void {
-            if ($sender->isClosed()) {
+            try {
+                $sock = @stream_socket_accept($resource, timeout: 0.0);
+                if ($sock !== false) {
+                    $sender->send([true, new Socket($sock)]);
+
+                    return;
+                }
+
+                // @codeCoverageIgnoreStart
+                /** @var array{file: string, line: int, message: string, type: int} $err */
+                $err = error_get_last();
+                $sender->send([false, new Network\Exception\RuntimeException('Failed to accept incoming connection: ' . $err['message'], $err['type'])]);
+                // @codeCoverageIgnoreEnd
+            } catch (Channel\Exception\ClosedChannelException) {
                 Async\Scheduler::cancel($watcher);
 
                 return;
             }
-
-            $sock = @stream_socket_accept($resource, timeout: 0.0);
-            if ($sock !== false) {
-                $sender->send([true, new Socket($sock)]);
-
-                return;
-            }
-
-            // @codeCoverageIgnoreStart
-            /** @var array{file: string, line: int, message: string, type: int} $err */
-            $err = error_get_last();
-            $sender->send([false, new Network\Exception\RuntimeException('Failed to accept incoming connection: ' . $err['message'], $err['type'])]);
-            // @codeCoverageIgnoreEnd
         });
     }
 

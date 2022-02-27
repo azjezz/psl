@@ -34,13 +34,7 @@ final class Sender implements SenderInterface
              * @param T $message
              */
             function (mixed $message): void {
-                // the channel could have already been closed
-                // so check first, otherwise the event loop will hang, and exit unexpectedly
-                if ($this->state->isClosed()) {
-                    throw Exception\ClosedChannelException::forSending();
-                }
-
-                if ($this->state->isFull()) {
+                if ($this->state->bounded && $this->state->isFull() && !$this->state->isClosed()) {
                     /** @var Suspension<null> */
                     $this->suspension = Async\Scheduler::getSuspension();
                     $this->suspension->suspend();

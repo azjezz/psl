@@ -36,13 +36,7 @@ final class Receiver implements ReceiverInterface
             function () {
                 // check empty before closed as a non-empty closed channel could still be used
                 // for receiving.
-                if ($this->state->isEmpty()) {
-                    // the channel could have already been closed
-                    // so check first, otherwise the event loop will hang, and exit unexpectedly
-                    if ($this->state->isClosed()) {
-                        throw Exception\ClosedChannelException::forReceiving();
-                    }
-
+                if ($this->state->isEmpty() && !$this->state->isClosed()) {
                     /** @var Suspension<null> */
                     $this->suspension = Async\Scheduler::getSuspension();
                     $this->suspension->suspend();

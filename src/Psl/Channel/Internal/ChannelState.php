@@ -9,7 +9,6 @@ use Psl\Channel\ChannelInterface;
 use Psl\Channel\Exception;
 
 use function array_shift;
-use function count;
 
 /**
  * @template T
@@ -17,6 +16,9 @@ use function count;
  * @implements ChannelInterface<T>
  *
  * @internal
+ *
+ * @psalm-suppress LessSpecificReturnStatement
+ * @psalm-suppress MoreSpecificReturnType
  */
 final class ChannelState implements ChannelInterface
 {
@@ -40,7 +42,11 @@ final class ChannelState implements ChannelInterface
      */
     private array $messages = [];
 
-    private bool $closed = false;
+    private int $size = 0;
+
+    public bool $closed = false;
+
+    public readonly bool $bounded;
 
     /**
      * @param null|positive-int $capacity
@@ -48,6 +54,12 @@ final class ChannelState implements ChannelInterface
     public function __construct(
         private ?int $capacity = null,
     ) {
+        $this->bounded = $this->capacity !== null;
+    }
+
+    public function __destruct()
+    {
+        $this->close();
     }
 
     /**
@@ -107,7 +119,7 @@ final class ChannelState implements ChannelInterface
      */
     public function count(): int
     {
-        return count($this->messages);
+        return $this->size;
     }
 
     /**
@@ -115,7 +127,7 @@ final class ChannelState implements ChannelInterface
      */
     public function isFull(): bool
     {
-        return $this->capacity && $this->capacity === $this->count();
+        return $this->capacity === $this->size;
     }
 
     /**
@@ -123,7 +135,7 @@ final class ChannelState implements ChannelInterface
      */
     public function isEmpty(): bool
     {
-        return 0 === count($this->messages);
+        return !$this->messages;
     }
 
     /**
@@ -138,16 +150,16 @@ final class ChannelState implements ChannelInterface
             throw Exception\ClosedChannelException::forSending();
         }
 
-        if (null === $this->capacity || $this->capacity > count($this->messages)) {
-            $this->messages[] = $message;
-            foreach ($this->sendListeners as $listener) {
-                $listener();
-            }
-
-            return;
+        if ($this->capacity === $this->size) {
+            throw Exception\FullChannelException::ofCapacity($this->capacity);
         }
 
-        throw Exception\FullChannelException::ofCapacity($this->capacity);
+        $this->messages[] = $message;
+        $this->size++;
+
+        foreach ($this->sendListeners as $listener) {
+            $listener();
+        }
     }
 
     /**
@@ -158,7 +170,7 @@ final class ChannelState implements ChannelInterface
      */
     public function receive(): mixed
     {
-        if ([] === $this->messages) {
+        if (!$this->messages) {
             if ($this->closed) {
                 throw Exception\ClosedChannelException::forReceiving();
             }
@@ -167,6 +179,8 @@ final class ChannelState implements ChannelInterface
         }
 
         $item = array_shift($this->messages);
+        $this->size--;
+
         foreach ($this->receiveListeners as $listener) {
             $listener();
         }
