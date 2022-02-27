@@ -34,7 +34,7 @@ final class Sender implements SenderInterface
              * @param T $message
              */
             function (mixed $message): void {
-                if ($this->state->bounded && $this->state->isFull() && !$this->state->isClosed()) {
+                if ($this->state->isFull() && !$this->state->isClosed()) {
                     /** @var Suspension<null> */
                     $this->suspension = Async\Scheduler::getSuspension();
                     $this->suspension->suspend();
