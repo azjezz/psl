@@ -6,6 +6,7 @@ namespace Psl\Async;
 
 use Closure;
 use Exception;
+use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
 
 use function array_shift;
@@ -62,7 +63,7 @@ final class Semaphore
     public function waitFor(mixed $input): mixed
     {
         if ($this->ingoing === $this->concurrencyLimit) {
-            $this->pending[] = $suspension = Scheduler::getSuspension();
+            $this->pending[] = $suspension = EventLoop::getSuspension();
 
             $suspension->suspend();
         }
@@ -166,7 +167,7 @@ final class Semaphore
             return;
         }
 
-        $suspension = Scheduler::getSuspension();
+        $suspension = EventLoop::getSuspension();
         $this->waits[] = $suspension;
         $suspension->suspend();
     }

@@ -9,6 +9,7 @@ use Generator;
 use Psl\Async\Internal\AwaitableIterator;
 use Psl\Async\Internal\State;
 use Psl\Promise\PromiseInterface;
+use Revolt\EventLoop;
 use Throwable;
 
 use function is_array;
@@ -63,7 +64,7 @@ final class Awaitable implements PromiseInterface
             /** @psalm-suppress MissingThrowsDocblock */
             $iterator->complete();
         } else {
-            Scheduler::defer(static function () use ($awaitables, $iterator): void {
+            EventLoop::defer(static function () use ($awaitables, $iterator): void {
                 // @codeCoverageIgnoreStart
                 try {
                     foreach ($awaitables as $key => $awaitable) {
@@ -249,7 +250,7 @@ final class Awaitable implements PromiseInterface
      */
     public function await(): mixed
     {
-        $suspension = Scheduler::getSuspension();
+        $suspension = EventLoop::getSuspension();
 
         $this->state->subscribe(
             /**

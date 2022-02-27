@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Async;
 
 use Closure;
+use Revolt\EventLoop;
 use Throwable;
 
 /**
@@ -20,7 +21,7 @@ function run(Closure $closure): Awaitable
 {
     $state = new Internal\State();
 
-    Scheduler::defer(static function () use ($closure, $state): void {
+    EventLoop::defer(static function () use ($closure, $state) {
         try {
             $result = $closure();
 

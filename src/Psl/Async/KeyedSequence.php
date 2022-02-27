@@ -6,6 +6,7 @@ namespace Psl\Async;
 
 use Closure;
 use Exception;
+use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
 
 use function array_key_exists;
@@ -61,7 +62,7 @@ final class KeyedSequence
     public function waitFor(string|int $key, mixed $input): mixed
     {
         if (array_key_exists($key, $this->ingoing)) {
-            $this->pending[$key][] = $suspension = Scheduler::getSuspension();
+            $this->pending[$key][] = $suspension = EventLoop::getSuspension();
 
             $suspension->suspend();
         }
@@ -219,7 +220,7 @@ final class KeyedSequence
             return;
         }
 
-        $suspension = Scheduler::getSuspension();
+        $suspension = EventLoop::getSuspension();
         $this->waits[$key][] = $suspension;
         $suspension->suspend();
     }

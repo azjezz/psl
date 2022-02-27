@@ -6,6 +6,7 @@ namespace Psl\Async;
 
 use Closure;
 use Exception;
+use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
 
 use function array_slice;
@@ -54,7 +55,7 @@ final class Sequence
     public function waitFor(mixed $input): mixed
     {
         if ($this->ingoing) {
-            $this->pending[] = $suspension = Scheduler::getSuspension();
+            $this->pending[] = $suspension = EventLoop::getSuspension();
 
             $suspension->suspend();
         }
@@ -136,7 +137,7 @@ final class Sequence
             return;
         }
 
-        $suspension = Scheduler::getSuspension();
+        $suspension = EventLoop::getSuspension();
         $this->waits[] = $suspension;
         $suspension->suspend();
     }

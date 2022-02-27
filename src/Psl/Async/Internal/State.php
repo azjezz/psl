@@ -8,7 +8,7 @@ use Closure;
 use Psl;
 use Psl\Async\Awaitable;
 use Psl\Async\Exception;
-use Psl\Async\Scheduler;
+use Revolt\EventLoop;
 use Throwable;
 
 /**
@@ -53,7 +53,8 @@ final class State
     public function __destruct()
     {
         if ($this->throwable && !$this->handled) {
-            throw Exception\UnhandledAwaitableException::forThrowable($this->throwable);
+            $exception = Exception\UnhandledAwaitableException::forThrowable($this->throwable);
+            EventLoop::queue(static fn() => throw $exception);
         }
     }
 
@@ -74,7 +75,7 @@ final class State
         $this->handled = true;
 
         if ($this->complete) {
-            Scheduler::queue(fn() => $callback($this->throwable, $this->result, $id));
+            EventLoop::queue(fn() => $callback($this->throwable, $this->result, $id));
         } else {
             $this->callbacks[$id] = $callback;
         }
@@ -152,7 +153,7 @@ final class State
         $this->complete = true;
 
         foreach ($this->callbacks as $id => $callback) {
-            Scheduler::queue(fn() => $callback($this->throwable, $this->result, $id));
+            EventLoop::queue(fn() => $callback($this->throwable, $this->result, $id));
         }
 
         $this->callbacks = [];

@@ -6,6 +6,7 @@ namespace Psl\Async;
 
 use Closure;
 use Exception;
+use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
 
 use function array_key_exists;
@@ -67,7 +68,7 @@ final class KeyedSemaphore
     {
         $this->ingoing[$key] = $this->ingoing[$key] ?? 0;
         if ($this->ingoing[$key] === $this->concurrencyLimit) {
-            $this->pending[$key][] = $suspension = Scheduler::getSuspension();
+            $this->pending[$key][] = $suspension = EventLoop::getSuspension();
 
             $suspension->suspend();
         }
@@ -259,7 +260,7 @@ final class KeyedSemaphore
             return;
         }
 
-        $suspension = Scheduler::getSuspension();
+        $suspension = EventLoop::getSuspension();
         $this->waits[$key][] = $suspension;
         $suspension->suspend();
     }

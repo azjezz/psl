@@ -6,6 +6,7 @@ namespace Psl\Async\Internal;
 
 use Psl;
 use Psl\Async\Awaitable;
+use Revolt\EventLoop;
 use Throwable;
 
 use function array_shift;
@@ -136,7 +137,7 @@ final class AwaitableIterator
                 return $this->complete->await();
             }
 
-            $this->queue->suspension = Psl\Async\Scheduler::getSuspension();
+            $this->queue->suspension = EventLoop::getSuspension();
 
             /** @var null|array{0: Tk, 1: Awaitable<Tv>} */
             return $this->queue->suspension->suspend();

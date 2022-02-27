@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Async;
 
+use Revolt\EventLoop;
+
 /**
  * Reschedule the work of an async function until some other time in the future.
  *
@@ -13,9 +15,9 @@ namespace Psl\Async;
  */
 function later(): void
 {
-    $suspension = Scheduler::getSuspension();
+    $suspension = EventLoop::getSuspension();
 
-    Scheduler::defer(static fn () => $suspension->resume());
+    EventLoop::defer(static fn () => $suspension->resume());
 
     $suspension->suspend();
 }
