@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Psl\Network\Internal;
 
 use Generator;
-use Psl\Async;
 use Psl\Channel;
 use Psl\Network;
 use Psl\Network\StreamServerInterface;
+use Revolt\EventLoop;
 
 use function error_get_last;
 use function fclose;
@@ -28,7 +28,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
     private mixed $impl;
 
     /**
-     * @var non-empty-string
+     * @var string
      */
     private string $watcher;
 
@@ -48,7 +48,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
          * @var Channel\SenderInterface<array{true, Socket}|array{false, Network\Exception\RuntimeException}> $sender
          */
         [$this->receiver, $sender] = Channel\bounded($idleConnections);
-        $this->watcher = Async\Scheduler::onReadable($impl, static function ($watcher, $resource) use ($sender): void {
+        $this->watcher = EventLoop::onReadable($impl, static function ($watcher, $resource) use ($sender): void {
             try {
                 $sock = @stream_socket_accept($resource, timeout: 0.0);
                 if ($sock !== false) {
@@ -63,7 +63,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
                 $sender->send([false, new Network\Exception\RuntimeException('Failed to accept incoming connection: ' . $err['message'], $err['type'])]);
                 // @codeCoverageIgnoreEnd
             } catch (Channel\Exception\ClosedChannelException) {
-                Async\Scheduler::cancel($watcher);
+                EventLoop::cancel($watcher);
 
                 return;
             }
@@ -134,7 +134,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
      */
     public function close(): void
     {
-        Async\Scheduler::disable($this->watcher);
+        EventLoop::disable($this->watcher);
         if (null === $this->impl) {
             return;
         }

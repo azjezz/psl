@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Network\Internal;
 
-use Psl\Async;
 use Psl\Internal;
 use Psl\Network\Exception;
+use Revolt\EventLoop;
 
 use function fclose;
 use function stream_context_create;
@@ -37,14 +37,14 @@ function socket_connect(string $uri, array $context = [], ?float $timeout = null
             throw new Exception\RuntimeException('Failed to connect to client "' . $uri . '".', $errno);
         }
 
-        $suspension = Async\Scheduler::getSuspension();
+        $suspension = EventLoop::getSuspension();
 
         $write_watcher = '';
         $timeout_watcher = '';
         if (null !== $timeout) {
-            $timeout_watcher = Async\Scheduler::delay($timeout, static function () use ($suspension, &$write_watcher, $socket) {
+            $timeout_watcher = EventLoop::delay($timeout, static function () use ($suspension, &$write_watcher, $socket) {
                 /** @var string $write_watcher */
-                Async\Scheduler::cancel($write_watcher);
+                EventLoop::cancel($write_watcher);
 
                 fclose($socket);
 
@@ -52,8 +52,8 @@ function socket_connect(string $uri, array $context = [], ?float $timeout = null
             });
         }
 
-        $write_watcher = Async\Scheduler::onWritable($socket, static function () use ($suspension, $socket, $timeout_watcher) {
-            Async\Scheduler::cancel($timeout_watcher);
+        $write_watcher = EventLoop::onWritable($socket, static function () use ($suspension, $socket, $timeout_watcher) {
+            EventLoop::cancel($timeout_watcher);
 
             $suspension->resume($socket);
         });
@@ -62,8 +62,8 @@ function socket_connect(string $uri, array $context = [], ?float $timeout = null
             /** @var resource */
             return $suspension->suspend();
         } finally {
-            Async\Scheduler::cancel($write_watcher);
-            Async\Scheduler::cancel($timeout_watcher);
+            EventLoop::cancel($write_watcher);
+            EventLoop::cancel($timeout_watcher);
         }
     });
 }

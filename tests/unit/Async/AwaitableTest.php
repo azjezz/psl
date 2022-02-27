@@ -13,6 +13,7 @@ use Psl\Async\Internal\State;
 use Psl\Dict;
 use Psl\Exception\InvariantViolationException;
 use Psl\Str;
+use Revolt\EventLoop\UncaughtThrowable;
 use Throwable;
 
 final class AwaitableTest extends TestCase
@@ -55,12 +56,17 @@ final class AwaitableTest extends TestCase
         $state->error(new InvariantViolationException('foo'));
         static::assertTrue($awaitable->isComplete());
 
-        $this->expectException(UnhandledAwaitableException::class);
-        $this->expectExceptionMessage('Unhandled awaitable error "Psl\Exception\InvariantViolationException", make sure to call `Awaitable::await()` before the awaitable is destroyed, or call `Awaitable::ignore()` to ignore exceptions.');
+        try {
+            unset($awaitable, $state);
 
-        unset($awaitable, $state);
+            Async\Scheduler::run();
 
-        Async\Scheduler::run();
+            static::fail('Expected exception to be thrown');
+        } catch (UncaughtThrowable $throwable) {
+            $previous = $throwable->getPrevious();
+            static::assertInstanceOf(UnhandledAwaitableException::class, $previous);
+            static::assertSame('Unhandled awaitable error "Psl\Exception\InvariantViolationException", make sure to call `Awaitable::await()` before the awaitable is destroyed, or call `Awaitable::ignore()` to ignore exceptions.', $previous->getMessage());
+        }
     }
 
     public function testDiscardedIgnoredAwaitableError(): void
