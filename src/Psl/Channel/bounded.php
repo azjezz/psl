@@ -17,10 +17,10 @@ namespace Psl\Channel;
  */
 function bounded(int $capacity): array
 {
-    $channel = new Internal\ChannelState($capacity);
+    $channel = new Internal\BoundedChannelState($capacity);
 
     return [
-        new Internal\Receiver($channel),
-        new Internal\Sender($channel),
+        new Internal\BoundedReceiver($channel),
+        new Internal\BoundedSender($channel),
     ];
 }

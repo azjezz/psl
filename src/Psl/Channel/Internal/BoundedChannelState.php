@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Channel\Internal;
 
-use Closure;
 use Psl\Channel\ChannelInterface;
 use Psl\Channel\Exception;
+use Revolt\EventLoop\Suspension;
 
 use function array_shift;
 
@@ -20,22 +20,17 @@ use function array_shift;
  * @psalm-suppress LessSpecificReturnStatement
  * @psalm-suppress MoreSpecificReturnType
  */
-final class ChannelState implements ChannelInterface
+final class BoundedChannelState implements ChannelInterface
 {
     /**
-     * @var list<(Closure(): void)>
+     * @var list<Suspension<mixed>>
      */
-    private array $closeListeners = [];
+    private array $waitingForMessage = [];
 
     /**
-     * @var list<(Closure(): void)>
+     * @var list<Suspension<mixed>>
      */
-    private array $receiveListeners = [];
-
-    /**
-     * @var list<(Closure(): void)>
-     */
-    private array $sendListeners = [];
+    private array $waitingForSpace = [];
 
     /**
      * @var array<array-key, T>
@@ -46,15 +41,12 @@ final class ChannelState implements ChannelInterface
 
     public bool $closed = false;
 
-    public readonly bool $bounded;
-
     /**
-     * @param null|positive-int $capacity
+     * @param positive-int $capacity
      */
     public function __construct(
-        private ?int $capacity = null,
+        private int $capacity
     ) {
-        $this->bounded = $this->capacity !== null;
     }
 
     public function __destruct()
@@ -63,33 +55,25 @@ final class ChannelState implements ChannelInterface
     }
 
     /**
-     * @param (Closure(): void) $listener
+     * @param Suspension<mixed> $suspension
      */
-    public function addCloseListener(Closure $listener): void
+    public function waitForSpace(Suspension $suspension): void
     {
-        $this->closeListeners[] = $listener;
+        $this->waitingForSpace[] = $suspension;
     }
 
     /**
-     * @param (Closure(): void) $listener
+     * @param Suspension<mixed> $suspension
      */
-    public function addSendListener(Closure $listener): void
+    public function waitForMessage(Suspension $suspension): void
     {
-        $this->sendListeners[] = $listener;
-    }
-
-    /**
-     * @param (Closure(): void) $listener
-     */
-    public function addReceiveListener(Closure $listener): void
-    {
-        $this->receiveListeners[] = $listener;
+        $this->waitingForMessage[] = $suspension;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getCapacity(): ?int
+    public function getCapacity(): int
     {
         return $this->capacity;
     }
@@ -101,8 +85,16 @@ final class ChannelState implements ChannelInterface
     {
         $this->closed = true;
 
-        foreach ($this->closeListeners as $listener) {
-            $listener();
+        $suspensions = $this->waitingForSpace;
+        $this->waitingForSpace = [];
+        foreach ($suspensions as $suspension) {
+            $suspension->throw(Exception\ClosedChannelException::forSending());
+        }
+
+        $suspensions = $this->waitingForMessage;
+        $this->waitingForMessage = [];
+        foreach ($suspensions as $suspension) {
+            $suspension->throw(Exception\ClosedChannelException::forReceiving());
         }
     }
 
@@ -157,8 +149,8 @@ final class ChannelState implements ChannelInterface
         $this->messages[] = $message;
         $this->size++;
 
-        foreach ($this->sendListeners as $listener) {
-            $listener();
+        if ($suspension = array_shift($this->waitingForMessage)) {
+            $suspension->resume(null);
         }
     }
 
@@ -181,8 +173,8 @@ final class ChannelState implements ChannelInterface
         $item = array_shift($this->messages);
         $this->size--;
 
-        foreach ($this->receiveListeners as $listener) {
-            $listener();
+        if ($suspension = array_shift($this->waitingForSpace)) {
+            $suspension->resume(null);
         }
 
         return $item;

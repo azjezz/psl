@@ -561,6 +561,7 @@ final class Loader
         'Psl\RandomSequence\Internal\MersenneTwisterTrait',
         'Psl\IO\ReadHandleConvenienceMethodsTrait',
         'Psl\IO\WriteHandleConvenienceMethodsTrait',
+        'Psl\Channel\Internal\ChannelSideTrait',
     ];
 
     public const CLASSES = [
@@ -699,9 +700,12 @@ final class Loader
         'Psl\TCP\ServerOptions',
         'Psl\TCP\Server',
         'Psl\Unix\Server',
-        'Psl\Channel\Internal\ChannelState',
-        'Psl\Channel\Internal\Sender',
-        'Psl\Channel\Internal\Receiver',
+        'Psl\Channel\Internal\BoundedChannelState',
+        'Psl\Channel\Internal\BoundedSender',
+        'Psl\Channel\Internal\BoundedReceiver',
+        'Psl\Channel\Internal\UnboundedChannelState',
+        'Psl\Channel\Internal\UnboundedSender',
+        'Psl\Channel\Internal\UnboundedReceiver',
         'Psl\Channel\Exception\ClosedChannelException',
         'Psl\Channel\Exception\EmptyChannelException',
         'Psl\Channel\Exception\FullChannelException',

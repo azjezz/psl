@@ -15,13 +15,10 @@ namespace Psl\Channel;
  */
 function unbounded(): array
 {
-    /**
-     * @psalm-suppress MissingThrowsDocblock - $capacity is null.
-     */
-    $channel = new Internal\ChannelState();
+    $channel = new Internal\UnboundedChannelState();
 
     return [
-        new Internal\Receiver($channel),
-        new Internal\Sender($channel),
+        new Internal\UnboundedReceiver($channel),
+        new Internal\UnboundedSender($channel),
     ];
 }
