@@ -13,7 +13,7 @@ namespace Psl\Dict;
  * @param iterable<Tk, Tv> $iterable Iterable to take the elements from
  * @param int<0, max> $n Number of elements to take from the start
  *
- * @return array<Tk, Tv>
+ * @return ($iterable is list<Tv> ? list<Tv> : array<Tk, Tv>)
  */
 function take(iterable $iterable, int $n): array
 {
