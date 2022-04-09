@@ -7,6 +7,11 @@ namespace Psl\Dict;
 /**
  * Take the first n elements from an iterable.
  *
+ * Examples:
+ *
+ *      Dict\drop(['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4], 2)
+ *      => Dict('a' => 1, 'b' => 2)
+ *
  * @template Tk of array-key
  * @template Tv
  *

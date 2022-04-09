@@ -45,7 +45,7 @@
 - [sort](./../../src/Psl/Dict/sort.php#L26)
 - [sort_by](./../../src/Psl/Dict/sort_by.php#L26)
 - [sort_by_key](./../../src/Psl/Dict/sort_by_key.php#L26)
-- [take](./../../src/Psl/Dict/take.php#L18)
+- [take](./../../src/Psl/Dict/take.php#L23)
 - [take_while](./../../src/Psl/Dict/take_while.php#L28)
 - [unique](./../../src/Psl/Dict/unique.php#L17)
 - [unique_by](./../../src/Psl/Dict/unique_by.php#L24)

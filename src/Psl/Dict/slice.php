@@ -9,11 +9,11 @@ namespace Psl\Dict;
  *
  * Examples:
  *
- *      Dict\slice([-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5], 5)
- *      => Dict(0, 1, 2, 3, 4, 5)
+ *      Dict\slice(['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4], 2)
+ *      => Dict('c' => 3, 'd' => 4)
  *
- *      Dict\slice([-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5], 5, 3)
- *      => Dict(0, 1, 2)
+ *      Dict\slice(['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4], 1, 2)
+ *      => Dict('b' => 2, 'c' => 3)
  *
  * @template Tk of array-key
  * @template Tv
