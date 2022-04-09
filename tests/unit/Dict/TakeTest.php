@@ -9,12 +9,21 @@ use Psl\Dict;
 
 final class TakeTest extends TestCase
 {
-    public function testTake(): void
+    /**
+     * @dataProvider provideData
+     */
+    public function testTake(array $expected, array $array, int $n): void
     {
-        $result = Dict\take([-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5], 3);
-        static::assertSame([-5, -4, -3], $result);
+        $result = Dict\take($array, $n);
 
-        $result = Dict\take([1, 2], 0);
-        static::assertSame([], $result);
+        static::assertSame($expected, $result);
+    }
+
+    public function provideData(): iterable
+    {
+        yield [[-5, -4, -3], [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5], 3];
+        yield [['a' => 1, 'b' => 2], ['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4], 2];
+        yield [[1, 2], [1, 2], 3];
+        yield [[], [1, 2], 0];
     }
 }
