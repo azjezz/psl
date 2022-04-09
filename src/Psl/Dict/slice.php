@@ -18,7 +18,7 @@ namespace Psl\Dict;
  * @template Tk of array-key
  * @template Tv
  *
- * @param iterable<Tk,Tv> $iterable Iterable to take the slice from
+ * @param iterable<Tk, Tv> $iterable Iterable to take the slice from
  * @param int<0, max> $start Start offset
  * @param null|int<0, max> $length Length (if not specified all remaining values from the array are used)
  *
