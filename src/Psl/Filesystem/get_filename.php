@@ -9,11 +9,11 @@ use function pathinfo;
 use const PATHINFO_FILENAME;
 
 /**
- * Returns trailing name component of path.
+ * Get the last component of $node, excluding extension.
  *
  * @param non-empty-string $node
  *
- * @return non-empty-string the base name of the given path.
+ * @return non-empty-string
  *
  * @pure
  */

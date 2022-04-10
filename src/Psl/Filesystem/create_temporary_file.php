@@ -11,8 +11,8 @@ use Psl\Str;
 /**
  * Create a temporary file.
  *
- * @param non-empty-string|null $directory The directory where the temporary filename will be created.
- *                                         If no specified, `Env\temp_dir()` will be used to retrieve
+ * @param non-empty-string|null $directory The directory where the temporary file will be created.
+ *                                         If none specified, `Env\temp_dir()` will be used to retrieve
  *                                         the system default temporary directory.
  * @param non-empty-string|null $prefix The prefix of the generated temporary filename.
  *

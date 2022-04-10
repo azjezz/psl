@@ -10,7 +10,7 @@ use Psl\Str;
 use function fileatime;
 
 /**
- * Gets last access time of $node.
+ * Get last access time of $node.
  *
  * @param non-empty-string $node
  *

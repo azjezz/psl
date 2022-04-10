@@ -7,7 +7,7 @@ namespace Psl\Filesystem;
 use function pathinfo;
 
 /**
- * Returns the $node extension.
+ * Get the $node extension.
  *
  * @param non-empty-string $node
  *

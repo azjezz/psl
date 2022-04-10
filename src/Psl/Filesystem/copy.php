@@ -10,12 +10,12 @@ use Psl\IO;
 use Psl\Str;
 
 /**
- * Copy $source to $destination and preserve executable permission bits.
+ * Copy a file from $source to $destination and preserve executable permission bits.
  *
  * @param non-empty-string $source
  * @param non-empty-string $destination
  *
- * @throws Exception\RuntimeException If unable to change the group ownership for $filename.
+ * @throws Exception\RuntimeException If unable to copy $source to $destination.
  * @throws Exception\NotFoundException If $source is not found.
  * @throws Exception\NotReadableException If $source is not readable.
  */

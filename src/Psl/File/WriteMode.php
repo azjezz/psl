@@ -11,7 +11,7 @@ enum WriteMode: string
      * the file.
      *
      * If the file exits, it is not truncated (as with `TRUNCATE`), and the call
-     * succeeds (unlike `EXCLUSIVE_CREATE`).
+     * succeeds (unlike `MUST_CREATE`).
      */
     case OPEN_OR_CREATE = 'cb';
 

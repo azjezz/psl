@@ -10,13 +10,15 @@ use Psl\Str;
 use function filectime;
 
 /**
- * Get the last time the inode of $node
- * was changed ( e.g: permission change, ownership change .. etc ).
+ * Get the last time the inode of $node was changed
+ * (e.g. permission change or ownership change).
  *
  * @param non-empty-string $node
  *
  * @throws Exception\NotFoundException If $node is not found.
  * @throws Exception\RuntimeException In case of an error.
+ *
+ * @return int The last inode modification time as a Unix timestamp.
  */
 function get_change_time(string $node): int
 {

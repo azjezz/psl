@@ -15,7 +15,7 @@ use function link;
  * @param non-empty-string $source The file to create a hard link for.
  * @param non-empty-string $destination
  *
- * @throws Exception\RuntimeException If unable to create a hard file.
+ * @throws Exception\RuntimeException If unable to create the hard link.
  * @throws Exception\NotFoundException If $source does not exist.
  * @throws Exception\NotFileException If $source is not a file.
  * @throws Exception\NotReadableException If $destination is a non-empty directory, and is non-readable {@see delete_directory()}.

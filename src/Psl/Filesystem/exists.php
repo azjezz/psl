@@ -9,10 +9,7 @@ use function file_exists;
 /**
  * Check whether $node exists.
  *
- * @param string $node Path to the file.
- *
- * If $node is a relative filename, it will be checked relative to
- * the current working directory.
+ * @param string $node Path, absolute or relative to the current working directory.
  *
  * @return bool true if $node exists, false otherwise.
  *

@@ -16,6 +16,8 @@ use function filemtime;
  *
  * @throws Exception\NotFoundException If $node is not found.
  * @throws Exception\RuntimeException In case of an error.
+ *
+ * @return int The last content modification time as a Unix timestamp.
  */
 function get_modification_time(string $node): int
 {

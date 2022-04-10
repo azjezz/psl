@@ -10,9 +10,10 @@ use Psl\Str;
 use function chmod;
 
 /**
- * Changes mode permission of $node.
+ * Change permission mode of $node.
  *
  * @param non-empty-string $node
+ * @param int<0, 511> $permissions Permissions as an octal number, e.g. `0755`.
  *
  * @throws Exception\RuntimeException If unable to change the mode for the given $node.
  * @throws Exception\NotFoundException If $node does not exist.

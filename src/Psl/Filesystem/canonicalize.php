@@ -8,9 +8,9 @@ use function realpath;
 
 /**
  * Returns canonicalized absolute pathname.
+ * The resulting path will have no symbolic links, '/./' or '/../' components.
  *
- * @return non-empty-string|null The canonicalized absolute pathname on success.
- *                               The resulting path will have no symbolic link, '/./' or '/../' components.
+ * @return non-empty-string|null
  */
 function canonicalize(string $path): ?string
 {
