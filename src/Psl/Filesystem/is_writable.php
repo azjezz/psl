@@ -7,14 +7,9 @@ namespace Psl\Filesystem;
 use function is_writable as php_is_writable;
 
 /**
- * Check whether $node is writable.
+ * Check whether $node exists and is writable.
  *
- * If $node is a relative filename, it will be checked relative to
- * the current working directory.
- *
- * @param non-empty-string $node
- *
- * @return bool true if the file or directory specified by $node exists and is writable, false otherwise.
+ * @param non-empty-string $node Path, absolute or relative to the current working directory.
  */
 function is_writable(string $node): bool
 {

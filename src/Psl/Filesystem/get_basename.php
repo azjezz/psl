@@ -7,16 +7,16 @@ namespace Psl\Filesystem;
 use function basename as php_basename;
 
 /**
- * Returns trailing name component of path.
+ * Get the last component of $path.
  *
- * On Windows, both forward slash `/` and back slash `\` are used
- * as directory separator character.
+ * On Windows, both forward slash `/` and backslash `\` are used
+ * as a directory separator character.
  *
  * In other environments, it is the forward slash `/`.
  *
- * @param non-empty-string|null $suffix If the filename ends in a suffix, this will also be cut off.
+ * @param non-empty-string|null $suffix If the filename ends in a suffix, it will also be cut off.
  *
- * @return non-empty-string the base name of the given path.
+ * @return non-empty-string
  *
  * @pure
  */

@@ -7,16 +7,10 @@ namespace Psl\Filesystem;
 use function is_dir;
 
 /**
- * Check whether $node is a directory.
+ * Check whether $node exists and is a directory.
  *
- * If $node is a relative filename, it will be checked relative to
- * the current working directory.
- *
- * If $node is a symbolic or hard link then the link will be resolved and checked.
- *
- * @param non-empty-string $node
- *
- * @return bool true if $node exists and is a directory, false otherwise.
+ * @param non-empty-string $node Path, absolute or relative to the current working directory.
+ *                               If it is a link, it will be resolved and checked.
  */
 function is_directory(string $node): bool
 {

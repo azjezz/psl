@@ -10,7 +10,7 @@ use Psl\Str;
 use function fileinode;
 
 /**
- * Get the last time the content of $node was modified.
+ * Get inode number of $node.
  *
  * @param non-empty-string $node
  *

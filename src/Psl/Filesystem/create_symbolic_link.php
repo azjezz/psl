@@ -12,7 +12,7 @@ use function symlink;
 /**
  * Create a symbolic link for $source.
  *
- * @param non-empty-string $source The file to create a hard link for.
+ * @param non-empty-string $source The file to create a symbolic link for.
  * @param non-empty-string $destination
  *
  * @throws Exception\RuntimeException If unable to create the symbolic link.

@@ -7,14 +7,10 @@ namespace Psl\Filesystem;
 use function is_executable as php_is_executable;
 
 /**
- * Check whether $node is executable.
+ * Check whether $node exists and is an executable file
+ * or a directory with `execute` permission.
  *
- * If $node is a relative filename, it will be checked relative to
- * the current working directory.
- *
- * @param non-empty-string $node
- *
- * @return bool true if the file or directory specified by $node exists and is executable, false otherwise.
+ * @param non-empty-string $node Path, absolute or relative to the current working directory.
  */
 function is_executable(string $node): bool
 {

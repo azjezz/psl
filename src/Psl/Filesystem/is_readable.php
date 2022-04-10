@@ -7,14 +7,9 @@ namespace Psl\Filesystem;
 use function is_readable as php_is_readable;
 
 /**
- * Check whether $node is readable.
+ * Check whether $node exists and is readable.
  *
- * If $node is a relative filename, it will be checked relative to
- * the current working directory.
- *
- * @param non-empty-string $node
- *
- * @return bool true if the file or directory specified by $node exists and is readable, false otherwise.
+ * @param non-empty-string $node Path, absolute or relative to the current working directory.
  */
 function is_readable(string $node): bool
 {

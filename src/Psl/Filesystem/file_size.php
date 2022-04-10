@@ -8,7 +8,7 @@ use Psl\Internal;
 use Psl\Str;
 
 /**
- * Ge the size of $file.
+ * Get the size of $file.
  *
  * @param non-empty-string $file
  *
