@@ -11,7 +11,7 @@ use function pathinfo;
  *
  * @param non-empty-string $node
  *
- * @return non-empty-string|null the $node extensions, or null if none.
+ * @return non-empty-string|null The $node extensions, or null if none.
  *
  * @pure
  */
