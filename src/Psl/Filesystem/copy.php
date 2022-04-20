@@ -10,7 +10,7 @@ use Psl\IO;
 use Psl\Str;
 
 /**
- * Change the group ownership of $filename.
+ * Copy $source to $destination and preserve executable permission bits.
  *
  * @param non-empty-string $source
  * @param non-empty-string $destination
