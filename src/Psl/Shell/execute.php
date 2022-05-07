@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Shell;
 
-use Psl\Async;
 use Psl\Dict;
 use Psl\Env;
 use Psl\Filesystem;
@@ -156,25 +155,15 @@ function execute(
     $stderr = new IO\CloseReadStreamHandle($pipes[2]);
 
     try {
-        [$stdout_content, $stderr_content] = Async\concurrently([
-            static fn(): string => $stdout->readAll(timeout: $timeout),
-            static fn(): string => $stderr->readAll(timeout: $timeout),
-        ]);
-        // @codeCoverageIgnoreStart
-    } catch (Async\Exception\CompositeException $exception) {
-        $reasons = $exception->getReasons();
-        if ($reasons[0] instanceof IO\Exception\TimeoutException) {
-            throw new Exception\TimeoutException('reached timeout while the process output is still not readable.', 0, $reasons[0]);
+        $result = '';
+        /** @psalm-suppress MissingThrowsDocblock */
+        foreach (IO\streaming([1 => $stdout, 2 => $stderr], $timeout) as $type => $chunk) {
+            if ($chunk) {
+                $result .= pack('C1N1', $type, Str\Byte\length($chunk)) . $chunk;
+            }
         }
-
-        if ($reasons[1] instanceof IO\Exception\TimeoutException) {
-            throw new Exception\TimeoutException('reached timeout while the process output is still not readable.', 0, $reasons[1]);
-        }
-
-        throw new Exception\RuntimeException('Failed to reach process output.', 0, $exception ?? null);
     } catch (IO\Exception\TimeoutException $previous) {
         throw new Exception\TimeoutException('reached timeout while the process output is still not readable.', 0, $previous);
-        // @codeCoverageIgnoreEnd
     } finally {
         /** @psalm-suppress MissingThrowsDocblock */
         $stdout->close();
@@ -185,29 +174,18 @@ function execute(
     }
 
     if ($code !== 0) {
+        /** @psalm-suppress MissingThrowsDocblock */
+        [$stdout_content, $stderr_content] = namespace\unpack($result);
+
         throw new Exception\FailedExecutionException($commandline, $stdout_content, $stderr_content, $code);
     }
 
     if (ErrorOutputBehavior::Packed === $error_output_behavior) {
-        $result = '';
-        $stdout_length = Str\Byte\length($stdout_content);
-        $stderr_length = Str\Byte\length($stderr_content);
-
-        if ($stdout_length) {
-            $stdout_header = pack('C1N1', 1, $stdout_length);
-
-            $result .= $stdout_header . $stdout_content;
-        }
-
-        if ($stderr_length) {
-            $stderr_header = pack('C1N1', 2, $stderr_length);
-
-            $result .= $stderr_header . $stderr_content;
-        }
-
         return $result;
     }
 
+    /** @psalm-suppress MissingThrowsDocblock */
+    [$stdout_content, $stderr_content] = namespace\unpack($result);
     return match ($error_output_behavior) {
         ErrorOutputBehavior::Prepend => $stderr_content . $stdout_content,
         ErrorOutputBehavior::Append => $stdout_content . $stderr_content,

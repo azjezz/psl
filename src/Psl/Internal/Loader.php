@@ -468,6 +468,7 @@ final class Loader
         'Psl\Unix\connect',
         'Psl\Channel\bounded',
         'Psl\Channel\unbounded',
+        'Psl\IO\streaming',
         'Psl\IO\write',
         'Psl\IO\write_line',
         'Psl\IO\write_error',
