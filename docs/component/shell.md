@@ -13,7 +13,8 @@
 #### `Functions`
 
 - [execute](./../../src/Psl/Shell/execute.php#L41)
-- [unpack](./../../src/Psl/Shell/unpack.php#L20)
+- [stream_unpack](./../../src/Psl/Shell/stream_unpack.php#L30)
+- [unpack](./../../src/Psl/Shell/unpack.php#L16)
 
 #### `Enums`
 

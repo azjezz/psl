@@ -71,3 +71,5 @@
 * **BC** - `$escape_arguments` argument of `Shell\execute` function has been removed.
 * introduced a new `Psl\Shell\ErrorOutputBehavior` enum
 * added a new `$error_output_behavior` argument to `Shell\execute` function, which can be used to return the command error output content, as well as the standard output content.
+* introduced a new `Psl\Shell\unpack` function to unpack packed result of `Shell\execute` ( see `Psl\Shell\ErrorOutputBehavior::Packed` ).
+* introduced a new `Psl\Shell\stream_unpack` function to unpack packed result of `Shell\execute` chunk by chunk, maintaing order ( see `Psl\Shell\ErrorOutputBehavior::Packed` ).

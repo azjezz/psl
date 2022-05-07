@@ -379,6 +379,7 @@ final class Loader
         'Psl\Encoding\Hex\decode',
         'Psl\Shell\execute',
         'Psl\Shell\unpack',
+        'Psl\Shell\stream_unpack',
         'Psl\Shell\Internal\escape_argument',
         'Psl\Html\encode',
         'Psl\Html\encode_special_characters',
