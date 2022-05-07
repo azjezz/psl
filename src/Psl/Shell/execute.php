@@ -16,6 +16,7 @@ use Psl\Str;
 use Psl\Vec;
 
 use function is_resource;
+use function pack;
 use function proc_close;
 use function proc_open;
 use function strpbrk;
@@ -30,7 +31,6 @@ use function strpbrk;
  *                                                 use the default value ( the current directory )
  * @param array<string, string> $environment A dict with the environment variables for the command that
  *                                           will be run.
- * @param bool $escape_arguments If set to true ( default ), all $arguments will be escaped using `escape_argument`.
  *
  * @psalm-taint-sink shell $command
  *
@@ -44,23 +44,10 @@ function execute(
     array   $arguments = [],
     ?string $working_directory = null,
     array   $environment = [],
-    bool    $escape_arguments = true,
+    ErrorOutputBehavior $error_output_behavior = ErrorOutputBehavior::Discard,
     ?float  $timeout = null
 ): string {
-    if ($escape_arguments) {
-        $arguments = Vec\map(
-            $arguments,
-            /**
-             * @param string $argument
-             *
-             * @return string
-             *
-             * @pure
-             */
-            static fn(string $argument): string => escape_argument($argument)
-        );
-    }
-
+    $arguments = Vec\map($arguments, Internal\escape_argument(...));
     $commandline = Str\join([$command, ...$arguments], ' ');
 
     /** @psalm-suppress MissingThrowsDocblock - safe ( $offset is within-of-bounds ) */
@@ -201,5 +188,30 @@ function execute(
         throw new Exception\FailedExecutionException($commandline, $stdout_content, $stderr_content, $code);
     }
 
-    return $stdout_content;
+    if (ErrorOutputBehavior::Packed === $error_output_behavior) {
+        $result = '';
+        $stdout_length = Str\Byte\length($stdout_content);
+        $stderr_length = Str\Byte\length($stderr_content);
+
+        if ($stdout_length) {
+            $stdout_header = pack('C1N1', 1, $stdout_length);
+
+            $result .= $stdout_header . $stdout_content;
+        }
+
+        if ($stderr_length) {
+            $stderr_header = pack('C1N1', 2, $stderr_length);
+
+            $result .= $stderr_header . $stderr_content;
+        }
+
+        return $result;
+    }
+
+    return match ($error_output_behavior) {
+        ErrorOutputBehavior::Prepend => $stderr_content . $stdout_content,
+        ErrorOutputBehavior::Append => $stdout_content . $stderr_content,
+        ErrorOutputBehavior::Replace => $stderr_content,
+        ErrorOutputBehavior::Packed, ErrorOutputBehavior::Discard => $stdout_content,
+    };
 }

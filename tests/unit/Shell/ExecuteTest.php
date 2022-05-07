@@ -91,4 +91,42 @@ final class ExecuteTest extends TestCase
 
         Shell\execute(PHP_BINARY, ['-r', 'echo getcwd();'], $dir);
     }
+
+    public function testErrorOutputIsDiscarded(): void
+    {
+        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");']);
+
+        static::assertSame('hello', $result);
+    }
+
+    public function testErrorOutputIsAppended(): void
+    {
+        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'], error_output_behavior: Shell\ErrorOutputBehavior::Append);
+
+        static::assertSame('hello world', $result);
+    }
+
+    public function testErrorOutputIsPrepended(): void
+    {
+        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'], error_output_behavior: Shell\ErrorOutputBehavior::Prepend);
+
+        static::assertSame(' worldhello', $result);
+    }
+
+    public function testErrorOutputIsReplacingStandardOutput(): void
+    {
+        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'], error_output_behavior: Shell\ErrorOutputBehavior::Replace);
+
+        static::assertSame(' world', $result);
+    }
+
+    public function testErrorOutputIsPacked(): void
+    {
+        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'], error_output_behavior: Shell\ErrorOutputBehavior::Packed);
+
+        [$stdout, $stderr] = Shell\unpack($result);
+
+        static::assertSame('hello', $stdout);
+        static::assertSame(' world', $stderr);
+    }
 }

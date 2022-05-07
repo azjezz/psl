@@ -12,7 +12,11 @@
 
 #### `Functions`
 
-- [escape_argument](./../../src/Psl/Shell/escape_argument.php#L17)
 - [execute](./../../src/Psl/Shell/execute.php#L42)
+- [unpack](./../../src/Psl/Shell/unpack.php#L20)
+
+#### `Enums`
+
+- [ErrorOutputBehavior](./../../src/Psl/Shell/ErrorOutputBehavior.php#L7)
 
 
