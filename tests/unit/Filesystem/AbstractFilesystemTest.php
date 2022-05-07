@@ -7,6 +7,7 @@ namespace Psl\Tests\Unit\Filesystem;
 use PHPUnit\Framework\TestCase;
 use Psl\Env;
 use Psl\Filesystem;
+use Psl\OS;
 use Psl\Str;
 use Psl\Type;
 
@@ -19,6 +20,10 @@ abstract class AbstractFilesystemTest extends TestCase
 
     protected function setUp(): void
     {
+        if (OS\is_windows() || OS\is_darwin()) {
+            static::markTestSkipped('Filesystem tests are only executed on linux.');
+        }
+
         $this->cacheDirectory = Type\string()->assert(Filesystem\canonicalize(Str\join([
             __DIR__, '..', '.cache'
         ], Filesystem\SEPARATOR)));

@@ -6,7 +6,6 @@ namespace Psl\Tests\Unit\Filesystem;
 
 use Psl\Env;
 use Psl\Filesystem;
-use Psl\OS;
 use Psl\Str;
 use Psl\Vec;
 
@@ -57,11 +56,6 @@ final class DirectoryTest extends AbstractFilesystemTest
 
     public function testReadDirectoryThrowsIfNotReadable(): void
     {
-        if (OS\is_windows()) {
-            // executable bit on windows.
-            static::markTestSkipped('Test can only be executed under *nix OS.');
-        }
-
         Filesystem\change_permissions($this->directory, 0077);
 
         $this->expectException(Filesystem\Exception\NotReadableException::class);

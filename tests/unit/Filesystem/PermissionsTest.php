@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Filesystem;
 
 use Psl\Filesystem;
-use Psl\OS;
 use Psl\Str;
 
 final class PermissionsTest extends AbstractFilesystemTest
@@ -14,11 +13,6 @@ final class PermissionsTest extends AbstractFilesystemTest
 
     public function testChangePermissions(): void
     {
-        if (OS\is_windows()) {
-            // executable bit on windows.
-            static::markTestSkipped('Test can only be executed under *nix OS.');
-        }
-
         $filename = Str\join([$this->directory, 'foo.txt'], Filesystem\SEPARATOR);
 
         Filesystem\create_file($filename);

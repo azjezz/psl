@@ -6,7 +6,6 @@ namespace Psl\Tests\Unit\Filesystem;
 
 use Psl\File;
 use Psl\Filesystem;
-use Psl\OS;
 use Psl\Str;
 
 final class CopyTest extends AbstractFilesystemTest
@@ -44,10 +43,6 @@ final class CopyTest extends AbstractFilesystemTest
 
     public function testCopyExecutableBits(): void
     {
-        if (OS\is_windows()) {
-            static::markTestSkipped('Test can only be executed under *nix OS.');
-        }
-
         $shell_file = Str\join([$this->directory, 'hello.sh'], Filesystem\SEPARATOR);
 
         Filesystem\create_file($shell_file);

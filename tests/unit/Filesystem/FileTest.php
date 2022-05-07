@@ -6,7 +6,6 @@ namespace Psl\Tests\Unit\Filesystem;
 
 use Psl\Env;
 use Psl\Filesystem;
-use Psl\OS;
 use Psl\Str;
 
 use function time;
@@ -173,10 +172,6 @@ final class FileTest extends AbstractFilesystemTest
 
     public function testFileSizeThrowsForNonReadableFile(): void
     {
-        if (OS\is_windows()) {
-            static::markTestSkipped('Test can only be executed under *nix OS.');
-        }
-
         $filename = Str\join([$this->directory, 'non-readable.txt'], Filesystem\SEPARATOR);
         Filesystem\create_file($filename);
         $permissions = Filesystem\get_permissions($filename) & 0777;
@@ -196,11 +191,6 @@ final class FileTest extends AbstractFilesystemTest
 
     public function testCopyThrowsForNonReadableFile(): void
     {
-        if (OS\is_windows()) {
-            // executable bit on windows.
-            static::markTestSkipped('Test can only be executed under *nix OS.');
-        }
-
         $file = Str\join([$this->directory, 'non-readable.txt'], Filesystem\SEPARATOR);
         Filesystem\create_file($file);
         $permissions = Filesystem\get_permissions($file) & 0777;
