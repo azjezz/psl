@@ -16,7 +16,7 @@
         "ext-mbstring": "*",
         "ext-sodium": "*",
         "ext-intl": "*",
-        "revolt/event-loop": "dev-main"
+        "revolt/event-loop": "^0.2.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.6.2",

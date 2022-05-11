@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e88aeadf472a323f1ca16cbdc638bdee",
+    "content-hash": "2e8184849fe46c476f16b8b37c65df92",
     "packages": [
         {
             "name": "revolt/event-loop",
-            "version": "dev-main",
+            "version": "v0.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/revoltphp/event-loop.git",
-                "reference": "13ca2bac4d4470f2ac4530565c74fc719370dad9"
+                "reference": "ae8162e3de46ab754cdf0b3fc39ea24c56df47b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/revoltphp/event-loop/zipball/13ca2bac4d4470f2ac4530565c74fc719370dad9",
-                "reference": "13ca2bac4d4470f2ac4530565c74fc719370dad9",
+                "url": "https://api.github.com/repos/revoltphp/event-loop/zipball/ae8162e3de46ab754cdf0b3fc39ea24c56df47b1",
+                "reference": "ae8162e3de46ab754cdf0b3fc39ea24c56df47b1",
                 "shasum": ""
             },
             "require": {
@@ -29,7 +29,6 @@
                 "phpunit/phpunit": "^9",
                 "psalm/phar": "^4.7"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -75,9 +74,9 @@
             ],
             "support": {
                 "issues": "https://github.com/revoltphp/event-loop/issues",
-                "source": "https://github.com/revoltphp/event-loop/tree/main"
+                "source": "https://github.com/revoltphp/event-loop/tree/v0.2.4"
             },
-            "time": "2022-02-24T04:29:09+00:00"
+            "time": "2022-03-04T20:47:22+00:00"
         }
     ],
     "packages-dev": [
@@ -6613,7 +6612,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "revolt/event-loop": 20,
         "roave/infection-static-analysis-plugin": 20
     },
     "prefer-stable": false,
@@ -6627,5 +6625,5 @@
         "ext-intl": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
