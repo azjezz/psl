@@ -36,6 +36,14 @@ final class PathTest extends TestCase
         ];
 
         yield [
+            '/home/azjezz/Projects/psl/src/bootstrap.',
+            '/home/azjezz/Projects/psl/src',
+            'bootstrap.',
+            'bootstrap',
+            null
+        ];
+
+        yield [
             '/home/azjezz/Projects/psl/src/Psl',
             '/home/azjezz/Projects/psl/src',
             'Psl',

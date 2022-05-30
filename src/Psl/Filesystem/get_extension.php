@@ -17,6 +17,7 @@ use function pathinfo;
  */
 function get_extension(string $node): ?string
 {
-    /** @var non-empty-string|null */
-    return pathinfo($node)['extension'] ?? null;
+    $extension = pathinfo($node)['extension'] ?? null;
+
+    return $extension !== '' ? $extension : null;
 }
