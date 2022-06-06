@@ -28,7 +28,7 @@ final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteH
             throw Exception\NotFileException::for($file);
         }
 
-        $open_or_create = $write_mode === WriteMode::OPEN_OR_CREATE;
+        $open_or_create = $write_mode === WriteMode::OPEN_OR_CREATE || $write_mode === WriteMode::TRUNCATE;
         $must_create = $write_mode === WriteMode::MUST_CREATE;
         if ($must_create && $is_file) {
             throw Exception\AlreadyCreatedException::for($file);

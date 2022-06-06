@@ -36,6 +36,21 @@ final class ReadWriteTest extends AbstractFilesystemTest
         Filesystem\delete_file($file);
     }
 
+    public function testWriteFileWithTruncateWriteModeCreatesFile(): void
+    {
+        $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
+
+        static::assertFileDoesNotExist($file);
+
+        File\write($file, 'Hello!', File\WriteMode::TRUNCATE);
+
+        static::assertFileExists($file);
+
+        static::assertStringEqualsFile($file, 'Hello!');
+
+        Filesystem\delete_file($file);
+    }
+
     public function testWriteFileClearsFileStat(): void
     {
         $file = Filesystem\create_temporary_file();
