@@ -61,6 +61,10 @@ composer require azjezz/psl
 
 Please refer to the [`php-standard-library/psalm-plugin`](https://github.com/php-standard-library/psalm-plugin) repository.
 
+### PHPStan Integration
+
+Please refer to the [`php-standard-library/phpstan-extension`](https://github.com/php-standard-library/phpstan-extension) repository.
+
 ## Documentation
 
 You can read through the API documentation in [`docs/`](./docs) directory.
