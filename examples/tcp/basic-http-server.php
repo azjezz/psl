@@ -7,8 +7,10 @@ namespace Psl\Example\TCP;
 use Psl\Async;
 use Psl\Html;
 use Psl\IO;
+use Psl\Network;
 use Psl\Str;
 use Psl\TCP;
+use Psl\Iter;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
@@ -27,21 +29,22 @@ HTML;
 
 $server = TCP\Server::create('localhost', 3030, TCP\ServerOptions::create(idleConnections: 1024));
 
-Async\Scheduler::unreference(Async\Scheduler::onSignal(SIGINT, $server->close(...)));
+Async\Scheduler::onSignal(SIGINT, $server->close(...));
 
 IO\write_error_line('Server is listening on http://localhost:3030');
 IO\write_error_line('Click Ctrl+C to stop the server.');
 
-foreach ($server->incoming() as $connection) {
-    try {
+Iter\apply($server->incoming(), static function (Network\StreamSocketInterface $connection): void {
+    Async\run(static function() use($connection): void {
         $request = $connection->read();
-        $connection->write("HTTP/1.1 200 OK\nConnection: close\nContent-Type: text/html; charset=utf-8\n\n");
-        $connection->write(Str\format(RESPONSE_FORMAT, Html\encode_special_characters($request)));
+
+        $connection->writeAll("HTTP/1.1 200 OK\nConnection: close\nContent-Type: text/html; charset=utf-8\n\n");
+        $connection->writeAll(Str\format(RESPONSE_FORMAT, Html\encode_special_characters($request)));
         $connection->close();
-    } catch (IO\Exception\ExceptionInterface $e) {
-        IO\write_error_line('Error: %s.', $e->getMessage());
-    }
-}
+    })->catch(
+        static fn(IO\Exception\ExceptionInterface $e) => IO\write_error_line('Error: %s.', $e->getMessage())
+    )->ignore();
+});
 
 IO\write_error_line('');
 IO\write_error_line('Goodbye 👋');
