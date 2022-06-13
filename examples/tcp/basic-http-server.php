@@ -7,10 +7,10 @@ namespace Psl\Example\TCP;
 use Psl\Async;
 use Psl\Html;
 use Psl\IO;
+use Psl\Iter;
 use Psl\Network;
 use Psl\Str;
 use Psl\TCP;
-use Psl\Iter;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
