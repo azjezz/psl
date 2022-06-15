@@ -9,7 +9,7 @@ namespace Psl\Dict;
  *
  * Examples:
  *
- *      Dict\drop(['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4], 2)
+ *      Dict\take(['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4], 2)
  *      => Dict('a' => 1, 'b' => 2)
  *
  * @template Tk of array-key
