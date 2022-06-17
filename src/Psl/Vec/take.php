@@ -9,7 +9,7 @@ namespace Psl\Vec;
  *
  * Examples:
  *
- *      Vec\drop([1, 2, 3, 4], 2)
+ *      Vec\take([1, 2, 3, 4], 2)
  *      => Vec(1, 2)
  *
  * @template T
