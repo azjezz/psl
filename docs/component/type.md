@@ -25,6 +25,8 @@
 - [literal_scalar](./../../src/Psl/Type/literal_scalar.php#L14)
 - [map](./../../src/Psl/Type/map.php#L18)
 - [mixed](./../../src/Psl/Type/mixed.php#L10)
+- [mixed_dict](./../../src/Psl/Type/mixed_dict.php#L10)
+- [mixed_vec](./../../src/Psl/Type/mixed_vec.php#L10)
 - [mutable_map](./../../src/Psl/Type/mutable_map.php#L18)
 - [mutable_vector](./../../src/Psl/Type/mutable_vector.php#L16)
 - [non_empty_dict](./../../src/Psl/Type/non_empty_dict.php#L16)
