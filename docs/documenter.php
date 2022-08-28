@@ -156,7 +156,7 @@ function get_component_members(string $component): array
 {
     /** @var (callable(list<string>): list<string>) $filter */
     $filter = static fn(array $list) => Vec\sort(Vec\filter(
-        $list,
+        Vec\keys($list),
         static function (string $member) use ($component): bool {
 
             if (!Str\starts_with_ci($member, $component . '\\')) {
