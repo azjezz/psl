@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": "~8.1.0",
+        "php": "~8.1.0 || ~8.2.0",
         "ext-bcmath": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
@@ -26,7 +26,7 @@
         "vimeo/psalm": "^4.21.0",
         "php-standard-library/psalm-plugin": "^2.0.2",
         "php-coveralls/php-coveralls": "^2.5.2",
-        "roave/infection-static-analysis-plugin": "1.13.x-dev"
+        "roave/infection-static-analysis-plugin": "^1.23.0"
     },
     "autoload": {
         "psr-4": {
@@ -44,6 +44,11 @@
             "Psl\\Tests\\Fixture\\": "tests/fixture"
         }
     },
+    "config": {
+        "allow-plugins": {
+            "infection/extension-installer": true
+        }
+    },
     "extra": {
         "thanks": {
             "name": "hhvm/hsl",
@@ -52,10 +57,5 @@
     },
     "suggest": {
         "php-standard-library/psalm-plugin": "Psalm integration"
-    },
-    "config": {
-        "allow-plugins": {
-            "infection/extension-installer": false
-        }
     }
 }

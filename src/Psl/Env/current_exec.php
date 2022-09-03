@@ -12,7 +12,7 @@ use Psl\Filesystem;
 function current_exec(): string
 {
     /** @var non-empty-string $executable */
-    $executable = (string) Filesystem\canonicalize((string) $_SERVER['SCRIPT_NAME']);
+    $executable = (string) Filesystem\canonicalize($_SERVER['SCRIPT_NAME'] ?? '');
     // @codeCoverageIgnoreStart
     if (Filesystem\is_symbolic_link($executable)) {
         /** @psalm-suppress MissingThrowsDocblock */

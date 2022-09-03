@@ -87,6 +87,8 @@ final class Scheduler
     /**
      * Queue a microtask.
      *
+     * @param Closure(): void $callback The callback to queue for execution.
+     *
      * @see EventLoop::queue()
      */
     public static function queue(Closure $callback): void
