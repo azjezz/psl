@@ -17,17 +17,17 @@ final class ParallelTest extends TestCase
 
         Async\concurrently([
             static function () use ($spy): void {
-                Async\sleep(0.003);
+                Async\sleep(0.03);
 
                 $spy->value .= '1';
             },
             static function () use ($spy): void {
-                Async\sleep(0.001);
+                Async\sleep(0.01);
 
                 $spy->value .= '2';
             },
             static function () use ($spy): void {
-                Async\sleep(0.001);
+                Async\sleep(0.01);
 
                 $spy->value .= '3';
             },

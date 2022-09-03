@@ -11,6 +11,7 @@
     ],
     "require": {
         "php": "~8.1.0",
+        "php": "~8.1.0 || ~8.2.0",
         "ext-bcmath": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
@@ -42,6 +43,11 @@
             "Psl\\Tests\\StaticAnalysis\\": "tests/static-analysis",
             "Psl\\Tests\\Unit\\": "tests/unit",
             "Psl\\Tests\\Fixture\\": "tests/fixture"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "infection/extension-installer": true
         }
     },
     "extra": {
