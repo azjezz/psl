@@ -8,6 +8,7 @@ use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
+use function array_is_list;
 use function is_array;
 use function is_iterable;
 
@@ -33,21 +34,14 @@ final class VecType extends Type\Type
      */
     public function matches(mixed $value): bool
     {
-        if (!is_array($value)) {
+        if (!is_array($value) || !array_is_list($value)) {
             return false;
         }
 
-        $index = 0;
-        foreach ($value as $k => $v) {
-            if ($index !== $k) {
-                return false;
-            }
-
+        foreach ($value as $v) {
             if (!$this->value_type->matches($v)) {
                 return false;
             }
-
-            $index++;
         }
 
         return true;
@@ -92,7 +86,7 @@ final class VecType extends Type\Type
      */
     public function assert(mixed $value): array
     {
-        if (! is_array($value)) {
+        if (! is_array($value) || !array_is_list($value)) {
             throw AssertException::withValue($value, $this->toString(), $this->getTrace());
         }
 
@@ -103,18 +97,11 @@ final class VecType extends Type\Type
         );
 
         $result = [];
-        $index = 0;
 
         /**
-         * @var int $k
          * @var Tv $v
          */
-        foreach ($value as $k => $v) {
-            if ($index !== $k) {
-                throw AssertException::withValue($value, $this->toString(), $this->getTrace());
-            }
-
-            $index++;
+        foreach ($value as $v) {
             $result[] = $value_type->assert($v);
         }
 
