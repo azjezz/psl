@@ -16,8 +16,8 @@
     "logs": {
         "text": "php://stderr",
         "github": true,
-        "badge": {
-            "branch": "/^\\d+\\.\\d+\\.x$/"
+        "stryker": {
+            "report": "/^\\d+\\.\\d+\\.x$/"
         }
     },
     "timeout": 10,
