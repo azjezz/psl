@@ -11,7 +11,6 @@ use function sys_get_temp_dir;
  *
  * @note On windows, we can't count on the environment variables "TEMP" or "TMP",
  *      and so must make the Win32 API call to get the default directory for temporary files.
- *
  * @note The return value of this function can be overridden using the sys_temp_dir ini directive.
  *
  * @see https://www.php.net/manual/en/function.sys-get-temp-dir.php

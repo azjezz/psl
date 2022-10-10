@@ -91,6 +91,7 @@ function test_invalid_input_type(): void
 
 /**
  * @throws InvariantViolationException
+ *
  * @psalm-suppress UnusedClosureParam, RedundantCondition
  */
 function test_output_type_is_known(): void

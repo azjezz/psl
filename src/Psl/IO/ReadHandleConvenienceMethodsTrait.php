@@ -52,6 +52,7 @@ trait ReadHandleConvenienceMethodsTrait
             $chunk_size = $to_read;
             /**
              * @var positive-int|null $chunk_size
+             *
              * @psalm-suppress UnnecessaryVarAnnotation
              */
             $chunk = $this->read($chunk_size, $timer->getRemaining());

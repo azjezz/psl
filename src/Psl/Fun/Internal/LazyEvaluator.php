@@ -8,6 +8,7 @@ use Closure;
 
 /**
  * @internal
+ *
  * @template T
  */
 final class LazyEvaluator
