@@ -44,7 +44,9 @@ abstract class GenericTypeBench
      */
     abstract public function provideHappyPathAssertion(): array;
 
-    /** @param array{type: BenchmarkedType, value: mixed} $input */
+    /**
+     * @param array{type: BenchmarkedType, value: mixed} $input
+     */
     #[ParamProviders('provideHappyPathMatches')]
     final public function benchMatch(array $input): bool
     {
