@@ -22,6 +22,6 @@
 - [set_current_dir](./../../src/Psl/Env/set_current_dir.php#L16)
 - [set_var](./../../src/Psl/Env/set_var.php#L20)
 - [split_paths](./../../src/Psl/Env/split_paths.php#L16)
-- [temp_dir](./../../src/Psl/Env/temp_dir.php#L22)
+- [temp_dir](./../../src/Psl/Env/temp_dir.php#L21)
 
 
