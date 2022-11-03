@@ -49,7 +49,7 @@ final class FloatType extends Type\Type
                     return (float)$str;
                 }
 
-                if (1 === preg_match("/^-?(?:\\d*\\.)?\\d+(?:[eE]\\d+)?$/", $str)) {
+                if (1 === preg_match("/^[+-]?(\d+([.]\d*)?([eE][+-]?\d+)?|[.]\d+([eE][+-]?\d+)?)$/", $str)) {
                     return (float)$str;
                 }
             }

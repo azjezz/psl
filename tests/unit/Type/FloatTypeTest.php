@@ -17,6 +17,8 @@ final class FloatTypeTest extends TypeTest
     public function getValidCoercions(): iterable
     {
         yield [123, 123.0];
+        yield ['+0', 0.0];
+        yield [+0, 0.0];
         yield [0, 0.0];
         yield ['0', 0.0];
         yield ['123', 123.0];
@@ -24,7 +26,10 @@ final class FloatTypeTest extends TypeTest
         yield ['1e2', 1e2];
         yield [$this->stringable('1e2'), 1e2];
         yield ['1.23e45', 1.23e45];
+        yield ['1.23e-45', 1.23e-45];
+        yield ['1.23e+45', 1.23e+45];
         yield ['.23', .23];
+        yield ['3.', 3.0];
         yield [$this->stringable('1.23'), 1.23];
         yield [Math\INT64_MAX, (float) Math\INT64_MAX];
         yield [(string)Math\INT64_MAX, (float) Math\INT64_MAX];
@@ -35,6 +40,9 @@ final class FloatTypeTest extends TypeTest
         yield ['-.5', -.5];
         yield ['-.9e2', -.9e2];
         yield ['-0.7e2', -0.7e2];
+        yield ['1.23e45', 1.23e45];
+        yield ['1.23e-45', 1.23e-45];
+        yield ['-33.e-1', -33.e-1];
     }
 
     public function getInvalidCoercions(): iterable
@@ -54,8 +62,6 @@ final class FloatTypeTest extends TypeTest
         yield ['1e2e1'];
         yield ['1ee1'];
         yield ['1,2'];
-        yield ['+1'];
-        yield ['3.'];
         yield [''];
     }
 
