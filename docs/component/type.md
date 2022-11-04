@@ -13,6 +13,7 @@
 #### `Functions`
 
 - [array_key](./../../src/Psl/Type/array_key.php#L10)
+- [backed_enum](./../../src/Psl/Type/backed_enum.php#L16)
 - [bool](./../../src/Psl/Type/bool.php#L10)
 - [dict](./../../src/Psl/Type/dict.php#L16)
 - [float](./../../src/Psl/Type/float.php#L10)
@@ -40,6 +41,7 @@
 - [shape](./../../src/Psl/Type/shape.php#L15)
 - [string](./../../src/Psl/Type/string.php#L10)
 - [union](./../../src/Psl/Type/union.php#L16)
+- [unit_enum](./../../src/Psl/Type/unit_enum.php#L16)
 - [vec](./../../src/Psl/Type/vec.php#L14)
 - [vector](./../../src/Psl/Type/vector.php#L16)
 
