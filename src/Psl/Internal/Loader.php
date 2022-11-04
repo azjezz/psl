@@ -307,6 +307,8 @@ final class Loader
         'Psl\\Type\\intersection' => 'Psl/Type/intersection.php',
         'Psl\\Type\\iterable' => 'Psl/Type/iterable.php',
         'Psl\\Type\\mixed' => 'Psl/Type/mixed.php',
+        'Psl\\Type\\mixed_dict' => 'Psl/Type/mixed_dict.php',
+        'Psl\\Type\\mixed_vec' => 'Psl/Type/mixed_vec.php',
         'Psl\\Type\\null' => 'Psl/Type/null.php',
         'Psl\\Type\\nullable' => 'Psl/Type/nullable.php',
         'Psl\\Type\\optional' => 'Psl/Type/optional.php',

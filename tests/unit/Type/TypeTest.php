@@ -119,7 +119,11 @@ abstract class TypeTest extends TestCase
     {
         $this->expectException(CoercionException::class);
 
-        $this->getType()->coerce($value);
+        try {
+            $ret  = $this->getType()->coerce($value);
+        } catch (CoercionException $e) {
+            throw $e;
+        }
     }
 
     /**
