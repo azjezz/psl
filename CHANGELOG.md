@@ -1,5 +1,26 @@
 # Changelog
 
+## 2.1.0
+
+### features
+
+* introduced a new `Psl\Type\unit_enum` function - [@19d1230](https://github.com/azjezz/psl/commit/19d123074546cc3ebfca18ad666f100e7fad0658) by @azjezz
+* introduced a new `Psl\Type\backed_enum` function - [@19d1230](https://github.com/azjezz/psl/commit/19d123074546cc3ebfca18ad666f100e7fad0658) by @azjezz
+* introduced a new `Psl\Type\mixed_vec` function - [#362](https://github.com/azjezz/psl/pull/362) by @BackEndTea
+* introduced a new `Psl\Type\mixed_dict` function - [#362](https://github.com/azjezz/psl/pull/362) by @BackEndTea
+
+### fixes, and improvements
+
+* improved `Psl\Type\vec` performance - [#364](https://github.com/azjezz/psl/pull/364) by @BackEndTea
+* improved `Psl\Type\float`, and `Psl\Type\num` - [#367](https://github.com/azjezz/psl/pull/367) by @bcremer
+
+### other
+
+* updated `revolt-php/event-loop` to `1.0.0` - [@c7bf866](https://github.com/azjezz/psl/commit/c7bf866a362b9528934a758981da718408ec15d4) by @azjezz
+* introduced scope-able loader - [#361](https://github.com/azjezz/psl/pull/361) by @veewee
+* fixed wrong function names in examples - [#354](https://github.com/azjezz/psl/pull/354) by @jrmajor
+* added reference to PHPStan integration in README.md - [#353](https://github.com/azjezz/psl/pull/353) by @ondrejmirtes
+
 ## 2.0.0
 
 * **BC** - removed `Psl\Arr` component.
