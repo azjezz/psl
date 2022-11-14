@@ -170,6 +170,8 @@ final class Loader
         'Psl\\Math\\atan' => 'Psl/Math/atan.php',
         'Psl\\Math\\atan2' => 'Psl/Math/atan2.php',
         'Psl\\Math\\to_base' => 'Psl/Math/to_base.php',
+        'Psl\\Math\\to_base_ffi' => 'Psl/Math/to_base_ffi.php',
+        'Psl\\Math\\from_base_ffi' => 'Psl/Math/from_base_ffi.php',
         'Psl\\Result\\collect_stats' => 'Psl/Result/collect_stats.php',
         'Psl\\Result\\wrap' => 'Psl/Result/wrap.php',
         'Psl\\Regex\\capture_groups' => 'Psl/Regex/capture_groups.php',
@@ -738,6 +740,7 @@ final class Loader
         'Psl\\Iter\\Exception\\InvalidArgumentException' => 'Psl/Iter/Exception/InvalidArgumentException.php',
         'Psl\\PseudoRandom\\Exception\\InvalidArgumentException' => 'Psl/PseudoRandom/Exception/InvalidArgumentException.php',
         'Psl\\Async\\Exception\\InvalidArgumentException' => 'Psl/Async/Exception/InvalidArgumentException.php',
+        'Psl\\Internal\\ForeignFunctionInterface\\MathBinding' => 'Psl/Internal/ForeignFunctionInterface/MathBinding.php',
     ];
 
     public const ENUMS = [

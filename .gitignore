@@ -16,3 +16,7 @@
 
 # phpunit cache
 /config/.phpunit.result.cache
+
+# rust
+/crates/*/target
+/crates/*/Cargo.lock

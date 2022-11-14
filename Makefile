@@ -46,4 +46,8 @@ docs-generate:                                                                  
 docs-check:                                                                     ## checks if docs are up to date
 	php docs/documenter.php check
 
+compile:                                                                        ## compile rust crates
+	cd crates/math; cargo build -r; cbindgen --crate math --output ../../libs/math/lib.h --lang c;
+	cp crates/math/target/release/libmath.so libs/math/lib.so
+
 check: coding-standard-check static-analysis security-analysis unit-tests mutation-tests docs-check  ## run quick checks for local development iterations

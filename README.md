@@ -66,6 +66,10 @@ Please refer to the [`php-standard-library/psalm-plugin`](https://github.com/php
 
 Please refer to the [`php-standard-library/phpstan-extension`](https://github.com/php-standard-library/phpstan-extension) repository.
 
+### Building crates
+
+`cbindgen` is required to generate c header files.
+
 ## Documentation
 
 You can read through the API documentation in [`docs/`](./docs) directory.

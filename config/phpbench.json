@@ -12,5 +12,8 @@
         "report": {
             "extends": "aggregate"
         }
-    }
+    },
+    "runner.php_config": [
+        "ffi.enable=true"
+    ]
 }
