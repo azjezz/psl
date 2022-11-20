@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Psl\Math;
 
 use Psl\Str;
-use Psl\Str\Byte;
+
+use function intdiv;
+use function ord;
+use function strlen;
 
 /**
  * Converts the given string in base `$from_base` to an integer, assuming letters a-z
@@ -22,10 +25,10 @@ use Psl\Str\Byte;
 function from_base(string $number, int $from_base): int
 {
     /** @psalm-suppress MissingThrowsDocblock */
-    $limit  = div(INT64_MAX, $from_base);
+    $limit  = intdiv(INT64_MAX, $from_base);
     $result = 0;
-    foreach (Byte\chunk($number) as $digit) {
-        $oval = Byte\ord($digit);
+    for ($i = 0, $l = strlen($number); $i < $l; $i++) {
+        $oval = ord($number[$i]);
         // Branches sorted by guesstimated frequency of use. */
         if (/* '0' - '9' */ $oval <= 57 && $oval >= 48) {
             $dval = $oval - 48;
@@ -38,7 +41,7 @@ function from_base(string $number, int $from_base): int
         }
 
         if ($from_base < $dval) {
-            throw new Exception\InvalidArgumentException(Str\format('Invalid digit %s in base %d', $digit, $from_base));
+            throw new Exception\InvalidArgumentException(Str\format('Invalid digit %s in base %d', $number[$i], $from_base));
         }
 
         $oldval = $result;

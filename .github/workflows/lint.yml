@@ -1,12 +1,12 @@
-name: "mutation tests"
+name: "lint"
 
 on:
   pull_request: ~
   push: ~
 
 jobs:
-  mutation-tests:
-    name: "mutation tests"
+  lint:
+    name: "lint"
     runs-on: "ubuntu-latest"
     steps:
       - name: "checkout"
@@ -18,7 +18,8 @@ jobs:
           php: "8.1"
           os: "ubuntu-latest"
 
-      - name: "running mutation tests"
-        run: make mutation-tests
-        env:
-          STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
+      - name: "checking if documentation is up-to-date."
+        run: "php docs/documenter.php check"
+
+      - name: "checking coding standards"
+        run: make coding-standard-check
