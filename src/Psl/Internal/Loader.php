@@ -478,6 +478,8 @@ final class Loader
         'Psl\\OS\\family' => 'Psl/OS/family.php',
         'Psl\\OS\\is_windows' => 'Psl/OS/is_windows.php',
         'Psl\\OS\\is_darwin' => 'Psl/OS/is_darwin.php',
+        'Psl\\Option\\some' => 'Psl/Option/some.php',
+        'Psl\\Option\\none' => 'Psl/Option/none.php',
     ];
 
     public const INTERFACES = [
@@ -562,6 +564,7 @@ final class Loader
         'Psl\\Vec\\Exception\\ExceptionInterface' => 'Psl/Vec/Exception/ExceptionInterface.php',
         'Psl\\Dict\\Exception\\ExceptionInterface' => 'Psl/Dict/Exception/ExceptionInterface.php',
         'Psl\\PseudoRandom\\Exception\\ExceptionInterface' => 'Psl/PseudoRandom/Exception/ExceptionInterface.php',
+        'Psl\\Option\\Exception\\ExceptionInterface' => 'Psl/Option/Exception/ExceptionInterface.php',
     ];
 
     public const TRAITS = [
@@ -738,6 +741,8 @@ final class Loader
         'Psl\\Iter\\Exception\\InvalidArgumentException' => 'Psl/Iter/Exception/InvalidArgumentException.php',
         'Psl\\PseudoRandom\\Exception\\InvalidArgumentException' => 'Psl/PseudoRandom/Exception/InvalidArgumentException.php',
         'Psl\\Async\\Exception\\InvalidArgumentException' => 'Psl/Async/Exception/InvalidArgumentException.php',
+        'Psl\\Option\\Exception\\NoneException' => 'Psl/Option/Exception/NoneException.php',
+        'Psl\\Option\\Option' => 'Psl/Option/Option.php',
     ];
 
     public const ENUMS = [
