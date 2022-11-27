@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Channel\Exception;
 
-use OutOfBoundsException;
+use Psl\Exception\OutOfBoundsException;
 use Psl\Channel;
 
 /**
@@ -14,6 +14,6 @@ final class EmptyChannelException extends OutOfBoundsException implements Except
 {
     public static function create(): EmptyChannelException
     {
-        return new self('Attempted to receiver from an empty channel.');
+        return new self('Attempted to receive a message from an empty channel.');
     }
 }

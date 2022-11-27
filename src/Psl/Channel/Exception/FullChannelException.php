@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Channel\Exception;
 
-use OutOfBoundsException;
+use Psl\Exception\OutOfBoundsException;
 use Psl\Channel;
 use Psl\Str;
 

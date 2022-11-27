@@ -1,7 +1,9 @@
 use ext_php_rs::prelude::ModuleBuilder;
 
+mod helpers;
 mod macros;
 
+pub mod channel;
 pub mod ds;
 pub mod math;
 
@@ -13,4 +15,5 @@ pub fn register(mut module: ModuleBuilder) -> ModuleBuilder {
 
 pub fn build() {
     ds::build();
+    channel::build();
 }

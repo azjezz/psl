@@ -285,7 +285,7 @@ final class BoundedChannelTest extends TestCase
         [$receiver, $sender] = Channel\bounded(1);
 
         $this->expectException(Channel\Exception\EmptyChannelException::class);
-        $this->expectExceptionMessage('Attempted to receiver from an empty channel.');
+        $this->expectExceptionMessage('Attempted to receive a message from an empty channel.');
 
         $receiver->tryReceive();
     }
