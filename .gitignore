@@ -16,3 +16,10 @@
 
 # phpunit cache
 /config/.phpunit.result.cache
+
+# extension
+/extension/target/
+/extension/Cargo.lock
+
+# phpbench
+/.phpbench

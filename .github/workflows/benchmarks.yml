@@ -5,42 +5,29 @@ on:
   push: ~
 
 jobs:
-  unit-tests:
+  benchmarks:
     name: "benchmarks"
 
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        php-version:
+        php:
           - "8.1"
-        operating-system:
+        os:
           - "ubuntu-latest"
+          - "macos-latest"
 
     steps:
       - name: "checkout"
         uses: "actions/checkout@v3"
 
-      - name: "installing PHP"
-        uses: "shivammathur/setup-php@v2"
+      - name: setup
+        uses: ./.github/actions/setup
         with:
-          php-version: "${{ matrix.php-version }}"
-          ini-values: memory_limit=-1
-          tools: composer:v2, cs2pr
-          extensions: bcmath, mbstring, intl, sodium, json
+          php: ${{ matrix.php }}
+          os: ${{ matrix.os }}
+          coverage: 'none'
 
-      - name: "caching dependencies"
-        uses: "actions/cache@v3"
-        with:
-          path: |
-            ~/.composer/cache
-            vendor
-          key: "php-${{ matrix.php-version }}"
-          restore-keys: "php-${{ matrix.php-version }}"
-
-      - name: "installing dependencies"
-        run: |
-          make install -j10 -O
-
-      - name: "running benchmarks"
-        run: make benchmarks
+      - name: "benchmarking PSL extension"
+        run: make benchmark-extension

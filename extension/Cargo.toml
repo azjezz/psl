@@ -1,0 +1,28 @@
+
+[package]
+name = "psl"
+version = "0.1.0"
+authors = ["Saif Eddin Gmati <azjezz@protonmail.com>"]
+edition = "2021"
+publish = false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["lib", "cdylib"]
+
+[dependencies]
+ext-php-rs = { version = "0.8.2" }
+
+[profile.release]
+opt-level = 3
+debug = false
+split-debuginfo = 'packed'
+strip = 'symbols'
+debug-assertions = false
+overflow-checks = false
+lto = 'fat'
+panic = 'abort'
+incremental = true
+codegen-units = 1
+rpath = true

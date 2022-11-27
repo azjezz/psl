@@ -1,3 +1,6 @@
+php-config           := opcache.enable_cli: true, opcache.jit_buffer_size: 256M, opcache.enable_cli: true, opcache.enable: true
+php-extension-config := $(php-config), extension: extension/target/release/libpsl.so
+
 help:                                                                           ## shows this help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_\-\.]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
@@ -47,3 +50,10 @@ docs-check:                                                                     
 	php docs/documenter.php check
 
 check: coding-standard-check static-analysis security-analysis unit-tests mutation-tests docs-check  ## run quick checks for local development iterations
+
+compile:
+	cd extension; cargo build -r;
+
+benchmark-extension: compile
+	php vendor/bin/phpbench run --group math --group ds --config config/phpbench.json --tag=php --php-config='$(php-config)'
+	php vendor/bin/phpbench run --group math --group ds --config config/phpbench.json --tag=extension --ref=php --php-config='$(php-extension-config)' --report=aggregate

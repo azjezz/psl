@@ -41,7 +41,7 @@
 - [div](./../../src/Psl/Math/div.php#L21)
 - [exp](./../../src/Psl/Math/exp.php#L14)
 - [floor](./../../src/Psl/Math/floor.php#L14)
-- [from_base](./../../src/Psl/Math/from_base.php#L22)
+- [from_base](./../../src/Psl/Math/from_base.php#L25)
 - [log](./../../src/Psl/Math/log.php#L16)
 - [max](./../../src/Psl/Math/max.php#L19)
 - [max_by](./../../src/Psl/Math/max_by.php#L24)

@@ -7,40 +7,16 @@ on:
 jobs:
   mutation-tests:
     name: "mutation tests"
-
-    runs-on: ${{ matrix.operating-system }}
-
-    strategy:
-      matrix:
-        php-version:
-          - "8.1"
-        operating-system:
-          - "ubuntu-latest"
-
+    runs-on: "ubuntu-latest"
     steps:
       - name: "checkout"
         uses: "actions/checkout@v3"
 
-      - name: "installing PHP"
-        uses: "shivammathur/setup-php@v2"
+      - name: setup
+        uses: ./.github/actions/setup
         with:
-          php-version: "${{ matrix.php-version }}"
-          ini-values: memory_limit=-1
-          tools: composer:v2, cs2pr
-          extensions: bcmath, mbstring, intl, sodium, json
-
-      - name: "caching dependencies"
-        uses: "actions/cache@v3"
-        with:
-          path: |
-            ~/.composer/cache
-            vendor
-          key: "php-${{ matrix.php-version }}"
-          restore-keys: "php-${{ matrix.php-version }}"
-
-      - name: "installing dependencies"
-        run: |
-          make install -j10
+          php: "8.1"
+          os: "ubuntu-latest"
 
       - name: "running mutation tests"
         run: make mutation-tests

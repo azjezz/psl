@@ -1,0 +1,68 @@
+name: 'setup PSL developement envrionment'
+
+inputs:
+  os:
+    required: true
+  php:
+    required: true
+  rust:
+    required: false
+    default: 'stable'
+  coverage:
+    required: false
+    default: 'xdebug'
+
+runs:
+  using: 'composite'
+  steps:
+      - name: "installing PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ inputs.php }}"
+          ini-values: memory_limit=-1
+          tools: composer:v2, cs2pr
+          extensions: bcmath, mbstring, intl, sodium, json
+          coverage: ${{ inputs.coverage }}
+
+      - name: "installing Rust"
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ inputs.rust }}
+          override: true
+          components: rustfmt, clippy
+
+      - name: "installing LLVM, and Clang"
+        if: "!contains(inputs.os, 'windows')"
+        id: clang
+        uses: KyleMayes/install-llvm-action@v1
+        with:
+          version: '13.0'
+          directory: ${{ runner.temp }}/llvm
+
+      - name: "configuring Clang"
+        shell: bash
+        if: "!contains(inputs.os, 'windows')"
+        run: |
+          echo "LIBCLANG_PATH=${{ runner.temp }}/llvm/lib" >> $GITHUB_ENV
+          echo "LLVM_VERSION=${{ steps.clang.outputs.version }}" >> $GITHUB_ENV
+
+      - name: "configuring Clang for macOS"
+        shell: bash
+        if: "contains(inputs.os, 'macos')"
+        run: echo "SDKROOT=$(xcrun --show-sdk-path)" >> $GITHUB_ENV
+
+      - name: "caching dependencies"
+        uses: "actions/cache@v3"
+        with:
+          path: |
+            ~/.composer/cache
+            vendor
+            ~/.cargo
+            extension/target
+          key: "php-${{ inputs.php }}-rust-${{ inputs.rust }}-os-${{ inputs.os }}"
+          restore-keys: "php-${{ inputs.php }}-rust-${{ inputs.rust }}-os-${{ inputs.os }}"
+
+      - name: "installing dependencies"
+        shell: bash
+        run: |
+          make install

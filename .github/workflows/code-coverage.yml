@@ -7,24 +7,16 @@ on:
 jobs:
   code-coverage:
     name: "code coverage"
-
     runs-on: "ubuntu-latest"
-
     steps:
       - name: "checkout"
         uses: "actions/checkout@v3"
 
-      - name: "installing PHP"
-        uses: "shivammathur/setup-php@v2"
+      - name: setup
+        uses: ./.github/actions/setup
         with:
-          php-version: "8.1"
-          ini-values: memory_limit=-1
-          tools: composer:v2, cs2pr
-          extensions: bcmath, mbstring, intl, sodium, json
-
-      - name: "installing dependencies"
-        run: |
-          make install -j10 -O
+          php: "8.1"
+          os: "ubuntu-latest"
 
       - name: "sending code coverage to coveralls"
         env:

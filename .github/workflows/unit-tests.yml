@@ -8,43 +8,27 @@ jobs:
   unit-tests:
     name: "unit tests"
 
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        php-version:
+        php:
           - "8.1"
           - "8.2"
-        operating-system:
-          # MacOs has a floating-point problem.
-          # - "macos-latest"
+        os:
           - "ubuntu-latest"
+          - "macos-latest"
           - "windows-latest"
 
     steps:
       - name: "checkout"
         uses: "actions/checkout@v3"
 
-      - name: "installing PHP"
-        uses: "shivammathur/setup-php@v2"
+      - name: setup
+        uses: ./.github/actions/setup
         with:
-          php-version: "${{ matrix.php-version }}"
-          ini-values: memory_limit=-1
-          tools: composer:v2, cs2pr
-          extensions: bcmath, mbstring, intl, sodium, json
-
-      - name: "caching dependencies"
-        uses: "actions/cache@v3"
-        with:
-          path: |
-            ~/.composer/cache
-            vendor
-          key: "php-${{ matrix.php-version }}"
-          restore-keys: "php-${{ matrix.php-version }}"
-
-      - name: "installing dependencies"
-        run: |
-          make install -j10
+          php: ${{ matrix.php }}
+          os: ${{ matrix.os }}
 
       - name: "running unit tests"
         run: ./vendor/bin/phpunit -c config/phpunit.xml.dist
