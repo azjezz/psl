@@ -30,7 +30,6 @@ function split(string $string, string $delimiter, ?int $limit = null): array
             return [$string];
         }
 
-        /** @var positive-int $length */
         $length = $limit - 1;
 
         $result   = chunk(slice($string, 0, $length));

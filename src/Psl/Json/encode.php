@@ -36,7 +36,7 @@ function encode(mixed $value, bool $pretty = false, int $flags = 0): string
     try {
         $json = json_encode($value, $flags);
     } catch (JsonException $e) {
-        throw new Exception\EncodeException(Str\format('%s.', $e->getMessage()), (int)$e->getCode(), $e);
+        throw new Exception\EncodeException(Str\format('%s.', $e->getMessage()), $e->getCode(), $e);
     }
 
     return $json;

@@ -75,6 +75,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
      */
     public function __construct(mixed $stream, bool $read, bool $write, bool $seek, private bool $close)
     {
+        /** @psalm-suppress RedundantConditionGivenDocblockType - The stream is always a resource, but we want to make sure it is a stream resource. */
         $this->stream = Type\resource('stream')->assert($stream);
 
         /** @psalm-suppress UnusedFunctionCall */

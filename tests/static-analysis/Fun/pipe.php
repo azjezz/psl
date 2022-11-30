@@ -45,7 +45,7 @@ function test_variadic_and_default_params(): void
  *
  * @see https://github.com/vimeo/psalm/issues/7244
  *
- * @psalm-suppress InvalidScalarArgument
+ * @psalm-suppress InvalidArgument
  */
 function test_empty_pipe(): void
 {

@@ -623,6 +623,8 @@ final class MutableVector implements MutableVectorInterface
      *                                         `MutableVector` split into chunks of the given size.
      *
      * @psalm-mutation-free
+     *
+     * @psalm-suppress LessSpecificImplementedReturnType - I don't see how this one is less specific than its inherited.
      */
     public function chunk(int $size): MutableVector
     {
