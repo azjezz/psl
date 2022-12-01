@@ -72,6 +72,7 @@ final class Context
         $internal_context = hash_copy($this->internalContext);
 
         // @codeCoverageIgnoreStart
+        /** @psalm-suppress ImpureFunctionCall - it creates a copy of the context, so we can consider it pure! */
         if (!hash_update($internal_context, $data)) {
             throw new Exception\RuntimeException('Unable to pump data into the active hashing context.');
         }

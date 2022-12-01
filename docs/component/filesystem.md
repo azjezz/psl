@@ -28,7 +28,7 @@
 - [create_temporary_file](./../../src/Psl/Filesystem/create_temporary_file.php#L26)
 - [delete_directory](./../../src/Psl/Filesystem/delete_directory.php#L23)
 - [delete_file](./../../src/Psl/Filesystem/delete_file.php#L21)
-- [exists](./../../src/Psl/Filesystem/exists.php#L16)
+- [exists](./../../src/Psl/Filesystem/exists.php#L14)
 - [file_size](./../../src/Psl/Filesystem/file_size.php#L22)
 - [get_access_time](./../../src/Psl/Filesystem/get_access_time.php#L20)
 - [get_basename](./../../src/Psl/Filesystem/get_basename.php#L23)

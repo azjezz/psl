@@ -8,7 +8,7 @@ use Stringable;
 
 final class ExplicitStringableObject implements Stringable
 {
-    public function __toString()
+    public function __toString(): string
     {
         return '123';
     }

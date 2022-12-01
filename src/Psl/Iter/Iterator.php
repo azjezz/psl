@@ -72,6 +72,8 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Create an iterator from an iterable.
      *
+     * @psalm-suppress DocblockTypeContradiction - Psalm gets lost on Generator, which is a perfectly valid iterable type.
+     *
      * @template Tsk
      * @template Tsv
      *

@@ -30,7 +30,7 @@ function decode(string $json, bool $assoc = true): mixed
             JSON_BIGINT_AS_STRING | JSON_THROW_ON_ERROR,
         );
     } catch (JsonException $e) {
-        throw new Exception\DecodeException(Str\format('%s.', $e->getMessage()), (int)$e->getCode(), $e);
+        throw new Exception\DecodeException(Str\format('%s.', $e->getMessage()), $e->getCode(), $e);
     }
 
     return $value;
