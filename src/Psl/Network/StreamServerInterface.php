@@ -22,7 +22,7 @@ interface StreamServerInterface extends IO\CloseStreamHandleInterface, ServerInt
     /**
      * {@inheritDoc}
      *
-     * @return Generator<null, StreamSocketInterface, void, void>
+     * @return Generator<null, StreamSocketInterface, void, null>
      */
     public function incoming(): Generator;
 }

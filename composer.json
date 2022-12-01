@@ -24,7 +24,7 @@
         "phpbench/phpbench": "^1.2.3",
         "phpunit/phpunit": "^9.5.16",
         "vimeo/psalm": "^5.0.0",
-        "php-standard-library/psalm-plugin": "^2.1.0",
+        "php-standard-library/psalm-plugin": "^2.2",
         "php-coveralls/php-coveralls": "^2.5.2",
         "roave/infection-static-analysis-plugin": "^1.26.0"
     },
