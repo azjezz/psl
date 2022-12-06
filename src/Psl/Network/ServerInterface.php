@@ -27,7 +27,7 @@ interface ServerInterface extends IO\CloseHandleInterface
      *
      * @throws Exception\RuntimeException In case failed to accept incoming connection.
      *
-     * @return Generator<null, SocketInterface, void, void>
+     * @return Generator<null, SocketInterface, void, null>
      */
     public function incoming(): Generator;
 
