@@ -33,7 +33,7 @@ use Revolt\EventLoop;
  * @throws Exception\RuntimeException If an error occurred during the operation.
  * @throws Exception\TimeoutException If $timeout is reached before being able to read all the handles until the end.
  *
- * @return Generator<T, string, mixed, void>
+ * @return Generator<T, string, mixed, null>
  */
 function streaming(iterable $handles, ?float $timeout = null): Generator
 {

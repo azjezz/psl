@@ -6,38 +6,36 @@ use Psl\Exception\InvariantViolationException;
 
 use function Psl\Fun\pipe;
 
-/**
- * @psalm-suppress TooFewArguments, UnusedClosureParam
- */
-function test_too_few_argument_count_issues(): void
+function test_too_few_argument_dont_matter(): int
 {
     $stages = pipe(
         static fn (): int => 2,
     );
-    $stages('hello');
+
+    return $stages('hello');
 }
 
 /**
- * @psalm-suppress TooManyArguments, UnusedClosureParam, InvalidArgument
+ * @psalm-suppress InvalidArgument, UnusedClosureParam
  */
-function test_too_many_argument_count_issues(): void
+function test_too_many_argument_count_issues(): int
 {
     $stages = pipe(
         static fn (string $x, string $y): int => 2,
     );
-    $stages('hello');
+    return $stages('hello');
 }
 
 /**
- * @psalm-suppress UnusedClosureParam, InvalidArgument
+ * @psalm-suppress UnusedClosureParam
  */
-function test_variadic_and_default_params(): void
+function test_variadic_and_default_params(): int
 {
     $stages = pipe(
         static fn (int $y, string $x = 'hello'): float => 1.2,
         static fn (float ...$items): int => 23
     );
-    $stages('hello');
+    return $stages(123);
 }
 
 /**
@@ -46,11 +44,12 @@ function test_variadic_and_default_params(): void
  * @see https://github.com/vimeo/psalm/issues/7244
  *
  * @psalm-suppress InvalidArgument
+ * @psalm-suppress NoValue - Resolves into "\Closure(never): never" because of the issue linked above.
  */
-function test_empty_pipe(): void
+function test_empty_pipe(): string
 {
     $stages = pipe();
-    $stages('hello');
+    return $stages('hello');
 }
 
 /**
@@ -66,27 +65,27 @@ function test_invalid_arguments(): void
 }
 
 /**
- * @psalm-suppress UnusedClosureParam, InvalidArgument
+ * @psalm-suppress InvalidScalarArgument, UnusedClosureParam
  */
-function test_invalid_return_to_input_type(): void
+function test_invalid_return_to_input_type(): float
 {
     $stages = pipe(
         static fn (string $x): int => 2,
         static fn (string $y): float => 1.2
     );
-    $stages('hello');
+    return $stages('hello');
 }
 
 /**
  * @psalm-suppress UnusedClosureParam, InvalidArgument
  */
-function test_invalid_input_type(): void
+function test_invalid_input_type(): float
 {
     $stages = pipe(
         static fn (string $x): int => 2,
         static fn (int $y): float => 1.2
     );
-    $stages(143);
+    return $stages(143);
 }
 
 /**
@@ -106,11 +105,11 @@ function test_output_type_is_known(): void
 /**
  * @psalm-suppress UnusedClosureParam
  */
-function test_currently_unparsed_input_types(): void
+function test_first_class_callables(): int
 {
     $stages = pipe(
         $assignment = static fn (string $x): int => 2,
         (static fn (): int => 2)(...),
     );
-    $stages('hello');
+    return $stages('hello');
 }
