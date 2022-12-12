@@ -29,6 +29,7 @@
 - [Psl\Network](./component/network.md)
 - [Psl\OS](./component/os.md)
 - [Psl\Observer](./component/observer.md)
+- [Psl\Option](./component/option.md)
 - [Psl\Password](./component/password.md)
 - [Psl\Promise](./component/promise.md)
 - [Psl\PseudoRandom](./component/pseudo-random.md)
