@@ -480,6 +480,7 @@ final class Loader
         'Psl\\OS\\is_darwin' => 'Psl/OS/is_darwin.php',
         'Psl\\Option\\some' => 'Psl/Option/some.php',
         'Psl\\Option\\none' => 'Psl/Option/none.php',
+        'Psl\\Option\\from_nullable' => 'Psl/Option/from_nullable.php',
     ];
 
     public const INTERFACES = [

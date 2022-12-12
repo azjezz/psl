@@ -206,6 +206,7 @@ function get_all_components(): array
         'Psl\\Json',
         'Psl\\Math',
         'Psl\\Network',
+        'Psl\\Option',
         'Psl\\Observer',
         'Psl\\OS',
         'Psl\\Password',
