@@ -34,6 +34,7 @@
 - [Psl\Promise](./component/promise.md)
 - [Psl\PseudoRandom](./component/pseudo-random.md)
 - [Psl\RandomSequence](./component/random-sequence.md)
+- [Psl\Range](./component/range.md)
 - [Psl\Regex](./component/regex.md)
 - [Psl\Result](./component/result.md)
 - [Psl\Runtime](./component/runtime.md)

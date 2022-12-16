@@ -20,7 +20,7 @@ use function array_key_exists;
 final class Iterator implements Countable, SeekableIterator
 {
     /**
-     * @var Generator<Tk, Tv, mixed, mixed>
+     * @var null|Generator<Tk, Tv, mixed, mixed>
      */
     private ?Generator $generator;
 
@@ -42,7 +42,7 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * The size of the generator.
      *
-     * @var int<0, max>
+     * @var null|int<0, max>
      */
     private ?int $count = null;
 
