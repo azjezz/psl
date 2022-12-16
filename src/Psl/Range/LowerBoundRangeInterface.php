@@ -18,6 +18,48 @@ use Psl\Iter;
 interface LowerBoundRangeInterface extends IteratorAggregate, RangeInterface
 {
     /**
+     * {@inheritDoc}
+     *
+     * @param T $upper_bound
+     *
+     * @return UpperBoundRangeInterface<T>&LowerBoundRangeInterface<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withUpperBound(int|float $upper_bound, bool $upper_inclusive): UpperBoundRangeInterface&LowerBoundRangeInterface;
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param T $upper_bound
+     *
+     * @return UpperBoundRangeInterface<T>&LowerBoundRangeInterface<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withUpperBoundInclusive(int|float $upper_bound): UpperBoundRangeInterface&LowerBoundRangeInterface;
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param T $upper_bound
+     *
+     * @return UpperBoundRangeInterface<T>&LowerBoundRangeInterface<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withUpperBoundExclusive(int|float $upper_bound): UpperBoundRangeInterface&LowerBoundRangeInterface;
+
+    /**
+     * Remove the lower bound from the range.
+     *
+     * @return RangeInterface<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withoutLowerBound(): RangeInterface;
+
+    /**
      * Returns the lower bound of the range.
      *
      * @return T
@@ -25,7 +67,7 @@ interface LowerBoundRangeInterface extends IteratorAggregate, RangeInterface
      * @psalm-mutation-free
      */
     public function getLowerBound(): int|float;
-
+    
     /**
      * Returns an iterator for the range.
      *

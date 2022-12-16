@@ -14,6 +14,26 @@ namespace Psl\Range;
 interface UpperBoundRangeInterface extends RangeInterface
 {
     /**
+     * {@inheritDoc}
+     *
+     * @param T $lower_bound
+     *
+     * @return UpperBoundRangeInterface<T>&LowerBoundRangeInterface<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withLowerBound(int|float $lower_bound): UpperBoundRangeInterface&LowerBoundRangeInterface;
+
+    /**
+     * Remove the upper bound from the range.
+     *
+     * @return RangeInterface<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withoutUpperBound(): RangeInterface;
+    
+    /**
      * Returns the upper bound of the range.
      *
      * @return T
@@ -28,4 +48,13 @@ interface UpperBoundRangeInterface extends RangeInterface
      * @psalm-mutation-free
      */
     public function isUpperInclusive(): bool;
+
+    /**
+     * Return a new instance, where the upper bound inclusive flag is set to the given value.
+     *
+     * @return static<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withUpperInclusive(bool $upper_inclusive): static;
 }

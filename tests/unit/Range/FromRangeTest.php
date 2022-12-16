@@ -46,7 +46,35 @@ final class FromRangeTest extends TestCase
         $range = Range\from(-24.24);
         static::assertSame(-24.24, $range->getLowerBound());
     }
-    
+
+    public function testWithers(): void
+    {
+        $range = new Range\FromRange(0);
+
+        static::assertSame(0, $range->getLowerBound());
+        static::assertSame(0, $range->withLowerBound(0)->getLowerBound());
+        static::assertSame(1, $range->withUpperBound(1, false)->getUpperBound());
+        static::assertSame(1, $range->withUpperBoundExclusive(1)->getUpperBound());
+        static::assertSame(1, $range->withUpperBoundInclusive(1)->getUpperBound());
+        static::assertSame(false, $range->withUpperBound(0, false)->isUpperInclusive());
+        static::assertSame(false, $range->withUpperBound(0, true)->withUpperInclusive(false)->isUpperInclusive());
+        static::assertSame(true, $range->withUpperBound(0, false)->withUpperInclusive(true)->isUpperInclusive());
+        static::assertSame(false, $range->withUpperBound(0, false)->isUpperInclusive());
+        static::assertSame(true, $range->withUpperBound(0, true)->isUpperInclusive());
+        static::assertSame(false, $range->withUpperBoundExclusive(0)->isUpperInclusive());
+        static::assertSame(true, $range->withUpperBoundInclusive(0)->isUpperInclusive());
+
+        static::assertSame(0, $range->withoutLowerBound()->withLowerBound(0)->getLowerBound());
+        static::assertSame(1, $range->withoutLowerBound()->withUpperBound(1, false)->getUpperBound());
+        static::assertSame(1, $range->withoutLowerBound()->withUpperBoundExclusive(1)->getUpperBound());
+        static::assertSame(1, $range->withoutLowerBound()->withUpperBoundInclusive(1)->getUpperBound());
+        static::assertSame(false, $range->withoutLowerBound()->withUpperBound(0, false)->isUpperInclusive());
+        static::assertSame(false, $range->withoutLowerBound()->withUpperBound(0, false)->isUpperInclusive());
+        static::assertSame(true, $range->withoutLowerBound()->withUpperBound(0, true)->isUpperInclusive());
+        static::assertSame(false, $range->withoutLowerBound()->withUpperBoundExclusive(0)->isUpperInclusive());
+        static::assertSame(true, $range->withoutLowerBound()->withUpperBoundInclusive(0)->isUpperInclusive());
+    }
+
     public function testIterate(): void
     {
         $range = Range\from(10);
