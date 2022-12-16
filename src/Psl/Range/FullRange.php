@@ -32,4 +32,62 @@ final class FullRange implements RangeInterface
     {
         return true;
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param T $lower_bound
+     *
+     * @return FromRange<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withLowerBound(int|float $lower_bound): FromRange
+    {
+        return new FromRange(
+            $lower_bound,
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param T $upper_bound
+     *
+     * @return ToRange<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withUpperBound(float|int $upper_bound, bool $upper_inclusive): ToRange
+    {
+        return new ToRange($upper_bound, $upper_inclusive);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param T $upper_bound
+     *
+     * @return ToRange<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withUpperBoundInclusive(float|int $upper_bound): ToRange
+    {
+        return new ToRange($upper_bound, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param T $upper_bound
+     *
+     * @return ToRange<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withUpperBoundExclusive(float|int $upper_bound): ToRange
+    {
+        return new ToRange($upper_bound, false);
+    }
 }

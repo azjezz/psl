@@ -34,4 +34,21 @@ final class FullRangeTest extends TestCase
         static::assertTrue($range->contains(Math\UINT64_MAX));
         static::assertTrue($range->contains(Math\INFINITY));
     }
+
+    public function testWithers(): void
+    {
+        $range = new Range\FullRange();
+
+        static::assertSame(0, $range->withLowerBound(0)->getLowerBound());
+        static::assertSame(1, $range->withUpperBound(1, false)->getUpperBound());
+        static::assertSame(1, $range->withUpperBoundExclusive(1)->getUpperBound());
+        static::assertSame(1, $range->withUpperBoundInclusive(1)->getUpperBound());
+        static::assertSame(false, $range->withUpperBound(0, false)->isUpperInclusive());
+        static::assertSame(false, $range->withUpperBound(0, true)->withUpperInclusive(false)->isUpperInclusive());
+        static::assertSame(true, $range->withUpperBound(0, false)->withUpperInclusive(true)->isUpperInclusive());
+        static::assertSame(false, $range->withUpperBound(0, false)->isUpperInclusive());
+        static::assertSame(true, $range->withUpperBound(0, true)->isUpperInclusive());
+        static::assertSame(false, $range->withUpperBoundExclusive(0)->isUpperInclusive());
+        static::assertSame(true, $range->withUpperBoundInclusive(0)->isUpperInclusive());
+    }
 }
