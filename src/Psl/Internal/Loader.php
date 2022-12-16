@@ -50,6 +50,7 @@ final class Loader
         'Psl\\Str\\ALPHABET' => 'Psl/Str/constants.php',
         'Psl\\Str\\ALPHABET_ALPHANUMERIC' => 'Psl/Str/constants.php',
         'Psl\\Filesystem\\SEPARATOR' => 'Psl/Filesystem/constants.php',
+        'Psl\\Option\\NONE' => 'Psl/Option/constants.php',
     ];
 
     public const FUNCTIONS = [

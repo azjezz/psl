@@ -44,7 +44,12 @@ final class Option
      */
     public static function none(): Option
     {
-        return new self(null);
+        if (!defined('Psl\Option\NONE')) {
+            define('Psl\Option\NONE', new self(null));
+        }
+
+        /** @var Option<Tn> */
+        return NONE;
     }
 
     /**
