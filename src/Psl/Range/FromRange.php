@@ -60,6 +60,89 @@ final class FromRange implements LowerBoundRangeInterface
     /**
      * {@inheritDoc}
      *
+     * @param T $lower_bound
+     *
+     * @return FromRange<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withLowerBound(int|float $lower_bound): FromRange
+    {
+        return new FromRange(
+            $lower_bound,
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param T $upper_bound
+     *
+     * @return BetweenRange<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withUpperBound(float|int $upper_bound, bool $upper_inclusive): BetweenRange
+    {
+        return new BetweenRange(
+            $this->lower_bound,
+            $upper_bound,
+            $upper_inclusive,
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return FullRange<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withoutLowerBound(): FullRange
+    {
+        /** @var FullRange<T> */
+        return new FullRange();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param T $upper_bound
+     *
+     * @return BetweenRange<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withUpperBoundInclusive(float|int $upper_bound): BetweenRange
+    {
+        return new BetweenRange(
+            $this->lower_bound,
+            $upper_bound,
+            true,
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param T $upper_bound
+     *
+     * @return BetweenRange<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withUpperBoundExclusive(float|int $upper_bound): BetweenRange
+    {
+        return new BetweenRange(
+            $this->lower_bound,
+            $upper_bound,
+            false,
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @return T
      *
      * @psalm-mutation-free

@@ -25,7 +25,7 @@
 
 #### `Classes`
 
-- [BetweenRange](./../../src/Psl/Range/BetweenRange.php#L45)
+- [BetweenRange](./../../src/Psl/Range/BetweenRange.php#L48)
 - [FromRange](./../../src/Psl/Range/FromRange.php#L36)
 - [FullRange](./../../src/Psl/Range/FullRange.php#L20)
 - [ToRange](./../../src/Psl/Range/ToRange.php#L22)

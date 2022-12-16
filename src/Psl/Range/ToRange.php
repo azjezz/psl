@@ -51,6 +51,79 @@ final class ToRange implements UpperBoundRangeInterface
     /**
      * {@inheritDoc}
      *
+     * @param T $lower_bound
+     *
+     * @return BetweenRange<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withLowerBound(int|float $lower_bound): BetweenRange
+    {
+        return new BetweenRange(
+            $lower_bound,
+            $this->upper_bound,
+            $this->upper_inclusive,
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return FullRange<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withoutUpperBound(): FullRange
+    {
+        /** @var FullRange<T> */
+        return new FullRange();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param T $upper_bound
+     *
+     * @return ToRange<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withUpperBound(float|int $upper_bound, bool $upper_inclusive): ToRange
+    {
+        return new self($upper_bound, $upper_inclusive);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param T $upper_bound
+     *
+     * @return ToRange<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withUpperBoundInclusive(float|int $upper_bound): ToRange
+    {
+        return new self($upper_bound, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param T $upper_bound
+     *
+     * @return ToRange<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withUpperBoundExclusive(float|int $upper_bound): ToRange
+    {
+        return new self($upper_bound, false);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @return T
      *
      * @psalm-mutation-free
@@ -59,7 +132,7 @@ final class ToRange implements UpperBoundRangeInterface
     {
         return $this->upper_bound;
     }
-
+    
     /**
      * {@inheritDoc}
      *
@@ -68,5 +141,20 @@ final class ToRange implements UpperBoundRangeInterface
     public function isUpperInclusive(): bool
     {
         return $this->upper_inclusive;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static<T>
+     *
+     * @psalm-mutation-free
+     */
+    public function withUpperInclusive(bool $upper_inclusive): static
+    {
+        return new static(
+            $this->upper_bound,
+            $upper_inclusive,
+        );
     }
 }
