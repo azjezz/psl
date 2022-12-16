@@ -92,6 +92,27 @@ const INT16_MAX = 32767;
 const INT16_MIN = -32768;
 
 /**
+ * The maximum integer value representable in a 8-bit binary-coded decimal.
+ *
+ * @var int
+ */
+const INT8_MAX = 128;
+
+/**
+ * The minimum integer value representable in a 8-bit binary-coded decimal.
+ *
+ * @var int
+ */
+const INT8_MIN = -128;
+
+/**
+ * The maximum unsigned integer value representable in a 64-bit binary-coded decimal.
+ *
+ * @var int
+ */
+const UINT64_MAX = 18446744073709551615;
+
+/**
  * The maximum unsigned integer value representable in a 32-bit binary-coded decimal.
  *
  * @var int
@@ -104,3 +125,10 @@ const UINT32_MAX = 4294967295;
  * @var int
  */
 const UINT16_MAX = 65535;
+
+/**
+ * The maximum unsigned integer value representable in a 8-bit binary-coded decimal.
+ *
+ * @var int
+ */
+const UINT8_MAX = 255;

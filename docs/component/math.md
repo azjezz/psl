@@ -22,10 +22,14 @@
 - [INT53_MIN](./../../src/Psl/Math/constants.php#L0)
 - [INT64_MAX](./../../src/Psl/Math/constants.php#L0)
 - [INT64_MIN](./../../src/Psl/Math/constants.php#L0)
+- [INT8_MAX](./../../src/Psl/Math/constants.php#L0)
+- [INT8_MIN](./../../src/Psl/Math/constants.php#L0)
 - [NAN](./../../src/Psl/Math/constants.php#L0)
 - [PI](./../../src/Psl/Math/constants.php#L0)
 - [UINT16_MAX](./../../src/Psl/Math/constants.php#L0)
 - [UINT32_MAX](./../../src/Psl/Math/constants.php#L0)
+- [UINT64_MAX](./../../src/Psl/Math/constants.php#L0)
+- [UINT8_MAX](./../../src/Psl/Math/constants.php#L0)
 
 #### `Functions`
 
