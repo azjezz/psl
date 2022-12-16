@@ -37,8 +37,12 @@ final class Loader
         'Psl\\Math\\INT32_MIN' => 'Psl/Math/constants.php',
         'Psl\\Math\\INT16_MAX' => 'Psl/Math/constants.php',
         'Psl\\Math\\INT16_MIN' => 'Psl/Math/constants.php',
+        'Psl\\Math\\INT8_MAX' => 'Psl/Math/constants.php',
+        'Psl\\Math\\INT8_MIN' => 'Psl/Math/constants.php',
+        'Psl\\Math\\UINT64_MAX' => 'Psl/Math/constants.php',
         'Psl\\Math\\UINT32_MAX' => 'Psl/Math/constants.php',
         'Psl\\Math\\UINT16_MAX' => 'Psl/Math/constants.php',
+        'Psl\\Math\\UINT8_MAX' => 'Psl/Math/constants.php',
         'Psl\\Math\\PI' => 'Psl/Math/constants.php',
         'Psl\\Math\\E' => 'Psl/Math/constants.php',
         'Psl\\Math\\INFINITY' => 'Psl/Math/constants.php',
@@ -481,6 +485,10 @@ final class Loader
         'Psl\\Option\\some' => 'Psl/Option/some.php',
         'Psl\\Option\\none' => 'Psl/Option/none.php',
         'Psl\\Option\\from_nullable' => 'Psl/Option/from_nullable.php',
+        'Psl\\Range\\from' => 'Psl/Range/from.php',
+        'Psl\\Range\\to' => 'Psl/Range/to.php',
+        'Psl\\Range\\between' => 'Psl/Range/between.php',
+        'Psl\\Range\\full' => 'Psl/Range/full.php',
     ];
 
     public const INTERFACES = [
@@ -567,6 +575,9 @@ final class Loader
         'Psl\\Dict\\Exception\\ExceptionInterface' => 'Psl/Dict/Exception/ExceptionInterface.php',
         'Psl\\PseudoRandom\\Exception\\ExceptionInterface' => 'Psl/PseudoRandom/Exception/ExceptionInterface.php',
         'Psl\\Option\\Exception\\ExceptionInterface' => 'Psl/Option/Exception/ExceptionInterface.php',
+        'Psl\\Range\\RangeInterface' => 'Psl/Range/RangeInterface.php',
+        'Psl\\Range\\LowerBoundRangeInterface' => 'Psl/Range/LowerBoundRangeInterface.php',
+        'Psl\\Range\\UpperBoundRangeInterface' => 'Psl/Range/UpperBoundRangeInterface.php',
     ];
 
     public const TRAITS = [
@@ -748,6 +759,10 @@ final class Loader
         'Psl\\Async\\Exception\\InvalidArgumentException' => 'Psl/Async/Exception/InvalidArgumentException.php',
         'Psl\\Option\\Exception\\NoneException' => 'Psl/Option/Exception/NoneException.php',
         'Psl\\Option\\Option' => 'Psl/Option/Option.php',
+        'Psl\\Range\\FromRange' => 'Psl/Range/FromRange.php',
+        'Psl\\Range\\ToRange' => 'Psl/Range/ToRange.php',
+        'Psl\\Range\\BetweenRange' => 'Psl/Range/BetweenRange.php',
+        'Psl\\Range\\FullRange' => 'Psl/Range/FullRange.php',
     ];
 
     public const ENUMS = [
