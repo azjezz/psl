@@ -36,7 +36,7 @@ namespace Psl\Vec;
  *
  * @throws Exception\LogicException If $start < $end, and $step is negative.
  *
- * @return list<T>
+ * @return non-empty-list<T>
  *
  * @psalm-suppress InvalidReturnType
  * @psalm-suppress InvalidReturnStatement
