@@ -19,7 +19,10 @@ use Closure;
  * @param positive-int $size
  * @param (Closure(int): T) $factory
  *
- * @return list<T>
+ * @return non-empty-list<T>
+ *
+ * @psalm-suppress InvalidReturnType
+ * @psalm-suppress InvalidReturnStatement
  */
 function reproduce(int $size, Closure $factory): array
 {
