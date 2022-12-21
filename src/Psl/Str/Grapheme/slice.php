@@ -19,7 +19,7 @@ use Psl\Str;
  * @pure
  *
  * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
- * @throws Str\Exception\InvalidArgumentException If $haystack is not made of grapheme clusters.
+ * @throws Str\Exception\InvalidArgumentException If $string is not made of grapheme clusters.
  */
 function slice(string $string, int $offset, ?int $length = null): string
 {
