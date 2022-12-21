@@ -26,7 +26,7 @@ use Closure;
  * @param iterable<Tk1, Tv> $iterable Iterable to be mapped over
  * @param (Closure(Tk1): Tk2) $function
  *
- * @return array<Tk2, Tv>
+ * @return ($iterable is non-empty-array ? non-empty-array<Tk2, Tv> : array<Tk2, Tv>)
  */
 function map_keys(iterable $iterable, Closure $function): array
 {
