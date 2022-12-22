@@ -35,6 +35,7 @@
 - [ord](./../../src/Psl/Str/Byte/ord.php#L12)
 - [pad_left](./../../src/Psl/Str/Byte/pad_left.php#L24)
 - [pad_right](./../../src/Psl/Str/Byte/pad_right.php#L24)
+- [range](./../../src/Psl/Str/Byte/range.php#L42)
 - [replace](./../../src/Psl/Str/Byte/replace.php#L15)
 - [replace_ci](./../../src/Psl/Str/Byte/replace_ci.php#L15)
 - [replace_every](./../../src/Psl/Str/Byte/replace_every.php#L17)

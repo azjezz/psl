@@ -50,6 +50,7 @@
 - [ord](./../../src/Psl/Str/ord.php#L22)
 - [pad_left](./../../src/Psl/Str/pad_left.php#L34)
 - [pad_right](./../../src/Psl/Str/pad_right.php#L34)
+- [range](./../../src/Psl/Str/range.php#L41)
 - [repeat](./../../src/Psl/Str/repeat.php#L26)
 - [replace](./../../src/Psl/Str/replace.php#L15)
 - [replace_ci](./../../src/Psl/Str/replace_ci.php#L16)

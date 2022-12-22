@@ -7,6 +7,7 @@
     <file>../config</file>
     <file>../tests</file>
 
+    <!-- enums -->
     <exclude-pattern>*/src/Psl/File/(WriteMode|LockType).php</exclude-pattern>
     <exclude-pattern>*/src/Psl/Network/SocketScheme.php</exclude-pattern>
     <exclude-pattern>*/src/Psl/Str/Encoding.php</exclude-pattern>
@@ -16,6 +17,8 @@
     <exclude-pattern>*/src/Psl/OS/OperatingSystemFamily.php</exclude-pattern>
     <exclude-pattern>*/src/Psl/Password/Algorithm.php</exclude-pattern>
     <exclude-pattern>*/src/Psl/Shell/ErrorOutputBehavior.php</exclude-pattern>
+    <!-- file includes a really long string made up of grapheme cluster -->
+    <exclude-pattern>*/tests/unit/Str/Grapheme/RangeTest.php</exclude-pattern>
 
     <arg name="basepath" value="."/>
     <arg name="colors"/>
