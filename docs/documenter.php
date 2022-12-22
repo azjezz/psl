@@ -186,7 +186,6 @@ function get_all_components(): array
 {
     $components = [
         'Psl',
-        'Psl\\Async',
         'Psl\\Channel',
         'Psl\\Class',
         'Psl\\Collection',

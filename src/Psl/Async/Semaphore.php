@@ -44,8 +44,8 @@ final class Semaphore
      * @param (Closure(Tin): Tout) $operation
      */
     public function __construct(
-        private int $concurrencyLimit,
-        private Closure $operation,
+        private readonly int $concurrencyLimit,
+        private readonly Closure $operation,
     ) {
     }
 

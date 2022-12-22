@@ -4,10 +4,15 @@
     Any edits to it will likely be lost.
 -->
 
+# Components
+
+ * [Psl\Async](../src/Psl/Async/README.md)
+
+---
+
 # Components API
 
 - [Psl](./component/psl.md)
-- [Psl\Async](./component/async.md)
 - [Psl\Channel](./component/channel.md)
 - [Psl\Class](./component/class.md)
 - [Psl\Collection](./component/collection.md)

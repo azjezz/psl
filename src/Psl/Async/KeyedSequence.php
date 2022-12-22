@@ -45,7 +45,7 @@ final class KeyedSequence
      * @param (Closure(Tk, Tin): Tout) $operation
      */
     public function __construct(
-        private Closure $operation,
+        private readonly Closure $operation,
     ) {
     }
 

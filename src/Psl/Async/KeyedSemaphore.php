@@ -17,7 +17,8 @@ use function count;
 /**
  * Run an operation with a limit on number of ongoing asynchronous jobs for a specific key.
  *
- * All operations must have the same input type (Tin) and output type (Tout), and be processed by the same function;
+ * All operations must have the same input type (Tin) and output type (Tout), and be processed by the same function.
+ *
  * `Tin` may be a callable invoked by the `$operation` for maximum flexibility,
  * however this pattern is best avoided in favor of creating semaphores with a more narrow process.
  *
@@ -47,15 +48,15 @@ final class KeyedSemaphore
      * @param (Closure(Tk, Tin): Tout) $operation
      */
     public function __construct(
-        private int $concurrencyLimit,
-        private Closure $operation,
+        private readonly int $concurrencyLimit,
+        private readonly Closure $operation,
     ) {
     }
 
     /**
      * Run the operation using the given `$input`.
      *
-     * If the concurrency limit has been reached, this method will wait until one of the ingoing operations has completed.
+     * If the concurrency limit has been reached for the given `$key`, this method will wait until one of the ingoing operations has completed.
      *
      * @param Tk $key
      * @param Tin $input

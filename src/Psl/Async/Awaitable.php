@@ -42,7 +42,7 @@ final class Awaitable implements PromiseInterface
     }
 
     /**
-     * Iterate over the given awaitables in completion order.
+     * Iterate over the given `Awaitable`s in completion order.
      *
      * @template Tk
      * @template Tv
@@ -124,7 +124,6 @@ final class Awaitable implements PromiseInterface
     {
         return $this->state->isComplete();
     }
-
 
     /**
      * {@inheritDoc}
