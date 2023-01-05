@@ -33,7 +33,7 @@ use Psl\Str\Exception;
  * Str\range($string, Range\between(7, 5, true)); // 'World'
  * ```
  *
- * @param RangeInterface<int> $range
+ * @param RangeInterface $range
  *
  * @throws Exception\OutOfBoundsException If the $offset is out-of-bounds.
  * @throws Exception\InvalidArgumentException If $string is not made of grapheme clusters.

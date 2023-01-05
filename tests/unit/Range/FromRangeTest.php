@@ -23,8 +23,6 @@ final class FromRangeTest extends TestCase
         static::assertTrue($range->contains(Math\UINT8_MAX));
         static::assertTrue($range->contains(Math\UINT16_MAX));
         static::assertTrue($range->contains(Math\UINT32_MAX));
-        static::assertTrue($range->contains(Math\UINT64_MAX));
-        static::assertTrue($range->contains(Math\INFINITY));
 
         static::assertFalse($range->contains(99));
         static::assertFalse($range->contains(1));
@@ -42,9 +40,6 @@ final class FromRangeTest extends TestCase
 
         $range = Range\from(2);
         static::assertSame(2, $range->getLowerBound());
-
-        $range = Range\from(-24.24);
-        static::assertSame(-24.24, $range->getLowerBound());
     }
 
     public function testWithers(): void
@@ -92,21 +87,17 @@ final class FromRangeTest extends TestCase
                 break;
             }
         }
-        
-        $range = Range\from(-24.24);
-        $last = null;
-        foreach ($range as $value) {
-            if (null !== $last) {
-                static::assertSame($last + 1, $value);
-            } else {
-                static::assertSame(-24.24, $value);
-            }
+    }
 
-            $last = $value;
-            // break after the 3rd iteration, otherwise we will be here forever.
-            if ($value === -21.24) {
-                break;
-            }
+    public function testOverflow(): void
+    {
+        $range = Range\from(Math\INT64_MAX);
+
+        $this->expectException(Range\Exception\OverflowException::class);
+        $this->expectExceptionMessage('f');
+
+        foreach ($range as $_) {
+            // do nothing.
         }
     }
 }

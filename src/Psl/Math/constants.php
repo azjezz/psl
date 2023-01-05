@@ -106,13 +106,6 @@ const INT8_MAX = 128;
 const INT8_MIN = -128;
 
 /**
- * The maximum unsigned integer value representable in a 64-bit binary-coded decimal.
- *
- * @var int
- */
-const UINT64_MAX = 18446744073709551615;
-
-/**
  * The maximum unsigned integer value representable in a 32-bit binary-coded decimal.
  *
  * @var int

@@ -12,8 +12,6 @@ use Psl\Str\Exception;
 final class RangeTest extends TestCase
 {
     /**
-     * @param Range\RangeInterface<int> $range
-     *
      * @dataProvider provideData
      */
     public function testRange(string $expected, string $string, Range\RangeInterface $range): void
@@ -22,7 +20,7 @@ final class RangeTest extends TestCase
     }
 
     /**
-     * @return list<{0: string, 1: string, 2: Range\RangeInterface<int>}>
+     * @return list<{0: string, 1: string, 2: Range\RangeInterface}>
      */
     public function provideData(): array
     {

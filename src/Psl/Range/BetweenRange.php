@@ -30,11 +30,6 @@ use Psl\Iter;
  * }
  * ```
  *
- * @template T of int|float
- *
- * @implements LowerBoundRangeInterface<T>
- * @implements UpperBoundRangeInterface<T>
- *
  * @see RangeInterface::contains()
  * @see RangeInterface::withLowerBound()
  * @see RangeInterface::withUpperBound()
@@ -48,26 +43,29 @@ use Psl\Iter;
 final class BetweenRange implements LowerBoundRangeInterface, UpperBoundRangeInterface
 {
     /**
-     * @param T $lower_bound
-     * @param T $upper_bound
+     * @throws Exception\InvalidRangeException If the lower bound is greater than the upper bound.
      *
      * @psalm-mutation-free
      */
     public function __construct(
-        private readonly int|float $lower_bound,
-        private readonly int|float $upper_bound,
+        private readonly int $lower_bound,
+        private readonly int $upper_bound,
         private readonly bool $upper_inclusive = false,
     ) {
+        if ($this->lower_bound > $this->upper_bound) {
+            throw Exception\InvalidRangeException::lowerBoundIsGreaterThanUpperBound(
+                $this->lower_bound,
+                $this->upper_bound
+            );
+        }
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param T $value
-     *
      * @psalm-mutation-free
      */
-    public function contains(int|float $value): bool
+    public function contains(int $value): bool
     {
         if ($value < $this->lower_bound) {
             return false;
@@ -83,13 +81,11 @@ final class BetweenRange implements LowerBoundRangeInterface, UpperBoundRangeInt
     /**
      * {@inheritDoc}
      *
-     * @param T $upper_bound
-     *
-     * @return BetweenRange<T>
+     * @throws Exception\InvalidRangeException If the lower bound is greater than the upper bound.
      *
      * @psalm-mutation-free
      */
-    public function withUpperBound(float|int $upper_bound, bool $upper_inclusive): BetweenRange
+    public function withUpperBound(int $upper_bound, bool $upper_inclusive): BetweenRange
     {
         return new BetweenRange(
             $this->lower_bound,
@@ -101,13 +97,11 @@ final class BetweenRange implements LowerBoundRangeInterface, UpperBoundRangeInt
     /**
      * {@inheritDoc}
      *
-     * @param T $upper_bound
-     *
-     * @return BetweenRange<T>
+     * @throws Exception\InvalidRangeException If the lower bound is greater than the upper bound.
      *
      * @psalm-mutation-free
      */
-    public function withUpperBoundInclusive(float|int $upper_bound): BetweenRange
+    public function withUpperBoundInclusive(int $upper_bound): BetweenRange
     {
         return new BetweenRange(
             $this->lower_bound,
@@ -119,13 +113,11 @@ final class BetweenRange implements LowerBoundRangeInterface, UpperBoundRangeInt
     /**
      * {@inheritDoc}
      *
-     * @param T $upper_bound
-     *
-     * @return BetweenRange<T>
+     * @throws Exception\InvalidRangeException If the lower bound is greater than the upper bound.
      *
      * @psalm-mutation-free
      */
-    public function withUpperBoundExclusive(float|int $upper_bound): BetweenRange
+    public function withUpperBoundExclusive(int $upper_bound): BetweenRange
     {
         return new BetweenRange(
             $this->lower_bound,
@@ -137,8 +129,6 @@ final class BetweenRange implements LowerBoundRangeInterface, UpperBoundRangeInt
     /**
      * {@inheritDoc}
      *
-     * @return ToRange<T>
-     *
      * @psalm-mutation-free
      */
     public function withoutLowerBound(): ToRange
@@ -149,13 +139,11 @@ final class BetweenRange implements LowerBoundRangeInterface, UpperBoundRangeInt
     /**
      * {@inheritDoc}
      *
-     * @param T $lower_bound
-     *
-     * @return BetweenRange<T>
+     * @throws Exception\InvalidRangeException If the lower bound is greater than the upper bound.
      *
      * @psalm-mutation-free
      */
-    public function withLowerBound(int|float $lower_bound): BetweenRange
+    public function withLowerBound(int $lower_bound): BetweenRange
     {
         return new static(
             $lower_bound,
@@ -167,8 +155,6 @@ final class BetweenRange implements LowerBoundRangeInterface, UpperBoundRangeInt
     /**
      * {@inheritDoc}
      *
-     * @return FromRange<T>
-     *
      * @psalm-mutation-free
      */
     public function withoutUpperBound(): FromRange
@@ -179,11 +165,9 @@ final class BetweenRange implements LowerBoundRangeInterface, UpperBoundRangeInt
     /**
      * {@inheritDoc}
      *
-     * @return T
-     *
      * @psalm-mutation-free
      */
-    public function getUpperBound(): int|float
+    public function getUpperBound(): int
     {
         return $this->upper_bound;
     }
@@ -201,12 +185,11 @@ final class BetweenRange implements LowerBoundRangeInterface, UpperBoundRangeInt
     /**
      * {@inheritDoc}
      *
-     * @return static<T>
-     *
      * @psalm-mutation-free
      */
     public function withUpperInclusive(bool $upper_inclusive): static
     {
+        /** @psalm-suppress MissingThrowsDocblock */
         return new static(
             $this->lower_bound,
             $this->upper_bound,
@@ -217,11 +200,9 @@ final class BetweenRange implements LowerBoundRangeInterface, UpperBoundRangeInt
     /**
      * {@inheritDoc}
      *
-     * @return T
-     *
      * @psalm-mutation-free
      */
-    public function getLowerBound(): int|float
+    public function getLowerBound(): int
     {
         return $this->lower_bound;
     }
@@ -229,7 +210,7 @@ final class BetweenRange implements LowerBoundRangeInterface, UpperBoundRangeInt
     /**
      * {@inheritDoc}
      *
-     * @return Iter\Iterator<int, T>
+     * @return Iter\Iterator<int, int>
      *
      * @psalm-mutation-free
      *
@@ -248,9 +229,8 @@ final class BetweenRange implements LowerBoundRangeInterface, UpperBoundRangeInt
 
         return Iter\Iterator::from(static function () use ($lower, $upper, $inclusive): Generator {
             $to = $inclusive ? $upper : $upper - 1;
-            
+
             for ($i = $lower; $i <= $to; $i++) {
-                /** @var T $i */
                 yield $i;
             }
         });

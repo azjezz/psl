@@ -22,7 +22,6 @@ final class FullRangeTest extends TestCase
         static::assertTrue($range->contains(Math\INT32_MIN));
         static::assertTrue($range->contains(Math\INT53_MIN));
         static::assertTrue($range->contains(Math\INT64_MIN));
-        static::assertTrue($range->contains(-Math\INFINITY));
         static::assertTrue($range->contains(Math\INT8_MAX));
         static::assertTrue($range->contains(Math\INT16_MAX));
         static::assertTrue($range->contains(Math\INT32_MAX));
@@ -31,8 +30,6 @@ final class FullRangeTest extends TestCase
         static::assertTrue($range->contains(Math\UINT8_MAX));
         static::assertTrue($range->contains(Math\UINT16_MAX));
         static::assertTrue($range->contains(Math\UINT32_MAX));
-        static::assertTrue($range->contains(Math\UINT64_MAX));
-        static::assertTrue($range->contains(Math\INFINITY));
     }
 
     public function testWithers(): void
