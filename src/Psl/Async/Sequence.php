@@ -39,7 +39,7 @@ final class Sequence
      * @param (Closure(Tin): Tout) $operation
      */
     public function __construct(
-        private Closure $operation,
+        private readonly Closure $operation,
     ) {
     }
 
