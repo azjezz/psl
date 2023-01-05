@@ -212,7 +212,6 @@ function get_all_components(): array
         'Psl\\Promise',
         'Psl\\PseudoRandom',
         'Psl\\RandomSequence',
-        'Psl\\Range',
         'Psl\\Regex',
         'Psl\\Result',
         'Psl\\Runtime',

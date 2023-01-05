@@ -6,12 +6,10 @@ namespace Psl\Range;
 
 use IteratorAggregate;
 use Psl\Iter;
+use Psl\Math;
 
 /**
- * @template T of int|float
- *
- * @extends RangeInterface<T>
- * @extends IteratorAggregate<int, T>
+ * @extends IteratorAggregate<int, int>
  *
  * @immutable
  */
@@ -20,40 +18,32 @@ interface LowerBoundRangeInterface extends IteratorAggregate, RangeInterface
     /**
      * {@inheritDoc}
      *
-     * @param T $upper_bound
-     *
-     * @return UpperBoundRangeInterface<T>&LowerBoundRangeInterface<T>
+     * @throws Exception\InvalidRangeException If the lower bound is greater than the upper bound.
      *
      * @psalm-mutation-free
      */
-    public function withUpperBound(int|float $upper_bound, bool $upper_inclusive): UpperBoundRangeInterface&LowerBoundRangeInterface;
+    public function withUpperBound(int $upper_bound, bool $upper_inclusive): UpperBoundRangeInterface&LowerBoundRangeInterface;
 
     /**
      * {@inheritDoc}
      *
-     * @param T $upper_bound
-     *
-     * @return UpperBoundRangeInterface<T>&LowerBoundRangeInterface<T>
+     * @throws Exception\InvalidRangeException If the lower bound is greater than the upper bound.
      *
      * @psalm-mutation-free
      */
-    public function withUpperBoundInclusive(int|float $upper_bound): UpperBoundRangeInterface&LowerBoundRangeInterface;
+    public function withUpperBoundInclusive(int $upper_bound): UpperBoundRangeInterface&LowerBoundRangeInterface;
 
     /**
      * {@inheritDoc}
      *
-     * @param T $upper_bound
-     *
-     * @return UpperBoundRangeInterface<T>&LowerBoundRangeInterface<T>
+     * @throws Exception\InvalidRangeException If the lower bound is greater than the upper bound.
      *
      * @psalm-mutation-free
      */
-    public function withUpperBoundExclusive(int|float $upper_bound): UpperBoundRangeInterface&LowerBoundRangeInterface;
+    public function withUpperBoundExclusive(int $upper_bound): UpperBoundRangeInterface&LowerBoundRangeInterface;
 
     /**
      * Remove the lower bound from the range.
-     *
-     * @return RangeInterface<T>
      *
      * @psalm-mutation-free
      */
@@ -62,20 +52,18 @@ interface LowerBoundRangeInterface extends IteratorAggregate, RangeInterface
     /**
      * Returns the lower bound of the range.
      *
-     * @return T
-     *
      * @psalm-mutation-free
      */
-    public function getLowerBound(): int|float;
+    public function getLowerBound(): int;
     
     /**
      * Returns an iterator for the range.
      *
      * If this range has no upper bound, the iterator will be infinite.
      *
-     * Iterating over an infinite range is considered an undefined behavior.
+     * If {@see Math\INT64_MAX} is reached while iterating, {@see Exception\OverflowException} will be thrown.
      *
-     * @return Iter\Iterator<int, T>
+     * @return Iter\Iterator<int, int>
      *
      * @psalm-mutation-free
      */

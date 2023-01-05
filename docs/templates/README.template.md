@@ -7,6 +7,7 @@
 # Components
 
  * [Psl\Async](../src/Psl/Async/README.md)
+ * [Psl\Range](../src/Psl/Range/README.md)
 
 ---
 

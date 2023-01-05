@@ -22,7 +22,6 @@ final class ToRangeTest extends TestCase
         static::assertTrue($range->contains(Math\INT32_MIN));
         static::assertTrue($range->contains(Math\INT53_MIN));
         static::assertTrue($range->contains(Math\INT64_MIN));
-        static::assertTrue($range->contains(-Math\INFINITY));
 
         static::assertFalse($range->contains(Math\INT8_MAX));
         static::assertFalse($range->contains(Math\INT16_MAX));
@@ -32,8 +31,6 @@ final class ToRangeTest extends TestCase
         static::assertFalse($range->contains(Math\UINT8_MAX));
         static::assertFalse($range->contains(Math\UINT16_MAX));
         static::assertFalse($range->contains(Math\UINT32_MAX));
-        static::assertFalse($range->contains(Math\UINT64_MAX));
-        static::assertFalse($range->contains(Math\INFINITY));
 
         $range = Range\to(100, inclusive: false);
 
@@ -45,7 +42,6 @@ final class ToRangeTest extends TestCase
         static::assertTrue($range->contains(Math\INT32_MIN));
         static::assertTrue($range->contains(Math\INT53_MIN));
         static::assertTrue($range->contains(Math\INT64_MIN));
-        static::assertTrue($range->contains(-Math\INFINITY));
 
         $range = Range\to(100);
 
@@ -57,8 +53,7 @@ final class ToRangeTest extends TestCase
         static::assertTrue($range->contains(Math\INT32_MIN));
         static::assertTrue($range->contains(Math\INT53_MIN));
         static::assertTrue($range->contains(Math\INT64_MIN));
-        static::assertTrue($range->contains(-Math\INFINITY));
-        
+
         $range = new Range\ToRange(100, upper_inclusive: true);
 
         static::assertTrue($range->contains(100));
@@ -69,7 +64,6 @@ final class ToRangeTest extends TestCase
         static::assertTrue($range->contains(Math\INT32_MIN));
         static::assertTrue($range->contains(Math\INT53_MIN));
         static::assertTrue($range->contains(Math\INT64_MIN));
-        static::assertTrue($range->contains(-Math\INFINITY));
 
         static::assertFalse($range->contains(Math\INT8_MAX));
         static::assertFalse($range->contains(Math\INT16_MAX));
@@ -79,8 +73,6 @@ final class ToRangeTest extends TestCase
         static::assertFalse($range->contains(Math\UINT8_MAX));
         static::assertFalse($range->contains(Math\UINT16_MAX));
         static::assertFalse($range->contains(Math\UINT32_MAX));
-        static::assertFalse($range->contains(Math\UINT64_MAX));
-        static::assertFalse($range->contains(Math\INFINITY));
 
         $range = new Range\ToRange(100, upper_inclusive: false);
 
@@ -92,7 +84,6 @@ final class ToRangeTest extends TestCase
         static::assertTrue($range->contains(Math\INT32_MIN));
         static::assertTrue($range->contains(Math\INT53_MIN));
         static::assertTrue($range->contains(Math\INT64_MIN));
-        static::assertTrue($range->contains(-Math\INFINITY));
 
         $range = new Range\ToRange(100);
 
@@ -104,7 +95,6 @@ final class ToRangeTest extends TestCase
         static::assertTrue($range->contains(Math\INT32_MIN));
         static::assertTrue($range->contains(Math\INT53_MIN));
         static::assertTrue($range->contains(Math\INT64_MIN));
-        static::assertTrue($range->contains(-Math\INFINITY));
     }
     
     public function testIsInclusive(): void
@@ -166,8 +156,5 @@ final class ToRangeTest extends TestCase
 
         $range = Range\to(2, inclusive: true);
         static::assertSame(2, $range->getUpperBound());
-
-        $range = Range\to(-24.24, inclusive: true);
-        static::assertSame(-24.24, $range->getUpperBound());
     }
 }

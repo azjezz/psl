@@ -33,7 +33,7 @@ use Psl\Str\Exception;
  * Byte\range($string, Range\between(7, 5, true)); // 'World'
  * ```
  *
- * @param RangeInterface<int> $range
+ * @param RangeInterface $range
  *
  * @throws Exception\OutOfBoundsException If the $offset is out-of-bounds.
  *

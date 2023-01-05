@@ -27,7 +27,6 @@ final class BetweenRangeTest extends TestCase
         static::assertFalse($range->contains(Math\INT32_MIN));
         static::assertFalse($range->contains(Math\INT53_MIN));
         static::assertFalse($range->contains(Math\INT64_MIN));
-        static::assertFalse($range->contains(-Math\INFINITY));
         static::assertFalse($range->contains(Math\INT32_MAX));
         static::assertFalse($range->contains(Math\INT53_MAX));
         static::assertFalse($range->contains(Math\INT64_MAX));
@@ -59,7 +58,6 @@ final class BetweenRangeTest extends TestCase
         static::assertFalse($range->contains(Math\INT32_MIN));
         static::assertFalse($range->contains(Math\INT53_MIN));
         static::assertFalse($range->contains(Math\INT64_MIN));
-        static::assertFalse($range->contains(-Math\INFINITY));
         static::assertFalse($range->contains(Math\INT32_MAX));
         static::assertFalse($range->contains(Math\INT53_MAX));
         static::assertFalse($range->contains(Math\INT64_MAX));
@@ -198,5 +196,20 @@ final class BetweenRangeTest extends TestCase
         }
 
         static::assertSame($expected, $actual);
+    }
+
+    public function testInvalidRange(): void
+    {
+        $this->expectException(Range\Exception\InvalidRangeException::class);
+        $this->expectExceptionMessage('`$lower_bound` (10) must be less than or equal to `$upper_bound` (5).');
+
+        try {
+            Range\between(10, 5);
+        } catch (Range\Exception\InvalidRangeException $e) {
+            static::assertSame(10, $e->getLowerBound());
+            static::assertSame(5, $e->getUpperBound());
+
+            throw $e;
+        }
     }
 }

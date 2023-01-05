@@ -7,11 +7,7 @@ namespace Psl\Range;
 /**
  * A `ToRange` is a range that contains all values up to the upper bound.
  *
- * This range cannot serve as an Iterator because it doesn’t have a starting point.
- *
- * @template T of int|float
- *
- * @implements UpperBoundRangeInterface<T>
+ * This range cannot serve as an Iterator because it does not have a starting point.
  *
  * @see RangeInterface::contains()
  * @see UpperBoundRangeInterface::getUpperBound()
@@ -22,12 +18,10 @@ namespace Psl\Range;
 final class ToRange implements UpperBoundRangeInterface
 {
     /**
-     * @param T $upper_bound
-     *
      * @psalm-mutation-free
      */
     public function __construct(
-        private readonly int|float $upper_bound,
+        private readonly int $upper_bound,
         private readonly bool $upper_inclusive = false,
     ) {
     }
@@ -35,11 +29,9 @@ final class ToRange implements UpperBoundRangeInterface
     /**
      * {@inheritDoc}
      *
-     * @param T $value
-     *
      * @psalm-mutation-free
      */
-    public function contains(int|float $value): bool
+    public function contains(int $value): bool
     {
         if ($this->upper_inclusive) {
             return $value <= $this->upper_bound;
@@ -51,13 +43,11 @@ final class ToRange implements UpperBoundRangeInterface
     /**
      * {@inheritDoc}
      *
-     * @param T $lower_bound
-     *
-     * @return BetweenRange<T>
+     * @throws Exception\InvalidRangeException If the lower bound is greater than the upper bound.
      *
      * @psalm-mutation-free
      */
-    public function withLowerBound(int|float $lower_bound): BetweenRange
+    public function withLowerBound(int $lower_bound): BetweenRange
     {
         return new BetweenRange(
             $lower_bound,
@@ -69,26 +59,19 @@ final class ToRange implements UpperBoundRangeInterface
     /**
      * {@inheritDoc}
      *
-     * @return FullRange<T>
-     *
      * @psalm-mutation-free
      */
     public function withoutUpperBound(): FullRange
     {
-        /** @var FullRange<T> */
         return new FullRange();
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param T $upper_bound
-     *
-     * @return ToRange<T>
-     *
      * @psalm-mutation-free
      */
-    public function withUpperBound(float|int $upper_bound, bool $upper_inclusive): ToRange
+    public function withUpperBound(int $upper_bound, bool $upper_inclusive): ToRange
     {
         return new self($upper_bound, $upper_inclusive);
     }
@@ -96,13 +79,9 @@ final class ToRange implements UpperBoundRangeInterface
     /**
      * {@inheritDoc}
      *
-     * @param T $upper_bound
-     *
-     * @return ToRange<T>
-     *
      * @psalm-mutation-free
      */
-    public function withUpperBoundInclusive(float|int $upper_bound): ToRange
+    public function withUpperBoundInclusive(int $upper_bound): ToRange
     {
         return new self($upper_bound, true);
     }
@@ -110,13 +89,9 @@ final class ToRange implements UpperBoundRangeInterface
     /**
      * {@inheritDoc}
      *
-     * @param T $upper_bound
-     *
-     * @return ToRange<T>
-     *
      * @psalm-mutation-free
      */
-    public function withUpperBoundExclusive(float|int $upper_bound): ToRange
+    public function withUpperBoundExclusive(int $upper_bound): ToRange
     {
         return new self($upper_bound, false);
     }
@@ -124,11 +99,9 @@ final class ToRange implements UpperBoundRangeInterface
     /**
      * {@inheritDoc}
      *
-     * @return T
-     *
      * @psalm-mutation-free
      */
-    public function getUpperBound(): int|float
+    public function getUpperBound(): int
     {
         return $this->upper_bound;
     }
@@ -145,8 +118,6 @@ final class ToRange implements UpperBoundRangeInterface
 
     /**
      * {@inheritDoc}
-     *
-     * @return static<T>
      *
      * @psalm-mutation-free
      */
