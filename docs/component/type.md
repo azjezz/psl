@@ -32,6 +32,7 @@
 - [non_empty_dict](./../../src/Psl/Type/non_empty_dict.php#L16)
 - [non_empty_string](./../../src/Psl/Type/non_empty_string.php#L10)
 - [non_empty_vec](./../../src/Psl/Type/non_empty_vec.php#L14)
+- [nonnull](./../../src/Psl/Type/nonnull.php#L12)
 - [null](./../../src/Psl/Type/null.php#L10)
 - [nullable](./../../src/Psl/Type/nullable.php#L14)
 - [num](./../../src/Psl/Type/num.php#L10)
