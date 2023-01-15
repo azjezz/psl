@@ -1,5 +1,23 @@
 # Changelog
 
+## 3.0.0
+
+### features
+
+* introduced a new `Psl\Range` component - by @azjezz
+* introduced a new `Psl\Str\range` function - by @azjezz
+* introduced a new `Psl\Str\Byte\range` function - by @azjezz
+* introduced a new `Psl\Str\Grapheme\range` function - by @azjezz
+* introduced a new `Psl\Type\uint` function - by @azjezz
+* introduced a new `Psl\Type\i8` function - by @azjezz
+* introduced a new `Psl\Type\i16` function - by @azjezz
+* introduced a new `Psl\Type\i32` function - by @azjezz
+* introduced a new `Psl\Type\i64` function - by @azjezz
+
+### deprecations
+
+* deprecated `Psl\Type\positive_int` function, use `Psl\Type\uint` instead - by @azjezz
+
 ## 2.1.0
 
 ### features
