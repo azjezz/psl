@@ -61,7 +61,7 @@ final class VecType extends Type\Type
         /** @var Type\Type<Tv> $value_type */
         $value_type = $this->value_type->withTrace(
             $this->getTrace()
-                ->withFrame('vec<' . $this->value_type->toString() . '>')
+                ->withFrame($this->toString())
         );
 
         /**

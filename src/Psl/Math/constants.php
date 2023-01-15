@@ -96,7 +96,7 @@ const INT16_MIN = -32768;
  *
  * @var int
  */
-const INT8_MAX = 128;
+const INT8_MAX = 127;
 
 /**
  * The minimum integer value representable in a 8-bit binary-coded decimal.
