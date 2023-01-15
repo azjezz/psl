@@ -6,6 +6,8 @@ namespace Psl\Type;
 
 /**
  * @return TypeInterface<positive-int>
+ *
+ * @deprecated use {@see uint} instead.
  */
 function positive_int(): TypeInterface
 {
