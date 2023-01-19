@@ -125,3 +125,31 @@ const UINT16_MAX = 65535;
  * @var int
  */
 const UINT8_MAX = 255;
+
+/**
+ * The maximum floating point value representable in a 32-bit binary-coded decimal.
+ *
+ * @var float
+ */
+const FLOAT32_MAX = 3.40282347E+38;
+
+/**
+ * The minimum floating point value representable in a 32-bit binary-coded decimal.
+ *
+ * @var float
+ */
+const FLOAT32_MIN = -3.40282347E+38;
+
+/**
+ * The maximum floating point value representable in a 64-bit binary-coded decimal.
+ *
+ * @var float
+ */
+const FLOAT64_MAX = 1.7976931348623157E+308;
+
+/**
+ * The minimum floating point value representable in a 64-bit binary-coded decimal.
+ *
+ * @var float
+ */
+const FLOAT64_MIN = -1.7976931348623157E+308;

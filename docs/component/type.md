@@ -16,6 +16,8 @@
 - [backed_enum](./../../src/Psl/Type/backed_enum.php#L16)
 - [bool](./../../src/Psl/Type/bool.php#L10)
 - [dict](./../../src/Psl/Type/dict.php#L16)
+- [f32](./../../src/Psl/Type/f32.php#L12)
+- [f64](./../../src/Psl/Type/f64.php#L12)
 - [float](./../../src/Psl/Type/float.php#L10)
 - [i16](./../../src/Psl/Type/i16.php#L12)
 - [i32](./../../src/Psl/Type/i32.php#L12)

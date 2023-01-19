@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Psl\Math;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -26,7 +27,7 @@ final class F32Type extends Type\Type
      */
     public function matches(mixed $value): bool
     {
-        return Type\float()->matches($value);
+        return is_float($value) && $value >= MATH\FLOAT32_MIN && $value <= MATH\FLOAT32_MAX;
     }
 
     /**
@@ -34,13 +35,19 @@ final class F32Type extends Type\Type
      *
      * @ara-return f32
      *
-     * @return float
+     * @return float $value
      */
     public function coerce(mixed $value): float
     {
-        return Type\float()
+        $float = Type\float()
             ->withTrace($this->getTrace()->withFrame($this->toString()))
             ->coerce($value);
+
+        if ($float >= MATH\FLOAT32_MIN && $float <= MATH\FLOAT32_MAX) {
+            return $float;
+        }
+
+        throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
     }
 
     /**
@@ -56,7 +63,11 @@ final class F32Type extends Type\Type
      */
     public function assert(mixed $value): float
     {
-        return Type\float()->assert($value);
+        if (is_float($value) && $value >= MATH\FLOAT32_MIN && $value <= MATH\FLOAT32_MAX) {
+            return $value;
+        }
+
+        throw AssertException::withValue($value, $this->toString(), $this->getTrace());
     }
 
     public function toString(): string
