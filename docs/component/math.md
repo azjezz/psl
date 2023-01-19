@@ -13,6 +13,10 @@
 #### `Constants`
 
 - [E](./../../src/Psl/Math/constants.php#L0)
+- [FLOAT32_MAX](./../../src/Psl/Math/constants.php#L0)
+- [FLOAT32_MIN](./../../src/Psl/Math/constants.php#L0)
+- [FLOAT64_MAX](./../../src/Psl/Math/constants.php#L0)
+- [FLOAT64_MIN](./../../src/Psl/Math/constants.php#L0)
 - [INFINITY](./../../src/Psl/Math/constants.php#L0)
 - [INT16_MAX](./../../src/Psl/Math/constants.php#L0)
 - [INT16_MIN](./../../src/Psl/Math/constants.php#L0)
