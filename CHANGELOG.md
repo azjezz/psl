@@ -13,6 +13,11 @@
 * introduced a new `Psl\Type\i16` function - by @azjezz
 * introduced a new `Psl\Type\i32` function - by @azjezz
 * introduced a new `Psl\Type\i64` function - by @azjezz
+* introduced a new `Psl\Type\u32` function - by @KennedyTedesco
+* introduced a new `Psl\Type\u16` function - by @KennedyTedesco
+* introduced a new `Psl\Type\u8` function - by @KennedyTedesco
+* introduced a new `Psl\Type\f64` function - by @KennedyTedesco
+* introduced a new `Psl\Type\f32` function - by @KennedyTedesco
 
 ### deprecations
 
