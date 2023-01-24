@@ -98,9 +98,11 @@ final class Option
      * @note:   Arguments passed to `Option::unwrapOr()` are eagerly evaluated;
      *          if you are passing the result of a function call, it is recommended to use `Option::unwrapOrElse()`, which is lazily evaluated.
      *
-     * @param T $default
+     * @template O
      *
-     * @return T
+     * @param O $default
+     *
+     * @return T|O
      */
     public function unwrapOr(mixed $default): mixed
     {
@@ -114,9 +116,11 @@ final class Option
     /**
      * Returns the contained some value or computes it from a closure.
      *
-     * @param (Closure(): T) $default
+     * @template O
      *
-     * @return T
+     * @param (Closure(): O) $default
+     *
+     * @return T|O
      */
     public function unwrapOrElse(Closure $default): mixed
     {
@@ -209,6 +213,25 @@ final class Option
     {
         if ($this->option !== null) {
             return some($closure($this->option[0]));
+        }
+
+        /** @var Option<Tu> */
+        return $this;
+    }
+
+    /**
+     * Maps an `Option<T>` to `Option<Tu>` by applying a function to a contained value that returns an Option<Tu>.
+     *
+     * @template Tu
+     *
+     * @param (Closure(T): Option<Tu>) $closure
+     *
+     * @return Option<Tu>
+     */
+    public function andThen(Closure $closure): Option
+    {
+        if ($this->option !== null) {
+            return $closure($this->option[0]);
         }
 
         /** @var Option<Tu> */

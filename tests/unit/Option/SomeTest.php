@@ -98,4 +98,11 @@ final class SomeTest extends TestCase
 
         static::assertSame(3, $option->mapOrElse(static fn($i) => $i + 1, static fn() => 4)->unwrap());
     }
+
+    public function testAndThen(): void
+    {
+        $option = Option\some(2);
+
+        static::assertSame(3, $option->andThen(static fn($i) => Option\some($i + 1))->unwrapOr(null));
+    }
 }
