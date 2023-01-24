@@ -101,4 +101,11 @@ final class NoneTest extends TestCase
 
         static::assertSame(4, $option->mapOrElse(static fn($i) => $i + 1, static fn() => 4)->unwrap());
     }
+
+    public function testAndThen(): void
+    {
+        $option = Option\none();
+
+        static::assertNull($option->andThen(static fn($i) => Option\some($i + 1))->unwrapOr(null));
+    }
 }
