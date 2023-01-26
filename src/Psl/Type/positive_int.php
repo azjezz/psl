@@ -7,7 +7,7 @@ namespace Psl\Type;
 /**
  * @return TypeInterface<positive-int>
  *
- * @deprecated use {@see uint} instead.
+ * @ara-return TypeInterface<0|uint>
  */
 function positive_int(): TypeInterface
 {
