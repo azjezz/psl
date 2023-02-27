@@ -42,9 +42,7 @@ function create_hard_link(string $source, string $destination): void
             namespace\delete_file($destination);
         }
     } else {
-        namespace\create_directory(
-            namespace\get_directory($destination)
-        );
+        namespace\create_directory_for_file($destination);
     }
 
     [$result, $error_message] = Internal\box(static fn() => link($source, $destination));

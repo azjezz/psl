@@ -25,8 +25,7 @@ function create_symbolic_link(string $source, string $destination): void
         throw Exception\NotFoundException::forNode($source);
     }
 
-    $destination_directory = namespace\get_directory($destination);
-    namespace\create_directory($destination_directory);
+    namespace\create_directory_for_file($destination);
 
     try {
         if (namespace\read_symbolic_link($destination) === $source) {

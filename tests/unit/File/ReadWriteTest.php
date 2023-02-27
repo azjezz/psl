@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\File;
 
+use Psl\Env;
 use Psl\File;
 use Psl\Filesystem;
+use Psl\OS;
 use Psl\Str;
 use Psl\Tests\Unit\Filesystem\AbstractFilesystemTest;
 
@@ -121,5 +123,22 @@ final class ReadWriteTest extends AbstractFilesystemTest
         $content = File\read($file, 84, 16);
 
         static::assertSame('PHP programmers.', $content);
+    }
+
+    public function testThrowsWhenDirectoryCreationFails(): void
+    {
+        if (OS\is_windows()) {
+            static::markTestSkipped('Permissions are not reliable on windows.');
+        }
+
+        $target_directory = Env\temp_dir() . DIRECTORY_SEPARATOR . 'you-shall-not-pass';
+        Filesystem\create_directory($target_directory, 0000);
+
+        $target_file = $target_directory . DIRECTORY_SEPARATOR . 'fails-on-subdir-creation' . DIRECTORY_SEPARATOR . 'somefile.txt';
+
+        $this->expectException(File\Exception\RuntimeException::class);
+        $this->expectExceptionMessage('Failed to create the directory for file "' . $target_file . '".');
+
+        new File\ReadWriteHandle($target_file, File\WriteMode::MUST_CREATE);
     }
 }

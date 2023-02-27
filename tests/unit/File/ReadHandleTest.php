@@ -26,4 +26,13 @@ final class ReadHandleTest extends TestCase
 
         static::assertSame('hello, world!', $content);
     }
+
+    public function testNonExisting(): void
+    {
+        $temporary_file = Filesystem\create_temporary_file();
+        Filesystem\delete_file($temporary_file);
+
+        $this->expectException(File\Exception\NotFoundException::class);
+        File\open_read_only($temporary_file);
+    }
 }

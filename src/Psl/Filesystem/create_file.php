@@ -33,8 +33,7 @@ function create_file(string $filename, ?int $time = null, ?int $access_time = nu
         $fun = static fn(): bool => touch($filename, $time, Math\maxva($access_time, $time));
     }
 
-    $directory = namespace\get_directory($filename);
-    namespace\create_directory($directory);
+    namespace\create_directory_for_file($filename);
 
     [$result, $error_message] = Internal\box($fun);
     // @codeCoverageIgnoreStart

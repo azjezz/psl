@@ -6,6 +6,7 @@ namespace Psl\File;
 
 use Psl\Filesystem;
 use Psl\IO;
+use Psl\Str;
 
 final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteHandleInterface
 {
@@ -19,7 +20,8 @@ final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteH
      * @throws Exception\NotFileException If $file points to a non-file node on the filesystem.
      * @throws Exception\AlreadyCreatedException If $file is already created, and $write_mode is {@see WriteMode::MUST_CREATE}.
      * @throws Exception\NotFoundException If $file does not exist, and $write_mode is {@see WriteMode::TRUNCATE} or {@see WriteMode::APPEND}.
-     * @throws Exception\NotWritableException If $file exists, and is non-writable.
+     * @throws Exception\NotWritableException If $file is non-writable.
+     * @throws Exception\RuntimeException If unable to create the $file if it does not exist.
      */
     public function __construct(string $file, WriteMode $write_mode = WriteMode::OPEN_OR_CREATE)
     {
@@ -28,19 +30,24 @@ final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteH
             throw Exception\NotFileException::for($file);
         }
 
-        $open_or_create = $write_mode === WriteMode::OPEN_OR_CREATE || $write_mode === WriteMode::TRUNCATE;
         $must_create = $write_mode === WriteMode::MUST_CREATE;
         if ($must_create && $is_file) {
             throw Exception\AlreadyCreatedException::for($file);
         }
 
-        $creating = $open_or_create || $must_create;
-        if (!$creating && !$is_file) {
-            throw Exception\NotFoundException::for($file);
+        if ($is_file && !Filesystem\is_writable($file)) {
+            throw Exception\NotWritableException::for($file);
         }
 
-        if ((!$creating || ($open_or_create && $is_file)) && !Filesystem\is_writable($file)) {
-            throw Exception\NotWritableException::for($file);
+        if (!$is_file) {
+            try {
+                $directory = Filesystem\create_directory_for_file($file);
+                if (!Filesystem\is_writable($directory)) {
+                    throw Exception\NotWritableException::for($file);
+                }
+            } catch (Filesystem\Exception\RuntimeException $previous) {
+                throw new Exception\RuntimeException(Str\format('Failed to create the directory for file "%s".', $file), previous: $previous);
+            }
         }
 
         $this->writeHandle = Internal\open($file, $write_mode->value, read: false, write: true);

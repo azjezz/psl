@@ -414,6 +414,7 @@ final class Loader
         'Psl\\Filesystem\\change_permissions' => 'Psl/Filesystem/change_permissions.php',
         'Psl\\Filesystem\\copy' => 'Psl/Filesystem/copy.php',
         'Psl\\Filesystem\\create_directory' => 'Psl/Filesystem/create_directory.php',
+        'Psl\\Filesystem\\create_directory_for_file' => 'Psl/Filesystem/create_directory_for_file.php',
         'Psl\\Filesystem\\create_file' => 'Psl/Filesystem/create_file.php',
         'Psl\\Filesystem\\delete_directory' => 'Psl/Filesystem/delete_directory.php',
         'Psl\\Filesystem\\delete_file' => 'Psl/Filesystem/delete_file.php',
