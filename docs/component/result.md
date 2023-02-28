@@ -14,6 +14,7 @@
 
 - [collect_stats](./../../src/Psl/Result/collect_stats.php#L14)
 - [reflect](./../../src/Psl/Result/reflect.php#L24)
+- [try_catch](./../../src/Psl/Result/try_catch.php#L24)
 - [wrap](./../../src/Psl/Result/wrap.php#L20)
 
 #### `Interfaces`

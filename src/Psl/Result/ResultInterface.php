@@ -22,6 +22,68 @@ use Throwable;
 interface ResultInterface extends Psl\Promise\PromiseInterface
 {
     /**
+     * Transforms a promise's value by applying a function to the promise's fulfillment
+     * or rejection value.
+     *
+     * It is a shortcut for:
+     *
+     * ```php
+     * $promise->then($success, $failure);
+     * // same as:
+     * $promise->map($success)->catch($failure);
+     * ```
+     *
+     * @template Ts
+     *
+     * @param (Closure(T): Ts) $success
+     * @param (Closure(Throwable): Ts) $failure
+     *
+     * @return ResultInterface<Ts>
+     */
+    public function then(Closure $success, Closure $failure): ResultInterface;
+
+    /**
+     * Attaches a callback that is invoked if this promise is fulfilled.
+     *
+     * The returned promise is resolved with the return value of the callback,
+     * or is rejected with a throwable thrown from the callback.
+     *
+     * @template Ts
+     *
+     * @param (Closure(T): Ts) $success
+     *
+     * @return ResultInterface<Ts>
+     */
+    public function map(Closure $success): ResultInterface;
+
+    /**
+     * Attaches a callback that is invoked if this promise is rejected.
+     *
+     * The returned promise is resolved with the return value of the callback,
+     * or is rejected with a throwable thrown from the callback.
+     *
+     * @template Ts
+     *
+     * @param (Closure(Throwable): Ts) $failure
+     *
+     * @return ResultInterface<T|Ts>
+     */
+    public function catch(Closure $failure): ResultInterface;
+
+    /**
+     * Attaches a callback that is always invoked when the promise is resolved.
+     *
+     * The returned promise resolves with the same value as this promise once the callback has finished execution.
+     *
+     * If the callback throws, the returned promise will be rejected with the thrown throwable.
+     *
+     * @param (Closure(): void) $always
+     *
+     * @return ResultInterface<T>
+     */
+    public function always(Closure $always): ResultInterface;
+
+    /**
      * Return the result of the operation, or throw underlying throwable.
      *
      * - if the operation succeeded: return its result.
