@@ -463,6 +463,7 @@ final class Loader
         'Psl\\Async\\run' => 'Psl/Async/run.php',
         'Psl\\Async\\concurrently' => 'Psl/Async/concurrently.php',
         'Psl\\Result\\reflect' => 'Psl/Result/reflect.php',
+        'Psl\\Result\\try_catch' => 'Psl/Result/try_catch.php',
         'Psl\\Async\\series' => 'Psl/Async/series.php',
         'Psl\\Async\\await' => 'Psl/Async/await.php',
         'Psl\\Async\\any' => 'Psl/Async/any.php',
