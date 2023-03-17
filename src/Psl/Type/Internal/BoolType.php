@@ -34,7 +34,7 @@ final class BoolType extends Type\Type
             return $value;
         }
 
-        if (0 === $value || '0' === $value) {
+        if (0 === $value || '0' === $value || '' === $value) {
             return false;
         }
 

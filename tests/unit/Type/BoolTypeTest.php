@@ -15,6 +15,7 @@ final class BoolTypeTest extends TypeTest
 
     public function getValidCoercions(): iterable
     {
+        yield ['', false];
         yield [false, false];
         yield [0, false];
         yield ['0', false];
