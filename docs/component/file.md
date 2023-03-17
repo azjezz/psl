@@ -30,7 +30,7 @@
 - [Lock](./../../src/Psl/File/Lock.php#L9)
 - [ReadHandle](./../../src/Psl/File/ReadHandle.php#L10)
 - [ReadWriteHandle](./../../src/Psl/File/ReadWriteHandle.php#L11)
-- [WriteHandle](./../../src/Psl/File/WriteHandle.php#L10)
+- [WriteHandle](./../../src/Psl/File/WriteHandle.php#L11)
 
 #### `Enums`
 

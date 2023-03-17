@@ -32,18 +32,12 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
             throw Exception\NotFileException::for($file);
         }
 
-        $open_or_create = $write_mode === WriteMode::OPEN_OR_CREATE;
         $must_create = $write_mode === WriteMode::MUST_CREATE;
         if ($must_create && $is_file) {
             throw Exception\AlreadyCreatedException::for($file);
         }
 
-        $creating = $open_or_create || $must_create;
-        if (!$creating && !$is_file) {
-            throw Exception\NotFoundException::for($file);
-        }
-
-        if ((!$creating || ($open_or_create && $is_file))) {
+        if ($is_file) {
             if (!Filesystem\is_writable($file)) {
                 throw Exception\NotWritableException::for($file);
             }
@@ -53,15 +47,22 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
             }
         }
 
-        if ($creating && !$is_file) {
+        if (!$is_file) {
             try {
-                Filesystem\create_file($file);
+                $directory = Filesystem\create_directory_for_file($file);
+                if (!Filesystem\is_writable($directory)) {
+                    throw Exception\NotWritableException::for($file);
+                }
+
+                if (!Filesystem\is_readable($directory)) {
+                    throw Exception\NotReadableException::for($file);
+                }
             } catch (Filesystem\Exception\RuntimeException $previous) {
-                throw new Exception\RuntimeException(Str\format('Failed to create the file "%s".', $file), previous: $previous);
+                throw new Exception\RuntimeException(Str\format('Failed to create the directory for file "%s".', $file), previous: $previous);
             }
         }
 
-        $this->readWriteHandle = Internal\open($file, 'r' . ($write_mode->value) . '+', read: true, write: true);
+        $this->readWriteHandle = Internal\open($file, ($write_mode->value) . 'r+', read: true, write: true);
 
         parent::__construct($this->readWriteHandle);
     }

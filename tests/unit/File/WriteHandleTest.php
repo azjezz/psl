@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Env;
 use Psl\File;
 use Psl\Filesystem;
-use Psl\SecureRandom;
+use Psl\OS;
 
 final class WriteHandleTest extends TestCase
 {
@@ -22,11 +22,15 @@ final class WriteHandleTest extends TestCase
 
     public function testAppendToNonExistingFile(): void
     {
-        $this->expectException(File\Exception\NotFoundException::class);
-        $this->expectExceptionMessage('is not found.');
+        $temporary_file = Filesystem\create_temporary_file();
+        Filesystem\delete_file($temporary_file);
 
-        $f = new File\WriteHandle(Env\temp_dir() . '/' . SecureRandom\string(20), File\WriteMode::APPEND);
-        $f->write('g');
+        static::assertFalse(Filesystem\is_file($temporary_file));
+
+        $handle = new File\WriteHandle($temporary_file, File\WriteMode::APPEND);
+        $handle->close();
+
+        static::assertTrue(Filesystem\is_file($temporary_file));
     }
 
     public function testAppendToANonWritableFile(): void
@@ -57,6 +61,25 @@ final class WriteHandleTest extends TestCase
         static::assertSame('hello, world!', $content);
     }
 
+    public function testThrowsWhenCreatingFile(): void
+    {
+        if (OS\is_windows()) {
+            static::markTestSkipped('Permissions are not reliable on windows.');
+        }
+
+        $temporary_file = Filesystem\create_temporary_file();
+        Filesystem\delete_file($temporary_file);
+        Filesystem\create_directory($temporary_file);
+        Filesystem\change_permissions($temporary_file, 0555);
+
+        $file = $temporary_file . Filesystem\SEPARATOR . 'foo';
+
+        $this->expectException(File\Exception\NotWritableException::class);
+        $this->expectExceptionMessage('File "' . $file . '" is not writable.');
+
+        new File\WriteHandle($file, File\WriteMode::MUST_CREATE);
+    }
+
     public function testCreateNonExisting(): void
     {
         $temporary_file = Filesystem\create_temporary_file();
@@ -68,5 +91,22 @@ final class WriteHandleTest extends TestCase
         $handle->close();
 
         static::assertTrue(Filesystem\is_file($temporary_file));
+    }
+
+    public function testThrowsWhenDirectoryCreationFails(): void
+    {
+        if (OS\is_windows()) {
+            static::markTestSkipped('Permissions are not reliable on windows.');
+        }
+
+        $target_directory = Env\temp_dir() . DIRECTORY_SEPARATOR . 'you-shall-not-pass';
+        Filesystem\create_directory($target_directory, 0000);
+
+        $target_file = $target_directory . DIRECTORY_SEPARATOR . 'fails-on-subdir-creation' . DIRECTORY_SEPARATOR . 'somefile.txt';
+
+        $this->expectException(File\Exception\RuntimeException::class);
+        $this->expectExceptionMessage('Failed to create the directory for file "' . $target_file . '".');
+
+        new File\WriteHandle($target_file, File\WriteMode::MUST_CREATE);
     }
 }

@@ -10,7 +10,6 @@ use Psl\File;
 use Psl\Filesystem;
 use Psl\IO;
 use Psl\OS;
-use Psl\SecureRandom;
 
 final class ReadWriteHandleTest extends TestCase
 {
@@ -90,10 +89,22 @@ final class ReadWriteHandleTest extends TestCase
 
     public function testAppendToNonExistingFile(): void
     {
-        $this->expectException(File\Exception\NotFoundException::class);
-        $this->expectExceptionMessage('is not found.');
+        $temporary_file = Filesystem\create_temporary_file();
+        Filesystem\delete_file($temporary_file);
 
-        new File\ReadWriteHandle(Env\temp_dir() . '/' . SecureRandom\string(20), File\WriteMode::APPEND);
+        static::assertFalse(Filesystem\is_file($temporary_file));
+
+        $handle = File\open_read_write($temporary_file, File\WriteMode::APPEND);
+        $handle->writeAll('hello');
+        $handle->seek(0);
+
+        $content = $handle->readAll();
+
+        static::assertSame('hello', $content);
+
+        $handle->close();
+
+        static::assertTrue(Filesystem\is_file($temporary_file));
     }
 
     public function testAppendToANonWritableFile(): void
@@ -139,8 +150,8 @@ final class ReadWriteHandleTest extends TestCase
 
         $file = $temporary_file . Filesystem\SEPARATOR . 'foo';
 
-        $this->expectException(File\Exception\RuntimeException::class);
-        $this->expectExceptionMessage('Failed to create the file "' . $file . '".');
+        $this->expectException(File\Exception\NotWritableException::class);
+        $this->expectExceptionMessage('File "' . $file . '" is not writable.');
 
         new File\ReadWriteHandle($file, File\WriteMode::MUST_CREATE);
     }

@@ -22,6 +22,7 @@
 - [change_permissions](./../../src/Psl/Filesystem/change_permissions.php#L21)
 - [copy](./../../src/Psl/Filesystem/copy.php#L22)
 - [create_directory](./../../src/Psl/Filesystem/create_directory.php#L19)
+- [create_directory_for_file](./../../src/Psl/Filesystem/create_directory_for_file.php#L16)
 - [create_file](./../../src/Psl/Filesystem/create_file.php#L24)
 - [create_hard_link](./../../src/Psl/Filesystem/create_hard_link.php#L23)
 - [create_symbolic_link](./../../src/Psl/Filesystem/create_symbolic_link.php#L22)
