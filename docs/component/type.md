@@ -43,6 +43,7 @@
 - [null](./../../src/Psl/Type/null.php#L10)
 - [nullable](./../../src/Psl/Type/nullable.php#L14)
 - [num](./../../src/Psl/Type/num.php#L10)
+- [numeric_string](./../../src/Psl/Type/numeric_string.php#L10)
 - [object](./../../src/Psl/Type/object.php#L10)
 - [optional](./../../src/Psl/Type/optional.php#L14)
 - [positive_int](./../../src/Psl/Type/positive_int.php#L12)
