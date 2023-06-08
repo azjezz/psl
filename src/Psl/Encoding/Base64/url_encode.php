@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Encoding\Base64;
 
+use function strtr;
+
 /**
- * Convert a binary string into a base64-encoded string url safe.
+ * Convert a binary string into a url safe base64-encoded string.
  *
  * Base64url character set:
  *  [A-Z]      [a-z]      [0-9]      -     _

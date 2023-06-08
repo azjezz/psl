@@ -6,8 +6,10 @@ namespace Psl\Encoding\Base64;
 
 use Psl\Encoding\Exception;
 
+use function strtr;
+
 /**
- * Decode a base64url-encoded string into raw binary.
+ * Decode a url safe base64-encoded string into raw binary.
  *
  * Base64url character set:
  *  [A-Z]      [a-z]      [0-9]      -     _
