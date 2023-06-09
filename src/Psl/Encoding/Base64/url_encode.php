@@ -15,7 +15,7 @@ use function strtr;
  *
  * @pure
  */
-function url_encode(string $binary): string
+function url_encode(string $binary, bool $padding = false): string
 {
-    return strtr(encode($binary), '+/', '-_');
+    return strtr(encode($binary, $padding), '+/', '-_');
 }

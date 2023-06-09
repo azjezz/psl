@@ -21,8 +21,8 @@ use function strtr;
  *                                  the base64url characters range.
  * @throws Exception\IncorrectPaddingException If the encoded string has an incorrect padding.
  */
-function url_decode(string $base64url): string
+function url_decode(string $base64url, bool $explicitPadding = false): string
 {
     /** @var string */
-    return decode(strtr($base64url, '-_', '+/'));
+    return decode(strtr($base64url, '-_', '+/'), $explicitPadding);
 }

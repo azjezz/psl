@@ -23,7 +23,7 @@ use function base64_decode;
  *                                  the base64 characters range.
  * @throws Exception\IncorrectPaddingException If the encoded string has an incorrect padding.
  */
-function decode(string $base64): string
+function decode(string $base64, bool $explicitPadding = true): string
 {
     /** @psalm-suppress MissingThrowsDocblock - pattern is valid */
     if (!Regex\matches($base64, '%^[a-zA-Z0-9/+]*={0,2}$%')) {
@@ -34,7 +34,7 @@ function decode(string $base64): string
 
     /** @psalm-suppress MissingThrowsDocblock */
     $remainder = Str\length($base64) % 4;
-    if (0 !== $remainder) {
+    if ($explicitPadding && 0 !== $remainder) {
         throw new Exception\IncorrectPaddingException(
             'The given base64 string has incorrect padding.'
         );

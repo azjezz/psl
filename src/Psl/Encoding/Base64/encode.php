@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Encoding\Base64;
 
+use Psl\Str;
+
 use function base64_encode;
 
 /**
@@ -15,7 +17,13 @@ use function base64_encode;
  *
  * @pure
  */
-function encode(string $binary): string
+function encode(string $binary, bool $padding = true): string
 {
-    return base64_encode($binary);
+    $base64 = base64_encode($binary);
+
+    if (!$padding) {
+        $base64 = Str\trim_right($base64, '=');
+    }
+
+    return $base64;
 }
