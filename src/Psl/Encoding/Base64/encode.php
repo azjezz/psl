@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Encoding\Base64;
 
-use Psl\Str;
-
-use function base64_encode;
+use Exception;
 
 /**
  * Convert a binary string into a base64-encoded string.
@@ -17,13 +15,12 @@ use function base64_encode;
  *
  * @pure
  */
-function encode(string $binary, bool $padding = true): string
+function encode(string $binary, Variant $variant = Variant::Default, bool $padding = true): string
 {
-    $base64 = base64_encode($binary);
-
-    if (!$padding) {
-        $base64 = Str\trim_right($base64, '=');
-    }
-
-    return $base64;
+    return match ($variant) {
+        Variant::Default => Internal\Base64::encode($binary, $padding),
+        Variant::UrlSafe => Internal\Base64UrlSafe::encode($binary, $padding),
+        Variant::DotSlash => throw new Exception('To be implemented'),
+        Variant::DotSlashOrdered => throw new Exception('To be implemented'),
+    };
 }

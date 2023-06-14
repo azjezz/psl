@@ -7,8 +7,8 @@ namespace Psl\Tests\Unit\Encoding;
 use PHPUnit\Framework\TestCase;
 use Psl\Encoding\Base64;
 use Psl\Encoding\Exception;
-use Psl\SecureRandom;
 use Psl\Regex;
+use Psl\SecureRandom;
 
 final class Base64Test extends TestCase
 {
@@ -40,9 +40,9 @@ final class Base64Test extends TestCase
      */
     public function testEncodeWithoutPaddingThenDecode(string $random): void
     {
-        $encoded = Base64\encode($random, false);
+        $encoded = Base64\encode($random, Base64\Variant::Default, false);
         static::assertFalse(Regex\matches($encoded, '/={1,3}$/'));
-        static::assertSame($random, Base64\decode($encoded, false));
+        static::assertSame($random, Base64\decode($encoded, Base64\Variant::Default, false));
     }
 
     public function provideRandomBytes(): iterable

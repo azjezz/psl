@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace Psl\Encoding\Base64;
 
 use Psl\Encoding\Exception;
-use Psl\Regex;
-use Psl\Str;
-
-use function base64_decode;
 
 /**
  * Decode a base64-encoded string into raw binary.
@@ -23,23 +19,12 @@ use function base64_decode;
  *                                  the base64 characters range.
  * @throws Exception\IncorrectPaddingException If the encoded string has an incorrect padding.
  */
-function decode(string $base64, bool $explicitPadding = true): string
+function decode(string $base64, Variant $variant = Variant::Default, bool $strictPadding = true): string
 {
-    /** @psalm-suppress MissingThrowsDocblock - pattern is valid */
-    if (!Regex\matches($base64, '%^[a-zA-Z0-9/+]*={0,2}$%')) {
-        throw new Exception\RangeException(
-            'The given base64 string contains characters outside the base64 range.'
-        );
-    }
-
-    /** @psalm-suppress MissingThrowsDocblock */
-    $remainder = Str\length($base64) % 4;
-    if ($explicitPadding && 0 !== $remainder) {
-        throw new Exception\IncorrectPaddingException(
-            'The given base64 string has incorrect padding.'
-        );
-    }
-
-    /** @var string */
-    return base64_decode($base64, true);
+    return match ($variant) {
+        Variant::Default => Internal\Base64::decode($base64, $strictPadding),
+        Variant::UrlSafe => Internal\Base64UrlSafe::decode($base64, $strictPadding),
+        Variant::DotSlash => throw new \Exception('To be implemented'),
+        Variant::DotSlashOrdered => throw new \Exception('To be implemented'),
+    };
 }
