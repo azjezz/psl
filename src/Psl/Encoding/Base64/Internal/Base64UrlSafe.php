@@ -17,6 +17,8 @@ use function pack;
  * Code subject to MIT License (https://github.com/paragonie/constant_time_encoding/blob/198317fa6db951dd791be0740915dae878f34b3a/LICENSE.txt)
  *
  * Copyright (c) 2016 - 2022 Paragon Initiative Enterprises
+ *
+ * @internal
  */
 final class Base64UrlSafe extends Base64
 {
@@ -28,7 +30,7 @@ final class Base64UrlSafe extends Base64
         /** @psalm-suppress MissingThrowsDocblock - pattern is valid */
         if (!Regex\matches($base64, '%^[a-zA-Z0-9-_]*={0,2}$%')) {
             throw new Exception\RangeException(
-                'The given base64url string contains characters outside the base64url range.'
+                'The given string contains characters outside the base64 range for the current variant.'
             );
         }
     }
