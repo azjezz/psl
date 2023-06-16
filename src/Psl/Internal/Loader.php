@@ -619,6 +619,10 @@ final class Loader
         'Psl\\Collection\\MutableVector' => 'Psl/Collection/MutableVector.php',
         'Psl\\Collection\\Map' => 'Psl/Collection/Map.php',
         'Psl\\Collection\\MutableMap' => 'Psl/Collection/MutableMap.php',
+        'Psl\\Encoding\\Base64\\Internal\\Base64' => 'Psl/Encoding/Base64/Internal/Base64.php',
+        'Psl\\Encoding\\Base64\\Internal\\Base64UrlSafe' => 'Psl/Encoding/Base64/Internal/Base64UrlSafe.php',
+        'Psl\\Encoding\\Base64\\Internal\\Base64DotSlash' => 'Psl/Encoding/Base64/Internal/Base64DotSlash.php',
+        'Psl\\Encoding\\Base64\\Internal\\Base64DotSlashOrdered' => 'Psl/Encoding/Base64/Internal/Base64DotSlashOrdered.php',
         'Psl\\Exception\\OverflowException' => 'Psl/Exception/OverflowException.php',
         'Psl\\Exception\\InvalidArgumentException' => 'Psl/Exception/InvalidArgumentException.php',
         'Psl\\Exception\\RuntimeException' => 'Psl/Exception/RuntimeException.php',
@@ -801,6 +805,7 @@ final class Loader
     ];
 
     public const ENUMS = [
+        'Psl\\Encoding\\Base64\\Variant' => 'Psl/Encoding/Base64/Variant.php',
         'Psl\\File\\LockType' => 'Psl/File/LockType.php',
         'Psl\\File\\WriteMode' => 'Psl/File/WriteMode.php',
         'Psl\\Str\\Encoding' => 'Psl/Str/Encoding.php',

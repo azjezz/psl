@@ -10,29 +10,29 @@ use Psl\Encoding\Exception;
 use Psl\Regex;
 use Psl\SecureRandom;
 
-final class Base64Test extends TestCase
+final class Base64DotSlashOrderedTest extends TestCase
 {
     /**
      * @dataProvider provideRandomBytes
      */
     public function testEncodeAndDecode(string $random): void
     {
-        $encoded = Base64\encode($random);
-        static::assertSame($random, Base64\decode($encoded));
+        $encoded = Base64\encode($random, Base64\Variant::DotSlashOrdered);
+        static::assertSame($random, Base64\decode($encoded, Base64\Variant::DotSlashOrdered));
     }
 
     public function testDecodeThrowsForCharactersOutsideTheBase64Range(): void
     {
         $this->expectException(Exception\RangeException::class);
 
-        Base64\decode('@~==');
+        Base64\decode('@~==', Base64\Variant::DotSlashOrdered);
     }
 
     public function testDecodeThrowsForIncorrectPadding(): void
     {
         $this->expectException(Exception\IncorrectPaddingException::class);
 
-        Base64\decode('ab');
+        Base64\decode('ab', Base64\Variant::DotSlashOrdered);
     }
 
     /**
@@ -40,9 +40,9 @@ final class Base64Test extends TestCase
      */
     public function testEncodeWithoutPaddingThenDecode(string $random): void
     {
-        $encoded = Base64\encode($random, Base64\Variant::Default, false);
+        $encoded = Base64\encode($random, Base64\Variant::DotSlashOrdered, false);
         static::assertFalse(Regex\matches($encoded, '/={1,3}$/'));
-        static::assertSame($random, Base64\decode($encoded, Base64\Variant::Default, false));
+        static::assertSame($random, Base64\decode($encoded, Base64\Variant::DotSlashOrdered, false));
     }
 
     public function provideRandomBytes(): iterable

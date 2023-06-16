@@ -12,7 +12,11 @@
 
 #### `Functions`
 
-- [decode](./../../src/Psl/Encoding/Base64/decode.php#L26)
-- [encode](./../../src/Psl/Encoding/Base64/encode.php#L18)
+- [decode](./../../src/Psl/Encoding/Base64/decode.php#L18)
+- [encode](./../../src/Psl/Encoding/Base64/encode.php#L12)
+
+#### `Enums`
+
+- [Variant](./../../src/Psl/Encoding/Base64/Variant.php#L7)
 
 
