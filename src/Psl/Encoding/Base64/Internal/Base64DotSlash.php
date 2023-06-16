@@ -58,10 +58,6 @@ final class Base64DotSlash extends Base64
      * Uses bitwise operators instead of table-lookups to turn 6-bit integers
      * into 8-bit integers.
      *
-     * Base64dotSlash character set:
-     * ./         [A-Z]      [a-z]     [0-9]
-     * 0x2e-0x2f, 0x41-0x5a, 0x61-0x7a, 0x30-0x39
-     *
      * @pure
      */
     protected static function decode6Bits(int $base64): int

@@ -12,8 +12,8 @@
 
 #### `Functions`
 
-- [decode](./../../src/Psl/Encoding/Base64/decode.php#L34)
-- [encode](./../../src/Psl/Encoding/Base64/encode.php#L16)
+- [decode](./../../src/Psl/Encoding/Base64/decode.php#L18)
+- [encode](./../../src/Psl/Encoding/Base64/encode.php#L12)
 
 #### `Enums`
 

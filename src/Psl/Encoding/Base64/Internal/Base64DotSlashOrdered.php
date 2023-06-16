@@ -56,10 +56,6 @@ final class Base64DotSlashOrdered extends Base64
      * Uses bitwise operators instead of table-lookups to turn 6-bit integers
      * into 8-bit integers.
      *
-     * Base64dotSlashOrdered character set:
-     * [.-9]      [A-Z]      [a-z]
-     * 0x2e-0x39, 0x41-0x5a, 0x61-0x7a
-     *
      * @pure
      */
     protected static function decode6Bits(int $base64): int

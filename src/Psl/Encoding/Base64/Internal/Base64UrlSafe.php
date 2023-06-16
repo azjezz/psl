@@ -60,10 +60,6 @@ final class Base64UrlSafe extends Base64
      * Uses bitwise operators instead of table-lookups to turn 6-bit integers
      * into 8-bit integers.
      *
-     * Base64url character set:
-     * [A-Z]      [a-z]      [0-9]      -     _
-     * 0x41-0x5a, 0x61-0x7a, 0x30-0x39, 0x2d, 0x5f
-     *
      * @pure
      */
     protected static function decode6Bits(int $base64): int
