@@ -102,6 +102,8 @@ abstract class Base64
         if ($explicit_padding && $base64_length % 4 !== 0) {
             throw new Exception\IncorrectPaddingException('The given base64 string has incorrect padding.');
         }
+
+        /** @psalm-suppress MissingThrowsDocblock */
         $base64 = Str\trim_right($base64, '=');
         $base64_length = Str\length($base64, encoding: Str\Encoding::ASCII_8BIT);
 

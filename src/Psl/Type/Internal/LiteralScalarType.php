@@ -122,6 +122,7 @@ final class LiteralScalarType extends Type\Type
         }
 
         if (Type\float()->matches($value)) {
+            /** @psalm-suppress MissingThrowsDocblock */
             $string_representation = Str\trim_right(Str\format('%.14F', $value), '0');
             /** @psalm-suppress MissingThrowsDocblock */
             if (Str\ends_with($string_representation, '.')) {

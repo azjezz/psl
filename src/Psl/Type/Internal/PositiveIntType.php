@@ -47,6 +47,7 @@ final class PositiveIntType extends Type\Type
                 return $int;
             }
 
+            /** @psalm-suppress MissingThrowsDocblock */
             $trimmed = Str\trim_left($str, '0');
             $int     = Str\to_int($trimmed);
             if (null !== $int && $int > 0) {
