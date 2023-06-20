@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Psl\Exception\InvariantViolationException;
 use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
@@ -47,9 +48,13 @@ final class PositiveIntType extends Type\Type
                 return $int;
             }
 
-            /** @psalm-suppress MissingThrowsDocblock */
-            $trimmed = Str\trim_left($str, '0');
-            $int     = Str\to_int($trimmed);
+            try {
+                $trimmed = Str\trim_left($str, '0');
+            } catch (InvariantViolationException $e) {
+                throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+            }
+
+            $int = Str\to_int($trimmed);
             if (null !== $int && $int > 0) {
                 return $int;
             }

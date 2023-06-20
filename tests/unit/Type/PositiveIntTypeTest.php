@@ -59,6 +59,7 @@ final class PositiveIntTypeTest extends TypeTest
         yield [$this->stringable('-9223372036854775809')];
         yield ['0xFF'];
         yield ['-0xFF'];
+        yield ["\xc1\xbf"];
         yield [''];
     }
 
