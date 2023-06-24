@@ -21,10 +21,12 @@ use function preg_replace;
  */
 function trim_left(string $string, ?string $char_mask = null): string
 {
-    Psl\invariant(is_utf8($string), 'Expected $string to be a valid UTF-8 string.');
-
     $char_mask ??= " \t\n\r\0\x0B\x0C\u{A0}\u{FEFF}";
     $char_mask   = preg_quote($char_mask, null);
 
-    return preg_replace("{^[{$char_mask}]++}uD", '', $string);
+    $string = preg_replace("{^[{$char_mask}]++}uD", '', $string);
+
+    Psl\invariant(null !== $string, 'Expected $string to be a valid UTF-8 string.');
+
+    return $string;
 }

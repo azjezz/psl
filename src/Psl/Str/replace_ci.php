@@ -23,7 +23,12 @@ function replace_ci(string $haystack, string $needle, string $replacement, Encod
         return $haystack;
     }
 
-    Psl\invariant(is_utf8($needle), 'Expected $needle to be a valid UTF-8 string.');
+    /** @psalm-suppress ImpureFunctionCall */
+    $pieces = Psl\Internal\suppress(
+        static fn () => preg_split('{' . preg_quote($needle, '/') . '}iu', $haystack)
+    );
 
-    return join(preg_split('{' . preg_quote($needle, '/') . '}iu', $haystack), $replacement);
+    Psl\invariant($pieces !== false, 'Expected $needle to be a valid UTF-8 string.');
+
+    return join($pieces, $replacement);
 }
