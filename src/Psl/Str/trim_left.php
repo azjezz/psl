@@ -25,7 +25,7 @@ function trim_left(string $string, ?string $char_mask = null): string
 
     try {
         return Regex\replace($string, "{^[{$char_mask}]++}uD", '');
-    } catch (Regex\Exception\RuntimeException $error) {
+    } catch (Regex\Exception\RuntimeException | Regex\Exception\InvalidPatternException $error) {
         throw new Exception\InvalidArgumentException($error->getMessage(), previous: $error);
     }
 }
