@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Str;
 
 use PHPUnit\Framework\TestCase;
-use Psl;
 use Psl\Str;
 
 final class TrimTest extends TestCase
@@ -69,20 +68,20 @@ final class TrimTest extends TestCase
     {
         yield [
             "\xc1\xbf",
-            Psl\Exception\InvariantViolationException::class,
-            'Expected $string to be a valid UTF-8 string.',
+            Str\Exception\InvalidArgumentException::class,
+            'Malformed UTF-8 characters, possibly incorrectly encoded',
         ];
 
         yield [
             "\xe0\x81\xbf",
-            Psl\Exception\InvariantViolationException::class,
-            'Expected $string to be a valid UTF-8 string.',
+            Str\Exception\InvalidArgumentException::class,
+            'Malformed UTF-8 characters, possibly incorrectly encoded',
         ];
 
         yield [
             "\xf0\x80\x81\xbf",
-            Psl\Exception\InvariantViolationException::class,
-            'Expected $string to be a valid UTF-8 string.',
+            Str\Exception\InvalidArgumentException::class,
+            'Malformed UTF-8 characters, possibly incorrectly encoded',
         ];
     }
 }

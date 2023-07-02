@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
-use Psl\Exception\InvariantViolationException;
 use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
@@ -50,7 +49,7 @@ final class PositiveIntType extends Type\Type
 
             try {
                 $trimmed = Str\trim_left($str, '0');
-            } catch (InvariantViolationException $e) {
+            } catch (Str\Exception\InvalidArgumentException $e) {
                 throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
             }
 

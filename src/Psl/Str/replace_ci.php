@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl;
+use Psl\Regex;
 
 use function preg_quote;
 use function preg_split;
@@ -15,7 +15,7 @@ use function preg_split;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException if $needle is not a valid UTF-8 string.
+ * @throws Exception\InvalidArgumentException if $needle is not a valid UTF-8 string.
  */
 function replace_ci(string $haystack, string $needle, string $replacement, Encoding $encoding = Encoding::UTF_8): string
 {
@@ -23,12 +23,15 @@ function replace_ci(string $haystack, string $needle, string $replacement, Encod
         return $haystack;
     }
 
-    /** @psalm-suppress ImpureFunctionCall */
-    $pieces = Psl\Internal\suppress(
-        static fn () => preg_split('{' . preg_quote($needle, '/') . '}iu', $haystack)
-    );
-
-    Psl\invariant($pieces !== false, 'Expected $needle to be a valid UTF-8 string.');
+    try {
+        /** @var list<string> */
+        $pieces = Regex\Internal\call_preg(
+            'preg_split',
+            static fn() => preg_split('{' . preg_quote($needle, '/') . '}iu', $haystack, -1),
+        );
+    } catch (Regex\Exception\InvalidPatternException $error) {
+        throw new Exception\InvalidArgumentException($error->getMessage(), previous: $error);
+    }
 
     return join($pieces, $replacement);
 }

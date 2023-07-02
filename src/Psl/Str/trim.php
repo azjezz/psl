@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl;
+use Psl\Regex;
 
 use function preg_quote;
-use function preg_replace;
 
 /**
  * Returns the given string with whitespace stripped from the beginning and end.
@@ -17,16 +16,16 @@ use function preg_replace;
  *
  * @pure
  *
- * @throws Psl\Exception\InvariantViolationException if $string is not a valid UTF-8 string.
+ * @throws Exception\InvalidArgumentException if $string is not a valid UTF-8 string.
  */
 function trim(string $string, ?string $char_mask = null): string
 {
     $char_mask ??= " \t\n\r\0\x0B\x0C\u{A0}\u{FEFF}";
     $char_mask   = preg_quote($char_mask, null);
 
-    $string = preg_replace("{^[{$char_mask}]++|[{$char_mask}]++$}uD", '', $string);
-
-    Psl\invariant(null !== $string, 'Expected $string to be a valid UTF-8 string.');
-
-    return $string;
+    try {
+        return Regex\replace($string, "{^[{$char_mask}]++|[{$char_mask}]++$}uD", '');
+    } catch (Regex\Exception\RuntimeException $error) {
+        throw new Exception\InvalidArgumentException($error->getMessage(), previous: $error);
+    }
 }
