@@ -13,7 +13,7 @@
 #### `Functions`
 
 - [from_nullable](./../../src/Psl/Option/from_nullable.php#L16)
-- [none](./../../src/Psl/Option/none.php#L14)
+- [none](./../../src/Psl/Option/none.php#L12)
 - [some](./../../src/Psl/Option/some.php#L16)
 
 #### `Classes`
