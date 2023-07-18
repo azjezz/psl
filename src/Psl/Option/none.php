@@ -7,9 +7,7 @@ namespace Psl\Option;
 /**
  * Create an option with none value.
  *
- * @template T
- *
- * @return Option<T>
+ * @return Option<never>
  */
 function none(): Option
 {

@@ -38,12 +38,11 @@ final class Option
     /**
      * Create an option with none value.
      *
-     * @template Tn
-     *
-     * @return Option<Tn>
+     * @return Option<never>
      */
     public static function none(): Option
     {
+        /** @var Option<never> */
         return new self(null);
     }
 
