@@ -47,8 +47,13 @@ final class PositiveIntType extends Type\Type
                 return $int;
             }
 
-            $trimmed = Str\trim_left($str, '0');
-            $int     = Str\to_int($trimmed);
+            try {
+                $trimmed = Str\trim_left($str, '0');
+            } catch (Str\Exception\InvalidArgumentException $e) {
+                throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+            }
+
+            $int = Str\to_int($trimmed);
             if (null !== $int && $int > 0) {
                 return $int;
             }
