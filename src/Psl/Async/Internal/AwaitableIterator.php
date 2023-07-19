@@ -124,7 +124,7 @@ final class AwaitableIterator
     /**
      * @throws Psl\Exception\InvariantViolationException If {@see consume()} is called concurrently.
      *
-     * @return null|array{Tk, Awaitable<Tv>}
+     * @return null|array{0: Tk, 1: Awaitable<Tv>}
      */
     public function consume(): ?array
     {

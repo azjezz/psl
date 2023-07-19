@@ -40,11 +40,8 @@ function streaming(iterable $handles, ?float $timeout = null): Generator
     /**
      * @psalm-suppress UnnecessaryVarAnnotation
      *
-     * @var Channel\ReceiverInterface<array{T|null, Result\ResultInterface<string>}> $receiver
-     *
-     * @psalm-suppress UnnecessaryVarAnnotation
-     *
-     * @var Channel\SenderInterface<array{T|null, Result\ResultInterface<string>}> $sender
+     * @var Channel\ReceiverInterface<array{0: T|null, 1: Result\ResultInterface<string>}> $receiver
+     * @var Channel\SenderInterface<array{0: T|null, 1: Result\ResultInterface<string>}> $sender
      */
     [$receiver, $sender] = Channel\unbounded();
 

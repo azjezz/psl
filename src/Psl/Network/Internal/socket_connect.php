@@ -31,7 +31,6 @@ function socket_connect(string $uri, array $context = [], ?float $timeout = null
 {
     return Internal\suppress(static function () use ($uri, $context, $timeout): mixed {
         $context = stream_context_create($context);
-        /** @psalm-suppress NullArgument */
         $socket = @stream_socket_client($uri, $errno, $_, null, STREAM_CLIENT_CONNECT | STREAM_CLIENT_ASYNC_CONNECT, $context);
         if (!$socket || $errno) {
             throw new Exception\RuntimeException('Failed to connect to client "' . $uri . '".', $errno);

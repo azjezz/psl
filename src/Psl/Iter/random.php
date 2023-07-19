@@ -24,10 +24,11 @@ function random(iterable $iterable)
     // this helps us avoids an issue when the iterable is a generator where
     // would exhaust it when calling `count`
     $values = Vec\values($iterable);
-    $size = count($values);
-    if ($size === 0) {
+    if ([] === $values) {
         throw new Exception\InvalidArgumentException('Expected a non-empty iterable.');
     }
+    
+    $size = namespace\count($values);
 
     if (1 === $size) {
         /** @var T */

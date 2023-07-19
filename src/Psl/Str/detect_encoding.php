@@ -24,9 +24,8 @@ function detect_encoding(string $string, ?array $encoding_list = null): ?Encodin
             $encoding_list
         );
     }
+
     $encoding = mb_detect_encoding($string, $encoding_list, true) ?: null;
-    /**
-     * @psalm-suppress ImpureMethodCall - Encoding::from is pure.
-     */
+
     return null === $encoding ? $encoding : Encoding::from($encoding);
 }

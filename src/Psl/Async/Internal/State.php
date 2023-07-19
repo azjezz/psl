@@ -69,7 +69,6 @@ final class State
      */
     public function subscribe(Closure $callback): string
     {
-        /** @psalm-suppress StringIncrement */
         $id = self::$nextId++;
 
         $this->handled = true;

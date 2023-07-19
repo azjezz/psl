@@ -50,10 +50,8 @@ trait MersenneTwisterTrait
                 $state[$i] = $this->twist($state[$i + 397], $state[$i], $state[$i + 1]);
             }
             for (; $i < 623; $i++) {
-                /** @psalm-suppress PossiblyInvalidArrayOffset */
                 $state[$i] = $this->twist($state[$i - 227], $state[$i], $state[$i + 1]);
             }
-            /** @psalm-suppress InvalidArrayOffset */
             $state[623] = $this->twist($state[396], $state[623], $state[0]);
             $this->state = $state;
 

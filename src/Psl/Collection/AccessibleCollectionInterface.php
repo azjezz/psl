@@ -23,7 +23,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * Returns a `AccessibleCollectionInterface` containing the values of the current
      * `AccessibleCollectionInterface`.
      *
-     * @return AccessibleCollectionInterface<int, Tv>
+     * @return AccessibleCollectionInterface<int<0, max>, Tv>
      *
      * @psalm-mutation-free
      */
@@ -32,7 +32,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
     /**
      * Returns a `AccessibleCollectionInterface` containing the keys of the current `AccessibleCollectionInterface`.
      *
-     * @return AccessibleCollectionInterface<int, Tk>
+     * @return AccessibleCollectionInterface<int<0, max>, Tk>
      *
      * @psalm-mutation-free
      */
@@ -49,7 +49,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * returned `AccessibleCollectionInterface`.
      *
      * @param (Closure(Tv): bool) $fn The callback containing the condition to apply to the current
-     *                                 `AccessibleCollectionInterface` values.
+     *                                `AccessibleCollectionInterface` values.
      *
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` containing the values
      *                                               after a user-specified condition is applied.
@@ -68,7 +68,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * returned `AccessibleCollectionInterface`; the keys will be used in the filtering process only.
      *
      * @param (Closure(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
-     *                                     `AccessibleCollectionInterface` keys and values.
+     *                                    `AccessibleCollectionInterface` keys and values.
      *
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` containing the values
      *                                               after a user-specified condition is applied to the keys and values
@@ -89,7 +89,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * @template Tu
      *
      * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                               `AccessibleCollectionInterface` values.
+     *                              `AccessibleCollectionInterface` values.
      *
      * @return AccessibleCollectionInterface<Tk, Tu> A `AccessibleCollectionInterface` containing key/value
      *                                               pairs after a user-specified operation is applied.
@@ -110,7 +110,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * @template Tu
      *
      * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                                   `AccessibleCollectionInterface` keys and values.
+     *                                  `AccessibleCollectionInterface` keys and values.
      *
      * @return AccessibleCollectionInterface<Tk, Tu> A `AccessibleCollectionInterface` containing the values
      *                                               after a user-specified operation on the current
@@ -221,7 +221,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * `AccessibleCollectionInterface`.
      *
      * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping
-     *                                 condition.
+     *                                condition.
      *
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` that is a proper subset
      *                                               of the current `AccessibleCollectionInterface` up until
@@ -258,7 +258,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * `AccessibleCollectionInterface`.
      *
      * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
-     *                                 returned `AccessibleCollectionInterface`.
+     *                                returned `AccessibleCollectionInterface`.
      *
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` that is a proper subset
      *                                               of the current `AccessibleCollectionInterface` starting after
@@ -298,8 +298,8 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @param positive-int $size The size of each chunk.
      *
-     * @return AccessibleCollectionInterface<int, static<Tk, Tv>> A `AccessibleCollectionInterface` containing the original
-     *                                                            `AccessibleCollectionInterface` split into chunks of the given size.
+     * @return AccessibleCollectionInterface<int<0, max>, static<Tk, Tv>> A `AccessibleCollectionInterface` containing the original
+     *                                                                    `AccessibleCollectionInterface` split into chunks of the given size.
      *
      * @psalm-mutation-free
      */

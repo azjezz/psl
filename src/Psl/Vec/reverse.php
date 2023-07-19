@@ -22,12 +22,11 @@ use Psl\Iter;
 function reverse(iterable $iterable): array
 {
     $values = namespace\values($iterable);
-
-    $size   = Iter\count($values);
-    if (0 === $size) {
+    if ([] === $values) {
         return [];
     }
 
+    $size   = Iter\count($values);
     $result = [];
     for ($i = $size - 1; $i >= 0; $i--) {
         $result[] = $values[$i];

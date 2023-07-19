@@ -71,10 +71,8 @@ final class Awaitable implements PromiseInterface
                         $iterator->enqueue($awaitable->state, $key, $awaitable);
                     }
 
-                    /** @psalm-suppress MissingThrowsDocblock */
                     $iterator->complete();
                 } catch (Throwable $throwable) {
-                    /** @psalm-suppress MissingThrowsDocblock */
                     $iterator->error($throwable);
                 }
                 // @codeCoverageIgnoreEnd

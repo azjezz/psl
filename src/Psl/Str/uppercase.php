@@ -13,9 +13,5 @@ use function mb_strtoupper;
  */
 function uppercase(string $string, Encoding $encoding = Encoding::UTF_8): string
 {
-    /**
-     * @psalm-suppress UndefinedPropertyFetch
-     * @psalm-suppress MixedArgument
-     */
     return mb_strtoupper($string, $encoding->value);
 }

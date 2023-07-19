@@ -138,11 +138,6 @@ final class FromRange implements LowerBoundRangeInterface
      * @psalm-mutation-free
      *
      * @psalm-suppress ImpureMethodCall
-     * @psalm-suppress InvalidReturnStatement
-     * @psalm-suppress InvalidReturnType
-     * @psalm-suppress InvalidOperand
-     * @psalm-suppress MixedOperand
-     * @psalm-suppress MixedAssignment
      */
     public function getIterator(): Iter\Iterator
     {

@@ -66,7 +66,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * returned `CollectionInterface`.
      *
      * @param (Closure(Tv): bool) $fn The callback containing the condition to apply to the current
-     *                                 `CollectionInterface` values.
+     *                                `CollectionInterface` values.
      *
      * @return CollectionInterface<Tk, Tv> A CollectionInterface containing the values after a user-specified
      *                                     condition is applied.
@@ -85,7 +85,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * returned `CollectionInterface`; the keys will be used in the filtering process only.
      *
      * @param (Closure(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
-     *                                     `CollectionInterface` keys and values.
+     *                                    `CollectionInterface` keys and values.
      *
      * @return CollectionInterface<Tk, Tv> A `CollectionInterface` containing the values after a user-specified
      *                                     condition is applied to the keys and values of the
@@ -106,7 +106,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * @template Tu
      *
      * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                               `CollectionInterface` values.
+     *                              `CollectionInterface` values.
      *
      * @return CollectionInterface<Tk, Tu> A `CollectionInterface` containing key/value pairs after
      *                                     a user-specified operation is applied.
@@ -127,7 +127,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * @template Tu
      *
      * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                                   `CollectionInterface` keys and values.
+     *                                  `CollectionInterface` keys and values.
      *
      * @return CollectionInterface<Tk, Tu> A `CollectionInterface` containing the values after a user-specified
      *                                     operation on the current `CollectionInterface`'s keys and values is applied.
@@ -182,7 +182,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * `CollectionInterface`.
      *
      * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping
-     *                                 condition.
+     *                                condition.
      *
      * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
      *                                     `CollectionInterface` up until the callback returns `false`.
@@ -217,7 +217,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      * `CollectionInterface`.
      *
      * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
-     *                                 returned `CollectionInterface`.
+     *                                returned `CollectionInterface`.
      *
      * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
      *                                     `CollectionInterface` starting after the callback returns `true`.
@@ -256,8 +256,8 @@ interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializ
      *
      * @param positive-int $size The size of each chunk.
      *
-     * @return CollectionInterface<int, static<Tk, Tv>> A `CollectionInterface` containing the original
-     *                                                  `CollectionInterface` split into chunks of the given size.
+     * @return CollectionInterface<int<0, max>, static<Tk, Tv>> A `CollectionInterface` containing the original
+     *                                                          `CollectionInterface` split into chunks of the given size.
      *
      * @psalm-mutation-free
      */

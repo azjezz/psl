@@ -10,7 +10,7 @@ use Closure;
  * @template T
  *
  * @extends VectorInterface<T>
- * @extends MutableAccessibleCollectionInterface<int, T>
+ * @extends MutableAccessibleCollectionInterface<int<0, max>, T>
  */
 interface MutableVectorInterface extends MutableAccessibleCollectionInterface, VectorInterface
 {
@@ -36,7 +36,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
     /**
      * Returns a `MutableVectorInterface` containing the keys of the current `MutableVectorInterface`.
      *
-     * @return MutableVectorInterface<int>
+     * @return MutableVectorInterface<int<0, max>>
      *
      * @psalm-mutation-free
      */
@@ -53,7 +53,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * returned `MutableVectorInterface`.
      *
      * @param (Closure(T): bool) $fn The callback containing the condition to apply to the current
-     *                                `MutableVectorInterface` values
+     *                               `MutableVectorInterface` values
      *
      * @return MutableVectorInterface<T> A MutableVectorInterface containing the values after
      *                                   a user-specified condition is applied.
@@ -71,8 +71,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * The keys associated with the current `MutableVectorInterface` remain unchanged in the
      * returned `MutableVectorInterface`; the keys will be used in the filtering process only.
      *
-     * @param (Closure(int, T): bool) $fn The callback containing the condition to apply to the current
-     *                                     `MutableVectorInterface` keys and values.
+     * @param (Closure(int<0, max>, T): bool) $fn The callback containing the condition to apply to the current
+     *                                            `MutableVectorInterface` keys and values.
      *
      * @return MutableVectorInterface<T> A `MutableVectorInterface` containing the values after a user-specified
      *                                   condition is applied to the keys and values of the current
@@ -93,7 +93,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * @template Tu
      *
      * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
-     *                              `MutableVectorInterface` values
+     *                             `MutableVectorInterface` values
      *
      * @return MutableVectorInterface<Tu> A `MutableVectorInterface` containing key/value pairs after
      *                                    a user-specified operation is applied.
@@ -113,8 +113,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @template Tu
      *
-     * @param (Closure(int, T): Tu) $fn The callback containing the operation to apply to the current
-     *                                   `MutableVectorInterface` keys and values
+     * @param (Closure(int<0, max>, T): Tu) $fn The callback containing the operation to apply to the current
+     *                                          `MutableVectorInterface` keys and values
      *
      * @return MutableVectorInterface<Tu> A `MutableVectorInterface` containing the values after
      *                                    a user-specified operation on the current `MutableVectorInterface`'s
@@ -135,8 +135,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
     /**
      * Returns the first key in the current `MutableVectorInterface`.
      *
-     * @return int|null The first key in the current `MutableVectorInterface`, or `null` if the
-     *                  current `MutableVectorInterface` is empty.
+     * @return int<0, max>|null The first key in the current `MutableVectorInterface`, or `null` if the
+     *                          current `MutableVectorInterface` is empty.
      *
      * @psalm-mutation-free
      */
@@ -155,8 +155,8 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
     /**
      * Returns the last key in the current `MutableVectorInterface`.
      *
-     * @return int|null The last key in the current `MutableVectorInterface`, or `null` if the
-     *                  current `MutableVectorInterface` is empty.
+     * @return int<0, max>|null The last key in the current `MutableVectorInterface`, or `null` if the
+     *                          current `MutableVectorInterface` is empty.
      *
      * @psalm-mutation-free
      */
@@ -170,7 +170,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * @param T $search_value The value that will be search for in the current
      *                        `MutableVectorInterface`.
      *
-     * @return int|null The key (index) where that value is found; null if it is not found.
+     * @return int<0, max>|null The key (index) where that value is found; null if it is not found.
      *
      * @psalm-mutation-free
      */
@@ -224,7 +224,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * `MutableVectorInterface`.
      *
      * @param (Closure(T): bool) $fn The callback that is used to determine the stopping
-     *                                condition.
+     *                               condition.
      *
      * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
      *                                   `MutableVectorInterface` up until the callback returns `false`.
@@ -259,7 +259,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * `MutableVectorInterface`.
      *
      * @param (Closure(T): bool) $fn The callback used to determine the starting element for the
-     *                                returned `MutableVectorInterface`.
+     *                               returned `MutableVectorInterface`.
      *
      * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
      *                                   `MutableVectorInterface` starting after the callback returns `true`.
@@ -315,7 +315,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * It returns the current vector, meaning changes made to the current
      * vector will be reflected in the returned vector.
      *
-     * @param int $k The key to which we will set the value.
+     * @param int<0, max> $k The key to which we will set the value.
      * @param T $v The value to set.
      *
      * @return MutableVectorInterface<T> Returns itself.
@@ -333,7 +333,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * It the current vector, meaning changes made to the current vector
      * will be reflected in the returned vector.
      *
-     * @param array<int, T> $elements The elements with the new values to set.
+     * @param array<int<0, max>, T> $elements The elements with the new values to set.
      *
      * @return MutableVectorInterface<T> Returns itself.
      */
@@ -354,7 +354,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * If $k is negative, or $k is greater than the largest key in the current Vector, no changes are made.
      *
-     * @param int $k The key to remove.
+     * @param int<0, max> $k The key to remove.
      *
      * @return MutableVectorInterface<T> Returns itself.
      */

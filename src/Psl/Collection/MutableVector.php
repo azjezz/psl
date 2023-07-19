@@ -90,11 +90,10 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Retrieve an external iterator.
      *
-     * @return Iter\Iterator<int, T>
+     * @return Iter\Iterator<int<0, max>, T>
      */
     public function getIterator(): Iter\Iterator
     {
-        /** @psalm-suppress ImpureMethodCall - conditionally pure */
         return Iter\Iterator::create($this->elements);
     }
 
@@ -148,7 +147,7 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Returns the value at the specified key in the current `MutableVector`.
      *
-     * @param int $k
+     * @param int<0, max> $k
      *
      * @throws Exception\OutOfBoundsException If $k is out-of-bounds.
      *
@@ -168,7 +167,7 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Determines if the specified key is in the current `MutableVector`.
      *
-     * @param int $k
+     * @param int<0, max> $k
      *
      * @psalm-mutation-free
      */
@@ -180,7 +179,7 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Returns the value at the specified key in the current `MutableVector`.
      *
-     * @param int $k
+     * @param int<0, max> $k
      *
      * @return T|null
      *
@@ -194,8 +193,8 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Returns the first key in the current `MutableVector`.
      *
-     * @return int|null The first key in the current `MutableVector`, or `null` if the
-     *                  current `MutableVector` is empty.
+     * @return int<0, max>|null The first key in the current `MutableVector`, or `null` if the
+     *                          current `MutableVector` is empty.
      *
      * @psalm-mutation-free
      */
@@ -207,8 +206,8 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Returns the last key in the current `MutableVector`.
      *
-     * @return int|null The last key in the current `MutableVector`, or `null` if the
-     *                  current `MutableVector` is empty.
+     * @return int<0, max>|null The last key in the current `MutableVector`, or `null` if the
+     *                          current `MutableVector` is empty.
      *
      * @psalm-mutation-free
      */
@@ -225,7 +224,7 @@ final class MutableVector implements MutableVectorInterface
      * @param T $search_value The value that will be search for in the current
      *                        collection.
      *
-     * @return int|null The key (index) where that value is found; null if it is not found.
+     * @return int<0, max>|null The key (index) where that value is found; null if it is not found.
      *
      * @psalm-mutation-free
      */
@@ -250,7 +249,7 @@ final class MutableVector implements MutableVectorInterface
      * It returns the current vector, meaning changes made to the current
      * vector will be reflected in the returned vector.
      *
-     * @param int $k The key to which we will set the value
+     * @param int<0, max> $k The key to which we will set the value
      * @param T $v The value to set
      *
      * @throws Exception\OutOfBoundsException If $k is out-of-bounds.
@@ -279,7 +278,7 @@ final class MutableVector implements MutableVectorInterface
      * It the current vector, meaning changes made to the current vector
      * will be reflected in the returned vector.
      *
-     * @param array<int, T> $elements The elements with the new values to set
+     * @param array<int<0, max>, T> $elements The elements with the new values to set
      *
      * @return MutableVector<T> returns itself
      */
@@ -305,7 +304,7 @@ final class MutableVector implements MutableVectorInterface
      * That is, values with keys $k + 1 to n - 1 will be given new keys $k to n - 2, where n is
      * the length of the current MutableVector before the call to remove().
      *
-     * @param int $k The key to remove.
+     * @param int<0, max> $k The key to remove.
      *
      * @return MutableVector<T> returns itself.
      */
@@ -378,7 +377,7 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Returns a `MutableVector` containing the keys of the current `MutableVector`.
      *
-     * @return MutableVector<int>
+     * @return MutableVector<int<0, max>>
      *
      * @psalm-mutation-free
      */
@@ -398,7 +397,7 @@ final class MutableVector implements MutableVectorInterface
      * returned `MutableVector`.
      *
      * @param (Closure(T): bool) $fn The callback containing the condition to apply to the current
-     *                                `MutableVector` values.
+     *                               `MutableVector` values.
      *
      * @return MutableVector<T> A `MutableVector` containing the values after a user-specified condition
      *                          is applied.
@@ -419,8 +418,8 @@ final class MutableVector implements MutableVectorInterface
      * The keys associated with the current `MutableVector` remain unchanged in the
      * returned `MutableVector`; the keys will be used in the filtering process only.
      *
-     * @param (Closure(int, T): bool) $fn The callback containing the condition to apply to the current
-     *                                     `MutableVector` keys and values.
+     * @param (Closure(int<0, max>, T): bool) $fn The callback containing the condition to apply to the current
+     *                                            `MutableVector` keys and values.
      *
      * @return MutableVector<T> A `MutableVector` containing the values after a user-specified
      *                          condition is applied to the keys and values of the current `MutableVector`.
@@ -443,7 +442,7 @@ final class MutableVector implements MutableVectorInterface
      * @template Tu
      *
      * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
-     *                              `MutableVector` values.
+     *                             `MutableVector` values.
      *
      * @return MutableVector<Tu> A `MutableVector` containing key/value pairs after a user-specified
      *                           operation is applied.
@@ -466,8 +465,8 @@ final class MutableVector implements MutableVectorInterface
      *
      * @template Tu
      *
-     * @param (Closure(int, T): Tu) $fn The callback containing the operation to apply to the current
-     *                                   `MutableVector` keys and values
+     * @param (Closure(int<0, max>, T): Tu) $fn The callback containing the operation to apply to the current
+     *                                          `MutableVector` keys and values
      *
      * @return MutableVector<Tu> A `MutableVector` containing the values after a user-specified
      *                           operation on the current `MutableVector`'s keys and values is applied.
@@ -532,7 +531,7 @@ final class MutableVector implements MutableVectorInterface
      * `MutableVector`.
      *
      * @param (Closure(T): bool) $fn The callback that is used to determine the stopping
-     *                                condition.
+     *                               condition.
      *
      * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
      *                          `MutableVector` up until the callback returns `false`.
@@ -573,7 +572,7 @@ final class MutableVector implements MutableVectorInterface
      * `MutableVector`.
      *
      * @param (Closure(T): bool) $fn The callback used to determine the starting element for the
-     *                                returned `MutableVector`.
+     *                               returned `MutableVector`.
      *
      * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
      *                          `MutableVector` starting after the callback returns `true`.

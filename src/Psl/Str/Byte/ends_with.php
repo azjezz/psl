@@ -18,6 +18,5 @@ function ends_with(string $string, string $suffix): bool
 
     $suffix_length = length($suffix);
 
-    /** @psalm-suppress MissingThrowsDocblock - $offset is within-bounds. */
     return slice($string, -$suffix_length) === $suffix;
 }

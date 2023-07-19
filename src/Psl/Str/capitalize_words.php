@@ -29,9 +29,5 @@ use const MB_CASE_TITLE;
  */
 function capitalize_words(string $string, Encoding $encoding = Encoding::UTF_8): string
 {
-    /**
-     * @psalm-suppress UndefinedPropertyFetch
-     * @psalm-suppress MixedArgument
-     */
     return mb_convert_case($string, MB_CASE_TITLE, $encoding->value);
 }

@@ -36,7 +36,6 @@ final class Address
      */
     public function toString(): string
     {
-        /** @psalm-suppress UndefinedPropertyFetch */
         $address = "{$this->scheme->value}://{$this->host}";
 
         if (null === $this->port) {

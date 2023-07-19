@@ -32,7 +32,7 @@ interface MutableCollectionInterface extends CollectionInterface
      * returned `MutableCollectionInterface`.
      *
      * @param (Closure(Tv): bool) $fn The callback containing the condition to apply to the current
-     *                                 `MutableCollectionInterface` values.
+     *                                `MutableCollectionInterface` values.
      *
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` containing the values
      *                                            after a user-specified condition is applied.
@@ -51,7 +51,7 @@ interface MutableCollectionInterface extends CollectionInterface
      * returned `MutableCollectionInterface`; the keys will be used in the filtering process only.
      *
      * @param (Closure(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
-     *                                     `MutableCollectionInterface` keys and values.
+     *                                    `MutableCollectionInterface` keys and values.
      *
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` containing the values after
      *                                            a user-specified condition is applied to the keys and values of
@@ -72,7 +72,7 @@ interface MutableCollectionInterface extends CollectionInterface
      * @template Tu
      *
      * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                               `MutableCollectionInterface` values.
+     *                              `MutableCollectionInterface` values.
      *
      * @return MutableCollectionInterface<Tk, Tu> A `MutableCollectionInterface` containing key/value pairs
      *                                            after a user-specified operation is applied.
@@ -93,7 +93,7 @@ interface MutableCollectionInterface extends CollectionInterface
      * @template Tu
      *
      * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                                   `MutableCollectionInterface` keys and values.
+     *                                  `MutableCollectionInterface` keys and values.
      *
      * @return MutableCollectionInterface<Tk, Tu> A `MutableCollectionInterface` containing the values
      *                                            after a user-specified operation on the current
@@ -151,7 +151,7 @@ interface MutableCollectionInterface extends CollectionInterface
      * `MutableCollectionInterface`.
      *
      * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping
-     *                                 condition.
+     *                                condition.
      *
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` that is a proper
      *                                            subset of the current `MutableCollectionInterface` up until
@@ -188,7 +188,7 @@ interface MutableCollectionInterface extends CollectionInterface
      * `MutableCollectionInterface`.
      *
      * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
-     *                                 returned `MutableCollectionInterface`.
+     *                                returned `MutableCollectionInterface`.
      *
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` that is a proper subset of the current
      *                                            `MutableCollectionInterface` starting after the callback
@@ -228,8 +228,8 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @param positive-int $size The size of each chunk.
      *
-     * @return MutableCollectionInterface<int, static<Tk, Tv>> A `MutableCollectionInterface` containing the original
-     *                                                         `MutableCollectionInterface` split into chunks of the given size.
+     * @return MutableCollectionInterface<int<0, max>, static<Tk, Tv>> A `MutableCollectionInterface` containing the original
+     *                                                                 `MutableCollectionInterface` split into chunks of the given size.
      *
      * @psalm-mutation-free
      */

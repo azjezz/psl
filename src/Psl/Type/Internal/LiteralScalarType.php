@@ -46,7 +46,6 @@ final class LiteralScalarType extends Type\Type
             return $value;
         }
 
-        /** @psalm-suppress DocblockTypeContradiction */
         if (Type\string()->matches($this->value)) {
             $coerced_value = Type\string()->withTrace($this->getTrace())->coerce($value);
             if ($this->value === $coerced_value) {
@@ -57,7 +56,6 @@ final class LiteralScalarType extends Type\Type
             throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
         }
 
-        /** @psalm-suppress DocblockTypeContradiction */
         if (Type\int()->matches($this->value)) {
             $coerced_value = Type\int()->withTrace($this->getTrace())->coerce($value);
             if ($this->value === $coerced_value) {
@@ -68,7 +66,6 @@ final class LiteralScalarType extends Type\Type
             throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
         }
 
-        /** @psalm-suppress DocblockTypeContradiction */
         if (Type\float()->matches($this->value)) {
             $coerced_value = Type\float()->withTrace($this->getTrace())->coerce($value);
             if ($this->value === $coerced_value) {
@@ -83,11 +80,7 @@ final class LiteralScalarType extends Type\Type
         $literal_value = $this->value;
         $coerced_value = Type\bool()->withTrace($this->getTrace())->coerce($value);
         if ($literal_value === $coerced_value) {
-            /**
-             * @psalm-suppress InvalidReturnStatement
-             *
-             * @var T $coerced_value
-             */
+            /** @var T $coerced_value */
             return $coerced_value;
         }
 

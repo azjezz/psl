@@ -266,8 +266,8 @@ final class Option
      *
      * @template Tu
      *
-     * @param (Closure(T): Tu)  $closure
-     * @param (Closure(): Tu)   $else
+     * @param (Closure(T): Tu) $closure
+     * @param (Closure(): Tu) $else
      *
      * @return Option<Tu>
      */

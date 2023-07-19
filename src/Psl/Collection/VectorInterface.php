@@ -9,14 +9,14 @@ use Closure;
 /**
  * @template T
  *
- * @extends AccessibleCollectionInterface<int, T>
+ * @extends AccessibleCollectionInterface<int<0, max>, T>
  */
 interface VectorInterface extends AccessibleCollectionInterface
 {
     /**
      * Returns the value at the specified key in the current vector.
      *
-     * @param int $k
+     * @param int<0, max> $k
      *
      * @return T
      *
@@ -27,7 +27,7 @@ interface VectorInterface extends AccessibleCollectionInterface
     /**
      * Determines if the specified key is in the current vector.
      *
-     * @param int $k
+     * @param int<0, max> $k
      *
      * @psalm-mutation-free
      */
@@ -36,7 +36,7 @@ interface VectorInterface extends AccessibleCollectionInterface
     /**
      * Returns the value at the specified key in the current vector.
      *
-     * @param int $k
+     * @param int<0, max> $k
      *
      * @return T|null
      *
@@ -66,7 +66,7 @@ interface VectorInterface extends AccessibleCollectionInterface
     /**
      * Returns a `VectorInterface` containing the keys of the current `VectorInterface`.
      *
-     * @return VectorInterface<int>
+     * @return VectorInterface<int<0, max>>
      *
      * @psalm-mutation-free
      */
@@ -83,7 +83,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * returned `VectorInterface`.
      *
      * @param (Closure(T): bool) $fn The callback containing the condition to apply to the current
-     *                                `VectorInterface` values.
+     *                               `VectorInterface` values.
      *
      * @return VectorInterface<T> A VectorInterface containing the values after a user-specified condition
      *                            is applied.
@@ -101,8 +101,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      * The keys associated with the current `VectorInterface` remain unchanged in the
      * returned `VectorInterface`; the keys will be used in the filtering process only.
      *
-     * @param (Closure(int, T): bool) $fn The callback containing the condition to apply to the current
-     *                                     `VectorInterface` keys and values.
+     * @param (Closure(int<0, max>, T): bool) $fn The callback containing the condition to apply to the current
+     *                                            `VectorInterface` keys and values.
      *
      * @return VectorInterface<T> A `VectorInterface` containing the values after a user-specified
      *                            condition is applied to the keys and values of the current `VectorInterface`.
@@ -122,7 +122,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * @template Tu
      *
      * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
-     *                              `VectorInterface` values.
+     *                             `VectorInterface` values.
      *
      * @return VectorInterface<Tu> A `VectorInterface` containing key/value pairs after a user-specified
      *                             operation is applied.
@@ -142,8 +142,8 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @template Tu
      *
-     * @param (Closure(int, T): Tu) $fn The callback containing the operation to apply to the current
-     *                                   `VectorInterface` keys and values.
+     * @param (Closure(int<0, max>, T): Tu) $fn The callback containing the operation to apply to the current
+     *                                          `VectorInterface` keys and values.
      *
      * @return VectorInterface<Tu> A `VectorInterface` containing the values after a user-specified
      *                             operation on the current `VectorInterface`'s keys and values is applied.
@@ -163,8 +163,8 @@ interface VectorInterface extends AccessibleCollectionInterface
     /**
      * Returns the first key in the current `VectorInterface`.
      *
-     * @return int|null The first key in the current `VectorInterface`, or `null` if the
-     *                  current `VectorInterface` is empty.
+     * @return int<0, max>|null The first key in the current `VectorInterface`, or `null` if the
+     *                          current `VectorInterface` is empty.
      *
      * @psalm-mutation-free
      */
@@ -183,8 +183,8 @@ interface VectorInterface extends AccessibleCollectionInterface
     /**
      * Returns the last key in the current `VectorInterface`.
      *
-     * @return int|null The last key in the current `VectorInterface`, or `null` if the
-     *                  current `VectorInterface` is empty.
+     * @return int<0, max>|null The last key in the current `VectorInterface`, or `null` if the
+     *                          current `VectorInterface` is empty.
      *
      * @psalm-mutation-free
      */
@@ -198,7 +198,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * @param T $search_value The value that will be search for in the current
      *                        `VectorInterface`.
      *
-     * @return int|null The key (index) where that value is found; null if it is not found
+     * @return int<0, max>|null The key (index) where that value is found; null if it is not found
      *
      * @psalm-mutation-free
      */
@@ -252,7 +252,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * `VectorInterface`.
      *
      * @param (Closure(T): bool) $fn The callback that is used to determine the stopping
-     *                                condition.
+     *                               condition.
      *
      * @return VectorInterface<T> A `VectorInterface` that is a proper subset of the current
      *                            `VectorInterface` up until the callback returns `false`.
@@ -287,7 +287,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * `VectorInterface`.
      *
      * @param (Closure(T): bool) $fn The callback used to determine the starting element for the
-     *                                returned `VectorInterface`.
+     *                               returned `VectorInterface`.
      *
      * @return VectorInterface<T> A `VectorInterface` that is a proper subset of the current
      *                            `VectorInterface` starting after the callback returns `true`.

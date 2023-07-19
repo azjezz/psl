@@ -28,7 +28,7 @@ interface MutableAccessibleCollectionInterface extends
      * Returns a `MutableAccessibleCollectionInterface` containing the values of the current
      * `MutableAccessibleCollectionInterface`.
      *
-     * @return MutableAccessibleCollectionInterface<int, Tv>
+     * @return MutableAccessibleCollectionInterface<int<0, max>, Tv>
      *
      * @psalm-mutation-free
      */
@@ -38,7 +38,7 @@ interface MutableAccessibleCollectionInterface extends
      * Returns a `MutableAccessibleCollectionInterface` containing the keys of the current
      * `MutableAccessibleCollectionInterface`.
      *
-     * @return MutableAccessibleCollectionInterface<int, Tk>
+     * @return MutableAccessibleCollectionInterface<int<0, max>, Tk>
      *
      * @psalm-mutation-free
      */
@@ -55,7 +55,7 @@ interface MutableAccessibleCollectionInterface extends
      * returned `MutableAccessibleCollectionInterface`.
      *
      * @param (Closure(Tv): bool) $fn The callback containing the condition to apply to the current
-     *                                 `MutableAccessibleCollectionInterface` values.
+     *                                `MutableAccessibleCollectionInterface` values.
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` containing
      *                                                      the values after a user-specified condition is applied.
@@ -74,7 +74,7 @@ interface MutableAccessibleCollectionInterface extends
      * returned `MutableAccessibleCollectionInterface`; the keys will be used in the filtering process only.
      *
      * @param (Closure(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
-     *                                     `MutableAccessibleCollectionInterface` keys and values.
+     *                                    `MutableAccessibleCollectionInterface` keys and values.
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` containing
      *                                                      the values after a user-specified condition is applied
@@ -96,7 +96,7 @@ interface MutableAccessibleCollectionInterface extends
      * @template Tu
      *
      * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                               `MutableAccessibleCollectionInterface` values.
+     *                              `MutableAccessibleCollectionInterface` values.
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tu> A `MutableAccessibleCollectionInterface` containing
      *                                                      key/value pairs after a user-specified operation is applied.
@@ -117,7 +117,7 @@ interface MutableAccessibleCollectionInterface extends
      * @template Tu
      *
      * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                                   `MutableAccessibleCollectionInterface` keys and values.
+     *                                  `MutableAccessibleCollectionInterface` keys and values.
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tu> A `MutableAccessibleCollectionInterface` containing
      *                                                      the values after a user-specified operation on the current
@@ -232,7 +232,7 @@ interface MutableAccessibleCollectionInterface extends
      * `MutableAccessibleCollectionInterface`.
      *
      * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping
-     *                                 condition.
+     *                                condition.
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` that is a proper
      *                                                      subset of the current `MutableAccessibleCollectionInterface`
@@ -269,7 +269,7 @@ interface MutableAccessibleCollectionInterface extends
      * `MutableAccessibleCollectionInterface`.
      *
      * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
-     *                                 returned `MutableAccessibleCollectionInterface`.
+     *                                returned `MutableAccessibleCollectionInterface`.
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` that is a proper
      *                                                      subset of the current `MutableAccessibleCollectionInterface`
@@ -309,8 +309,8 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @param positive-int $size The size of each chunk.
      *
-     * @return MutableAccessibleCollectionInterface<int, static<Tk, Tv>> A `MutableAccessibleCollectionInterface` containing the original
-     *                                                                   `MutableAccessibleCollectionInterface` split into chunks of the given size.
+     * @return MutableAccessibleCollectionInterface<int<0, max>, static<Tk, Tv>> A `MutableAccessibleCollectionInterface` containing the original
+     *                                                                           `MutableAccessibleCollectionInterface` split into chunks of the given size.
      *
      * @psalm-mutation-free
      */

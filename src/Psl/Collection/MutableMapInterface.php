@@ -45,7 +45,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * returned `MutableMapInterface`.
      *
      * @param (Closure(Tv): bool) $fn - The callback containing the condition to apply to the current
-     *                                 `MutableMapInterface` values.
+     *                                `MutableMapInterface` values.
      *
      * @return MutableMapInterface<Tk, Tv> - a MutableMapInterface containing the values after a user-specified
      *                                     condition is applied.
@@ -64,7 +64,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * returned `MutableMapInterface`; the keys will be used in the filtering process only.
      *
      * @param (Closure(Tk, Tv): bool) $fn - The callback containing the condition to apply to
-     *                                     the current `MutableMapInterface` keys and values.
+     *                                    the current `MutableMapInterface` keys and values.
      *
      * @return MutableMapInterface<Tk, Tv> - a `MutableMapInterface` containing the values after a user-specified
      *                                     condition is applied to the keys and values of the
@@ -85,7 +85,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @template Tu
      *
      * @param (Closure(Tv): Tu) $fn - The callback containing the operation to apply to the current
-     *                               `MutableMapInterface` values.
+     *                              `MutableMapInterface` values.
      *
      * @return MutableMapInterface<Tk, Tu> - a `MutableMapInterface` containing key/value pairs after
      *                                     a user-specified operation is applied.
@@ -106,7 +106,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @template Tu
      *
      * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                                   `MutableMapInterface` keys and values.
+     *                                  `MutableMapInterface` keys and values.
      *
      * @return MutableMapInterface<Tk, Tu> A `MutableMapInterface` containing the values after a user-specified
      *                                     operation on the current `MutableMapInterface`'s keys and values is applied.
@@ -249,7 +249,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * `MutableMapInterface`.
      *
      * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
-     *                                 returned `MutableMapInterface`.
+     *                                returned `MutableMapInterface`.
      *
      * @return MutableMapInterface<Tk, Tv> A `MutableMapInterface` that is a proper subset of the current
      *                                     `MutableMapInterface` starting after the callback returns `true`.

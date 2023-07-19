@@ -15,7 +15,7 @@ jobs:
       - name: "installing PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "8.1"
+          php-version: "8.2"
           ini-values: memory_limit=-1
           tools: composer:v2, cs2pr
           extensions: bcmath, mbstring, intl, sodium, json

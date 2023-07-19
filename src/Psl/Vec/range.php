@@ -42,7 +42,6 @@ namespace Psl\Vec;
  * @psalm-suppress InvalidReturnStatement
  * @psalm-suppress InvalidOperand
  * @psalm-suppress MixedOperand
- * @psalm-suppress DocblockTypeContradiction
  *
  * @see https://github.com/vimeo/psalm/issues/2152#issuecomment-533363310
  */

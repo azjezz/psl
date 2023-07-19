@@ -119,12 +119,7 @@ function execute(
                     '$1$1\\"',
                 ) . '"';
 
-                /**
-                 * @psalm-suppress MixedArrayOffset
-                 * @psalm-suppress MixedArrayAssignment
-                 *
-                 * @var string
-                 */
+                /** @var string */
                 return $variable_cache[$m[0]] = '!' . $var . '!';
             },
         );
@@ -190,6 +185,6 @@ function execute(
         ErrorOutputBehavior::Prepend => $stderr_content . $stdout_content,
         ErrorOutputBehavior::Append => $stdout_content . $stderr_content,
         ErrorOutputBehavior::Replace => $stderr_content,
-        ErrorOutputBehavior::Packed, ErrorOutputBehavior::Discard => $stdout_content,
+        ErrorOutputBehavior::Discard => $stdout_content,
     };
 }

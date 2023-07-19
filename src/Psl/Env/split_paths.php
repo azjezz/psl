@@ -15,6 +15,5 @@ use const PATH_SEPARATOR;
  */
 function split_paths(string $path): array
 {
-    /** @psalm-suppress MissingThrowsDocblock - we don't provide the $limit argument */
     return Str\split($path, PATH_SEPARATOR);
 }

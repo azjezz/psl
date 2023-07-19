@@ -273,7 +273,7 @@ final class MutableMap implements MutableMapInterface
      * returned `MutableMap`.
      *
      * @param (Closure(Tv): bool) $fn The callback containing the condition to apply to the current
-     *                                 `MutableMap` values.
+     *                                `MutableMap` values.
      *
      * @return MutableMap<Tk, Tv> A MutableMap containing the values after a user-specified condition
      *                            is applied.
@@ -295,7 +295,7 @@ final class MutableMap implements MutableMapInterface
      * returned `MutableMap`; the keys will be used in the filtering process only.
      *
      * @param (Closure(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
-     *                                     `MutableMap` keys and values.
+     *                                    `MutableMap` keys and values.
      *
      * @return MutableMap<Tk, Tv> A `MutableMap` containing the values after a user-specified
      *                            condition is applied to the keys and values of the current `MutableMap`.
@@ -318,7 +318,7 @@ final class MutableMap implements MutableMapInterface
      * @template Tu
      *
      * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                               `MutableMap` values.
+     *                              `MutableMap` values.
      *
      * @return MutableMap<Tk, Tu> A `MutableMap` containing key/value pairs after a user-specified
      *                            operation is applied.
@@ -342,7 +342,7 @@ final class MutableMap implements MutableMapInterface
      * @template Tu
      *
      * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                                   `MutableMap` keys and values.
+     *                                  `MutableMap` keys and values.
      *
      * @return MutableMap<Tk, Tu> A `MutableMap` containing the values after a user-specified
      *                            operation on the current `MutableMap`'s keys and values is applied.
@@ -422,7 +422,7 @@ final class MutableMap implements MutableMapInterface
      * `MutableMap`.
      *
      * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping
-     *                                 condition.
+     *                                condition.
      *
      * @return MutableMap<Tk, Tv> A `MutableMap` that is a proper subset of the current
      *                            `MutableMap` up until the callback returns `false`.
@@ -464,7 +464,7 @@ final class MutableMap implements MutableMapInterface
      * `MutableMap`.
      *
      * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
-     *                                 returned `MutableMap`.
+     *                                returned `MutableMap`.
      *
      * @return MutableMap<Tk, Tv> A `MutableMap` that is a proper subset of the current
      *                            `MutableMap` starting after the callback returns `true`.

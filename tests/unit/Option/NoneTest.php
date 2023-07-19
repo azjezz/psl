@@ -31,7 +31,7 @@ final class NoneTest extends TestCase
         $option = Option\none();
 
         $this->expectException(NoneException::class);
-        $this->expectErrorMessage('Attempting to unwrap a none option.');
+        $this->expectExceptionMessage('Attempting to unwrap a none option.');
 
         $option->unwrap();
     }

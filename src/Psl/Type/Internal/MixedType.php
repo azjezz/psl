@@ -23,8 +23,6 @@ final class MixedType extends Type
 
     /**
      * @psalm-assert mixed $value
-     *
-     * @psalm-suppress MixedReturnStatement
      */
     public function coerce(mixed $value): mixed
     {
@@ -33,8 +31,6 @@ final class MixedType extends Type
 
     /**
      * @psalm-assert mixed $value
-     *
-     * @psalm-suppress MixedReturnStatement
      */
     public function assert(mixed $value): mixed
     {

@@ -83,7 +83,6 @@ final class Semaphore
                 $this->waits = [];
             }
 
-            /** @psalm-suppress InvalidPropertyAssignmentValue - valid */
             $this->ingoing--;
         }
     }

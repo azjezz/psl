@@ -26,7 +26,7 @@ final class ConvertedType extends Type\Type
     /**
      * @param TypeInterface<I> $from
      * @param TypeInterface<O> $into
-     * @param (\Closure(I): O) $converter
+     * @param (Closure(I): O) $converter
      */
     public function __construct(
         private TypeInterface $from,

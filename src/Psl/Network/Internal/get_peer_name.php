@@ -23,7 +23,6 @@ use function substr;
 function get_peer_name(mixed $socket): Network\Address
 {
     error_clear_last();
-    /** @var string|false $result */
     $result = stream_socket_get_name($socket, true);
     if ($result !== false && $result !== "\0") {
         $separator_position = strrpos($result, ':');

@@ -90,7 +90,7 @@ final class Vector implements VectorInterface
     /**
      * Retrieve an external iterator.
      *
-     * @return Iter\Iterator<int, T>
+     * @return Iter\Iterator<int<0, max>, T>
      */
     public function getIterator(): Iter\Iterator
     {
@@ -148,7 +148,7 @@ final class Vector implements VectorInterface
     /**
      * Returns the value at the specified key in the current `Vector`.
      *
-     * @param int $k
+     * @param int<0, max> $k
      *
      * @throws Exception\OutOfBoundsException If $k is out-of-bounds.
      *
@@ -168,7 +168,7 @@ final class Vector implements VectorInterface
     /**
      * Determines if the specified key is in the current `Vector`.
      *
-     * @param int $k
+     * @param int<0, max> $k
      *
      * @psalm-mutation-free
      */
@@ -180,7 +180,7 @@ final class Vector implements VectorInterface
     /**
      * Returns the value at the specified key in the current `Vector`.
      *
-     * @param int $k
+     * @param int<0, max> $k
      *
      * @return T|null
      *
@@ -194,8 +194,8 @@ final class Vector implements VectorInterface
     /**
      * Returns the first key in the current `Vector`.
      *
-     * @return int|null The first key in the current `Vector`, or `null` if the
-     *                  current `Vector` is empty.
+     * @return int<0, max>|null The first key in the current `Vector`, or `null` if the
+     *                          current `Vector` is empty.
      *
      * @psalm-mutation-free
      */
@@ -207,8 +207,8 @@ final class Vector implements VectorInterface
     /**
      * Returns the last key in the current `Vector`.
      *
-     * @return int|null The last key in the current `Vector`, or `null` if the
-     *                  current `Vector` is empty.
+     * @return int<0, max>|null The last key in the current `Vector`, or `null` if the
+     *                          current `Vector` is empty.
      *
      * @psalm-mutation-free
      */
@@ -225,7 +225,7 @@ final class Vector implements VectorInterface
      * @param T $search_value The value that will be search for in the current
      *                        collection.
      *
-     * @return int|null The key (index) where that value is found; null if it is not found.
+     * @return int<0, max>|null The key (index) where that value is found; null if it is not found.
      *
      * @psalm-mutation-free
      */
@@ -256,7 +256,7 @@ final class Vector implements VectorInterface
     /**
      * Returns a `Vector` containing the keys of the current `Vector`.
      *
-     * @return Vector<int>
+     * @return Vector<int<0, max>>
      *
      * @psalm-mutation-free
      */
@@ -276,7 +276,7 @@ final class Vector implements VectorInterface
      * returned `Vector`.
      *
      * @param (Closure(T): bool) $fn The callback containing the condition to apply to the current
-     *                                `Vector` values.
+     *                               `Vector` values.
      *
      * @return Vector<T> a Vector containing the values after a user-specified condition
      *                   is applied.
@@ -297,8 +297,8 @@ final class Vector implements VectorInterface
      * The keys associated with the current `Vector` remain unchanged in the
      * returned `Vector`; the keys will be used in the filtering process only.
      *
-     * @param (Closure(int, T): bool) $fn The callback containing the condition to apply to the current
-     *                                     `Vector` keys and values.
+     * @param (Closure(int<0, max>, T): bool) $fn The callback containing the condition to apply to the current
+     *                                            `Vector` keys and values.
      *
      * @return Vector<T> a `Vector` containing the values after a user-specified
      *                   condition is applied to the keys and values of the current `Vector`.
@@ -321,7 +321,7 @@ final class Vector implements VectorInterface
      * @template Tu
      *
      * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
-     *                              `Vector` values.
+     *                             `Vector` values.
      *
      * @return Vector<Tu> a `Vector` containing key/value pairs after a user-specified
      *                    operation is applied.
@@ -344,8 +344,8 @@ final class Vector implements VectorInterface
      *
      * @template Tu
      *
-     * @param (Closure(int, T): Tu) $fn The callback containing the operation to apply to the current
-     *                                   `Vector` keys and values.
+     * @param (Closure(int<0, max>, T): Tu) $fn The callback containing the operation to apply to the current
+     *                                          `Vector` keys and values.
      *
      * @return Vector<Tu> a `Vector` containing the values after a user-specified
      *                    operation on the current `Vector`'s keys and values is applied.
@@ -410,7 +410,7 @@ final class Vector implements VectorInterface
      * `Vector`.
      *
      * @param (Closure(T): bool) $fn The callback that is used to determine the stopping
-     *                                condition.
+     *                               condition.
      *
      * @return Vector<T> A `Vector` that is a proper subset of the current
      *                   `Vector` up until the callback returns `false`.
@@ -451,7 +451,7 @@ final class Vector implements VectorInterface
      * `Vector`.
      *
      * @param (Closure(T): bool) $fn The callback used to determine the starting element for the
-     *                                returned `Vector`.
+     *                               returned `Vector`.
      *
      * @return Vector<T> A `Vector` that is a proper subset of the current
      *                   `Vector` starting after the callback returns `true`.

@@ -273,7 +273,7 @@ final class Map implements MapInterface
      * returned `Map`.
      *
      * @param (Closure(Tv): bool) $fn The callback containing the condition to apply to the current
-     *                                 `Map` values.
+     *                                `Map` values.
      *
      * @return Map<Tk, Tv> A Map containing the values after a user-specified condition
      *                     is applied.
@@ -295,7 +295,7 @@ final class Map implements MapInterface
      * returned `Map`; the keys will be used in the filtering process only.
      *
      * @param (Closure(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
-     *                                     `Map` keys and values.
+     *                                    `Map` keys and values.
      *
      * @return Map<Tk, Tv> A `Map` containing the values after a user-specified
      *                     condition is applied to the keys and values of the current `Map`.
@@ -318,7 +318,7 @@ final class Map implements MapInterface
      * @template Tu
      *
      * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                               `Map` values.
+     *                              `Map` values.
      *
      * @return Map<Tk, Tu> A `Map` containing key/value pairs after a user-specified
      *                     operation is applied.
@@ -342,7 +342,7 @@ final class Map implements MapInterface
      * @template Tu
      *
      * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                                   `Map` keys and values.
+     *                                  `Map` keys and values.
      *
      * @return Map<Tk, Tu> A `Map` containing the values after a user-specified
      *                     operation on the current `Map`'s keys and values is applied.
@@ -419,7 +419,7 @@ final class Map implements MapInterface
      * `Map`.
      *
      * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping
-     *                                 condition.
+     *                                condition.
      *
      * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
      *                     `Map` up until the callback returns `false`.
@@ -460,7 +460,7 @@ final class Map implements MapInterface
      * `Map`.
      *
      * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
-     *                                 returned `Map`.
+     *                                returned `Map`.
      *
      * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
      *                     `Map` starting after the callback returns `true`.

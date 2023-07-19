@@ -7,6 +7,6 @@ namespace Psl\Filesystem;
 use const DIRECTORY_SEPARATOR;
 
 /**
- * @var string
+ * @var non-empty-string
  */
 const SEPARATOR = DIRECTORY_SEPARATOR;

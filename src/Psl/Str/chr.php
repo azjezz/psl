@@ -21,9 +21,5 @@ use function mb_chr;
  */
 function chr(int $codepoint, Encoding $encoding = Encoding::UTF_8): string
 {
-    /**
-     * @psalm-suppress UndefinedPropertyFetch
-     * @psalm-suppress MixedArgument
-     */
     return (string) mb_chr($codepoint, $encoding->value);
 }

@@ -50,11 +50,7 @@ function range(string $string, RangeInterface $range): string
     }
     
     if ($range instanceof UpperBoundRangeInterface) {
-        /**
-         * @psalm-suppress InvalidOperand
-         *
-         * @var int<0, max> $length
-         */
+        /** @var int<0, max> $length */
         $length = $range->getUpperBound() - $offset;
         if ($range->isUpperInclusive()) {
             $length += 1;

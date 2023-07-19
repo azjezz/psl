@@ -44,7 +44,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * returned `MapInterface`.
      *
      * @param (Closure(Tv): bool) $fn The callback containing the condition to apply to the current
-     *                                 `MapInterface` values.
+     *                                `MapInterface` values.
      *
      * @return MapInterface<Tk, Tv> A MapInterface containing the values after a user-specified condition
      *                              is applied.
@@ -63,7 +63,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * returned `MapInterface`; the keys will be used in the filtering process only.
      *
      * @param (Closure(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
-     *                                     `MapInterface` keys and values.
+     *                                    `MapInterface` keys and values.
      *
      * @return MapInterface<Tk, Tv> A `MapInterface` containing the values after a user-specified
      *                              condition is applied to the keys and values of the current `MapInterface`.
@@ -83,7 +83,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * @template Tu
      *
      * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                               `MapInterface` values.
+     *                              `MapInterface` values.
      *
      * @return MapInterface<Tk, Tu> A `MapInterface` containing key/value pairs after a user-specified
      *                              operation is applied.
@@ -104,7 +104,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * @template Tu
      *
      * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                                   `MapInterface` keys and values.
+     *                                  `MapInterface` keys and values.
      *
      * @return MapInterface<Tk, Tu> A `MapInterface` containing the values after a user-specified
      *                              operation on the current `MapInterface`'s keys and values is applied.
@@ -213,7 +213,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * `MapInterface`.
      *
      * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping
-     *                                 condition.
+     *                                condition.
      *
      * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
      *                              `MapInterface` up until the callback returns `false`.
@@ -248,7 +248,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * `MapInterface`.
      *
      * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
-     *                                 returned `MapInterface`.
+     *                                returned `MapInterface`.
      *
      * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
      *                              `MapInterface` starting after the callback returns `true`.
