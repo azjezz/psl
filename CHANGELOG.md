@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.7.0
+
+### features
+
+* feat(encoding): introduce `Base64\Variant` enum to support encoding/decoding different variants - [#408](https://github.com/azjezz/psl/pull/408) by @Gashmob
+
+### fixes, and improvements
+
+* fix(option): return `Option<never>` for `Option::none()` - [#415](https://github.com/azjezz/psl/pull/415) by @devnix
+* fix(str): add invariant to avoid unexpected errors when parsing an invalid UTF8 string - [#410](https://github.com/azjezz/psl/pull/410) by @devnix
+
 ## 2.6.0
 
 ### features
