@@ -1,27 +1,75 @@
 # Changelog
 
-## 3.0.0
+## 2.6.0
 
 ### features
 
-* introduced a new `Psl\Range` component - by @azjezz
-* introduced a new `Psl\Str\range` function - by @azjezz
-* introduced a new `Psl\Str\Byte\range` function - by @azjezz
-* introduced a new `Psl\Str\Grapheme\range` function - by @azjezz
-* introduced a new `Psl\Type\uint` function - by @azjezz
-* introduced a new `Psl\Type\i8` function - by @azjezz
-* introduced a new `Psl\Type\i16` function - by @azjezz
-* introduced a new `Psl\Type\i32` function - by @azjezz
-* introduced a new `Psl\Type\i64` function - by @azjezz
-* introduced a new `Psl\Type\u32` function - by @KennedyTedesco
-* introduced a new `Psl\Type\u16` function - by @KennedyTedesco
-* introduced a new `Psl\Type\u8` function - by @KennedyTedesco
-* introduced a new `Psl\Type\f64` function - by @KennedyTedesco
-* introduced a new `Psl\Type\f32` function - by @KennedyTedesco
+* feat(type): introduce `Type\converted` function - [#405](https://github.com/azjezz/psl/pull/405) by @veewee
+* feat(type): introduce `Type\numeric_string` function - [#406](https://github.com/azjezz/psl/pull/406) by @veewee
+
+## 2.5.0
+
+### features
+
+* feat(result): introduce `Result\try_catch` function - [#403](https://github.com/azjezz/psl/pull/403) by @azjezz
+
+### fixes, and improvements
+
+* fix(file): improve consistency when creating files for write-mode - [#401](https://github.com/azjezz/psl/pull/401) by @veewee
+
+## 2.4.1
+
+### fixes, and improvements
+
+* fix(type): un-deprecate `Psl\Type\positive_int` function - [#400](https://github.com/azjezz/psl/pull/400) by @dragosprotung
+
+## 2.4.0
+
+### features
+
+* feat(range): introduced `Psl\Range` component - [#378](https://github.com/azjezz/psl/pull/378) by @azjezz
+* feat(str): introduced `Psl\Str\range`, `Psl\Str\Byte\range`, and `Psl\Str\Grapheme\range` functions - [#385](https://github.com/azjezz/psl/pull/385) by @azjezz
+* feat(type): introduced `Psl\Type\uint` function - [#393](https://github.com/azjezz/psl/pull/393) by @azjezz
+* feat(type): introduced `Psl\Type\i8`, `Psl\Type\i16`, `Psl\Type\i32`, `Psl\Type\i64` functions - [#392](https://github.com/azjezz/psl/pull/392) by @azjezz
+* feat(type): introduced `Psl\Type\u8`, `Psl\Type\u16`, `Psl\Type\u32` functions - [#395](https://github.com/azjezz/psl/pull/395) by @KennedyTedesco
+* feat(type): introduced `Psl\Type\f32`, and `Psl\Type\f64` functions - [#396](https://github.com/azjezz/psl/pull/396) by @KennedyTedesco
+* feat(type): introduced `Psl\Type\nonnull` function - [#392](https://github.com/azjezz/psl/pull/392) by @azjezz
+* feat(option): improve options type declarations and add `andThen` method - [#398](https://github.com/azjezz/psl/pull/398) by @veewee
+
+### fixes, and improvements
+
+* fix(vec/dict): Return might be non-empty-list/non-empty-array for map functions - [#384](https://github.com/azjezz/psl/pull/384) by @dragosprotung
+
+### other
+
+* chore(async): add async component documentation - [#386](https://github.com/azjezz/psl/pull/386) by @azjezz
 
 ### deprecations
 
 * deprecated `Psl\Type\positive_int` function, use `Psl\Type\uint` instead - by @azjezz
+
+## 2.3.1
+
+### fixes, and improvements
+
+* fix(vec): `Vec\reproduce` and `Vec\range` return type is always non-empty-list - [#383](https://github.com/azjezz/psl/pull/383) by @dragosprotung
+
+### other
+
+* chore: update license copyright year - [#371](https://github.com/azjezz/psl/pull/371) by @azjezz
+
+## 2.3.0
+
+### other
+
+* chore: support psalm v5 - [#369](https://github.com/azjezz/psl/pull/369) by @veewee
+
+
+## 2.2.0
+
+### features
+
+* feat(option): introduce option component - [#356](https://github.com/azjezz/psl/pull/356) by @azjezz
 
 ## 2.1.0
 
