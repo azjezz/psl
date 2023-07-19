@@ -34,7 +34,6 @@ function create_temporary_file(?string $directory = null, ?string $prefix = null
         throw Exception\NotDirectoryException::for($directory);
     }
 
-    /** @var non-empty-string $separator */
     $separator = namespace\SEPARATOR;
     if (null !== $prefix) {
         /** @psalm-suppress MissingThrowsDocblock - $offset is within bounds. */

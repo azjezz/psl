@@ -23,6 +23,8 @@ use const LOCK_UN;
 use const SEEK_END;
 
 /**
+ * @psalm-suppress PossiblyInvalidArgument
+ *
  * @internal
  */
 final class ResourceHandle extends IO\Internal\ResourceHandle implements File\ReadWriteHandleInterface
@@ -63,7 +65,6 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements File\Re
             throw new File\Exception\RuntimeException($previous->getMessage(), previous: $previous);
         }
 
-        /** @psalm-suppress PossiblyInvalidArgument */
         $result = @fseek($this->stream, 0, SEEK_END);
         if ($result === -1) {
             $error = error_get_last();
@@ -108,7 +109,6 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements File\Re
         }
 
         $operations = LOCK_NB | ($type === LockType::EXCLUSIVE ? LOCK_EX : LOCK_SH);
-        /** @psalm-suppress PossiblyInvalidArgument */
         $success = @flock($this->stream, $operations, $would_block);
         // @codeCoverageIgnoreStart
         if ($would_block) {
@@ -130,7 +130,6 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements File\Re
                 throw new Exception\AlreadyClosedException('Handle was closed before releasing the lock.');
             }
 
-            /** @psalm-suppress PossiblyInvalidArgument */
             if (!@flock($this->stream, LOCK_UN)) {
                 throw new File\Exception\RuntimeException(Str\format(
                     'Could not release lock for "%s".',

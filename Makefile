@@ -22,14 +22,14 @@ compare-benchmark-to-reference:                                                 
 	./vendor/bin/phpbench run --config config/phpbench.json --ref=benchmark_reference
 
 static-analysis:                                                                ## run static analysis checks
-	./vendor/bin/psalm -c config/psalm.xml --show-info=true --no-cache
-	./vendor/bin/psalm -c config/psalm.xml tests/static-analysis --no-cache
+	./vendor/bin/psalm -c config/psalm.xml --show-info=true --no-cache --threads=1
+	./vendor/bin/psalm -c config/psalm.xml tests/static-analysis --no-cache --threads=1
 
 type-coverage:                                                                  ## send static analysis type coverage metrics to https://shepherd.dev/
-	./vendor/bin/psalm -c config/psalm.xml --shepherd --stats
+	./vendor/bin/psalm -c config/psalm.xml --shepherd --stats --threads=1
 
 security-analysis:                                                              ## run static analysis security checks
-	./vendor/bin/psalm -c config/psalm.xml --taint-analysis
+	./vendor/bin/psalm -c config/psalm.xml --taint-analysis --threads=1
 
 unit-tests:                                                                     ## run unit test suite
 	./vendor/bin/phpunit -c config/phpunit.xml.dist

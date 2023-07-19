@@ -1,9 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="dev-master@641587635d1fabd5539c23385ced18e9840cce45">
-  <file src="../src/Psl/Filesystem/create_temporary_file.php">
-    <MixedArgument occurrences="2">
-      <code>SEPARATOR</code>
-      <code>SEPARATOR</code>
-    </MixedArgument>
-  </file>
-</files>
+<files psalm-version="5.13.1@086b94371304750d1c673315321a55d15fc59015"/>

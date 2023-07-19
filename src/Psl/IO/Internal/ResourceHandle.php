@@ -210,7 +210,6 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
-        /** @psalm-suppress PossiblyInvalidArgument */
         $result = @fwrite($this->stream, $bytes);
         if ($result === false) {
             $error = error_get_last();
@@ -230,7 +229,6 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
-        /** @psalm-suppress PossiblyInvalidArgument */
         $result = @fseek($this->stream, $offset);
         if (0 !== $result) {
             throw new Exception\RuntimeException('Failed to seek the specified position.');
@@ -246,7 +244,6 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
-        /** @psalm-suppress PossiblyInvalidArgument */
         $result = @ftell($this->stream);
         if ($result === false) {
             $error = error_get_last();
@@ -282,7 +279,6 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
             $max_bytes = self::MAXIMUM_READ_BUFFER_SIZE;
         }
 
-        /** @psalm-suppress PossiblyInvalidArgument */
         $result = fread($this->stream, $max_bytes);
         if ($result === false) {
             /** @var array{message: string} $error */
@@ -326,7 +322,6 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
 
             // don't close the stream if `$this->close` is false, or if it's already closed.
             if ($this->close && is_resource($this->stream)) {
-                /** @psalm-suppress PossiblyInvalidArgument */
                 $stream = $this->stream;
                 $this->stream = null;
                 $result = @fclose($stream);
