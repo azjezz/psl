@@ -1,6 +1,5 @@
 # Psl - PHP Standard Library
 
-[![Open Collective](https://opencollective.com/php-standard-library/tiers/badge.svg)](https://opencollective.com/php-standard-library)
 ![Unit tests status](https://github.com/azjezz/psl/workflows/unit%20tests/badge.svg)
 ![Static analysis status](https://github.com/azjezz/psl/workflows/static%20analysis/badge.svg)
 ![Security analysis status](https://github.com/azjezz/psl/workflows/security%20analysis/badge.svg)
