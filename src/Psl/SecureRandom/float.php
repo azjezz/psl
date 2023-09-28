@@ -15,10 +15,5 @@ use Psl\Math;
  */
 function float(): float
 {
-    /**
-     * @psalm-suppress MissingThrowsDocblock
-     */
-    $result = namespace\int(0, Math\INT53_MAX) / Math\INT53_MAX;
-
-    return (float) $result;
+    return (float) namespace\int(0, Math\INT53_MAX) / Math\INT53_MAX;
 }
