@@ -1,3 +1,14 @@
+> ## 🇵🇸 Support Palestine 🇵🇸
+> 
+> In light of recent events in Gaza, I encourage everyone to educate themselves on the ongoing issues in Palestine and consider supporting the people there. Here are some resources and donation links:
+>
+> - [Decolonize Palestine](https://decolonizepalestine.com/) - An informative resource to better understand the situation in Palestine. Please take the time to read it.
+> - [One Ummah - Gaza Emergency Appeal](https://donate.oneummah.org.uk/gazaemergencyappeal48427259) - A platform to provide direct donations to help the people in Gaza.
+> - [Islamic Relief UK - Palestine Appeal](https://www.islamic-relief.org.uk/giving/appeals/palestine/) - Another trusted platform to provide support for those affected in Palestine.
+>
+> Thank you for taking a moment to bring awareness and make a difference. 🇵🇸❤️
+
+
 # Psl - PHP Standard Library
 
 ![Unit tests status](https://github.com/azjezz/psl/workflows/unit%20tests/badge.svg)
