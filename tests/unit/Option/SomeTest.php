@@ -105,4 +105,12 @@ final class SomeTest extends TestCase
 
         static::assertSame(3, $option->andThen(static fn($i) => Option\some($i + 1))->unwrapOr(null));
     }
+
+    public function testMerge(): void
+    {
+        $value1 = Option\some(1);
+        $value2 = Option\some(2);
+
+        static::assertSame(3, $value1->merge($value2, static fn($a, $b) => $a + $b)->unwrap());
+    }
 }

@@ -108,4 +108,25 @@ final class NoneTest extends TestCase
 
         static::assertNull($option->andThen(static fn($i) => Option\some($i + 1))->unwrapOr(null));
     }
+
+    /**
+     * @param Option\Option<int> $value1
+     * @param Option\Option<int> $value2
+     *
+     * @dataProvider provideMerge
+     */
+    public function testMerge(Option\Option $value1, Option\Option $value2): void
+    {
+        $this->expectException(NoneException::class);
+        $this->expectExceptionMessage('Attempting to unwrap a none option.');
+
+        $value1->merge($value2, static fn($a, $b) => $a + $b)->unwrap();
+    }
+
+    public function provideMerge(): iterable
+    {
+        yield [Option\none(), Option\none()];
+        yield [Option\none(), Option\some(2)];
+        yield [Option\some(1), Option\none()];
+    }
 }

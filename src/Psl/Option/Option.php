@@ -279,4 +279,23 @@ final class Option
 
         return some($default());
     }
+
+    /**
+     * Merges an `Option<T>` and other `Option<T>` to `Option<Tu>` by applying a function to both contained values.
+     *
+     * @template Tu
+     *
+     * @param Option<T> $other
+     * @param (Closure(T, T): Tu) $closure
+     *
+     * @return Option<Tu>
+     */
+    public function merge(Option $other, Closure $closure)
+    {
+        if ($this->option !== null && $other->option !== null) {
+            return some($closure($this->option[0], $other->option[0]));
+        }
+
+        return none();
+    }
 }
