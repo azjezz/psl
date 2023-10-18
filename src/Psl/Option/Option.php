@@ -228,6 +228,22 @@ final class Option implements Comparison\Comparable, Comparison\Equable
     }
 
     /**
+     * Applies a function to a contained value and returns the original `Option<T>`.
+     *
+     * @param (Closure(T): void) $closure
+     *
+     * @return Option<T>
+     */
+    public function apply(Closure $closure): Option
+    {
+        if ($this->option !== null) {
+            $closure($this->option[0]);
+        }
+
+        return $this;
+    }
+
+    /**
      * Maps an `Option<T>` to `Option<Tu>` by applying a function to a contained value.
      *
      * @template Tu
