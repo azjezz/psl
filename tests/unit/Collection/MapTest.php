@@ -29,6 +29,6 @@ final class MapTest extends AbstractMapTest
      */
     protected function create(iterable $items): Map
     {
-        return new Map($items);
+        return Map::fromArray($items);
     }
 }

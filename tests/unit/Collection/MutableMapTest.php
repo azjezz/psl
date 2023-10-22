@@ -152,6 +152,6 @@ final class MutableMapTest extends AbstractMapTest
      */
     protected function create(iterable $items): MutableMap
     {
-        return new MutableMap($items);
+        return MutableMap::fromArray($items);
     }
 }

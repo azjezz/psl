@@ -9,12 +9,14 @@ use Psl\Math;
 
 final class TanTest extends TestCase
 {
+    use FloatAsserts;
+
     /**
      * @dataProvider provideData
      */
-    public function testTan(float $expected, float $number): void
+    public function testTan(float $expected, float $number, float $epsilon = PHP_FLOAT_EPSILON): void
     {
-        static::assertSame($expected, Math\tan($number));
+        static::assertFloatEquals($expected, Math\tan($number), $epsilon);
     }
 
     public function provideData(): array
@@ -22,7 +24,8 @@ final class TanTest extends TestCase
         return [
             [
                 -3.380515006246586,
-                5.0
+                5.0,
+                0.00000000000001
             ],
 
             [

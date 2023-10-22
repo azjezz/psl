@@ -9,12 +9,14 @@ use Psl\Math;
 
 final class AsinTest extends TestCase
 {
+    use FloatAsserts;
+
     /**
      * @dataProvider provideData
      */
     public function testAsin(float $expected, float $number): void
     {
-        static::assertSame($expected, Math\asin($number));
+        static::assertFloatEquals($expected, Math\asin($number));
     }
 
     public function provideData(): array

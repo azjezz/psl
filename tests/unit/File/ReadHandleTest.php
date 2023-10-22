@@ -35,4 +35,13 @@ final class ReadHandleTest extends TestCase
         $this->expectException(File\Exception\NotFoundException::class);
         File\open_read_only($temporary_file);
     }
+
+    public function testNonFile(): void
+    {
+        $temporary_file = Filesystem\create_temporary_file();
+        Filesystem\delete_file($temporary_file);
+
+        $this->expectException(File\Exception\NotFileException::class);
+        File\open_read_only(dirname($temporary_file));
+    }
 }

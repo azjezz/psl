@@ -24,6 +24,24 @@ final class PriorityQueueTest extends TestCase
         static::assertSame('hi', $queue->dequeue());
     }
 
+    public function testDefaultEnqueueSettings(): void
+    {
+        $queue = new DataStructure\PriorityQueue();
+        $queue->enqueue('hey');
+        $queue->enqueue('ho', 0);
+        $queue->enqueue('hi', -1);
+        $queue->enqueue('hello', 1);
+
+        static::assertCount(4, $queue);
+        static::assertSame('hello', $queue->dequeue());
+        static::assertCount(3, $queue);
+        static::assertSame('hey', $queue->dequeue());
+        static::assertCount(2, $queue);
+        static::assertSame('ho', $queue->dequeue());
+        static::assertCount(1, $queue);
+        static::assertSame('hi', $queue->dequeue());
+    }
+
     public function testMultipleNodesWithSamePriority(): void
     {
         $queue = new DataStructure\PriorityQueue();

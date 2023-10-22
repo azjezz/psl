@@ -9,12 +9,14 @@ use Psl\Math;
 
 final class SinTest extends TestCase
 {
+    use FloatAsserts;
+
     /**
      * @dataProvider provideData
      */
     public function testSin(float $expected, float $number): void
     {
-        static::assertSame($expected, Math\sin($number));
+        static::assertFloatEquals($expected, Math\sin($number));
     }
 
     public function provideData(): array

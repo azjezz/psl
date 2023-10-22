@@ -373,6 +373,13 @@ abstract class AbstractMapTest extends TestCase
         static::assertCount(2, $zipped);
         static::assertSame(['hello', 'foo'], $zipped->at(1));
         static::assertSame(['world', 'bar'], $zipped->at(2));
+
+        $map    = $this->create([1 => 'hello', 2 => 'world']);
+        $zipped = $map->zip(['foo' => 'foo', 'bar' => 'bar']);
+        static::assertInstanceOf($this->mapClass, $zipped);
+        static::assertCount(2, $zipped);
+        static::assertSame(['hello', 'foo'], $zipped->at(1));
+        static::assertSame(['world', 'bar'], $zipped->at(2));
     }
 
     public function testTake(): void

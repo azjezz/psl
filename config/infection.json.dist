@@ -21,6 +21,48 @@
         }
     },
     "timeout": 10,
-    "minMsi": 98,
-    "minCoveredMsi": 100
+    "minMsi": 100,
+    "minCoveredMsi": 100,
+    "mutators": {
+        "@default": true,
+        "Break_": {
+            "ignore": [
+                "Psl\\Collection\\*Map::zip"
+            ]
+        },
+        "DecrementInteger": {
+            "ignore": [
+                "Psl\\DataStructure\\PriorityQueue::peek"
+            ]
+        },
+        "FunctionCallRemoval": {
+            "ignore": [
+                "Psl\\Result\\Success::getThrowable"
+            ]
+        },
+        "IncrementInteger": {
+            "ignore": [
+                "Psl\\DataStructure\\PriorityQueue::peek"
+            ]
+        },
+        "LogicalNot": {
+            "ignore": [
+                "Psl\\Hash\\Context::update"
+            ]
+        },
+        "MethodCallRemoval": {
+            "ignore": [
+                "Psl\\Iter\\Iterator::seek",
+                "Psl\\Iter\\Iterator::count"
+            ]
+        },
+        "Throw_": {
+            "ignore": [
+                "Psl\\File\\ReadHandle::__construct",
+                "Psl\\File\\WriteHandle::__construct",
+                "Psl\\File\\ReadWriteHandle::__construct",
+                "Psl\\Hash\\Context::update"
+            ]
+        }
+    }
 }

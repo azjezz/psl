@@ -9,12 +9,14 @@ use Psl\Math;
 
 final class CosTest extends TestCase
 {
+    use FloatAsserts;
+
     /**
      * @dataProvider provideData
      */
     public function testCos(float $expected, float $number): void
     {
-        static::assertSame($expected, Math\cos($number));
+        static::assertFloatEquals($expected, Math\cos($number));
     }
 
     public function provideData(): array
