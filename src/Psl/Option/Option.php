@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Psl\Option;
 
 use Closure;
+use Psl\Comparison;
 
 /**
  * @template T
+ *
+ * @implements Comparison\Comparable<Option<T>>
+ * @implements Comparison\Equable<Option<T>>
  */
-final class Option
+final class Option implements Comparison\Comparable, Comparison\Equable
 {
     /**
      * @param ?array{T} $option
@@ -278,5 +282,27 @@ final class Option
         }
 
         return some($default());
+    }
+
+    /**
+     * @param Option<T> $other
+     */
+    public function compare(mixed $other): Comparison\Order
+    {
+        $aIsNone = $this->isNone();
+        $bIsNone = $other->isNone();
+
+        return match (true) {
+            $aIsNone || $bIsNone => Comparison\compare($bIsNone, $aIsNone),
+            default => Comparison\compare($this->unwrap(), $other->unwrap())
+        };
+    }
+
+    /**
+     * @param Option<T> $other
+     */
+    public function equals(mixed $other): bool
+    {
+        return Comparison\equal($this, $other);
     }
 }

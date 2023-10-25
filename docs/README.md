@@ -17,6 +17,7 @@
 - [Psl\Channel](./component/channel.md)
 - [Psl\Class](./component/class.md)
 - [Psl\Collection](./component/collection.md)
+- [Psl\Comparison](./component/comparison.md)
 - [Psl\DataStructure](./component/data-structure.md)
 - [Psl\Dict](./component/dict.md)
 - [Psl\Encoding\Base64](./component/encoding-base64.md)
