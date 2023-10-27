@@ -223,7 +223,7 @@ final class ShapeType extends Type\Type
     private function getTypeAndTraceForElement(string|int $element, Type\TypeInterface $type): array
     {
         $element_name = $this->getElementName($element);
-        $trace = $this->getTrace()->withFrame('array{' . $element_name . ': _}');
+        $trace = $this->getTrace()->withFrameAtPath('array{' . $element_name . ': _}', (string) $element);
 
         return [
             $trace,
