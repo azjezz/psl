@@ -1,3 +1,6 @@
+
+> [!IMPORTANT]
+>
 > ## 🇵🇸 Support Palestine 🇵🇸
 > 
 > In light of recent events in Gaza, I encourage everyone to educate themselves on the ongoing issues in Palestine and consider supporting the people there. Here are some resources and donation links:
