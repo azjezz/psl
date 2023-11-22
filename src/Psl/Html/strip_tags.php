@@ -15,10 +15,5 @@ use function strip_tags as php_strip_tags;
  */
 function strip_tags(string $html, array $allowed_tags = []): string
 {
-    /**
-     * @psalm-suppress InvalidArgument
-     *
-     * @link https://github.com/vimeo/psalm/issues/5330
-     */
     return php_strip_tags($html, $allowed_tags);
 }
