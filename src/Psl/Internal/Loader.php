@@ -57,6 +57,14 @@ final class Loader
     ];
 
     public const FUNCTIONS = [
+        'Psl\\Comparison\\compare' => 'Psl/Comparison/compare.php',
+        'Psl\\Comparison\\equal' => 'Psl/Comparison/equal.php',
+        'Psl\\Comparison\\greater' => 'Psl/Comparison/greater.php',
+        'Psl\\Comparison\\greater_or_equal' => 'Psl/Comparison/greater_or_equal.php',
+        'Psl\\Comparison\\less' => 'Psl/Comparison/less.php',
+        'Psl\\Comparison\\less_or_equal' => 'Psl/Comparison/less_or_equal.php',
+        'Psl\\Comparison\\not_equal' => 'Psl/Comparison/not_equal.php',
+        'Psl\\Comparison\\sort' => 'Psl/Comparison/sort.php',
         'Psl\\Dict\\associate' => 'Psl/Dict/associate.php',
         'Psl\\Dict\\count_values' => 'Psl/Dict/count_values.php',
         'Psl\\Dict\\drop' => 'Psl/Dict/drop.php',
@@ -514,6 +522,8 @@ final class Loader
     ];
 
     public const INTERFACES = [
+        'Psl\\Comparison\\Comparable' => 'Psl/Comparison/Comparable.php',
+        'Psl\\Comparison\\Equable' => 'Psl/Comparison/Equable.php',
         'Psl\\DataStructure\\PriorityQueueInterface' => 'Psl/DataStructure/PriorityQueueInterface.php',
         'Psl\\DataStructure\\QueueInterface' => 'Psl/DataStructure/QueueInterface.php',
         'Psl\\DataStructure\\StackInterface' => 'Psl/DataStructure/StackInterface.php',
@@ -611,6 +621,7 @@ final class Loader
 
     public const CLASSES = [
         'Psl\\Ref' => 'Psl/Ref.php',
+        'Psl\\Comparison\\Exception\\IncomparableException' => 'Psl/Comparison/Exception/IncomparableException.php',
         'Psl\\DataStructure\\PriorityQueue' => 'Psl/DataStructure/PriorityQueue.php',
         'Psl\\DataStructure\\Queue' => 'Psl/DataStructure/Queue.php',
         'Psl\\DataStructure\\Stack' => 'Psl/DataStructure/Stack.php',
@@ -805,6 +816,7 @@ final class Loader
     ];
 
     public const ENUMS = [
+        'Psl\\Comparison\\Order' => 'Psl/Comparison/Order.php',
         'Psl\\Encoding\\Base64\\Variant' => 'Psl/Encoding/Base64/Variant.php',
         'Psl\\File\\LockType' => 'Psl/File/LockType.php',
         'Psl\\File\\WriteMode' => 'Psl/File/WriteMode.php',

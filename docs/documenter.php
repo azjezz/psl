@@ -189,6 +189,7 @@ function get_all_components(): array
         'Psl\\Channel',
         'Psl\\Class',
         'Psl\\Collection',
+        'Psl\\Comparison',
         'Psl\\DataStructure',
         'Psl\\Dict',
         'Psl\\Encoding\\Base64',

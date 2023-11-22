@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Option;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Comparison\Comparable;
+use Psl\Comparison\Equable;
+use Psl\Comparison\Order;
 use Psl\Option;
 
 final class SomeTest extends TestCase
@@ -104,5 +107,26 @@ final class SomeTest extends TestCase
         $option = Option\some(2);
 
         static::assertSame(3, $option->andThen(static fn($i) => Option\some($i + 1))->unwrapOr(null));
+    }
+
+    public function testComparable(): void
+    {
+        $a = Option\some(2);
+
+        static::assertInstanceOf(Comparable::class, $a);
+        static::assertSame(Order::Equal, $a->compare(Option\some(2)));
+        static::assertSame(Order::Less, Option\none()->compare(Option\some(1)));
+        static::assertSame(Order::Greater, $a->compare(Option\none()));
+        static::assertSame(Order::Less, $a->compare(Option\some(3)));
+    }
+
+    public function testEquality()
+    {
+        $a = Option\some('a');
+
+        static::assertInstanceOf(Equable::class, $a);
+        static::assertFalse($a->equals(Option\none()));
+        static::assertFalse($a->equals(Option\some('other')));
+        static::assertTrue($a->equals(Option\some('a')));
     }
 }

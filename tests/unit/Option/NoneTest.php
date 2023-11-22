@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Option;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Comparison\Comparable;
+use Psl\Comparison\Equable;
+use Psl\Comparison\Order;
 use Psl\Option;
 use Psl\Option\Exception\NoneException;
 
@@ -107,5 +110,24 @@ final class NoneTest extends TestCase
         $option = Option\none();
 
         static::assertNull($option->andThen(static fn($i) => Option\some($i + 1))->unwrapOr(null));
+    }
+
+    public function testComparable(): void
+    {
+        $a = Option\none();
+
+        static::assertInstanceOf(Comparable::class, $a);
+        static::assertSame(Order::Equal, $a->compare(Option\none()));
+        static::assertSame(Order::Less, $a->compare(Option\some('some')));
+        static::assertSame(Order::Greater, Option\some('some')->compare($a));
+    }
+
+    public function testEquality(): void
+    {
+        $a = Option\none();
+
+        static::assertInstanceOf(Equable::class, $a);
+        static::assertTrue($a->equals(Option\none()));
+        static::assertFalse($a->equals(Option\some('other')));
     }
 }
