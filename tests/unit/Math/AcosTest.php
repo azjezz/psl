@@ -9,12 +9,14 @@ use Psl\Math;
 
 final class AcosTest extends TestCase
 {
+    use FloatAsserts;
+
     /**
      * @dataProvider provideData
      */
     public function testAcos(float $expected, float $number): void
     {
-        static::assertSame($expected, Math\acos($number));
+        static::assertFloatEquals($expected, Math\acos($number));
     }
 
     public function provideData(): array

@@ -33,6 +33,7 @@
   </coverage>
   <php>
     <ini name="error_reporting" value="-1" />
+    <ini name="precision" value="16" />
   </php>
   <testsuites>
     <testsuite name="PHP Standard Library">

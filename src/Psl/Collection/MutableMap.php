@@ -247,7 +247,7 @@ final class MutableMap implements MutableMapInterface
      */
     public function values(): MutableVector
     {
-        return MutableVector::fromArray(array_values($this->elements));
+        return MutableVector::fromArray($this->elements);
     }
 
     /**

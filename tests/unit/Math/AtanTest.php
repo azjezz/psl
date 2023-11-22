@@ -9,12 +9,14 @@ use Psl\Math;
 
 final class AtanTest extends TestCase
 {
+    use FloatAsserts;
+
     /**
      * @dataProvider provideData
      */
     public function testAtan(float $expected, float $number): void
     {
-        static::assertSame($expected, Math\atan($number));
+        static::assertFloatEquals($expected, Math\atan($number));
     }
 
     public function provideData(): array
