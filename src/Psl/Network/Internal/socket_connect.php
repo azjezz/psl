@@ -9,6 +9,7 @@ use Psl\Network\Exception;
 use Revolt\EventLoop;
 
 use function fclose;
+use function is_resource;
 use function stream_context_create;
 use function stream_socket_client;
 
@@ -42,10 +43,12 @@ function socket_connect(string $uri, array $context = [], ?float $timeout = null
         $timeout_watcher = '';
         if (null !== $timeout) {
             $timeout_watcher = EventLoop::delay($timeout, static function () use ($suspension, &$write_watcher, $socket) {
-                /** @var string $write_watcher */
                 EventLoop::cancel($write_watcher);
 
-                fclose($socket);
+                /** @psalm-suppress RedundantCondition - it can be resource|closed-resource */
+                if (is_resource($socket)) {
+                    fclose($socket);
+                }
 
                 $suspension->throw(new Exception\TimeoutException('Connection to socket timed out.'));
             });
