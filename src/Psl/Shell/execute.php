@@ -86,7 +86,6 @@ function execute(
                     return $m[0];
                 }
 
-                /** @var array<string, string> $variable_cache */
                 if (isset($variable_cache[$m[0]])) {
                     /** @var string */
                     return $variable_cache[$m[0]];
@@ -101,15 +100,8 @@ function execute(
                     return '"' . $value . '"';
                 }
 
-                /**
-                 * @var string $var
-                 * @var int $variable_count
-                 */
                 $var = $identifier . ((string) ++$variable_count);
 
-                /**
-                 * @var array<string, string> $environment
-                 */
                 $environment[$var] = '"' . Regex\replace(
                     Str\Byte\replace_every(
                         $value,
@@ -137,7 +129,6 @@ function execute(
         1 => ['pipe', 'w'],
         2 => ['pipe', 'w'],
     ];
-    /** @var array<string, string> $environment */
     $process = proc_open($commandline, $descriptor, $pipes, $working_directory, $environment, $options);
     // @codeCoverageIgnoreStart
     // not sure how to replicate this, but it can happen \_o.o_/

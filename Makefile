@@ -35,7 +35,7 @@ unit-tests:                                                                     
 	./vendor/bin/phpunit -c config/phpunit.xml.dist
 
 mutation-tests:                                                                     ## run mutation tests
-	./vendor/bin/roave-infection-static-analysis-plugin run --configuration=config/infection.json.dist --psalm-config=config/psalm.xml
+	./vendor/bin/roave-infection-static-analysis-plugin --configuration=config/infection.json.dist --psalm-config=config/psalm.xml
 
 code-coverage: unit-tests                                                       ## generate and upload test coverage metrics to https://coveralls.io/
 	./vendor/bin/php-coveralls -x var/clover.xml -o var/coveralls-upload.json -v
