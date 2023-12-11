@@ -84,6 +84,26 @@ final class NoneTest extends TestCase
         static::assertFalse($option->contains(4));
     }
 
+    public function testMatch(): void
+    {
+        $checked_divisor = static function (int $dividend, int $divisor): Option\Option {
+            if ($divisor === 0) {
+                return Option\none();
+            }
+
+            return Option\some($dividend / $divisor);
+        };
+
+        $try_division = static function (int $dividend, int $divisor) use ($checked_divisor): string {
+            return $checked_divisor($dividend, $divisor)->match(
+                none: static fn () => sprintf('%s / %s failed!', $dividend, $divisor),
+                some: static fn ($value) => sprintf('%s / %s = %s', $dividend, $divisor, $value),
+            );
+        };
+
+        static::assertSame('2 / 0 failed!', $try_division(2, 0));
+    }
+
     public function testMap(): void
     {
         $option = Option\none();

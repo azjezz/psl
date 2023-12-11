@@ -83,6 +83,26 @@ final class SomeTest extends TestCase
         static::assertTrue($option->contains(2));
     }
 
+    public function testMatch(): void
+    {
+        $checked_divisor = static function (int $dividend, int $divisor): Option\Option {
+            if ($divisor === 0) {
+                return Option\none();
+            }
+
+            return Option\some($dividend / $divisor);
+        };
+
+        $try_division = static function (int $dividend, int $divisor) use ($checked_divisor): string {
+            return $checked_divisor($dividend, $divisor)->match(
+                none: static fn () => sprintf('%s / %s failed!', $dividend, $divisor),
+                some: static fn ($value) => sprintf('%s / %s = %s', $dividend, $divisor, $value),
+            );
+        };
+
+        static::assertSame('10 / 2 = 5', $try_division(10, 2));
+    }
+
     public function testMap(): void
     {
         $option = Option\some(2);
