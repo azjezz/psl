@@ -11,6 +11,7 @@ use Psl\Comparison\Order;
 use Psl\Option;
 use Psl\Option\Exception\NoneException;
 use Psl\Str;
+use Psl\Ref;
 
 final class NoneTest extends TestCase
 {
@@ -97,14 +98,15 @@ final class NoneTest extends TestCase
 
     public function testApply(): void
     {
-        $i = 1;
+        $spy = new Ref(1);
 
         $option = Option\none();
-        $option->apply(static function (int $value) use (&$i) {
-            $i += $value;
+        $option->apply(static function (int $value) use ($spy) {
+            $spy->value += $value;
         });
 
-        static::assertSame(1, $i);
+        static::assertSame(1, $spy->value);
+        static::assertTrue($option->isNone());
     }
 
     public function testMap(): void

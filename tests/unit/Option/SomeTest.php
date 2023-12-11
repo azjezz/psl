@@ -10,6 +10,7 @@ use Psl\Comparison\Equable;
 use Psl\Comparison\Order;
 use Psl\Option;
 use Psl\Str;
+use Psl\Ref;
 use Psl\Tests\Fixture;
 use Psl\Type;
 
@@ -96,14 +97,15 @@ final class SomeTest extends TestCase
 
     public function testApply(): void
     {
-        $i = 1;
+        $spy = new Ref(1);
 
         $option = Option\some(2);
-        $option->apply(static function (int $value) use (&$i) {
-            $i += $value;
+        $option->apply(static function (int $value) use ($spy) {
+            $spy->value += $value;
         });
 
-        static::assertSame(3, $i);
+        static::assertSame(3, $spy->value);
+        static::assertSame(2, $option->unwrap());
     }
 
     public function testMap(): void
