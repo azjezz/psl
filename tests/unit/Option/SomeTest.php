@@ -94,6 +94,18 @@ final class SomeTest extends TestCase
         static::assertSame('Value is 1', $result);
     }
 
+    public function testApply(): void
+    {
+        $i = 1;
+
+        $option = Option\some(2);
+        $option->apply(static function (int $value) use (&$i) {
+            $i += $value;
+        });
+
+        static::assertSame(3, $i);
+    }
+
     public function testMap(): void
     {
         $option = Option\some(2);

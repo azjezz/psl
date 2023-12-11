@@ -95,6 +95,18 @@ final class NoneTest extends TestCase
         static::assertSame('There is no value', $result);
     }
 
+    public function testApply(): void
+    {
+        $i = 1;
+
+        $option = Option\none();
+        $option->apply(static function (int $value) use (&$i) {
+            $i += $value;
+        });
+
+        static::assertSame(1, $i);
+    }
+
     public function testMap(): void
     {
         $option = Option\none();
