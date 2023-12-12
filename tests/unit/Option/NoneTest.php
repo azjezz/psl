@@ -130,4 +130,44 @@ final class NoneTest extends TestCase
         static::assertTrue($a->equals(Option\none()));
         static::assertFalse($a->equals(Option\some('other')));
     }
+
+    public function testZip(): void
+    {
+        $x = Option\some(1);
+        $y = Option\none();
+
+        static::assertTrue($x->zip($y)->isNone());
+        static::assertTrue($y->zip($x)->isNone());
+    }
+
+    public function testZipWith(): void
+    {
+        $x = Option\some(1);
+        $y = Option\none();
+
+        static::assertTrue($x->zipWith($y, static fn($a, $b) => $a + $b)->isNone());
+        static::assertTrue($y->zipWith($x, static fn($a, $b) => $a + $b)->isNone());
+    }
+
+    /**
+     * @dataProvider provideTestUnzip
+     */
+    public function testUnzip(Option\Option $option): void
+    {
+        [$x, $y] = $option->unzip();
+
+        static::assertTrue($x->isNone());
+        static::assertTrue($y->isNone());
+    }
+
+    private function provideTestUnzip(): iterable
+    {
+        yield [Option\none()];
+        yield [Option\some(1)];
+        yield [Option\some([])];
+        yield [Option\some(['foo'])];
+        yield [Option\none()->zip(Option\none())];
+        yield [Option\none()->zip(Option\some(1))];
+        yield [Option\some(1)->zip(Option\none())];
+    }
 }

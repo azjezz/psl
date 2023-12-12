@@ -305,4 +305,77 @@ final class Option implements Comparison\Comparable, Comparison\Equable
     {
         return Comparison\equal($this, $other);
     }
+
+    /**
+     * Combines two `Option` values into a single `Option` containing a tuple of the two inner values.
+     * If either of the `Option`s is `None`, the resulting `Option` will also be `None`.
+     *
+     * @note: If an element is `None`, the corresponding element in the resulting tuple will be `None`.
+     *
+     * @template U
+     *
+     * @param Option<U> $other The other `Option` to zip with.
+     *
+     * @return Option<array{T, U}> The resulting `Option` containing the combined tuple or `None`.
+     */
+    public function zip(Option $other): Option
+    {
+        return $this->andThen(static function ($a) use ($other) {
+            return $other->map(static fn($b) => [$a, $b]);
+        });
+    }
+
+    /**
+     * Applies the provided closure to the value contained in this `Option` and the value contained in the $other `Option`,
+     * and returns a new `Option` containing the result of the closure.
+     *
+     * @template U
+     * @template Tv
+     *
+     * @param Option<U> $other The Option to zip with.
+     * @param (Closure(T, U): Tv) $closure The closure to apply to the values.
+     *
+     * @return Option<Tv> The new `Option` containing the result of applying the closure to the values,
+     *                    or `None` if either this or the $other `Option is `None`.
+     */
+    public function zipWith(Option $other, Closure $closure): Option
+    {
+        return $this->andThen(
+            /** @param T $a */
+            static function ($a) use ($other, $closure) {
+                return $other->map(
+                    /** @param U $b */
+                    static fn ($b) => $closure($a, $b)
+                );
+            }
+        );
+    }
+
+    /**
+     * @template OValue1
+     * @template OValue2
+     *
+     * @psalm-if-this-is Option<array{OValue1, OValue2}>
+     *
+     * @return array{Option<OValue1>, Option<OValue2>}
+     */
+    public function unzip(): array
+    {
+        if ($this->option === null) {
+            return [none(), none()];
+        }
+
+        /** @psalm-suppress DocblockTypeContradiction we want this check in runtime */
+        if (!is_array($this->option[0])) {
+            return [none(), none()];
+        }
+
+        if (!array_key_exists(0, $this->option[0]) || !array_key_exists(1, $this->option[0])) {
+            return [none(), none()];
+        }
+
+        [$a, $b] = $this->option[0];
+
+        return [some($a), some($b)];
+    }
 }
