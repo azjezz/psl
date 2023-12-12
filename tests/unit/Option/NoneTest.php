@@ -101,12 +101,12 @@ final class NoneTest extends TestCase
         $spy = new Ref(1);
 
         $option = Option\none();
-        $option->apply(static function (int $value) use ($spy) {
+        $actual = $option->apply(static function (int $value) use ($spy) {
             $spy->value += $value;
         });
 
         static::assertSame(1, $spy->value);
-        static::assertTrue($option->isNone());
+        static::assertSame($option, $actual);
     }
 
     public function testMap(): void
