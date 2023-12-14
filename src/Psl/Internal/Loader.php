@@ -344,6 +344,7 @@ final class Loader
         'Psl\\Type\\scalar' => 'Psl/Type/scalar.php',
         'Psl\\Type\\shape' => 'Psl/Type/shape.php',
         'Psl\\Type\\uint' => 'Psl/Type/uint.php',
+        'Psl\\Type\\class_string' => 'Psl/Type/class_string.php',
         'Psl\\Type\\u32' => 'Psl/Type/u32.php',
         'Psl\\Type\\u16' => 'Psl/Type/u16.php',
         'Psl\\Type\\u8' => 'Psl/Type/u8.php',
