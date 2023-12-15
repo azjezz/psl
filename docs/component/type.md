@@ -15,6 +15,7 @@
 - [array_key](./../../src/Psl/Type/array_key.php#L10)
 - [backed_enum](./../../src/Psl/Type/backed_enum.php#L16)
 - [bool](./../../src/Psl/Type/bool.php#L10)
+- [class_string](./../../src/Psl/Type/class_string.php#L14)
 - [converted](./../../src/Psl/Type/converted.php#L21)
 - [dict](./../../src/Psl/Type/dict.php#L16)
 - [f32](./../../src/Psl/Type/f32.php#L12)
