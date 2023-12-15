@@ -20,6 +20,8 @@ final class ClassStringTypeTest extends TypeTest
         yield [$_ = Collection\MutableVector::class, $_];
         yield [$_ = Collection\Map::class, $_];
         yield [$_ = Collection\MutableMap::class, $_];
+        yield [$_ = Collection\MutableMapInterface::class, $_];
+        yield [$_ = Collection\CollectionInterface::class, $_];
     }
 
     public function getInvalidCoercions(): iterable
