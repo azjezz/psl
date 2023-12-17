@@ -6,6 +6,7 @@ namespace Psl\Option;
 
 use Closure;
 use Psl\Comparison;
+use Psl\Type;
 
 /**
  * @template T
@@ -312,11 +313,15 @@ final class Option implements Comparison\Comparable, Comparison\Equable
      *
      * @note: If an element is `None`, the corresponding element in the resulting tuple will be `None`.
      *
-     * @template U
+     * @template Tu
      *
-     * @param Option<U> $other The other `Option` to zip with.
+     * @param Option<Tu> $other The other `Option` to zip with.
      *
-     * @return Option<array{T, U}> The resulting `Option` containing the combined tuple or `None`.
+     * @return (
+     *     T is never
+     *     ? Option<never>
+     *     : (Tu is never ? Option<never> : Option<array{T, Tu}>)
+     * )
      */
     public function zip(Option $other): Option
     {
@@ -329,13 +334,13 @@ final class Option implements Comparison\Comparable, Comparison\Equable
      * Applies the provided closure to the value contained in this `Option` and the value contained in the $other `Option`,
      * and returns a new `Option` containing the result of the closure.
      *
-     * @template U
-     * @template Tv
+     * @template Tu
+     * @template Tr
      *
-     * @param Option<U> $other The Option to zip with.
-     * @param (Closure(T, U): Tv) $closure The closure to apply to the values.
+     * @param Option<Tu> $other The Option to zip with.
+     * @param (Closure(T, Tu): Tr) $closure The closure to apply to the values.
      *
-     * @return Option<Tv> The new `Option` containing the result of applying the closure to the values,
+     * @return Option<Tr> The new `Option` containing the result of applying the closure to the values,
      *                    or `None` if either this or the $other `Option is `None`.
      */
     public function zipWith(Option $other, Closure $closure): Option
@@ -344,7 +349,7 @@ final class Option implements Comparison\Comparable, Comparison\Equable
             /** @param T $a */
             static function ($a) use ($other, $closure) {
                 return $other->map(
-                    /** @param U $b */
+                    /** @param Tu $b */
                     static fn ($b) => $closure($a, $b)
                 );
             }
@@ -352,12 +357,14 @@ final class Option implements Comparison\Comparable, Comparison\Equable
     }
 
     /**
-     * @template OValue1
-     * @template OValue2
+     * @template Tv
+     * @template Tr
      *
-     * @psalm-if-this-is Option<array{OValue1, OValue2}>
+     * @psalm-if-this-is Option<array{Tv, Tr}>
      *
-     * @return array{Option<OValue1>, Option<OValue2>}
+     * @throws Type\Exception\AssertException
+     *
+     * @return array{Option<Tv>, Option<Tr>}
      */
     public function unzip(): array
     {
@@ -365,16 +372,11 @@ final class Option implements Comparison\Comparable, Comparison\Equable
             return [none(), none()];
         }
 
-        /** @psalm-suppress DocblockTypeContradiction we want this check in runtime */
-        if (!is_array($this->option[0])) {
-            return [none(), none()];
-        }
+        // Assertion done in a separate variable to avoid Psalm inferring the type of $this->option as mixed
+        $option = $this->option[0];
+        Type\shape([Type\mixed(), Type\mixed()])->assert($option);
 
-        if (!array_key_exists(0, $this->option[0]) || !array_key_exists(1, $this->option[0])) {
-            return [none(), none()];
-        }
-
-        [$a, $b] = $this->option[0];
+        [$a, $b] = $option;
 
         return [some($a), some($b)];
     }

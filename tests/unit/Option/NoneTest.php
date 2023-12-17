@@ -163,9 +163,6 @@ final class NoneTest extends TestCase
     private function provideTestUnzip(): iterable
     {
         yield [Option\none()];
-        yield [Option\some(1)];
-        yield [Option\some([])];
-        yield [Option\some(['foo'])];
         yield [Option\none()->zip(Option\none())];
         yield [Option\none()->zip(Option\some(1))];
         yield [Option\some(1)->zip(Option\none())];

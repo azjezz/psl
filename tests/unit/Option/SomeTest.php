@@ -10,6 +10,7 @@ use Psl\Comparison\Equable;
 use Psl\Comparison\Order;
 use Psl\Option;
 use Psl\Tests\Fixture;
+use Psl\Type;
 
 final class SomeTest extends TestCase
 {
@@ -142,12 +143,12 @@ final class SomeTest extends TestCase
 
     public function testZipWith(): void
     {
-        $x = Option\some(17.5);
-        $y = Option\some(42.7);
+        $x = Option\some(17);
+        $y = Option\some(42);
 
         $point = $x->zipWith($y, static fn($a, $b) => new Fixture\Point($a, $b));
 
-        static::assertTrue(Option\some(new Fixture\Point(17.5, 42.7))->equals($point));
+        static::assertTrue(Option\some(new Fixture\Point(17, 42))->equals($point));
     }
 
     /**
@@ -166,5 +167,21 @@ final class SomeTest extends TestCase
         yield [Option\some(null)->zip(Option\some('hi')), null, 'hi'];
         yield [Option\some(1)->zip(Option\some('hi')), 1, 'hi'];
         yield [Option\some([true, false]), true, false];
+    }
+
+    /**
+     * @dataProvider provideTestUnzipAssertionException
+     */
+    public function testUnzipAssertionException(Option\Option $option): void
+    {
+        static::expectException(Type\Exception\AssertException::class);
+        $option->unzip();
+    }
+
+    private function provideTestUnzipAssertionException(): iterable
+    {
+        yield [Option\some(null)];
+        yield [Option\some(1)];
+        yield [Option\some([true])];
     }
 }
