@@ -311,8 +311,6 @@ final class Option implements Comparison\Comparable, Comparison\Equable
      * Combines two `Option` values into a single `Option` containing a tuple of the two inner values.
      * If either of the `Option`s is `None`, the resulting `Option` will also be `None`.
      *
-     * @note: If an element is `None`, both elements in the resulting tuple will be `None`.
-     *
      * @template Tu
      *
      * @param Option<Tu> $other The other `Option` to zip with.
