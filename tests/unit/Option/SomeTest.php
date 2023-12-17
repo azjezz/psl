@@ -83,7 +83,7 @@ final class SomeTest extends TestCase
         static::assertTrue($option->contains(2));
     }
 
-    public function testMatch(): void
+    public function testProceed(): void
     {
         $checked_divisor = static function (int $dividend, int $divisor): Option\Option {
             if ($divisor === 0) {
@@ -94,9 +94,9 @@ final class SomeTest extends TestCase
         };
 
         $try_division = static function (int $dividend, int $divisor) use ($checked_divisor): string {
-            return $checked_divisor($dividend, $divisor)->match(
-                none: static fn () => sprintf('%s / %s failed!', $dividend, $divisor),
+            return $checked_divisor($dividend, $divisor)->proceed(
                 some: static fn ($value) => sprintf('%s / %s = %s', $dividend, $divisor, $value),
+                none: static fn () => sprintf('%s / %s failed!', $dividend, $divisor),
             );
         };
 
