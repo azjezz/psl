@@ -10,6 +10,7 @@ use Psl\Comparison\Equable;
 use Psl\Comparison\Order;
 use Psl\Option;
 use Psl\Option\Exception\NoneException;
+use Psl\Str;
 
 final class NoneTest extends TestCase
 {
@@ -86,22 +87,12 @@ final class NoneTest extends TestCase
 
     public function testProceed(): void
     {
-        $checked_divisor = static function (int $dividend, int $divisor): Option\Option {
-            if ($divisor === 0) {
-                return Option\none();
-            }
+        $result = Option\none()->proceed(
+            static fn ($i) => Str\format('Value is %d', $i),
+            static fn () => 'There is no value',
+        );
 
-            return Option\some($dividend / $divisor);
-        };
-
-        $try_division = static function (int $dividend, int $divisor) use ($checked_divisor): string {
-            return $checked_divisor($dividend, $divisor)->proceed(
-                some: static fn ($value) => sprintf('%s / %s = %s', $dividend, $divisor, $value),
-                none: static fn() => sprintf('%s / %s failed!', $dividend, $divisor),
-            );
-        };
-
-        static::assertSame('2 / 0 failed!', $try_division(2, 0));
+        static::assertSame('There is no value', $result);
     }
 
     public function testMap(): void
