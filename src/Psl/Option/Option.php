@@ -315,11 +315,7 @@ final class Option implements Comparison\Comparable, Comparison\Equable
      *
      * @param Option<Tu> $other The other `Option` to zip with.
      *
-     * @return (
-     *     T is never
-     *     ? Option<never>
-     *     : (Tu is never ? Option<never> : Option<array{T, Tu}>)
-     * )
+     * @return Option<array{T, Tu}> The resulting `Option` containing the combined tuple or `None`.
      */
     public function zip(Option $other): Option
     {

@@ -6,7 +6,7 @@ use Psl\Option;
 use Psl\Type;
 
 /**
- * @return Option\Option<never>
+ * @return Option\Option<array{never, int}>
  */
 function test_partial_none_tuple_1(): Option\Option
 {
@@ -14,7 +14,7 @@ function test_partial_none_tuple_1(): Option\Option
 }
 
 /**
- * @return Option\Option<never>
+ * @return Option\Option<array{int, never}>
  */
 function test_partial_none_tuple_2(): Option\Option
 {
@@ -24,7 +24,7 @@ function test_partial_none_tuple_2(): Option\Option
 /**
  * @throws Type\Exception\AssertException
  *
- * @return array{Option\Option<never>, Option\Option<never>}
+ * @return array{Option\Option<never>, Option\Option<int>}
  */
 function test_partial_none_unzip_1(): array
 {
@@ -42,7 +42,7 @@ function test_some_zip(): Option\Option
 /**
  * @throws Type\Exception\AssertException
  *
- * @return array{Option\Option<never>, Option\Option<never>}
+ * @return array{Option\Option<int>, Option\Option<never>}
  */
 function test_partial_none_unzip_2(): array
 {
