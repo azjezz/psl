@@ -6,6 +6,7 @@ namespace Psl\Option;
 
 use Closure;
 use Psl\Comparison;
+use Psl\Type;
 
 /**
  * @template T
@@ -304,5 +305,73 @@ final class Option implements Comparison\Comparable, Comparison\Equable
     public function equals(mixed $other): bool
     {
         return Comparison\equal($this, $other);
+    }
+
+    /**
+     * Combines two `Option` values into a single `Option` containing a tuple of the two inner values.
+     * If either of the `Option`s is `None`, the resulting `Option` will also be `None`.
+     *
+     * @template Tu
+     *
+     * @param Option<Tu> $other The other `Option` to zip with.
+     *
+     * @return Option<array{T, Tu}> The resulting `Option` containing the combined tuple or `None`.
+     */
+    public function zip(Option $other): Option
+    {
+        return $this->andThen(static function ($a) use ($other) {
+            return $other->map(static fn($b) => [$a, $b]);
+        });
+    }
+
+    /**
+     * Applies the provided closure to the value contained in this `Option` and the value contained in the $other `Option`,
+     * and returns a new `Option` containing the result of the closure.
+     *
+     * @template Tu
+     * @template Tr
+     *
+     * @param Option<Tu> $other The Option to zip with.
+     * @param (Closure(T, Tu): Tr) $closure The closure to apply to the values.
+     *
+     * @return Option<Tr> The new `Option` containing the result of applying the closure to the values,
+     *                    or `None` if either this or the $other `Option is `None`.
+     */
+    public function zipWith(Option $other, Closure $closure): Option
+    {
+        return $this->andThen(
+            /** @param T $a */
+            static function ($a) use ($other, $closure) {
+                return $other->map(
+                    /** @param Tu $b */
+                    static fn ($b) => $closure($a, $b)
+                );
+            }
+        );
+    }
+
+    /**
+     * @template Tv
+     * @template Tr
+     *
+     * @psalm-if-this-is Option<array{Tv, Tr}>
+     *
+     * @throws Type\Exception\AssertException
+     *
+     * @return array{Option<Tv>, Option<Tr>}
+     */
+    public function unzip(): array
+    {
+        if ($this->option === null) {
+            return [none(), none()];
+        }
+
+        // Assertion done in a separate variable to avoid Psalm inferring the type of $this->option as mixed
+        $option = $this->option[0];
+        Type\shape([Type\mixed(), Type\mixed()])->assert($option);
+
+        [$a, $b] = $option;
+
+        return [some($a), some($b)];
     }
 }

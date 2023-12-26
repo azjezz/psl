@@ -9,6 +9,8 @@ use Psl\Comparison\Comparable;
 use Psl\Comparison\Equable;
 use Psl\Comparison\Order;
 use Psl\Option;
+use Psl\Tests\Fixture;
+use Psl\Type;
 
 final class SomeTest extends TestCase
 {
@@ -128,5 +130,58 @@ final class SomeTest extends TestCase
         static::assertFalse($a->equals(Option\none()));
         static::assertFalse($a->equals(Option\some('other')));
         static::assertTrue($a->equals(Option\some('a')));
+    }
+
+    public function testZip(): void
+    {
+        $x = Option\some(1);
+        $y = Option\some("hi");
+
+        static::assertTrue(Option\some([1, 'hi'])->equals($x->zip($y)));
+        static::assertTrue(Option\some(['hi', 1])->equals($y->zip($x)));
+    }
+
+    public function testZipWith(): void
+    {
+        $x = Option\some(17);
+        $y = Option\some(42);
+
+        $point = $x->zipWith($y, static fn($a, $b) => new Fixture\Point($a, $b));
+
+        static::assertTrue(Option\some(new Fixture\Point(17, 42))->equals($point));
+    }
+
+    /**
+     * @dataProvider provideTestUnzip
+     */
+    public function testUnzip(Option\Option $option, mixed $expectedX, mixed $expectedY): void
+    {
+        [$x, $y] = $option->unzip();
+
+        static::assertSame($expectedX, $x->unwrap());
+        static::assertSame($expectedY, $y->unwrap());
+    }
+
+    private function provideTestUnzip(): iterable
+    {
+        yield [Option\some(null)->zip(Option\some('hi')), null, 'hi'];
+        yield [Option\some(1)->zip(Option\some('hi')), 1, 'hi'];
+        yield [Option\some([true, false]), true, false];
+    }
+
+    /**
+     * @dataProvider provideTestUnzipAssertionException
+     */
+    public function testUnzipAssertionException(Option\Option $option): void
+    {
+        static::expectException(Type\Exception\AssertException::class);
+        $option->unzip();
+    }
+
+    private function provideTestUnzipAssertionException(): iterable
+    {
+        yield [Option\some(null)];
+        yield [Option\some(1)];
+        yield [Option\some([true])];
     }
 }
