@@ -98,14 +98,15 @@ final class SomeTest extends TestCase
     public function testApply(): void
     {
         $spy = new Ref(1);
+        $actual = 2;
 
-        $option = Option\some(2);
+        $option = Option\some($actual);
         $option->apply(static function (int $value) use ($spy) {
             $spy->value += $value;
         });
 
         static::assertSame(3, $spy->value);
-        static::assertSame(2, $option->unwrap());
+        static::assertSame($actual, $option->unwrap());
     }
 
     public function testMap(): void
