@@ -10,8 +10,8 @@ use Psl\Comparison\Equable;
 use Psl\Comparison\Order;
 use Psl\Option;
 use Psl\Option\Exception\NoneException;
-use Psl\Str;
 use Psl\Ref;
+use Psl\Str;
 
 final class NoneTest extends TestCase
 {

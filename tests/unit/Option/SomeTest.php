@@ -9,8 +9,8 @@ use Psl\Comparison\Comparable;
 use Psl\Comparison\Equable;
 use Psl\Comparison\Order;
 use Psl\Option;
-use Psl\Str;
 use Psl\Ref;
+use Psl\Str;
 use Psl\Tests\Fixture;
 use Psl\Type;
 
