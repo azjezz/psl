@@ -205,6 +205,29 @@ final class Option implements Comparison\Comparable, Comparison\Equable
     }
 
     /**
+     * Matches the contained option value with the provided closures and returns the result.
+     *
+     * @template Ts
+     *
+     * @param (Closure(T): Ts) $some A closure to be called when the option is some.
+     *                               The closure must accept the option value as its only argument and can return a value.
+     *                               Example: `fn($value) => $value + 10`
+     * @param (Closure(): Ts) $none A closure to be called when the option is none.
+     *                              The closure must not accept any arguments and can return a value.
+     *                              Example: `fn() => 'Default value'`
+     *
+     * @return Ts The result of calling the appropriate closure.
+     */
+    public function proceed(Closure $some, Closure $none): mixed
+    {
+        if ($this->option !== null) {
+            return $some($this->option[0]);
+        }
+
+        return $none();
+    }
+
+    /**
      * Maps an `Option<T>` to `Option<Tu>` by applying a function to a contained value.
      *
      * @template Tu

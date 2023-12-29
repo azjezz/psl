@@ -9,6 +9,7 @@ use Psl\Comparison\Comparable;
 use Psl\Comparison\Equable;
 use Psl\Comparison\Order;
 use Psl\Option;
+use Psl\Str;
 use Psl\Tests\Fixture;
 use Psl\Type;
 
@@ -81,6 +82,16 @@ final class SomeTest extends TestCase
 
         static::assertFalse($option->contains(4));
         static::assertTrue($option->contains(2));
+    }
+
+    public function testProceed(): void
+    {
+        $result = Option\some(1)->proceed(
+            static fn ($i) => Str\format('Value is %d', $i),
+            static fn () => 'There is no value',
+        );
+
+        static::assertSame('Value is 1', $result);
     }
 
     public function testMap(): void

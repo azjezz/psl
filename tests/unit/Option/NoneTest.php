@@ -10,6 +10,7 @@ use Psl\Comparison\Equable;
 use Psl\Comparison\Order;
 use Psl\Option;
 use Psl\Option\Exception\NoneException;
+use Psl\Str;
 
 final class NoneTest extends TestCase
 {
@@ -82,6 +83,16 @@ final class NoneTest extends TestCase
         $option = Option\none();
 
         static::assertFalse($option->contains(4));
+    }
+
+    public function testProceed(): void
+    {
+        $result = Option\none()->proceed(
+            static fn ($i) => Str\format('Value is %d', $i),
+            static fn () => 'There is no value',
+        );
+
+        static::assertSame('There is no value', $result);
     }
 
     public function testMap(): void
