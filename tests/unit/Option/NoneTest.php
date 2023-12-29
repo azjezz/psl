@@ -10,6 +10,7 @@ use Psl\Comparison\Equable;
 use Psl\Comparison\Order;
 use Psl\Option;
 use Psl\Option\Exception\NoneException;
+use Psl\Ref;
 use Psl\Str;
 
 final class NoneTest extends TestCase
@@ -93,6 +94,19 @@ final class NoneTest extends TestCase
         );
 
         static::assertSame('There is no value', $result);
+    }
+
+    public function testApply(): void
+    {
+        $spy = new Ref(1);
+
+        $option = Option\none();
+        $actual = $option->apply(static function (int $value) use ($spy) {
+            $spy->value += $value;
+        });
+
+        static::assertSame(1, $spy->value);
+        static::assertSame($option, $actual);
     }
 
     public function testMap(): void

@@ -9,6 +9,7 @@ use Psl\Comparison\Comparable;
 use Psl\Comparison\Equable;
 use Psl\Comparison\Order;
 use Psl\Option;
+use Psl\Ref;
 use Psl\Str;
 use Psl\Tests\Fixture;
 use Psl\Type;
@@ -92,6 +93,19 @@ final class SomeTest extends TestCase
         );
 
         static::assertSame('Value is 1', $result);
+    }
+
+    public function testApply(): void
+    {
+        $spy = new Ref(1);
+
+        $option = Option\some(2);
+        $actual = $option->apply(static function (int $value) use ($spy) {
+            $spy->value += $value;
+        });
+
+        static::assertSame(3, $spy->value);
+        static::assertSame($actual, $option);
     }
 
     public function testMap(): void
