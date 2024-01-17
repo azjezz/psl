@@ -8,6 +8,7 @@ use Psl\Iter;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
+use stdClass;
 
 use function array_diff_key;
 use function array_filter;
@@ -51,6 +52,10 @@ final class ShapeType extends Type\Type
      */
     public function coerce(mixed $value): array
     {
+        if ($value instanceof stdClass) {
+            $value = (array) $value;
+        }
+
         // To whom reads this: yes, I hate this stuff as passionately as you do :-)
         if (! is_array($value)) {
             // Fallback to slow implementation - unhappy path

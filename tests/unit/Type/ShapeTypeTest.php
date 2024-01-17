@@ -120,6 +120,17 @@ final class ShapeTypeTest extends TypeTest
             ]],
         ];
 
+        yield 'stdClass containing a valid shape' => [
+            (object) ['name' => 'saif', 'articles' => new Collection\Vector([
+                ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0, 'dislikes' => 5],
+                ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13, 'dislikes' => 3],
+            ])],
+            ['name' => 'saif', 'articles' => [
+                ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0],
+                ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13],
+            ]],
+        ];
+
         yield [
             ['name' => 'saif', 'articles' => new Collection\Vector([
                 ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0, 'dislikes' => 5],
@@ -148,6 +159,9 @@ final class ShapeTypeTest extends TypeTest
             ['title' => 'biz'] // missing 'content' and 'likes'
         ]]];
         yield [['name' => 'saif', 'articles' => [
+            ['title' => 'biz', 'content' => 'foo', 'upvotes' => 4] // 'likes' replaced by 'upvotes'
+        ]]];
+        yield [(object) ['name' => 'saif', 'articles' => [
             ['title' => 'biz', 'content' => 'foo', 'upvotes' => 4] // 'likes' replaced by 'upvotes'
         ]]];
     }
