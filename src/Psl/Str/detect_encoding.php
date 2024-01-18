@@ -25,7 +25,10 @@ function detect_encoding(string $string, ?array $encoding_list = null): ?Encodin
         );
     }
 
-    $encoding = mb_detect_encoding($string, $encoding_list, true) ?: null;
+    $encoding = mb_detect_encoding($string, $encoding_list, true);
+    if ($encoding === false) {
+        return null;
+    }
 
-    return null === $encoding ? $encoding : Encoding::from($encoding);
+    return Encoding::from($encoding);
 }
