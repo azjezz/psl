@@ -14,5 +14,7 @@ use function realpath;
  */
 function canonicalize(string $path): ?string
 {
-    return realpath($path) ?: null;
+    $path = realpath($path);
+
+    return false !== $path && '' !== $path ? $path : null;
 }
