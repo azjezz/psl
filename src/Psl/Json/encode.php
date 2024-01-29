@@ -21,6 +21,8 @@ use const JSON_UNESCAPED_UNICODE;
  * @pure
  *
  * @throws Exception\EncodeException If an error occurred.
+ *
+ * @return non-empty-string
  */
 function encode(mixed $value, bool $pretty = false, int $flags = 0): string
 {

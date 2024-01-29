@@ -13,7 +13,7 @@
 #### `Functions`
 
 - [decode](./../../src/Psl/Json/decode.php#L22)
-- [encode](./../../src/Psl/Json/encode.php#L25)
+- [encode](./../../src/Psl/Json/encode.php#L27)
 - [typed](./../../src/Psl/Json/typed.php#L20)
 
 
