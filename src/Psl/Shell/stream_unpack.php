@@ -17,7 +17,7 @@ use function unpack as byte_unpack;
  *
  * @throws Exception\InvalidArgumentException If $content is invalid.
  *
- * @return Generator<1|2, string, void, void> Generator where the key is either 1 ( representing the standard output ),
+ * @return Generator<1|2, string, null, void> Generator where the key is either 1 ( representing the standard output ),
  *                                            or 2 ( representing the standard error output ), and the value is the output chunk.
  *
  * Example:
