@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
+use Psl\DateTime\Duration;
 use Psl\Str;
 
 use function strlen;
@@ -29,7 +30,7 @@ final class Reader implements ReadHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function readFixedSize(int $size, ?float $timeout = null): string
+    public function readFixedSize(int $size, null|Duration|float $timeout = null): string
     {
         $timer = new Internal\OptionalIncrementalTimeout(
             $timeout,
@@ -72,7 +73,7 @@ final class Reader implements ReadHandleInterface
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    private function fillBuffer(?int $desired_bytes, ?float $timeout): void
+    private function fillBuffer(?int $desired_bytes, null|Duration|float $timeout): void
     {
         $chunk = $this->handle->read($desired_bytes, $timeout);
         if ($chunk === '') {
@@ -89,7 +90,7 @@ final class Reader implements ReadHandleInterface
      * @throws Exception\RuntimeException If an error occurred during the operation, or reached end of file.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    public function readByte(?float $timeout = null): string
+    public function readByte(null|Duration|float $timeout = null): string
     {
         if ($this->buffer === '' && !$this->eof) {
             $this->fillBuffer(null, $timeout);
@@ -118,7 +119,7 @@ final class Reader implements ReadHandleInterface
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    public function readLine(?float $timeout = null): ?string
+    public function readLine(null|Duration|float $timeout = null): ?string
     {
         $timer = new Internal\OptionalIncrementalTimeout(
             $timeout,
@@ -154,7 +155,7 @@ final class Reader implements ReadHandleInterface
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    public function readUntil(string $suffix, ?float $timeout = null): ?string
+    public function readUntil(string $suffix, null|Duration|float $timeout = null): ?string
     {
         $buf = $this->buffer;
         $idx = strpos($buf, $suffix);
@@ -198,7 +199,7 @@ final class Reader implements ReadHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function read(?int $max_bytes = null, ?float $timeout = null): string
+    public function read(?int $max_bytes = null, null|Duration|float $timeout = null): string
     {
         if ($this->eof) {
             return '';

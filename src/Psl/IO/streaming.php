@@ -7,6 +7,7 @@ namespace Psl\IO;
 use Generator;
 use Psl;
 use Psl\Channel;
+use Psl\DateTime\Duration;
 use Psl\Result;
 use Psl\Str;
 use Revolt\EventLoop;
@@ -35,7 +36,7 @@ use Revolt\EventLoop;
  *
  * @return Generator<T, string, mixed, null>
  */
-function streaming(iterable $handles, ?float $timeout = null): Generator
+function streaming(iterable $handles, null|Duration|float $timeout = null): Generator
 {
     /**
      * @psalm-suppress UnnecessaryVarAnnotation
@@ -72,6 +73,10 @@ function streaming(iterable $handles, ?float $timeout = null): Generator
 
     $timeout_watcher = null;
     if ($timeout !== null) {
+        if ($timeout instanceof Duration) {
+            $timeout = $timeout->getTotalSeconds();
+        }
+
         $timeout_watcher = EventLoop::delay($timeout, static function () use ($sender): void {
             /** @var Result\ResultInterface<string> $failure */
             $failure = new Result\Failure(

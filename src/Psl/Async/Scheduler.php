@@ -6,6 +6,7 @@ namespace Psl\Async;
 
 use Closure;
 use Psl;
+use Psl\DateTime;
 use Revolt\EventLoop;
 use Revolt\EventLoop\Driver;
 use Revolt\EventLoop\InvalidCallbackError;
@@ -114,15 +115,19 @@ final class Scheduler
     /**
      * Delay the execution of a callback.
      *
-     * @param float $delay The amount of time, to delay the execution for in seconds.
+     * @param DateTime\Duration|float $delay The amount of time, to delay the execution for in seconds.
      * @param Closure(string): void $callback The callback to delay.
      *
      * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
      *
      * @see EventLoop::delay()
      */
-    public static function delay(float $delay, Closure $callback): string
+    public static function delay(DateTime\Duration|float $delay, Closure $callback): string
     {
+        if ($delay instanceof DateTime\Duration) {
+            $delay = $delay->getTotalSeconds();
+        }
+
         /** @var non-empty-string */
         return EventLoop::delay($delay, $callback);
     }
@@ -130,18 +135,22 @@ final class Scheduler
     /**
      * Repeatedly execute a callback.
      *
-     * @param float $interval The time interval, to wait between executions in seconds.
+     * @param DateTime\Duration|float $interval The time interval, to wait between executions in seconds.
      * @param Closure(string): void $callback The callback to repeat.
      *
      * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
      *
      * @see EventLoop::repeat()
      */
-    public static function repeat(float $interval, Closure $callback): string
+    public static function repeat(DateTime\Duration|float $interval, Closure $callback): string
     {
+        if ($interval instanceof DateTime\Duration) {
+            $interval = $interval->getTotalSeconds();
+        }
         /** @var non-empty-string */
         return EventLoop::repeat($interval, $callback);
     }
+
 
     /**
      * Enable a callback to be active starting in the next tick.
