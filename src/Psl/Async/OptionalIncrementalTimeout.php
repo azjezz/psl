@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Async;
 
 use Closure;
-
-use function microtime;
+use Psl\DateTime\Duration;
+use Psl\DateTime\Timestamp;
 
 /**
  * Manages optional incremental timeouts for asynchronous operations.
@@ -16,28 +16,40 @@ use function microtime;
  * particularly useful in asynchronous programming where operations
  * might need to be interrupted or handled differently if they take
  * too long to complete.
+ *
+ * @psalm-suppress MissingThrowsDocblock
  */
 final class OptionalIncrementalTimeout
 {
     /**
-     * @var ?float The end time in microseconds.
+     * @var ?Timestamp The end time.
      */
-    private ?float $end;
+    private ?Timestamp $end;
 
     /**
-     * @var (Closure(): ?float) The handler to be called upon timeout.
+     * @var (Closure(): ?Duration) The handler to be called upon timeout.
      */
     private Closure $handler;
 
     /**
-     * @param float|null $timeout The timeout duration in seconds. Null to disable timeout.
-     * @param (Closure(): ?float) $handler The handler to be executed if the timeout is reached.
+     * @param null|Duration $timeout The timeout duration. Null to disable timeout.
+     * @param (Closure(): ?Duration) $handler The handler to be executed if the timeout is reached.
      */
-    public function __construct(?float $timeout, Closure $handler)
+    public function __construct(?Duration $timeout, Closure $handler)
     {
         $this->handler = $handler;
 
-        $this->end = $timeout !== null ? (microtime(true) + $timeout) : null;
+        if (null === $timeout) {
+            $this->end = null;
+
+            return;
+        }
+
+        if (!$timeout->isPositive()) {
+            $this->end = Timestamp::monotonic();
+        } else {
+            $this->end = Timestamp::monotonic()->plus($timeout);
+        }
     }
 
     /**
@@ -45,16 +57,16 @@ final class OptionalIncrementalTimeout
      *
      * If the timeout has already been exceeded, the handler is invoked, and its return value is provided.
      *
-     * @return float|null The remaining time in seconds, null if no timeout is set, or the handler's return value if the timeout is exceeded.
+     * @return Duration|null The remaining time duration, null if no timeout is set, or the handler's return value if the timeout is exceeded.
      */
-    public function getRemaining(): ?float
+    public function getRemaining(): ?Duration
     {
         if ($this->end === null) {
             return null;
         }
 
-        $remaining = $this->end - microtime(true);
+        $remaining = $this->end->since(Timestamp::monotonic());
 
-        return $remaining <= 0 ? ($this->handler)() : $remaining;
+        return $remaining->isPositive() ? $remaining : ($this->handler)();
     }
 }

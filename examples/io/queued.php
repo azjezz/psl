@@ -15,7 +15,7 @@ Async\main(static function(): int {
 
     $he = Async\run(static fn(): string => $read->readFixedSize(2));
 
-    Async\sleep(0.001);
+    Async\sleep(Psl\DateTime\Duration::milliseconds(200));
 
     $write->write("hello");
 

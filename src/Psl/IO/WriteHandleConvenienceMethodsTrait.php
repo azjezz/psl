@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\IO;
 
 use Psl;
+use Psl\DateTime\Duration;
 use Psl\Str;
 
 use function strlen;
@@ -30,7 +31,7 @@ trait WriteHandleConvenienceMethodsTrait
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If reached timeout before completing the operation.
      */
-    public function writeAll(string $bytes, ?float $timeout = null): void
+    public function writeAll(string $bytes, ?Duration $timeout = null): void
     {
         if ($bytes === '') {
             return;

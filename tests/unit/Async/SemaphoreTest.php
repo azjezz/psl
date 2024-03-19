@@ -7,6 +7,7 @@ namespace Psl\Tests\Unit\Async;
 use PHPUnit\Framework\TestCase;
 use Psl;
 use Psl\Async;
+use Psl\DateTime;
 
 final class SemaphoreTest extends TestCase
 {
@@ -24,7 +25,7 @@ final class SemaphoreTest extends TestCase
         $spy = new Psl\Ref([]);
 
         /**
-         * @var Async\Semaphore<array{time: ?float, value: string}, void>
+         * @var Async\Semaphore<array{time: ?DateTime\Duration, value: string}, void>
          */
         $semaphore = new Async\Semaphore(1, static function (array $data) use ($spy): void {
             if ($data['time'] !== null) {
@@ -34,9 +35,9 @@ final class SemaphoreTest extends TestCase
             $spy->value[] = $data['value'];
         });
 
-        Async\run(static fn() => $semaphore->waitFor(['time' => 0.003, 'value' => 'a']));
-        Async\run(static fn() => $semaphore->waitFor(['time' => 0.004, 'value' => 'b']));
-        Async\run(static fn() => $semaphore->waitFor(['time' => 0.005, 'value' => 'c']));
+        Async\run(static fn() => $semaphore->waitFor(['time' => DateTime\Duration::milliseconds(3), 'value' => 'a']));
+        Async\run(static fn() => $semaphore->waitFor(['time' => DateTime\Duration::milliseconds(4), 'value' => 'b']));
+        Async\run(static fn() => $semaphore->waitFor(['time' => DateTime\Duration::milliseconds(5), 'value' => 'c']));
         $last = Async\run(static fn() => $semaphore->waitFor(['time' => null, 'value' => 'd']));
         $last->await();
 
@@ -48,7 +49,7 @@ final class SemaphoreTest extends TestCase
         $spy = new Psl\Ref([]);
 
         /**
-         * @var Async\Semaphore<array{time: ?float, value: string}, void>
+         * @var Async\Semaphore<array{time: ?DateTime\Duration, value: string}, void>
          */
         $semaphore = new Async\Semaphore(2, static function (array $data) use ($spy): void {
             if ($data['time'] !== null) {
@@ -58,9 +59,9 @@ final class SemaphoreTest extends TestCase
             $spy->value[] = $data['value'];
         });
 
-        Async\run(static fn() => $semaphore->waitFor(['time' => 0.003, 'value' => 'a']));
-        Async\run(static fn() => $semaphore->waitFor(['time' => 0.004, 'value' => 'b']));
-        $beforeLast = Async\run(static fn() => $semaphore->waitFor(['time' => 0.005, 'value' => 'c']));
+        Async\run(static fn() => $semaphore->waitFor(['time' => Datetime\Duration::milliseconds(3), 'value' => 'a']));
+        Async\run(static fn() => $semaphore->waitFor(['time' => Datetime\Duration::milliseconds(4), 'value' => 'b']));
+        $beforeLast = Async\run(static fn() => $semaphore->waitFor(['time' => Datetime\Duration::milliseconds(5), 'value' => 'c']));
         Async\run(static fn() => $semaphore->waitFor(['time' => null, 'value' => 'd']));
 
         $beforeLast->await();
@@ -78,12 +79,12 @@ final class SemaphoreTest extends TestCase
         $semaphore = new Async\Semaphore(1, static function (string $input) use ($spy): void {
             $spy->value[] = $input;
 
-            Async\sleep(0.002);
+            Async\sleep(Datetime\Duration::milliseconds(2));
         });
 
         $awaitable = Async\run(static fn() => $semaphore->waitFor('hello'));
 
-        Async\sleep(0.001);
+        Async\sleep(Datetime\Duration::milliseconds(1));
 
         static::assertSame(['hello'], $spy->value);
 
@@ -100,13 +101,13 @@ final class SemaphoreTest extends TestCase
         $semaphore = new Async\Semaphore(1, static function (string $input) use ($spy): void {
             $spy->value[] = $input;
 
-            Async\sleep(0.002);
+            Async\sleep(Datetime\Duration::milliseconds(2));
         });
 
         Async\run(static fn() => $semaphore->waitFor('hello'));
         $awaitable = Async\run(static fn() => $semaphore->waitFor('world'));
 
-        Async\sleep(0.001);
+        Async\sleep(Datetime\Duration::milliseconds(1));
 
         static::assertNotContains('world', $spy->value);
 
@@ -133,7 +134,7 @@ final class SemaphoreTest extends TestCase
          * @var Async\Semaphore<string, string>
          */
         $semaphore = new Async\Semaphore(1, static function (string $input): string {
-            Async\sleep(0.04);
+            Async\sleep(Datetime\Duration::milliseconds(40));
 
             return $input;
         });
@@ -143,7 +144,7 @@ final class SemaphoreTest extends TestCase
         $one = Async\run(static fn() => $semaphore->waitFor('one'));
         $two = Async\run(static fn() => $semaphore->waitFor('two'));
 
-        Async\sleep(0.01);
+        Async\sleep(Datetime\Duration::milliseconds(10));
 
         $semaphore->cancel(new Async\Exception\TimeoutException('The semaphore is destroyed.'));
 
@@ -161,7 +162,7 @@ final class SemaphoreTest extends TestCase
          * @var Async\Semaphore<string, string>
          */
         $semaphore = new Async\Semaphore(1, static function (string $input): string {
-            Async\sleep(0.04);
+            Async\sleep(Datetime\Duration::milliseconds(40));
 
             return $input;
         });
@@ -195,7 +196,7 @@ final class SemaphoreTest extends TestCase
          * @var Async\Semaphore<string, string>
          */
         $semaphore = new Async\Semaphore(1, static function (string $input): string {
-            Async\sleep(0.04);
+            Async\sleep(Datetime\Duration::milliseconds(40));
 
             return $input;
         });

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\TCP;
 
+use Psl\DateTime\Duration;
 use Psl\Network;
 
 /**
@@ -15,12 +16,8 @@ use Psl\Network;
  * @throws Network\Exception\RuntimeException If failed to connect to client on the given address.
  * @throws Network\Exception\TimeoutException If $timeout is non-null, and the operation timed-out.
  */
-function connect(
-    string $host,
-    int $port = 0,
-    ?ConnectOptions $options = null,
-    ?float $timeout = null,
-): Network\StreamSocketInterface {
+function connect(string $host, int $port = 0, ?ConnectOptions $options = null, ?Duration $timeout = null): Network\StreamSocketInterface
+{
     $options ??= ConnectOptions::create();
 
     $context = [
@@ -29,7 +26,7 @@ function connect(
         ]
     ];
 
-    $socket = Network\Internal\socket_connect("tcp://{$host}:{$port}", $context, $timeout);
+    $socket = Network\Internal\socket_connect("tcp://$host:$port", $context, $timeout);
 
     /** @psalm-suppress MissingThrowsDocblock */
     return new Network\Internal\Socket($socket);

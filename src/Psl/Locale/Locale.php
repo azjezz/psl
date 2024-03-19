@@ -810,6 +810,8 @@ enum Locale: string
      * @return self The default locale as an enum instance, sourced from PHP settings or `self::English` as the fallback.
      *
      * @see https://www.php.net/manual/en/locale.getdefault.php
+     *
+     * @psalm-mutation-free
      */
     public static function default(): self
     {

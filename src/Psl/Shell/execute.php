@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Shell;
 
+use Psl\DateTime\Duration;
 use Psl\Dict;
 use Psl\Env;
 use Psl\Filesystem;
@@ -44,7 +45,7 @@ function execute(
     ?string $working_directory = null,
     array   $environment = [],
     ErrorOutputBehavior $error_output_behavior = ErrorOutputBehavior::Discard,
-    ?float  $timeout = null
+    ?Duration $timeout = null
 ): string {
     $arguments = Vec\map($arguments, Internal\escape_argument(...));
     $commandline = Str\join([$command, ...$arguments], ' ');

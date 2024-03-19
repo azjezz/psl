@@ -10,6 +10,7 @@ use Psl\Async;
 use Psl\Async\Awaitable;
 use Psl\Async\Exception\UnhandledAwaitableException;
 use Psl\Async\Internal\State;
+use Psl\DateTime;
 use Psl\Dict;
 use Psl\Exception\InvariantViolationException;
 use Psl\Str;
@@ -94,12 +95,12 @@ final class AwaitableTest extends TestCase
             'foo' => Awaitable::complete('foo'),
             'bar' => Awaitable::error(new InvariantViolationException('bar')),
             'baz' => Async\run(static function () {
-                Async\sleep(0.0001);
+                Async\sleep(DateTime\Duration::milliseconds(1));
 
                 throw new InvariantViolationException('baz');
             }),
             'qux' => Async\run(static function () {
-                Async\sleep(0.003);
+                Async\sleep(DateTime\Duration::milliseconds(30));
 
                 return 'qux';
             }),
@@ -141,7 +142,7 @@ final class AwaitableTest extends TestCase
         $generator1 = Async\run(static function (): iterable {
             yield 'foo' => 'foo';
 
-            Async\sleep(0.0003);
+            Async\sleep(DateTime\Duration::milliseconds(3));
 
             yield 'bar' => 'bar';
         });
@@ -149,7 +150,7 @@ final class AwaitableTest extends TestCase
         $generator2 = Async\run(static function (): iterable {
             yield 'baz' => 'baz';
 
-            Async\sleep(0.0001);
+            Async\sleep(DateTime\Duration::milliseconds(1));
 
             yield 'qux' => 'qux';
         });
@@ -157,7 +158,7 @@ final class AwaitableTest extends TestCase
         $generator3 = Async\run(static function () use ($generator1, $generator2): iterable {
             yield 'gen1' => $generator1;
 
-            Async\sleep(0.0002);
+            Async\sleep(DateTime\Duration::milliseconds(2));
 
             yield 'gen2' => $generator2;
         })->await();

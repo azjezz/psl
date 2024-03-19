@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
+use Psl\DateTime\Duration;
+
 /**
  * An interface for a writable Handle.
  */
@@ -34,7 +36,7 @@ interface WriteHandleInterface extends HandleInterface
      *
      * @return int<0, max> the number of bytes written, which may be less than the length of input string.
      */
-    public function write(string $bytes, ?float $timeout = null): int;
+    public function write(string $bytes, ?Duration $timeout = null): int;
 
     /**
      * Write all of the requested data.
@@ -51,5 +53,5 @@ interface WriteHandleInterface extends HandleInterface
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If reached timeout before completing the operation.
      */
-    public function writeAll(string $bytes, ?float $timeout = null): void;
+    public function writeAll(string $bytes, ?Duration $timeout = null): void;
 }

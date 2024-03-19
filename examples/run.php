@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Psl\Example\IO;
 
 use Psl\Async;
+use Psl\DateTime;
 use Psl\Filesystem;
 use Psl\IO;
 use Psl\Shell;
@@ -34,9 +35,9 @@ Async\main(static function (): int {
             IO\write_error_line('- %s/%s   -> started', $component, $script);
 
             $awaitables[] = Async\run(static function() use($component, $script, $file): array {
-                $start = microtime(true);
+                $start = DateTime\Timestamp::monotonic();
                 Shell\execute(PHP_BINARY, [$file]);
-                $duration = microtime(true) - $start;
+                $duration = DateTime\Timestamp::monotonic()->since($start);
 
                 return [$component, $script, $duration];
             });
@@ -46,7 +47,7 @@ Async\main(static function (): int {
     foreach (Async\Awaitable::iterate($awaitables) as $awaitable) {
         [$component, $script, $duration] = $awaitable->await();
 
-        IO\write_error_line('+ %s/%s   -> finished in %ds', $component, $script, $duration);
+        IO\write_error_line('+ %s/%s   -> finished in %s', $component, $script, $duration->toString());
     }
 
     return 0;

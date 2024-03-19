@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\Async;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
+use Psl\DateTime;
 use Psl\Exception\InvariantViolationException;
 
 final class DeferredTest extends TestCase
@@ -15,7 +16,7 @@ final class DeferredTest extends TestCase
         $deferred = new Async\Deferred();
 
         $placeholder = Async\run(static function () use ($deferred) {
-            Async\sleep(0.0001);
+            Async\sleep(DateTime\Duration::milliseconds(1));
 
             $deferred->complete('hello');
         });
@@ -34,7 +35,7 @@ final class DeferredTest extends TestCase
         $deferred = new Async\Deferred();
 
         $placeholder = Async\run(static function () use ($deferred) {
-            Async\sleep(0.0001);
+            Async\sleep(DateTime\Duration::milliseconds(1));
 
             $deferred->error(new InvariantViolationException('hello'));
         });

@@ -7,6 +7,7 @@ namespace Psl\Tests\Unit\Async;
 use PHPUnit\Framework\TestCase;
 use Psl;
 use Psl\Async;
+use Psl\DateTime;
 use Psl\Str;
 
 use function microtime;
@@ -37,9 +38,9 @@ final class SequenceTest extends TestCase
             $spy->value[] = $data['value'];
         });
 
-        Async\run(static fn() => $sequence->waitFor(['time' => 0.003, 'value' => 'a']));
-        Async\run(static fn() => $sequence->waitFor(['time' => 0.004, 'value' => 'b']));
-        Async\run(static fn() => $sequence->waitFor(['time' => 0.005, 'value' => 'c']));
+        Async\run(static fn() => $sequence->waitFor(['time' => DateTime\Duration::milliseconds(3), 'value' => 'a']));
+        Async\run(static fn() => $sequence->waitFor(['time' => DateTime\Duration::milliseconds(4), 'value' => 'b']));
+        Async\run(static fn() => $sequence->waitFor(['time' => DateTime\Duration::milliseconds(5), 'value' => 'c']));
         $last = Async\run(static fn() => $sequence->waitFor(['time' => null, 'value' => 'd']));
         $last->await();
 
@@ -56,12 +57,12 @@ final class SequenceTest extends TestCase
         $sequence = new Async\Sequence(static function (string $input) use ($spy): void {
             $spy->value[] = $input;
 
-            Async\sleep(0.002);
+            Async\sleep(DateTime\Duration::milliseconds(2));
         });
 
         $awaitable = Async\run(static fn() => $sequence->waitFor('hello'));
 
-        Async\sleep(0.001);
+        Async\sleep(DateTime\Duration::milliseconds(1));
 
         static::assertSame(['hello'], $spy->value);
 
@@ -78,13 +79,13 @@ final class SequenceTest extends TestCase
         $sequence = new Async\Sequence(static function (string $input) use ($spy): void {
             $spy->value[] = $input;
 
-            Async\sleep(0.002);
+            Async\sleep(DateTime\Duration::milliseconds(2));
         });
 
         Async\run(static fn() => $sequence->waitFor('hello'));
         $awaitable = Async\run(static fn() => $sequence->waitFor('world'));
 
-        Async\sleep(0.001);
+        Async\sleep(DateTime\Duration::milliseconds(1));
 
         static::assertNotContains('world', $spy->value);
 
@@ -111,7 +112,7 @@ final class SequenceTest extends TestCase
          * @var Async\Sequence<string, string>
          */
         $sequence = new Async\Sequence(static function (string $input): string {
-            Async\sleep(0.04);
+            Async\sleep(DateTime\Duration::milliseconds(40));
 
             return $input;
         });
@@ -119,7 +120,7 @@ final class SequenceTest extends TestCase
         $one = Async\run(static fn() => $sequence->waitFor('one'));
         $two = Async\run(static fn() => $sequence->waitFor('two'));
 
-        Async\sleep(0.01);
+        Async\sleep(DateTime\Duration::milliseconds(10));
 
         $sequence->cancel(new Async\Exception\TimeoutException('The semaphore is destroyed.'));
 
@@ -138,8 +139,8 @@ final class SequenceTest extends TestCase
     {
         $ref = new Psl\Ref('');
 
-        $sequence = new Async\Sequence(static function (float $value) use ($ref): void {
-            $ref->value .= Str\format('%f', $value);
+        $sequence = new Async\Sequence(static function (DateTime\Duration $value) use ($ref): void {
+            $ref->value .= Str\format('%f', $value->getTotalSeconds());
 
             Async\sleep($value);
         });
@@ -148,10 +149,10 @@ final class SequenceTest extends TestCase
 
         Async\concurrently([
             static function () use ($sequence): void {
-                $sequence->waitFor(0.02);
-                $sequence->waitFor(0.02);
+                $sequence->waitFor(DateTime\Duration::milliseconds(20));
+                $sequence->waitFor(DateTime\Duration::milliseconds(20));
             },
-            static fn() => $sequence->waitFor(0.02),
+            static fn() => $sequence->waitFor(DateTime\Duration::milliseconds(20)),
         ]);
 
         $duration = microtime(true) - $time;
@@ -166,7 +167,7 @@ final class SequenceTest extends TestCase
          * @var Async\Sequence<string, string>
          */
         $s = new Async\Sequence(static function (string $input): string {
-            Async\sleep(0.04);
+            Async\sleep(DateTime\Duration::milliseconds(40));
 
             return $input;
         });
@@ -196,7 +197,7 @@ final class SequenceTest extends TestCase
          * @var Async\Sequence<string, string>
          */
         $s = new Async\Sequence(static function (string $input): string {
-            Async\sleep(0.04);
+            Async\sleep(DateTime\Duration::milliseconds(40));
 
             return $input;
         });

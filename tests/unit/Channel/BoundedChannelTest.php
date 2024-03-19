@@ -7,6 +7,7 @@ namespace Psl\Tests\Unit\Channel;
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
 use Psl\Channel;
+use Psl\DateTime;
 
 final class BoundedChannelTest extends TestCase
 {
@@ -109,10 +110,9 @@ final class BoundedChannelTest extends TestCase
     public function testTrySendThrowsOnFullChannel(): void
     {
         /**
-         * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$_, $sender] = Channel\bounded(1);
 
         $sender->send('hello');
 
@@ -131,7 +131,7 @@ final class BoundedChannelTest extends TestCase
 
         $sender->send('hello');
 
-        Async\Scheduler::delay(0.001, static function () use ($receiver) {
+        Async\Scheduler::delay(DateTime\Duration::milliseconds(1), static function () use ($receiver) {
             $receiver->receive();
         });
 
@@ -166,7 +166,7 @@ final class BoundedChannelTest extends TestCase
 
         $sender->send('hello');
 
-        Async\Scheduler::delay(0.001, static function () use ($receiver): void {
+        Async\Scheduler::delay(DateTime\Duration::milliseconds(1), static function () use ($receiver): void {
             $receiver->close();
         });
 
@@ -233,7 +233,7 @@ final class BoundedChannelTest extends TestCase
          */
         [$receiver, $sender] = Channel\bounded(1);
 
-        Async\Scheduler::delay(0.0001, static function () use ($sender): void {
+        Async\Scheduler::delay(DateTime\Duration::milliseconds(1), static function () use ($sender): void {
             $sender->close();
         });
 
@@ -267,9 +267,10 @@ final class BoundedChannelTest extends TestCase
          */
         [$receiver, $sender] = Channel\bounded(1);
 
-        Async\Scheduler::delay(0.001, static function () use ($sender) {
-            $sender->send('hello');
-        });
+        Async\Scheduler::delay(
+            DateTime\Duration::milliseconds(1),
+            static fn() => $sender->send('hello'),
+        );
 
         static::assertTrue($receiver->isEmpty());
 
@@ -280,9 +281,8 @@ final class BoundedChannelTest extends TestCase
     {
         /**
          * @var Channel\ReceiverInterface<string> $receiver
-         * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $_] = Channel\bounded(1);
 
         $this->expectException(Channel\Exception\EmptyChannelException::class);
         $this->expectExceptionMessage('Attempted to receiver from an empty channel.');

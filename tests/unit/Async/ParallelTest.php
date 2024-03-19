@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Exception;
 use Psl;
 use Psl\Async;
+use Psl\DateTime;
 
 final class ParallelTest extends TestCase
 {
@@ -17,17 +18,17 @@ final class ParallelTest extends TestCase
 
         Async\concurrently([
             static function () use ($spy): void {
-                Async\sleep(0.03);
+                Async\sleep(DateTime\Duration::milliseconds(30));
 
                 $spy->value .= '1';
             },
             static function () use ($spy): void {
-                Async\sleep(0.01);
+                Async\sleep(DateTime\Duration::milliseconds(10));
 
                 $spy->value .= '2';
             },
             static function () use ($spy): void {
-                Async\sleep(0.01);
+                Async\sleep(DateTime\Duration::milliseconds(10));
 
                 $spy->value .= '3';
             },
@@ -45,12 +46,12 @@ final class ParallelTest extends TestCase
         try {
             Async\concurrently([
                 static function (): void {
-                    Async\sleep(0.003);
+                    Async\sleep(DateTime\Duration::milliseconds(3));
 
                     throw new Exception('foo');
                 },
                 static function () use ($spy): void {
-                    Async\sleep(0.004);
+                    Async\sleep(DateTime\Duration::milliseconds(4));
 
                     $spy->value = 'thrown';
 

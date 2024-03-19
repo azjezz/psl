@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\Async;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
+use Psl\DateTime;
 
 final class RunTest extends TestCase
 {
@@ -13,9 +14,9 @@ final class RunTest extends TestCase
     {
         $awaitable = Async\run(static function (): string {
             Async\concurrently([
-                static fn() => Async\sleep(0.001),
-                static fn() => Async\sleep(0.001),
-                static fn() => Async\sleep(0.001),
+                static fn() => Async\sleep(DateTime\Duration::milliseconds(1)),
+                static fn() => Async\sleep(DateTime\Duration::milliseconds(1)),
+                static fn() => Async\sleep(DateTime\Duration::milliseconds(1)),
             ]);
 
             return 'hello';

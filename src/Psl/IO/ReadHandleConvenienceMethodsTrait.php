@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\IO;
 
 use Psl;
+use Psl\DateTime\Duration;
 use Psl\Str;
 
 use function strlen;
@@ -30,7 +31,7 @@ trait ReadHandleConvenienceMethodsTrait
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    public function readAll(?int $max_bytes = null, ?float $timeout = null): string
+    public function readAll(?int $max_bytes = null, ?Duration $timeout = null): string
     {
         $to_read = $max_bytes;
 
@@ -78,7 +79,7 @@ trait ReadHandleConvenienceMethodsTrait
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    public function readFixedSize(int $size, ?float $timeout = null): string
+    public function readFixedSize(int $size, ?Duration $timeout = null): string
     {
         $data = $this->readAll($size, $timeout);
 

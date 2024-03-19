@@ -6,6 +6,7 @@ namespace Psl\IO\Internal;
 
 use Psl;
 use Psl\Async;
+use Psl\DateTime\Duration;
 use Psl\IO;
 use Psl\IO\Exception;
 use Psl\Type;
@@ -51,14 +52,14 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     protected mixed $stream;
 
     /**
-     * @var null|Async\Sequence<array{string, null|float}, int<0, max>>
+     * @var null|Async\Sequence<array{string, null|Duration}, int<0, max>>
      */
     private ?Async\Sequence $writeSequence = null;
     private ?Suspension $writeSuspension = null;
     private string $writeWatcher = 'invalid';
 
     /**
-     * @var null|Async\Sequence<array{null|int<1, max>, null|float}, string>
+     * @var null|Async\Sequence<array{null|int<1, max>, null|Duration}, string>
      */
     private ?Async\Sequence $readSequence = null;
     private ?Suspension $readSuspension = null;
@@ -103,7 +104,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
 
             $this->readSequence = new Async\Sequence(
                 /**
-                 * @param array{null|int<1, max>, null|float} $input
+                 * @param array{null|int<1, max>, null|Duration} $input
                  */
                 function (array $input) use ($blocks): string {
                     [$max_bytes, $timeout] = $input;
@@ -116,7 +117,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
                     EventLoop::enable($this->readWatcher);
                     $delay_watcher = null;
                     if (null !== $timeout) {
-                        $timeout = max($timeout, 0.0);
+                        $timeout = max($timeout->getTotalSeconds(), 0.0);
                         $delay_watcher = EventLoop::delay(
                             $timeout,
                             static fn () => $suspension->throw(new Exception\TimeoutException('Reached timeout while the handle is still not readable.')),
@@ -159,7 +160,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
 
             $this->writeSequence = new Async\Sequence(
                 /**
-                 * @param array{string, null|float} $input
+                 * @param array{string, null|Duration} $input
                  *
                  * @return int<0, max>
                  */
@@ -175,7 +176,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
                     EventLoop::enable($this->writeWatcher);
                     $delay_watcher = null;
                     if (null !== $timeout) {
-                        $timeout = max($timeout, 0.0);
+                        $timeout = max($timeout->getTotalSeconds(), 0.0);
                         $delay_watcher = EventLoop::delay(
                             $timeout,
                             static fn () => $suspension->throw(new Exception\TimeoutException('Reached timeout while the handle is still not readable.')),
@@ -204,7 +205,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function write(string $bytes, ?float $timeout = null): int
+    public function write(string $bytes, ?Duration $timeout = null): int
     {
         Psl\invariant($this->writeSequence !== null, 'The resource handle is not writable.');
 
@@ -283,7 +284,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function read(?int $max_bytes = null, ?float $timeout = null): string
+    public function read(?int $max_bytes = null, ?Duration $timeout = null): string
     {
         Psl\invariant($this->readSequence !== null, 'The resource handle is not readable.');
 

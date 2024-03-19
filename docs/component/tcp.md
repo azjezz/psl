@@ -12,7 +12,7 @@
 
 #### `Functions`
 
-- [connect](./../../src/Psl/TCP/connect.php#L18)
+- [connect](./../../src/Psl/TCP/connect.php#L19)
 
 #### `Classes`
 

@@ -7,6 +7,7 @@ namespace Psl\Tests\Unit\Async;
 use PHPUnit\Framework\TestCase;
 use Psl;
 use Psl\Async;
+use Psl\DateTime;
 
 final class KeyedSequenceTest extends TestCase
 {
@@ -38,9 +39,9 @@ final class KeyedSequenceTest extends TestCase
             $spy->value[] = $data['value'];
         });
 
-        Async\run(static fn() => $ks->waitFor('operation', ['time' => 0.003, 'value' => 'a']));
-        Async\run(static fn() => $ks->waitFor('operation', ['time' => 0.004, 'value' => 'b']));
-        Async\run(static fn() => $ks->waitFor('operation', ['time' => 0.005, 'value' => 'c']));
+        Async\run(static fn() => $ks->waitFor('operation', ['time' => DateTime\Duration::milliseconds(3), 'value' => 'a']));
+        Async\run(static fn() => $ks->waitFor('operation', ['time' => DateTime\Duration::milliseconds(4), 'value' => 'b']));
+        Async\run(static fn() => $ks->waitFor('operation', ['time' => DateTime\Duration::milliseconds(5), 'value' => 'c']));
         $last = Async\run(static fn() => $ks->waitFor('operation', ['time' => null, 'value' => 'd']));
         $last->await();
 
@@ -54,10 +55,12 @@ final class KeyedSequenceTest extends TestCase
         /**
          * @var Async\KeyedSequence<string, string, void>
          */
-        $ks = new Async\KeyedSequence(static function (string $_, string $input) use ($spy): void {
+        $ks = new Async\KeyedSequence(static function (string $key, string $input) use ($spy): void {
+            static::assertSame('x', $key);
+
             $spy->value[] = $input;
 
-            Async\sleep(0.002);
+            Async\sleep(DateTime\Duration::milliseconds(2));
         });
 
         $awaitable = Async\run(static fn() => $ks->waitFor('x', 'hello'));
@@ -79,13 +82,13 @@ final class KeyedSequenceTest extends TestCase
         $ks = new Async\KeyedSequence(static function (string $_, string $input) use ($spy): void {
             $spy->value[] = $input;
 
-            Async\sleep(0.002);
+            Async\sleep(DateTime\Duration::milliseconds(2));
         });
 
         Async\run(static fn() => $ks->waitFor('x', 'hello'));
         $awaitable = Async\run(static fn() => $ks->waitFor('x', 'world'));
 
-        Async\sleep(0.001);
+        Async\sleep(DateTime\Duration::milliseconds(1));
 
         static::assertNotContains('world', $spy->value);
 
@@ -112,7 +115,7 @@ final class KeyedSequenceTest extends TestCase
          * @var Async\KeyedSequence<string, string, string>
          */
         $ks = new Async\KeyedSequence(static function (string $_, string $input): string {
-            Async\sleep(0.04);
+            Async\sleep(DateTime\Duration::milliseconds(40));
 
             return $input;
         });
@@ -120,7 +123,7 @@ final class KeyedSequenceTest extends TestCase
         $one = Async\run(static fn() => $ks->waitFor('foo', 'one'));
         $two = Async\run(static fn() => $ks->waitFor('foo', 'two'));
 
-        Async\sleep(0.01);
+        Async\sleep(DateTime\Duration::milliseconds(10));
 
         $ks->cancel('foo', new Async\Exception\TimeoutException('The semaphore is destroyed.'));
 
@@ -138,7 +141,7 @@ final class KeyedSequenceTest extends TestCase
          * @var Async\KeyedSequence<string, string, string>
          */
         $ks = new Async\KeyedSequence(static function (string $_, string $input): string {
-            Async\sleep(0.04);
+            Async\sleep(DateTime\Duration::milliseconds(40));
 
             return $input;
         });
@@ -155,7 +158,7 @@ final class KeyedSequenceTest extends TestCase
             Async\run(static fn() => $ks->waitFor('baz', 'pending'))
         ];
 
-        Async\sleep(0.01);
+        Async\sleep(DateTime\Duration::milliseconds(10));
 
         $ks->cancelAll(new Async\Exception\TimeoutException('The semaphore is destroyed.'));
 
@@ -178,7 +181,7 @@ final class KeyedSequenceTest extends TestCase
          * @var Async\KeyedSequence<string, string, string>
          */
         $ks = new Async\KeyedSequence(static function (string $_, string $input): string {
-            Async\sleep(0.04);
+            Async\sleep(DateTime\Duration::milliseconds(40));
 
             return $input;
         });
@@ -226,7 +229,8 @@ final class KeyedSequenceTest extends TestCase
          * @var Async\KeyedSequence<string, string, string>
          */
         $ks = new Async\KeyedSequence(static function (string $_, string $input): string {
-            Async\sleep(0.04);
+            Async\sleep(DateTime\Duration::milliseconds(40));
+
             return $input;
         });
 
@@ -244,7 +248,8 @@ final class KeyedSequenceTest extends TestCase
          * @var Async\KeyedSequence<string, string, string>
          */
         $ks = new Async\KeyedSequence(static function (string $_, string $input): string {
-            Async\sleep(0.04);
+            Async\sleep(DateTime\Duration::milliseconds(40));
+
             return $input;
         });
 
