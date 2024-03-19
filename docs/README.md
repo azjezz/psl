@@ -32,6 +32,7 @@
 - [Psl\Interface](./component/interface.md)
 - [Psl\Iter](./component/iter.md)
 - [Psl\Json](./component/json.md)
+- [Psl\Locale](./component/locale.md)
 - [Psl\Math](./component/math.md)
 - [Psl\Network](./component/network.md)
 - [Psl\OS](./component/os.md)

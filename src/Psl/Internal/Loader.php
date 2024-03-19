@@ -829,6 +829,7 @@ final class Loader
         'Psl\\OS\\OperatingSystemFamily' => 'Psl/OS/OperatingSystemFamily.php',
         'Psl\\Password\\Algorithm' => 'Psl/Password/Algorithm.php',
         'Psl\\Shell\\ErrorOutputBehavior' => 'Psl/Shell/ErrorOutputBehavior.php',
+        'Psl\\Locale\\Locale' => 'Psl/Locale/Locale.php',
     ];
 
     public const TYPE_CONSTANTS = 1;

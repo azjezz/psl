@@ -225,6 +225,7 @@ function get_all_components(): array
         'Psl\\Trait',
         'Psl\\Type',
         'Psl\\Unix',
+        'Psl\\Locale',
         'Psl\\Vec',
     ];
 
