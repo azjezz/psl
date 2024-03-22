@@ -11,7 +11,7 @@ use Psl\IO;
 require __DIR__ . '/../../vendor/autoload.php';
 
 Async\main(static function (): int {
-    $start = microtime(true);
+    $start = DateTime\Timestamp::now();
 
     Async\concurrently([
         static fn() => Async\sleep(DateTime\Duration::hours(0)),
@@ -23,9 +23,9 @@ Async\main(static function (): int {
         static fn() => Async\sleep(DateTime\Duration::milliseconds(2000)),
     ]);
 
-    $duration = DateTime\Duration::microseconds((int) ((microtime(true) - $start) * DateTime\MICROSECONDS_PER_SECOND));
+    $duration = DateTime\Timestamp::now()->since($start);
 
-    IO\write_error_line("duration: %s.", $duration->toString(max_decimals: 5));
+    IO\write_error_line("duration: %s.", $duration->toString(max_decimals: 2));
 
     return 0;
 });
