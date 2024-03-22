@@ -7,6 +7,7 @@ namespace Psl\DateTime;
 use JsonSerializable;
 use Psl\Comparison\Comparable;
 use Psl\Comparison\Equable;
+use Psl\Locale;
 
 /**
  * Represents a temporal object that can be manipulated and compared.
@@ -202,4 +203,19 @@ interface TemporalInterface extends Comparable, Equable, JsonSerializable
      * @mutation-free
      */
     public function convertToTimezone(Timezone $timezone): DateTimeInterface;
+
+    /**
+     * Formats the date and time of this instance into a string based on the provided pattern, timezone, and locale.
+     *
+     * If no pattern is specified, a default pattern will be used.
+     *
+     * If no timezone is specified, {@see Timezone::UTC} will be used.
+     *
+     * The method also accounts for locale-specific formatting rules if a locale is provided.
+     *
+     * @mutation-free
+     *
+     * @note The default pattern is subject to change at any time and should not be relied upon for consistent formatting.
+     */
+    public function format(DatePattern|string|null $pattern = null, ?Timezone $timezone = null, ?Locale\Locale $locale = null): string;
 }

@@ -398,12 +398,18 @@ interface DateTimeInterface extends TemporalInterface
     public function convertToTimezone(Timezone $timezone): static;
 
     /**
-     * Formats the date and time according to the specified format and locale.
+     * Formats the date and time of this instance into a string based on the provided pattern, timezone, and locale.
      *
-     * @param DateFormat|string|null $format The format string or {@see DateFormat}. If null, the default format is used.
-     * @param Locale\Locale|null $locale The locale for formatting. If null, the default locale is used.
+     * If no pattern is specified, a default pattern will be used.
+     *
+     * The method uses the associated timezone of the instance by default, but this can be overridden with the
+     * provided timezone parameter.
+     *
+     * The method also accounts for locale-specific formatting rules if a locale is provided.
      *
      * @mutation-free
+     *
+     * @note The default pattern is subject to change at any time and should not be relied upon for consistent formatting.
      */
-    public function format(DateFormat|string|null $format = null, ?Locale\Locale $locale = null): string;
+    public function format(DatePattern|string|null $pattern = null, ?Timezone $timezone = null, ?Locale\Locale $locale = null): string;
 }

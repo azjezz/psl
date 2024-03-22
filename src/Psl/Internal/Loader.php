@@ -537,7 +537,7 @@ final class Loader
         'Psl\\Range\\between' => 'Psl/Range/between.php',
         'Psl\\Range\\full' => 'Psl/Range/full.php',
         'Psl\\DateTime\\is_leap_year' => 'Psl/DateTime/is_leap_year.php',
-        'Psl\\DateTime\\Internal\\zone_override' => 'Psl/DateTime/Internal/zone_override.php',
+        'Psl\\DateTime\\Internal\\to_intl_timezone' => 'Psl/DateTime/Internal/to_intl_timezone.php',
     ];
 
     public const INTERFACES = [
@@ -839,11 +839,11 @@ final class Loader
         'Psl\\Range\\FullRange' => 'Psl/Range/FullRange.php',
         'Psl\\DateTime\\Exception\\InvalidArgumentException' => 'Psl/DateTime/Exception/InvalidArgumentException.php',
         'Psl\\DateTime\\Exception\\OverflowException' => 'Psl/DateTime/Exception/OverflowException.php',
+        'Psl\\DateTime\\Exception\\RuntimeException' => 'Psl/DateTime/Exception/RuntimeException.php',
         'Psl\\DateTime\\Exception\\UnderflowException' => 'Psl/DateTime/Exception/UnderflowException.php',
         'Psl\\DateTime\\DateTime' => 'Psl/DateTime/DateTime.php',
         'Psl\\DateTime\\Duration' => 'Psl/DateTime/Interval.php',
         'Psl\\DateTime\\Timestamp' => 'Psl/DateTime/Timestamp.php',
-        'Psl\\DateTime\\TimezoneLocation' => 'Psl/DateTime/TimezoneLocation.php',
     ];
 
     public const ENUMS = [
@@ -860,7 +860,7 @@ final class Loader
         'Psl\\Password\\Algorithm' => 'Psl/Password/Algorithm.php',
         'Psl\\Shell\\ErrorOutputBehavior' => 'Psl/Shell/ErrorOutputBehavior.php',
         'Psl\\Locale\\Locale' => 'Psl/Locale/Locale.php',
-        'Psl\\DateTime\\DateFormat' => 'Psl/DateTime/DateFormat.php',
+        'Psl\\DateTime\\DatePattern' => 'Psl/DateTime/DateFormat.php',
         'Psl\\DateTime\\Era' => 'Psl/DateTime/Era.php',
         'Psl\\DateTime\\Meridiem' => 'Psl/DateTime/Meridiem.php',
         'Psl\\DateTime\\Month' => 'Psl/DateTime/Weekday.php',

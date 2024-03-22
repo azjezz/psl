@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\DateTime;
 
-use DateTime as NativeDateTime;
-use DateTimeZone as NativeDateTimeZone;
 use IntlDateFormatter;
 use Psl\Locale;
 use Psl\Math;
 
 use function hrtime;
-use function strtotime;
 use function time;
 
 /**
@@ -19,7 +16,7 @@ use function time;
  */
 final class Timestamp implements TemporalInterface
 {
-    use \Psl\DateTime\TemporalConvenienceMethodsTrait;
+    use TemporalConvenienceMethodsTrait;
 
     /**
      * @var null|array{seconds: int, nanoseconds: int}
@@ -111,41 +108,62 @@ final class Timestamp implements TemporalInterface
         return new self($finalSeconds, $normalizedNanoseconds);
     }
 
+    /**
+     * Creates a {@see Timestamp} instance from a date/time string according to a specific pattern.
+     *
+     * This method allows parsing of date/time strings that conform to custom patterns,
+     * making it versatile for handling various date/time formats.
+     *
+     * @throws Exception\RuntimeException If parsing fails or the date/time string is invalid.
+     */
+    public static function fromPattern(string|DatePattern $pattern, string $raw_string, ?Timezone $timezone = null, ?Locale\Locale $locale = null): self
+    {
+        $pattern = $pattern instanceof DatePattern ? $pattern->value : $pattern;
+
+        $formatter = new IntlDateFormatter(
+            $locale?->value,
+            IntlDateFormatter::FULL,
+            IntlDateFormatter::FULL,
+            $timezone === null ? null : Internal\to_intl_timezone($timezone),
+            IntlDateFormatter::GREGORIAN,
+            $pattern,
+        );
+
+        $timestamp = $formatter->parse($raw_string, $offset);
+        if ($timestamp === false) {
+            throw new Exception\RuntimeException(
+                "Parsing error: Unable to interpret '$raw_string' as a valid date/time using pattern '$pattern'.",
+            );
+        }
+
+        return self::fromRaw($timestamp);
+    }
 
     /**
-     * Parses a date/time string into an instance, considering the provided timezone.
+     * Parses a date/time string into a {@see Timestamp} instance.
      *
-     * If the `$raw_string` includes a timezone, it overrides the `$timezone` argument. The
-     * `$relative_to` argument is for parsing relative time strings, defaulting to the current
-     * time if not specified.
+     * This method is a convenience wrapper for parsing date/time strings without specifying a custom pattern.
      *
-     * @param ?Timezone $timezone The timezone context for parsing. Defaults to the system's timezone.
-     * @param ?TemporalInterface $relative_to Context for relative time strings.
-     *
-     * @throws Exception\InvalidArgumentException If parsing fails or the format is invalid.
-     *
-     * @see https://www.php.net/manual/en/datetime.formats.php
-     *
-     * @pure
+     * @throws Exception\RuntimeException If parsing fails or the format of the date/time string is invalid.
      */
-    public static function parse(string $raw_string, ?Timezone $timezone = null, ?TemporalInterface $relative_to = null): self
+    public static function parse(string $raw_string, ?Timezone $timezone = null, ?Locale\Locale $locale = null): self
     {
-        $timezone ??= Timezone::default();
+        $formatter = new IntlDateFormatter(
+            $locale?->value,
+            IntlDateFormatter::FULL,
+            IntlDateFormatter::FULL,
+            $timezone === null ? null : Internal\to_intl_timezone($timezone),
+            IntlDateFormatter::GREGORIAN,
+        );
 
-        return Internal\zone_override($timezone, static function () use ($raw_string, $relative_to): self {
-            if ($relative_to !== null) {
-                $relative_to = $relative_to->getTimestamp()->getSeconds();
-            }
+        $timestamp = $formatter->parse($raw_string);
+        if ($timestamp === false) {
+            throw new Exception\RuntimeException(
+                "Parsing error: Unable to interpret '$raw_string' as a valid date/time.",
+            );
+        }
 
-            $raw = strtotime($raw_string, $relative_to);
-            if ($raw === false) {
-                throw new Exception\InvalidArgumentException(
-                    "Failed to parse the provided date/time string: '$raw_string'",
-                );
-            }
-
-            return self::fromRaw($raw);
-        });
+        return self::fromRaw($timestamp);
     }
 
     /**
@@ -233,27 +251,34 @@ final class Timestamp implements TemporalInterface
     }
 
     /**
-     * Formats the timestamp according to the given format and timezone.
+     * Formats the date and time of this instance into a string based on the provided pattern, timezone, and locale.
      *
-     * The format can be a predefined {@see DateFormat} case, a date-time format string, or `null` for default formatting.
+     * If no pattern is specified, a default pattern will be used.
      *
-     * The timezone is required to accurately represent the timestamp in the desired locale.
+     * If no timezone is specified, {@see Timezone::UTC} will be used.
+     *
+     * The method also accounts for locale-specific formatting rules if a locale is provided.
      *
      * @mutation-free
+     *
+     * @note The default pattern is subject to change at any time and should not be relied upon for consistent formatting.
      */
-    public function format(Timezone $timezone, null|DateFormat|string $format = null, ?Locale\Locale $locale = null): string
+    public function format(null|DatePattern|string $pattern = null, ?Timezone $timezone = null, ?Locale\Locale $locale = null): string
     {
-        return Internal\zone_override($timezone, function () use ($timezone, $locale, $format): string {
-            $obj = new NativeDateTime();
-            $obj->setTimestamp($this->getSeconds());
-            $obj->setTimezone(new NativeDateTimeZone($timezone->value));
+        if ($pattern instanceof DatePattern) {
+            $pattern = $pattern->value;
+        }
 
-            if ($format instanceof DateFormat) {
-                $format = $format->value;
-            }
+        $formatter = new IntlDateFormatter(
+            $locale?->value,
+            IntlDateFormatter::LONG,
+            IntlDateFormatter::LONG,
+            $timezone === null ? null : Internal\to_intl_timezone($timezone),
+            IntlDateFormatter::GREGORIAN,
+            $pattern,
+        );
 
-            return IntlDateFormatter::formatObject($obj, $format, $locale->value);
-        });
+        return $formatter->format($this->getSeconds());
     }
 
     public function jsonSerialize(): array

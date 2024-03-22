@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\DateTime;
 
-use DateTimeZone;
-
 /**
  * Enumerates all supported time zones, including UTC, all tzdata time zones, and all unique UTC offsets.
  *
@@ -162,8 +160,8 @@ enum Timezone : string
     case AmericaDominica = 'America/Dominica';
     case AmericaEdmonton = 'America/Edmonton';
     case AmericaEirunepe = 'America/Eirunepe';
-    case AmericaEl_Salvador = 'America/El_Salvador';
-    case AmericaFort_Nelson = 'America/Fort_Nelson';
+    case AmericaElSalvador = 'America/El_Salvador';
+    case AmericaFortNelson = 'America/Fort_Nelson';
     case AmericaFortaleza = 'America/Fortaleza';
     case AmericaGlaceBay = 'America/Glace_Bay';
     case AmericaGooseBay = 'America/Goose_Bay';
@@ -194,7 +192,7 @@ enum Timezone : string
     case AmericaLaPaz = 'America/La_Paz';
     case AmericaLima = 'America/Lima';
     case AmericaLosAngeles = 'America/Los_Angeles';
-    case AmericaLower_Princes = 'America/Lower_Princes';
+    case AmericaLowerPrinces = 'America/Lower_Princes';
     case AmericaMaceio = 'America/Maceio';
     case AmericaManagua = 'America/Managua';
     case AmericaManaus = 'America/Manaus';
@@ -212,7 +210,7 @@ enum Timezone : string
     case AmericaMontevideo = 'America/Montevideo';
     case AmericaMontserrat = 'America/Montserrat';
     case AmericaNassau = 'America/Nassau';
-    case AmericaNew_York = 'America/New_York';
+    case AmericaNewYork = 'America/New_York';
     case AmericaNipigon = 'America/Nipigon';
     case AmericaNome = 'America/Nome';
     case AmericaNoronha = 'America/Noronha';
@@ -235,10 +233,10 @@ enum Timezone : string
     case AmericaRecife = 'America/Recife';
     case AmericaRegina = 'America/Regina';
     case AmericaResolute = 'America/Resolute';
-    case AmericaRio_Branco = 'America/Rio_Branco';
+    case AmericaRioBranco = 'America/Rio_Branco';
     case AmericaSantarem = 'America/Santarem';
     case AmericaSantiago = 'America/Santiago';
-    case AmericaSanto_Domingo = 'America/Santo_Domingo';
+    case AmericaSantoDomingo = 'America/Santo_Domingo';
     case AmericaSaoPaulo = 'America/Sao_Paulo';
     case AmericaScoresbysund = 'America/Scoresbysund';
     case AmericaSitka = 'America/Sitka';
@@ -300,7 +298,7 @@ enum Timezone : string
     case AsiaGaza = 'Asia/Gaza';
     case AsiaHebron = 'Asia/Hebron';
     case AsiaHoChiMinh = 'Asia/Ho_Chi_Minh';
-    case AsiaHong_Kong = 'Asia/Hong_Kong';
+    case AsiaHongKong = 'Asia/Hong_Kong';
     case AsiaHovd = 'Asia/Hovd';
     case AsiaIrkutsk = 'Asia/Irkutsk';
     case AsiaJakarta = 'Asia/Jakarta';
@@ -358,7 +356,7 @@ enum Timezone : string
     case AtlanticAzores = 'Atlantic/Azores';
     case AtlanticBermuda = 'Atlantic/Bermuda';
     case AtlanticCanary = 'Atlantic/Canary';
-    case AtlanticCape_Verde = 'Atlantic/Cape_Verde';
+    case AtlanticCapeVerde = 'Atlantic/Cape_Verde';
     case AtlanticFaroe = 'Atlantic/Faroe';
     case AtlanticMadeira = 'Atlantic/Madeira';
     case AtlanticReykjavik = 'Atlantic/Reykjavik';
@@ -416,7 +414,7 @@ enum Timezone : string
     case EuropeRiga = 'Europe/Riga';
     case EuropeRome = 'Europe/Rome';
     case EuropeSamara = 'Europe/Samara';
-    case EuropeSan_Marino = 'Europe/San_Marino';
+    case EuropeSanMarino = 'Europe/San_Marino';
     case EuropeSarajevo = 'Europe/Sarajevo';
     case EuropeSaratov = 'Europe/Saratov';
     case EuropeSimferopol = 'Europe/Simferopol';
@@ -473,11 +471,11 @@ enum Timezone : string
     case PacificNiue = 'Pacific/Niue';
     case PacificNorfolk = 'Pacific/Norfolk';
     case PacificNoumea = 'Pacific/Noumea';
-    case PacificPago_Pago = 'Pacific/Pago_Pago';
+    case PacificPagoPago = 'Pacific/Pago_Pago';
     case PacificPalau = 'Pacific/Palau';
     case PacificPitcairn = 'Pacific/Pitcairn';
     case PacificPohnpei = 'Pacific/Pohnpei';
-    case PacificPort_Moresby = 'Pacific/Port_Moresby';
+    case PacificPortMoresby = 'Pacific/Port_Moresby';
     case PacificRarotonga = 'Pacific/Rarotonga';
     case PacificSaipan = 'Pacific/Saipan';
     case PacificTahiti = 'Pacific/Tahiti';
@@ -487,60 +485,94 @@ enum Timezone : string
     case PacificWallis = 'Pacific/Wallis';
 
     /**
-     * Returns the default system time zone as a {@see Timezone} enum instance.
+     * Calculates the total time zone offset for a given {@see TemporalInterface} instance.
      *
-     * This method attempts to determine the current default time zone set in the system and return
-     * its corresponding {@see Timezone} enum instance. If the system's default time zone does not match any
-     * of the enum cases, UTC is returned as the default.
+     * This total offset includes both the raw timezone offset and any daylight saving time (DST) adjustments applicable at the temporal instance's time.
      *
-     * @return Timezone The system's default time zone as a {@see Timezone} enum instance or UTC if not found.
-     */
-    public static function default(): Timezone
-    {
-        return self::tryFrom(date_default_timezone_get()) ?? self::UTC;
-    }
-
-    /**
-     * Calculates the time zone offset for a given {@see TemporalInterface} instance.
+     * @param bool $local Indicates whether the temporal object's time should be treated as local time (`true`) or as UTC time (`false`).
      *
-     * This method determines the UTC offset for the time zone, based on the specific date and time
-     * represented by the provided {@see TemporalInterface} instance. This is important because the offset
-     * can vary due to daylight saving time changes.
-     *
-     * @param TemporalInterface $temporal The temporal object to calculate the time zone offset for.
-     *
-     * @return Duration The offset from UTC as a Duration instance.
+     * @return Duration The total offset from UTC as a Duration instance, including any DST adjustments.
      *
      * @mutation-free
      */
-    public function getOffset(TemporalInterface $temporal): Duration
+    public function getOffset(TemporalInterface $temporal, bool $local = false): Duration
     {
-        return Internal\zone_override($this, static function () use ($temporal): Duration {
-            return Duration::seconds((int) date('Z', $temporal->getTimestamp()->getSeconds()));
-        });
+        $intl_timezone = Internal\to_intl_timezone($this);
+        $timestamp_millis = $temporal->getTimestamp()->getSeconds() * MILLISECONDS_PER_SECOND;
+        $intl_timezone->getOffset($timestamp_millis, $local, $raw_offset, $dst_offset);
+
+        return Duration::milliseconds($raw_offset + $dst_offset);
     }
 
     /**
-     * Retrieves location information associated with this time zone.
+     * Calculates the raw time zone offset for the current timezone, excluding any daylight saving time (DST) adjustments.
      *
-     * For time zones corresponding to a specific location, this method provides geographical
-     * information such as the country code, latitude, and longitude. This can be useful for
-     * applications needing to display location-based data or perform calculations based on
-     * geographical positions.
-     *
-     * @return TimezoneLocation|null Location information for the time zone, or null if the time zone does not
-     *                               correspond to a specific geographical location or if location data is unavailable.
+     * This method retrieves the fixed offset from UTC for the timezone without considering any seasonal adjustments
+     * that might apply due to DST. It's particularly useful for understanding the base offset of a timezone.
      *
      * @mutation-free
      */
-    public function getLocation(): ?TimezoneLocation
+    public function getRawOffset(): Duration
     {
-        $tz = new DateTimeZone($this->value);
-        $location = $tz->getLocation();
-        if (!$location || '??' === $location['country_code']) {
-            return null;
-        }
+        return Duration::milliseconds(Internal\to_intl_timezone($this)->getRawOffset());
+    }
 
-        return new TimezoneLocation($location['country_code'], $location['latitude'], $location['longitude']);
+    /**
+     * Calculates the daylight saving time (DST) offset for a given {@see TemporalInterface} instance at its specific time.
+     *
+     * This DST offset is the adjustment added to the raw timezone offset, if DST is in effect at the temporal instance's time.
+     *
+     * @param bool $local Indicates whether the temporal object's time should be treated as local time (`true`) or as UTC time (`false`).
+     *
+     * @return Duration The DST offset as a Duration instance. If DST is not in effect, the offset will be zero.
+     *
+     * @mutation-free
+     */
+    public function getDaylightSavingTimeOffset(TemporalInterface $temporal, bool $local = false): Duration
+    {
+        $intl_timezone = Internal\to_intl_timezone($this);
+        $timestamp_millis = $temporal->getTimestamp()->getSeconds() * MILLISECONDS_PER_SECOND;
+        $intl_timezone->getOffset($timestamp_millis, $local, $_, $dst_offset);
+
+        return Duration::milliseconds($dst_offset);
+    }
+
+    /**
+     * Determines whether the current timezone observes Daylight Saving Time (DST).
+     *
+     * This method checks if the timezone has any DST rules and if DST is applied at any point during the year.
+     *
+     * @return bool True if the timezone uses Daylight Saving Time at any point in the year, false otherwise.
+     *
+     * @mutation-free
+     */
+    public function usesDaylightSavingTime(): bool
+    {
+        return Internal\to_intl_timezone($this)->useDaylightTime();
+    }
+
+    /**
+     * Retrieves the amount of time added during Daylight Saving Time for the current timezone.
+     *
+     * This method returns the typical adjustment made to the local time when DST is in effect.
+     *
+     * If the timezone does not observe DST or if there is no current DST adjustment (e.g., outside of DST periods),
+     * the method will return a Duration of zero.
+     *
+     * @mutation-free
+     */
+    public function getDaylightSavingTimeSavings(): Duration
+    {
+        return Duration::milliseconds(Internal\to_intl_timezone($this)->getDSTSavings());
+    }
+
+    /**
+     * Determines whether the current timezone has the same rules as another specified timezone.
+     *
+     * @mutation-free
+     */
+    public function hasTheSameRulesAs(Timezone $other): bool
+    {
+        return Internal\to_intl_timezone($this)->hasSameRules(Internal\to_intl_timezone($other));
     }
 }

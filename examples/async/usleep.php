@@ -25,7 +25,7 @@ Async\main(static function (): int {
 
     $duration = DateTime\Timestamp::now()->since($start);
 
-    IO\write_error_line("duration: %s.", $duration->toString(max_decimals: 2));
+    IO\write_error_line("duration : %s.", $duration->toString(max_decimals: 5));
 
     return 0;
 });

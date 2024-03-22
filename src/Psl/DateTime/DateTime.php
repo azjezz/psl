@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\DateTime;
 
-use Psl\Str;
-
-use function getdate;
-use function mktime;
+use IntlCalendar;
+use Psl\Locale\Locale;
 
 final class DateTime implements DateTimeInterface
 {
@@ -87,24 +85,16 @@ final class DateTime implements DateTimeInterface
     }
 
     /**
-     * Creates a new DateTime instance representing the current moment.
+     * Creates a new {@see DateTime} instance representing the current moment.
      *
-     * This static method returns a DateTime object set to the current date and time. If a specific timezone is
-     * provided, the returned DateTime will be adjusted to reflect the date and time in that timezone. If no timezone
-     * is specified, the system's default timezone is used.
-     *
-     * Utilizing the {@see Timestamp::now()} method, this function captures the precise moment of invocation down to the
-     * nanosecond. This ensures that the {@see DateTime] instance represents an accurate and precise point in time.
-     *
-     * The method optionally accepts a timezone. If omitted, the DateTime object is created using the default system
-     * timezone, as determined by {@see Timezone::default()}. This flexibility allows for the creation of DateTime instances
-     * that are relevant in various global contexts without the need for manual timezone conversion by the caller.
+     * This static method returns a {@see DateTime} object set to the current date and time. If a specific timezone is
+     * provided, the returned {@see DateTime} will be adjusted to reflect the date and time in that timezone.
      *
      * @pure
      */
-    public static function now(?Timezone $timezone = null): DateTime
+    public static function now(Timezone $timezone): DateTime
     {
-        return self::fromTimestamp(Timestamp::now(), $timezone ?? Timezone::default());
+        return self::fromTimestamp(Timestamp::now(), $timezone);
     }
 
     /**
@@ -114,9 +104,6 @@ final class DateTime implements DateTimeInterface
      * particularly useful when you need to set a specific time of day for the current date in a given timezone. The
      * method combines the current date context with a specific time, offering a convenient way to specify times such
      * as "today at 14:00" in code.
-     *
-     * If a timezone is provided, the {@see DateTime} object is adjusted to reflect the specified time in that timezone. If
-     * the timezone parameter is omitted, the system's default timezone, as determined by {@see Timezone::default()}, is used.
      *
      * The time components (hours, minutes, seconds, nanoseconds) must be within their valid ranges. The method
      * enforces these constraints and throws an {@see Exception\InvalidArgumentException} if any component is out of bounds.
@@ -131,7 +118,7 @@ final class DateTime implements DateTimeInterface
      *
      * @pure
      */
-    public static function todayAt(int $hours, int $minutes, int $seconds = 0, int $nanoseconds = 0, ?Timezone $timezone = null): DateTime
+    public static function todayAt(Timezone $timezone, int $hours, int $minutes, int $seconds = 0, int $nanoseconds = 0): DateTime
     {
         return self::now($timezone)->withTime($hours, $minutes, $seconds, $nanoseconds);
     }
@@ -139,11 +126,7 @@ final class DateTime implements DateTimeInterface
     /**
      * Creates a {@see DateTime} instance from individual date and time components.
      *
-     * This method constructs a DateTime object based on the specified year, month, day, hour, minute, second, and nanosecond,
-     * taking into account the specified or default timezone. It validates the date and time components to ensure they form
-     * a valid date-time. If the components are invalid (e.g., 30th February), an {@see Exception\InvalidArgumentException} is thrown.
-     *
-     * In cases where the specified time occurs twice (such as during the end of daylight saving time), the earlier occurrence
+     * Note: In cases where the specified time occurs twice (such as during the end of daylight saving time), the earlier occurrence
      * is returned. To obtain the later occurrence, you can adjust the returned instance using `->plusHours(1)`.
      *
      * @param Month|int<1, 12> $month
@@ -159,96 +142,113 @@ final class DateTime implements DateTimeInterface
      */
     public static function fromParts(int $year, Month|int $month, int $day, int $hours = 0, int $minutes = 0, int $seconds = 0, int $nanoseconds = 0, Timezone $timezone = null): self
     {
-        $timezone ??= Timezone::default();
+        if ($month instanceof Month) {
+            $month = $month->value;
+        }
 
-        return Internal\zone_override($timezone, static function () use ($timezone, $year, $month, $day, $hours, $minutes, $seconds, $nanoseconds): DateTime {
-            if ($month instanceof Month) {
-                $month = $month->value;
-            }
+        /** @var IntlCalendar $calendar */
+        $calendar = IntlCalendar::createInstance(
+            $timezone === null ? null : Internal\to_intl_timezone($timezone),
+        );
 
-            $timestamp = Timestamp::fromRaw(
-                mktime($hours, $minutes, $seconds, $month, $day, $year),
-                $nanoseconds,
+        $calendar->set($year, $month - 1, $day, $hours, $minutes, $seconds);
+
+        // Validate the date-time components by comparing them to what was set
+        if (
+            !($calendar->get(IntlCalendar::FIELD_YEAR) === $year &&
+            ($calendar->get(IntlCalendar::FIELD_MONTH) + 1) === $month &&
+            $calendar->get(IntlCalendar::FIELD_DAY_OF_MONTH) === $day &&
+            $calendar->get(IntlCalendar::FIELD_HOUR_OF_DAY) === $hours &&
+            $calendar->get(IntlCalendar::FIELD_MINUTE) === $minutes &&
+            $calendar->get(IntlCalendar::FIELD_SECOND) === $seconds)
+        ) {
+            throw new Exception\InvalidArgumentException(
+                'The given components do not form a valid date-time.',
             );
+        }
 
-            $ret = new DateTime(
-                $timezone,
-                $timestamp,
-                $year,
-                $month,
-                $day,
-                $hours,
-                $minutes,
-                $seconds,
-                $nanoseconds,
-            );
+        $timestampInSeconds = (int) ($calendar->getTime() / MILLISECONDS_PER_SECOND);
+        $timestamp = Timestamp::fromRaw($timestampInSeconds, $nanoseconds);
 
-            // mktime() doesn't throw on invalid date/time, but silently returns a
-            // timestamp that doesn't match the input; so we check for that here.
-            if ($ret->getParts() !== DateTime::fromTimestamp($timestamp, $timezone)->getParts()) {
-                throw new Exception\InvalidArgumentException(Str\format(
-                    'The given components do not form a valid date-time in the timezone "%s"',
-                    $timezone->value,
-                ));
-            }
-
-            return $ret;
-        });
+        return new self(
+            $timezone,
+            $timestamp,
+            $year,
+            $month,
+            $day,
+            $hours,
+            $minutes,
+            $seconds,
+            $nanoseconds
+        );
     }
 
     /**
      * Creates a {@see DateTime} instance from a timestamp, representing the same point in time.
      *
      * This method converts a {@see Timestamp} into a {@see DateTime} instance calculated for the specified timezone.
-     * It extracts and uses the date and time parts corresponding to the given timestamp in the provided or default timezone.
-     *
-     * @param Timezone|null $timezone The timezone for the DateTime instance. Defaults to the system's default timezone if null.
      *
      * @pure
      */
-    public static function fromTimestamp(Timestamp $timestamp, ?Timezone $timezone = null): DateTime
+    public static function fromTimestamp(Timestamp $timestamp, Timezone $timezone): DateTime
     {
-        $timezone ??= Timezone::default();
+        /** @var IntlCalendar $calendar */
+        $calendar = IntlCalendar::createInstance(
+            Internal\to_intl_timezone($timezone),
+        );
 
-        return Internal\zone_override($timezone, static function () use ($timezone, $timestamp): DateTime {
-            [$s, $ns] = $timestamp->toRaw();
-            $parts = getdate($s);
+        $calendar->setTime(
+            $timestamp->getSeconds() * MILLISECONDS_PER_SECOND,
+        );
 
-            return new static(
-                $timezone,
-                $timestamp,
-                $parts['year'],
-                $parts['mon'],
-                $parts['mday'],
-                $parts['hours'],
-                $parts['minutes'],
-                $parts['seconds'],
-                $ns,
-            );
-        });
+        $year = $calendar->get(IntlCalendar::FIELD_YEAR);
+        $month = $calendar->get(IntlCalendar::FIELD_MONTH) + 1;
+        $day = $calendar->get(IntlCalendar::FIELD_DAY_OF_MONTH);
+        $hour = $calendar->get(IntlCalendar::FIELD_HOUR_OF_DAY);
+        $minute = $calendar->get(IntlCalendar::FIELD_MINUTE);
+        $second = $calendar->get(IntlCalendar::FIELD_SECOND);
+        $nanoseconds = $timestamp->getNanoseconds();
+
+        return new static(
+            $timezone,
+            $timestamp,
+            $year,
+            $month,
+            $day,
+            $hour,
+            $minute,
+            $second,
+            $nanoseconds,
+        );
     }
 
     /**
-     * Parses a date-time string and returns a {@see DateTime} instance for the specified or default timezone.
+     * Creates a {@see DateTime} instance from a date/time string according to a specific pattern.
      *
-     * This method interprets a date-time string, potentially relative (e.g., "next Thursday", "10 minutes ago") or absolute
-     * (e.g., "2023-03-15 12:00:00"), into a {@see DateTime} object. An optional base time (`$relative_to`) can be provided to resolve
-     * relative date-time expressions. If `$relative_to` is not provided, the current system time is used as the base.
+     * This method allows parsing of date/time strings that conform to custom patterns,
+     * making it versatile for handling various date/time formats.
      *
-     * @param string $raw_string The date-time string to parse.
-     * @param Timezone|null $timezone The timezone to use for the resulting DateTime instance. Defaults to the system's default timezone if null.
-     * @param TemporalInterface|null $relative_to The temporal context used to interpret relative date-time expressions. Defaults to the current system time if null.
-     *
-     * @throws Exception\InvalidArgumentException If parsing fails or the date-time string is invalid.
-     *
-     * @see https://www.php.net/manual/en/datetime.formats.php For information on supported date and time formats.
+     * @throws Exception\RuntimeException If parsing fails or the date/time string is invalid.
      */
-    public static function parse(string $raw_string, ?Timezone $timezone = null, ?TemporalInterface $relative_to = null): self
+    public static function fromPattern(string|DatePattern $pattern, string $raw_string, Timezone $timezone, ?Locale $locale = null): self
     {
-        $timezone ??= Timezone::default();
-
         return self::fromTimestamp(
-            Timestamp::parse($raw_string, $timezone, $relative_to),
+            Timestamp::fromPattern($pattern, $raw_string, $timezone, $locale),
+            $timezone,
+        );
+    }
+
+    /**
+     * Parses a date/time string into a {@see DateTime} instance.
+     *
+     * This method is a convenience wrapper for parsing date/time strings without specifying a custom pattern.
+     *
+     * @throws Exception\RuntimeException If parsing fails or the format of the date/time string is invalid.
+     */
+    public static function parse(string $raw_string, Timezone $timezone, ?Locale $locale = null): self
+    {
+        return self::fromTimestamp(
+            Timestamp::parse($raw_string, $timezone, $locale),
             $timezone,
         );
     }
