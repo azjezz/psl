@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Locale;
 
 use Locale as NativeLocale;
+use Psl\Str;
 
 /**
  * Represents a locale identifier.
@@ -686,8 +687,11 @@ enum Locale: string
     case AlbanianNorthMacedonia = "sq_MK";
     case AlbanianKosovo = "sq_XK";
     case Serbian = "sr";
+    case SerbianSerbia = "sr_RS";
     case SerbianCyrillic = "sr_Cyrl";
+    case SerbianCyrillicSerbia = "sr_Cyrl_RS";
     case SerbianLatin = "sr_Latn";
+    case SerbianLatinSerbia = "sr_Latn_RS";
     case Sundanese = "su";
     case SundaneseLatin = "su_Latn";
     case Swedish = "sv";
@@ -790,6 +794,48 @@ enum Locale: string
     case ChineseTraditional = "zh_Hant";
     case Zulu = "zu";
     case ZuluSouthAfrica = "zu_ZA";
+
+    /**
+     * Retrieves the system's default locale from the PHP environment settings.
+     *
+     * This method returns the locale configured via `intl.default_locale`. Should the PHP environment lack a specific
+     * locale configuration or if the configured locale is unsupported, it defaults to `self::English` representing
+     * the English language.
+     *
+     * The choice of English as the fallback is motivated by its global comprehension, role as a base language in
+     * technology and international communication, predominance in technical documentation and support resources,
+     * and its historical precedence in the tech industry. These factors ensure the fallback locale is both broadly
+     * accessible and consistent with international standards.
+     *
+     * @return self The default locale as an enum instance, sourced from PHP settings or `self::English` as the fallback.
+     *
+     * @see https://www.php.net/manual/en/locale.getdefault.php
+     */
+    public static function default(): self
+    {
+        $full_locale = NativeLocale::getDefault();
+        if (!$full_locale) {
+            // Fallback to English if no locale is set or supported.
+            return self::English;
+        }
+
+        $language = NativeLocale::getPrimaryLanguage($full_locale);
+        $script = NativeLocale::getScript($full_locale);
+        $region = NativeLocale::getRegion($full_locale);
+
+        $locale = Str\lowercase($language);
+        if ($script) {
+            $locale .= '_' . Str\capitalize($script);
+        }
+
+        if ($region) {
+            $locale .= '_' . Str\uppercase($region);
+        }
+
+        // Attempt to match the system-configured locale with a supported enum instance,
+        // defaulting to English if a precise match is unavailable.
+        return self::tryFrom($locale) ?? self::tryFrom($language) ?? self::English;
+    }
 
     /**
      * Get a human-readable name for the locale, suitable for display.
