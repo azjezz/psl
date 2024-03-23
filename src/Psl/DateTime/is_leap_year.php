@@ -10,9 +10,9 @@ namespace Psl\DateTime;
  * Returns true if the specified year is a leap year according to the Gregorian
  * calendar; otherwise, returns false.
  *
- * @param 0|positive-int $year The year to check.
- *
  * @return bool True if the year is a leap year, false otherwise.
+ *
+ * @pure
  */
 function is_leap_year(int $year): bool
 {

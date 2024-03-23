@@ -199,7 +199,7 @@ interface DateTimeInterface extends TemporalInterface
     /**
      * Returns the short format of the year (last 2 digits).
      *
-     * @return int<00, 99> The short format of the year.
+     * @return int<-99, 99> The short format of the year.
      *
      * @mutation-free
      */
@@ -400,7 +400,12 @@ interface DateTimeInterface extends TemporalInterface
     /**
      * Formats the date and time of this instance into a string based on the provided pattern, timezone, and locale.
      *
-     * If no pattern is specified, a default pattern will be used.
+     * The pattern determines the format of the output string.
+     *
+     * If no pattern is provided, an implementation-specific default pattern will be used.
+     *
+     * Implementations may choose any pattern they deem appropriate for the default format,
+     *  and this pattern may vary between implementations or change over time.
      *
      * The method uses the associated timezone of the instance by default, but this can be overridden with the
      * provided timezone parameter.
@@ -408,8 +413,6 @@ interface DateTimeInterface extends TemporalInterface
      * The method also accounts for locale-specific formatting rules if a locale is provided.
      *
      * @mutation-free
-     *
-     * @note The default pattern is subject to change at any time and should not be relied upon for consistent formatting.
      */
     public function format(DatePattern|string|null $pattern = null, ?Timezone $timezone = null, ?Locale\Locale $locale = null): string;
 }

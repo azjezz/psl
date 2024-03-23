@@ -11,10 +11,23 @@ use DateTimeZone as NativeDateTimeZone;
 require 'vendor/autoload.php';
 
 Async\main(static function(): void {
+    $a = DateTime\Timestamp::now();
+    $b = DateTime\Timestamp::now();
+
+    var_dump($b->since($a)->toString(20));
+
+    $a = DateTime\Timestamp::monotonic();
+    $b = DateTime\Timestamp::monotonic();
+
+    var_dump($b->since($a)->toString(20));
+
     $someday = DateTime\DateTime::fromTimestamp(
-        DateTime\Timestamp::fromRaw(1711846900),
         DateTime\Timezone::EuropeLondon,
+        DateTime\Timestamp::fromRaw(1711846900),
     );
+
+    var_dump($someday->format(DateTime\DatePattern::Http->value));
+    die();
 
     IO\write_line('The offset of the timezone: %s', $someday->getTimezone()->getOffset($someday)->getTotalMinutes());
     IO\write_line('The raw offset of the timezone: %s', $someday->getTimezone()->getRawOffset()->getTotalMinutes());

@@ -246,6 +246,6 @@ trait TemporalConvenienceMethodsTrait
      */
     public function convertToTimezone(Timezone $timezone): DateTimeInterface
     {
-        return DateTime::fromTimestamp($this->getTimestamp(), $timezone);
+        return DateTime::fromTimestamp($timezone, $this->getTimestamp());
     }
 }

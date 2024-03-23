@@ -485,6 +485,16 @@ enum Timezone : string
     case PacificWallis = 'Pacific/Wallis';
 
     /**
+     * Retrieves the default timezone set in the PHP environment.
+     *
+     * @return self The default timezone as an enum instance.
+     */
+    public static function default(): self
+    {
+        return Internal\default_timezone();
+    }
+
+    /**
      * Calculates the total time zone offset for a given {@see TemporalInterface} instance.
      *
      * This total offset includes both the raw timezone offset and any daylight saving time (DST) adjustments applicable at the temporal instance's time.

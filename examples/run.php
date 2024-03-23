@@ -35,9 +35,9 @@ Async\main(static function (): int {
             IO\write_error_line('- %s/%s   -> started', $component, $script);
 
             $awaitables[] = Async\run(static function() use($component, $script, $file): array {
-                $start = DateTime\Timestamp::now();
+                $start = DateTime\Timestamp::monotonic();
                 Shell\execute(PHP_BINARY, [$file]);
-                $duration = DateTime\Timestamp::now()->since($start);
+                $duration = DateTime\Timestamp::monotonic()->since($start);
 
                 return [$component, $script, $duration];
             });
@@ -47,7 +47,7 @@ Async\main(static function (): int {
     foreach (Async\Awaitable::iterate($awaitables) as $awaitable) {
         [$component, $script, $duration] = $awaitable->await();
 
-        IO\write_error_line('+ %s/%s   -> finished in %s', $component, $script, $duration);
+        IO\write_error_line('+ %s/%s   -> finished in %s', $component, $script, $duration->toString(10));
     }
 
     return 0;

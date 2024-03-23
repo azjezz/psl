@@ -538,6 +538,7 @@ final class Loader
         'Psl\\Range\\full' => 'Psl/Range/full.php',
         'Psl\\DateTime\\is_leap_year' => 'Psl/DateTime/is_leap_year.php',
         'Psl\\DateTime\\Internal\\to_intl_timezone' => 'Psl/DateTime/Internal/to_intl_timezone.php',
+        'Psl\\DateTime\\Internal\\default_timezone' => 'Psl/DateTime/Internal/default_timezone.php',
     ];
 
     public const INTERFACES = [

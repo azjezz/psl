@@ -207,15 +207,18 @@ interface TemporalInterface extends Comparable, Equable, JsonSerializable
     /**
      * Formats the date and time of this instance into a string based on the provided pattern, timezone, and locale.
      *
-     * If no pattern is specified, a default pattern will be used.
+     * The pattern determines the format of the output string.
      *
-     * If no timezone is specified, {@see Timezone::UTC} will be used.
+     * If no pattern is provided, an implementation-specific default pattern will be used.
+     *
+     * Implementations may choose any pattern they deem appropriate for the default format,
+     *  and this pattern may vary between implementations or change over time.
+     *
+     * The default timezone used is {@see Timezone::default()} if none is specified.
      *
      * The method also accounts for locale-specific formatting rules if a locale is provided.
      *
      * @mutation-free
-     *
-     * @note The default pattern is subject to change at any time and should not be relied upon for consistent formatting.
      */
     public function format(DatePattern|string|null $pattern = null, ?Timezone $timezone = null, ?Locale\Locale $locale = null): string;
 }

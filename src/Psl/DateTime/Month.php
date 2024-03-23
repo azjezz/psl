@@ -91,6 +91,8 @@ enum Month: int
      * @param int $year The year for which the day count is needed.
      *
      * @return int<28, 31> The number of days in the month for the specified year.
+     *
+     * @pure
      */
     public function getDaysForYear(int $year): int
     {
@@ -109,6 +111,8 @@ enum Month: int
      * February returns 28, while April, June, September, and November return 30, and the rest return 31.
      *
      * @return int<28, 31> The number of days in the month for a non-leap year.
+     *
+     * @pure
      */
     public function getNonLeapYearDays(): int
     {
@@ -127,6 +131,8 @@ enum Month: int
      * February returns 29, while April, June, September, and November return 30, and the rest return 31.
      *
      * @return int<29, 31> The number of days in the month for a leap year.
+     *
+     * @pure
      */
     public function getLeapYearDays(): int
     {

@@ -38,16 +38,7 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function withYear(int $year): static
     {
-        return static::fromParts(
-            $year,
-            $this->getMonth(),
-            $this->getDay(),
-            $this->getHours(),
-            $this->getMinutes(),
-            $this->getSeconds(),
-            $this->getNanoseconds(),
-            $this->getTimezone(),
-        );
+        return $this->withDate($year, $this->getMonth(), $this->getDay());
     }
 
     /**
@@ -61,16 +52,7 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function withMonth(Month|int $month): static
     {
-        return static::fromParts(
-            $this->getYear(),
-            $month,
-            $this->getDay(),
-            $this->getHours(),
-            $this->getMinutes(),
-            $this->getSeconds(),
-            $this->getNanoseconds(),
-            $this->getTimezone(),
-        );
+        return $this->withDate($this->getYear(), $month, $this->getDay());
     }
 
     /**
@@ -84,16 +66,7 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function withDay(int $day): static
     {
-        return static::fromParts(
-            $this->getYear(),
-            $this->getMonth(),
-            $day,
-            $this->getHours(),
-            $this->getMinutes(),
-            $this->getSeconds(),
-            $this->getNanoseconds(),
-            $this->getTimezone(),
-        );
+        return $this->withDate($this->getYear(), $this->getMonth(), $day);
     }
 
     /**
@@ -107,16 +80,7 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function withHours(int $hours): static
     {
-        return static::fromParts(
-            $this->getYear(),
-            $this->getMonth(),
-            $this->getDay(),
-            $hours,
-            $this->getMinutes(),
-            $this->getSeconds(),
-            $this->getNanoseconds(),
-            $this->getTimezone(),
-        );
+        return $this->withTime($hours, $this->getMinutes(), $this->getSeconds(), $this->getNanoseconds());
     }
 
     /**
@@ -130,16 +94,7 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function withMinutes(int $minutes): static
     {
-        return static::fromParts(
-            $this->getYear(),
-            $this->getMonth(),
-            $this->getDay(),
-            $this->getHours(),
-            $minutes,
-            $this->getSeconds(),
-            $this->getNanoseconds(),
-            $this->getTimezone(),
-        );
+        return $this->withTime($this->getHours(), $minutes, $this->getSeconds(), $this->getNanoseconds());
     }
 
     /**
@@ -153,16 +108,7 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function withSeconds(int $seconds): static
     {
-        return static::fromParts(
-            $this->getYear(),
-            $this->getMonth(),
-            $this->getDay(),
-            $this->getHours(),
-            $this->getMinutes(),
-            $seconds,
-            $this->getNanoseconds(),
-            $this->getTimezone(),
-        );
+        return $this->withTime($this->getHours(), $this->getMinutes(), $seconds, $this->getNanoseconds());
     }
 
     /**
@@ -176,67 +122,7 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function withNanoseconds(int $nanoseconds): static
     {
-        return static::fromParts(
-            $this->getYear(),
-            $this->getMonth(),
-            $this->getDay(),
-            $this->getHours(),
-            $this->getMinutes(),
-            $this->getSeconds(),
-            $nanoseconds,
-            $this->getTimezone(),
-        );
-    }
-
-    /**
-     * Returns a new instance with the specified date.
-     *
-     * @param Month|int<1, 12> $month
-     * @param int<1, 31> $day
-     *
-     * @throws Exception\InvalidArgumentException If specifying the date would result in an invalid date/time.
-     *                                            This can happen if the combination of year, month, and day does not constitute a valid date (e.g., April 31st, February 29th in a non-leap year).
-     *
-     * @mutation-free
-     */
-    public function withDate(int $year, Month|int $month, int $day): static
-    {
-        return static::fromParts(
-            $year,
-            $month,
-            $day,
-            $this->getHours(),
-            $this->getMinutes(),
-            $this->getSeconds(),
-            $this->getNanoseconds(),
-            $this->getTimezone(),
-        );
-    }
-
-    /**
-     * Returns a new instance with the specified time.
-     *
-     * @param int<0, 23> $hours
-     * @param int<0, 59> $minutes
-     * @param int<0, 59> $seconds
-     * @param int<0, 999999999> $nanoseconds
-     *
-     * @throws Exception\InvalidArgumentException If specifying the time would result in an invalid time (e.g., hours greater than 23, minutes or seconds greater than 59).
-     *
-     * @mutation-free
-     */
-    public function withTime(int $hours, int $minutes, int $seconds = 0, int $nanoseconds = 0): static
-    {
-        return static::fromParts(
-            $this->getYear(),
-            $this->getMonth(),
-            $this->getDay(),
-            $hours,
-            $minutes,
-            $seconds,
-            $nanoseconds,
-            $this->getTimezone(),
-        );
+        return $this->withTime($this->getHours(), $this->getMinutes(), $this->getSeconds(), $nanoseconds);
     }
 
     /**
@@ -329,7 +215,7 @@ trait DateTimeConvenienceMethodsTrait
     /**
      * Returns the short format of the year (last 2 digits).
      *
-     * @return int<0, 99> The short format of the year.
+     * @return int<-99, 99> The short format of the year.
      *
      * @mutation-free
      */

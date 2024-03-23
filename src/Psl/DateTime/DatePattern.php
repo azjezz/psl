@@ -16,7 +16,8 @@ enum DatePattern: string
     case Iso8601 = 'yyyy-MM-dd\'T\'HH:mm:ssXXX';
     case Http = 'EEE, dd MMM yyyy HH:mm:ss zzz';
     case Cookie = 'EEEE, dd-MMM-yyyy HH:mm:ss zzz';
-    case Sql = 'yyyy-MM-dd HH:mm:ss';
+    case SqlDate = 'yyyy-MM-dd';
+    case SqlDateTime = 'yyyy-MM-dd HH:mm:ss';
     case XmlRpc = 'yyyyMMdd\'T\'HH:mm:ss';
     case IsoWeekDate = 'Y-ww-E';
     case IsoOrdinalDate = 'yyyy-DDD';

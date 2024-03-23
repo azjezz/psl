@@ -251,9 +251,10 @@ final class Duration implements Comparison\Comparable, Comparison\Equable, JsonS
      */
     public function getTotalHours(): float
     {
-        return $this->hours + ($this->minutes / MINUTES_PER_HOUR) +
+        /** @psalm-suppress InvalidOperand */
+        return (int) ($this->hours + ($this->minutes / MINUTES_PER_HOUR) +
             ($this->seconds / SECONDS_PER_HOUR) +
-            ($this->nanoseconds / (SECONDS_PER_HOUR * NANOSECONDS_PER_SECOND));
+            ($this->nanoseconds / (SECONDS_PER_HOUR * NANOSECONDS_PER_SECOND)));
     }
 
     /**
@@ -264,9 +265,10 @@ final class Duration implements Comparison\Comparable, Comparison\Equable, JsonS
      */
     public function getTotalMinutes(): float
     {
-        return ($this->hours * MINUTES_PER_HOUR) +
+        /** @psalm-suppress InvalidOperand */
+        return (int) (($this->hours * MINUTES_PER_HOUR) +
             $this->minutes + ($this->seconds / SECONDS_PER_MINUTE) +
-            ($this->nanoseconds / (SECONDS_PER_MINUTE * NANOSECONDS_PER_SECOND));
+            ($this->nanoseconds / (SECONDS_PER_MINUTE * NANOSECONDS_PER_SECOND)));
     }
 
     /**
@@ -277,10 +279,11 @@ final class Duration implements Comparison\Comparable, Comparison\Equable, JsonS
      */
     public function getTotalSeconds(): float
     {
-        return $this->seconds +
+        /** @psalm-suppress InvalidOperand */
+        return (int) ($this->seconds +
             ($this->minutes * SECONDS_PER_MINUTE) +
             ($this->hours * SECONDS_PER_HOUR) +
-            ($this->nanoseconds / NANOSECONDS_PER_SECOND);
+            ($this->nanoseconds / NANOSECONDS_PER_SECOND));
     }
 
     /**
@@ -291,10 +294,11 @@ final class Duration implements Comparison\Comparable, Comparison\Equable, JsonS
      */
     public function getTotalMilliseconds(): float
     {
-        return ($this->hours * SECONDS_PER_HOUR * MILLISECONDS_PER_SECOND) +
+        /** @psalm-suppress InvalidOperand */
+        return (int) (($this->hours * SECONDS_PER_HOUR * MILLISECONDS_PER_SECOND) +
             ($this->minutes * SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND) +
             ($this->seconds * MILLISECONDS_PER_SECOND) +
-            ($this->nanoseconds / NANOSECONDS_PER_MILLISECOND);
+            ($this->nanoseconds / NANOSECONDS_PER_MILLISECOND));
     }
 
     /**
@@ -305,10 +309,11 @@ final class Duration implements Comparison\Comparable, Comparison\Equable, JsonS
      */
     public function getTotalMicroseconds(): float
     {
-        return ($this->hours * SECONDS_PER_HOUR * MICROSECONDS_PER_SECOND) +
+        /** @psalm-suppress InvalidOperand */
+        return (int) (($this->hours * SECONDS_PER_HOUR * MICROSECONDS_PER_SECOND) +
             ($this->minutes * SECONDS_PER_MINUTE * MICROSECONDS_PER_SECOND) +
             ($this->seconds * MICROSECONDS_PER_SECOND) +
-            ($this->nanoseconds / NANOSECONDS_PER_MICROSECOND);
+            ($this->nanoseconds / NANOSECONDS_PER_MICROSECOND));
     }
 
     /**
@@ -669,6 +674,7 @@ final class Duration implements Comparison\Comparable, Comparison\Equable, JsonS
         $sec_sign = $this->seconds < 0 || $this->nanoseconds < 0 ? '-' : '';
         $sec = Math\abs($this->seconds);
 
+        /** @var list<array{string, string}> $values */
         $values = [
             [((string) $this->hours), 'hour(s)'],
             [((string) $this->minutes), 'minute(s)'],

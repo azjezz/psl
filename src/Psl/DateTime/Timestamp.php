@@ -5,21 +5,26 @@ declare(strict_types=1);
 namespace Psl\DateTime;
 
 use IntlDateFormatter;
+use Psl;
+use Psl\Exception\InvariantViolationException;
 use Psl\Locale;
 use Psl\Math;
+use Psl\Str;
 
 use function hrtime;
-use function time;
+use function microtime;
 
 /**
  * Represents a precise point in time, with seconds and nanoseconds since the Unix epoch.
+ *
+ * @immutable
  */
 final class Timestamp implements TemporalInterface
 {
     use TemporalConvenienceMethodsTrait;
 
     /**
-     * @var null|array{seconds: int, nanoseconds: int}
+     * @var null|array{int, int}
      *
      * @internal
      */
@@ -28,6 +33,8 @@ final class Timestamp implements TemporalInterface
     /**
      * @param int $seconds
      * @param int<0, 999999999> $nanoseconds
+     *
+     * @pure
      */
     private function __construct(
         private readonly int $seconds,
@@ -36,37 +43,64 @@ final class Timestamp implements TemporalInterface
     }
 
     /**
-     * Creates a new instance for the current moment.
-     *
-     * Returns the current time with precision up to nanoseconds, adjusted to maintain accuracy.
-     *
-     * @return self The current timestamp.
-     *
-     * @pure
+     * Create a high-precision instance representing the current time using the system clock.
      */
     public static function now(): self
     {
-        $hrTime = hrtime();
+        $time = microtime();
 
-        // Calculate the offset if not already calculated
+        $parts = Str\split($time, ' ');
+        $seconds = (int) $parts[1];
+        $nanoseconds = (int) (((float)$parts[0]) * ((float)NANOSECONDS_PER_SECOND));
+
+        /** @psalm-suppress MissingThrowsDocblock */
+        return self::fromRaw(
+            seconds: $seconds,
+            nanoseconds: $nanoseconds,
+        );
+    }
+
+    /**
+     * Create a current time instance using a monotonic clock with high precision
+     *  to the nanosecond for precise measurements.
+     *
+     * This method ensures that the time is always moving forward, unaffected by adjustments in the system clock,
+     * making it suitable for measuring durations or intervals accurately.
+     *
+     * @throws InvariantViolationException If the system does not provide a monotonic timer.
+     */
+    public static function monotonic(): self
+    {
         if (self::$offset === null) {
-            $now = time();
-            $nowHrTime = hrtime();
+            $offset = hrtime();
+
+            /** @psalm-suppress RedundantCondition - This is not redundant, hrtime can return false. */
+            Psl\invariant(false !== $offset, 'The system does not provide a monotonic timer.');
+
+            $time = Str\split(microtime(), ' ', 2);
 
             self::$offset = [
-                'seconds' => $now - $nowHrTime[0],
-                'nanoseconds' => $nowHrTime[1],
+                (int) ($time[1] - $offset[0]),
+                (int) ($time[0] * NANOSECONDS_PER_SECOND) - $offset[1],
             ];
         }
 
-        // Add the offset to the current hrtime to get the precise time
-        $seconds = $hrTime[0] + self::$offset['seconds'];
-        $nanoseconds = $hrTime[1] + self::$offset['nanoseconds'];
+        [$seconds, $nanoseconds] = hrtime();
+        [$seconds_offset, $nanoseconds_offset] = self::$offset;
 
-        // Normalize nanoseconds
-        $seconds += (int)($nanoseconds / NANOSECONDS_PER_SECOND);
-        $nanoseconds %= NANOSECONDS_PER_SECOND;
+        $nanoseconds_adjusted = $nanoseconds + $nanoseconds_offset;
+        if ($nanoseconds_adjusted >= NANOSECONDS_PER_SECOND) {
+            ++$seconds;
+            $nanoseconds_adjusted -= NANOSECONDS_PER_SECOND;
+        } elseif ($nanoseconds_adjusted < 0) {
+            --$seconds;
+            $nanoseconds_adjusted += NANOSECONDS_PER_SECOND;
+        }
 
+        $seconds += $seconds_offset;
+        $nanoseconds = $nanoseconds_adjusted;
+
+        /** @psalm-suppress MissingThrowsDocblock */
         return self::fromRaw($seconds, $nanoseconds);
     }
 
@@ -92,20 +126,22 @@ final class Timestamp implements TemporalInterface
         if ($seconds === Math\INT64_MAX && $nanoseconds > 0) {
             throw new Exception\OverflowException("Adding nanoseconds would cause an overflow.");
         }
+
         if ($seconds === Math\INT64_MIN && $nanoseconds < 0) {
             throw new Exception\UnderflowException("Subtracting nanoseconds would cause an underflow.");
         }
 
-        $secondsAdjustment = Math\div($nanoseconds, NANOSECONDS_PER_SECOND);
-        $finalSeconds = $seconds + $secondsAdjustment;
+        /** @psalm-suppress MissingThrowsDocblock */
+        $seconds_adjustment = Math\div($nanoseconds, NANOSECONDS_PER_SECOND);
+        $adjusted_seconds = $seconds + $seconds_adjustment;
 
-        $normalizedNanoseconds = $nanoseconds % NANOSECONDS_PER_SECOND;
-        if ($normalizedNanoseconds < 0) {
-            --$finalSeconds;
-            $normalizedNanoseconds += NANOSECONDS_PER_SECOND;
+        $adjusted_nanoseconds = $nanoseconds % NANOSECONDS_PER_SECOND;
+        if ($adjusted_nanoseconds < 0) {
+            --$adjusted_seconds;
+            $adjusted_nanoseconds += NANOSECONDS_PER_SECOND;
         }
 
-        return new self($finalSeconds, $normalizedNanoseconds);
+        return new self($adjusted_seconds, $adjusted_nanoseconds);
     }
 
     /**
@@ -115,11 +151,14 @@ final class Timestamp implements TemporalInterface
      * making it versatile for handling various date/time formats.
      *
      * @throws Exception\RuntimeException If parsing fails or the date/time string is invalid.
+     *
+     * @pure
      */
     public static function fromPattern(string|DatePattern $pattern, string $raw_string, ?Timezone $timezone = null, ?Locale\Locale $locale = null): self
     {
         $pattern = $pattern instanceof DatePattern ? $pattern->value : $pattern;
 
+        /** @psalm-suppress ImpureMethodCall */
         $formatter = new IntlDateFormatter(
             $locale?->value,
             IntlDateFormatter::FULL,
@@ -129,6 +168,7 @@ final class Timestamp implements TemporalInterface
             $pattern,
         );
 
+        /** @psalm-suppress ImpureMethodCall */
         $timestamp = $formatter->parse($raw_string, $offset);
         if ($timestamp === false) {
             throw new Exception\RuntimeException(
@@ -136,7 +176,8 @@ final class Timestamp implements TemporalInterface
             );
         }
 
-        return self::fromRaw($timestamp);
+        /** @psalm-suppress MissingThrowsDocblock */
+        return self::fromRaw((int) $timestamp);
     }
 
     /**
@@ -145,9 +186,12 @@ final class Timestamp implements TemporalInterface
      * This method is a convenience wrapper for parsing date/time strings without specifying a custom pattern.
      *
      * @throws Exception\RuntimeException If parsing fails or the format of the date/time string is invalid.
+     *
+     * @pure
      */
     public static function parse(string $raw_string, ?Timezone $timezone = null, ?Locale\Locale $locale = null): self
     {
+        /** @psalm-suppress ImpureMethodCall */
         $formatter = new IntlDateFormatter(
             $locale?->value,
             IntlDateFormatter::FULL,
@@ -156,6 +200,7 @@ final class Timestamp implements TemporalInterface
             IntlDateFormatter::GREGORIAN,
         );
 
+        /** @psalm-suppress ImpureMethodCall */
         $timestamp = $formatter->parse($raw_string);
         if ($timestamp === false) {
             throw new Exception\RuntimeException(
@@ -163,7 +208,8 @@ final class Timestamp implements TemporalInterface
             );
         }
 
-        return self::fromRaw($timestamp);
+        /** @psalm-suppress MissingThrowsDocblock */
+        return self::fromRaw((int) $timestamp);
     }
 
     /**
@@ -278,7 +324,14 @@ final class Timestamp implements TemporalInterface
             $pattern,
         );
 
-        return $formatter->format($this->getSeconds());
+        $result = $formatter->format($this->getSeconds());
+        if (Str\starts_with($timezone->value, '+')) {
+            $result = Str\replace($result, 'GMT+', 'UTC+');
+        } elseif (Str\starts_with($timezone->value, '-')) {
+            $result = Str\replace($result, 'GMT-', 'UTC-');
+        }
+
+        return $result;
     }
 
     public function jsonSerialize(): array

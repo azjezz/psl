@@ -28,9 +28,9 @@
 #### `Classes`
 
 - [Lock](./../../src/Psl/File/Lock.php#L9)
-- [ReadHandle](./../../src/Psl/File/ReadHandle.php#L10)
-- [ReadWriteHandle](./../../src/Psl/File/ReadWriteHandle.php#L11)
-- [WriteHandle](./../../src/Psl/File/WriteHandle.php#L11)
+- [ReadHandle](./../../src/Psl/File/ReadHandle.php#L11)
+- [ReadWriteHandle](./../../src/Psl/File/ReadWriteHandle.php#L12)
+- [WriteHandle](./../../src/Psl/File/WriteHandle.php#L12)
 
 #### `Enums`
 

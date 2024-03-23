@@ -41,7 +41,7 @@ Async\main(static function (): int {
 
     Async\Scheduler::delay($seconds, static fn() => $input->close());
 
-    $start = DateTime\Timestamp::now();
+    $start = DateTime\Timestamp::monotonic();
     $i = 0;
     try {
         while ($chunk = $input->read(65536)) {
@@ -53,7 +53,7 @@ Async\main(static function (): int {
     } catch (IO\Exception\AlreadyClosedException) {
     }
 
-    $duration = DateTime\Timestamp::now()->since($start);
+    $duration = DateTime\Timestamp::monotonic()->since($start);
     $bytes = $i * 65536;
     $bytes_formatted = Math\round($bytes / 1024 / 1024 / $duration->getTotalSeconds(), 1);
 

@@ -22,8 +22,8 @@ compare-benchmark-to-reference:                                                 
 	./vendor/bin/phpbench run --config config/phpbench.json --ref=benchmark_reference
 
 static-analysis:                                                                ## run static analysis checks
-	./vendor/bin/psalm -c config/psalm.xml --show-info=true --no-cache --threads=1
-	./vendor/bin/psalm -c config/psalm.xml tests/static-analysis --no-cache --threads=1
+	./vendor/bin/psalm -c config/psalm.xml --show-info=true --no-cache --threads=2
+	./vendor/bin/psalm -c config/psalm.xml tests/static-analysis --no-cache --threads=2
 
 type-coverage:                                                                  ## send static analysis type coverage metrics to https://shepherd.dev/
 	./vendor/bin/psalm -c config/psalm.xml --shepherd --stats --threads=1

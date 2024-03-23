@@ -7,45 +7,48 @@ namespace Psl\DateTime;
 use IntlCalendar;
 use Psl\Locale\Locale;
 
+/**
+ * @immutable
+ */
 final class DateTime implements DateTimeInterface
 {
     use DateTimeConvenienceMethodsTrait;
 
-    private Timezone $timezone;
+    private readonly Timezone $timezone;
 
-    private Timestamp $timestamp;
+    private readonly Timestamp $timestamp;
 
-    private int $year;
+    private readonly int $year;
 
     /**
      * @var int<1, 12>
      */
-    private int $month;
+    private readonly int $month;
 
     /**
      * @var int<1, 31>
      */
-    private int $day;
+    private readonly int $day;
 
     /**
      * @var int<0, 23>
      */
-    private int $hours;
+    private readonly int $hours;
 
     /**
      * @var int<0, 59>
      */
-    private int $minutes;
+    private readonly int $minutes;
 
     /**
      * @var int<0, 59>
      */
-    private int $seconds;
+    private readonly int $seconds;
 
     /**
      * @var int<0, 999999999>
      */
-    private int $nanoseconds;
+    private readonly int $nanoseconds;
 
     /**
      * Constructs a new date-time instance with specified components and timezone.
@@ -59,6 +62,8 @@ final class DateTime implements DateTimeInterface
      *
      * @throws Exception\InvalidArgumentException If any of the date or time components are outside their valid ranges,
      *                                            indicating an invalid date-time configuration.
+     *
+     * @psalm-external-mutation-free
      */
     private function __construct(Timezone $timezone, Timestamp $timestamp, int $year, int $month, int $day, int $hours, int $minutes, int $seconds, int $nanoseconds)
     {
@@ -68,7 +73,7 @@ final class DateTime implements DateTimeInterface
             $minutes < 0 || $minutes >= 60 ||
             $hours < 0 || $hours >= 24 ||
             $month < 1 || $month > 12 ||
-            $day < 1 || $day > Month::from($month)->getDaysForYear($year)
+            $day < 1 || $day > 31 || $day > Month::from($month)->getDaysForYear($year)
         ) {
             throw new Exception\InvalidArgumentException('One or more components of the date-time are out of valid ranges.');
         }
@@ -89,12 +94,10 @@ final class DateTime implements DateTimeInterface
      *
      * This static method returns a {@see DateTime} object set to the current date and time. If a specific timezone is
      * provided, the returned {@see DateTime} will be adjusted to reflect the date and time in that timezone.
-     *
-     * @pure
      */
-    public static function now(Timezone $timezone): DateTime
+    public static function now(?Timezone $timezone = null): DateTime
     {
-        return self::fromTimestamp(Timestamp::now(), $timezone);
+        return self::fromTimestamp($timezone ?? Timezone::default(), Timestamp::now());
     }
 
     /**
@@ -115,10 +118,8 @@ final class DateTime implements DateTimeInterface
      *
      * @throws Exception\InvalidArgumentException If any of the time components are outside their valid ranges,
      *                                            indicating an invalid date-time configuration.
-     *
-     * @pure
      */
-    public static function todayAt(Timezone $timezone, int $hours, int $minutes, int $seconds = 0, int $nanoseconds = 0): DateTime
+    public static function todayAt(int $hours, int $minutes, int $seconds = 0, int $nanoseconds = 0, ?Timezone $timezone = null): DateTime
     {
         return self::now($timezone)->withTime($hours, $minutes, $seconds, $nanoseconds);
     }
@@ -140,33 +141,37 @@ final class DateTime implements DateTimeInterface
      *
      * @pure
      */
-    public static function fromParts(int $year, Month|int $month, int $day, int $hours = 0, int $minutes = 0, int $seconds = 0, int $nanoseconds = 0, Timezone $timezone = null): self
+    public static function fromParts(Timezone $timezone, int $year, Month|int $month, int $day, int $hours = 0, int $minutes = 0, int $seconds = 0, int $nanoseconds = 0): self
     {
         if ($month instanceof Month) {
             $month = $month->value;
         }
 
-        /** @var IntlCalendar $calendar */
+        /**
+         * @var IntlCalendar $calendar
+         */
         $calendar = IntlCalendar::createInstance(
-            $timezone === null ? null : Internal\to_intl_timezone($timezone),
+            Internal\to_intl_timezone($timezone),
         );
 
+        /** @psalm-suppress ImpureMethodCall */
         $calendar->set($year, $month - 1, $day, $hours, $minutes, $seconds);
 
         // Validate the date-time components by comparing them to what was set
         if (
-            !($calendar->get(IntlCalendar::FIELD_YEAR) === $year &&
-            ($calendar->get(IntlCalendar::FIELD_MONTH) + 1) === $month &&
-            $calendar->get(IntlCalendar::FIELD_DAY_OF_MONTH) === $day &&
-            $calendar->get(IntlCalendar::FIELD_HOUR_OF_DAY) === $hours &&
-            $calendar->get(IntlCalendar::FIELD_MINUTE) === $minutes &&
-            $calendar->get(IntlCalendar::FIELD_SECOND) === $seconds)
+            !(/** @psalm-suppress ImpureMethodCall */ $calendar->get(IntlCalendar::FIELD_YEAR) === $year &&
+                (/** @psalm-suppress ImpureMethodCall */ $calendar->get(IntlCalendar::FIELD_MONTH) + 1) === $month &&
+/** @psalm-suppress ImpureMethodCall */ $calendar->get(IntlCalendar::FIELD_DAY_OF_MONTH) === $day &&
+/** @psalm-suppress ImpureMethodCall */ $calendar->get(IntlCalendar::FIELD_HOUR_OF_DAY) === $hours &&
+/** @psalm-suppress ImpureMethodCall */ $calendar->get(IntlCalendar::FIELD_MINUTE) === $minutes &&
+/** @psalm-suppress ImpureMethodCall */ $calendar->get(IntlCalendar::FIELD_SECOND) === $seconds)
         ) {
             throw new Exception\InvalidArgumentException(
                 'The given components do not form a valid date-time.',
             );
         }
 
+        /** @psalm-suppress ImpureMethodCall */
         $timestampInSeconds = (int) ($calendar->getTime() / MILLISECONDS_PER_SECOND);
         $timestamp = Timestamp::fromRaw($timestampInSeconds, $nanoseconds);
 
@@ -190,25 +195,38 @@ final class DateTime implements DateTimeInterface
      *
      * @pure
      */
-    public static function fromTimestamp(Timestamp $timestamp, Timezone $timezone): DateTime
+    public static function fromTimestamp(Timezone $timezone, Timestamp $timestamp): DateTime
     {
-        /** @var IntlCalendar $calendar */
+        /**
+         * @var IntlCalendar $calendar
+         *
+         * @psalm-suppress ImpureMethodCall
+         */
         $calendar = IntlCalendar::createInstance(
             Internal\to_intl_timezone($timezone),
         );
 
+        /** @psalm-suppress ImpureMethodCall */
         $calendar->setTime(
             $timestamp->getSeconds() * MILLISECONDS_PER_SECOND,
         );
 
+        /** @psalm-suppress ImpureMethodCall */
         $year = $calendar->get(IntlCalendar::FIELD_YEAR);
+        /** @psalm-suppress ImpureMethodCall */
         $month = $calendar->get(IntlCalendar::FIELD_MONTH) + 1;
+        /** @psalm-suppress ImpureMethodCall */
         $day = $calendar->get(IntlCalendar::FIELD_DAY_OF_MONTH);
+        /** @psalm-suppress ImpureMethodCall */
         $hour = $calendar->get(IntlCalendar::FIELD_HOUR_OF_DAY);
+        /** @psalm-suppress ImpureMethodCall */
         $minute = $calendar->get(IntlCalendar::FIELD_MINUTE);
+        /** @psalm-suppress ImpureMethodCall */
         $second = $calendar->get(IntlCalendar::FIELD_SECOND);
+        /** @psalm-suppress ImpureMethodCall */
         $nanoseconds = $timestamp->getNanoseconds();
 
+        /** @psalm-suppress MissingThrowsDocblock */
         return new static(
             $timezone,
             $timestamp,
@@ -229,13 +247,12 @@ final class DateTime implements DateTimeInterface
      * making it versatile for handling various date/time formats.
      *
      * @throws Exception\RuntimeException If parsing fails or the date/time string is invalid.
+     *
+     * @pure
      */
     public static function fromPattern(string|DatePattern $pattern, string $raw_string, Timezone $timezone, ?Locale $locale = null): self
     {
-        return self::fromTimestamp(
-            Timestamp::fromPattern($pattern, $raw_string, $timezone, $locale),
-            $timezone,
-        );
+        return self::fromTimestamp($timezone, Timestamp::fromPattern($pattern, $raw_string, $timezone, $locale));
     }
 
     /**
@@ -244,13 +261,12 @@ final class DateTime implements DateTimeInterface
      * This method is a convenience wrapper for parsing date/time strings without specifying a custom pattern.
      *
      * @throws Exception\RuntimeException If parsing fails or the format of the date/time string is invalid.
+     *
+     * @pure
      */
     public static function parse(string $raw_string, Timezone $timezone, ?Locale $locale = null): self
     {
-        return self::fromTimestamp(
-            Timestamp::parse($raw_string, $timezone, $locale),
-            $timezone,
-        );
+        return self::fromTimestamp($timezone, Timestamp::parse($raw_string, $timezone, $locale));
     }
 
     /**
@@ -297,7 +313,7 @@ final class DateTime implements DateTimeInterface
     /**
      * Returns the day.
      *
-     * @return int<0, 31>
+     * @return int<1, 31>
      *
      * @mutation-free
      */
@@ -365,27 +381,80 @@ final class DateTime implements DateTimeInterface
     }
 
     /**
+     * Returns a new instance with the specified date.
+     *
+     * @param Month|int<1, 12> $month
+     * @param int<1, 31> $day
+     *
+     * @throws Exception\InvalidArgumentException If specifying the date would result in an invalid date/time.
+     *                                            This can happen if the combination of year, month, and day does not constitute a valid date (e.g., April 31st, February 29th in a non-leap year).
+     *
+     * @mutation-free
+     */
+    public function withDate(int $year, Month|int $month, int $day): static
+    {
+        return static::fromParts(
+            $this->getTimezone(),
+            $year,
+            $month,
+            $day,
+            $this->getHours(),
+            $this->getMinutes(),
+            $this->getSeconds(),
+            $this->getNanoseconds(),
+        );
+    }
+
+    /**
+     * Returns a new instance with the specified time.
+     *
+     * @param int<0, 23> $hours
+     * @param int<0, 59> $minutes
+     * @param int<0, 59> $seconds
+     * @param int<0, 999999999> $nanoseconds
+     *
+     * @throws Exception\InvalidArgumentException If specifying the time would result in an invalid time (e.g., hours greater than 23, minutes or seconds greater than 59).
+     *
+     * @mutation-free
+     */
+    public function withTime(int $hours, int $minutes, int $seconds = 0, int $nanoseconds = 0): static
+    {
+        return static::fromParts(
+            $this->getTimezone(),
+            $this->getYear(),
+            $this->getMonth(),
+            $this->getDay(),
+            $hours,
+            $minutes,
+            $seconds,
+            $nanoseconds,
+        );
+    }
+
+    /**
      * Adds the specified duration to this date-time object, returning a new instance with the added duration.
      *
+     * @throws Exception\UnderflowException If adding the duration results in an arithmetic underflow.
      * @throws Exception\OverflowException If adding the duration results in an arithmetic overflow.
      *
      * @mutation-free
      */
     public function plus(Duration $duration): static
     {
-        return static::fromTimestamp($this->getTimestamp()->plus($duration), $this->timezone);
+        return static::fromTimestamp($this->timezone, $this->getTimestamp()->plus($duration));
     }
 
     /**
      * Subtracts the specified duration from this date-time object, returning a new instance with the subtracted duration.
      *
+     * @throws Exception\UnderflowException If subtracting the duration results in an arithmetic underflow.
      * @throws Exception\OverflowException If subtracting the duration results in an arithmetic overflow.
      *
      * @mutation-free
      */
     public function minus(Duration $duration): static
     {
-        return static::fromTimestamp($this->getTimestamp()->minus($duration), $this->timezone);
+        return static::fromTimestamp($this->timezone, $this->getTimestamp()->minus($duration));
     }
 
     /**
@@ -397,7 +466,7 @@ final class DateTime implements DateTimeInterface
      */
     public function convertToTimezone(Timezone $timezone): static
     {
-        return static::fromTimestamp($this->getTimestamp(), $timezone);
+        return static::fromTimestamp($timezone, $this->getTimestamp());
     }
 
     public function jsonSerialize(): array
