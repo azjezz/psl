@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
+use Psl\DateTime\Duration;
+
 /**
  * An `IO\Handle` that is readable.
  */
@@ -41,7 +43,7 @@ interface ReadHandleInterface extends HandleInterface
      * Up to `$max_bytes` may be allocated in a buffer; large values may lead to
      * unnecessarily hitting the request memory limit.
      */
-    public function read(?int $max_bytes = null, ?float $timeout = null): string;
+    public function read(?int $max_bytes = null, null|Duration|float $timeout = null): string;
 
     /**
      * Read until there is no more data to read.
@@ -59,7 +61,7 @@ interface ReadHandleInterface extends HandleInterface
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    public function readAll(?int $max_bytes = null, ?float $timeout = null): string;
+    public function readAll(?int $max_bytes = null, null|Duration|float $timeout = null): string;
 
     /**
      * Read a fixed amount of data.
@@ -74,5 +76,5 @@ interface ReadHandleInterface extends HandleInterface
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    public function readFixedSize(int $size, ?float $timeout = null): string;
+    public function readFixedSize(int $size, null|Duration|float $timeout = null): string;
 }

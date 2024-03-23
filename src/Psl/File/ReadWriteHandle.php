@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\File;
 
+use Psl\DateTime\Duration;
 use Psl\Filesystem;
 use Psl\IO;
 use Psl\Str;
@@ -78,7 +79,7 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
     /**
      * {@inheritDoc}
      */
-    public function read(?int $max_bytes = null, ?float $timeout = null): string
+    public function read(?int $max_bytes = null, null|Duration|float $timeout = null): string
     {
         return $this->readWriteHandle->read($max_bytes, $timeout);
     }
@@ -94,7 +95,7 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
     /**
      * {@inheritDoc}
      */
-    public function write(string $bytes, ?float $timeout = null): int
+    public function write(string $bytes, null|Duration|float $timeout = null): int
     {
         return $this->readWriteHandle->write($bytes, $timeout);
     }

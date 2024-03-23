@@ -792,6 +792,25 @@ enum Locale: string
     case ZuluSouthAfrica = "zu_ZA";
 
     /**
+     * Retrieves the default locale set in the PHP environment.
+     *
+     * This method returns the locale configured in the PHP ini settings (`intl.default_locale`),
+     * falling back to a predefined default ( {@see Locale::English} ) if no locale has been configured.
+     *
+     * @return self The default locale as an enum instance.
+     */
+    public static function default(): self
+    {
+        $locale = NativeLocale::getDefault();
+        if (!$locale) {
+            return self::English;
+        }
+
+        return self::tryFrom($locale) ?: self::English;
+    }
+
+
+    /**
      * Get a human-readable name for the locale, suitable for display.
      *
      * @param Locale|null $locale The locale for which to get the name. Defaults to the current locale if not specified.

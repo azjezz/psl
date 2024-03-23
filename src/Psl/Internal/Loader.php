@@ -54,6 +54,22 @@ final class Loader
         'Psl\\Str\\ALPHABET' => 'Psl/Str/constants.php',
         'Psl\\Str\\ALPHABET_ALPHANUMERIC' => 'Psl/Str/constants.php',
         'Psl\\Filesystem\\SEPARATOR' => 'Psl/Filesystem/constants.php',
+        'Psl\\DateTime\\NANOSECONDS_PER_MICROSECOND' => 'Psl/DateTime/constants.php',
+        'Psl\\DateTime\\NANOSECONDS_PER_MILLISECOND' => 'Psl/DateTime/constants.php',
+        'Psl\\DateTime\\NANOSECONDS_PER_SECOND' => 'Psl/DateTime/constants.php',
+        'Psl\\DateTime\\MICROSECONDS_PER_MILLISECOND' => 'Psl/DateTime/constants.php',
+        'Psl\\DateTime\\MICROSECONDS_PER_SECOND' => 'Psl/DateTime/constants.php',
+        'Psl\\DateTime\\MILLISECONDS_PER_SECOND' => 'Psl/DateTime/constants.php',
+        'Psl\\DateTime\\SECONDS_PER_MINUTE' => 'Psl/DateTime/constants.php',
+        'Psl\\DateTime\\SECONDS_PER_HOUR' => 'Psl/DateTime/constants.php',
+        'Psl\\DateTime\\SECONDS_PER_DAY' => 'Psl/DateTime/constants.php',
+        'Psl\\DateTime\\SECONDS_PER_WEEK' => 'Psl/DateTime/constants.php',
+        'Psl\\DateTime\\MINUTES_PER_HOUR' => 'Psl/DateTime/constants.php',
+        'Psl\\DateTime\\MINUTES_PER_DAY' => 'Psl/DateTime/constants.php',
+        'Psl\\DateTime\\MINUTES_PER_WEEK' => 'Psl/DateTime/constants.php',
+        'Psl\\DateTime\\HOURS_PER_DAY' => 'Psl/DateTime/constants.php',
+        'Psl\\DateTime\\HOURS_PER_WEEK' => 'Psl/DateTime/constants.php',
+        'Psl\\DateTime\\DAYS_PER_WEEK' => 'Psl/DateTime/constants.php',
     ];
 
     public const FUNCTIONS = [
@@ -520,6 +536,9 @@ final class Loader
         'Psl\\Range\\to' => 'Psl/Range/to.php',
         'Psl\\Range\\between' => 'Psl/Range/between.php',
         'Psl\\Range\\full' => 'Psl/Range/full.php',
+        'Psl\\DateTime\\is_leap_year' => 'Psl/DateTime/is_leap_year.php',
+        'Psl\\DateTime\\Internal\\to_intl_timezone' => 'Psl/DateTime/Internal/to_intl_timezone.php',
+        'Psl\\DateTime\\Internal\\default_timezone' => 'Psl/DateTime/Internal/default_timezone.php',
     ];
 
     public const INTERFACES = [
@@ -611,6 +630,9 @@ final class Loader
         'Psl\\Range\\RangeInterface' => 'Psl/Range/RangeInterface.php',
         'Psl\\Range\\LowerBoundRangeInterface' => 'Psl/Range/LowerBoundRangeInterface.php',
         'Psl\\Range\\UpperBoundRangeInterface' => 'Psl/Range/UpperBoundRangeInterface.php',
+        'Psl\\DateTime\\Exception\\ExceptionInterface' => 'Psl/DateTime/Exception/ExceptionInterface.php',
+        'Psl\\DateTime\\DateTimeInterface' => 'Psl/DateTime/DateTimeInterface.php',
+        'Psl\\DateTime\\TemporalInterface' => 'Psl/DateTime/TemporalInterface.php',
     ];
 
     public const TRAITS = [
@@ -618,6 +640,8 @@ final class Loader
         'Psl\\IO\\ReadHandleConvenienceMethodsTrait' => 'Psl/IO/ReadHandleConvenienceMethodsTrait.php',
         'Psl\\IO\\WriteHandleConvenienceMethodsTrait' => 'Psl/IO/WriteHandleConvenienceMethodsTrait.php',
         'Psl\\Channel\\Internal\\ChannelSideTrait' => 'Psl/Channel/Internal/ChannelSideTrait.php',
+        'Psl\\DateTime\\DateTimeConvenienceMethodsTrait' => 'Psl/DateTime/DateTimeConvenienceMethodsTrait.php',
+        'Psl\\DateTime\\TemporalConvenienceMethodsTrait' => 'Psl/DateTime/TemporalConvenienceMethodsTrait.php',
     ];
 
     public const CLASSES = [
@@ -814,6 +838,13 @@ final class Loader
         'Psl\\Range\\ToRange' => 'Psl/Range/ToRange.php',
         'Psl\\Range\\BetweenRange' => 'Psl/Range/BetweenRange.php',
         'Psl\\Range\\FullRange' => 'Psl/Range/FullRange.php',
+        'Psl\\DateTime\\Exception\\InvalidArgumentException' => 'Psl/DateTime/Exception/InvalidArgumentException.php',
+        'Psl\\DateTime\\Exception\\OverflowException' => 'Psl/DateTime/Exception/OverflowException.php',
+        'Psl\\DateTime\\Exception\\RuntimeException' => 'Psl/DateTime/Exception/RuntimeException.php',
+        'Psl\\DateTime\\Exception\\UnderflowException' => 'Psl/DateTime/Exception/UnderflowException.php',
+        'Psl\\DateTime\\DateTime' => 'Psl/DateTime/DateTime.php',
+        'Psl\\DateTime\\Duration' => 'Psl/DateTime/Interval.php',
+        'Psl\\DateTime\\Timestamp' => 'Psl/DateTime/Timestamp.php',
     ];
 
     public const ENUMS = [
@@ -830,6 +861,12 @@ final class Loader
         'Psl\\Password\\Algorithm' => 'Psl/Password/Algorithm.php',
         'Psl\\Shell\\ErrorOutputBehavior' => 'Psl/Shell/ErrorOutputBehavior.php',
         'Psl\\Locale\\Locale' => 'Psl/Locale/Locale.php',
+        'Psl\\DateTime\\DatePattern' => 'Psl/DateTime/DateFormat.php',
+        'Psl\\DateTime\\Era' => 'Psl/DateTime/Era.php',
+        'Psl\\DateTime\\Meridiem' => 'Psl/DateTime/Meridiem.php',
+        'Psl\\DateTime\\Month' => 'Psl/DateTime/Weekday.php',
+        'Psl\\DateTime\\Timezone' => 'Psl/DateTime/Timezone.php',
+        'Psl\\DateTime\\Weekday' => 'Psl/DateTime/Weekday.php',
     ];
 
     public const TYPE_CONSTANTS = 1;

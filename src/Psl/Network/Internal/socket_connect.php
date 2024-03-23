@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Network\Internal;
 
+use Psl\DateTime\Duration;
 use Psl\Internal;
 use Psl\Network\Exception;
 use Revolt\EventLoop;
@@ -28,7 +29,7 @@ use const STREAM_CLIENT_CONNECT;
  *
  * @codeCoverageIgnore
  */
-function socket_connect(string $uri, array $context = [], ?float $timeout = null): mixed
+function socket_connect(string $uri, array $context = [], null|Duration|float $timeout = null): mixed
 {
     return Internal\suppress(static function () use ($uri, $context, $timeout): mixed {
         $context = stream_context_create($context);
@@ -42,6 +43,10 @@ function socket_connect(string $uri, array $context = [], ?float $timeout = null
         $write_watcher = '';
         $timeout_watcher = '';
         if (null !== $timeout) {
+            if ($timeout instanceof Duration) {
+                $timeout = $timeout->getTotalSeconds();
+            }
+
             $timeout_watcher = EventLoop::delay($timeout, static function () use ($suspension, &$write_watcher, $socket) {
                 EventLoop::cancel($write_watcher);
 
