@@ -27,7 +27,7 @@ const RESPONSE_FORMAT = <<<HTML
 </html>
 HTML;
 
-$server = TCP\Server::create('localhost', 3030, TCP\ServerOptions::create(idleConnections: 1024));
+$server = TCP\Server::create('localhost', 3030, TCP\ServerOptions::create(idle_connections: 1024));
 
 Async\Scheduler::onSignal(SIGINT, $server->close(...));
 

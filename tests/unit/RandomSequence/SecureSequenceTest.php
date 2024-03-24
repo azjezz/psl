@@ -11,7 +11,7 @@ final class SecureSequenceTest extends TestCase
 {
     public function testNext(): void
     {
-        $sequence = new SecureSequence();
+        $sequence = SecureSequence::default();
 
         $a = $sequence->next();
         $b = $sequence->next();

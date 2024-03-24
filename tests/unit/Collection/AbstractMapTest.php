@@ -28,6 +28,7 @@ abstract class AbstractMapTest extends TestCase
 
     public function testIsEmpty(): void
     {
+        static::assertTrue($this->default()->isEmpty());
         static::assertTrue($this->create([])->isEmpty());
         static::assertFalse($this->create(['foo' => 'bar'])->isEmpty());
         static::assertEmpty($this->create(['foo' => null])->isEmpty());
@@ -35,6 +36,7 @@ abstract class AbstractMapTest extends TestCase
 
     public function testCount(): void
     {
+        static::assertCount(0, $this->default());
         static::assertCount(0, $this->create([]));
         static::assertCount(1, $this->create(['foo' => 'bar']));
         static::assertSame(5, $this->create([
@@ -589,6 +591,11 @@ abstract class AbstractMapTest extends TestCase
         static::assertSame(['foo' => 'hello'], $chunks->at(0)->toArray());
         static::assertSame(['bar' => 'world'], $chunks->at(1)->toArray());
         static::assertSame(['baz' => '!'], $chunks->at(2)->toArray());
+    }
+
+    protected function default(): MapInterface
+    {
+        return ($this->mapClass)::default();
     }
 
     /**

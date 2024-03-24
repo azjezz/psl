@@ -22,9 +22,23 @@ final class Stack implements StackInterface
     private array $items = [];
 
     /**
+     * Provides a default instance of the {@see Stack}.
+     *
+     * @return static A new instance of {@see Stack}, devoid of any items.
+     *
+     * @pure
+     */
+    public static function default(): static
+    {
+        return new self();
+    }
+
+    /**
      * Adds an item to the stack.
      *
      * @param T $item
+     *
+     * @external-mutation-free
      */
     public function push(mixed $item): void
     {
@@ -36,6 +50,8 @@ final class Stack implements StackInterface
      * or returns null if this queue is empty.
      *
      * @return null|T
+     *
+     * @mutation-free
      */
     public function peek(): mixed
     {
@@ -49,6 +65,8 @@ final class Stack implements StackInterface
      * or returns null if this queue is empty.
      *
      * @return null|T
+     *
+     * @external-mutation-free
      */
     public function pull(): mixed
     {
@@ -61,6 +79,8 @@ final class Stack implements StackInterface
      * @throws Exception\UnderflowException If the stack is empty.
      *
      * @return T
+     *
+     * @external-mutation-free
      */
     public function pop(): mixed
     {
@@ -76,6 +96,8 @@ final class Stack implements StackInterface
      * Count the items in the stack.
      *
      * @return int<0, max>
+     *
+     * @mutation-free
      */
     public function count(): int
     {

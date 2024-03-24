@@ -79,6 +79,6 @@
 
 #### `Enums`
 
-- [Encoding](./../../src/Psl/Str/Encoding.php#L7)
+- [Encoding](./../../src/Psl/Str/Encoding.php#L16)
 
 

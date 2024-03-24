@@ -97,6 +97,10 @@ final class ExecuteTest extends TestCase
         $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");']);
 
         static::assertSame('hello', $result);
+
+        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'], error_output_behavior: Shell\ErrorOutputBehavior::default());
+
+        static::assertSame('hello', $result);
     }
 
     public function testErrorOutputIsAppended(): void

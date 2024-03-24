@@ -14,6 +14,18 @@ final class PasswordTest extends TestCase
     /**
      * @dataProvider providePasswords
      */
+    public function testDefault(string $password): void
+    {
+        $hash = Password\hash($password, Password\Algorithm::default());
+
+        static::assertTrue(Password\verify($password, $hash));
+
+        static::assertFalse(Password\needs_rehash($hash, Password\Algorithm::default()));
+    }
+
+    /**
+     * @dataProvider providePasswords
+     */
     public function testBcrypt(string $password): void
     {
         $hash = Password\hash($password, Password\Algorithm::Bcrypt, [

@@ -22,9 +22,23 @@ final class Queue implements QueueInterface
     private array $queue = [];
 
     /**
+     * Provides a default instance of the {@see Queue}.
+     *
+     * @return static A new instance of {@see Queue}, devoid of any nodes.
+     *
+     * @pure
+     */
+    public static function default(): static
+    {
+        return new self();
+    }
+
+    /**
      * Adds a node to the queue.
      *
      * @param T $node
+     *
+     * @external-mutation-free
      */
     public function enqueue(mixed $node): void
     {
@@ -36,6 +50,8 @@ final class Queue implements QueueInterface
      * or returns null if this queue is empty.
      *
      * @return null|T
+     *
+     * @mutation-free
      */
     public function peek(): mixed
     {
@@ -47,6 +63,8 @@ final class Queue implements QueueInterface
      * or returns null if this queue is empty.
      *
      * @return null|T
+     *
+     * @external-mutation-free
      */
     public function pull(): mixed
     {
@@ -59,6 +77,8 @@ final class Queue implements QueueInterface
      * @throws Exception\UnderflowException If the queue is empty.
      *
      * @return T
+     *
+     * @external-mutation-free
      */
     public function dequeue(): mixed
     {
@@ -74,6 +94,8 @@ final class Queue implements QueueInterface
      * Count the nodes in the queue.
      *
      * @return int<0, max>
+     *
+     * @mutation-free
      */
     public function count(): int
     {

@@ -4,7 +4,18 @@ declare(strict_types=1);
 
 namespace Psl\Shell;
 
-enum ErrorOutputBehavior {
+use Psl\Default\DefaultInterface;
+
+/**
+ * Specifies the behavior for handling the standard error (stderr) output of shell commands.
+ *
+ * This enum is utilized to configure how stderr output should be treated in relation to the
+ * standard output (stdout) when executing shell commands via the Shell component. Each case
+ * offers a different strategy for managing or combining stderr and stdout, allowing for flexible
+ * error output handling based on specific requirements of the execution context.
+ */
+enum ErrorOutputBehavior implements DefaultInterface
+{
     /**
      * Discard the standard error output.
      *
@@ -53,4 +64,22 @@ enum ErrorOutputBehavior {
      * @note The packing format is not guaranteed to be BC, you should always use `Shell\unpack` instead of attempting to unpack the result manually.
      */
     case Packed;
+
+    /**
+     * Provides the default error output behavior.
+     *
+     * The default behavior is to discard the standard error output. This choice simplifies
+     * handling of command outputs in scenarios where error details are not crucial, or
+     * errors are expected and non-critical. It offers a clean approach for focusing solely
+     * on the standard output content, especially in automated scripts or where output clarity
+     * is a priority.
+     *
+     * @return static The default `Discard` behavior instance, representing the preference to ignore stderr output.
+     *
+     * @pure
+     */
+    public static function default(): static
+    {
+        return self::Discard;
+    }
 }

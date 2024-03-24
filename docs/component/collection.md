@@ -13,7 +13,7 @@
 #### `Interfaces`
 
 - [AccessibleCollectionInterface](./../../src/Psl/Collection/AccessibleCollectionInterface.php#L20)
-- [CollectionInterface](./../../src/Psl/Collection/CollectionInterface.php#L22)
+- [CollectionInterface](./../../src/Psl/Collection/CollectionInterface.php#L23)
 - [IndexAccessInterface](./../../src/Psl/Collection/IndexAccessInterface.php#L13)
 - [MapInterface](./../../src/Psl/Collection/MapInterface.php#L15)
 - [MutableAccessibleCollectionInterface](./../../src/Psl/Collection/MutableAccessibleCollectionInterface.php#L22)

@@ -11,7 +11,7 @@ final class ConnectOptionsTest extends TestCase
 {
     public function testOptions(): void
     {
-        $options = ConnectOptions::create();
+        $options = ConnectOptions::default();
 
         static::assertFalse($options->noDelay);
 

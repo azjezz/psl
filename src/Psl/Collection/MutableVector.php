@@ -31,12 +31,26 @@ final class MutableVector implements MutableVectorInterface
      * MutableVector constructor.
      *
      * @param array<array-key, T> $elements
+     *
+     * @external-mutation-free
      */
     public function __construct(array $elements)
     {
         foreach ($elements as $element) {
             $this->elements[] = $element;
         }
+    }
+
+    /**
+     * Creates and returns a default instance of {@see MutableVector}.
+     *
+     * @return static A default instance of {@see MutableVector}.
+     *
+     * @external-mutation-free
+     */
+    public static function default(): static
+    {
+        return new self([]);
     }
 
     /**
