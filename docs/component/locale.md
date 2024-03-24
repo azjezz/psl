@@ -12,6 +12,6 @@
 
 #### `Enums`
 
-- [Locale](./../../src/Psl/Locale/Locale.php#L12)
+- [Locale](./../../src/Psl/Locale/Locale.php#L13)
 
 
