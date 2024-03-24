@@ -28,7 +28,7 @@ final class ConnectTest extends TestCase
                 $client = TCP\connect(
                     '127.0.0.1',
                     8089,
-                    TCP\ConnectOptions::create()
+                    TCP\ClientOptions::create()
                         ->withNoDelay(false)
                 );
 

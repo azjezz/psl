@@ -20,7 +20,7 @@ use function stream_socket_accept;
  */
 abstract class AbstractStreamServer implements StreamServerInterface
 {
-    private const DEFAULT_IDLE_CONNECTIONS = 256;
+    protected const DEFAULT_IDLE_CONNECTIONS = 256;
 
     /**
      * @var closed-resource|resource|null $impl
@@ -33,7 +33,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
     private string $watcher;
 
     /**
-     * @var Channel\ReceiverInterface<array{true, Socket}|array{false, Network\Exception\RuntimeException}>
+     * @var Channel\ReceiverInterface<array{true, resource}|array{false, Network\Exception\RuntimeException}>
      */
     private Channel\ReceiverInterface $receiver;
 
@@ -45,14 +45,14 @@ abstract class AbstractStreamServer implements StreamServerInterface
     {
         $this->impl = $impl;
         /**
-         * @var Channel\SenderInterface<array{true, Socket}|array{false, Network\Exception\RuntimeException}> $sender
+         * @var Channel\SenderInterface<array{true, resource}|array{false, Network\Exception\RuntimeException}> $sender
          */
         [$this->receiver, $sender] = Channel\bounded($idleConnections);
         $this->watcher = EventLoop::onReadable($impl, static function ($watcher, $resource) use ($sender): void {
             try {
-                $sock = @stream_socket_accept($resource, timeout: 0.0);
-                if ($sock !== false) {
-                    $sender->send([true, new Socket($sock)]);
+                $stream = @stream_socket_accept($resource, timeout: 0.0);
+                if ($stream !== false) {
+                    $sender->send([true, $stream]);
 
                     return;
                 }
@@ -75,6 +75,28 @@ abstract class AbstractStreamServer implements StreamServerInterface
      */
     public function nextConnection(): Network\StreamSocketInterface
     {
+        return $this->wrap($this->nextConnectionImpl());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function incoming(): Generator
+    {
+        /** @psalm-suppress InvalidIterator */
+        foreach ($this->incomingImpl() as $stream) {
+            yield null => $this->wrap($stream);
+        }
+    }
+
+    /**
+     * @throws Network\Exception\AlreadyStoppedException
+     * @throws Network\Exception\RuntimeException
+     *
+     * @return resource
+     */
+    protected function nextConnectionImpl(): mixed
+    {
         try {
             [$success, $result] = $this->receiver->receive();
         } catch (Channel\Exception\ClosedChannelException) {
@@ -82,7 +104,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
         }
 
         if ($success) {
-            /** @var Socket $result */
+            /** @var resource $result */
             return $result;
         }
 
@@ -91,15 +113,17 @@ abstract class AbstractStreamServer implements StreamServerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @throws Network\Exception\RuntimeException
+     *
+     * @return Generator<null, resource, void, null>
      */
-    public function incoming(): Generator
+    protected function incomingImpl(): Generator
     {
         try {
             while (true) {
                 [$success, $result] = $this->receiver->receive();
                 if ($success) {
-                    /** @var Socket $result */
+                    /** @var resource $result */
                     yield null => $result;
                 } else {
                     /** @var Network\Exception\RuntimeException $result  */
@@ -154,5 +178,20 @@ abstract class AbstractStreamServer implements StreamServerInterface
     {
         /** @var resource */
         return $this->impl;
+    }
+
+    /**
+     * Wraps the stream into a socket object.
+     *
+     * @param resource $stream The stream to wrap.
+     *
+     * @throws Network\Exception\AlreadyStoppedException
+     * @throws Network\Exception\RuntimeException
+     *
+     * @return Socket The wrapped socket.
+     */
+    protected function wrap(mixed $stream): Socket
+    {
+        return new Socket($stream);
     }
 }

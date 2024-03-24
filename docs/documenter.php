@@ -223,6 +223,7 @@ function get_all_components(): array
         'Psl\\Str\\Byte',
         'Psl\\Str\\Grapheme',
         'Psl\\TCP',
+        'Psl\\TCP\\TLS',
         'Psl\\Trait',
         'Psl\\Unix',
         'Psl\\Locale',

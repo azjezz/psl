@@ -16,6 +16,7 @@
         "ext-mbstring": "*",
         "ext-sodium": "*",
         "ext-intl": "*",
+        "ext-openssl": "*",
         "revolt/event-loop": "^1.0.6"
     },
     "require-dev": {

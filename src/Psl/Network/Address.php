@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Network;
 
+use Stringable;
+
 /**
  * @psalm-immutable
  */
-final readonly class Address
+final readonly class Address implements Stringable
 {
     public const DEFAULT_HOST = '127.0.0.1';
     public const DEFAULT_PORT = 0;
@@ -84,5 +86,13 @@ final readonly class Address
         }
 
         return "$address:$this->port";
+    }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function __toString(): string
+    {
+        return $this->toString();
     }
 }

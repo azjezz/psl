@@ -12,12 +12,12 @@
 
 #### `Functions`
 
-- [connect](./../../src/Psl/TCP/connect.php#L19)
+- [connect](./../../src/Psl/TCP/connect.php#L21)
 
 #### `Classes`
 
-- [ConnectOptions](./../../src/Psl/TCP/ConnectOptions.php#L14)
-- [Server](./../../src/Psl/TCP/Server.php#L11)
+- [ClientOptions](./../../src/Psl/TCP/ClientOptions.php#L14)
+- [Server](./../../src/Psl/TCP/Server.php#L14)
 - [ServerOptions](./../../src/Psl/TCP/ServerOptions.php#L15)
 
 

@@ -19,7 +19,7 @@
 
 #### `Classes`
 
-- [Address](./../../src/Psl/Network/Address.php#L10)
+- [Address](./../../src/Psl/Network/Address.php#L12)
 - [SocketOptions](./../../src/Psl/Network/SocketOptions.php#L14)
 
 #### `Enums`

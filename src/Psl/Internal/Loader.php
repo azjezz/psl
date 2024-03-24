@@ -482,6 +482,7 @@ final class Loader
         'Psl\\Filesystem\\get_modification_time' => 'Psl/Filesystem/get_modification_time.php',
         'Psl\\Filesystem\\get_inode' => 'Psl/Filesystem/get_inode.php',
         'Psl\\IO\\Internal\\open_resource' => 'Psl/IO/Internal/open_resource.php',
+        'Psl\\IO\\Internal\\close_resource' => 'Psl/IO/Internal/close_resource.php',
         'Psl\\IO\\input_handle' => 'Psl/IO/input_handle.php',
         'Psl\\IO\\output_handle' => 'Psl/IO/output_handle.php',
         'Psl\\IO\\error_handle' => 'Psl/IO/error_handle.php',
@@ -554,6 +555,9 @@ final class Loader
         'Psl\\DateTime\\Internal\\create_intl_date_formatter' => 'Psl/DateTime/Internal/create_intl_date_formatter.php',
         'Psl\\DateTime\\Internal\\parse' => 'Psl/DateTime/Internal/parse.php',
         'Psl\\DateTime\\Internal\\format_rfc3339' => 'Psl/DateTime/Internal/format_rfc3339.php',
+        'Psl\\TCP\\TLS\\Internal\\establish_tls_connection' => 'Psl/TCP/TLS/Internal/establish_tls_connection.php',
+        'Psl\\TCP\\TLS\\Internal\\server_context' => 'Psl/TCP/TLS/Internal/server_context.php',
+        'Psl\\TCP\\TLS\\Internal\\client_context' => 'Psl/TCP/TLS/Internal/client_context.php',
     ];
 
     public const INTERFACES = [
@@ -649,6 +653,7 @@ final class Loader
         'Psl\\DateTime\\Exception\\ExceptionInterface' => 'Psl/DateTime/Exception/ExceptionInterface.php',
         'Psl\\DateTime\\TemporalInterface' => 'Psl/DateTime/TemporalInterface.php',
         'Psl\\DateTime\\DateTimeInterface' => 'Psl/DateTime/DateTimeInterface.php',
+        'Psl\\TCP\\TLS\\Exception\\ExceptionInterface' => 'Psl/TCP/TLS/Exception/ExceptionInterface.php',
     ];
 
     public const TRAITS = [
@@ -816,9 +821,10 @@ final class Loader
         'Psl\\Network\\SocketOptions' => 'Psl/Network/SocketOptions.php',
         'Psl\\Network\\Internal\\AbstractStreamServer' => 'Psl/Network/Internal/AbstractStreamServer.php',
         'Psl\\Network\\Internal\\Socket' => 'Psl/Network/Internal/Socket.php',
-        'Psl\\TCP\\ConnectOptions' => 'Psl/TCP/ConnectOptions.php',
+        'Psl\\TCP\\ClientOptions' => 'Psl/TCP/ConnectOptions.php',
         'Psl\\TCP\\ServerOptions' => 'Psl/TCP/ServerOptions.php',
         'Psl\\TCP\\Server' => 'Psl/TCP/Server.php',
+        'Psl\\TCP\\Internal\\TCPSocket' => 'Psl/TCP/Internal/TCPSocket.php',
         'Psl\\Unix\\Server' => 'Psl/Unix/Server.php',
         'Psl\\Channel\\Internal\\BoundedChannelState' => 'Psl/Channel/Internal/BoundedChannelState.php',
         'Psl\\Channel\\Internal\\BoundedSender' => 'Psl/Channel/Internal/BoundedSender.php',
@@ -862,6 +868,12 @@ final class Loader
         'Psl\\DateTime\\DateTime' => 'Psl/DateTime/DateTime.php',
         'Psl\\DateTime\\Duration' => 'Psl/DateTime/Interval.php',
         'Psl\\DateTime\\Timestamp' => 'Psl/DateTime/Timestamp.php',
+        'Psl\\TCP\\TLS\\Exception\\NegotiationException' => 'Psl/TCP/TLS/Exception/NegotiationException.php',
+        'Psl\\TCP\\TLS\\Certificate' => 'Psl/TCP/TLS/Certificate.php',
+        'Psl\\TCP\\TLS\\ClientOptions' => 'Psl/TCP/TLS/ConnectOptions.php',
+        'Psl\\TCP\\TLS\\HashingAlgorithm' => 'Psl/TCP/TLS/HashingAlgorithm.php',
+        'Psl\\TCP\\TLS\\SecurityLevel' => 'Psl/TCP/TLS/SecurityLevel.php',
+        'Psl\\TCP\\TLS\\Version' => 'Psl/TCP/TLS/Version.php',
     ];
 
     public const ENUMS = [

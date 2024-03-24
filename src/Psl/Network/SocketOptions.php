@@ -13,24 +13,21 @@ use Psl\Default\DefaultInterface;
  */
 final readonly class SocketOptions implements DefaultInterface
 {
-    public bool $addressReuse;
-    public bool $portReuse;
-    public bool $broadcast;
-
     /**
      * Initializes a new instance of SocketOptions with the specified settings.
      *
-     * @param bool $address_reuse Enables or disables the SO_REUSEADDR socket option.
-     * @param bool $port_reuse Enables or disables the SO_REUSEPORT socket option.
+     * @param bool $addressReuse Enables or disables the SO_REUSEADDR socket option.
+     * @param bool $portReuse Enables or disables the SO_REUSEPORT socket option.
      * @param bool $broadcast Enables or disables the SO_BROADCAST socket option.
      *
      * @psalm-mutation-free
      */
-    public function __construct(bool $address_reuse, bool $port_reuse, bool $broadcast)
-    {
-        $this->addressReuse = $address_reuse;
-        $this->portReuse = $port_reuse;
-        $this->broadcast = $broadcast;
+    public function __construct(
+        public readonly bool $addressReuse,
+        public readonly bool $portReuse,
+        public readonly bool $broadcast,
+        public readonly int $backlog,
+    ) {
     }
 
     /**
@@ -42,12 +39,13 @@ final readonly class SocketOptions implements DefaultInterface
      * @param bool $address_reuse Determines the SO_REUSEADDR socket option state.
      * @param bool $port_reuse Determines the SO_REUSEPORT socket option state.
      * @param bool $broadcast Determines the SO_BROADCAST socket option state.
+     * @param positive-int $backlog A maximum of backlog incoming connections will be queued for processing.
      *
      * @pure
      */
-    public static function create(bool $address_reuse = false, bool $port_reuse = false, bool $broadcast = false): SocketOptions
+    public static function create(bool $address_reuse = false, bool $port_reuse = false, bool $broadcast = false, int $backlog = 128): SocketOptions
     {
-        return new self($address_reuse, $port_reuse, $broadcast);
+        return new self($address_reuse, $port_reuse, $broadcast, $backlog);
     }
 
     /**
@@ -72,7 +70,7 @@ final readonly class SocketOptions implements DefaultInterface
      */
     public function withAddressReuse(bool $enabled = true): SocketOptions
     {
-        return new self($enabled, $this->portReuse, $this->broadcast);
+        return new self($enabled, $this->portReuse, $this->broadcast, $this->backlog);
     }
 
     /**
@@ -84,7 +82,7 @@ final readonly class SocketOptions implements DefaultInterface
      */
     public function withPortReuse(bool $enabled = true): SocketOptions
     {
-        return new self($this->addressReuse, $enabled, $this->broadcast);
+        return new self($this->addressReuse, $enabled, $this->broadcast, $this->backlog);
     }
 
     /**
@@ -96,6 +94,18 @@ final readonly class SocketOptions implements DefaultInterface
      */
     public function withBroadcast(bool $enabled = true): SocketOptions
     {
-        return new self($this->addressReuse, $this->portReuse, $enabled);
+        return new self($this->addressReuse, $this->portReuse, $enabled, $this->backlog);
+    }
+
+    /**
+     * Returns a new instance with the backlog option modified.
+     *
+     * @param positive-int $backlog A maximum of backlog incoming connections will be queued for processing.
+     *
+     * @mutation-free
+     */
+    public function withBacklog(int $backlog): SocketOptions
+    {
+        return new self($this->addressReuse, $this->portReuse, $this->broadcast, $backlog);
     }
 }

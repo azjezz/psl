@@ -7,6 +7,7 @@ namespace Psl\Network\Internal;
 use Psl\DateTime\Duration;
 use Psl\Internal;
 use Psl\Network\Exception;
+use Psl\Str;
 use Revolt\EventLoop;
 
 use function fclose;
@@ -14,6 +15,7 @@ use function is_resource;
 use function max;
 use function stream_context_create;
 use function stream_socket_client;
+use function stream_socket_get_name;
 
 use const STREAM_CLIENT_ASYNC_CONNECT;
 use const STREAM_CLIENT_CONNECT;
@@ -64,8 +66,19 @@ function socket_connect(string $uri, array $context = [], ?Duration $timeout = n
         });
 
         try {
-            /** @var resource */
-            return $suspension->suspend();
+            /** @var resource $socket */
+            $socket = $suspension->suspend();
+
+            if (stream_socket_get_name($socket, true) === false) {
+                fclose($socket);
+
+                throw new Exception\RuntimeException(Str\format(
+                    'Connection to %s refused%s',
+                    $uri,
+                ));
+            }
+
+            return $socket;
         } finally {
             EventLoop::cancel($write_watcher);
             EventLoop::cancel($timeout_watcher);

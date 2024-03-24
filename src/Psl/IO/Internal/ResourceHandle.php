@@ -14,7 +14,6 @@ use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
 
 use function error_get_last;
-use function fclose;
 use function feof;
 use function fread;
 use function fseek;
@@ -360,13 +359,8 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
             if ($this->close && is_resource($this->stream)) {
                 $stream = $this->stream;
                 $this->stream = null;
-                $result = @fclose($stream);
-                if ($result === false) {
-                    /** @var array{message: string} $error */
-                    $error = error_get_last();
 
-                    throw new Exception\RuntimeException($error['message'] ?? 'unknown error.');
-                }
+                namespace\close_resource($stream);
             } else {
                 // Stream could be set to a non-null closed-resource,
                 // if manually closed using `fclose($handle->getStream)`.
