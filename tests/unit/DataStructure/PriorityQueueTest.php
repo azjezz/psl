@@ -11,7 +11,7 @@ final class PriorityQueueTest extends TestCase
 {
     public function testEnqueueAndDequeue(): void
     {
-        $queue = new DataStructure\PriorityQueue();
+        $queue = DataStructure\PriorityQueue::default();
         $queue->enqueue('hi', 1);
         $queue->enqueue('hey', 2);
         $queue->enqueue('hello', 3);
@@ -26,7 +26,7 @@ final class PriorityQueueTest extends TestCase
 
     public function testDefaultEnqueueSettings(): void
     {
-        $queue = new DataStructure\PriorityQueue();
+        $queue = DataStructure\PriorityQueue::default();
         $queue->enqueue('hey');
         $queue->enqueue('ho', 0);
         $queue->enqueue('hi', -1);
@@ -44,7 +44,7 @@ final class PriorityQueueTest extends TestCase
 
     public function testMultipleNodesWithSamePriority(): void
     {
-        $queue = new DataStructure\PriorityQueue();
+        $queue = DataStructure\PriorityQueue::default();
         $queue->enqueue('hi', 1);
         $queue->enqueue('hey', 1);
         $queue->enqueue('hello', 1);
@@ -59,7 +59,7 @@ final class PriorityQueueTest extends TestCase
 
     public function testPeekDoesNotRemoveTheNode(): void
     {
-        $queue = new DataStructure\PriorityQueue();
+        $queue = DataStructure\PriorityQueue::default();
         $queue->enqueue('hi', 1);
         $queue->enqueue('hey', 2);
         $queue->enqueue('hello', 3);
@@ -72,7 +72,7 @@ final class PriorityQueueTest extends TestCase
 
     public function testPeekReturnsNullWhenTheQueueIsEmpty(): void
     {
-        $queue = new DataStructure\PriorityQueue();
+        $queue = DataStructure\PriorityQueue::default();
 
         static::assertCount(0, $queue);
         static::assertNull($queue->peek());
@@ -80,7 +80,7 @@ final class PriorityQueueTest extends TestCase
 
     public function testPullDoesRemoveTheNode(): void
     {
-        $queue = new DataStructure\PriorityQueue();
+        $queue = DataStructure\PriorityQueue::default();
         $queue->enqueue('hi', 1);
         $queue->enqueue('hey', 2);
         $queue->enqueue('hello', 3);

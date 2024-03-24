@@ -14,10 +14,16 @@ abstract class AbstractComparisonTest extends TestCase
 {
     public static function provideComparisonCases(): Generator
     {
+        yield 'scalar-default' => [0, 0, Order::default()];
         yield 'scalar-equal' => [0, 0, Order::Equal];
         yield 'scalar-less' => [0, 1, Order::Less];
         yield 'scalar-greater' => [1, 0, Order::Greater];
 
+        yield 'comparable-default' => [
+            self::createComparableIntWrapper(0),
+            self::createComparableIntWrapper(0),
+            Order::default()
+        ];
         yield 'comparable-equal' => [
             self::createComparableIntWrapper(0),
             self::createComparableIntWrapper(0),

@@ -35,6 +35,18 @@ final class MutableMap implements MutableMapInterface
     }
 
     /**
+     * Creates and returns a default instance of {@see MutableMap}.
+     *
+     * @return static A default instance of {@see MutableMap}.
+     *
+     * @pure
+     */
+    public static function default(): static
+    {
+        return new self([]);
+    }
+
+    /**
      * @template Tsk of array-key
      * @template Tsv
      *

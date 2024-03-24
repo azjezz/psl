@@ -28,6 +28,8 @@ final class Vector implements VectorInterface
 
     /**
      * @param array<array-key, T> $elements
+     *
+     * @external-mutation-free
      */
     public function __construct(array $elements)
     {
@@ -37,6 +39,18 @@ final class Vector implements VectorInterface
         }
 
         $this->elements = $list;
+    }
+
+    /**
+     * Creates and returns a default instance of {@see Vector}.
+     *
+     * @return static A default instance of {@see Vector}.
+     *
+     * @external-mutation-free
+     */
+    public static function default(): static
+    {
+        return new self([]);
     }
 
     /**
@@ -517,7 +531,7 @@ final class Vector implements VectorInterface
              *
              * @return Vector<T>
              */
-            static fn(array $chunk) => Vector::fromArray($chunk)
+            static fn(array $chunk) => static::fromArray($chunk)
         ));
     }
 }

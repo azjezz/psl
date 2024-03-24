@@ -17,6 +17,6 @@
 
 #### `Enums`
 
-- [Variant](./../../src/Psl/Encoding/Base64/Variant.php#L7)
+- [Variant](./../../src/Psl/Encoding/Base64/Variant.php#L12)
 
 

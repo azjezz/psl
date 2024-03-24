@@ -23,9 +23,23 @@ final class PriorityQueue implements PriorityQueueInterface
     private array $queue = [];
 
     /**
+     * Provides a default instance of the {@see PriorityQueue}.
+     *
+     * @return static A new instance of {@see PriorityQueue}, devoid of any nodes.
+     *
+     * @pure
+     */
+    public static function default(): static
+    {
+        return new self();
+    }
+
+    /**
      * Adds a node to the queue.
      *
      * @param T $node
+     *
+     * @external-mutation-free
      */
     public function enqueue(mixed $node, int $priority = 0): void
     {
@@ -40,6 +54,8 @@ final class PriorityQueue implements PriorityQueueInterface
      * or returns null if this queue is empty.
      *
      * @return null|T
+     *
+     * @mutation-free
      */
     public function peek(): mixed
     {
@@ -64,6 +80,8 @@ final class PriorityQueue implements PriorityQueueInterface
      * or returns null if this queue is empty.
      *
      * @return null|T
+     *
+     * @external-mutation-free
      */
     public function pull(): mixed
     {
@@ -80,6 +98,8 @@ final class PriorityQueue implements PriorityQueueInterface
      * @throws Exception\UnderflowException If the queue is empty.
      *
      * @return T
+     *
+     * @external-mutation-free
      */
     public function dequeue(): mixed
     {
@@ -117,6 +137,8 @@ final class PriorityQueue implements PriorityQueueInterface
      * Count the nodes in the queue.
      *
      * @return int<0, max>
+     *
+     * @mutation-free
      */
     public function count(): int
     {

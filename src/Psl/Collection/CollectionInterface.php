@@ -8,6 +8,7 @@ use Closure;
 use Countable;
 use IteratorAggregate;
 use JsonSerializable;
+use Psl\Default\DefaultInterface;
 
 /**
  * The base interface implemented for a CollectionInterface type.
@@ -19,7 +20,7 @@ use JsonSerializable;
  *
  * @extends IteratorAggregate<Tk, Tv>
  */
-interface CollectionInterface extends Countable, IteratorAggregate, JsonSerializable
+interface CollectionInterface extends Countable, DefaultInterface, IteratorAggregate, JsonSerializable
 {
     /**
      * Is the CollectionInterface empty?

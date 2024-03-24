@@ -11,7 +11,7 @@ final class QueueTest extends TestCase
 {
     public function testEnqueueAndDequeue(): void
     {
-        $queue = new DataStructure\Queue();
+        $queue = DataStructure\Queue::default();
         $queue->enqueue('hello');
         $queue->enqueue('hey');
         $queue->enqueue('hi');
@@ -26,7 +26,7 @@ final class QueueTest extends TestCase
 
     public function testPeekDoesNotRemoveTheNode(): void
     {
-        $queue = new DataStructure\Queue();
+        $queue = DataStructure\Queue::default();
         $queue->enqueue('hello');
         $queue->enqueue('hey');
         $queue->enqueue('hi');
@@ -39,7 +39,7 @@ final class QueueTest extends TestCase
 
     public function testPeekReturnsNullWhenTheQueueIsEmpty(): void
     {
-        $queue = new DataStructure\Queue();
+        $queue = DataStructure\Queue::default();
 
         static::assertCount(0, $queue);
         static::assertNull($queue->peek());

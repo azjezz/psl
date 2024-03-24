@@ -26,10 +26,24 @@ final class Map implements MapInterface
 {
     /**
      * @param array<Tk, Tv> $elements
+     *
+     * @pure
      */
     public function __construct(
         private readonly array $elements
     ) {
+    }
+
+    /**
+     * Creates and returns a default instance of {@see Map}.
+     *
+     * @return static A default instance of {@see Map}.
+     *
+     * @pure
+     */
+    public static function default(): static
+    {
+        return new self([]);
     }
 
     /**
@@ -44,7 +58,6 @@ final class Map implements MapInterface
      */
     public static function fromArray(array $elements): Map
     {
-        /** @psalm-suppress ImpureMethodCall - conditionally pure */
         return new self($elements);
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\DataStructure;
 
 use Countable;
+use Psl\Default\DefaultInterface;
 
 /**
  * An interface representing a queue data structure ( FIFO ).
@@ -13,7 +14,7 @@ use Countable;
  *
  * @see https://en.wikipedia.org/wiki/FIFO_(computing_and_electronics)
  */
-interface QueueInterface extends Countable
+interface QueueInterface extends Countable, DefaultInterface
 {
     /**
      * Adds a node to the queue.

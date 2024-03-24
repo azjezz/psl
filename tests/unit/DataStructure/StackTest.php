@@ -11,7 +11,7 @@ final class StackTest extends TestCase
 {
     public function testPushAndPop(): void
     {
-        $stack = new DataStructure\Stack();
+        $stack = DataStructure\Stack::default();
         $stack->push('hello');
         $stack->push('hey');
         $stack->push('hi');
@@ -29,7 +29,7 @@ final class StackTest extends TestCase
 
     public function testPeek(): void
     {
-        $stack = new DataStructure\Stack();
+        $stack = DataStructure\Stack::default();
 
         static::assertNull($stack->peek());
 
@@ -45,7 +45,7 @@ final class StackTest extends TestCase
 
     public function testPopThrowsForEmptyStack(): void
     {
-        $stack = new DataStructure\Stack();
+        $stack = DataStructure\Stack::default();
         $stack->push('hello');
 
         static::assertSame('hello', $stack->pop());

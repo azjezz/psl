@@ -18,6 +18,6 @@
 
 #### `Enums`
 
-- [ErrorOutputBehavior](./../../src/Psl/Shell/ErrorOutputBehavior.php#L7)
+- [ErrorOutputBehavior](./../../src/Psl/Shell/ErrorOutputBehavior.php#L17)
 
 

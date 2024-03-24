@@ -4,7 +4,16 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-enum Encoding: string
+use Psl\Default\DefaultInterface;
+
+/**
+ * Enumerates supported character encodings for string operations.
+ *
+ * This enum defines a comprehensive list of character encodings supported for various string manipulation
+ * and processing tasks. It includes encodings from multiple languages and regions, ensuring wide-ranging
+ * internationalization support across different platforms and systems.
+ */
+enum Encoding: string implements DefaultInterface
 {
     case BASE64 = 'BASE64';
     case UUENCODE = 'UUENCODE';
@@ -83,4 +92,20 @@ enum Encoding: string
     case CP50220 = 'CP50220';
     case CP50221 = 'CP50221';
     case CP50222 = 'CP50222';
+
+    /**
+     * Provides the default character encoding.
+     *
+     * UTF-8 is selected as the default encoding because of its ability to represent any character in the Unicode
+     * standard and its compatibility with ASCII. It's a practical choice for web and application development,
+     * offering flexibility for handling international text and ensuring data integrity across diverse systems.
+     *
+     * @return static The UTF-8 encoding instance, representing the default encoding choice for string operations.
+     *
+     * @pure
+     */
+    public static function default(): static
+    {
+        return self::UTF_8;
+    }
 }

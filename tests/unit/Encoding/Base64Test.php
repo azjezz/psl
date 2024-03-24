@@ -17,8 +17,10 @@ final class Base64Test extends TestCase
      */
     public function testEncodeAndDecode(string $random): void
     {
-        $encoded = Base64\encode($random);
+        $encoded = Base64\encode($random, Base64\Variant::default());
+
         static::assertSame($random, Base64\decode($encoded));
+        static::assertSame($random, Base64\decode($encoded, Base64\Variant::default()));
     }
 
     public function testDecodeThrowsForCharactersOutsideTheBase64Range(): void
@@ -40,9 +42,9 @@ final class Base64Test extends TestCase
      */
     public function testEncodeWithoutPaddingThenDecode(string $random): void
     {
-        $encoded = Base64\encode($random, Base64\Variant::Default, false);
+        $encoded = Base64\encode($random, Base64\Variant::default(), false);
         static::assertFalse(Regex\matches($encoded, '/={1,3}$/'));
-        static::assertSame($random, Base64\decode($encoded, Base64\Variant::Default, false));
+        static::assertSame($random, Base64\decode($encoded, Base64\Variant::default(), false));
     }
 
     public function provideRandomBytes(): iterable

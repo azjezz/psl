@@ -18,6 +18,6 @@
 
 #### `Enums`
 
-- [OperatingSystemFamily](./../../src/Psl/OS/OperatingSystemFamily.php#L7)
+- [OperatingSystemFamily](./../../src/Psl/OS/OperatingSystemFamily.php#L16)
 
 

@@ -28,6 +28,6 @@
 
 #### `Enums`
 
-- [Order](./../../src/Psl/Comparison/Order.php#L7)
+- [Order](./../../src/Psl/Comparison/Order.php#L23)
 
 
