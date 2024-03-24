@@ -612,6 +612,7 @@ final class Loader
         'Psl\\Range\\LowerBoundRangeInterface' => 'Psl/Range/LowerBoundRangeInterface.php',
         'Psl\\Range\\UpperBoundRangeInterface' => 'Psl/Range/UpperBoundRangeInterface.php',
         'Psl\\Default\\DefaultInterface' => 'Psl/Default/DefaultInterface.php',
+        'Psl\\TCP\\TLS\\Exception\\ExceptionInterface' => 'Psl/TCP/TLS/Exception/ExceptionInterface.php',
     ];
 
     public const TRAITS = [
@@ -815,6 +816,12 @@ final class Loader
         'Psl\\Range\\ToRange' => 'Psl/Range/ToRange.php',
         'Psl\\Range\\BetweenRange' => 'Psl/Range/BetweenRange.php',
         'Psl\\Range\\FullRange' => 'Psl/Range/FullRange.php',
+        'Psl\\TCP\\TLS\\Exception\\NegotiationException' => 'Psl/TCP/TLS/Exception/NegotiationException.php',
+        'Psl\\TCP\\TLS\\Certificate' => 'Psl/TCP/TLS/Certificate.php',
+        'Psl\\TCP\\TLS\\ConnectOptions' => 'Psl/TCP/TLS/ConnectOptions.php',
+        'Psl\\TCP\\TLS\\HashingAlgorithm' => 'Psl/TCP/TLS/HashingAlgorithm.php',
+        'Psl\\TCP\\TLS\\SecurityLevel' => 'Psl/TCP/TLS/SecurityLevel.php',
+        'Psl\\TCP\\TLS\\Version' => 'Psl/TCP/TLS/Version.php',
     ];
 
     public const ENUMS = [
