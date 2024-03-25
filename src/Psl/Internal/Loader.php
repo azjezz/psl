@@ -611,6 +611,7 @@ final class Loader
         'Psl\\Range\\RangeInterface' => 'Psl/Range/RangeInterface.php',
         'Psl\\Range\\LowerBoundRangeInterface' => 'Psl/Range/LowerBoundRangeInterface.php',
         'Psl\\Range\\UpperBoundRangeInterface' => 'Psl/Range/UpperBoundRangeInterface.php',
+        'Psl\\Default\\DefaultInterface' => 'Psl/Default/DefaultInterface.php',
     ];
 
     public const TRAITS = [
