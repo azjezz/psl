@@ -11,7 +11,7 @@ use Psl\Vec;
  *
  * @psalm-pure
  */
-function reverse(string $string, Encoding $encoding = Encoding::UTF_8): string
+function reverse(string $string, Encoding $encoding = Encoding::Utf8): string
 {
         $chunks = chunk($string, encoding: $encoding);
 

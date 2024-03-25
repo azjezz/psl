@@ -32,7 +32,7 @@ namespace Psl\Str;
  *
  * @pure
  */
-function ends_with_ci(string $string, string $suffix, Encoding $encoding = Encoding::UTF_8): bool
+function ends_with_ci(string $string, string $suffix, Encoding $encoding = Encoding::Utf8): bool
 {
     if ($suffix === $string) {
         return true;

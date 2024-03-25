@@ -27,7 +27,7 @@ use function mb_strtolower;
  *
  * @pure
  */
-function lowercase(string $string, Encoding $encoding = Encoding::UTF_8): string
+function lowercase(string $string, Encoding $encoding = Encoding::Utf8): string
 {
     return mb_strtolower($string, $encoding->value);
 }

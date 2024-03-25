@@ -23,12 +23,12 @@ final class Address
 
     public static function unix(string $host): self
     {
-        return new self(SocketScheme::UNIX, $host, null);
+        return new self(SocketScheme::Unix, $host, null);
     }
 
     public static function tcp(string $host = self::DEFAULT_HOST, int $port = self::DEFAULT_PORT): self
     {
-        return new self(SocketScheme::TCP, $host, $port);
+        return new self(SocketScheme::Tcp, $host, $port);
     }
 
     /**

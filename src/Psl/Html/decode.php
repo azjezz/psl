@@ -15,7 +15,7 @@ use const ENT_QUOTES;
  *
  * @pure
  */
-function decode(string $html, Encoding $encoding = Encoding::UTF_8): string
+function decode(string $html, Encoding $encoding = Encoding::Utf8): string
 {
     return html_entity_decode($html, ENT_QUOTES, $encoding->value);
 }

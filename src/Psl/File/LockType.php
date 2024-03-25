@@ -11,11 +11,11 @@ enum LockType
      * commonly called a reader lock. The creation of a Lock will block until
      * the lock is acquired.
      */
-    case SHARED;
+    case Shared;
 
     /**
      * Only a single process may possess an exclusive lock to a given file at a
      * time. The creation of a Lock will block until the lock is acquired.
      */
-    case EXCLUSIVE;
+    case Exclusive;
 }

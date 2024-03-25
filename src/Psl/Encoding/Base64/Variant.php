@@ -21,7 +21,7 @@ enum Variant implements DefaultInterface
      *
      * This variant is typically used in MIME messages and XML data.
      */
-    case Default;
+    case Standard;
 
     /**
      * A URL and filename safe Base64 encoding variant.
@@ -64,8 +64,17 @@ enum Variant implements DefaultInterface
      */
     case DotSlashOrdered;
 
+    /**
+     * Provides the default variant for Base64 encoding.
+     *
+     * By default, this method returns the `Standard` variant, which is widely used across
+     * various applications, including MIME messages and XML data. It represents a safe
+     * and common choice for general-purpose encoding needs.
+     *
+     * @return static The `Standard` variant of Base64 encoding.
+     */
     public static function default(): static
     {
-        return self::Default;
+        return self::Standard;
     }
 }

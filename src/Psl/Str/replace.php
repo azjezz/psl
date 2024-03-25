@@ -12,7 +12,7 @@ use function str_replace;
  *
  * @pure
  */
-function replace(string $haystack, string $needle, string $replacement, Encoding $encoding = Encoding::UTF_8): string
+function replace(string $haystack, string $needle, string $replacement, Encoding $encoding = Encoding::Utf8): string
 {
     if ('' === $needle || null === search($haystack, $needle, 0, $encoding)) {
         return $haystack;

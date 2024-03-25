@@ -15,7 +15,7 @@ namespace Psl\File;
  * @throws Exception\NotWritableException If $file exists, and is non-writable.
  * @throws Exception\RuntimeException If unable to create the $file if it does not exist.
  */
-function open_write_only(string $file, WriteMode $mode = WriteMode::OPEN_OR_CREATE): WriteHandleInterface
+function open_write_only(string $file, WriteMode $mode = WriteMode::OpenOrCreate): WriteHandleInterface
 {
     return new WriteHandle($file, $mode);
 }

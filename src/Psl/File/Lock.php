@@ -11,9 +11,9 @@ final class Lock
     private bool $released = false;
 
     /**
-     * @param (Closure(): void) $release
+     * @param (Closure(): void) $releaseCallback
      *
-     * @internal use HandleInterface::lock() to create a lock.
+     * @internal use {@see HandleInterface::lock()} to create a lock.
      */
     public function __construct(
         public readonly LockType $type,

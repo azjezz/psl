@@ -84,7 +84,7 @@ final class ReadWriteHandleTest extends TestCase
         $this->expectException(File\Exception\AlreadyCreatedException::class);
         $this->expectExceptionMessage('is already created.');
 
-        new File\ReadWriteHandle(__FILE__, File\WriteMode::MUST_CREATE);
+        new File\ReadWriteHandle(__FILE__, File\WriteMode::MustCreate);
     }
 
     public function testAppendToNonExistingFile(): void
@@ -94,7 +94,7 @@ final class ReadWriteHandleTest extends TestCase
 
         static::assertFalse(Filesystem\is_file($temporary_file));
 
-        $handle = File\open_read_write($temporary_file, File\WriteMode::APPEND);
+        $handle = File\open_read_write($temporary_file, File\WriteMode::Append);
         $handle->writeAll('hello');
         $handle->seek(0);
 
@@ -119,7 +119,7 @@ final class ReadWriteHandleTest extends TestCase
         $this->expectException(File\Exception\NotWritableException::class);
         $this->expectExceptionMessage('File "' . $temporary_file . '" is not writable.');
 
-        new File\ReadWriteHandle($temporary_file, File\WriteMode::APPEND);
+        new File\ReadWriteHandle($temporary_file, File\WriteMode::Append);
     }
 
     public function testOpenNonReadableFile(): void
@@ -134,7 +134,7 @@ final class ReadWriteHandleTest extends TestCase
         $this->expectException(File\Exception\NotReadableException::class);
         $this->expectExceptionMessage('File "' . $temporary_file . '" is not readable.');
 
-        new File\ReadWriteHandle($temporary_file, File\WriteMode::APPEND);
+        new File\ReadWriteHandle($temporary_file, File\WriteMode::Append);
     }
 
     public function testThrowsWhenCreatingFile(): void
@@ -153,7 +153,7 @@ final class ReadWriteHandleTest extends TestCase
         $this->expectException(File\Exception\NotWritableException::class);
         $this->expectExceptionMessage('File "' . $file . '" is not writable.');
 
-        new File\ReadWriteHandle($file, File\WriteMode::MUST_CREATE);
+        new File\ReadWriteHandle($file, File\WriteMode::MustCreate);
     }
 
     public function testOpenDirectory(): void
@@ -161,7 +161,7 @@ final class ReadWriteHandleTest extends TestCase
         $this->expectException(File\Exception\NotFileException::class);
         $this->expectExceptionMessage('Path "' . Env\temp_dir() . '" does not point to a file.');
 
-        new File\ReadWriteHandle(Env\temp_dir(), File\WriteMode::APPEND);
+        new File\ReadWriteHandle(Env\temp_dir(), File\WriteMode::Append);
     }
 
     public function testCreateNonExisting(): void
@@ -171,7 +171,7 @@ final class ReadWriteHandleTest extends TestCase
 
         static::assertFalse(Filesystem\is_file($temporary_file));
 
-        $handle = File\open_read_write($temporary_file, File\WriteMode::MUST_CREATE);
+        $handle = File\open_read_write($temporary_file, File\WriteMode::MustCreate);
         $handle->tryWrite('hello');
         $handle->seek(0);
 
@@ -235,11 +235,11 @@ final class ReadWriteHandleTest extends TestCase
         ];
 
         yield [
-            static fn(File\HandleInterface $handle) => $handle->lock(File\LockType::EXCLUSIVE),
+            static fn(File\HandleInterface $handle) => $handle->lock(File\LockType::Exclusive),
         ];
 
         yield [
-            static fn(File\HandleInterface $handle) => $handle->tryLock(File\LockType::EXCLUSIVE),
+            static fn(File\HandleInterface $handle) => $handle->tryLock(File\LockType::Exclusive),
         ];
 
         yield [

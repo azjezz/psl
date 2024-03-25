@@ -12,7 +12,7 @@ namespace Psl\Str;
  *
  * @pure
  */
-function replace_every(string $haystack, array $replacements, Encoding $encoding = Encoding::UTF_8): string
+function replace_every(string $haystack, array $replacements, Encoding $encoding = Encoding::Utf8): string
 {
     foreach ($replacements as $needle => $replacement) {
         $haystack = replace($haystack, $needle, $replacement, $encoding);

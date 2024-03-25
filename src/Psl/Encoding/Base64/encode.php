@@ -9,10 +9,10 @@ namespace Psl\Encoding\Base64;
  *
  * @pure
  */
-function encode(string $binary, Variant $variant = Variant::Default, bool $padding = true): string
+function encode(string $binary, Variant $variant = Variant::Standard, bool $padding = true): string
 {
     return match ($variant) {
-        Variant::Default => Internal\Base64::encode($binary, $padding),
+        Variant::Standard => Internal\Base64::encode($binary, $padding),
         Variant::UrlSafe => Internal\Base64UrlSafe::encode($binary, $padding),
         Variant::DotSlash => Internal\Base64DotSlash::encode($binary, $padding),
         Variant::DotSlashOrdered => Internal\Base64DotSlashOrdered::encode($binary, $padding),

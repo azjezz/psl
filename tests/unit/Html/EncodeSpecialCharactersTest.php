@@ -19,16 +19,16 @@ final class EncodeSpecialCharactersTest extends TestCase
 
     public function provideData(): iterable
     {
-        yield ['hello', 'hello', true, Html\Encoding::UTF_8];
-        yield ['héllo', 'héllo', true, Html\Encoding::UTF_8];
-        yield ['&lt;hello /&gt;', '<hello />', true, Html\Encoding::UTF_8];
-        yield ['&lt;p&gt;Hello&lt;/p&gt;', '<p>Hello</p>', true, Html\Encoding::UTF_8];
-        yield ['&lt;p&gt;&amp;lt; &lt;/p&gt;', '<p>&lt; </p>', true, Html\Encoding::UTF_8];
+        yield ['hello', 'hello', true, Html\Encoding::Utf8];
+        yield ['héllo', 'héllo', true, Html\Encoding::Utf8];
+        yield ['&lt;hello /&gt;', '<hello />', true, Html\Encoding::Utf8];
+        yield ['&lt;p&gt;Hello&lt;/p&gt;', '<p>Hello</p>', true, Html\Encoding::Utf8];
+        yield ['&lt;p&gt;&amp;lt; &lt;/p&gt;', '<p>&lt; </p>', true, Html\Encoding::Utf8];
 
-        yield ['hello', 'hello', false, Html\Encoding::UTF_8];
-        yield ['héllo', 'héllo', false, Html\Encoding::UTF_8];
-        yield ['&lt;hello /&gt;', '<hello />', false, Html\Encoding::UTF_8];
-        yield ['&lt;p&gt;Hello&lt;/p&gt;', '<p>Hello</p>', false, Html\Encoding::UTF_8];
-        yield ['&lt;p&gt;&lt; &lt;/p&gt;', '<p>&lt; </p>', false, Html\Encoding::UTF_8];
+        yield ['hello', 'hello', false, Html\Encoding::Utf8];
+        yield ['héllo', 'héllo', false, Html\Encoding::Utf8];
+        yield ['&lt;hello /&gt;', '<hello />', false, Html\Encoding::Utf8];
+        yield ['&lt;p&gt;Hello&lt;/p&gt;', '<p>Hello</p>', false, Html\Encoding::Utf8];
+        yield ['&lt;p&gt;&lt; &lt;/p&gt;', '<p>&lt; </p>', false, Html\Encoding::Utf8];
     }
 }

@@ -27,11 +27,11 @@ final class ReadWriteTest extends AbstractFilesystemTest
 
         static::assertStringEqualsFile($file, 'Hello!');
 
-        File\write($file, 'Hello', mode: File\WriteMode::TRUNCATE);
+        File\write($file, 'Hello', mode: File\WriteMode::Truncate);
 
         static::assertStringEqualsFile($file, 'Hello');
 
-        File\write($file, ', World!', mode: File\WriteMode::APPEND);
+        File\write($file, ', World!', mode: File\WriteMode::Append);
 
         static::assertStringEqualsFile($file, 'Hello, World!');
 
@@ -44,7 +44,7 @@ final class ReadWriteTest extends AbstractFilesystemTest
 
         static::assertFileDoesNotExist($file);
 
-        File\write($file, 'Hello!', File\WriteMode::TRUNCATE);
+        File\write($file, 'Hello!', File\WriteMode::Truncate);
 
         static::assertFileExists($file);
 
@@ -61,7 +61,7 @@ final class ReadWriteTest extends AbstractFilesystemTest
 
         static::assertSame(5, Filesystem\file_size($file));
 
-        File\write($file, ', World!', mode: File\WriteMode::APPEND);
+        File\write($file, ', World!', mode: File\WriteMode::Append);
 
         static::assertSame(13, Filesystem\file_size($file));
 
@@ -81,7 +81,7 @@ final class ReadWriteTest extends AbstractFilesystemTest
         $this->expectException(File\Exception\NotFileException::class);
         $this->expectExceptionMessage('Path "' . $this->directory . '" does not point to a file.');
 
-        File\write($this->directory, 'hello', mode: File\WriteMode::APPEND);
+        File\write($this->directory, 'hello', mode: File\WriteMode::Append);
     }
 
     public function testReadFileThrowsForDirectories(): void
@@ -113,8 +113,8 @@ final class ReadWriteTest extends AbstractFilesystemTest
     {
         $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
         File\write($file, 'PHP Standard Library');
-        File\write($file, ' - a modern, consistent, centralized', mode: File\WriteMode::APPEND);
-        File\write($file, ' well-typed set of APIs for PHP programmers.', mode: File\WriteMode::APPEND);
+        File\write($file, ' - a modern, consistent, centralized', mode: File\WriteMode::Append);
+        File\write($file, ' well-typed set of APIs for PHP programmers.', mode: File\WriteMode::Append);
 
         $content = File\read($file, 0, 20);
 
@@ -139,6 +139,6 @@ final class ReadWriteTest extends AbstractFilesystemTest
         $this->expectException(File\Exception\RuntimeException::class);
         $this->expectExceptionMessage('Failed to create the directory for file "' . $target_file . '".');
 
-        new File\ReadWriteHandle($target_file, File\WriteMode::MUST_CREATE);
+        new File\ReadWriteHandle($target_file, File\WriteMode::MustCreate);
     }
 }

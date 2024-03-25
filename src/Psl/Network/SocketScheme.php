@@ -9,6 +9,6 @@ namespace Psl\Network;
  */
 enum SocketScheme: string
 {
-    case TCP = 'tcp';
-    case UNIX = 'unix';
+    case Tcp = 'tcp';
+    case Unix = 'unix';
 }

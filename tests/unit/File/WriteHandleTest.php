@@ -17,7 +17,7 @@ final class WriteHandleTest extends TestCase
         $this->expectException(File\Exception\AlreadyCreatedException::class);
         $this->expectExceptionMessage('already created.');
 
-        new File\WriteHandle(__FILE__, File\WriteMode::MUST_CREATE);
+        new File\WriteHandle(__FILE__, File\WriteMode::MustCreate);
     }
 
     public function testAppendToNonExistingFile(): void
@@ -27,7 +27,7 @@ final class WriteHandleTest extends TestCase
 
         static::assertFalse(Filesystem\is_file($temporary_file));
 
-        $handle = new File\WriteHandle($temporary_file, File\WriteMode::APPEND);
+        $handle = new File\WriteHandle($temporary_file, File\WriteMode::Append);
         $handle->close();
 
         static::assertTrue(Filesystem\is_file($temporary_file));
@@ -41,7 +41,7 @@ final class WriteHandleTest extends TestCase
         $this->expectException(File\Exception\NotWritableException::class);
         $this->expectExceptionMessage('is not writable.');
 
-        new File\WriteHandle($temporary_file, File\WriteMode::APPEND);
+        new File\WriteHandle($temporary_file, File\WriteMode::Append);
     }
 
     public function testWriting(): void
@@ -77,7 +77,7 @@ final class WriteHandleTest extends TestCase
         $this->expectException(File\Exception\NotWritableException::class);
         $this->expectExceptionMessage('File "' . $file . '" is not writable.');
 
-        new File\WriteHandle($file, File\WriteMode::MUST_CREATE);
+        new File\WriteHandle($file, File\WriteMode::MustCreate);
     }
 
     public function testCreateNonExisting(): void
@@ -87,7 +87,7 @@ final class WriteHandleTest extends TestCase
 
         static::assertFalse(Filesystem\is_file($temporary_file));
 
-        $handle = new File\WriteHandle($temporary_file, File\WriteMode::MUST_CREATE);
+        $handle = new File\WriteHandle($temporary_file, File\WriteMode::MustCreate);
         $handle->close();
 
         static::assertTrue(Filesystem\is_file($temporary_file));
@@ -107,6 +107,6 @@ final class WriteHandleTest extends TestCase
         $this->expectException(File\Exception\RuntimeException::class);
         $this->expectExceptionMessage('Failed to create the directory for file "' . $target_file . '".');
 
-        new File\WriteHandle($target_file, File\WriteMode::MUST_CREATE);
+        new File\WriteHandle($target_file, File\WriteMode::MustCreate);
     }
 }

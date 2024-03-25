@@ -19,7 +19,7 @@ use function mb_chr;
  *
  * @pure
  */
-function chr(int $codepoint, Encoding $encoding = Encoding::UTF_8): string
+function chr(int $codepoint, Encoding $encoding = Encoding::Utf8): string
 {
     return (string) mb_chr($codepoint, $encoding->value);
 }

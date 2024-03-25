@@ -16,15 +16,15 @@ final class LockTest extends TestCase
         $file = Filesystem\create_temporary_file();
         $handle = File\open_read_write($file);
 
-        $lock = $handle->lock(File\LockType::EXCLUSIVE);
+        $lock = $handle->lock(File\LockType::Exclusive);
 
-        static::assertSame(File\LockType::EXCLUSIVE, $lock->type);
+        static::assertSame(File\LockType::Exclusive, $lock->type);
 
         $lock->release();
 
-        $lock = $handle->tryLock(File\LockType::SHARED);
+        $lock = $handle->tryLock(File\LockType::Shared);
 
-        static::assertSame(File\LockType::SHARED, $lock->type);
+        static::assertSame(File\LockType::Shared, $lock->type);
 
         $lock->release();
     }
@@ -38,7 +38,7 @@ final class LockTest extends TestCase
         $this->expectException(AlreadyClosedException::class);
         $this->expectExceptionMessage('Handle has already been closed.');
 
-        $handle->lock(File\LockType::EXCLUSIVE);
+        $handle->lock(File\LockType::Exclusive);
     }
 
     public function testReleasingALockOnAClosedFile(): void
@@ -46,9 +46,9 @@ final class LockTest extends TestCase
         $file = Filesystem\create_temporary_file();
         $handle = File\open_read_write($file);
 
-        $lock = $handle->lock(File\LockType::EXCLUSIVE);
+        $lock = $handle->lock(File\LockType::Exclusive);
 
-        static::assertSame(File\LockType::EXCLUSIVE, $lock->type);
+        static::assertSame(File\LockType::Exclusive, $lock->type);
 
         $handle->close();
 
@@ -63,9 +63,9 @@ final class LockTest extends TestCase
         $file = Filesystem\create_temporary_file();
         $handle = File\open_read_write($file);
 
-        $lock = $handle->lock(File\LockType::EXCLUSIVE);
+        $lock = $handle->lock(File\LockType::Exclusive);
 
-        static::assertSame(File\LockType::EXCLUSIVE, $lock->type);
+        static::assertSame(File\LockType::Exclusive, $lock->type);
 
         $handle->close();
 
@@ -80,15 +80,15 @@ final class LockTest extends TestCase
         $file = Filesystem\create_temporary_file();
         $handle = File\open_read_write($file);
 
-        $lock = $handle->lock(File\LockType::EXCLUSIVE);
+        $lock = $handle->lock(File\LockType::Exclusive);
 
-        static::assertSame(File\LockType::EXCLUSIVE, $lock->type);
+        static::assertSame(File\LockType::Exclusive, $lock->type);
 
         $lock->release();
 
-        $lock = $handle->tryLock(File\LockType::SHARED);
+        $lock = $handle->tryLock(File\LockType::Shared);
 
-        static::assertSame(File\LockType::SHARED, $lock->type);
+        static::assertSame(File\LockType::Shared, $lock->type);
 
         $lock->release();
         $handle->close();

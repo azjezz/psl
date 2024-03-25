@@ -20,7 +20,7 @@ use function mb_strpos;
  *
  * @return null|int<0, max>
  */
-function search(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::UTF_8): ?int
+function search(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::Utf8): ?int
 {
     if ('' === $needle) {
         return null;

@@ -38,7 +38,7 @@ use Psl\Range\UpperBoundRangeInterface;
  *
  * @pure
  */
-function range(string $string, RangeInterface $range, Encoding $encoding = Encoding::UTF_8): string
+function range(string $string, RangeInterface $range, Encoding $encoding = Encoding::Utf8): string
 {
     $offset = 0;
     $length = null;

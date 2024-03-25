@@ -30,7 +30,7 @@ function get_peer_name(mixed $socket): Network\Address
             return Network\Address::unix($result);
         }
 
-        $scheme = Network\SocketScheme::TCP;
+        $scheme = Network\SocketScheme::Tcp;
         $host = substr($result, 0, $separator_position);
         $port = (int) substr($result, $separator_position + 1);
 

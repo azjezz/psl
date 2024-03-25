@@ -23,14 +23,14 @@ final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteH
      * @throws Exception\NotWritableException If $file is non-writable.
      * @throws Exception\RuntimeException If unable to create the $file if it does not exist.
      */
-    public function __construct(string $file, WriteMode $write_mode = WriteMode::OPEN_OR_CREATE)
+    public function __construct(string $file, WriteMode $write_mode = WriteMode::OpenOrCreate)
     {
         $is_file = Filesystem\is_file($file);
         if (!$is_file && Filesystem\exists($file)) {
             throw Exception\NotFileException::for($file);
         }
 
-        $must_create = $write_mode === WriteMode::MUST_CREATE;
+        $must_create = $write_mode === WriteMode::MustCreate;
         if ($must_create && $is_file) {
             throw Exception\AlreadyCreatedException::for($file);
         }

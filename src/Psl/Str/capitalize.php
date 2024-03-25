@@ -26,7 +26,7 @@ namespace Psl\Str;
  *
  * @pure
  */
-function capitalize(string $string, Encoding $encoding = Encoding::UTF_8): string
+function capitalize(string $string, Encoding $encoding = Encoding::Utf8): string
 {
     if ('' === $string) {
         return '';

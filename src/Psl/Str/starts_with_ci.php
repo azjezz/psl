@@ -9,7 +9,7 @@ namespace Psl\Str;
  *
  * @pure
  */
-function starts_with_ci(string $string, string $prefix, Encoding $encoding = Encoding::UTF_8): bool
+function starts_with_ci(string $string, string $prefix, Encoding $encoding = Encoding::Utf8): bool
 {
     /** @psalm-suppress MissingThrowsDocblock */
     return 0 === search_ci($string, $prefix, 0, $encoding);

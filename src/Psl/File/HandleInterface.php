@@ -35,7 +35,7 @@ interface HandleInterface extends IO\CloseSeekStreamHandleInterface
      * Example:
      *
      * ```php
-     * $lock = $file->lock(LockType::SHARED);
+     * $lock = $file->lock(LockType::Shared);
      * // lock has been acquired.
      * $lock->release();
      * ```
@@ -53,7 +53,7 @@ interface HandleInterface extends IO\CloseSeekStreamHandleInterface
      *
      * ```php
      * try {
-     *   $lock = $file->tryLock(LockType::SHARED);
+     *   $lock = $file->tryLock(LockType::Shared);
      *   // lock has been acquired.
      *   $lock->release();
      * } catch(AlreadyLockedException) {
