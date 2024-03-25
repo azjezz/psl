@@ -31,7 +31,7 @@ namespace Psl\Str;
  *
  * @pure
  */
-function pad_right(string $string, int $total_length, string $pad_string = ' ', Encoding $encoding = Encoding::UTF_8): string
+function pad_right(string $string, int $total_length, string $pad_string = ' ', Encoding $encoding = Encoding::Utf8): string
 {
     while (($length = length($string, $encoding)) < $total_length) {
         /** @var int<0, max> $remaining */

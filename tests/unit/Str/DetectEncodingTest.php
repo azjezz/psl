@@ -20,9 +20,9 @@ final class DetectEncodingTest extends TestCase
     public function provideData(): array
     {
         return [
-            [Str\Encoding::ASCII, 'hello'],
-            [Str\Encoding::UTF_8, 'سيف'],
-            [Str\Encoding::UTF_8, '🐘'],
+            [Str\Encoding::Ascii, 'hello'],
+            [Str\Encoding::Utf8, 'سيف'],
+            [Str\Encoding::Utf8, '🐘'],
             [null, Str\Byte\chr(128)]
         ];
     }

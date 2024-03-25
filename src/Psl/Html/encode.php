@@ -19,7 +19,7 @@ use const ENT_QUOTES;
  *
  * @pure
  */
-function encode(string $html, bool $double_encoding = true, Encoding $encoding = Encoding::UTF_8): string
+function encode(string $html, bool $double_encoding = true, Encoding $encoding = Encoding::Utf8): string
 {
     return htmlentities($html, ENT_QUOTES, $encoding->value, $double_encoding);
 }

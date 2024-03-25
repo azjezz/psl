@@ -40,11 +40,11 @@ function copy(string $source, string $destination, bool $overwrite = false): voi
         $source_handle = File\open_read_only($source);
         $destination_handle = File\open_write_only(
             $destination,
-            $destination_exists ? File\WriteMode::TRUNCATE : File\WriteMode::OPEN_OR_CREATE,
+            $destination_exists ? File\WriteMode::Truncate : File\WriteMode::OpenOrCreate,
         );
 
-        $source_lock = $source_handle->lock(File\LockType::SHARED);
-        $destination_lock = $destination_handle->lock(File\LockType::EXCLUSIVE);
+        $source_lock = $source_handle->lock(File\LockType::Shared);
+        $destination_lock = $destination_handle->lock(File\LockType::Exclusive);
 
         while ($chunk = $source_handle->read()) {
             $destination_handle->writeAll($chunk);

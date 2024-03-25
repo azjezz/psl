@@ -19,7 +19,7 @@ use function mb_ord;
  *
  * @pure
  */
-function ord(string $character, Encoding $encoding = Encoding::UTF_8): int
+function ord(string $character, Encoding $encoding = Encoding::Utf8): int
 {
     return mb_ord($character, $encoding->value);
 }

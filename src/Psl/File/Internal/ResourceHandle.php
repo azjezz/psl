@@ -108,7 +108,7 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements File\Re
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
-        $operations = LOCK_NB | ($type === LockType::EXCLUSIVE ? LOCK_EX : LOCK_SH);
+        $operations = LOCK_NB | ($type === LockType::Exclusive ? LOCK_EX : LOCK_SH);
         $success = @flock($this->stream, $operations, $would_block);
         // @codeCoverageIgnoreStart
         if ($would_block) {
@@ -118,7 +118,7 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements File\Re
         if (!$success) {
             throw new File\Exception\RuntimeException(Str\format(
                 'Could not acquire %s lock for "%s".',
-                $type === LockType::EXCLUSIVE ? 'exclusive' : 'shared',
+                $type === LockType::Exclusive ? 'exclusive' : 'shared',
                 $this->getPath(),
             ));
         }

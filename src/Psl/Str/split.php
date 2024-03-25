@@ -19,7 +19,7 @@ use Psl\Math;
  *
  * @pure
  */
-function split(string $string, string $delimiter, ?int $limit = null, Encoding $encoding = Encoding::UTF_8): array
+function split(string $string, string $delimiter, ?int $limit = null, Encoding $encoding = Encoding::Utf8): array
 {
     if ('' === $delimiter) {
         if (null === $limit || $limit >= length($string, $encoding)) {

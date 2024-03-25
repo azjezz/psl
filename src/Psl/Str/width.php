@@ -11,7 +11,7 @@ use function mb_strwidth;
  *
  * @pure
  */
-function width(string $string, Encoding $encoding = Encoding::UTF_8): int
+function width(string $string, Encoding $encoding = Encoding::Utf8): int
 {
     return mb_strwidth($string, $encoding->value);
 }

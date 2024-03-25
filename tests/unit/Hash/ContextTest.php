@@ -11,7 +11,7 @@ final class ContextTest extends TestCase
 {
     public function testForAlgorithm(): void
     {
-        $context = Hash\Context::forAlgorithm(Hash\Algorithm::MD5)
+        $context = Hash\Context::forAlgorithm(Hash\Algorithm::Md5)
             ->update('The quick brown fox ')
             ->update('jumped over the lazy dog.');
 
@@ -20,7 +20,7 @@ final class ContextTest extends TestCase
 
     public function testHmac(): void
     {
-        $context = Hash\Context::hmac(Hash\Hmac\Algorithm::MD5, 'secret')
+        $context = Hash\Context::hmac(Hash\Hmac\Algorithm::Md5, 'secret')
             ->update('The quick brown fox ')
             ->update('jumped over the lazy dog.');
 
@@ -29,7 +29,7 @@ final class ContextTest extends TestCase
 
     public function testContextIsImmutable(): void
     {
-        $first  = Hash\Context::forAlgorithm(Hash\Algorithm::MD5);
+        $first  = Hash\Context::forAlgorithm(Hash\Algorithm::Md5);
         $second = $first->update('The quick brown fox ');
         $third  = $second->update('jumped over the lazy dog.');
 
@@ -44,7 +44,7 @@ final class ContextTest extends TestCase
 
     public function testContextIsStillValidAfterFinalization(): void
     {
-        $context  = Hash\Context::forAlgorithm(Hash\Algorithm::MD5)
+        $context  = Hash\Context::forAlgorithm(Hash\Algorithm::Md5)
             ->update('The quick brown fox ')
             ->update('jumped over the lazy dog.');
 

@@ -24,7 +24,7 @@ function read(string $file, int $offset = 0, ?int $length = null): string
 {
     try {
         $handle = namespace\open_read_only($file);
-        $lock = $handle->lock(namespace\LockType::SHARED);
+        $lock = $handle->lock(namespace\LockType::Shared);
 
         $handle->seek($offset);
         $content = $handle->readAll($length);

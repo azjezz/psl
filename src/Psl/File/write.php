@@ -21,13 +21,13 @@ use function clearstatcache;
  * @throws Exception\NotWritableException If $file exists, and is non-writable.
  * @throws Exception\RuntimeException In case of an error.
  */
-function write(string $file, string $content, WriteMode $mode = WriteMode::OPEN_OR_CREATE): void
+function write(string $file, string $content, WriteMode $mode = WriteMode::OpenOrCreate): void
 {
     clearstatcache();
 
     try {
         $handle = File\open_write_only($file, $mode);
-        $lock = $handle->lock(File\LockType::EXCLUSIVE);
+        $lock = $handle->lock(File\LockType::Exclusive);
 
         $handle->writeAll($content);
 

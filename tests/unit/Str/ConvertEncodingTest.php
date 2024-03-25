@@ -24,7 +24,7 @@ final class ConvertEncodingTest extends TestCase
     public function provideData(): array
     {
         return [
-            ['Ã¥Ã¤Ã¶', 'åäö', Str\Encoding::ISO_8859_1, Str\Encoding::UTF_8],
+            ['Ã¥Ã¤Ã¶', 'åäö', Str\Encoding::Iso88591, Str\Encoding::Utf8],
         ];
     }
 }

@@ -10,7 +10,7 @@ namespace Psl\Str;
  *
  * @pure
  */
-function strip_prefix(string $string, string $prefix, Encoding $encoding = Encoding::UTF_8): string
+function strip_prefix(string $string, string $prefix, Encoding $encoding = Encoding::Utf8): string
 {
     if ($prefix === $string) {
         return '';

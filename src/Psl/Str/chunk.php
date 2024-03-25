@@ -31,7 +31,7 @@ namespace Psl\Str;
  *
  * @pure
  */
-function chunk(string $string, int $chunk_length = 1, Encoding $encoding = Encoding::UTF_8): array
+function chunk(string $string, int $chunk_length = 1, Encoding $encoding = Encoding::Utf8): array
 {
     if ('' === $string) {
         return [];

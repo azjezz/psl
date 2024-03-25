@@ -27,7 +27,7 @@ function decode(string $hexadecimal): string
         );
     }
 
-    $hex_len = Str\length($hexadecimal, Str\Encoding::ASCII_8BIT);
+    $hex_len = Str\length($hexadecimal, Str\Encoding::Ascii8bit);
     if (($hex_len & 1) !== 0) {
         throw new Exception\RangeException(
             'Expected an even number of hexadecimal characters.',

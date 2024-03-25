@@ -17,7 +17,7 @@ use function preg_split;
  *
  * @throws Exception\InvalidArgumentException if $needle is not a valid UTF-8 string.
  */
-function replace_ci(string $haystack, string $needle, string $replacement, Encoding $encoding = Encoding::UTF_8): string
+function replace_ci(string $haystack, string $needle, string $replacement, Encoding $encoding = Encoding::Utf8): string
 {
     if ('' === $needle || null === search_ci($haystack, $needle, 0, $encoding)) {
         return $haystack;

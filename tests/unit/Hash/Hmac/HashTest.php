@@ -27,7 +27,7 @@ final class HashTest extends TestCase
      */
     public function provideHashData(): Generator
     {
-        yield ['03376ee7ad7bbfceee98660439a4d8b125122a5a', 'hello world', Hmac\Algorithm::SHA1, 'secret'];
-        yield ['78d6997b1230f38e59b6d1642dfaa3a4', 'hello world', Hmac\Algorithm::MD5, 'secret'];
+        yield ['03376ee7ad7bbfceee98660439a4d8b125122a5a', 'hello world', Hmac\Algorithm::Sha1, 'secret'];
+        yield ['78d6997b1230f38e59b6d1642dfaa3a4', 'hello world', Hmac\Algorithm::Md5, 'secret'];
     }
 }

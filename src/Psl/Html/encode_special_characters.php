@@ -21,7 +21,7 @@ use const ENT_SUBSTITUTE;
  *
  * @pure
  */
-function encode_special_characters(string $html, bool $double_encoding = true, Encoding $encoding = Encoding::UTF_8): string
+function encode_special_characters(string $html, bool $double_encoding = true, Encoding $encoding = Encoding::Utf8): string
 {
     return htmlspecialchars($html, ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE, $encoding->value, $double_encoding);
 }

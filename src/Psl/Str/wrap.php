@@ -17,7 +17,7 @@ namespace Psl\Str;
  *
  * @pure
  */
-function wrap(string $string, int $width = 75, string $break = "\n", bool $cut = false, Encoding $encoding = Encoding::UTF_8): string
+function wrap(string $string, int $width = 75, string $break = "\n", bool $cut = false, Encoding $encoding = Encoding::Utf8): string
 {
     if ('' === $string) {
         return '';

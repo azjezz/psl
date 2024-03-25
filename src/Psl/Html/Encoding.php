@@ -13,53 +13,78 @@ use Psl\Default\DefaultInterface;
  * HTML documents and web development. It includes various Unicode, Western European,
  * Cyrillic, Chinese, Japanese, and other character sets to support internationalization
  * and localization of web content.
- *
- * Implementing the DefaultInterface, it provides a method to obtain a default encoding,
- * which is UTF-8 due to its wide compatibility and support for a vast range of characters.
  */
 enum Encoding: string implements DefaultInterface
 {
-    // ASCII compatible multi-byte 8-bit Unicode.
-    case UTF_8 = 'UTF-8';
+    /**
+     * ASCII compatible multi-byte 8-bit Unicode.
+     */
+    case Utf8 = 'UTF-8';
 
-    // Western European, Latin-1.
-    case ISO_8859_1 = 'ISO-8859-1';
+    /**
+     * Western European, Latin-1.
+     */
+    case Iso88591 = 'ISO-8859-1';
 
-    // Western European, Latin-9.
-    case ISO_8859_15 = 'ISO-8859-15';
+    /**
+     * Western European, Latin-9.
+     */
+    case Iso885915 = 'ISO-8859-15';
 
-    // Cyrillic charset (Latin/Cyrillic).
-    case ISO_8859_5 = 'ISO-8859-5';
+    /**
+     * Cyrillic charset (Latin/Cyrillic).
+     */
+    case Iso88595 = 'ISO-8859-5';
 
-    // DOS-specific Cyrillic charset.
-    case CP_866 = 'cp866';
+    /**
+     * DOS-specific Cyrillic charset.
+     */
+    case Cp866 = 'cp866';
 
-    // Windows-specific Cyrillic charset.
-    case CP_1251 = 'cp1251';
+    /**
+     * Windows-specific Cyrillic charset.
+     */
+    case Cp1251 = 'cp1251';
 
-    // Windows specific charset for Western European.
-    case CP_1252 = 'cp1252';
+    /**
+     * Windows specific charset for Western European.
+     */
+    case Cp1252 = 'cp1252';
 
-    // Russian.
-    case KOI8_R = 'KOI8-R';
+    /**
+     * Russian.
+     */
+    case Koi8R = 'KOI8-R';
 
-    // Traditional Chinese, mainly used in Taiwan.
-    case BIG5 = 'BIG5';
+    /**
+     * Traditional Chinese.
+     */
+    case Big5 = 'BIG5';
 
-    // Simplified Chinese, national standard character set.
-    case GB2312 = 'GB2312';
+    /**
+     * Simplified Chinese, national standard character set.
+     */
+    case Gb2312 = 'GB2312';
 
-    // Big5 with Hong Kong extensions, Traditional Chinese.
-    case BIG5_HKSCS = 'BIG5-HKSCS';
+    /**
+     * Traditional Chinese ( Big5 with Hong Kong extensions ).
+     */
+    case Big5Hkscs = 'BIG5-HKSCS';
 
-    // Japanese
-    case SHIFT_JIS = 'Shift_JIS';
+    /**
+     * Japanese.
+     */
+    case ShiftJis = 'Shift_JIS';
 
-    // Japanese
-    case EUC_JP = 'EUC-JP';
+    /**
+     * Japanese.
+     */
+    case EucJp = 'EUC-JP';
 
-    // Charset that was used by Mac OS.
-    case MAC_ROMAN = 'MacRoman';
+    /**
+     * Charset that was used by macOS.
+     */
+    case MacRoman = 'MacRoman';
 
     /**
      * Provides the default character encoding.
@@ -73,6 +98,6 @@ enum Encoding: string implements DefaultInterface
      */
     public static function default(): static
     {
-        return self::UTF_8;
+        return self::Utf8;
     }
 }

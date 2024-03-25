@@ -23,7 +23,7 @@ function splice(
     string $replacement,
     int $offset = 0,
     ?int $length = null,
-    Encoding $encoding = Encoding::UTF_8
+    Encoding $encoding = Encoding::Utf8
 ): string {
     $total_length = length($string, $encoding);
     $offset       = Internal\validate_offset($offset, $total_length);

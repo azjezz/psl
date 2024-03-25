@@ -66,7 +66,7 @@ function regenerate_documentation(): void
 
     $readme_template = File\read(__DIR__ . '/templates/README.template.md');
     $readme = Str\replace($readme_template, '{{ list }}', $components_documentation);
-    $mode = Filesystem\is_file($readme) ? File\WriteMode::TRUNCATE : File\WriteMode::OPEN_OR_CREATE;
+    $mode = Filesystem\is_file($readme) ? File\WriteMode::Truncate : File\WriteMode::OpenOrCreate;
     File\write(__DIR__ . '/README.md', $readme, $mode);
 
     foreach ($components as $component) {
@@ -143,7 +143,7 @@ function document_component(string $component, string $index_link): void
         ), "\n"),
     ]);
 
-    $mode = Filesystem\is_file($current_filename) ? File\WriteMode::TRUNCATE : File\WriteMode::OPEN_OR_CREATE;
+    $mode = Filesystem\is_file($current_filename) ? File\WriteMode::Truncate : File\WriteMode::OpenOrCreate;
     File\write($current_filename, $documentation, $mode);
 }
 

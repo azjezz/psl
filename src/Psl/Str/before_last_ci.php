@@ -9,7 +9,7 @@ namespace Psl\Str;
  *
  * @pure
  */
-function before_last_ci(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::UTF_8): ?string
+function before_last_ci(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::Utf8): ?string
 {
     $length = search_last_ci($haystack, $needle, $offset, $encoding);
     if (null === $length) {

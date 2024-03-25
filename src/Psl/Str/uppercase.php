@@ -11,7 +11,7 @@ use function mb_strtoupper;
  *
  * @pure
  */
-function uppercase(string $string, Encoding $encoding = Encoding::UTF_8): string
+function uppercase(string $string, Encoding $encoding = Encoding::Utf8): string
 {
     return mb_strtoupper($string, $encoding->value);
 }
