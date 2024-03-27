@@ -23,7 +23,7 @@ final class MixedDictType extends Type\Type
     public function coerce(mixed $value): array
     {
         if (! is_iterable($value)) {
-            throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+            throw CoercionException::withValue($value, $this->toString());
         }
 
         if (is_array($value)) {
@@ -33,7 +33,6 @@ final class MixedDictType extends Type\Type
         $result = [];
 
         $key_type = Type\array_key();
-        $key_type = $key_type->withTrace($this->getTrace()->withFrame('dict<' . $key_type->toString() . ', _>'));
 
         /**
          * @var array-key $k
@@ -58,7 +57,7 @@ final class MixedDictType extends Type\Type
     public function assert(mixed $value): array
     {
         if (! is_array($value)) {
-            throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+            throw AssertException::withValue($value, $this->toString());
         }
 
         return $value;

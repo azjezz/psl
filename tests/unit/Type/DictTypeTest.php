@@ -16,19 +16,6 @@ use Psl\Vec;
  */
 final class DictTypeTest extends TypeTest
 {
-    public function testWithTraceReturnsAClone(): void
-    {
-        $type = $this->getType();
-
-        $trace = new Type\Exception\TypeTrace();
-        $new_trace = $trace->withFrame('foo');
-        static::assertNotSame($new_trace, $trace);
-
-        $new_type = $type->withTrace($new_trace);
-
-        static::assertNotSame($new_type, $type);
-    }
-
     public function getType(): Type\TypeInterface
     {
         return Type\dict(Type\int(), Type\int());

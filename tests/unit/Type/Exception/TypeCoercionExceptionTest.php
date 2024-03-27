@@ -30,12 +30,6 @@ final class TypeCoercionExceptionTest extends TestCase
             static::assertSame('bool', $e->getTargetType());
             static::assertSame('int', $e->getActualType());
             static::assertSame('Could not coerce "int" to type "bool".', $e->getMessage());
-
-            $trace  = $e->getTypeTrace();
-            $frames = $trace->getFrames();
-
-            static::assertCount(1, $frames);
-            static::assertSame('iterable<bool, _>', Iter\first($frames));
         }
     }
 
@@ -57,11 +51,6 @@ final class TypeCoercionExceptionTest extends TestCase
                 'Could not coerce "%s" to type "resource (curl)".',
                 Collection\Map::class
             ), $e->getMessage());
-
-            $trace  = $e->getTypeTrace();
-            $frames = $trace->getFrames();
-
-            static::assertCount(0, $frames);
         }
     }
 
@@ -87,11 +76,6 @@ final class TypeCoercionExceptionTest extends TestCase
                 'Could not coerce "int" to type "string": not possible',
                 Collection\Map::class
             ), $e->getMessage());
-
-            $trace  = $e->getTypeTrace();
-            $frames = $trace->getFrames();
-
-            static::assertCount(0, $frames);
         }
     }
 }

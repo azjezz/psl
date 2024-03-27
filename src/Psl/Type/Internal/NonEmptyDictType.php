@@ -40,13 +40,8 @@ final class NonEmptyDictType extends Type\Type
     public function coerce(mixed $value): array
     {
         if (is_iterable($value)) {
-            $key_trace   = $this->getTrace()
-                ->withFrame(Str\format('non-empty-dict<%s, _>', $this->key_type->toString()));
-            $value_trace = $this->getTrace()
-                ->withFrame(Str\format('non-empty-dict<_, %s>', $this->value_type->toString()));
-
-            $key_type = $this->key_type->withTrace($key_trace);
-            $value_type = $this->value_type->withTrace($value_trace);
+            $key_type = $this->key_type;
+            $value_type = $this->value_type;
 
             $result = [];
 
@@ -59,13 +54,13 @@ final class NonEmptyDictType extends Type\Type
             }
 
             if ($result === []) {
-                throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+                throw CoercionException::withValue($value, $this->toString());
             }
 
             return $result;
         }
 
-        throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+        throw CoercionException::withValue($value, $this->toString());
     }
 
     /**
@@ -78,13 +73,8 @@ final class NonEmptyDictType extends Type\Type
     public function assert(mixed $value): array
     {
         if (is_array($value)) {
-            $key_trace   = $this->getTrace()
-                ->withFrame(Str\format('non-empty-dict<%s, _>', $this->key_type->toString()));
-            $value_trace = $this->getTrace()
-                ->withFrame(Str\format('non-empty-dict<_, %s>', $this->value_type->toString()));
-
-            $key_type = $this->key_type->withTrace($key_trace);
-            $value_type = $this->value_type->withTrace($value_trace);
+            $key_type = $this->key_type;
+            $value_type = $this->value_type;
 
             $result = [];
 
@@ -97,13 +87,13 @@ final class NonEmptyDictType extends Type\Type
             }
 
             if ($result === []) {
-                throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+                throw AssertException::withValue($value, $this->toString());
             }
 
             return $result;
         }
 
-        throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+        throw AssertException::withValue($value, $this->toString());
     }
 
     public function toString(): string

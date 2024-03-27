@@ -12,9 +12,9 @@ final class AssertException extends Exception
 {
     private string $expected;
 
-    public function __construct(string $actual, string $expected, TypeTrace $typeTrace)
+    public function __construct(string $actual, string $expected)
     {
-        parent::__construct(Str\format('Expected "%s", got "%s".', $expected, $actual), $actual, $typeTrace);
+        parent::__construct(Str\format('Expected "%s", got "%s".', $expected, $actual), $actual);
 
         $this->expected = $expected;
     }
@@ -27,8 +27,7 @@ final class AssertException extends Exception
     public static function withValue(
         mixed $value,
         string $expected_type,
-        TypeTrace $trace
     ): self {
-        return new self(get_debug_type($value), $expected_type, $trace);
+        return new self(get_debug_type($value), $expected_type);
     }
 }

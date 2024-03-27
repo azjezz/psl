@@ -47,44 +47,44 @@ final class LiteralScalarType extends Type\Type
         }
 
         if (Type\string()->matches($this->value)) {
-            $coerced_value = Type\string()->withTrace($this->getTrace())->coerce($value);
+            $coerced_value = Type\string()->coerce($value);
             if ($this->value === $coerced_value) {
                 /** @var T $coerced_value */
                 return $coerced_value;
             }
 
-            throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+            throw CoercionException::withValue($value, $this->toString());
         }
 
         if (Type\int()->matches($this->value)) {
-            $coerced_value = Type\int()->withTrace($this->getTrace())->coerce($value);
+            $coerced_value = Type\int()->coerce($value);
             if ($this->value === $coerced_value) {
                 /** @var T $coerced_value */
                 return $coerced_value;
             }
 
-            throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+            throw CoercionException::withValue($value, $this->toString());
         }
 
         if (Type\float()->matches($this->value)) {
-            $coerced_value = Type\float()->withTrace($this->getTrace())->coerce($value);
+            $coerced_value = Type\float()->coerce($value);
             if ($this->value === $coerced_value) {
                 /** @var T $coerced_value */
                 return $coerced_value;
             }
 
-            throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+            throw CoercionException::withValue($value, $this->toString());
         }
 
         /** @var bool $literal_value */
         $literal_value = $this->value;
-        $coerced_value = Type\bool()->withTrace($this->getTrace())->coerce($value);
+        $coerced_value = Type\bool()->coerce($value);
         if ($literal_value === $coerced_value) {
             /** @var T $coerced_value */
             return $coerced_value;
         }
 
-        throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+        throw CoercionException::withValue($value, $this->toString());
     }
 
     /**
@@ -99,7 +99,7 @@ final class LiteralScalarType extends Type\Type
             return $value;
         }
 
-        throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+        throw AssertException::withValue($value, $this->toString());
     }
 
     public function toString(): string

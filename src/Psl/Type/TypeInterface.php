@@ -6,7 +6,6 @@ namespace Psl\Type;
 
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
-use Psl\Type\Exception\TypeTrace;
 
 /**
  * @template-covariant T
@@ -43,9 +42,4 @@ interface TypeInterface
      * Returns a string representation of the type.
      */
     public function toString(): string;
-
-    /**
-     * @return TypeInterface<T>
-     */
-    public function withTrace(TypeTrace $trace): TypeInterface;
 }

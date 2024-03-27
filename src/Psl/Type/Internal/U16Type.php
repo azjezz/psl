@@ -40,15 +40,13 @@ final class U16Type extends Type\Type
      */
     public function coerce(mixed $value): int
     {
-        $integer = Type\int()
-            ->withTrace($this->getTrace()->withFrame($this->toString()))
-            ->coerce($value);
+        $integer = Type\int()->coerce($value);
 
         if ($integer >= 0 && $integer <= MATH\UINT16_MAX) {
             return $integer;
         }
 
-        throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+        throw CoercionException::withValue($value, $this->toString());
     }
 
     /**
@@ -68,7 +66,7 @@ final class U16Type extends Type\Type
             return $value;
         }
 
-        throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+        throw AssertException::withValue($value, $this->toString());
     }
 
     public function toString(): string
