@@ -13,7 +13,7 @@ final class CoercionException extends Exception
 {
     private string $target;
 
-    public function __construct(string $actual, string $target, TypeTrace $typeTrace, string $additionalInfo = '')
+    public function __construct(string $actual, string $target, string $additionalInfo = '')
     {
         parent::__construct(
             Str\format(
@@ -24,7 +24,6 @@ final class CoercionException extends Exception
                 $additionalInfo
             ),
             $actual,
-            $typeTrace,
         );
 
         $this->target = $target;
@@ -38,21 +37,18 @@ final class CoercionException extends Exception
     public static function withValue(
         mixed $value,
         string $target,
-        TypeTrace $typeTrace
     ): self {
-        return new self(get_debug_type($value), $target, $typeTrace);
+        return new self(get_debug_type($value), $target);
     }
 
     public static function withConversionFailureOnValue(
         mixed $value,
         string $target,
-        TypeTrace $typeTrace,
         Throwable $failure,
     ): self {
         return new self(
             get_debug_type($value),
             $target,
-            $typeTrace,
             $failure->getMessage()
         );
     }

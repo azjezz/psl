@@ -53,7 +53,7 @@ final class ConvertedType extends Type\Type
         try {
             $converted = ($this->converter)($coercedInput);
         } catch (Throwable $failure) {
-            throw CoercionException::withConversionFailureOnValue($value, $this->toString(), $this->getTrace(), $failure);
+            throw CoercionException::withConversionFailureOnValue($value, $this->toString(), $failure);
         }
 
         return $this->into->coerce($converted);

@@ -38,9 +38,7 @@ final class I64Type extends Type\Type
      */
     public function coerce(mixed $value): int
     {
-        return Type\int()
-            ->withTrace($this->getTrace()->withFrame($this->toString()))
-            ->coerce($value);
+        return Type\int()->coerce($value);
     }
 
     /**
@@ -60,7 +58,7 @@ final class I64Type extends Type\Type
             return $value;
         }
 
-        throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+        throw AssertException::withValue($value, $this->toString());
     }
 
     public function toString(): string

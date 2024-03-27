@@ -26,12 +26,6 @@ final class TypeAssertExceptionTest extends TestCase
             static::assertSame('int', $e->getExpectedType());
             static::assertSame('string', $e->getActualType());
             static::assertSame('Expected "int", got "string".', $e->getMessage());
-
-            $trace  = $e->getTypeTrace();
-            $frames = $trace->getFrames();
-
-            static::assertCount(1, $frames);
-            static::assertSame('iterable<int, _>', Iter\first($frames));
         }
     }
 
@@ -47,11 +41,6 @@ final class TypeAssertExceptionTest extends TestCase
             static::assertSame('resource (curl)', $e->getExpectedType());
             static::assertSame('resource (stream)', $e->getActualType());
             static::assertSame('Expected "resource (curl)", got "resource (stream)".', $e->getMessage());
-
-            $trace  = $e->getTypeTrace();
-            $frames = $trace->getFrames();
-
-            static::assertCount(0, $frames);
         }
     }
 }

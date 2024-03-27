@@ -39,12 +39,11 @@ final class DictType extends Type\Type
     public function coerce(mixed $value): array
     {
         if (! is_iterable($value)) {
-            throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+            throw CoercionException::withValue($value, $this->toString());
         }
 
-        $trace = $this->getTrace();
-        $key_type = $this->key_type->withTrace($trace->withFrame('dict<' . $this->key_type->toString() . ', _>'));
-        $value_type = $this->value_type->withTrace($trace->withFrame('dict<_, ' . $this->value_type->toString() . '>'));
+        $key_type = $this->key_type;
+        $value_type = $this->value_type;
 
         $result = [];
 
@@ -69,16 +68,11 @@ final class DictType extends Type\Type
     public function assert(mixed $value): array
     {
         if (! is_array($value)) {
-            throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+            throw AssertException::withValue($value, $this->toString());
         }
 
-        $trace = $this->getTrace();
-        $key_type = $this->key_type->withTrace(
-            $trace->withFrame('dict<' . $this->key_type->toString() . ', _>')
-        );
-        $value_type = $this->value_type->withTrace(
-            $trace->withFrame('dict<_, ' . $this->value_type->toString() . '>')
-        );
+        $key_type = $this->key_type;
+        $value_type = $this->value_type;
 
         $result = [];
 

@@ -66,11 +66,8 @@ final class NonEmptyVecType extends Type\Type
     public function coerce(mixed $value): iterable
     {
         if (is_iterable($value)) {
-            $value_trace = $this->getTrace()
-                ->withFrame(Str\format('non-empty-vec<%s>', $this->value_type->toString()));
-
             /** @var Type\Type<Tv> $value_type */
-            $value_type = $this->value_type->withTrace($value_trace);
+            $value_type = $this->value_type;
 
             /**
              * @var list<Tv> $entries
@@ -83,13 +80,13 @@ final class NonEmptyVecType extends Type\Type
             }
 
             if ($result === []) {
-                throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+                throw CoercionException::withValue($value, $this->toString());
             }
 
             return $result;
         }
 
-        throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+        throw CoercionException::withValue($value, $this->toString());
     }
 
     /**
@@ -102,11 +99,8 @@ final class NonEmptyVecType extends Type\Type
     public function assert(mixed $value): array
     {
         if (is_array($value)) {
-            $value_trace = $this->getTrace()
-                ->withFrame(Str\format('non-empty-vec<%s>', $this->value_type->toString()));
-
             /** @var Type\Type<Tv> $value_type */
-            $value_type = $this->value_type->withTrace($value_trace);
+            $value_type = $this->value_type;
 
             $result = [];
             $index = 0;
@@ -117,7 +111,7 @@ final class NonEmptyVecType extends Type\Type
              */
             foreach ($value as $k => $v) {
                 if ($index !== $k) {
-                    throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+                    throw AssertException::withValue($value, $this->toString());
                 }
 
                 $index++;
@@ -125,13 +119,13 @@ final class NonEmptyVecType extends Type\Type
             }
 
             if ($result === []) {
-                throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+                throw AssertException::withValue($value, $this->toString());
             }
 
             return $result;
         }
 
-        throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+        throw AssertException::withValue($value, $this->toString());
     }
 
     public function toString(): string

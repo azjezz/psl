@@ -62,7 +62,7 @@ class UnionType extends Type\Type
             // ignore
         }
 
-        throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+        throw CoercionException::withValue($value, $this->toString());
     }
 
     /**
@@ -86,7 +86,7 @@ class UnionType extends Type\Type
             // ignore
         }
 
-        throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+        throw AssertException::withValue($value, $this->toString());
     }
 
     public function toString(): string
