@@ -14,16 +14,18 @@ use Psl\Default\DefaultInterface;
 final class ConnectOptions implements DefaultInterface
 {
     /**
-     * Initializes a new instance of {@see ConnectOptions} with the specified settings.
+     * Constructor is private to enforce immutability. Use static creation methods instead.
      *
-     * @param bool $noDelay Determines whether the TCP_NODELAY option is enabled, controlling
-     *                      the use of the Nagle algorithm. When true, TCP_NODELAY is enabled,
-     *                      and the Nagle algorithm is disabled.
+     * @param bool $noDelay Indicates whether to disable Nagle's algorithm. When true, packets are sent immediately.
+     * @param null|array{non-empty-string, null|int} $bindTo Specifies the IP address and optionally the port to bind to.
+     *                                                       Format: [`IP`, `Port`]. `Port` is optional and can be null.
      *
      * @pure
      */
-    public function __construct(
-        public readonly bool $noDelay,
+    private function __construct(
+        public readonly bool                $noDelay,
+        public readonly ?array              $bindTo,
+        public readonly ?TLS\ConnectOptions $TLSConnectOptions,
     ) {
     }
 
@@ -41,17 +43,11 @@ final class ConnectOptions implements DefaultInterface
      */
     public static function create(bool $noDelay = false): ConnectOptions
     {
-        return new self($noDelay);
+        return new self($noDelay, null, null);
     }
 
     /**
      * Creates and returns a default instance of {@see ConnectOptions}.
-     *
-     * The default instance has the TCP_NODELAY option disabled, allowing the Nagle algorithm
-     * to be used. This method is a convenience wrapper around the `create` method, adhering to
-     * the {@see DefaultInterface} contract.
-     *
-     * @return static A default ConnectOptions instance with noDelay set to false.
      *
      * @pure
      */
@@ -61,14 +57,63 @@ final class ConnectOptions implements DefaultInterface
     }
 
     /**
-     * Returns a new instance of {@see ConnectOptions} with the noDelay setting modified.
+     * Returns a new instance with noDelay enabled.
      *
-     * @param bool $enabled Specifies the desired state of the TCP_NODELAY option.
+     * @return ConnectOptions A new instance with noDelay set to true.
      *
      * @mutation-free
      */
     public function withNoDelay(bool $enabled = true): ConnectOptions
     {
-        return new self($enabled);
+        return new self($enabled, $this->bindTo, $this->TLSConnectOptions);
+    }
+
+    /**
+     * Returns a new instance with the specified IP and optionally port to bind to.
+     *
+     * @param non-empty-string $ip The IP address to bind the connection to.
+     * @param int|null $port The port number to bind the connection to, or null to not specify.
+     *
+     * @return ConnectOptions A new instance with the updated bindTo option.
+     *
+     * @mutation-free
+     */
+    public function withBindTo(string $ip, ?int $port = null): ConnectOptions
+    {
+        return new self($this->noDelay, [$ip, $port], $this->TLSConnectOptions);
+    }
+
+    /**
+     * Returns a new instance without any bindTo configuration.
+     *
+     * @return ConnectOptions A new instance with bindTo set to null.
+     *
+     * @mutation-free
+     */
+    public function withoutBindTo(): ConnectOptions
+    {
+        return new self($this->noDelay, null, $this->TLSConnectOptions);
+    }
+
+    /**
+     * Returns a new instance with the specified TLS connect options.
+     *
+     * @param TLS\ConnectOptions $tls_connect_options The TLS connect options.
+     *
+     * @mutation-free
+     */
+    public function withTLSConnectOptions(TLS\ConnectOptions $tls_connect_options): ConnectOptions
+    {
+        return new self($this->noDelay, $this->bindTo, $tls_connect_options);
+    }
+
+    /**
+     * Returns a new instance without the Tls connect options.
+     *
+     * @mutation-free
+     */
+    public function withoutTlsConnectOptions(): ConnectOptions
+    {
+        return new self($this->noDelay, $this->bindTo, null);
     }
 }

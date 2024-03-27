@@ -52,6 +52,7 @@
 - [Psl\Str\Byte](./component/str-byte.md)
 - [Psl\Str\Grapheme](./component/str-grapheme.md)
 - [Psl\TCP](./component/tcp.md)
+- [Psl\TCP\TLS](./component/tcp-tls.md)
 - [Psl\Trait](./component/trait.md)
 - [Psl\Type](./component/type.md)
 - [Psl\Unix](./component/unix.md)

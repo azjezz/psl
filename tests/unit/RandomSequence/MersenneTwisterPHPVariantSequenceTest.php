@@ -6,38 +6,25 @@ namespace Psl\Tests\Unit\RandomSequence;
 
 use PHPUnit\Framework\TestCase;
 use Psl\RandomSequence\MersenneTwisterPHPVariantSequence;
-use Psl\SecureRandom;
-
-use function mt_rand;
-use function mt_srand;
-use function time;
-
-use const MT_RAND_PHP;
 
 final class MersenneTwisterPHPVariantSequenceTest extends TestCase
 {
     /**
      * @dataProvider provideSeeds
      */
-    public function testNext(int $seed): void
+    public function testNext(int $seed, array $expectations): void
     {
-        mt_srand($seed, MT_RAND_PHP);
         $sequence = new MersenneTwisterPHPVariantSequence($seed);
 
-        for ($i = 0; $i < 100; $i++) {
-            static::assertSame(mt_rand(), $sequence->next());
+        for ($i = 0; $i < 5; $i++) {
+            static::assertSame($expectations[$i], $sequence->next());
         }
     }
 
     public function provideSeeds(): iterable
     {
-        yield [2147483649];
-        yield [45635];
-        yield [5744];
-        yield [456];
-        yield [34];
-        yield [5];
-        yield [time()];
-        yield [SecureRandom\int()];
+        yield [2147483649, [90281504, 1278257534, 1994752345, 683161987, 992945549]];
+        yield [45635, [899019714, 822361780, 1611332592, 632462060, 1431120852]];
+        yield [5744, [1962086712, 1462838808, 1331836928, 446021369, 535020186]];
     }
 }

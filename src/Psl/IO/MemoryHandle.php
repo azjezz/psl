@@ -28,6 +28,15 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
         $this->buffer = $buffer;
     }
 
+    public function reachedEndOfDataSource(): bool
+    {
+        $this->assertHandleIsOpen();
+
+        $length = strlen($this->buffer);
+
+        return $this->offset >= $length;
+    }
+
     /**
      * {@inheritDoc}
      */
