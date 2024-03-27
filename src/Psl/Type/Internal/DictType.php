@@ -44,8 +44,6 @@ final class DictType extends Type\Type
 
         $trace = $this->getTrace();
         $key_type = $this->key_type->withTrace($trace->withFrame('dict<' . $this->key_type->toString() . ', _>'));
-        $value_type = $this->value_type->withTrace($trace->withFrame('dict<_, ' . $this->value_type->toString() . '>'));
-
         $result = [];
 
         /**
@@ -53,6 +51,12 @@ final class DictType extends Type\Type
          * @var Tv $v
          */
         foreach ($value as $k => $v) {
+            $value_type = $this->value_type->withTrace(
+                $trace->withFrameAtPath(
+                    'dict<_, ' . $this->value_type->toString() . '>',
+                    (string) $k
+                )
+            );
             $result[$key_type->coerce($k)] = $value_type->coerce($v);
         }
 

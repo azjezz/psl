@@ -94,4 +94,29 @@ final class TypeCoercionExceptionTest extends TestCase
             static::assertCount(0, $frames);
         }
     }
+
+    public function testCoercionPath(): void
+    {
+        $type = Type\shape([
+            'articles' => Type\vec(Type\shape([
+                'name' => Type\string(),
+            ]))
+        ]);
+
+        try {
+            $type->coerce(['articles' => [['name' => null]]]);
+
+            static::fail(Str\format(
+                'Expected "%s" exception to be thrown.',
+                Type\Exception\CoercionException::class
+            ));
+        } catch (Type\Exception\CoercionException $e) {
+            static::assertSame(
+                'Could not coerce "null" to type "string": at path articles.0.name',
+                $e->getMessage()
+            );
+
+            static::assertCount(3, $e->getTypeTrace()->getPath());
+        }
+    }
 }

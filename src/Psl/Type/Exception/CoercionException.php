@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Exception;
 
+use Psl\Iter;
 use Psl\Str;
 use Throwable;
 
@@ -40,7 +41,15 @@ final class CoercionException extends Exception
         string $target,
         TypeTrace $typeTrace
     ): self {
-        return new self(get_debug_type($value), $target, $typeTrace);
+        return new self(
+            get_debug_type($value),
+            $target,
+            $typeTrace,
+            Iter\is_empty($typeTrace->getPath()) ? "" : Str\Format(
+                'at path %s',
+                Str\join($typeTrace->getPath(), '.')
+            )
+        );
     }
 
     public static function withConversionFailureOnValue(

@@ -58,19 +58,21 @@ final class VecType extends Type\Type
             throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
         }
 
-        /** @var Type\Type<Tv> $value_type */
-        $value_type = $this->value_type->withTrace(
-            $this->getTrace()
-                ->withFrame($this->toString())
-        );
-
         /**
          * @var list<Tv> $entries
          */
         $result = [];
 
-        /** @var Tv $v */
-        foreach ($value as $v) {
+        /**
+         * @var array-key $i
+         * @var Tv $v
+         */
+        foreach ($value as $i => $v) {
+            /** @var Type\Type<Tv> $value_type */
+            $value_type = $this->value_type->withTrace(
+                $this->getTrace()
+                    ->withFrameAtPath($this->toString(), (string) $i)
+            );
             $result[] = $value_type->coerce($v);
         }
 
