@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Psl\Type\Exception;
 
 use Psl\Str;
+use Psl\Vec;
+use Throwable;
 
 use function get_debug_type;
 
@@ -12,9 +14,24 @@ final class AssertException extends Exception
 {
     private string $expected;
 
-    public function __construct(string $actual, string $expected)
+    /**
+     * @param list<string> $paths
+     */
+    public function __construct(string $actual, string $expected, array $paths = [], ?Throwable $previous = null)
     {
-        parent::__construct(Str\format('Expected "%s", got "%s".', $expected, $actual), $actual);
+        $first = $previous instanceof Exception ? $previous->getFirstFailingActualType() : $actual;
+
+        parent::__construct(
+            Str\format(
+                'Expected "%s", got "%s"%s.',
+                $expected,
+                $first,
+                $paths ? ' at path "' . Str\join($paths, '.') . '"' : ''
+            ),
+            $actual,
+            $paths,
+            $previous
+        );
 
         $this->expected = $expected;
     }
@@ -27,7 +44,11 @@ final class AssertException extends Exception
     public static function withValue(
         mixed $value,
         string $expected_type,
+        ?string $path = null,
+        ?Throwable $previous = null
     ): self {
-        return new self(get_debug_type($value), $expected_type);
+        $paths = $previous instanceof Exception ? [$path, ...$previous->getPaths()] : [$path];
+
+        return new self(get_debug_type($value), $expected_type, Vec\filter_nulls($paths), $previous);
     }
 }

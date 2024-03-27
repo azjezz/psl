@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Type\Exception;
 
 use Psl\Str;
+use Psl\Vec;
 use Throwable;
 
 use function get_debug_type;
@@ -13,17 +14,24 @@ final class CoercionException extends Exception
 {
     private string $target;
 
-    public function __construct(string $actual, string $target, string $additionalInfo = '')
+    /**
+     * @param list<string> $paths
+     */
+    public function __construct(string $actual, string $target, array $paths = [], ?Throwable $previous = null)
     {
+        $first = $previous instanceof Exception ? $previous->getFirstFailingActualType() : $actual;
+
         parent::__construct(
             Str\format(
-                'Could not coerce "%s" to type "%s"%s%s',
-                $actual,
+                'Could not coerce "%s" to type "%s"%s%s.',
+                $first,
                 $target,
-                $additionalInfo ? ': ' : '.',
-                $additionalInfo
+                $paths ? ' at path "' . Str\join($paths, '.') . '"' : '',
+                $previous && !$previous instanceof self ? ': ' . $previous->getMessage() : '',
             ),
             $actual,
+            $paths,
+            $previous
         );
 
         $this->target = $target;
@@ -37,19 +45,11 @@ final class CoercionException extends Exception
     public static function withValue(
         mixed $value,
         string $target,
+        ?string $path = null,
+        ?Throwable $previous = null
     ): self {
-        return new self(get_debug_type($value), $target);
-    }
+        $paths = $previous instanceof Exception ? [$path, ...$previous->getPaths()] : [$path];
 
-    public static function withConversionFailureOnValue(
-        mixed $value,
-        string $target,
-        Throwable $failure,
-    ): self {
-        return new self(
-            get_debug_type($value),
-            $target,
-            $failure->getMessage()
-        );
+        return new self(get_debug_type($value), $target, Vec\filter_nulls($paths), $previous);
     }
 }

@@ -117,18 +117,31 @@ final class ShapeType extends Type\Type
         }
 
         $result = [];
-        foreach ($this->elements_types as $element => $type) {
-            if (Iter\contains_key($array, $element)) {
-                $result[$element] = $type->coerce($array[$element]);
+        $element = null;
+        $element_value_found = false;
 
-                continue;
+        try {
+            foreach ($this->elements_types as $element => $type) {
+                $element_value_found = false;
+                if (Iter\contains_key($array, $element)) {
+                    $element_value_found = true;
+                    $result[$element] = $type->coerce($array[$element]);
+
+                    continue;
+                }
+
+                if ($type->isOptional()) {
+                    continue;
+                }
+
+                throw CoercionException::withValue(null, $this->toString(), (string) $element);
             }
-
-            if ($type->isOptional()) {
-                continue;
-            }
-
-            throw CoercionException::withValue($value, $this->toString());
+        } catch (CoercionException $e) {
+            throw match (true) {
+                $element === null => $e,
+                $element_value_found => CoercionException::withValue($array[$element] ?? null, $this->toString(), (string) $element, $e),
+                default => $e
+            };
         }
 
         if ($this->allow_unknown_fields) {
@@ -157,18 +170,31 @@ final class ShapeType extends Type\Type
         }
 
         $result = [];
-        foreach ($this->elements_types as $element => $type) {
-            if (Iter\contains_key($value, $element)) {
-                $result[$element] = $type->assert($value[$element]);
+        $element = null;
+        $element_value_found = false;
 
-                continue;
+        try {
+            foreach ($this->elements_types as $element => $type) {
+                $element_value_found = false;
+                if (Iter\contains_key($value, $element)) {
+                    $element_value_found = true;
+                    $result[$element] = $type->assert($value[$element]);
+
+                    continue;
+                }
+
+                if ($type->isOptional()) {
+                    continue;
+                }
+
+                throw AssertException::withValue(null, $this->toString(), (string) $element);
             }
-
-            if ($type->isOptional()) {
-                continue;
-            }
-
-            throw AssertException::withValue($value, $this->toString());
+        } catch (AssertException $e) {
+            throw match (true) {
+                $element === null => $e,
+                $element_value_found => AssertException::withValue($value[$element] ?? null, $this->toString(), (string) $element, $e),
+                default => $e
+            };
         }
 
         /**
@@ -181,8 +207,9 @@ final class ShapeType extends Type\Type
                     $result[$k] = $v;
                 } else {
                     throw AssertException::withValue(
-                        $value,
+                        $v,
                         $this->toString(),
+                        (string) $k
                     );
                 }
             }

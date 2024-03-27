@@ -99,4 +99,79 @@ final class DictTypeTest extends TypeTest
             'dict<array-key, Psl\Iter\Iterator>'
         ];
     }
+
+    public function testInvalidAssertionKeyType(): void
+    {
+        try {
+            Type\dict(Type\int(), Type\int())->assert([
+                'nope' => 1,
+            ]);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
+        } catch (Type\Exception\AssertException $e) {
+            static::assertSame(
+                'Expected "dict<int, int>", got "string" at path "key(nope)".',
+                $e->getMessage()
+            );
+        }
+    }
+
+    public function testInvalidAssertionValueType(): void
+    {
+        try {
+            Type\dict(Type\int(), Type\int())->assert([
+                0 => 'nope',
+            ]);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
+        } catch (Type\Exception\AssertException $e) {
+            static::assertSame(
+                'Expected "dict<int, int>", got "string" at path "0".',
+                $e->getMessage()
+            );
+        }
+    }
+
+    public function testInvalidCoercionKeyType(): void
+    {
+        try {
+            Type\dict(Type\int(), Type\int())->coerce([
+                'nope' => 1,
+            ]);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\CoercionException::class));
+        } catch (Type\Exception\CoercionException $e) {
+            static::assertSame(
+                'Could not coerce "string" to type "dict<int, int>" at path "key(nope)".',
+                $e->getMessage()
+            );
+        }
+    }
+
+    public function testInvalidCoercionValueType(): void
+    {
+        try {
+            Type\dict(Type\int(), Type\int())->coerce([
+                0 => 'nope',
+            ]);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\CoercionException::class));
+        } catch (Type\Exception\CoercionException $e) {
+            static::assertSame(
+                'Could not coerce "string" to type "dict<int, int>" at path "0".',
+                $e->getMessage()
+            );
+        }
+    }
+
+    public function testNestedAssertionInvalidKey(): void
+    {
+        try {
+            Type\dict(Type\int(), Type\dict(Type\int(), Type\int()))->assert([
+                0 => ['nope' => 'nope'],
+            ]);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
+        } catch (Type\Exception\AssertException $e) {
+            static::assertSame(
+                'Expected "dict<int, dict<int, int>>", got "string" at path "0.key(nope)".',
+                $e->getMessage()
+            );
+        }
+    }
 }

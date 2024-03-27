@@ -7,6 +7,7 @@ namespace Psl\Tests\Unit\Type;
 use ArrayIterator;
 use Psl\Collection;
 use Psl\Iter;
+use Psl\Str;
 use Psl\Type;
 
 /**
@@ -32,15 +33,106 @@ final class ShapeTypeTest extends TypeTest
 
     public function testInvalidAssertionExtraKey(): void
     {
-        $this->expectException(Type\Exception\AssertException::class);
+        try {
+            Type\shape([
+                'name' => Type\string(),
+            ])->assert([
+                'name' => 'saif',
+                'extra' => 123,
+            ]);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
+        } catch (Type\Exception\AssertException $e) {
+            static::assertSame(
+                'Expected "array{\'name\': string}", got "int" at path "extra".',
+                $e->getMessage()
+            );
+        }
+    }
 
-        $this->getType()->assert([
-            'name' => 'saif',
-            'articles' => [
-                ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0, 'dislikes' => 5],
-                ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13, 'dislikes' => 3],
-            ]
-        ]);
+    public function testInvalidAssertionMissingKey(): void
+    {
+        try {
+            Type\shape([
+                'name' => Type\string(),
+            ])->assert([]);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
+        } catch (Type\Exception\AssertException $e) {
+            static::assertSame(
+                'Expected "array{\'name\': string}", got "null" at path "name".',
+                $e->getMessage()
+            );
+        }
+    }
+
+    public function testInvalidAssertionInvalidKey(): void
+    {
+        try {
+            Type\shape([
+                'name' => Type\string(),
+            ])->assert([
+                'name' => 123
+            ]);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
+        } catch (Type\Exception\AssertException $e) {
+            static::assertSame(
+                'Expected "array{\'name\': string}", got "int" at path "name".',
+                $e->getMessage()
+            );
+        }
+    }
+
+    public function testNestedAssertionInvalidKey(): void
+    {
+        try {
+            Type\shape([
+                'item' => Type\shape([
+                    'name' => Type\string(),
+                ]),
+            ])->assert([
+                'item' => [
+                    'name' => 123,
+                ]
+            ]);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
+        } catch (Type\Exception\AssertException $e) {
+            static::assertSame(
+                'Expected "array{\'item\': array{\'name\': string}}", got "int" at path "item.name".',
+                $e->getMessage()
+            );
+        }
+    }
+
+    public function testInvalidCoercionMissingKey(): void
+    {
+        try {
+            Type\shape([
+                'name' => Type\string(),
+            ])->coerce([]);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\CoercionException::class));
+        } catch (Type\Exception\CoercionException $e) {
+            static::assertSame(
+                'Could not coerce "null" to type "array{\'name\': string}" at path "name".',
+                $e->getMessage()
+            );
+        }
+    }
+
+    public function testInvalidCoercionInvalidKey(): void
+    {
+        try {
+            Type\shape([
+                'name' => Type\string(),
+            ])->coerce([
+                'name' => new class (){
+                },
+            ]);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\CoercionException::class));
+        } catch (Type\Exception\CoercionException $e) {
+            static::assertSame(
+                'Could not coerce "class@anonymous" to type "array{\'name\': string}" at path "name".',
+                $e->getMessage()
+            );
+        }
     }
 
     public function testWillConsiderUnknownIterableFieldsWhenCoercing(): void
