@@ -21,6 +21,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
     private int $offset = 0;
     private string $buffer;
     private bool $closed = false;
+    private bool $reachedEof = false;
 
     public function __construct(string $buffer = '')
     {
@@ -28,13 +29,17 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
     }
 
     /**
-     * Read from the handle.
-     *
-     * @param positive-int|null $max_bytes the maximum number of bytes to read.
-     *
-     * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     *
-     * @return string the read data on success, or an empty string if the end of file is reached.
+     * {@inheritDoc}
+     */
+    public function reachedEndOfDataSource(): bool
+    {
+        $this->assertHandleIsOpen();
+
+        return $this->reachedEof;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function tryRead(?int $max_bytes = null): string
     {
@@ -46,6 +51,8 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
 
         $length = strlen($this->buffer);
         if ($this->offset >= $length) {
+            $this->reachedEof = true;
+
             return '';
         }
 
@@ -58,13 +65,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
     }
 
     /**
-     * Read from the handle.
-     *
-     * @param positive-int|null $max_bytes the maximum number of bytes to read.
-     *
-     * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     *
-     * @return string the read data on success, or an empty string if the end of file is reached.
+     * {@inheritDoc}
      */
     public function read(?int $max_bytes = null, ?float $timeout = null): string
     {

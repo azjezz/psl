@@ -16,7 +16,7 @@ final class ReaderTest extends TestCase
         $reader = new IO\Reader($handle);
 
         static::assertSame('a', $reader->readByte());
-        static::assertTrue($reader->isEndOfFile());
+        static::assertTrue($reader->reachedEndOfDataSource());
     }
 
     public function testReadByteOnAnEmptyBufferThrows(): void
@@ -35,7 +35,7 @@ final class ReaderTest extends TestCase
         $reader = new IO\Reader($handle);
 
         static::assertEmpty($reader->tryRead());
-        static::assertTrue($reader->isEndOfFile());
+        static::assertTrue($reader->reachedEndOfDataSource());
     }
 
     public function testReadingFile(): void
@@ -66,7 +66,7 @@ final class ReaderTest extends TestCase
         /**
          * Handle has reached EOL, but the buffer still contains content.
          */
-        static::assertFalse($reader->isEndOfFile());
+        static::assertFalse($reader->reachedEndOfDataSource());
         static::assertSame(' ', $reader->readByte());
         static::assertSame('ReaderTest', $reader->readFixedSize(10));
     }
@@ -77,7 +77,7 @@ final class ReaderTest extends TestCase
         $reader = new IO\Reader($handle);
         static::assertSame('hello', $reader->read());
         static::assertSame('', $reader->read());
-        static::assertTrue($reader->isEndOfFile());
+        static::assertTrue($reader->reachedEndOfDataSource());
         static::assertSame('', $reader->read());
     }
 
@@ -90,7 +90,7 @@ final class ReaderTest extends TestCase
         static::assertSame('ll', $reader->read(2));
         static::assertSame('o,', $reader->read(2));
         static::assertSame(' world!', $reader->read(10));
-        static::assertTrue($reader->isEndOfFile());
+        static::assertTrue($reader->reachedEndOfDataSource());
         static::assertSame('', $reader->read());
     }
 
@@ -130,7 +130,7 @@ final class ReaderTest extends TestCase
 
         $reader = new IO\Reader($handle);
 
-        static::assertTrue($reader->isEndOfFile());
+        static::assertTrue($reader->reachedEndOfDataSource());
     }
 
     public function testIsEndOfLineWithEmptyHandle(): void
@@ -138,8 +138,8 @@ final class ReaderTest extends TestCase
         $handle = new IO\MemoryHandle();
         $reader = new IO\Reader($handle);
 
-        static::assertTrue($reader->isEndOfFile());
-        static::assertTrue($reader->isEndOfFile());
+        static::assertTrue($reader->reachedEndOfDataSource());
+        static::assertTrue($reader->reachedEndOfDataSource());
     }
 
     public function testIsEndOfLineWithNonEmptyHandle(): void
@@ -147,7 +147,7 @@ final class ReaderTest extends TestCase
         $handle = new IO\MemoryHandle('hello');
         $reader = new IO\Reader($handle);
 
-        static::assertFalse($reader->isEndOfFile());
+        static::assertFalse($reader->reachedEndOfDataSource());
         static::assertSame('hello', $reader->readLine());
     }
 }

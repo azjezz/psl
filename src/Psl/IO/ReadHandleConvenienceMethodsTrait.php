@@ -17,7 +17,7 @@ trait ReadHandleConvenienceMethodsTrait
     /**
      * Read until there is no more data to read.
      *
-     * It is possible for this to never return, e.g. if called on a pipe or
+     * It is possible for this to never return, e.g. if called on a pipe
      * or socket which the other end keeps open forever. Set a timeout if you
      * do not want this to happen.
      *
@@ -60,7 +60,7 @@ trait ReadHandleConvenienceMethodsTrait
             if ($to_read !== null) {
                 $to_read -= strlen($chunk);
             }
-        } while (($to_read === null || $to_read > 0) && $chunk !== '');
+        } while (($to_read === null || $to_read > 0) && !$this->reachedEndOfDataSource());
 
         return $data->value;
     }
@@ -68,7 +68,7 @@ trait ReadHandleConvenienceMethodsTrait
     /**
      * Read a fixed amount of data.
      *
-     * It is possible for this to never return, e.g. if called on a pipe or
+     * It is possible for this to never return, e.g. if called on a pipe
      * or socket which the other end keeps open forever. Set a timeout if you
      * do not want this to happen.
      *

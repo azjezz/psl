@@ -70,6 +70,14 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
     /**
      * {@inheritDoc}
      */
+    public function reachedEndOfDataSource(): bool
+    {
+        return $this->readWriteHandle->reachedEndOfDataSource();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function tryRead(?int $max_bytes = null): string
     {
         return $this->readWriteHandle->tryRead($max_bytes);
