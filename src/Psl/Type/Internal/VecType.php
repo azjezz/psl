@@ -7,6 +7,8 @@ namespace Psl\Type\Internal;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
+use Psl\Type\Exception\PathExpression;
+use Throwable;
 
 use function array_is_list;
 use function is_array;
@@ -58,17 +60,29 @@ final class VecType extends Type\Type
             throw CoercionException::withValue($value, $this->toString());
         }
 
-        /** @var Type\Type<Tv> $value_type */
-        $value_type = $this->value_type;
-
         /**
          * @var list<Tv> $entries
          */
         $result = [];
+        $value_type = $this->value_type;
+        $i = $v = null;
+        $iterating = true;
 
-        /** @var Tv $v */
-        foreach ($value as $v) {
-            $result[] = $value_type->coerce($v);
+        try {
+            /**
+             * @var Tv $v
+             * @var array-key $i
+             */
+            foreach ($value as $i => $v) {
+                $iterating = false;
+                $result[] = $value_type->coerce($v);
+                $iterating = true;
+            }
+        } catch (Throwable $e) {
+            throw match (true) {
+                $iterating => CoercionException::withValue(null, $this->toString(), PathExpression::iteratorError($i), $e),
+                default => CoercionException::withValue($v, $this->toString(), PathExpression::path($i), $e)
+            };
         }
 
         return $result;
@@ -87,16 +101,20 @@ final class VecType extends Type\Type
             throw AssertException::withValue($value, $this->toString());
         }
 
-        /** @var Type\Type<Tv> $value_type */
-        $value_type = $this->value_type;
-
         $result = [];
+        $value_type = $this->value_type;
+        $i = $v = null;
 
-        /**
-         * @var Tv $v
-         */
-        foreach ($value as $v) {
-            $result[] = $value_type->assert($v);
+        try {
+            /**
+             * @var Tv $v
+             * @var array-key $i
+             */
+            foreach ($value as $i => $v) {
+                $result[] = $value_type->assert($v);
+            }
+        } catch (AssertException $e) {
+            throw AssertException::withValue($v, $this->toString(), PathExpression::path($i), $e);
         }
 
         return $result;
