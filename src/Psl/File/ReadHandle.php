@@ -42,6 +42,14 @@ final class ReadHandle extends Internal\AbstractHandleWrapper implements ReadHan
     /**
      * {@inheritDoc}
      */
+    public function reachedEndOfDataSource(): bool
+    {
+        return $this->readHandle->reachedEndOfDataSource();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function tryRead(?int $max_bytes = null): string
     {
         return $this->readHandle->tryRead($max_bytes);

@@ -16,7 +16,7 @@ final class Reader implements ReadHandleInterface
 {
     use ReadHandleConvenienceMethodsTrait;
 
-    private ReadHandleInterface $handle;
+    private readonly ReadHandleInterface $handle;
 
     private bool $eof = false;
     private string $buffer = '';
@@ -24,6 +24,33 @@ final class Reader implements ReadHandleInterface
     public function __construct(ReadHandleInterface $handle)
     {
         $this->handle = $handle;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function reachedEndOfDataSource(): bool
+    {
+        if ($this->eof) {
+            return true;
+        }
+
+        if ($this->buffer !== '') {
+            return false;
+        }
+
+        // @codeCoverageIgnoreStart
+        try {
+            $this->buffer = $this->handle->read();
+            if ($this->buffer === '') {
+                return $this->eof = $this->handle->reachedEndOfDataSource();
+            }
+        } catch (Exception\ExceptionInterface) {
+            // ignore; it'll be thrown again when attempting a real read.
+        }
+        // @codeCoverageIgnoreEnd
+
+        return false;
     }
 
     /**
@@ -66,23 +93,6 @@ final class Reader implements ReadHandleInterface
     }
 
     /**
-     * @param null|positive-int $desired_bytes
-     *
-     * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
-     */
-    private function fillBuffer(?int $desired_bytes, ?float $timeout): void
-    {
-        $chunk = $this->handle->read($desired_bytes, $timeout);
-        if ($chunk === '') {
-            $this->eof = true;
-        }
-
-        $this->buffer .= $chunk;
-    }
-
-    /**
      * Read a single byte from the handle.
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
@@ -102,7 +112,6 @@ final class Reader implements ReadHandleInterface
         $ret = $this->buffer[0];
         if ($ret === $this->buffer) {
             $this->buffer = '';
-            $this->eof = true;
             return $ret;
         }
 
@@ -246,33 +255,17 @@ final class Reader implements ReadHandleInterface
     }
 
     /**
-     * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\AlreadyClosedException If the handle has been already closed.
+     * @param null|positive-int $desired_bytes
      *
-     * @return bool true if EOL has been reached, false otherwise.
+     * @throws Exception\AlreadyClosedException If the handle has been already closed.
+     * @throws Exception\RuntimeException If an error occurred during the operation.
+     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    public function isEndOfFile(): bool
+    private function fillBuffer(?int $desired_bytes, ?float $timeout): void
     {
-        if ($this->eof) {
-            return true;
+        $this->buffer .= $chunk = $this->handle->read($desired_bytes, $timeout);
+        if ($chunk === '') {
+            $this->eof = $this->handle->reachedEndOfDataSource();
         }
-
-        if ($this->buffer !== '') {
-            return false;
-        }
-
-        // @codeCoverageIgnoreStart
-        try {
-            $this->buffer = $this->handle->read();
-            if ($this->buffer === '') {
-                $this->eof = true;
-                return true;
-            }
-        } catch (Exception\ExceptionInterface) {
-            // ignore; it'll be thrown again when attempting a real read.
-        }
-        // @codeCoverageIgnoreEnd
-
-        return false;
     }
 }

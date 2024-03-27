@@ -13,10 +13,18 @@ use Psl\IO;
 #[Groups(['channel'])]
 final class CommunicationBench
 {
+    /**
+     * @throws Channel\Exception\ExceptionInterface
+     * @throws IO\Exception\ExceptionInterface
+     * @throws File\Exception\ExceptionInterface
+     *
+     * @psalm-suppress UnnecessaryVarAnnotation
+     */
     public function benchBoundedCommunication(): void
     {
         /**
-         * @psalm-suppress MissingThrowsDocblock - $capacity is always > 0
+         * @var Channel\ReceiverInterface<string> $receiver
+         * @var Channel\SenderInterface<string> $sender
          */
         [$receiver, $sender] = Channel\bounded(10);
 
@@ -30,14 +38,8 @@ final class CommunicationBench
             }
         });
 
-        /** @psalm-suppress MissingThrowsDocblock */
         $file = File\open_read_only(__FILE__);
-        $reader = new IO\Reader($file);
-        /** @psalm-suppress MissingThrowsDocblock */
-        while (!$reader->isEndOfFile()) {
-            $byte = $reader->readByte();
-
-            /** @psalm-suppress InvalidArgument */
+        while ($byte = $file->readAll(1)) {
             $sender->send($byte);
         }
 
@@ -46,10 +48,18 @@ final class CommunicationBench
         Async\Scheduler::run();
     }
 
+    /**
+     * @throws Channel\Exception\ExceptionInterface
+     * @throws IO\Exception\ExceptionInterface
+     * @throws File\Exception\ExceptionInterface
+     *
+     * @psalm-suppress UnnecessaryVarAnnotation
+     */
     public function benchUnboundedCommunication(): void
     {
         /**
-         * @psalm-suppress MissingThrowsDocblock - $capacity is always > 0
+         * @var Channel\ReceiverInterface<string> $receiver
+         * @var Channel\SenderInterface<string> $sender
          */
         [$receiver, $sender] = Channel\bounded(10);
 
@@ -63,14 +73,8 @@ final class CommunicationBench
             }
         });
 
-        /** @psalm-suppress MissingThrowsDocblock */
         $file = File\open_read_only(__FILE__);
-        $reader = new IO\Reader($file);
-        /** @psalm-suppress MissingThrowsDocblock */
-        while (!$reader->isEndOfFile()) {
-            $byte = $reader->readByte();
-
-            /** @psalm-suppress InvalidArgument */
+        while ($byte = $file->readAll(1)) {
             $sender->send($byte);
         }
 

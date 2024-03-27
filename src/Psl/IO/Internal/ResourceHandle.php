@@ -14,15 +14,19 @@ use Revolt\EventLoop\Suspension;
 
 use function error_get_last;
 use function fclose;
+use function feof;
+use function fread;
 use function fseek;
 use function ftell;
 use function fwrite;
 use function is_resource;
 use function max;
 use function str_contains;
+use function stream_get_contents;
 use function stream_get_meta_data;
 use function stream_set_blocking;
 use function stream_set_read_buffer;
+use function stream_set_write_buffer;
 use function substr;
 
 /**
@@ -47,53 +51,56 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     protected mixed $stream;
 
     /**
-     * @var null|Async\Sequence<array{null|int<1, max>, null|float}, string>
-     */
-    private ?Async\Sequence $readSequence = null;
-
-    private ?Suspension $readSuspension = null;
-
-    /**
-     * @var string
-     */
-    private string $readWatcher = 'invalid';
-
-    /**
      * @var null|Async\Sequence<array{string, null|float}, int<0, max>>
      */
     private ?Async\Sequence $writeSequence = null;
-
     private ?Suspension $writeSuspension = null;
+    private string $writeWatcher = 'invalid';
 
     /**
-     * @var string
+     * @var null|Async\Sequence<array{null|int<1, max>, null|float}, string>
      */
-    private string $writeWatcher = 'invalid';
+    private ?Async\Sequence $readSequence = null;
+    private ?Suspension $readSuspension = null;
+    private string $readWatcher = 'invalid';
+
+    private bool $useSingleRead = false;
+    private bool $reachedEof = false;
 
     /**
      * @param resource $stream
      */
-    public function __construct(mixed $stream, bool $read, bool $write, bool $seek, private bool $close)
+    public function __construct(mixed $stream, bool $read, bool $write, bool $seek, private readonly bool $close)
     {
         /** @psalm-suppress RedundantConditionGivenDocblockType - The stream is always a resource, but we want to make sure it is a stream resource. */
         $this->stream = Type\resource('stream')->assert($stream);
 
-        /** @psalm-suppress UnusedFunctionCall */
-        stream_set_read_buffer($stream, 0);
         stream_set_blocking($stream, false);
 
         $meta = stream_get_meta_data($stream);
+        if ($read) {
+            $this->useSingleRead = ($meta["stream_type"] === "udp_socket" || $meta["stream_type"] === "STDIO");
+        }
+
         $blocks = $meta['blocked'] || ($meta['wrapper_type'] ?? '') === 'plainfile';
         if ($seek) {
-            Psl\invariant($meta['seekable'], 'Handle is not seekable.');
+            $seekable = $meta['seekable'];
+
+            Psl\invariant($seekable, 'Handle is not seekable.');
         }
 
         if ($read) {
-            Psl\invariant(str_contains($meta['mode'], 'r') || str_contains($meta['mode'], '+'), 'Handle is not readable.');
+            $readable = str_contains($meta['mode'], 'r') || str_contains($meta['mode'], '+');
+
+            Psl\invariant($readable, 'Handle is not readable.');
+
+            /** @psalm-suppress UnusedFunctionCall */
+            stream_set_read_buffer($stream, 0);
 
             $this->readWatcher = EventLoop::onReadable($this->stream, function () {
-                $this->readSuspension?->resume(null);
+                $this->readSuspension?->resume();
             });
+
             $this->readSequence = new Async\Sequence(
                 /**
                  * @param array{null|int<1, max>, null|float} $input
@@ -142,11 +149,14 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
                 || str_contains($meta['mode'], 'a')
                 || str_contains($meta['mode'], '+');
 
-              Psl\invariant($writable, 'Handle is not writeable.');
+            Psl\invariant($writable, 'Handle is not writeable.');
 
-            $this->writeWatcher = EventLoop::onReadable($this->stream, function () {
-                $this->writeSuspension?->resume(null);
+            stream_set_write_buffer($stream, 0);
+
+            $this->writeWatcher = EventLoop::onWritable($this->stream, function () {
+                $this->writeSuspension?->resume();
             });
+
             $this->writeSequence = new Async\Sequence(
                 /**
                  * @param array{string, null|float} $input
@@ -257,6 +267,22 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    public function reachedEndOfDataSource(): bool
+    {
+        if (!is_resource($this->stream)) {
+            throw new Exception\AlreadyClosedException('Handle has already been closed.');
+        }
+
+        if ($this->reachedEof) {
+            return true;
+        }
+
+        return $this->reachedEof = feof($this->stream);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function read(?int $max_bytes = null, ?float $timeout = null): string
     {
         Psl\invariant($this->readSequence !== null, 'The resource handle is not readable.');
@@ -279,12 +305,21 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
             $max_bytes = self::MAXIMUM_READ_BUFFER_SIZE;
         }
 
-        $result = fread($this->stream, $max_bytes);
+        if ($this->useSingleRead) {
+            $result = fread($this->stream, $max_bytes);
+        } else {
+            $result = stream_get_contents($this->stream, $max_bytes);
+        }
+
         if ($result === false) {
             /** @var array{message: string} $error */
             $error = error_get_last();
 
             throw new Exception\RuntimeException($error['message'] ?? 'unknown error.');
+        }
+
+        if ($result === '' && feof($this->stream)) {
+            $this->reachedEof = true;
         }
 
         return $result;

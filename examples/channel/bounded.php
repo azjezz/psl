@@ -30,12 +30,11 @@ Async\main(static function () {
 
     for ($i = 0; $i < 10; $i++) {
         $file = File\open_read_only(__FILE__);
-        $reader = new IO\Reader($file);
-        while (!$reader->isEndOfFile()) {
-            $byte = $reader->readByte();
-
+        while ($byte = $file->readAll(1)) {
             $sender->send($byte);
         }
+
+        $file->close();
     }
 
     IO\write_error_line("[ sender   ]: completed.");
