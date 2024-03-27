@@ -63,10 +63,10 @@
 
 #### `Interfaces`
 
-- [TypeInterface](./../../src/Psl/Type/TypeInterface.php#L14)
+- [TypeInterface](./../../src/Psl/Type/TypeInterface.php#L13)
 
 #### `Classes`
 
-- [Type](./../../src/Psl/Type/Type.php#L15)
+- [Type](./../../src/Psl/Type/Type.php#L14)
 
 

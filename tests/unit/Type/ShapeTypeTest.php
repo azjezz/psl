@@ -7,7 +7,9 @@ namespace Psl\Tests\Unit\Type;
 use ArrayIterator;
 use Psl\Collection;
 use Psl\Iter;
+use Psl\Str;
 use Psl\Type;
+use RuntimeException;
 
 /**
  * @extends TypeTest<array>
@@ -27,19 +29,6 @@ final class ShapeTypeTest extends TypeTest
                     'comment' => Type\string()
                 ]))),
             ]))
-        ]);
-    }
-
-    public function testInvalidAssertionExtraKey(): void
-    {
-        $this->expectException(Type\Exception\AssertException::class);
-
-        $this->getType()->assert([
-            'name' => 'saif',
-            'articles' => [
-                ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0, 'dislikes' => 5],
-                ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13, 'dislikes' => 3],
-            ]
         ]);
     }
 
@@ -208,5 +197,141 @@ final class ShapeTypeTest extends TypeTest
         }
 
         return parent::equals($a, $b);
+    }
+
+    public static function provideAssertExceptionExpectations(): iterable
+    {
+        yield 'extra key' => [
+            Type\shape([
+                'name' => Type\string(),
+            ]),
+            [
+                'name' => 'saif',
+                'extra' => 123,
+            ],
+            'Expected "array{\'name\': string}", got "int" at path "extra".'
+        ];
+        yield 'missing key' => [
+            Type\shape([
+                'name' => Type\string(),
+            ]),
+            [],
+            'Expected "array{\'name\': string}", got "null" at path "name".'
+        ];
+        yield 'invalid key' => [
+            Type\shape([
+                'name' => Type\string(),
+            ]),
+            ['name' => 123],
+            'Expected "array{\'name\': string}", got "int" at path "name".'
+        ];
+        yield 'nested' => [
+            Type\shape([
+                'item' => Type\shape([
+                    'name' => Type\string(),
+                ]),
+            ]),
+            [
+                'item' => [
+                    'name' => 123,
+                ]
+            ],
+            'Expected "array{\'item\': array{\'name\': string}}", got "int" at path "item.name".',
+        ];
+    }
+
+    public static function provideCoerceExceptionExpectations(): iterable
+    {
+        yield 'missing key' => [
+            Type\shape([
+                'name' => Type\string(),
+            ]),
+            [],
+            'Could not coerce "null" to type "array{\'name\': string}" at path "name".'
+        ];
+        yield 'invalid key' => [
+            Type\shape([
+                'name' => Type\string(),
+            ]),
+            [
+                'name' => new class () {
+                },
+            ],
+            'Could not coerce "class@anonymous" to type "array{\'name\': string}" at path "name".',
+        ];
+        yield 'invalid iterator first item' => [
+            Type\shape([
+                'id' => Type\int(),
+            ]),
+            (static function () {
+                yield 'id' => Type\int()->coerce('nope');
+            })(),
+            'Could not coerce "string" to type "array{\'id\': int}" at path "first()".'
+        ];
+        yield 'invalid iterator second item' => [
+            Type\shape([
+                'id' => Type\int(),
+            ]),
+            (static function () {
+                yield 'id' => 1;
+                yield 'next' => Type\int()->coerce('nope');
+            })(),
+            'Could not coerce "string" to type "array{\'id\': int}" at path "id.next()".'
+        ];
+        yield 'iterator throwing exception' => [
+            Type\shape([
+                'id' => Type\int(),
+            ]),
+            (static function () {
+                throw new RuntimeException('whoops');
+                yield;
+            })(),
+            'Could not coerce "null" to type "array{\'id\': int}" at path "first()": whoops.'
+        ];
+        yield 'iterator yielding null key' => [
+            Type\shape([
+                'id' => Type\int(),
+            ]),
+            (static function () {
+                yield null => 'nope';
+            })(),
+            'Could not coerce "null" to type "array{\'id\': int}" at path "id".'
+        ];
+        yield 'iterator yielding object key' => [
+            Type\shape([
+                'id' => Type\int(),
+            ]),
+            (static function () {
+                yield (new class () {
+                }) => 'nope';
+            })(),
+            'Could not coerce "null" to type "array{\'id\': int}" at path "id".'
+        ];
+    }
+
+    /**
+     * @dataProvider provideAssertExceptionExpectations
+     */
+    public function testInvalidAssertionTypeExceptions(Type\TypeInterface $type, mixed $data, string $expectedMessage): void
+    {
+        try {
+            $type->assert($data);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
+        } catch (Type\Exception\AssertException $e) {
+            static::assertSame($expectedMessage, $e->getMessage());
+        }
+    }
+
+    /**
+     * @dataProvider provideCoerceExceptionExpectations
+     */
+    public function testInvalidCoercionTypeExceptions(Type\TypeInterface $type, mixed $data, string $expectedMessage): void
+    {
+        try {
+            $type->coerce($data);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\CoercionException::class));
+        } catch (Type\Exception\CoercionException $e) {
+            static::assertSame($expectedMessage, $e->getMessage());
+        }
     }
 }

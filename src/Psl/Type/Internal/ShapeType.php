@@ -8,7 +8,9 @@ use Psl\Iter;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
+use Psl\Type\Exception\PathExpression;
 use stdClass;
+use Throwable;
 
 use function array_diff_key;
 use function array_filter;
@@ -106,29 +108,47 @@ final class ShapeType extends Type\Type
 
         $arrayKeyType = Type\array_key();
         $array = [];
-        /**
-         * @var Tk $k
-         * @var Tv $v
-         */
-        foreach ($value as $k => $v) {
-            if ($arrayKeyType->matches($k)) {
-                $array[$k] = $v;
+        $k = null;
+        try {
+            /**
+             * @var Tk $k
+             * @var Tv $v
+             */
+            foreach ($value as $k => $v) {
+                if ($arrayKeyType->matches($k)) {
+                    $array[$k] = $v;
+                }
             }
+        } catch (Throwable $e) {
+            throw CoercionException::withValue(null, $this->toString(), PathExpression::iteratorError($k), $e);
         }
 
+
         $result = [];
-        foreach ($this->elements_types as $element => $type) {
-            if (Iter\contains_key($array, $element)) {
-                $result[$element] = $type->coerce($array[$element]);
+        $element = null;
+        $element_value_found = false;
 
-                continue;
+        try {
+            foreach ($this->elements_types as $element => $type) {
+                $element_value_found = false;
+                if (Iter\contains_key($array, $element)) {
+                    $element_value_found = true;
+                    $result[$element] = $type->coerce($array[$element]);
+
+                    continue;
+                }
+
+                if ($type->isOptional()) {
+                    continue;
+                }
+
+                throw CoercionException::withValue(null, $this->toString(), PathExpression::path($element));
             }
-
-            if ($type->isOptional()) {
-                continue;
-            }
-
-            throw CoercionException::withValue($value, $this->toString());
+        } catch (CoercionException $e) {
+            throw match (true) {
+                $element_value_found => CoercionException::withValue($array[$element] ?? null, $this->toString(), PathExpression::path($element), $e),
+                default => $e
+            };
         }
 
         if ($this->allow_unknown_fields) {
@@ -157,18 +177,30 @@ final class ShapeType extends Type\Type
         }
 
         $result = [];
-        foreach ($this->elements_types as $element => $type) {
-            if (Iter\contains_key($value, $element)) {
-                $result[$element] = $type->assert($value[$element]);
+        $element = null;
+        $element_value_found = false;
 
-                continue;
+        try {
+            foreach ($this->elements_types as $element => $type) {
+                $element_value_found = false;
+                if (Iter\contains_key($value, $element)) {
+                    $element_value_found = true;
+                    $result[$element] = $type->assert($value[$element]);
+
+                    continue;
+                }
+
+                if ($type->isOptional()) {
+                    continue;
+                }
+
+                throw AssertException::withValue(null, $this->toString(), PathExpression::path($element));
             }
-
-            if ($type->isOptional()) {
-                continue;
-            }
-
-            throw AssertException::withValue($value, $this->toString());
+        } catch (AssertException $e) {
+            throw match (true) {
+                $element_value_found => AssertException::withValue($value[$element] ?? null, $this->toString(), PathExpression::path($element), $e),
+                default => $e
+            };
         }
 
         /**
@@ -181,8 +213,9 @@ final class ShapeType extends Type\Type
                     $result[$k] = $v;
                 } else {
                     throw AssertException::withValue(
-                        $value,
+                        $v,
                         $this->toString(),
+                        PathExpression::path($k)
                     );
                 }
             }
