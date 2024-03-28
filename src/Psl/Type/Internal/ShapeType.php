@@ -101,7 +101,7 @@ final class ShapeType extends Type\Type
     private function coerceIterable(mixed $value): array
     {
         if (! is_iterable($value)) {
-            throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+            throw CoercionException::withValue($value, $this->toString());
         }
 
         $arrayKeyType = Type\array_key();
@@ -117,19 +117,31 @@ final class ShapeType extends Type\Type
         }
 
         $result = [];
-        foreach ($this->elements_types as $element => $type) {
-            [$trace, $type] = $this->getTypeAndTraceForElement($element, $type);
-            if (Iter\contains_key($array, $element)) {
-                $result[$element] = $type->coerce($array[$element]);
+        $element = null;
+        $element_value_found = false;
 
-                continue;
+        try {
+            foreach ($this->elements_types as $element => $type) {
+                $element_value_found = false;
+                if (Iter\contains_key($array, $element)) {
+                    $element_value_found = true;
+                    $result[$element] = $type->coerce($array[$element]);
+
+                    continue;
+                }
+
+                if ($type->isOptional()) {
+                    continue;
+                }
+
+                throw CoercionException::withValue(null, $this->toString(), (string) $element);
             }
-
-            if ($type->isOptional()) {
-                continue;
-            }
-
-            throw CoercionException::withValue($value, $this->toString(), $trace);
+        } catch (CoercionException $e) {
+            throw match (true) {
+                $element === null => $e,
+                $element_value_found => CoercionException::withValue($array[$element] ?? null, $this->toString(), (string) $element, $e),
+                default => $e
+            };
         }
 
         if ($this->allow_unknown_fields) {
@@ -154,23 +166,35 @@ final class ShapeType extends Type\Type
     public function assert(mixed $value): array
     {
         if (! is_array($value)) {
-            throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+            throw AssertException::withValue($value, $this->toString());
         }
 
         $result = [];
-        foreach ($this->elements_types as $element => $type) {
-            [$trace, $type] = $this->getTypeAndTraceForElement($element, $type);
-            if (Iter\contains_key($value, $element)) {
-                $result[$element] = $type->assert($value[$element]);
+        $element = null;
+        $element_value_found = false;
 
-                continue;
+        try {
+            foreach ($this->elements_types as $element => $type) {
+                $element_value_found = false;
+                if (Iter\contains_key($value, $element)) {
+                    $element_value_found = true;
+                    $result[$element] = $type->assert($value[$element]);
+
+                    continue;
+                }
+
+                if ($type->isOptional()) {
+                    continue;
+                }
+
+                throw AssertException::withValue(null, $this->toString(), (string) $element);
             }
-
-            if ($type->isOptional()) {
-                continue;
-            }
-
-            throw AssertException::withValue($value, $this->toString(), $trace);
+        } catch (AssertException $e) {
+            throw match (true) {
+                $element === null => $e,
+                $element_value_found => AssertException::withValue($value[$element] ?? null, $this->toString(), (string) $element, $e),
+                default => $e
+            };
         }
 
         /**
@@ -183,9 +207,9 @@ final class ShapeType extends Type\Type
                     $result[$k] = $v;
                 } else {
                     throw AssertException::withValue(
-                        $value,
+                        $v,
                         $this->toString(),
-                        $this->getTrace()->withFrame('array{' . $this->getElementName($k) . ': _}')
+                        (string) $k
                     );
                 }
             }
@@ -216,23 +240,5 @@ final class ShapeType extends Type\Type
         return is_int($element)
             ? (string) $element
             : '\'' . $element . '\'';
-    }
-
-    /**
-     * @template T
-     *
-     * @param Type\TypeInterface<T> $type
-     *
-     * @return array{0: Type\Exception\TypeTrace, 1: Type\TypeInterface<T>}
-     */
-    private function getTypeAndTraceForElement(string|int $element, Type\TypeInterface $type): array
-    {
-        $element_name = $this->getElementName($element);
-        $trace = $this->getTrace()->withFrame('array{' . $element_name . ': _}');
-
-        return [
-            $trace,
-            $type->withTrace($trace),
-        ];
     }
 }

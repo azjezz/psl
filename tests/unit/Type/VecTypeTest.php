@@ -94,4 +94,45 @@ final class VecTypeTest extends TypeTest
     {
         return Type\vec(Type\int());
     }
+
+    public function testInvalidAssertionValueType(): void
+    {
+        try {
+            Type\vec(Type\int())->assert(['nope']);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
+        } catch (Type\Exception\AssertException $e) {
+            static::assertSame(
+                'Expected "vec<int>", got "string" at path "0".',
+                $e->getMessage()
+            );
+        }
+    }
+
+    public function testInvalidCoercionValueType(): void
+    {
+        try {
+            Type\vec(Type\int())->coerce(['nope']);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\CoercionException::class));
+        } catch (Type\Exception\CoercionException $e) {
+            static::assertSame(
+                'Could not coerce "string" to type "vec<int>" at path "0".',
+                $e->getMessage()
+            );
+        }
+    }
+
+    public function testNestedAssertionInvalidKey(): void
+    {
+        try {
+            Type\vec(Type\vec(Type\int()))->assert([
+                ['nope'],
+            ]);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
+        } catch (Type\Exception\AssertException $e) {
+            static::assertSame(
+                'Expected "vec<vec<int>>", got "string" at path "0.0".',
+                $e->getMessage()
+            );
+        }
+    }
 }

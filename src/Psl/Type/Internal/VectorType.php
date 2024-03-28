@@ -38,12 +38,8 @@ final class VectorType extends Type\Type
     public function coerce(mixed $value): Collection\VectorInterface
     {
         if (is_iterable($value)) {
-            $value_trace = $this->getTrace()->withFrame(
-                Str\format('%s<%s>', Collection\VectorInterface::class, $this->value_type->toString())
-            );
-
             /** @var Type\Type<T> $value_type */
-            $value_type = $this->value_type->withTrace($value_trace);
+            $value_type = $this->value_type;
 
             /**
              * @var list<T> $values
@@ -61,7 +57,7 @@ final class VectorType extends Type\Type
             return new Collection\Vector($values);
         }
 
-        throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+        throw CoercionException::withValue($value, $this->toString());
     }
 
     /**
@@ -76,12 +72,8 @@ final class VectorType extends Type\Type
     public function assert(mixed $value): Collection\VectorInterface
     {
         if (is_object($value) && $value instanceof Collection\VectorInterface) {
-            $value_trace = $this->getTrace()->withFrame(
-                Str\format('%s<%s>', Collection\VectorInterface::class, $this->value_type->toString())
-            );
-
             /** @var Type\Type<T> $value_type */
-            $value_type = $this->value_type->withTrace($value_trace);
+            $value_type = $this->value_type;
 
             /**
              * @var list<T> $values
@@ -99,7 +91,7 @@ final class VectorType extends Type\Type
             return new Collection\Vector($values);
         }
 
-        throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+        throw AssertException::withValue($value, $this->toString());
     }
 
     public function toString(): string

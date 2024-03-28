@@ -50,7 +50,7 @@ final class PositiveIntType extends Type\Type
             try {
                 $trimmed = Str\trim_left($str, '0');
             } catch (Str\Exception\InvalidArgumentException $e) {
-                throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+                throw CoercionException::withValue($value, $this->toString());
             }
 
             $int = Str\to_int($trimmed);
@@ -60,7 +60,7 @@ final class PositiveIntType extends Type\Type
 
             // Exceptional case "000" -(trim)-> "", but we treat it as 0
             if ('' === $trimmed && '' !== $str) {
-                CoercionException::withValue($value, $this->toString(), $this->getTrace());
+                CoercionException::withValue($value, $this->toString());
             }
         }
 
@@ -72,7 +72,7 @@ final class PositiveIntType extends Type\Type
             }
         }
 
-        throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+        throw CoercionException::withValue($value, $this->toString());
     }
 
     /**
@@ -88,7 +88,7 @@ final class PositiveIntType extends Type\Type
             return $value;
         }
 
-        throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+        throw AssertException::withValue($value, $this->toString());
     }
 
     public function toString(): string

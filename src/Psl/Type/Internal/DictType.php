@@ -39,21 +39,35 @@ final class DictType extends Type\Type
     public function coerce(mixed $value): array
     {
         if (! is_iterable($value)) {
-            throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+            throw CoercionException::withValue($value, $this->toString());
         }
 
-        $trace = $this->getTrace();
-        $key_type = $this->key_type->withTrace($trace->withFrame('dict<' . $this->key_type->toString() . ', _>'));
-        $value_type = $this->value_type->withTrace($trace->withFrame('dict<_, ' . $this->value_type->toString() . '>'));
-
         $result = [];
+        $key_type = $this->key_type;
+        $value_type = $this->value_type;
 
-        /**
-         * @var Tk $k
-         * @var Tv $v
-         */
-        foreach ($value as $k => $v) {
-            $result[$key_type->coerce($k)] = $value_type->coerce($v);
+        $k = $v = null;
+        $trying_key = true;
+
+        try {
+            /**
+             * @var Tk $k
+             * @var Tv $v
+             */
+            foreach ($value as $k => $v) {
+                $trying_key = true;
+                $k_result = $key_type->coerce($k);
+                $trying_key = false;
+                $v_result = $value_type->coerce($v);
+
+                $result[$k_result] = $v_result;
+            }
+        } catch (CoercionException $e) {
+            throw match (true) {
+                $k === null => $e,
+                $trying_key => CoercionException::withValue($k, $this->toString(), 'key(' . (string) $k . ')', $e),
+                !$trying_key => CoercionException::withValue($v, $this->toString(), (string) $k, $e)
+            };
         }
 
         return $result;
@@ -69,25 +83,35 @@ final class DictType extends Type\Type
     public function assert(mixed $value): array
     {
         if (! is_array($value)) {
-            throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+            throw AssertException::withValue($value, $this->toString());
         }
 
-        $trace = $this->getTrace();
-        $key_type = $this->key_type->withTrace(
-            $trace->withFrame('dict<' . $this->key_type->toString() . ', _>')
-        );
-        $value_type = $this->value_type->withTrace(
-            $trace->withFrame('dict<_, ' . $this->value_type->toString() . '>')
-        );
-
         $result = [];
+        $key_type = $this->key_type;
+        $value_type = $this->value_type;
 
-        /**
-         * @var Tk $k
-         * @var Tv $v
-         */
-        foreach ($value as $k => $v) {
-            $result[$key_type->assert($k)] = $value_type->assert($v);
+        $k = $v = null;
+        $trying_key = true;
+
+        try {
+            /**
+             * @var Tk $k
+             * @var Tv $v
+             */
+            foreach ($value as $k => $v) {
+                $trying_key = true;
+                $k_result = $key_type->assert($k);
+                $trying_key = false;
+                $v_result = $value_type->assert($v);
+
+                $result[$k_result] = $v_result;
+            }
+        } catch (AssertException $e) {
+            throw match (true) {
+                $k === null => $e,
+                $trying_key => AssertException::withValue($k, $this->toString(), 'key(' . (string) $k . ')', $e),
+                !$trying_key => AssertException::withValue($v, $this->toString(), (string) $k, $e)
+            };
         }
 
         return $result;

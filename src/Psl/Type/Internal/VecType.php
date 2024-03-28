@@ -55,23 +55,29 @@ final class VecType extends Type\Type
     public function coerce(mixed $value): iterable
     {
         if (! is_iterable($value)) {
-            throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+            throw CoercionException::withValue($value, $this->toString());
         }
-
-        /** @var Type\Type<Tv> $value_type */
-        $value_type = $this->value_type->withTrace(
-            $this->getTrace()
-                ->withFrame($this->toString())
-        );
 
         /**
          * @var list<Tv> $entries
          */
         $result = [];
+        $value_type = $this->value_type;
+        $i = $v = null;
 
-        /** @var Tv $v */
-        foreach ($value as $v) {
-            $result[] = $value_type->coerce($v);
+        try {
+            /**
+             * @var Tv $v
+             * @var array-key $i
+             */
+            foreach ($value as $i => $v) {
+                $result[] = $value_type->coerce($v);
+            }
+        } catch (CoercionException $e) {
+            throw match (true) {
+                $i === null => $e,
+                default => CoercionException::withValue($v, $this->toString(), (string) $i, $e)
+            };
         }
 
         return $result;
@@ -87,22 +93,26 @@ final class VecType extends Type\Type
     public function assert(mixed $value): array
     {
         if (! is_array($value) || !array_is_list($value)) {
-            throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+            throw AssertException::withValue($value, $this->toString());
         }
 
-        /** @var Type\Type<Tv> $value_type */
-        $value_type = $this->value_type->withTrace(
-            $this->getTrace()
-                ->withFrame('vec<' . $this->value_type->toString() . '>')
-        );
-
         $result = [];
+        $value_type = $this->value_type;
+        $i = $v = null;
 
-        /**
-         * @var Tv $v
-         */
-        foreach ($value as $v) {
-            $result[] = $value_type->assert($v);
+        try {
+            /**
+             * @var Tv $v
+             * @var array-key $i
+             */
+            foreach ($value as $i => $v) {
+                $result[] = $value_type->assert($v);
+            }
+        } catch (AssertException $e) {
+            throw match (true) {
+                $i === null => $e,
+                default => AssertException::withValue($v, $this->toString(), (string) $i, $e)
+            };
         }
 
         return $result;

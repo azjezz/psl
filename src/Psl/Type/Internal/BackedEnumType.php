@@ -43,13 +43,13 @@ final class BackedEnumType extends Type\Type
 
         foreach (($this->enum)::cases() as $case) {
             if (Type\string()->matches($case->value)) {
-                $string_value = Type\string()->withTrace($this->getTrace())->coerce($value);
+                $string_value = Type\string()->coerce($value);
 
                 if ($string_value === $case->value) {
                     return $case;
                 }
             } else {
-                $integer_value = Type\int()->withTrace($this->getTrace())->coerce($value);
+                $integer_value = Type\int()->coerce($value);
 
                 if ($integer_value === $case->value) {
                     return $case;
@@ -57,7 +57,7 @@ final class BackedEnumType extends Type\Type
             }
         }
 
-        throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+        throw CoercionException::withValue($value, $this->toString());
     }
 
     /**
@@ -73,7 +73,7 @@ final class BackedEnumType extends Type\Type
             return $value;
         }
 
-        throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+        throw AssertException::withValue($value, $this->toString());
     }
 
     public function toString(): string

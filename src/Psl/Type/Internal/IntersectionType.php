@@ -68,7 +68,7 @@ final class IntersectionType extends Type
             // ignore
         }
 
-        throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+        throw CoercionException::withValue($value, $this->toString());
     }
 
     /**
@@ -85,7 +85,7 @@ final class IntersectionType extends Type
             /** @var Tl&Tr */
             return $this->right_type->assert($value);
         } catch (AssertException) {
-            throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+            throw AssertException::withValue($value, $this->toString());
         }
     }
 

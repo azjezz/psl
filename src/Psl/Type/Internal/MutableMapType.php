@@ -42,18 +42,10 @@ final class MutableMapType extends Type\Type
     public function coerce(mixed $value): Collection\MutableMapInterface
     {
         if (is_iterable($value)) {
-            $key_trace = $this->getTrace()->withFrame(
-                Str\format('%s<%s, _>', Collection\MutableMapInterface::class, $this->key_type->toString())
-            );
-
-            $value_trace = $this->getTrace()->withFrame(
-                Str\format('%s<_, %s>', Collection\MutableMapInterface::class, $this->value_type->toString())
-            );
-
             /** @var Type\Type<Tk> $key_type */
-            $key_type = $this->key_type->withTrace($key_trace);
+            $key_type = $this->key_type;
             /** @var Type\Type<Tv> $value_type */
-            $value_type = $this->value_type->withTrace($value_trace);
+            $value_type = $this->value_type;
 
             /** @var list<array{Tk, Tv}> $entries */
             $entries = [];
@@ -75,7 +67,7 @@ final class MutableMapType extends Type\Type
             return new Collection\MutableMap($dict);
         }
 
-        throw CoercionException::withValue($value, $this->toString(), $this->getTrace());
+        throw CoercionException::withValue($value, $this->toString());
     }
 
     /**
@@ -88,18 +80,10 @@ final class MutableMapType extends Type\Type
     public function assert(mixed $value): Collection\MutableMapInterface
     {
         if (is_object($value) && $value instanceof Collection\MutableMapInterface) {
-            $key_trace = $this->getTrace()->withFrame(
-                Str\format('%s<%s, _>', Collection\MutableMapInterface::class, $this->key_type->toString())
-            );
-
-            $value_trace = $this->getTrace()->withFrame(
-                Str\format('%s<_, %s>', Collection\MutableMapInterface::class, $this->value_type->toString())
-            );
-
             /** @var Type\Type<Tk> $key_type */
-            $key_type = $this->key_type->withTrace($key_trace);
+            $key_type = $this->key_type;
             /** @var Type\Type<Tv> $value_type */
-            $value_type = $this->value_type->withTrace($value_trace);
+            $value_type = $this->value_type;
 
             /** @var list<array{Tk, Tv}> $entries */
             $entries = [];
@@ -121,7 +105,7 @@ final class MutableMapType extends Type\Type
             return new Collection\MutableMap($dict);
         }
 
-        throw AssertException::withValue($value, $this->toString(), $this->getTrace());
+        throw AssertException::withValue($value, $this->toString());
     }
 
     public function toString(): string

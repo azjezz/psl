@@ -32,7 +32,7 @@ final class OptionalType extends Type\Type
      */
     public function coerce(mixed $value): mixed
     {
-        return $this->inner->withTrace($this->getTrace())->coerce($value);
+        return $this->inner->coerce($value);
     }
 
     /**
@@ -44,7 +44,7 @@ final class OptionalType extends Type\Type
      */
     public function assert(mixed $value): mixed
     {
-        return $this->inner->withTrace($this->getTrace())->assert($value);
+        return $this->inner->assert($value);
     }
 
     /**

@@ -690,7 +690,6 @@ final class Loader
         'Psl\\Type\\Internal\\LiteralScalarType' => 'Psl/Type/Internal/LiteralScalarType.php',
         'Psl\\Type\\Internal\\BackedEnumType' => 'Psl/Type/Internal/BackedEnumType.php',
         'Psl\\Type\\Internal\\UnitEnumType' => 'Psl/Type/Internal/UnitEnumType.php',
-        'Psl\\Type\\Exception\\TypeTrace' => 'Psl/Type/Exception/TypeTrace.php',
         'Psl\\Type\\Exception\\AssertException' => 'Psl/Type/Exception/AssertException.php',
         'Psl\\Type\\Exception\\CoercionException' => 'Psl/Type/Exception/CoercionException.php',
         'Psl\\Type\\Exception\\Exception' => 'Psl/Type/Exception/Exception.php',

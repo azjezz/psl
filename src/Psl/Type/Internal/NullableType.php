@@ -44,7 +44,7 @@ final class NullableType extends Type\Type
             return null;
         }
 
-        return $this->inner->withTrace($this->getTrace())->coerce($value);
+        return $this->inner->coerce($value);
     }
 
     /**
@@ -60,7 +60,7 @@ final class NullableType extends Type\Type
             return null;
         }
 
-        return $this->inner->withTrace($this->getTrace())->assert($value);
+        return $this->inner->assert($value);
     }
 
     public function toString(): string
