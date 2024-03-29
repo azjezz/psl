@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Type;
 
 use DateTimeImmutable;
+use Psl\Str;
 use Psl\Type;
 use RuntimeException;
 
@@ -60,5 +61,51 @@ final class ConvertedTypeTest extends TypeTest
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), DateTimeImmutable::class];
+    }
+
+    public static function provideCoerceExceptionExpectations(): iterable
+    {
+        yield 'Coerce input error' => [
+            Type\converted(
+                Type\int(),
+                Type\string(),
+                static fn (int $i): string => (string) $i
+            ),
+            new class () {
+            },
+            'Could not coerce "class@anonymous" to type "int" at path "coerce_input(class@anonymous): int".'
+        ];
+        yield 'Convert exception error' => [
+            Type\converted(
+                Type\int(),
+                Type\string(),
+                static fn (int $i): string => throw new RuntimeException('not possible')
+            ),
+            1,
+            'Could not coerce "int" to type "string" at path "convert(int): string": not possible.'
+        ];
+        yield 'Coerce output error' => [
+            Type\converted(
+                Type\int(),
+                Type\string(),
+                static fn (int $i): object => new class () {
+                }
+            ),
+            1,
+            'Could not coerce "class@anonymous" to type "string" at path "coerce_output(class@anonymous): string".'
+        ];
+    }
+
+    /**
+     * @dataProvider provideCoerceExceptionExpectations
+     */
+    public function testInvalidCoercionTypeExceptions(Type\TypeInterface $type, mixed $data, string $expectedMessage): void
+    {
+        try {
+            $type->coerce($data);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\CoercionException::class));
+        } catch (Type\Exception\CoercionException $e) {
+            static::assertSame($expectedMessage, $e->getMessage());
+        }
     }
 }

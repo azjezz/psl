@@ -38,4 +38,22 @@ final class PathExpressionTest extends TestCase
         static::assertSame('first()', PathExpression::iteratorError(null));
         static::assertSame('foo.next()', PathExpression::iteratorError('foo'));
     }
+
+    public function testCoerceInput(): void
+    {
+        static::assertSame('coerce_input(string): string', PathExpression::coerceInput('foo', 'string'));
+        static::assertSame('coerce_input(array): string', PathExpression::coerceInput([], 'string'));
+    }
+
+    public function testConvert(): void
+    {
+        static::assertSame('convert(string): string', PathExpression::convert('foo', 'string'));
+        static::assertSame('convert(array): string', PathExpression::convert([], 'string'));
+    }
+
+    public function testCoerceOutput(): void
+    {
+        static::assertSame('coerce_output(string): string', PathExpression::coerceOutput('foo', 'string'));
+        static::assertSame('coerce_output(array): string', PathExpression::coerceOutput([], 'string'));
+    }
 }

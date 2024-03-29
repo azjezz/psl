@@ -8,6 +8,7 @@ use Closure;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
+use Psl\Type\Exception\PathExpression;
 use Psl\Type\TypeInterface;
 use Throwable;
 
@@ -48,15 +49,29 @@ final class ConvertedType extends Type\Type
             return $value;
         }
 
-        $coercedInput = $this->from->coerce($value);
+        $action = 0;
 
         try {
+            $coercedInput = $this->from->coerce($value);
+            $action++;
             $converted = ($this->converter)($coercedInput);
+            $action++;
+            return $this->into->coerce($converted);
         } catch (Throwable $failure) {
-            throw CoercionException::withValue($value, $this->toString(), previous: $failure);
+            throw CoercionException::withValue(
+                $value,
+                match ($action) {
+                    0 => $this->from->toString(),
+                    default => $this->into->toString(),
+                },
+                match ($action) {
+                    0 => PathExpression::coerceInput($value, $this->from->toString()),
+                    1 => PathExpression::convert($coercedInput ?? null, $this->into->toString()),
+                    default => PathExpression::coerceOutput($converted ?? null, $this->into->toString()),
+                },
+                $failure
+            );
         }
-
-        return $this->into->coerce($converted);
     }
 
     /**

@@ -8,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Str;
 use Psl\Type;
-use RuntimeException;
 
 final class TypeCoercionExceptionTest extends TestCase
 {
@@ -51,33 +50,6 @@ final class TypeCoercionExceptionTest extends TestCase
             static::assertSame(0, $e->getCode());
             static::assertSame(Str\format(
                 'Could not coerce "%s" to type "resource (curl)".',
-                Collection\Map::class
-            ), $e->getMessage());
-            static::assertSame([], $e->getPaths());
-        }
-    }
-
-    public function testConversionFailure(): void
-    {
-        $type = Type\converted(
-            Type\int(),
-            Type\string(),
-            static fn (int $i): string => throw new RuntimeException('not possible')
-        );
-
-        try {
-            $type->coerce(1);
-
-            static::fail(Str\format(
-                'Expected "%s" exception to be thrown.',
-                Type\Exception\CoercionException::class
-            ));
-        } catch (Type\Exception\CoercionException $e) {
-            static::assertSame('string', $e->getTargetType());
-            static::assertSame('int', $e->getActualType());
-            static::assertSame(0, $e->getCode());
-            static::assertSame(Str\format(
-                'Could not coerce "int" to type "string": not possible.',
                 Collection\Map::class
             ), $e->getMessage());
             static::assertSame([], $e->getPaths());
