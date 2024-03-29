@@ -21,7 +21,7 @@ abstract class Exception extends RuntimeException implements ExceptionInterface
     /**
      * @param list<string> $paths
      */
-    public function __construct(
+    protected function __construct(
         string $message,
         string $actual,
         array $paths,

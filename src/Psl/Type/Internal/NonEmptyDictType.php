@@ -8,7 +8,6 @@ use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
-use Psl\Type\Exception\PathExpression;
 use Throwable;
 
 use function is_array;
