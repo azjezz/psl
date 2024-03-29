@@ -8,6 +8,8 @@ use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
+use Psl\Type\Exception\PathExpression;
+use Throwable;
 
 use function is_array;
 use function is_iterable;
@@ -45,12 +47,31 @@ final class NonEmptyDictType extends Type\Type
 
             $result = [];
 
-            /**
-             * @var Tk $k
-             * @var Tv $v
-             */
-            foreach ($value as $k => $v) {
-                $result[$key_type->coerce($k)] = $value_type->coerce($v);
+            $k = $v = null;
+            $trying_key = true;
+            $iterating = true;
+
+            try {
+                /**
+                 * @var Tk $k
+                 * @var Tv $v
+                 */
+                foreach ($value as $k => $v) {
+                    $iterating = false;
+                    $trying_key = true;
+                    $k_result = $key_type->coerce($k);
+                    $trying_key = false;
+                    $v_result = $value_type->coerce($v);
+
+                    $result[$k_result] = $v_result;
+                    $iterating = true;
+                }
+            } catch (Throwable $e) {
+                throw match (true) {
+                    $iterating => CoercionException::withValue(null, $this->toString(), PathExpression::iteratorError($k), $e),
+                    $trying_key => CoercionException::withValue($k, $this->toString(), PathExpression::iteratorKey($k), $e),
+                    !$trying_key => CoercionException::withValue($v, $this->toString(), PathExpression::path($k), $e)
+                };
             }
 
             if ($result === []) {
@@ -78,12 +99,27 @@ final class NonEmptyDictType extends Type\Type
 
             $result = [];
 
-            /**
-             * @var Tk $k
-             * @var Tv $v
-             */
-            foreach ($value as $k => $v) {
-                $result[$key_type->assert($k)] = $value_type->assert($v);
+            $k = $v = null;
+            $trying_key = true;
+
+            try {
+                /**
+                 * @var Tk $k
+                 * @var Tv $v
+                 */
+                foreach ($value as $k => $v) {
+                    $trying_key = true;
+                    $k_result = $key_type->assert($k);
+                    $trying_key = false;
+                    $v_result = $value_type->assert($v);
+
+                    $result[$k_result] = $v_result;
+                }
+            } catch (AssertException $e) {
+                throw match ($trying_key) {
+                    true => AssertException::withValue($k, $this->toString(), PathExpression::iteratorKey($k), $e),
+                    false => AssertException::withValue($v, $this->toString(), PathExpression::path($k), $e)
+                };
             }
 
             if ($result === []) {
