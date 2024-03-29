@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Psl\Tests\Unit\Type\Exception;
+namespace Psl\Tests\Unit\Type\Internal;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Type\Exception\PathExpression;
+use Psl\Type\Internal\PathExpression;
 
 final class PathExpressionTest extends TestCase
 {

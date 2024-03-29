@@ -17,7 +17,7 @@ final class AssertException extends Exception
     /**
      * @param list<string> $paths
      */
-    public function __construct(string $actual, string $expected, array $paths = [], ?Throwable $previous = null)
+    private function __construct(string $actual, string $expected, array $paths = [], ?Throwable $previous = null)
     {
         $first = $previous instanceof Exception ? $previous->getFirstFailingActualType() : $actual;
 
