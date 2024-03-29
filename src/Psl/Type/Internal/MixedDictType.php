@@ -7,6 +7,8 @@ namespace Psl\Type\Internal;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
+use Psl\Type\Exception\PathExpression;
+use Throwable;
 
 /**
  * @extends Type\Type<array<array-key, mixed>>
@@ -33,16 +35,28 @@ final class MixedDictType extends Type\Type
         $result = [];
 
         $key_type = Type\array_key();
+        $k = null;
+        $iterating = true;
 
-        /**
-         * @var array-key $k
-         * @var mixed $v
-         *
-         * @psalm-suppress MixedAssignment
-         */
-        foreach ($value as $k => $v) {
-            $result[$key_type->coerce($k)] = $v;
+        try {
+            /**
+             * @var array-key $k
+             * @var mixed $v
+             *
+             * @psalm-suppress MixedAssignment
+             */
+            foreach ($value as $k => $v) {
+                $iterating = false;
+                $result[$key_type->coerce($k)] = $v;
+                $iterating = true;
+            }
+        } catch (Throwable $e) {
+            throw match (true) {
+                $iterating => CoercionException::withValue(null, $this->toString(), PathExpression::iteratorError($k), $e),
+                default => CoercionException::withValue($k, $this->toString(), PathExpression::iteratorKey($k), $e),
+            };
         }
+
 
         return $result;
     }

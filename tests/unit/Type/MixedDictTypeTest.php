@@ -10,6 +10,7 @@ use Psl\Dict;
 use Psl\Str;
 use Psl\Type;
 use Psl\Vec;
+use RuntimeException;
 use SplObjectStorage;
 use stdClass;
 
@@ -85,5 +86,61 @@ final class MixedDictTypeTest extends TypeTest
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'dict<array-key, mixed>'];
+    }
+
+
+    public static function provideCoerceExceptionExpectations(): iterable
+    {
+        yield 'invalid iterator first item' => [
+            Type\mixed_dict(),
+            (static function () {
+                yield 0 => Type\int()->coerce('nope');
+            })(),
+            'Could not coerce "string" to type "dict<array-key, mixed>" at path "first()".'
+        ];
+        yield 'invalid iterator second item' => [
+            Type\mixed_dict(),
+            (static function () {
+                yield 0 => 0;
+                yield 1 => Type\int()->coerce('nope');
+            })(),
+            'Could not coerce "string" to type "dict<array-key, mixed>" at path "0.next()".'
+        ];
+        yield 'iterator throwing exception' => [
+            Type\mixed_dict(),
+            (static function () {
+                throw new RuntimeException('whoops');
+                yield;
+            })(),
+            'Could not coerce "null" to type "dict<array-key, mixed>" at path "first()": whoops.'
+        ];
+        yield 'iterator yielding null key' => [
+            Type\mixed_dict(),
+            (static function () {
+                yield null => 'nope';
+            })(),
+            'Could not coerce "null" to type "dict<array-key, mixed>" at path "key(null)".'
+        ];
+        yield 'iterator yielding object key' => [
+            Type\mixed_dict(),
+            (static function () {
+                yield (new class () {
+                }) => 'nope';
+            })(),
+            'Could not coerce "class@anonymous" to type "dict<array-key, mixed>" at path "key(class@anonymous)".'
+        ];
+    }
+
+    /**
+     * @dataProvider provideCoerceExceptionExpectations
+     */
+    public function testInvalidCoercionTypeExceptions(Type\TypeInterface $type, mixed $data, string $expectedMessage): void
+    {
+        try {
+            $type->coerce($data);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\CoercionException::class));
+        } catch (Type\Exception\CoercionException $e) {
+            static::assertSame($expectedMessage, $e->getMessage());
+        }
     }
 }

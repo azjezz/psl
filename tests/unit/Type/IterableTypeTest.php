@@ -9,6 +9,7 @@ use Psl\Iter;
 use Psl\Str;
 use Psl\Type;
 use Psl\Vec;
+use RuntimeException;
 
 /**
  * @extends TypeTest<iterable<int, int>>
@@ -74,5 +75,102 @@ final class IterableTypeTest extends TypeTest
         $b = Dict\from_iterable($b);
 
         return $a === $b;
+    }
+
+    public static function provideAssertExceptionExpectations(): iterable
+    {
+        yield 'invalid assertion key' => [
+            Type\iterable(Type\int(), Type\int()),
+            ['nope' => 1],
+            'Expected "iterable<int, int>", got "string" at path "key(nope)".'
+        ];
+        yield 'invalid assertion value' => [
+            Type\iterable(Type\int(), Type\int()),
+            [0 => 'nope'],
+            'Expected "iterable<int, int>", got "string" at path "0".'
+        ];
+        yield 'nested' => [
+            Type\iterable(Type\int(), Type\iterable(Type\int(), Type\int())),
+            [0 => ['nope' => 'nope'],],
+            'Expected "iterable<int, iterable<int, int>>", got "string" at path "0.key(nope)".',
+        ];
+    }
+
+    public static function provideCoerceExceptionExpectations(): iterable
+    {
+        yield 'invalid coercion key' => [
+            Type\iterable(Type\int(), Type\int()),
+            ['nope' => 1],
+            'Could not coerce "string" to type "iterable<int, int>" at path "key(nope)".'
+        ];
+        yield 'invalid coercion value' => [
+            Type\iterable(Type\int(), Type\int()),
+            [0 => 'nope'],
+            'Could not coerce "string" to type "iterable<int, int>" at path "0".'
+        ];
+        yield 'invalid iterator first item' => [
+            Type\iterable(Type\int(), Type\int()),
+            (static function () {
+                yield 0 => Type\int()->coerce('nope');
+            })(),
+            'Could not coerce "string" to type "iterable<int, int>" at path "first()".'
+        ];
+        yield 'invalid iterator second item' => [
+            Type\iterable(Type\int(), Type\int()),
+            (static function () {
+                yield 0 => 0;
+                yield 1 => Type\int()->coerce('nope');
+            })(),
+            'Could not coerce "string" to type "iterable<int, int>" at path "0.next()".'
+        ];
+        yield 'iterator throwing exception' => [
+            Type\iterable(Type\int(), Type\int()),
+            (static function () {
+                throw new RuntimeException('whoops');
+                yield;
+            })(),
+            'Could not coerce "null" to type "iterable<int, int>" at path "first()": whoops.'
+        ];
+        yield 'iterator yielding null key' => [
+            Type\iterable(Type\int(), Type\int()),
+            (static function () {
+                yield null => 'nope';
+            })(),
+            'Could not coerce "null" to type "iterable<int, int>" at path "key(null)".'
+        ];
+        yield 'iterator yielding object key' => [
+            Type\iterable(Type\int(), Type\int()),
+            (static function () {
+                yield (new class () {
+                }) => 'nope';
+            })(),
+            'Could not coerce "class@anonymous" to type "iterable<int, int>" at path "key(class@anonymous)".'
+        ];
+    }
+
+    /**
+     * @dataProvider provideAssertExceptionExpectations
+     */
+    public function testInvalidAssertionTypeExceptions(Type\TypeInterface $type, mixed $data, string $expectedMessage): void
+    {
+        try {
+            $type->assert($data);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
+        } catch (Type\Exception\AssertException $e) {
+            static::assertSame($expectedMessage, $e->getMessage());
+        }
+    }
+
+    /**
+     * @dataProvider provideCoerceExceptionExpectations
+     */
+    public function testInvalidCoercionTypeExceptions(Type\TypeInterface $type, mixed $data, string $expectedMessage): void
+    {
+        try {
+            $type->coerce($data);
+            static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\CoercionException::class));
+        } catch (Type\Exception\CoercionException $e) {
+            static::assertSame($expectedMessage, $e->getMessage());
+        }
     }
 }

@@ -9,6 +9,8 @@ use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
+use Psl\Type\Exception\PathExpression;
+use Throwable;
 
 use function is_iterable;
 use function is_object;
@@ -45,12 +47,24 @@ final class VectorType extends Type\Type
              * @var list<T> $values
              */
             $values = [];
+            $i = $v = null;
+            $iterating = true;
 
-            /**
-             * @var T $v
-             */
-            foreach ($value as $v) {
-                $values[] = $value_type->coerce($v);
+            try {
+                /**
+                 * @var T $v
+                 * @var array-key $i
+                 */
+                foreach ($value as $i => $v) {
+                    $iterating = false;
+                    $values[] = $value_type->coerce($v);
+                    $iterating = true;
+                }
+            } catch (Throwable $e) {
+                throw match (true) {
+                    $iterating => CoercionException::withValue(null, $this->toString(), PathExpression::iteratorError($i), $e),
+                    default => CoercionException::withValue($v, $this->toString(), PathExpression::path($i), $e)
+                };
             }
 
             /** @var Collection\Vector<T> */
@@ -79,12 +93,18 @@ final class VectorType extends Type\Type
              * @var list<T> $values
              */
             $values = [];
+            $i = $v = null;
 
-            /**
-             * @var T $v
-             */
-            foreach ($value as $v) {
-                $values[] = $value_type->coerce($v);
+            try {
+                /**
+                 * @var T $v
+                 * @var array-key $i
+                 */
+                foreach ($value as $i => $v) {
+                    $values[] = $value_type->assert($v);
+                }
+            } catch (AssertException $e) {
+                throw AssertException::withValue($v, $this->toString(), PathExpression::path($i), $e);
             }
 
             /** @var Collection\Vector<T> */

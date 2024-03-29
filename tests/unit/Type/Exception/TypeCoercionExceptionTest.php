@@ -11,28 +11,6 @@ use Psl\Type;
 
 final class TypeCoercionExceptionTest extends TestCase
 {
-    public function testIncorrectIterableKey(): void
-    {
-        $type = Type\iterable(Type\bool(), Type\instance_of(Collection\CollectionInterface::class));
-
-        try {
-            $type->coerce([
-                4 => new Collection\Vector([1, 2, 3])
-            ]);
-
-            static::fail(Str\format(
-                'Expected "%s" exception to be thrown.',
-                Type\Exception\CoercionException::class
-            ));
-        } catch (Type\Exception\CoercionException $e) {
-            static::assertSame('bool', $e->getTargetType());
-            static::assertSame('int', $e->getActualType());
-            static::assertSame('Could not coerce "int" to type "bool".', $e->getMessage());
-            static::assertSame(0, $e->getCode());
-            static::assertSame([], $e->getPaths());
-        }
-    }
-
     public function testIncorrectResourceType(): void
     {
         $type = Type\resource('curl');
