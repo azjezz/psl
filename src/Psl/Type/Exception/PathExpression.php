@@ -46,4 +46,19 @@ final class PathExpression
     {
         return self::expression($previousKey === null ? 'first()' : '%s.next()', $previousKey);
     }
+
+    public static function coerceInput(mixed $input, string $expectedType): string
+    {
+        return Str\format('coerce_input(%s): %s', get_debug_type($input), $expectedType);
+    }
+
+    public static function convert(mixed $input, string $expectedType): string
+    {
+        return Str\format('convert(%s): %s', get_debug_type($input), $expectedType);
+    }
+
+    public static function coerceOutput(mixed $input, string $expectedType): string
+    {
+        return Str\format('coerce_output(%s): %s', get_debug_type($input), $expectedType);
+    }
 }
