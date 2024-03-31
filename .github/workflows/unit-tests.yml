@@ -13,12 +13,10 @@ jobs:
     strategy:
       matrix:
         php-version:
-          - "8.1"
           - "8.2"
           - "8.3"
         operating-system:
-          # MacOs has a floating-point problem.
-          # - "macos-latest"
+          - "macos-latest"
           - "ubuntu-latest"
           - "windows-latest"
 
