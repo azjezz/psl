@@ -42,7 +42,7 @@ trait WriteHandleConvenienceMethodsTrait
          */
         $written = new Psl\Ref(0);
 
-        $timer = new Internal\OptionalIncrementalTimeout(
+        $timer = new Psl\Async\OptionalIncrementalTimeout(
             $timeout,
             static function () use ($written): void {
                 // @codeCoverageIgnoreStart

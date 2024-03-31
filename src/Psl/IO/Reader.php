@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
+use Psl\Async;
 use Psl\Str;
 
 use function strlen;
@@ -58,7 +59,7 @@ final class Reader implements ReadHandleInterface
      */
     public function readFixedSize(int $size, ?float $timeout = null): string
     {
-        $timer = new Internal\OptionalIncrementalTimeout(
+        $timer = new Async\OptionalIncrementalTimeout(
             $timeout,
             function (): void {
                 // @codeCoverageIgnoreStart
@@ -129,7 +130,7 @@ final class Reader implements ReadHandleInterface
      */
     public function readLine(?float $timeout = null): ?string
     {
-        $timer = new Internal\OptionalIncrementalTimeout(
+        $timer = new Async\OptionalIncrementalTimeout(
             $timeout,
             static function (): void {
                 // @codeCoverageIgnoreStart
@@ -173,7 +174,7 @@ final class Reader implements ReadHandleInterface
             return substr($buf, 0, $idx);
         }
 
-        $timer = new Internal\OptionalIncrementalTimeout(
+        $timer = new Async\OptionalIncrementalTimeout(
             $timeout,
             static function () use ($suffix): void {
                 // @codeCoverageIgnoreStart

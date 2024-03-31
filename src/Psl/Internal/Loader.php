@@ -760,7 +760,7 @@ final class Loader
         'Psl\\IO\\SeekReadWriteStreamHandle' => 'Psl/IO/SeekReadWriteStreamHandle.php',
         'Psl\\IO\\SeekWriteStreamHandle' => 'Psl/IO/SeekWriteStreamHandle.php',
         'Psl\\IO\\WriteStreamHandle' => 'Psl/IO/WriteStreamHandle.php',
-        'Psl\\IO\\Internal\\OptionalIncrementalTimeout' => 'Psl/IO/Internal/OptionalIncrementalTimeout.php',
+        'Psl\\Async\\OptionalIncrementalTimeout' => 'Psl/Async/OptionalIncrementalTimeout.php',
         'Psl\\File\\Exception\\AlreadyLockedException' => 'Psl/File/Exception/AlreadyLockedException.php',
         'Psl\\File\\Exception\\RuntimeException' => 'Psl/File/Exception/RuntimeException.php',
         'Psl\\File\\Internal\\AbstractHandleWrapper' => 'Psl/File/Internal/AbstractHandleWrapper.php',

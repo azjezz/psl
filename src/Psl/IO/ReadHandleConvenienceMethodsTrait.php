@@ -36,7 +36,7 @@ trait ReadHandleConvenienceMethodsTrait
 
         /** @var Psl\Ref<string> $data */
         $data = new Psl\Ref('');
-        $timer = new Internal\OptionalIncrementalTimeout(
+        $timer = new Psl\Async\OptionalIncrementalTimeout(
             $timeout,
             static function () use ($data): void {
                 // @codeCoverageIgnoreStart
