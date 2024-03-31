@@ -70,7 +70,7 @@
 - [MemoryHandle](./../../src/Psl/IO/MemoryHandle.php#L13)
 - [ReadStreamHandle](./../../src/Psl/IO/ReadStreamHandle.php#L12)
 - [ReadWriteStreamHandle](./../../src/Psl/IO/ReadWriteStreamHandle.php#L12)
-- [Reader](./../../src/Psl/IO/Reader.php#L15)
+- [Reader](./../../src/Psl/IO/Reader.php#L16)
 - [SeekReadStreamHandle](./../../src/Psl/IO/SeekReadStreamHandle.php#L12)
 - [SeekReadWriteStreamHandle](./../../src/Psl/IO/SeekReadWriteStreamHandle.php#L12)
 - [SeekStreamHandle](./../../src/Psl/IO/SeekStreamHandle.php#L10)
