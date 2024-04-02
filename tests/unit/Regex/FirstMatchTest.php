@@ -19,7 +19,7 @@ final class FirstMatchTest extends TestCase
         array $expected,
         string $subject,
         string $pattern,
-        TypeInterface $shape = null,
+        ?TypeInterface $shape = null,
         int $offset = 0
     ): void {
         static::assertSame($expected, Regex\first_match($subject, $pattern, $shape, $offset));
