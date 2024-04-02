@@ -45,7 +45,7 @@ namespace Psl\Vec;
  *
  * @see https://github.com/vimeo/psalm/issues/2152#issuecomment-533363310
  */
-function range(int|float $start, int|float $end, int|float $step = null): array
+function range(int|float $start, int|float $end, int|float|null $step = null): array
 {
     if ((float) $start === (float) $end) {
         return [$start];

@@ -76,5 +76,6 @@ return (new PhpCsFixer\Config())
         'phpdoc_trim_consecutive_blank_line_separation' => true,
         'no_empty_statement' => true,
         'semicolon_after_instruction' => true,
+        'nullable_type_declaration_for_default_null_value' => true,
     ])
     ;
