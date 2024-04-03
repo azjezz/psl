@@ -64,4 +64,9 @@ final class U16TypeTest extends TypeTest
     {
         yield [$this->getType(), 'u16'];
     }
+
+    public function testItIsAMemoizedType(): void
+    {
+        static::assertSame(Type\u16(), Type\u16());
+    }
 }

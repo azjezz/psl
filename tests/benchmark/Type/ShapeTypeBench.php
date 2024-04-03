@@ -98,6 +98,58 @@ final class ShapeTypeBench extends GenericTypeBench
                     'war' => null,
                 ]),
             ],
+            'real-life-type-usage' => [
+                'type' => Type\shape([
+                    'name' => Type\string(),
+                    'articles' => Type\vec(Type\shape([
+                        'title' => Type\string(),
+                        'content' => Type\string(),
+                        'likes' => Type\int(),
+                        'comments' => Type\optional(Type\vec(Type\shape([
+                            'user' => Type\string(),
+                            'comment' => Type\string()
+                        ]))),
+                    ])),
+                    'dictionary' => Type\dict(Type\string(), Type\vec(Type\shape([
+                        'title' => Type\string(),
+                        'content' => Type\string(),
+                    ]))),
+                    'pagination' => Type\optional(Type\shape([
+                        'currentPage' => Type\uint(),
+                        'totalPages' => Type\uint(),
+                        'perPage' => Type\uint(),
+                        'totalRows' => Type\uint(),
+                    ]))
+                ]),
+                'value' => [
+                    'name' => 'ok',
+                    'articles' => [
+                        [
+                            'title' => 'ok',
+                            'content' => 'ok',
+                            'likes' => 1,
+                            'comments' => [
+                                [
+                                    'user' => 'ok',
+                                    'comment' => 'ok'
+                                ],
+                                [
+                                    'user' => 'ok',
+                                    'comment' => 'ok',
+                                ]
+                            ]
+                        ]
+                    ],
+                    'dictionary' => [
+                        'key' => [
+                            [
+                                'title' => 'ok',
+                                'content' => 'ok',
+                            ]
+                        ]
+                    ]
+                ]
+            ]
         ];
     }
 
@@ -146,6 +198,58 @@ final class ShapeTypeBench extends GenericTypeBench
                     'war' => null,
                 ],
             ],
+            'real-life-type-usage' => [
+                'type' => Type\shape([
+                    'name' => Type\string(),
+                    'articles' => Type\vec(Type\shape([
+                        'title' => Type\string(),
+                        'content' => Type\string(),
+                        'likes' => Type\int(),
+                        'comments' => Type\optional(Type\vec(Type\shape([
+                            'user' => Type\string(),
+                            'comment' => Type\string()
+                        ]))),
+                    ])),
+                    'dictionary' => Type\dict(Type\string(), Type\vec(Type\shape([
+                        'title' => Type\string(),
+                        'content' => Type\string(),
+                    ]))),
+                    'pagination' => Type\optional(Type\shape([
+                        'currentPage' => Type\uint(),
+                        'totalPages' => Type\uint(),
+                        'perPage' => Type\uint(),
+                        'totalRows' => Type\uint(),
+                    ]))
+                ]),
+                'value' => [
+                    'name' => 'ok',
+                    'articles' => [
+                        [
+                            'title' => 'ok',
+                            'content' => 'ok',
+                            'likes' => 1,
+                            'comments' => [
+                                [
+                                    'user' => 'ok',
+                                    'comment' => 'ok'
+                                ],
+                                [
+                                    'user' => 'ok',
+                                    'comment' => 'ok',
+                                ]
+                            ]
+                        ]
+                    ],
+                    'dictionary' => [
+                        'key' => [
+                            [
+                                'title' => 'ok',
+                                'content' => 'ok',
+                            ]
+                        ]
+                    ]
+                ]
+            ]
         ];
     }
 

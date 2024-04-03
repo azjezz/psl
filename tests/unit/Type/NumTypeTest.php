@@ -80,4 +80,9 @@ final class NumTypeTest extends TypeTest
     {
         yield [$this->getType(), 'num'];
     }
+
+    public function testItIsAMemoizedType(): void
+    {
+        static::assertSame(Type\num(), Type\num());
+    }
 }

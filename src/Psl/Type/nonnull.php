@@ -11,5 +11,8 @@ namespace Psl\Type;
  */
 function nonnull(): TypeInterface
 {
-    return new Internal\NonNullType();
+    /** @var Internal\NonNullType $instance */
+    static $instance = new Internal\NonNullType();
+
+    return $instance;
 }

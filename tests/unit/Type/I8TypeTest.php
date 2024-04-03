@@ -61,4 +61,9 @@ final class I8TypeTest extends TypeTest
     {
         yield [$this->getType(), 'i8'];
     }
+
+    public function testItIsAMemoizedType(): void
+    {
+        static::assertSame(Type\i8(), Type\i8());
+    }
 }

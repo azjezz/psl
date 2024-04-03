@@ -11,5 +11,8 @@ namespace Psl\Type;
  */
 function i16(): TypeInterface
 {
-    return new Internal\I16Type();
+    /** @var Internal\I16Type $instance */
+    static $instance = new Internal\I16Type();
+
+    return $instance;
 }

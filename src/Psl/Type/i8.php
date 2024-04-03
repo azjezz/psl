@@ -11,5 +11,8 @@ namespace Psl\Type;
  */
 function i8(): TypeInterface
 {
-    return new Internal\I8Type();
+    /** @var Internal\I8Type $instance */
+    static $instance = new Internal\I8Type();
+
+    return $instance;
 }

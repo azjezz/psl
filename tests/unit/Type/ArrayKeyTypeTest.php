@@ -40,4 +40,9 @@ final class ArrayKeyTypeTest extends TypeTest
     {
         yield [$this->getType(), 'array-key'];
     }
+
+    public function testItIsAMemoizedType(): void
+    {
+        static::assertSame(Type\array_key(), Type\array_key());
+    }
 }

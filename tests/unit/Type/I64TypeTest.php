@@ -64,4 +64,9 @@ final class I64TypeTest extends TypeTest
     {
         yield [$this->getType(), 'i64'];
     }
+
+    public function testItIsAMemoizedType(): void
+    {
+        static::assertSame(Type\i64(), Type\i64());
+    }
 }

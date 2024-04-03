@@ -9,5 +9,8 @@ namespace Psl\Type;
  */
 function object(): TypeInterface
 {
-    return new Internal\ObjectType();
+    /** @var Internal\ObjectType $instance */
+    static $instance = new Internal\ObjectType();
+
+    return $instance;
 }

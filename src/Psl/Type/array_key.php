@@ -9,5 +9,8 @@ namespace Psl\Type;
  */
 function array_key(): TypeInterface
 {
-    return new Internal\ArrayKeyType();
+    /** @var Internal\ArrayKeyType $instance */
+    static $instance = new Internal\ArrayKeyType();
+
+    return $instance;
 }

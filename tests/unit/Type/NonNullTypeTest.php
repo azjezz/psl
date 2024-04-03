@@ -38,4 +38,9 @@ final class NonNullTypeTest extends TypeTest
     {
         yield [$this->getType(), 'nonnull'];
     }
+
+    public function testItIsAMemoizedType(): void
+    {
+        static::assertSame(Type\nonnull(), Type\nonnull());
+    }
 }

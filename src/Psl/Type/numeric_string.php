@@ -9,5 +9,8 @@ namespace Psl\Type;
  */
 function numeric_string(): TypeInterface
 {
-    return new Internal\NumericStringType();
+    /** @var Internal\NumericStringType $instance */
+    static $instance = new Internal\NumericStringType();
+
+    return $instance;
 }

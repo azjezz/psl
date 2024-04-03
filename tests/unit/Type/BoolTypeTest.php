@@ -36,4 +36,9 @@ final class BoolTypeTest extends TypeTest
     {
         yield [$this->getType(), 'bool'];
     }
+
+    public function testItIsAMemoizedType(): void
+    {
+        static::assertSame(Type\bool(), Type\bool());
+    }
 }

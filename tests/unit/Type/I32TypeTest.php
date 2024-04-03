@@ -64,4 +64,9 @@ final class I32TypeTest extends TypeTest
     {
         yield [$this->getType(), 'i32'];
     }
+
+    public function testItIsAMemoizedType(): void
+    {
+        static::assertSame(Type\i32(), Type\i32());
+    }
 }

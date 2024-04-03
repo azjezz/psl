@@ -49,4 +49,9 @@ final class NonEmptyStringTypeTest extends TypeTest
     {
         yield [$this->getType(), 'non-empty-string'];
     }
+
+    public function testItIsAMemoizedType(): void
+    {
+        static::assertSame(Type\non_empty_string(), Type\non_empty_string());
+    }
 }

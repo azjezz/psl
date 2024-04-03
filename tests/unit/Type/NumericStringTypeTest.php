@@ -49,4 +49,9 @@ final class NumericStringTypeTest extends TypeTest
     {
         yield [$this->getType(), 'numeric-string'];
     }
+
+    public function testItIsAMemoizedType(): void
+    {
+        static::assertSame(Type\numeric_string(), Type\numeric_string());
+    }
 }
