@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Range;
 
 /**
- * @immutable
+ * @psalm-immutable
  */
 interface UpperBoundRangeInterface extends RangeInterface
 {
@@ -24,7 +24,7 @@ interface UpperBoundRangeInterface extends RangeInterface
      * @psalm-mutation-free
      */
     public function withoutUpperBound(): RangeInterface;
-    
+
     /**
      * Returns the upper bound of the range.
      *

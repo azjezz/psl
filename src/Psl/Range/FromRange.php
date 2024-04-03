@@ -28,16 +28,18 @@ use Psl\Math;
  * @see RangeInterface::contains()
  * @see LowerBoundRangeInterface::getLowerBound()
  *
- * @immutable
+ * @psalm-immutable
  */
-final class FromRange implements LowerBoundRangeInterface
+final readonly class FromRange implements LowerBoundRangeInterface
 {
+    private int $lowerBound;
+
     /**
      * @psalm-mutation-free
      */
-    public function __construct(
-        private readonly int $lower_bound,
-    ) {
+    public function __construct(int $lower_bound)
+    {
+        $this->lowerBound = $lower_bound;
     }
 
     /**
@@ -47,7 +49,7 @@ final class FromRange implements LowerBoundRangeInterface
      */
     public function contains(int $value): bool
     {
-        return $value >= $this->lower_bound;
+        return $value >= $this->lowerBound;
     }
 
     /**
@@ -72,7 +74,7 @@ final class FromRange implements LowerBoundRangeInterface
     public function withUpperBound(int $upper_bound, bool $upper_inclusive): BetweenRange
     {
         return new BetweenRange(
-            $this->lower_bound,
+            $this->lowerBound,
             $upper_bound,
             $upper_inclusive,
         );
@@ -88,7 +90,7 @@ final class FromRange implements LowerBoundRangeInterface
     public function withUpperBoundInclusive(int $upper_bound): BetweenRange
     {
         return new BetweenRange(
-            $this->lower_bound,
+            $this->lowerBound,
             $upper_bound,
             true,
         );
@@ -104,7 +106,7 @@ final class FromRange implements LowerBoundRangeInterface
     public function withUpperBoundExclusive(int $upper_bound): BetweenRange
     {
         return new BetweenRange(
-            $this->lower_bound,
+            $this->lowerBound,
             $upper_bound,
             false,
         );
@@ -127,7 +129,7 @@ final class FromRange implements LowerBoundRangeInterface
      */
     public function getLowerBound(): int
     {
-        return $this->lower_bound;
+        return $this->lowerBound;
     }
 
     /**
@@ -141,7 +143,7 @@ final class FromRange implements LowerBoundRangeInterface
      */
     public function getIterator(): Iter\Iterator
     {
-        $bound = $this->lower_bound;
+        $bound = $this->lowerBound;
 
         return Iter\Iterator::from(static function () use ($bound): Generator {
             $value = $bound;

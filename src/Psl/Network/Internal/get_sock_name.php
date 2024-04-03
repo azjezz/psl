@@ -24,6 +24,7 @@ use function substr;
 function get_sock_name(mixed $socket): Network\Address
 {
     error_clear_last();
+    /** @var non-empty-string|false $result */
     $result = stream_socket_get_name($socket, false);
     if ($result !== false) {
         $separator_position = strrpos($result, ':');
@@ -31,7 +32,9 @@ function get_sock_name(mixed $socket): Network\Address
             return Network\Address::unix($result);
         }
 
+        /** @var non-empty-string $host */
         $host = substr($result, 0, $separator_position);
+        /** @var int<0, 65535> $port */
         $port = (int) substr($result, $separator_position + 1);
 
         return Network\Address::tcp($host, $port);

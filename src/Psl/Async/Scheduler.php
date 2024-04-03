@@ -18,7 +18,7 @@ use Revolt\EventLoop\Suspension;
  *
  * @codeCoverageIgnore
  */
-final class Scheduler
+final readonly class Scheduler
 {
     private function __construct()
     {

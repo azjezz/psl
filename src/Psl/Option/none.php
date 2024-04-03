@@ -8,6 +8,8 @@ namespace Psl\Option;
  * Create an option with none value.
  *
  * @return Option<never>
+ *
+ * @pure
  */
 function none(): Option
 {

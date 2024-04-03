@@ -14,16 +14,21 @@ use Psl\Type;
  * @implements Comparison\Comparable<Option<T>>
  * @implements Comparison\Equable<Option<T>>
  */
-final class Option implements Comparison\Comparable, Comparison\Equable
+final readonly class Option implements Comparison\Comparable, Comparison\Equable
 {
+    /**
+     * @var ?array{T} $option
+     */
+    private null|array $option;
+
     /**
      * @param ?array{T} $option
      *
-     * @internal
+     * @psalm-mutation-free
      */
-    private function __construct(
-        private readonly null|array $option,
-    ) {
+    private function __construct(?array $option)
+    {
+        $this->option = $option;
     }
 
     /**
@@ -34,6 +39,8 @@ final class Option implements Comparison\Comparable, Comparison\Equable
      * @param Tv $value
      *
      * @return Option<Tv>
+     *
+     * @pure
      */
     public static function some(mixed $value): Option
     {
@@ -44,6 +51,8 @@ final class Option implements Comparison\Comparable, Comparison\Equable
      * Create an option with none value.
      *
      * @return Option<never>
+     *
+     * @pure
      */
     public static function none(): Option
     {
@@ -53,6 +62,8 @@ final class Option implements Comparison\Comparable, Comparison\Equable
 
     /**
      * Returns true if the option is a some value.
+     *
+     * @psalm-mutation-free
      */
     public function isSome(): bool
     {
@@ -71,6 +82,8 @@ final class Option implements Comparison\Comparable, Comparison\Equable
 
     /**
      * Returns true if the option is a none.
+     *
+     * @psalm-mutation-free
      */
     public function isNone(): bool
     {
@@ -86,6 +99,8 @@ final class Option implements Comparison\Comparable, Comparison\Equable
      * @throws Exception\NoneException If the option is none.
      *
      * @return T
+     *
+     * @psalm-mutation-free
      */
     public function unwrap(): mixed
     {
@@ -107,6 +122,8 @@ final class Option implements Comparison\Comparable, Comparison\Equable
      * @param O $default
      *
      * @return T|O
+     *
+     * @psalm-mutation-free
      */
     public function unwrapOr(mixed $default): mixed
     {
@@ -143,6 +160,8 @@ final class Option implements Comparison\Comparable, Comparison\Equable
      * @param Option<Tu> $other
      *
      * @return Option<Tu>
+     *
+     * @psalm-mutation-free
      */
     public function and(Option $other): Option
     {
@@ -162,6 +181,8 @@ final class Option implements Comparison\Comparable, Comparison\Equable
      * @param Option<T> $option
      *
      * @return Option<T>
+     *
+     * @psalm-mutation-free
      */
     public function or(Option $option): Option
     {
@@ -194,6 +215,8 @@ final class Option implements Comparison\Comparable, Comparison\Equable
      * Returns true if the option is a `Option<T>::some()` value containing the given value.
      *
      * @psalm-assert-if-true T $value
+     *
+     * @psalm-mutation-free
      */
     public function contains(mixed $value): bool
     {
@@ -398,6 +421,8 @@ final class Option implements Comparison\Comparable, Comparison\Equable
      * @throws Type\Exception\AssertException
      *
      * @return array{Option<Tv>, Option<Tr>}
+     *
+     * @psalm-mutation-free
      */
     public function unzip(): array
     {
@@ -405,11 +430,7 @@ final class Option implements Comparison\Comparable, Comparison\Equable
             return [none(), none()];
         }
 
-        // Assertion done in a separate variable to avoid Psalm inferring the type of $this->option as mixed
-        $option = $this->option[0];
-        Type\shape([Type\mixed(), Type\mixed()])->assert($option);
-
-        [$a, $b] = $option;
+        [$a, $b] = $this->option[0];
 
         return [some($a), some($b)];
     }

@@ -18,6 +18,6 @@
 
 - [MersenneTwisterPHPVariantSequence](./../../src/Psl/RandomSequence/MersenneTwisterPHPVariantSequence.php#L10)
 - [MersenneTwisterSequence](./../../src/Psl/RandomSequence/MersenneTwisterSequence.php#L10)
-- [SecureSequence](./../../src/Psl/RandomSequence/SecureSequence.php#L15)
+- [SecureSequence](./../../src/Psl/RandomSequence/SecureSequence.php#L13)
 
 

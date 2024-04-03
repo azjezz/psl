@@ -844,7 +844,7 @@ enum Locale: string
      *
      * @return non-empty-string The human-readable name of the locale.
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function getDisplayName(?Locale $locale = null): string
     {
@@ -857,7 +857,7 @@ enum Locale: string
      *
      * @return non-empty-string The language code.
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function getLanguage(): string
     {
@@ -872,7 +872,7 @@ enum Locale: string
      *
      * @return non-empty-string The display name of the language.
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function getDisplayLanguage(?Locale $locale = null): string
     {
@@ -885,7 +885,7 @@ enum Locale: string
      *
      * @return bool True if the locale has a script, false otherwise.
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function hasScript(): bool
     {
@@ -897,7 +897,7 @@ enum Locale: string
      *
      * @return non-empty-string|null The script of the locale, or null if not applicable.
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function getScript(): ?string
     {
@@ -909,7 +909,7 @@ enum Locale: string
      *
      * @return bool True if the locale has a region, false otherwise.
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function hasRegion(): bool
     {
@@ -923,7 +923,7 @@ enum Locale: string
      *
      * @return non-empty-string|null The display name of the region, or null if not applicable.
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function getDisplayRegion(?Locale $locale = null): ?string
     {
@@ -935,7 +935,7 @@ enum Locale: string
      *
      * @return non-empty-string|null The alpha-2 country code, or null if not present.
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function getRegion(): ?string
     {

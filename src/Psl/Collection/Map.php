@@ -22,16 +22,21 @@ use function count;
  *
  * @implements MapInterface<Tk, Tv>
  */
-final class Map implements MapInterface
+final readonly class Map implements MapInterface
 {
+    /**
+     * @var array<Tk, Tv> $elements
+     */
+    private array $elements;
+
     /**
      * @param array<Tk, Tv> $elements
      *
-     * @pure
+     * @psalm-mutation-free
      */
-    public function __construct(
-        private readonly array $elements
-    ) {
+    public function __construct(array $elements)
+    {
+        $this->elements = $elements;
     }
 
     /**

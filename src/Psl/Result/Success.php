@@ -15,17 +15,17 @@ use Psl;
  *
  * @implements  ResultInterface<T>
  */
-final class Success implements ResultInterface
+final readonly class Success implements ResultInterface
 {
     /**
      * @var T
-     *
-     * @readonly
      */
     private mixed $value;
 
     /**
      * @param T $value
+     *
+     * @psalm-mutation-free
      */
     public function __construct(mixed $value)
     {

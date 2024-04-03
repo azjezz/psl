@@ -9,24 +9,28 @@ use Psl\Default\DefaultInterface;
 /**
  * Encapsulates socket options for network operations.
  *
- * @immutable
+ * @psalm-immutable
  */
-final class SocketOptions implements DefaultInterface
+final readonly class SocketOptions implements DefaultInterface
 {
+    public bool $addressReuse;
+    public bool $portReuse;
+    public bool $broadcast;
+
     /**
      * Initializes a new instance of SocketOptions with the specified settings.
      *
-     * @param bool $addressReuse Enables or disables the SO_REUSEADDR socket option.
-     * @param bool $portReuse Enables or disables the SO_REUSEPORT socket option.
+     * @param bool $address_reuse Enables or disables the SO_REUSEADDR socket option.
+     * @param bool $port_reuse Enables or disables the SO_REUSEPORT socket option.
      * @param bool $broadcast Enables or disables the SO_BROADCAST socket option.
      *
-     * @pure
+     * @psalm-mutation-free
      */
-    public function __construct(
-        public readonly bool $addressReuse,
-        public readonly bool $portReuse,
-        public readonly bool $broadcast,
-    ) {
+    public function __construct(bool $address_reuse, bool $port_reuse, bool $broadcast)
+    {
+        $this->addressReuse = $address_reuse;
+        $this->portReuse = $port_reuse;
+        $this->broadcast = $broadcast;
     }
 
     /**
@@ -64,7 +68,7 @@ final class SocketOptions implements DefaultInterface
      *
      * @param bool $enabled The desired state for the SO_REUSEADDR option.
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function withAddressReuse(bool $enabled = true): SocketOptions
     {
@@ -76,7 +80,7 @@ final class SocketOptions implements DefaultInterface
      *
      * @param bool $enabled The desired state for the SO_REUSEPORT option.
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function withPortReuse(bool $enabled = true): SocketOptions
     {
@@ -88,7 +92,7 @@ final class SocketOptions implements DefaultInterface
      *
      * @param bool $enabled The desired state for the SO_BROADCAST option.
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function withBroadcast(bool $enabled = true): SocketOptions
     {

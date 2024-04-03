@@ -12,6 +12,8 @@ use const PATH_SEPARATOR;
  * Parses input according to platform conventions for the PATH environment variable.
  *
  * @return string[]
+ *
+ * @pure
  */
 function split_paths(string $path): array
 {

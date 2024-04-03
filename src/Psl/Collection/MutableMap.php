@@ -25,13 +25,18 @@ use function count;
 final class MutableMap implements MutableMapInterface
 {
     /**
+     * @var array<Tk, Tv> $elements
+     */
+    private array $elements;
+
+    /**
      * @param array<Tk, Tv> $elements
      *
-     * @pure
+     * @psalm-mutation-free
      */
-    public function __construct(
-        private array $elements
-    ) {
+    public function __construct(array $elements)
+    {
+        $this->elements = $elements;
     }
 
     /**
@@ -570,6 +575,8 @@ final class MutableMap implements MutableMapInterface
      * @throws Exception\OutOfBoundsException If $k is out-of-bounds.
      *
      * @return MutableMap<Tk, Tv> Returns itself
+     *
+     * @psalm-external-mutation-free
      */
     public function set(int|string $k, mixed $v): MutableMap
     {
@@ -596,6 +603,8 @@ final class MutableMap implements MutableMapInterface
      * @param array<Tk, Tv> $elements The elements with the new values to set
      *
      * @return MutableMap<Tk, Tv> Returns itself
+     *
+     * @psalm-external-mutation-free
      */
     public function setAll(array $elements): MutableMap
     {
@@ -613,6 +622,8 @@ final class MutableMap implements MutableMapInterface
      * @param Tv $v The value to set
      *
      * @return MutableMap<Tk, Tv> Returns itself
+     *
+     * @psalm-external-mutation-free
      */
     public function add(int|string $k, mixed $v): MutableMap
     {
@@ -627,6 +638,8 @@ final class MutableMap implements MutableMapInterface
      * @param array<Tk, Tv> $elements The elements with the new values to add.
      *
      * @return MutableMap<Tk, Tv> Returns itself.
+     *
+     * @psalm-external-mutation-free
      */
     public function addAll(array $elements): MutableMap
     {
@@ -650,6 +663,8 @@ final class MutableMap implements MutableMapInterface
      * @param Tk $k The key to remove.
      *
      * @return MutableMap<Tk, Tv> Returns itself.
+     *
+     * @psalm-external-mutation-free
      */
     public function remove(int|string $k): MutableMap
     {
@@ -664,6 +679,8 @@ final class MutableMap implements MutableMapInterface
      * Removes all elements from the map.
      *
      * @return MutableMap<Tk, Tv>
+     *
+     * @psalm-external-mutation-free
      */
     public function clear(): MutableMap
     {

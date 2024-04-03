@@ -18,7 +18,7 @@ use Throwable;
  *
  * @template T
  */
-final class Deferred
+final readonly class Deferred
 {
     /**
      * @var Internal\State<T>
@@ -62,6 +62,8 @@ final class Deferred
 
     /**
      * @return bool True if the operation has completed.
+     *
+     * @psalm-mutation-free
      */
     public function isComplete(): bool
     {
@@ -70,6 +72,8 @@ final class Deferred
 
     /**
      * @return Awaitable<T> The awaitable associated with this Deferred.
+     *
+     * @psalm-mutation-free
      */
     public function getAwaitable(): Awaitable
     {

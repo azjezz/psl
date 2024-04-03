@@ -10,31 +10,39 @@ use Psl\Network;
 /**
  * Configures options for a TCP server.
  *
- * @immutable
+ * @psalm-immutable
  */
-final class ServerOptions implements DefaultInterface
+final readonly class ServerOptions implements DefaultInterface
 {
     /**
      * Default number of idle connections allowed.
      */
     public const DEFAULT_IDLE_CONNECTIONS = 256;
 
+    public bool $noDelay;
+
+    /**
+     * @var int<1, max>
+     */
+    public int $idleConnections;
+    public Network\SocketOptions $socketOptions;
+
     /**
      * Initializes a new instance of ServerOptions with specified settings.
      *
-     * @param bool $noDelay Determines whether the TCP_NODELAY option is enabled, controlling
-     *                      the use of the Nagle algorithm. When true, TCP_NODELAY is enabled,
-     *                      and the Nagle algorithm is disabled.
-     * @param int<1, max> $idleConnections The maximum number of idle connections the server will keep open.
-     * @param Network\SocketOptions $socketOptions Socket configuration options.
+     * @param bool $no_delay Determines whether the TCP_NODELAY option is enabled, controlling
+     *                       the use of the Nagle algorithm. When true, TCP_NODELAY is enabled,
+     *                       and the Nagle algorithm is disabled.
+     * @param int<1, max> $idle_connections The maximum number of idle connections the server will keep open.
+     * @param Network\SocketOptions $socket_options Socket configuration options.
      *
-     * @pure
+     * @psalm-mutation-free
      */
-    public function __construct(
-        public readonly bool $noDelay,
-        public readonly int $idleConnections,
-        public readonly Network\SocketOptions $socketOptions,
-    ) {
+    public function __construct(bool $no_delay, int $idle_connections, Network\SocketOptions $socket_options)
+    {
+        $this->noDelay = $no_delay;
+        $this->idleConnections = $idle_connections;
+        $this->socketOptions = $socket_options;
     }
 
     /**
@@ -75,7 +83,7 @@ final class ServerOptions implements DefaultInterface
      *
      * @param Network\SocketOptions $socket_options New socket configuration options.
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function withSocketOptions(Network\SocketOptions $socket_options): ServerOptions
     {
@@ -87,7 +95,7 @@ final class ServerOptions implements DefaultInterface
      *
      * @param bool $enabled The desired state for the TCP_NODELAY option.
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function withNoDelay(bool $enabled = true): ServerOptions
     {
@@ -99,7 +107,7 @@ final class ServerOptions implements DefaultInterface
      *
      * @param int<1, max> $idleConnections The new maximum number of idle connections to allow.
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function withIdleConnections(int $idleConnections): ServerOptions
     {

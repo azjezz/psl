@@ -40,7 +40,7 @@ trait MersenneTwisterTrait
     /**
      * Generates the next pseudorandom number.
      *
-     * @external-mutation-free
+     * @psalm-external-mutation-free
      */
     final public function next(): int
     {

@@ -38,7 +38,7 @@ final class Queue implements QueueInterface
      *
      * @param T $node
      *
-     * @external-mutation-free
+     * @psalm-external-mutation-free
      */
     public function enqueue(mixed $node): void
     {
@@ -51,7 +51,7 @@ final class Queue implements QueueInterface
      *
      * @return null|T
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function peek(): mixed
     {
@@ -64,7 +64,7 @@ final class Queue implements QueueInterface
      *
      * @return null|T
      *
-     * @external-mutation-free
+     * @psalm-external-mutation-free
      */
     public function pull(): mixed
     {
@@ -78,7 +78,7 @@ final class Queue implements QueueInterface
      *
      * @return T
      *
-     * @external-mutation-free
+     * @psalm-external-mutation-free
      */
     public function dequeue(): mixed
     {
@@ -95,7 +95,7 @@ final class Queue implements QueueInterface
      *
      * @return int<0, max>
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function count(): int
     {

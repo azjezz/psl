@@ -44,9 +44,11 @@ final class UnboundedChannelState implements ChannelInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @return null
+     *
+     * @psalm-mutation-free
      */
-    public function getCapacity(): ?int
+    public function getCapacity(): null
     {
         return null;
     }
@@ -66,7 +68,7 @@ final class UnboundedChannelState implements ChannelInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @psalm-mutation-free
      */
     public function isClosed(): bool
     {
@@ -74,7 +76,9 @@ final class UnboundedChannelState implements ChannelInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
+     *
+     * @psalm-mutation-free
      */
     public function count(): int
     {
@@ -82,7 +86,7 @@ final class UnboundedChannelState implements ChannelInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @psalm-mutation-free
      */
     public function isFull(): bool
     {
@@ -90,7 +94,7 @@ final class UnboundedChannelState implements ChannelInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @psalm-mutation-free
      */
     public function isEmpty(): bool
     {

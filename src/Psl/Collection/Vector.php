@@ -19,17 +19,17 @@ use function count;
  *
  * @implements VectorInterface<T>
  */
-final class Vector implements VectorInterface
+final readonly class Vector implements VectorInterface
 {
     /**
      * @var list<T> $elements
      */
-    private readonly array $elements;
+    private array $elements;
 
     /**
      * @param array<array-key, T> $elements
      *
-     * @external-mutation-free
+     * @psalm-mutation-free
      */
     public function __construct(array $elements)
     {
@@ -46,7 +46,7 @@ final class Vector implements VectorInterface
      *
      * @return static A default instance of {@see Vector}.
      *
-     * @external-mutation-free
+     * @pure
      */
     public static function default(): static
     {
@@ -66,7 +66,6 @@ final class Vector implements VectorInterface
      */
     public static function fromArray(array $elements): Vector
     {
-        /** @psalm-suppress ImpureMethodCall - safe */
         return new self($elements);
     }
 

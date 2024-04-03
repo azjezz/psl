@@ -16,7 +16,7 @@ interface ChannelInterface extends Countable
      *
      * @return null|positive-int
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function getCapacity(): ?int;
 
@@ -30,7 +30,7 @@ interface ChannelInterface extends Countable
     /**
      * Returns true if the channel is closed.
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function isClosed(): bool;
 
@@ -39,7 +39,7 @@ interface ChannelInterface extends Countable
      *
      * @return int<0, max>
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function count(): int;
 
@@ -48,14 +48,14 @@ interface ChannelInterface extends Countable
      *
      * Unbounded channels are never full.
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function isFull(): bool;
 
     /**
      * Returns true if the channel is empty.
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function isEmpty(): bool;
 }

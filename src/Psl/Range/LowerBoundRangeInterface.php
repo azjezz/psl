@@ -11,7 +11,7 @@ use Psl\Math;
 /**
  * @extends IteratorAggregate<int, int>
  *
- * @immutable
+ * @psalm-immutable
  */
 interface LowerBoundRangeInterface extends IteratorAggregate, RangeInterface
 {
@@ -55,7 +55,7 @@ interface LowerBoundRangeInterface extends IteratorAggregate, RangeInterface
      * @psalm-mutation-free
      */
     public function getLowerBound(): int;
-    
+
     /**
      * Returns an iterator for the range.
      *

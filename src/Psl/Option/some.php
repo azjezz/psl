@@ -12,6 +12,8 @@ namespace Psl\Option;
  * @param T $value
  *
  * @return Option<T>
+ *
+ * @pure
  */
 function some(mixed $value): Option
 {

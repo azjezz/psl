@@ -30,7 +30,7 @@ final class Iterator implements Countable, SeekableIterator
     private array $entries = [];
 
     /**
-     *  Whether or not the current value/key pair has been added to the local entries.
+     *  Whether the current value/key pair has been added to the local entries.
      */
     private bool $saved = true;
 
@@ -164,14 +164,14 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Seek to the given position.
      *
-     * @param int<0, max> $position
+     * @param int<0, max> $offset
      *
      * @throws Exception\OutOfBoundsException If $position is out-of-bounds.
      */
-    public function seek(int $position): void
+    public function seek(int $offset): void
     {
-        if ($position <= $this->position) {
-            $this->position = $position;
+        if ($offset <= $this->position) {
+            $this->position = $offset;
             return;
         }
 
@@ -184,16 +184,16 @@ final class Iterator implements Countable, SeekableIterator
                     $this->generator = null;
                     throw new Exception\OutOfBoundsException('Position is out-of-bounds.');
                 }
-            } while ($this->position < $position);
+            } while ($this->position < $offset);
 
             return;
         }
 
-        if ($position >= $this->count()) {
+        if ($offset >= $this->count()) {
             throw new Exception\OutOfBoundsException('Position is out-of-bounds.');
         }
 
-        $this->position = $position;
+        $this->position = $offset;
     }
 
     /**

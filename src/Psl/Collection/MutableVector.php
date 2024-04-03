@@ -32,7 +32,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @param array<array-key, T> $elements
      *
-     * @external-mutation-free
+     * @psalm-mutation-free
      */
     public function __construct(array $elements)
     {
@@ -46,7 +46,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @return static A default instance of {@see MutableVector}.
      *
-     * @external-mutation-free
+     * @psalm-external-mutation-free
      */
     public static function default(): static
     {
@@ -66,7 +66,6 @@ final class MutableVector implements MutableVectorInterface
      */
     public static function fromArray(array $elements): MutableVector
     {
-        /** @psalm-suppress ImpureMethodCall - conditionally pure */
         return new self($elements);
     }
 
@@ -269,6 +268,8 @@ final class MutableVector implements MutableVectorInterface
      * @throws Exception\OutOfBoundsException If $k is out-of-bounds.
      *
      * @return MutableVector<T> returns itself
+     *
+     * @psalm-external-mutation-free
      */
     public function set(int|string $k, mixed $v): MutableVector
     {
@@ -295,6 +296,8 @@ final class MutableVector implements MutableVectorInterface
      * @param array<int<0, max>, T> $elements The elements with the new values to set
      *
      * @return MutableVector<T> returns itself
+     *
+     * @psalm-external-mutation-free
      */
     public function setAll(array $elements): MutableVector
     {
@@ -321,6 +324,8 @@ final class MutableVector implements MutableVectorInterface
      * @param int<0, max> $k The key to remove.
      *
      * @return MutableVector<T> returns itself.
+     *
+     * @psalm-external-mutation-free
      */
     public function remove(int|string $k): MutableVector
     {
@@ -337,6 +342,8 @@ final class MutableVector implements MutableVectorInterface
      * Removes all elements from the vector.
      *
      * @return MutableVector<T> Returns itself
+     *
+     * @psalm-external-mutation-free
      */
     public function clear(): MutableVector
     {
@@ -351,6 +358,8 @@ final class MutableVector implements MutableVectorInterface
      * @param T $v The value to add.
      *
      * @return MutableVector<T> Returns itself.
+     *
+     * @psalm-external-mutation-free
      */
     public function add(mixed $v): MutableVector
     {
@@ -365,6 +374,8 @@ final class MutableVector implements MutableVectorInterface
      * @param array<array-key, T> $elements The elements with the new values to add
      *
      * @return MutableVector<T> returns itself.
+     *
+     * @psalm-external-mutation-free
      */
     public function addAll(array $elements): MutableVector
     {

@@ -10,6 +10,7 @@ final class Lock
 {
     private bool $released = false;
 
+
     /**
      * @param (Closure(): void) $releaseCallback
      *

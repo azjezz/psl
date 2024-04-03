@@ -7,32 +7,53 @@ namespace Psl\Result;
 /**
  * @psalm-immutable
  */
-final class Stats
+final readonly class Stats
 {
-    private int $total = 0;
-    private int $succeeded = 0;
-    private int $failed = 0;
+    private int $total;
+    private int $succeeded;
+    private int $failed;
 
-    public function apply(ResultInterface $result): self
+    /**
+     * @psalm-mutation-free
+     */
+    public function __construct(int $total = 0, int $succeeded = 0, int $failed = 0)
     {
-        $new = new self();
-        $new->total = $this->total + 1;
-        $new->succeeded = $result->isSucceeded() ? $this->succeeded + 1 : $this->succeeded;
-        $new->failed = $result->isFailed() ? $this->failed + 1 : $this->failed;
-
-        return $new;
+        $this->total = $total;
+        $this->succeeded = $succeeded;
+        $this->failed = $failed;
     }
 
+    /**
+     * @psalm-mutation-free
+     */
+    public function apply(ResultInterface $result): self
+    {
+        return new self(
+            $this->total + 1,
+            $result->isSucceeded() ? $this->succeeded + 1 : $this->succeeded,
+            $result->isFailed() ? $this->failed + 1 : $this->failed,
+        );
+    }
+
+    /**
+     * @psalm-mutation-free
+     */
     public function total(): int
     {
         return $this->total;
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function succeeded(): int
     {
         return $this->succeeded;
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function failed(): int
     {
         return $this->failed;

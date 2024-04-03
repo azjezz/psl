@@ -21,12 +21,8 @@ use function preg_match_all;
  *
  * @return (T is null ? list<array<array-key, string>> : list<T>)|null
  */
-function every_match(
-    string $subject,
-    string $pattern,
-    ?Type\TypeInterface $capture_groups = null,
-    int $offset = 0
-): ?array {
+function every_match(string $subject, string $pattern, ?Type\TypeInterface $capture_groups = null, int $offset = 0): ?array
+{
     $matching = Internal\call_preg(
         'preg_match_all',
         static function () use ($subject, $pattern, $offset): ?array {

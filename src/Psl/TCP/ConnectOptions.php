@@ -9,22 +9,24 @@ use Psl\Default\DefaultInterface;
 /**
  * Represents the configuration options for TCP connections.
  *
- * @immutable
+ * @psalm-immutable
  */
-final class ConnectOptions implements DefaultInterface
+final readonly class ConnectOptions implements DefaultInterface
 {
+    public bool $noDelay;
+
     /**
      * Initializes a new instance of {@see ConnectOptions} with the specified settings.
      *
-     * @param bool $noDelay Determines whether the TCP_NODELAY option is enabled, controlling
-     *                      the use of the Nagle algorithm. When true, TCP_NODELAY is enabled,
-     *                      and the Nagle algorithm is disabled.
+     * @param bool $no_delay Determines whether the TCP_NODELAY option is enabled, controlling
+     *                       the use of the Nagle algorithm. When true, TCP_NODELAY is enabled,
+     *                       and the Nagle algorithm is disabled.
      *
-     * @pure
+     * @psalm-mutation-free
      */
-    public function __construct(
-        public readonly bool $noDelay,
-    ) {
+    public function __construct(bool $no_delay)
+    {
+        $this->noDelay = $no_delay;
     }
 
     /**
@@ -35,13 +37,13 @@ final class ConnectOptions implements DefaultInterface
      * to the default constructor for cases where named constructors improve readability
      * and usage clarity.
      *
-     * @param bool $noDelay Specifies whether the TCP_NODELAY option should be enabled.
+     * @param bool $no_delay Specifies whether the TCP_NODELAY option should be enabled.
      *
      * @pure
      */
-    public static function create(bool $noDelay = false): ConnectOptions
+    public static function create(bool $no_delay = false): ConnectOptions
     {
-        return new self($noDelay);
+        return new self($no_delay);
     }
 
     /**
@@ -65,7 +67,7 @@ final class ConnectOptions implements DefaultInterface
      *
      * @param bool $enabled Specifies the desired state of the TCP_NODELAY option.
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function withNoDelay(bool $enabled = true): ConnectOptions
     {

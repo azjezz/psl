@@ -21,12 +21,8 @@ use function preg_match;
  *
  * @return (T is null ? array<array-key, string> : T)|null
  */
-function first_match(
-    string $subject,
-    string $pattern,
-    ?Type\TypeInterface $capture_groups = null,
-    int $offset = 0
-): ?array {
+function first_match(string $subject, string $pattern, ?Type\TypeInterface $capture_groups = null, int $offset = 0): ?array
+{
     $matching = Internal\call_preg(
         'preg_match',
         static function () use ($subject, $pattern, $offset): ?array {

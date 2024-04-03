@@ -75,7 +75,7 @@ enum Algorithm: string implements DefaultInterface
      * values used by the password hashing API. It enables seamless integration between
      * the type-safe enum approach and PHP's underlying password hashing mechanism.
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function getBuiltinConstantValue(): string
     {
