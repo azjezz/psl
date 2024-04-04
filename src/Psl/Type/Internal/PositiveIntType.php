@@ -58,10 +58,7 @@ final class PositiveIntType extends Type\Type
                 return $int;
             }
 
-            // Exceptional case "000" -(trim)-> "", but we treat it as 0
-            if ('' === $trimmed && '' !== $str) {
-                CoercionException::withValue($value, $this->toString());
-            }
+            throw CoercionException::withValue($value, $this->toString());
         }
 
         if (is_float($value)) {
