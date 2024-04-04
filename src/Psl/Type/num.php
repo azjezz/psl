@@ -9,5 +9,8 @@ namespace Psl\Type;
  */
 function num(): TypeInterface
 {
-    return new Internal\NumType();
+    /** @var Internal\NumType $instance */
+    static $instance = new Internal\NumType();
+
+    return $instance;
 }

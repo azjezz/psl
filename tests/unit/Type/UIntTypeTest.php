@@ -60,4 +60,9 @@ final class UIntTypeTest extends TypeTest
     {
         yield [$this->getType(), 'uint'];
     }
+
+    public function testItIsAMemoizedType(): void
+    {
+        static::assertSame(Type\uint(), Type\uint());
+    }
 }

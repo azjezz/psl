@@ -9,5 +9,8 @@ namespace Psl\Type;
  */
 function non_empty_string(): TypeInterface
 {
-    return new Internal\NonEmptyStringType();
+    /** @var Internal\NonEmptyStringType $instance */
+    static $instance = new Internal\NonEmptyStringType();
+
+    return $instance;
 }

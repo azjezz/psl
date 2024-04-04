@@ -11,5 +11,8 @@ namespace Psl\Type;
  */
 function i32(): TypeInterface
 {
-    return new Internal\I32Type();
+    /** @var Internal\I32Type $instance */
+    static $instance = new Internal\I32Type();
+
+    return $instance;
 }

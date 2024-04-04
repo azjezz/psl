@@ -64,4 +64,9 @@ final class U32TypeTest extends TypeTest
     {
         yield [$this->getType(), 'u32'];
     }
+
+    public function testItIsAMemoizedType(): void
+    {
+        static::assertSame(Type\u32(), Type\u32());
+    }
 }

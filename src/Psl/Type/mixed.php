@@ -9,5 +9,8 @@ namespace Psl\Type;
  */
 function mixed(): TypeInterface
 {
-    return new Internal\MixedType();
+    /** @var Internal\MixedType $instance */
+    static $instance = new Internal\MixedType();
+
+    return $instance;
 }

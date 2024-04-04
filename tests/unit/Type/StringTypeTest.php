@@ -42,4 +42,9 @@ final class StringTypeTest extends TypeTest
     {
         yield [$this->getType(), 'string'];
     }
+
+    public function testItIsAMemoizedType(): void
+    {
+        static::assertSame(Type\string(), Type\string());
+    }
 }

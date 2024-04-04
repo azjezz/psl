@@ -88,4 +88,9 @@ final class MixedTypeTest extends TypeTest
     {
         $this->addToAssertionCount(1);
     }
+
+    public function testItIsAMemoizedType(): void
+    {
+        static::assertSame(Type\mixed(), Type\mixed());
+    }
 }

@@ -9,5 +9,8 @@ namespace Psl\Type;
  */
 function null(): TypeInterface
 {
-    return new Internal\NullType();
+    /** @var Internal\NullType $instance */
+    static $instance = new Internal\NullType();
+
+    return $instance;
 }

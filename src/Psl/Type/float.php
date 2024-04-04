@@ -9,5 +9,8 @@ namespace Psl\Type;
  */
 function float(): TypeInterface
 {
-    return new Internal\FloatType();
+    /** @var Internal\FloatType $instance */
+    static $instance = new Internal\FloatType();
+
+    return $instance;
 }

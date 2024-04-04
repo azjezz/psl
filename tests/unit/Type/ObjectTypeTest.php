@@ -37,4 +37,9 @@ final class ObjectTypeTest extends TypeTest
     {
         yield [Type\object(), 'object'];
     }
+
+    public function testItIsAMemoizedType(): void
+    {
+        static::assertSame(Type\object(), Type\object());
+    }
 }

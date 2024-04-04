@@ -69,4 +69,9 @@ final class FloatTypeTest extends TypeTest
     {
         yield [$this->getType(), 'float'];
     }
+
+    public function testItIsAMemoizedType(): void
+    {
+        static::assertSame(Type\float(), Type\float());
+    }
 }

@@ -60,4 +60,9 @@ final class IntTypeTest extends TypeTest
     {
         yield [$this->getType(), 'int'];
     }
+
+    public function testItIsAMemoizedType(): void
+    {
+        static::assertSame(Type\int(), Type\int());
+    }
 }

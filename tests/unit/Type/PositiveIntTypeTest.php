@@ -67,4 +67,9 @@ final class PositiveIntTypeTest extends TypeTest
     {
         yield [$this->getType(), 'positive-int'];
     }
+
+    public function testItIsAMemoizedType(): void
+    {
+        static::assertSame(Type\positive_int(), Type\positive_int());
+    }
 }
