@@ -27,7 +27,7 @@ use function is_array;
  *
  * @implements PromiseInterface<T>
  */
-final class Awaitable implements PromiseInterface
+final readonly class Awaitable implements PromiseInterface
 {
     private State $state;
 
@@ -117,6 +117,8 @@ final class Awaitable implements PromiseInterface
 
     /**
      * @return bool True if the operation has completed.
+     *
+     * @psalm-mutation-free
      */
     public function isComplete(): bool
     {

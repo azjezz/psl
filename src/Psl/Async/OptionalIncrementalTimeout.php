@@ -46,8 +46,6 @@ final class OptionalIncrementalTimeout
      * If the timeout has already been exceeded, the handler is invoked, and its return value is provided.
      *
      * @return float|null The remaining time in seconds, null if no timeout is set, or the handler's return value if the timeout is exceeded.
-     *
-     * @external-mutation-free
      */
     public function getRemaining(): ?float
     {

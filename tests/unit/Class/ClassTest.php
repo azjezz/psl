@@ -18,6 +18,7 @@ final class ClassTest extends TestCase
         string $classname,
         bool $exists,
         bool $final,
+        bool $readonly,
         bool $abstract,
         array $methods = [],
         array $constants = []
@@ -29,6 +30,7 @@ final class ClassTest extends TestCase
         }
 
         static::assertSame($final, Class\is_final($classname));
+        static::assertSame($readonly, Class\is_readonly($classname));
         static::assertSame($abstract, Class\is_abstract($classname));
 
         foreach ($methods as $method) {
@@ -46,12 +48,12 @@ final class ClassTest extends TestCase
 
     public function provideData(): iterable
     {
-        yield [Collection\Vector::class, true, true, false, ['first', 'last'], []];
-        yield [Collection\MutableVector::class, true, true, false, ['first', 'last'], []];
-        yield [Collection\Map::class, true, true, false, ['first', 'last'], []];
-        yield [Collection\MutableMap::class, true, true, false, ['first', 'last'], []];
-        yield [Type\Type::class, true, false, true, ['matches', 'isOptional'], []];
+        yield [Collection\Vector::class, true, true, true, false, ['first', 'last'], []];
+        yield [Collection\MutableVector::class, true, true, false, false, ['first', 'last'], []];
+        yield [Collection\Map::class, true, true, true, false, ['first', 'last'], []];
+        yield [Collection\MutableMap::class, true, true, false, false, ['first', 'last'], []];
+        yield [Type\Type::class, true, false, false, true, ['matches', 'isOptional'], []];
 
-        yield ['Psl\\Not\\Class', false, false, false, [], []];
+        yield ['Psl\\Not\\Class', false, false, false, false, [], []];
     }
 }

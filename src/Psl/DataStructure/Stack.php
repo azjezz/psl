@@ -38,7 +38,7 @@ final class Stack implements StackInterface
      *
      * @param T $item
      *
-     * @external-mutation-free
+     * @psalm-external-mutation-free
      */
     public function push(mixed $item): void
     {
@@ -51,7 +51,7 @@ final class Stack implements StackInterface
      *
      * @return null|T
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function peek(): mixed
     {
@@ -66,7 +66,7 @@ final class Stack implements StackInterface
      *
      * @return null|T
      *
-     * @external-mutation-free
+     * @psalm-external-mutation-free
      */
     public function pull(): mixed
     {
@@ -80,7 +80,7 @@ final class Stack implements StackInterface
      *
      * @return T
      *
-     * @external-mutation-free
+     * @psalm-external-mutation-free
      */
     public function pop(): mixed
     {
@@ -97,7 +97,7 @@ final class Stack implements StackInterface
      *
      * @return int<0, max>
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function count(): int
     {

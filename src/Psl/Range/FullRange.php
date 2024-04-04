@@ -11,7 +11,7 @@ namespace Psl\Range;
  *
  * @see RangeInterface::contains()
  *
- * @immutable
+ * @psalm-immutable
  */
 final class FullRange implements RangeInterface
 {

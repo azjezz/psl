@@ -39,7 +39,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @param T $node
      *
-     * @external-mutation-free
+     * @psalm-external-mutation-free
      */
     public function enqueue(mixed $node, int $priority = 0): void
     {
@@ -55,7 +55,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @return null|T
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function peek(): mixed
     {
@@ -81,7 +81,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @return null|T
      *
-     * @external-mutation-free
+     * @psalm-external-mutation-free
      */
     public function pull(): mixed
     {
@@ -99,7 +99,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @return T
      *
-     * @external-mutation-free
+     * @psalm-external-mutation-free
      */
     public function dequeue(): mixed
     {
@@ -138,7 +138,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @return int<0, max>
      *
-     * @mutation-free
+     * @psalm-mutation-free
      */
     public function count(): int
     {

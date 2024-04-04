@@ -15,14 +15,21 @@ use Throwable;
  *
  * @implements  ResultInterface<T>
  */
-final class Failure implements ResultInterface
+final readonly class Failure implements ResultInterface
 {
     /**
-     * @param Te $throwable
+     * @var Te
      */
-    public function __construct(
-        private readonly Throwable $throwable
-    ) {
+    private Throwable $throwable;
+
+    /**
+     * @param Te $throwable
+     *
+     * @psalm-mutation-free
+     */
+    public function __construct(Throwable $throwable)
+    {
+        $this->throwable = $throwable;
     }
 
     /**

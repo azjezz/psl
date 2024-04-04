@@ -13,17 +13,20 @@ namespace Psl\Range;
  * @see UpperBoundRangeInterface::getUpperBound()
  * @see UpperBoundRangeInterface::isUpperInclusive()
  *
- * @immutable
+ * @psalm-immutable
  */
-final class ToRange implements UpperBoundRangeInterface
+final readonly class ToRange implements UpperBoundRangeInterface
 {
+    private int  $upperBound;
+    private bool $upperInclusive;
+
     /**
      * @psalm-mutation-free
      */
-    public function __construct(
-        private readonly int $upper_bound,
-        private readonly bool $upper_inclusive = false,
-    ) {
+    public function __construct(int $upper_bound, bool $upper_inclusive = false)
+    {
+        $this->upperBound = $upper_bound;
+        $this->upperInclusive = $upper_inclusive;
     }
 
     /**
@@ -33,11 +36,11 @@ final class ToRange implements UpperBoundRangeInterface
      */
     public function contains(int $value): bool
     {
-        if ($this->upper_inclusive) {
-            return $value <= $this->upper_bound;
+        if ($this->upperInclusive) {
+            return $value <= $this->upperBound;
         }
 
-        return $value < $this->upper_bound;
+        return $value < $this->upperBound;
     }
 
     /**
@@ -51,8 +54,8 @@ final class ToRange implements UpperBoundRangeInterface
     {
         return new BetweenRange(
             $lower_bound,
-            $this->upper_bound,
-            $this->upper_inclusive,
+            $this->upperBound,
+            $this->upperInclusive,
         );
     }
 
@@ -103,9 +106,9 @@ final class ToRange implements UpperBoundRangeInterface
      */
     public function getUpperBound(): int
     {
-        return $this->upper_bound;
+        return $this->upperBound;
     }
-    
+
     /**
      * {@inheritDoc}
      *
@@ -113,7 +116,7 @@ final class ToRange implements UpperBoundRangeInterface
      */
     public function isUpperInclusive(): bool
     {
-        return $this->upper_inclusive;
+        return $this->upperInclusive;
     }
 
     /**
@@ -124,7 +127,7 @@ final class ToRange implements UpperBoundRangeInterface
     public function withUpperInclusive(bool $upper_inclusive): static
     {
         return new static(
-            $this->upper_bound,
+            $this->upperBound,
             $upper_inclusive,
         );
     }

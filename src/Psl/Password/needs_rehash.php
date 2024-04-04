@@ -24,6 +24,5 @@ use function password_needs_rehash;
  */
 function needs_rehash(string $hash, Algorithm $algorithm = Algorithm::Default, array $options = []): bool
 {
-    /** @psalm-suppress ImpureMethodCall */
     return password_needs_rehash($hash, $algorithm->getBuiltinConstantValue(), $options);
 }

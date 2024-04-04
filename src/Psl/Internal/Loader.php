@@ -467,6 +467,7 @@ final class Loader
         'Psl\\Class\\has_method' => 'Psl/Class/has_method.php',
         'Psl\\Class\\is_abstract' => 'Psl/Class/is_abstract.php',
         'Psl\\Class\\is_final' => 'Psl/Class/is_final.php',
+        'Psl\\Class\\is_readonly' => 'Psl/Class/is_readonly.php',
         'Psl\\Interface\\exists' => 'Psl/Interface/exists.php',
         'Psl\\Interface\\defined' => 'Psl/Interface/defined.php',
         'Psl\\Trait\\exists' => 'Psl/Trait/exists.php',

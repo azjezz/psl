@@ -37,16 +37,24 @@ final class BoundedChannelState implements ChannelInterface
      */
     private array $messages = [];
 
+    /**
+     * @var int<0, max>
+     */
     private int $size = 0;
 
     public bool $closed = false;
 
     /**
+     * @var positive-int
+     */
+    private readonly int $capacity;
+
+    /**
      * @param positive-int $capacity
      */
-    public function __construct(
-        private int $capacity
-    ) {
+    public function __construct(int $capacity)
+    {
+        $this->capacity = $capacity;
     }
 
     public function __destruct()
@@ -71,7 +79,9 @@ final class BoundedChannelState implements ChannelInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @return positive-int
+     *
+     * @psalm-mutation-free
      */
     public function getCapacity(): int
     {
@@ -99,7 +109,7 @@ final class BoundedChannelState implements ChannelInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @psalm-mutation-free
      */
     public function isClosed(): bool
     {
@@ -107,7 +117,9 @@ final class BoundedChannelState implements ChannelInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
+     *
+     * @psalm-mutation-free
      */
     public function count(): int
     {
@@ -115,7 +127,7 @@ final class BoundedChannelState implements ChannelInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @psalm-mutation-free
      */
     public function isFull(): bool
     {
@@ -123,7 +135,7 @@ final class BoundedChannelState implements ChannelInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @psalm-mutation-free
      */
     public function isEmpty(): bool
     {
@@ -171,6 +183,7 @@ final class BoundedChannelState implements ChannelInterface
         }
 
         $item = array_shift($this->messages);
+        /** @psalm-suppress InvalidPropertyAssignmentValue - The size is always in sync with messages */
         $this->size--;
 
         if ($suspension = array_shift($this->waitingForSpace)) {

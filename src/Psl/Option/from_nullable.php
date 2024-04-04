@@ -12,6 +12,8 @@ namespace Psl\Option;
  * @param null|T $value
  *
  * @return Option<T>
+ *
+ * @pure
  */
 function from_nullable(mixed $value): Option
 {

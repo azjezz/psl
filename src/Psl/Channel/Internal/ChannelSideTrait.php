@@ -15,7 +15,11 @@ trait ChannelSideTrait
     protected UnboundedChannelState|BoundedChannelState $state;
 
     /**
-     * @return int<1, max>|null
+     * Returns the channel capacity if it’s bounded.
+     *
+     * @return null|positive-int
+     *
+     * @psalm-mutation-free
      */
     public function getCapacity(): ?int
     {
@@ -28,6 +32,9 @@ trait ChannelSideTrait
         $this->state->close();
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function isClosed(): bool
     {
         return $this->state->isClosed();
@@ -35,6 +42,8 @@ trait ChannelSideTrait
 
     /**
      * @return int<0, max>
+     *
+     * @psalm-mutation-free
      */
     public function count(): int
     {
@@ -42,11 +51,17 @@ trait ChannelSideTrait
         return $this->state->count();
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function isFull(): bool
     {
         return $this->state->isFull();
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function isEmpty(): bool
     {
         return $this->state->isEmpty();

@@ -9,11 +9,18 @@ use Psl\SecureRandom;
 
 /**
  * A Cryptographically Secure PRNG.
- *
- * @immutable
  */
 final class SecureSequence implements DefaultInterface, SequenceInterface
 {
+    /**
+     * Construct a new secure sequence.
+     *
+     * @pure
+     */
+    public function __construct()
+    {
+    }
+
     /**
      * @pure
      */
@@ -25,11 +32,14 @@ final class SecureSequence implements DefaultInterface, SequenceInterface
     /**
      * Generates the next pseudorandom number.
      *
-     * @external-mutation-free
+     * @psalm-external-mutation-free
      */
     public function next(): int
     {
-        /** @psalm-suppress MissingThrowsDocblock */
+        /**
+         * @psalm-suppress MissingThrowsDocblock
+         * @psalm-suppress ImpureFunctionCall
+         */
         return SecureRandom\int();
     }
 }

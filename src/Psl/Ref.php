@@ -7,7 +7,7 @@ namespace Psl;
 /**
  * Wrapper class for getting object (byref) semantics for a value type.
  *
- * This is especially useful for mutating values outside of a lambda's scope.
+ * This is especially useful for mutating values outside a lambda's scope.
  *
  * In general, it's preferable to refactor to use return values.
  *
@@ -18,10 +18,15 @@ namespace Psl;
 final class Ref
 {
     /**
+     * @var T
+     */
+    public mixed $value;
+
+    /**
      * @param T $value
      */
-    public function __construct(
-        public mixed $value
-    ) {
+    public function __construct(mixed $value)
+    {
+        $this->value = $value;
     }
 }

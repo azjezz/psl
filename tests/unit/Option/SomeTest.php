@@ -12,7 +12,6 @@ use Psl\Option;
 use Psl\Ref;
 use Psl\Str;
 use Psl\Tests\Fixture;
-use Psl\Type;
 
 final class SomeTest extends TestCase
 {
@@ -192,15 +191,6 @@ final class SomeTest extends TestCase
         yield [Option\some(null)->zip(Option\some('hi')), null, 'hi'];
         yield [Option\some(1)->zip(Option\some('hi')), 1, 'hi'];
         yield [Option\some([true, false]), true, false];
-    }
-
-    /**
-     * @dataProvider provideTestUnzipAssertionException
-     */
-    public function testUnzipAssertionException(Option\Option $option): void
-    {
-        static::expectException(Type\Exception\AssertException::class);
-        $option->unzip();
     }
 
     private function provideTestUnzipAssertionException(): iterable

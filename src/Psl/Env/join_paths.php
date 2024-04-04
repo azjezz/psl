@@ -14,6 +14,8 @@ use const PATH_SEPARATOR;
  * @param string ...$paths
  *
  * @no-named-arguments
+ *
+ * @pure
  */
 function join_paths(string ...$paths): string
 {

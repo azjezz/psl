@@ -15,6 +15,5 @@ use function password_hash;
  */
 function hash(string $password, Algorithm $algorithm = Algorithm::Default, array $options = []): string
 {
-    /** @psalm-suppress ImpureMethodCall */
     return password_hash($password, $algorithm->getBuiltinConstantValue(), $options);
 }

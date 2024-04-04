@@ -23,7 +23,7 @@ function connect(string $path, ?float $timeout = null): Network\StreamSocketInte
     }
     // @codeCoverageIgnoreEnd
 
-    $socket = Network\Internal\socket_connect("unix://{$path}", timeout: $timeout);
+    $socket = Network\Internal\socket_connect("unix://$path", timeout: $timeout);
 
     /** @psalm-suppress MissingThrowsDocblock */
     return new Network\Internal\Socket($socket);

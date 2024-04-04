@@ -133,6 +133,8 @@ final class State
 
     /**
      * Suppress the `Throwable`s thrown to the loop error handler if and operation error is not handled by a callback.
+     *
+     * @psalm-external-mutation-free
      */
     public function ignore(): void
     {
@@ -141,6 +143,8 @@ final class State
 
     /**
      * @return bool True if the operation has completed.
+     *
+     * @psalm-mutation-free
      */
     public function isComplete(): bool
     {

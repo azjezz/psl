@@ -23,6 +23,9 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
     private bool $closed = false;
     private bool $reachedEof = false;
 
+    /**
+     * @psalm-external-mutation-free
+     */
     public function __construct(string $buffer = '')
     {
         $this->buffer = $buffer;
@@ -30,6 +33,8 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @psalm-mutation-free
      */
     public function reachedEndOfDataSource(): bool
     {
@@ -40,6 +45,8 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @psalm-external-mutation-free
      */
     public function tryRead(?int $max_bytes = null): string
     {
@@ -66,6 +73,8 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @psalm-external-mutation-free
      */
     public function read(?int $max_bytes = null, ?float $timeout = null): string
     {
@@ -74,6 +83,8 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @psalm-external-mutation-free
      */
     public function seek(int $offset): void
     {
@@ -84,6 +95,8 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @psalm-mutation-free
      */
     public function tell(): int
     {
@@ -94,6 +107,8 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @psalm-external-mutation-free
      */
     public function tryWrite(string $bytes, ?float $timeout = null): int
     {
@@ -119,6 +134,8 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @psalm-external-mutation-free
      */
     public function write(string $bytes, ?float $timeout = null): int
     {
@@ -127,12 +144,17 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @psalm-external-mutation-free
      */
     public function close(): void
     {
         $this->closed = true;
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function getBuffer(): string
     {
         return $this->buffer;
@@ -140,6 +162,8 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
 
     /**
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
+     *
+     * @psalm-mutation-free
      */
     private function assertHandleIsOpen(): void
     {

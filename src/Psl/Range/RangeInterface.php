@@ -7,7 +7,7 @@ namespace Psl\Range;
 /**
  * a range is a set of values that are contained in the range.
  *
- * @immutable
+ * @psalm-immutable
  */
 interface RangeInterface
 {
