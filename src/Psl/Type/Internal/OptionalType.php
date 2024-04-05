@@ -18,6 +18,8 @@ use Psl\Type\Exception\CoercionException;
 final class OptionalType extends Type\Type
 {
     /**
+     * @psalm-mutation-free
+     *
      * @param Type\TypeInterface<T> $inner
      */
     public function __construct(

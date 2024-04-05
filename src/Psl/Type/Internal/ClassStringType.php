@@ -23,6 +23,8 @@ final class ClassStringType extends Type
     private string $classname;
 
     /**
+     * @psalm-mutation-free
+     *
      * @param class-string<T> $classname
      */
     public function __construct(

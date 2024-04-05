@@ -7,6 +7,8 @@ namespace Psl\Type;
 use Closure;
 
 /**
+ * @psalm-pure
+ *
  * @template I
  * @template O
  *

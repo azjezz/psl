@@ -18,6 +18,8 @@ use UnitEnum;
 final class UnitEnumType extends Type\Type
 {
     /**
+     * @psalm-mutation-free
+     *
      * @param class-string<T> $enum
      */
     public function __construct(

@@ -7,6 +7,8 @@ namespace Psl\Type;
 use Psl\Collection;
 
 /**
+ * @psalm-pure
+ *
  * @template T
  *
  * @param TypeInterface<T> $value_type

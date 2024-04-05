@@ -19,6 +19,8 @@ use Psl\Type\Exception\CoercionException;
 final class LiteralScalarType extends Type\Type
 {
     /**
+     * @psalm-mutation-free
+     *
      * @param T $value
      */
     public function __construct(

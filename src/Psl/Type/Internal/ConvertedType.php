@@ -24,6 +24,8 @@ use Throwable;
 final class ConvertedType extends Type\Type
 {
     /**
+     * @psalm-mutation-free
+     *
      * @param TypeInterface<I> $from
      * @param TypeInterface<O> $into
      * @param (Closure(I): O) $converter

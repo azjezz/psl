@@ -7,6 +7,8 @@ namespace Psl\Type;
 use Psl\Collection;
 
 /**
+ * @psalm-pure
+ *
  * @template Tk of array-key
  * @template Tv
  *

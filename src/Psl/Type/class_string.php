@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Psl\Type;
 
 /**
+ * @psalm-pure
+ *
  * @template T
  *
  * @param class-string<T> $classname

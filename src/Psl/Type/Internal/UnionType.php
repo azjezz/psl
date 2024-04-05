@@ -20,6 +20,8 @@ use Psl\Type\Exception\CoercionException;
 class UnionType extends Type\Type
 {
     /**
+     * @psalm-mutation-free
+     *
      * @param Type\TypeInterface<Tl> $left_type
      * @param Type\TypeInterface<Tr> $right_type
      */
