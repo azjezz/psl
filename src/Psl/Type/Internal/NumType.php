@@ -11,6 +11,9 @@ namespace Psl\Type\Internal;
  */
 final class NumType extends UnionType
 {
+    /**
+     * @psalm-mutation-free
+     */
     public function __construct()
     {
         /** @psalm-suppress MissingThrowsDocblock */

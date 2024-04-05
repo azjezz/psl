@@ -7,6 +7,8 @@ namespace Psl\Type;
 use BackedEnum;
 
 /**
+ * @psalm-pure
+ *
  * @template T of BackedEnum
  *
  * @param class-string<T> $enum

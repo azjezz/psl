@@ -18,6 +18,8 @@ use Psl\Type\Exception\CoercionException;
 final class NullableType extends Type\Type
 {
     /**
+     * @psalm-mutation-free
+     *
      * @param Type\TypeInterface<T> $inner
      */
     public function __construct(

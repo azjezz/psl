@@ -14,6 +14,9 @@ use function is_string;
  */
 final class ArrayKeyType extends UnionType
 {
+    /**
+     * @psalm-mutation-free
+     */
     public function __construct()
     {
         /** @psalm-suppress MissingThrowsDocblock */

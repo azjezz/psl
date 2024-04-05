@@ -22,6 +22,8 @@ use Psl\Type\TypeInterface;
 final class IntersectionType extends Type
 {
     /**
+     * @psalm-mutation-free
+     *
      * @param TypeInterface<Tl> $left_type
      * @param TypeInterface<Tr> $right_type
      */

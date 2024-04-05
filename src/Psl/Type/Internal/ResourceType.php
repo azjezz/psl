@@ -18,6 +18,9 @@ use function is_resource;
  */
 final class ResourceType extends Type\Type
 {
+    /**
+     * @psalm-mutation-free
+     */
     public function __construct(
         private ?string $kind = null
     ) {

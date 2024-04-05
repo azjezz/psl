@@ -23,6 +23,8 @@ use function is_iterable;
 final class VecType extends Type\Type
 {
     /**
+     * @psalm-mutation-free
+     *
      * @param Type\TypeInterface<Tv> $value_type
      */
     public function __construct(

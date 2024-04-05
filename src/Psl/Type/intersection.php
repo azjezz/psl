@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Psl\Type;
 
 /**
+ * @psalm-pure
+ *
  * @template TFirst
  * @template TSecond
  * @template TRest

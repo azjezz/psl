@@ -7,6 +7,8 @@ namespace Psl\Type;
 use UnitEnum;
 
 /**
+ * @psalm-pure
+ *
  * @template T of UnitEnum
  *
  * @param class-string<T> $enum

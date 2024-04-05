@@ -24,6 +24,8 @@ use function is_object;
 final class MutableVectorType extends Type\Type
 {
     /**
+     * @psalm-mutation-free
+     *
      * @param Type\TypeInterface<T> $value_type
      */
     public function __construct(

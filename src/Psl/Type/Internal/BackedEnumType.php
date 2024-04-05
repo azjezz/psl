@@ -18,6 +18,8 @@ use Psl\Type\Exception\CoercionException;
 final class BackedEnumType extends Type\Type
 {
     /**
+     * @psalm-mutation-free
+     *
      * @param class-string<T> $enum
      */
     public function __construct(
