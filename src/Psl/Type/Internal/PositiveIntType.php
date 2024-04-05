@@ -19,7 +19,7 @@ use function is_string;
  *
  * @internal
  */
-final class PositiveIntType extends Type\Type
+final readonly class PositiveIntType extends Type\Type
 {
     /**
      * @psalm-assert-if-true positive-int $value

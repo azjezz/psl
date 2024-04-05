@@ -21,7 +21,7 @@ use function is_iterable;
  *
  * @internal
  */
-final class IterableType extends Type\Type
+final readonly class IterableType extends Type\Type
 {
     /**
      * @psalm-mutation-free

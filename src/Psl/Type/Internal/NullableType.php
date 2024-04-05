@@ -15,7 +15,7 @@ use Psl\Type\Exception\CoercionException;
  *
  * @internal
  */
-final class NullableType extends Type\Type
+final readonly class NullableType extends Type\Type
 {
     /**
      * @psalm-mutation-free

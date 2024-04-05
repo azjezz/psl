@@ -21,7 +21,7 @@ use function is_object;
  *
  * @internal
  */
-final class MutableVectorType extends Type\Type
+final readonly class MutableVectorType extends Type\Type
 {
     /**
      * @psalm-mutation-free

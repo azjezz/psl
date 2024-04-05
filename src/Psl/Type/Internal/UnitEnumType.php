@@ -15,7 +15,7 @@ use UnitEnum;
  *
  * @extends Type\Type<T>
  */
-final class UnitEnumType extends Type\Type
+final readonly class UnitEnumType extends Type\Type
 {
     /**
      * @psalm-mutation-free

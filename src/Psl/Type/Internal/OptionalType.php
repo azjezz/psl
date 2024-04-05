@@ -15,7 +15,7 @@ use Psl\Type\Exception\CoercionException;
  *
  * @internal
  */
-final class OptionalType extends Type\Type
+final readonly class OptionalType extends Type\Type
 {
     /**
      * @psalm-mutation-free

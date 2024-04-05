@@ -17,7 +17,7 @@ use function Psl\Type;
  *
  * @internal
  */
-final class F64Type extends Type\Type
+final readonly class F64Type extends Type\Type
 {
     /**
      * @ara-assert-if-true f64 $value

@@ -19,7 +19,7 @@ use Psl\Type\TypeInterface;
  *
  * @internal
  */
-final class IntersectionType extends Type
+final readonly class IntersectionType extends Type
 {
     /**
      * @psalm-mutation-free

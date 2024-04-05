@@ -16,7 +16,7 @@ use function is_resource;
  *
  * @internal
  */
-final class ResourceType extends Type\Type
+final readonly class ResourceType extends Type\Type
 {
     /**
      * @psalm-mutation-free

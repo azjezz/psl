@@ -19,7 +19,7 @@ use function is_string;
  *
  * @internal
  */
-final class FloatType extends Type\Type
+final readonly class FloatType extends Type\Type
 {
     /**
      * @psalm-assert-if-true float $value

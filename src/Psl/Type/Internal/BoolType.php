@@ -15,7 +15,7 @@ use function is_bool;
  *
  * @internal
  */
-final class BoolType extends Type\Type
+final readonly class BoolType extends Type\Type
 {
     /**
      * @psalm-assert-if-true bool $value

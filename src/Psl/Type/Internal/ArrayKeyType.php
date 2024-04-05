@@ -12,7 +12,7 @@ use function is_string;
  *
  * @internal
  */
-final class ArrayKeyType extends UnionType
+final readonly class ArrayKeyType extends UnionType
 {
     /**
      * @psalm-mutation-free

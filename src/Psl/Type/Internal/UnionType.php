@@ -17,7 +17,7 @@ use Psl\Type\Exception\CoercionException;
  *
  * @internal
  */
-class UnionType extends Type\Type
+readonly class UnionType extends Type\Type
 {
     /**
      * @psalm-mutation-free

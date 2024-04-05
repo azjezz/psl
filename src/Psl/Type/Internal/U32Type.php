@@ -19,7 +19,7 @@ use function Psl\Type;
  *
  * @internal
  */
-final class U32Type extends Type\Type
+final readonly class U32Type extends Type\Type
 {
     /**
      * @ara-assert-if-true u32 $value

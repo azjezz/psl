@@ -21,7 +21,7 @@ use function is_iterable;
  *
  * @internal
  */
-final class NonEmptyDictType extends Type\Type
+final readonly class NonEmptyDictType extends Type\Type
 {
     /**
      * @psalm-mutation-free

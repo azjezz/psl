@@ -15,7 +15,7 @@ use Psl\Type\Type;
  *
  * @internal
  */
-final class ClassStringType extends Type
+final readonly class ClassStringType extends Type
 {
     /**
      * @var class-string<T> $classname

@@ -52,7 +52,7 @@ final class ClassTest extends TestCase
         yield [Collection\MutableVector::class, true, true, false, false, ['first', 'last'], []];
         yield [Collection\Map::class, true, true, true, false, ['first', 'last'], []];
         yield [Collection\MutableMap::class, true, true, false, false, ['first', 'last'], []];
-        yield [Type\Type::class, true, false, false, true, ['matches', 'isOptional'], []];
+        yield [Type\Type::class, true, false, true, true, ['matches', 'isOptional'], []];
 
         yield ['Psl\\Not\\Class', false, false, false, false, [], []];
     }

@@ -15,7 +15,7 @@ use Psl\Type\Exception\CoercionException;
  *
  * @extends Type\Type<T>
  */
-final class BackedEnumType extends Type\Type
+final readonly class BackedEnumType extends Type\Type
 {
     /**
      * @psalm-mutation-free

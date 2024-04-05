@@ -19,7 +19,7 @@ use function Psl\Type;
  *
  * @internal
  */
-final class U8Type extends Type\Type
+final readonly class U8Type extends Type\Type
 {
     /**
      * @ara-assert-if-true u8 $value

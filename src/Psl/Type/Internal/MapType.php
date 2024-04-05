@@ -23,7 +23,7 @@ use function is_object;
  *
  * @internal
  */
-final class MapType extends Type\Type
+final readonly class MapType extends Type\Type
 {
     /**
      * @psalm-mutation-free

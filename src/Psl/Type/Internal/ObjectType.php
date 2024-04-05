@@ -15,7 +15,7 @@ use function is_object;
  *
  * @internal
  */
-final class ObjectType extends Type
+final readonly class ObjectType extends Type
 {
     /**
      * @psalm-assert-if-true T $value

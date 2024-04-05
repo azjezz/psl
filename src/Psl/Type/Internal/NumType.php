@@ -9,7 +9,7 @@ namespace Psl\Type\Internal;
  *
  * @internal
  */
-final class NumType extends UnionType
+final readonly class NumType extends UnionType
 {
     /**
      * @psalm-mutation-free

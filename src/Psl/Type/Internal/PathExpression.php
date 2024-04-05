@@ -14,7 +14,7 @@ use Psl\Str;
  * This class can be used for building the "path" parts of an exception message.
  * It is introduced to make sure the same path formatting is used when constructing the exception message.
  */
-final class PathExpression
+final readonly class PathExpression
 {
     /**
      * @pure

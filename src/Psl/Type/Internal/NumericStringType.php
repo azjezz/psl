@@ -17,7 +17,7 @@ use function is_string;
  *
  * @internal
  */
-final class NumericStringType extends Type\Type
+final readonly class NumericStringType extends Type\Type
 {
     /**
      * @psalm-assert-if-true numeric-string $value

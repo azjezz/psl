@@ -19,7 +19,7 @@ use function ltrim;
  *
  * @internal
  */
-final class IntType extends Type\Type
+final readonly class IntType extends Type\Type
 {
     /**
      * @psalm-assert-if-true int $value
