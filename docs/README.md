@@ -9,6 +9,7 @@
  * [Psl\Async](../src/Psl/Async/README.md)
  * [Psl\Default](../src/Psl/Default/README.md)
  * [Psl\Range](../src/Psl/Range/README.md)
+ * [Psl\Type](../src/Psl/Type/README.md)
 
 ---
 
@@ -53,7 +54,6 @@
 - [Psl\Str\Grapheme](./component/str-grapheme.md)
 - [Psl\TCP](./component/tcp.md)
 - [Psl\Trait](./component/trait.md)
-- [Psl\Type](./component/type.md)
 - [Psl\Unix](./component/unix.md)
 - [Psl\Vec](./component/vec.md)
 

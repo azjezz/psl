@@ -223,7 +223,6 @@ function get_all_components(): array
         'Psl\\Str\\Grapheme',
         'Psl\\TCP',
         'Psl\\Trait',
-        'Psl\\Type',
         'Psl\\Unix',
         'Psl\\Locale',
         'Psl\\Vec',
