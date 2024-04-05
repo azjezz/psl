@@ -11,7 +11,7 @@ use Psl\Type\Exception\AssertException;
  *
  * @implements TypeInterface<T>
  */
-abstract class Type implements TypeInterface
+abstract readonly class Type implements TypeInterface
 {
     /**
      * @psalm-assert-if-true T $value

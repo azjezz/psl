@@ -21,7 +21,7 @@ use function ltrim;
  *
  * @internal
  */
-final class UIntType extends Type\Type
+final readonly class UIntType extends Type\Type
 {
     /**
      * @ara-assert-if-true unit $value

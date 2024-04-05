@@ -9,7 +9,7 @@ namespace Psl\Type\Internal;
  *
  * @internal
  */
-final class ScalarType extends UnionType
+final readonly class ScalarType extends UnionType
 {
     /**
      * @psalm-mutation-free

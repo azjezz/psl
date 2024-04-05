@@ -18,7 +18,7 @@ use function Psl\Type;
  *
  * @internal
  */
-final class F32Type extends Type\Type
+final readonly class F32Type extends Type\Type
 {
     /**
      * @ara-assert-if-true f32 $value

@@ -15,7 +15,7 @@ use Psl\Type\Type;
  *
  * @internal
  */
-final class InstanceOfType extends Type
+final readonly class InstanceOfType extends Type
 {
     /**
      * @var class-string<T> $classname

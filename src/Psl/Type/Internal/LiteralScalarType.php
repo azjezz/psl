@@ -16,7 +16,7 @@ use Psl\Type\Exception\CoercionException;
  *
  * @internal
  */
-final class LiteralScalarType extends Type\Type
+final readonly class LiteralScalarType extends Type\Type
 {
     /**
      * @psalm-mutation-free

@@ -17,7 +17,7 @@ use function is_int;
  *
  * @internal
  */
-final class I64Type extends Type\Type
+final readonly class I64Type extends Type\Type
 {
     /**
      * @ara-assert-if-true i64 $value

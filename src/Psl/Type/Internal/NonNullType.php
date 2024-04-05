@@ -15,7 +15,7 @@ use Psl\Type\Exception\CoercionException;
  *
  * @internal
  */
-final class NonNullType extends Type\Type
+final readonly class NonNullType extends Type\Type
 {
     /**
      * @psalm-assert-if-true mixed $value

@@ -20,7 +20,7 @@ use function is_iterable;
  *
  * @internal
  */
-final class DictType extends Type\Type
+final readonly class DictType extends Type\Type
 {
     /**
      * @psalm-mutation-free

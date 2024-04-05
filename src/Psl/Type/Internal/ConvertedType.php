@@ -21,7 +21,7 @@ use Throwable;
  *
  * @internal
  */
-final class ConvertedType extends Type\Type
+final readonly class ConvertedType extends Type\Type
 {
     /**
      * @psalm-mutation-free

@@ -14,7 +14,7 @@ use Throwable;
  *
  * @internal
  */
-final class MixedDictType extends Type\Type
+final readonly class MixedDictType extends Type\Type
 {
     /**
      * @throws CoercionException

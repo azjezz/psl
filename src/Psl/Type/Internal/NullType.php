@@ -13,7 +13,7 @@ use Psl\Type\Exception\CoercionException;
  *
  * @internal
  */
-final class NullType extends Type\Type
+final readonly class NullType extends Type\Type
 {
     /**
      * @psalm-assert-if-true null $value

@@ -20,7 +20,7 @@ use function is_iterable;
  *
  * @internal
  */
-final class NonEmptyVecType extends Type\Type
+final readonly class NonEmptyVecType extends Type\Type
 {
     /**
      * @psalm-mutation-free

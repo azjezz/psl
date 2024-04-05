@@ -11,7 +11,7 @@ use Psl\Type\Type;
  *
  * @internal
  */
-final class MixedType extends Type
+final readonly class MixedType extends Type
 {
     /**
      * @psalm-assert-if-true mixed $value
