@@ -18,9 +18,15 @@ use Psl\Type\Exception\CoercionException;
 final readonly class NonNullType extends Type\Type
 {
     /**
-     * @psalm-assert-if-true mixed $value
+     * @template T of mixed
+     *
+     * @param T|null $value
+     *
+     * @psalm-assert-if-true T $value
      *
      * @ara-assert-if-true nonnull $value
+     *
+     * @return ($value is null ? false : true)
      */
     public function matches(mixed $value): bool
     {
@@ -28,9 +34,13 @@ final readonly class NonNullType extends Type\Type
     }
 
     /**
+     * @template T of mixed
+     *
+     * @param T|null $value
+     *
      * @ara-return nonnull
      *
-     * @return mixed
+     * @return ($value is null ? never : T)
      */
     public function coerce(mixed $value): mixed
     {
@@ -42,13 +52,17 @@ final readonly class NonNullType extends Type\Type
     }
 
     /**
+     * @template T
+     *
+     * @param T|null $value
+     *
      * @ara-assert nonnull $value
      *
-     * @psalm-assert mixed $value
+     * @psalm-assert T $value
      *
      * @ara-return nonnull
      *
-     * @return mixed
+     * @return ($value is null ? never : T)
      */
     public function assert(mixed $value): mixed
     {

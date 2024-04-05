@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
+use Psl\Type\Internal\NonNullType;
+
 /**
  * @psalm-pure
  *
@@ -11,7 +13,7 @@ namespace Psl\Type;
  *
  * @ara-return TypeInterface<nonnull>
  *
- * @return TypeInterface<mixed>
+ * @return NonNullType
  */
 function nonnull(): TypeInterface
 {
