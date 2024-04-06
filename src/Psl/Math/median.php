@@ -14,9 +14,11 @@ use function sort;
  *
  * @param list<int|float> $numbers
  *
+ * @return ($numbers is non-empty-list ? float : null)
+ *
  * @pure
  */
-function median(array $numbers): ?float
+function median(array $numbers): float|null
 {
     sort($numbers);
     $count   = count($numbers);
@@ -29,7 +31,7 @@ function median(array $numbers): ?float
     if (0 === $count % 2) {
         return mean(
             [$numbers[$middle_index], $numbers[$middle_index - 1]]
-        ) ?? 0.0;
+        );
     }
 
     return (float) $numbers[$middle_index];
