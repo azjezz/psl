@@ -13,9 +13,11 @@ use function count;
  *
  * @param list<int|float> $numbers
  *
+ * @return ($numbers is non-empty-list ? float : null)
+ *
  * @pure
  */
-function mean(array $numbers): ?float
+function mean(array $numbers): float|null
 {
     $count = (float) count($numbers);
     if (0.0 === $count) {

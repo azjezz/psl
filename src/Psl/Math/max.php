@@ -12,7 +12,7 @@ namespace Psl\Math;
  *
  * @param list<T> $numbers
  *
- * @return T|null
+ * @return ($numbers is non-empty-list<T> ? T : null)
  *
  * @pure
  */
