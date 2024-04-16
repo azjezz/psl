@@ -40,7 +40,7 @@
 - [non_empty_dict](./../../src/Psl/Type/non_empty_dict.php#L18)
 - [non_empty_string](./../../src/Psl/Type/non_empty_string.php#L14)
 - [non_empty_vec](./../../src/Psl/Type/non_empty_vec.php#L16)
-- [nonnull](./../../src/Psl/Type/nonnull.php#L16)
+- [nonnull](./../../src/Psl/Type/nonnull.php#L18)
 - [null](./../../src/Psl/Type/null.php#L14)
 - [nullable](./../../src/Psl/Type/nullable.php#L16)
 - [num](./../../src/Psl/Type/num.php#L14)
