@@ -31,6 +31,14 @@ final class SuccessTest extends TestCase
         static::assertSame('hello', $wrapper->getResult());
     }
 
+    public function testUnwrap(): void
+    {
+        $result = new Success('foo');
+        $value = $result->unwrapOr(null);
+
+        static::assertSame('foo', $value);
+    }
+
     public function testGetException(): void
     {
         $wrapper = new Success('hello');

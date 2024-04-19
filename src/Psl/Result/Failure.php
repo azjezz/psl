@@ -45,6 +45,20 @@ final readonly class Failure implements ResultInterface
     }
 
     /**
+     * Unwrap the Result if it is succeeded or return $default value.
+     *
+     * @param D $default
+     *
+     * @return T|D
+     *
+     * @template D
+     */
+    public function unwrapOr(mixed $default): mixed
+    {
+        return $default;
+    }
+
+    /**
      * Since this is a failed result wrapper, this always returns the `Throwable` thrown during the operation.
      *
      * @return Te - The `Throwable` thrown during the operation.
