@@ -115,8 +115,6 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
      * @return bool - `true` if the operation succeeded; `false` otherwise
      *
      * @psalm-mutation-free
-     *
-     * @psalm-assert-if-true Success<T> $this
      */
     public function isSucceeded(): bool;
 
@@ -128,8 +126,6 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
      * @return bool - `true` if the operation failed; `false` otherwise
      *
      * @psalm-mutation-free
-     *
-     * @psalm-assert-if-true Failure<T> $this
      */
     public function isFailed(): bool;
 
