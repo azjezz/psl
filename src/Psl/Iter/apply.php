@@ -12,7 +12,7 @@ use Closure;
  * @template  T
  *
  * @param iterable<T> $iterable Iterable to apply on
- * @param (Closure(T): void) $function Apply function
+ * @param (Closure(T): mixed) $function Apply function
  */
 function apply(iterable $iterable, Closure $function): void
 {
