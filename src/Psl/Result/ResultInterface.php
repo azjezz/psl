@@ -98,7 +98,7 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
     /**
      * Unwrap the Result if it is succeeded or return $default value.
      *
-     * @template D 
+     * @template D
      *
      * @param D $default
      *
