@@ -47,11 +47,11 @@ final readonly class Success implements ResultInterface
     /**
      * Unwrap the Result if it is succeeded or return $default value.
      *
+     * @template D
+     *
      * @param D $default
      *
-     * @return T|D
-     *
-     * @template D
+     * @return T
      */
     public function unwrapOr(mixed $default): mixed
     {
