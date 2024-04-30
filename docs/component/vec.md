@@ -36,6 +36,9 @@
 - [sort](./../../src/Psl/Vec/sort.php#L25)
 - [sort_by](./../../src/Psl/Vec/sort_by.php#L28)
 - [take](./../../src/Psl/Vec/take.php#L22)
+- [unique](./../../src/Psl/Vec/unique.php#L16)
+- [unique_by](./../../src/Psl/Vec/unique_by.php#L23)
+- [unique_scalar](./../../src/Psl/Vec/unique_scalar.php#L20)
 - [values](./../../src/Psl/Vec/values.php#L19)
 - [zip](./../../src/Psl/Vec/zip.php#L37)
 
