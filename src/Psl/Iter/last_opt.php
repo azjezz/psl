@@ -16,7 +16,7 @@ use Psl\Option\Option;
  *
  * @return Option<Tv>
  */
-function last_opt(iterable $iterable)
+function last_opt(iterable $iterable): Option
 {
     $last = Option::none();
     foreach ($iterable as $v) {
