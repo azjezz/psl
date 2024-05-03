@@ -27,7 +27,7 @@ use Psl\Option\Option;
  *
  * @return Option<T>
  */
-function search_opt(iterable $iterable, Closure $predicate)
+function search_opt(iterable $iterable, Closure $predicate): Option
 {
     foreach ($iterable as $value) {
         if ($predicate($value)) {
