@@ -14,11 +14,11 @@ use Psl\Option\Option;
  *
  * Examples:
  *
- *      Iter\search(['foo', 'bar', 'baz'], fn($v) => 'baz' === $v)
- *      => Str('baz')
+ *      Iter\search_opt(['foo', 'bar', 'baz'], fn($v) => 'baz' === $v)
+ *      => Option::some('baz')
  *
- *      Iter\search(['foo', 'bar', 'baz'], fn($v) => 'qux' === $v)
- *      => Null
+ *      Iter\search_opt(['foo', 'bar', 'baz'], fn($v) => 'qux' === $v)
+ *      => Option::none()
  *
  * @template T
  *
