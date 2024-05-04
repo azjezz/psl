@@ -45,6 +45,20 @@ final readonly class Success implements ResultInterface
     }
 
     /**
+     * Unwrap the Result if it is succeeded or return $default value.
+     *
+     * @template D
+     *
+     * @param D $default
+     *
+     * @return T
+     */
+    public function unwrapOr(mixed $default): mixed
+    {
+        return $this->value;
+    }
+
+    /**
      * Since this is a successful result wrapper, this always throws a
      * `Psl\Exception\InvariantViolationException` saying that there was no exception thrown from the operation.
      *

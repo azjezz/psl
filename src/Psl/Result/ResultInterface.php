@@ -96,6 +96,17 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
     public function getResult();
 
     /**
+     * Unwrap the Result if it is succeeded or return $default value.
+     *
+     * @template D
+     *
+     * @param D $default
+     *
+     * @return T|D
+     */
+    public function unwrapOr(mixed $default): mixed;
+
+    /**
      * Return the underlying throwable, or fail with a invariant violation exception.
      *
      * - if the operation succeeded: fails with a invariant violation exception.

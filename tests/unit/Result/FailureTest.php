@@ -33,6 +33,14 @@ final class FailureTest extends TestCase
         $wrapper->getResult();
     }
 
+    public function testUnwrapFailure(): void
+    {
+        $result = new Failure(new Exception());
+        $value = $result->unwrapOr(null);
+
+        static::assertNull($value);
+    }
+
     public function testGetException(): void
     {
         $exception = new Exception('bar');
