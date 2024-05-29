@@ -30,7 +30,7 @@
 - [contains_ci](./../../src/Psl/Str/Byte/contains_ci.php#L21)
 - [ends_with](./../../src/Psl/Str/Byte/ends_with.php#L12)
 - [ends_with_ci](./../../src/Psl/Str/Byte/ends_with_ci.php#L14)
-- [length](./../../src/Psl/Str/Byte/length.php#L14)
+- [length](./../../src/Psl/Str/Byte/length.php#L16)
 - [lowercase](./../../src/Psl/Str/Byte/lowercase.php#L14)
 - [ord](./../../src/Psl/Str/Byte/ord.php#L12)
 - [pad_left](./../../src/Psl/Str/Byte/pad_left.php#L24)

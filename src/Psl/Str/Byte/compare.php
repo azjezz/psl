@@ -11,8 +11,8 @@ use function strncmp;
  * Returns < 0 if `$string1` is less than `$string2`, > 0 if `$string1` is
  * greater than `$string2`, and 0 if they are equal.
  *
- * @param int|null $length number of characters to use in the comparison,
- *                         or null to compare the whole string
+ * @param int<0, max>|null $length number of characters to use in the comparison,
+ *                                 or null to compare the whole string
  *
  * @pure
  */

@@ -35,7 +35,9 @@ function strip_suffix(string $string, string $suffix): string
     /**
      * $string_length is greater than $suffix_length, so the result is always int<0, max>.
      *
-     * @psalm-suppress ArgumentTypeCoercion
+     * @var int<0, max> $length
      */
-    return slice($string, 0, $string_length - $suffix_length);
+    $length = $string_length - $suffix_length;
+
+    return slice($string, 0, $length);
 }
