@@ -24,7 +24,7 @@
 - [contains_ci](./../../src/Psl/Str/Grapheme/contains_ci.php#L22)
 - [ends_with](./../../src/Psl/Str/Grapheme/ends_with.php#L16)
 - [ends_with_ci](./../../src/Psl/Str/Grapheme/ends_with_ci.php#L16)
-- [length](./../../src/Psl/Str/Grapheme/length.php#L18)
+- [length](./../../src/Psl/Str/Grapheme/length.php#L20)
 - [range](./../../src/Psl/Str/Grapheme/range.php#L43)
 - [reverse](./../../src/Psl/Str/Grapheme/reverse.php#L16)
 - [search](./../../src/Psl/Str/Grapheme/search.php#L27)

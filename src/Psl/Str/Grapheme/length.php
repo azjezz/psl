@@ -11,9 +11,11 @@ use function grapheme_strlen;
 /**
  * Returns the length of the given string in grapheme units.
  *
- * @pure
- *
  * @throws Exception\InvalidArgumentException If $string is not made of grapheme clusters.
+ *
+ * @return int<0, max>
+ *
+ * @pure
  */
 function length(string $string): int
 {

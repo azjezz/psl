@@ -164,14 +164,14 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Seek to the given position.
      *
-     * @param int<0, max> $offset
+     * @param int<0, max> $position
      *
      * @throws Exception\OutOfBoundsException If $position is out-of-bounds.
      */
-    public function seek(int $offset): void
+    public function seek(int $position): void
     {
-        if ($offset <= $this->position) {
-            $this->position = $offset;
+        if ($position <= $this->position) {
+            $this->position = $position;
             return;
         }
 
@@ -184,16 +184,16 @@ final class Iterator implements Countable, SeekableIterator
                     $this->generator = null;
                     throw new Exception\OutOfBoundsException('Position is out-of-bounds.');
                 }
-            } while ($this->position < $offset);
+            } while ($this->position < $position);
 
             return;
         }
 
-        if ($offset >= $this->count()) {
+        if ($position >= $this->count()) {
             throw new Exception\OutOfBoundsException('Position is out-of-bounds.');
         }
 
-        $this->position = $offset;
+        $this->position = $position;
     }
 
     /**
