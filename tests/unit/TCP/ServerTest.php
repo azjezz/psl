@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\TCP;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
+use Psl\DateTime;
 use Psl\Network;
 use Psl\Network\Exception\AlreadyStoppedException;
 use Psl\TCP;
@@ -78,7 +79,7 @@ final class ServerTest extends TestCase
     {
         $server = TCP\Server::create('127.0.0.1');
         $incoming = $server->incoming();
-        Async\Scheduler::delay(0.01, static fn() => $server->close());
+        Async\Scheduler::delay(DateTime\Duration::milliseconds(1), static fn() => $server->close());
         Async\Scheduler::defer(static function () use ($server) {
             TCP\connect('127.0.0.1', $server->getLocalAddress()->port);
         });

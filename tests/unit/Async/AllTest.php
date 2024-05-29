@@ -7,6 +7,7 @@ namespace Psl\Tests\Unit\Async;
 use PHPUnit\Framework\TestCase;
 use Psl;
 use Psl\Async;
+use Psl\DateTime;
 use Psl\Exception\InvariantViolationException;
 
 final class AllTest extends TestCase
@@ -15,17 +16,17 @@ final class AllTest extends TestCase
     {
         $awaitables = [
             'a' => Async\run(static function (): string {
-                Async\sleep(0.003);
+                Async\sleep(DateTime\Duration::milliseconds(3));
 
                 return 'a';
             }),
             'b' => Async\run(static function (): string {
-                Async\sleep(0.001);
+                Async\sleep(DateTime\Duration::milliseconds(1));
 
                 return 'b';
             }),
             'c' => Async\run(static function (): string {
-                Async\sleep(0.01);
+                Async\sleep(DateTime\Duration::milliseconds(10));
 
                 return 'c';
             }),
@@ -81,23 +82,23 @@ final class AllTest extends TestCase
                     throw new InvariantViolationException('a');
                 }),
                 Async\run(static function () use ($ref): void {
-                    Async\sleep(0.02);
+                    Async\sleep(DateTime\Duration::milliseconds(20));
 
                     $ref->value .= 'b';
 
                     throw new InvariantViolationException('b');
                 }),
                 Async\run(static function () use ($ref): void {
-                    Async\sleep(0.05);
+                    Async\sleep(DateTime\Duration::milliseconds(50));
 
                     $ref->value .= 'c';
                 }),
                 Async\run(static function () use ($ref): void {
-                    Async\sleep(0.00005);
+                    Async\sleep(DateTime\Duration::microseconds(5));
 
                     Async\later();
 
-                    Async\sleep(0.00005);
+                    Async\sleep(DateTime\Duration::microseconds(5));
 
                     $ref->value .= 'd';
                 }),

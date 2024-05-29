@@ -6,6 +6,7 @@ namespace Psl\Example\IO;
 
 use Psl\Async;
 use Psl\Channel;
+use Psl\DateTime\Duration;
 use Psl\IO;
 
 require __DIR__ . '/../../vendor/autoload.php';
@@ -16,7 +17,7 @@ require __DIR__ . '/../../vendor/autoload.php';
  */
 [$receiver, $sender] = Channel\unbounded();
 
-Async\Scheduler::delay(1, static function () use ($sender) {
+Async\Scheduler::delay(Duration::seconds(1), static function () use ($sender) {
     $sender->send('Hello, World!');
 });
 

@@ -21,6 +21,7 @@
 - [Psl\Collection](./component/collection.md)
 - [Psl\Comparison](./component/comparison.md)
 - [Psl\DataStructure](./component/data-structure.md)
+- [Psl\DateTime](./component/date-time.md)
 - [Psl\Dict](./component/dict.md)
 - [Psl\Encoding\Base64](./component/encoding-base64.md)
 - [Psl\Encoding\Hex](./component/encoding-hex.md)

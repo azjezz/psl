@@ -30,6 +30,7 @@
 
     <rule ref="PSR2">
         <type>error</type>
+        <exclude name="PSR2.ControlStructures.ControlStructureSpacing.SpacingAfterOpenBrace"/>
     </rule>
 
     <rule ref="PSR12">

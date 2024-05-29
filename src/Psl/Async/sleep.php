@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Async;
 
+use Psl\DateTime;
 use Revolt\EventLoop;
 
 /**
  * Non-blocking sleep for the specified number of seconds.
  */
-function sleep(float $seconds): void
+function sleep(DateTime\Duration $duration): void
 {
     $suspension = EventLoop::getSuspension();
-    $watcher = EventLoop::delay($seconds, static fn () => $suspension->resume());
+    $watcher = EventLoop::delay(
+        $duration->getTotalSeconds(),
+        static fn () => $suspension->resume(),
+    );
 
     try {
         $suspension->suspend();

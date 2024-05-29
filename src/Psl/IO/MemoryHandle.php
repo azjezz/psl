@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
+use Psl\DateTime\Duration;
 use Psl\Math;
 
 use function str_repeat;
@@ -76,7 +77,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
      *
      * @psalm-external-mutation-free
      */
-    public function read(?int $max_bytes = null, ?float $timeout = null): string
+    public function read(?int $max_bytes = null, ?Duration $timeout = null): string
     {
         return $this->tryRead($max_bytes);
     }
@@ -110,7 +111,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
      *
      * @psalm-external-mutation-free
      */
-    public function tryWrite(string $bytes, ?float $timeout = null): int
+    public function tryWrite(string $bytes, ?Duration $timeout = null): int
     {
         $this->assertHandleIsOpen();
         $length = strlen($this->buffer);
@@ -137,7 +138,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
      *
      * @psalm-external-mutation-free
      */
-    public function write(string $bytes, ?float $timeout = null): int
+    public function write(string $bytes, ?Duration $timeout = null): int
     {
         return $this->tryWrite($bytes);
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
+use Psl\DateTime\Duration;
 use Psl\IO;
 
 /**
@@ -34,7 +35,7 @@ final class WriteStreamHandle implements WriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function write(string $bytes, ?float $timeout = null): int
+    public function write(string $bytes, ?Duration $timeout = null): int
     {
         return $this->handle->write($bytes, $timeout);
     }

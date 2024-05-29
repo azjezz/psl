@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Exception;
 use Psl;
 use Psl\Async;
+use Psl\DateTime;
 
 final class SeriesTest extends TestCase
 {
@@ -17,17 +18,17 @@ final class SeriesTest extends TestCase
 
         Async\series([
             static function () use ($spy): void {
-                Async\sleep(0.003);
+                Async\sleep(DateTime\Duration::milliseconds(3));
 
                 $spy->value .= '1';
             },
             static function () use ($spy): void {
-                Async\sleep(0.001);
+                Async\sleep(DateTime\Duration::milliseconds(1));
 
                 $spy->value .= '2';
             },
             static function () use ($spy): void {
-                Async\sleep(0.001);
+                Async\sleep(DateTime\Duration::milliseconds(1));
 
                 $spy->value .= '3';
             },
@@ -45,7 +46,7 @@ final class SeriesTest extends TestCase
         try {
             Async\series([
                 static function (): void {
-                    Async\sleep(0.003);
+                    Async\sleep(DateTime\Duration::milliseconds(3));
 
                     throw new Exception('foo');
                 },

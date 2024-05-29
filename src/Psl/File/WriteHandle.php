@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\File;
 
+use Psl\DateTime\Duration;
 use Psl\Filesystem;
 use Psl\IO;
 use Psl\Str;
@@ -66,7 +67,7 @@ final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteH
     /**
      * {@inheritDoc}
      */
-    public function write(string $bytes, ?float $timeout = null): int
+    public function write(string $bytes, ?Duration $timeout = null): int
     {
         return $this->writeHandle->write($bytes, $timeout);
     }

@@ -7,6 +7,7 @@ namespace Psl\Tests\Unit\Async;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
+use Psl\DateTime;
 use Psl\Result;
 
 final class ReflectTest extends TestCase
@@ -15,7 +16,7 @@ final class ReflectTest extends TestCase
     {
         [$one, $two] = Async\concurrently([
             Result\reflect(static function (): void {
-                Async\sleep(0.0001);
+                Async\sleep(DateTime\Duration::milliseconds(1));
 
                 throw new Exception('failure');
             }),

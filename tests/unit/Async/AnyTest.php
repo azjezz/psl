@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\Async;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
+use Psl\DateTime;
 use Psl\Exception\InvariantViolationException;
 
 final class AnyTest extends TestCase
@@ -14,26 +15,26 @@ final class AnyTest extends TestCase
     {
         $result = Async\any([
             Async\run(static function (): string {
-                Async\sleep(0.0001);
+                Async\sleep(DateTime\Duration::milliseconds(1));
 
                 throw new InvariantViolationException('a');
             }),
             Async\run(static function (): string {
-                Async\sleep(0.0002);
+                Async\sleep(DateTime\Duration::milliseconds(2));
 
                 throw new InvariantViolationException('b');
             }),
             Async\run(static function (): string {
-                Async\sleep(0.0003);
+                Async\sleep(DateTime\Duration::milliseconds(3));
 
                 return 'c';
             }),
             Async\run(static function (): string {
-                Async\sleep(0.00005);
+                Async\sleep(DateTime\Duration::microseconds(500));
 
                 Async\later();
 
-                Async\sleep(0.00005);
+                Async\sleep(DateTime\Duration::microseconds(500));
 
                 return 'c';
             }),

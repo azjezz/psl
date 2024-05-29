@@ -20,8 +20,8 @@ abstract class AbstractFilesystemTest extends TestCase
 
     protected function setUp(): void
     {
-        if (OS\is_windows() || OS\is_darwin()) {
-            static::markTestSkipped('Filesystem tests are only executed on linux.');
+        if (OS\is_windows()) {
+            static::markTestSkipped('Test can only be executed under *nix OS.');
         }
 
         $this->cacheDirectory = Type\string()->assert(Filesystem\canonicalize(Str\join([

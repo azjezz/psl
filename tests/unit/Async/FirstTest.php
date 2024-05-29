@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\Async;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
+use Psl\DateTime;
 
 final class FirstTest extends TestCase
 {
@@ -13,26 +14,26 @@ final class FirstTest extends TestCase
     {
         $result = Async\first([
             Async\run(static function (): string {
-                Async\sleep(0.001);
+                Async\sleep(DateTime\Duration::milliseconds(1));
 
                 return 'a';
             }),
             Async\run(static function (): string {
-                Async\sleep(0.002);
+                Async\sleep(DateTime\Duration::milliseconds(2));
 
                 return 'b';
             }),
             Async\run(static function (): string {
-                Async\sleep(0.003);
+                Async\sleep(DateTime\Duration::milliseconds(3));
 
                 return 'c';
             }),
             Async\run(static function (): string {
-                Async\sleep(0.0005);
+                Async\sleep(DateTime\Duration::milliseconds(5));
 
                 Async\later();
 
-                Async\sleep(0.0005);
+                Async\sleep(DateTime\Duration::milliseconds(5));
 
                 return 'c';
             }),

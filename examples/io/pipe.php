@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Example\IO;
 
 use Psl\Async;
+use Psl\DateTime\Duration;
 use Psl\IO;
 
 require __DIR__ . '/../../vendor/autoload.php';
@@ -16,7 +17,7 @@ Async\main(static function(): int {
         static function() use($read): void {
             IO\write_error_line("< sleeping.");
 
-            Async\sleep(0.01);
+            Async\sleep(Duration::milliseconds(10));
 
             IO\write_error_line("< waiting for content.");
 
@@ -30,7 +31,7 @@ Async\main(static function(): int {
         static function() use($write): void {
             IO\write_error_line('> sleeping.');
 
-            Async\sleep(0.1);
+            Async\sleep(Duration::milliseconds(100));
 
             IO\write_error_line('> writing.');
 

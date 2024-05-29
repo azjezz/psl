@@ -191,6 +191,7 @@ function get_all_components(): array
         'Psl\\Collection',
         'Psl\\Comparison',
         'Psl\\DataStructure',
+        'Psl\\DateTime',
         'Psl\\Dict',
         'Psl\\Encoding\\Base64',
         'Psl\\Encoding\\Hex',
