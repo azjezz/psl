@@ -196,6 +196,24 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     }
 
     /**
+     * Returns the option if it contains a value, otherwise calls $closure and returns the result.
+     *
+     * @param (Closure(): Option<T>) $closure
+     *
+     * @param-immediately-invoked-callable $closure
+     *
+     * @return Option<T>
+     */
+    public function orElse(Closure $closure): Option
+    {
+        if ($this->option !== null) {
+            return $this;
+        }
+
+        return $closure();
+    }
+
+    /**
      * Returns none if the option is none, otherwise calls `$predicate` with the wrapped value and returns:
      *  - Option<T>::some() if `$predicate` returns true (where t is the wrapped value), and
      *  - Option<T>::none() if `$predicate` returns false.

@@ -71,6 +71,14 @@ final class NoneTest extends TestCase
         static::assertFalse(Option\none()->or(Option\some(4))->isNone());
     }
 
+    public function testOrElse(): void
+    {
+        static::assertFalse(Option\none()->orElse(static fn () => Option\none())->isSome());
+        static::assertTrue(Option\none()->orElse(static fn () => Option\some(4))->isSome());
+        static::assertTrue(Option\none()->orElse(static fn () => Option\none())->isNone());
+        static::assertFalse(Option\none()->orElse(static fn () => Option\some(4))->isNone());
+    }
+
     public function testFilter(): void
     {
         $option = Option\none();
