@@ -194,6 +194,44 @@ final class DateTimeTest extends TestCase
         static::assertSame(1, $new->getNanoseconds());
     }
 
+    public function testPlusMonthsEdgeCases(): void
+    {
+        $jan_31th = DateTime::fromParts(Timezone::default(), 2024, Month::January, 31, 14, 0, 0, 0);
+        $febr_29th = $jan_31th->plusMonths(1);
+        static::assertSame([2024, 2, 29], $febr_29th->getDate());
+        static::assertSame([14, 0, 0, 0], $febr_29th->getTime());
+
+        $dec_31th = DateTime::fromParts(Timezone::default(), 2023, Month::December, 31, 14, 0, 0, 0);
+        $march_31th = $dec_31th->plusMonths(3);
+        static::assertSame([2024, 3, 31], $march_31th->getDate());
+        static::assertSame([14, 0, 0, 0], $march_31th->getTime());
+
+        $april_30th = $march_31th->plusMonths(1);
+        static::assertSame([2024, 4, 30], $april_30th->getDate());
+        static::assertSame([14, 0, 0, 0], $april_30th->getTime());
+
+        $april_30th_next_year = $april_30th->plusYears(1);
+        static::assertSame([2025, 4, 30], $april_30th_next_year->getDate());
+        static::assertSame([14, 0, 0, 0], $april_30th_next_year->getTime());
+    }
+
+    public function testPlusMonthOverflows(): void
+    {
+        $jan_31th_2024 = DateTime::fromParts(Timezone::default(), 2024, Month::January, 31, 14, 0, 0, 0);
+        $previous_month = 1;
+        for ($i = 1; $i < 24; $i++) {
+            $res = $jan_31th_2024->plusMonths($i);
+
+            $expected_month = ($previous_month + 1) % 12;
+            $expected_month = $expected_month === 0 ? 12 : $expected_month;
+
+            static::assertSame($res->getDay(), $res->getMonthEnum()->getDaysForYear($res->getYear()));
+            static::assertSame($res->getMonth(), $expected_month);
+
+            $previous_month = $expected_month;
+        }
+    }
+
     public function testMinusMethods(): void
     {
         $datetime = DateTime::fromParts(Timezone::default(), 2024, Month::February, 4, 14, 0, 0, 0);
@@ -218,6 +256,57 @@ final class DateTimeTest extends TestCase
 
         $new = $datetime->minusNanoseconds(1);
         static::assertSame(999999999, $new->getNanoseconds());
+    }
+
+    public function testMinusMonthsEdgeCases(): void
+    {
+        $febr_29th = DateTime::fromParts(Timezone::default(), 2024, Month::February, 29, 14, 0, 0, 0);
+        $jan_29th = $febr_29th->minusMonths(1);
+        static::assertSame([2024, 1, 29], $jan_29th->getDate());
+        static::assertSame([14, 0, 0, 0], $jan_29th->getTime());
+
+        $febr_28th_previous_year = $febr_29th->minusYears(1);
+        static::assertSame([2023, 2, 28], $febr_28th_previous_year->getDate());
+        static::assertSame([14, 0, 0, 0], $febr_28th_previous_year->getTime());
+
+        $febr_29th_previous_leap_year = $febr_29th->minusYears(4);
+        static::assertSame([2020, 2, 29], $febr_29th_previous_leap_year->getDate());
+        static::assertSame([14, 0, 0, 0], $febr_29th_previous_leap_year->getTime());
+
+        $march_31th = DateTime::fromParts(Timezone::default(), 2024, Month::March, 31, 14, 0, 0, 0);
+        $dec_31th = $march_31th->minusMonths(3);
+        static::assertSame([2023, 12, 31], $dec_31th->getDate());
+        static::assertSame([14, 0, 0, 0], $dec_31th->getTime());
+
+        $jan_31th = $march_31th->minusMonths(2);
+        static::assertSame([2024, 1, 31], $jan_31th->getDate());
+        static::assertSame([14, 0, 0, 0], $jan_31th->getTime());
+
+        $may_31th = DateTime::fromParts(Timezone::default(), 2024, Month::May, 31, 14, 0, 0, 0);
+        $april_30th = $may_31th->minusMonths(1);
+        static::assertSame([2024, 4, 30], $april_30th->getDate());
+        static::assertSame([14, 0, 0, 0], $april_30th->getTime());
+
+        $april_30th_previous_year = $april_30th->minusYears(1);
+        static::assertSame([2023, 4, 30], $april_30th_previous_year->getDate());
+        static::assertSame([14, 0, 0, 0], $april_30th_previous_year->getTime());
+    }
+
+    public function testMinusMonthOverflows(): void
+    {
+        $jan_31th_2024 = DateTime::fromParts(Timezone::default(), 2024, Month::January, 31, 14, 0, 0, 0);
+        $previous_month = 1;
+        for ($i = 1; $i < 24; $i++) {
+            $res = $jan_31th_2024->minusMonths($i);
+
+            $expected_month = $previous_month - 1;
+            $expected_month = $expected_month === 0 ? 12 : $expected_month;
+
+            static::assertSame($res->getDay(), $res->getMonthEnum()->getDaysForYear($res->getYear()));
+            static::assertSame($res->getMonth(), $expected_month);
+
+            $previous_month = $expected_month;
+        }
     }
 
     public function testIsLeapYear(): void
