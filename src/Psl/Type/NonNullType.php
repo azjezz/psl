@@ -2,18 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Psl\Type\Internal;
+namespace Psl\Type;
 
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
 /**
+ * This type is not marked as internal, cause the class is being leaked by the nonnull() function.
+ * This is necessary to get coerce and assert narrow down the type without psalm having a TNonNull type.
+ *
  * @ara-extends Type\Type<nonnull>
  *
  * @extends Type\Type<mixed>
- *
- * @internal
  */
 final readonly class NonNullType extends Type\Type
 {
