@@ -36,6 +36,21 @@ final class DateTimeTest extends TestCase
         static::assertSame(14, $today->getHours());
         static::assertSame(0, $today->getMinutes());
         static::assertSame(0, $today->getSeconds());
+        static::assertSame(0, $today->getNanoseconds());
+    }
+
+    public function testTodayAtDefaults(): void
+    {
+        $now = DateTime::now();
+        $today = DateTime::todayAt(14, 0);
+
+        static::assertSame($now->getDate(), $today->getDate());
+        static::assertNotSame($now->getTime(), $today->getTime());
+        static::assertSame(14, $today->getHours());
+        static::assertSame(0, $today->getMinutes());
+        static::assertSame(0, $today->getSeconds());
+        static::assertSame(0, $today->getNanoseconds());
+        static::assertSame(Timezone::default(), $today->getTimezone());
     }
 
     public function testFromParts(): void
@@ -51,6 +66,21 @@ final class DateTimeTest extends TestCase
         static::assertSame(0, $datetime->getMinutes());
         static::assertSame(0, $datetime->getSeconds());
         static::assertSame(1, $datetime->getNanoseconds());
+    }
+
+    public function testFromPartsWithDefaults(): void
+    {
+        $datetime = DateTime::fromParts(Timezone::UTC, 2024, Month::February, 4, );
+
+        static::assertSame(Timezone::UTC, $datetime->getTimezone());
+        static::assertSame(2024, $datetime->getYear());
+        static::assertSame(2, $datetime->getMonth());
+        static::assertSame(4, $datetime->getDay());
+        static::assertSame(Weekday::Sunday, $datetime->getWeekday());
+        static::assertSame(0, $datetime->getHours());
+        static::assertSame(0, $datetime->getMinutes());
+        static::assertSame(0, $datetime->getSeconds());
+        static::assertSame(0, $datetime->getNanoseconds());
     }
 
     public function testFromPartsWithInvalidComponent(): void
@@ -79,6 +109,19 @@ final class DateTimeTest extends TestCase
         $parsed = DateTime::parse($string);
 
         static::assertEquals($datetime->getTimestamp(), $parsed->getTimestamp());
+        static::assertSame($datetime->getTimezone(), $parsed->getTimezone());
+    }
+
+    public function testParseWithTimezone(): void
+    {
+        $datetime = DateTime::fromParts(Timezone::AmericaNewYork, 2024, Month::February, 4, 14, 0, 0, 0);
+
+        $string = $datetime->format();
+        $parsed = DateTime::parse($string, timezone: TimeZone::AmericaNewYork);
+
+        static::assertEquals($datetime->getTimestamp(), $parsed->getTimestamp());
+        static::assertSame($datetime->getTimezone(), $parsed->getTimezone());
+
     }
 
     public function testWithDate(): void
@@ -362,5 +405,16 @@ final class DateTimeTest extends TestCase
             '{"timezone":"Europe/London","timestamp":{"seconds":1707055200,"nanoseconds":0},"year":2024,"month":2,"day":4,"hours":14,"minutes":0,"seconds":0,"nanoseconds":0}',
             Json\encode($datetime),
         );
+    }
+
+    public function testWithTime()
+    {
+        $date = DateTime::todayAt(14, 0);
+        $new = $date->withTime(15, 0);
+
+        self::assertSame(15, $new->getHours());
+        self::assertSame(0, $new->getMinutes());
+        self::assertSame(0, $new->getSeconds());
+        self::assertSame(0, $new->getNanoseconds());
     }
 }
