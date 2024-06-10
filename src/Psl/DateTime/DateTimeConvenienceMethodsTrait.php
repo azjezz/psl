@@ -402,13 +402,13 @@ trait DateTimeConvenienceMethodsTrait
             return $this->minusMonths(-$months);
         }
 
-        $plus_years = Math\div($months, 12);
-        $months_left = $months - ($plus_years * 12);
+        $plus_years = Math\div($months, MONTHS_PER_YEAR);
+        $months_left = $months - ($plus_years * MONTHS_PER_YEAR);
         $target_month = $this->getMonth() + $months_left;
 
         if ($target_month > 12) {
             $plus_years++;
-            $target_month = $target_month - 12;
+            $target_month = $target_month - MONTHS_PER_YEAR;
         }
 
         $target_month_enum = Month::from($target_month);
@@ -442,13 +442,13 @@ trait DateTimeConvenienceMethodsTrait
             return $this->plusMonths(-$months);
         }
 
-        $minus_years = Math\div($months, 12);
-        $months_left = $months - ($minus_years * 12);
+        $minus_years = Math\div($months, MONTHS_PER_YEAR);
+        $months_left = $months - ($minus_years * MONTHS_PER_YEAR);
         $target_month = $this->getMonth() - $months_left;
 
         if ($target_month <= 0) {
             $minus_years++;
-            $target_month = 12 - Math\abs($target_month);
+            $target_month = MONTHS_PER_YEAR - Math\abs($target_month);
         }
 
         $target_month_enum = Month::from($target_month);
