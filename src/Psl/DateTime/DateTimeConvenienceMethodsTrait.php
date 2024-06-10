@@ -362,8 +362,7 @@ trait DateTimeConvenienceMethodsTrait
     /**
      * Adds the specified years to this date-time object, returning a new instance with the added years.
      *
-     * @throws Exception\UnderflowException If adding the years results in an arithmetic underflow.
-     * @throws Exception\OverflowException If adding the years results in an arithmetic overflow.
+     * @throws Exception\UnexpectedValueException If adding the years results in an arithmetic issue.
      *
      * @psalm-mutation-free
      */
@@ -375,8 +374,7 @@ trait DateTimeConvenienceMethodsTrait
     /**
      * Subtracts the specified years from this date-time object, returning a new instance with the subtracted years.
      *
-     * @throws Exception\UnderflowException If subtracting the years results in an arithmetic underflow.
-     * @throws Exception\OverflowException If subtracting the years results in an arithmetic overflow.
+     * @throws Exception\UnexpectedValueException If subtracting the years results in an arithmetic issue.
      *
      * @psalm-mutation-free
      */
@@ -388,10 +386,11 @@ trait DateTimeConvenienceMethodsTrait
     /**
      * Adds the specified months to this date-time object, returning a new instance with the added months.
      *
-     * @throws Exception\UnderflowException If adding the months results in an arithmetic underflow.
-     * @throws Exception\OverflowException If adding the months results in an arithmetic overflow.
+     * @throws Exception\UnexpectedValueException If adding the months results in an arithmetic issue.
      *
      * @psalm-mutation-free
+     *
+     * @psalm-suppress MissingThrowsDocblock - The Math exceptions from Math\div do not result in any error.
      */
     public function plusMonths(int $months): static
     {
@@ -403,30 +402,35 @@ trait DateTimeConvenienceMethodsTrait
             return $this->minusMonths(-$months);
         }
 
-        $current_year = $this->getYear();
-        $current_month = $this->getMonthEnum();
-        $days_to_add = 0;
-        for ($i = 0; $i < $months; $i++) {
-            $total_months = $current_month->value + $i;
-            $target_year = $current_year + Math\div($total_months - 1, MONTHS_PER_YEAR);
-            $target_month = $total_months % MONTHS_PER_YEAR;
-            if ($target_month === 0) {
-                $target_month = 1;
-            }
+        $plus_years = Math\div($months, 12);
+        $months_left = $months - ($plus_years * 12);
+        $target_month = $this->getMonth() + $months_left;
 
-            $days_to_add += Month::from($target_month)->getDaysForYear($target_year);
+        if ($target_month > 12) {
+            $plus_years++;
+            $target_month = $target_month - 12;
         }
 
-        return $this->plus(Duration::days($days_to_add));
+        $target_month_enum = Month::from($target_month);
+
+        return $this->withDate(
+            $target_year = $this->getYear() + $plus_years,
+            $target_month_enum->value,
+            Math\minva(
+                $this->getDay(),
+                $target_month_enum->getDaysForYear($target_year)
+            )
+        );
     }
 
     /**
      * Subtracts the specified months from this date-time object, returning a new instance with the subtracted months.
      *
-     * @throws Exception\UnderflowException If subtracting the months results in an arithmetic underflow.
-     * @throws Exception\OverflowException If subtracting the months results in an arithmetic overflow.
+     * @throws Exception\UnexpectedValueException If subtracting the months results in an arithmetic issue.
      *
      * @psalm-mutation-free
+     *
+     * @psalm-suppress MissingThrowsDocblock - The Math exceptions from Math\div do not result in any error.
      */
     public function minusMonths(int $months): static
     {
@@ -438,25 +442,25 @@ trait DateTimeConvenienceMethodsTrait
             return $this->plusMonths(-$months);
         }
 
-        $current_year = $this->getYear();
-        $current_month = $this->getMonthEnum();
-        $days_to_subtract = 0;
-        for ($i = 0; $i < $months; $i++) {
-            // When subtracting, we need to move the current month back before the calculation
-            $total_months = $current_month->value - $i;
-            while ($total_months <= 0) {
-                $total_months += MONTHS_PER_YEAR; // Adjust month to be within 1-12
-                $current_year--; // Adjust year when wrapping
-            }
+        $minus_years = Math\div($months, 12);
+        $months_left = $months - ($minus_years * 12);
+        $target_month = $this->getMonth() - $months_left;
 
-            $target_month = ($total_months % MONTHS_PER_YEAR) ?: MONTHS_PER_YEAR;
-            $target_year = $current_year + Math\div($total_months - 1, MONTHS_PER_YEAR);
-
-            // Subtract days of the month we are moving into
-            $days_to_subtract += Month::from($target_month)->getDaysForYear($target_year);
+        if ($target_month <= 0) {
+            $minus_years++;
+            $target_month = 12 - Math\abs($target_month);
         }
 
-        return $this->minus(Duration::days($days_to_subtract));
+        $target_month_enum = Month::from($target_month);
+
+        return $this->withDate(
+            $target_year = $this->getYear() - $minus_years,
+            $target_month_enum->value,
+            Math\minva(
+                $this->getDay(),
+                $target_month_enum->getDaysForYear($target_year)
+            )
+        );
     }
 
     /**

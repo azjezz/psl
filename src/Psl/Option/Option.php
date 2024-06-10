@@ -74,6 +74,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      * Returns true if the option is a some and the value inside of it matches a predicate.
      *
      * @param (Closure(T): bool) $predicate
+     *
      * @param-immediately-invoked-callable $predicate
      */
     public function isSomeAnd(Closure $predicate): bool
@@ -141,6 +142,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      * @template O
      *
      * @param (Closure(): O) $default
+     *
      * @param-immediately-invoked-callable $default
      *
      * @return T|O
@@ -219,6 +221,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      *  - Option<T>::none() if `$predicate` returns false.
      *
      * @param (Closure(T): bool) $predicate
+     *
      * @param-immediately-invoked-callable $predicate
      *
      * @return Option<T>
@@ -256,10 +259,13 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      * @param (Closure(T): Ts) $some A closure to be called when the option is some.
      *                               The closure must accept the option value as its only argument and can return a value.
      *                               Example: `fn($value) => $value + 10`
+     *
      * @param-immediately-invoked-callable $some
+     *
      * @param (Closure(): Ts) $none A closure to be called when the option is none.
      *                              The closure must not accept any arguments and can return a value.
      *                              Example: `fn() => 'Default value'`
+     *
      * @param-immediately-invoked-callable $none
      *
      * @return Ts The result of calling the appropriate closure.
@@ -277,6 +283,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      * Applies a function to a contained value and returns the original `Option<T>`.
      *
      * @param (Closure(T): mixed) $closure
+     *
      * @param-immediately-invoked-callable $closure
      *
      * @return Option<T>
@@ -296,6 +303,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      * @template Tu
      *
      * @param (Closure(T): Tu) $closure
+     *
      * @param-immediately-invoked-callable $closure
      *
      * @return Option<Tu>
@@ -316,6 +324,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      * @template Tu
      *
      * @param (Closure(T): Option<Tu>) $closure
+     *
      * @param-immediately-invoked-callable $closure
      *
      * @return Option<Tu>
@@ -340,7 +349,9 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      * @template Tu
      *
      * @param (Closure(T): Tu) $closure
+     *
      * @param-immediately-invoked-callable $closure
+     *
      * @param Tu $default
      *
      * @return Option<Tu>
@@ -361,8 +372,11 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      * @template Tu
      *
      * @param (Closure(T): Tu) $closure
+     *
      * @param-immediately-invoked-callable $closure
+     *
      * @param (Closure(): Tu) $default
+     *
      * @param-immediately-invoked-callable $default
      *
      * @return Option<Tu>
@@ -424,6 +438,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      *
      * @param Option<Tu> $other The Option to zip with.
      * @param (Closure(T, Tu): Tr) $closure The closure to apply to the values.
+     *
      * @param-immediately-invoked-callable $closure
      *
      * @return Option<Tr> The new `Option` containing the result of applying the closure to the values,
