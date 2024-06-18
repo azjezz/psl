@@ -824,8 +824,8 @@ Both `assert()` and `coerce()` are designed to narrow down the provided type:
 ```php
 use Psl\Type;
 
-$nullable = Type\nonnull();
-$nullable->assert($stringOrNull);
+$nonnull = Type\nonnull();
+$nonnull->assert($stringOrNull);
 
 // Your static analyzer will know that $stringOrNull is a string !
 
@@ -864,7 +864,7 @@ Can coerce from:
 ```php
 use Psl\Type;
 
-$nullableString = Type\nonnull(Type\string());
+$nullableString = Type\nullable(Type\string());
 $nullable->assert($stringOrNull);
 ```
 
@@ -934,7 +934,7 @@ Can coerce from:
 ```php
 use Psl\Type;
 
-$nullableString = Type\nonnull(Type\string());
+$nullableString = Type\optional(Type\string());
 $nullable->assert($stringOrNull);
 ```
 
