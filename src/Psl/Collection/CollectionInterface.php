@@ -60,8 +60,7 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      * Returns a `CollectionInterface` containing the values of the current `CollectionInterface`
      * that meet a supplied condition.
      *
-     * Only values that meet a certain criteria are affected by a call to
-     * `filter()`, while all values are affected by a call to `map()`.
+     * Only values that meet a certain criteria are affected by a call to `filter()`.
      *
      * The keys associated with the current `CollectionInterface` remain unchanged in the
      * returned `CollectionInterface`.
@@ -79,8 +78,7 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      * that meet a supplied condition applied to its keys and values.
      *
      * Only keys and values that meet a certain criteria are affected by a call
-     * to `filterWithKey()`, while all values are affected by a call to
-     * `mapWithKey()`.
+     * to `filterWithKey()`.
      *
      * The keys associated with the current `CollectionInterface` remain unchanged in the
      * returned `CollectionInterface`; the keys will be used in the filtering process only.
@@ -93,47 +91,6 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      *                                     current `CollectionInterface`.
      */
     public function filterWithKey(Closure $fn): CollectionInterface;
-
-    /**
-     * Returns a `CollectionInterface` after an operation has been applied to each value
-     * in the current `CollectionInterface`.
-     *
-     * Every value in the current Map is affected by a call to `map()`, unlike
-     * `filter()` where only values that meet a certain criteria are affected.
-     *
-     * The keys will remain unchanged from the current `CollectionInterface` to the
-     * returned `CollectionInterface`.
-     *
-     * @template Tu
-     *
-     * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                              `CollectionInterface` values.
-     *
-     * @return CollectionInterface<Tk, Tu> A `CollectionInterface` containing key/value pairs after
-     *                                     a user-specified operation is applied.
-     */
-    public function map(Closure $fn): CollectionInterface;
-
-    /**
-     * Returns a `CollectionInterface` after an operation has been applied to each key and
-     * value in the current `CollectionInterface`.
-     *
-     * Every key and value in the current `CollectionInterface` is affected by a call to
-     * `mapWithKey()`, unlike `filterWithKey()` where only values that meet a
-     * certain criteria are affected.
-     *
-     * The keys will remain unchanged from this `CollectionInterface` to the returned
-     * `CollectionInterface`. The keys are only used to help in the mapping operation.
-     *
-     * @template Tu
-     *
-     * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                                  `CollectionInterface` keys and values.
-     *
-     * @return CollectionInterface<Tk, Tu> A `CollectionInterface` containing the values after a user-specified
-     *                                     operation on the current `CollectionInterface`'s keys and values is applied.
-     */
-    public function mapWithKey(Closure $fn): CollectionInterface;
 
     /**
      * Returns a `CollectionInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the

@@ -342,11 +342,11 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
     /**
      * For every element in the provided elements array, add the value into the current collection.
      *
-     * @param array<Tk, Tv> $elements The elements with the new values to add.
+     * @param iterable<Tk, Tv> $elements The elements with the new values to add.
      *
      * @return MutableMapInterface<Tk, Tv> Returns itself.
      */
-    public function addAll(array $elements): MutableMapInterface;
+    public function addAll(iterable $elements): MutableMapInterface;
 
     /**
      * Removes the specified key (and associated value) from the current

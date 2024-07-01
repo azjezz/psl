@@ -568,11 +568,11 @@ abstract class AbstractVectorTest extends TestCase
     }
 
     /**
-     * @template     T
+     * @template T
      *
-     * @param iterable<T> $items
+     * @param list<T> $items
      *
      * @return VectorInterface<T>
      */
-    abstract protected function create(iterable $items): VectorInterface;
+    abstract protected function create(array $items): VectorInterface;
 }

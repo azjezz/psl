@@ -43,7 +43,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * that meet a supplied condition.
      *
      * Only values that meet a certain criteria are affected by a call to
-     * `filter()`, while all values are affected by a call to `map()`.
+     * `filter()`.
      *
      * The keys associated with the current `AccessibleCollectionInterface` remain unchanged in the
      * returned `AccessibleCollectionInterface`.
@@ -61,8 +61,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * that meet a supplied condition applied to its keys and values.
      *
      * Only keys and values that meet a certain criteria are affected by a call
-     * to `filterWithKey()`, while all values are affected by a call to
-     * `mapWithKey()`.
+     * to `filterWithKey()`.
      *
      * The keys associated with the current `AccessibleCollectionInterface` remain unchanged in the
      * returned `AccessibleCollectionInterface`; the keys will be used in the filtering process only.
@@ -75,48 +74,6 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *                                               of the current `AccessibleCollectionInterface`.
      */
     public function filterWithKey(Closure $fn): AccessibleCollectionInterface;
-
-    /**
-     * Returns a `AccessibleCollectionInterface` after an operation has been applied to each value
-     * in the current `AccessibleCollectionInterface`.
-     *
-     * Every value in the current Map is affected by a call to `map()`, unlike
-     * `filter()` where only values that meet a certain criteria are affected.
-     *
-     * The keys will remain unchanged from the current `AccessibleCollectionInterface` to the
-     * returned `AccessibleCollectionInterface`.
-     *
-     * @template Tu
-     *
-     * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                              `AccessibleCollectionInterface` values.
-     *
-     * @return AccessibleCollectionInterface<Tk, Tu> A `AccessibleCollectionInterface` containing key/value
-     *                                               pairs after a user-specified operation is applied.
-     */
-    public function map(Closure $fn): AccessibleCollectionInterface;
-
-    /**
-     * Returns a `AccessibleCollectionInterface` after an operation has been applied to each key and
-     * value in the current `AccessibleCollectionInterface`.
-     *
-     * Every key and value in the current `AccessibleCollectionInterface` is affected by a call to
-     * `mapWithKey()`, unlike `filterWithKey()` where only values that meet a
-     * certain criteria are affected.
-     *
-     * The keys will remain unchanged from this `AccessibleCollectionInterface` to the returned
-     * `AccessibleCollectionInterface`. The keys are only used to help in the mapping operation.
-     *
-     * @template Tu
-     *
-     * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                                  `AccessibleCollectionInterface` keys and values.
-     *
-     * @return AccessibleCollectionInterface<Tk, Tu> A `AccessibleCollectionInterface` containing the values
-     *                                               after a user-specified operation on the current
-     *                                               `AccessibleCollectionInterface`'s keys and values is  applied.
-     */
-    public function mapWithKey(Closure $fn): AccessibleCollectionInterface;
 
     /**
      * Returns the first value in the current `AccessibleCollectionInterface`.

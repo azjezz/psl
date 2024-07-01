@@ -26,7 +26,7 @@ interface MutableCollectionInterface extends CollectionInterface
      * that meet a supplied condition.
      *
      * Only values that meet a certain criteria are affected by a call to
-     * `filter()`, while all values are affected by a call to `map()`.
+     * `filter()`.
      *
      * The keys associated with the current `MutableCollectionInterface` remain unchanged in the
      * returned `MutableCollectionInterface`.
@@ -44,8 +44,7 @@ interface MutableCollectionInterface extends CollectionInterface
      * that meet a supplied condition applied to its keys and values.
      *
      * Only keys and values that meet a certain criteria are affected by a call
-     * to `filterWithKey()`, while all values are affected by a call to
-     * `mapWithKey()`.
+     * to `filterWithKey()`.
      *
      * The keys associated with the current `MutableCollectionInterface` remain unchanged in the
      * returned `MutableCollectionInterface`; the keys will be used in the filtering process only.
@@ -58,48 +57,6 @@ interface MutableCollectionInterface extends CollectionInterface
      *                                            the current `MutableCollectionInterface`.
      */
     public function filterWithKey(Closure $fn): MutableCollectionInterface;
-
-    /**
-     * Returns a `MutableCollectionInterface` after an operation has been applied to each value
-     * in the current `MutableCollectionInterface`.
-     *
-     * Every value in the current Map is affected by a call to `map()`, unlike
-     * `filter()` where only values that meet a certain criteria are affected.
-     *
-     * The keys will remain unchanged from the current `MutableCollectionInterface` to the
-     * returned `MutableCollectionInterface`.
-     *
-     * @template Tu
-     *
-     * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                              `MutableCollectionInterface` values.
-     *
-     * @return MutableCollectionInterface<Tk, Tu> A `MutableCollectionInterface` containing key/value pairs
-     *                                            after a user-specified operation is applied.
-     */
-    public function map(Closure $fn): MutableCollectionInterface;
-
-    /**
-     * Returns a `MutableCollectionInterface` after an operation has been applied to each key and
-     * value in the current `MutableCollectionInterface`.
-     *
-     * Every key and value in the current `MutableCollectionInterface` is affected by a call to
-     * `mapWithKey()`, unlike `filterWithKey()` where only values that meet a
-     * certain criteria are affected.
-     *
-     * The keys will remain unchanged from this `MutableCollectionInterface` to the returned
-     * `MutableCollectionInterface`. The keys are only used to help in the mapping operation.
-     *
-     * @template Tu
-     *
-     * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                                  `MutableCollectionInterface` keys and values.
-     *
-     * @return MutableCollectionInterface<Tk, Tu> A `MutableCollectionInterface` containing the values
-     *                                            after a user-specified operation on the current
-     *                                            `MutableCollectionInterface`'s keys and values is applied.
-     */
-    public function mapWithKey(Closure $fn): MutableCollectionInterface;
 
     /**
      * Returns a `MutableCollectionInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the

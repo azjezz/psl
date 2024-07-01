@@ -12,7 +12,7 @@ final class OutOfBoundsException extends Exception\OutOfBoundsException implemen
     /**
      * @psalm-mutation-free
      */
-    public static function for(string|int $offset): OutOfBoundsException
+    public static function for(int|string $offset): OutOfBoundsException
     {
         return new self(Str\format('Key (%s) was out-of-bounds.', $offset));
     }
