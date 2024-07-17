@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\Collection;
 
+use ArrayAccess;
 use Closure;
 
 /**
- * The base interface implemented for a collection type that you are able set and remove its values.
- * keys.
+ * The base interface implemented for a collection type whose values you are able to set and remove.
  *
  * Every concrete mutable class indirectly implements this interface.
  *
@@ -18,9 +18,11 @@ use Closure;
  * @extends AccessibleCollectionInterface<Tk, Tv>
  * @extends MutableCollectionInterface<Tk, Tv>
  * @extends MutableIndexAccessInterface<Tk, Tv>
+ * @extends ArrayAccess<Tk, Tv>
  */
 interface MutableAccessibleCollectionInterface extends
     AccessibleCollectionInterface,
+    ArrayAccess,
     MutableCollectionInterface,
     MutableIndexAccessInterface
 {
@@ -49,7 +51,7 @@ interface MutableAccessibleCollectionInterface extends
      * `MutableAccessibleCollectionInterface` that meet a supplied condition.
      *
      * Only values that meet a certain criteria are affected by a call to
-     * `filter()`, while all values are affected by a call to `map()`.
+     * `filter()`.
      *
      * The keys associated with the current `MutableAccessibleCollectionInterface` remain unchanged in the
      * returned `MutableAccessibleCollectionInterface`.
@@ -67,8 +69,7 @@ interface MutableAccessibleCollectionInterface extends
      * `MutableAccessibleCollectionInterface` that meet a supplied condition applied to its keys and values.
      *
      * Only keys and values that meet a certain criteria are affected by a call
-     * to `filterWithKey()`, while all values are affected by a call to
-     * `mapWithKey()`.
+     * to `filterWithKey()`.
      *
      * The keys associated with the current `MutableAccessibleCollectionInterface` remain unchanged in the
      * returned `MutableAccessibleCollectionInterface`; the keys will be used in the filtering process only.
@@ -82,83 +83,6 @@ interface MutableAccessibleCollectionInterface extends
      *                                                      `MutableAccessibleCollectionInterface`.
      */
     public function filterWithKey(Closure $fn): MutableAccessibleCollectionInterface;
-
-    /**
-     * Returns a `MutableAccessibleCollectionInterface` after an operation has been applied to each value
-     * in the current `MutableAccessibleCollectionInterface`.
-     *
-     * Every value in the current Map is affected by a call to `map()`, unlike
-     * `filter()` where only values that meet a certain criteria are affected.
-     *
-     * The keys will remain unchanged from the current `MutableAccessibleCollectionInterface` to the
-     * returned `MutableAccessibleCollectionInterface`.
-     *
-     * @template Tu
-     *
-     * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                              `MutableAccessibleCollectionInterface` values.
-     *
-     * @return MutableAccessibleCollectionInterface<Tk, Tu> A `MutableAccessibleCollectionInterface` containing
-     *                                                      key/value pairs after a user-specified operation is applied.
-     */
-    public function map(Closure $fn): MutableAccessibleCollectionInterface;
-
-    /**
-     * Returns a `MutableAccessibleCollectionInterface` after an operation has been applied to each key and
-     * value in the current `MutableAccessibleCollectionInterface`.
-     *
-     * Every key and value in the current `MutableAccessibleCollectionInterface` is affected by a call to
-     * `mapWithKey()`, unlike `filterWithKey()` where only values that meet a
-     * certain criteria are affected.
-     *
-     * The keys will remain unchanged from this `MutableAccessibleCollectionInterface` to the returned
-     * `MutableAccessibleCollectionInterface`. The keys are only used to help in the mapping operation.
-     *
-     * @template Tu
-     *
-     * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
-     *                                  `MutableAccessibleCollectionInterface` keys and values.
-     *
-     * @return MutableAccessibleCollectionInterface<Tk, Tu> A `MutableAccessibleCollectionInterface` containing
-     *                                                      the values after a user-specified operation on the current
-     *                                                      `MutableAccessibleCollectionInterface`'s keys and values is
-     *                                                      applied.
-     */
-    public function mapWithKey(Closure $fn): MutableAccessibleCollectionInterface;
-
-    /**
-     * Stores a value into the current collection with the specified key,
-     * overwriting the previous value associated with the key.
-     *
-     * If the key is not present, an exception is thrown. If you want to add
-     * a value even if a key is not present, use `add()`.
-     *
-     * It returns the current collection, meaning changes made to the current
-     * collection will be reflected in the returned collection.
-     *
-     * @param Tk $k The key to which we will set the value.
-     * @param Tv $v The value to set.
-     *
-     * @return MutableAccessibleCollectionInterface<Tk, Tv> Returns itself.
-     */
-    public function set(int|string $k, mixed $v): MutableAccessibleCollectionInterface;
-
-    /**
-     * For every element in the provided elements, stores a value into the
-     * current collection associated with each key, overwriting the previous value
-     * associated with the key.
-     *
-     * If the key is not present, an exception is thrown. If you want to add
-     * a value even if a key is not present, use `addAll()`.
-     *
-     * It the current collection, meaning changes made to the current collection
-     * will be reflected in the returned collection.
-     *
-     * @param array<Tk, Tv> $elements The elements with the new values to set.
-     *
-     * @return MutableAccessibleCollectionInterface<Tk, Tv> Returns itself.
-     */
-    public function setAll(array $elements): MutableAccessibleCollectionInterface;
 
     /**
      * Removes the specified key (and associated value) from the current
@@ -315,4 +239,56 @@ interface MutableAccessibleCollectionInterface extends
      * @psalm-mutation-free
      */
     public function chunk(int $size): MutableAccessibleCollectionInterface;
+
+    /**
+     * Determines if the specified offset exists in the current collection.
+     *
+     * @param mixed $offset An offset to check for.
+     *
+     * @throws Exception\InvalidOffsetException If the offset type is not valid.
+     *
+     * @return bool Returns true if the specified offset exists, false otherwise.
+     *
+     * @psalm-assert-if-true Tk $offset
+     *
+     * @psalm-mutation-free
+     */
+    public function offsetExists(mixed $offset): bool;
+
+    /**
+     * Returns the value at the specified offset.
+     *
+     * @param mixed $offset The offset to retrieve.
+     *
+     * @throws Exception\InvalidOffsetException If the offset type is not valid.
+     * @throws Exception\OutOfBoundsException If the offset is out-of-bounds.
+     *
+     * @return Tv The value at the specified offset.
+     *
+     * @psalm-mutation-free
+     */
+    public function offsetGet(mixed $offset): mixed;
+
+    /**
+     * Sets the value at the specified offset.
+     *
+     * @param mixed $offset The offset to assign the value to.
+     * @param Tv $value The value to set.
+     *
+     * @psalm-external-mutation-free
+     *
+     * @throws Exception\InvalidOffsetException If the offset type is not valid.
+     */
+    public function offsetSet(mixed $offset, mixed $value): void;
+
+    /**
+     * Unsets the value at the specified offset.
+     *
+     * @param mixed $offset The offset to unset.
+     *
+     * @psalm-external-mutation-free
+     *
+     * @throws Exception\InvalidOffsetException If the offset type is not valid.
+     */
+    public function offsetUnset(mixed $offset): void;
 }

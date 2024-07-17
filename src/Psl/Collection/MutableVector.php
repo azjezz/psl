@@ -168,7 +168,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    public function at(string|int $k): mixed
+    public function at(int|string $k): mixed
     {
         if (!array_key_exists($k, $this->elements)) {
             throw Exception\OutOfBoundsException::for($k);
@@ -198,7 +198,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    public function get(string|int $k): mixed
+    public function get(int|string $k): mixed
     {
         return $this->elements[$k] ?? null;
     }
@@ -369,15 +369,15 @@ final class MutableVector implements MutableVectorInterface
     }
 
     /**
-     * For every element in the provided elements array, add the value into the current vector.
+     * For every element in the provided elements iterable, add the value into the current vector.
      *
-     * @param array<array-key, T> $elements The elements with the new values to add
+     * @param iterable<T> $elements The elements with the new values to add
      *
      * @return MutableVector<T> returns itself.
      *
      * @psalm-external-mutation-free
      */
-    public function addAll(array $elements): MutableVector
+    public function addAll(iterable $elements): MutableVector
     {
         foreach ($elements as $item) {
             $this->add($item);
@@ -669,5 +669,99 @@ final class MutableVector implements MutableVectorInterface
              */
             static fn(array $chunk) => MutableVector::fromArray($chunk)
         ));
+    }
+
+
+    /**
+     * Determines if the specified offset exists in the current vector.
+     *
+     * @param mixed $offset An offset to check for.
+     *
+     * @throws Exception\InvalidOffsetException If the offset type is not a positive integer.
+     *
+     * @return bool Returns true if the specified offset exists, false otherwise.
+     *
+     * @psalm-mutation-free
+     *
+     * @psalm-assert int<0, max> $offset
+     */
+    public function offsetExists(mixed $offset): bool
+    {
+        if (!is_int($offset) || $offset < 0) {
+            throw new Exception\InvalidOffsetException('Invalid vector read offset type, expected a positive integer.');
+        }
+
+        return $this->contains($offset);
+    }
+
+    /**
+     * Returns the value at the specified offset.
+     *
+     * @param mixed $offset The offset to retrieve.
+     *
+     * @throws Exception\InvalidOffsetException If the offset type is not a positive integer.
+     * @throws Exception\OutOfBoundsException If the offset does not exist.
+     *
+     * @return T|null The value at the specified offset, null if the offset does not exist.
+     *
+     * @psalm-mutation-free
+     *
+     * @psalm-assert int<0, max> $offset
+     */
+    public function offsetGet(mixed $offset): mixed
+    {
+        if (!is_int($offset) || $offset < 0) {
+            throw new Exception\InvalidOffsetException('Invalid vector read offset type, expected a positive integer.');
+        }
+
+        return $this->at($offset);
+    }
+
+    /**
+     * Sets the value at the specified offset.
+     *
+     * @param mixed $offset The offset to assign the value to.
+     * @param T $value The value to set.
+     *
+     * @psalm-external-mutation-free
+     *
+     * @psalm-assert null|int<0, max> $offset
+     *
+     * @throws Exception\InvalidOffsetException If the offset is not null or a positive integer.
+     * @throws Exception\OutOfBoundsException If the offset is out-of-bounds.
+     */
+    public function offsetSet(mixed $offset, mixed $value): void
+    {
+        if (null === $offset) {
+            $this->add($value);
+
+            return;
+        }
+
+        if (!is_int($offset) || $offset < 0) {
+            throw new Exception\InvalidOffsetException('Invalid vector write offset type, expected a positive integer or null.');
+        }
+
+        $this->set($offset, $value);
+    }
+
+    /**
+     * Unsets the value at the specified offset.
+     *
+     * @param mixed $offset The offset to unset.
+     *
+     * @psalm-external-mutation-free
+     *
+     * @psalm-assert array-key $offset
+     *
+     * @throws Exception\InvalidOffsetException If the offset type is not valid.
+     */
+    public function offsetUnset(mixed $offset): void
+    {
+        if (!is_int($offset) || $offset < 0) {
+            throw new Exception\InvalidOffsetException('Invalid vector read offset type, expected a positive integer.');
+        }
+
+        $this->remove($offset);
     }
 }

@@ -16,34 +16,6 @@ namespace Psl\Collection;
 interface MutableIndexAccessInterface extends IndexAccessInterface
 {
     /**
-     * Stores a value into the current collection with the specified key,
-     * overwriting the previous value associated with the key.
-     *
-     * It returns the current collection, meaning changes made to the current
-     * collection will be reflected in the returned collection.
-     *
-     * @param Tk $k The key to which we will set the value
-     * @param Tv $v The value to set
-     *
-     * @return MutableIndexAccessInterface<Tk, Tv> Returns itself
-     */
-    public function set(int|string $k, mixed $v): MutableIndexAccessInterface;
-
-    /**
-     * For every element in the provided elements array, stores a value into the
-     * current collection associated with each key, overwriting the previous value
-     * associated with the key.
-     *
-     * It the current collection, meaning changes made to the current collection
-     * will be reflected in the returned collection.
-     *
-     * @param array<Tk, Tv> $elements The elements with the new values to set
-     *
-     * @return MutableIndexAccessInterface<Tk, Tv> Returns itself
-     */
-    public function setAll(array $elements): MutableIndexAccessInterface;
-
-    /**
      * Removes the specified key (and associated value) from the current
      * collection.
      *

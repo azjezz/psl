@@ -706,6 +706,41 @@ When the iterable does not match the specified type, you will get detailed infor
 
 ---
 
+#### [mutable_set](mutable_set.php)
+
+```hack
+@pure
+@template T of array-key
+Type\mutable_set(
+    TypeInterface<T> $type,
+): TypeInterface<MutableSetInterface<Tk, Tv>>
+```
+
+Provides a type that can parse into a `Psl\Collection\MutableSetInterface`.
+
+Can coerce from:
+
+* `iterable`: The iterable will be iterated:
+    * Every item's value will be coerced by the provided `T` type.
+
+These are some examples on how the type can be used:
+
+```php
+use Psl\Type;
+
+$set = Type\mutable_set(
+    Type\string(),
+);
+
+$result = $set->coerce(['a', 'b', 'c', 'd', 'd']);
+```
+
+When the iterable does not match the specified type, you will get detailed information about what went wrong exactly:
+
+> Expected "Psl\Collection\MutableSetInterface<string>", got "int" **at path "foo"**.
+
+---
+
 #### [mixed](mixed.php)
 ```hack
 @pure
@@ -997,6 +1032,41 @@ Can coerce from:
 * `bool`: If that fails, the type will attempt to coerce the provided value into a string.
 * `int`: Next, the type will attempt to coerce the provided value into an integer.
 * `float`: Finally, the type will attempt to coerce the provided value into a float.
+
+---
+
+#### [set](set.php)
+
+```hack
+@pure
+@template T of array-key
+Type\set(
+    TypeInterface<T> $type,
+): TypeInterface<SetInterface<Tk, Tv>>
+```
+
+Provides a type that can parse into a `Psl\Collection\SetInterface`.
+
+Can coerce from:
+
+* `iterable`: The iterable will be iterated:
+    * Every item's value will be coerced by the provided `T` type.
+
+These are some examples on how the type can be used:
+
+```php
+use Psl\Type;
+
+$set = Type\set(
+    Type\string(),
+);
+
+$result = $set->coerce(['a', 'b', 'c', 'd', 'd']);
+```
+
+When the iterable does not match the specified type, you will get detailed information about what went wrong exactly:
+
+> Expected "Psl\Collection\SetInterface<string>", got "int" **at path "foo"**.
 
 ---
 

@@ -219,7 +219,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
-    public function at(string|int $k): mixed
+    public function at(int|string $k): mixed
     {
         if (!array_key_exists($k, $this->elements)) {
             throw Exception\OutOfBoundsException::for($k);
@@ -249,7 +249,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
-    public function get(string|int $k): mixed
+    public function get(int|string $k): mixed
     {
         return $this->elements[$k] ?? null;
     }
@@ -635,13 +635,13 @@ final class MutableMap implements MutableMapInterface
     /**
      * For every element in the provided elements, add the value into the current map.
      *
-     * @param array<Tk, Tv> $elements The elements with the new values to add.
+     * @param iterable<Tk, Tv> $elements The elements with the new values to add.
      *
      * @return MutableMap<Tk, Tv> Returns itself.
      *
      * @psalm-external-mutation-free
      */
-    public function addAll(array $elements): MutableMap
+    public function addAll(iterable $elements): MutableMap
     {
         foreach ($elements as $k => $v) {
             $this->add($k, $v);
@@ -687,5 +687,96 @@ final class MutableMap implements MutableMapInterface
         $this->elements = [];
 
         return $this;
+    }
+
+    /**
+     * Determines if the specified offset exists in the current map.
+     *
+     * @param mixed $offset An offset to check for.
+     *
+     * @throws Exception\InvalidOffsetException If the offset type is not valid.
+     *
+     * @return bool Returns true if the specified offset exists, false otherwise.
+     *
+     * @psalm-assert array-key $offset
+     *
+     * @psalm-mutation-free
+     */
+    public function offsetExists(mixed $offset): bool
+    {
+        if (!is_int($offset) && !is_string($offset)) {
+            throw new Exception\InvalidOffsetException('Invalid map read offset type, expected a string or an integer.');
+        }
+
+        /** @var Tk $offset - technically, we don't know if the offset is of type Tk, but we can assume it is, as this causes no "harm". */
+        return $this->contains($offset);
+    }
+
+    /**
+     * Returns the value at the specified offset.
+     *
+     * @param mixed $offset The offset to retrieve.
+     *
+     * @throws Exception\InvalidOffsetException If the offset type is not valid.
+     * @throws Exception\OutOfBoundsException If the offset is out-of-bounds.
+     *
+     * @return Tv|null The value at the specified offset, null if the offset does not exist.
+     *
+     * @psalm-mutation-free
+     *
+     * @psalm-assert array-key $offset
+     */
+    public function offsetGet(mixed $offset): mixed
+    {
+        if (!is_int($offset) && !is_string($offset)) {
+            throw new Exception\InvalidOffsetException('Invalid map read offset type, expected a string or an integer.');
+        }
+
+        /** @var Tk $offset - technically, we don't know if the offset is of type Tk, but we can assume it is, as this causes no "harm". */
+        return $this->at($offset);
+    }
+
+    /**
+     * Sets the value at the specified offset.
+     *
+     * @param mixed $offset The offset to assign the value to.
+     * @param Tv $value The value to set.
+     *
+     * @psalm-external-mutation-free
+     *
+     * @psalm-assert Tk $offset
+     *
+     * @throws Exception\InvalidOffsetException If the offset type is not valid.
+     * @throws Exception\OutOfBoundsException If the offset is out-of-bounds.
+     */
+    public function offsetSet(mixed $offset, mixed $value): void
+    {
+        if (!is_int($offset) && !is_string($offset)) {
+            throw new Exception\InvalidOffsetException('Invalid map write offset type, expected a string or an integer.');
+        }
+
+        /** @var Tk $offset - technically, we don't know if the offset is of type Tk, but we can assume it is, as this causes no "harm". */
+        $this->add($offset, $value);
+    }
+
+    /**
+     * Unsets the value at the specified offset.
+     *
+     * @param mixed $offset The offset to unset.
+     *
+     * @psalm-external-mutation-free
+     *
+     * @psalm-assert array-key $offset
+     *
+     * @throws Exception\InvalidOffsetException If the offset type is not valid.
+     */
+    public function offsetUnset(mixed $offset): void
+    {
+        if (!is_int($offset) && !is_string($offset)) {
+            throw new Exception\InvalidOffsetException('Invalid map read offset type, expected a string or an integer.');
+        }
+
+        /** @var Tk $offset - technically, we don't know if the offset is of type Tk, but we can assume it is, as this causes no "harm". */
+        $this->remove($offset);
     }
 }

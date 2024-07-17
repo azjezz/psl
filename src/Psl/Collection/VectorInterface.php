@@ -22,7 +22,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function at(string|int $k): mixed;
+    public function at(int|string $k): mixed;
 
     /**
      * Determines if the specified key is in the current vector.
@@ -42,7 +42,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function get(string|int $k): mixed;
+    public function get(int|string $k): mixed;
 
     /**
      * Get an array copy of the current vector.

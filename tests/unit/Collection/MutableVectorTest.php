@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Collection;
 
 use Psl\Collection;
+use Psl\Collection\Exception;
 use Psl\Collection\MutableVector;
 
 final class MutableVectorTest extends AbstractVectorTest
@@ -137,14 +138,107 @@ final class MutableVectorTest extends AbstractVectorTest
         static::assertSame('baz', $vector->get(0));
     }
 
+
+    public function testArrayAccess(): void
+    {
+        $vector = $this->create([
+            'foo',
+            'bar',
+            'baz',
+        ]);
+
+        static::assertTrue(isset($vector[0]));
+        static::assertSame('foo', $vector[0]);
+        
+        unset($vector[0]);
+        static::assertFalse(isset($vector[2]));
+
+        $vector[] = 'foo';
+        static::assertTrue(isset($vector[2]));
+        static::assertSame('foo', $vector[2]);
+
+        $vector[] = 'qux';
+        static::assertTrue(isset($vector[3]));
+        static::assertCount(4, $vector);
+
+        $vector[2] = 'v';
+        static::assertTrue(isset($vector[2]));
+        static::assertSame('v', $vector[2]);
+        static::assertCount(4, $vector);
+
+        unset($vector[3]);
+
+        $this->expectException(Exception\OutOfBoundsException::class);
+        $this->expectExceptionMessage('Key (3) was out-of-bounds.');
+
+        $vector[3];
+    }
+
+    public function testOffsetSetThrowsForInvalidOffsetType(): void
+    {
+        $vector = $this->create([
+            'foo',
+            'bar',
+            'baz',
+        ]);
+
+        $this->expectException(Exception\InvalidOffsetException::class);
+        $this->expectExceptionMessage('Invalid vector write offset type, expected a positive integer or null.');
+
+        $vector[false] = 'qux';
+    }
+
+    public function testOffsetIssetThrowsForInvalidOffsetType(): void
+    {
+        $vector = $this->create([
+            'foo',
+            'bar',
+            'baz',
+        ]);
+
+        $this->expectException(Exception\InvalidOffsetException::class);
+        $this->expectExceptionMessage('Invalid vector read offset type, expected a positive integer.');
+
+        isset($vector[false]);
+    }
+
+    public function testOffsetUnsetThrowsForInvalidOffsetType(): void
+    {
+        $vector = $this->create([
+            'foo',
+            'bar',
+            'baz',
+        ]);
+
+        $this->expectException(Exception\InvalidOffsetException::class);
+        $this->expectExceptionMessage('Invalid vector read offset type, expected a positive integer.');
+
+        unset($vector[false]);
+    }
+
+    public function testOffsetGetThrowsForInvalidOffsetType(): void
+    {
+        $vector = $this->create([
+            'foo',
+            'bar',
+            'baz',
+        ]);
+
+        $this->expectException(Exception\InvalidOffsetException::class);
+        $this->expectExceptionMessage('Invalid vector read offset type, expected a positive integer.');
+
+        $vector[false];
+    }
+
+
     /**
      * @template     T
      *
-     * @param iterable<T> $items
+     * @param list<T> $items
      *
      * @return MutableVector<T>
      */
-    protected function create(iterable $items): MutableVector
+    protected function create(array $items): MutableVector
     {
         return new MutableVector($items);
     }

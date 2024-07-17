@@ -379,9 +379,9 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
     /**
      * For every element in the provided elements array, add the value into the current vector.
      *
-     * @param array<array-key, T> $elements The elements with the new values to add.
+     * @param iterable<T> $elements The elements with the new values to add.
      *
      * @return MutableVectorInterface<T> Returns itself.
      */
-    public function addAll(array $elements): MutableVectorInterface;
+    public function addAll(iterable $elements): MutableVectorInterface;
 }

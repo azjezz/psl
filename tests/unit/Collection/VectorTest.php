@@ -16,13 +16,13 @@ final class VectorTest extends AbstractVectorTest
     protected string $vectorClass = Vector::class;
 
     /**
-     * @template     T
+     * @template T
      *
-     * @param iterable<T> $items
+     * @param array<T> $items
      *
      * @return Vector<T>
      */
-    protected function create(iterable $items): Vector
+    protected function create(array $items): Vector
     {
         return new Vector($items);
     }

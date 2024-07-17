@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Collection;
 
 use Psl\Collection;
+use Psl\Collection\Exception;
 use Psl\Collection\MutableMap;
 use Psl\Collection\MutableVector;
 
@@ -140,6 +141,98 @@ final class MutableMapTest extends AbstractMapTest
         static::assertSame('qux', $map->get('baz'));
         static::assertNull($map->get('foo'));
         static::assertNull($map->get('bar'));
+    }
+
+    public function testArrayAccess(): void
+    {
+        $map = $this->create([
+            'foo' => '1',
+            'bar' => '2',
+            'baz' => '3',
+        ]);
+
+        static::assertTrue(isset($map['foo']));
+        static::assertSame('1', $map['foo']);
+        
+        unset($map['foo']);
+        static::assertFalse(isset($map['foo']));
+
+        $map['foo'] = '2';
+        static::assertTrue(isset($map['foo']));
+        static::assertSame('2', $map['foo']);
+
+        $map['qux'] = '4';
+        static::assertTrue(isset($map['qux']));
+        static::assertCount(4, $map);
+
+        $map[124] = 'v';
+        static::assertTrue(isset($map[124]));
+        static::assertSame('v', $map[124]);
+        static::assertCount(5, $map);
+
+        unset($map[124]);
+
+        $this->expectException(Exception\OutOfBoundsException::class);
+        $this->expectExceptionMessage('Key (124) was out-of-bounds.');
+
+        $map[124];
+    }
+
+    public function testOffsetSetThrowsForInvalidOffsetType(): void
+    {
+        $map = $this->create([
+            'foo' => '1',
+            'bar' => '2',
+            'baz' => '3',
+        ]);
+
+        $this->expectException(Exception\InvalidOffsetException::class);
+        $this->expectExceptionMessage('Invalid map write offset type, expected a string or an integer.');
+
+        $map[false] = 'qux';
+    }
+
+    public function testOffsetIssetThrowsForInvalidOffsetType(): void
+    {
+        $map = $this->create([
+            'foo' => '1',
+            'bar' => '2',
+            'baz' => '3',
+        ]);
+
+
+        $this->expectException(Exception\InvalidOffsetException::class);
+        $this->expectExceptionMessage('Invalid map read offset type, expected a string or an integer.');
+
+        isset($map[false]);
+    }
+
+    public function testOffsetUnsetThrowsForInvalidOffsetType(): void
+    {
+        $map = $this->create([
+            'foo' => '1',
+            'bar' => '2',
+            'baz' => '3',
+        ]);
+
+        $this->expectException(Exception\InvalidOffsetException::class);
+        $this->expectExceptionMessage('Invalid map read offset type, expected a string or an integer.');
+
+        unset($map[false]);
+    }
+
+    public function testOffsetGetThrowsForInvalidOffsetType(): void
+    {
+        $map = $this->create([
+            'foo' => '1',
+            'bar' => '2',
+            'baz' => '3',
+        ]);
+
+        $this->expectException(Exception\InvalidOffsetException::class);
+        $this->expectExceptionMessage('Invalid map read offset type, expected a string or an integer.');
+
+        $map[false];
     }
 
     /**
