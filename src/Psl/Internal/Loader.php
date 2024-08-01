@@ -387,6 +387,7 @@ final class Loader
         'Psl\\Type\\is_nan' => 'Psl/Type/is_nan.php',
         'Psl\\Type\\literal_scalar' => 'Psl/Type/literal_scalar.php',
         'Psl\\Type\\backed_enum' => 'Psl/Type/backed_enum.php',
+        'Psl\\Type\\backed_enum_value' => 'Psl/Type/backed_enum_value.php',
         'Psl\\Type\\unit_enum' => 'Psl/Type/unit_enum.php',
         'Psl\\Type\\converted' => 'Psl/Type/converted.php',
         'Psl\\Json\\encode' => 'Psl/Json/encode.php',
