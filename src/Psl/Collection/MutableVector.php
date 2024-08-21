@@ -14,6 +14,7 @@ use function array_key_last;
 use function array_keys;
 use function array_values;
 use function count;
+use function iterator_to_array;
 
 /**
  * @template T
@@ -67,6 +68,20 @@ final class MutableVector implements MutableVectorInterface
     public static function fromArray(array $elements): MutableVector
     {
         return new self($elements);
+    }
+
+    /**
+     * Create a vector from the given $items iterable.
+     *
+     * @template Ts
+     *
+     * @param iterable<Ts> $items
+     *
+     * @return MutableVector<Ts>
+     */
+    public static function fromItems(iterable $items): MutableVector
+    {
+        return self::fromArray(iterator_to_array($items));
     }
 
     /**
