@@ -398,7 +398,7 @@ trait DateTimeConvenienceMethodsTrait
             return $this;
         }
 
-        if (0 > $months) {
+        if ($months < 1) {
             return $this->minusMonths(-$months);
         }
 
@@ -406,7 +406,7 @@ trait DateTimeConvenienceMethodsTrait
         $months_left = $months - ($plus_years * MONTHS_PER_YEAR);
         $target_month = $this->getMonth() + $months_left;
 
-        if ($target_month > 12) {
+        if ($target_month > MONTHS_PER_YEAR) {
             $plus_years++;
             $target_month = $target_month - MONTHS_PER_YEAR;
         }
@@ -438,7 +438,7 @@ trait DateTimeConvenienceMethodsTrait
             return $this;
         }
 
-        if (0 > $months) {
+        if ($months < 1) {
             return $this->plusMonths(-$months);
         }
 
@@ -616,10 +616,9 @@ trait DateTimeConvenienceMethodsTrait
         $timestamp = $this->getTimestamp();
 
         /**
-         * @psalm-suppress InvalidOperand
          * @psalm-suppress ImpureMethodCall
          */
         return Internal\create_intl_date_formatter($date_style, $time_style, null, $timezone ?? $this->getTimezone(), $locale)
-            ->format($timestamp->getSeconds() + ($timestamp->getNanoseconds() / NANOSECONDS_PER_SECOND));
+            ->format($timestamp->getSeconds());
     }
 }

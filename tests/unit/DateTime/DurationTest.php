@@ -27,6 +27,19 @@ final class DurationTest extends TestCase
         static::assertEquals([1, 2, 3, 4], $t->getParts());
     }
 
+    public function testNamedConstructors()
+    {
+        static::assertSame(168.0, DateTime\Duration::weeks(1)->getTotalHours());
+        static::assertSame(24.0, DateTime\Duration::days(1)->getTotalHours());
+        static::assertSame(1.0, DateTime\Duration::hours(1)->getTotalHours());
+        static::assertSame(1.0, DateTime\Duration::minutes(1)->getTotalMinutes());
+        static::assertSame(1.0, DateTime\Duration::seconds(1)->getTotalSeconds());
+        static::assertSame(1.0, DateTime\Duration::milliseconds(1)->getTotalMilliseconds());
+        static::assertSame(1.0, DateTime\Duration::microseconds(1)->getTotalMicroseconds());
+        static::assertSame(1, DateTime\Duration::nanoseconds(1)->getNanoseconds());
+        static::assertSame(0.0, DateTime\Duration::zero(1)->getTotalSeconds());
+    }
+
     public function provideGetTotalHours(): array
     {
         return [
@@ -237,6 +250,9 @@ final class DurationTest extends TestCase
     public static function provideCompare(): array
     {
         return [
+            [DateTime\Duration::seconds(20), DateTime\Duration::seconds(10), Order::Greater],
+            [DateTime\Duration::seconds(10), DateTime\Duration::seconds(20), Order::Less],
+            [DateTime\Duration::seconds(10), DateTime\Duration::seconds(10), Order::Equal],
             [DateTime\Duration::hours(1), DateTime\Duration::minutes(42), Order::Greater],
             [DateTime\Duration::minutes(2), DateTime\Duration::seconds(120), Order::Equal],
             [DateTime\Duration::zero(), DateTime\Duration::nanoseconds(1), Order::Less],

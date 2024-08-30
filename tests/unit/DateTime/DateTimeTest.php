@@ -5,14 +5,19 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\DateTime;
 
 use PHPUnit\Framework\TestCase;
+use Psl\DateTime\DateStyle;
 use Psl\DateTime\DateTime;
 use Psl\DateTime\Exception\UnexpectedValueException;
+use Psl\DateTime\FormatPattern;
 use Psl\DateTime\Meridiem;
 use Psl\DateTime\Month;
+use Psl\DateTime\TimeStyle;
 use Psl\DateTime\Timezone;
 use Psl\DateTime\Weekday;
 use Psl\Json;
+use Psl\Locale\Locale;
 
+use function Psl\DateTime\Internal\create_intl_date_formatter;
 use function time;
 
 final class DateTimeTest extends TestCase
@@ -59,6 +64,7 @@ final class DateTimeTest extends TestCase
 
         static::assertSame(Timezone::UTC, $datetime->getTimezone());
         static::assertSame(2024, $datetime->getYear());
+        static::assertSame(24, $datetime->getYearShort());
         static::assertSame(2, $datetime->getMonth());
         static::assertSame(4, $datetime->getDay());
         static::assertSame(Weekday::Sunday, $datetime->getWeekday());
@@ -66,11 +72,12 @@ final class DateTimeTest extends TestCase
         static::assertSame(0, $datetime->getMinutes());
         static::assertSame(0, $datetime->getSeconds());
         static::assertSame(1, $datetime->getNanoseconds());
+        static::assertSame([2024, 2, 4, 14, 0, 0, 1,], $datetime->getParts());
     }
 
     public function testFromPartsWithDefaults(): void
     {
-        $datetime = DateTime::fromParts(Timezone::UTC, 2024, Month::February, 4, );
+        $datetime = DateTime::fromParts(Timezone::UTC, 2024, Month::February, 4,);
 
         static::assertSame(Timezone::UTC, $datetime->getTimezone());
         static::assertSame(2024, $datetime->getYear());
@@ -83,22 +90,81 @@ final class DateTimeTest extends TestCase
         static::assertSame(0, $datetime->getNanoseconds());
     }
 
-    public function testFromPartsWithInvalidComponent(): void
-    {
-        $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('Unexpected hours value encountered. Provided "999", but the calendar expects "15". Ensure the hour falls within a 24-hour day.');
 
-        DateTime::fromParts(Timezone::UTC, 2024, Month::February, 4, 999, 0, 0, 1);
+    /**
+     * @dataProvider provideInvalidComponentParts
+     */
+    public function testFromPartsWithInvalidComponent(
+        string $expectedMessage,
+        int $year,
+        int $month,
+        int $day,
+        int $hours,
+        int $minutes,
+        int $seconds,
+        int $nanoseconds
+    ): void {
+        $this->expectException(UnexpectedValueException::class);
+        $this->expectExceptionMessage($expectedMessage);
+
+        DateTime::fromParts(Timezone::UTC, $year, $month, $day, $hours, $minutes, $seconds, $nanoseconds);
     }
 
-    public function fromString(): void
+    public static function provideInvalidComponentParts(): array
+    {
+        return [
+            ['Unexpected year value encountered. Provided "0", but the calendar expects "1". Check the year for accuracy and ensure it\'s within the supported range.', 0, 1, 1, 0, 0, 0, 0],
+            ['Unexpected month value encountered. Provided "0", but the calendar expects "12". Ensure the month is within the 1-12 range and matches the specific year context.', 2024, 0, 1, 0, 0, 0, 0],
+            ['Unexpected day value encountered. Provided "0", but the calendar expects "31". Ensure the day is valid for the given month and year, considering variations like leap years.', 2024, 1, 0, 0, 0, 0, 0],
+            ['Unexpected hours value encountered. Provided "-1", but the calendar expects "23". Ensure the hour falls within a 24-hour day.', 2024, 1, 1, -1, 0, 0, 0],
+            ['Unexpected minutes value encountered. Provided "-1", but the calendar expects "59". Check the minutes value for errors and ensure it\'s within the 0-59 range.', 2024, 1, 1, 0, -1, 0, 0],
+            ['Unexpected seconds value encountered. Provided "59", but the calendar expects "-1". Ensure the seconds are correct and within the 0-59 range.', 2024, 1, 1, 0, 0, -1, 0],
+        ];
+    }
+
+    public function testFromString(): void
+    {
+        $timezone = Timezone::EuropeBrussels;
+        $datetime = DateTime::fromParts($timezone, 2024, Month::February, 4, 14, 0, 0, 0);
+
+        $string = $datetime->toString();
+        $parsed = DateTime::fromString($string, timezone: $timezone);
+
+        static::assertEquals($datetime->getTimestamp(), $parsed->getTimestamp());
+        static::assertSame($datetime->getTimezone(), $parsed->getTimezone());
+        static::assertSame($string, $parsed->toString());
+    }
+
+    public function testToString(): void
     {
         $datetime = DateTime::fromParts(Timezone::default(), 2024, Month::February, 4, 14, 0, 0, 0);
 
-        $string = $datetime->toString();
-        $parsed = DateTime::fromString($string);
+        static::assertSame('4 Feb 2024, 14:00:00', $datetime->toString());
+        static::assertSame('04/02/2024, 14:00:00', $datetime->toString(date_style: DateStyle::Short));
+        static::assertSame('4 Feb 2024, 14:00:00 Greenwich Mean Time', $datetime->toString(time_style: TimeStyle::Full));
+        static::assertSame('4 Feb 2024, 15:00:00', $datetime->toString(timezone: TimeZone::EuropeBrussels));
 
-        static::assertEquals($datetime->getTimestamp(), $parsed->getTimestamp());
+        // Formatting depends on version of intl - so compare with intl version instead of hardcoding a label:
+        static::assertSame(
+            create_intl_date_formatter(locale: Locale::DutchBelgium)->format($datetime->getTimestamp()->getSeconds()),
+            $datetime->toString(locale: Locale::DutchBelgium)
+        );
+    }
+
+    public function testFormat(): void
+    {
+        $datetime = DateTime::fromParts(Timezone::default(), 2024, Month::February, 4, 14, 0, 0, 0);
+
+        static::assertSame('4 Feb 2024, 14:00:00', $datetime->format());
+        static::assertSame('02/04/2024', $datetime->format(pattern: FormatPattern::American));
+        static::assertSame('02/04/2024', $datetime->format(pattern: FormatPattern::American->value));
+        static::assertSame('4 Feb 2024, 15:00:00', $datetime->format(timezone: TimeZone::EuropeBrussels));
+
+        // Formatting depends on version of intl - so compare with intl version instead of hardcoding a label:
+        static::assertSame(
+            create_intl_date_formatter(locale: Locale::DutchBelgium)->format($datetime->getTimestamp()->getSeconds()),
+            $datetime->toString(locale: Locale::DutchBelgium)
+        );
     }
 
     public function testParse(): void
@@ -121,7 +187,6 @@ final class DateTimeTest extends TestCase
 
         static::assertEquals($datetime->getTimestamp(), $parsed->getTimestamp());
         static::assertSame($datetime->getTimezone(), $parsed->getTimezone());
-
     }
 
     public function testWithDate(): void
@@ -173,18 +238,32 @@ final class DateTimeTest extends TestCase
 
     public function testGetCentury()
     {
-        $datetime = DateTime::fromParts(Timezone::default(), 2024, Month::February, 4, 14, 0, 0, 0);
-
-        static::assertSame(21, $datetime->getCentury());
+        static::assertSame(20, DateTime::fromParts(Timezone::default(), 1999, Month::February, 4, 14)->getCentury());
+        static::assertSame(21, DateTime::fromParts(Timezone::default(), 2000, Month::February, 4, 14)->getCentury());
     }
 
-    public function testGetTwelveHours()
+    public static function provideTwelveHours()
     {
-        $datetime = DateTime::fromParts(Timezone::default(), 2024, Month::February, 4, 14, 0, 0, 0);
+        yield [0, 12, Meridiem::AnteMeridiem];
+        yield [1, 1, Meridiem::AnteMeridiem];
+        yield [2, 2, Meridiem::AnteMeridiem];
+        yield [11, 11, Meridiem::AnteMeridiem];
+        yield [12, 12, Meridiem::PostMeridiem];
+        yield [13, 1, Meridiem::PostMeridiem];
+        yield [14, 2, Meridiem::PostMeridiem];
+        yield [23, 11, Meridiem::PostMeridiem];
+    }
+
+    /**
+     * @dataProvider provideTwelveHours
+     */
+    public function testGetTwelveHours(int $hour, $expectedTwelveHour, $expectedMeridiem)
+    {
+        $datetime = DateTime::fromParts(Timezone::default(), 2024, Month::February, 4, $hour, 0, 0, 0);
         [$hours, $meridiem] = $datetime->getTwelveHours();
 
-        static::assertSame(2, $hours);
-        static::assertSame(Meridiem::PostMeridiem, $meridiem);
+        static::assertSame($expectedTwelveHour, $hours);
+        static::assertSame($expectedMeridiem, $meridiem);
     }
 
     public function testGetIsoWeek(): void
@@ -220,6 +299,12 @@ final class DateTimeTest extends TestCase
 
         $new = $datetime->plusMonths(1);
         static::assertSame(3, $new->getMonth());
+
+        $new = $datetime->plusMonths(0);
+        static::assertSame($datetime, $new);
+
+        $new = $datetime->plusMonths(-1);
+        static::assertSame(1, $new->getMonth());
 
         $new = $datetime->plusDays(1);
         static::assertSame(5, $new->getDay());
@@ -284,6 +369,12 @@ final class DateTimeTest extends TestCase
 
         $new = $datetime->minusMonths(1);
         static::assertSame(1, $new->getMonth());
+
+        $new = $datetime->minusMonths(0);
+        static::assertSame($datetime, $new);
+
+        $new = $datetime->minusMonths(-1);
+        static::assertSame(3, $new->getMonth());
 
         $new = $datetime->minusDays(1);
         static::assertSame(3, $new->getDay());
@@ -412,9 +503,31 @@ final class DateTimeTest extends TestCase
         $date = DateTime::todayAt(14, 0);
         $new = $date->withTime(15, 0);
 
-        self::assertSame(15, $new->getHours());
-        self::assertSame(0, $new->getMinutes());
-        self::assertSame(0, $new->getSeconds());
-        self::assertSame(0, $new->getNanoseconds());
+        static::assertSame(15, $new->getHours());
+        static::assertSame(0, $new->getMinutes());
+        static::assertSame(0, $new->getSeconds());
+        static::assertSame(0, $new->getNanoseconds());
+    }
+
+    public function testTimezoneInfo()
+    {
+        $timeZone = Timezone::EuropeBrussels;
+        $date = DateTime::fromParts($timeZone, 2024, 01, 01);
+
+        static::assertSame(!$timeZone->getDaylightSavingTimeOffset($date)->isZero(), $date->isDaylightSavingTime());
+        static::assertEquals($timeZone->getOffset($date), $date->getTimezoneOffset());
+    }
+
+    public function testConvertTimeZone()
+    {
+        $date = DateTime::fromParts(Timezone::EuropeBrussels, 2024, 01, 01, 1);
+        $converted = $date->convertToTimezone($london = Timezone::EuropeLondon);
+
+        static::assertSame($london, $converted->getTimezone());
+        static::assertSame($date->getTimestamp(), $converted->getTimestamp());
+        static::assertSame($date->getYear(), $converted->getYear());
+        static::assertSame($date->getMonth(), $converted->getMonth());
+        static::assertSame($date->getDay(), $converted->getDay());
+        static::assertSame(0, $converted->getHours());
     }
 }
