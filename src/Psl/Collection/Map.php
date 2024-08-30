@@ -67,6 +67,19 @@ final readonly class Map implements MapInterface
     }
 
     /**
+     * @template Tsk of array-key
+     * @template Tsv
+     *
+     * @param array<Tsk, Tsv> $items
+     *
+     * @return Map<Tsk, Tsv>
+     */
+    public static function fromItems(iterable $items): Map
+    {
+        return self::fromArray(iterator_to_array($items));
+    }
+
+    /**
      * Returns the first value in the current collection.
      *
      * @return Tv|null The first value in the current collection, or `null` if the

@@ -70,6 +70,20 @@ final readonly class Vector implements VectorInterface
     }
 
     /**
+     * Create a vector from the given $items iterable.
+     *
+     * @template Ts
+     *
+     * @param iterable<Ts> $items
+     *
+     * @return Vector<Ts>
+     */
+    public static function fromItems(iterable $items): Vector
+    {
+        return self::fromArray(iterator_to_array($items));
+    }
+
+    /**
      * Returns the first value in the current `Vector`.
      *
      * @return T|null The first value in the current `Vector`, or `null` if the

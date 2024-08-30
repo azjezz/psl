@@ -236,7 +236,6 @@ final class MutableVectorTest extends AbstractVectorTest
         static::assertSame([1, 2, 3], $vector->toArray());
     }
 
-
     /**
      * @template     T
      *

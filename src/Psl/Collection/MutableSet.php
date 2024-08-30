@@ -72,6 +72,20 @@ final class MutableSet implements MutableSetInterface
     }
 
     /**
+     * Create a set from the given iterable, using the values of the iterable as the set values.
+     *
+     * @template Ts of array-key
+     *
+     * @param iterable<Ts> $items
+     *
+     * @return MutableSet<Ts>
+     */
+    public static function fromItems(iterable $items): MutableSet
+    {
+        return self::fromArray(iterator_to_array($items));
+    }
+
+    /**
      * Create a set from the given $elements array, using the keys of the array as the set values.
      *
      * @template Ts of array-key

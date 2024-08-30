@@ -15,6 +15,12 @@ final class VectorTest extends AbstractVectorTest
      */
     protected string $vectorClass = Vector::class;
 
+    public function testFromItems(): void
+    {
+        $vector = Vector::fromItems([1, 2, 3]);
+        static::assertSame([1, 2, 3], $vector->toArray());
+    }
+
     /**
      * @template T
      *
