@@ -237,6 +237,20 @@ final readonly class Set implements SetInterface
     }
 
     /**
+     * Alias of `contains`.
+     *
+     * @param T $k
+     *
+     * @return bool True if the value is in the set, false otherwise.
+     *
+     * @psalm-mutation-free
+     */
+    public function containsKey(int|string $k): bool
+    {
+        return $this->contains($k);
+    }
+
+    /**
      * Returns the provided value if it is part of the set, or null if it is not.
      *
      * As {@see Set} does not have keys, this method checks if the value exists in the set.

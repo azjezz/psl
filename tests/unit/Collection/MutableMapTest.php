@@ -235,7 +235,8 @@ final class MutableMapTest extends AbstractMapTest
         $map[false];
     }
 
-    public function testFromItems(): void {
+    public function testFromItems(): void
+    {
         $map = MutableMap::fromItems([
             'foo' => 'bar',
             'bar' => 'baz',

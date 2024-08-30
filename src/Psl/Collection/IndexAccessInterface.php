@@ -35,6 +35,17 @@ interface IndexAccessInterface
     public function contains(int|string $k): bool;
 
     /**
+     * Alias of `contains`.
+     *
+     * @param Tk $k
+     *
+     * @see contains() method
+     *
+     * @psalm-mutation-free
+     */
+    public function containsKey(int|string $k): bool;
+
+    /**
      * Returns the value at the specified key in the current collection.
      *
      * @param Tk $k

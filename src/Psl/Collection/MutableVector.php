@@ -205,6 +205,18 @@ final class MutableVector implements MutableVectorInterface
     }
 
     /**
+     * Alias of `contains`.
+     *
+     * @param int<0, max> $k
+     *
+     * @psalm-mutation-free
+     */
+    public function containsKey(int|string $k): bool
+    {
+        return $this->contains($k);
+    }
+
+    /**
      * Returns the value at the specified key in the current `MutableVector`.
      *
      * @param int<0, max> $k

@@ -254,6 +254,18 @@ final class MutableMap implements MutableMapInterface
     }
 
     /**
+     * Alias of `contains`.
+     *
+     * @param Tk $k
+     *
+     * @psalm-mutation-free
+     */
+    public function containsKey(int|string $k): bool
+    {
+        return $this->contains($k);
+    }
+
+    /**
      * Returns the value at the specified key in the current map.
      *
      * @param Tk $k
