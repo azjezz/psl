@@ -484,8 +484,10 @@ abstract class AbstractSetTest extends TestCase
         ]);
 
         static::assertTrue($vector->contains('hello'));
+        static::assertTrue($vector->containsKey('hello'));
         static::assertTrue($vector->contains('world'));
         static::assertFalse($vector->contains('foo'));
+        static::assertFalse($vector->containsKey('foo'));
     }
 
     public function testGet(): void

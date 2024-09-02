@@ -555,8 +555,9 @@ abstract class AbstractMapTest extends TestCase
         ]);
 
         static::assertTrue($map->contains('foo'));
+        static::assertTrue($map->containsKey('foo'));
         static::assertTrue($map->contains('bar'));
-        static::assertFalse($map->contains('baz'));
+        static::assertFalse($map->containsKey('baz'));
     }
 
     public function testGet(): void
