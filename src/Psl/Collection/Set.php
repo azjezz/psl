@@ -77,15 +77,18 @@ final readonly class Set implements SetInterface
      *
      * @template Ts of array-key
      *
-     * @param iterable<Ts, mixed> $items
+     * @param iterable<array-key, Ts> $items
      *
      * @return Set<Ts>
-     *
-     * @pure
      */
     public static function fromItems(iterable $items): Set
     {
-        return self::fromArray(iterator_to_array($items));
+        /**
+         * @var array<array-key, Ts>
+         * @psalm-suppress InvalidArgument
+         */
+        $array = iterator_to_array($items);
+        return self::fromArray($array);
     }
 
     /**
