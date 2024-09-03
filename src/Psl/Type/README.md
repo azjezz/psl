@@ -77,7 +77,24 @@ Provides a type that can parse backed-enums.
 Can coerce from:
 
 * `string` when `T` is a string-backed enum.
-* `int` when `T` is a string-backed enum.
+* `int` when `T` is an integer-backed enum.
+
+---
+
+#### [backed_enum_value](backed_enum_value.php)
+
+```hack
+@pure
+@template T of BackedEnum
+Type\backed_enum_value(class-string<T> $enum): TypeInterface<value-of<T>>
+```
+
+Provides a type that can verify a value matches a backed enum value.
+
+Can coerce from:
+
+* `string|int` when `T` is a string-backed enum.
+* `int|numeric-string` when `T` is an integer-backed enum.
 
 ---
 
