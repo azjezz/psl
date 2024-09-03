@@ -13,6 +13,7 @@ use Psl\DateTime\Exception\OverflowException;
 use Psl\DateTime\Exception\ParserException;
 use Psl\DateTime\Exception\UnderflowException;
 use Psl\DateTime\FormatPattern;
+use Psl\DateTime\SecondsStyle;
 use Psl\DateTime\Timestamp;
 use Psl\DateTime\Timezone;
 use Psl\Locale\Locale;
@@ -51,6 +52,17 @@ final class TimestampTest extends TestCase
         $difference = $b->since($a);
 
         static::assertGreaterThan(100.0, $difference->getTotalMilliseconds());
+    }
+
+    public function testSince()
+    {
+        $a = Timestamp::fromParts(20, 1);
+        $b = Timestamp::fromParts(30, 2);
+
+        $duration = $b->since($a);
+
+        static::assertSame(10, $duration->getSeconds());
+        static::assertSame(1, $duration->getNanoseconds());
     }
 
     public function testFromRowOverflow(): void
@@ -189,6 +201,11 @@ final class TimestampTest extends TestCase
             [Timestamp::fromParts(100), Timestamp::fromParts(42), Order::Greater],
             [Timestamp::fromParts(42), Timestamp::fromParts(42), Order::Equal],
             [Timestamp::fromParts(42), Timestamp::fromParts(100), Order::Less],
+
+            // Nanoseconds
+            [Timestamp::fromParts(42, 100), Timestamp::fromParts(42, 42), Order::Greater],
+            [Timestamp::fromParts(42, 42), Timestamp::fromParts(42, 42), Order::Equal],
+            [Timestamp::fromParts(42, 42), Timestamp::fromParts(42, 100), Order::Less],
         ];
     }
     /**
@@ -402,5 +419,14 @@ final class TimestampTest extends TestCase
 
         static::assertSame(1711917232, $serialized['seconds']);
         static::assertSame(12, $serialized['nanoseconds']);
+    }
+
+    public function testToRfc3999(): void
+    {
+        $timestamp = Timestamp::fromParts(1711917232, 12);
+
+        static::assertSame('2024-03-31T20:33:52.12+00:00', $timestamp->toRfc3339());
+        static::assertSame('2024-03-31T20:33:52+00:00', $timestamp->toRfc3339(seconds_style: SecondsStyle::Seconds));
+        static::assertSame('2024-03-31T20:33:52.12Z', $timestamp->toRfc3339(use_z: true));
     }
 }

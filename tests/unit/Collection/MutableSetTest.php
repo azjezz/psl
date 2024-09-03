@@ -109,7 +109,7 @@ final class MutableSetTest extends AbstractSetTest
 
         static::assertTrue(isset($set['foo']));
         static::assertSame('foo', $set['foo']);
-        
+
         unset($set['foo']);
         static::assertFalse(isset($set['foo']));
 
@@ -189,6 +189,16 @@ final class MutableSetTest extends AbstractSetTest
         $this->expectExceptionMessage('Invalid set read offset type, expected a string or an integer.');
 
         $set[false];
+    }
+
+    public function testFromArrayKeysConstructor()
+    {
+        $set = MutableSet::fromArrayKeys(['foo' => 1, 'bar' => 1, 'baz' => 1]);
+
+        static::assertCount(3, $set);
+        static::assertTrue($set->contains('foo'));
+        static::assertTrue($set->contains('bar'));
+        static::assertTrue($set->contains('baz'));
     }
 
     /**

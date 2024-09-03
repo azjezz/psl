@@ -32,7 +32,8 @@
         },
         "DecrementInteger": {
             "ignore": [
-                "Psl\\DataStructure\\PriorityQueue::peek"
+                "Psl\\DataStructure\\PriorityQueue::peek",
+                "Psl\\DateTime\\TemporalConvenienceMethodsTrait::since"
             ]
         },
         "FunctionCallRemoval": {
@@ -42,7 +43,8 @@
         },
         "IncrementInteger": {
             "ignore": [
-                "Psl\\DataStructure\\PriorityQueue::peek"
+                "Psl\\DataStructure\\PriorityQueue::peek",
+                "Psl\\DateTime\\TemporalConvenienceMethodsTrait::since"
             ]
         },
         "LogicalNot": {
@@ -58,6 +60,7 @@
         },
         "Throw_": {
             "ignore": [
+                "Psl\\DateTime\\DateTime::__construct",
                 "Psl\\File\\ReadHandle::__construct",
                 "Psl\\File\\WriteHandle::__construct",
                 "Psl\\File\\ReadWriteHandle::__construct",
