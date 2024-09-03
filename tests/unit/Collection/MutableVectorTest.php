@@ -149,7 +149,7 @@ final class MutableVectorTest extends AbstractVectorTest
 
         static::assertTrue(isset($vector[0]));
         static::assertSame('foo', $vector[0]);
-        
+
         unset($vector[0]);
         static::assertFalse(isset($vector[2]));
 
@@ -230,6 +230,11 @@ final class MutableVectorTest extends AbstractVectorTest
         $vector[false];
     }
 
+    public function testFromItems(): void
+    {
+        $vector = MutableVector::fromItems([1, 2, 3]);
+        static::assertSame([1, 2, 3], $vector->toArray());
+    }
 
     /**
      * @template     T

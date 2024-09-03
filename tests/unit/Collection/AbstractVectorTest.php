@@ -529,7 +529,9 @@ abstract class AbstractVectorTest extends TestCase
 
         static::assertTrue($vector->contains(0));
         static::assertTrue($vector->contains(1));
+        static::assertTrue($vector->containsKey(1));
         static::assertFalse($vector->contains(2));
+        static::assertFalse($vector->containsKey(2));
     }
 
     public function testGet(): void

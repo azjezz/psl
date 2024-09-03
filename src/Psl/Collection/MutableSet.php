@@ -72,6 +72,26 @@ final class MutableSet implements MutableSetInterface
     }
 
     /**
+     * Create a set from the given iterable, using the values of the iterable as the set values.
+     *
+     * @template Ts of array-key
+     *
+     * @param iterable<Ts, Ts> $items
+     *
+     * @return MutableSet<Ts>
+     */
+    public static function fromItems(iterable $items): MutableSet
+    {
+        /**
+         * @psalm-suppress InvalidArgument
+         *
+         * @var array<Ts, Ts>
+         */
+        $array = iterator_to_array($items);
+        return self::fromArray($array);
+    }
+
+    /**
      * Create a set from the given $elements array, using the keys of the array as the set values.
      *
      * @template Ts of array-key
@@ -217,6 +237,20 @@ final class MutableSet implements MutableSetInterface
     public function contains(int|string $k): bool
     {
         return array_key_exists($k, $this->elements);
+    }
+
+    /**
+     * Alias of `contains`.
+     *
+     * @param T $k
+     *
+     * @return bool True if the value is in the set, false otherwise.
+     *
+     * @psalm-mutation-free
+     */
+    public function containsKey(int|string $k): bool
+    {
+        return $this->contains($k);
     }
 
     /**

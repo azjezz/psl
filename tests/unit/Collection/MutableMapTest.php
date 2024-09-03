@@ -153,7 +153,7 @@ final class MutableMapTest extends AbstractMapTest
 
         static::assertTrue(isset($map['foo']));
         static::assertSame('1', $map['foo']);
-        
+
         unset($map['foo']);
         static::assertFalse(isset($map['foo']));
 
@@ -233,6 +233,19 @@ final class MutableMapTest extends AbstractMapTest
         $this->expectExceptionMessage('Invalid map read offset type, expected a string or an integer.');
 
         $map[false];
+    }
+
+    public function testFromItems(): void
+    {
+        $map = MutableMap::fromItems([
+            'foo' => 'bar',
+            'bar' => 'baz',
+            'baz' => 'qux',
+        ]);
+
+        static::assertSame('bar', $map->at('foo'));
+        static::assertSame('baz', $map->at('bar'));
+        static::assertSame('qux', $map->at('baz'));
     }
 
     /**

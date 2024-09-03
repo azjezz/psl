@@ -70,6 +70,26 @@ final readonly class Vector implements VectorInterface
     }
 
     /**
+     * Create a vector from the given $items iterable.
+     *
+     * @template Ts
+     *
+     * @param iterable<array-key, Ts> $items
+     *
+     * @return Vector<Ts>
+     */
+    public static function fromItems(iterable $items): Vector
+    {
+        /**
+         * @psalm-suppress InvalidArgument
+         *
+         * @var array<array-key, Ts>
+         */
+        $array = iterator_to_array($items);
+        return self::fromArray($array);
+    }
+
+    /**
      * Returns the first value in the current `Vector`.
      *
      * @return T|null The first value in the current `Vector`, or `null` if the
@@ -188,6 +208,18 @@ final readonly class Vector implements VectorInterface
     public function contains(int|string $k): bool
     {
         return array_key_exists($k, $this->elements);
+    }
+
+    /**
+     * Alias of `contains`.
+     *
+     * @param int<0, max> $k
+     *
+     * @psalm-mutation-free
+     */
+    public function containsKey(int|string $k): bool
+    {
+        return $this->contains($k);
     }
 
     /**

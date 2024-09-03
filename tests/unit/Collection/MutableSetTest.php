@@ -191,6 +191,12 @@ final class MutableSetTest extends AbstractSetTest
         $set[false];
     }
 
+    public function testFromItems(): void
+    {
+        $set = MutableSet::fromItems(['a', 'b', 'b', 'c']);
+        static::assertSame(['a' => 'a', 'b' => 'b', 'c' => 'c'], $set->toArray());
+    }
+
     public function testFromArrayKeysConstructor()
     {
         $set = MutableSet::fromArrayKeys(['foo' => 1, 'bar' => 1, 'baz' => 1]);

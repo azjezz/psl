@@ -19,6 +19,19 @@ final class MapTest extends AbstractMapTest
      */
     protected string $vectorClass = Vector::class;
 
+    public function testFromItems(): void
+    {
+        $map = Map::fromItems([
+            'foo' => 'bar',
+            'bar' => 'baz',
+            'baz' => 'qux',
+        ]);
+
+        static::assertSame('bar', $map->at('foo'));
+        static::assertSame('baz', $map->at('bar'));
+        static::assertSame('qux', $map->at('baz'));
+    }
+
     /**
      * @template     Tk of array-key
      * @template     Tv

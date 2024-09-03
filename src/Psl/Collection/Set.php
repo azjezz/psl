@@ -73,6 +73,26 @@ final readonly class Set implements SetInterface
     }
 
     /**
+     * Create a set from the given items, using the keys of the array as the set values.
+     *
+     * @template Ts of array-key
+     *
+     * @param iterable<array-key, Ts> $items
+     *
+     * @return Set<Ts>
+     */
+    public static function fromItems(iterable $items): Set
+    {
+        /**
+         * @var array<array-key, Ts>
+         *
+         * @psalm-suppress InvalidArgument
+         */
+        $array = iterator_to_array($items);
+        return self::fromArray($array);
+    }
+
+    /**
      * Create a set from the given $elements array, using the keys of the array as the set values.
      *
      * @template Ts of array-key
@@ -218,6 +238,20 @@ final readonly class Set implements SetInterface
     public function contains(int|string $k): bool
     {
         return array_key_exists($k, $this->elements);
+    }
+
+    /**
+     * Alias of `contains`.
+     *
+     * @param T $k
+     *
+     * @return bool True if the value is in the set, false otherwise.
+     *
+     * @psalm-mutation-free
+     */
+    public function containsKey(int|string $k): bool
+    {
+        return $this->contains($k);
     }
 
     /**

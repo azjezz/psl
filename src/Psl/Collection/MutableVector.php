@@ -14,6 +14,7 @@ use function array_key_last;
 use function array_keys;
 use function array_values;
 use function count;
+use function iterator_to_array;
 
 /**
  * @template T
@@ -67,6 +68,26 @@ final class MutableVector implements MutableVectorInterface
     public static function fromArray(array $elements): MutableVector
     {
         return new self($elements);
+    }
+
+    /**
+     * Create a vector from the given $items iterable.
+     *
+     * @template Ts
+     *
+     * @param iterable<array-key, Ts> $items
+     *
+     * @return MutableVector<Ts>
+     */
+    public static function fromItems(iterable $items): MutableVector
+    {
+        /**
+         * @psalm-suppress InvalidArgument
+         *
+         * @var array<array-key, Ts>
+         */
+        $array = iterator_to_array($items);
+        return self::fromArray($array);
     }
 
     /**
@@ -187,6 +208,18 @@ final class MutableVector implements MutableVectorInterface
     public function contains(int|string $k): bool
     {
         return array_key_exists($k, $this->elements);
+    }
+
+    /**
+     * Alias of `contains`.
+     *
+     * @param int<0, max> $k
+     *
+     * @psalm-mutation-free
+     */
+    public function containsKey(int|string $k): bool
+    {
+        return $this->contains($k);
     }
 
     /**

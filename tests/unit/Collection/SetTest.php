@@ -15,6 +15,19 @@ final class SetTest extends AbstractSetTest
      */
     protected string $setClass = Set::class;
 
+    public function testFromItems(): void
+    {
+        $set = Set::fromItems([
+            'foo',
+            'bar',
+            'baz',
+        ]);
+
+        static::assertTrue($set->contains('foo'));
+        static::assertTrue($set->contains('bar'));
+        static::assertTrue($set->contains('baz'));
+    }
+
     /**
      * @template T of array-key
      *
