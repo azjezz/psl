@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\DateTime;
 
 use PHPUnit\Framework\TestCase;
+use Psl\DateTime\DateTime;
 use Psl\DateTime\Timestamp;
 use Psl\DateTime\Timezone;
 
@@ -31,6 +32,15 @@ final class TimezoneTest extends TestCase
         static::assertSame(-12600., Timezone::Minus0330->getOffset($temporal)->getTotalSeconds());
         static::assertSame(3600., Timezone::Plus0100->getOffset($temporal)->getTotalSeconds());
         static::assertSame(-3600., Timezone::Minus0100->getOffset($temporal)->getTotalSeconds());
+
+        // Local
+        $brussels = Timezone::EuropeBrussels;
+        date_default_timezone_set($brussels->value);
+
+        $summer = DateTime::fromParts($brussels, 2024, 3, 31, 3);
+
+        static::assertSame(2., $brussels->getOffset($summer)->getTotalHours());
+        static::assertSame(1., $brussels->getOffset($summer, local: true)->getTotalHours());
     }
 
     /**
@@ -59,6 +69,20 @@ final class TimezoneTest extends TestCase
     {
         static::assertTrue(Timezone::AmericaNewYork->hasTheSameRulesAs(Timezone::AmericaNewYork));
         static::assertFalse(Timezone::AmericaNewYork->hasTheSameRulesAs(Timezone::EuropeLondon));
+    }
+
+    public function testGetDaylightSavingTimeOffset(): void
+    {
+        $brussels = Timezone::EuropeBrussels;
+        date_default_timezone_set($brussels->value);
+
+        $summer = DateTime::fromParts($brussels, 2024, 3, 31, 3);
+        $winter = DateTime::fromParts($brussels, 2024, 10, 27, 2);
+
+        static::assertSame(0., $brussels->getDaylightSavingTimeOffset($winter)->getTotalHours());
+        static::assertSame(1., $brussels->getDaylightSavingTimeOffset($winter, local: true)->getTotalHours());
+        static::assertSame(1., $brussels->getDaylightSavingTimeOffset($summer)->getTotalHours());
+        static::assertSame(0., $brussels->getDaylightSavingTimeOffset($summer, local: true)->getTotalHours());
     }
 
     public static function provideRawOffsetData(): iterable

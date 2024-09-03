@@ -197,6 +197,16 @@ final class MutableSetTest extends AbstractSetTest
         static::assertSame(['a' => 'a', 'b' => 'b', 'c' => 'c'], $set->toArray());
     }
 
+    public function testFromArrayKeysConstructor()
+    {
+        $set = MutableSet::fromArrayKeys(['foo' => 1, 'bar' => 1, 'baz' => 1]);
+
+        static::assertCount(3, $set);
+        static::assertTrue($set->contains('foo'));
+        static::assertTrue($set->contains('bar'));
+        static::assertTrue($set->contains('baz'));
+    }
+
     /**
      * @template T of array-key
      *

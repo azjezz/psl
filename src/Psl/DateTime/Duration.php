@@ -674,27 +674,24 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
         $sec_sign = $this->seconds < 0 || $this->nanoseconds < 0 ? '-' : '';
         $sec = Math\abs($this->seconds);
 
-        /** @var list<array{string, string}> $values */
-        $values = [
-            [((string) $this->hours), 'hour(s)'],
-            [((string) $this->minutes), 'minute(s)'],
-            [$sec_sign . ((string) $sec) . $decimal_part, 'second(s)'],
-        ];
 
-        // $end is the sizeof($values), use static value for better performance.
-        $end = 3;
-        while ($end > 0 && $values[$end - 1][0] === '0') {
-            --$end;
-        }
+        $containsHours = $this->hours !== 0;
+        $containsMinutes = $this->minutes !== 0;
+        $concatenatedSeconds = $sec_sign . ((string) $sec) . $decimal_part;
+        $containsSeconds = $concatenatedSeconds !== '0';
 
-        $start = 0;
-        while ($start < $end && $values[$start][0] === '0') {
-            ++$start;
-        }
-
+        /** @var list<string> $output */
         $output = [];
-        for ($i = $start; $i < $end; ++$i) {
-            $output[] = $values[$i][0] . ' ' . $values[$i][1];
+        if ($containsHours) {
+            $output[] = ((string) $this->hours) . ' hour(s)';
+        }
+
+        if ($containsMinutes || ($containsHours && $containsSeconds)) {
+            $output[] = ((string) $this->minutes) . ' minute(s)';
+        }
+
+        if ($containsSeconds) {
+            $output[] = $concatenatedSeconds . ' second(s)';
         }
 
         return ([] === $output) ? '0 second(s)' : Str\join($output, ', ');
