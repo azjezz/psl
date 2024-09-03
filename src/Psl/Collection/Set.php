@@ -85,6 +85,7 @@ final readonly class Set implements SetInterface
     {
         /**
          * @var array<array-key, Ts>
+         *
          * @psalm-suppress InvalidArgument
          */
         $array = iterator_to_array($items);

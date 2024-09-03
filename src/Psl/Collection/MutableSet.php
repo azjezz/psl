@@ -84,6 +84,7 @@ final class MutableSet implements MutableSetInterface
     {
         /**
          * @psalm-suppress InvalidArgument
+         *
          * @var array<Ts, Ts>
          */
         $array = iterator_to_array($items);

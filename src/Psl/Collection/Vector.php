@@ -82,6 +82,7 @@ final readonly class Vector implements VectorInterface
     {
         /**
          * @psalm-suppress InvalidArgument
+         *
          * @var array<array-key, Ts>
          */
         $array = iterator_to_array($items);

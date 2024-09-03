@@ -83,6 +83,7 @@ final class MutableVector implements MutableVectorInterface
     {
         /**
          * @psalm-suppress InvalidArgument
+         *
          * @var array<array-key, Ts>
          */
         $array = iterator_to_array($items);
