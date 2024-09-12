@@ -34,6 +34,7 @@
 - [rewindable](./../../src/Psl/Iter/rewindable.php#L20)
 - [search](./../../src/Psl/Iter/search.php#L28)
 - [search_opt](./../../src/Psl/Iter/search_opt.php#L30)
+- [search_opt_k_v](./../../src/Psl/Iter/search_opt_k_v.php#L31)
 - [to_iterator](./../../src/Psl/Iter/to_iterator.php#L19)
 
 #### `Classes`

@@ -152,6 +152,7 @@ final class Loader
         'Psl\\Iter\\rewindable' => 'Psl/Iter/rewindable.php',
         'Psl\\Iter\\search' => 'Psl/Iter/search.php',
         'Psl\\Iter\\search_opt' => 'Psl/Iter/search_opt.php',
+        'Psl\\Iter\\search_opt_k_v' => 'Psl/Iter/search_opt_k_v.php',
         'Psl\\Iter\\to_iterator' => 'Psl/Iter/to_iterator.php',
         'Psl\\Vec\\chunk' => 'Psl/Vec/chunk.php',
         'Psl\\Vec\\chunk_with_keys' => 'Psl/Vec/chunk_with_keys.php',
