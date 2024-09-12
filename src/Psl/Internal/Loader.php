@@ -708,7 +708,7 @@ final class Loader
         'Psl\\Type\\Internal\\IterableType' => 'Psl/Type/Internal/IterableType.php',
         'Psl\\Type\\Internal\\MixedType' => 'Psl/Type/Internal/MixedType.php',
         'Psl\\Type\\Internal\\NullType' => 'Psl/Type/Internal/NullType.php',
-        'Psl\\Type\\NonNullType' => 'Psl/Type/Internal/NonNullType.php',
+        'Psl\\Type\\NonNullType' => 'Psl/Type/NonNullType.php',
         'Psl\\Type\\Internal\\NullableType' => 'Psl/Type/Internal/NullableType.php',
         'Psl\\Type\\Internal\\OptionalType' => 'Psl/Type/Internal/OptionalType.php',
         'Psl\\Type\\Internal\\PositiveIntType' => 'Psl/Type/Internal/PositiveIntType.php',
