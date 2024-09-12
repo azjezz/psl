@@ -14,10 +14,10 @@ use Psl\Option\Option;
  *
  * Examples:
  *
- *      Iter\search_opt_k_v(['foo', 'bar', 'baz'], fn($k, $v) => 'baz' === $v)
+ *      Iter\search_with_keys_opt(['foo', 'bar', 'baz'], fn($k, $v) => 'baz' === $v)
  *      => Option::some('baz')
  *
- *      Iter\search_opt_k_v(['foo', 'bar', 'baz'], fn($k, $v) => 'qux' === $v)
+ *      Iter\search_with_keys_opt(['foo', 'bar', 'baz'], fn($k, $v) => 'qux' === $v)
  *      => Option::none()
  *
  * @template TKey
@@ -28,7 +28,7 @@ use Psl\Option\Option;
  *
  * @return Option<TValue>
  */
-function search_opt_k_v(iterable $iterable, Closure $predicate): Option
+function search_with_keys_opt(iterable $iterable, Closure $predicate): Option
 {
     foreach ($iterable as $key => $value) {
         if ($predicate($key, $value)) {

@@ -7,14 +7,14 @@ namespace Psl\Tests\Unit\Iter;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 
-final class SearchOptKVTest extends TestCase
+final class SearchWithKeysOptTest extends TestCase
 {
     /**
      * @dataProvider provideDataSome
      */
     public function testSearchSome($expected, iterable $iterable, callable $predicate): void
     {
-        static::assertSame($expected, Iter\search_opt_k_v($iterable, $predicate)->unwrap());
+        static::assertSame($expected, Iter\search_with_keys_opt($iterable, $predicate)->unwrap());
     }
 
     public function provideDataSome(): iterable
@@ -31,8 +31,9 @@ final class SearchOptKVTest extends TestCase
      */
     public function testSearchNone(iterable $iterable, callable $predicate): void
     {
-        static::assertTrue(Iter\search_opt_k_v($iterable, $predicate)->isNone());
+        static::assertTrue(Iter\search_with_keys_opt($iterable, $predicate)->isNone());
     }
+
     public function provideDataNone(): iterable
     {
         yield [[], static fn (int $k, string $v): bool => 'qux' === $v];
