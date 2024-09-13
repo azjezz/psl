@@ -1,0 +1,24 @@
+name: "preload check"
+
+on:
+  pull_request: ~
+  push: ~
+
+jobs:
+  doc-check:
+    name: "preload check"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "checkout"
+        uses: "actions/checkout@v4"
+
+      - name: "installing PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "8.3"
+          ini-values: memory_limit=-1
+          tools: composer:v2, cs2pr
+          extensions: bcmath, mbstring, intl, sodium, json
+
+      - name: "checking if preload script is valid."
+        run: make preload-check

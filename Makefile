@@ -46,4 +46,7 @@ docs-generate:                                                                  
 docs-check:                                                                     ## checks if docs are up to date
 	php docs/documenter.php check
 
-check: coding-standard-check static-analysis security-analysis unit-tests mutation-tests docs-check  ## run quick checks for local development iterations
+preload-check:                                                                  ## checks if preloader is configured correctly
+	php src/preload.php
+
+check: coding-standard-check static-analysis security-analysis unit-tests mutation-tests docs-check autoload-check  ## run quick checks for local development iterations
