@@ -871,7 +871,7 @@ final class Loader
         'Psl\\DateTime\\Exception\\ParserException' => 'Psl/DateTime/Exception/ParserException.php',
         'Psl\\DateTime\\Exception\\UnderflowException' => 'Psl/DateTime/Exception/UnderflowException.php',
         'Psl\\DateTime\\DateTime' => 'Psl/DateTime/DateTime.php',
-        'Psl\\DateTime\\Duration' => 'Psl/DateTime/Interval.php',
+        'Psl\\DateTime\\Duration' => 'Psl/DateTime/Duration.php',
         'Psl\\DateTime\\Timestamp' => 'Psl/DateTime/Timestamp.php',
     ];
 
