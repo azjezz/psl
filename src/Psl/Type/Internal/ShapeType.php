@@ -144,7 +144,7 @@ final readonly class ShapeType extends Type\Type
                     continue;
                 }
 
-                throw CoercionException::withValue(null, $this->toString(), PathExpression::path($element));
+                throw CoercionException::withoutValue($this->toString(), PathExpression::path($element));
             }
         } catch (CoercionException $e) {
             throw match (true) {
@@ -196,7 +196,7 @@ final readonly class ShapeType extends Type\Type
                     continue;
                 }
 
-                throw AssertException::withValue(null, $this->toString(), PathExpression::path($element));
+                throw AssertException::withoutValue($this->toString(), PathExpression::path($element));
             }
         } catch (AssertException $e) {
             throw match (true) {

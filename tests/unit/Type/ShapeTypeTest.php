@@ -216,7 +216,7 @@ final class ShapeTypeTest extends TypeTest
                 'name' => Type\string(),
             ]),
             [],
-            'Expected "array{\'name\': string}", got "null" at path "name".'
+            'Expected "array{\'name\': string}", received no value at path "name".'
         ];
         yield 'invalid key' => [
             Type\shape([
@@ -247,7 +247,7 @@ final class ShapeTypeTest extends TypeTest
                 'name' => Type\string(),
             ]),
             [],
-            'Could not coerce "null" to type "array{\'name\': string}" at path "name".'
+            'Could not coerce to type "array{\'name\': string}" at path "name" as the value was not passed.'
         ];
         yield 'invalid key' => [
             Type\shape([
@@ -295,7 +295,7 @@ final class ShapeTypeTest extends TypeTest
             (static function () {
                 yield null => 'nope';
             })(),
-            'Could not coerce "null" to type "array{\'id\': int}" at path "id".'
+            'Could not coerce to type "array{\'id\': int}" at path "id" as the value was not passed.'
         ];
         yield 'iterator yielding object key' => [
             Type\shape([
@@ -305,7 +305,7 @@ final class ShapeTypeTest extends TypeTest
                 yield (new class () {
                 }) => 'nope';
             })(),
-            'Could not coerce "null" to type "array{\'id\': int}" at path "id".'
+            'Could not coerce to type "array{\'id\': int}" at path "id" as the value was not passed.'
         ];
     }
 
