@@ -9,12 +9,12 @@ namespace Psl\Vec;
  *
  * @template T
  *
- * @param list<T> $first
+ * @param iterable<T> $first
  * @param iterable<T> ...$rest
  *
  * @return list<T>
  */
-function concat(array $first, iterable ...$rest): array
+function concat(iterable $first, iterable ...$rest): array
 {
     $first = values($first);
     foreach ($rest as $arr) {
