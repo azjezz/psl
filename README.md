@@ -87,14 +87,6 @@ You can read through the API documentation in [`docs/`](./docs) directory.
 
 Have a look at [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
-## Sponsors
-
-Thanks to our sponsors and supporters:
-
-| JetBrains |
-|---|
-| <a href="https://www.jetbrains.com/?from=PSL ( PHP Standard Library )" title="JetBrains" target="_blank"><img src="https://res.cloudinary.com/azjezz/image/upload/v1599239910/jetbrains_qnyb0o.png" height="120" /></a> |
-
 ## License
 
 The MIT License (MIT). Please see [`LICENSE`](./LICENSE) for more information.
