@@ -17,18 +17,28 @@ final class AssertException extends Exception
     /**
      * @param list<string> $paths
      */
-    private function __construct(string $actual, string $expected, array $paths = [], ?Throwable $previous = null)
+    private function __construct(?string $actual, string $expected, array $paths = [], ?Throwable $previous = null)
     {
         $first = $previous instanceof Exception ? $previous->getFirstFailingActualType() : $actual;
 
-        parent::__construct(
-            Str\format(
+        if ($first !== null) {
+            $message = Str\format(
                 'Expected "%s", got "%s"%s.',
                 $expected,
                 $first,
-                $paths ? ' at path "' . Str\join($paths, '.') . '"' : ''
-            ),
-            $actual,
+                $paths ? ' at path "' . Str\join($paths, '.') . '"' : '',
+            );
+        } else {
+            $message = Str\format(
+                'Expected "%s", received no value at path "%s".',
+                $expected,
+                Str\join($paths, '.'),
+            );
+        }
+
+        parent::__construct(
+            $message,
+            $actual ?? 'null',
             $paths,
             $previous
         );
@@ -50,5 +60,15 @@ final class AssertException extends Exception
         $paths = $previous instanceof Exception ? [$path, ...$previous->getPaths()] : [$path];
 
         return new self(get_debug_type($value), $expected_type, Vec\filter_nulls($paths), $previous);
+    }
+
+    public static function withoutValue(
+        string $expected_type,
+        ?string $path = null,
+        ?Throwable $previous = null
+    ): self {
+        $paths = $previous instanceof Exception ? [$path, ...$previous->getPaths()] : [$path];
+
+        return new self(null, $expected_type, Vec\filter_nulls($paths), $previous);
     }
 }

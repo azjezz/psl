@@ -17,19 +17,30 @@ final class CoercionException extends Exception
     /**
      * @param list<string> $paths
      */
-    private function __construct(string $actual, string $target, array $paths = [], ?Throwable $previous = null)
+    private function __construct(?string $actual, string $target, array $paths = [], ?Throwable $previous = null)
     {
         $first = $previous instanceof Exception ? $previous->getFirstFailingActualType() : $actual;
 
-        parent::__construct(
-            Str\format(
+        if ($first !== null) {
+            $message = Str\format(
                 'Could not coerce "%s" to type "%s"%s%s.',
                 $first,
                 $target,
                 $paths ? ' at path "' . Str\join($paths, '.') . '"' : '',
                 $previous && !$previous instanceof self ? ': ' . $previous->getMessage() : '',
-            ),
-            $actual,
+            );
+        } else {
+            $message = Str\format(
+                'Could not coerce to type "%s" at path "%s" as the value was not passed%s.',
+                $target,
+                Str\join($paths, '.'),
+                $previous && !$previous instanceof self ? ': ' . $previous->getMessage() : '',
+            );
+        }
+
+        parent::__construct(
+            $message,
+            $actual ?? 'null',
             $paths,
             $previous
         );
@@ -51,5 +62,15 @@ final class CoercionException extends Exception
         $paths = $previous instanceof Exception ? [$path, ...$previous->getPaths()] : [$path];
 
         return new self(get_debug_type($value), $target, Vec\filter_nulls($paths), $previous);
+    }
+
+    public static function withoutValue(
+        string $target,
+        ?string $path = null,
+        ?Throwable $previous = null
+    ): self {
+        $paths = $previous instanceof Exception ? [$path, ...$previous->getPaths()] : [$path];
+
+        return new self(null, $target, Vec\filter_nulls($paths), $previous);
     }
 }
