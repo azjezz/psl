@@ -2,7 +2,7 @@ help:                                                                           
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_\-\.]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 install:                                                              			## install all dependencies for a development environment
-	composer install
+	COMPOSER_IGNORE_PLATFORM_REQ=php+ composer install
 
 coding-standard-fix:                                                            ## apply automated coding standard fixes
 	PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --config=config/.php_cs.dist.php

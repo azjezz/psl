@@ -554,6 +554,7 @@ final class Loader
         'Psl\\DateTime\\Internal\\default_timezone' => 'Psl/DateTime/Internal/default_timezone.php',
         'Psl\\DateTime\\Internal\\system_time' => 'Psl/DateTime/Internal/system_time.php',
         'Psl\\DateTime\\Internal\\high_resolution_time' => 'Psl/DateTime/Internal/high_resolution_time.php',
+        'Psl\\DateTime\\Internal\\create_intl_calendar_from_date_time' => 'Psl/DateTime/Internal/create_intl_calendar_from_date_time.php',
         'Psl\\DateTime\\Internal\\create_intl_date_formatter' => 'Psl/DateTime/Internal/create_intl_date_formatter.php',
         'Psl\\DateTime\\Internal\\parse' => 'Psl/DateTime/Internal/parse.php',
         'Psl\\DateTime\\Internal\\format_rfc3339' => 'Psl/DateTime/Internal/format_rfc3339.php',

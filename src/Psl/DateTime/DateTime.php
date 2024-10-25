@@ -172,14 +172,7 @@ final readonly class DateTime implements DateTimeInterface
             $month = $month->value;
         }
 
-        /**
-         * @var IntlCalendar $calendar
-         */
-        $calendar = IntlCalendar::createInstance(
-            Internal\to_intl_timezone($timezone),
-        );
-
-        $calendar->set($year, $month - 1, $day, $hours, $minutes, $seconds);
+        $calendar = Internal\create_intl_calendar_from_date_time($timezone, $year, $month, $day, $hours, $minutes, $seconds);
 
         if ($seconds !== $calendar->get(IntlCalendar::FIELD_SECOND)) {
             throw Exception\UnexpectedValueException::forSeconds($seconds, $calendar->get(IntlCalendar::FIELD_SECOND));
