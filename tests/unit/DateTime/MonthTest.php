@@ -16,7 +16,7 @@ final class MonthTest extends TestCase
      */
     public function testGetPrevious(Month $month, Month $expected): void
     {
-        static::assertEquals($expected, $month->getPrevious());
+        static::assertSame($expected, $month->getPrevious());
     }
 
     /**
@@ -24,7 +24,7 @@ final class MonthTest extends TestCase
      */
     public function testGetNext(Month $month, Month $expected): void
     {
-        static::assertEquals($expected, $month->getNext());
+        static::assertSame($expected, $month->getNext());
     }
 
     /**
@@ -32,8 +32,8 @@ final class MonthTest extends TestCase
      */
     public function testGetDays(Month $month, int $expectedForLeapYear, int $expectedForNonLeapYear): void
     {
-        static::assertEquals($expectedForLeapYear, $month->getLeapYearDays());
-        static::assertEquals($expectedForNonLeapYear, $month->getNonLeapYearDays());
+        static::assertSame($expectedForLeapYear, $month->getLeapYearDays());
+        static::assertSame($expectedForNonLeapYear, $month->getNonLeapYearDays());
     }
 
     /**
@@ -41,7 +41,7 @@ final class MonthTest extends TestCase
      */
     public function testGetDaysForYear(Month $month, int $year, int $expected): void
     {
-        static::assertEquals($expected, $month->getDaysForYear($year));
+        static::assertSame($expected, $month->getDaysForYear($year));
     }
 
     /**

@@ -19,8 +19,8 @@ final class ReduceWithKeysTest extends TestCase
 
     public function provideData(): iterable
     {
-        yield [null, [], static fn($accumulator, $k, $v) => $accumulator, null];
-        yield [6, [1, 2, 3], static fn($accumulator, $k, $v) => $accumulator + $v, 0];
-        yield [6, Iter\to_iterator([1, 2, 3]), static fn($accumulator, $k, $v) => $accumulator + $v, 0];
+        yield [null, [], static fn($accumulator, $_k, $_v) => $accumulator, null];
+        yield [6, [1, 2, 3], static fn($accumulator, $_k, $v) => $accumulator + $v, 0];
+        yield [6, Iter\to_iterator([1, 2, 3]), static fn($accumulator, $_k, $v) => $accumulator + $v, 0];
     }
 }

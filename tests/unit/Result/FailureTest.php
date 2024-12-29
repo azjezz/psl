@@ -53,7 +53,10 @@ final class FailureTest extends TestCase
     {
         $exception = new Exception('bar');
         $wrapper = new Failure($exception);
-        $actual = $wrapper->proceed(static fn(string $result): int => 200, static fn(Exception $exception): int => 404);
+        $actual = $wrapper->proceed(
+            static fn(string $_result): int => 200,
+            static fn(Exception $_exception): int => 404,
+        );
 
         static::assertSame(404, $actual);
     }

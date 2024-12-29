@@ -34,7 +34,7 @@ final class ShapeTypeTest extends TypeTest
 
     public function testWillConsiderUnknownIterableFieldsWhenCoercing(): void
     {
-        static::assertEquals(
+        static::assertSame(
             [
                 'defined_key' => 'value',
                 'additional_key' => 'value',

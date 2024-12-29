@@ -186,13 +186,13 @@ final class AwaitableTest extends TestCase
         });
 
         $awaitable = $awaitable
-            ->then(static fn(string $result) => Str\reverse($result), static fn(Throwable $exception) => exit(0))
+            ->then(static fn(string $result) => Str\reverse($result), static fn(Throwable $_exception) => exit(0))
             ->then(
                 static fn(string $result) => throw new InvariantViolationException($result),
-                static fn(Throwable $exception) => exit(0),
+                static fn(Throwable $_exception) => exit(0),
             )
-            ->then(static fn($result) => exit(0), static fn(Throwable $exception) => throw $exception)
-            ->then(static fn($result) => exit(0), static fn(Throwable $exception) => $exception->getMessage());
+            ->then(static fn($_result) => exit(0), static fn(Throwable $exception) => throw $exception)
+            ->then(static fn($_result) => exit(0), static fn(Throwable $exception) => $exception->getMessage());
 
         static::assertSame('olleh', $awaitable->await());
     }

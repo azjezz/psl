@@ -52,7 +52,10 @@ final class SuccessTest extends TestCase
     public function testProceed(): void
     {
         $wrapper = new Success('hello');
-        $actual = $wrapper->proceed(static fn(string $result): int => 200, static fn(Exception $exception): int => 404);
+        $actual = $wrapper->proceed(
+            static fn(string $_result): int => 200,
+            static fn(Exception $_exception): int => 404,
+        );
 
         static::assertSame(200, $actual);
     }

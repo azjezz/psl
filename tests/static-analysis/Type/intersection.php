@@ -8,11 +8,9 @@ use Psl\Result\ResultInterface;
 use Psl\Type;
 
 /**
- * @psalm-suppress UnusedParam
- *
- * @param Map&ResultInterface&stdClass&Vector $value
+ * @param Map&ResultInterface&stdClass&Vector $_value
  */
-function takes_valid_intersection($value): void
+function takes_valid_intersection($_value): void
 {
 }
 

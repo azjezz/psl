@@ -30,7 +30,7 @@ final class FilterWithKeyTest extends TestCase
         yield [['a', 'b'], Collection\Vector::fromArray(['a', 'b'])];
         yield [[], Collection\Vector::fromArray(['a', 'b']), static fn(int $_k, string $_v) => false];
         yield [['a', 'b'], Collection\Vector::fromArray(['a', 'b']), static fn(int $_k, string $_v): bool => true];
-        yield [['a'], ['a', 'b'], static fn(int $k, string $v): bool => 'b' !== $v];
+        yield [['a'], ['a', 'b'], static fn(int $_k, string $v): bool => 'b' !== $v];
         yield [[], ['a', 'b'], static fn(int $k, string $v): bool => 'b' !== $v && 0 !== $k];
         yield [['a'], ['a', 'b'], static fn(int $k, string $v): bool => 'b' !== $v && 1 !== $k];
         yield [[], ['a', 'b'], static fn(int $k, string $v): bool => 'a' !== $v && 1 !== $k];

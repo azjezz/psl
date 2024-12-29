@@ -85,23 +85,23 @@ final class TimestampTest extends TestCase
     {
         $timestamp = Timestamp::fromParts(0, NANOSECONDS_PER_SECOND * 20);
 
-        static::assertEquals(20, $timestamp->getSeconds());
-        static::assertEquals(0, $timestamp->getNanoseconds());
+        static::assertSame(20, $timestamp->getSeconds());
+        static::assertSame(0, $timestamp->getNanoseconds());
 
         $timestamp = Timestamp::fromParts(0, 100 + (NANOSECONDS_PER_SECOND * 20));
 
-        static::assertEquals(20, $timestamp->getSeconds());
-        static::assertEquals(100, $timestamp->getNanoseconds());
+        static::assertSame(20, $timestamp->getSeconds());
+        static::assertSame(100, $timestamp->getNanoseconds());
 
         $timestamp = Timestamp::fromParts(30, -NANOSECONDS_PER_SECOND * 20);
 
-        static::assertEquals(10, $timestamp->getSeconds());
-        static::assertEquals(0, $timestamp->getNanoseconds());
+        static::assertSame(10, $timestamp->getSeconds());
+        static::assertSame(0, $timestamp->getNanoseconds());
 
         $timestamp = Timestamp::fromParts(10, 100 + (-NANOSECONDS_PER_SECOND * 20));
 
-        static::assertEquals(-10, $timestamp->getSeconds());
-        static::assertEquals(100, $timestamp->getNanoseconds());
+        static::assertSame(-10, $timestamp->getSeconds());
+        static::assertSame(100, $timestamp->getNanoseconds());
     }
 
     public function testParsingFromPattern(): void
@@ -258,13 +258,13 @@ final class TimestampTest extends TestCase
     {
         $opposite = Order::from(-$expected->value);
 
-        static::assertEquals($expected, $a->compare($b));
-        static::assertEquals($opposite, $b->compare($a));
-        static::assertEquals($expected === Order::Equal, $a->equals($b));
-        static::assertEquals($expected === Order::Less, $a->before($b));
-        static::assertEquals($expected !== Order::Greater, $a->beforeOrAtTheSameTime($b));
-        static::assertEquals($expected === Order::Greater, $a->after($b));
-        static::assertEquals($expected !== Order::Less, $a->afterOrAtTheSameTime($b));
+        static::assertSame($expected, $a->compare($b));
+        static::assertSame($opposite, $b->compare($a));
+        static::assertSame($expected === Order::Equal, $a->equals($b));
+        static::assertSame($expected === Order::Less, $a->before($b));
+        static::assertSame($expected !== Order::Greater, $a->beforeOrAtTheSameTime($b));
+        static::assertSame($expected === Order::Greater, $a->after($b));
+        static::assertSame($expected !== Order::Less, $a->afterOrAtTheSameTime($b));
         static::assertFalse($a->betweenTimeExclusive($a, $a));
         static::assertFalse($a->betweenTimeExclusive($a, $b));
         static::assertFalse($a->betweenTimeExclusive($b, $a));
@@ -272,7 +272,7 @@ final class TimestampTest extends TestCase
         static::assertTrue($a->betweenTimeInclusive($a, $a));
         static::assertTrue($a->betweenTimeInclusive($a, $b));
         static::assertTrue($a->betweenTimeInclusive($b, $a));
-        static::assertEquals($expected === Order::Equal, $a->betweenTimeInclusive($b, $b));
+        static::assertSame($expected === Order::Equal, $a->betweenTimeInclusive($b, $b));
     }
 
     public function testNanosecondsModifications(): void

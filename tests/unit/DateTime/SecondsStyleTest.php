@@ -17,7 +17,7 @@ final class SecondsStyleTest extends TestCase
      */
     public function testFromTimestamp(SecondsStyle $expectedSecondsStyle, Timestamp $timestamp): void
     {
-        static::assertEquals($expectedSecondsStyle, SecondsStyle::fromTimestamp($timestamp));
+        static::assertSame($expectedSecondsStyle, SecondsStyle::fromTimestamp($timestamp));
     }
 
     /**

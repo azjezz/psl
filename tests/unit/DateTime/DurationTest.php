@@ -20,11 +20,11 @@ final class DurationTest extends TestCase
     {
         $t = DateTime\Duration::fromParts(1, 2, 3, 4);
 
-        static::assertEquals(1, $t->getHours());
-        static::assertEquals(2, $t->getMinutes());
-        static::assertEquals(3, $t->getSeconds());
-        static::assertEquals(4, $t->getNanoseconds());
-        static::assertEquals([1, 2, 3, 4], $t->getParts());
+        static::assertSame(1, $t->getHours());
+        static::assertSame(2, $t->getMinutes());
+        static::assertSame(3, $t->getSeconds());
+        static::assertSame(4, $t->getNanoseconds());
+        static::assertSame([1, 2, 3, 4], $t->getParts());
     }
 
     public function testNamedConstructors()
@@ -65,7 +65,7 @@ final class DurationTest extends TestCase
         float $expectedHours,
     ): void {
         $time = DateTime\Duration::fromParts($hours, $minutes, $seconds, $nanoseconds);
-        static::assertEquals($expectedHours, $time->getTotalHours());
+        static::assertSame($expectedHours, $time->getTotalHours());
     }
 
     public function provideGetTotalMinutes(): array
@@ -93,7 +93,7 @@ final class DurationTest extends TestCase
         float $expectedMinutes,
     ): void {
         $time = DateTime\Duration::fromParts($hours, $minutes, $seconds, $nanoseconds);
-        static::assertEquals($expectedMinutes, $time->getTotalMinutes());
+        static::assertSame($expectedMinutes, $time->getTotalMinutes());
     }
 
     public function provideGetTotalSeconds(): array
@@ -121,7 +121,7 @@ final class DurationTest extends TestCase
         float $expectedSeconds,
     ): void {
         $time = DateTime\Duration::fromParts($hours, $minutes, $seconds, $nanoseconds);
-        static::assertEquals($expectedSeconds, $time->getTotalSeconds());
+        static::assertSame($expectedSeconds, $time->getTotalSeconds());
     }
 
     public function provideGetTotalMilliseconds(): array
@@ -149,7 +149,7 @@ final class DurationTest extends TestCase
         float $expectedMilliseconds,
     ): void {
         $time = DateTime\Duration::fromParts($hours, $minutes, $seconds, $nanoseconds);
-        static::assertEquals($expectedMilliseconds, $time->getTotalMilliseconds());
+        static::assertSame($expectedMilliseconds, $time->getTotalMilliseconds());
     }
 
     public function provideGetTotalMicroseconds(): array
@@ -177,34 +177,34 @@ final class DurationTest extends TestCase
         float $expectedMicroseconds,
     ): void {
         $time = DateTime\Duration::fromParts($hours, $minutes, $seconds, $nanoseconds);
-        static::assertEquals($expectedMicroseconds, $time->getTotalMicroseconds());
+        static::assertSame($expectedMicroseconds, $time->getTotalMicroseconds());
     }
 
     public function testSetters(): void
     {
         $t = DateTime\Duration::fromParts(1, 2, 3, 4);
 
-        static::assertEquals([42, 2, 3, 4], $t->withHours(42)->getParts());
-        static::assertEquals([1, 42, 3, 4], $t->withMinutes(42)->getParts());
-        static::assertEquals([1, 2, 42, 4], $t->withSeconds(42)->getParts());
-        static::assertEquals([1, 2, 3, 42], $t->withNanoseconds(42)->getParts());
-        static::assertEquals([2, 3, 3, 4], $t->withMinutes(63)->getParts());
-        static::assertEquals([1, 3, 3, 4], $t->withSeconds(63)->getParts());
-        static::assertEquals([1, 2, 4, 42], $t->withNanoseconds(DateTime\NANOSECONDS_PER_SECOND + 42)->getParts());
-        static::assertEquals([1, 2, 3, 4], $t->getParts());
+        static::assertSame([42, 2, 3, 4], $t->withHours(42)->getParts());
+        static::assertSame([1, 42, 3, 4], $t->withMinutes(42)->getParts());
+        static::assertSame([1, 2, 42, 4], $t->withSeconds(42)->getParts());
+        static::assertSame([1, 2, 3, 42], $t->withNanoseconds(42)->getParts());
+        static::assertSame([2, 3, 3, 4], $t->withMinutes(63)->getParts());
+        static::assertSame([1, 3, 3, 4], $t->withSeconds(63)->getParts());
+        static::assertSame([1, 2, 4, 42], $t->withNanoseconds(DateTime\NANOSECONDS_PER_SECOND + 42)->getParts());
+        static::assertSame([1, 2, 3, 4], $t->getParts());
     }
     public function testFractionsOfSecond(): void
     {
-        static::assertEquals([0, 0, 0, 0], DateTime\Duration::zero()->getParts());
-        static::assertEquals([0, 0, 0, 42], DateTime\Duration::nanoseconds(42)->getParts());
-        static::assertEquals(
+        static::assertSame([0, 0, 0, 0], DateTime\Duration::zero()->getParts());
+        static::assertSame([0, 0, 0, 42], DateTime\Duration::nanoseconds(42)->getParts());
+        static::assertSame(
             [0, 0, 1, 42],
             DateTime\Duration::nanoseconds(DateTime\NANOSECONDS_PER_SECOND + 42)->getParts(),
         );
-        static::assertEquals([0, 0, 0, 42000], DateTime\Duration::microseconds(42)->getParts());
-        static::assertEquals([0, 0, 1, 42000], DateTime\Duration::microseconds(1000042)->getParts());
-        static::assertEquals([0, 0, 0, 42000000], DateTime\Duration::milliseconds(42)->getParts());
-        static::assertEquals([0, 0, 1, 42000000], DateTime\Duration::milliseconds(1042)->getParts());
+        static::assertSame([0, 0, 0, 42000], DateTime\Duration::microseconds(42)->getParts());
+        static::assertSame([0, 0, 1, 42000], DateTime\Duration::microseconds(1000042)->getParts());
+        static::assertSame([0, 0, 0, 42000000], DateTime\Duration::milliseconds(42)->getParts());
+        static::assertSame([0, 0, 1, 42000000], DateTime\Duration::milliseconds(1042)->getParts());
     }
 
     /**
@@ -231,7 +231,7 @@ final class DurationTest extends TestCase
      */
     public function testNormalized(int $input_s, int $input_ns, int $normalized_s, int $normalized_ns): void
     {
-        static::assertEquals(
+        static::assertSame(
             [0, 0, $normalized_s, $normalized_ns],
             DateTime\Duration::fromParts(0, 0, $input_s, $input_ns)->getParts(),
         );
@@ -239,19 +239,16 @@ final class DurationTest extends TestCase
 
     public function testNormalizedHMS(): void
     {
-        static::assertEquals([3, 5, 4, 0], DateTime\Duration::fromParts(2, 63, 124)->getParts());
-        static::assertEquals([0, 59, 4, 0], DateTime\Duration::fromParts(2, -63, 124)->getParts());
-        static::assertEquals(
+        static::assertSame([3, 5, 4, 0], DateTime\Duration::fromParts(2, 63, 124)->getParts());
+        static::assertSame([0, 59, 4, 0], DateTime\Duration::fromParts(2, -63, 124)->getParts());
+        static::assertSame(
             [-1, 0, -55, -(DateTime\NANOSECONDS_PER_SECOND - 42)],
             DateTime\Duration::fromParts(0, -63, 124, 42)->getParts(),
         );
-        static::assertEquals([42, 0, 0, 0], DateTime\Duration::hours(42)->getParts());
-        static::assertEquals([1, 3, 0, 0], DateTime\Duration::minutes(63)->getParts());
-        static::assertEquals([0, -1, -3, 0], DateTime\Duration::seconds(-63)->getParts());
-        static::assertEquals(
-            [0, 0, -1, 0],
-            DateTime\Duration::nanoseconds(-DateTime\NANOSECONDS_PER_SECOND)->getParts(),
-        );
+        static::assertSame([42, 0, 0, 0], DateTime\Duration::hours(42)->getParts());
+        static::assertSame([1, 3, 0, 0], DateTime\Duration::minutes(63)->getParts());
+        static::assertSame([0, -1, -3, 0], DateTime\Duration::seconds(-63)->getParts());
+        static::assertSame([0, 0, -1, 0], DateTime\Duration::nanoseconds(-DateTime\NANOSECONDS_PER_SECOND)->getParts());
     }
 
     /**
@@ -273,9 +270,9 @@ final class DurationTest extends TestCase
     public function testPositiveNegative(int $h, int $m, int $s, int $ns, int $expected_sign): void
     {
         $t = DateTime\Duration::fromParts($h, $m, $s, $ns);
-        static::assertEquals($expected_sign === 0, $t->isZero());
-        static::assertEquals($expected_sign === 1, $t->isPositive());
-        static::assertEquals($expected_sign === -1, $t->isNegative());
+        static::assertSame($expected_sign === 0, $t->isZero());
+        static::assertSame($expected_sign === 1, $t->isPositive());
+        static::assertSame($expected_sign === -1, $t->isNegative());
     }
 
     /**
@@ -299,13 +296,13 @@ final class DurationTest extends TestCase
     {
         $opposite = Order::from(-$expected->value);
 
-        static::assertEquals($expected, $a->compare($b));
-        static::assertEquals($opposite, $b->compare($a));
-        static::assertEquals($expected === Order::Equal, $a->equals($b));
-        static::assertEquals($expected === Order::Less, $a->shorter($b));
-        static::assertEquals($expected !== Order::Greater, $a->shorterOrEqual($b));
-        static::assertEquals($expected === Order::Greater, $a->longer($b));
-        static::assertEquals($expected !== Order::Less, $a->longerOrEqual($b));
+        static::assertSame($expected, $a->compare($b));
+        static::assertSame($opposite, $b->compare($a));
+        static::assertSame($expected === Order::Equal, $a->equals($b));
+        static::assertSame($expected === Order::Less, $a->shorter($b));
+        static::assertSame($expected !== Order::Greater, $a->shorterOrEqual($b));
+        static::assertSame($expected === Order::Greater, $a->longer($b));
+        static::assertSame($expected !== Order::Less, $a->longerOrEqual($b));
         static::assertFalse($a->betweenExclusive($a, $a));
         static::assertFalse($a->betweenExclusive($a, $b));
         static::assertFalse($a->betweenExclusive($b, $a));
@@ -313,7 +310,7 @@ final class DurationTest extends TestCase
         static::assertTrue($a->betweenInclusive($a, $a));
         static::assertTrue($a->betweenInclusive($a, $b));
         static::assertTrue($a->betweenInclusive($b, $a));
-        static::assertEquals($expected === Order::Equal, $a->betweenInclusive($b, $b));
+        static::assertSame($expected === Order::Equal, $a->betweenInclusive($b, $b));
     }
 
     public function testIsBetween(): void
@@ -336,18 +333,18 @@ final class DurationTest extends TestCase
         $z = DateTime\Duration::zero();
         $a = DateTime\Duration::fromParts(0, 2, 25);
         $b = DateTime\Duration::fromParts(0, 0, -63, 42);
-        static::assertEquals([0, 0, 0, 0], $z->invert()->getParts());
-        static::assertEquals([0, -2, -25, 0], $a->invert()->getParts());
-        static::assertEquals([0, 1, 2, DateTime\NANOSECONDS_PER_SECOND - 42], $b->invert()->getParts());
-        static::assertEquals($a->getParts(), $z->plus($a)->getParts());
-        static::assertEquals($b->getParts(), $b->plus($z)->getParts());
-        static::assertEquals($b->invert()->getParts(), $z->minus($b)->getParts());
-        static::assertEquals($a->getParts(), $a->minus($z)->getParts());
-        static::assertEquals([0, 1, 22, 42], $a->plus($b)->getParts());
-        static::assertEquals([0, 1, 22, 42], $b->plus($a)->getParts());
-        static::assertEquals([0, 3, 27, DateTime\NANOSECONDS_PER_SECOND - 42], $a->minus($b)->getParts());
-        static::assertEquals([0, -3, -27, -(DateTime\NANOSECONDS_PER_SECOND - 42)], $b->minus($a)->getParts());
-        static::assertEquals($b->invert()->plus($a)->getParts(), $a->minus($b)->getParts());
+        static::assertSame([0, 0, 0, 0], $z->invert()->getParts());
+        static::assertSame([0, -2, -25, 0], $a->invert()->getParts());
+        static::assertSame([0, 1, 2, DateTime\NANOSECONDS_PER_SECOND - 42], $b->invert()->getParts());
+        static::assertSame($a->getParts(), $z->plus($a)->getParts());
+        static::assertSame($b->getParts(), $b->plus($z)->getParts());
+        static::assertSame($b->invert()->getParts(), $z->minus($b)->getParts());
+        static::assertSame($a->getParts(), $a->minus($z)->getParts());
+        static::assertSame([0, 1, 22, 42], $a->plus($b)->getParts());
+        static::assertSame([0, 1, 22, 42], $b->plus($a)->getParts());
+        static::assertSame([0, 3, 27, DateTime\NANOSECONDS_PER_SECOND - 42], $a->minus($b)->getParts());
+        static::assertSame([0, -3, -27, -(DateTime\NANOSECONDS_PER_SECOND - 42)], $b->minus($a)->getParts());
+        static::assertSame($b->invert()->plus($a)->getParts(), $a->minus($b)->getParts());
     }
 
     /**
@@ -380,7 +377,7 @@ final class DurationTest extends TestCase
      */
     public function testToString(int $h, int $m, int $s, int $ns, string $expected): void
     {
-        static::assertEquals($expected, DateTime\Duration::fromParts($h, $m, $s, $ns)->toString());
+        static::assertSame($expected, DateTime\Duration::fromParts($h, $m, $s, $ns)->toString());
     }
 
     public function testSerialization(): void

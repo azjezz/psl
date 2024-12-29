@@ -5,11 +5,9 @@ declare(strict_types=1);
 use Psl\Type;
 
 /**
- * @psalm-suppress UnusedParam
- *
  * @param 'PENDING'|'PROCESSING'|'COMPLETED'|'ERROR' $state
  */
-function takes_valid_state(string $state): void
+function takes_valid_state(string $_state): void
 {
 }
 

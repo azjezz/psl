@@ -39,12 +39,12 @@ final class PartitionTest extends TestCase
             [
                 [[], ['foo', 'bar', 'baz', 'qux']],
                 ['foo', 'bar', 'baz', 'qux'],
-                static fn(string $str) => false,
+                static fn(string $_str) => false,
             ],
             [
                 [['foo', 'bar', 'baz', 'qux'], []],
                 ['foo', 'bar', 'baz', 'qux'],
-                static fn(string $str) => true,
+                static fn(string $_str) => true,
             ],
         ];
     }

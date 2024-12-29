@@ -79,7 +79,7 @@ final class ConvertedTypeTest extends TypeTest
             Type\converted(
                 Type\int(),
                 Type\string(),
-                static fn(int $i): string => throw new RuntimeException('not possible'),
+                static fn(int $_i): string => throw new RuntimeException('not possible'),
             ),
             1,
             'Could not coerce "int" to type "string" at path "convert(int): string": not possible.',
@@ -88,7 +88,7 @@ final class ConvertedTypeTest extends TypeTest
             Type\converted(
                 Type\int(),
                 Type\string(),
-                static fn(int $i): object => new class() {
+                static fn(int $_i): object => new class() {
                 },
             ),
             1,
