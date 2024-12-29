@@ -38,7 +38,7 @@ final class AwaitableIterator
     /**
      * @var null|Awaitable<void>|Awaitable<null>|Awaitable<array{Tk, Awaitable<Tv>}>
      */
-    private ?Awaitable $complete = null;
+    private null|Awaitable $complete = null;
 
     public function __construct()
     {
@@ -63,15 +63,7 @@ final class AwaitableIterator
             /**
              * @param Tv|null $_result
              */
-            static function (
-                ?Throwable $_error,
-                mixed      $_result,
-                string     $id
-            ) use (
-                $key,
-                $awaitable,
-                $queue
-            ): void {
+            static function (null|Throwable $_error, mixed $_result, string $id) use ($key, $awaitable, $queue): void {
                 unset($queue->pending[$id]);
 
                 if ($queue->suspension) {
@@ -81,7 +73,7 @@ final class AwaitableIterator
                 }
 
                 $queue->items[] = [$key, $awaitable];
-            }
+            },
         );
 
         $queue->pending[$id] = $state;
@@ -126,7 +118,7 @@ final class AwaitableIterator
      *
      * @return null|array{0: Tk, 1: Awaitable<Tv>}
      */
-    public function consume(): ?array
+    public function consume(): null|array
     {
         if (null !== $this->queue->suspension) {
             Psl\invariant_violation('Concurrent consume() operations are not supported');

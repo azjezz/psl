@@ -185,7 +185,6 @@ final readonly class Set implements SetInterface
         return $this->elements;
     }
 
-
     /**
      * Get an array copy of the current `Set`.
      *
@@ -368,7 +367,6 @@ final readonly class Set implements SetInterface
         return new Set(Dict\filter_keys($this->elements, $fn));
     }
 
-
     /**
      * Applies a user-defined condition to each value in the `Set`,
      *  considering the value as both key and value.
@@ -548,7 +546,7 @@ final readonly class Set implements SetInterface
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, ?int $length = null): Set
+    public function slice(int $start, null|int $length = null): Set
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return self::fromArray(Dict\slice($this->elements, $start, $length));
@@ -581,7 +579,7 @@ final readonly class Set implements SetInterface
              *
              * @return Set<T>
              */
-            static fn(array $chunk) => static::fromArray($chunk)
+            static fn(array $chunk) => static::fromArray($chunk),
         ));
     }
 }

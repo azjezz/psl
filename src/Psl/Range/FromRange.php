@@ -59,9 +59,7 @@ final readonly class FromRange implements LowerBoundRangeInterface
      */
     public function withLowerBound(int $lower_bound): FromRange
     {
-        return new FromRange(
-            $lower_bound,
-        );
+        return new FromRange($lower_bound);
     }
 
     /**
@@ -73,11 +71,7 @@ final readonly class FromRange implements LowerBoundRangeInterface
      */
     public function withUpperBound(int $upper_bound, bool $upper_inclusive): BetweenRange
     {
-        return new BetweenRange(
-            $this->lowerBound,
-            $upper_bound,
-            $upper_inclusive,
-        );
+        return new BetweenRange($this->lowerBound, $upper_bound, $upper_inclusive);
     }
 
     /**
@@ -89,11 +83,7 @@ final readonly class FromRange implements LowerBoundRangeInterface
      */
     public function withUpperBoundInclusive(int $upper_bound): BetweenRange
     {
-        return new BetweenRange(
-            $this->lowerBound,
-            $upper_bound,
-            true,
-        );
+        return new BetweenRange($this->lowerBound, $upper_bound, true);
     }
 
     /**
@@ -105,11 +95,7 @@ final readonly class FromRange implements LowerBoundRangeInterface
      */
     public function withUpperBoundExclusive(int $upper_bound): BetweenRange
     {
-        return new BetweenRange(
-            $this->lowerBound,
-            $upper_bound,
-            false,
-        );
+        return new BetweenRange($this->lowerBound, $upper_bound, false);
     }
 
     /**

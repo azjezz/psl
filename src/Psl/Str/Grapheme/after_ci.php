@@ -12,7 +12,7 @@ use Psl\Str\Exception;
  *
  * @pure
  */
-function after_ci(string $haystack, string $needle, int $offset = 0): ?string
+function after_ci(string $haystack, string $needle, int $offset = 0): null|string
 {
     $position = search_ci($haystack, $needle, $offset);
     if (null === $position) {

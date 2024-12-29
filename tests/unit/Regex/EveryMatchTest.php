@@ -19,8 +19,8 @@ final class EveryMatchTest extends TestCase
         array $expected,
         string $subject,
         string $pattern,
-        ?TypeInterface $shape = null,
-        int $offset = 0
+        null|TypeInterface $shape = null,
+        int $offset = 0,
     ): void {
         static::assertSame($expected, Regex\every_match($subject, $pattern, $shape, $offset));
     }
@@ -52,80 +52,66 @@ final class EveryMatchTest extends TestCase
     public function provideMatchingData(): iterable
     {
         yield [
-            [
-                [
-                    0 => 'PHP',
-                    1 => 'PHP',
-                ]
-            ],
+            [[
+                0 => 'PHP',
+                1 => 'PHP',
+            ]],
             'PHP is the web scripting language of choice.',
             '/(php)/i',
-            capture_groups([1])
+            capture_groups([1]),
         ];
         yield [
-            [
-                [
-                    0 => 'Hello world',
-                    1 => 'Hello',
-                ]
-            ],
+            [[
+                0 => 'Hello world',
+                1 => 'Hello',
+            ]],
             'Hello world is the web scripting language of choice.',
             '/(hello) world/i',
-            capture_groups([1])
+            capture_groups([1]),
         ];
         yield [
-            [
-                [
-                    0 => 'web',
-                    1 => 'web',
-                ]
-            ],
+            [[
+                0 => 'web',
+                1 => 'web',
+            ]],
             'PHP is the web scripting language of choice.',
             '/(\bweb\b)/i',
-            capture_groups([1])
+            capture_groups([1]),
         ];
         yield [
-            [
-                [
-                    0 => 'web',
-                    1 => 'web',
-                ]
-            ],
+            [[
+                0 => 'web',
+                1 => 'web',
+            ]],
             'PHP is the web scripting language of choice.',
-            '/(\bweb\b)/i'
+            '/(\bweb\b)/i',
         ];
         yield [
-            [
-                [
-                    0 => 'PHP',
-                    'language' => 'PHP'
-                ],
-            ],
+            [[
+                0 => 'PHP',
+                'language' => 'PHP',
+            ]],
             'PHP is the web scripting language of choice.',
             '/(?P<language>PHP)/',
-            capture_groups(['language'])
+            capture_groups(['language']),
         ];
         yield [
-            [
-                [
-                    0 => 'PHP',
-                    'language' => 'PHP',
-                    1 => 'PHP',
-                ],
-            ],
+            [[
+                0 => 'PHP',
+                'language' => 'PHP',
+                1 => 'PHP',
+            ]],
             'PHP is the web scripting language of choice.',
-            '/(?P<language>PHP)/'
+            '/(?P<language>PHP)/',
         ];
         yield [
-            [
-                [
-                    0 => 'http://www.php.net',
-                    1 => 'www.php.net',
-                ]
-            ],
+            [[
+                0 => 'http://www.php.net',
+                1 => 'www.php.net',
+            ]],
             'http://www.php.net/index.html',
             '@^(?:http://)?([^/]+)@i',
-            capture_groups([1])
+            capture_groups([1]),
         ];
         yield [
             [
@@ -151,7 +137,7 @@ final class EveryMatchTest extends TestCase
             c: 3
             FOO,
             '@(\w+): (\d+)@i',
-            capture_groups([1, 2])
+            capture_groups([1, 2]),
         ];
         yield [
             [
@@ -177,7 +163,7 @@ final class EveryMatchTest extends TestCase
             c: 3
             FOO,
             '@(?P<name>\w+): (?P<digit>\d+)@i',
-            capture_groups(['name', 'digit'])
+            capture_groups(['name', 'digit']),
         ];
     }
 

@@ -15,7 +15,7 @@ function sum_floats(array $numbers): float
 {
     $result = 0.0;
     foreach ($numbers as $number) {
-        $result += (float)$number;
+        $result += (float) $number;
     }
 
     return $result;

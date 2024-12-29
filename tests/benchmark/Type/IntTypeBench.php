@@ -20,27 +20,24 @@ final class IntTypeBench extends GenericTypeBench
      */
     public function provideHappyPathCoercion(): array
     {
-        return array_merge(
-            $this->strictlyValidDataSet(),
-            [
-                'string' => [
-                    'type'  => Type\int(),
-                    'value' => '123',
-                ],
-                'float' => [
-                    'type'  => Type\int(),
-                    'value' => 123.0,
-                ],
-                'instanceof Stringable (explicit)' => [
-                    'type'  => Type\int(),
-                    'value' => new ImplicitStringableObject(),
-                ],
-                'instanceof Stringable (implicit)' => [
-                    'type'  => Type\int(),
-                    'value' => new ExplicitStringableObject(),
-                ],
-            ]
-        );
+        return array_merge($this->strictlyValidDataSet(), [
+            'string' => [
+                'type' => Type\int(),
+                'value' => '123',
+            ],
+            'float' => [
+                'type' => Type\int(),
+                'value' => 123.0,
+            ],
+            'instanceof Stringable (explicit)' => [
+                'type' => Type\int(),
+                'value' => new ImplicitStringableObject(),
+            ],
+            'instanceof Stringable (implicit)' => [
+                'type' => Type\int(),
+                'value' => new ExplicitStringableObject(),
+            ],
+        ]);
     }
 
     /**
@@ -64,11 +61,9 @@ final class IntTypeBench extends GenericTypeBench
      */
     private function strictlyValidDataSet(): array
     {
-        return [
-            'int'    => [
-                'type'  => Type\int(),
-                'value' => 123,
-            ],
-        ];
+        return ['int' => [
+            'type' => Type\int(),
+            'value' => 123,
+        ]];
     }
 }

@@ -55,7 +55,7 @@ final class ScalarTypeTest extends TypeTest
         }];
         yield [STDIN];
         yield [[]];
-        yield [(static fn () => yield 'hello')()];
+        yield [(static fn() => yield 'hello')()];
     }
 
     public function getToStringExamples(): iterable

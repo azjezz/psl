@@ -12,7 +12,7 @@ final class TrimTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testTrim(string $expected, string $string, ?string $chars = null): void
+    public function testTrim(string $expected, string $string, null|string $chars = null): void
     {
         static::assertSame($expected, Str\trim($string, $chars));
     }
@@ -41,7 +41,7 @@ final class TrimTest extends TestCase
                 " \n!",
             ],
             [
-                "Héllö     World",
+                'Héllö     World',
                 "    Héllö     World\t!!!\n",
                 " \n!\t",
             ],

@@ -36,6 +36,5 @@ function take_while(iterable $iterable, Closure $predicate): array
         $result[$key] = $value;
     }
 
-
     return $result;
 }

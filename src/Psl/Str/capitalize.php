@@ -34,6 +34,6 @@ function capitalize(string $string, Encoding $encoding = Encoding::Utf8): string
 
     return concat(
         uppercase(slice($string, 0, 1, $encoding), $encoding),
-        slice($string, 1, length($string, $encoding), $encoding)
+        slice($string, 1, length($string, $encoding), $encoding),
     );
 }

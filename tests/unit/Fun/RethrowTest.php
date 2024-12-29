@@ -13,7 +13,7 @@ final class RethrowTest extends TestCase
     public function testRethrow(): void
     {
         $exception = new Exception('foo');
-        $rethrow   = Fun\rethrow();
+        $rethrow = Fun\rethrow();
 
         $this->expectExceptionObject($exception);
         $rethrow($exception);

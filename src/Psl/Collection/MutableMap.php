@@ -537,7 +537,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, ?int $length = null): MutableMap
+    public function slice(int $start, null|int $length = null): MutableMap
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return self::fromArray(Dict\slice($this->elements, $start, $length));
@@ -580,7 +580,7 @@ final class MutableMap implements MutableMapInterface
                     }
 
                     return MutableMap::fromArray($array);
-                }
+                },
             );
     }
 
@@ -730,7 +730,9 @@ final class MutableMap implements MutableMapInterface
     public function offsetExists(mixed $offset): bool
     {
         if (!is_int($offset) && !is_string($offset)) {
-            throw new Exception\InvalidOffsetException('Invalid map read offset type, expected a string or an integer.');
+            throw new Exception\InvalidOffsetException(
+                'Invalid map read offset type, expected a string or an integer.',
+            );
         }
 
         /** @var Tk $offset - technically, we don't know if the offset is of type Tk, but we can assume it is, as this causes no "harm". */
@@ -754,7 +756,9 @@ final class MutableMap implements MutableMapInterface
     public function offsetGet(mixed $offset): mixed
     {
         if (!is_int($offset) && !is_string($offset)) {
-            throw new Exception\InvalidOffsetException('Invalid map read offset type, expected a string or an integer.');
+            throw new Exception\InvalidOffsetException(
+                'Invalid map read offset type, expected a string or an integer.',
+            );
         }
 
         /** @var Tk $offset - technically, we don't know if the offset is of type Tk, but we can assume it is, as this causes no "harm". */
@@ -777,7 +781,9 @@ final class MutableMap implements MutableMapInterface
     public function offsetSet(mixed $offset, mixed $value): void
     {
         if (!is_int($offset) && !is_string($offset)) {
-            throw new Exception\InvalidOffsetException('Invalid map write offset type, expected a string or an integer.');
+            throw new Exception\InvalidOffsetException(
+                'Invalid map write offset type, expected a string or an integer.',
+            );
         }
 
         /** @var Tk $offset - technically, we don't know if the offset is of type Tk, but we can assume it is, as this causes no "harm". */
@@ -798,7 +804,9 @@ final class MutableMap implements MutableMapInterface
     public function offsetUnset(mixed $offset): void
     {
         if (!is_int($offset) && !is_string($offset)) {
-            throw new Exception\InvalidOffsetException('Invalid map read offset type, expected a string or an integer.');
+            throw new Exception\InvalidOffsetException(
+                'Invalid map read offset type, expected a string or an integer.',
+            );
         }
 
         /** @var Tk $offset - technically, we don't know if the offset is of type Tk, but we can assume it is, as this causes no "harm". */

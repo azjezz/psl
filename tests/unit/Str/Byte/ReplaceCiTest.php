@@ -20,8 +20,8 @@ final class ReplaceCiTest extends TestCase
     public function provideData(): array
     {
         return [
-            ['Hello, World!', 'Hello, you!', 'You', 'World', ],
-            ['Hello, World!', 'Hello, You!', 'You', 'World', ],
+            ['Hello, World!', 'Hello, you!', 'You', 'World'],
+            ['Hello, World!', 'Hello, You!', 'You', 'World'],
             ['مرحبا بكم', 'مرحبا سيف', 'سيف', 'بكم'],
             ['foo', 'foo', 'bar', 'baz'],
         ];

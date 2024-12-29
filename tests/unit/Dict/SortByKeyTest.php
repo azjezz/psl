@@ -13,7 +13,7 @@ final class SortByKeyTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testSortByKey(array $expected, array $array, ?callable $comparator = null): void
+    public function testSortByKey(array $expected, array $array, null|callable $comparator = null): void
     {
         static::assertSame($expected, Dict\sort_by_key($array, $comparator));
     }
@@ -26,11 +26,10 @@ final class SortByKeyTest extends TestCase
                 ['d' => 'lemon', 'a' => 'orange', 'b' => 'banana', 'c' => 'apple'],
                 null,
             ],
-
             [
                 ['d' => 'lemon', 'c' => 'apple', 'b' => 'banana', 'a' => 'orange'],
                 ['d' => 'lemon', 'a' => 'orange', 'b' => 'banana', 'c' => 'apple'],
-                static fn (string $a, string $b) => Str\ord($a) > Str\ord($b) ? -1 : 1,
+                static fn(string $a, string $b) => Str\ord($a) > Str\ord($b) ? -1 : 1,
             ],
         ];
     }

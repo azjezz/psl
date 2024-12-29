@@ -21,7 +21,7 @@ use function touch;
  *
  * @throws Exception\RuntimeException If unable to create the file.
  */
-function create_file(string $filename, ?int $time = null, ?int $access_time = null): void
+function create_file(string $filename, null|int $time = null, null|int $access_time = null): void
 {
     if (null === $access_time && null === $time) {
         $fun = static fn(): bool => touch($filename);
@@ -41,7 +41,7 @@ function create_file(string $filename, ?int $time = null, ?int $access_time = nu
         throw new Exception\RuntimeException(Str\format(
             'Failed to create file "%s": %s.',
             $filename,
-            $error_message ?? 'internal error'
+            $error_message ?? 'internal error',
         ));
     }
     // @codeCoverageIgnoreEnd

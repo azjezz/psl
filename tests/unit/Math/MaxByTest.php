@@ -25,7 +25,7 @@ final class MaxByTest extends TestCase
         yield [
             'bazqux',
             ['foo', 'bar', 'baz', 'qux', 'foobar', 'bazqux'],
-            static fn ($value) => Str\length($value),
+            static fn($value) => Str\length($value),
         ];
 
         yield [
@@ -33,21 +33,21 @@ final class MaxByTest extends TestCase
             [
                 ['foo'],
                 ['foo', 'bar'],
-                ['foo', 'bar', 'baz']
+                ['foo', 'bar', 'baz'],
             ],
-            static fn ($arr) => Iter\count($arr),
+            static fn($arr) => Iter\count($arr),
         ];
 
         yield [
             9,
             [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-            static fn ($i) => $i,
+            static fn($i) => $i,
         ];
 
         yield [
             null,
             [],
-            static fn ($i) => $i,
+            static fn($i) => $i,
         ];
     }
 }

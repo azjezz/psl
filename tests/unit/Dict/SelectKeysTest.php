@@ -25,25 +25,21 @@ final class SelectKeysTest extends TestCase
                 ['foo' => 'bar', 'bar' => 'baz', 'baz' => 'qux', 'qux' => 'foo'],
                 ['foo', 'bar'],
             ],
-
             [
                 [],
                 ['baz' => 'qux', 'qux' => 'foo'],
                 ['foo', 'bar'],
             ],
-
             [
                 [],
                 [],
                 ['foo', 'bar'],
             ],
-
             [
                 [],
                 ['foo' => 'bar', 'bar' => 'baz', 'baz' => 'qux', 'qux' => 'foo'],
                 [],
             ],
-
             [
                 [],
                 ['foo' => 'bar', 'bar' => 'baz', 'baz' => 'qux', 'qux' => 'foo'],

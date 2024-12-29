@@ -22,7 +22,7 @@ use function strpos;
  *
  * @return null|int<0, max>
  */
-function search(string $haystack, string $needle, int $offset = 0): ?int
+function search(string $haystack, string $needle, int $offset = 0): null|int
 {
     $offset = Str\Internal\validate_offset($offset, length($haystack));
 

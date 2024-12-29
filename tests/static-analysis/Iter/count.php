@@ -49,19 +49,11 @@ function return_array(): array
 
 function test(): void
 {
-    take_positive_integer(
-        Iter\count(return_non_empty_array())
-    );
+    take_positive_integer(Iter\count(return_non_empty_array()));
 
-    take_positive_integer(
-        Iter\count(return_non_empty_list())
-    );
+    take_positive_integer(Iter\count(return_non_empty_list()));
 
-    take_positive_integer(
-        Iter\count(return_non_empty_keyed_array())
-    );
+    take_positive_integer(Iter\count(return_non_empty_keyed_array()));
 
-    take_zero(
-        Iter\count(return_array())
-    );
+    take_zero(Iter\count(return_array()));
 }

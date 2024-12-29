@@ -26,12 +26,12 @@ final class DictTypeTest extends TypeTest
     {
         yield [
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
             ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
@@ -55,27 +55,21 @@ final class DictTypeTest extends TypeTest
         ];
 
         yield [
-            Dict\map_keys(Vec\range(1, 10), static fn(int $key): string => (string)$key),
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            Dict\map_keys(Vec\range(1, 10), static fn(int $key): string => (string) $key),
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
-            Dict\map(
-                Vec\range(1, 10),
-                static fn(int $value): string => Str\format('00%d', $value)
-            ),
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            Dict\map(Vec\range(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
             Dict\map_keys(
-                Dict\map(
-                    Vec\range(1, 10),
-                    static fn(int $value): string => Str\format('00%d', $value)
-                ),
-                static fn(int $key): string => Str\format('00%d', $key)
+                Dict\map(Vec\range(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
+                static fn(int $key): string => Str\format('00%d', $key),
             ),
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
     }
 
@@ -97,7 +91,7 @@ final class DictTypeTest extends TypeTest
         yield [Type\dict(Type\array_key(), Type\string()), 'dict<array-key, string>'];
         yield [
             Type\dict(Type\array_key(), Type\instance_of(Iter\Iterator::class)),
-            'dict<array-key, Psl\Iter\Iterator>'
+            'dict<array-key, Psl\Iter\Iterator>',
         ];
     }
 
@@ -106,16 +100,16 @@ final class DictTypeTest extends TypeTest
         yield 'invalid assertion key' => [
             Type\dict(Type\int(), Type\int()),
             ['nope' => 1],
-            'Expected "dict<int, int>", got "string" at path "key(nope)".'
+            'Expected "dict<int, int>", got "string" at path "key(nope)".',
         ];
         yield 'invalid assertion value' => [
             Type\dict(Type\int(), Type\int()),
             [0 => 'nope'],
-            'Expected "dict<int, int>", got "string" at path "0".'
+            'Expected "dict<int, int>", got "string" at path "0".',
         ];
         yield 'nested' => [
             Type\dict(Type\int(), Type\dict(Type\int(), Type\int())),
-            [0 => ['nope' => 'nope'],],
+            [0 => ['nope' => 'nope']],
             'Expected "dict<int, dict<int, int>>", got "string" at path "0.key(nope)".',
         ];
     }
@@ -125,19 +119,19 @@ final class DictTypeTest extends TypeTest
         yield 'invalid coercion key' => [
             Type\dict(Type\int(), Type\int()),
             ['nope' => 1],
-            'Could not coerce "string" to type "dict<int, int>" at path "key(nope)".'
+            'Could not coerce "string" to type "dict<int, int>" at path "key(nope)".',
         ];
         yield 'invalid coercion value' => [
             Type\dict(Type\int(), Type\int()),
             [0 => 'nope'],
-            'Could not coerce "string" to type "dict<int, int>" at path "0".'
+            'Could not coerce "string" to type "dict<int, int>" at path "0".',
         ];
         yield 'invalid iterator first item' => [
             Type\dict(Type\int(), Type\int()),
             (static function () {
                 yield 0 => Type\int()->coerce('nope');
             })(),
-            'Could not coerce "string" to type "dict<int, int>" at path "first()".'
+            'Could not coerce "string" to type "dict<int, int>" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
             Type\dict(Type\int(), Type\int()),
@@ -145,7 +139,7 @@ final class DictTypeTest extends TypeTest
                 yield 0 => 0;
                 yield 1 => Type\int()->coerce('nope');
             })(),
-            'Could not coerce "string" to type "dict<int, int>" at path "0.next()".'
+            'Could not coerce "string" to type "dict<int, int>" at path "0.next()".',
         ];
         yield 'iterator throwing exception' => [
             Type\dict(Type\int(), Type\int()),
@@ -153,30 +147,33 @@ final class DictTypeTest extends TypeTest
                 throw new RuntimeException('whoops');
                 yield;
             })(),
-            'Could not coerce "null" to type "dict<int, int>" at path "first()": whoops.'
+            'Could not coerce "null" to type "dict<int, int>" at path "first()": whoops.',
         ];
         yield 'iterator yielding null key' => [
             Type\dict(Type\int(), Type\int()),
             (static function () {
                 yield null => 'nope';
             })(),
-            'Could not coerce "null" to type "dict<int, int>" at path "key(null)".'
+            'Could not coerce "null" to type "dict<int, int>" at path "key(null)".',
         ];
         yield 'iterator yielding object key' => [
             Type\dict(Type\int(), Type\int()),
             (static function () {
-                yield (new class () {
-                }) => 'nope';
+                yield new class() {
+                } => 'nope';
             })(),
-            'Could not coerce "class@anonymous" to type "dict<int, int>" at path "key(class@anonymous)".'
+            'Could not coerce "class@anonymous" to type "dict<int, int>" at path "key(class@anonymous)".',
         ];
     }
 
     /**
      * @dataProvider provideAssertExceptionExpectations
      */
-    public function testInvalidAssertionTypeExceptions(Type\TypeInterface $type, mixed $data, string $expectedMessage): void
-    {
+    public function testInvalidAssertionTypeExceptions(
+        Type\TypeInterface $type,
+        mixed $data,
+        string $expectedMessage,
+    ): void {
         try {
             $type->assert($data);
             static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
@@ -188,8 +185,11 @@ final class DictTypeTest extends TypeTest
     /**
      * @dataProvider provideCoerceExceptionExpectations
      */
-    public function testInvalidCoercionTypeExceptions(Type\TypeInterface $type, mixed $data, string $expectedMessage): void
-    {
+    public function testInvalidCoercionTypeExceptions(
+        Type\TypeInterface $type,
+        mixed $data,
+        string $expectedMessage,
+    ): void {
         try {
             $type->coerce($data);
             static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\CoercionException::class));

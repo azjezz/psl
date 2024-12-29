@@ -20,11 +20,8 @@ function test(): void
         Type\literal_scalar('PENDING'),
         Type\union(
             Type\literal_scalar('PROCESSING'),
-            Type\union(
-                Type\literal_scalar('COMPLETED'),
-                Type\literal_scalar('ERROR'),
-            )
-        )
+            Type\union(Type\literal_scalar('COMPLETED'), Type\literal_scalar('ERROR')),
+        ),
     );
 
     /** @psalm-suppress MissingThrowsDocblock */

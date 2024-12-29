@@ -277,7 +277,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, ?int $length = null): MutableMapInterface;
+    public function slice(int $start, null|int $length = null): MutableMapInterface;
 
     /**
      * Returns a `MutableVectorInterface` containing the original `MutableMapInterface` split into

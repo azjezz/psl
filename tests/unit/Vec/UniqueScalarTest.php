@@ -13,7 +13,7 @@ final class UniqueScalarTest extends TestCase
 {
     public function testUniqueScalars(): void
     {
-        $array   = Vec\fill(10, 'foo');
+        $array = Vec\fill(10, 'foo');
         $array[] = 'bar';
 
         $unique = Vec\unique_scalar($array);

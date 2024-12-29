@@ -40,14 +40,14 @@ final class ReplaceEveryCiTest extends TestCase
                 'مرحبا سيف',
                 [
                     'سيف' => 'بكم',
-                    'مرحبا' => 'اهلا'
+                    'مرحبا' => 'اهلا',
                 ],
             ],
             [
                 'Foo',
                 'Foo',
-                ['bar' => 'baz']
-            ]
+                ['bar' => 'baz'],
+            ],
         ];
     }
 }

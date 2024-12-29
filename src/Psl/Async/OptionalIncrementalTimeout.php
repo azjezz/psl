@@ -24,7 +24,7 @@ final class OptionalIncrementalTimeout
     /**
      * @var ?Timestamp The end time.
      */
-    private ?Timestamp $end;
+    private null|Timestamp $end;
 
     /**
      * @var (Closure(): ?Duration) The handler to be called upon timeout.
@@ -35,7 +35,7 @@ final class OptionalIncrementalTimeout
      * @param null|Duration $timeout The timeout duration. Null to disable timeout.
      * @param (Closure(): ?Duration) $handler The handler to be executed if the timeout is reached.
      */
-    public function __construct(?Duration $timeout, Closure $handler)
+    public function __construct(null|Duration $timeout, Closure $handler)
     {
         $this->handler = $handler;
 
@@ -59,7 +59,7 @@ final class OptionalIncrementalTimeout
      *
      * @return Duration|null The remaining time duration, null if no timeout is set, or the handler's return value if the timeout is exceeded.
      */
-    public function getRemaining(): ?Duration
+    public function getRemaining(): null|Duration
     {
         if ($this->end === null) {
             return null;

@@ -25,7 +25,7 @@ final class LazyTest extends TestCase
 
     public function testItCanBeUsedAsALazyProxy(): void
     {
-        $proxy = Fun\lazy(static fn (): int => 132);
+        $proxy = Fun\lazy(static fn(): int => 132);
 
         static::assertSame(132, $proxy());
     }
@@ -38,7 +38,7 @@ final class LazyTest extends TestCase
                 return 132;
             }
         };
-        $proxy = Fun\lazy(static fn (): object => $x);
+        $proxy = Fun\lazy(static fn(): object => $x);
 
         static::assertSame($x, $proxy());
         static::assertSame($x, $proxy());

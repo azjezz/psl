@@ -12,7 +12,7 @@ final class SearchTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testSearch(?int $expected, string $haystack, string $needle, int $offset = 0): void
+    public function testSearch(null|int $expected, string $haystack, string $needle, int $offset = 0): void
     {
         static::assertSame($expected, Grapheme\search($haystack, $needle, $offset));
     }
@@ -20,10 +20,10 @@ final class SearchTest extends TestCase
     public function provideData(): array
     {
         return [
-            [null, 'Hello, you!', 'You', ],
-            [7, 'Hello, You!', 'You', ],
-            [null, 'Ho! Ho! Ho!', 'ho', ],
-            [0, 'Ho! Ho! Ho!', 'Ho', ],
+            [null, 'Hello, you!', 'You'],
+            [7, 'Hello, You!', 'You'],
+            [null, 'Ho! Ho! Ho!', 'ho'],
+            [0, 'Ho! Ho! Ho!', 'Ho'],
             [7, 'Hello, You!', 'You', 5],
             [null, 'Hello, World!', 'You', 5],
             [6, 'مرحبا سيف', 'سيف', 4],

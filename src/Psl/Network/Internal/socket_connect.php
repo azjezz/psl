@@ -30,11 +30,18 @@ use const STREAM_CLIENT_CONNECT;
  *
  * @codeCoverageIgnore
  */
-function socket_connect(string $uri, array $context = [], ?Duration $timeout = null): mixed
+function socket_connect(string $uri, array $context = [], null|Duration $timeout = null): mixed
 {
     return Internal\suppress(static function () use ($uri, $context, $timeout): mixed {
         $context = stream_context_create($context);
-        $socket = @stream_socket_client($uri, $errno, $_, null, STREAM_CLIENT_CONNECT | STREAM_CLIENT_ASYNC_CONNECT, $context);
+        $socket = @stream_socket_client(
+            $uri,
+            $errno,
+            $_,
+            null,
+            STREAM_CLIENT_CONNECT | STREAM_CLIENT_ASYNC_CONNECT,
+            $context,
+        );
         if (!$socket || $errno) {
             throw new Exception\RuntimeException('Failed to connect to client "' . $uri . '".', $errno);
         }
@@ -45,7 +52,11 @@ function socket_connect(string $uri, array $context = [], ?Duration $timeout = n
         $timeout_watcher = '';
         if (null !== $timeout) {
             $timeout = max($timeout->getTotalSeconds(), 0.0);
-            $timeout_watcher = EventLoop::delay($timeout, static function () use ($suspension, &$write_watcher, $socket) {
+            $timeout_watcher = EventLoop::delay($timeout, static function () use (
+                $suspension,
+                &$write_watcher,
+                $socket,
+            ) {
                 EventLoop::cancel($write_watcher);
 
                 /** @psalm-suppress RedundantCondition - it can be resource|closed-resource */
@@ -57,7 +68,11 @@ function socket_connect(string $uri, array $context = [], ?Duration $timeout = n
             });
         }
 
-        $write_watcher = EventLoop::onWritable($socket, static function () use ($suspension, $socket, $timeout_watcher) {
+        $write_watcher = EventLoop::onWritable($socket, static function () use (
+            $suspension,
+            $socket,
+            $timeout_watcher,
+        ) {
             EventLoop::cancel($timeout_watcher);
 
             $suspension->resume($socket);

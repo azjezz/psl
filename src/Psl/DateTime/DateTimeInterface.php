@@ -19,7 +19,7 @@ interface DateTimeInterface extends TemporalInterface
      *
      * @psalm-mutation-free
      */
-    public static function fromTimestamp(Timestamp $timestamp, ?Timezone $timezone = null): static;
+    public static function fromTimestamp(Timestamp $timestamp, null|Timezone $timezone = null): static;
 
     /**
      * Checks if this {@see DateTimeInterface} instance is equal to the given {@see DateTimeInterface} instance including the timezone.
@@ -453,7 +453,11 @@ interface DateTimeInterface extends TemporalInterface
      *
      * @psalm-mutation-free
      */
-    public function format(null|FormatPattern|string $pattern = null, null|Timezone $timezone = null, null|Locale $locale = null): string;
+    public function format(
+        null|FormatPattern|string $pattern = null,
+        null|Timezone $timezone = null,
+        null|Locale $locale = null,
+    ): string;
 
     /**
      * Provides a string representation of this {@see TemporalInterface} instance, formatted according to specified styles for date and time,
@@ -483,7 +487,12 @@ interface DateTimeInterface extends TemporalInterface
      *
      * @psalm-mutation-free
      */
-    public function toString(null|DateStyle $date_style = null, null|TimeStyle $time_style = null, null|Timezone $timezone = null, null|Locale $locale = null): string;
+    public function toString(
+        null|DateStyle $date_style = null,
+        null|TimeStyle $time_style = null,
+        null|Timezone $timezone = null,
+        null|Locale $locale = null,
+    ): string;
 
     /**
      * Formats this {@see DateTimeInterface} instance to a string based on the RFC 3339 format, with additional
@@ -512,7 +521,7 @@ interface DateTimeInterface extends TemporalInterface
      *
      * @psalm-mutation-free
      */
-    public function toRfc3339(?SecondsStyle $seconds_style = null, bool $use_z = false): string;
+    public function toRfc3339(null|SecondsStyle $seconds_style = null, bool $use_z = false): string;
 
     /**
      * Magic method that provides a default string representation of the date and time.

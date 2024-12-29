@@ -276,7 +276,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, ?int $length = null): MapInterface;
+    public function slice(int $start, null|int $length = null): MapInterface;
 
     /**
      * Returns a `VectorInterface` containing the original `MapInterface` split into

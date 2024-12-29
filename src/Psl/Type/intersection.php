@@ -17,11 +17,8 @@ namespace Psl\Type;
  *
  * @return TypeInterface<TFirst&TSecond&TRest>
  */
-function intersection(
-    TypeInterface $first,
-    TypeInterface $second,
-    TypeInterface ...$rest
-): TypeInterface {
+function intersection(TypeInterface $first, TypeInterface $second, TypeInterface ...$rest): TypeInterface
+{
     $accumulated_type = new Internal\IntersectionType($first, $second);
 
     foreach ($rest as $type) {

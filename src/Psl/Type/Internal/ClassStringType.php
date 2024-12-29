@@ -27,9 +27,8 @@ final readonly class ClassStringType extends Type
      *
      * @param class-string<T> $classname
      */
-    public function __construct(
-        string $classname
-    ) {
+    public function __construct(string $classname)
+    {
         $this->classname = $classname;
     }
 

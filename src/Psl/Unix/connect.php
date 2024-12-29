@@ -16,7 +16,7 @@ use Psl\OS;
  * @throws Network\Exception\RuntimeException If failed to connect to client on the given address.
  * @throws Network\Exception\TimeoutException If $timeout is non-null, and the operation timed-out.
  */
-function connect(string $path, ?Duration $timeout = null): Network\StreamSocketInterface
+function connect(string $path, null|Duration $timeout = null): Network\StreamSocketInterface
 {
     // @codeCoverageIgnoreStart
     if (OS\is_windows()) {

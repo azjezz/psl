@@ -47,7 +47,10 @@ final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteH
                     throw Exception\NotWritableException::for($file);
                 }
             } catch (Filesystem\Exception\RuntimeException $previous) {
-                throw new Exception\RuntimeException(Str\format('Failed to create the directory for file "%s".', $file), previous: $previous);
+                throw new Exception\RuntimeException(
+                    Str\format('Failed to create the directory for file "%s".', $file),
+                    previous: $previous,
+                );
             }
         }
 
@@ -67,7 +70,7 @@ final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteH
     /**
      * {@inheritDoc}
      */
-    public function write(string $bytes, ?Duration $timeout = null): int
+    public function write(string $bytes, null|Duration $timeout = null): int
     {
         return $this->writeHandle->write($bytes, $timeout);
     }

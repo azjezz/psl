@@ -12,7 +12,7 @@ final class CompareTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testCompare(int $expected, string $str1, string $str2, ?int $length = null): void
+    public function testCompare(int $expected, string $str1, string $str2, null|int $length = null): void
     {
         $diff = Byte\compare($str1, $str2, $length);
 

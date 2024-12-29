@@ -29,7 +29,7 @@ function get_permissions(string $node): int
         throw new Exception\RuntimeException(Str\format(
             'Failed to retrieve permissions of file "%s": %s',
             $node,
-            $message ?? 'internal error'
+            $message ?? 'internal error',
         ));
     }
     // @codeCoverageIgnoreEnd

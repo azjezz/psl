@@ -12,19 +12,15 @@ final class BeforeLastCiTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testAfter(
-        ?string $expected,
-        string $haystack,
-        string $needle,
-        int $offset
-    ): void {
+    public function testAfter(null|string $expected, string $haystack, string $needle, int $offset): void
+    {
         static::assertSame($expected, Byte\before_last_ci($haystack, $needle, $offset));
     }
 
     public function provideData(): array
     {
         return [
-            [null, '', '',  0],
+            [null, '', '', 0],
             ['Hello, ', 'Hello, World!', 'W', 0],
             ['', '🤷!', '🤷', 0],
             [null, 'مرحبا بكم', '', 0],

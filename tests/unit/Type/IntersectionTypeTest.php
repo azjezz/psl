@@ -48,31 +48,25 @@ final class IntersectionTypeTest extends TypeTest
         yield [
             Type\intersection(
                 Type\instance_of(IndexAccessInterface::class),
-                Type\instance_of(CollectionInterface::class)
+                Type\instance_of(CollectionInterface::class),
             ),
-            'Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface'
+            'Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface',
         ];
 
         yield [
             Type\intersection(
                 Type\instance_of(IndexAccessInterface::class),
-                Type\union(
-                    Type\instance_of(CollectionInterface::class),
-                    Type\instance_of(Iterator::class)
-                )
+                Type\union(Type\instance_of(CollectionInterface::class), Type\instance_of(Iterator::class)),
             ),
-            'Psl\Collection\IndexAccessInterface&(Psl\Collection\CollectionInterface|Iterator)'
+            'Psl\Collection\IndexAccessInterface&(Psl\Collection\CollectionInterface|Iterator)',
         ];
 
         yield [
             Type\intersection(
-                Type\union(
-                    Type\instance_of(CollectionInterface::class),
-                    Type\instance_of(Iterator::class)
-                ),
-                Type\instance_of(IndexAccessInterface::class)
+                Type\union(Type\instance_of(CollectionInterface::class), Type\instance_of(Iterator::class)),
+                Type\instance_of(IndexAccessInterface::class),
             ),
-            '(Psl\Collection\CollectionInterface|Iterator)&Psl\Collection\IndexAccessInterface'
+            '(Psl\Collection\CollectionInterface|Iterator)&Psl\Collection\IndexAccessInterface',
         ];
 
         yield [
@@ -82,7 +76,7 @@ final class IntersectionTypeTest extends TypeTest
                 Type\instance_of(Iterator::class),
                 Type\shape(['id' => Type\string()]),
             ),
-            'Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface&Iterator&array{\'id\': string}'
+            'Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface&Iterator&array{\'id\': string}',
         ];
     }
 }

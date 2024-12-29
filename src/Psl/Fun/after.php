@@ -22,5 +22,5 @@ use Closure;
  */
 function after(Closure $first, Closure $next): Closure
 {
-    return static fn ($input) => $next($first($input));
+    return static fn($input) => $next($first($input));
 }

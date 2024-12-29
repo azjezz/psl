@@ -48,7 +48,7 @@ function range(string $string, RangeInterface $range): string
         /** @var int<0, max> $offset */
         $offset = $range->getLowerBound();
     }
-    
+
     if ($range instanceof UpperBoundRangeInterface) {
         /** @var int<0, max> $length */
         $length = $range->getUpperBound() - $offset;

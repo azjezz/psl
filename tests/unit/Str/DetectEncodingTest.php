@@ -12,7 +12,7 @@ final class DetectEncodingTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testDetectEncoding(?Str\Encoding $expected, string $string): void
+    public function testDetectEncoding(null|Str\Encoding $expected, string $string): void
     {
         static::assertSame($expected, Str\detect_encoding($string));
     }
@@ -23,7 +23,7 @@ final class DetectEncodingTest extends TestCase
             [Str\Encoding::Ascii, 'hello'],
             [Str\Encoding::Utf8, 'سيف'],
             [Str\Encoding::Utf8, '🐘'],
-            [null, Str\Byte\chr(128)]
+            [null, Str\Byte\chr(128)],
         ];
     }
 }

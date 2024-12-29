@@ -31,7 +31,7 @@ final class Context
      * @pure
      */
     private function __construct(
-        private readonly HashContext $internalContext
+        private readonly HashContext $internalContext,
     ) {
     }
 

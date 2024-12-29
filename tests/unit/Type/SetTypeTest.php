@@ -24,40 +24,39 @@ final class SetTypeTest extends TypeTest
 
     public function getValidCoercions(): iterable
     {
-        
         yield [
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+            new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
             ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
-            new Collection\Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+            new Collection\Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
         ];
 
         yield [
             Vec\range(1, 10),
-            new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+            new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
-            Dict\map(Vec\range(1, 10), static fn(int $key): string => (string)$key),
-            new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+            Dict\map(Vec\range(1, 10), static fn(int $key): string => (string) $key),
+            new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
             new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-            new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+            new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
             new Collection\MutableSet([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-            new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+            new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
             new Collection\MutableVector([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-            new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+            new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
     }
 
@@ -100,12 +99,12 @@ final class SetTypeTest extends TypeTest
         yield 'invalid assertion value' => [
             Type\set(Type\int()),
             new Collection\MutableSet(['foo' => 'nope']),
-            'Expected "' . SetInterface::class . '<int>", got "string" at path "nope".'
+            'Expected "' . SetInterface::class . '<int>", got "string" at path "nope".',
         ];
         yield 'nested' => [
             Type\set(Type\string()),
             new Collection\MutableSet([1 => 123]),
-            'Expected "' . SetInterface::class . '<string>", got "int" at path "123".'
+            'Expected "' . SetInterface::class . '<string>", got "int" at path "123".',
         ];
     }
 
@@ -114,14 +113,14 @@ final class SetTypeTest extends TypeTest
         yield 'invalid coercion value' => [
             Type\set(Type\int()),
             ['nope' => 'nope'],
-            'Could not coerce "string" to type "' . SetInterface::class . '<int>" at path "nope".'
+            'Could not coerce "string" to type "' . SetInterface::class . '<int>" at path "nope".',
         ];
         yield 'invalid iterator first item' => [
             Type\set(Type\int()),
             (static function () {
                 yield Type\int()->coerce('nope');
             })(),
-            'Could not coerce "string" to type "' . SetInterface::class . '<int>" at path "first()".'
+            'Could not coerce "string" to type "' . SetInterface::class . '<int>" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
             Type\set(Type\int()),
@@ -129,7 +128,7 @@ final class SetTypeTest extends TypeTest
                 yield 0;
                 yield Type\int()->coerce('nope');
             })(),
-            'Could not coerce "string" to type "' . SetInterface::class . '<int>" at path "0.next()".'
+            'Could not coerce "string" to type "' . SetInterface::class . '<int>" at path "0.next()".',
         ];
         yield 'iterator throwing exception' => [
             Type\set(Type\int()),
@@ -137,37 +136,40 @@ final class SetTypeTest extends TypeTest
                 yield 0;
                 throw new RuntimeException('whoops');
             })(),
-            'Could not coerce "null" to type "' . SetInterface::class . '<int>" at path "0.next()": whoops.'
+            'Could not coerce "null" to type "' . SetInterface::class . '<int>" at path "0.next()": whoops.',
         ];
         yield 'iterator yielding null key' => [
             Type\set(Type\int()),
             (static function () {
                 yield null => 'nope';
             })(),
-            'Could not coerce "string" to type "' . SetInterface::class . '<int>" at path "null".'
+            'Could not coerce "string" to type "' . SetInterface::class . '<int>" at path "null".',
         ];
         yield 'iterator yielding string key, null value' => [
             Type\set(Type\int()),
             (static function () {
                 yield 'nope' => 'bar';
             })(),
-            'Could not coerce "string" to type "' . SetInterface::class . '<int>" at path "nope".'
+            'Could not coerce "string" to type "' . SetInterface::class . '<int>" at path "nope".',
         ];
         yield 'iterator yielding object key' => [
             Type\set(Type\int()),
             (static function () {
-                yield 'nope' => (new class () {
-                });
+                yield 'nope' => new class() {
+                };
             })(),
-            'Could not coerce "class@anonymous" to type "' . SetInterface::class . '<int>" at path "nope".'
+            'Could not coerce "class@anonymous" to type "' . SetInterface::class . '<int>" at path "nope".',
         ];
     }
 
     /**
      * @dataProvider provideAssertExceptionExpectations
      */
-    public function testInvalidAssertionTypeExceptions(Type\TypeInterface $type, mixed $data, string $expectedMessage): void
-    {
+    public function testInvalidAssertionTypeExceptions(
+        Type\TypeInterface $type,
+        mixed $data,
+        string $expectedMessage,
+    ): void {
         try {
             $type->assert($data);
             static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
@@ -179,8 +181,11 @@ final class SetTypeTest extends TypeTest
     /**
      * @dataProvider provideCoerceExceptionExpectations
      */
-    public function testInvalidCoercionTypeExceptions(Type\TypeInterface $type, mixed $data, string $expectedMessage): void
-    {
+    public function testInvalidCoercionTypeExceptions(
+        Type\TypeInterface $type,
+        mixed $data,
+        string $expectedMessage,
+    ): void {
         try {
             $type->coerce($data);
             static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\CoercionException::class));

@@ -117,7 +117,7 @@ final readonly class Failure implements ResultInterface
      */
     public function then(Closure $success, Closure $failure): ResultInterface
     {
-        return wrap(fn () => $failure($this->throwable));
+        return wrap(fn() => $failure($this->throwable));
     }
 
     /**

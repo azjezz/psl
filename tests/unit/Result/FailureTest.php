@@ -27,7 +27,7 @@ final class FailureTest extends TestCase
     public function testGetResult(): void
     {
         $exception = new Exception('bar');
-        $wrapper   = new Failure($exception);
+        $wrapper = new Failure($exception);
 
         $this->expectExceptionObject($exception);
         $wrapper->getResult();
@@ -44,19 +44,16 @@ final class FailureTest extends TestCase
     public function testGetException(): void
     {
         $exception = new Exception('bar');
-        $wrapper   = new Failure($exception);
-        $e         = $wrapper->getThrowable();
+        $wrapper = new Failure($exception);
+        $e = $wrapper->getThrowable();
         static::assertSame($exception, $e);
     }
 
     public function testProceed(): void
     {
         $exception = new Exception('bar');
-        $wrapper   = new Failure($exception);
-        $actual    = $wrapper->proceed(
-            static fn (string $result): int => 200,
-            static fn (Exception $exception): int => 404
-        );
+        $wrapper = new Failure($exception);
+        $actual = $wrapper->proceed(static fn(string $result): int => 200, static fn(Exception $exception): int => 404);
 
         static::assertSame(404, $actual);
     }
@@ -64,12 +61,12 @@ final class FailureTest extends TestCase
     public function testThenToSuccess(): void
     {
         $exception = new Exception('bar');
-        $wrapper   = new Failure($exception);
-        $actual    = $wrapper->then(
+        $wrapper = new Failure($exception);
+        $actual = $wrapper->then(
             static function () {
                 throw new Exception('Dont call us, we\'ll call you!');
             },
-            static fn (Exception $exception): string => $exception->getMessage()
+            static fn(Exception $exception): string => $exception->getMessage(),
         );
 
         static::assertTrue($actual->isSucceeded());
@@ -79,13 +76,10 @@ final class FailureTest extends TestCase
     public function testThenToFailure(): void
     {
         $exception = new Exception('bar');
-        $wrapper   = new Failure($exception);
-        $actual    = $wrapper->then(
-            static function () {
-                throw new Exception('Dont call us, we\'ll call you!');
-            },
-            Fun\rethrow()
-        );
+        $wrapper = new Failure($exception);
+        $actual = $wrapper->then(static function () {
+            throw new Exception('Dont call us, we\'ll call you!');
+        }, Fun\rethrow());
 
         static::assertFalse($actual->isSucceeded());
         static::assertSame($actual->getThrowable(), $exception);
@@ -94,15 +88,15 @@ final class FailureTest extends TestCase
     public function testCatch(): void
     {
         $exception = new Exception('bar');
-        $wrapper   = new Failure($exception);
-        $actual    = $wrapper->catch(Fun\rethrow());
+        $wrapper = new Failure($exception);
+        $actual = $wrapper->catch(Fun\rethrow());
 
         static::assertFalse($actual->isSucceeded());
         static::assertSame($actual->getThrowable(), $exception);
 
         $exception = new Exception('bar');
-        $wrapper   = new Failure($exception);
-        $actual    = $wrapper->catch(static fn($exception) => $exception);
+        $wrapper = new Failure($exception);
+        $actual = $wrapper->catch(static fn($exception) => $exception);
 
         static::assertTrue($actual->isSucceeded());
         static::assertSame($exception, $actual->getResult());
@@ -111,8 +105,8 @@ final class FailureTest extends TestCase
     public function testMap(): void
     {
         $exception = new Exception('bar');
-        $wrapper   = new Failure($exception);
-        $actual    = $wrapper->map(static function () {
+        $wrapper = new Failure($exception);
+        $actual = $wrapper->map(static function () {
             throw new Exception('Dont call us, we\'ll call you!');
         });
 
@@ -124,8 +118,8 @@ final class FailureTest extends TestCase
     {
         $ref = new Psl\Ref('');
         $exception = new Exception('bar');
-        $wrapper   = new Failure($exception);
-        $actual    = $wrapper->always(static function () use ($ref) {
+        $wrapper = new Failure($exception);
+        $actual = $wrapper->always(static function () use ($ref) {
             $ref->value .= 'hello';
         });
 

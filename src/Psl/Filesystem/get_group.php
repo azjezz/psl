@@ -27,14 +27,14 @@ function get_group(string $node): int
         /**
          * @return false|int
          */
-        static fn() => filegroup($node)
+        static fn() => filegroup($node),
     );
 
     if (false === $result) {
         throw new Exception\RuntimeException(Str\format(
             'Failed to retrieve group of file "%s": %s',
             $node,
-            $message ?? 'internal error'
+            $message ?? 'internal error',
         ));
     }
 

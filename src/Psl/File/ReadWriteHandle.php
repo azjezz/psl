@@ -59,11 +59,14 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
                     throw Exception\NotReadableException::for($file);
                 }
             } catch (Filesystem\Exception\RuntimeException $previous) {
-                throw new Exception\RuntimeException(Str\format('Failed to create the directory for file "%s".', $file), previous: $previous);
+                throw new Exception\RuntimeException(
+                    Str\format('Failed to create the directory for file "%s".', $file),
+                    previous: $previous,
+                );
             }
         }
 
-        $this->readWriteHandle = Internal\open($file, ($write_mode->value) . 'r+', read: true, write: true);
+        $this->readWriteHandle = Internal\open($file, $write_mode->value . 'r+', read: true, write: true);
 
         parent::__construct($this->readWriteHandle);
     }
@@ -79,7 +82,7 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
     /**
      * {@inheritDoc}
      */
-    public function tryRead(?int $max_bytes = null): string
+    public function tryRead(null|int $max_bytes = null): string
     {
         return $this->readWriteHandle->tryRead($max_bytes);
     }
@@ -87,7 +90,7 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
     /**
      * {@inheritDoc}
      */
-    public function read(?int $max_bytes = null, ?Duration $timeout = null): string
+    public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         return $this->readWriteHandle->read($max_bytes, $timeout);
     }
@@ -103,7 +106,7 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
     /**
      * {@inheritDoc}
      */
-    public function write(string $bytes, ?Duration $timeout = null): int
+    public function write(string $bytes, null|Duration $timeout = null): int
     {
         return $this->readWriteHandle->write($bytes, $timeout);
     }

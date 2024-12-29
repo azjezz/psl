@@ -34,7 +34,7 @@ function delete_file(string $file): void
         throw new Exception\RuntimeException(Str\format(
             'Failed to delete file "%s": %s.',
             $file,
-            $error_message ?? 'internal error'
+            $error_message ?? 'internal error',
         ));
     }
     // @codeCoverageIgnoreEnd

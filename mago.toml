@@ -1,5 +1,5 @@
 [source]
-paths = ["src", "tests"]
+paths = ["src", "tests", "examples"]
 includes = ["vendor"]
 excludes = []
 

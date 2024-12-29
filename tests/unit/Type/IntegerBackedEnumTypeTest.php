@@ -17,7 +17,7 @@ final class IntegerBackedEnumTypeTest extends TypeTest
     {
         return Type\backed_enum(IntegerEnum::class);
     }
-    
+
     /**
      * @return iterable<array{0: mixed, 1: IntegerEnum}>
      */

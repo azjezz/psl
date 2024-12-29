@@ -39,7 +39,7 @@ function file_size(string $file): int
         throw new Exception\RuntimeException(Str\format(
             'Error reading the size of file "%s": %s',
             $file,
-            $message ?? 'internal error'
+            $message ?? 'internal error',
         ));
     }
     // @codeCoverageIgnoreEnd

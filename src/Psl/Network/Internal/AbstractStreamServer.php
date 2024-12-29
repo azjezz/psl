@@ -60,7 +60,13 @@ abstract class AbstractStreamServer implements StreamServerInterface
                 // @codeCoverageIgnoreStart
                 /** @var array{file: string, line: int, message: string, type: int} $err */
                 $err = error_get_last();
-                $sender->send([false, new Network\Exception\RuntimeException('Failed to accept incoming connection: ' . $err['message'], $err['type'])]);
+                $sender->send([
+                    false,
+                    new Network\Exception\RuntimeException(
+                        'Failed to accept incoming connection: ' . $err['message'],
+                        $err['type'],
+                    ),
+                ]);
                 // @codeCoverageIgnoreEnd
             } catch (Channel\Exception\ClosedChannelException) {
                 EventLoop::cancel($watcher);

@@ -47,7 +47,7 @@ interface ReadHandleInterface extends HandleInterface
      * @see ReadStreamHandleInterface::read()
      * @see ReadStreamHandleInterface::readAll()
      */
-    public function tryRead(?int $max_bytes = null): string;
+    public function tryRead(null|int $max_bytes = null): string;
 
     /**
      * Read from the handle, waiting for data if necessary.
@@ -63,7 +63,7 @@ interface ReadHandleInterface extends HandleInterface
      * Up to `$max_bytes` may be allocated in a buffer; large values may lead to
      * unnecessarily hitting the request memory limit.
      */
-    public function read(?int $max_bytes = null, ?Duration $timeout = null): string;
+    public function read(null|int $max_bytes = null, null|Duration $timeout = null): string;
 
     /**
      * Read until there is no more data to read.
@@ -81,7 +81,7 @@ interface ReadHandleInterface extends HandleInterface
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    public function readAll(?int $max_bytes = null, ?Duration $timeout = null): string;
+    public function readAll(null|int $max_bytes = null, null|Duration $timeout = null): string;
 
     /**
      * Read a fixed amount of data.
@@ -96,5 +96,5 @@ interface ReadHandleInterface extends HandleInterface
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    public function readFixedSize(int $size, ?Duration $timeout = null): string;
+    public function readFixedSize(int $size, null|Duration $timeout = null): string;
 }

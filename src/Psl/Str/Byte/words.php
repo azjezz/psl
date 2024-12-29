@@ -16,7 +16,7 @@ use function str_word_count;
  *
  * @pure
  */
-function words(string $string, ?string $characters_list = null): array
+function words(string $string, null|string $characters_list = null): array
 {
     if (null === $characters_list) {
         $words = str_word_count($string, 2);

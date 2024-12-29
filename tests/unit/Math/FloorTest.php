@@ -24,26 +24,22 @@ final class FloorTest extends TestCase
                 4,
                 4.3,
             ],
-
             [
                 9,
                 9.9,
             ],
-
             [
                 3,
-                Math\PI
+                Math\PI,
             ],
-
             [
                 -4,
-                -Math\PI
+                -Math\PI,
             ],
-
             [
                 2,
-                Math\E
-            ]
+                Math\E,
+            ],
         ];
     }
 }

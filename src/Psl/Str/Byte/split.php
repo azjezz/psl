@@ -19,7 +19,7 @@ use function explode;
  *
  * @pure
  */
-function split(string $string, string $delimiter, ?int $limit = null): array
+function split(string $string, string $delimiter, null|int $limit = null): array
 {
     if ('' === $delimiter) {
         if (null === $limit || $limit >= length($string)) {
@@ -32,7 +32,7 @@ function split(string $string, string $delimiter, ?int $limit = null): array
 
         $length = $limit - 1;
 
-        $result   = chunk(slice($string, 0, $length));
+        $result = chunk(slice($string, 0, $length));
         $result[] = slice($string, $length);
 
         return $result;

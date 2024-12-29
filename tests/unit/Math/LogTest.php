@@ -12,7 +12,7 @@ final class LogTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testLog(float $expected, float $number, ?float $base = null): void
+    public function testLog(float $expected, float $number, null|float $base = null): void
     {
         static::assertSame($expected, Math\log($number, $base));
     }
@@ -23,25 +23,22 @@ final class LogTest extends TestCase
             [
                 1.6863989535702288,
                 5.4,
-                null
+                null,
             ],
-
             [
                 0.6574784600188808,
                 5.4,
-                13
+                13,
             ],
-
             [
                 1.7323937598229686,
                 54.0,
-                10
+                10,
             ],
-
             [
                 0,
                 1,
-                null
+                null,
             ],
         ];
     }

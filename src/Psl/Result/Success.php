@@ -124,7 +124,7 @@ final readonly class Success implements ResultInterface
      */
     public function then(Closure $success, Closure $failure): ResultInterface
     {
-        return wrap(fn () => $success($this->value));
+        return wrap(fn() => $success($this->value));
     }
 
     /**
@@ -138,7 +138,7 @@ final readonly class Success implements ResultInterface
      */
     public function map(Closure $success): ResultInterface
     {
-        return wrap(fn () => $success($this->value));
+        return wrap(fn() => $success($this->value));
     }
 
     /**

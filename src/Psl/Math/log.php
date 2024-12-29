@@ -13,7 +13,7 @@ use function log as php_log;
  *
  * @throws Exception\InvalidArgumentException If $number or $base are negative, or $base is equal to 1.0.
  */
-function log(float $number, ?float $base = null): float
+function log(float $number, null|float $base = null): float
 {
     if ($number <= 0) {
         throw new Exception\InvalidArgumentException('$number must be positive.');

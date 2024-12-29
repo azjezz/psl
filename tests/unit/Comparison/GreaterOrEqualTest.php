@@ -14,6 +14,9 @@ class GreaterOrEqualTest extends AbstractComparisonTest
      */
     public function testItCanCheckGreaterOrEqual(mixed $a, mixed $b, Order $expected): void
     {
-        static::assertSame($expected === Order::Greater || $expected === Order::Equal, Comparison\greater_or_equal($a, $b));
+        static::assertSame(
+            $expected === Order::Greater || $expected === Order::Equal,
+            Comparison\greater_or_equal($a, $b),
+        );
     }
 }

@@ -24,7 +24,7 @@ Async\main(static function () {
                 $receiver->receive();
             }
         } catch (Channel\Exception\ClosedChannelException) {
-            IO\write_error_line("[ receiver ]: completed.");
+            IO\write_error_line('[ receiver ]: completed.');
         }
     });
 
@@ -37,9 +37,8 @@ Async\main(static function () {
         $file->close();
     }
 
-    IO\write_error_line("[ sender   ]: completed.");
+    IO\write_error_line('[ sender   ]: completed.');
     $sender->close();
 
     return 0;
 });
-

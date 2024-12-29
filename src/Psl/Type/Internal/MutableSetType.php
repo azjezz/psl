@@ -117,10 +117,6 @@ final readonly class MutableSetType extends Type\Type
 
     public function toString(): string
     {
-        return Str\format(
-            '%s<%s>',
-            Collection\MutableSetInterface::class,
-            $this->type->toString(),
-        );
+        return Str\format('%s<%s>', Collection\MutableSetInterface::class, $this->type->toString());
     }
 }

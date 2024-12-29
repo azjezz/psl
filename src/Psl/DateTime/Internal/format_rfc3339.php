@@ -18,7 +18,7 @@ use Psl\Str\Byte;
  */
 function format_rfc3339(
     Timestamp $timestamp,
-    ?SecondsStyle $seconds_style = null,
+    null|SecondsStyle $seconds_style = null,
     bool $use_z = false,
     null|Timezone $timezone = null,
 ): string {

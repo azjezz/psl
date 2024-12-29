@@ -24,7 +24,7 @@ final class LazyEvaluator
      * @param (Closure(): T) $initializer
      */
     public function __construct(
-        private Closure $initializer
+        private Closure $initializer,
     ) {
     }
 

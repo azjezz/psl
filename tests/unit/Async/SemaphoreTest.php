@@ -61,7 +61,10 @@ final class SemaphoreTest extends TestCase
 
         Async\run(static fn() => $semaphore->waitFor(['time' => Datetime\Duration::milliseconds(3), 'value' => 'a']));
         Async\run(static fn() => $semaphore->waitFor(['time' => Datetime\Duration::milliseconds(4), 'value' => 'b']));
-        $beforeLast = Async\run(static fn() => $semaphore->waitFor(['time' => Datetime\Duration::milliseconds(5), 'value' => 'c']));
+        $beforeLast = Async\run(static fn() => $semaphore->waitFor([
+            'time' => Datetime\Duration::milliseconds(5),
+            'value' => 'c',
+        ]));
         Async\run(static fn() => $semaphore->waitFor(['time' => null, 'value' => 'd']));
 
         $beforeLast->await();

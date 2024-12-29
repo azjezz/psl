@@ -26,7 +26,7 @@ final class MinByTest extends TestCase
         yield [
             'qux',
             ['foo', 'bar', 'baz', 'qux', 'foobar', 'bazqux'],
-            static fn ($value) => Str\length($value),
+            static fn($value) => Str\length($value),
         ];
 
         yield [
@@ -34,21 +34,21 @@ final class MinByTest extends TestCase
             [
                 ['foo'],
                 ['foo', 'bar'],
-                ['foo', 'bar', 'baz']
+                ['foo', 'bar', 'baz'],
             ],
-            static fn ($arr) => Iter\count($arr),
+            static fn($arr) => Iter\count($arr),
         ];
 
         yield [
             0,
             [...Vec\range(0, 9)],
-            static fn ($i) => $i,
+            static fn($i) => $i,
         ];
 
         yield [
             null,
             [],
-            static fn ($i) => $i,
+            static fn($i) => $i,
         ];
     }
 }

@@ -26,7 +26,7 @@ final class UniqueTest extends TestCase
     {
         $array = Vec\fill(10, 'foo');
         $object = new Collection\Map([]);
-        $array  = Vec\concat($array, Vec\fill(10, $object));
+        $array = Vec\concat($array, Vec\fill(10, $object));
 
         $unique = Vec\unique($array);
 

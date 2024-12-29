@@ -15,7 +15,7 @@ function collect_stats(iterable $results): Stats
 {
     return reduce(
         $results,
-        static fn (Stats $stats, ResultInterface $result): Stats => $stats->apply($result),
-        new Stats()
+        static fn(Stats $stats, ResultInterface $result): Stats => $stats->apply($result),
+        new Stats(),
     );
 }

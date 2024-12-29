@@ -14,7 +14,7 @@ use function locale_set_default;
 
 final class LocaleTest extends TestCase
 {
-    private ?string $defaultLocale = null;
+    private null|string $defaultLocale = null;
     protected function setUp(): void
     {
         $this->defaultLocale = locale_get_default();

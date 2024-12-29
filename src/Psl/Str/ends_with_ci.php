@@ -39,7 +39,7 @@ function ends_with_ci(string $string, string $suffix, Encoding $encoding = Encod
     }
 
     $suffix_length = length($suffix, $encoding);
-    $total_length  = length($string, $encoding);
+    $total_length = length($string, $encoding);
     if ($suffix_length > $total_length) {
         return false;
     }
@@ -50,5 +50,5 @@ function ends_with_ci(string $string, string $suffix, Encoding $encoding = Encod
         return false;
     }
 
-    return $position + $suffix_length === $total_length;
+    return ($position + $suffix_length) === $total_length;
 }

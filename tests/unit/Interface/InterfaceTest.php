@@ -14,10 +14,8 @@ final class InterfaceTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function test(
-        string $interface_name,
-        bool $exists,
-    ): void {
+    public function test(string $interface_name, bool $exists): void
+    {
         static::assertSame($exists, Interface\exists($interface_name));
         static::assertSame($exists, Interface\defined($interface_name));
     }

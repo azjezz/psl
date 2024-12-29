@@ -13,11 +13,8 @@ final class TraitTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function test(
-        string $trait_name,
-        bool $defined,
-        bool $exists,
-    ): void {
+    public function test(string $trait_name, bool $defined, bool $exists): void
+    {
         static::assertSame($defined, Trait\defined($trait_name));
         static::assertSame($exists, Trait\exists($trait_name));
 

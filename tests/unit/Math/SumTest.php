@@ -29,7 +29,6 @@ final class SumTest extends TestCase
                     ...Vec\range(0, 9),
                 ],
             ],
-
             [
                 103,
                 [
@@ -39,7 +38,6 @@ final class SumTest extends TestCase
                     15,
                 ],
             ],
-
             [
                 534,
                 [
@@ -48,7 +46,7 @@ final class SumTest extends TestCase
                     ...Vec\range(0, 45, 5),
                     52,
                     64,
-                ]
+                ],
             ],
         ];
     }

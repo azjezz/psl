@@ -25,25 +25,23 @@ final class MinvaTest extends TestCase
                 5,
                 10,
                 5,
-                ...Vec\range(7, 9, 2)
+                ...Vec\range(7, 9, 2),
             ],
-
             [
                 4,
                 18,
                 15,
                 ...Vec\range(4, 10),
-                15
+                15,
             ],
-
             [
                 15,
                 19,
                 15,
                 ...Vec\range(40, 45, 5),
                 52,
-                64
-            ]
+                64,
+            ],
         ];
     }
 }

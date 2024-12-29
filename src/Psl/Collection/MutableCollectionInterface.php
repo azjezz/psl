@@ -174,7 +174,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, ?int $length = null): MutableCollectionInterface;
+    public function slice(int $start, null|int $length = null): MutableCollectionInterface;
 
     /**
      * Returns a `MutableCollectionInterface` containing the original `MutableCollectionInterface` split into

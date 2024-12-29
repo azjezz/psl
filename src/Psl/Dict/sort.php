@@ -23,7 +23,7 @@ use function uasort;
  *
  * @return array<Tk, Tv>
  */
-function sort(iterable $iterable, ?Closure $comparator = null): array
+function sort(iterable $iterable, null|Closure $comparator = null): array
 {
     $array = [];
     foreach ($iterable as $k => $v) {
@@ -37,7 +37,7 @@ function sort(iterable $iterable, ?Closure $comparator = null): array
              * @param Tv $a
              * @param Tv $b
              */
-            static fn(mixed $a, mixed $b): int => $comparator($a, $b)
+            static fn(mixed $a, mixed $b): int => $comparator($a, $b),
         );
     } else {
         asort($array);

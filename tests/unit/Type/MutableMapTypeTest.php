@@ -27,37 +27,37 @@ final class MutableMapTypeTest extends TypeTest
     {
         yield [
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
             Vec\range(1, 10),
-            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
             Vec\range(1, 10),
-            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
-            Dict\map(Vec\range(1, 10), static fn(int $value): string => (string)$value),
-            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+            Dict\map(Vec\range(1, 10), static fn(int $value): string => (string) $value),
+            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
-            Dict\map_keys(Vec\range(1, 10), static fn(int $key): string => (string)$key),
-            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+            Dict\map_keys(Vec\range(1, 10), static fn(int $key): string => (string) $key),
+            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
             Dict\map(Vec\range(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
-            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
             new Collection\Map([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
     }
 
@@ -76,22 +76,22 @@ final class MutableMapTypeTest extends TypeTest
     {
         yield [
             $this->getType(),
-            'Psl\Collection\MutableMapInterface<int, int>'
+            'Psl\Collection\MutableMapInterface<int, int>',
         ];
 
         yield [
             Type\mutable_map(Type\array_key(), Type\int()),
-            'Psl\Collection\MutableMapInterface<array-key, int>'
+            'Psl\Collection\MutableMapInterface<array-key, int>',
         ];
 
         yield [
             Type\mutable_map(Type\array_key(), Type\string()),
-            'Psl\Collection\MutableMapInterface<array-key, string>'
+            'Psl\Collection\MutableMapInterface<array-key, string>',
         ];
 
         yield [
             Type\mutable_map(Type\array_key(), Type\instance_of(Iter\Iterator::class)),
-            'Psl\Collection\MutableMapInterface<array-key, Psl\Iter\Iterator>'
+            'Psl\Collection\MutableMapInterface<array-key, Psl\Iter\Iterator>',
         ];
     }
 
@@ -117,17 +117,21 @@ final class MutableMapTypeTest extends TypeTest
         yield 'invalid assertion key' => [
             Type\mutable_map(Type\int(), Type\int()),
             new Collection\MutableMap(['nope' => 1]),
-            'Expected "' . MutableMapInterface::class . '<int, int>", got "string" at path "key(nope)".'
+            'Expected "' . MutableMapInterface::class . '<int, int>", got "string" at path "key(nope)".',
         ];
         yield 'invalid assertion value' => [
             Type\mutable_map(Type\int(), Type\int()),
             new Collection\MutableMap([0 => 'nope']),
-            'Expected "' . MutableMapInterface::class . '<int, int>", got "string" at path "0".'
+            'Expected "' . MutableMapInterface::class . '<int, int>", got "string" at path "0".',
         ];
         yield 'nested' => [
             Type\mutable_map(Type\int(), Type\mutable_map(Type\int(), Type\int())),
             new Collection\MutableMap([0 => new Collection\MutableMap(['nope' => 'nope'])]),
-            'Expected "' . MutableMapInterface::class . '<int, ' . MutableMapInterface::class . '<int, int>>", got "string" at path "0.key(nope)".',
+            'Expected "' .
+            MutableMapInterface::class .
+                '<int, ' .
+                MutableMapInterface::class .
+                '<int, int>>", got "string" at path "0.key(nope)".',
         ];
     }
 
@@ -136,19 +140,19 @@ final class MutableMapTypeTest extends TypeTest
         yield 'invalid coercion key' => [
             Type\mutable_map(Type\int(), Type\int()),
             ['nope' => 1],
-            'Could not coerce "string" to type "' . MutableMapInterface::class . '<int, int>" at path "key(nope)".'
+            'Could not coerce "string" to type "' . MutableMapInterface::class . '<int, int>" at path "key(nope)".',
         ];
         yield 'invalid coercion value' => [
             Type\mutable_map(Type\int(), Type\int()),
             [0 => 'nope'],
-            'Could not coerce "string" to type "' . MutableMapInterface::class . '<int, int>" at path "0".'
+            'Could not coerce "string" to type "' . MutableMapInterface::class . '<int, int>" at path "0".',
         ];
         yield 'invalid iterator first item' => [
             Type\mutable_map(Type\int(), Type\int()),
             (static function () {
                 yield 0 => Type\int()->coerce('nope');
             })(),
-            'Could not coerce "string" to type "' . MutableMapInterface::class . '<int, int>" at path "first()".'
+            'Could not coerce "string" to type "' . MutableMapInterface::class . '<int, int>" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
             Type\mutable_map(Type\int(), Type\int()),
@@ -156,7 +160,7 @@ final class MutableMapTypeTest extends TypeTest
                 yield 0 => 0;
                 yield 1 => Type\int()->coerce('nope');
             })(),
-            'Could not coerce "string" to type "' . MutableMapInterface::class . '<int, int>" at path "0.next()".'
+            'Could not coerce "string" to type "' . MutableMapInterface::class . '<int, int>" at path "0.next()".',
         ];
         yield 'iterator throwing exception' => [
             Type\mutable_map(Type\int(), Type\int()),
@@ -164,30 +168,35 @@ final class MutableMapTypeTest extends TypeTest
                 throw new RuntimeException('whoops');
                 yield;
             })(),
-            'Could not coerce "null" to type "' . MutableMapInterface::class . '<int, int>" at path "first()": whoops.'
+            'Could not coerce "null" to type "' . MutableMapInterface::class . '<int, int>" at path "first()": whoops.',
         ];
         yield 'iterator yielding null key' => [
             Type\mutable_map(Type\int(), Type\int()),
             (static function () {
                 yield null => 'nope';
             })(),
-            'Could not coerce "null" to type "' . MutableMapInterface::class . '<int, int>" at path "key(null)".'
+            'Could not coerce "null" to type "' . MutableMapInterface::class . '<int, int>" at path "key(null)".',
         ];
         yield 'iterator yielding object key' => [
             Type\mutable_map(Type\int(), Type\int()),
             (static function () {
-                yield (new class () {
-                }) => 'nope';
+                yield new class() {
+                } => 'nope';
             })(),
-            'Could not coerce "class@anonymous" to type "' . MutableMapInterface::class . '<int, int>" at path "key(class@anonymous)".'
+            'Could not coerce "class@anonymous" to type "' .
+            MutableMapInterface::class .
+                '<int, int>" at path "key(class@anonymous)".',
         ];
     }
 
     /**
      * @dataProvider provideAssertExceptionExpectations
      */
-    public function testInvalidAssertionTypeExceptions(Type\TypeInterface $type, mixed $data, string $expectedMessage): void
-    {
+    public function testInvalidAssertionTypeExceptions(
+        Type\TypeInterface $type,
+        mixed $data,
+        string $expectedMessage,
+    ): void {
         try {
             $type->assert($data);
             static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
@@ -199,8 +208,11 @@ final class MutableMapTypeTest extends TypeTest
     /**
      * @dataProvider provideCoerceExceptionExpectations
      */
-    public function testInvalidCoercionTypeExceptions(Type\TypeInterface $type, mixed $data, string $expectedMessage): void
-    {
+    public function testInvalidCoercionTypeExceptions(
+        Type\TypeInterface $type,
+        mixed $data,
+        string $expectedMessage,
+    ): void {
         try {
             $type->coerce($data);
             static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\CoercionException::class));

@@ -22,30 +22,30 @@ abstract class AbstractComparisonTest extends TestCase
         yield 'comparable-default' => [
             self::createComparableIntWrapper(0),
             self::createComparableIntWrapper(0),
-            Order::default()
+            Order::default(),
         ];
         yield 'comparable-equal' => [
             self::createComparableIntWrapper(0),
             self::createComparableIntWrapper(0),
-            Order::Equal
+            Order::Equal,
         ];
         yield 'comparable-less' => [
             self::createComparableIntWrapper(0),
             self::createComparableIntWrapper(1),
-            Order::Less
+            Order::Less,
         ];
         yield 'comparable-greater' => [
             self::createComparableIntWrapper(1),
             self::createComparableIntWrapper(0),
-            Order::Greater
+            Order::Greater,
         ];
     }
 
     protected static function createComparableIntWrapper(int $i): Comparable
     {
-        return new class ($i) implements Comparable {
+        return new class($i) implements Comparable {
             public function __construct(
-                public readonly int $int
+                public readonly int $int,
             ) {
             }
             public function compare(mixed $other): Order
@@ -57,10 +57,10 @@ abstract class AbstractComparisonTest extends TestCase
 
     protected static function createIncomparableWrapper(int $i, string $additionalInfo = ''): Comparable
     {
-        return new class ($i, $additionalInfo) implements Comparable {
+        return new class($i, $additionalInfo) implements Comparable {
             public function __construct(
                 public readonly int $int,
-                public readonly string $additionalInfo
+                public readonly string $additionalInfo,
             ) {
             }
 

@@ -29,7 +29,6 @@ final class MedianTest extends TestCase
                     ...Vec\range(0, 9, 2),
                 ],
             ],
-
             [
                 6.5,
                 [
@@ -39,7 +38,6 @@ final class MedianTest extends TestCase
                     15,
                 ],
             ],
-
             [
                 22.5,
                 [
@@ -50,16 +48,14 @@ final class MedianTest extends TestCase
                     64,
                 ],
             ],
-
             [
                 100.0,
-                Vec\fill(100, 100)
+                Vec\fill(100, 100),
             ],
-
             [
                 null,
-                []
-            ]
+                [],
+            ],
         ];
     }
 }

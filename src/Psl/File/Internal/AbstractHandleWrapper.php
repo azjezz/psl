@@ -10,8 +10,9 @@ use Psl\File\LockType;
 
 abstract class AbstractHandleWrapper implements File\HandleInterface
 {
-    public function __construct(private File\HandleInterface $handle)
-    {
+    public function __construct(
+        private File\HandleInterface $handle,
+    ) {
     }
 
     /**

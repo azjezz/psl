@@ -31,23 +31,20 @@ trait ReadHandleConvenienceMethodsTrait
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    public function readAll(?int $max_bytes = null, ?Duration $timeout = null): string
+    public function readAll(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         $to_read = $max_bytes;
 
         /** @var Psl\Ref<string> $data */
         $data = new Psl\Ref('');
-        $timer = new Psl\Async\OptionalIncrementalTimeout(
-            $timeout,
-            static function () use ($data): void {
-                // @codeCoverageIgnoreStart
-                throw new Exception\TimeoutException(Str\format(
-                    "Reached timeout before %s data could be read.",
-                    ($data->value === '') ? 'any' : 'all',
-                ));
-                // @codeCoverageIgnoreEnd
-            },
-        );
+        $timer = new Psl\Async\OptionalIncrementalTimeout($timeout, static function () use ($data): void {
+            // @codeCoverageIgnoreStart
+            throw new Exception\TimeoutException(Str\format(
+                'Reached timeout before %s data could be read.',
+                $data->value === '' ? 'any' : 'all',
+            ));
+            // @codeCoverageIgnoreEnd
+        });
 
         do {
             $chunk_size = $to_read;
@@ -79,13 +76,13 @@ trait ReadHandleConvenienceMethodsTrait
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    public function readFixedSize(int $size, ?Duration $timeout = null): string
+    public function readFixedSize(int $size, null|Duration $timeout = null): string
     {
         $data = $this->readAll($size, $timeout);
 
         if (($length = strlen($data)) !== $size) {
             throw new Exception\RuntimeException(Str\format(
-                "%d bytes were requested, but only able to read %d bytes",
+                '%d bytes were requested, but only able to read %d bytes',
                 $size,
                 $length,
             ));

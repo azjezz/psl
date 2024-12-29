@@ -34,8 +34,16 @@ final class RangeTest extends TestCase
             ['سيف', 'مرحبا سيف', Range\between(6, 9, upper_inclusive: true)],
             ['اهلا', 'اهلا بكم', Range\between(0, 3, upper_inclusive: true)],
             ['اهلا', 'اهلا بكم', Range\between(0, 4, upper_inclusive: false)],
-            ['destiny', 'People linked by destiny will always find each other.', Range\between(17, 23, upper_inclusive: true)],
-            ['destiny', 'People linked by destiny will always find each other.', Range\between(17, 24, upper_inclusive: false)],
+            [
+                'destiny',
+                'People linked by destiny will always find each other.',
+                Range\between(17, 23, upper_inclusive: true),
+            ],
+            [
+                'destiny',
+                'People linked by destiny will always find each other.',
+                Range\between(17, 24, upper_inclusive: false),
+            ],
             ['lö ', 'héllö wôrld', Range\between(3, 5, upper_inclusive: true)],
             ['lö ', 'héllö wôrld', Range\between(3, 6, upper_inclusive: false)],
             ['lö wôrld', 'héllö wôrld', Range\from(3)],
@@ -45,7 +53,11 @@ final class RangeTest extends TestCase
             ['', 'fôo', Range\between(3, 3)],
             ['', 'fôo', Range\between(3, 12)],
             ['fôo', 'fôo', Range\full()],
-            ['he̡̙̬͎̿́̐̅̕͢', 'he̡̙̬͎̿́̐̅̕͢l͕̮͕͈̜͐̈́̇̕͠ļ͚͉̗̘̽͑̿͑̚o̼̰̼͕̞̍̄̎̿̊,̻̰̻̘́̎͒̋͘͟ ̧̬̝͈̬̿͌̿̑̕ẉ̣̟͉̮͆̊̃͐̈́ờ̢̫͎͖̹͊́͐r̨̮͓͓̣̅̋͐͐͆ḻ̩̦͚̯͑̌̓̅͒d͇̯͔̼͍͛̾͛͡͝', Range\between(0, 11, true)],
+            [
+                'he̡̙̬͎̿́̐̅̕͢',
+                'he̡̙̬͎̿́̐̅̕͢l͕̮͕͈̜͐̈́̇̕͠ļ͚͉̗̘̽͑̿͑̚o̼̰̼͕̞̍̄̎̿̊,̻̰̻̘́̎͒̋͘͟ ̧̬̝͈̬̿͌̿̑̕ẉ̣̟͉̮͆̊̃͐̈́ờ̢̫͎͖̹͊́͐r̨̮͓͓̣̅̋͐͐͆ḻ̩̦͚̯͑̌̓̅͒d͇̯͔̼͍͛̾͛͡͝',
+                Range\between(0, 11, true),
+            ],
         ];
     }
 

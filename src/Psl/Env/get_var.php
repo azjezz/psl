@@ -16,7 +16,7 @@ use function str_contains;
  *
  * @throws Psl\Exception\InvariantViolationException If $key contains an ASCII equals sign `=`, or the NUL character `\0`.
  */
-function get_var(string $key): ?string
+function get_var(string $key): null|string
 {
     if (str_contains($key, '=') || str_contains($key, "\0")) {
         Psl\invariant_violation('Invalid environment variable key provided.');

@@ -20,7 +20,7 @@ Async\main(static function (): int {
         return 0;
     }
 
-    $file = Filesystem\create_temporary_file(prefix: 'psl-examples') . ".sock";
+    $file = Filesystem\create_temporary_file(prefix: 'psl-examples') . '.sock';
 
     Async\concurrently([
         'server' => static function () use ($file): void {

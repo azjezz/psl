@@ -21,15 +21,15 @@ final class EndsWithCiTest extends TestCase
     {
         return [
             [true, 'Hello', 'Hello'],
-            [true, 'Hello, World', 'world', ],
-            [true, 'Hello, WorlḐ', 'worlḑ', ],
-            [false, 'T U N I S I A', 'e', ],
+            [true, 'Hello, World', 'world'],
+            [true, 'Hello, WorlḐ', 'worlḑ'],
+            [false, 'T U N I S I A', 'e'],
             [true, 'تونس', 'س'],
-            [false, 'Hello, World', '', ],
-            [false, 'hello, world', 'hey', ],
+            [false, 'Hello, World', ''],
+            [false, 'hello, world', 'hey'],
             [false, 'hello, world', 'hello cruel world'],
-            [true, 'azjezz', 'z', ],
-            [true, 'مرحبا بكم', 'بكم', ],
+            [true, 'azjezz', 'z'],
+            [true, 'مرحبا بكم', 'بكم'],
         ];
     }
 }

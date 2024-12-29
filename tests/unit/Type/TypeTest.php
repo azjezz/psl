@@ -43,7 +43,7 @@ abstract class TypeTest extends TestCase
     public function getValidValues(): array
     {
         $non_unique = $this->getValidCoercions();
-        $non_unique = Dict\map($non_unique, static fn ($tuple) => $tuple[1]);
+        $non_unique = Dict\map($non_unique, static fn($tuple) => $tuple[1]);
 
         $out = [];
         foreach ($non_unique as $v) {
@@ -120,7 +120,7 @@ abstract class TypeTest extends TestCase
         $this->expectException(CoercionException::class);
 
         try {
-            $ret  = $this->getType()->coerce($value);
+            $ret = $this->getType()->coerce($value);
         } catch (CoercionException $e) {
             throw $e;
         }
@@ -165,7 +165,7 @@ abstract class TypeTest extends TestCase
 
     protected function stringable(string $value): object
     {
-        return new class ($value) {
+        return new class($value) {
             private string $value;
 
             public function __construct(string $value)

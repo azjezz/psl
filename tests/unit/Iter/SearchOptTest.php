@@ -19,9 +19,9 @@ final class SearchOptTest extends TestCase
 
     public function provideDataSome(): iterable
     {
-        yield ['baz', ['foo', 'bar', 'baz'], static fn (string $v): bool => 'baz' === $v];
+        yield ['baz', ['foo', 'bar', 'baz'], static fn(string $v): bool => 'baz' === $v];
 
-        yield ['baz', Iter\to_iterator(['foo', 'bar', 'baz']), static fn (string $v): bool => 'baz' === $v];
+        yield ['baz', Iter\to_iterator(['foo', 'bar', 'baz']), static fn(string $v): bool => 'baz' === $v];
     }
     /**
      * @dataProvider provideDataNone
@@ -32,8 +32,8 @@ final class SearchOptTest extends TestCase
     }
     public function provideDataNone(): iterable
     {
-        yield [[], static fn (string $v): bool => 'qux' === $v];
-        yield [Iter\to_iterator([]), static fn (string $v): bool => 'qux' === $v];
-        yield [Iter\to_iterator(['foo', 'bar', 'baz']), static fn (string $v): bool => 'qux' === $v];
+        yield [[], static fn(string $v): bool => 'qux' === $v];
+        yield [Iter\to_iterator([]), static fn(string $v): bool => 'qux' === $v];
+        yield [Iter\to_iterator(['foo', 'bar', 'baz']), static fn(string $v): bool => 'qux' === $v];
     }
 }

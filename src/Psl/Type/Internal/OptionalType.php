@@ -23,7 +23,7 @@ final readonly class OptionalType extends Type\Type
      * @param Type\TypeInterface<T> $inner
      */
     public function __construct(
-        private Type\TypeInterface $inner
+        private Type\TypeInterface $inner,
     ) {
     }
 

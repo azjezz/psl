@@ -26,7 +26,7 @@ function reverse(iterable $iterable): array
         return [];
     }
 
-    $size   = Iter\count($values);
+    $size = Iter\count($values);
     $result = [];
     for ($i = $size - 1; $i >= 0; $i--) {
         $result[] = $values[$i];

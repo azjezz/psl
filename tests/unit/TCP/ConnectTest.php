@@ -25,12 +25,7 @@ final class ConnectTest extends TestCase
                 $server->close();
             },
             'client' => static function (): void {
-                $client = TCP\connect(
-                    '127.0.0.1',
-                    8089,
-                    TCP\ConnectOptions::create()
-                        ->withNoDelay(false)
-                );
+                $client = TCP\connect('127.0.0.1', 8089, TCP\ConnectOptions::create()->withNoDelay(false));
 
                 self::assertSame('tcp://127.0.0.1:8089', $client->getPeerAddress()->toString());
                 $client->writeAll('Hello, World!');

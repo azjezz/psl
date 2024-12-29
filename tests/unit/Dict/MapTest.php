@@ -22,11 +22,11 @@ final class MapTest extends TestCase
 
     public function provideData(): iterable
     {
-        yield [[1, 2, 3], [1, 2, 3], static fn (int $v): int => $v];
-        yield [[2, 4, 6], [1, 2, 3], static fn (int $v): int => $v * 2];
-        yield [['1', '2', '3'], [1, 2, 3], static fn (int $v): string => (string)$v];
-        yield [['1', '2', '3'], Collection\Map::fromArray([1, 2, 3]), static fn (int $v): string => (string)$v];
-        yield [[], Collection\Map::fromArray([]), static fn (int $v): string => (string)$v];
-        yield [[], [], static fn (int $v): string => (string)$v];
+        yield [[1, 2, 3], [1, 2, 3], static fn(int $v): int => $v];
+        yield [[2, 4, 6], [1, 2, 3], static fn(int $v): int => $v * 2];
+        yield [['1', '2', '3'], [1, 2, 3], static fn(int $v): string => (string) $v];
+        yield [['1', '2', '3'], Collection\Map::fromArray([1, 2, 3]), static fn(int $v): string => (string) $v];
+        yield [[], Collection\Map::fromArray([]), static fn(int $v): string => (string) $v];
+        yield [[], [], static fn(int $v): string => (string) $v];
     }
 }

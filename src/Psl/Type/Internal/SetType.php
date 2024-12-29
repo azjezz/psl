@@ -117,10 +117,6 @@ final readonly class SetType extends Type\Type
 
     public function toString(): string
     {
-        return Str\format(
-            '%s<%s>',
-            Collection\SetInterface::class,
-            $this->type->toString(),
-        );
+        return Str\format('%s<%s>', Collection\SetInterface::class, $this->type->toString());
     }
 }

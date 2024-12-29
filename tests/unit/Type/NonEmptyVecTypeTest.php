@@ -26,12 +26,12 @@ final class NonEmptyVecTypeTest extends TypeTest
     {
         yield [
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
             ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
@@ -55,18 +55,18 @@ final class NonEmptyVecTypeTest extends TypeTest
         ];
 
         yield [
-            Dict\map_keys(Vec\range(1, 10), static fn(int $key): string => (string)$key),
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            Dict\map_keys(Vec\range(1, 10), static fn(int $key): string => (string) $key),
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
             Dict\map(Vec\range(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
             ['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5],
-            [1, 2, 3, 4, 5]
+            [1, 2, 3, 4, 5],
         ];
     }
 
@@ -88,7 +88,7 @@ final class NonEmptyVecTypeTest extends TypeTest
         yield [Type\non_empty_vec(Type\string()), 'non-empty-vec<string>'];
         yield [
             Type\non_empty_vec(Type\instance_of(Iter\Iterator::class)),
-            'non-empty-vec<Psl\Iter\Iterator>'
+            'non-empty-vec<Psl\Iter\Iterator>',
         ];
     }
 
@@ -97,7 +97,7 @@ final class NonEmptyVecTypeTest extends TypeTest
         yield 'invalid assertion value' => [
             Type\vec(Type\int()),
             ['nope'],
-            'Expected "vec<int>", got "string" at path "0".'
+            'Expected "vec<int>", got "string" at path "0".',
         ];
         yield 'nested' => [
             Type\vec(Type\vec(Type\int())),
@@ -111,14 +111,14 @@ final class NonEmptyVecTypeTest extends TypeTest
         yield 'invalid coercion value' => [
             Type\vec(Type\int()),
             ['nope'],
-            'Could not coerce "string" to type "vec<int>" at path "0".'
+            'Could not coerce "string" to type "vec<int>" at path "0".',
         ];
         yield 'invalid iterator first item' => [
             Type\vec(Type\int()),
             (static function () {
                 yield Type\int()->coerce('nope');
             })(),
-            'Could not coerce "string" to type "vec<int>" at path "first()".'
+            'Could not coerce "string" to type "vec<int>" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
             Type\vec(Type\int()),
@@ -126,7 +126,7 @@ final class NonEmptyVecTypeTest extends TypeTest
                 yield 0;
                 yield Type\int()->coerce('nope');
             })(),
-            'Could not coerce "string" to type "vec<int>" at path "0.next()".'
+            'Could not coerce "string" to type "vec<int>" at path "0.next()".',
         ];
         yield 'iterator throwing exception' => [
             Type\vec(Type\int()),
@@ -134,30 +134,33 @@ final class NonEmptyVecTypeTest extends TypeTest
                 yield 0;
                 throw new RuntimeException('whoops');
             })(),
-            'Could not coerce "null" to type "vec<int>" at path "0.next()": whoops.'
+            'Could not coerce "null" to type "vec<int>" at path "0.next()": whoops.',
         ];
         yield 'iterator yielding null key' => [
             Type\vec(Type\int()),
             (static function () {
                 yield null => 'nope';
             })(),
-            'Could not coerce "string" to type "vec<int>" at path "null".'
+            'Could not coerce "string" to type "vec<int>" at path "null".',
         ];
         yield 'iterator yielding object key' => [
             Type\vec(Type\int()),
             (static function () {
-                yield (new class () {
-                }) => 'nope';
+                yield new class() {
+                } => 'nope';
             })(),
-            'Could not coerce "string" to type "vec<int>" at path "class@anonymous".'
+            'Could not coerce "string" to type "vec<int>" at path "class@anonymous".',
         ];
     }
 
     /**
      * @dataProvider provideAssertExceptionExpectations
      */
-    public function testInvalidAssertionTypeExceptions(Type\TypeInterface $type, mixed $data, string $expectedMessage): void
-    {
+    public function testInvalidAssertionTypeExceptions(
+        Type\TypeInterface $type,
+        mixed $data,
+        string $expectedMessage,
+    ): void {
         try {
             $type->assert($data);
             static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
@@ -169,8 +172,11 @@ final class NonEmptyVecTypeTest extends TypeTest
     /**
      * @dataProvider provideCoerceExceptionExpectations
      */
-    public function testInvalidCoercionTypeExceptions(Type\TypeInterface $type, mixed $data, string $expectedMessage): void
-    {
+    public function testInvalidCoercionTypeExceptions(
+        Type\TypeInterface $type,
+        mixed $data,
+        string $expectedMessage,
+    ): void {
         try {
             $type->coerce($data);
             static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\CoercionException::class));

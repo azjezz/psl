@@ -37,10 +37,7 @@ function write(string $file, string $content, WriteMode $mode = WriteMode::OpenO
         clearstatcache();
     } catch (IO\Exception\ExceptionInterface $previous) {
         // @codeCoverageIgnoreStart
-        throw new Exception\RuntimeException(Str\format(
-            'Failed to write to file "%s".',
-            $file,
-        ), 0, $previous);
+        throw new Exception\RuntimeException(Str\format('Failed to write to file "%s".', $file), 0, $previous);
         // @codeCoverageIgnoreEnd
     }
 }

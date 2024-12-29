@@ -23,12 +23,7 @@ function decode(string $json, bool $assoc = true): mixed
 {
     try {
         /** @var mixed $value */
-        $value = json_decode(
-            $json,
-            $assoc,
-            512,
-            JSON_BIGINT_AS_STRING | JSON_THROW_ON_ERROR,
-        );
+        $value = json_decode($json, $assoc, 512, JSON_BIGINT_AS_STRING | JSON_THROW_ON_ERROR);
     } catch (JsonException $e) {
         throw new Exception\DecodeException(Str\format('%s.', $e->getMessage()), $e->getCode(), $e);
     }

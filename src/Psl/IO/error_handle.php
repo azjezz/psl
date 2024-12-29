@@ -17,7 +17,7 @@ use const PHP_SAPI;
  *
  * @codeCoverageIgnore
  */
-function error_handle(): ?CloseWriteStreamHandleInterface
+function error_handle(): null|CloseWriteStreamHandleInterface
 {
     /** @var WeakMap|null $cache */
     static $cache = null;
@@ -32,10 +32,8 @@ function error_handle(): ?CloseWriteStreamHandleInterface
     }
 
     $handle = null;
-    if (PHP_SAPI === "cli") {
-        $handle = new CloseWriteStreamHandle(
-            Internal\open_resource('php://stderr', 'wb')
-        );
+    if (PHP_SAPI === 'cli') {
+        $handle = new CloseWriteStreamHandle(Internal\open_resource('php://stderr', 'wb'));
     }
 
     $cache->offsetSet($key, $handle);

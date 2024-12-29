@@ -617,7 +617,7 @@ final class MutableSet implements MutableSetInterface
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, ?int $length = null): MutableSet
+    public function slice(int $start, null|int $length = null): MutableSet
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return MutableSet::fromArray(Dict\slice($this->elements, $start, $length));
@@ -654,7 +654,7 @@ final class MutableSet implements MutableSetInterface
              *
              * @return MutableSet<T>
              */
-            static fn(array $chunk) => MutableSet::fromArray($chunk)
+            static fn(array $chunk) => MutableSet::fromArray($chunk),
         ));
     }
 
@@ -674,7 +674,9 @@ final class MutableSet implements MutableSetInterface
     public function offsetExists(mixed $offset): bool
     {
         if (!is_int($offset) && !is_string($offset)) {
-            throw new Exception\InvalidOffsetException('Invalid set read offset type, expected a string or an integer.');
+            throw new Exception\InvalidOffsetException(
+                'Invalid set read offset type, expected a string or an integer.',
+            );
         }
 
         /** @var T $offset - technically, we don't know if the offset is of type T, but we can assume it is, as this causes no "harm". */
@@ -698,7 +700,9 @@ final class MutableSet implements MutableSetInterface
     public function offsetGet(mixed $offset): mixed
     {
         if (!is_int($offset) && !is_string($offset)) {
-            throw new Exception\InvalidOffsetException('Invalid set read offset type, expected a string or an integer.');
+            throw new Exception\InvalidOffsetException(
+                'Invalid set read offset type, expected a string or an integer.',
+            );
         }
 
         /** @var T $offset - technically, we don't know if the offset is of type T, but we can assume it is, as this causes no "harm". */
@@ -725,7 +729,9 @@ final class MutableSet implements MutableSetInterface
             return;
         }
 
-        throw new Exception\InvalidOffsetException('Invalid set write offset type, expected null or the same as the value.');
+        throw new Exception\InvalidOffsetException(
+            'Invalid set write offset type, expected null or the same as the value.',
+        );
     }
 
     /**
@@ -742,7 +748,9 @@ final class MutableSet implements MutableSetInterface
     public function offsetUnset(mixed $offset): void
     {
         if (!is_int($offset) && !is_string($offset)) {
-            throw new Exception\InvalidOffsetException('Invalid set read offset type, expected a string or an integer.');
+            throw new Exception\InvalidOffsetException(
+                'Invalid set read offset type, expected a string or an integer.',
+            );
         }
 
         /** @var T $offset - technically, we don't know if the offset is of type T, but we can assume it is, as this causes no "harm". */

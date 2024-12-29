@@ -23,10 +23,7 @@ function test(): void
         Type\instance_of(Map::class),
         Type\intersection(
             Type\instance_of(ResultInterface::class),
-            Type\intersection(
-                Type\instance_of(stdClass::class),
-                Type\instance_of(Vector::class),
-            )
+            Type\intersection(Type\instance_of(stdClass::class), Type\instance_of(Vector::class)),
         ),
     );
 

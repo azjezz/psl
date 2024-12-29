@@ -60,7 +60,7 @@ final readonly class ServerOptions implements DefaultInterface
     public static function create(
         bool $no_delay = false,
         int $idle_connections = self::DEFAULT_IDLE_CONNECTIONS,
-        ?Network\SocketOptions $socket_options = null,
+        null|Network\SocketOptions $socket_options = null,
     ): ServerOptions {
         return new self($no_delay, $idle_connections, $socket_options ?? Network\SocketOptions::default());
     }

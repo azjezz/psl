@@ -23,7 +23,7 @@ final readonly class UnitEnumType extends Type\Type
      * @param class-string<T> $enum
      */
     public function __construct(
-        private readonly string $enum
+        private readonly string $enum,
     ) {
     }
 

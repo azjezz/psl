@@ -21,16 +21,12 @@ abstract class Exception extends RuntimeException implements ExceptionInterface
     /**
      * @param list<string> $paths
      */
-    protected function __construct(
-        string $message,
-        string $actual,
-        array $paths,
-        ?Throwable $previous = null
-    ) {
+    protected function __construct(string $message, string $actual, array $paths, null|Throwable $previous = null)
+    {
         parent::__construct($message, 0, $previous);
 
         $this->paths = $paths;
-        $this->first = $previous instanceof self ? $previous->first : $actual;
+        $this->first = ($previous instanceof self) ? $previous->first : $actual;
         $this->actual = $actual;
     }
 

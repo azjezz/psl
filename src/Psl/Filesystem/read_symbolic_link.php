@@ -34,7 +34,7 @@ function read_symbolic_link(string $symbolic_link): string
         /**
          * @return false|string
          */
-        static fn() => readlink($symbolic_link)
+        static fn() => readlink($symbolic_link),
     );
 
     // @codeCoverageIgnoreStart
@@ -42,7 +42,7 @@ function read_symbolic_link(string $symbolic_link): string
         throw new Exception\RuntimeException(Str\format(
             'Failed to retrieve the target of symbolic link "%s": %s',
             $symbolic_link,
-            $message ?? 'internal error'
+            $message ?? 'internal error',
         ));
     }
     // @codeCoverageIgnoreEnd

@@ -23,26 +23,23 @@ final class ToBaseTest extends TestCase
             [
                 '1010101111001',
                 5497,
-                2
+                2,
             ],
-
             [
                 'pphlmw9v',
                 2014587925987,
-                36
+                36,
             ],
-
             [
                 'zik0zj',
                 Math\INT32_MAX,
-                36
+                36,
             ],
-
             [
                 'f',
                 15,
-                16
-            ]
+                16,
+            ],
         ];
     }
 }

@@ -15,13 +15,16 @@ final class TypedTest extends TestCase
     public function testTyped(): void
     {
         /** @var MapInterface $actual */
-        $actual = Json\typed('{
+        $actual = Json\typed(
+            '{
             "name": "azjezz/psl",
             "type": "library",
             "description": "PHP Standard Library.",
             "keywords": ["php", "std", "stdlib", "utility", "psl"],
             "license": "MIT"
-        }', Type\map(Type\string(), Type\union(Type\string(), Type\vector(Type\string()))));
+        }',
+            Type\map(Type\string(), Type\union(Type\string(), Type\vector(Type\string()))),
+        );
 
         static::assertInstanceOf(MapInterface::class, $actual);
         static::assertCount(5, $actual);
@@ -35,10 +38,7 @@ final class TypedTest extends TestCase
 
     public function testTypedVector(): void
     {
-        $actual = Json\typed(
-            '["php", "std", "stdlib", "utility", "psl"]',
-            Type\vector(Type\string())
-        );
+        $actual = Json\typed('["php", "std", "stdlib", "utility", "psl"]', Type\vector(Type\string()));
 
         static::assertInstanceOf(VectorInterface::class, $actual);
         static::assertSame(['php', 'std', 'stdlib', 'utility', 'psl'], $actual->toArray());
@@ -47,15 +47,20 @@ final class TypedTest extends TestCase
     public function testTypedThrowsWhenUnableToCoerce(): void
     {
         $this->expectException(Json\Exception\DecodeException::class);
-        $this->expectExceptionMessage('Could not coerce "string" to type "' . MapInterface::class . '<string, int>" at path "name".');
+        $this->expectExceptionMessage(
+            'Could not coerce "string" to type "' . MapInterface::class . '<string, int>" at path "name".',
+        );
 
-        Json\typed('{
+        Json\typed(
+            '{
             "name": "azjezz/psl",
             "type": "library",
             "description": "PHP Standard Library.",
             "keywords": ["php", "std", "stdlib", "utility", "psl"],
             "license": "MIT"
-        }', Type\map(Type\string(), Type\int()));
+        }',
+            Type\map(Type\string(), Type\int()),
+        );
     }
 
     public function testsTypedAsserts(): void

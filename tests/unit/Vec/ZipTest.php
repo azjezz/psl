@@ -22,7 +22,7 @@ final class ZipTest extends TestCase
         yield [
             [['foo', 'baz'], ['bar', 'qux']],
             ['foo', 'bar'],
-            ['baz', 'qux']
+            ['baz', 'qux'],
         ];
 
         yield [

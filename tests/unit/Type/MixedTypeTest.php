@@ -47,8 +47,11 @@ final class MixedTypeTest extends TypeTest
         yield [1, 1];
         yield [true, true];
         yield [[], []];
-        yield [$_ = new class {
-        }, $_];
+        yield [
+            $_ = new class {
+            },
+            $_,
+        ];
         yield [null, null];
         yield [STDIN, STDIN];
     }

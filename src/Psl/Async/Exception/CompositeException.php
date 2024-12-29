@@ -23,7 +23,7 @@ final class CompositeException extends Exception implements ExceptionInterface
      * @param non-empty-array<array-key, Throwable> $reasons Array of exceptions.
      * @param string|null $message Exception message, defaults to message generated from passed exceptions.
      */
-    public function __construct(array $reasons, ?string $message = null)
+    public function __construct(array $reasons, null|string $message = null)
     {
         parent::__construct($message ?? $this->generateMessage($reasons));
 
@@ -43,7 +43,11 @@ final class CompositeException extends Exception implements ExceptionInterface
      */
     private function generateMessage(array $reasons): string
     {
-        $message = Str\format('"Multiple errors encountered (%d); use "%s::getReasons()" to retrieve the array of exceptions thrown:', count($reasons), self::class);
+        $message = Str\format(
+            '"Multiple errors encountered (%d); use "%s::getReasons()" to retrieve the array of exceptions thrown:',
+            count($reasons),
+            self::class,
+        );
 
         foreach ($reasons as $reason) {
             $message .= PHP_EOL . PHP_EOL . $reason::class;

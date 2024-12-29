@@ -29,9 +29,9 @@ use function levenshtein as php_levenshtien;
 function levenshtein(
     string $source,
     string $target,
-    ?int $cost_of_insertion = null,
-    ?int $cost_of_replacement = null,
-    ?int $cost_of_deletion = null
+    null|int $cost_of_insertion = null,
+    null|int $cost_of_replacement = null,
+    null|int $cost_of_deletion = null,
 ): int {
     if (null === $cost_of_deletion && null === $cost_of_insertion && null === $cost_of_replacement) {
         return php_levenshtien($source, $target);
@@ -40,7 +40,7 @@ function levenshtein(
     // https://github.com/php/php-src/blob/623911f993f39ebbe75abe2771fc89faf6b15b9b/ext/standard/levenshtein.c#L101
     Psl\invariant(
         null !== $cost_of_deletion && null !== $cost_of_insertion && null !== $cost_of_replacement,
-        'Expected either all costs to be supplied, or non.'
+        'Expected either all costs to be supplied, or non.',
     );
 
     return php_levenshtien($source, $target, $cost_of_insertion, $cost_of_replacement, $cost_of_deletion);

@@ -222,7 +222,7 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, ?int $length = null): MutableAccessibleCollectionInterface;
+    public function slice(int $start, null|int $length = null): MutableAccessibleCollectionInterface;
 
     /**
      * Returns a `MutableAccessibleCollectionInterface` containing the original `MutableAccessibleCollectionInterface` split into

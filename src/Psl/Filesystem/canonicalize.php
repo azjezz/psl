@@ -12,7 +12,7 @@ use function realpath;
  *
  * @return non-empty-string|null
  */
-function canonicalize(string $path): ?string
+function canonicalize(string $path): null|string
 {
     $path = realpath($path);
 

@@ -24,7 +24,7 @@ final class ChrTest extends TestCase
             ['0', 48],
             ['&', 38],
             ['\'', 1575],
-            ['A', 65]
+            ['A', 65],
         ];
     }
 }

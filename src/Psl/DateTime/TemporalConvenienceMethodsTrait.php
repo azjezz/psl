@@ -282,16 +282,20 @@ trait TemporalConvenienceMethodsTrait
      *
      * @psalm-mutation-free
      */
-    public function format(null|FormatPattern|string $pattern = null, null|Timezone $timezone = null, null|Locale $locale = null): string
-    {
+    public function format(
+        null|FormatPattern|string $pattern = null,
+        null|Timezone $timezone = null,
+        null|Locale $locale = null,
+    ): string {
         $timestamp = $this->getTimestamp();
 
         /**
          * @psalm-suppress InvalidOperand
          * @psalm-suppress ImpureMethodCall
          */
-        return Internal\create_intl_date_formatter(null, null, $pattern, $timezone, $locale)
-            ->format($timestamp->getSeconds() + ($timestamp->getNanoseconds() / NANOSECONDS_PER_SECOND));
+        return Internal\create_intl_date_formatter(null, null, $pattern, $timezone, $locale)->format(
+            $timestamp->getSeconds() + ($timestamp->getNanoseconds() / NANOSECONDS_PER_SECOND),
+        );
     }
 
     /**
@@ -321,7 +325,7 @@ trait TemporalConvenienceMethodsTrait
      *
      * @psalm-mutation-free
      */
-    public function toRfc3339(?SecondsStyle $seconds_style = null, bool $use_z = false): string
+    public function toRfc3339(null|SecondsStyle $seconds_style = null, bool $use_z = false): string
     {
         return Internal\format_rfc3339($this->getTimestamp(), $seconds_style, $use_z);
     }
@@ -353,16 +357,21 @@ trait TemporalConvenienceMethodsTrait
      *
      * @psalm-mutation-free
      */
-    public function toString(null|DateStyle $date_style = null, null|TimeStyle $time_style = null, null|Timezone $timezone = null, null|Locale $locale = null): string
-    {
+    public function toString(
+        null|DateStyle $date_style = null,
+        null|TimeStyle $time_style = null,
+        null|Timezone $timezone = null,
+        null|Locale $locale = null,
+    ): string {
         $timestamp = $this->getTimestamp();
 
         /**
          * @psalm-suppress InvalidOperand
          * @psalm-suppress ImpureMethodCall
          */
-        return Internal\create_intl_date_formatter($date_style, $time_style, null, $timezone, $locale)
-            ->format($timestamp->getSeconds() + ($timestamp->getNanoseconds() / NANOSECONDS_PER_SECOND));
+        return Internal\create_intl_date_formatter($date_style, $time_style, null, $timezone, $locale)->format(
+            $timestamp->getSeconds() + ($timestamp->getNanoseconds() / NANOSECONDS_PER_SECOND),
+        );
     }
 
     /**

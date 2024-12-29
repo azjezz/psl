@@ -12,7 +12,7 @@ final class WordsTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testWords(array $expected, string $string, ?string $extra_chars = null): void
+    public function testWords(array $expected, string $string, null|string $extra_chars = null): void
     {
         static::assertSame($expected, Byte\words($string, $extra_chars));
     }

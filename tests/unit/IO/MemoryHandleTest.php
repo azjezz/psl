@@ -116,7 +116,7 @@ final class MemoryHandleTest extends TestCase
 
     public function testReadTooMuch(): void
     {
-        $h = new IO\MemoryHandle("herpderp");
+        $h = new IO\MemoryHandle('herpderp');
 
         $this->expectException(IO\Exception\RuntimeException::class);
         $this->expectExceptionMessage('Reached end of file before requested size.');

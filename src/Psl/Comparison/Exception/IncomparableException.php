@@ -14,13 +14,11 @@ class IncomparableException extends InvalidArgumentRootException implements Exce
 {
     public static function fromValues(mixed $a, mixed $b, string $additionalInfo = ''): self
     {
-        return new self(
-            Str\format(
-                'Unable to compare "%s" with "%s"%s',
-                get_debug_type($a),
-                get_debug_type($b),
-                $additionalInfo ? ': ' . $additionalInfo : '.',
-            )
-        );
+        return new self(Str\format(
+            'Unable to compare "%s" with "%s"%s',
+            get_debug_type($a),
+            get_debug_type($b),
+            $additionalInfo ? (': ' . $additionalInfo) : '.',
+        ));
     }
 }

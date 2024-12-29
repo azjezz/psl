@@ -22,11 +22,11 @@ function splice(
     string $string,
     string $replacement,
     int $offset = 0,
-    ?int $length = null,
-    Encoding $encoding = Encoding::Utf8
+    null|int $length = null,
+    Encoding $encoding = Encoding::Utf8,
 ): string {
     $total_length = length($string, $encoding);
-    $offset       = Internal\validate_offset($offset, $total_length);
+    $offset = Internal\validate_offset($offset, $total_length);
 
     if (null === $length || ($offset + $length) >= $total_length) {
         return slice($string, 0, $offset, $encoding) . $replacement;

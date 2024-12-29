@@ -65,8 +65,17 @@ final readonly class DateTime implements DateTimeInterface
      *
      * @psalm-mutation-free
      */
-    private function __construct(Timezone $timezone, Timestamp $timestamp, int $year, int $month, int $day, int $hours, int $minutes, int $seconds, int $nanoseconds)
-    {
+    private function __construct(
+        Timezone $timezone,
+        Timestamp $timestamp,
+        int $year,
+        int $month,
+        int $day,
+        int $hours,
+        int $minutes,
+        int $seconds,
+        int $nanoseconds,
+    ) {
         if ($nanoseconds < 0 || $nanoseconds >= NANOSECONDS_PER_SECOND) {
             throw Exception\InvalidArgumentException::forNanoseconds($nanoseconds);
         }
@@ -112,7 +121,7 @@ final readonly class DateTime implements DateTimeInterface
      *
      * @psalm-mutation-free
      */
-    public static function now(?Timezone $timezone = null): DateTime
+    public static function now(null|Timezone $timezone = null): DateTime
     {
         return self::fromTimestamp(Timestamp::now(), $timezone);
     }
@@ -137,8 +146,13 @@ final readonly class DateTime implements DateTimeInterface
      *
      * @psalm-mutation-free
      */
-    public static function todayAt(int $hours, int $minutes, int $seconds = 0, int $nanoseconds = 0, ?Timezone $timezone = null): DateTime
-    {
+    public static function todayAt(
+        int $hours,
+        int $minutes,
+        int $seconds = 0,
+        int $nanoseconds = 0,
+        null|Timezone $timezone = null,
+    ): DateTime {
         return self::now($timezone)->withTime($hours, $minutes, $seconds, $nanoseconds);
     }
 
@@ -166,13 +180,29 @@ final readonly class DateTime implements DateTimeInterface
      *
      * @psalm-suppress ImpureMethodCall
      */
-    public static function fromParts(Timezone $timezone, int $year, Month|int $month, int $day, int $hours = 0, int $minutes = 0, int $seconds = 0, int $nanoseconds = 0): self
-    {
+    public static function fromParts(
+        Timezone $timezone,
+        int $year,
+        Month|int $month,
+        int $day,
+        int $hours = 0,
+        int $minutes = 0,
+        int $seconds = 0,
+        int $nanoseconds = 0,
+    ): self {
         if ($month instanceof Month) {
             $month = $month->value;
         }
 
-        $calendar = Internal\create_intl_calendar_from_date_time($timezone, $year, $month, $day, $hours, $minutes, $seconds);
+        $calendar = Internal\create_intl_calendar_from_date_time(
+            $timezone,
+            $year,
+            $month,
+            $day,
+            $hours,
+            $minutes,
+            $seconds,
+        );
 
         if ($seconds !== $calendar->get(IntlCalendar::FIELD_SECOND)) {
             throw Exception\UnexpectedValueException::forSeconds($seconds, $calendar->get(IntlCalendar::FIELD_SECOND));
@@ -203,17 +233,7 @@ final readonly class DateTime implements DateTimeInterface
         $timestamp = Timestamp::fromParts($timestamp_in_seconds, $nanoseconds);
 
         /** @psalm-suppress MissingThrowsDocblock */
-        return new self(
-            $timezone,
-            $timestamp,
-            $year,
-            $month,
-            $day,
-            $hours,
-            $minutes,
-            $seconds,
-            $nanoseconds
-        );
+        return new self($timezone, $timestamp, $year, $month, $day, $hours, $minutes, $seconds, $nanoseconds);
     }
 
     /**
@@ -229,18 +249,14 @@ final readonly class DateTime implements DateTimeInterface
      *
      * @psalm-suppress ImpureMethodCall
      */
-    public static function fromTimestamp(Timestamp $timestamp, ?Timezone $timezone = null): static
+    public static function fromTimestamp(Timestamp $timestamp, null|Timezone $timezone = null): static
     {
         $timezone ??= Timezone::default();
 
         /** @var IntlCalendar $calendar */
-        $calendar = IntlCalendar::createInstance(
-            Internal\to_intl_timezone($timezone),
-        );
+        $calendar = IntlCalendar::createInstance(Internal\to_intl_timezone($timezone));
 
-        $calendar->setTime(
-            $timestamp->getSeconds() * MILLISECONDS_PER_SECOND,
-        );
+        $calendar->setTime($timestamp->getSeconds() * MILLISECONDS_PER_SECOND);
 
         $year = $calendar->get(IntlCalendar::FIELD_YEAR);
         $month = $calendar->get(IntlCalendar::FIELD_MONTH) + 1;
@@ -251,19 +267,8 @@ final readonly class DateTime implements DateTimeInterface
         $nanoseconds = $timestamp->getNanoseconds();
 
         /** @psalm-suppress MissingThrowsDocblock */
-        return new static(
-            $timezone,
-            $timestamp,
-            $year,
-            $month,
-            $day,
-            $hour,
-            $minute,
-            $second,
-            $nanoseconds,
-        );
+        return new static($timezone, $timestamp, $year, $month, $day, $hour, $minute, $second, $nanoseconds);
     }
-
 
     /**
      * Parses a date and time string into an instance of {@see Timestamp} using a specific format pattern, with optional customization for timezone and locale.
@@ -295,8 +300,12 @@ final readonly class DateTime implements DateTimeInterface
      *
      * @psalm-mutation-free
      */
-    public static function parse(string $raw_string, null|FormatPattern|string $pattern = null, ?Timezone $timezone = null, null|Locale $locale = null): static
-    {
+    public static function parse(
+        string $raw_string,
+        null|FormatPattern|string $pattern = null,
+        null|Timezone $timezone = null,
+        null|Locale $locale = null,
+    ): static {
         $timezone ??= Timezone::default();
 
         return self::fromTimestamp(Timestamp::parse($raw_string, $pattern, $timezone, $locale), $timezone);
@@ -334,11 +343,19 @@ final readonly class DateTime implements DateTimeInterface
      *
      * @psalm-mutation-free
      */
-    public static function fromString(string $raw_string, null|DateStyle $date_style = null, null|TimeStyle $time_style = null, null|Timezone $timezone = null, null|Locale $locale = null): static
-    {
+    public static function fromString(
+        string $raw_string,
+        null|DateStyle $date_style = null,
+        null|TimeStyle $time_style = null,
+        null|Timezone $timezone = null,
+        null|Locale $locale = null,
+    ): static {
         $timezone ??= Timezone::default();
 
-        return self::fromTimestamp(Timestamp::fromString($raw_string, $date_style, $time_style, $timezone, $locale), $timezone);
+        return self::fromTimestamp(
+            Timestamp::fromString($raw_string, $date_style, $time_style, $timezone, $locale),
+            $timezone,
+        );
     }
 
     /**

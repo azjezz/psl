@@ -26,7 +26,7 @@ function chunk_with_keys(iterable $iterable, int $size): array
     $ii = 0;
     $chunk_number = -1;
     foreach ($iterable as $k => $value) {
-        if ($ii % $size === 0) {
+        if (($ii % $size) === 0) {
             $result[] = [];
             $chunk_number++;
         }

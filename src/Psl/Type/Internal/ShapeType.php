@@ -45,7 +45,7 @@ final readonly class ShapeType extends Type\Type
         /** @psalm-suppress ImpureFunctionCall - This implementation is pure. */
         $this->requiredElements = array_filter(
             $elements_types,
-            static fn (Type\TypeInterface $element): bool => ! $element->isOptional()
+            static fn(Type\TypeInterface $element): bool => !$element->isOptional(),
         );
     }
 
@@ -61,7 +61,7 @@ final readonly class ShapeType extends Type\Type
         }
 
         // To whom reads this: yes, I hate this stuff as passionately as you do :-)
-        if (! is_array($value)) {
+        if (!is_array($value)) {
             // Fallback to slow implementation - unhappy path
             return $this->coerceIterable($value);
         }
@@ -71,7 +71,7 @@ final readonly class ShapeType extends Type\Type
             return $this->coerceIterable($value);
         }
 
-        if (! $this->allow_unknown_fields && array_keys($value) !== array_keys($this->elements_types)) {
+        if (!$this->allow_unknown_fields && array_keys($value) !== array_keys($this->elements_types)) {
             // Fallback to slow implementation - unhappy path
             return $this->coerceIterable($value);
         }
@@ -104,7 +104,7 @@ final readonly class ShapeType extends Type\Type
      */
     private function coerceIterable(mixed $value): array
     {
-        if (! is_iterable($value)) {
+        if (!is_iterable($value)) {
             throw CoercionException::withValue($value, $this->toString());
         }
 
@@ -124,7 +124,6 @@ final readonly class ShapeType extends Type\Type
         } catch (Throwable $e) {
             throw CoercionException::withValue(null, $this->toString(), PathExpression::iteratorError($k), $e);
         }
-
 
         $result = [];
         $element = null;
@@ -148,8 +147,13 @@ final readonly class ShapeType extends Type\Type
             }
         } catch (CoercionException $e) {
             throw match (true) {
-                $element_value_found => CoercionException::withValue($array[$element] ?? null, $this->toString(), PathExpression::path($element), $e),
-                default => $e
+                $element_value_found => CoercionException::withValue(
+                    $array[$element] ?? null,
+                    $this->toString(),
+                    PathExpression::path($element),
+                    $e,
+                ),
+                default => $e,
             };
         }
 
@@ -174,7 +178,7 @@ final readonly class ShapeType extends Type\Type
      */
     public function assert(mixed $value): array
     {
-        if (! is_array($value)) {
+        if (!is_array($value)) {
             throw AssertException::withValue($value, $this->toString());
         }
 
@@ -200,8 +204,13 @@ final readonly class ShapeType extends Type\Type
             }
         } catch (AssertException $e) {
             throw match (true) {
-                $element_value_found => AssertException::withValue($value[$element] ?? null, $this->toString(), PathExpression::path($element), $e),
-                default => $e
+                $element_value_found => AssertException::withValue(
+                    $value[$element] ?? null,
+                    $this->toString(),
+                    PathExpression::path($element),
+                    $e,
+                ),
+                default => $e,
             };
         }
 
@@ -214,11 +223,7 @@ final readonly class ShapeType extends Type\Type
                 if ($this->allow_unknown_fields) {
                     $result[$k] = $v;
                 } else {
-                    throw AssertException::withValue(
-                        $v,
-                        $this->toString(),
-                        PathExpression::path($k)
-                    );
+                    throw AssertException::withValue($v, $this->toString(), PathExpression::path($k));
                 }
             }
         }
@@ -234,10 +239,7 @@ final readonly class ShapeType extends Type\Type
     {
         $nodes = [];
         foreach ($this->elements_types as $element => $type) {
-            $nodes[] = $this->getElementName($element)
-                . ($type->isOptional() ? '?' : '')
-                . ': '
-                . $type->toString();
+            $nodes[] = $this->getElementName($element) . ($type->isOptional() ? '?' : '') . ': ' . $type->toString();
         }
 
         return 'array{' . implode(', ', $nodes) . '}';
@@ -245,8 +247,6 @@ final readonly class ShapeType extends Type\Type
 
     private function getElementName(string|int $element): string
     {
-        return is_int($element)
-            ? (string) $element
-            : '\'' . $element . '\'';
+        return is_int($element) ? ((string) $element) : ('\'' . $element . '\'');
     }
 }

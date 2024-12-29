@@ -19,12 +19,12 @@ final class SearchTest extends TestCase
 
     public function provideData(): iterable
     {
-        yield ['baz', ['foo', 'bar', 'baz'], static fn (string $v): bool => 'baz' === $v];
-        yield [null, ['foo', 'bar', 'baz'], static fn (string $v): bool => 'qux' === $v];
-        yield [null, [], static fn (string $v): bool => 'qux' === $v];
+        yield ['baz', ['foo', 'bar', 'baz'], static fn(string $v): bool => 'baz' === $v];
+        yield [null, ['foo', 'bar', 'baz'], static fn(string $v): bool => 'qux' === $v];
+        yield [null, [], static fn(string $v): bool => 'qux' === $v];
 
-        yield ['baz', Iter\to_iterator(['foo', 'bar', 'baz']), static fn (string $v): bool => 'baz' === $v];
-        yield [null, Iter\to_iterator(['foo', 'bar', 'baz']), static fn (string $v): bool => 'qux' === $v];
-        yield [null, Iter\to_iterator([]), static fn (string $v): bool => 'qux' === $v];
+        yield ['baz', Iter\to_iterator(['foo', 'bar', 'baz']), static fn(string $v): bool => 'baz' === $v];
+        yield [null, Iter\to_iterator(['foo', 'bar', 'baz']), static fn(string $v): bool => 'qux' === $v];
+        yield [null, Iter\to_iterator([]), static fn(string $v): bool => 'qux' === $v];
     }
 }

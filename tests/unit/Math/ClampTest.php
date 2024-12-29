@@ -32,43 +32,43 @@ final class ClampTest extends TestCase
                 'expected' => 10,
                 'number' => 10,
                 'min' => 2,
-                'max' => 20
+                'max' => 20,
             ],
             [
                 'expected' => 10,
                 'number' => 20,
                 'min' => 1,
-                'max' => 10
+                'max' => 10,
             ],
             [
                 'expected' => 10,
                 'number' => 5,
                 'min' => 10,
-                'max' => 20
+                'max' => 20,
             ],
             [
                 'expected' => 10,
                 'number' => 10,
                 'min' => 10,
-                'max' => 20
+                'max' => 20,
             ],
             [
                 'expected' => 10,
                 'number' => 10,
                 'min' => 1,
-                'max' => 10
+                'max' => 10,
             ],
             [
                 'expected' => 10,
                 'number' => 20,
                 'min' => 10,
-                'max' => 10
+                'max' => 10,
             ],
             [
                 'expected' => 10.0,
                 'number' => 10.0,
                 'min' => 2.0,
-                'max' => 20.0
+                'max' => 20.0,
             ],
         ];
     }

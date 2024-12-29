@@ -20,7 +20,7 @@ use function mb_stripos;
  *
  * @return null|int<0, max>
  */
-function search_ci(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::Utf8): ?int
+function search_ci(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::Utf8): null|int
 {
     if ('' === $needle) {
         return null;
@@ -29,7 +29,5 @@ function search_ci(string $haystack, string $needle, int $offset = 0, Encoding $
     $offset = Internal\validate_offset($offset, length($haystack, $encoding));
 
     /** @var null|int<0, max> */
-    return false === ($pos = mb_stripos($haystack, $needle, $offset, $encoding->value)) ?
-        null :
-        $pos;
+    return false === ($pos = mb_stripos($haystack, $needle, $offset, $encoding->value)) ? null : $pos;
 }

@@ -13,7 +13,7 @@ final class SliceTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testSlice(string $expected, string $string, int $offset, ?int $length = null): void
+    public function testSlice(string $expected, string $string, int $offset, null|int $length = null): void
     {
         static::assertSame($expected, Byte\slice($string, $offset, $length));
     }
@@ -21,7 +21,7 @@ final class SliceTest extends TestCase
     public function provideData(): array
     {
         return [
-            ['', '', 0, 0, ],
+            ['', '', 0, 0],
             ['Hello', 'Hello, World!', 0, 5],
             ['Hello, World!', 'Hello, World!', 0],
             ['World', 'Hello, World!', 7, 5],

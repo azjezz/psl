@@ -16,13 +16,11 @@ use Psl\Type;
  */
 function capture_groups(array $groups): Type\TypeInterface
 {
-    return Type\shape(
-        Dict\from_keys(
-            Dict\unique([0, ...$groups]),
-            /**
-             * @return Type\TypeInterface<string>
-             */
-            static fn(): Type\TypeInterface => Type\string()
-        )
-    );
+    return Type\shape(Dict\from_keys(
+        Dict\unique([0, ...$groups]),
+        /**
+         * @return Type\TypeInterface<string>
+         */
+        static fn(): Type\TypeInterface => Type\string(),
+    ));
 }

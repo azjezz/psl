@@ -14,14 +14,14 @@ final class FailedExecutionExceptionTest extends TestCase
         $exception = new Exception\FailedExecutionException('foo', 'bar', 'baz', 4);
 
         $message = <<<MESSAGE
-Shell command "foo" returned an exit code of "4".
+        Shell command "foo" returned an exit code of "4".
 
-STDOUT:
-    bar
+        STDOUT:
+            bar
 
-STDERR:
-    baz
-MESSAGE;
+        STDERR:
+            baz
+        MESSAGE;
 
         static::assertSame($message, $exception->getMessage());
         static::assertSame('foo', $exception->getCommand());

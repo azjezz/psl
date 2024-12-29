@@ -12,7 +12,7 @@ final class SplitTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testSplit(array $expected, string $subject, string $pattern, ?int $limit = null): void
+    public function testSplit(array $expected, string $subject, string $pattern, null|int $limit = null): void
     {
         static::assertSame($expected, Regex\split($subject, $pattern, $limit));
     }
@@ -22,26 +22,26 @@ final class SplitTest extends TestCase
         yield [
             ['hello'],
             'hello',
-            "/[\s,]+/"
+            "/[\s,]+/",
         ];
 
         yield [
             ['php', 'standard', 'library'],
             'php standard library',
-            "/[\s,]+/"
+            "/[\s,]+/",
         ];
 
         yield [
             ['p', 'h', 'p', ' ', 's', 't', 'a', 'n', 'd', 'a', 'r', 'd', ' ', 'l', 'i', 'b', 'r', 'a', 'r', 'y'],
             'php standard library',
-            "//"
+            '//',
         ];
 
         yield [
             ['p', 'h', 'p', ' ', 'standard library'],
             'php standard library',
-            "//",
-            5
+            '//',
+            5,
         ];
     }
 

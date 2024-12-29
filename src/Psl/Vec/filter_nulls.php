@@ -25,6 +25,6 @@ function filter_nulls(iterable $iterable): array
         /**
          * @param T|null $value
          */
-        static fn($value): bool => null !== $value
+        static fn($value): bool => null !== $value,
     );
 }

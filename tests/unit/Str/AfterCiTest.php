@@ -13,11 +13,11 @@ final class AfterCiTest extends TestCase
      * @dataProvider provideData
      */
     public function testAfter(
-        ?string $expected,
+        null|string $expected,
         string $haystack,
         string $needle,
         int $offset,
-        Str\Encoding $encoding
+        Str\Encoding $encoding,
     ): void {
         static::assertSame($expected, Str\after_ci($haystack, $needle, $offset, $encoding));
     }
@@ -25,7 +25,7 @@ final class AfterCiTest extends TestCase
     public function provideData(): array
     {
         return [
-            [null, '', '',  0, Str\Encoding::Utf8],
+            [null, '', '', 0, Str\Encoding::Utf8],
             ['orld!', 'Hello, World!', 'W', 0, Str\Encoding::Utf8],
             ['!', '🤷!', '🤷', 0, Str\Encoding::Utf8],
             [null, 'مرحبا بكم', '', 0, Str\Encoding::Utf8],

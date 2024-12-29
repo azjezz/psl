@@ -17,10 +17,8 @@ final class InvalidRangeException extends Exception\InvalidArgumentException imp
         parent::__construct($message);
     }
 
-    public static function lowerBoundIsGreaterThanUpperBound(
-        int $lower_bound,
-        int $upper_bound,
-    ): self {
+    public static function lowerBoundIsGreaterThanUpperBound(int $lower_bound, int $upper_bound): self
+    {
         return new self(
             Str\format(
                 '`$lower_bound` (%d) must be less than or equal to `$upper_bound` (%d).',

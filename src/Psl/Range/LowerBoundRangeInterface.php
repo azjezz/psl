@@ -22,7 +22,10 @@ interface LowerBoundRangeInterface extends IteratorAggregate, RangeInterface
      *
      * @psalm-mutation-free
      */
-    public function withUpperBound(int $upper_bound, bool $upper_inclusive): UpperBoundRangeInterface&LowerBoundRangeInterface;
+    public function withUpperBound(
+        int $upper_bound,
+        bool $upper_inclusive,
+    ): UpperBoundRangeInterface&LowerBoundRangeInterface;
 
     /**
      * {@inheritDoc}

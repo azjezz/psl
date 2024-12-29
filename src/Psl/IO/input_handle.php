@@ -31,14 +31,10 @@ function input_handle(): CloseReadStreamHandleInterface
         return $cache->offsetGet($key);
     }
 
-    if (PHP_SAPI === "cli") {
-        $handle = new CloseReadStreamHandle(
-            Internal\open_resource('php://stdin', 'rb')
-        );
+    if (PHP_SAPI === 'cli') {
+        $handle = new CloseReadStreamHandle(Internal\open_resource('php://stdin', 'rb'));
     } else {
-        $handle = new CloseReadStreamHandle(
-            Internal\open_resource('php://input', 'rb')
-        );
+        $handle = new CloseReadStreamHandle(Internal\open_resource('php://input', 'rb'));
     }
 
     $cache->offsetSet($key, $handle);

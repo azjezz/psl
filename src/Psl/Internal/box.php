@@ -33,7 +33,7 @@ function box(Closure $fun): array
         $last_message = Str\after(
             Str\lowercase($last_message),
             // how i feel toward PHP error handling:
-            '): '
+            '): ',
         );
     }
 

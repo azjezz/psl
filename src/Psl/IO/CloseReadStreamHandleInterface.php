@@ -6,6 +6,9 @@ namespace Psl\IO;
 
 use Psl\IO;
 
-interface CloseReadStreamHandleInterface extends CloseStreamHandleInterface, IO\CloseReadHandleInterface, ReadStreamHandleInterface
+interface CloseReadStreamHandleInterface extends
+    CloseStreamHandleInterface,
+    IO\CloseReadHandleInterface,
+    ReadStreamHandleInterface
 {
 }

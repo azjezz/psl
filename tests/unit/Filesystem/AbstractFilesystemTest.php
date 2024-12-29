@@ -24,9 +24,14 @@ abstract class AbstractFilesystemTest extends TestCase
             static::markTestSkipped('Test can only be executed under *nix OS.');
         }
 
-        $this->cacheDirectory = Type\string()->assert(Filesystem\canonicalize(Str\join([
-            __DIR__, '..', '.cache'
-        ], Filesystem\SEPARATOR)));
+        $this->cacheDirectory = Type\string()->assert(Filesystem\canonicalize(Str\join(
+            [
+                __DIR__,
+                '..',
+                '.cache',
+            ],
+            Filesystem\SEPARATOR,
+        )));
 
         $this->directory = Str\join([$this->cacheDirectory, $this->function], Filesystem\SEPARATOR);
         Filesystem\create_directory($this->directory);

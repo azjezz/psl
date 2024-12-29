@@ -20,7 +20,7 @@ function ends_with(string $string, string $suffix): bool
     }
 
     $suffix_length = length($suffix);
-    $total_length  = length($string);
+    $total_length = length($string);
     if ($suffix_length > $total_length) {
         return false;
     }
@@ -31,5 +31,5 @@ function ends_with(string $string, string $suffix): bool
         return false;
     }
 
-    return $position + $suffix_length === $total_length;
+    return ($position + $suffix_length) === $total_length;
 }

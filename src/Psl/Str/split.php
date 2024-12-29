@@ -19,7 +19,7 @@ use Psl\Math;
  *
  * @pure
  */
-function split(string $string, string $delimiter, ?int $limit = null, Encoding $encoding = Encoding::Utf8): array
+function split(string $string, string $delimiter, null|int $limit = null, Encoding $encoding = Encoding::Utf8): array
 {
     if ('' === $delimiter) {
         if (null === $limit || $limit >= length($string, $encoding)) {
@@ -32,7 +32,7 @@ function split(string $string, string $delimiter, ?int $limit = null, Encoding $
 
         $length = $limit - 1;
 
-        $result   = chunk(slice($string, 0, $length, $encoding), 1, $encoding);
+        $result = chunk(slice($string, 0, $length, $encoding), 1, $encoding);
         $result[] = slice($string, $length, null, $encoding);
 
         return $result;
@@ -40,7 +40,7 @@ function split(string $string, string $delimiter, ?int $limit = null, Encoding $
 
     $limit ??= Math\INT64_MAX;
 
-    $tail   = $string;
+    $tail = $string;
     $chunks = [];
 
     /**
@@ -50,9 +50,9 @@ function split(string $string, string $delimiter, ?int $limit = null, Encoding $
      */
     $position = search($tail, $delimiter, 0, $encoding);
     while (1 < $limit && null !== $position) {
-        $result   = slice($tail, 0, $position, $encoding);
+        $result = slice($tail, 0, $position, $encoding);
         $chunks[] = $result;
-        $tail     = slice($tail, length($result, $encoding) + length($delimiter, $encoding), null, $encoding);
+        $tail = slice($tail, length($result, $encoding) + length($delimiter, $encoding), null, $encoding);
 
         $limit--;
         /**

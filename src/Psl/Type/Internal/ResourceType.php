@@ -22,7 +22,7 @@ final readonly class ResourceType extends Type\Type
      * @psalm-mutation-free
      */
     public function __construct(
-        private ?string $kind = null
+        private null|string $kind = null,
     ) {
     }
 

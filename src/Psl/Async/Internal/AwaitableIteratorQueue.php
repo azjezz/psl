@@ -35,5 +35,5 @@ final class AwaitableIteratorQueue
      */
     public array $pending = [];
 
-    public ?Suspension $suspension = null;
+    public null|Suspension $suspension = null;
 }

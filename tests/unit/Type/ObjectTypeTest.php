@@ -22,8 +22,11 @@ final class ObjectTypeTest extends TypeTest
         yield [$_ = new Collection\Map([1 => 'hey', 2 => 'hello']), $_];
         yield [$_ = new Collection\MutableMap([1 => 'hey', 2 => 'hello']), $_];
         yield [$_ = $this->createStub(CollectionInterface::class), $_];
-        yield [$_ = new class {
-        }, $_];
+        yield [
+            $_ = new class {
+            },
+            $_,
+        ];
     }
 
     public function getInvalidCoercions(): iterable

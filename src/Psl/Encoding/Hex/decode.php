@@ -23,15 +23,13 @@ function decode(string $hexadecimal): string
 {
     if (!ctype_xdigit($hexadecimal)) {
         throw new Exception\RangeException(
-            'The given hexadecimal string contains characters outside the base16 range.'
+            'The given hexadecimal string contains characters outside the base16 range.',
         );
     }
 
     $hex_len = Str\length($hexadecimal, Str\Encoding::Ascii8bit);
     if (($hex_len & 1) !== 0) {
-        throw new Exception\RangeException(
-            'Expected an even number of hexadecimal characters.',
-        );
+        throw new Exception\RangeException('Expected an even number of hexadecimal characters.');
     }
 
     return hex2bin($hexadecimal);

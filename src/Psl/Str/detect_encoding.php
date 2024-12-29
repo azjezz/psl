@@ -16,13 +16,10 @@ use function mb_detect_encoding;
  *
  * @pure
  */
-function detect_encoding(string $string, ?array $encoding_list = null): ?Encoding
+function detect_encoding(string $string, null|array $encoding_list = null): null|Encoding
 {
     if (null !== $encoding_list) {
-        $encoding_list = array_map(
-            static fn(Encoding $encoding): string => $encoding->value,
-            $encoding_list
-        );
+        $encoding_list = array_map(static fn(Encoding $encoding): string => $encoding->value, $encoding_list);
     }
 
     $encoding = mb_detect_encoding($string, $encoding_list, true);

@@ -21,21 +21,21 @@ final class MixedVecTypeTest extends TypeTest
     {
         yield [
             [],
-            []
+            [],
         ];
         yield [
             ['foo' => 'bar'],
-            ['bar']
+            ['bar'],
         ];
 
         yield [
-            [1,2,3],
-            [1,2,3]
+            [1, 2, 3],
+            [1, 2, 3],
         ];
 
         yield [
             [16 => ['arr'], 'foo', 'bar', 45 => 1, 44 => 2],
-            [['arr'], 'foo', 'bar', 1,2]
+            [['arr'], 'foo', 'bar', 1, 2],
         ];
 
         yield [
@@ -59,18 +59,18 @@ final class MixedVecTypeTest extends TypeTest
         ];
 
         yield [
-            Dict\map_keys(Vec\range(1, 10), static fn(int $key): string => (string)$key),
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            Dict\map_keys(Vec\range(1, 10), static fn(int $key): string => (string) $key),
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
             Dict\map(Vec\range(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
-            ['001', '002', '003', '004', '005', '006', '007', '008', '009', '0010']
+            ['001', '002', '003', '004', '005', '006', '007', '008', '009', '0010'],
         ];
 
         yield [
             ['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5],
-            [1, 2, 3, 4, 5]
+            [1, 2, 3, 4, 5],
         ];
     }
 

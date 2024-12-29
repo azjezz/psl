@@ -27,7 +27,7 @@ final class DictTypeBench extends GenericTypeBench
             $arraysAndIterables[$key . ' array'] = $pair;
             $arraysAndIterables[$key . ' iterable'] = [
                 'type' => $pair['type'],
-                'value' => new ArrayIterator($pair['value'])
+                'value' => new ArrayIterator($pair['value']),
             ];
         }
 
@@ -107,7 +107,7 @@ final class DictTypeBench extends GenericTypeBench
             'map, large' => [
                 'type' => Type\dict(Type\string(), Type\mixed()),
                 'value' => Dict\associate(
-                    Vec\map(Vec\range(0, 99), static fn (int $key): string => 'key' . (string) $key),
+                    Vec\map(Vec\range(0, 99), static fn(int $key): string => 'key' . ((string) $key)),
                     Vec\fill(100, null),
                 ),
             ],

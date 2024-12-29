@@ -19,17 +19,17 @@ final class AnyTest extends TestCase
 
     public function provideData(): iterable
     {
-        yield [true, [false, true, true], static fn (bool $value): bool => $value];
-        yield [true, [false, true, true], static fn (bool $value): bool => !$value];
-        yield [true, [true, true, true], static fn (bool $value): bool => $value];
-        yield [false, [true, true, true], static fn (bool $value): bool => !$value];
-        yield [false, [false, false, false], static fn (bool $value): bool => $value];
-        yield [true, [false, false, false], static fn (bool $value): bool => !$value];
-        yield [true, [false, false, false], static fn (bool $value): bool => true];
-        yield [false, [false, false, false], static fn (bool $value): bool => false];
-        yield [false, [1, 2, 3], static fn (int $i): bool => $i > 3];
-        yield [true, [4, 5, 6], static fn (int $i): bool => $i > 3];
-        yield [true, [1, 2, 3, 4, 5, 6], static fn (int $i): bool => $i > 3];
-        yield [false, [], static fn (bool $value): bool => false];
+        yield [true, [false, true, true], static fn(bool $value): bool => $value];
+        yield [true, [false, true, true], static fn(bool $value): bool => !$value];
+        yield [true, [true, true, true], static fn(bool $value): bool => $value];
+        yield [false, [true, true, true], static fn(bool $value): bool => !$value];
+        yield [false, [false, false, false], static fn(bool $value): bool => $value];
+        yield [true, [false, false, false], static fn(bool $value): bool => !$value];
+        yield [true, [false, false, false], static fn(bool $value): bool => true];
+        yield [false, [false, false, false], static fn(bool $value): bool => false];
+        yield [false, [1, 2, 3], static fn(int $i): bool => $i > 3];
+        yield [true, [4, 5, 6], static fn(int $i): bool => $i > 3];
+        yield [true, [1, 2, 3, 4, 5, 6], static fn(int $i): bool => $i > 3];
+        yield [false, [], static fn(bool $value): bool => false];
     }
 }

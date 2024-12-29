@@ -51,11 +51,11 @@ function group_by(iterable $values, Closure $key_func): array
         Psl\invariant(
             Type\array_key()->matches($key),
             'Expected $key_func to return a value of type array-key, value of type (%s) returned.',
-            gettype($key)
+            gettype($key),
         );
 
         /** @var Tk $key */
-        $result[$key]   = $result[$key] ?? [];
+        $result[$key] = $result[$key] ?? [];
         $result[$key][] = $value;
     }
 

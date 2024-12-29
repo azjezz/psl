@@ -17,7 +17,7 @@ final class PathTest extends TestCase
         string $directory,
         string $basename,
         string $filename,
-        ?string $extension
+        null|string $extension,
     ): void {
         static::assertSame($directory, Filesystem\get_directory($path));
         static::assertSame($basename, Filesystem\get_basename($path));
@@ -32,7 +32,7 @@ final class PathTest extends TestCase
             '/home/azjezz/Projects/psl/src',
             'bootstrap.php',
             'bootstrap',
-            'php'
+            'php',
         ];
 
         yield [
@@ -40,7 +40,7 @@ final class PathTest extends TestCase
             '/home/azjezz/Projects/psl/src',
             'bootstrap.',
             'bootstrap',
-            null
+            null,
         ];
 
         yield [
@@ -48,7 +48,7 @@ final class PathTest extends TestCase
             '/home/azjezz/Projects/psl/src',
             'Psl',
             'Psl',
-            null
+            null,
         ];
     }
 
@@ -59,9 +59,6 @@ final class PathTest extends TestCase
 
     public function testGetDirectoryWithMultipleLevels(): void
     {
-        static::assertSame(
-            '/home/azjezz/Projects',
-            Filesystem\get_directory('/home/azjezz/Projects/psl/src/Psl', 3)
-        );
+        static::assertSame('/home/azjezz/Projects', Filesystem\get_directory('/home/azjezz/Projects/psl/src/Psl', 3));
     }
 }

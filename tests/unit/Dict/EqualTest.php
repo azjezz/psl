@@ -26,25 +26,21 @@ final class EqualTest extends TestCase
                 ['foo' => 'bar', 'baz' => 'qux'],
                 ['baz' => 'qux', 'foo' => 'bar'],
             ],
-
             [
                 false,
                 ['foo' => 0, 'baz' => 1],
                 ['foo' => '0', 'baz' => 1],
             ],
-
             [
                 true,
                 [],
                 [],
             ],
-
             [
                 false,
                 [null],
                 [],
             ],
-
             [
                 false,
                 [new Collection\Vector([])],

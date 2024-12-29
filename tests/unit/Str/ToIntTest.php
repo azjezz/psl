@@ -12,7 +12,7 @@ final class ToIntTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testToInt(?int $expected, string $string): void
+    public function testToInt(null|int $expected, string $string): void
     {
         static::assertSame($expected, Str\to_int($string));
     }

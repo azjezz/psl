@@ -31,13 +31,16 @@ abstract class AbstractSetTest extends TestCase
         static::assertCount(0, $this->default());
         static::assertCount(0, $this->createFromList([]));
         static::assertCount(2, $this->createFromList(['foo', 'bar']));
-        static::assertSame(5, $this->createFromList([
-            'foo',
-            'bar',
-            'baz',
-            'qux',
-            'hax' // ??
-        ])->count());
+        static::assertSame(
+            5,
+            $this->createFromList([
+                'foo',
+                'bar',
+                'baz',
+                'qux',
+                'hax', // ??
+            ])->count(),
+        );
     }
 
     public function testValues(): void
@@ -74,7 +77,7 @@ abstract class AbstractSetTest extends TestCase
             'bar',
             'baz',
         ]);
-        $keys   = $vector->keys();
+        $keys = $vector->keys();
 
         static::assertCount(3, $keys);
         static::assertSame('foo', $keys->at(0));
@@ -82,7 +85,7 @@ abstract class AbstractSetTest extends TestCase
         static::assertSame('baz', $keys->at(2));
 
         $vector = $this->createFromList([]);
-        $keys   = $vector->keys();
+        $keys = $vector->keys();
 
         static::assertCount(0, $keys);
     }
@@ -96,7 +99,7 @@ abstract class AbstractSetTest extends TestCase
             'qux',
         ]);
 
-        $filtered = $vector->filter(static fn (string $item) => Str\contains($item, 'b'));
+        $filtered = $vector->filter(static fn(string $item) => Str\contains($item, 'b'));
 
         static::assertInstanceOf($this->setClass, $filtered);
         static::assertNotSame($vector, $filtered);
@@ -113,7 +116,7 @@ abstract class AbstractSetTest extends TestCase
             'qux',
         ]);
 
-        $filtered = $vector->filter(static fn (string $item) => Str\contains($item, 'hello'));
+        $filtered = $vector->filter(static fn(string $item) => Str\contains($item, 'hello'));
 
         static::assertInstanceOf($this->setClass, $filtered);
         static::assertNotContains('bar', $filtered);
@@ -132,7 +135,7 @@ abstract class AbstractSetTest extends TestCase
             'qux',
         ]);
 
-        $filtered = $vector->filterWithKey(static fn (string $item) => Str\contains($item, 'b'));
+        $filtered = $vector->filterWithKey(static fn(string $item) => Str\contains($item, 'b'));
 
         static::assertInstanceOf($this->setClass, $filtered);
         static::assertNotSame($vector, $filtered);
@@ -149,7 +152,7 @@ abstract class AbstractSetTest extends TestCase
             'qux',
         ]);
 
-        $filtered = $vector->filterWithKey(static fn (string $item) => Str\contains($item, 'hello'));
+        $filtered = $vector->filterWithKey(static fn(string $item) => Str\contains($item, 'hello'));
 
         static::assertInstanceOf($this->setClass, $filtered);
         static::assertNotContains('bar', $filtered);
@@ -168,15 +171,18 @@ abstract class AbstractSetTest extends TestCase
             'qux',
         ]);
 
-        $mapped = $set->map(static fn (string $item) => Str\uppercase($item));
+        $mapped = $set->map(static fn(string $item) => Str\uppercase($item));
 
         static::assertInstanceOf($this->setClass, $mapped);
-        static::assertSame([
-            'FOO' => 'FOO',
-            'BAR' => 'BAR',
-            'BAZ' => 'BAZ',
-            'QUX' => 'QUX',
-        ], $mapped->toArray());
+        static::assertSame(
+            [
+                'FOO' => 'FOO',
+                'BAR' => 'BAR',
+                'BAZ' => 'BAZ',
+                'QUX' => 'QUX',
+            ],
+            $mapped->toArray(),
+        );
         static::assertNotSame($set, $mapped);
         static::assertCount(4, $mapped);
 
@@ -187,7 +193,7 @@ abstract class AbstractSetTest extends TestCase
             'qux',
         ]);
 
-        $mapped = $set->map(static fn (string $item) => $item);
+        $mapped = $set->map(static fn(string $item) => $item);
 
         static::assertInstanceOf($this->setClass, $mapped);
         static::assertNotSame($set, $mapped);
@@ -203,15 +209,18 @@ abstract class AbstractSetTest extends TestCase
             'qux',
         ]);
 
-        $mapped = $set->mapWithKey(static fn (string $item) => Str\uppercase($item));
+        $mapped = $set->mapWithKey(static fn(string $item) => Str\uppercase($item));
 
         static::assertInstanceOf($this->setClass, $mapped);
-        static::assertSame([
-            'FOO' => 'FOO',
-            'BAR' => 'BAR',
-            'BAZ' => 'BAZ',
-            'QUX' => 'QUX',
-        ], $mapped->toArray());
+        static::assertSame(
+            [
+                'FOO' => 'FOO',
+                'BAR' => 'BAR',
+                'BAZ' => 'BAZ',
+                'QUX' => 'QUX',
+            ],
+            $mapped->toArray(),
+        );
         static::assertNotSame($set, $mapped);
         static::assertCount(4, $mapped);
 
@@ -222,7 +231,7 @@ abstract class AbstractSetTest extends TestCase
             'qux',
         ]);
 
-        $mapped = $set->mapWithKey(static fn (string $item) => $item);
+        $mapped = $set->mapWithKey(static fn(string $item) => $item);
 
         static::assertInstanceOf($this->setClass, $mapped);
         static::assertNotSame($set, $mapped);
@@ -316,20 +325,20 @@ abstract class AbstractSetTest extends TestCase
     public function testTake(): void
     {
         $set = $this->default();
-        $rest   = $set->take(2);
+        $rest = $set->take(2);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(0, $rest);
 
         $set = $this->createFromList(['bar', 'qux']);
-        $rest   = $set->take(4);
+        $rest = $set->take(4);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(2, $rest);
         static::assertSame($set->toArray(), $rest->toArray());
 
         $set = $this->createFromList(['bar', 'qux']);
-        $rest   = $set->take(1);
+        $rest = $set->take(1);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(1, $rest);
@@ -339,26 +348,26 @@ abstract class AbstractSetTest extends TestCase
     public function testTakeWhile(): void
     {
         $set = $this->default();
-        $rest   = $set->takeWhile(static fn ($v) => false);
+        $rest = $set->takeWhile(static fn($v) => false);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(0, $rest);
 
         $set = $this->default();
-        $rest   = $set->takeWhile(static fn ($v) => true);
+        $rest = $set->takeWhile(static fn($v) => true);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(0, $rest);
 
         $set = $this->createFromList(['bar', 'qux']);
-        $rest   = $set->takeWhile(static fn ($v) => true);
+        $rest = $set->takeWhile(static fn($v) => true);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(2, $rest);
         static::assertSame($set->toArray(), $rest->toArray());
 
         $set = $this->createFromList(['bar', 'qux']);
-        $rest   = $set->takeWhile(static fn ($v) => 'bar' === $v);
+        $rest = $set->takeWhile(static fn($v) => 'bar' === $v);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(1, $rest);
@@ -368,26 +377,26 @@ abstract class AbstractSetTest extends TestCase
     public function testDrop(): void
     {
         $set = $this->default();
-        $rest   = $set->drop(2);
+        $rest = $set->drop(2);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(0, $rest);
 
         $set = $this->createFromList(['bar', 'qux']);
-        $rest   = $set->drop(4);
+        $rest = $set->drop(4);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(0, $rest);
 
         $set = $this->createFromList(['bar', 'qux']);
-        $rest   = $set->drop(1);
+        $rest = $set->drop(1);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(1, $rest);
         static::assertSame('qux', $rest->at('qux'));
 
         $set = $this->createFromList(['bar', 'qux']);
-        $rest   = $set->drop(0);
+        $rest = $set->drop(0);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(2, $rest);
@@ -397,32 +406,32 @@ abstract class AbstractSetTest extends TestCase
     public function testDropWhile(): void
     {
         $set = $this->default();
-        $rest   = $set->dropWhile(static fn ($v) => true);
+        $rest = $set->dropWhile(static fn($v) => true);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(0, $rest);
 
         $set = $this->default();
-        $rest   = $set->dropWhile(static fn ($v) => false);
+        $rest = $set->dropWhile(static fn($v) => false);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(0, $rest);
 
         $set = $this->createFromList(['bar', 'qux']);
-        $rest   = $set->dropWhile(static fn ($v) => true);
+        $rest = $set->dropWhile(static fn($v) => true);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(0, $rest);
 
         $set = $this->createFromList(['bar', 'qux']);
-        $rest   = $set->dropWhile(static fn ($v) => false);
+        $rest = $set->dropWhile(static fn($v) => false);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(2, $rest);
         static::assertSame($set->toArray(), $rest->toArray());
 
         $set = $this->createFromList(['bar', 'qux']);
-        $rest   = $set->dropWhile(static fn ($v) => 'bar' === $v);
+        $rest = $set->dropWhile(static fn($v) => 'bar' === $v);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(1, $rest);
@@ -452,12 +461,15 @@ abstract class AbstractSetTest extends TestCase
         static::assertInstanceOf($this->setClass, $slice1);
         static::assertNotSame($slice2, $vector);
         static::assertCount(4, $slice2);
-        static::assertSame([
-            'baz' => 'baz',
-            'qux' => 'qux',
-            'hax' => 'hax',
-            'dax' => 'dax',
-        ], $slice2->toArray());
+        static::assertSame(
+            [
+                'baz' => 'baz',
+                'qux' => 'qux',
+                'hax' => 'hax',
+                'dax' => 'dax',
+            ],
+            $slice2->toArray(),
+        );
     }
 
     public function testAt(): void
@@ -522,7 +534,7 @@ abstract class AbstractSetTest extends TestCase
 
     protected function default(): SetInterface
     {
-        return ($this->setClass)::default();
+        return $this->setClass::default();
     }
 
     /**

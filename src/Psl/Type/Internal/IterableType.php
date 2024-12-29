@@ -31,7 +31,7 @@ final readonly class IterableType extends Type\Type
      */
     public function __construct(
         private readonly Type\TypeInterface $key_type,
-        private readonly Type\TypeInterface $value_type
+        private readonly Type\TypeInterface $value_type,
     ) {
     }
 
@@ -72,18 +72,28 @@ final readonly class IterableType extends Type\Type
                 }
             } catch (Throwable $e) {
                 throw match (true) {
-                    $iterating => CoercionException::withValue(null, $this->toString(), PathExpression::iteratorError($k), $e),
-                    $trying_key => CoercionException::withValue($k, $this->toString(), PathExpression::iteratorKey($k), $e),
-                    !$trying_key => CoercionException::withValue($v, $this->toString(), PathExpression::path($k), $e)
+                    $iterating => CoercionException::withValue(
+                        null,
+                        $this->toString(),
+                        PathExpression::iteratorError($k),
+                        $e,
+                    ),
+                    $trying_key => CoercionException::withValue(
+                        $k,
+                        $this->toString(),
+                        PathExpression::iteratorKey($k),
+                        $e,
+                    ),
+                    !$trying_key => CoercionException::withValue($v, $this->toString(), PathExpression::path($k), $e),
                 };
             }
 
             /** @var iterable<Tk, Tv> */
-            return Iter\Iterator::from((static function () use ($entries) {
+            return Iter\Iterator::from(static function () use ($entries) {
                 foreach ($entries as [$key, $value]) {
                     yield $key => $value;
                 }
-            }));
+            });
         }
 
         throw CoercionException::withValue($value, $this->toString());
@@ -126,16 +136,16 @@ final readonly class IterableType extends Type\Type
             } catch (AssertException $e) {
                 throw match ($trying_key) {
                     true => AssertException::withValue($k, $this->toString(), PathExpression::iteratorKey($k), $e),
-                    false => AssertException::withValue($v, $this->toString(), PathExpression::path($k), $e)
+                    false => AssertException::withValue($v, $this->toString(), PathExpression::path($k), $e),
                 };
             }
 
             /** @var iterable<Tk, Tv> */
-            return Iter\Iterator::from((static function () use ($entries) {
+            return Iter\Iterator::from(static function () use ($entries) {
                 foreach ($entries as [$key, $value]) {
                     yield $key => $value;
                 }
-            }));
+            });
         }
 
         throw AssertException::withValue($value, $this->toString());

@@ -50,15 +50,15 @@ final readonly class UIntType extends Type\Type
                 return $integer_value;
             }
         } elseif (is_string($value) || $value instanceof Stringable) {
-            $str = (string)$value;
-            $int = (int)$str;
-            if ($str === (string) $int && $int >= 0) {
+            $str = (string) $value;
+            $int = (int) $str;
+            if ($str === ((string) $int) && $int >= 0) {
                 return $int;
             }
 
             $trimmed = ltrim($str, '0');
-            $int     = (int) $trimmed;
-            if ($trimmed === (string) $int && $int >= 0) {
+            $int = (int) $trimmed;
+            if ($trimmed === ((string) $int) && $int >= 0) {
                 return $int;
             }
 

@@ -19,7 +19,7 @@ final class MutableVectorTest extends AbstractVectorTest
 
     public function testClear(): void
     {
-        $vector  = $this->create(['foo', 'bar']);
+        $vector = $this->create(['foo', 'bar']);
         $cleared = $vector->clear();
 
         static::assertSame($cleared, $vector);
@@ -34,10 +34,7 @@ final class MutableVectorTest extends AbstractVectorTest
             'qux',
         ]);
 
-        $modified = $vector
-            ->set(0, 'foo')
-            ->set(1, 'bar')
-            ->set(2, 'baz');
+        $modified = $vector->set(0, 'foo')->set(1, 'bar')->set(2, 'baz');
 
         static::assertSame($modified, $vector);
 
@@ -80,13 +77,13 @@ final class MutableVectorTest extends AbstractVectorTest
     public function testAdd(): void
     {
         $vector = $this->create([
-            'foo', 'bar',
-            'baz', 'qux',
+            'foo',
+            'bar',
+            'baz',
+            'qux',
         ]);
 
-        $modified = $vector
-            ->add('hello')
-            ->add('world');
+        $modified = $vector->add('hello')->add('world');
 
         static::assertSame($modified, $vector);
 
@@ -101,15 +98,16 @@ final class MutableVectorTest extends AbstractVectorTest
     public function testAddAll(): void
     {
         $vector = $this->create([
-            'foo', 'bar',
-            'baz', 'qux',
+            'foo',
+            'bar',
+            'baz',
+            'qux',
         ]);
 
-        $modified = $vector
-            ->addAll([
-                'hello',
-                'world',
-            ]);
+        $modified = $vector->addAll([
+            'hello',
+            'world',
+        ]);
 
         static::assertSame($modified, $vector);
 
@@ -129,15 +127,12 @@ final class MutableVectorTest extends AbstractVectorTest
             'baz',
         ]);
 
-        $modified = $vector
-            ->remove(0)
-            ->remove(0);
+        $modified = $vector->remove(0)->remove(0);
 
         static::assertSame($modified, $vector);
         static::assertCount(1, $vector);
         static::assertSame('baz', $vector->get(0));
     }
-
 
     public function testArrayAccess(): void
     {

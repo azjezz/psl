@@ -23,7 +23,7 @@ final readonly class BackedEnumType extends Type\Type
      * @param class-string<T> $enum
      */
     public function __construct(
-        private readonly string $enum
+        private readonly string $enum,
     ) {
     }
 
@@ -43,7 +43,7 @@ final readonly class BackedEnumType extends Type\Type
             return $value;
         }
 
-        foreach (($this->enum)::cases() as $case) {
+        foreach ($this->enum::cases() as $case) {
             if (Type\string()->matches($case->value)) {
                 $string_value = Type\string()->coerce($value);
 

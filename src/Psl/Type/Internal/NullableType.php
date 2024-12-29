@@ -23,7 +23,7 @@ final readonly class NullableType extends Type\Type
      * @param Type\TypeInterface<T> $inner
      */
     public function __construct(
-        private readonly Type\TypeInterface $inner
+        private readonly Type\TypeInterface $inner,
     ) {
     }
 

@@ -11,7 +11,7 @@ namespace Psl\Type;
  *
  * @return TypeInterface<resource>
  */
-function resource(?string $kind = null): TypeInterface
+function resource(null|string $kind = null): TypeInterface
 {
     return new Internal\ResourceType($kind);
 }

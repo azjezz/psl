@@ -18,7 +18,7 @@ namespace Psl\DateTime;
  * and the historical changes in time zone definitions. Time zone identifiers like "America/Los_Angeles" automatically
  * account for these variations correctly across different dates.
  */
-enum Timezone : string
+enum Timezone: string
 {
     case UTC = 'UTC';
     case Minus1100 = '-11:00';

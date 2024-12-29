@@ -40,12 +40,12 @@ use function strpbrk;
  * @throws Exception\TimeoutException If $timeout is reached before being able to read the process stream.
  */
 function execute(
-    string  $command,
-    array   $arguments = [],
-    ?string $working_directory = null,
-    array   $environment = [],
+    string $command,
+    array $arguments = [],
+    null|string $working_directory = null,
+    array $environment = [],
     ErrorOutputBehavior $error_output_behavior = ErrorOutputBehavior::Discard,
-    ?Duration $timeout = null
+    null|Duration $timeout = null,
 ): string {
     $arguments = Vec\map($arguments, Internal\escape_argument(...));
     $commandline = Str\join([$command, ...$arguments], ' ');
@@ -77,12 +77,7 @@ function execute(
              *
              * @return string
              */
-            static function (array $m) use (
-                &$environment,
-                &$variable_cache,
-                &$variable_count,
-                $identifier
-            ): string {
+            static function (array $m) use (&$environment, &$variable_cache, &$variable_count, $identifier): string {
                 if (!isset($m[1])) {
                     return $m[0];
                 }
@@ -103,14 +98,20 @@ function execute(
 
                 $var = $identifier . ((string) ++$variable_count);
 
-                $environment[$var] = '"' . Regex\replace(
-                    Str\Byte\replace_every(
-                        $value,
-                        ['!LF!' => "\n", '"^!"' => '!', '"^%"' => '%', '"^^"' => '^', '""' => '"']
-                    ),
-                    '/(\\\\*)"/',
-                    '$1$1\\"',
-                ) . '"';
+                $environment[$var] =
+                    '"' .
+                    Regex\replace(
+                        Str\Byte\replace_every($value, [
+                            '!LF!' => "\n",
+                            '"^!"' => '!',
+                            '"^%"' => '%',
+                            '"^^"' => '^',
+                            '""' => '"',
+                        ]),
+                        '/(\\\\*)"/',
+                        '$1$1\\"',
+                    ) .
+                    '"';
 
                 /** @var string */
                 return $variable_cache[$m[0]] = '!' . $var . '!';
@@ -150,7 +151,11 @@ function execute(
             }
         }
     } catch (IO\Exception\TimeoutException $previous) {
-        throw new Exception\TimeoutException('reached timeout while the process output is still not readable.', 0, $previous);
+        throw new Exception\TimeoutException(
+            'reached timeout while the process output is still not readable.',
+            0,
+            $previous,
+        );
     } finally {
         /** @psalm-suppress MissingThrowsDocblock */
         $stdout->close();

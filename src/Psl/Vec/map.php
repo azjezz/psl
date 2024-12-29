@@ -38,7 +38,7 @@ function map(iterable $iterable, Closure $function): array
              * @param Tv $v
              */
             static fn($v) => $function($v),
-            $iterable
+            $iterable,
         ));
     }
 

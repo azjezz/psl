@@ -21,7 +21,7 @@ trait ChannelSideTrait
      *
      * @psalm-mutation-free
      */
-    public function getCapacity(): ?int
+    public function getCapacity(): null|int
     {
         /** @var null|int<1, max> */
         return $this->state->getCapacity();

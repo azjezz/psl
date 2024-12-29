@@ -96,7 +96,7 @@ final class ToRangeTest extends TestCase
         static::assertTrue($range->contains(Math\INT53_MIN));
         static::assertTrue($range->contains(Math\INT64_MIN));
     }
-    
+
     public function testIsInclusive(): void
     {
         $range = Range\to(100, inclusive: true);

@@ -54,15 +54,15 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     /**
      * @var null|Async\Sequence<array{string, null|Duration}, int<0, max>>
      */
-    private ?Async\Sequence $writeSequence = null;
-    private ?Suspension $writeSuspension = null;
+    private null|Async\Sequence $writeSequence = null;
+    private null|Suspension $writeSuspension = null;
     private string $writeWatcher = 'invalid';
 
     /**
      * @var null|Async\Sequence<array{null|int<1, max>, null|Duration}, string>
      */
-    private ?Async\Sequence $readSequence = null;
-    private ?Suspension $readSuspension = null;
+    private null|Async\Sequence $readSequence = null;
+    private null|Suspension $readSuspension = null;
     private string $readWatcher = 'invalid';
 
     private bool $useSingleRead = false;
@@ -71,8 +71,13 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     /**
      * @param resource $stream
      */
-    public function __construct(mixed $stream, bool $read, bool $write, bool $seek, private readonly bool $close)
-    {
+    public function __construct(
+        mixed $stream,
+        bool $read,
+        bool $write,
+        bool $seek,
+        private readonly bool $close,
+    ) {
         /** @psalm-suppress RedundantConditionGivenDocblockType - The stream is always a resource, but we want to make sure it is a stream resource. */
         $this->stream = Type\resource('stream')->assert($stream);
 
@@ -80,7 +85,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
 
         $meta = stream_get_meta_data($stream);
         if ($read) {
-            $this->useSingleRead = ($meta["stream_type"] === "udp_socket" || $meta["stream_type"] === "STDIO");
+            $this->useSingleRead = $meta['stream_type'] === 'udp_socket' || $meta['stream_type'] === 'STDIO';
         }
 
         $blocks = $meta['blocked'] || ($meta['wrapper_type'] ?? '') === 'plainfile';
@@ -118,10 +123,9 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
                     $delay_watcher = null;
                     if (null !== $timeout) {
                         $timeout = max($timeout->getTotalSeconds(), 0.0);
-                        $delay_watcher = EventLoop::delay(
-                            $timeout,
-                            static fn () => $suspension->throw(new Exception\TimeoutException('Reached timeout while the handle is still not readable.')),
-                        );
+                        $delay_watcher = EventLoop::delay($timeout, static fn() => $suspension->throw(
+                            new Exception\TimeoutException('Reached timeout while the handle is still not readable.'),
+                        ));
 
                         EventLoop::unreference($delay_watcher);
                     }
@@ -137,18 +141,19 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
                             EventLoop::cancel($delay_watcher);
                         }
                     }
-                }
+                },
             );
 
             EventLoop::disable($this->readWatcher);
         }
 
         if ($write) {
-            $writable = str_contains($meta['mode'], 'x')
-                || str_contains($meta['mode'], 'w')
-                || str_contains($meta['mode'], 'c')
-                || str_contains($meta['mode'], 'a')
-                || str_contains($meta['mode'], '+');
+            $writable =
+                str_contains($meta['mode'], 'x') ||
+                str_contains($meta['mode'], 'w') ||
+                str_contains($meta['mode'], 'c') ||
+                str_contains($meta['mode'], 'a') ||
+                str_contains($meta['mode'], '+');
 
             Psl\invariant($writable, 'Handle is not writeable.');
 
@@ -177,10 +182,9 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
                     $delay_watcher = null;
                     if (null !== $timeout) {
                         $timeout = max($timeout->getTotalSeconds(), 0.0);
-                        $delay_watcher = EventLoop::delay(
-                            $timeout,
-                            static fn () => $suspension->throw(new Exception\TimeoutException('Reached timeout while the handle is still not readable.')),
-                        );
+                        $delay_watcher = EventLoop::delay($timeout, static fn() => $suspension->throw(
+                            new Exception\TimeoutException('Reached timeout while the handle is still not readable.'),
+                        ));
 
                         EventLoop::unreference($delay_watcher);
                     }
@@ -205,7 +209,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function write(string $bytes, ?Duration $timeout = null): int
+    public function write(string $bytes, null|Duration $timeout = null): int
     {
         Psl\invariant($this->writeSequence !== null, 'The resource handle is not writable.');
 
@@ -284,7 +288,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function read(?int $max_bytes = null, ?Duration $timeout = null): string
+    public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         Psl\invariant($this->readSequence !== null, 'The resource handle is not readable.');
 
@@ -294,7 +298,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function tryRead(?int $max_bytes = null): string
+    public function tryRead(null|int $max_bytes = null): string
     {
         if (!is_resource($this->stream)) {
             throw new Exception\AlreadyClosedException('Handle has already been closed.');

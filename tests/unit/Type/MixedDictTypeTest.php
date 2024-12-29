@@ -25,23 +25,23 @@ final class MixedDictTypeTest extends TypeTest
     {
         yield [
             [],
-            []
+            [],
         ];
 
         yield [
             ['foo' => 'bar'],
-            ['foo' => 'bar']
+            ['foo' => 'bar'],
         ];
 
         $object = new stdClass();
-        yield [[0,1,2, 'foo' => 'bar', [], $object], [0,1,2, 'foo' => 'bar', [], $object]];
+        yield [[0, 1, 2, 'foo' => 'bar', [], $object], [0, 1, 2, 'foo' => 'bar', [], $object]];
 
         $gen = $this->generator();
-        yield [$gen, [1,2, 'asdf' => 'key']];
+        yield [$gen, [1, 2, 'asdf' => 'key']];
 
         yield [
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
@@ -55,11 +55,8 @@ final class MixedDictTypeTest extends TypeTest
         ];
 
         yield [
-            Dict\map(
-                Vec\range(1, 10),
-                static fn(int $value): string => Str\format('00%d', $value)
-            ),
-            ['001', '002', '003', '004', '005', '006', '007', '008', '009', '0010']
+            Dict\map(Vec\range(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
+            ['001', '002', '003', '004', '005', '006', '007', '008', '009', '0010'],
         ];
 
         $spl = new SplObjectStorage();
@@ -88,7 +85,6 @@ final class MixedDictTypeTest extends TypeTest
         yield [$this->getType(), 'dict<array-key, mixed>'];
     }
 
-
     public static function provideCoerceExceptionExpectations(): iterable
     {
         yield 'invalid iterator first item' => [
@@ -96,7 +92,7 @@ final class MixedDictTypeTest extends TypeTest
             (static function () {
                 yield 0 => Type\int()->coerce('nope');
             })(),
-            'Could not coerce "string" to type "dict<array-key, mixed>" at path "first()".'
+            'Could not coerce "string" to type "dict<array-key, mixed>" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
             Type\mixed_dict(),
@@ -104,7 +100,7 @@ final class MixedDictTypeTest extends TypeTest
                 yield 0 => 0;
                 yield 1 => Type\int()->coerce('nope');
             })(),
-            'Could not coerce "string" to type "dict<array-key, mixed>" at path "0.next()".'
+            'Could not coerce "string" to type "dict<array-key, mixed>" at path "0.next()".',
         ];
         yield 'iterator throwing exception' => [
             Type\mixed_dict(),
@@ -112,30 +108,33 @@ final class MixedDictTypeTest extends TypeTest
                 throw new RuntimeException('whoops');
                 yield;
             })(),
-            'Could not coerce "null" to type "dict<array-key, mixed>" at path "first()": whoops.'
+            'Could not coerce "null" to type "dict<array-key, mixed>" at path "first()": whoops.',
         ];
         yield 'iterator yielding null key' => [
             Type\mixed_dict(),
             (static function () {
                 yield null => 'nope';
             })(),
-            'Could not coerce "null" to type "dict<array-key, mixed>" at path "key(null)".'
+            'Could not coerce "null" to type "dict<array-key, mixed>" at path "key(null)".',
         ];
         yield 'iterator yielding object key' => [
             Type\mixed_dict(),
             (static function () {
-                yield (new class () {
-                }) => 'nope';
+                yield new class() {
+                } => 'nope';
             })(),
-            'Could not coerce "class@anonymous" to type "dict<array-key, mixed>" at path "key(class@anonymous)".'
+            'Could not coerce "class@anonymous" to type "dict<array-key, mixed>" at path "key(class@anonymous)".',
         ];
     }
 
     /**
      * @dataProvider provideCoerceExceptionExpectations
      */
-    public function testInvalidCoercionTypeExceptions(Type\TypeInterface $type, mixed $data, string $expectedMessage): void
-    {
+    public function testInvalidCoercionTypeExceptions(
+        Type\TypeInterface $type,
+        mixed $data,
+        string $expectedMessage,
+    ): void {
         try {
             $type->coerce($data);
             static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\CoercionException::class));

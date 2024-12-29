@@ -12,7 +12,7 @@ final class SplitTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testSplit(array $expected, string $string, string $delimiter, ?int $length = null): void
+    public function testSplit(array $expected, string $string, string $delimiter, null|int $length = null): void
     {
         static::assertSame($expected, Byte\split($string, $delimiter, $length));
     }

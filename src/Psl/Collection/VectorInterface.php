@@ -168,7 +168,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function firstKey(): ?int;
+    public function firstKey(): null|int;
 
     /**
      * Returns the last value in the current `VectorInterface`.
@@ -188,7 +188,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function lastKey(): ?int;
+    public function lastKey(): null|int;
 
     /**
      * Returns the index of the first element that matches the search value.
@@ -202,7 +202,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function linearSearch(mixed $search_value): ?int;
+    public function linearSearch(mixed $search_value): null|int;
 
     /**
      * Returns a `VectorInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
@@ -315,7 +315,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, ?int $length = null): VectorInterface;
+    public function slice(int $start, null|int $length = null): VectorInterface;
 
     /**
      * Returns a `VectorInterface` containing the original `VectorInterface` split into

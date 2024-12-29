@@ -19,19 +19,31 @@ final class ReplaceEveryTest extends TestCase
 
     public function provideData(): iterable
     {
-        yield ['April1,2003', 'April 15, 2003', [
-            '/(\w+) (\d+), (\d+)/i' => '${1}1,$3'
-        ]];
+        yield [
+            'April1,2003',
+            'April 15, 2003',
+            [
+                '/(\w+) (\d+), (\d+)/i' => '${1}1,$3',
+            ],
+        ];
 
-        yield ['The slow black bear jumps over the lazy dog.', 'The quick brown fox jumps over the lazy dog.', [
-            '/quick/' => 'slow',
-            '/brown/' => 'black',
-            '/fox/' => 'bear'
-        ]];
+        yield [
+            'The slow black bear jumps over the lazy dog.',
+            'The quick brown fox jumps over the lazy dog.',
+            [
+                '/quick/' => 'slow',
+                '/brown/' => 'black',
+                '/fox/' => 'bear',
+            ],
+        ];
 
-        yield ['Hello, World!', 'Hello, World!', [
-            '/foo/' => 'bar'
-        ]];
+        yield [
+            'Hello, World!',
+            'Hello, World!',
+            [
+                '/foo/' => 'bar',
+            ],
+        ];
     }
 
     public function testReplaceEveryWithInvalidPattern(): void

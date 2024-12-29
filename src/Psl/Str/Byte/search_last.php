@@ -24,7 +24,7 @@ use function strrpos;
  *
  * @return null|int<0, max>
  */
-function search_last(string $haystack, string $needle, int $offset = 0): ?int
+function search_last(string $haystack, string $needle, int $offset = 0): null|int
 {
     if ('' === $needle) {
         return null;

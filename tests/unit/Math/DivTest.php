@@ -35,30 +35,27 @@ final class DivTest extends TestCase
 
     public function provideData(): array
     {
-        return[
+        return [
             [
                 2,
                 5,
                 2,
             ],
-
             [
                 5,
                 10,
-                2
+                2,
             ],
-
             [
                 0,
                 15,
-                20
+                20,
             ],
-
             [
                 1,
                 10,
-                10
-            ]
+                10,
+            ],
         ];
     }
 }

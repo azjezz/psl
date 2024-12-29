@@ -12,7 +12,7 @@ final class SliceTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testSlice(array $expected, array $array, int $n, ?int $l = null): void
+    public function testSlice(array $expected, array $array, int $n, null|int $l = null): void
     {
         $result = Vec\slice($array, $n, $l);
 

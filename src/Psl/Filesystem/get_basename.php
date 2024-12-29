@@ -20,7 +20,7 @@ use function basename as php_basename;
  *
  * @pure
  */
-function get_basename(string $path, ?string $suffix = null): string
+function get_basename(string $path, null|string $suffix = null): string
 {
     if (null === $suffix) {
         /** @var non-empty-string */

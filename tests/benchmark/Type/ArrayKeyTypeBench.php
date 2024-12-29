@@ -20,19 +20,16 @@ final class ArrayKeyTypeBench extends GenericTypeBench
      */
     public function provideHappyPathCoercion(): array
     {
-        return array_merge(
-            $this->strictlyValidDataSet(),
-            [
-                'instanceof Stringable (explicit)' => [
-                    'type'  => Type\array_key(),
-                    'value' => new ImplicitStringableObject(),
-                ],
-                'instanceof Stringable (implicit)' => [
-                    'type'  => Type\array_key(),
-                    'value' => new ExplicitStringableObject(),
-                ],
-            ]
-        );
+        return array_merge($this->strictlyValidDataSet(), [
+            'instanceof Stringable (explicit)' => [
+                'type' => Type\array_key(),
+                'value' => new ImplicitStringableObject(),
+            ],
+            'instanceof Stringable (implicit)' => [
+                'type' => Type\array_key(),
+                'value' => new ExplicitStringableObject(),
+            ],
+        ]);
     }
 
     /**
@@ -58,11 +55,11 @@ final class ArrayKeyTypeBench extends GenericTypeBench
     {
         return [
             'string' => [
-                'type'  => Type\array_key(),
+                'type' => Type\array_key(),
                 'value' => 'foo',
             ],
-            'int'    => [
-                'type'  => Type\array_key(),
+            'int' => [
+                'type' => Type\array_key(),
                 'value' => 123,
             ],
         ];

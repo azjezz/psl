@@ -52,7 +52,7 @@ function create_hard_link(string $source, string $destination): void
             'Failed to create hard link "%s" from "%s": %s.',
             $destination,
             $source,
-            $error_message ?? 'internal error'
+            $error_message ?? 'internal error',
         ));
     }
     // @codeCoverageIgnoreEnd

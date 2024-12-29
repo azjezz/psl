@@ -20,10 +20,10 @@ use function mb_substr;
  *
  * @pure
  */
-function slice(string $string, int $offset, ?int $length = null, Encoding $encoding = Encoding::Utf8): string
+function slice(string $string, int $offset, null|int $length = null, Encoding $encoding = Encoding::Utf8): string
 {
     $string_length = length($string, $encoding);
-    $offset        = Internal\validate_offset($offset, $string_length);
+    $offset = Internal\validate_offset($offset, $string_length);
     if (0 === $offset && (null === $length || $string_length <= $length)) {
         return $string;
     }

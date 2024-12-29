@@ -28,7 +28,7 @@ final readonly class NonEmptyVecType extends Type\Type
      * @param Type\TypeInterface<Tv> $value_type
      */
     public function __construct(
-        private readonly Type\TypeInterface $value_type
+        private readonly Type\TypeInterface $value_type,
     ) {
     }
 
@@ -92,8 +92,13 @@ final readonly class NonEmptyVecType extends Type\Type
                 }
             } catch (Throwable $e) {
                 throw match (true) {
-                    $iterating => CoercionException::withValue(null, $this->toString(), PathExpression::iteratorError($i), $e),
-                    default => CoercionException::withValue($v, $this->toString(), PathExpression::path($i), $e)
+                    $iterating => CoercionException::withValue(
+                        null,
+                        $this->toString(),
+                        PathExpression::iteratorError($i),
+                        $e,
+                    ),
+                    default => CoercionException::withValue($v, $this->toString(), PathExpression::path($i), $e),
                 };
             }
 

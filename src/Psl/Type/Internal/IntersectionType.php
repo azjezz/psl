@@ -29,7 +29,7 @@ final readonly class IntersectionType extends Type
      */
     public function __construct(
         private readonly TypeInterface $left_type,
-        private readonly TypeInterface $right_type
+        private readonly TypeInterface $right_type,
     ) {
     }
 
@@ -93,7 +93,7 @@ final readonly class IntersectionType extends Type
 
     public function toString(): string
     {
-        $left  = $this->left_type->toString();
+        $left = $this->left_type->toString();
         $right = $this->right_type->toString();
         /** @psalm-suppress MissingThrowsDocblock - offset is within bound. */
         if (Str\contains($left, '|')) {

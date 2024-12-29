@@ -145,7 +145,7 @@ final readonly class Awaitable implements PromiseInterface
              * @param null|Throwable $error
              * @param null|T $value
              */
-            static function (?Throwable $error, mixed $value) use ($state, $success, $failure): void {
+            static function (null|Throwable $error, mixed $value) use ($state, $success, $failure): void {
                 if ($error) {
                     try {
                         $state->complete($failure($error));
@@ -181,7 +181,7 @@ final readonly class Awaitable implements PromiseInterface
      */
     public function map(Closure $success): Awaitable
     {
-        return $this->then($success, static fn (Throwable $throwable) => throw $throwable);
+        return $this->then($success, static fn(Throwable $throwable) => throw $throwable);
     }
 
     /**
@@ -220,7 +220,7 @@ final readonly class Awaitable implements PromiseInterface
         /** @var State<T> $state */
         $state = new State();
 
-        $this->state->subscribe(static function (?Throwable $error, mixed $value) use ($state, $always): void {
+        $this->state->subscribe(static function (null|Throwable $error, mixed $value) use ($state, $always): void {
             try {
                 $always();
 
@@ -256,7 +256,7 @@ final readonly class Awaitable implements PromiseInterface
              * @param null|Throwable $error
              * @param null|T $value
              */
-            static function (?Throwable $error, mixed $value) use ($suspension): void {
+            static function (null|Throwable $error, mixed $value) use ($suspension): void {
                 if ($error) {
                     $suspension->throw($error);
                 } else {

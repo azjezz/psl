@@ -88,7 +88,7 @@ final class TimestampTest extends TestCase
         static::assertEquals(20, $timestamp->getSeconds());
         static::assertEquals(0, $timestamp->getNanoseconds());
 
-        $timestamp = Timestamp::fromParts(0, 100 + NANOSECONDS_PER_SECOND * 20);
+        $timestamp = Timestamp::fromParts(0, 100 + (NANOSECONDS_PER_SECOND * 20));
 
         static::assertEquals(20, $timestamp->getSeconds());
         static::assertEquals(100, $timestamp->getNanoseconds());
@@ -98,7 +98,7 @@ final class TimestampTest extends TestCase
         static::assertEquals(10, $timestamp->getSeconds());
         static::assertEquals(0, $timestamp->getNanoseconds());
 
-        $timestamp = Timestamp::fromParts(10, 100 + -NANOSECONDS_PER_SECOND * 20);
+        $timestamp = Timestamp::fromParts(10, 100 + (-NANOSECONDS_PER_SECOND * 20));
 
         static::assertEquals(-10, $timestamp->getSeconds());
         static::assertEquals(100, $timestamp->getNanoseconds());
@@ -106,10 +106,7 @@ final class TimestampTest extends TestCase
 
     public function testParsingFromPattern(): void
     {
-        $timestamp = Timestamp::parse(
-            raw_string: '2024 091',
-            pattern: FormatPattern::JulianDay,
-        );
+        $timestamp = Timestamp::parse(raw_string: '2024 091', pattern: FormatPattern::JulianDay);
 
         $datetime = DateTime::fromTimestamp($timestamp, Timezone::UTC);
 
@@ -156,28 +153,75 @@ final class TimestampTest extends TestCase
 
     public function provideFormatParsingData(): iterable
     {
-        yield [1711917897, FormatPattern::FullDateTime, Timezone::UTC, Locale::English, 'Sunday, March 31, 2024 20:44:57'];
-        yield [1711917897, FormatPattern::FullDateTime, Timezone::AsiaShanghai, Locale::ChineseTraditional, '星期一, 4月 01, 2024 04:44:57'];
-        yield [1711917897, FormatPattern::Cookie, Timezone::AmericaNewYork, Locale::EnglishUnitedStates, 'Sunday, 31-Mar-2024 16:44:57 EDT'];
-        yield [1711917897, FormatPattern::Http, Timezone::EuropeVienna, Locale::GermanAustria, 'So., 31 März 2024 22:44:57 MESZ'];
-        yield [1711917897, FormatPattern::Email, Timezone::EuropeMadrid, Locale::SpanishSpain, 'dom, 31 mar 2024 22:44:57 GMT+02:00'];
-        yield [1711917897, FormatPattern::SqlDateTime, Timezone::AfricaTunis, Locale::ArabicTunisia, '2024-03-31 21:44:57'];
+        yield [
+            1711917897,
+            FormatPattern::FullDateTime,
+            Timezone::UTC,
+            Locale::English,
+            'Sunday, March 31, 2024 20:44:57',
+        ];
+        yield [
+            1711917897,
+            FormatPattern::FullDateTime,
+            Timezone::AsiaShanghai,
+            Locale::ChineseTraditional,
+            '星期一, 4月 01, 2024 04:44:57',
+        ];
+        yield [
+            1711917897,
+            FormatPattern::Cookie,
+            Timezone::AmericaNewYork,
+            Locale::EnglishUnitedStates,
+            'Sunday, 31-Mar-2024 16:44:57 EDT',
+        ];
+        yield [
+            1711917897,
+            FormatPattern::Http,
+            Timezone::EuropeVienna,
+            Locale::GermanAustria,
+            'So., 31 März 2024 22:44:57 MESZ',
+        ];
+        yield [
+            1711917897,
+            FormatPattern::Email,
+            Timezone::EuropeMadrid,
+            Locale::SpanishSpain,
+            'dom, 31 mar 2024 22:44:57 GMT+02:00',
+        ];
+        yield [
+            1711917897,
+            FormatPattern::SqlDateTime,
+            Timezone::AfricaTunis,
+            Locale::ArabicTunisia,
+            '2024-03-31 21:44:57',
+        ];
         yield [1711832400, FormatPattern::IsoOrdinalDate, Timezone::EuropeMoscow, Locale::RussianRussia, '2024-091'];
-        yield [1711917897, FormatPattern::Iso8601, Timezone::EuropeLondon, Locale::EnglishUnitedKingdom, '2024-03-31T21:44:57.000+01:00'];
+        yield [
+            1711917897,
+            FormatPattern::Iso8601,
+            Timezone::EuropeLondon,
+            Locale::EnglishUnitedKingdom,
+            '2024-03-31T21:44:57.000+01:00',
+        ];
     }
 
     /**
      * @dataProvider provideFormatParsingData
      */
-    public function testFormattingAndPatternParsing(int $timestamp, string|FormatPattern $pattern, Timezone $timezone, Locale $locale, string $expected): void
-    {
+    public function testFormattingAndPatternParsing(
+        int $timestamp,
+        string|FormatPattern $pattern,
+        Timezone $timezone,
+        Locale $locale,
+        string $expected,
+    ): void {
         $timestamp = Timestamp::fromParts($timestamp);
 
         $result = $timestamp->format(pattern: $pattern, timezone: $timezone, locale: $locale);
 
         static::assertSame($expected, $result);
 
-        $other = Timestamp::parse($result, pattern: $pattern, timezone:  $timezone, locale:  $locale);
+        $other = Timestamp::parse($result, pattern: $pattern, timezone: $timezone, locale: $locale);
 
         static::assertSame($timestamp->getSeconds(), $other->getSeconds());
         static::assertSame($timestamp->getNanoseconds(), $other->getNanoseconds());
@@ -201,7 +245,6 @@ final class TimestampTest extends TestCase
             [Timestamp::fromParts(100), Timestamp::fromParts(42), Order::Greater],
             [Timestamp::fromParts(42), Timestamp::fromParts(42), Order::Equal],
             [Timestamp::fromParts(42), Timestamp::fromParts(100), Order::Less],
-
             // Nanoseconds
             [Timestamp::fromParts(42, 100), Timestamp::fromParts(42, 42), Order::Greater],
             [Timestamp::fromParts(42, 42), Timestamp::fromParts(42, 42), Order::Equal],

@@ -17,7 +17,7 @@ final class WrapTest extends TestCase
         string $str,
         int $width = 75,
         string $break = "\n",
-        bool $cut = false
+        bool $cut = false,
     ): void {
         static::assertSame($expected, Str\wrap($str, $width, $break, $cut));
     }
@@ -35,7 +35,13 @@ final class WrapTest extends TestCase
             ["こんに\nちは世\n界", 'こんにちは世界', 3, "\n", true],
             ['こんにちは世界', 'こんにちは世界', 3, "\n", false],
             ['こんにちは世界', 'こんにちは世界', 7, "\n", true],
-            [Str\concat('ส', '-', 'ว', '-', 'ั', '-', 'ส', '-', 'ด', '-', 'ี'), 'สวัสดี', 1, '-', true],
+            [
+                Str\concat('ส', '-', 'ว', '-', 'ั', '-', 'ส', '-', 'ด', '-', 'ี'),
+                'สวัสดี',
+                1,
+                '-',
+                true,
+            ],
             ['สวัสดี', 'สวัสดี', 1, '-', false],
         ];
     }

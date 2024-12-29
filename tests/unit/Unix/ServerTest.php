@@ -19,7 +19,7 @@ final class ServerTest extends TestCase
             static::markTestSkipped('Unix Server is not supported on Windows platform.');
         }
 
-        $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . ".sock";
+        $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . '.sock';
         $server = Unix\Server::create($sock);
         $server->close();
 
@@ -35,7 +35,7 @@ final class ServerTest extends TestCase
             static::markTestSkipped('Unix Server is not supported on Windows platform.');
         }
 
-        $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . ".sock";
+        $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . '.sock';
         $server = Unix\Server::create($sock);
         $server->close();
 
@@ -51,7 +51,7 @@ final class ServerTest extends TestCase
             static::markTestSkipped('Unix Server is not supported on Windows platform.');
         }
 
-        $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . ".sock";
+        $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . '.sock';
         $server = Unix\Server::create($sock);
 
         $first = Async\run(static fn() => $server->nextConnection());
@@ -84,7 +84,7 @@ final class ServerTest extends TestCase
             static::markTestSkipped('Unix Server is not supported on Windows platform.');
         }
 
-        $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . ".sock";
+        $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . '.sock';
         $server = Unix\Server::create($sock);
         $stream = $server->getStream();
         $deferred = new Async\Deferred();

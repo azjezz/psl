@@ -39,9 +39,18 @@ final class KeyedSemaphoreTest extends TestCase
             $spy->value[] = $data['value'];
         });
 
-        Async\run(static fn() => $ks->waitFor('operation', ['time' => DateTime\Duration::milliseconds(3), 'value' => 'a']));
-        Async\run(static fn() => $ks->waitFor('operation', ['time' => DateTime\Duration::milliseconds(4), 'value' => 'b']));
-        Async\run(static fn() => $ks->waitFor('operation', ['time' => DateTime\Duration::milliseconds(5), 'value' => 'c']));
+        Async\run(static fn() => $ks->waitFor('operation', [
+            'time' => DateTime\Duration::milliseconds(3),
+            'value' => 'a',
+        ]));
+        Async\run(static fn() => $ks->waitFor('operation', [
+            'time' => DateTime\Duration::milliseconds(4),
+            'value' => 'b',
+        ]));
+        Async\run(static fn() => $ks->waitFor('operation', [
+            'time' => DateTime\Duration::milliseconds(5),
+            'value' => 'c',
+        ]));
         $last = Async\run(static fn() => $ks->waitFor('operation', ['time' => null, 'value' => 'd']));
         $last->await();
 
@@ -65,7 +74,10 @@ final class KeyedSemaphoreTest extends TestCase
 
         Async\run(static fn() => $ks->waitFor('key', ['time' => DateTime\Duration::milliseconds(3), 'value' => 'a']));
         Async\run(static fn() => $ks->waitFor('key', ['time' => DateTime\Duration::milliseconds(4), 'value' => 'b']));
-        $beforeLast = Async\run(static fn() => $ks->waitFor('key', ['time' => DateTime\Duration::milliseconds(5), 'value' => 'c']));
+        $beforeLast = Async\run(static fn() => $ks->waitFor('key', [
+            'time' => DateTime\Duration::milliseconds(5),
+            'value' => 'c',
+        ]));
         Async\run(static fn() => $ks->waitFor('key', ['time' => null, 'value' => 'd']));
 
         $beforeLast->await();
@@ -172,13 +184,13 @@ final class KeyedSemaphoreTest extends TestCase
         $ingoing = [
             Async\run(static fn() => $ks->waitFor('foo', 'ingoing')),
             Async\run(static fn() => $ks->waitFor('bar', 'ingoing')),
-            Async\run(static fn() => $ks->waitFor('baz', 'ingoing'))
+            Async\run(static fn() => $ks->waitFor('baz', 'ingoing')),
         ];
 
         $pending = [
             Async\run(static fn() => $ks->waitFor('foo', 'pending')),
             Async\run(static fn() => $ks->waitFor('bar', 'pending')),
-            Async\run(static fn() => $ks->waitFor('baz', 'pending'))
+            Async\run(static fn() => $ks->waitFor('baz', 'pending')),
         ];
 
         Async\sleep(DateTime\Duration::milliseconds(10));

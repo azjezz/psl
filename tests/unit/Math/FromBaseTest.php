@@ -24,26 +24,23 @@ final class FromBaseTest extends TestCase
             [
                 5497,
                 '1010101111001',
-                2
+                2,
             ],
-
             [
                 2014587925987,
                 'pphlmw9v',
-                36
+                36,
             ],
-
             [
                 Math\INT32_MAX,
                 'zik0zj',
-                36
+                36,
             ],
-
             [
                 15,
                 'F',
-                16
-            ]
+                16,
+            ],
         ];
     }
 

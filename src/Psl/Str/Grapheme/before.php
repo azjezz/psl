@@ -12,7 +12,7 @@ use Psl\Str\Exception;
  *
  * @pure
  */
-function before(string $haystack, string $needle, int $offset = 0): ?string
+function before(string $haystack, string $needle, int $offset = 0): null|string
 {
     $length = search($haystack, $needle, $offset);
     if (null === $length) {

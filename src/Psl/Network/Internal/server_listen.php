@@ -34,9 +34,18 @@ function server_listen(string $uri, array $context = []): mixed
         static function () use ($uri, $context): mixed {
             $context = stream_context_create($context);
             // Error reporting suppressed since stream_socket_server() emits an E_WARNING on failure (checked below).
-            $server = @stream_socket_server($uri, $errno, $_, flags: STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, context: $context);
+            $server = @stream_socket_server(
+                $uri,
+                $errno,
+                $_,
+                flags: STREAM_SERVER_BIND | STREAM_SERVER_LISTEN,
+                context: $context,
+            );
             if (!$server || $errno) {
-                throw new Psl\Network\Exception\RuntimeException('Failed to listen to on given address (' . $uri . ').', $errno);
+                throw new Psl\Network\Exception\RuntimeException(
+                    'Failed to listen to on given address (' . $uri . ').',
+                    $errno,
+                );
             }
 
             return $server;

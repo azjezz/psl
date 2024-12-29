@@ -16,9 +16,9 @@ final class LevenshteinTest extends TestCase
         int $expected,
         string $a,
         string $b,
-        ?int $coi = null,
-        ?int $cor = null,
-        ?int $cod = null
+        null|int $coi = null,
+        null|int $cor = null,
+        null|int $cod = null,
     ): void {
         static::assertSame($expected, Str\levenshtein($a, $b, $coi, $cor, $cod));
     }
@@ -30,7 +30,7 @@ final class LevenshteinTest extends TestCase
             [1, 'foo', 'oo'],
             [1, 'oo', 'foo'],
             [6, 'saif', 'azjezz'],
-            [48, 'saif', 'azjezz', 9, 8, 5]
+            [48, 'saif', 'azjezz', 9, 8, 5],
         ];
     }
 }

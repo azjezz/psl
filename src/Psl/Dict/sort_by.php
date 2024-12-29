@@ -23,21 +23,21 @@ use Closure;
  *
  * @return array<Tk, Tv>
  */
-function sort_by(iterable $iterable, Closure $scalar_func, ?Closure $comparator = null): array
+function sort_by(iterable $iterable, Closure $scalar_func, null|Closure $comparator = null): array
 {
     $comparator ??=
         /**
          * @param Ts $a
          * @param Ts $b
          */
-        static fn ($a, $b): int => $a <=> $b;
+        static fn($a, $b): int => $a <=> $b;
 
     $tuple_comparator =
         /**
          * @param array{0: Ts, 1: Tv} $a
          * @param array{0: Ts, 1: Tv} $b
          */
-        static fn ($a, $b): int => $comparator($a[0], $b[0]);
+        static fn($a, $b): int => $comparator($a[0], $b[0]);
 
     /**
      * @var array<Tk, array{0: Ts, 1: Tv}> $tuples

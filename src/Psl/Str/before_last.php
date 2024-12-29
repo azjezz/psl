@@ -9,8 +9,12 @@ namespace Psl\Str;
  *
  * @pure
  */
-function before_last(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::Utf8): ?string
-{
+function before_last(
+    string $haystack,
+    string $needle,
+    int $offset = 0,
+    Encoding $encoding = Encoding::Utf8,
+): null|string {
     $length = search_last($haystack, $needle, $offset, $encoding);
     if (null === $length) {
         return null;

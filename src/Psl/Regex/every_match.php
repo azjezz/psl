@@ -21,17 +21,18 @@ use function preg_match_all;
  *
  * @return (T is null ? list<array<array-key, string>> : list<T>)|null
  */
-function every_match(string $subject, string $pattern, ?Type\TypeInterface $capture_groups = null, int $offset = 0): ?array
-{
-    $matching = Internal\call_preg(
-        'preg_match_all',
-        static function () use ($subject, $pattern, $offset): ?array {
-            $matching = [];
-            $matches  = preg_match_all($pattern, $subject, $matching, PREG_SET_ORDER, $offset);
+function every_match(
+    string $subject,
+    string $pattern,
+    null|Type\TypeInterface $capture_groups = null,
+    int $offset = 0,
+): null|array {
+    $matching = Internal\call_preg('preg_match_all', static function () use ($subject, $pattern, $offset): null|array {
+        $matching = [];
+        $matches = preg_match_all($pattern, $subject, $matching, PREG_SET_ORDER, $offset);
 
-            return $matches === 0 ? null : $matching;
-        }
-    );
+        return $matches === 0 ? null : $matching;
+    });
 
     if ($matching === null) {
         return null;

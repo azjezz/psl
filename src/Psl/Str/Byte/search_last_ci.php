@@ -22,7 +22,7 @@ use Psl\Str;
  *
  * @return null|int<0, max>
  */
-function search_last_ci(string $haystack, string $needle, int $offset = 0): ?int
+function search_last_ci(string $haystack, string $needle, int $offset = 0): null|int
 {
     if ('' === $needle) {
         return null;

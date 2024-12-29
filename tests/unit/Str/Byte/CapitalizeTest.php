@@ -21,9 +21,9 @@ final class CapitalizeTest extends TestCase
     {
         return [
             ['', ''],
-            ['Hello', 'hello', ],
+            ['Hello', 'hello'],
             ['Hello, world', 'hello, world'],
-            ['Alpha', 'Alpha', ],
+            ['Alpha', 'Alpha'],
             ['Héllö, wôrld!', 'héllö, wôrld!'],
             ['ßoo', 'ßoo'],
         ];

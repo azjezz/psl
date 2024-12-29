@@ -31,7 +31,7 @@ use function is_array;
  *
  * @return list<T>
  */
-function filter(iterable $iterable, ?Closure $predicate = null): array
+function filter(iterable $iterable, null|Closure $predicate = null): array
 {
     /** @var (Closure(T): bool) $predicate */
     $predicate = $predicate ?? static fn(mixed $value): bool => (bool) $value;
@@ -41,11 +41,11 @@ function filter(iterable $iterable, ?Closure $predicate = null): array
             /**
              * @param T $t
              */
-            static fn(mixed $t): bool => $predicate($t)
+            static fn(mixed $t): bool => $predicate($t),
         ));
     }
 
-    $result    = [];
+    $result = [];
     foreach ($iterable as $v) {
         if ($predicate($v)) {
             $result[] = $v;

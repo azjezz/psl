@@ -22,7 +22,7 @@ final readonly class Address
     /**
      * @var int<0, 65535>|null
      */
-    public ?int $port;
+    public null|int $port;
 
     /**
      * @param SocketScheme $scheme
@@ -31,7 +31,7 @@ final readonly class Address
      *
      * @psalm-mutation-free
      */
-    private function __construct(SocketScheme $scheme, string $host, ?int $port)
+    private function __construct(SocketScheme $scheme, string $host, null|int $port)
     {
         $this->scheme = $scheme;
         $this->host = $host;
@@ -45,7 +45,7 @@ final readonly class Address
      *
      * @pure
      */
-    public static function create(SocketScheme $scheme, string $host, ?int $port = null): self
+    public static function create(SocketScheme $scheme, string $host, null|int $port = null): self
     {
         return new self($scheme, $host, $port);
     }

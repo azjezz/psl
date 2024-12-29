@@ -24,31 +24,27 @@ final class PartitionTest extends TestCase
             [
                 [[1 => 'bar', 2 => 'baz'], [0 => 'foo', 3 => 'qux']],
                 ['foo', 'bar', 'baz', 'qux'],
-                static fn (string $str) => Str\starts_with($str, 'b'),
+                static fn(string $str) => Str\starts_with($str, 'b'),
             ],
-
             [
                 [[0 => 'foo', 3 => 'qux'], [1 => 'bar', 2 => 'baz']],
                 ['foo', 'bar', 'baz', 'qux'],
-                static fn (string $str) => !Str\starts_with($str, 'b'),
+                static fn(string $str) => !Str\starts_with($str, 'b'),
             ],
-
             [
                 [[], []],
                 [],
-                static fn ($_) => false,
+                static fn($_) => false,
             ],
-
             [
                 [[], ['foo', 'bar', 'baz', 'qux']],
                 ['foo', 'bar', 'baz', 'qux'],
-                static fn (string $str) => false,
+                static fn(string $str) => false,
             ],
-
             [
                 [['foo', 'bar', 'baz', 'qux'], []],
                 ['foo', 'bar', 'baz', 'qux'],
-                static fn (string $str) => true,
+                static fn(string $str) => true,
             ],
         ];
     }

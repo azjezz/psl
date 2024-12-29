@@ -42,8 +42,8 @@ use Psl\Iter;
  */
 final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoundRangeInterface
 {
-    private int  $lowerBound;
-    private int  $upperBound;
+    private int $lowerBound;
+    private int $upperBound;
     private bool $upperInclusive;
 
     /**
@@ -51,13 +51,10 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      *
      * @psalm-mutation-free
      */
-    public function __construct(int  $lower_bound, int  $upper_bound, bool $upper_inclusive = false)
+    public function __construct(int $lower_bound, int $upper_bound, bool $upper_inclusive = false)
     {
         if ($lower_bound > $upper_bound) {
-            throw Exception\InvalidRangeException::lowerBoundIsGreaterThanUpperBound(
-                $lower_bound,
-                $upper_bound
-            );
+            throw Exception\InvalidRangeException::lowerBoundIsGreaterThanUpperBound($lower_bound, $upper_bound);
         }
 
         $this->lowerBound = $lower_bound;
@@ -92,11 +89,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      */
     public function withUpperBound(int $upper_bound, bool $upper_inclusive): BetweenRange
     {
-        return new BetweenRange(
-            $this->lowerBound,
-            $upper_bound,
-            $upper_inclusive,
-        );
+        return new BetweenRange($this->lowerBound, $upper_bound, $upper_inclusive);
     }
 
     /**
@@ -108,11 +101,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      */
     public function withUpperBoundInclusive(int $upper_bound): BetweenRange
     {
-        return new BetweenRange(
-            $this->lowerBound,
-            $upper_bound,
-            true,
-        );
+        return new BetweenRange($this->lowerBound, $upper_bound, true);
     }
 
     /**
@@ -124,11 +113,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      */
     public function withUpperBoundExclusive(int $upper_bound): BetweenRange
     {
-        return new BetweenRange(
-            $this->lowerBound,
-            $upper_bound,
-            false,
-        );
+        return new BetweenRange($this->lowerBound, $upper_bound, false);
     }
 
     /**
@@ -150,11 +135,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      */
     public function withLowerBound(int $lower_bound): BetweenRange
     {
-        return new static(
-            $lower_bound,
-            $this->upperBound,
-            $this->upperInclusive,
-        );
+        return new static($lower_bound, $this->upperBound, $this->upperInclusive);
     }
 
     /**
@@ -195,11 +176,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
     public function withUpperInclusive(bool $upper_inclusive): static
     {
         /** @psalm-suppress MissingThrowsDocblock */
-        return new static(
-            $this->lowerBound,
-            $this->upperBound,
-            $upper_inclusive,
-        );
+        return new static($this->lowerBound, $this->upperBound, $upper_inclusive);
     }
 
     /**
@@ -228,7 +205,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
         $inclusive = $this->upperInclusive;
 
         return Iter\Iterator::from(static function () use ($lower, $upper, $inclusive): Generator {
-            $to = $inclusive ? $upper : $upper - 1;
+            $to = $inclusive ? $upper : ($upper - 1);
 
             for ($i = $lower; $i <= $to; $i++) {
                 yield $i;

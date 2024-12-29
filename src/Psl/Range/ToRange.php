@@ -17,7 +17,7 @@ namespace Psl\Range;
  */
 final readonly class ToRange implements UpperBoundRangeInterface
 {
-    private int  $upperBound;
+    private int $upperBound;
     private bool $upperInclusive;
 
     /**
@@ -52,11 +52,7 @@ final readonly class ToRange implements UpperBoundRangeInterface
      */
     public function withLowerBound(int $lower_bound): BetweenRange
     {
-        return new BetweenRange(
-            $lower_bound,
-            $this->upperBound,
-            $this->upperInclusive,
-        );
+        return new BetweenRange($lower_bound, $this->upperBound, $this->upperInclusive);
     }
 
     /**
@@ -126,9 +122,6 @@ final readonly class ToRange implements UpperBoundRangeInterface
      */
     public function withUpperInclusive(bool $upper_inclusive): static
     {
-        return new static(
-            $this->upperBound,
-            $upper_inclusive,
-        );
+        return new static($this->upperBound, $upper_inclusive);
     }
 }

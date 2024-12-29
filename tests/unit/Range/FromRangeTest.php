@@ -32,7 +32,7 @@ final class FromRangeTest extends TestCase
         static::assertFalse($range->contains(Math\INT53_MIN));
         static::assertFalse($range->contains(Math\INT64_MIN));
     }
-    
+
     public function testLowerBound(): void
     {
         $range = Range\from(10);

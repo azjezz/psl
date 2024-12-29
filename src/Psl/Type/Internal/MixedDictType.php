@@ -23,7 +23,7 @@ final readonly class MixedDictType extends Type\Type
      */
     public function coerce(mixed $value): array
     {
-        if (! is_iterable($value)) {
+        if (!is_iterable($value)) {
             throw CoercionException::withValue($value, $this->toString());
         }
 
@@ -51,11 +51,15 @@ final readonly class MixedDictType extends Type\Type
             }
         } catch (Throwable $e) {
             throw match (true) {
-                $iterating => CoercionException::withValue(null, $this->toString(), PathExpression::iteratorError($k), $e),
+                $iterating => CoercionException::withValue(
+                    null,
+                    $this->toString(),
+                    PathExpression::iteratorError($k),
+                    $e,
+                ),
                 default => CoercionException::withValue($k, $this->toString(), PathExpression::iteratorKey($k), $e),
             };
         }
-
 
         return $result;
     }
@@ -69,7 +73,7 @@ final readonly class MixedDictType extends Type\Type
      */
     public function assert(mixed $value): array
     {
-        if (! is_array($value)) {
+        if (!is_array($value)) {
             throw AssertException::withValue($value, $this->toString());
         }
 

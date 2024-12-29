@@ -31,7 +31,7 @@ function flip(iterable $iterable): array
         Psl\invariant(
             Type\array_key()->matches($value),
             'Expected all values to be of type array-key, value of type (%s) provided.',
-            gettype($value)
+            gettype($value),
         );
 
         /** @var Tv $value */

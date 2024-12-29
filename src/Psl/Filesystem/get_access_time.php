@@ -27,7 +27,7 @@ function get_access_time(string $node): int
         /**
          * @return false|int
          */
-        static fn() => fileatime($node)
+        static fn() => fileatime($node),
     );
 
     // @codeCoverageIgnoreStart
@@ -35,7 +35,7 @@ function get_access_time(string $node): int
         throw new Exception\RuntimeException(Str\format(
             'Failed to retrieve the access time of "%s": %s',
             $node,
-            $message ?? 'internal error'
+            $message ?? 'internal error',
         ));
     }
     // @codeCoverageIgnoreEnd

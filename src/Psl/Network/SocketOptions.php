@@ -45,8 +45,11 @@ final readonly class SocketOptions implements DefaultInterface
      *
      * @pure
      */
-    public static function create(bool $address_reuse = false, bool $port_reuse = false, bool $broadcast = false): SocketOptions
-    {
+    public static function create(
+        bool $address_reuse = false,
+        bool $port_reuse = false,
+        bool $broadcast = false,
+    ): SocketOptions {
         return new self($address_reuse, $port_reuse, $broadcast);
     }
 

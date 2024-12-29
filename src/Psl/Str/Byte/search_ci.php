@@ -22,7 +22,7 @@ use function stripos;
  *
  * @return null|int<0, max>
  */
-function search_ci(string $haystack, string $needle, int $offset = 0): ?int
+function search_ci(string $haystack, string $needle, int $offset = 0): null|int
 {
     $offset = Str\Internal\validate_offset($offset, length($haystack));
 

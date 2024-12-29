@@ -23,7 +23,7 @@ use function uksort;
  *
  * @return array<Tk, Tv>
  */
-function sort_by_key(iterable $iterable, ?Closure $comparator = null): array
+function sort_by_key(iterable $iterable, null|Closure $comparator = null): array
 {
     $result = [];
     foreach ($iterable as $k => $v) {

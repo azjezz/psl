@@ -18,14 +18,11 @@ final class ServerTest extends TestCase
         $server = TCP\Server::create(
             '127.0.0.1',
             0,
-            TCP\ServerOptions::create()
-                ->withNoDelay(true)
-                ->withSocketOptions(
-                    Network\SocketOptions::create()
-                        ->withAddressReuse(false)
-                        ->withPortReuse(false)
-                        ->withBroadcast(true)
-                )
+            TCP\ServerOptions::create()->withNoDelay(
+                true,
+            )->withSocketOptions(Network\SocketOptions::create()->withAddressReuse(false)->withPortReuse(
+                false,
+            )->withBroadcast(true)),
         );
 
         $server->close();

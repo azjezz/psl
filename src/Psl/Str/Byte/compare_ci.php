@@ -16,9 +16,7 @@ use function strncasecmp;
  * @param int<0, max>|null $length number of characters to use in the comparison,
  *                                 or null to compare the whole string
  */
-function compare_ci(string $string, string $other, ?int $length = null): int
+function compare_ci(string $string, string $other, null|int $length = null): int
 {
-    return null === $length ?
-        strcasecmp($string, $other) :
-        strncasecmp($string, $other, $length);
+    return null === $length ? strcasecmp($string, $other) : strncasecmp($string, $other, $length);
 }

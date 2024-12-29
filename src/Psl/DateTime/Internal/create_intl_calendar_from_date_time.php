@@ -23,14 +23,12 @@ function create_intl_calendar_from_date_time(
     int $day,
     int $hours,
     int $minutes,
-    int $seconds
+    int $seconds,
 ): IntlCalendar {
     /**
      * @var IntlCalendar $calendar
      */
-    $calendar = IntlCalendar::createInstance(
-        to_intl_timezone($timezone),
-    );
+    $calendar = IntlCalendar::createInstance(to_intl_timezone($timezone));
 
     if (PHP_VERSION_ID >= 80300) {
         $calendar->setDateTime($year, $month - 1, $day, $hours, $minutes, $seconds);

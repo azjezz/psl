@@ -57,8 +57,13 @@ final class DurationTest extends TestCase
     /**
      * @dataProvider provideGetTotalHours
      */
-    public function testGetTotalHours(int $hours, int $minutes, int $seconds, int $nanoseconds, float $expectedHours): void
-    {
+    public function testGetTotalHours(
+        int $hours,
+        int $minutes,
+        int $seconds,
+        int $nanoseconds,
+        float $expectedHours,
+    ): void {
         $time = DateTime\Duration::fromParts($hours, $minutes, $seconds, $nanoseconds);
         static::assertEquals($expectedHours, $time->getTotalHours());
     }
@@ -80,8 +85,13 @@ final class DurationTest extends TestCase
     /**
      * @dataProvider provideGetTotalMinutes
      */
-    public function testGetTotalMinutes(int $hours, int $minutes, int $seconds, int $nanoseconds, float $expectedMinutes): void
-    {
+    public function testGetTotalMinutes(
+        int $hours,
+        int $minutes,
+        int $seconds,
+        int $nanoseconds,
+        float $expectedMinutes,
+    ): void {
         $time = DateTime\Duration::fromParts($hours, $minutes, $seconds, $nanoseconds);
         static::assertEquals($expectedMinutes, $time->getTotalMinutes());
     }
@@ -103,8 +113,13 @@ final class DurationTest extends TestCase
     /**
      * @dataProvider provideGetTotalSeconds
      */
-    public function testGetTotalSeconds(int $hours, int $minutes, int $seconds, int $nanoseconds, float $expectedSeconds): void
-    {
+    public function testGetTotalSeconds(
+        int $hours,
+        int $minutes,
+        int $seconds,
+        int $nanoseconds,
+        float $expectedSeconds,
+    ): void {
         $time = DateTime\Duration::fromParts($hours, $minutes, $seconds, $nanoseconds);
         static::assertEquals($expectedSeconds, $time->getTotalSeconds());
     }
@@ -126,8 +141,13 @@ final class DurationTest extends TestCase
     /**
      * @dataProvider provideGetTotalMilliseconds
      */
-    public function testGetTotalMilliseconds(int $hours, int $minutes, int $seconds, int $nanoseconds, float $expectedMilliseconds): void
-    {
+    public function testGetTotalMilliseconds(
+        int $hours,
+        int $minutes,
+        int $seconds,
+        int $nanoseconds,
+        float $expectedMilliseconds,
+    ): void {
         $time = DateTime\Duration::fromParts($hours, $minutes, $seconds, $nanoseconds);
         static::assertEquals($expectedMilliseconds, $time->getTotalMilliseconds());
     }
@@ -136,7 +156,7 @@ final class DurationTest extends TestCase
     {
         return [
             [0, 0, 0, 0, 0.0],
-            [0, 0, 0, 1,  0.001],
+            [0, 0, 0, 1, 0.001],
             [1, 0, 0, 0, 3600000000.0],
             [1, 30, 0, 0, 5400000000.0],
             [2, 15, 30, 0, 8130000000.0],
@@ -149,8 +169,13 @@ final class DurationTest extends TestCase
     /**
      * @dataProvider provideGetTotalMicroseconds
      */
-    public function testGetTotalMicroseconds(int $hours, int $minutes, int $seconds, int $nanoseconds, float $expectedMicroseconds): void
-    {
+    public function testGetTotalMicroseconds(
+        int $hours,
+        int $minutes,
+        int $seconds,
+        int $nanoseconds,
+        float $expectedMicroseconds,
+    ): void {
         $time = DateTime\Duration::fromParts($hours, $minutes, $seconds, $nanoseconds);
         static::assertEquals($expectedMicroseconds, $time->getTotalMicroseconds());
     }
@@ -172,7 +197,10 @@ final class DurationTest extends TestCase
     {
         static::assertEquals([0, 0, 0, 0], DateTime\Duration::zero()->getParts());
         static::assertEquals([0, 0, 0, 42], DateTime\Duration::nanoseconds(42)->getParts());
-        static::assertEquals([0, 0, 1, 42], DateTime\Duration::nanoseconds(DateTime\NANOSECONDS_PER_SECOND + 42)->getParts());
+        static::assertEquals(
+            [0, 0, 1, 42],
+            DateTime\Duration::nanoseconds(DateTime\NANOSECONDS_PER_SECOND + 42)->getParts(),
+        );
         static::assertEquals([0, 0, 0, 42000], DateTime\Duration::microseconds(42)->getParts());
         static::assertEquals([0, 0, 1, 42000], DateTime\Duration::microseconds(1000042)->getParts());
         static::assertEquals([0, 0, 0, 42000000], DateTime\Duration::milliseconds(42)->getParts());
@@ -205,7 +233,7 @@ final class DurationTest extends TestCase
     {
         static::assertEquals(
             [0, 0, $normalized_s, $normalized_ns],
-            DateTime\Duration::fromParts(0, 0, $input_s, $input_ns)->getParts()
+            DateTime\Duration::fromParts(0, 0, $input_s, $input_ns)->getParts(),
         );
     }
 
@@ -213,11 +241,17 @@ final class DurationTest extends TestCase
     {
         static::assertEquals([3, 5, 4, 0], DateTime\Duration::fromParts(2, 63, 124)->getParts());
         static::assertEquals([0, 59, 4, 0], DateTime\Duration::fromParts(2, -63, 124)->getParts());
-        static::assertEquals([-1, 0, -55, -(DateTime\NANOSECONDS_PER_SECOND - 42)], DateTime\Duration::fromParts(0, -63, 124, 42)->getParts());
+        static::assertEquals(
+            [-1, 0, -55, -(DateTime\NANOSECONDS_PER_SECOND - 42)],
+            DateTime\Duration::fromParts(0, -63, 124, 42)->getParts(),
+        );
         static::assertEquals([42, 0, 0, 0], DateTime\Duration::hours(42)->getParts());
         static::assertEquals([1, 3, 0, 0], DateTime\Duration::minutes(63)->getParts());
         static::assertEquals([0, -1, -3, 0], DateTime\Duration::seconds(-63)->getParts());
-        static::assertEquals([0, 0, -1, 0], DateTime\Duration::nanoseconds(-DateTime\NANOSECONDS_PER_SECOND)->getParts());
+        static::assertEquals(
+            [0, 0, -1, 0],
+            DateTime\Duration::nanoseconds(-DateTime\NANOSECONDS_PER_SECOND)->getParts(),
+        );
     }
 
     /**

@@ -58,19 +58,16 @@ final class Reader implements ReadHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function readFixedSize(int $size, ?Duration $timeout = null): string
+    public function readFixedSize(int $size, null|Duration $timeout = null): string
     {
-        $timer = new Async\OptionalIncrementalTimeout(
-            $timeout,
-            function (): void {
-                // @codeCoverageIgnoreStart
-                throw new Exception\TimeoutException(Str\format(
-                    "Reached timeout before reading requested amount of data",
-                    $this->buffer === '' ? 'any' : 'all',
-                ));
-                // @codeCoverageIgnoreEnd
-            },
-        );
+        $timer = new Async\OptionalIncrementalTimeout($timeout, function (): void {
+            // @codeCoverageIgnoreStart
+            throw new Exception\TimeoutException(Str\format(
+                'Reached timeout before reading requested amount of data',
+                $this->buffer === '' ? 'any' : 'all',
+            ));
+            // @codeCoverageIgnoreEnd
+        });
 
         while (($length = strlen($this->buffer)) < $size && !$this->eof) {
             /** @var positive-int $to_read */
@@ -101,7 +98,7 @@ final class Reader implements ReadHandleInterface
      * @throws Exception\RuntimeException If an error occurred during the operation, or reached end of file.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    public function readByte(?Duration $timeout = null): string
+    public function readByte(null|Duration $timeout = null): string
     {
         if ($this->buffer === '' && !$this->eof) {
             $this->fillBuffer(null, $timeout);
@@ -129,18 +126,15 @@ final class Reader implements ReadHandleInterface
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    public function readLine(?Duration $timeout = null): ?string
+    public function readLine(null|Duration $timeout = null): null|string
     {
-        $timer = new Async\OptionalIncrementalTimeout(
-            $timeout,
-            static function (): void {
-                // @codeCoverageIgnoreStart
-                throw new Exception\TimeoutException(
-                    "Reached timeout before encountering reaching the current line terminator.",
-                );
-                // @codeCoverageIgnoreEnd
-            },
-        );
+        $timer = new Async\OptionalIncrementalTimeout($timeout, static function (): void {
+            // @codeCoverageIgnoreStart
+            throw new Exception\TimeoutException(
+                'Reached timeout before encountering reaching the current line terminator.',
+            );
+            // @codeCoverageIgnoreEnd
+        });
 
         $line = $this->readUntil(PHP_EOL, $timer->getRemaining());
         if (null !== $line) {
@@ -165,7 +159,7 @@ final class Reader implements ReadHandleInterface
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    public function readUntil(string $suffix, ?Duration $timeout = null): ?string
+    public function readUntil(string $suffix, null|Duration $timeout = null): null|string
     {
         $buf = $this->buffer;
         $idx = strpos($buf, $suffix);
@@ -175,22 +169,19 @@ final class Reader implements ReadHandleInterface
             return substr($buf, 0, $idx);
         }
 
-        $timer = new Async\OptionalIncrementalTimeout(
-            $timeout,
-            static function () use ($suffix): void {
-                // @codeCoverageIgnoreStart
-                throw new Exception\TimeoutException(Str\format(
-                    "Reached timeout before encountering the suffix (\"%s\").",
-                    $suffix,
-                ));
-                // @codeCoverageIgnoreEnd
-            },
-        );
+        $timer = new Async\OptionalIncrementalTimeout($timeout, static function () use ($suffix): void {
+            // @codeCoverageIgnoreStart
+            throw new Exception\TimeoutException(Str\format(
+                "Reached timeout before encountering the suffix (\"%s\").",
+                $suffix,
+            ));
+            // @codeCoverageIgnoreEnd
+        });
 
         do {
             // + 1 as it would have been matched in the previous iteration if it
             // fully fit in the chunk
-            $offset = strlen($buf) - $suffix_len + 1;
+            $offset = (strlen($buf) - $suffix_len) + 1;
             $offset = $offset > 0 ? $offset : 0;
             $chunk = $this->handle->read(null, $timer->getRemaining());
             if ($chunk === '') {
@@ -209,7 +200,7 @@ final class Reader implements ReadHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function read(?int $max_bytes = null, ?Duration $timeout = null): string
+    public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         if ($this->eof) {
             return '';
@@ -227,7 +218,7 @@ final class Reader implements ReadHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function tryRead(?int $max_bytes = null): string
+    public function tryRead(null|int $max_bytes = null): string
     {
         if ($this->eof) {
             return '';
@@ -263,7 +254,7 @@ final class Reader implements ReadHandleInterface
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      */
-    private function fillBuffer(?int $desired_bytes, ?Duration $timeout): void
+    private function fillBuffer(null|int $desired_bytes, null|Duration $timeout): void
     {
         $this->buffer .= $chunk = $this->handle->read($desired_bytes, $timeout);
         if ($chunk === '') {

@@ -22,11 +22,13 @@ use const PREG_SPLIT_NO_EMPTY;
  *
  * @pure
  */
-function split(string $subject, string $pattern, ?int $limit = null): array
+function split(string $subject, string $pattern, null|int $limit = null): array
 {
     /** @var list<string> */
-    return Internal\call_preg(
-        'preg_split',
-        static fn() => preg_split($pattern, $subject, $limit ?? -1, PREG_SPLIT_NO_EMPTY),
-    );
+    return Internal\call_preg('preg_split', static fn() => preg_split(
+        $pattern,
+        $subject,
+        $limit ?? -1,
+        PREG_SPLIT_NO_EMPTY,
+    ));
 }

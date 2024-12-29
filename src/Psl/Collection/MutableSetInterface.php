@@ -318,7 +318,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, ?int $length = null): MutableSetInterface;
+    public function slice(int $start, null|int $length = null): MutableSetInterface;
 
     /**
      * Returns a `MutableVectorInterface` containing the original `MutableSetInterface` split into

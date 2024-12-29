@@ -49,11 +49,11 @@ final readonly class Timestamp implements TemporalInterface
     {
         // Check for potential overflow or underflow before doing any operation
         if ($seconds === Math\INT64_MAX && $nanoseconds >= NANOSECONDS_PER_SECOND) {
-            throw new Exception\OverflowException("Adding nanoseconds would cause an overflow.");
+            throw new Exception\OverflowException('Adding nanoseconds would cause an overflow.');
         }
 
         if ($seconds === Math\INT64_MIN && $nanoseconds <= -NANOSECONDS_PER_SECOND) {
-            throw new Exception\UnderflowException("Subtracting nanoseconds would cause an underflow.");
+            throw new Exception\UnderflowException('Subtracting nanoseconds would cause an underflow.');
         }
 
         /** @psalm-suppress MissingThrowsDocblock */
@@ -131,12 +131,19 @@ final readonly class Timestamp implements TemporalInterface
      *
      * @psalm-mutation-free
      */
-    public static function parse(string $raw_string, null|FormatPattern|string $pattern = null, null|Timezone $timezone = null, null|Locale $locale = null): static
-    {
+    public static function parse(
+        string $raw_string,
+        null|FormatPattern|string $pattern = null,
+        null|Timezone $timezone = null,
+        null|Locale $locale = null,
+    ): static {
         /** @psalm-suppress MissingThrowsDocblock */
-        return self::fromParts(
-            Internal\parse(raw_string: $raw_string, pattern: $pattern, timezone: $timezone, locale: $locale)
-        );
+        return self::fromParts(Internal\parse(
+            raw_string: $raw_string,
+            pattern: $pattern,
+            timezone: $timezone,
+            locale: $locale,
+        ));
     }
 
     /**
@@ -171,12 +178,21 @@ final readonly class Timestamp implements TemporalInterface
      *
      * @psalm-mutation-free
      */
-    public static function fromString(string $raw_string, null|DateStyle $date_style = null, null|TimeStyle $time_style = null, null|Timezone $timezone = null, null|Locale $locale = null): static
-    {
+    public static function fromString(
+        string $raw_string,
+        null|DateStyle $date_style = null,
+        null|TimeStyle $time_style = null,
+        null|Timezone $timezone = null,
+        null|Locale $locale = null,
+    ): static {
         /** @psalm-suppress MissingThrowsDocblock */
-        return self::fromParts(
-            Internal\parse(raw_string: $raw_string, date_style: $date_style, time_style: $time_style, timezone: $timezone, locale: $locale)
-        );
+        return self::fromParts(Internal\parse(
+            raw_string: $raw_string,
+            date_style: $date_style,
+            time_style: $time_style,
+            timezone: $timezone,
+            locale: $locale,
+        ));
     }
 
     /**
@@ -236,7 +252,7 @@ final readonly class Timestamp implements TemporalInterface
     public function plus(Duration $duration): static
     {
         [$h, $m, $s, $ns] = $duration->getParts();
-        $totalSeconds = SECONDS_PER_MINUTE * $m + SECONDS_PER_HOUR * $h + $s;
+        $totalSeconds = (SECONDS_PER_MINUTE * $m) + (SECONDS_PER_HOUR * $h) + $s;
         $newSeconds = $this->seconds + $totalSeconds;
         $newNanoseconds = $this->nanoseconds + $ns;
 
@@ -255,7 +271,7 @@ final readonly class Timestamp implements TemporalInterface
     public function minus(Duration $duration): static
     {
         [$h, $m, $s, $ns] = $duration->getParts();
-        $totalSeconds = SECONDS_PER_MINUTE * $m + SECONDS_PER_HOUR * $h + $s;
+        $totalSeconds = (SECONDS_PER_MINUTE * $m) + (SECONDS_PER_HOUR * $h) + $s;
         $newSeconds = $this->seconds - $totalSeconds;
         $newNanoseconds = $this->nanoseconds - $ns;
 

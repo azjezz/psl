@@ -21,11 +21,14 @@ final class EnumerateTest extends TestCase
     {
         yield [[], []];
         yield [[['a', 'b'], ['c', 'd']], ['a' => 'b', 'c' => 'd']];
-        yield [[['a', 'b'], ['a', 'b'], ['a', 'b']], (static function () {
-            yield 'a' => 'b';
-            yield 'a' => 'b';
-            yield 'a' => 'b';
-        })()];
+        yield [
+            [['a', 'b'], ['a', 'b'], ['a', 'b']],
+            (static function () {
+                yield 'a' => 'b';
+                yield 'a' => 'b';
+                yield 'a' => 'b';
+            })(),
+        ];
         yield [[['a', null], ['b', 0]], ['a' => null, 'b' => 0]];
     }
 }

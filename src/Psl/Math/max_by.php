@@ -23,12 +23,12 @@ use Closure;
  */
 function max_by(iterable $numbers, Closure $numeric_function): mixed
 {
-    $max     = null;
+    $max = null;
     $max_num = null;
     foreach ($numbers as $value) {
         $value_num = $numeric_function($value);
         if (null === $max_num || $value_num >= $max_num) {
-            $max     = $value;
+            $max = $value;
             $max_num = $value_num;
         }
     }

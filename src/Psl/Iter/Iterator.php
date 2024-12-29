@@ -22,7 +22,7 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * @var null|Generator<Tk, Tv, mixed, mixed>
      */
-    private ?Generator $generator;
+    private null|Generator $generator;
 
     /**
      * @var array<int, array{0: Tk, 1: Tv}>
@@ -44,7 +44,7 @@ final class Iterator implements Countable, SeekableIterator
      *
      * @var null|int<0, max>
      */
-    private ?int $count = null;
+    private null|int $count = null;
 
     /**
      * @param Generator<Tk, Tv, mixed, mixed> $generator
@@ -203,7 +203,9 @@ final class Iterator implements Countable, SeekableIterator
     {
         $this->position++;
 
-        if (array_key_exists($this->position, $this->entries) || null === $this->generator || !$this->generator->valid()) {
+        if (
+            array_key_exists($this->position, $this->entries) || null === $this->generator || !$this->generator->valid()
+        ) {
             return;
         }
 

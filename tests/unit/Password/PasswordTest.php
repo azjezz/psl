@@ -29,7 +29,7 @@ final class PasswordTest extends TestCase
     public function testBcrypt(string $password): void
     {
         $hash = Password\hash($password, Password\Algorithm::Bcrypt, [
-            'cost' => 8
+            'cost' => 8,
         ]);
 
         static::assertTrue(Password\verify($password, $hash));
@@ -39,7 +39,7 @@ final class PasswordTest extends TestCase
         static::assertSame(8, $information['options']['cost']);
 
         static::assertFalse(Password\needs_rehash($hash, Password\Algorithm::Bcrypt, [
-            'cost' => 8
+            'cost' => 8,
         ]));
     }
 

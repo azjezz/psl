@@ -23,16 +23,12 @@ function div(int $numerator, int $denominator): int
     try {
         return intdiv($numerator, $denominator);
     } catch (DivisionByZeroError $error) {
-        throw new Exception\DivisionByZeroException(
-            Str\format('%s.', $error->getMessage()),
-            $error->getCode(),
-            $error
-        );
+        throw new Exception\DivisionByZeroException(Str\format('%s.', $error->getMessage()), $error->getCode(), $error);
     } catch (ArithmeticError $error) {
         throw new Exception\ArithmeticException(
             'Division of Math\INT64_MIN by -1 is not an integer.',
             $error->getCode(),
-            $error
+            $error,
         );
     }
 }

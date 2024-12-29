@@ -26,10 +26,7 @@ use const JSON_UNESCAPED_UNICODE;
  */
 function encode(mixed $value, bool $pretty = false, int $flags = 0): string
 {
-    $flags |= JSON_UNESCAPED_UNICODE
-        | JSON_UNESCAPED_SLASHES
-        | JSON_PRESERVE_ZERO_FRACTION
-        | JSON_THROW_ON_ERROR;
+    $flags |= JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRESERVE_ZERO_FRACTION | JSON_THROW_ON_ERROR;
 
     if ($pretty) {
         $flags |= JSON_PRETTY_PRINT;

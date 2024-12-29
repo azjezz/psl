@@ -203,7 +203,7 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, ?int $length = null): CollectionInterface;
+    public function slice(int $start, null|int $length = null): CollectionInterface;
 
     /**
      * Returns a `CollectionInterface` containing the original `CollectionInterface` split into

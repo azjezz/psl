@@ -21,10 +21,12 @@ use function preg_replace_callback;
  * @throws Exception\InvalidPatternException If $pattern is invalid.
  * @throws Exception\RuntimeException In case of an unexpected error.
  */
-function replace_with(string $haystack, string $pattern, Closure $callback, ?int $limit = null): string
+function replace_with(string $haystack, string $pattern, Closure $callback, null|int $limit = null): string
 {
-    return (string) Internal\call_preg(
-        'preg_replace_callback',
-        static fn() => preg_replace_callback($pattern, $callback, $haystack, $limit ?? -1),
-    );
+    return (string) Internal\call_preg('preg_replace_callback', static fn() => preg_replace_callback(
+        $pattern,
+        $callback,
+        $haystack,
+        $limit ?? -1,
+    ));
 }

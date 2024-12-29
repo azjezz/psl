@@ -21,7 +21,7 @@ use function substr;
  *
  * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
  */
-function slice(string $string, int $offset, ?int $length = null): string
+function slice(string $string, int $offset, null|int $length = null): string
 {
     $offset = Str\Internal\validate_offset($offset, length($string));
 

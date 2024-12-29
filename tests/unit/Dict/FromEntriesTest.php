@@ -19,7 +19,7 @@ final class FromEntriesTest extends TestCase
     {
         $array = Dict\from_entries([
             [1, 'hello'],
-            [2, 'world']
+            [2, 'world'],
         ]);
 
         static::assertCount(2, $array);

@@ -16,7 +16,7 @@ use Psl\Str\Exception;
 function reverse(string $string): string
 {
     $reversed = '';
-    $offset   = length($string);
+    $offset = length($string);
 
     while ($offset-- > 0) {
         $reversed .= slice($string, $offset, 1);

@@ -21,7 +21,7 @@ final class ClassTest extends TestCase
         bool $readonly,
         bool $abstract,
         array $methods = [],
-        array $constants = []
+        array $constants = [],
     ): void {
         static::assertSame($exists, Class\exists($classname));
         static::assertSame($exists, Class\defined($classname));

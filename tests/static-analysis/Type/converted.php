@@ -13,9 +13,5 @@ use Psl\Type;
  */
 function testsPurity(): Type\TypeInterface
 {
-    return Type\converted(
-        Type\int(),
-        Type\string(),
-        static fn (int $value): string => (string) $value
-    );
+    return Type\converted(Type\int(), Type\string(), static fn(int $value): string => (string) $value);
 }

@@ -19,10 +19,12 @@ use function preg_replace;
  *
  * @pure
  */
-function replace(string $haystack, string $pattern, string $replacement, ?int $limit = null): string
+function replace(string $haystack, string $pattern, string $replacement, null|int $limit = null): string
 {
-    return (string) Internal\call_preg(
-        'preg_replace',
-        static fn() => preg_replace($pattern, $replacement, $haystack, $limit ?? -1),
-    );
+    return (string) Internal\call_preg('preg_replace', static fn() => preg_replace(
+        $pattern,
+        $replacement,
+        $haystack,
+        $limit ?? -1,
+    ));
 }

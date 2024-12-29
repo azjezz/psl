@@ -13,9 +13,9 @@ final class PipeTest extends TestCase
     public function testItCombinesMultipleFunctionToExecutesInOrder(): void
     {
         $x = Fun\pipe(
-            static fn (string $x): string => $x . ' world',
-            static fn (string $y): string => $y . '?',
-            static fn (string $z): string => $z . '!',
+            static fn(string $x): string => $x . ' world',
+            static fn(string $y): string => $y . '?',
+            static fn(string $z): string => $z . '!',
         );
 
         static::assertSame('Hello world?!', $x('Hello'));
@@ -23,10 +23,7 @@ final class PipeTest extends TestCase
 
     public function testItCombinesMultipleFunctionsThatDealWithDifferentTypes(): void
     {
-        $x = Fun\pipe(
-            static fn (string $x): int => Str\length($x),
-            static fn (int $y): string => $y . '!'
-        );
+        $x = Fun\pipe(static fn(string $x): int => Str\length($x), static fn(int $y): string => $y . '!');
 
         static::assertSame('5!', $x('Hello'));
     }

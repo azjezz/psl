@@ -26,7 +26,7 @@ final class VecTypeBench extends GenericTypeBench
             $arraysAndIterables[$key . ' array'] = $pair;
             $arraysAndIterables[$key . ' iterable'] = [
                 'type' => $pair['type'],
-                'value' => new ArrayIterator($pair['value'])
+                'value' => new ArrayIterator($pair['value']),
             ];
         }
 

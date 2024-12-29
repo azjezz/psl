@@ -62,7 +62,10 @@ final class PipeTest extends TestCase
         $read_result = $read_awaitable->await();
 
         static::assertSame('hello', $read_result);
-        static::assertSame('[read:sleep][write:sleep][read:start][write:start][write:complete][write:close][read:complete][read:close]', $spy->value);
+        static::assertSame(
+            '[read:sleep][write:sleep][read:start][write:start][write:complete][write:close][read:complete][read:close]',
+            $spy->value,
+        );
     }
 
     public function testReadFixedSize(): void

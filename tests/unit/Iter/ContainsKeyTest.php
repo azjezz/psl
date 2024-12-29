@@ -38,7 +38,7 @@ final class ContainsKeyTest extends TestCase
         yield [true, new Collection\Vector([1, 2]), 0];
         yield [true, new Collection\Vector([1, 2]), 1];
         yield [false, new Collection\Vector([1, 2]), 2];
-        yield [true, (static fn () => yield 'foo' => 'bar')(), 'foo'];
-        yield [false, (static fn () => yield 'foo' => 'bar')(), 'bar'];
+        yield [true, (static fn() => yield 'foo' => 'bar')(), 'foo'];
+        yield [false, (static fn() => yield 'foo' => 'bar')(), 'bar'];
     }
 }

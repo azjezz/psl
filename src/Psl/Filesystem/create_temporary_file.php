@@ -23,7 +23,7 @@ use Psl\Str;
  *
  * @return non-empty-string The absolute path to the temporary file.
  */
-function create_temporary_file(?string $directory = null, ?string $prefix = null): string
+function create_temporary_file(null|string $directory = null, null|string $prefix = null): string
 {
     $directory ??= Env\temp_dir();
     if (!namespace\exists($directory)) {
@@ -38,7 +38,10 @@ function create_temporary_file(?string $directory = null, ?string $prefix = null
     if (null !== $prefix) {
         /** @psalm-suppress MissingThrowsDocblock - $offset is within bounds. */
         if (Str\contains($prefix, $separator)) {
-            throw new Exception\InvalidArgumentException(Str\format('$prefix should not contain a directory separator ( "%s" ).', $separator));
+            throw new Exception\InvalidArgumentException(Str\format(
+                '$prefix should not contain a directory separator ( "%s" ).',
+                $separator,
+            ));
         }
     } else {
         $prefix = '';

@@ -33,7 +33,6 @@ final class MeanTest extends TestCase
                     8,
                 ],
             ],
-
             [
                 7.357142857142858,
                 [
@@ -53,7 +52,6 @@ final class MeanTest extends TestCase
                     15,
                 ],
             ],
-
             [
                 26.785714285714285,
                 [
@@ -73,16 +71,14 @@ final class MeanTest extends TestCase
                     64,
                 ],
             ],
-
             [
                 100.0,
-                Vec\fill(100, 100)
+                Vec\fill(100, 100),
             ],
-
             [
                 null,
-                []
-            ]
+                [],
+            ],
         ];
     }
 }

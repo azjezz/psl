@@ -21,10 +21,10 @@ use Psl\Str;
  * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
  * @throws Str\Exception\InvalidArgumentException If $string is not made of grapheme clusters.
  */
-function slice(string $string, int $offset, ?int $length = null): string
+function slice(string $string, int $offset, null|int $length = null): string
 {
     $string_length = length($string);
-    $offset        = Str\Internal\validate_offset($offset, $string_length);
+    $offset = Str\Internal\validate_offset($offset, $string_length);
 
     if (0 === $offset && (null === $length || $string_length <= $length)) {
         return $string;

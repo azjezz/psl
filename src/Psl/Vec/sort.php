@@ -22,7 +22,7 @@ use function usort;
  *
  * @return list<T>
  */
-function sort(iterable $iterable, ?Closure $comparator = null): array
+function sort(iterable $iterable, null|Closure $comparator = null): array
 {
     $array = values($iterable);
     if (null !== $comparator) {

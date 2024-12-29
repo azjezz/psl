@@ -34,21 +34,21 @@ final class ReductionsTest extends TestCase
         yield [
             [],
             [],
-            static fn (int $accumulator, int $k, int $v): int => $accumulator,
+            static fn(int $accumulator, int $k, int $v): int => $accumulator,
             0,
         ];
 
         yield [
             [1, 3, 6],
             [1, 2, 3],
-            static fn (int $accumulator, int $k, int $v): int => $accumulator + $v,
+            static fn(int $accumulator, int $k, int $v): int => $accumulator + $v,
             0,
         ];
 
         yield [
             [1, 3, 6],
             Iter\to_iterator([1, 2, 3]),
-            static fn (int $accumulator, int $k, int $v): int => $accumulator + $v,
+            static fn(int $accumulator, int $k, int $v): int => $accumulator + $v,
             0,
         ];
     }

@@ -19,7 +19,7 @@ trait FloatAsserts
     {
         TestCase::assertTrue(
             Math\abs($a - $b) <= $epsilon,
-            'Failed asserting that float ' . $a . ' is equal to ' . $b . '.'
+            'Failed asserting that float ' . $a . ' is equal to ' . $b . '.',
         );
     }
 }

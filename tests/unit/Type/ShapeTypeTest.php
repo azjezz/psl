@@ -26,9 +26,9 @@ final class ShapeTypeTest extends TypeTest
                 'likes' => Type\int(),
                 'comments' => Type\optional(Type\vec(Type\shape([
                     'user' => Type\string(),
-                    'comment' => Type\string()
+                    'comment' => Type\string(),
                 ]))),
-            ]))
+            ])),
         ]);
     }
 
@@ -39,13 +39,12 @@ final class ShapeTypeTest extends TypeTest
                 'defined_key' => 'value',
                 'additional_key' => 'value',
             ],
-            Type\shape([
-                'defined_key' => Type\mixed(),
-            ], true)
-                ->coerce(new ArrayIterator([
+            Type\shape(['defined_key' => Type\mixed()], true)->coerce(
+                new ArrayIterator([
                     'defined_key' => 'value',
                     'additional_key' => 'value',
-                ]))
+                ]),
+            ),
         );
     }
 
@@ -55,7 +54,7 @@ final class ShapeTypeTest extends TypeTest
             yield $row;
             yield [
                 new ArrayIterator($row[0]),
-                $row[1]
+                $row[1],
             ];
         }
     }
@@ -67,68 +66,101 @@ final class ShapeTypeTest extends TypeTest
     {
         yield [
             ['name' => 'saif', 'articles' => new Collection\Vector([])],
-            ['name' => 'saif', 'articles' => []]
+            ['name' => 'saif', 'articles' => []],
         ];
 
         yield [
-            ['name' => 'saif', 'articles' => new Collection\Vector([
-                ['title' => 'Foo', 'content' => 'Baz', 'likes' => 0],
-            ])],
-            ['name' => 'saif', 'articles' => [
-                ['title' => 'Foo', 'content' => 'Baz', 'likes' => 0],
-            ]]
+            [
+                'name' => 'saif',
+                'articles' => new Collection\Vector([['title' => 'Foo', 'content' => 'Baz', 'likes' => 0]]),
+            ],
+            ['name' => 'saif', 'articles' => [['title' => 'Foo', 'content' => 'Baz', 'likes' => 0]]],
         ];
 
         yield [
-            ['name' => 'saif', 'articles' => new Collection\Vector([
-                ['title' => 'Foo', 'content' => 'Baz', 'likes' => 0],
-                ['title' => 'Bar', 'content' => 'Qux', 'likes' => 0, 'comments' => [
-                    ['user' => 'a', 'comment' => 'hello'],
-                    ['user' => 'b', 'comment' => 'hey'],
-                    ['user' => 'c', 'comment' => 'hi'],
-                ]],
-            ])],
-            ['name' => 'saif', 'articles' => [
-                ['title' => 'Foo', 'content' => 'Baz', 'likes' => 0],
-                ['title' => 'Bar', 'content' => 'Qux', 'likes' => 0, 'comments' => [
-                    ['user' => 'a', 'comment' => 'hello'],
-                    ['user' => 'b', 'comment' => 'hey'],
-                    ['user' => 'c', 'comment' => 'hi'],
-                ]],
-            ]],
+            [
+                'name' => 'saif',
+                'articles' => new Collection\Vector([
+                    ['title' => 'Foo', 'content' => 'Baz', 'likes' => 0],
+                    [
+                        'title' => 'Bar',
+                        'content' => 'Qux',
+                        'likes' => 0,
+                        'comments' => [
+                            ['user' => 'a', 'comment' => 'hello'],
+                            ['user' => 'b', 'comment' => 'hey'],
+                            ['user' => 'c', 'comment' => 'hi'],
+                        ],
+                    ],
+                ]),
+            ],
+            [
+                'name' => 'saif',
+                'articles' => [
+                    ['title' => 'Foo', 'content' => 'Baz', 'likes' => 0],
+                    [
+                        'title' => 'Bar',
+                        'content' => 'Qux',
+                        'likes' => 0,
+                        'comments' => [
+                            ['user' => 'a', 'comment' => 'hello'],
+                            ['user' => 'b', 'comment' => 'hey'],
+                            ['user' => 'c', 'comment' => 'hi'],
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         yield [
-            ['name' => 'saif', 'articles' => new Collection\Vector([
-                ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0],
-                ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13],
-            ])],
-            ['name' => 'saif', 'articles' => [
-                ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0],
-                ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13],
-            ]],
+            [
+                'name' => 'saif',
+                'articles' => new Collection\Vector([
+                    ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0],
+                    ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13],
+                ]),
+            ],
+            [
+                'name' => 'saif',
+                'articles' => [
+                    ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0],
+                    ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13],
+                ],
+            ],
         ];
 
         yield 'stdClass containing a valid shape' => [
-            (object) ['name' => 'saif', 'articles' => new Collection\Vector([
-                ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0, 'dislikes' => 5],
-                ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13, 'dislikes' => 3],
-            ])],
-            ['name' => 'saif', 'articles' => [
-                ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0],
-                ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13],
-            ]],
+            (object) [
+                'name' => 'saif',
+                'articles' => new Collection\Vector([
+                    ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0, 'dislikes' => 5],
+                    ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13, 'dislikes' => 3],
+                ]),
+            ],
+            [
+                'name' => 'saif',
+                'articles' => [
+                    ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0],
+                    ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13],
+                ],
+            ],
         ];
 
         yield [
-            ['name' => 'saif', 'articles' => new Collection\Vector([
-                ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0, 'dislikes' => 5],
-                ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13, 'dislikes' => 3],
-            ])],
-            ['name' => 'saif', 'articles' => [
-                ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0],
-                ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13],
-            ]],
+            [
+                'name' => 'saif',
+                'articles' => new Collection\Vector([
+                    ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0, 'dislikes' => 5],
+                    ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13, 'dislikes' => 3],
+                ]),
+            ],
+            [
+                'name' => 'saif',
+                'articles' => [
+                    ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0],
+                    ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13],
+                ],
+            ],
         ];
     }
 
@@ -144,15 +176,24 @@ final class ShapeTypeTest extends TypeTest
         yield [['name' => 'saif', 'articles' => 5]];
         yield [['name' => 'saif', 'baz' => []]];
         yield [['name' => 'saif', 'baz' => []]];
-        yield [['name' => 'saif', 'articles' => [
-            ['title' => 'biz'] // missing 'content' and 'likes'
-        ]]];
-        yield [['name' => 'saif', 'articles' => [
-            ['title' => 'biz', 'content' => 'foo', 'upvotes' => 4] // 'likes' replaced by 'upvotes'
-        ]]];
-        yield [(object) ['name' => 'saif', 'articles' => [
-            ['title' => 'biz', 'content' => 'foo', 'upvotes' => 4] // 'likes' replaced by 'upvotes'
-        ]]];
+        yield [[
+            'name' => 'saif',
+            'articles' => [
+                ['title' => 'biz'], // missing 'content' and 'likes'
+            ],
+        ]];
+        yield [[
+            'name' => 'saif',
+            'articles' => [
+                ['title' => 'biz', 'content' => 'foo', 'upvotes' => 4], // 'likes' replaced by 'upvotes'
+            ],
+        ]];
+        yield [(object) [
+            'name' => 'saif',
+            'articles' => [
+                ['title' => 'biz', 'content' => 'foo', 'upvotes' => 4], // 'likes' replaced by 'upvotes'
+            ],
+        ]];
     }
 
     public function getToStringExamples(): iterable
@@ -160,15 +201,15 @@ final class ShapeTypeTest extends TypeTest
         yield [
             $this->getType(),
             "array{'name': string, 'articles': vec<array{" .
-            "'title': string, " .
-            "'content': string, " .
-            "'likes': int, " .
-            "'comments'?: vec<array{'user': string, 'comment': string}>" .
-            "}>}"
+                "'title': string, " .
+                "'content': string, " .
+                "'likes': int, " .
+                "'comments'?: vec<array{'user': string, 'comment': string}>" .
+                '}>}',
         ];
         yield [
             Type\shape([Type\int(), Type\string()]),
-            'array{0: int, 1: string}'
+            'array{0: int, 1: string}',
         ];
     }
 
@@ -202,40 +243,28 @@ final class ShapeTypeTest extends TypeTest
     public static function provideAssertExceptionExpectations(): iterable
     {
         yield 'extra key' => [
-            Type\shape([
-                'name' => Type\string(),
-            ]),
+            Type\shape(['name' => Type\string()]),
             [
                 'name' => 'saif',
                 'extra' => 123,
             ],
-            'Expected "array{\'name\': string}", got "int" at path "extra".'
+            'Expected "array{\'name\': string}", got "int" at path "extra".',
         ];
         yield 'missing key' => [
-            Type\shape([
-                'name' => Type\string(),
-            ]),
+            Type\shape(['name' => Type\string()]),
             [],
-            'Expected "array{\'name\': string}", got "null" at path "name".'
+            'Expected "array{\'name\': string}", got "null" at path "name".',
         ];
         yield 'invalid key' => [
-            Type\shape([
-                'name' => Type\string(),
-            ]),
+            Type\shape(['name' => Type\string()]),
             ['name' => 123],
-            'Expected "array{\'name\': string}", got "int" at path "name".'
+            'Expected "array{\'name\': string}", got "int" at path "name".',
         ];
         yield 'nested' => [
-            Type\shape([
-                'item' => Type\shape([
-                    'name' => Type\string(),
-                ]),
-            ]),
-            [
-                'item' => [
-                    'name' => 123,
-                ]
-            ],
+            Type\shape(['item' => Type\shape(['name' => Type\string()])]),
+            ['item' => [
+                'name' => 123,
+            ]],
             'Expected "array{\'item\': array{\'name\': string}}", got "int" at path "item.name".',
         ];
     }
@@ -243,77 +272,64 @@ final class ShapeTypeTest extends TypeTest
     public static function provideCoerceExceptionExpectations(): iterable
     {
         yield 'missing key' => [
-            Type\shape([
-                'name' => Type\string(),
-            ]),
+            Type\shape(['name' => Type\string()]),
             [],
-            'Could not coerce "null" to type "array{\'name\': string}" at path "name".'
+            'Could not coerce "null" to type "array{\'name\': string}" at path "name".',
         ];
         yield 'invalid key' => [
-            Type\shape([
-                'name' => Type\string(),
-            ]),
-            [
-                'name' => new class () {
-                },
-            ],
+            Type\shape(['name' => Type\string()]),
+            ['name' => new class() {
+            }],
             'Could not coerce "class@anonymous" to type "array{\'name\': string}" at path "name".',
         ];
         yield 'invalid iterator first item' => [
-            Type\shape([
-                'id' => Type\int(),
-            ]),
+            Type\shape(['id' => Type\int()]),
             (static function () {
                 yield 'id' => Type\int()->coerce('nope');
             })(),
-            'Could not coerce "string" to type "array{\'id\': int}" at path "first()".'
+            'Could not coerce "string" to type "array{\'id\': int}" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
-            Type\shape([
-                'id' => Type\int(),
-            ]),
+            Type\shape(['id' => Type\int()]),
             (static function () {
                 yield 'id' => 1;
                 yield 'next' => Type\int()->coerce('nope');
             })(),
-            'Could not coerce "string" to type "array{\'id\': int}" at path "id.next()".'
+            'Could not coerce "string" to type "array{\'id\': int}" at path "id.next()".',
         ];
         yield 'iterator throwing exception' => [
-            Type\shape([
-                'id' => Type\int(),
-            ]),
+            Type\shape(['id' => Type\int()]),
             (static function () {
                 throw new RuntimeException('whoops');
                 yield;
             })(),
-            'Could not coerce "null" to type "array{\'id\': int}" at path "first()": whoops.'
+            'Could not coerce "null" to type "array{\'id\': int}" at path "first()": whoops.',
         ];
         yield 'iterator yielding null key' => [
-            Type\shape([
-                'id' => Type\int(),
-            ]),
+            Type\shape(['id' => Type\int()]),
             (static function () {
                 yield null => 'nope';
             })(),
-            'Could not coerce "null" to type "array{\'id\': int}" at path "id".'
+            'Could not coerce "null" to type "array{\'id\': int}" at path "id".',
         ];
         yield 'iterator yielding object key' => [
-            Type\shape([
-                'id' => Type\int(),
-            ]),
+            Type\shape(['id' => Type\int()]),
             (static function () {
-                yield (new class () {
-                }) => 'nope';
+                yield new class() {
+                } => 'nope';
             })(),
-            'Could not coerce "null" to type "array{\'id\': int}" at path "id".'
+            'Could not coerce "null" to type "array{\'id\': int}" at path "id".',
         ];
     }
 
     /**
      * @dataProvider provideAssertExceptionExpectations
      */
-    public function testInvalidAssertionTypeExceptions(Type\TypeInterface $type, mixed $data, string $expectedMessage): void
-    {
+    public function testInvalidAssertionTypeExceptions(
+        Type\TypeInterface $type,
+        mixed $data,
+        string $expectedMessage,
+    ): void {
         try {
             $type->assert($data);
             static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
@@ -325,8 +341,11 @@ final class ShapeTypeTest extends TypeTest
     /**
      * @dataProvider provideCoerceExceptionExpectations
      */
-    public function testInvalidCoercionTypeExceptions(Type\TypeInterface $type, mixed $data, string $expectedMessage): void
-    {
+    public function testInvalidCoercionTypeExceptions(
+        Type\TypeInterface $type,
+        mixed $data,
+        string $expectedMessage,
+    ): void {
         try {
             $type->coerce($data);
             static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\CoercionException::class));

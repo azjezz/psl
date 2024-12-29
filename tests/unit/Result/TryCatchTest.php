@@ -13,45 +13,29 @@ final class TryCatchTest extends TestCase
 {
     public function testTryResulting(): void
     {
-        $actual = Result\try_catch(
-            static fn () => true,
-            static fn () => false,
-        );
+        $actual = Result\try_catch(static fn() => true, static fn() => false);
 
         static::assertTrue($actual);
     }
 
     public function testTryFailing(): void
     {
-        $actual = Result\try_catch(
-            static fn () => throw new Exception('Not my style'),
-            static fn () => false,
-        );
+        $actual = Result\try_catch(static fn() => throw new Exception('Not my style'), static fn() => false);
 
         static::assertFalse($actual);
     }
 
     public function testTryThrowing(): void
     {
-        $this->expectExceptionObject(
-            $expected = new Exception('Mine either')
-        );
+        $this->expectExceptionObject($expected = new Exception('Mine either'));
 
-        Result\try_catch(
-            static fn () => throw new Exception('Not my style'),
-            static fn () => throw $expected,
-        );
+        Result\try_catch(static fn() => throw new Exception('Not my style'), static fn() => throw $expected);
     }
 
     public function testReThrowing(): void
     {
-        $this->expectExceptionObject(
-            $expected = new Exception('Not my style')
-        );
+        $this->expectExceptionObject($expected = new Exception('Not my style'));
 
-        Result\try_catch(
-            static fn () => throw $expected,
-            static fn (Throwable $previous) => throw $previous,
-        );
+        Result\try_catch(static fn() => throw $expected, static fn(Throwable $previous) => throw $previous);
     }
 }

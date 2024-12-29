@@ -11,11 +11,8 @@ use Psl\Str\Exception;
  *
  * @pure
  */
-function before_last(
-    string $haystack,
-    string $needle,
-    int $offset = 0
-): ?string {
+function before_last(string $haystack, string $needle, int $offset = 0): null|string
+{
     $length = search_last($haystack, $needle, $offset);
     if (null === $length) {
         return null;

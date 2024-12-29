@@ -37,12 +37,15 @@ final class ShapeTypeBench extends GenericTypeBench
                 'value' => new ArrayIterator(['foo' => 'bar']),
             ],
             'complex shape with optional values, minimum array value' => [
-                'type' => Type\shape([
-                    'foo' => Type\mixed(),
-                    'bar' => Type\mixed(),
-                    'baz' => Type\mixed(),
-                    'tab' => Type\optional(Type\mixed()),
-                ], true),
+                'type' => Type\shape(
+                    [
+                        'foo' => Type\mixed(),
+                        'bar' => Type\mixed(),
+                        'baz' => Type\mixed(),
+                        'tab' => Type\optional(Type\mixed()),
+                    ],
+                    true,
+                ),
                 'value' => [
                     'foo' => null,
                     'bar' => null,
@@ -50,12 +53,15 @@ final class ShapeTypeBench extends GenericTypeBench
                 ],
             ],
             'complex shape with optional values, minimum iterable value' => [
-                'type' => Type\shape([
-                    'foo' => Type\mixed(),
-                    'bar' => Type\mixed(),
-                    'baz' => Type\mixed(),
-                    'tab' => Type\optional(Type\mixed()),
-                ], true),
+                'type' => Type\shape(
+                    [
+                        'foo' => Type\mixed(),
+                        'bar' => Type\mixed(),
+                        'baz' => Type\mixed(),
+                        'tab' => Type\optional(Type\mixed()),
+                    ],
+                    true,
+                ),
                 'value' => new ArrayIterator([
                     'foo' => null,
                     'bar' => null,
@@ -63,12 +69,15 @@ final class ShapeTypeBench extends GenericTypeBench
                 ]),
             ],
             'complex shape with optional values, array value with further values' => [
-                'type' => Type\shape([
-                    'foo' => Type\mixed(),
-                    'bar' => Type\mixed(),
-                    'baz' => Type\mixed(),
-                    'tab' => Type\optional(Type\mixed()),
-                ], true),
+                'type' => Type\shape(
+                    [
+                        'foo' => Type\mixed(),
+                        'bar' => Type\mixed(),
+                        'baz' => Type\mixed(),
+                        'tab' => Type\optional(Type\mixed()),
+                    ],
+                    true,
+                ),
                 'value' => [
                     'foo' => null,
                     'bar' => null,
@@ -81,12 +90,15 @@ final class ShapeTypeBench extends GenericTypeBench
                 ],
             ],
             'complex shape with optional values, iterable value with further values' => [
-                'type' => Type\shape([
-                    'foo' => Type\mixed(),
-                    'bar' => Type\mixed(),
-                    'baz' => Type\mixed(),
-                    'tab' => Type\optional(Type\mixed()),
-                ], true),
+                'type' => Type\shape(
+                    [
+                        'foo' => Type\mixed(),
+                        'bar' => Type\mixed(),
+                        'baz' => Type\mixed(),
+                        'tab' => Type\optional(Type\mixed()),
+                    ],
+                    true,
+                ),
                 'value' => new ArrayIterator([
                     'foo' => null,
                     'bar' => null,
@@ -107,49 +119,46 @@ final class ShapeTypeBench extends GenericTypeBench
                         'likes' => Type\int(),
                         'comments' => Type\optional(Type\vec(Type\shape([
                             'user' => Type\string(),
-                            'comment' => Type\string()
+                            'comment' => Type\string(),
                         ]))),
                     ])),
-                    'dictionary' => Type\dict(Type\string(), Type\vec(Type\shape([
-                        'title' => Type\string(),
-                        'content' => Type\string(),
-                    ]))),
+                    'dictionary' => Type\dict(
+                        Type\string(),
+                        Type\vec(Type\shape([
+                            'title' => Type\string(),
+                            'content' => Type\string(),
+                        ])),
+                    ),
                     'pagination' => Type\optional(Type\shape([
                         'currentPage' => Type\uint(),
                         'totalPages' => Type\uint(),
                         'perPage' => Type\uint(),
                         'totalRows' => Type\uint(),
-                    ]))
+                    ])),
                 ]),
                 'value' => [
                     'name' => 'ok',
-                    'articles' => [
-                        [
-                            'title' => 'ok',
-                            'content' => 'ok',
-                            'likes' => 1,
-                            'comments' => [
-                                [
-                                    'user' => 'ok',
-                                    'comment' => 'ok'
-                                ],
-                                [
-                                    'user' => 'ok',
-                                    'comment' => 'ok',
-                                ]
-                            ]
-                        ]
-                    ],
-                    'dictionary' => [
-                        'key' => [
+                    'articles' => [[
+                        'title' => 'ok',
+                        'content' => 'ok',
+                        'likes' => 1,
+                        'comments' => [
                             [
-                                'title' => 'ok',
-                                'content' => 'ok',
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                'user' => 'ok',
+                                'comment' => 'ok',
+                            ],
+                            [
+                                'user' => 'ok',
+                                'comment' => 'ok',
+                            ],
+                        ],
+                    ]],
+                    'dictionary' => ['key' => [[
+                        'title' => 'ok',
+                        'content' => 'ok',
+                    ]]],
+                ],
+            ],
         ];
     }
 
@@ -168,12 +177,15 @@ final class ShapeTypeBench extends GenericTypeBench
                 'value' => ['foo' => 'bar'],
             ],
             'complex shape with optional values, minimum array value' => [
-                'type' => Type\shape([
-                    'foo' => Type\mixed(),
-                    'bar' => Type\mixed(),
-                    'baz' => Type\mixed(),
-                    'tab' => Type\optional(Type\mixed()),
-                ], true),
+                'type' => Type\shape(
+                    [
+                        'foo' => Type\mixed(),
+                        'bar' => Type\mixed(),
+                        'baz' => Type\mixed(),
+                        'tab' => Type\optional(Type\mixed()),
+                    ],
+                    true,
+                ),
                 'value' => [
                     'foo' => null,
                     'bar' => null,
@@ -181,12 +193,15 @@ final class ShapeTypeBench extends GenericTypeBench
                 ],
             ],
             'complex shape with optional values, array value with further values' => [
-                'type' => Type\shape([
-                    'foo' => Type\mixed(),
-                    'bar' => Type\mixed(),
-                    'baz' => Type\mixed(),
-                    'tab' => Type\optional(Type\mixed()),
-                ], true),
+                'type' => Type\shape(
+                    [
+                        'foo' => Type\mixed(),
+                        'bar' => Type\mixed(),
+                        'baz' => Type\mixed(),
+                        'tab' => Type\optional(Type\mixed()),
+                    ],
+                    true,
+                ),
                 'value' => [
                     'foo' => null,
                     'bar' => null,
@@ -207,49 +222,46 @@ final class ShapeTypeBench extends GenericTypeBench
                         'likes' => Type\int(),
                         'comments' => Type\optional(Type\vec(Type\shape([
                             'user' => Type\string(),
-                            'comment' => Type\string()
+                            'comment' => Type\string(),
                         ]))),
                     ])),
-                    'dictionary' => Type\dict(Type\string(), Type\vec(Type\shape([
-                        'title' => Type\string(),
-                        'content' => Type\string(),
-                    ]))),
+                    'dictionary' => Type\dict(
+                        Type\string(),
+                        Type\vec(Type\shape([
+                            'title' => Type\string(),
+                            'content' => Type\string(),
+                        ])),
+                    ),
                     'pagination' => Type\optional(Type\shape([
                         'currentPage' => Type\uint(),
                         'totalPages' => Type\uint(),
                         'perPage' => Type\uint(),
                         'totalRows' => Type\uint(),
-                    ]))
+                    ])),
                 ]),
                 'value' => [
                     'name' => 'ok',
-                    'articles' => [
-                        [
-                            'title' => 'ok',
-                            'content' => 'ok',
-                            'likes' => 1,
-                            'comments' => [
-                                [
-                                    'user' => 'ok',
-                                    'comment' => 'ok'
-                                ],
-                                [
-                                    'user' => 'ok',
-                                    'comment' => 'ok',
-                                ]
-                            ]
-                        ]
-                    ],
-                    'dictionary' => [
-                        'key' => [
+                    'articles' => [[
+                        'title' => 'ok',
+                        'content' => 'ok',
+                        'likes' => 1,
+                        'comments' => [
                             [
-                                'title' => 'ok',
-                                'content' => 'ok',
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                'user' => 'ok',
+                                'comment' => 'ok',
+                            ],
+                            [
+                                'user' => 'ok',
+                                'comment' => 'ok',
+                            ],
+                        ],
+                    ]],
+                    'dictionary' => ['key' => [[
+                        'title' => 'ok',
+                        'content' => 'ok',
+                    ]]],
+                ],
+            ],
         ];
     }
 

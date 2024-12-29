@@ -140,7 +140,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
-    public function firstKey(): ?int;
+    public function firstKey(): null|int;
 
     /**
      * Returns the last value in the current `MutableVectorInterface`.
@@ -160,7 +160,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
-    public function lastKey(): ?int;
+    public function lastKey(): null|int;
 
     /**
      * Returns the index of the first element that matches the search value.
@@ -174,7 +174,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
-    public function linearSearch(mixed $search_value): ?int;
+    public function linearSearch(mixed $search_value): null|int;
 
     /**
      * Returns a `MutableVectorInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
@@ -287,7 +287,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, ?int $length = null): MutableVectorInterface;
+    public function slice(int $start, null|int $length = null): MutableVectorInterface;
 
     /**
      * Returns a `MutableVectorInterface` containing the original `MutableVectorInterface` split into

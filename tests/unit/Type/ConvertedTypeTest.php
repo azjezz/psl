@@ -18,16 +18,20 @@ final class ConvertedTypeTest extends TypeTest
         return Type\converted(
             Type\string(),
             Type\instance_of(DateTimeImmutable::class),
-            static fn (string $value): DateTimeImmutable =>
-                DateTimeImmutable::createFromFormat(self::DATE_FORMAT, $value)
-                    ?: throw new RuntimeException('Unable to parse date format'),
+            static fn(string $value): DateTimeImmutable => DateTimeImmutable::createFromFormat(
+                self::DATE_FORMAT,
+                $value,
+            ) ?: throw new RuntimeException('Unable to parse date format'),
         );
     }
 
     public function getValidCoercions(): iterable
     {
         yield ['2023-04-27 08:28:00', DateTimeImmutable::createFromFormat(self::DATE_FORMAT, '2023-04-27 08:28:00')];
-        yield [$this->stringable('2023-04-27 08:28:00'), DateTimeImmutable::createFromFormat(self::DATE_FORMAT, '2023-04-27 08:28:00')];
+        yield [
+            $this->stringable('2023-04-27 08:28:00'),
+            DateTimeImmutable::createFromFormat(self::DATE_FORMAT, '2023-04-27 08:28:00'),
+        ];
     }
 
     public function getInvalidCoercions(): iterable
@@ -66,41 +70,40 @@ final class ConvertedTypeTest extends TypeTest
     public static function provideCoerceExceptionExpectations(): iterable
     {
         yield 'Coerce input error' => [
-            Type\converted(
-                Type\int(),
-                Type\string(),
-                static fn (int $i): string => (string) $i
-            ),
-            new class () {
+            Type\converted(Type\int(), Type\string(), static fn(int $i): string => (string) $i),
+            new class() {
             },
-            'Could not coerce "class@anonymous" to type "int" at path "coerce_input(class@anonymous): int".'
+            'Could not coerce "class@anonymous" to type "int" at path "coerce_input(class@anonymous): int".',
         ];
         yield 'Convert exception error' => [
             Type\converted(
                 Type\int(),
                 Type\string(),
-                static fn (int $i): string => throw new RuntimeException('not possible')
+                static fn(int $i): string => throw new RuntimeException('not possible'),
             ),
             1,
-            'Could not coerce "int" to type "string" at path "convert(int): string": not possible.'
+            'Could not coerce "int" to type "string" at path "convert(int): string": not possible.',
         ];
         yield 'Coerce output error' => [
             Type\converted(
                 Type\int(),
                 Type\string(),
-                static fn (int $i): object => new class () {
-                }
+                static fn(int $i): object => new class() {
+                },
             ),
             1,
-            'Could not coerce "class@anonymous" to type "string" at path "coerce_output(class@anonymous): string".'
+            'Could not coerce "class@anonymous" to type "string" at path "coerce_output(class@anonymous): string".',
         ];
     }
 
     /**
      * @dataProvider provideCoerceExceptionExpectations
      */
-    public function testInvalidCoercionTypeExceptions(Type\TypeInterface $type, mixed $data, string $expectedMessage): void
-    {
+    public function testInvalidCoercionTypeExceptions(
+        Type\TypeInterface $type,
+        mixed $data,
+        string $expectedMessage,
+    ): void {
         try {
             $type->coerce($data);
             static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\CoercionException::class));

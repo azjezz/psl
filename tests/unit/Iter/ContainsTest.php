@@ -40,7 +40,7 @@ final class ContainsTest extends TestCase
         yield [false, new Collection\Vector([1, 2]), 0];
         yield [true, new Collection\Vector([1, 2]), 1];
         yield [true, new Collection\Vector([1, 2]), 2];
-        yield [false, (static fn () => yield 'foo' => 'bar')(), 'foo'];
-        yield [true, (static fn () => yield 'foo' => 'bar')(), 'bar'];
+        yield [false, (static fn() => yield 'foo' => 'bar')(), 'foo'];
+        yield [true, (static fn() => yield 'foo' => 'bar')(), 'bar'];
     }
 }

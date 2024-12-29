@@ -21,7 +21,7 @@ function wrap(Closure $closure): ResultInterface
 {
     try {
         $result = $closure();
-        return $result instanceof ResultInterface ? $result : new Success($result);
+        return ($result instanceof ResultInterface) ? $result : new Success($result);
     } catch (Throwable $e) {
         return new Failure($e);
     }

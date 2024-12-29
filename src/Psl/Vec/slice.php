@@ -23,7 +23,7 @@ namespace Psl\Vec;
  *
  * @return list<T>
  */
-function slice(iterable $iterable, int $start, ?int $length = null): array
+function slice(iterable $iterable, int $start, null|int $length = null): array
 {
     $result = [];
     if (0 === $length) {
@@ -37,7 +37,7 @@ function slice(iterable $iterable, int $start, ?int $length = null): array
         }
 
         $result[] = $value;
-        if (null !== $length && $i >= $start + $length) {
+        if (null !== $length && $i >= ($start + $length)) {
             break;
         }
     }

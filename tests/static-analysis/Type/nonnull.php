@@ -9,7 +9,7 @@ use Psl\Type;
 /**
  * @throws Type\Exception\AssertException
  */
-function returns_non_null_assertion(?string $state): string
+function returns_non_null_assertion(null|string $state): string
 {
     return Type\nonnull()->assert($state);
 }
@@ -17,7 +17,7 @@ function returns_non_null_assertion(?string $state): string
 /**
  * @throws Type\Exception\AssertException
  */
-function returns_non_null_assertion_asserted(?string $state): string
+function returns_non_null_assertion_asserted(null|string $state): string
 {
     Type\nonnull()->assert($state);
 
@@ -27,7 +27,7 @@ function returns_non_null_assertion_asserted(?string $state): string
 /**
  * @throws Type\Exception\CoercionException
  */
-function returns_non_null_coercion(?string $state): string
+function returns_non_null_coercion(null|string $state): string
 {
     return Type\nonnull()->coerce($state);
 }
@@ -58,7 +58,5 @@ function returns_falsy_match(null $state = null): bool
  */
 function returns_mixed_in_shape(mixed $data): array
 {
-    return Type\shape([
-        'mightBeNull' => Type\nonnull(),
-    ])->coerce($data);
+    return Type\shape(['mightBeNull' => Type\nonnull()])->coerce($data);
 }

@@ -37,14 +37,15 @@ use const ARRAY_FILTER_USE_BOTH;
  *
  * @return list<Tv>
  */
-function filter_with_key(iterable $iterable, ?Closure $predicate = null): array
+function filter_with_key(iterable $iterable, null|Closure $predicate = null): array
 {
-    $predicate = $predicate ??
+    $predicate =
+        $predicate ??
         /**
          * @param Tk $_k
          * @param Tv $v
          */
-        static fn (mixed $_k, mixed $v): bool => (bool) $v;
+        static fn(mixed $_k, mixed $v): bool => (bool) $v;
 
     if (is_array($iterable)) {
         return array_values(array_filter(
@@ -54,7 +55,7 @@ function filter_with_key(iterable $iterable, ?Closure $predicate = null): array
              * @param Tk $k
              */
             static fn($v, $k): bool => $predicate($k, $v),
-            ARRAY_FILTER_USE_BOTH
+            ARRAY_FILTER_USE_BOTH,
         ));
     }
 

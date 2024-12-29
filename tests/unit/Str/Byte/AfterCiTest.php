@@ -12,19 +12,15 @@ final class AfterCiTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testAfter(
-        ?string $expected,
-        string $haystack,
-        string $needle,
-        int $offset
-    ): void {
+    public function testAfter(null|string $expected, string $haystack, string $needle, int $offset): void
+    {
         static::assertSame($expected, Byte\after_ci($haystack, $needle, $offset));
     }
 
     public function provideData(): array
     {
         return [
-            [null, '', '',  0],
+            [null, '', '', 0],
             ['orld!', 'Hello, World!', 'W', 0],
             ['!', '🤷!', '🤷', 0],
             ['', '🤷!', '!', 0],

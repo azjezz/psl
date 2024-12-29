@@ -17,7 +17,7 @@ final class TruncateTest extends TestCase
         string $str,
         int $offset,
         int $width,
-        ?string $trim_marker = null
+        null|string $trim_marker = null,
     ): void {
         static::assertSame($expected, Str\truncate($str, $offset, $width, $trim_marker));
     }

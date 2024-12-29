@@ -19,26 +19,23 @@ final class AbsTest extends TestCase
 
     public function provideData(): array
     {
-        return  [
+        return [
             [
                 5,
-                5
+                5,
             ],
-
             [
                 5,
-                -5
+                -5,
             ],
-
             [
                 5.5,
-                -5.5
+                -5.5,
             ],
-
             [
                 10.5,
-                10.5
-            ]
+                10.5,
+            ],
         ];
     }
 }

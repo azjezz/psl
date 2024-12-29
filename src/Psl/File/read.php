@@ -20,7 +20,7 @@ use Psl\Str;
  * @throws Exception\NotReadableException If $file exists, and is non-readable.
  * @throws Exception\RuntimeException In case of an error.
  */
-function read(string $file, int $offset = 0, ?int $length = null): string
+function read(string $file, int $offset = 0, null|int $length = null): string
 {
     try {
         $handle = namespace\open_read_only($file);
@@ -35,10 +35,7 @@ function read(string $file, int $offset = 0, ?int $length = null): string
         return $content;
     } catch (IO\Exception\ExceptionInterface $previous) {
         // @codeCoverageIgnoreStart
-        throw new Exception\RuntimeException(Str\format(
-            'Failed to read file "%s".',
-            $file,
-        ), 0, $previous);
+        throw new Exception\RuntimeException(Str\format('Failed to read file "%s".', $file), 0, $previous);
         // @codeCoverageIgnoreEnd
     }
 }

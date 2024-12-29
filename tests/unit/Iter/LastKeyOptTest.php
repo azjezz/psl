@@ -29,7 +29,7 @@ final class LastKeyOptTest extends TestCase
         yield [4, Iter\to_iterator(Vec\range(4, 8))];
         yield [0, [null]];
         yield [1, [null, null]];
-        yield [[1, 2], (static fn () => yield [1, 2] => 'hello')()];
+        yield [[1, 2], (static fn() => yield [1, 2] => 'hello')()];
     }
 
     /**

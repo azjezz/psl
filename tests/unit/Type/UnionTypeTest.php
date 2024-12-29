@@ -47,21 +47,21 @@ final class UnionTypeTest extends TypeTest
                 Type\bool(),
                 Type\intersection(
                     Type\instance_of(IndexAccessInterface::class),
-                    Type\instance_of(CollectionInterface::class)
-                )
+                    Type\instance_of(CollectionInterface::class),
+                ),
             ),
-            'bool|(Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface)'
+            'bool|(Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface)',
         ];
         yield [
             Type\union(
                 Type\intersection(
                     Type\instance_of(IndexAccessInterface::class),
-                    Type\instance_of(CollectionInterface::class)
+                    Type\instance_of(CollectionInterface::class),
                 ),
                 Type\bool(),
-                Type\non_empty_string()
+                Type\non_empty_string(),
             ),
-            '((Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface)|bool)|non-empty-string'
+            '((Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface)|bool)|non-empty-string',
         ];
         yield [
             Type\union(
@@ -71,7 +71,7 @@ final class UnionTypeTest extends TypeTest
                 Type\literal_scalar('still'),
                 Type\literal_scalar('alive'),
             ),
-            'null|vec<positive-int>|"php"|"still"|"alive"'
+            'null|vec<positive-int>|"php"|"still"|"alive"',
         ];
     }
 

@@ -244,7 +244,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, ?int $length = null): AccessibleCollectionInterface;
+    public function slice(int $start, null|int $length = null): AccessibleCollectionInterface;
 
     /**
      * Returns a `AccessibleCollectionInterface` containing the original `AccessibleCollectionInterface` split into

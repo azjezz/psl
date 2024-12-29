@@ -165,7 +165,6 @@ final readonly class Vector implements VectorInterface
         return $this->elements;
     }
 
-
     /**
      * Get an array copy of the current `Vector`.
      *
@@ -244,7 +243,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    public function firstKey(): ?int
+    public function firstKey(): null|int
     {
         return [] === $this->elements ? null : 0;
     }
@@ -257,7 +256,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    public function lastKey(): ?int
+    public function lastKey(): null|int
     {
         return array_key_last($this->elements);
     }
@@ -274,7 +273,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    public function linearSearch(mixed $search_value): ?int
+    public function linearSearch(mixed $search_value): null|int
     {
         foreach ($this->elements as $key => $element) {
             if ($search_value === $element) {
@@ -527,7 +526,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, ?int $length = null): Vector
+    public function slice(int $start, null|int $length = null): Vector
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return self::fromArray(Dict\slice($this->elements, $start, $length));
@@ -562,7 +561,7 @@ final readonly class Vector implements VectorInterface
              *
              * @return Vector<T>
              */
-            static fn(array $chunk) => static::fromArray($chunk)
+            static fn(array $chunk) => static::fromArray($chunk),
         ));
     }
 }

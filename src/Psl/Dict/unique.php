@@ -25,6 +25,6 @@ function unique(iterable $iterable): array
          *
          * @pure
          */
-        static fn($v) => $v
+        static fn($v) => $v,
     );
 }

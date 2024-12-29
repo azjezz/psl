@@ -22,7 +22,11 @@ use function random_int;
 function int(int $min = Math\INT64_MIN, int $max = Math\INT64_MAX): int
 {
     if ($max < $min) {
-        throw new Exception\InvalidArgumentException(Str\format('Expected $min (%d) to be less than or equal to $max (%d).', $min, $max));
+        throw new Exception\InvalidArgumentException(Str\format(
+            'Expected $min (%d) to be less than or equal to $max (%d).',
+            $min,
+            $max,
+        ));
     }
 
     if ($min === $max) {

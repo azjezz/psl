@@ -17,5 +17,5 @@ use Closure;
  */
 function identity(): Closure
 {
-    return static fn ($result) => $result;
+    return static fn($result) => $result;
 }

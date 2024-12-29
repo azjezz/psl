@@ -17,11 +17,11 @@ use Psl\Locale\Locale;
  * @psalm-mutation-free
  */
 function create_intl_date_formatter(
-    null|DateStyle            $date_style = null,
-    null|TimeStyle            $time_style = null,
+    null|DateStyle $date_style = null,
+    null|TimeStyle $time_style = null,
     null|FormatPattern|string $pattern = null,
-    null|Timezone             $timezone = null,
-    null|Locale               $locale = null,
+    null|Timezone $timezone = null,
+    null|Locale $locale = null,
 ): IntlDateFormatter {
     if ($pattern instanceof FormatPattern) {
         $pattern = $pattern->value;

@@ -70,10 +70,10 @@ final class SomeTest extends TestCase
 
     public function testOrElse(): void
     {
-        static::assertTrue(Option\some(2)->orElse(static fn () => Option\none())->isSome());
-        static::assertTrue(Option\some(2)->orElse(static fn () => Option\some(4))->isSome());
-        static::assertFalse(Option\some(2)->orElse(static fn () => Option\none())->isNone());
-        static::assertFalse(Option\some(2)->orElse(static fn () => Option\some(4))->isNone());
+        static::assertTrue(Option\some(2)->orElse(static fn() => Option\none())->isSome());
+        static::assertTrue(Option\some(2)->orElse(static fn() => Option\some(4))->isSome());
+        static::assertFalse(Option\some(2)->orElse(static fn() => Option\none())->isNone());
+        static::assertFalse(Option\some(2)->orElse(static fn() => Option\some(4))->isNone());
     }
 
     public function testFilter(): void
@@ -95,8 +95,8 @@ final class SomeTest extends TestCase
     public function testProceed(): void
     {
         $result = Option\some(1)->proceed(
-            static fn ($i) => Str\format('Value is %d', $i),
-            static fn () => 'There is no value',
+            static fn($i) => Str\format('Value is %d', $i),
+            static fn() => 'There is no value',
         );
 
         static::assertSame('Value is 1', $result);
@@ -167,7 +167,7 @@ final class SomeTest extends TestCase
     public function testZip(): void
     {
         $x = Option\some(1);
-        $y = Option\some("hi");
+        $y = Option\some('hi');
 
         static::assertTrue(Option\some([1, 'hi'])->equals($x->zip($y)));
         static::assertTrue(Option\some(['hi', 1])->equals($y->zip($x)));

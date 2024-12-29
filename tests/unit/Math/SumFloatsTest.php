@@ -29,7 +29,6 @@ final class SumFloatsTest extends TestCase
                     ...Vec\range(0, 9.8798, 0.48),
                 ],
             ],
-
             [
                 103.0,
                 [
@@ -39,7 +38,6 @@ final class SumFloatsTest extends TestCase
                     15,
                 ],
             ],
-
             [
                 323.54,
                 [
@@ -48,7 +46,7 @@ final class SumFloatsTest extends TestCase
                     ...Vec\range(0.5, 45, 5.98),
                     52.8,
                     64,
-                ]
+                ],
             ],
         ];
     }

@@ -18,8 +18,11 @@ final class PathExpressionTest extends TestCase
         static::assertSame('false', PathExpression::path(false));
         static::assertSame('null', PathExpression::path(null));
         static::assertSame('array', PathExpression::path([]));
-        static::assertSame('class@anonymous', PathExpression::path(new class () {
-        }));
+        static::assertSame(
+            'class@anonymous',
+            PathExpression::path(new class() {
+            }),
+        );
     }
 
     public function testExpression(): void

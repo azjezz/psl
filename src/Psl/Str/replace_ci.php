@@ -25,11 +25,12 @@ function replace_ci(string $haystack, string $needle, string $replacement, Encod
 
     try {
         /** @var list<string> */
-        $pieces = Regex\Internal\call_preg(
-            'preg_split',
-            static fn() => preg_split('{' . preg_quote($needle, '/') . '}iu', $haystack, -1),
-        );
-    } catch (Regex\Exception\RuntimeException | Regex\Exception\InvalidPatternException $error) {
+        $pieces = Regex\Internal\call_preg('preg_split', static fn() => preg_split(
+            '{' . preg_quote($needle, '/') . '}iu',
+            $haystack,
+            -1,
+        ));
+    } catch (Regex\Exception\RuntimeException|Regex\Exception\InvalidPatternException $error) {
         throw new Exception\InvalidArgumentException($error->getMessage(), previous: $error);
     }
 

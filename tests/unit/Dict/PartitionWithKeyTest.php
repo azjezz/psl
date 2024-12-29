@@ -24,43 +24,37 @@ final class PartitionWithKeyTest extends TestCase
             [
                 [[1 => 'bar', 2 => 'baz'], [0 => 'foo', 3 => 'qux']],
                 ['foo', 'bar', 'baz', 'qux'],
-                static fn (int $k, string $str) => Str\starts_with($str, 'b'),
+                static fn(int $k, string $str) => Str\starts_with($str, 'b'),
             ],
-
             [
                 [[0 => 'foo', 3 => 'qux'], [1 => 'bar', 2 => 'baz']],
                 ['foo', 'bar', 'baz', 'qux'],
-                static fn (int $k, string $str) => !Str\starts_with($str, 'b'),
+                static fn(int $k, string $str) => !Str\starts_with($str, 'b'),
             ],
-
             [
                 [[], []],
                 [],
-                static fn ($_k, $_v) => false,
+                static fn($_k, $_v) => false,
             ],
-
             [
                 [[], ['foo', 'bar', 'baz', 'qux']],
                 ['foo', 'bar', 'baz', 'qux'],
-                static fn (int $k, string $str) => false,
+                static fn(int $k, string $str) => false,
             ],
-
             [
                 [['foo', 'bar', 'baz', 'qux'], []],
                 ['foo', 'bar', 'baz', 'qux'],
-                static fn (int $k, string $str) => true,
+                static fn(int $k, string $str) => true,
             ],
-
             [
                 [[1 => 'bar', 2 => 'baz', 3 => 'qux'], ['foo']],
                 ['foo', 'bar', 'baz', 'qux'],
-                static fn (int $k, string $str) => (bool) $k,
+                static fn(int $k, string $str) => (bool) $k,
             ],
-
             [
                 [['foo'], [1 => 'bar', 2 => 'baz', 3 => 'qux']],
                 ['foo', 'bar', 'baz', 'qux'],
-                static fn (int $k, string $str) => !((bool) $k),
+                static fn(int $k, string $str) => !((bool) $k),
             ],
         ];
     }

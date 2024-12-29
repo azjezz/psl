@@ -31,7 +31,7 @@ function get_modification_time(string $node): int
         throw new Exception\RuntimeException(Str\format(
             'Failed to retrieve the modification time of "%s": %s',
             $node,
-            $message ?? 'internal error'
+            $message ?? 'internal error',
         ));
     }
     // @codeCoverageIgnoreEnd

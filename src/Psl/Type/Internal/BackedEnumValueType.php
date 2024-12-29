@@ -41,7 +41,7 @@ final readonly class BackedEnumValueType extends Type
      * @throws InvariantViolationException If the given value is not class-string<BackedEnum>.
      */
     public function __construct(
-        private string $enum
+        private string $enum,
     ) {
         $this->isStringBacked = $this->hasStringBackingType($this->enum);
     }
@@ -95,9 +95,7 @@ final readonly class BackedEnumValueType extends Type
     public function coerce(mixed $value): string|int
     {
         try {
-            $case = $this->isStringBacked
-                ? string()->coerce($value)
-                : int()->coerce($value);
+            $case = $this->isStringBacked ? string()->coerce($value) : int()->coerce($value);
 
             if ($this->matches($case)) {
                 return $case;

@@ -53,8 +53,11 @@ function copy(string $source, string $destination, bool $overwrite = false): voi
             unset($chunk);
         }
         // @codeCoverageIgnoreStart
-    } catch (IO\Exception\ExceptionInterface | File\Exception\ExceptionInterface | Psl\Exception\InvariantViolationException $exception) {
-        throw new Exception\RuntimeException(Str\format('Failed to copy source file "%s" to destination "%s".', $source, $destination), previous: $exception);
+    } catch (IO\Exception\ExceptionInterface|File\Exception\ExceptionInterface|Psl\Exception\InvariantViolationException $exception) {
+        throw new Exception\RuntimeException(
+            Str\format('Failed to copy source file "%s" to destination "%s".', $source, $destination),
+            previous: $exception,
+        );
     } finally {
         // @codeCoverageIgnoreEnd
         $source_lock?->release();
@@ -62,8 +65,5 @@ function copy(string $source, string $destination, bool $overwrite = false): voi
     }
 
     // preserve executable permission bits
-    change_permissions(
-        $destination,
-        get_permissions($destination) | (get_permissions($source) & 0111)
-    );
+    change_permissions($destination, get_permissions($destination) | (get_permissions($source) & 0111));
 }

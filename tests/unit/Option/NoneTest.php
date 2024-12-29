@@ -73,10 +73,10 @@ final class NoneTest extends TestCase
 
     public function testOrElse(): void
     {
-        static::assertFalse(Option\none()->orElse(static fn () => Option\none())->isSome());
-        static::assertTrue(Option\none()->orElse(static fn () => Option\some(4))->isSome());
-        static::assertTrue(Option\none()->orElse(static fn () => Option\none())->isNone());
-        static::assertFalse(Option\none()->orElse(static fn () => Option\some(4))->isNone());
+        static::assertFalse(Option\none()->orElse(static fn() => Option\none())->isSome());
+        static::assertTrue(Option\none()->orElse(static fn() => Option\some(4))->isSome());
+        static::assertTrue(Option\none()->orElse(static fn() => Option\none())->isNone());
+        static::assertFalse(Option\none()->orElse(static fn() => Option\some(4))->isNone());
     }
 
     public function testFilter(): void
@@ -97,8 +97,8 @@ final class NoneTest extends TestCase
     public function testProceed(): void
     {
         $result = Option\none()->proceed(
-            static fn ($i) => Str\format('Value is %d', $i),
-            static fn () => 'There is no value',
+            static fn($i) => Str\format('Value is %d', $i),
+            static fn() => 'There is no value',
         );
 
         static::assertSame('There is no value', $result);

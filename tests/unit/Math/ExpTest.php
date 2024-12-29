@@ -24,16 +24,14 @@ final class ExpTest extends TestCase
                 162754.79141900392,
                 12.0,
             ],
-
             [
                 298.8674009670603,
                 5.7,
             ],
-
             [
                 Math\INFINITY,
                 1000000,
-            ]
+            ],
         ];
     }
 }

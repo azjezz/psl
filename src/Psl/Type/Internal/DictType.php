@@ -30,7 +30,7 @@ final readonly class DictType extends Type\Type
      */
     public function __construct(
         private readonly Type\TypeInterface $key_type,
-        private readonly Type\TypeInterface $value_type
+        private readonly Type\TypeInterface $value_type,
     ) {
     }
 
@@ -41,7 +41,7 @@ final readonly class DictType extends Type\Type
      */
     public function coerce(mixed $value): array
     {
-        if (! is_iterable($value)) {
+        if (!is_iterable($value)) {
             throw CoercionException::withValue($value, $this->toString());
         }
 
@@ -70,9 +70,14 @@ final readonly class DictType extends Type\Type
             }
         } catch (Throwable $e) {
             throw match (true) {
-                $iterating => CoercionException::withValue(null, $this->toString(), PathExpression::iteratorError($k), $e),
+                $iterating => CoercionException::withValue(
+                    null,
+                    $this->toString(),
+                    PathExpression::iteratorError($k),
+                    $e,
+                ),
                 $trying_key => CoercionException::withValue($k, $this->toString(), PathExpression::iteratorKey($k), $e),
-                !$trying_key => CoercionException::withValue($v, $this->toString(), PathExpression::path($k), $e)
+                !$trying_key => CoercionException::withValue($v, $this->toString(), PathExpression::path($k), $e),
             };
         }
 
@@ -88,7 +93,7 @@ final readonly class DictType extends Type\Type
      */
     public function assert(mixed $value): array
     {
-        if (! is_array($value)) {
+        if (!is_array($value)) {
             throw AssertException::withValue($value, $this->toString());
         }
 
@@ -115,7 +120,7 @@ final readonly class DictType extends Type\Type
         } catch (AssertException $e) {
             throw match ($trying_key) {
                 true => AssertException::withValue($k, $this->toString(), PathExpression::iteratorKey($k), $e),
-                false => AssertException::withValue($v, $this->toString(), PathExpression::path($k), $e)
+                false => AssertException::withValue($v, $this->toString(), PathExpression::path($k), $e),
             };
         }
 

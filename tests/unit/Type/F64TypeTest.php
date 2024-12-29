@@ -32,8 +32,8 @@ final class F64TypeTest extends TypeTest
         yield ['3.', 3.0];
         yield [$this->stringable('1.23'), 1.23];
         yield [Math\UINT32_MAX, (float) Math\UINT32_MAX];
-        yield [(string)Math\UINT32_MAX, (float) Math\UINT32_MAX];
-        yield [$this->stringable((string)Math\UINT32_MAX), (float) Math\UINT32_MAX];
+        yield [(string) Math\UINT32_MAX, (float) Math\UINT32_MAX];
+        yield [$this->stringable((string) Math\UINT32_MAX), (float) Math\UINT32_MAX];
         yield ['9223372036854775808', 9223372036854775808.0];
         yield ['3.40282347E+38', Math\FLOAT32_MAX];
         yield ['-3.40282347E+38', Math\FLOAT32_MIN];
@@ -55,7 +55,7 @@ final class F64TypeTest extends TypeTest
         yield ['foo'];
         yield [null];
         yield [false];
-        yield [new class () {
+        yield [new class() {
         }];
         yield [$this->stringable('foo')];
         yield ['0xFF'];

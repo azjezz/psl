@@ -34,7 +34,6 @@ final class PositiveIntTypeTest extends TypeTest
 
     public function getInvalidCoercions(): iterable
     {
-
         yield [0];
         yield ['0'];
         yield ['-321'];

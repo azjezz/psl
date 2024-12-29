@@ -30,12 +30,12 @@ final readonly class MixedVecType extends Type\Type
      */
     public function coerce(mixed $value): iterable
     {
-        if (! is_iterable($value)) {
+        if (!is_iterable($value)) {
             throw CoercionException::withValue($value, $this->toString());
         }
 
         if (is_array($value)) {
-            if (! array_is_list($value)) {
+            if (!array_is_list($value)) {
                 return array_values($value);
             }
 
@@ -68,7 +68,7 @@ final readonly class MixedVecType extends Type\Type
      */
     public function assert(mixed $value): array
     {
-        if (! is_array($value) || ! array_is_list($value)) {
+        if (!is_array($value) || !array_is_list($value)) {
             throw AssertException::withValue($value, $this->toString());
         }
 

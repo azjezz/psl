@@ -267,10 +267,7 @@ final class BoundedChannelTest extends TestCase
          */
         [$receiver, $sender] = Channel\bounded(1);
 
-        Async\Scheduler::delay(
-            DateTime\Duration::milliseconds(1),
-            static fn() => $sender->send('hello'),
-        );
+        Async\Scheduler::delay(DateTime\Duration::milliseconds(1), static fn() => $sender->send('hello'));
 
         static::assertTrue($receiver->isEmpty());
 

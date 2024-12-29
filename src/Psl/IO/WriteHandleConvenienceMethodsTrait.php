@@ -31,7 +31,7 @@ trait WriteHandleConvenienceMethodsTrait
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If reached timeout before completing the operation.
      */
-    public function writeAll(string $bytes, ?Duration $timeout = null): void
+    public function writeAll(string $bytes, null|Duration $timeout = null): void
     {
         if ($bytes === '') {
             return;
@@ -43,23 +43,17 @@ trait WriteHandleConvenienceMethodsTrait
          */
         $written = new Psl\Ref(0);
 
-        $timer = new Psl\Async\OptionalIncrementalTimeout(
-            $timeout,
-            static function () use ($written): void {
-                // @codeCoverageIgnoreStart
-                throw new Exception\TimeoutException(Str\format(
-                    "Reached timeout before %s data could be written.",
-                    ($written->value === 0) ? 'any' : 'all',
-                ));
-                // @codeCoverageIgnoreEnd
-            },
-        );
+        $timer = new Psl\Async\OptionalIncrementalTimeout($timeout, static function () use ($written): void {
+            // @codeCoverageIgnoreStart
+            throw new Exception\TimeoutException(Str\format(
+                'Reached timeout before %s data could be written.',
+                $written->value === 0 ? 'any' : 'all',
+            ));
+            // @codeCoverageIgnoreEnd
+        });
 
         do {
-            $written->value = $this->write(
-                $bytes,
-                $timer->getRemaining(),
-            );
+            $written->value = $this->write($bytes, $timer->getRemaining());
 
             $bytes = substr($bytes, $written->value);
         } while ($written->value !== 0 && $bytes !== '');
@@ -67,7 +61,7 @@ trait WriteHandleConvenienceMethodsTrait
         if ($bytes !== '') {
             // @codeCoverageIgnoreStart
             throw new Exception\RuntimeException(Str\format(
-                "asked to write %d bytes, but only able to write %d bytes",
+                'asked to write %d bytes, but only able to write %d bytes',
                 $original_size,
                 $original_size - strlen($bytes),
             ));

@@ -43,8 +43,8 @@ final class ReplaceEveryTest extends TestCase
             [
                 'Foo',
                 'Foo',
-                ['bar' => 'baz']
-            ]
+                ['bar' => 'baz'],
+            ],
         ];
     }
 }

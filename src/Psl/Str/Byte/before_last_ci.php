@@ -11,11 +11,8 @@ use Psl\Str\Exception;
  *
  * @pure
  */
-function before_last_ci(
-    string $haystack,
-    string $needle,
-    int $offset = 0
-): ?string {
+function before_last_ci(string $haystack, string $needle, int $offset = 0): null|string
+{
     $length = search_last_ci($haystack, $needle, $offset);
     if (null === $length) {
         return null;

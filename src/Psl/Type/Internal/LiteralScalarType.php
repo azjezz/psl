@@ -24,7 +24,7 @@ final readonly class LiteralScalarType extends Type\Type
      * @param T $value
      */
     public function __construct(
-        private string|int|float|bool $value
+        private string|int|float|bool $value,
     ) {
     }
 

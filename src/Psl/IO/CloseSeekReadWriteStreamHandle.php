@@ -36,7 +36,7 @@ final class CloseSeekReadWriteStreamHandle implements CloseSeekReadWriteStreamHa
     /**
      * {@inheritDoc}
      */
-    public function tryRead(?int $max_bytes = null): string
+    public function tryRead(null|int $max_bytes = null): string
     {
         return $this->handle->tryRead($max_bytes);
     }
@@ -44,7 +44,7 @@ final class CloseSeekReadWriteStreamHandle implements CloseSeekReadWriteStreamHa
     /**
      * {@inheritDoc}
      */
-    public function read(?int $max_bytes = null, ?Duration $timeout = null): string
+    public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         return $this->handle->read($max_bytes, $timeout);
     }
@@ -60,7 +60,7 @@ final class CloseSeekReadWriteStreamHandle implements CloseSeekReadWriteStreamHa
     /**
      * {@inheritDoc}
      */
-    public function write(string $bytes, ?Duration $timeout = null): int
+    public function write(string $bytes, null|Duration $timeout = null): int
     {
         return $this->handle->write($bytes, $timeout);
     }

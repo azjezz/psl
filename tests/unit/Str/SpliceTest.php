@@ -17,7 +17,7 @@ final class SpliceTest extends TestCase
         string $string,
         string $replacement,
         int $offset,
-        ?int $length = null
+        null|int $length = null,
     ): void {
         static::assertSame($expected, Str\splice($string, $replacement, $offset, $length));
     }
@@ -25,20 +25,20 @@ final class SpliceTest extends TestCase
     public function provideData(): array
     {
         return [
-            ['', '', '', 0, null, ],
-            ['héllö darkness', 'héllö wôrld', 'darkness', 6, null, ],
+            ['', '', '', 0, null],
+            ['héllö darkness', 'héllö wôrld', 'darkness', 6, null],
             ['héllö crüel wôrld', 'héllö wôrld', ' crüel ', 5, 1],
-            ['héllö crüel wôrld', 'héllö wôrld', ' crüel ', -6, 1, ],
-            ['héllö crüel wôrld', 'héllö wôrld', ' crüel', 5, 0, ],
-            ['héllö darkness', 'héllö ', 'darkness', 6, null, ],
-            ['héllö darkness', 'héllö wôrld', 'darkness', 6, 100, ],
-            ['héllö darkness', 'héllö wôrld', 'darkness', 6, 11, ],
+            ['héllö crüel wôrld', 'héllö wôrld', ' crüel ', -6, 1],
+            ['héllö crüel wôrld', 'héllö wôrld', ' crüel', 5, 0],
+            ['héllö darkness', 'héllö ', 'darkness', 6, null],
+            ['héllö darkness', 'héllö wôrld', 'darkness', 6, 100],
+            ['héllö darkness', 'héllö wôrld', 'darkness', 6, 11],
             [
                 'Peôple linkéd by déstiny wȋll ȃlways find each öther.',
                 'Peôple linkéd by déstiny wȋll find each öther.',
                 ' ȃlways ',
                 29,
-                1
+                1,
             ],
         ];
     }

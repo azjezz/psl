@@ -12,7 +12,7 @@ final class CompareCiTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testCompareCi(int $expected, string $str1, string $str2, ?int $length = null): void
+    public function testCompareCi(int $expected, string $str1, string $str2, null|int $length = null): void
     {
         $diff = Byte\compare_ci($str1, $str2, $length);
 

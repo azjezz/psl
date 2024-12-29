@@ -30,8 +30,8 @@ final readonly class Stats
     {
         return new self(
             $this->total + 1,
-            $result->isSucceeded() ? $this->succeeded + 1 : $this->succeeded,
-            $result->isFailed() ? $this->failed + 1 : $this->failed,
+            $result->isSucceeded() ? ($this->succeeded + 1) : $this->succeeded,
+            $result->isFailed() ? ($this->failed + 1) : $this->failed,
         );
     }
 

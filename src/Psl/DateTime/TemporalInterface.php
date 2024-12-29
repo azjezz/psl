@@ -231,7 +231,11 @@ interface TemporalInterface extends Comparable, Equable, JsonSerializable, Strin
      *
      * @psalm-mutation-free
      */
-    public function format(null|FormatPattern|string $pattern = null, null|Timezone $timezone = null, null|Locale $locale = null): string;
+    public function format(
+        null|FormatPattern|string $pattern = null,
+        null|Timezone $timezone = null,
+        null|Locale $locale = null,
+    ): string;
 
     /**
      * Formats this {@see TemporalInterface} instance to a string based on the RFC 3339 format, with additional
@@ -260,7 +264,7 @@ interface TemporalInterface extends Comparable, Equable, JsonSerializable, Strin
      *
      * @psalm-mutation-free
      */
-    public function toRfc3339(?SecondsStyle $seconds_style = null, bool $use_z = false): string;
+    public function toRfc3339(null|SecondsStyle $seconds_style = null, bool $use_z = false): string;
 
     /**
      * Provides a string representation of this {@see TemporalInterface} instance, formatted according to specified styles for date and time,
@@ -291,7 +295,12 @@ interface TemporalInterface extends Comparable, Equable, JsonSerializable, Strin
      *
      * @psalm-mutation-free
      */
-    public function toString(null|DateStyle $date_style = null, null|TimeStyle $time_style = null, null|Timezone $timezone = null, null|Locale $locale = null): string;
+    public function toString(
+        null|DateStyle $date_style = null,
+        null|TimeStyle $time_style = null,
+        null|Timezone $timezone = null,
+        null|Locale $locale = null,
+    ): string;
 
     /**
      * Magic method that provides a default string representation of the date and time.

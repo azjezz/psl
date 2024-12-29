@@ -10,14 +10,14 @@ use Psl\IO;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-Async\main(static function(): int {
+Async\main(static function (): int {
     [$read, $write] = IO\pipe();
 
     $he = Async\run(static fn(): string => $read->readFixedSize(2));
 
     Async\sleep(Psl\DateTime\Duration::milliseconds(200));
 
-    $write->write("hello");
+    $write->write('hello');
 
     $llo = $read->readFixedSize(3);
 

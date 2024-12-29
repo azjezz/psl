@@ -35,7 +35,7 @@ final class WriteStreamHandle implements WriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function write(string $bytes, ?Duration $timeout = null): int
+    public function write(string $bytes, null|Duration $timeout = null): int
     {
         return $this->handle->write($bytes, $timeout);
     }

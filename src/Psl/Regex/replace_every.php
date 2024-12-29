@@ -21,10 +21,12 @@ use function preg_replace;
  *
  * @pure
  */
-function replace_every(string $haystack, array $replacements, ?int $limit = null): string
+function replace_every(string $haystack, array $replacements, null|int $limit = null): string
 {
-    return (string) Internal\call_preg(
-        'preg_replace',
-        static fn() => preg_replace(array_keys($replacements), array_values($replacements), $haystack, $limit ?? -1),
-    );
+    return (string) Internal\call_preg('preg_replace', static fn() => preg_replace(
+        array_keys($replacements),
+        array_values($replacements),
+        $haystack,
+        $limit ?? -1,
+    ));
 }

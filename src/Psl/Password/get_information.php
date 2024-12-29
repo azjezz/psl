@@ -29,12 +29,12 @@ function get_information(string $hash): array
 {
     /** @var array{algo: string, options: array<string, array-key>} $information */
     $information = password_get_info($hash);
-    $algorithm   = $information['algo'];
+    $algorithm = $information['algo'];
     if (PASSWORD_BCRYPT === $algorithm) {
         return [
             'algorithm' => Algorithm::Bcrypt,
             'options' => [
-                'cost' => (int)($information['options']['cost'] ?? PASSWORD_BCRYPT_DEFAULT_COST),
+                'cost' => (int) ($information['options']['cost'] ?? PASSWORD_BCRYPT_DEFAULT_COST),
             ],
         ];
     }
@@ -42,9 +42,9 @@ function get_information(string $hash): array
     return [
         'algorithm' => PASSWORD_ARGON2ID === $algorithm ? Algorithm::Argon2id : Algorithm::Argon2i,
         'options' => [
-            'memory_cost' => (int)($information['options']['memory_cost'] ?? PASSWORD_ARGON2_DEFAULT_MEMORY_COST),
-            'time_cost' => (int)($information['options']['time_cost'] ?? PASSWORD_ARGON2_DEFAULT_TIME_COST),
-            'threads' => (int)($information['options']['threads'] ?? PASSWORD_ARGON2_DEFAULT_THREADS),
+            'memory_cost' => (int) ($information['options']['memory_cost'] ?? PASSWORD_ARGON2_DEFAULT_MEMORY_COST),
+            'time_cost' => (int) ($information['options']['time_cost'] ?? PASSWORD_ARGON2_DEFAULT_TIME_COST),
+            'threads' => (int) ($information['options']['threads'] ?? PASSWORD_ARGON2_DEFAULT_THREADS),
         ],
     ];
 }

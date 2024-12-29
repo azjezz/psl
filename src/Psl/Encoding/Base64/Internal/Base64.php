@@ -38,13 +38,14 @@ abstract class Base64
         $dest = '';
         $binary_length = Str\length($binary, encoding: Str\Encoding::Ascii8bit);
 
-        for ($i = 0; $i + 3 <= $binary_length; $i += 3) {
+        for ($i = 0; ($i + 3) <= $binary_length; $i += 3) {
             /** @var array<int, int> $chunk */
             $chunk = unpack('C*', Str\slice($binary, $i, 3, encoding: Str\Encoding::Ascii8bit));
             $byte0 = $chunk[1];
             $byte1 = $chunk[2];
             $byte2 = $chunk[3];
-            $dest .= static::encode6Bits($byte0 >> 2) .
+            $dest .=
+                static::encode6Bits($byte0 >> 2) .
                 static::encode6Bits((($byte0 << 4) | ($byte1 >> 4)) & 63) .
                 static::encode6Bits((($byte1 << 2) | ($byte2 >> 6)) & 63) .
                 static::encode6Bits($byte2 & 63);
@@ -57,17 +58,17 @@ abstract class Base64
              */
             $chunk = unpack('C*', Str\slice($binary, $i, $binary_length - $i, encoding: Str\Encoding::Ascii8bit));
             $byte0 = $chunk[1];
-            if ($i + 1 < $binary_length) {
+            if (($i + 1) < $binary_length) {
                 $byte1 = $chunk[2];
-                $dest .= static::encode6Bits($byte0 >> 2) .
+                $dest .=
+                    static::encode6Bits($byte0 >> 2) .
                     static::encode6Bits((($byte0 << 4) | ($byte1 >> 4)) & 63) .
                     static::encode6Bits(($byte1 << 2) & 63);
                 if ($padding) {
                     $dest .= '=';
                 }
             } else {
-                $dest .= static::encode6Bits($byte0 >> 2) .
-                    static::encode6Bits(($byte0 << 4) & 63);
+                $dest .= static::encode6Bits($byte0 >> 2) . static::encode6Bits(($byte0 << 4) & 63);
                 if ($padding) {
                     $dest .= '==';
                 }
@@ -99,7 +100,7 @@ abstract class Base64
 
         static::checkRange($base64);
 
-        if ($explicit_padding && $base64_length % 4 !== 0) {
+        if ($explicit_padding && ($base64_length % 4) !== 0) {
             throw new Exception\IncorrectPaddingException('The given base64 string has incorrect padding.');
         }
 
@@ -109,7 +110,7 @@ abstract class Base64
 
         $err = 0;
         $dest = '';
-        for ($i = 0; $i + 4 <= $base64_length; $i += 4) {
+        for ($i = 0; ($i + 4) <= $base64_length; $i += 4) {
             /** @var array<int, int> $chunk */
             $chunk = unpack('C*', Str\slice($base64, $i, 4, encoding: Str\Encoding::Ascii8bit));
             $char0 = static::decode6Bits($chunk[1]);
@@ -118,9 +119,9 @@ abstract class Base64
             $char3 = static::decode6Bits($chunk[4]);
             $dest .= pack(
                 'CCC',
-                ((($char0 << 2) | ($char1 >> 4)) & 0xff),
-                ((($char1 << 4) | ($char2 >> 2)) & 0xff),
-                ((($char2 << 6) | $char3) & 0xff),
+                (($char0 << 2) | ($char1 >> 4)) & 0xff,
+                (($char1 << 4) | ($char2 >> 2)) & 0xff,
+                (($char2 << 6) | $char3) & 0xff,
             );
             $err |= ($char0 | $char1 | $char2 | $char3) >> 8;
         }
@@ -132,28 +133,22 @@ abstract class Base64
              */
             $chunk = unpack('C*', Str\slice($base64, $i, $base64_length - $i, encoding: Str\Encoding::Ascii8bit));
             $char0 = static::decode6Bits($chunk[1]);
-            if ($i + 2 < $base64_length) {
+            if (($i + 2) < $base64_length) {
                 $char1 = static::decode6Bits($chunk[2]);
                 $char2 = static::decode6Bits($chunk[3]);
-                $dest .= pack(
-                    'CC',
-                    ((($char0 << 2) | ($char1 >> 4)) & 0xff),
-                    ((($char1 << 4) | ($char2 >> 2)) & 0xff),
-                );
+                $dest .= pack('CC', (($char0 << 2) | ($char1 >> 4)) & 0xff, (($char1 << 4) | ($char2 >> 2)) & 0xff);
                 $err |= ($char0 | $char1 | $char2) >> 8;
-            } elseif ($i + 1 < $base64_length) {
+            } elseif (($i + 1) < $base64_length) {
                 $char1 = static::decode6Bits($chunk[2]);
-                $dest .= pack('C', ((($char0 << 2) | ($char1 >> 4)) & 0xff));
+                $dest .= pack('C', (($char0 << 2) | ($char1 >> 4)) & 0xff);
                 $err |= ($char0 | $char1) >> 8;
             } elseif ($explicit_padding) {
                 $err |= 1;
             }
         }
-        $check = ($err === 0);
+        $check = $err === 0;
         if (!$check) {
-            throw new Exception\RangeException(
-                'Expected characters in the correct base64 alphabet',
-            );
+            throw new Exception\RangeException('Expected characters in the correct base64 alphabet');
         }
 
         return $dest;
@@ -169,9 +164,7 @@ abstract class Base64
     {
         /** @psalm-suppress MissingThrowsDocblock - pattern is valid */
         if (!Regex\matches($base64, '%^[a-zA-Z0-9/+]*={0,2}$%')) {
-            throw new Exception\RangeException(
-                'The given base64 string contains characters outside the base64 range.'
-            );
+            throw new Exception\RangeException('The given base64 string contains characters outside the base64 range.');
         }
     }
 

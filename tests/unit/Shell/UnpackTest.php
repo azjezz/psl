@@ -16,7 +16,11 @@ final class UnpackTest extends TestCase
 {
     public function testUnpacking(): void
     {
-        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'], error_output_behavior: Shell\ErrorOutputBehavior::Packed);
+        $result = Shell\execute(
+            PHP_BINARY,
+            ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
+            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+        );
 
         [$stdout, $stderr] = Shell\unpack($result);
 
@@ -26,7 +30,11 @@ final class UnpackTest extends TestCase
 
     public function testUnpackingStandardOutputOnly(): void
     {
-        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDOUT, "hello");'], error_output_behavior: Shell\ErrorOutputBehavior::Packed);
+        $result = Shell\execute(
+            PHP_BINARY,
+            ['-r', 'fwrite(STDOUT, "hello");'],
+            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+        );
 
         [$stdout, $stderr] = Shell\unpack($result);
 
@@ -36,7 +44,11 @@ final class UnpackTest extends TestCase
 
     public function testUnpackingStandardErrorOutputOnly(): void
     {
-        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDERR, "hello");'], error_output_behavior: Shell\ErrorOutputBehavior::Packed);
+        $result = Shell\execute(
+            PHP_BINARY,
+            ['-r', 'fwrite(STDERR, "hello");'],
+            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+        );
 
         [$stdout, $stderr] = Shell\unpack($result);
 
@@ -46,7 +58,11 @@ final class UnpackTest extends TestCase
 
     public function testUnpackingEmpty(): void
     {
-        $result = Shell\execute(PHP_BINARY, ['-r', 'exit(0);'], error_output_behavior: Shell\ErrorOutputBehavior::Packed);
+        $result = Shell\execute(
+            PHP_BINARY,
+            ['-r', 'exit(0);'],
+            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+        );
 
         [$stdout, $stderr] = Shell\unpack($result);
 
@@ -56,7 +72,11 @@ final class UnpackTest extends TestCase
 
     public function testUnpackingInvalidMessage(): void
     {
-        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDERR, "hello");'], error_output_behavior: Shell\ErrorOutputBehavior::Packed);
+        $result = Shell\execute(
+            PHP_BINARY,
+            ['-r', 'fwrite(STDERR, "hello");'],
+            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+        );
         $result .= ' world!';
 
         $this->expectException(Shell\Exception\InvalidArgumentException::class);
@@ -67,7 +87,11 @@ final class UnpackTest extends TestCase
 
     public function testUnpackingInvalidAdditionalHeader(): void
     {
-        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDERR, "hello");'], error_output_behavior: Shell\ErrorOutputBehavior::Packed);
+        $result = Shell\execute(
+            PHP_BINARY,
+            ['-r', 'fwrite(STDERR, "hello");'],
+            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+        );
         $result .= 'x';
 
         $this->expectException(Shell\Exception\InvalidArgumentException::class);
@@ -78,7 +102,11 @@ final class UnpackTest extends TestCase
 
     public function testUnpackingInvalidNulHeader(): void
     {
-        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDERR, "hello");'], error_output_behavior: Shell\ErrorOutputBehavior::Packed);
+        $result = Shell\execute(
+            PHP_BINARY,
+            ['-r', 'fwrite(STDERR, "hello");'],
+            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+        );
         $result .= "\0\0\0\0\0";
 
         $this->expectException(Shell\Exception\InvalidArgumentException::class);
@@ -89,7 +117,11 @@ final class UnpackTest extends TestCase
 
     public function testUnpackingInvalidLength(): void
     {
-        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDERR, "hello");'], error_output_behavior: Shell\ErrorOutputBehavior::Packed);
+        $result = Shell\execute(
+            PHP_BINARY,
+            ['-r', 'fwrite(STDERR, "hello");'],
+            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+        );
         $result .= Str\slice($result, 0, 7);
 
         $this->expectException(Shell\Exception\InvalidArgumentException::class);
@@ -100,7 +132,11 @@ final class UnpackTest extends TestCase
 
     public function testUnpackingInvalidType(): void
     {
-        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDERR, "hello");'], error_output_behavior: Shell\ErrorOutputBehavior::Packed);
+        $result = Shell\execute(
+            PHP_BINARY,
+            ['-r', 'fwrite(STDERR, "hello");'],
+            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+        );
         $result .= pack('C1N1', 3, 1) . 'a';
 
         $this->expectException(Shell\Exception\InvalidArgumentException::class);

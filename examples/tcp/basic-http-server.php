@@ -35,15 +35,16 @@ IO\write_error_line('Server is listening on http://localhost:3030');
 IO\write_error_line('Click Ctrl+C to stop the server.');
 
 Iter\apply($server->incoming(), static function (Network\StreamSocketInterface $connection): void {
-    Async\run(static function() use($connection): void {
+    Async\run(static function () use ($connection): void {
         $request = $connection->read();
 
         $connection->writeAll("HTTP/1.1 200 OK\nConnection: close\nContent-Type: text/html; charset=utf-8\n\n");
         $connection->writeAll(Str\format(RESPONSE_FORMAT, Html\encode_special_characters($request)));
         $connection->close();
-    })->catch(
-        static fn(IO\Exception\ExceptionInterface $e) => IO\write_error_line('Error: %s.', $e->getMessage())
-    )->ignore();
+    })->catch(static fn(IO\Exception\ExceptionInterface $e) => IO\write_error_line(
+        'Error: %s.',
+        $e->getMessage(),
+    ))->ignore();
 });
 
 IO\write_error_line('');

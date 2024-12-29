@@ -12,10 +12,7 @@ final class AssociateTest extends TestCase
 {
     public function testAssociate(): void
     {
-        static::assertSame(['a' => 1, 'b' => 2, 'c' => 3], Dict\associate(
-            ['a', 'b', 'c'],
-            [1, 2, 3]
-        ));
+        static::assertSame(['a' => 1, 'b' => 2, 'c' => 3], Dict\associate(['a', 'b', 'c'], [1, 2, 3]));
     }
 
     public function testAssociateEmpty(): void
@@ -25,10 +22,10 @@ final class AssociateTest extends TestCase
 
     public function testAssociateCollections(): void
     {
-        static::assertSame(['a' => 1, 'b' => 2, 'c' => 3], Dict\associate(
-            Collection\Vector::fromArray(['a', 'b', 'c']),
-            Collection\Vector::fromArray([1, 2, 3])
-        ));
+        static::assertSame(
+            ['a' => 1, 'b' => 2, 'c' => 3],
+            Dict\associate(Collection\Vector::fromArray(['a', 'b', 'c']), Collection\Vector::fromArray([1, 2, 3])),
+        );
     }
 
     public function testAssociateWithMissingKeys(): void
@@ -36,10 +33,7 @@ final class AssociateTest extends TestCase
         $this->expectException(Dict\Exception\LogicException::class);
         $this->expectExceptionMessage('Expected length of $keys and $values to be the same');
 
-        Dict\associate(
-            ['a', 'b', 'c'],
-            [1, 2, 3, 4]
-        );
+        Dict\associate(['a', 'b', 'c'], [1, 2, 3, 4]);
     }
 
     public function testAssociateWithMissingValues(): void
@@ -47,9 +41,6 @@ final class AssociateTest extends TestCase
         $this->expectException(Dict\Exception\LogicException::class);
         $this->expectExceptionMessage('Expected length of $keys and $values to be the same');
 
-        Dict\associate(
-            ['a', 'b', 'c', 'd', 'e', 'f'],
-            [1, 2, 3, 4]
-        );
+        Dict\associate(['a', 'b', 'c', 'd', 'e', 'f'], [1, 2, 3, 4]);
     }
 }

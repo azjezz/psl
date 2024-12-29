@@ -17,7 +17,7 @@ final class SortTest extends TestCase
      *
      * @dataProvider provideData
      */
-    public function testSort(array $expected, array $array, ?callable $comparator = null): void
+    public function testSort(array $expected, array $array, null|callable $comparator = null): void
     {
         static::assertSame($expected, Vec\sort($array, $comparator));
     }
@@ -29,16 +29,14 @@ final class SortTest extends TestCase
                 ['a', 'b', 'c'],
                 ['c', 'a', 'b'],
             ],
-
             [
                 [8, 9, 10],
                 [8, 9, 10],
                 /**
                  * @psalm-pure
                  */
-                static fn (int $a, int $b): int => $a <=> $b ? -1 : 1,
+                static fn(int $a, int $b): int => $a <=> $b ? -1 : 1,
             ],
-
             [
                 ['bar', 'baz'],
                 ['foo' => 'bar', 'bar' => 'baz'],

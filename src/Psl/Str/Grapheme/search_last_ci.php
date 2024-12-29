@@ -25,7 +25,7 @@ use function grapheme_strripos;
  *
  * @return null|int<0, max>
  */
-function search_last_ci(string $haystack, string $needle, int $offset = 0): ?int
+function search_last_ci(string $haystack, string $needle, int $offset = 0): null|int
 {
     if ('' === $needle) {
         return null;
@@ -34,7 +34,5 @@ function search_last_ci(string $haystack, string $needle, int $offset = 0): ?int
     $offset = Str\Internal\validate_offset($offset, length($haystack));
 
     /** @var null|int<0, max> */
-    return false === ($pos = grapheme_strripos($haystack, $needle, $offset)) ?
-        null :
-        $pos;
+    return false === ($pos = grapheme_strripos($haystack, $needle, $offset)) ? null : $pos;
 }

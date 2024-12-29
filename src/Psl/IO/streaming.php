@@ -38,7 +38,7 @@ use function max;
  *
  * @return Generator<T, string, mixed, null>
  */
-function streaming(iterable $handles, ?Duration $timeout = null): Generator
+function streaming(iterable $handles, null|Duration $timeout = null): Generator
 {
     /**
      * @psalm-suppress UnnecessaryVarAnnotation
@@ -56,10 +56,15 @@ function streaming(iterable $handles, ?Duration $timeout = null): Generator
             throw new Exception\AlreadyClosedException(Str\format('Handle "%s" is already closed.', (string) $index));
         }
 
-        $watchers->value[$index] = EventLoop::onReadable($stream, static function (string $watcher) use ($index, $handle, $sender, $watchers): void {
+        $watchers->value[$index] = EventLoop::onReadable($stream, static function (string $watcher) use (
+            $index,
+            $handle,
+            $sender,
+            $watchers,
+        ): void {
             try {
                 $result = Result\wrap($handle->tryRead(...));
-                if ($result->isFailed() || ($result->isSucceeded() && $result->getResult() === '')) {
+                if ($result->isFailed() || $result->isSucceeded() && $result->getResult() === '') {
                     EventLoop::cancel($watcher);
                     unset($watchers->value[$index]);
                 }
@@ -80,7 +85,9 @@ function streaming(iterable $handles, ?Duration $timeout = null): Generator
         $timeout_watcher = EventLoop::delay($timeout, static function () use ($sender): void {
             /** @var Result\ResultInterface<string> $failure */
             $failure = new Result\Failure(
-                new Exception\TimeoutException('Reached timeout before being able to read all the handles until the end.')
+                new Exception\TimeoutException(
+                    'Reached timeout before being able to read all the handles until the end.',
+                ),
             );
 
             $sender->send([null, $failure]);

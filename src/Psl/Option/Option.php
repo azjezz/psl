@@ -26,7 +26,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      *
      * @psalm-mutation-free
      */
-    private function __construct(?array $option)
+    private function __construct(null|array $option)
     {
         $this->option = $option;
     }
@@ -400,7 +400,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
 
         return match (true) {
             $aIsNone || $bIsNone => Comparison\compare($bIsNone, $aIsNone),
-            default => Comparison\compare($this->unwrap(), $other->unwrap())
+            default => Comparison\compare($this->unwrap(), $other->unwrap()),
         };
     }
 
@@ -451,9 +451,9 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
             static function ($a) use ($other, $closure) {
                 return $other->map(
                     /** @param Tu $b */
-                    static fn ($b) => $closure($a, $b)
+                    static fn($b) => $closure($a, $b),
                 );
-            }
+            },
         );
     }
 

@@ -12,7 +12,7 @@ final class TrimLeftTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testTrimLeft(string $expected, string $string, ?string $chars = null): void
+    public function testTrimLeft(string $expected, string $string, null|string $chars = null): void
     {
         static::assertSame($expected, Byte\trim_left($string, $chars));
     }

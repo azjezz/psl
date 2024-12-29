@@ -33,7 +33,7 @@ use const ARRAY_FILTER_USE_KEY;
  *
  * @return array<Tk, Tv>
  */
-function filter_keys(iterable $iterable, ?Closure $predicate = null): array
+function filter_keys(iterable $iterable, null|Closure $predicate = null): array
 {
     /** @var (Closure(Tk): bool) $predicate */
     $predicate = $predicate ?? static fn(mixed $value): bool => (bool) $value;
@@ -45,11 +45,11 @@ function filter_keys(iterable $iterable, ?Closure $predicate = null): array
              * @param Tk $k
              */
             static fn($k): bool => $predicate($k),
-            ARRAY_FILTER_USE_KEY
+            ARRAY_FILTER_USE_KEY,
         );
     }
 
-    $result    = [];
+    $result = [];
     foreach ($iterable as $k => $v) {
         if ($predicate($k)) {
             $result[$k] = $v;

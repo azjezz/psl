@@ -17,7 +17,7 @@ final class StringBackedEnumTypeTest extends TypeTest
     {
         return Type\backed_enum(StringEnum::class);
     }
-    
+
     /**
      * @return iterable<array{0: mixed, 1: StringEnum}>
      */

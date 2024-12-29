@@ -36,12 +36,7 @@ final class CountValuesTest extends TestCase
             ],
             [
                 ['foo' => 2, 'bar' => 1, 'baz' => 4],
-                Vec\concat(
-                    ['foo', 'bar', 'baz'],
-                    ['foo'],
-                    ['baz'],
-                    ['baz', 'baz'],
-                ),
+                Vec\concat(['foo', 'bar', 'baz'], ['foo'], ['baz'], ['baz', 'baz']),
             ],
         ];
     }

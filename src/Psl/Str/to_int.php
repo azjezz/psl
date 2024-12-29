@@ -9,9 +9,9 @@ namespace Psl\Str;
  *
  * @pure
  */
-function to_int(string $string): ?int
+function to_int(string $string): null|int
 {
-    if ((string) (int) $string === $string) {
+    if (((string) ((int) $string)) === $string) {
         return (int) $string;
     }
 

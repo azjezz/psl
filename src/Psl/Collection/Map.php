@@ -279,7 +279,6 @@ final readonly class Map implements MapInterface
         return $this->elements[$k] ?? null;
     }
 
-
     /**
      * Returns a `Vector` containing the values of the current
      * `Map`.
@@ -532,7 +531,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, ?int $length = null): Map
+    public function slice(int $start, null|int $length = null): Map
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         $result = Dict\slice($this->elements, $start, $length);
@@ -575,7 +574,7 @@ final readonly class Map implements MapInterface
                     }
 
                     return Map::fromArray($array);
-                }
+                },
             );
     }
 }

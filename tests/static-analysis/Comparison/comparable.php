@@ -44,7 +44,6 @@ class Centimeters extends Size
     }
 }
 
-
 function test_covariant_limitations(): Order
 {
     $cm = new Centimeters();

@@ -30,7 +30,7 @@ final class Base64UrlSafe extends Base64
         /** @psalm-suppress MissingThrowsDocblock - pattern is valid */
         if (!Regex\matches($base64, '%^[a-zA-Z0-9-_]*={0,2}$%')) {
             throw new Exception\RangeException(
-                'The given string contains characters outside the base64 range for the current variant.'
+                'The given string contains characters outside the base64 range for the current variant.',
             );
         }
     }

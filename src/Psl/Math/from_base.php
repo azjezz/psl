@@ -22,7 +22,7 @@ use Psl\Str\Byte;
 function from_base(string $number, int $from_base): int
 {
     /** @psalm-suppress MissingThrowsDocblock */
-    $limit  = div(INT64_MAX, $from_base);
+    $limit = div(INT64_MAX, $from_base);
     $result = 0;
     foreach (Byte\chunk($number) as $digit) {
         $oval = Byte\ord($digit);
@@ -42,11 +42,13 @@ function from_base(string $number, int $from_base): int
         }
 
         $oldval = $result;
-        $result = $from_base * $result + $dval;
+        $result = ($from_base * $result) + $dval;
         if ($oldval > $limit || $oldval > $result) {
-            throw new Exception\OverflowException(
-                Str\format('Unexpected integer overflow parsing %s from base %d', $number, $from_base)
-            );
+            throw new Exception\OverflowException(Str\format(
+                'Unexpected integer overflow parsing %s from base %d',
+                $number,
+                $from_base,
+            ));
         }
     }
 

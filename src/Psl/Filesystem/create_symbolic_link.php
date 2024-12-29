@@ -48,7 +48,7 @@ function create_symbolic_link(string $source, string $destination): void
             'Failed to create symbolic link "%s" from "%s": %s.',
             $destination,
             $source,
-            $error_message ?? 'internal error'
+            $error_message ?? 'internal error',
         ));
     }
     // @codeCoverageIgnoreEnd

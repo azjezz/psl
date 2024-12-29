@@ -31,13 +31,16 @@ abstract class AbstractVectorTest extends TestCase
         static::assertCount(0, $this->default());
         static::assertCount(0, $this->create([]));
         static::assertCount(2, $this->create(['foo', 'bar']));
-        static::assertSame(5, $this->create([
-            'foo',
-            'bar',
-            'baz',
-            'qux',
-            'hax' // ??
-        ])->count());
+        static::assertSame(
+            5,
+            $this->create([
+                'foo',
+                'bar',
+                'baz',
+                'qux',
+                'hax', // ??
+            ])->count(),
+        );
     }
 
     public function testValues(): void
@@ -77,7 +80,7 @@ abstract class AbstractVectorTest extends TestCase
             'bar',
             'baz',
         ]);
-        $keys   = $vector->keys();
+        $keys = $vector->keys();
 
         static::assertInstanceOf($this->vectorClass, $keys);
         static::assertCount(3, $keys);
@@ -86,7 +89,7 @@ abstract class AbstractVectorTest extends TestCase
         static::assertSame(2, $keys->at(2));
 
         $vector = $this->create([]);
-        $keys   = $vector->keys();
+        $keys = $vector->keys();
 
         static::assertInstanceOf($this->vectorClass, $keys);
         static::assertCount(0, $keys);
@@ -101,7 +104,7 @@ abstract class AbstractVectorTest extends TestCase
             'qux',
         ]);
 
-        $filtered = $vector->filter(static fn (string $item) => Str\contains($item, 'b'));
+        $filtered = $vector->filter(static fn(string $item) => Str\contains($item, 'b'));
 
         static::assertInstanceOf($this->vectorClass, $filtered);
         static::assertNotSame($vector, $filtered);
@@ -118,7 +121,7 @@ abstract class AbstractVectorTest extends TestCase
             'qux',
         ]);
 
-        $filtered = $vector->filter(static fn (string $item) => Str\contains($item, 'hello'));
+        $filtered = $vector->filter(static fn(string $item) => Str\contains($item, 'hello'));
 
         static::assertInstanceOf($this->vectorClass, $filtered);
         static::assertNotContains('bar', $filtered);
@@ -137,7 +140,7 @@ abstract class AbstractVectorTest extends TestCase
             'qux',
         ]);
 
-        $filtered = $vector->filterWithKey(static fn (int $k, string $v) => 'foo' === $v || 3 === $k);
+        $filtered = $vector->filterWithKey(static fn(int $k, string $v) => 'foo' === $v || 3 === $k);
 
         static::assertInstanceOf($this->vectorClass, $filtered);
         static::assertNotSame($vector, $filtered);
@@ -154,7 +157,7 @@ abstract class AbstractVectorTest extends TestCase
             'qux',
         ]);
 
-        $filtered = $vector->filterWithKey(static fn (int $k, string $v) => 4 === $k);
+        $filtered = $vector->filterWithKey(static fn(int $k, string $v) => 4 === $k);
 
         static::assertInstanceOf($this->vectorClass, $filtered);
         static::assertNotContains('bar', $filtered);
@@ -173,15 +176,18 @@ abstract class AbstractVectorTest extends TestCase
             'qux',
         ]);
 
-        $mapped = $vector->map(static fn (string $item) => Str\uppercase($item));
+        $mapped = $vector->map(static fn(string $item) => Str\uppercase($item));
 
         static::assertInstanceOf($this->vectorClass, $mapped);
-        static::assertSame([
-            'FOO',
-            'BAR',
-            'BAZ',
-            'QUX',
-        ], $mapped->toArray());
+        static::assertSame(
+            [
+                'FOO',
+                'BAR',
+                'BAZ',
+                'QUX',
+            ],
+            $mapped->toArray(),
+        );
         static::assertNotSame($vector, $mapped);
         static::assertCount(4, $mapped);
 
@@ -192,7 +198,7 @@ abstract class AbstractVectorTest extends TestCase
             'qux',
         ]);
 
-        $mapped = $vector->map(static fn (string $item) => $item);
+        $mapped = $vector->map(static fn(string $item) => $item);
 
         static::assertInstanceOf($this->vectorClass, $mapped);
         static::assertNotSame($vector, $mapped);
@@ -209,15 +215,18 @@ abstract class AbstractVectorTest extends TestCase
             3 => 'qux',
         ]);
 
-        $mapped = $vector->mapWithKey(static fn (int $k, string $v) => Str\format('%s ( %d )', $v, $k));
+        $mapped = $vector->mapWithKey(static fn(int $k, string $v) => Str\format('%s ( %d )', $v, $k));
 
         static::assertInstanceOf($this->vectorClass, $mapped);
-        static::assertSame([
-            'foo ( 0 )',
-            'bar ( 1 )',
-            'baz ( 2 )',
-            'qux ( 3 )',
-        ], $mapped->toArray());
+        static::assertSame(
+            [
+                'foo ( 0 )',
+                'bar ( 1 )',
+                'baz ( 2 )',
+                'qux ( 3 )',
+            ],
+            $mapped->toArray(),
+        );
         static::assertNotSame($vector, $mapped);
         static::assertCount(4, $mapped);
 
@@ -228,14 +237,14 @@ abstract class AbstractVectorTest extends TestCase
             'qux',
         ]);
 
-        $mapped = $vector->mapWithKey(static fn (int $k, string $v) => $k);
+        $mapped = $vector->mapWithKey(static fn(int $k, string $v) => $k);
 
         static::assertInstanceOf($this->vectorClass, $mapped);
         static::assertNotSame($vector, $mapped);
         static::assertSame($vector->keys()->toArray(), $mapped->toArray());
         static::assertCount(4, $mapped);
 
-        $mapped = $vector->mapWithKey(static fn (int $k, string $v) => $v);
+        $mapped = $vector->mapWithKey(static fn(int $k, string $v) => $v);
 
         static::assertInstanceOf($this->vectorClass, $mapped);
         static::assertNotSame($vector, $mapped);
@@ -360,20 +369,20 @@ abstract class AbstractVectorTest extends TestCase
     public function testTake(): void
     {
         $vector = $this->create([]);
-        $rest   = $vector->take(2);
+        $rest = $vector->take(2);
         static::assertInstanceOf($this->vectorClass, $rest);
         static::assertNotSame($vector, $rest);
         static::assertCount(0, $rest);
 
         $vector = $this->create(['bar', 'qux']);
-        $rest   = $vector->take(4);
+        $rest = $vector->take(4);
         static::assertInstanceOf($this->vectorClass, $rest);
         static::assertNotSame($vector, $rest);
         static::assertCount(2, $rest);
         static::assertSame($vector->toArray(), $rest->toArray());
 
         $vector = $this->create(['bar', 'qux']);
-        $rest   = $vector->take(1);
+        $rest = $vector->take(1);
         static::assertInstanceOf($this->vectorClass, $rest);
         static::assertNotSame($vector, $rest);
         static::assertCount(1, $rest);
@@ -383,26 +392,26 @@ abstract class AbstractVectorTest extends TestCase
     public function testTakeWhile(): void
     {
         $vector = $this->create([]);
-        $rest   = $vector->takeWhile(static fn ($v) => false);
+        $rest = $vector->takeWhile(static fn($v) => false);
         static::assertInstanceOf($this->vectorClass, $rest);
         static::assertNotSame($vector, $rest);
         static::assertCount(0, $rest);
 
         $vector = $this->create([]);
-        $rest   = $vector->takeWhile(static fn ($v) => true);
+        $rest = $vector->takeWhile(static fn($v) => true);
         static::assertInstanceOf($this->vectorClass, $rest);
         static::assertNotSame($vector, $rest);
         static::assertCount(0, $rest);
 
         $vector = $this->create(['bar', 'qux']);
-        $rest   = $vector->takeWhile(static fn ($v) => true);
+        $rest = $vector->takeWhile(static fn($v) => true);
         static::assertInstanceOf($this->vectorClass, $rest);
         static::assertNotSame($vector, $rest);
         static::assertCount(2, $rest);
         static::assertSame($vector->toArray(), $rest->toArray());
 
         $vector = $this->create(['bar', 'qux']);
-        $rest   = $vector->takeWhile(static fn ($v) => 'bar' === $v);
+        $rest = $vector->takeWhile(static fn($v) => 'bar' === $v);
         static::assertInstanceOf($this->vectorClass, $rest);
         static::assertNotSame($vector, $rest);
         static::assertCount(1, $rest);
@@ -412,26 +421,26 @@ abstract class AbstractVectorTest extends TestCase
     public function testDrop(): void
     {
         $vector = $this->create([]);
-        $rest   = $vector->drop(2);
+        $rest = $vector->drop(2);
         static::assertInstanceOf($this->vectorClass, $rest);
         static::assertNotSame($vector, $rest);
         static::assertCount(0, $rest);
 
         $vector = $this->create(['bar', 'qux']);
-        $rest   = $vector->drop(4);
+        $rest = $vector->drop(4);
         static::assertInstanceOf($this->vectorClass, $rest);
         static::assertNotSame($vector, $rest);
         static::assertCount(0, $rest);
 
         $vector = $this->create(['bar', 'qux']);
-        $rest   = $vector->drop(1);
+        $rest = $vector->drop(1);
         static::assertInstanceOf($this->vectorClass, $rest);
         static::assertNotSame($vector, $rest);
         static::assertCount(1, $rest);
         static::assertSame('qux', $rest->at(0));
 
         $vector = $this->create(['bar', 'qux']);
-        $rest   = $vector->drop(0);
+        $rest = $vector->drop(0);
         static::assertInstanceOf($this->vectorClass, $rest);
         static::assertNotSame($vector, $rest);
         static::assertCount(2, $rest);
@@ -441,32 +450,32 @@ abstract class AbstractVectorTest extends TestCase
     public function testDropWhile(): void
     {
         $vector = $this->create([]);
-        $rest   = $vector->dropWhile(static fn ($v) => true);
+        $rest = $vector->dropWhile(static fn($v) => true);
         static::assertInstanceOf($this->vectorClass, $rest);
         static::assertNotSame($vector, $rest);
         static::assertCount(0, $rest);
 
         $vector = $this->create([]);
-        $rest   = $vector->dropWhile(static fn ($v) => false);
+        $rest = $vector->dropWhile(static fn($v) => false);
         static::assertInstanceOf($this->vectorClass, $rest);
         static::assertNotSame($vector, $rest);
         static::assertCount(0, $rest);
 
         $vector = $this->create(['bar', 'qux']);
-        $rest   = $vector->dropWhile(static fn ($v) => true);
+        $rest = $vector->dropWhile(static fn($v) => true);
         static::assertInstanceOf($this->vectorClass, $rest);
         static::assertNotSame($vector, $rest);
         static::assertCount(0, $rest);
 
         $vector = $this->create(['bar', 'qux']);
-        $rest   = $vector->dropWhile(static fn ($v) => false);
+        $rest = $vector->dropWhile(static fn($v) => false);
         static::assertInstanceOf($this->vectorClass, $rest);
         static::assertNotSame($vector, $rest);
         static::assertCount(2, $rest);
         static::assertSame($vector->toArray(), $rest->toArray());
 
         $vector = $this->create(['bar', 'qux']);
-        $rest   = $vector->dropWhile(static fn ($v) => 'bar' === $v);
+        $rest = $vector->dropWhile(static fn($v) => 'bar' === $v);
         static::assertInstanceOf($this->vectorClass, $rest);
         static::assertNotSame($vector, $rest);
         static::assertCount(1, $rest);
@@ -496,12 +505,15 @@ abstract class AbstractVectorTest extends TestCase
         static::assertInstanceOf($this->vectorClass, $slice1);
         static::assertNotSame($slice2, $vector);
         static::assertCount(4, $slice2);
-        static::assertSame([
-            'bar',
-            'bar',
-            'baz',
-            'baz',
-        ], $slice2->toArray());
+        static::assertSame(
+            [
+                'bar',
+                'bar',
+                'baz',
+                'baz',
+            ],
+            $slice2->toArray(),
+        );
     }
 
     public function testAt(): void
@@ -566,7 +578,7 @@ abstract class AbstractVectorTest extends TestCase
 
     protected function default(): VectorInterface
     {
-        return ($this->vectorClass)::default();
+        return $this->vectorClass::default();
     }
 
     /**

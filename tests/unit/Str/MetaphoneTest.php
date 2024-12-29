@@ -12,7 +12,7 @@ final class MetaphoneTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testMetaphone(?string $expected, string $str, int $phonemes = 0): void
+    public function testMetaphone(null|string $expected, string $str, int $phonemes = 0): void
     {
         static::assertSame($expected, Str\metaphone($str, $phonemes));
     }

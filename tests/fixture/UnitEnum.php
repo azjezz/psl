@@ -8,5 +8,5 @@ enum UnitEnum
 {
     case Foo;
     case Bar;
-    case Baz ;
+    case Baz;
 }

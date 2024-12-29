@@ -14,7 +14,7 @@ final class WhenTest extends TestCase
         $greet = Fun\when(
             static fn(string $name): bool => $name === 'Jos',
             static fn(string $name): string => 'Bonjour ' . $name . '!',
-            static fn(string $name): string => 'Hello ' . $name . '!'
+            static fn(string $name): string => 'Hello ' . $name . '!',
         );
 
         static::assertSame('Bonjour Jos!', $greet('Jos'));
@@ -25,7 +25,7 @@ final class WhenTest extends TestCase
         $greet = Fun\when(
             static fn(string $name): bool => $name === 'Jos',
             static fn(string $name): string => 'Bonjour ' . $name . '!',
-            static fn(string $name): string => 'Hello ' . $name . '!'
+            static fn(string $name): string => 'Hello ' . $name . '!',
         );
 
         static::assertSame('Hello World!', $greet('World'));

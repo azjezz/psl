@@ -317,7 +317,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, ?int $length = null): SetInterface;
+    public function slice(int $start, null|int $length = null): SetInterface;
 
     /**
      * Returns a `VectorInterface` containing the original `SetInterface` split into

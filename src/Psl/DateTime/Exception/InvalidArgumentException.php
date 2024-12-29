@@ -23,7 +23,10 @@ final class InvalidArgumentException extends Exception\InvalidArgumentException 
      */
     public static function forYear(int $value): self
     {
-        return new self(Str\format('The year \'%d\' diverges from expectation; a positive integer is required.', $value));
+        return new self(Str\format(
+            'The year \'%d\' diverges from expectation; a positive integer is required.',
+            $value,
+        ));
     }
 
     /**
@@ -62,7 +65,7 @@ final class InvalidArgumentException extends Exception\InvalidArgumentException 
             $value,
             $month,
             $year,
-            Month::from($month)->getDaysForYear($year)
+            Month::from($month)->getDaysForYear($year),
         ));
     }
 
@@ -111,7 +114,10 @@ final class InvalidArgumentException extends Exception\InvalidArgumentException 
      */
     public static function forSeconds(int $value): self
     {
-        return new self(Str\format('The seconds \'%d\' stretch outside the acceptable range of \'0\' to \'59\'.', $value));
+        return new self(Str\format(
+            'The seconds \'%d\' stretch outside the acceptable range of \'0\' to \'59\'.',
+            $value,
+        ));
     }
 
     /**
@@ -127,6 +133,9 @@ final class InvalidArgumentException extends Exception\InvalidArgumentException 
      */
     public static function forNanoseconds(int $value): self
     {
-        return new self(Str\format('The nanoseconds \'%d\' exceed the foreseen limit of \'0\' to \'999999999\'.', $value));
+        return new self(Str\format(
+            'The nanoseconds \'%d\' exceed the foreseen limit of \'0\' to \'999999999\'.',
+            $value,
+        ));
     }
 }

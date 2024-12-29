@@ -30,12 +30,18 @@ final class LastTest extends TestCase
         yield ['b', new Collection\Vector(['a', 'b'])];
         yield ['b', new Collection\Vector(['b'])];
         yield ['d', new Collection\Map(['a' => 'b', 'c' => 'd'])];
-        yield [null, (static function () {
-            yield null => null;
-        })()];
-        yield [null, (static function () {
-            return;
-            yield;
-        })()];
+        yield [
+            null,
+            (static function () {
+                yield null => null;
+            })(),
+        ];
+        yield [
+            null,
+            (static function () {
+                return;
+                yield;
+            })(),
+        ];
     }
 }

@@ -17,7 +17,7 @@ final class WrapTest extends TestCase
         string $str,
         int $width = 75,
         string $break = "\n",
-        bool $cut = false
+        bool $cut = false,
     ): void {
         static::assertSame($expected, Byte\wrap($str, $width, $break, $cut));
     }

@@ -13,9 +13,12 @@ final class UnhandledAwaitableException extends RuntimeException implements Exce
     public static function forThrowable(Throwable $throwable): UnhandledAwaitableException
     {
         return new self(
-            Str\format('Unhandled awaitable error "%s", make sure to call `Awaitable::await()` before the awaitable is destroyed, or call `Awaitable::ignore()` to ignore exceptions.', $throwable::class),
+            Str\format(
+                'Unhandled awaitable error "%s", make sure to call `Awaitable::await()` before the awaitable is destroyed, or call `Awaitable::ignore()` to ignore exceptions.',
+                $throwable::class,
+            ),
             (int) $throwable->getCode(),
-            $throwable
+            $throwable,
         );
     }
 }

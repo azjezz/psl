@@ -17,7 +17,6 @@ class CompareTest extends AbstractComparisonTest
         static::assertSame($expected, Comparison\compare($a, $b));
     }
 
-
     public function testItCanFailComparing(): void
     {
         $a = self::createIncomparableWrapper(1);
@@ -28,7 +27,6 @@ class CompareTest extends AbstractComparisonTest
 
         Comparison\compare($a, $b);
     }
-
 
     public function testItCanFailComparingWithAdditionalInfo(): void
     {

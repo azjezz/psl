@@ -8,9 +8,7 @@ use function Psl\Fun\pipe;
 
 function test_too_few_argument_dont_matter(): int
 {
-    $stages = pipe(
-        static fn (): int => 2,
-    );
+    $stages = pipe(static fn(): int => 2);
 
     return $stages('hello');
 }
@@ -20,9 +18,7 @@ function test_too_few_argument_dont_matter(): int
  */
 function test_too_many_argument_count_issues(): int
 {
-    $stages = pipe(
-        static fn (string $x, string $y): int => 2,
-    );
+    $stages = pipe(static fn(string $x, string $y): int => 2);
     return $stages('hello');
 }
 
@@ -31,10 +27,7 @@ function test_too_many_argument_count_issues(): int
  */
 function test_variadic_and_default_params(): int
 {
-    $stages = pipe(
-        static fn (int $y, string $x = 'hello'): float => 1.2,
-        static fn (float ...$items): int => 23
-    );
+    $stages = pipe(static fn(int $y, string $x = 'hello'): float => 1.2, static fn(float ...$items): int => 23);
     return $stages(123);
 }
 
@@ -57,10 +50,7 @@ function test_empty_pipe(): string
  */
 function test_invalid_arguments(): void
 {
-    $stages = pipe(
-        'hello',
-        'world'
-    );
+    $stages = pipe('hello', 'world');
     $stages('hello');
 }
 
@@ -69,10 +59,7 @@ function test_invalid_arguments(): void
  */
 function test_invalid_return_to_input_type(): float
 {
-    $stages = pipe(
-        static fn (string $x): int => 2,
-        static fn (string $y): float => 1.2
-    );
+    $stages = pipe(static fn(string $x): int => 2, static fn(string $y): float => 1.2);
     return $stages('hello');
 }
 
@@ -81,10 +68,7 @@ function test_invalid_return_to_input_type(): float
  */
 function test_invalid_input_type(): float
 {
-    $stages = pipe(
-        static fn (string $x): int => 2,
-        static fn (int $y): float => 1.2
-    );
+    $stages = pipe(static fn(string $x): int => 2, static fn(int $y): float => 1.2);
     return $stages(143);
 }
 
@@ -95,9 +79,7 @@ function test_invalid_input_type(): float
  */
 function test_output_type_is_known(): void
 {
-    $stages = pipe(
-        static fn (string $x): int => 2,
-    );
+    $stages = pipe(static fn(string $x): int => 2);
 
     Psl\invariant(is_int($stages('hello')), 'Expected output of int');
 }
@@ -107,9 +89,6 @@ function test_output_type_is_known(): void
  */
 function test_first_class_callables(): int
 {
-    $stages = pipe(
-        $assignment = static fn (string $x): int => 2,
-        (static fn (): int => 2)(...),
-    );
+    $stages = pipe($assignment = static fn(string $x): int => 2, (static fn(): int => 2)(...));
     return $stages('hello');
 }

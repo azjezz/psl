@@ -30,12 +30,18 @@ final class FirstKeyTest extends TestCase
         yield [0, new Collection\Vector(['a', 'b'])];
         yield [0, new Collection\Vector(['a' => 'b'])];
         yield ['a', new Collection\Map(['a' => 'b'])];
-        yield [null, (static function () {
-            yield null => null;
-        })()];
-        yield [null, (static function () {
-            return;
-            yield;
-        })()];
+        yield [
+            null,
+            (static function () {
+                yield null => null;
+            })(),
+        ];
+        yield [
+            null,
+            (static function () {
+                return;
+                yield;
+            })(),
+        ];
     }
 }

@@ -16,10 +16,10 @@ use function str_replace;
  */
 function replace_every(string $haystack, array $replacements): string
 {
-    $search  = [];
+    $search = [];
     $replace = [];
     foreach ($replacements as $k => $v) {
-        $search[]  = $k;
+        $search[] = $k;
         $replace[] = $v;
     }
 

@@ -13,7 +13,10 @@ final class FromCodePointsTest extends TestCase
     {
         static::assertSame(/* NULL = */ Str\chr(0), Str\from_code_points(0));
 
-        static::assertSame('مرحبا بكم', Str\from_code_points(1605, 1585, 1581, 1576, 1575, 32, 1576, 1603, 1605));
+        static::assertSame(
+            'مرحبا بكم',
+            Str\from_code_points(1605, 1585, 1581, 1576, 1575, 32, 1576, 1603, 1605),
+        );
 
         static::assertSame('Hello', Str\from_code_points(72, 101, 108, 108, 111));
 

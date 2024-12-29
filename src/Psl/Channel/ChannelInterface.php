@@ -18,7 +18,7 @@ interface ChannelInterface extends Countable
      *
      * @psalm-mutation-free
      */
-    public function getCapacity(): ?int;
+    public function getCapacity(): null|int;
 
     /**
      * Closes the channel.

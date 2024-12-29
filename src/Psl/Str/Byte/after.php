@@ -11,7 +11,7 @@ use Psl\Str\Exception;
  *
  * @pure
  */
-function after(string $haystack, string $needle, int $offset = 0): ?string
+function after(string $haystack, string $needle, int $offset = 0): null|string
 {
     $position = search($haystack, $needle, $offset);
     if (null === $position) {

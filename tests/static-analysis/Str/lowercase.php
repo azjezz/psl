@@ -34,27 +34,15 @@ function return_non_falsy_string(): string
  */
 function test(): void
 {
-    take_lowercase_string(
-        Str\lowercase('hello')
-    );
+    take_lowercase_string(Str\lowercase('hello'));
 
-    take_lowercase_string(
-        Str\Byte\lowercase('hello')
-    );
+    take_lowercase_string(Str\Byte\lowercase('hello'));
 
-    take_non_empty_lowercase_string(
-        Str\lowercase(return_non_empty_string())
-    );
+    take_non_empty_lowercase_string(Str\lowercase(return_non_empty_string()));
 
-    take_non_empty_lowercase_string(
-        Str\lowercase(return_non_falsy_string())
-    );
+    take_non_empty_lowercase_string(Str\lowercase(return_non_falsy_string()));
 
-    take_non_empty_lowercase_string(
-        Str\Byte\lowercase(return_non_empty_string())
-    );
+    take_non_empty_lowercase_string(Str\Byte\lowercase(return_non_empty_string()));
 
-    take_non_empty_lowercase_string(
-        Str\Byte\lowercase(return_non_falsy_string())
-    );
+    take_non_empty_lowercase_string(Str\Byte\lowercase(return_non_falsy_string()));
 }

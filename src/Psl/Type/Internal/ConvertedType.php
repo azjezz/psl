@@ -33,7 +33,7 @@ final readonly class ConvertedType extends Type\Type
     public function __construct(
         private TypeInterface $from,
         private TypeInterface $into,
-        private Closure $converter
+        private Closure $converter,
     ) {
     }
 
@@ -70,7 +70,7 @@ final readonly class ConvertedType extends Type\Type
                     1 => PathExpression::convert($coercedInput ?? null, $this->into->toString()),
                     default => PathExpression::coerceOutput($converted ?? null, $this->into->toString()),
                 },
-                $failure
+                $failure,
             );
         }
     }

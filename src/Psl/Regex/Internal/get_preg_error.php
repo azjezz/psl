@@ -21,7 +21,7 @@ use const PREG_RECURSION_LIMIT_ERROR;
  *
  * @internal
  */
-function get_preg_error(string $function): ?array
+function get_preg_error(string $function): null|array
 {
     /** @psalm-suppress ImpureFunctionCall */
     $code = preg_last_error();

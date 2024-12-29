@@ -27,13 +27,17 @@ function intersect(iterable $first, iterable $second, iterable ...$rest): array
         return [];
     }
 
-    return array_intersect(from_iterable($first), from_iterable($second), ...Vec\map(
-        $rest,
-        /**
-         * @param iterable<Tk, Tv> $iterable
-         *
-         * @return array<Tk, Tv>
-         */
-        static fn(iterable $iterable): array => from_iterable($iterable)
-    ));
+    return array_intersect(
+        from_iterable($first),
+        from_iterable($second),
+        ...Vec\map(
+            $rest,
+            /**
+             * @param iterable<Tk, Tv> $iterable
+             *
+             * @return array<Tk, Tv>
+             */
+            static fn(iterable $iterable): array => from_iterable($iterable),
+        ),
+    );
 }

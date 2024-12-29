@@ -14,7 +14,7 @@ final class WrapTest extends TestCase
     public function testWrapException(): void
     {
         $exception = new Exception('foo');
-        $wrapper   = Result\wrap(static function () use ($exception): void {
+        $wrapper = Result\wrap(static function () use ($exception): void {
             throw $exception;
         });
         static::assertFalse($wrapper->isSucceeded());

@@ -31,14 +31,10 @@ function output_handle(): CloseWriteStreamHandleInterface
         return $cache->offsetGet($key);
     }
 
-    if (PHP_SAPI === "cli") {
-        $handle = new CloseWriteStreamHandle(
-            Internal\open_resource('php://stdout', 'wb')
-        );
+    if (PHP_SAPI === 'cli') {
+        $handle = new CloseWriteStreamHandle(Internal\open_resource('php://stdout', 'wb'));
     } else {
-        $handle = new CloseWriteStreamHandle(
-            Internal\open_resource('php://output', 'wb')
-        );
+        $handle = new CloseWriteStreamHandle(Internal\open_resource('php://output', 'wb'));
     }
 
     $cache->offsetSet($key, $handle);

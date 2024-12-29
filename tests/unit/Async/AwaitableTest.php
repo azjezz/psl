@@ -186,23 +186,13 @@ final class AwaitableTest extends TestCase
         });
 
         $awaitable = $awaitable
-            ->then(
-                static fn(string $result) => Str\reverse($result),
-                static fn(Throwable $exception) => exit(0),
-            )
+            ->then(static fn(string $result) => Str\reverse($result), static fn(Throwable $exception) => exit(0))
             ->then(
                 static fn(string $result) => throw new InvariantViolationException($result),
                 static fn(Throwable $exception) => exit(0),
             )
-            ->then(
-                static fn($result) => exit(0),
-                static fn(Throwable $exception) => throw $exception,
-            )
-            ->then(
-                static fn($result) => exit(0),
-                static fn(Throwable $exception) => $exception->getMessage(),
-            )
-        ;
+            ->then(static fn($result) => exit(0), static fn(Throwable $exception) => throw $exception)
+            ->then(static fn($result) => exit(0), static fn(Throwable $exception) => $exception->getMessage());
 
         static::assertSame('olleh', $awaitable->await());
     }
@@ -218,8 +208,7 @@ final class AwaitableTest extends TestCase
             ->map(static fn(string $result) => Str\reverse($result))
             ->map(static fn(string $result) => throw new InvariantViolationException($result))
             ->catch(static fn(InvariantViolationException $exception): string => $exception->getMessage())
-            ->always(static fn() => $ref->value = 'hello')
-        ;
+            ->always(static fn() => $ref->value = 'hello');
 
         static::assertSame('olleh', $awaitable->await());
         static::assertSame('hello', $ref->value);

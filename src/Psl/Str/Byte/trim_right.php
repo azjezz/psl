@@ -14,9 +14,7 @@ use function rtrim;
  *
  * @pure
  */
-function trim_right(string $string, ?string $char_mask = null): string
+function trim_right(string $string, null|string $char_mask = null): string
 {
-    return null === $char_mask
-        ? rtrim($string)
-        : rtrim($string, $char_mask);
+    return null === $char_mask ? rtrim($string) : rtrim($string, $char_mask);
 }

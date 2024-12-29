@@ -17,20 +17,20 @@ final class AssertException extends Exception
     /**
      * @param list<string> $paths
      */
-    private function __construct(string $actual, string $expected, array $paths = [], ?Throwable $previous = null)
+    private function __construct(string $actual, string $expected, array $paths = [], null|Throwable $previous = null)
     {
-        $first = $previous instanceof Exception ? $previous->getFirstFailingActualType() : $actual;
+        $first = ($previous instanceof Exception) ? $previous->getFirstFailingActualType() : $actual;
 
         parent::__construct(
             Str\format(
                 'Expected "%s", got "%s"%s.',
                 $expected,
                 $first,
-                $paths ? ' at path "' . Str\join($paths, '.') . '"' : ''
+                $paths ? (' at path "' . Str\join($paths, '.') . '"') : '',
             ),
             $actual,
             $paths,
-            $previous
+            $previous,
         );
 
         $this->expected = $expected;
@@ -44,10 +44,10 @@ final class AssertException extends Exception
     public static function withValue(
         mixed $value,
         string $expected_type,
-        ?string $path = null,
-        ?Throwable $previous = null
+        null|string $path = null,
+        null|Throwable $previous = null,
     ): self {
-        $paths = $previous instanceof Exception ? [$path, ...$previous->getPaths()] : [$path];
+        $paths = ($previous instanceof Exception) ? [$path, ...$previous->getPaths()] : [$path];
 
         return new self(get_debug_type($value), $expected_type, Vec\filter_nulls($paths), $previous);
     }

@@ -26,7 +26,7 @@ function system_time(): array
 
     $parts = Str\split($time, ' ');
     $seconds = (int) $parts[1];
-    $nanoseconds = (int) (((float)$parts[0]) * ((float)NANOSECONDS_PER_SECOND));
+    $nanoseconds = (int) (((float) $parts[0]) * ((float) NANOSECONDS_PER_SECOND));
 
     return [$seconds, $nanoseconds];
 }

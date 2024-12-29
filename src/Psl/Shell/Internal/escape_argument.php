@@ -57,7 +57,7 @@ function escape_argument(string $argument): string
         '^' => '"^^"',
         '%' => '"^%"',
         '!' => '"^!"',
-        "\n" => '!LF!'
+        "\n" => '!LF!',
     ]);
 
     return '"' . $argument . '"';

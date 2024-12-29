@@ -15,7 +15,7 @@ final class ReverseTest extends TestCase
             ['Hello World', 'dlroW olleH'],
             ['héllö wôrld', 'dlrôw ölléh'],
             ['Iñigo Montoya', 'ayotnoM ogiñI'],
-            ['某物', '物某' ],
+            ['某物', '物某'],
             ['что-то', 'от-отч'],
             ['🙂😟', '😟🙂'],
             ['مرحبا', 'ابحرم'],

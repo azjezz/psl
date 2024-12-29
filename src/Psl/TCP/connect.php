@@ -16,15 +16,17 @@ use Psl\Network;
  * @throws Network\Exception\RuntimeException If failed to connect to client on the given address.
  * @throws Network\Exception\TimeoutException If $timeout is non-null, and the operation timed-out.
  */
-function connect(string $host, int $port = 0, ?ConnectOptions $options = null, ?Duration $timeout = null): Network\StreamSocketInterface
-{
+function connect(
+    string $host,
+    int $port = 0,
+    null|ConnectOptions $options = null,
+    null|Duration $timeout = null,
+): Network\StreamSocketInterface {
     $options ??= ConnectOptions::create();
 
-    $context = [
-        'socket' => [
-            'tcp_nodelay' => $options->noDelay,
-        ]
-    ];
+    $context = ['socket' => [
+        'tcp_nodelay' => $options->noDelay,
+    ]];
 
     $socket = Network\Internal\socket_connect("tcp://$host:$port", $context, $timeout);
 

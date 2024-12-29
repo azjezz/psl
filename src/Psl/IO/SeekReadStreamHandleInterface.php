@@ -6,6 +6,9 @@ namespace Psl\IO;
 
 use Psl\IO;
 
-interface SeekReadStreamHandleInterface extends IO\SeekReadHandleInterface, ReadStreamHandleInterface, SeekStreamHandleInterface
+interface SeekReadStreamHandleInterface extends
+    IO\SeekReadHandleInterface,
+    ReadStreamHandleInterface,
+    SeekStreamHandleInterface
 {
 }

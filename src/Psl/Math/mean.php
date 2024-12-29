@@ -26,7 +26,7 @@ function mean(array $numbers): float|null
 
     $mean = 0.0;
     foreach ($numbers as $number) {
-        $mean += (float)$number / $count;
+        $mean += ((float) $number) / $count;
     }
 
     return $mean;

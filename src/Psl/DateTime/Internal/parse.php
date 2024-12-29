@@ -20,12 +20,12 @@ use Psl\Str;
  * @throws ParserException
  */
 function parse(
-    string                    $raw_string,
-    null|DateStyle            $date_style = null,
-    null|TimeStyle            $time_style = null,
+    string $raw_string,
+    null|DateStyle $date_style = null,
+    null|TimeStyle $time_style = null,
     null|FormatPattern|string $pattern = null,
-    null|Timezone             $timezone = null,
-    null|Locale               $locale = null,
+    null|Timezone $timezone = null,
+    null|Locale $locale = null,
 ): int {
     $formatter = namespace\create_intl_date_formatter($date_style, $time_style, $pattern, $timezone, $locale);
 
@@ -34,7 +34,7 @@ function parse(
     if ($timestamp === false) {
         // Only show pattern in the exception if it was provided.
         if (null !== $pattern) {
-            $formatter_pattern = $pattern instanceof FormatPattern ? $pattern->value : $pattern;
+            $formatter_pattern = ($pattern instanceof FormatPattern) ? $pattern->value : $pattern;
 
             throw new ParserException(Str\format(
                 'Unable to interpret \'%s\' as a valid date/time using pattern \'%s\'.',
@@ -43,9 +43,7 @@ function parse(
             ));
         }
 
-        throw new ParserException(
-            "Unable to interpret '$raw_string' as a valid date/time.",
-        );
+        throw new ParserException("Unable to interpret '$raw_string' as a valid date/time.");
     }
 
     return (int) $timestamp;

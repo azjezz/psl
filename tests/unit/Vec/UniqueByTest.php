@@ -24,13 +24,12 @@ final class UniqueByTest extends TestCase
             [
                 ['a', 'saif'],
                 ['a', 'b', 'c', 'd', 'saif', 'jack'],
-                static fn (string $value): int => Str\length($value),
+                static fn(string $value): int => Str\length($value),
             ],
-
             [
                 ['foo', 'bar', '@baz'],
                 ['foo', '@foo', 'bar', '@bar', '@baz'],
-                static fn (string $value): string => Str\replace($value, '@', ''),
+                static fn(string $value): string => Str\replace($value, '@', ''),
             ],
         ];
     }

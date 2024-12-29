@@ -15,11 +15,9 @@ final class TapTest extends TestCase
     public function testItWorksAsACurriedFunctionThatCanBeUsedForPerformingSideEffects(): void
     {
         $log = new Ref('123');
-        $call = Fun\tap(
-            static function (string $x) use ($log): void {
-                $log->value .= $x;
-            }
-        );
+        $call = Fun\tap(static function (string $x) use ($log): void {
+            $log->value .= $x;
+        });
 
         static::assertSame('abc', $call('abc'));
         static::assertSame('123abc', $log->value);
@@ -32,11 +30,11 @@ final class TapTest extends TestCase
     {
         $log = new Ref('');
         $result = Fun\pipe(
-            static fn (string $x) => Hash\hash($x, Hash\Algorithm::Md5),
+            static fn(string $x) => Hash\hash($x, Hash\Algorithm::Md5),
             Fun\tap(static function ($x) use ($log): void {
                 $log->value = $x;
             }),
-            static fn (string $x): string => Str\truncate($x, 0, 1),
+            static fn(string $x): string => Str\truncate($x, 0, 1),
         )('abc');
 
         $md5 = Hash\hash('abc', Hash\Algorithm::Md5);

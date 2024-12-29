@@ -22,7 +22,7 @@ use function substr_replace;
  *
  * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
  */
-function splice(string $string, string $replacement, int $offset, ?int $length = null): string
+function splice(string $string, string $replacement, int $offset, null|int $length = null): string
 {
     $offset = Str\Internal\validate_offset($offset, length($string));
 

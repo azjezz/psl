@@ -244,7 +244,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    public function firstKey(): ?int
+    public function firstKey(): null|int
     {
         return [] === $this->elements ? null : 0;
     }
@@ -257,7 +257,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    public function lastKey(): ?int
+    public function lastKey(): null|int
     {
         return array_key_last($this->elements);
     }
@@ -274,7 +274,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    public function linearSearch(mixed $search_value): ?int
+    public function linearSearch(mixed $search_value): null|int
     {
         foreach ($this->elements as $key => $element) {
             if ($search_value === $element) {
@@ -661,7 +661,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    public function slice(int $start, ?int $length = null): MutableVector
+    public function slice(int $start, null|int $length = null): MutableVector
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return MutableVector::fromArray(Dict\slice($this->elements, $start, $length));
@@ -700,10 +700,9 @@ final class MutableVector implements MutableVectorInterface
              *
              * @return MutableVector<T>
              */
-            static fn(array $chunk) => MutableVector::fromArray($chunk)
+            static fn(array $chunk) => MutableVector::fromArray($chunk),
         ));
     }
-
 
     /**
      * Determines if the specified offset exists in the current vector.
@@ -772,7 +771,9 @@ final class MutableVector implements MutableVectorInterface
         }
 
         if (!is_int($offset) || $offset < 0) {
-            throw new Exception\InvalidOffsetException('Invalid vector write offset type, expected a positive integer or null.');
+            throw new Exception\InvalidOffsetException(
+                'Invalid vector write offset type, expected a positive integer or null.',
+            );
         }
 
         $this->set($offset, $value);

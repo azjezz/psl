@@ -23,12 +23,12 @@ use Closure;
  */
 function min_by(iterable $numbers, Closure $numeric_function): mixed
 {
-    $min     = null;
+    $min = null;
     $min_num = null;
     foreach ($numbers as $value) {
         $value_num = $numeric_function($value);
         if (null === $min_num || $value_num <= $min_num) {
-            $min     = $value;
+            $min = $value;
             $min_num = $value_num;
         }
     }

@@ -256,7 +256,7 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function getCentury(): int
     {
-        return (int)($this->getYear() / 100) + 1;
+        return ((int) ($this->getYear() / 100)) + 1;
     }
 
     /**
@@ -297,8 +297,8 @@ trait DateTimeConvenienceMethodsTrait
     public function getTwelveHours(): array
     {
         return [
-            ($this->getHours() % 12 ?: 12),
-            ($this->getHours() < 12 ? Meridiem::AnteMeridiem : Meridiem::PostMeridiem),
+            ($this->getHours() % 12) ?: 12,
+            $this->getHours() < 12 ? Meridiem::AnteMeridiem : Meridiem::PostMeridiem,
         ];
     }
 
@@ -331,8 +331,8 @@ trait DateTimeConvenienceMethodsTrait
     public function getISOWeekNumber(): array
     {
         /** @var int<1, 53> $week */
-        $week = (int)$this->format(pattern: 'w');
-        $year = (int)$this->format(pattern: 'Y');
+        $week = (int) $this->format(pattern: 'w');
+        $year = (int) $this->format(pattern: 'Y');
 
         return [$year, $week];
     }
@@ -416,10 +416,7 @@ trait DateTimeConvenienceMethodsTrait
         return $this->withDate(
             $target_year = $this->getYear() + $plus_years,
             $target_month_enum->value,
-            Math\minva(
-                $this->getDay(),
-                $target_month_enum->getDaysForYear($target_year)
-            )
+            Math\minva($this->getDay(), $target_month_enum->getDaysForYear($target_year)),
         );
     }
 
@@ -456,10 +453,7 @@ trait DateTimeConvenienceMethodsTrait
         return $this->withDate(
             $target_year = $this->getYear() - $minus_years,
             $target_month_enum->value,
-            Math\minva(
-                $this->getDay(),
-                $target_month_enum->getDaysForYear($target_year)
-            )
+            Math\minva($this->getDay(), $target_month_enum->getDaysForYear($target_year)),
         );
     }
 
@@ -539,16 +533,24 @@ trait DateTimeConvenienceMethodsTrait
      *
      * @psalm-mutation-free
      */
-    public function format(null|FormatPattern|string $pattern = null, null|Timezone $timezone = null, null|Locale $locale = null): string
-    {
+    public function format(
+        null|FormatPattern|string $pattern = null,
+        null|Timezone $timezone = null,
+        null|Locale $locale = null,
+    ): string {
         $timestamp = $this->getTimestamp();
 
         /**
          * @psalm-suppress InvalidOperand
          * @psalm-suppress ImpureMethodCall
          */
-        return Internal\create_intl_date_formatter(null, null, $pattern, $timezone ?? $this->getTimezone(), $locale)
-            ->format($timestamp->getSeconds() + ($timestamp->getNanoseconds() / NANOSECONDS_PER_SECOND));
+        return Internal\create_intl_date_formatter(
+            null,
+            null,
+            $pattern,
+            $timezone ?? $this->getTimezone(),
+            $locale,
+        )->format($timestamp->getSeconds() + ($timestamp->getNanoseconds() / NANOSECONDS_PER_SECOND));
     }
 
     /**
@@ -578,7 +580,7 @@ trait DateTimeConvenienceMethodsTrait
      *
      * @psalm-mutation-free
      */
-    public function toRfc3339(?SecondsStyle $seconds_style = null, bool $use_z = false): string
+    public function toRfc3339(null|SecondsStyle $seconds_style = null, bool $use_z = false): string
     {
         return Internal\format_rfc3339($this->getTimestamp(), $seconds_style, $use_z, $this->getTimezone());
     }
@@ -611,14 +613,23 @@ trait DateTimeConvenienceMethodsTrait
      *
      * @psalm-mutation-free
      */
-    public function toString(null|DateStyle $date_style = null, null|TimeStyle $time_style = null, null|Timezone $timezone = null, null|Locale $locale = null): string
-    {
+    public function toString(
+        null|DateStyle $date_style = null,
+        null|TimeStyle $time_style = null,
+        null|Timezone $timezone = null,
+        null|Locale $locale = null,
+    ): string {
         $timestamp = $this->getTimestamp();
 
         /**
          * @psalm-suppress ImpureMethodCall
          */
-        return Internal\create_intl_date_formatter($date_style, $time_style, null, $timezone ?? $this->getTimezone(), $locale)
-            ->format($timestamp->getSeconds());
+        return Internal\create_intl_date_formatter(
+            $date_style,
+            $time_style,
+            null,
+            $timezone ?? $this->getTimezone(),
+            $locale,
+        )->format($timestamp->getSeconds());
     }
 }

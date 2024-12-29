@@ -60,7 +60,7 @@ final class FileTest extends AbstractFilesystemTest
 
         $this->expectException(Filesystem\Exception\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            '$prefix should not contain a directory separator ( "' . Filesystem\SEPARATOR . '" ).'
+            '$prefix should not contain a directory separator ( "' . Filesystem\SEPARATOR . '" ).',
         );
 
         Filesystem\create_temporary_file($this->directory, $prefix);
@@ -197,7 +197,6 @@ final class FileTest extends AbstractFilesystemTest
         Filesystem\change_permissions($file, 0111);
 
         static::assertFalse(Filesystem\is_readable($file));
-
 
         $this->expectException(Filesystem\Exception\NotReadableException::class);
         $this->expectExceptionMessage('File "' . $file . '" is not readable.');

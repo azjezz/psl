@@ -29,7 +29,7 @@ final readonly class MutableVectorType extends Type\Type
      * @param Type\TypeInterface<T> $value_type
      */
     public function __construct(
-        private readonly Type\TypeInterface $value_type
+        private readonly Type\TypeInterface $value_type,
     ) {
     }
 
@@ -63,8 +63,13 @@ final readonly class MutableVectorType extends Type\Type
                 }
             } catch (Throwable $e) {
                 throw match (true) {
-                    $iterating => CoercionException::withValue(null, $this->toString(), PathExpression::iteratorError($i), $e),
-                    default => CoercionException::withValue($v, $this->toString(), PathExpression::path($i), $e)
+                    $iterating => CoercionException::withValue(
+                        null,
+                        $this->toString(),
+                        PathExpression::iteratorError($i),
+                        $e,
+                    ),
+                    default => CoercionException::withValue($v, $this->toString(), PathExpression::path($i), $e),
                 };
             }
 
@@ -115,10 +120,6 @@ final readonly class MutableVectorType extends Type\Type
 
     public function toString(): string
     {
-        return Str\format(
-            '%s<%s>',
-            Collection\MutableVectorInterface::class,
-            $this->value_type->toString(),
-        );
+        return Str\format('%s<%s>', Collection\MutableVectorInterface::class, $this->value_type->toString());
     }
 }

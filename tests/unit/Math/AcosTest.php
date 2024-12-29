@@ -33,7 +33,7 @@ final class AcosTest extends TestCase
             [
                 1.0471975511965979,
                 0.5,
-            ]
+            ],
         ];
     }
 }

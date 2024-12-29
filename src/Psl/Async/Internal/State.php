@@ -45,7 +45,7 @@ final class State
      */
     private mixed $result = null;
 
-    private ?Throwable $throwable = null;
+    private null|Throwable $throwable = null;
 
     /**
      * @throws Exception\UnhandledAwaitableException

@@ -26,7 +26,7 @@ namespace Psl\Str;
  *
  * @pure
  */
-function is_empty(?string $string): bool
+function is_empty(null|string $string): bool
 {
     return null === $string || '' === $string;
 }

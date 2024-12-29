@@ -26,7 +26,7 @@ final class UnexpectedValueException extends Exception\UnexpectedValueException 
         return new self(Str\format(
             'Unexpected year value encountered. Provided "%d", but the calendar expects "%d". Check the year for accuracy and ensure it\'s within the supported range.',
             $provided_year,
-            $calendar_year
+            $calendar_year,
         ));
     }
 
@@ -47,7 +47,7 @@ final class UnexpectedValueException extends Exception\UnexpectedValueException 
         return new self(Str\format(
             'Unexpected month value encountered. Provided "%d", but the calendar expects "%d". Ensure the month is within the 1-12 range and matches the specific year context.',
             $provided_month,
-            $calendar_month
+            $calendar_month,
         ));
     }
 
@@ -68,7 +68,7 @@ final class UnexpectedValueException extends Exception\UnexpectedValueException 
         return new self(Str\format(
             'Unexpected day value encountered. Provided "%d", but the calendar expects "%d". Ensure the day is valid for the given month and year, considering variations like leap years.',
             $provided_day,
-            $calendar_day
+            $calendar_day,
         ));
     }
 
@@ -89,7 +89,7 @@ final class UnexpectedValueException extends Exception\UnexpectedValueException 
         return new self(Str\format(
             'Unexpected hours value encountered. Provided "%d", but the calendar expects "%d". Ensure the hour falls within a 24-hour day.',
             $provided_hours,
-            $calendar_hours
+            $calendar_hours,
         ));
     }
 
@@ -110,7 +110,7 @@ final class UnexpectedValueException extends Exception\UnexpectedValueException 
         return new self(Str\format(
             'Unexpected minutes value encountered. Provided "%d", but the calendar expects "%d". Check the minutes value for errors and ensure it\'s within the 0-59 range.',
             $provided_minutes,
-            $calendar_minutes
+            $calendar_minutes,
         ));
     }
 
@@ -131,7 +131,7 @@ final class UnexpectedValueException extends Exception\UnexpectedValueException 
         return new self(Str\format(
             'Unexpected seconds value encountered. Provided "%d", but the calendar expects "%d". Ensure the seconds are correct and within the 0-59 range.',
             $calendar_seconds,
-            $provided_seconds
+            $provided_seconds,
         ));
     }
 }

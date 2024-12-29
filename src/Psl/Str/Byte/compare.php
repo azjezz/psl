@@ -16,9 +16,7 @@ use function strncmp;
  *
  * @pure
  */
-function compare(string $string, string $other, ?int $length = null): int
+function compare(string $string, string $other, null|int $length = null): int
 {
-    return null === $length ?
-        strcmp($string, $other) :
-        strncmp($string, $other, $length);
+    return null === $length ? strcmp($string, $other) : strncmp($string, $other, $length);
 }

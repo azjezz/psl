@@ -49,7 +49,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
      *
      * @psalm-external-mutation-free
      */
-    public function tryRead(?int $max_bytes = null): string
+    public function tryRead(null|int $max_bytes = null): string
     {
         $this->assertHandleIsOpen();
 
@@ -77,7 +77,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
      *
      * @psalm-external-mutation-free
      */
-    public function read(?int $max_bytes = null, ?Duration $timeout = null): string
+    public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         return $this->tryRead($max_bytes);
     }
@@ -111,7 +111,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
      *
      * @psalm-external-mutation-free
      */
-    public function tryWrite(string $bytes, ?Duration $timeout = null): int
+    public function tryWrite(string $bytes, null|Duration $timeout = null): int
     {
         $this->assertHandleIsOpen();
         $length = strlen($this->buffer);
@@ -138,7 +138,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
      *
      * @psalm-external-mutation-free
      */
-    public function write(string $bytes, ?Duration $timeout = null): int
+    public function write(string $bytes, null|Duration $timeout = null): int
     {
         return $this->tryWrite($bytes);
     }

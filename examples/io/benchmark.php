@@ -28,7 +28,7 @@ Async\main(static function (): int {
     $args = getopt('i:o:t:');
     $input_file = $args['i'] ?? '/dev/zero';
     $output_file = $args['o'] ?? '/dev/null';
-    $seconds = DateTime\Duration::seconds((int)($args['t'] ?? 5));
+    $seconds = DateTime\Duration::seconds((int) ($args['t'] ?? 5));
 
     // passing file descriptors requires mapping paths (https://bugs.php.net/bug.php?id=53465)
     $input_file = Regex\replace($input_file, '(^/dev/fd/)', 'php://fd/');
@@ -55,10 +55,10 @@ Async\main(static function (): int {
 
     $duration = DateTime\Timestamp::monotonic()->since($start);
     $bytes = $i * 65536;
-    $bytes_formatted = Math\round($bytes / 1024 / 1024 / $duration->getTotalSeconds(), 1);
+    $bytes_formatted = Math\round((($bytes / 1024) / 1024) / $duration->getTotalSeconds(), 1);
 
     IO\write_error_line('read %d byte(s) in %s => %dMiB/s', $bytes, $duration->toString(), $bytes_formatted);
-    IO\write_error_line('peak memory usage of %dMiB', Math\round(memory_get_peak_usage(true) / 1024 / 1024, 1));
+    IO\write_error_line('peak memory usage of %dMiB', Math\round((memory_get_peak_usage(true) / 1024) / 1024, 1));
 
     return 0;
 });

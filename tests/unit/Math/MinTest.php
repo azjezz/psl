@@ -23,18 +23,16 @@ final class MinTest extends TestCase
         return [
             [
                 0,
-                [...Vec\range(0, 10, 2)]
+                [...Vec\range(0, 10, 2)],
             ],
-
             [
                 4,
-                [...Vec\range(5, 10), 4]
+                [...Vec\range(5, 10), 4],
             ],
-
             [
                 null,
-                []
-            ]
+                [],
+            ],
         ];
     }
 }

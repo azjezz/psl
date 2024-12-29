@@ -33,7 +33,7 @@ function get_change_time(string $node): int
         throw new Exception\RuntimeException(Str\format(
             'Failed to retrieve the change time of "%s": %s',
             $node,
-            $message ?? 'internal error'
+            $message ?? 'internal error',
         ));
     }
     // @codeCoverageIgnoreEnd

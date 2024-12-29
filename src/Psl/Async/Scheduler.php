@@ -144,7 +144,6 @@ final readonly class Scheduler
         return EventLoop::repeat($interval->getTotalSeconds(), $callback);
     }
 
-
     /**
      * Enable a callback to be active starting in the next tick.
      *

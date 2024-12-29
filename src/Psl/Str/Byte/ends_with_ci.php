@@ -20,6 +20,8 @@ function ends_with_ci(string $string, string $suffix): bool
 
     $suffix_length = length($suffix);
 
-    return length($string) >= $suffix_length &&
-        0 === substr_compare($string, $suffix, -$suffix_length, $suffix_length, true);
+    return (
+        length($string) >= $suffix_length &&
+        0 === substr_compare($string, $suffix, -$suffix_length, $suffix_length, true)
+    );
 }

@@ -29,11 +29,7 @@ final class TypeAssertExceptionTest extends TestCase
 
     public function testIncorrectNestedType()
     {
-        $type = Type\shape([
-            'child' => Type\shape([
-                'name' => Type\string(),
-            ])
-        ]);
+        $type = Type\shape(['child' => Type\shape(['name' => Type\string()])]);
 
         try {
             $type->assert(['child' => ['name' => 123]]);
@@ -43,13 +39,19 @@ final class TypeAssertExceptionTest extends TestCase
             static::assertSame('array{\'child\': array{\'name\': string}}', $e->getExpectedType());
             static::assertSame('array', $e->getActualType());
             static::assertSame('int', $e->getFirstFailingActualType());
-            static::assertSame('Expected "array{\'child\': array{\'name\': string}}", got "int" at path "child.name".', $e->getMessage());
+            static::assertSame(
+                'Expected "array{\'child\': array{\'name\': string}}", got "int" at path "child.name".',
+                $e->getMessage(),
+            );
             static::assertSame(0, $e->getCode());
             static::assertSame(['child', 'name'], $e->getPaths());
 
             $previous = $e->getPrevious();
             static::assertInstanceOf(Type\Exception\AssertException::class, $previous);
-            static::assertSame('Expected "array{\'name\': string}", got "int" at path "name".', $previous->getMessage());
+            static::assertSame(
+                'Expected "array{\'name\': string}", got "int" at path "name".',
+                $previous->getMessage(),
+            );
             static::assertSame('int', $previous->getActualType());
             static::assertSame('int', $previous->getFirstFailingActualType());
             static::assertSame(0, $previous->getCode());

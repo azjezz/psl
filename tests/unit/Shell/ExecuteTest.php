@@ -14,10 +14,7 @@ final class ExecuteTest extends TestCase
 {
     public function testExecute(): void
     {
-        static::assertSame(
-            "Hello, World!",
-            Shell\execute(PHP_BINARY, ['-r', 'echo "Hello, World!";'])
-        );
+        static::assertSame('Hello, World!', Shell\execute(PHP_BINARY, ['-r', 'echo "Hello, World!";']));
     }
 
     public function testFailedExecution(): void
@@ -44,10 +41,7 @@ final class ExecuteTest extends TestCase
 
     public function testEnvironmentIsPassedDownToTheProcess(): void
     {
-        static::assertSame(
-            'BAR',
-            Shell\execute(PHP_BINARY, ['-r', 'echo getenv("FOO");'], null, ['FOO' => 'BAR'])
-        );
+        static::assertSame('BAR', Shell\execute(PHP_BINARY, ['-r', 'echo getenv("FOO");'], null, ['FOO' => 'BAR']));
     }
 
     public function testCurrentEnvironmentVariablesArePassedDownToTheProcess(): void
@@ -55,10 +49,7 @@ final class ExecuteTest extends TestCase
         try {
             Env\set_var('FOO', 'BAR');
 
-            static::assertSame(
-                'BAR',
-                Shell\execute(PHP_BINARY, ['-r', 'echo getenv("FOO");'])
-            );
+            static::assertSame('BAR', Shell\execute(PHP_BINARY, ['-r', 'echo getenv("FOO");']));
         } finally {
             Env\remove_var('FOO');
         }
@@ -76,10 +67,7 @@ final class ExecuteTest extends TestCase
     {
         $dir = Env\current_dir();
 
-        static::assertSame(
-            $dir,
-            Shell\execute(PHP_BINARY, ['-r', 'echo getcwd();'])
-        );
+        static::assertSame($dir, Shell\execute(PHP_BINARY, ['-r', 'echo getcwd();']));
     }
 
     public function testItThrowsWhenWorkingDirectoryDoesntExist(): void
@@ -98,35 +86,55 @@ final class ExecuteTest extends TestCase
 
         static::assertSame('hello', $result);
 
-        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'], error_output_behavior: Shell\ErrorOutputBehavior::default());
+        $result = Shell\execute(
+            PHP_BINARY,
+            ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
+            error_output_behavior: Shell\ErrorOutputBehavior::default(),
+        );
 
         static::assertSame('hello', $result);
     }
 
     public function testErrorOutputIsAppended(): void
     {
-        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'], error_output_behavior: Shell\ErrorOutputBehavior::Append);
+        $result = Shell\execute(
+            PHP_BINARY,
+            ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
+            error_output_behavior: Shell\ErrorOutputBehavior::Append,
+        );
 
         static::assertSame('hello world', $result);
     }
 
     public function testErrorOutputIsPrepended(): void
     {
-        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'], error_output_behavior: Shell\ErrorOutputBehavior::Prepend);
+        $result = Shell\execute(
+            PHP_BINARY,
+            ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
+            error_output_behavior: Shell\ErrorOutputBehavior::Prepend,
+        );
 
         static::assertSame(' worldhello', $result);
     }
 
     public function testErrorOutputIsReplacingStandardOutput(): void
     {
-        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'], error_output_behavior: Shell\ErrorOutputBehavior::Replace);
+        $result = Shell\execute(
+            PHP_BINARY,
+            ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
+            error_output_behavior: Shell\ErrorOutputBehavior::Replace,
+        );
 
         static::assertSame(' world', $result);
     }
 
     public function testErrorOutputIsPacked(): void
     {
-        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'], error_output_behavior: Shell\ErrorOutputBehavior::Packed);
+        $result = Shell\execute(
+            PHP_BINARY,
+            ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
+            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+        );
 
         [$stdout, $stderr] = Shell\unpack($result);
 

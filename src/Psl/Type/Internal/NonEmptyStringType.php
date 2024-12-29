@@ -24,8 +24,7 @@ final readonly class NonEmptyStringType extends Type\Type
      */
     public function matches(mixed $value): bool
     {
-        return '' !== $value
-            && is_string($value);
+        return '' !== $value && is_string($value);
     }
 
     /**

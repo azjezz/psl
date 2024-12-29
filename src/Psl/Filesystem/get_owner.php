@@ -28,7 +28,7 @@ function get_owner(string $node): int
         throw new Exception\RuntimeException(Str\format(
             'Failed to retrieve owner of file "%s": %s',
             $node,
-            $message ?? 'internal error'
+            $message ?? 'internal error',
         ));
     }
 

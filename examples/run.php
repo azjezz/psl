@@ -1,6 +1,5 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace Psl\Example\IO;
@@ -34,7 +33,7 @@ Async\main(static function (): int {
 
             IO\write_error_line('- %s/%s   -> started', $component, $script);
 
-            $awaitables[] = Async\run(static function() use($component, $script, $file): array {
+            $awaitables[] = Async\run(static function () use ($component, $script, $file): array {
                 $start = DateTime\Timestamp::monotonic();
                 Shell\execute(PHP_BINARY, [$file]);
                 $duration = DateTime\Timestamp::monotonic()->since($start);

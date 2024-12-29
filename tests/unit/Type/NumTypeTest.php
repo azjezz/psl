@@ -44,8 +44,8 @@ final class NumTypeTest extends TypeTest
         yield ['3.', 3.0];
         yield [$this->stringable('1.23'), 1.23];
         yield [Math\INT64_MAX, Math\INT64_MAX];
-        yield [(string)Math\INT64_MAX, Math\INT64_MAX];
-        yield [$this->stringable((string)Math\INT64_MAX), Math\INT64_MAX];
+        yield [(string) Math\INT64_MAX, Math\INT64_MAX];
+        yield [$this->stringable((string) Math\INT64_MAX), Math\INT64_MAX];
         yield ['9223372036854775808', 9223372036854775808.0];
         yield ['007', 7];
         yield ['-0.1', -0.1];
@@ -62,7 +62,7 @@ final class NumTypeTest extends TypeTest
         yield ['foo'];
         yield [null];
         yield [false];
-        yield [new class () {
+        yield [new class() {
         }];
         yield [$this->stringable('foo')];
         yield ['0xFF'];

@@ -20,7 +20,7 @@ final readonly class ScalarType extends UnionType
         parent::__construct(
             /** @psalm-suppress MissingThrowsDocblock */
             new UnionType(new StringType(), new BoolType()),
-            new NumType()
+            new NumType(),
         );
     }
 

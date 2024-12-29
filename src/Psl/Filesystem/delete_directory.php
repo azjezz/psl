@@ -60,7 +60,7 @@ function delete_directory(string $directory, bool $recursive = false): void
         throw new Exception\RuntimeException(Str\format(
             'Failed to delete directory "%s": %s.',
             $directory,
-            $error_message ?? 'internal error'
+            $error_message ?? 'internal error',
         ));
     }
     // @codeCoverageIgnoreEnd

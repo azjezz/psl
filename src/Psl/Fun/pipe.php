@@ -20,7 +20,7 @@ use Psl\Iter;
  */
 function pipe(Closure ...$stages): Closure
 {
-    return static fn ($input) => Iter\reduce(
+    return static fn($input) => Iter\reduce(
         $stages,
         /**
          * @param T $input
@@ -28,7 +28,7 @@ function pipe(Closure ...$stages): Closure
          *
          * @return T
          */
-        static fn (mixed $input, Closure $next): mixed => $next($input),
-        $input
+        static fn(mixed $input, Closure $next): mixed => $next($input),
+        $input,
     );
 }

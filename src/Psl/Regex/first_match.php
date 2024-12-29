@@ -21,17 +21,18 @@ use function preg_match;
  *
  * @return (T is null ? array<array-key, string> : T)|null
  */
-function first_match(string $subject, string $pattern, ?Type\TypeInterface $capture_groups = null, int $offset = 0): ?array
-{
-    $matching = Internal\call_preg(
-        'preg_match',
-        static function () use ($subject, $pattern, $offset): ?array {
-            $matching = [];
-            $matches  = preg_match($pattern, $subject, $matching, 0, $offset);
+function first_match(
+    string $subject,
+    string $pattern,
+    null|Type\TypeInterface $capture_groups = null,
+    int $offset = 0,
+): null|array {
+    $matching = Internal\call_preg('preg_match', static function () use ($subject, $pattern, $offset): null|array {
+        $matching = [];
+        $matches = preg_match($pattern, $subject, $matching, 0, $offset);
 
-            return $matches === 0 ? null : $matching;
-        }
-    );
+        return $matches === 0 ? null : $matching;
+    });
 
     if ($matching === null) {
         return null;

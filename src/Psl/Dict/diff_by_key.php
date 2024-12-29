@@ -27,13 +27,17 @@ function diff_by_key(iterable $first, iterable $second, iterable ...$rest): arra
         return [];
     }
 
-    return array_diff_key(from_iterable($first), from_iterable($second), ...Vec\map(
-        $rest,
-        /**
-         * @param iterable<Tk, Tv> $iterable
-         *
-         * @return array<Tk, Tv>
-         */
-        static fn(iterable $iterable): array => from_iterable($iterable)
-    ));
+    return array_diff_key(
+        from_iterable($first),
+        from_iterable($second),
+        ...Vec\map(
+            $rest,
+            /**
+             * @param iterable<Tk, Tv> $iterable
+             *
+             * @return array<Tk, Tv>
+             */
+            static fn(iterable $iterable): array => from_iterable($iterable),
+        ),
+    );
 }

@@ -25,25 +25,23 @@ final class MaxvaTest extends TestCase
                 10,
                 10,
                 5,
-                ...Vec\range(0, 9, 2)
+                ...Vec\range(0, 9, 2),
             ],
-
             [
                 18,
                 18,
                 15,
                 ...Vec\range(0, 10),
-                15
+                15,
             ],
-
             [
                 64,
                 19,
                 15,
                 ...Vec\range(0, 45, 5),
                 52,
-                64
-            ]
+                64,
+            ],
         ];
     }
 }

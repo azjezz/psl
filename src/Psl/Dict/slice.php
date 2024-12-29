@@ -24,7 +24,7 @@ namespace Psl\Dict;
  *
  * @return array<Tk, Tv>
  */
-function slice(iterable $iterable, int $start, ?int $length = null): array
+function slice(iterable $iterable, int $start, null|int $length = null): array
 {
     $result = [];
     if (0 === $length) {
@@ -38,7 +38,7 @@ function slice(iterable $iterable, int $start, ?int $length = null): array
         }
 
         $result[$key] = $value;
-        if (null !== $length && $i >= $start + $length) {
+        if (null !== $length && $i >= ($start + $length)) {
             break;
         }
     }

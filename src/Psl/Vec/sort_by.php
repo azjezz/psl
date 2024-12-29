@@ -25,7 +25,7 @@ use function uasort;
  *
  * @return list<Tv>
  */
-function sort_by(iterable $iterable, Closure $scalar_func, ?Closure $comparator = null): array
+function sort_by(iterable $iterable, Closure $scalar_func, null|Closure $comparator = null): array
 {
     /** @var array<int, Ts> $order_by */
     $order_by = [];

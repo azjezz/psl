@@ -42,15 +42,15 @@ final readonly class FloatType extends Type\Type
             return $value;
         }
 
-        if (is_string($value) || (is_object($value) && method_exists($value, '__toString'))) {
+        if (is_string($value) || is_object($value) && method_exists($value, '__toString')) {
             $str = (string) $value;
             if ('' !== $str) {
                 if (ctype_digit($str)) {
-                    return (float)$str;
+                    return (float) $str;
                 }
 
                 if (1 === preg_match("/^[+-]?(\d+([.]\d*)?([eE][+-]?\d+)?|[.]\d+([eE][+-]?\d+)?)$/", $str)) {
-                    return (float)$str;
+                    return (float) $str;
                 }
             }
         }

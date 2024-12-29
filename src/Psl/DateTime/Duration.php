@@ -44,7 +44,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
         private int $hours,
         private int $minutes,
         private int $seconds,
-        private int $nanoseconds
+        private int $nanoseconds,
     ) {
     }
 
@@ -58,7 +58,11 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
     public static function fromParts(int $hours, int $minutes = 0, int $seconds = 0, int $nanoseconds = 0): self
     {
         // This is where the normalization happens.
-        $s = (SECONDS_PER_HOUR * $hours) + (SECONDS_PER_MINUTE * $minutes) + ($seconds + (int)($nanoseconds / NANOSECONDS_PER_SECOND));
+        $s =
+            (SECONDS_PER_HOUR * $hours) +
+            (SECONDS_PER_MINUTE * $minutes) +
+            $seconds +
+            ((int) ($nanoseconds / NANOSECONDS_PER_SECOND));
         $ns = $nanoseconds % NANOSECONDS_PER_SECOND;
         if ($s < 0 && $ns > 0) {
             ++$s;
@@ -68,9 +72,9 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
             $ns += NANOSECONDS_PER_SECOND;
         }
 
-        $m = (int)($s / 60);
+        $m = (int) ($s / 60);
         $s %= 60;
-        $h = (int)($m / 60);
+        $h = (int) ($m / 60);
         $m %= 60;
         return new self($h, $m, $s, $ns);
     }
@@ -252,9 +256,12 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
     public function getTotalHours(): float
     {
         /** @psalm-suppress InvalidOperand */
-        return ($this->hours + ($this->minutes / MINUTES_PER_HOUR) +
+        return (
+            $this->hours +
+            ($this->minutes / MINUTES_PER_HOUR) +
             ($this->seconds / SECONDS_PER_HOUR) +
-            ($this->nanoseconds / (SECONDS_PER_HOUR * NANOSECONDS_PER_SECOND)));
+            ($this->nanoseconds / (SECONDS_PER_HOUR * NANOSECONDS_PER_SECOND))
+        );
     }
 
     /**
@@ -266,9 +273,12 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
     public function getTotalMinutes(): float
     {
         /** @psalm-suppress InvalidOperand */
-        return (($this->hours * MINUTES_PER_HOUR) +
-            $this->minutes + ($this->seconds / SECONDS_PER_MINUTE) +
-            ($this->nanoseconds / (SECONDS_PER_MINUTE * NANOSECONDS_PER_SECOND)));
+        return (
+            ($this->hours * MINUTES_PER_HOUR) +
+            $this->minutes +
+            ($this->seconds / SECONDS_PER_MINUTE) +
+            ($this->nanoseconds / (SECONDS_PER_MINUTE * NANOSECONDS_PER_SECOND))
+        );
     }
 
     /**
@@ -280,10 +290,12 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
     public function getTotalSeconds(): float
     {
         /** @psalm-suppress InvalidOperand */
-        return ($this->seconds +
+        return (
+            $this->seconds +
             ($this->minutes * SECONDS_PER_MINUTE) +
             ($this->hours * SECONDS_PER_HOUR) +
-            ($this->nanoseconds / NANOSECONDS_PER_SECOND));
+            ($this->nanoseconds / NANOSECONDS_PER_SECOND)
+        );
     }
 
     /**
@@ -295,10 +307,12 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
     public function getTotalMilliseconds(): float
     {
         /** @psalm-suppress InvalidOperand */
-        return (($this->hours * SECONDS_PER_HOUR * MILLISECONDS_PER_SECOND) +
+        return (
+            ($this->hours * SECONDS_PER_HOUR * MILLISECONDS_PER_SECOND) +
             ($this->minutes * SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND) +
             ($this->seconds * MILLISECONDS_PER_SECOND) +
-            ($this->nanoseconds / NANOSECONDS_PER_MILLISECOND));
+            ($this->nanoseconds / NANOSECONDS_PER_MILLISECOND)
+        );
     }
 
     /**
@@ -310,10 +324,12 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
     public function getTotalMicroseconds(): float
     {
         /** @psalm-suppress InvalidOperand */
-        return (($this->hours * SECONDS_PER_HOUR * MICROSECONDS_PER_SECOND) +
+        return (
+            ($this->hours * SECONDS_PER_HOUR * MICROSECONDS_PER_SECOND) +
             ($this->minutes * SECONDS_PER_MINUTE * MICROSECONDS_PER_SECOND) +
             ($this->seconds * MICROSECONDS_PER_SECOND) +
-            ($this->nanoseconds / NANOSECONDS_PER_MICROSECOND));
+            ($this->nanoseconds / NANOSECONDS_PER_MICROSECOND)
+        );
     }
 
     /**
@@ -323,10 +339,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      */
     public function isZero(): bool
     {
-        return $this->hours === 0 &&
-            $this->minutes === 0 &&
-            $this->seconds === 0 &&
-            $this->nanoseconds === 0;
+        return $this->hours === 0 && $this->minutes === 0 && $this->seconds === 0 && $this->nanoseconds === 0;
     }
 
     /**
@@ -342,10 +355,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      */
     public function isPositive(): bool
     {
-        return $this->hours > 0 ||
-            $this->minutes > 0 ||
-            $this->seconds > 0 ||
-            $this->nanoseconds > 0;
+        return $this->hours > 0 || $this->minutes > 0 || $this->seconds > 0 || $this->nanoseconds > 0;
     }
 
     /**
@@ -361,10 +371,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      */
     public function isNegative(): bool
     {
-        return $this->hours < 0 ||
-            $this->minutes < 0 ||
-            $this->seconds < 0 ||
-            $this->nanoseconds < 0;
+        return $this->hours < 0 || $this->minutes < 0 || $this->seconds < 0 || $this->nanoseconds < 0;
     }
 
     /**
@@ -382,12 +389,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      */
     public function withHours(int $hours): self
     {
-        return self::fromParts(
-            $hours,
-            $this->minutes,
-            $this->seconds,
-            $this->nanoseconds,
-        );
+        return self::fromParts($hours, $this->minutes, $this->seconds, $this->nanoseconds);
     }
 
     /**
@@ -405,12 +407,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      */
     public function withMinutes(int $minutes): self
     {
-        return self::fromParts(
-            $this->hours,
-            $minutes,
-            $this->seconds,
-            $this->nanoseconds,
-        );
+        return self::fromParts($this->hours, $minutes, $this->seconds, $this->nanoseconds);
     }
 
     /**
@@ -428,12 +425,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      */
     public function withSeconds(int $seconds): self
     {
-        return self::fromParts(
-            $this->hours,
-            $this->minutes,
-            $seconds,
-            $this->nanoseconds,
-        );
+        return self::fromParts($this->hours, $this->minutes, $seconds, $this->nanoseconds);
     }
 
     /**
@@ -451,12 +443,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      */
     public function withNanoseconds(int $nanoseconds): self
     {
-        return self::fromParts(
-            $this->hours,
-            $this->minutes,
-            $this->seconds,
-            $nanoseconds,
-        );
+        return self::fromParts($this->hours, $this->minutes, $this->seconds, $nanoseconds);
     }
 
     /**
@@ -581,12 +568,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
             return $this;
         }
 
-        return new self(
-            -$this->hours,
-            -$this->minutes,
-            -$this->seconds,
-            -$this->nanoseconds,
-        );
+        return new self(-$this->hours, -$this->minutes, -$this->seconds, -$this->nanoseconds);
     }
 
     /**
@@ -661,7 +643,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
     {
         $decimal_part = '';
         if ($max_decimals > 0) {
-            $decimal_part = (string)Math\abs($this->nanoseconds);
+            $decimal_part = (string) Math\abs($this->nanoseconds);
             $decimal_part = Str\pad_left($decimal_part, 9, '0');
             $decimal_part = Str\slice($decimal_part, 0, $max_decimals);
             $decimal_part = Str\trim_right($decimal_part, '0');
@@ -674,7 +656,6 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
         $sec_sign = $this->seconds < 0 || $this->nanoseconds < 0 ? '-' : '';
         $sec = Math\abs($this->seconds);
 
-
         $containsHours = $this->hours !== 0;
         $containsMinutes = $this->minutes !== 0;
         $concatenatedSeconds = $sec_sign . ((string) $sec) . $decimal_part;
@@ -686,7 +667,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
             $output[] = ((string) $this->hours) . ' hour(s)';
         }
 
-        if ($containsMinutes || ($containsHours && $containsSeconds)) {
+        if ($containsMinutes || $containsHours && $containsSeconds) {
             $output[] = ((string) $this->minutes) . ' minute(s)';
         }
 
@@ -694,7 +675,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
             $output[] = $concatenatedSeconds . ' second(s)';
         }
 
-        return ([] === $output) ? '0 second(s)' : Str\join($output, ', ');
+        return [] === $output ? '0 second(s)' : Str\join($output, ', ');
     }
 
     /**

@@ -23,8 +23,8 @@ function to_base(int $number, int $base): string
     do {
         /** @psalm-suppress MissingThrowsDocblock */
         $quotient = div($number, $base);
-        $result   = Str\ALPHABET_ALPHANUMERIC[$number - $quotient * $base] . $result;
-        $number   = $quotient;
+        $result = Str\ALPHABET_ALPHANUMERIC[$number - ($quotient * $base)] . $result;
+        $number = $quotient;
     } while (0 !== $number);
 
     /** @var non-empty-string */

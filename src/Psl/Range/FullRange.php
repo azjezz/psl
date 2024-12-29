@@ -34,9 +34,7 @@ final class FullRange implements RangeInterface
      */
     public function withLowerBound(int $lower_bound): FromRange
     {
-        return new FromRange(
-            $lower_bound,
-        );
+        return new FromRange($lower_bound);
     }
 
     /**

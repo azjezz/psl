@@ -48,7 +48,10 @@ function all(iterable $awaitables): array
                 throw $exception;
             }
 
-            throw new Exception\CompositeException([$exception, ...$errors], 'Multiple exceptions thrown while waiting.');
+            throw new Exception\CompositeException(
+                [$exception, ...$errors],
+                'Multiple exceptions thrown while waiting.',
+            );
         }
     }
 

@@ -19,8 +19,8 @@ final class FirstMatchTest extends TestCase
         array $expected,
         string $subject,
         string $pattern,
-        ?TypeInterface $shape = null,
-        int $offset = 0
+        null|TypeInterface $shape = null,
+        int $offset = 0,
     ): void {
         static::assertSame($expected, Regex\first_match($subject, $pattern, $shape, $offset));
     }
@@ -58,7 +58,7 @@ final class FirstMatchTest extends TestCase
             ],
             'PHP is the web scripting language of choice.',
             '/(php)/i',
-            capture_groups([1])
+            capture_groups([1]),
         ];
         yield [
             [
@@ -67,7 +67,7 @@ final class FirstMatchTest extends TestCase
             ],
             'Hello world is the web scripting language of choice.',
             '/(hello) world/i',
-            capture_groups([1])
+            capture_groups([1]),
         ];
         yield [
             [
@@ -76,7 +76,7 @@ final class FirstMatchTest extends TestCase
             ],
             'PHP is the web scripting language of choice.',
             '/(\bweb\b)/i',
-            capture_groups([1])
+            capture_groups([1]),
         ];
         yield [
             [
@@ -84,7 +84,7 @@ final class FirstMatchTest extends TestCase
                 1 => 'web',
             ],
             'PHP is the web scripting language of choice.',
-            '/(\bweb\b)/i'
+            '/(\bweb\b)/i',
         ];
         yield [
             [
@@ -93,16 +93,16 @@ final class FirstMatchTest extends TestCase
             ],
             'PHP is the web scripting language of choice.',
             '/(?P<language>PHP)/',
-            capture_groups(['language'])
+            capture_groups(['language']),
         ];
         yield [
             [
                 0 => 'http://www.php.net',
-                1 => 'www.php.net'
+                1 => 'www.php.net',
             ],
             'http://www.php.net/index.html',
             '@^(?:http://)?([^/]+)@i',
-            capture_groups([1])
+            capture_groups([1]),
         ];
         yield [
             [

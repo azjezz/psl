@@ -46,15 +46,15 @@ final readonly class IntType extends Type\Type
         }
 
         if (is_string($value) || $value instanceof Stringable) {
-            $str = (string)$value;
-            $int = (int)$str;
-            if ($str === (string) $int) {
+            $str = (string) $value;
+            $int = (int) $str;
+            if ($str === ((string) $int)) {
                 return $int;
             }
 
             $trimmed = ltrim($str, '0');
-            $int     = (int) $trimmed;
-            if ($trimmed === (string) $int) {
+            $int = (int) $trimmed;
+            if ($trimmed === ((string) $int)) {
                 return $int;
             }
 

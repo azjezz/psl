@@ -20,9 +20,9 @@ final class ChunkTest extends TestCase
     public function provideData(): array
     {
         return [
-            [['h', 'e', 'l', 'l', 'o'], 'hello', ],
-            [['h', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd'], 'hello, world', ],
-            [['Al', 'ph', 'a ', ' '], 'Alpha  ', 2, ],
+            [['h', 'e', 'l', 'l', 'o'], 'hello'],
+            [['h', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd'], 'hello, world'],
+            [['Al', 'ph', 'a ', ' '], 'Alpha  ', 2],
             [['م', 'ر', 'ح', 'ب', 'ا'], 'مرحبا', 2],
             [[], ''],
         ];

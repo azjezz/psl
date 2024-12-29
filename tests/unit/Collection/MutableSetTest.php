@@ -16,10 +16,9 @@ final class MutableSetTest extends AbstractSetTest
      */
     protected string $setClass = MutableSet::class;
 
-
     public function testClear(): void
     {
-        $set  = $this->createFromList(['foo', 'bar']);
+        $set = $this->createFromList(['foo', 'bar']);
         $cleared = $set->clear();
 
         static::assertSame($cleared, $set);
@@ -39,8 +38,7 @@ final class MutableSetTest extends AbstractSetTest
             ->add('foo')
             ->add('bar')
             ->add('baz')
-            ->add('qux')
-            ;
+            ->add('qux');
 
         static::assertSame($modified, $set);
 
@@ -90,9 +88,7 @@ final class MutableSetTest extends AbstractSetTest
             'baz',
         ]);
 
-        $modified = $set
-            ->remove('foo')
-            ->remove('bar');
+        $modified = $set->remove('foo')->remove('bar');
 
         static::assertSame($modified, $set);
         static::assertCount(1, $set);
