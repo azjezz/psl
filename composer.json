@@ -19,8 +19,6 @@
         "revolt/event-loop": "^1.0.6"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "^3.9.0",
-        "friendsofphp/php-cs-fixer": "^3.52.1",
         "phpbench/phpbench": "^1.2.15",
         "phpunit/phpunit": "^9.6.18",
         "vimeo/psalm": "^5.23.1",

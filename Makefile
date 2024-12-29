@@ -5,12 +5,12 @@ install:                                                              			## inst
 	COMPOSER_IGNORE_PLATFORM_REQ=php+ composer install
 
 coding-standard-fix:                                                            ## apply automated coding standard fixes
-	PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --config=config/.php_cs.dist.php
-	./vendor/bin/phpcbf --basepath=. --standard=config/.phpcs.xml
+	mago fix
+	mago fmt
 
 coding-standard-check:                                                          ## check coding-standard compliance
-	PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --config=config/.php_cs.dist.php --dry-run
-	./vendor/bin/phpcs --basepath=. --standard=config/.phpcs.xml
+	mago lint
+	mago fmt --dry-run
 
 benchmarks:                                                                     ## run benchmarks
 	./vendor/bin/phpbench run --config config/phpbench.json

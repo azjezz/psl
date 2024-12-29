@@ -1,0 +1,56 @@
+[source]
+paths = ["src", "tests"]
+includes = ["vendor"]
+excludes = []
+
+[format]
+null_type_hint = "pipe"
+
+[linter]
+level = "Error"
+default_plugins = true
+plugins = ["phpunit"]
+
+[[linter.rules]]
+name = "best-practices/disallowed-functions"
+functions = ["is_null", "assert"]
+
+[[linter.rules]]
+name = "best-practices/excessive-nesting"
+threshold = 5
+
+[[linter.rules]]
+name = "best-practices/no-debug-symbols"
+level = "Error"
+
+[[linter.rules]]
+name = "strictness/no-assignment-in-condition"
+level = "Warning"
+
+[[linter.rules]]
+name = "strictness/require-constant-type"
+level = "Warning"
+
+[[linter.rules]]
+name = "strictness/require-parameter-type"
+level = "Warning"
+
+[[linter.rules]]
+name = "strictness/require-property-type"
+level = "Error"
+
+[[linter.rules]]
+name = "strictness/require-return-type"
+level = "Warning"
+
+[[linter.rules]]
+name = "strictness/require-strict-types"
+level = "Error"
+
+[[linter.rules]]
+name = "safety/no-error-control-operator"
+level = "Off"
+
+[[linter.rules]]
+name = "safety/no-global"
+level = "Warning"

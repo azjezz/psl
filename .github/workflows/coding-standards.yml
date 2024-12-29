@@ -24,5 +24,11 @@ jobs:
         run: |
           make install -j10 -O
 
-      - name: "checking coding standards"
-        run: make coding-standard-check
+      - name: "install mago"
+        run: wget -qO- https://carthage.software/mago.sh | bash --install-dir="/usr/local/bin"
+
+      - name: "formatting"
+        run: mago fmt --dry-run
+
+      - name: "linting"
+        run: mago lint --reporting-format=github
