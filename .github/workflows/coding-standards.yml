@@ -25,7 +25,7 @@ jobs:
           make install -j10 -O
 
       - name: "install mago"
-        run: wget -qO- https://carthage.software/mago.sh | bash --install-dir="/usr/local/bin"
+        run: wget -qO- https://carthage.software/mago.sh | bash -s -- --install-dir="/usr/local/bin"
 
       - name: "formatting"
         run: mago fmt --dry-run
