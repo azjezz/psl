@@ -96,8 +96,8 @@ final class ReadWriteTest extends AbstractFilesystemTest
     {
         $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
         Filesystem\create_file($file);
-        $permissions = Filesystem\get_permissions($file) & 0777;
-        Filesystem\change_permissions($file, 0111);
+        $permissions = Filesystem\get_permissions($file) & 0o777;
+        Filesystem\change_permissions($file, 0o111);
 
         try {
             $this->expectException(File\Exception\NotWritableException::class);
@@ -132,7 +132,7 @@ final class ReadWriteTest extends AbstractFilesystemTest
         }
 
         $target_directory = Env\temp_dir() . DIRECTORY_SEPARATOR . 'you-shall-not-pass';
-        Filesystem\create_directory($target_directory, 0000);
+        Filesystem\create_directory($target_directory, 0o000);
 
         $target_file =
             $target_directory . DIRECTORY_SEPARATOR . 'fails-on-subdir-creation' . DIRECTORY_SEPARATOR . 'somefile.txt';

@@ -174,8 +174,8 @@ final class FileTest extends AbstractFilesystemTest
     {
         $filename = Str\join([$this->directory, 'non-readable.txt'], Filesystem\SEPARATOR);
         Filesystem\create_file($filename);
-        $permissions = Filesystem\get_permissions($filename) & 0777;
-        Filesystem\change_permissions($filename, 0111);
+        $permissions = Filesystem\get_permissions($filename) & 0o777;
+        Filesystem\change_permissions($filename, 0o111);
 
         static::assertFalse(Filesystem\is_readable($filename));
 
@@ -193,8 +193,8 @@ final class FileTest extends AbstractFilesystemTest
     {
         $file = Str\join([$this->directory, 'non-readable.txt'], Filesystem\SEPARATOR);
         Filesystem\create_file($file);
-        $permissions = Filesystem\get_permissions($file) & 0777;
-        Filesystem\change_permissions($file, 0111);
+        $permissions = Filesystem\get_permissions($file) & 0o777;
+        Filesystem\change_permissions($file, 0o111);
 
         static::assertFalse(Filesystem\is_readable($file));
 

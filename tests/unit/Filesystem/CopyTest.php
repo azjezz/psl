@@ -46,7 +46,7 @@ final class CopyTest extends AbstractFilesystemTest
         $shell_file = Str\join([$this->directory, 'hello.sh'], Filesystem\SEPARATOR);
 
         Filesystem\create_file($shell_file);
-        Filesystem\change_permissions($shell_file, 0557);
+        Filesystem\change_permissions($shell_file, 0o557);
 
         static::assertTrue(Filesystem\is_executable($shell_file));
 

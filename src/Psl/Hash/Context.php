@@ -25,13 +25,13 @@ use const HASH_HMAC;
  *
  * @psalm-immutable
  */
-final class Context
+final readonly class Context
 {
     /**
      * @pure
      */
     private function __construct(
-        private readonly HashContext $internalContext,
+        private HashContext $internalContext,
     ) {
     }
 

@@ -71,7 +71,7 @@ final class DirectoryTest extends AbstractFilesystemTest
 
     public function testReadDirectoryThrowsIfNotReadable(): void
     {
-        Filesystem\change_permissions($this->directory, 0077);
+        Filesystem\change_permissions($this->directory, 0o077);
 
         $this->expectException(Filesystem\Exception\NotReadableException::class);
         $this->expectExceptionMessage('Directory "' . $this->directory . '" is not readable.');
@@ -81,7 +81,7 @@ final class DirectoryTest extends AbstractFilesystemTest
         } finally {
             // restore $this->directory permissions, otherwise we won't
             // be able to delete it.
-            Filesystem\change_permissions($this->directory, 0777);
+            Filesystem\change_permissions($this->directory, 0o777);
         }
     }
 

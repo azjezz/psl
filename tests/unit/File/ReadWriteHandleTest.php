@@ -114,7 +114,7 @@ final class ReadWriteHandleTest extends TestCase
         }
 
         $temporary_file = Filesystem\create_temporary_file();
-        Filesystem\change_permissions($temporary_file, 0555);
+        Filesystem\change_permissions($temporary_file, 0o555);
 
         $this->expectException(File\Exception\NotWritableException::class);
         $this->expectExceptionMessage('File "' . $temporary_file . '" is not writable.');
@@ -129,7 +129,7 @@ final class ReadWriteHandleTest extends TestCase
         }
 
         $temporary_file = Filesystem\create_temporary_file();
-        Filesystem\change_permissions($temporary_file, 0333);
+        Filesystem\change_permissions($temporary_file, 0o333);
 
         $this->expectException(File\Exception\NotReadableException::class);
         $this->expectExceptionMessage('File "' . $temporary_file . '" is not readable.');
@@ -146,7 +146,7 @@ final class ReadWriteHandleTest extends TestCase
         $temporary_file = Filesystem\create_temporary_file();
         Filesystem\delete_file($temporary_file);
         Filesystem\create_directory($temporary_file);
-        Filesystem\change_permissions($temporary_file, 0555);
+        Filesystem\change_permissions($temporary_file, 0o555);
 
         $file = $temporary_file . Filesystem\SEPARATOR . 'foo';
 

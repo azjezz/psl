@@ -36,7 +36,7 @@ final class WriteHandleTest extends TestCase
     public function testAppendToANonWritableFile(): void
     {
         $temporary_file = Filesystem\create_temporary_file();
-        Filesystem\change_permissions($temporary_file, 0555);
+        Filesystem\change_permissions($temporary_file, 0o555);
 
         $this->expectException(File\Exception\NotWritableException::class);
         $this->expectExceptionMessage('is not writable.');
@@ -70,7 +70,7 @@ final class WriteHandleTest extends TestCase
         $temporary_file = Filesystem\create_temporary_file();
         Filesystem\delete_file($temporary_file);
         Filesystem\create_directory($temporary_file);
-        Filesystem\change_permissions($temporary_file, 0555);
+        Filesystem\change_permissions($temporary_file, 0o555);
 
         $file = $temporary_file . Filesystem\SEPARATOR . 'foo';
 
@@ -100,7 +100,7 @@ final class WriteHandleTest extends TestCase
         }
 
         $target_directory = Env\temp_dir() . DIRECTORY_SEPARATOR . 'you-shall-not-pass';
-        Filesystem\create_directory($target_directory, 0000);
+        Filesystem\create_directory($target_directory, 0o000);
 
         $target_file =
             $target_directory . DIRECTORY_SEPARATOR . 'fails-on-subdir-creation' . DIRECTORY_SEPARATOR . 'somefile.txt';

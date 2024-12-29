@@ -34,7 +34,7 @@ final class DateTimeTest extends TestCase
     public function testTodayAt(): void
     {
         $now = DateTime::now();
-        $today = DateTime::todayAt(14, 00, 00);
+        $today = DateTime::todayAt(14, 0o0, 0o0);
 
         static::assertSame($now->getDate(), $today->getDate());
         static::assertNotSame($now->getTime(), $today->getTime());
@@ -568,7 +568,7 @@ final class DateTimeTest extends TestCase
     public function testTimezoneInfo()
     {
         $timeZone = Timezone::EuropeBrussels;
-        $date = DateTime::fromParts($timeZone, 2024, 01, 01);
+        $date = DateTime::fromParts($timeZone, 2024, 0o1, 0o1);
 
         static::assertSame(!$timeZone->getDaylightSavingTimeOffset($date)->isZero(), $date->isDaylightSavingTime());
         static::assertEquals($timeZone->getOffset($date), $date->getTimezoneOffset());
@@ -576,7 +576,7 @@ final class DateTimeTest extends TestCase
 
     public function testConvertTimeZone()
     {
-        $date = DateTime::fromParts(Timezone::EuropeBrussels, 2024, 01, 01, 1);
+        $date = DateTime::fromParts(Timezone::EuropeBrussels, 2024, 0o1, 0o1, 1);
         $converted = $date->convertToTimezone($london = Timezone::EuropeLondon);
 
         static::assertSame($london, $converted->getTimezone());

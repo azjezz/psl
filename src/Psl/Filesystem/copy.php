@@ -65,5 +65,5 @@ function copy(string $source, string $destination, bool $overwrite = false): voi
     }
 
     // preserve executable permission bits
-    change_permissions($destination, get_permissions($destination) | (get_permissions($source) & 0111));
+    change_permissions($destination, get_permissions($destination) | (get_permissions($source) & 0o111));
 }

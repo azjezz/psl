@@ -13,7 +13,7 @@ namespace Psl\Filesystem;
  *
  * @return non-empty-string
  */
-function create_directory_for_file(string $filename, int $permissions = 0777): string
+function create_directory_for_file(string $filename, int $permissions = 0o777): string
 {
     $directory = namespace\get_directory($filename);
     namespace\create_directory($directory, $permissions);

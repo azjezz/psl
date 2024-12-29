@@ -35,7 +35,7 @@ abstract class AbstractFilesystemTest extends TestCase
 
         $this->directory = Str\join([$this->cacheDirectory, $this->function], Filesystem\SEPARATOR);
         Filesystem\create_directory($this->directory);
-        $this->directoryPermissions = Filesystem\get_permissions($this->directory) & 0777;
+        $this->directoryPermissions = Filesystem\get_permissions($this->directory) & 0o777;
 
         static::assertTrue(Filesystem\exists($this->directory));
         static::assertTrue(Filesystem\is_directory($this->directory));

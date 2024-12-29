@@ -16,7 +16,7 @@ use function mkdir;
  *
  * @throws Exception\RuntimeException If unable to create the directory.
  */
-function create_directory(string $directory, int $permissions = 0777): void
+function create_directory(string $directory, int $permissions = 0o777): void
 {
     if (namespace\is_directory($directory)) {
         return;

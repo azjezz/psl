@@ -17,34 +17,34 @@ final class PermissionsTest extends AbstractFilesystemTest
 
         Filesystem\create_file($filename);
 
-        $permissions = Filesystem\get_permissions($filename) & 0777;
+        $permissions = Filesystem\get_permissions($filename) & 0o777;
 
         try {
-            Filesystem\change_permissions($filename, 0444);
+            Filesystem\change_permissions($filename, 0o444);
 
             static::assertTrue(Filesystem\is_readable($filename));
             static::assertFalse(Filesystem\is_writable($filename));
             static::assertFalse(Filesystem\is_executable($filename));
 
-            Filesystem\change_permissions($filename, 0222);
+            Filesystem\change_permissions($filename, 0o222);
 
             static::assertTrue(Filesystem\is_writable($filename));
             static::assertFalse(Filesystem\is_readable($filename));
             static::assertFalse(Filesystem\is_executable($filename));
 
-            Filesystem\change_permissions($filename, 0111);
+            Filesystem\change_permissions($filename, 0o111);
 
             static::assertTrue(Filesystem\is_executable($filename));
             static::assertFalse(Filesystem\is_writable($filename));
             static::assertFalse(Filesystem\is_readable($filename));
 
-            Filesystem\change_permissions($filename, 0666);
+            Filesystem\change_permissions($filename, 0o666);
 
             static::assertTrue(Filesystem\is_writable($filename));
             static::assertTrue(Filesystem\is_readable($filename));
             static::assertFalse(Filesystem\is_executable($filename));
 
-            Filesystem\change_permissions($filename, 0777);
+            Filesystem\change_permissions($filename, 0o777);
 
             static::assertTrue(Filesystem\is_writable($filename));
             static::assertTrue(Filesystem\is_readable($filename));
@@ -61,7 +61,7 @@ final class PermissionsTest extends AbstractFilesystemTest
         $this->expectException(Filesystem\Exception\NotFoundException::class);
         $this->expectExceptionMessage('Node "' . $filename . '" is not found.');
 
-        Filesystem\change_permissions($filename, 0111);
+        Filesystem\change_permissions($filename, 0o111);
     }
 
     public function testGetPermissionsThrowsForNonExistingFile(): void
