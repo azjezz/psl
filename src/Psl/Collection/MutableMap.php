@@ -72,13 +72,15 @@ final class MutableMap implements MutableMapInterface
      * @template Tsk of array-key
      * @template Tsv
      *
-     * @param array<Tsk, Tsv> $items
+     * @param iterable<Tsk, Tsv> $items
      *
      * @return MutableMap<Tsk, Tsv>
      */
     public static function fromItems(iterable $items): MutableMap
     {
-        return self::fromArray(iterator_to_array($items));
+        $items = $items instanceof \Traversable ? iterator_to_array($items) : $items;
+
+        return self::fromArray($items);
     }
 
     /**
