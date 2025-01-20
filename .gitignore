@@ -16,3 +16,6 @@
 
 # phpunit cache
 /config/.phpunit.result.cache
+
+# mago binary
+mago
