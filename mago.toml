@@ -1,15 +1,43 @@
 [source]
 paths = ["src", "tests", "examples"]
 includes = ["vendor"]
-excludes = []
+excludes = [
+    "src/bootstrap.php",
+    "src/preload.php",
+    "src/Psl/Internal/Loader.php",
+]
 
 [format]
 null_type_hint = "pipe"
 
 [linter]
-level = "Error"
-default_plugins = true
-plugins = ["phpunit"]
+plugins = ["php-unit"]
+
+[[linter.rules]]
+name = "maintainability/cyclomatic-complexity"
+threshold = 43
+
+[[linter.rules]]
+name = "maintainability/kan-defect"
+threshold = 3.5
+
+[[linter.rules]]
+name = "maintainability/halstead"
+effort_threshold = 16_000.0
+volume_threshold = 1_400.0
+difficulty_threshold = 18.5
+
+[[linter.rules]]
+name = "maintainability/excessive-parameter-list"
+threshold = 9
+
+[[linter.rules]]
+name = "maintainability/too-many-enum-cases"
+threshold = 800
+
+[[linter.rules]]
+name = "maintainability/too-many-methods"
+threshold = 43
 
 [[linter.rules]]
 name = "best-practices/disallowed-functions"
