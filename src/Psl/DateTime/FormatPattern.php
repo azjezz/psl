@@ -16,6 +16,7 @@ enum FormatPattern: string implements DefaultInterface
 {
     case Rfc2822 = 'EEE, dd MMM yyyy HH:mm:ss Z';
     case Iso8601 = 'yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX';
+    case Iso8601WithoutMicroseconds = 'yyyy-MM-dd\'T\'HH:mm:ssXXX';
     case Http = 'EEE, dd MMM yyyy HH:mm:ss zzz';
     case Cookie = 'EEEE, dd-MMM-yyyy HH:mm:ss zzz';
     case SqlDate = 'yyyy-MM-dd';
@@ -25,6 +26,7 @@ enum FormatPattern: string implements DefaultInterface
     case IsoOrdinalDate = 'yyyy-DDD';
     case JulianDay = 'yyyy DDD';
     case Rfc3339 = 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZZZZZ';
+    case Rfc3339WithoutMicroseconds = 'yyyy-MM-dd\'T\'HH:mm:ssZZZZZ';
     case UnixTimestamp = 'U';
     case SimpleDate = 'dd/MM/yyyy';
     case American = 'MM/dd/yyyy';
