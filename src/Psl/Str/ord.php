@@ -21,5 +21,5 @@ use function mb_ord;
  */
 function ord(string $character, Encoding $encoding = Encoding::Utf8): int
 {
-    return mb_ord($character, $encoding->value);
+    return (int) mb_ord($character, $encoding->value);
 }

@@ -32,5 +32,5 @@ function decode(string $hexadecimal): string
         throw new Exception\RangeException('Expected an even number of hexadecimal characters.');
     }
 
-    return hex2bin($hexadecimal);
+    return (string) hex2bin($hexadecimal);
 }

@@ -35,6 +35,10 @@ function stream_unpack(string $content): Generator
         }
 
         $headers = byte_unpack('C1type/N1size', Str\Byte\slice($content, 0, 5));
+        if ($headers === false) {
+            throw new Exception\InvalidArgumentException('$content contains an invalid header value.');
+        }
+
         /** @var int<0, max> $type */
         $type = (int) $headers['type'];
         /** @var int<0, max> $size */

@@ -85,9 +85,10 @@ final class KeyedSemaphore
                     unset($this->pending[$key]);
                 }
 
-                $suspension->resume();
+                if ($suspension !== null) {
+                    $suspension->resume();
+                }
 
-                /** @psalm-suppress InvalidPropertyAssignmentValue */
                 $this->ingoing[$key]--;
             } else {
                 foreach ($this->waits[$key] ?? [] as $suspension) {

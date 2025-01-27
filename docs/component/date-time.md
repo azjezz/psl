@@ -47,7 +47,7 @@
 
 #### `Traits`
 
-- [DateTimeConvenienceMethodsTrait](./../../src/Psl/DateTime/DateTimeConvenienceMethodsTrait.php#L15)
+- [DateTimeConvenienceMethodsTrait](./../../src/Psl/DateTime/DateTimeConvenienceMethodsTrait.php#L16)
 - [TemporalConvenienceMethodsTrait](./../../src/Psl/DateTime/TemporalConvenienceMethodsTrait.php#L16)
 
 #### `Enums`

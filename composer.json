@@ -21,10 +21,11 @@
     "require-dev": {
         "phpbench/phpbench": "^1.2.15",
         "phpunit/phpunit": "^9.6.18",
-        "vimeo/psalm": "^5.23.1",
+        "vimeo/psalm": "^6.0.0",
         "php-standard-library/psalm-plugin": "^2.3.0",
         "php-coveralls/php-coveralls": "^2.7.0",
-        "roave/infection-static-analysis-plugin": "^1.35.0"
+        "roave/infection-static-analysis-plugin": "^1.36.0",
+        "carthage-software/mago": "~0.7"
     },
     "autoload": {
         "psr-4": {
@@ -44,7 +45,8 @@
     },
     "config": {
         "allow-plugins": {
-            "infection/extension-installer": true
+            "infection/extension-installer": true,
+            "carthage-software/mago": true
         }
     },
     "extra": {

@@ -24,11 +24,8 @@ jobs:
         run: |
           make install -j10 -O
 
-      - name: "install mago"
-        run: wget -qO- https://carthage.software/mago.sh | bash -s -- --install-dir="/usr/local/bin"
-
       - name: "formatting"
-        run: mago fmt --dry-run
+        run: ./vendor/bin/mago fmt --dry-run
 
       - name: "linting"
-        run: mago lint --reporting-format=github
+        run: ./vendor/bin/mago lint --reporting-format=github

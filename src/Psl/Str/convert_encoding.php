@@ -13,5 +13,5 @@ use function mb_convert_encoding;
  */
 function convert_encoding(string $string, Encoding $from_encoding, Encoding $to_encoding): string
 {
-    return mb_convert_encoding($string, $to_encoding->value, $from_encoding->value);
+    return (string) mb_convert_encoding($string, $to_encoding->value, $from_encoding->value);
 }

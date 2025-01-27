@@ -2,15 +2,15 @@ help:                                                                           
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_\-\.]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 install:                                                              			## install all dependencies for a development environment
-	COMPOSER_IGNORE_PLATFORM_REQ=php+ composer install
+	composer install
 
 coding-standard-fix:                                                            ## apply automated coding standard fixes
-	mago fix
-	mago fmt
+	./vendor/bin/mago fix
+	./vendor/bin/mago fmt
 
 coding-standard-check:                                                          ## check coding-standard compliance
-	mago lint
-	mago fmt --dry-run
+	./vendor/bin/mago lint
+	./vendor/bin/mago fmt --dry-run
 
 benchmarks:                                                                     ## run benchmarks
 	./vendor/bin/phpbench run --config config/phpbench.json

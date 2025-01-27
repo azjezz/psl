@@ -6,6 +6,7 @@ namespace Psl\DateTime;
 
 use Psl\Locale\Locale;
 use Psl\Math;
+use function Psl\DateTime\Internal\default_timezone;
 
 /**
  * @require-implements DateTimeInterface
@@ -269,7 +270,7 @@ trait DateTimeConvenienceMethodsTrait
     public function getYearShort(): int
     {
         /** @var int<-99, 99> */
-        return (int) $this->format(pattern: 'yy');
+        return (int) $this->format(pattern: 'yy', locale: Locale::EnglishUnitedKingdom);
     }
 
     /**
@@ -331,8 +332,8 @@ trait DateTimeConvenienceMethodsTrait
     public function getISOWeekNumber(): array
     {
         /** @var int<1, 53> $week */
-        $week = (int) $this->format(pattern: 'w');
-        $year = (int) $this->format(pattern: 'Y');
+        $week = (int) $this->format(pattern: 'w', locale: Locale::EnglishUnitedKingdom);
+        $year = (int) $this->format(pattern: 'Y', locale: Locale::EnglishUnitedKingdom);
 
         return [$year, $week];
     }
@@ -346,7 +347,7 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function getWeekday(): Weekday
     {
-        return Weekday::from((int) $this->format(pattern: 'e'));
+        return Weekday::from((int) $this->format(pattern: 'e', locale: Locale::EnglishUnitedKingdom));
     }
 
     /**

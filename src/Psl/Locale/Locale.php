@@ -821,9 +821,9 @@ enum Locale: string
             return self::English;
         }
 
-        $language = NativeLocale::getPrimaryLanguage($full_locale);
-        $script = NativeLocale::getScript($full_locale);
-        $region = NativeLocale::getRegion($full_locale);
+        $language = (string) NativeLocale::getPrimaryLanguage($full_locale);
+        $script = (string) NativeLocale::getScript($full_locale);
+        $region = (string) NativeLocale::getRegion($full_locale);
 
         $locale = Str\lowercase($language);
         if ($script) {
@@ -900,6 +900,7 @@ enum Locale: string
      * @return non-empty-string|null The script of the locale, or null if not applicable.
      *
      * @psalm-mutation-free
+     * @psalm-suppress RiskyTruthyFalsyComparison
      */
     public function getScript(): null|string
     {
@@ -938,6 +939,7 @@ enum Locale: string
      * @return non-empty-string|null The alpha-2 country code, or null if not present.
      *
      * @psalm-mutation-free
+     * @psalm-suppress RiskyTruthyFalsyComparison
      */
     public function getRegion(): null|string
     {
