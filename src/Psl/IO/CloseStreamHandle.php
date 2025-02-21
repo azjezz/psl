@@ -31,6 +31,7 @@ final class CloseStreamHandle implements CloseStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getStream(): mixed
     {
         return $this->handle->getStream();

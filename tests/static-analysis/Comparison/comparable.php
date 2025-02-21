@@ -31,6 +31,7 @@ abstract class Size implements Comparable
 
 class Inches extends Size
 {
+    #[\Override]
     public function normalizedValue(): int
     {
         return 1;
@@ -39,6 +40,7 @@ class Inches extends Size
 
 class Centimeters extends Size
 {
+    #[\Override]
     public function normalizedValue(): int
     {
         return 2;

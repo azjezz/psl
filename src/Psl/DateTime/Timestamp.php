@@ -200,6 +200,7 @@ final readonly class Timestamp implements TemporalInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function getTimestamp(): self
     {
         return $this;
@@ -281,6 +282,7 @@ final readonly class Timestamp implements TemporalInterface
         return self::fromParts($newSeconds, $newNanoseconds);
     }
 
+    #[\Override]
     public function jsonSerialize(): array
     {
         return [

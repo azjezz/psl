@@ -28,6 +28,7 @@ abstract readonly class Type implements TypeInterface
         }
     }
 
+    #[\Override]
     public function isOptional(): bool
     {
         return false;

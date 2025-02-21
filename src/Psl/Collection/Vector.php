@@ -128,6 +128,7 @@ final readonly class Vector implements VectorInterface
      *
      * @return Iter\Iterator<int<0, max>, T>
      */
+    #[\Override]
     public function getIterator(): Iter\Iterator
     {
         return Iter\Iterator::create($this->elements);
@@ -138,6 +139,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function isEmpty(): bool
     {
         return [] === $this->elements;
@@ -164,6 +166,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function toArray(): array
     {
         return $this->elements;
@@ -176,6 +179,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function jsonSerialize(): array
     {
         return $this->elements;
@@ -222,6 +226,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function containsKey(int|string $k): bool
     {
         return $this->contains($k);
@@ -250,6 +255,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function firstKey(): null|int
     {
         return [] === $this->elements ? null : 0;
@@ -263,6 +269,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function lastKey(): null|int
     {
         return array_key_last($this->elements);
@@ -280,6 +287,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function linearSearch(mixed $search_value): null|int
     {
         foreach ($this->elements as $key => $element) {
@@ -357,6 +365,7 @@ final readonly class Vector implements VectorInterface
      * @return Vector<T> a `Vector` containing the values after a user-specified
      *                   condition is applied to the keys and values of the current `Vector`.
      */
+    #[\Override]
     public function filterWithKey(Closure $fn): Vector
     {
         return new Vector(Dict\filter_with_key($this->elements, $fn));
@@ -405,6 +414,7 @@ final readonly class Vector implements VectorInterface
      * @return Vector<Tu> a `Vector` containing the values after a user-specified
      *                    operation on the current `Vector`'s keys and values is applied.
      */
+    #[\Override]
     public function mapWithKey(Closure $fn): Vector
     {
         return new Vector(Dict\map_with_key($this->elements, $fn));
@@ -472,6 +482,7 @@ final readonly class Vector implements VectorInterface
      * @return Vector<T> A `Vector` that is a proper subset of the current
      *                   `Vector` up until the callback returns `false`.
      */
+    #[\Override]
     public function takeWhile(Closure $fn): Vector
     {
         return new Vector(Dict\take_while($this->elements, $fn));
@@ -514,6 +525,7 @@ final readonly class Vector implements VectorInterface
      * @return Vector<T> A `Vector` that is a proper subset of the current
      *                   `Vector` starting after the callback returns `true`.
      */
+    #[\Override]
     public function dropWhile(Closure $fn): Vector
     {
         return new Vector(Dict\drop_while($this->elements, $fn));

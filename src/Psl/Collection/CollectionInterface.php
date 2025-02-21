@@ -55,6 +55,7 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function jsonSerialize(): array;
 
     /**

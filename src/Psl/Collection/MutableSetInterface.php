@@ -71,6 +71,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function toArray(): array;
 
     /**
@@ -123,6 +124,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @return MutableSetInterface<T>
      */
+    #[\Override]
     public function filterWithKey(Closure $fn): MutableSetInterface;
 
     /**
@@ -159,6 +161,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @return MutableSetInterface<Tu>
      */
+    #[\Override]
     public function mapWithKey(Closure $fn): MutableSetInterface;
 
     /**
@@ -182,6 +185,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function firstKey(): null|int|string;
 
     /**
@@ -205,6 +209,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function lastKey(): null|int|string;
 
     /**
@@ -221,6 +226,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function linearSearch(mixed $search_value): null|int|string;
 
     /**
@@ -271,6 +277,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * @return MutableSetInterface<T> A `MutableSetInterface` that is a proper subset of the current
      *                                `MutableSetInterface` up until the callback returns `false`.
      */
+    #[\Override]
     public function takeWhile(Closure $fn): MutableSetInterface;
 
     /**
@@ -307,6 +314,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * @return MutableSetInterface<T> A `MutableSetInterface` that is a proper subset of the current
      *                                `MutableSetInterface` starting after the callback returns `true`.
      */
+    #[\Override]
     public function dropWhile(Closure $fn): MutableSetInterface;
 
     /**

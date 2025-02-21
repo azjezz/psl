@@ -20,6 +20,7 @@ final readonly class NumType extends UnionType
         parent::__construct(new IntType(), new FloatType());
     }
 
+    #[\Override]
     public function toString(): string
     {
         return 'num';

@@ -18,6 +18,7 @@ final class VecTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function provideHappyPathCoercion(): array
     {
         $arraysAndIterables = [];
@@ -36,6 +37,7 @@ final class VecTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function provideHappyPathAssertion(): array
     {
         $arraysAndIterables = [];
@@ -50,6 +52,7 @@ final class VecTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function provideHappyPathMatches(): array
     {
         return $this->provideHappyPathAssertion();

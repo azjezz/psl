@@ -149,6 +149,7 @@ final readonly class IterableType extends Type\Type
         });
     }
 
+    #[\Override]
     public function toString(): string
     {
         return Str\format('iterable<%s, %s>', $this->key_type->toString(), $this->value_type->toString());

@@ -71,6 +71,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * @return MapInterface<Tk, Tv> A `MapInterface` containing the values after a user-specified
      *                              condition is applied to the keys and values of the current `MapInterface`.
      */
+    #[\Override]
     public function filterWithKey(Closure $fn): MapInterface;
 
     /**
@@ -133,6 +134,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function firstKey(): int|string|null;
 
     /**
@@ -154,6 +156,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function lastKey(): int|string|null;
 
     /**
@@ -168,6 +171,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function linearSearch(mixed $search_value): int|string|null;
 
     /**
@@ -225,6 +229,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
      *                              `MapInterface` up until the callback returns `false`.
      */
+    #[\Override]
     public function takeWhile(Closure $fn): MapInterface;
 
     /**
@@ -261,6 +266,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
      *                              `MapInterface` starting after the callback returns `true`.
      */
+    #[\Override]
     public function dropWhile(Closure $fn): MapInterface;
 
     /**

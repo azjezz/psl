@@ -72,6 +72,7 @@ final readonly class ResourceType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
+    #[\Override]
     public function toString(): string
     {
         if (null === $this->kind) {

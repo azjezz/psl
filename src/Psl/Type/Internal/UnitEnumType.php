@@ -65,6 +65,7 @@ final readonly class UnitEnumType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
+    #[\Override]
     public function toString(): string
     {
         return Str\format('unit-enum(%s)', $this->enum);

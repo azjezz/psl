@@ -44,6 +44,7 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements File\Re
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getPath(): string
     {
         return $this->path;
@@ -52,6 +53,7 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements File\Re
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getSize(): int
     {
         if (null === $this->stream) {
@@ -103,6 +105,7 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements File\Re
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function tryLock(LockType $type): Lock
     {
         if (null === $this->stream) {

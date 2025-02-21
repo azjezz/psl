@@ -73,6 +73,7 @@ final readonly class NumericStringType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
+    #[\Override]
     public function toString(): string
     {
         return 'numeric-string';

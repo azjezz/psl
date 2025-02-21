@@ -21,6 +21,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function toArray(): array;
 
     /**
@@ -81,6 +82,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *                                   condition is applied to the keys and values of the current
      *                                   `MutableVectorInterface`.
      */
+    #[\Override]
     public function filterWithKey(Closure $fn): MutableVectorInterface;
 
     /**
@@ -124,6 +126,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *                                    a user-specified operation on the current `MutableVectorInterface`'s
      *                                    keys and values is applied.
      */
+    #[\Override]
     public function mapWithKey(Closure $fn): MutableVectorInterface;
 
     /**
@@ -145,6 +148,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function firstKey(): null|int;
 
     /**
@@ -166,6 +170,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function lastKey(): null|int;
 
     /**
@@ -180,6 +185,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function linearSearch(mixed $search_value): null|int;
 
     /**
@@ -237,6 +243,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
      *                                   `MutableVectorInterface` up until the callback returns `false`.
      */
+    #[\Override]
     public function takeWhile(Closure $fn): MutableVectorInterface;
 
     /**
@@ -273,6 +280,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
      *                                   `MutableVectorInterface` starting after the callback returns `true`.
      */
+    #[\Override]
     public function dropWhile(Closure $fn): MutableVectorInterface;
 
     /**

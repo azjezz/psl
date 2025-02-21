@@ -118,6 +118,7 @@ final readonly class MutableSetType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
+    #[\Override]
     public function toString(): string
     {
         return Str\format('%s<%s>', Collection\MutableSetInterface::class, $this->type->toString());

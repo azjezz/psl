@@ -33,6 +33,7 @@ final class Reader implements ReadHandleInterface
      *
      * @mago-ignore best-practices/no-empty-catch-clause
      */
+    #[\Override]
     public function reachedEndOfDataSource(): bool
     {
         if ($this->eof) {
@@ -60,6 +61,7 @@ final class Reader implements ReadHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function readFixedSize(int $size, null|Duration $timeout = null): string
     {
         $timer = new Async\OptionalIncrementalTimeout($timeout, function (): void {
@@ -228,6 +230,7 @@ final class Reader implements ReadHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function tryRead(null|int $max_bytes = null): string
     {
         if ($this->eof) {

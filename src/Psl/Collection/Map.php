@@ -107,6 +107,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function firstKey(): int|string|null
     {
         return array_key_first($this->elements);
@@ -139,6 +140,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function lastKey(): int|string|null
     {
         return array_key_last($this->elements);
@@ -156,6 +158,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function linearSearch(mixed $search_value): int|string|null
     {
         foreach ($this->elements as $key => $element) {
@@ -172,6 +175,7 @@ final readonly class Map implements MapInterface
      *
      * @return Iter\Iterator<Tk, Tv>
      */
+    #[\Override]
     public function getIterator(): Iter\Iterator
     {
         return Iter\Iterator::create($this->elements);
@@ -182,6 +186,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function isEmpty(): bool
     {
         return [] === $this->elements;
@@ -208,6 +213,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function toArray(): array
     {
         return $this->elements;
@@ -220,6 +226,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function jsonSerialize(): array
     {
         return $this->elements;
@@ -266,6 +273,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function containsKey(int|string $k): bool
     {
         return $this->contains($k);
@@ -352,6 +360,7 @@ final readonly class Map implements MapInterface
      * @return Map<Tk, Tv> A `Map` containing the values after a user-specified
      *                     condition is applied to the keys and values of the current `Map`.
      */
+    #[\Override]
     public function filterWithKey(Closure $fn): Map
     {
         return new Map(Dict\filter_with_key($this->elements, $fn));
@@ -400,6 +409,7 @@ final readonly class Map implements MapInterface
      * @return Map<Tk, Tu> A `Map` containing the values after a user-specified
      *                     operation on the current `Map`'s keys and values is applied.
      */
+    #[\Override]
     public function mapWithKey(Closure $fn): Map
     {
         return new Map(Dict\map_with_key($this->elements, $fn));
@@ -479,6 +489,7 @@ final readonly class Map implements MapInterface
      * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
      *                     `Map` up until the callback returns `false`.
      */
+    #[\Override]
     public function takeWhile(Closure $fn): Map
     {
         return new Map(Dict\take_while($this->elements, $fn));
@@ -521,6 +532,7 @@ final readonly class Map implements MapInterface
      * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
      *                     `Map` starting after the callback returns `true`.
      */
+    #[\Override]
     public function dropWhile(Closure $fn): Map
     {
         return new Map(Dict\drop_while($this->elements, $fn));

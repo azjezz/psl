@@ -62,6 +62,7 @@ final class BoundedReceiver implements ReceiverInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function tryReceive(): mixed
     {
         return $this->state->receive();

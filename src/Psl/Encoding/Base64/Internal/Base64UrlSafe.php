@@ -25,6 +25,7 @@ final class Base64UrlSafe extends Base64
     /**
      * @pure
      */
+    #[\Override]
     protected static function checkRange(string $base64): void
     {
         /** @psalm-suppress MissingThrowsDocblock - pattern is valid */
@@ -41,6 +42,7 @@ final class Base64UrlSafe extends Base64
      *
      * @pure
      */
+    #[\Override]
     protected static function encode6Bits(int $bin): string
     {
         $diff = 0x41;
@@ -62,6 +64,7 @@ final class Base64UrlSafe extends Base64
      *
      * @pure
      */
+    #[\Override]
     protected static function decode6Bits(int $base64): int
     {
         $ret = -1;

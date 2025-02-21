@@ -51,6 +51,7 @@ final readonly class ToRange implements UpperBoundRangeInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function withLowerBound(int $lower_bound): BetweenRange
     {
         return new BetweenRange($lower_bound, $this->upperBound, $this->upperInclusive);
@@ -61,6 +62,7 @@ final readonly class ToRange implements UpperBoundRangeInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function withoutUpperBound(): FullRange
     {
         return new FullRange();
@@ -71,6 +73,7 @@ final readonly class ToRange implements UpperBoundRangeInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function withUpperBound(int $upper_bound, bool $upper_inclusive): ToRange
     {
         return new self($upper_bound, $upper_inclusive);
@@ -81,6 +84,7 @@ final readonly class ToRange implements UpperBoundRangeInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function withUpperBoundInclusive(int $upper_bound): ToRange
     {
         return new self($upper_bound, true);
@@ -91,6 +95,7 @@ final readonly class ToRange implements UpperBoundRangeInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function withUpperBoundExclusive(int $upper_bound): ToRange
     {
         return new self($upper_bound, false);
@@ -101,6 +106,7 @@ final readonly class ToRange implements UpperBoundRangeInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function getUpperBound(): int
     {
         return $this->upperBound;
@@ -111,6 +117,7 @@ final readonly class ToRange implements UpperBoundRangeInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function isUpperInclusive(): bool
     {
         return $this->upperInclusive;
@@ -121,6 +128,7 @@ final readonly class ToRange implements UpperBoundRangeInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function withUpperInclusive(bool $upper_inclusive): static
     {
         return new static($this->upperBound, $upper_inclusive);

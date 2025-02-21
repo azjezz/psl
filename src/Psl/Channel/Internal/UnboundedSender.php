@@ -39,6 +39,7 @@ final class UnboundedSender implements SenderInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function trySend(mixed $message): void
     {
         $this->state->send($message);

@@ -74,6 +74,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *                                               after a user-specified condition is applied to the keys and values
      *                                               of the current `AccessibleCollectionInterface`.
      */
+    #[\Override]
     public function filterWithKey(Closure $fn): AccessibleCollectionInterface;
 
     /**
@@ -187,6 +188,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *                                               of the current `AccessibleCollectionInterface` up until
      *                                               the callback returns `false`.
      */
+    #[\Override]
     public function takeWhile(Closure $fn): AccessibleCollectionInterface;
 
     /**
@@ -225,6 +227,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *                                               of the current `AccessibleCollectionInterface` starting after
      *                                               the callback returns `true`.
      */
+    #[\Override]
     public function dropWhile(Closure $fn): AccessibleCollectionInterface;
 
     /**

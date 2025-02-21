@@ -19,6 +19,7 @@ final class DictTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function provideHappyPathCoercion(): array
     {
         $arraysAndIterables = [];
@@ -37,6 +38,7 @@ final class DictTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function provideHappyPathAssertion(): array
     {
         $arraysAndIterables = [];
@@ -51,6 +53,7 @@ final class DictTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function provideHappyPathMatches(): array
     {
         return $this->provideHappyPathAssertion();

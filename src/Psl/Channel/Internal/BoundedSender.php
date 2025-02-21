@@ -62,6 +62,7 @@ final class BoundedSender implements SenderInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function trySend(mixed $message): void
     {
         $this->state->send($message);

@@ -18,6 +18,7 @@ abstract class AbstractHandleWrapper implements File\HandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getPath(): string
     {
         return $this->handle->getPath();
@@ -26,6 +27,7 @@ abstract class AbstractHandleWrapper implements File\HandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getSize(): int
     {
         return $this->handle->getSize();
@@ -43,6 +45,7 @@ abstract class AbstractHandleWrapper implements File\HandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function tryLock(LockType $type): Lock
     {
         return $this->handle->tryLock($type);
@@ -78,6 +81,7 @@ abstract class AbstractHandleWrapper implements File\HandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getStream(): mixed
     {
         return $this->handle->getStream();

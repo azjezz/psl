@@ -17,6 +17,7 @@ interface StreamServerInterface extends IO\CloseStreamHandleInterface, ServerInt
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function nextConnection(): StreamSocketInterface;
 
     /**

@@ -85,6 +85,7 @@ interface MutableAccessibleCollectionInterface extends
      *                                                      to the keys and values of the current
      *                                                      `MutableAccessibleCollectionInterface`.
      */
+    #[\Override]
     public function filterWithKey(Closure $fn): MutableAccessibleCollectionInterface;
 
     /**
@@ -169,6 +170,7 @@ interface MutableAccessibleCollectionInterface extends
      *                                                      subset of the current `MutableAccessibleCollectionInterface`
      *                                                      up until the callback returns `false`.
      */
+    #[\Override]
     public function takeWhile(Closure $fn): MutableAccessibleCollectionInterface;
 
     /**
@@ -207,6 +209,7 @@ interface MutableAccessibleCollectionInterface extends
      *                                                      subset of the current `MutableAccessibleCollectionInterface`
      *                                                      starting after the callback returns `true`.
      */
+    #[\Override]
     public function dropWhile(Closure $fn): MutableAccessibleCollectionInterface;
 
     /**
@@ -263,6 +266,7 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function offsetExists(mixed $offset): bool;
 
     /**
@@ -277,6 +281,7 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function offsetGet(mixed $offset): mixed;
 
     /**
@@ -289,6 +294,7 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @throws Exception\InvalidOffsetException If the offset type is not valid.
      */
+    #[\Override]
     public function offsetSet(mixed $offset, mixed $value): void;
 
     /**
@@ -300,5 +306,6 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @throws Exception\InvalidOffsetException If the offset type is not valid.
      */
+    #[\Override]
     public function offsetUnset(mixed $offset): void;
 }

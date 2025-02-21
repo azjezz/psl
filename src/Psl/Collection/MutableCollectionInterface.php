@@ -57,6 +57,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *                                            a user-specified condition is applied to the keys and values of
      *                                            the current `MutableCollectionInterface`.
      */
+    #[\Override]
     public function filterWithKey(Closure $fn): MutableCollectionInterface;
 
     /**
@@ -117,6 +118,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *                                            subset of the current `MutableCollectionInterface` up until
      *                                            the callback returns `false`.
      */
+    #[\Override]
     public function takeWhile(Closure $fn): MutableCollectionInterface;
 
     /**
@@ -155,6 +157,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *                                            `MutableCollectionInterface` starting after the callback
      *                                            returns `true`.
      */
+    #[\Override]
     public function dropWhile(Closure $fn): MutableCollectionInterface;
 
     /**

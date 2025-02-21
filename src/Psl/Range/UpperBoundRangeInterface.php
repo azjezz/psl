@@ -16,6 +16,7 @@ interface UpperBoundRangeInterface extends RangeInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function withLowerBound(int $lower_bound): UpperBoundRangeInterface&LowerBoundRangeInterface;
 
     /**

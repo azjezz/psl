@@ -96,6 +96,7 @@ final readonly class IntersectionType extends Type
         }
     }
 
+    #[\Override]
     public function toString(): string
     {
         $left = $this->left_type->toString();

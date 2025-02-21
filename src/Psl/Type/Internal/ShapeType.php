@@ -238,6 +238,7 @@ final readonly class ShapeType extends Type\Type
     /**
      * Returns a string representation of the shape.
      */
+    #[\Override]
     public function toString(): string
     {
         $nodes = [];

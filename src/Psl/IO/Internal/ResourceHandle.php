@@ -226,6 +226,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
      *
      * @mago-ignore best-practices/no-boolean-literal-comparison
      */
+    #[\Override]
     public function tryWrite(string $bytes): int
     {
         if (!is_resource($this->stream)) {
@@ -283,6 +284,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function reachedEndOfDataSource(): bool
     {
         if (!is_resource($this->stream)) {
@@ -312,6 +314,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
      *
      * @mago-ignore best-practices/no-boolean-literal-comparison
      */
+    #[\Override]
     public function tryRead(null|int $max_bytes = null): string
     {
         if (!is_resource($this->stream)) {
@@ -347,6 +350,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getStream(): mixed
     {
         /** @var resource|null */

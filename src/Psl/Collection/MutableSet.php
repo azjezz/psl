@@ -147,6 +147,7 @@ final class MutableSet implements MutableSetInterface
      *
      * @return Iter\Iterator<T, T>
      */
+    #[\Override]
     public function getIterator(): Iter\Iterator
     {
         return Iter\Iterator::create($this->elements);
@@ -157,6 +158,7 @@ final class MutableSet implements MutableSetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function isEmpty(): bool
     {
         return [] === $this->elements;
@@ -183,6 +185,7 @@ final class MutableSet implements MutableSetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function toArray(): array
     {
         return $this->elements;
@@ -195,6 +198,7 @@ final class MutableSet implements MutableSetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function jsonSerialize(): array
     {
         return $this->elements;
@@ -254,6 +258,7 @@ final class MutableSet implements MutableSetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function containsKey(int|string $k): bool
     {
         return $this->contains($k);
@@ -288,6 +293,7 @@ final class MutableSet implements MutableSetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function firstKey(): null|int|string
     {
         return $this->first();
@@ -303,6 +309,7 @@ final class MutableSet implements MutableSetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function lastKey(): null|int|string
     {
         return $this->last();
@@ -322,6 +329,7 @@ final class MutableSet implements MutableSetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function linearSearch(mixed $search_value): null|int|string
     {
         foreach ($this->elements as $element) {
@@ -391,6 +399,7 @@ final class MutableSet implements MutableSetInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function addAll(iterable $elements): MutableSet
     {
         foreach ($elements as $item) {
@@ -462,6 +471,7 @@ final class MutableSet implements MutableSetInterface
      *
      * @return MutableSet<T>
      */
+    #[\Override]
     public function filterWithKey(Closure $fn): MutableSet
     {
         return $this->filter(static fn(string|int $k): bool => $fn($k, $k));
@@ -507,6 +517,7 @@ final class MutableSet implements MutableSetInterface
      *
      * @return MutableSet<Tu>
      */
+    #[\Override]
     public function mapWithKey(Closure $fn): MutableSet
     {
         return $this->map(static fn(string|int $k): string|int => $fn($k, $k));
@@ -566,6 +577,7 @@ final class MutableSet implements MutableSetInterface
      * @return MutableSet<T> A `MutableSet` that is a proper subset of the current
      *                       `MutableSet` up until the callback returns `false`.
      */
+    #[\Override]
     public function takeWhile(Closure $fn): MutableSet
     {
         return new MutableSet(Dict\take_while($this->elements, $fn));
@@ -608,6 +620,7 @@ final class MutableSet implements MutableSetInterface
      * @return MutableSet<T> A `MutableSet` that is a proper subset of the current
      *                       `MutableSet` starting after the callback returns `true`.
      */
+    #[\Override]
     public function dropWhile(Closure $fn): MutableSet
     {
         return new MutableSet(Dict\drop_while($this->elements, $fn));
@@ -690,6 +703,7 @@ final class MutableSet implements MutableSetInterface
      *
      * @psalm-assert array-key $offset
      */
+    #[\Override]
     public function offsetExists(mixed $offset): bool
     {
         if (!is_int($offset) && !is_string($offset)) {
@@ -716,6 +730,7 @@ final class MutableSet implements MutableSetInterface
      *
      * @psalm-assert array-key $offset
      */
+    #[\Override]
     public function offsetGet(mixed $offset): mixed
     {
         if (!is_int($offset) && !is_string($offset)) {
@@ -740,6 +755,7 @@ final class MutableSet implements MutableSetInterface
      *
      * @throws Exception\InvalidOffsetException If the offset is not null or the value is not the same as the offset.
      */
+    #[\Override]
     public function offsetSet(mixed $offset, mixed $value): void
     {
         if (null === $offset || $offset === $value) {
@@ -764,6 +780,7 @@ final class MutableSet implements MutableSetInterface
      *
      * @throws Exception\InvalidOffsetException If the offset type is not valid.
      */
+    #[\Override]
     public function offsetUnset(mixed $offset): void
     {
         if (!is_int($offset) && !is_string($offset)) {

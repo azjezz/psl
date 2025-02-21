@@ -82,6 +82,7 @@ final readonly class MixedDictType extends Type\Type
         return $value;
     }
 
+    #[\Override]
     public function toString(): string
     {
         return 'dict<array-key, mixed>';

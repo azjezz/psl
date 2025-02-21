@@ -70,6 +70,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function toArray(): array;
 
     /**
@@ -122,6 +123,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @return SetInterface<T>
      */
+    #[\Override]
     public function filterWithKey(Closure $fn): SetInterface;
 
     /**
@@ -180,6 +182,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function firstKey(): null|int|string;
 
     /**
@@ -203,6 +206,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function lastKey(): null|int|string;
 
     /**
@@ -219,6 +223,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function linearSearch(mixed $search_value): null|int|string;
 
     /**
@@ -269,6 +274,7 @@ interface SetInterface extends AccessibleCollectionInterface
      * @return SetInterface<T> A `SetInterface` that is a proper subset of the current
      *                         `SetInterface` up until the callback returns `false`.
      */
+    #[\Override]
     public function takeWhile(Closure $fn): SetInterface;
 
     /**
@@ -305,6 +311,7 @@ interface SetInterface extends AccessibleCollectionInterface
      * @return SetInterface<T> A `SetInterface` that is a proper subset of the current
      *                         `SetInterface` starting after the callback returns `true`.
      */
+    #[\Override]
     public function dropWhile(Closure $fn): SetInterface;
 
     /**

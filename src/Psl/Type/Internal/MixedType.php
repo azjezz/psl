@@ -40,6 +40,7 @@ final readonly class MixedType extends Type
         return $value;
     }
 
+    #[\Override]
     public function toString(): string
     {
         return 'mixed';

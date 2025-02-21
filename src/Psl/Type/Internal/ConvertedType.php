@@ -93,6 +93,7 @@ final readonly class ConvertedType extends Type\Type
         return $this->into->assert($value);
     }
 
+    #[\Override]
     public function toString(): string
     {
         return $this->into->toString();

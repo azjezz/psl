@@ -1,21 +1,20 @@
-<?xml version="1.0"?>
-<psalm 
-        errorLevel="1"
-        strictBinaryOperands="true"
-        phpVersion="8.2"
-        allowStringToStandInForClass="true"
-        rememberPropertyAssignmentsAfterCall="false"
-        checkForThrowsDocblock="true"
-        checkForThrowsInGlobalScope="true"
-        errorBaseline="psalm-baseline.xml"
-        findUnusedPsalmSuppress="true"
-        findUnusedVariablesAndParams="true"
-        findUnusedCode="false"
-        findUnusedBaselineEntry="true"
-        ensureOverrideAttribute="false"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns="https://getpsalm.org/schema/config"
-        xsi:schemaLocation="https://getpsalm.org/schema/config ../vendor/vimeo/psalm/config.xsd"
+<?xml version="1.0" ?>
+<psalm
+    errorLevel="1"
+    strictBinaryOperands="true"
+    phpVersion="8.2"
+    allowStringToStandInForClass="true"
+    rememberPropertyAssignmentsAfterCall="false"
+    checkForThrowsDocblock="true"
+    checkForThrowsInGlobalScope="true"
+    errorBaseline="psalm-baseline.xml"
+    findUnusedPsalmSuppress="true"
+    findUnusedVariablesAndParams="true"
+    findUnusedCode="false"
+    findUnusedBaselineEntry="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config ../vendor/vimeo/psalm/config.xsd"
 >
     <projectFiles>
         <directory name="../src" />

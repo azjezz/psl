@@ -49,6 +49,7 @@ final class CloseSeekStreamHandle implements CloseSeekStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getStream(): mixed
     {
         return $this->handle->getStream();

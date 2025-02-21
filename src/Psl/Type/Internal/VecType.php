@@ -131,6 +131,7 @@ final readonly class VecType extends Type\Type
         return $result;
     }
 
+    #[\Override]
     public function toString(): string
     {
         return 'vec<' . $this->value_type->toString() . '>';

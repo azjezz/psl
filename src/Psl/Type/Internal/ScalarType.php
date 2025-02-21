@@ -24,6 +24,7 @@ final readonly class ScalarType extends UnionType
         );
     }
 
+    #[\Override]
     public function toString(): string
     {
         return 'scalar';

@@ -156,6 +156,7 @@ final readonly class NonEmptyVecType extends Type\Type
         return $result;
     }
 
+    #[\Override]
     public function toString(): string
     {
         return Str\format('non-empty-vec<%s>', $this->value_type->toString());

@@ -60,6 +60,7 @@ final readonly class StringType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
+    #[\Override]
     public function toString(): string
     {
         return 'string';

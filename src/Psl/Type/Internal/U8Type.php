@@ -72,6 +72,7 @@ final readonly class U8Type extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
+    #[\Override]
     public function toString(): string
     {
         return 'u8';

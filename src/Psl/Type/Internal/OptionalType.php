@@ -54,6 +54,7 @@ final readonly class OptionalType extends Type\Type
     /**
      * Return whether this type is optional.
      */
+    #[\Override]
     public function isOptional(): bool
     {
         return true;
@@ -62,6 +63,7 @@ final readonly class OptionalType extends Type\Type
     /**
      * Returns a string representation of the type.
      */
+    #[\Override]
     public function toString(): string
     {
         return $this->inner->toString();

@@ -43,6 +43,7 @@ final class ReadHandle extends Internal\AbstractHandleWrapper implements ReadHan
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function reachedEndOfDataSource(): bool
     {
         return $this->readHandle->reachedEndOfDataSource();
@@ -51,6 +52,7 @@ final class ReadHandle extends Internal\AbstractHandleWrapper implements ReadHan
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function tryRead(null|int $max_bytes = null): string
     {
         return $this->readHandle->tryRead($max_bytes);

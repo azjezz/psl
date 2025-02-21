@@ -54,6 +54,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function toArray(): array;
 
     /**
@@ -113,6 +114,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * @return VectorInterface<T> A `VectorInterface` containing the values after a user-specified
      *                            condition is applied to the keys and values of the current `VectorInterface`.
      */
+    #[\Override]
     public function filterWithKey(Closure $fn): VectorInterface;
 
     /**
@@ -175,6 +177,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function firstKey(): null|int;
 
     /**
@@ -196,6 +199,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function lastKey(): null|int;
 
     /**
@@ -210,6 +214,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function linearSearch(mixed $search_value): null|int;
 
     /**
@@ -267,6 +272,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * @return VectorInterface<T> A `VectorInterface` that is a proper subset of the current
      *                            `VectorInterface` up until the callback returns `false`.
      */
+    #[\Override]
     public function takeWhile(Closure $fn): VectorInterface;
 
     /**
@@ -303,6 +309,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * @return VectorInterface<T> A `VectorInterface` that is a proper subset of the current
      *                            `VectorInterface` starting after the callback returns `true`.
      */
+    #[\Override]
     public function dropWhile(Closure $fn): VectorInterface;
 
     /**

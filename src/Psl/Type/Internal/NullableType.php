@@ -68,6 +68,7 @@ final readonly class NullableType extends Type\Type
         return $this->inner->assert($value);
     }
 
+    #[\Override]
     public function toString(): string
     {
         return '?' . $this->inner->toString();

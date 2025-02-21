@@ -27,6 +27,7 @@ final class CloseSeekWriteStreamHandle implements CloseSeekWriteStreamHandleInte
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function tryWrite(string $bytes): int
     {
         return $this->handle->tryWrite($bytes);
@@ -71,6 +72,7 @@ final class CloseSeekWriteStreamHandle implements CloseSeekWriteStreamHandleInte
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getStream(): mixed
     {
         return $this->handle->getStream();

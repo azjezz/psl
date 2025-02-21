@@ -18,6 +18,7 @@ final class IntTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function provideHappyPathCoercion(): array
     {
         return array_merge($this->strictlyValidDataSet(), [
@@ -43,6 +44,7 @@ final class IntTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function provideHappyPathAssertion(): array
     {
         return $this->strictlyValidDataSet();
@@ -51,6 +53,7 @@ final class IntTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function provideHappyPathMatches(): array
     {
         return $this->strictlyValidDataSet();

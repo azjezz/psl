@@ -8,6 +8,7 @@ use Stringable;
 
 final class ExplicitStringableObject implements Stringable
 {
+    #[\Override]
     public function __toString(): string
     {
         return '123';

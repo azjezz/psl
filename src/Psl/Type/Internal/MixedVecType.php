@@ -78,6 +78,7 @@ final readonly class MixedVecType extends Type\Type
         return $value;
     }
 
+    #[\Override]
     public function toString(): string
     {
         return 'vec<mixed>';

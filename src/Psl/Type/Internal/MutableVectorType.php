@@ -122,6 +122,7 @@ final readonly class MutableVectorType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
+    #[\Override]
     public function toString(): string
     {
         return Str\format('%s<%s>', Collection\MutableVectorInterface::class, $this->value_type->toString());

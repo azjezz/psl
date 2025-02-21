@@ -73,6 +73,7 @@ final readonly class ClassStringType extends Type
         throw AssertException::withValue($value, $this->toString());
     }
 
+    #[\Override]
     public function toString(): string
     {
         return 'class-string<' . $this->classname . '>';

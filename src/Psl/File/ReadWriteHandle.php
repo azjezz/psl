@@ -74,6 +74,7 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function reachedEndOfDataSource(): bool
     {
         return $this->readWriteHandle->reachedEndOfDataSource();
@@ -82,6 +83,7 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function tryRead(null|int $max_bytes = null): string
     {
         return $this->readWriteHandle->tryRead($max_bytes);
@@ -99,6 +101,7 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function tryWrite(string $bytes): int
     {
         return $this->readWriteHandle->tryWrite($bytes);

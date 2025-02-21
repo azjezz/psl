@@ -83,6 +83,7 @@ final class BoundedChannelState implements ChannelInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function getCapacity(): int
     {
         return $this->capacity;
@@ -112,6 +113,7 @@ final class BoundedChannelState implements ChannelInterface
     /**
      * @psalm-mutation-free
      */
+    #[\Override]
     public function isClosed(): bool
     {
         return $this->closed;
@@ -131,6 +133,7 @@ final class BoundedChannelState implements ChannelInterface
     /**
      * @psalm-mutation-free
      */
+    #[\Override]
     public function isFull(): bool
     {
         return $this->capacity === $this->size;
@@ -139,6 +142,7 @@ final class BoundedChannelState implements ChannelInterface
     /**
      * @psalm-mutation-free
      */
+    #[\Override]
     public function isEmpty(): bool
     {
         return !$this->messages;

@@ -39,6 +39,7 @@ final readonly class Success implements ResultInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function getResult(): mixed
     {
         return $this->value;
@@ -53,6 +54,7 @@ final readonly class Success implements ResultInterface
      *
      * @return T
      */
+    #[\Override]
     public function unwrapOr(mixed $default): mixed
     {
         return $this->value;
@@ -68,6 +70,7 @@ final readonly class Success implements ResultInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function getThrowable(): never
     {
         Psl\invariant_violation('No exception thrown from the operation.');
@@ -80,6 +83,7 @@ final readonly class Success implements ResultInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function isSucceeded(): bool
     {
         return true;
@@ -92,6 +96,7 @@ final readonly class Success implements ResultInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function isFailed(): bool
     {
         return false;

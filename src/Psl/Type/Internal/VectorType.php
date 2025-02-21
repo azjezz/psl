@@ -124,6 +124,7 @@ final readonly class VectorType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
+    #[\Override]
     public function toString(): string
     {
         return Str\format('%s<%s>', Collection\VectorInterface::class, $this->value_type->toString());

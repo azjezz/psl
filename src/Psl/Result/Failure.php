@@ -39,6 +39,7 @@ final readonly class Failure implements ResultInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function getResult(): void
     {
         throw $this->throwable;
@@ -53,6 +54,7 @@ final readonly class Failure implements ResultInterface
      *
      * @return D
      */
+    #[\Override]
     public function unwrapOr(mixed $default): mixed
     {
         return $default;
@@ -65,6 +67,7 @@ final readonly class Failure implements ResultInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function getThrowable(): Throwable
     {
         return $this->throwable;
@@ -75,6 +78,7 @@ final readonly class Failure implements ResultInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function isSucceeded(): bool
     {
         return false;
@@ -85,6 +89,7 @@ final readonly class Failure implements ResultInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function isFailed(): bool
     {
         return true;

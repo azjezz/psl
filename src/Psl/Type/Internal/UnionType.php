@@ -98,6 +98,7 @@ readonly class UnionType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
+    #[\Override]
     public function toString(): string
     {
         $left = $this->left_type->toString();

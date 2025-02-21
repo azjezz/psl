@@ -484,12 +484,8 @@ interface DateTimeInterface extends TemporalInterface
      *
      * @psalm-mutation-free
      */
-    public function toString(
-        null|DateStyle $date_style = null,
-        null|TimeStyle $time_style = null,
-        null|Timezone $timezone = null,
-        null|Locale $locale = null,
-    ): string;
+    #[\Override]
+    public function toString(null|DateStyle $date_style = null, null|TimeStyle $time_style = null, null|Timezone $timezone = null, null|Locale $locale = null): string;
 
     /**
      * Formats this {@see DateTimeInterface} instance to a string based on the RFC 3339 format, with additional
@@ -518,6 +514,7 @@ interface DateTimeInterface extends TemporalInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function toRfc3339(null|SecondsStyle $seconds_style = null, bool $use_z = false): string;
 
     /**
@@ -547,5 +544,6 @@ interface DateTimeInterface extends TemporalInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function convertToTimezone(Timezone $timezone): static;
 }

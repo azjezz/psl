@@ -17,6 +17,7 @@ final class ShapeTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function provideHappyPathCoercion(): array
     {
         return [
@@ -165,6 +166,7 @@ final class ShapeTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function provideHappyPathAssertion(): array
     {
         return [
@@ -268,6 +270,7 @@ final class ShapeTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function provideHappyPathMatches(): array
     {
         // As of now, matches ~= coercion in terms of happy path

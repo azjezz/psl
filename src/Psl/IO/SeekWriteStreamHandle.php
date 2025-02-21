@@ -27,6 +27,7 @@ final class SeekWriteStreamHandle implements SeekWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function tryWrite(string $bytes): int
     {
         return $this->handle->tryWrite($bytes);
@@ -62,6 +63,7 @@ final class SeekWriteStreamHandle implements SeekWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getStream(): mixed
     {
         return $this->handle->getStream();

@@ -27,6 +27,7 @@ final class CloseReadStreamHandle implements CloseReadStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function reachedEndOfDataSource(): bool
     {
         return $this->handle->reachedEndOfDataSource();
@@ -35,6 +36,7 @@ final class CloseReadStreamHandle implements CloseReadStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function tryRead(null|int $max_bytes = null): string
     {
         return $this->handle->tryRead($max_bytes);
@@ -61,6 +63,7 @@ final class CloseReadStreamHandle implements CloseReadStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getStream(): mixed
     {
         return $this->handle->getStream();

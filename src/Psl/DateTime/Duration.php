@@ -687,6 +687,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function __toString(): string
     {
         return $this->toString();
@@ -699,6 +700,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function jsonSerialize(): array
     {
         return [

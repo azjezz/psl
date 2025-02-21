@@ -71,6 +71,7 @@ final readonly class I16Type extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
+    #[\Override]
     public function toString(): string
     {
         return 'i16';

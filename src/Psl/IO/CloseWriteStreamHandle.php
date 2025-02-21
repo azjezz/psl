@@ -27,6 +27,7 @@ final class CloseWriteStreamHandle implements CloseWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function tryWrite(string $bytes): int
     {
         return $this->handle->tryWrite($bytes);
@@ -53,6 +54,7 @@ final class CloseWriteStreamHandle implements CloseWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getStream(): mixed
     {
         return $this->handle->getStream();

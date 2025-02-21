@@ -71,6 +71,7 @@ final readonly class F32Type extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
+    #[\Override]
     public function toString(): string
     {
         return 'f32';

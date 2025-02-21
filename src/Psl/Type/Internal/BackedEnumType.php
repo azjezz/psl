@@ -83,6 +83,7 @@ final readonly class BackedEnumType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
+    #[\Override]
     public function toString(): string
     {
         return Str\format('backed-enum(%s)', $this->enum);

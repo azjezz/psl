@@ -83,6 +83,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function nextConnection(): Network\StreamSocketInterface
     {
         try {
@@ -126,6 +127,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getLocalAddress(): Network\Address
     {
         if (!is_resource($this->impl)) {
@@ -163,6 +165,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getStream(): mixed
     {
         /** @var resource */

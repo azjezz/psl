@@ -148,6 +148,7 @@ final readonly class Set implements SetInterface
      *
      * @return Iter\Iterator<T, T>
      */
+    #[\Override]
     public function getIterator(): Iter\Iterator
     {
         return Iter\Iterator::create($this->elements);
@@ -158,6 +159,7 @@ final readonly class Set implements SetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function isEmpty(): bool
     {
         return [] === $this->elements;
@@ -184,6 +186,7 @@ final readonly class Set implements SetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function toArray(): array
     {
         return $this->elements;
@@ -196,6 +199,7 @@ final readonly class Set implements SetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function jsonSerialize(): array
     {
         return $this->elements;
@@ -254,6 +258,7 @@ final readonly class Set implements SetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function containsKey(int|string $k): bool
     {
         return $this->contains($k);
@@ -288,6 +293,7 @@ final readonly class Set implements SetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function firstKey(): null|int|string
     {
         return $this->first();
@@ -303,6 +309,7 @@ final readonly class Set implements SetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function lastKey(): null|int|string
     {
         return $this->last();
@@ -321,6 +328,7 @@ final readonly class Set implements SetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function linearSearch(mixed $search_value): null|int|string
     {
         foreach ($this->elements as $key => $element) {
@@ -391,6 +399,7 @@ final readonly class Set implements SetInterface
      *
      * @return Set<T>
      */
+    #[\Override]
     public function filterWithKey(Closure $fn): Set
     {
         return $this->filter(static fn(string|int $k): bool => $fn($k, $k));
@@ -433,6 +442,7 @@ final readonly class Set implements SetInterface
      *
      * @return Set<Tu>
      */
+    #[\Override]
     public function mapWithKey(Closure $fn): Set
     {
         return $this->map(static fn(string|int $k): string|int => $fn($k, $k));
@@ -492,6 +502,7 @@ final readonly class Set implements SetInterface
      * @return Set<T> A `Set` that is a proper subset of the current
      *                `Set` up until the callback returns `false`.
      */
+    #[\Override]
     public function takeWhile(Closure $fn): Set
     {
         return new Set(Dict\take_while($this->elements, $fn));
@@ -534,6 +545,7 @@ final readonly class Set implements SetInterface
      * @return Set<T> A `Set` that is a proper subset of the current
      *                `Set` starting after the callback returns `true`.
      */
+    #[\Override]
     public function dropWhile(Closure $fn): Set
     {
         return new Set(Dict\drop_while($this->elements, $fn));

@@ -37,6 +37,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function reachedEndOfDataSource(): bool
     {
         $this->assertHandleIsOpen();
@@ -49,6 +50,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function tryRead(null|int $max_bytes = null): string
     {
         $this->assertHandleIsOpen();
@@ -114,6 +116,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function tryWrite(string $bytes, null|Duration $timeout = null): int
     {
         $this->assertHandleIsOpen();

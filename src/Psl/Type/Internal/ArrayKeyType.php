@@ -51,6 +51,7 @@ final readonly class ArrayKeyType extends UnionType
         return parent::coerce($value);
     }
 
+    #[\Override]
     public function toString(): string
     {
         return 'array-key';

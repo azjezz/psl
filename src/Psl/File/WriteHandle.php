@@ -62,6 +62,7 @@ final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteH
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function tryWrite(string $bytes): int
     {
         return $this->writeHandle->tryWrite($bytes);

@@ -28,6 +28,7 @@ final class CloseReadWriteStreamHandle implements CloseReadWriteStreamHandleInte
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function reachedEndOfDataSource(): bool
     {
         return $this->handle->reachedEndOfDataSource();
@@ -36,6 +37,7 @@ final class CloseReadWriteStreamHandle implements CloseReadWriteStreamHandleInte
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function tryRead(null|int $max_bytes = null): string
     {
         return $this->handle->tryRead($max_bytes);
@@ -53,6 +55,7 @@ final class CloseReadWriteStreamHandle implements CloseReadWriteStreamHandleInte
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function tryWrite(string $bytes): int
     {
         return $this->handle->tryWrite($bytes);
@@ -79,6 +82,7 @@ final class CloseReadWriteStreamHandle implements CloseReadWriteStreamHandleInte
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getStream(): mixed
     {
         return $this->handle->getStream();

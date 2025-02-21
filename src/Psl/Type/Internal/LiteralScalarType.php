@@ -111,6 +111,7 @@ final readonly class LiteralScalarType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
+    #[\Override]
     public function toString(): string
     {
         /** @var int|string|float|bool $value */

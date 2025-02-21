@@ -73,6 +73,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *                                     condition is applied to the keys and values of the
      *                                     current `MutableMapInterface`.
      */
+    #[\Override]
     public function filterWithKey(Closure $fn): MutableMapInterface;
 
     /**
@@ -115,6 +116,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @return MutableMapInterface<Tk, Tu> A `MutableMapInterface` containing the values after a user-specified
      *                                     operation on the current `MutableMapInterface`'s keys and values is applied.
      */
+    #[\Override]
     public function mapWithKey(Closure $fn): MutableMapInterface;
 
     /**
@@ -136,6 +138,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function firstKey(): int|string|null;
 
     /**
@@ -157,6 +160,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function lastKey(): int|string|null;
 
     /**
@@ -171,6 +175,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function linearSearch(mixed $search_value): int|string|null;
 
     /**
@@ -227,6 +232,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @return MutableMapInterface<Tk, Tv> A `MutableMapInterface` that is a proper subset of the current
      *                                     `MutableMapInterface` up until the callback returns `false`.
      */
+    #[\Override]
     public function takeWhile(Closure $fn): MutableMapInterface;
 
     /**
@@ -263,6 +269,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @return MutableMapInterface<Tk, Tv> A `MutableMapInterface` that is a proper subset of the current
      *                                     `MutableMapInterface` starting after the callback returns `true`.
      */
+    #[\Override]
     public function dropWhile(Closure $fn): MutableMapInterface;
 
     /**

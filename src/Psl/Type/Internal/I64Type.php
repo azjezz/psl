@@ -64,6 +64,7 @@ final readonly class I64Type extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
+    #[\Override]
     public function toString(): string
     {
         return 'i64';

@@ -131,6 +131,7 @@ final readonly class DictType extends Type\Type
         return $result;
     }
 
+    #[\Override]
     public function toString(): string
     {
         return 'dict<' . $this->key_type->toString() . ', ' . $this->value_type->toString() . '>';

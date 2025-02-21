@@ -40,6 +40,7 @@ final class SeekStreamHandle implements SeekStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getStream(): mixed
     {
         return $this->handle->getStream();

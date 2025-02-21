@@ -60,6 +60,7 @@ final readonly class F64Type extends Type\Type
         return Type\float()->assert($value);
     }
 
+    #[\Override]
     public function toString(): string
     {
         return 'f64';
