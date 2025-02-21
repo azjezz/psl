@@ -22,6 +22,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function values(): VectorInterface;
 
     /**
@@ -31,6 +32,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function keys(): VectorInterface;
 
     /**
@@ -49,6 +51,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * @return MapInterface<Tk, Tv> A MapInterface containing the values after a user-specified condition
      *                              is applied.
      */
+    #[\Override]
     public function filter(Closure $fn): MapInterface;
 
     /**
@@ -119,6 +122,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function first(): mixed;
 
     /**
@@ -139,6 +143,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function last(): mixed;
 
     /**
@@ -183,6 +188,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function zip(array $elements): MapInterface;
 
     /**
@@ -202,6 +208,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function take(int $n): MapInterface;
 
     /**
@@ -237,6 +244,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function drop(int $n): MapInterface;
 
     /**
@@ -276,6 +284,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function slice(int $start, null|int $length = null): MapInterface;
 
     /**
@@ -292,5 +301,6 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function chunk(int $size): VectorInterface;
 }

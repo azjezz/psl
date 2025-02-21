@@ -10,10 +10,10 @@ use Psl\TCP;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-function fetch(string $host, string $path): string
+function request(string $method, string $host, string $path): string
 {
     $client = TCP\connect($host, 80);
-    $client->writeAll("GET {$path} HTTP/1.1\r\nHost: $host\r\nConnection: close\r\n\r\n");
+    $client->writeAll("{$method} {$path} HTTP/1.1\r\nHost: $host\r\nConnection: close\r\n\r\n");
     $response = $client->readAll();
     $client->close();
 
@@ -21,7 +21,7 @@ function fetch(string $host, string $path): string
 }
 
 Async\main(static function (): int {
-    $response = fetch('example.com', '/');
+    $response = request('GET', 'example.com', '/');
 
     IO\write_error_line($response);
 

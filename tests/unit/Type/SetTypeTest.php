@@ -81,6 +81,7 @@ final class SetTypeTest extends TypeTest
      * @param SetInterface<array-key>|mixed $a
      * @param SetInterface<array-key>|mixed $b
      */
+    #[\Override]
     protected function equals($a, $b): bool
     {
         if (Type\instance_of(SetInterface::class)->matches($a)) {
@@ -117,14 +118,14 @@ final class SetTypeTest extends TypeTest
         ];
         yield 'invalid iterator first item' => [
             Type\set(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield Type\int()->coerce('nope');
             })(),
             'Could not coerce "string" to type "' . SetInterface::class . '<int>" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
             Type\set(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 0;
                 yield Type\int()->coerce('nope');
             })(),
@@ -132,7 +133,7 @@ final class SetTypeTest extends TypeTest
         ];
         yield 'iterator throwing exception' => [
             Type\set(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 0;
                 throw new RuntimeException('whoops');
             })(),
@@ -140,21 +141,21 @@ final class SetTypeTest extends TypeTest
         ];
         yield 'iterator yielding null key' => [
             Type\set(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield null => 'nope';
             })(),
             'Could not coerce "string" to type "' . SetInterface::class . '<int>" at path "null".',
         ];
         yield 'iterator yielding string key, null value' => [
             Type\set(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 'nope' => 'bar';
             })(),
             'Could not coerce "string" to type "' . SetInterface::class . '<int>" at path "nope".',
         ];
         yield 'iterator yielding object key' => [
             Type\set(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 'nope' => new class() {
                 };
             })(),

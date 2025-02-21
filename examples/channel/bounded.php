@@ -11,14 +11,14 @@ use Psl\IO;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-Async\main(static function () {
+Async\main(static function (): int {
     /**
      * @var Channel\ReceiverInterface<string> $receiver
      * @var Channel\SenderInterface<string> $sender
      */
     [$receiver, $sender] = Channel\bounded(10);
 
-    Async\Scheduler::defer(static function () use ($receiver) {
+    Async\Scheduler::defer(static function () use ($receiver): void {
         try {
             while (true) {
                 $receiver->receive();
@@ -30,9 +30,14 @@ Async\main(static function () {
 
     for ($i = 0; $i < 10; $i++) {
         $file = File\open_read_only(__FILE__);
-        while ($byte = $file->readAll(1)) {
+        do {
+            $byte = $file->readAll(1);
+            if ('' === $byte) {
+                break;
+            }
+
             $sender->send($byte);
-        }
+        } while (true);
 
         $file->close();
     }

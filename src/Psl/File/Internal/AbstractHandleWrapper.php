@@ -34,6 +34,7 @@ abstract class AbstractHandleWrapper implements File\HandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function lock(LockType $type): Lock
     {
         return $this->handle->lock($type);
@@ -50,6 +51,7 @@ abstract class AbstractHandleWrapper implements File\HandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function seek(int $offset): void
     {
         $this->handle->seek($offset);
@@ -58,6 +60,7 @@ abstract class AbstractHandleWrapper implements File\HandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function tell(): int
     {
         return $this->handle->tell();
@@ -66,6 +69,7 @@ abstract class AbstractHandleWrapper implements File\HandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function close(): void
     {
         $this->handle->close();

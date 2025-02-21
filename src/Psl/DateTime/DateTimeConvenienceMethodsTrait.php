@@ -534,6 +534,7 @@ trait DateTimeConvenienceMethodsTrait
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function format(
         null|FormatPattern|string $pattern = null,
         null|Timezone $timezone = null,

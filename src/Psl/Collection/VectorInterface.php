@@ -22,6 +22,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function at(int|string $k): mixed;
 
     /**
@@ -31,6 +32,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function contains(int|string $k): bool;
 
     /**
@@ -42,6 +44,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function get(int|string $k): mixed;
 
     /**
@@ -61,6 +64,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function values(): VectorInterface;
 
     /**
@@ -70,6 +74,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function keys(): VectorInterface;
 
     /**
@@ -88,6 +93,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * @return VectorInterface<T> A VectorInterface containing the values after a user-specified condition
      *                            is applied.
      */
+    #[\Override]
     public function filter(Closure $fn): VectorInterface;
 
     /**
@@ -158,6 +164,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function first(): mixed;
 
     /**
@@ -178,6 +185,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function last(): mixed;
 
     /**
@@ -222,6 +230,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function zip(array $elements): VectorInterface;
 
     /**
@@ -241,6 +250,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function take(int $n): VectorInterface;
 
     /**
@@ -276,6 +286,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function drop(int $n): VectorInterface;
 
     /**
@@ -315,6 +326,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function slice(int $start, null|int $length = null): VectorInterface;
 
     /**
@@ -331,5 +343,6 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function chunk(int $size): VectorInterface;
 }

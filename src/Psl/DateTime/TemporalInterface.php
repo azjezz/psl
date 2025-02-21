@@ -33,6 +33,7 @@ interface TemporalInterface extends Comparable, Equable, JsonSerializable, Strin
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function compare(mixed $other): Order;
 
     /**
@@ -44,6 +45,7 @@ interface TemporalInterface extends Comparable, Equable, JsonSerializable, Strin
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function equals(mixed $other): bool;
 
     /**

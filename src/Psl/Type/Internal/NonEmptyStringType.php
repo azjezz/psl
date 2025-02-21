@@ -22,6 +22,7 @@ final readonly class NonEmptyStringType extends Type\Type
     /**
      * @psalm-assert-if-true non-empty-string $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return '' !== $value && is_string($value);
@@ -32,6 +33,7 @@ final readonly class NonEmptyStringType extends Type\Type
      *
      * @return non-empty-string
      */
+    #[\Override]
     public function coerce(mixed $value): string
     {
         if ('' !== $value && is_string($value)) {
@@ -60,6 +62,7 @@ final readonly class NonEmptyStringType extends Type\Type
      *
      * @psalm-assert non-empty-string $value
      */
+    #[\Override]
     public function assert(mixed $value): string
     {
         if ('' !== $value && is_string($value)) {

@@ -22,6 +22,7 @@ final class CloseSeekStreamHandle implements CloseSeekStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function seek(int $offset): void
     {
         $this->handle->seek($offset);
@@ -30,6 +31,7 @@ final class CloseSeekStreamHandle implements CloseSeekStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function tell(): int
     {
         return $this->handle->tell();
@@ -38,6 +40,7 @@ final class CloseSeekStreamHandle implements CloseSeekStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function close(): void
     {
         $this->handle->close();

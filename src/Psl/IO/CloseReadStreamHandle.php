@@ -43,6 +43,7 @@ final class CloseReadStreamHandle implements CloseReadStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         return $this->handle->read($max_bytes, $timeout);
@@ -51,6 +52,7 @@ final class CloseReadStreamHandle implements CloseReadStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function close(): void
     {
         $this->handle->close();

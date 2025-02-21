@@ -10,8 +10,10 @@ use Psl\Shell;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-Async\main(static function (): void {
+Async\main(static function (): int {
     $result = Shell\execute('echo', ['hello']);
 
     IO\write_error('result: %s', $result);
+
+    return 0;
 });

@@ -16,5 +16,6 @@ interface PriorityQueueInterface extends QueueInterface
      *
      * @param T $node
      */
+    #[\Override]
     public function enqueue(mixed $node, int $priority = 0): void;
 }

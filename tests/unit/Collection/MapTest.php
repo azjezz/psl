@@ -40,6 +40,7 @@ final class MapTest extends AbstractMapTest
      *
      * @return Map<Tk, Tv>
      */
+    #[\Override]
     protected function create(iterable $items): Map
     {
         return Map::fromArray($items);

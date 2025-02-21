@@ -38,6 +38,7 @@ enum TimeStyle implements DefaultInterface
      *
      * @pure
      */
+    #[\Override]
     public static function default(): static
     {
         return self::Medium;

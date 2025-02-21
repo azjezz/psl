@@ -24,6 +24,8 @@ use function uasort;
  * @param (Closure(Ts, Ts): int)|null $comparator
  *
  * @return list<Tv>
+ *
+ * @mago-ignore best-practices/no-else-clause
  */
 function sort_by(iterable $iterable, Closure $scalar_func, null|Closure $comparator = null): array
 {

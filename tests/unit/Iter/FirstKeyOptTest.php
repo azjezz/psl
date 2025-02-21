@@ -30,7 +30,7 @@ final class FirstKeyOptTest extends TestCase
         yield ['a', new Collection\Map(['a' => 'b'])];
         yield [
             null,
-            (static function () {
+            (static function (): iterable {
                 yield null => null;
             })(),
         ];
@@ -50,7 +50,7 @@ final class FirstKeyOptTest extends TestCase
     {
         yield [[]];
         yield [new SplDoublyLinkedList()];
-        yield [(static function () {
+        yield [(static function (): iterable {
             return;
             yield;
         })()];

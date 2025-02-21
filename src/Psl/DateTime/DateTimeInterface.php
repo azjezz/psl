@@ -453,11 +453,8 @@ interface DateTimeInterface extends TemporalInterface
      *
      * @psalm-mutation-free
      */
-    public function format(
-        null|FormatPattern|string $pattern = null,
-        null|Timezone $timezone = null,
-        null|Locale $locale = null,
-    ): string;
+    #[\Override]
+    public function format(null|FormatPattern|string $pattern = null, null|Timezone $timezone = null, null|Locale $locale = null): string;
 
     /**
      * Provides a string representation of this {@see TemporalInterface} instance, formatted according to specified styles for date and time,

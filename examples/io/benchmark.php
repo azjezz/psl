@@ -18,6 +18,9 @@ use const PHP_OS_FAMILY;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
+/**
+ * @mago-ignore best-practices/no-empty-catch-clause
+ */
 Async\main(static function (): int {
     if (PHP_OS_FAMILY === 'Windows') {
         IO\write_error_line('This example does not support Windows.');
@@ -37,19 +40,29 @@ Async\main(static function (): int {
     $input = new IO\CloseReadStreamHandle(fopen($input_file, 'rb'));
     $output = new IO\CloseWriteStreamHandle(fopen($output_file, 'wb'));
 
-    IO\write_error_line('piping from %s to %s (for max %d second(s)) ...', $input_file, $output_file, $seconds);
+    IO\write_error_line(
+        'piping from %s to %s (for max %d second(s)) ...',
+        $input_file,
+        $output_file,
+        $seconds->getTotalSeconds(),
+    );
 
-    Async\Scheduler::delay($seconds, static fn() => $input->close());
+    Async\Scheduler::delay($seconds, static fn(): null => $input->close());
 
     $start = DateTime\Timestamp::monotonic();
     $i = 0;
     try {
-        while ($chunk = $input->read(65536)) {
+        do {
+            $chunk = $input->read(65536);
+            if ('' === $chunk) {
+                break;
+            }
+
             $output->writeAll($chunk);
             $i++;
 
             Async\later();
-        }
+        } while (true);
     } catch (IO\Exception\AlreadyClosedException) {
     }
 

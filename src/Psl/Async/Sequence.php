@@ -20,6 +20,8 @@ use function array_slice;
  * @template Tout
  *
  * @see Semaphore
+ *
+ * @mago-ignore best-practices/no-else-clause
  */
 final class Sequence
 {
@@ -55,7 +57,8 @@ final class Sequence
     public function waitFor(mixed $input): mixed
     {
         if ($this->ingoing) {
-            $this->pending[] = $suspension = EventLoop::getSuspension();
+            $suspension = EventLoop::getSuspension();
+            $this->pending[] = $suspension;
 
             $suspension->suspend();
         }

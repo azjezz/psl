@@ -22,6 +22,7 @@ final readonly class StringType extends Type\Type
     /**
      * @psalm-assert-if-true string $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return is_string($value);
@@ -30,6 +31,7 @@ final readonly class StringType extends Type\Type
     /**
      * @throws CoercionException
      */
+    #[\Override]
     public function coerce(mixed $value): string
     {
         if (is_string($value)) {
@@ -48,6 +50,7 @@ final readonly class StringType extends Type\Type
      *
      * @throws AssertException
      */
+    #[\Override]
     public function assert(mixed $value): string
     {
         if (is_string($value)) {

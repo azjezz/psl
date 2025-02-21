@@ -25,7 +25,7 @@ function replace_ci(string $haystack, string $needle, string $replacement, Encod
 
     try {
         /** @var list<string> */
-        $pieces = Regex\Internal\call_preg('preg_split', static fn() => preg_split(
+        $pieces = Regex\Internal\call_preg('preg_split', static fn(): array|false => preg_split(
             '{' . preg_quote($needle, '/') . '}iu',
             $haystack,
             -1,

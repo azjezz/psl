@@ -61,6 +61,7 @@ final readonly class SocketOptions implements DefaultInterface
      *
      * @pure
      */
+    #[\Override]
     public static function default(): static
     {
         return self::create();

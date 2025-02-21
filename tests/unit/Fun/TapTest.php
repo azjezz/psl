@@ -30,8 +30,8 @@ final class TapTest extends TestCase
     {
         $log = new Ref('');
         $result = Fun\pipe(
-            static fn(string $x) => Hash\hash($x, Hash\Algorithm::Md5),
-            Fun\tap(static function ($x) use ($log): void {
+            static fn(string $x): string => Hash\hash($x, Hash\Algorithm::Md5),
+            Fun\tap(static function (string $x) use ($log): void {
                 $log->value = $x;
             }),
             static fn(string $x): string => Str\truncate($x, 0, 1),

@@ -21,6 +21,7 @@ final readonly class MixedDictType extends Type\Type
      *
      * @return array<array-key, mixed>
      */
+    #[\Override]
     public function coerce(mixed $value): array
     {
         if (!is_iterable($value)) {
@@ -71,6 +72,7 @@ final readonly class MixedDictType extends Type\Type
      *
      * @psalm-assert array<array-key, mixed> $value
      */
+    #[\Override]
     public function assert(mixed $value): array
     {
         if (!is_array($value)) {

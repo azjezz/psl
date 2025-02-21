@@ -18,6 +18,8 @@ use Psl\Str;
  * @throws Exception\NotFoundException If $file is not found.
  *
  * @return int<0, max>
+ *
+ * @mago-ignore best-practices/no-boolean-literal-comparison
  */
 function file_size(string $file): int
 {
@@ -34,7 +36,7 @@ function file_size(string $file): int
     }
 
     // @codeCoverageIgnoreStart
-    [$size, $message] = Internal\box(static fn() => filesize($file));
+    [$size, $message] = Internal\box(static fn(): int|false => filesize($file));
     if (false === $size) {
         throw new Exception\RuntimeException(Str\format(
             'Error reading the size of file "%s": %s',

@@ -20,6 +20,7 @@ final readonly class BoolType extends Type\Type
     /**
      * @psalm-assert-if-true bool $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return is_bool($value);
@@ -28,6 +29,7 @@ final readonly class BoolType extends Type\Type
     /**
      * @throws CoercionException
      */
+    #[\Override]
     public function coerce(mixed $value): bool
     {
         if (is_bool($value)) {
@@ -50,6 +52,7 @@ final readonly class BoolType extends Type\Type
      *
      * @throws AssertException
      */
+    #[\Override]
     public function assert(mixed $value): bool
     {
         if (is_bool($value)) {

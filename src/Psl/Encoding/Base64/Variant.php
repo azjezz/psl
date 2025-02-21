@@ -73,6 +73,7 @@ enum Variant implements DefaultInterface
      *
      * @return static The `Standard` variant of Base64 encoding.
      */
+    #[\Override]
     public static function default(): static
     {
         return self::Standard;

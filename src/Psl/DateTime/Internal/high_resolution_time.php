@@ -22,6 +22,9 @@ use const Psl\DateTime\NANOSECONDS_PER_SECOND;
  * @psalm-suppress ImpureStaticVariable - We ignore the internal mutation, as is simply a static initializer.
  * @psalm-suppress ImpureFunctionCall - `hrtime()` it is mutation-free, as it performs a read-only operation from the systems clock,
  *  and does not alter anything.
+ *
+ * @mago-ignore best-practices/no-boolean-literal-comparison
+ * @mago-ignore best-practices/no-else-clause
  */
 function high_resolution_time(): array
 {

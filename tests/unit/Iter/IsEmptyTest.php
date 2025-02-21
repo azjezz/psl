@@ -21,7 +21,7 @@ final class IsEmptyTest extends TestCase
     {
         yield [true, []];
         yield [true, Iter\to_iterator([])];
-        yield [true, (static fn() => yield from [])()];
+        yield [true, (static fn(): iterable => yield from [])()];
 
         yield [false, [null]];
         yield [false, [false]];

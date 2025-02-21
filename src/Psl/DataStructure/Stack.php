@@ -40,6 +40,7 @@ final class Stack implements StackInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function push(mixed $item): void
     {
         $this->items[] = $item;
@@ -53,6 +54,7 @@ final class Stack implements StackInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function peek(): mixed
     {
         $items = $this->items;
@@ -68,6 +70,7 @@ final class Stack implements StackInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function pull(): mixed
     {
         return array_pop($this->items);
@@ -82,6 +85,7 @@ final class Stack implements StackInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function pop(): mixed
     {
         if ([] === $this->items) {
@@ -99,6 +103,7 @@ final class Stack implements StackInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function count(): int
     {
         return count($this->items);

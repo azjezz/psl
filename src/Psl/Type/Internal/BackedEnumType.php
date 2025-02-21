@@ -27,6 +27,7 @@ final readonly class BackedEnumType extends Type\Type
     ) {
     }
 
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return $value instanceof $this->enum;
@@ -37,6 +38,7 @@ final readonly class BackedEnumType extends Type\Type
      *
      * @return T
      */
+    #[\Override]
     public function coerce(mixed $value): BackedEnum
     {
         if ($value instanceof $this->enum) {
@@ -50,12 +52,14 @@ final readonly class BackedEnumType extends Type\Type
                 if ($string_value === $case->value) {
                     return $case;
                 }
-            } else {
-                $integer_value = Type\int()->coerce($value);
 
-                if ($integer_value === $case->value) {
-                    return $case;
-                }
+                continue;
+            }
+
+            $integer_value = Type\int()->coerce($value);
+
+            if ($integer_value === $case->value) {
+                return $case;
             }
         }
 
@@ -69,6 +73,7 @@ final readonly class BackedEnumType extends Type\Type
      *
      * @psalm-assert T $value
      */
+    #[\Override]
     public function assert(mixed $value): BackedEnum
     {
         if ($value instanceof $this->enum) {

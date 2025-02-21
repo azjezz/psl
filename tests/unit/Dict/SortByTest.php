@@ -8,13 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Psl\Dict;
 use Psl\Iter;
 use Psl\Str;
+use Closure;
 
 final class SortByTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
-    public function testSortBy(array $expected, array $array, callable $scalar_fun, null|callable $comp = null): void
+    public function testSortBy(array $expected, array $array, callable $scalar_fun, null|Closure $comp = null): void
     {
         static::assertSame($expected, Dict\sort_by($array, $scalar_fun, $comp));
     }
@@ -31,8 +32,6 @@ final class SortByTest extends TestCase
             /**
              * @param array<array-key, string|int> $array
              *
-             * @return int
-             *
              * @pure
              */
             static fn(array $array): int => Iter\count($array);
@@ -47,70 +46,45 @@ final class SortByTest extends TestCase
                 [1 => 'a', 2 => 'b', 3 => 'c', 0 => 'd'],
                 ['d', 'a', 'b', 'c'],
                 /**
-                 * @param string $v
-                 *
-                 * @return string
-                 *
                  * @pure
                  */
-                static fn($v) => $v,
+                static fn(string $v): string => $v,
             ],
             [
                 ['a'],
                 ['a'],
                 /**
-                 * @param string $v
-                 *
-                 * @return string
-                 *
                  * @pure
                  */
-                static fn($v) => $v,
+                static fn(string $v): string => $v,
             ],
             [
                 [0 => 'd', 3 => 'c', 2 => 'b', 1 => 'a'],
                 ['d', 'a', 'b', 'c'],
                 /**
-                 * @param string $v
-                 *
-                 * @return string
-                 *
                  * @pure
                  */
-                static fn($v) => $v,
+                static fn(string $v): string => $v,
                 /**
-                 * @param string $a
-                 * @param string $b
-                 *
-                 * @return int
-                 *
                  * @pure
                  */
-                static fn(string $a, string $b) => Str\ord($a) > Str\ord($b) ? -1 : 1,
+                static fn(string $a, string $b): int => Str\ord($a) > Str\ord($b) ? -1 : 1,
             ],
             [
                 ['foo' => 'bar', 'baz' => 'qux'],
                 ['foo' => 'bar', 'baz' => 'qux'],
                 /**
-                 * @param string $v
-                 *
-                 * @return string
-                 *
                  * @pure
                  */
-                static fn($v) => $v,
+                static fn(string $v): string => $v,
             ],
             [
                 [4 => 'jumped', 0 => 'the', 1 => 'quick', 2 => 'brown', 3 => 'fox'],
                 ['the', 'quick', 'brown', 'fox', 'jumped'],
                 /**
-                 * @param string $v
-                 *
-                 * @return string
-                 *
                  * @pure
                  */
-                static fn($v) => Str\Byte\reverse($v),
+                static fn(string $v): string => Str\Byte\reverse($v),
             ],
         ];
     }

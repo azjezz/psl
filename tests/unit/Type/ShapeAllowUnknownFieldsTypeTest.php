@@ -161,6 +161,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTest
      * @param Collection\VectorInterface<mixed>|mixed $a
      * @param Collection\VectorInterface<mixed>|mixed $b
      */
+    #[\Override]
     protected function equals($a, $b): bool
     {
         $dict = Type\dict(Type\array_key(), Type\mixed());

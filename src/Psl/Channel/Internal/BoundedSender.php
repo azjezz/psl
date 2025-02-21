@@ -34,10 +34,12 @@ final class BoundedSender implements SenderInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function send(mixed $message): void
     {
         if ($this->suspension) {
-            $this->suspension = $suspension = EventLoop::getSuspension();
+            $suspension = EventLoop::getSuspension();
+            $this->suspension = $suspension;
             $this->state->waitForSpace($suspension);
             $suspension->suspend();
         }
@@ -45,7 +47,8 @@ final class BoundedSender implements SenderInterface
         try {
             $this->state->send($message);
         } catch (Exception\FullChannelException) {
-            $this->suspension = $suspension = EventLoop::getSuspension();
+            $suspension = EventLoop::getSuspension();
+            $this->suspension = $suspension;
             $this->state->waitForSpace($suspension);
             $suspension->suspend();
 

@@ -27,9 +27,11 @@ function sort(iterable $iterable, null|Closure $comparator = null): array
     $array = values($iterable);
     if (null !== $comparator) {
         usort($array, $comparator);
-    } else {
-        php_sort($array);
+
+        return $array;
     }
+
+    php_sort($array);
 
     return $array;
 }

@@ -1,3 +1,5 @@
+php_version = "8.2"
+
 [source]
 paths = ["src", "tests", "examples"]
 includes = ["vendor"]
@@ -22,63 +24,49 @@ name = "maintainability/kan-defect"
 threshold = 3.5
 
 [[linter.rules]]
-name = "maintainability/halstead"
-effort_threshold = 16_000.0
-volume_threshold = 1_400.0
-difficulty_threshold = 18.5
-
-[[linter.rules]]
 name = "maintainability/excessive-parameter-list"
 threshold = 9
-
-[[linter.rules]]
-name = "maintainability/too-many-enum-cases"
-threshold = 800
-
-[[linter.rules]]
-name = "maintainability/too-many-methods"
-threshold = 43
-
-[[linter.rules]]
-name = "best-practices/disallowed-functions"
-functions = ["is_null", "assert"]
 
 [[linter.rules]]
 name = "best-practices/excessive-nesting"
 threshold = 5
 
 [[linter.rules]]
-name = "best-practices/no-debug-symbols"
-level = "Error"
+name = "naming/trait"
+psr = false
 
 [[linter.rules]]
-name = "strictness/no-assignment-in-condition"
-level = "Warning"
+name = "naming/interface"
+psr = false
 
 [[linter.rules]]
-name = "strictness/require-constant-type"
-level = "Warning"
+name = "naming/class"
+psr = false
 
 [[linter.rules]]
-name = "strictness/require-parameter-type"
-level = "Warning"
+name = "maintainability/halstead"
+level = "off"
 
 [[linter.rules]]
-name = "strictness/require-property-type"
-level = "Error"
+name = "maintainability/too-many-enum-cases"
+level = "off"
 
 [[linter.rules]]
-name = "strictness/require-return-type"
-level = "Warning"
+name = "maintainability/too-many-methods"
+level = "off"
 
 [[linter.rules]]
-name = "strictness/require-strict-types"
-level = "Error"
+name = "maintainability/long-inheritance-chain"
+level = "off"
 
 [[linter.rules]]
 name = "safety/no-error-control-operator"
-level = "Off"
+level = "off"
 
 [[linter.rules]]
 name = "safety/no-global"
-level = "Warning"
+level = "off"
+
+[[linter.rules]]
+name = "best-practices/no-boolean-flag-parameter"
+level = "off"

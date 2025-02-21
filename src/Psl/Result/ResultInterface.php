@@ -18,6 +18,8 @@ use Throwable;
  * @template T
  *
  * @extends Psl\Promise\PromiseInterface<T>
+ *
+ * @mago-ignore strictness/require-return-type - Adding a return type would break the interface
  */
 interface ResultInterface extends Psl\Promise\PromiseInterface
 {
@@ -40,6 +42,7 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
      *
      * @return ResultInterface<Ts>
      */
+    #[\Override]
     public function then(Closure $success, Closure $failure): ResultInterface;
 
     /**
@@ -54,6 +57,7 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
      *
      * @return ResultInterface<Ts>
      */
+    #[\Override]
     public function map(Closure $success): ResultInterface;
 
     /**
@@ -68,6 +72,7 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
      *
      * @return ResultInterface<T|Ts>
      */
+    #[\Override]
     public function catch(Closure $failure): ResultInterface;
 
     /**
@@ -81,6 +86,7 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
      *
      * @return ResultInterface<T>
      */
+    #[\Override]
     public function always(Closure $always): ResultInterface;
 
     /**

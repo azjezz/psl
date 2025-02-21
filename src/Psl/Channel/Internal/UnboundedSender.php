@@ -29,6 +29,7 @@ final class UnboundedSender implements SenderInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function send(mixed $message): void
     {
         /** @psalm-suppress MissingThrowsDocblock */

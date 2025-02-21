@@ -54,7 +54,7 @@ final class State
     {
         if ($this->throwable && !$this->handled) {
             $exception = Exception\UnhandledAwaitableException::forThrowable($this->throwable);
-            EventLoop::queue(static fn() => throw $exception);
+            EventLoop::queue(static fn(): never => throw $exception);
         }
     }
 
@@ -74,10 +74,12 @@ final class State
         $this->handled = true;
 
         if ($this->complete) {
-            EventLoop::queue(fn() => $callback($this->throwable, $this->result, $id));
-        } else {
-            $this->callbacks[$id] = $callback;
+            EventLoop::queue(fn(): mixed => $callback($this->throwable, $this->result, $id));
+
+            return $id;
         }
+
+        $this->callbacks[$id] = $callback;
 
         return $id;
     }
@@ -156,7 +158,7 @@ final class State
         $this->complete = true;
 
         foreach ($this->callbacks as $id => $callback) {
-            EventLoop::queue(fn() => $callback($this->throwable, $this->result, $id));
+            EventLoop::queue(fn(): mixed => $callback($this->throwable, $this->result, $id));
         }
 
         $this->callbacks = [];

@@ -207,43 +207,43 @@ final class ReadWriteHandleTest extends TestCase
     public function provideOperations(): iterable
     {
         yield [
-            static fn(File\HandleInterface $handle) => $handle->seek(5),
+            static fn(File\HandleInterface $handle): null => $handle->seek(5),
         ];
 
         yield [
-            static fn(File\HandleInterface $handle) => $handle->tell(),
+            static fn(File\HandleInterface $handle): int => $handle->tell(),
         ];
 
         yield [
-            static fn(File\WriteHandleInterface $handle) => $handle->write('hello'),
+            static fn(File\WriteHandleInterface $handle): null => $handle->write('hello'),
         ];
 
         yield [
-            static fn(File\WriteHandleInterface $handle) => $handle->writeAll('hello'),
+            static fn(File\WriteHandleInterface $handle): null => $handle->writeAll('hello'),
         ];
 
         yield [
-            static fn(File\ReadHandleInterface $handle) => $handle->read(),
+            static fn(File\ReadHandleInterface $handle): string => $handle->read(),
         ];
 
         yield [
-            static fn(File\ReadHandleInterface $handle) => $handle->readAll(),
+            static fn(File\ReadHandleInterface $handle): string => $handle->readAll(),
         ];
 
         yield [
-            static fn(File\ReadHandleInterface $handle) => $handle->tryRead(),
+            static fn(File\ReadHandleInterface $handle): string => $handle->tryRead(),
         ];
 
         yield [
-            static fn(File\HandleInterface $handle) => $handle->lock(File\LockType::Exclusive),
+            static fn(File\HandleInterface $handle): File\Lock => $handle->lock(File\LockType::Exclusive),
         ];
 
         yield [
-            static fn(File\HandleInterface $handle) => $handle->tryLock(File\LockType::Exclusive),
+            static fn(File\HandleInterface $handle): File\Lock => $handle->tryLock(File\LockType::Exclusive),
         ];
 
         yield [
-            static fn(File\HandleInterface $handle) => $handle->getSize(),
+            static fn(File\HandleInterface $handle): int => $handle->getSize(),
         ];
     }
 }

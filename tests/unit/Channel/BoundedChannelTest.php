@@ -131,7 +131,7 @@ final class BoundedChannelTest extends TestCase
 
         $sender->send('hello');
 
-        Async\Scheduler::delay(DateTime\Duration::milliseconds(1), static function () use ($receiver) {
+        Async\Scheduler::delay(DateTime\Duration::milliseconds(1), static function () use ($receiver): void {
             $receiver->receive();
         });
 
@@ -267,7 +267,7 @@ final class BoundedChannelTest extends TestCase
          */
         [$receiver, $sender] = Channel\bounded(1);
 
-        Async\Scheduler::delay(DateTime\Duration::milliseconds(1), static fn() => $sender->send('hello'));
+        Async\Scheduler::delay(DateTime\Duration::milliseconds(1), static fn(): null => $sender->send('hello'));
 
         static::assertTrue($receiver->isEmpty());
 
@@ -298,14 +298,14 @@ final class BoundedChannelTest extends TestCase
         // fill the channel.
         $sender->send('foo');
 
-        $one = Async\run(static fn() => $sender->send('bar'));
-        $two = Async\run(static fn() => $sender->send('baz'));
+        $one = Async\run(static fn(): null => $sender->send('bar'));
+        $two = Async\run(static fn(): null => $sender->send('baz'));
 
-        Async\Scheduler::defer(static function () use ($receiver) {
+        Async\Scheduler::defer(static function () use ($receiver): void {
             $receiver->receive();
         });
 
-        Async\Scheduler::defer(static function () use ($receiver) {
+        Async\Scheduler::defer(static function () use ($receiver): void {
             $receiver->receive();
         });
 
@@ -324,11 +324,11 @@ final class BoundedChannelTest extends TestCase
          */
         [$receiver, $sender] = Channel\bounded(1);
 
-        $one = Async\run(static fn() => $receiver->receive());
-        $two = Async\run(static fn() => $receiver->receive());
+        $one = Async\run(static fn(): string => $receiver->receive());
+        $two = Async\run(static fn(): string => $receiver->receive());
 
-        Async\Scheduler::defer(static fn() => $sender->send('foo'));
-        Async\Scheduler::defer(static fn() => $sender->send('bar'));
+        Async\Scheduler::defer(static fn(): null => $sender->send('foo'));
+        Async\Scheduler::defer(static fn(): null => $sender->send('bar'));
 
         static::assertSame('bar', $two->await());
 

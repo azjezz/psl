@@ -18,6 +18,7 @@ final readonly class NullType extends Type\Type
     /**
      * @psalm-assert-if-true null $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return null === $value;
@@ -26,6 +27,7 @@ final readonly class NullType extends Type\Type
     /**
      * @return null
      */
+    #[\Override]
     public function coerce(mixed $value): mixed
     {
         if (null === $value) {
@@ -40,6 +42,7 @@ final readonly class NullType extends Type\Type
      *
      * @return null
      */
+    #[\Override]
     public function assert(mixed $value): mixed
     {
         if (null === $value) {

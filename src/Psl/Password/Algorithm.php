@@ -98,6 +98,7 @@ enum Algorithm: string implements DefaultInterface
      *
      * @pure
      */
+    #[\Override]
     public static function default(): static
     {
         return self::Default;

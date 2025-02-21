@@ -15,6 +15,8 @@ use Psl\Option\Option;
  * @param iterable<T> $iterable
  *
  * @return Option<T>
+ *
+ * @mago-ignore best-practices/loop-does-not-iterate
  */
 function first_opt(iterable $iterable): Option
 {

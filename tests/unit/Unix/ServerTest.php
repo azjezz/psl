@@ -7,6 +7,7 @@ namespace Psl\Tests\Unit\Unix;
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
 use Psl\Filesystem;
+use Psl\Network;
 use Psl\Network\Exception;
 use Psl\OS;
 use Psl\Unix;
@@ -54,12 +55,12 @@ final class ServerTest extends TestCase
         $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . '.sock';
         $server = Unix\Server::create($sock);
 
-        $first = Async\run(static fn() => $server->nextConnection());
+        $first = Async\run(static fn(): Network\SocketInterface => $server->nextConnection());
 
         [$second_connection, $client_one, $client_two] = Async\concurrently([
-            static fn() => $server->nextConnection(),
-            static fn() => Unix\connect($sock),
-            static fn() => Unix\connect($sock),
+            static fn(): Network\SocketInterface => $server->nextConnection(),
+            static fn(): Network\SocketInterface => Unix\connect($sock),
+            static fn(): Network\SocketInterface => Unix\connect($sock),
         ]);
 
         static::assertTrue($first->isComplete());
@@ -88,7 +89,7 @@ final class ServerTest extends TestCase
         $server = Unix\Server::create($sock);
         $stream = $server->getStream();
         $deferred = new Async\Deferred();
-        $watcher = Async\Scheduler::onReadable($stream, static fn() => $deferred->complete(true));
+        $watcher = Async\Scheduler::onReadable($stream, static fn(): null => $deferred->complete(true));
         $client = Unix\connect($sock);
 
         $deferred->getAwaitable()->await();

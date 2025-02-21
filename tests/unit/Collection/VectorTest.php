@@ -28,6 +28,7 @@ final class VectorTest extends AbstractVectorTest
      *
      * @return Vector<T>
      */
+    #[\Override]
     protected function create(array $items): Vector
     {
         return new Vector($items);

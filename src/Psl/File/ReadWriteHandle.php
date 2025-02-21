@@ -90,6 +90,7 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         return $this->readWriteHandle->read($max_bytes, $timeout);
@@ -106,6 +107,7 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Re
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function write(string $bytes, null|Duration $timeout = null): int
     {
         return $this->readWriteHandle->write($bytes, $timeout);

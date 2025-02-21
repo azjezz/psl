@@ -26,6 +26,8 @@ use function unpack as byte_unpack;
  *          Shell\execute('php', ['-r', 'fwrite(STDOUT, "a"); fwrite(STDERR, "b"); fwrite(STDOUT, "c");'], null, [], ErrorOutputBehavior::Packed),
  *      );
  *      => Generator(1 => "a", 2 => "b", 1 => "c")
+ *
+ * @mago-ignore best-practices/no-boolean-literal-comparison
  */
 function stream_unpack(string $content): Generator
 {
@@ -53,8 +55,9 @@ function stream_unpack(string $content): Generator
 
         if ($type === 1 || $type === 2) {
             yield $type => $chunk;
-        } else {
-            throw new Exception\InvalidArgumentException('$content contains an invalid header value.');
+            continue;
         }
+
+        throw new Exception\InvalidArgumentException('$content contains an invalid header value.');
     }
 }

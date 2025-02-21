@@ -250,6 +250,7 @@ final class MutableMapTest extends AbstractMapTest
      *
      * @return MutableMap<Tk, Tv>
      */
+    #[\Override]
     protected function create(iterable $items): MutableMap
     {
         return MutableMap::fromArray($items);

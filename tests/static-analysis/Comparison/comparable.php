@@ -22,6 +22,7 @@ abstract class Size implements Comparable
 {
     abstract public function normalizedValue(): int;
 
+    #[\Override]
     public function compare(mixed $other): Order
     {
         return Comparison\compare($this->normalizedValue(), $other->normalizedValue());

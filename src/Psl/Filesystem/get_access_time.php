@@ -16,6 +16,8 @@ use function fileatime;
  *
  * @throws Exception\NotFoundException If $node is not found.
  * @throws Exception\RuntimeException In case of an error.
+ *
+ * @mago-ignore best-practices/no-boolean-literal-comparison
  */
 function get_access_time(string $node): int
 {
@@ -23,12 +25,7 @@ function get_access_time(string $node): int
         throw Exception\NotFoundException::forNode($node);
     }
 
-    [$result, $message] = Psl\Internal\box(
-        /**
-         * @return false|int
-         */
-        static fn() => fileatime($node),
-    );
+    [$result, $message] = Psl\Internal\box(static fn(): false|int => fileatime($node));
 
     // @codeCoverageIgnoreStart
     if (false === $result) {

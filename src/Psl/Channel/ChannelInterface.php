@@ -41,6 +41,7 @@ interface ChannelInterface extends Countable
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function count(): int;
 
     /**

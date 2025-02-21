@@ -28,7 +28,7 @@ final class CommunicationBench
          */
         [$receiver, $sender] = Channel\bounded(10);
 
-        Async\Scheduler::defer(static function () use ($receiver) {
+        Async\Scheduler::defer(static function () use ($receiver): void {
             try {
                 while (true) {
                     $receiver->receive();
@@ -39,9 +39,14 @@ final class CommunicationBench
         });
 
         $file = File\open_read_only(__FILE__);
-        while ($byte = $file->readAll(1)) {
+        do {
+            $byte = $file->readAll(1);
+            if ('' === $byte) {
+                break;
+            }
+
             $sender->send($byte);
-        }
+        } while (true);
 
         $sender->close();
 
@@ -63,7 +68,7 @@ final class CommunicationBench
          */
         [$receiver, $sender] = Channel\bounded(10);
 
-        Async\Scheduler::defer(static function () use ($receiver) {
+        Async\Scheduler::defer(static function () use ($receiver): void {
             try {
                 while (true) {
                     $receiver->receive();
@@ -74,9 +79,14 @@ final class CommunicationBench
         });
 
         $file = File\open_read_only(__FILE__);
-        while ($byte = $file->readAll(1)) {
+        do {
+            $byte = $file->readAll(1);
+            if ('' === $byte) {
+                break;
+            }
+
             $sender->send($byte);
-        }
+        } while (true);
 
         $sender->close();
 

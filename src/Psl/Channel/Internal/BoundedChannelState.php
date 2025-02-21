@@ -91,6 +91,7 @@ final class BoundedChannelState implements ChannelInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function close(): void
     {
         $this->closed = true;
@@ -121,6 +122,7 @@ final class BoundedChannelState implements ChannelInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function count(): int
     {
         return $this->size;
@@ -161,9 +163,8 @@ final class BoundedChannelState implements ChannelInterface
         $this->messages[] = $message;
         $this->size++;
 
-        if ($suspension = array_shift($this->waitingForMessage)) {
-            $suspension->resume(null);
-        }
+        $suspension = array_shift($this->waitingForMessage);
+        $suspension?->resume(null);
     }
 
     /**
@@ -186,9 +187,8 @@ final class BoundedChannelState implements ChannelInterface
         /** @psalm-suppress InvalidPropertyAssignmentValue - The size is always in sync with messages */
         $this->size--;
 
-        if ($suspension = array_shift($this->waitingForSpace)) {
-            $suspension->resume(null);
-        }
+        $suspension = array_shift($this->waitingForSpace);
+        $suspension?->resume(null);
 
         return $item;
     }

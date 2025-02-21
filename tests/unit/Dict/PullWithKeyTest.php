@@ -15,8 +15,8 @@ final class PullWithKeyTest extends TestCase
     {
         $result = Dict\pull_with_key(
             Vec\range(0, 10),
-            static fn($k, $v) => Str\chr($v + $k + 65),
-            static fn($k, $v) => 2 ** ($v + $k),
+            static fn(int $k, int $v): string => Str\chr($v + $k + 65),
+            static fn(int $k, int $v): int => 2 ** ($v + $k),
         );
 
         static::assertSame(

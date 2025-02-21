@@ -91,6 +91,7 @@ final class VectorTypeTest extends TypeTest
      * @param VectorInterface<mixed>|mixed $a
      * @param VectorInterface<mixed>|mixed $b
      */
+    #[\Override]
     protected function equals($a, $b): bool
     {
         if (Type\instance_of(VectorInterface::class)->matches($a)) {
@@ -131,14 +132,14 @@ final class VectorTypeTest extends TypeTest
         ];
         yield 'invalid iterator first item' => [
             Type\vector(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield Type\int()->coerce('nope');
             })(),
             'Could not coerce "string" to type "' . VectorInterface::class . '<int>" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
             Type\vector(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 0;
                 yield Type\int()->coerce('nope');
             })(),
@@ -146,7 +147,7 @@ final class VectorTypeTest extends TypeTest
         ];
         yield 'iterator throwing exception' => [
             Type\vector(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 0;
                 throw new RuntimeException('whoops');
             })(),
@@ -154,14 +155,14 @@ final class VectorTypeTest extends TypeTest
         ];
         yield 'iterator yielding null key' => [
             Type\vector(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield null => 'nope';
             })(),
             'Could not coerce "string" to type "' . VectorInterface::class . '<int>" at path "null".',
         ];
         yield 'iterator yielding object key' => [
             Type\vector(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield new class() {
                 } => 'nope';
             })(),

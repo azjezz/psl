@@ -27,8 +27,8 @@ final class SomeTest extends TestCase
     {
         $option = Option\some(4);
 
-        static::assertTrue($option->isSomeAnd(static fn($i) => $i < 10));
-        static::assertFalse($option->isSomeAnd(static fn($i) => $i > 10));
+        static::assertTrue($option->isSomeAnd(static fn(int $i): bool => $i < 10));
+        static::assertFalse($option->isSomeAnd(static fn(int $i): bool => $i > 10));
     }
 
     public function testUnwrap(): void
@@ -49,7 +49,7 @@ final class SomeTest extends TestCase
     {
         $option = Option\some(2);
 
-        static::assertSame(2, $option->unwrapOrElse(static fn() => 4));
+        static::assertSame(2, $option->unwrapOrElse(static fn(): int => 4));
     }
 
     public function testAnd(): void
@@ -70,18 +70,18 @@ final class SomeTest extends TestCase
 
     public function testOrElse(): void
     {
-        static::assertTrue(Option\some(2)->orElse(static fn() => Option\none())->isSome());
-        static::assertTrue(Option\some(2)->orElse(static fn() => Option\some(4))->isSome());
-        static::assertFalse(Option\some(2)->orElse(static fn() => Option\none())->isNone());
-        static::assertFalse(Option\some(2)->orElse(static fn() => Option\some(4))->isNone());
+        static::assertTrue(Option\some(2)->orElse(static fn(): Option\Option => Option\none())->isSome());
+        static::assertTrue(Option\some(2)->orElse(static fn(): Option\Option => Option\some(4))->isSome());
+        static::assertFalse(Option\some(2)->orElse(static fn(): Option\Option => Option\none())->isNone());
+        static::assertFalse(Option\some(2)->orElse(static fn(): Option\Option => Option\some(4))->isNone());
     }
 
     public function testFilter(): void
     {
         $option = Option\some(2);
 
-        static::assertTrue($option->filter(static fn($_) => true)->isSome());
-        static::assertTrue($option->filter(static fn($_) => false)->isNone());
+        static::assertTrue($option->filter(static fn(int $_): bool => true)->isSome());
+        static::assertTrue($option->filter(static fn(int $_): bool => false)->isNone());
     }
 
     public function testContains(): void
@@ -95,8 +95,8 @@ final class SomeTest extends TestCase
     public function testProceed(): void
     {
         $result = Option\some(1)->proceed(
-            static fn($i) => Str\format('Value is %d', $i),
-            static fn() => 'There is no value',
+            static fn(int $i): string => Str\format('Value is %d', $i),
+            static fn(): string => 'There is no value',
         );
 
         static::assertSame('Value is 1', $result);
@@ -107,7 +107,7 @@ final class SomeTest extends TestCase
         $spy = new Ref(1);
 
         $option = Option\some(2);
-        $actual = $option->apply(static function (int $value) use ($spy) {
+        $actual = $option->apply(static function (int $value) use ($spy): void {
             $spy->value += $value;
         });
 
@@ -119,28 +119,31 @@ final class SomeTest extends TestCase
     {
         $option = Option\some(2);
 
-        static::assertSame(3, $option->map(static fn($i) => $i + 1)->unwrapOr(0));
+        static::assertSame(3, $option->map(static fn(int $i): int => $i + 1)->unwrapOr(0));
     }
 
     public function testMapOr(): void
     {
         $option = Option\some(2);
 
-        static::assertSame(3, $option->mapOr(static fn($i) => $i + 1, 4)->unwrap());
+        static::assertSame(3, $option->mapOr(static fn(int $i): int => $i + 1, 4)->unwrap());
     }
 
     public function testMapOrElse(): void
     {
         $option = Option\some(2);
 
-        static::assertSame(3, $option->mapOrElse(static fn($i) => $i + 1, static fn() => 4)->unwrap());
+        static::assertSame(3, $option->mapOrElse(static fn(int $i): int => $i + 1, static fn(): int => 4)->unwrap());
     }
 
     public function testAndThen(): void
     {
         $option = Option\some(2);
 
-        static::assertSame(3, $option->andThen(static fn($i) => Option\some($i + 1))->unwrapOr(null));
+        static::assertSame(
+            3,
+            $option->andThen(static fn(int $i): Option\Option => Option\some($i + 1))->unwrapOr(null),
+        );
     }
 
     public function testComparable(): void
@@ -154,7 +157,7 @@ final class SomeTest extends TestCase
         static::assertSame(Order::Less, $a->compare(Option\some(3)));
     }
 
-    public function testEquality()
+    public function testEquality(): void
     {
         $a = Option\some('a');
 
@@ -178,7 +181,7 @@ final class SomeTest extends TestCase
         $x = Option\some(17);
         $y = Option\some(42);
 
-        $point = $x->zipWith($y, static fn($a, $b) => new Fixture\Point($a, $b));
+        $point = $x->zipWith($y, static fn(int $a, int $b): Fixture\Point => new Fixture\Point($a, $b));
 
         static::assertTrue(Option\some(new Fixture\Point(17, 42))->equals($point));
     }

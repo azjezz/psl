@@ -43,6 +43,7 @@ final class CloseSeekReadStreamHandle implements CloseSeekReadStreamHandleInterf
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         return $this->handle->read($max_bytes, $timeout);
@@ -51,6 +52,7 @@ final class CloseSeekReadStreamHandle implements CloseSeekReadStreamHandleInterf
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function seek(int $offset): void
     {
         $this->handle->seek($offset);
@@ -59,6 +61,7 @@ final class CloseSeekReadStreamHandle implements CloseSeekReadStreamHandleInterf
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function tell(): int
     {
         return $this->handle->tell();
@@ -67,6 +70,7 @@ final class CloseSeekReadStreamHandle implements CloseSeekReadStreamHandleInterf
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function close(): void
     {
         $this->handle->close();

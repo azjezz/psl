@@ -17,7 +17,7 @@ use function error_reporting;
  *
  * @internal
  */
-function suppress(Closure $fun)
+function suppress(Closure $fun): mixed
 {
     $previous_level = error_reporting(0);
 

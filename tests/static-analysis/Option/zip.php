@@ -62,15 +62,15 @@ function test_some_unzip(): array
 /**
  * @return Option\Option<int>
  */
-function test_some_zip_with()
+function test_some_zip_with(): Option\Option
 {
-    return Option\some(1)->zipWith(Option\some('2'), static fn($a, $b) => $a + ((int) $b));
+    return Option\some(1)->zipWith(Option\some('2'), static fn(int $a, string $b): int => $a + ((int) $b));
 }
 
 /**
  * @return Option\Option<string>
  */
-function test_some_zip_with_2()
+function test_some_zip_with_2(): Option\Option
 {
-    return Option\some(1)->zipWith(Option\some('2'), static fn($_a, $b) => $b);
+    return Option\some(1)->zipWith(Option\some('2'), static fn(int $_a, string $b): string => $b);
 }

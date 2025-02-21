@@ -48,6 +48,7 @@ abstract class AbstractComparisonTest extends TestCase
                 public readonly int $int,
             ) {
             }
+            #[\Override]
             public function compare(mixed $other): Order
             {
                 return Order::from($this->int <=> $other->int);
@@ -64,6 +65,7 @@ abstract class AbstractComparisonTest extends TestCase
             ) {
             }
 
+            #[\Override]
             public function compare(mixed $other): Order
             {
                 throw IncomparableException::fromValues($this->int, $other->int, $this->additionalInfo);

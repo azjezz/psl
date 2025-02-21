@@ -35,12 +35,14 @@ function all(iterable $awaitables): array
 
                 if (!$original->isComplete()) {
                     $original->ignore();
-                } else {
-                    try {
-                        $original->await();
-                    } catch (Throwable $error) {
-                        $errors[] = $error;
-                    }
+
+                    continue;
+                }
+
+                try {
+                    $original->await();
+                } catch (Throwable $error) {
+                    $errors[] = $error;
                 }
             }
 

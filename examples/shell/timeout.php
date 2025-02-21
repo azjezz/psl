@@ -11,10 +11,12 @@ use Psl\Shell;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-Async\main(static function (): void {
+Async\main(static function (): int {
     try {
         Shell\execute('sleep', ['1'], timeout: DateTime\Duration::milliseconds(500));
     } catch (Shell\Exception\TimeoutException $exception) {
         IO\write_error_line($exception->getMessage());
     }
+
+    return 0;
 });

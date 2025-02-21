@@ -46,6 +46,7 @@ final readonly class Map implements MapInterface
      *
      * @pure
      */
+    #[\Override]
     public static function default(): static
     {
         return new self([]);
@@ -87,6 +88,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function first(): mixed
     {
         $key = $this->firstKey();
@@ -118,6 +120,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function last(): mixed
     {
         $key = $this->lastKey();
@@ -191,6 +194,7 @@ final readonly class Map implements MapInterface
      *
      * @return int<0, max>
      */
+    #[\Override]
     public function count(): int
     {
         /** @var int<0, max> */
@@ -232,6 +236,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function at(int|string $k): mixed
     {
         if (!array_key_exists($k, $this->elements)) {
@@ -248,6 +253,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function contains(int|string $k): bool
     {
         return array_key_exists($k, $this->elements);
@@ -274,6 +280,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function get(int|string $k): mixed
     {
         return $this->elements[$k] ?? null;
@@ -287,6 +294,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function values(): Vector
     {
         return Vector::fromArray($this->elements);
@@ -299,6 +307,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function keys(): Vector
     {
         return Vector::fromArray(array_keys($this->elements));
@@ -320,6 +329,7 @@ final readonly class Map implements MapInterface
      * @return Map<Tk, Tv> A Map containing the values after a user-specified condition
      *                     is applied.
      */
+    #[\Override]
     public function filter(Closure $fn): Map
     {
         return new Map(Dict\filter($this->elements, $fn));
@@ -365,6 +375,7 @@ final readonly class Map implements MapInterface
      * @return Map<Tk, Tu> A `Map` containing key/value pairs after a user-specified
      *                     operation is applied.
      */
+    #[\Override]
     public function map(Closure $fn): Map
     {
         return new Map(Dict\map($this->elements, $fn));
@@ -411,6 +422,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function zip(array $elements): Map
     {
         $elements = array_values($elements);
@@ -447,6 +459,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function take(int $n): Map
     {
         return $this->slice(0, $n);
@@ -488,6 +501,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function drop(int $n): Map
     {
         return $this->slice($n);
@@ -531,6 +545,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function slice(int $start, null|int $length = null): Map
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
@@ -551,6 +566,7 @@ final readonly class Map implements MapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function chunk(int $size): Vector
     {
         /** @psalm-suppress ImpureMethodCall */

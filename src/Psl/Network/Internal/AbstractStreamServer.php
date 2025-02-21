@@ -40,6 +40,8 @@ abstract class AbstractStreamServer implements StreamServerInterface
     /**
      * @param resource $impl
      * @param int<1, max> $idleConnections
+     *
+     * @mago-ignore best-practices/no-boolean-literal-comparison
      */
     protected function __construct(mixed $impl, int $idleConnections = self::DEFAULT_IDLE_CONNECTIONS)
     {
@@ -48,7 +50,9 @@ abstract class AbstractStreamServer implements StreamServerInterface
          * @var Channel\SenderInterface<array{true, Socket}|array{false, Network\Exception\RuntimeException}> $sender
          */
         [$this->receiver, $sender] = Channel\bounded($idleConnections);
-        $this->watcher = EventLoop::onReadable($impl, static function ($watcher, $resource) use ($sender): void {
+        $this->watcher = EventLoop::onReadable($impl, static function (string $watcher, mixed $resource) use (
+            $sender,
+        ): void {
             try {
                 $sock = @stream_socket_accept($resource, timeout: 0.0);
                 if ($sock !== false) {
@@ -99,6 +103,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function incoming(): Generator
     {
         try {
@@ -107,10 +112,11 @@ abstract class AbstractStreamServer implements StreamServerInterface
                 if ($success) {
                     /** @var Socket $result */
                     yield null => $result;
-                } else {
-                    /** @var Network\Exception\RuntimeException $result  */
-                    throw $result;
+                    continue;
                 }
+
+                /** @var Network\Exception\RuntimeException $result  */
+                throw $result;
             }
         } catch (Channel\Exception\ClosedChannelException) {
             return;
@@ -138,6 +144,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function close(): void
     {
         EventLoop::disable($this->watcher);

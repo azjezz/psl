@@ -43,6 +43,7 @@ final class ReadStreamHandle implements ReadStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         return $this->handle->read($max_bytes, $timeout);

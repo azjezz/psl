@@ -25,7 +25,7 @@ use const PREG_SPLIT_NO_EMPTY;
 function split(string $subject, string $pattern, null|int $limit = null): array
 {
     /** @var list<string> */
-    return Internal\call_preg('preg_split', static fn() => preg_split(
+    return Internal\call_preg('preg_split', static fn(): array|false => preg_split(
         $pattern,
         $subject,
         $limit ?? -1,

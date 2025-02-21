@@ -34,7 +34,7 @@
 - [shuffle](./../../src/Psl/Vec/shuffle.php#L26)
 - [slice](./../../src/Psl/Vec/slice.php#L26)
 - [sort](./../../src/Psl/Vec/sort.php#L25)
-- [sort_by](./../../src/Psl/Vec/sort_by.php#L28)
+- [sort_by](./../../src/Psl/Vec/sort_by.php#L30)
 - [take](./../../src/Psl/Vec/take.php#L22)
 - [unique](./../../src/Psl/Vec/unique.php#L16)
 - [unique_by](./../../src/Psl/Vec/unique_by.php#L23)

@@ -13,7 +13,11 @@ final class PullTest extends TestCase
 {
     public function testPull(): void
     {
-        $result = Dict\pull(Vec\range(0, 10), static fn($i) => Str\chr($i + 65), static fn($i) => 2 ** $i);
+        $result = Dict\pull(
+            Vec\range(0, 10),
+            static fn(int $i): string => Str\chr($i + 65),
+            static fn(int $i): int => 2 ** $i,
+        );
 
         static::assertSame(
             [

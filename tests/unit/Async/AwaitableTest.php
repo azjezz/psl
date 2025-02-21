@@ -17,6 +17,9 @@ use Psl\Str;
 use Revolt\EventLoop\UncaughtThrowable;
 use Throwable;
 
+/**
+ * @mago-ignore best-practices/dont-catch-error
+ */
 final class AwaitableTest extends TestCase
 {
     public function testCompleteAwait(): void
@@ -94,12 +97,12 @@ final class AwaitableTest extends TestCase
         $iterator = Awaitable::iterate([
             'foo' => Awaitable::complete('foo'),
             'bar' => Awaitable::error(new InvariantViolationException('bar')),
-            'baz' => Async\run(static function () {
+            'baz' => Async\run(static function (): never {
                 Async\sleep(DateTime\Duration::milliseconds(1));
 
                 throw new InvariantViolationException('baz');
             }),
-            'qux' => Async\run(static function () {
+            'qux' => Async\run(static function (): string {
                 Async\sleep(DateTime\Duration::milliseconds(30));
 
                 return 'qux';
@@ -186,13 +189,22 @@ final class AwaitableTest extends TestCase
         });
 
         $awaitable = $awaitable
-            ->then(static fn(string $result) => Str\reverse($result), static fn(Throwable $_exception) => exit(0))
             ->then(
-                static fn(string $result) => throw new InvariantViolationException($result),
-                static fn(Throwable $_exception) => exit(0),
+                static fn(string $result): string => Str\reverse($result),
+                static fn(Throwable $_exception): never => exit(0),
             )
-            ->then(static fn($_result) => exit(0), static fn(Throwable $exception) => throw $exception)
-            ->then(static fn($_result) => exit(0), static fn(Throwable $exception) => $exception->getMessage());
+            ->then(
+                static fn(string $result): never => throw new InvariantViolationException($result),
+                static fn(Throwable $_exception): never => exit(0),
+            )
+            ->then(
+                static fn(mixed $_result): never => exit(0),
+                static fn(Throwable $exception): never => throw $exception,
+            )
+            ->then(
+                static fn(mixed $_result): never => exit(0),
+                static fn(Throwable $exception): string => $exception->getMessage(),
+            );
 
         static::assertSame('olleh', $awaitable->await());
     }
@@ -205,10 +217,10 @@ final class AwaitableTest extends TestCase
 
         $ref = new Psl\Ref('');
         $awaitable = $awaitable
-            ->map(static fn(string $result) => Str\reverse($result))
-            ->map(static fn(string $result) => throw new InvariantViolationException($result))
+            ->map(static fn(string $result): string => Str\reverse($result))
+            ->map(static fn(string $result): never => throw new InvariantViolationException($result))
             ->catch(static fn(InvariantViolationException $exception): string => $exception->getMessage())
-            ->always(static fn() => $ref->value = 'hello');
+            ->always(static fn(): string => $ref->value = 'hello');
 
         static::assertSame('olleh', $awaitable->await());
         static::assertSame('hello', $ref->value);

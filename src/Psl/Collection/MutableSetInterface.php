@@ -29,6 +29,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function at(int|string $k): int|string;
 
     /**
@@ -44,6 +45,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function contains(int|string $k): bool;
 
     /**
@@ -59,6 +61,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function get(int|string $k): null|int|string;
 
     /**
@@ -77,6 +80,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function values(): MutableVectorInterface;
 
     /**
@@ -86,6 +90,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function keys(): MutableVectorInterface;
 
     /**
@@ -101,6 +106,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * @return MutableSetInterface<T> A MutableSetInterface containing the values after
      *                                a user-specified condition is applied.
      */
+    #[\Override]
     public function filter(Closure $fn): MutableSetInterface;
 
     /**
@@ -134,6 +140,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * @return MutableSetInterface<Tu> A `MutableSetInterface` containing the values after a user-specified
      *                                 operation is applied.
      */
+    #[\Override]
     public function map(Closure $fn): MutableSetInterface;
 
     /**
@@ -162,6 +169,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function first(): null|int|string;
 
     /**
@@ -184,6 +192,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function last(): null|int|string;
 
     /**
@@ -225,6 +234,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @throws Exception\RuntimeException Always throws an exception since `Set` can only contain array-key values.
      */
+    #[\Override]
     public function zip(array $elements): never;
 
     /**
@@ -244,6 +254,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function take(int $n): MutableSetInterface;
 
     /**
@@ -279,6 +290,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function drop(int $n): MutableSetInterface;
 
     /**
@@ -318,6 +330,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function slice(int $start, null|int $length = null): MutableSetInterface;
 
     /**
@@ -334,6 +347,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function chunk(int $size): MutableVectorInterface;
 
     /**
@@ -345,6 +359,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @return MutableSetInterface<T> Returns itself.
      */
+    #[\Override]
     public function remove(int|string $k): MutableSetInterface;
 
     /**
@@ -352,6 +367,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @return MutableSetInterface<T>
      */
+    #[\Override]
     public function clear(): MutableSetInterface;
 
     /**

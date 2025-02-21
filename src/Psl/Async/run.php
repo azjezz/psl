@@ -21,7 +21,7 @@ function run(Closure $closure): Awaitable
 {
     $state = new Internal\State();
 
-    EventLoop::defer(static function () use ($closure, $state) {
+    EventLoop::defer(static function () use ($closure, $state): void {
         try {
             $result = $closure();
 

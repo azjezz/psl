@@ -119,14 +119,14 @@ final class VecTypeTest extends TypeTest
         ];
         yield 'invalid iterator first item' => [
             Type\vec(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield Type\int()->coerce('nope');
             })(),
             'Could not coerce "string" to type "vec<int>" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
             Type\vec(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 0;
                 yield Type\int()->coerce('nope');
             })(),
@@ -134,7 +134,7 @@ final class VecTypeTest extends TypeTest
         ];
         yield 'iterator throwing exception' => [
             Type\vec(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 0;
                 throw new RuntimeException('whoops');
             })(),
@@ -142,14 +142,14 @@ final class VecTypeTest extends TypeTest
         ];
         yield 'iterator yielding null key' => [
             Type\vec(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield null => 'nope';
             })(),
             'Could not coerce "string" to type "vec<int>" at path "null".',
         ];
         yield 'iterator yielding object key' => [
             Type\vec(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield new class() {
                 } => 'nope';
             })(),

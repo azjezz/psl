@@ -46,12 +46,17 @@ function copy(string $source, string $destination, bool $overwrite = false): voi
         $source_lock = $source_handle->lock(File\LockType::Shared);
         $destination_lock = $destination_handle->lock(File\LockType::Exclusive);
 
-        while ($chunk = $source_handle->read()) {
+        do {
+            $chunk = $source_handle->read();
+            if ('' === $chunk) {
+                break;
+            }
+
             $destination_handle->writeAll($chunk);
 
             // free memory
             unset($chunk);
-        }
+        } while (true);
         // @codeCoverageIgnoreStart
     } catch (IO\Exception\ExceptionInterface|File\Exception\ExceptionInterface|Psl\Exception\InvariantViolationException $exception) {
         throw new Exception\RuntimeException(

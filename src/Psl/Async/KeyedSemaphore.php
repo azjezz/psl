@@ -25,6 +25,8 @@ use function count;
  * @template Tk of array-key
  * @template Tin
  * @template Tout
+ *
+ * @mago-ignore best-practices/no-else-clause
  */
 final class KeyedSemaphore
 {
@@ -69,7 +71,8 @@ final class KeyedSemaphore
     {
         $this->ingoing[$key] = $this->ingoing[$key] ?? 0;
         if ($this->ingoing[$key] === $this->concurrencyLimit) {
-            $this->pending[$key][] = $suspension = EventLoop::getSuspension();
+            $suspension = EventLoop::getSuspension();
+            $this->pending[$key][] = $suspension;
 
             $suspension->suspend();
         }

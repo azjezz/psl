@@ -107,8 +107,8 @@ final class PipeTest extends TestCase
     {
         [$read, $_write] = IO\pipe();
 
-        Async\Scheduler::defer(static fn() => $read->close());
-        $b = Async\run(static fn() => $read->readAll());
+        Async\Scheduler::defer(static fn(): null => $read->close());
+        $b = Async\run(static fn(): string => $read->readAll());
 
         $this->expectException(IO\Exception\AlreadyClosedException::class);
         $this->expectExceptionMessage('Handle has already been closed.');
@@ -126,9 +126,9 @@ final class PipeTest extends TestCase
     {
         [$_read, $write] = IO\pipe();
 
-        Async\Scheduler::defer(static fn() => $write->close());
+        Async\Scheduler::defer(static fn(): null => $write->close());
 
-        $b = Async\run(static fn() => $write->writeAll('hello'));
+        $b = Async\run(static fn(): null => $write->writeAll('hello'));
 
         $this->expectException(IO\Exception\AlreadyClosedException::class);
         $this->expectExceptionMessage('Handle has already been closed.');

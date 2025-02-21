@@ -13,9 +13,9 @@
 #### `Functions`
 
 - [error_handle](./../../src/Psl/IO/error_handle.php#L20)
-- [input_handle](./../../src/Psl/IO/input_handle.php#L20)
-- [output_handle](./../../src/Psl/IO/output_handle.php#L20)
-- [pipe](./../../src/Psl/IO/pipe.php#L24)
+- [input_handle](./../../src/Psl/IO/input_handle.php#L22)
+- [output_handle](./../../src/Psl/IO/output_handle.php#L22)
+- [pipe](./../../src/Psl/IO/pipe.php#L26)
 - [streaming](./../../src/Psl/IO/streaming.php#L41)
 - [write](./../../src/Psl/IO/write.php#L21)
 - [write_error](./../../src/Psl/IO/write_error.php#L23)

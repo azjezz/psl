@@ -14,7 +14,7 @@ namespace Psl\Iter;
  *
  * @return Tv|null
  */
-function last(iterable $iterable)
+function last(iterable $iterable): mixed
 {
     $last = null;
     foreach ($iterable as $v) {

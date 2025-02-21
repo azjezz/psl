@@ -36,6 +36,7 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      *
      * @return int<0, max>
      */
+    #[\Override]
     public function count(): int;
 
     /**

@@ -217,6 +217,7 @@ final class ShapeTypeTest extends TypeTest
      * @param Collection\VectorInterface<mixed>|mixed $a
      * @param Collection\VectorInterface<mixed>|mixed $b
      */
+    #[\Override]
     protected function equals($a, $b): bool
     {
         $dict = Type\dict(Type\array_key(), Type\mixed());
@@ -284,14 +285,14 @@ final class ShapeTypeTest extends TypeTest
         ];
         yield 'invalid iterator first item' => [
             Type\shape(['id' => Type\int()]),
-            (static function () {
+            (static function (): iterable {
                 yield 'id' => Type\int()->coerce('nope');
             })(),
             'Could not coerce "string" to type "array{\'id\': int}" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
             Type\shape(['id' => Type\int()]),
-            (static function () {
+            (static function (): iterable {
                 yield 'id' => 1;
                 yield 'next' => Type\int()->coerce('nope');
             })(),
@@ -299,7 +300,7 @@ final class ShapeTypeTest extends TypeTest
         ];
         yield 'iterator throwing exception' => [
             Type\shape(['id' => Type\int()]),
-            (static function () {
+            (static function (): iterable {
                 throw new RuntimeException('whoops');
                 yield;
             })(),
@@ -307,14 +308,14 @@ final class ShapeTypeTest extends TypeTest
         ];
         yield 'iterator yielding null key' => [
             Type\shape(['id' => Type\int()]),
-            (static function () {
+            (static function (): iterable {
                 yield null => 'nope';
             })(),
             'Could not coerce "null" to type "array{\'id\': int}" at path "id".',
         ];
         yield 'iterator yielding object key' => [
             Type\shape(['id' => Type\int()]),
-            (static function () {
+            (static function (): iterable {
                 yield new class() {
                 } => 'nope';
             })(),

@@ -26,7 +26,7 @@ use Closure;
  *
  * @return list<Ts>
  */
-function reductions(iterable $iterable, Closure $function, $initial): array
+function reductions(iterable $iterable, Closure $function, mixed $initial): array
 {
     $accumulators = [];
     $accumulator = $initial;

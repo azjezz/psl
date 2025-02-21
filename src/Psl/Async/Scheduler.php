@@ -18,6 +18,8 @@ use Revolt\EventLoop\Suspension;
  * @see EventLoop
  *
  * @codeCoverageIgnore
+ *
+ * @mago-ignore best-practices/dont-catch-error
  */
 final readonly class Scheduler
 {

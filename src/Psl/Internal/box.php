@@ -25,7 +25,7 @@ function box(Closure $fun): array
 {
     $last_message = null;
     /** @psalm-suppress InvalidArgument */
-    set_error_handler(static function (int $_type, string $message) use (&$last_message) {
+    set_error_handler(static function (int $_type, string $message) use (&$last_message): void {
         $last_message = $message;
     });
 

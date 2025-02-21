@@ -20,6 +20,9 @@ use function substr;
  * @internal
  *
  * @codeCoverageIgnore
+ *
+ * @mago-ignore best-practices/no-boolean-literal-comparison
+ * @mago-ignore best-practices/no-else-clause
  */
 function get_sock_name(mixed $socket): Network\Address
 {

@@ -19,5 +19,5 @@ function lazy(Closure $initializer): Closure
 {
     $evaluator = new Internal\LazyEvaluator($initializer);
 
-    return static fn() => $evaluator();
+    return static fn(): mixed => $evaluator();
 }

@@ -23,11 +23,13 @@ final readonly class ArrayKeyType extends UnionType
         parent::__construct(new StringType(), new IntType());
     }
 
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return is_string($value) || is_int($value);
     }
 
+    #[\Override]
     public function assert(mixed $value): mixed
     {
         // happy path performance optimization:
@@ -38,6 +40,7 @@ final readonly class ArrayKeyType extends UnionType
         return parent::assert($value);
     }
 
+    #[\Override]
     public function coerce(mixed $value): mixed
     {
         // happy path performance optimization:

@@ -15,7 +15,7 @@ namespace Psl;
  *
  * @pure
  */
-function sequence(...$args)
+function sequence(mixed ...$args): mixed
 {
     $result = null;
     foreach ($args as $arg) {

@@ -32,6 +32,7 @@ final readonly class OptionalType extends Type\Type
      *
      * @return T
      */
+    #[\Override]
     public function coerce(mixed $value): mixed
     {
         return $this->inner->coerce($value);
@@ -44,6 +45,7 @@ final readonly class OptionalType extends Type\Type
      *
      * @psalm-assert T $value
      */
+    #[\Override]
     public function assert(mixed $value): mixed
     {
         return $this->inner->assert($value);

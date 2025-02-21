@@ -24,6 +24,7 @@ final class SecureSequence implements DefaultInterface, SequenceInterface
     /**
      * @pure
      */
+    #[\Override]
     public static function default(): static
     {
         return new self();
@@ -34,6 +35,7 @@ final class SecureSequence implements DefaultInterface, SequenceInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function next(): int
     {
         /**

@@ -34,6 +34,7 @@ final readonly class ToRange implements UpperBoundRangeInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function contains(int $value): bool
     {
         if ($this->upperInclusive) {

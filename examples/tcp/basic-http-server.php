@@ -41,7 +41,7 @@ Iter\apply($server->incoming(), static function (Network\StreamSocketInterface $
         $connection->writeAll("HTTP/1.1 200 OK\nConnection: close\nContent-Type: text/html; charset=utf-8\n\n");
         $connection->writeAll(Str\format(RESPONSE_FORMAT, Html\encode_special_characters($request)));
         $connection->close();
-    })->catch(static fn(IO\Exception\ExceptionInterface $e) => IO\write_error_line(
+    })->catch(static fn(IO\Exception\ExceptionInterface $e): null => IO\write_error_line(
         'Error: %s.',
         $e->getMessage(),
     ))->ignore();

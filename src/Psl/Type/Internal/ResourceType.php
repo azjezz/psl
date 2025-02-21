@@ -31,6 +31,7 @@ final readonly class ResourceType extends Type\Type
      *
      * @return resource
      */
+    #[\Override]
     public function coerce(mixed $value): mixed
     {
         if (is_resource($value)) {
@@ -54,6 +55,7 @@ final readonly class ResourceType extends Type\Type
      *
      * @psalm-assert resource $value
      */
+    #[\Override]
     public function assert(mixed $value): mixed
     {
         if (is_resource($value)) {

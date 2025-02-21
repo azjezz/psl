@@ -13,7 +13,7 @@ final class ApplyTest extends TestCase
     public function testApply(): void
     {
         $vec = new MutableVector([]);
-        Iter\apply([1, 2, 3], static fn(int $i) => $vec->add($i));
+        Iter\apply([1, 2, 3], static fn(int $i): MutableVector => $vec->add($i));
 
         static::assertSame([1, 2, 3], $vec->toArray());
     }

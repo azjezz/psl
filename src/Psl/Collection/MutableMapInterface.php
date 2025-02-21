@@ -23,6 +23,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function values(): MutableVectorInterface;
 
     /**
@@ -32,6 +33,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function keys(): MutableVectorInterface;
 
     /**
@@ -50,6 +52,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @return MutableMapInterface<Tk, Tv> - a MutableMapInterface containing the values after a user-specified
      *                                     condition is applied.
      */
+    #[\Override]
     public function filter(Closure $fn): MutableMapInterface;
 
     /**
@@ -90,6 +93,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @return MutableMapInterface<Tk, Tu> - a `MutableMapInterface` containing key/value pairs after
      *                                     a user-specified operation is applied.
      */
+    #[\Override]
     public function map(Closure $fn): MutableMapInterface;
 
     /**
@@ -121,6 +125,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function first(): mixed;
 
     /**
@@ -141,6 +146,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function last(): mixed;
 
     /**
@@ -186,6 +192,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function zip(array $elements): MutableMapInterface;
 
     /**
@@ -204,6 +211,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function take(int $n): MutableMapInterface;
 
     /**
@@ -238,6 +246,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function drop(int $n): MutableMapInterface;
 
     /**
@@ -277,6 +286,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function slice(int $start, null|int $length = null): MutableMapInterface;
 
     /**
@@ -293,6 +303,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function chunk(int $size): MutableVectorInterface;
 
     /**
@@ -362,6 +373,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @return MutableMapInterface<Tk, Tv> Returns itself.
      */
+    #[\Override]
     public function remove(int|string $k): MutableMapInterface;
 
     /**
@@ -369,5 +381,6 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @return MutableMapInterface<Tk, Tv>
      */
+    #[\Override]
     public function clear(): MutableMapInterface;
 }

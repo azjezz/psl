@@ -67,6 +67,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function contains(int $value): bool
     {
         if ($value < $this->lowerBound) {

@@ -19,7 +19,7 @@
 
 #### `Interfaces`
 
-- [ResultInterface](./../../src/Psl/Result/ResultInterface.php#L22)
+- [ResultInterface](./../../src/Psl/Result/ResultInterface.php#L24)
 
 #### `Classes`
 

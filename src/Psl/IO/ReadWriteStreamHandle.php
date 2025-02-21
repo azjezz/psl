@@ -44,6 +44,7 @@ final class ReadWriteStreamHandle implements ReadWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         return $this->handle->read($max_bytes, $timeout);
@@ -60,6 +61,7 @@ final class ReadWriteStreamHandle implements ReadWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function write(string $bytes, null|Duration $timeout = null): int
     {
         return $this->handle->write($bytes, $timeout);

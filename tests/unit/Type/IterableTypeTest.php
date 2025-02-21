@@ -69,6 +69,7 @@ final class IterableTypeTest extends TypeTest
      * @param iterable<int, int> $a
      * @param iterable<int, int> $b
      */
+    #[\Override]
     protected function equals($a, $b): bool
     {
         $a = Dict\from_iterable($a);
@@ -110,14 +111,14 @@ final class IterableTypeTest extends TypeTest
         ];
         yield 'invalid iterator first item' => [
             Type\iterable(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 0 => Type\int()->coerce('nope');
             })(),
             'Could not coerce "string" to type "iterable<int, int>" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
             Type\iterable(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 0 => 0;
                 yield 1 => Type\int()->coerce('nope');
             })(),
@@ -125,7 +126,7 @@ final class IterableTypeTest extends TypeTest
         ];
         yield 'iterator throwing exception' => [
             Type\iterable(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 throw new RuntimeException('whoops');
                 yield;
             })(),
@@ -133,14 +134,14 @@ final class IterableTypeTest extends TypeTest
         ];
         yield 'iterator yielding null key' => [
             Type\iterable(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield null => 'nope';
             })(),
             'Could not coerce "null" to type "iterable<int, int>" at path "key(null)".',
         ];
         yield 'iterator yielding object key' => [
             Type\iterable(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield new class() {
                 } => 'nope';
             })(),

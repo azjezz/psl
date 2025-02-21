@@ -79,8 +79,9 @@ trait ReadHandleConvenienceMethodsTrait
     public function readFixedSize(int $size, null|Duration $timeout = null): string
     {
         $data = $this->readAll($size, $timeout);
+        $length = strlen($data);
 
-        if (($length = strlen($data)) !== $size) {
+        if ($length !== $size) {
             throw new Exception\RuntimeException(Str\format(
                 '%d bytes were requested, but only able to read %d bytes',
                 $size,

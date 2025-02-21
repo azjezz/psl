@@ -56,6 +56,7 @@ final class UnboundedChannelState implements ChannelInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function close(): void
     {
         $this->closed = true;
@@ -80,6 +81,7 @@ final class UnboundedChannelState implements ChannelInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function count(): int
     {
         return count($this->messages);
@@ -114,9 +116,8 @@ final class UnboundedChannelState implements ChannelInterface
         }
 
         $this->messages[] = $message;
-        if ($suspension = array_shift($this->waitingForMessage)) {
-            $suspension->resume(null);
-        }
+        $suspension = array_shift($this->waitingForMessage);
+        $suspension?->resume(null);
     }
 
     /**

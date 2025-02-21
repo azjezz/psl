@@ -44,7 +44,7 @@ function filter_keys(iterable $iterable, null|Closure $predicate = null): array
             /**
              * @param Tk $t
              */
-            static fn($t): bool => $predicate($t),
+            static fn(mixed $t): bool => $predicate($t),
             ARRAY_FILTER_USE_KEY,
         ));
     }

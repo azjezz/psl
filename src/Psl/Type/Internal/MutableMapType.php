@@ -42,6 +42,7 @@ final readonly class MutableMapType extends Type\Type
      *
      * @return Collection\MutableMapInterface<Tk, Tv>
      */
+    #[\Override]
     public function coerce(mixed $value): Collection\MutableMapInterface
     {
         if (is_iterable($value)) {
@@ -53,7 +54,8 @@ final readonly class MutableMapType extends Type\Type
             /** @var list<array{Tk, Tv}> $entries */
             $entries = [];
 
-            $k = $v = null;
+            $k = null;
+            $v = null;
             $trying_key = true;
             $iterating = true;
 
@@ -105,6 +107,7 @@ final readonly class MutableMapType extends Type\Type
      *
      * @psalm-assert Collection\MutableMapInterface<Tk, Tv> $value
      */
+    #[\Override]
     public function assert(mixed $value): Collection\MutableMapInterface
     {
         if (is_object($value) && $value instanceof Collection\MutableMapInterface) {
@@ -116,7 +119,8 @@ final readonly class MutableMapType extends Type\Type
             /** @var list<array{Tk, Tv}> $entries */
             $entries = [];
 
-            $k = $v = null;
+            $k = null;
+            $v = null;
             $trying_key = true;
 
             try {

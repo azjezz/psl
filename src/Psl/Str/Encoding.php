@@ -104,6 +104,7 @@ enum Encoding: string implements DefaultInterface
      *
      * @pure
      */
+    #[\Override]
     public static function default(): static
     {
         return self::Utf8;

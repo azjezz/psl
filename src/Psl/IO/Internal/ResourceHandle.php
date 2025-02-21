@@ -37,6 +37,8 @@ use function substr;
  * @psalm-suppress MissingThrowsDocblock
  *
  * @codeCoverageIgnore
+ *
+ * @mago-ignore best-practices/no-else-clause
  */
 class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
 {
@@ -103,7 +105,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
             /** @psalm-suppress UnusedFunctionCall */
             stream_set_read_buffer($stream, 0);
 
-            $this->readWatcher = EventLoop::onReadable($this->stream, function () {
+            $this->readWatcher = EventLoop::onReadable($this->stream, function (): void {
                 $this->readSuspension?->resume();
             });
 
@@ -118,12 +120,13 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
                         return $chunk;
                     }
 
-                    $this->readSuspension = $suspension = EventLoop::getSuspension();
+                    $suspension = EventLoop::getSuspension();
+                    $this->readSuspension = $suspension;
                     EventLoop::enable($this->readWatcher);
                     $delay_watcher = null;
                     if (null !== $timeout) {
                         $timeout = max($timeout->getTotalSeconds(), 0.0);
-                        $delay_watcher = EventLoop::delay($timeout, static fn() => $suspension->throw(
+                        $delay_watcher = EventLoop::delay($timeout, static fn(): null => $suspension->throw(
                             new Exception\TimeoutException('Reached timeout while the handle is still not readable.'),
                         ));
 
@@ -159,7 +162,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
 
             stream_set_write_buffer($stream, 0);
 
-            $this->writeWatcher = EventLoop::onWritable($this->stream, function () {
+            $this->writeWatcher = EventLoop::onWritable($this->stream, function (): void {
                 $this->writeSuspension?->resume();
             });
 
@@ -177,12 +180,13 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
                         return $written;
                     }
 
-                    $this->writeSuspension = $suspension = EventLoop::getSuspension();
+                    $suspension = EventLoop::getSuspension();
+                    $this->writeSuspension = $suspension;
                     EventLoop::enable($this->writeWatcher);
                     $delay_watcher = null;
                     if (null !== $timeout) {
                         $timeout = max($timeout->getTotalSeconds(), 0.0);
-                        $delay_watcher = EventLoop::delay($timeout, static fn() => $suspension->throw(
+                        $delay_watcher = EventLoop::delay($timeout, static fn(): null => $suspension->throw(
                             new Exception\TimeoutException('Reached timeout while the handle is still not readable.'),
                         ));
 
@@ -209,6 +213,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function write(string $bytes, null|Duration $timeout = null): int
     {
         Psl\invariant($this->writeSequence !== null, 'The resource handle is not writable.');
@@ -218,6 +223,8 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @mago-ignore best-practices/no-boolean-literal-comparison
      */
     public function tryWrite(string $bytes): int
     {
@@ -238,6 +245,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function seek(int $offset): void
     {
         if (!is_resource($this->stream)) {
@@ -252,7 +260,10 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @mago-ignore best-practices/no-boolean-literal-comparison
      */
+    #[\Override]
     public function tell(): int
     {
         if (!is_resource($this->stream)) {
@@ -288,6 +299,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         Psl\invariant($this->readSequence !== null, 'The resource handle is not readable.');
@@ -297,6 +309,8 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @mago-ignore best-practices/no-boolean-literal-comparison
      */
     public function tryRead(null|int $max_bytes = null): string
     {
@@ -346,7 +360,10 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @mago-ignore best-practices/no-boolean-literal-comparison
      */
+    #[\Override]
     public function close(): void
     {
         EventLoop::cancel($this->readWatcher);
@@ -371,11 +388,13 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
 
                     throw new Exception\RuntimeException($error['message'] ?? 'unknown error.');
                 }
-            } else {
-                // Stream could be set to a non-null closed-resource,
-                // if manually closed using `fclose($handle->getStream)`.
-                $this->stream = null;
+
+                return;
             }
+
+            // Stream could be set to a non-null closed-resource,
+            // if manually closed using `fclose($handle->getStream)`.
+            $this->stream = null;
         }
     }
 }

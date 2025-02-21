@@ -7,6 +7,7 @@ namespace Psl\Tests\Unit\Dict;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Dict;
+use Closure;
 
 final class FilterWithKeyTest extends TestCase
 {
@@ -16,11 +17,11 @@ final class FilterWithKeyTest extends TestCase
      *
      * @param array<Tk, Tv> $expected
      * @param iterable<Tk, Tv> $iterable
-     * @param (callable(Tk, Tv): bool)|null $predicate
+     * @param (Closure(Tk, Tv): bool)|null $predicate
      *
      * @dataProvider provideData
      */
-    public function testFilterWithKey(array $expected, iterable $iterable, null|callable $predicate = null): void
+    public function testFilterWithKey(array $expected, iterable $iterable, null|Closure $predicate = null): void
     {
         $result = Dict\filter_with_key($iterable, $predicate);
 
@@ -31,7 +32,7 @@ final class FilterWithKeyTest extends TestCase
     {
         yield [[], []];
         yield [['a', 'b'], ['a', 'b']];
-        yield [[], ['a', 'b'], static fn(int $_k, string $_v) => false];
+        yield [[], ['a', 'b'], static fn(int $_k, string $_v): bool => false];
         yield [['a', 'b'], ['a', 'b'], static fn(int $_k, string $_v): bool => true];
         yield [['a'], ['a', 'b'], static fn(int $_k, string $v): bool => 'b' !== $v];
         yield [[], ['a', 'b'], static fn(int $k, string $v): bool => 'b' !== $v && 0 !== $k];

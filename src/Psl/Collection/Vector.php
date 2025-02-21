@@ -48,6 +48,7 @@ final readonly class Vector implements VectorInterface
      *
      * @pure
      */
+    #[\Override]
     public static function default(): static
     {
         return new self([]);
@@ -97,6 +98,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function first(): mixed
     {
         return $this->elements[0] ?? null;
@@ -110,6 +112,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function last(): mixed
     {
         $key = array_key_last($this->elements);
@@ -147,6 +150,7 @@ final readonly class Vector implements VectorInterface
      *
      * @return int<0, max>
      */
+    #[\Override]
     public function count(): int
     {
         /** @var int<0, max> */
@@ -188,6 +192,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function at(int|string $k): mixed
     {
         if (!array_key_exists($k, $this->elements)) {
@@ -204,6 +209,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function contains(int|string $k): bool
     {
         return array_key_exists($k, $this->elements);
@@ -230,6 +236,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function get(int|string $k): mixed
     {
         return $this->elements[$k] ?? null;
@@ -292,6 +299,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function values(): Vector
     {
         return self::fromArray($this->elements);
@@ -304,6 +312,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function keys(): Vector
     {
         return self::fromArray(array_keys($this->elements));
@@ -325,6 +334,7 @@ final readonly class Vector implements VectorInterface
      * @return Vector<T> a Vector containing the values after a user-specified condition
      *                   is applied.
      */
+    #[\Override]
     public function filter(Closure $fn): Vector
     {
         return new Vector(Dict\filter($this->elements, $fn));
@@ -370,6 +380,7 @@ final readonly class Vector implements VectorInterface
      * @return Vector<Tu> a `Vector` containing key/value pairs after a user-specified
      *                    operation is applied.
      */
+    #[\Override]
     public function map(Closure $fn): Vector
     {
         return new Vector(Dict\map($this->elements, $fn));
@@ -417,6 +428,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function zip(array $elements): Vector
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
@@ -440,6 +452,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function take(int $n): Vector
     {
         return $this->slice(0, $n);
@@ -481,6 +494,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function drop(int $n): Vector
     {
         return $this->slice($n);
@@ -526,6 +540,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function slice(int $start, null|int $length = null): Vector
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
@@ -548,6 +563,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-suppress LessSpecificImplementedReturnType - I don't see how this one is less specific than its inherited.
      */
+    #[\Override]
     public function chunk(int $size): Vector
     {
         /**
@@ -561,7 +577,7 @@ final readonly class Vector implements VectorInterface
              *
              * @return Vector<T>
              */
-            static fn(array $chunk) => static::fromArray($chunk),
+            static fn(array $chunk): Vector => static::fromArray($chunk),
         ));
     }
 }

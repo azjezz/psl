@@ -20,6 +20,9 @@ use Psl\Locale\Locale;
 use function Psl\DateTime\Internal\create_intl_date_formatter;
 use function time;
 
+/**
+ * @mago-ignore php-unit/strict-assertions
+ */
 final class DateTimeTest extends TestCase
 {
     use DateTimeTestTrait;
@@ -285,20 +288,20 @@ final class DateTimeTest extends TestCase
         static::assertSame(100, $new->getNanoseconds());
     }
 
-    public function testGetEra()
+    public function testGetEra(): void
     {
         $datetime = DateTime::fromParts(Timezone::default(), 2024, Month::February, 4, 14, 0, 0, 0);
 
         static::assertSame('AD', $datetime->getEra()->value);
     }
 
-    public function testGetCentury()
+    public function testGetCentury(): void
     {
         static::assertSame(20, DateTime::fromParts(Timezone::default(), 1999, Month::February, 4, 14)->getCentury());
         static::assertSame(21, DateTime::fromParts(Timezone::default(), 2000, Month::February, 4, 14)->getCentury());
     }
 
-    public static function provideTwelveHours()
+    public static function provideTwelveHours(): iterable
     {
         yield [0, 12, Meridiem::AnteMeridiem];
         yield [1, 1, Meridiem::AnteMeridiem];
@@ -313,7 +316,7 @@ final class DateTimeTest extends TestCase
     /**
      * @dataProvider provideTwelveHours
      */
-    public function testGetTwelveHours(int $hour, $expectedTwelveHour, $expectedMeridiem)
+    public function testGetTwelveHours(int $hour, $expectedTwelveHour, $expectedMeridiem): void
     {
         $datetime = DateTime::fromParts(Timezone::default(), 2024, Month::February, 4, $hour, 0, 0, 0);
         [$hours, $meridiem] = $datetime->getTwelveHours();
@@ -554,7 +557,7 @@ final class DateTimeTest extends TestCase
         );
     }
 
-    public function testWithTime()
+    public function testWithTime(): void
     {
         $date = DateTime::todayAt(14, 0);
         $new = $date->withTime(15, 0);
@@ -565,7 +568,7 @@ final class DateTimeTest extends TestCase
         static::assertSame(0, $new->getNanoseconds());
     }
 
-    public function testTimezoneInfo()
+    public function testTimezoneInfo(): void
     {
         $timeZone = Timezone::EuropeBrussels;
         $date = DateTime::fromParts($timeZone, 2024, 0o1, 0o1);
@@ -574,7 +577,7 @@ final class DateTimeTest extends TestCase
         static::assertEquals($timeZone->getOffset($date), $date->getTimezoneOffset());
     }
 
-    public function testConvertTimeZone()
+    public function testConvertTimeZone(): void
     {
         $date = DateTime::fromParts(Timezone::EuropeBrussels, 2024, 0o1, 0o1, 1);
         $converted = $date->convertToTimezone($london = Timezone::EuropeLondon);

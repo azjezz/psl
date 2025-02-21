@@ -13,8 +13,10 @@ namespace Psl\Iter;
  * @param iterable<Tk, Tv> $iterable
  *
  * @return Tk|null
+ *
+ * @mago-ignore best-practices/loop-does-not-iterate
  */
-function first_key(iterable $iterable)
+function first_key(iterable $iterable): mixed
 {
     foreach ($iterable as $k => $_) {
         return $k;

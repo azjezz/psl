@@ -24,6 +24,7 @@ final readonly class FloatType extends Type\Type
     /**
      * @psalm-assert-if-true float $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return is_float($value);
@@ -32,6 +33,7 @@ final readonly class FloatType extends Type\Type
     /**
      * @throws CoercionException
      */
+    #[\Override]
     public function coerce(mixed $value): float
     {
         if (is_float($value)) {
@@ -63,6 +65,7 @@ final readonly class FloatType extends Type\Type
      *
      * @throws AssertException
      */
+    #[\Override]
     public function assert(mixed $value): float
     {
         if (is_float($value)) {

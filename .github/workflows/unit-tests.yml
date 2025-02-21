@@ -11,6 +11,7 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
 
     strategy:
+      fail-fast: false
       matrix:
         php-version:
           - "8.2"
@@ -20,6 +21,9 @@ jobs:
           - "macos-latest"
           - "ubuntu-latest"
           - "windows-latest"
+        exclude:
+          - php-version: "8.4"
+            operating-system: "ubuntu-latest"
 
     steps:
       - name: "checkout"
@@ -47,4 +51,4 @@ jobs:
           make install -j10
 
       - name: "running unit tests"
-        run: ./vendor/bin/phpunit -c config/phpunit.xml.dist
+        run: make unit-tests

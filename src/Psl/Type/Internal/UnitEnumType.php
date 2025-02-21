@@ -27,6 +27,7 @@ final readonly class UnitEnumType extends Type\Type
     ) {
     }
 
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return $value instanceof $this->enum;
@@ -37,6 +38,7 @@ final readonly class UnitEnumType extends Type\Type
      *
      * @return T
      */
+    #[\Override]
     public function coerce(mixed $value): UnitEnum
     {
         if ($value instanceof $this->enum) {
@@ -53,6 +55,7 @@ final readonly class UnitEnumType extends Type\Type
      *
      * @psalm-assert T $value
      */
+    #[\Override]
     public function assert(mixed $value): UnitEnum
     {
         if ($value instanceof $this->enum) {

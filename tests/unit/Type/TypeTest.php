@@ -43,7 +43,7 @@ abstract class TypeTest extends TestCase
     public function getValidValues(): array
     {
         $non_unique = $this->getValidCoercions();
-        $non_unique = Dict\map($non_unique, static fn($tuple) => $tuple[1]);
+        $non_unique = Dict\map($non_unique, static fn(array $tuple): mixed => $tuple[1]);
 
         $out = [];
         foreach ($non_unique as $v) {
@@ -158,7 +158,7 @@ abstract class TypeTest extends TestCase
      * @param T $a
      * @param T $b
      */
-    protected function equals($a, $b): bool
+    protected function equals(mixed $a, mixed $b): bool
     {
         return $a === $b;
     }

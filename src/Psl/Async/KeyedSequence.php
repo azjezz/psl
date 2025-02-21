@@ -23,6 +23,8 @@ use function count;
  * @template Tout
  *
  * @see KeyedSemaphore
+ *
+ * @mago-ignore best-practices/no-else-clause
  */
 final class KeyedSequence
 {
@@ -62,8 +64,8 @@ final class KeyedSequence
     public function waitFor(string|int $key, mixed $input): mixed
     {
         if (array_key_exists($key, $this->ingoing)) {
-            $this->pending[$key][] = $suspension = EventLoop::getSuspension();
-
+            $suspension = EventLoop::getSuspension();
+            $this->pending[$key][] = $suspension;
             $suspension->suspend();
         }
 

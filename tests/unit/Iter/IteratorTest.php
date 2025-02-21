@@ -9,25 +9,28 @@ use PHPUnit\Framework\TestCase;
 use Psl\Collection\MutableVector;
 use Psl\Iter;
 
+/**
+ * @mago-ignore best-practices/loop-does-not-iterate
+ */
 final class IteratorTest extends TestCase
 {
     public function testCreateFromGenerator(): void
     {
-        $iterator = Iter\Iterator::create((static fn() => yield from [1, 2, 3])());
+        $iterator = Iter\Iterator::create((static fn(): iterable => yield from [1, 2, 3])());
 
         static::assertCount(3, $iterator);
     }
 
     public function testCreateFromFactory(): void
     {
-        $iterator = Iter\Iterator::from(static fn() => yield from [1, 2, 3]);
+        $iterator = Iter\Iterator::from(static fn(): iterable => yield from [1, 2, 3]);
 
         static::assertCount(3, $iterator);
     }
 
     public function testKeyIteration(): void
     {
-        $iterator = Iter\Iterator::from(static fn() => yield from [1, 2, 3]);
+        $iterator = Iter\Iterator::from(static fn(): iterable => yield from [1, 2, 3]);
         $keys = [];
         while ($iterator->valid()) {
             $keys[] = $iterator->key();
@@ -40,7 +43,7 @@ final class IteratorTest extends TestCase
 
     public function testSeek(): void
     {
-        $iterator = new Iter\Iterator((static fn() => yield from [1, 2, 3, 4, 5])());
+        $iterator = new Iter\Iterator((static fn(): iterable => yield from [1, 2, 3, 4, 5])());
 
         static::assertSame(1, $iterator->current());
         $iterator->next();
@@ -66,7 +69,7 @@ final class IteratorTest extends TestCase
 
     public function testSeekThrowsForOutOfBoundIndex(): void
     {
-        $iterator = new Iter\Iterator((static fn() => yield from [1, 2, 3, 4, 5])());
+        $iterator = new Iter\Iterator((static fn(): iterable => yield from [1, 2, 3, 4, 5])());
 
         $this->expectException(Iter\Exception\OutOfBoundsException::class);
         $this->expectExceptionMessage('Position is out-of-bounds.');
@@ -76,7 +79,7 @@ final class IteratorTest extends TestCase
 
     public function testSeekThrowsForPlusOneOutOfBoundIndexWhenCached(): void
     {
-        $iterator = new Iter\Iterator((static fn() => yield from [1, 2, 3, 4, 5])());
+        $iterator = new Iter\Iterator((static fn(): iterable => yield from [1, 2, 3, 4, 5])());
 
         static::assertSame(5, $iterator->count());
 
@@ -88,7 +91,7 @@ final class IteratorTest extends TestCase
 
     public function testSeekThrowsForPlusOneOutOfBoundIndex(): void
     {
-        $iterator = new Iter\Iterator((static fn() => yield from [1, 2, 3, 4, 5])());
+        $iterator = new Iter\Iterator((static fn(): iterable => yield from [1, 2, 3, 4, 5])());
 
         $this->expectException(Iter\Exception\OutOfBoundsException::class);
         $this->expectExceptionMessage('Position is out-of-bounds.');
@@ -98,7 +101,7 @@ final class IteratorTest extends TestCase
 
     public function testSeekZero(): void
     {
-        $iterator = new Iter\Iterator((static function () {
+        $iterator = new Iter\Iterator((static function (): iterable {
             yield 1;
 
             throw new Exception('nope');

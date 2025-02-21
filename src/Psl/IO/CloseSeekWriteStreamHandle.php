@@ -35,6 +35,7 @@ final class CloseSeekWriteStreamHandle implements CloseSeekWriteStreamHandleInte
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function write(string $bytes, null|Duration $timeout = null): int
     {
         return $this->handle->write($bytes, $timeout);
@@ -43,6 +44,7 @@ final class CloseSeekWriteStreamHandle implements CloseSeekWriteStreamHandleInte
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function seek(int $offset): void
     {
         $this->handle->seek($offset);
@@ -51,6 +53,7 @@ final class CloseSeekWriteStreamHandle implements CloseSeekWriteStreamHandleInte
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function tell(): int
     {
         return $this->handle->tell();
@@ -59,6 +62,7 @@ final class CloseSeekWriteStreamHandle implements CloseSeekWriteStreamHandleInte
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function close(): void
     {
         $this->handle->close();

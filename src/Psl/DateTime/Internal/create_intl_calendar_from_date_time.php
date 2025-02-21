@@ -15,6 +15,8 @@ use Psl\DateTime\Timezone;
  * @psalm-suppress ImpureMethodCall - `IntlCalender::setDateTime()` is mutation free, as it performs a read-only operation.
  *
  * @infection-ignore-all
+ *
+ * @mago-ignore best-practices/no-else-clause
  */
 function create_intl_calendar_from_date_time(
     Timezone $timezone,

@@ -16,6 +16,7 @@ final readonly class MixedType extends Type
     /**
      * @psalm-assert-if-true mixed $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return true;
@@ -24,6 +25,7 @@ final readonly class MixedType extends Type
     /**
      * @psalm-assert mixed $value
      */
+    #[\Override]
     public function coerce(mixed $value): mixed
     {
         return $value;
@@ -32,6 +34,7 @@ final readonly class MixedType extends Type
     /**
      * @psalm-assert mixed $value
      */
+    #[\Override]
     public function assert(mixed $value): mixed
     {
         return $value;

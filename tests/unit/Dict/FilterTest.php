@@ -6,13 +6,14 @@ namespace Psl\Tests\Unit\Dict;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Dict;
+use Closure;
 
 final class FilterTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
-    public function testFilter(array $expected, array $array, null|callable $predicate = null): void
+    public function testFilter(array $expected, array $array, null|Closure $predicate = null): void
     {
         $result = Dict\filter($array, $predicate);
 
@@ -23,7 +24,7 @@ final class FilterTest extends TestCase
     {
         yield [[], []];
         yield [['a', 'b'], ['a', 'b']];
-        yield [[], ['a', 'b'], static fn() => false];
+        yield [[], ['a', 'b'], static fn(): bool => false];
         yield [['a', 'b'], ['a', 'b'], static fn(string $_): bool => true];
         yield [['a'], ['a', 'b'], static fn(string $v): bool => 'b' !== $v];
     }

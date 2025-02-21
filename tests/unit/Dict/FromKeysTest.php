@@ -12,7 +12,7 @@ final class FromKeysTest extends TestCase
 {
     public function testFromKeys(): void
     {
-        $actual = Dict\from_keys(['hello', 'world'], static fn(string $_key) => false);
+        $actual = Dict\from_keys(['hello', 'world'], static fn(string $_key): bool => false);
 
         static::assertSame('hello', Iter\first_key($actual));
         static::assertSame('world', Iter\last_key($actual));

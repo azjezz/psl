@@ -17,7 +17,7 @@ require __DIR__ . '/../../vendor/autoload.php';
  */
 [$receiver, $sender] = Channel\unbounded();
 
-Async\Scheduler::delay(Duration::seconds(1), static function () use ($sender) {
+Async\Scheduler::delay(Duration::seconds(1), static function () use ($sender): void {
     $sender->send('Hello, World!');
 });
 

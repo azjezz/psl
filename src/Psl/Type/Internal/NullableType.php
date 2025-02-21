@@ -30,6 +30,7 @@ final readonly class NullableType extends Type\Type
     /**
      * @psalm-assert-if-true T|null $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return null === $value || $this->inner->matches($value);
@@ -40,6 +41,7 @@ final readonly class NullableType extends Type\Type
      *
      * @return T|null
      */
+    #[\Override]
     public function coerce(mixed $value): mixed
     {
         if (null === $value) {
@@ -56,6 +58,7 @@ final readonly class NullableType extends Type\Type
      *
      * @psalm-assert T|null $value
      */
+    #[\Override]
     public function assert(mixed $value): mixed
     {
         if (null === $value) {

@@ -18,6 +18,7 @@ final readonly class MixedVecType extends Type\Type
     /**
      * @psalm-assert-if-true list<Tv> $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return is_array($value) && array_is_list($value);
@@ -28,6 +29,7 @@ final readonly class MixedVecType extends Type\Type
      *
      * @return list<mixed>
      */
+    #[\Override]
     public function coerce(mixed $value): iterable
     {
         if (!is_iterable($value)) {
@@ -66,6 +68,7 @@ final readonly class MixedVecType extends Type\Type
      *
      * @psalm-assert list<mixed> $value
      */
+    #[\Override]
     public function assert(mixed $value): array
     {
         if (!is_array($value) || !array_is_list($value)) {

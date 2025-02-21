@@ -25,4 +25,4 @@ jobs:
           make install -j10 -O
 
       - name: "checking if documentation is up-to-date."
-        run: "php docs/documenter.php check"
+        run: make docs-check

@@ -13,6 +13,8 @@ use Psl\Type;
  *
  * @implements Comparison\Comparable<Option<T>>
  * @implements Comparison\Equable<Option<T>>
+ *
+ * @psalm-suppress ClassMustBeFinal
  */
 final readonly class Option implements Comparison\Comparable, Comparison\Equable
 {
@@ -393,6 +395,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     /**
      * @param Option<T> $other
      */
+    #[\Override]
     public function compare(mixed $other): Comparison\Order
     {
         $aIsNone = $this->isNone();
@@ -407,6 +410,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     /**
      * @param Option<T> $other
      */
+    #[\Override]
     public function equals(mixed $other): bool
     {
         return Comparison\equal($this, $other);
@@ -424,8 +428,8 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function zip(Option $other): Option
     {
-        return $this->andThen(static function ($a) use ($other) {
-            return $other->map(static fn($b) => [$a, $b]);
+        return $this->andThen(static function (mixed $a) use ($other): Option {
+            return $other->map(static fn(mixed $b): array => [$a, $b]);
         });
     }
 
@@ -448,10 +452,10 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     {
         return $this->andThen(
             /** @param T $a */
-            static function ($a) use ($other, $closure) {
+            static function (mixed $a) use ($other, $closure): Option {
                 return $other->map(
                     /** @param Tu $b */
-                    static fn($b) => $closure($a, $b),
+                    static fn(mixed $b): mixed => $closure($a, $b),
                 );
             },
         );

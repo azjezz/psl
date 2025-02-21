@@ -15,6 +15,8 @@ use function mb_detect_encoding;
  * @return null|Encoding The string encoding or null if unable to detect encoding.
  *
  * @pure
+ *
+ * @mago-ignore best-practices/no-boolean-literal-comparison
  */
 function detect_encoding(string $string, null|array $encoding_list = null): null|Encoding
 {

@@ -18,6 +18,8 @@ use Psl\Str;
  * @psalm-mutation-free
  *
  * @throws ParserException
+ *
+ * @mago-ignore best-practices/no-boolean-literal-comparison
  */
 function parse(
     string $raw_string,

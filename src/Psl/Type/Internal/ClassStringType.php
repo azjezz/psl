@@ -35,6 +35,7 @@ final readonly class ClassStringType extends Type
     /**
      * @psalm-assert-if-true class-string<T> $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return is_string($value) && is_a($value, $this->classname, true);
@@ -45,6 +46,7 @@ final readonly class ClassStringType extends Type
      *
      * @return class-string<T>
      */
+    #[\Override]
     public function coerce(mixed $value): string
     {
         if (is_string($value) && is_a($value, $this->classname, true)) {
@@ -61,6 +63,7 @@ final readonly class ClassStringType extends Type
      *
      * @psalm-assert class-string<T> $value
      */
+    #[\Override]
     public function assert(mixed $value): string
     {
         if (is_string($value) && is_a($value, $this->classname, true)) {

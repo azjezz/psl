@@ -28,7 +28,7 @@ final class Socket implements Network\StreamSocketInterface
     /**
      * @param resource $stream
      */
-    public function __construct($stream)
+    public function __construct(mixed $stream)
     {
         $this->handle = new Internal\ResourceHandle($stream, read: true, write: true, seek: false, close: true);
     }
@@ -52,6 +52,7 @@ final class Socket implements Network\StreamSocketInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         return $this->handle->read($max_bytes, $timeout);
@@ -68,6 +69,7 @@ final class Socket implements Network\StreamSocketInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function write(string $bytes, null|Duration $timeout = null): int
     {
         return $this->handle->write($bytes, $timeout);
@@ -110,6 +112,7 @@ final class Socket implements Network\StreamSocketInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function close(): void
     {
         $this->handle->close();

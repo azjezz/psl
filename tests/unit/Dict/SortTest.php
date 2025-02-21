@@ -6,13 +6,14 @@ namespace Psl\Tests\Unit\Dict;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Dict;
+use Closure;
 
 final class SortTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
-    public function testSort(array $expected, array $array, null|callable $comparator = null): void
+    public function testSort(array $expected, array $array, null|Closure $comparator = null): void
     {
         static::assertSame($expected, Dict\sort($array, $comparator));
     }
@@ -35,7 +36,7 @@ final class SortTest extends TestCase
                  *
                  * @pure
                  */
-                static fn(int $a, int $b) => $a <=> $b ? -1 : 1,
+                static fn(int $a, int $b): int => $a <=> $b ? -1 : 1,
             ],
             [
                 ['foo' => 'bar', 'bar' => 'baz'],

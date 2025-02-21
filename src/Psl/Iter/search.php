@@ -25,7 +25,7 @@ use Closure;
  *
  * @return T|null
  */
-function search(iterable $iterable, Closure $predicate)
+function search(iterable $iterable, Closure $predicate): mixed
 {
     foreach ($iterable as $value) {
         if ($predicate($value)) {

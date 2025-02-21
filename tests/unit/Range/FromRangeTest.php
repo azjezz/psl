@@ -8,6 +8,10 @@ use PHPUnit\Framework\TestCase;
 use Psl\Math;
 use Psl\Range;
 
+/**
+ * @mago-ignore best-practices/no-empty-loop
+ * @mago-ignore best-practices/no-else-clause
+ */
 final class FromRangeTest extends TestCase
 {
     public function testContains(): void

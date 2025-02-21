@@ -11,7 +11,7 @@ function test_try_catch(): null|string
 
 function test_try_catch_composed(): null|string
 {
-    return (static fn(int $id) => Result\try_catch(
+    return (static fn(int $id): null|string => Result\try_catch(
         static fn(): string => 'hello ' . ((string) $id),
         static fn(): null|string => null,
     ))(1);

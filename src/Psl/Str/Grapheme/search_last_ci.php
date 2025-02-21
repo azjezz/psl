@@ -24,6 +24,8 @@ use function grapheme_strripos;
  * @throws Str\Exception\InvalidArgumentException If $haystack is not made of grapheme clusters.
  *
  * @return null|int<0, max>
+ *
+ * @mago-ignore best-practices/no-boolean-literal-comparison
  */
 function search_last_ci(string $haystack, string $needle, int $offset = 0): null|int
 {

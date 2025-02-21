@@ -22,6 +22,7 @@ final readonly class NumericStringType extends Type\Type
     /**
      * @psalm-assert-if-true numeric-string $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return is_string($value) && is_numeric($value);
@@ -32,6 +33,7 @@ final readonly class NumericStringType extends Type\Type
      *
      * @return numeric-string
      */
+    #[\Override]
     public function coerce(mixed $value): string
     {
         if (is_string($value) && is_numeric($value)) {
@@ -60,6 +62,7 @@ final readonly class NumericStringType extends Type\Type
      *
      * @psalm-assert numeric-string $value
      */
+    #[\Override]
     public function assert(mixed $value): string
     {
         if (is_string($value) && is_numeric($value)) {

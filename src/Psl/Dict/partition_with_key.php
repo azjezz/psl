@@ -25,9 +25,11 @@ function partition_with_key(iterable $iterable, Closure $predicate): array
     foreach ($iterable as $key => $value) {
         if ($predicate($key, $value)) {
             $success[$key] = $value;
-        } else {
-            $failure[$key] = $value;
+
+            continue;
         }
+
+        $failure[$key] = $value;
     }
 
     return [$success, $failure];

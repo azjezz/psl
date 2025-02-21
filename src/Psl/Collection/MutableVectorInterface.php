@@ -31,6 +31,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function values(): MutableVectorInterface;
 
     /**
@@ -40,6 +41,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function keys(): MutableVectorInterface;
 
     /**
@@ -58,6 +60,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * @return MutableVectorInterface<T> A MutableVectorInterface containing the values after
      *                                   a user-specified condition is applied.
      */
+    #[\Override]
     public function filter(Closure $fn): MutableVectorInterface;
 
     /**
@@ -98,6 +101,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * @return MutableVectorInterface<Tu> A `MutableVectorInterface` containing key/value pairs after
      *                                    a user-specified operation is applied.
      */
+    #[\Override]
     public function map(Closure $fn): MutableVectorInterface;
 
     /**
@@ -130,6 +134,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function first(): mixed;
 
     /**
@@ -150,6 +155,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function last(): mixed;
 
     /**
@@ -194,6 +200,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function zip(array $elements): MutableVectorInterface;
 
     /**
@@ -213,6 +220,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function take(int $n): MutableVectorInterface;
 
     /**
@@ -248,6 +256,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function drop(int $n): MutableVectorInterface;
 
     /**
@@ -287,6 +296,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function slice(int $start, null|int $length = null): MutableVectorInterface;
 
     /**
@@ -303,6 +313,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function chunk(int $size): MutableVectorInterface;
 
     /**
@@ -358,6 +369,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @return MutableVectorInterface<T> Returns itself.
      */
+    #[\Override]
     public function remove(int|string $k): MutableVectorInterface;
 
     /**
@@ -365,6 +377,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @return MutableVectorInterface<T>
      */
+    #[\Override]
     public function clear(): MutableVectorInterface;
 
     /**

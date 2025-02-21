@@ -38,10 +38,22 @@ final class SequenceTest extends TestCase
             $spy->value[] = $data['value'];
         });
 
-        Async\run(static fn() => $sequence->waitFor(['time' => DateTime\Duration::milliseconds(3), 'value' => 'a']));
-        Async\run(static fn() => $sequence->waitFor(['time' => DateTime\Duration::milliseconds(4), 'value' => 'b']));
-        Async\run(static fn() => $sequence->waitFor(['time' => DateTime\Duration::milliseconds(5), 'value' => 'c']));
-        $last = Async\run(static fn() => $sequence->waitFor(['time' => null, 'value' => 'd']));
+        Async\run(static fn(): null => $sequence->waitFor([
+            'time' => DateTime\Duration::milliseconds(3),
+            'value' => 'a',
+        ]));
+        Async\run(static fn(): null => $sequence->waitFor([
+            'time' => DateTime\Duration::milliseconds(4),
+            'value' => 'b',
+        ]));
+        Async\run(static fn(): null => $sequence->waitFor([
+            'time' => DateTime\Duration::milliseconds(5),
+            'value' => 'c',
+        ]));
+        $last = Async\run(static fn(): null => $sequence->waitFor([
+            'time' => null,
+            'value' => 'd',
+        ]));
         $last->await();
 
         static::assertSame(['a', 'b', 'c', 'd'], $spy->value);
@@ -60,7 +72,7 @@ final class SequenceTest extends TestCase
             Async\sleep(DateTime\Duration::milliseconds(2));
         });
 
-        $awaitable = Async\run(static fn() => $sequence->waitFor('hello'));
+        $awaitable = Async\run(static fn(): null => $sequence->waitFor('hello'));
 
         Async\sleep(DateTime\Duration::milliseconds(1));
 
@@ -82,8 +94,8 @@ final class SequenceTest extends TestCase
             Async\sleep(DateTime\Duration::milliseconds(2));
         });
 
-        Async\run(static fn() => $sequence->waitFor('hello'));
-        $awaitable = Async\run(static fn() => $sequence->waitFor('world'));
+        Async\run(static fn(): null => $sequence->waitFor('hello'));
+        $awaitable = Async\run(static fn(): null => $sequence->waitFor('world'));
 
         Async\sleep(DateTime\Duration::milliseconds(1));
 
@@ -117,8 +129,8 @@ final class SequenceTest extends TestCase
             return $input;
         });
 
-        $one = Async\run(static fn() => $sequence->waitFor('one'));
-        $two = Async\run(static fn() => $sequence->waitFor('two'));
+        $one = Async\run(static fn(): string => $sequence->waitFor('one'));
+        $two = Async\run(static fn(): string => $sequence->waitFor('two'));
 
         Async\sleep(DateTime\Duration::milliseconds(10));
 
@@ -152,7 +164,7 @@ final class SequenceTest extends TestCase
                 $sequence->waitFor(DateTime\Duration::milliseconds(20));
                 $sequence->waitFor(DateTime\Duration::milliseconds(20));
             },
-            static fn() => $sequence->waitFor(DateTime\Duration::milliseconds(20)),
+            static fn(): null => $sequence->waitFor(DateTime\Duration::milliseconds(20)),
         ]);
 
         $duration = microtime(true) - $time;
@@ -172,8 +184,8 @@ final class SequenceTest extends TestCase
             return $input;
         });
 
-        $one = Async\run(static fn() => $s->waitFor('one'));
-        $two = Async\run(static fn() => $s->waitFor('two'));
+        $one = Async\run(static fn(): string => $s->waitFor('one'));
+        $two = Async\run(static fn(): string => $s->waitFor('two'));
         static::assertFalse($s->hasIngoingOperations());
         static::assertFalse($s->hasPendingOperations());
         static::assertSame(0, $s->getPendingOperations());
@@ -202,8 +214,8 @@ final class SequenceTest extends TestCase
             return $input;
         });
 
-        $one = Async\run(static fn() => $s->waitFor('one'));
-        $two = Async\run(static fn() => $s->waitFor('two'));
+        $one = Async\run(static fn(): string => $s->waitFor('one'));
+        $two = Async\run(static fn(): string => $s->waitFor('two'));
         static::assertFalse($s->hasIngoingOperations());
         static::assertFalse($s->hasPendingOperations());
         static::assertSame(0, $s->getPendingOperations());

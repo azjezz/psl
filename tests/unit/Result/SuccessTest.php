@@ -75,7 +75,7 @@ final class SuccessTest extends TestCase
         $exception = new Exception('bar');
         $wrapper = new Success('hello');
         $actual = $wrapper->then(
-            static function () use ($exception) {
+            static function () use ($exception): never {
                 throw $exception;
             },
             Fun\rethrow(),
@@ -88,7 +88,7 @@ final class SuccessTest extends TestCase
     public function testCatch(): void
     {
         $wrapper = new Success('hello');
-        $actual = $wrapper->catch(static function () {
+        $actual = $wrapper->catch(static function (): never {
             throw new Exception('Dont call us, we\'ll call you!');
         });
 
@@ -107,7 +107,7 @@ final class SuccessTest extends TestCase
         static::assertSame('hello', $actual->getResult());
 
         $wrapper = new Success('hello');
-        $actual = $wrapper->map(static fn() => throw new Exception('bye'));
+        $actual = $wrapper->map(static fn(): never => throw new Exception('bye'));
 
         static::assertNotSame($wrapper, $actual);
         static::assertFalse($actual->isSucceeded());
@@ -119,7 +119,7 @@ final class SuccessTest extends TestCase
     {
         $ref = new Psl\Ref('');
         $wrapper = new Success('hello');
-        $actual = $wrapper->always(static function () use ($ref) {
+        $actual = $wrapper->always(static function () use ($ref): void {
             $ref->value .= 'hey';
         });
 

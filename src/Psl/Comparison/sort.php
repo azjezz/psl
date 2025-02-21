@@ -14,7 +14,7 @@ namespace Psl\Comparison;
  *
  * Vec\sort($list, Comparable\sort(...))
  */
-function sort($a, $b): int
+function sort(mixed $a, mixed $b): int
 {
     return compare($a, $b)->value;
 }

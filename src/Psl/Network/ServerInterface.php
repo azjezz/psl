@@ -42,5 +42,6 @@ interface ServerInterface extends IO\CloseHandleInterface
     /**
      * Stop listening; open connection are not closed.
      */
+    #[\Override]
     public function close(): void;
 }

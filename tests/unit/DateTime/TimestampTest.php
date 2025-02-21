@@ -54,7 +54,7 @@ final class TimestampTest extends TestCase
         static::assertGreaterThan(100.0, $difference->getTotalMilliseconds());
     }
 
-    public function testSince()
+    public function testSince(): void
     {
         $a = Timestamp::fromParts(20, 1);
         $b = Timestamp::fromParts(30, 2);

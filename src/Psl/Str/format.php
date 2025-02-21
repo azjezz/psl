@@ -23,7 +23,7 @@ use function vsprintf;
  *
  * @return string a string produced according to the $format string.
  */
-function format(string $format, ...$args): string
+function format(string $format, mixed ...$args): string
 {
     return vsprintf($format, $args);
 }

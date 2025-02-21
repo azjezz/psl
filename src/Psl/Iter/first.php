@@ -12,8 +12,10 @@ namespace Psl\Iter;
  * @param iterable<T> $iterable
  *
  * @return T|null
+ *
+ * @mago-ignore best-practices/loop-does-not-iterate
  */
-function first(iterable $iterable)
+function first(iterable $iterable): mixed
 {
     foreach ($iterable as $v) {
         return $v;

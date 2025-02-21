@@ -38,6 +38,7 @@ final readonly class VectorType extends Type\Type
      *
      * @return Collection\VectorInterface<T>
      */
+    #[\Override]
     public function coerce(mixed $value): Collection\VectorInterface
     {
         if (is_iterable($value)) {
@@ -48,7 +49,8 @@ final readonly class VectorType extends Type\Type
              * @var list<T> $values
              */
             $values = [];
-            $i = $v = null;
+            $i = null;
+            $v = null;
             $iterating = true;
 
             try {
@@ -89,6 +91,7 @@ final readonly class VectorType extends Type\Type
      *
      * @psalm-assert Collection\VectorInterface<T> $value
      */
+    #[\Override]
     public function assert(mixed $value): Collection\VectorInterface
     {
         if (is_object($value) && $value instanceof Collection\VectorInterface) {
@@ -99,7 +102,8 @@ final readonly class VectorType extends Type\Type
              * @var list<T> $values
              */
             $values = [];
-            $i = $v = null;
+            $i = null;
+            $v = null;
 
             try {
                 /**

@@ -46,6 +46,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @pure
      */
+    #[\Override]
     public static function default(): static
     {
         return new self([]);
@@ -87,6 +88,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function first(): mixed
     {
         $key = $this->firstKey();
@@ -118,6 +120,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function last(): mixed
     {
         $key = $this->lastKey();
@@ -191,6 +194,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @return int<0, max>
      */
+    #[\Override]
     public function count(): int
     {
         /** @var int<0, max> */
@@ -232,6 +236,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function at(int|string $k): mixed
     {
         if (!array_key_exists($k, $this->elements)) {
@@ -248,6 +253,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function contains(int|string $k): bool
     {
         return array_key_exists($k, $this->elements);
@@ -274,6 +280,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function get(int|string $k): mixed
     {
         return $this->elements[$k] ?? null;
@@ -287,6 +294,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function values(): MutableVector
     {
         return MutableVector::fromArray($this->elements);
@@ -299,6 +307,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function keys(): MutableVector
     {
         return MutableVector::fromArray(array_keys($this->elements));
@@ -320,6 +329,7 @@ final class MutableMap implements MutableMapInterface
      * @return MutableMap<Tk, Tv> A MutableMap containing the values after a user-specified condition
      *                            is applied.
      */
+    #[\Override]
     public function filter(Closure $fn): MutableMap
     {
         return new MutableMap(Dict\filter($this->elements, $fn));
@@ -365,6 +375,7 @@ final class MutableMap implements MutableMapInterface
      * @return MutableMap<Tk, Tu> A `MutableMap` containing key/value pairs after a user-specified
      *                            operation is applied.
      */
+    #[\Override]
     public function map(Closure $fn): MutableMap
     {
         return new MutableMap(Dict\map($this->elements, $fn));
@@ -413,6 +424,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function zip(array $elements): MutableMap
     {
         $elements = array_values($elements);
@@ -450,6 +462,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function take(int $n): MutableMap
     {
         return $this->slice(0, $n);
@@ -491,6 +504,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function drop(int $n): MutableMap
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
@@ -537,6 +551,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function slice(int $start, null|int $length = null): MutableMap
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
@@ -557,6 +572,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function chunk(int $size): MutableVector
     {
         /** @psalm-suppress ImpureMethodCall */
@@ -603,6 +619,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function set(int|string $k, mixed $v): MutableMap
     {
         if (!array_key_exists($k, $this->elements)) {
@@ -650,6 +667,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function add(int|string $k, mixed $v): MutableMap
     {
         $this->elements[$k] = $v;
@@ -691,6 +709,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function remove(int|string $k): MutableMap
     {
         if ($this->contains($k)) {
@@ -707,6 +726,7 @@ final class MutableMap implements MutableMapInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function clear(): MutableMap
     {
         $this->elements = [];

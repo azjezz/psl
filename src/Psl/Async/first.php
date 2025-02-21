@@ -16,6 +16,8 @@ namespace Psl\Async;
  * @throws Exception\InvalidArgumentException If $awaitables is empty.
  *
  * @return T
+ *
+ * @mago-ignore best-practices/loop-does-not-iterate
  */
 function first(iterable $awaitables): mixed
 {

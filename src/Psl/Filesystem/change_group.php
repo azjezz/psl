@@ -17,6 +17,8 @@ use function lchgrp;
  *
  * @throws Exception\RuntimeException If unable to change the group ownership for $node.
  * @throws Exception\NotFoundException If $node does not exist.
+ *
+ * @mago-ignore best-practices/no-else-clause
  */
 function change_group(string $node, int $group): void
 {

@@ -29,6 +29,7 @@ final readonly class NonNullType extends Type\Type
      *
      * @return ($value is null ? false : true)
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return null !== $value;
@@ -43,6 +44,7 @@ final readonly class NonNullType extends Type\Type
      *
      * @return ($value is null ? never : T)
      */
+    #[\Override]
     public function coerce(mixed $value): mixed
     {
         if (null !== $value) {
@@ -65,6 +67,7 @@ final readonly class NonNullType extends Type\Type
      *
      * @return ($value is null ? never : T)
      */
+    #[\Override]
     public function assert(mixed $value): mixed
     {
         if (null !== $value) {

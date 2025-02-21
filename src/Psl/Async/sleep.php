@@ -13,7 +13,7 @@ use Revolt\EventLoop;
 function sleep(DateTime\Duration $duration): void
 {
     $suspension = EventLoop::getSuspension();
-    $watcher = EventLoop::delay($duration->getTotalSeconds(), static fn() => $suspension->resume());
+    $watcher = EventLoop::delay($duration->getTotalSeconds(), static fn(): null => $suspension->resume());
 
     try {
         $suspension->suspend();

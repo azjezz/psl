@@ -23,5 +23,5 @@ use Closure;
  */
 function when(Closure $condition, Closure $then, Closure $else): Closure
 {
-    return static fn($value) => $condition($value) ? $then($value) : $else($value);
+    return static fn(mixed $value): mixed => $condition($value) ? $then($value) : $else($value);
 }

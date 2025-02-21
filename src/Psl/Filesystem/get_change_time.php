@@ -19,6 +19,8 @@ use function filectime;
  * @throws Exception\RuntimeException In case of an error.
  *
  * @return int The last inode modification time as a Unix timestamp.
+ *
+ * @mago-ignore best-practices/no-boolean-literal-comparison
  */
 function get_change_time(string $node): int
 {

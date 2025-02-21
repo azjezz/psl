@@ -11,7 +11,7 @@ namespace Psl;
  *
  * @pure
  */
-function invariant_violation(string $message, ...$args): never
+function invariant_violation(string $message, mixed ...$args): never
 {
     throw new Exception\InvariantViolationException(Str\format($message, ...$args));
 }

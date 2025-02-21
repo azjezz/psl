@@ -28,6 +28,7 @@ final class Queue implements QueueInterface
      *
      * @pure
      */
+    #[\Override]
     public static function default(): static
     {
         return new self();
@@ -40,6 +41,7 @@ final class Queue implements QueueInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function enqueue(mixed $node): void
     {
         $this->queue[] = $node;
@@ -53,6 +55,7 @@ final class Queue implements QueueInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function peek(): mixed
     {
         return $this->queue[0] ?? null;
@@ -66,6 +69,7 @@ final class Queue implements QueueInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function pull(): mixed
     {
         return array_shift($this->queue);
@@ -80,6 +84,7 @@ final class Queue implements QueueInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function dequeue(): mixed
     {
         if ([] === $this->queue) {
@@ -97,6 +102,7 @@ final class Queue implements QueueInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function count(): int
     {
         return count($this->queue);

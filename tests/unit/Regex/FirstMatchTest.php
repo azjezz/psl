@@ -28,7 +28,7 @@ final class FirstMatchTest extends TestCase
     /**
      * @dataProvider provideNonMatchingData
      */
-    public function testNotMatching(string $subject, string $pattern, int $offset = 0)
+    public function testNotMatching(string $subject, string $pattern, int $offset = 0): void
     {
         static::assertNull(Regex\first_match($subject, $pattern, null, $offset));
     }

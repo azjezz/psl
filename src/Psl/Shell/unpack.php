@@ -19,9 +19,9 @@ function unpack(string $content): array
     foreach (stream_unpack($content) as $type => $chunk) {
         if ($type === 1) {
             $result[0] .= $chunk;
-        } else {
-            $result[1] .= $chunk;
+            continue;
         }
+        $result[1] .= $chunk;
     }
 
     return $result;

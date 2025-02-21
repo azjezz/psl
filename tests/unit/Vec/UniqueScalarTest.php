@@ -22,7 +22,7 @@ final class UniqueScalarTest extends TestCase
         static::assertSame(['foo', 'bar'], $unique);
     }
 
-    public function testUniqueIterator()
+    public function testUniqueIterator(): void
     {
         $array = Iter\Iterator::create(['foo', 'foo', 'bar', 'bar', 'baz']);
 
@@ -32,7 +32,7 @@ final class UniqueScalarTest extends TestCase
         static::assertSame(['foo', 'bar', 'baz'], $unique);
     }
 
-    public function testUniqueIteratorAgggregate()
+    public function testUniqueIteratorAgggregate(): void
     {
         $array = Collection\Map::fromArray(['foo', 'foo', 'bar', 'bar', 'baz']);
 

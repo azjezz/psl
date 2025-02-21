@@ -38,6 +38,7 @@ final readonly class MutableSetType extends Type\Type
      *
      * @return Collection\MutableSetInterface<T>
      */
+    #[\Override]
     public function coerce(mixed $value): Collection\MutableSetInterface
     {
         if (is_iterable($value)) {
@@ -81,6 +82,7 @@ final readonly class MutableSetType extends Type\Type
      *
      * @psalm-assert Collection\MutableSetInterface<T> $value
      */
+    #[\Override]
     public function assert(mixed $value): Collection\MutableSetInterface
     {
         if (is_object($value) && $value instanceof Collection\MutableSetInterface) {
@@ -88,7 +90,8 @@ final readonly class MutableSetType extends Type\Type
             $type = $this->type;
             /** @var array<T, T> $set */
             $set = [];
-            $k = $v = null;
+            $k = null;
+            $v = null;
             $iterating = true;
             try {
                 /**

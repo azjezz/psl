@@ -38,14 +38,16 @@ Async\main(static function (): int {
             IO\write_error_line('< server stopped.');
         },
         'client' => static function (): void {
+            IO\write_error_line('> client connecting.');
+
             $client = TCP\connect('localhost', 91337);
 
-            IO\write_error_line('> client connected');
-            IO\write_error_line('> sending request');
+            IO\write_error_line('> client connected.');
+            IO\write_error_line('> sending request.');
 
             $client->writeAll('Hello, World!');
 
-            IO\write_error_line('> awaiting response');
+            IO\write_error_line('> awaiting response.');
 
             $response = $client->readAll();
 
@@ -53,7 +55,7 @@ Async\main(static function (): int {
 
             $client->close();
 
-            IO\write_error_line('> client disconnected');
+            IO\write_error_line('> client disconnected.');
         },
     ]);
 

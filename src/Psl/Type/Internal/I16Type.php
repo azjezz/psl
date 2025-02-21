@@ -25,6 +25,7 @@ final readonly class I16Type extends Type\Type
      *
      * @psalm-assert-if-true int<-32768, 32767> $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return is_int($value) && $value >= Math\INT16_MIN && $value <= MATH\INT16_MAX;
@@ -37,6 +38,7 @@ final readonly class I16Type extends Type\Type
      *
      * @return int<-32768, 32767>
      */
+    #[\Override]
     public function coerce(mixed $value): int
     {
         $integer = Type\int()->coerce($value);
@@ -59,6 +61,7 @@ final readonly class I16Type extends Type\Type
      *
      * @return int<-32768, 32767>
      */
+    #[\Override]
     public function assert(mixed $value): int
     {
         if (is_int($value) && $value >= Math\INT16_MIN && $value <= MATH\INT16_MAX) {

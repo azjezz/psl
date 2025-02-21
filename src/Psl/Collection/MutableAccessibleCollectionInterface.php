@@ -34,6 +34,7 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function values(): MutableAccessibleCollectionInterface;
 
     /**
@@ -44,6 +45,7 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function keys(): MutableAccessibleCollectionInterface;
 
     /**
@@ -62,6 +64,7 @@ interface MutableAccessibleCollectionInterface extends
      * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` containing
      *                                                      the values after a user-specified condition is applied.
      */
+    #[\Override]
     public function filter(Closure $fn): MutableAccessibleCollectionInterface;
 
     /**
@@ -98,6 +101,7 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv> Returns itself.
      */
+    #[\Override]
     public function remove(int|string $k): MutableAccessibleCollectionInterface;
 
     /**
@@ -105,6 +109,7 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @return MutableAccessibleCollectionInterface<Tk, Tv>
      */
+    #[\Override]
     public function clear(): MutableAccessibleCollectionInterface;
 
     /**
@@ -126,6 +131,7 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function zip(array $elements): MutableAccessibleCollectionInterface;
 
     /**
@@ -145,6 +151,7 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function take(int $n): MutableAccessibleCollectionInterface;
 
     /**
@@ -182,6 +189,7 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function drop(int $n): MutableAccessibleCollectionInterface;
 
     /**
@@ -222,6 +230,7 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function slice(int $start, null|int $length = null): MutableAccessibleCollectionInterface;
 
     /**
@@ -238,6 +247,7 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function chunk(int $size): MutableAccessibleCollectionInterface;
 
     /**

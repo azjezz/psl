@@ -16,6 +16,8 @@ use function filegroup;
  *
  * @throws Exception\NotFoundException If $node is not found.
  * @throws Exception\RuntimeException In case of an error.
+ *
+ * @mago-ignore best-practices/no-boolean-literal-comparison
  */
 function get_group(string $node): int
 {
@@ -23,12 +25,7 @@ function get_group(string $node): int
         throw Exception\NotFoundException::forNode($node);
     }
 
-    [$result, $message] = Psl\Internal\box(
-        /**
-         * @return false|int
-         */
-        static fn() => filegroup($node),
-    );
+    [$result, $message] = Psl\Internal\box(static fn(): false|int => filegroup($node));
 
     if (false === $result) {
         throw new Exception\RuntimeException(Str\format(

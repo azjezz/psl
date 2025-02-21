@@ -89,14 +89,14 @@ final class MixedDictTypeTest extends TypeTest
     {
         yield 'invalid iterator first item' => [
             Type\mixed_dict(),
-            (static function () {
+            (static function (): iterable {
                 yield 0 => Type\int()->coerce('nope');
             })(),
             'Could not coerce "string" to type "dict<array-key, mixed>" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
             Type\mixed_dict(),
-            (static function () {
+            (static function (): iterable {
                 yield 0 => 0;
                 yield 1 => Type\int()->coerce('nope');
             })(),
@@ -104,7 +104,7 @@ final class MixedDictTypeTest extends TypeTest
         ];
         yield 'iterator throwing exception' => [
             Type\mixed_dict(),
-            (static function () {
+            (static function (): iterable {
                 throw new RuntimeException('whoops');
                 yield;
             })(),
@@ -112,14 +112,14 @@ final class MixedDictTypeTest extends TypeTest
         ];
         yield 'iterator yielding null key' => [
             Type\mixed_dict(),
-            (static function () {
+            (static function (): iterable {
                 yield null => 'nope';
             })(),
             'Could not coerce "null" to type "dict<array-key, mixed>" at path "key(null)".',
         ];
         yield 'iterator yielding object key' => [
             Type\mixed_dict(),
-            (static function () {
+            (static function (): iterable {
                 yield new class() {
                 } => 'nope';
             })(),

@@ -37,6 +37,7 @@ enum Order: int implements DefaultInterface
      *
      * @pure
      */
+    #[\Override]
     public static function default(): static
     {
         return self::Equal;

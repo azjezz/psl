@@ -77,6 +77,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         return $this->tryRead($max_bytes);
@@ -87,6 +88,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function seek(int $offset): void
     {
         $this->assertHandleIsOpen();
@@ -99,6 +101,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function tell(): int
     {
         $this->assertHandleIsOpen();
@@ -138,6 +141,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function write(string $bytes, null|Duration $timeout = null): int
     {
         return $this->tryWrite($bytes);
@@ -148,6 +152,7 @@ final class MemoryHandle implements CloseSeekReadWriteHandleInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function close(): void
     {
         $this->closed = true;

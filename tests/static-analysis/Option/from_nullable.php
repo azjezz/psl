@@ -29,7 +29,7 @@ function test_none(): Option
  *
  * @return Option<T>
  */
-function test_generic($param): Option
+function test_generic(mixed $param): Option
 {
     return from_nullable($param);
 }
@@ -55,7 +55,7 @@ function test_none_generic(): Option
  *
  * @return Option<string>
  */
-function test_all_posibilities_generic($x): Option
+function test_all_posibilities_generic(string|null $x): Option
 {
     return test_generic($x);
 }

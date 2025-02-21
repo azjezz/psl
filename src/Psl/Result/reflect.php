@@ -23,5 +23,5 @@ use Throwable;
  */
 function reflect(Closure $task): Closure
 {
-    return static fn() => wrap($task);
+    return static fn(): ResultInterface => wrap($task);
 }

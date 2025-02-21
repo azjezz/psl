@@ -76,6 +76,7 @@ final readonly class BackedEnumValueType extends Type
     /**
      * @psalm-assert-if-true value-of<T> $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return match ($this->isStringBacked) {
@@ -91,7 +92,10 @@ final readonly class BackedEnumValueType extends Type
      *
      * @psalm-suppress MismatchingDocblockReturnType,DocblockTypeContradiction
      *     Psalm has issues with value-of<T> when used with an enum
+     *
+     * @mago-ignore best-practices/no-empty-catch-clause
      */
+    #[\Override]
     public function coerce(mixed $value): string|int
     {
         try {
@@ -116,6 +120,7 @@ final readonly class BackedEnumValueType extends Type
      * @psalm-suppress MismatchingDocblockReturnType
      *     Psalm has issues with value-of<T> when used with an enum
      */
+    #[\Override]
     public function assert(mixed $value): string|int
     {
         if ($this->matches($value)) {

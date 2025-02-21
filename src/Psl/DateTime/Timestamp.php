@@ -249,6 +249,7 @@ final readonly class Timestamp implements TemporalInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function plus(Duration $duration): static
     {
         [$h, $m, $s, $ns] = $duration->getParts();
@@ -268,6 +269,7 @@ final readonly class Timestamp implements TemporalInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function minus(Duration $duration): static
     {
         [$h, $m, $s, $ns] = $duration->getParts();

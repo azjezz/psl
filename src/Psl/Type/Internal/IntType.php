@@ -24,6 +24,7 @@ final readonly class IntType extends Type\Type
     /**
      * @psalm-assert-if-true int $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return is_int($value);
@@ -32,6 +33,7 @@ final readonly class IntType extends Type\Type
     /**
      * @throws CoercionException
      */
+    #[\Override]
     public function coerce(mixed $value): int
     {
         if (is_int($value)) {
@@ -72,6 +74,7 @@ final readonly class IntType extends Type\Type
      *
      * @throws AssertException
      */
+    #[\Override]
     public function assert(mixed $value): int
     {
         if (is_int($value)) {

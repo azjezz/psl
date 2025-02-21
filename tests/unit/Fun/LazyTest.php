@@ -18,7 +18,7 @@ final class LazyTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
 
-        Fun\lazy(static function () {
+        Fun\lazy(static function (): void {
             throw new RuntimeException('nonono');
         });
     }
@@ -50,7 +50,7 @@ final class LazyTest extends TestCase
     public function testItCanDealWithNullValues(): void
     {
         $counter = new Psl\Ref(0);
-        $proxy = Fun\lazy(static function () use ($counter) {
+        $proxy = Fun\lazy(static function () use ($counter): null {
             $counter->value++;
             if ($counter->value > 1) {
                 throw new RuntimeException('The initializer should only be called once');
@@ -69,7 +69,7 @@ final class LazyTest extends TestCase
         $a = Fun\lazy(static fn(): int => 1);
         for ($i = 1; $i <= 10; $i++) {
             $b = $a;
-            $a = Fun\lazy(static fn() => $b() + $b());
+            $a = Fun\lazy(static fn(): int => $b() + $b());
         }
 
         static::assertSame($a(), pow(2, 10));
@@ -77,14 +77,14 @@ final class LazyTest extends TestCase
 
     public function testItCanBeUsedAsALazyStream(): void
     {
-        $incrementalNumbersStream = Fun\lazy(static function () {
+        $incrementalNumbersStream = Fun\lazy(static function (): iterable {
             $i = 0;
             while (true) {
                 yield ++$i;
             }
         });
 
-        $take = static function (Generator $stream, int $n) {
+        $take = static function (Generator $stream, int $n): array {
             $res = [];
             for ($i = 0; $i < $n; $i++) {
                 if (!$stream->valid()) {
@@ -93,6 +93,7 @@ final class LazyTest extends TestCase
                 $res[] = $stream->current();
                 $stream->next();
             }
+
             return $res;
         };
 

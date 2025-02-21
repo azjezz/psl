@@ -22,6 +22,7 @@ final class FullRange implements RangeInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function contains(int $value): bool
     {
         return true;

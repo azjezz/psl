@@ -88,6 +88,7 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements File\Re
      *
      * @codeCoverageIgnore
      */
+    #[\Override]
     public function lock(LockType $type): Lock
     {
         while (true) {

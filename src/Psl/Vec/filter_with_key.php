@@ -54,7 +54,7 @@ function filter_with_key(iterable $iterable, null|Closure $predicate = null): ar
              * @param Tv $v
              * @param Tk $k
              */
-            static fn($v, $k): bool => $predicate($k, $v),
+            static fn(mixed $v, mixed $k): bool => $predicate($k, $v),
             ARRAY_FILTER_USE_BOTH,
         ));
     }

@@ -20,6 +20,7 @@ final readonly class ObjectType extends Type
     /**
      * @psalm-assert-if-true T $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return is_object($value);
@@ -30,6 +31,7 @@ final readonly class ObjectType extends Type
      *
      * @return object
      */
+    #[\Override]
     public function coerce(mixed $value): object
     {
         if (is_object($value)) {
@@ -46,6 +48,7 @@ final readonly class ObjectType extends Type
      *
      * @psalm-assert object $value
      */
+    #[\Override]
     public function assert(mixed $value): object
     {
         if (is_object($value)) {

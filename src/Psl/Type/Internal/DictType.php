@@ -39,6 +39,7 @@ final readonly class DictType extends Type\Type
      *
      * @return array<Tk, Tv>
      */
+    #[\Override]
     public function coerce(mixed $value): array
     {
         if (!is_iterable($value)) {
@@ -49,7 +50,8 @@ final readonly class DictType extends Type\Type
         $key_type = $this->key_type;
         $value_type = $this->value_type;
 
-        $k = $v = null;
+        $k = null;
+        $v = null;
         $trying_key = true;
         $iterating = true;
 
@@ -91,6 +93,7 @@ final readonly class DictType extends Type\Type
      *
      * @psalm-assert array<Tk, Tv> $value
      */
+    #[\Override]
     public function assert(mixed $value): array
     {
         if (!is_array($value)) {
@@ -101,7 +104,8 @@ final readonly class DictType extends Type\Type
         $key_type = $this->key_type;
         $value_type = $this->value_type;
 
-        $k = $v = null;
+        $k = null;
+        $v = null;
         $trying_key = true;
 
         try {

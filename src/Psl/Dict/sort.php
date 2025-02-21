@@ -39,9 +39,11 @@ function sort(iterable $iterable, null|Closure $comparator = null): array
              */
             static fn(mixed $a, mixed $b): int => $comparator($a, $b),
         );
-    } else {
-        asort($array);
+
+        return $array;
     }
+
+    asort($array);
 
     return $array;
 }

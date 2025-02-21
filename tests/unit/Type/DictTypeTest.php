@@ -128,14 +128,14 @@ final class DictTypeTest extends TypeTest
         ];
         yield 'invalid iterator first item' => [
             Type\dict(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 0 => Type\int()->coerce('nope');
             })(),
             'Could not coerce "string" to type "dict<int, int>" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
             Type\dict(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 0 => 0;
                 yield 1 => Type\int()->coerce('nope');
             })(),
@@ -143,7 +143,7 @@ final class DictTypeTest extends TypeTest
         ];
         yield 'iterator throwing exception' => [
             Type\dict(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 throw new RuntimeException('whoops');
                 yield;
             })(),
@@ -151,14 +151,14 @@ final class DictTypeTest extends TypeTest
         ];
         yield 'iterator yielding null key' => [
             Type\dict(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield null => 'nope';
             })(),
             'Could not coerce "null" to type "dict<int, int>" at path "key(null)".',
         ];
         yield 'iterator yielding object key' => [
             Type\dict(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield new class() {
                 } => 'nope';
             })(),

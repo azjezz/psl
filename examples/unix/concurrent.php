@@ -48,6 +48,8 @@ Async\main(static function (): int {
             IO\write_error_line("< server stopped\n");
         },
         'client' => static function () use ($file): void {
+            IO\write_error_line('> client connecting.');
+
             $client = Unix\connect($file);
 
             IO\write_error_line('> client connected.');

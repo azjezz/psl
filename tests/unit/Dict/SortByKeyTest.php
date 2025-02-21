@@ -7,13 +7,14 @@ namespace Psl\Tests\Unit\Dict;
 use PHPUnit\Framework\TestCase;
 use Psl\Dict;
 use Psl\Str;
+use Closure;
 
 final class SortByKeyTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
-    public function testSortByKey(array $expected, array $array, null|callable $comparator = null): void
+    public function testSortByKey(array $expected, array $array, null|Closure $comparator = null): void
     {
         static::assertSame($expected, Dict\sort_by_key($array, $comparator));
     }
@@ -29,7 +30,7 @@ final class SortByKeyTest extends TestCase
             [
                 ['d' => 'lemon', 'c' => 'apple', 'b' => 'banana', 'a' => 'orange'],
                 ['d' => 'lemon', 'a' => 'orange', 'b' => 'banana', 'c' => 'apple'],
-                static fn(string $a, string $b) => Str\ord($a) > Str\ord($b) ? -1 : 1,
+                static fn(string $a, string $b): int => Str\ord($a) > Str\ord($b) ? -1 : 1,
             ],
         ];
     }

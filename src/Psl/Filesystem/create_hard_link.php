@@ -19,6 +19,9 @@ use function link;
  * @throws Exception\NotFoundException If $source does not exist.
  * @throws Exception\NotFileException If $source is not a file.
  * @throws Exception\NotReadableException If $destination is a non-empty directory, and is non-readable {@see delete_directory()}.
+ *
+ * @mago-ignore best-practices/no-boolean-literal-comparison
+ * @mago-ignore best-practices/no-else-clause
  */
 function create_hard_link(string $source, string $destination): void
 {
@@ -45,7 +48,7 @@ function create_hard_link(string $source, string $destination): void
         namespace\create_directory_for_file($destination);
     }
 
-    [$result, $error_message] = Internal\box(static fn() => link($source, $destination));
+    [$result, $error_message] = Internal\box(static fn(): bool => link($source, $destination));
     // @codeCoverageIgnoreStart
     if (false === $result) {
         throw new Exception\RuntimeException(Str\format(

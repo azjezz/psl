@@ -48,12 +48,12 @@ final class ServerTest extends TestCase
     {
         $server = TCP\Server::create('127.0.0.1');
 
-        $first = Async\run(static fn() => $server->nextConnection());
+        $first = Async\run(static fn(): Network\SocketInterface => $server->nextConnection());
 
         [$second_connection, $client_one, $client_two] = Async\concurrently([
-            static fn() => $server->nextConnection(),
-            static fn() => TCP\connect('127.0.0.1', $server->getLocalAddress()->port),
-            static fn() => TCP\connect('127.0.0.1', $server->getLocalAddress()->port),
+            static fn(): Network\SocketInterface => $server->nextConnection(),
+            static fn(): Network\SocketInterface => TCP\connect('127.0.0.1', $server->getLocalAddress()->port),
+            static fn(): Network\SocketInterface => TCP\connect('127.0.0.1', $server->getLocalAddress()->port),
         ]);
 
         static::assertTrue($first->isComplete());
@@ -76,8 +76,8 @@ final class ServerTest extends TestCase
     {
         $server = TCP\Server::create('127.0.0.1');
         $incoming = $server->incoming();
-        Async\Scheduler::delay(DateTime\Duration::milliseconds(1), static fn() => $server->close());
-        Async\Scheduler::defer(static function () use ($server) {
+        Async\Scheduler::delay(DateTime\Duration::milliseconds(1), static fn(): null => $server->close());
+        Async\Scheduler::defer(static function () use ($server): void {
             TCP\connect('127.0.0.1', $server->getLocalAddress()->port);
         });
 
@@ -93,7 +93,7 @@ final class ServerTest extends TestCase
         $server = TCP\Server::create('127.0.0.1');
         $stream = $server->getStream();
         $deferred = new Async\Deferred();
-        $watcher = Async\Scheduler::onReadable($stream, static fn() => $deferred->complete(true));
+        $watcher = Async\Scheduler::onReadable($stream, static fn(): null => $deferred->complete(true));
         $client = TCP\connect('127.0.0.1', $server->getLocalAddress()->port);
 
         $deferred->getAwaitable()->await();

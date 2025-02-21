@@ -16,6 +16,8 @@ use const PHP_SAPI;
  * is usually the process STDOUT.
  *
  * @codeCoverageIgnore
+ *
+ * @mago-ignore best-practices/no-else-clause
  */
 function output_handle(): CloseWriteStreamHandleInterface
 {

@@ -35,6 +35,7 @@ final readonly class InstanceOfType extends Type
     /**
      * @psalm-assert-if-true T $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return $value instanceof $this->classname;
@@ -45,6 +46,7 @@ final readonly class InstanceOfType extends Type
      *
      * @return T
      */
+    #[\Override]
     public function coerce(mixed $value): object
     {
         if ($value instanceof $this->classname) {
@@ -61,6 +63,7 @@ final readonly class InstanceOfType extends Type
      *
      * @psalm-assert T $value
      */
+    #[\Override]
     public function assert(mixed $value): object
     {
         if ($value instanceof $this->classname) {

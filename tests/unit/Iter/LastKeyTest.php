@@ -30,6 +30,6 @@ final class LastKeyTest extends TestCase
         yield [null, []];
         yield [0, [null]];
         yield [1, [null, null]];
-        yield [[1, 2], (static fn() => yield [1, 2] => 'hello')()];
+        yield [[1, 2], (static fn(): iterable => yield [1, 2] => 'hello')()];
     }
 }

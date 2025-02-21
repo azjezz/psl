@@ -66,7 +66,7 @@ final class FailureTest extends TestCase
         $exception = new Exception('bar');
         $wrapper = new Failure($exception);
         $actual = $wrapper->then(
-            static function () {
+            static function (): never {
                 throw new Exception('Dont call us, we\'ll call you!');
             },
             static fn(Exception $exception): string => $exception->getMessage(),
@@ -80,7 +80,7 @@ final class FailureTest extends TestCase
     {
         $exception = new Exception('bar');
         $wrapper = new Failure($exception);
-        $actual = $wrapper->then(static function () {
+        $actual = $wrapper->then(static function (): never {
             throw new Exception('Dont call us, we\'ll call you!');
         }, Fun\rethrow());
 
@@ -99,7 +99,7 @@ final class FailureTest extends TestCase
 
         $exception = new Exception('bar');
         $wrapper = new Failure($exception);
-        $actual = $wrapper->catch(static fn($exception) => $exception);
+        $actual = $wrapper->catch(static fn(Exception $exception): Exception => $exception);
 
         static::assertTrue($actual->isSucceeded());
         static::assertSame($exception, $actual->getResult());
@@ -109,7 +109,7 @@ final class FailureTest extends TestCase
     {
         $exception = new Exception('bar');
         $wrapper = new Failure($exception);
-        $actual = $wrapper->map(static function () {
+        $actual = $wrapper->map(static function (): never {
             throw new Exception('Dont call us, we\'ll call you!');
         });
 
@@ -122,7 +122,7 @@ final class FailureTest extends TestCase
         $ref = new Psl\Ref('');
         $exception = new Exception('bar');
         $wrapper = new Failure($exception);
-        $actual = $wrapper->always(static function () use ($ref) {
+        $actual = $wrapper->always(static function () use ($ref): void {
             $ref->value .= 'hello';
         });
 

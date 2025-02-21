@@ -53,5 +53,6 @@ interface QueueInterface extends Countable, DefaultInterface
      *
      * @return int<0, max>
      */
+    #[\Override]
     public function count(): int;
 }

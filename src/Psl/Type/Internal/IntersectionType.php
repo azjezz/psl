@@ -36,6 +36,7 @@ final readonly class IntersectionType extends Type
     /**
      * @psalm-assert-if-true Tl&Tr $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return $this->right_type->matches($value) && $this->left_type->matches($value);
@@ -45,7 +46,10 @@ final readonly class IntersectionType extends Type
      * @throws CoercionException
      *
      * @return Tl&Tr
+     *
+     * @mago-ignore best-practices/no-empty-catch-clause
      */
+    #[\Override]
     public function coerce(mixed $value): mixed
     {
         try {
@@ -80,6 +84,7 @@ final readonly class IntersectionType extends Type
      *
      * @psalm-assert Tl&Tr $value
      */
+    #[\Override]
     public function assert(mixed $value): mixed
     {
         try {

@@ -16,6 +16,8 @@ use function fileinode;
  *
  * @throws Exception\NotFoundException If $node is not found.
  * @throws Exception\RuntimeException In case of an error.
+ *
+ * @mago-ignore best-practices/no-boolean-literal-comparison
  */
 function get_inode(string $node): int
 {

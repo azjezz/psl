@@ -100,6 +100,7 @@ final readonly class Failure implements ResultInterface
      *
      * @return Ts
      */
+    #[\Override]
     public function proceed(Closure $success, Closure $failure): mixed
     {
         return $failure($this->throwable);
@@ -115,9 +116,10 @@ final readonly class Failure implements ResultInterface
      *
      * @return ResultInterface<Ts>
      */
+    #[\Override]
     public function then(Closure $success, Closure $failure): ResultInterface
     {
-        return wrap(fn() => $failure($this->throwable));
+        return wrap(fn(): mixed => $failure($this->throwable));
     }
 
     /**
@@ -129,6 +131,7 @@ final readonly class Failure implements ResultInterface
      *
      * @return Failure<Ts, Te>
      */
+    #[\Override]
     public function map(Closure $success): Failure
     {
         return new Failure($this->throwable);
@@ -143,9 +146,10 @@ final readonly class Failure implements ResultInterface
      *
      * @return ResultInterface<Ts>
      */
+    #[\Override]
     public function catch(Closure $failure): ResultInterface
     {
-        return wrap(fn() => $failure($this->throwable));
+        return wrap(fn(): mixed => $failure($this->throwable));
     }
 
     /**
@@ -155,6 +159,7 @@ final readonly class Failure implements ResultInterface
      *
      * @return ResultInterface<T>
      */
+    #[\Override]
     public function always(Closure $always): ResultInterface
     {
         return wrap(function () use ($always): never {

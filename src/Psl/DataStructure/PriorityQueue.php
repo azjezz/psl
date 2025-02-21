@@ -29,6 +29,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @pure
      */
+    #[\Override]
     public static function default(): static
     {
         return new self();
@@ -41,6 +42,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function enqueue(mixed $node, int $priority = 0): void
     {
         $nodes = $this->queue[$priority] ?? [];
@@ -57,6 +59,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function peek(): mixed
     {
         if (0 === $this->count()) {
@@ -83,6 +86,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function pull(): mixed
     {
         try {
@@ -101,6 +105,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function dequeue(): mixed
     {
         if (0 === $this->count()) {
@@ -126,9 +131,11 @@ final class PriorityQueue implements PriorityQueueInterface
          */
         if ([] === $nodes) {
             unset($this->queue[$priority]);
-        } else {
-            $this->queue[$priority] = $nodes;
+
+            return $node;
         }
+
+        $this->queue[$priority] = $nodes;
 
         return $node;
     }
@@ -140,6 +147,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function count(): int
     {
         $count = 0;

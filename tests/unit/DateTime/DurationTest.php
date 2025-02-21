@@ -12,6 +12,9 @@ use Psl\Json;
 use function serialize;
 use function unserialize;
 
+/**
+ * @mago-ignore php-unit/strict-assertions
+ */
 final class DurationTest extends TestCase
 {
     use DateTimeTestTrait;
@@ -27,7 +30,7 @@ final class DurationTest extends TestCase
         static::assertSame([1, 2, 3, 4], $t->getParts());
     }
 
-    public function testNamedConstructors()
+    public function testNamedConstructors(): void
     {
         static::assertSame(168.0, DateTime\Duration::weeks(1)->getTotalHours());
         static::assertSame(24.0, DateTime\Duration::days(1)->getTotalHours());

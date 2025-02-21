@@ -18,7 +18,7 @@ use Psl\Str;
  *
  * @codeCoverageIgnore
  */
-function write_line(string $message, ...$args): void
+function write_line(string $message, mixed ...$args): void
 {
     /**
      * @psalm-suppress MissingThrowsDocblock - we won't encounter timeout, or already closed exception.

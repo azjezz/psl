@@ -16,10 +16,10 @@ function test_none_unwrap_or(): null|string
 
 function test_some_unwrap_or_else(): null|string
 {
-    return Option\some('string')->unwrapOrElse(static fn() => null);
+    return Option\some('string')->unwrapOrElse(static fn(): null => null);
 }
 
 function test_none_unwrap_or_else(): null|string
 {
-    return Option\none()->unwrapOrElse(static fn() => null);
+    return Option\none()->unwrapOrElse(static fn(): null => null);
 }

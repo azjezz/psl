@@ -100,6 +100,7 @@ final class Iterator implements Countable, SeekableIterator
      *
      * @return Tv
      */
+    #[\Override]
     public function current(): mixed
     {
         $this->save();
@@ -110,6 +111,7 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Checks if current position is valid.
      */
+    #[\Override]
     public function valid(): bool
     {
         if (array_key_exists($this->position, $this->entries)) {
@@ -146,6 +148,7 @@ final class Iterator implements Countable, SeekableIterator
      *
      * @return Tk
      */
+    #[\Override]
     public function key(): mixed
     {
         $this->save();
@@ -156,6 +159,7 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Rewind the Iterator to the first element.
      */
+    #[\Override]
     public function rewind(): void
     {
         $this->position = 0;
@@ -167,11 +171,14 @@ final class Iterator implements Countable, SeekableIterator
      * @param int<0, max> $position
      *
      * @throws Exception\OutOfBoundsException If $position is out-of-bounds.
+     *
+     * @psalm-suppress ParamNameMismatch
      */
-    public function seek(int $position): void
+    #[\Override]
+    public function seek(int $offset): void
     {
-        if ($position <= $this->position) {
-            $this->position = $position;
+        if ($offset <= $this->position) {
+            $this->position = $offset;
             return;
         }
 
@@ -184,21 +191,22 @@ final class Iterator implements Countable, SeekableIterator
                     $this->generator = null;
                     throw new Exception\OutOfBoundsException('Position is out-of-bounds.');
                 }
-            } while ($this->position < $position);
+            } while ($this->position < $offset);
 
             return;
         }
 
-        if ($position >= $this->count()) {
+        if ($offset >= $this->count()) {
             throw new Exception\OutOfBoundsException('Position is out-of-bounds.');
         }
 
-        $this->position = $position;
+        $this->position = $offset;
     }
 
     /**
      * Move forward to the next element.
      */
+    #[\Override]
     public function next(): void
     {
         $this->position++;
@@ -218,6 +226,7 @@ final class Iterator implements Countable, SeekableIterator
      *
      * @psalm-suppress PossiblyNullReference
      */
+    #[\Override]
     public function count(): int
     {
         if ($this->generator) {

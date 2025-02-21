@@ -10,7 +10,7 @@ use Psl\Type;
 /**
  * @param Map&ResultInterface&stdClass&Vector $_value
  */
-function takes_valid_intersection($_value): void
+function takes_valid_intersection(Map&ResultInterface&stdClass&Vector $_value): void
 {
 }
 

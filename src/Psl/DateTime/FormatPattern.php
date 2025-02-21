@@ -35,6 +35,7 @@ enum FormatPattern: string implements DefaultInterface
     case LogTimestamp = 'yyyy-MM-dd HH:mm:ss,SSS';
     case FullDateTime = 'EEEE, MMMM dd, yyyy HH:mm:ss';
 
+    #[\Override]
     public static function default(): static
     {
         return static::Iso8601;

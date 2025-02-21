@@ -7,13 +7,14 @@ namespace Psl\Tests\Unit\Dict;
 use PHPUnit\Framework\TestCase;
 use Psl\Dict;
 use Psl\Str;
+use Closure;
 
 final class PartitionWithKeyTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
-    public function testPartition(array $expected, array $array, callable $predicate): void
+    public function testPartition(array $expected, array $array, Closure $predicate): void
     {
         static::assertSame($expected, Dict\partition_with_key($array, $predicate));
     }
@@ -24,37 +25,37 @@ final class PartitionWithKeyTest extends TestCase
             [
                 [[1 => 'bar', 2 => 'baz'], [0 => 'foo', 3 => 'qux']],
                 ['foo', 'bar', 'baz', 'qux'],
-                static fn(int $_k, string $str) => Str\starts_with($str, 'b'),
+                static fn(int $_k, string $str): bool => Str\starts_with($str, 'b'),
             ],
             [
                 [[0 => 'foo', 3 => 'qux'], [1 => 'bar', 2 => 'baz']],
                 ['foo', 'bar', 'baz', 'qux'],
-                static fn(int $_k, string $str) => !Str\starts_with($str, 'b'),
+                static fn(int $_k, string $str): bool => !Str\starts_with($str, 'b'),
             ],
             [
                 [[], []],
                 [],
-                static fn($_k, $_v) => false,
+                static fn(mixed $_k, mixed $_v): bool => false,
             ],
             [
                 [[], ['foo', 'bar', 'baz', 'qux']],
                 ['foo', 'bar', 'baz', 'qux'],
-                static fn(int $_k, string $_str) => false,
+                static fn(int $_k, string $_str): bool => false,
             ],
             [
                 [['foo', 'bar', 'baz', 'qux'], []],
                 ['foo', 'bar', 'baz', 'qux'],
-                static fn(int $_k, string $_str) => true,
+                static fn(int $_k, string $_str): bool => true,
             ],
             [
                 [[1 => 'bar', 2 => 'baz', 3 => 'qux'], ['foo']],
                 ['foo', 'bar', 'baz', 'qux'],
-                static fn(int $k, string $_str) => (bool) $k,
+                static fn(int $k, string $_str): bool => (bool) $k,
             ],
             [
                 [['foo'], [1 => 'bar', 2 => 'baz', 3 => 'qux']],
                 ['foo', 'bar', 'baz', 'qux'],
-                static fn(int $k, string $_str) => !((bool) $k),
+                static fn(int $k, string $_str): bool => !((bool) $k),
             ],
         ];
     }

@@ -23,7 +23,7 @@ use function preg_replace_callback;
  */
 function replace_with(string $haystack, string $pattern, Closure $callback, null|int $limit = null): string
 {
-    return (string) Internal\call_preg('preg_replace_callback', static fn() => preg_replace_callback(
+    return (string) Internal\call_preg('preg_replace_callback', static fn(): string|null => preg_replace_callback(
         $pattern,
         $callback,
         $haystack,

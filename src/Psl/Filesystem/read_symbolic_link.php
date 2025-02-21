@@ -19,6 +19,8 @@ use function readlink;
  * @throws Exception\RuntimeException If unable to retrieve the target of $symbolic_link.
  *
  * @return non-empty-string
+ *
+ * @mago-ignore best-practices/no-boolean-literal-comparison
  */
 function read_symbolic_link(string $symbolic_link): string
 {
@@ -30,12 +32,7 @@ function read_symbolic_link(string $symbolic_link): string
         throw Exception\NotSymbolicLinkException::for($symbolic_link);
     }
 
-    [$result, $message] = Internal\box(
-        /**
-         * @return false|string
-         */
-        static fn() => readlink($symbolic_link),
-    );
+    [$result, $message] = Internal\box(static fn(): false|string => readlink($symbolic_link));
 
     // @codeCoverageIgnoreStart
     if (false === $result) {

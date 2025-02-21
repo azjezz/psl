@@ -28,6 +28,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function at(int|string $k): int|string;
 
     /**
@@ -43,6 +44,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function contains(int|string $k): bool;
 
     /**
@@ -58,6 +60,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function get(int|string $k): null|int|string;
 
     /**
@@ -76,6 +79,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function values(): VectorInterface;
 
     /**
@@ -85,6 +89,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function keys(): VectorInterface;
 
     /**
@@ -100,6 +105,7 @@ interface SetInterface extends AccessibleCollectionInterface
      * @return SetInterface<T> A SetInterface containing the values after a user-specified condition
      *                         is applied.
      */
+    #[\Override]
     public function filter(Closure $fn): SetInterface;
 
     /**
@@ -161,6 +167,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function first(): null|int|string;
 
     /**
@@ -183,6 +190,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function last(): null|int|string;
 
     /**
@@ -224,6 +232,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @throws Exception\RuntimeException Always throws an exception since `Set` can only contain array-key values.
      */
+    #[\Override]
     public function zip(array $elements): never;
 
     /**
@@ -243,6 +252,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function take(int $n): SetInterface;
 
     /**
@@ -278,6 +288,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function drop(int $n): SetInterface;
 
     /**
@@ -317,6 +328,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function slice(int $start, null|int $length = null): SetInterface;
 
     /**
@@ -333,5 +345,6 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function chunk(int $size): VectorInterface;
 }

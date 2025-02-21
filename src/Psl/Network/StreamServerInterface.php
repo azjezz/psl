@@ -24,5 +24,6 @@ interface StreamServerInterface extends IO\CloseStreamHandleInterface, ServerInt
      *
      * @return Generator<null, StreamSocketInterface, void, null>
      */
+    #[\Override]
     public function incoming(): Generator;
 }

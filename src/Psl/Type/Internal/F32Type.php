@@ -25,6 +25,7 @@ final readonly class F32Type extends Type\Type
      *
      * @psalm-assert-if-true float $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return is_float($value) && $value >= MATH\FLOAT32_MIN && $value <= MATH\FLOAT32_MAX;
@@ -37,6 +38,7 @@ final readonly class F32Type extends Type\Type
      *
      * @return float $value
      */
+    #[\Override]
     public function coerce(mixed $value): float
     {
         $float = Type\float()->coerce($value);
@@ -59,6 +61,7 @@ final readonly class F32Type extends Type\Type
      *
      * @return float
      */
+    #[\Override]
     public function assert(mixed $value): float
     {
         if (is_float($value) && $value >= MATH\FLOAT32_MIN && $value <= MATH\FLOAT32_MAX) {

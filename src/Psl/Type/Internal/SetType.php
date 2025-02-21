@@ -38,6 +38,7 @@ final readonly class SetType extends Type\Type
      *
      * @return Collection\SetInterface<T>
      */
+    #[\Override]
     public function coerce(mixed $value): Collection\SetInterface
     {
         if (is_iterable($value)) {
@@ -81,6 +82,7 @@ final readonly class SetType extends Type\Type
      *
      * @psalm-assert Collection\SetInterface<T> $value
      */
+    #[\Override]
     public function assert(mixed $value): Collection\SetInterface
     {
         if (is_object($value) && $value instanceof Collection\SetInterface) {
@@ -88,7 +90,8 @@ final readonly class SetType extends Type\Type
             $type = $this->type;
             /** @var array<T, T> $set */
             $set = [];
-            $v = $k = null;
+            $v = null;
+            $k = null;
             $iterating = true;
             try {
                 /**

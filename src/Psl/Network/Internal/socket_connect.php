@@ -56,7 +56,7 @@ function socket_connect(string $uri, array $context = [], null|Duration $timeout
                 $suspension,
                 &$write_watcher,
                 $socket,
-            ) {
+            ): void {
                 EventLoop::cancel($write_watcher);
 
                 /** @psalm-suppress RedundantCondition - it can be resource|closed-resource */
@@ -72,7 +72,7 @@ function socket_connect(string $uri, array $context = [], null|Duration $timeout
             $suspension,
             $socket,
             $timeout_watcher,
-        ) {
+        ): void {
             EventLoop::cancel($timeout_watcher);
 
             $suspension->resume($socket);

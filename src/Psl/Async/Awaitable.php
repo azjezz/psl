@@ -26,6 +26,8 @@ use function is_array;
  * @template T
  *
  * @implements PromiseInterface<T>
+ *
+ * @mago-ignore best-practices/no-else-clause
  */
 final readonly class Awaitable implements PromiseInterface
 {
@@ -80,9 +82,14 @@ final readonly class Awaitable implements PromiseInterface
         }
 
         /** @psalm-suppress MissingThrowsDocblock */
-        while ($item = $iterator->consume()) {
+        do {
+            $item = $iterator->consume();
+            if (!$item) {
+                break;
+            }
+
             yield $item[0] => $item[1];
-        }
+        } while (true);
     }
 
     /**
@@ -135,6 +142,7 @@ final readonly class Awaitable implements PromiseInterface
      *
      * @return Awaitable<Ts>
      */
+    #[\Override]
     public function then(Closure $success, Closure $failure): Awaitable
     {
         /** @var State<Ts> $state */
@@ -179,9 +187,10 @@ final readonly class Awaitable implements PromiseInterface
      *
      * @return Awaitable<Ts>
      */
+    #[\Override]
     public function map(Closure $success): Awaitable
     {
-        return $this->then($success, static fn(Throwable $throwable) => throw $throwable);
+        return $this->then($success, static fn(Throwable $throwable): never => throw $throwable);
     }
 
     /**
@@ -193,6 +202,7 @@ final readonly class Awaitable implements PromiseInterface
      *
      * @return Awaitable<T|Ts>
      */
+    #[\Override]
     public function catch(Closure $failure): Awaitable
     {
         return $this->then(
@@ -215,6 +225,7 @@ final readonly class Awaitable implements PromiseInterface
      *
      * @return Awaitable<T>
      */
+    #[\Override]
     public function always(Closure $always): Awaitable
     {
         /** @var State<T> $state */

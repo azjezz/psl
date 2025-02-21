@@ -8,15 +8,16 @@ use PHPUnit\Framework\TestCase;
 use Psl\IO;
 use Psl\Str;
 use Psl\Str\Byte;
+use Closure;
 
 final class MemoryHandleTest extends TestCase
 {
     /**
-     * @param (callable(IO\MemoryHandle): mixed) $operation
+     * @param (Closure(IO\MemoryHandle): mixed) $operation
      *
      * @dataProvider provideOperations
      */
-    public function testClose(callable $operation): void
+    public function testClose(Closure $operation): void
     {
         $handle = new IO\MemoryHandle('hello');
         $handle->close();
@@ -28,36 +29,36 @@ final class MemoryHandleTest extends TestCase
     }
 
     /**
-     * @return iterable<(callable(IO\MemoryHandle): mixed)>
+     * @return iterable<(Closure(IO\MemoryHandle): mixed)>
      */
     public function provideOperations(): iterable
     {
         yield [
-            static fn(IO\SeekHandleInterface $handle) => $handle->seek(5),
+            static fn(IO\SeekHandleInterface $handle): null => $handle->seek(5),
         ];
 
         yield [
-            static fn(IO\SeekHandleInterface $handle) => $handle->tell(),
+            static fn(IO\SeekHandleInterface $handle): int => $handle->tell(),
         ];
 
         yield [
-            static fn(IO\WriteHandleInterface $handle) => $handle->write('hello'),
+            static fn(IO\WriteHandleInterface $handle): null => $handle->write('hello'),
         ];
 
         yield [
-            static fn(IO\WriteHandleInterface $handle) => $handle->writeAll('hello'),
+            static fn(IO\WriteHandleInterface $handle): null => $handle->writeAll('hello'),
         ];
 
         yield [
-            static fn(IO\ReadHandleInterface $handle) => $handle->read(),
+            static fn(IO\ReadHandleInterface $handle): string => $handle->read(),
         ];
 
         yield [
-            static fn(IO\ReadHandleInterface $handle) => $handle->readAll(),
+            static fn(IO\ReadHandleInterface $handle): string => $handle->readAll(),
         ];
 
         yield [
-            static fn(IO\ReadHandleInterface $handle) => $handle->tryRead(),
+            static fn(IO\ReadHandleInterface $handle): string => $handle->tryRead(),
         ];
     }
 

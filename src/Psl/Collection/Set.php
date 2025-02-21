@@ -51,6 +51,7 @@ final readonly class Set implements SetInterface
      *
      * @pure
      */
+    #[\Override]
     public static function default(): static
     {
         return new self([]);
@@ -122,6 +123,7 @@ final readonly class Set implements SetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function first(): null|int|string
     {
         return array_key_first($this->elements);
@@ -135,6 +137,7 @@ final readonly class Set implements SetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function last(): null|int|string
     {
         return array_key_last($this->elements);
@@ -167,6 +170,7 @@ final readonly class Set implements SetInterface
      *
      * @return int<0, max>
      */
+    #[\Override]
     public function count(): int
     {
         /** @var int<0, max> */
@@ -212,6 +216,7 @@ final readonly class Set implements SetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function at(int|string $k): int|string
     {
         if (!array_key_exists($k, $this->elements)) {
@@ -234,6 +239,7 @@ final readonly class Set implements SetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function contains(int|string $k): bool
     {
         return array_key_exists($k, $this->elements);
@@ -266,6 +272,7 @@ final readonly class Set implements SetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function get(int|string $k): null|int|string
     {
         return $this->elements[$k] ?? null;
@@ -332,6 +339,7 @@ final readonly class Set implements SetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function values(): Vector
     {
         return Vector::fromArray($this->elements);
@@ -344,6 +352,7 @@ final readonly class Set implements SetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function keys(): Vector
     {
         return Vector::fromArray(array_keys($this->elements));
@@ -362,6 +371,7 @@ final readonly class Set implements SetInterface
      * @return Set<T> a Set containing the values after a user-specified condition
      *                is applied.
      */
+    #[\Override]
     public function filter(Closure $fn): Set
     {
         return new Set(Dict\filter_keys($this->elements, $fn));
@@ -383,7 +393,7 @@ final readonly class Set implements SetInterface
      */
     public function filterWithKey(Closure $fn): Set
     {
-        return $this->filter(static fn($k) => $fn($k, $k));
+        return $this->filter(static fn(string|int $k): bool => $fn($k, $k));
     }
 
     /**
@@ -401,6 +411,7 @@ final readonly class Set implements SetInterface
      * @return Set<Tu> a `Set` containing key/value pairs after a user-specified
      *                 operation is applied.
      */
+    #[\Override]
     public function map(Closure $fn): Set
     {
         return new Set(Dict\map($this->elements, $fn));
@@ -424,7 +435,7 @@ final readonly class Set implements SetInterface
      */
     public function mapWithKey(Closure $fn): Set
     {
-        return $this->map(static fn($k) => $fn($k, $k));
+        return $this->map(static fn(string|int $k): string|int => $fn($k, $k));
     }
 
     /**
@@ -438,6 +449,7 @@ final readonly class Set implements SetInterface
      *
      * @throws Exception\RuntimeException Always throws an exception since `Set` can only contain array-key values.
      */
+    #[\Override]
     public function zip(array $elements): never
     {
         throw new Exception\RuntimeException('Cannot zip a Set.');
@@ -460,6 +472,7 @@ final readonly class Set implements SetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function take(int $n): Set
     {
         return $this->slice(0, $n);
@@ -501,6 +514,7 @@ final readonly class Set implements SetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function drop(int $n): Set
     {
         return $this->slice($n);
@@ -546,6 +560,7 @@ final readonly class Set implements SetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function slice(int $start, null|int $length = null): Set
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
@@ -566,6 +581,7 @@ final readonly class Set implements SetInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function chunk(int $size): Vector
     {
         /**
@@ -579,7 +595,7 @@ final readonly class Set implements SetInterface
              *
              * @return Set<T>
              */
-            static fn(array $chunk) => static::fromArray($chunk),
+            static fn(array $chunk): Set => static::fromArray($chunk),
         ));
     }
 }

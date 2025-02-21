@@ -37,6 +37,7 @@ interface MutableCollectionInterface extends CollectionInterface
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` containing the values
      *                                            after a user-specified condition is applied.
      */
+    #[\Override]
     public function filter(Closure $fn): MutableCollectionInterface;
 
     /**
@@ -79,6 +80,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function zip(array $elements): MutableCollectionInterface;
 
     /**
@@ -97,6 +99,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function take(int $n): MutableCollectionInterface;
 
     /**
@@ -134,6 +137,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function drop(int $n): MutableCollectionInterface;
 
     /**
@@ -174,6 +178,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function slice(int $start, null|int $length = null): MutableCollectionInterface;
 
     /**
@@ -190,6 +195,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function chunk(int $size): MutableCollectionInterface;
 
     /**

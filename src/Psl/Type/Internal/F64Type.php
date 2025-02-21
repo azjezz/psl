@@ -24,6 +24,7 @@ final readonly class F64Type extends Type\Type
      *
      * @psalm-assert-if-true float $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return Type\float()->matches($value);
@@ -36,6 +37,7 @@ final readonly class F64Type extends Type\Type
      *
      * @return float
      */
+    #[\Override]
     public function coerce(mixed $value): float
     {
         return Type\float()->coerce($value);
@@ -52,6 +54,7 @@ final readonly class F64Type extends Type\Type
      *
      * @return float
      */
+    #[\Override]
     public function assert(mixed $value): float
     {
         return Type\float()->assert($value);

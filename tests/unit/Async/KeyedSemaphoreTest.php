@@ -39,19 +39,22 @@ final class KeyedSemaphoreTest extends TestCase
             $spy->value[] = $data['value'];
         });
 
-        Async\run(static fn() => $ks->waitFor('operation', [
+        Async\run(static fn(): null => $ks->waitFor('operation', [
             'time' => DateTime\Duration::milliseconds(3),
             'value' => 'a',
         ]));
-        Async\run(static fn() => $ks->waitFor('operation', [
+        Async\run(static fn(): null => $ks->waitFor('operation', [
             'time' => DateTime\Duration::milliseconds(4),
             'value' => 'b',
         ]));
-        Async\run(static fn() => $ks->waitFor('operation', [
+        Async\run(static fn(): null => $ks->waitFor('operation', [
             'time' => DateTime\Duration::milliseconds(5),
             'value' => 'c',
         ]));
-        $last = Async\run(static fn() => $ks->waitFor('operation', ['time' => null, 'value' => 'd']));
+        $last = Async\run(static fn(): null => $ks->waitFor('operation', [
+            'time' => null,
+            'value' => 'd',
+        ]));
         $last->await();
 
         static::assertSame(['a', 'b', 'c', 'd'], $spy->value);
@@ -72,13 +75,22 @@ final class KeyedSemaphoreTest extends TestCase
             $spy->value[] = $data['value'];
         });
 
-        Async\run(static fn() => $ks->waitFor('key', ['time' => DateTime\Duration::milliseconds(3), 'value' => 'a']));
-        Async\run(static fn() => $ks->waitFor('key', ['time' => DateTime\Duration::milliseconds(4), 'value' => 'b']));
-        $beforeLast = Async\run(static fn() => $ks->waitFor('key', [
+        Async\run(static fn(): null => $ks->waitFor('key', [
+            'time' => DateTime\Duration::milliseconds(3),
+            'value' => 'a',
+        ]));
+        Async\run(static fn(): null => $ks->waitFor('key', [
+            'time' => DateTime\Duration::milliseconds(4),
+            'value' => 'b',
+        ]));
+        $beforeLast = Async\run(static fn(): null => $ks->waitFor('key', [
             'time' => DateTime\Duration::milliseconds(5),
             'value' => 'c',
         ]));
-        Async\run(static fn() => $ks->waitFor('key', ['time' => null, 'value' => 'd']));
+        Async\run(static fn(): null => $ks->waitFor('key', [
+            'time' => null,
+            'value' => 'd',
+        ]));
 
         $beforeLast->await();
 
@@ -98,7 +110,7 @@ final class KeyedSemaphoreTest extends TestCase
             Async\sleep(DateTime\Duration::milliseconds(2));
         });
 
-        $awaitable = Async\run(static fn() => $ks->waitFor('x', 'hello'));
+        $awaitable = Async\run(static fn(): null => $ks->waitFor('x', 'hello'));
 
         Async\later();
 
@@ -120,8 +132,8 @@ final class KeyedSemaphoreTest extends TestCase
             Async\sleep(DateTime\Duration::milliseconds(2));
         });
 
-        Async\run(static fn() => $semaphore->waitFor('x', 'hello'));
-        $awaitable = Async\run(static fn() => $semaphore->waitFor('x', 'world'));
+        Async\run(static fn(): null => $semaphore->waitFor('x', 'hello'));
+        $awaitable = Async\run(static fn(): null => $semaphore->waitFor('x', 'world'));
 
         Async\sleep(DateTime\Duration::milliseconds(1));
 
@@ -155,8 +167,8 @@ final class KeyedSemaphoreTest extends TestCase
             return $input;
         });
 
-        $one = Async\run(static fn() => $ks->waitFor('foo', 'one'));
-        $two = Async\run(static fn() => $ks->waitFor('foo', 'two'));
+        $one = Async\run(static fn(): string => $ks->waitFor('foo', 'one'));
+        $two = Async\run(static fn(): string => $ks->waitFor('foo', 'two'));
 
         Async\sleep(DateTime\Duration::milliseconds(10));
 
@@ -182,15 +194,15 @@ final class KeyedSemaphoreTest extends TestCase
         });
 
         $ingoing = [
-            Async\run(static fn() => $ks->waitFor('foo', 'ingoing')),
-            Async\run(static fn() => $ks->waitFor('bar', 'ingoing')),
-            Async\run(static fn() => $ks->waitFor('baz', 'ingoing')),
+            Async\run(static fn(): string => $ks->waitFor('foo', 'ingoing')),
+            Async\run(static fn(): string => $ks->waitFor('bar', 'ingoing')),
+            Async\run(static fn(): string => $ks->waitFor('baz', 'ingoing')),
         ];
 
         $pending = [
-            Async\run(static fn() => $ks->waitFor('foo', 'pending')),
-            Async\run(static fn() => $ks->waitFor('bar', 'pending')),
-            Async\run(static fn() => $ks->waitFor('baz', 'pending')),
+            Async\run(static fn(): string => $ks->waitFor('foo', 'pending')),
+            Async\run(static fn(): string => $ks->waitFor('bar', 'pending')),
+            Async\run(static fn(): string => $ks->waitFor('baz', 'pending')),
         ];
 
         Async\sleep(DateTime\Duration::milliseconds(10));
@@ -223,8 +235,8 @@ final class KeyedSemaphoreTest extends TestCase
 
         $key = 'foo';
 
-        $one = Async\run(static fn() => $ks->waitFor($key, 'one'));
-        $two = Async\run(static fn() => $ks->waitFor($key, 'two'));
+        $one = Async\run(static fn(): string => $ks->waitFor($key, 'one'));
+        $two = Async\run(static fn(): string => $ks->waitFor($key, 'two'));
         static::assertSame(0, $ks->getIngoingOperations($key));
         static::assertSame(0, $ks->getPendingOperations($key));
         static::assertFalse($ks->hasIngoingOperations($key));
@@ -272,7 +284,7 @@ final class KeyedSemaphoreTest extends TestCase
             return $input;
         });
 
-        $one = Async\run(static fn() => $ks->waitFor('foo', 'one'));
+        $one = Async\run(static fn(): string => $ks->waitFor('foo', 'one'));
         Async\later();
         static::assertFalse($one->isComplete());
         $ks->waitForPending('foo');
@@ -296,8 +308,8 @@ final class KeyedSemaphoreTest extends TestCase
         static::assertFalse($ks->hasPendingOperations('foo'));
         static::assertFalse($ks->hasPendingOperations('bar'));
 
-        $fooOne = Async\run(static fn() => $ks->waitFor('foo', 'one'));
-        $barOne = Async\run(static fn() => $ks->waitFor('bar', 'one'));
+        $fooOne = Async\run(static fn(): string => $ks->waitFor('foo', 'one'));
+        $barOne = Async\run(static fn(): string => $ks->waitFor('bar', 'one'));
 
         Async\later();
 
@@ -306,8 +318,8 @@ final class KeyedSemaphoreTest extends TestCase
         static::assertFalse($ks->hasPendingOperations('foo'));
         static::assertFalse($ks->hasPendingOperations('bar'));
 
-        $fooTwo = Async\run(static fn() => $ks->waitFor('foo', 'two'));
-        $barTwo = Async\run(static fn() => $ks->waitFor('bar', 'two'));
+        $fooTwo = Async\run(static fn(): string => $ks->waitFor('foo', 'two'));
+        $barTwo = Async\run(static fn(): string => $ks->waitFor('bar', 'two'));
 
         Async\later();
 

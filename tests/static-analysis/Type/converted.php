@@ -11,7 +11,7 @@ use Psl\Type;
  *
  * @return Type\TypeInterface<string>
  */
-function testsPurity(): Type\TypeInterface
+function tests_purity(): Type\TypeInterface
 {
     return Type\converted(Type\int(), Type\string(), static fn(int $value): string => (string) $value);
 }

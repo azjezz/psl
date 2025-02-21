@@ -25,7 +25,7 @@
         "php-standard-library/psalm-plugin": "^2.3.0",
         "php-coveralls/php-coveralls": "^2.7.0",
         "roave/infection-static-analysis-plugin": "^1.36.0",
-        "carthage-software/mago": "~0.7"
+        "carthage-software/mago": "~0.11"
     },
     "autoload": {
         "psr-4": {

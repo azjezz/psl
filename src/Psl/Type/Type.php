@@ -16,6 +16,7 @@ abstract readonly class Type implements TypeInterface
     /**
      * @psalm-assert-if-true T $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         try {

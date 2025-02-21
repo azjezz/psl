@@ -24,6 +24,7 @@ final readonly class I64Type extends Type\Type
      *
      * @psalm-assert-if-true int $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return is_int($value);
@@ -36,6 +37,7 @@ final readonly class I64Type extends Type\Type
      *
      * @return int
      */
+    #[\Override]
     public function coerce(mixed $value): int
     {
         return Type\int()->coerce($value);
@@ -52,6 +54,7 @@ final readonly class I64Type extends Type\Type
      *
      * @return int
      */
+    #[\Override]
     public function assert(mixed $value): int
     {
         if (is_int($value)) {

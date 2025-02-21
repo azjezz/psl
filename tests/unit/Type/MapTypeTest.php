@@ -82,6 +82,7 @@ final class MapTypeTest extends TypeTest
      * @param MapInterface<array-key, mixed>|mixed $a
      * @param MapInterface<array-key, mixed>|mixed $b
      */
+    #[\Override]
     protected function equals($a, $b): bool
     {
         if (Type\instance_of(MapInterface::class)->matches($a)) {
@@ -132,14 +133,14 @@ final class MapTypeTest extends TypeTest
         ];
         yield 'invalid iterator first item' => [
             Type\map(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 0 => Type\int()->coerce('nope');
             })(),
             'Could not coerce "string" to type "' . MapInterface::class . '<int, int>" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
             Type\map(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 0 => 0;
                 yield 1 => Type\int()->coerce('nope');
             })(),
@@ -147,7 +148,7 @@ final class MapTypeTest extends TypeTest
         ];
         yield 'iterator throwing exception' => [
             Type\map(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 throw new RuntimeException('whoops');
                 yield;
             })(),
@@ -155,14 +156,14 @@ final class MapTypeTest extends TypeTest
         ];
         yield 'iterator yielding null key' => [
             Type\map(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield null => 'nope';
             })(),
             'Could not coerce "null" to type "' . MapInterface::class . '<int, int>" at path "key(null)".',
         ];
         yield 'iterator yielding object key' => [
             Type\map(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield new class() {
                 } => 'nope';
             })(),

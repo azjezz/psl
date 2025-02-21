@@ -25,6 +25,7 @@ final readonly class I8Type extends Type\Type
      *
      * @psalm-assert-if-true int<-128, 127> $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return is_int($value) && $value >= Math\INT8_MIN && $value <= Math\INT8_MAX;
@@ -37,6 +38,7 @@ final readonly class I8Type extends Type\Type
      *
      * @return int<-128, 127>
      */
+    #[\Override]
     public function coerce(mixed $value): int
     {
         $integer = Type\int()->coerce($value);
@@ -59,6 +61,7 @@ final readonly class I8Type extends Type\Type
      *
      * @return int<-128, 127>
      */
+    #[\Override]
     public function assert(mixed $value): int
     {
         if (is_int($value) && $value >= Math\INT8_MIN && $value <= Math\INT8_MAX) {

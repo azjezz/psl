@@ -31,6 +31,7 @@ final readonly class LiteralScalarType extends Type\Type
     /**
      * @psalm-assert-if-true T $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return $this->value === $value;
@@ -41,6 +42,7 @@ final readonly class LiteralScalarType extends Type\Type
      *
      * @return T
      */
+    #[\Override]
     public function coerce(mixed $value): string|int|float|bool
     {
         $expectedScalarValue = $this->value;
@@ -98,6 +100,7 @@ final readonly class LiteralScalarType extends Type\Type
      *
      * @throws AssertException
      */
+    #[\Override]
     public function assert(mixed $value): string|int|float|bool
     {
         if ($this->value === $value) {

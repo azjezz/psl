@@ -40,6 +40,7 @@ final readonly class NonEmptyDictType extends Type\Type
      *
      * @return non-empty-array<Tk, Tv>
      */
+    #[\Override]
     public function coerce(mixed $value): array
     {
         if (is_iterable($value)) {
@@ -48,7 +49,8 @@ final readonly class NonEmptyDictType extends Type\Type
 
             $result = [];
 
-            $k = $v = null;
+            $k = null;
+            $v = null;
             $trying_key = true;
             $iterating = true;
 
@@ -102,6 +104,7 @@ final readonly class NonEmptyDictType extends Type\Type
      *
      * @psalm-assert non-empty-array<Tk, Tv> $value
      */
+    #[\Override]
     public function assert(mixed $value): array
     {
         if (is_array($value)) {
@@ -110,7 +113,8 @@ final readonly class NonEmptyDictType extends Type\Type
 
             $result = [];
 
-            $k = $v = null;
+            $k = null;
+            $v = null;
             $trying_key = true;
 
             try {

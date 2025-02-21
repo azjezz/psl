@@ -99,6 +99,7 @@ final class MutableMapTypeTest extends TypeTest
      * @param MutableMapInterface<array-key, mixed>|mixed $a
      * @param MutableMapInterface<array-key, mixed>|mixed $b
      */
+    #[\Override]
     protected function equals($a, $b): bool
     {
         if (Type\instance_of(MutableMapInterface::class)->matches($a)) {
@@ -149,14 +150,14 @@ final class MutableMapTypeTest extends TypeTest
         ];
         yield 'invalid iterator first item' => [
             Type\mutable_map(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 0 => Type\int()->coerce('nope');
             })(),
             'Could not coerce "string" to type "' . MutableMapInterface::class . '<int, int>" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
             Type\mutable_map(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 0 => 0;
                 yield 1 => Type\int()->coerce('nope');
             })(),
@@ -164,7 +165,7 @@ final class MutableMapTypeTest extends TypeTest
         ];
         yield 'iterator throwing exception' => [
             Type\mutable_map(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 throw new RuntimeException('whoops');
                 yield;
             })(),
@@ -172,14 +173,14 @@ final class MutableMapTypeTest extends TypeTest
         ];
         yield 'iterator yielding null key' => [
             Type\mutable_map(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield null => 'nope';
             })(),
             'Could not coerce "null" to type "' . MutableMapInterface::class . '<int, int>" at path "key(null)".',
         ];
         yield 'iterator yielding object key' => [
             Type\mutable_map(Type\int(), Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield new class() {
                 } => 'nope';
             })(),

@@ -35,7 +35,8 @@ function wrap(
     $string_length = length($string, $encoding);
     $break_length = length($break, $encoding);
     $result = '';
-    $last_start = $last_space = 0;
+    $last_start = 0;
+    $last_space = 0;
     for ($current = 0; $current < $string_length; ++$current) {
         $char = slice($string, $current, 1, $encoding);
         $possible_break = $char;
@@ -47,12 +48,14 @@ function wrap(
             /** @psalm-suppress InvalidArgument - length is positive */
             $result .= slice($string, $last_start, ($current - $last_start) + $break_length, $encoding);
             $current += $break_length - 1;
-            $last_start = $last_space = $current + 1;
+            $last_space = $current + 1;
+            $last_start = $last_space;
             continue;
         }
 
         if (' ' === $char) {
-            if (($length = $current - $last_start) >= $width) {
+            $length = $current - $last_start;
+            if ($length >= $width) {
                 /** @psalm-suppress InvalidArgument - length is positive */
                 $result .= slice($string, $last_start, $length, $encoding) . $break;
                 $last_start = $current + 1;
@@ -61,10 +64,12 @@ function wrap(
             continue;
         }
 
-        if (($length = $current - $last_start) >= $width && $cut && $last_start >= $last_space) {
+        $length = $current - $last_start;
+        if ($length >= $width && $cut && $last_start >= $last_space) {
             /** @psalm-suppress InvalidArgument - length is positive */
             $result .= slice($string, $last_start, $length, $encoding) . $break;
-            $last_start = $last_space = $current;
+            $last_space = $current;
+            $last_start = $last_space;
             continue;
         }
 

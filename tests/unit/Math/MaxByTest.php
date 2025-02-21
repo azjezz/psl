@@ -9,13 +9,14 @@ use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 use Psl\Math;
 use Psl\Str;
+use Closure;
 
 final class MaxByTest extends TestCase
 {
     /**
      * @dataProvider provideData
      */
-    public function testMaxBy($expected, array $values, callable $fun): void
+    public function testMaxBy($expected, array $values, Closure $fun): void
     {
         static::assertSame($expected, Math\max_by($values, $fun));
     }
@@ -25,7 +26,7 @@ final class MaxByTest extends TestCase
         yield [
             'bazqux',
             ['foo', 'bar', 'baz', 'qux', 'foobar', 'bazqux'],
-            static fn($value) => Str\length($value),
+            static fn(string $value): int => Str\length($value),
         ];
 
         yield [
@@ -35,19 +36,19 @@ final class MaxByTest extends TestCase
                 ['foo', 'bar'],
                 ['foo', 'bar', 'baz'],
             ],
-            static fn($arr) => Iter\count($arr),
+            static fn(array $arr): int => Iter\count($arr),
         ];
 
         yield [
             9,
             [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-            static fn($i) => $i,
+            static fn(int $i): int => $i,
         ];
 
         yield [
             null,
             [],
-            static fn($i) => $i,
+            static fn(int $i): int => $i,
         ];
     }
 }

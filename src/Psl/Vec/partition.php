@@ -24,9 +24,10 @@ function partition(iterable $iterable, Closure $predicate): array
     foreach ($iterable as $value) {
         if ($predicate($value)) {
             $success[] = $value;
-        } else {
-            $failure[] = $value;
+            continue;
         }
+
+        $failure[] = $value;
     }
 
     return [$success, $failure];

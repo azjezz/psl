@@ -54,6 +54,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` containing the values
      *                                               after a user-specified condition is applied.
      */
+    #[\Override]
     public function filter(Closure $fn): AccessibleCollectionInterface;
 
     /**
@@ -147,6 +148,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function zip(array $elements): AccessibleCollectionInterface;
 
     /**
@@ -167,6 +169,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function take(int $n): AccessibleCollectionInterface;
 
     /**
@@ -204,6 +207,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function drop(int $n): AccessibleCollectionInterface;
 
     /**
@@ -244,6 +248,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function slice(int $start, null|int $length = null): AccessibleCollectionInterface;
 
     /**
@@ -260,5 +265,6 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function chunk(int $size): AccessibleCollectionInterface;
 }

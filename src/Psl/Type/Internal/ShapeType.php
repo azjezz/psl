@@ -54,6 +54,7 @@ final readonly class ShapeType extends Type\Type
      *
      * @return array<Tk, Tv>
      */
+    #[\Override]
     public function coerce(mixed $value): array
     {
         if ($value instanceof stdClass) {
@@ -176,6 +177,7 @@ final readonly class ShapeType extends Type\Type
      *
      * @psalm-assert array<Tk, Tv> $value
      */
+    #[\Override]
     public function assert(mixed $value): array
     {
         if (!is_array($value)) {
@@ -222,9 +224,10 @@ final readonly class ShapeType extends Type\Type
             if (!Iter\contains_key($result, $k)) {
                 if ($this->allow_unknown_fields) {
                     $result[$k] = $v;
-                } else {
-                    throw AssertException::withValue($v, $this->toString(), PathExpression::path($k));
+                    continue;
                 }
+
+                throw AssertException::withValue($v, $this->toString(), PathExpression::path($k));
             }
         }
 

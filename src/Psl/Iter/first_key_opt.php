@@ -16,6 +16,8 @@ use Psl\Option\Option;
  * @template Tv
  *
  * @return Option<Tk>
+ *
+ * @mago-ignore best-practices/loop-does-not-iterate
  */
 function first_key_opt(iterable $iterable): Option
 {

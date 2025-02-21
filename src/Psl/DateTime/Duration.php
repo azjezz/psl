@@ -54,6 +54,8 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      * actual values in the returned instance may differ from the provided ones.
      *
      * @pure
+     *
+     * @mago-ignore best-practices/no-else-clause
      */
     public static function fromParts(int $hours, int $minutes = 0, int $seconds = 0, int $nanoseconds = 0): self
     {
@@ -453,6 +455,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function compare(mixed $other): Comparison\Order
     {
         if ($this->hours !== $other->hours) {
@@ -477,6 +480,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function equals(mixed $other): bool
     {
         return $this->compare($other) === Comparison\Order::Equal;

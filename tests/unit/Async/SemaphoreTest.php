@@ -35,10 +35,22 @@ final class SemaphoreTest extends TestCase
             $spy->value[] = $data['value'];
         });
 
-        Async\run(static fn() => $semaphore->waitFor(['time' => DateTime\Duration::milliseconds(3), 'value' => 'a']));
-        Async\run(static fn() => $semaphore->waitFor(['time' => DateTime\Duration::milliseconds(4), 'value' => 'b']));
-        Async\run(static fn() => $semaphore->waitFor(['time' => DateTime\Duration::milliseconds(5), 'value' => 'c']));
-        $last = Async\run(static fn() => $semaphore->waitFor(['time' => null, 'value' => 'd']));
+        Async\run(static fn(): null => $semaphore->waitFor([
+            'time' => DateTime\Duration::milliseconds(3),
+            'value' => 'a',
+        ]));
+        Async\run(static fn(): null => $semaphore->waitFor([
+            'time' => DateTime\Duration::milliseconds(4),
+            'value' => 'b',
+        ]));
+        Async\run(static fn(): null => $semaphore->waitFor([
+            'time' => DateTime\Duration::milliseconds(5),
+            'value' => 'c',
+        ]));
+        $last = Async\run(static fn(): null => $semaphore->waitFor([
+            'time' => null,
+            'value' => 'd',
+        ]));
         $last->await();
 
         static::assertSame(['a', 'b', 'c', 'd'], $spy->value);
@@ -59,13 +71,22 @@ final class SemaphoreTest extends TestCase
             $spy->value[] = $data['value'];
         });
 
-        Async\run(static fn() => $semaphore->waitFor(['time' => Datetime\Duration::milliseconds(3), 'value' => 'a']));
-        Async\run(static fn() => $semaphore->waitFor(['time' => Datetime\Duration::milliseconds(4), 'value' => 'b']));
-        $beforeLast = Async\run(static fn() => $semaphore->waitFor([
+        Async\run(static fn(): null => $semaphore->waitFor([
+            'time' => Datetime\Duration::milliseconds(3),
+            'value' => 'a',
+        ]));
+        Async\run(static fn(): null => $semaphore->waitFor([
+            'time' => Datetime\Duration::milliseconds(4),
+            'value' => 'b',
+        ]));
+        $beforeLast = Async\run(static fn(): null => $semaphore->waitFor([
             'time' => Datetime\Duration::milliseconds(5),
             'value' => 'c',
         ]));
-        Async\run(static fn() => $semaphore->waitFor(['time' => null, 'value' => 'd']));
+        Async\run(static fn(): null => $semaphore->waitFor([
+            'time' => null,
+            'value' => 'd',
+        ]));
 
         $beforeLast->await();
 
@@ -85,7 +106,7 @@ final class SemaphoreTest extends TestCase
             Async\sleep(Datetime\Duration::milliseconds(2));
         });
 
-        $awaitable = Async\run(static fn() => $semaphore->waitFor('hello'));
+        $awaitable = Async\run(static fn(): null => $semaphore->waitFor('hello'));
 
         Async\sleep(Datetime\Duration::milliseconds(1));
 
@@ -107,8 +128,8 @@ final class SemaphoreTest extends TestCase
             Async\sleep(Datetime\Duration::milliseconds(2));
         });
 
-        Async\run(static fn() => $semaphore->waitFor('hello'));
-        $awaitable = Async\run(static fn() => $semaphore->waitFor('world'));
+        Async\run(static fn(): null => $semaphore->waitFor('hello'));
+        $awaitable = Async\run(static fn(): null => $semaphore->waitFor('world'));
 
         Async\sleep(Datetime\Duration::milliseconds(1));
 
@@ -144,8 +165,8 @@ final class SemaphoreTest extends TestCase
 
         static::assertSame(1, $semaphore->getConcurrencyLimit());
 
-        $one = Async\run(static fn() => $semaphore->waitFor('one'));
-        $two = Async\run(static fn() => $semaphore->waitFor('two'));
+        $one = Async\run(static fn(): string => $semaphore->waitFor('one'));
+        $two = Async\run(static fn(): string => $semaphore->waitFor('two'));
 
         Async\sleep(Datetime\Duration::milliseconds(10));
 
@@ -170,8 +191,8 @@ final class SemaphoreTest extends TestCase
             return $input;
         });
 
-        $one = Async\run(static fn() => $semaphore->waitFor('one'));
-        $two = Async\run(static fn() => $semaphore->waitFor('two'));
+        $one = Async\run(static fn(): string => $semaphore->waitFor('one'));
+        $two = Async\run(static fn(): string => $semaphore->waitFor('two'));
         static::assertSame(0, $semaphore->getIngoingOperations());
         static::assertSame(0, $semaphore->getPendingOperations());
         static::assertFalse($semaphore->hasIngoingOperations());
@@ -204,7 +225,7 @@ final class SemaphoreTest extends TestCase
             return $input;
         });
 
-        $one = Async\run(static fn() => $semaphore->waitFor('one'));
+        $one = Async\run(static fn(): string => $semaphore->waitFor('one'));
         Async\later();
         static::assertFalse($one->isComplete());
         $semaphore->waitForPending();

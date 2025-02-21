@@ -31,7 +31,7 @@ final class TypeCoercionExceptionTest extends TestCase
         }
     }
 
-    public function testIncorrectNestedType()
+    public function testIncorrectNestedType(): void
     {
         $type = Type\shape(['child' => Type\shape(['name' => Type\string()])]);
 

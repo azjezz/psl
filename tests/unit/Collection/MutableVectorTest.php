@@ -238,6 +238,7 @@ final class MutableVectorTest extends AbstractVectorTest
      *
      * @return MutableVector<T>
      */
+    #[\Override]
     protected function create(array $items): MutableVector
     {
         return new MutableVector($items);

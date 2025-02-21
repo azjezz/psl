@@ -47,6 +47,7 @@ final readonly class FromRange implements LowerBoundRangeInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function contains(int $value): bool
     {
         return $value >= $this->lowerBound;

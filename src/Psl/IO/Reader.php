@@ -30,6 +30,8 @@ final class Reader implements ReadHandleInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @mago-ignore best-practices/no-empty-catch-clause
      */
     public function reachedEndOfDataSource(): bool
     {
@@ -69,11 +71,16 @@ final class Reader implements ReadHandleInterface
             // @codeCoverageIgnoreEnd
         });
 
-        while (($length = strlen($this->buffer)) < $size && !$this->eof) {
+        do {
+            $length = strlen($this->buffer);
+            if ($length >= $size || $this->eof) {
+                break;
+            }
+
             /** @var positive-int $to_read */
             $to_read = $size - $length;
             $this->fillBuffer($to_read, $timer->getRemaining());
-        }
+        } while (true);
 
         if ($this->eof) {
             throw new Exception\RuntimeException('Reached end of file before requested size.');
@@ -158,6 +165,8 @@ final class Reader implements ReadHandleInterface
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
+     *
+     * @mago-ignore best-practices/no-boolean-literal-comparison
      */
     public function readUntil(string $suffix, null|Duration $timeout = null): null|string
     {
@@ -200,6 +209,7 @@ final class Reader implements ReadHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         if ($this->eof) {
@@ -256,7 +266,8 @@ final class Reader implements ReadHandleInterface
      */
     private function fillBuffer(null|int $desired_bytes, null|Duration $timeout): void
     {
-        $this->buffer .= $chunk = $this->handle->read($desired_bytes, $timeout);
+        $chunk = $this->handle->read($desired_bytes, $timeout);
+        $this->buffer .= $chunk;
         if ($chunk === '') {
             $this->eof = $this->handle->reachedEndOfDataSource();
         }

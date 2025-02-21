@@ -38,6 +38,7 @@ final readonly class MutableVectorType extends Type\Type
      *
      * @return Collection\MutableVectorInterface<T>
      */
+    #[\Override]
     public function coerce(mixed $value): Collection\MutableVectorInterface
     {
         if (is_iterable($value)) {
@@ -48,7 +49,8 @@ final readonly class MutableVectorType extends Type\Type
              * @var list<T> $values
              */
             $values = [];
-            $i = $v = null;
+            $i = null;
+            $v = null;
             $iterating = true;
 
             try {
@@ -87,6 +89,7 @@ final readonly class MutableVectorType extends Type\Type
      *
      * @psalm-assert Collection\MutableVectorInterface<T> $value
      */
+    #[\Override]
     public function assert(mixed $value): Collection\MutableVectorInterface
     {
         if (is_object($value) && $value instanceof Collection\MutableVectorInterface) {
@@ -97,7 +100,8 @@ final readonly class MutableVectorType extends Type\Type
              * @var list<T> $values
              */
             $values = [];
-            $i = $v = null;
+            $i = null;
+            $v = null;
 
             try {
                 /**

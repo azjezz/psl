@@ -42,6 +42,7 @@ final readonly class MapType extends Type\Type
      *
      * @return Collection\MapInterface<Tk, Tv>
      */
+    #[\Override]
     public function coerce(mixed $value): Collection\MapInterface
     {
         if (is_iterable($value)) {
@@ -53,7 +54,8 @@ final readonly class MapType extends Type\Type
             /** @var list<array{Tk, Tv}> $entries */
             $entries = [];
 
-            $k = $v = null;
+            $k = null;
+            $v = null;
             $trying_key = true;
             $iterating = true;
 
@@ -104,6 +106,7 @@ final readonly class MapType extends Type\Type
      *
      * @psalm-assert Collection\MapInterface<Tk, Tv> $value
      */
+    #[\Override]
     public function assert(mixed $value): Collection\MapInterface
     {
         if (is_object($value) && $value instanceof Collection\MapInterface) {
@@ -115,7 +118,8 @@ final readonly class MapType extends Type\Type
             /** @var list<array{Tk, Tv}> $entries */
             $entries = [];
 
-            $k = $v = null;
+            $k = null;
+            $v = null;
             $trying_key = true;
 
             try {

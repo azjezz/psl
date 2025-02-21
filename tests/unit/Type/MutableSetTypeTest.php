@@ -86,6 +86,7 @@ final class MutableSetTypeTest extends TypeTest
      * @param MutableSetInterface<array-key>|mixed $a
      * @param MutableSetInterface<array-key>|mixed $b
      */
+    #[\Override]
     protected function equals($a, $b): bool
     {
         if (Type\instance_of(MutableSetInterface::class)->matches($a)) {
@@ -122,14 +123,14 @@ final class MutableSetTypeTest extends TypeTest
         ];
         yield 'invalid iterator first item' => [
             Type\mutable_set(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield Type\int()->coerce('nope');
             })(),
             'Could not coerce "string" to type "' . MutableSetInterface::class . '<int>" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
             Type\mutable_set(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 0;
                 yield Type\int()->coerce('nope');
             })(),
@@ -137,7 +138,7 @@ final class MutableSetTypeTest extends TypeTest
         ];
         yield 'iterator throwing exception' => [
             Type\mutable_set(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 0;
                 throw new RuntimeException('whoops');
             })(),
@@ -145,21 +146,21 @@ final class MutableSetTypeTest extends TypeTest
         ];
         yield 'iterator yielding null key' => [
             Type\mutable_set(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield null => 'nope';
             })(),
             'Could not coerce "string" to type "' . MutableSetInterface::class . '<int>" at path "null".',
         ];
         yield 'iterator yielding string key, null value' => [
             Type\mutable_set(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 'nope' => null;
             })(),
             'Could not coerce "null" to type "' . MutableSetInterface::class . '<int>" at path "nope".',
         ];
         yield 'iterator yielding object key' => [
             Type\mutable_set(Type\int()),
-            (static function () {
+            (static function (): iterable {
                 yield 'nope' => new class() {
                 };
             })(),

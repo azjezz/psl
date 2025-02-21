@@ -16,9 +16,11 @@ final class EndsWithCiTest extends TestCase
     {
         if (null === Str\search_ci($haystack, $suffix)) {
             static::assertFalse(Str\ends_with_ci($haystack, $suffix));
-        } else {
-            static::assertSame($expected, Str\ends_with_ci($haystack, $suffix));
+
+            return;
         }
+
+        static::assertSame($expected, Str\ends_with_ci($haystack, $suffix));
     }
 
     public function provideData(): array

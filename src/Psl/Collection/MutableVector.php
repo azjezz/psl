@@ -49,6 +49,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public static function default(): static
     {
         return new self([]);
@@ -98,6 +99,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function first(): mixed
     {
         return $this->elements[0] ?? null;
@@ -111,6 +113,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function last(): mixed
     {
         $key = $this->lastKey();
@@ -148,6 +151,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @return int<0, max>
      */
+    #[\Override]
     public function count(): int
     {
         /** @var int<0, max> */
@@ -189,6 +193,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function at(int|string $k): mixed
     {
         if (!array_key_exists($k, $this->elements)) {
@@ -205,6 +210,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function contains(int|string $k): bool
     {
         return array_key_exists($k, $this->elements);
@@ -231,6 +237,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function get(int|string $k): mixed
     {
         return $this->elements[$k] ?? null;
@@ -304,6 +311,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function set(int|string $k, mixed $v): MutableVector
     {
         if (!array_key_exists($k, $this->elements)) {
@@ -360,6 +368,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function remove(int|string $k): MutableVector
     {
         if ($this->contains($k)) {
@@ -378,6 +387,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function clear(): MutableVector
     {
         $this->elements = [];
@@ -394,6 +404,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-external-mutation-free
      */
+    #[\Override]
     public function add(mixed $v): MutableVector
     {
         $this->elements[] = $v;
@@ -427,6 +438,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function values(): MutableVector
     {
         return MutableVector::fromArray($this->elements);
@@ -439,6 +451,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function keys(): MutableVector
     {
         return MutableVector::fromArray(array_keys($this->elements));
@@ -460,6 +473,7 @@ final class MutableVector implements MutableVectorInterface
      * @return MutableVector<T> A `MutableVector` containing the values after a user-specified condition
      *                          is applied.
      */
+    #[\Override]
     public function filter(Closure $fn): MutableVector
     {
         return new MutableVector(Dict\filter($this->elements, $fn));
@@ -505,6 +519,7 @@ final class MutableVector implements MutableVectorInterface
      * @return MutableVector<Tu> A `MutableVector` containing key/value pairs after a user-specified
      *                           operation is applied.
      */
+    #[\Override]
     public function map(Closure $fn): MutableVector
     {
         return new MutableVector(Dict\map($this->elements, $fn));
@@ -552,6 +567,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function zip(array $elements): MutableVector
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
@@ -575,6 +591,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function take(int $n): MutableVector
     {
         return $this->slice(0, $n);
@@ -616,6 +633,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function drop(int $n): MutableVector
     {
         return $this->slice($n);
@@ -661,6 +679,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function slice(int $start, null|int $length = null): MutableVector
     {
         /** @psalm-suppress ImpureFunctionCall - conditionally pure */
@@ -683,6 +702,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-suppress LessSpecificImplementedReturnType - I don't see how this one is less specific than its inherited.
      */
+    #[\Override]
     public function chunk(int $size): MutableVector
     {
         /**
@@ -700,7 +720,7 @@ final class MutableVector implements MutableVectorInterface
              *
              * @return MutableVector<T>
              */
-            static fn(array $chunk) => MutableVector::fromArray($chunk),
+            static fn(array $chunk): MutableVector => MutableVector::fromArray($chunk),
         ));
     }
 

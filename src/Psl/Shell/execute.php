@@ -38,6 +38,9 @@ use function strpbrk;
  * @throws Exception\PossibleAttackException In case the command being run is suspicious ( e.g: contains NULL byte ).
  * @throws Exception\RuntimeException In case $working_directory doesn't exist, or unable to create a new process.
  * @throws Exception\TimeoutException If $timeout is reached before being able to read the process stream.
+ *
+ * @mago-ignore best-practices/no-boolean-literal-comparison
+ * @mago-ignore best-practices/no-else-clause
  */
 function execute(
     string $command,

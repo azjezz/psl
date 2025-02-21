@@ -37,7 +37,12 @@ function pad_right(
     string $pad_string = ' ',
     Encoding $encoding = Encoding::Utf8,
 ): string {
-    while (($length = length($string, $encoding)) < $total_length) {
+    do {
+        $length = length($string, $encoding);
+        if ($length >= $total_length) {
+            return $string;
+        }
+
         /** @var int<0, max> $remaining */
         $remaining = $total_length - $length;
         if ($remaining <= length($pad_string, $encoding)) {
@@ -45,7 +50,5 @@ function pad_right(
         }
 
         $string .= $pad_string;
-    }
-
-    return $string;
+    } while (true);
 }

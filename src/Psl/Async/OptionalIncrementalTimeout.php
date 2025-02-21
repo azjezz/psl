@@ -47,9 +47,10 @@ final class OptionalIncrementalTimeout
 
         if (!$timeout->isPositive()) {
             $this->end = Timestamp::monotonic();
-        } else {
-            $this->end = Timestamp::monotonic()->plus($timeout);
+            return;
         }
+
+        $this->end = Timestamp::monotonic()->plus($timeout);
     }
 
     /**

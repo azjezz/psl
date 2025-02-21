@@ -18,11 +18,17 @@ final class CompareTest extends TestCase
 
         if (0 === $expected) {
             static::assertSame(0, $diff);
-        } elseif (0 > $expected) {
-            static::assertLessThanOrEqual(-1, $diff);
-        } else {
-            static::assertGreaterThanOrEqual(1, $diff);
+
+            return;
         }
+
+        if (0 > $expected) {
+            static::assertLessThanOrEqual(-1, $diff);
+
+            return;
+        }
+
+        static::assertGreaterThanOrEqual(1, $diff);
     }
 
     public function provideData(): array

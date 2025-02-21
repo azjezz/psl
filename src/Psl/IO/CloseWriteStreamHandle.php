@@ -35,6 +35,7 @@ final class CloseWriteStreamHandle implements CloseWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function write(string $bytes, null|Duration $timeout = null): int
     {
         return $this->handle->write($bytes, $timeout);
@@ -43,6 +44,7 @@ final class CloseWriteStreamHandle implements CloseWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function close(): void
     {
         $this->handle->close();

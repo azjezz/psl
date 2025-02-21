@@ -22,8 +22,9 @@ compare-benchmark-to-reference:                                                 
 	./vendor/bin/phpbench run --config config/phpbench.json --ref=benchmark_reference
 
 static-analysis:                                                                ## run static analysis checks
-	./vendor/bin/psalm -c config/psalm.xml --show-info=true --no-cache --threads=2
-	./vendor/bin/psalm -c config/psalm.xml tests/static-analysis --no-cache --threads=2
+	./vendor/bin/psalm -c config/psalm.xml --show-info=true
+	./vendor/bin/psalm -c config/psalm.xml tests/static-analysis
+	./vendor/bin/mago lint -n -p analysis
 
 type-coverage:                                                                  ## send static analysis type coverage metrics to https://shepherd.dev/
 	./vendor/bin/psalm -c config/psalm.xml --shepherd --stats --threads=1
@@ -32,13 +33,13 @@ security-analysis:                                                              
 	./vendor/bin/psalm -c config/psalm.xml --taint-analysis --threads=1
 
 unit-tests:                                                                     ## run unit test suite
-	./vendor/bin/phpunit -c config/phpunit.xml.dist
+	php -dmemory_limit=-1 ./vendor/bin/phpunit -c config/phpunit.xml.dist
 
-mutation-tests:                                                                     ## run mutation tests
-	./vendor/bin/roave-infection-static-analysis-plugin --configuration=config/infection.json.dist --psalm-config=config/psalm.xml
+mutation-tests:                                                                 ## run mutation tests
+	php -dmemory_limit=-1 ./vendor/bin/roave-infection-static-analysis-plugin --configuration=config/infection.json.dist --psalm-config=config/psalm.xml
 
 code-coverage: unit-tests                                                       ## generate and upload test coverage metrics to https://coveralls.io/
-	./vendor/bin/php-coveralls -x var/clover.xml -o var/coveralls-upload.json -v
+	php -dmemory_limit=-1 ./vendor/bin/php-coveralls -x var/clover.xml -o var/coveralls-upload.json -v
 
 docs-generate:                                                                  ## regenerate docs
 	php docs/documenter.php

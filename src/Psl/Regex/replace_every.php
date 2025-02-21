@@ -23,7 +23,7 @@ use function preg_replace;
  */
 function replace_every(string $haystack, array $replacements, null|int $limit = null): string
 {
-    return (string) Internal\call_preg('preg_replace', static fn() => preg_replace(
+    return (string) Internal\call_preg('preg_replace', static fn(): string|null => preg_replace(
         array_keys($replacements),
         array_values($replacements),
         $haystack,

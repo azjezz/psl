@@ -73,6 +73,7 @@ final readonly class ServerOptions implements DefaultInterface
      *
      * @pure
      */
+    #[\Override]
     public static function default(): static
     {
         return self::create();

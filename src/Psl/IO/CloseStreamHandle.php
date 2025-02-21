@@ -22,6 +22,7 @@ final class CloseStreamHandle implements CloseStreamHandleInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function close(): void
     {
         $this->handle->close();

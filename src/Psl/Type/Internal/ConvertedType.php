@@ -44,6 +44,7 @@ final readonly class ConvertedType extends Type\Type
      *
      * @return O
      */
+    #[\Override]
     public function coerce(mixed $value): mixed
     {
         if ($this->into->matches($value)) {
@@ -86,6 +87,7 @@ final readonly class ConvertedType extends Type\Type
      *
      * @return O
      */
+    #[\Override]
     public function assert(mixed $value): mixed
     {
         return $this->into->assert($value);

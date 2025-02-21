@@ -17,11 +17,7 @@ final class SetTest extends AbstractSetTest
 
     public function testFromItems(): void
     {
-        $set = Set::fromItems([
-            'foo',
-            'bar',
-            'baz',
-        ]);
+        $set = Set::fromItems(['foo', 'bar', 'baz']);
 
         static::assertTrue($set->contains('foo'));
         static::assertTrue($set->contains('bar'));
@@ -40,7 +36,7 @@ final class SetTest extends AbstractSetTest
         return Set::fromArray($items);
     }
 
-    public function testFromArrayKeysConstructor()
+    public function testFromArrayKeysConstructor(): void
     {
         $set = Set::fromArrayKeys(['foo' => 1, 'bar' => 1, 'baz' => 1]);
 

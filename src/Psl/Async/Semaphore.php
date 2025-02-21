@@ -21,6 +21,8 @@ use function count;
  *
  * @template Tin
  * @template Tout
+ *
+ * @mago-ignore best-practices/no-else-clause
  */
 final class Semaphore
 {
@@ -63,7 +65,8 @@ final class Semaphore
     public function waitFor(mixed $input): mixed
     {
         if ($this->ingoing === $this->concurrencyLimit) {
-            $this->pending[] = $suspension = EventLoop::getSuspension();
+            $suspension = EventLoop::getSuspension();
+            $this->pending[] = $suspension;
 
             $suspension->suspend();
         }

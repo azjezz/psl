@@ -21,7 +21,7 @@ use function preg_replace;
  */
 function replace(string $haystack, string $pattern, string $replacement, null|int $limit = null): string
 {
-    return (string) Internal\call_preg('preg_replace', static fn() => preg_replace(
+    return (string) Internal\call_preg('preg_replace', static fn(): string|null => preg_replace(
         $pattern,
         $replacement,
         $haystack,

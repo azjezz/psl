@@ -32,13 +32,13 @@ final class FirstKeyTest extends TestCase
         yield ['a', new Collection\Map(['a' => 'b'])];
         yield [
             null,
-            (static function () {
+            (static function (): iterable {
                 yield null => null;
             })(),
         ];
         yield [
             null,
-            (static function () {
+            (static function (): iterable {
                 return;
                 yield;
             })(),

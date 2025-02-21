@@ -32,9 +32,9 @@ function sort_by_key(iterable $iterable, null|Closure $comparator = null): array
 
     if ($comparator) {
         uksort($result, $comparator);
-    } else {
-        ksort($result);
+        return $result;
     }
 
+    ksort($result);
     return $result;
 }

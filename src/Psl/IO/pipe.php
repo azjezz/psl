@@ -20,6 +20,8 @@ use const STREAM_SOCK_STREAM;
  * Create a pair of handles, where writes to the {@see WriteStreamHandleInterface} can be read from the {@see ReadStreamHandleInterface}.
  *
  * @return array{0: CloseReadStreamHandleInterface, 1: CloseWriteStreamHandleInterface}
+ *
+ * @mago-ignore best-practices/no-boolean-literal-comparison
  */
 function pipe(): array
 {

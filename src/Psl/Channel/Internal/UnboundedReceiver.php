@@ -34,10 +34,12 @@ final class UnboundedReceiver implements ReceiverInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function receive(): mixed
     {
         if ($this->suspension) {
-            $this->suspension = $suspension = EventLoop::getSuspension();
+            $suspension = EventLoop::getSuspension();
+            $this->suspension = $suspension;
             $this->state->waitForMessage($suspension);
             $suspension->suspend();
         }
@@ -45,7 +47,8 @@ final class UnboundedReceiver implements ReceiverInterface
         try {
             return $this->state->receive();
         } catch (Exception\EmptyChannelException) {
-            $this->suspension = $suspension = EventLoop::getSuspension();
+            $suspension = EventLoop::getSuspension();
+            $this->suspension = $suspension;
             $this->state->waitForMessage($suspension);
             $suspension->suspend();
 

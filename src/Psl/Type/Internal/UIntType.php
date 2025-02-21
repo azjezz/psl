@@ -28,6 +28,7 @@ final readonly class UIntType extends Type\Type
      *
      * @psalm-assert-if-true int<0, max> $value
      */
+    #[\Override]
     public function matches(mixed $value): bool
     {
         return is_int($value) && $value >= 0;
@@ -40,16 +41,23 @@ final readonly class UIntType extends Type\Type
      *
      * @return int<0, max>
      */
+    #[\Override]
     public function coerce(mixed $value): int
     {
         if (is_int($value) && $value >= 0) {
             return $value;
-        } elseif (is_float($value)) {
+        }
+
+        if (is_float($value)) {
             $integer_value = (int) $value;
             if (((float) $integer_value) === $value && $integer_value >= 0) {
                 return $integer_value;
             }
-        } elseif (is_string($value) || $value instanceof Stringable) {
+
+            throw CoercionException::withValue($value, $this->toString());
+        }
+
+        if (is_string($value) || $value instanceof Stringable) {
             $str = (string) $value;
             $int = (int) $str;
             if ($str === ((string) $int) && $int >= 0) {
@@ -78,6 +86,7 @@ final readonly class UIntType extends Type\Type
      *
      * @throws AssertException
      */
+    #[\Override]
     public function assert(mixed $value): int
     {
         if (is_int($value) && $value >= 0) {

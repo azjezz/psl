@@ -22,7 +22,7 @@ interface TypeInterface
      *
      * @return T
      */
-    public function coerce(mixed $value);
+    public function coerce(mixed $value): mixed;
 
     /**
      * @throws AssertException
@@ -31,7 +31,7 @@ interface TypeInterface
      *
      * @psalm-assert T $value
      */
-    public function assert(mixed $value);
+    public function assert(mixed $value): mixed;
 
     /**
      * Return whether this type is optional.

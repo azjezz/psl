@@ -14,7 +14,7 @@ namespace Psl\Iter;
  *
  * @return Tk|null
  */
-function last_key(iterable $iterable)
+function last_key(iterable $iterable): mixed
 {
     $last = null;
     foreach ($iterable as $k => $_) {
