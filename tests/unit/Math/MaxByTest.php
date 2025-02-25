@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Math;
 
+use Closure;
 use Generator;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 use Psl\Math;
 use Psl\Str;
-use Closure;
 
 final class MaxByTest extends TestCase
 {

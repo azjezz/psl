@@ -51,16 +51,13 @@ final class TypedTest extends TestCase
             'Could not coerce "string" to type "' . MapInterface::class . '<string, int>" at path "name".',
         );
 
-        Json\typed(
-            '{
+        Json\typed('{
             "name": "azjezz/psl",
             "type": "library",
             "description": "PHP Standard Library.",
             "keywords": ["php", "std", "stdlib", "utility", "psl"],
             "license": "MIT"
-        }',
-            Type\map(Type\string(), Type\int()),
-        );
+        }', Type\map(Type\string(), Type\int()));
     }
 
     public function testsTypedAsserts(): void

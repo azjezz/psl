@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Vec;
 
+use Closure;
 use PHPUnit\Framework\TestCase;
 use Psl\Vec;
-use Closure;
 
 final class FilterTest extends TestCase
 {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\IO;
 
+use Closure;
 use PHPUnit\Framework\TestCase;
 use Psl\IO;
 use Psl\Str;
 use Psl\Str\Byte;
-use Closure;
 
 final class MemoryHandleTest extends TestCase
 {

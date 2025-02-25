@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Dict;
 
+use Closure;
 use PHPUnit\Framework\TestCase;
 use Psl\Dict;
 use Psl\Iter;
 use Psl\Str;
-use Closure;
 
 final class SortByTest extends TestCase
 {

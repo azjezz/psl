@@ -9,9 +9,6 @@ excludes = [
     "src/Psl/Internal/Loader.php",
 ]
 
-[format]
-null_type_hint = "pipe"
-
 [linter]
 plugins = ["php-unit"]
 

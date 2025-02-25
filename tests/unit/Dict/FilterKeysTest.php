@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Dict;
 
+use Closure;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Dict;
-use Closure;
 
 final class FilterKeysTest extends TestCase
 {
