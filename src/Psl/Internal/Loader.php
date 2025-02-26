@@ -348,6 +348,7 @@ final class Loader
         'Psl\\Type\\array_key' => 'Psl/Type/array_key.php',
         'Psl\\Type\\bool' => 'Psl/Type/bool.php',
         'Psl\\Type\\float' => 'Psl/Type/float.php',
+        'Psl\\Type\\int_range' => 'Psl/Type/int_range.php',
         'Psl\\Type\\int' => 'Psl/Type/int.php',
         'Psl\\Type\\intersection' => 'Psl/Type/intersection.php',
         'Psl\\Type\\iterable' => 'Psl/Type/iterable.php',

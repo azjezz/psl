@@ -444,6 +444,21 @@ Type\instance_of(SomeInterface::class)->assert($someImplementation);
 
 ---
 
+#### [int_range](int_range.php)
+
+```hack
+@pure
+Type\int_range(10, 42): TypeInterface<int<10, 42>>
+```
+
+Provides a type that can parse integers with a user defined range.
+
+Can coerce from:
+
+* This type will use the same coercion rules as the [`int()`](#int) type whilst guarding the integer range.
+
+---
+
 #### [int](int.php)
 
 ```hack
