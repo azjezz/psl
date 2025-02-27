@@ -85,11 +85,7 @@ final class MutableMapTest extends AbstractMapTest
             'bar' => 'baz',
         ]);
 
-        $modified = $map
-            ->add('foo', 'foo')
-            ->add('bar', 'bar')
-            ->add('baz', 'baz')
-            ->add('qux', 'qux');
+        $modified = $map->add('foo', 'foo')->add('bar', 'bar')->add('baz', 'baz')->add('qux', 'qux');
 
         static::assertSame($modified, $map);
 

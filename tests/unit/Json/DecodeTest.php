@@ -19,16 +19,13 @@ final class DecodeTest extends TestCase
             "license": "MIT"
         }');
 
-        static::assertSame(
-            [
-                'name' => 'azjezz/psl',
-                'type' => 'library',
-                'description' => 'PHP Standard Library.',
-                'keywords' => ['php', 'std', 'stdlib', 'utility', 'psl'],
-                'license' => 'MIT',
-            ],
-            $actual,
-        );
+        static::assertSame([
+            'name' => 'azjezz/psl',
+            'type' => 'library',
+            'description' => 'PHP Standard Library.',
+            'keywords' => ['php', 'std', 'stdlib', 'utility', 'psl'],
+            'license' => 'MIT',
+        ], $actual);
     }
 
     public function testDecodeThrowsForInvalidSyntax(): void

@@ -38,15 +38,12 @@ final class ShapeTypeBench extends GenericTypeBench
                 'value' => new ArrayIterator(['foo' => 'bar']),
             ],
             'complex shape with optional values, minimum array value' => [
-                'type' => Type\shape(
-                    [
-                        'foo' => Type\mixed(),
-                        'bar' => Type\mixed(),
-                        'baz' => Type\mixed(),
-                        'tab' => Type\optional(Type\mixed()),
-                    ],
-                    true,
-                ),
+                'type' => Type\shape([
+                    'foo' => Type\mixed(),
+                    'bar' => Type\mixed(),
+                    'baz' => Type\mixed(),
+                    'tab' => Type\optional(Type\mixed()),
+                ], true),
                 'value' => [
                     'foo' => null,
                     'bar' => null,
@@ -54,15 +51,12 @@ final class ShapeTypeBench extends GenericTypeBench
                 ],
             ],
             'complex shape with optional values, minimum iterable value' => [
-                'type' => Type\shape(
-                    [
-                        'foo' => Type\mixed(),
-                        'bar' => Type\mixed(),
-                        'baz' => Type\mixed(),
-                        'tab' => Type\optional(Type\mixed()),
-                    ],
-                    true,
-                ),
+                'type' => Type\shape([
+                    'foo' => Type\mixed(),
+                    'bar' => Type\mixed(),
+                    'baz' => Type\mixed(),
+                    'tab' => Type\optional(Type\mixed()),
+                ], true),
                 'value' => new ArrayIterator([
                     'foo' => null,
                     'bar' => null,
@@ -70,15 +64,12 @@ final class ShapeTypeBench extends GenericTypeBench
                 ]),
             ],
             'complex shape with optional values, array value with further values' => [
-                'type' => Type\shape(
-                    [
-                        'foo' => Type\mixed(),
-                        'bar' => Type\mixed(),
-                        'baz' => Type\mixed(),
-                        'tab' => Type\optional(Type\mixed()),
-                    ],
-                    true,
-                ),
+                'type' => Type\shape([
+                    'foo' => Type\mixed(),
+                    'bar' => Type\mixed(),
+                    'baz' => Type\mixed(),
+                    'tab' => Type\optional(Type\mixed()),
+                ], true),
                 'value' => [
                     'foo' => null,
                     'bar' => null,
@@ -91,15 +82,12 @@ final class ShapeTypeBench extends GenericTypeBench
                 ],
             ],
             'complex shape with optional values, iterable value with further values' => [
-                'type' => Type\shape(
-                    [
-                        'foo' => Type\mixed(),
-                        'bar' => Type\mixed(),
-                        'baz' => Type\mixed(),
-                        'tab' => Type\optional(Type\mixed()),
-                    ],
-                    true,
-                ),
+                'type' => Type\shape([
+                    'foo' => Type\mixed(),
+                    'bar' => Type\mixed(),
+                    'baz' => Type\mixed(),
+                    'tab' => Type\optional(Type\mixed()),
+                ], true),
                 'value' => new ArrayIterator([
                     'foo' => null,
                     'bar' => null,
@@ -179,15 +167,12 @@ final class ShapeTypeBench extends GenericTypeBench
                 'value' => ['foo' => 'bar'],
             ],
             'complex shape with optional values, minimum array value' => [
-                'type' => Type\shape(
-                    [
-                        'foo' => Type\mixed(),
-                        'bar' => Type\mixed(),
-                        'baz' => Type\mixed(),
-                        'tab' => Type\optional(Type\mixed()),
-                    ],
-                    true,
-                ),
+                'type' => Type\shape([
+                    'foo' => Type\mixed(),
+                    'bar' => Type\mixed(),
+                    'baz' => Type\mixed(),
+                    'tab' => Type\optional(Type\mixed()),
+                ], true),
                 'value' => [
                     'foo' => null,
                     'bar' => null,
@@ -195,15 +180,12 @@ final class ShapeTypeBench extends GenericTypeBench
                 ],
             ],
             'complex shape with optional values, array value with further values' => [
-                'type' => Type\shape(
-                    [
-                        'foo' => Type\mixed(),
-                        'bar' => Type\mixed(),
-                        'baz' => Type\mixed(),
-                        'tab' => Type\optional(Type\mixed()),
-                    ],
-                    true,
-                ),
+                'type' => Type\shape([
+                    'foo' => Type\mixed(),
+                    'bar' => Type\mixed(),
+                    'baz' => Type\mixed(),
+                    'tab' => Type\optional(Type\mixed()),
+                ], true),
                 'value' => [
                     'foo' => null,
                     'bar' => null,

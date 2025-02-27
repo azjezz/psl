@@ -33,7 +33,8 @@ function read_directory(string $directory): array
     }
 
     /** @var list<non-empty-string> */
-    return Vec\values(
-        new FilesystemIterator($directory, FilesystemIterator::CURRENT_AS_PATHNAME | FilesystemIterator::SKIP_DOTS),
-    );
+    return Vec\values(new FilesystemIterator(
+        $directory,
+        FilesystemIterator::CURRENT_AS_PATHNAME | FilesystemIterator::SKIP_DOTS,
+    ));
 }

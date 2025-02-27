@@ -87,14 +87,11 @@ abstract class AbstractMapTest extends TestCase
 
         $array = $map->jsonSerialize();
 
-        static::assertSame(
-            [
-                'foo' => 1,
-                'bar' => 2,
-                'baz' => 3,
-            ],
-            $array,
-        );
+        static::assertSame([
+            'foo' => 1,
+            'bar' => 2,
+            'baz' => 3,
+        ], $array);
     }
 
     public function testKeys(): void
@@ -203,15 +200,12 @@ abstract class AbstractMapTest extends TestCase
         $mapped = $map->map(static fn(string $item): string => Str\uppercase($item));
 
         static::assertInstanceOf($this->mapClass, $mapped);
-        static::assertSame(
-            [
-                0 => 'FOO',
-                1 => 'BAR',
-                2 => 'BAZ',
-                3 => 'QUX',
-            ],
-            $mapped->toArray(),
-        );
+        static::assertSame([
+            0 => 'FOO',
+            1 => 'BAR',
+            2 => 'BAZ',
+            3 => 'QUX',
+        ], $mapped->toArray());
         static::assertNotSame($map, $mapped);
         static::assertCount(4, $mapped);
 
@@ -242,15 +236,12 @@ abstract class AbstractMapTest extends TestCase
         $mapped = $map->mapWithKey(static fn(int $k, string $v): string => Str\format('%s ( %d )', $v, $k));
 
         static::assertInstanceOf($this->mapClass, $mapped);
-        static::assertSame(
-            [
-                0 => 'foo ( 0 )',
-                1 => 'bar ( 1 )',
-                2 => 'baz ( 2 )',
-                3 => 'qux ( 3 )',
-            ],
-            $mapped->toArray(),
-        );
+        static::assertSame([
+            0 => 'foo ( 0 )',
+            1 => 'bar ( 1 )',
+            2 => 'baz ( 2 )',
+            3 => 'qux ( 3 )',
+        ], $mapped->toArray());
         static::assertNotSame($map, $mapped);
         static::assertCount(4, $mapped);
 
@@ -536,15 +527,12 @@ abstract class AbstractMapTest extends TestCase
         static::assertInstanceOf($this->mapClass, $slice1);
         static::assertNotSame($slice2, $map);
         static::assertCount(4, $slice2);
-        static::assertSame(
-            [
-                2 => 'bar',
-                3 => 'bar',
-                4 => 'baz',
-                5 => 'baz',
-            ],
-            $slice2->toArray(),
-        );
+        static::assertSame([
+            2 => 'bar',
+            3 => 'bar',
+            4 => 'baz',
+            5 => 'baz',
+        ], $slice2->toArray());
     }
 
     public function testAt(): void

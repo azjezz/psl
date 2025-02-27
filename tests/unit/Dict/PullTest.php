@@ -19,21 +19,18 @@ final class PullTest extends TestCase
             static fn(int $i): int => 2 ** $i,
         );
 
-        static::assertSame(
-            [
-                1 => 'A',
-                2 => 'B',
-                4 => 'C',
-                8 => 'D',
-                16 => 'E',
-                32 => 'F',
-                64 => 'G',
-                128 => 'H',
-                256 => 'I',
-                512 => 'J',
-                1024 => 'K',
-            ],
-            $result,
-        );
+        static::assertSame([
+            1 => 'A',
+            2 => 'B',
+            4 => 'C',
+            8 => 'D',
+            16 => 'E',
+            32 => 'F',
+            64 => 'G',
+            128 => 'H',
+            256 => 'I',
+            512 => 'J',
+            1024 => 'K',
+        ], $result);
     }
 }
