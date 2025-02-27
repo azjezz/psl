@@ -5,7 +5,7 @@ install:                                                              			## inst
 	composer install
 
 coding-standard-fix:                                                            ## apply automated coding standard fixes
-	./vendor/bin/mago fix
+	./vendor/bin/mago lint --fix
 	./vendor/bin/mago fmt
 
 coding-standard-check:                                                          ## check coding-standard compliance
