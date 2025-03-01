@@ -45,4 +45,11 @@ final class SetTest extends AbstractSetTest
         static::assertTrue($set->contains('bar'));
         static::assertTrue($set->contains('baz'));
     }
+
+    public function testJsonSerialize(): void
+    {
+        $set = $this->createFromList(['foo', 'bar', 'baz', 'qux']);
+
+        static::assertEquals(['foo', 'bar', 'baz', 'qux'], $set->jsonSerialize());
+    }
 }

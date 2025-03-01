@@ -195,14 +195,14 @@ final readonly class Set implements SetInterface
     /**
      * Get an array copy of the current `Set`.
      *
-     * @return array<T, T>
+     * @return array<T>
      *
      * @psalm-mutation-free
      */
     #[\Override]
     public function jsonSerialize(): array
     {
-        return $this->elements;
+        return array_values($this->elements);
     }
 
     /**
