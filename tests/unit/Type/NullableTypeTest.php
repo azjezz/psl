@@ -8,11 +8,13 @@ use Psl\Type;
 
 final class NullableTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\nullable(Type\string());
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield ['hello', 'hello'];
@@ -27,6 +29,7 @@ final class NullableTypeTest extends TypeTest
         yield ['null', 'null'];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1.0];
@@ -39,6 +42,7 @@ final class NullableTypeTest extends TypeTest
         yield [STDIN];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), '?string'];

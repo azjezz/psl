@@ -17,11 +17,13 @@ use RuntimeException;
  */
 final class SetTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\set(Type\int());
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [
@@ -60,6 +62,7 @@ final class SetTypeTest extends TypeTest
         ];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1.0];
@@ -71,6 +74,7 @@ final class SetTypeTest extends TypeTest
         yield [STDIN];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'Psl\Collection\SetInterface<int>'];

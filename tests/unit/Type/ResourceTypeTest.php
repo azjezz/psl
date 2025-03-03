@@ -8,17 +8,20 @@ use Psl\Type;
 
 final class ResourceTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\resource('stream');
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [STDIN, STDIN];
         yield [STDOUT, STDOUT];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [null];
@@ -27,6 +30,7 @@ final class ResourceTypeTest extends TypeTest
         yield [__FILE__];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'resource (stream)'];

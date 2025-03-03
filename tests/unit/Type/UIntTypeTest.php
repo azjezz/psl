@@ -9,11 +9,13 @@ use Psl\Type;
 
 final class UIntTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\uint();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [123, 123];
@@ -32,6 +34,7 @@ final class UIntTypeTest extends TypeTest
         yield [1.0, 1];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1.23];
@@ -56,6 +59,7 @@ final class UIntTypeTest extends TypeTest
         yield [-321];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'uint'];

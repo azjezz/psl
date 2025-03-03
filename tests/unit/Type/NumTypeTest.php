@@ -9,11 +9,13 @@ use Psl\Type;
 
 final class NumTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\num();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [123, 123];
@@ -57,6 +59,7 @@ final class NumTypeTest extends TypeTest
         yield ['-33.e-1', -33.e-1];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield ['foo'];
@@ -76,6 +79,7 @@ final class NumTypeTest extends TypeTest
         yield [''];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'num'];

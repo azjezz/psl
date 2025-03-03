@@ -18,11 +18,13 @@ final class IntersectionTypeTest extends TypeTest
         static::assertSame(1, $intersection->coerce('1'));
     }
 
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\intersection(Type\int(), Type\array_key());
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [1, 1];
@@ -33,6 +35,7 @@ final class IntersectionTypeTest extends TypeTest
         yield [$this->stringable('0007'), 7];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [null];
@@ -43,6 +46,7 @@ final class IntersectionTypeTest extends TypeTest
         }];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [

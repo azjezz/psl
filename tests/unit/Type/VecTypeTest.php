@@ -17,6 +17,7 @@ use RuntimeException;
  */
 final class VecTypeTest extends TypeTest
 {
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [
@@ -70,6 +71,7 @@ final class VecTypeTest extends TypeTest
         ];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1.0];
@@ -81,6 +83,7 @@ final class VecTypeTest extends TypeTest
         yield [STDIN];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'vec<int>'];
@@ -91,6 +94,7 @@ final class VecTypeTest extends TypeTest
         ];
     }
 
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\vec(Type\int());

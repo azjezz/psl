@@ -13,6 +13,7 @@ use Psl\Type;
  */
 final class IntegerBackedEnumTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\backed_enum(IntegerEnum::class);
@@ -21,6 +22,7 @@ final class IntegerBackedEnumTypeTest extends TypeTest
     /**
      * @return iterable<array{0: mixed, 1: IntegerEnum}>
      */
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [IntegerEnum::Foo, IntegerEnum::Foo];
@@ -34,6 +36,7 @@ final class IntegerBackedEnumTypeTest extends TypeTest
     /**
      * @return iterable<array{0: mixed}>
      */
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [null];
@@ -47,6 +50,7 @@ final class IntegerBackedEnumTypeTest extends TypeTest
     /**
      * @return iterable<array{0: Type\Type<mixed>, 1: string}>
      */
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [Type\backed_enum(IntegerEnum::class), Str\format('backed-enum(%s)', IntegerEnum::class)];

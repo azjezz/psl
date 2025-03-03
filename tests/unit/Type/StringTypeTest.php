@@ -8,11 +8,13 @@ use Psl\Type;
 
 final class StringTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\string();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield ['hello', 'hello'];
@@ -25,6 +27,7 @@ final class StringTypeTest extends TypeTest
         yield [$this->stringable('123'), '123'];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1.0];
@@ -38,6 +41,7 @@ final class StringTypeTest extends TypeTest
         yield [STDIN];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'string'];

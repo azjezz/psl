@@ -17,11 +17,13 @@ use RuntimeException;
  */
 final class NonEmptyDictTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\non_empty_dict(Type\int(), Type\int());
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [
@@ -73,6 +75,7 @@ final class NonEmptyDictTypeTest extends TypeTest
         ];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [[]];
@@ -85,6 +88,7 @@ final class NonEmptyDictTypeTest extends TypeTest
         yield [STDIN];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'non-empty-dict<int, int>'];

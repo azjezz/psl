@@ -18,11 +18,13 @@ use RuntimeException;
  */
 final class MapTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\map(Type\int(), Type\int());
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [
@@ -56,6 +58,7 @@ final class MapTypeTest extends TypeTest
         ];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1.0];
@@ -67,6 +70,7 @@ final class MapTypeTest extends TypeTest
         yield [STDIN];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'Psl\Collection\MapInterface<int, int>'];

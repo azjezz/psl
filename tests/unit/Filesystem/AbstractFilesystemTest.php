@@ -18,6 +18,7 @@ abstract class AbstractFilesystemTest extends TestCase
     protected string $directory;
     private int $directoryPermissions;
 
+    #[\Override]
     protected function setUp(): void
     {
         if (OS\is_windows()) {
@@ -41,6 +42,7 @@ abstract class AbstractFilesystemTest extends TestCase
         static::assertTrue(Filesystem\is_directory($this->directory));
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         Filesystem\change_permissions($this->directory, $this->directoryPermissions);

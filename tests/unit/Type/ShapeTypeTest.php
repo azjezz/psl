@@ -16,6 +16,7 @@ use RuntimeException;
  */
 final class ShapeTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\shape([
@@ -43,6 +44,7 @@ final class ShapeTypeTest extends TypeTest
         ])));
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         foreach ($this->validCoercions() as $row) {
@@ -159,6 +161,7 @@ final class ShapeTypeTest extends TypeTest
         ];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1.0];
@@ -191,6 +194,7 @@ final class ShapeTypeTest extends TypeTest
         ]];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [

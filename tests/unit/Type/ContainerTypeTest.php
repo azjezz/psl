@@ -16,11 +16,13 @@ use RuntimeException;
  */
 final class ContainerTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\container(Type\int(), Type\int());
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]];
@@ -43,6 +45,7 @@ final class ContainerTypeTest extends TypeTest
         ];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1.0];
@@ -54,6 +57,7 @@ final class ContainerTypeTest extends TypeTest
         yield [STDIN];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'container<int, int>'];

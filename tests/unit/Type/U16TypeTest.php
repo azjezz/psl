@@ -9,11 +9,13 @@ use Psl\Type;
 
 final class U16TypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\u16();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [65535, 65535];
@@ -32,6 +34,7 @@ final class U16TypeTest extends TypeTest
         yield [$this->stringable((string) Math\UINT8_MAX), Math\UINT8_MAX];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [-123];
@@ -60,6 +63,7 @@ final class U16TypeTest extends TypeTest
         yield [Math\INT64_MAX];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'u16'];

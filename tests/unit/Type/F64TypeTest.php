@@ -9,11 +9,13 @@ use Psl\Type;
 
 final class F64TypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\f64();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [123, 123.0];
@@ -49,6 +51,7 @@ final class F64TypeTest extends TypeTest
         yield ['-33.e-1', -33.e-1];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [''];
@@ -69,6 +72,7 @@ final class F64TypeTest extends TypeTest
         yield [''];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'f64'];

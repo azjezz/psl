@@ -13,6 +13,7 @@ final class ConvertedTypeTest extends TypeTest
 {
     private const DATE_FORMAT = 'Y-m-d H:i:s';
 
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\converted(
@@ -27,6 +28,7 @@ final class ConvertedTypeTest extends TypeTest
         );
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield ['2023-04-27 08:28:00', DateTimeImmutable::createFromFormat(self::DATE_FORMAT, '2023-04-27 08:28:00')];
@@ -36,6 +38,7 @@ final class ConvertedTypeTest extends TypeTest
         ];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1];
@@ -65,6 +68,7 @@ final class ConvertedTypeTest extends TypeTest
         return parent::equals($a, $b);
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), DateTimeImmutable::class];

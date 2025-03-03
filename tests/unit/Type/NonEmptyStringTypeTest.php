@@ -14,11 +14,13 @@ final class NonEmptyStringTypeTest extends TypeTest
     /**
      * @return Type\Type<non-empty-string>
      */
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\non_empty_string();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield ['hello', 'hello'];
@@ -31,6 +33,7 @@ final class NonEmptyStringTypeTest extends TypeTest
         yield [$this->stringable('123'), '123'];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [''];
@@ -45,6 +48,7 @@ final class NonEmptyStringTypeTest extends TypeTest
         yield [STDIN];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'non-empty-string'];

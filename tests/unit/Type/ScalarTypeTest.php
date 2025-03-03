@@ -9,11 +9,13 @@ use Psl\Type;
 
 final class ScalarTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\scalar();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [123, 123];
@@ -48,6 +50,7 @@ final class ScalarTypeTest extends TypeTest
         yield [true, true];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [null];
@@ -58,6 +61,7 @@ final class ScalarTypeTest extends TypeTest
         yield [(static fn(): iterable => yield 'hello')()];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'scalar'];

@@ -16,11 +16,13 @@ use stdClass;
 
 final class MixedDictTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\mixed_dict();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [
@@ -71,6 +73,7 @@ final class MixedDictTypeTest extends TypeTest
         yield 'asdf' => 'key';
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1];
@@ -80,6 +83,7 @@ final class MixedDictTypeTest extends TypeTest
         yield [null];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'dict<array-key, mixed>'];

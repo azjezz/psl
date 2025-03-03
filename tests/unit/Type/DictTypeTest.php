@@ -17,11 +17,13 @@ use RuntimeException;
  */
 final class DictTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\dict(Type\int(), Type\int());
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [
@@ -73,6 +75,7 @@ final class DictTypeTest extends TypeTest
         ];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1.0];
@@ -84,6 +87,7 @@ final class DictTypeTest extends TypeTest
         yield [STDIN];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'dict<int, int>'];

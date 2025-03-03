@@ -10,11 +10,13 @@ use Psl\Type;
 
 final class UnionTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\union(Type\int(), Type\bool());
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [1, 1];
@@ -25,6 +27,7 @@ final class UnionTypeTest extends TypeTest
         yield [$this->stringable('123'), 123];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [null];
@@ -35,6 +38,7 @@ final class UnionTypeTest extends TypeTest
         }];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [Type\union(Type\bool(), Type\string()), 'bool|string'];

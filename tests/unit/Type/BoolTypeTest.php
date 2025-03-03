@@ -8,11 +8,13 @@ use Psl\Type;
 
 final class BoolTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\bool();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [false, false];
@@ -23,6 +25,7 @@ final class BoolTypeTest extends TypeTest
         yield ['1', true];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [null];
@@ -32,6 +35,7 @@ final class BoolTypeTest extends TypeTest
         yield [Type\bool()];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'bool'];

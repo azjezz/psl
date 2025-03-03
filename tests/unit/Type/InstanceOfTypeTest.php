@@ -10,11 +10,13 @@ use Psl\Type;
 
 final class InstanceOfTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\instance_of(Collection\CollectionInterface::class);
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [$_ = new Collection\Vector([1, 2]), $_];
@@ -24,6 +26,7 @@ final class InstanceOfTypeTest extends TypeTest
         yield [$_ = $this->createStub(CollectionInterface::class), $_];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [null];
@@ -34,6 +37,7 @@ final class InstanceOfTypeTest extends TypeTest
         }];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [Type\instance_of(Collection\MapInterface::class), Collection\MapInterface::class];
