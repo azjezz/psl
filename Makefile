@@ -5,12 +5,12 @@ install:                                                              			## inst
 	composer install
 
 coding-standard-fix:                                                            ## apply automated coding standard fixes
-	./vendor/bin/mago lint --fix
-	./vendor/bin/mago fmt
+	./vendor/bin/mago --config config/mago.toml lint --fix
+	./vendor/bin/mago --config config/mago.toml fmt
 
 coding-standard-check:                                                          ## check coding-standard compliance
-	./vendor/bin/mago lint
-	./vendor/bin/mago fmt --dry-run
+	./vendor/bin/mago --config config/mago.toml lint
+	./vendor/bin/mago --config config/mago.toml fmt --dry-run
 
 benchmarks:                                                                     ## run benchmarks
 	./vendor/bin/phpbench run --config config/phpbench.json
