@@ -22,9 +22,9 @@ compare-benchmark-to-reference:                                                 
 	./vendor/bin/phpbench run --config config/phpbench.json --ref=benchmark_reference
 
 static-analysis:                                                                ## run static analysis checks
-	./vendor/bin/psalm -c config/psalm.xml --show-info=true
-	./vendor/bin/psalm -c config/psalm.xml tests/static-analysis
-	./vendor/bin/mago lint -n -p analysis
+	./vendor/bin/psalm -c config/psalm.xml --show-info=true --no-cache
+	./vendor/bin/psalm -c config/psalm.xml tests/static-analysis --no-cache
+	./vendor/bin/mago --config config/mago.toml lint -n -p analysis
 
 type-coverage:                                                                  ## send static analysis type coverage metrics to https://shepherd.dev/
 	./vendor/bin/psalm -c config/psalm.xml --shepherd --stats --threads=1
