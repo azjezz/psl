@@ -21,7 +21,7 @@ use function Psl\DateTime\Internal\create_intl_date_formatter;
 use function time;
 
 /**
- * @mago-ignore php-unit/strict-assertions
+ * @mago-expect php-unit/strict-assertions
  */
 final class DateTimeTest extends TestCase
 {

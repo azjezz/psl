@@ -25,7 +25,7 @@ use function grapheme_strripos;
  *
  * @return null|int<0, max>
  *
- * @mago-ignore best-practices/no-boolean-literal-comparison
+ * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function search_last_ci(string $haystack, string $needle, int $offset = 0): null|int
 {

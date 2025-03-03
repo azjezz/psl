@@ -22,7 +22,7 @@ use function count;
  * @template Tin
  * @template Tout
  *
- * @mago-ignore best-practices/no-else-clause
+ * @mago-expect best-practices/no-else-clause
  */
 final class Semaphore
 {

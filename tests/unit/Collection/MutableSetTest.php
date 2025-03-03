@@ -165,7 +165,7 @@ final class MutableSetTest extends AbstractSetTest
     {
         $set = $this->createFromList(['foo', 'bar', 'baz', 'qux']);
 
-        static::assertEquals(['foo', 'bar', 'baz', 'qux'], $set->jsonSerialize());
+        static::assertSame(['foo', 'bar', 'baz', 'qux'], $set->jsonSerialize());
     }
 
     /**

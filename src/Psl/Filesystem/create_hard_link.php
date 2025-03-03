@@ -20,8 +20,8 @@ use function link;
  * @throws Exception\NotFileException If $source is not a file.
  * @throws Exception\NotReadableException If $destination is a non-empty directory, and is non-readable {@see delete_directory()}.
  *
- * @mago-ignore best-practices/no-boolean-literal-comparison
- * @mago-ignore best-practices/no-else-clause
+ * @mago-expect best-practices/no-boolean-literal-comparison
+ * @mago-expect best-practices/no-else-clause
  */
 function create_hard_link(string $source, string $destination): void
 {

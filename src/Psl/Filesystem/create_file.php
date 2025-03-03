@@ -21,8 +21,8 @@ use function touch;
  *
  * @throws Exception\RuntimeException If unable to create the file.
  *
- * @mago-ignore best-practices/no-boolean-literal-comparison
- * @mago-ignore best-practices/no-else-clause
+ * @mago-expect best-practices/no-boolean-literal-comparison
+ * @mago-expect best-practices/no-else-clause
  */
 function create_file(string $filename, null|int $time = null, null|int $access_time = null): void
 {

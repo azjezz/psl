@@ -10,7 +10,7 @@ use Psl\Collection\MutableVector;
 use Psl\Iter;
 
 /**
- * @mago-ignore best-practices/loop-does-not-iterate
+ * @mago-expect best-practices/loop-does-not-iterate
  */
 final class IteratorTest extends TestCase
 {

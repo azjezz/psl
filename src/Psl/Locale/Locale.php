@@ -904,7 +904,12 @@ enum Locale: string
      */
     public function getScript(): null|string
     {
-        return NativeLocale::getScript($this->value) ?: null;
+        $script = NativeLocale::getScript($this->value);
+        if (!$script) {
+            return null;
+        }
+
+        return $script;
     }
 
     /**
@@ -930,7 +935,12 @@ enum Locale: string
      */
     public function getDisplayRegion(null|Locale $locale = null): null|string
     {
-        return NativeLocale::getDisplayRegion($this->value, $locale?->value ?? $this->value) ?: null;
+        $displayRegion = NativeLocale::getDisplayRegion($this->value, $locale?->value ?? $this->value);
+        if (!$displayRegion) {
+            return null;
+        }
+
+        return $displayRegion;
     }
 
     /**
@@ -943,6 +953,11 @@ enum Locale: string
      */
     public function getRegion(): null|string
     {
-        return NativeLocale::getRegion($this->value) ?: null;
+        $region = NativeLocale::getRegion($this->value);
+        if (!$region) {
+            return null;
+        }
+
+        return $region;
     }
 }

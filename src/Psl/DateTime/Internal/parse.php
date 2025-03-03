@@ -19,7 +19,7 @@ use Psl\Str;
  *
  * @throws ParserException
  *
- * @mago-ignore best-practices/no-boolean-literal-comparison
+ * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function parse(
     string $raw_string,

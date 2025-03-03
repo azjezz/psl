@@ -16,7 +16,7 @@ use function mb_detect_encoding;
  *
  * @pure
  *
- * @mago-ignore best-practices/no-boolean-literal-comparison
+ * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function detect_encoding(string $string, null|array $encoding_list = null): null|Encoding
 {

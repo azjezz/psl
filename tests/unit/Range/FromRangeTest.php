@@ -9,8 +9,8 @@ use Psl\Math;
 use Psl\Range;
 
 /**
- * @mago-ignore best-practices/no-empty-loop
- * @mago-ignore best-practices/no-else-clause
+ * @mago-expect best-practices/no-empty-loop
+ * @mago-expect best-practices/no-else-clause
  */
 final class FromRangeTest extends TestCase
 {

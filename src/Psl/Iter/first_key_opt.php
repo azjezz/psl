@@ -17,7 +17,7 @@ use Psl\Option\Option;
  *
  * @return Option<Tk>
  *
- * @mago-ignore best-practices/loop-does-not-iterate
+ * @mago-expect best-practices/loop-does-not-iterate
  */
 function first_key_opt(iterable $iterable): Option
 {

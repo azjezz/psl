@@ -19,7 +19,7 @@ use Psl\Str;
  *
  * @return int<0, max>
  *
- * @mago-ignore best-practices/no-boolean-literal-comparison
+ * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function file_size(string $file): int
 {

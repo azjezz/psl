@@ -38,7 +38,7 @@ use function substr;
  *
  * @codeCoverageIgnore
  *
- * @mago-ignore best-practices/no-else-clause
+ * @mago-expect best-practices/no-else-clause
  */
 class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
 {
@@ -224,7 +224,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      *
-     * @mago-ignore best-practices/no-boolean-literal-comparison
+     * @mago-expect best-practices/no-boolean-literal-comparison
      */
     #[\Override]
     public function tryWrite(string $bytes): int
@@ -262,7 +262,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      *
-     * @mago-ignore best-practices/no-boolean-literal-comparison
+     * @mago-expect best-practices/no-boolean-literal-comparison
      */
     #[\Override]
     public function tell(): int
@@ -312,7 +312,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      *
-     * @mago-ignore best-practices/no-boolean-literal-comparison
+     * @mago-expect best-practices/no-boolean-literal-comparison
      */
     #[\Override]
     public function tryRead(null|int $max_bytes = null): string
@@ -365,7 +365,7 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     /**
      * {@inheritDoc}
      *
-     * @mago-ignore best-practices/no-boolean-literal-comparison
+     * @mago-expect best-practices/no-boolean-literal-comparison
      */
     #[\Override]
     public function close(): void

@@ -24,7 +24,7 @@ use function count;
  *
  * @see KeyedSemaphore
  *
- * @mago-ignore best-practices/no-else-clause
+ * @mago-expect best-practices/no-else-clause
  */
 final class KeyedSequence
 {

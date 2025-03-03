@@ -19,7 +19,7 @@ use const PHP_OS_FAMILY;
 require __DIR__ . '/../../vendor/autoload.php';
 
 /**
- * @mago-ignore best-practices/no-empty-catch-clause
+ * @mago-expect best-practices/no-empty-catch-clause
  */
 Async\main(static function (): int {
     if (PHP_OS_FAMILY === 'Windows') {

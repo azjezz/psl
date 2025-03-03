@@ -14,7 +14,7 @@ namespace Psl\Iter;
  *
  * @return Tk|null
  *
- * @mago-ignore best-practices/loop-does-not-iterate
+ * @mago-expect best-practices/loop-does-not-iterate
  */
 function first_key(iterable $iterable): mixed
 {

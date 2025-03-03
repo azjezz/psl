@@ -21,7 +21,7 @@ use const STREAM_SOCK_STREAM;
  *
  * @return array{0: CloseReadStreamHandleInterface, 1: CloseWriteStreamHandleInterface}
  *
- * @mago-ignore best-practices/no-boolean-literal-comparison
+ * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function pipe(): array
 {

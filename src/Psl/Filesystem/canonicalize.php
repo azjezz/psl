@@ -12,7 +12,7 @@ use function realpath;
  *
  * @return non-empty-string|null
  *
- * @mago-ignore best-practices/no-boolean-literal-comparison
+ * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function canonicalize(string $path): null|string
 {

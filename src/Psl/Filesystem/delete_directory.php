@@ -20,8 +20,8 @@ use function rmdir;
  * @throws Exception\NotDirectoryException If $directory is not a directory.
  * @throws Exception\NotReadableException If $recursive is true, and $directory is not readable.
  *
- * @mago-ignore best-practices/no-boolean-literal-comparison
- * @mago-ignore best-practices/no-else-clause
+ * @mago-expect best-practices/no-boolean-literal-comparison
+ * @mago-expect best-practices/no-else-clause
  */
 function delete_directory(string $directory, bool $recursive = false): void
 {

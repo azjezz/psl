@@ -45,7 +45,7 @@ readonly class UnionType extends Type\Type
      *
      * @return Tl|Tr
      *
-     * @mago-ignore best-practices/no-empty-catch-clause
+     * @mago-expect best-practices/no-empty-catch-clause
      */
     #[\Override]
     public function coerce(mixed $value): mixed
@@ -78,7 +78,7 @@ readonly class UnionType extends Type\Type
      *
      * @psalm-assert Tl|Tr $value
      *
-     * @mago-ignore best-practices/no-empty-catch-clause
+     * @mago-expect best-practices/no-empty-catch-clause
      */
     #[\Override]
     public function assert(mixed $value): mixed
