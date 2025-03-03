@@ -161,6 +161,7 @@ final class MutableSetTest extends AbstractSetTest
         static::assertTrue($set->contains('baz'));
     }
 
+    #[\Override]
     public function testJsonSerialize(): void
     {
         $set = $this->createFromList(['foo', 'bar', 'baz', 'qux']);
@@ -175,6 +176,7 @@ final class MutableSetTest extends AbstractSetTest
      *
      * @return MutableSet<T>
      */
+    #[\Override]
     protected function createFromList(array $items): MutableSet
     {
         return MutableSet::fromArray($items);

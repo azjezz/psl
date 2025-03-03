@@ -12,11 +12,13 @@ use Psl\Type;
  */
 final class PositiveIntTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\positive_int();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [123, 123];
@@ -32,6 +34,7 @@ final class PositiveIntTypeTest extends TypeTest
         yield [1.0, 1];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [0];
@@ -62,6 +65,7 @@ final class PositiveIntTypeTest extends TypeTest
         yield [''];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'positive-int'];

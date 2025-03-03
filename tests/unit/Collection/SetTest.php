@@ -31,6 +31,7 @@ final class SetTest extends AbstractSetTest
      *
      * @return Set<T>
      */
+    #[\Override]
     protected function createFromList(array $items): Set
     {
         return Set::fromArray($items);
@@ -46,6 +47,7 @@ final class SetTest extends AbstractSetTest
         static::assertTrue($set->contains('baz'));
     }
 
+    #[\Override]
     public function testJsonSerialize(): void
     {
         $set = $this->createFromList(['foo', 'bar', 'baz', 'qux']);

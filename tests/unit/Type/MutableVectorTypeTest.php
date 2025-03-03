@@ -18,11 +18,13 @@ use RuntimeException;
  */
 final class MutableVectorTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\mutable_vector(Type\int());
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [
@@ -66,6 +68,7 @@ final class MutableVectorTypeTest extends TypeTest
         ];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1.0];
@@ -77,6 +80,7 @@ final class MutableVectorTypeTest extends TypeTest
         yield [STDIN];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'Psl\Collection\MutableVectorInterface<int>'];

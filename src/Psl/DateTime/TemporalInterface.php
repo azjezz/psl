@@ -322,6 +322,7 @@ interface TemporalInterface extends Comparable, Equable, JsonSerializable, Strin
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function __toString(): string;
 
     /**

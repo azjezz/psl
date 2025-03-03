@@ -8,11 +8,13 @@ use Psl\Type;
 
 final class LiteralScalarIntTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\literal_scalar(5);
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield ['5', 5];
@@ -20,6 +22,7 @@ final class LiteralScalarIntTypeTest extends TypeTest
         yield [5.0, 5];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [null];
@@ -30,6 +33,7 @@ final class LiteralScalarIntTypeTest extends TypeTest
         yield [Type\bool()];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), '5'];

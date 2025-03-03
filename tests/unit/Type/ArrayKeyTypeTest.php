@@ -8,11 +8,13 @@ use Psl\Type;
 
 final class ArrayKeyTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\array_key();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [123, 123];
@@ -24,6 +26,7 @@ final class ArrayKeyTypeTest extends TypeTest
         yield [1.0, 1];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1.23];
@@ -36,6 +39,7 @@ final class ArrayKeyTypeTest extends TypeTest
         yield [STDIN];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'array-key'];

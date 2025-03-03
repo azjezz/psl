@@ -25,7 +25,7 @@ jobs:
           make install -j10 -O
 
       - name: "formatting"
-        run: ./vendor/bin/mago fmt --dry-run
+        run: ./vendor/bin/mago --config config/mago.toml fmt --dry-run
 
       - name: "linting"
-        run: ./vendor/bin/mago lint --reporting-format=github
+        run: ./vendor/bin/mago --config config/mago.toml lint --reporting-format=github

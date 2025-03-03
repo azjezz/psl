@@ -9,11 +9,13 @@ use Psl\Type;
 
 final class F32TypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\f32();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [123, 123.0];
@@ -41,6 +43,7 @@ final class F32TypeTest extends TypeTest
         yield ['-0.7e2', -0.7e2];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [''];
@@ -63,6 +66,7 @@ final class F32TypeTest extends TypeTest
         yield [Math\FLOAT64_MAX];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'f32'];

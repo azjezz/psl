@@ -9,11 +9,13 @@ use Psl\Type;
 
 final class I32TypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\i32();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [123, 123];
@@ -36,6 +38,7 @@ final class I32TypeTest extends TypeTest
         yield [$this->stringable((string) Math\INT32_MAX), Math\INT32_MAX];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1.23];
@@ -60,6 +63,7 @@ final class I32TypeTest extends TypeTest
         yield [Math\INT64_MAX];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'i32'];

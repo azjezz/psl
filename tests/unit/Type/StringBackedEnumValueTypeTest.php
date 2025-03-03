@@ -15,11 +15,13 @@ use const STDIN;
  */
 final class StringBackedEnumValueTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\backed_enum_value(StringEnum::class);
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [1, StringEnum::Bar->value];
@@ -31,6 +33,7 @@ final class StringBackedEnumValueTypeTest extends TypeTest
     /**
      * @return iterable<array{0: mixed}>
      */
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [null];
@@ -44,6 +47,7 @@ final class StringBackedEnumValueTypeTest extends TypeTest
     /**
      * @return iterable<array{0: Type\Type<value-of<StringEnum>>, 1: string}>
      */
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [Type\backed_enum_value(StringEnum::class), Str\format('value-of<%s>', StringEnum::class)];

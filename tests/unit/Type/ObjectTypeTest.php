@@ -10,11 +10,13 @@ use Psl\Type;
 
 final class ObjectTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\object();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [$_ = new Collection\Vector([1, 2]), $_];
@@ -29,6 +31,7 @@ final class ObjectTypeTest extends TypeTest
         ];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [null];
@@ -36,6 +39,7 @@ final class ObjectTypeTest extends TypeTest
         yield ['hello'];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [Type\object(), 'object'];

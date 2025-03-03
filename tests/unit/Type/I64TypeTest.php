@@ -9,11 +9,13 @@ use Psl\Type;
 
 final class I64TypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\i64();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [123, 123];
@@ -39,6 +41,7 @@ final class I64TypeTest extends TypeTest
         yield [Math\INT64_MAX, Math\INT64_MAX];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1.23];
@@ -60,6 +63,7 @@ final class I64TypeTest extends TypeTest
         yield [''];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'i64'];

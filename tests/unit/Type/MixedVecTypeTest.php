@@ -12,11 +12,13 @@ use Psl\Vec;
 
 final class MixedVecTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\mixed_vec();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [
@@ -74,6 +76,7 @@ final class MixedVecTypeTest extends TypeTest
         ];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1.0];
@@ -85,6 +88,7 @@ final class MixedVecTypeTest extends TypeTest
         yield [STDIN];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'vec<mixed>'];

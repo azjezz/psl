@@ -5,12 +5,12 @@ install:                                                              			## inst
 	composer install
 
 coding-standard-fix:                                                            ## apply automated coding standard fixes
-	./vendor/bin/mago lint --fix
-	./vendor/bin/mago fmt
+	./vendor/bin/mago --config config/mago.toml lint --fix
+	./vendor/bin/mago --config config/mago.toml fmt
 
 coding-standard-check:                                                          ## check coding-standard compliance
-	./vendor/bin/mago lint
-	./vendor/bin/mago fmt --dry-run
+	./vendor/bin/mago --config config/mago.toml lint
+	./vendor/bin/mago --config config/mago.toml fmt --dry-run
 
 benchmarks:                                                                     ## run benchmarks
 	./vendor/bin/phpbench run --config config/phpbench.json
@@ -22,9 +22,9 @@ compare-benchmark-to-reference:                                                 
 	./vendor/bin/phpbench run --config config/phpbench.json --ref=benchmark_reference
 
 static-analysis:                                                                ## run static analysis checks
-	./vendor/bin/psalm -c config/psalm.xml --show-info=true
-	./vendor/bin/psalm -c config/psalm.xml tests/static-analysis
-	./vendor/bin/mago lint -n -p analysis
+	./vendor/bin/psalm -c config/psalm.xml --show-info=true --no-cache
+	./vendor/bin/psalm -c config/psalm.xml tests/static-analysis --no-cache
+	./vendor/bin/mago --config config/mago.toml lint -n -p analysis
 
 type-coverage:                                                                  ## send static analysis type coverage metrics to https://shepherd.dev/
 	./vendor/bin/psalm -c config/psalm.xml --shepherd --stats --threads=1

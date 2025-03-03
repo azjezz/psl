@@ -9,11 +9,13 @@ use Psl\Type;
 
 final class ClassStringTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\class_string(Collection\CollectionInterface::class);
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [$_ = Collection\Vector::class, $_];
@@ -24,6 +26,7 @@ final class ClassStringTypeTest extends TypeTest
         yield [$_ = Collection\CollectionInterface::class, $_];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [null];
@@ -34,6 +37,7 @@ final class ClassStringTypeTest extends TypeTest
         }];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [Type\class_string(Collection\MapInterface::class), 'class-string<Psl\Collection\MapInterface>'];

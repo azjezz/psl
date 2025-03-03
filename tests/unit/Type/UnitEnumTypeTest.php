@@ -13,6 +13,7 @@ use Psl\Type;
  */
 final class UnitEnumTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\unit_enum(UnitEnum::class);
@@ -21,6 +22,7 @@ final class UnitEnumTypeTest extends TypeTest
     /**
      * @return iterable<array{0: mixed, 1: UnitEnum}>
      */
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [UnitEnum::Foo, UnitEnum::Foo];
@@ -31,6 +33,7 @@ final class UnitEnumTypeTest extends TypeTest
     /**
      * @return iterable<array{0: mixed}>
      */
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         // NOTE(azjezz): should we allow coercion of unit enums from case names?
@@ -52,6 +55,7 @@ final class UnitEnumTypeTest extends TypeTest
     /**
      * @return iterable<array{0: Type\Type<mixed>, 1: string}>
      */
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [Type\unit_enum(UnitEnum::class), Str\format('unit-enum(%s)', UnitEnum::class)];

@@ -14,11 +14,13 @@ final class NumericStringTypeTest extends TypeTest
     /**
      * @return Type\Type<numeric-string>
      */
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\numeric_string();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [123, '123'];
@@ -31,6 +33,7 @@ final class NumericStringTypeTest extends TypeTest
         yield [$this->stringable('123'), '123'];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [''];
@@ -45,6 +48,7 @@ final class NumericStringTypeTest extends TypeTest
         yield [STDIN];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'numeric-string'];

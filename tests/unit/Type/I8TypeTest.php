@@ -9,11 +9,13 @@ use Psl\Type;
 
 final class I8TypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\i8();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [123, 123];
@@ -29,6 +31,7 @@ final class I8TypeTest extends TypeTest
         yield [1.0, 1];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1.23];
@@ -57,6 +60,7 @@ final class I8TypeTest extends TypeTest
         yield [Math\INT64_MAX];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'i8'];

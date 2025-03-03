@@ -9,11 +9,13 @@ use Psl\Type;
 
 final class FloatTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\float();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [123, 123.0];
@@ -45,6 +47,7 @@ final class FloatTypeTest extends TypeTest
         yield ['-33.e-1', -33.e-1];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [''];
@@ -65,6 +68,7 @@ final class FloatTypeTest extends TypeTest
         yield [''];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'float'];

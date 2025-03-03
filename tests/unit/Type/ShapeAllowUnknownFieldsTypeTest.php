@@ -13,6 +13,7 @@ use Psl\Type;
  */
 final class ShapeAllowUnknownFieldsTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\shape([
@@ -29,6 +30,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTest
         ], true);
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [
@@ -111,6 +113,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTest
         ];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1.0];
@@ -137,6 +140,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTest
         ]];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [

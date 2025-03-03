@@ -9,11 +9,13 @@ use Psl\Type;
 
 final class MixedTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\mixed();
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [123, 123];
@@ -56,11 +58,13 @@ final class MixedTypeTest extends TypeTest
         yield [STDIN, STDIN];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [null];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'mixed'];
@@ -69,6 +73,7 @@ final class MixedTypeTest extends TypeTest
     /**
      * @dataProvider getInvalidValues
      */
+    #[\Override]
     public function testInvalidAssertion($value): void
     {
         $this->addToAssertionCount(1);
@@ -77,6 +82,7 @@ final class MixedTypeTest extends TypeTest
     /**
      * @dataProvider getInvalidCoercions
      */
+    #[\Override]
     public function testInvalidCoercion($value): void
     {
         $this->addToAssertionCount(1);
@@ -87,6 +93,7 @@ final class MixedTypeTest extends TypeTest
      *
      * @dataProvider getInvalidValues
      */
+    #[\Override]
     public function testInvalidMatches($value): void
     {
         $this->addToAssertionCount(1);

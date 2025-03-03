@@ -544,6 +544,7 @@ interface DateTimeInterface extends TemporalInterface
      *
      * @psalm-mutation-free
      */
+    #[\Override]
     public function __toString(): string;
 
     /**

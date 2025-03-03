@@ -17,11 +17,13 @@ use RuntimeException;
  */
 final class MutableSetTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\mutable_set(Type\int());
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [
@@ -65,6 +67,7 @@ final class MutableSetTypeTest extends TypeTest
         ];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1.0];
@@ -76,6 +79,7 @@ final class MutableSetTypeTest extends TypeTest
         yield [STDIN];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [$this->getType(), 'Psl\Collection\MutableSetInterface<int>'];
