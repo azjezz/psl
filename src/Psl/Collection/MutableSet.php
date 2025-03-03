@@ -12,6 +12,7 @@ use Psl\Vec;
 use function array_key_exists;
 use function array_key_first;
 use function array_key_last;
+use function array_values;
 use function count;
 
 /**
