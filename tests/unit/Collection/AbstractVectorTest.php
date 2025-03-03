@@ -179,15 +179,12 @@ abstract class AbstractVectorTest extends TestCase
         $mapped = $vector->map(static fn(string $item): string => Str\uppercase($item));
 
         static::assertInstanceOf($this->vectorClass, $mapped);
-        static::assertSame(
-            [
-                'FOO',
-                'BAR',
-                'BAZ',
-                'QUX',
-            ],
-            $mapped->toArray(),
-        );
+        static::assertSame([
+            'FOO',
+            'BAR',
+            'BAZ',
+            'QUX',
+        ], $mapped->toArray());
         static::assertNotSame($vector, $mapped);
         static::assertCount(4, $mapped);
 
@@ -218,15 +215,12 @@ abstract class AbstractVectorTest extends TestCase
         $mapped = $vector->mapWithKey(static fn(int $k, string $v): string => Str\format('%s ( %d )', $v, $k));
 
         static::assertInstanceOf($this->vectorClass, $mapped);
-        static::assertSame(
-            [
-                'foo ( 0 )',
-                'bar ( 1 )',
-                'baz ( 2 )',
-                'qux ( 3 )',
-            ],
-            $mapped->toArray(),
-        );
+        static::assertSame([
+            'foo ( 0 )',
+            'bar ( 1 )',
+            'baz ( 2 )',
+            'qux ( 3 )',
+        ], $mapped->toArray());
         static::assertNotSame($vector, $mapped);
         static::assertCount(4, $mapped);
 
@@ -505,15 +499,12 @@ abstract class AbstractVectorTest extends TestCase
         static::assertInstanceOf($this->vectorClass, $slice1);
         static::assertNotSame($slice2, $vector);
         static::assertCount(4, $slice2);
-        static::assertSame(
-            [
-                'bar',
-                'bar',
-                'baz',
-                'baz',
-            ],
-            $slice2->toArray(),
-        );
+        static::assertSame([
+            'bar',
+            'bar',
+            'baz',
+            'baz',
+        ], $slice2->toArray());
     }
 
     public function testAt(): void

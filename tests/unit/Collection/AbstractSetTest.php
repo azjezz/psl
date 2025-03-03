@@ -174,15 +174,12 @@ abstract class AbstractSetTest extends TestCase
         $mapped = $set->map(static fn(string $item): string => Str\uppercase($item));
 
         static::assertInstanceOf($this->setClass, $mapped);
-        static::assertSame(
-            [
-                'FOO' => 'FOO',
-                'BAR' => 'BAR',
-                'BAZ' => 'BAZ',
-                'QUX' => 'QUX',
-            ],
-            $mapped->toArray(),
-        );
+        static::assertSame([
+            'FOO' => 'FOO',
+            'BAR' => 'BAR',
+            'BAZ' => 'BAZ',
+            'QUX' => 'QUX',
+        ], $mapped->toArray());
         static::assertNotSame($set, $mapped);
         static::assertCount(4, $mapped);
 
@@ -212,15 +209,12 @@ abstract class AbstractSetTest extends TestCase
         $mapped = $set->mapWithKey(static fn(string $item): string => Str\uppercase($item));
 
         static::assertInstanceOf($this->setClass, $mapped);
-        static::assertSame(
-            [
-                'FOO' => 'FOO',
-                'BAR' => 'BAR',
-                'BAZ' => 'BAZ',
-                'QUX' => 'QUX',
-            ],
-            $mapped->toArray(),
-        );
+        static::assertSame([
+            'FOO' => 'FOO',
+            'BAR' => 'BAR',
+            'BAZ' => 'BAZ',
+            'QUX' => 'QUX',
+        ], $mapped->toArray());
         static::assertNotSame($set, $mapped);
         static::assertCount(4, $mapped);
 
@@ -461,15 +455,12 @@ abstract class AbstractSetTest extends TestCase
         static::assertInstanceOf($this->setClass, $slice1);
         static::assertNotSame($slice2, $vector);
         static::assertCount(4, $slice2);
-        static::assertSame(
-            [
-                'baz' => 'baz',
-                'qux' => 'qux',
-                'hax' => 'hax',
-                'dax' => 'dax',
-            ],
-            $slice2->toArray(),
-        );
+        static::assertSame([
+            'baz' => 'baz',
+            'qux' => 'qux',
+            'hax' => 'hax',
+            'dax' => 'dax',
+        ], $slice2->toArray());
     }
 
     public function testAt(): void

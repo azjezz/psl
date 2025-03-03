@@ -15,21 +15,18 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTest
 {
     public function getType(): Type\TypeInterface
     {
-        return Type\shape(
-            [
-                'name' => Type\string(),
-                'articles' => Type\vec(Type\shape([
-                    'title' => Type\string(),
-                    'content' => Type\string(),
-                    'likes' => Type\int(),
-                    'comments' => Type\optional(Type\vec(Type\shape([
-                        'user' => Type\string(),
-                        'comment' => Type\string(),
-                    ]))),
-                ])),
-            ],
-            true,
-        );
+        return Type\shape([
+            'name' => Type\string(),
+            'articles' => Type\vec(Type\shape([
+                'title' => Type\string(),
+                'content' => Type\string(),
+                'likes' => Type\int(),
+                'comments' => Type\optional(Type\vec(Type\shape([
+                    'user' => Type\string(),
+                    'comment' => Type\string(),
+                ]))),
+            ])),
+        ], true);
     }
 
     public function getValidCoercions(): iterable

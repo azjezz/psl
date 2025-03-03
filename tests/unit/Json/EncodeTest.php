@@ -22,16 +22,13 @@ final class EncodeTest extends TestCase
 
     public function testPrettyEncode(): void
     {
-        $actual = Json\encode(
-            [
-                'name' => 'azjezz/psl',
-                'type' => 'library',
-                'description' => 'PHP Standard Library.',
-                'keywords' => ['php', 'std', 'stdlib', 'utility', 'psl'],
-                'license' => 'MIT',
-            ],
-            true,
-        );
+        $actual = Json\encode([
+            'name' => 'azjezz/psl',
+            'type' => 'library',
+            'description' => 'PHP Standard Library.',
+            'keywords' => ['php', 'std', 'stdlib', 'utility', 'psl'],
+            'license' => 'MIT',
+        ], true);
 
         $json = Str\replace(<<<JSON
             {

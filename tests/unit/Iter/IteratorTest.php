@@ -154,26 +154,23 @@ final class IteratorTest extends TestCase
          *  - The iterator is capable of rewinding a generator.
          *  - The generator is not exhausted immediately on construction.
          */
-        static::assertSame(
-            [
-                'generator (0)',
-                'foreach (0)',
-                'generator (1)',
-                'foreach (1)',
-                'generator (2)',
-                'foreach (2)',
-                'foreach (0)',
-                'foreach (1)',
-                'foreach (2)',
-                'foreach (0)',
-                'foreach (1)',
-                'foreach (2)',
-                'while (0)',
-                'while (1)',
-                'while (2)',
-            ],
-            $spy->toArray(),
-        );
+        static::assertSame([
+            'generator (0)',
+            'foreach (0)',
+            'generator (1)',
+            'foreach (1)',
+            'generator (2)',
+            'foreach (2)',
+            'foreach (0)',
+            'foreach (1)',
+            'foreach (2)',
+            'foreach (0)',
+            'foreach (1)',
+            'foreach (2)',
+            'while (0)',
+            'while (1)',
+            'while (2)',
+        ], $spy->toArray());
     }
 
     public function testCountWhileIterating(): void
@@ -196,20 +193,17 @@ final class IteratorTest extends TestCase
             static::assertSame(['foo', 'bar'], $key);
         }
 
-        static::assertSame(
-            [
-                'sending (0)',
-                'sending (1)',
-                'sending (2)',
-                'count (3)',
-                'received (0)',
-                'count (3)',
-                'received (1)',
-                'count (3)',
-                'received (2)',
-            ],
-            $spy->toArray(),
-        );
+        static::assertSame([
+            'sending (0)',
+            'sending (1)',
+            'sending (2)',
+            'count (3)',
+            'received (0)',
+            'count (3)',
+            'received (1)',
+            'count (3)',
+            'received (2)',
+        ], $spy->toArray());
     }
 
     public function testRewindingValidGenerator(): void
@@ -244,19 +238,16 @@ final class IteratorTest extends TestCase
             $spy->add('for (' . $rewindable->current() . ')');
         }
 
-        static::assertSame(
-            [
-                'generator (0)',
-                'foreach (0)',
-                'do while (0)',
-                'while (0)',
-                'for (0)',
-                'generator (1)',
-                'for (1)',
-                'generator (2)',
-                'for (2)',
-            ],
-            $spy->toArray(),
-        );
+        static::assertSame([
+            'generator (0)',
+            'foreach (0)',
+            'do while (0)',
+            'while (0)',
+            'for (0)',
+            'generator (1)',
+            'for (1)',
+            'generator (2)',
+            'for (2)',
+        ], $spy->toArray());
     }
 }

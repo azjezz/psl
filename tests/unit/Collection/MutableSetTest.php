@@ -29,11 +29,7 @@ final class MutableSetTest extends AbstractSetTest
     {
         $set = $this->createFromList(['foo', 'bar', 'baz', 'qux']);
 
-        $modified = $set
-            ->add('foo')
-            ->add('bar')
-            ->add('baz')
-            ->add('qux');
+        $modified = $set->add('foo')->add('bar')->add('baz')->add('qux');
 
         static::assertSame($modified, $set);
 

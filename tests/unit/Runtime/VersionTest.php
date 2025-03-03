@@ -26,15 +26,12 @@ final class VersionTest extends TestCase
         static::assertArrayHasKey('release', $version_details);
         static::assertArrayHasKey('extra', $version_details);
 
-        static::assertSame(
-            [
-                'major' => PHP_MAJOR_VERSION,
-                'minor' => PHP_MINOR_VERSION,
-                'release' => PHP_RELEASE_VERSION,
-                'extra' => PHP_EXTRA_VERSION ?: null,
-            ],
-            $version_details,
-        );
+        static::assertSame([
+            'major' => PHP_MAJOR_VERSION,
+            'minor' => PHP_MINOR_VERSION,
+            'release' => PHP_RELEASE_VERSION,
+            'extra' => PHP_EXTRA_VERSION ?: null,
+        ], $version_details);
     }
 
     public function testGetVersionId(): void

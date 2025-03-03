@@ -34,13 +34,10 @@ final class DirectoryTest extends AbstractFilesystemTest
         $children = Filesystem\read_directory($this->directory);
 
         static::assertCount(2, $children);
-        static::assertSame(
-            [
-                Str\join([$this->directory, 'foo'], Filesystem\SEPARATOR),
-                Str\join([$this->directory, 'hello.txt'], Filesystem\SEPARATOR),
-            ],
-            Vec\sort($children),
-        );
+        static::assertSame([
+            Str\join([$this->directory, 'foo'], Filesystem\SEPARATOR),
+            Str\join([$this->directory, 'hello.txt'], Filesystem\SEPARATOR),
+        ], Vec\sort($children));
     }
 
     public function testReadDirectoryThrowsIfDirectoryDoesNotExist(): void
