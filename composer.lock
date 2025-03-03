@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a003a3e2b261d32020cf8774e2c621b9",
+    "content-hash": "529009229f35764b0eead6afbfa248bd",
     "packages": [
         {
             "name": "revolt/event-loop",
@@ -890,16 +890,16 @@
         },
         {
             "name": "carthage-software/mago",
-            "version": "0.14.0",
+            "version": "0.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/carthage-software/mago.git",
-                "reference": "dcc12a1747824d8c87075b8e726a555bbf172192"
+                "reference": "3b13bf66ddd975dced857515984f4f587403ac89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carthage-software/mago/zipball/dcc12a1747824d8c87075b8e726a555bbf172192",
-                "reference": "dcc12a1747824d8c87075b8e726a555bbf172192",
+                "url": "https://api.github.com/repos/carthage-software/mago/zipball/3b13bf66ddd975dced857515984f4f587403ac89",
+                "reference": "3b13bf66ddd975dced857515984f4f587403ac89",
                 "shasum": ""
             },
             "require": {
@@ -931,7 +931,7 @@
             ],
             "support": {
                 "issues": "https://github.com/carthage-software/mago/issues",
-                "source": "https://github.com/carthage-software/mago/tree/0.14.0"
+                "source": "https://github.com/carthage-software/mago/tree/0.15.0"
             },
             "funding": [
                 {
@@ -939,7 +939,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-01T04:21:06+00:00"
+            "time": "2025-03-03T05:04:49+00:00"
         },
         {
             "name": "colinodell/json5",
