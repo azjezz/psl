@@ -30,7 +30,7 @@ final class VersionTest extends TestCase
             'major' => PHP_MAJOR_VERSION,
             'minor' => PHP_MINOR_VERSION,
             'release' => PHP_RELEASE_VERSION,
-            'extra' => PHP_EXTRA_VERSION ?: null,
+            'extra' => PHP_EXTRA_VERSION === '' ? null : PHP_EXTRA_VERSION,
         ], $version_details);
     }
 

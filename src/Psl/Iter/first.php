@@ -13,7 +13,7 @@ namespace Psl\Iter;
  *
  * @return T|null
  *
- * @mago-ignore best-practices/loop-does-not-iterate
+ * @mago-expect best-practices/loop-does-not-iterate
  */
 function first(iterable $iterable): mixed
 {

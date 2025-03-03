@@ -20,7 +20,7 @@ use function filectime;
  *
  * @return int The last inode modification time as a Unix timestamp.
  *
- * @mago-ignore best-practices/no-boolean-literal-comparison
+ * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function get_change_time(string $node): int
 {

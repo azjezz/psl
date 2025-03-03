@@ -18,10 +18,12 @@ final class ConvertedTypeTest extends TypeTest
         return Type\converted(
             Type\string(),
             Type\instance_of(DateTimeImmutable::class),
-            static fn(string $value): DateTimeImmutable => DateTimeImmutable::createFromFormat(
+            static fn(string $value): DateTimeImmutable => ($dt = DateTimeImmutable::createFromFormat(
                 self::DATE_FORMAT,
                 $value,
-            ) ?: throw new RuntimeException('Unable to parse date format'),
+            ))
+                ? $dt
+                : throw new RuntimeException('Unable to parse date format'),
         );
     }
 

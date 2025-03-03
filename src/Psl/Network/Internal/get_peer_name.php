@@ -20,7 +20,7 @@ use function substr;
  *
  * @codeCoverageIgnore
  *
- * @mago-ignore best-practices/no-boolean-literal-comparison
+ * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function get_peer_name(mixed $socket): Network\Address
 {

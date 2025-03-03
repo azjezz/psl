@@ -16,7 +16,7 @@ use function error_get_last;
  *
  * @codeCoverageIgnore
  *
- * @mago-ignore best-practices/no-boolean-literal-comparison
+ * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function open_resource(string $uri, string $mode): mixed
 {

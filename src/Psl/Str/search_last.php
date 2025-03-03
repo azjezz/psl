@@ -20,7 +20,7 @@ use function mb_strrpos;
  *
  * @return null|int<0, max>
  *
- * @mago-ignore best-practices/no-boolean-literal-comparison
+ * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function search_last(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::Utf8): null|int
 {

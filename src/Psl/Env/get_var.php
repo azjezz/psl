@@ -16,7 +16,7 @@ use function str_contains;
  *
  * @throws Psl\Exception\InvariantViolationException If $key contains an ASCII equals sign `=`, or the NUL character `\0`.
  *
- * @mago-ignore best-practices/no-boolean-literal-comparison
+ * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function get_var(string $key): null|string
 {

@@ -298,10 +298,13 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function getTwelveHours(): array
     {
-        return [
-            ($this->getHours() % 12) ?: 12,
-            $this->getHours() < 12 ? Meridiem::AnteMeridiem : Meridiem::PostMeridiem,
-        ];
+        $hours = $this->getHours();
+        $twelve_hours = $hours % 12;
+        if (0 === $twelve_hours) {
+            $twelve_hours = 12;
+        }
+
+        return [$twelve_hours, $hours < 12 ? Meridiem::AnteMeridiem : Meridiem::PostMeridiem];
     }
 
     /**

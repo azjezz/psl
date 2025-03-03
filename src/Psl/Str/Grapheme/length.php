@@ -17,7 +17,7 @@ use function grapheme_strlen;
  *
  * @pure
  *
- * @mago-ignore best-practices/no-boolean-literal-comparison
+ * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function length(string $string): int
 {

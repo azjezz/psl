@@ -23,6 +23,6 @@ function get_version_details(): array
         'major' => PHP_MAJOR_VERSION,
         'minor' => PHP_MINOR_VERSION,
         'release' => PHP_RELEASE_VERSION,
-        'extra' => PHP_EXTRA_VERSION ?: null,
+        'extra' => PHP_EXTRA_VERSION === '' ? null : PHP_EXTRA_VERSION,
     ];
 }

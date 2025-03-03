@@ -31,7 +31,7 @@ final class Reader implements ReadHandleInterface
     /**
      * {@inheritDoc}
      *
-     * @mago-ignore best-practices/no-empty-catch-clause
+     * @mago-expect best-practices/no-empty-catch-clause
      */
     #[\Override]
     public function reachedEndOfDataSource(): bool
@@ -168,7 +168,7 @@ final class Reader implements ReadHandleInterface
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
      *
-     * @mago-ignore best-practices/no-boolean-literal-comparison
+     * @mago-expect best-practices/no-boolean-literal-comparison
      */
     public function readUntil(string $suffix, null|Duration $timeout = null): null|string
     {

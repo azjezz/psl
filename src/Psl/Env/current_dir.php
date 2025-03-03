@@ -15,7 +15,7 @@ use function getcwd;
  *
  * @return non-empty-string
  *
- * @mago-ignore best-practices/no-boolean-literal-comparison
+ * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function current_dir(): string
 {

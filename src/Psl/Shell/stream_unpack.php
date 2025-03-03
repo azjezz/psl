@@ -27,7 +27,7 @@ use function unpack as byte_unpack;
  *      );
  *      => Generator(1 => "a", 2 => "b", 1 => "c")
  *
- * @mago-ignore best-practices/no-boolean-literal-comparison
+ * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function stream_unpack(string $content): Generator
 {

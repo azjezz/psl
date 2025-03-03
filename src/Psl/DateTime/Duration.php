@@ -55,7 +55,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      *
      * @pure
      *
-     * @mago-ignore best-practices/no-else-clause
+     * @mago-expect best-practices/no-else-clause
      */
     public static function fromParts(int $hours, int $minutes = 0, int $seconds = 0, int $nanoseconds = 0): self
     {
