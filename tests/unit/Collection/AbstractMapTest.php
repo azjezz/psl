@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Collection\MapInterface;
 use Psl\Collection\VectorInterface;
+use Psl\Json;
 use Psl\Str;
 
 abstract class AbstractMapTest extends TestCase
@@ -85,13 +86,25 @@ abstract class AbstractMapTest extends TestCase
             'baz' => 3,
         ]);
 
-        $array = $map->jsonSerialize();
+        $array = (array) $map->jsonSerialize();
 
         static::assertSame([
             'foo' => 1,
             'bar' => 2,
             'baz' => 3,
         ], $array);
+    }
+
+    public function testJsonRepresentation(): void
+    {
+        $assert = function (array $array, string $expected): void {
+            static::assertSame($expected, Json\encode($this->create($array), pretty: false));
+        };
+
+        $assert([], '{}');
+        $assert(['foo' => 'bar'], '{"foo":"bar"}');
+        $assert(['foo' => 'bar', 'baz' => 'qux'], '{"foo":"bar","baz":"qux"}');
+        $assert([1 => 2, 3 => 4], '{"1":2,"3":4}');
     }
 
     public function testKeys(): void

@@ -13,6 +13,7 @@ use function array_key_exists;
 use function array_key_first;
 use function array_key_last;
 use function array_keys;
+use function array_values;
 use function count;
 
 /**
@@ -195,14 +196,14 @@ final readonly class Set implements SetInterface
     /**
      * Get an array copy of the current `Set`.
      *
-     * @return array<T, T>
+     * @return array<T>
      *
      * @psalm-mutation-free
      */
     #[\Override]
     public function jsonSerialize(): array
     {
-        return $this->elements;
+        return array_values($this->elements);
     }
 
     /**

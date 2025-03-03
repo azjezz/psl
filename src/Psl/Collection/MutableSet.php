@@ -12,6 +12,7 @@ use Psl\Vec;
 use function array_key_exists;
 use function array_key_first;
 use function array_key_last;
+use function array_values;
 use function count;
 
 /**
@@ -194,14 +195,14 @@ final class MutableSet implements MutableSetInterface
     /**
      * Get an array copy of the current `MutableSet`.
      *
-     * @return array<T, T>
+     * @return array<T>
      *
      * @psalm-mutation-free
      */
     #[\Override]
     public function jsonSerialize(): array
     {
-        return $this->elements;
+        return array_values($this->elements);
     }
 
     /**

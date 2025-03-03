@@ -28,10 +28,10 @@
 #### `Classes`
 
 - [Map](./../../src/Psl/Collection/Map.php#L25)
-- [MutableMap](./../../src/Psl/Collection/MutableMap.php#L25)
-- [MutableSet](./../../src/Psl/Collection/MutableSet.php#L22)
+- [MutableMap](./../../src/Psl/Collection/MutableMap.php#L26)
+- [MutableSet](./../../src/Psl/Collection/MutableSet.php#L23)
 - [MutableVector](./../../src/Psl/Collection/MutableVector.php#L24)
-- [Set](./../../src/Psl/Collection/Set.php#L23)
+- [Set](./../../src/Psl/Collection/Set.php#L24)
 - [Vector](./../../src/Psl/Collection/Vector.php#L22)
 
 
