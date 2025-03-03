@@ -49,14 +49,31 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
     public function toArray(): array;
 
     /**
-     * Get an array copy of the current collection.
+     * Prepare the collection for JSON serialization.
      *
-     * @return array<Tk, Tv>
+     * This method is responsible for defining how the collection should be
+     * represented when encoded to JSON using `json_encode()`.
+     *
+     * The returned value must be a valid PHP data type that can be serialized
+     * into JSON. This can be an array, an object, or any other type that accurately represents
+     * the collection's data structure and contents in JSON format.
+     *
+     * Implementations should choose a representation (JSON array `[]` or JSON object `{}`)
+     * that best reflects the nature of the collection.
+     * For example:
+     * - A numerically indexed sequence of elements might be best represented as a JSON array.
+     * - A collection with key-value pairs might be better represented as a JSON object.
+     *
+     * The key goal is to ensure that the serialized JSON accurately reflects the
+     * logical structure and data within the collection.
+     *
+     * @return mixed  A PHP value representing the collection for JSON serialization.
+     *               This value will be passed to `json_encode()` to produce the final JSON output.
      *
      * @psalm-mutation-free
      */
     #[\Override]
-    public function jsonSerialize(): array;
+    public function jsonSerialize(): mixed;
 
     /**
      * Returns a `CollectionInterface` containing the values of the current `CollectionInterface`

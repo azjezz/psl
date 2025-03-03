@@ -220,16 +220,24 @@ final readonly class Map implements MapInterface
     }
 
     /**
-     * Get an array copy of the current map.
+     * Returns the map's elements as an object.
      *
-     * @return array<Tk, Tv>
+     * This ensures that the map is always serialized as a JSON object ({}) and not a JSON array ([]).
+     *
+     * PHP's `json_encode` serializes empty arrays as `[]`.  Also, arrays with sequential integer keys starting
+     * from 0 are serialized  as JSON arrays too, like `[0 => 'a', 1 => 'b']` becoming `['a', 'b']`.
+     *
+     * By casting to an object, we guarantee that the map will always be a JSON object `{}` when serialized,
+     * even if empty or having sequential integer keys.
+     *
+     * @return object
      *
      * @psalm-mutation-free
      */
     #[\Override]
-    public function jsonSerialize(): array
+    public function jsonSerialize(): object
     {
-        return $this->elements;
+        return (object) $this->elements;
     }
 
     /**
