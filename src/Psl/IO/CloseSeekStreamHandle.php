@@ -7,9 +7,9 @@ namespace Psl\IO;
 /**
  * @codeCoverageIgnore
  */
-final class CloseSeekStreamHandle implements CloseSeekStreamHandleInterface
+final class CloseSeekStreamHandle implements StreamHandleInterface, SeekHandleInterface, CloseHandleInterface
 {
-    private CloseSeekStreamHandleInterface $handle;
+    private StreamHandleInterface&SeekHandleInterface&CloseHandleInterface $handle;
 
     /**
      * @param resource $stream

@@ -17,9 +17,12 @@ use const STREAM_PF_UNIX;
 use const STREAM_SOCK_STREAM;
 
 /**
- * Create a pair of handles, where writes to the {@see WriteStreamHandleInterface} can be read from the {@see ReadStreamHandleInterface}.
+ * Create a pair of handles, where writes to the {@see WriteHandleInterface} can be read from the {@see ReadHandleInterface}.
  *
- * @return array{0: CloseReadStreamHandleInterface, 1: CloseWriteStreamHandleInterface}
+ * @return array{
+ *  0: CloseHandleInterface&ReadHandleInterface&StreamHandleInterface,
+ *  1: CloseHandleInterface&WriteHandleInterface&StreamHandleInterface,
+ * }
  *
  * @mago-expect best-practices/no-boolean-literal-comparison
  */

@@ -6,6 +6,6 @@ namespace Psl\File;
 
 use Psl\IO;
 
-interface WriteHandleInterface extends HandleInterface, IO\CloseSeekWriteStreamHandleInterface
+interface WriteHandleInterface extends HandleInterface, IO\WriteHandleInterface
 {
 }

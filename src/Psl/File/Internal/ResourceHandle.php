@@ -27,7 +27,9 @@ use const SEEK_END;
  *
  * @internal
  */
-final class ResourceHandle extends IO\Internal\ResourceHandle implements File\ReadWriteHandleInterface
+final class ResourceHandle extends IO\Internal\ResourceHandle implements
+    File\WriteHandleInterface,
+    File\ReadHandleInterface
 {
     private string $path;
 

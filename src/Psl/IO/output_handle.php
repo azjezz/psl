@@ -19,7 +19,7 @@ use const PHP_SAPI;
  *
  * @mago-expect best-practices/no-else-clause
  */
-function output_handle(): CloseWriteStreamHandleInterface
+function output_handle(): StreamHandleInterface&WriteHandleInterface&CloseHandleInterface
 {
     /** @var WeakMap|null $cache */
     static $cache = null;
@@ -29,7 +29,7 @@ function output_handle(): CloseWriteStreamHandleInterface
 
     $key = EventLoop::getDriver();
     if ($cache->offsetExists($key)) {
-        /** @var CloseWriteStreamHandleInterface */
+        /** @var StreamHandleInterface&WriteHandleInterface&CloseHandleInterface */
         return $cache->offsetGet($key);
     }
 

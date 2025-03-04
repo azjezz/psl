@@ -11,7 +11,7 @@ use function str_repeat;
 use function strlen;
 use function substr;
 
-final class MemoryHandle implements CloseSeekReadWriteHandleInterface
+final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, SeekHandleInterface, CloseHandleInterface
 {
     use WriteHandleConvenienceMethodsTrait;
     use ReadHandleConvenienceMethodsTrait;

@@ -9,12 +9,12 @@ use Psl\Filesystem;
 use Psl\IO;
 use Psl\Str;
 
-final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements ReadWriteHandleInterface
+final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements WriteHandleInterface, ReadHandleInterface
 {
     use IO\ReadHandleConvenienceMethodsTrait;
     use IO\WriteHandleConvenienceMethodsTrait;
 
-    private ReadWriteHandleInterface $readWriteHandle;
+    private ReadHandleInterface&WriteHandleInterface $readWriteHandle;
 
     /**
      * @param non-empty-string $file

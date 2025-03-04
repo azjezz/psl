@@ -14,6 +14,6 @@ use Psl\IO;
  *
  * Unlike {@see SocketInterface}, {@see StreamSocketInterface} provides access to the underlying socket stream.
  */
-interface StreamSocketInterface extends IO\CloseReadWriteStreamHandleInterface, SocketInterface
+interface StreamSocketInterface extends IO\StreamHandleInterface, SocketInterface
 {
 }

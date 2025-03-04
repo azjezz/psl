@@ -10,11 +10,11 @@ use Psl\IO;
 /**
  * @codeCoverageIgnore
  */
-final class SeekReadStreamHandle implements SeekReadStreamHandleInterface
+final class SeekReadStreamHandle implements StreamHandleInterface, ReadHandleInterface, SeekHandleInterface
 {
     use IO\ReadHandleConvenienceMethodsTrait;
 
-    private SeekReadStreamHandleInterface $handle;
+    private StreamHandleInterface&ReadHandleInterface&SeekHandleInterface $handle;
 
     /**
      * @param resource $stream
