@@ -17,7 +17,7 @@ final readonly class ServerOptions implements DefaultInterface
     /**
      * Default number of idle connections allowed.
      */
-    public const DEFAULT_IDLE_CONNECTIONS = 256;
+    public const int DEFAULT_IDLE_CONNECTIONS = 256;
 
     public bool $noDelay;
 

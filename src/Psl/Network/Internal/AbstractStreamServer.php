@@ -20,7 +20,7 @@ use function stream_socket_accept;
  */
 abstract class AbstractStreamServer implements StreamServerInterface
 {
-    private const DEFAULT_IDLE_CONNECTIONS = 256;
+    private const int DEFAULT_IDLE_CONNECTIONS = 256;
 
     /**
      * @var closed-resource|resource|null $impl
