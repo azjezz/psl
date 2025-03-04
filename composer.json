@@ -10,18 +10,18 @@
         }
     ],
     "require": {
-        "php": "~8.2.0 || ~8.3.0 || ~8.4.0",
+        "php": "~8.3.0 || ~8.4.0",
         "ext-bcmath": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
         "ext-sodium": "*",
         "ext-intl": "*",
-        "revolt/event-loop": "^1.0.6"
+        "revolt/event-loop": "^1.0.7"
     },
     "require-dev": {
-        "phpbench/phpbench": "^1.2.15",
-        "phpunit/phpunit": "^9.6.18",
-        "vimeo/psalm": "^6.0.0",
+        "phpbench/phpbench": "^1.4.0",
+        "phpunit/phpunit": "^9.6.22",
+        "vimeo/psalm": "^6.8.8",
         "php-standard-library/psalm-plugin": "^2.3.0",
         "php-coveralls/php-coveralls": "^2.7.0",
         "roave/infection-static-analysis-plugin": "^1.36.0",
