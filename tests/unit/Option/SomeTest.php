@@ -94,10 +94,11 @@ final class SomeTest extends TestCase
 
     public function testProceed(): void
     {
-        $result = Option\some(1)->proceed(
-            static fn(int $i): string => Str\format('Value is %d', $i),
-            static fn(): string => 'There is no value',
-        );
+        $result = Option\some(1)
+            ->proceed(
+                static fn(int $i): string => Str\format('Value is %d', $i),
+                static fn(): string => 'There is no value',
+            );
 
         static::assertSame('Value is 1', $result);
     }

@@ -13,5 +13,7 @@ namespace Psl\Hash;
  */
 function hash(string $data, Algorithm $algorithm): string
 {
-    return Context::forAlgorithm($algorithm)->update($data)->finalize();
+    return Context::forAlgorithm($algorithm)
+        ->update($data)
+        ->finalize();
 }

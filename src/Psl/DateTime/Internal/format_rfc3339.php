@@ -45,7 +45,10 @@ function format_rfc3339(
         false => 'yyyy-MM-dd\'T\'HH:mm:ss@xxx',
     };
 
-    $formatter = namespace\create_intl_date_formatter(pattern: $pattern, timezone: $timezone);
+    $formatter = namespace\create_intl_date_formatter(
+        pattern: $pattern,
+        timezone: $timezone,
+    );
     $rfc_string = $formatter->format($seconds);
 
     return Byte\replace($rfc_string, '@', $fraction);
