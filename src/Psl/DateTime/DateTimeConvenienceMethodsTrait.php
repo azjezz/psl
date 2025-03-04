@@ -272,7 +272,10 @@ trait DateTimeConvenienceMethodsTrait
     public function getYearShort(): int
     {
         /** @var int<-99, 99> */
-        return (int) $this->format(pattern: 'yy', locale: Locale::EnglishUnitedKingdom);
+        return (int) $this->format(
+            pattern: 'yy',
+            locale: Locale::EnglishUnitedKingdom,
+        );
     }
 
     /**
@@ -337,8 +340,15 @@ trait DateTimeConvenienceMethodsTrait
     public function getISOWeekNumber(): array
     {
         /** @var int<1, 53> $week */
-        $week = (int) $this->format(pattern: 'w', locale: Locale::EnglishUnitedKingdom);
-        $year = (int) $this->format(pattern: 'Y', locale: Locale::EnglishUnitedKingdom);
+        $week = (int) $this->format(
+            pattern: 'w',
+            locale: Locale::EnglishUnitedKingdom,
+        );
+
+        $year = (int) $this->format(
+            pattern: 'Y',
+            locale: Locale::EnglishUnitedKingdom,
+        );
 
         return [$year, $week];
     }
@@ -352,7 +362,10 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function getWeekday(): Weekday
     {
-        return Weekday::from((int) $this->format(pattern: 'e', locale: Locale::EnglishUnitedKingdom));
+        return Weekday::from((int) $this->format(
+            pattern: 'e',
+            locale: Locale::EnglishUnitedKingdom,
+        ));
     }
 
     /**

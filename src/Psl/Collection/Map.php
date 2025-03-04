@@ -590,8 +590,7 @@ final readonly class Map implements MapInterface
     public function chunk(int $size): Vector
     {
         /** @psalm-suppress ImpureMethodCall */
-        return $this
-            ->zip($this->keys()->toArray())
+        return $this->zip($this->keys()->toArray())
             ->values()
             ->chunk($size)
             ->map(
