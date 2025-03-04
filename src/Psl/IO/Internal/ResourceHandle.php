@@ -45,8 +45,8 @@ class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
     use IO\ReadHandleConvenienceMethodsTrait;
     use IO\WriteHandleConvenienceMethodsTrait;
 
-    public const DEFAULT_READ_BUFFER_SIZE = 4096;
-    public const MAXIMUM_READ_BUFFER_SIZE = 786432;
+    public const int DEFAULT_READ_BUFFER_SIZE = 4096;
+    public const int MAXIMUM_READ_BUFFER_SIZE = 786432;
 
     /**
      * @var closed-resource|resource|null $stream

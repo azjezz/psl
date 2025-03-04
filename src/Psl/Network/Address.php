@@ -9,8 +9,8 @@ namespace Psl\Network;
  */
 final readonly class Address
 {
-    public const DEFAULT_HOST = '127.0.0.1';
-    public const DEFAULT_PORT = 0;
+    public const string DEFAULT_HOST = '127.0.0.1';
+    public const int DEFAULT_PORT = 0;
 
     public SocketScheme $scheme;
 

@@ -25,7 +25,7 @@ use function trait_exists;
  */
 final class Loader
 {
-    public const CONSTANTS = [
+    public const array CONSTANTS = [
         'Psl\\Internal\\ALPHABET_BASE64' => 'Psl/Internal/constants.php',
         'Psl\\Internal\\ALPHABET_BASE64_URL' => 'Psl/Internal/constants.php',
         'Psl\\Internal\\CASE_FOLD' => 'Psl/Internal/constants.php',
@@ -73,7 +73,7 @@ final class Loader
         'Psl\\DateTime\\MONTHS_PER_YEAR' => 'Psl/DateTime/constants.php',
     ];
 
-    public const FUNCTIONS = [
+    public const array FUNCTIONS = [
         'Psl\\Comparison\\compare' => 'Psl/Comparison/compare.php',
         'Psl\\Comparison\\equal' => 'Psl/Comparison/equal.php',
         'Psl\\Comparison\\greater' => 'Psl/Comparison/greater.php',
@@ -562,7 +562,7 @@ final class Loader
         'Psl\\DateTime\\Internal\\format_rfc3339' => 'Psl/DateTime/Internal/format_rfc3339.php',
     ];
 
-    public const INTERFACES = [
+    public const array INTERFACES = [
         'Psl\\Comparison\\Comparable' => 'Psl/Comparison/Comparable.php',
         'Psl\\Comparison\\Equable' => 'Psl/Comparison/Equable.php',
         'Psl\\DataStructure\\PriorityQueueInterface' => 'Psl/DataStructure/PriorityQueueInterface.php',
@@ -660,7 +660,7 @@ final class Loader
         'Psl\\DateTime\\DateTimeInterface' => 'Psl/DateTime/DateTimeInterface.php',
     ];
 
-    public const TRAITS = [
+    public const array TRAITS = [
         'Psl\\RandomSequence\\Internal\\MersenneTwisterTrait' => 'Psl/RandomSequence/Internal/MersenneTwisterTrait.php',
         'Psl\\IO\\ReadHandleConvenienceMethodsTrait' => 'Psl/IO/ReadHandleConvenienceMethodsTrait.php',
         'Psl\\IO\\WriteHandleConvenienceMethodsTrait' => 'Psl/IO/WriteHandleConvenienceMethodsTrait.php',
@@ -669,7 +669,7 @@ final class Loader
         'Psl\\DateTime\\DateTimeConvenienceMethodsTrait' => 'Psl/DateTime/DateTimeConvenienceMethodsTrait.php',
     ];
 
-    public const CLASSES = [
+    public const array CLASSES = [
         'Psl\\Ref' => 'Psl/Ref.php',
         'Psl\\Comparison\\Exception\\IncomparableException' => 'Psl/Comparison/Exception/IncomparableException.php',
         'Psl\\DataStructure\\PriorityQueue' => 'Psl/DataStructure/PriorityQueue.php',
@@ -886,7 +886,7 @@ final class Loader
         'Psl\\DateTime\\Timestamp' => 'Psl/DateTime/Timestamp.php',
     ];
 
-    public const ENUMS = [
+    public const array ENUMS = [
         'Psl\\Comparison\\Order' => 'Psl/Comparison/Order.php',
         'Psl\\Encoding\\Base64\\Variant' => 'Psl/Encoding/Base64/Variant.php',
         'Psl\\File\\LockType' => 'Psl/File/LockType.php',
@@ -911,19 +911,19 @@ final class Loader
         'Psl\\DateTime\\Weekday' => 'Psl/DateTime/Weekday.php',
     ];
 
-    public const TYPE_CONSTANTS = 1;
+    public const int TYPE_CONSTANTS = 1;
 
-    public const TYPE_FUNCTION = 2;
+    public const int TYPE_FUNCTION = 2;
 
-    public const TYPE_INTERFACE = 4;
+    public const int TYPE_INTERFACE = 4;
 
-    public const TYPE_TRAIT = 8;
+    public const int TYPE_TRAIT = 8;
 
-    public const TYPE_CLASS = 16;
+    public const int TYPE_CLASS = 16;
 
-    public const TYPE_ENUM = 32;
+    public const int TYPE_ENUM = 32;
 
-    public const TYPE_CLASSISH = self::TYPE_INTERFACE | self::TYPE_TRAIT | self::TYPE_CLASS | self::TYPE_ENUM;
+    public const int TYPE_CLASSISH = self::TYPE_INTERFACE | self::TYPE_TRAIT | self::TYPE_CLASS | self::TYPE_ENUM;
 
     private function __construct()
     {

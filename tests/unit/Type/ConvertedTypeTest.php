@@ -11,7 +11,7 @@ use RuntimeException;
 
 final class ConvertedTypeTest extends TypeTest
 {
-    private const DATE_FORMAT = 'Y-m-d H:i:s';
+    private const string DATE_FORMAT = 'Y-m-d H:i:s';
 
     #[\Override]
     public function getType(): Type\TypeInterface
