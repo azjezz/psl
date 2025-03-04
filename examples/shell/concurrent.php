@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl\Example\Shell;
 
 use Psl\Async;
+use Psl\DateTime;
 use Psl\IO;
 use Psl\Shell;
-use Psl\DateTime;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
