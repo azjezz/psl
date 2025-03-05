@@ -14,7 +14,6 @@
 
 - [invariant](./../../src/Psl/invariant.php#L18)
 - [invariant_violation](./../../src/Psl/invariant_violation.php#L14)
-- [sequence](./../../src/Psl/sequence.php#L18)
 
 #### `Classes`
 
