@@ -338,7 +338,6 @@ final class Loader
         'Psl\\Str\\before_last_ci' => 'Psl/Str/before_last_ci.php',
         'Psl\\invariant' => 'Psl/invariant.php',
         'Psl\\invariant_violation' => 'Psl/invariant_violation.php',
-        'Psl\\sequence' => 'Psl/sequence.php',
         'Psl\\Type\\map' => 'Psl/Type/map.php',
         'Psl\\Type\\mutable_map' => 'Psl/Type/mutable_map.php',
         'Psl\\Type\\set' => 'Psl/Type/set.php',
