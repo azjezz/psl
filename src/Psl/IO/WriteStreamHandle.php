@@ -10,11 +10,11 @@ use Psl\IO;
 /**
  * @codeCoverageIgnore
  */
-final class WriteStreamHandle implements WriteStreamHandleInterface
+final class WriteStreamHandle implements StreamHandleInterface, WriteHandleInterface
 {
     use IO\WriteHandleConvenienceMethodsTrait;
 
-    private WriteStreamHandleInterface $handle;
+    private StreamHandleInterface&WriteHandleInterface $handle;
 
     /**
      * @param resource $stream

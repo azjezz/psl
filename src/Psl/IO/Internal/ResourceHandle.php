@@ -40,7 +40,12 @@ use function substr;
  *
  * @mago-expect best-practices/no-else-clause
  */
-class ResourceHandle implements IO\CloseSeekReadWriteStreamHandleInterface
+class ResourceHandle implements
+    IO\ReadHandleInterface,
+    IO\WriteHandleInterface,
+    IO\SeekHandleInterface,
+    IO\CloseHandleInterface,
+    IO\StreamHandleInterface
 {
     use IO\ReadHandleConvenienceMethodsTrait;
     use IO\WriteHandleConvenienceMethodsTrait;

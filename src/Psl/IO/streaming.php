@@ -30,7 +30,7 @@ use function max;
  *
  * @template T of array-key
  *
- * @param iterable<T, ReadStreamHandleInterface> $handles
+ * @param iterable<T, ReadHandleInterface&StreamHandleInterface> $handles
  *
  * @throws Exception\AlreadyClosedException If one of the handles has been already closed.
  * @throws Exception\RuntimeException If an error occurred during the operation.

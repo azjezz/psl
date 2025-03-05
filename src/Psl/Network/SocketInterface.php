@@ -12,7 +12,7 @@ use Psl\IO;
  * It is possible for both ends to be connected to the same process,
  * and to either be local or across a network.
  */
-interface SocketInterface extends IO\CloseReadWriteHandleInterface
+interface SocketInterface extends IO\CloseHandleInterface, IO\ReadHandleInterface, IO\WriteHandleInterface
 {
     /**
      * Returns the address of the local side of the socket.

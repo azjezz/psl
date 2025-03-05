@@ -22,7 +22,6 @@
 
 - [HandleInterface](./../../src/Psl/File/HandleInterface.php#L9)
 - [ReadHandleInterface](./../../src/Psl/File/ReadHandleInterface.php#L9)
-- [ReadWriteHandleInterface](./../../src/Psl/File/ReadWriteHandleInterface.php#L9)
 - [WriteHandleInterface](./../../src/Psl/File/WriteHandleInterface.php#L9)
 
 #### `Classes`

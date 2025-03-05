@@ -9,6 +9,6 @@ use Psl\Exception;
 /**
  * @psalm-suppress ClassMustBeFinal
  */
-class RuntimeException extends Exception\RuntimeException implements ExceptionInterface
+final class RuntimeException extends Exception\RuntimeException implements ExceptionInterface
 {
 }

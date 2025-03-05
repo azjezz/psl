@@ -17,7 +17,7 @@ use const PHP_SAPI;
  *
  * @codeCoverageIgnore
  */
-function error_handle(): null|CloseWriteStreamHandleInterface
+function error_handle(): null|(CloseHandleInterface&WriteHandleInterface&StreamHandleInterface)
 {
     /** @var WeakMap|null $cache */
     static $cache = null;
@@ -27,7 +27,7 @@ function error_handle(): null|CloseWriteStreamHandleInterface
 
     $key = EventLoop::getDriver();
     if ($cache->offsetExists($key)) {
-        /** @var CloseWriteStreamHandleInterface|null */
+        /** @var CloseHandleInterface&WriteHandleInterface&StreamHandleInterface|null */
         return $cache->offsetGet($key);
     }
 

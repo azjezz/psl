@@ -16,7 +16,9 @@ namespace Psl\File;
  * @throws Exception\NotReadableException If $file exists, and is non-readable.
  * @throws Exception\RuntimeException If unable to create the $file if it does not exist.
  */
-function open_read_write(string $path, WriteMode $write_mode = WriteMode::OpenOrCreate): ReadWriteHandleInterface
-{
+function open_read_write(
+    string $path,
+    WriteMode $write_mode = WriteMode::OpenOrCreate,
+): ReadHandleInterface&WriteHandleInterface {
     return new ReadWriteHandle($path, $write_mode);
 }

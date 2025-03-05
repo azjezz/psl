@@ -6,7 +6,7 @@ namespace Psl\File;
 
 use Psl\IO;
 
-interface HandleInterface extends IO\CloseSeekStreamHandleInterface
+interface HandleInterface extends IO\StreamHandleInterface, IO\SeekHandleInterface, IO\CloseHandleInterface
 {
     /**
      * Gets the path to the file.
