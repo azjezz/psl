@@ -213,8 +213,8 @@ final class Iterator implements Countable, SeekableIterator
 
         if (
             array_key_exists($this->position, $this->entries) ||
-            null === $this->generator ||
-            !$this->generator->valid()
+                null === $this->generator ||
+                !$this->generator->valid()
         ) {
             return;
         }

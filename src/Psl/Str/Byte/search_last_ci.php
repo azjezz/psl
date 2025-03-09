@@ -6,6 +6,8 @@ namespace Psl\Str\Byte;
 
 use Psl\Str;
 
+use function strripos;
+
 /**
  * Returns the last position of the 'needle' string in the 'haystack' string,
  * or null if it isn't found (case-insensitive).

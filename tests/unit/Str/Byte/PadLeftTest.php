@@ -20,9 +20,9 @@ final class PadLeftTest extends TestCase
     public function provideData(): array
     {
         return [
-            [' aaay', 'aaay', 5],
-            ['Aaaay', 'aaay', 5, 'A'],
-            ['Yeet', 'eet', 4, 'Yeeeee'],
+            [' aaay', 'aaay',  5],
+            ['Aaaay', 'aaay',  5, 'A'],
+            ['Yeet',  'eet',   4, 'Yeeeee'],
             ['مرحبا', 'مرحبا', 8, 'م'],
         ];
     }

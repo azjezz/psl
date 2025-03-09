@@ -47,8 +47,7 @@ abstract class AbstractMapTest extends TestCase
                 2 => 'bar',
                 4 => 'baz',
                 8 => 'qux',
-                16 =>
-                    'hax', // ??
+                16 => 'hax', // ??
             ])->count(),
         );
     }

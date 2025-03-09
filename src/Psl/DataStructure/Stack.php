@@ -8,7 +8,7 @@ use function array_pop;
 use function count;
 
 /**
- * An basic implementation of a stack data structure ( LIFO ).
+ * A basic implementation of a stack data structure ( LIFO ).
  *
  * @template T
  *

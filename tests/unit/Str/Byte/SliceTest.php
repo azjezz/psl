@@ -21,11 +21,11 @@ final class SliceTest extends TestCase
     public function provideData(): array
     {
         return [
-            ['', '', 0, 0],
-            ['Hello', 'Hello, World!', 0, 5],
-            ['Hello, World!', 'Hello, World!', 0],
-            ['World', 'Hello, World!', 7, 5],
-            ['destiny', 'People linked by destiny will always find each other.', 17, 7],
+            ['',              '',                                                      0,  0],
+            ['Hello',         'Hello, World!',                                         0,  5],
+            ['Hello, World!', 'Hello, World!',                                         0],
+            ['World',         'Hello, World!',                                         7,  5],
+            ['destiny',       'People linked by destiny will always find each other.', 17, 7],
         ];
     }
 

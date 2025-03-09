@@ -31,20 +31,20 @@ final class EncodeTest extends TestCase
         ], true);
 
         $json = Str\replace(<<<JSON
-            {
-                "name": "azjezz/psl",
-                "type": "library",
-                "description": "PHP Standard Library.",
-                "keywords": [
-                    "php",
-                    "std",
-                    "stdlib",
-                    "utility",
-                    "psl"
-                ],
-                "license": "MIT"
-            }
-            JSON, PHP_EOL, "\n");
+        {
+            "name": "azjezz/psl",
+            "type": "library",
+            "description": "PHP Standard Library.",
+            "keywords": [
+                "php",
+                "std",
+                "stdlib",
+                "utility",
+                "psl"
+            ],
+            "license": "MIT"
+        }
+        JSON, PHP_EOL, "\n");
 
         static::assertSame($json, $actual);
     }

@@ -20,36 +20,12 @@ final class TrimTest extends TestCase
     public function provideData(): array
     {
         return [
-            [
-                "Hello     Wôrld\t!!!",
-                "    Hello     Wôrld\t!!!\n",
-                null,
-            ],
-            [
-                "Hello     Wôrld\t!!!\n",
-                "    Hello     Wôrld\t!!!\n",
-                ' ',
-            ],
-            [
-                "    Héllö     World\t!!!",
-                "    Héllö     World\t!!!\n",
-                "\n",
-            ],
-            [
-                "Héllö     World\t",
-                "    Héllö     World\t!!!\n",
-                " \n!",
-            ],
-            [
-                'Héllö     World',
-                "    Héllö     World\t!!!\n",
-                " \n!\t",
-            ],
-            [
-                "Héllö     Wôrld\t!!!  \n",
-                "    Héllö     Wôrld\t!!!  \n",
-                ' ',
-            ],
+            ["Hello     Wôrld\t!!!",     "    Hello     Wôrld\t!!!\n",   null],
+            ["Hello     Wôrld\t!!!\n",   "    Hello     Wôrld\t!!!\n",   ' '],
+            ["    Héllö     World\t!!!", "    Héllö     World\t!!!\n",   "\n"],
+            ["Héllö     World\t",        "    Héllö     World\t!!!\n",   " \n!"],
+            ['Héllö     World',          "    Héllö     World\t!!!\n",   " \n!\t"],
+            ["Héllö     Wôrld\t!!!  \n", "    Héllö     Wôrld\t!!!  \n", ' '],
         ];
     }
 

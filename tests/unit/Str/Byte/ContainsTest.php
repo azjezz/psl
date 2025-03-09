@@ -20,48 +20,13 @@ final class ContainsTest extends TestCase
     public function provideData(): array
     {
         return [
-            [
-                true,
-                'Hello, World',
-                'Hello',
-                0,
-            ],
-            [
-                false,
-                'Hello, World',
-                'world',
-                0,
-            ],
-            [
-                true,
-                'Hello, World',
-                '',
-                8,
-            ],
-            [
-                false,
-                'hello, world',
-                'hey',
-                5,
-            ],
-            [
-                true,
-                'azjezz',
-                'az',
-                0,
-            ],
-            [
-                false,
-                'azjezz',
-                'Az',
-                2,
-            ],
-            [
-                true,
-                'مرحبا بكم',
-                'بكم',
-                5,
-            ],
+            [true,  'Hello, World', 'Hello', 0],
+            [false, 'Hello, World', 'world', 0],
+            [true,  'Hello, World', '',      8],
+            [false, 'hello, world', 'hey',   5],
+            [true,  'azjezz',       'az',    0],
+            [false, 'azjezz',       'Az',    2],
+            [true,  'مرحبا بكم',    'بكم',   5],
         ];
     }
 }

@@ -20,9 +20,9 @@ final class RepeatTest extends TestCase
     public function provideData(): array
     {
         return [
-            ['a', 'a', 1],
+            ['a',            'a',    1],
             ['Go! Go! Go! ', 'Go! ', 3],
-            ['مممممممممممم', 'م', 12],
+            ['مممممممممممم', 'م',    12],
         ];
     }
 }
