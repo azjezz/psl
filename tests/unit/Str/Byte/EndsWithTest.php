@@ -20,16 +20,16 @@ final class EndsWithTest extends TestCase
     public function provideData(): array
     {
         return [
-            [true, 'Hello', 'Hello'],
-            [false, 'Hello, WorlḐ', 'worlḑ'],
-            [false, 'Hello, Worlḑ', 'worlḑ'],
+            [true,  'Hello',         'Hello'],
+            [false, 'Hello, WorlḐ',  'worlḑ'],
+            [false, 'Hello, Worlḑ',  'worlḑ'],
             [false, 'T U N I S I A', 'e'],
-            [true, 'تونس', 'س'],
-            [false, 'Hello, World', ''],
-            [false, 'hello, world', 'hey'],
-            [false, 'hello, worlḑ', 'hello cruel worḑ'],
-            [true, 'azjezz', 'z'],
-            [true, 'مرحبا بكم', 'بكم'],
+            [true,  'تونس',          'س'],
+            [false, 'Hello, World',  ''],
+            [false, 'hello, world',  'hey'],
+            [false, 'hello, worlḑ',  'hello cruel worḑ'],
+            [true,  'azjezz',        'z'],
+            [true,  'مرحبا بكم',     'بكم'],
         ];
     }
 }

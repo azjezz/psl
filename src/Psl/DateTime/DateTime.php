@@ -153,8 +153,7 @@ final readonly class DateTime implements DateTimeInterface
         int $nanoseconds = 0,
         null|Timezone $timezone = null,
     ): DateTime {
-        return self::now($timezone)
-            ->withTime($hours, $minutes, $seconds, $nanoseconds);
+        return self::now($timezone)->withTime($hours, $minutes, $seconds, $nanoseconds);
     }
 
     /**

@@ -20,31 +20,11 @@ final class TrimLeftTest extends TestCase
     public function provideData(): array
     {
         return [
-            [
-                "Hello     Wôrld\t!!!\n",
-                "    Hello     Wôrld\t!!!\n",
-                null,
-            ],
-            [
-                "Hello     Wôrld\t!!!\n",
-                "    Hello     Wôrld\t!!!\n",
-                ' ',
-            ],
-            [
-                "    Héllö     World\t!!!\n",
-                "    Héllö     World\t!!!\n",
-                "\n",
-            ],
-            [
-                "Héllö     World\t!!!\n",
-                "    Héllö     World\t!!!\n",
-                " \n!",
-            ],
-            [
-                "Héllö     Wôrld\t!!!  \n",
-                "    Héllö     Wôrld\t!!!  \n",
-                ' ',
-            ],
+            ["Hello     Wôrld\t!!!\n",     "    Hello     Wôrld\t!!!\n",   null],
+            ["Hello     Wôrld\t!!!\n",     "    Hello     Wôrld\t!!!\n",   ' '],
+            ["    Héllö     World\t!!!\n", "    Héllö     World\t!!!\n",   "\n"],
+            ["Héllö     World\t!!!\n",     "    Héllö     World\t!!!\n",   " \n!"],
+            ["Héllö     Wôrld\t!!!  \n",   "    Héllö     Wôrld\t!!!  \n", ' '],
         ];
     }
 }

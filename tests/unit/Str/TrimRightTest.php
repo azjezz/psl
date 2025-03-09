@@ -20,41 +20,13 @@ final class TrimRightTest extends TestCase
     public function provideData(): array
     {
         return [
-            [
-                "    Hello     World\t!!!",
-                "    Hello     World\t!!!\n",
-                null,
-            ],
-            [
-                "    Hello     World\t!!!\n",
-                "    Hello     World\t!!!\n",
-                ' ',
-            ],
-            [
-                "    Hello     World\t!!!",
-                "    Hello     World\t!!!\n",
-                "\n",
-            ],
-            [
-                "    Hello     World\t",
-                "    Hello     World\t!!!\n",
-                "\n!",
-            ],
-            [
-                '    Hello     World',
-                "    Hello     World\t!!!\n",
-                "\n!\t",
-            ],
-            [
-                "    Hello     World\t",
-                "    Hello     World\t!!!\n",
-                " \n!",
-            ],
-            [
-                "    Hello     World\t!!!  \n",
-                "    Hello     World\t!!!  \n",
-                ' ',
-            ],
+            ["    Hello     World\t!!!",     "    Hello     World\t!!!\n",   null],
+            ["    Hello     World\t!!!\n",   "    Hello     World\t!!!\n",   ' '],
+            ["    Hello     World\t!!!",     "    Hello     World\t!!!\n",   "\n"],
+            ["    Hello     World\t",        "    Hello     World\t!!!\n",   "\n!"],
+            ['    Hello     World',          "    Hello     World\t!!!\n",   "\n!\t"],
+            ["    Hello     World\t",        "    Hello     World\t!!!\n",   " \n!"],
+            ["    Hello     World\t!!!  \n", "    Hello     World\t!!!  \n", ' '],
         ];
     }
 

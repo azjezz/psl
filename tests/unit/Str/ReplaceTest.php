@@ -20,10 +20,10 @@ final class ReplaceTest extends TestCase
     public function provideData(): array
     {
         return [
-            ['Hello, you!', 'Hello, you!', 'You', 'World'],
+            ['Hello, you!',   'Hello, you!', 'You', 'World'],
             ['Hello, World!', 'Hello, You!', 'You', 'World'],
-            ['مرحبا بكم', 'مرحبا سيف', 'سيف', 'بكم'],
-            ['foo', 'foo', 'bar', 'baz'],
+            ['مرحبا بكم',     'مرحبا سيف',   'سيف', 'بكم'],
+            ['foo',           'foo',         'bar', 'baz'],
         ];
     }
 }

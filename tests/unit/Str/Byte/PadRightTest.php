@@ -20,9 +20,9 @@ final class PadRightTest extends TestCase
     public function provideData(): array
     {
         return [
-            ['aaay ', 'aaay', 5],
-            ['aaayy', 'aaay', 5, 'y'],
-            ['Yeet', 'Yee', 4, 't'],
+            ['aaay ', 'aaay',  5],
+            ['aaayy', 'aaay',  5, 'y'],
+            ['Yeet',  'Yee',   4, 't'],
             ['مرحبا', 'مرحبا', 8, 'ا'],
         ];
     }

@@ -25,13 +25,13 @@ final class TruncateTest extends TestCase
     public function provideData(): array
     {
         return [
-            ['Hello', 'Hello, World!', 0, 5],
-            ['He...', 'Hello, World!', 0, 5, '...'],
+            ['Hello',    'Hello, World!', 0, 5],
+            ['He...',    'Hello, World!', 0, 5, '...'],
             ['Hello...', 'Hello, World!', 0, 8, '...'],
             ['héllö...', 'héllö, wôrld!', 0, 8, '...'],
-            ['wôrld!', 'héllö, wôrld!', 7, 8, '...'],
-            ['مرحبا...', 'مرحبا بكم', 0, 8, '...'],
-            ['سيف', 'مرحبا سيف', 6, 8, '...'],
+            ['wôrld!',   'héllö, wôrld!', 7, 8, '...'],
+            ['مرحبا...', 'مرحبا بكم',     0, 8, '...'],
+            ['سيف',      'مرحبا سيف',     6, 8, '...'],
         ];
     }
 }

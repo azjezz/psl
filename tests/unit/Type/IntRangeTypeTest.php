@@ -12,11 +12,13 @@ use const PHP_INT_MIN;
 
 final class IntRangeTypeTest extends TypeTest
 {
+    #[\Override]
     public function getType(): Type\TypeInterface
     {
         return Type\int_range(Math\INT64_MIN, Math\INT64_MAX);
     }
 
+    #[\Override]
     public function getValidCoercions(): iterable
     {
         yield [42, 42];
@@ -36,6 +38,7 @@ final class IntRangeTypeTest extends TypeTest
         yield [1.0, 1];
     }
 
+    #[\Override]
     public function getInvalidCoercions(): iterable
     {
         yield [1.23];
@@ -56,6 +59,7 @@ final class IntRangeTypeTest extends TypeTest
         yield ['0xFF'];
     }
 
+    #[\Override]
     public function getToStringExamples(): iterable
     {
         yield [Type\int_range(5, 10), 'int<5, 10>'];

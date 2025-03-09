@@ -17,7 +17,5 @@ use Psl\Hash;
  */
 function hash(string $data, Algorithm $algorithm, string $key): string
 {
-    return Hash\Context::hmac($algorithm, $key)
-        ->update($data)
-        ->finalize();
+    return Hash\Context::hmac($algorithm, $key)->update($data)->finalize();
 }
