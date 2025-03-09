@@ -45,7 +45,7 @@
 - [search](./../../src/Psl/Str/Byte/search.php#L27)
 - [search_ci](./../../src/Psl/Str/Byte/search_ci.php#L27)
 - [search_last](./../../src/Psl/Str/Byte/search_last.php#L29)
-- [search_last_ci](./../../src/Psl/Str/Byte/search_last_ci.php#L27)
+- [search_last_ci](./../../src/Psl/Str/Byte/search_last_ci.php#L29)
 - [shuffle](./../../src/Psl/Str/Byte/shuffle.php#L14)
 - [slice](./../../src/Psl/Str/Byte/slice.php#L24)
 - [splice](./../../src/Psl/Str/Byte/splice.php#L25)
