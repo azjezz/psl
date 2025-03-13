@@ -12,11 +12,13 @@ function return_nonempty_string(): string
 {
     return 'hello';
 }
+
 /** @return non-empty-lowercase-string */
 function return_nonempty_lowercase_string(): string
 {
     return 'hello';
 }
+
 /** @return lowercase-string */
 function return_lowercase_string(): string
 {
@@ -27,10 +29,12 @@ function return_lowercase_string(): string
 function take_non_empty_lowercase_string(string $_foo): void
 {
 }
+
 /** @param non-empty-string $_foo */
 function take_non_empty_string(string $_foo): void
 {
 }
+
 /** @param lowercase-string $_foo */
 function take_lowercase_string(string $_foo): void
 {

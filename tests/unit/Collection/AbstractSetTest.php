@@ -197,6 +197,7 @@ abstract class AbstractSetTest extends TestCase
         static::assertSame($set->toArray(), $mapped->toArray());
         static::assertCount(4, $mapped);
     }
+
     public function testMapWithKey(): void
     {
         $set = $this->createFromList([
@@ -232,6 +233,7 @@ abstract class AbstractSetTest extends TestCase
         static::assertSame($set->toArray(), $mapped->toArray());
         static::assertCount(4, $mapped);
     }
+
     public function testZip(): void
     {
         $set = $this->createFromList([

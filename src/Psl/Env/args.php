@@ -17,6 +17,7 @@ function args(): array
     if (null === $args) {
         return [];
     }
+
     // @codeCoverageIgnoreEnd
 
     return $args;

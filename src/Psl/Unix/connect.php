@@ -22,6 +22,7 @@ function connect(string $path, null|Duration $timeout = null): Network\StreamSoc
     if (OS\is_windows()) {
         throw new Network\Exception\RuntimeException('Unix socket is not supported on Windows platform.');
     }
+
     // @codeCoverageIgnoreEnd
 
     $socket = Network\Internal\socket_connect("unix://$path", timeout: $timeout);

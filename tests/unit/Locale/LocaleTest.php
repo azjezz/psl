@@ -196,6 +196,7 @@ final class LocaleTest extends TestCase
             }
         }
     }
+
     /**
      * @dataProvider getLocalesWithoutScript
      */

@@ -48,9 +48,11 @@ trait MersenneTwisterTrait
             for ($i = 0; $i < 227; $i++) {
                 $state[$i] = $this->twist($state[$i + 397], $state[$i], $state[$i + 1]);
             }
+
             for (; $i < 623; $i++) {
                 $state[$i] = $this->twist($state[$i - 227], $state[$i], $state[$i + 1]);
             }
+
             $state[623] = $this->twist($state[396], $state[623], $state[0]);
             $this->state = $state;
 

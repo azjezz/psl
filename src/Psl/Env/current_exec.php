@@ -18,6 +18,7 @@ function current_exec(): string
         /** @psalm-suppress MissingThrowsDocblock */
         $executable = Filesystem\read_symbolic_link($executable);
     }
+
     // @codeCoverageIgnoreEnd
 
     return $executable;

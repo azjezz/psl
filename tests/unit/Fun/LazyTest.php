@@ -90,6 +90,7 @@ final class LazyTest extends TestCase
                 if (!$stream->valid()) {
                     break;
                 }
+
                 $res[] = $stream->current();
                 $stream->next();
             }

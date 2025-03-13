@@ -76,6 +76,7 @@ final class Sequence
                 foreach ($this->waits as $suspension) {
                     $suspension->resume();
                 }
+
                 $this->waits = [];
 
                 $this->ingoing = false;

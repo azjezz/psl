@@ -11,6 +11,7 @@ use Psl\Str;
 function take_lowercase_string(string $_foo): void
 {
 }
+
 /** @return lowercase-string */
 function return_lowercase_string(): string
 {

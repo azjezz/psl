@@ -196,6 +196,7 @@ final class DurationTest extends TestCase
         static::assertSame([1, 2, 4, 42], $t->withNanoseconds(DateTime\NANOSECONDS_PER_SECOND + 42)->getParts());
         static::assertSame([1, 2, 3, 4], $t->getParts());
     }
+
     public function testFractionsOfSecond(): void
     {
         static::assertSame([0, 0, 0, 0], DateTime\Duration::zero()->getParts());
@@ -229,6 +230,7 @@ final class DurationTest extends TestCase
             [2, -3, 1, DateTime\NANOSECONDS_PER_SECOND - 3],
         ];
     }
+
     /**
      * @dataProvider provideNormalized
      */
@@ -267,6 +269,7 @@ final class DurationTest extends TestCase
             [1, -63, 0, 0, -1],
         ];
     }
+
     /**
      * @dataProvider providePositiveNegative
      */
@@ -292,6 +295,7 @@ final class DurationTest extends TestCase
             [DateTime\Duration::zero(), DateTime\Duration::nanoseconds(1), Order::Less],
         ];
     }
+
     /**
      * @dataProvider provideCompare
      */

@@ -27,6 +27,7 @@ final class SearchWithKeysOptTest extends TestCase
             static fn(int $k, string $v): bool => 2 === $k && 'baz' === $v,
         ];
     }
+
     /**
      * @dataProvider provideDataNone
      */

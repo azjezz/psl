@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb0f630b7879a1e089e08c844b225104",
+    "content-hash": "2e355ed582d9eb45a6e00c1ff343f8b2",
     "packages": [
         {
             "name": "revolt/event-loop",
@@ -890,16 +890,16 @@
         },
         {
             "name": "carthage-software/mago",
-            "version": "0.19.0",
+            "version": "0.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/carthage-software/mago.git",
-                "reference": "376b60efca2871f06827dbbb18a6c1b6a37b8fe7"
+                "reference": "cd709fe33b6feb529e20e137f0f750fc73861c38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carthage-software/mago/zipball/376b60efca2871f06827dbbb18a6c1b6a37b8fe7",
-                "reference": "376b60efca2871f06827dbbb18a6c1b6a37b8fe7",
+                "url": "https://api.github.com/repos/carthage-software/mago/zipball/cd709fe33b6feb529e20e137f0f750fc73861c38",
+                "reference": "cd709fe33b6feb529e20e137f0f750fc73861c38",
                 "shasum": ""
             },
             "require": {
@@ -925,13 +925,19 @@
             "license": [
                 "MIT OR Apache-2.0"
             ],
+            "authors": [
+                {
+                    "name": "Saif Eddin Gmati",
+                    "email": "azjezz@carthage.software"
+                }
+            ],
             "description": "Mago is a toolchain for PHP that aims to provide a set of tools to help developers write better code.",
             "keywords": [
                 "dev"
             ],
             "support": {
                 "issues": "https://github.com/carthage-software/mago/issues",
-                "source": "https://github.com/carthage-software/mago/tree/0.19.0"
+                "source": "https://github.com/carthage-software/mago/tree/0.20.0"
             },
             "funding": [
                 {
@@ -939,7 +945,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-09T05:53:58+00:00"
+            "time": "2025-03-13T10:06:36+00:00"
         },
         {
             "name": "colinodell/json5",

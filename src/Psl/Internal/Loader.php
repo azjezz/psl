@@ -557,8 +557,7 @@ final class Loader
         'Psl\\DateTime\\Internal\\default_timezone' => 'Psl/DateTime/Internal/default_timezone.php',
         'Psl\\DateTime\\Internal\\system_time' => 'Psl/DateTime/Internal/system_time.php',
         'Psl\\DateTime\\Internal\\high_resolution_time' => 'Psl/DateTime/Internal/high_resolution_time.php',
-        'Psl\\DateTime\\Internal\\create_intl_calendar_from_date_time' =>
-            'Psl/DateTime/Internal/create_intl_calendar_from_date_time.php',
+        'Psl\\DateTime\\Internal\\create_intl_calendar_from_date_time' => 'Psl/DateTime/Internal/create_intl_calendar_from_date_time.php',
         'Psl\\DateTime\\Internal\\create_intl_date_formatter' => 'Psl/DateTime/Internal/create_intl_date_formatter.php',
         'Psl\\DateTime\\Internal\\parse' => 'Psl/DateTime/Internal/parse.php',
         'Psl\\DateTime\\Internal\\format_rfc3339' => 'Psl/DateTime/Internal/format_rfc3339.php',
@@ -576,8 +575,7 @@ final class Loader
         'Psl\\Collection\\MutableCollectionInterface' => 'Psl/Collection/MutableCollectionInterface.php',
         'Psl\\Collection\\MutableIndexAccessInterface' => 'Psl/Collection/MutableIndexAccessInterface.php',
         'Psl\\Collection\\AccessibleCollectionInterface' => 'Psl/Collection/AccessibleCollectionInterface.php',
-        'Psl\\Collection\\MutableAccessibleCollectionInterface' =>
-            'Psl/Collection/MutableAccessibleCollectionInterface.php',
+        'Psl\\Collection\\MutableAccessibleCollectionInterface' => 'Psl/Collection/MutableAccessibleCollectionInterface.php',
         'Psl\\Collection\\VectorInterface' => 'Psl/Collection/VectorInterface.php',
         'Psl\\Collection\\MutableVectorInterface' => 'Psl/Collection/MutableVectorInterface.php',
         'Psl\\Collection\\MapInterface' => 'Psl/Collection/MapInterface.php',
@@ -660,8 +658,7 @@ final class Loader
         'Psl\\Encoding\\Base64\\Internal\\Base64' => 'Psl/Encoding/Base64/Internal/Base64.php',
         'Psl\\Encoding\\Base64\\Internal\\Base64UrlSafe' => 'Psl/Encoding/Base64/Internal/Base64UrlSafe.php',
         'Psl\\Encoding\\Base64\\Internal\\Base64DotSlash' => 'Psl/Encoding/Base64/Internal/Base64DotSlash.php',
-        'Psl\\Encoding\\Base64\\Internal\\Base64DotSlashOrdered' =>
-            'Psl/Encoding/Base64/Internal/Base64DotSlashOrdered.php',
+        'Psl\\Encoding\\Base64\\Internal\\Base64DotSlashOrdered' => 'Psl/Encoding/Base64/Internal/Base64DotSlashOrdered.php',
         'Psl\\Exception\\OverflowException' => 'Psl/Exception/OverflowException.php',
         'Psl\\Exception\\InvalidArgumentException' => 'Psl/Exception/InvalidArgumentException.php',
         'Psl\\Exception\\UnexpectedValueException' => 'Psl/Exception/UnexpectedValueException.php',
@@ -732,8 +729,7 @@ final class Loader
         'Psl\\Hash\\Context' => 'Psl/Hash/Context.php',
         'Psl\\Encoding\\Exception\\IncorrectPaddingException' => 'Psl/Encoding/Exception/IncorrectPaddingException.php',
         'Psl\\Encoding\\Exception\\RangeException' => 'Psl/Encoding/Exception/RangeException.php',
-        'Psl\\SecureRandom\\Exception\\InsufficientEntropyException' =>
-            'Psl/SecureRandom/Exception/InsufficientEntropyException.php',
+        'Psl\\SecureRandom\\Exception\\InsufficientEntropyException' => 'Psl/SecureRandom/Exception/InsufficientEntropyException.php',
         'Psl\\Regex\\Exception\\InvalidPatternException' => 'Psl/Regex/Exception/InvalidPatternException.php',
         'Psl\\Regex\\Exception\\RuntimeException' => 'Psl/Regex/Exception/RuntimeException.php',
         'Psl\\Shell\\Exception\\FailedExecutionException' => 'Psl/Shell/Exception/FailedExecutionException.php',
@@ -744,13 +740,11 @@ final class Loader
         'Psl\\Math\\Exception\\ArithmeticException' => 'Psl/Math/Exception/ArithmeticException.php',
         'Psl\\Math\\Exception\\DivisionByZeroException' => 'Psl/Math/Exception/DivisionByZeroException.php',
         'Psl\\Filesystem\\Exception\\RuntimeException' => 'Psl/Filesystem/Exception/RuntimeException.php',
-        'Psl\\Filesystem\\Exception\\InvalidArgumentException' =>
-            'Psl/Filesystem/Exception/InvalidArgumentException.php',
+        'Psl\\Filesystem\\Exception\\InvalidArgumentException' => 'Psl/Filesystem/Exception/InvalidArgumentException.php',
         'Psl\\Filesystem\\Exception\\NotFileException' => 'Psl/Filesystem/Exception/NotFileException.php',
         'Psl\\Filesystem\\Exception\\NotDirectoryException' => 'Psl/Filesystem/Exception/NotDirectoryException.php',
         'Psl\\Filesystem\\Exception\\NotFoundException' => 'Psl/Filesystem/Exception/NotFoundException.php',
-        'Psl\\Filesystem\\Exception\\NotSymbolicLinkException' =>
-            'Psl/Filesystem/Exception/NotSymbolicLinkException.php',
+        'Psl\\Filesystem\\Exception\\NotSymbolicLinkException' => 'Psl/Filesystem/Exception/NotSymbolicLinkException.php',
         'Psl\\Filesystem\\Exception\\NotReadableException' => 'Psl/Filesystem/Exception/NotReadableException.php',
         'Psl\\IO\\Exception\\AlreadyClosedException' => 'Psl/IO/Exception/AlreadyClosedException.php',
         'Psl\\IO\\Exception\\RuntimeException' => 'Psl/IO/Exception/RuntimeException.php',
@@ -760,8 +754,7 @@ final class Loader
         'Psl\\IO\\MemoryHandle' => 'Psl/IO/MemoryHandle.php',
         'Psl\\Fun\\Internal\\LazyEvaluator' => 'Psl/Fun/Internal/LazyEvaluator.php',
         'Psl\\RandomSequence\\MersenneTwisterSequence' => 'Psl/RandomSequence/MersenneTwisterSequence.php',
-        'Psl\\RandomSequence\\MersenneTwisterPHPVariantSequence' =>
-            'Psl/RandomSequence/MersenneTwisterPHPVariantSequence.php',
+        'Psl\\RandomSequence\\MersenneTwisterPHPVariantSequence' => 'Psl/RandomSequence/MersenneTwisterPHPVariantSequence.php',
         'Psl\\RandomSequence\\SecureSequence' => 'Psl/RandomSequence/SecureSequence.php',
         'Psl\\Async\\Exception\\CompositeException' => 'Psl/Async/Exception/CompositeException.php',
         'Psl\\Async\\Exception\\RuntimeException' => 'Psl/Async/Exception/RuntimeException.php',
@@ -842,8 +835,7 @@ final class Loader
         'Psl\\Math\\Exception\\OverflowException' => 'Psl/Math/Exception/OverflowException.php',
         'Psl\\Math\\Exception\\InvalidArgumentException' => 'Psl/Math/Exception/InvalidArgumentException.php',
         'Psl\\Iter\\Exception\\InvalidArgumentException' => 'Psl/Iter/Exception/InvalidArgumentException.php',
-        'Psl\\PseudoRandom\\Exception\\InvalidArgumentException' =>
-            'Psl/PseudoRandom/Exception/InvalidArgumentException.php',
+        'Psl\\PseudoRandom\\Exception\\InvalidArgumentException' => 'Psl/PseudoRandom/Exception/InvalidArgumentException.php',
         'Psl\\Async\\Exception\\InvalidArgumentException' => 'Psl/Async/Exception/InvalidArgumentException.php',
         'Psl\\Option\\Exception\\NoneException' => 'Psl/Option/Exception/NoneException.php',
         'Psl\\Option\\Option' => 'Psl/Option/Option.php',

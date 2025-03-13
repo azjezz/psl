@@ -22,6 +22,7 @@ final class Server extends Network\Internal\AbstractStreamServer
         if (OS\is_windows()) {
             throw new Network\Exception\RuntimeException('Unix server is not supported on Windows platform.');
         }
+
         // @codeCoverageIgnoreEnd
 
         $socket = Network\Internal\server_listen("unix://{$file}");

@@ -5,6 +5,10 @@ paths = ["src", "tests", "examples"]
 includes = ["vendor"]
 excludes = []
 
+[format]
+empty_line_after_control_structure = true
+empty_line_before_dangling_comments = false
+
 [linter]
 plugins = ["php-unit"]
 
@@ -58,8 +62,4 @@ level = "off"
 
 [[linter.rules]]
 name = "safety/no-global"
-level = "off"
-
-[[linter.rules]]
-name = "best-practices/no-boolean-flag-parameter"
 level = "off"

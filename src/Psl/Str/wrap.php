@@ -60,6 +60,7 @@ function wrap(
                 $result .= slice($string, $last_start, $length, $encoding) . $break;
                 $last_start = $current + 1;
             }
+
             $last_space = $current;
             continue;
         }

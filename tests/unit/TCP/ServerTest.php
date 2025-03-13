@@ -88,6 +88,7 @@ final class ServerTest extends TestCase
         foreach ($incoming as $connection) {
             $connections[] = $connection;
         }
+
         static::assertCount(1, $connections);
     }
 

@@ -34,6 +34,7 @@ function get_inode(string $node): int
             $message ?? 'internal error',
         ));
     }
+
     // @codeCoverageIgnoreEnd
 
     return $result;

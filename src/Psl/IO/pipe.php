@@ -41,6 +41,7 @@ function pipe(): array
                 $message = $error['message'] ?? 'Unable to create a pipe stream.';
                 Psl\invariant_violation($message);
             }
+
             // @codeCoverageIgnoreEnd
 
             return [$sockets[0], $sockets[1]];
