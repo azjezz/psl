@@ -44,6 +44,7 @@ function file_size(string $file): int
             $message ?? 'internal error',
         ));
     }
+
     // @codeCoverageIgnoreEnd
 
     /** @var int<0, max> */

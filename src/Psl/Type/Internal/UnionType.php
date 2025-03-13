@@ -107,6 +107,7 @@ readonly class UnionType extends Type\Type
         if (Str\contains($left, '&')) {
             $left = Str\format('(%s)', $left);
         }
+
         /** @psalm-suppress MissingThrowsDocblock - offset is within bound. */
         if (Str\contains($right, '&')) {
             $right = Str\format('(%s)', $right);

@@ -21,6 +21,7 @@ function unpack(string $content): array
             $result[0] .= $chunk;
             continue;
         }
+
         $result[1] .= $chunk;
     }
 

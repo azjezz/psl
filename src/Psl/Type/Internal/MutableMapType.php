@@ -91,6 +91,7 @@ final readonly class MutableMapType extends Type\Type
                     !$trying_key => CoercionException::withValue($v, $this->toString(), PathExpression::path($k), $e),
                 };
             }
+
             $dict = Dict\from_entries($entries);
 
             /** @var Collection\MutableMap<Tk, Tv> */

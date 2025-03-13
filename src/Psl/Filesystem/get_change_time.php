@@ -38,6 +38,7 @@ function get_change_time(string $node): int
             $message ?? 'internal error',
         ));
     }
+
     // @codeCoverageIgnoreEnd
 
     return $result;

@@ -52,6 +52,7 @@ abstract class Base64
                 static::encode6Bits((($byte1 << 2) | ($byte2 >> 6)) & 63) .
                 static::encode6Bits($byte2 & 63);
         }
+
         if ($i < $binary_length) {
             /**
              * @psalm-suppress InvalidArgument
@@ -127,6 +128,7 @@ abstract class Base64
             );
             $err |= ($char0 | $char1 | $char2 | $char3) >> 8;
         }
+
         if ($i < $base64_length) {
             /**
              * @psalm-suppress InvalidArgument
@@ -148,6 +150,7 @@ abstract class Base64
                 $err |= 1;
             }
         }
+
         $check = $err === 0;
         if (!$check) {
             throw new Exception\RangeException('Expected characters in the correct base64 alphabet');
@@ -187,7 +190,6 @@ abstract class Base64
         $diff -= ((61 - $bin) >> 8) & 15;
         // if ($bin > 62) $diff += 0x2f - 0x2b - 1; // 3
         $diff += ((62 - $bin) >> 8) & 3;
-
         return pack('C', $bin + $diff);
     }
 

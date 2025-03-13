@@ -21,6 +21,7 @@ final class ServerOptionsTest extends TestCase
         static::assertSame(ServerOptions::DEFAULT_IDLE_CONNECTIONS, $options->idleConnections);
         static::assertEquals(SocketOptions::default(), $options->socketOptions);
     }
+
     public function testNoDelay(): void
     {
         $options = ServerOptions::default();

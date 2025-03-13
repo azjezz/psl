@@ -82,6 +82,7 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements
         } catch (IO\Exception\RuntimeException $previous) {
             throw new File\Exception\RuntimeException($previous->getMessage(), previous: $previous);
         }
+
         // @codeCoverageIgnoreEnd
 
         return $size;

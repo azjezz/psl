@@ -23,6 +23,7 @@ final class SearchOptTest extends TestCase
 
         yield ['baz', Iter\to_iterator(['foo', 'bar', 'baz']), static fn(string $v): bool => 'baz' === $v];
     }
+
     /**
      * @dataProvider provideDataNone
      */
@@ -30,6 +31,7 @@ final class SearchOptTest extends TestCase
     {
         static::assertTrue(Iter\search_opt($iterable, $predicate)->isNone());
     }
+
     public function provideDataNone(): iterable
     {
         yield [[], static fn(string $v): bool => 'qux' === $v];

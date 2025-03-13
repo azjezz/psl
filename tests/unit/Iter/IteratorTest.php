@@ -222,6 +222,7 @@ final class IteratorTest extends TestCase
             $spy->add('foreach (' . $v . ')');
             break;
         }
+
         $rewindable->rewind();
         do {
             $spy->add('do while (' . $rewindable->current() . ')');

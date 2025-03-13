@@ -77,6 +77,7 @@ final readonly class Context
         if (!hash_update($internal_context, $data)) {
             throw new Exception\RuntimeException('Unable to pump data into the active hashing context.');
         }
+
         // @codeCoverageIgnoreEnd
 
         return new self($internal_context);

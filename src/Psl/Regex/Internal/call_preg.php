@@ -39,6 +39,7 @@ function call_preg(string $function, Closure $closure): mixed
 
         throw new Exception\RuntimeException($error['message'], $error['code']);
     }
+
     // @codeCoverageIgnoreEnd
 
     return $result;

@@ -37,6 +37,7 @@ function base_convert(string $value, int $from_base, int $to_base): string
         if (null === $digit_numeric) {
             throw new Exception\InvalidArgumentException(Str\format('Invalid digit %s in base %d', $digit, $from_base));
         }
+
         $result_decimal = bcadd($result_decimal, bcmul((string) $digit_numeric, $place_value));
         $place_value = bcdiv($place_value, (string) $from_base);
     }

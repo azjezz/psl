@@ -129,6 +129,7 @@ function execute(
     } else {
         $commandline = Str\format('exec %s', $commandline);
     }
+
     // @codeCoverageIgnoreEnd
     $descriptor = [
         1 => ['pipe', 'w'],
@@ -140,6 +141,7 @@ function execute(
     if (!is_resource($process)) {
         throw new Exception\RuntimeException('Failed to open a new process.');
     }
+
     // @codeCoverageIgnoreEnd
 
     $stdout = new IO\CloseReadStreamHandle($pipes[1]);

@@ -53,6 +53,7 @@ final class Reader implements ReadHandleInterface
         } catch (Exception\ExceptionInterface) {
             // ignore; it'll be thrown again when attempting a real read.
         }
+
         // @codeCoverageIgnoreEnd
 
         return false;
@@ -199,6 +200,7 @@ final class Reader implements ReadHandleInterface
                 $this->buffer = $buf;
                 return null;
             }
+
             $buf .= $chunk;
             $idx = strpos($buf, $suffix, $offset);
         } while ($idx === false);

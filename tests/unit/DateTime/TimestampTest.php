@@ -258,6 +258,7 @@ final class TimestampTest extends TestCase
             [Timestamp::fromParts(42, 42), Timestamp::fromParts(42, 100), Order::Less],
         ];
     }
+
     /**
      * @dataProvider provideCompare
      */

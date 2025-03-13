@@ -109,6 +109,7 @@ final readonly class IterableType extends Type\Type
         if (!is_iterable($value)) {
             throw AssertException::withValue($value, $this->toString());
         }
+
         /** @var Type\Type<Tk> $key_type */
         $key_type = $this->key_type;
         /** @var Type\Type<Tv> $value_type */

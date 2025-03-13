@@ -237,6 +237,7 @@ final class Iterator implements Countable, SeekableIterator
                 $this->save();
                 $this->next();
             } while ($this->generator->valid());
+
             $this->position = $previous;
 
             $this->generator = null;

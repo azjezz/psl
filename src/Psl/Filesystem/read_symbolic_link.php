@@ -42,6 +42,7 @@ function read_symbolic_link(string $symbolic_link): string
             $message ?? 'internal error',
         ));
     }
+
     // @codeCoverageIgnoreEnd
 
     /** @var non-empty-string */

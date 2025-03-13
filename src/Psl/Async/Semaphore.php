@@ -83,6 +83,7 @@ final class Semaphore
                 foreach ($this->waits as $suspension) {
                     $suspension->resume();
                 }
+
                 $this->waits = [];
             }
 

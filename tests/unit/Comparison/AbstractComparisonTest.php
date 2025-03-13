@@ -48,6 +48,7 @@ abstract class AbstractComparisonTest extends TestCase
                 public readonly int $int,
             ) {
             }
+
             #[\Override]
             public function compare(mixed $other): Order
             {

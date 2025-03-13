@@ -56,6 +56,7 @@ function create_temporary_file(null|string $directory = null, null|string $prefi
     } catch (SecureRandom\Exception\InsufficientEntropyException $e) {
         throw new Exception\RuntimeException('Unable to gather enough entropy to generate filename.', 0, $e);
     }
+
     // @codeCoverageIgnoreEnd
 
     create_file($filename);
