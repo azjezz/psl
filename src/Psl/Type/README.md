@@ -1381,3 +1381,26 @@ When the iterable value does not match the specified type, you will get detailed
 > Could not coerce "stdClass" to type "Psl\Collection\VectorInterface<array{'user': string, 'comment': string}>" **at path "foo.user".**
 
 ---
+
+#### [always_assert](always_assert.php)
+
+```hack
+@pure
+@template T
+Type\always_assert(TypeInterface<T> $type): TypeInterface<T>
+```
+
+Provides a type that will always assert that the input value matches the input, even when coercing.
+
+```php
+use Psl\Type;
+
+$integer = Type\int();
+$always_assert_integer = Type\always_assert(Type\int());
+
+$integer->assert(1); // Ok.
+$always_assert_integer->assert(1); // Ok.
+
+$integer->coerce('1'); // Ok.
+$always_assert_integer->coerce('1'); // Error: Could not coerce "string" to type "int".
+```
