@@ -33,8 +33,7 @@ final class InstanceOfTypeTest extends TypeTest
         yield [STDIN];
         yield ['hello'];
         yield [$this->stringable('foo')];
-        yield [new class {
-        }];
+        yield [new class {}];
     }
 
     #[\Override]

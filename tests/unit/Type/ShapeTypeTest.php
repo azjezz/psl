@@ -278,8 +278,7 @@ final class ShapeTypeTest extends TypeTest
         ];
         yield 'invalid key' => [
             Type\shape(['name' => Type\string()]),
-            ['name' => new class() {
-            }],
+            ['name' => new class() {}],
             'Could not coerce "class@anonymous" to type "array{\'name\': string}" at path "name".',
         ];
         yield 'invalid iterator first item' => [
@@ -315,8 +314,7 @@ final class ShapeTypeTest extends TypeTest
         yield 'iterator yielding object key' => [
             Type\shape(['id' => Type\int()]),
             (static function (): iterable {
-                yield new class() {
-                } => 'nope';
+                yield new class() {} => 'nope';
             })(),
             'Could not coerce "null" to type "array{\'id\': int}" at path "id".',
         ];

@@ -74,12 +74,9 @@ final class SuccessTest extends TestCase
     {
         $exception = new Exception('bar');
         $wrapper = new Success('hello');
-        $actual = $wrapper->then(
-            static function () use ($exception): never {
-                throw $exception;
-            },
-            Fun\rethrow(),
-        );
+        $actual = $wrapper->then(static function () use ($exception): never {
+            throw $exception;
+        }, Fun\rethrow());
 
         static::assertFalse($actual->isSucceeded());
         static::assertSame($actual->getThrowable(), $exception);

@@ -48,8 +48,7 @@ final class UnitEnumTypeTest extends TypeTest
         yield [STDIN];
         yield ['hello'];
         yield [$this->stringable('bar')];
-        yield [new class {
-        }];
+        yield [new class {}];
     }
 
     /**

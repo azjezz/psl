@@ -26,8 +26,7 @@ final readonly class Timestamp implements TemporalInterface
     private function __construct(
         private int $seconds,
         private int $nanoseconds,
-    ) {
-    }
+    ) {}
 
     /**
      * Creates a timestamp from seconds and nanoseconds since the epoch.

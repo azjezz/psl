@@ -26,8 +26,7 @@ final readonly class AlwaysAssertType extends Type\Type
      */
     public function __construct(
         private Type\TypeInterface $inner,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws CoercionException

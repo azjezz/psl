@@ -20,8 +20,8 @@ final class Rot13Test extends TestCase
     public function provideData(): array
     {
         return [
-            ['', ''],
-            ['Uryyb', 'Hello'],
+            ['',              ''],
+            ['Uryyb',         'Hello'],
             ['Uryyb, Jbeyq!', 'Hello, World!'],
         ];
     }

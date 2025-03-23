@@ -12,13 +12,13 @@ final class ReverseTest extends TestCase
     public function provideData(): array
     {
         return [
-            ['Hello World', 'dlroW olleH'],
-            ['héllö wôrld', 'dlrôw ölléh'],
+            ['Hello World',   'dlroW olleH'],
+            ['héllö wôrld',   'dlrôw ölléh'],
             ['Iñigo Montoya', 'ayotnoM ogiñI'],
-            ['某物', '物某'],
-            ['что-то', 'от-отч'],
-            ['🙂😟', '😟🙂'],
-            ['مرحبا', 'ابحرم'],
+            ['某物',          '物某'],
+            ['что-то',        'от-отч'],
+            ['🙂😟',          '😟🙂'],
+            ['مرحبا',         'ابحرم'],
         ];
     }
 

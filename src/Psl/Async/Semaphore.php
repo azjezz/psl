@@ -48,8 +48,7 @@ final class Semaphore
     public function __construct(
         private readonly int $concurrencyLimit,
         private readonly Closure $operation,
-    ) {
-    }
+    ) {}
 
     /**
      * Run the operation using the given `$input`.

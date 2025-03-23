@@ -13,7 +13,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 function request(string $method, string $host, string $path): string
 {
     $client = TCP\connect($host, 80);
-    $client->writeAll("{$method} {$path} HTTP/1.1\r\nHost: $host\r\nConnection: close\r\n\r\n");
+    $client->writeAll("{$method} {$path} HTTP/1.1\r\nHost: {$host}\r\nConnection: close\r\n\r\n");
     $response = $client->readAll();
     $client->close();
 

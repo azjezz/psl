@@ -48,8 +48,7 @@ final class KeyedSequence
      */
     public function __construct(
         private readonly Closure $operation,
-    ) {
-    }
+    ) {}
 
     /**
      * Run the operation using the given `$input`, after all previous operations have completed.

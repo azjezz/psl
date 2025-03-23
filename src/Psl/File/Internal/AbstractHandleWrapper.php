@@ -12,8 +12,7 @@ abstract class AbstractHandleWrapper implements File\HandleInterface
 {
     public function __construct(
         private File\HandleInterface $handle,
-    ) {
-    }
+    ) {}
 
     /**
      * {@inheritDoc}

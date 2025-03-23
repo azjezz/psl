@@ -22,8 +22,7 @@ final readonly class IntRangeType extends Type\Type
     public function __construct(
         private int $min,
         private int $max,
-    ) {
-    }
+    ) {}
 
     /**
      * @psalm-assert-if-true int $value

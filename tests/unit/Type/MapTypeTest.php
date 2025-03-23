@@ -168,8 +168,7 @@ final class MapTypeTest extends TypeTest
         yield 'iterator yielding object key' => [
             Type\map(Type\int(), Type\int()),
             (static function (): iterable {
-                yield new class() {
-                } => 'nope';
+                yield new class() {} => 'nope';
             })(),
             'Could not coerce "class@anonymous" to type "' .
             MapInterface::class .

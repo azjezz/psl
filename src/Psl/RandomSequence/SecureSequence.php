@@ -17,9 +17,7 @@ final class SecureSequence implements DefaultInterface, SequenceInterface
      *
      * @pure
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * @pure

@@ -54,8 +54,7 @@ final class ScalarTypeTest extends TypeTest
     public function getInvalidCoercions(): iterable
     {
         yield [null];
-        yield [new class {
-        }];
+        yield [new class {}];
         yield [STDIN];
         yield [[]];
         yield [(static fn(): iterable => yield 'hello')()];

@@ -165,8 +165,7 @@ final class MutableSetTypeTest extends TypeTest
         yield 'iterator yielding object key' => [
             Type\mutable_set(Type\int()),
             (static function (): iterable {
-                yield 'nope' => new class() {
-                };
+                yield 'nope' => new class() {};
             })(),
             'Could not coerce "class@anonymous" to type "' . MutableSetInterface::class . '<int>" at path "nope".',
         ];

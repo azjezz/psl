@@ -50,8 +50,7 @@ final class MixedTypeTest extends TypeTest
         yield [true, true];
         yield [[], []];
         yield [
-            $_ = new class {
-            },
+            $_ = new class {},
             $_,
         ];
         yield [null, null];

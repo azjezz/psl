@@ -23,9 +23,9 @@ class BackedEnumValueTypeTest extends TestCase
     {
         return [
             [IntegerEnumWithNoCases::class, false],
-            [StringEnumWithNoCases::class, true],
-            [IntegerEnum::class, false],
-            [StringEnum::class, true],
+            [StringEnumWithNoCases::class,  true],
+            [IntegerEnum::class,            false],
+            [StringEnum::class,             true],
         ];
     }
 

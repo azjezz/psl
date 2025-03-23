@@ -46,8 +46,7 @@ abstract class AbstractComparisonTest extends TestCase
         return new class($i) implements Comparable {
             public function __construct(
                 public readonly int $int,
-            ) {
-            }
+            ) {}
 
             #[\Override]
             public function compare(mixed $other): Order
@@ -63,8 +62,7 @@ abstract class AbstractComparisonTest extends TestCase
             public function __construct(
                 public readonly int $int,
                 public readonly string $additionalInfo,
-            ) {
-            }
+            ) {}
 
             #[\Override]
             public function compare(mixed $other): Order
