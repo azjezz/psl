@@ -163,8 +163,7 @@ final class DictTypeTest extends TypeTest
         yield 'iterator yielding object key' => [
             Type\dict(Type\int(), Type\int()),
             (static function (): iterable {
-                yield new class() {
-                } => 'nope';
+                yield new class() {} => 'nope';
             })(),
             'Could not coerce "class@anonymous" to type "dict<int, int>" at path "key(class@anonymous)".',
         ];

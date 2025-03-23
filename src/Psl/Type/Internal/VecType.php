@@ -29,8 +29,7 @@ final readonly class VecType extends Type\Type
      */
     public function __construct(
         private readonly Type\TypeInterface $value_type,
-    ) {
-    }
+    ) {}
 
     /**
      * @psalm-assert-if-true list<Tv> $value

@@ -18,8 +18,7 @@ final class Lock
     public function __construct(
         public readonly LockType $type,
         private Closure $releaseCallback,
-    ) {
-    }
+    ) {}
 
     /**
      * Release the lock.

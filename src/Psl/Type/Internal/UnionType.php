@@ -28,8 +28,7 @@ readonly class UnionType extends Type\Type
     public function __construct(
         private readonly Type\TypeInterface $left_type,
         private readonly Type\TypeInterface $right_type,
-    ) {
-    }
+    ) {}
 
     /**
      * @psalm-assert-if-true Tl|Tr $value

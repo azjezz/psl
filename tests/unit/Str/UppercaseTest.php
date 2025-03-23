@@ -20,19 +20,19 @@ final class UppercaseTest extends TestCase
     public function provideData(): array
     {
         return [
-            ['HELLO', 'hello'],
-            ['HELLO', 'helLO'],
-            ['HELLO', 'Hello'],
-            ['HÉLLÖ, WÔRLD!', 'héllö, wôrld!'],
-            ['SS', 'ß'],
-            ['ẞ', 'ẞ'],
-            ['🤷 🔥', '🤷 🔥'],
-            ['سيف', 'سيف'],
-            ['1337', '1337'],
-            ['你好', '你好'],
+            ['HELLO',          'hello'],
+            ['HELLO',          'helLO'],
+            ['HELLO',          'Hello'],
+            ['HÉLLÖ, WÔRLD!',  'héllö, wôrld!'],
+            ['SS',             'ß'],
+            ['ẞ',              'ẞ'],
+            ['🤷 🔥',          '🤷 🔥'],
+            ['سيف',            'سيف'],
+            ['1337',           '1337'],
+            ['你好',           '你好'],
             ['こんにちは世界', 'こんにちは世界'],
-            ['สวัสดี', 'สวัสดี'],
-            ['ؤخى', 'ؤخى'],
+            ['สวัสดี',           'สวัสดี'],
+            ['ؤخى',            'ؤخى'],
         ];
     }
 }

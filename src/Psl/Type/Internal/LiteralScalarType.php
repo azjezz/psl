@@ -25,8 +25,7 @@ final readonly class LiteralScalarType extends Type\Type
      */
     public function __construct(
         private string|int|float|bool $value,
-    ) {
-    }
+    ) {}
 
     /**
      * @psalm-assert-if-true T $value

@@ -167,8 +167,7 @@ final class MutableVectorTypeTest extends TypeTest
         yield 'iterator yielding object key' => [
             Type\mutable_vector(Type\int()),
             (static function (): iterable {
-                yield new class() {
-                } => 'nope';
+                yield new class() {} => 'nope';
             })(),
             'Could not coerce "string" to type "' . MutableVectorInterface::class . '<int>" at path "class@anonymous".',
         ];

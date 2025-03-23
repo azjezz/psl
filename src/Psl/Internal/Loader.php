@@ -894,9 +894,7 @@ final class Loader
 
     public const int TYPE_CLASSISH = self::TYPE_INTERFACE | self::TYPE_TRAIT | self::TYPE_CLASS | self::TYPE_ENUM;
 
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
     public static function bootstrap(): void
     {

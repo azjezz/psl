@@ -33,8 +33,7 @@ final class ClassStringTypeTest extends TypeTest
         yield [STDIN];
         yield ['UnknownClass'];
         yield [$this->stringable('foo')];
-        yield [new class {
-        }];
+        yield [new class {}];
     }
 
     #[\Override]

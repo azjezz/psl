@@ -164,8 +164,7 @@ final class NonEmptyDictTypeTest extends TypeTest
         yield 'iterator yielding object key' => [
             Type\non_empty_dict(Type\int(), Type\int()),
             (static function (): iterable {
-                yield new class() {
-                } => 'nope';
+                yield new class() {} => 'nope';
             })(),
             'Could not coerce "class@anonymous" to type "non-empty-dict<int, int>" at path "key(class@anonymous)".',
         ];

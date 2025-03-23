@@ -78,8 +78,7 @@ final class ConvertedTypeTest extends TypeTest
     {
         yield 'Coerce input error' => [
             Type\converted(Type\int(), Type\string(), static fn(int $i): string => (string) $i),
-            new class() {
-            },
+            new class() {},
             'Could not coerce "class@anonymous" to type "int" at path "coerce_input(class@anonymous): int".',
         ];
         yield 'Convert exception error' => [
@@ -92,12 +91,7 @@ final class ConvertedTypeTest extends TypeTest
             'Could not coerce "int" to type "string" at path "convert(int): string": not possible.',
         ];
         yield 'Coerce output error' => [
-            Type\converted(
-                Type\int(),
-                Type\string(),
-                static fn(int $_i): object => new class() {
-                },
-            ),
+            Type\converted(Type\int(), Type\string(), static fn(int $_i): object => new class() {}),
             1,
             'Could not coerce "class@anonymous" to type "string" at path "coerce_output(class@anonymous): string".',
         ];

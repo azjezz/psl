@@ -249,9 +249,9 @@ final class TimestampTest extends TestCase
     public static function provideCompare(): array
     {
         return [
-            [Timestamp::fromParts(100), Timestamp::fromParts(42), Order::Greater],
-            [Timestamp::fromParts(42), Timestamp::fromParts(42), Order::Equal],
-            [Timestamp::fromParts(42), Timestamp::fromParts(100), Order::Less],
+            [Timestamp::fromParts(100),  Timestamp::fromParts(42),   Order::Greater],
+            [Timestamp::fromParts(42),   Timestamp::fromParts(42),   Order::Equal],
+            [Timestamp::fromParts(42),   Timestamp::fromParts(100),  Order::Less],
             // Nanoseconds
             [Timestamp::fromParts(42, 100), Timestamp::fromParts(42, 42), Order::Greater],
             [Timestamp::fromParts(42, 42), Timestamp::fromParts(42, 42), Order::Equal],

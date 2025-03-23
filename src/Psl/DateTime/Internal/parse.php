@@ -45,7 +45,7 @@ function parse(
             ));
         }
 
-        throw new ParserException("Unable to interpret '$raw_string' as a valid date/time.");
+        throw new ParserException("Unable to interpret '{$raw_string}' as a valid date/time.");
     }
 
     return (int) $timestamp;

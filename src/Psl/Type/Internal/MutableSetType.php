@@ -30,8 +30,7 @@ final readonly class MutableSetType extends Type\Type
      */
     public function __construct(
         private readonly Type\TypeInterface $type,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws CoercionException

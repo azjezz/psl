@@ -30,8 +30,7 @@ final readonly class SetType extends Type\Type
      */
     public function __construct(
         private readonly Type\TypeInterface $type,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws CoercionException

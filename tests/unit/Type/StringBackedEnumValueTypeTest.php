@@ -40,8 +40,7 @@ final class StringBackedEnumValueTypeTest extends TypeTest
         yield [STDIN];
         yield ['hello'];
         yield [$this->stringable('bar')];
-        yield [new class {
-        }];
+        yield [new class {}];
     }
 
     /**

@@ -24,8 +24,7 @@ final readonly class OptionalType extends Type\Type
      */
     public function __construct(
         private Type\TypeInterface $inner,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws CoercionException

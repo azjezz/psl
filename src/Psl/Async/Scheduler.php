@@ -23,9 +23,7 @@ use Revolt\EventLoop\Suspension;
  */
 final readonly class Scheduler
 {
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
     /**
      * Returns an object used to suspend and resume execution of the current fiber or {main}.

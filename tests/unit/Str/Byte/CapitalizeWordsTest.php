@@ -20,9 +20,9 @@ final class CapitalizeWordsTest extends TestCase
     public function provideData(): array
     {
         return [
-            ['Hello', 'hello'],
-            ['Hello, World', 'hello, world'],
-            ['Alpha', 'Alpha'],
+            ['Hello',             'hello'],
+            ['Hello, World',      'hello, world'],
+            ['Alpha',             'Alpha'],
             ['Foo, Bar, And Baz', 'foo, bar, and baz'],
         ];
     }

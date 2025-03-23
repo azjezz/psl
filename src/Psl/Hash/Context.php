@@ -32,8 +32,7 @@ final readonly class Context
      */
     private function __construct(
         private HashContext $internalContext,
-    ) {
-    }
+    ) {}
 
     /**
      * Initialize an incremental hashing context.

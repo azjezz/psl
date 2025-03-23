@@ -23,8 +23,7 @@ final readonly class ResourceType extends Type\Type
      */
     public function __construct(
         private null|string $kind = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws CoercionException

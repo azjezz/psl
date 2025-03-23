@@ -34,8 +34,7 @@ final readonly class ConvertedType extends Type\Type
         private TypeInterface $from,
         private TypeInterface $into,
         private Closure $converter,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws CoercionException

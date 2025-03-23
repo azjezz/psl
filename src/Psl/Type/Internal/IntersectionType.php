@@ -30,8 +30,7 @@ final readonly class IntersectionType extends Type
     public function __construct(
         private readonly TypeInterface $left_type,
         private readonly TypeInterface $right_type,
-    ) {
-    }
+    ) {}
 
     /**
      * @psalm-assert-if-true Tl&Tr $value

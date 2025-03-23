@@ -45,8 +45,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
         private int $minutes,
         private int $seconds,
         private int $nanoseconds,
-    ) {
-    }
+    ) {}
 
     /**
      * Returns an instance representing the specified number of hours (and

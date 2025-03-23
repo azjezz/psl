@@ -32,8 +32,7 @@ final readonly class NonEmptyDictType extends Type\Type
     public function __construct(
         private readonly Type\TypeInterface $key_type,
         private readonly Type\TypeInterface $value_type,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws CoercionException

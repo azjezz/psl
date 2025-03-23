@@ -154,8 +154,7 @@ final class VecTypeTest extends TypeTest
         yield 'iterator yielding object key' => [
             Type\vec(Type\int()),
             (static function (): iterable {
-                yield new class() {
-                } => 'nope';
+                yield new class() {} => 'nope';
             })(),
             'Could not coerce "string" to type "vec<int>" at path "class@anonymous".',
         ];

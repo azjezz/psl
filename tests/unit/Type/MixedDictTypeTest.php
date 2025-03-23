@@ -124,8 +124,7 @@ final class MixedDictTypeTest extends TypeTest
         yield 'iterator yielding object key' => [
             Type\mixed_dict(),
             (static function (): iterable {
-                yield new class() {
-                } => 'nope';
+                yield new class() {} => 'nope';
             })(),
             'Could not coerce "class@anonymous" to type "dict<array-key, mixed>" at path "key(class@anonymous)".',
         ];

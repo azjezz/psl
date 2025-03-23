@@ -36,8 +36,7 @@ final class TypeCoercionExceptionTest extends TestCase
         $type = Type\shape(['child' => Type\shape(['name' => Type\string()])]);
 
         try {
-            $type->coerce(['child' => ['name' => new class() {
-            }]]);
+            $type->coerce(['child' => ['name' => new class() {}]]);
 
             static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\CoercionException::class));
         } catch (Type\Exception\CoercionException $e) {

@@ -30,8 +30,7 @@ final readonly class VectorType extends Type\Type
      */
     public function __construct(
         private readonly Type\TypeInterface $value_type,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws CoercionException

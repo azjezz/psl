@@ -160,8 +160,7 @@ final class SetTypeTest extends TypeTest
         yield 'iterator yielding object key' => [
             Type\set(Type\int()),
             (static function (): iterable {
-                yield 'nope' => new class() {
-                };
+                yield 'nope' => new class() {};
             })(),
             'Could not coerce "class@anonymous" to type "' . SetInterface::class . '<int>" at path "nope".',
         ];

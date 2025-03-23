@@ -14,7 +14,7 @@ function proceed(): void
     function test_proceed(Option\Option $option): string
     {
         return $option->proceed(
-            static fn(int $value): string => "There is $value of them.",
+            static fn(int $value): string => "There is {$value} of them.",
             static fn(): string => 'There are none.',
         );
     }

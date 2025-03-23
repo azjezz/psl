@@ -24,8 +24,7 @@ final readonly class UnitEnumType extends Type\Type
      */
     public function __construct(
         private readonly string $enum,
-    ) {
-    }
+    ) {}
 
     #[\Override]
     public function matches(mixed $value): bool

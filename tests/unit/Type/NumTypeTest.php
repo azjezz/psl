@@ -65,8 +65,7 @@ final class NumTypeTest extends TypeTest
         yield ['foo'];
         yield [null];
         yield [false];
-        yield [new class() {
-        }];
+        yield [new class() {}];
         yield [$this->stringable('foo')];
         yield ['0xFF'];
         yield ['1a'];

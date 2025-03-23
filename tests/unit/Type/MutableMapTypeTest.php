@@ -185,8 +185,7 @@ final class MutableMapTypeTest extends TypeTest
         yield 'iterator yielding object key' => [
             Type\mutable_map(Type\int(), Type\int()),
             (static function (): iterable {
-                yield new class() {
-                } => 'nope';
+                yield new class() {} => 'nope';
             })(),
             'Could not coerce "class@anonymous" to type "' .
             MutableMapInterface::class .

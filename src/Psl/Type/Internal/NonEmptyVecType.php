@@ -29,8 +29,7 @@ final readonly class NonEmptyVecType extends Type\Type
      */
     public function __construct(
         private readonly Type\TypeInterface $value_type,
-    ) {
-    }
+    ) {}
 
     /**
      * @psalm-assert-if-true non-empty-list<Tv> $value

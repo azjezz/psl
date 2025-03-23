@@ -149,8 +149,7 @@ final class IterableTypeTest extends TypeTest
         yield 'iterator yielding object key' => [
             Type\iterable(Type\int(), Type\int()),
             (static function (): iterable {
-                yield new class() {
-                } => 'nope';
+                yield new class() {} => 'nope';
             })(),
             'Could not coerce "class@anonymous" to type "iterable<int, int>" at path "key(class@anonymous)".',
         ];

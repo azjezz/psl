@@ -20,12 +20,12 @@ final class CapitalizeTest extends TestCase
     public function provideData(): array
     {
         return [
-            ['', ''],
-            ['Hello', 'hello'],
-            ['Hello, world', 'hello, world'],
-            ['Alpha', 'Alpha'],
+            ['',              ''],
+            ['Hello',         'hello'],
+            ['Hello, world',  'hello, world'],
+            ['Alpha',         'Alpha'],
             ['Héllö, wôrld!', 'héllö, wôrld!'],
-            ['ßoo', 'ßoo'],
+            ['ßoo',           'ßoo'],
         ];
     }
 }

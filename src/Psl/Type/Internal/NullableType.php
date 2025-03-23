@@ -24,8 +24,7 @@ final readonly class NullableType extends Type\Type
      */
     public function __construct(
         private readonly Type\TypeInterface $inner,
-    ) {
-    }
+    ) {}
 
     /**
      * @psalm-assert-if-true T|null $value

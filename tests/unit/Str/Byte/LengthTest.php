@@ -20,14 +20,14 @@ final class LengthTest extends TestCase
     public function provideData(): array
     {
         return [
-            [6, 'azjezz'],
-            [8, 'تونس'],
-            [6, 'سيف'],
+            [6,  'azjezz'],
+            [8,  'تونس'],
+            [6,  'سيف'],
             [21, 'こんにちは世界'],
             [12, '🥇🥈🥉'],
-            [6, '你好'],
+            [6,  '你好'],
             [18, 'สวัสดี'],
-            [6, 'ؤخى'],
+            [6,  'ؤخى'],
         ];
     }
 }
