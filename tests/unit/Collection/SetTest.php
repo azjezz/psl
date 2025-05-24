@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Collection;
 
+use Psl\Collection\Exception;
 use Psl\Collection\Set;
 
 final class SetTest extends AbstractSetTest
@@ -53,5 +54,53 @@ final class SetTest extends AbstractSetTest
         $set = $this->createFromList(['foo', 'bar', 'baz', 'qux']);
 
         static::assertSame(['foo', 'bar', 'baz', 'qux'], $set->jsonSerialize());
+    }
+
+    public function testArrayAccess(): void
+    {
+        $set = $this->createFromList(['foo', 'bar', 'baz']);
+
+        static::assertTrue(isset($set['foo']));
+        static::assertSame('foo', $set['foo']);
+    }
+
+    public function testOffsetSetThrows(): void
+    {
+        $set = $this->createFromList(['foo', 'bar', 'baz']);
+
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage('Cannot use object of type Psl\Collection\Set as array');
+
+        $set['qux'] = 'qux';
+    }
+
+    public function testOffsetIssetThrowsForInvalidOffsetType(): void
+    {
+        $set = $this->createFromList(['foo', 'bar', 'baz']);
+
+        $this->expectException(Exception\InvalidOffsetException::class);
+        $this->expectExceptionMessage('Invalid set read offset type, expected a string or an integer.');
+
+        isset($set[false]);
+    }
+
+    public function testOffsetGetThrowsForInvalidOffsetType(): void
+    {
+        $set = $this->createFromList(['foo', 'bar', 'baz']);
+
+        $this->expectException(Exception\InvalidOffsetException::class);
+        $this->expectExceptionMessage('Invalid set read offset type, expected a string or an integer.');
+
+        $set[false];
+    }
+
+    public function testOffsetUnsetThrows(): void
+    {
+        $set = $this->createFromList(['foo', 'bar', 'baz']);
+
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage('Cannot use object of type Psl\Collection\Set as array');
+
+        unset($set['foo']);
     }
 }

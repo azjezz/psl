@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Psl\Collection;
 
 use Closure;
+use Error;
+use Psl\Collection\Exception\RuntimeException;
 use Psl\Dict;
 use Psl\Iter;
 
@@ -611,5 +613,76 @@ final readonly class Map implements MapInterface
                     return Map::fromArray($array);
                 },
             );
+    }
+
+    /**
+     * Determines if the specified offset exists in the current map.
+     *
+     * @param mixed $offset An offset to check for.
+     *
+     * @throws Exception\InvalidOffsetException If the offset type is not valid.
+     *
+     * @return bool Returns true if the specified offset exists, false otherwise.
+     *
+     * @psalm-assert array-key $offset
+     *
+     * @psalm-mutation-free
+     */
+    #[\Override]
+    public function offsetExists(mixed $offset): bool
+    {
+        if (!is_int($offset) && !is_string($offset)) {
+            throw new Exception\InvalidOffsetException(
+                'Invalid map read offset type, expected a string or an integer.',
+            );
+        }
+
+        /** @var Tk $offset - technically, we don't know if the offset is of type Tk, but we can assume it is, as this causes no "harm". */
+        return $this->contains($offset);
+    }
+
+    /**
+     * Returns the value at the specified offset.
+     *
+     * @param mixed $offset The offset to retrieve.
+     *
+     * @throws Exception\InvalidOffsetException If the offset type is not valid.
+     * @throws Exception\OutOfBoundsException If the offset is out-of-bounds.
+     *
+     * @return Tv|null The value at the specified offset, null if the offset does not exist.
+     *
+     * @psalm-mutation-free
+     *
+     * @psalm-assert array-key $offset
+     */
+    #[\Override]
+    public function offsetGet(mixed $offset): mixed
+    {
+        if (!is_int($offset) && !is_string($offset)) {
+            throw new Exception\InvalidOffsetException(
+                'Invalid map read offset type, expected a string or an integer.',
+            );
+        }
+
+        /** @var Tk $offset - technically, we don't know if the offset is of type Tk, but we can assume it is, as this causes no "harm". */
+        return $this->at($offset);
+    }
+
+    /**
+     * @throws Error
+     */
+    #[\Override]
+    public function offsetSet(mixed $offset, mixed $value): never
+    {
+        throw new Error(sprintf('Cannot use object of type %s as array', get_class($this)));
+    }
+
+    /**
+     * @throws Error
+     */
+    #[\Override]
+    public function offsetUnset(mixed $offset): never
+    {
+        throw new Error(sprintf('Cannot use object of type %s as array', get_class($this)));
     }
 }

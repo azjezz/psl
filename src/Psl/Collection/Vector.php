@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Psl\Collection;
 
 use Closure;
+use Error;
+use Psl\Collection\Exception\RuntimeException;
 use Psl\Dict;
 use Psl\Iter;
 use Psl\Vec;
@@ -591,5 +593,70 @@ final readonly class Vector implements VectorInterface
              */
             static fn(array $chunk): Vector => static::fromArray($chunk),
         ));
+    }
+
+    /**
+     * Determines if the specified offset exists in the current vector.
+     *
+     * @param mixed $offset An offset to check for.
+     *
+     * @throws Exception\InvalidOffsetException If the offset type is not a positive integer.
+     *
+     * @return bool Returns true if the specified offset exists, false otherwise.
+     *
+     * @psalm-mutation-free
+     *
+     * @psalm-assert int<0, max> $offset
+     */
+    #[\Override]
+    public function offsetExists(mixed $offset): bool
+    {
+        if (!is_int($offset) || $offset < 0) {
+            throw new Exception\InvalidOffsetException('Invalid vector read offset type, expected a positive integer.');
+        }
+
+        return $this->contains($offset);
+    }
+
+    /**
+     * Returns the value at the specified offset.
+     *
+     * @param mixed $offset The offset to retrieve.
+     *
+     * @throws Exception\InvalidOffsetException If the offset type is not a positive integer.
+     * @throws Exception\OutOfBoundsException If the offset does not exist.
+     *
+     * @return T|null The value at the specified offset, null if the offset does not exist.
+     *
+     * @psalm-mutation-free
+     *
+     * @psalm-assert int<0, max> $offset
+     */
+    #[\Override]
+    public function offsetGet(mixed $offset): mixed
+    {
+        if (!is_int($offset) || $offset < 0) {
+            throw new Exception\InvalidOffsetException('Invalid vector read offset type, expected a positive integer.');
+        }
+
+        return $this->at($offset);
+    }
+
+    /**
+     * @throws Error
+     */
+    #[\Override]
+    public function offsetSet(mixed $offset, mixed $value): never
+    {
+        throw new Error(sprintf('Cannot use object of type %s as array', get_class($this)));
+    }
+
+    /**
+     * @throws Error
+     */
+    #[\Override]
+    public function offsetUnset(mixed $offset): never
+    {
+        throw new Error(sprintf('Cannot use object of type %s as array', get_class($this)));
     }
 }

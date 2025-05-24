@@ -18,11 +18,9 @@ use Closure;
  * @extends AccessibleCollectionInterface<Tk, Tv>
  * @extends MutableCollectionInterface<Tk, Tv>
  * @extends MutableIndexAccessInterface<Tk, Tv>
- * @extends ArrayAccess<Tk, Tv>
  */
 interface MutableAccessibleCollectionInterface extends
     AccessibleCollectionInterface,
-    ArrayAccess,
     MutableCollectionInterface,
     MutableIndexAccessInterface
 {

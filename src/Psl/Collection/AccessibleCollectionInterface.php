@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Collection;
 
+use ArrayAccess;
 use Closure;
 
 /**
@@ -16,8 +17,9 @@ use Closure;
  *
  * @extends CollectionInterface<Tk, Tv>
  * @extends IndexAccessInterface<Tk, Tv>
+ * @extends ArrayAccess<Tk, Tv>
  */
-interface AccessibleCollectionInterface extends CollectionInterface, IndexAccessInterface
+interface AccessibleCollectionInterface extends CollectionInterface, IndexAccessInterface, ArrayAccess
 {
     /**
      * Returns a `AccessibleCollectionInterface` containing the values of the current
