@@ -72,8 +72,6 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Create an iterator from an iterable.
      *
-     * @psalm-suppress DocblockTypeContradiction - Psalm gets lost on Generator, which is a perfectly valid iterable type.
-     *
      * @template Tsk
      * @template Tsv
      *
@@ -127,9 +125,6 @@ final class Iterator implements Countable, SeekableIterator
         return false;
     }
 
-    /**
-     * @psalm-suppress PossiblyNullReference
-     */
     private function save(): void
     {
         if ($this->generator) {
@@ -172,8 +167,6 @@ final class Iterator implements Countable, SeekableIterator
      * @param int<0, max> $offset
      *
      * @throws Exception\OutOfBoundsException If $offset is out-of-bounds.
-     *
-     * @psalm-suppress ParamNameMismatch
      */
     #[\Override]
     public function seek(int $offset): void
@@ -187,7 +180,6 @@ final class Iterator implements Countable, SeekableIterator
             do {
                 $this->save();
                 $this->next();
-                /** @psalm-suppress PossiblyNullReference - ->next() and ->save() don't mutate ->generator. */
                 if (!$this->generator->valid()) {
                     $this->generator = null;
                     throw new Exception\OutOfBoundsException('Position is out-of-bounds.');
@@ -226,8 +218,6 @@ final class Iterator implements Countable, SeekableIterator
 
     /**
      * @return int<0, max>
-     *
-     * @psalm-suppress PossiblyNullReference
      */
     #[\Override]
     public function count(): int

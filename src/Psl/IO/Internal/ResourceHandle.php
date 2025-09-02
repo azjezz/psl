@@ -34,8 +34,6 @@ use function substr;
 /**
  * @internal
  *
- * @psalm-suppress PossiblyInvalidArgument
- *
  * @codeCoverageIgnore
  *
  * @mago-expect lint:best-practices/no-else-clause
@@ -106,7 +104,6 @@ class ResourceHandle implements
 
             Psl\invariant($readable, 'Handle is not readable.');
 
-            /** @psalm-suppress UnusedFunctionCall */
             stream_set_read_buffer($stream, 0);
 
             $this->readWatcher = EventLoop::onReadable($this->stream, function (): void {

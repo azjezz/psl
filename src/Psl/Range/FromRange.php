@@ -131,8 +131,6 @@ final readonly class FromRange implements LowerBoundRangeInterface
      * @return Iter\Iterator<int, int>
      *
      * @psalm-mutation-free
-     *
-     * @psalm-suppress ImpureMethodCall
      */
     #[\Override]
     public function getIterator(): Iter\Iterator

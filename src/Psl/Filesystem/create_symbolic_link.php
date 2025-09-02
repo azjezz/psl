@@ -37,7 +37,6 @@ function create_symbolic_link(string $source, string $destination): void
         try {
             namespace\delete_directory($destination, true);
         } catch (Exception\NotDirectoryException) {
-            /** @psalm-suppress MissingThrowsDocblock - $destination is a file. */
             namespace\delete_file($destination);
         }
     } catch (Exception\NotFoundException) {

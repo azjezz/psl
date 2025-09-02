@@ -12,8 +12,6 @@ use function date_default_timezone_get;
  * @internal
  *
  * @psalm-mutation-free
- *
- * @psalm-suppress ImpureFunctionCall - `date_default_timezone_get()` is mutation free, as it performs a read-only operation.
  */
 function default_timezone(): Timezone
 {

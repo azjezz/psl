@@ -16,8 +16,6 @@ use function zend_version;
 function get_zend_version(): string
 {
     /**
-     * @psalm-suppress ImpureFunctionCall
-     *
      * @var non-empty-string
      */
     return zend_version();

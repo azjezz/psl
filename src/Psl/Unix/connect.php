@@ -27,6 +27,5 @@ function connect(string $path, null|Duration $timeout = null): Network\StreamSoc
 
     $socket = Network\Internal\socket_connect("unix://{$path}", timeout: $timeout);
 
-    /** @psalm-suppress MissingThrowsDocblock */
     return new Network\Internal\Socket($socket);
 }

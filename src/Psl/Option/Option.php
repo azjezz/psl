@@ -13,8 +13,6 @@ use Psl\Type;
  *
  * @implements Comparison\Comparable<Option<T>>
  * @implements Comparison\Equable<Option<T>>
- *
- * @psalm-suppress ClassMustBeFinal
  */
 final readonly class Option implements Comparison\Comparable, Comparison\Equable
 {

@@ -16,9 +16,6 @@ use function array_shift;
  * @implements ChannelInterface<T>
  *
  * @internal
- *
- * @psalm-suppress LessSpecificReturnStatement
- * @psalm-suppress MoreSpecificReturnType
  */
 final class BoundedChannelState implements ChannelInterface
 {

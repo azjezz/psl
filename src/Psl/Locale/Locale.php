@@ -900,7 +900,6 @@ enum Locale: string
      * @return non-empty-string|null The script of the locale, or null if not applicable.
      *
      * @psalm-mutation-free
-     * @psalm-suppress RiskyTruthyFalsyComparison
      */
     public function getScript(): null|string
     {
@@ -949,7 +948,6 @@ enum Locale: string
      * @return non-empty-string|null The alpha-2 country code, or null if not present.
      *
      * @psalm-mutation-free
-     * @psalm-suppress RiskyTruthyFalsyComparison
      */
     public function getRegion(): null|string
     {

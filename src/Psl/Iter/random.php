@@ -35,6 +35,5 @@ function random(iterable $iterable): mixed
         return $values[0];
     }
 
-    /** @psalm-suppress MissingThrowsDocblock */
     return $values[PseudoRandom\int(0, $size - 1)];
 }

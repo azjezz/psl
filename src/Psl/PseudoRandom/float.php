@@ -13,9 +13,6 @@ use Psl\Math;
  */
 function float(): float
 {
-    /**
-     * @psalm-suppress MissingThrowsDocblock $max is always > than $min
-     */
     $result = namespace\int(0, Math\INT53_MAX) / Math\INT53_MAX;
 
     return (float) $result;

@@ -85,8 +85,6 @@ final class MutableSet implements MutableSetInterface
     public static function fromItems(iterable $items): MutableSet
     {
         /**
-         * @psalm-suppress InvalidArgument
-         *
          * @var array<Ts, Ts>
          */
         $array = iterator_to_array($items);
@@ -661,7 +659,6 @@ final class MutableSet implements MutableSetInterface
     #[\Override]
     public function slice(int $start, null|int $length = null): MutableSet
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return MutableSet::fromArray(Dict\slice($this->elements, $start, $length));
     }
 
@@ -682,15 +679,7 @@ final class MutableSet implements MutableSetInterface
     #[\Override]
     public function chunk(int $size): MutableVector
     {
-        /**
-         * @psalm-suppress MissingThrowsDocblock
-         * @psalm-suppress ImpureFunctionCall
-         */
         return MutableVector::fromArray(Vec\map(
-            /**
-             * @psalm-suppress MissingThrowsDocblock
-             * @psalm-suppress ImpureFunctionCall
-             */
             Vec\chunk($this->toArray(), $size),
             /**
              * @param list<T> $chunk

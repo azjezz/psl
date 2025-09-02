@@ -554,10 +554,6 @@ trait DateTimeConvenienceMethodsTrait
     ): string {
         $timestamp = $this->getTimestamp();
 
-        /**
-         * @psalm-suppress InvalidOperand
-         * @psalm-suppress ImpureMethodCall
-         */
         return Internal\create_intl_date_formatter(
             null,
             null,
@@ -635,9 +631,6 @@ trait DateTimeConvenienceMethodsTrait
     ): string {
         $timestamp = $this->getTimestamp();
 
-        /**
-         * @psalm-suppress ImpureMethodCall
-         */
         return Internal\create_intl_date_formatter(
             $date_style,
             $time_style,

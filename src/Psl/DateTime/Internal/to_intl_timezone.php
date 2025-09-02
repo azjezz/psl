@@ -13,8 +13,6 @@ use Psl\Str\Byte;
  * @pure
  *
  * @internal
- *
- * @psalm-suppress ImpureMethodCall
  */
 function to_intl_timezone(Timezone $timezone): IntlTimeZone
 {

@@ -24,8 +24,6 @@ use const LOCK_UN;
 use const SEEK_END;
 
 /**
- * @psalm-suppress PossiblyInvalidArgument
- *
  * @internal
  */
 final class ResourceHandle extends IO\Internal\ResourceHandle implements

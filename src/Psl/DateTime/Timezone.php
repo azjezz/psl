@@ -513,7 +513,6 @@ enum Timezone: string
     {
         $intl_timezone = Internal\to_intl_timezone($this);
         $timestamp_millis = $temporal->getTimestamp()->getSeconds() * MILLISECONDS_PER_SECOND;
-        /** @psalm-suppress ImpureMethodCall - mutation free */
         $intl_timezone->getOffset($timestamp_millis, $local, $raw_offset, $dst_offset);
 
         return Duration::milliseconds($raw_offset + $dst_offset);
@@ -529,7 +528,6 @@ enum Timezone: string
      */
     public function getRawOffset(): Duration
     {
-        /** @psalm-suppress ImpureMethodCall - mutation free */
         return Duration::milliseconds(Internal\to_intl_timezone($this)->getRawOffset());
     }
 
@@ -548,7 +546,6 @@ enum Timezone: string
     {
         $intl_timezone = Internal\to_intl_timezone($this);
         $timestamp_millis = $temporal->getTimestamp()->getSeconds() * MILLISECONDS_PER_SECOND;
-        /** @psalm-suppress ImpureMethodCall - mutation free */
         $intl_timezone->getOffset($timestamp_millis, $local, $_, $dst_offset);
 
         return Duration::milliseconds($dst_offset);
@@ -565,7 +562,6 @@ enum Timezone: string
      */
     public function usesDaylightSavingTime(): bool
     {
-        /** @psalm-suppress ImpureMethodCall - mutation free */
         return Internal\to_intl_timezone($this)->useDaylightTime();
     }
 
@@ -581,7 +577,6 @@ enum Timezone: string
      */
     public function getDaylightSavingTimeSavings(): Duration
     {
-        /** @psalm-suppress ImpureMethodCall - mutation free */
         return Duration::milliseconds(Internal\to_intl_timezone($this)->getDSTSavings());
     }
 
@@ -592,7 +587,6 @@ enum Timezone: string
      */
     public function hasTheSameRulesAs(Timezone $other): bool
     {
-        /** @psalm-suppress ImpureMethodCall - mutation free */
         return Internal\to_intl_timezone($this)->hasSameRules(Internal\to_intl_timezone($other));
     }
 }

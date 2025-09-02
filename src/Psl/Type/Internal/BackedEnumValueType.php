@@ -91,9 +91,6 @@ final readonly class BackedEnumValueType extends Type
      *
      * @return value-of<T>
      *
-     * @psalm-suppress MismatchingDocblockReturnType,DocblockTypeContradiction
-     *     Psalm has issues with value-of<T> when used with an enum
-     *
      * @mago-expect lint:no-empty-catch-clause
      */
     #[Override]
@@ -117,9 +114,6 @@ final readonly class BackedEnumValueType extends Type
      * @return value-of<T>
      *
      * @psalm-assert value-of<T> $value
-     *
-     * @psalm-suppress MismatchingDocblockReturnType
-     *     Psalm has issues with value-of<T> when used with an enum
      */
     #[Override]
     public function assert(mixed $value): string|int

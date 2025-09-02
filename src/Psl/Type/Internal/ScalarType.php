@@ -16,12 +16,7 @@ final readonly class ScalarType extends UnionType
      */
     public function __construct()
     {
-        /** @psalm-suppress MissingThrowsDocblock */
-        parent::__construct(
-            /** @psalm-suppress MissingThrowsDocblock */
-            new UnionType(new StringType(), new BoolType()),
-            new NumType(),
-        );
+        parent::__construct(new UnionType(new StringType(), new BoolType()), new NumType());
     }
 
     #[\Override]

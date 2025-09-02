@@ -18,8 +18,6 @@ use function class_exists;
 function defined(string $class_name): bool
 {
     /**
-     * @psalm-suppress ImpureFunctionCall - call is pure.
-     *
      * @var bool
      */
     return class_exists($class_name, false);

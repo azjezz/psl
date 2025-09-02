@@ -16,8 +16,6 @@ use Psl\DateTime\Timestamp;
  * particularly useful in asynchronous programming where operations
  * might need to be interrupted or handled differently if they take
  * too long to complete.
- *
- * @psalm-suppress MissingThrowsDocblock
  */
 final class OptionalIncrementalTimeout
 {

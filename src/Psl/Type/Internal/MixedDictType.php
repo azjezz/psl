@@ -43,8 +43,6 @@ final readonly class MixedDictType extends Type\Type
             /**
              * @var array-key $k
              * @var mixed $v
-             *
-             * @psalm-suppress MixedAssignment
              */
             foreach ($value as $k => $v) {
                 $iterating = false;

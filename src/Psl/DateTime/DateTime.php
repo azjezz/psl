@@ -177,8 +177,6 @@ final readonly class DateTime implements DateTimeInterface
      * @throws Exception\UnexpectedValueException If any of the provided date or time components do not align with calendar expectations.
      *
      * @pure
-     *
-     * @psalm-suppress ImpureMethodCall
      */
     public static function fromParts(
         Timezone $timezone,
@@ -244,8 +242,6 @@ final readonly class DateTime implements DateTimeInterface
      * @see Timezone::default()
      *
      * @psalm-mutation-free
-     *
-     * @psalm-suppress ImpureMethodCall
      */
     #[\Override]
     public static function fromTimestamp(Timestamp $timestamp, null|Timezone $timezone = null): static

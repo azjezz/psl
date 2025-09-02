@@ -32,7 +32,6 @@ final class UnboundedSender implements SenderInterface
     #[\Override]
     public function send(mixed $message): void
     {
-        /** @psalm-suppress MissingThrowsDocblock */
         $this->state->send($message);
     }
 

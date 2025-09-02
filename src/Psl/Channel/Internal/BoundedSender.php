@@ -52,7 +52,6 @@ final class BoundedSender implements SenderInterface
             $this->state->waitForSpace($suspension);
             $suspension->suspend();
 
-            /** @psalm-suppress MissingThrowsDocblock */
             $this->state->send($message);
         } finally {
             $this->suspension = null;

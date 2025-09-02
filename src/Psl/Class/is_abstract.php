@@ -13,6 +13,5 @@ use ReflectionClass;
  */
 function is_abstract(string $class_name): bool
 {
-    /** @psalm-suppress MissingThrowsDocblock */
     return (new ReflectionClass($class_name))->isAbstract();
 }

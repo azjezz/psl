@@ -23,7 +23,6 @@ use const PREG_RECURSION_LIMIT_ERROR;
  */
 function get_preg_error(string $function): null|array
 {
-    /** @psalm-suppress ImpureFunctionCall */
     $code = preg_last_error();
     if ($code === PREG_NO_ERROR) {
         return null;
@@ -41,11 +40,8 @@ function get_preg_error(string $function): null|array
     $message = $messages[$code] ?? 'Unknown error';
     $result = ['message' => $message, 'code' => $code, 'pattern_message' => null];
 
-    /** @psalm-suppress ImpureFunctionCall */
     $error = error_get_last();
-    /** @psalm-suppress MissingThrowsDocblock */
     if (null !== $error && Str\starts_with($error['message'], $function)) {
-        /** @psalm-suppress MissingThrowsDocblock */
         $result['pattern_message'] = Str\strip_prefix($error['message'], Str\format('%s(): ', $function));
     }
 

@@ -38,12 +38,7 @@ namespace Psl\Vec;
  *
  * @return non-empty-list<T>
  *
- * @psalm-suppress InvalidReturnType
- * @psalm-suppress InvalidReturnStatement
- * @psalm-suppress InvalidOperand
- * @psalm-suppress MixedOperand
- *
- * @see https://github.com/vimeo/psalm/issues/2152#issuecomment-533363310
+ * @pure
  */
 function range(int|float $start, int|float $end, int|float|null $step = null): array
 {

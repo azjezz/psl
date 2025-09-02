@@ -56,8 +56,6 @@ final readonly class MixedVecType extends Type\Type
 
         /**
          * @var mixed $v
-         *
-         * @psalm-suppress MixedAssignment
          */
         foreach ($value as $v) {
             $result[] = $v;

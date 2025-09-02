@@ -14,7 +14,6 @@ use Psl\Str\Byte;
  *
  * @psalm-mutation-free
  *
- * @psalm-suppress ImpureMethodCall
  * @mago-expect lint:best-practices/no-else-clause
  */
 function format_rfc3339(

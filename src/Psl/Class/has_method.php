@@ -13,6 +13,5 @@ use ReflectionClass;
  */
 function has_method(string $class_name, string $method_name): bool
 {
-    /** @psalm-suppress MissingThrowsDocblock */
     return (new ReflectionClass($class_name))->hasMethod($method_name);
 }

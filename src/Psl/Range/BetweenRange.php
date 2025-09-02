@@ -185,7 +185,6 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
     #[\Override]
     public function withUpperInclusive(bool $upper_inclusive): static
     {
-        /** @psalm-suppress MissingThrowsDocblock */
         return new static($this->lowerBound, $this->upperBound, $upper_inclusive);
     }
 
@@ -206,8 +205,6 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      * @return Iter\Iterator<int, int>
      *
      * @psalm-mutation-free
-     *
-     * @psalm-suppress ImpureMethodCall
      */
     #[\Override]
     public function getIterator(): Iter\Iterator

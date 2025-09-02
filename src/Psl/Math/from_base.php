@@ -23,7 +23,6 @@ use Psl\Str\Byte;
  */
 function from_base(string $number, int $from_base): int
 {
-    /** @psalm-suppress MissingThrowsDocblock */
     $limit = div(INT64_MAX, $from_base);
     $result = 0;
     foreach (Byte\chunk($number) as $digit) {

@@ -42,7 +42,6 @@ final readonly class ShapeType extends Type\Type
         private array $elements_types,
         private bool $allow_unknown_fields = false,
     ) {
-        /** @psalm-suppress ImpureFunctionCall - This implementation is pure. */
         $this->requiredElements = array_filter(
             $elements_types,
             static fn(Type\TypeInterface $element): bool => !$element->isOptional(),
@@ -90,7 +89,6 @@ final readonly class ShapeType extends Type\Type
 
         /** @var mixed $additionalValue */
         foreach (array_diff_key($value, $this->elements_types) as $key => $additionalValue) {
-            /** @psalm-suppress MixedAssignment type inference is broken by additional (unknown) fields */
             $coerced[$key] = $additionalValue;
         }
 

@@ -12,8 +12,6 @@ use Psl\DateTime\Timezone;
  *
  * @psalm-mutation-free
  *
- * @psalm-suppress ImpureMethodCall - `IntlCalender::setDateTime()` is mutation free, as it performs a read-only operation.
- *
  * @infection-ignore-all
  *
  * @mago-expect lint:best-practices/no-else-clause

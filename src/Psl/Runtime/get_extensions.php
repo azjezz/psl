@@ -16,8 +16,6 @@ function get_extensions(): array
     // we know that this cannot be empty, since some extensions cannot be disabled ( e.g: Core )
 
     /**
-     * @psalm-suppress ImpureFunctionCall - no mutation is caused by this function.
-     *
      * @var non-empty-list<non-empty-string>
      */
     return get_loaded_extensions();

@@ -52,7 +52,6 @@ function execute(
     $arguments = Vec\map($arguments, Internal\escape_argument(...));
     $commandline = Str\join([$command, ...$arguments], ' ');
 
-    /** @psalm-suppress MissingThrowsDocblock - safe ( $offset is within-of-bounds ) */
     if (Str\contains($commandline, "\0")) {
         throw new Exception\PossibleAttackException('NULL byte detected.');
     }

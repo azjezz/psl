@@ -32,7 +32,6 @@ function string(int $length, null|string $alphabet = null): string
 
     $alphabet ??= Str\ALPHABET_ALPHANUMERIC;
     $alphabet_size = Byte\length($alphabet);
-    /** @psalm-suppress MissingThrowsDocblock */
     $bits = (int) Math\ceil(Math\log($alphabet_size, 2.0));
     if ($bits < 1 || $bits > 56) {
         throw new Exception\InvalidArgumentException('$alphabet\'s length must be in [2^1, 2^56]');

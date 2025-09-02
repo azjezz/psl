@@ -29,7 +29,6 @@ function parse(
 ): int {
     $formatter = namespace\create_intl_date_formatter($date_style, $time_style, $pattern, $timezone, $locale);
 
-    /** @psalm-suppress ImpureMethodCall */
     $timestamp = $formatter->parse($raw_string);
     if ($timestamp === false) {
         // Only show pattern in the exception if it was provided.

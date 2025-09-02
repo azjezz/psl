@@ -99,7 +99,6 @@ final class KeyedSemaphore
 
                 unset($this->waits[$key]);
 
-                /** @psalm-suppress InvalidPropertyAssignmentValue */
                 $this->ingoing[$key]--;
                 if ($this->ingoing[$key] === 0) {
                     unset($this->ingoing[$key]);
