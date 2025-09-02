@@ -19,7 +19,7 @@ final class ContainsKeyTest extends TestCase
      *
      * @dataProvider provideData
      */
-    public function testContainsKey(bool $expected, iterable $iterable, $key): void
+    public function testContainsKey(bool $expected, iterable $iterable, mixed $key): void
     {
         static::assertSame($expected, Iter\contains_key($iterable, $key));
     }

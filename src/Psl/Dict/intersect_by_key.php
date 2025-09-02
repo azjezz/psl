@@ -37,7 +37,7 @@ function intersect_by_key(iterable $first, iterable $second, iterable ...$rest):
              *
              * @return array<Tk, Tv>
              */
-            static fn(iterable $iterable): array => from_iterable($iterable),
+            from_iterable(...),
         ),
     );
 }

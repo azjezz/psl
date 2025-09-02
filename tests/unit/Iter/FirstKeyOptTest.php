@@ -14,7 +14,7 @@ final class FirstKeyOptTest extends TestCase
     /**
      * @dataProvider provideDataSome
      */
-    public function testFirstKeyOptSome($expected, iterable $iterable): void
+    public function testFirstKeyOptSome(mixed $expected, iterable $iterable): void
     {
         $result = Iter\first_key_opt($iterable);
 

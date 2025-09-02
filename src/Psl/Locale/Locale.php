@@ -851,7 +851,7 @@ enum Locale: string
     public function getDisplayName(null|Locale $locale = null): string
     {
         /** @var non-empty-string */
-        return NativeLocale::getDisplayName($this->value, $locale?->value ?? $this->value);
+        return NativeLocale::getDisplayName($this->value, $locale->value ?? $this->value);
     }
 
     /**
@@ -879,7 +879,7 @@ enum Locale: string
     public function getDisplayLanguage(null|Locale $locale = null): string
     {
         /** @var non-empty-string */
-        return NativeLocale::getDisplayLanguage($this->value, $locale?->value ?? $this->value);
+        return NativeLocale::getDisplayLanguage($this->value, $locale->value ?? $this->value);
     }
 
     /**
@@ -935,7 +935,7 @@ enum Locale: string
      */
     public function getDisplayRegion(null|Locale $locale = null): null|string
     {
-        $displayRegion = NativeLocale::getDisplayRegion($this->value, $locale?->value ?? $this->value);
+        $displayRegion = NativeLocale::getDisplayRegion($this->value, $locale->value ?? $this->value);
         if (!$displayRegion) {
             return null;
         }

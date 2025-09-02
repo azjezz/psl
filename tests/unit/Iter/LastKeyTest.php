@@ -13,7 +13,7 @@ final class LastKeyTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testLastKey($expected, iterable $iterable): void
+    public function testLastKey(null|int|array $expected, iterable $iterable): void
     {
         $result = Iter\last_key($iterable);
 

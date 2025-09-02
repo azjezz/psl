@@ -17,7 +17,7 @@ function later(): void
 {
     $suspension = EventLoop::getSuspension();
 
-    EventLoop::defer(static fn(): null => $suspension->resume());
+    EventLoop::defer($suspension->resume(...));
 
     $suspension->suspend();
 }

@@ -589,7 +589,7 @@ final readonly class Vector implements VectorInterface
              *
              * @return Vector<T>
              */
-            static fn(array $chunk): Vector => static::fromArray($chunk),
+            static::fromArray(...),
         ));
     }
 }

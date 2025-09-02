@@ -24,3 +24,7 @@ trait-name = { psr = false }
 interface-name = { psr = false }
 class-name = { psr = false }
 no-global = { enabled = false }
+literal-named-argument = { enabled = false }
+no-boolean-flag-parameter = { enabled = false }
+no-boolean-literal-comparison = { enabled = false }
+no-error-control-operator = { enabled = false }

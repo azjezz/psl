@@ -14,7 +14,7 @@ final class LastOptTest extends TestCase
     /**
      * @dataProvider provideDataSome
      */
-    public function testLastSome($expected, iterable $iterable): void
+    public function testLastSome(null|string $expected, iterable $iterable): void
     {
         $result = Iter\last_opt($iterable);
 

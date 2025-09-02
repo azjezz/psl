@@ -14,7 +14,7 @@ final class FirstKeyTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testFirstKey($expected, iterable $iterable): void
+    public function testFirstKey(null|int|string $expected, iterable $iterable): void
     {
         $result = Iter\first_key($iterable);
 

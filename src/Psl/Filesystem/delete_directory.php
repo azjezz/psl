@@ -20,8 +20,7 @@ use function rmdir;
  * @throws Exception\NotDirectoryException If $directory is not a directory.
  * @throws Exception\NotReadableException If $recursive is true, and $directory is not readable.
  *
- * @mago-expect best-practices/no-boolean-literal-comparison
- * @mago-expect best-practices/no-else-clause
+ * @mago-expect lint:no-else-clause
  */
 function delete_directory(string $directory, bool $recursive = false): void
 {
@@ -32,7 +31,7 @@ function delete_directory(string $directory, bool $recursive = false): void
             /**
              * @param non-empty-string $node
              */
-            static fn(string $node): bool => namespace\is_symbolic_link($node),
+            namespace\is_symbolic_link(...),
         );
 
         foreach ($symbolic_links as $symbolic_link) {

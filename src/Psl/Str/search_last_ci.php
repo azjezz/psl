@@ -19,8 +19,6 @@ use function mb_strripos;
  * @throws Exception\OutOfBoundsException If the $offset is out-of-bounds.
  *
  * @return null|int<0, max>
- *
- * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function search_last_ci(
     string $haystack,

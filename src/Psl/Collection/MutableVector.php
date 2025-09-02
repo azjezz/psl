@@ -734,7 +734,7 @@ final class MutableVector implements MutableVectorInterface
              *
              * @return MutableVector<T>
              */
-            static fn(array $chunk): MutableVector => MutableVector::fromArray($chunk),
+            MutableVector::fromArray(...),
         ));
     }
 

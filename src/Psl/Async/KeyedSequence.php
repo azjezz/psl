@@ -24,7 +24,7 @@ use function count;
  *
  * @see KeyedSemaphore
  *
- * @mago-expect best-practices/no-else-clause
+ * @mago-expect lint:no-else-clause
  */
 final class KeyedSequence
 {
@@ -73,7 +73,7 @@ final class KeyedSequence
         try {
             return ($this->operation)($key, $input);
         } finally {
-            $this->pending[$key] = $this->pending[$key] ?? [];
+            $this->pending[$key] ??= [];
             $suspension = array_shift($this->pending[$key]);
             if ($this->pending[$key] === []) {
                 unset($this->pending[$key]);

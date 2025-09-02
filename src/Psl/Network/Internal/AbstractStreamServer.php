@@ -40,8 +40,6 @@ abstract class AbstractStreamServer implements StreamServerInterface
     /**
      * @param resource $impl
      * @param int<1, max> $idleConnections
-     *
-     * @mago-expect best-practices/no-boolean-literal-comparison
      */
     protected function __construct(mixed $impl, int $idleConnections = self::DEFAULT_IDLE_CONNECTIONS)
     {

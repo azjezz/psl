@@ -27,7 +27,7 @@ use function is_array;
  *
  * @implements PromiseInterface<T>
  *
- * @mago-expect best-practices/no-else-clause
+ * @mago-expect lint:no-else-clause
  */
 final readonly class Awaitable implements PromiseInterface
 {

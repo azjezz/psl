@@ -38,8 +38,7 @@ use const ARRAY_FILTER_USE_BOTH;
  */
 function filter_with_key(iterable $iterable, null|Closure $predicate = null): array
 {
-    $predicate =
-        $predicate ??
+    $predicate ??=
         /**
          * @param Tk $_k
          * @param Tv $v

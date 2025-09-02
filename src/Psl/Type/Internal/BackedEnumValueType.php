@@ -93,7 +93,7 @@ final readonly class BackedEnumValueType extends Type
      * @psalm-suppress MismatchingDocblockReturnType,DocblockTypeContradiction
      *     Psalm has issues with value-of<T> when used with an enum
      *
-     * @mago-expect best-practices/no-empty-catch-clause
+     * @mago-expect lint:no-empty-catch-clause
      */
     #[\Override]
     public function coerce(mixed $value): string|int

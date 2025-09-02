@@ -16,5 +16,5 @@ function reverse(string $string, Encoding $encoding = Encoding::Utf8): string
     $chunks = chunk($string, encoding: $encoding);
 
     /** @psalm-suppress ImpureFunctionCall */
-    return join(Vec\reverse($chunks), '');
+    return namespace\join(Vec\reverse($chunks), '');
 }

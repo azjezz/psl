@@ -19,8 +19,6 @@ use function mb_strrpos;
  * @throws Exception\OutOfBoundsException If the $offset is out-of-bounds.
  *
  * @return null|int<0, max>
- *
- * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function search_last(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::Utf8): null|int
 {

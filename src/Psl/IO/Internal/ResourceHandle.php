@@ -38,7 +38,7 @@ use function substr;
  *
  * @codeCoverageIgnore
  *
- * @mago-expect best-practices/no-else-clause
+ * @mago-expect lint:no-else-clause
  */
 class ResourceHandle implements
     IO\ReadHandleInterface,
@@ -228,8 +228,6 @@ class ResourceHandle implements
 
     /**
      * {@inheritDoc}
-     *
-     * @mago-expect best-practices/no-boolean-literal-comparison
      */
     #[\Override]
     public function tryWrite(string $bytes): int
@@ -266,8 +264,6 @@ class ResourceHandle implements
 
     /**
      * {@inheritDoc}
-     *
-     * @mago-expect best-practices/no-boolean-literal-comparison
      */
     #[\Override]
     public function tell(): int
@@ -316,8 +312,6 @@ class ResourceHandle implements
 
     /**
      * {@inheritDoc}
-     *
-     * @mago-expect best-practices/no-boolean-literal-comparison
      */
     #[\Override]
     public function tryRead(null|int $max_bytes = null): string
@@ -369,8 +363,6 @@ class ResourceHandle implements
 
     /**
      * {@inheritDoc}
-     *
-     * @mago-expect best-practices/no-boolean-literal-comparison
      */
     #[\Override]
     public function close(): void

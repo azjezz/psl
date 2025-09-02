@@ -37,7 +37,7 @@ function diff(iterable $first, iterable $second, iterable ...$rest): array
              *
              * @return array<Tk, Tv>
              */
-            static fn(iterable $iterable): array => from_iterable($iterable),
+            from_iterable(...),
         ),
     );
 }

@@ -13,7 +13,7 @@ final class LastKeyOptTest extends TestCase
     /**
      * @dataProvider provideDataSome
      */
-    public function testLastKeySome($expected, iterable $iterable): void
+    public function testLastKeySome(int|array $expected, iterable $iterable): void
     {
         $result = Iter\last_key_opt($iterable);
 

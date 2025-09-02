@@ -17,8 +17,6 @@ use function unlink;
  * @throws Exception\RuntimeException If unable to delete the file.
  * @throws Exception\NotFileException If $file is not a file.
  * @throws Exception\NotFoundException If $file is not found.
- *
- * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function delete_file(string $file): void
 {

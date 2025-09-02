@@ -79,21 +79,17 @@ abstract class TypeTest extends TestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider getValidValues
      */
-    public function testMatches($value): void
+    public function testMatches(mixed $value): void
     {
         static::assertTrue($this->getType()->matches($value));
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider getInvalidValues
      */
-    public function testInvalidMatches($value): void
+    public function testInvalidMatches(mixed $value): void
     {
         static::assertFalse($this->getType()->matches($value));
     }
@@ -104,7 +100,7 @@ abstract class TypeTest extends TestCase
      *
      * @dataProvider getValidCoercions
      */
-    final public function testValidCoercion($value, $expected): void
+    final public function testValidCoercion(mixed $value, mixed $expected): void
     {
         $actual = $this->getType()->coerce($value);
 
@@ -115,7 +111,7 @@ abstract class TypeTest extends TestCase
     /**
      * @dataProvider getInvalidCoercions
      */
-    public function testInvalidCoercion($value): void
+    public function testInvalidCoercion(mixed $value): void
     {
         $this->expectException(CoercionException::class);
 
@@ -129,7 +125,7 @@ abstract class TypeTest extends TestCase
     /**
      * @dataProvider getValidValues
      */
-    final public function testValidAssertion($value): void
+    final public function testValidAssertion(mixed $value): void
     {
         $out = $this->getType()->assert($value);
 
@@ -139,7 +135,7 @@ abstract class TypeTest extends TestCase
     /**
      * @dataProvider getInvalidValues
      */
-    public function testInvalidAssertion($value): void
+    public function testInvalidAssertion(mixed $value): void
     {
         $this->expectException(AssertException::class);
 

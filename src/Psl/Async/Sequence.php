@@ -21,7 +21,7 @@ use function array_slice;
  *
  * @see Semaphore
  *
- * @mago-expect best-practices/no-else-clause
+ * @mago-expect lint:no-else-clause
  */
 final class Sequence
 {

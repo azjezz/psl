@@ -51,10 +51,10 @@ final class ServerTest extends TestCase
     {
         $server = TCP\Server::create('127.0.0.1');
 
-        $first = Async\run(static fn(): Network\SocketInterface => $server->nextConnection());
+        $first = Async\run($server->nextConnection(...));
 
         [$second_connection, $client_one, $client_two] = Async\concurrently([
-            static fn(): Network\SocketInterface => $server->nextConnection(),
+            $server->nextConnection(...),
             static fn(): Network\SocketInterface => TCP\connect('127.0.0.1', $server->getLocalAddress()->port),
             static fn(): Network\SocketInterface => TCP\connect('127.0.0.1', $server->getLocalAddress()->port),
         ]);
@@ -79,7 +79,7 @@ final class ServerTest extends TestCase
     {
         $server = TCP\Server::create('127.0.0.1');
         $incoming = $server->incoming();
-        Async\Scheduler::delay(DateTime\Duration::milliseconds(1), static fn(): null => $server->close());
+        Async\Scheduler::delay(DateTime\Duration::milliseconds(1), $server->close(...));
         Async\Scheduler::defer(static function () use ($server): void {
             TCP\connect('127.0.0.1', $server->getLocalAddress()->port);
         });

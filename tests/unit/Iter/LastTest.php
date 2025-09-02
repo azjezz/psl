@@ -14,7 +14,7 @@ final class LastTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testLast($expected, iterable $iterable): void
+    public function testLast(null|string $expected, iterable $iterable): void
     {
         $result = Iter\last($iterable);
 

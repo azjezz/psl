@@ -8,10 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Psl\Math;
 use Psl\Range;
 
-/**
- * @mago-expect best-practices/no-empty-loop
- * @mago-expect best-practices/no-else-clause
- */
 final class FromRangeTest extends TestCase
 {
     public function testContains(): void
@@ -81,7 +77,7 @@ final class FromRangeTest extends TestCase
         foreach ($range as $value) {
             if (null !== $last) {
                 static::assertSame($last + 1, $value);
-            } else {
+            } else { // @mago-expect lint:no-else-clause
                 static::assertSame(10, $value);
             }
 
@@ -101,7 +97,7 @@ final class FromRangeTest extends TestCase
         $this->expectExceptionMessage('f');
 
         foreach ($range as $_) {
-            // do nothing.
+            // @mago-expect lint:no-empty-loop
         }
     }
 }

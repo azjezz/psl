@@ -34,7 +34,7 @@ use function is_array;
 function filter(iterable $iterable, null|Closure $predicate = null): array
 {
     /** @var (Closure(Tv): bool) $predicate */
-    $predicate = $predicate ?? static fn(mixed $value): bool => (bool) $value;
+    $predicate ??= static fn(mixed $value): bool => (bool) $value;
 
     if (is_array($iterable)) {
         return array_filter(
@@ -42,7 +42,7 @@ function filter(iterable $iterable, null|Closure $predicate = null): array
             /**
              * @param Tv $v
              */
-            static fn(mixed $v): bool => $predicate($v),
+            $predicate(...),
         );
     }
 

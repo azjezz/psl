@@ -209,7 +209,7 @@ abstract class AbstractMapTest extends TestCase
             3 => 'qux',
         ]);
 
-        $mapped = $map->map(static fn(string $item): string => Str\uppercase($item));
+        $mapped = $map->map(Str\uppercase(...));
 
         static::assertInstanceOf($this->mapClass, $mapped);
         static::assertSame([

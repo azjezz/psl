@@ -104,7 +104,7 @@ final class MutableMapTypeTest extends TypeTest
      * @param MutableMapInterface<array-key, mixed>|mixed $b
      */
     #[\Override]
-    protected function equals($a, $b): bool
+    protected function equals(mixed $a, mixed $b): bool
     {
         if (Type\instance_of(MutableMapInterface::class)->matches($a)) {
             $a = $a->toArray();

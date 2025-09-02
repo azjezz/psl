@@ -16,7 +16,7 @@ final class MaxByTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testMaxBy($expected, array $values, Closure $fun): void
+    public function testMaxBy(null|string|int|array $expected, array $values, Closure $fun): void
     {
         static::assertSame($expected, Math\max_by($values, $fun));
     }
@@ -26,7 +26,7 @@ final class MaxByTest extends TestCase
         yield [
             'bazqux',
             ['foo', 'bar', 'baz', 'qux', 'foobar', 'bazqux'],
-            static fn(string $value): int => Str\length($value),
+            Str\length(...),
         ];
 
         yield [
@@ -36,7 +36,7 @@ final class MaxByTest extends TestCase
                 ['foo', 'bar'],
                 ['foo', 'bar', 'baz'],
             ],
-            static fn(array $arr): int => Iter\count($arr),
+            Iter\count(...),
         ];
 
         yield [

@@ -24,7 +24,7 @@ final class UniqueByTest extends TestCase
             [
                 ['a', 'saif'],
                 ['a', 'b', 'c', 'd', 'saif', 'jack'],
-                static fn(string $value): int => Str\length($value),
+                Str\length(...),
             ],
             [
                 ['foo', 'bar', '@baz'],

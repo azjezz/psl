@@ -96,7 +96,7 @@ final class MutableVectorTypeTest extends TypeTest
      * @param MutableVectorInterface<mixed>|mixed $b
      */
     #[\Override]
-    protected function equals($a, $b): bool
+    protected function equals(mixed $a, mixed $b): bool
     {
         if (Type\instance_of(MutableVectorInterface::class)->matches($a)) {
             $a = $a->toArray();

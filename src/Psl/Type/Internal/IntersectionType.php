@@ -46,7 +46,7 @@ final readonly class IntersectionType extends Type
      *
      * @return Tl&Tr
      *
-     * @mago-expect best-practices/no-empty-catch-clause
+     * @mago-expect lint:no-empty-catch-clause
      */
     #[\Override]
     public function coerce(mixed $value): mixed

@@ -687,7 +687,7 @@ final class MutableSet implements MutableSetInterface
              *
              * @return MutableSet<T>
              */
-            static fn(array $chunk): MutableSet => MutableSet::fromArray($chunk),
+            MutableSet::fromArray(...),
         ));
     }
 

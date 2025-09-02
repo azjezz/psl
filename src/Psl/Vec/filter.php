@@ -34,14 +34,14 @@ use function is_array;
 function filter(iterable $iterable, null|Closure $predicate = null): array
 {
     /** @var (Closure(T): bool) $predicate */
-    $predicate = $predicate ?? static fn(mixed $value): bool => (bool) $value;
+    $predicate ??= static fn(mixed $value): bool => (bool) $value;
     if (is_array($iterable)) {
         return array_values(array_filter(
             $iterable,
             /**
              * @param T $t
              */
-            static fn(mixed $t): bool => $predicate($t),
+            $predicate(...),
         ));
     }
 

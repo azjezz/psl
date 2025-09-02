@@ -16,8 +16,6 @@ use function grapheme_strlen;
  * @return int<0, max>
  *
  * @pure
- *
- * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function length(string $string): int
 {

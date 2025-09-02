@@ -14,8 +14,6 @@ use function getcwd;
  * @throws Psl\Exception\InvariantViolationException If unable to retrieve the current working directory.
  *
  * @return non-empty-string
- *
- * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function current_dir(): string
 {

@@ -30,7 +30,7 @@ function string(int $length, null|string $alphabet = null): string
         return '';
     }
 
-    $alphabet = $alphabet ?? Str\ALPHABET_ALPHANUMERIC;
+    $alphabet ??= Str\ALPHABET_ALPHANUMERIC;
     $alphabet_size = Byte\length($alphabet);
     /** @psalm-suppress MissingThrowsDocblock */
     $bits = (int) Math\ceil(Math\log($alphabet_size, 2.0));

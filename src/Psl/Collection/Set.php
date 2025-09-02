@@ -608,7 +608,7 @@ final readonly class Set implements SetInterface
              *
              * @return Set<T>
              */
-            static fn(array $chunk): Set => static::fromArray($chunk),
+            static::fromArray(...),
         ));
     }
 }

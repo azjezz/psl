@@ -23,7 +23,7 @@ final class PipeTest extends TestCase
 
     public function testItCombinesMultipleFunctionsThatDealWithDifferentTypes(): void
     {
-        $x = Fun\pipe(static fn(string $x): int => Str\length($x), static fn(int $y): string => $y . '!');
+        $x = Fun\pipe(Str\length(...), static fn(int $y): string => $y . '!');
 
         static::assertSame('5!', $x('Hello'));
     }

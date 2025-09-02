@@ -47,7 +47,7 @@ Async\main(static function (): int {
         $seconds->getTotalSeconds(),
     );
 
-    Async\Scheduler::delay($seconds, static fn(): null => $input->close());
+    Async\Scheduler::delay($seconds, $input->close(...));
 
     $start = DateTime\Timestamp::monotonic();
     $i = 0;
@@ -64,6 +64,7 @@ Async\main(static function (): int {
             Async\later();
         } while (true);
     } catch (IO\Exception\AlreadyClosedException) {
+        // @mago-expect lint:no-empty-catch-clause
     }
 
     $duration = DateTime\Timestamp::monotonic()->since($start);

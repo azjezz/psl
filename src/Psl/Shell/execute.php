@@ -39,8 +39,7 @@ use function strpbrk;
  * @throws Exception\RuntimeException In case $working_directory doesn't exist, or unable to create a new process.
  * @throws Exception\TimeoutException If $timeout is reached before being able to read the process stream.
  *
- * @mago-expect best-practices/no-boolean-literal-comparison
- * @mago-expect best-practices/no-else-clause
+ * @mago-expect lint:no-else-clause
  */
 function execute(
     string $command,

@@ -96,7 +96,7 @@ final class VectorTypeTest extends TypeTest
      * @param VectorInterface<mixed>|mixed $b
      */
     #[\Override]
-    protected function equals($a, $b): bool
+    protected function equals(mixed $a, mixed $b): bool
     {
         if (Type\instance_of(VectorInterface::class)->matches($a)) {
             $a = $a->toArray();

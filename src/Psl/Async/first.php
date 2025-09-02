@@ -17,7 +17,7 @@ namespace Psl\Async;
  *
  * @return T
  *
- * @mago-expect best-practices/loop-does-not-iterate
+ * @mago-expect lint:loop-does-not-iterate
  */
 function first(iterable $awaitables): mixed
 {

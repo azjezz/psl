@@ -176,7 +176,7 @@ abstract class AbstractVectorTest extends TestCase
             'qux',
         ]);
 
-        $mapped = $vector->map(static fn(string $item): string => Str\uppercase($item));
+        $mapped = $vector->map(Str\uppercase(...));
 
         static::assertInstanceOf($this->vectorClass, $mapped);
         static::assertSame([

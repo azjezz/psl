@@ -26,7 +26,7 @@ use function count;
  * @template Tin
  * @template Tout
  *
- * @mago-expect best-practices/no-else-clause
+ * @mago-expect lint:no-else-clause
  */
 final class KeyedSemaphore
 {
@@ -68,7 +68,7 @@ final class KeyedSemaphore
      */
     public function waitFor(string|int $key, mixed $input): mixed
     {
-        $this->ingoing[$key] = $this->ingoing[$key] ?? 0;
+        $this->ingoing[$key] ??= 0;
         if ($this->ingoing[$key] === $this->concurrencyLimit) {
             $suspension = EventLoop::getSuspension();
             $this->pending[$key][] = $suspension;

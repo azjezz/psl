@@ -19,8 +19,6 @@ use function readlink;
  * @throws Exception\RuntimeException If unable to retrieve the target of $symbolic_link.
  *
  * @return non-empty-string
- *
- * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function read_symbolic_link(string $symbolic_link): string
 {

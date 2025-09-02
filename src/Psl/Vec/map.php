@@ -37,7 +37,7 @@ function map(iterable $iterable, Closure $function): array
             /**
              * @param Tv $v
              */
-            static fn(mixed $v): mixed => $function($v),
+            $function(...),
             $iterable,
         ));
     }

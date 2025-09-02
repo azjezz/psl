@@ -18,8 +18,6 @@ use Psl\Str;
  * @throws Exception\NotFoundException If $file is not found.
  *
  * @return int<0, max>
- *
- * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function file_size(string $file): int
 {

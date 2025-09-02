@@ -14,7 +14,7 @@ final class FirstOptTest extends TestCase
     /**
      * @dataProvider provideDataSome
      */
-    public function testFirstSome($expected, iterable $iterable): void
+    public function testFirstSome(null|string $expected, iterable $iterable): void
     {
         $result = Iter\first_opt($iterable);
 

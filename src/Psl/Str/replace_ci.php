@@ -34,5 +34,5 @@ function replace_ci(string $haystack, string $needle, string $replacement, Encod
         throw new Exception\InvalidArgumentException($error->getMessage(), previous: $error);
     }
 
-    return join($pieces, $replacement);
+    return namespace\join($pieces, $replacement);
 }

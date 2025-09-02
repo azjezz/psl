@@ -12,7 +12,7 @@ final class SearchTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testSearch($expected, iterable $iterable, callable $predicate): void
+    public function testSearch(null|string $expected, iterable $iterable, callable $predicate): void
     {
         static::assertSame($expected, Iter\search($iterable, $predicate));
     }

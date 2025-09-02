@@ -87,7 +87,7 @@ final class MapTypeTest extends TypeTest
      * @param MapInterface<array-key, mixed>|mixed $b
      */
     #[\Override]
-    protected function equals($a, $b): bool
+    protected function equals(mixed $a, mixed $b): bool
     {
         if (Type\instance_of(MapInterface::class)->matches($a)) {
             $a = $a->toArray();
