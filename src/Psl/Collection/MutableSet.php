@@ -679,15 +679,7 @@ final class MutableSet implements MutableSetInterface
     #[\Override]
     public function chunk(int $size): MutableVector
     {
-        return MutableVector::fromArray(Vec\map(
-            Vec\chunk($this->toArray(), $size),
-            /**
-             * @param list<T> $chunk
-             *
-             * @return MutableSet<T>
-             */
-            MutableSet::fromArray(...),
-        ));
+        return MutableVector::fromArray(Vec\map(Vec\chunk($this->toArray(), $size), MutableSet::fromArray(...)));
     }
 
     /**
