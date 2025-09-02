@@ -90,7 +90,7 @@ final class BoundedChannelState implements ChannelInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     #[\Override]
     public function close(): void
@@ -188,7 +188,7 @@ final class BoundedChannelState implements ChannelInterface
         }
 
         $item = array_shift($this->messages);
-        /** @psalm-suppress InvalidPropertyAssignmentValue - The size is always in sync with messages */
+        // @mago-expect analysis:invalid-property-assignment-value - The size is always in sync with messages.
         $this->size--;
 
         $suspension = array_shift($this->waitingForSpace);

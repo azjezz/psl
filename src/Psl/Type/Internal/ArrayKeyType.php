@@ -19,7 +19,6 @@ final readonly class ArrayKeyType extends UnionType
      */
     public function __construct()
     {
-        /** @psalm-suppress MissingThrowsDocblock */
         parent::__construct(new StringType(), new IntType());
     }
 

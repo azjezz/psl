@@ -54,7 +54,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      *
      * @pure
      *
-     * @mago-expect lint:no-else-clause
+     * @mago-expect lint:best-practices/no-else-clause
      */
     public static function fromParts(int $hours, int $minutes = 0, int $seconds = 0, int $nanoseconds = 0): self
     {
@@ -256,7 +256,6 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      */
     public function getTotalHours(): float
     {
-        /** @psalm-suppress InvalidOperand */
         return (
             $this->hours
             + ($this->minutes / MINUTES_PER_HOUR)
@@ -273,7 +272,6 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      */
     public function getTotalMinutes(): float
     {
-        /** @psalm-suppress InvalidOperand */
         return (
             ($this->hours * MINUTES_PER_HOUR)
             + $this->minutes
@@ -290,7 +288,6 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      */
     public function getTotalSeconds(): float
     {
-        /** @psalm-suppress InvalidOperand */
         return (
             $this->seconds
             + ($this->minutes * SECONDS_PER_MINUTE)
@@ -307,7 +304,6 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      */
     public function getTotalMilliseconds(): float
     {
-        /** @psalm-suppress InvalidOperand */
         return (
             ($this->hours * SECONDS_PER_HOUR * MILLISECONDS_PER_SECOND)
             + ($this->minutes * SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND)
@@ -324,7 +320,6 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      */
     public function getTotalMicroseconds(): float
     {
-        /** @psalm-suppress InvalidOperand */
         return (
             ($this->hours * SECONDS_PER_HOUR * MICROSECONDS_PER_SECOND)
             + ($this->minutes * SECONDS_PER_MINUTE * MICROSECONDS_PER_SECOND)
@@ -639,8 +634,6 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      * @param int<0, max> $max_decimals
      *
      * @psalm-mutation-free
-     *
-     * @psalm-suppress MissingThrowsDocblock
      */
     public function toString(int $max_decimals = 3): string
     {

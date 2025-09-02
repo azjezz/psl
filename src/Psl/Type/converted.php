@@ -16,8 +16,6 @@ use Closure;
  * @param TypeInterface<O> $into
  * @param (Closure(I): O) $converter
  *
- * @ara-return TypeInterface<O>
- *
  * @return TypeInterface<O>
  */
 function converted(TypeInterface $from, TypeInterface $into, Closure $converter): TypeInterface

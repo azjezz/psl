@@ -41,8 +41,6 @@ use function max;
 function streaming(iterable $handles, null|Duration $timeout = null): Generator
 {
     /**
-     * @psalm-suppress UnnecessaryVarAnnotation
-     *
      * @var Channel\ReceiverInterface<array{0: T|null, 1: Result\ResultInterface<string>}> $receiver
      * @var Channel\SenderInterface<array{0: T|null, 1: Result\ResultInterface<string>}> $sender
      */

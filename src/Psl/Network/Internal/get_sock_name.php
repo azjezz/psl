@@ -21,7 +21,7 @@ use function substr;
  *
  * @codeCoverageIgnore
  *
- * @mago-expect lint:no-else-clause
+ * @mago-expect lint:best-practices/no-else-clause
  */
 function get_sock_name(mixed $socket): Network\Address
 {

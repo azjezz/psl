@@ -28,7 +28,7 @@ function pipe(): array
 {
     $sockets = Internal\suppress(
         /**
-         * @return list{resource, resource}
+         * @return array{0: resource, 1: resource}
          */
         static function (): array {
             $domain = OS\is_windows() ? STREAM_PF_INET : STREAM_PF_UNIX;

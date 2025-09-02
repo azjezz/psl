@@ -20,7 +20,7 @@ final readonly class BackedEnumType extends Type\Type
     /**
      * @psalm-mutation-free
      *
-     * @param class-string<T> $enum
+     * @param enum-string<T> $enum
      */
     public function __construct(
         private readonly string $enum,
@@ -41,6 +41,7 @@ final readonly class BackedEnumType extends Type\Type
     public function coerce(mixed $value): BackedEnum
     {
         if ($value instanceof $this->enum) {
+            /** @var T */
             return $value;
         }
 
@@ -49,6 +50,7 @@ final readonly class BackedEnumType extends Type\Type
                 $string_value = Type\string()->coerce($value);
 
                 if ($string_value === $case->value) {
+                    /** @var T */
                     return $case;
                 }
 
@@ -58,6 +60,7 @@ final readonly class BackedEnumType extends Type\Type
             $integer_value = Type\int()->coerce($value);
 
             if ($integer_value === $case->value) {
+                /** @var T */
                 return $case;
             }
         }
@@ -76,6 +79,7 @@ final readonly class BackedEnumType extends Type\Type
     public function assert(mixed $value): BackedEnum
     {
         if ($value instanceof $this->enum) {
+            /** @var T */
             return $value;
         }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
+use Override;
 use Psl\DateTime\Duration;
 use Psl\Math;
 
@@ -33,11 +34,11 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function reachedEndOfDataSource(): bool
     {
         $this->assertHandleIsOpen();
@@ -46,11 +47,13 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
     }
 
     /**
-     * {@inheritDoc}
+     * @param ?positive-int $max_bytes the maximum number of bytes to read
      *
      * @psalm-external-mutation-free
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tryRead(null|int $max_bytes = null): string
     {
         $this->assertHandleIsOpen();
@@ -75,22 +78,26 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
     }
 
     /**
-     * {@inheritDoc}
+     * @param ?positive-int $max_bytes the maximum number of bytes to read
      *
      * @psalm-external-mutation-free
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         return $this->tryRead($max_bytes);
     }
 
     /**
-     * {@inheritDoc}
+     * @param int<0, max> $offset
      *
      * @psalm-external-mutation-free
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function seek(int $offset): void
     {
         $this->assertHandleIsOpen();
@@ -99,11 +106,13 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
      *
      * @psalm-mutation-free
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tell(): int
     {
         $this->assertHandleIsOpen();
@@ -112,11 +121,13 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
      *
      * @psalm-external-mutation-free
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tryWrite(string $bytes, null|Duration $timeout = null): int
     {
         $this->assertHandleIsOpen();
@@ -135,27 +146,29 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
         }
 
         $this->buffer = $new;
-        $this->offset = ($offset = $this->offset + $bytes_length) >= 0 ? $offset : 0;
+        $this->offset += $bytes_length;
         return $bytes_length;
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
      *
      * @psalm-external-mutation-free
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function write(string $bytes, null|Duration $timeout = null): int
     {
         return $this->tryWrite($bytes);
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @psalm-external-mutation-free
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function close(): void
     {
         $this->closed = true;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\DateTime;
 
+use Override;
 use Psl\Default\DefaultInterface;
 
 /**
@@ -35,7 +36,17 @@ enum FormatPattern: string implements DefaultInterface
     case LogTimestamp = 'yyyy-MM-dd HH:mm:ss,SSS';
     case FullDateTime = 'EEEE, MMMM dd, yyyy HH:mm:ss';
 
-    #[\Override]
+    /**
+     * Returns the default date format pattern.
+     *
+     * This method implements the DefaultInterface, providing a standard way to access the default enum case.
+     * The ISO 8601 format is returned as the default, which is widely used and recognized.
+     *
+     * @return FormatPattern::Iso8601 The default date format pattern.
+     *
+     * @pure
+     */
+    #[Override]
     public static function default(): static
     {
         return static::Iso8601;

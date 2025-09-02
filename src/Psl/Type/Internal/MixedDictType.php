@@ -36,6 +36,7 @@ final readonly class MixedDictType extends Type\Type
 
         $key_type = Type\array_key();
         $k = null;
+        /** @var bool $iterating */
         $iterating = true;
 
         try {

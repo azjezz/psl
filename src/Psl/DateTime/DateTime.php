@@ -229,10 +229,8 @@ final readonly class DateTime implements DateTimeInterface
         }
 
         $timestamp_in_seconds = (int) ($calendar->getTime() / (float) MILLISECONDS_PER_SECOND);
-        /** @psalm-suppress MissingThrowsDocblock */
         $timestamp = Timestamp::fromParts($timestamp_in_seconds, $nanoseconds);
 
-        /** @psalm-suppress MissingThrowsDocblock */
         return new self($timezone, $timestamp, $year, $month, $day, $hours, $minutes, $seconds, $nanoseconds);
     }
 
@@ -267,7 +265,6 @@ final readonly class DateTime implements DateTimeInterface
         $second = $calendar->get(IntlCalendar::FIELD_SECOND);
         $nanoseconds = $timestamp->getNanoseconds();
 
-        /** @psalm-suppress MissingThrowsDocblock */
         return new static($timezone, $timestamp, $year, $month, $day, $hour, $minute, $second, $nanoseconds);
     }
 

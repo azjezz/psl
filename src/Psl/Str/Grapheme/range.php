@@ -45,15 +45,17 @@ function range(string $string, RangeInterface $range): string
     $offset = 0;
     $length = null;
     if ($range instanceof LowerBoundRangeInterface) {
-        /** @var int<0, max> $offset */
         $offset = $range->getLowerBound();
     }
 
     if ($range instanceof UpperBoundRangeInterface) {
-        /** @var int<0, max> $length */
         $length = $range->getUpperBound() - $offset;
         if ($range->isUpperInclusive()) {
             $length += 1;
+        }
+
+        if ($length < 0) {
+            $length = 0;
         }
     }
 

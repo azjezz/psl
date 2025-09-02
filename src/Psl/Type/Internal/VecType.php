@@ -19,6 +19,8 @@ use function is_iterable;
  * @extends Type\Type<list<Tv>>
  *
  * @internal
+ *
+ * @mago-expect analysis:mixed-assignment
  */
 final readonly class VecType extends Type\Type
 {
@@ -69,6 +71,7 @@ final readonly class VecType extends Type\Type
         $value_type = $this->value_type;
         $i = null;
         $v = null;
+        /** @var bool $iterating */
         $iterating = true;
 
         try {
@@ -116,10 +119,7 @@ final readonly class VecType extends Type\Type
         $v = null;
 
         try {
-            /**
-             * @var Tv $v
-             * @var array-key $i
-             */
+            /** @var Tv $v */
             foreach ($value as $i => $v) {
                 $result[] = $value_type->assert($v);
             }

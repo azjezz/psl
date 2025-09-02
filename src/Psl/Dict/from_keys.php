@@ -10,7 +10,7 @@ use Closure;
  * Returns a dict where each value is the result of calling the given
  * function on the corresponding key.
  *
- * @template Tk
+ * @template Tk as array-key
  * @template Tv
  *
  * @param iterable<Tk> $keys

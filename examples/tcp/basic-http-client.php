@@ -10,6 +10,9 @@ use Psl\TCP;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
+/**
+ * @param non-empty-string $host
+ */
 function request(string $method, string $host, string $path): string
 {
     $client = TCP\connect($host, 80);

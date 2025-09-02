@@ -7,6 +7,7 @@ namespace Psl\Str;
 /**
  * Wraps a string to a given number of characters.
  *
+ * @param int<0, max> $width the width at which the string is wrapped.
  * @param non-empty-string $break the line is broken using the optional break parameter
  * @param bool $cut If the cut is set to true, the string is always wrapped at or before the specified width.
  *                  so if you have a word that is larger than the given width, it is broken apart.
@@ -35,7 +36,9 @@ function wrap(
     $string_length = length($string, $encoding);
     $break_length = length($break, $encoding);
     $result = '';
+    /** @var int<0, max> $last_space */
     $last_start = 0;
+    /** @var int<0, max> $last_space */
     $last_space = 0;
     for ($current = 0; $current < $string_length; ++$current) {
         $char = slice($string, $current, 1, $encoding);
@@ -45,8 +48,9 @@ function wrap(
         }
 
         if ($possible_break === $break) {
-            /** @psalm-suppress InvalidArgument - length is positive */
-            $result .= slice($string, $last_start, $current - $last_start + $break_length, $encoding);
+            /** @var int<0, max> $slice_length */
+            $slice_length = $current - $last_start + $break_length;
+            $result .= slice($string, $last_start, $slice_length, $encoding);
             $current += $break_length - 1;
             $last_space = $current + 1;
             $last_start = $last_space;
@@ -56,7 +60,6 @@ function wrap(
         if (' ' === $char) {
             $length = $current - $last_start;
             if ($length >= $width) {
-                /** @psalm-suppress InvalidArgument - length is positive */
                 $result .= slice($string, $last_start, $length, $encoding) . $break;
                 $last_start = $current + 1;
             }
@@ -67,7 +70,6 @@ function wrap(
 
         $length = $current - $last_start;
         if ($length >= $width && $cut && $last_start >= $last_space) {
-            /** @psalm-suppress InvalidArgument - length is positive */
             $result .= slice($string, $last_start, $length, $encoding) . $break;
             $last_space = $current;
             $last_start = $last_space;
@@ -75,15 +77,18 @@ function wrap(
         }
 
         if (($current - $last_start) >= $width && $last_start < $last_space) {
-            /** @psalm-suppress InvalidArgument - length is positive */
-            $result .= slice($string, $last_start, $last_space - $last_start, $encoding) . $break;
+            /** @var int<0, max> $slice_length */
+            $slice_length = $last_space - $last_start;
+            $result .= slice($string, $last_start, $slice_length, $encoding) . $break;
             $last_start = ++$last_space;
         }
     }
 
     if ($last_start !== $current) {
-        /** @psalm-suppress InvalidArgument - length is positive */
-        $result .= slice($string, $last_start, $current - $last_start, $encoding);
+        /** @var int<0, max> $slice_length */
+        $slice_length = $current - $last_start;
+
+        $result .= slice($string, $last_start, $slice_length, $encoding);
     }
 
     return $result;

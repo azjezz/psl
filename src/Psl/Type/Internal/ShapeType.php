@@ -149,7 +149,7 @@ final readonly class ShapeType extends Type\Type
         } catch (CoercionException $e) {
             throw match (true) {
                 $element_value_found => CoercionException::withValue(
-                    $array[$element] ?? null,
+                    $element === null ? null : $array[$element] ?? null,
                     $this->toString(),
                     PathExpression::path($element),
                     $e,
@@ -207,7 +207,7 @@ final readonly class ShapeType extends Type\Type
         } catch (AssertException $e) {
             throw match (true) {
                 $element_value_found => AssertException::withValue(
-                    $value[$element] ?? null,
+                    $element === null ? null : $array[$element] ?? null,
                     $this->toString(),
                     PathExpression::path($element),
                     $e,

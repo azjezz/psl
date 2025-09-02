@@ -15,8 +15,6 @@ use function is_string;
 use function ltrim;
 
 /**
- * @ara-extends Type\Type<uint>
- *
  * @extends Type\Type<int<0, max>>
  *
  * @internal
@@ -24,8 +22,6 @@ use function ltrim;
 final readonly class UIntType extends Type\Type
 {
     /**
-     * @ara-assert-if-true unit $value
-     *
      * @psalm-assert-if-true int<0, max> $value
      */
     #[\Override]
@@ -36,8 +32,6 @@ final readonly class UIntType extends Type\Type
 
     /**
      * @throws CoercionException
-     *
-     * @ara-return uint
      *
      * @return int<0, max>
      */
@@ -80,8 +74,6 @@ final readonly class UIntType extends Type\Type
     }
 
     /**
-     * @ara-assert uint $value
-     *
      * @psalm-assert int<0, max> $value
      *
      * @throws AssertException

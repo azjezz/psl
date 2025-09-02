@@ -39,12 +39,11 @@ function pad_right(
 ): string {
     do {
         $length = length($string, $encoding);
-        if ($length >= $total_length) {
+        $remaining = $total_length - $length;
+        if ($remaining <= 0) {
             return $string;
         }
 
-        /** @var int<0, max> $remaining */
-        $remaining = $total_length - $length;
         if ($remaining <= length($pad_string, $encoding)) {
             $pad_string = slice($pad_string, 0, $remaining, $encoding);
         }

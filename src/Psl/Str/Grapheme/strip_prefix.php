@@ -20,6 +20,5 @@ function strip_prefix(string $string, string $prefix): string
         return $string;
     }
 
-    /** @psalm-suppress MissingThrowsDocblock */
     return slice($string, length($prefix));
 }

@@ -7,9 +7,7 @@ namespace Psl\Type;
 /**
  * @psalm-pure
  *
- * @psalm-suppress ImpureStaticVariable - The $instance is always the same and is considered pure.
- *
- * @ara-return TypeInterface<i8>
+ * @mago-expect analysis:impure-static-variable - The $instance is always the same and is considered pure.
  *
  * @return TypeInterface<int<-128, 127>>
  */

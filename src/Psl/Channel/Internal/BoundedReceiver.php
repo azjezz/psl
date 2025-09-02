@@ -32,7 +32,7 @@ final class BoundedReceiver implements ReceiverInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     #[\Override]
     public function receive(): mixed
@@ -60,7 +60,7 @@ final class BoundedReceiver implements ReceiverInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     #[\Override]
     public function tryReceive(): mixed

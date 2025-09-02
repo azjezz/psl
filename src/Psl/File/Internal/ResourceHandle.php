@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\File\Internal;
 
+use Override;
 use Psl\Async;
 use Psl\File;
 use Psl\File\Lock;
@@ -44,18 +45,20 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function getPath(): string
     {
         return $this->path;
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function getSize(): int
     {
         if (null === $this->stream) {
@@ -89,11 +92,11 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      *
      * @codeCoverageIgnore
      */
-    #[\Override]
+    #[Override]
     public function lock(LockType $type): Lock
     {
         while (true) {
@@ -106,15 +109,16 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tryLock(LockType $type): Lock
     {
         if (null === $this->stream) {
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
+        $would_block = false;
         $operations = LOCK_NB | ($type === LockType::Exclusive ? LOCK_EX : LOCK_SH);
         $success = @flock($this->stream, $operations, $would_block);
         // @codeCoverageIgnoreStart

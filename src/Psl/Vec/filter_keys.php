@@ -36,17 +36,14 @@ use const ARRAY_FILTER_USE_KEY;
  */
 function filter_keys(iterable $iterable, null|Closure $predicate = null): array
 {
-    /** @var (Closure(Tk): bool) $predicate */
-    $predicate ??= static fn(mixed $value): bool => (bool) $value;
+    $predicate ??=
+        /**
+         * @param Tk $value
+         */
+        static fn(mixed $value): bool => (bool) $value;
+
     if (is_array($iterable)) {
-        return array_values(array_filter(
-            $iterable,
-            /**
-             * @param Tk $t
-             */
-            $predicate(...),
-            ARRAY_FILTER_USE_KEY,
-        ));
+        return array_values(array_filter($iterable, $predicate, ARRAY_FILTER_USE_KEY));
     }
 
     $result = [];

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\IO\Internal;
 
+use Override;
 use Psl;
 use Psl\Async;
 use Psl\DateTime\Duration;
@@ -34,11 +35,10 @@ use function substr;
  * @internal
  *
  * @psalm-suppress PossiblyInvalidArgument
- * @psalm-suppress MissingThrowsDocblock
  *
  * @codeCoverageIgnore
  *
- * @mago-expect lint:no-else-clause
+ * @mago-expect lint:best-practices/no-else-clause
  */
 class ResourceHandle implements
     IO\ReadHandleInterface,
@@ -85,7 +85,6 @@ class ResourceHandle implements
         bool $seek,
         private readonly bool $close,
     ) {
-        /** @psalm-suppress RedundantConditionGivenDocblockType - The stream is always a resource, but we want to make sure it is a stream resource. */
         $this->stream = Type\resource('stream')->assert($stream);
 
         stream_set_blocking($stream, false);
@@ -216,9 +215,11 @@ class ResourceHandle implements
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function write(string $bytes, null|Duration $timeout = null): int
     {
         Psl\invariant($this->writeSequence !== null, 'The resource handle is not writable.');
@@ -227,9 +228,11 @@ class ResourceHandle implements
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tryWrite(string $bytes): int
     {
         if (!is_resource($this->stream)) {
@@ -247,9 +250,9 @@ class ResourceHandle implements
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function seek(int $offset): void
     {
         if (!is_resource($this->stream)) {
@@ -263,9 +266,11 @@ class ResourceHandle implements
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tell(): int
     {
         if (!is_resource($this->stream)) {
@@ -283,9 +288,9 @@ class ResourceHandle implements
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function reachedEndOfDataSource(): bool
     {
         if (!is_resource($this->stream)) {
@@ -300,20 +305,11 @@ class ResourceHandle implements
     }
 
     /**
-     * {@inheritDoc}
+     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     *
+     * @inheritDoc
      */
-    #[\Override]
-    public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
-    {
-        Psl\invariant($this->readSequence !== null, 'The resource handle is not readable.');
-
-        return $this->readSequence->waitFor([$max_bytes, $timeout]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    #[\Override]
+    #[Override]
     public function tryRead(null|int $max_bytes = null): string
     {
         if (!is_resource($this->stream)) {
@@ -333,7 +329,7 @@ class ResourceHandle implements
         }
 
         if ($result === false) {
-            /** @var array{message: string} $error */
+            /** @var array{message?: string} $error */
             $error = error_get_last();
 
             throw new Exception\RuntimeException($error['message'] ?? 'unknown error.');
@@ -347,24 +343,22 @@ class ResourceHandle implements
     }
 
     /**
-     * {@inheritDoc}
+     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     *
+     * @inheritDoc
      */
-    #[\Override]
-    public function getStream(): mixed
+    #[Override]
+    public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
-        /** @var resource|null */
-        return $this->stream;
-    }
+        Psl\invariant($this->readSequence !== null, 'The resource handle is not readable.');
 
-    public function __destruct()
-    {
-        $this->close();
+        return $this->readSequence->waitFor([$max_bytes, $timeout]);
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function close(): void
     {
         EventLoop::cancel($this->readWatcher);
@@ -384,7 +378,7 @@ class ResourceHandle implements
                 $this->stream = null;
                 $result = @fclose($stream);
                 if ($result === false) {
-                    /** @var array{message: string} $error */
+                    /** @var array{message?: string} $error */
                     $error = error_get_last();
 
                     throw new Exception\RuntimeException($error['message'] ?? 'unknown error.');
@@ -397,5 +391,22 @@ class ResourceHandle implements
             // if manually closed using `fclose($handle->getStream)`.
             $this->stream = null;
         }
+    }
+
+    /**
+     * @return resource|null
+     *
+     * @inheritDoc
+     */
+    #[Override]
+    public function getStream(): mixed
+    {
+        /** @var resource|null */
+        return $this->stream;
+    }
+
+    public function __destruct()
+    {
+        $this->close();
     }
 }

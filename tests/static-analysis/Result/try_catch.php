@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Psl\Tests\StaticAnalysis\Result;
+
 use Psl\Result;
 
 function test_try_catch(): null|string

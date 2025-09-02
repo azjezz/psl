@@ -16,7 +16,7 @@ use Psl\DateTime\Timezone;
  *
  * @infection-ignore-all
  *
- * @mago-expect lint:no-else-clause
+ * @mago-expect lint:best-practices/no-else-clause
  */
 function create_intl_calendar_from_date_time(
     Timezone $timezone,

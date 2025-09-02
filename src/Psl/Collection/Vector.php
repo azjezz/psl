@@ -582,14 +582,6 @@ final readonly class Vector implements VectorInterface
          * @psalm-suppress MissingThrowsDocblock
          * @psalm-suppress ImpureFunctionCall
          */
-        return static::fromArray(Vec\map(
-            Vec\chunk($this->toArray(), $size),
-            /**
-             * @param list<T> $chunk
-             *
-             * @return Vector<T>
-             */
-            static::fromArray(...),
-        ));
+        return static::fromArray(Vec\map(Vec\chunk($this->toArray(), $size), static::fromArray(...)));
     }
 }

@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
+namespace Psl\Tests\StaticAnalysis\Type;
+
 use Psl\Type;
 
 /**
- * @param 'PENDING'|'PROCESSING'|'COMPLETED'|'ERROR' $state
+ * @param 'PENDING'|'PROCESSING'|'COMPLETED'|'ERROR' $_state
  */
 function takes_valid_state(string $_state): void
 {

@@ -17,6 +17,8 @@ namespace Psl\DateTime;
  * is encouraged to avoid ambiguity, especially considering the dynamic nature of daylight saving time adjustments
  * and the historical changes in time zone definitions. Time zone identifiers like "America/Los_Angeles" automatically
  * account for these variations correctly across different dates.
+ *
+ * @mago-expect analysis:reference-to-undefined-variable
  */
 enum Timezone: string
 {

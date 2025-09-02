@@ -218,8 +218,6 @@ final readonly class Scheduler
      * Run the event loop.
      *
      * @see Driver::run()
-     *
-     * @psalm-suppress MissingThrowsDocblock
      */
     public static function run(): void
     {

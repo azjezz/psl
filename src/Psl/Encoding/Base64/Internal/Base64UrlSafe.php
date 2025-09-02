@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Encoding\Base64\Internal;
 
+use Override;
 use Psl\Encoding\Exception;
 use Psl\Regex;
 
@@ -23,12 +24,13 @@ use function pack;
 final class Base64UrlSafe extends Base64
 {
     /**
+     * @throws Exception\RangeException
+     *
      * @pure
      */
-    #[\Override]
+    #[Override]
     protected static function checkRange(string $base64): void
     {
-        /** @psalm-suppress MissingThrowsDocblock - pattern is valid */
         if (!Regex\matches($base64, '%^[a-zA-Z0-9-_]*={0,2}$%')) {
             throw new Exception\RangeException(
                 'The given string contains characters outside the base64 range for the current variant.',
@@ -42,7 +44,7 @@ final class Base64UrlSafe extends Base64
      *
      * @pure
      */
-    #[\Override]
+    #[Override]
     protected static function encode6Bits(int $bin): string
     {
         $diff = 0x41;
@@ -64,7 +66,7 @@ final class Base64UrlSafe extends Base64
      *
      * @pure
      */
-    #[\Override]
+    #[Override]
     protected static function decode6Bits(int $base64): int
     {
         $ret = -1;

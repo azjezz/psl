@@ -22,7 +22,7 @@ use function unpack;
  *
  * @internal
  *
- * @mago-expect lint:no-else-clause
+ * @mago-expect lint:best-practices/no-else-clause
  */
 abstract class Base64
 {
@@ -53,13 +53,13 @@ abstract class Base64
                 . static::encode6Bits($byte2 & 63);
         }
 
-        if ($i < $binary_length) {
+        $chunk_size = $binary_length - $i;
+
+        if ($chunk_size > 0) {
             /**
-             * @psalm-suppress InvalidArgument
-             *
              * @var array<int, int> $chunk
              */
-            $chunk = unpack('C*', Str\slice($binary, $i, $binary_length - $i, encoding: Str\Encoding::Ascii8bit));
+            $chunk = unpack('C*', Str\slice($binary, $i, $chunk_size, encoding: Str\Encoding::Ascii8bit));
             $byte0 = $chunk[1];
             if (($i + 1) < $binary_length) {
                 $byte1 = $chunk[2];
@@ -107,7 +107,6 @@ abstract class Base64
             throw new Exception\IncorrectPaddingException('The given base64 string has incorrect padding.');
         }
 
-        /** @psalm-suppress MissingThrowsDocblock */
         $base64 = Str\trim_right($base64, '=');
         $base64_length = Str\length($base64, encoding: Str\Encoding::Ascii8bit);
 
@@ -129,13 +128,12 @@ abstract class Base64
             $err |= ($char0 | $char1 | $char2 | $char3) >> 8;
         }
 
-        if ($i < $base64_length) {
+        $chunk_size = $base64_length - $i;
+        if ($chunk_size > 0) {
             /**
-             * @psalm-suppress InvalidArgument
-             *
              * @var array<int, int> $chunk
              */
-            $chunk = unpack('C*', Str\slice($base64, $i, $base64_length - $i, encoding: Str\Encoding::Ascii8bit));
+            $chunk = unpack('C*', Str\slice($base64, $i, $chunk_size, encoding: Str\Encoding::Ascii8bit));
             $char0 = static::decode6Bits($chunk[1]);
             if (($i + 2) < $base64_length) {
                 $char1 = static::decode6Bits($chunk[2]);
@@ -167,7 +165,6 @@ abstract class Base64
      */
     protected static function checkRange(string $base64): void
     {
-        /** @psalm-suppress MissingThrowsDocblock - pattern is valid */
         if (!Regex\matches($base64, '%^[a-zA-Z0-9/+]*={0,2}$%')) {
             throw new Exception\RangeException('The given base64 string contains characters outside the base64 range.');
         }

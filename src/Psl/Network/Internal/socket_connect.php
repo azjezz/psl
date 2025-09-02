@@ -8,6 +8,7 @@ use Psl\DateTime\Duration;
 use Psl\Internal;
 use Psl\Network\Exception;
 use Revolt\EventLoop;
+use Revolt\EventLoop\Suspension;
 
 use function fclose;
 use function is_resource;
@@ -32,58 +33,67 @@ use const STREAM_CLIENT_CONNECT;
  */
 function socket_connect(string $uri, array $context = [], null|Duration $timeout = null): mixed
 {
-    return Internal\suppress(static function () use ($uri, $context, $timeout): mixed {
-        $context = stream_context_create($context);
-        $socket = @stream_socket_client(
-            $uri,
-            $errno,
-            $_,
-            null,
-            STREAM_CLIENT_CONNECT | STREAM_CLIENT_ASYNC_CONNECT,
-            $context,
-        );
-        if (!$socket || $errno) {
-            throw new Exception\RuntimeException('Failed to connect to client "' . $uri . '".', $errno);
-        }
+    return Internal\suppress(
+        /**
+         * @return resource
+         */
+        static function () use ($uri, $context, $timeout): mixed {
+            $_error_message = null;
+            $error_code = null;
 
-        $suspension = EventLoop::getSuspension();
+            $context = stream_context_create($context);
+            $socket = @stream_socket_client(
+                $uri,
+                $error_code,
+                $_error_message,
+                null,
+                STREAM_CLIENT_CONNECT | STREAM_CLIENT_ASYNC_CONNECT,
+                $context,
+            );
 
-        $write_watcher = '';
-        $timeout_watcher = '';
-        if (null !== $timeout) {
-            $timeout = max($timeout->getTotalSeconds(), 0.0);
-            $timeout_watcher = EventLoop::delay($timeout, static function () use (
+            if (!$socket || $error_code) {
+                throw new Exception\RuntimeException('Failed to connect to client "' . $uri . '".', (int) $error_code);
+            }
+
+            /** @var Suspension<resource> */
+            $suspension = EventLoop::getSuspension();
+
+            $write_watcher = '';
+            $timeout_watcher = '';
+            if (null !== $timeout) {
+                $timeout = max($timeout->getTotalSeconds(), 0.0);
+                $timeout_watcher = EventLoop::delay($timeout, static function () use (
+                    $suspension,
+                    &$write_watcher,
+                    $socket,
+                ): void {
+                    EventLoop::cancel($write_watcher);
+
+                    if (is_resource($socket)) {
+                        fclose($socket);
+                    }
+
+                    $suspension->throw(new Exception\TimeoutException('Connection to socket timed out.'));
+                });
+            }
+
+            $write_watcher = EventLoop::onWritable($socket, static function () use (
                 $suspension,
-                &$write_watcher,
                 $socket,
+                $timeout_watcher,
             ): void {
-                EventLoop::cancel($write_watcher);
+                EventLoop::cancel($timeout_watcher);
 
-                /** @psalm-suppress RedundantCondition - it can be resource|closed-resource */
-                if (is_resource($socket)) {
-                    fclose($socket);
-                }
-
-                $suspension->throw(new Exception\TimeoutException('Connection to socket timed out.'));
+                $suspension->resume($socket);
             });
-        }
 
-        $write_watcher = EventLoop::onWritable($socket, static function () use (
-            $suspension,
-            $socket,
-            $timeout_watcher,
-        ): void {
-            EventLoop::cancel($timeout_watcher);
-
-            $suspension->resume($socket);
-        });
-
-        try {
-            /** @var resource */
-            return $suspension->suspend();
-        } finally {
-            EventLoop::cancel($write_watcher);
-            EventLoop::cancel($timeout_watcher);
-        }
-    });
+            try {
+                /** @var resource */
+                return $suspension->suspend();
+            } finally {
+                EventLoop::cancel($write_watcher);
+                EventLoop::cancel($timeout_watcher);
+            }
+        },
+    );
 }

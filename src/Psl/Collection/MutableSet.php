@@ -475,7 +475,12 @@ final class MutableSet implements MutableSetInterface
     #[\Override]
     public function filterWithKey(Closure $fn): MutableSet
     {
-        return $this->filter(static fn(string|int $k): bool => $fn($k, $k));
+        return $this->filter(
+            /**
+             * @param T $k
+             */
+            static fn(string|int $k): bool => $fn($k, $k),
+        );
     }
 
     /**
@@ -521,7 +526,12 @@ final class MutableSet implements MutableSetInterface
     #[\Override]
     public function mapWithKey(Closure $fn): MutableSet
     {
-        return $this->map(static fn(string|int $k): string|int => $fn($k, $k));
+        return $this->map(
+            /**
+             * @param T $k
+             */
+            static fn(string|int $k): string|int => $fn($k, $k),
+        );
     }
 
     /**

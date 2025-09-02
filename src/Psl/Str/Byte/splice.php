@@ -16,7 +16,7 @@ use function substr_replace;
  * remainder of the string will be replaced. If the length is zero, the
  * replacement will be inserted at the offset.
  *
- * @param int<0, max> $length
+ * @param null|int<0, max> $length
  *
  * @pure
  *

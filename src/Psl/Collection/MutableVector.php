@@ -719,23 +719,7 @@ final class MutableVector implements MutableVectorInterface
     #[\Override]
     public function chunk(int $size): MutableVector
     {
-        /**
-         * @psalm-suppress MissingThrowsDocblock
-         * @psalm-suppress ImpureFunctionCall
-         */
-        return static::fromArray(Vec\map(
-            /**
-             * @psalm-suppress MissingThrowsDocblock
-             * @psalm-suppress ImpureFunctionCall
-             */
-            Vec\chunk($this->toArray(), $size),
-            /**
-             * @param list<T> $chunk
-             *
-             * @return MutableVector<T>
-             */
-            MutableVector::fromArray(...),
-        ));
+        return static::fromArray(Vec\map(Vec\chunk($this->toArray(), $size), MutableVector::fromArray(...)));
     }
 
     /**

@@ -28,3 +28,10 @@ literal-named-argument = { enabled = false }
 no-boolean-flag-parameter = { enabled = false }
 no-boolean-literal-comparison = { enabled = false }
 no-error-control-operator = { enabled = false }
+
+[analyzer]
+excludes = ["tests"]
+ignore = [
+    "reference-to-undefined-variable",
+    "possibly-static-access-on-interface",
+]

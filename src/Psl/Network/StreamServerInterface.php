@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Network;
 
 use Generator;
+use Override;
 use Psl\IO;
 
 /**
@@ -17,7 +18,7 @@ interface StreamServerInterface extends IO\StreamHandleInterface, IO\CloseHandle
     /**
      * {@inheritDoc}
      */
-    #[\Override]
+    #[Override]
     public function nextConnection(): StreamSocketInterface;
 
     /**
@@ -25,6 +26,6 @@ interface StreamServerInterface extends IO\StreamHandleInterface, IO\CloseHandle
      *
      * @return Generator<null, StreamSocketInterface, void, null>
      */
-    #[\Override]
+    #[Override]
     public function incoming(): Generator;
 }

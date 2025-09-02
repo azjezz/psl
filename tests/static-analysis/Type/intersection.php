@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Psl\Tests\StaticAnalysis\Type;
+
 use Psl\Collection\Map;
 use Psl\Collection\Vector;
 use Psl\Result\ResultInterface;

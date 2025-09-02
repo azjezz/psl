@@ -55,7 +55,6 @@ final readonly class Timestamp implements TemporalInterface
             throw new Exception\UnderflowException('Subtracting nanoseconds would cause an underflow.');
         }
 
-        /** @psalm-suppress MissingThrowsDocblock */
         $seconds_adjustment = Math\div($nanoseconds, NANOSECONDS_PER_SECOND);
         $adjusted_seconds = $seconds + $seconds_adjustment;
 
@@ -70,14 +69,11 @@ final readonly class Timestamp implements TemporalInterface
 
     /**
      * Create a high-precision instance representing the current time using the system clock.
-     *
-     * @psalm-mutation-free
      */
     public static function now(): self
     {
         [$seconds, $nanoseconds] = Internal\system_time();
 
-        /** @psalm-suppress MissingThrowsDocblock */
         return self::fromParts($seconds, $nanoseconds);
     }
 
@@ -89,14 +85,11 @@ final readonly class Timestamp implements TemporalInterface
      * making it suitable for measuring durations or intervals accurately.
      *
      * @throws InvariantViolationException If the system does not provide a monotonic timer.
-     *
-     * @psalm-mutation-free
      */
     public static function monotonic(): self
     {
         [$seconds, $nanoseconds] = Internal\high_resolution_time();
 
-        /** @psalm-suppress MissingThrowsDocblock */
         return self::fromParts($seconds, $nanoseconds);
     }
 
@@ -136,7 +129,6 @@ final readonly class Timestamp implements TemporalInterface
         null|Timezone $timezone = null,
         null|Locale $locale = null,
     ): static {
-        /** @psalm-suppress MissingThrowsDocblock */
         return self::fromParts(Internal\parse(
             raw_string: $raw_string,
             pattern: $pattern,
@@ -184,7 +176,6 @@ final readonly class Timestamp implements TemporalInterface
         null|Timezone $timezone = null,
         null|Locale $locale = null,
     ): static {
-        /** @psalm-suppress MissingThrowsDocblock */
         return self::fromParts(Internal\parse(
             raw_string: $raw_string,
             date_style: $date_style,

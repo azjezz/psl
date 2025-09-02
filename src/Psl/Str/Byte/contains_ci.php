@@ -20,10 +20,10 @@ use Psl\Str;
  */
 function contains_ci(string $haystack, string $needle, int $offset = 0): bool
 {
-    $length = length($haystack);
+    $length = namespace\length($haystack);
     if ('' === $needle) {
         return Str\Internal\validate_offset($offset, $length, true);
     }
 
-    return null !== search_ci($haystack, $needle, $offset);
+    return null !== namespace\search_ci($haystack, $needle, $offset);
 }

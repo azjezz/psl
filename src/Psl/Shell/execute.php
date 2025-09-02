@@ -66,11 +66,12 @@ function execute(
     $options = [];
     // @codeCoverageIgnoreStart
     if (OS\is_windows()) {
+        /** @var array<string, string> */
         $variable_cache = [];
         $variable_count = 0;
-        /** @psalm-suppress MissingThrowsDocblock */
+
         $identifier = 'PHP_STANDARD_LIBRARY_TMP_ENV_' . SecureRandom\string(6);
-        /** @psalm-suppress MissingThrowsDocblock */
+
         $commandline = Regex\replace_with(
             $commandline,
             '/"(?:([^"%!^]*+(?:(?:!LF!|"(?:\^[%!^])?+")[^"%!^]*+)++)|[^"]*+ )"/x',
@@ -115,7 +116,6 @@ function execute(
                     )
                     . '"';
 
-                /** @var string */
                 return $variable_cache[$m[0]] = '!' . $var . '!';
             },
         );
@@ -134,6 +134,7 @@ function execute(
         1 => ['pipe', 'w'],
         2 => ['pipe', 'w'],
     ];
+    $pipes = null;
     $process = proc_open($commandline, $descriptor, $pipes, $working_directory, $environment, $options);
     // @codeCoverageIgnoreStart
     // not sure how to replicate this, but it can happen \_o.o_/
@@ -146,9 +147,10 @@ function execute(
     $stdout = new IO\CloseReadStreamHandle($pipes[1]);
     $stderr = new IO\CloseReadStreamHandle($pipes[2]);
 
+    $code = 0;
     try {
         $result = '';
-        /** @psalm-suppress MissingThrowsDocblock */
+
         foreach (IO\streaming([1 => $stdout, 2 => $stderr], $timeout) as $type => $chunk) {
             if ($chunk) {
                 $result .= pack('C1N1', $type, Str\Byte\length($chunk)) . $chunk;
@@ -161,16 +163,14 @@ function execute(
             $previous,
         );
     } finally {
-        /** @psalm-suppress MissingThrowsDocblock */
         $stdout->close();
-        /** @psalm-suppress MissingThrowsDocblock */
+
         $stderr->close();
 
         $code = proc_close($process);
     }
 
     if ($code !== 0) {
-        /** @psalm-suppress MissingThrowsDocblock */
         [$stdout_content, $stderr_content] = namespace\unpack($result);
 
         throw new Exception\FailedExecutionException($commandline, $stdout_content, $stderr_content, $code);
@@ -180,7 +180,6 @@ function execute(
         return $result;
     }
 
-    /** @psalm-suppress MissingThrowsDocblock */
     [$stdout_content, $stderr_content] = namespace\unpack($result);
     return match ($error_output_behavior) {
         ErrorOutputBehavior::Prepend => $stderr_content . $stdout_content,

@@ -27,7 +27,7 @@ final class UnboundedSender implements SenderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     #[\Override]
     public function send(mixed $message): void
@@ -37,7 +37,7 @@ final class UnboundedSender implements SenderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     #[\Override]
     public function trySend(mixed $message): void

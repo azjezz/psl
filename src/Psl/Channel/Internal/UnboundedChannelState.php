@@ -55,7 +55,7 @@ final class UnboundedChannelState implements ChannelInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     #[\Override]
     public function close(): void

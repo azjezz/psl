@@ -25,7 +25,6 @@ function ends_with(string $string, string $suffix): bool
         return false;
     }
 
-    /** @psalm-suppress MissingThrowsDocblock */
     $position = search_last($string, $suffix);
     if (null === $position) {
         return false;

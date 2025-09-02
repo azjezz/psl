@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\File\Internal;
 
+use Override;
 use Psl\File;
 use Psl\File\Lock;
 use Psl\File\LockType;
@@ -15,72 +16,80 @@ abstract class AbstractHandleWrapper implements File\HandleInterface
     ) {}
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function getPath(): string
     {
         return $this->handle->getPath();
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function getSize(): int
     {
         return $this->handle->getSize();
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function lock(LockType $type): Lock
     {
         return $this->handle->lock($type);
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tryLock(LockType $type): Lock
     {
         return $this->handle->tryLock($type);
     }
 
     /**
-     * {@inheritDoc}
+     * @param int<0, max> $offset
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function seek(int $offset): void
     {
         $this->handle->seek($offset);
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tell(): int
     {
         return $this->handle->tell();
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function close(): void
     {
         $this->handle->close();
     }
 
     /**
-     * {@inheritDoc}
+     * @return resource|null
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function getStream(): mixed
     {
         return $this->handle->getStream();

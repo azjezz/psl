@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\DateTime;
 
+use Override;
 use Psl\Default\DefaultInterface;
 
 /**
@@ -34,11 +35,11 @@ enum TimeStyle implements DefaultInterface
      * Implements the DefaultInterface to standardize access to the default enum case for time formatting.
      * The Medium style is the default, including hour, minute, and potentially seconds for a balance of detail.
      *
-     * @return static The default time format style.
+     * @return TimeStyle::Medium The default time format style.
      *
      * @pure
      */
-    #[\Override]
+    #[Override]
     public static function default(): static
     {
         return self::Medium;

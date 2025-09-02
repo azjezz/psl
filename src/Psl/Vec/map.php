@@ -33,13 +33,7 @@ use function is_array;
 function map(iterable $iterable, Closure $function): array
 {
     if (is_array($iterable)) {
-        return array_values(array_map(
-            /**
-             * @param Tv $v
-             */
-            $function(...),
-            $iterable,
-        ));
+        return array_values(array_map($function, $iterable));
     }
 
     $result = [];

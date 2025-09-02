@@ -51,7 +51,9 @@ final readonly class DictType extends Type\Type
 
         $k = null;
         $v = null;
+        /** @var bool $trying_key */
         $trying_key = true;
+        /** @var bool $iterating */
         $iterating = true;
 
         try {

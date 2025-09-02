@@ -87,10 +87,11 @@ final class Iterator implements Countable, SeekableIterator
             return new self($iterable);
         }
 
-        /**
-         * @var (Closure(): Generator<Tsk, Tsv, mixed, void>) $factory
-         */
-        $factory = static fn(): Generator => yield from $iterable;
+        $factory =
+            /**
+             * @return Generator<Tsk, Tsv, mixed, mixed>
+             */
+            static fn(): Generator => yield from $iterable;
 
         return new self($factory());
     }
@@ -168,9 +169,9 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Seek to the given position.
      *
-     * @param int<0, max> $position
+     * @param int<0, max> $offset
      *
-     * @throws Exception\OutOfBoundsException If $position is out-of-bounds.
+     * @throws Exception\OutOfBoundsException If $offset is out-of-bounds.
      *
      * @psalm-suppress ParamNameMismatch
      */

@@ -45,7 +45,7 @@ class BackedEnumValueTypeTest extends TestCase
     public function testReflectionFailsForANonEnumArgument(): void
     {
         $this->expectException(InvariantViolationException::class);
-        $this->expectExceptionMessage('A BackedEnum class-string is required');
+        $this->expectExceptionMessage('A BackedEnum enum-string is required');
 
         new BackedEnumValueType(self::class);
     }

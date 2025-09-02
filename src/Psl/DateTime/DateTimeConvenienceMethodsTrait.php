@@ -73,7 +73,6 @@ trait DateTimeConvenienceMethodsTrait
      *
      * @psalm-mutation-free
      */
-    #[\Override]
     public function convertToTimezone(Timezone $timezone): static
     {
         return static::fromTimestamp($this->getTimestamp(), $timezone);
@@ -408,8 +407,6 @@ trait DateTimeConvenienceMethodsTrait
      * @throws Exception\UnexpectedValueException If adding the months results in an arithmetic issue.
      *
      * @psalm-mutation-free
-     *
-     * @psalm-suppress MissingThrowsDocblock - The Math exceptions from Math\div do not result in any error.
      */
     public function plusMonths(int $months): static
     {
@@ -445,8 +442,6 @@ trait DateTimeConvenienceMethodsTrait
      * @throws Exception\UnexpectedValueException If subtracting the months results in an arithmetic issue.
      *
      * @psalm-mutation-free
-     *
-     * @psalm-suppress MissingThrowsDocblock - The Math exceptions from Math\div do not result in any error.
      */
     public function minusMonths(int $months): static
     {
@@ -512,7 +507,7 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function plus(Duration $duration): static
     {
-        return static::fromTimestamp($this->getTimestamp()->plus($duration), $this->timezone);
+        return static::fromTimestamp($this->getTimestamp()->plus($duration), $this->getTimezone());
     }
 
     /**
@@ -525,7 +520,7 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function minus(Duration $duration): static
     {
-        return static::fromTimestamp($this->getTimestamp()->minus($duration), $this->timezone);
+        return static::fromTimestamp($this->getTimestamp()->minus($duration), $this->getTimezone());
     }
 
     /**
@@ -552,7 +547,6 @@ trait DateTimeConvenienceMethodsTrait
      *
      * @psalm-mutation-free
      */
-    #[\Override]
     public function format(
         null|FormatPattern|string $pattern = null,
         null|Timezone $timezone = null,
@@ -600,7 +594,6 @@ trait DateTimeConvenienceMethodsTrait
      *
      * @psalm-mutation-free
      */
-    #[\Override]
     public function toRfc3339(null|SecondsStyle $seconds_style = null, bool $use_z = false): string
     {
         return Internal\format_rfc3339($this->getTimestamp(), $seconds_style, $use_z, $this->getTimezone());
@@ -634,7 +627,6 @@ trait DateTimeConvenienceMethodsTrait
      *
      * @psalm-mutation-free
      */
-    #[\Override]
     public function toString(
         null|DateStyle $date_style = null,
         null|TimeStyle $time_style = null,

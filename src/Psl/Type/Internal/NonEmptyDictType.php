@@ -50,7 +50,9 @@ final readonly class NonEmptyDictType extends Type\Type
 
             $k = null;
             $v = null;
+            /** @var bool */
             $trying_key = true;
+            /** @var bool */
             $iterating = true;
 
             try {

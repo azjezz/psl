@@ -33,17 +33,13 @@ use function is_array;
  */
 function filter(iterable $iterable, null|Closure $predicate = null): array
 {
-    /** @var (Closure(Tv): bool) $predicate */
-    $predicate ??= static fn(mixed $value): bool => (bool) $value;
+    $predicate ??= static fn(mixed $value): bool => (
+        // @mago-expect analysis:mixed-operand
+        (bool) $value
+    );
 
     if (is_array($iterable)) {
-        return array_filter(
-            $iterable,
-            /**
-             * @param Tv $v
-             */
-            $predicate(...),
-        );
+        return array_filter($iterable, $predicate);
     }
 
     $result = [];

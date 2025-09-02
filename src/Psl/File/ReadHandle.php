@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\File;
 
+use Override;
 use Psl\DateTime\Duration;
 use Psl\Filesystem;
 use Psl\IO;
@@ -41,27 +42,31 @@ final class ReadHandle extends Internal\AbstractHandleWrapper implements ReadHan
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function reachedEndOfDataSource(): bool
     {
         return $this->readHandle->reachedEndOfDataSource();
     }
 
     /**
-     * {@inheritDoc}
+     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tryRead(null|int $max_bytes = null): string
     {
         return $this->readHandle->tryRead($max_bytes);
     }
 
     /**
-     * {@inheritDoc}
+     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         return $this->readHandle->read($max_bytes, $timeout);

@@ -14,6 +14,8 @@ use Psl\Internal;
  *      Str\fold('ẞ')
  *      => Str('ss')
  *
+ * @return lowercase-string
+ *
  * @pure
  */
 function fold(string $string, Encoding $encoding = Encoding::Utf8): string

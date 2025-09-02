@@ -50,12 +50,14 @@ final readonly class MutableMapType extends Type\Type
             /** @var Type\Type<Tv> $value_type */
             $value_type = $this->value_type;
 
-            /** @var list<array{Tk, Tv}> $entries */
+            /** @var list<list{Tk, Tv}> $entries */
             $entries = [];
 
             $k = null;
             $v = null;
+            /** @var bool $trying_key */
             $trying_key = true;
+            /** @var bool $iterating */
             $iterating = true;
 
             try {
@@ -116,11 +118,12 @@ final readonly class MutableMapType extends Type\Type
             /** @var Type\Type<Tv> $value_type */
             $value_type = $this->value_type;
 
-            /** @var list<array{Tk, Tv}> $entries */
+            /** @var list<list{Tk, Tv}> $entries */
             $entries = [];
 
             $k = null;
             $v = null;
+            /** @var bool $trying_key */
             $trying_key = true;
 
             try {

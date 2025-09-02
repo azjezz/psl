@@ -31,7 +31,7 @@ final class Reader implements ReadHandleInterface
     /**
      * {@inheritDoc}
      *
-     * @mago-expect lint:no-empty-catch-clause
+     * @mago-expect lint:best-practices/no-empty-catch-clause
      */
     #[\Override]
     public function reachedEndOfDataSource(): bool
@@ -151,7 +151,6 @@ final class Reader implements ReadHandleInterface
             return $line;
         }
 
-        /** @psalm-suppress MissingThrowsDocblock - $size is positive */
         $content = $this->read(null, $timer->getRemaining());
         return '' === $content ? null : $content;
     }

@@ -7,6 +7,8 @@ namespace Psl\Str\Byte;
 /**
  * Return ASCII value of character.
  *
+ * @return int<0, 255>
+ *
  * @pure
  */
 function ord(string $character): int
