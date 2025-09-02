@@ -205,7 +205,7 @@ final readonly class ShapeType extends Type\Type
         } catch (AssertException $e) {
             throw match (true) {
                 $element_value_found => AssertException::withValue(
-                    $element === null ? null : $array[$element] ?? null,
+                    $element === null ? null : $value[$element] ?? null,
                     $this->toString(),
                     PathExpression::path($element),
                     $e,
