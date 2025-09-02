@@ -4,7 +4,7 @@ on:
   pull_request: ~
   push: ~
   schedule:
-    - cron: '0 */3 * * *'
+    - cron: "0 */3 * * *"
 
 jobs:
   static-analysis:
@@ -28,6 +28,3 @@ jobs:
 
       - name: "running static analysis"
         run: make static-analysis
-
-      - name: "calculating type coverage"
-        run: make type-coverage

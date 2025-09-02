@@ -31,7 +31,4 @@ no-error-control-operator = { enabled = false }
 
 [analyzer]
 excludes = ["tests"]
-ignore = [
-    "reference-to-undefined-variable",
-    "possibly-static-access-on-interface",
-]
+ignore = ["possibly-static-access-on-interface"]

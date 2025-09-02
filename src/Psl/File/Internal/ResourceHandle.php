@@ -135,7 +135,15 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements
         }
 
         return new Lock($type, function (): void {
+            /** @var bool $released */
+            static $released = false;
+            if ($released) {
+                return;
+            }
+
             if (null === $this->stream) {
+                $released = true;
+
                 // while closing a handle should unlock it, that is not always the case.
                 // therefore, we should require users to explicitly release the lock before closing the handle.
                 throw new Exception\AlreadyClosedException('Handle was closed before releasing the lock.');
@@ -147,6 +155,8 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements
                     $this->getPath(),
                 ));
             }
+
+            $released = true;
         });
         // @codeCoverageIgnoreEnd
     }
