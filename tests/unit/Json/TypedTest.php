@@ -47,9 +47,9 @@ final class TypedTest extends TestCase
     public function testTypedThrowsWhenUnableToCoerce(): void
     {
         $this->expectException(Json\Exception\DecodeException::class);
-        $this->expectExceptionMessage(
-            'Could not coerce "string" to type "' . MapInterface::class . '<string, int>" at path "name".',
-        );
+        $this->expectExceptionMessage('Could not coerce "string" to type "'
+        . MapInterface::class
+        . '<string, int>" at path "name".');
 
         Json\typed('{
             "name": "azjezz/psl",

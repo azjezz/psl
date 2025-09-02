@@ -47,10 +47,10 @@ abstract class Base64
             $byte1 = $chunk[2];
             $byte2 = $chunk[3];
             $dest .=
-                static::encode6Bits($byte0 >> 2) .
-                static::encode6Bits((($byte0 << 4) | ($byte1 >> 4)) & 63) .
-                static::encode6Bits((($byte1 << 2) | ($byte2 >> 6)) & 63) .
-                static::encode6Bits($byte2 & 63);
+                static::encode6Bits($byte0 >> 2)
+                . static::encode6Bits((($byte0 << 4) | ($byte1 >> 4)) & 63)
+                . static::encode6Bits((($byte1 << 2) | ($byte2 >> 6)) & 63)
+                . static::encode6Bits($byte2 & 63);
         }
 
         if ($i < $binary_length) {
@@ -64,9 +64,9 @@ abstract class Base64
             if (($i + 1) < $binary_length) {
                 $byte1 = $chunk[2];
                 $dest .=
-                    static::encode6Bits($byte0 >> 2) .
-                    static::encode6Bits((($byte0 << 4) | ($byte1 >> 4)) & 63) .
-                    static::encode6Bits(($byte1 << 2) & 63);
+                    static::encode6Bits($byte0 >> 2)
+                    . static::encode6Bits((($byte0 << 4) | ($byte1 >> 4)) & 63)
+                    . static::encode6Bits(($byte1 << 2) & 63);
                 if ($padding) {
                     $dest .= '=';
                 }

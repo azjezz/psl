@@ -251,6 +251,6 @@ final readonly class ShapeType extends Type\Type
 
     private function getElementName(string|int $element): string
     {
-        return is_int($element) ? ((string) $element) : ('\'' . $element . '\'');
+        return is_int($element) ? (string) $element : '\'' . $element . '\'';
     }
 }

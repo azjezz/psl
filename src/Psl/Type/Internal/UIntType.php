@@ -50,7 +50,7 @@ final readonly class UIntType extends Type\Type
 
         if (is_float($value)) {
             $integer_value = (int) $value;
-            if (((float) $integer_value) === $value && $integer_value >= 0) {
+            if ((float) $integer_value === $value && $integer_value >= 0) {
                 return $integer_value;
             }
 
@@ -60,13 +60,13 @@ final readonly class UIntType extends Type\Type
         if (is_string($value) || $value instanceof Stringable) {
             $str = (string) $value;
             $int = (int) $str;
-            if ($str === ((string) $int) && $int >= 0) {
+            if ($str === (string) $int && $int >= 0) {
                 return $int;
             }
 
             $trimmed = ltrim($str, '0');
             $int = (int) $trimmed;
-            if ($trimmed === ((string) $int) && $int >= 0) {
+            if ($trimmed === (string) $int && $int >= 0) {
                 return $int;
             }
 

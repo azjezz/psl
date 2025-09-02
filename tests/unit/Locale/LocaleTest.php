@@ -15,6 +15,7 @@ use function locale_set_default;
 final class LocaleTest extends TestCase
 {
     private null|string $defaultLocale = null;
+
     #[\Override]
     protected function setUp(): void
     {

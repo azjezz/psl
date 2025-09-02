@@ -217,7 +217,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
         $inclusive = $this->upperInclusive;
 
         return Iter\Iterator::from(static function () use ($lower, $upper, $inclusive): Generator {
-            $to = $inclusive ? $upper : ($upper - 1);
+            $to = $inclusive ? $upper : $upper - 1;
 
             for ($i = $lower; $i <= $to; $i++) {
                 yield $i;

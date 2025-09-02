@@ -119,11 +119,11 @@ final class MutableVectorTypeTest extends TypeTest
         yield 'nested' => [
             Type\mutable_vector(Type\mutable_vector(Type\int())),
             new Collection\MutableVector([new Collection\MutableVector(['nope'])]),
-            'Expected "' .
-            MutableVectorInterface::class .
-                '<' .
-                MutableVectorInterface::class .
-                '<int>>", got "string" at path "0.0".',
+            'Expected "'
+            . MutableVectorInterface::class
+                . '<'
+                . MutableVectorInterface::class
+                . '<int>>", got "string" at path "0.0".',
         ];
     }
 

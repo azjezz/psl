@@ -157,11 +157,11 @@ class ResourceHandle implements
 
         if ($write) {
             $writable =
-                str_contains($meta['mode'], 'x') ||
-                str_contains($meta['mode'], 'w') ||
-                str_contains($meta['mode'], 'c') ||
-                str_contains($meta['mode'], 'a') ||
-                str_contains($meta['mode'], '+');
+                str_contains($meta['mode'], 'x')
+                || str_contains($meta['mode'], 'w')
+                || str_contains($meta['mode'], 'c')
+                || str_contains($meta['mode'], 'a')
+                || str_contains($meta['mode'], '+');
 
             Psl\invariant($writable, 'Handle is not writeable.');
 

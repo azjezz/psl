@@ -59,7 +59,7 @@ final readonly class IntRangeType extends Type\Type
 
         if (is_float($value)) {
             $integer_value = (int) $value;
-            if (((float) $integer_value) === $value) {
+            if ((float) $integer_value === $value) {
                 return $integer_value;
             }
         }
@@ -67,13 +67,13 @@ final readonly class IntRangeType extends Type\Type
         if (is_string($value) || $value instanceof Stringable) {
             $str = (string) $value;
             $int = (int) $str;
-            if ($str === ((string) $int)) {
+            if ($str === (string) $int) {
                 return $int;
             }
 
             $trimmed = ltrim($str, '0');
             $int = (int) $trimmed;
-            if ($trimmed === ((string) $int)) {
+            if ($trimmed === (string) $int) {
                 return $int;
             }
 
@@ -104,8 +104,8 @@ final readonly class IntRangeType extends Type\Type
     #[\Override]
     public function toString(): string
     {
-        $min = $this->min === PHP_INT_MIN ? 'min' : ((string) $this->min);
-        $max = $this->max === PHP_INT_MAX ? 'max' : ((string) $this->max);
+        $min = $this->min === PHP_INT_MIN ? 'min' : (string) $this->min;
+        $max = $this->max === PHP_INT_MAX ? 'max' : (string) $this->max;
 
         return sprintf('int<%s, %s>', $min, $max);
     }

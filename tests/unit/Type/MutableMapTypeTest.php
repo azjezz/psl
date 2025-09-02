@@ -132,11 +132,11 @@ final class MutableMapTypeTest extends TypeTest
         yield 'nested' => [
             Type\mutable_map(Type\int(), Type\mutable_map(Type\int(), Type\int())),
             new Collection\MutableMap([0 => new Collection\MutableMap(['nope' => 'nope'])]),
-            'Expected "' .
-            MutableMapInterface::class .
-                '<int, ' .
-                MutableMapInterface::class .
-                '<int, int>>", got "string" at path "0.key(nope)".',
+            'Expected "'
+            . MutableMapInterface::class
+                . '<int, '
+                . MutableMapInterface::class
+                . '<int, int>>", got "string" at path "0.key(nope)".',
         ];
     }
 
@@ -187,9 +187,9 @@ final class MutableMapTypeTest extends TypeTest
             (static function (): iterable {
                 yield new class() {} => 'nope';
             })(),
-            'Could not coerce "class@anonymous" to type "' .
-            MutableMapInterface::class .
-                '<int, int>" at path "key(class@anonymous)".',
+            'Could not coerce "class@anonymous" to type "'
+            . MutableMapInterface::class
+                . '<int, int>" at path "key(class@anonymous)".',
         ];
     }
 

@@ -26,7 +26,7 @@ abstract class Exception extends RuntimeException implements ExceptionInterface
         parent::__construct($message, 0, $previous);
 
         $this->paths = $paths;
-        $this->first = ($previous instanceof self) ? $previous->first : $actual;
+        $this->first = $previous instanceof self ? $previous->first : $actual;
         $this->actual = $actual;
     }
 

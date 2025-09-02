@@ -259,7 +259,7 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function getCentury(): int
     {
-        return ((int) ($this->getYear() / 100)) + 1;
+        return (int) ($this->getYear() / 100) + 1;
     }
 
     /**

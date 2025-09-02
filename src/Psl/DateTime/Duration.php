@@ -60,10 +60,10 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
     {
         // This is where the normalization happens.
         $s =
-            (SECONDS_PER_HOUR * $hours) +
-            (SECONDS_PER_MINUTE * $minutes) +
-            $seconds +
-            ((int) ($nanoseconds / NANOSECONDS_PER_SECOND));
+            (SECONDS_PER_HOUR * $hours)
+            + (SECONDS_PER_MINUTE * $minutes)
+            + $seconds
+            + (int) ($nanoseconds / NANOSECONDS_PER_SECOND);
         $ns = $nanoseconds % NANOSECONDS_PER_SECOND;
         if ($s < 0 && $ns > 0) {
             ++$s;
@@ -258,10 +258,10 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
     {
         /** @psalm-suppress InvalidOperand */
         return (
-            $this->hours +
-            ($this->minutes / MINUTES_PER_HOUR) +
-            ($this->seconds / SECONDS_PER_HOUR) +
-            ($this->nanoseconds / (SECONDS_PER_HOUR * NANOSECONDS_PER_SECOND))
+            $this->hours
+            + ($this->minutes / MINUTES_PER_HOUR)
+            + ($this->seconds / SECONDS_PER_HOUR)
+            + ($this->nanoseconds / (SECONDS_PER_HOUR * NANOSECONDS_PER_SECOND))
         );
     }
 
@@ -275,10 +275,10 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
     {
         /** @psalm-suppress InvalidOperand */
         return (
-            ($this->hours * MINUTES_PER_HOUR) +
-            $this->minutes +
-            ($this->seconds / SECONDS_PER_MINUTE) +
-            ($this->nanoseconds / (SECONDS_PER_MINUTE * NANOSECONDS_PER_SECOND))
+            ($this->hours * MINUTES_PER_HOUR)
+            + $this->minutes
+            + ($this->seconds / SECONDS_PER_MINUTE)
+            + ($this->nanoseconds / (SECONDS_PER_MINUTE * NANOSECONDS_PER_SECOND))
         );
     }
 
@@ -292,10 +292,10 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
     {
         /** @psalm-suppress InvalidOperand */
         return (
-            $this->seconds +
-            ($this->minutes * SECONDS_PER_MINUTE) +
-            ($this->hours * SECONDS_PER_HOUR) +
-            ($this->nanoseconds / NANOSECONDS_PER_SECOND)
+            $this->seconds
+            + ($this->minutes * SECONDS_PER_MINUTE)
+            + ($this->hours * SECONDS_PER_HOUR)
+            + ($this->nanoseconds / NANOSECONDS_PER_SECOND)
         );
     }
 
@@ -309,10 +309,10 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
     {
         /** @psalm-suppress InvalidOperand */
         return (
-            ($this->hours * SECONDS_PER_HOUR * MILLISECONDS_PER_SECOND) +
-            ($this->minutes * SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND) +
-            ($this->seconds * MILLISECONDS_PER_SECOND) +
-            ($this->nanoseconds / NANOSECONDS_PER_MILLISECOND)
+            ($this->hours * SECONDS_PER_HOUR * MILLISECONDS_PER_SECOND)
+            + ($this->minutes * SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND)
+            + ($this->seconds * MILLISECONDS_PER_SECOND)
+            + ($this->nanoseconds / NANOSECONDS_PER_MILLISECOND)
         );
     }
 
@@ -326,10 +326,10 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
     {
         /** @psalm-suppress InvalidOperand */
         return (
-            ($this->hours * SECONDS_PER_HOUR * MICROSECONDS_PER_SECOND) +
-            ($this->minutes * SECONDS_PER_MINUTE * MICROSECONDS_PER_SECOND) +
-            ($this->seconds * MICROSECONDS_PER_SECOND) +
-            ($this->nanoseconds / NANOSECONDS_PER_MICROSECOND)
+            ($this->hours * SECONDS_PER_HOUR * MICROSECONDS_PER_SECOND)
+            + ($this->minutes * SECONDS_PER_MINUTE * MICROSECONDS_PER_SECOND)
+            + ($this->seconds * MICROSECONDS_PER_SECOND)
+            + ($this->nanoseconds / NANOSECONDS_PER_MICROSECOND)
         );
     }
 
@@ -661,17 +661,17 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
 
         $containsHours = $this->hours !== 0;
         $containsMinutes = $this->minutes !== 0;
-        $concatenatedSeconds = $sec_sign . ((string) $sec) . $decimal_part;
+        $concatenatedSeconds = $sec_sign . (string) $sec . $decimal_part;
         $containsSeconds = $concatenatedSeconds !== '0';
 
         /** @var list<string> $output */
         $output = [];
         if ($containsHours) {
-            $output[] = ((string) $this->hours) . ' hour(s)';
+            $output[] = (string) $this->hours . ' hour(s)';
         }
 
         if ($containsMinutes || $containsHours && $containsSeconds) {
-            $output[] = ((string) $this->minutes) . ' minute(s)';
+            $output[] = (string) $this->minutes . ' minute(s)';
         }
 
         if ($containsSeconds) {

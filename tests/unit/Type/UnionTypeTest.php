@@ -46,13 +46,10 @@ final class UnionTypeTest extends TypeTest
         yield [Type\union(Type\bool(), Type\num()), 'bool|num'];
         yield [Type\union(Type\bool(), Type\array_key()), 'bool|array-key'];
         yield [
-            Type\union(
-                Type\bool(),
-                Type\intersection(
-                    Type\instance_of(IndexAccessInterface::class),
-                    Type\instance_of(CollectionInterface::class),
-                ),
-            ),
+            Type\union(Type\bool(), Type\intersection(
+                Type\instance_of(IndexAccessInterface::class),
+                Type\instance_of(CollectionInterface::class),
+            )),
             'bool|(Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface)',
         ];
         yield [

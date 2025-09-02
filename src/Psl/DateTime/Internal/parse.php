@@ -36,7 +36,7 @@ function parse(
     if ($timestamp === false) {
         // Only show pattern in the exception if it was provided.
         if (null !== $pattern) {
-            $formatter_pattern = ($pattern instanceof FormatPattern) ? $pattern->value : $pattern;
+            $formatter_pattern = $pattern instanceof FormatPattern ? $pattern->value : $pattern;
 
             throw new ParserException(Str\format(
                 'Unable to interpret \'%s\' as a valid date/time using pattern \'%s\'.',

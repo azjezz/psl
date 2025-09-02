@@ -193,7 +193,7 @@ final class Reader implements ReadHandleInterface
         do {
             // + 1 as it would have been matched in the previous iteration if it
             // fully fit in the chunk
-            $offset = (strlen($buf) - $suffix_len) + 1;
+            $offset = strlen($buf) - $suffix_len + 1;
             $offset = $offset > 0 ? $offset : 0;
             $chunk = $this->handle->read(null, $timer->getRemaining());
             if ($chunk === '') {

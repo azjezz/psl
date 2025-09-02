@@ -99,11 +99,11 @@ function execute(
                     return '"' . $value . '"';
                 }
 
-                $var = $identifier . ((string) ++$variable_count);
+                $var = $identifier . (string) ++$variable_count;
 
                 $environment[$var] =
-                    '"' .
-                    Regex\replace(
+                    '"'
+                    . Regex\replace(
                         Str\Byte\replace_every($value, [
                             '!LF!' => "\n",
                             '"^!"' => '!',
@@ -113,8 +113,8 @@ function execute(
                         ]),
                         '/(\\\\*)"/',
                         '$1$1\\"',
-                    ) .
-                    '"';
+                    )
+                    . '"';
 
                 /** @var string */
                 return $variable_cache[$m[0]] = '!' . $var . '!';

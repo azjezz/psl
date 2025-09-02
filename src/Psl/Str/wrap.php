@@ -46,7 +46,7 @@ function wrap(
 
         if ($possible_break === $break) {
             /** @psalm-suppress InvalidArgument - length is positive */
-            $result .= slice($string, $last_start, ($current - $last_start) + $break_length, $encoding);
+            $result .= slice($string, $last_start, $current - $last_start + $break_length, $encoding);
             $current += $break_length - 1;
             $last_space = $current + 1;
             $last_start = $last_space;
