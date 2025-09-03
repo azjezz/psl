@@ -12,8 +12,6 @@ use function get_debug_type;
 
 /**
  * Exception thrown when two values are incomparable.
- *
- * @psalm-suppress ClassMustBeFinal
  */
 class IncomparableException extends InvalidArgumentRootException implements ExceptionInterface
 {
@@ -23,7 +21,7 @@ class IncomparableException extends InvalidArgumentRootException implements Exce
             'Unable to compare "%s" with "%s"%s',
             get_debug_type($a),
             get_debug_type($b),
-            $additionalInfo ? (': ' . $additionalInfo) : '.',
+            $additionalInfo ? ': ' . $additionalInfo : '.',
         ));
     }
 }

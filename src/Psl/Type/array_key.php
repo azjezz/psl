@@ -7,7 +7,7 @@ namespace Psl\Type;
 /**
  * @psalm-pure
  *
- * @psalm-suppress ImpureStaticVariable - The $instance is always the same and is considered pure.
+ * @mago-expect analysis:impure-static-variable - The $instance is always the same and is considered pure.
  *
  * @return TypeInterface<array-key>
  */

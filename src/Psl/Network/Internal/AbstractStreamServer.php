@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Network\Internal;
 
 use Generator;
+use Override;
 use Psl\Channel;
 use Psl\Network;
 use Psl\Network\StreamServerInterface;
@@ -15,9 +16,6 @@ use function fclose;
 use function is_resource;
 use function stream_socket_accept;
 
-/**
- * @psalm-suppress UnnecessaryVarAnnotation
- */
 abstract class AbstractStreamServer implements StreamServerInterface
 {
     private const int DEFAULT_IDLE_CONNECTIONS = 256;
@@ -40,50 +38,56 @@ abstract class AbstractStreamServer implements StreamServerInterface
     /**
      * @param resource $impl
      * @param int<1, max> $idleConnections
-     *
-     * @mago-expect best-practices/no-boolean-literal-comparison
      */
     protected function __construct(mixed $impl, int $idleConnections = self::DEFAULT_IDLE_CONNECTIONS)
     {
         $this->impl = $impl;
+
         /**
+         * @var Channel\ReceiverInterface<array{true, Socket}|array{false, Network\Exception\RuntimeException}> $receiver
          * @var Channel\SenderInterface<array{true, Socket}|array{false, Network\Exception\RuntimeException}> $sender
          */
-        [$this->receiver, $sender] = Channel\bounded($idleConnections);
-        $this->watcher = EventLoop::onReadable($impl, static function (string $watcher, mixed $resource) use (
-            $sender,
-        ): void {
-            try {
-                $sock = @stream_socket_accept($resource, timeout: 0.0);
-                if ($sock !== false) {
-                    $sender->send([true, new Socket($sock)]);
+        [$receiver, $sender] = Channel\bounded($idleConnections);
+
+        $this->receiver = $receiver;
+        $this->watcher = EventLoop::onReadable(
+            $impl,
+            /**
+             * @param resource $resource
+             */
+            static function (string $watcher, mixed $resource) use ($sender): void {
+                try {
+                    $sock = @stream_socket_accept($resource, timeout: 0.0);
+                    if ($sock !== false) {
+                        $sender->send([true, new Socket($sock)]);
+
+                        return;
+                    }
+
+                    // @codeCoverageIgnoreStart
+                    /** @var array{file: string, line: int, message: string, type: int} $err */
+                    $err = error_get_last();
+                    $sender->send([
+                        false,
+                        new Network\Exception\RuntimeException(
+                            'Failed to accept incoming connection: ' . $err['message'],
+                            $err['type'],
+                        ),
+                    ]);
+                    // @codeCoverageIgnoreEnd
+                } catch (Channel\Exception\ClosedChannelException) {
+                    EventLoop::cancel($watcher);
 
                     return;
                 }
-
-                // @codeCoverageIgnoreStart
-                /** @var array{file: string, line: int, message: string, type: int} $err */
-                $err = error_get_last();
-                $sender->send([
-                    false,
-                    new Network\Exception\RuntimeException(
-                        'Failed to accept incoming connection: ' . $err['message'],
-                        $err['type'],
-                    ),
-                ]);
-                // @codeCoverageIgnoreEnd
-            } catch (Channel\Exception\ClosedChannelException) {
-                EventLoop::cancel($watcher);
-
-                return;
-            }
-        });
+            },
+        );
     }
 
     /**
      * {@inheritDoc}
      */
-    #[\Override]
+    #[Override]
     public function nextConnection(): Network\StreamSocketInterface
     {
         try {
@@ -97,14 +101,14 @@ abstract class AbstractStreamServer implements StreamServerInterface
             return $result;
         }
 
-        /** @var Network\Exception\RuntimeException $result  */
+        /** @var Network\Exception\RuntimeException $result */
         throw $result;
     }
 
     /**
-     * {@inheritDoc}
+     * @return Generator<null, Network\StreamSocketInterface, void, null>
      */
-    #[\Override]
+    #[Override]
     public function incoming(): Generator
     {
         try {
@@ -116,7 +120,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
                     continue;
                 }
 
-                /** @var Network\Exception\RuntimeException $result  */
+                /** @var Network\Exception\RuntimeException $result */
                 throw $result;
             }
         } catch (Channel\Exception\ClosedChannelException) {
@@ -139,7 +143,6 @@ abstract class AbstractStreamServer implements StreamServerInterface
 
     public function __destruct()
     {
-        /** @psalm-suppress MissingThrowsDocblock */
         $this->close();
     }
 

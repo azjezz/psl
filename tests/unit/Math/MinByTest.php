@@ -17,7 +17,7 @@ final class MinByTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testMinBy($expected, array $values, Closure $fun): void
+    public function testMinBy(null|int|string|array $expected, array $values, Closure $fun): void
     {
         static::assertSame($expected, Math\min_by($values, $fun));
     }
@@ -27,7 +27,7 @@ final class MinByTest extends TestCase
         yield [
             'qux',
             ['foo', 'bar', 'baz', 'qux', 'foobar', 'bazqux'],
-            static fn(string $value): int => Str\length($value),
+            Str\length(...),
         ];
 
         yield [
@@ -37,7 +37,7 @@ final class MinByTest extends TestCase
                 ['foo', 'bar'],
                 ['foo', 'bar', 'baz'],
             ],
-            static fn(array $arr): int => Iter\count($arr),
+            Iter\count(...),
         ];
 
         yield [

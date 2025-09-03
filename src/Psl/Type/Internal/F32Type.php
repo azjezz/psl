@@ -12,8 +12,6 @@ use Psl\Type\Exception\CoercionException;
 use function Psl\Type;
 
 /**
- * @ara-extends Type\Type<f32>
- *
  * @extends Type\Type<float>
  *
  * @internal
@@ -21,8 +19,6 @@ use function Psl\Type;
 final readonly class F32Type extends Type\Type
 {
     /**
-     * @ara-assert-if-true f32 $value
-     *
      * @psalm-assert-if-true float $value
      */
     #[\Override]
@@ -33,8 +29,6 @@ final readonly class F32Type extends Type\Type
 
     /**
      * @throws CoercionException
-     *
-     * @ara-return f32
      *
      * @return float $value
      */
@@ -51,13 +45,9 @@ final readonly class F32Type extends Type\Type
     }
 
     /**
-     * @ara-assert f32 $value
-     *
      * @psalm-assert float $value
      *
      * @throws AssertException
-     *
-     * @ara-return f32
      *
      * @return float
      */

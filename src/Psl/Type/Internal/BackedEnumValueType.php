@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use BackedEnum;
+use Override;
 use Psl\Exception\InvariantViolationException;
 use Psl\Exception\RuntimeException;
 use Psl\Type\Exception\AssertException;
@@ -35,10 +36,10 @@ final readonly class BackedEnumValueType extends Type
     /**
      * @psalm-mutation-free
      *
-     * @param class-string<T> $enum
+     * @param enum-string<T> $enum
      *
      * @throws RuntimeException If reflection fails.
-     * @throws InvariantViolationException If the given value is not class-string<BackedEnum>.
+     * @throws InvariantViolationException If the given value is not enum-string<BackedEnum>.
      */
     public function __construct(
         private string $enum,
@@ -47,14 +48,14 @@ final readonly class BackedEnumValueType extends Type
     }
 
     /**
-     * @param class-string<T> $enum
+     * @param enum-string<T> $enum
      *
      * @throws RuntimeException If reflection fails.
-     * @throws InvariantViolationException If the given value is not class-string<BackedEnum>.
+     * @throws InvariantViolationException If the given value is not enum-string<BackedEnum>.
      */
     private function hasStringBackingType(string $enum): bool
     {
-        invariant(is_a($enum, BackedEnum::class, true), 'A BackedEnum class-string is required');
+        invariant(is_a($enum, BackedEnum::class, true), 'A BackedEnum enum-string is required');
 
         // If the enum has any cases, detect its type by inspecting the first case found
         $case = $enum::cases()[0] ?? null;
@@ -69,14 +70,14 @@ final readonly class BackedEnumValueType extends Type
             invariant($type instanceof ReflectionNamedType, 'Unexpected type');
             return $type->getName() === 'string';
         } catch (ReflectionException $e) {
-            throw new RuntimeException('Failed to reflect an enum class-string', 0, $e);
+            throw new RuntimeException('Failed to reflect an enum enum-string', 0, $e);
         }
     }
 
     /**
      * @psalm-assert-if-true value-of<T> $value
      */
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         return match ($this->isStringBacked) {
@@ -90,12 +91,9 @@ final readonly class BackedEnumValueType extends Type
      *
      * @return value-of<T>
      *
-     * @psalm-suppress MismatchingDocblockReturnType,DocblockTypeContradiction
-     *     Psalm has issues with value-of<T> when used with an enum
-     *
-     * @mago-expect best-practices/no-empty-catch-clause
+     * @mago-expect lint:no-empty-catch-clause
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): string|int
     {
         try {
@@ -116,11 +114,8 @@ final readonly class BackedEnumValueType extends Type
      * @return value-of<T>
      *
      * @psalm-assert value-of<T> $value
-     *
-     * @psalm-suppress MismatchingDocblockReturnType
-     *     Psalm has issues with value-of<T> when used with an enum
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): string|int
     {
         if ($this->matches($value)) {
@@ -130,7 +125,7 @@ final readonly class BackedEnumValueType extends Type
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return 'value-of<' . $this->enum . '>';

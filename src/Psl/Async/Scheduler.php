@@ -18,8 +18,6 @@ use Revolt\EventLoop\Suspension;
  * @see EventLoop
  *
  * @codeCoverageIgnore
- *
- * @mago-expect best-practices/dont-catch-error
  */
 final readonly class Scheduler
 {
@@ -50,8 +48,6 @@ final readonly class Scheduler
     public static function onSignal(int $signal_number, Closure $callback): string
     {
         /**
-         * @psalm-suppress MissingThrowsDocblock
-         *
          * @var non-empty-string
          */
         return EventLoop::onSignal($signal_number, $callback);
@@ -220,8 +216,6 @@ final readonly class Scheduler
      * Run the event loop.
      *
      * @see Driver::run()
-     *
-     * @psalm-suppress MissingThrowsDocblock
      */
     public static function run(): void
     {

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Psl\Tests\StaticAnalysis\Option;
+
 use Psl\Option;
 use Psl\Type;
 
@@ -64,7 +66,7 @@ function test_some_unzip(): array
  */
 function test_some_zip_with(): Option\Option
 {
-    return Option\some(1)->zipWith(Option\some('2'), static fn(int $a, string $b): int => $a + ((int) $b));
+    return Option\some(1)->zipWith(Option\some('2'), static fn(int $a, string $b): int => $a + (int) $b);
 }
 
 /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\IO;
 
 use Revolt\EventLoop;
+use Revolt\EventLoop\Driver;
 use WeakMap;
 
 use const PHP_SAPI;
@@ -17,19 +18,15 @@ use const PHP_SAPI;
  *
  * @codeCoverageIgnore
  *
- * @mago-expect best-practices/no-else-clause
+ * @mago-expect lint:best-practices/no-else-clause
  */
 function input_handle(): CloseHandleInterface&ReadHandleInterface&StreamHandleInterface
 {
-    /** @var WeakMap|null $cache */
-    static $cache = null;
-    if (null === $cache) {
-        $cache = new WeakMap();
-    }
+    /** @var WeakMap<Driver, CloseHandleInterface&ReadHandleInterface&StreamHandleInterface> $cache */
+    static $cache = new WeakMap();
 
     $key = EventLoop::getDriver();
     if ($cache->offsetExists($key)) {
-        /** @var CloseHandleInterface&ReadHandleInterface&StreamHandleInterface */
         return $cache->offsetGet($key);
     }
 

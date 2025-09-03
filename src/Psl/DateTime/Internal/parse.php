@@ -18,8 +18,6 @@ use Psl\Str;
  * @psalm-mutation-free
  *
  * @throws ParserException
- *
- * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function parse(
     string $raw_string,
@@ -31,12 +29,11 @@ function parse(
 ): int {
     $formatter = namespace\create_intl_date_formatter($date_style, $time_style, $pattern, $timezone, $locale);
 
-    /** @psalm-suppress ImpureMethodCall */
     $timestamp = $formatter->parse($raw_string);
     if ($timestamp === false) {
         // Only show pattern in the exception if it was provided.
         if (null !== $pattern) {
-            $formatter_pattern = ($pattern instanceof FormatPattern) ? $pattern->value : $pattern;
+            $formatter_pattern = $pattern instanceof FormatPattern ? $pattern->value : $pattern;
 
             throw new ParserException(Str\format(
                 'Unable to interpret \'%s\' as a valid date/time using pattern \'%s\'.',

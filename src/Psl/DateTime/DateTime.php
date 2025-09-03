@@ -177,8 +177,6 @@ final readonly class DateTime implements DateTimeInterface
      * @throws Exception\UnexpectedValueException If any of the provided date or time components do not align with calendar expectations.
      *
      * @pure
-     *
-     * @psalm-suppress ImpureMethodCall
      */
     public static function fromParts(
         Timezone $timezone,
@@ -228,11 +226,9 @@ final readonly class DateTime implements DateTimeInterface
             throw Exception\UnexpectedValueException::forYear($year, $calendar->get(IntlCalendar::FIELD_YEAR));
         }
 
-        $timestamp_in_seconds = (int) ($calendar->getTime() / ((float) MILLISECONDS_PER_SECOND));
-        /** @psalm-suppress MissingThrowsDocblock */
+        $timestamp_in_seconds = (int) ($calendar->getTime() / (float) MILLISECONDS_PER_SECOND);
         $timestamp = Timestamp::fromParts($timestamp_in_seconds, $nanoseconds);
 
-        /** @psalm-suppress MissingThrowsDocblock */
         return new self($timezone, $timestamp, $year, $month, $day, $hours, $minutes, $seconds, $nanoseconds);
     }
 
@@ -246,8 +242,6 @@ final readonly class DateTime implements DateTimeInterface
      * @see Timezone::default()
      *
      * @psalm-mutation-free
-     *
-     * @psalm-suppress ImpureMethodCall
      */
     #[\Override]
     public static function fromTimestamp(Timestamp $timestamp, null|Timezone $timezone = null): static
@@ -267,7 +261,6 @@ final readonly class DateTime implements DateTimeInterface
         $second = $calendar->get(IntlCalendar::FIELD_SECOND);
         $nanoseconds = $timestamp->getNanoseconds();
 
-        /** @psalm-suppress MissingThrowsDocblock */
         return new static($timezone, $timestamp, $year, $month, $day, $hour, $minute, $second, $nanoseconds);
     }
 

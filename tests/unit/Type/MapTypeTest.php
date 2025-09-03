@@ -87,7 +87,7 @@ final class MapTypeTest extends TypeTest
      * @param MapInterface<array-key, mixed>|mixed $b
      */
     #[\Override]
-    protected function equals($a, $b): bool
+    protected function equals(mixed $a, mixed $b): bool
     {
         if (Type\instance_of(MapInterface::class)->matches($a)) {
             $a = $a->toArray();
@@ -115,11 +115,11 @@ final class MapTypeTest extends TypeTest
         yield 'nested' => [
             Type\map(Type\int(), Type\map(Type\int(), Type\int())),
             new Collection\Map([0 => new Collection\Map(['nope' => 'nope'])]),
-            'Expected "' .
-            MapInterface::class .
-                '<int, ' .
-                MapInterface::class .
-                '<int, int>>", got "string" at path "0.key(nope)".',
+            'Expected "'
+            . MapInterface::class
+                . '<int, '
+                . MapInterface::class
+                . '<int, int>>", got "string" at path "0.key(nope)".',
         ];
     }
 
@@ -170,9 +170,9 @@ final class MapTypeTest extends TypeTest
             (static function (): iterable {
                 yield new class() {} => 'nope';
             })(),
-            'Could not coerce "class@anonymous" to type "' .
-            MapInterface::class .
-                '<int, int>" at path "key(class@anonymous)".',
+            'Could not coerce "class@anonymous" to type "'
+            . MapInterface::class
+                . '<int, int>" at path "key(class@anonymous)".',
         ];
     }
 

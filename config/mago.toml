@@ -1,65 +1,34 @@
-php_version = "8.3"
+php-version = "8.3"
 
 [source]
 paths = ["src", "tests", "examples"]
 includes = ["vendor"]
 excludes = []
 
-[format]
-empty_line_after_control_structure = true
-empty_line_before_dangling_comments = false
+[formatter]
+empty-line-after-control-structure = true
+empty-line-before-dangling-comments = false
 
 [linter]
-plugins = ["php-unit"]
+integrations = ["php-unit"]
 
-[[linter.rules]]
-name = "maintainability/cyclomatic-complexity"
-threshold = 43
+[linter.rules]
+cyclomatic-complexity = { threshold = 43 }
+kan-defect = { threshold = 3.5 }
+halstead = { enabled = false }
+too-many-methods = { enabled = false }
+too-many-enum-cases = { enabled = false }
+excessive-parameter-list = { threshold = 9 }
+excessive-nesting = { threshold = 5 }
+trait-name = { psr = false }
+interface-name = { psr = false }
+class-name = { psr = false }
+no-global = { enabled = false }
+literal-named-argument = { enabled = false }
+no-boolean-flag-parameter = { enabled = false }
+no-boolean-literal-comparison = { enabled = false }
+no-error-control-operator = { enabled = false }
 
-[[linter.rules]]
-name = "maintainability/kan-defect"
-threshold = 3.5
-
-[[linter.rules]]
-name = "maintainability/excessive-parameter-list"
-threshold = 9
-
-[[linter.rules]]
-name = "best-practices/excessive-nesting"
-threshold = 5
-
-[[linter.rules]]
-name = "naming/trait"
-psr = false
-
-[[linter.rules]]
-name = "naming/interface"
-psr = false
-
-[[linter.rules]]
-name = "naming/class"
-psr = false
-
-[[linter.rules]]
-name = "maintainability/halstead"
-level = "off"
-
-[[linter.rules]]
-name = "maintainability/too-many-enum-cases"
-level = "off"
-
-[[linter.rules]]
-name = "maintainability/too-many-methods"
-level = "off"
-
-[[linter.rules]]
-name = "maintainability/long-inheritance-chain"
-level = "off"
-
-[[linter.rules]]
-name = "safety/no-error-control-operator"
-level = "off"
-
-[[linter.rules]]
-name = "safety/no-global"
-level = "off"
+[analyzer]
+excludes = ["tests"]
+ignore = ["possibly-static-access-on-interface"]

@@ -18,8 +18,6 @@ use function filemtime;
  * @throws Exception\RuntimeException In case of an error.
  *
  * @return int The last content modification time as a Unix timestamp.
- *
- * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function get_modification_time(string $node): int
 {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -31,7 +32,7 @@ final readonly class OptionalType extends Type\Type
      *
      * @return T
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): mixed
     {
         return $this->inner->coerce($value);
@@ -44,7 +45,7 @@ final readonly class OptionalType extends Type\Type
      *
      * @psalm-assert T $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): mixed
     {
         return $this->inner->assert($value);
@@ -53,7 +54,7 @@ final readonly class OptionalType extends Type\Type
     /**
      * Return whether this type is optional.
      */
-    #[\Override]
+    #[Override]
     public function isOptional(): bool
     {
         return true;
@@ -62,7 +63,7 @@ final readonly class OptionalType extends Type\Type
     /**
      * Returns a string representation of the type.
      */
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return $this->inner->toString();

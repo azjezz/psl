@@ -17,8 +17,6 @@ use function intdiv;
  *
  * @throws Exception\ArithmeticException If the $numerator is Math\INT64_MIN and the $denominator is -1.
  * @throws Exception\DivisionByZeroException If the $denominator is 0.
- *
- * @mago-expect best-practices/dont-catch-error
  */
 function div(int $numerator, int $denominator): int
 {

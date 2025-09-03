@@ -13,18 +13,16 @@ use Psl\Type;
  *
  * @implements Comparison\Comparable<Option<T>>
  * @implements Comparison\Equable<Option<T>>
- *
- * @psalm-suppress ClassMustBeFinal
  */
 final readonly class Option implements Comparison\Comparable, Comparison\Equable
 {
     /**
-     * @var ?array{T} $option
+     * @var null|array{T}
      */
     private null|array $option;
 
     /**
-     * @param ?array{T} $option
+     * @param null|array{T} $option
      *
      * @psalm-mutation-free
      */
@@ -462,14 +460,13 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     }
 
     /**
-     * @template Tv
-     * @template Tr
+     * @template L
+     * @template R
      *
-     * @psalm-if-this-is Option<array{Tv, Tr}>
+     * @psalm-if-this-is Option<list{L, R}>
+     * @where T is list{L, R}
      *
-     * @throws Type\Exception\AssertException
-     *
-     * @return array{Option<Tv>, Option<Tr>}
+     * @return list{Option<L>, Option<R>}
      *
      * @psalm-mutation-free
      */

@@ -42,7 +42,7 @@ final readonly class IntType extends Type\Type
 
         if (is_float($value)) {
             $integer_value = (int) $value;
-            if (((float) $integer_value) === $value) {
+            if ((float) $integer_value === $value) {
                 return $integer_value;
             }
         }
@@ -50,13 +50,13 @@ final readonly class IntType extends Type\Type
         if (is_string($value) || $value instanceof Stringable) {
             $str = (string) $value;
             $int = (int) $str;
-            if ($str === ((string) $int)) {
+            if ($str === (string) $int) {
                 return $int;
             }
 
             $trimmed = ltrim($str, '0');
             $int = (int) $trimmed;
-            if ($trimmed === ((string) $int)) {
+            if ($trimmed === (string) $int) {
                 return $int;
             }
 

@@ -17,9 +17,6 @@ use function count;
  * @implements ChannelInterface<T>
  *
  * @internal
- *
- * @psalm-suppress LessSpecificReturnStatement
- * @psalm-suppress MoreSpecificReturnType
  */
 final class UnboundedChannelState implements ChannelInterface
 {
@@ -55,7 +52,7 @@ final class UnboundedChannelState implements ChannelInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     #[\Override]
     public function close(): void

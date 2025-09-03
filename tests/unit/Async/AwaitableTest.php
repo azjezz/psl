@@ -17,9 +17,6 @@ use Psl\Str;
 use Revolt\EventLoop\UncaughtThrowable;
 use Throwable;
 
-/**
- * @mago-expect best-practices/dont-catch-error
- */
 final class AwaitableTest extends TestCase
 {
     public function testCompleteAwait(): void
@@ -189,10 +186,7 @@ final class AwaitableTest extends TestCase
         });
 
         $awaitable = $awaitable
-            ->then(
-                static fn(string $result): string => Str\reverse($result),
-                static fn(Throwable $_exception): never => exit(0),
-            )
+            ->then(Str\reverse(...), static fn(Throwable $_exception): never => exit(0))
             ->then(
                 static fn(string $result): never => throw new InvariantViolationException($result),
                 static fn(Throwable $_exception): never => exit(0),
@@ -217,7 +211,7 @@ final class AwaitableTest extends TestCase
 
         $ref = new Psl\Ref('');
         $awaitable = $awaitable
-            ->map(static fn(string $result): string => Str\reverse($result))
+            ->map(Str\reverse(...))
             ->map(static fn(string $result): never => throw new InvariantViolationException($result))
             ->catch(static fn(InvariantViolationException $exception): string => $exception->getMessage())
             ->always(static fn(): string => $ref->value = 'hello');

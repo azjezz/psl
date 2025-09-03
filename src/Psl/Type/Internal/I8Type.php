@@ -12,8 +12,6 @@ use Psl\Type\Exception\CoercionException;
 use function is_int;
 
 /**
- * @ara-extends Type\Type<i8>
- *
  * @extends Type\Type<int<-128, 127>>
  *
  * @internal
@@ -21,8 +19,6 @@ use function is_int;
 final readonly class I8Type extends Type\Type
 {
     /**
-     * @ara-assert-if-true i8 $value
-     *
      * @psalm-assert-if-true int<-128, 127> $value
      */
     #[\Override]
@@ -33,8 +29,6 @@ final readonly class I8Type extends Type\Type
 
     /**
      * @throws CoercionException
-     *
-     * @ara-return i8
      *
      * @return int<-128, 127>
      */
@@ -51,13 +45,9 @@ final readonly class I8Type extends Type\Type
     }
 
     /**
-     * @ara-assert i8 $value
-     *
      * @psalm-assert int<-128, 127> $value
      *
      * @throws AssertException
-     *
-     * @ara-return i8
      *
      * @return int<-128, 127>
      */

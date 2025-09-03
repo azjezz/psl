@@ -19,20 +19,28 @@ use function preg_split;
  */
 function replace_ci(string $haystack, string $needle, string $replacement, Encoding $encoding = Encoding::Utf8): string
 {
-    if ('' === $needle || null === search_ci($haystack, $needle, 0, $encoding)) {
+    if ('' === $haystack || '' === $needle || null === namespace\search_ci($haystack, $needle, 0, $encoding)) {
         return $haystack;
     }
 
     try {
-        /** @var list<string> */
-        $pieces = Regex\Internal\call_preg('preg_split', static fn(): array|false => preg_split(
-            '{' . preg_quote($needle, '/') . '}iu',
-            $haystack,
-            -1,
-        ));
+        $pieces = Regex\Internal\call_preg(
+            'preg_split',
+            /**
+             * @return list<non-empty-string>
+             */
+            static function () use ($haystack, $needle): array {
+                $result = preg_split('{' . preg_quote($needle, '/') . '}iu', $haystack, -1);
+                if (false === $result) {
+                    $result = [];
+                }
+
+                return $result;
+            },
+        );
     } catch (Regex\Exception\RuntimeException|Regex\Exception\InvalidPatternException $error) {
         throw new Exception\InvalidArgumentException($error->getMessage(), previous: $error);
     }
 
-    return join($pieces, $replacement);
+    return namespace\join($pieces, $replacement);
 }

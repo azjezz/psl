@@ -324,8 +324,8 @@ final class BoundedChannelTest extends TestCase
          */
         [$receiver, $sender] = Channel\bounded(1);
 
-        $one = Async\run(static fn(): string => $receiver->receive());
-        $two = Async\run(static fn(): string => $receiver->receive());
+        $one = Async\run($receiver->receive(...));
+        $two = Async\run($receiver->receive(...));
 
         Async\Scheduler::defer(static fn(): null => $sender->send('foo'));
         Async\Scheduler::defer(static fn(): null => $sender->send('bar'));

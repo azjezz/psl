@@ -11,8 +11,6 @@ use Psl\Type\Exception\CoercionException;
 use function is_int;
 
 /**
- * @ara-extends Type\Type<i64>
- *
  * @extends Type\Type<int>
  *
  * @internal
@@ -20,8 +18,6 @@ use function is_int;
 final readonly class I64Type extends Type\Type
 {
     /**
-     * @ara-assert-if-true i64 $value
-     *
      * @psalm-assert-if-true int $value
      */
     #[\Override]
@@ -33,8 +29,6 @@ final readonly class I64Type extends Type\Type
     /**
      * @throws CoercionException
      *
-     * @ara-return i64
-     *
      * @return int
      */
     #[\Override]
@@ -44,13 +38,9 @@ final readonly class I64Type extends Type\Type
     }
 
     /**
-     * @ara-assert i64 $value
-     *
      * @psalm-assert int $value
      *
      * @throws AssertException
-     *
-     * @ara-return i64
      *
      * @return int
      */

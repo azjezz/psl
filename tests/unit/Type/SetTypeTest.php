@@ -86,7 +86,7 @@ final class SetTypeTest extends TypeTest
      * @param SetInterface<array-key>|mixed $b
      */
     #[\Override]
-    protected function equals($a, $b): bool
+    protected function equals(mixed $a, mixed $b): bool
     {
         if (Type\instance_of(SetInterface::class)->matches($a)) {
             $a = $a->toArray();

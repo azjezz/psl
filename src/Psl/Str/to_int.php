@@ -11,7 +11,7 @@ namespace Psl\Str;
  */
 function to_int(string $string): null|int
 {
-    if (((string) ((int) $string)) === $string) {
+    if ((string) (int) $string === $string) {
         return (int) $string;
     }
 

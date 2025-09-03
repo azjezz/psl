@@ -40,17 +40,14 @@ function escape_argument(string $argument): string
     }
 
     // @codeCoverageIgnoreStart
-    /** @psalm-suppress MissingThrowsDocblock - safe ( $offset is within-of-bounds ) */
     if (Byte\contains($argument, "\0")) {
         $argument = Byte\replace($argument, "\0", '?');
     }
 
-    /** @psalm-suppress MissingThrowsDocblock - safe ( $pattern is valid ) */
     if (!Regex\matches($argument, '/[\/()%!^"<>&|\s]/')) {
         return $argument;
     }
 
-    /** @psalm-suppress MissingThrowsDocblock - safe ( $pattern is valid ) */
     $argument = Regex\replace($argument, '/(\\\\+)$/', '$1$1');
     $argument = Byte\replace_every($argument, [
         '"' => '""',

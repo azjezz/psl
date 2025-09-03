@@ -13,7 +13,7 @@ final class MeanTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testMean($expected, array $numbers): void
+    public function testMean(null|float $expected, array $numbers): void
     {
         static::assertSame($expected, Math\mean($numbers));
     }

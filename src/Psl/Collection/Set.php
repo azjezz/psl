@@ -87,8 +87,6 @@ final readonly class Set implements SetInterface
     {
         /**
          * @var array<array-key, Ts>
-         *
-         * @psalm-suppress InvalidArgument
          */
         $array = iterator_to_array($items);
         return self::fromArray($array);
@@ -403,7 +401,12 @@ final readonly class Set implements SetInterface
     #[\Override]
     public function filterWithKey(Closure $fn): Set
     {
-        return $this->filter(static fn(string|int $k): bool => $fn($k, $k));
+        return $this->filter(
+            /**
+             * @param T $k
+             */
+            static fn(string|int $k): bool => $fn($k, $k),
+        );
     }
 
     /**
@@ -446,7 +449,12 @@ final readonly class Set implements SetInterface
     #[\Override]
     public function mapWithKey(Closure $fn): Set
     {
-        return $this->map(static fn(string|int $k): string|int => $fn($k, $k));
+        return $this->map(
+            /**
+             * @param T $k
+             */
+            static fn(string|int $k): string|int => $fn($k, $k),
+        );
     }
 
     /**
@@ -576,7 +584,6 @@ final readonly class Set implements SetInterface
     #[\Override]
     public function slice(int $start, null|int $length = null): Set
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return self::fromArray(Dict\slice($this->elements, $start, $length));
     }
 
@@ -597,18 +604,6 @@ final readonly class Set implements SetInterface
     #[\Override]
     public function chunk(int $size): Vector
     {
-        /**
-         * @psalm-suppress MissingThrowsDocblock
-         * @psalm-suppress ImpureFunctionCall
-         */
-        return Vector::fromArray(Vec\map(
-            Vec\chunk($this->toArray(), $size),
-            /**
-             * @param list<T> $chunk
-             *
-             * @return Set<T>
-             */
-            static fn(array $chunk): Set => static::fromArray($chunk),
-        ));
+        return Vector::fromArray(Vec\map(Vec\chunk($this->toArray(), $size), static::fromArray(...)));
     }
 }

@@ -83,8 +83,6 @@ final class MutableVector implements MutableVectorInterface
     public static function fromItems(iterable $items): MutableVector
     {
         /**
-         * @psalm-suppress InvalidArgument
-         *
          * @var array<array-key, Ts>
          */
         $array = iterator_to_array($items);
@@ -582,7 +580,6 @@ final class MutableVector implements MutableVectorInterface
     #[\Override]
     public function zip(array $elements): MutableVector
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return MutableVector::fromArray(Vec\zip($this->elements, $elements));
     }
 
@@ -696,7 +693,6 @@ final class MutableVector implements MutableVectorInterface
     #[\Override]
     public function slice(int $start, null|int $length = null): MutableVector
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return MutableVector::fromArray(Dict\slice($this->elements, $start, $length));
     }
 
@@ -713,29 +709,11 @@ final class MutableVector implements MutableVectorInterface
      *                                         `MutableVector` split into chunks of the given size.
      *
      * @psalm-mutation-free
-     *
-     * @psalm-suppress LessSpecificImplementedReturnType - I don't see how this one is less specific than its inherited.
      */
     #[\Override]
     public function chunk(int $size): MutableVector
     {
-        /**
-         * @psalm-suppress MissingThrowsDocblock
-         * @psalm-suppress ImpureFunctionCall
-         */
-        return static::fromArray(Vec\map(
-            /**
-             * @psalm-suppress MissingThrowsDocblock
-             * @psalm-suppress ImpureFunctionCall
-             */
-            Vec\chunk($this->toArray(), $size),
-            /**
-             * @param list<T> $chunk
-             *
-             * @return MutableVector<T>
-             */
-            static fn(array $chunk): MutableVector => MutableVector::fromArray($chunk),
-        ));
+        return static::fromArray(Vec\map(Vec\chunk($this->toArray(), $size), MutableVector::fromArray(...)));
     }
 
     /**

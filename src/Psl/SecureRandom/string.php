@@ -30,9 +30,8 @@ function string(int $length, null|string $alphabet = null): string
         return '';
     }
 
-    $alphabet = $alphabet ?? Str\ALPHABET_ALPHANUMERIC;
+    $alphabet ??= Str\ALPHABET_ALPHANUMERIC;
     $alphabet_size = Byte\length($alphabet);
-    /** @psalm-suppress MissingThrowsDocblock */
     $bits = (int) Math\ceil(Math\log($alphabet_size, 2.0));
     if ($bits < 1 || $bits > 56) {
         throw new Exception\InvalidArgumentException('$alphabet\'s length must be in [2^1, 2^56]');
@@ -41,7 +40,7 @@ function string(int $length, null|string $alphabet = null): string
     $ret = '';
     while ($length > 0) {
         /** @var int<0, max> $urandom_length */
-        $urandom_length = (int) Math\ceil(((float) (2 * $length * $bits)) / 8.0);
+        $urandom_length = (int) Math\ceil((float) (2 * $length * $bits) / 8.0);
         $data = namespace\bytes($urandom_length);
 
         $unpacked_data = 0;

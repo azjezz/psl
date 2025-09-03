@@ -25,6 +25,8 @@ use function mb_strtolower;
  *      Str\lowercase('سيف')
  *      => Str('سيف')
  *
+ * @return lowercase-string
+ *
  * @pure
  */
 function lowercase(string $string, Encoding $encoding = Encoding::Utf8): string

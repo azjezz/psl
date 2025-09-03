@@ -32,7 +32,7 @@ final class UnboundedReceiver implements ReceiverInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     #[\Override]
     public function receive(): mixed
@@ -52,7 +52,6 @@ final class UnboundedReceiver implements ReceiverInterface
             $this->state->waitForMessage($suspension);
             $suspension->suspend();
 
-            /** @psalm-suppress MissingThrowsDocblock */
             return $this->state->receive();
         } finally {
             $this->suspension = null;
@@ -60,7 +59,7 @@ final class UnboundedReceiver implements ReceiverInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     #[\Override]
     public function tryReceive(): mixed

@@ -12,7 +12,7 @@ final class SearchWithKeysOptTest extends TestCase
     /**
      * @dataProvider provideDataSome
      */
-    public function testSearchSome($expected, iterable $iterable, callable $predicate): void
+    public function testSearchSome(string $expected, iterable $iterable, callable $predicate): void
     {
         static::assertSame($expected, Iter\search_with_keys_opt($iterable, $predicate)->unwrap());
     }

@@ -96,7 +96,7 @@ final class MutableVectorTypeTest extends TypeTest
      * @param MutableVectorInterface<mixed>|mixed $b
      */
     #[\Override]
-    protected function equals($a, $b): bool
+    protected function equals(mixed $a, mixed $b): bool
     {
         if (Type\instance_of(MutableVectorInterface::class)->matches($a)) {
             $a = $a->toArray();
@@ -119,11 +119,11 @@ final class MutableVectorTypeTest extends TypeTest
         yield 'nested' => [
             Type\mutable_vector(Type\mutable_vector(Type\int())),
             new Collection\MutableVector([new Collection\MutableVector(['nope'])]),
-            'Expected "' .
-            MutableVectorInterface::class .
-                '<' .
-                MutableVectorInterface::class .
-                '<int>>", got "string" at path "0.0".',
+            'Expected "'
+            . MutableVectorInterface::class
+                . '<'
+                . MutableVectorInterface::class
+                . '<int>>", got "string" at path "0.0".',
         ];
     }
 

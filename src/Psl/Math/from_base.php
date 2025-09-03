@@ -19,11 +19,10 @@ use Psl\Str\Byte;
  * @throws Exception\InvalidArgumentException If $number contains an invalid digit in base $from_base
  * @throws Exception\OverflowException In case of an integer overflow
  *
- * @mago-expect best-practices/no-else-clause
+ * @mago-expect lint:no-else-clause
  */
 function from_base(string $number, int $from_base): int
 {
-    /** @psalm-suppress MissingThrowsDocblock */
     $limit = div(INT64_MAX, $from_base);
     $result = 0;
     foreach (Byte\chunk($number) as $digit) {

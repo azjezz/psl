@@ -15,6 +15,5 @@ use Psl\Str\Exception;
  */
 function starts_with_ci(string $string, string $prefix): bool
 {
-    /** @psalm-suppress MissingThrowsDocblock */
     return 0 === search_ci($string, $prefix);
 }

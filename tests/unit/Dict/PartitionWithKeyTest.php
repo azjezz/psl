@@ -55,7 +55,7 @@ final class PartitionWithKeyTest extends TestCase
             [
                 [['foo'], [1 => 'bar', 2 => 'baz', 3 => 'qux']],
                 ['foo', 'bar', 'baz', 'qux'],
-                static fn(int $k, string $_str): bool => !((bool) $k),
+                static fn(int $k, string $_str): bool => !(bool) $k,
             ],
         ];
     }

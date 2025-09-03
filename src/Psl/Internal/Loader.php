@@ -25,6 +25,9 @@ use function trait_exists;
  */
 final class Loader
 {
+    /**
+     * @var non-empty-array<non-empty-string, non-empty-string>
+     */
     public const array CONSTANTS = [
         'Psl\\Internal\\ALPHABET_BASE64' => 'Psl/Internal/constants.php',
         'Psl\\Internal\\ALPHABET_BASE64_URL' => 'Psl/Internal/constants.php',
@@ -73,6 +76,9 @@ final class Loader
         'Psl\\DateTime\\MONTHS_PER_YEAR' => 'Psl/DateTime/constants.php',
     ];
 
+    /**
+     * @var array<non-empty-string, non-empty-string>
+     */
     public const array FUNCTIONS = [
         'Psl\\Comparison\\compare' => 'Psl/Comparison/compare.php',
         'Psl\\Comparison\\equal' => 'Psl/Comparison/equal.php',
@@ -564,6 +570,9 @@ final class Loader
         'Psl\\DateTime\\Internal\\format_rfc3339' => 'Psl/DateTime/Internal/format_rfc3339.php',
     ];
 
+    /**
+     * @var non-empty-array<interface-string, non-empty-string>
+     */
     public const array INTERFACES = [
         'Psl\\Comparison\\Comparable' => 'Psl/Comparison/Comparable.php',
         'Psl\\Comparison\\Equable' => 'Psl/Comparison/Equable.php',
@@ -634,6 +643,9 @@ final class Loader
         'Psl\\DateTime\\DateTimeInterface' => 'Psl/DateTime/DateTimeInterface.php',
     ];
 
+    /**
+     * @var non-empty-array<trait-string, non-empty-string>
+     */
     public const array TRAITS = [
         'Psl\\RandomSequence\\Internal\\MersenneTwisterTrait' => 'Psl/RandomSequence/Internal/MersenneTwisterTrait.php',
         'Psl\\IO\\ReadHandleConvenienceMethodsTrait' => 'Psl/IO/ReadHandleConvenienceMethodsTrait.php',
@@ -643,6 +655,9 @@ final class Loader
         'Psl\\DateTime\\DateTimeConvenienceMethodsTrait' => 'Psl/DateTime/DateTimeConvenienceMethodsTrait.php',
     ];
 
+    /**
+     * @var non-empty-array<class-string, non-empty-string>
+     */
     public const array CLASSES = [
         'Psl\\Ref' => 'Psl/Ref.php',
         'Psl\\Comparison\\Exception\\IncomparableException' => 'Psl/Comparison/Exception/IncomparableException.php',
@@ -855,6 +870,9 @@ final class Loader
         'Psl\\DateTime\\Timestamp' => 'Psl/DateTime/Timestamp.php',
     ];
 
+    /**
+     * @var non-empty-array<enum-string, non-empty-string>
+     */
     public const array ENUMS = [
         'Psl\\Comparison\\Order' => 'Psl/Comparison/Order.php',
         'Psl\\Encoding\\Base64\\Variant' => 'Psl/Encoding/Base64/Variant.php',
@@ -1007,8 +1025,12 @@ final class Loader
 
     private static function lookupClassish(string $classname): null|string
     {
-        static $lookup;
-        if (!$lookup) {
+        /**
+         * @var array<non-empty-string, non-empty-string>|null $lookup
+         */
+        static $lookup = null;
+
+        if (null === $lookup) {
             $lookup = array_merge(self::TRAITS, self::INTERFACES, self::CLASSES, self::ENUMS);
         }
 

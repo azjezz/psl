@@ -13,7 +13,7 @@ final class MedianTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testMedian($expected, array $numbers): void
+    public function testMedian(null|float $expected, array $numbers): void
     {
         static::assertSame($expected, Math\median($numbers));
     }

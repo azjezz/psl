@@ -13,6 +13,5 @@ use ReflectionClass;
  */
 function has_constant(string $class_name, string $constant_name): bool
 {
-    /** @psalm-suppress MissingThrowsDocblock */
     return (new ReflectionClass($class_name))->hasConstant($constant_name);
 }

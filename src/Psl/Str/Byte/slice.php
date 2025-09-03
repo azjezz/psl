@@ -15,7 +15,7 @@ use function substr;
  * If no length is given, the slice will contain the rest of the
  * string. If the length is zero, the empty string will be returned.
  *
- * @param int<0, max> $length
+ * @param null|int<0, max> $length
  *
  * @pure
  *

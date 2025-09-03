@@ -10,13 +10,11 @@ use function mb_detect_encoding;
 /**
  * Detect the encoding of the giving string.
  *
- * @param list<Encoding> $encoding_list
+ * @param null|list<Encoding> $encoding_list
  *
  * @return null|Encoding The string encoding or null if unable to detect encoding.
  *
  * @pure
- *
- * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function detect_encoding(string $string, null|array $encoding_list = null): null|Encoding
 {

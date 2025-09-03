@@ -171,7 +171,7 @@ abstract class AbstractSetTest extends TestCase
             'qux',
         ]);
 
-        $mapped = $set->map(static fn(string $item): string => Str\uppercase($item));
+        $mapped = $set->map(Str\uppercase(...));
 
         static::assertInstanceOf($this->setClass, $mapped);
         static::assertSame([
@@ -207,7 +207,7 @@ abstract class AbstractSetTest extends TestCase
             'qux',
         ]);
 
-        $mapped = $set->mapWithKey(static fn(string $item): string => Str\uppercase($item));
+        $mapped = $set->mapWithKey(static fn(string $item, string $_): string => Str\uppercase($item));
 
         static::assertInstanceOf($this->setClass, $mapped);
         static::assertSame([

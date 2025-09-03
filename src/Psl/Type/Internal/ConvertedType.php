@@ -15,8 +15,6 @@ use Throwable;
  * @template I
  * @template O
  *
- * @ara-extends Type\Type<O>
- *
  * @extends Type\Type<O>
  *
  * @internal
@@ -39,8 +37,6 @@ final readonly class ConvertedType extends Type\Type
     /**
      * @throws CoercionException
      *
-     * @ara-return O
-     *
      * @return O
      */
     #[\Override]
@@ -50,6 +46,7 @@ final readonly class ConvertedType extends Type\Type
             return $value;
         }
 
+        /** @var int */
         $action = 0;
 
         try {
@@ -76,13 +73,9 @@ final readonly class ConvertedType extends Type\Type
     }
 
     /**
-     * @ara-assert O $value
-     *
      * @psalm-assert O $value
      *
      * @throws AssertException
-     *
-     * @ara-return O
      *
      * @return O
      */

@@ -37,7 +37,6 @@ final class TypeAssertExceptionTest extends TestCase
             static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\AssertException::class));
         } catch (Type\Exception\AssertException $e) {
             static::assertSame('array{\'child\': array{\'name\': string}}', $e->getExpectedType());
-            static::assertSame('array', $e->getActualType());
             static::assertSame('int', $e->getFirstFailingActualType());
             static::assertSame(
                 'Expected "array{\'child\': array{\'name\': string}}", got "int" at path "child.name".',
@@ -52,7 +51,6 @@ final class TypeAssertExceptionTest extends TestCase
                 'Expected "array{\'name\': string}", got "int" at path "name".',
                 $previous->getMessage(),
             );
-            static::assertSame('int', $previous->getActualType());
             static::assertSame('int', $previous->getFirstFailingActualType());
             static::assertSame(0, $previous->getCode());
             static::assertSame(['name'], $previous->getpaths());

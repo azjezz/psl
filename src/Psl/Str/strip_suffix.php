@@ -24,7 +24,8 @@ function strip_suffix(string $string, string $suffix, Encoding $encoding = Encod
     $string_length = length($string, $encoding);
     // if $suffix_length is greater than $string_length, return $string as it can't contain $suffix.
     // if $suffix_length and $string_length are the same, return $string as $suffix is not $string.
-    if ($suffix_length >= $string_length) {
+    $length = $string_length - $suffix_length;
+    if ($length < 0) {
         return $string;
     }
 
@@ -32,6 +33,5 @@ function strip_suffix(string $string, string $suffix, Encoding $encoding = Encod
         return $string;
     }
 
-    /** @psalm-suppress InvalidArgument - $string_length is greater than $suffix_length, so the result is always int<0, max> */
-    return slice($string, 0, $string_length - $suffix_length, $encoding);
+    return slice($string, 0, $length, $encoding);
 }

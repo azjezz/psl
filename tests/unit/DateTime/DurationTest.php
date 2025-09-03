@@ -13,7 +13,7 @@ use function serialize;
 use function unserialize;
 
 /**
- * @mago-expect php-unit/strict-assertions
+ * @mago-expect lint:strict-assertions
  */
 final class DurationTest extends TestCase
 {

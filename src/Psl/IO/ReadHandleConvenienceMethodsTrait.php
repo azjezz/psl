@@ -37,22 +37,24 @@ trait ReadHandleConvenienceMethodsTrait
 
         /** @var Psl\Ref<string> $data */
         $data = new Psl\Ref('');
-        $timer = new Psl\Async\OptionalIncrementalTimeout($timeout, static function () use ($data): void {
-            // @codeCoverageIgnoreStart
-            throw new Exception\TimeoutException(Str\format(
-                'Reached timeout before %s data could be read.',
-                $data->value === '' ? 'any' : 'all',
-            ));
-            // @codeCoverageIgnoreEnd
-        });
+        $timer = new Psl\Async\OptionalIncrementalTimeout(
+            $timeout,
+            /**
+             * @throws Exception\TimeoutException
+             */
+            static function () use ($data): void {
+                // @codeCoverageIgnoreStart
+                throw new Exception\TimeoutException(Str\format(
+                    'Reached timeout before %s data could be read.',
+                    $data->value === '' ? 'any' : 'all',
+                ));
+                // @codeCoverageIgnoreEnd
+            },
+        );
 
         do {
+            /** @var positive-int|null $chunk_size */
             $chunk_size = $to_read;
-            /**
-             * @var positive-int|null $chunk_size
-             *
-             * @psalm-suppress UnnecessaryVarAnnotation
-             */
             $chunk = $this->read($chunk_size, $timer->getRemaining());
             $data->value .= $chunk;
             if ($to_read !== null) {

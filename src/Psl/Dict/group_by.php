@@ -55,7 +55,7 @@ function group_by(iterable $values, Closure $key_func): array
         );
 
         /** @var Tk $key */
-        $result[$key] = $result[$key] ?? [];
+        $result[$key] ??= [];
         $result[$key][] = $value;
     }
 

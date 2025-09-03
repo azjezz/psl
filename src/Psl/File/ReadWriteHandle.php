@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\File;
 
+use Override;
 use Psl\DateTime\Duration;
 use Psl\Filesystem;
 use Psl\IO;
@@ -72,45 +73,53 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Wr
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function reachedEndOfDataSource(): bool
     {
         return $this->readWriteHandle->reachedEndOfDataSource();
     }
 
     /**
-     * {@inheritDoc}
+     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tryRead(null|int $max_bytes = null): string
     {
         return $this->readWriteHandle->tryRead($max_bytes);
     }
 
     /**
-     * {@inheritDoc}
+     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         return $this->readWriteHandle->read($max_bytes, $timeout);
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tryWrite(string $bytes): int
     {
         return $this->readWriteHandle->tryWrite($bytes);
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function write(string $bytes, null|Duration $timeout = null): int
     {
         return $this->readWriteHandle->write($bytes, $timeout);

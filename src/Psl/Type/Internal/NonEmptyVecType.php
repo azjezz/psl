@@ -19,6 +19,8 @@ use function is_iterable;
  * @extends Type\Type<non-empty-list<Tv>>
  *
  * @internal
+ *
+ * @mago-expect analysis:mixed-assignment
  */
 final readonly class NonEmptyVecType extends Type\Type
 {
@@ -80,6 +82,7 @@ final readonly class NonEmptyVecType extends Type\Type
 
             $i = null;
             $v = null;
+            /** @var bool $iterating */
             $iterating = true;
 
             try {

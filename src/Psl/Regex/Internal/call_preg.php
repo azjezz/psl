@@ -25,10 +25,8 @@ use Psl\Regex\Exception;
  */
 function call_preg(string $function, Closure $closure): mixed
 {
-    /** @psalm-suppress ImpureFunctionCall */
     error_clear_last();
 
-    /** @psalm-suppress ImpureFunctionCall */
     $result = Internal\suppress($closure);
     $error = get_preg_error($function);
     // @codeCoverageIgnoreStart

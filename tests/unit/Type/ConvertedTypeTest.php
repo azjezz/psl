@@ -55,7 +55,7 @@ final class ConvertedTypeTest extends TypeTest
      * @param DateTimeImmutable|mixed $b
      */
     #[\Override]
-    protected function equals($a, $b): bool
+    protected function equals(mixed $a, mixed $b): bool
     {
         if (Type\instance_of(DateTimeImmutable::class)->matches($a)) {
             $a = $a->format(self::DATE_FORMAT);

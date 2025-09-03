@@ -21,8 +21,6 @@ use function stripos;
  * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
  *
  * @return null|int<0, max>
- *
- * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function search_ci(string $haystack, string $needle, int $offset = 0): null|int
 {
@@ -32,6 +30,5 @@ function search_ci(string $haystack, string $needle, int $offset = 0): null|int
         return null;
     }
 
-    /** @var null|int<0, max> */
     return false === ($pos = stripos($haystack, $needle, $offset)) ? null : $pos;
 }

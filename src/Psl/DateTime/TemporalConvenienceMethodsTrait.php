@@ -21,8 +21,6 @@ trait TemporalConvenienceMethodsTrait
      * @param TemporalInterface $other
      *
      * @psalm-mutation-free
-     *
-     * @psalm-suppress MoreSpecificImplementedParamType
      */
     public function compare(mixed $other): Order
     {
@@ -40,8 +38,6 @@ trait TemporalConvenienceMethodsTrait
      * @param TemporalInterface $other
      *
      * @psalm-mutation-free
-     *
-     * @psalm-suppress MoreSpecificImplementedParamType
      */
     public function equals(mixed $other): bool
     {
@@ -288,11 +284,6 @@ trait TemporalConvenienceMethodsTrait
         null|Locale $locale = null,
     ): string {
         $timestamp = $this->getTimestamp();
-
-        /**
-         * @psalm-suppress InvalidOperand
-         * @psalm-suppress ImpureMethodCall
-         */
         return Internal\create_intl_date_formatter(null, null, $pattern, $timezone, $locale)->format(
             $timestamp->getSeconds() + ($timestamp->getNanoseconds() / NANOSECONDS_PER_SECOND),
         );
@@ -364,11 +355,6 @@ trait TemporalConvenienceMethodsTrait
         null|Locale $locale = null,
     ): string {
         $timestamp = $this->getTimestamp();
-
-        /**
-         * @psalm-suppress InvalidOperand
-         * @psalm-suppress ImpureMethodCall
-         */
         return Internal\create_intl_date_formatter($date_style, $time_style, null, $timezone, $locale)->format(
             $timestamp->getSeconds() + ($timestamp->getNanoseconds() / NANOSECONDS_PER_SECOND),
         );
@@ -392,7 +378,6 @@ trait TemporalConvenienceMethodsTrait
      *
      * @psalm-mutation-free
      */
-    #[\Override]
     public function __toString(): string
     {
         return $this->toString();

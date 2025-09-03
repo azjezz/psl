@@ -568,7 +568,6 @@ final readonly class Map implements MapInterface
     #[\Override]
     public function slice(int $start, null|int $length = null): Map
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         $result = Dict\slice($this->elements, $start, $length);
 
         return self::fromArray($result);
@@ -589,7 +588,6 @@ final readonly class Map implements MapInterface
     #[\Override]
     public function chunk(int $size): Vector
     {
-        /** @psalm-suppress ImpureMethodCall */
         return $this->zip($this->keys()->toArray())
             ->values()
             ->chunk($size)

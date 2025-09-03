@@ -26,7 +26,6 @@ function median(array $numbers): float|null
         return null;
     }
 
-    /** @psalm-suppress MissingThrowsDocblock */
     $middle_index = div($count, 2);
     if (0 === ($count % 2)) {
         return mean([$numbers[$middle_index], $numbers[$middle_index - 1]]);

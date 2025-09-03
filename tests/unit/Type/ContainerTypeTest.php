@@ -77,7 +77,7 @@ final class ContainerTypeTest extends TypeTest
      * @param iterable<int, int> $b
      */
     #[\Override]
-    protected function equals($a, $b): bool
+    protected function equals(mixed $a, mixed $b): bool
     {
         return $a === $b;
     }

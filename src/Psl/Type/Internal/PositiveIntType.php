@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
+use Stringable;
 
 use function is_float;
 use function is_int;
@@ -42,7 +44,7 @@ final readonly class PositiveIntType extends Type\Type
             return $value;
         }
 
-        if (is_string($value) || is_object($value) && method_exists($value, '__toString')) {
+        if (is_string($value) || $value instanceof Stringable) {
             $str = (string) $value;
             $int = Str\to_int($str);
             if (null !== $int && $int > 0) {

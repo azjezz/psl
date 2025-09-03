@@ -26,12 +26,13 @@ final class GroupByTest extends TestCase
             [
                 [7 => [2], 8 => [3], 9 => [4], 10 => [5], 11 => [6], 12 => [7, 8, 9, 10]],
                 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                static fn(int $i): null|int => $i < 2 ? null : ($i >= 7 ? 12 : ($i + 5)),
+                // @mago-expect lint:no-nested-ternary
+                static fn(int $i): null|int => $i < 2 ? null : ($i >= 7 ? 12 : $i + 5),
             ],
             [
                 [7 => [2], 8 => [3], 9 => [4], 10 => [5], 11 => [6], 12 => [7], 13 => [8], 14 => [9], 15 => [10]],
                 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                static fn(int $i): null|int => $i < 2 ? null : ($i + 5),
+                static fn(int $i): null|int => $i < 2 ? null : $i + 5,
             ],
             [
                 ['username' => ['@azjezz', '@veewee', '@ocramius'], 'name' => ['Saif', 'Toon', 'Marco']],

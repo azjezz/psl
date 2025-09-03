@@ -36,14 +36,13 @@ final readonly class MixedDictType extends Type\Type
 
         $key_type = Type\array_key();
         $k = null;
+        /** @var bool $iterating */
         $iterating = true;
 
         try {
             /**
              * @var array-key $k
              * @var mixed $v
-             *
-             * @psalm-suppress MixedAssignment
              */
             foreach ($value as $k => $v) {
                 $iterating = false;

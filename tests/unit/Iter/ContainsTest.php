@@ -18,7 +18,7 @@ final class ContainsTest extends TestCase
      *
      * @dataProvider provideData
      */
-    public function testContainsKey(bool $expected, iterable $iterable, $value): void
+    public function testContainsKey(bool $expected, iterable $iterable, null|int|string $value): void
     {
         static::assertSame($expected, Iter\contains($iterable, $value));
     }

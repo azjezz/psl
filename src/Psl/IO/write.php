@@ -20,8 +20,5 @@ use Psl\Str;
  */
 function write(string $message, mixed ...$args): void
 {
-    /**
-     * @psalm-suppress MissingThrowsDocblock - we won't encounter timeout.
-     */
     output_handle()->writeAll(Str\format($message, ...$args));
 }

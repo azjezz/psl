@@ -85,8 +85,6 @@ final class MutableSet implements MutableSetInterface
     public static function fromItems(iterable $items): MutableSet
     {
         /**
-         * @psalm-suppress InvalidArgument
-         *
          * @var array<Ts, Ts>
          */
         $array = iterator_to_array($items);
@@ -475,7 +473,12 @@ final class MutableSet implements MutableSetInterface
     #[\Override]
     public function filterWithKey(Closure $fn): MutableSet
     {
-        return $this->filter(static fn(string|int $k): bool => $fn($k, $k));
+        return $this->filter(
+            /**
+             * @param T $k
+             */
+            static fn(string|int $k): bool => $fn($k, $k),
+        );
     }
 
     /**
@@ -521,7 +524,12 @@ final class MutableSet implements MutableSetInterface
     #[\Override]
     public function mapWithKey(Closure $fn): MutableSet
     {
-        return $this->map(static fn(string|int $k): string|int => $fn($k, $k));
+        return $this->map(
+            /**
+             * @param T $k
+             */
+            static fn(string|int $k): string|int => $fn($k, $k),
+        );
     }
 
     /**
@@ -651,7 +659,6 @@ final class MutableSet implements MutableSetInterface
     #[\Override]
     public function slice(int $start, null|int $length = null): MutableSet
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return MutableSet::fromArray(Dict\slice($this->elements, $start, $length));
     }
 
@@ -672,23 +679,7 @@ final class MutableSet implements MutableSetInterface
     #[\Override]
     public function chunk(int $size): MutableVector
     {
-        /**
-         * @psalm-suppress MissingThrowsDocblock
-         * @psalm-suppress ImpureFunctionCall
-         */
-        return MutableVector::fromArray(Vec\map(
-            /**
-             * @psalm-suppress MissingThrowsDocblock
-             * @psalm-suppress ImpureFunctionCall
-             */
-            Vec\chunk($this->toArray(), $size),
-            /**
-             * @param list<T> $chunk
-             *
-             * @return MutableSet<T>
-             */
-            static fn(array $chunk): MutableSet => MutableSet::fromArray($chunk),
-        ));
+        return MutableVector::fromArray(Vec\map(Vec\chunk($this->toArray(), $size), MutableSet::fromArray(...)));
     }
 
     /**

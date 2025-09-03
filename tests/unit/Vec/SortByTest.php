@@ -32,7 +32,7 @@ final class SortByTest extends TestCase
              *
              * @psalm-pure
              */
-            static fn(array $arr): int => Iter\count($arr);
+            Iter\count(...);
 
         return [
             [
@@ -82,7 +82,7 @@ final class SortByTest extends TestCase
                 /**
                  * @psalm-pure
                  */
-                static fn(string $v): string => Str\Byte\reverse($v),
+                Str\Byte\reverse(...),
             ],
         ];
     }

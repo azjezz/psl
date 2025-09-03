@@ -45,8 +45,6 @@ function split(string $string, string $delimiter, null|int $limit = null, Encodi
 
     /**
      * $offset is within bounded.
-     *
-     * @psalm-suppress MissingThrowsDocblock
      */
     $position = search($tail, $delimiter, 0, $encoding);
     while (1 < $limit && null !== $position) {
@@ -57,8 +55,6 @@ function split(string $string, string $delimiter, null|int $limit = null, Encodi
         $limit--;
         /**
          * $offset is within bounded.
-         *
-         * @psalm-suppress MissingThrowsDocblock
          */
         $position = search($tail, $delimiter, encoding: $encoding);
     }

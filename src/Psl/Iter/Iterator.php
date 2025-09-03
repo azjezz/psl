@@ -72,8 +72,6 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Create an iterator from an iterable.
      *
-     * @psalm-suppress DocblockTypeContradiction - Psalm gets lost on Generator, which is a perfectly valid iterable type.
-     *
      * @template Tsk
      * @template Tsv
      *
@@ -87,10 +85,11 @@ final class Iterator implements Countable, SeekableIterator
             return new self($iterable);
         }
 
-        /**
-         * @var (Closure(): Generator<Tsk, Tsv, mixed, void>) $factory
-         */
-        $factory = static fn(): Generator => yield from $iterable;
+        $factory =
+            /**
+             * @return Generator<Tsk, Tsv, mixed, mixed>
+             */
+            static fn(): Generator => yield from $iterable;
 
         return new self($factory());
     }
@@ -126,9 +125,6 @@ final class Iterator implements Countable, SeekableIterator
         return false;
     }
 
-    /**
-     * @psalm-suppress PossiblyNullReference
-     */
     private function save(): void
     {
         if ($this->generator) {
@@ -168,11 +164,9 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Seek to the given position.
      *
-     * @param int<0, max> $position
+     * @param int<0, max> $offset
      *
-     * @throws Exception\OutOfBoundsException If $position is out-of-bounds.
-     *
-     * @psalm-suppress ParamNameMismatch
+     * @throws Exception\OutOfBoundsException If $offset is out-of-bounds.
      */
     #[\Override]
     public function seek(int $offset): void
@@ -186,7 +180,6 @@ final class Iterator implements Countable, SeekableIterator
             do {
                 $this->save();
                 $this->next();
-                /** @psalm-suppress PossiblyNullReference - ->next() and ->save() don't mutate ->generator. */
                 if (!$this->generator->valid()) {
                     $this->generator = null;
                     throw new Exception\OutOfBoundsException('Position is out-of-bounds.');
@@ -212,9 +205,9 @@ final class Iterator implements Countable, SeekableIterator
         $this->position++;
 
         if (
-            array_key_exists($this->position, $this->entries) ||
-                null === $this->generator ||
-                !$this->generator->valid()
+            array_key_exists($this->position, $this->entries)
+            || null === $this->generator
+            || !$this->generator->valid()
         ) {
             return;
         }
@@ -225,8 +218,6 @@ final class Iterator implements Countable, SeekableIterator
 
     /**
      * @return int<0, max>
-     *
-     * @psalm-suppress PossiblyNullReference
      */
     #[\Override]
     public function count(): int

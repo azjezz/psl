@@ -23,7 +23,7 @@ use Psl\Str;
  *
  * @return non-empty-string The absolute path to the temporary file.
  *
- * @mago-expect best-practices/no-else-clause
+ * @mago-expect lint:no-else-clause
  */
 function create_temporary_file(null|string $directory = null, null|string $prefix = null): string
 {
@@ -38,7 +38,6 @@ function create_temporary_file(null|string $directory = null, null|string $prefi
 
     $separator = namespace\SEPARATOR;
     if (null !== $prefix) {
-        /** @psalm-suppress MissingThrowsDocblock - $offset is within bounds. */
         if (Str\contains($prefix, $separator)) {
             throw new Exception\InvalidArgumentException(Str\format(
                 '$prefix should not contain a directory separator ( "%s" ).',
@@ -50,7 +49,6 @@ function create_temporary_file(null|string $directory = null, null|string $prefi
     }
 
     try {
-        /** @psalm-suppress MissingThrowsDocblock - alphabet is within range */
         $filename = $directory . $separator . $prefix . SecureRandom\string(8);
         // @codeCoverageIgnoreStart
     } catch (SecureRandom\Exception\InsufficientEntropyException $e) {

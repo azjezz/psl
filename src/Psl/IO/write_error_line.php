@@ -22,8 +22,5 @@ use Psl\Str;
  */
 function write_error_line(string $message, mixed ...$args): void
 {
-    /**
-     * @psalm-suppress MissingThrowsDocblock - we won't encounter timeout, or already closed exception.
-     */
     error_handle()?->writeAll(Str\format($message, ...$args) . "\n");
 }

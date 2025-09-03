@@ -18,13 +18,10 @@ use function set_error_handler;
  * @return array{0: T, 1: ?string}
  *
  * @internal
- *
- * @psalm-suppress MissingThrowsDocblock
  */
 function box(Closure $fun): array
 {
     $last_message = null;
-    /** @psalm-suppress InvalidArgument */
     set_error_handler(static function (int $_type, string $message) use (&$last_message): void {
         $last_message = $message;
     });

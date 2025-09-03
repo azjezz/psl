@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
+use Override;
+
 /**
  * @codeCoverageIgnore
  */
@@ -20,36 +22,42 @@ final class CloseSeekStreamHandle implements StreamHandleInterface, SeekHandleIn
     }
 
     /**
-     * {@inheritDoc}
+     * @param int<0, max> $offset
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function seek(int $offset): void
     {
         $this->handle->seek($offset);
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tell(): int
     {
         return $this->handle->tell();
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function close(): void
     {
         $this->handle->close();
     }
 
     /**
-     * {@inheritDoc}
+     * @return resource|null
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function getStream(): mixed
     {
         return $this->handle->getStream();

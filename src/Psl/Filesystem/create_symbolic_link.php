@@ -19,8 +19,7 @@ use function symlink;
  * @throws Exception\NotFoundException If $source is not found.
  * @throws Exception\NotReadableException If $destination is a non-empty directory, and is non-readable {@see delete_directory()}.
  *
- * @mago-expect best-practices/no-boolean-literal-comparison
- * @mago-expect best-practices/no-empty-catch-clause
+ * @mago-expect lint:no-empty-catch-clause
  */
 function create_symbolic_link(string $source, string $destination): void
 {
@@ -38,7 +37,6 @@ function create_symbolic_link(string $source, string $destination): void
         try {
             namespace\delete_directory($destination, true);
         } catch (Exception\NotDirectoryException) {
-            /** @psalm-suppress MissingThrowsDocblock - $destination is a file. */
             namespace\delete_file($destination);
         }
     } catch (Exception\NotFoundException) {

@@ -39,8 +39,7 @@ use function strpbrk;
  * @throws Exception\RuntimeException In case $working_directory doesn't exist, or unable to create a new process.
  * @throws Exception\TimeoutException If $timeout is reached before being able to read the process stream.
  *
- * @mago-expect best-practices/no-boolean-literal-comparison
- * @mago-expect best-practices/no-else-clause
+ * @mago-expect lint:no-else-clause
  */
 function execute(
     string $command,
@@ -53,7 +52,6 @@ function execute(
     $arguments = Vec\map($arguments, Internal\escape_argument(...));
     $commandline = Str\join([$command, ...$arguments], ' ');
 
-    /** @psalm-suppress MissingThrowsDocblock - safe ( $offset is within-of-bounds ) */
     if (Str\contains($commandline, "\0")) {
         throw new Exception\PossibleAttackException('NULL byte detected.');
     }
@@ -67,11 +65,12 @@ function execute(
     $options = [];
     // @codeCoverageIgnoreStart
     if (OS\is_windows()) {
+        /** @var array<string, string> */
         $variable_cache = [];
         $variable_count = 0;
-        /** @psalm-suppress MissingThrowsDocblock */
+
         $identifier = 'PHP_STANDARD_LIBRARY_TMP_ENV_' . SecureRandom\string(6);
-        /** @psalm-suppress MissingThrowsDocblock */
+
         $commandline = Regex\replace_with(
             $commandline,
             '/"(?:([^"%!^]*+(?:(?:!LF!|"(?:\^[%!^])?+")[^"%!^]*+)++)|[^"]*+ )"/x',
@@ -99,11 +98,11 @@ function execute(
                     return '"' . $value . '"';
                 }
 
-                $var = $identifier . ((string) ++$variable_count);
+                $var = $identifier . (string) ++$variable_count;
 
                 $environment[$var] =
-                    '"' .
-                    Regex\replace(
+                    '"'
+                    . Regex\replace(
                         Str\Byte\replace_every($value, [
                             '!LF!' => "\n",
                             '"^!"' => '!',
@@ -113,10 +112,9 @@ function execute(
                         ]),
                         '/(\\\\*)"/',
                         '$1$1\\"',
-                    ) .
-                    '"';
+                    )
+                    . '"';
 
-                /** @var string */
                 return $variable_cache[$m[0]] = '!' . $var . '!';
             },
         );
@@ -135,6 +133,7 @@ function execute(
         1 => ['pipe', 'w'],
         2 => ['pipe', 'w'],
     ];
+    $pipes = null;
     $process = proc_open($commandline, $descriptor, $pipes, $working_directory, $environment, $options);
     // @codeCoverageIgnoreStart
     // not sure how to replicate this, but it can happen \_o.o_/
@@ -147,9 +146,10 @@ function execute(
     $stdout = new IO\CloseReadStreamHandle($pipes[1]);
     $stderr = new IO\CloseReadStreamHandle($pipes[2]);
 
+    $code = 0;
     try {
         $result = '';
-        /** @psalm-suppress MissingThrowsDocblock */
+
         foreach (IO\streaming([1 => $stdout, 2 => $stderr], $timeout) as $type => $chunk) {
             if ($chunk) {
                 $result .= pack('C1N1', $type, Str\Byte\length($chunk)) . $chunk;
@@ -162,16 +162,14 @@ function execute(
             $previous,
         );
     } finally {
-        /** @psalm-suppress MissingThrowsDocblock */
         $stdout->close();
-        /** @psalm-suppress MissingThrowsDocblock */
+
         $stderr->close();
 
         $code = proc_close($process);
     }
 
     if ($code !== 0) {
-        /** @psalm-suppress MissingThrowsDocblock */
         [$stdout_content, $stderr_content] = namespace\unpack($result);
 
         throw new Exception\FailedExecutionException($commandline, $stdout_content, $stderr_content, $code);
@@ -181,7 +179,6 @@ function execute(
         return $result;
     }
 
-    /** @psalm-suppress MissingThrowsDocblock */
     [$stdout_content, $stderr_content] = namespace\unpack($result);
     return match ($error_output_behavior) {
         ErrorOutputBehavior::Prepend => $stderr_content . $stdout_content,

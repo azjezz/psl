@@ -55,10 +55,10 @@ final class ServerTest extends TestCase
         $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . '.sock';
         $server = Unix\Server::create($sock);
 
-        $first = Async\run(static fn(): Network\SocketInterface => $server->nextConnection());
+        $first = Async\run($server->nextConnection(...));
 
         [$second_connection, $client_one, $client_two] = Async\concurrently([
-            static fn(): Network\SocketInterface => $server->nextConnection(),
+            $server->nextConnection(...),
             static fn(): Network\SocketInterface => Unix\connect($sock),
             static fn(): Network\SocketInterface => Unix\connect($sock),
         ]);

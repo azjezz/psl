@@ -13,7 +13,7 @@ final class MaxvaTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testMaxva($expected, $first, $second, ...$rest): void
+    public function testMaxva(int $expected, int $first, int $second, int ...$rest): void
     {
         static::assertSame($expected, Math\maxva($first, $second, ...$rest));
     }

@@ -12,7 +12,7 @@ final class ClampTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testClamp($expected, $number, $min, $max): void
+    public function testClamp(int|float $expected, int|float $number, int|float $min, int|float $max): void
     {
         static::assertSame($expected, Math\clamp($number, $min, $max));
     }

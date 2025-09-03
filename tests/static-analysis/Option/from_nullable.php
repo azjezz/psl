@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Psl\Tests\StaticAnalysis\Option;
+
 use Psl\Option\Option;
 
 use function Psl\Option\from_nullable;

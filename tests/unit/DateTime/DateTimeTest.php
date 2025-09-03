@@ -21,7 +21,7 @@ use function Psl\DateTime\Internal\create_intl_date_formatter;
 use function time;
 
 /**
- * @mago-expect php-unit/strict-assertions
+ * @mago-expect lint:strict-assertions
  */
 final class DateTimeTest extends TestCase
 {
@@ -316,7 +316,7 @@ final class DateTimeTest extends TestCase
     /**
      * @dataProvider provideTwelveHours
      */
-    public function testGetTwelveHours(int $hour, $expectedTwelveHour, $expectedMeridiem): void
+    public function testGetTwelveHours(int $hour, int $expectedTwelveHour, Meridiem $expectedMeridiem): void
     {
         $datetime = DateTime::fromParts(Timezone::default(), 2024, Month::February, 4, $hour, 0, 0, 0);
         [$hours, $meridiem] = $datetime->getTwelveHours();

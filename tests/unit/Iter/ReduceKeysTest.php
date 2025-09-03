@@ -12,8 +12,12 @@ final class ReduceKeysTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testReduceKeys($expected, iterable $iterable, callable $function, $initial = null): void
-    {
+    public function testReduceKeys(
+        null|int $expected,
+        iterable $iterable,
+        callable $function,
+        null|int $initial = null,
+    ): void {
         static::assertSame($expected, Iter\reduce_keys($iterable, $function, $initial));
     }
 

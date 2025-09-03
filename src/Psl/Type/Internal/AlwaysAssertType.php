@@ -11,8 +11,6 @@ use Psl\Type\Exception\CoercionException;
 /**
  * @template T
  *
- * @ara-extends Type\Type<T>
- *
  * @extends Type\Type<T>
  *
  * @internal

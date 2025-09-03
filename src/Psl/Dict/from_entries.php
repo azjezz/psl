@@ -11,7 +11,7 @@ namespace Psl\Dict;
  * @template Tk of array-key
  * @template Tv
  *
- * @param iterable<array{0: Tk, 1: Tv}> $entries
+ * @param iterable<list{Tk, Tv}> $entries
  *
  * @return array<Tk, Tv>
  */

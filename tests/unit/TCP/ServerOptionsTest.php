@@ -9,7 +9,7 @@ use Psl\Network\SocketOptions;
 use Psl\TCP\ServerOptions;
 
 /**
- * @mago-expect php-unit/strict-assertions
+ * @mago-expect lint:strict-assertions
  */
 final class ServerOptionsTest extends TestCase
 {

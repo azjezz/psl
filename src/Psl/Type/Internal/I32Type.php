@@ -13,8 +13,6 @@ use function is_int;
 use function Psl\Type;
 
 /**
- * @ara-extends Type\Type<i32>
- *
  * @extends Type\Type<int<-2147483648, 2147483647>>
  *
  * @internal
@@ -22,8 +20,6 @@ use function Psl\Type;
 final readonly class I32Type extends Type\Type
 {
     /**
-     * @ara-assert-if-true i32 $value
-     *
      * @psalm-assert-if-true int<-2147483648, 2147483647> $value
      */
     #[\Override]
@@ -34,8 +30,6 @@ final readonly class I32Type extends Type\Type
 
     /**
      * @throws CoercionException
-     *
-     * @ara-return i32
      *
      * @return int<-2147483648, 2147483647>
      */
@@ -52,13 +46,9 @@ final readonly class I32Type extends Type\Type
     }
 
     /**
-     * @ara-assert i32 $value
-     *
      * @psalm-assert int<-2147483648, 2147483647> $value
      *
      * @throws AssertException
-     *
-     * @ara-return i32
      *
      * @return int<-2147483648, 2147483647>
      */

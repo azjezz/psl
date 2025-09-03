@@ -110,7 +110,7 @@ final class DictTypeBench extends GenericTypeBench
             'map, large' => [
                 'type' => Type\dict(Type\string(), Type\mixed()),
                 'value' => Dict\associate(
-                    Vec\map(Vec\range(0, 99), static fn(int $key): string => 'key' . ((string) $key)),
+                    Vec\map(Vec\range(0, 99), static fn(int $key): string => 'key' . (string) $key),
                     Vec\fill(100, null),
                 ),
             ],

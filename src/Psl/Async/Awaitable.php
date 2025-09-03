@@ -27,7 +27,7 @@ use function is_array;
  *
  * @implements PromiseInterface<T>
  *
- * @mago-expect best-practices/no-else-clause
+ * @mago-expect lint:no-else-clause
  */
 final readonly class Awaitable implements PromiseInterface
 {
@@ -59,11 +59,9 @@ final readonly class Awaitable implements PromiseInterface
 
         if (is_array($awaitables)) {
             foreach ($awaitables as $key => $awaitable) {
-                /** @psalm-suppress MissingThrowsDocblock */
                 $iterator->enqueue($awaitable->state, $key, $awaitable);
             }
 
-            /** @psalm-suppress MissingThrowsDocblock */
             $iterator->complete();
         } else {
             EventLoop::defer(static function () use ($awaitables, $iterator): void {
@@ -81,7 +79,6 @@ final readonly class Awaitable implements PromiseInterface
             });
         }
 
-        /** @psalm-suppress MissingThrowsDocblock */
         do {
             $item = $iterator->consume();
             if (!$item) {
@@ -103,7 +100,6 @@ final readonly class Awaitable implements PromiseInterface
     {
         /** @var State<Tv> $state */
         $state = new State();
-        /** @psalm-suppress MissingThrowsDocblock */
         $state->complete($result);
 
         return new self($state);
@@ -116,7 +112,6 @@ final readonly class Awaitable implements PromiseInterface
     {
         /** @var State<void> $state */
         $state = new State();
-        /** @psalm-suppress MissingThrowsDocblock */
         $state->error($throwable);
 
         return new self($state);

@@ -12,7 +12,7 @@
 
 #### `Functions`
 
-- [capture_groups](./../../src/Psl/Regex/capture_groups.php#L17)
+- [capture_groups](./../../src/Psl/Regex/capture_groups.php#L15)
 - [every_match](./../../src/Psl/Regex/every_match.php#L24)
 - [first_match](./../../src/Psl/Regex/first_match.php#L24)
 - [matches](./../../src/Psl/Regex/matches.php#L19)

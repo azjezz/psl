@@ -17,27 +17,20 @@ use const Psl\DateTime\NANOSECONDS_PER_SECOND;
  *
  * @internal
  *
- * @psalm-mutation-free
- *
- * @psalm-suppress ImpureStaticVariable - We ignore the internal mutation, as is simply a static initializer.
- * @psalm-suppress ImpureFunctionCall - `hrtime()` it is mutation-free, as it performs a read-only operation from the systems clock,
- *  and does not alter anything.
- *
- * @mago-expect best-practices/no-boolean-literal-comparison
- * @mago-expect best-practices/no-else-clause
+ * @mago-expect lint:best-practices/no-else-clause
+ * @mago-expect lint:strictness/no-shorthand-ternary
  */
 function high_resolution_time(): array
 {
     /**
-     * @var null|array{int, int} $offset
+     * @var null|list{int, int} $offset
      */
     static $offset = null;
 
     if ($offset === null) {
-        $offset = hrtime();
+        $offset = hrtime() ?: null;
 
-        /** @psalm-suppress RedundantCondition - This is not redundant, hrtime can return false. */
-        Psl\invariant(false !== $offset, 'The system does not provide a monotonic timer.');
+        Psl\invariant(null !== $offset, 'The system does not provide a monotonic timer.');
 
         $time = system_time();
 
@@ -48,7 +41,12 @@ function high_resolution_time(): array
     }
 
     [$seconds_offset, $nanoseconds_offset] = $offset;
-    [$seconds, $nanoseconds] = hrtime();
+    $high_resolution_time = hrtime();
+    if (false === $high_resolution_time) {
+        throw new Psl\Exception\InvariantViolationException('The system does not provide a monotonic timer.');
+    }
+
+    [$seconds, $nanoseconds] = $high_resolution_time;
 
     $nanoseconds_adjusted = $nanoseconds + $nanoseconds_offset;
     if ($nanoseconds_adjusted >= NANOSECONDS_PER_SECOND) {

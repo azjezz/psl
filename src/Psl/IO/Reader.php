@@ -31,7 +31,7 @@ final class Reader implements ReadHandleInterface
     /**
      * {@inheritDoc}
      *
-     * @mago-expect best-practices/no-empty-catch-clause
+     * @mago-expect lint:best-practices/no-empty-catch-clause
      */
     #[\Override]
     public function reachedEndOfDataSource(): bool
@@ -151,7 +151,6 @@ final class Reader implements ReadHandleInterface
             return $line;
         }
 
-        /** @psalm-suppress MissingThrowsDocblock - $size is positive */
         $content = $this->read(null, $timer->getRemaining());
         return '' === $content ? null : $content;
     }
@@ -168,8 +167,6 @@ final class Reader implements ReadHandleInterface
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
-     *
-     * @mago-expect best-practices/no-boolean-literal-comparison
      */
     public function readUntil(string $suffix, null|Duration $timeout = null): null|string
     {
@@ -193,7 +190,7 @@ final class Reader implements ReadHandleInterface
         do {
             // + 1 as it would have been matched in the previous iteration if it
             // fully fit in the chunk
-            $offset = (strlen($buf) - $suffix_len) + 1;
+            $offset = strlen($buf) - $suffix_len + 1;
             $offset = $offset > 0 ? $offset : 0;
             $chunk = $this->handle->read(null, $timer->getRemaining());
             if ($chunk === '') {

@@ -82,8 +82,6 @@ final readonly class Vector implements VectorInterface
     public static function fromItems(iterable $items): Vector
     {
         /**
-         * @psalm-suppress InvalidArgument
-         *
          * @var array<array-key, Ts>
          */
         $array = iterator_to_array($items);
@@ -441,7 +439,6 @@ final readonly class Vector implements VectorInterface
     #[\Override]
     public function zip(array $elements): Vector
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return Vector::fromArray(Vec\zip($this->elements, $elements));
     }
 
@@ -555,7 +552,6 @@ final readonly class Vector implements VectorInterface
     #[\Override]
     public function slice(int $start, null|int $length = null): Vector
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return self::fromArray(Dict\slice($this->elements, $start, $length));
     }
 
@@ -572,24 +568,10 @@ final readonly class Vector implements VectorInterface
      *                           into chunks of the given size.
      *
      * @psalm-mutation-free
-     *
-     * @psalm-suppress LessSpecificImplementedReturnType - I don't see how this one is less specific than its inherited.
      */
     #[\Override]
     public function chunk(int $size): Vector
     {
-        /**
-         * @psalm-suppress MissingThrowsDocblock
-         * @psalm-suppress ImpureFunctionCall
-         */
-        return static::fromArray(Vec\map(
-            Vec\chunk($this->toArray(), $size),
-            /**
-             * @param list<T> $chunk
-             *
-             * @return Vector<T>
-             */
-            static fn(array $chunk): Vector => static::fromArray($chunk),
-        ));
+        return static::fromArray(Vec\map(Vec\chunk($this->toArray(), $size), static::fromArray(...)));
     }
 }

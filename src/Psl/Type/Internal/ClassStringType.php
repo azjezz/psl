@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 use Psl\Type\Type;
@@ -35,7 +36,7 @@ final readonly class ClassStringType extends Type
     /**
      * @psalm-assert-if-true class-string<T> $value
      */
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         return is_string($value) && is_a($value, $this->classname, true);
@@ -46,10 +47,11 @@ final readonly class ClassStringType extends Type
      *
      * @return class-string<T>
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): string
     {
         if (is_string($value) && is_a($value, $this->classname, true)) {
+            /** @var class-string<T> */
             return $value;
         }
 
@@ -63,17 +65,18 @@ final readonly class ClassStringType extends Type
      *
      * @psalm-assert class-string<T> $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): string
     {
         if (is_string($value) && is_a($value, $this->classname, true)) {
+            /** @var class-string<T> */
             return $value;
         }
 
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return 'class-string<' . $this->classname . '>';

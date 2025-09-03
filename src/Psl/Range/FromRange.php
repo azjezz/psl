@@ -131,25 +131,28 @@ final readonly class FromRange implements LowerBoundRangeInterface
      * @return Iter\Iterator<int, int>
      *
      * @psalm-mutation-free
-     *
-     * @psalm-suppress ImpureMethodCall
      */
     #[\Override]
     public function getIterator(): Iter\Iterator
     {
         $bound = $this->lowerBound;
 
-        return Iter\Iterator::from(static function () use ($bound): Generator {
-            $value = $bound;
-            while (true) {
-                yield $value;
+        return Iter\Iterator::from(
+            /**
+             * @return Generator<int, int>
+             */
+            static function () use ($bound): Generator {
+                $value = $bound;
+                while (true) {
+                    yield $value;
 
-                if ($value === Math\INT64_MAX) {
-                    throw Exception\OverflowException::whileIterating($bound);
+                    if ($value === Math\INT64_MAX) {
+                        throw Exception\OverflowException::whileIterating($bound);
+                    }
+
+                    $value += 1;
                 }
-
-                $value += 1;
-            }
-        });
+            },
+        );
     }
 }

@@ -12,7 +12,7 @@ final class MaxTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testMax($expected, array $numbers): void
+    public function testMax(null|int $expected, array $numbers): void
     {
         static::assertSame($expected, Math\max($numbers));
     }

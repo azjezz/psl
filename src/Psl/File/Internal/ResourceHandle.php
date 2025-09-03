@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\File\Internal;
 
+use Override;
 use Psl\Async;
 use Psl\File;
 use Psl\File\Lock;
@@ -23,8 +24,6 @@ use const LOCK_UN;
 use const SEEK_END;
 
 /**
- * @psalm-suppress PossiblyInvalidArgument
- *
  * @internal
  */
 final class ResourceHandle extends IO\Internal\ResourceHandle implements
@@ -44,18 +43,20 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function getPath(): string
     {
         return $this->path;
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function getSize(): int
     {
         if (null === $this->stream) {
@@ -89,11 +90,11 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      *
      * @codeCoverageIgnore
      */
-    #[\Override]
+    #[Override]
     public function lock(LockType $type): Lock
     {
         while (true) {
@@ -106,15 +107,16 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tryLock(LockType $type): Lock
     {
         if (null === $this->stream) {
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
+        $would_block = false;
         $operations = LOCK_NB | ($type === LockType::Exclusive ? LOCK_EX : LOCK_SH);
         $success = @flock($this->stream, $operations, $would_block);
         // @codeCoverageIgnoreStart
@@ -131,7 +133,15 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements
         }
 
         return new Lock($type, function (): void {
+            /** @var bool $released */
+            static $released = false;
+            if ($released) {
+                return;
+            }
+
             if (null === $this->stream) {
+                $released = true;
+
                 // while closing a handle should unlock it, that is not always the case.
                 // therefore, we should require users to explicitly release the lock before closing the handle.
                 throw new Exception\AlreadyClosedException('Handle was closed before releasing the lock.');
@@ -143,6 +153,8 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements
                     $this->getPath(),
                 ));
             }
+
+            $released = true;
         });
         // @codeCoverageIgnoreEnd
     }

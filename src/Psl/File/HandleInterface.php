@@ -16,6 +16,8 @@ interface HandleInterface extends IO\StreamHandleInterface, IO\SeekHandleInterfa
     /**
      * Get the size of the file.
      *
+     * @return int<0, max> The size of the file in bytes.
+     *
      * @throws IO\Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      */

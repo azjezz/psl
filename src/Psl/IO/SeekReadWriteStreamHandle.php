@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
+use Override;
 use Psl\DateTime\Duration;
 use Psl\IO;
 
@@ -30,72 +31,86 @@ final class SeekReadWriteStreamHandle implements
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function reachedEndOfDataSource(): bool
     {
         return $this->handle->reachedEndOfDataSource();
     }
 
     /**
-     * {@inheritDoc}
+     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tryRead(null|int $max_bytes = null): string
     {
         return $this->handle->tryRead($max_bytes);
     }
 
     /**
-     * {@inheritDoc}
+     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         return $this->handle->read($max_bytes, $timeout);
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tryWrite(string $bytes): int
     {
         return $this->handle->tryWrite($bytes);
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function write(string $bytes, null|Duration $timeout = null): int
     {
         return $this->handle->write($bytes, $timeout);
     }
 
     /**
-     * {@inheritDoc}
+     * @param int<0, max> $offset
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function seek(int $offset): void
     {
         $this->handle->seek($offset);
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tell(): int
     {
         return $this->handle->tell();
     }
 
     /**
-     * {@inheritDoc}
+     * @return resource|null
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function getStream(): mixed
     {
         return $this->handle->getStream();

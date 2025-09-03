@@ -527,7 +527,6 @@ final class MutableMap implements MutableMapInterface
     #[\Override]
     public function drop(int $n): MutableMap
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return self::fromArray(Dict\drop($this->elements, $n));
     }
 
@@ -575,7 +574,6 @@ final class MutableMap implements MutableMapInterface
     #[\Override]
     public function slice(int $start, null|int $length = null): MutableMap
     {
-        /** @psalm-suppress ImpureFunctionCall - conditionally pure */
         return self::fromArray(Dict\slice($this->elements, $start, $length));
     }
 
@@ -596,7 +594,6 @@ final class MutableMap implements MutableMapInterface
     #[\Override]
     public function chunk(int $size): MutableVector
     {
-        /** @psalm-suppress ImpureMethodCall */
         return $this->zip($this->keys()->toArray())
             ->values()
             ->chunk($size)

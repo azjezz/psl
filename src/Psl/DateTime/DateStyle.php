@@ -34,7 +34,7 @@ enum DateStyle implements DefaultInterface
      * This method implements the DefaultInterface, providing a standard way to access the default enum case.
      * The Medium style is returned as the default, representing a balance between detail and brevity.
      *
-     * @return static The default date format style.
+     * @return DateStyle::Medium The default date format style.
      *
      * @pure
      */

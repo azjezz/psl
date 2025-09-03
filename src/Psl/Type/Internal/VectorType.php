@@ -50,6 +50,7 @@ final readonly class VectorType extends Type\Type
             $values = [];
             $i = null;
             $v = null;
+            /** @var bool $iterating */
             $iterating = true;
 
             try {

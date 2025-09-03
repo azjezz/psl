@@ -34,7 +34,7 @@ final class SortByTest extends TestCase
              *
              * @pure
              */
-            static fn(array $array): int => Iter\count($array);
+            Iter\count(...);
 
         return [
             [
@@ -84,7 +84,7 @@ final class SortByTest extends TestCase
                 /**
                  * @pure
                  */
-                static fn(string $v): string => Str\Byte\reverse($v),
+                Str\Byte\reverse(...),
             ],
         ];
     }

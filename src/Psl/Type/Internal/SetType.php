@@ -47,6 +47,7 @@ final readonly class SetType extends Type\Type
             $set = [];
             $k = null;
             $v = null;
+            /** @var bool $iterating */
             $iterating = true;
             try {
                 /**
@@ -91,6 +92,7 @@ final readonly class SetType extends Type\Type
             $set = [];
             $v = null;
             $k = null;
+            /** @var bool $iterating */
             $iterating = true;
             try {
                 /**

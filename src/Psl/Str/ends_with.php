@@ -44,7 +44,6 @@ function ends_with(string $string, string $suffix, Encoding $encoding = Encoding
         return false;
     }
 
-    /** @psalm-suppress MissingThrowsDocblock */
     $position = search_last($string, $suffix, 0, $encoding);
     if (null === $position) {
         return false;

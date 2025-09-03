@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
+
+use function array_is_list;
+use function array_values;
+use function is_array;
 
 /**
  * @extends Type\Type<list<mixed>>
@@ -18,7 +23,7 @@ final readonly class MixedVecType extends Type\Type
     /**
      * @psalm-assert-if-true list<Tv> $value
      */
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         return is_array($value) && array_is_list($value);
@@ -29,7 +34,7 @@ final readonly class MixedVecType extends Type\Type
      *
      * @return list<mixed>
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): iterable
     {
         if (!is_iterable($value)) {
@@ -51,8 +56,6 @@ final readonly class MixedVecType extends Type\Type
 
         /**
          * @var mixed $v
-         *
-         * @psalm-suppress MixedAssignment
          */
         foreach ($value as $v) {
             $result[] = $v;
@@ -68,7 +71,7 @@ final readonly class MixedVecType extends Type\Type
      *
      * @psalm-assert list<mixed> $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): array
     {
         if (!is_array($value) || !array_is_list($value)) {
@@ -78,7 +81,7 @@ final readonly class MixedVecType extends Type\Type
         return $value;
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return 'vec<mixed>';

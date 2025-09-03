@@ -37,7 +37,7 @@
 
 #### `Functions`
 
-- [abs](./../../src/Psl/Math/abs.php#L23)
+- [abs](./../../src/Psl/Math/abs.php#L18)
 - [acos](./../../src/Psl/Math/acos.php#L14)
 - [asin](./../../src/Psl/Math/asin.php#L14)
 - [atan](./../../src/Psl/Math/atan.php#L14)
@@ -46,7 +46,7 @@
 - [ceil](./../../src/Psl/Math/ceil.php#L14)
 - [clamp](./../../src/Psl/Math/clamp.php#L22)
 - [cos](./../../src/Psl/Math/cos.php#L14)
-- [div](./../../src/Psl/Math/div.php#L23)
+- [div](./../../src/Psl/Math/div.php#L21)
 - [exp](./../../src/Psl/Math/exp.php#L14)
 - [floor](./../../src/Psl/Math/floor.php#L14)
 - [from_base](./../../src/Psl/Math/from_base.php#L24)

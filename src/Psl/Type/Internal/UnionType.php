@@ -44,7 +44,7 @@ readonly class UnionType extends Type\Type
      *
      * @return Tl|Tr
      *
-     * @mago-expect best-practices/no-empty-catch-clause
+     * @mago-expect lint:no-empty-catch-clause
      */
     #[\Override]
     public function coerce(mixed $value): mixed
@@ -77,7 +77,7 @@ readonly class UnionType extends Type\Type
      *
      * @psalm-assert Tl|Tr $value
      *
-     * @mago-expect best-practices/no-empty-catch-clause
+     * @mago-expect lint:no-empty-catch-clause
      */
     #[\Override]
     public function assert(mixed $value): mixed
@@ -102,12 +102,10 @@ readonly class UnionType extends Type\Type
     {
         $left = $this->left_type->toString();
         $right = $this->right_type->toString();
-        /** @psalm-suppress MissingThrowsDocblock - offset is within bound. */
         if (Str\contains($left, '&')) {
             $left = Str\format('(%s)', $left);
         }
 
-        /** @psalm-suppress MissingThrowsDocblock - offset is within bound. */
         if (Str\contains($right, '&')) {
             $right = Str\format('(%s)', $right);
         }

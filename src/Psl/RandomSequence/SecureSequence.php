@@ -36,10 +36,6 @@ final class SecureSequence implements DefaultInterface, SequenceInterface
     #[\Override]
     public function next(): int
     {
-        /**
-         * @psalm-suppress MissingThrowsDocblock
-         * @psalm-suppress ImpureFunctionCall
-         */
         return SecureRandom\int();
     }
 }

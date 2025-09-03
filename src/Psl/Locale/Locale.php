@@ -851,7 +851,7 @@ enum Locale: string
     public function getDisplayName(null|Locale $locale = null): string
     {
         /** @var non-empty-string */
-        return NativeLocale::getDisplayName($this->value, $locale?->value ?? $this->value);
+        return NativeLocale::getDisplayName($this->value, $locale->value ?? $this->value);
     }
 
     /**
@@ -879,7 +879,7 @@ enum Locale: string
     public function getDisplayLanguage(null|Locale $locale = null): string
     {
         /** @var non-empty-string */
-        return NativeLocale::getDisplayLanguage($this->value, $locale?->value ?? $this->value);
+        return NativeLocale::getDisplayLanguage($this->value, $locale->value ?? $this->value);
     }
 
     /**
@@ -900,7 +900,6 @@ enum Locale: string
      * @return non-empty-string|null The script of the locale, or null if not applicable.
      *
      * @psalm-mutation-free
-     * @psalm-suppress RiskyTruthyFalsyComparison
      */
     public function getScript(): null|string
     {
@@ -935,7 +934,7 @@ enum Locale: string
      */
     public function getDisplayRegion(null|Locale $locale = null): null|string
     {
-        $displayRegion = NativeLocale::getDisplayRegion($this->value, $locale?->value ?? $this->value);
+        $displayRegion = NativeLocale::getDisplayRegion($this->value, $locale->value ?? $this->value);
         if (!$displayRegion) {
             return null;
         }
@@ -949,7 +948,6 @@ enum Locale: string
      * @return non-empty-string|null The alpha-2 country code, or null if not present.
      *
      * @psalm-mutation-free
-     * @psalm-suppress RiskyTruthyFalsyComparison
      */
     public function getRegion(): null|string
     {

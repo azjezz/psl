@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 use Psl\Type\Type;
@@ -18,9 +19,9 @@ use function is_object;
 final readonly class ObjectType extends Type
 {
     /**
-     * @psalm-assert-if-true T $value
+     * @psalm-assert-if-true object $value
      */
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         return is_object($value);
@@ -31,7 +32,7 @@ final readonly class ObjectType extends Type
      *
      * @return object
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): object
     {
         if (is_object($value)) {
@@ -48,7 +49,7 @@ final readonly class ObjectType extends Type
      *
      * @psalm-assert object $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): object
     {
         if (is_object($value)) {
@@ -58,7 +59,7 @@ final readonly class ObjectType extends Type
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return 'object';

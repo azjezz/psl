@@ -31,14 +31,7 @@ function sort(iterable $iterable, null|Closure $comparator = null): array
     }
 
     if (null !== $comparator) {
-        uasort(
-            $array,
-            /**
-             * @param Tv $a
-             * @param Tv $b
-             */
-            static fn(mixed $a, mixed $b): int => $comparator($a, $b),
-        );
+        uasort($array, $comparator);
 
         return $array;
     }

@@ -99,7 +99,7 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
      *
      * @psalm-mutation-free
      */
-    public function getResult();
+    public function getResult(): mixed;
 
     /**
      * Unwrap the Result if it is succeeded or return $default value.

@@ -6,6 +6,9 @@ namespace Psl\Str\Exception;
 
 use Psl\Exception;
 
+/**
+ * @mutation-free
+ */
 interface ExceptionInterface extends Exception\ExceptionInterface
 {
 }

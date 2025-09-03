@@ -19,8 +19,6 @@ use function substr;
  * @internal
  *
  * @codeCoverageIgnore
- *
- * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function get_peer_name(mixed $socket): Network\Address
 {

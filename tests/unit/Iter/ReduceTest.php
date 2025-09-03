@@ -12,8 +12,12 @@ final class ReduceTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testReduce($expected, iterable $iterable, callable $function, $initial = null): void
-    {
+    public function testReduce(
+        null|int $expected,
+        iterable $iterable,
+        callable $function,
+        null|int $initial = null,
+    ): void {
         static::assertSame($expected, Iter\reduce($iterable, $function, $initial));
     }
 

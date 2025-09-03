@@ -73,7 +73,7 @@ final class MixedTypeTest extends TypeTest
      * @dataProvider getInvalidValues
      */
     #[\Override]
-    public function testInvalidAssertion($value): void
+    public function testInvalidAssertion(mixed $value): void
     {
         $this->addToAssertionCount(1);
     }
@@ -82,7 +82,7 @@ final class MixedTypeTest extends TypeTest
      * @dataProvider getInvalidCoercions
      */
     #[\Override]
-    public function testInvalidCoercion($value): void
+    public function testInvalidCoercion(mixed $value): void
     {
         $this->addToAssertionCount(1);
     }
@@ -93,7 +93,7 @@ final class MixedTypeTest extends TypeTest
      * @dataProvider getInvalidValues
      */
     #[\Override]
-    public function testInvalidMatches($value): void
+    public function testInvalidMatches(mixed $value): void
     {
         $this->addToAssertionCount(1);
     }

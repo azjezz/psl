@@ -14,7 +14,7 @@ final class FirstTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testFirst($expected, iterable $iterable): void
+    public function testFirst(null|string $expected, iterable $iterable): void
     {
         $result = Iter\first($iterable);
 

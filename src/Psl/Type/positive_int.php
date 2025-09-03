@@ -7,11 +7,9 @@ namespace Psl\Type;
 /**
  * @psalm-pure
  *
- * @psalm-suppress ImpureStaticVariable - The $instance is always the same and is considered pure.
+ * @mago-expect analysis:impure-static-variable - The $instance is always the same and is considered pure.
  *
  * @return TypeInterface<positive-int>
- *
- * @ara-return TypeInterface<0|uint>
  */
 function positive_int(): TypeInterface
 {

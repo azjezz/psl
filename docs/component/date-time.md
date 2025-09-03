@@ -54,12 +54,12 @@
 
 - [DateStyle](./../../src/Psl/DateTime/DateStyle.php#L23)
 - [Era](./../../src/Psl/DateTime/Era.php#L14)
-- [FormatPattern](./../../src/Psl/DateTime/FormatPattern.php#L15)
+- [FormatPattern](./../../src/Psl/DateTime/FormatPattern.php#L16)
 - [Meridiem](./../../src/Psl/DateTime/Meridiem.php#L14)
 - [Month](./../../src/Psl/DateTime/Month.php#L15)
 - [SecondsStyle](./../../src/Psl/DateTime/SecondsStyle.php#L13)
-- [TimeStyle](./../../src/Psl/DateTime/TimeStyle.php#L23)
-- [Timezone](./../../src/Psl/DateTime/Timezone.php#L21)
+- [TimeStyle](./../../src/Psl/DateTime/TimeStyle.php#L24)
+- [Timezone](./../../src/Psl/DateTime/Timezone.php#L23)
 - [Weekday](./../../src/Psl/DateTime/Weekday.php#L15)
 
 

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
+use Stringable;
 
 use function ctype_digit;
 use function is_float;
@@ -24,7 +26,7 @@ final readonly class FloatType extends Type\Type
     /**
      * @psalm-assert-if-true float $value
      */
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         return is_float($value);
@@ -33,7 +35,7 @@ final readonly class FloatType extends Type\Type
     /**
      * @throws CoercionException
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): float
     {
         if (is_float($value)) {
@@ -44,7 +46,7 @@ final readonly class FloatType extends Type\Type
             return $value;
         }
 
-        if (is_string($value) || is_object($value) && method_exists($value, '__toString')) {
+        if (is_string($value) || $value instanceof Stringable) {
             $str = (string) $value;
             if ('' !== $str) {
                 if (ctype_digit($str)) {
@@ -52,7 +54,7 @@ final readonly class FloatType extends Type\Type
                 }
 
                 if (1 === preg_match("/^[+-]?(\d+([.]\d*)?([eE][+-]?\d+)?|[.]\d+([eE][+-]?\d+)?)$/", $str)) {
-                    return (float) $str;
+                    return (float) $str; // @mago-expect analysis:invalid-type-cast
                 }
             }
         }
@@ -65,7 +67,7 @@ final readonly class FloatType extends Type\Type
      *
      * @throws AssertException
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): float
     {
         if (is_float($value)) {
@@ -75,7 +77,7 @@ final readonly class FloatType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return 'float';

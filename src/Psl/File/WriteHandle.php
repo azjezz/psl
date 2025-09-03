@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\File;
 
+use Override;
 use Psl\DateTime\Duration;
 use Psl\Filesystem;
 use Psl\IO;
@@ -60,18 +61,22 @@ final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteH
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tryWrite(string $bytes): int
     {
         return $this->writeHandle->tryWrite($bytes);
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function write(string $bytes, null|Duration $timeout = null): int
     {
         return $this->writeHandle->write($bytes, $timeout);

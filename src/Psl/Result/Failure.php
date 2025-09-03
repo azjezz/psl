@@ -36,11 +36,9 @@ final readonly class Failure implements ResultInterface
      * Since this is a failed result wrapper, this always throws the `Throwable` thrown during the operation.
      *
      * @throws Throwable
-     *
-     * @psalm-mutation-free
      */
     #[\Override]
-    public function getResult(): void
+    public function getResult(): never
     {
         throw $this->throwable;
     }

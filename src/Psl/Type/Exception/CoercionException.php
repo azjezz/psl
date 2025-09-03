@@ -19,15 +19,15 @@ final class CoercionException extends Exception
      */
     private function __construct(string $actual, string $target, array $paths = [], null|Throwable $previous = null)
     {
-        $first = ($previous instanceof Exception) ? $previous->getFirstFailingActualType() : $actual;
+        $first = $previous instanceof Exception ? $previous->getFirstFailingActualType() : $actual;
 
         parent::__construct(
             Str\format(
                 'Could not coerce "%s" to type "%s"%s%s.',
                 $first,
                 $target,
-                $paths ? (' at path "' . Str\join($paths, '.') . '"') : '',
-                $previous && !($previous instanceof self) ? (': ' . $previous->getMessage()) : '',
+                $paths ? ' at path "' . Str\join($paths, '.') . '"' : '',
+                $previous && !$previous instanceof self ? ': ' . $previous->getMessage() : '',
             ),
             $actual,
             $paths,
@@ -48,7 +48,7 @@ final class CoercionException extends Exception
         null|string $path = null,
         null|Throwable $previous = null,
     ): self {
-        $paths = ($previous instanceof Exception) ? [$path, ...$previous->getPaths()] : [$path];
+        $paths = $previous instanceof Exception ? [$path, ...$previous->getPaths()] : [$path];
 
         return new self(get_debug_type($value), $target, Vec\filter_nulls($paths), $previous);
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Network\Internal;
 
+use Override;
 use Psl\DateTime\Duration;
 use Psl\IO;
 use Psl\IO\Exception;
@@ -34,63 +35,73 @@ final class Socket implements Network\StreamSocketInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function reachedEndOfDataSource(): bool
     {
         return $this->handle->reachedEndOfDataSource();
     }
 
     /**
-     * {@inheritDoc}
+     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tryRead(null|int $max_bytes = null): string
     {
         return $this->handle->tryRead($max_bytes);
     }
 
     /**
-     * {@inheritDoc}
+     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         return $this->handle->read($max_bytes, $timeout);
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tryWrite(string $bytes): int
     {
         return $this->handle->tryWrite($bytes);
     }
 
     /**
-     * {@inheritDoc}
+     * @return int<0, max>
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function write(string $bytes, null|Duration $timeout = null): int
     {
         return $this->handle->write($bytes, $timeout);
     }
 
     /**
-     * {@inheritDoc}
+     * @return resource|null
+     *
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function getStream(): mixed
     {
         return $this->handle->getStream();
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function getLocalAddress(): Address
     {
         $stream = $this->handle->getStream();
@@ -102,9 +113,9 @@ final class Socket implements Network\StreamSocketInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function getPeerAddress(): Address
     {
         $stream = $this->handle->getStream();
@@ -116,9 +127,9 @@ final class Socket implements Network\StreamSocketInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function close(): void
     {
         $this->handle->close();
@@ -126,7 +137,6 @@ final class Socket implements Network\StreamSocketInterface
 
     public function __destruct()
     {
-        /** @psalm-suppress MissingThrowsDocblock */
         $this->close();
     }
 }

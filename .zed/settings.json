@@ -1,0 +1,18 @@
+{
+    "languages": {
+        "PHP": {
+            "format_on_save": "on",
+            "formatter": {
+                "external": {
+                    "command": "vendor/bin/mago",
+                    "arguments": [
+                        "--config",
+                        "config/mago.toml",
+                        "format",
+                        "--stdin-input"
+                    ]
+                }
+            }
+        }
+    }
+}

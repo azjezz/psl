@@ -19,7 +19,7 @@ final class AfterTest extends TestCase
 
     public function testItCombinesAFunctionThatDealWithDifferentTypes(): void
     {
-        $x = Fun\after(static fn(string $x): int => Str\length($x), static fn(int $z): string => $z . '!');
+        $x = Fun\after(Str\length(...), static fn(int $z): string => $z . '!');
 
         static::assertSame('5!', $x('Hello'));
     }

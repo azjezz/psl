@@ -21,8 +21,7 @@ use function touch;
  *
  * @throws Exception\RuntimeException If unable to create the file.
  *
- * @mago-expect best-practices/no-boolean-literal-comparison
- * @mago-expect best-practices/no-else-clause
+ * @mago-expect lint:no-else-clause
  */
 function create_file(string $filename, null|int $time = null, null|int $access_time = null): void
 {
@@ -31,7 +30,7 @@ function create_file(string $filename, null|int $time = null, null|int $access_t
     } elseif (null === $access_time) {
         $fun = static fn(): bool => touch($filename, $time);
     } else {
-        $time = $time ?? $access_time;
+        $time ??= $access_time;
 
         $fun = static fn(): bool => touch($filename, $time, Math\maxva($access_time, $time));
     }

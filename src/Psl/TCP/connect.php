@@ -30,6 +30,5 @@ function connect(
 
     $socket = Network\Internal\socket_connect("tcp://{$host}:{$port}", $context, $timeout);
 
-    /** @psalm-suppress MissingThrowsDocblock */
     return new Network\Internal\Socket($socket);
 }

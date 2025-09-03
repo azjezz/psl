@@ -13,7 +13,7 @@ final class MinvaTest extends TestCase
     /**
      * @dataProvider provideData
      */
-    public function testMainva($expected, $first, $second, ...$rest): void
+    public function testMainva(int|float $expected, int|float $first, int|float $second, int|float ...$rest): void
     {
         static::assertSame($expected, Math\minva($first, $second, ...$rest));
     }

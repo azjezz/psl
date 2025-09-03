@@ -13,8 +13,6 @@ use function is_int;
 use function Psl\Type;
 
 /**
- * @ara-extends Type\Type<u8>
- *
  * @extends Type\Type<int<0, 255>>
  *
  * @internal
@@ -22,8 +20,6 @@ use function Psl\Type;
 final readonly class U8Type extends Type\Type
 {
     /**
-     * @ara-assert-if-true u8 $value
-     *
      * @psalm-assert-if-true int<0, 255> $value
      */
     #[\Override]
@@ -34,8 +30,6 @@ final readonly class U8Type extends Type\Type
 
     /**
      * @throws CoercionException
-     *
-     * @ara-return u8
      *
      * @return int<0, 255>
      */
@@ -52,13 +46,9 @@ final readonly class U8Type extends Type\Type
     }
 
     /**
-     * @ara-assert u8 $value
-     *
      * @psalm-assert int<0, 255> $value
      *
      * @throws AssertException
-     *
-     * @ara-return u8
      *
      * @return int<0, 255>
      */

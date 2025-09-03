@@ -15,8 +15,6 @@ use function mkdir;
  * @param non-empty-string $directory
  *
  * @throws Exception\RuntimeException If unable to create the directory.
- *
- * @mago-expect best-practices/no-boolean-literal-comparison
  */
 function create_directory(string $directory, int $permissions = 0o777): void
 {

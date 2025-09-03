@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Psl\Tests\StaticAnalysis\Option;
+
 use Psl\Option;
 
 function test_some_unwrap_or(): null|string

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
+
 /**
  * @extends UnionType<int, float>
  *
@@ -16,11 +18,10 @@ final readonly class NumType extends UnionType
      */
     public function __construct()
     {
-        /** @psalm-suppress MissingThrowsDocblock */
         parent::__construct(new IntType(), new FloatType());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return 'num';

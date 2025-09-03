@@ -11,6 +11,5 @@ namespace Psl\Str;
  */
 function starts_with(string $string, string $prefix, Encoding $encoding = Encoding::Utf8): bool
 {
-    /** @psalm-suppress MissingThrowsDocblock */
     return 0 === search($string, $prefix, 0, $encoding);
 }

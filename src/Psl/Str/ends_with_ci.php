@@ -44,7 +44,6 @@ function ends_with_ci(string $string, string $suffix, Encoding $encoding = Encod
         return false;
     }
 
-    /** @psalm-suppress MissingThrowsDocblock */
     $position = search_last_ci($string, $suffix, 0, $encoding);
     if (null === $position) {
         return false;
