@@ -7,12 +7,11 @@ namespace Psl\Iter;
 /**
  * Returns the last element of an iterable, if the iterable is empty, null will be returned.
  *
- * @template Tk
- * @template Tv
+ * @template T
  *
- * @param iterable<Tk, Tv> $iterable
+ * @param iterable<T> $iterable
  *
- * @return Tv|null
+ * @return ($iterable is non-empty-array ? T : null)
  */
 function last(iterable $iterable): mixed
 {

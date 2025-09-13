@@ -12,7 +12,7 @@ namespace Psl\Iter;
  *
  * @param iterable<Tk, Tv> $iterable
  *
- * @return Tk|null
+ * @return ($iterable is non-empty-array ? Tk : null)
  */
 function last_key(iterable $iterable): mixed
 {

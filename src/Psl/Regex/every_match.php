@@ -19,7 +19,7 @@ use function preg_match_all;
  * @throws Exception\RuntimeException If an internal error accord.
  * @throws Exception\InvalidPatternException If $pattern is invalid.
  *
- * @return (T is null ? list<array<array-key, string>> : list<T>)|null
+ * @return ($capture_groups is null ? list<array<array-key, string>> : list<T>)|null
  */
 function every_match(
     string $subject,

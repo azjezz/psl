@@ -19,7 +19,7 @@ use function preg_match;
  * @throws Exception\RuntimeException If an internal error accord.
  * @throws Exception\InvalidPatternException If $pattern is invalid.
  *
- * @return (T is null ? array<array-key, string> : T)|null
+ * @return ($capture_groups is null ? array<array-key, string> : T)|null
  */
 function first_match(
     string $subject,
