@@ -11,7 +11,7 @@ namespace Psl\Iter;
  *
  * @param iterable<T> $iterable
  *
- * @return ($iterable is non-empty-array ? T : null)
+ * @return ($iterable is non-empty-array|non-empty-list ? T : T|null)
  */
 function last(iterable $iterable): mixed
 {

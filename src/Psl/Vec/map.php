@@ -28,7 +28,7 @@ use function is_array;
  * @param iterable<Tk, Tv> $iterable Iterable to be mapped over
  * @param (Closure(Tv): T) $function
  *
- * @return ($iterable is non-empty-array ? non-empty-list<T> : list<T>)
+ * @return ($iterable is non-empty-array|non-empty-list ? non-empty-list<T> : list<T>)
  */
 function map(iterable $iterable, Closure $function): array
 {
