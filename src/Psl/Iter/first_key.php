@@ -12,7 +12,7 @@ namespace Psl\Iter;
  *
  * @param iterable<Tk, Tv> $iterable
  *
- * @return ($iterable is non-empty-array ? Tk : null)
+ * @return ($iterable is non-empty-array|non-empty-list ? Tk : Tk|null)
  *
  * @mago-expect lint:loop-does-not-iterate
  */

@@ -11,7 +11,7 @@ namespace Psl\Iter;
  *
  * @param iterable<T> $iterable
  *
- * @return ($iterable is non-empty-array ? false : true)
+ * @return ($iterable is non-empty-array|non-empty-list ? false : true)
  *
  * @psalm-assert-if-true empty $iterable
  */
