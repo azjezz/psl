@@ -11,7 +11,7 @@ namespace Psl\Iter;
  *
  * @param iterable<T> $iterable
  *
- * @return T|null
+ * @return ($iterable is non-empty-array ? T : null)
  *
  * @mago-expect lint:loop-does-not-iterate
  */
