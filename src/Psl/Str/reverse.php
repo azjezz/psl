@@ -9,7 +9,7 @@ use Psl\Vec;
 /**
  * Returns the given string reversed.
  *
- * @psalm-pure
+ * @pure
  */
 function reverse(string $string, Encoding $encoding = Encoding::Utf8): string
 {

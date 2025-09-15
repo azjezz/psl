@@ -9,7 +9,7 @@ use Psl\Exception\InvariantViolationException;
 use Psl\Exception\RuntimeException;
 
 /**
- * @psalm-pure
+ * @pure
  *
  * @template T of BackedEnum
  *

@@ -11,17 +11,16 @@ use Throwable;
  * Wrap the given closure result in a `Success`, or `Failure` if the closure throws
  * an `Throwable`.
  *
- * @template     T
+ * @template T
  *
- * @param (Closure(): (T|ResultInterface<T>)) $closure
+ * @param (Closure(): T) $closure
  *
  * @return ResultInterface<T>
  */
 function wrap(Closure $closure): ResultInterface
 {
     try {
-        $result = $closure();
-        return $result instanceof ResultInterface ? $result : new Success($result);
+        return new Success($closure());
     } catch (Throwable $e) {
         return new Failure($e);
     }
