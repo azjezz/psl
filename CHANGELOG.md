@@ -1,5 +1,31 @@
 # Changelog
 
+## 4.0.0
+
+### breaking changes
+
+* `Psl\Result\wrap()` no longer unwraps nested results - [#531](https://github.com/azjezz/psl/pull/531) by @azjezz
+* `Psl\Collection\Map`, `Psl\Collection\MutableMap`, `Psl\Collection\Set`, and `Psl\Collection\MutableSet` now have a more natural JSON serialization - [#512](https://github.com/azjezz/psl/pull/512) by @josh-rai
+* A large number of intersection interfaces in the `Psl\IO` and `Psl\File` namespaces have been removed to simplify the component's hierarchy - [#518](https://github.com/azjezz/psl/pull/518) by @azjezz
+* `Psl\sequence()` function has been removed - [#519](https://github.com/azjezz/psl/pull/519) by @azjezz
+
+### features
+
+* feat(type): add `container` type - [#513](https://github.com/azjezz/psl/pull/513) by @azjezz
+* feat(type): add `int_range` type - [#510](https://github.com/azjezz/psl/pull/510) by @george-steel
+* feat(type): add `always_assert` type - [#522](https://github.com/azjezz/psl/pull/522) by @azjezz
+* feat(iter): add `search_with_keys_opt` and `search_with_keys` functions - [#490](https://github.com/azjezz/psl/pull/490) by @simon-podlipsky
+
+### fixes, and improvements
+
+* refactor: improve type inference for non-empty lists - [#529](https://github.com/azjezz/psl/pull/529) by @azjezz
+* refactor: improve type inference for `Iter` and `Regex` - [#528](https://github.com/azjezz/psl/pull/528) by @azjezz
+
+### other
+
+* chore: migrate from `psalm` to `mago` - [#527](https://github.com/azjezz/psl/pull/527) by @azjezz
+* chore: replace psalm-specific tags by generic tags - [#531](https://github.com/azjezz/psl/pull/531) by @azjezz
+
 ## 2.7.0
 
 ### features
