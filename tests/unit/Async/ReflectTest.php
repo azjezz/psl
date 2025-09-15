@@ -20,9 +20,7 @@ final class ReflectTest extends TestCase
 
                 throw new Exception('failure');
             }),
-            Result\reflect(static function (): string {
-                return 'success';
-            }),
+            Result\reflect(static fn(): string => 'success'),
         ]);
 
         static::assertInstanceOf(Result\Failure::class, $one);

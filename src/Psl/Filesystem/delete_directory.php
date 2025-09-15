@@ -58,7 +58,7 @@ function delete_directory(string $directory, bool $recursive = false): void
 
     [$result, $error_message] = Internal\box(static fn(): bool => rmdir($directory));
     // @codeCoverageIgnoreStart
-    if (false === $result && namespace\is_directory($directory)) {
+    if (false === $result) {
         throw new Exception\RuntimeException(Str\format(
             'Failed to delete directory "%s": %s.',
             $directory,

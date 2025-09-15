@@ -30,7 +30,7 @@ function delete_file(string $file): void
 
     [$result, $error_message] = Internal\box(static fn(): bool => unlink($file));
     // @codeCoverageIgnoreStart
-    if (false === $result && namespace\is_file($file)) {
+    if (false === $result) {
         throw new Exception\RuntimeException(Str\format(
             'Failed to delete file "%s": %s.',
             $file,

@@ -35,13 +35,16 @@ final class ShapeTypeTest extends TypeTest
 
     public function testWillConsiderUnknownIterableFieldsWhenCoercing(): void
     {
-        static::assertSame([
-            'defined_key' => 'value',
-            'additional_key' => 'value',
-        ], Type\shape(['defined_key' => Type\mixed()], true)->coerce(new ArrayIterator([
-            'defined_key' => 'value',
-            'additional_key' => 'value',
-        ])));
+        static::assertSame(
+            [
+                'defined_key' => 'value',
+                'additional_key' => 'value',
+            ],
+            Type\shape(['defined_key' => Type\mixed()], true)->coerce(new ArrayIterator([
+                'defined_key' => 'value',
+                'additional_key' => 'value',
+            ])),
+        );
     }
 
     #[\Override]

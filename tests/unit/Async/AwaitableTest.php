@@ -181,9 +181,7 @@ final class AwaitableTest extends TestCase
 
     public function testThenOnSuccess(): void
     {
-        $awaitable = Async\run(static function (): string {
-            return 'hello';
-        });
+        $awaitable = Async\run(static fn(): string => 'hello');
 
         $awaitable = $awaitable
             ->then(Str\reverse(...), static fn(Throwable $_exception): never => exit(0))
@@ -205,9 +203,7 @@ final class AwaitableTest extends TestCase
 
     public function testMap(): void
     {
-        $awaitable = Async\run(static function (): string {
-            return 'hello';
-        });
+        $awaitable = Async\run(static fn(): string => 'hello');
 
         $ref = new Psl\Ref('');
         $awaitable = $awaitable

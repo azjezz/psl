@@ -109,9 +109,7 @@ final class KeyedSequenceTest extends TestCase
         /**
          * @var Async\KeyedSequence<string, string, string>
          */
-        $semaphore = new Async\KeyedSequence(static function (string $_, string $input): string {
-            return $input;
-        });
+        $semaphore = new Async\KeyedSequence(static fn(string $_, string $input): string => $input);
 
         $semaphore->cancelAll(new Async\Exception\TimeoutException('The semaphore is destroyed.'));
 

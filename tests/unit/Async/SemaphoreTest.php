@@ -13,9 +13,7 @@ final class SemaphoreTest extends TestCase
 {
     public function testItCallsTheOperation(): void
     {
-        $sequence = new Async\Semaphore(1, static function (int $input): int {
-            return $input * 2;
-        });
+        $sequence = new Async\Semaphore(1, static fn(int $input): int => $input * 2);
 
         static::assertSame(4, $sequence->waitFor(2));
     }
@@ -143,9 +141,7 @@ final class SemaphoreTest extends TestCase
         /**
          * @var Async\Semaphore<string, string>
          */
-        $semaphore = new Async\Semaphore(1, static function (string $input): string {
-            return $input;
-        });
+        $semaphore = new Async\Semaphore(1, static fn(string $input): string => $input);
 
         $semaphore->cancel(new Async\Exception\TimeoutException('The semaphore is destroyed.'));
 

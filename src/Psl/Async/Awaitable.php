@@ -206,9 +206,7 @@ final readonly class Awaitable implements PromiseInterface
              *
              * @return T
              */
-            static function (mixed $value): mixed {
-                return $value;
-            },
+            static fn(mixed $value): mixed => $value,
             $failure,
         );
     }
