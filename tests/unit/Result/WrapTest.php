@@ -28,9 +28,7 @@ final class WrapTest extends TestCase
 
     public function testWrapResult(): void
     {
-        $wrapper = Result\wrap(static function (): string {
-            return 'foo';
-        });
+        $wrapper = Result\wrap(static fn(): string => 'foo');
         static::assertTrue($wrapper->isSucceeded());
         static::assertFalse($wrapper->isFailed());
         static::assertSame('foo', $wrapper->getResult());
@@ -43,9 +41,7 @@ final class WrapTest extends TestCase
 
     public function testWrapOtherResult(): void
     {
-        $wrapper = Result\wrap(static function (): Result\ResultInterface {
-            return new Result\Success('foo');
-        });
+        $wrapper = Result\wrap(static fn(): Result\ResultInterface => new Result\Success('foo'));
         static::assertTrue($wrapper->isSucceeded());
         static::assertFalse($wrapper->isFailed());
         static::assertSame('foo', $wrapper->getResult());

@@ -426,9 +426,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function zip(Option $other): Option
     {
-        return $this->andThen(static function (mixed $a) use ($other): Option {
-            return $other->map(static fn(mixed $b): array => [$a, $b]);
-        });
+        return $this->andThen(static fn(mixed $a): Option => $other->map(static fn(mixed $b): array => [$a, $b]));
     }
 
     /**
@@ -450,12 +448,10 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     {
         return $this->andThen(
             /** @param T $a */
-            static function (mixed $a) use ($other, $closure): Option {
-                return $other->map(
-                    /** @param Tu $b */
-                    static fn(mixed $b): mixed => $closure($a, $b),
-                );
-            },
+            static fn(mixed $a): Option => $other->map(
+                /** @param Tu $b */
+                static fn(mixed $b): mixed => $closure($a, $b),
+            ),
         );
     }
 

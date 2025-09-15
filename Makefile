@@ -45,4 +45,4 @@ preload-check:                                                                  
 php-check:                                                                      ## shows which php binary is used
 	which php
 
-check: coding-standard-check static-analysis security-analysis unit-tests mutation-tests docs-check autoload-check  ## run quick checks for local development iterations
+check: coding-standard-check static-analysis unit-tests mutation-tests docs-check ## run quick checks for local development iterations

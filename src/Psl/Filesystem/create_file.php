@@ -39,7 +39,7 @@ function create_file(string $filename, null|int $time = null, null|int $access_t
 
     [$result, $error_message] = Internal\box($fun);
     // @codeCoverageIgnoreStart
-    if (false === $result && !namespace\is_file($filename)) {
+    if (false === $result) {
         throw new Exception\RuntimeException(Str\format(
             'Failed to create file "%s": %s.',
             $filename,

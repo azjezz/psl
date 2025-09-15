@@ -147,9 +147,7 @@ final class KeyedSemaphoreTest extends TestCase
         /**
          * @var Async\KeyedSemaphore<string, string, string>
          */
-        $semaphore = new Async\KeyedSemaphore(1, static function (string $_, string $input): string {
-            return $input;
-        });
+        $semaphore = new Async\KeyedSemaphore(1, static fn(string $_, string $input): string => $input);
 
         $semaphore->cancelAll(new Async\Exception\TimeoutException('The semaphore is destroyed.'));
 
