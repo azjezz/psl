@@ -7,7 +7,7 @@ namespace Psl\Type;
 use BackedEnum;
 
 /**
- * @psalm-pure
+ * @pure
  *
  * @template T of BackedEnum
  *

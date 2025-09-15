@@ -7,7 +7,7 @@ namespace Psl\Type;
 use UnitEnum;
 
 /**
- * @psalm-pure
+ * @pure
  *
  * @template T of UnitEnum
  *

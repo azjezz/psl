@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Type;
 
 /**
- * @psalm-pure
+ * @pure
  *
  * @template Tk of array-key
  * @template Tv

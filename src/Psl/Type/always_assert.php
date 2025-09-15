@@ -8,7 +8,7 @@ namespace Psl\Type;
  * Create a new type that always asserts that the value matches the provided type,
  * even when coercing.
  *
- * @psalm-pure
+ * @pure
  *
  * @template T
  *

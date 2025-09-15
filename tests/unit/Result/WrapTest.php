@@ -44,6 +44,6 @@ final class WrapTest extends TestCase
         $wrapper = Result\wrap(static fn(): Result\ResultInterface => new Result\Success('foo'));
         static::assertTrue($wrapper->isSucceeded());
         static::assertFalse($wrapper->isFailed());
-        static::assertSame('foo', $wrapper->getResult());
+        static::assertSame('foo', $wrapper->getResult()->getResult());
     }
 }

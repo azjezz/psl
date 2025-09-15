@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\Type;
 
 /**
- * @psalm-pure
+ * @pure
  *
  * @return TypeInterface<array<array-key, mixed>>
  */
