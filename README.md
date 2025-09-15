@@ -64,7 +64,7 @@ Async\main(static function(): int {
 Supported installation method is via [composer](https://getcomposer.org):
 
 ```shell
-composer require azjezz/psl
+composer require azjezz/psl:^4.0
 ```
 
 ### Psalm Integration
