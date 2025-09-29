@@ -92,7 +92,6 @@ final class Stack implements StackInterface
             throw new Exception\UnderflowException('Cannot pop an item from an empty stack.');
         }
 
-        /** @var T */
         return array_pop($this->items);
     }
 

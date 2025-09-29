@@ -13,10 +13,5 @@ namespace Psl\Runtime;
  */
 function get_extensions(): array
 {
-    // we know that this cannot be empty, since some extensions cannot be disabled ( e.g: Core )
-
-    /**
-     * @var non-empty-list<non-empty-string>
-     */
     return get_loaded_extensions();
 }

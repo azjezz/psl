@@ -19,7 +19,6 @@ trait MersenneTwisterTrait
     final public function __construct(int $seed)
     {
         $state = [$seed & 0xffffffff];
-        /** @var array{0: int, 1: int} $i */
         $i = [$seed & 0xffff, ($seed >> 16) & 0xffff];
 
         for ($index = 1; $index < 624; $index++) {

@@ -13,7 +13,6 @@ namespace Psl\Type;
  */
 function nonnull(): NonNullType
 {
-    /** @var NonNullType $instance */
     static $instance = new NonNullType();
 
     return $instance;

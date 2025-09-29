@@ -23,7 +23,6 @@ trait ChannelSideTrait
      */
     public function getCapacity(): null|int
     {
-        /** @var null|int<1, max> */
         return $this->state->getCapacity();
     }
 
@@ -47,7 +46,6 @@ trait ChannelSideTrait
      */
     public function count(): int
     {
-        /** @var int<0, max> */
         return $this->state->count();
     }
 

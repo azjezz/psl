@@ -123,7 +123,6 @@ final class Semaphore
      */
     public function getPendingOperations(): int
     {
-        /** @var int<0, max> */
         return count($this->pending);
     }
 

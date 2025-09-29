@@ -92,7 +92,6 @@ final readonly class ShapeType extends Type\Type
             $coerced[$key] = $additionalValue;
         }
 
-        /** @var array<Tk, Tv> $coerced type inference is broken by additional (unknown) fields */
         return $coerced;
     }
 
@@ -164,7 +163,6 @@ final readonly class ShapeType extends Type\Type
             }
         }
 
-        /** @var array<Tk, Tv> */
         return $result;
     }
 
@@ -215,7 +213,6 @@ final readonly class ShapeType extends Type\Type
         }
 
         /**
-         * @var Tk $k
          * @var Tv $v
          */
         foreach ($value as $k => $v) {
@@ -229,7 +226,6 @@ final readonly class ShapeType extends Type\Type
             }
         }
 
-        /** @var array<Tk, Tv> */
         return $result;
     }
 

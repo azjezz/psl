@@ -15,6 +15,5 @@ use function trait_exists;
  */
 function defined(string $trait_name): bool
 {
-    /** @var bool */
     return trait_exists($trait_name, false);
 }

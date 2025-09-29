@@ -37,6 +37,5 @@ function chunk(string $string, int $chunk_length = 1, Encoding $encoding = Encod
         return [];
     }
 
-    /** @var list<non-empty-string> */
     return mb_str_split($string, $chunk_length, $encoding->value);
 }

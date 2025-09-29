@@ -68,7 +68,6 @@ final readonly class MutableSetType extends Type\Type
                 throw CoercionException::withValue($v, $this->toString(), PathExpression::path($k), $e);
             }
 
-            /** @var Collection\MutableSet<T> */
             return new Collection\MutableSet($set);
         }
 
@@ -112,7 +111,6 @@ final readonly class MutableSetType extends Type\Type
                 throw AssertException::withValue($v, $this->toString(), PathExpression::path($k), $e);
             }
 
-            /** @var Collection\MutableSet<T> */
             return new Collection\MutableSet($set);
         }
 

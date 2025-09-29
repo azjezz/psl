@@ -37,7 +37,6 @@ function box(Closure $fun): array
     try {
         $value = $fun();
 
-        /** @var array{0: T, 1: ?string} $result */
         $result = [$value, $last_message];
 
         return $result;

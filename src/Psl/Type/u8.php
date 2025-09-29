@@ -13,7 +13,6 @@ namespace Psl\Type;
  */
 function u8(): TypeInterface
 {
-    /** @var Internal\U8Type $instance */
     static $instance = new Internal\U8Type();
 
     return $instance;

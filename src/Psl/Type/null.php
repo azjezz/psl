@@ -13,7 +13,6 @@ namespace Psl\Type;
  */
 function null(): TypeInterface
 {
-    /** @var Internal\NullType $instance */
     static $instance = new Internal\NullType();
 
     return $instance;

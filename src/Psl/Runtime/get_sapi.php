@@ -15,6 +15,5 @@ use const PHP_SAPI;
  */
 function get_sapi(): string
 {
-    /** @var non-empty-string */
     return PHP_SAPI;
 }

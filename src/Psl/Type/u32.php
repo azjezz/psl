@@ -13,7 +13,6 @@ namespace Psl\Type;
  */
 function u32(): TypeInterface
 {
-    /** @var Internal\U32Type $instance */
     static $instance = new Internal\U32Type();
 
     return $instance;

@@ -13,7 +13,6 @@ namespace Psl\Type;
  */
 function positive_int(): TypeInterface
 {
-    /** @var Internal\PositiveIntType $instance */
     static $instance = new Internal\PositiveIntType();
 
     return $instance;

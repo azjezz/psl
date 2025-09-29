@@ -41,7 +41,6 @@ final readonly class BackedEnumType extends Type\Type
     public function coerce(mixed $value): BackedEnum
     {
         if ($value instanceof $this->enum) {
-            /** @var T */
             return $value;
         }
 
@@ -79,7 +78,6 @@ final readonly class BackedEnumType extends Type\Type
     public function assert(mixed $value): BackedEnum
     {
         if ($value instanceof $this->enum) {
-            /** @var T */
             return $value;
         }
 

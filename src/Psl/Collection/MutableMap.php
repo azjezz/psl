@@ -203,7 +203,6 @@ final class MutableMap implements MutableMapInterface
     #[\Override]
     public function count(): int
     {
-        /** @var int<0, max> */
         return count($this->elements);
     }
 

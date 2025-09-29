@@ -30,6 +30,5 @@ function search(string $haystack, string $needle, int $offset = 0): null|int
         return null;
     }
 
-    /** @var null|int<0, max> */
     return false === ($pos = strpos($haystack, $needle, $offset)) ? null : $pos;
 }

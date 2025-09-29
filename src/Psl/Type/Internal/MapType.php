@@ -93,7 +93,6 @@ final readonly class MapType extends Type\Type
                 };
             }
 
-            /** @var Collection\Map<Tk, Tv> */
             return new Collection\Map(Dict\from_entries($entries));
         }
 
@@ -143,7 +142,6 @@ final readonly class MapType extends Type\Type
                 };
             }
 
-            /** @var Collection\Map<Tk, Tv> */
             return new Collection\Map(Dict\from_entries($entries));
         }
 

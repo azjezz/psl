@@ -136,7 +136,6 @@ final class KeyedSequence
      */
     public function getPendingOperations(string|int $key): int
     {
-        /** @var int<0, max> */
         return count($this->pending[$key] ?? []);
     }
 
@@ -204,7 +203,6 @@ final class KeyedSequence
      */
     public function getTotalIngoingOperations(): int
     {
-        /** @var int<0, max> */
         return count($this->ingoing);
     }
 

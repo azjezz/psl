@@ -32,6 +32,5 @@ function search_ci(string $haystack, string $needle, int $offset = 0): null|int
 
     $offset = Str\Internal\validate_offset($offset, length($haystack));
 
-    /** @var null|int<0, max> */
     return false === ($pos = grapheme_stripos($haystack, $needle, $offset)) ? null : $pos;
 }
