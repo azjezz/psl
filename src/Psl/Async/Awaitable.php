@@ -98,7 +98,6 @@ final readonly class Awaitable implements PromiseInterface
      */
     public static function complete(mixed $result): self
     {
-        /** @var State<Tv> $state */
         $state = new State();
         $state->complete($result);
 
@@ -140,7 +139,6 @@ final readonly class Awaitable implements PromiseInterface
     #[\Override]
     public function then(Closure $success, Closure $failure): Awaitable
     {
-        /** @var State<Ts> $state */
         $state = new State();
 
         $this->state->subscribe(
@@ -221,7 +219,6 @@ final readonly class Awaitable implements PromiseInterface
     #[\Override]
     public function always(Closure $always): Awaitable
     {
-        /** @var State<T> $state */
         $state = new State();
 
         $this->state->subscribe(static function (null|Throwable $error, mixed $value) use ($state, $always): void {

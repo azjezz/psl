@@ -31,7 +31,6 @@ function random(iterable $iterable): mixed
     $size = namespace\count($values);
 
     if (1 === $size) {
-        /** @var T */
         return $values[0];
     }
 

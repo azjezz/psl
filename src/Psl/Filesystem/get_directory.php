@@ -23,6 +23,5 @@ use function dirname;
  */
 function get_directory(string $node, int $levels = 1): string
 {
-    /** @var non-empty-string */
     return dirname($node, $levels);
 }

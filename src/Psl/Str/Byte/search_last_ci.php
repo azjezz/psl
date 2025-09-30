@@ -32,6 +32,5 @@ function search_last_ci(string $haystack, string $needle, int $offset = 0): null
 
     $offset = Str\Internal\validate_offset($offset, length($haystack));
 
-    /** @var null|int<0, max> */
     return false === ($pos = strripos($haystack, $needle, $offset)) ? null : $pos;
 }

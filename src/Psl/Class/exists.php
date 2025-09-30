@@ -15,6 +15,5 @@ use function class_exists;
  */
 function exists(string $class_name): bool
 {
-    /** @var bool */
     return class_exists($class_name, true);
 }

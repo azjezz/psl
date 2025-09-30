@@ -20,7 +20,6 @@ namespace Psl\Dict;
  */
 function filter_nulls(iterable $iterable): array
 {
-    /** @var array<Tk, Tv> */
     return filter(
         $iterable,
         /**

@@ -75,7 +75,6 @@ final readonly class VectorType extends Type\Type
                 };
             }
 
-            /** @var Collection\Vector<T> */
             return new Collection\Vector($values);
         }
 
@@ -117,7 +116,6 @@ final readonly class VectorType extends Type\Type
                 throw AssertException::withValue($v, $this->toString(), PathExpression::path($i), $e);
             }
 
-            /** @var Collection\Vector<T> */
             return new Collection\Vector($values);
         }
 

@@ -84,10 +84,8 @@ final class MutableSet implements MutableSetInterface
      */
     public static function fromItems(iterable $items): MutableSet
     {
-        /**
-         * @var array<Ts, Ts>
-         */
         $array = iterator_to_array($items);
+
         return self::fromArray($array);
     }
 
@@ -173,7 +171,6 @@ final class MutableSet implements MutableSetInterface
     #[\Override]
     public function count(): int
     {
-        /** @var int<0, max> */
         return count($this->elements);
     }
 

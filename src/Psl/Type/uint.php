@@ -13,7 +13,6 @@ namespace Psl\Type;
  */
 function uint(): TypeInterface
 {
-    /** @var Internal\UIntType $instance */
     static $instance = new Internal\UIntType();
 
     return $instance;

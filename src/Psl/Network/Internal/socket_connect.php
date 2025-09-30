@@ -88,7 +88,6 @@ function socket_connect(string $uri, array $context = [], null|Duration $timeout
             });
 
             try {
-                /** @var resource */
                 return $suspension->suspend();
             } finally {
                 EventLoop::cancel($write_watcher);

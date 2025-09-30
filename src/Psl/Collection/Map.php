@@ -202,7 +202,6 @@ final readonly class Map implements MapInterface
     #[\Override]
     public function count(): int
     {
-        /** @var int<0, max> */
         return count($this->elements);
     }
 

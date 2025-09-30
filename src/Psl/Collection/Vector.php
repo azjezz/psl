@@ -81,10 +81,8 @@ final readonly class Vector implements VectorInterface
      */
     public static function fromItems(iterable $items): Vector
     {
-        /**
-         * @var array<array-key, Ts>
-         */
         $array = iterator_to_array($items);
+
         return self::fromArray($array);
     }
 
@@ -153,7 +151,6 @@ final readonly class Vector implements VectorInterface
     #[\Override]
     public function count(): int
     {
-        /** @var int<0, max> */
         return count($this->elements);
     }
 

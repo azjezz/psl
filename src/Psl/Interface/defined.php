@@ -15,6 +15,5 @@ use function interface_exists;
  */
 function defined(string $interface_name): bool
 {
-    /** @var bool */
     return interface_exists($interface_name, false);
 }

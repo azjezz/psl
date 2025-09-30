@@ -82,10 +82,8 @@ final class MutableVector implements MutableVectorInterface
      */
     public static function fromItems(iterable $items): MutableVector
     {
-        /**
-         * @var array<array-key, Ts>
-         */
         $array = iterator_to_array($items);
+
         return self::fromArray($array);
     }
 
@@ -154,7 +152,6 @@ final class MutableVector implements MutableVectorInterface
     #[\Override]
     public function count(): int
     {
-        /** @var int<0, max> */
         return count($this->elements);
     }
 

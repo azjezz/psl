@@ -20,6 +20,5 @@ use function sys_get_temp_dir;
  */
 function temp_dir(): string
 {
-    /** @var non-empty-string */
     return sys_get_temp_dir();
 }

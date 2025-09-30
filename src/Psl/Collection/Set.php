@@ -85,10 +85,8 @@ final readonly class Set implements SetInterface
      */
     public static function fromItems(iterable $items): Set
     {
-        /**
-         * @var array<array-key, Ts>
-         */
         $array = iterator_to_array($items);
+
         return self::fromArray($array);
     }
 
@@ -174,7 +172,6 @@ final readonly class Set implements SetInterface
     #[\Override]
     public function count(): int
     {
-        /** @var int<0, max> */
         return count($this->elements);
     }
 

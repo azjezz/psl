@@ -13,7 +13,6 @@ namespace Psl\Type;
  */
 function string(): TypeInterface
 {
-    /** @var Internal\StringType $instance */
     static $instance = new Internal\StringType();
 
     return $instance;

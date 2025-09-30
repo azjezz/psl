@@ -13,7 +13,6 @@ namespace Psl\Type;
  */
 function scalar(): TypeInterface
 {
-    /** @var Internal\ScalarType $instance */
     static $instance = new Internal\ScalarType();
 
     return $instance;

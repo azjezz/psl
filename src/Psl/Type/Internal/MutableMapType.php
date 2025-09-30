@@ -95,7 +95,6 @@ final readonly class MutableMapType extends Type\Type
 
             $dict = Dict\from_entries($entries);
 
-            /** @var Collection\MutableMap<Tk, Tv> */
             return new Collection\MutableMap($dict);
         }
 
@@ -148,7 +147,6 @@ final readonly class MutableMapType extends Type\Type
 
             $dict = Dict\from_entries($entries);
 
-            /** @var Collection\MutableMap<Tk, Tv> */
             return new Collection\MutableMap($dict);
         }
 

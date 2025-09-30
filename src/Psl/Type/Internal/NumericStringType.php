@@ -38,7 +38,6 @@ final readonly class NumericStringType extends Type\Type
     public function coerce(mixed $value): string
     {
         if (is_string($value) && is_numeric($value)) {
-            /** @var numeric-string $value */
             return $value;
         }
 
@@ -67,7 +66,6 @@ final readonly class NumericStringType extends Type\Type
     public function assert(mixed $value): string
     {
         if (is_string($value) && is_numeric($value)) {
-            /** @var numeric-string $value */
             return $value;
         }
 

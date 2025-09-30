@@ -33,6 +33,5 @@ function search_last(string $haystack, string $needle, int $offset = 0): null|in
 
     $offset = Str\Internal\validate_offset($offset, length($haystack));
 
-    /** @var null|int<0, max> */
     return false === ($pos = grapheme_strrpos($haystack, $needle, $offset)) ? null : $pos;
 }

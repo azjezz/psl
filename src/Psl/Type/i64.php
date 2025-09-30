@@ -13,7 +13,6 @@ namespace Psl\Type;
  */
 function i64(): TypeInterface
 {
-    /** @var Internal\I64Type $instance */
     static $instance = new Internal\I64Type();
 
     return $instance;

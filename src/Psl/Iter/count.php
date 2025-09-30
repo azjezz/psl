@@ -23,7 +23,6 @@ use function is_countable;
 function count(iterable $iterable): int
 {
     if (is_countable($iterable)) {
-        /** @var int<0, max> */
         return \count($iterable);
     }
 

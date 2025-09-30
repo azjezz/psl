@@ -68,7 +68,6 @@ final readonly class SetType extends Type\Type
                 throw CoercionException::withValue($v, $this->toString(), PathExpression::path($k), $e);
             }
 
-            /** @var Collection\Set<T> */
             return new Collection\Set($set);
         }
 
@@ -95,9 +94,6 @@ final readonly class SetType extends Type\Type
             /** @var bool $iterating */
             $iterating = true;
             try {
-                /**
-                 * @var T $v
-                 */
                 foreach ($value as $k => $v) {
                     $iterating = false;
                     $v = $type->assert($v);
@@ -112,7 +108,6 @@ final readonly class SetType extends Type\Type
                 throw AssertException::withValue($v, $this->toString(), PathExpression::path($k), $e);
             }
 
-            /** @var Collection\Set<T> */
             return new Collection\Set($set);
         }
 

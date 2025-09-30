@@ -37,7 +37,6 @@ function validate_offset(int $offset, int $length, bool $assert = false): int|bo
     }
 
     if (!$assert) {
-        /** @var int<0, max> */
         return $offset;
     }
 

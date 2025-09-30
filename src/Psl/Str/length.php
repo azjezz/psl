@@ -26,6 +26,5 @@ use function mb_strlen;
  */
 function length(string $string, Encoding $encoding = Encoding::Utf8): int
 {
-    /** @var int<0, max> */
     return mb_strlen($string, $encoding->value);
 }

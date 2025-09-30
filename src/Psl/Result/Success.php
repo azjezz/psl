@@ -181,7 +181,6 @@ final readonly class Success implements ResultInterface
             function () use ($always): mixed {
                 $always();
 
-                /** @var T */
                 return $this->value;
             },
         );

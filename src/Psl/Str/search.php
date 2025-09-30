@@ -28,6 +28,5 @@ function search(string $haystack, string $needle, int $offset = 0, Encoding $enc
 
     $offset = Internal\validate_offset($offset, length($haystack, $encoding));
 
-    /** @var null|int<0, max> */
     return false === ($pos = mb_strpos($haystack, $needle, $offset, $encoding->value)) ? null : $pos;
 }

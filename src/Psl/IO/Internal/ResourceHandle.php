@@ -398,7 +398,6 @@ class ResourceHandle implements
     #[Override]
     public function getStream(): mixed
     {
-        /** @var resource|null */
         return $this->stream;
     }
 

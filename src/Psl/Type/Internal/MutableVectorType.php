@@ -75,7 +75,6 @@ final readonly class MutableVectorType extends Type\Type
                 };
             }
 
-            /** @var Collection\MutableVector<T> */
             return new Collection\MutableVector($values);
         }
 
@@ -105,8 +104,8 @@ final readonly class MutableVectorType extends Type\Type
 
             try {
                 /**
-                 * @var T $v
                  * @var array-key $i
+                 * @var T $v
                  */
                 foreach ($value as $i => $v) {
                     $values[] = $value_type->assert($v);
@@ -115,7 +114,6 @@ final readonly class MutableVectorType extends Type\Type
                 throw AssertException::withValue($v, $this->toString(), PathExpression::path($i), $e);
             }
 
-            /** @var Collection\MutableVector<T> */
             return new Collection\MutableVector($values);
         }
 

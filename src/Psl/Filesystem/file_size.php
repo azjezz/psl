@@ -45,6 +45,5 @@ function file_size(string $file): int
 
     // @codeCoverageIgnoreEnd
 
-    /** @var int<0, max> */
     return $size;
 }

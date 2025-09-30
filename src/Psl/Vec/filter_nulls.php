@@ -19,7 +19,6 @@ namespace Psl\Vec;
  */
 function filter_nulls(iterable $iterable): array
 {
-    /** @var list<T> */
     return filter(
         $iterable,
         /**

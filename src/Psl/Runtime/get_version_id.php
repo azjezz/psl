@@ -15,6 +15,5 @@ use const PHP_VERSION_ID;
  */
 function get_version_id(): int
 {
-    /** @var positive-int */
     return PHP_VERSION_ID;
 }
