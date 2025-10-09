@@ -24,7 +24,7 @@ use const PREG_RECURSION_LIMIT_ERROR;
 function get_preg_error(string $function): null|array
 {
     $code = preg_last_error();
-    if ($code === PREG_NO_ERROR) {
+    if (PREG_NO_ERROR === $code) {
         return null;
     }
 

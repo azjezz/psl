@@ -169,7 +169,7 @@ function execute(
         $code = proc_close($process);
     }
 
-    if ($code !== 0) {
+    if (0 !== $code) {
         [$stdout_content, $stderr_content] = namespace\unpack($result);
 
         throw new Exception\FailedExecutionException($commandline, $stdout_content, $stderr_content, $code);

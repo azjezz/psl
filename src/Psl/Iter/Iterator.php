@@ -128,7 +128,7 @@ final class Iterator implements Countable, SeekableIterator
     private function save(): void
     {
         if ($this->generator) {
-            if ($this->entries === []) {
+            if ([] === $this->entries) {
                 $this->saved = false;
             }
 

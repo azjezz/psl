@@ -58,7 +58,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
             static function (string $watcher, mixed $resource) use ($sender): void {
                 try {
                     $sock = @stream_socket_accept($resource, timeout: 0.0);
-                    if ($sock !== false) {
+                    if (false !== $sock) {
                         $sender->send([true, new Socket($sock)]);
 
                         return;

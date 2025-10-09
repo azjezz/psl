@@ -40,14 +40,14 @@ final class Reader implements ReadHandleInterface
             return true;
         }
 
-        if ($this->buffer !== '') {
+        if ('' !== $this->buffer) {
             return false;
         }
 
         // @codeCoverageIgnoreStart
         try {
             $this->buffer = $this->handle->read();
-            if ($this->buffer === '') {
+            if ('' === $this->buffer) {
                 return $this->eof = $this->handle->reachedEndOfDataSource();
             }
         } catch (Exception\ExceptionInterface) {
@@ -69,7 +69,7 @@ final class Reader implements ReadHandleInterface
             // @codeCoverageIgnoreStart
             throw new Exception\TimeoutException(Str\format(
                 'Reached timeout before reading requested amount of data',
-                $this->buffer === '' ? 'any' : 'all',
+                '' === $this->buffer ? 'any' : 'all',
             ));
             // @codeCoverageIgnoreEnd
         });
@@ -110,11 +110,11 @@ final class Reader implements ReadHandleInterface
      */
     public function readByte(null|Duration $timeout = null): string
     {
-        if ($this->buffer === '' && !$this->eof) {
+        if ('' === $this->buffer && !$this->eof) {
             $this->fillBuffer(null, $timeout);
         }
 
-        if ($this->buffer === '') {
+        if ('' === $this->buffer) {
             throw new Exception\RuntimeException('Reached EOF without any more data.');
         }
 
@@ -173,7 +173,7 @@ final class Reader implements ReadHandleInterface
         $buf = $this->buffer;
         $idx = strpos($buf, $suffix);
         $suffix_len = strlen($suffix);
-        if ($idx !== false) {
+        if (false !== $idx) {
             $this->buffer = substr($buf, $idx + $suffix_len);
             return substr($buf, 0, $idx);
         }
@@ -193,14 +193,14 @@ final class Reader implements ReadHandleInterface
             $offset = strlen($buf) - $suffix_len + 1;
             $offset = $offset > 0 ? $offset : 0;
             $chunk = $this->handle->read(null, $timer->getRemaining());
-            if ($chunk === '') {
+            if ('' === $chunk) {
                 $this->buffer = $buf;
                 return null;
             }
 
             $buf .= $chunk;
             $idx = strpos($buf, $suffix, $offset);
-        } while ($idx === false);
+        } while (false === $idx);
 
         $this->buffer = substr($buf, $idx + $suffix_len);
 
@@ -217,7 +217,7 @@ final class Reader implements ReadHandleInterface
             return '';
         }
 
-        if ($this->buffer === '') {
+        if ('' === $this->buffer) {
             $this->fillBuffer(null, $timeout);
         }
 
@@ -236,15 +236,15 @@ final class Reader implements ReadHandleInterface
             return '';
         }
 
-        if ($this->buffer === '') {
+        if ('' === $this->buffer) {
             $this->buffer = $this->getHandle()->tryRead();
-            if ($this->buffer === '') {
+            if ('' === $this->buffer) {
                 return '';
             }
         }
 
         $buffer = $this->buffer;
-        if ($max_bytes === null || $max_bytes >= strlen($buffer)) {
+        if (null === $max_bytes || $max_bytes >= strlen($buffer)) {
             $this->buffer = '';
             return $buffer;
         }
@@ -270,7 +270,7 @@ final class Reader implements ReadHandleInterface
     {
         $chunk = $this->handle->read($desired_bytes, $timeout);
         $this->buffer .= $chunk;
-        if ($chunk === '') {
+        if ('' === $chunk) {
             $this->eof = $this->handle->reachedEndOfDataSource();
         }
     }

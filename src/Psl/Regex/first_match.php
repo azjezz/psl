@@ -31,10 +31,10 @@ function first_match(
         $matching = [];
         $matches = preg_match($pattern, $subject, $matching, 0, $offset);
 
-        return $matches === 0 ? null : $matching;
+        return 0 === $matches ? null : $matching;
     });
 
-    if ($matching === null) {
+    if (null === $matching) {
         return null;
     }
 

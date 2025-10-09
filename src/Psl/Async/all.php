@@ -46,7 +46,7 @@ function all(iterable $awaitables): array
                 }
             }
 
-            if ($errors === []) {
+            if ([] === $errors) {
                 throw $exception;
             }
 

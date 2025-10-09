@@ -75,11 +75,11 @@ final class KeyedSequence
         } finally {
             $this->pending[$key] ??= [];
             $suspension = array_shift($this->pending[$key]);
-            if ($this->pending[$key] === []) {
+            if ([] === $this->pending[$key]) {
                 unset($this->pending[$key]);
             }
 
-            if ($suspension !== null) {
+            if (null !== $suspension) {
                 $suspension->resume();
             } else {
                 foreach ($this->waits[$key] ?? [] as $suspension) {
@@ -172,7 +172,7 @@ final class KeyedSequence
      */
     public function hasAnyPendingOperations(): bool
     {
-        return $this->pending !== [];
+        return [] !== $this->pending;
     }
 
     /**
@@ -193,7 +193,7 @@ final class KeyedSequence
      */
     public function hasAnyIngoingOperations(): bool
     {
-        return $this->ingoing !== [];
+        return [] !== $this->ingoing;
     }
 
     /**

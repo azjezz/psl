@@ -76,7 +76,7 @@ final class Semaphore
             return ($this->operation)($input);
         } finally {
             $suspension = array_shift($this->pending);
-            if ($suspension !== null) {
+            if (null !== $suspension) {
                 $suspension->resume();
             } else {
                 foreach ($this->waits as $suspension) {

@@ -47,11 +47,11 @@ final readonly class Timestamp implements TemporalInterface
     public static function fromParts(int $seconds, int $nanoseconds = 0): Timestamp
     {
         // Check for potential overflow or underflow before doing any operation
-        if ($seconds === Math\INT64_MAX && $nanoseconds >= NANOSECONDS_PER_SECOND) {
+        if (Math\INT64_MAX === $seconds && $nanoseconds >= NANOSECONDS_PER_SECOND) {
             throw new Exception\OverflowException('Adding nanoseconds would cause an overflow.');
         }
 
-        if ($seconds === Math\INT64_MIN && $nanoseconds <= -NANOSECONDS_PER_SECOND) {
+        if (Math\INT64_MIN === $seconds && $nanoseconds <= -NANOSECONDS_PER_SECOND) {
             throw new Exception\UnderflowException('Subtracting nanoseconds would cause an underflow.');
         }
 

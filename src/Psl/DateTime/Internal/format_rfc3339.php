@@ -35,7 +35,7 @@ function format_rfc3339(
 
     // Intl formatter cannot handle nanoseconds and microseconds, do it manually instead.
     $fraction = Byte\slice((string) $nanoseconds, 0, $seconds_style->value);
-    if ($fraction !== '') {
+    if ('' !== $fraction) {
         $fraction = '.' . $fraction;
     }
 

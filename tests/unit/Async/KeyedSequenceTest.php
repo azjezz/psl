@@ -32,7 +32,7 @@ final class KeyedSequenceTest extends TestCase
         $ks = new Async\KeyedSequence(static function (string $key, array $data) use ($spy): void {
             static::assertSame('operation', $key);
 
-            if ($data['time'] !== null) {
+            if (null !== $data['time']) {
                 Async\sleep($data['time']);
             }
 

@@ -29,7 +29,7 @@ final class SequenceTest extends TestCase
          * @var Async\Sequence<array{time: ?float, value: string}, void>
          */
         $sequence = new Async\Sequence(static function (array $data) use ($spy): void {
-            if ($data['time'] !== null) {
+            if (null !== $data['time']) {
                 Async\sleep($data['time']);
             }
 

@@ -33,11 +33,11 @@ function associate(iterable $keys, iterable $values): array
     }
 
     $keys_count = count($keys);
-    if ($keys_count !== count($values)) {
+    if (count($values) !== $keys_count) {
         throw new Exception\LogicException('Expected length of $keys and $values to be the same');
     }
 
-    if ($keys_count === 0) {
+    if (0 === $keys_count) {
         return [];
     }
 

@@ -97,7 +97,7 @@ abstract class Base64
     public static function decode(string $base64, bool $explicit_padding = true): string
     {
         $base64_length = Str\length($base64, encoding: Str\Encoding::Ascii8bit);
-        if ($base64_length === 0) {
+        if (0 === $base64_length) {
             return '';
         }
 
@@ -149,7 +149,7 @@ abstract class Base64
             }
         }
 
-        $check = $err === 0;
+        $check = 0 === $err;
         if (!$check) {
             throw new Exception\RangeException('Expected characters in the correct base64 alphabet');
         }

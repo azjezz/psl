@@ -88,7 +88,7 @@ final readonly class NonEmptyDictType extends Type\Type
                 };
             }
 
-            if ($result === []) {
+            if ([] === $result) {
                 throw CoercionException::withValue($value, $this->toString());
             }
 
@@ -138,7 +138,7 @@ final readonly class NonEmptyDictType extends Type\Type
                 };
             }
 
-            if ($result === []) {
+            if ([] === $result) {
                 throw AssertException::withValue($value, $this->toString());
             }
 

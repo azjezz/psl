@@ -59,7 +59,7 @@ final readonly class BackedEnumValueType extends Type
 
         // If the enum has any cases, detect its type by inspecting the first case found
         $case = $enum::cases()[0] ?? null;
-        if ($case !== null) {
+        if (null !== $case) {
             return is_string($case->value);
         }
 

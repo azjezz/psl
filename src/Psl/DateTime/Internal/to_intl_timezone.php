@@ -24,7 +24,7 @@ function to_intl_timezone(Timezone $timezone): IntlTimeZone
     $tz = IntlTimeZone::createTimeZone($value);
 
     Psl\invariant(
-        $tz !== null,
+        null !== $tz,
         'Failed to create intl timezone from timezone "%s" ( "%s" / "%s" ).',
         $timezone->name,
         $timezone->value,

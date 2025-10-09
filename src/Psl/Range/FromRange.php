@@ -146,7 +146,7 @@ final readonly class FromRange implements LowerBoundRangeInterface
                 while (true) {
                     yield $value;
 
-                    if ($value === Math\INT64_MAX) {
+                    if (Math\INT64_MAX === $value) {
                         throw Exception\OverflowException::whileIterating($bound);
                     }
 

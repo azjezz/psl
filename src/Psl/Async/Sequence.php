@@ -68,7 +68,7 @@ final class Sequence
             return ($this->operation)($input);
         } finally {
             $suspension = $this->pending[0] ?? null;
-            if ($suspension !== null) {
+            if (null !== $suspension) {
                 $this->pending = array_slice($this->pending, 1);
                 $suspension->resume();
             } else {
@@ -116,7 +116,7 @@ final class Sequence
      */
     public function hasPendingOperations(): bool
     {
-        return $this->pending !== [];
+        return [] !== $this->pending;
     }
 
     /**

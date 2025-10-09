@@ -32,7 +32,7 @@ final class KeyedSemaphoreTest extends TestCase
         $ks = new Async\KeyedSemaphore(1, static function (string $key, array $data) use ($spy): void {
             static::assertSame('operation', $key);
 
-            if ($data['time'] !== null) {
+            if (null !== $data['time']) {
                 Async\sleep($data['time']);
             }
 
@@ -68,7 +68,7 @@ final class KeyedSemaphoreTest extends TestCase
          * @var Async\KeyedSemaphore<string, array{time: ?DateTime\Duration, value: string}, void>
          */
         $ks = new Async\KeyedSemaphore(2, static function (string $_, array $data) use ($spy): void {
-            if ($data['time'] !== null) {
+            if (null !== $data['time']) {
                 Async\sleep($data['time']);
             }
 

@@ -76,7 +76,7 @@ final readonly class PathExpression
      */
     public static function iteratorError(mixed $previousKey): string
     {
-        return self::expression($previousKey === null ? 'first()' : '%s.next()', $previousKey);
+        return self::expression(null === $previousKey ? 'first()' : '%s.next()', $previousKey);
     }
 
     /**

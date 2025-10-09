@@ -6,7 +6,6 @@ namespace Psl\Option;
 
 use Closure;
 use Psl\Comparison;
-use Psl\Type;
 
 /**
  * @template T
@@ -67,7 +66,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function isSome(): bool
     {
-        return $this->option !== null;
+        return null !== $this->option;
     }
 
     /**
@@ -79,7 +78,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function isSomeAnd(Closure $predicate): bool
     {
-        return $this->option !== null && $predicate($this->option[0]);
+        return null !== $this->option && $predicate($this->option[0]);
     }
 
     /**
@@ -89,7 +88,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function isNone(): bool
     {
-        return $this->option === null;
+        return null === $this->option;
     }
 
     /**
@@ -106,7 +105,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function unwrap(): mixed
     {
-        if ($this->option !== null) {
+        if (null !== $this->option) {
             return $this->option[0];
         }
 
@@ -129,7 +128,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function unwrapOr(mixed $default): mixed
     {
-        if ($this->option !== null) {
+        if (null !== $this->option) {
             return $this->option[0];
         }
 
@@ -149,7 +148,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function unwrapOrElse(Closure $default): mixed
     {
-        if ($this->option !== null) {
+        if (null !== $this->option) {
             return $this->option[0];
         }
 
@@ -169,7 +168,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function and(Option $other): Option
     {
-        if ($this->option !== null && $other->option !== null) {
+        if (null !== $this->option && null !== $other->option) {
             return $other;
         }
 
@@ -190,7 +189,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function or(Option $option): Option
     {
-        if ($this->option !== null) {
+        if (null !== $this->option) {
             return $this;
         }
 
@@ -208,7 +207,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function orElse(Closure $closure): Option
     {
-        if ($this->option !== null) {
+        if (null !== $this->option) {
             return $this;
         }
 
@@ -228,7 +227,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function filter(Closure $predicate): Option
     {
-        if ($this->option !== null) {
+        if (null !== $this->option) {
             return $predicate($this->option[0]) ? $this : none();
         }
 
@@ -244,7 +243,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function contains(mixed $value): bool
     {
-        if ($this->option !== null) {
+        if (null !== $this->option) {
             return $this->option[0] === $value;
         }
 
@@ -272,7 +271,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function proceed(Closure $some, Closure $none): mixed
     {
-        if ($this->option !== null) {
+        if (null !== $this->option) {
             return $some($this->option[0]);
         }
 
@@ -290,7 +289,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function apply(Closure $closure): Option
     {
-        if ($this->option !== null) {
+        if (null !== $this->option) {
             $closure($this->option[0]);
         }
 
@@ -310,7 +309,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function map(Closure $closure): Option
     {
-        if ($this->option !== null) {
+        if (null !== $this->option) {
             return some($closure($this->option[0]));
         }
 
@@ -331,7 +330,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function andThen(Closure $closure): Option
     {
-        if ($this->option !== null) {
+        if (null !== $this->option) {
             return $closure($this->option[0]);
         }
 
@@ -358,7 +357,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function mapOr(Closure $closure, mixed $default): Option
     {
-        if ($this->option !== null) {
+        if (null !== $this->option) {
             return some($closure($this->option[0]));
         }
 
@@ -383,7 +382,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function mapOrElse(Closure $closure, Closure $default): Option
     {
-        if ($this->option !== null) {
+        if (null !== $this->option) {
             return some($closure($this->option[0]));
         }
 
@@ -468,7 +467,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      */
     public function unzip(): array
     {
-        if ($this->option === null) {
+        if (null === $this->option) {
             return [none(), none()];
         }
 

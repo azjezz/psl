@@ -27,7 +27,7 @@ function high_resolution_time(): array
      */
     static $offset = null;
 
-    if ($offset === null) {
+    if (null === $offset) {
         $offset = hrtime() ?: null;
 
         Psl\invariant(null !== $offset, 'The system does not provide a monotonic timer.');

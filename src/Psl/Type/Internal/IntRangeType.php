@@ -104,8 +104,8 @@ final readonly class IntRangeType extends Type\Type
     #[\Override]
     public function toString(): string
     {
-        $min = $this->min === PHP_INT_MIN ? 'min' : (string) $this->min;
-        $max = $this->max === PHP_INT_MAX ? 'max' : (string) $this->max;
+        $min = PHP_INT_MIN === $this->min ? 'min' : (string) $this->min;
+        $max = PHP_INT_MAX === $this->max ? 'max' : (string) $this->max;
 
         return sprintf('int<%s, %s>', $min, $max);
     }

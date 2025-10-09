@@ -29,13 +29,13 @@ use function unpack as byte_unpack;
  */
 function stream_unpack(string $content): Generator
 {
-    while ($content !== '') {
+    while ('' !== $content) {
         if (Str\Byte\length($content) < 5) {
             throw new Exception\InvalidArgumentException('$content contains an invalid header value.');
         }
 
         $headers = byte_unpack('C1type/N1size', Str\Byte\slice($content, 0, 5));
-        if ($headers === false) {
+        if (false === $headers) {
             throw new Exception\InvalidArgumentException('$content contains an invalid header value.');
         }
 
@@ -51,7 +51,7 @@ function stream_unpack(string $content): Generator
         $chunk = Str\Byte\slice($content, 5, $size);
         $content = Str\Byte\slice($content, $size + 5);
 
-        if ($type === 1 || $type === 2) {
+        if (1 === $type || 2 === $type) {
             yield $type => $chunk;
             continue;
         }

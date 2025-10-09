@@ -25,9 +25,9 @@ final class FilterKeysTest extends TestCase
     {
         yield [[], []];
         yield [['b'], ['a', 'b']];
-        yield [['a'], ['a', 'b'], static fn(int $k): bool => $k !== 1];
-        yield [['b'], ['a', 'b'], static fn(int $k): bool => $k !== 0];
-        yield [['b'], Collection\Vector::fromArray(['a', 'b']), static fn(int $k): bool => $k !== 0];
+        yield [['a'], ['a', 'b'], static fn(int $k): bool => 1 !== $k];
+        yield [['b'], ['a', 'b'], static fn(int $k): bool => 0 !== $k];
+        yield [['b'], Collection\Vector::fromArray(['a', 'b']), static fn(int $k): bool => 0 !== $k];
         yield [[], Collection\Vector::fromArray(['a', 'b']), static fn(int $_k): bool => false];
         yield [[], Collection\Vector::fromArray([]), static fn(int $_k): bool => false];
         yield [[], ['a', 'b'], static fn(int $_): bool => false];

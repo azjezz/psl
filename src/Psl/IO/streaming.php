@@ -50,7 +50,7 @@ function streaming(iterable $handles, null|Duration $timeout = null): Generator
     $watchers = new Psl\Ref([]);
     foreach ($handles as $index => $handle) {
         $stream = $handle->getStream();
-        if ($stream === null) {
+        if (null === $stream) {
             throw new Exception\AlreadyClosedException(Str\format('Handle "%s" is already closed.', (string) $index));
         }
 
@@ -69,7 +69,7 @@ function streaming(iterable $handles, null|Duration $timeout = null): Generator
 
                 $sender->send([$index, $result]);
             } finally {
-                if ($watchers->value === []) {
+                if ([] === $watchers->value) {
                     $sender->close();
                 }
             }
@@ -77,7 +77,7 @@ function streaming(iterable $handles, null|Duration $timeout = null): Generator
     }
 
     $timeout_watcher = null;
-    if ($timeout !== null) {
+    if (null !== $timeout) {
         $timeout = max($timeout->getTotalSeconds(), 0.0);
 
         $timeout_watcher = EventLoop::delay($timeout, static function () use ($sender): void {
@@ -105,7 +105,7 @@ function streaming(iterable $handles, null|Duration $timeout = null): Generator
         // completed.
         return;
     } finally {
-        if ($timeout_watcher !== null) {
+        if (null !== $timeout_watcher) {
             EventLoop::cancel($timeout_watcher);
         }
 

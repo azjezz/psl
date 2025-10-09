@@ -87,7 +87,7 @@ final class KeyedSemaphore
                     unset($this->pending[$key]);
                 }
 
-                if ($suspension !== null) {
+                if (null !== $suspension) {
                     $suspension->resume();
                 }
 
@@ -100,7 +100,7 @@ final class KeyedSemaphore
                 unset($this->waits[$key]);
 
                 $this->ingoing[$key]--;
-                if ($this->ingoing[$key] === 0) {
+                if (0 === $this->ingoing[$key]) {
                     unset($this->ingoing[$key]);
                 }
             }
@@ -198,7 +198,7 @@ final class KeyedSemaphore
      */
     public function hasAnyPendingOperations(): bool
     {
-        return $this->pending !== [];
+        return [] !== $this->pending;
     }
 
     /**
@@ -246,7 +246,7 @@ final class KeyedSemaphore
      */
     public function hasAnyIngoingOperations(): bool
     {
-        return $this->ingoing !== [];
+        return [] !== $this->ingoing;
     }
 
     /**

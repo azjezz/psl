@@ -46,7 +46,7 @@ trait ReadHandleConvenienceMethodsTrait
                 // @codeCoverageIgnoreStart
                 throw new Exception\TimeoutException(Str\format(
                     'Reached timeout before %s data could be read.',
-                    $data->value === '' ? 'any' : 'all',
+                    '' === $data->value ? 'any' : 'all',
                 ));
                 // @codeCoverageIgnoreEnd
             },
@@ -57,10 +57,10 @@ trait ReadHandleConvenienceMethodsTrait
             $chunk_size = $to_read;
             $chunk = $this->read($chunk_size, $timer->getRemaining());
             $data->value .= $chunk;
-            if ($to_read !== null) {
+            if (null !== $to_read) {
                 $to_read -= strlen($chunk);
             }
-        } while (($to_read === null || $to_read > 0) && !$this->reachedEndOfDataSource());
+        } while ((null === $to_read || $to_read > 0) && !$this->reachedEndOfDataSource());
 
         return $data->value;
     }
