@@ -7,7 +7,6 @@ namespace Psl\Collection;
 use Closure;
 use Psl\Dict;
 use Psl\Iter;
-use stdClass;
 
 use function array_key_exists;
 use function array_key_first;

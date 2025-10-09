@@ -28,7 +28,7 @@ function get_sock_name(mixed $socket): Network\Address
     error_clear_last();
     /** @var non-empty-string|false $result */
     $result = stream_socket_get_name($socket, false);
-    if ($result !== false) {
+    if (false !== $result) {
         $separator_position = strrpos($result, ':');
         if (false === $separator_position) {
             return Network\Address::unix($result);

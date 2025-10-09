@@ -83,7 +83,7 @@ final class FromRangeTest extends TestCase
 
             $last = $value;
             // break after the 3rd iteration, otherwise we will be here forever.
-            if ($value === 13) {
+            if (13 === $value) {
                 break;
             }
         }

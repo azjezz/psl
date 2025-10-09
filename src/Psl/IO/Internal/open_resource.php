@@ -24,7 +24,7 @@ function open_resource(string $uri, string $mode): mixed
          */
         static function () use ($uri, $mode): mixed {
             $resource = fopen($uri, $mode);
-            if ($resource === false) {
+            if (false === $resource) {
                 $error = error_get_last();
                 $message = $error['message'] ?? 'Unable to open resource.';
                 Psl\invariant_violation($message);

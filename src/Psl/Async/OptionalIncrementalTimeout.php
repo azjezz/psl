@@ -60,7 +60,7 @@ final class OptionalIncrementalTimeout
      */
     public function getRemaining(): null|Duration
     {
-        if ($this->end === null) {
+        if (null === $this->end) {
             return null;
         }
 

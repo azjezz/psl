@@ -125,7 +125,7 @@ final class AwaitableIterator
         }
 
         if (0 === count($this->queue->items)) {
-            if ($this->complete !== null && 0 === count($this->queue->pending)) {
+            if (null !== $this->complete && 0 === count($this->queue->pending)) {
                 return $this->complete->await();
             }
 

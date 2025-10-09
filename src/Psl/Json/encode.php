@@ -38,7 +38,7 @@ function encode(mixed $value, bool $pretty = false, int $flags = 0): string
         throw new Exception\EncodeException(Str\format('%s.', $e->getMessage()), (int) $e->getCode(), $e);
     }
 
-    if ($json === false || $json === '') {
+    if (false === $json || '' === $json) {
         throw new Exception\EncodeException('Unexpected error occurred while encoding JSON.');
     }
 

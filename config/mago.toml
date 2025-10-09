@@ -28,6 +28,7 @@ literal-named-argument = { enabled = false }
 no-boolean-flag-parameter = { enabled = false }
 no-boolean-literal-comparison = { enabled = false }
 no-error-control-operator = { enabled = false }
+no-redundant-use = { enabled = true }
 
 [analyzer]
 excludes = ["tests"]

@@ -34,7 +34,7 @@ function pipe(): array
             $domain = OS\is_windows() ? STREAM_PF_INET : STREAM_PF_UNIX;
             $sockets = stream_socket_pair($domain, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
             // @codeCoverageIgnoreStart
-            if ($sockets === false) {
+            if (false === $sockets) {
                 $error = error_get_last();
                 $message = $error['message'] ?? 'Unable to create a pipe stream.';
                 Psl\invariant_violation($message);

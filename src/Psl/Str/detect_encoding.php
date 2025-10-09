@@ -23,7 +23,7 @@ function detect_encoding(string $string, null|array $encoding_list = null): null
     }
 
     $encoding = mb_detect_encoding($string, $encoding_list, true);
-    if ($encoding === false) {
+    if (false === $encoding) {
         return null;
     }
 

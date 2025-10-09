@@ -31,10 +31,10 @@ function every_match(
         $matching = [];
         $matches = preg_match_all($pattern, $subject, $matching, PREG_SET_ORDER, $offset);
 
-        return $matches === 0 ? null : $matching;
+        return 0 === $matches ? null : $matching;
     });
 
-    if ($matching === null) {
+    if (null === $matching) {
         return null;
     }
 

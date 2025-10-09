@@ -27,7 +27,7 @@ function log(float $number, null|float $base = null): float
         throw new Exception\InvalidArgumentException('$base must be positive.');
     }
 
-    if ($base === 1.0) {
+    if (1.0 === $base) {
         throw new Exception\InvalidArgumentException('Logarithm undefined for $base of 1.0.');
     }
 

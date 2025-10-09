@@ -25,7 +25,7 @@ function get_peer_name(mixed $socket): Network\Address
     error_clear_last();
     /** @var non-empty-string|false $result */
     $result = stream_socket_get_name($socket, true);
-    if ($result !== false && $result !== "\0") {
+    if (false !== $result && "\0" !== $result) {
         $separator_position = strrpos($result, ':');
         if (false === $separator_position) {
             return Network\Address::unix($result);

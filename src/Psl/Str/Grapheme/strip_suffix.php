@@ -16,7 +16,7 @@ use Psl\Str\Exception;
  */
 function strip_suffix(string $string, string $suffix): string
 {
-    if ($string === '' || $suffix === '') {
+    if ('' === $string || '' === $suffix) {
         return $string;
     }
 

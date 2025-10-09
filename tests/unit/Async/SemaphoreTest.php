@@ -26,7 +26,7 @@ final class SemaphoreTest extends TestCase
          * @var Async\Semaphore<array{time: ?DateTime\Duration, value: string}, void>
          */
         $semaphore = new Async\Semaphore(1, static function (array $data) use ($spy): void {
-            if ($data['time'] !== null) {
+            if (null !== $data['time']) {
                 Async\sleep($data['time']);
             }
 
@@ -62,7 +62,7 @@ final class SemaphoreTest extends TestCase
          * @var Async\Semaphore<array{time: ?DateTime\Duration, value: string}, void>
          */
         $semaphore = new Async\Semaphore(2, static function (array $data) use ($spy): void {
-            if ($data['time'] !== null) {
+            if (null !== $data['time']) {
                 Async\sleep($data['time']);
             }
 

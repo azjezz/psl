@@ -30,7 +30,7 @@ function parse(
     $formatter = namespace\create_intl_date_formatter($date_style, $time_style, $pattern, $timezone, $locale);
 
     $timestamp = $formatter->parse($raw_string);
-    if ($timestamp === false) {
+    if (false === $timestamp) {
         // Only show pattern in the exception if it was provided.
         if (null !== $pattern) {
             $formatter_pattern = $pattern instanceof FormatPattern ? $pattern->value : $pattern;

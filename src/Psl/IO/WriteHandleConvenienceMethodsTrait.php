@@ -33,7 +33,7 @@ trait WriteHandleConvenienceMethodsTrait
      */
     public function writeAll(string $bytes, null|Duration $timeout = null): void
     {
-        if ($bytes === '') {
+        if ('' === $bytes) {
             return;
         }
 
@@ -47,7 +47,7 @@ trait WriteHandleConvenienceMethodsTrait
             // @codeCoverageIgnoreStart
             throw new Exception\TimeoutException(Str\format(
                 'Reached timeout before %s data could be written.',
-                $written->value === 0 ? 'any' : 'all',
+                0 === $written->value ? 'any' : 'all',
             ));
             // @codeCoverageIgnoreEnd
         });
@@ -56,9 +56,9 @@ trait WriteHandleConvenienceMethodsTrait
             $written->value = $this->write($bytes, $timer->getRemaining());
 
             $bytes = substr($bytes, $written->value);
-        } while ($written->value !== 0 && $bytes !== '');
+        } while (0 !== $written->value && '' !== $bytes);
 
-        if ($bytes !== '') {
+        if ('' !== $bytes) {
             // @codeCoverageIgnoreStart
             throw new Exception\RuntimeException(Str\format(
                 'asked to write %d bytes, but only able to write %d bytes',

@@ -89,7 +89,7 @@ class ResourceHandle implements
 
         $meta = stream_get_meta_data($stream);
         if ($read) {
-            $this->useSingleRead = $meta['stream_type'] === 'udp_socket' || $meta['stream_type'] === 'STDIO';
+            $this->useSingleRead = 'udp_socket' === $meta['stream_type'] || 'STDIO' === $meta['stream_type'];
         }
 
         $blocks = $meta['blocked'] || ($meta['wrapper_type'] ?? '') === 'plainfile';
@@ -219,7 +219,7 @@ class ResourceHandle implements
     #[Override]
     public function write(string $bytes, null|Duration $timeout = null): int
     {
-        Psl\invariant($this->writeSequence !== null, 'The resource handle is not writable.');
+        Psl\invariant(null !== $this->writeSequence, 'The resource handle is not writable.');
 
         return $this->writeSequence->waitFor([$bytes, $timeout]);
     }
@@ -237,7 +237,7 @@ class ResourceHandle implements
         }
 
         $result = @fwrite($this->stream, $bytes);
-        if ($result === false) {
+        if (false === $result) {
             $error = error_get_last();
 
             throw new Exception\RuntimeException($error['message'] ?? 'unknown error.');
@@ -275,7 +275,7 @@ class ResourceHandle implements
         }
 
         $result = @ftell($this->stream);
-        if ($result === false) {
+        if (false === $result) {
             $error = error_get_last();
 
             throw new Exception\RuntimeException($error['message'] ?? 'unknown error.');
@@ -313,7 +313,7 @@ class ResourceHandle implements
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
-        if ($max_bytes === null) {
+        if (null === $max_bytes) {
             $max_bytes = self::DEFAULT_READ_BUFFER_SIZE;
         } elseif ($max_bytes > self::MAXIMUM_READ_BUFFER_SIZE) {
             $max_bytes = self::MAXIMUM_READ_BUFFER_SIZE;
@@ -325,14 +325,14 @@ class ResourceHandle implements
             $result = stream_get_contents($this->stream, $max_bytes);
         }
 
-        if ($result === false) {
+        if (false === $result) {
             /** @var array{message?: string} $error */
             $error = error_get_last();
 
             throw new Exception\RuntimeException($error['message'] ?? 'unknown error.');
         }
 
-        if ($result === '' && feof($this->stream)) {
+        if ('' === $result && feof($this->stream)) {
             $this->reachedEof = true;
         }
 
@@ -347,7 +347,7 @@ class ResourceHandle implements
     #[Override]
     public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
-        Psl\invariant($this->readSequence !== null, 'The resource handle is not readable.');
+        Psl\invariant(null !== $this->readSequence, 'The resource handle is not readable.');
 
         return $this->readSequence->waitFor([$max_bytes, $timeout]);
     }
@@ -374,7 +374,7 @@ class ResourceHandle implements
                 $stream = $this->stream;
                 $this->stream = null;
                 $result = @fclose($stream);
-                if ($result === false) {
+                if (false === $result) {
                     /** @var array{message?: string} $error */
                     $error = error_get_last();
 

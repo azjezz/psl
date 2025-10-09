@@ -410,7 +410,7 @@ final class DateTimeTest extends TestCase
             $res = $jan_31th_2024->plusMonths($i);
 
             $expected_month = ($previous_month + 1) % 12;
-            $expected_month = $expected_month === 0 ? 12 : $expected_month;
+            $expected_month = 0 === $expected_month ? 12 : $expected_month;
 
             static::assertSame($res->getDay(), $res->getMonthEnum()->getDaysForYear($res->getYear()));
             static::assertSame($res->getMonth(), $expected_month);
@@ -493,7 +493,7 @@ final class DateTimeTest extends TestCase
             $res = $jan_31th_2024->minusMonths($i);
 
             $expected_month = $previous_month - 1;
-            $expected_month = $expected_month === 0 ? 12 : $expected_month;
+            $expected_month = 0 === $expected_month ? 12 : $expected_month;
 
             static::assertSame($res->getDay(), $res->getMonthEnum()->getDaysForYear($res->getYear()));
             static::assertSame($res->getMonth(), $expected_month);

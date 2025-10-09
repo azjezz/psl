@@ -335,7 +335,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      */
     public function isZero(): bool
     {
-        return $this->hours === 0 && $this->minutes === 0 && $this->seconds === 0 && $this->nanoseconds === 0;
+        return 0 === $this->hours && 0 === $this->minutes && 0 === $this->seconds && 0 === $this->nanoseconds;
     }
 
     /**
@@ -645,17 +645,17 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
             $decimal_part = Str\trim_right($decimal_part, '0');
         }
 
-        if ($decimal_part !== '') {
+        if ('' !== $decimal_part) {
             $decimal_part = '.' . $decimal_part;
         }
 
         $sec_sign = $this->seconds < 0 || $this->nanoseconds < 0 ? '-' : '';
         $sec = Math\abs($this->seconds);
 
-        $containsHours = $this->hours !== 0;
-        $containsMinutes = $this->minutes !== 0;
+        $containsHours = 0 !== $this->hours;
+        $containsMinutes = 0 !== $this->minutes;
         $concatenatedSeconds = $sec_sign . (string) $sec . $decimal_part;
-        $containsSeconds = $concatenatedSeconds !== '0';
+        $containsSeconds = '0' !== $concatenatedSeconds;
 
         /** @var list<string> $output */
         $output = [];

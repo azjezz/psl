@@ -17,7 +17,7 @@ function unpack(string $content): array
 {
     $result = ['', ''];
     foreach (stream_unpack($content) as $type => $chunk) {
-        if ($type === 1) {
+        if (1 === $type) {
             $result[0] .= $chunk;
             continue;
         }

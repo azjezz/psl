@@ -25,6 +25,6 @@ function filter_nulls(iterable $iterable): array
         /**
          * @param Tv|null $value
          */
-        static fn(mixed $value): bool => $value !== null,
+        static fn(mixed $value): bool => null !== $value,
     );
 }

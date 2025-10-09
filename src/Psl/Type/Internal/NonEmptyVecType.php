@@ -107,7 +107,7 @@ final readonly class NonEmptyVecType extends Type\Type
                 };
             }
 
-            if ($result === []) {
+            if ([] === $result) {
                 throw CoercionException::withValue($value, $this->toString());
             }
 
@@ -151,7 +151,7 @@ final readonly class NonEmptyVecType extends Type\Type
             throw AssertException::withValue($v, $this->toString(), PathExpression::path($i), $e);
         }
 
-        if ($result === []) {
+        if ([] === $result) {
             throw AssertException::withValue($value, $this->toString());
         }
 

@@ -276,8 +276,8 @@ final class DurationTest extends TestCase
     public function testPositiveNegative(int $h, int $m, int $s, int $ns, int $expected_sign): void
     {
         $t = DateTime\Duration::fromParts($h, $m, $s, $ns);
-        static::assertSame($expected_sign === 0, $t->isZero());
-        static::assertSame($expected_sign === 1, $t->isPositive());
+        static::assertSame(0 === $expected_sign, $t->isZero());
+        static::assertSame(1 === $expected_sign, $t->isPositive());
         static::assertSame($expected_sign === -1, $t->isNegative());
     }
 
