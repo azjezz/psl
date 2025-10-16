@@ -34,5 +34,7 @@ function random(iterable $iterable): mixed
         return $values[0];
     }
 
-    return $values[PseudoRandom\int(0, $size - 1)];
+    /** @var int<0, max> $i */
+    $i = PseudoRandom\int(0, $size - 1);
+    return $values[$i];
 }

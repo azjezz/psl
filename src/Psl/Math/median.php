@@ -26,8 +26,10 @@ function median(array $numbers): float|null
         return null;
     }
 
+    /** @var int<0, max> $middle_index */
     $middle_index = div($count, 2);
     if (0 === ($count % 2)) {
+        /** @var int<1, max> $middle_index */
         return mean([$numbers[$middle_index], $numbers[$middle_index - 1]]);
     }
 
