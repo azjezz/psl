@@ -58,7 +58,9 @@ function copy(string $source, string $destination, bool $overwrite = false): voi
             unset($chunk);
         } while (true);
         // @codeCoverageIgnoreStart
-    } catch (IO\Exception\ExceptionInterface|File\Exception\ExceptionInterface|Psl\Exception\InvariantViolationException $exception) {
+    } catch (
+        IO\Exception\ExceptionInterface|File\Exception\ExceptionInterface|Psl\Exception\InvariantViolationException $exception
+    ) {
         throw new Exception\RuntimeException(
             Str\format('Failed to copy source file "%s" to destination "%s".', $source, $destination),
             previous: $exception,

@@ -33,3 +33,4 @@ no-redundant-use = { enabled = true }
 [analyzer]
 excludes = ["tests"]
 ignore = ["possibly-static-access-on-interface"]
+strict-list-index-checks = true
