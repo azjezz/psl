@@ -20,9 +20,11 @@ jobs:
           tools: composer:v2, cs2pr
           extensions: bcmath, mbstring, intl, sodium, json
 
+      - name: "installing just"
+        uses: "extractions/setup-just@v2"
+
       - name: "installing dependencies"
-        run: |
-          make install -j10 -O
+        run: just install
 
       - name: "checking if documentation is up-to-date."
-        run: make docs-check
+        run: just docs-check

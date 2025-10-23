@@ -22,9 +22,9 @@ Here is a small checklist to get you going:
 - Discuss the changes you want to make first!
 - Create a fork of this repository.
 - Clone your own repository.
-- Run `make install` to get everything set-up for you.
-- Checkout a new branch and make the changes you want to make. 
-- Run `make check` to verify your code is ok to submit.
+- Run `just install` to get everything set-up for you.
+- Checkout a new branch and make the changes you want to make.
+- Run `just verify` to verify your code is ok to submit.
 - Submit your Pull Request.
 
 ## Submitting Pull Requests
@@ -60,26 +60,24 @@ PSL tries to maintain a 100% code coverage, meaning everything within the librar
 If you are submitting a bug-fix, please add a test case to reproduce the bug.
 If you are submitting a new feature, please make sure to add tests for all possible code paths.
 
-To run the tests, use `make unit-tests`.
+To run the tests, use `just test`.
 
 ### Code Style
 
-PSL follows a custom set of rules that extend PSR-12, PSR-2, and PSR-1.
+PSL follows a custom set of rules that extend PSR-CS.
 
-To check if your code contains any issues that violate PSL rules, use `make coding-standard-check`.
+To check if your code contains any issues that violate PSL rules, use `just fmt-diff`, and `just lint`.
 
-You may fix many of the issues using `make coding-standard-fix`.
+You may fix many of the issues using `just fix`.
 
 ### Static Analysis
 
-PSL uses Psalm static analysis tool to avoid type issues within the code base, and to provide a better API
+PSL uses Mago static analysis tool to avoid type issues within the code base, and to provide a better API
 for the end user.
 
-PSL is configured to pass the strictest psalm level.
+PSL is configured to pass the strictest mago level.
 
-To ensure that your code doesn't contain any type issues, use `make static-analysis`.
-
-To ensure that your code doesn't introduce any security issues, use `make security-analysis`
+To ensure that your code doesn't contain any type issues, use `just analyze`.
 
 ### License
 
