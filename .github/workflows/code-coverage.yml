@@ -22,11 +22,13 @@ jobs:
           tools: composer:v2, cs2pr
           extensions: bcmath, mbstring, intl, sodium, json
 
+      - name: "installing just"
+        uses: "extractions/setup-just@v2"
+
       - name: "installing dependencies"
-        run: |
-          make install -j10 -O
+        run: just install
 
       - name: "sending code coverage to coveralls"
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: make code-coverage
+        run: just coverage
