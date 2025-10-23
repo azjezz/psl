@@ -139,6 +139,29 @@ Type\class_string(SomeInterface::class)->assert(SomeImplementation::class);
 
 ---
 
+#### [constant_name_of](constant_name_of.php)
+
+```hack
+@pure
+Type\constant_name_of(class-string $classname): TypeInterface<non-empty-string>
+```
+
+Provides a type that validates a string is a valid constant name for the given class.
+
+Can coerce from:
+
+* `non-empty-string` when the string is the name of a constant defined in `$classname`.
+
+Examples:
+
+```php
+use Psl\Type;
+
+Type\constant_name_of(SomeClass::class)->assert('SOME_CONSTANT');
+```
+
+---
+
 #### [converted](class_string.php)
 
 ```hack
@@ -308,6 +331,29 @@ When the iterable does not match the specified dictionary, you will get detailed
 > Expected "dict<string, array{'title': string, 'content': string}>", got "int" **at path "key(123)"**.
 
 > Expected "dict<string, array{'title': string, 'content': string}>", got "int" **at path "foo.title"**.
+
+---
+
+#### [enum_case_of](enum_case_of.php)
+
+```hack
+@pure
+Type\enum_case_of(class-string $enumname): TypeInterface<non-empty-string>
+```
+
+Provides a type that validates a string is a valid case name for the given enum.
+
+Can coerce from:
+
+* `non-empty-string` when the string is the name of a case defined in `$enumname` enum.
+
+Examples:
+
+```php
+use Psl\Type;
+
+Type\enum_case_of(SomeEnum::class)->assert('SomeCase');
+```
 
 ---
 
@@ -689,6 +735,30 @@ Can coerce from:
 
 ---
 
+#### [method_name_of](method_name_of.php)
+
+```hack
+@pure
+Type\method_name_of(class-string $classname): TypeInterface<non-empty-string>
+```
+
+Provides a type that validates a string is a valid method name for the given class. Method names are case-insensitive in PHP.
+
+Can coerce from:
+
+* `non-empty-string` when the string is the name of a method defined in `$classname`.
+
+Examples:
+
+```php
+use Psl\Type;
+
+Type\method_name_of(SomeClass::class)->assert('someMethod');
+Type\method_name_of(SomeClass::class)->assert('SomeMethod'); // Also valid (case-insensitive)
+```
+
+---
+
 #### [mutable_map](mutable_map.php)
 
 ```hack
@@ -1019,6 +1089,164 @@ Provides a type that can parse integers with a range `int<1, max>`.
 Can coerce from:
 
 * This type will use the same coercion rules as the [`int()`](#int) type whilst guarding the integer range.
+
+---
+
+#### [private_constant_name_of](private_constant_name_of.php)
+
+```hack
+@pure
+Type\private_constant_name_of(class-string $classname): TypeInterface<non-empty-string>
+```
+
+Provides a type that validates a string is a valid private constant name for the given class.
+
+Can coerce from:
+
+* `non-empty-string` when the string is the name of a private constant defined in `$classname`.
+
+---
+
+#### [private_method_name_of](private_method_name_of.php)
+
+```hack
+@pure
+Type\private_method_name_of(class-string $classname): TypeInterface<non-empty-string>
+```
+
+Provides a type that validates a string is a valid private method name for the given class. Method names are case-insensitive in PHP.
+
+Can coerce from:
+
+* `non-empty-string` when the string is the name of a private method defined in `$classname`.
+
+---
+
+#### [private_property_name_of](private_property_name_of.php)
+
+```hack
+@pure
+Type\private_property_name_of(class-string $classname): TypeInterface<non-empty-string>
+```
+
+Provides a type that validates a string is a valid private property name for the given class.
+
+Can coerce from:
+
+* `non-empty-string` when the string is the name of a private property defined in `$classname`.
+
+---
+
+#### [property_name_of](property_name_of.php)
+
+```hack
+@pure
+Type\property_name_of(class-string $classname): TypeInterface<non-empty-string>
+```
+
+Provides a type that validates a string is a valid property name for the given class.
+
+Can coerce from:
+
+* `non-empty-string` when the string is the name of a property defined in `$classname`.
+
+Examples:
+
+```php
+use Psl\Type;
+
+Type\property_name_of(SomeClass::class)->assert('someProperty');
+```
+
+---
+
+#### [protected_constant_name_of](protected_constant_name_of.php)
+
+```hack
+@pure
+Type\protected_constant_name_of(class-string $classname): TypeInterface<non-empty-string>
+```
+
+Provides a type that validates a string is a valid protected constant name for the given class.
+
+Can coerce from:
+
+* `non-empty-string` when the string is the name of a protected constant defined in `$classname`.
+
+---
+
+#### [protected_method_name_of](protected_method_name_of.php)
+
+```hack
+@pure
+Type\protected_method_name_of(class-string $classname): TypeInterface<non-empty-string>
+```
+
+Provides a type that validates a string is a valid protected method name for the given class. Method names are case-insensitive in PHP.
+
+Can coerce from:
+
+* `non-empty-string` when the string is the name of a protected method defined in `$classname`.
+
+---
+
+#### [protected_property_name_of](protected_property_name_of.php)
+
+```hack
+@pure
+Type\protected_property_name_of(class-string $classname): TypeInterface<non-empty-string>
+```
+
+Provides a type that validates a string is a valid protected property name for the given class.
+
+Can coerce from:
+
+* `non-empty-string` when the string is the name of a protected property defined in `$classname`.
+
+---
+
+#### [public_constant_name_of](public_constant_name_of.php)
+
+```hack
+@pure
+Type\public_constant_name_of(class-string $classname): TypeInterface<non-empty-string>
+```
+
+Provides a type that validates a string is a valid public constant name for the given class.
+
+Can coerce from:
+
+* `non-empty-string` when the string is the name of a public constant defined in `$classname`.
+
+---
+
+#### [public_method_name_of](public_method_name_of.php)
+
+```hack
+@pure
+Type\public_method_name_of(class-string $classname): TypeInterface<non-empty-string>
+```
+
+Provides a type that validates a string is a valid public method name for the given class. Method names are case-insensitive in PHP.
+
+Can coerce from:
+
+* `non-empty-string` when the string is the name of a public method defined in `$classname`.
+
+---
+
+#### [public_property_name_of](public_property_name_of.php)
+
+```hack
+@pure
+Type\public_property_name_of(class-string $classname): TypeInterface<non-empty-string>
+```
+
+Provides a type that validates a string is a valid public property name for the given class.
+
+Can coerce from:
+
+* `non-empty-string` when the string is the name of a public property defined in `$classname`.
 
 ---
 
