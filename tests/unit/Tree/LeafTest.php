@@ -1,0 +1,20 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\Tests\Unit\Tree;
+
+use PHPUnit\Framework\TestCase;
+use Psl\Tree;
+
+final class LeafTest extends TestCase
+{
+    public function testLeafCreatesLeafNode(): void
+    {
+        $leaf = Tree\leaf('value');
+
+        static::assertInstanceOf(Tree\LeafNode::class, $leaf);
+        static::assertSame('value', $leaf->getValue());
+        static::assertTrue(Tree\is_leaf($leaf));
+    }
+}
