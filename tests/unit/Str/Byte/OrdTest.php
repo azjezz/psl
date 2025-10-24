@@ -20,6 +20,7 @@ final class OrdTest extends TestCase
     public function provideData(): array
     {
         return [
+            [0, ''],
             [217, 'م'],
             [48, '0'],
             [38, '&'],

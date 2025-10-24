@@ -11,6 +11,8 @@ use Psl\Async\Exception;
 use Revolt\EventLoop;
 use Throwable;
 
+use function str_increment;
+
 /**
  * The following class was derived from code of Amphp.
  *
@@ -69,7 +71,8 @@ final class State
      */
     public function subscribe(Closure $callback): string
     {
-        $id = self::$nextId++;
+        $id = self::$nextId;
+        self::$nextId = str_increment(self::$nextId);
 
         $this->handled = true;
 
