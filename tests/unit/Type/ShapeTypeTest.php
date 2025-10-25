@@ -53,7 +53,7 @@ final class ShapeTypeTest extends TypeTest
         foreach ($this->validCoercions() as $row) {
             yield $row;
             yield [
-                new ArrayIterator($row[0]),
+                new ArrayIterator((array) $row[0]),
                 $row[1],
             ];
         }

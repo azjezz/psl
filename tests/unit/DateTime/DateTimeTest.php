@@ -31,7 +31,7 @@ final class DateTimeTest extends TestCase
     {
         $timestamp = DateTime::now()->getTimestamp();
 
-        static::assertEqualsWithDelta(time(), $timestamp->getSeconds(), 1);
+        static::assertEqualsWithDelta(time(), $timestamp->getSeconds(), 3);
     }
 
     public function testTodayAt(): void

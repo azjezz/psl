@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -53,14 +54,14 @@ final readonly class UIntType extends Type\Type
 
         if (is_string($value) || $value instanceof Stringable) {
             $str = (string) $value;
-            $int = (int) $str;
-            if ($str === (string) $int && $int >= 0) {
+            $int = Str\to_int($str);
+            if ($int !== null && $str === (string) $int && $int >= 0) {
                 return $int;
             }
 
             $trimmed = ltrim($str, '0');
-            $int = (int) $trimmed;
-            if ($trimmed === (string) $int && $int >= 0) {
+            $int = Str\to_int($trimmed);
+            if ($int !== null && $trimmed === (string) $int && $int >= 0) {
                 return $int;
             }
 

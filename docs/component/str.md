@@ -68,7 +68,7 @@
 - [starts_with_ci](./../../src/Psl/Str/starts_with_ci.php#L12)
 - [strip_prefix](./../../src/Psl/Str/strip_prefix.php#L13)
 - [strip_suffix](./../../src/Psl/Str/strip_suffix.php#L13)
-- [to_int](./../../src/Psl/Str/to_int.php#L12)
+- [to_int](./../../src/Psl/Str/to_int.php#L14)
 - [trim](./../../src/Psl/Str/trim.php#L21)
 - [trim_left](./../../src/Psl/Str/trim_left.php#L21)
 - [trim_right](./../../src/Psl/Str/trim_right.php#L21)

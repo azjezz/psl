@@ -13,5 +13,5 @@ use function chr as php_chr;
  */
 function chr(int $ascii): string
 {
-    return php_chr($ascii);
+    return php_chr($ascii % 256);
 }

@@ -13,5 +13,5 @@ namespace Psl\Str\Byte;
  */
 function ord(string $character): int
 {
-    return \ord($character);
+    return $character !== '' ? \ord($character[0]) : 0;
 }
