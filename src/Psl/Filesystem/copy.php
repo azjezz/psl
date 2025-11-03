@@ -34,6 +34,8 @@ function copy(string $source, string $destination, bool $overwrite = false): voi
         throw Exception\NotReadableException::forFile($source);
     }
 
+    $source_handle = null;
+    $destination_handle = null;
     $source_lock = null;
     $destination_lock = null;
     try {
@@ -69,6 +71,9 @@ function copy(string $source, string $destination, bool $overwrite = false): voi
         // @codeCoverageIgnoreEnd
         $source_lock?->release();
         $destination_lock?->release();
+
+        $source_handle?->close();
+        $destination_handle?->close();
     }
 
     // preserve executable permission bits
