@@ -71,7 +71,6 @@ function copy(string $source, string $destination, bool $overwrite = false): voi
         // @codeCoverageIgnoreEnd
         $source_lock?->release();
         $destination_lock?->release();
-
         $source_handle?->close();
         $destination_handle?->close();
     }
