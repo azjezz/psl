@@ -7,6 +7,7 @@ namespace Psl\Iter;
 use Closure;
 use Countable;
 use Generator;
+use Override;
 use SeekableIterator;
 
 use function array_key_exists;
@@ -99,7 +100,7 @@ final class Iterator implements Countable, SeekableIterator
      *
      * @return Tv
      */
-    #[\Override]
+    #[Override]
     public function current(): mixed
     {
         $this->save();
@@ -110,7 +111,7 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Checks if current position is valid.
      */
-    #[\Override]
+    #[Override]
     public function valid(): bool
     {
         if (array_key_exists($this->position, $this->entries)) {
@@ -144,7 +145,7 @@ final class Iterator implements Countable, SeekableIterator
      *
      * @return Tk
      */
-    #[\Override]
+    #[Override]
     public function key(): mixed
     {
         $this->save();
@@ -155,7 +156,7 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Rewind the Iterator to the first element.
      */
-    #[\Override]
+    #[Override]
     public function rewind(): void
     {
         $this->position = 0;
@@ -164,13 +165,15 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Seek to the given position.
      *
-     * @param int<0, max> $offset
-     *
      * @throws Exception\OutOfBoundsException If $offset is out-of-bounds.
      */
-    #[\Override]
+    #[Override]
     public function seek(int $offset): void
     {
+        if ($offset < 0) {
+            throw new Exception\OutOfBoundsException('Position is out-of-bounds.');
+        }
+
         if ($offset <= $this->position) {
             $this->position = $offset;
             return;
@@ -199,7 +202,7 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Move forward to the next element.
      */
-    #[\Override]
+    #[Override]
     public function next(): void
     {
         $this->position++;
@@ -219,7 +222,7 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * @return int<0, max>
      */
-    #[\Override]
+    #[Override]
     public function count(): int
     {
         if ($this->generator) {
