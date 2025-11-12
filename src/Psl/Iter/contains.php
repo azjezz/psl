@@ -16,9 +16,11 @@ namespace Psl\Iter;
 function contains(iterable $iterable, mixed $value): bool
 {
     foreach ($iterable as $v) {
-        if ($value === $v) {
-            return true;
+        if ($value !== $v) {
+            continue;
         }
+
+        return true;
     }
 
     return false;

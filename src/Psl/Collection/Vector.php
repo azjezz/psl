@@ -286,9 +286,11 @@ final readonly class Vector implements VectorInterface
     public function linearSearch(mixed $search_value): null|int
     {
         foreach ($this->elements as $key => $element) {
-            if ($search_value === $element) {
-                return $key;
+            if ($search_value !== $element) {
+                continue;
             }
+
+            return $key;
         }
 
         return null;

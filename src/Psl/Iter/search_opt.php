@@ -30,9 +30,11 @@ use Psl\Option\Option;
 function search_opt(iterable $iterable, Closure $predicate): Option
 {
     foreach ($iterable as $value) {
-        if ($predicate($value)) {
-            return Option::some($value);
+        if (!$predicate($value)) {
+            continue;
         }
+
+        return Option::some($value);
     }
 
     return Option::none();

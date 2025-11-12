@@ -44,9 +44,11 @@ function filter(iterable $iterable, null|Closure $predicate = null): array
 
     $result = [];
     foreach ($iterable as $k => $v) {
-        if ($predicate($v)) {
-            $result[$k] = $v;
+        if (!$predicate($v)) {
+            continue;
         }
+
+        $result[$k] = $v;
     }
 
     return $result;

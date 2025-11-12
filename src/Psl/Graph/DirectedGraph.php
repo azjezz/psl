@@ -87,9 +87,11 @@ final readonly class DirectedGraph implements GraphInterface
         }
 
         foreach ($this->edges[$key] as $edge) {
-            if ($edge->to === $to) {
-                return true;
+            if ($edge->to !== $to) {
+                continue;
             }
+
+            return true;
         }
 
         return false;

@@ -27,9 +27,11 @@ function equal(array $first, array $second): bool
     }
 
     foreach ($first as $k => $v) {
-        if (!Iter\contains_key($second, $k) || $second[$k] !== $v) {
-            return false;
+        if (!(!Iter\contains_key($second, $k) || $second[$k] !== $v)) {
+            continue;
         }
+
+        return false;
     }
 
     return true;

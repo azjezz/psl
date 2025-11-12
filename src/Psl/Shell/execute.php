@@ -151,9 +151,11 @@ function execute(
         $result = '';
 
         foreach (IO\streaming([1 => $stdout, 2 => $stderr], $timeout) as $type => $chunk) {
-            if ($chunk) {
-                $result .= pack('C1N1', $type, Str\Byte\length($chunk)) . $chunk;
+            if (!$chunk) {
+                continue;
             }
+
+            $result .= pack('C1N1', $type, Str\Byte\length($chunk)) . $chunk;
         }
     } catch (IO\Exception\TimeoutException $previous) {
         throw new Exception\TimeoutException(

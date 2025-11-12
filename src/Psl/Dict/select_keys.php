@@ -29,9 +29,11 @@ function select_keys(iterable $iterable, iterable $keys): array
 
     $result = [];
     foreach ($keys as $key) {
-        if (Iter\contains_key($array, $key)) {
-            $result[$key] = $array[$key];
+        if (!Iter\contains_key($array, $key)) {
+            continue;
         }
+
+        $result[$key] = $array[$key];
     }
 
     return $result;

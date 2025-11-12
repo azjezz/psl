@@ -21,9 +21,11 @@ function maxva(int|float $first, int|float $second, int|float ...$rest): int|flo
 {
     $max = $first > $second ? $first : $second;
     foreach ($rest as $number) {
-        if ($number > $max) {
-            $max = $number;
+        if ($number <= $max) {
+            continue;
         }
+
+        $max = $number;
     }
 
     return $max;

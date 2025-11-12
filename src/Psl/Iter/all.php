@@ -20,9 +20,11 @@ use Closure;
 function all(iterable $iterable, Closure $predicate): bool
 {
     foreach ($iterable as $value) {
-        if (!$predicate($value)) {
-            return false;
+        if ($predicate($value)) {
+            continue;
         }
+
+        return false;
     }
 
     return true;
