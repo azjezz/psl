@@ -50,9 +50,11 @@ function filter_keys(iterable $iterable, null|Closure $predicate = null): array
 
     $result = [];
     foreach ($iterable as $k => $v) {
-        if ($predicate($k)) {
-            $result[$k] = $v;
+        if (!$predicate($k)) {
+            continue;
         }
+
+        $result[$k] = $v;
     }
 
     return $result;

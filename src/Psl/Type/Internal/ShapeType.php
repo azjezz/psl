@@ -115,9 +115,11 @@ final readonly class ShapeType extends Type\Type
              * @var Tv $v
              */
             foreach ($value as $k => $v) {
-                if ($arrayKeyType->matches($k)) {
-                    $array[$k] = $v;
+                if (!$arrayKeyType->matches($k)) {
+                    continue;
                 }
+
+                $array[$k] = $v;
             }
         } catch (Throwable $e) {
             throw CoercionException::withValue(null, $this->toString(), PathExpression::iteratorError($k), $e);
@@ -157,9 +159,11 @@ final readonly class ShapeType extends Type\Type
 
         if ($this->allow_unknown_fields) {
             foreach ($array as $k => $v) {
-                if (!Iter\contains_key($result, $k)) {
-                    $result[$k] = $v;
+                if (Iter\contains_key($result, $k)) {
+                    continue;
                 }
+
+                $result[$k] = $v;
             }
         }
 
@@ -216,14 +220,16 @@ final readonly class ShapeType extends Type\Type
          * @var Tv $v
          */
         foreach ($value as $k => $v) {
-            if (!Iter\contains_key($result, $k)) {
-                if ($this->allow_unknown_fields) {
-                    $result[$k] = $v;
-                    continue;
-                }
-
-                throw AssertException::withValue($v, $this->toString(), PathExpression::path($k));
+            if (Iter\contains_key($result, $k)) {
+                continue;
             }
+
+            if ($this->allow_unknown_fields) {
+                $result[$k] = $v;
+                continue;
+            }
+
+            throw AssertException::withValue($v, $this->toString(), PathExpression::path($k));
         }
 
         return $result;

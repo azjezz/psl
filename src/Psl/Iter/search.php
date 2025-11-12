@@ -28,9 +28,11 @@ use Closure;
 function search(iterable $iterable, Closure $predicate): mixed
 {
     foreach ($iterable as $value) {
-        if ($predicate($value)) {
-            return $value;
+        if (!$predicate($value)) {
+            continue;
         }
+
+        return $value;
     }
 
     return null;

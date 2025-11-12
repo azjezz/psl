@@ -32,9 +32,11 @@ function all(NodeInterface $node, Closure $predicate): bool
 
     if ($node instanceof TreeNode) {
         foreach ($node->getChildren() as $child) {
-            if (!all($child, $predicate)) {
-                return false;
+            if (all($child, $predicate)) {
+                continue;
             }
+
+            return false;
         }
     }
 

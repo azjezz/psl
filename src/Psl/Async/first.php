@@ -16,16 +16,16 @@ namespace Psl\Async;
  * @throws Exception\InvalidArgumentException If $awaitables is empty.
  *
  * @return T
- *
- * @mago-expect lint:loop-does-not-iterate
  */
 function first(iterable $awaitables): mixed
 {
     foreach (Awaitable::iterate($awaitables) as $first) {
         foreach ($awaitables as $awaitable) {
-            if ($awaitable !== $first) {
-                $awaitable->ignore();
+            if ($awaitable === $first) {
+                continue;
             }
+
+            $awaitable->ignore();
         }
 
         return $first->await();

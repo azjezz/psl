@@ -89,9 +89,11 @@ final readonly class UndirectedGraph implements GraphInterface
         }
 
         foreach ($this->edges[$key] as $edge) {
-            if ($edge->to === $node2) {
-                return true;
+            if ($edge->to !== $node2) {
+                continue;
             }
+
+            return true;
         }
 
         return false;

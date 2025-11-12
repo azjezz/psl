@@ -20,9 +20,11 @@ function min(array $numbers): null|float|int
 {
     $min = null;
     foreach ($numbers as $number) {
-        if (null === $min || $number < $min) {
-            $min = $number;
+        if (!(null === $min || $number < $min)) {
+            continue;
         }
+
+        $min = $number;
     }
 
     return $min;

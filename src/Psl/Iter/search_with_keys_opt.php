@@ -31,9 +31,11 @@ use Psl\Option\Option;
 function search_with_keys_opt(iterable $iterable, Closure $predicate): Option
 {
     foreach ($iterable as $key => $value) {
-        if ($predicate($key, $value)) {
-            return Option::some($value);
+        if (!$predicate($key, $value)) {
+            continue;
         }
+
+        return Option::some($value);
     }
 
     return Option::none();

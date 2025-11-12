@@ -21,9 +21,11 @@ function minva(int|float $first, int|float $second, int|float ...$rest): int|flo
 {
     $min = $first < $second ? $first : $second;
     foreach ($rest as $number) {
-        if ($number < $min) {
-            $min = $number;
+        if ($number >= $min) {
+            continue;
         }
+
+        $min = $number;
     }
 
     return $min;

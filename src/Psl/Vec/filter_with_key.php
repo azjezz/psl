@@ -60,9 +60,11 @@ function filter_with_key(iterable $iterable, null|Closure $predicate = null): ar
 
     $result = [];
     foreach ($iterable as $k => $v) {
-        if ($predicate($k, $v)) {
-            $result[] = $v;
+        if (!$predicate($k, $v)) {
+            continue;
         }
+
+        $result[] = $v;
     }
 
     return $result;

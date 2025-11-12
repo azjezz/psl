@@ -20,9 +20,11 @@ function max(array $numbers): null|int|float
 {
     $max = null;
     foreach ($numbers as $number) {
-        if (null === $max || $number > $max) {
-            $max = $number;
+        if (!(null === $max || $number > $max)) {
+            continue;
         }
+
+        $max = $number;
     }
 
     return $max;

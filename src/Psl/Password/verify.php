@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Password;
 
+use SensitiveParameter;
+
 use function password_verify;
 
 /**
@@ -11,7 +13,7 @@ use function password_verify;
  *
  * @pure
  */
-function verify(string $password, string $hash): bool
+function verify(#[SensitiveParameter] string $password, string $hash): bool
 {
     return password_verify($password, $hash);
 }

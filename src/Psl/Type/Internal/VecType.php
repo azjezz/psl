@@ -44,9 +44,11 @@ final readonly class VecType extends Type\Type
         }
 
         foreach ($value as $v) {
-            if (!$this->value_type->matches($v)) {
-                return false;
+            if ($this->value_type->matches($v)) {
+                continue;
             }
+
+            return false;
         }
 
         return true;

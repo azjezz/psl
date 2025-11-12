@@ -48,9 +48,11 @@ abstract class TypeTest extends TestCase
         $out = [];
         foreach ($non_unique as $v) {
             foreach ($out as $value) {
-                if ($this->equals($value, $v)) {
-                    break;
+                if (!$this->equals($value, $v)) {
+                    continue;
                 }
+
+                break;
             }
 
             $out[] = [$v];

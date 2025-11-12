@@ -29,9 +29,11 @@ use Closure;
 function search_with_keys(iterable $iterable, Closure $predicate): mixed
 {
     foreach ($iterable as $key => $value) {
-        if ($predicate($key, $value)) {
-            return $value;
+        if (!$predicate($key, $value)) {
+            continue;
         }
+
+        return $value;
     }
 
     return null;

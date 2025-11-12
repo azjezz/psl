@@ -61,10 +61,12 @@ function shortest_path_by(
     $isWeighted = false;
     foreach (nodes($graph) as $node) {
         foreach ($graph->getEdgesFrom($node) as $edge) {
-            if (null !== $edge->weight) {
-                $isWeighted = true;
-                break 2;
+            if (null === $edge->weight) {
+                continue;
             }
+
+            $isWeighted = true;
+            break 2;
         }
     }
 

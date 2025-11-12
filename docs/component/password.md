@@ -13,9 +13,9 @@
 #### `Functions`
 
 - [get_information](./../../src/Psl/Password/get_information.php#L28)
-- [hash](./../../src/Psl/Password/hash.php#L16)
+- [hash](./../../src/Psl/Password/hash.php#L18)
 - [needs_rehash](./../../src/Psl/Password/needs_rehash.php#L25)
-- [verify](./../../src/Psl/Password/verify.php#L14)
+- [verify](./../../src/Psl/Password/verify.php#L16)
 
 #### `Enums`
 

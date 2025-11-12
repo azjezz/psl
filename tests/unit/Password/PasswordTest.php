@@ -8,13 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Psl\Password;
 use Psl\SecureRandom;
 use Psl\Str;
+use SensitiveParameter;
 
 final class PasswordTest extends TestCase
 {
     /**
      * @dataProvider providePasswords
      */
-    public function testDefault(string $password): void
+    public function testDefault(#[SensitiveParameter] string $password): void
     {
         $hash = Password\hash($password, Password\Algorithm::default());
 
@@ -26,7 +27,7 @@ final class PasswordTest extends TestCase
     /**
      * @dataProvider providePasswords
      */
-    public function testBcrypt(string $password): void
+    public function testBcrypt(#[SensitiveParameter] string $password): void
     {
         $hash = Password\hash($password, Password\Algorithm::Bcrypt, [
             'cost' => 8,
@@ -46,7 +47,7 @@ final class PasswordTest extends TestCase
     /**
      * @dataProvider providePasswords
      */
-    public function testArgon2i(string $password): void
+    public function testArgon2i(#[SensitiveParameter] string $password): void
     {
         $hash = Password\hash($password, Password\Algorithm::Argon2i);
 

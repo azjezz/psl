@@ -162,9 +162,11 @@ final class MutableMap implements MutableMapInterface
     public function linearSearch(mixed $search_value): int|string|null
     {
         foreach ($this->elements as $key => $element) {
-            if ($search_value === $element) {
-                return $key;
+            if ($search_value !== $element) {
+                continue;
             }
+
+            return $key;
         }
 
         return null;

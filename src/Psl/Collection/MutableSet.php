@@ -329,9 +329,11 @@ final class MutableSet implements MutableSetInterface
     public function linearSearch(mixed $search_value): null|int|string
     {
         foreach ($this->elements as $element) {
-            if ($search_value === $element) {
-                return $element;
+            if ($search_value !== $element) {
+                continue;
             }
+
+            return $element;
         }
 
         return null;

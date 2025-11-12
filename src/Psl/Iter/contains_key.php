@@ -16,9 +16,11 @@ namespace Psl\Iter;
 function contains_key(iterable $iterable, mixed $key): bool
 {
     foreach ($iterable as $k => $_v) {
-        if ($key === $k) {
-            return true;
+        if ($key !== $k) {
+            continue;
         }
+
+        return true;
     }
 
     return false;

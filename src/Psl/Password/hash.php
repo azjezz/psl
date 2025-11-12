@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Password;
 
+use SensitiveParameter;
+
 use function password_hash;
 
 /**
@@ -13,7 +15,10 @@ use function password_hash;
  *
  * @pure
  */
-function hash(string $password, Algorithm $algorithm = Algorithm::Default, array $options = []): string
-{
+function hash(
+    #[SensitiveParameter] string $password,
+    Algorithm $algorithm = Algorithm::Default,
+    array $options = [],
+): string {
     return password_hash($password, $algorithm->getBuiltinConstantValue(), $options);
 }

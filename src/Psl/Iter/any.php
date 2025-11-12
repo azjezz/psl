@@ -21,9 +21,11 @@ use Closure;
 function any(iterable $iterable, Closure $predicate): bool
 {
     foreach ($iterable as $value) {
-        if ($predicate($value)) {
-            return true;
+        if (!$predicate($value)) {
+            continue;
         }
+
+        return true;
     }
 
     return false;

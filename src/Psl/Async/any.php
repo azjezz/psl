@@ -28,9 +28,11 @@ function any(iterable $awaitables): mixed
         try {
             $result = $first->await();
             foreach ($awaitables as $awaitable) {
-                if ($awaitable !== $first) {
-                    $awaitable->ignore();
+                if ($awaitable === $first) {
+                    continue;
                 }
+
+                $awaitable->ignore();
             }
 
             return $result;
