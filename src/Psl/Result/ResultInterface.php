@@ -160,4 +160,11 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
      * @return Ts
      */
     public function proceed(Closure $success, Closure $failure): mixed;
+
+    /**
+     * Transforms the Result into an Option, being some if Success and none if Error
+     *
+     * @return Psl\Option\Option<T>
+     */
+    public function toOption(): Psl\Option\Option;
 }

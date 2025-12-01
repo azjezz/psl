@@ -126,4 +126,13 @@ final class SuccessTest extends TestCase
         static::assertSame('hey', $ref->value);
         static::assertSame('hello', $actual->getResult());
     }
+
+    public function testToOption(): void
+    {
+        $wrapper = new Success('hello');
+
+        $actual = $wrapper->toOption();
+
+        static::assertSame('hello', $actual->unwrap());
+    }
 }

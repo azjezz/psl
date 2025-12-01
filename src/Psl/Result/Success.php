@@ -185,4 +185,9 @@ final readonly class Success implements ResultInterface
             },
         );
     }
+
+    public function toOption(): Psl\Option\Option
+    {
+        return Psl\Option\Option::some($this->value);
+    }
 }

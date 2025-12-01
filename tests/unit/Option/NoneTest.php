@@ -200,4 +200,14 @@ final class NoneTest extends TestCase
         yield [Option\none()->zip(Option\some(1))];
         yield [Option\some(1)->zip(Option\none())];
     }
+
+    public function testToResult(): void
+    {
+        $this->expectException(NoneException::class);
+
+        $option = Option\none();
+        $actual = $option->toResult();
+
+        $actual->getResult();
+    }
 }

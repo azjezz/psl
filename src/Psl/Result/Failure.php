@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Result;
 
 use Closure;
+use Psl;
 use Throwable;
 
 /**
@@ -170,5 +171,10 @@ final readonly class Failure implements ResultInterface
 
             throw $this->throwable;
         });
+    }
+
+    public function toOption(): Psl\Option\Option
+    {
+        return Psl\Option\Option::none();
     }
 }

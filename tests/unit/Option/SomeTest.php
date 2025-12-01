@@ -211,4 +211,12 @@ final class SomeTest extends TestCase
         yield [Option\some(1)];
         yield [Option\some([true])];
     }
+
+    public function testToResult(): void
+    {
+        $option = Option\some('hello');
+        $actual = $option->toResult();
+
+        static::assertSame('hello', $actual->getResult());
+    }
 }

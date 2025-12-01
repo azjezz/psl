@@ -6,6 +6,7 @@ namespace Psl\Option;
 
 use Closure;
 use Psl\Comparison;
+use Psl\Result;
 
 /**
  * @template T
@@ -474,5 +475,15 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
         [$a, $b] = $this->option[0];
 
         return [some($a), some($b)];
+    }
+
+    /**
+     * Transform the Option into a Result
+     *
+     * @return Result\ResultInterface<T>
+     */
+    public function toResult(): Result\ResultInterface
+    {
+        return Result\wrap($this->unwrap(...));
     }
 }

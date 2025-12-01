@@ -130,4 +130,14 @@ final class FailureTest extends TestCase
         static::assertSame($exception, $actual->getThrowable());
         static::assertSame('hello', $ref->value);
     }
+
+    public function testToOption(): void
+    {
+        $exception = new Exception('bar');
+        $wrapper = new Failure($exception);
+
+        $actual = $wrapper->toOption();
+
+        static::assertTrue($actual->isNone());
+    }
 }
