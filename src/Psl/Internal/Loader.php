@@ -693,6 +693,7 @@ final class Loader
         'Psl\\DateTime\\Exception\\ExceptionInterface' => 'Psl/DateTime/Exception/ExceptionInterface.php',
         'Psl\\DateTime\\TemporalInterface' => 'Psl/DateTime/TemporalInterface.php',
         'Psl\\DateTime\\DateTimeInterface' => 'Psl/DateTime/DateTimeInterface.php',
+        'Psl\Filterable\FilterableInterface' => 'Psl/Filterable/FilterableInterface.php',
     ];
 
     /**

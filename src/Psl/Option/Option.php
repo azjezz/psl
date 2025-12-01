@@ -6,14 +6,16 @@ namespace Psl\Option;
 
 use Closure;
 use Psl\Comparison;
+use Psl\Filterable;
 
 /**
  * @template T
  *
  * @implements Comparison\Comparable<Option<T>>
  * @implements Comparison\Equable<Option<T>>
+ * @implements Filterable\FilterableInterface<T>
  */
-final readonly class Option implements Comparison\Comparable, Comparison\Equable
+final readonly class Option implements Comparison\Comparable, Comparison\Equable, Filterable\FilterableInterface
 {
     /**
      * @var null|array{T}

@@ -9,6 +9,7 @@ use Countable;
 use IteratorAggregate;
 use JsonSerializable;
 use Psl\Default\DefaultInterface;
+use Psl\Filterable\FilterableInterface;
 
 /**
  * The base interface implemented for a CollectionInterface type.
@@ -18,9 +19,15 @@ use Psl\Default\DefaultInterface;
  * @template Tk of array-key
  * @template Tv
  *
+ * @implements FilterableInterface<Tv>
  * @extends IteratorAggregate<Tk, Tv>
  */
-interface CollectionInterface extends Countable, DefaultInterface, IteratorAggregate, JsonSerializable
+interface CollectionInterface extends
+    Countable,
+    DefaultInterface,
+    FilterableInterface,
+    IteratorAggregate,
+    JsonSerializable
 {
     /**
      * Is the CollectionInterface empty?
