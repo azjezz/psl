@@ -116,7 +116,7 @@ final class MapTypeTest extends TypeTest
             Type\map(Type\int(), Type\map(Type\int(), Type\int())),
             new Collection\Map([0 => new Collection\Map(['nope' => 'nope'])]),
             'Expected "'
-            . MapInterface::class
+                . MapInterface::class
                 . '<int, '
                 . MapInterface::class
                 . '<int, int>>", got "string" at path "0.key(nope)".',
@@ -171,7 +171,7 @@ final class MapTypeTest extends TypeTest
                 yield new class() {} => 'nope';
             })(),
             'Could not coerce "class@anonymous" to type "'
-            . MapInterface::class
+                . MapInterface::class
                 . '<int, int>" at path "key(class@anonymous)".',
         ];
     }

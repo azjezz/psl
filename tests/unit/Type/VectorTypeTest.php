@@ -120,7 +120,7 @@ final class VectorTypeTest extends TypeTest
             Type\vector(Type\vector(Type\int())),
             new Collection\MutableVector([new Collection\MutableVector(['nope'])]),
             'Expected "'
-            . VectorInterface::class
+                . VectorInterface::class
                 . '<'
                 . VectorInterface::class
                 . '<int>>", got "string" at path "0.0".',
