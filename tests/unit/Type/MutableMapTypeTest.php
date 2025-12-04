@@ -133,7 +133,7 @@ final class MutableMapTypeTest extends TypeTest
             Type\mutable_map(Type\int(), Type\mutable_map(Type\int(), Type\int())),
             new Collection\MutableMap([0 => new Collection\MutableMap(['nope' => 'nope'])]),
             'Expected "'
-            . MutableMapInterface::class
+                . MutableMapInterface::class
                 . '<int, '
                 . MutableMapInterface::class
                 . '<int, int>>", got "string" at path "0.key(nope)".',
@@ -188,7 +188,7 @@ final class MutableMapTypeTest extends TypeTest
                 yield new class() {} => 'nope';
             })(),
             'Could not coerce "class@anonymous" to type "'
-            . MutableMapInterface::class
+                . MutableMapInterface::class
                 . '<int, int>" at path "key(class@anonymous)".',
         ];
     }
