@@ -83,6 +83,7 @@ class ResourceHandle implements
         bool $seek,
         private readonly bool $close,
     ) {
+        // @mago-expect analysis:redundant-type-comparison
         $this->stream = Type\resource('stream')->assert($stream);
 
         stream_set_blocking($stream, false);
