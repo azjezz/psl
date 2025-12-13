@@ -130,33 +130,33 @@ final class BetweenRangeTest extends TestCase
         static::assertSame(1, $range->withUpperBound(1, false)->getUpperBound());
         static::assertSame(1, $range->withUpperBoundExclusive(1)->getUpperBound());
         static::assertSame(1, $range->withUpperBoundInclusive(1)->getUpperBound());
-        static::assertSame(false, $range->withUpperBound(0, false)->isUpperInclusive());
-        static::assertSame(false, $range->withUpperInclusive(false)->isUpperInclusive());
-        static::assertSame(true, $range->withUpperInclusive(true)->isUpperInclusive());
-        static::assertSame(false, $range->withUpperBound(0, false)->isUpperInclusive());
-        static::assertSame(true, $range->withUpperBound(0, true)->isUpperInclusive());
-        static::assertSame(false, $range->withUpperBoundExclusive(0)->isUpperInclusive());
-        static::assertSame(true, $range->withUpperBoundInclusive(0)->isUpperInclusive());
+        static::assertFalse($range->withUpperBound(0, false)->isUpperInclusive());
+        static::assertFalse($range->withUpperInclusive(false)->isUpperInclusive());
+        static::assertTrue($range->withUpperInclusive(true)->isUpperInclusive());
+        static::assertFalse($range->withUpperBound(0, false)->isUpperInclusive());
+        static::assertTrue($range->withUpperBound(0, true)->isUpperInclusive());
+        static::assertFalse($range->withUpperBoundExclusive(0)->isUpperInclusive());
+        static::assertTrue($range->withUpperBoundInclusive(0)->isUpperInclusive());
 
         static::assertSame(0, $range->withoutUpperBound()->withLowerBound(0)->getLowerBound());
         static::assertSame(1, $range->withoutUpperBound()->withUpperBound(1, false)->getUpperBound());
         static::assertSame(1, $range->withoutUpperBound()->withUpperBoundExclusive(1)->getUpperBound());
         static::assertSame(1, $range->withoutUpperBound()->withUpperBoundInclusive(1)->getUpperBound());
-        static::assertSame(false, $range->withoutUpperBound()->withUpperBound(0, false)->isUpperInclusive());
-        static::assertSame(false, $range->withoutUpperBound()->withUpperBound(0, false)->isUpperInclusive());
-        static::assertSame(true, $range->withoutUpperBound()->withUpperBound(0, true)->isUpperInclusive());
-        static::assertSame(false, $range->withoutUpperBound()->withUpperBoundExclusive(0)->isUpperInclusive());
-        static::assertSame(true, $range->withoutUpperBound()->withUpperBoundInclusive(0)->isUpperInclusive());
+        static::assertFalse($range->withoutUpperBound()->withUpperBound(0, false)->isUpperInclusive());
+        static::assertFalse($range->withoutUpperBound()->withUpperBound(0, false)->isUpperInclusive());
+        static::assertTrue($range->withoutUpperBound()->withUpperBound(0, true)->isUpperInclusive());
+        static::assertFalse($range->withoutUpperBound()->withUpperBoundExclusive(0)->isUpperInclusive());
+        static::assertTrue($range->withoutUpperBound()->withUpperBoundInclusive(0)->isUpperInclusive());
 
         static::assertSame(0, $range->withoutLowerBound()->withLowerBound(0)->getLowerBound());
         static::assertSame(1, $range->withoutLowerBound()->withUpperBound(1, false)->getUpperBound());
         static::assertSame(1, $range->withoutLowerBound()->withUpperBoundExclusive(1)->getUpperBound());
         static::assertSame(1, $range->withoutLowerBound()->withUpperBoundInclusive(1)->getUpperBound());
-        static::assertSame(false, $range->withoutLowerBound()->withUpperBound(0, false)->isUpperInclusive());
-        static::assertSame(false, $range->withoutLowerBound()->withUpperBound(0, false)->isUpperInclusive());
-        static::assertSame(true, $range->withoutLowerBound()->withUpperBound(0, true)->isUpperInclusive());
-        static::assertSame(false, $range->withoutLowerBound()->withUpperBoundExclusive(0)->isUpperInclusive());
-        static::assertSame(true, $range->withoutLowerBound()->withUpperBoundInclusive(0)->isUpperInclusive());
+        static::assertFalse($range->withoutLowerBound()->withUpperBound(0, false)->isUpperInclusive());
+        static::assertFalse($range->withoutLowerBound()->withUpperBound(0, false)->isUpperInclusive());
+        static::assertTrue($range->withoutLowerBound()->withUpperBound(0, true)->isUpperInclusive());
+        static::assertFalse($range->withoutLowerBound()->withUpperBoundExclusive(0)->isUpperInclusive());
+        static::assertTrue($range->withoutLowerBound()->withUpperBoundInclusive(0)->isUpperInclusive());
     }
 
     public function testIterate(): void

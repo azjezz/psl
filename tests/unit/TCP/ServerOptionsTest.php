@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Psl\Network\SocketOptions;
 use Psl\TCP\ServerOptions;
 
-/**
- * @mago-expect lint:strict-assertions
- */
 final class ServerOptionsTest extends TestCase
 {
     public function testDefaultOptions(): void

@@ -59,9 +59,9 @@ final class LazyTest extends TestCase
             return null;
         });
 
-        static::assertSame(null, $proxy());
-        static::assertSame(null, $proxy());
-        static::assertSame(null, $proxy());
+        static::assertNull($proxy());
+        static::assertNull($proxy());
+        static::assertNull($proxy());
     }
 
     public function testItCanBeUsedAsALazyEvaluator(): void

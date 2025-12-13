@@ -20,9 +20,6 @@ use Psl\Locale\Locale;
 use function Psl\DateTime\Internal\create_intl_date_formatter;
 use function time;
 
-/**
- * @mago-expect lint:strict-assertions
- */
 final class DateTimeTest extends TestCase
 {
     use DateTimeTestTrait;

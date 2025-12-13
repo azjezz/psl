@@ -12,9 +12,6 @@ use Psl\Json;
 use function serialize;
 use function unserialize;
 
-/**
- * @mago-expect lint:strict-assertions
- */
 final class DurationTest extends TestCase
 {
     use DateTimeTestTrait;
