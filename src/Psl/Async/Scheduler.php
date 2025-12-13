@@ -153,7 +153,7 @@ final readonly class Scheduler
     {
         try {
             EventLoop::enable($identifier);
-        } catch (InvalidCallbackError $error) {
+        } catch (InvalidCallbackError $error) { // @mago-expect analysis:avoid-catching-error
             throw new Exception\InvalidArgumentException($error->getMessage(), previous: $error);
         }
     }
@@ -195,7 +195,7 @@ final readonly class Scheduler
     {
         try {
             EventLoop::reference($identifier);
-        } catch (InvalidCallbackError $error) {
+        } catch (InvalidCallbackError $error) { // @mago-expect analysis:avoid-catching-error
             throw new Exception\InvalidArgumentException($error->getMessage(), previous: $error);
         }
     }

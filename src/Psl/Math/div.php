@@ -22,9 +22,9 @@ function div(int $numerator, int $denominator): int
 {
     try {
         return intdiv($numerator, $denominator);
-    } catch (DivisionByZeroError $error) {
+    } catch (DivisionByZeroError $error) { // @mago-expect analysis:avoid-catching-error
         throw new Exception\DivisionByZeroException(Str\format('%s.', $error->getMessage()), $error->getCode(), $error);
-    } catch (ArithmeticError $error) {
+    } catch (ArithmeticError $error) { // @mago-expect analysis:avoid-catching-error
         throw new Exception\ArithmeticException(
             'Division of Math\INT64_MIN by -1 is not an integer.',
             $error->getCode(),
