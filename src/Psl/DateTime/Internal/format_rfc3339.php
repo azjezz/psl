@@ -14,7 +14,7 @@ use Psl\Str\Byte;
  *
  * @psalm-mutation-free
  *
- * @mago-expect lint:best-practices/no-else-clause
+ * @mago-expect lint:no-else-clause
  */
 function format_rfc3339(
     Timestamp $timestamp,

@@ -36,7 +36,7 @@ use function substr;
  *
  * @codeCoverageIgnore
  *
- * @mago-expect lint:best-practices/no-else-clause
+ * @mago-expect lint:no-else-clause
  */
 class ResourceHandle implements
     IO\ReadHandleInterface,
