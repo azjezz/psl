@@ -17,8 +17,8 @@
 
 #### `Interfaces`
 
-- [ChannelInterface](./../../src/Psl/Channel/ChannelInterface.php#L12)
-- [ReceiverInterface](./../../src/Psl/Channel/ReceiverInterface.php#L12)
-- [SenderInterface](./../../src/Psl/Channel/SenderInterface.php#L12)
+- [ChannelInterface](./../../src/Psl/Channel/ChannelInterface.php#L9)
+- [ReceiverInterface](./../../src/Psl/Channel/ReceiverInterface.php#L10)
+- [SenderInterface](./../../src/Psl/Channel/SenderInterface.php#L10)
 
 

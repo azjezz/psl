@@ -31,7 +31,7 @@ final class Reader implements ReadHandleInterface
     /**
      * {@inheritDoc}
      *
-     * @mago-expect lint:best-practices/no-empty-catch-clause
+     * @mago-expect lint:no-empty-catch-clause
      */
     #[\Override]
     public function reachedEndOfDataSource(): bool

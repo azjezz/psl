@@ -13,8 +13,6 @@ use function array_shift;
 /**
  * @template T
  *
- * @implements ChannelInterface<T>
- *
  * @internal
  */
 final class BoundedChannelState implements ChannelInterface

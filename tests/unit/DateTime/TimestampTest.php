@@ -106,10 +106,7 @@ final class TimestampTest extends TestCase
 
     public function testParsingFromPattern(): void
     {
-        $timestamp = Timestamp::parse(
-            raw_string: '2024 091',
-            pattern: FormatPattern::JulianDay,
-        );
+        $timestamp = Timestamp::parse(raw_string: '2024 091', pattern: FormatPattern::JulianDay);
 
         $datetime = DateTime::fromTimestamp($timestamp, Timezone::UTC);
 
@@ -220,11 +217,7 @@ final class TimestampTest extends TestCase
     ): void {
         $timestamp = Timestamp::fromParts($timestamp);
 
-        $result = $timestamp->format(
-            pattern: $pattern,
-            timezone: $timezone,
-            locale: $locale,
-        );
+        $result = $timestamp->format(pattern: $pattern, timezone: $timezone, locale: $locale);
 
         static::assertSame($expected, $result);
 

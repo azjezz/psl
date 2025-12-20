@@ -22,7 +22,7 @@ use function unpack;
  *
  * @internal
  *
- * @mago-expect lint:best-practices/no-else-clause
+ * @mago-expect lint:no-else-clause
  */
 abstract class Base64
 {

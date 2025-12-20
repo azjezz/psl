@@ -6,8 +6,6 @@ namespace Psl\Channel;
 
 /**
  * @template T
- *
- * @extends ChannelInterface<T>
  */
 interface SenderInterface extends ChannelInterface
 {

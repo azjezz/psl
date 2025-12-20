@@ -37,9 +37,7 @@ function box(Closure $fun): array
     try {
         $value = $fun();
 
-        $result = [$value, $last_message];
-
-        return $result;
+        return [$value, $last_message];
     } finally {
         restore_error_handler();
     }
