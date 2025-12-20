@@ -594,7 +594,8 @@ final class MutableMap implements MutableMapInterface
     #[\Override]
     public function chunk(int $size): MutableVector
     {
-        return $this->zip($this->keys()->toArray())
+        return $this
+            ->zip($this->keys()->toArray())
             ->values()
             ->chunk($size)
             ->map(

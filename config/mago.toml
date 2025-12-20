@@ -6,6 +6,7 @@ includes = ["vendor"]
 excludes = []
 
 [formatter]
+null-type-hint = "pipe"
 empty-line-after-control-structure = true
 empty-line-before-dangling-comments = false
 
@@ -33,4 +34,5 @@ no-redundant-use = { enabled = true }
 [analyzer]
 excludes = ["tests"]
 ignore = ["possibly-static-access-on-interface"]
+plugins = ["php-standard-library"]
 strict-list-index-checks = true

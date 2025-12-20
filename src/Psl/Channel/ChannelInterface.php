@@ -6,9 +6,6 @@ namespace Psl\Channel;
 
 use Countable;
 
-/**
- * @template T
- */
 interface ChannelInterface extends Countable
 {
     /**

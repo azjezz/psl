@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7d26533b6896a24b4a92bf7f700a449e",
+    "content-hash": "10c088b7ebc6e3da3ab11e50b144ac9a",
     "packages": [
         {
             "name": "revolt/event-loop",
@@ -82,16 +82,16 @@
     "packages-dev": [
         {
             "name": "carthage-software/mago",
-            "version": "1.0.0-rc.12",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/carthage-software/mago.git",
-                "reference": "9e1e3d1a4566349d3b07d1275bca53f3c93dabeb"
+                "reference": "a470d002d19d64126ed8ff2230664284e96df30d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carthage-software/mago/zipball/9e1e3d1a4566349d3b07d1275bca53f3c93dabeb",
-                "reference": "9e1e3d1a4566349d3b07d1275bca53f3c93dabeb",
+                "url": "https://api.github.com/repos/carthage-software/mago/zipball/a470d002d19d64126ed8ff2230664284e96df30d",
+                "reference": "a470d002d19d64126ed8ff2230664284e96df30d",
                 "shasum": ""
             },
             "require": {
@@ -129,7 +129,7 @@
             ],
             "support": {
                 "issues": "https://github.com/carthage-software/mago/issues",
-                "source": "https://github.com/carthage-software/mago/tree/1.0.0-rc.12"
+                "source": "https://github.com/carthage-software/mago/tree/1.0.0"
             },
             "funding": [
                 {
@@ -137,7 +137,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-12-10T14:03:54+00:00"
+            "time": "2025-12-20T00:14:03+00:00"
         },
         {
             "name": "colinodell/json5",
@@ -1807,16 +1807,16 @@
         },
         {
             "name": "php-coveralls/php-coveralls",
-            "version": "v2.9.0",
+            "version": "v2.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-coveralls/php-coveralls.git",
-                "reference": "468f5247e9e36ecc9b34f501cab868e7ac7c1f73"
+                "reference": "916bdb118597f61ce6715fb738ab8f234b89a2cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-coveralls/php-coveralls/zipball/468f5247e9e36ecc9b34f501cab868e7ac7c1f73",
-                "reference": "468f5247e9e36ecc9b34f501cab868e7ac7c1f73",
+                "url": "https://api.github.com/repos/php-coveralls/php-coveralls/zipball/916bdb118597f61ce6715fb738ab8f234b89a2cb",
+                "reference": "916bdb118597f61ce6715fb738ab8f234b89a2cb",
                 "shasum": ""
             },
             "require": {
@@ -1884,9 +1884,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-coveralls/php-coveralls/issues",
-                "source": "https://github.com/php-coveralls/php-coveralls/tree/v2.9.0"
+                "source": "https://github.com/php-coveralls/php-coveralls/tree/v2.9.1"
             },
-            "time": "2025-11-06T10:39:48+00:00"
+            "time": "2025-12-18T13:08:37+00:00"
         },
         {
             "name": "phpbench/container",
@@ -5686,9 +5686,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "carthage-software/mago": 5
-    },
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

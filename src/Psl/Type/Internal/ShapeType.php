@@ -115,6 +115,7 @@ final readonly class ShapeType extends Type\Type
              * @var Tv $v
              */
             foreach ($value as $k => $v) {
+                // @mago-expect analysis:redundant-type-comparison
                 if (!$arrayKeyType->matches($k)) {
                     continue;
                 }

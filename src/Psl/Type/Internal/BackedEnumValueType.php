@@ -99,7 +99,7 @@ final readonly class BackedEnumValueType extends Type
         try {
             $case = $this->isStringBacked ? string()->coerce($value) : int()->coerce($value);
 
-            if ($this->matches($case)) {
+            if ($this->matches($case)) { // @mago-expect analysis:redundant-type-comparison
                 return $case;
             }
         } catch (CoercionException) {

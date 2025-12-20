@@ -14,8 +14,6 @@ use function count;
 /**
  * @template T
  *
- * @implements ChannelInterface<T>
- *
  * @internal
  */
 final class UnboundedChannelState implements ChannelInterface
