@@ -6,6 +6,4 @@ namespace Psl\Math\Exception;
 
 use Psl\Exception\InvalidArgumentException;
 
-class ArithmeticException extends InvalidArgumentException implements ExceptionInterface
-{
-}
+class ArithmeticException extends InvalidArgumentException implements ExceptionInterface {}

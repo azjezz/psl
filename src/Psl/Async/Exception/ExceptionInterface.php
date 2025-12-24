@@ -6,6 +6,4 @@ namespace Psl\Async\Exception;
 
 use Psl\Exception;
 
-interface ExceptionInterface extends Exception\ExceptionInterface
-{
-}
+interface ExceptionInterface extends Exception\ExceptionInterface {}

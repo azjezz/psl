@@ -6,6 +6,4 @@ namespace Psl\Regex\Exception;
 
 use Psl\Exception\InvalidArgumentException;
 
-final class InvalidPatternException extends InvalidArgumentException implements ExceptionInterface
-{
-}
+final class InvalidPatternException extends InvalidArgumentException implements ExceptionInterface {}

@@ -9,6 +9,4 @@ use Psl\Exception;
 /**
  * @mutation-free
  */
-final class InvalidArgumentException extends Exception\InvalidArgumentException implements ExceptionInterface
-{
-}
+final class InvalidArgumentException extends Exception\InvalidArgumentException implements ExceptionInterface {}

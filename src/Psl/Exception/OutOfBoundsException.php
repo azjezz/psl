@@ -6,6 +6,4 @@ namespace Psl\Exception;
 
 use OutOfBoundsException as OutOfBoundsRootException;
 
-class OutOfBoundsException extends OutOfBoundsRootException implements ExceptionInterface
-{
-}
+class OutOfBoundsException extends OutOfBoundsRootException implements ExceptionInterface {}

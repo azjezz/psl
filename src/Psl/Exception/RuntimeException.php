@@ -6,6 +6,4 @@ namespace Psl\Exception;
 
 use RuntimeException as RuntimeRootException;
 
-class RuntimeException extends RuntimeRootException implements ExceptionInterface
-{
-}
+class RuntimeException extends RuntimeRootException implements ExceptionInterface {}

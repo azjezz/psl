@@ -6,6 +6,4 @@ namespace Psl\Math\Exception;
 
 use Psl\Exception;
 
-final class OverflowException extends Exception\OverflowException implements ExceptionInterface
-{
-}
+final class OverflowException extends Exception\OverflowException implements ExceptionInterface {}

@@ -6,6 +6,4 @@ namespace Psl\IO\Exception;
 
 use Psl;
 
-interface ExceptionInterface extends Psl\Exception\ExceptionInterface
-{
-}
+interface ExceptionInterface extends Psl\Exception\ExceptionInterface {}

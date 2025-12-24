@@ -6,6 +6,4 @@ namespace Psl\Exception;
 
 use LogicException as LogicRootException;
 
-class LogicException extends LogicRootException implements ExceptionInterface
-{
-}
+class LogicException extends LogicRootException implements ExceptionInterface {}

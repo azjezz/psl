@@ -6,6 +6,4 @@ namespace Psl\File\Exception;
 
 use Psl\Exception;
 
-class InvalidArgumentException extends Exception\InvalidArgumentException implements ExceptionInterface
-{
-}
+class InvalidArgumentException extends Exception\InvalidArgumentException implements ExceptionInterface {}

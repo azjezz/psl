@@ -6,6 +6,4 @@ namespace Psl\Collection\Exception;
 
 use Psl\Exception;
 
-final class RuntimeException extends Exception\RuntimeException implements ExceptionInterface
-{
-}
+final class RuntimeException extends Exception\RuntimeException implements ExceptionInterface {}

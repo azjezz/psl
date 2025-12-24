@@ -6,6 +6,4 @@ namespace Psl\Exception;
 
 use OverflowException as OverflowRootException;
 
-class OverflowException extends OverflowRootException implements ExceptionInterface
-{
-}
+class OverflowException extends OverflowRootException implements ExceptionInterface {}

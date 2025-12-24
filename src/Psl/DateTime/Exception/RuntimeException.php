@@ -6,6 +6,4 @@ namespace Psl\DateTime\Exception;
 
 use Psl\Exception;
 
-class RuntimeException extends Exception\RuntimeException implements ExceptionInterface
-{
-}
+class RuntimeException extends Exception\RuntimeException implements ExceptionInterface {}
