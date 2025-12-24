@@ -6,6 +6,4 @@ namespace Psl\PseudoRandom\Exception;
 
 use Psl\Exception\ExceptionInterface as PslExceptionInterface;
 
-interface ExceptionInterface extends PslExceptionInterface
-{
-}
+interface ExceptionInterface extends PslExceptionInterface {}

@@ -6,6 +6,4 @@ namespace Psl\Tree\Exception;
 
 use Psl\Exception\InvalidArgumentException as PslInvalidArgumentException;
 
-final class InvalidArgumentException extends PslInvalidArgumentException implements ExceptionInterface
-{
-}
+final class InvalidArgumentException extends PslInvalidArgumentException implements ExceptionInterface {}

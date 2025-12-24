@@ -6,6 +6,4 @@ namespace Psl\Exception;
 
 use UnderflowException as UnderflowRootException;
 
-class UnderflowException extends UnderflowRootException implements ExceptionInterface
-{
-}
+class UnderflowException extends UnderflowRootException implements ExceptionInterface {}

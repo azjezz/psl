@@ -6,6 +6,4 @@ namespace Psl\Exception;
 
 use UnexpectedValueException as UnexpectedValueRootException;
 
-class UnexpectedValueException extends UnexpectedValueRootException implements ExceptionInterface
-{
-}
+class UnexpectedValueException extends UnexpectedValueRootException implements ExceptionInterface {}

@@ -6,6 +6,4 @@ namespace Psl\SecureRandom\Exception;
 
 use Psl\Exception\RuntimeException;
 
-final class InsufficientEntropyException extends RuntimeException implements ExceptionInterface
-{
-}
+final class InsufficientEntropyException extends RuntimeException implements ExceptionInterface {}

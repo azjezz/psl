@@ -9,6 +9,4 @@ use Psl\Exception;
 /**
  * @mutation-free
  */
-interface ExceptionInterface extends Exception\ExceptionInterface
-{
-}
+interface ExceptionInterface extends Exception\ExceptionInterface {}

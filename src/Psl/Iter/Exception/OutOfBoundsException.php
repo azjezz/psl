@@ -6,6 +6,4 @@ namespace Psl\Iter\Exception;
 
 use Psl\Exception;
 
-final class OutOfBoundsException extends Exception\OutOfBoundsException implements ExceptionInterface
-{
-}
+final class OutOfBoundsException extends Exception\OutOfBoundsException implements ExceptionInterface {}

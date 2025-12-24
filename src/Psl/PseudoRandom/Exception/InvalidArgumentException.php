@@ -6,6 +6,4 @@ namespace Psl\PseudoRandom\Exception;
 
 use Psl\Exception;
 
-final class InvalidArgumentException extends Exception\InvalidArgumentException implements ExceptionInterface
-{
-}
+final class InvalidArgumentException extends Exception\InvalidArgumentException implements ExceptionInterface {}

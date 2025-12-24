@@ -6,6 +6,4 @@ namespace Psl\Vec\Exception;
 
 use Psl\Exception;
 
-final class LogicException extends Exception\LogicException implements ExceptionInterface
-{
-}
+final class LogicException extends Exception\LogicException implements ExceptionInterface {}

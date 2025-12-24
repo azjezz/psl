@@ -6,6 +6,4 @@ namespace Psl\Collection\Exception;
 
 use Psl\Exception;
 
-final class InvalidOffsetException extends Exception\UnexpectedValueException implements ExceptionInterface
-{
-}
+final class InvalidOffsetException extends Exception\UnexpectedValueException implements ExceptionInterface {}

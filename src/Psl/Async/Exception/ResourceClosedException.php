@@ -4,6 +4,4 @@ declare(strict_types=1);
 
 namespace Psl\Async\Exception;
 
-final class ResourceClosedException extends RuntimeException
-{
-}
+final class ResourceClosedException extends RuntimeException {}
