@@ -44,7 +44,7 @@ use function count;
  *
  * @param non-empty-list<TItem> $items The flat list of items
  * @param Closure(TItem): TId $get_id Function to extract the ID from an item
- * @param Closure(TItem): TId|null $get_parent_id Function to extract the parent ID (null for root)
+ * @param Closure(TItem): (TId|null) $get_parent_id Function to extract the parent ID (null for root)
  * @param Closure(TItem): TValue $get_value Function to extract/transform the value to store in the node
  *
  * @return NodeInterface<TValue>
