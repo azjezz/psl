@@ -85,7 +85,6 @@ function execute(
                 }
 
                 if (isset($variable_cache[$m[0]])) {
-                    /** @var string */
                     return $variable_cache[$m[0]];
                 }
 

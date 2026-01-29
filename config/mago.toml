@@ -2,13 +2,14 @@ php-version = "8.3"
 
 [source]
 paths = ["src", "tests", "examples"]
-includes = ["vendor"]
+includes = ["vendor/revolt"]
 excludes = []
 
 [formatter]
 null-type-hint = "pipe"
 empty-line-after-control-structure = true
 empty-line-before-dangling-comments = false
+indent-heredoc = false
 
 [linter]
 integrations = ["php-unit"]
