@@ -49,7 +49,7 @@ class ResourceHandle implements
     use IO\WriteHandleConvenienceMethodsTrait;
 
     public const int DEFAULT_READ_BUFFER_SIZE = 4096;
-    public const int MAXIMUM_READ_BUFFER_SIZE = 786432;
+    public const int MAXIMUM_READ_BUFFER_SIZE = 786_432;
 
     /**
      * @var closed-resource|resource|null $stream

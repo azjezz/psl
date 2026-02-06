@@ -38,8 +38,8 @@ final class LiteralScalarBoolTypeTest extends TypeTest
     {
         yield [$this->getType(), 'false'];
         yield [Type\literal_scalar('5'), '"5"'];
-        yield [Type\literal_scalar(5.5000), '5.5'];
+        yield [Type\literal_scalar(5.500_0), '5.5'];
         yield [Type\literal_scalar(true), 'true'];
-        yield [Type\literal_scalar(5.50000000000005), '5.50000000000005'];
+        yield [Type\literal_scalar(5.500_000_000_000_05), '5.50000000000005'];
     }
 }

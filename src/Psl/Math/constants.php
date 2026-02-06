@@ -24,17 +24,17 @@ const NAN = PHP_NAN;
 /**
  * The base of the natural system of logarithms, or approximately 2.7182818284590452353602875.
  */
-const E = 2.7182818284590452353602875;
+const E = 2.718_281_828_459_045_235_360_287_5;
 
 /**
  * The ratio of the circumference of a circle to its diameter, or approximately 3.141592653589793238462643.
  */
-const PI = 3.141592653589793238462643;
+const PI = 3.141_592_653_589_793_238_462_643;
 
 /**
  * The maximum integer value representable in a 64-bit binary-coded decimal.
  */
-const INT64_MAX = 9223372036854775807;
+const INT64_MAX = 9_223_372_036_854_775_807;
 
 /**
  * The minimum integer value representable in a 64-bit binary-coded decimal.
@@ -44,32 +44,32 @@ const INT64_MIN = -1 << 63;
 /**
  * The maximum integer value representable in a 53-bit binary-coded decimal.
  */
-const INT53_MAX = 9007199254740992;
+const INT53_MAX = 9_007_199_254_740_992;
 
 /**
  * The minimum integer value representable in a 53-bit binary-coded decimal.
  */
-const INT53_MIN = -9007199254740993;
+const INT53_MIN = -9_007_199_254_740_993;
 
 /**
  * The maximum integer value representable in a 32-bit binary-coded decimal.
  */
-const INT32_MAX = 2147483647;
+const INT32_MAX = 2_147_483_647;
 
 /**
  * The minimum integer value representable in a 32-bit binary-coded decimal.
  */
-const INT32_MIN = -2147483648;
+const INT32_MIN = -2_147_483_648;
 
 /**
  * The maximum integer value representable in a 16-bit binary-coded decimal.
  */
-const INT16_MAX = 32767;
+const INT16_MAX = 32_767;
 
 /**
  * The minimum integer value representable in a 16-bit binary-coded decimal.
  */
-const INT16_MIN = -32768;
+const INT16_MIN = -32_768;
 
 /**
  * The maximum integer value representable in a 8-bit binary-coded decimal.
@@ -84,12 +84,12 @@ const INT8_MIN = -128;
 /**
  * The maximum unsigned integer value representable in a 32-bit binary-coded decimal.
  */
-const UINT32_MAX = 4294967295;
+const UINT32_MAX = 4_294_967_295;
 
 /**
  * The maximum unsigned integer value representable in a 16-bit binary-coded decimal.
  */
-const UINT16_MAX = 65535;
+const UINT16_MAX = 65_535;
 
 /**
  * The maximum unsigned integer value representable in a 8-bit binary-coded decimal.
@@ -99,19 +99,19 @@ const UINT8_MAX = 255;
 /**
  * The maximum floating point value representable in a 32-bit binary-coded decimal.
  */
-const FLOAT32_MAX = 3.40282347E+38;
+const FLOAT32_MAX = 3.402_823_47E+38;
 
 /**
  * The minimum floating point value representable in a 32-bit binary-coded decimal.
  */
-const FLOAT32_MIN = -3.40282347E+38;
+const FLOAT32_MIN = -3.402_823_47E+38;
 
 /**
  * The maximum floating point value representable in a 64-bit binary-coded decimal.
  */
-const FLOAT64_MAX = 1.7976931348623157E+308;
+const FLOAT64_MAX = 1.797_693_134_862_315_7E+308;
 
 /**
  * The minimum floating point value representable in a 64-bit binary-coded decimal.
  */
-const FLOAT64_MIN = -1.7976931348623157E+308;
+const FLOAT64_MIN = -1.797_693_134_862_315_7E+308;

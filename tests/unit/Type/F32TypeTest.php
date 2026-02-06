@@ -33,7 +33,7 @@ final class F32TypeTest extends TypeTest
         yield [Math\UINT32_MAX, (float) Math\UINT32_MAX];
         yield [(string) Math\UINT32_MAX, (float) Math\UINT32_MAX];
         yield [$this->stringable((string) Math\UINT32_MAX), (float) Math\UINT32_MAX];
-        yield ['9223372036854775808', 9223372036854775808.0];
+        yield ['9223372036854775808', 9_223_372_036_854_775_808.0];
         yield ['3.40282347E+38', Math\FLOAT32_MAX];
         yield ['-3.40282347E+38', Math\FLOAT32_MIN];
         yield ['007', 7.0];

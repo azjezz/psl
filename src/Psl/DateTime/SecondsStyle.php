@@ -38,7 +38,7 @@ enum SecondsStyle: int
 
         return match (true) {
             0 === $nanoseconds => static::Seconds,
-            ($nanoseconds % 1000000) === 0 => static::Milliseconds,
+            ($nanoseconds % 1_000_000) === 0 => static::Milliseconds,
             ($nanoseconds % 1000) === 0 => static::Microseconds,
             default => static::Nanoseconds,
         };

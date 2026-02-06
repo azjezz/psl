@@ -34,7 +34,7 @@ final class MeanTest extends TestCase
                 ],
             ],
             [
-                7.357142857142858,
+                7.357_142_857_142_858,
                 [
                     18,
                     15,
@@ -53,7 +53,7 @@ final class MeanTest extends TestCase
                 ],
             ],
             [
-                26.785714285714285,
+                26.785_714_285_714_285,
                 [
                     19,
                     15,

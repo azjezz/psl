@@ -445,7 +445,7 @@ final class DateTimeTest extends TestCase
         static::assertSame(59, $new->getSeconds());
 
         $new = $datetime->minusNanoseconds(1);
-        static::assertSame(999999999, $new->getNanoseconds());
+        static::assertSame(999_999_999, $new->getNanoseconds());
     }
 
     public function testMinusMonthsEdgeCases(): void

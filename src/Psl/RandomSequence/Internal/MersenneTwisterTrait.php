@@ -18,7 +18,7 @@ trait MersenneTwisterTrait
 
     final public function __construct(int $seed)
     {
-        $state = [$seed & 0xffffffff];
+        $state = [$seed & 0xffff_ffff];
         $i = [$seed & 0xffff, ($seed >> 16) & 0xffff];
 
         for ($index = 1; $index < 624; $index++) {
@@ -60,12 +60,12 @@ trait MersenneTwisterTrait
 
         $y = $this->state[$this->index++];
 
-        $y ^= ($y >> 11) & 0x001fffff;
-        $y ^= ($y << 7) & 0x9d2c5680;
-        $y ^= ($y << 15) & 0xefc60000;
-        $y ^= ($y >> 18) & 0x00003fff;
+        $y ^= ($y >> 11) & 0x001f_ffff;
+        $y ^= ($y << 7) & 0x9d2c_5680;
+        $y ^= ($y << 15) & 0xefc6_0000;
+        $y ^= ($y >> 18) & 0x0000_3fff;
 
-        return ($y >> 1) & 0x7fffffff;
+        return ($y >> 1) & 0x7fff_ffff;
     }
 
     /**

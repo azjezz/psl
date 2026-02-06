@@ -30,7 +30,7 @@ function create_intl_calendar_from_date_time(
      */
     $calendar = IntlCalendar::createInstance(to_intl_timezone($timezone));
 
-    if (PHP_VERSION_ID >= 80300) {
+    if (PHP_VERSION_ID >= 80_300) {
         $calendar->setDateTime($year, $month - 1, $day, $hours, $minutes, $seconds);
     } else {
         // @codeCoverageIgnoreStart

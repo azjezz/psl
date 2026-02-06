@@ -22,11 +22,11 @@ final class SumFloatsTest extends TestCase
     {
         return [
             [
-                116.70000000000005,
+                116.700_000_000_000_05,
                 [
                     10.9,
                     5,
-                    ...Vec\range(0, 9.8798, 0.48),
+                    ...Vec\range(0, 9.879_8, 0.48),
                 ],
             ],
             [
