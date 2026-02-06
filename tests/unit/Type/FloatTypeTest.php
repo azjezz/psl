@@ -36,7 +36,7 @@ final class FloatTypeTest extends TypeTest
         yield [Math\INT64_MAX, (float) Math\INT64_MAX];
         yield [(string) Math\INT64_MAX, (float) Math\INT64_MAX];
         yield [$this->stringable((string) Math\INT64_MAX), (float) Math\INT64_MAX];
-        yield ['9223372036854775808', 9223372036854775808.0];
+        yield ['9223372036854775808', 9_223_372_036_854_775_808.0];
         yield ['007', 7.0];
         yield ['-0.1', -0.1];
         yield ['-.5', -.5];

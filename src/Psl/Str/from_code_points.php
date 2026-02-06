@@ -21,7 +21,7 @@ function from_code_points(int ...$code_points): string
 {
     $string = '';
     foreach ($code_points as $code) {
-        $code %= 0x200000;
+        $code %= 0x20_0000;
 
         if (0x80 > $code) {
             $string .= Byte\chr($code);
@@ -33,7 +33,7 @@ function from_code_points(int ...$code_points): string
             continue;
         }
 
-        if (0x10000 > $code) {
+        if (0x1_0000 > $code) {
             $string .= Byte\chr(0xE0 | ($code >> 12)) . Byte\chr(0x80 | (($code >> 6) & 0x3F));
             $string .= Byte\chr(0x80 | ($code & 0x3F));
             continue;

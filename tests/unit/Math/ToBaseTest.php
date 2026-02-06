@@ -27,7 +27,7 @@ final class ToBaseTest extends TestCase
             ],
             [
                 'pphlmw9v',
-                2014587925987,
+                2_014_587_925_987,
                 36,
             ],
             [

@@ -26,7 +26,7 @@ final class SecondsStyleTest extends TestCase
     public static function provideFromTimestampData(): iterable
     {
         yield [SecondsStyle::Seconds, Timestamp::fromParts(0)];
-        yield [SecondsStyle::Milliseconds, Timestamp::fromParts(0, 1000000)];
+        yield [SecondsStyle::Milliseconds, Timestamp::fromParts(0, 1_000_000)];
         yield [SecondsStyle::Microseconds, Timestamp::fromParts(0, 1000)];
         yield [SecondsStyle::Nanoseconds, Timestamp::fromParts(0, 1)];
     }

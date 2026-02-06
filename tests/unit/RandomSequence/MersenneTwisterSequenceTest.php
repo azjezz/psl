@@ -31,8 +31,8 @@ final class MersenneTwisterSequenceTest extends TestCase
 
     public function provideSeeds(): iterable
     {
-        yield [2147483649];
-        yield [45635];
+        yield [2_147_483_649];
+        yield [45_635];
         yield [5744];
         yield [456];
         yield [34];

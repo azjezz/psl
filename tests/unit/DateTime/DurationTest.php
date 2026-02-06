@@ -44,13 +44,13 @@ final class DurationTest extends TestCase
     {
         return [
             [0, 0, 0, 0, 0.0],
-            [0, 0, 0, 1, 2.777777777777778E-13],
+            [0, 0, 0, 1, 2.777_777_777_777_778E-13],
             [1, 0, 0, 0, 1.0],
             [1, 30, 0, 0, 1.5],
-            [2, 15, 30, 0, 2.2583333333333333],
+            [2, 15, 30, 0, 2.258_333_333_333_333_3],
             [-1, 0, 0, 0, -1.0],
             [-1, -30, 0, 0, -1.5],
-            [-2, -15, -30, 0, -2.2583333333333333],
+            [-2, -15, -30, 0, -2.258_333_333_333_333_3],
         ];
     }
 
@@ -72,7 +72,7 @@ final class DurationTest extends TestCase
     {
         return [
             [0, 0, 0, 0, 0.0],
-            [0, 0, 0, 1, 1.6666666666666667E-11],
+            [0, 0, 0, 1, 1.666_666_666_666_666_7E-11],
             [1, 0, 0, 0, 60.0],
             [1, 30, 0, 0, 90.0],
             [2, 15, 30, 0, 135.5],
@@ -100,13 +100,13 @@ final class DurationTest extends TestCase
     {
         return [
             [0, 0, 0, 0, 0.0],
-            [0, 0, 0, 1, 0.000000001],
-            [1, 0, 0, 0, 3600.0],
-            [1, 30, 0, 0, 5400.0],
-            [2, 15, 30, 0, 8130.0],
-            [-1, 0, 0, 0, -3600.0],
-            [-1, -30, 0, 0, -5400.0],
-            [-2, -15, -30, 0, -8130.0],
+            [0, 0, 0, 1, 0.000_000_001],
+            [1, 0, 0, 0, 3_600.0],
+            [1, 30, 0, 0, 5_400.0],
+            [2, 15, 30, 0, 8_130.0],
+            [-1, 0, 0, 0, -3_600.0],
+            [-1, -30, 0, 0, -5_400.0],
+            [-2, -15, -30, 0, -8_130.0],
         ];
     }
 
@@ -128,13 +128,13 @@ final class DurationTest extends TestCase
     {
         return [
             [0, 0, 0, 0, 0.0],
-            [0, 0, 0, 1, 0.000001],
-            [1, 0, 0, 0, 3600000.0],
-            [1, 30, 0, 0, 5400000.0],
-            [2, 15, 30, 0, 8130000.0],
-            [-1, 0, 0, 0, -3600000.0],
-            [-1, -30, 0, 0, -5400000.0],
-            [-2, -15, -30, 0, -8130000.0],
+            [0, 0, 0, 1, 0.000_001],
+            [1, 0, 0, 0, 3_600_000.0],
+            [1, 30, 0, 0, 5_400_000.0],
+            [2, 15, 30, 0, 8_130_000.0],
+            [-1, 0, 0, 0, -3_600_000.0],
+            [-1, -30, 0, 0, -5_400_000.0],
+            [-2, -15, -30, 0, -8_130_000.0],
         ];
     }
 
@@ -157,12 +157,12 @@ final class DurationTest extends TestCase
         return [
             [0, 0, 0, 0, 0.0],
             [0, 0, 0, 1, 0.001],
-            [1, 0, 0, 0, 3600000000.0],
-            [1, 30, 0, 0, 5400000000.0],
-            [2, 15, 30, 0, 8130000000.0],
-            [-1, 0, 0, 0, -3600000000.0],
-            [-1, -30, 0, 0, -5400000000.0],
-            [-2, -15, -30, 0, -8130000000.0],
+            [1, 0, 0, 0, 3_600_000_000.0],
+            [1, 30, 0, 0, 5_400_000_000.0],
+            [2, 15, 30, 0, 8_130_000_000.0],
+            [-1, 0, 0, 0, -3_600_000_000.0],
+            [-1, -30, 0, 0, -5_400_000_000.0],
+            [-2, -15, -30, 0, -8_130_000_000.0],
         ];
     }
 
@@ -202,10 +202,10 @@ final class DurationTest extends TestCase
             [0, 0, 1, 42],
             DateTime\Duration::nanoseconds(DateTime\NANOSECONDS_PER_SECOND + 42)->getParts(),
         );
-        static::assertSame([0, 0, 0, 42000], DateTime\Duration::microseconds(42)->getParts());
-        static::assertSame([0, 0, 1, 42000], DateTime\Duration::microseconds(1000042)->getParts());
-        static::assertSame([0, 0, 0, 42000000], DateTime\Duration::milliseconds(42)->getParts());
-        static::assertSame([0, 0, 1, 42000000], DateTime\Duration::milliseconds(1042)->getParts());
+        static::assertSame([0, 0, 0, 42_000], DateTime\Duration::microseconds(42)->getParts());
+        static::assertSame([0, 0, 1, 42_000], DateTime\Duration::microseconds(1_000_042)->getParts());
+        static::assertSame([0, 0, 0, 42_000_000], DateTime\Duration::milliseconds(42)->getParts());
+        static::assertSame([0, 0, 1, 42_000_000], DateTime\Duration::milliseconds(1042)->getParts());
     }
 
     /**
@@ -364,15 +364,15 @@ final class DurationTest extends TestCase
             [0, 0, 0, 0, '0 second(s)'],
             [0, 0, 0, 42, '0 second(s)'], // rounded because default $max_decimals = 3
             [0, 0, 1, 42, '1 second(s)'],
-            [0, 0, 1, 20000000, '1.02 second(s)'],
+            [0, 0, 1, 20_000_000, '1.02 second(s)'],
             [1, 2, 0, 0, '1 hour(s), 2 minute(s)'],
             [1, 0, 3, 0, '1 hour(s), 0 minute(s), 3 second(s)'],
             [0, 2, 3, 0, '2 minute(s), 3 second(s)'],
             [1, 2, 3, 0, '1 hour(s), 2 minute(s), 3 second(s)'],
-            [1, 0, 0, 42000000, '1 hour(s), 0 minute(s), 0.042 second(s)'],
+            [1, 0, 0, 42_000_000, '1 hour(s), 0 minute(s), 0.042 second(s)'],
             [-42, 0, -42, 0, '-42 hour(s), 0 minute(s), -42 second(s)'],
-            [-42, 0, -42, -420000000, '-42 hour(s), 0 minute(s), -42.42 second(s)'],
-            [0, 0, 0, -420000000, '-0.42 second(s)'],
+            [-42, 0, -42, -420_000_000, '-42 hour(s), 0 minute(s), -42.42 second(s)'],
+            [0, 0, 0, -420_000_000, '-0.42 second(s)'],
         ];
     }
 
@@ -386,7 +386,7 @@ final class DurationTest extends TestCase
 
     public function testSerialization(): void
     {
-        $timeInterval = DateTime\Duration::fromParts(1, 30, 45, 500000000);
+        $timeInterval = DateTime\Duration::fromParts(1, 30, 45, 500_000_000);
         $serialized = serialize($timeInterval);
         $deserialized = unserialize($serialized);
 
@@ -395,10 +395,13 @@ final class DurationTest extends TestCase
 
     public function testJsonEncoding(): void
     {
-        $timeInterval = DateTime\Duration::fromParts(1, 30, 45, 500000000);
+        $timeInterval = DateTime\Duration::fromParts(1, 30, 45, 500_000_000);
         $jsonEncoded = Json\encode($timeInterval);
         $jsonDecoded = Json\decode($jsonEncoded);
 
-        static::assertSame(['hours' => 1, 'minutes' => 30, 'seconds' => 45, 'nanoseconds' => 500000000], $jsonDecoded);
+        static::assertSame(
+            ['hours' => 1, 'minutes' => 30, 'seconds' => 45, 'nanoseconds' => 500_000_000],
+            $jsonDecoded,
+        );
     }
 }

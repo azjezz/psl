@@ -11,6 +11,6 @@ final class FormatNumberTest extends TestCase
 {
     public function testFormatNumber(): void
     {
-        static::assertSame('487 891,49', Str\format_number(487891.4879, 2, ',', ' '));
+        static::assertSame('487 891,49', Str\format_number(487_891.487_9, 2, ',', ' '));
     }
 }

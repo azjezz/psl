@@ -53,7 +53,7 @@ Async\main(static function (): int {
     $i = 0;
     try {
         do {
-            $chunk = $input->read(65536);
+            $chunk = $input->read(65_536);
             if ('' === $chunk) {
                 break;
             }
@@ -68,7 +68,7 @@ Async\main(static function (): int {
     }
 
     $duration = DateTime\Timestamp::monotonic()->since($start);
-    $bytes = $i * 65536;
+    $bytes = $i * 65_536;
     $bytes_formatted = Math\round((($bytes / 1024) / 1024) / $duration->getTotalSeconds(), 1);
 
     IO\write_error_line('read %d byte(s) in %s => %dMiB/s', $bytes, $duration->toString(), $bytes_formatted);

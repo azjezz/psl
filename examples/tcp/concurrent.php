@@ -14,7 +14,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 Async\main(static function (): int {
     Async\concurrently([
         'server' => static function (): void {
-            $server = TCP\Server::create('localhost', 91337);
+            $server = TCP\Server::create('localhost', 91_337);
 
             IO\write_error_line('< server is listening.');
 
@@ -40,7 +40,7 @@ Async\main(static function (): int {
         'client' => static function (): void {
             IO\write_error_line('> client connecting.');
 
-            $client = TCP\connect('localhost', 91337);
+            $client = TCP\connect('localhost', 91_337);
 
             IO\write_error_line('> client connected.');
             IO\write_error_line('> sending request.');

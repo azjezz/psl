@@ -18,7 +18,7 @@ final class U16TypeTest extends TypeTest
     #[\Override]
     public function getValidCoercions(): iterable
     {
-        yield [65535, 65535];
+        yield [65_535, 65_535];
         yield [0, 0];
         yield ['0', 0];
         yield ['123', 123];

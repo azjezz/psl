@@ -154,50 +154,50 @@ final class TimestampTest extends TestCase
     public function provideFormatParsingData(): iterable
     {
         yield [
-            1711917897,
+            1_711_917_897,
             FormatPattern::FullDateTime,
             Timezone::UTC,
             Locale::English,
             'Sunday, March 31, 2024 20:44:57',
         ];
         yield [
-            1711917897,
+            1_711_917_897,
             FormatPattern::FullDateTime,
             Timezone::AsiaShanghai,
             Locale::ChineseTraditional,
             '星期一, 4月 01, 2024 04:44:57',
         ];
         yield [
-            1711917897,
+            1_711_917_897,
             FormatPattern::Cookie,
             Timezone::AmericaNewYork,
             Locale::EnglishUnitedStates,
             'Sunday, 31-Mar-2024 16:44:57 EDT',
         ];
         yield [
-            1711917897,
+            1_711_917_897,
             FormatPattern::Http,
             Timezone::EuropeVienna,
             Locale::GermanAustria,
             'So., 31 März 2024 22:44:57 MESZ',
         ];
         yield [
-            1711917897,
+            1_711_917_897,
             FormatPattern::Email,
             Timezone::EuropeMadrid,
             Locale::SpanishSpain,
             'dom, 31 mar 2024 22:44:57 GMT+02:00',
         ];
         yield [
-            1711917897,
+            1_711_917_897,
             FormatPattern::SqlDateTime,
             Timezone::AfricaTunis,
             Locale::ArabicTunisia,
             '2024-03-31 21:44:57',
         ];
-        yield [1711832400, FormatPattern::IsoOrdinalDate, Timezone::EuropeMoscow, Locale::RussianRussia, '2024-091'];
+        yield [1_711_832_400, FormatPattern::IsoOrdinalDate, Timezone::EuropeMoscow, Locale::RussianRussia, '2024-091'];
         yield [
-            1711917897,
+            1_711_917_897,
             FormatPattern::Iso8601,
             Timezone::EuropeLondon,
             Locale::EnglishUnitedKingdom,
@@ -459,15 +459,15 @@ final class TimestampTest extends TestCase
 
     public function testJsonSerialization(): void
     {
-        $serialized = Timestamp::fromParts(1711917232, 12)->jsonSerialize();
+        $serialized = Timestamp::fromParts(1_711_917_232, 12)->jsonSerialize();
 
-        static::assertSame(1711917232, $serialized['seconds']);
+        static::assertSame(1_711_917_232, $serialized['seconds']);
         static::assertSame(12, $serialized['nanoseconds']);
     }
 
     public function testToRfc3999(): void
     {
-        $timestamp = Timestamp::fromParts(1711917232, 12);
+        $timestamp = Timestamp::fromParts(1_711_917_232, 12);
 
         static::assertSame('2024-03-31T20:33:52.12+00:00', $timestamp->toRfc3339());
         static::assertSame('2024-03-31T20:33:52+00:00', $timestamp->toRfc3339(seconds_style: SecondsStyle::Seconds));

@@ -18,11 +18,11 @@ final class U32TypeTest extends TypeTest
     #[\Override]
     public function getValidCoercions(): iterable
     {
-        yield [4294967295, 4294967295];
+        yield [4_294_967_295, 4_294_967_295];
         yield [0, 0];
         yield ['0', 0];
         yield ['123', 123];
-        yield [$this->stringable('4294967295'), 4294967295];
+        yield [$this->stringable('4294967295'), 4_294_967_295];
         yield ['7', 7];
         yield ['07', 7];
         yield ['007', 7];
@@ -39,13 +39,13 @@ final class U32TypeTest extends TypeTest
     #[\Override]
     public function getInvalidCoercions(): iterable
     {
-        yield [-4294967295];
+        yield [-4_294_967_295];
         yield [1.23];
         yield ['1.23'];
         yield ['1e123'];
         yield [''];
         yield [[]];
-        yield [[4294967295]];
+        yield [[4_294_967_295]];
         yield [null];
         yield [false];
         yield [$this->stringable('1.23')];

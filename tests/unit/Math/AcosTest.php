@@ -22,9 +22,9 @@ final class AcosTest extends TestCase
     public function provideData(): array
     {
         return [
-            [0.0,                1.0],
-            [1.2661036727794992, 0.3],
-            [1.0471975511965979, 0.5],
+            [0.0,                     1.0],
+            [1.266_103_672_779_499_2, 0.3],
+            [1.047_197_551_196_597_9, 0.5],
         ];
     }
 }

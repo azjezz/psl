@@ -23,13 +23,13 @@ final class TimezoneTest extends TestCase
 
     public function testGetOffset(): void
     {
-        $temporal = Timestamp::fromParts(seconds: 1716956903);
+        $temporal = Timestamp::fromParts(seconds: 1_716_956_903);
 
         static::assertSame(3600., Timezone::EuropeLondon->getOffset($temporal)->getTotalSeconds());
-        static::assertSame(-14400., Timezone::AmericaNewYork->getOffset($temporal)->getTotalSeconds());
-        static::assertSame(28800., Timezone::AsiaShanghai->getOffset($temporal)->getTotalSeconds());
-        static::assertSame(12600., Timezone::Plus0330->getOffset($temporal)->getTotalSeconds());
-        static::assertSame(-12600., Timezone::Minus0330->getOffset($temporal)->getTotalSeconds());
+        static::assertSame(-14_400., Timezone::AmericaNewYork->getOffset($temporal)->getTotalSeconds());
+        static::assertSame(28_800., Timezone::AsiaShanghai->getOffset($temporal)->getTotalSeconds());
+        static::assertSame(12_600., Timezone::Plus0330->getOffset($temporal)->getTotalSeconds());
+        static::assertSame(-12_600., Timezone::Minus0330->getOffset($temporal)->getTotalSeconds());
         static::assertSame(3600., Timezone::Plus0100->getOffset($temporal)->getTotalSeconds());
         static::assertSame(-3600., Timezone::Minus0100->getOffset($temporal)->getTotalSeconds());
 
@@ -88,7 +88,7 @@ final class TimezoneTest extends TestCase
     public static function provideRawOffsetData(): iterable
     {
         yield [Timezone::EuropeLondon, 0];
-        yield [Timezone::AmericaNewYork, -18000];
-        yield [Timezone::AsiaShanghai, 28800];
+        yield [Timezone::AmericaNewYork, -18_000];
+        yield [Timezone::AsiaShanghai, 28_800];
     }
 }

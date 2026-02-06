@@ -111,7 +111,7 @@ final class MemoryHandleTest extends TestCase
     public function testReadAtInvalidOffset(): void
     {
         $h = new IO\MemoryHandle('herpderp');
-        $h->seek(99999);
+        $h->seek(99_999);
         static::assertSame('', $h->read());
     }
 

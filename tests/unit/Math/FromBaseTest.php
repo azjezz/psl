@@ -27,7 +27,7 @@ final class FromBaseTest extends TestCase
                 2,
             ],
             [
-                2014587925987,
+                2_014_587_925_987,
                 'pphlmw9v',
                 36,
             ],
