@@ -1532,6 +1532,22 @@ Can coerce from:
 
 ---
 
+#### [uuid](uuid.php)
+
+```hack
+@pure
+Type\uuid(): TypeInterface<non-empty-string>
+```
+
+Provides a type that can parse a UUID.
+
+Can coerce from:
+
+* `string`
+* `\Stringable`
+
+---
+
 #### [vec](vec.php)
 
 ```hack
