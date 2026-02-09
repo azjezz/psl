@@ -8,14 +8,10 @@ use Psl;
 use Psl\Str;
 
 /** @param non-empty-lowercase-string $_foo */
-function take_non_empty_lowercase_string(string $_foo): void
-{
-}
+function take_non_empty_lowercase_string(string $_foo): void {}
 
 /** @param lowercase-string $_foo */
-function take_lowercase_string(string $_foo): void
-{
-}
+function take_lowercase_string(string $_foo): void {}
 
 /** @return non-empty-string */
 function return_non_empty_string(): string

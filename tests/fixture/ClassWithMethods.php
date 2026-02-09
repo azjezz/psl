@@ -9,19 +9,11 @@ namespace Psl\Tests\Fixture;
  */
 final class ClassWithMethods
 {
-    public function publicMethod(): void
-    {
-    }
+    public function publicMethod(): void {}
 
-    protected function protectedMethod(): void
-    {
-    }
+    protected function protectedMethod(): void {}
 
-    private function privateMethod(): void
-    {
-    }
+    private function privateMethod(): void {}
 
-    public static function publicStaticMethod(): void
-    {
-    }
+    public static function publicStaticMethod(): void {}
 }

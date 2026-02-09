@@ -8,13 +8,12 @@ use Psl\Collection\Map;
 use Psl\Collection\Vector;
 use Psl\Result\ResultInterface;
 use Psl\Type;
+use stdClass;
 
 /**
  * @param Map&ResultInterface&stdClass&Vector $_value
  */
-function takes_valid_intersection(Map&ResultInterface&stdClass&Vector $_value): void
-{
-}
+function takes_valid_intersection(Map&ResultInterface&stdClass&Vector $_value): void {}
 
 function test(): void
 {
