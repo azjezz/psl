@@ -34,6 +34,8 @@ function returns_non_null_coercion(null|string $state): string
 
 /**
  * @return true
+ *
+ * @mago-expect analysis:redundant-type-comparison
  */
 function returns_truthy_match(string $state): bool
 {
@@ -42,6 +44,8 @@ function returns_truthy_match(string $state): bool
 
 /**
  * @return false
+ *
+ * @mago-expect analysis:redundant-type-comparison
  */
 function returns_falsy_match(null $state = null): bool
 {

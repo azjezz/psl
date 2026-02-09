@@ -26,24 +26,16 @@ function return_lowercase_string(): string
 }
 
 /** @param non-empty-lowercase-string $_foo */
-function take_non_empty_lowercase_string(string $_foo): void
-{
-}
+function take_non_empty_lowercase_string(string $_foo): void {}
 
 /** @param non-empty-string $_foo */
-function take_non_empty_string(string $_foo): void
-{
-}
+function take_non_empty_string(string $_foo): void {}
 
 /** @param lowercase-string $_foo */
-function take_lowercase_string(string $_foo): void
-{
-}
+function take_lowercase_string(string $_foo): void {}
 
 /** @param "hhh" $_x */
-function take_triple_h_string(string $_x): void
-{
-}
+function take_triple_h_string(string $_x): void {}
 
 /**
  * @throws Psl\Exception\InvariantViolationException

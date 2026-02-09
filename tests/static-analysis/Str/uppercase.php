@@ -8,9 +8,7 @@ use Psl;
 use Psl\Str;
 
 /** @param non-empty-string $_foo */
-function take_non_empty_string(string $_foo): void
-{
-}
+function take_non_empty_string(string $_foo): void {}
 
 /** @return non-empty-string */
 function return_non_empty_string(): string

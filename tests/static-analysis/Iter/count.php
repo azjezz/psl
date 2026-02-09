@@ -8,14 +8,10 @@ use Psl\Iter;
 use Psl\Math;
 
 /** @param positive-int $_foo */
-function take_positive_integer(int $_foo): void
-{
-}
+function take_positive_integer(int $_foo): void {}
 
 /** @param 0 $_foo */
-function take_zero(int $_foo): void
-{
-}
+function take_zero(int $_foo): void {}
 
 /** @return non-empty-list<int> */
 function return_non_empty_list(): array
@@ -41,7 +37,7 @@ function return_non_empty_keyed_array(): array
     return [1 => 'h', 2 => 'c'];
 }
 
-/** @return array<empty, empty> */
+/** @return array{} */
 function return_array(): array
 {
     return [];

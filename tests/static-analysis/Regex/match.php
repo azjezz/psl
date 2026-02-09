@@ -7,9 +7,7 @@ namespace Psl\Tests\StaticAnalysis\Regex;
 use Psl;
 use Psl\Regex;
 
-function take_string(string $_foo): void
-{
-}
+function take_string(string $_foo): void {}
 
 /**
  * @throws Regex\Exception\ExceptionInterface

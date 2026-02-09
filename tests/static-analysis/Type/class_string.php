@@ -10,9 +10,7 @@ use Psl\Type;
 /**
  * @param class-string<Psl\Collection\CollectionInterface> $_foo
  */
-function take_collection_classname(string $_foo): void
-{
-}
+function take_collection_classname(string $_foo): void {}
 
 /**
  * @throws Psl\Type\Exception\AssertException

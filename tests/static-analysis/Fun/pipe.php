@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\StaticAnalysis\Fun;
 
+use Psl;
 use Psl\Exception\InvariantViolationException;
 
 use function Psl\Fun\pipe;

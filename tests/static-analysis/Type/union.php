@@ -9,9 +9,7 @@ use Psl\Type;
 /**
  * @param 'PENDING'|'PROCESSING'|'COMPLETED'|'ERROR' $_state
  */
-function takes_valid_state(string $_state): void
-{
-}
+function takes_valid_state(string $_state): void {}
 
 function test(): void
 {
