@@ -193,6 +193,7 @@ function get_all_components(): array
         'Psl\\DataStructure',
         'Psl\\DateTime',
         'Psl\\Dict',
+        'Psl\\Either',
         'Psl\\Encoding\\Base64',
         'Psl\\Encoding\\Hex',
         'Psl\\Env',
