@@ -129,8 +129,7 @@ final class Reader implements ReadHandleInterface
     }
 
     /**
-     * @returns string the read data on success,
-     *  or null if the end of file is reached before finding the current line terminator.
+     * @return string|null the read data on success, or null if the end of file is reached before finding the current line terminator.
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
