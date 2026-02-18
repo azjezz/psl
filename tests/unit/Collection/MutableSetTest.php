@@ -7,7 +7,7 @@ namespace Psl\Tests\Unit\Collection;
 use Psl\Collection\Exception;
 use Psl\Collection\MutableSet;
 
-final class MutableSetTest extends AbstractSetTest
+final class MutableSetTest extends AbstractSetTestCase
 {
     /**
      * The Set class used for values, keys .. etc.

@@ -14,9 +14,9 @@ use Psl\Vec;
 use RuntimeException;
 
 /**
- * @extends TypeTest<VectorInterface<mixed>>
+ * @extends TypeTestCase<VectorInterface<mixed>>
  */
-final class VectorTypeTest extends TypeTest
+final class VectorTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

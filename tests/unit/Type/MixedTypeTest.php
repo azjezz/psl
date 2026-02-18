@@ -7,7 +7,7 @@ namespace Psl\Tests\Unit\Type;
 use Psl\Math;
 use Psl\Type;
 
-final class MixedTypeTest extends TypeTest
+final class MixedTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

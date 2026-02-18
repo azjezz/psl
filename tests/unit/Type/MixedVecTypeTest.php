@@ -10,7 +10,7 @@ use Psl\Str;
 use Psl\Type;
 use Psl\Vec;
 
-final class MixedVecTypeTest extends TypeTest
+final class MixedVecTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

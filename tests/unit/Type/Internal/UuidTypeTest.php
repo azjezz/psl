@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type\Internal;
 
-use Psl\Tests\Unit\Type\TypeTest;
+use Psl\Tests\Unit\Type\TypeTestCase;
 use Psl\Type;
 
 use const STDIN;
 
 /**
- * @extends TypeTest<non-empty-string>
+ * @extends TypeTestCase<non-empty-string>
  */
-final class UuidTypeTest extends TypeTest
+final class UuidTypeTest extends TypeTestCase
 {
     /**
      * @return Type\Type<non-empty-string>

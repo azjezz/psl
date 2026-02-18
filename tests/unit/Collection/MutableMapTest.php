@@ -9,7 +9,7 @@ use Psl\Collection\Exception;
 use Psl\Collection\MutableMap;
 use Psl\Collection\MutableVector;
 
-final class MutableMapTest extends AbstractMapTest
+final class MutableMapTest extends AbstractMapTestCase
 {
     /**
      * @var class-string<MutableMap>

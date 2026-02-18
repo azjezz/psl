@@ -10,7 +10,7 @@ use Psl\Type;
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
 
-final class IntRangeTypeTest extends TypeTest
+final class IntRangeTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

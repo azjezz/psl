@@ -13,9 +13,9 @@ use Psl\Vec;
 use RuntimeException;
 
 /**
- * @extends TypeTest<MutableSetInterface<array-key>>
+ * @extends TypeTestCase<MutableSetInterface<array-key>>
  */
-final class MutableSetTypeTest extends TypeTest
+final class MutableSetTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

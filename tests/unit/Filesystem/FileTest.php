@@ -10,7 +10,7 @@ use Psl\Str;
 
 use function time;
 
-final class FileTest extends AbstractFilesystemTest
+final class FileTest extends AbstractFilesystemTestCase
 {
     protected string $function = 'file';
 

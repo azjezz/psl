@@ -7,9 +7,9 @@ namespace Psl\Tests\Unit\Type;
 use Psl\Type;
 
 /**
- * @extends TypeTest<non-empty-string>
+ * @extends TypeTestCase<non-empty-string>
  */
-final class NonEmptyStringTypeTest extends TypeTest
+final class NonEmptyStringTypeTest extends TypeTestCase
 {
     /**
      * @return Type\Type<non-empty-string>

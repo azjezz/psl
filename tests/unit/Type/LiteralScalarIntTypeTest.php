@@ -6,7 +6,7 @@ namespace Psl\Tests\Unit\Type;
 
 use Psl\Type;
 
-final class LiteralScalarIntTypeTest extends TypeTest
+final class LiteralScalarIntTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

@@ -15,7 +15,7 @@ use Psl\Vec;
 /**
  * @template T
  */
-abstract class TypeTest extends TestCase
+abstract class TypeTestCase extends TestCase
 {
     /**
      * @return TypeInterface<T>

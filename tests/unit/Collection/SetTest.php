@@ -6,7 +6,7 @@ namespace Psl\Tests\Unit\Collection;
 
 use Psl\Collection\Set;
 
-final class SetTest extends AbstractSetTest
+final class SetTest extends AbstractSetTestCase
 {
     /**
      * The Set class used for values, keys .. etc.

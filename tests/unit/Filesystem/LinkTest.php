@@ -7,7 +7,7 @@ namespace Psl\Tests\Unit\Filesystem;
 use Psl\Filesystem;
 use Psl\Str;
 
-final class LinkTest extends AbstractFilesystemTest
+final class LinkTest extends AbstractFilesystemTestCase
 {
     protected string $function = 'link';
 

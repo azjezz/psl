@@ -11,7 +11,7 @@ use Psl\OS;
 use Psl\Str;
 use Psl\Type;
 
-abstract class AbstractFilesystemTest extends TestCase
+abstract class AbstractFilesystemTestCase extends TestCase
 {
     protected string $function;
     protected string $cacheDirectory;

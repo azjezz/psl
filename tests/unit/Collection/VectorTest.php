@@ -6,7 +6,7 @@ namespace Psl\Tests\Unit\Collection;
 
 use Psl\Collection\Vector;
 
-final class VectorTest extends AbstractVectorTest
+final class VectorTest extends AbstractVectorTestCase
 {
     /**
      * The Vector class used for values, keys .. etc.

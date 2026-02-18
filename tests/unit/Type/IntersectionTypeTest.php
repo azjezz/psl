@@ -9,7 +9,7 @@ use Psl\Collection\CollectionInterface;
 use Psl\Collection\IndexAccessInterface;
 use Psl\Type;
 
-final class IntersectionTypeTest extends TypeTest
+final class IntersectionTypeTest extends TypeTestCase
 {
     public function testIntersectionLeft(): void
     {

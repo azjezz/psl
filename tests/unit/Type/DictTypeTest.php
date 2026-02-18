@@ -13,9 +13,9 @@ use Psl\Vec;
 use RuntimeException;
 
 /**
- * @extends TypeTest<array<array-key, mixed>>
+ * @extends TypeTestCase<array<array-key, mixed>>
  */
-final class DictTypeTest extends TypeTest
+final class DictTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

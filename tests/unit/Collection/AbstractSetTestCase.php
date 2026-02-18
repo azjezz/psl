@@ -9,7 +9,7 @@ use Psl\Collection;
 use Psl\Collection\SetInterface;
 use Psl\Str;
 
-abstract class AbstractSetTest extends TestCase
+abstract class AbstractSetTestCase extends TestCase
 {
     /**
      * The set class used for values, keys .. etc.

@@ -8,7 +8,7 @@ use Psl\Collection\CollectionInterface;
 use Psl\Collection\IndexAccessInterface;
 use Psl\Type;
 
-final class UnionTypeTest extends TypeTest
+final class UnionTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

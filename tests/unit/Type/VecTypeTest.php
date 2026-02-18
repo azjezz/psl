@@ -13,9 +13,9 @@ use Psl\Vec;
 use RuntimeException;
 
 /**
- * @extends TypeTest<list<mixed>>
+ * @extends TypeTestCase<list<mixed>>
  */
-final class VecTypeTest extends TypeTest
+final class VecTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getValidCoercions(): iterable

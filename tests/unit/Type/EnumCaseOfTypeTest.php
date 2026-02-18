@@ -9,7 +9,7 @@ use Psl\Tests\Fixture\StringEnum;
 use Psl\Tests\Fixture\UnitEnum;
 use Psl\Type;
 
-final class EnumCaseOfTypeTest extends TypeTest
+final class EnumCaseOfTypeTest extends TypeTestCase
 {
     #[Override]
     public function getType(): Type\TypeInterface

@@ -7,9 +7,9 @@ namespace Psl\Tests\Unit\Type;
 use Psl\Type;
 
 /**
- * @extends TypeTest<numeric-string>
+ * @extends TypeTestCase<numeric-string>
  */
-final class NumericStringTypeTest extends TypeTest
+final class NumericStringTypeTest extends TypeTestCase
 {
     /**
      * @return Type\Type<numeric-string>

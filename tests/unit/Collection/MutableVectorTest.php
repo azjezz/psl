@@ -8,7 +8,7 @@ use Psl\Collection;
 use Psl\Collection\Exception;
 use Psl\Collection\MutableVector;
 
-final class MutableVectorTest extends AbstractVectorTest
+final class MutableVectorTest extends AbstractVectorTestCase
 {
     /**
      * The Vector class used for values, keys .. etc.

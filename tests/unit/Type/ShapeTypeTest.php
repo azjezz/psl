@@ -12,9 +12,9 @@ use Psl\Type;
 use RuntimeException;
 
 /**
- * @extends TypeTest<array>
+ * @extends TypeTestCase<array>
  */
-final class ShapeTypeTest extends TypeTest
+final class ShapeTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface
