@@ -443,6 +443,7 @@ final class Loader
         'Psl\\Type\\f32' => 'Psl/Type/f32.php',
         'Psl\\Type\\f64' => 'Psl/Type/f64.php',
         'Psl\\Type\\union' => 'Psl/Type/union.php',
+        'Psl\\Type\\uuid' => 'Psl/Type/uuid.php',
         'Psl\\Type\\vec' => 'Psl/Type/vec.php',
         'Psl\\Type\\dict' => 'Psl/Type/dict.php',
         'Psl\\Type\\is_nan' => 'Psl/Type/is_nan.php',
