@@ -7,7 +7,7 @@ namespace Psl\Tests\Unit\Filesystem;
 use Psl\Filesystem;
 use Psl\Str;
 
-final class PermissionsTest extends AbstractFilesystemTest
+final class PermissionsTest extends AbstractFilesystemTestCase
 {
     protected string $function = 'permissions';
 

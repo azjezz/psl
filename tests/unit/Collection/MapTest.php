@@ -7,7 +7,7 @@ namespace Psl\Tests\Unit\Collection;
 use Psl\Collection\Map;
 use Psl\Collection\Vector;
 
-final class MapTest extends AbstractMapTest
+final class MapTest extends AbstractMapTestCase
 {
     /**
      * @var class-string<Map>

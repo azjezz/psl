@@ -7,7 +7,7 @@ namespace Psl\Tests\Unit\Type;
 use Psl\Math;
 use Psl\Type;
 
-final class FloatTypeTest extends TypeTest
+final class FloatTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

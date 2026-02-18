@@ -8,9 +8,9 @@ use Psl\Math;
 use Psl\Type;
 
 /**
- * @extends TypeTest<positive-int>
+ * @extends TypeTestCase<positive-int>
  */
-final class PositiveIntTypeTest extends TypeTest
+final class PositiveIntTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

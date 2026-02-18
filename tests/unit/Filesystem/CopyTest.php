@@ -8,7 +8,7 @@ use Psl\File;
 use Psl\Filesystem;
 use Psl\Str;
 
-final class CopyTest extends AbstractFilesystemTest
+final class CopyTest extends AbstractFilesystemTestCase
 {
     protected string $function = 'copy';
 

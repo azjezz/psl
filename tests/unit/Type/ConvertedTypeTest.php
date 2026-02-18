@@ -9,7 +9,7 @@ use Psl\Str;
 use Psl\Type;
 use RuntimeException;
 
-final class ConvertedTypeTest extends TypeTest
+final class ConvertedTypeTest extends TypeTestCase
 {
     private const string DATE_FORMAT = 'Y-m-d H:i:s';
 

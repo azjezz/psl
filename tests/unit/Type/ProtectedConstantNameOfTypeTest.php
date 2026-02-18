@@ -7,7 +7,7 @@ namespace Psl\Tests\Unit\Type;
 use Psl\Tests\Fixture\ClassWithConstants;
 use Psl\Type;
 
-final class ProtectedConstantNameOfTypeTest extends TypeTest
+final class ProtectedConstantNameOfTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

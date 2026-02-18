@@ -9,9 +9,9 @@ use Psl\File;
 use Psl\Filesystem;
 use Psl\OS;
 use Psl\Str;
-use Psl\Tests\Unit\Filesystem\AbstractFilesystemTest;
+use Psl\Tests\Unit\Filesystem\AbstractFilesystemTestCase;
 
-final class ReadWriteTest extends AbstractFilesystemTest
+final class ReadWriteTest extends AbstractFilesystemTestCase
 {
     protected string $function = 'file';
 

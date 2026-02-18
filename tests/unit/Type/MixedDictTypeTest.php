@@ -14,7 +14,7 @@ use RuntimeException;
 use SplObjectStorage;
 use stdClass;
 
-final class MixedDictTypeTest extends TypeTest
+final class MixedDictTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

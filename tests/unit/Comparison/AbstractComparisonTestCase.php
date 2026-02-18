@@ -10,7 +10,7 @@ use Psl\Comparison\Comparable;
 use Psl\Comparison\Exception\IncomparableException;
 use Psl\Comparison\Order;
 
-abstract class AbstractComparisonTest extends TestCase
+abstract class AbstractComparisonTestCase extends TestCase
 {
     public static function provideComparisonCases(): Generator
     {

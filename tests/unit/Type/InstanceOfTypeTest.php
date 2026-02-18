@@ -8,7 +8,7 @@ use Psl\Collection;
 use Psl\Collection\CollectionInterface;
 use Psl\Type;
 
-final class InstanceOfTypeTest extends TypeTest
+final class InstanceOfTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

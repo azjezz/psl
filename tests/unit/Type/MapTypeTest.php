@@ -14,9 +14,9 @@ use Psl\Vec;
 use RuntimeException;
 
 /**
- * @extends TypeTest<Collection\MapInterface<array-key, mixed>>
+ * @extends TypeTestCase<Collection\MapInterface<array-key, mixed>>
  */
-final class MapTypeTest extends TypeTest
+final class MapTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

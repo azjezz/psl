@@ -7,7 +7,7 @@ namespace Psl\Tests\Unit\Type;
 use Psl\Tests\Fixture\ClassWithProperties;
 use Psl\Type;
 
-final class PublicPropertyNameOfTypeTest extends TypeTest
+final class PublicPropertyNameOfTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

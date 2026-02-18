@@ -11,9 +11,9 @@ use Psl\Type;
 use const STDIN;
 
 /**
- * @extends TypeTest<value-of<IntegerEnum>>
+ * @extends TypeTestCase<value-of<IntegerEnum>>
  */
-final class IntegerBackedEnumValueTypeTest extends TypeTest
+final class IntegerBackedEnumValueTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

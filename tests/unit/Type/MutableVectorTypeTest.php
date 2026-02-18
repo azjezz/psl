@@ -14,9 +14,9 @@ use Psl\Vec;
 use RuntimeException;
 
 /**
- * @extends TypeTest<MutableVectorInterface<mixed>>
+ * @extends TypeTestCase<MutableVectorInterface<mixed>>
  */
-final class MutableVectorTypeTest extends TypeTest
+final class MutableVectorTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

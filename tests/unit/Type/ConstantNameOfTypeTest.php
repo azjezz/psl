@@ -8,7 +8,7 @@ use Override;
 use Psl\Tests\Fixture\ClassWithConstants;
 use Psl\Type;
 
-final class ConstantNameOfTypeTest extends TypeTest
+final class ConstantNameOfTypeTest extends TypeTestCase
 {
     #[Override]
     public function getType(): Type\TypeInterface

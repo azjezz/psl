@@ -9,7 +9,7 @@ use Psl\Collection;
 use Psl\Collection\VectorInterface;
 use Psl\Str;
 
-abstract class AbstractVectorTest extends TestCase
+abstract class AbstractVectorTestCase extends TestCase
 {
     /**
      * The Vector class used for values, keys .. etc.

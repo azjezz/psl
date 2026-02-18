@@ -12,9 +12,9 @@ use Psl\Vec;
 use RuntimeException;
 
 /**
- * @extends TypeTest<iterable<int, int>>
+ * @extends TypeTestCase<iterable<int, int>>
  */
-final class IterableTypeTest extends TypeTest
+final class IterableTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

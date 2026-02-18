@@ -6,7 +6,7 @@ namespace Psl\Tests\Unit\Type;
 
 use Psl\Type;
 
-final class ResourceTypeTest extends TypeTest
+final class ResourceTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

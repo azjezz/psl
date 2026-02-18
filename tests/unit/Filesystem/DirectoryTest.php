@@ -9,7 +9,7 @@ use Psl\Filesystem;
 use Psl\Str;
 use Psl\Vec;
 
-final class DirectoryTest extends AbstractFilesystemTest
+final class DirectoryTest extends AbstractFilesystemTestCase
 {
     protected string $function = 'directory';
 

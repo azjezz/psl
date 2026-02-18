@@ -11,7 +11,7 @@ use Psl\Collection\VectorInterface;
 use Psl\Json;
 use Psl\Str;
 
-abstract class AbstractMapTest extends TestCase
+abstract class AbstractMapTestCase extends TestCase
 {
     /**
      * The Map class being currently tested.

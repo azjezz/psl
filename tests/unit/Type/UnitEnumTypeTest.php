@@ -9,9 +9,9 @@ use Psl\Tests\Fixture\UnitEnum;
 use Psl\Type;
 
 /**
- * @extends TypeTest<UnitEnum>
+ * @extends TypeTestCase<UnitEnum>
  */
-final class UnitEnumTypeTest extends TypeTest
+final class UnitEnumTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

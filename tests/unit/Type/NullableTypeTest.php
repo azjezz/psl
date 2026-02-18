@@ -6,7 +6,7 @@ namespace Psl\Tests\Unit\Type;
 
 use Psl\Type;
 
-final class NullableTypeTest extends TypeTest
+final class NullableTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

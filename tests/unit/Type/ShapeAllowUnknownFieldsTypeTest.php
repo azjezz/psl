@@ -9,9 +9,9 @@ use Psl\Iter;
 use Psl\Type;
 
 /**
- * @extends TypeTest<array>
+ * @extends TypeTestCase<array>
  */
-final class ShapeAllowUnknownFieldsTypeTest extends TypeTest
+final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
 {
     #[\Override]
     public function getType(): Type\TypeInterface

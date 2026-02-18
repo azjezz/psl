@@ -7,7 +7,7 @@ namespace Psl\Tests\Unit\Comparison;
 use Psl\Comparison;
 use Psl\Comparison\Order;
 
-class LessOrEqualTest extends AbstractComparisonTest
+class LessOrEqualTest extends AbstractComparisonTestCase
 {
     /**
      * @dataProvider provideComparisonCases
