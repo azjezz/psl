@@ -156,7 +156,7 @@ final class ExecuteTest extends TestCase
         $start = DateTime\Timestamp::monotonic();
 
         try {
-            Shell\execute('sleep', ['10'], timeout: Duration::seconds(2));
+            Shell\execute(PHP_BINARY, ['-r', 'sleep(10);'], timeout: Duration::seconds(2));
         } catch (Shell\Exception\TimeoutException $_) {
             $elapsed = DateTime\Timestamp::monotonic()->since($start);
 
