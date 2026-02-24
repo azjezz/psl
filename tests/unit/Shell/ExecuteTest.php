@@ -154,7 +154,9 @@ final class ExecuteTest extends TestCase
     public function testTimeoutException(): void
     {
         if (OS\is_windows()) {
-            static::markTestSkipped('Timeout relies on IO\\streaming() which behaves differently on Windows with non-blocking pipes.');
+            static::markTestSkipped(
+                'Timeout relies on IO\\streaming() which behaves differently on Windows with non-blocking pipes.',
+            );
         }
 
         $start = DateTime\Timestamp::monotonic();
