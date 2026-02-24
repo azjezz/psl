@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Shell;
 
 use PHPUnit\Framework\TestCase;
+use Psl\DateTime;
+use Psl\DateTime\Duration;
 use Psl\Env;
 use Psl\OS;
 use Psl\SecureRandom;
@@ -140,5 +142,39 @@ final class ExecuteTest extends TestCase
 
         static::assertSame('hello', $stdout);
         static::assertSame(' world', $stderr);
+    }
+
+    public function testTimeoutDoesNotAffectFastCommands(): void
+    {
+        $result = Shell\execute(PHP_BINARY, ['-r', 'echo "hello";'], timeout: Duration::seconds(5));
+
+        static::assertSame('hello', $result);
+    }
+
+    public function testTimeoutException(): void
+    {
+        if (OS\is_windows()) {
+            static::markTestSkipped(
+                'Timeout relies on IO\\streaming() which behaves differently on Windows with non-blocking pipes.',
+            );
+        }
+
+        $start = DateTime\Timestamp::monotonic();
+
+        try {
+            Shell\execute(PHP_BINARY, ['-r', 'sleep(10);'], timeout: Duration::seconds(2));
+        } catch (Shell\Exception\TimeoutException $_) {
+            $elapsed = DateTime\Timestamp::monotonic()->since($start);
+
+            static::assertLessThan(
+                3.0,
+                $elapsed->getTotalSeconds(),
+                'Process was not killed after timeout — proc_close() likely blocked.',
+            );
+
+            return;
+        }
+
+        static::fail('Expected timeout exception');
     }
 }

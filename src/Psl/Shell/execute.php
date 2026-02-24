@@ -19,6 +19,7 @@ use function is_resource;
 use function pack;
 use function proc_close;
 use function proc_open;
+use function proc_terminate;
 use function strpbrk;
 
 /**
@@ -146,6 +147,7 @@ function execute(
     $stderr = new IO\CloseReadStreamHandle($pipes[2]);
 
     $code = 0;
+    $timed_out = false;
     try {
         $result = '';
 
@@ -157,6 +159,8 @@ function execute(
             $result .= pack('C1N1', $type, Str\Byte\length($chunk)) . $chunk;
         }
     } catch (IO\Exception\TimeoutException $previous) {
+        $timed_out = true;
+
         throw new Exception\TimeoutException(
             'reached timeout while the process output is still not readable.',
             0,
@@ -164,8 +168,13 @@ function execute(
         );
     } finally {
         $stdout->close();
-
         $stderr->close();
+
+        // Kill the process before closing if it timed out, otherwise
+        // proc_close() will block indefinitely waiting for it to exit.
+        if ($timed_out) {
+            proc_terminate($process, 9);
+        }
 
         $code = proc_close($process);
     }
