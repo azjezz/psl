@@ -24,25 +24,25 @@ final class FilterNonnullByTest extends TestCase
 
     public function provideData(): iterable
     {
-        yield [[], [], static fn(int $v): ?int => $v];
-        yield [[0 => 1, 1 => 2, 2 => 3], [1, 2, 3], static fn(int $v): ?int => $v];
-        yield [[1 => 2, 2 => 3], [1, 2, 3], static fn(int $v): ?int => $v > 1 ? $v : null];
+        yield [[], [], static fn(int $v): null|int => $v];
+        yield [[0 => 1, 1 => 2, 2 => 3], [1, 2, 3], static fn(int $v): null|int => $v];
+        yield [[1 => 2, 2 => 3], [1, 2, 3], static fn(int $v): null|int => $v > 1 ? $v : null];
         yield [
             ['a' => 'hello', 'c' => 'world'],
             ['a' => 'hello', 'b' => '', 'c' => 'world'],
-            static fn(string $v): ?string => $v !== '' ? $v : null,
+            static fn(string $v): null|string => $v !== '' ? $v : null,
         ];
-        yield [[], [null, null], static fn(?string $v): ?string => $v];
+        yield [[], [null, null], static fn(null|string $v): null|string => $v];
         yield [[0 => 1, 1 => 2, 2 => 3], [1, 2, 3], static fn(int $v): int => 0];
         yield [
             [1 => 2, 2 => 3],
             Collection\Vector::fromArray([1, 2, 3]),
-            static fn(int $v): ?int => $v > 1 ? $v : null,
+            static fn(int $v): null|int => $v > 1 ? $v : null,
         ];
         yield [
             [1 => 2, 3 => 4],
             Iter\Iterator::create([1, 2, 3, 4]),
-            static fn(int $v): ?int => $v % 2 === 0 ? $v : null,
+            static fn(int $v): null|int => ($v % 2) === 0 ? $v : null,
         ];
     }
 }
