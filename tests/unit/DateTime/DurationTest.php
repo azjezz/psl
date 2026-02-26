@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\DateTime;
 
+use DateInterval;
 use PHPUnit\Framework\TestCase;
 use Psl\Comparison\Order;
 use Psl\DateTime;
@@ -403,5 +404,40 @@ final class DurationTest extends TestCase
             ['hours' => 1, 'minutes' => 30, 'seconds' => 45, 'nanoseconds' => 500_000_000],
             $jsonDecoded,
         );
+    }
+
+    public function testToStdlibPositive(): void
+    {
+        $duration = DateTime\Duration::fromParts(1, 30, 45);
+
+        $interval = $duration->toStdlib();
+
+        static::assertInstanceOf(DateInterval::class, $interval);
+        static::assertSame(0, $interval->invert);
+        // 1h30m45s = 5445 seconds
+        static::assertSame(5445, (int) $interval->s);
+    }
+
+    public function testToStdlibNegative(): void
+    {
+        $duration = DateTime\Duration::fromParts(-2, -15);
+
+        $interval = $duration->toStdlib();
+
+        static::assertInstanceOf(DateInterval::class, $interval);
+        // -2h15m = -8100 seconds
+        $total = (int) $duration->getTotalSeconds();
+        static::assertSame(-8100, $total);
+        static::assertSame($total, (int) $interval->s);
+    }
+
+    public function testToStdlibZero(): void
+    {
+        $duration = DateTime\Duration::zero();
+
+        $interval = $duration->toStdlib();
+
+        static::assertInstanceOf(DateInterval::class, $interval);
+        static::assertSame(0, (int) $interval->s);
     }
 }

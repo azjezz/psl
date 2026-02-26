@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\DateTime;
 
+use DateTimeImmutable;
+use DateTimeZone;
 use Psl\Exception\InvariantViolationException;
+use Psl\Interoperability;
 use Psl\Locale\Locale;
 use Psl\Math;
 
@@ -12,8 +15,11 @@ use Psl\Math;
  * Represents a precise point in time, with seconds and nanoseconds since the Unix epoch.
  *
  * @immutable
+ *
+ * @implements Interoperability\ToStdlib<DateTimeImmutable>
+ * @implements Interoperability\FromStdlib<DateTimeImmutable>
  */
-final readonly class Timestamp implements TemporalInterface
+final readonly class Timestamp implements TemporalInterface, Interoperability\ToStdlib, Interoperability\FromStdlib
 {
     use TemporalConvenienceMethodsTrait;
 
@@ -270,6 +276,42 @@ final readonly class Timestamp implements TemporalInterface
 
         // No manual normalization required here due to fromRaw handling it
         return self::fromParts($newSeconds, $newNanoseconds);
+    }
+
+    /**
+     * Creates a {@see Timestamp} from a PHP {@see DateTimeImmutable}.
+     *
+     * @param DateTimeImmutable $value
+     *
+     * @psalm-mutation-free
+     */
+    #[\Override]
+    public static function fromStdlib(mixed $value): static
+    {
+        $seconds = $value->getTimestamp();
+        $microseconds = (int) $value->format('u');
+        $nanoseconds = $microseconds * NANOSECONDS_PER_MICROSECOND;
+
+        return self::fromParts($seconds, $nanoseconds);
+    }
+
+    /**
+     * Converts this {@see Timestamp} to a PHP {@see DateTimeImmutable} in UTC.
+     *
+     * Note: nanosecond precision is truncated to microseconds.
+     *
+     * @return DateTimeImmutable
+     *
+     * @psalm-mutation-free
+     */
+    #[\Override]
+    public function toStdlib(): mixed
+    {
+        $microseconds = (int) ($this->nanoseconds / NANOSECONDS_PER_MICROSECOND);
+        $formatted = \sprintf('%d.%06d', $this->seconds, $microseconds);
+
+        /** @var DateTimeImmutable */
+        return DateTimeImmutable::createFromFormat('U.u', $formatted, new DateTimeZone('UTC'));
     }
 
     #[\Override]

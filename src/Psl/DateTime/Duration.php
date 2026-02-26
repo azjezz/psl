@@ -4,30 +4,20 @@ declare(strict_types=1);
 
 namespace Psl\DateTime;
 
+use DateInterval;
 use JsonSerializable;
 use Psl\Comparison;
+use Psl\Interoperability;
 use Psl\Math;
 use Psl\Str;
 use Stringable;
 
-/**
- * Defines a representation of a time duration with specific hours, minutes, seconds,
- * and nanoseconds.
- *
- * All instances are normalized as follows:
- *
- * - all non-zero parts (hours, minutes, seconds, nanoseconds) will have the same sign
- * - minutes, seconds will be between -59 and 59
- * - nanoseconds will be between -999999999 and 999999999 (less than 1 second)
- *
- * For example, Duration::hours(2, -183) normalizes to "-1 hour(s), -3 minute(s)".
- *
- * @implements Comparison\Comparable<Duration>
- * @implements Comparison\Equable<Duration>
- *
- * @immutable
- */
-final readonly class Duration implements Comparison\Comparable, Comparison\Equable, JsonSerializable, Stringable
+final readonly class Duration implements
+    Comparison\Comparable,
+    Comparison\Equable,
+    JsonSerializable,
+    Stringable,
+    Interoperability\ToStdlib
 {
     /**
      * Initializes a new instance of Duration with specified hours, minutes, seconds, and
@@ -683,6 +673,23 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
     public function __toString(): string
     {
         return $this->toString();
+    }
+
+    /**
+     * Converts this {@see Duration} to a PHP {@see DateInterval}.
+     *
+     * Note: nanosecond precision is truncated to microseconds.
+     *
+     * @return DateInterval
+     *
+     * @psalm-mutation-free
+     */
+    #[\Override]
+    public function toStdlib(): mixed
+    {
+        $total_seconds = (int) $this->getTotalSeconds();
+
+        return DateInterval::createFromDateString($total_seconds . ' seconds');
     }
 
     /**

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\DateTime;
 
+use DateTimeImmutable;
+use DateTimeZone;
+use IntlCalendar;
 use PHPUnit\Framework\TestCase;
 use Psl\DateTime\DateStyle;
 use Psl\DateTime\DateTime;
@@ -585,5 +588,101 @@ final class DateTimeTest extends TestCase
         static::assertSame($date->getMonth(), $converted->getMonth());
         static::assertSame($date->getDay(), $converted->getDay());
         static::assertSame(0, $converted->getHours());
+    }
+
+    public function testToStdlib(): void
+    {
+        $dt = DateTime::fromParts(Timezone::AmericaNewYork, 2024, 6, 15, 14, 30, 45, 123_456_000);
+
+        $stdlib = $dt->toStdlib();
+
+        static::assertInstanceOf(DateTimeImmutable::class, $stdlib);
+        static::assertSame('America/New_York', $stdlib->getTimezone()->getName());
+        static::assertSame('2024', $stdlib->format('Y'));
+        static::assertSame('06', $stdlib->format('m'));
+        static::assertSame('15', $stdlib->format('d'));
+        static::assertSame('14', $stdlib->format('H'));
+        static::assertSame('30', $stdlib->format('i'));
+        static::assertSame('45', $stdlib->format('s'));
+        static::assertSame('123456', $stdlib->format('u'));
+    }
+
+    public function testFromStdlib(): void
+    {
+        $stdlib = new DateTimeImmutable('2024-06-15 14:30:45.123456', new DateTimeZone('America/New_York'));
+
+        $dt = DateTime::fromStdlib($stdlib);
+
+        static::assertSame(Timezone::AmericaNewYork, $dt->getTimezone());
+        static::assertSame(2024, $dt->getYear());
+        static::assertSame(6, $dt->getMonth());
+        static::assertSame(15, $dt->getDay());
+        static::assertSame(14, $dt->getHours());
+        static::assertSame(30, $dt->getMinutes());
+        static::assertSame(45, $dt->getSeconds());
+        static::assertSame(123_456_000, $dt->getNanoseconds());
+    }
+
+    public function testStdlibRoundTrip(): void
+    {
+        $original = DateTime::fromParts(Timezone::EuropeParis, 2024, 12, 25, 10, 0, 0, 500_000_000);
+
+        $roundTripped = DateTime::fromStdlib($original->toStdlib());
+
+        static::assertSame($original->getYear(), $roundTripped->getYear());
+        static::assertSame($original->getMonth(), $roundTripped->getMonth());
+        static::assertSame($original->getDay(), $roundTripped->getDay());
+        static::assertSame($original->getHours(), $roundTripped->getHours());
+        static::assertSame($original->getMinutes(), $roundTripped->getMinutes());
+        static::assertSame($original->getSeconds(), $roundTripped->getSeconds());
+        // microsecond precision preserved (nanoseconds truncated to microseconds)
+        static::assertSame(500_000_000, $roundTripped->getNanoseconds());
+        static::assertSame($original->getTimezone(), $roundTripped->getTimezone());
+    }
+
+    public function testToIntl(): void
+    {
+        $dt = DateTime::fromParts(Timezone::AsiaShanghai, 2024, 3, 15, 12, 0, 0);
+
+        $calendar = $dt->toIntl();
+
+        static::assertInstanceOf(IntlCalendar::class, $calendar);
+        static::assertSame(2024, $calendar->get(IntlCalendar::FIELD_YEAR));
+        static::assertSame(2, $calendar->get(IntlCalendar::FIELD_MONTH)); // 0-indexed
+        static::assertSame(15, $calendar->get(IntlCalendar::FIELD_DAY_OF_MONTH));
+        static::assertSame(12, $calendar->get(IntlCalendar::FIELD_HOUR_OF_DAY));
+        static::assertSame(0, $calendar->get(IntlCalendar::FIELD_MINUTE));
+        static::assertSame(0, $calendar->get(IntlCalendar::FIELD_SECOND));
+    }
+
+    public function testFromIntl(): void
+    {
+        $calendar = IntlCalendar::createInstance('America/New_York');
+        $calendar->setDateTime(2024, 5, 15, 14, 30, 45); // month is 0-indexed
+
+        $dt = DateTime::fromIntl($calendar);
+
+        static::assertSame(Timezone::AmericaNewYork, $dt->getTimezone());
+        static::assertSame(2024, $dt->getYear());
+        static::assertSame(6, $dt->getMonth());
+        static::assertSame(15, $dt->getDay());
+        static::assertSame(14, $dt->getHours());
+        static::assertSame(30, $dt->getMinutes());
+        static::assertSame(45, $dt->getSeconds());
+    }
+
+    public function testIntlRoundTrip(): void
+    {
+        $original = DateTime::fromParts(Timezone::UTC, 2024, 1, 1, 0, 0, 0);
+
+        $roundTripped = DateTime::fromIntl($original->toIntl());
+
+        static::assertSame($original->getYear(), $roundTripped->getYear());
+        static::assertSame($original->getMonth(), $roundTripped->getMonth());
+        static::assertSame($original->getDay(), $roundTripped->getDay());
+        static::assertSame($original->getHours(), $roundTripped->getHours());
+        static::assertSame($original->getMinutes(), $roundTripped->getMinutes());
+        static::assertSame($original->getSeconds(), $roundTripped->getSeconds());
+        static::assertSame($original->getTimezone(), $roundTripped->getTimezone());
     }
 }

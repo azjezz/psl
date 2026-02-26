@@ -41,9 +41,9 @@
 
 #### `Classes`
 
-- [DateTime](./../../src/Psl/DateTime/DateTime.php#L13)
-- [Duration](./../../src/Psl/DateTime/Duration.php#L30)
-- [Timestamp](./../../src/Psl/DateTime/Timestamp.php#L16)
+- [DateTime](./../../src/Psl/DateTime/DateTime.php#L21)
+- [Duration](./../../src/Psl/DateTime/Duration.php#L15)
+- [Timestamp](./../../src/Psl/DateTime/Timestamp.php#L22)
 
 #### `Traits`
 
@@ -59,7 +59,7 @@
 - [Month](./../../src/Psl/DateTime/Month.php#L15)
 - [SecondsStyle](./../../src/Psl/DateTime/SecondsStyle.php#L13)
 - [TimeStyle](./../../src/Psl/DateTime/TimeStyle.php#L24)
-- [Timezone](./../../src/Psl/DateTime/Timezone.php#L23)
+- [Timezone](./../../src/Psl/DateTime/Timezone.php#L32)
 - [Weekday](./../../src/Psl/DateTime/Weekday.php#L15)
 
 
