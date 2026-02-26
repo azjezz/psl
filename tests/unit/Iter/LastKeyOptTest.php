@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Iter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 use Psl\Vec;
 
 final class LastKeyOptTest extends TestCase
 {
-    /**
-     * @dataProvider provideDataSome
-     */
+    #[DataProvider('provideDataSome')]
     public function testLastKeySome(int|array $expected, iterable $iterable): void
     {
         $result = Iter\last_key_opt($iterable);
@@ -20,7 +19,7 @@ final class LastKeyOptTest extends TestCase
         static::assertSame($expected, $result->unwrap());
     }
 
-    public function provideDataSome(): iterable
+    public static function provideDataSome(): iterable
     {
         yield [3, [1, 2, 3, 4]];
         yield [3, Iter\to_iterator([1, 2, 3, 4])];
@@ -32,9 +31,7 @@ final class LastKeyOptTest extends TestCase
         yield [[1, 2], (static fn(): iterable => yield [1, 2] => 'hello')()];
     }
 
-    /**
-     * @dataProvider provideDataNone
-     */
+    #[DataProvider('provideDataNone')]
     public function testLastKeyNone(iterable $iterable): void
     {
         $result = Iter\last_key_opt($iterable);
@@ -42,7 +39,7 @@ final class LastKeyOptTest extends TestCase
         static::assertTrue($result->isNone());
     }
 
-    public function provideDataNone(): iterable
+    public static function provideDataNone(): iterable
     {
         yield [[]];
     }

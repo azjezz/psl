@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Vec;
 
 use Closure;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Vec;
 
 final class FilterKeysTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testFilter(array $expected, iterable $iterable, null|Closure $predicate = null): void
     {
         $result = Vec\filter_keys($iterable, $predicate);
@@ -21,7 +20,7 @@ final class FilterKeysTest extends TestCase
         static::assertSame($expected, $result);
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [[], []];
         yield [['b'], ['a', 'b']];

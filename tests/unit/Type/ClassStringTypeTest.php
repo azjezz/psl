@@ -10,13 +10,13 @@ use Psl\Type;
 final class ClassStringTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\class_string(Collection\CollectionInterface::class);
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield [$_ = Collection\Vector::class, $_];
         yield [$_ = Collection\MutableVector::class, $_];
@@ -27,17 +27,17 @@ final class ClassStringTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [null];
         yield [STDIN];
         yield ['UnknownClass'];
-        yield [$this->stringable('foo')];
+        yield [static::stringable('foo')];
         yield [new class {}];
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
         yield [Type\class_string(Collection\MapInterface::class), 'class-string<Psl\Collection\MapInterface>'];
         yield [Type\class_string(Collection\VectorInterface::class), 'class-string<Psl\Collection\VectorInterface>'];

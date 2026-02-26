@@ -10,32 +10,32 @@ use Psl\Type;
 final class U16TypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\u16();
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield [65_535, 65_535];
         yield [0, 0];
         yield ['0', 0];
         yield ['123', 123];
-        yield [$this->stringable('123'), 123];
+        yield [static::stringable('123'), 123];
         yield ['7', 7];
         yield ['07', 7];
         yield ['007', 7];
         yield ['000', 0];
         yield [1.0, 1];
-        yield [$this->stringable((string) Math\INT16_MAX), Math\INT16_MAX];
-        yield [$this->stringable((string) Math\INT8_MAX), Math\INT8_MAX];
-        yield [$this->stringable((string) Math\UINT16_MAX), Math\UINT16_MAX];
-        yield [$this->stringable((string) Math\UINT8_MAX), Math\UINT8_MAX];
+        yield [static::stringable((string) Math\INT16_MAX), Math\INT16_MAX];
+        yield [static::stringable((string) Math\INT8_MAX), Math\INT8_MAX];
+        yield [static::stringable((string) Math\UINT16_MAX), Math\UINT16_MAX];
+        yield [static::stringable((string) Math\UINT8_MAX), Math\UINT8_MAX];
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [-123];
         yield [1.23];
@@ -46,27 +46,27 @@ final class U16TypeTest extends TypeTestCase
         yield [[123]];
         yield [null];
         yield [false];
-        yield [$this->stringable('1.23')];
-        yield [$this->stringable('-007')];
+        yield [static::stringable('1.23')];
+        yield [static::stringable('-007')];
         yield ['-007'];
         yield ['4294967296'];
-        yield [$this->stringable('4294967296')];
+        yield [static::stringable('4294967296')];
         yield ['-4294967295'];
         yield ['0xFF'];
         yield [''];
-        yield [$this->stringable((string) Math\INT8_MIN)];
-        yield [$this->stringable((string) Math\INT16_MIN)];
-        yield [$this->stringable((string) Math\INT32_MIN)];
-        yield [$this->stringable((string) Math\INT32_MAX)];
-        yield [$this->stringable((string) Math\INT64_MAX)];
+        yield [static::stringable((string) Math\INT8_MIN)];
+        yield [static::stringable((string) Math\INT16_MIN)];
+        yield [static::stringable((string) Math\INT32_MIN)];
+        yield [static::stringable((string) Math\INT32_MAX)];
+        yield [static::stringable((string) Math\INT64_MAX)];
         yield [(string) Math\INT64_MAX];
         yield [Math\INT64_MAX];
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'u16'];
+        yield [static::getType(), 'u16'];
     }
 
     public function testItIsAMemoizedType(): void

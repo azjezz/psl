@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": "~8.3.0 || ~8.4.0 || ~8.5.0",
+        "php": "~8.4.0 || ~8.5.0",
         "ext-bcmath": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
@@ -20,10 +20,10 @@
     },
     "require-dev": {
         "phpbench/phpbench": "^1.4.0",
-        "phpunit/phpunit": "^9.6.22",
+        "phpunit/phpunit": "^13.0",
         "php-coveralls/php-coveralls": "^2.7.0",
         "carthage-software/mago": "^1.13.1",
-        "infection/infection": "^0.31.2"
+        "infection/infection": "^0.32.6"
     },
     "autoload": {
         "psr-4": {

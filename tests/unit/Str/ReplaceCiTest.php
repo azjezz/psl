@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
 final class ReplaceCiTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testReplaceCi(string $expected, string $haystack, string $needle, string $replacement): void
     {
         static::assertSame($expected, Str\replace_ci($haystack, $needle, $replacement));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             ['Hello, World!', 'Hello, you!', 'You', 'World'],
@@ -27,9 +26,7 @@ final class ReplaceCiTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideBadUtf8Data
-     */
+    #[DataProvider('provideBadUtf8Data')]
     public function testBadUtf8(string $string, string $expectedException, string $expectedExceptionMessage): void
     {
         $this->expectException($expectedException);
@@ -38,7 +35,7 @@ final class ReplaceCiTest extends TestCase
         Str\replace_ci($string, $string, $string);
     }
 
-    public function provideBadUtf8Data(): iterable
+    public static function provideBadUtf8Data(): iterable
     {
         yield [
             "\xc1\xbf",

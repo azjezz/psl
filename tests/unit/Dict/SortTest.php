@@ -5,20 +5,19 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Dict;
 
 use Closure;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Dict;
 
 final class SortTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testSort(array $expected, array $array, null|Closure $comparator = null): void
     {
         static::assertSame($expected, Dict\sort($array, $comparator));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\Math;
 
 use Closure;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 use Psl\Math;
@@ -13,15 +14,13 @@ use Psl\Str;
 
 final class MaxByTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testMaxBy(null|string|int|array $expected, array $values, Closure $fun): void
     {
         static::assertSame($expected, Math\max_by($values, $fun));
     }
 
-    public function provideData(): Generator
+    public static function provideData(): Generator
     {
         yield [
             'bazqux',

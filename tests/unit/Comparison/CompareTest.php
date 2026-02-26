@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Comparison;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Comparison;
 use Psl\Comparison\Order;
 
 class CompareTest extends AbstractComparisonTestCase
 {
-    /**
-     * @dataProvider provideComparisonCases
-     */
+    #[DataProvider('provideComparisonCases')]
     public function testItCanCompare(mixed $a, mixed $b, Order $expected): void
     {
         static::assertSame($expected, Comparison\compare($a, $b));

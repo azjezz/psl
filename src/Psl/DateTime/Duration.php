@@ -12,6 +12,24 @@ use Psl\Math;
 use Psl\Str;
 use Stringable;
 
+/**
+ * Defines a representation of a time duration with specific hours, minutes, seconds,
+ * and nanoseconds.
+ *
+ * All instances are normalized as follows:
+ *
+ * - all non-zero parts (hours, minutes, seconds, nanoseconds) will have the same sign
+ * - minutes, seconds will be between -59 and 59
+ * - nanoseconds will be between -999999999 and 999999999 (less than 1 second)
+ *
+ * For example, Duration::hours(2, -183) normalizes to "-1 hour(s), -3 minute(s)".
+ *
+ * @implements Comparison\Comparable<Duration>
+ * @implements Comparison\Equable<Duration>
+ * @implements Interoperability\ToStdlib<DateInterval>
+ *
+ * @immutable
+ */
 final readonly class Duration implements
     Comparison\Comparable,
     Comparison\Equable,

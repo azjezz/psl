@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
 final class TruncateTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testTruncate(
         string $expected,
         string $str,
@@ -22,7 +21,7 @@ final class TruncateTest extends TestCase
         static::assertSame($expected, Str\truncate($str, $offset, $width, $trim_marker));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             ['Hello',    'Hello, World!', 0, 5],

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\IO;
 
 use Closure;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\IO;
 use Psl\Str;
@@ -14,9 +15,8 @@ final class MemoryHandleTest extends TestCase
 {
     /**
      * @param (Closure(IO\MemoryHandle): mixed) $operation
-     *
-     * @dataProvider provideOperations
      */
+    #[DataProvider('provideOperations')]
     public function testClose(Closure $operation): void
     {
         $handle = new IO\MemoryHandle('hello');
@@ -31,7 +31,7 @@ final class MemoryHandleTest extends TestCase
     /**
      * @return iterable<(Closure(IO\MemoryHandle): mixed)>
      */
-    public function provideOperations(): iterable
+    public static function provideOperations(): iterable
     {
         yield [
             static fn(IO\SeekHandleInterface $handle): null => $handle->seek(5),

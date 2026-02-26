@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Iter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Iter;
@@ -11,9 +12,7 @@ use SplDoublyLinkedList;
 
 final class LastTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testLast(null|string $expected, iterable $iterable): void
     {
         $result = Iter\last($iterable);
@@ -21,7 +20,7 @@ final class LastTest extends TestCase
         static::assertSame($expected, $result);
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [null, []];
         yield [null, new SplDoublyLinkedList()];

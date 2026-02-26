@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Iter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 
 final class ReduceKeysTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testReduceKeys(
         null|int $expected,
         iterable $iterable,
@@ -21,7 +20,7 @@ final class ReduceKeysTest extends TestCase
         static::assertSame($expected, Iter\reduce_keys($iterable, $function, $initial));
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [null, [], static fn(null $accumulator, int $_k): null => $accumulator, null];
         yield [3, [1, 2, 3], static fn(int $accumulator, int $k): int => $accumulator + $k, 0];

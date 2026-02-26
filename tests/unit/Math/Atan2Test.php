@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Math;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
@@ -11,15 +12,13 @@ final class Atan2Test extends TestCase
 {
     use FloatAsserts;
 
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testAtan2(float $expected, float $y, float $x): void
     {
         static::assertFloatEquals($expected, Math\atan2($y, $x));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

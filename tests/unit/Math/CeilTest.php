@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Math;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
 final class CeilTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testCiel(float $expected, float $number): void
     {
         static::assertSame($expected, Math\ceil($number));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Regex;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Regex;
 
 final class MatchesTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testMatches(bool $expected, string $subject, string $pattern, int $offset = 0): void
     {
         static::assertSame($expected, Regex\matches($subject, $pattern, $offset));
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [true, 'PHP is the web scripting language of choice.', '/php/i'];
         yield [true, 'PHP is the web scripting language of choice.', '/\bweb\b/i'];

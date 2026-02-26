@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Vec;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Vec;
 
 final class ValuesTest extends TestCase
 {
-    /**
-     * @dataProvider provideTestValues
-     */
+    #[DataProvider('provideTestValues')]
     public function testValues(array $expected, iterable $iterable): void
     {
         static::assertSame($expected, Vec\values($iterable));
     }
 
-    public function provideTestValues(): iterable
+    public static function provideTestValues(): iterable
     {
         yield [[], []];
         yield [[null], [null]];

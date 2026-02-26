@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Iter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 
 final class SearchTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testSearch(null|string $expected, iterable $iterable, callable $predicate): void
     {
         static::assertSame($expected, Iter\search($iterable, $predicate));
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield ['baz', ['foo', 'bar', 'baz'], static fn(string $v): bool => 'baz' === $v];
         yield [null, ['foo', 'bar', 'baz'], static fn(string $v): bool => 'qux' === $v];

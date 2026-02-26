@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Html;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Html;
 
 final class EncodeTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testEncode(string $expected, string $html, bool $double_encoding, Html\Encoding $encoding): void
     {
         static::assertSame($expected, Html\encode($html, $double_encoding, $encoding));
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield ['hello', 'hello', true, Html\Encoding::Utf8];
         yield ['h&eacute;llo', 'héllo', true, Html\Encoding::Utf8];

@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Math;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 use Psl\Vec;
 
 final class MeanTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testMean(null|float $expected, array $numbers): void
     {
         static::assertSame($expected, Math\mean($numbers));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

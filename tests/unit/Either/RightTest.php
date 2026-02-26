@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Either;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psl\Comparison\Comparable;
 use Psl\Comparison\Equable;
@@ -13,9 +14,7 @@ use Psl\Either\Left;
 use Psl\Either\Right;
 use Psl\Ref;
 
-/**
- * @covers \Psl\Either\Right
- */
+#[CoversClass(Right::class)]
 final class RightTest extends TestCase
 {
     public function testIsRight(): void

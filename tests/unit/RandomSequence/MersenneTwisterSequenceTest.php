@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\RandomSequence;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\RandomSequence\MersenneTwisterSequence;
 use Psl\SecureRandom;
@@ -16,9 +17,7 @@ use const MT_RAND_MT19937;
 
 final class MersenneTwisterSequenceTest extends TestCase
 {
-    /**
-     * @dataProvider provideSeeds
-     */
+    #[DataProvider('provideSeeds')]
     public function testNext(int $seed): void
     {
         mt_srand($seed, MT_RAND_MT19937);
@@ -29,7 +28,7 @@ final class MersenneTwisterSequenceTest extends TestCase
         }
     }
 
-    public function provideSeeds(): iterable
+    public static function provideSeeds(): iterable
     {
         yield [2_147_483_649];
         yield [45_635];

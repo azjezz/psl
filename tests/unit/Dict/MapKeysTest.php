@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Dict;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Dict;
 
 final class MapKeysTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testMapKeys(array $expected, array $array, callable $function): void
     {
         $result = Dict\map_keys($array, $function);
@@ -19,7 +18,7 @@ final class MapKeysTest extends TestCase
         static::assertSame($expected, $result);
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [[1, 2, 3], [1, 2, 3], static fn(int $k): int => $k];
         yield [[1, 2 => 2, 4 => 3], [1, 2, 3], static fn(int $k): int => $k * 2];

@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Dict;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Dict;
 use Psl\Vec;
 
 final class DiffByKeyTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testDiffByKey(array $expected, iterable $first, iterable $second, iterable ...$rest): void
     {
         static::assertSame($expected, Dict\diff_by_key($first, $second, ...$rest));
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [[], [], [], []];
         yield [[], [], [1, 2, 3]];

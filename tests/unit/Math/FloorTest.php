@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Math;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
 final class FloorTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testFloor(float $expected, float $number): void
     {
         static::assertSame($expected, Math\floor($number));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

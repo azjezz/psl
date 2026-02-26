@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\DateTime;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\DateTime\Month;
 
@@ -11,34 +12,26 @@ final class MonthTest extends TestCase
 {
     use DateTimeTestTrait;
 
-    /**
-     * @dataProvider provideGetPreviousData
-     */
+    #[DataProvider('provideGetPreviousData')]
     public function testGetPrevious(Month $month, Month $expected): void
     {
         static::assertSame($expected, $month->getPrevious());
     }
 
-    /**
-     * @dataProvider provideGetNextData
-     */
+    #[DataProvider('provideGetNextData')]
     public function testGetNext(Month $month, Month $expected): void
     {
         static::assertSame($expected, $month->getNext());
     }
 
-    /**
-     * @dataProvider provideGetDaysData
-     */
+    #[DataProvider('provideGetDaysData')]
     public function testGetDays(Month $month, int $expectedForLeapYear, int $expectedForNonLeapYear): void
     {
         static::assertSame($expectedForLeapYear, $month->getLeapYearDays());
         static::assertSame($expectedForNonLeapYear, $month->getNonLeapYearDays());
     }
 
-    /**
-     * @dataProvider provideGetDaysForYearData
-     */
+    #[DataProvider('provideGetDaysForYearData')]
     public function testGetDaysForYear(Month $month, int $year, int $expected): void
     {
         static::assertSame($expected, $month->getDaysForYear($year));

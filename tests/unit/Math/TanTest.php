@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Math;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
@@ -11,15 +12,13 @@ final class TanTest extends TestCase
 {
     use FloatAsserts;
 
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testTan(float $expected, float $number, float $epsilon = PHP_FLOAT_EPSILON): void
     {
         static::assertFloatEquals($expected, Math\tan($number), $epsilon);
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

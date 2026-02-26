@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str\Byte;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
 final class EndsWithCiTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testEndsWithCi(bool $expected, string $haystack, string $suffix): void
     {
         static::assertSame($expected, Byte\ends_with_ci($haystack, $suffix));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [true,  'Hello',         'Hello'],

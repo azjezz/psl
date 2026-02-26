@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\DateTime;
 
 use DateTimeZone;
 use IntlTimeZone;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\DateTime\DateTime;
 use Psl\DateTime\Timestamp;
@@ -45,9 +46,7 @@ final class TimezoneTest extends TestCase
         static::assertSame(1., $brussels->getOffset($summer, local: true)->getTotalHours());
     }
 
-    /**
-     * @dataProvider provideRawOffsetData
-     */
+    #[DataProvider('provideRawOffsetData')]
     public function testRawOffset(Timezone $timezone, int $expected): void
     {
         static::assertSame($expected, (int) $timezone->getRawOffset()->getTotalSeconds());

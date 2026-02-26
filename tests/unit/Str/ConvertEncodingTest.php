@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
 final class ConvertEncodingTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testConvertEncoding(
         null|string $expected,
         string $string,
@@ -21,7 +20,7 @@ final class ConvertEncodingTest extends TestCase
         static::assertSame($expected, Str\convert_encoding($string, $from_encoding, $to_encoding));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [['Ã¥Ã¤Ã¶', 'åäö', Str\Encoding::Iso88591, Str\Encoding::Utf8]];
     }

@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Math;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 use Psl\Vec;
 
 final class MinvaTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testMainva(int|float $expected, int|float $first, int|float $second, int|float ...$rest): void
     {
         static::assertSame($expected, Math\minva($first, $second, ...$rest));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Collection;
 use Psl\Dict;
 use Psl\Iter;
@@ -18,7 +19,7 @@ use RuntimeException;
 final class VecTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield [
             [],
@@ -72,7 +73,7 @@ final class VecTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [1.0];
         yield [1.23];
@@ -84,9 +85,9 @@ final class VecTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'vec<int>'];
+        yield [static::getType(), 'vec<int>'];
         yield [Type\vec(Type\string()), 'vec<string>'];
         yield [
             Type\vec(Type\instance_of(Iter\Iterator::class)),
@@ -95,7 +96,7 @@ final class VecTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\vec(Type\int());
     }
@@ -160,9 +161,7 @@ final class VecTypeTest extends TypeTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideAssertExceptionExpectations
-     */
+    #[DataProvider('provideAssertExceptionExpectations')]
     public function testInvalidAssertionTypeExceptions(
         Type\TypeInterface $type,
         mixed $data,
@@ -176,9 +175,7 @@ final class VecTypeTest extends TypeTestCase
         }
     }
 
-    /**
-     * @dataProvider provideCoerceExceptionExpectations
-     */
+    #[DataProvider('provideCoerceExceptionExpectations')]
     public function testInvalidCoercionTypeExceptions(
         Type\TypeInterface $type,
         mixed $data,

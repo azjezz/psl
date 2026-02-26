@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\DateTime;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\DateTime\Meridiem;
 
@@ -11,7 +12,7 @@ final class MeridiemTest extends TestCase
 {
     use DateTimeTestTrait;
 
-    public function provideFromHourData(): iterable
+    public static function provideFromHourData(): iterable
     {
         yield [0, Meridiem::AnteMeridiem];
         yield [1, Meridiem::AnteMeridiem];
@@ -21,9 +22,7 @@ final class MeridiemTest extends TestCase
         yield [14, Meridiem::PostMeridiem];
     }
 
-    /**
-     * @dataProvider provideFromHourData
-     */
+    #[DataProvider('provideFromHourData')]
     public function testFromHour(int $hour, Meridiem $expected): void
     {
         static::assertSame($expected, Meridiem::fromHour($hour));

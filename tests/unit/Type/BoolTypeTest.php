@@ -9,13 +9,13 @@ use Psl\Type;
 final class BoolTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\bool();
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield [false, false];
         yield [0, false];
@@ -26,7 +26,7 @@ final class BoolTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [null];
         yield ['true'];
@@ -36,9 +36,9 @@ final class BoolTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'bool'];
+        yield [static::getType(), 'bool'];
     }
 
     public function testItIsAMemoizedType(): void

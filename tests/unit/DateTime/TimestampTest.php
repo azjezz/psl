@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\DateTime;
 
 use DateTimeImmutable;
 use DateTimeZone;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
 use Psl\Comparison\Order;
@@ -153,7 +154,7 @@ final class TimestampTest extends TestCase
         Timestamp::parse('x');
     }
 
-    public function provideFormatParsingData(): iterable
+    public static function provideFormatParsingData(): iterable
     {
         yield [
             1_711_917_897,
@@ -207,9 +208,7 @@ final class TimestampTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideFormatParsingData
-     */
+    #[DataProvider('provideFormatParsingData')]
     public function testFormattingAndPatternParsing(
         int $timestamp,
         string|FormatPattern $pattern,
@@ -254,9 +253,7 @@ final class TimestampTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideCompare
-     */
+    #[DataProvider('provideCompare')]
     public function testCompare(Timestamp $a, Timestamp $b, Order $expected): void
     {
         $opposite = Order::from(-$expected->value);

@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str\Grapheme;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Grapheme;
 
 final class AfterTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testAfter(null|string $expected, string $haystack, string $needle, int $offset): void
     {
         static::assertSame($expected, Grapheme\after($haystack, $needle, $offset));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [null,         '',               '',      0],

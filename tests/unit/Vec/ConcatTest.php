@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Vec;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Vec;
 
@@ -11,21 +12,18 @@ final class ConcatTest extends TestCase
 {
     /**
      * @template T
-     *
      * @param list<T> $expected
      * @param list<T> $first
      * @param iterable<T> ...$rest
-     *
      * @return list<T>
-     *
-     * @dataProvider provideData
      */
+    #[DataProvider('provideData')]
     public function testConcat(array $expected, array $first, iterable ...$rest): void
     {
         static::assertSame($expected, Vec\concat($first, ...$rest));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

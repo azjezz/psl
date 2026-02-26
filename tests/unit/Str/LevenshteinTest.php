@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
 final class LevenshteinTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testLevenshtein(
         int $expected,
         string $a,
@@ -23,7 +22,7 @@ final class LevenshteinTest extends TestCase
         static::assertSame($expected, Str\levenshtein($a, $b, $coi, $cor, $cod));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [0, 'o', 'o'],

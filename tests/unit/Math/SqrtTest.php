@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Math;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
 final class SqrtTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testSqrt(float $expected, float $number): void
     {
         static::assertSame($expected, Math\sqrt($number));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [2.236_067_977_499_79,    5.0],

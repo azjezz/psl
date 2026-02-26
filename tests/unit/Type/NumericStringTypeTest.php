@@ -15,13 +15,13 @@ final class NumericStringTypeTest extends TypeTestCase
      * @return Type\Type<numeric-string>
      */
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\numeric_string();
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield [123, '123'];
         yield [0, '0'];
@@ -30,15 +30,15 @@ final class NumericStringTypeTest extends TypeTestCase
         yield ['0', '0'];
         yield ['123', '123'];
         yield ['1e23', '1e23'];
-        yield [$this->stringable('123'), '123'];
+        yield [static::stringable('123'), '123'];
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [''];
-        yield ['hello', 'hello'];
-        yield [$this->stringable('hello'), 'hello'];
+        yield ['hello'];
+        yield [static::stringable('hello')];
         yield [[]];
         yield [[1]];
         yield [Type\bool()];
@@ -49,9 +49,9 @@ final class NumericStringTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'numeric-string'];
+        yield [static::getType(), 'numeric-string'];
     }
 
     public function testItIsAMemoizedType(): void

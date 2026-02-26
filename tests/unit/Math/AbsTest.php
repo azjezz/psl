@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Math;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
 final class AbsTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testAbs(int|float $expected, int|float $number): void
     {
         static::assertSame($expected, Math\abs($number));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

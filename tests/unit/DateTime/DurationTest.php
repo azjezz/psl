@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\DateTime;
 
 use DateInterval;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Comparison\Order;
 use Psl\DateTime;
@@ -41,7 +42,7 @@ final class DurationTest extends TestCase
         static::assertSame(0.0, DateTime\Duration::zero(1)->getTotalSeconds());
     }
 
-    public function provideGetTotalHours(): array
+    public static function provideGetTotalHours(): array
     {
         return [
             [0, 0, 0, 0, 0.0],
@@ -55,9 +56,7 @@ final class DurationTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideGetTotalHours
-     */
+    #[DataProvider('provideGetTotalHours')]
     public function testGetTotalHours(
         int $hours,
         int $minutes,
@@ -69,7 +68,7 @@ final class DurationTest extends TestCase
         static::assertSame($expectedHours, $time->getTotalHours());
     }
 
-    public function provideGetTotalMinutes(): array
+    public static function provideGetTotalMinutes(): array
     {
         return [
             [0, 0, 0, 0, 0.0],
@@ -83,9 +82,7 @@ final class DurationTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideGetTotalMinutes
-     */
+    #[DataProvider('provideGetTotalMinutes')]
     public function testGetTotalMinutes(
         int $hours,
         int $minutes,
@@ -97,7 +94,7 @@ final class DurationTest extends TestCase
         static::assertSame($expectedMinutes, $time->getTotalMinutes());
     }
 
-    public function provideGetTotalSeconds(): array
+    public static function provideGetTotalSeconds(): array
     {
         return [
             [0, 0, 0, 0, 0.0],
@@ -111,9 +108,7 @@ final class DurationTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideGetTotalSeconds
-     */
+    #[DataProvider('provideGetTotalSeconds')]
     public function testGetTotalSeconds(
         int $hours,
         int $minutes,
@@ -125,7 +120,7 @@ final class DurationTest extends TestCase
         static::assertSame($expectedSeconds, $time->getTotalSeconds());
     }
 
-    public function provideGetTotalMilliseconds(): array
+    public static function provideGetTotalMilliseconds(): array
     {
         return [
             [0, 0, 0, 0, 0.0],
@@ -139,9 +134,7 @@ final class DurationTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideGetTotalMilliseconds
-     */
+    #[DataProvider('provideGetTotalMilliseconds')]
     public function testGetTotalMilliseconds(
         int $hours,
         int $minutes,
@@ -153,7 +146,7 @@ final class DurationTest extends TestCase
         static::assertSame($expectedMilliseconds, $time->getTotalMilliseconds());
     }
 
-    public function provideGetTotalMicroseconds(): array
+    public static function provideGetTotalMicroseconds(): array
     {
         return [
             [0, 0, 0, 0, 0.0],
@@ -167,9 +160,7 @@ final class DurationTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideGetTotalMicroseconds
-     */
+    #[DataProvider('provideGetTotalMicroseconds')]
     public function testGetTotalMicroseconds(
         int $hours,
         int $minutes,
@@ -229,9 +220,7 @@ final class DurationTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideNormalized
-     */
+    #[DataProvider('provideNormalized')]
     public function testNormalized(int $input_s, int $input_ns, int $normalized_s, int $normalized_ns): void
     {
         static::assertSame(
@@ -268,9 +257,7 @@ final class DurationTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider providePositiveNegative
-     */
+    #[DataProvider('providePositiveNegative')]
     public function testPositiveNegative(int $h, int $m, int $s, int $ns, int $expected_sign): void
     {
         $t = DateTime\Duration::fromParts($h, $m, $s, $ns);
@@ -294,9 +281,7 @@ final class DurationTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideCompare
-     */
+    #[DataProvider('provideCompare')]
     public function testCompare(DateTime\Duration $a, DateTime\Duration $b, Order $expected): void
     {
         $opposite = Order::from(-$expected->value);
@@ -377,9 +362,7 @@ final class DurationTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideToString
-     */
+    #[DataProvider('provideToString')]
     public function testToString(int $h, int $m, int $s, int $ns, string $expected): void
     {
         static::assertSame($expected, DateTime\Duration::fromParts($h, $m, $s, $ns)->toString());
