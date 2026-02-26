@@ -29,6 +29,8 @@ function sort_by(iterable $iterable, Closure $scalar_func, null|Closure $compara
         /**
          * @param Ts $a
          * @param Ts $b
+         *
+         * @mago-expect analysis:possibly-null-operand,possibly-null-operand
          */
         static fn(mixed $a, mixed $b): int => $a <=> $b;
 

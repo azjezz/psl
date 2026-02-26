@@ -26,13 +26,15 @@ final class FilterNullsTest extends TestCase
         static::assertCount(3, Dict\filter_nulls(new Collection\Map([null, false, '', 0])));
         static::assertCount(
             3,
-            Dict\filter_nulls((static function (): iterable {
-                yield null;
-                yield false;
-                yield '';
-                yield 0;
-                yield null;
-            })()),
+            Dict\filter_nulls(
+                (static function (): iterable {
+                    yield null;
+                    yield false;
+                    yield '';
+                    yield 0;
+                    yield null;
+                })(),
+            ),
         );
     }
 }
