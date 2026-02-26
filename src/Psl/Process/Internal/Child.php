@@ -216,15 +216,15 @@ final class Child implements ChildInterface
             return $this->exitStatus;
         }
 
-        $timeoutSeconds = null !== $timeout ? $timeout->getTotalSeconds() : null;
-        $timedOut = false;
-        $timeoutWatcher = null;
-
-        if (null !== $timeoutSeconds && $timeoutSeconds > 0) {
-            $timeoutWatcher = EventLoop::delay($timeoutSeconds, static function () use (&$timedOut): void {
-                $timedOut = true;
-            });
+        if (null === $timeout) {
+            return $this->close();
         }
+
+        $timeoutSeconds = $timeout->getTotalSeconds();
+        $timedOut = false;
+        $timeoutWatcher = EventLoop::delay($timeoutSeconds, static function () use (&$timedOut): void {
+            $timedOut = true;
+        });
 
         try {
             while ($this->isRunning()) {
@@ -242,9 +242,7 @@ final class Child implements ChildInterface
                 $suspension->suspend();
             }
         } finally {
-            if (null !== $timeoutWatcher) {
-                EventLoop::cancel($timeoutWatcher);
-            }
+            EventLoop::cancel($timeoutWatcher);
         }
 
         return $this->close();

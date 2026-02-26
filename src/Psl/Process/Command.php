@@ -357,7 +357,6 @@ final readonly class Command
         $options = [];
         // @codeCoverageIgnoreStart
         if (OS\is_windows()) {
-            // Non-blocking pipes are required for async I/O with the event loop.
             $options['blocking_pipes'] = false;
 
             if (!$this->shell) {
