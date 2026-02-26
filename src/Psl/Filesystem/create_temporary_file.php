@@ -26,6 +26,7 @@ use Psl\Str;
 function create_temporary_file(null|string $directory = null, null|string $prefix = null): string
 {
     $directory ??= Env\temp_dir();
+    $directory = namespace\canonicalize($directory) ?? $directory;
     if (!namespace\exists($directory)) {
         throw Exception\NotFoundException::forDirectory($directory);
     }
