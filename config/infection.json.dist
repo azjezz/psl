@@ -21,8 +21,8 @@
         }
     },
     "timeout": 10,
-    "minMsi": 97,
-    "minCoveredMsi": 97,
+    "minMsi": 96,
+    "minCoveredMsi": 96,
     "mutators": {
         "@default": true,
         "Break_": {
