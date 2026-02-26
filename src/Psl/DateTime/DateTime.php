@@ -4,13 +4,26 @@ declare(strict_types=1);
 
 namespace Psl\DateTime;
 
+use DateTimeImmutable;
 use IntlCalendar;
+use Override;
+use Psl\Interoperability;
 use Psl\Locale\Locale;
 
 /**
  * @psalm-immutable
+ *
+ * @implements Interoperability\ToStdlib<DateTimeImmutable>
+ * @implements Interoperability\FromStdlib<DateTimeImmutable>
+ * @implements Interoperability\ToIntl<IntlCalendar>
+ * @implements Interoperability\FromIntl<IntlCalendar>
  */
-final readonly class DateTime implements DateTimeInterface
+final readonly class DateTime implements
+    DateTimeInterface,
+    Interoperability\ToStdlib,
+    Interoperability\FromStdlib,
+    Interoperability\ToIntl,
+    Interoperability\FromIntl
 {
     use DateTimeConvenienceMethodsTrait;
 
@@ -243,7 +256,7 @@ final readonly class DateTime implements DateTimeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public static function fromTimestamp(Timestamp $timestamp, null|Timezone $timezone = null): static
     {
         $timezone ??= Timezone::default();
@@ -357,7 +370,7 @@ final readonly class DateTime implements DateTimeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function getTimestamp(): Timestamp
     {
         return $this->timestamp;
@@ -377,7 +390,7 @@ final readonly class DateTime implements DateTimeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function getYear(): int
     {
         return $this->year;
@@ -390,7 +403,7 @@ final readonly class DateTime implements DateTimeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function getMonth(): int
     {
         return $this->month;
@@ -403,7 +416,7 @@ final readonly class DateTime implements DateTimeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function getDay(): int
     {
         return $this->day;
@@ -416,7 +429,7 @@ final readonly class DateTime implements DateTimeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function getHours(): int
     {
         return $this->hours;
@@ -429,7 +442,7 @@ final readonly class DateTime implements DateTimeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function getMinutes(): int
     {
         return $this->minutes;
@@ -442,7 +455,7 @@ final readonly class DateTime implements DateTimeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function getSeconds(): int
     {
         return $this->seconds;
@@ -455,7 +468,7 @@ final readonly class DateTime implements DateTimeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function getNanoseconds(): int
     {
         return $this->nanoseconds;
@@ -466,7 +479,7 @@ final readonly class DateTime implements DateTimeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function getTimezone(): Timezone
     {
         return $this->timezone;
@@ -482,7 +495,7 @@ final readonly class DateTime implements DateTimeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function withDate(int $year, Month|int $month, int $day): static
     {
         return static::fromParts(
@@ -509,7 +522,7 @@ final readonly class DateTime implements DateTimeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function withTime(int $hours, int $minutes, int $seconds = 0, int $nanoseconds = 0): static
     {
         return static::fromParts(
@@ -524,7 +537,100 @@ final readonly class DateTime implements DateTimeInterface
         );
     }
 
-    #[\Override]
+    /**
+     * Creates a {@see DateTime} instance from a PHP {@see DateTimeImmutable}.
+     *
+     * @param DateTimeImmutable $value
+     *
+     * @psalm-mutation-free
+     */
+    #[Override]
+    public static function fromStdlib(mixed $value): static
+    {
+        /** @var \DateTimeZone $tz */
+        $tz = $value->getTimezone();
+        $timezone = Timezone::from($tz->getName());
+        $seconds = $value->getTimestamp();
+        $microseconds = (int) $value->format('u');
+        $nanoseconds = $microseconds * NANOSECONDS_PER_MICROSECOND;
+
+        return self::fromTimestamp(Timestamp::fromParts($seconds, $nanoseconds), $timezone);
+    }
+
+    /**
+     * Converts this {@see DateTime} to a PHP {@see DateTimeImmutable}.
+     *
+     * Note: nanosecond precision is truncated to microseconds.
+     *
+     * @return DateTimeImmutable
+     *
+     * @psalm-mutation-free
+     */
+    #[Override]
+    public function toStdlib(): mixed
+    {
+        $microseconds = (int) ($this->nanoseconds / NANOSECONDS_PER_MICROSECOND);
+        $formatted = \sprintf(
+            '%04d-%02d-%02d %02d:%02d:%02d.%06d',
+            $this->year,
+            $this->month,
+            $this->day,
+            $this->hours,
+            $this->minutes,
+            $this->seconds,
+            $microseconds,
+        );
+
+        return new DateTimeImmutable($formatted, new \DateTimeZone($this->timezone->value));
+    }
+
+    /**
+     * Creates a {@see DateTime} instance from an {@see IntlCalendar}.
+     *
+     * @param IntlCalendar $value
+     *
+     * @psalm-mutation-free
+     */
+    #[Override]
+    public static function fromIntl(mixed $value): static
+    {
+        /** @var \IntlTimeZone $intl_tz */
+        $intl_tz = $value->getTimeZone();
+        /** @var string $timezone_id */
+        $timezone_id = $intl_tz->getID();
+        $timezone = Timezone::from($timezone_id);
+        $millis = $value->getTime();
+        $seconds = (int) ($millis / MILLISECONDS_PER_SECOND);
+        $remaining_millis = $millis % MILLISECONDS_PER_SECOND;
+        $nanoseconds = (int) ($remaining_millis * NANOSECONDS_PER_MILLISECOND);
+
+        return self::fromTimestamp(Timestamp::fromParts($seconds, $nanoseconds), $timezone);
+    }
+
+    /**
+     * Converts this {@see DateTime} to an {@see IntlCalendar}.
+     *
+     * Note: nanosecond precision is truncated to milliseconds.
+     *
+     * @return IntlCalendar
+     *
+     * @psalm-mutation-free
+     */
+    #[Override]
+    public function toIntl(): mixed
+    {
+        return Internal\create_intl_calendar_from_date_time(
+            $this->timezone,
+            $this->year,
+            $this->month,
+            $this->day,
+            $this->hours,
+            $this->minutes,
+            $this->seconds,
+        );
+    }
+
+    #[Override]
     public function jsonSerialize(): array
     {
         return [

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\DateTime;
 
+use DateTimeImmutable;
+use DateTimeZone;
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
 use Psl\Comparison\Order;
@@ -472,5 +474,37 @@ final class TimestampTest extends TestCase
         static::assertSame('2024-03-31T20:33:52.12+00:00', $timestamp->toRfc3339());
         static::assertSame('2024-03-31T20:33:52+00:00', $timestamp->toRfc3339(seconds_style: SecondsStyle::Seconds));
         static::assertSame('2024-03-31T20:33:52.12Z', $timestamp->toRfc3339(use_z: true));
+    }
+
+    public function testToStdlib(): void
+    {
+        $timestamp = Timestamp::fromParts(1_711_917_232, 123_456_000);
+
+        $stdlib = $timestamp->toStdlib();
+
+        static::assertInstanceOf(DateTimeImmutable::class, $stdlib);
+        static::assertSame(1_711_917_232, $stdlib->getTimestamp());
+        static::assertSame('123456', $stdlib->format('u'));
+    }
+
+    public function testFromStdlib(): void
+    {
+        $stdlib = new DateTimeImmutable('2024-03-31 20:33:52.123456', new DateTimeZone('UTC'));
+
+        $timestamp = Timestamp::fromStdlib($stdlib);
+
+        static::assertSame($stdlib->getTimestamp(), $timestamp->getSeconds());
+        static::assertSame(123_456_000, $timestamp->getNanoseconds());
+    }
+
+    public function testStdlibRoundTrip(): void
+    {
+        $original = Timestamp::fromParts(1_711_917_232, 500_000_000);
+
+        $roundTripped = Timestamp::fromStdlib($original->toStdlib());
+
+        static::assertSame($original->getSeconds(), $roundTripped->getSeconds());
+        // microsecond precision preserved
+        static::assertSame(500_000_000, $roundTripped->getNanoseconds());
     }
 }

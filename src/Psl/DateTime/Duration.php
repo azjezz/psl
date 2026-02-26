@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\DateTime;
 
+use DateInterval;
 use JsonSerializable;
 use Psl\Comparison;
+use Psl\Interoperability;
 use Psl\Math;
 use Psl\Str;
 use Stringable;
@@ -24,10 +26,18 @@ use Stringable;
  *
  * @implements Comparison\Comparable<Duration>
  * @implements Comparison\Equable<Duration>
+ * @implements Interoperability\ToStdlib<DateInterval>
  *
  * @immutable
+ *
+ * @mago-expect lint:cyclomatic-complexity
  */
-final readonly class Duration implements Comparison\Comparable, Comparison\Equable, JsonSerializable, Stringable
+final readonly class Duration implements
+    Comparison\Comparable,
+    Comparison\Equable,
+    JsonSerializable,
+    Stringable,
+    Interoperability\ToStdlib
 {
     /**
      * Initializes a new instance of Duration with specified hours, minutes, seconds, and
@@ -683,6 +693,23 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
     public function __toString(): string
     {
         return $this->toString();
+    }
+
+    /**
+     * Converts this {@see Duration} to a PHP {@see DateInterval}.
+     *
+     * Note: nanosecond precision is truncated to microseconds.
+     *
+     * @return DateInterval
+     *
+     * @psalm-mutation-free
+     */
+    #[\Override]
+    public function toStdlib(): mixed
+    {
+        $total_seconds = (int) $this->getTotalSeconds();
+
+        return DateInterval::createFromDateString($total_seconds . ' seconds');
     }
 
     /**

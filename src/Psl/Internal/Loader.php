@@ -698,6 +698,10 @@ final class Loader
         'Psl\\DateTime\\Exception\\ExceptionInterface' => 'Psl/DateTime/Exception/ExceptionInterface.php',
         'Psl\\DateTime\\TemporalInterface' => 'Psl/DateTime/TemporalInterface.php',
         'Psl\\DateTime\\DateTimeInterface' => 'Psl/DateTime/DateTimeInterface.php',
+        'Psl\\Interoperability\\ToStdlib' => 'Psl/Interoperability/ToStdlib.php',
+        'Psl\\Interoperability\\FromStdlib' => 'Psl/Interoperability/FromStdlib.php',
+        'Psl\\Interoperability\\ToIntl' => 'Psl/Interoperability/ToIntl.php',
+        'Psl\\Interoperability\\FromIntl' => 'Psl/Interoperability/FromIntl.php',
     ];
 
     /**

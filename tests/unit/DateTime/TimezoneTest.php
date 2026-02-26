@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\DateTime;
 
+use DateTimeZone;
+use IntlTimeZone;
 use PHPUnit\Framework\TestCase;
 use Psl\DateTime\DateTime;
 use Psl\DateTime\Timestamp;
@@ -90,5 +92,61 @@ final class TimezoneTest extends TestCase
         yield [Timezone::EuropeLondon, 0];
         yield [Timezone::AmericaNewYork, -18_000];
         yield [Timezone::AsiaShanghai, 28_800];
+    }
+
+    public function testToStdlib(): void
+    {
+        $tz = Timezone::AmericaNewYork;
+
+        $stdlib = $tz->toStdlib();
+
+        static::assertInstanceOf(DateTimeZone::class, $stdlib);
+        static::assertSame('America/New_York', $stdlib->getName());
+    }
+
+    public function testFromStdlib(): void
+    {
+        $stdlib = new DateTimeZone('Europe/Paris');
+
+        $tz = Timezone::fromStdlib($stdlib);
+
+        static::assertSame(Timezone::EuropeParis, $tz);
+    }
+
+    public function testStdlibRoundTrip(): void
+    {
+        $original = Timezone::AsiaShanghai;
+
+        $roundTripped = Timezone::fromStdlib($original->toStdlib());
+
+        static::assertSame($original, $roundTripped);
+    }
+
+    public function testToIntl(): void
+    {
+        $tz = Timezone::EuropeParis;
+
+        $intl = $tz->toIntl();
+
+        static::assertInstanceOf(IntlTimeZone::class, $intl);
+        static::assertSame('Europe/Paris', $intl->getID());
+    }
+
+    public function testFromIntl(): void
+    {
+        $intl = IntlTimeZone::createTimeZone('America/New_York');
+
+        $tz = Timezone::fromIntl($intl);
+
+        static::assertSame(Timezone::AmericaNewYork, $tz);
+    }
+
+    public function testIntlRoundTrip(): void
+    {
+        $original = Timezone::UTC;
+
+        $roundTripped = Timezone::fromIntl($original->toIntl());
+
+        static::assertSame($original, $roundTripped);
     }
 }
