@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Process\Internal;
 
 use Override;
+use Psl\Async;
 use Psl\DateTime\Duration;
 use Psl\IO;
 use Psl\OS;
@@ -216,15 +217,15 @@ final class Child implements ChildInterface
             return $this->exitStatus;
         }
 
-        if (null === $timeout) {
-            return $this->close();
-        }
-
-        $timeoutSeconds = $timeout->getTotalSeconds();
+        $timeoutSeconds = null !== $timeout ? $timeout->getTotalSeconds() : null;
         $timedOut = false;
-        $timeoutWatcher = EventLoop::delay($timeoutSeconds, static function () use (&$timedOut): void {
-            $timedOut = true;
-        });
+        $timeoutWatcher = null;
+
+        if (null !== $timeoutSeconds && $timeoutSeconds > 0) {
+            $timeoutWatcher = EventLoop::delay($timeoutSeconds, static function () use (&$timedOut): void {
+                $timedOut = true;
+            });
+        }
 
         try {
             while ($this->isRunning()) {
@@ -235,14 +236,16 @@ final class Child implements ChildInterface
                     throw new Exception\TimeoutException('Process timed out.');
                 }
 
-                $suspension = EventLoop::getSuspension();
-                EventLoop::defer(static function () use ($suspension): void {
-                    $suspension->resume();
-                });
-                $suspension->suspend();
+                // Small delay between polls to avoid busy-looping and to give
+                // the OS time to update process status. This is important on Windows
+                // where proc_get_status() can briefly report running=true after the
+                // process has actually exited.
+                Async\sleep(Duration::milliseconds(5));
             }
         } finally {
-            EventLoop::cancel($timeoutWatcher);
+            if (null !== $timeoutWatcher) {
+                EventLoop::cancel($timeoutWatcher);
+            }
         }
 
         return $this->close();

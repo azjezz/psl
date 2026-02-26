@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Process;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Async;
+use Psl\DateTime;
 use Psl\DateTime\Duration;
 use Psl\Env;
 use Psl\Filesystem;
@@ -669,5 +671,57 @@ final class ChildTest extends TestCase
         } catch (Exception\TimeoutException) {
             static::assertFalse($child->isRunning());
         }
+    }
+
+    public function testConcurrentOutput(): void
+    {
+        $run = static function (): void {
+            Command::create(PHP_BINARY)
+                ->withArgument('-r')
+                ->withArgument('usleep(500000); echo "done";')
+                ->output();
+        };
+
+        $start = DateTime\Timestamp::monotonic();
+        Async\concurrently([$run, $run]);
+        $elapsed = DateTime\Timestamp::monotonic()->since($start);
+
+        static::assertLessThan(0.9, $elapsed->getTotalSeconds());
+    }
+
+    public function testConcurrentStatus(): void
+    {
+        $run = static function (): void {
+            Command::create(PHP_BINARY)
+                ->withArgument('-r')
+                ->withArgument('usleep(500000);')
+                ->status();
+        };
+
+        $start = DateTime\Timestamp::monotonic();
+        Async\concurrently([$run, $run]);
+        $elapsed = DateTime\Timestamp::monotonic()->since($start);
+
+        static::assertLessThan(0.9, $elapsed->getTotalSeconds());
+    }
+
+    public function testConcurrentWait(): void
+    {
+        $run = static function (): void {
+            $child = Command::create(PHP_BINARY)
+                ->withArgument('-r')
+                ->withArgument('usleep(500000);')
+                ->withStdout(Stdio::null())
+                ->withStderr(Stdio::null())
+                ->spawn();
+
+            $child->wait();
+        };
+
+        $start = DateTime\Timestamp::monotonic();
+        Async\concurrently([$run, $run]);
+        $elapsed = DateTime\Timestamp::monotonic()->since($start);
+
+        static::assertLessThan(0.9, $elapsed->getTotalSeconds());
     }
 }
