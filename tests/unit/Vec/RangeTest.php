@@ -18,6 +18,21 @@ final class RangeTest extends TestCase
         static::assertSame([3.0, 2.5, 2.0, 1.5, 1.0, 0.5, 0.0], Vec\values(Vec\range(3.0, 0.0, -0.5)));
     }
 
+    /**
+     * @see https://github.com/azjezz/psl/issues/422
+     */
+    public function testRangeWithLargeIntsBeyondFloatPrecision(): void
+    {
+        $start = 1 << 60;
+        $end = (1 << 60) + 8;
+
+        $result = Vec\range($start, $end);
+
+        static::assertCount(9, $result);
+        static::assertSame($start, $result[0]);
+        static::assertSame($end, $result[8]);
+    }
+
     public function testRandomThrowsIfEndIsGreaterThanStartAndStepIsNegative(): void
     {
         $this->expectException(Vec\Exception\LogicException::class);
