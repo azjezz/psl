@@ -423,4 +423,239 @@ final class ChildTest extends TestCase
         static::assertSame('stdout', $output->stdout);
         static::assertSame('stderr', $output->stderr);
     }
+
+    public function testWaitTimeoutKillsProcess(): void
+    {
+        $child = Command::create(PHP_BINARY)
+            ->withArgument('-r')
+            ->withArgument('sleep(60);')
+            ->withStdout(Stdio::null())
+            ->withStderr(Stdio::null())
+            ->spawn();
+
+        try {
+            $child->wait(Duration::milliseconds(200));
+            static::fail('Expected TimeoutException');
+        } catch (Exception\TimeoutException) {
+            static::assertFalse($child->isRunning());
+        }
+    }
+
+    public function testWaitWithOutputTimeoutKillsProcess(): void
+    {
+        $child = Command::create(PHP_BINARY)
+            ->withArgument('-r')
+            ->withArgument('sleep(60);')
+            ->spawn();
+
+        try {
+            $child->waitWithOutput(Duration::milliseconds(200));
+            static::fail('Expected TimeoutException');
+        } catch (Exception\TimeoutException) {
+            static::assertFalse($child->isRunning());
+        }
+    }
+
+    public function testTimeoutWhileChildWaitsForStdin(): void
+    {
+        $child = Command::create(PHP_BINARY)
+            ->withArgument('-r')
+            ->withArgument('fread(STDIN, 1); sleep(60);')
+            ->withStdin(Stdio::piped())
+            ->withStdout(Stdio::null())
+            ->withStderr(Stdio::null())
+            ->spawn();
+
+        try {
+            $child->wait(Duration::milliseconds(500));
+            static::fail('Expected TimeoutException');
+        } catch (Exception\TimeoutException) {
+            static::assertFalse($child->isRunning());
+        }
+    }
+
+    public function testTimeoutDoesNotAffectFastProcess(): void
+    {
+        $output = Command::create(PHP_BINARY)
+            ->withArgument('-r')
+            ->withArgument('echo "fast";')
+            ->output(Duration::seconds(5));
+
+        static::assertSame('fast', $output->stdout);
+        static::assertTrue($output->status->isSuccessful());
+    }
+
+    public function testTimeoutDoesNotAffectFastProcessStatus(): void
+    {
+        $status = Command::create(PHP_BINARY)
+            ->withArgument('-r')
+            ->withArgument('exit(0);')
+            ->status(Duration::seconds(5));
+
+        static::assertTrue($status->isSuccessful());
+    }
+
+    public function testPartialStdoutCapturedBeforeTimeout(): void
+    {
+        if (OS\is_windows()) {
+            static::markTestSkipped('Timing-sensitive test unreliable on Windows CI.');
+        }
+
+        $child = Command::create(PHP_BINARY)
+            ->withArgument('-r')
+            ->withArgument('echo "1"; usleep(500000); echo "2"; sleep(10);')
+            ->spawn();
+
+        $stdout = '';
+        try {
+            foreach (IO\streaming([1 => $child->getStdout()], Duration::seconds(2)) as $chunk) {
+                if ('' === $chunk) {
+                    continue;
+                }
+
+                $stdout .= $chunk;
+            }
+        } catch (IO\Exception\TimeoutException) {
+            // Expected — process is still sleeping.
+        }
+
+        static::assertSame('12', $stdout);
+
+        $child->kill();
+        $child->wait();
+    }
+
+    public function testPartialStdoutAndStderrCapturedBeforeTimeout(): void
+    {
+        if (OS\is_windows()) {
+            static::markTestSkipped('Timing-sensitive test unreliable on Windows CI.');
+        }
+
+        $child = Command::create(PHP_BINARY)
+            ->withArgument('-r')
+            ->withArgument('fwrite(STDOUT, "out"); fwrite(STDERR, "err"); sleep(10);')
+            ->spawn();
+
+        $stdout = '';
+        $stderr = '';
+        try {
+            foreach (IO\streaming([
+                1 => $child->getStdout(),
+                2 => $child->getStderr(),
+            ], Duration::seconds(2)) as $type => $chunk) {
+                if ('' === $chunk) {
+                    continue;
+                }
+
+                if (1 === $type) {
+                    $stdout .= $chunk;
+                } else {
+                    $stderr .= $chunk;
+                }
+            }
+        } catch (IO\Exception\TimeoutException) {
+            // Expected
+        }
+
+        static::assertSame('out', $stdout);
+        static::assertSame('err', $stderr);
+
+        $child->kill();
+        $child->wait();
+    }
+
+    public function testLargeOutputCapturedBeforeTimeout(): void
+    {
+        if (OS\is_windows()) {
+            static::markTestSkipped('Timing-sensitive test unreliable on Windows CI.');
+        }
+
+        $child = Command::create(PHP_BINARY)
+            ->withArgument('-r')
+            ->withArgument('echo str_repeat("x", 10000); sleep(60);')
+            ->spawn();
+
+        $stdout = '';
+        try {
+            foreach (IO\streaming([1 => $child->getStdout()], Duration::seconds(2)) as $chunk) {
+                if ('' === $chunk) {
+                    continue;
+                }
+
+                $stdout .= $chunk;
+            }
+        } catch (IO\Exception\TimeoutException) {
+            // Expected
+        }
+
+        static::assertSame(10_000, strlen($stdout));
+
+        $child->kill();
+        $child->wait();
+    }
+
+    public function testOutputTimeoutOnSlowProducer(): void
+    {
+        $this->expectException(Exception\TimeoutException::class);
+
+        Command::create(PHP_BINARY)
+            ->withArgument('-r')
+            ->withArgument('for ($i = 0; $i < 100; $i++) { echo $i; usleep(100000); }')
+            ->output(Duration::milliseconds(500));
+    }
+
+    public function testStatusTimeoutWhileChildOutputsAndSleeps(): void
+    {
+        $this->expectException(Exception\TimeoutException::class);
+
+        Command::create(PHP_BINARY)
+            ->withArgument('-r')
+            ->withArgument('echo str_repeat("x", 10000); sleep(60);')
+            ->status(Duration::milliseconds(500));
+    }
+
+    public function testMultipleChunksBeforeTimeout(): void
+    {
+        if (OS\is_windows()) {
+            static::markTestSkipped('Timing-sensitive test unreliable on Windows CI.');
+        }
+
+        $child = Command::create(PHP_BINARY)
+            ->withArgument('-r')
+            ->withArgument('for ($i = 1; $i <= 5; $i++) { echo $i; usleep(200000); } sleep(60);')
+            ->spawn();
+
+        $stdout = '';
+        try {
+            foreach (IO\streaming([1 => $child->getStdout()], Duration::seconds(3)) as $chunk) {
+                if ('' === $chunk) {
+                    continue;
+                }
+
+                $stdout .= $chunk;
+            }
+        } catch (IO\Exception\TimeoutException) {
+            // Expected
+        }
+
+        static::assertSame('12345', $stdout);
+
+        $child->kill();
+        $child->wait();
+    }
+
+    public function testWaitWithOutputTimeoutAfterPartialOutput(): void
+    {
+        $child = Command::create(PHP_BINARY)
+            ->withArgument('-r')
+            ->withArgument('echo "partial"; sleep(60);')
+            ->spawn();
+
+        try {
+            $child->waitWithOutput(Duration::milliseconds(500));
+            static::fail('Expected TimeoutException');
+        } catch (Exception\TimeoutException) {
+            static::assertFalse($child->isRunning());
+        }
+    }
 }
