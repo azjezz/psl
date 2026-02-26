@@ -43,6 +43,33 @@ final class StdioTest extends TestCase
         static::assertNull($stdio->getHandle());
     }
 
+    public function testTty(): void
+    {
+        $stdio = Stdio::tty();
+
+        static::assertFalse($stdio->isPiped());
+        static::assertFalse($stdio->isInherit());
+        static::assertFalse($stdio->isNull());
+        static::assertFalse($stdio->isHandle());
+        static::assertTrue($stdio->isTty());
+        static::assertNull($stdio->getHandle());
+    }
+
+    public function testPipedIsNotTty(): void
+    {
+        static::assertFalse(Stdio::piped()->isTty());
+    }
+
+    public function testInheritIsNotTty(): void
+    {
+        static::assertFalse(Stdio::inherit()->isTty());
+    }
+
+    public function testNullIsNotTty(): void
+    {
+        static::assertFalse(Stdio::null()->isTty());
+    }
+
     public function testFromStreamHandle(): void
     {
         [$read, $write] = IO\pipe();
@@ -51,8 +78,20 @@ final class StdioTest extends TestCase
         static::assertFalse($stdio->isPiped());
         static::assertFalse($stdio->isInherit());
         static::assertFalse($stdio->isNull());
+        static::assertFalse($stdio->isTty());
         static::assertTrue($stdio->isHandle());
         static::assertSame($read, $stdio->getHandle());
+
+        $read->close();
+        $write->close();
+    }
+
+    public function testFromStreamHandleIsNotTty(): void
+    {
+        [$read, $write] = IO\pipe();
+        $stdio = Stdio::fromStreamHandle($read);
+
+        static::assertFalse($stdio->isTty());
 
         $read->close();
         $write->close();
