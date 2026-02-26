@@ -77,7 +77,7 @@ final class ExecuteTest extends TestCase
         $dir = Env\current_dir() . DIRECTORY_SEPARATOR . SecureRandom\string(6);
 
         $this->expectException(Shell\Exception\RuntimeException::class);
-        $this->expectExceptionMessage('$working_directory does not exist.');
+        $this->expectExceptionMessage('Working directory does not exist.');
 
         Shell\execute(PHP_BINARY, ['-r', 'echo getcwd();'], $dir);
     }

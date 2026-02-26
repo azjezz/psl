@@ -12,7 +12,7 @@
 
 #### `Functions`
 
-- [execute](./../../src/Psl/Shell/execute.php#L45)
+- [execute](./../../src/Psl/Shell/execute.php#L31)
 - [stream_unpack](./../../src/Psl/Shell/stream_unpack.php#L30)
 - [unpack](./../../src/Psl/Shell/unpack.php#L16)
 
