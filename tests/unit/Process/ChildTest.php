@@ -366,7 +366,9 @@ final class ChildTest extends TestCase
     public function testFromStreamHandle(): void
     {
         if (OS\is_windows()) {
-            static::markTestSkipped('IO\pipe() uses TCP sockets on Windows which are not inheritable by child processes.');
+            static::markTestSkipped(
+                'IO\pipe() uses TCP sockets on Windows which are not inheritable by child processes.',
+            );
         }
 
         [$read, $write] = IO\pipe();
