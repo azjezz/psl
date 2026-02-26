@@ -597,7 +597,9 @@ final class ChildTest extends TestCase
     public function testOutputTimeoutOnSlowProducer(): void
     {
         if (OS\is_windows()) {
-            static::markTestSkipped('IO\streaming() timeout is unreliable on Windows when data is actively flowing through pipes.');
+            static::markTestSkipped(
+                'IO\streaming() timeout is unreliable on Windows when data is actively flowing through pipes.',
+            );
         }
 
         $this->expectException(Exception\TimeoutException::class);
@@ -651,7 +653,9 @@ final class ChildTest extends TestCase
     public function testWaitWithOutputTimeoutAfterPartialOutput(): void
     {
         if (OS\is_windows()) {
-            static::markTestSkipped('IO\streaming() timeout is unreliable on Windows when data is actively flowing through pipes.');
+            static::markTestSkipped(
+                'IO\streaming() timeout is unreliable on Windows when data is actively flowing through pipes.',
+            );
         }
 
         $child = Command::create(PHP_BINARY)

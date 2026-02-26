@@ -15,6 +15,7 @@ final readonly class Stdio
     private const int TYPE_INHERIT = 1;
     private const int TYPE_NULL = 2;
     private const int TYPE_HANDLE = 3;
+    private const int TYPE_TTY = 4;
 
     private function __construct(
         private int $type,
@@ -43,6 +44,20 @@ final readonly class Stdio
     public static function null(): self
     {
         return new self(self::TYPE_NULL);
+    }
+
+    /**
+     * The child will read/write directly to the terminal (/dev/tty).
+     *
+     * This is useful for interactive programs (e.g. vim, crontab -e, git commit)
+     * or programs that detect TTY for colored output.
+     *
+     * Only available on Unix systems. On Windows, this will throw a
+     * {@see Exception\RuntimeException} when the process is spawned.
+     */
+    public static function tty(): self
+    {
+        return new self(self::TYPE_TTY);
     }
 
     /**
@@ -75,6 +90,14 @@ final readonly class Stdio
     public function isNull(): bool
     {
         return self::TYPE_NULL === $this->type;
+    }
+
+    /**
+     * @internal
+     */
+    public function isTty(): bool
+    {
+        return self::TYPE_TTY === $this->type;
     }
 
     /**

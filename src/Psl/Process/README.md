@@ -69,6 +69,7 @@ Describes what to do with a standard I/O stream for a child process.
 - `Stdio::piped(): self` — Create a pipe between the parent and child processes. This is the default for stdout and stderr.
 - `Stdio::inherit(): self` — The child inherits the corresponding parent descriptor.
 - `Stdio::null(): self` — Attach the stream to `/dev/null` (or `NUL` on Windows). This is the default for stdin.
+- `Stdio::tty(): self` — Connect the child directly to the terminal (`/dev/tty`). Useful for interactive programs (vim, crontab -e, git commit) or programs that detect TTY for colored output. Unix only.
 - `Stdio::fromStreamHandle(IO\StreamHandleInterface $handle): self` — Use an existing stream handle.
 
 ---

@@ -426,6 +426,17 @@ final readonly class Command
             return ['pipe', $mode];
         }
 
+        if ($stdio->isTty()) {
+            // @codeCoverageIgnoreStart
+            if (OS\is_windows()) {
+                throw new Exception\RuntimeException('TTY is not supported on Windows.');
+            }
+
+            // @codeCoverageIgnoreEnd
+
+            return ['file', '/dev/tty', $mode];
+        }
+
         if ($stdio->isInherit()) {
             return match ($fd) {
                 0 => \STDIN,
