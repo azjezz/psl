@@ -29,7 +29,6 @@ function reverse(iterable $iterable): array
     $size = Iter\count($values);
     $result = [];
     for ($i = $size - 1; $i >= 0; $i--) {
-        // @mago-expect analysis:mismatched-array-index - we know that $i is always an int within bounds
         $result[] = $values[$i];
     }
 

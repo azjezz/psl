@@ -22,5 +22,6 @@ function compare(mixed $a, mixed $b): Order
         return $a->compare($b);
     }
 
+    // @mago-expect analysis:possibly-null-operand,possibly-null-operand
     return Order::from($a <=> $b);
 }

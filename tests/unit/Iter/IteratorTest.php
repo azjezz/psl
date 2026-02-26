@@ -101,13 +101,15 @@ final class IteratorTest extends TestCase
 
     public function testSeekZero(): void
     {
-        $iterator = new Iter\Iterator((static function (): iterable {
-            yield 1;
+        $iterator = new Iter\Iterator(
+            (static function (): iterable {
+                yield 1;
 
-            throw new Exception('nope');
+                throw new Exception('nope');
 
-            yield 2;
-        })());
+                yield 2;
+            })(),
+        );
 
         foreach ($iterator as $k => $v) {
             static::assertSame(0, $k);
