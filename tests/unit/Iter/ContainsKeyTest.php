@@ -34,7 +34,7 @@ final class ContainsKeyTest extends TestCase
         yield [true, ['hello' => 'world'], 'hello'];
         yield [false, ['hello' => 'world'], 'hellO'];
         yield [false, ['hello' => 'world'], 'world'];
-        yield [false, [null => null], null];
+        yield [false, ['' => null], ''];
         yield [true, new Collection\Vector([1, 2]), 0];
         yield [true, new Collection\Vector([1, 2]), 1];
         yield [false, new Collection\Vector([1, 2]), 2];

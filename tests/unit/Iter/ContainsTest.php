@@ -36,7 +36,7 @@ final class ContainsTest extends TestCase
         yield [false, ['hello' => 'world'], 'hello'];
         yield [true, ['hello' => 'world'], 'world'];
         yield [false, ['hello' => 'world'], 'worlD'];
-        yield [true, [null => null], null];
+        yield [true, ['' => ''], ''];
         yield [false, new Collection\Vector([1, 2]), 0];
         yield [true, new Collection\Vector([1, 2]), 1];
         yield [true, new Collection\Vector([1, 2]), 2];
