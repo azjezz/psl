@@ -16,16 +16,16 @@ use const STDIN;
 final class StringBackedEnumValueTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\backed_enum_value(StringEnum::class);
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield [1, StringEnum::Bar->value];
-        yield [$this->stringable('foo'), StringEnum::Foo->value];
+        yield [static::stringable('foo'), StringEnum::Foo->value];
         yield ['foo', StringEnum::Foo->value];
         yield ['1', StringEnum::Bar->value];
     }
@@ -34,12 +34,12 @@ final class StringBackedEnumValueTypeTest extends TypeTestCase
      * @return iterable<array{0: mixed}>
      */
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [null];
         yield [STDIN];
         yield ['hello'];
-        yield [$this->stringable('bar')];
+        yield [static::stringable('bar')];
         yield [new class {}];
     }
 
@@ -47,7 +47,7 @@ final class StringBackedEnumValueTypeTest extends TypeTestCase
      * @return iterable<array{0: Type\Type<value-of<StringEnum>>, 1: string}>
      */
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
         yield [Type\backed_enum_value(StringEnum::class), Str\format('value-of<%s>', StringEnum::class)];
     }

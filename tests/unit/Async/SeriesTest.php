@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Async;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\Exception;
 use Psl;
 use Psl\Async;
 use Psl\DateTime;
+use RuntimeException as Exception;
 
 final class SeriesTest extends TestCase
 {

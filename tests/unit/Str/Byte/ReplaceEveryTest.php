@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str\Byte;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
 final class ReplaceEveryTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testReplaceEvery(string $expected, string $haystack, iterable $replacements): void
     {
         static::assertSame($expected, Byte\replace_every($haystack, $replacements));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

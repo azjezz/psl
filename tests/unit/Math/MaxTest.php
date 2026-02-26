@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Math;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
 final class MaxTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testMax(null|int $expected, array $numbers): void
     {
         static::assertSame($expected, Math\max($numbers));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

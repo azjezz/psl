@@ -10,19 +10,19 @@ use Psl\Type;
 final class PrivateConstantNameOfTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\private_constant_name_of(ClassWithConstants::class);
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield ['PRIVATE_CONST', 'PRIVATE_CONST'];
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [null];
         yield [STDIN];
@@ -33,12 +33,12 @@ final class PrivateConstantNameOfTypeTest extends TypeTestCase
         yield [123];
         yield [true];
         yield [[]];
-        yield [$this->stringable('foo')];
+        yield [static::stringable('foo')];
         yield [new class {}];
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
         yield [
             Type\private_constant_name_of(ClassWithConstants::class),

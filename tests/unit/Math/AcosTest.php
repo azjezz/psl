@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Math;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
@@ -11,15 +12,13 @@ final class AcosTest extends TestCase
 {
     use FloatAsserts;
 
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testAcos(float $expected, float $number): void
     {
         static::assertFloatEquals($expected, Math\acos($number));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [0.0,                     1.0],

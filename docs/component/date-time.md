@@ -42,7 +42,7 @@
 #### `Classes`
 
 - [DateTime](./../../src/Psl/DateTime/DateTime.php#L21)
-- [Duration](./../../src/Psl/DateTime/Duration.php#L15)
+- [Duration](./../../src/Psl/DateTime/Duration.php#L33)
 - [Timestamp](./../../src/Psl/DateTime/Timestamp.php#L22)
 
 #### `Traits`

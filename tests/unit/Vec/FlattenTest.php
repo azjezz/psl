@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Vec;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Vec;
 
 final class FlattenTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testFlatten(array $expected, array $iterables): void
     {
         static::assertSame($expected, Vec\flatten($iterables));
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield 'basic' => [[1, 2, 3, 4, 5], [[1, 2], [3, 4], [5]]];
         yield 'with empty inner' => [['a', 'b', 'c'], [['a', 'b'], [], ['c']]];

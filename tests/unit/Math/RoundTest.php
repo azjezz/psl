@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Math;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
 final class RoundTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testRound(float $expected, float $number, int $precision = 0): void
     {
         static::assertSame($expected, Math\round($number, $precision));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

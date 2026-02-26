@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Math;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
 final class DivTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testDiv(int $expected, int $numerator, int $denominator): void
     {
         static::assertSame($expected, Math\div($numerator, $denominator));
@@ -33,7 +32,7 @@ final class DivTest extends TestCase
         Math\div(Math\INT64_MIN, -1);
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

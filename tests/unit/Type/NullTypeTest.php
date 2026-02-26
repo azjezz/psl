@@ -9,19 +9,19 @@ use Psl\Type;
 final class NullTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\null();
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield [null, null];
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [Type\bool()];
         yield [1];
@@ -34,13 +34,13 @@ final class NullTypeTest extends TypeTestCase
         yield [[null]];
         yield [[]];
         yield [[1, 2, 3]];
-        yield [$this->stringable('')];
+        yield [static::stringable('')];
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'null'];
+        yield [static::getType(), 'null'];
     }
 
     public function testItIsAMemoizedType(): void

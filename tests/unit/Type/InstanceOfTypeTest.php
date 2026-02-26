@@ -11,33 +11,33 @@ use Psl\Type;
 final class InstanceOfTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\instance_of(Collection\CollectionInterface::class);
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield [$_ = new Collection\Vector([1, 2]), $_];
         yield [$_ = new Collection\MutableVector([1, 2]), $_];
         yield [$_ = new Collection\Map([1 => 'hey', 2 => 'hello']), $_];
         yield [$_ = new Collection\MutableMap([1 => 'hey', 2 => 'hello']), $_];
-        yield [$_ = $this->createStub(CollectionInterface::class), $_];
+        yield [$_ = new Collection\Set([]), $_];
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [null];
         yield [STDIN];
         yield ['hello'];
-        yield [$this->stringable('foo')];
+        yield [static::stringable('foo')];
         yield [new class {}];
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
         yield [Type\instance_of(Collection\MapInterface::class), Collection\MapInterface::class];
         yield [Type\instance_of(Collection\VectorInterface::class), Collection\VectorInterface::class];

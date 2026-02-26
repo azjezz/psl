@@ -5,25 +5,24 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Type;
 
 use Psl\Collection;
-use Psl\Collection\CollectionInterface;
 use Psl\Type;
 
 final class ObjectTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\object();
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield [$_ = new Collection\Vector([1, 2]), $_];
         yield [$_ = new Collection\MutableVector([1, 2]), $_];
         yield [$_ = new Collection\Map([1 => 'hey', 2 => 'hello']), $_];
         yield [$_ = new Collection\MutableMap([1 => 'hey', 2 => 'hello']), $_];
-        yield [$_ = $this->createStub(CollectionInterface::class), $_];
+        yield [$_ = new Collection\Set([]), $_];
         yield [
             $_ = new class {},
             $_,
@@ -31,7 +30,7 @@ final class ObjectTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [null];
         yield [STDIN];
@@ -39,7 +38,7 @@ final class ObjectTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
         yield [Type\object(), 'object'];
     }

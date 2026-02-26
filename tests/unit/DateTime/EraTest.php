@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\DateTime;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\DateTime\Era;
 
@@ -11,7 +12,7 @@ final class EraTest extends TestCase
 {
     use DateTimeTestTrait;
 
-    public function provideFromYearData(): iterable
+    public static function provideFromYearData(): iterable
     {
         yield [2024, Era::AnnoDomini];
         yield [1, Era::AnnoDomini];
@@ -20,9 +21,7 @@ final class EraTest extends TestCase
         yield [0, Era::BeforeChrist];
     }
 
-    /**
-     * @dataProvider provideFromYearData
-     */
+    #[DataProvider('provideFromYearData')]
     public function testFromYear(int $year, Era $expected): void
     {
         static::assertSame($expected, Era::fromYear($year));

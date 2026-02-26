@@ -14,7 +14,7 @@ use Psl\Type;
 final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\shape([
             'name' => Type\string(),
@@ -31,7 +31,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield [
             ['name' => 'saif', 'articles' => new Collection\Vector([])],
@@ -114,7 +114,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [1.0];
         yield [1.23];
@@ -141,10 +141,10 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
         yield [
-            $this->getType(),
+            static::getType(),
             "array{'name': string, 'articles': vec<array{"
                 . "'title': string, "
                 . "'content': string, "
@@ -163,7 +163,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
      * @param Collection\VectorInterface<mixed>|mixed $b
      */
     #[\Override]
-    protected function equals(mixed $a, mixed $b): bool
+    protected static function equals(mixed $a, mixed $b): bool
     {
         $dict = Type\dict(Type\array_key(), Type\mixed());
         if (!$dict->matches($a) || !$dict->matches($b)) {

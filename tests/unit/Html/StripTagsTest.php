@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Html;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Html;
 
 final class StripTagsTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testEncode(string $expected, string $html, array $allowed_tags): void
     {
         static::assertSame($expected, Html\strip_tags($html, $allowed_tags));
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield ['hello', 'hello', []];
         yield ['hello', '<p>hello</p>', []];

@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
 final class RepeatTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testRepeat(string $expected, string $string, int $multiplier): void
     {
         static::assertSame($expected, Str\repeat($string, $multiplier));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             ['a',            'a',    1],

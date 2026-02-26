@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Iter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Iter;
@@ -11,15 +12,13 @@ use Psl\Vec;
 
 final class CountTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testCount(int $expected, iterable $iterable): void
     {
         static::assertSame($expected, Iter\count($iterable));
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [0, []];
         yield [1, [null]];

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Collection;
 use Psl\Dict;
 use Psl\Iter;
@@ -18,13 +19,13 @@ use RuntimeException;
 final class NonEmptyVecTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\non_empty_vec(Type\int());
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield [
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -73,7 +74,7 @@ final class NonEmptyVecTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [[]];
         yield [1.0];
@@ -86,9 +87,9 @@ final class NonEmptyVecTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'non-empty-vec<int>'];
+        yield [static::getType(), 'non-empty-vec<int>'];
         yield [Type\non_empty_vec(Type\string()), 'non-empty-vec<string>'];
         yield [
             Type\non_empty_vec(Type\instance_of(Iter\Iterator::class)),
@@ -156,9 +157,7 @@ final class NonEmptyVecTypeTest extends TypeTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideAssertExceptionExpectations
-     */
+    #[DataProvider('provideAssertExceptionExpectations')]
     public function testInvalidAssertionTypeExceptions(
         Type\TypeInterface $type,
         mixed $data,
@@ -172,9 +171,7 @@ final class NonEmptyVecTypeTest extends TypeTestCase
         }
     }
 
-    /**
-     * @dataProvider provideCoerceExceptionExpectations
-     */
+    #[DataProvider('provideCoerceExceptionExpectations')]
     public function testInvalidCoercionTypeExceptions(
         Type\TypeInterface $type,
         mixed $data,

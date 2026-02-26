@@ -13,19 +13,19 @@ use Psl\Type;
 final class PositiveIntTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\positive_int();
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield [123, 123];
         yield ['123', 123];
-        yield [$this->stringable('123'), 123];
-        yield [$this->stringable((string) Math\INT16_MAX), Math\INT16_MAX];
-        yield [$this->stringable((string) Math\INT64_MAX), Math\INT64_MAX];
+        yield [static::stringable('123'), 123];
+        yield [static::stringable((string) Math\INT16_MAX), Math\INT16_MAX];
+        yield [static::stringable((string) Math\INT64_MAX), Math\INT64_MAX];
         yield [(string) Math\INT64_MAX, Math\INT64_MAX];
         yield [Math\INT64_MAX, Math\INT64_MAX];
         yield ['7', 7];
@@ -35,7 +35,7 @@ final class PositiveIntTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [0];
         yield ['0'];
@@ -51,14 +51,14 @@ final class PositiveIntTypeTest extends TypeTestCase
         yield [[123]];
         yield [null];
         yield [false];
-        yield [$this->stringable('1.23')];
-        yield [$this->stringable('-007')];
-        yield [$this->stringable('-321')];
+        yield [static::stringable('1.23')];
+        yield [static::stringable('-007')];
+        yield [static::stringable('-321')];
         yield ['-007'];
         yield ['9223372036854775808'];
-        yield [$this->stringable('9223372036854775808')];
+        yield [static::stringable('9223372036854775808')];
         yield ['-9223372036854775809'];
-        yield [$this->stringable('-9223372036854775809')];
+        yield [static::stringable('-9223372036854775809')];
         yield ['0xFF'];
         yield ['-0xFF'];
         yield ["\xc1\xbf"];
@@ -66,9 +66,9 @@ final class PositiveIntTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'positive-int'];
+        yield [static::getType(), 'positive-int'];
     }
 
     public function testItIsAMemoizedType(): void

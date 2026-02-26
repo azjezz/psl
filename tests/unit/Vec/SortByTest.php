@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Vec;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 use Psl\Str;
@@ -11,15 +12,13 @@ use Psl\Vec;
 
 final class SortByTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testSortBy(array $expected, array $array, callable $scalar_fun, null|callable $comp = null): void
     {
         static::assertSame($expected, Vec\sort_by($array, $scalar_fun, $comp));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         $a = [1, 2];
         $b = [1, 2, 3, 4];

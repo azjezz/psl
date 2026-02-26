@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Vec;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 use Psl\Vec;
@@ -14,13 +15,11 @@ final class ReductionsTest extends TestCase
      * @template Tk
      * @template Tv
      * @template Ts
-     *
      * @param iterable<Tk, Tv> $iterable
      * @param (callable(Ts, Tk, Tv): Ts) $function
      * @param Ts $initial
-     *
-     * @dataProvider provideData
      */
+    #[DataProvider('provideData')]
     public function testReductions(array $expected, iterable $iterable, callable $function, mixed $initial): void
     {
         static::assertSame($expected, Vec\reductions($iterable, $function, $initial));
@@ -29,7 +28,7 @@ final class ReductionsTest extends TestCase
     /**
      * @return iterable<array{0: list<int>, 1: iterable<int>, 2: (function(int, int, int): int)}>
      */
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [
             [],

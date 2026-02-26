@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
 final class SearchLastCiTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testSearchLastCi(null|int $expected, string $haystack, string $needle, int $offset = 0): void
     {
         static::assertSame($expected, Str\search_last_ci($haystack, $needle, $offset));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [7, 'Hello, you!', 'You'],

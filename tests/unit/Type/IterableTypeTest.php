@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Dict;
 use Psl\Iter;
 use Psl\Str;
@@ -17,13 +18,13 @@ use RuntimeException;
 final class IterableTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\iterable(Type\int(), Type\int());
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield [
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -49,7 +50,7 @@ final class IterableTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [1.0];
         yield [1.23];
@@ -61,9 +62,9 @@ final class IterableTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'iterable<int, int>'];
+        yield [static::getType(), 'iterable<int, int>'];
         yield [Type\iterable(Type\array_key(), Type\int()), 'iterable<array-key, int>'];
         yield [Type\iterable(Type\array_key(), Type\string()), 'iterable<array-key, string>'];
         yield [
@@ -77,7 +78,7 @@ final class IterableTypeTest extends TypeTestCase
      * @param iterable<int, int> $b
      */
     #[\Override]
-    protected function equals(mixed $a, mixed $b): bool
+    protected static function equals(mixed $a, mixed $b): bool
     {
         $a = Dict\from_iterable($a);
         $b = Dict\from_iterable($b);
@@ -155,9 +156,7 @@ final class IterableTypeTest extends TypeTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideAssertExceptionExpectations
-     */
+    #[DataProvider('provideAssertExceptionExpectations')]
     public function testInvalidAssertionTypeExceptions(
         Type\TypeInterface $type,
         mixed $data,
@@ -171,9 +170,7 @@ final class IterableTypeTest extends TypeTestCase
         }
     }
 
-    /**
-     * @dataProvider provideCoerceExceptionExpectations
-     */
+    #[DataProvider('provideCoerceExceptionExpectations')]
     public function testInvalidCoercionTypeExceptions(
         Type\TypeInterface $type,
         mixed $data,

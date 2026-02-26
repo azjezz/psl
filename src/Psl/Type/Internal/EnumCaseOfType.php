@@ -38,7 +38,7 @@ final readonly class EnumCaseOfType extends Type
     #[Override]
     public function matches(mixed $value): bool
     {
-        return is_string($value) && $value !== '' && (new ReflectionEnum($this->enumname))->hasCase($value);
+        return is_string($value) && $value !== '' && new ReflectionEnum($this->enumname)->hasCase($value);
     }
 
     /**
@@ -49,7 +49,7 @@ final readonly class EnumCaseOfType extends Type
     #[Override]
     public function coerce(mixed $value): string
     {
-        if (is_string($value) && $value !== '' && (new ReflectionEnum($this->enumname))->hasCase($value)) {
+        if (is_string($value) && $value !== '' && new ReflectionEnum($this->enumname)->hasCase($value)) {
             return $value;
         }
 
@@ -66,7 +66,7 @@ final readonly class EnumCaseOfType extends Type
     #[Override]
     public function assert(mixed $value): string
     {
-        if (is_string($value) && $value !== '' && (new ReflectionEnum($this->enumname))->hasCase($value)) {
+        if (is_string($value) && $value !== '' && new ReflectionEnum($this->enumname)->hasCase($value)) {
             return $value;
         }
 

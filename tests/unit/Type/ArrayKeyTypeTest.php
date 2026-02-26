@@ -9,25 +9,25 @@ use Psl\Type;
 final class ArrayKeyTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\array_key();
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield [123, 123];
         yield [0, 0];
         yield ['0', '0'];
         yield ['123', '123'];
         yield ['1e23', '1e23'];
-        yield [$this->stringable('123'), '123'];
+        yield [static::stringable('123'), '123'];
         yield [1.0, 1];
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [1.23];
         yield [[]];
@@ -40,9 +40,9 @@ final class ArrayKeyTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'array-key'];
+        yield [static::getType(), 'array-key'];
     }
 
     public function testItIsAMemoizedType(): void

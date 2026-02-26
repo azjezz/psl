@@ -16,15 +16,15 @@ use const STDIN;
 final class IntegerBackedEnumValueTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\backed_enum_value(IntegerEnum::class);
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
-        yield [$this->stringable('1'), IntegerEnum::Foo->value];
+        yield [static::stringable('1'), IntegerEnum::Foo->value];
         yield [1, IntegerEnum::Foo->value];
         yield ['1', IntegerEnum::Foo->value];
         yield ['2', IntegerEnum::Bar->value];
@@ -35,13 +35,13 @@ final class IntegerBackedEnumValueTypeTest extends TypeTestCase
      * @return iterable<array{0: mixed}>
      */
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [99];
         yield [null];
         yield [STDIN];
         yield ['hello'];
-        yield [$this->stringable('bar')];
+        yield [static::stringable('bar')];
         yield [new class {}];
     }
 
@@ -49,7 +49,7 @@ final class IntegerBackedEnumValueTypeTest extends TypeTestCase
      * @return iterable<array{0: Type\Type<mixed>, 1: string}>
      */
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
         yield [Type\backed_enum_value(IntegerEnum::class), Str\format('value-of<%s>', IntegerEnum::class)];
     }

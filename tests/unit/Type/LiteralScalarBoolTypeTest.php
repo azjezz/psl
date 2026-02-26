@@ -9,13 +9,13 @@ use Psl\Type;
 final class LiteralScalarBoolTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\literal_scalar(false);
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield ['0', false];
         yield [0, false];
@@ -23,7 +23,7 @@ final class LiteralScalarBoolTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [null];
         yield [true];
@@ -34,9 +34,9 @@ final class LiteralScalarBoolTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'false'];
+        yield [static::getType(), 'false'];
         yield [Type\literal_scalar('5'), '"5"'];
         yield [Type\literal_scalar(5.500_0), '5.5'];
         yield [Type\literal_scalar(true), 'true'];

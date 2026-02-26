@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Math;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
@@ -11,15 +12,13 @@ final class AsinTest extends TestCase
 {
     use FloatAsserts;
 
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testAsin(float $expected, float $number): void
     {
         static::assertFloatEquals($expected, Math\asin($number));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [0.523_598_775_598_298_9,  0.5],

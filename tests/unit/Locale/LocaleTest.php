@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Locale;
 
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Locale\Locale;
 use Psl\Str;
@@ -134,16 +135,14 @@ final class LocaleTest extends TestCase
     /**
      * @return Generator<string, array{Locale}, void, null>
      */
-    public function getAllLocales(): Generator
+    public static function getAllLocales(): Generator
     {
         foreach (Locale::cases() as $locale) {
             yield $locale->value => [$locale];
         }
     }
 
-    /**
-     * @dataProvider getAllLocales
-     */
+    #[DataProvider('getAllLocales')]
     public function testItReturnsTheLanguageAndHumanReadableName(Locale $locale): void
     {
         $display_language = $locale->getDisplayLanguage(Locale::English);
@@ -168,7 +167,7 @@ final class LocaleTest extends TestCase
     /**
      * @return Generator<string, array{Locale}, void, null>
      */
-    public function getLocalesWithScript(): Generator
+    public static function getLocalesWithScript(): Generator
     {
         foreach (Locale::cases() as $locale) {
             if (!$locale->hasScript()) {
@@ -179,9 +178,7 @@ final class LocaleTest extends TestCase
         }
     }
 
-    /**
-     * @dataProvider getLocalesWithScript
-     */
+    #[DataProvider('getLocalesWithScript')]
     public function testItReturnsTheScript(Locale $locale): void
     {
         static::assertTrue($locale->hasScript());
@@ -191,7 +188,7 @@ final class LocaleTest extends TestCase
     /**
      * @return Generator<string, array{Locale}, void, null>
      */
-    public function getLocalesWithoutScript(): Generator
+    public static function getLocalesWithoutScript(): Generator
     {
         foreach (Locale::cases() as $locale) {
             if ($locale->hasScript()) {
@@ -202,9 +199,7 @@ final class LocaleTest extends TestCase
         }
     }
 
-    /**
-     * @dataProvider getLocalesWithoutScript
-     */
+    #[DataProvider('getLocalesWithoutScript')]
     public function testItDoesNotReturnsTheScript(Locale $locale): void
     {
         static::assertFalse($locale->hasScript());
@@ -214,7 +209,7 @@ final class LocaleTest extends TestCase
     /**
      * @return Generator<string, array{Locale}, void, null>
      */
-    public function getLocalesWithRegion(): Generator
+    public static function getLocalesWithRegion(): Generator
     {
         foreach (Locale::cases() as $locale) {
             if (!$locale->hasRegion()) {
@@ -225,9 +220,7 @@ final class LocaleTest extends TestCase
         }
     }
 
-    /**
-     * @dataProvider getLocalesWithRegion
-     */
+    #[DataProvider('getLocalesWithRegion')]
     public function testItReturnsTheRegion(Locale $locale): void
     {
         static::assertTrue($locale->hasRegion());
@@ -238,7 +231,7 @@ final class LocaleTest extends TestCase
     /**
      * @return Generator<string, array{Locale}, void, null>
      */
-    public function getLocalesWithoutRegion(): Generator
+    public static function getLocalesWithoutRegion(): Generator
     {
         foreach (Locale::cases() as $locale) {
             if ($locale->hasRegion()) {
@@ -249,9 +242,7 @@ final class LocaleTest extends TestCase
         }
     }
 
-    /**
-     * @dataProvider getLocalesWithoutRegion
-     */
+    #[DataProvider('getLocalesWithoutRegion')]
     public function testItDoesNotReturnsTheRegion(Locale $locale): void
     {
         static::assertFalse($locale->hasRegion());

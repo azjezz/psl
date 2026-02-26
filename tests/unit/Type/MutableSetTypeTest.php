@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Collection;
 use Psl\Collection\MutableSetInterface;
 use Psl\Dict;
@@ -18,13 +19,13 @@ use RuntimeException;
 final class MutableSetTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\mutable_set(Type\int());
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield [
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -68,7 +69,7 @@ final class MutableSetTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [1.0];
         yield [1.23];
@@ -80,9 +81,9 @@ final class MutableSetTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'Psl\Collection\MutableSetInterface<int>'];
+        yield [static::getType(), 'Psl\Collection\MutableSetInterface<int>'];
         yield [Type\mutable_set(Type\string()), 'Psl\Collection\MutableSetInterface<string>'];
     }
 
@@ -91,7 +92,7 @@ final class MutableSetTypeTest extends TypeTestCase
      * @param MutableSetInterface<array-key>|mixed $b
      */
     #[\Override]
-    protected function equals(mixed $a, mixed $b): bool
+    protected static function equals(mixed $a, mixed $b): bool
     {
         if (Type\instance_of(MutableSetInterface::class)->matches($a)) {
             $a = $a->toArray();
@@ -171,9 +172,7 @@ final class MutableSetTypeTest extends TypeTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideAssertExceptionExpectations
-     */
+    #[DataProvider('provideAssertExceptionExpectations')]
     public function testInvalidAssertionTypeExceptions(
         Type\TypeInterface $type,
         mixed $data,
@@ -187,9 +186,7 @@ final class MutableSetTypeTest extends TypeTestCase
         }
     }
 
-    /**
-     * @dataProvider provideCoerceExceptionExpectations
-     */
+    #[DataProvider('provideCoerceExceptionExpectations')]
     public function testInvalidCoercionTypeExceptions(
         Type\TypeInterface $type,
         mixed $data,

@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str\Byte;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
 final class TrimTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testTrim(string $expected, string $string, null|string $chars = null): void
     {
         static::assertSame($expected, Byte\trim($string, $chars));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             ["Hello     Wôrld\t!!!",     "    Hello     Wôrld\t!!!\n",   null],

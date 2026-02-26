@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Encoding;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Encoding\Base64;
 use Psl\Encoding\Exception;
@@ -12,9 +13,7 @@ use Psl\SecureRandom;
 
 final class Base64Test extends TestCase
 {
-    /**
-     * @dataProvider provideRandomBytes
-     */
+    #[DataProvider('provideRandomBytes')]
     public function testEncodeAndDecode(string $random): void
     {
         $encoded = Base64\encode($random, Base64\Variant::default());
@@ -37,9 +36,7 @@ final class Base64Test extends TestCase
         Base64\decode('ab');
     }
 
-    /**
-     * @dataProvider provideRandomBytes
-     */
+    #[DataProvider('provideRandomBytes')]
     public function testEncodeWithoutPaddingThenDecode(string $random): void
     {
         $encoded = Base64\encode($random, Base64\Variant::default(), false);
@@ -47,7 +44,7 @@ final class Base64Test extends TestCase
         static::assertSame($random, Base64\decode($encoded, Base64\Variant::default(), false));
     }
 
-    public function provideRandomBytes(): iterable
+    public static function provideRandomBytes(): iterable
     {
         for ($i = 1; $i < 128; ++$i) {
             yield [SecureRandom\bytes($i)];

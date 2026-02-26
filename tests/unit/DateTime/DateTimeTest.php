@@ -7,6 +7,7 @@ namespace Psl\Tests\Unit\DateTime;
 use DateTimeImmutable;
 use DateTimeZone;
 use IntlCalendar;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\DateTime\DateStyle;
 use Psl\DateTime\DateTime;
@@ -93,9 +94,7 @@ final class DateTimeTest extends TestCase
         static::assertSame(0, $datetime->getNanoseconds());
     }
 
-    /**
-     * @dataProvider provideInvalidComponentParts
-     */
+    #[DataProvider('provideInvalidComponentParts')]
     public function testFromPartsWithInvalidComponent(
         string $expectedMessage,
         int $year,
@@ -313,9 +312,7 @@ final class DateTimeTest extends TestCase
         yield [23, 11, Meridiem::PostMeridiem];
     }
 
-    /**
-     * @dataProvider provideTwelveHours
-     */
+    #[DataProvider('provideTwelveHours')]
     public function testGetTwelveHours(int $hour, int $expectedTwelveHour, Meridiem $expectedMeridiem): void
     {
         $datetime = DateTime::fromParts(Timezone::default(), 2024, Month::February, 4, $hour, 0, 0, 0);

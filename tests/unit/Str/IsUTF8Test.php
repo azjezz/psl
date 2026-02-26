@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
 final class IsUTF8Test extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testIsUTF8Test(bool $expected, string $string): void
     {
         static::assertSame($expected, Str\is_utf8($string));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [true,  'hello'],

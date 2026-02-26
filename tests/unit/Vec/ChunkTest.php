@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Vec;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Vec;
 
@@ -11,18 +12,16 @@ final class ChunkTest extends TestCase
 {
     /**
      * @template T
-     *
      * @param list<list<T>> $expected
      * @param iterable<T> $iterable
-     *
-     * @dataProvider provideData
      */
+    #[DataProvider('provideData')]
     public function testChunk(array $expected, iterable $iterable, int $size): void
     {
         static::assertSame($expected, Vec\chunk($iterable, $size));
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [[[1], [2], [3]], Vec\range(1, 3), 1];
         yield [[], [], 4];

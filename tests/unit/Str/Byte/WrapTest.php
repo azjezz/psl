@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str\Byte;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
 final class WrapTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testWrap(
         string $expected,
         string $str,
@@ -22,7 +21,7 @@ final class WrapTest extends TestCase
         static::assertSame($expected, Byte\wrap($str, $width, $break, $cut));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             ['Hello', 'Hello'],

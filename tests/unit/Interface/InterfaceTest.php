@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Interface;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Interface;
@@ -11,16 +12,14 @@ use Psl\Type;
 
 final class InterfaceTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function test(string $interface_name, bool $exists): void
     {
         static::assertSame($exists, Interface\exists($interface_name));
         static::assertSame($exists, Interface\defined($interface_name));
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [Collection\VectorInterface::class, true];
         yield [Collection\MutableVectorInterface::class, true];

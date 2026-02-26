@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Encoding;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Encoding\Exception;
 use Psl\Encoding\Hex;
@@ -13,9 +14,7 @@ use function bin2hex;
 
 final class HexTest extends TestCase
 {
-    /**
-     * @dataProvider provideRandomBytes
-     */
+    #[DataProvider('provideRandomBytes')]
     public function testRandom(string $random): void
     {
         $enc = Hex\encode($random);
@@ -39,7 +38,7 @@ final class HexTest extends TestCase
         Hex\decode('f');
     }
 
-    public function provideRandomBytes(): iterable
+    public static function provideRandomBytes(): iterable
     {
         for ($i = 1; $i < 128; ++$i) {
             yield [SecureRandom\bytes($i)];

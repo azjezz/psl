@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str\Grapheme;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 use Psl\Str\Exception;
@@ -11,7 +12,7 @@ use Psl\Str\Grapheme;
 
 class ReverseTest extends TestCase
 {
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             ['Hello World 👩🏽‍❤️‍👨🏼', '👩🏽‍❤️‍👨🏼 dlroW olleH'],
@@ -23,9 +24,7 @@ class ReverseTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testReverse(string $string, string $expected): void
     {
         static::assertSame(Grapheme\reverse($string), $expected);

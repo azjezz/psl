@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
 final class EndsWithCiTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testEndsWithCi(bool $expected, string $haystack, string $suffix): void
     {
         if (null === Str\search_ci($haystack, $suffix)) {
@@ -23,7 +22,7 @@ final class EndsWithCiTest extends TestCase
         static::assertSame($expected, Str\ends_with_ci($haystack, $suffix));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [true,  'Hello',         'Hello'],

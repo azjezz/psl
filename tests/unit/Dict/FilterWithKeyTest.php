@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Dict;
 
 use Closure;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Dict;
@@ -14,13 +15,11 @@ final class FilterWithKeyTest extends TestCase
     /**
      * @template Tk of array-key
      * @template Tv
-     *
      * @param array<Tk, Tv> $expected
      * @param iterable<Tk, Tv> $iterable
      * @param (Closure(Tk, Tv): bool)|null $predicate
-     *
-     * @dataProvider provideData
      */
+    #[DataProvider('provideData')]
     public function testFilterWithKey(array $expected, iterable $iterable, null|Closure $predicate = null): void
     {
         $result = Dict\filter_with_key($iterable, $predicate);
@@ -28,7 +27,7 @@ final class FilterWithKeyTest extends TestCase
         static::assertSame($expected, $result);
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [[], []];
         yield [['a', 'b'], ['a', 'b']];

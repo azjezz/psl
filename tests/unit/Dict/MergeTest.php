@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Dict;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Dict;
 
 final class MergeTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testMerge(array $expected, array $array, array ...$arrays): void
     {
         static::assertSame($expected, Dict\merge($array, ...$arrays));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

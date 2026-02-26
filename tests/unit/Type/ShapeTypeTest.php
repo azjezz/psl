@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Type;
 
 use ArrayIterator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Collection;
 use Psl\Iter;
 use Psl\Str;
@@ -17,7 +18,7 @@ use RuntimeException;
 final class ShapeTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\shape([
             'name' => Type\string(),
@@ -48,9 +49,9 @@ final class ShapeTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
-        foreach ($this->validCoercions() as $row) {
+        foreach (static::validCoercions() as $row) {
             yield $row;
             yield [
                 new ArrayIterator((array) $row[0]),
@@ -62,7 +63,7 @@ final class ShapeTypeTest extends TypeTestCase
     /**
      * @return iterable<array{0: array, 1: T}>
      */
-    private function validCoercions(): iterable
+    private static function validCoercions(): iterable
     {
         yield [
             ['name' => 'saif', 'articles' => new Collection\Vector([])],
@@ -165,7 +166,7 @@ final class ShapeTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [1.0];
         yield [1.23];
@@ -198,10 +199,10 @@ final class ShapeTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
         yield [
-            $this->getType(),
+            static::getType(),
             "array{'name': string, 'articles': vec<array{"
                 . "'title': string, "
                 . "'content': string, "
@@ -220,7 +221,7 @@ final class ShapeTypeTest extends TypeTestCase
      * @param Collection\VectorInterface<mixed>|mixed $b
      */
     #[\Override]
-    protected function equals(mixed $a, mixed $b): bool
+    protected static function equals(mixed $a, mixed $b): bool
     {
         $dict = Type\dict(Type\array_key(), Type\mixed());
         if (!$dict->matches($a) || !$dict->matches($b)) {
@@ -323,9 +324,7 @@ final class ShapeTypeTest extends TypeTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideAssertExceptionExpectations
-     */
+    #[DataProvider('provideAssertExceptionExpectations')]
     public function testInvalidAssertionTypeExceptions(
         Type\TypeInterface $type,
         mixed $data,
@@ -339,9 +338,7 @@ final class ShapeTypeTest extends TypeTestCase
         }
     }
 
-    /**
-     * @dataProvider provideCoerceExceptionExpectations
-     */
+    #[DataProvider('provideCoerceExceptionExpectations')]
     public function testInvalidCoercionTypeExceptions(
         Type\TypeInterface $type,
         mixed $data,

@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
 final class ContainsTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testContains(bool $expected, string $haystack, string $needle, int $offset = 0): void
     {
         static::assertSame($expected, Str\contains($haystack, $needle, $offset));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [true,  'Hello, World', 'Hello', 0],

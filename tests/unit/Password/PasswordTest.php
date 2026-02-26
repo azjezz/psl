@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Password;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Password;
 use Psl\SecureRandom;
@@ -12,9 +13,7 @@ use SensitiveParameter;
 
 final class PasswordTest extends TestCase
 {
-    /**
-     * @dataProvider providePasswords
-     */
+    #[DataProvider('providePasswords')]
     public function testDefault(#[SensitiveParameter] string $password): void
     {
         $hash = Password\hash($password, Password\Algorithm::default());
@@ -24,9 +23,7 @@ final class PasswordTest extends TestCase
         static::assertFalse(Password\needs_rehash($hash, Password\Algorithm::default()));
     }
 
-    /**
-     * @dataProvider providePasswords
-     */
+    #[DataProvider('providePasswords')]
     public function testBcrypt(#[SensitiveParameter] string $password): void
     {
         $hash = Password\hash($password, Password\Algorithm::Bcrypt, [
@@ -44,9 +41,7 @@ final class PasswordTest extends TestCase
         ]));
     }
 
-    /**
-     * @dataProvider providePasswords
-     */
+    #[DataProvider('providePasswords')]
     public function testArgon2i(#[SensitiveParameter] string $password): void
     {
         $hash = Password\hash($password, Password\Algorithm::Argon2i);
@@ -60,7 +55,7 @@ final class PasswordTest extends TestCase
         static::assertFalse(Password\needs_rehash($hash, Password\Algorithm::Argon2i));
     }
 
-    public function providePasswords(): iterable
+    public static function providePasswords(): iterable
     {
         yield ['hunter2'];
         yield [SecureRandom\string(64)];

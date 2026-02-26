@@ -13,5 +13,5 @@ use ReflectionClass;
  */
 function is_readonly(string $class_name): bool
 {
-    return (new ReflectionClass($class_name))->isReadOnly();
+    return new ReflectionClass($class_name)->isReadOnly();
 }

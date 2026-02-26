@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- https://phpunit.de/manual/current/en/appendixes.configuration.html -->
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../vendor/phpunit/phpunit/phpunit.xsd"
@@ -7,7 +6,7 @@
     stopOnFailure="false"
     bootstrap="../vendor/autoload.php"
 >
-  <coverage processUncoveredFiles="true">
+  <source>
     <include>
       <directory>../src</directory>
     </include>
@@ -33,10 +32,7 @@
       <file>../src/Psl/Filesystem/change_owner.php</file>
       <file>../src/Psl/Filesystem/Internal/change_owner.php</file>
     </exclude>
-    <report>
-      <clover outputFile="../var/clover.xml" />
-    </report>
-  </coverage>
+  </source>
   <php>
     <ini name="error_reporting" value="-1" />
     <ini name="precision" value="16" />
@@ -46,5 +42,4 @@
       <directory>../tests/unit/</directory>
     </testsuite>
   </testsuites>
-  <logging />
 </phpunit>

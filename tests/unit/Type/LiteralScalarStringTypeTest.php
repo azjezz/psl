@@ -9,21 +9,21 @@ use Psl\Type;
 final class LiteralScalarStringTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\literal_scalar('5');
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield ['5', '5'];
         yield [5, '5'];
-        yield [$this->stringable('5'), '5'];
+        yield [static::stringable('5'), '5'];
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [null];
         yield ['true'];
@@ -33,9 +33,9 @@ final class LiteralScalarStringTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), '"5"'];
+        yield [static::getType(), '"5"'];
         yield [Type\literal_scalar(5), '5'];
         yield [Type\literal_scalar(5.500_0), '5.5'];
         yield [Type\literal_scalar(false), 'false'];

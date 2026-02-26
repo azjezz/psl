@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Dict;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Dict;
@@ -12,15 +13,13 @@ use Psl\Str;
 
 final class GroupByTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testGroupBy(array $expected, array $values, callable $callable): void
     {
         static::assertSame($expected, Dict\group_by($values, $callable));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

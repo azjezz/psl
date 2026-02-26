@@ -9,20 +9,20 @@ use Psl\Type;
 final class ResourceTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\resource('stream');
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield [STDIN, STDIN];
         yield [STDOUT, STDOUT];
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [null];
         yield ['hello'];
@@ -31,9 +31,9 @@ final class ResourceTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'resource (stream)'];
+        yield [static::getType(), 'resource (stream)'];
         yield [Type\resource('curl'), 'resource (curl)'];
         yield [Type\resource(), 'resource'];
     }

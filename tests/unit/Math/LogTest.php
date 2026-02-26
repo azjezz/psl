@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Math;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
 final class LogTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testLog(float $expected, float $number, null|float $base = null): void
     {
         static::assertSame($expected, Math\log($number, $base));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [1.686_398_953_570_228_8, 5.4,  null],

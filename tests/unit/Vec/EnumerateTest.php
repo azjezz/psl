@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Vec;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Vec;
 
 final class EnumerateTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testEnumerate(array $expected, iterable $iterable): void
     {
         static::assertSame($expected, Vec\enumerate($iterable));
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [[], []];
         yield [[['a', 'b'], ['c', 'd']], ['a' => 'b', 'c' => 'd']];

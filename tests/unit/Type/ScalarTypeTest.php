@@ -10,36 +10,36 @@ use Psl\Type;
 final class ScalarTypeTest extends TypeTestCase
 {
     #[\Override]
-    public function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface
     {
         return Type\scalar();
     }
 
     #[\Override]
-    public function getValidCoercions(): iterable
+    public static function getValidCoercions(): iterable
     {
         yield [123, 123];
         yield [0, 0];
         yield ['0', '0'];
         yield ['123', '123'];
-        yield [$this->stringable('123'), '123'];
-        yield [$this->stringable((string) Math\INT16_MAX), (string) Math\INT16_MAX];
-        yield [$this->stringable((string) Math\INT64_MAX), (string) Math\INT64_MAX];
+        yield [static::stringable('123'), '123'];
+        yield [static::stringable((string) Math\INT16_MAX), (string) Math\INT16_MAX];
+        yield [static::stringable((string) Math\INT64_MAX), (string) Math\INT64_MAX];
         yield [(string) Math\INT64_MAX, (string) Math\INT64_MAX];
         yield [Math\INT64_MAX, Math\INT64_MAX];
-        yield [$this->stringable('-321'), '-321'];
+        yield [static::stringable('-321'), '-321'];
         yield ['-321', '-321'];
         yield [-321, -321];
         yield ['7', '7'];
         yield ['07', '07'];
         yield ['007', '007'];
         yield ['000', '000'];
-        yield [$this->stringable('123'), '123'];
+        yield [static::stringable('123'), '123'];
         yield ['1e2', '1e2'];
-        yield [$this->stringable('1e2'), '1e2'];
+        yield [static::stringable('1e2'), '1e2'];
         yield ['1.23e45', '1.23e45'];
         yield ['.23', '.23'];
-        yield [$this->stringable('1.23'), '1.23'];
+        yield [static::stringable('1.23'), '1.23'];
         yield [(float) Math\INT64_MAX, (float) Math\INT64_MAX];
         yield ['9223372036854775808', '9223372036854775808'];
         yield ['-.9e2', '-.9e2'];
@@ -51,7 +51,7 @@ final class ScalarTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getInvalidCoercions(): iterable
+    public static function getInvalidCoercions(): iterable
     {
         yield [null];
         yield [new class {}];
@@ -61,8 +61,8 @@ final class ScalarTypeTest extends TypeTestCase
     }
 
     #[\Override]
-    public function getToStringExamples(): iterable
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'scalar'];
+        yield [static::getType(), 'scalar'];
     }
 }

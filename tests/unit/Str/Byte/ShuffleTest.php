@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str\Byte;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
 final class ShuffleTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testShuffle(string $str): void
     {
         $shuffled = Byte\shuffle($str);
@@ -22,7 +21,7 @@ final class ShuffleTest extends TestCase
         }
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [''],

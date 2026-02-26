@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
 final class LowercaseTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testLowercase(string $expected, string $str): void
     {
         static::assertSame($expected, Str\lowercase($str));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             ['hello',          'hello'],
