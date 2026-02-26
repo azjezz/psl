@@ -42,9 +42,4 @@
       <directory>../tests/unit/</directory>
     </testsuite>
   </testsuites>
-  <coverage>
-    <report>
-      <clover outputFile="../var/clover.xml" />
-    </report>
-  </coverage>
 </phpunit>
