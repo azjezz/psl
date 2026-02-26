@@ -210,6 +210,7 @@ final class Loader
         'Psl\\Vec\\filter_nulls' => 'Psl/Vec/filter_nulls.php',
         'Psl\\Vec\\filter_with_key' => 'Psl/Vec/filter_with_key.php',
         'Psl\\Vec\\flat_map' => 'Psl/Vec/flat_map.php',
+        'Psl\\Vec\\flatten' => 'Psl/Vec/flatten.php',
         'Psl\\Vec\\keys' => 'Psl/Vec/keys.php',
         'Psl\\Vec\\partition' => 'Psl/Vec/partition.php',
         'Psl\\Vec\\range' => 'Psl/Vec/range.php',

@@ -23,6 +23,7 @@
 - [filter_nulls](./../../src/Psl/Vec/filter_nulls.php#L20)
 - [filter_with_key](./../../src/Psl/Vec/filter_with_key.php#L40)
 - [flat_map](./../../src/Psl/Vec/flat_map.php#L18)
+- [flatten](./../../src/Psl/Vec/flatten.php#L27)
 - [keys](./../../src/Psl/Vec/keys.php#L20)
 - [map](./../../src/Psl/Vec/map.php#L33)
 - [map_with_key](./../../src/Psl/Vec/map_with_key.php#L29)
