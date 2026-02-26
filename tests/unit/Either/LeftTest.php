@@ -152,7 +152,7 @@ final class LeftTest extends TestCase
 
     public function testProceed(): void
     {
-        $result = (new Left('error'))->proceed(static fn($v) => 'right: ' . $v, static fn($v) => 'left: ' . $v);
+        $result = new Left('error')->proceed(static fn($v) => 'right: ' . $v, static fn($v) => 'left: ' . $v);
 
         static::assertSame('left: error', $result);
     }

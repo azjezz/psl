@@ -13,5 +13,5 @@ use ReflectionClass;
  */
 function has_method(string $class_name, string $method_name): bool
 {
-    return (new ReflectionClass($class_name))->hasMethod($method_name);
+    return new ReflectionClass($class_name)->hasMethod($method_name);
 }

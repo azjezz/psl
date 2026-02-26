@@ -151,7 +151,7 @@ final class RightTest extends TestCase
 
     public function testProceed(): void
     {
-        $result = (new Right(42))->proceed(static fn($v) => 'right: ' . $v, static fn($v) => 'left: ' . $v);
+        $result = new Right(42)->proceed(static fn($v) => 'right: ' . $v, static fn($v) => 'left: ' . $v);
 
         static::assertSame('right: 42', $result);
     }
