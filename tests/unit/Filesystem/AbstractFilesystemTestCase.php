@@ -45,6 +45,10 @@ abstract class AbstractFilesystemTestCase extends TestCase
     #[\Override]
     protected function tearDown(): void
     {
+        if (!isset($this->directory)) {
+            return;
+        }
+
         Filesystem\change_permissions($this->directory, $this->directoryPermissions);
         Filesystem\delete_directory($this->directory, true);
 

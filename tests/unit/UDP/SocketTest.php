@@ -13,6 +13,13 @@ use Psl\UDP;
 
 final class SocketTest extends TestCase
 {
+    private function requireSockets(): void
+    {
+        if (!extension_loaded('sockets')) {
+            static::markTestSkipped('ext-sockets is required for this test.');
+        }
+    }
+
     public function testBindAndGetLocalAddress(): void
     {
         Async\run(static function (): void {
@@ -46,6 +53,8 @@ final class SocketTest extends TestCase
 
     public function testConnectAndSendReceive(): void
     {
+        $this->requireSockets();
+
         Async\run(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $client = UDP\Socket::bind('127.0.0.1', 0);
@@ -100,6 +109,8 @@ final class SocketTest extends TestCase
 
     public function testSendToForbiddenWhenConnected(): void
     {
+        $this->requireSockets();
+
         $this->expectException(Network\Exception\RuntimeException::class);
         $this->expectExceptionMessage('Cannot use sendTo()');
 
@@ -118,6 +129,8 @@ final class SocketTest extends TestCase
 
     public function testReceiveFromForbiddenWhenConnected(): void
     {
+        $this->requireSockets();
+
         $this->expectException(Network\Exception\RuntimeException::class);
         $this->expectExceptionMessage('Cannot use receiveFrom()');
 
@@ -188,6 +201,8 @@ final class SocketTest extends TestCase
 
     public function testGetPeerAddressWhenConnected(): void
     {
+        $this->requireSockets();
+
         Async\run(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $client = UDP\Socket::bind('127.0.0.1', 0);
@@ -217,6 +232,8 @@ final class SocketTest extends TestCase
 
     public function testSetAndGetBroadcast(): void
     {
+        $this->requireSockets();
+
         Async\run(static function (): void {
             $socket = UDP\Socket::bind('127.0.0.1', 0);
 
@@ -232,6 +249,8 @@ final class SocketTest extends TestCase
 
     public function testSetAndGetTtl(): void
     {
+        $this->requireSockets();
+
         Async\run(static function (): void {
             $socket = UDP\Socket::bind('127.0.0.1', 0);
 
