@@ -176,9 +176,10 @@ final class Child implements ChildInterface
 
                     if (1 === $type) {
                         $stdoutContent .= $chunk;
-                    } else {
-                        $stderrContent .= $chunk;
+                        continue;
                     }
+
+                    $stderrContent .= $chunk;
                 }
             } catch (IO\Exception\TimeoutException $e) {
                 // Kill the process on timeout before closing handles.

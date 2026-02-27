@@ -417,7 +417,7 @@ final readonly class Command
      * @param 'r'|'w' $mode
      * @param 0|1|2 $fd
      *
-     * @return array{0: 'pipe', 1: 'r'|'w'}|array{0: 'file', 1: non-empty-string, 2: 'r'|'w'}|resource
+     * @return array{0: 'pipe', 1: 'r'|'w'}|array{0: 'file', 1: non-empty-string, 2: 'r'|'w'}|object|resource
      */
     private function buildDescriptor(Stdio $stdio, string $mode, int $fd): mixed
     {

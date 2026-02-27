@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Psl\Network\Internal;
+namespace Psl\Unix\Internal;
 
-use Generator;
 use Override;
 use Psl\Channel;
 use Psl\Network;
-use Psl\Network\StreamServerInterface;
+use Psl\Unix;
 use Revolt\EventLoop;
 
 use function error_get_last;
@@ -16,40 +15,43 @@ use function fclose;
 use function is_resource;
 use function stream_socket_accept;
 
-abstract class AbstractStreamServer implements StreamServerInterface
+/**
+ * @internal
+ *
+ * @codeCoverageIgnore
+ */
+final class Listener implements Unix\ListenerInterface
 {
     private const int DEFAULT_IDLE_CONNECTIONS = 256;
 
     /**
-     * @var closed-resource|resource|null $impl
+     * @var closed-resource|resource|object|null $impl
      */
     private mixed $impl;
 
-    /**
-     * @var string
-     */
     private string $watcher;
 
     /**
-     * @var Channel\ReceiverInterface<array{true, Socket}|array{false, Network\Exception\RuntimeException}>
+     * @var Channel\ReceiverInterface<array{true, Stream}|array{false, Network\Exception\RuntimeException}>
      */
     private Channel\ReceiverInterface $receiver;
 
     /**
-     * @param resource $impl
+     * @param resource|object $impl
      * @param int<1, max> $idleConnections
      */
-    protected function __construct(mixed $impl, int $idleConnections = self::DEFAULT_IDLE_CONNECTIONS)
+    public function __construct(mixed $impl, int $idleConnections = self::DEFAULT_IDLE_CONNECTIONS)
     {
         $this->impl = $impl;
 
         /**
-         * @var Channel\ReceiverInterface<array{true, Socket}|array{false, Network\Exception\RuntimeException}> $receiver
-         * @var Channel\SenderInterface<array{true, Socket}|array{false, Network\Exception\RuntimeException}> $sender
+         * @var Channel\ReceiverInterface<array{true, Stream}|array{false, Network\Exception\RuntimeException}> $receiver
+         * @var Channel\SenderInterface<array{true, Stream}|array{false, Network\Exception\RuntimeException}> $sender
          */
         [$receiver, $sender] = Channel\bounded($idleConnections);
 
         $this->receiver = $receiver;
+        // @mago-expect analysis:possibly-invalid-argument - revolt signature is wrong.
         $this->watcher = EventLoop::onReadable(
             $impl,
             /**
@@ -59,7 +61,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
                 try {
                     $sock = @stream_socket_accept($resource, timeout: 0.0);
                     if (false !== $sock) {
-                        $sender->send([true, new Socket($sock)]);
+                        $sender->send([true, new Stream($sock)]);
 
                         return;
                     }
@@ -84,11 +86,8 @@ abstract class AbstractStreamServer implements StreamServerInterface
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     #[Override]
-    public function nextConnection(): Network\StreamSocketInterface
+    public function accept(): Unix\StreamInterface
     {
         try {
             [$success, $result] = $this->receiver->receive();
@@ -97,7 +96,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
         }
 
         if ($success) {
-            /** @var Socket $result */
+            /** @var Stream $result */
             return $result;
         }
 
@@ -105,33 +104,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
         throw $result;
     }
 
-    /**
-     * @return Generator<null, Network\StreamSocketInterface, void, null>
-     */
     #[Override]
-    public function incoming(): Generator
-    {
-        try {
-            while (true) {
-                [$success, $result] = $this->receiver->receive();
-                if ($success) {
-                    /** @var Socket $result */
-                    yield null => $result;
-                    continue;
-                }
-
-                /** @var Network\Exception\RuntimeException $result */
-                throw $result;
-            }
-        } catch (Channel\Exception\ClosedChannelException) {
-            return;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    #[\Override]
     public function getLocalAddress(): Network\Address
     {
         if (!is_resource($this->impl)) {
@@ -141,15 +114,7 @@ abstract class AbstractStreamServer implements StreamServerInterface
         return Network\Internal\get_sock_name($this->impl);
     }
 
-    public function __destruct()
-    {
-        $this->close();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    #[\Override]
+    #[Override]
     public function close(): void
     {
         EventLoop::disable($this->watcher);
@@ -165,13 +130,8 @@ abstract class AbstractStreamServer implements StreamServerInterface
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    #[\Override]
-    public function getStream(): mixed
+    public function __destruct()
     {
-        /** @var resource */
-        return $this->impl;
+        $this->close();
     }
 }

@@ -1,0 +1,280 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\TLS;
+
+/**
+ * TLS configuration for servers.
+ *
+ * Used with {@see Acceptor} and {@see LazyAcceptor}.
+ *
+ * @psalm-immutable
+ */
+final readonly class ServerConfig
+{
+    /**
+     * @param Certificate $certificate Server certificate (required for TLS servers).
+     * @param ?Version $minimumVersion Minimum TLS protocol version to accept.
+     * @param ?Version $maximumVersion Maximum TLS protocol version to accept.
+     * @param ?non-empty-string $ciphers OpenSSL cipher string to use.
+     * @param int<0, 5> $securityLevel OpenSSL security level.
+     * @param ?non-empty-string $certificateAuthority Path to a CA file for client certificate verification.
+     * @param ?non-empty-string $certificateAuthorityPath Path to a directory of CA files for client certificate verification.
+     * @param ?list<non-empty-string> $alpnProtocols ALPN protocol list (e.g. ['h2', 'http/1.1']).
+     * @param array<non-empty-string, Certificate> $sniCertificates SNI hostname-to-certificate mapping.
+     * @param bool $sessionTickets Whether to enable TLS session tickets for session resumption.
+     *
+     * @psalm-mutation-free
+     *
+     * @mago-expect lint:excessive-parameter-list
+     */
+    public function __construct(
+        public Certificate $certificate,
+        public null|Version $minimumVersion = null,
+        public null|Version $maximumVersion = null,
+        public null|string $ciphers = null,
+        public int $securityLevel = 2,
+        public null|string $certificateAuthority = null,
+        public null|string $certificateAuthorityPath = null,
+        /** @var null|list<non-empty-string> */
+        public null|array $alpnProtocols = null,
+        public array $sniCertificates = [],
+        public bool $sessionTickets = true,
+    ) {}
+
+    /**
+     * @pure
+     */
+    public static function create(Certificate $certificate): self
+    {
+        return new self($certificate);
+    }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function withCertificate(Certificate $certificate): self
+    {
+        return new self(
+            $certificate,
+            $this->minimumVersion,
+            $this->maximumVersion,
+            $this->ciphers,
+            $this->securityLevel,
+            $this->certificateAuthority,
+            $this->certificateAuthorityPath,
+            $this->alpnProtocols,
+            $this->sniCertificates,
+            $this->sessionTickets,
+        );
+    }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function withMinimumVersion(null|Version $minimum_version): self
+    {
+        return new self(
+            $this->certificate,
+            $minimum_version,
+            $this->maximumVersion,
+            $this->ciphers,
+            $this->securityLevel,
+            $this->certificateAuthority,
+            $this->certificateAuthorityPath,
+            $this->alpnProtocols,
+            $this->sniCertificates,
+            $this->sessionTickets,
+        );
+    }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function withMaximumVersion(null|Version $maximum_version): self
+    {
+        return new self(
+            $this->certificate,
+            $this->minimumVersion,
+            $maximum_version,
+            $this->ciphers,
+            $this->securityLevel,
+            $this->certificateAuthority,
+            $this->certificateAuthorityPath,
+            $this->alpnProtocols,
+            $this->sniCertificates,
+            $this->sessionTickets,
+        );
+    }
+
+    /**
+     * @param ?non-empty-string $ciphers OpenSSL cipher string.
+     *
+     * @psalm-mutation-free
+     */
+    public function withCiphers(null|string $ciphers): self
+    {
+        return new self(
+            $this->certificate,
+            $this->minimumVersion,
+            $this->maximumVersion,
+            $ciphers,
+            $this->securityLevel,
+            $this->certificateAuthority,
+            $this->certificateAuthorityPath,
+            $this->alpnProtocols,
+            $this->sniCertificates,
+            $this->sessionTickets,
+        );
+    }
+
+    /**
+     * @param int<0, 5> $security_level OpenSSL security level.
+     *
+     * @psalm-mutation-free
+     */
+    public function withSecurityLevel(int $security_level): self
+    {
+        return new self(
+            $this->certificate,
+            $this->minimumVersion,
+            $this->maximumVersion,
+            $this->ciphers,
+            $security_level,
+            $this->certificateAuthority,
+            $this->certificateAuthorityPath,
+            $this->alpnProtocols,
+            $this->sniCertificates,
+            $this->sessionTickets,
+        );
+    }
+
+    /**
+     * @param ?non-empty-string $certificate_authority Path to a CA file.
+     *
+     * @psalm-mutation-free
+     */
+    public function withCertificateAuthority(null|string $certificate_authority): self
+    {
+        return new self(
+            $this->certificate,
+            $this->minimumVersion,
+            $this->maximumVersion,
+            $this->ciphers,
+            $this->securityLevel,
+            $certificate_authority,
+            $this->certificateAuthorityPath,
+            $this->alpnProtocols,
+            $this->sniCertificates,
+            $this->sessionTickets,
+        );
+    }
+
+    /**
+     * @param ?non-empty-string $certificate_authority_path Path to a CA directory.
+     *
+     * @psalm-mutation-free
+     */
+    public function withCertificateAuthorityPath(null|string $certificate_authority_path): self
+    {
+        return new self(
+            $this->certificate,
+            $this->minimumVersion,
+            $this->maximumVersion,
+            $this->ciphers,
+            $this->securityLevel,
+            $this->certificateAuthority,
+            $certificate_authority_path,
+            $this->alpnProtocols,
+            $this->sniCertificates,
+            $this->sessionTickets,
+        );
+    }
+
+    /**
+     * @param ?list<non-empty-string> $alpn_protocols ALPN protocol list (e.g. ['h2', 'http/1.1']).
+     *
+     * @psalm-mutation-free
+     */
+    public function withAlpnProtocols(null|array $alpn_protocols): self
+    {
+        return new self(
+            $this->certificate,
+            $this->minimumVersion,
+            $this->maximumVersion,
+            $this->ciphers,
+            $this->securityLevel,
+            $this->certificateAuthority,
+            $this->certificateAuthorityPath,
+            $alpn_protocols,
+            $this->sniCertificates,
+            $this->sessionTickets,
+        );
+    }
+
+    /**
+     * @param non-empty-string $hostname The SNI hostname.
+     * @param Certificate $certificate The certificate to use for this hostname.
+     *
+     * @psalm-mutation-free
+     */
+    public function withSniCertificate(string $hostname, Certificate $certificate): self
+    {
+        $sni = $this->sniCertificates;
+        $sni[$hostname] = $certificate;
+
+        return new self(
+            $this->certificate,
+            $this->minimumVersion,
+            $this->maximumVersion,
+            $this->ciphers,
+            $this->securityLevel,
+            $this->certificateAuthority,
+            $this->certificateAuthorityPath,
+            $this->alpnProtocols,
+            $sni,
+            $this->sessionTickets,
+        );
+    }
+
+    /**
+     * @param array<non-empty-string, Certificate> $sni_certificates SNI hostname-to-certificate mapping.
+     *
+     * @psalm-mutation-free
+     */
+    public function withSniCertificates(array $sni_certificates): self
+    {
+        return new self(
+            $this->certificate,
+            $this->minimumVersion,
+            $this->maximumVersion,
+            $this->ciphers,
+            $this->securityLevel,
+            $this->certificateAuthority,
+            $this->certificateAuthorityPath,
+            $this->alpnProtocols,
+            $sni_certificates,
+            $this->sessionTickets,
+        );
+    }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function withSessionTickets(bool $enabled): self
+    {
+        return new self(
+            $this->certificate,
+            $this->minimumVersion,
+            $this->maximumVersion,
+            $this->ciphers,
+            $this->securityLevel,
+            $this->certificateAuthority,
+            $this->certificateAuthorityPath,
+            $this->alpnProtocols,
+            $this->sniCertificates,
+            $enabled,
+        );
+    }
+}

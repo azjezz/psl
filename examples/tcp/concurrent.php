@@ -14,11 +14,11 @@ require __DIR__ . '/../../vendor/autoload.php';
 Async\main(static function (): int {
     Async\concurrently([
         'server' => static function (): void {
-            $server = TCP\Server::create('localhost', 91_337);
+            $listener = TCP\listen('localhost', 91_337);
 
             IO\write_error_line('< server is listening.');
 
-            $connection = $server->nextConnection();
+            $connection = $listener->accept();
 
             IO\write_error_line('< connection received.');
             IO\write_error_line('< awaiting request.');
@@ -33,7 +33,7 @@ Async\main(static function (): int {
 
             IO\write_error_line('< connection closed.');
 
-            $server->close();
+            $listener->close();
 
             IO\write_error_line('< server stopped.');
         },

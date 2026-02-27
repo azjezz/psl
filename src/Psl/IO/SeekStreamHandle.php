@@ -44,7 +44,7 @@ final class SeekStreamHandle implements StreamHandleInterface, SeekHandleInterfa
     }
 
     /**
-     * @return resource|null
+     * @return resource|object|null
      *
      * @inheritDoc
      */

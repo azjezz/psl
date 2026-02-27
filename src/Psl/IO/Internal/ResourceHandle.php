@@ -10,9 +10,9 @@ use Psl\Async;
 use Psl\DateTime\Duration;
 use Psl\IO;
 use Psl\IO\Exception;
-use Psl\Type;
 use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
+use Socket as PHPSocket;
 
 use function error_get_last;
 use function fclose;
@@ -52,7 +52,7 @@ class ResourceHandle implements
     public const int MAXIMUM_READ_BUFFER_SIZE = 786_432;
 
     /**
-     * @var closed-resource|resource|null $stream
+     * @var closed-resource|resource|PHPSocket|null $stream
      */
     protected mixed $stream;
 
@@ -74,7 +74,7 @@ class ResourceHandle implements
     private bool $reachedEof = false;
 
     /**
-     * @param resource $stream
+     * @param resource|PHPSocket $stream
      */
     public function __construct(
         mixed $stream,
@@ -83,11 +83,12 @@ class ResourceHandle implements
         bool $seek,
         private readonly bool $close,
     ) {
-        // @mago-expect analysis:redundant-type-comparison
-        $this->stream = Type\resource('stream')->assert($stream);
+        $this->stream = $stream;
 
+        // @mago-expect analysis:possibly-invalid-argument
         stream_set_blocking($stream, false);
 
+        // @mago-expect analysis:possibly-invalid-argument
         $meta = stream_get_meta_data($stream);
         if ($read) {
             $this->useSingleRead = 'udp_socket' === $meta['stream_type'] || 'STDIO' === $meta['stream_type'];
@@ -105,9 +106,11 @@ class ResourceHandle implements
 
             Psl\invariant($readable, 'Handle is not readable.');
 
+            // @mago-expect analysis:possibly-invalid-argument
             stream_set_read_buffer($stream, 0);
 
-            $this->readWatcher = EventLoop::onReadable($this->stream, function (): void {
+            // @mago-expect analysis:possibly-invalid-argument
+            $this->readWatcher = EventLoop::onReadable($stream, function (): void {
                 $this->readSuspension?->resume();
             });
 
@@ -162,9 +165,11 @@ class ResourceHandle implements
 
             Psl\invariant($writable, 'Handle is not writeable.');
 
+            // @mago-expect analysis:possibly-invalid-argument
             stream_set_write_buffer($stream, 0);
 
-            $this->writeWatcher = EventLoop::onWritable($this->stream, function (): void {
+            // @mago-expect analysis:possibly-invalid-argument
+            $this->writeWatcher = EventLoop::onWritable($stream, function (): void {
                 $this->writeSuspension?->resume();
             });
 
@@ -392,7 +397,7 @@ class ResourceHandle implements
     }
 
     /**
-     * @return resource|null
+     * @return resource|object|null
      *
      * @inheritDoc
      */

@@ -85,7 +85,7 @@ abstract class AbstractHandleWrapper implements File\HandleInterface
     }
 
     /**
-     * @return resource|null
+     * @return resource|object|null
      *
      * @inheritDoc
      */

@@ -26,7 +26,7 @@ Async\main(static function (): int {
         foreach ($files as $file) {
             $script = Filesystem\get_filename($file);
 
-            if ('basic-http-server' === $script) {
+            if ('basic-http-server' === $script || 'tls-http-server' === $script) {
                 // long running process.
                 continue;
             }

@@ -14,36 +14,36 @@ use Psl\Unix;
 
 final class ServerTest extends TestCase
 {
-    public function testNextConnectionOnStoppedServer(): void
+    public function testAcceptOnStoppedListener(): void
     {
         if (OS\is_windows()) {
             static::markTestSkipped('Unix Server is not supported on Windows platform.');
         }
 
         $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . '.sock';
-        $server = Unix\Server::create($sock);
-        $server->close();
+        $listener = Unix\listen($sock);
+        $listener->close();
 
         $this->expectException(Exception\AlreadyStoppedException::class);
         $this->expectExceptionMessage('Server socket has already been stopped.');
 
-        $server->nextConnection();
+        $listener->accept();
     }
 
-    public function testGetLocalAddressOnStoppedServer(): void
+    public function testGetLocalAddressOnStoppedListener(): void
     {
         if (OS\is_windows()) {
             static::markTestSkipped('Unix Server is not supported on Windows platform.');
         }
 
         $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . '.sock';
-        $server = Unix\Server::create($sock);
-        $server->close();
+        $listener = Unix\listen($sock);
+        $listener->close();
 
         $this->expectException(Exception\AlreadyStoppedException::class);
         $this->expectExceptionMessage('Server socket has already been stopped.');
 
-        $server->getLocalAddress();
+        $listener->getLocalAddress();
     }
 
     public function testWaitsForPendingOperation(): void
@@ -53,14 +53,14 @@ final class ServerTest extends TestCase
         }
 
         $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . '.sock';
-        $server = Unix\Server::create($sock);
+        $listener = Unix\listen($sock);
 
-        $first = Async\run($server->nextConnection(...));
+        $first = Async\run($listener->accept(...));
 
         [$second_connection, $client_one, $client_two] = Async\concurrently([
-            $server->nextConnection(...),
-            static fn(): Network\SocketInterface => Unix\connect($sock),
-            static fn(): Network\SocketInterface => Unix\connect($sock),
+            $listener->accept(...),
+            static fn(): Network\StreamInterface => Unix\connect($sock),
+            static fn(): Network\StreamInterface => Unix\connect($sock),
         ]);
 
         static::assertTrue($first->isComplete());
@@ -76,33 +76,6 @@ final class ServerTest extends TestCase
         $first_connection->close();
         $second_connection->close();
 
-        $server->close();
-    }
-
-    public function testAccessUnderlyingStream(): void
-    {
-        if (OS\is_windows()) {
-            static::markTestSkipped('Unix Server is not supported on Windows platform.');
-        }
-
-        $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . '.sock';
-        $server = Unix\Server::create($sock);
-        $stream = $server->getStream();
-        $deferred = new Async\Deferred();
-        $watcher = Async\Scheduler::onReadable($stream, static fn(): null => $deferred->complete(true));
-        $client = Unix\connect($sock);
-
-        $deferred->getAwaitable()->await();
-
-        static::assertTrue($deferred->isComplete());
-
-        Async\Scheduler::cancel($watcher);
-        $connection = $server->nextConnection();
-        $client->write('hello');
-
-        static::assertSame('hello', $connection->read(5));
-
-        $client->close();
-        $server->close();
+        $listener->close();
     }
 }

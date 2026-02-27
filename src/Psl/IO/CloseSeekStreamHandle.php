@@ -53,7 +53,7 @@ final class CloseSeekStreamHandle implements StreamHandleInterface, SeekHandleIn
     }
 
     /**
-     * @return resource|null
+     * @return resource|object|null
      *
      * @inheritDoc
      */

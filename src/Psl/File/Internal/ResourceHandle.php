@@ -25,6 +25,8 @@ use const SEEK_END;
 
 /**
  * @internal
+ *
+ * @mago-expect analysis:possibly-invalid-argument
  */
 final class ResourceHandle extends IO\Internal\ResourceHandle implements
     File\WriteHandleInterface,

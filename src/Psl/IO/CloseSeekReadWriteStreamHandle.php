@@ -116,7 +116,7 @@ final class CloseSeekReadWriteStreamHandle implements
     }
 
     /**
-     * @return resource|null
+     * @return resource|object|null
      *
      * @inheritDoc
      */

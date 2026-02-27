@@ -518,7 +518,7 @@ final class ChildTest extends TestCase
                 $stdout .= $chunk;
             }
         } catch (IO\Exception\TimeoutException) {
-            // Expected — process is still sleeping.
+            // @mago-expect lint:no-empty-catch-clause - Expected
         }
 
         static::assertSame('12', $stdout);
@@ -551,12 +551,14 @@ final class ChildTest extends TestCase
 
                 if (1 === $type) {
                     $stdout .= $chunk;
-                } else {
-                    $stderr .= $chunk;
+
+                    continue;
                 }
+
+                $stderr .= $chunk;
             }
         } catch (IO\Exception\TimeoutException) {
-            // Expected
+            // @mago-expect lint:no-empty-catch-clause - Expected
         }
 
         static::assertSame('out', $stdout);
@@ -587,7 +589,7 @@ final class ChildTest extends TestCase
                 $stdout .= $chunk;
             }
         } catch (IO\Exception\TimeoutException) {
-            // Expected
+            // @mago-expect lint:no-empty-catch-clause - Expected
         }
 
         static::assertSame(10_000, strlen($stdout));
@@ -643,7 +645,7 @@ final class ChildTest extends TestCase
                 $stdout .= $chunk;
             }
         } catch (IO\Exception\TimeoutException) {
-            // Expected
+            // @mago-expect lint:no-empty-catch-clause - Expected
         }
 
         static::assertSame('12345', $stdout);

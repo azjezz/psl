@@ -16,13 +16,15 @@
         "ext-mbstring": "*",
         "ext-sodium": "*",
         "ext-intl": "*",
+        "ext-openssl": "*",
+        "ext-sockets": "*",
         "revolt/event-loop": "^1.0.7"
     },
     "require-dev": {
         "phpbench/phpbench": "^1.4.0",
         "phpunit/phpunit": "^13.0",
         "php-coveralls/php-coveralls": "^2.7.0",
-        "carthage-software/mago": "^1.13.1",
+        "carthage-software/mago": "^1.13.2",
         "infection/infection": "^0.32.6"
     },
     "autoload": {

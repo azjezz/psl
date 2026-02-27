@@ -72,6 +72,17 @@ final readonly class Address
     }
 
     /**
+     * @param non-empty-string $host
+     * @param int<0,65535> $port
+     *
+     * @pure
+     */
+    public static function udp(string $host = self::DEFAULT_HOST, int $port = self::DEFAULT_PORT): self
+    {
+        return new self(SocketScheme::Udp, $host, $port);
+    }
+
+    /**
      * @return non-empty-string
      *
      * @psalm-mutation-free

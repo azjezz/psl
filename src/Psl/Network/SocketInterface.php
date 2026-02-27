@@ -7,12 +7,11 @@ namespace Psl\Network;
 use Psl\IO;
 
 /**
- * A handle representing a connection between processes.
+ * Base interface for all network sockets.
  *
- * It is possible for both ends to be connected to the same process,
- * and to either be local or across a network.
+ * Provides access to the local address and close functionality.
  */
-interface SocketInterface extends IO\CloseHandleInterface, IO\ReadHandleInterface, IO\WriteHandleInterface
+interface SocketInterface extends IO\CloseHandleInterface
 {
     /**
      * Returns the address of the local side of the socket.
@@ -21,12 +20,4 @@ interface SocketInterface extends IO\CloseHandleInterface, IO\ReadHandleInterfac
      * @throws Exception\RuntimeException If unable to retrieve local address.
      */
     public function getLocalAddress(): Address;
-
-    /**
-     * Returns the address of the remote side of the socket.
-     *
-     * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
-     * @throws Exception\RuntimeException If unable to retrieve peer address.
-     */
-    public function getPeerAddress(): Address;
 }
