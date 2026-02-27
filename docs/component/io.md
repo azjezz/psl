@@ -12,6 +12,8 @@
 
 #### `Functions`
 
+- [copy](./../../src/Psl/IO/copy.php#L20)
+- [copy_bidirectional](./../../src/Psl/IO/copy_bidirectional.php#L21)
 - [error_handle](./../../src/Psl/IO/error_handle.php#L21)
 - [input_handle](./../../src/Psl/IO/input_handle.php#L23)
 - [output_handle](./../../src/Psl/IO/output_handle.php#L23)
@@ -54,6 +56,6 @@
 #### `Traits`
 
 - [ReadHandleConvenienceMethodsTrait](./../../src/Psl/IO/ReadHandleConvenienceMethodsTrait.php#L16)
-- [WriteHandleConvenienceMethodsTrait](./../../src/Psl/IO/WriteHandleConvenienceMethodsTrait.php#L17)
+- [WriteHandleConvenienceMethodsTrait](./../../src/Psl/IO/WriteHandleConvenienceMethodsTrait.php#L19)
 
 

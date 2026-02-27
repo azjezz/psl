@@ -10,10 +10,15 @@
  * [Psl\Default](../src/Psl/Default/README.md)
  * [Psl\Graph](../src/Psl/Graph/README.md)
  * [Psl\Interoperability](../src/Psl/Interoperability/README.md)
+ * [Psl\Network](../src/Psl/Network/README.md)
  * [Psl\Process](../src/Psl/Process/README.md)
  * [Psl\Range](../src/Psl/Range/README.md)
+ * [Psl\TCP](../src/Psl/TCP/README.md)
+ * [Psl\TLS](../src/Psl/TLS/README.md)
  * [Psl\Tree](../src/Psl/Tree/README.md)
  * [Psl\Type](../src/Psl/Type/README.md)
+ * [Psl\UDP](../src/Psl/UDP/README.md)
+ * [Psl\Unix](../src/Psl/Unix/README.md)
 
 ---
 
@@ -42,7 +47,6 @@
 - [Psl\Json](./component/json.md)
 - [Psl\Locale](./component/locale.md)
 - [Psl\Math](./component/math.md)
-- [Psl\Network](./component/network.md)
 - [Psl\OS](./component/os.md)
 - [Psl\Observer](./component/observer.md)
 - [Psl\Option](./component/option.md)
@@ -58,8 +62,6 @@
 - [Psl\Str](./component/str.md)
 - [Psl\Str\Byte](./component/str-byte.md)
 - [Psl\Str\Grapheme](./component/str-grapheme.md)
-- [Psl\TCP](./component/tcp.md)
 - [Psl\Trait](./component/trait.md)
-- [Psl\Unix](./component/unix.md)
 - [Psl\Vec](./component/vec.md)
 

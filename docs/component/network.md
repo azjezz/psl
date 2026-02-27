@@ -12,15 +12,13 @@
 
 #### `Interfaces`
 
-- [ServerInterface](./../../src/Psl/Network/ServerInterface.php#L13)
-- [SocketInterface](./../../src/Psl/Network/SocketInterface.php#L15)
-- [StreamServerInterface](./../../src/Psl/Network/StreamServerInterface.php#L16)
-- [StreamSocketInterface](./../../src/Psl/Network/StreamSocketInterface.php#L17)
+- [ListenerInterface](./../../src/Psl/Network/ListenerInterface.php#L12)
+- [SocketInterface](./../../src/Psl/Network/SocketInterface.php#L14)
+- [StreamInterface](./../../src/Psl/Network/StreamInterface.php#L17)
 
 #### `Classes`
 
 - [Address](./../../src/Psl/Network/Address.php#L10)
-- [SocketOptions](./../../src/Psl/Network/SocketOptions.php#L14)
 
 #### `Enums`
 
