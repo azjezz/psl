@@ -17,7 +17,6 @@
         "ext-sodium": "*",
         "ext-intl": "*",
         "ext-openssl": "*",
-        "ext-sockets": "*",
         "revolt/event-loop": "^1.0.7"
     },
     "require-dev": {
@@ -56,6 +55,7 @@
         }
     },
     "suggest": {
+        "ext-sockets": "Required for TCP/Unix Socket classes and socket options (setNoDelay, setKeepAlive, setTtl, buffer sizes, linger, multicast)",
         "php-standard-library/psalm-plugin": "Psalm integration",
         "php-standard-library/phpstan-extension": "PHPStan integration"
     }

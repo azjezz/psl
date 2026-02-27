@@ -107,7 +107,7 @@ A TCP listener that accepts incoming connections. Extends `Network\ListenerInter
 
 #### `Socket`
 
-A low-level TCP socket that can be configured before connecting or listening. Follows a create-configure-consume pattern. Requires `ext-sockets`.
+A low-level TCP socket that can be configured before connecting or listening. Create a socket, configure options, then consume it by calling `connect()` or `listen()`. Requires `ext-sockets`.
 
 **Factories:**
 - `Socket::createV4(): self` — Create a new IPv4 TCP socket.

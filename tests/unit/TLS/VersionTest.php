@@ -30,4 +30,9 @@ final class VersionTest extends TestCase
         static::assertLessThan(Version::Tls12->value, Version::Tls11->value);
         static::assertLessThan(Version::Tls13->value, Version::Tls12->value);
     }
+
+    public function testDefault(): void
+    {
+        static::assertSame(Version::Tls13, Version::default());
+    }
 }

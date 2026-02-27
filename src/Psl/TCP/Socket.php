@@ -9,6 +9,7 @@ use Psl\Network;
 use Revolt\EventLoop;
 use Socket as PHPSocket;
 
+use function is_bool;
 use function socket_bind;
 use function socket_connect;
 use function socket_create;
@@ -35,7 +36,8 @@ use const TCP_NODELAY;
 /**
  * A TCP socket that can be configured before connecting or listening.
  *
- * Mirrors Tokio's TcpSocket pattern: create → configure → connect/listen.
+ * Create a socket, configure options (reuse address, no delay, buffer sizes, etc.),
+ * then consume it by calling connect() or listen().
  *
  * Requires the `ext-sockets` extension.
  */
@@ -240,7 +242,12 @@ final class Socket
     {
         $this->ensureNotConsumed();
 
-        if (!@socket_set_option($this->socket, $level, $option, $value ? 1 : 0)) {
+        $value = match (is_bool($value)) {
+            true => $value ? 1 : 0,
+            false => $value,
+        };
+
+        if (!@socket_set_option($this->socket, $level, $option, $value)) {
             throw new Network\Exception\RuntimeException(
                 'Failed to set socket option: ' . socket_strerror(socket_last_error($this->socket)),
             );
@@ -269,29 +276,30 @@ final class Socket
     }
 
     /**
-     * Export the underlying socket as a stream resource or object.
+     * Export the underlying socket as a stream resource.
      *
-     * @return PHPSocket
+     * @return resource
      */
-    private function exportStream(): PHPSocket
+    private function exportStream(): mixed
     {
         $stream = @socket_export_stream($this->socket);
         if ($stream === false) {
             throw new Network\Exception\RuntimeException('Failed to export socket as stream.');
         }
 
-        /** @var PHPSocket */
+        /** @var resource */
         return $stream;
     }
 
     /**
      * Wait for a non-blocking connect to complete.
+     *
+     * @param resource $stream
      */
-    private function waitForConnect(PHPSocket $stream, null|Duration $timeout): void
+    private function waitForConnect(mixed $stream, null|Duration $timeout): void
     {
         $suspension = EventLoop::getSuspension();
         $timeout_watcher = null;
-        // @mago-expect analysis:invalid-argument
         $write_watcher = EventLoop::onWritable($stream, static function (string $watcher) use ($suspension): void {
             EventLoop::cancel($watcher);
             $suspension->resume(false);
