@@ -20,6 +20,6 @@
 
 #### `Enums`
 
-- [Encoding](./../../src/Psl/Html/Encoding.php#L17)
+- [Encoding](./../../src/Psl/Html/Encoding.php#L18)
 
 

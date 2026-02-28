@@ -19,6 +19,6 @@
 
 #### `Enums`
 
-- [Algorithm](./../../src/Psl/Password/Algorithm.php#L23)
+- [Algorithm](./../../src/Psl/Password/Algorithm.php#L24)
 
 

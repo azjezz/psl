@@ -36,14 +36,14 @@
 
 #### `Interfaces`
 
-- [DateTimeInterface](./../../src/Psl/DateTime/DateTimeInterface.php#L9)
-- [TemporalInterface](./../../src/Psl/DateTime/TemporalInterface.php#L20)
+- [DateTimeInterface](./../../src/Psl/DateTime/DateTimeInterface.php#L10)
+- [TemporalInterface](./../../src/Psl/DateTime/TemporalInterface.php#L21)
 
 #### `Classes`
 
-- [DateTime](./../../src/Psl/DateTime/DateTime.php#L21)
-- [Duration](./../../src/Psl/DateTime/Duration.php#L33)
-- [Timestamp](./../../src/Psl/DateTime/Timestamp.php#L22)
+- [DateTime](./../../src/Psl/DateTime/DateTime.php#L25)
+- [Duration](./../../src/Psl/DateTime/Duration.php#L34)
+- [Timestamp](./../../src/Psl/DateTime/Timestamp.php#L25)
 
 #### `Traits`
 
@@ -52,14 +52,14 @@
 
 #### `Enums`
 
-- [DateStyle](./../../src/Psl/DateTime/DateStyle.php#L23)
+- [DateStyle](./../../src/Psl/DateTime/DateStyle.php#L24)
 - [Era](./../../src/Psl/DateTime/Era.php#L14)
 - [FormatPattern](./../../src/Psl/DateTime/FormatPattern.php#L16)
 - [Meridiem](./../../src/Psl/DateTime/Meridiem.php#L14)
 - [Month](./../../src/Psl/DateTime/Month.php#L15)
 - [SecondsStyle](./../../src/Psl/DateTime/SecondsStyle.php#L13)
 - [TimeStyle](./../../src/Psl/DateTime/TimeStyle.php#L24)
-- [Timezone](./../../src/Psl/DateTime/Timezone.php#L32)
+- [Timezone](./../../src/Psl/DateTime/Timezone.php#L33)
 - [Weekday](./../../src/Psl/DateTime/Weekday.php#L15)
 
 

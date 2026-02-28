@@ -19,12 +19,12 @@
 
 #### `Interfaces`
 
-- [ResultInterface](./../../src/Psl/Result/ResultInterface.php#L24)
+- [ResultInterface](./../../src/Psl/Result/ResultInterface.php#L25)
 
 #### `Classes`
 
-- [Failure](./../../src/Psl/Result/Failure.php#L18)
+- [Failure](./../../src/Psl/Result/Failure.php#L19)
 - [Stats](./../../src/Psl/Result/Stats.php#L10)
-- [Success](./../../src/Psl/Result/Success.php#L18)
+- [Success](./../../src/Psl/Result/Success.php#L19)
 
 
