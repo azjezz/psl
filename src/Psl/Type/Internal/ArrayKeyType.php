@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
+
 use function is_int;
 use function is_string;
 
@@ -22,13 +24,13 @@ final readonly class ArrayKeyType extends UnionType
         parent::__construct(new StringType(), new IntType());
     }
 
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         return is_string($value) || is_int($value);
     }
 
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): mixed
     {
         // happy path performance optimization:
@@ -39,7 +41,7 @@ final readonly class ArrayKeyType extends UnionType
         return parent::assert($value);
     }
 
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): mixed
     {
         // happy path performance optimization:
@@ -50,7 +52,7 @@ final readonly class ArrayKeyType extends UnionType
         return parent::coerce($value);
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return 'array-key';

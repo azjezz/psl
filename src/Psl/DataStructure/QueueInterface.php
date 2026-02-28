@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\DataStructure;
 
 use Countable;
+use Override;
 use Psl\Default\DefaultInterface;
 
 /**
@@ -53,6 +54,6 @@ interface QueueInterface extends Countable, DefaultInterface
      *
      * @return int<0, max>
      */
-    #[\Override]
+    #[Override]
     public function count(): int;
 }

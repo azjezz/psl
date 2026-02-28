@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\DataStructure;
 
+use Override;
+
 use function array_shift;
 use function count;
 
@@ -28,7 +30,7 @@ final class Queue implements QueueInterface
      *
      * @pure
      */
-    #[\Override]
+    #[Override]
     public static function default(): static
     {
         return new self();
@@ -41,7 +43,7 @@ final class Queue implements QueueInterface
      *
      * @psalm-external-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function enqueue(mixed $node): void
     {
         $this->queue[] = $node;
@@ -55,7 +57,7 @@ final class Queue implements QueueInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function peek(): mixed
     {
         return $this->queue[0] ?? null;
@@ -69,7 +71,7 @@ final class Queue implements QueueInterface
      *
      * @psalm-external-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function pull(): mixed
     {
         return array_shift($this->queue);
@@ -84,7 +86,7 @@ final class Queue implements QueueInterface
      *
      * @psalm-external-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function dequeue(): mixed
     {
         if ([] === $this->queue) {
@@ -102,7 +104,7 @@ final class Queue implements QueueInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function count(): int
     {
         return count($this->queue);

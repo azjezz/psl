@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Collection;
 use Psl\Dict;
 use Psl\Str;
@@ -41,7 +42,7 @@ final readonly class MapType extends Type\Type
      *
      * @return Collection\MapInterface<Tk, Tv>
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): Collection\MapInterface
     {
         if (is_iterable($value)) {
@@ -106,7 +107,7 @@ final readonly class MapType extends Type\Type
      *
      * @psalm-assert Collection\MapInterface<Tk, Tv> $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): Collection\MapInterface
     {
         if (is_object($value) && $value instanceof Collection\MapInterface) {
@@ -148,7 +149,7 @@ final readonly class MapType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return Str\format(

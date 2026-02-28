@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\OS;
 
+use Override;
 use Psl\Default\DefaultInterface;
 
 /**
@@ -57,7 +58,7 @@ enum OperatingSystemFamily: string implements DefaultInterface
      *
      * @pure
      */
-    #[\Override]
+    #[Override]
     public static function default(): static
     {
         return namespace\family();

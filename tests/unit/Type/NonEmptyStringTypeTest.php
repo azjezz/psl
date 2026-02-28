@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Type;
 
 /**
@@ -14,13 +15,13 @@ final class NonEmptyStringTypeTest extends TypeTestCase
     /**
      * @return Type\Type<non-empty-string>
      */
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\non_empty_string();
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield ['hello', 'hello'];
@@ -33,7 +34,7 @@ final class NonEmptyStringTypeTest extends TypeTestCase
         yield [static::stringable('123'), '123'];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [''];
@@ -48,7 +49,7 @@ final class NonEmptyStringTypeTest extends TypeTestCase
         yield [STDIN];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), 'non-empty-string'];

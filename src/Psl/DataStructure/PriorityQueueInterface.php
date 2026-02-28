@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\DataStructure;
 
+use Override;
+
 /**
  * @template T
  *
@@ -16,6 +18,6 @@ interface PriorityQueueInterface extends QueueInterface
      *
      * @param T $node
      */
-    #[\Override]
+    #[Override]
     public function enqueue(mixed $node, int $priority = 0): void;
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Channel\Internal;
 
+use Override;
 use Psl\Channel\Exception;
 use Psl\Channel\ReceiverInterface;
 use Revolt\EventLoop;
@@ -34,7 +35,7 @@ final class UnboundedReceiver implements ReceiverInterface
     /**
      * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function receive(): mixed
     {
         if ($this->suspension) {
@@ -61,7 +62,7 @@ final class UnboundedReceiver implements ReceiverInterface
     /**
      * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function tryReceive(): mixed
     {
         return $this->state->receive();

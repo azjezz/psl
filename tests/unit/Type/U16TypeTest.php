@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Math;
 use Psl\Type;
 
 final class U16TypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\u16();
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield [65_535, 65_535];
@@ -34,7 +35,7 @@ final class U16TypeTest extends TypeTestCase
         yield [static::stringable((string) Math\UINT8_MAX), Math\UINT8_MAX];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [-123];
@@ -63,7 +64,7 @@ final class U16TypeTest extends TypeTestCase
         yield [Math\INT64_MAX];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), 'u16'];

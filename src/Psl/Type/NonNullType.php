@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
+use Override;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -25,7 +26,7 @@ final readonly class NonNullType extends Type\Type
      *
      * @return ($value is null ? false : true)
      */
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         return null !== $value;
@@ -38,7 +39,7 @@ final readonly class NonNullType extends Type\Type
      *
      * @return ($value is null ? never : T)
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): mixed
     {
         if (null !== $value) {
@@ -57,7 +58,7 @@ final readonly class NonNullType extends Type\Type
      *
      * @return ($value is null ? never : T)
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): mixed
     {
         if (null !== $value) {
@@ -67,7 +68,7 @@ final readonly class NonNullType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return 'nonnull';

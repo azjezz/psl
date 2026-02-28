@@ -9,6 +9,8 @@ use Psl\Async;
 use Psl\TCP;
 use Psl\TLS;
 
+use function extension_loaded;
+
 final class LazyAcceptorTest extends TestCase
 {
     /**
@@ -18,7 +20,7 @@ final class LazyAcceptorTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        if (!\extension_loaded('openssl')) {
+        if (!extension_loaded('openssl')) {
             static::markTestSkipped('OpenSSL extension is required for TLS tests.');
         }
 

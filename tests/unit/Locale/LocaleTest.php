@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Locale;
 
 use Generator;
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Locale\Locale;
@@ -17,13 +18,13 @@ final class LocaleTest extends TestCase
 {
     private null|string $defaultLocale = null;
 
-    #[\Override]
+    #[Override]
     protected function setUp(): void
     {
         $this->defaultLocale = locale_get_default();
     }
 
-    #[\Override]
+    #[Override]
     protected function tearDown(): void
     {
         if (null !== $this->defaultLocale) {

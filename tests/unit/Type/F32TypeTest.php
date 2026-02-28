@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Math;
 use Psl\Type;
 
 final class F32TypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\f32();
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield [123, 123.0];
@@ -43,7 +44,7 @@ final class F32TypeTest extends TypeTestCase
         yield ['-0.7e2', -0.7e2];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [''];
@@ -65,7 +66,7 @@ final class F32TypeTest extends TypeTestCase
         yield [Math\FLOAT64_MAX];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), 'f32'];

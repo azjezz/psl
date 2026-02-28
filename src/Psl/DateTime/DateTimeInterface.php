@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\DateTime;
 
+use Override;
 use Psl\Locale\Locale;
 
 interface DateTimeInterface extends TemporalInterface
@@ -453,7 +454,7 @@ interface DateTimeInterface extends TemporalInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function format(
         null|FormatPattern|string $pattern = null,
         null|Timezone $timezone = null,
@@ -488,7 +489,7 @@ interface DateTimeInterface extends TemporalInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function toString(
         null|DateStyle $date_style = null,
         null|TimeStyle $time_style = null,
@@ -523,7 +524,7 @@ interface DateTimeInterface extends TemporalInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function toRfc3339(null|SecondsStyle $seconds_style = null, bool $use_z = false): string;
 
     /**
@@ -544,7 +545,7 @@ interface DateTimeInterface extends TemporalInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function __toString(): string;
 
     /**
@@ -554,6 +555,6 @@ interface DateTimeInterface extends TemporalInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function convertToTimezone(Timezone $timezone): static;
 }

@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Type;
 
 final class StringTypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\string();
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield ['hello', 'hello'];
@@ -27,7 +28,7 @@ final class StringTypeTest extends TypeTestCase
         yield [static::stringable('123'), '123'];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [1.0];
@@ -41,7 +42,7 @@ final class StringTypeTest extends TypeTestCase
         yield [STDIN];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), 'string'];

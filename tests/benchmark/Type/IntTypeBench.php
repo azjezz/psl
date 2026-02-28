@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Benchmark\Type;
 
+use Override;
 use PhpBench\Attributes\Groups;
 use Psl\Tests\Benchmark\Type\Asset\ExplicitStringableObject;
 use Psl\Tests\Benchmark\Type\Asset\ImplicitStringableObject;
@@ -18,7 +19,7 @@ final class IntTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
-    #[\Override]
+    #[Override]
     public function provideHappyPathCoercion(): array
     {
         return array_merge($this->strictlyValidDataSet(), [
@@ -44,7 +45,7 @@ final class IntTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
-    #[\Override]
+    #[Override]
     public function provideHappyPathAssertion(): array
     {
         return $this->strictlyValidDataSet();
@@ -53,7 +54,7 @@ final class IntTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
-    #[\Override]
+    #[Override]
     public function provideHappyPathMatches(): array
     {
         return $this->strictlyValidDataSet();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Collection;
 use Psl\Collection\MutableVectorInterface;
@@ -19,13 +20,13 @@ use RuntimeException;
  */
 final class MutableVectorTypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\mutable_vector(Type\int());
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield [
@@ -69,7 +70,7 @@ final class MutableVectorTypeTest extends TypeTestCase
         ];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [1.0];
@@ -81,7 +82,7 @@ final class MutableVectorTypeTest extends TypeTestCase
         yield [STDIN];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), 'Psl\Collection\MutableVectorInterface<int>'];
@@ -96,7 +97,7 @@ final class MutableVectorTypeTest extends TypeTestCase
      * @param MutableVectorInterface<mixed>|mixed $a
      * @param MutableVectorInterface<mixed>|mixed $b
      */
-    #[\Override]
+    #[Override]
     protected static function equals(mixed $a, mixed $b): bool
     {
         if (Type\instance_of(MutableVectorInterface::class)->matches($a)) {

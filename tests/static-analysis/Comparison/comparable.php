@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\StaticAnalysis\Comparison;
 
+use Override;
 use Psl\Comparison;
 use Psl\Comparison\Comparable;
 use Psl\Comparison\Order;
@@ -22,7 +23,7 @@ abstract class Size implements Comparable
 {
     abstract public function normalizedValue(): int;
 
-    #[\Override]
+    #[Override]
     public function compare(mixed $other): Order
     {
         return Comparison\compare($this->normalizedValue(), $other->normalizedValue());
@@ -31,7 +32,7 @@ abstract class Size implements Comparable
 
 class Inches extends Size
 {
-    #[\Override]
+    #[Override]
     public function normalizedValue(): int
     {
         return 1;
@@ -40,7 +41,7 @@ class Inches extends Size
 
 class Centimeters extends Size
 {
-    #[\Override]
+    #[Override]
     public function normalizedValue(): int
     {
         return 2;

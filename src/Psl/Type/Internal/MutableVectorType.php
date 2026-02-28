@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Collection;
 use Psl\Str;
 use Psl\Type;
@@ -37,7 +38,7 @@ final readonly class MutableVectorType extends Type\Type
      *
      * @return Collection\MutableVectorInterface<T>
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): Collection\MutableVectorInterface
     {
         if (is_iterable($value)) {
@@ -88,7 +89,7 @@ final readonly class MutableVectorType extends Type\Type
      *
      * @psalm-assert Collection\MutableVectorInterface<T> $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): Collection\MutableVectorInterface
     {
         if (is_object($value) && $value instanceof Collection\MutableVectorInterface) {
@@ -120,7 +121,7 @@ final readonly class MutableVectorType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return Str\format('%s<%s>', Collection\MutableVectorInterface::class, $this->value_type->toString());

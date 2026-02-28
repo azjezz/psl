@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
@@ -30,7 +31,7 @@ final readonly class LiteralScalarType extends Type\Type
     /**
      * @psalm-assert-if-true T $value
      */
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         return $this->value === $value;
@@ -41,7 +42,7 @@ final readonly class LiteralScalarType extends Type\Type
      *
      * @return T
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): string|int|float|bool
     {
         $expectedScalarValue = $this->value;
@@ -99,7 +100,7 @@ final readonly class LiteralScalarType extends Type\Type
      *
      * @throws AssertException
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): string|int|float|bool
     {
         if ($this->value === $value) {
@@ -110,7 +111,7 @@ final readonly class LiteralScalarType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         /** @var int|string|float|bool $value */

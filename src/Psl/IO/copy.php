@@ -7,6 +7,8 @@ namespace Psl\IO;
 use Psl\Async;
 use Psl\DateTime\Duration;
 
+use function strlen;
+
 /**
  * Copy data from a read handle to a write handle until EOF.
  *
@@ -37,7 +39,7 @@ function copy(ReadHandleInterface $reader, WriteHandleInterface $writer, null|Du
         }
 
         $writer->writeAll($data, $timer->getRemaining());
-        $bytes_copied += \strlen($data);
+        $bytes_copied += strlen($data);
     }
 
     /** @var int<0, max> */

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Collection;
 
+use Override;
 use Psl\Collection;
 use Psl\Collection\Exception;
 use Psl\Collection\MutableVector;
@@ -250,7 +251,7 @@ final class MutableVectorTest extends AbstractVectorTestCase
      *
      * @return MutableVector<T>
      */
-    #[\Override]
+    #[Override]
     protected function create(array $items): MutableVector
     {
         return new MutableVector($items);

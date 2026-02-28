@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Collection;
 
+use Override;
 use Psl\Collection\Vector;
 
 final class VectorTest extends AbstractVectorTestCase
@@ -28,7 +29,7 @@ final class VectorTest extends AbstractVectorTestCase
      *
      * @return Vector<T>
      */
-    #[\Override]
+    #[Override]
     protected function create(array $items): Vector
     {
         return new Vector($items);

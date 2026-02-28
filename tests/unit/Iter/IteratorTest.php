@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Iter;
 
 use Exception;
+use Generator;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection\MutableVector;
 use Psl\Iter;
@@ -216,7 +217,7 @@ final class IteratorTest extends TestCase
 
     public function testCreateWithGeneratorDirectlyWraps(): void
     {
-        $generator = (static function (): \Generator {
+        $generator = (static function (): Generator {
             yield 'a' => 1;
             yield 'b' => 2;
             yield 'c' => 3;

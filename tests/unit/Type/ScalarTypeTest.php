@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Math;
 use Psl\Type;
 
 final class ScalarTypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\scalar();
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield [123, 123];
@@ -50,7 +51,7 @@ final class ScalarTypeTest extends TypeTestCase
         yield [true, true];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [null];
@@ -60,7 +61,7 @@ final class ScalarTypeTest extends TypeTestCase
         yield [(static fn(): iterable => yield 'hello')()];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), 'scalar'];

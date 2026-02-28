@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -20,7 +21,7 @@ final readonly class F64Type extends Type\Type
     /**
      * @psalm-assert-if-true float $value
      */
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         return Type\float()->matches($value);
@@ -31,7 +32,7 @@ final readonly class F64Type extends Type\Type
      *
      * @return float
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): float
     {
         return Type\float()->coerce($value);
@@ -44,13 +45,13 @@ final readonly class F64Type extends Type\Type
      *
      * @return float
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): float
     {
         return Type\float()->assert($value);
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return 'f64';

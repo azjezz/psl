@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Iter;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
@@ -53,7 +54,7 @@ final readonly class ShapeType extends Type\Type
      *
      * @return array<Tk, Tv>
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): array
     {
         if ($value instanceof stdClass) {
@@ -178,7 +179,7 @@ final readonly class ShapeType extends Type\Type
      *
      * @psalm-assert array<Tk, Tv> $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): array
     {
         if (!is_array($value)) {
@@ -239,7 +240,7 @@ final readonly class ShapeType extends Type\Type
     /**
      * Returns a string representation of the shape.
      */
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         $nodes = [];

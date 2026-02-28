@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type\Internal;
 
+use Override;
 use Psl\Tests\Unit\Type\TypeTestCase;
 use Psl\Type;
 
@@ -17,13 +18,13 @@ final class UuidTypeTest extends TypeTestCase
     /**
      * @return Type\Type<non-empty-string>
      */
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\uuid();
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield ['2E58B54C-ADE0-41CD-A806-90420571991B', '2E58B54C-ADE0-41CD-A806-90420571991B'];
@@ -32,7 +33,7 @@ final class UuidTypeTest extends TypeTestCase
         yield [static::stringable('88b82321-6993-4e94-961f-52e093153fae'), '88b82321-6993-4e94-961f-52e093153fae'];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [''];
@@ -50,7 +51,7 @@ final class UuidTypeTest extends TypeTestCase
         yield ['E58B54C-ADE0-41CD-A806-90420571991B'];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), 'uuid'];

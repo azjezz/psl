@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace Psl\DateTime;
 
 use DateTimeImmutable;
+use DateTimeZone;
 use IntlCalendar;
+use IntlTimeZone;
 use Override;
 use Psl\Interoperability;
 use Psl\Locale\Locale;
+
+use function sprintf;
 
 /**
  * @psalm-immutable
@@ -547,7 +551,7 @@ final readonly class DateTime implements
     #[Override]
     public static function fromStdlib(mixed $value): static
     {
-        /** @var \DateTimeZone $tz */
+        /** @var DateTimeZone $tz */
         $tz = $value->getTimezone();
         $timezone = Timezone::from($tz->getName());
         $seconds = $value->getTimestamp();
@@ -570,7 +574,7 @@ final readonly class DateTime implements
     public function toStdlib(): mixed
     {
         $microseconds = (int) ($this->nanoseconds / NANOSECONDS_PER_MICROSECOND);
-        $formatted = \sprintf(
+        $formatted = sprintf(
             '%04d-%02d-%02d %02d:%02d:%02d.%06d',
             $this->year,
             $this->month,
@@ -581,7 +585,7 @@ final readonly class DateTime implements
             $microseconds,
         );
 
-        return new DateTimeImmutable($formatted, new \DateTimeZone($this->timezone->value));
+        return new DateTimeImmutable($formatted, new DateTimeZone($this->timezone->value));
     }
 
     /**
@@ -594,7 +598,7 @@ final readonly class DateTime implements
     #[Override]
     public static function fromIntl(mixed $value): static
     {
-        /** @var \IntlTimeZone $intl_tz */
+        /** @var IntlTimeZone $intl_tz */
         $intl_tz = $value->getTimeZone();
         /** @var string $timezone_id */
         $timezone_id = $intl_tz->getID();

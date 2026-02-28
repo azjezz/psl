@@ -6,6 +6,7 @@ namespace Psl\DateTime;
 
 use DateTimeZone;
 use IntlTimeZone;
+use Override;
 use Psl\Interoperability;
 
 /**
@@ -610,7 +611,7 @@ enum Timezone: string implements
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public static function fromStdlib(mixed $value): static
     {
         return self::from($value->getName());
@@ -623,7 +624,7 @@ enum Timezone: string implements
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function toStdlib(): mixed
     {
         return new DateTimeZone($this->value);
@@ -636,7 +637,7 @@ enum Timezone: string implements
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public static function fromIntl(mixed $value): static
     {
         /** @var string $id */
@@ -652,7 +653,7 @@ enum Timezone: string implements
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function toIntl(): mixed
     {
         return Internal\to_intl_timezone($this);

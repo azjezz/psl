@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -36,7 +37,7 @@ final readonly class VecType extends Type\Type
     /**
      * @psalm-assert-if-true list<Tv> $value
      */
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         if (!is_array($value) || !array_is_list($value)) {
@@ -59,7 +60,7 @@ final readonly class VecType extends Type\Type
      *
      * @return list<Tv>
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): iterable
     {
         if (!is_iterable($value)) {
@@ -108,7 +109,7 @@ final readonly class VecType extends Type\Type
      *
      * @psalm-assert list<Tv> $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): array
     {
         if (!is_array($value) || !array_is_list($value)) {
@@ -132,7 +133,7 @@ final readonly class VecType extends Type\Type
         return $result;
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return 'vec<' . $this->value_type->toString() . '>';

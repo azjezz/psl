@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Tests\Fixture\ClassWithMethods;
 use Psl\Type;
 
 final class PublicMethodNameOfTypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\public_method_name_of(ClassWithMethods::class);
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield ['publicMethod', 'publicMethod'];
@@ -24,7 +25,7 @@ final class PublicMethodNameOfTypeTest extends TypeTestCase
         yield ['PublicMethod', 'PublicMethod'];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [null];
@@ -40,7 +41,7 @@ final class PublicMethodNameOfTypeTest extends TypeTestCase
         yield [new class {}];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [

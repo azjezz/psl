@@ -4,25 +4,26 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Tests\Fixture\ClassWithProperties;
 use Psl\Type;
 
 final class PublicPropertyNameOfTypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\public_property_name_of(ClassWithProperties::class);
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield ['publicProperty', 'publicProperty'];
         yield ['staticProperty', 'staticProperty'];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [null];
@@ -38,7 +39,7 @@ final class PublicPropertyNameOfTypeTest extends TypeTestCase
         yield [new class {}];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [

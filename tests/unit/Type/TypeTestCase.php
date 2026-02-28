@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Dict;
@@ -155,7 +156,7 @@ abstract class TypeTestCase extends TestCase
                 $this->value = $value;
             }
 
-            #[\Override]
+            #[Override]
             public function __toString(): string
             {
                 return $this->value;

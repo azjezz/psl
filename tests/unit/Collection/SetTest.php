@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Collection;
 
+use Override;
 use Psl\Collection\Set;
 
 final class SetTest extends AbstractSetTestCase
@@ -31,7 +32,7 @@ final class SetTest extends AbstractSetTestCase
      *
      * @return Set<T>
      */
-    #[\Override]
+    #[Override]
     protected function createFromList(array $items): Set
     {
         return Set::fromArray($items);
@@ -47,7 +48,7 @@ final class SetTest extends AbstractSetTestCase
         static::assertTrue($set->contains('baz'));
     }
 
-    #[\Override]
+    #[Override]
     public function testJsonSerialize(): void
     {
         $set = $this->createFromList(['foo', 'bar', 'baz', 'qux']);

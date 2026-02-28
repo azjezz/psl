@@ -9,7 +9,9 @@ use Psl\Async;
 use Psl\DateTime\Duration;
 use Psl\IO;
 use Psl\Network;
+use Psl\OS;
 use Psl\UDP;
+use ReflectionMethod;
 
 final class SocketTest extends TestCase
 {
@@ -461,6 +463,120 @@ final class SocketTest extends TestCase
             } finally {
                 $client->close();
                 $server->close();
+            }
+        })->await();
+    }
+
+    public function testParseAddressEmptyString(): void
+    {
+        $socket = UDP\Socket::bind('127.0.0.1', 0);
+        $socket->close();
+        $method = new ReflectionMethod($socket, 'parseAddress');
+        $result = $method->invoke($socket, '');
+        static::assertSame('0.0.0.0', $result->host);
+        static::assertSame(0, $result->port);
+    }
+
+    public function testParseAddressIpv6WithPort(): void
+    {
+        $socket = UDP\Socket::bind('127.0.0.1', 0);
+        $socket->close();
+        $method = new ReflectionMethod($socket, 'parseAddress');
+        $result = $method->invoke($socket, '[::1]:8080');
+        static::assertSame('::1', $result->host);
+        static::assertSame(8080, $result->port);
+    }
+
+    public function testParseAddressIpv6WithoutPort(): void
+    {
+        $socket = UDP\Socket::bind('127.0.0.1', 0);
+        $socket->close();
+        $method = new ReflectionMethod($socket, 'parseAddress');
+        $result = $method->invoke($socket, '[::1]');
+        static::assertSame('::1', $result->host);
+        static::assertSame(0, $result->port);
+    }
+
+    public function testParseAddressIpv6EmptyHost(): void
+    {
+        $socket = UDP\Socket::bind('127.0.0.1', 0);
+        $socket->close();
+        $method = new ReflectionMethod($socket, 'parseAddress');
+        $result = $method->invoke($socket, '[]:8080');
+        static::assertSame('::', $result->host);
+        static::assertSame(8080, $result->port);
+    }
+
+    public function testParseAddressIpv6NoBracketClose(): void
+    {
+        $socket = UDP\Socket::bind('127.0.0.1', 0);
+        $socket->close();
+        $method = new ReflectionMethod($socket, 'parseAddress');
+        $result = $method->invoke($socket, '[::1');
+        static::assertSame('[::1', $result->host);
+        static::assertSame(0, $result->port);
+    }
+
+    public function testParseAddressIpv4WithoutColon(): void
+    {
+        $socket = UDP\Socket::bind('127.0.0.1', 0);
+        $socket->close();
+        $method = new ReflectionMethod($socket, 'parseAddress');
+        $result = $method->invoke($socket, '192.168.1.1');
+        static::assertSame('192.168.1.1', $result->host);
+        static::assertSame(0, $result->port);
+    }
+
+    public function testParseAddressIpv4InvalidPort(): void
+    {
+        $this->expectException(Network\Exception\RuntimeException::class);
+        $this->expectExceptionMessage('Invalid port number');
+
+        $socket = UDP\Socket::bind('127.0.0.1', 0);
+        $socket->close();
+        $method = new ReflectionMethod($socket, 'parseAddress');
+        $method->invoke($socket, '127.0.0.1:99999');
+    }
+
+    public function testParseAddressIpv6InvalidPort(): void
+    {
+        $this->expectException(Network\Exception\RuntimeException::class);
+        $this->expectExceptionMessage('Invalid port number');
+
+        $socket = UDP\Socket::bind('127.0.0.1', 0);
+        $socket->close();
+        $method = new ReflectionMethod($socket, 'parseAddress');
+        $method->invoke($socket, '[::1]:99999');
+    }
+
+    public function testWaitWritableTimeout(): void
+    {
+        if (OS\is_windows()) {
+            static::markTestSkipped('stream_socket_pair with STREAM_PF_UNIX not available on Windows');
+        }
+
+        $this->expectException(IO\Exception\TimeoutException::class);
+        $this->expectExceptionMessage('send operation timed out');
+
+        Async\run(static function (): void {
+            $pair = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
+            stream_set_blocking($pair[0], false);
+            stream_set_blocking($pair[1], false);
+
+            $chunk = str_repeat('x', 65_536);
+            while (@fwrite($pair[0], $chunk) > 0) {
+                // Keep writing until the buffer is full and the socket becomes unwritable
+                // @mago-expect lint:no-empty-loop
+            }
+
+            $socket = UDP\Socket::bind('127.0.0.1', 0);
+            $socket->close();
+            $method = new ReflectionMethod($socket, 'waitWritable');
+            try {
+                $method->invoke($socket, $pair[0], Duration::milliseconds(50));
+            } finally {
+                fclose($pair[0]);
+                fclose($pair[1]);
             }
         })->await();
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\DateTime;
 
+use Override;
 use Psl\Default\DefaultInterface;
 
 /**
@@ -38,7 +39,7 @@ enum DateStyle implements DefaultInterface
      *
      * @pure
      */
-    #[\Override]
+    #[Override]
     public static function default(): static
     {
         return self::Medium;

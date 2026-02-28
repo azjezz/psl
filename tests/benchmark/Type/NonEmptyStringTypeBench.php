@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Benchmark\Type;
 
+use Override;
 use PhpBench\Attributes\Groups;
 use Psl\Tests\Benchmark\Type\Asset\ExplicitStringableObject;
 use Psl\Tests\Benchmark\Type\Asset\ImplicitStringableObject;
 use Psl\Type;
+use Psl\Type\TypeInterface;
 
 /**
- * @extends GenericTypeBench<Type\TypeInterface<non-empty-string>>
+ * @extends GenericTypeBench<TypeInterface<non-empty-string>>
  */
 #[Groups(['type'])]
 final class NonEmptyStringTypeBench extends GenericTypeBench
@@ -18,7 +20,7 @@ final class NonEmptyStringTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
-    #[\Override]
+    #[Override]
     public function provideHappyPathCoercion(): array
     {
         return array_merge($this->strictlyValidDataSet(), [
@@ -40,7 +42,7 @@ final class NonEmptyStringTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
-    #[\Override]
+    #[Override]
     public function provideHappyPathAssertion(): array
     {
         return $this->strictlyValidDataSet();
@@ -49,14 +51,14 @@ final class NonEmptyStringTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
-    #[\Override]
+    #[Override]
     public function provideHappyPathMatches(): array
     {
         return $this->strictlyValidDataSet();
     }
 
     /**
-     * @return array<non-empty-string, array{type: \Psl\Type\TypeInterface<non-empty-string>, value: non-empty-string}>
+     * @return array<non-empty-string, array{type: TypeInterface<non-empty-string>, value: non-empty-string}>
      */
     private function strictlyValidDataSet(): array
     {

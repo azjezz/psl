@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Collection;
 
+use Override;
 use Psl\Collection;
 use Psl\Collection\Exception;
 use Psl\Collection\MutableMap;
@@ -246,7 +247,7 @@ final class MutableMapTest extends AbstractMapTestCase
      *
      * @return MutableMap<Tk, Tv>
      */
-    #[\Override]
+    #[Override]
     protected function create(iterable $items): MutableMap
     {
         return MutableMap::fromArray($items);

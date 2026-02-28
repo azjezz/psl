@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Collection;
 use Psl\Str;
 use Psl\Type;
@@ -37,7 +38,7 @@ final readonly class MutableSetType extends Type\Type
      *
      * @return Collection\MutableSetInterface<T>
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): Collection\MutableSetInterface
     {
         if (is_iterable($value)) {
@@ -81,7 +82,7 @@ final readonly class MutableSetType extends Type\Type
      *
      * @psalm-assert Collection\MutableSetInterface<T> $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): Collection\MutableSetInterface
     {
         if (is_object($value) && $value instanceof Collection\MutableSetInterface) {
@@ -117,7 +118,7 @@ final readonly class MutableSetType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return Str\format('%s<%s>', Collection\MutableSetInterface::class, $this->type->toString());

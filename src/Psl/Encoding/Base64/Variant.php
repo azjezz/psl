@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Encoding\Base64;
 
+use Override;
 use Psl\Default\DefaultInterface;
 
 /**
@@ -73,7 +74,7 @@ enum Variant implements DefaultInterface
      *
      * @return static The `Standard` variant of Base64 encoding.
      */
-    #[\Override]
+    #[Override]
     public static function default(): static
     {
         return self::Standard;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -29,7 +30,7 @@ final readonly class NullableType extends Type\Type
     /**
      * @psalm-assert-if-true T|null $value
      */
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         return null === $value || $this->inner->matches($value);
@@ -40,7 +41,7 @@ final readonly class NullableType extends Type\Type
      *
      * @return T|null
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): mixed
     {
         if (null === $value) {
@@ -57,7 +58,7 @@ final readonly class NullableType extends Type\Type
      *
      * @psalm-assert T|null $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): mixed
     {
         if (null === $value) {
@@ -67,7 +68,7 @@ final readonly class NullableType extends Type\Type
         return $this->inner->assert($value);
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return '?' . $this->inner->toString();

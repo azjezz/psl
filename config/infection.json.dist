@@ -13,6 +13,9 @@
             "IO",
             "Unix",
             "TCP",
+            "TLS",
+            "UDP",
+            "Process",
             "Internal",
             "{.*/Internal/.*}"
         ]
@@ -41,6 +44,7 @@
         },
         "CastInt": {
             "ignore": [
+                "Psl\\CIDR\\Block::__construct",
                 "Psl\\DateTime\\DateTime::fromStdlib",
                 "Psl\\DateTime\\DateTime::toStdlib",
                 "Psl\\DateTime\\DateTime::fromIntl",
@@ -48,8 +52,15 @@
                 "Psl\\DateTime\\Timestamp::toStdlib"
             ]
         },
+        "CastString": {
+            "ignore": [
+                "Psl\\DateTime\\Duration::toString",
+                "Psl\\Locale\\Locale::default"
+            ]
+        },
         "DecrementInteger": {
             "ignore": [
+                "Psl\\CIDR\\Block::__construct",
                 "Psl\\DataStructure\\PriorityQueue::peek",
                 "Psl\\DateTime\\TemporalConvenienceMethodsTrait::since"
             ]
@@ -61,11 +72,18 @@
         },
         "GreaterThan": {
             "ignore": [
-                "Psl\\CIDR\\Block::__construct"
+                "Psl\\CIDR\\Block::__construct",
+                "Psl\\DateTime\\Duration::toString"
+            ]
+        },
+        "GreaterThanOrEqualTo": {
+            "ignore": [
+                "Psl\\DateTime\\DateTime::__construct"
             ]
         },
         "IncrementInteger": {
             "ignore": [
+                "Psl\\CIDR\\Block::__construct",
                 "Psl\\DataStructure\\PriorityQueue::peek",
                 "Psl\\DateTime\\TemporalConvenienceMethodsTrait::since"
             ]
@@ -75,8 +93,24 @@
                 "Psl\\Hash\\Context::update"
             ]
         },
+        "LogicalOr": {
+            "ignore": [
+                "Psl\\DateTime\\DateTime::__construct"
+            ]
+        },
         "MethodCallRemoval": {
             "ignore": [
+                "Psl\\Iter\\Iterator::seek",
+                "Psl\\Iter\\Iterator::count"
+            ]
+        },
+        "ReturnRemoval": {
+            "ignore": [
+                "Psl\\DataStructure\\PriorityQueue::peek",
+                "Psl\\DateTime\\DateTimeConvenienceMethodsTrait::plusMonths",
+                "Psl\\DateTime\\DateTimeConvenienceMethodsTrait::minusMonths",
+                "Psl\\DateTime\\Duration::minus",
+                "Psl\\Iter\\Iterator::create",
                 "Psl\\Iter\\Iterator::seek",
                 "Psl\\Iter\\Iterator::count"
             ]
@@ -88,6 +122,17 @@
                 "Psl\\File\\WriteHandle::__construct",
                 "Psl\\File\\ReadWriteHandle::__construct",
                 "Psl\\Hash\\Context::update"
+            ]
+        },
+        "TrueValue": {
+            "ignore": [
+                "Psl\\Graph\\DirectedGraph::hasCycle",
+                "Psl\\Graph\\UndirectedGraph::hasCycle"
+            ]
+        },
+        "UnwrapArrayKeys": {
+            "ignore": [
+                "Psl\\Collection\\Set::keys"
             ]
         }
     }

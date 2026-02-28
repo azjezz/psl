@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Collection;
 
 use Closure;
+use Override;
 
 /**
  * @template Tk of array-key
@@ -23,7 +24,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function values(): MutableVectorInterface;
 
     /**
@@ -33,7 +34,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function keys(): MutableVectorInterface;
 
     /**
@@ -52,7 +53,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @return MutableMapInterface<Tk, Tv> - a MutableMapInterface containing the values after a user-specified
      *                                     condition is applied.
      */
-    #[\Override]
+    #[Override]
     public function filter(Closure $fn): MutableMapInterface;
 
     /**
@@ -73,7 +74,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *                                     condition is applied to the keys and values of the
      *                                     current `MutableMapInterface`.
      */
-    #[\Override]
+    #[Override]
     public function filterWithKey(Closure $fn): MutableMapInterface;
 
     /**
@@ -94,7 +95,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @return MutableMapInterface<Tk, Tu> - a `MutableMapInterface` containing key/value pairs after
      *                                     a user-specified operation is applied.
      */
-    #[\Override]
+    #[Override]
     public function map(Closure $fn): MutableMapInterface;
 
     /**
@@ -116,7 +117,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @return MutableMapInterface<Tk, Tu> A `MutableMapInterface` containing the values after a user-specified
      *                                     operation on the current `MutableMapInterface`'s keys and values is applied.
      */
-    #[\Override]
+    #[Override]
     public function mapWithKey(Closure $fn): MutableMapInterface;
 
     /**
@@ -127,7 +128,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function first(): mixed;
 
     /**
@@ -138,7 +139,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function firstKey(): int|string|null;
 
     /**
@@ -149,7 +150,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function last(): mixed;
 
     /**
@@ -160,7 +161,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function lastKey(): int|string|null;
 
     /**
@@ -175,7 +176,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function linearSearch(mixed $search_value): int|string|null;
 
     /**
@@ -197,7 +198,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function zip(array $elements): MutableMapInterface;
 
     /**
@@ -216,7 +217,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function take(int $n): MutableMapInterface;
 
     /**
@@ -232,7 +233,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @return MutableMapInterface<Tk, Tv> A `MutableMapInterface` that is a proper subset of the current
      *                                     `MutableMapInterface` up until the callback returns `false`.
      */
-    #[\Override]
+    #[Override]
     public function takeWhile(Closure $fn): MutableMapInterface;
 
     /**
@@ -252,7 +253,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function drop(int $n): MutableMapInterface;
 
     /**
@@ -269,7 +270,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @return MutableMapInterface<Tk, Tv> A `MutableMapInterface` that is a proper subset of the current
      *                                     `MutableMapInterface` starting after the callback returns `true`.
      */
-    #[\Override]
+    #[Override]
     public function dropWhile(Closure $fn): MutableMapInterface;
 
     /**
@@ -293,7 +294,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function slice(int $start, null|int $length = null): MutableMapInterface;
 
     /**
@@ -310,7 +311,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function chunk(int $size): MutableVectorInterface;
 
     /**
@@ -380,7 +381,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @return MutableMapInterface<Tk, Tv> Returns itself.
      */
-    #[\Override]
+    #[Override]
     public function remove(int|string $k): MutableMapInterface;
 
     /**
@@ -388,6 +389,6 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @return MutableMapInterface<Tk, Tv>
      */
-    #[\Override]
+    #[Override]
     public function clear(): MutableMapInterface;
 }

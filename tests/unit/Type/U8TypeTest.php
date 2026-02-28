@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Math;
 use Psl\Type;
 
 final class U8TypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\u8();
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield [255, 255];
@@ -31,7 +32,7 @@ final class U8TypeTest extends TypeTestCase
         yield [255.0, 255];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [-1];
@@ -65,7 +66,7 @@ final class U8TypeTest extends TypeTestCase
         yield [Math\INT64_MAX];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), 'u8'];

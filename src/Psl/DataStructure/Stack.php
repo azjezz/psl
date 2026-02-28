@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\DataStructure;
 
+use Override;
+
 use function array_pop;
 use function count;
 
@@ -40,7 +42,7 @@ final class Stack implements StackInterface
      *
      * @psalm-external-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function push(mixed $item): void
     {
         $this->items[] = $item;
@@ -54,7 +56,7 @@ final class Stack implements StackInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function peek(): mixed
     {
         $items = $this->items;
@@ -70,7 +72,7 @@ final class Stack implements StackInterface
      *
      * @psalm-external-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function pull(): mixed
     {
         return array_pop($this->items);
@@ -85,7 +87,7 @@ final class Stack implements StackInterface
      *
      * @psalm-external-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function pop(): mixed
     {
         if ([] === $this->items) {
@@ -102,7 +104,7 @@ final class Stack implements StackInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function count(): int
     {
         return count($this->items);

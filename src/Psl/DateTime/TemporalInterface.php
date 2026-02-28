@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\DateTime;
 
 use JsonSerializable;
+use Override;
 use Psl\Comparison\Comparable;
 use Psl\Comparison\Equable;
 use Psl\Comparison\Order;
@@ -33,7 +34,7 @@ interface TemporalInterface extends Comparable, Equable, JsonSerializable, Strin
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function compare(mixed $other): Order;
 
     /**
@@ -45,7 +46,7 @@ interface TemporalInterface extends Comparable, Equable, JsonSerializable, Strin
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function equals(mixed $other): bool;
 
     /**
@@ -322,7 +323,7 @@ interface TemporalInterface extends Comparable, Equable, JsonSerializable, Strin
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function __toString(): string;
 
     /**

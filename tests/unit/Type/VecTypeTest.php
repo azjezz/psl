@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Collection;
 use Psl\Dict;
@@ -18,7 +19,7 @@ use RuntimeException;
  */
 final class VecTypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield [
@@ -72,7 +73,7 @@ final class VecTypeTest extends TypeTestCase
         ];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [1.0];
@@ -84,7 +85,7 @@ final class VecTypeTest extends TypeTestCase
         yield [STDIN];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), 'vec<int>'];
@@ -95,7 +96,7 @@ final class VecTypeTest extends TypeTestCase
         ];
     }
 
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\vec(Type\int());

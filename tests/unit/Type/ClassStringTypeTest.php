@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Collection;
 use Psl\Type;
 
 final class ClassStringTypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\class_string(Collection\CollectionInterface::class);
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield [$_ = Collection\Vector::class, $_];
@@ -26,7 +27,7 @@ final class ClassStringTypeTest extends TypeTestCase
         yield [$_ = Collection\CollectionInterface::class, $_];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [null];
@@ -36,7 +37,7 @@ final class ClassStringTypeTest extends TypeTestCase
         yield [new class {}];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [Type\class_string(Collection\MapInterface::class), 'class-string<Psl\Collection\MapInterface>'];

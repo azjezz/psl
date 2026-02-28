@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
@@ -38,7 +39,7 @@ final readonly class ContainerType extends Type\Type
      *
      * @return iterable<Tk, Tv>
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): iterable
     {
         if (!is_iterable($value)) {
@@ -99,7 +100,7 @@ final readonly class ContainerType extends Type\Type
      *
      * @psalm-assert iterable<Tk, Tv> $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): iterable
     {
         if (!is_iterable($value)) {
@@ -142,7 +143,7 @@ final readonly class ContainerType extends Type\Type
         return $values;
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return Str\format('container<%s, %s>', $this->key_type->toString(), $this->value_type->toString());

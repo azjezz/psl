@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Collection;
 
 use Closure;
+use Override;
 
 /**
  * MutableCollectionInterface is the primary collection interface for mutable collections.
@@ -37,7 +38,7 @@ interface MutableCollectionInterface extends CollectionInterface
      * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` containing the values
      *                                            after a user-specified condition is applied.
      */
-    #[\Override]
+    #[Override]
     public function filter(Closure $fn): MutableCollectionInterface;
 
     /**
@@ -57,7 +58,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *                                            a user-specified condition is applied to the keys and values of
      *                                            the current `MutableCollectionInterface`.
      */
-    #[\Override]
+    #[Override]
     public function filterWithKey(Closure $fn): MutableCollectionInterface;
 
     /**
@@ -81,7 +82,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function zip(array $elements): MutableCollectionInterface;
 
     /**
@@ -100,7 +101,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function take(int $n): MutableCollectionInterface;
 
     /**
@@ -118,7 +119,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *                                            subset of the current `MutableCollectionInterface` up until
      *                                            the callback returns `false`.
      */
-    #[\Override]
+    #[Override]
     public function takeWhile(Closure $fn): MutableCollectionInterface;
 
     /**
@@ -139,7 +140,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function drop(int $n): MutableCollectionInterface;
 
     /**
@@ -157,7 +158,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *                                            `MutableCollectionInterface` starting after the callback
      *                                            returns `true`.
      */
-    #[\Override]
+    #[Override]
     public function dropWhile(Closure $fn): MutableCollectionInterface;
 
     /**
@@ -181,7 +182,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function slice(int $start, null|int $length = null): MutableCollectionInterface;
 
     /**
@@ -198,7 +199,7 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function chunk(int $size): MutableCollectionInterface;
 
     /**

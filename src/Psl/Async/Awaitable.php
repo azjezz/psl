@@ -6,6 +6,7 @@ namespace Psl\Async;
 
 use Closure;
 use Generator;
+use Override;
 use Psl\Async\Internal\AwaitableIterator;
 use Psl\Async\Internal\State;
 use Psl\Promise\PromiseInterface;
@@ -136,7 +137,7 @@ final readonly class Awaitable implements PromiseInterface
      *
      * @return Awaitable<Ts>
      */
-    #[\Override]
+    #[Override]
     public function then(Closure $success, Closure $failure): Awaitable
     {
         $state = new State();
@@ -180,7 +181,7 @@ final readonly class Awaitable implements PromiseInterface
      *
      * @return Awaitable<Ts>
      */
-    #[\Override]
+    #[Override]
     public function map(Closure $success): Awaitable
     {
         return $this->then($success, static fn(Throwable $throwable): never => throw $throwable);
@@ -195,7 +196,7 @@ final readonly class Awaitable implements PromiseInterface
      *
      * @return Awaitable<T|Ts>
      */
-    #[\Override]
+    #[Override]
     public function catch(Closure $failure): Awaitable
     {
         return $this->then(
@@ -216,7 +217,7 @@ final readonly class Awaitable implements PromiseInterface
      *
      * @return Awaitable<T>
      */
-    #[\Override]
+    #[Override]
     public function always(Closure $always): Awaitable
     {
         $state = new State();

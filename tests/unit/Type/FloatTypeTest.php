@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Math;
 use Psl\Type;
 
 final class FloatTypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\float();
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield [123, 123.0];
@@ -47,7 +48,7 @@ final class FloatTypeTest extends TypeTestCase
         yield ['-33.e-1', -33.e-1];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [''];
@@ -67,7 +68,7 @@ final class FloatTypeTest extends TypeTestCase
         yield [''];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), 'float'];

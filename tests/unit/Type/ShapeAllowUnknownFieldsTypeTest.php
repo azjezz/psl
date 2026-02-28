@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Collection;
 use Psl\Iter;
 use Psl\Type;
@@ -13,7 +14,7 @@ use Psl\Type;
  */
 final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\shape([
@@ -30,7 +31,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
         ], true);
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield [
@@ -113,7 +114,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
         ];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [1.0];
@@ -140,7 +141,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
         ]];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [
@@ -162,7 +163,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
      * @param Collection\VectorInterface<mixed>|mixed $a
      * @param Collection\VectorInterface<mixed>|mixed $b
      */
-    #[\Override]
+    #[Override]
     protected static function equals(mixed $a, mixed $b): bool
     {
         $dict = Type\dict(Type\array_key(), Type\mixed());

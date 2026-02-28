@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Benchmark\Type;
 
 use ArrayIterator;
+use Override;
 use PhpBench\Attributes\Groups;
 use Psl\Dict;
 use Psl\Type;
@@ -19,7 +20,7 @@ final class DictTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
-    #[\Override]
+    #[Override]
     public function provideHappyPathCoercion(): array
     {
         $arraysAndIterables = [];
@@ -38,7 +39,7 @@ final class DictTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
-    #[\Override]
+    #[Override]
     public function provideHappyPathAssertion(): array
     {
         $arraysAndIterables = [];
@@ -53,7 +54,7 @@ final class DictTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
-    #[\Override]
+    #[Override]
     public function provideHappyPathMatches(): array
     {
         return $this->provideHappyPathAssertion();

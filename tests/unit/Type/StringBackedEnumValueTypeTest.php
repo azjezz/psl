@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Str;
 use Psl\Tests\Fixture\StringEnum;
 use Psl\Type;
@@ -15,13 +16,13 @@ use const STDIN;
  */
 final class StringBackedEnumValueTypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\backed_enum_value(StringEnum::class);
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield [1, StringEnum::Bar->value];
@@ -33,7 +34,7 @@ final class StringBackedEnumValueTypeTest extends TypeTestCase
     /**
      * @return iterable<array{0: mixed}>
      */
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [null];
@@ -46,7 +47,7 @@ final class StringBackedEnumValueTypeTest extends TypeTestCase
     /**
      * @return iterable<array{0: Type\Type<value-of<StringEnum>>, 1: string}>
      */
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [Type\backed_enum_value(StringEnum::class), Str\format('value-of<%s>', StringEnum::class)];

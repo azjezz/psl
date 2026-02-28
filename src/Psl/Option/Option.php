@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Option;
 
 use Closure;
+use Override;
 use Psl\Comparison;
 
 /**
@@ -368,7 +369,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     /**
      * @param Option<T> $other
      */
-    #[\Override]
+    #[Override]
     public function compare(mixed $other): Comparison\Order
     {
         $aIsNone = $this->isNone();
@@ -383,7 +384,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     /**
      * @param Option<T> $other
      */
-    #[\Override]
+    #[Override]
     public function equals(mixed $other): bool
     {
         return Comparison\equal($this, $other);

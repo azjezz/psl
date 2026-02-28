@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Collection;
 
 use Closure;
+use Override;
 
 /**
  * @template T of array-key
@@ -29,7 +30,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function at(int|string $k): int|string;
 
     /**
@@ -45,7 +46,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function contains(int|string $k): bool;
 
     /**
@@ -61,7 +62,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function get(int|string $k): null|int|string;
 
     /**
@@ -71,7 +72,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function toArray(): array;
 
     /**
@@ -81,7 +82,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function values(): MutableVectorInterface;
 
     /**
@@ -91,7 +92,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function keys(): MutableVectorInterface;
 
     /**
@@ -107,7 +108,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * @return MutableSetInterface<T> A MutableSetInterface containing the values after
      *                                a user-specified condition is applied.
      */
-    #[\Override]
+    #[Override]
     public function filter(Closure $fn): MutableSetInterface;
 
     /**
@@ -124,7 +125,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @return MutableSetInterface<T>
      */
-    #[\Override]
+    #[Override]
     public function filterWithKey(Closure $fn): MutableSetInterface;
 
     /**
@@ -142,7 +143,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * @return MutableSetInterface<Tu> A `MutableSetInterface` containing the values after a user-specified
      *                                 operation is applied.
      */
-    #[\Override]
+    #[Override]
     public function map(Closure $fn): MutableSetInterface;
 
     /**
@@ -161,7 +162,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @return MutableSetInterface<Tu>
      */
-    #[\Override]
+    #[Override]
     public function mapWithKey(Closure $fn): MutableSetInterface;
 
     /**
@@ -172,7 +173,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function first(): null|int|string;
 
     /**
@@ -185,7 +186,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function firstKey(): null|int|string;
 
     /**
@@ -196,7 +197,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function last(): null|int|string;
 
     /**
@@ -209,7 +210,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function lastKey(): null|int|string;
 
     /**
@@ -226,7 +227,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function linearSearch(mixed $search_value): null|int|string;
 
     /**
@@ -240,7 +241,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @throws Exception\RuntimeException Always throws an exception since `Set` can only contain array-key values.
      */
-    #[\Override]
+    #[Override]
     public function zip(array $elements): never;
 
     /**
@@ -260,7 +261,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function take(int $n): MutableSetInterface;
 
     /**
@@ -277,7 +278,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * @return MutableSetInterface<T> A `MutableSetInterface` that is a proper subset of the current
      *                                `MutableSetInterface` up until the callback returns `false`.
      */
-    #[\Override]
+    #[Override]
     public function takeWhile(Closure $fn): MutableSetInterface;
 
     /**
@@ -297,7 +298,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function drop(int $n): MutableSetInterface;
 
     /**
@@ -314,7 +315,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * @return MutableSetInterface<T> A `MutableSetInterface` that is a proper subset of the current
      *                                `MutableSetInterface` starting after the callback returns `true`.
      */
-    #[\Override]
+    #[Override]
     public function dropWhile(Closure $fn): MutableSetInterface;
 
     /**
@@ -338,7 +339,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function slice(int $start, null|int $length = null): MutableSetInterface;
 
     /**
@@ -355,7 +356,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function chunk(int $size): MutableVectorInterface;
 
     /**
@@ -367,7 +368,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @return MutableSetInterface<T> Returns itself.
      */
-    #[\Override]
+    #[Override]
     public function remove(int|string $k): MutableSetInterface;
 
     /**
@@ -375,7 +376,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @return MutableSetInterface<T>
      */
-    #[\Override]
+    #[Override]
     public function clear(): MutableSetInterface;
 
     /**

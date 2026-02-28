@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Type;
 
 use DateTimeImmutable;
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Str;
 use Psl\Type;
@@ -14,7 +15,7 @@ final class ConvertedTypeTest extends TypeTestCase
 {
     private const string DATE_FORMAT = 'Y-m-d H:i:s';
 
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\converted(
@@ -29,7 +30,7 @@ final class ConvertedTypeTest extends TypeTestCase
         );
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield ['2023-04-27 08:28:00', DateTimeImmutable::createFromFormat(self::DATE_FORMAT, '2023-04-27 08:28:00')];
@@ -39,7 +40,7 @@ final class ConvertedTypeTest extends TypeTestCase
         ];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [1];
@@ -55,7 +56,7 @@ final class ConvertedTypeTest extends TypeTestCase
      * @param DateTimeImmutable|mixed $a
      * @param DateTimeImmutable|mixed $b
      */
-    #[\Override]
+    #[Override]
     protected static function equals(mixed $a, mixed $b): bool
     {
         if (Type\instance_of(DateTimeImmutable::class)->matches($a)) {
@@ -69,7 +70,7 @@ final class ConvertedTypeTest extends TypeTestCase
         return parent::equals($a, $b);
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), DateTimeImmutable::class];

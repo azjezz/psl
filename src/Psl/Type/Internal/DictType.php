@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -38,7 +39,7 @@ final readonly class DictType extends Type\Type
      *
      * @return array<Tk, Tv>
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): array
     {
         if (!is_iterable($value)) {
@@ -94,7 +95,7 @@ final readonly class DictType extends Type\Type
      *
      * @psalm-assert array<Tk, Tv> $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): array
     {
         if (!is_array($value)) {
@@ -132,7 +133,7 @@ final readonly class DictType extends Type\Type
         return $result;
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return 'dict<' . $this->key_type->toString() . ', ' . $this->value_type->toString() . '>';

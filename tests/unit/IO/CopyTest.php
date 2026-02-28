@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Async;
 use Psl\DateTime\Duration;
 use Psl\IO;
+use Psl\Ref;
 use Psl\TCP;
 
 final class CopyTest extends TestCase
@@ -102,17 +103,17 @@ final class CopyTest extends TestCase
 
     public function testCopyRetriesOnEmptyNonEofRead(): void
     {
-        $state = new \Psl\Ref(0);
+        $state = new Ref(0);
         $reader = new class($state) implements IO\ReadHandleInterface {
             use IO\ReadHandleConvenienceMethodsTrait;
 
             private bool $eof = false;
 
             /**
-             * @param \Psl\Ref<int> $state
+             * @param Ref<int> $state
              */
             public function __construct(
-                private \Psl\Ref $state,
+                private Ref $state,
             ) {}
 
             public function read(null|int $max_bytes = null, null|Duration $timeout = null): string

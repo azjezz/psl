@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Channel\Internal;
 
+use Override;
 use Psl\Channel\ChannelInterface;
 use Psl\Channel\Exception;
 use Revolt\EventLoop\Suspension;
@@ -78,7 +79,7 @@ final class BoundedChannelState implements ChannelInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function getCapacity(): int
     {
         return $this->capacity;
@@ -87,7 +88,7 @@ final class BoundedChannelState implements ChannelInterface
     /**
      * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function close(): void
     {
         $this->closed = true;
@@ -108,7 +109,7 @@ final class BoundedChannelState implements ChannelInterface
     /**
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function isClosed(): bool
     {
         return $this->closed;
@@ -119,7 +120,7 @@ final class BoundedChannelState implements ChannelInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function count(): int
     {
         return $this->size;
@@ -128,7 +129,7 @@ final class BoundedChannelState implements ChannelInterface
     /**
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function isFull(): bool
     {
         return $this->capacity === $this->size;
@@ -137,7 +138,7 @@ final class BoundedChannelState implements ChannelInterface
     /**
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function isEmpty(): bool
     {
         return !$this->messages;
