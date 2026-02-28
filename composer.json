@@ -55,7 +55,6 @@
         }
     },
     "suggest": {
-        "ext-sockets": "Required for TCP/Unix Socket classes and socket options (setNoDelay, setKeepAlive, setTtl, buffer sizes, linger, multicast)",
         "php-standard-library/psalm-plugin": "Psalm integration",
         "php-standard-library/phpstan-extension": "PHPStan integration"
     }

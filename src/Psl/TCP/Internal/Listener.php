@@ -9,7 +9,6 @@ use Psl\Channel;
 use Psl\Network;
 use Psl\TCP;
 use Revolt\EventLoop;
-use Socket as PHPSocket;
 
 use function error_get_last;
 use function fclose;
@@ -26,7 +25,7 @@ final class Listener implements TCP\ListenerInterface
     private const int DEFAULT_IDLE_CONNECTIONS = 256;
 
     /**
-     * @var closed-resource|resource|PHPSocket|null $impl
+     * @var closed-resource|resource|null $impl
      */
     private mixed $impl;
 
@@ -38,7 +37,7 @@ final class Listener implements TCP\ListenerInterface
     private Channel\ReceiverInterface $receiver;
 
     /**
-     * @param PHPSocket|resource $impl
+     * @param resource $impl
      * @param int<1, max> $idleConnections
      */
     public function __construct(mixed $impl, int $idleConnections = self::DEFAULT_IDLE_CONNECTIONS)
@@ -52,7 +51,6 @@ final class Listener implements TCP\ListenerInterface
         [$receiver, $sender] = Channel\bounded($idleConnections);
 
         $this->receiver = $receiver;
-        // @mago-expect analysis:possibly-invalid-argument
         $this->watcher = EventLoop::onReadable(
             $impl,
             /**

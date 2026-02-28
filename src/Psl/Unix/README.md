@@ -88,7 +88,7 @@ A Unix domain socket listener. Extends `Network\ListenerInterface`.
 
 #### `Socket`
 
-A low-level Unix domain socket that can be configured before connecting or listening. Requires `ext-sockets`.
+A low-level Unix domain socket that can be configured before connecting or listening.
 
 **Factory:**
 - `static create(): self` — Create a new Unix domain socket.

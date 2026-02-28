@@ -13,7 +13,6 @@ use Psl\Network;
 use Psl\Network\Address;
 use Psl\Unix;
 use Revolt\EventLoop;
-use Socket as PHPSocket;
 
 use function is_resource;
 use function stream_socket_recvfrom;
@@ -35,7 +34,7 @@ final class Stream implements Unix\StreamInterface
     private ResourceHandle $handle;
 
     /**
-     * @param resource|PHPSocket $stream
+     * @param resource $stream
      */
     public function __construct(mixed $stream)
     {

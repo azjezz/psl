@@ -19,10 +19,6 @@ final class SocketTest extends TestCase
         if (PHP_OS_FAMILY === 'Windows') {
             static::markTestSkipped('Unix sockets are not supported on Windows.');
         }
-
-        if (!\extension_loaded('sockets')) {
-            static::markTestSkipped('ext-sockets is required for Unix\\Socket tests.');
-        }
     }
 
     public function testCreate(): void
@@ -209,5 +205,25 @@ final class SocketTest extends TestCase
         } finally {
             @unlink($path);
         }
+    }
+
+    public function testGetLocalAddressWithoutBindThrows(): void
+    {
+        $socket = Unix\Socket::create();
+
+        $this->expectException(Network\Exception\RuntimeException::class);
+        $this->expectExceptionMessage('Socket has not been bound');
+
+        $socket->getLocalAddress();
+    }
+
+    public function testListenWithoutBindThrows(): void
+    {
+        $socket = Unix\Socket::create();
+
+        $this->expectException(Network\Exception\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot listen without binding');
+
+        $socket->listen();
     }
 }

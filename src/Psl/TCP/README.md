@@ -72,16 +72,7 @@ Create a TCP listener bound to the given address. When `$port` is `0`, the OS as
 
 #### `StreamInterface`
 
-A connected TCP stream with TCP-specific socket options. Extends `Network\StreamInterface`.
-
-**Socket Options:**
-
-- `setNoDelay(bool $enabled): void` / `getNoDelay(): bool` — TCP_NODELAY (disable Nagle's algorithm).
-- `setKeepAlive(bool $enabled): void` / `getKeepAlive(): bool` — SO_KEEPALIVE (detect dead peers on idle connections).
-- `setTtl(int $ttl): void` / `getTtl(): int` — IP Time-To-Live.
-- `setSendBufferSize(int $size): void` / `getSendBufferSize(): int` — SO_SNDBUF (kernel send buffer size).
-- `setReceiveBufferSize(int $size): void` / `getReceiveBufferSize(): int` — SO_RCVBUF (kernel receive buffer size).
-- `setLinger(?Duration $duration): void` / `getLinger(): ?Duration` — SO_LINGER (close behavior). `null` = default (graceful FIN), `Duration::zero()` = RST on close, positive duration = wait then RST.
+A connected TCP stream. Extends `Network\StreamInterface`.
 
 Inherited from `Network\StreamInterface`:
 - `read()`, `write()`, `readAll()`, `writeAll()`, `readFixedSize()`
@@ -107,7 +98,7 @@ A TCP listener that accepts incoming connections. Extends `Network\ListenerInter
 
 #### `Socket`
 
-A low-level TCP socket that can be configured before connecting or listening. Create a socket, configure options, then consume it by calling `connect()` or `listen()`. Requires `ext-sockets`.
+A low-level TCP socket that can be configured before connecting or listening. Create a socket, configure options, then consume it by calling `connect()` or `listen()`.
 
 **Factories:**
 - `Socket::createV4(): self` — Create a new IPv4 TCP socket.
@@ -118,9 +109,6 @@ A low-level TCP socket that can be configured before connecting or listening. Cr
 - `setReuseAddress(bool) / getReuseAddress(): bool`
 - `setReusePort(bool) / getReusePort(): bool`
 - `setNoDelay(bool) / getNoDelay(): bool`
-- `setSendBufferSize(int) / getSendBufferSize(): int`
-- `setReceiveBufferSize(int) / getReceiveBufferSize(): int`
-- `setKeepAlive(bool) / getKeepAlive(): bool`
 - `getLocalAddress(): Address`
 
 **Consume (consumes the socket — cannot be reused):**
@@ -177,21 +165,6 @@ $socket->setNoDelay(true);
 $socket->bind('0.0.0.0', 8080);
 
 $listener = $socket->listen();
-```
-
-### Stream Options
-
-```php
-use Psl\TCP;
-use Psl\DateTime\Duration;
-
-$client = TCP\connect('example.com', 80);
-
-$client->setNoDelay(true);
-$client->setKeepAlive(true);
-$client->setSendBufferSize(65536);
-$client->setReceiveBufferSize(65536);
-$client->setLinger(Duration::seconds(5));
 ```
 
 ---

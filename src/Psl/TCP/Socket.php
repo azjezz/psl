@@ -6,69 +6,47 @@ namespace Psl\TCP;
 
 use Psl\DateTime\Duration;
 use Psl\Network;
-use Revolt\EventLoop;
-use Socket as PHPSocket;
-
-use function is_bool;
-use function socket_bind;
-use function socket_connect;
-use function socket_create;
-use function socket_export_stream;
-use function socket_get_option;
-use function socket_getsockname;
-use function socket_last_error;
-use function socket_listen;
-use function socket_set_option;
-use function socket_strerror;
-
-use const AF_INET;
-use const AF_INET6;
-use const SO_KEEPALIVE;
-use const SO_RCVBUF;
-use const SO_REUSEADDR;
-use const SO_REUSEPORT;
-use const SO_SNDBUF;
-use const SOCK_STREAM;
-use const SOL_SOCKET;
-use const SOL_TCP;
-use const TCP_NODELAY;
+use Psl\OS;
 
 /**
  * A TCP socket that can be configured before connecting or listening.
  *
- * Create a socket, configure options (reuse address, no delay, buffer sizes, etc.),
+ * Create a socket, configure options (reuse address, no delay, etc.),
  * then consume it by calling connect() or listen().
- *
- * Requires the `ext-sockets` extension.
  */
 final class Socket
 {
-    private PHPSocket $socket;
+    private bool $ipv6;
     private bool $consumed = false;
 
-    private function __construct(PHPSocket $socket)
+    private bool $reuseAddress = false;
+    private bool $reusePort = false;
+    private bool $noDelay = false;
+
+    /**
+     * @var null|array{non-empty-string, int<0, 65535>}
+     */
+    private null|array $bindAddress = null;
+
+    private function __construct(bool $ipv6)
     {
-        $this->socket = $socket;
+        $this->ipv6 = $ipv6;
     }
 
     /**
      * Create a new IPv4 TCP socket.
-     *
-     * @throws Network\Exception\RuntimeException If the sockets extension is not available or socket creation fails.
      */
     public static function createV4(): self
     {
-        return self::doCreate(AF_INET);
+        return new self(false);
     }
 
     /**
      * Create a new IPv6 TCP socket.
-     *
-     * @throws Network\Exception\RuntimeException If the sockets extension is not available or socket creation fails.
      */
     public static function createV6(): self
     {
-        return self::doCreate(AF_INET6);
+        return new self(true);
     }
 
     /**
@@ -76,18 +54,12 @@ final class Socket
      *
      * @param non-empty-string $host
      * @param int<0, 65535> $port
-     *
-     * @throws Network\Exception\RuntimeException If bind fails.
      */
     public function bind(string $host, int $port = 0): void
     {
         $this->ensureNotConsumed();
 
-        if (!@socket_bind($this->socket, $host, $port)) {
-            throw new Network\Exception\RuntimeException(
-                'Failed to bind socket: ' . socket_strerror(socket_last_error($this->socket)),
-            );
-        }
+        $this->bindAddress = [$host, $port];
     }
 
     /**
@@ -106,20 +78,11 @@ final class Socket
         $this->ensureNotConsumed();
         $this->consumed = true;
 
-        if (!@socket_connect($this->socket, $host, $port)) {
-            $errno = socket_last_error($this->socket);
-            // EINPROGRESS — non-blocking connect, need to wait
-            if ($errno === 115 || $errno === 36 || $errno === 10_035) {
-                $stream = $this->exportStream();
-                $this->waitForConnect($stream, $timeout);
+        $context = $this->buildContext();
 
-                return new Internal\Stream($stream);
-            }
+        $stream = Network\Internal\socket_connect("tcp://{$host}:{$port}", $context, $timeout);
 
-            throw new Network\Exception\RuntimeException('Failed to connect socket: ' . socket_strerror($errno));
-        }
-
-        return new Internal\Stream($this->exportStream());
+        return new Internal\Stream($stream);
     }
 
     /**
@@ -137,194 +100,109 @@ final class Socket
         $this->ensureNotConsumed();
         $this->consumed = true;
 
-        if (!@socket_listen($this->socket, $backlog)) {
+        if ($this->bindAddress === null) {
             throw new Network\Exception\RuntimeException(
-                'Failed to listen on socket: ' . socket_strerror(socket_last_error($this->socket)),
+                'Cannot listen without binding to an address first. Call bind() before listen().',
             );
         }
 
-        return new Internal\Listener($this->exportStream(), $idle_connections);
+        [$host, $port] = $this->bindAddress;
+
+        $context = $this->buildContext();
+        $context['socket']['backlog'] = $backlog;
+
+        $stream = Network\Internal\server_listen("tcp://{$host}:{$port}", $context);
+
+        return new Internal\Listener($stream, $idle_connections);
     }
 
     /**
      * Get the local address the socket is bound to.
      *
-     * @throws Network\Exception\RuntimeException If unable to retrieve local address.
+     * @throws Network\Exception\RuntimeException If no address has been bound.
      */
     public function getLocalAddress(): Network\Address
     {
         $this->ensureNotConsumed();
 
-        $address = '';
-        $port = 0;
-        if (!@socket_getsockname($this->socket, $address, $port)) {
-            throw new Network\Exception\RuntimeException(
-                'Failed to get socket name: ' . socket_strerror(socket_last_error($this->socket)),
-            );
+        if ($this->bindAddress === null) {
+            throw new Network\Exception\RuntimeException('Socket has not been bound to an address. Call bind() first.');
         }
 
-        return Network\Address::tcp($address !== '' ? $address : '0.0.0.0', $port);
+        [$host, $port] = $this->bindAddress;
+
+        return Network\Address::tcp($host, $port);
     }
 
     public function setReuseAddress(bool $enabled): void
     {
-        $this->setOption(SOL_SOCKET, SO_REUSEADDR, $enabled);
+        $this->ensureNotConsumed();
+
+        $this->reuseAddress = $enabled;
     }
 
     public function getReuseAddress(): bool
     {
-        return (bool) $this->getOption(SOL_SOCKET, SO_REUSEADDR);
+        $this->ensureNotConsumed();
+
+        return $this->reuseAddress;
     }
 
     public function setReusePort(bool $enabled): void
     {
-        $this->setOption(SOL_SOCKET, SO_REUSEPORT, $enabled);
+        $this->ensureNotConsumed();
+
+        $this->reusePort = $enabled;
     }
 
     public function getReusePort(): bool
     {
-        return (bool) $this->getOption(SOL_SOCKET, SO_REUSEPORT);
+        $this->ensureNotConsumed();
+
+        return $this->reusePort;
     }
 
     public function setNoDelay(bool $enabled): void
     {
-        $this->setOption(SOL_TCP, TCP_NODELAY, $enabled);
+        $this->ensureNotConsumed();
+
+        $this->noDelay = $enabled;
     }
 
     public function getNoDelay(): bool
     {
-        return (bool) $this->getOption(SOL_TCP, TCP_NODELAY);
-    }
-
-    public function setSendBufferSize(int $size): void
-    {
-        $this->setOption(SOL_SOCKET, SO_SNDBUF, $size);
-    }
-
-    public function getSendBufferSize(): int
-    {
-        return $this->getOption(SOL_SOCKET, SO_SNDBUF);
-    }
-
-    public function setReceiveBufferSize(int $size): void
-    {
-        $this->setOption(SOL_SOCKET, SO_RCVBUF, $size);
-    }
-
-    public function getReceiveBufferSize(): int
-    {
-        return $this->getOption(SOL_SOCKET, SO_RCVBUF);
-    }
-
-    public function setKeepAlive(bool $enabled): void
-    {
-        $this->setOption(SOL_SOCKET, SO_KEEPALIVE, $enabled);
-    }
-
-    public function getKeepAlive(): bool
-    {
-        return (bool) $this->getOption(SOL_SOCKET, SO_KEEPALIVE);
-    }
-
-    private static function doCreate(int $domain): self
-    {
-        $socket = @socket_create($domain, SOCK_STREAM, SOL_TCP);
-        if ($socket === false) {
-            throw new Network\Exception\RuntimeException(
-                'Failed to create TCP socket. Ensure ext-sockets is installed.',
-            );
-        }
-
-        return new self($socket);
-    }
-
-    private function setOption(int $level, int $option, bool|int $value): void
-    {
         $this->ensureNotConsumed();
 
-        $value = match (is_bool($value)) {
-            true => $value ? 1 : 0,
-            false => $value,
-        };
-
-        if (!@socket_set_option($this->socket, $level, $option, $value)) {
-            throw new Network\Exception\RuntimeException(
-                'Failed to set socket option: ' . socket_strerror(socket_last_error($this->socket)),
-            );
-        }
+        return $this->noDelay;
     }
 
-    private function getOption(int $level, int $option): int
+    /**
+     * @return array{socket: array{tcp_nodelay: bool, so_reuseaddr: bool, so_reuseport: bool, ipv6_v6only?: bool, bindto?: string}}
+     */
+    private function buildContext(): array
     {
-        $this->ensureNotConsumed();
+        $socket = [
+            'tcp_nodelay' => $this->noDelay,
+            'so_reuseaddr' => OS\is_windows() ? $this->reusePort : $this->reuseAddress,
+            'so_reuseport' => $this->reusePort,
+        ];
 
-        $value = @socket_get_option($this->socket, $level, $option);
-        if ($value === false) {
-            throw new Network\Exception\RuntimeException(
-                'Failed to get socket option: ' . socket_strerror(socket_last_error($this->socket)),
-            );
+        if ($this->ipv6) {
+            $socket['ipv6_v6only'] = true;
         }
 
-        return (int) $value;
+        if ($this->bindAddress !== null) {
+            [$host, $port] = $this->bindAddress;
+            $socket['bindto'] = "{$host}:{$port}";
+        }
+
+        return ['socket' => $socket];
     }
 
     private function ensureNotConsumed(): void
     {
         if ($this->consumed) {
             throw new Network\Exception\RuntimeException('Socket has already been consumed by connect() or listen().');
-        }
-    }
-
-    /**
-     * Export the underlying socket as a stream resource.
-     *
-     * @return resource
-     */
-    private function exportStream(): mixed
-    {
-        $stream = @socket_export_stream($this->socket);
-        if ($stream === false) {
-            throw new Network\Exception\RuntimeException('Failed to export socket as stream.');
-        }
-
-        /** @var resource */
-        return $stream;
-    }
-
-    /**
-     * Wait for a non-blocking connect to complete.
-     *
-     * @param resource $stream
-     */
-    private function waitForConnect(mixed $stream, null|Duration $timeout): void
-    {
-        $suspension = EventLoop::getSuspension();
-        $timeout_watcher = null;
-        $write_watcher = EventLoop::onWritable($stream, static function (string $watcher) use ($suspension): void {
-            EventLoop::cancel($watcher);
-            $suspension->resume(false);
-        });
-
-        if ($timeout !== null) {
-            $timeout_watcher = EventLoop::delay($timeout->getTotalSeconds(), static function () use (
-                $suspension,
-                $write_watcher,
-            ): void {
-                EventLoop::cancel($write_watcher);
-                $suspension->resume(true);
-            });
-        }
-
-        /** @var bool $timed_out */
-        $timed_out = $suspension->suspend();
-        if ($timeout_watcher !== null) {
-            EventLoop::cancel($timeout_watcher);
-        }
-
-        EventLoop::cancel($write_watcher);
-
-        if ($timed_out) {
-            throw new Network\Exception\TimeoutException('Connection timed out.');
         }
     }
 }

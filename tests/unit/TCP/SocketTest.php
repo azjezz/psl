@@ -12,13 +12,6 @@ use Psl\TCP;
 
 final class SocketTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        if (!\extension_loaded('sockets')) {
-            static::markTestSkipped('ext-sockets is required for TCP\\Socket tests.');
-        }
-    }
-
     public function testCreateV4(): void
     {
         $socket = TCP\Socket::createV4();
@@ -40,8 +33,7 @@ final class SocketTest extends TestCase
 
         $address = $socket->getLocalAddress();
         static::assertSame('127.0.0.1', $address->host);
-        static::assertNotNull($address->port);
-        static::assertGreaterThan(0, $address->port);
+        static::assertSame(0, $address->port);
     }
 
     public function testSetAndGetReuseAddress(): void
@@ -64,34 +56,6 @@ final class SocketTest extends TestCase
 
         $socket->setNoDelay(false);
         static::assertFalse($socket->getNoDelay());
-    }
-
-    public function testSetAndGetSendBufferSize(): void
-    {
-        $socket = TCP\Socket::createV4();
-
-        $socket->setSendBufferSize(32_768);
-        // Kernel may double the value
-        static::assertGreaterThanOrEqual(32_768, $socket->getSendBufferSize());
-    }
-
-    public function testSetAndGetReceiveBufferSize(): void
-    {
-        $socket = TCP\Socket::createV4();
-
-        $socket->setReceiveBufferSize(32_768);
-        static::assertGreaterThanOrEqual(32_768, $socket->getReceiveBufferSize());
-    }
-
-    public function testSetAndGetKeepAlive(): void
-    {
-        $socket = TCP\Socket::createV4();
-
-        $socket->setKeepAlive(true);
-        static::assertTrue($socket->getKeepAlive());
-
-        $socket->setKeepAlive(false);
-        static::assertFalse($socket->getKeepAlive());
     }
 
     public function testConnectAndCommunicate(): void
@@ -126,8 +90,8 @@ final class SocketTest extends TestCase
         $socket = TCP\Socket::createV4();
         $socket->setReuseAddress(true);
         $socket->bind('127.0.0.1', 0);
-        $address = $socket->getLocalAddress();
         $listener = $socket->listen();
+        $address = $listener->getLocalAddress();
 
         Async\concurrently([
             'server' => static function () use ($listener): void {
@@ -179,7 +143,7 @@ final class SocketTest extends TestCase
             },
             'client' => static function () use ($port): void {
                 $socket = TCP\Socket::createV4();
-                // Connect with a generous timeout — should succeed via waitForConnect
+                // Connect with a generous timeout — should succeed
                 $stream = $socket->connect('127.0.0.1', $port, Duration::seconds(5));
 
                 $stream->writeAll('with-timeout');
@@ -218,5 +182,25 @@ final class SocketTest extends TestCase
         $socket->getLocalAddress();
 
         $listener->close();
+    }
+
+    public function testGetLocalAddressWithoutBindThrows(): void
+    {
+        $socket = TCP\Socket::createV4();
+
+        $this->expectException(Network\Exception\RuntimeException::class);
+        $this->expectExceptionMessage('Socket has not been bound');
+
+        $socket->getLocalAddress();
+    }
+
+    public function testListenWithoutBindThrows(): void
+    {
+        $socket = TCP\Socket::createV4();
+
+        $this->expectException(Network\Exception\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot listen without binding');
+
+        $socket->listen();
     }
 }
