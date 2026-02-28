@@ -19,6 +19,7 @@ final readonly class ClientConfig implements DefaultInterface
     /**
      * @param ?non-empty-string $peerName SNI hostname for the TLS handshake. When null, the connection host is used.
      * @param bool $peerVerification Whether to verify the peer certificate.
+     * @param bool $peerNameVerification Whether to verify the peer name matches the certificate. When null, follows $peerVerification.
      * @param bool $allowSelfSigned Whether to allow self-signed certificates.
      * @param ?non-empty-string $certificateAuthority Path to a CA file for peer verification.
      * @param ?non-empty-string $certificateAuthorityPath Path to a directory of CA files for peer verification.
@@ -29,6 +30,9 @@ final readonly class ClientConfig implements DefaultInterface
      * @param int<0, 5> $securityLevel OpenSSL security level.
      * @param ?list<non-empty-string> $alpnProtocols ALPN protocol list (e.g. ['h2', 'http/1.1']).
      * @param bool $sessionTickets Whether to enable TLS session tickets for session resumption.
+     * @param ?list<non-empty-string> $peerFingerprints SHA-256 hex fingerprints for certificate pinning. Any match is accepted.
+     * @param bool $sniEnabled Whether to enable Server Name Indication (SNI).
+     * @param int<1, 100> $verificationDepth Maximum certificate chain verification depth.
      *
      * @psalm-mutation-free
      *
@@ -37,6 +41,7 @@ final readonly class ClientConfig implements DefaultInterface
     public function __construct(
         public null|string $peerName = null,
         public bool $peerVerification = true,
+        public null|bool $peerNameVerification = null,
         public bool $allowSelfSigned = false,
         public null|string $certificateAuthority = null,
         public null|string $certificateAuthorityPath = null,
@@ -48,6 +53,10 @@ final readonly class ClientConfig implements DefaultInterface
         /** @var null|list<non-empty-string> */
         public null|array $alpnProtocols = null,
         public bool $sessionTickets = true,
+        /** @var null|list<non-empty-string> */
+        public null|array $peerFingerprints = null,
+        public bool $sniEnabled = true,
+        public int $verificationDepth = 10,
     ) {}
 
     /**
@@ -69,6 +78,7 @@ final readonly class ClientConfig implements DefaultInterface
         return new self(
             $peer_name,
             $this->peerVerification,
+            $this->peerNameVerification,
             $this->allowSelfSigned,
             $this->certificateAuthority,
             $this->certificateAuthorityPath,
@@ -79,6 +89,9 @@ final readonly class ClientConfig implements DefaultInterface
             $this->securityLevel,
             $this->alpnProtocols,
             $this->sessionTickets,
+            $this->peerFingerprints,
+            $this->sniEnabled,
+            $this->verificationDepth,
         );
     }
 
@@ -90,6 +103,7 @@ final readonly class ClientConfig implements DefaultInterface
         return new self(
             $this->peerName,
             $enabled,
+            $this->peerNameVerification,
             $this->allowSelfSigned,
             $this->certificateAuthority,
             $this->certificateAuthorityPath,
@@ -100,6 +114,38 @@ final readonly class ClientConfig implements DefaultInterface
             $this->securityLevel,
             $this->alpnProtocols,
             $this->sessionTickets,
+            $this->peerFingerprints,
+            $this->sniEnabled,
+            $this->verificationDepth,
+        );
+    }
+
+    /**
+     * Whether to verify the peer name matches the certificate.
+     *
+     * When null, follows the value of $peerVerification.
+     *
+     * @psalm-mutation-free
+     */
+    public function withPeerNameVerification(null|bool $enabled): self
+    {
+        return new self(
+            $this->peerName,
+            $this->peerVerification,
+            $enabled,
+            $this->allowSelfSigned,
+            $this->certificateAuthority,
+            $this->certificateAuthorityPath,
+            $this->certificate,
+            $this->minimumVersion,
+            $this->maximumVersion,
+            $this->ciphers,
+            $this->securityLevel,
+            $this->alpnProtocols,
+            $this->sessionTickets,
+            $this->peerFingerprints,
+            $this->sniEnabled,
+            $this->verificationDepth,
         );
     }
 
@@ -111,6 +157,7 @@ final readonly class ClientConfig implements DefaultInterface
         return new self(
             $this->peerName,
             $this->peerVerification,
+            $this->peerNameVerification,
             $enabled,
             $this->certificateAuthority,
             $this->certificateAuthorityPath,
@@ -121,6 +168,9 @@ final readonly class ClientConfig implements DefaultInterface
             $this->securityLevel,
             $this->alpnProtocols,
             $this->sessionTickets,
+            $this->peerFingerprints,
+            $this->sniEnabled,
+            $this->verificationDepth,
         );
     }
 
@@ -134,6 +184,7 @@ final readonly class ClientConfig implements DefaultInterface
         return new self(
             $this->peerName,
             $this->peerVerification,
+            $this->peerNameVerification,
             $this->allowSelfSigned,
             $certificate_authority,
             $this->certificateAuthorityPath,
@@ -144,6 +195,9 @@ final readonly class ClientConfig implements DefaultInterface
             $this->securityLevel,
             $this->alpnProtocols,
             $this->sessionTickets,
+            $this->peerFingerprints,
+            $this->sniEnabled,
+            $this->verificationDepth,
         );
     }
 
@@ -157,6 +211,7 @@ final readonly class ClientConfig implements DefaultInterface
         return new self(
             $this->peerName,
             $this->peerVerification,
+            $this->peerNameVerification,
             $this->allowSelfSigned,
             $this->certificateAuthority,
             $certificate_authority_path,
@@ -167,6 +222,9 @@ final readonly class ClientConfig implements DefaultInterface
             $this->securityLevel,
             $this->alpnProtocols,
             $this->sessionTickets,
+            $this->peerFingerprints,
+            $this->sniEnabled,
+            $this->verificationDepth,
         );
     }
 
@@ -178,6 +236,7 @@ final readonly class ClientConfig implements DefaultInterface
         return new self(
             $this->peerName,
             $this->peerVerification,
+            $this->peerNameVerification,
             $this->allowSelfSigned,
             $this->certificateAuthority,
             $this->certificateAuthorityPath,
@@ -188,6 +247,9 @@ final readonly class ClientConfig implements DefaultInterface
             $this->securityLevel,
             $this->alpnProtocols,
             $this->sessionTickets,
+            $this->peerFingerprints,
+            $this->sniEnabled,
+            $this->verificationDepth,
         );
     }
 
@@ -199,6 +261,7 @@ final readonly class ClientConfig implements DefaultInterface
         return new self(
             $this->peerName,
             $this->peerVerification,
+            $this->peerNameVerification,
             $this->allowSelfSigned,
             $this->certificateAuthority,
             $this->certificateAuthorityPath,
@@ -209,6 +272,9 @@ final readonly class ClientConfig implements DefaultInterface
             $this->securityLevel,
             $this->alpnProtocols,
             $this->sessionTickets,
+            $this->peerFingerprints,
+            $this->sniEnabled,
+            $this->verificationDepth,
         );
     }
 
@@ -220,6 +286,7 @@ final readonly class ClientConfig implements DefaultInterface
         return new self(
             $this->peerName,
             $this->peerVerification,
+            $this->peerNameVerification,
             $this->allowSelfSigned,
             $this->certificateAuthority,
             $this->certificateAuthorityPath,
@@ -230,6 +297,9 @@ final readonly class ClientConfig implements DefaultInterface
             $this->securityLevel,
             $this->alpnProtocols,
             $this->sessionTickets,
+            $this->peerFingerprints,
+            $this->sniEnabled,
+            $this->verificationDepth,
         );
     }
 
@@ -243,6 +313,7 @@ final readonly class ClientConfig implements DefaultInterface
         return new self(
             $this->peerName,
             $this->peerVerification,
+            $this->peerNameVerification,
             $this->allowSelfSigned,
             $this->certificateAuthority,
             $this->certificateAuthorityPath,
@@ -253,6 +324,9 @@ final readonly class ClientConfig implements DefaultInterface
             $this->securityLevel,
             $this->alpnProtocols,
             $this->sessionTickets,
+            $this->peerFingerprints,
+            $this->sniEnabled,
+            $this->verificationDepth,
         );
     }
 
@@ -266,6 +340,7 @@ final readonly class ClientConfig implements DefaultInterface
         return new self(
             $this->peerName,
             $this->peerVerification,
+            $this->peerNameVerification,
             $this->allowSelfSigned,
             $this->certificateAuthority,
             $this->certificateAuthorityPath,
@@ -276,6 +351,9 @@ final readonly class ClientConfig implements DefaultInterface
             $security_level,
             $this->alpnProtocols,
             $this->sessionTickets,
+            $this->peerFingerprints,
+            $this->sniEnabled,
+            $this->verificationDepth,
         );
     }
 
@@ -289,6 +367,7 @@ final readonly class ClientConfig implements DefaultInterface
         return new self(
             $this->peerName,
             $this->peerVerification,
+            $this->peerNameVerification,
             $this->allowSelfSigned,
             $this->certificateAuthority,
             $this->certificateAuthorityPath,
@@ -299,6 +378,9 @@ final readonly class ClientConfig implements DefaultInterface
             $this->securityLevel,
             $alpn_protocols,
             $this->sessionTickets,
+            $this->peerFingerprints,
+            $this->sniEnabled,
+            $this->verificationDepth,
         );
     }
 
@@ -310,6 +392,7 @@ final readonly class ClientConfig implements DefaultInterface
         return new self(
             $this->peerName,
             $this->peerVerification,
+            $this->peerNameVerification,
             $this->allowSelfSigned,
             $this->certificateAuthority,
             $this->certificateAuthorityPath,
@@ -320,6 +403,90 @@ final readonly class ClientConfig implements DefaultInterface
             $this->securityLevel,
             $this->alpnProtocols,
             $enabled,
+            $this->peerFingerprints,
+            $this->sniEnabled,
+            $this->verificationDepth,
+        );
+    }
+
+    /**
+     * Set SHA-256 hex fingerprints for certificate pinning. Any match is accepted.
+     *
+     * @param ?list<non-empty-string> $fingerprints SHA-256 hex fingerprints.
+     *
+     * @psalm-mutation-free
+     */
+    public function withPeerFingerprints(null|array $fingerprints): self
+    {
+        return new self(
+            $this->peerName,
+            $this->peerVerification,
+            $this->peerNameVerification,
+            $this->allowSelfSigned,
+            $this->certificateAuthority,
+            $this->certificateAuthorityPath,
+            $this->certificate,
+            $this->minimumVersion,
+            $this->maximumVersion,
+            $this->ciphers,
+            $this->securityLevel,
+            $this->alpnProtocols,
+            $this->sessionTickets,
+            $fingerprints,
+            $this->sniEnabled,
+            $this->verificationDepth,
+        );
+    }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function withSniEnabled(bool $enabled = true): self
+    {
+        return new self(
+            $this->peerName,
+            $this->peerVerification,
+            $this->peerNameVerification,
+            $this->allowSelfSigned,
+            $this->certificateAuthority,
+            $this->certificateAuthorityPath,
+            $this->certificate,
+            $this->minimumVersion,
+            $this->maximumVersion,
+            $this->ciphers,
+            $this->securityLevel,
+            $this->alpnProtocols,
+            $this->sessionTickets,
+            $this->peerFingerprints,
+            $enabled,
+            $this->verificationDepth,
+        );
+    }
+
+    /**
+     * @param int<1, 100> $depth Maximum certificate chain verification depth.
+     *
+     * @psalm-mutation-free
+     */
+    public function withVerificationDepth(int $depth): self
+    {
+        return new self(
+            $this->peerName,
+            $this->peerVerification,
+            $this->peerNameVerification,
+            $this->allowSelfSigned,
+            $this->certificateAuthority,
+            $this->certificateAuthorityPath,
+            $this->certificate,
+            $this->minimumVersion,
+            $this->maximumVersion,
+            $this->ciphers,
+            $this->securityLevel,
+            $this->alpnProtocols,
+            $this->sessionTickets,
+            $this->peerFingerprints,
+            $this->sniEnabled,
+            $depth,
         );
     }
 }

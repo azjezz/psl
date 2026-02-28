@@ -2,17 +2,15 @@
 
 The `TLS` component provides a transport-agnostic API for TLS encryption. It operates on `Network\StreamInterface`, meaning it can upgrade any connected stream (TCP, Unix, or other) to a TLS-encrypted stream.
 
-It supports TLS 1.0–1.3, ALPN protocol negotiation, SNI-based certificate selection, mutual TLS authentication, session tickets, and lazy handshake inspection.
+It supports TLS 1.0–1.3, ALPN protocol negotiation, SNI-based certificate selection, mutual TLS authentication, session tickets, certificate pinning, and lazy handshake inspection.
 
 ## Usage
 
 ```php
-use Psl\TCP;
 use Psl\TLS;
 
-// Client: connect to an HTTPS server
-$stream = TCP\connect('example.com', 443);
-$tls = TLS\Connector::default()->connect($stream, 'example.com');
+// One-step TLS connection
+$tls = TLS\connect('example.com', 443);
 
 $tls->writeAll("GET / HTTP/1.0\r\nHost: example.com\r\n\r\n");
 $tls->shutdown();
@@ -21,6 +19,37 @@ $tls->close();
 ```
 
 ## API
+
+### Functions
+
+---
+
+#### `connect()`
+
+```php
+function connect(
+    string $host,
+    int $port,
+    ?ClientConfig $config = null,
+    ?Duration $timeout = null,
+): StreamInterface
+```
+
+Connect to a host over TCP and perform a TLS handshake in one step. Combines `TCP\connect()` and `Connector::connect()`.
+
+```php
+// Simple
+$tls = TLS\connect('example.com', 443);
+
+// With custom config
+$config = TLS\ClientConfig::default()
+    ->withAlpnProtocols(['h2', 'http/1.1'])
+    ->withMinimumVersion(TLS\Version::Tls12);
+
+$tls = TLS\connect('example.com', 443, $config);
+```
+
+---
 
 ### Interfaces
 
@@ -49,6 +78,7 @@ Performs TLS client handshakes on existing streams. Implements `DefaultInterface
 
 ```php
 // With default config
+$stream = TCP\connect('example.com', 443);
 $tls = TLS\Connector::default()->connect($stream, 'example.com');
 
 // With custom config
@@ -125,6 +155,7 @@ Immutable TLS configuration for client connections. Implements `DefaultInterface
 **Properties:**
 - `?string $peerName` — SNI hostname for the handshake.
 - `bool $peerVerification` — Whether to verify the peer certificate (default: `true`).
+- `?bool $peerNameVerification` — Whether to verify the peer name matches the certificate. When null, follows `$peerVerification`.
 - `bool $allowSelfSigned` — Whether to allow self-signed certificates (default: `false`).
 - `?string $certificateAuthority` — Path to a CA file for peer verification.
 - `?string $certificateAuthorityPath` — Path to a CA directory.
@@ -135,11 +166,15 @@ Immutable TLS configuration for client connections. Implements `DefaultInterface
 - `int $securityLevel` — OpenSSL security level (0–5, default: `2`).
 - `?list<string> $alpnProtocols` — ALPN protocol list (e.g. `['h2', 'http/1.1']`).
 - `bool $sessionTickets` — Enable TLS session tickets (default: `true`).
+- `?list<string> $peerFingerprints` — SHA-256 hex fingerprints for certificate pinning. Any match is accepted.
+- `bool $sniEnabled` — Enable Server Name Indication (default: `true`).
+- `int $verificationDepth` — Maximum certificate chain verification depth (default: `10`).
 
 **Methods:**
 - `static default(): static`
 - `withPeerName(?string): self`
 - `withPeerVerification(bool): self`
+- `withPeerNameVerification(?bool): self`
 - `withAllowSelfSigned(bool): self`
 - `withCertificateAuthority(?string): self`
 - `withCertificateAuthorityPath(?string): self`
@@ -150,6 +185,9 @@ Immutable TLS configuration for client connections. Implements `DefaultInterface
 - `withSecurityLevel(int): self`
 - `withAlpnProtocols(?list<string>): self`
 - `withSessionTickets(bool): self`
+- `withPeerFingerprints(?list<string>): self`
+- `withSniEnabled(bool): self`
+- `withVerificationDepth(int): self`
 
 ---
 
@@ -255,14 +293,12 @@ TLS protocol versions. Implements `DefaultInterface`.
 
 ## Examples
 
-### HTTPS Client
+### HTTPS Client (One Step)
 
 ```php
-use Psl\TCP;
 use Psl\TLS;
 
-$stream = TCP\connect('example.com', 443);
-$tls = TLS\Connector::default()->connect($stream, 'example.com');
+$tls = TLS\connect('example.com', 443);
 
 $tls->writeAll("GET / HTTP/1.0\r\nHost: example.com\r\n\r\n");
 $tls->shutdown();
@@ -273,18 +309,38 @@ $tls->close();
 ### HTTPS Client with ALPN
 
 ```php
+use Psl\TLS;
+
+$config = TLS\ClientConfig::default()
+    ->withAlpnProtocols(['h2', 'http/1.1']);
+
+$tls = TLS\connect('example.com', 443, $config);
+
+$protocol = $tls->getState()->alpnProtocol; // 'h2'
+```
+
+### Certificate Pinning
+
+```php
+use Psl\TLS;
+
+$config = TLS\ClientConfig::default()
+    ->withPeerFingerprints([
+        'a1b2c3d4...current-cert-fingerprint...',
+        'e5f6a7b8...next-cert-fingerprint...',
+    ]);
+
+$tls = TLS\connect('api.example.com', 443, $config);
+```
+
+### Two-Step Connection (Upgrade Existing Stream)
+
+```php
 use Psl\TCP;
 use Psl\TLS;
 
-$connector = new TLS\Connector(
-    TLS\ClientConfig::default()
-        ->withAlpnProtocols(['h2', 'http/1.1']),
-);
-
 $stream = TCP\connect('example.com', 443);
-$tls = $connector->connect($stream, 'example.com');
-
-$protocol = $tls->getState()->alpnProtocol; // 'h2'
+$tls = TLS\Connector::default()->connect($stream, 'example.com');
 ```
 
 ### TLS Server
@@ -372,11 +428,9 @@ $tls = $acceptor->accept($stream);
 ### Inspecting Connection State
 
 ```php
-use Psl\TCP;
 use Psl\TLS;
 
-$stream = TCP\connect('example.com', 443);
-$tls = TLS\Connector::default()->connect($stream, 'example.com');
+$tls = TLS\connect('example.com', 443);
 
 $state = $tls->getState();
 echo "TLS {$state->version->name}\n";         // "TLS Tls13"

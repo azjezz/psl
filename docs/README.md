@@ -7,12 +7,14 @@
 # Components
 
  * [Psl\Async](../src/Psl/Async/README.md)
+ * [Psl\CIDR](../src/Psl/CIDR/README.md)
  * [Psl\Default](../src/Psl/Default/README.md)
  * [Psl\Graph](../src/Psl/Graph/README.md)
  * [Psl\Interoperability](../src/Psl/Interoperability/README.md)
  * [Psl\Network](../src/Psl/Network/README.md)
  * [Psl\Process](../src/Psl/Process/README.md)
  * [Psl\Range](../src/Psl/Range/README.md)
+ * [Psl\Socks](../src/Psl/Socks/README.md)
  * [Psl\TCP](../src/Psl/TCP/README.md)
  * [Psl\TLS](../src/Psl/TLS/README.md)
  * [Psl\Tree](../src/Psl/Tree/README.md)

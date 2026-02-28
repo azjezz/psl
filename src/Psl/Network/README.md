@@ -6,6 +6,20 @@ It provides the abstraction layer that protocol-specific components build on top
 
 ## API
 
+### Functions
+
+---
+
+#### `socket_pair()`
+
+```php
+function socket_pair(): array{Network\StreamInterface, Network\StreamInterface}
+```
+
+Create a pair of connected bidirectional stream sockets. Data written to one end can be read from the other. Useful for inter-process communication and testing.
+
+---
+
 ### Interfaces
 
 ---
@@ -52,6 +66,17 @@ Interface for accepting incoming connections. Extends `SocketInterface`.
 
 ---
 
+#### `SocketPoolInterface`
+
+A connection pool for reusing idle TCP connections.
+
+- `checkout(string $host, int $port, ?Duration $timeout = null): StreamInterface` — Get a connection, reusing an idle one if available.
+- `checkin(StreamInterface $stream): void` — Return a connection to the pool for reuse.
+- `clear(StreamInterface $stream): void` — Remove a connection from the pool permanently and close it.
+- `close(): void` — Close all idle pooled connections.
+
+---
+
 ### Classes
 
 ---
@@ -73,6 +98,26 @@ Immutable value object representing a network address.
 
 **Methods:**
 - `toString(): string` — Returns the address as a URI string (e.g. `tcp://127.0.0.1:8080`).
+
+---
+
+#### `SocketPool`
+
+A connection pool that reuses idle TCP connections. When a connection is checked in, an idle timer starts. If the connection is not checked out again before the timer fires, it is closed.
+
+```php
+$pool = new Network\SocketPool();
+$stream = $pool->checkout('example.com', 80);
+// ... use stream ...
+$pool->checkin($stream);
+
+// Later — reuses the same connection
+$stream = $pool->checkout('example.com', 80);
+```
+
+**Constructor:**
+- `TCP\ConnectorInterface $connector = new TCP\Connector()` — Connector for creating new connections.
+- `?Duration $idleTimeout = null` — How long idle connections stay alive (default: 10s).
 
 ---
 

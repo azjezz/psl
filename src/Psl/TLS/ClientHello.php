@@ -16,16 +16,16 @@ use function stream_context_set_options;
  * Obtained from {@see LazyAcceptor::accept()}, this class lets you inspect the client's
  * SNI hostname and ALPN protocols before choosing a {@see ServerConfig} for the handshake.
  */
-final class ClientHello
+final readonly class ClientHello
 {
     /**
      * @param ?non-empty-string $serverName
      * @param ?list<non-empty-string> $alpnProtocols
      */
     public function __construct(
-        private readonly Network\StreamInterface $stream,
-        private readonly null|string $serverName,
-        private readonly null|array $alpnProtocols,
+        private Network\StreamInterface $stream,
+        private null|string $serverName,
+        private null|array $alpnProtocols,
     ) {}
 
     /**

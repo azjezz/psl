@@ -5,7 +5,7 @@
     "initialTestsPhpOptions": "-dopcache.enable=0",
     "source": {
         "directories": [
-            "src/Psl/"
+            "../src/Psl/"
         ],
         "excludes": [
             "RandomSequence",

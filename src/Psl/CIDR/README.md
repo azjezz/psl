@@ -1,0 +1,56 @@
+# CIDR
+
+The `CIDR` component provides utilities for working with CIDR (Classless Inter-Domain Routing) notation. It supports both IPv4 and IPv6 addresses.
+
+## Usage
+
+```php
+use Psl\CIDR;
+
+$block = new CIDR\Block('192.168.1.0/24');
+$block->contains('192.168.1.100'); // true
+$block->contains('192.168.2.1');   // false
+```
+
+## API
+
+### Classes
+
+---
+
+#### `Block`
+
+An immutable CIDR block that can check whether IP addresses fall within its range.
+
+IPv4 addresses are internally normalized to IPv4-mapped IPv6 for unified comparison, so mixed-family matching works transparently.
+
+```php
+// IPv4
+$private = new CIDR\Block('10.0.0.0/8');
+$private->contains('10.1.2.3');    // true
+$private->contains('172.16.0.1');  // false
+
+// IPv6
+$loopback = new CIDR\Block('::1/128');
+$loopback->contains('::1');        // true
+
+// Single host
+$exact = new CIDR\Block('192.168.1.1/32');
+$exact->contains('192.168.1.1');   // true
+$exact->contains('192.168.1.2');   // false
+```
+
+**Constructor:**
+- `string $cidr` — CIDR notation (e.g. `"192.168.1.0/24"`, `"2001:db8::/32"`).
+
+**Methods:**
+- `contains(string $ip): bool` — Check whether the given IP address falls within this CIDR block.
+
+---
+
+### Exceptions
+
+- `Exception\ExceptionInterface` — Marker interface for all CIDR exceptions.
+- `Exception\InvalidArgumentException` — Thrown for invalid CIDR notation or IP addresses.
+
+---
