@@ -8,11 +8,9 @@ use Override;
 use Psl\DateTime\Duration;
 use Psl\IO;
 use Psl\Network;
-use Revolt\EventLoop;
 
 use function fclose;
 use function is_resource;
-use function str_starts_with;
 use function stream_context_create;
 use function stream_set_blocking;
 use function stream_socket_client;
@@ -20,33 +18,24 @@ use function stream_socket_get_name;
 use function stream_socket_recvfrom;
 use function stream_socket_sendto;
 use function stream_socket_server;
-use function strlen;
-use function strpos;
-use function strrpos;
-use function substr;
 
 use const STREAM_CLIENT_CONNECT;
 use const STREAM_PEEK;
 use const STREAM_SERVER_BIND;
 
 /**
- * A UDP socket for sending and receiving datagrams.
+ * An unconnected UDP socket for sending and receiving datagrams.
  *
- * Supports both connected and unconnected modes and peek.
+ * Use {@see sendTo()} and {@see receiveFrom()} to communicate with arbitrary addresses.
+ *
+ * To switch to connected mode, call {@see connect()} which returns a {@see ConnectedSocket}.
  */
-final class Socket implements IO\CloseHandleInterface, IO\StreamHandleInterface
+final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
 {
-    /**
-     * Maximum IPv4 UDP payload size (65535 - 20 IP header - 8 UDP header).
-     */
-    private const int MAX_DATAGRAM_SIZE = 65_507;
-
     /**
      * @var resource|closed-resource|null
      */
     private mixed $stream;
-    private bool $connected = false;
-    private null|Network\Address $peerAddress = null;
 
     /**
      * @param resource $stream
@@ -91,27 +80,26 @@ final class Socket implements IO\CloseHandleInterface, IO\StreamHandleInterface
     }
 
     /**
-     * Connect the socket to a remote address.
+     * Connect to a remote address, returning a {@see ConnectedSocket}.
      *
-     * After connecting, you must use send()/receive() instead of sendTo()/receiveFrom().
+     * This socket is closed after connecting. Use the returned {@see ConnectedSocket} for further communication.
      *
      * @param non-empty-string $host
      * @param int<0, 65535> $port
      *
      * @throws Network\Exception\RuntimeException If the connect fails.
+     * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
      */
-    public function connect(string $host, int $port): void
+    public function connect(string $host, int $port): ConnectedSocket
     {
         $old_stream = $this->getResource();
 
-        // Get the local address to rebind
         $local_name = @stream_socket_get_name($old_stream, false);
         $bindto = $local_name !== false ? $local_name : '0.0.0.0:0';
 
-        // Close old stream
         fclose($old_stream);
+        $this->stream = null;
 
-        // Create new connected UDP stream
         $context = stream_context_create(['socket' => [
             'bindto' => $bindto,
         ]]);
@@ -128,40 +116,31 @@ final class Socket implements IO\CloseHandleInterface, IO\StreamHandleInterface
         );
 
         if ($new_stream === false) {
-            $this->stream = null;
             throw new Network\Exception\RuntimeException("Failed to connect UDP socket to {$host}:{$port}: {$errstr}");
         }
 
-        stream_set_blocking($new_stream, false);
-        $this->stream = $new_stream;
-        $this->connected = true;
-        $this->peerAddress = Network\Address::udp($host, $port);
+        return new ConnectedSocket($new_stream, Network\Address::udp($host, $port));
     }
 
     /**
-     * Send data to a specific address (unconnected mode).
+     * Send a datagram to a specific address.
      *
      * @return int<0, max> Number of bytes sent.
      *
-     * @throws Network\Exception\RuntimeException If the send fails or the socket is connected.
+     * @throws Network\Exception\RuntimeException If the send fails.
      * @throws Network\Exception\InvalidArgumentException If the datagram exceeds the maximum size.
      * @throws IO\Exception\TimeoutException If the operation times out.
+     * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
      */
     public function sendTo(string $data, Network\Address $address, null|Duration $timeout = null): int
     {
-        if ($this->connected) {
-            throw new Network\Exception\RuntimeException(
-                'Cannot use sendTo() on a connected socket. Use send() instead.',
-            );
-        }
-
-        $this->validatePayloadSize($data);
+        Internal\validate_payload_size($data);
         $stream = $this->getResource();
 
         $target = "{$address->host}:{$address->port}";
 
         if ($timeout !== null) {
-            $this->waitWritable($stream, $timeout);
+            Internal\wait_writable($stream, $timeout);
         }
 
         $result = @stream_socket_sendto($stream, $data, 0, $target);
@@ -174,26 +153,21 @@ final class Socket implements IO\CloseHandleInterface, IO\StreamHandleInterface
     }
 
     /**
-     * Receive data and the sender's address (unconnected mode).
+     * Receive a datagram and the sender's address.
      *
      * @param positive-int $max_bytes
      *
      * @return array{string, Network\Address} [data, sender_address]
      *
-     * @throws Network\Exception\RuntimeException If the receive fails or the socket is connected.
+     * @throws Network\Exception\RuntimeException If the receive fails.
      * @throws IO\Exception\TimeoutException If the operation times out.
+     * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
      */
     public function receiveFrom(int $max_bytes, null|Duration $timeout = null): array
     {
-        if ($this->connected) {
-            throw new Network\Exception\RuntimeException(
-                'Cannot use receiveFrom() on a connected socket. Use receive() instead.',
-            );
-        }
-
         $stream = $this->getResource();
 
-        $this->awaitReadable($stream, $timeout);
+        Internal\await_readable($stream, $timeout);
 
         $address = '';
         $data = @stream_socket_recvfrom($stream, $max_bytes, 0, $address);
@@ -201,94 +175,11 @@ final class Socket implements IO\CloseHandleInterface, IO\StreamHandleInterface
             throw new Network\Exception\RuntimeException('Failed to receive UDP datagram.');
         }
 
-        return [$data, $this->parseAddress($address)];
+        return [$data, Internal\parse_address($address)];
     }
 
     /**
-     * Send data on a connected socket.
-     *
-     * @return int<0, max> Number of bytes sent.
-     *
-     * @throws Network\Exception\RuntimeException If the send fails or the socket is not connected.
-     * @throws Network\Exception\InvalidArgumentException If the datagram exceeds the maximum size.
-     * @throws IO\Exception\TimeoutException If the operation times out.
-     */
-    public function send(string $data, null|Duration $timeout = null): int
-    {
-        if (!$this->connected) {
-            throw new Network\Exception\RuntimeException(
-                'Cannot send on an unconnected socket. Use sendTo() or call connect() first.',
-            );
-        }
-
-        $this->validatePayloadSize($data);
-        $stream = $this->getResource();
-
-        if ($timeout !== null) {
-            $this->waitWritable($stream, $timeout);
-        }
-
-        $result = @stream_socket_sendto($stream, $data);
-        if ($result === false || $result === -1) {
-            throw new Network\Exception\RuntimeException('Failed to send UDP datagram.');
-        }
-
-        /** @var int<0, max> */
-        return $result;
-    }
-
-    /**
-     * Receive data on a connected socket.
-     *
-     * @param positive-int $max_bytes
-     *
-     * @throws Network\Exception\RuntimeException If the receive fails or the socket is not connected.
-     * @throws IO\Exception\TimeoutException If the operation times out.
-     */
-    public function receive(int $max_bytes, null|Duration $timeout = null): string
-    {
-        if (!$this->connected) {
-            throw new Network\Exception\RuntimeException(
-                'Cannot receive on an unconnected socket. Use receiveFrom() or call connect() first.',
-            );
-        }
-
-        $stream = $this->getResource();
-
-        $this->awaitReadable($stream, $timeout);
-
-        $data = @stream_socket_recvfrom($stream, $max_bytes, 0);
-        if ($data === false) {
-            throw new Network\Exception\RuntimeException('Failed to receive UDP datagram.');
-        }
-
-        return $data;
-    }
-
-    /**
-     * Peek at incoming data without consuming it.
-     *
-     * @param positive-int $max_bytes
-     *
-     * @throws Network\Exception\RuntimeException If the peek fails.
-     * @throws IO\Exception\TimeoutException If the operation times out.
-     */
-    public function peek(int $max_bytes, null|Duration $timeout = null): string
-    {
-        $stream = $this->getResource();
-
-        $this->awaitReadable($stream, $timeout);
-
-        $data = @stream_socket_recvfrom($stream, $max_bytes, STREAM_PEEK);
-        if ($data === false) {
-            throw new Network\Exception\RuntimeException('Failed to peek UDP datagram.');
-        }
-
-        return $data;
-    }
-
-    /**
-     * Peek at incoming data and get the sender's address.
+     * Peek at an incoming datagram and get the sender's address, without consuming it.
      *
      * @param positive-int $max_bytes
      *
@@ -296,12 +187,13 @@ final class Socket implements IO\CloseHandleInterface, IO\StreamHandleInterface
      *
      * @throws Network\Exception\RuntimeException If the peek fails.
      * @throws IO\Exception\TimeoutException If the operation times out.
+     * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
      */
     public function peekFrom(int $max_bytes, null|Duration $timeout = null): array
     {
         $stream = $this->getResource();
 
-        $this->awaitReadable($stream, $timeout);
+        Internal\await_readable($stream, $timeout);
 
         $address = '';
         $data = @stream_socket_recvfrom($stream, $max_bytes, STREAM_PEEK, $address);
@@ -309,14 +201,16 @@ final class Socket implements IO\CloseHandleInterface, IO\StreamHandleInterface
             throw new Network\Exception\RuntimeException('Failed to peek UDP datagram.');
         }
 
-        return [$data, $this->parseAddress($address)];
+        return [$data, Internal\parse_address($address)];
     }
 
     /**
      * Get the local address this socket is bound to.
      *
      * @throws Network\Exception\RuntimeException If unable to retrieve local address.
+     * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
      */
+    #[Override]
     public function getLocalAddress(): Network\Address
     {
         $stream = $this->getResource();
@@ -325,15 +219,7 @@ final class Socket implements IO\CloseHandleInterface, IO\StreamHandleInterface
             throw new Network\Exception\RuntimeException('Failed to get local address.');
         }
 
-        return $this->parseAddress($name);
-    }
-
-    /**
-     * Get the peer address this socket is connected to, or null if unconnected.
-     */
-    public function getPeerAddress(): null|Network\Address
-    {
-        return $this->peerAddress;
+        return Internal\parse_address($name);
     }
 
     /**
@@ -366,6 +252,8 @@ final class Socket implements IO\CloseHandleInterface, IO\StreamHandleInterface
 
     /**
      * @return resource
+     *
+     * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
      */
     private function getResource(): mixed
     {
@@ -374,137 +262,5 @@ final class Socket implements IO\CloseHandleInterface, IO\StreamHandleInterface
         }
 
         return $this->stream;
-    }
-
-    /**
-     * Validate that the payload does not exceed the maximum UDP datagram size.
-     *
-     * @throws Network\Exception\InvalidArgumentException If the payload is too large.
-     */
-    private function validatePayloadSize(string $data): void
-    {
-        if (strlen($data) > self::MAX_DATAGRAM_SIZE) {
-            throw new Network\Exception\InvalidArgumentException('UDP datagram payload exceeds maximum size of '
-            . self::MAX_DATAGRAM_SIZE
-            . ' bytes.');
-        }
-    }
-
-    /**
-     * Wait for the stream to become readable.
-     *
-     * @param resource $stream
-     */
-    private function awaitReadable(mixed $stream, null|Duration $timeout): void
-    {
-        $suspension = EventLoop::getSuspension();
-        $timeout_watcher = null;
-
-        if ($timeout !== null) {
-            $timeout_watcher = EventLoop::delay($timeout->getTotalSeconds(), static function () use (
-                $suspension,
-            ): void {
-                $suspension->resume(true);
-            });
-        }
-
-        $read_watcher = EventLoop::onReadable($stream, static function (string $watcher) use ($suspension): void {
-            EventLoop::cancel($watcher);
-            $suspension->resume(false);
-        });
-
-        /** @var bool $timed_out */
-        $timed_out = $suspension->suspend();
-        if ($timeout_watcher !== null) {
-            EventLoop::cancel($timeout_watcher);
-        }
-
-        EventLoop::cancel($read_watcher);
-
-        if ($timed_out) {
-            throw new IO\Exception\TimeoutException('UDP receive operation timed out.');
-        }
-    }
-
-    /**
-     * Wait for the stream to be writable with a timeout.
-     *
-     * @param resource $stream
-     */
-    private function waitWritable(mixed $stream, Duration $timeout): void
-    {
-        $suspension = EventLoop::getSuspension();
-        $timeout_watcher = EventLoop::delay($timeout->getTotalSeconds(), static function () use ($suspension): void {
-            $suspension->resume(true);
-        });
-
-        $write_watcher = EventLoop::onWritable($stream, static function (string $watcher) use ($suspension): void {
-            EventLoop::cancel($watcher);
-            $suspension->resume(false);
-        });
-
-        /** @var bool $timed_out */
-        $timed_out = $suspension->suspend();
-        EventLoop::cancel($timeout_watcher);
-        EventLoop::cancel($write_watcher);
-
-        if ($timed_out) {
-            throw new IO\Exception\TimeoutException('UDP send operation timed out.');
-        }
-    }
-
-    /**
-     * Parse a "host:port" or "[host]:port" string into an Address.
-     *
-     * Handles both IPv4 ("127.0.0.1:8080") and IPv6 ("[::1]:8080") formats.
-     *
-     * @throws Network\Exception\RuntimeException If the address is invalid.
-     */
-    private function parseAddress(string $address): Network\Address
-    {
-        if ($address === '') {
-            return Network\Address::udp('0.0.0.0', 0);
-        }
-
-        // IPv6 bracket notation: [host]:port
-        if (str_starts_with($address, '[')) {
-            $close_bracket = strpos($address, ']');
-            if ($close_bracket === false) {
-                return Network\Address::udp($address, 0);
-            }
-
-            $host = substr($address, 1, $close_bracket - 1);
-            if ($host === '') {
-                $host = '::';
-            }
-
-            // Check for :port after the closing bracket
-            $port = 0;
-            if (($close_bracket + 1) < strlen($address) && $address[$close_bracket + 1] === ':') {
-                $port = (int) substr($address, $close_bracket + 2);
-            }
-
-            if ($port < 0 || $port > 65_535) {
-                throw new Network\Exception\RuntimeException("Invalid port number in address: {$port}");
-            }
-
-            return Network\Address::udp($host, $port);
-        }
-
-        // IPv4: host:port
-        $last_colon = strrpos($address, ':');
-        if ($last_colon === false) {
-            return Network\Address::udp($address, 0);
-        }
-
-        $host = substr($address, 0, $last_colon);
-        $port = (int) substr($address, $last_colon + 1);
-
-        $host = $host !== '' ? $host : '0.0.0.0';
-        if ($port < 0 || $port > 65_535) {
-            throw new Network\Exception\RuntimeException("Invalid port number in address: {$port}");
-        }
-
-        return Network\Address::udp($host, $port);
     }
 }

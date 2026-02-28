@@ -2,7 +2,10 @@
 
 The `UDP` component provides a non-blocking API for sending and receiving datagrams over UDP.
 
-It supports both connected and unconnected modes, multicast groups (IPv4 and IPv6), broadcast, peek, and configurable socket options.
+It uses two distinct types for type-safe socket usage:
+
+- **`Socket`** — An unconnected socket for sending/receiving to arbitrary addresses.
+- **`ConnectedSocket`** — A connected socket for communicating with a single peer.
 
 ## Usage
 
@@ -30,61 +33,67 @@ Async\concurrently([
 
 ## API
 
+### Functions
+
+---
+
+#### `connect(string $host, int $port): ConnectedSocket`
+
+Create a connected UDP socket in one step. Binds to a local address and connects to the given host and port.
+
+```php
+$socket = UDP\connect('8.8.8.8', 53);
+$socket->send($dns_query);
+$response = $socket->receive(512);
+$socket->close();
+```
+
 ### Classes
 
 ---
 
 #### `Socket`
 
-A UDP socket for sending and receiving datagrams. Implements `IO\CloseHandleInterface` and `IO\StreamHandleInterface`.
-
-Supports two modes of operation:
-
-- **Unconnected mode** (default): Use `sendTo()` / `receiveFrom()` to send and receive datagrams to/from arbitrary addresses.
-- **Connected mode** (after calling `connect()`): Use `send()` / `receive()` to communicate with a single peer. Mixing modes throws an exception.
+An unconnected UDP socket. Implements `Network\SocketInterface` and `IO\StreamHandleInterface`.
 
 **Factory:**
 
 - `static bind(string $host = '0.0.0.0', int $port = 0, bool $reuse_address = false, bool $reuse_port = false, bool $broadcast = false): self` — Create a UDP socket bound to the given address.
 
-**Connection:**
-
-- `connect(string $host, int $port): void` — Connect to a remote address, switching to connected mode.
-
-**Unconnected Mode:**
+**Sending & Receiving:**
 
 - `sendTo(string $data, Address $address, ?Duration $timeout = null): int` — Send a datagram to a specific address.
 - `receiveFrom(int $max_bytes, ?Duration $timeout = null): array{string, Address}` — Receive a datagram and the sender's address.
 - `peekFrom(int $max_bytes, ?Duration $timeout = null): array{string, Address}` — Peek at an incoming datagram with sender address, without consuming it.
 
-**Connected Mode:**
+**Connecting:**
 
-- `send(string $data, ?Duration $timeout = null): int` — Send a datagram on the connected socket.
-- `receive(int $max_bytes, ?Duration $timeout = null): string` — Receive a datagram on the connected socket.
-- `peek(int $max_bytes, ?Duration $timeout = null): string` — Peek at an incoming datagram without consuming it.
-
-**Addresses:**
-
-- `getLocalAddress(): Address` — Get the local bound address.
-- `getPeerAddress(): ?Address` — Get the connected peer address, or null if unconnected.
-
-**Socket Options:**
-
-- `setBroadcast(bool $enabled): void` / `getBroadcast(): bool` — SO_BROADCAST.
-- `setTtl(int $ttl): void` / `getTtl(): int` — IP Time-To-Live.
-
-**Multicast (IPv4):**
-
-- `joinMulticastV4(string $multicast_address, string $interface_address): void`
-- `leaveMulticastV4(string $multicast_address, string $interface_address): void`
-
-**Multicast (IPv6):**
-
-- `joinMulticastV6(string $multicast_address, int $interface_index): void`
-- `leaveMulticastV6(string $multicast_address, int $interface_index): void`
+- `connect(string $host, int $port): ConnectedSocket` — Connect to a remote address, returning a `ConnectedSocket`. This socket is closed after connecting.
 
 **Lifecycle:**
 
+- `getLocalAddress(): Address` — Get the local bound address.
+- `getStream(): resource|object|null` — Access the underlying stream resource.
+- `close(): void` — Close the socket.
+
+---
+
+#### `ConnectedSocket`
+
+A connected UDP socket for communicating with a single peer. Obtained via `Socket::connect()` or `connect()`.
+
+Implements `Network\SocketInterface` and `IO\StreamHandleInterface`.
+
+**Sending & Receiving:**
+
+- `send(string $data, ?Duration $timeout = null): int` — Send a datagram to the connected peer.
+- `receive(int $max_bytes, ?Duration $timeout = null): string` — Receive a datagram from the connected peer.
+- `peek(int $max_bytes, ?Duration $timeout = null): string` — Peek at an incoming datagram without consuming it.
+
+**Lifecycle:**
+
+- `getLocalAddress(): Address` — Get the local bound address.
+- `getPeerAddress(): Address` — Get the connected peer address.
 - `getStream(): resource|object|null` — Access the underlying stream resource.
 - `close(): void` — Close the socket.
 
@@ -114,8 +123,7 @@ Async\main(static function (): void {
 ```php
 use Psl\UDP;
 
-$socket = UDP\Socket::bind('127.0.0.1', 0);
-$socket->connect('8.8.8.8', 53);
+$socket = UDP\connect('8.8.8.8', 53);
 
 $socket->send($dns_query);
 $response = $socket->receive(512);
@@ -123,29 +131,21 @@ $response = $socket->receive(512);
 $socket->close();
 ```
 
-### Multicast
+### Type-Safe Transition
 
 ```php
 use Psl\UDP;
 
-$socket = UDP\Socket::bind('0.0.0.0', 5000, reuse_address: true);
-$socket->joinMulticastV4('224.0.0.1', '0.0.0.0');
+// Start with an unconnected socket
+$socket = UDP\Socket::bind('127.0.0.1', 0);
 
-[$data, $sender] = $socket->receiveFrom(1024);
+// Connect returns a ConnectedSocket — the original socket is closed
+$connected = $socket->connect('8.8.8.8', 53);
 
-$socket->leaveMulticastV4('224.0.0.1', '0.0.0.0');
-$socket->close();
-```
-
-### Broadcast
-
-```php
-use Psl\Network\Address;
-use Psl\UDP;
-
-$socket = UDP\Socket::bind('0.0.0.0', 0, broadcast: true);
-$socket->sendTo('discovery', Address::udp('255.255.255.255', 5000));
-$socket->close();
+// $socket is now closed — only $connected is usable
+$connected->send($data);
+$response = $connected->receive(512);
+$connected->close();
 ```
 
 ### Peek
