@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Dict;
 use Psl\Iter;
@@ -17,13 +18,13 @@ use RuntimeException;
  */
 final class ContainerTypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\container(Type\int(), Type\int());
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield [
@@ -49,7 +50,7 @@ final class ContainerTypeTest extends TypeTestCase
         ];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [1.0];
@@ -61,7 +62,7 @@ final class ContainerTypeTest extends TypeTestCase
         yield [STDIN];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), 'container<int, int>'];
@@ -77,7 +78,7 @@ final class ContainerTypeTest extends TypeTestCase
      * @param iterable<int, int> $a
      * @param iterable<int, int> $b
      */
-    #[\Override]
+    #[Override]
     protected static function equals(mixed $a, mixed $b): bool
     {
         return $a === $b;

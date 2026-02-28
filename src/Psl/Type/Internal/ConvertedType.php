@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Closure;
+use Override;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -39,7 +40,7 @@ final readonly class ConvertedType extends Type\Type
      *
      * @return O
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): mixed
     {
         if ($this->into->matches($value)) {
@@ -79,13 +80,13 @@ final readonly class ConvertedType extends Type\Type
      *
      * @return O
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): mixed
     {
         return $this->into->assert($value);
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return $this->into->toString();

@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Math;
 use Psl\Type;
 
 final class AlwaysAssertTypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\always_assert(Type\int());
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield [123, 123];
@@ -24,7 +25,7 @@ final class AlwaysAssertTypeTest extends TypeTestCase
         yield [-321, -321];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [1.23];
@@ -59,7 +60,7 @@ final class AlwaysAssertTypeTest extends TypeTestCase
         yield [1.0];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [Type\always_assert(Type\int()), 'int'];

@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Math;
 use Psl\Type;
 
 final class MixedTypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\mixed();
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield [123, 123];
@@ -58,27 +59,27 @@ final class MixedTypeTest extends TypeTestCase
         yield [STDIN, STDIN];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [null];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), 'mixed'];
     }
 
     #[DataProvider('getInvalidValues')]
-    #[\Override]
+    #[Override]
     public function testInvalidAssertion(mixed $value): void
     {
         $this->addToAssertionCount(1);
     }
 
     #[DataProvider('getInvalidCoercions')]
-    #[\Override]
+    #[Override]
     public function testInvalidCoercion(mixed $value): void
     {
         $this->addToAssertionCount(1);
@@ -88,7 +89,7 @@ final class MixedTypeTest extends TypeTestCase
      * @param mixed $value
      */
     #[DataProvider('getInvalidValues')]
-    #[\Override]
+    #[Override]
     public function testInvalidMatches(mixed $value): void
     {
         $this->addToAssertionCount(1);

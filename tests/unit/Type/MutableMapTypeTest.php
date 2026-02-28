@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Collection;
 use Psl\Collection\MutableMapInterface;
@@ -19,13 +20,13 @@ use RuntimeException;
  */
 final class MutableMapTypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\mutable_map(Type\int(), Type\int());
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield [
@@ -64,7 +65,7 @@ final class MutableMapTypeTest extends TypeTestCase
         ];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [1.0];
@@ -76,7 +77,7 @@ final class MutableMapTypeTest extends TypeTestCase
         yield [STDIN];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [
@@ -104,7 +105,7 @@ final class MutableMapTypeTest extends TypeTestCase
      * @param MutableMapInterface<array-key, mixed>|mixed $a
      * @param MutableMapInterface<array-key, mixed>|mixed $b
      */
-    #[\Override]
+    #[Override]
     protected static function equals(mixed $a, mixed $b): bool
     {
         if (Type\instance_of(MutableMapInterface::class)->matches($a)) {

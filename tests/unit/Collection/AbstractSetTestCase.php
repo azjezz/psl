@@ -345,6 +345,12 @@ abstract class AbstractSetTestCase extends TestCase
         static::assertNotSame($set, $rest);
         static::assertCount(1, $rest);
         static::assertSame('bar', $rest->at('bar'));
+
+        $set = $this->createFromList(['a', 'b', 'c', 'd']);
+        $rest = $set->take(2);
+        static::assertInstanceOf($this->setClass, $rest);
+        static::assertCount(2, $rest);
+        static::assertSame(['a' => 'a', 'b' => 'b'], $rest->toArray());
     }
 
     public function testTakeWhile(): void

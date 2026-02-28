@@ -6,6 +6,7 @@ namespace Psl\DateTime;
 
 use DateInterval;
 use JsonSerializable;
+use Override;
 use Psl\Comparison;
 use Psl\Interoperability;
 use Psl\Math;
@@ -457,7 +458,7 @@ final readonly class Duration implements
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function compare(mixed $other): Comparison\Order
     {
         if ($this->hours !== $other->hours) {
@@ -482,7 +483,7 @@ final readonly class Duration implements
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function equals(mixed $other): bool
     {
         return $this->compare($other) === Comparison\Order::Equal;
@@ -687,7 +688,7 @@ final readonly class Duration implements
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function __toString(): string
     {
         return $this->toString();
@@ -702,7 +703,7 @@ final readonly class Duration implements
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function toStdlib(): mixed
     {
         $total_seconds = (int) $this->getTotalSeconds();
@@ -717,7 +718,7 @@ final readonly class Duration implements
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function jsonSerialize(): array
     {
         return [

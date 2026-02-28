@@ -6,6 +6,7 @@ namespace Psl\CIDR;
 
 use function chr;
 use function count;
+use function ctype_digit;
 use function explode;
 use function inet_pton;
 use function str_pad;
@@ -47,6 +48,12 @@ final readonly class Block
         }
 
         [$address, $prefixStr] = $parts;
+
+        if (!ctype_digit($prefixStr)) {
+            throw new Exception\InvalidArgumentException(
+                "Invalid prefix length: '{$prefixStr}'. Must be a non-negative integer.",
+            );
+        }
 
         $networkBytes = inet_pton($address);
         if ($networkBytes === false) {

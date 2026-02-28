@@ -55,6 +55,33 @@ final class PasswordTest extends TestCase
         static::assertFalse(Password\needs_rehash($hash, Password\Algorithm::Argon2i));
     }
 
+    #[DataProvider('providePasswords')]
+    public function testArgon2id(#[SensitiveParameter] string $password): void
+    {
+        $hash = Password\hash($password, Password\Algorithm::Argon2id);
+
+        static::assertTrue(Password\verify($password, $hash));
+
+        $information = Password\get_information($hash);
+
+        static::assertSame(Password\Algorithm::Argon2id, $information['algorithm']);
+
+        static::assertFalse(Password\needs_rehash($hash, Password\Algorithm::Argon2id));
+    }
+
+    public function testArgon2idBuiltinConstantValue(): void
+    {
+        static::assertSame(PASSWORD_ARGON2ID, Password\Algorithm::Argon2id->getBuiltinConstantValue());
+    }
+
+    public function testAllAlgorithmBuiltinConstantValues(): void
+    {
+        static::assertSame(PASSWORD_DEFAULT, Password\Algorithm::Default->getBuiltinConstantValue());
+        static::assertSame(PASSWORD_BCRYPT, Password\Algorithm::Bcrypt->getBuiltinConstantValue());
+        static::assertSame(PASSWORD_ARGON2I, Password\Algorithm::Argon2i->getBuiltinConstantValue());
+        static::assertSame(PASSWORD_ARGON2ID, Password\Algorithm::Argon2id->getBuiltinConstantValue());
+    }
+
     public static function providePasswords(): iterable
     {
         yield ['hunter2'];

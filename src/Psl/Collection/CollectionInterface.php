@@ -8,6 +8,7 @@ use Closure;
 use Countable;
 use IteratorAggregate;
 use JsonSerializable;
+use Override;
 use Psl\Default\DefaultInterface;
 
 /**
@@ -36,7 +37,7 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      *
      * @return int<0, max>
      */
-    #[\Override]
+    #[Override]
     public function count(): int;
 
     /**
@@ -72,7 +73,7 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function jsonSerialize(): mixed;
 
     /**

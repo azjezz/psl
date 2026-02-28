@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\DataStructure;
 
 use Countable;
+use Override;
 
 /**
  * An interface representing a stack data structure ( LIFO ).
@@ -52,6 +53,6 @@ interface StackInterface extends Countable
      *
      * @return int<0, max>
      */
-    #[\Override]
+    #[Override]
     public function count(): int;
 }

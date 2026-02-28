@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Channel;
 
 use Countable;
+use Override;
 
 interface ChannelInterface extends Countable
 {
@@ -38,7 +39,7 @@ interface ChannelInterface extends Countable
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function count(): int;
 
     /**

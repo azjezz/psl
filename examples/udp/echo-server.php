@@ -6,6 +6,7 @@ namespace Psl\Example\UDP;
 
 use Psl\Async;
 use Psl\IO;
+use Psl\Network\Address;
 use Psl\UDP;
 
 require __DIR__ . '/../../vendor/autoload.php';
@@ -33,7 +34,7 @@ Async\main(static function (): int {
             $socket = UDP\Socket::bind('127.0.0.1', 0);
             IO\write_error_line('> client bound to %s', $socket->getLocalAddress()->toString());
 
-            $server_address = \Psl\Network\Address::udp('127.0.0.1', 9999);
+            $server_address = Address::udp('127.0.0.1', 9999);
 
             $messages = ['Hello', 'World', 'UDP!'];
             foreach ($messages as $msg) {

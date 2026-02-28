@@ -12,7 +12,7 @@
 
 #### `Functions`
 
-- [copy](./../../src/Psl/IO/copy.php#L20)
+- [copy](./../../src/Psl/IO/copy.php#L22)
 - [copy_bidirectional](./../../src/Psl/IO/copy_bidirectional.php#L21)
 - [error_handle](./../../src/Psl/IO/error_handle.php#L21)
 - [input_handle](./../../src/Psl/IO/input_handle.php#L23)
@@ -41,17 +41,17 @@
 - [CloseSeekReadWriteStreamHandle](./../../src/Psl/IO/CloseSeekReadWriteStreamHandle.php#L14)
 - [CloseSeekStreamHandle](./../../src/Psl/IO/CloseSeekStreamHandle.php#L12)
 - [CloseSeekWriteStreamHandle](./../../src/Psl/IO/CloseSeekWriteStreamHandle.php#L14)
-- [CloseStreamHandle](./../../src/Psl/IO/CloseStreamHandle.php#L10)
-- [CloseWriteStreamHandle](./../../src/Psl/IO/CloseWriteStreamHandle.php#L13)
+- [CloseStreamHandle](./../../src/Psl/IO/CloseStreamHandle.php#L12)
+- [CloseWriteStreamHandle](./../../src/Psl/IO/CloseWriteStreamHandle.php#L14)
 - [MemoryHandle](./../../src/Psl/IO/MemoryHandle.php#L15)
 - [ReadStreamHandle](./../../src/Psl/IO/ReadStreamHandle.php#L14)
 - [ReadWriteStreamHandle](./../../src/Psl/IO/ReadWriteStreamHandle.php#L14)
-- [Reader](./../../src/Psl/IO/Reader.php#L17)
+- [Reader](./../../src/Psl/IO/Reader.php#L18)
 - [SeekReadStreamHandle](./../../src/Psl/IO/SeekReadStreamHandle.php#L14)
 - [SeekReadWriteStreamHandle](./../../src/Psl/IO/SeekReadWriteStreamHandle.php#L14)
 - [SeekStreamHandle](./../../src/Psl/IO/SeekStreamHandle.php#L12)
 - [SeekWriteStreamHandle](./../../src/Psl/IO/SeekWriteStreamHandle.php#L14)
-- [WriteStreamHandle](./../../src/Psl/IO/WriteStreamHandle.php#L13)
+- [WriteStreamHandle](./../../src/Psl/IO/WriteStreamHandle.php#L14)
 
 #### `Traits`
 

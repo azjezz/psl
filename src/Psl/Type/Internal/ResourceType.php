@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
@@ -30,7 +31,7 @@ final readonly class ResourceType extends Type\Type
      *
      * @return resource
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): mixed
     {
         if (is_resource($value)) {
@@ -54,7 +55,7 @@ final readonly class ResourceType extends Type\Type
      *
      * @psalm-assert resource $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): mixed
     {
         if (is_resource($value)) {
@@ -71,7 +72,7 @@ final readonly class ResourceType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         if (null === $this->kind) {

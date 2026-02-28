@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
@@ -25,7 +26,7 @@ final readonly class IntType extends Type\Type
     /**
      * @psalm-assert-if-true int $value
      */
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         return is_int($value);
@@ -34,7 +35,7 @@ final readonly class IntType extends Type\Type
     /**
      * @throws CoercionException
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): int
     {
         if (is_int($value)) {
@@ -75,7 +76,7 @@ final readonly class IntType extends Type\Type
      *
      * @throws AssertException
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): int
     {
         if (is_int($value)) {
@@ -85,7 +86,7 @@ final readonly class IntType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return 'int';

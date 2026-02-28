@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Collection;
 
+use Override;
 use Psl\Collection\Exception;
 use Psl\Collection\MutableSet;
 
@@ -161,7 +162,7 @@ final class MutableSetTest extends AbstractSetTestCase
         static::assertTrue($set->contains('baz'));
     }
 
-    #[\Override]
+    #[Override]
     public function testJsonSerialize(): void
     {
         $set = $this->createFromList(['foo', 'bar', 'baz', 'qux']);
@@ -176,7 +177,7 @@ final class MutableSetTest extends AbstractSetTestCase
      *
      * @return MutableSet<T>
      */
-    #[\Override]
+    #[Override]
     protected function createFromList(array $items): MutableSet
     {
         return MutableSet::fromArray($items);

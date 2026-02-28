@@ -4,24 +4,25 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Tests\Fixture\ClassWithProperties;
 use Psl\Type;
 
 final class ProtectedPropertyNameOfTypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\protected_property_name_of(ClassWithProperties::class);
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield ['protectedProperty', 'protectedProperty'];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [null];
@@ -37,7 +38,7 @@ final class ProtectedPropertyNameOfTypeTest extends TypeTestCase
         yield [new class {}];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [

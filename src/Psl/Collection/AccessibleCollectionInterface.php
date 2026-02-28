@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Collection;
 
 use Closure;
+use Override;
 
 /**
  * The base interface implemented for a collection type that you are able to access its values.
@@ -54,7 +55,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` containing the values
      *                                               after a user-specified condition is applied.
      */
-    #[\Override]
+    #[Override]
     public function filter(Closure $fn): AccessibleCollectionInterface;
 
     /**
@@ -74,7 +75,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *                                               after a user-specified condition is applied to the keys and values
      *                                               of the current `AccessibleCollectionInterface`.
      */
-    #[\Override]
+    #[Override]
     public function filterWithKey(Closure $fn): AccessibleCollectionInterface;
 
     /**
@@ -149,7 +150,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function zip(array $elements): AccessibleCollectionInterface;
 
     /**
@@ -170,7 +171,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function take(int $n): AccessibleCollectionInterface;
 
     /**
@@ -188,7 +189,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *                                               of the current `AccessibleCollectionInterface` up until
      *                                               the callback returns `false`.
      */
-    #[\Override]
+    #[Override]
     public function takeWhile(Closure $fn): AccessibleCollectionInterface;
 
     /**
@@ -209,7 +210,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function drop(int $n): AccessibleCollectionInterface;
 
     /**
@@ -227,7 +228,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *                                               of the current `AccessibleCollectionInterface` starting after
      *                                               the callback returns `true`.
      */
-    #[\Override]
+    #[Override]
     public function dropWhile(Closure $fn): AccessibleCollectionInterface;
 
     /**
@@ -251,7 +252,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function slice(int $start, null|int $length = null): AccessibleCollectionInterface;
 
     /**
@@ -268,6 +269,6 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function chunk(int $size): AccessibleCollectionInterface;
 }

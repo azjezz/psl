@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Tests\Fixture\ClassWithConstants;
 use Psl\Type;
 
 final class PublicConstantNameOfTypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\public_constant_name_of(ClassWithConstants::class);
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield ['FOO', 'FOO'];
@@ -24,7 +25,7 @@ final class PublicConstantNameOfTypeTest extends TypeTestCase
         yield ['QUX', 'QUX'];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [null];
@@ -40,7 +41,7 @@ final class PublicConstantNameOfTypeTest extends TypeTestCase
         yield [new class {}];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [

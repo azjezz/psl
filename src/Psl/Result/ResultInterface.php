@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Result;
 
 use Closure;
+use Override;
 use Psl;
 use Throwable;
 
@@ -42,7 +43,7 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
      *
      * @return ResultInterface<Ts>
      */
-    #[\Override]
+    #[Override]
     public function then(Closure $success, Closure $failure): ResultInterface;
 
     /**
@@ -57,7 +58,7 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
      *
      * @return ResultInterface<Ts>
      */
-    #[\Override]
+    #[Override]
     public function map(Closure $success): ResultInterface;
 
     /**
@@ -72,7 +73,7 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
      *
      * @return ResultInterface<T|Ts>
      */
-    #[\Override]
+    #[Override]
     public function catch(Closure $failure): ResultInterface;
 
     /**
@@ -86,7 +87,7 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
      *
      * @return ResultInterface<T>
      */
-    #[\Override]
+    #[Override]
     public function always(Closure $always): ResultInterface;
 
     /**

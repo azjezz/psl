@@ -6,6 +6,7 @@ namespace Psl\Result;
 
 use Closure;
 use Exception as RootException;
+use Override;
 use Psl;
 
 /**
@@ -39,7 +40,7 @@ final readonly class Success implements ResultInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function getResult(): mixed
     {
         return $this->value;
@@ -54,7 +55,7 @@ final readonly class Success implements ResultInterface
      *
      * @return T
      */
-    #[\Override]
+    #[Override]
     public function unwrapOr(mixed $default): mixed
     {
         return $this->value;
@@ -70,7 +71,7 @@ final readonly class Success implements ResultInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function getThrowable(): never
     {
         Psl\invariant_violation('No exception thrown from the operation.');
@@ -83,7 +84,7 @@ final readonly class Success implements ResultInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function isSucceeded(): bool
     {
         return true;
@@ -96,7 +97,7 @@ final readonly class Success implements ResultInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function isFailed(): bool
     {
         return false;
@@ -112,7 +113,7 @@ final readonly class Success implements ResultInterface
      *
      * @return Ts
      */
-    #[\Override]
+    #[Override]
     public function proceed(Closure $success, Closure $failure): mixed
     {
         return $success($this->value);
@@ -128,7 +129,7 @@ final readonly class Success implements ResultInterface
      *
      * @return ResultInterface<Ts>
      */
-    #[\Override]
+    #[Override]
     public function then(Closure $success, Closure $failure): ResultInterface
     {
         return wrap(fn(): mixed => $success($this->value));
@@ -143,7 +144,7 @@ final readonly class Success implements ResultInterface
      *
      * @return ResultInterface<Ts>
      */
-    #[\Override]
+    #[Override]
     public function map(Closure $success): ResultInterface
     {
         return wrap(fn(): mixed => $success($this->value));
@@ -158,7 +159,7 @@ final readonly class Success implements ResultInterface
      *
      * @return Success<T>
      */
-    #[\Override]
+    #[Override]
     public function catch(Closure $failure): Success
     {
         return new Success($this->value);
@@ -171,7 +172,7 @@ final readonly class Success implements ResultInterface
      *
      * @return ResultInterface<T>
      */
-    #[\Override]
+    #[Override]
     public function always(Closure $always): ResultInterface
     {
         return wrap(

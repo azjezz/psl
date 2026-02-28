@@ -12,8 +12,13 @@ use Psl\IO;
 use Psl\OS;
 use Psl\Str;
 
+use function defined;
 use function is_resource;
 use function proc_open;
+
+use const STDERR;
+use const STDIN;
+use const STDOUT;
 
 final readonly class Command
 {
@@ -438,9 +443,9 @@ final readonly class Command
 
         if ($stdio->isInherit()) {
             return match ($fd) {
-                0 => \STDIN,
-                1 => \defined('STDOUT') ? \STDOUT : ['file', 'php://stdout', 'w'],
-                default => \defined('STDERR') ? \STDERR : ['file', 'php://stderr', 'w'],
+                0 => STDIN,
+                1 => defined('STDOUT') ? STDOUT : ['file', 'php://stdout', 'w'],
+                default => defined('STDERR') ? STDERR : ['file', 'php://stderr', 'w'],
             };
         }
 

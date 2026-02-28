@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Type;
 
 use ArrayIterator;
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Collection;
 use Psl\Iter;
@@ -17,7 +18,7 @@ use RuntimeException;
  */
 final class ShapeTypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\shape([
@@ -48,7 +49,7 @@ final class ShapeTypeTest extends TypeTestCase
         );
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         foreach (static::validCoercions() as $row) {
@@ -165,7 +166,7 @@ final class ShapeTypeTest extends TypeTestCase
         ];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [1.0];
@@ -198,7 +199,7 @@ final class ShapeTypeTest extends TypeTestCase
         ]];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [
@@ -220,7 +221,7 @@ final class ShapeTypeTest extends TypeTestCase
      * @param Collection\VectorInterface<mixed>|mixed $a
      * @param Collection\VectorInterface<mixed>|mixed $b
      */
-    #[\Override]
+    #[Override]
     protected static function equals(mixed $a, mixed $b): bool
     {
         $dict = Type\dict(Type\array_key(), Type\mixed());

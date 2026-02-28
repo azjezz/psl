@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Collection;
 
 use Closure;
+use Override;
 
 /**
  * @template T of array-key
@@ -28,7 +29,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function at(int|string $k): int|string;
 
     /**
@@ -44,7 +45,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function contains(int|string $k): bool;
 
     /**
@@ -60,7 +61,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function get(int|string $k): null|int|string;
 
     /**
@@ -70,7 +71,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function toArray(): array;
 
     /**
@@ -80,7 +81,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function values(): VectorInterface;
 
     /**
@@ -90,7 +91,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function keys(): VectorInterface;
 
     /**
@@ -106,7 +107,7 @@ interface SetInterface extends AccessibleCollectionInterface
      * @return SetInterface<T> A SetInterface containing the values after a user-specified condition
      *                         is applied.
      */
-    #[\Override]
+    #[Override]
     public function filter(Closure $fn): SetInterface;
 
     /**
@@ -123,7 +124,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @return SetInterface<T>
      */
-    #[\Override]
+    #[Override]
     public function filterWithKey(Closure $fn): SetInterface;
 
     /**
@@ -169,7 +170,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function first(): null|int|string;
 
     /**
@@ -182,7 +183,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function firstKey(): null|int|string;
 
     /**
@@ -193,7 +194,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function last(): null|int|string;
 
     /**
@@ -206,7 +207,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function lastKey(): null|int|string;
 
     /**
@@ -223,7 +224,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function linearSearch(mixed $search_value): null|int|string;
 
     /**
@@ -237,7 +238,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @throws Exception\RuntimeException Always throws an exception since `Set` can only contain array-key values.
      */
-    #[\Override]
+    #[Override]
     public function zip(array $elements): never;
 
     /**
@@ -257,7 +258,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function take(int $n): SetInterface;
 
     /**
@@ -274,7 +275,7 @@ interface SetInterface extends AccessibleCollectionInterface
      * @return SetInterface<T> A `SetInterface` that is a proper subset of the current
      *                         `SetInterface` up until the callback returns `false`.
      */
-    #[\Override]
+    #[Override]
     public function takeWhile(Closure $fn): SetInterface;
 
     /**
@@ -294,7 +295,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function drop(int $n): SetInterface;
 
     /**
@@ -311,7 +312,7 @@ interface SetInterface extends AccessibleCollectionInterface
      * @return SetInterface<T> A `SetInterface` that is a proper subset of the current
      *                         `SetInterface` starting after the callback returns `true`.
      */
-    #[\Override]
+    #[Override]
     public function dropWhile(Closure $fn): SetInterface;
 
     /**
@@ -335,7 +336,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function slice(int $start, null|int $length = null): SetInterface;
 
     /**
@@ -352,6 +353,6 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function chunk(int $size): VectorInterface;
 }

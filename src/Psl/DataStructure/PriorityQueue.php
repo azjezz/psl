@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\DataStructure;
 
+use Override;
 use Psl\Math;
 
 use function array_keys;
@@ -29,7 +30,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @pure
      */
-    #[\Override]
+    #[Override]
     public static function default(): static
     {
         return new self();
@@ -42,7 +43,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @psalm-external-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function enqueue(mixed $node, int $priority = 0): void
     {
         $nodes = $this->queue[$priority] ?? [];
@@ -59,7 +60,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function peek(): mixed
     {
         if (0 === $this->count()) {
@@ -86,7 +87,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @psalm-external-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function pull(): mixed
     {
         try {
@@ -105,7 +106,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @psalm-external-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function dequeue(): mixed
     {
         if (0 === $this->count()) {
@@ -147,7 +148,7 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function count(): int
     {
         $count = 0;

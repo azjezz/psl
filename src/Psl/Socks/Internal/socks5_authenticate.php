@@ -6,6 +6,7 @@ namespace Psl\Socks\Internal;
 
 use Psl\IO;
 use Psl\Socks\Exception;
+use SensitiveParameter;
 
 use function chr;
 use function strlen;
@@ -25,7 +26,7 @@ use function strlen;
 function socks5_authenticate(
     IO\ReadHandleInterface&IO\WriteHandleInterface $stream,
     string $username,
-    #[\SensitiveParameter] string $password,
+    #[SensitiveParameter] string $password,
 ): void {
     $usernameLen = strlen($username);
     $passwordLen = strlen($password);

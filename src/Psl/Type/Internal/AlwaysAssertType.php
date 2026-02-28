@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -31,7 +32,7 @@ final readonly class AlwaysAssertType extends Type\Type
      *
      * @return T
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): mixed
     {
         if ($this->inner->matches($value)) {
@@ -48,13 +49,13 @@ final readonly class AlwaysAssertType extends Type\Type
      *
      * @return T
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): mixed
     {
         return $this->inner->assert($value);
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return $this->inner->toString();

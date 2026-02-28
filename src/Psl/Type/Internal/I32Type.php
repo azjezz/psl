@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Math;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
@@ -22,7 +23,7 @@ final readonly class I32Type extends Type\Type
     /**
      * @psalm-assert-if-true int<-2147483648, 2147483647> $value
      */
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         return is_int($value) && $value >= Math\INT32_MIN && $value <= MATH\INT32_MAX;
@@ -33,7 +34,7 @@ final readonly class I32Type extends Type\Type
      *
      * @return int<-2147483648, 2147483647>
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): int
     {
         $integer = Type\int()->coerce($value);
@@ -52,7 +53,7 @@ final readonly class I32Type extends Type\Type
      *
      * @return int<-2147483648, 2147483647>
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): int
     {
         if (is_int($value) && $value >= Math\INT32_MIN && $value <= MATH\INT32_MAX) {
@@ -62,7 +63,7 @@ final readonly class I32Type extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return 'i32';

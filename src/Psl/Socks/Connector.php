@@ -7,6 +7,7 @@ namespace Psl\Socks;
 use Override;
 use Psl\DateTime\Duration;
 use Psl\TCP;
+use SensitiveParameter;
 
 /**
  * A TCP connector that tunnels connections through a SOCKS5 proxy.
@@ -31,7 +32,7 @@ final readonly class Connector implements TCP\ConnectorInterface
         private string $proxyHost,
         private int $proxyPort,
         private null|string $username = null,
-        #[\SensitiveParameter]
+        #[SensitiveParameter]
         private null|string $password = null,
         private TCP\ConnectorInterface $connector = new TCP\Connector(),
     ) {}

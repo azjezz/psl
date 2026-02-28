@@ -8,6 +8,8 @@ use Closure;
 use PHPUnit\Framework\TestCase;
 use Psl\Tree;
 
+use function count;
+
 final class TraverseTest extends TestCase
 {
     public function testTraverseWithCustomChildrenProperty(): void
@@ -124,7 +126,7 @@ final class TraverseTest extends TestCase
             return [
                 'name' => $value,
                 'hasChildren' => [] !== $children,
-                'childCount' => \count($children),
+                'childCount' => count($children),
                 'children' => $children,
             ];
         });

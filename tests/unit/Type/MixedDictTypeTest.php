@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Type;
 
 use Generator;
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Collection;
 use Psl\Dict;
@@ -17,13 +18,13 @@ use stdClass;
 
 final class MixedDictTypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\mixed_dict();
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield [
@@ -74,7 +75,7 @@ final class MixedDictTypeTest extends TypeTestCase
         yield 'asdf' => 'key';
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [1];
@@ -84,7 +85,7 @@ final class MixedDictTypeTest extends TypeTestCase
         yield [null];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), 'dict<array-key, mixed>'];

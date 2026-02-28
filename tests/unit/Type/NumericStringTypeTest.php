@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Type;
 
 /**
@@ -14,13 +15,13 @@ final class NumericStringTypeTest extends TypeTestCase
     /**
      * @return Type\Type<numeric-string>
      */
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\numeric_string();
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield [123, '123'];
@@ -33,7 +34,7 @@ final class NumericStringTypeTest extends TypeTestCase
         yield [static::stringable('123'), '123'];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [''];
@@ -48,7 +49,7 @@ final class NumericStringTypeTest extends TypeTestCase
         yield [STDIN];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), 'numeric-string'];

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Collection;
 
 use Closure;
+use Override;
 use Psl\Dict;
 use Psl\Iter;
 use Psl\Vec;
@@ -48,7 +49,7 @@ final readonly class Vector implements VectorInterface
      *
      * @pure
      */
-    #[\Override]
+    #[Override]
     public static function default(): static
     {
         return new self([]);
@@ -94,7 +95,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function first(): mixed
     {
         return $this->elements[0] ?? null;
@@ -108,7 +109,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function last(): mixed
     {
         $key = array_key_last($this->elements);
@@ -124,7 +125,7 @@ final readonly class Vector implements VectorInterface
      *
      * @return Iter\Iterator<int<0, max>, T>
      */
-    #[\Override]
+    #[Override]
     public function getIterator(): Iter\Iterator
     {
         return Iter\Iterator::create($this->elements);
@@ -135,7 +136,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function isEmpty(): bool
     {
         return [] === $this->elements;
@@ -148,7 +149,7 @@ final readonly class Vector implements VectorInterface
      *
      * @return int<0, max>
      */
-    #[\Override]
+    #[Override]
     public function count(): int
     {
         return count($this->elements);
@@ -161,7 +162,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function toArray(): array
     {
         return $this->elements;
@@ -174,7 +175,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function jsonSerialize(): array
     {
         return $this->elements;
@@ -191,7 +192,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function at(int|string $k): mixed
     {
         if (!array_key_exists($k, $this->elements)) {
@@ -208,7 +209,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function contains(int|string $k): bool
     {
         return array_key_exists($k, $this->elements);
@@ -221,7 +222,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function containsKey(int|string $k): bool
     {
         return $this->contains($k);
@@ -236,7 +237,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function get(int|string $k): mixed
     {
         return $this->elements[$k] ?? null;
@@ -250,7 +251,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function firstKey(): null|int
     {
         return [] === $this->elements ? null : 0;
@@ -264,7 +265,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function lastKey(): null|int
     {
         return array_key_last($this->elements);
@@ -282,7 +283,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function linearSearch(mixed $search_value): null|int
     {
         foreach ($this->elements as $key => $element) {
@@ -304,7 +305,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function values(): Vector
     {
         return self::fromArray($this->elements);
@@ -317,7 +318,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function keys(): Vector
     {
         return self::fromArray(array_keys($this->elements));
@@ -339,7 +340,7 @@ final readonly class Vector implements VectorInterface
      * @return Vector<T> a Vector containing the values after a user-specified condition
      *                   is applied.
      */
-    #[\Override]
+    #[Override]
     public function filter(Closure $fn): Vector
     {
         return new Vector(Dict\filter($this->elements, $fn));
@@ -362,7 +363,7 @@ final readonly class Vector implements VectorInterface
      * @return Vector<T> a `Vector` containing the values after a user-specified
      *                   condition is applied to the keys and values of the current `Vector`.
      */
-    #[\Override]
+    #[Override]
     public function filterWithKey(Closure $fn): Vector
     {
         return new Vector(Dict\filter_with_key($this->elements, $fn));
@@ -386,7 +387,7 @@ final readonly class Vector implements VectorInterface
      * @return Vector<Tu> a `Vector` containing key/value pairs after a user-specified
      *                    operation is applied.
      */
-    #[\Override]
+    #[Override]
     public function map(Closure $fn): Vector
     {
         return new Vector(Dict\map($this->elements, $fn));
@@ -411,7 +412,7 @@ final readonly class Vector implements VectorInterface
      * @return Vector<Tu> a `Vector` containing the values after a user-specified
      *                    operation on the current `Vector`'s keys and values is applied.
      */
-    #[\Override]
+    #[Override]
     public function mapWithKey(Closure $fn): Vector
     {
         return new Vector(Dict\map_with_key($this->elements, $fn));
@@ -435,7 +436,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function zip(array $elements): Vector
     {
         return Vector::fromArray(Vec\zip($this->elements, $elements));
@@ -458,7 +459,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function take(int $n): Vector
     {
         return $this->slice(0, $n);
@@ -478,7 +479,7 @@ final readonly class Vector implements VectorInterface
      * @return Vector<T> A `Vector` that is a proper subset of the current
      *                   `Vector` up until the callback returns `false`.
      */
-    #[\Override]
+    #[Override]
     public function takeWhile(Closure $fn): Vector
     {
         return new Vector(Dict\take_while($this->elements, $fn));
@@ -501,7 +502,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function drop(int $n): Vector
     {
         return $this->slice($n);
@@ -521,7 +522,7 @@ final readonly class Vector implements VectorInterface
      * @return Vector<T> A `Vector` that is a proper subset of the current
      *                   `Vector` starting after the callback returns `true`.
      */
-    #[\Override]
+    #[Override]
     public function dropWhile(Closure $fn): Vector
     {
         return new Vector(Dict\drop_while($this->elements, $fn));
@@ -548,7 +549,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function slice(int $start, null|int $length = null): Vector
     {
         return self::fromArray(Dict\slice($this->elements, $start, $length));
@@ -568,7 +569,7 @@ final readonly class Vector implements VectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function chunk(int $size): Vector
     {
         return static::fromArray(Vec\map(Vec\chunk($this->toArray(), $size), static::fromArray(...)));

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -20,7 +21,7 @@ final readonly class BoolType extends Type\Type
     /**
      * @psalm-assert-if-true bool $value
      */
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         return is_bool($value);
@@ -29,7 +30,7 @@ final readonly class BoolType extends Type\Type
     /**
      * @throws CoercionException
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): bool
     {
         if (is_bool($value)) {
@@ -52,7 +53,7 @@ final readonly class BoolType extends Type\Type
      *
      * @throws AssertException
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): bool
     {
         if (is_bool($value)) {
@@ -62,7 +63,7 @@ final readonly class BoolType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return 'bool';

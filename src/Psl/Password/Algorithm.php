@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Password;
 
+use Override;
 use Psl\Default\DefaultInterface;
 
 use const PASSWORD_ARGON2I;
@@ -98,7 +99,7 @@ enum Algorithm: string implements DefaultInterface
      *
      * @pure
      */
-    #[\Override]
+    #[Override]
     public static function default(): static
     {
         return self::Default;

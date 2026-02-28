@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Shell;
 
+use Override;
 use Psl\Default\DefaultInterface;
 
 /**
@@ -78,7 +79,7 @@ enum ErrorOutputBehavior implements DefaultInterface
      *
      * @pure
      */
-    #[\Override]
+    #[Override]
     public static function default(): static
     {
         return self::Discard;

@@ -6,10 +6,13 @@ namespace Psl\DateTime;
 
 use DateTimeImmutable;
 use DateTimeZone;
+use Override;
 use Psl\Exception\InvariantViolationException;
 use Psl\Interoperability;
 use Psl\Locale\Locale;
 use Psl\Math;
+
+use function sprintf;
 
 /**
  * Represents a precise point in time, with seconds and nanoseconds since the Unix epoch.
@@ -196,7 +199,7 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\To
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function getTimestamp(): self
     {
         return $this;
@@ -246,7 +249,7 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\To
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function plus(Duration $duration): static
     {
         [$h, $m, $s, $ns] = $duration->getParts();
@@ -266,7 +269,7 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\To
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function minus(Duration $duration): static
     {
         [$h, $m, $s, $ns] = $duration->getParts();
@@ -285,7 +288,7 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\To
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public static function fromStdlib(mixed $value): static
     {
         $seconds = $value->getTimestamp();
@@ -304,17 +307,17 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\To
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function toStdlib(): mixed
     {
         $microseconds = (int) ($this->nanoseconds / NANOSECONDS_PER_MICROSECOND);
-        $formatted = \sprintf('%d.%06d', $this->seconds, $microseconds);
+        $formatted = sprintf('%d.%06d', $this->seconds, $microseconds);
 
         /** @var DateTimeImmutable */
         return DateTimeImmutable::createFromFormat('U.u', $formatted, new DateTimeZone('UTC'));
     }
 
-    #[\Override]
+    #[Override]
     public function jsonSerialize(): array
     {
         return [

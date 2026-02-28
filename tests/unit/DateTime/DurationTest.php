@@ -423,4 +423,178 @@ final class DurationTest extends TestCase
         static::assertInstanceOf(DateInterval::class, $interval);
         static::assertSame(0, (int) $interval->s);
     }
+
+    public function testCompareWithSameHoursDifferentMinutes(): void
+    {
+        $a = DateTime\Duration::fromParts(2, 10);
+        $b = DateTime\Duration::fromParts(2, 20);
+
+        static::assertSame(Order::Less, $a->compare($b));
+        static::assertSame(Order::Greater, $b->compare($a));
+        static::assertTrue($a->shorter($b));
+        static::assertFalse($b->shorter($a));
+    }
+
+    public function testInvertZeroReturnsSameInstance(): void
+    {
+        $zero = DateTime\Duration::zero();
+
+        $inverted = $zero->invert();
+
+        static::assertSame($zero, $inverted);
+    }
+
+    public function testPlusZeroReturnsSameInstance(): void
+    {
+        $d = DateTime\Duration::fromParts(1, 30, 45);
+        $zero = DateTime\Duration::zero();
+
+        $result = $d->plus($zero);
+
+        static::assertSame($d, $result);
+    }
+
+    public function testZeroPlusOtherReturnsSameInstanceAsOther(): void
+    {
+        $zero = DateTime\Duration::zero();
+        $d = DateTime\Duration::fromParts(1, 30, 45);
+
+        $result = $zero->plus($d);
+
+        static::assertSame($d, $result);
+    }
+
+    public function testMinusZeroReturnsSameInstance(): void
+    {
+        $d = DateTime\Duration::fromParts(1, 30, 45);
+        $zero = DateTime\Duration::zero();
+
+        $result = $d->minus($zero);
+
+        static::assertSame($d, $result);
+    }
+
+    public function testZeroMinusOtherReturnsInvertedOther(): void
+    {
+        $zero = DateTime\Duration::zero();
+        $d = DateTime\Duration::fromParts(1, 30, 45);
+
+        $result = $zero->minus($d);
+
+        // Should be the inverse of $d
+        static::assertSame([-1, -30, -45, 0], $result->getParts());
+        static::assertTrue($result->equals($d->invert()));
+    }
+
+    public function testPlusWithNonZeroHours(): void
+    {
+        $a = DateTime\Duration::fromParts(3, 0, 0);
+        $b = DateTime\Duration::fromParts(2, 0, 0);
+
+        $result = $a->plus($b);
+
+        static::assertSame(5, $result->getHours());
+        static::assertSame(0, $result->getMinutes());
+    }
+
+    public function testMinusWithNonZeroHours(): void
+    {
+        $a = DateTime\Duration::fromParts(5, 0, 0);
+        $b = DateTime\Duration::fromParts(2, 0, 0);
+
+        $result = $a->minus($b);
+
+        static::assertSame(3, $result->getHours());
+        static::assertSame(0, $result->getMinutes());
+    }
+
+    public function testToStringDefaultMaxDecimals(): void
+    {
+        // With default max_decimals=3, nanoseconds=42 should be rounded to "0 second(s)"
+        // because 42 nanoseconds -> "000000042" -> first 3 chars "000" -> trimmed to "" -> "0"
+        $d = DateTime\Duration::nanoseconds(42);
+        static::assertSame('0 second(s)', $d->toString());
+
+        // With 4 decimals, 42 nanoseconds -> "000000042" -> first 4 chars "0000" -> trimmed to "" -> "0 second(s)"
+        // But with 9 decimals, we'd see the full value
+        static::assertSame('0.000000042 second(s)', $d->toString(9));
+
+        // 42_000_000 nanoseconds -> "042000000" -> first 3 chars "042" -> "0.042 second(s)"
+        $d2 = DateTime\Duration::nanoseconds(42_000_000);
+        static::assertSame('0.042 second(s)', $d2->toString());
+
+        // With max_decimals=4: "042000000" -> first 4 chars "0420" -> trimmed to "042" -> "0.042 second(s)"
+        // If mutant changes default from 3 to 4, this would still be "0.042" - same result.
+        // But with 1234000 nanoseconds: "001234000" -> first 3 chars "001" -> "0.001 second(s)"
+        // With 4 decimals: "001234000" -> first 4 chars "0012" -> "0.0012 second(s)"
+        $d3 = DateTime\Duration::nanoseconds(1_234_000);
+        static::assertSame('0.001 second(s)', $d3->toString());
+        static::assertSame('0.0012 second(s)', $d3->toString(4));
+    }
+
+    public function testToStringZeroDecimals(): void
+    {
+        $d = DateTime\Duration::fromParts(1, 30, 45, 500_000_000);
+
+        // With 0 decimals, should not include any decimal part
+        $result = $d->toString(0);
+
+        static::assertSame('1 hour(s), 30 minute(s), 45 second(s)', $result);
+        static::assertStringNotContainsString('.', $result);
+    }
+
+    public function testMagicToStringMatchesToString(): void
+    {
+        $d = DateTime\Duration::fromParts(1, 30, 45, 500_000_000);
+
+        static::assertSame($d->toString(), (string) $d);
+    }
+
+    public function testToStdlibCastInt(): void
+    {
+        // Duration with nanoseconds that create a fractional second
+        $duration = DateTime\Duration::fromParts(0, 0, 5, 999_999_999);
+
+        $interval = $duration->toStdlib();
+
+        // (int) getTotalSeconds() should truncate, not round
+        // getTotalSeconds() = 5.999999999, (int) = 5
+        static::assertInstanceOf(DateInterval::class, $interval);
+        static::assertSame(5, (int) $interval->s);
+    }
+
+    public function testCompareWithSameHoursAndMinutesDifferentSeconds(): void
+    {
+        $a = DateTime\Duration::fromParts(1, 30, 10);
+        $b = DateTime\Duration::fromParts(1, 30, 20);
+
+        static::assertSame(Order::Less, $a->compare($b));
+        static::assertSame(Order::Greater, $b->compare($a));
+    }
+
+    public function testPlusAllComponents(): void
+    {
+        $a = DateTime\Duration::fromParts(1, 10, 20, 300_000_000);
+        $b = DateTime\Duration::fromParts(2, 20, 30, 400_000_000);
+
+        $result = $a->plus($b);
+
+        static::assertSame(3, $result->getHours());
+        static::assertSame(30, $result->getMinutes());
+        static::assertSame(50, $result->getSeconds());
+        static::assertSame(700_000_000, $result->getNanoseconds());
+    }
+
+    public function testMinusAllComponents(): void
+    {
+        $a = DateTime\Duration::fromParts(3, 30, 50, 700_000_000);
+        $b = DateTime\Duration::fromParts(1, 10, 20, 300_000_000);
+
+        $result = $a->minus($b);
+
+        static::assertSame(2, $result->getHours());
+        static::assertSame(20, $result->getMinutes());
+        static::assertSame(30, $result->getSeconds());
+        static::assertSame(400_000_000, $result->getNanoseconds());
+    }
 }

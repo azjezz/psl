@@ -9,7 +9,9 @@ use Psl\Async;
 use Psl\DateTime\Duration;
 use Psl\IO;
 use Psl\Network;
+use Psl\OS;
 use Psl\UDP;
+use ReflectionMethod;
 
 final class SocketTest extends TestCase
 {
@@ -240,6 +242,341 @@ final class SocketTest extends TestCase
                 $socket->receiveFrom(1024, Duration::milliseconds(50));
             } finally {
                 $socket->close();
+            }
+        })->await();
+    }
+
+    public function testBindWithExplicitPort0(): void
+    {
+        Async\run(static function (): void {
+            $socket = UDP\Socket::bind('127.0.0.1', 0);
+            $address = $socket->getLocalAddress();
+            self::assertGreaterThan(0, $address->port);
+            $socket->close();
+        })->await();
+    }
+
+    public function testBindWithExplicitFalseOptions(): void
+    {
+        Async\run(static function (): void {
+            $socket = UDP\Socket::bind('127.0.0.1', 0, false, false, false);
+            $address = $socket->getLocalAddress();
+            self::assertSame('127.0.0.1', $address->host);
+            self::assertGreaterThan(0, $address->port);
+            $socket->close();
+        })->await();
+    }
+
+    public function testSendToActuallySendsData(): void
+    {
+        Async\run(static function (): void {
+            $receiver = UDP\Socket::bind('127.0.0.1', 0);
+            $sender = UDP\Socket::bind('127.0.0.1', 0);
+
+            $target = $receiver->getLocalAddress();
+            $bytes_sent = $sender->sendTo('test-data', $target);
+
+            self::assertGreaterThan(0, $bytes_sent);
+            self::assertSame(9, $bytes_sent);
+
+            [$data] = $receiver->receiveFrom(1024);
+            self::assertSame('test-data', $data);
+
+            $sender->close();
+            $receiver->close();
+        })->await();
+    }
+
+    public function testSendActuallySendsData(): void
+    {
+        Async\run(static function (): void {
+            $server = UDP\Socket::bind('127.0.0.1', 0);
+            $client = UDP\Socket::bind('127.0.0.1', 0);
+
+            $server_addr = $server->getLocalAddress();
+            $client->connect($server_addr->host, $server_addr->port);
+
+            $bytes_sent = $client->send('connected-data');
+
+            self::assertGreaterThan(0, $bytes_sent);
+            self::assertSame(14, $bytes_sent);
+
+            [$data] = $server->receiveFrom(1024);
+            self::assertSame('connected-data', $data);
+
+            $client->close();
+            $server->close();
+        })->await();
+    }
+
+    public function testPayloadExactlyAtMaxDatagramSizePassesValidation(): void
+    {
+        Async\run(static function (): void {
+            $socket = UDP\Socket::bind('127.0.0.1', 0);
+            $data = str_repeat('x', 65_507);
+            $threw_invalid_argument = false;
+            try {
+                $socket->sendTo($data, Network\Address::udp('127.0.0.1', 9999));
+            } catch (Network\Exception\InvalidArgumentException) {
+                $threw_invalid_argument = true;
+            } catch (Network\Exception\RuntimeException) {
+                // @mago-expect lint:no-empty-catch-clause
+                // OS-level send failure is acceptable
+            } finally {
+                $socket->close();
+            }
+
+            self::assertFalse(
+                $threw_invalid_argument,
+                'Payload at exactly MAX_DATAGRAM_SIZE should not fail validation',
+            );
+        })->await();
+    }
+
+    public function testPayloadOneOverMaxDatagramSizeThrows(): void
+    {
+        $this->expectException(Network\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('exceeds maximum size');
+
+        Async\run(static function (): void {
+            $socket = UDP\Socket::bind('127.0.0.1', 0);
+            try {
+                $socket->sendTo(str_repeat('x', 65_508), Network\Address::udp('127.0.0.1', 9999));
+            } finally {
+                $socket->close();
+            }
+        })->await();
+    }
+
+    public function testPayloadSizeValidationOnSend(): void
+    {
+        $this->expectException(Network\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('exceeds maximum size');
+
+        Async\run(static function (): void {
+            $server = UDP\Socket::bind('127.0.0.1', 0);
+            $client = UDP\Socket::bind('127.0.0.1', 0);
+            $client->connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
+            try {
+                $client->send(str_repeat('x', 65_508));
+            } finally {
+                $client->close();
+                $server->close();
+            }
+        })->await();
+    }
+
+    public function testGetStreamReturnsResource(): void
+    {
+        Async\run(static function (): void {
+            $socket = UDP\Socket::bind('127.0.0.1', 0);
+            $stream = $socket->getStream();
+            self::assertIsResource($stream);
+            $socket->close();
+        })->await();
+    }
+
+    public function testGetStreamReturnsNullAfterClose(): void
+    {
+        Async\run(static function (): void {
+            $socket = UDP\Socket::bind('127.0.0.1', 0);
+            $socket->close();
+            $stream = $socket->getStream();
+            self::assertNull($stream);
+        })->await();
+    }
+
+    public function testDoubleCloseDoesNotThrow(): void
+    {
+        Async\run(static function (): void {
+            $socket = UDP\Socket::bind('127.0.0.1', 0);
+            $socket->close();
+            $socket->close();
+            self::assertNull($socket->getStream());
+        })->await();
+    }
+
+    public function testBindWithSpecificPort(): void
+    {
+        Async\run(static function (): void {
+            $temp = UDP\Socket::bind('127.0.0.1', 0);
+            $port = $temp->getLocalAddress()->port;
+            $temp->close();
+
+            $socket = UDP\Socket::bind('127.0.0.1', $port);
+            $address = $socket->getLocalAddress();
+            self::assertSame($port, $address->port);
+            $socket->close();
+        })->await();
+    }
+
+    public function testSendToWithTimeout(): void
+    {
+        Async\run(static function (): void {
+            $receiver = UDP\Socket::bind('127.0.0.1', 0);
+            $sender = UDP\Socket::bind('127.0.0.1', 0);
+
+            $target = $receiver->getLocalAddress();
+            $bytes_sent = $sender->sendTo('timeout-test', $target, Duration::seconds(5));
+
+            self::assertGreaterThan(0, $bytes_sent);
+            self::assertSame(12, $bytes_sent);
+
+            [$data] = $receiver->receiveFrom(1024);
+            self::assertSame('timeout-test', $data);
+
+            $sender->close();
+            $receiver->close();
+        })->await();
+    }
+
+    public function testSendWithTimeout(): void
+    {
+        Async\run(static function (): void {
+            $server = UDP\Socket::bind('127.0.0.1', 0);
+            $client = UDP\Socket::bind('127.0.0.1', 0);
+            $client->connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
+
+            $bytes_sent = $client->send('timeout-send', Duration::seconds(5));
+
+            self::assertGreaterThan(0, $bytes_sent);
+            self::assertSame(12, $bytes_sent);
+
+            [$data] = $server->receiveFrom(1024);
+            self::assertSame('timeout-send', $data);
+
+            $client->close();
+            $server->close();
+        })->await();
+    }
+
+    public function testReceiveTimeout(): void
+    {
+        $this->expectException(IO\Exception\TimeoutException::class);
+
+        Async\run(static function (): void {
+            $server = UDP\Socket::bind('127.0.0.1', 0);
+            $client = UDP\Socket::bind('127.0.0.1', 0);
+            $client->connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
+            try {
+                $client->receive(1024, Duration::milliseconds(50));
+            } finally {
+                $client->close();
+                $server->close();
+            }
+        })->await();
+    }
+
+    public function testParseAddressEmptyString(): void
+    {
+        $socket = UDP\Socket::bind('127.0.0.1', 0);
+        $socket->close();
+        $method = new ReflectionMethod($socket, 'parseAddress');
+        $result = $method->invoke($socket, '');
+        static::assertSame('0.0.0.0', $result->host);
+        static::assertSame(0, $result->port);
+    }
+
+    public function testParseAddressIpv6WithPort(): void
+    {
+        $socket = UDP\Socket::bind('127.0.0.1', 0);
+        $socket->close();
+        $method = new ReflectionMethod($socket, 'parseAddress');
+        $result = $method->invoke($socket, '[::1]:8080');
+        static::assertSame('::1', $result->host);
+        static::assertSame(8080, $result->port);
+    }
+
+    public function testParseAddressIpv6WithoutPort(): void
+    {
+        $socket = UDP\Socket::bind('127.0.0.1', 0);
+        $socket->close();
+        $method = new ReflectionMethod($socket, 'parseAddress');
+        $result = $method->invoke($socket, '[::1]');
+        static::assertSame('::1', $result->host);
+        static::assertSame(0, $result->port);
+    }
+
+    public function testParseAddressIpv6EmptyHost(): void
+    {
+        $socket = UDP\Socket::bind('127.0.0.1', 0);
+        $socket->close();
+        $method = new ReflectionMethod($socket, 'parseAddress');
+        $result = $method->invoke($socket, '[]:8080');
+        static::assertSame('::', $result->host);
+        static::assertSame(8080, $result->port);
+    }
+
+    public function testParseAddressIpv6NoBracketClose(): void
+    {
+        $socket = UDP\Socket::bind('127.0.0.1', 0);
+        $socket->close();
+        $method = new ReflectionMethod($socket, 'parseAddress');
+        $result = $method->invoke($socket, '[::1');
+        static::assertSame('[::1', $result->host);
+        static::assertSame(0, $result->port);
+    }
+
+    public function testParseAddressIpv4WithoutColon(): void
+    {
+        $socket = UDP\Socket::bind('127.0.0.1', 0);
+        $socket->close();
+        $method = new ReflectionMethod($socket, 'parseAddress');
+        $result = $method->invoke($socket, '192.168.1.1');
+        static::assertSame('192.168.1.1', $result->host);
+        static::assertSame(0, $result->port);
+    }
+
+    public function testParseAddressIpv4InvalidPort(): void
+    {
+        $this->expectException(Network\Exception\RuntimeException::class);
+        $this->expectExceptionMessage('Invalid port number');
+
+        $socket = UDP\Socket::bind('127.0.0.1', 0);
+        $socket->close();
+        $method = new ReflectionMethod($socket, 'parseAddress');
+        $method->invoke($socket, '127.0.0.1:99999');
+    }
+
+    public function testParseAddressIpv6InvalidPort(): void
+    {
+        $this->expectException(Network\Exception\RuntimeException::class);
+        $this->expectExceptionMessage('Invalid port number');
+
+        $socket = UDP\Socket::bind('127.0.0.1', 0);
+        $socket->close();
+        $method = new ReflectionMethod($socket, 'parseAddress');
+        $method->invoke($socket, '[::1]:99999');
+    }
+
+    public function testWaitWritableTimeout(): void
+    {
+        if (OS\is_windows()) {
+            static::markTestSkipped('stream_socket_pair with STREAM_PF_UNIX not available on Windows');
+        }
+
+        $this->expectException(IO\Exception\TimeoutException::class);
+        $this->expectExceptionMessage('send operation timed out');
+
+        Async\run(static function (): void {
+            $pair = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
+            stream_set_blocking($pair[0], false);
+            stream_set_blocking($pair[1], false);
+
+            $chunk = str_repeat('x', 65_536);
+            while (@fwrite($pair[0], $chunk) > 0) {
+                // Keep writing until the buffer is full and the socket becomes unwritable
+                // @mago-expect lint:no-empty-loop
+            }
+
+            $socket = UDP\Socket::bind('127.0.0.1', 0);
+            $socket->close();
+            $method = new ReflectionMethod($socket, 'waitWritable');
+            try {
+                $method->invoke($socket, $pair[0], Duration::milliseconds(50));
+            } finally {
+                fclose($pair[0]);
+                fclose($pair[1]);
             }
         })->await();
     }

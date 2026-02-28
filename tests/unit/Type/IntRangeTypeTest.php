@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Math;
 use Psl\Type;
@@ -13,13 +14,13 @@ use const PHP_INT_MIN;
 
 final class IntRangeTypeTest extends TypeTestCase
 {
-    #[\Override]
+    #[Override]
     public static function getType(): Type\TypeInterface
     {
         return Type\int_range(Math\INT64_MIN, Math\INT64_MAX);
     }
 
-    #[\Override]
+    #[Override]
     public static function getValidCoercions(): iterable
     {
         yield [42, 42];
@@ -39,7 +40,7 @@ final class IntRangeTypeTest extends TypeTestCase
         yield [1.0, 1];
     }
 
-    #[\Override]
+    #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [1.23];
@@ -60,7 +61,7 @@ final class IntRangeTypeTest extends TypeTestCase
         yield ['0xFF'];
     }
 
-    #[\Override]
+    #[Override]
     public static function getToStringExamples(): iterable
     {
         yield [Type\int_range(5, 10), 'int<5, 10>'];

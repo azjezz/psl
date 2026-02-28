@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
+use Override;
+
 /**
  * @codeCoverageIgnore
  */
@@ -22,7 +24,7 @@ final class CloseStreamHandle implements CloseHandleInterface, StreamHandleInter
     /**
      * {@inheritDoc}
      */
-    #[\Override]
+    #[Override]
     public function close(): void
     {
         $this->handle->close();
@@ -31,7 +33,7 @@ final class CloseStreamHandle implements CloseHandleInterface, StreamHandleInter
     /**
      * {@inheritDoc}
      */
-    #[\Override]
+    #[Override]
     public function getStream(): mixed
     {
         return $this->handle->getStream();

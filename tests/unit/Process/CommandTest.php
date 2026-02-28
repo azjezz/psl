@@ -10,6 +10,10 @@ use Psl\Process\Command;
 use Psl\Process\Exception;
 use Psl\Process\Stdio;
 
+use function Psl\Env\temp_dir;
+use function Psl\Filesystem\canonicalize;
+use function Psl\IO\pipe;
+
 final class CommandTest extends TestCase
 {
     /**
@@ -166,7 +170,7 @@ final class CommandTest extends TestCase
 
     public function testWorkingDirectoryIsUsed(): void
     {
-        $tempDir = \Psl\Env\temp_dir();
+        $tempDir = temp_dir();
 
         $output = self::phpCommand()
             ->withArgument('-r')
@@ -174,7 +178,7 @@ final class CommandTest extends TestCase
             ->withWorkingDirectory($tempDir)
             ->output();
 
-        static::assertSame(\Psl\Filesystem\canonicalize($tempDir), \Psl\Filesystem\canonicalize($output->stdout));
+        static::assertSame(canonicalize($tempDir), canonicalize($output->stdout));
     }
 
     public function testImmutability(): void
@@ -354,7 +358,7 @@ final class CommandTest extends TestCase
             );
         }
 
-        [$read, $write] = \Psl\IO\pipe();
+        [$read, $write] = pipe();
         $write->writeAll("handle_input\n");
         $write->close();
 
@@ -373,7 +377,7 @@ final class CommandTest extends TestCase
 
     public function testHandleStdioClosedThrows(): void
     {
-        [$read, $write] = \Psl\IO\pipe();
+        [$read, $write] = pipe();
         $read->close();
         $write->close();
 
