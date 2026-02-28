@@ -154,4 +154,42 @@ final class DirectedGraphTest extends TestCase
 
         static::assertTrue($graph->hasCycle());
     }
+
+    public function testHasCycleDetectsDirectCycleCorrectly(): void
+    {
+        $graph = Graph\directed();
+        $graph = Graph\add_edge($graph, 'A', 'B');
+        $graph = Graph\add_edge($graph, 'B', 'C');
+        $graph = Graph\add_edge($graph, 'C', 'A');
+
+        static::assertTrue($graph->hasCycle());
+
+        $acyclic = Graph\directed();
+        $acyclic = Graph\add_edge($acyclic, 'X', 'Y');
+        $acyclic = Graph\add_edge($acyclic, 'Y', 'Z');
+        static::assertFalse($acyclic->hasCycle());
+    }
+
+    public function testHasCycleWithNodeHavingMultipleEdgesFirstNeighborVisited(): void
+    {
+        $graph = Graph\directed();
+        $graph = Graph\add_edge($graph, 'A', 'B');
+        $graph = Graph\add_edge($graph, 'A', 'C');
+        $graph = Graph\add_edge($graph, 'B', 'D');
+        $graph = Graph\add_edge($graph, 'C', 'D');
+
+        static::assertFalse($graph->hasCycle());
+    }
+
+    public function testHasCycleWithMultipleEdgesContinueVsBreak(): void
+    {
+        $graph = Graph\directed();
+        $graph = Graph\add_edge($graph, 'A', 'B');
+        $graph = Graph\add_edge($graph, 'B', 'C');
+        $graph = Graph\add_edge($graph, 'B', 'D');
+        $graph = Graph\add_edge($graph, 'C', 'D');
+        $graph = Graph\add_edge($graph, 'C', 'A');
+
+        static::assertTrue($graph->hasCycle());
+    }
 }

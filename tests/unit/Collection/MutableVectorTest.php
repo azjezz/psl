@@ -169,6 +169,18 @@ final class MutableVectorTest extends AbstractVectorTestCase
         $vector[3];
     }
 
+    public function testOffsetSetAtZero(): void
+    {
+        $vector = $this->create(['a', 'b', 'c']);
+
+        $vector[0] = 'x';
+
+        static::assertSame('x', $vector[0]);
+        static::assertSame('b', $vector[1]);
+        static::assertSame('c', $vector[2]);
+        static::assertCount(3, $vector);
+    }
+
     public function testOffsetSetThrowsForInvalidOffsetType(): void
     {
         $vector = $this->create([

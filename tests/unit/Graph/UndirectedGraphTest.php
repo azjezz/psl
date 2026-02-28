@@ -174,4 +174,20 @@ final class UndirectedGraphTest extends TestCase
 
         static::assertTrue($graph->hasCycle());
     }
+
+    public function testHasCycleDetectsTriangleCycleRequiringVisitedFlag(): void
+    {
+        $graph = Graph\undirected();
+        $graph = Graph\add_edge($graph, 'A', 'B');
+        $graph = Graph\add_edge($graph, 'B', 'C');
+        $graph = Graph\add_edge($graph, 'C', 'A');
+
+        static::assertTrue($graph->hasCycle());
+
+        $linear = Graph\undirected();
+        $linear = Graph\add_edge($linear, 'X', 'Y');
+        $linear = Graph\add_edge($linear, 'Y', 'Z');
+
+        static::assertFalse($linear->hasCycle());
+    }
 }

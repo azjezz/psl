@@ -504,4 +504,71 @@ final class TimestampTest extends TestCase
         // microsecond precision preserved
         static::assertSame(500_000_000, $roundTripped->getNanoseconds());
     }
+
+    public function testFromStdlibMicrosecondCast(): void
+    {
+        // Test with a specific microsecond value
+        $stdlib = new DateTimeImmutable('2024-06-15 14:30:45.000001', new DateTimeZone('UTC'));
+
+        $timestamp = Timestamp::fromStdlib($stdlib);
+
+        // 1 microsecond = 1000 nanoseconds
+        static::assertSame(1_000, $timestamp->getNanoseconds());
+    }
+
+    public function testToStdlibNanosecondDivisionCast(): void
+    {
+        // 1500 nanoseconds / 1000 = 1.5, which should be truncated to 1 microsecond
+        $timestamp = Timestamp::fromParts(1_711_917_232, 1_500);
+
+        $stdlib = $timestamp->toStdlib();
+
+        static::assertSame('000001', $stdlib->format('u'));
+    }
+
+    public function testStdlibMicrosecondPrecisionRoundTrip(): void
+    {
+        $nanosecondValues = [
+            0,
+            1_000, // 1 microsecond
+            123_456_000, // 123456 microseconds
+            500_000_000, // 500000 microseconds
+            999_999_000, // 999999 microseconds
+        ];
+
+        foreach ($nanosecondValues as $nanoseconds) {
+            $original = Timestamp::fromParts(1_711_917_232, $nanoseconds);
+            $roundTripped = Timestamp::fromStdlib($original->toStdlib());
+
+            static::assertSame(
+                $original->getSeconds(),
+                $roundTripped->getSeconds(),
+                "Seconds mismatch for nanoseconds={$nanoseconds}",
+            );
+            static::assertSame(
+                $nanoseconds,
+                $roundTripped->getNanoseconds(),
+                "Nanoseconds precision lost for value {$nanoseconds}",
+            );
+        }
+    }
+
+    public function testFromStdlibZeroMicroseconds(): void
+    {
+        $stdlib = new DateTimeImmutable('2024-06-15 14:30:45.000000', new DateTimeZone('UTC'));
+
+        $timestamp = Timestamp::fromStdlib($stdlib);
+
+        static::assertSame(0, $timestamp->getNanoseconds());
+    }
+
+    public function testToStdlibEdgeMicroseconds(): void
+    {
+        // Maximum microsecond value: 999999 microseconds = 999_999_000 nanoseconds
+        $timestamp = Timestamp::fromParts(1_711_917_232, 999_999_000);
+        $stdlib = $timestamp->toStdlib();
+
+        static::assertSame('999999', $stdlib->format('u'));
+        static::assertSame(1_711_917_232, $stdlib->getTimestamp());
+    }
 }

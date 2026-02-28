@@ -109,4 +109,115 @@ final class BlockTest extends TestCase
 
         static::assertFalse($block->contains('not-an-ip'));
     }
+
+    public function testCidrWithExtraSlashIsAcceptedByExplodeLimit(): void
+    {
+        $block = new Block('::1/128/extra');
+
+        static::assertTrue($block->contains('::1'));
+        static::assertFalse($block->contains('::2'));
+    }
+
+    public function testNonNumericPrefixIsTreatedAsZeroByIntCast(): void
+    {
+        $block = new Block('10.0.0.0/abc');
+
+        static::assertTrue($block->contains('10.0.0.1'));
+        static::assertTrue($block->contains('192.168.1.1'));
+        static::assertTrue($block->contains('255.255.255.255'));
+    }
+
+    public function testIpv6PrefixZeroMatchesAllAddresses(): void
+    {
+        $block = new Block('::/0');
+
+        static::assertTrue($block->contains('::1'));
+        static::assertTrue($block->contains('2001:db8::1'));
+        static::assertTrue($block->contains('fe80::1'));
+        static::assertTrue($block->contains('ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff'));
+        static::assertTrue($block->contains('192.168.1.1'));
+        static::assertTrue($block->contains('255.255.255.255'));
+    }
+
+    public function testByteAlignedPrefixProducesCorrectMask(): void
+    {
+        // /8 for IPv4 (prefix 104 internally): 13 full 0xFF bytes, 0 remaining bits
+        $block = new Block('10.0.0.0/8');
+
+        static::assertTrue($block->contains('10.0.0.1'));
+        static::assertTrue($block->contains('10.255.255.255'));
+        static::assertFalse($block->contains('11.0.0.0'));
+
+        // /16 for IPv4 (prefix 112 internally): 14 full 0xFF bytes, 0 remaining bits
+        $block16 = new Block('172.16.0.0/16');
+
+        static::assertTrue($block16->contains('172.16.0.1'));
+        static::assertTrue($block16->contains('172.16.255.255'));
+        static::assertFalse($block16->contains('172.17.0.0'));
+
+        // /64 for IPv6: 8 full 0xFF bytes, 0 remaining bits
+        $block64 = new Block('2001:db8:abcd:1234::/64');
+
+        static::assertTrue($block64->contains('2001:db8:abcd:1234::1'));
+        static::assertTrue($block64->contains('2001:db8:abcd:1234:ffff:ffff:ffff:ffff'));
+        static::assertFalse($block64->contains('2001:db8:abcd:1235::1'));
+    }
+
+    public function testPrefix25ExcludesUpperHalf(): void
+    {
+        $block = new Block('192.168.1.0/25');
+
+        // Lower half (.0 - .127) should be contained
+        static::assertTrue($block->contains('192.168.1.0'));
+        static::assertTrue($block->contains('192.168.1.1'));
+        static::assertTrue($block->contains('192.168.1.64'));
+        static::assertTrue($block->contains('192.168.1.127'));
+
+        // Upper half (.128 - .255) should NOT be contained
+        static::assertFalse($block->contains('192.168.1.128'));
+        static::assertFalse($block->contains('192.168.1.200'));
+        static::assertFalse($block->contains('192.168.1.255'));
+    }
+
+    public function testPrefix26CorrectlyMasksSubnet(): void
+    {
+        $block = new Block('192.168.1.0/26');
+
+        // First quarter (.0 - .63) should be contained
+        static::assertTrue($block->contains('192.168.1.0'));
+        static::assertTrue($block->contains('192.168.1.63'));
+
+        // Remaining addresses should NOT be contained
+        static::assertFalse($block->contains('192.168.1.64'));
+        static::assertFalse($block->contains('192.168.1.127'));
+        static::assertFalse($block->contains('192.168.1.128'));
+    }
+
+    public function testIpv6SmallPrefixContainment(): void
+    {
+        // /1 prefix: first bit determines membership
+        $block = new Block('8000::/1');
+
+        // Addresses with first bit = 1 should be contained
+        static::assertTrue($block->contains('8000::1'));
+        static::assertTrue($block->contains('ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff'));
+
+        // Addresses with first bit = 0 should NOT be contained
+        static::assertFalse($block->contains('::1'));
+        static::assertFalse($block->contains('7fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff'));
+    }
+
+    public function testIpv6Prefix120CorrectMasking(): void
+    {
+        // /120: 15 full 0xFF bytes + no remaining bits, padded to 16 (or 17)
+        $block = new Block('2001:db8::100/120');
+
+        // Addresses in the last byte range .100-.1ff should match based on /120
+        static::assertTrue($block->contains('2001:db8::100'));
+        static::assertTrue($block->contains('2001:db8::1ff'));
+
+        // Addresses outside the range should NOT match
+        static::assertFalse($block->contains('2001:db8::200'));
+        static::assertFalse($block->contains('2001:db8::ff'));
+    }
 }

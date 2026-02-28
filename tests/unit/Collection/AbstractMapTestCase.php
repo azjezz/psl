@@ -430,6 +430,12 @@ abstract class AbstractMapTestCase extends TestCase
         static::assertNotSame($map, $rest);
         static::assertCount(1, $rest);
         static::assertSame('bar', $rest->at('foo'));
+
+        $map = $this->create(['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4]);
+        $rest = $map->take(2);
+        static::assertInstanceOf($this->mapClass, $rest);
+        static::assertCount(2, $rest);
+        static::assertSame(['a' => 1, 'b' => 2], $rest->toArray());
     }
 
     public function testTakeWhile(): void

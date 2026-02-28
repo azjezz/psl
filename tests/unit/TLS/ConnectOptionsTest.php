@@ -47,6 +47,13 @@ final class ConnectOptionsTest extends TestCase
         static::assertFalse($config->peerVerification);
     }
 
+    public function testWithPeerVerificationDefaultsToTrue(): void
+    {
+        $config = ClientConfig::default()->withPeerVerification(false)->withPeerVerification();
+
+        static::assertTrue($config->peerVerification);
+    }
+
     public function testWithPeerNameVerification(): void
     {
         $config = ClientConfig::default()->withPeerNameVerification(false);
@@ -64,6 +71,13 @@ final class ConnectOptionsTest extends TestCase
     public function testWithAllowSelfSigned(): void
     {
         $config = ClientConfig::default()->withAllowSelfSigned(true);
+
+        static::assertTrue($config->allowSelfSigned);
+    }
+
+    public function testWithAllowSelfSignedDefaultsToTrue(): void
+    {
+        $config = ClientConfig::default()->withAllowSelfSigned();
 
         static::assertTrue($config->allowSelfSigned);
     }
@@ -182,6 +196,13 @@ final class ConnectOptionsTest extends TestCase
         $config = ClientConfig::default()->withSniEnabled(false);
 
         static::assertFalse($config->sniEnabled);
+    }
+
+    public function testWithSniEnabledDefaultsToTrue(): void
+    {
+        $config = ClientConfig::default()->withSniEnabled(false)->withSniEnabled();
+
+        static::assertTrue($config->sniEnabled);
     }
 
     public function testWithVerificationDepth(): void

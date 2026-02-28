@@ -187,6 +187,89 @@ final class ConnectTest extends TestCase
         ]);
     }
 
+    public function testConnectPreservesConfigPeerNameWhenServerNameProvided(): void
+    {
+        $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
+        $server_config = TLS\ServerConfig::create($cert);
+
+        $listener = TCP\listen('127.0.0.1', 0);
+        $port = $listener->getLocalAddress()->port;
+
+        Async\concurrently([
+            'server' => static function () use ($listener, $server_config): void {
+                $connection = $listener->accept();
+
+                $lazy = TLS\LazyAcceptor::default();
+                $hello = $lazy->accept($connection);
+
+                static::assertSame('my-custom-peer', $hello->getServerName());
+
+                $tls = $hello->complete($server_config);
+                $data = $tls->read();
+                static::assertSame('peer-name-test', $data);
+                $tls->writeAll('ok');
+                $tls->close();
+                $listener->close();
+            },
+            'client' => static function () use ($port): void {
+                $config = TLS\ClientConfig::default()
+                    ->withPeerVerification(false)
+                    ->withAllowSelfSigned(true)
+                    ->withPeerName('my-custom-peer');
+
+                $connector = new TLS\Connector($config);
+                $stream = TCP\connect('127.0.0.1', $port);
+                $client = $connector->connect($stream, 'different-server-name');
+
+                $client->writeAll('peer-name-test');
+                $response = $client->readAll();
+                static::assertSame('ok', $response);
+                $client->close();
+            },
+        ]);
+    }
+
+    public function testConnectUsesServerNameWhenConfigPeerNameIsNull(): void
+    {
+        $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
+        $server_config = TLS\ServerConfig::create($cert);
+
+        $listener = TCP\listen('127.0.0.1', 0);
+        $port = $listener->getLocalAddress()->port;
+
+        Async\concurrently([
+            'server' => static function () use ($listener, $server_config): void {
+                $connection = $listener->accept();
+
+                $lazy = TLS\LazyAcceptor::default();
+                $hello = $lazy->accept($connection);
+
+                static::assertSame('localhost', $hello->getServerName());
+
+                $tls = $hello->complete($server_config);
+                $data = $tls->read();
+                static::assertSame('server-name-test', $data);
+                $tls->writeAll('ok');
+                $tls->close();
+                $listener->close();
+            },
+            'client' => static function () use ($port): void {
+                $config = TLS\ClientConfig::default()->withPeerVerification(false)->withAllowSelfSigned(true);
+
+                static::assertNull($config->peerName);
+
+                $connector = new TLS\Connector($config);
+                $stream = TCP\connect('127.0.0.1', $port);
+                $client = $connector->connect($stream, 'localhost');
+
+                $client->writeAll('server-name-test');
+                $response = $client->readAll();
+                static::assertSame('ok', $response);
+                $client->close();
+            },
+        ]);
+    }
+
     public function testConvenienceConnectReturnsTlsStream(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);

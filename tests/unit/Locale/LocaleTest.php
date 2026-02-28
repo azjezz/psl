@@ -249,4 +249,45 @@ final class LocaleTest extends TestCase
         static::assertNull($locale->getRegion());
         static::assertNull($locale->getDisplayRegion());
     }
+
+    public function testDefaultWithLanguageOnlyLocale(): void
+    {
+        locale_set_default('fr');
+        $locale = Locale::default();
+        static::assertSame(Locale::French, $locale);
+        static::assertSame('fr', $locale->getLanguage());
+    }
+
+    public function testDefaultWithScriptLocale(): void
+    {
+        locale_set_default('sr_Cyrl');
+        $locale = Locale::default();
+        static::assertSame(Locale::SerbianCyrillic, $locale);
+
+        locale_set_default('sr_Latn');
+        $locale = Locale::default();
+        static::assertSame(Locale::SerbianLatin, $locale);
+    }
+
+    public function testDefaultWithRegionLocale(): void
+    {
+        locale_set_default('en_US');
+        $locale = Locale::default();
+        static::assertSame(Locale::EnglishUnitedStates, $locale);
+
+        locale_set_default('fr_FR');
+        $locale = Locale::default();
+        static::assertSame(Locale::FrenchFrance, $locale);
+    }
+
+    public function testDefaultWithScriptAndRegionLocale(): void
+    {
+        locale_set_default('sr_Cyrl_RS');
+        $locale = Locale::default();
+        static::assertSame(Locale::SerbianCyrillicSerbia, $locale);
+
+        locale_set_default('sr_Latn_RS');
+        $locale = Locale::default();
+        static::assertSame(Locale::SerbianLatinSerbia, $locale);
+    }
 }
