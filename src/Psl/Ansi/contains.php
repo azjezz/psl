@@ -1,0 +1,17 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\Ansi;
+
+use Psl\Regex;
+
+/**
+ * Checks whether the given text contains any ANSI escape sequences.
+ *
+ * @pure
+ */
+function contains(string $text): bool
+{
+    return Regex\matches($text, '/\e(?:\[\??[0-9;]*[A-Za-z]|\][^\x07\e]*(?:\e\\\\|\x07))/');
+}
