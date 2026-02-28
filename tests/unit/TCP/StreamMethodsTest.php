@@ -11,6 +11,13 @@ use Psl\TCP;
 
 final class StreamMethodsTest extends TestCase
 {
+    private function requireSockets(): void
+    {
+        if (!extension_loaded('sockets')) {
+            static::markTestSkipped('ext-sockets is required for this test.');
+        }
+    }
+
     public function testPeekDoesNotConsumeData(): void
     {
         $listener = TCP\listen('127.0.0.1', 0);
@@ -66,6 +73,8 @@ final class StreamMethodsTest extends TestCase
 
     public function testSetAndGetNoDelay(): void
     {
+        $this->requireSockets();
+
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
@@ -92,6 +101,8 @@ final class StreamMethodsTest extends TestCase
 
     public function testSetAndGetTtl(): void
     {
+        $this->requireSockets();
+
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
@@ -118,6 +129,8 @@ final class StreamMethodsTest extends TestCase
 
     public function testSetAndGetKeepAlive(): void
     {
+        $this->requireSockets();
+
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
@@ -144,6 +157,8 @@ final class StreamMethodsTest extends TestCase
 
     public function testSetAndGetSendBufferSize(): void
     {
+        $this->requireSockets();
+
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
@@ -168,6 +183,8 @@ final class StreamMethodsTest extends TestCase
 
     public function testSetAndGetReceiveBufferSize(): void
     {
+        $this->requireSockets();
+
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
@@ -192,6 +209,8 @@ final class StreamMethodsTest extends TestCase
 
     public function testSetAndGetLingerEnabled(): void
     {
+        $this->requireSockets();
+
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 

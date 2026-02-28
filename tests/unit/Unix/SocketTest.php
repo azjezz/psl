@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\Unix;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
+use Psl\DateTime\Duration;
 use Psl\Network;
 use Psl\Unix;
 
@@ -126,6 +127,83 @@ final class SocketTest extends TestCase
 
             // Should throw — socket already consumed by listen()
             $socket->bind($path);
+
+            $listener->close();
+        } finally {
+            @unlink($path);
+        }
+    }
+
+    public function testConnectWithTimeout(): void
+    {
+        $path = sys_get_temp_dir() . '/psl_unix_timeout_test_' . getmypid() . '.sock';
+        @unlink($path);
+
+        try {
+            $listener = Unix\listen($path);
+
+            Async\concurrently([
+                'server' => static function () use ($listener): void {
+                    $conn = $listener->accept();
+                    $data = $conn->read();
+                    static::assertSame('with-timeout', $data);
+                    $conn->writeAll('ok');
+                    $conn->close();
+                    $listener->close();
+                },
+                'client' => static function () use ($path): void {
+                    $socket = Unix\Socket::create();
+                    // Connect with a generous timeout — should succeed
+                    $stream = $socket->connect($path, Duration::seconds(5));
+
+                    $stream->writeAll('with-timeout');
+                    $response = $stream->readAll();
+                    static::assertSame('ok', $response);
+                    $stream->close();
+                },
+            ]);
+        } finally {
+            @unlink($path);
+        }
+    }
+
+    public function testConnectConsumedByConnect(): void
+    {
+        $path = sys_get_temp_dir() . '/psl_unix_consumed_connect_' . getmypid() . '.sock';
+        @unlink($path);
+
+        try {
+            $listener = Unix\listen($path);
+
+            $socket = Unix\Socket::create();
+            $stream = $socket->connect($path);
+            $stream->close();
+            $listener->close();
+
+            $this->expectException(Network\Exception\RuntimeException::class);
+            $this->expectExceptionMessage('Socket has already been consumed');
+
+            // Should throw — socket already consumed by connect()
+            $socket->connect($path);
+        } finally {
+            @unlink($path);
+        }
+    }
+
+    public function testGetLocalAddressOnConsumedSocketThrows(): void
+    {
+        $path = sys_get_temp_dir() . '/psl_unix_addr_consumed_' . getmypid() . '.sock';
+        @unlink($path);
+
+        try {
+            $socket = Unix\Socket::create();
+            $socket->bind($path);
+            $listener = $socket->listen();
+
+            $this->expectException(Network\Exception\RuntimeException::class);
+            $this->expectExceptionMessage('Socket has already been consumed');
+
+            $socket->getLocalAddress();
 
             $listener->close();
         } finally {

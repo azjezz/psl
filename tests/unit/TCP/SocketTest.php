@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\TCP;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
+use Psl\DateTime\Duration;
 use Psl\Network;
 use Psl\TCP;
 
@@ -158,6 +159,63 @@ final class SocketTest extends TestCase
 
         // Should throw — socket already consumed by listen()
         $socket->bind('127.0.0.1', 0);
+
+        $listener->close();
+    }
+
+    public function testConnectWithTimeout(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 0);
+        $port = $listener->getLocalAddress()->port;
+
+        Async\concurrently([
+            'server' => static function () use ($listener): void {
+                $conn = $listener->accept();
+                $data = $conn->read();
+                static::assertSame('with-timeout', $data);
+                $conn->writeAll('ok');
+                $conn->close();
+                $listener->close();
+            },
+            'client' => static function () use ($port): void {
+                $socket = TCP\Socket::createV4();
+                // Connect with a generous timeout — should succeed via waitForConnect
+                $stream = $socket->connect('127.0.0.1', $port, Duration::seconds(5));
+
+                $stream->writeAll('with-timeout');
+                $response = $stream->readAll();
+                static::assertSame('ok', $response);
+                $stream->close();
+            },
+        ]);
+    }
+
+    public function testConnectConsumedByConnect(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 0);
+        $port = $listener->getLocalAddress()->port;
+
+        $socket = TCP\Socket::createV4();
+        $stream = $socket->connect('127.0.0.1', $port);
+        $stream->close();
+        $listener->close();
+
+        $this->expectException(Network\Exception\RuntimeException::class);
+        $this->expectExceptionMessage('Socket has already been consumed');
+
+        $socket->connect('127.0.0.1', $port);
+    }
+
+    public function testGetLocalAddressOnConsumedSocketThrows(): void
+    {
+        $socket = TCP\Socket::createV4();
+        $socket->bind('127.0.0.1', 0);
+        $listener = $socket->listen();
+
+        $this->expectException(Network\Exception\RuntimeException::class);
+        $this->expectExceptionMessage('Socket has already been consumed');
+
+        $socket->getLocalAddress();
 
         $listener->close();
     }
