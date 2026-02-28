@@ -34,6 +34,20 @@
                 "Psl\\Collection\\*Map::zip"
             ]
         },
+        "CastFloat": {
+            "ignore": [
+                "Psl\\DateTime\\DateTime::fromParts"
+            ]
+        },
+        "CastInt": {
+            "ignore": [
+                "Psl\\DateTime\\DateTime::fromStdlib",
+                "Psl\\DateTime\\DateTime::toStdlib",
+                "Psl\\DateTime\\DateTime::fromIntl",
+                "Psl\\DateTime\\Timestamp::fromStdlib",
+                "Psl\\DateTime\\Timestamp::toStdlib"
+            ]
+        },
         "DecrementInteger": {
             "ignore": [
                 "Psl\\DataStructure\\PriorityQueue::peek",
@@ -43,6 +57,11 @@
         "FunctionCallRemoval": {
             "ignore": [
                 "Psl\\Result\\Success::getThrowable"
+            ]
+        },
+        "GreaterThan": {
+            "ignore": [
+                "Psl\\CIDR\\Block::__construct"
             ]
         },
         "IncrementInteger": {
