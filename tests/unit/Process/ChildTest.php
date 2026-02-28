@@ -19,9 +19,20 @@ use Psl\Process\Stdio;
 
 final class ChildTest extends TestCase
 {
+    /**
+     * Create a PHP command with JIT warnings suppressed.
+     *
+     * When pcov is loaded alongside opcache, PHP emits a JIT incompatibility
+     * warning to stdout which corrupts output assertions.
+     */
+    private static function phpCommand(): Command
+    {
+        return Command::create(PHP_BINARY)->withArgument('-dopcache.enable=0');
+    }
+
     public function testSpawnAndWait(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('exit(0);')
             ->withStdout(Stdio::null())
@@ -36,7 +47,7 @@ final class ChildTest extends TestCase
 
     public function testSpawnAndWaitWithOutput(): void
     {
-        $output = Command::create(PHP_BINARY)
+        $output = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo "out"; fwrite(STDERR, "err");')
             ->spawn()
@@ -49,7 +60,7 @@ final class ChildTest extends TestCase
 
     public function testCommandOutput(): void
     {
-        $output = Command::create(PHP_BINARY)
+        $output = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo "hello world";')
             ->output();
@@ -61,7 +72,7 @@ final class ChildTest extends TestCase
 
     public function testCommandStatus(): void
     {
-        $status = Command::create(PHP_BINARY)
+        $status = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('exit(0);')
             ->status();
@@ -71,7 +82,7 @@ final class ChildTest extends TestCase
 
     public function testCommandStatusWithNonZeroExit(): void
     {
-        $status = Command::create(PHP_BINARY)
+        $status = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('exit(42);')
             ->status();
@@ -82,7 +93,7 @@ final class ChildTest extends TestCase
 
     public function testGetProcessId(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('usleep(100000);')
             ->spawn();
@@ -95,7 +106,7 @@ final class ChildTest extends TestCase
 
     public function testIsRunning(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('usleep(500000);')
             ->spawn();
@@ -114,7 +125,7 @@ final class ChildTest extends TestCase
             static::markTestSkipped('Signal tests are not reliable on Windows.');
         }
 
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('sleep(60);')
             ->withStdout(Stdio::null())
@@ -136,7 +147,7 @@ final class ChildTest extends TestCase
             static::markTestSkipped('Signal tests are not reliable on Windows.');
         }
 
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('sleep(60);')
             ->withStdout(Stdio::null())
@@ -151,7 +162,7 @@ final class ChildTest extends TestCase
 
     public function testSignalOnExitedProcessIsNoop(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('exit(0);')
             ->withStdout(Stdio::null())
@@ -168,7 +179,7 @@ final class ChildTest extends TestCase
 
     public function testWaitTimeout(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('sleep(60);')
             ->withStdout(Stdio::null())
@@ -190,7 +201,7 @@ final class ChildTest extends TestCase
 
     public function testWaitWithOutputTimeout(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('sleep(60);')
             ->spawn();
@@ -204,7 +215,7 @@ final class ChildTest extends TestCase
     {
         $this->expectException(Exception\TimeoutException::class);
 
-        Command::create(PHP_BINARY)
+        self::phpCommand()
             ->withArgument('-r')
             ->withArgument('sleep(60);')
             ->output(Duration::milliseconds(100));
@@ -214,7 +225,7 @@ final class ChildTest extends TestCase
     {
         $this->expectException(Exception\TimeoutException::class);
 
-        Command::create(PHP_BINARY)
+        self::phpCommand()
             ->withArgument('-r')
             ->withArgument('sleep(60);')
             ->status(Duration::milliseconds(100));
@@ -222,7 +233,7 @@ final class ChildTest extends TestCase
 
     public function testTryWaitWhileRunning(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('usleep(500000);')
             ->withStdout(Stdio::null())
@@ -238,7 +249,7 @@ final class ChildTest extends TestCase
 
     public function testTryWaitAfterExit(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('exit(0);')
             ->withStdout(Stdio::null())
@@ -255,7 +266,7 @@ final class ChildTest extends TestCase
 
     public function testStdinUnavailable(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('exit(0);')
             ->spawn();
@@ -268,7 +279,7 @@ final class ChildTest extends TestCase
 
     public function testStdoutUnavailableWhenNull(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('exit(0);')
             ->withStdout(Stdio::null())
@@ -281,7 +292,7 @@ final class ChildTest extends TestCase
 
     public function testStderrUnavailableWhenNull(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('exit(0);')
             ->withStderr(Stdio::null())
@@ -294,7 +305,7 @@ final class ChildTest extends TestCase
 
     public function testEnvironmentVariables(): void
     {
-        $output = Command::create(PHP_BINARY)
+        $output = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo getenv("PSL_TEST_VAR");')
             ->withEnvironmentVariable('PSL_TEST_VAR', 'hello_from_psl')
@@ -307,7 +318,7 @@ final class ChildTest extends TestCase
     {
         $tempDir = Env\temp_dir();
 
-        $output = Command::create(PHP_BINARY)
+        $output = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo getcwd();')
             ->withWorkingDirectory($tempDir)
@@ -318,7 +329,7 @@ final class ChildTest extends TestCase
 
     public function testWaitCalledTwiceReturnsSameStatus(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('exit(0);')
             ->withStdout(Stdio::null())
@@ -333,7 +344,7 @@ final class ChildTest extends TestCase
 
     public function testWaitWithOutputCalledAfterWait(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('exit(0);')
             ->withStdout(Stdio::null())
@@ -350,7 +361,7 @@ final class ChildTest extends TestCase
 
     public function testStdinPiped(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo fgets(STDIN);')
             ->withStdin(Stdio::piped())
@@ -377,7 +388,7 @@ final class ChildTest extends TestCase
         $write->writeAll("piped input\n");
         $write->close();
 
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo fgets(STDIN);')
             ->withStdin(Stdio::fromStreamHandle($read))
@@ -393,7 +404,7 @@ final class ChildTest extends TestCase
 
     public function testLargeOutput(): void
     {
-        $output = Command::create(PHP_BINARY)
+        $output = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo str_repeat("x", 100000);')
             ->output();
@@ -417,7 +428,7 @@ final class ChildTest extends TestCase
 
     public function testStdoutAndStderrSeparation(): void
     {
-        $output = Command::create(PHP_BINARY)
+        $output = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('fwrite(STDOUT, "stdout"); fwrite(STDERR, "stderr");')
             ->output();
@@ -428,7 +439,7 @@ final class ChildTest extends TestCase
 
     public function testWaitTimeoutKillsProcess(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('sleep(60);')
             ->withStdout(Stdio::null())
@@ -445,7 +456,7 @@ final class ChildTest extends TestCase
 
     public function testWaitWithOutputTimeoutKillsProcess(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('sleep(60);')
             ->spawn();
@@ -460,7 +471,7 @@ final class ChildTest extends TestCase
 
     public function testTimeoutWhileChildWaitsForStdin(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('fread(STDIN, 1); sleep(60);')
             ->withStdin(Stdio::piped())
@@ -478,7 +489,7 @@ final class ChildTest extends TestCase
 
     public function testTimeoutDoesNotAffectFastProcess(): void
     {
-        $output = Command::create(PHP_BINARY)
+        $output = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo "fast";')
             ->output(Duration::seconds(5));
@@ -489,7 +500,7 @@ final class ChildTest extends TestCase
 
     public function testTimeoutDoesNotAffectFastProcessStatus(): void
     {
-        $status = Command::create(PHP_BINARY)
+        $status = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('exit(0);')
             ->status(Duration::seconds(5));
@@ -503,7 +514,7 @@ final class ChildTest extends TestCase
             static::markTestSkipped('Timing-sensitive test unreliable on Windows CI.');
         }
 
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo "1"; usleep(500000); echo "2"; sleep(10);')
             ->spawn();
@@ -533,7 +544,7 @@ final class ChildTest extends TestCase
             static::markTestSkipped('Timing-sensitive test unreliable on Windows CI.');
         }
 
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('fwrite(STDOUT, "out"); fwrite(STDERR, "err"); sleep(10);')
             ->spawn();
@@ -574,7 +585,7 @@ final class ChildTest extends TestCase
             static::markTestSkipped('Timing-sensitive test unreliable on Windows CI.');
         }
 
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo str_repeat("x", 10000); sleep(60);')
             ->spawn();
@@ -608,7 +619,7 @@ final class ChildTest extends TestCase
 
         $this->expectException(Exception\TimeoutException::class);
 
-        Command::create(PHP_BINARY)
+        self::phpCommand()
             ->withArgument('-r')
             ->withArgument('for ($i = 0; $i < 100; $i++) { echo $i; usleep(100000); }')
             ->output(Duration::milliseconds(500));
@@ -618,7 +629,7 @@ final class ChildTest extends TestCase
     {
         $this->expectException(Exception\TimeoutException::class);
 
-        Command::create(PHP_BINARY)
+        self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo str_repeat("x", 10000); sleep(60);')
             ->status(Duration::milliseconds(500));
@@ -630,7 +641,7 @@ final class ChildTest extends TestCase
             static::markTestSkipped('Timing-sensitive test unreliable on Windows CI.');
         }
 
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('for ($i = 1; $i <= 5; $i++) { echo $i; usleep(200000); } sleep(60);')
             ->spawn();
@@ -662,7 +673,7 @@ final class ChildTest extends TestCase
             );
         }
 
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo "partial"; sleep(60);')
             ->spawn();
@@ -678,7 +689,7 @@ final class ChildTest extends TestCase
     public function testConcurrentOutput(): void
     {
         $run = static function (): void {
-            Command::create(PHP_BINARY)
+            self::phpCommand()
                 ->withArgument('-r')
                 ->withArgument('usleep(500000); echo "done";')
                 ->output();
@@ -694,7 +705,7 @@ final class ChildTest extends TestCase
     public function testConcurrentStatus(): void
     {
         $run = static function (): void {
-            Command::create(PHP_BINARY)
+            self::phpCommand()
                 ->withArgument('-r')
                 ->withArgument('usleep(500000);')
                 ->status();
@@ -710,7 +721,7 @@ final class ChildTest extends TestCase
     public function testConcurrentWait(): void
     {
         $run = static function (): void {
-            $child = Command::create(PHP_BINARY)
+            $child = self::phpCommand()
                 ->withArgument('-r')
                 ->withArgument('usleep(500000);')
                 ->withStdout(Stdio::null())

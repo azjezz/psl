@@ -12,6 +12,17 @@ use Psl\Process\Stdio;
 
 final class CommandTest extends TestCase
 {
+    /**
+     * Create a PHP command.
+     *
+     * When pcov is loaded alongside opcache, PHP emits a JIT incompatibility
+     * warning to stdout which corrupts output assertions.
+     */
+    private static function phpCommand(): Command
+    {
+        return Command::create(PHP_BINARY)->withArgument('-dopcache.enable=0');
+    }
+
     public function testCreate(): void
     {
         $command = Command::create('git');
@@ -32,7 +43,7 @@ final class CommandTest extends TestCase
 
     public function testCreatePassesArgumentsSeparately(): void
     {
-        $output = Command::create(PHP_BINARY)
+        $output = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo $argv[1];')
             ->withArgument('hello world & echo injected')
@@ -70,7 +81,7 @@ final class CommandTest extends TestCase
 
     public function testWithArgumentAdditiveExecution(): void
     {
-        $output = Command::create(PHP_BINARY)
+        $output = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo implode(",", array_slice($argv, 1));')
             ->withArgument('--')
@@ -105,7 +116,7 @@ final class CommandTest extends TestCase
 
     public function testWithEnvironmentVariableExecution(): void
     {
-        $output = Command::create(PHP_BINARY)
+        $output = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo getenv("MY_TEST_VAR");')
             ->withEnvironmentVariable('MY_TEST_VAR', 'from_with_env_var')
@@ -157,7 +168,7 @@ final class CommandTest extends TestCase
     {
         $tempDir = \Psl\Env\temp_dir();
 
-        $output = Command::create(PHP_BINARY)
+        $output = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo getcwd();')
             ->withWorkingDirectory($tempDir)
@@ -180,7 +191,7 @@ final class CommandTest extends TestCase
         $this->expectException(Exception\RuntimeException::class);
         $this->expectExceptionMessage('Working directory does not exist.');
 
-        Command::create(PHP_BINARY)
+        self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo "hello";')
             ->withWorkingDirectory('/nonexistent/path/that/does/not/exist')
@@ -191,7 +202,7 @@ final class CommandTest extends TestCase
     {
         $this->expectException(Exception\RuntimeException::class);
 
-        Command::create(PHP_BINARY)
+        self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo "hello";')
             ->withWorkingDirectory('/nonexistent/path/that/does/not/exist')
@@ -202,7 +213,7 @@ final class CommandTest extends TestCase
     {
         $this->expectException(Exception\RuntimeException::class);
 
-        Command::create(PHP_BINARY)
+        self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo "hello";')
             ->withWorkingDirectory('/nonexistent/path/that/does/not/exist')
@@ -214,7 +225,7 @@ final class CommandTest extends TestCase
         $this->expectException(Exception\RuntimeException::class);
         $this->expectExceptionMessage('Working directory does not exist.');
 
-        Command::create(PHP_BINARY)
+        self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo "hello";')
             ->withWorkingDirectory('')
@@ -234,7 +245,7 @@ final class CommandTest extends TestCase
         $this->expectException(Exception\RuntimeException::class);
         $this->expectExceptionMessage('Command line contains NULL bytes.');
 
-        Command::create(PHP_BINARY)
+        self::phpCommand()
             ->withArgument('-r')
             ->withArgument("echo\0injected;")
             ->spawn();
@@ -242,7 +253,7 @@ final class CommandTest extends TestCase
 
     public function testStdinPiped(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo fgets(STDIN);')
             ->withStdin(Stdio::piped())
@@ -259,7 +270,7 @@ final class CommandTest extends TestCase
 
     public function testStdoutPipedCapturesOutput(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo "from_stdout";')
             ->withStdout(Stdio::piped())
@@ -274,7 +285,7 @@ final class CommandTest extends TestCase
 
     public function testStderrPipedCapturesError(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('fwrite(STDERR, "from_stderr");')
             ->withStdout(Stdio::null())
@@ -289,7 +300,7 @@ final class CommandTest extends TestCase
 
     public function testStdoutAndStderrSeparation(): void
     {
-        $output = Command::create(PHP_BINARY)
+        $output = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('fwrite(STDOUT, "OUT"); fwrite(STDERR, "ERR");')
             ->output();
@@ -300,7 +311,7 @@ final class CommandTest extends TestCase
 
     public function testStdoutNull(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo "test";')
             ->withStdout(Stdio::null())
@@ -313,7 +324,7 @@ final class CommandTest extends TestCase
 
     public function testStderrNull(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo "test";')
             ->withStderr(Stdio::null())
@@ -327,7 +338,7 @@ final class CommandTest extends TestCase
     public function testDescriptorStdinNullIsDevNull(): void
     {
         // With Stdio::null() for stdin, the child reads EOF immediately.
-        $output = Command::create(PHP_BINARY)
+        $output = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('$data = fread(STDIN, 1024); echo strlen($data);')
             ->output();
@@ -347,7 +358,7 @@ final class CommandTest extends TestCase
         $write->writeAll("handle_input\n");
         $write->close();
 
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo trim(fgets(STDIN));')
             ->withStdin(Stdio::fromStreamHandle($read))
@@ -369,7 +380,7 @@ final class CommandTest extends TestCase
         $this->expectException(Exception\RuntimeException::class);
         $this->expectExceptionMessage('The stream handle is closed.');
 
-        Command::create(PHP_BINARY)
+        self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo "test";')
             ->withStdin(Stdio::fromStreamHandle($read))
@@ -378,7 +389,7 @@ final class CommandTest extends TestCase
 
     public function testOutputForcesStdinNullAndPipedStdoutStderr(): void
     {
-        $output = Command::create(PHP_BINARY)
+        $output = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('fwrite(STDOUT, "out"); fwrite(STDERR, "err");')
             ->withStdin(Stdio::piped())
@@ -392,7 +403,7 @@ final class CommandTest extends TestCase
 
     public function testStatusForcesAllNull(): void
     {
-        $status = Command::create(PHP_BINARY)
+        $status = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('exit(42);')
             ->withStdout(Stdio::piped())
@@ -405,7 +416,7 @@ final class CommandTest extends TestCase
 
     public function testSpawnUsesConfiguredStdio(): void
     {
-        $child = Command::create(PHP_BINARY)
+        $child = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo "spawned";')
             ->withStdout(Stdio::piped())
@@ -431,7 +442,7 @@ final class CommandTest extends TestCase
         $this->expectException(Exception\RuntimeException::class);
         $this->expectExceptionMessage('TTY is not supported on Windows.');
 
-        Command::create(PHP_BINARY)
+        self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo "test";')
             ->withStdout(Stdio::tty())

@@ -16,7 +16,11 @@ final class ExecuteTest extends TestCase
 {
     public function testExecute(): void
     {
-        static::assertSame('Hello, World!', Shell\execute(PHP_BINARY, ['-r', 'echo "Hello, World!";']));
+        static::assertSame('Hello, World!', Shell\execute(PHP_BINARY, [
+            '-dopcache.enable=0',
+            '-r',
+            'echo "Hello, World!";',
+        ]));
     }
 
     public function testFailedExecution(): void
@@ -43,7 +47,9 @@ final class ExecuteTest extends TestCase
 
     public function testEnvironmentIsPassedDownToTheProcess(): void
     {
-        static::assertSame('BAR', Shell\execute(PHP_BINARY, ['-r', 'echo getenv("FOO");'], null, ['FOO' => 'BAR']));
+        static::assertSame('BAR', Shell\execute(PHP_BINARY, ['-dopcache.enable=0', '-r', 'echo getenv("FOO");'], null, [
+            'FOO' => 'BAR',
+        ]));
     }
 
     public function testCurrentEnvironmentVariablesArePassedDownToTheProcess(): void
@@ -51,7 +57,7 @@ final class ExecuteTest extends TestCase
         try {
             Env\set_var('FOO', 'BAR');
 
-            static::assertSame('BAR', Shell\execute(PHP_BINARY, ['-r', 'echo getenv("FOO");']));
+            static::assertSame('BAR', Shell\execute(PHP_BINARY, ['-dopcache.enable=0', '-r', 'echo getenv("FOO");']));
         } finally {
             Env\remove_var('FOO');
         }
@@ -60,7 +66,7 @@ final class ExecuteTest extends TestCase
     public function testWorkingDirectoryIsUsed(): void
     {
         $temp = Env\temp_dir();
-        $result = Shell\execute(PHP_BINARY, ['-r', 'echo getcwd();'], $temp);
+        $result = Shell\execute(PHP_BINARY, ['-dopcache.enable=0', '-r', 'echo getcwd();'], $temp);
 
         static::assertStringEndsWith($temp, $result);
     }
@@ -69,7 +75,7 @@ final class ExecuteTest extends TestCase
     {
         $dir = Env\current_dir();
 
-        static::assertSame($dir, Shell\execute(PHP_BINARY, ['-r', 'echo getcwd();']));
+        static::assertSame($dir, Shell\execute(PHP_BINARY, ['-dopcache.enable=0', '-r', 'echo getcwd();']));
     }
 
     public function testItThrowsWhenWorkingDirectoryDoesntExist(): void
@@ -79,18 +85,22 @@ final class ExecuteTest extends TestCase
         $this->expectException(Shell\Exception\RuntimeException::class);
         $this->expectExceptionMessage('Working directory does not exist.');
 
-        Shell\execute(PHP_BINARY, ['-r', 'echo getcwd();'], $dir);
+        Shell\execute(PHP_BINARY, ['-dopcache.enable=0', '-r', 'echo getcwd();'], $dir);
     }
 
     public function testErrorOutputIsDiscarded(): void
     {
-        $result = Shell\execute(PHP_BINARY, ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");']);
+        $result = Shell\execute(PHP_BINARY, [
+            '-dopcache.enable=0',
+            '-r',
+            'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");',
+        ]);
 
         static::assertSame('hello', $result);
 
         $result = Shell\execute(
             PHP_BINARY,
-            ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
+            ['-dopcache.enable=0', '-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
             error_output_behavior: Shell\ErrorOutputBehavior::default(),
         );
 
@@ -101,7 +111,7 @@ final class ExecuteTest extends TestCase
     {
         $result = Shell\execute(
             PHP_BINARY,
-            ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
+            ['-dopcache.enable=0', '-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
             error_output_behavior: Shell\ErrorOutputBehavior::Append,
         );
 
@@ -112,7 +122,7 @@ final class ExecuteTest extends TestCase
     {
         $result = Shell\execute(
             PHP_BINARY,
-            ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
+            ['-dopcache.enable=0', '-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
             error_output_behavior: Shell\ErrorOutputBehavior::Prepend,
         );
 
@@ -123,7 +133,7 @@ final class ExecuteTest extends TestCase
     {
         $result = Shell\execute(
             PHP_BINARY,
-            ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
+            ['-dopcache.enable=0', '-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
             error_output_behavior: Shell\ErrorOutputBehavior::Replace,
         );
 
@@ -134,7 +144,7 @@ final class ExecuteTest extends TestCase
     {
         $result = Shell\execute(
             PHP_BINARY,
-            ['-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
+            ['-dopcache.enable=0', '-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
             error_output_behavior: Shell\ErrorOutputBehavior::Packed,
         );
 
@@ -146,7 +156,11 @@ final class ExecuteTest extends TestCase
 
     public function testTimeoutDoesNotAffectFastCommands(): void
     {
-        $result = Shell\execute(PHP_BINARY, ['-r', 'echo "hello";'], timeout: Duration::seconds(5));
+        $result = Shell\execute(
+            PHP_BINARY,
+            ['-dopcache.enable=0', '-r', 'echo "hello";'],
+            timeout: Duration::seconds(5),
+        );
 
         static::assertSame('hello', $result);
     }
@@ -162,7 +176,7 @@ final class ExecuteTest extends TestCase
         $start = DateTime\Timestamp::monotonic();
 
         try {
-            Shell\execute(PHP_BINARY, ['-r', 'sleep(10);'], timeout: Duration::seconds(2));
+            Shell\execute(PHP_BINARY, ['-dopcache.enable=0', '-r', 'sleep(10);'], timeout: Duration::seconds(2));
         } catch (Shell\Exception\TimeoutException $_) {
             $elapsed = DateTime\Timestamp::monotonic()->since($start);
 
