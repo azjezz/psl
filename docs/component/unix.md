@@ -12,10 +12,16 @@
 
 #### `Functions`
 
-- [connect](./../../src/Psl/Unix/connect.php#L19)
+- [connect](./../../src/Psl/Unix/connect.php#L18)
+- [listen](./../../src/Psl/Unix/listen.php#L17)
+
+#### `Interfaces`
+
+- [ListenerInterface](./../../src/Psl/Unix/ListenerInterface.php#L12)
+- [StreamInterface](./../../src/Psl/Unix/StreamInterface.php#L12)
 
 #### `Classes`
 
-- [Server](./../../src/Psl/Unix/Server.php#L10)
+- [Socket](./../../src/Psl/Unix/Socket.php#L30)
 
 

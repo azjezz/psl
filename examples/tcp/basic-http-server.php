@@ -7,7 +7,6 @@ namespace Psl\Example\TCP;
 use Psl\Async;
 use Psl\Html;
 use Psl\IO;
-use Psl\Iter;
 use Psl\Network;
 use Psl\Str;
 use Psl\TCP;
@@ -28,14 +27,20 @@ const RESPONSE_FORMAT = <<<HTML
 </html>
 HTML;
 
-$server = TCP\Server::create('localhost', 3030, TCP\ServerOptions::create(idle_connections: 1024));
+$listener = TCP\listen('localhost', 3030, idle_connections: 1024);
 
-Async\Scheduler::onSignal(SIGINT, $server->close(...));
+Async\Scheduler::onSignal(SIGINT, $listener->close(...));
 
 IO\write_error_line('Server is listening on http://localhost:3030');
 IO\write_error_line('Click Ctrl+C to stop the server.');
 
-Iter\apply($server->incoming(), static function (Network\StreamSocketInterface $connection): void {
+while (true) {
+    try {
+        $connection = $listener->accept();
+    } catch (Network\Exception\AlreadyStoppedException) {
+        break;
+    }
+
     Async\run(static function () use ($connection): void {
         $request = $connection->read();
 
@@ -43,7 +48,7 @@ Iter\apply($server->incoming(), static function (Network\StreamSocketInterface $
         $connection->writeAll(Str\format(RESPONSE_FORMAT, Html\encode_special_characters($request)));
         $connection->close();
     })->catch(static fn(Throwable $e): null => IO\write_error_line('Error: %s.', $e->getMessage()))->ignore();
-});
+}
 
 IO\write_error_line('');
 IO\write_error_line('Goodbye 👋');

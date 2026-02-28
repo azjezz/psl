@@ -1,0 +1,34 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\TCP;
+
+use Override;
+use Psl\DateTime\Duration;
+use Psl\Default\DefaultInterface;
+
+/**
+ * Default TCP connector that establishes direct connections.
+ */
+final readonly class Connector implements ConnectorInterface, DefaultInterface
+{
+    public function __construct(
+        private bool $noDelay = false,
+    ) {}
+
+    /**
+     * @pure
+     */
+    #[Override]
+    public static function default(): static
+    {
+        return new self();
+    }
+
+    #[Override]
+    public function connect(string $host, int $port, null|Duration $timeout = null): StreamInterface
+    {
+        return connect($host, $port, $this->noDelay, $timeout);
+    }
+}

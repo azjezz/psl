@@ -13,11 +13,15 @@
 #### `Functions`
 
 - [connect](./../../src/Psl/TCP/connect.php#L19)
+- [listen](./../../src/Psl/TCP/listen.php#L19)
+
+#### `Interfaces`
+
+- [ListenerInterface](./../../src/Psl/TCP/ListenerInterface.php#L12)
+- [StreamInterface](./../../src/Psl/TCP/StreamInterface.php#L13)
 
 #### `Classes`
 
-- [ConnectOptions](./../../src/Psl/TCP/ConnectOptions.php#L14)
-- [Server](./../../src/Psl/TCP/Server.php#L11)
-- [ServerOptions](./../../src/Psl/TCP/ServerOptions.php#L15)
+- [Socket](./../../src/Psl/TCP/Socket.php#L42)
 
 

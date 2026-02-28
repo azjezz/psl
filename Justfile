@@ -37,7 +37,7 @@ test:
     php -dmemory_limit=-1 ./vendor/bin/phpunit -c config/phpunit.xml.dist
 
 mutation:
-    php -dmemory_limit=-1 ./vendor/bin/infection --configuration=config/infection.json.dist
+    php -dmemory_limit=-1 -dopcache.enable=0 ./vendor/bin/infection --configuration=config/infection.json.dist
 
 coverage:
     php -dmemory_limit=-1 ./vendor/bin/phpunit -c config/phpunit.xml.dist --coverage-clover var/clover.xml

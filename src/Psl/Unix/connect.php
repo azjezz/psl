@@ -6,26 +6,20 @@ namespace Psl\Unix;
 
 use Psl\DateTime\Duration;
 use Psl\Network;
-use Psl\OS;
 
 /**
- * Connect to a socket.
+ * Connect to a Unix domain socket.
  *
  * @param non-empty-string $path
  *
- * @throws Network\Exception\RuntimeException If failed to connect to client on the given address.
+ * @throws Network\Exception\RuntimeException If failed to connect on the given path, or if on Windows.
  * @throws Network\Exception\TimeoutException If $timeout is non-null, and the operation timed-out.
  */
-function connect(string $path, null|Duration $timeout = null): Network\StreamSocketInterface
+function connect(string $path, null|Duration $timeout = null): StreamInterface
 {
-    // @codeCoverageIgnoreStart
-    if (OS\is_windows()) {
-        throw new Network\Exception\RuntimeException('Unix socket is not supported on Windows platform.');
-    }
-
-    // @codeCoverageIgnoreEnd
+    Internal\assert_not_windows();
 
     $socket = Network\Internal\socket_connect("unix://{$path}", timeout: $timeout);
 
-    return new Network\Internal\Socket($socket);
+    return new Internal\Stream($socket);
 }

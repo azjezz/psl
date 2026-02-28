@@ -47,5 +47,12 @@ final class AddressTest extends TestCase
         static::assertSame(SocketScheme::Unix, $address->scheme);
         static::assertSame('/etc/foo', $address->host);
         static::assertNull($address->port);
+
+        $address = Address::udp('127.0.0.1', 5353);
+
+        static::assertSame(SocketScheme::Udp, $address->scheme);
+        static::assertSame('127.0.0.1', $address->host);
+        static::assertSame(5353, $address->port);
+        static::assertSame('udp://127.0.0.1:5353', $address->toString());
     }
 }

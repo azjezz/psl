@@ -35,18 +35,33 @@ trait ReadHandleConvenienceMethodsTrait
     {
         $to_read = $max_bytes;
 
-        /** @var Psl\Ref<string> $data */
-        $data = new Psl\Ref('');
+        if (null === $timeout) {
+            $data = '';
+            do {
+                /** @var positive-int|null $chunk_size */
+                $chunk_size = $to_read;
+                $chunk = $this->read($chunk_size);
+                $data .= $chunk;
+                if (null !== $to_read) {
+                    $to_read -= strlen($chunk);
+                }
+            } while ((null === $to_read || $to_read > 0) && !$this->reachedEndOfDataSource());
+
+            return $data;
+        }
+
+        /** @var Psl\Ref<string> $data_ref */
+        $data_ref = new Psl\Ref('');
         $timer = new Psl\Async\OptionalIncrementalTimeout(
             $timeout,
             /**
              * @throws Exception\TimeoutException
              */
-            static function () use ($data): void {
+            static function () use ($data_ref): void {
                 // @codeCoverageIgnoreStart
                 throw new Exception\TimeoutException(Str\format(
                     'Reached timeout before %s data could be read.',
-                    '' === $data->value ? 'any' : 'all',
+                    '' === $data_ref->value ? 'any' : 'all',
                 ));
                 // @codeCoverageIgnoreEnd
             },
@@ -56,13 +71,13 @@ trait ReadHandleConvenienceMethodsTrait
             /** @var positive-int|null $chunk_size */
             $chunk_size = $to_read;
             $chunk = $this->read($chunk_size, $timer->getRemaining());
-            $data->value .= $chunk;
+            $data_ref->value .= $chunk;
             if (null !== $to_read) {
                 $to_read -= strlen($chunk);
             }
         } while ((null === $to_read || $to_read > 0) && !$this->reachedEndOfDataSource());
 
-        return $data->value;
+        return $data_ref->value;
     }
 
     /**

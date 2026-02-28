@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Psl\Example\TCP;
+namespace Psl\Example\Unix;
 
 use Psl\Async;
 use Psl\Filesystem;
@@ -16,7 +16,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 Async\main(static function (): int {
     if (PHP_OS_FAMILY === 'Windows') {
-        IO\write_error_line('This example requires does not support Windows.');
+        IO\write_error_line('This example does not support Windows.');
 
         return 0;
     }
@@ -25,11 +25,11 @@ Async\main(static function (): int {
 
     Async\concurrently([
         'server' => static function () use ($file): void {
-            $server = Unix\Server::create($file);
+            $listener = Unix\listen($file);
 
             IO\write_error_line('< server is listening.');
 
-            $connection = $server->nextConnection();
+            $connection = $listener->accept();
 
             IO\write_error_line('< connection received.');
             IO\write_error_line('< awaiting request.');
@@ -44,7 +44,7 @@ Async\main(static function (): int {
 
             IO\write_error_line('< connection closed.');
 
-            $server->close();
+            $listener->close();
 
             IO\write_error_line("< server stopped\n");
         },

@@ -70,7 +70,7 @@ final class SeekWriteStreamHandle implements StreamHandleInterface, WriteHandleI
     }
 
     /**
-     * @return resource|null
+     * @return resource|object|null
      *
      * @inheritDoc
      */
