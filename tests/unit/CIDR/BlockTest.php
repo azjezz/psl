@@ -110,21 +110,30 @@ final class BlockTest extends TestCase
         static::assertFalse($block->contains('not-an-ip'));
     }
 
-    public function testCidrWithExtraSlashIsAcceptedByExplodeLimit(): void
+    public function testCidrWithExtraSlashThrows(): void
     {
-        $block = new Block('::1/128/extra');
-
-        static::assertTrue($block->contains('::1'));
-        static::assertFalse($block->contains('::2'));
+        $this->expectException(InvalidArgumentException::class);
+        new Block('::1/128/extra');
     }
 
-    public function testNonNumericPrefixIsTreatedAsZeroByIntCast(): void
+    public function testNonNumericPrefixThrows(): void
     {
-        $block = new Block('10.0.0.0/abc');
+        $this->expectException(InvalidArgumentException::class);
+        new Block('10.0.0.0/abc');
+    }
+
+    public function testNegativePrefixThrows(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new Block('10.0.0.0/-1');
+    }
+
+    public function testPrefixWithLeadingZerosIsValid(): void
+    {
+        $block = new Block('10.0.0.0/08');
 
         static::assertTrue($block->contains('10.0.0.1'));
-        static::assertTrue($block->contains('192.168.1.1'));
-        static::assertTrue($block->contains('255.255.255.255'));
+        static::assertFalse($block->contains('11.0.0.1'));
     }
 
     public function testIpv6PrefixZeroMatchesAllAddresses(): void
