@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Psl\Network;
+namespace Psl\TCP;
 
 use Psl\DateTime\Duration;
-use Psl\TCP;
 use Revolt\EventLoop;
 
+use function array_filter;
+use function array_pop;
+use function array_values;
 use function is_resource;
 use function spl_object_id;
 
@@ -42,7 +44,7 @@ final class SocketPool implements SocketPoolInterface
     private readonly Duration $idleTimeout;
 
     public function __construct(
-        private readonly TCP\ConnectorInterface $connector = new TCP\Connector(),
+        private readonly ConnectorInterface $connector = new Connector(),
         null|Duration $idleTimeout = null,
     ) {
         $this->idleTimeout = $idleTimeout ?? Duration::seconds(10);

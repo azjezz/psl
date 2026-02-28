@@ -80,10 +80,10 @@ $tls->writeAll("GET /data HTTP/1.1\r\nHost: api.example.com\r\n\r\n");
 
 ```php
 use Psl\Socks;
-use Psl\Network;
+use Psl\TCP;
 
 $proxy = new Socks\Connector('proxy.example.com', 1080);
-$pool = new Network\SocketPool(connector: $proxy);
+$pool = new TCP\SocketPool(connector: $proxy);
 
 $stream = $pool->checkout('api.example.com', 80);
 // ... use stream ...

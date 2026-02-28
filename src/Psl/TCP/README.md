@@ -166,6 +166,26 @@ $stream = $connector->connect('db.production.internal', 5432);
 
 ---
 
+#### `SocketPool`
+
+A connection pool that reuses idle TCP connections. When a connection is checked in, an idle timer starts. If not checked out again before the timer fires, it is closed.
+
+```php
+$pool = new TCP\SocketPool();
+$stream = $pool->checkout('example.com', 80);
+// ... use stream ...
+$pool->checkin($stream);
+
+// Later — reuses the same connection
+$stream = $pool->checkout('example.com', 80);
+```
+
+**Constructor:**
+- `ConnectorInterface $connector = new Connector()` — Connector for creating new connections.
+- `?Duration $idleTimeout = null` — How long idle connections stay alive (default: 10s).
+
+---
+
 #### `Socket`
 
 A low-level TCP socket that can be configured before connecting or listening. Create a socket, configure options, then consume it by calling `connect()` or `listen()`.

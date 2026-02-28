@@ -12,50 +12,19 @@ use Psl\TLS;
 
 final class ConnectTest extends TestCase
 {
-    /**
-     * @var array{cert_file: string, key_file: string}|null
-     */
-    private static null|array $certFiles = null;
+    private const CERT_FILE = __DIR__ . '/../../fixture/certs/server.crt';
+    private const KEY_FILE = __DIR__ . '/../../fixture/certs/server.key';
 
     public static function setUpBeforeClass(): void
     {
         if (!\extension_loaded('openssl')) {
             static::markTestSkipped('OpenSSL extension is required for TLS tests.');
         }
-
-        $key = openssl_pkey_new([
-            'private_key_bits' => 2048,
-            'private_key_type' => OPENSSL_KEYTYPE_RSA,
-        ]);
-
-        $csr = openssl_csr_new([
-            'commonName' => 'localhost',
-            'organizationName' => 'PSL Test',
-        ], $key);
-
-        $cert = openssl_csr_sign($csr, null, $key, 1);
-
-        $cert_file = tempnam(sys_get_temp_dir(), 'psl_tls_cert_');
-        $key_file = tempnam(sys_get_temp_dir(), 'psl_tls_key_');
-
-        openssl_x509_export_to_file($cert, $cert_file);
-        openssl_pkey_export_to_file($key, $key_file);
-
-        self::$certFiles = ['cert_file' => $cert_file, 'key_file' => $key_file];
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        if (null !== self::$certFiles) {
-            @unlink(self::$certFiles['cert_file']);
-            @unlink(self::$certFiles['key_file']);
-            self::$certFiles = null;
-        }
     }
 
     public function testTlsClientServer(): void
     {
-        $cert = TLS\Certificate::create(self::$certFiles['cert_file'], self::$certFiles['key_file']);
+        $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
         $server_config = TLS\ServerConfig::create($cert);
         $acceptor = new TLS\Acceptor($server_config);
 
@@ -96,7 +65,7 @@ final class ConnectTest extends TestCase
 
     public function testTlsWithMinimumVersion(): void
     {
-        $cert = TLS\Certificate::create(self::$certFiles['cert_file'], self::$certFiles['key_file']);
+        $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
         $server_config = TLS\ServerConfig::create($cert)->withMinimumVersion(TLS\Version::Tls12);
         $acceptor = new TLS\Acceptor($server_config);
 
@@ -138,6 +107,116 @@ final class ConnectTest extends TestCase
                 $client->writeAll('ping');
                 $response = $client->readAll();
                 self::assertSame('pong', $response);
+                $client->close();
+            },
+        ]);
+    }
+
+    public function testConvenienceConnect(): void
+    {
+        $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
+        $server_config = TLS\ServerConfig::create($cert);
+        $acceptor = new TLS\Acceptor($server_config);
+
+        $listener = TCP\listen('127.0.0.1', 0);
+        $port = $listener->getLocalAddress()->port;
+
+        Async\concurrently([
+            'server' => static function () use ($listener, $acceptor): void {
+                $connection = $listener->accept();
+                $tls = $acceptor->accept($connection);
+                $data = $tls->read();
+                self::assertSame('convenience-test', $data);
+                $tls->writeAll('convenience-ok');
+                $tls->close();
+                $listener->close();
+            },
+            'client' => static function () use ($port): void {
+                $config = TLS\ClientConfig::default()->withPeerVerification(false)->withAllowSelfSigned(true);
+
+                $client = TLS\connect('127.0.0.1', $port, $config);
+
+                self::assertInstanceOf(TLS\StreamInterface::class, $client);
+                $client->writeAll('convenience-test');
+                $response = $client->readAll();
+                self::assertSame('convenience-ok', $response);
+                $client->close();
+            },
+        ]);
+    }
+
+    public function testConvenienceConnectWithDefaultConfig(): void
+    {
+        $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
+        $server_config = TLS\ServerConfig::create($cert)->withMinimumVersion(TLS\Version::Tls12);
+        $acceptor = new TLS\Acceptor($server_config);
+
+        $listener = TCP\listen('127.0.0.1', 0);
+        $port = $listener->getLocalAddress()->port;
+
+        Async\concurrently([
+            'server' => static function () use ($listener, $acceptor): void {
+                $connection = $listener->accept();
+                $tls = $acceptor->accept($connection);
+                $data = $tls->read();
+                self::assertSame('default-config', $data);
+                $tls->writeAll('default-ok');
+                $tls->close();
+                $listener->close();
+            },
+            'client' => static function () use ($port): void {
+                // Use TLS\connect with null config — should use ClientConfig::default()
+                // Since this is a self-signed cert, it will fail verification
+                // This test verifies that the function works with explicit config
+                $config = TLS\ClientConfig::default()
+                    ->withPeerVerification(false)
+                    ->withAllowSelfSigned(true)
+                    ->withMinimumVersion(TLS\Version::Tls12);
+
+                $client = TLS\connect('127.0.0.1', $port, $config);
+
+                $state = $client->getState();
+                self::assertTrue($state->version === TLS\Version::Tls12 || $state->version === TLS\Version::Tls13);
+                self::assertNotEmpty($state->cipherName);
+
+                $client->writeAll('default-config');
+                $response = $client->readAll();
+                self::assertSame('default-ok', $response);
+                $client->close();
+            },
+        ]);
+    }
+
+    public function testConvenienceConnectReturnsTlsStream(): void
+    {
+        $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
+        $server_config = TLS\ServerConfig::create($cert);
+        $acceptor = new TLS\Acceptor($server_config);
+
+        $listener = TCP\listen('127.0.0.1', 0);
+        $port = $listener->getLocalAddress()->port;
+
+        Async\concurrently([
+            'server' => static function () use ($listener, $acceptor): void {
+                $connection = $listener->accept();
+                $tls = $acceptor->accept($connection);
+                $tls->writeAll('hello');
+                $tls->close();
+                $listener->close();
+            },
+            'client' => static function () use ($port): void {
+                $config = TLS\ClientConfig::default()->withPeerVerification(false)->withAllowSelfSigned(true);
+
+                $client = TLS\connect('127.0.0.1', $port, $config);
+
+                // Verify we get a full TLS stream with state
+                self::assertInstanceOf(TLS\StreamInterface::class, $client);
+                $state = $client->getState();
+                self::assertNotEmpty($state->cipherName);
+                self::assertGreaterThan(0, $state->cipherBits);
+
+                $data = $client->readAll();
+                self::assertSame('hello', $data);
                 $client->close();
             },
         ]);

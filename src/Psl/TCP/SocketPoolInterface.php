@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Psl\Network;
+namespace Psl\TCP;
 
 use Psl\DateTime\Duration;
+use Psl\Network;
 
 /**
  * A pool of reusable TCP connections.
@@ -21,8 +22,8 @@ interface SocketPoolInterface
      * @param non-empty-string $host
      * @param int<0, 65535> $port
      *
-     * @throws Exception\RuntimeException If the connection fails.
-     * @throws Exception\TimeoutException If the operation times out.
+     * @throws Network\Exception\RuntimeException If the connection fails.
+     * @throws Network\Exception\TimeoutException If the operation times out.
      */
     public function checkout(string $host, int $port, null|Duration $timeout = null): StreamInterface;
 
