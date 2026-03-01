@@ -101,12 +101,12 @@ final class LineWrapperTest extends TestCase
         static::assertCount(2, $result);
 
         static::assertSame('Hello', $result[0]->spans[0]->content);
-        static::assertCount(1, $result[0]->spans[0]->modifiers);
+        static::assertCount(2, $result[0]->spans[0]->modifiers);
         static::assertSame($bold, $result[0]->spans[0]->modifiers[0]);
         static::assertSame($italic, $result[0]->spans[0]->modifiers[1]);
 
         static::assertSame('World', $result[1]->spans[0]->content);
-        static::assertCount(1, $result[1]->spans[0]->modifiers);
+        static::assertCount(2, $result[1]->spans[0]->modifiers);
         static::assertSame($bold, $result[1]->spans[0]->modifiers[0]);
         static::assertSame($italic, $result[1]->spans[0]->modifiers[1]);
     }
