@@ -16,6 +16,7 @@
 - [copy_bidirectional](./../../src/Psl/IO/copy_bidirectional.php#L21)
 - [error_handle](./../../src/Psl/IO/error_handle.php#L21)
 - [input_handle](./../../src/Psl/IO/input_handle.php#L23)
+- [is_terminal](./../../src/Psl/IO/is_terminal.php#L18)
 - [output_handle](./../../src/Psl/IO/output_handle.php#L23)
 - [pipe](./../../src/Psl/IO/pipe.php#L27)
 - [streaming](./../../src/Psl/IO/streaming.php#L41)

@@ -374,7 +374,7 @@ final readonly class Command
         // @codeCoverageIgnoreEnd
 
         $pipes = [];
-        $process = proc_open($command, $descriptors, $pipes, $workingDirectory, $environment, $options);
+        $process = @proc_open($command, $descriptors, $pipes, $workingDirectory, $environment, $options);
         // @codeCoverageIgnoreStart
         if (!is_resource($process)) {
             throw new Exception\StartFailedException('Failed to start the process.');

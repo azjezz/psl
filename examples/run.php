@@ -31,7 +31,7 @@ Async\main(static function (): int {
                 continue;
             }
 
-            if ('ansi' === $component) {
+            if ('ansi' === $component || 'terminal' === $component) {
                 // interactive terminal demo.
                 continue;
             }

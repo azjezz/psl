@@ -31,6 +31,11 @@
       <file>../src/Psl/Filesystem/get_owner.php</file>
       <file>../src/Psl/Filesystem/change_owner.php</file>
       <file>../src/Psl/Filesystem/Internal/change_owner.php</file>
+
+      <!-- Terminal internals require a real terminal -->
+      <directory>../src/Psl/Terminal/Internal</directory>
+      <file>../src/Psl/Terminal/Application.php</file>
+
     </exclude>
   </source>
   <php>

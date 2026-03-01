@@ -17,6 +17,7 @@
  * [Psl\Range](../src/Psl/Range/README.md)
  * [Psl\Socks](../src/Psl/Socks/README.md)
  * [Psl\TCP](../src/Psl/TCP/README.md)
+ * [Psl\Terminal](../src/Psl/Terminal/README.md)
  * [Psl\TLS](../src/Psl/TLS/README.md)
  * [Psl\Tree](../src/Psl/Tree/README.md)
  * [Psl\Type](../src/Psl/Type/README.md)

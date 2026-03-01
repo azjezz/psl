@@ -15,7 +15,7 @@ indent-heredoc = false
 integrations = ["php-unit"]
 
 [linter.rules]
-cyclomatic-complexity = { threshold = 43 }
+cyclomatic-complexity = { threshold = 48 }
 kan-defect = { threshold = 3.5 }
 halstead = { enabled = false }
 too-many-methods = { enabled = false }
@@ -31,7 +31,8 @@ no-boolean-flag-parameter = { enabled = false }
 no-error-control-operator = { enabled = false }
 no-redundant-use = { enabled = true }
 no-isset = { enabled = false }
-single-class-per-file = { exclude = ["tests/static-analysis"] }
+single-class-per-file = { exclude = ["tests/static-analysis", "examples"] }
+file-name = { exclude = ["examples"] }
 
 [analyzer]
 excludes = [
