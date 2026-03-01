@@ -10,7 +10,7 @@ use Psl\Ansi\ControlSequenceIntroducerKind;
 /**
  * @pure
  */
-function enable_alternate_screen(): ControlSequenceIntroducer
+function reset_mode(ScreenMode $mode): ControlSequenceIntroducer
 {
-    return new ControlSequenceIntroducer('?1049', ControlSequenceIntroducerKind::SetMode);
+    return new ControlSequenceIntroducer($mode->value, ControlSequenceIntroducerKind::ResetMode);
 }
