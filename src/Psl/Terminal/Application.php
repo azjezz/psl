@@ -60,7 +60,7 @@ final class Application
         private readonly IO\ReadHandleInterface&IO\StreamHandleInterface $input,
         private readonly IO\WriteHandleInterface $output,
         private readonly null|Internal\ScrollSmoothing $scrollSmoothing,
-        private readonly bool $mouseMotion,
+        private readonly Ansi\Screen\ScreenMode $mouseMode,
         private readonly RawModeSwitcherInterface $rawModeSwitcher,
         private readonly WindowSizeProviderInterface $windowSizeProvider,
         private readonly bool $remote,
@@ -90,7 +90,7 @@ final class Application
             IO\input_handle(),
             IO\output_handle(),
             $scrollSmoothing ? new Internal\ScrollSmoothing() : null,
-            $mouseMotion,
+            $mouseMotion ? Ansi\Screen\ScreenMode::MouseMotionTracking : Ansi\Screen\ScreenMode::MouseTracking,
             new LocalRawModeSwitcher(),
             new LocalWindowSizeProvider(),
             false,
@@ -140,7 +140,7 @@ final class Application
             $input,
             $output,
             $scrollSmoothing ? new Internal\ScrollSmoothing() : null,
-            $mouseMotion,
+            $mouseMotion ? Ansi\Screen\ScreenMode::MouseMotionTracking : Ansi\Screen\ScreenMode::MouseTracking,
             new NoopRawModeSwitcher(),
             new StaticWindowSizeProvider($width, $height),
             true,
@@ -222,13 +222,13 @@ final class Application
         $this->rawModeSwitcher->enable();
 
         try {
-            $setupSequences = Ansi\Screen\enable_alternate_screen()->toString();
+            $setupSequences = Ansi\Screen\set_mode(Ansi\Screen\ScreenMode::AlternateScreen)->toString();
             $setupSequences .= Ansi\Cursor\hide()->toString();
-            $setupSequences .= Ansi\Screen\enable_mouse_tracking($this->mouseMotion)->toString();
-            $setupSequences .= Ansi\Screen\enable_bracketed_paste()->toString();
-            $setupSequences .= Ansi\Screen\enable_focus_tracking()->toString();
+            $setupSequences .= Ansi\Screen\set_mode($this->mouseMode)->toString();
+            $setupSequences .= Ansi\Screen\set_mode(Ansi\Screen\ScreenMode::BracketedPaste)->toString();
+            $setupSequences .= Ansi\Screen\set_mode(Ansi\Screen\ScreenMode::FocusTracking)->toString();
             $setupSequences .= Ansi\Screen\enable_kitty_keyboard()->toString();
-            $setupSequences .= Ansi\Screen\enable_in_band_resize()->toString();
+            $setupSequences .= Ansi\Screen\set_mode(Ansi\Screen\ScreenMode::InBandResize)->toString();
 
             if ($this->title !== '') {
                 $setupSequences .= Ansi\Screen\title($this->title)->toString();
@@ -402,16 +402,16 @@ final class Application
     private function tryTeardown(): void
     {
         try {
-            $teardownSequences = Ansi\Screen\disable_in_band_resize()->toString();
+            $teardownSequences = Ansi\Screen\reset_mode(Ansi\Screen\ScreenMode::InBandResize)->toString();
             $teardownSequences .= Ansi\Screen\disable_kitty_keyboard()->toString();
-            $teardownSequences .= Ansi\Screen\disable_focus_tracking()->toString();
-            $teardownSequences .= Ansi\Screen\disable_bracketed_paste()->toString();
-            $teardownSequences .= Ansi\Screen\disable_mouse_tracking($this->mouseMotion)->toString();
+            $teardownSequences .= Ansi\Screen\reset_mode(Ansi\Screen\ScreenMode::FocusTracking)->toString();
+            $teardownSequences .= Ansi\Screen\reset_mode(Ansi\Screen\ScreenMode::BracketedPaste)->toString();
+            $teardownSequences .= Ansi\Screen\reset_mode($this->mouseMode)->toString();
             $teardownSequences .= Ansi\Screen\erase(Ansi\Screen\EraseMode::Full)->toString();
             $teardownSequences .= Ansi\reset()->toString();
             $teardownSequences .= Ansi\Cursor\move_to(1, 1)->toString();
             $teardownSequences .= Ansi\Cursor\show()->toString();
-            $teardownSequences .= Ansi\Screen\disable_alternate_screen()->toString();
+            $teardownSequences .= Ansi\Screen\reset_mode(Ansi\Screen\ScreenMode::AlternateScreen)->toString();
 
             $written = 1;
             while ($teardownSequences !== '' && $written > 0) {

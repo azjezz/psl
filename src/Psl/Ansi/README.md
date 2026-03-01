@@ -159,42 +159,31 @@ Screen\progress_clear();                                    // remove progress i
 
 ### Terminal Modes
 
-These functions toggle DEC private modes — the same mechanism used by `Cursor\hide()`/`show()` for cursor visibility.
-
-**Alternate screen buffer** (`?1049`) — provides a clean canvas for full-screen TUIs. When disabled, the original terminal content is restored:
+DEC private modes are toggled with `set_mode()` and `reset_mode()` using the `ScreenMode` enum:
 
 ```php
-IO\write(Screen\enable_alternate_screen()->toString());
+use Psl\Ansi\Screen;
+
+// Alternate screen buffer (?1049) — clean canvas for full-screen TUIs
+IO\write(Screen\set_mode(Screen\ScreenMode::AlternateScreen)->toString());
 // ... draw TUI ...
-IO\write(Screen\disable_alternate_screen()->toString());
-```
+IO\write(Screen\reset_mode(Screen\ScreenMode::AlternateScreen)->toString());
 
-**Mouse tracking** (`?1000` + `?1006`) — enables mouse event reporting with SGR extended coordinates, allowing the application to receive click, scroll, and motion events:
+// Mouse tracking (?1000 + ?1006) — click and scroll events
+IO\write(Screen\set_mode(Screen\ScreenMode::MouseTracking)->toString());
+// ... or with motion tracking (?1003 + ?1006) ...
+IO\write(Screen\set_mode(Screen\ScreenMode::MouseMotionTracking)->toString());
 
-```php
-IO\write(Screen\enable_mouse_tracking()->toString());
-// ... read mouse events from stdin ...
-IO\write(Screen\disable_mouse_tracking()->toString());
-```
-
-**Bracketed paste** (`?2004`) — when enabled, the terminal wraps pasted content with delimiter sequences so the application can distinguish pasted text from typed input. Use `bracketed_paste_start()` and `bracketed_paste_end()` to get the marker strings for detection:
-
-```php
-IO\write(Screen\enable_bracketed_paste()->toString());
-
+// Bracketed paste (?2004) — distinguish pasted text from typed input
+IO\write(Screen\set_mode(Screen\ScreenMode::BracketedPaste)->toString());
 $paste_start = Screen\bracketed_paste_start(); // "\e[200~"
 $paste_end = Screen\bracketed_paste_end();     // "\e[201~"
-// ... detect paste boundaries when reading input ...
 
-IO\write(Screen\disable_bracketed_paste()->toString());
-```
+// Focus tracking (?1004) — focus-in/focus-out events
+IO\write(Screen\set_mode(Screen\ScreenMode::FocusTracking)->toString());
 
-**Focus tracking** (`?1004`) — when enabled, the terminal reports focus-in (`\e[I`) and focus-out (`\e[O`) events when the window gains or loses focus:
-
-```php
-IO\write(Screen\enable_focus_tracking()->toString());
-// ... read focus events from stdin ...
-IO\write(Screen\disable_focus_tracking()->toString());
+// In-band resize (?2048) — resize events as escape sequences
+IO\write(Screen\set_mode(Screen\ScreenMode::InBandResize)->toString());
 ```
 
 **Kitty keyboard protocol** — pushes enhanced keyboard reporting onto the terminal's mode stack, enabling features like key release events and modifier disambiguation:
@@ -231,7 +220,7 @@ use Psl\IO;
 
 // Enter TUI mode
 IO\write(
-    Screen\enable_alternate_screen()->toString()
+    Screen\set_mode(Screen\ScreenMode::AlternateScreen)->toString()
     . Cursor\hide()->toString()
     . Screen\erase(Screen\EraseMode::Full)->toString()
     . Cursor\move_to(1, 1)->toString()
@@ -244,7 +233,7 @@ IO\write(
 IO\write(
     Cursor\show()->toString()
     . Ansi\reset()->toString()
-    . Screen\disable_alternate_screen()->toString()
+    . Screen\reset_mode(Screen\ScreenMode::AlternateScreen)->toString()
     . Screen\title('')->toString()
 );
 ```

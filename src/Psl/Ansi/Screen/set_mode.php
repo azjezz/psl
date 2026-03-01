@@ -10,7 +10,7 @@ use Psl\Ansi\ControlSequenceIntroducerKind;
 /**
  * @pure
  */
-function enable_bracketed_paste(): ControlSequenceIntroducer
+function set_mode(ScreenMode $mode): ControlSequenceIntroducer
 {
-    return new ControlSequenceIntroducer('?2004', ControlSequenceIntroducerKind::SetMode);
+    return new ControlSequenceIntroducer($mode->value, ControlSequenceIntroducerKind::SetMode);
 }

@@ -6,6 +6,7 @@ namespace Psl\Terminal;
 
 use Psl\Ansi;
 use Psl\Ansi\ControlSequenceIntroducer;
+use Psl\Ansi\Screen;
 use Psl\IO;
 use Psl\Str;
 
@@ -137,7 +138,7 @@ final class Buffer
      */
     public function flush(IO\WriteHandleInterface $output): void
     {
-        $buf = '';
+        $buf = Screen\set_mode(Screen\ScreenMode::SynchronizedOutput)->toString();
         $lastX = -2;
         $lastY = -1;
         /** @var list<ControlSequenceIntroducer> $lastStyle */
@@ -199,11 +200,11 @@ final class Buffer
             $buf .= "\e[0m";
         }
 
+        $buf .= Screen\reset_mode(Screen\ScreenMode::SynchronizedOutput)->toString();
+
         $this->previous = self::copyGrid($this->cells, $this->width, $this->height);
 
-        if ($buf !== '') {
-            $output->writeAll($buf);
-        }
+        $output->writeAll($buf);
     }
 
     /**

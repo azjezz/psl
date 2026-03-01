@@ -173,6 +173,11 @@ final class BufferTest extends TestCase
 
     public function testFlushWritesNothingWhenUnchanged(): void
     {
+        $syncOverhead = Str\Byte\length(
+            Ansi\Screen\set_mode(Ansi\Screen\ScreenMode::SynchronizedOutput)->toString()
+                . Ansi\Screen\reset_mode(Ansi\Screen\ScreenMode::SynchronizedOutput)->toString(),
+        );
+
         $buffer = new Buffer(3, 1);
         $buffer->setString(0, 0, 'AB');
 
@@ -183,7 +188,7 @@ final class BufferTest extends TestCase
 
         $buffer->flush($output);
 
-        static::assertSame($afterFirst, Str\Byte\length($output->getBuffer()));
+        static::assertSame($afterFirst + $syncOverhead, Str\Byte\length($output->getBuffer()));
     }
 
     public function testFlushWithForegroundAndBackground(): void
@@ -372,6 +377,11 @@ final class BufferTest extends TestCase
 
     public function testFlushWritesNothingWhenUnchangedMultiRow(): void
     {
+        $syncOverhead = Str\Byte\length(
+            Ansi\Screen\set_mode(Ansi\Screen\ScreenMode::SynchronizedOutput)->toString()
+                . Ansi\Screen\reset_mode(Ansi\Screen\ScreenMode::SynchronizedOutput)->toString(),
+        );
+
         $buffer = new Buffer(2, 3);
         $buffer->setString(0, 0, 'AB');
         $buffer->setString(0, 1, 'CD');
@@ -382,6 +392,6 @@ final class BufferTest extends TestCase
         $afterFirst = Str\Byte\length($output->getBuffer());
 
         $buffer->flush($output);
-        static::assertSame($afterFirst, Str\Byte\length($output->getBuffer()));
+        static::assertSame($afterFirst + $syncOverhead, Str\Byte\length($output->getBuffer()));
     }
 }

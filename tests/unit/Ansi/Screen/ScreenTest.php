@@ -168,58 +168,43 @@ final class ScreenTest extends TestCase
         static::assertSame("\e]52;c;aGVsbG8=\e\\", $osc->toString());
     }
 
-    public function testEnableMouseTracking(): void
+    public function testSetMode(): void
     {
-        $sequence = Screen\enable_mouse_tracking();
+        foreach (Screen\ScreenMode::cases() as $mode) {
+            $sequence = Screen\set_mode($mode);
 
-        static::assertSame('?1000;1006', $sequence->parameters);
-        static::assertSame(ControlSequenceIntroducerKind::SetMode, $sequence->kind);
-        static::assertSame("\e[?1000;1006h", $sequence->toString());
+            static::assertSame($mode->value, $sequence->parameters);
+            static::assertSame(ControlSequenceIntroducerKind::SetMode, $sequence->kind);
+            static::assertSame("\e[" . $mode->value . 'h', $sequence->toString());
+        }
     }
 
-    public function testDisableMouseTracking(): void
+    public function testResetMode(): void
     {
-        $sequence = Screen\disable_mouse_tracking();
+        foreach (Screen\ScreenMode::cases() as $mode) {
+            $sequence = Screen\reset_mode($mode);
 
-        static::assertSame('?1006;1000', $sequence->parameters);
-        static::assertSame(ControlSequenceIntroducerKind::ResetMode, $sequence->kind);
-        static::assertSame("\e[?1006;1000l", $sequence->toString());
+            static::assertSame($mode->value, $sequence->parameters);
+            static::assertSame(ControlSequenceIntroducerKind::ResetMode, $sequence->kind);
+            static::assertSame("\e[" . $mode->value . 'l', $sequence->toString());
+        }
     }
 
-    public function testEnableBracketedPaste(): void
+    public function testScreenModeValues(): void
     {
-        $sequence = Screen\enable_bracketed_paste();
-
-        static::assertSame('?2004', $sequence->parameters);
-        static::assertSame(ControlSequenceIntroducerKind::SetMode, $sequence->kind);
-        static::assertSame("\e[?2004h", $sequence->toString());
-    }
-
-    public function testDisableBracketedPaste(): void
-    {
-        $sequence = Screen\disable_bracketed_paste();
-
-        static::assertSame('?2004', $sequence->parameters);
-        static::assertSame(ControlSequenceIntroducerKind::ResetMode, $sequence->kind);
-        static::assertSame("\e[?2004l", $sequence->toString());
-    }
-
-    public function testEnableAlternateScreen(): void
-    {
-        $sequence = Screen\enable_alternate_screen();
-
-        static::assertSame('?1049', $sequence->parameters);
-        static::assertSame(ControlSequenceIntroducerKind::SetMode, $sequence->kind);
-        static::assertSame("\e[?1049h", $sequence->toString());
-    }
-
-    public function testDisableAlternateScreen(): void
-    {
-        $sequence = Screen\disable_alternate_screen();
-
-        static::assertSame('?1049', $sequence->parameters);
-        static::assertSame(ControlSequenceIntroducerKind::ResetMode, $sequence->kind);
-        static::assertSame("\e[?1049l", $sequence->toString());
+        static::assertSame('?12', Screen\ScreenMode::CursorBlink->value);
+        static::assertSame('?7', Screen\ScreenMode::AutoWrap->value);
+        static::assertSame('?45', Screen\ScreenMode::ReverseWrap->value);
+        static::assertSame('?6', Screen\ScreenMode::Origin->value);
+        static::assertSame('?1049', Screen\ScreenMode::AlternateScreen->value);
+        static::assertSame('?2026', Screen\ScreenMode::SynchronizedOutput->value);
+        static::assertSame('?1000;1006', Screen\ScreenMode::MouseTracking->value);
+        static::assertSame('?1003;1006', Screen\ScreenMode::MouseMotionTracking->value);
+        static::assertSame('?2004', Screen\ScreenMode::BracketedPaste->value);
+        static::assertSame('?1004', Screen\ScreenMode::FocusTracking->value);
+        static::assertSame('?2048', Screen\ScreenMode::InBandResize->value);
+        static::assertSame('?2027', Screen\ScreenMode::GraphemeClustering->value);
+        static::assertSame('?2031', Screen\ScreenMode::ColorSchemeReporting->value);
     }
 
     public function testProgressNormal(): void
@@ -298,24 +283,6 @@ final class ScreenTest extends TestCase
         static::assertSame("\e[201~", Screen\bracketed_paste_end());
     }
 
-    public function testEnableFocusTracking(): void
-    {
-        $sequence = Screen\enable_focus_tracking();
-
-        static::assertSame('?1004', $sequence->parameters);
-        static::assertSame(ControlSequenceIntroducerKind::SetMode, $sequence->kind);
-        static::assertSame("\e[?1004h", $sequence->toString());
-    }
-
-    public function testDisableFocusTracking(): void
-    {
-        $sequence = Screen\disable_focus_tracking();
-
-        static::assertSame('?1004', $sequence->parameters);
-        static::assertSame(ControlSequenceIntroducerKind::ResetMode, $sequence->kind);
-        static::assertSame("\e[?1004l", $sequence->toString());
-    }
-
     public function testEnableKittyKeyboard(): void
     {
         $sequence = Screen\enable_kitty_keyboard();
@@ -340,24 +307,6 @@ final class ScreenTest extends TestCase
         static::assertSame('<', $sequence->parameters);
         static::assertSame(ControlSequenceIntroducerKind::RestoreCursor, $sequence->kind);
         static::assertSame("\e[<u", $sequence->toString());
-    }
-
-    public function testEnableInBandResize(): void
-    {
-        $sequence = Screen\enable_in_band_resize();
-
-        static::assertSame('?2048', $sequence->parameters);
-        static::assertSame(ControlSequenceIntroducerKind::SetMode, $sequence->kind);
-        static::assertSame("\e[?2048h", $sequence->toString());
-    }
-
-    public function testDisableInBandResize(): void
-    {
-        $sequence = Screen\disable_in_band_resize();
-
-        static::assertSame('?2048', $sequence->parameters);
-        static::assertSame(ControlSequenceIntroducerKind::ResetMode, $sequence->kind);
-        static::assertSame("\e[?2048l", $sequence->toString());
     }
 
     public function testBell(): void
