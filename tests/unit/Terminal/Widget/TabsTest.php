@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Terminal\Widget;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Terminal\Buffer;
@@ -39,17 +40,17 @@ final class TabsTest extends TestCase
         $buffer = new Buffer(20, 1);
         $area = new Rect(0, 0, 20, 1);
 
-        $activeFg = Color\bright_cyan();
+        $activeFg = Ansi\foreground(Color\bright_cyan());
 
         Tabs::new()
             ->titles(['Active', 'Other'])
             ->highlight(0)
-            ->activeStyle(foreground: $activeFg, style: Style\bold())
+            ->activeStyle($activeFg, Style\bold())
             ->render($area, $buffer);
 
         $cell = $buffer->get(1, 0);
         static::assertNotNull($cell);
-        static::assertNotNull($cell->foreground);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testInactiveStyleApplied(): void
@@ -57,17 +58,17 @@ final class TabsTest extends TestCase
         $buffer = new Buffer(30, 1);
         $area = new Rect(0, 0, 30, 1);
 
-        $inactiveFg = Color\bright_black();
+        $inactiveFg = Ansi\foreground(Color\bright_black());
 
         Tabs::new()
             ->titles(['First', 'Second'])
             ->highlight(0)
-            ->inactiveStyle(foreground: $inactiveFg)
+            ->inactiveStyle($inactiveFg)
             ->render($area, $buffer);
 
         $cell = $buffer->get(9, 0);
         static::assertNotNull($cell);
-        static::assertNotNull($cell->foreground);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testNoHighlightRendersAllInactive(): void
@@ -75,18 +76,18 @@ final class TabsTest extends TestCase
         $buffer = new Buffer(30, 1);
         $area = new Rect(0, 0, 30, 1);
 
-        $activeFg = Color\bright_cyan();
-        $inactiveFg = Color\bright_black();
+        $activeFg = Ansi\foreground(Color\bright_cyan());
+        $inactiveFg = Ansi\foreground(Color\bright_black());
 
         Tabs::new()
             ->titles(['Tab1', 'Tab2'])
-            ->activeStyle(foreground: $activeFg)
-            ->inactiveStyle(foreground: $inactiveFg)
+            ->activeStyle($activeFg)
+            ->inactiveStyle($inactiveFg)
             ->render($area, $buffer);
 
         $cell = $buffer->get(1, 0);
         static::assertNotNull($cell);
-        static::assertSame($inactiveFg, $cell->foreground);
+        static::assertContains($inactiveFg, $cell->style);
     }
 
     public function testEmptyTitlesRendersNothing(): void
@@ -131,12 +132,12 @@ final class TabsTest extends TestCase
         Tabs::new()
             ->titles(['Tab1', 'Tab2'])
             ->highlight(0)
-            ->activeStyle(style: Style\bold())
+            ->activeStyle(Style\bold())
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
-        static::assertNotEmpty($cell->modifiers);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testInactiveStyleModifier(): void
@@ -147,7 +148,7 @@ final class TabsTest extends TestCase
         Tabs::new()
             ->titles(['Tab1', 'Tab2'])
             ->highlight(0)
-            ->inactiveStyle(style: Style\italic())
+            ->inactiveStyle(Style\italic())
             ->render($area, $buffer);
 
         $tCount = 0;
@@ -167,7 +168,7 @@ final class TabsTest extends TestCase
         static::assertGreaterThanOrEqual(0, $tab2Start);
         $cell = $buffer->get($tab2Start, 0);
         static::assertNotNull($cell);
-        static::assertNotEmpty($cell->modifiers);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testEmptyAreaDoesNotCorruptBuffer(): void

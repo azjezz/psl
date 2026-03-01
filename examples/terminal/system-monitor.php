@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Example\Terminal;
 
+use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Async;
@@ -162,13 +163,11 @@ final class MonitorState
 
 function render_overview(Terminal\Rect $main, MonitorState $state, Terminal\Buffer $buffer): void
 {
-    // Main: top panels + process table
     [$topSection, $processSection] = Layout\vertical($main, [
         Layout\fixed(8),
         Layout\fill(),
     ]);
 
-    // Top: CPU block + Memory block
     [$cpuSection, $memSection] = Layout\horizontal($topSection, [
         Layout\fill(),
         Layout\fixed(32),
@@ -176,20 +175,19 @@ function render_overview(Terminal\Rect $main, MonitorState $state, Terminal\Buff
 
     $cpuBlock = Widget\Block::new()
         ->title(' CPU ')
-        ->titleStyle(foreground: Color\bright_cyan(), style: Style\bold())
+        ->titleStyle(Ansi\foreground(Color\bright_cyan()), Style\bold())
         ->border(Widget\Border::rounded());
 
     $cpuBlock->render($cpuSection, Widget\Paragraph::new([]), $buffer);
     $cpuInner = $cpuBlock->innerArea($cpuSection);
 
-    // Split inner: 4 gauge rows + 1 empty + 1 sparkline
     $cpuRows = Layout\vertical($cpuInner, [
         Layout\fixed(1),
         Layout\fixed(1),
         Layout\fixed(1),
         Layout\fixed(1),
-        Layout\fixed(1), // separator
-        Layout\fill(), // sparkline
+        Layout\fixed(1),
+        Layout\fill(),
     ]);
 
     $cpuLabels = ['CPU 1', 'CPU 2', 'CPU 3', 'CPU 4'];
@@ -203,15 +201,14 @@ function render_overview(Terminal\Rect $main, MonitorState $state, Terminal\Buff
         Widget\Gauge::new()
             ->ratio($cpuVal / 100.0)
             ->label($cpuLabels[$i])
-            ->filledStyle(foreground: $color)
-            ->emptyStyle(foreground: Color\bright_black())
-            ->labelStyle(foreground: Color\bright_white())
+            ->filledStyle(Ansi\foreground($color))
+            ->emptyStyle(Ansi\foreground(Color\bright_black()))
+            ->labelStyle(Ansi\foreground(Color\bright_white()))
             ->render($cpuRows[$i], $buffer);
     }
 
-    // Sparkline
     if ($state->cpu_history !== []) {
-        Widget\Sparkline::new($state->cpu_history)->style(foreground: Color\bright_cyan())->render(
+        Widget\Sparkline::new($state->cpu_history)->style(Ansi\foreground(Color\bright_cyan()))->render(
             $cpuRows[5],
             $buffer,
         );
@@ -219,17 +216,17 @@ function render_overview(Terminal\Rect $main, MonitorState $state, Terminal\Buff
 
     $memBlock = Widget\Block::new()
         ->title(' Memory ')
-        ->titleStyle(foreground: Color\bright_green(), style: Style\bold())
+        ->titleStyle(Ansi\foreground(Color\bright_green()), Style\bold())
         ->border(Widget\Border::rounded());
 
     $memBlock->render($memSection, Widget\Paragraph::new([]), $buffer);
     $memInner = $memBlock->innerArea($memSection);
 
     $memRows = Layout\vertical($memInner, [
-        Layout\fixed(1), // Used gauge
-        Layout\fixed(1), // Swap gauge
-        Layout\fixed(1), // separator
-        Layout\fill(), // info text
+        Layout\fixed(1),
+        Layout\fixed(1),
+        Layout\fixed(1),
+        Layout\fill(),
     ]);
 
     $memRatio = $state->mem_used / $state->mem_total;
@@ -242,9 +239,9 @@ function render_overview(Terminal\Rect $main, MonitorState $state, Terminal\Buff
     Widget\Gauge::new()
         ->ratio($memRatio)
         ->label('Used')
-        ->filledStyle(foreground: $memColor)
-        ->emptyStyle(foreground: Color\bright_black())
-        ->labelStyle(foreground: Color\bright_white())
+        ->filledStyle(Ansi\foreground($memColor))
+        ->emptyStyle(Ansi\foreground(Color\bright_black()))
+        ->labelStyle(Ansi\foreground(Color\bright_white()))
         ->render($memRows[0], $buffer);
 
     $swapRatio = $state->swap_total > 0.0 ? $state->swap_used / $state->swap_total : 0.0;
@@ -252,23 +249,22 @@ function render_overview(Terminal\Rect $main, MonitorState $state, Terminal\Buff
     Widget\Gauge::new()
         ->ratio($swapRatio)
         ->label('Swap')
-        ->filledStyle(foreground: Color\bright_yellow())
-        ->emptyStyle(foreground: Color\bright_black())
-        ->labelStyle(foreground: Color\bright_white())
+        ->filledStyle(Ansi\foreground(Color\bright_yellow()))
+        ->emptyStyle(Ansi\foreground(Color\bright_black()))
+        ->labelStyle(Ansi\foreground(Color\bright_white()))
         ->render($memRows[1], $buffer);
 
-    // Memory info text
     Widget\Paragraph::new([
         Widget\Line::new([
             Widget\Span::styled(
                 Str\format('%.1fG / %.1fG', $state->mem_used, $state->mem_total),
-                foreground: Color\bright_black(),
+                Ansi\foreground(Color\bright_black()),
             ),
         ]),
         Widget\Line::new([
             Widget\Span::styled(
                 Str\format('Swap: %.1fG / %.1fG', $state->swap_used, $state->swap_total),
-                foreground: Color\bright_black(),
+                Ansi\foreground(Color\bright_black()),
             ),
         ]),
     ])->render($memRows[3], $buffer);
@@ -276,15 +272,18 @@ function render_overview(Terminal\Rect $main, MonitorState $state, Terminal\Buff
     $tableRows = Vec\map($state->processes, static fn(Process $p): array => [
         Widget\Span::raw((string) $p->pid),
         Widget\Span::raw($p->command),
-        Widget\Span::styled(Str\format('%.1f', $p->cpu), foreground: match (true) {
-            $p->cpu > 50.0 => Color\bright_red(),
-            $p->cpu > 25.0 => Color\bright_yellow(),
-            default => null,
+        Widget\Span::styled(Str\format('%.1f', $p->cpu), ...match (true) {
+            $p->cpu > 50.0 => [Ansi\foreground(Color\bright_red())],
+            $p->cpu > 25.0 => [Ansi\foreground(Color\bright_yellow())],
+            default => [],
         }),
-        Widget\Span::styled(Str\format('%.1f', $p->mem), foreground: $p->mem > 30.0 ? Color\bright_yellow() : null),
+        Widget\Span::styled(
+            Str\format('%.1f', $p->mem),
+            ...$p->mem > 30.0 ? [Ansi\foreground(Color\bright_yellow())] : [],
+        ),
         Widget\Span::styled(
             $p->status,
-            foreground: $p->status === 'running' ? Color\bright_green() : Color\bright_black(),
+            Ansi\foreground($p->status === 'running' ? Color\bright_green() : Color\bright_black()),
         ),
         Widget\Span::raw($p->time),
     ]);
@@ -298,42 +297,38 @@ function render_overview(Terminal\Rect $main, MonitorState $state, Terminal\Buff
     $table = Widget\Table::new()
         ->headers($sortIndicator)
         ->widths([8, 18, 8, 8, 12, 10])
-        ->headerStyle(foreground: Color\bright_cyan(), style: Style\bold())
+        ->headerStyle(Ansi\foreground(Color\bright_cyan()), Style\bold())
         ->rows($tableRows)
         ->highlight($state->view->selected)
-        ->highlightStyle(foreground: Color\bright_white(), background: Color\ansi256(236), style: Style\bold())
+        ->highlightStyle(Ansi\foreground(Color\bright_white()), Ansi\background(Color\ansi256(236)), Style\bold())
         ->scroll($state->view->proc_scroll);
 
-    // Block with right padding to make room for the scrollbar inside
     $procBlock = Widget\Block::new()
         ->title(' Processes ')
-        ->titleStyle(foreground: Color\bright_magenta(), style: Style\bold())
-        ->border(Widget\Border::rounded(color: Color\ansi256(240)))
+        ->titleStyle(Ansi\foreground(Color\bright_magenta()), Style\bold())
+        ->border(Widget\Border::rounded(Ansi\foreground(Color\ansi256(240))))
         ->padding(right: 2);
 
     $procBlock->render($processSection, $table, $buffer);
 
-    // Render scrollbar inside the block, in the right padding gap
     $processCount = Iter\count($state->processes);
     $blockInner = Widget\Block::new()->border(Widget\Border::rounded())->innerArea($processSection);
-    $visibleRows = Math\maxva(1, $blockInner->height - 2); // subtract header + separator
+    $visibleRows = Math\maxva(1, $blockInner->height - 2);
     $state->view->visible_rows = $visibleRows;
 
-    // Position scrollbar 1 col inside the right border
     $scrollbarRect = new Terminal\Rect($processSection->right() - 2, $blockInner->y, 1, $blockInner->height);
 
     Widget\Scrollbar::new()
         ->contentLength($processCount)
         ->viewportLength($visibleRows)
         ->position($state->view->proc_scroll)
-        ->thumbStyle(foreground: Color\bright_white())
-        ->trackStyle(foreground: Color\ansi256(238))
+        ->thumbStyle(Ansi\foreground(Color\bright_white()))
+        ->trackStyle(Ansi\foreground(Color\ansi256(238)))
         ->render($scrollbarRect, $buffer);
 }
 
 function render_details(Terminal\Rect $main, MonitorState $state, Terminal\Buffer $buffer): void
 {
-    // Details view: BarChart of CPU cores + per-core sparklines
     [$chartSection, $infoSection] = Layout\vertical($main, [
         Layout\fill(),
         Layout\fixed(6),
@@ -347,7 +342,7 @@ function render_details(Terminal\Rect $main, MonitorState $state, Terminal\Buffe
 
     $chartBlock = Widget\Block::new()
         ->title(' CPU Cores ')
-        ->titleStyle(foreground: Color\bright_cyan(), style: Style\bold())
+        ->titleStyle(Ansi\foreground(Color\bright_cyan()), Style\bold())
         ->border(Widget\Border::rounded());
 
     $chartBlock->render($chartSection, Widget\Paragraph::new([]), $buffer);
@@ -357,13 +352,13 @@ function render_details(Terminal\Rect $main, MonitorState $state, Terminal\Buffe
         ->data($cpuData)
         ->barWidth(8)
         ->barGap(2)
-        ->barStyle(foreground: Color\bright_cyan())
-        ->labelStyle(foreground: Color\bright_white())
+        ->barStyle(Ansi\foreground(Color\bright_cyan()))
+        ->labelStyle(Ansi\foreground(Color\bright_white()))
         ->render($chartInner, $buffer);
 
     $infoBlock = Widget\Block::new()
         ->title(' System Info ')
-        ->titleStyle(foreground: Color\bright_green(), style: Style\bold())
+        ->titleStyle(Ansi\foreground(Color\bright_green()), Style\bold())
         ->border(Widget\Border::rounded());
 
     $avgCpu = Iter\count($state->cpu_values) > 0
@@ -374,32 +369,35 @@ function render_details(Terminal\Rect $main, MonitorState $state, Terminal\Buffe
         $infoSection,
         Widget\Paragraph::new([
             Widget\Line::new([
-                Widget\Span::styled('Average CPU: ', foreground: Color\bright_white()),
-                Widget\Span::styled(Str\format('%.1f%%', $avgCpu), foreground: match (true) {
-                    $avgCpu > 80.0 => Color\bright_red(),
-                    $avgCpu > 50.0 => Color\bright_yellow(),
-                    default => Color\bright_green(),
-                }),
-                Widget\Span::styled('    Memory: ', foreground: Color\bright_white()),
+                Widget\Span::styled('Average CPU: ', Ansi\foreground(Color\bright_white())),
+                Widget\Span::styled(
+                    Str\format('%.1f%%', $avgCpu),
+                    Ansi\foreground(match (true) {
+                        $avgCpu > 80.0 => Color\bright_red(),
+                        $avgCpu > 50.0 => Color\bright_yellow(),
+                        default => Color\bright_green(),
+                    }),
+                ),
+                Widget\Span::styled('    Memory: ', Ansi\foreground(Color\bright_white())),
                 Widget\Span::styled(
                     Str\format('%.1fG / %.1fG', $state->mem_used, $state->mem_total),
-                    foreground: Color\bright_green(),
+                    Ansi\foreground(Color\bright_green()),
                 ),
             ]),
             Widget\Line::new([
-                Widget\Span::styled('Cores: ', foreground: Color\bright_white()),
-                Widget\Span::styled((string) Iter\count($state->cpu_values), foreground: Color\bright_cyan()),
-                Widget\Span::styled('    Swap: ', foreground: Color\bright_white()),
+                Widget\Span::styled('Cores: ', Ansi\foreground(Color\bright_white())),
+                Widget\Span::styled((string) Iter\count($state->cpu_values), Ansi\foreground(Color\bright_cyan())),
+                Widget\Span::styled('    Swap: ', Ansi\foreground(Color\bright_white())),
                 Widget\Span::styled(
                     Str\format('%.1fG / %.1fG', $state->swap_used, $state->swap_total),
-                    foreground: Color\bright_yellow(),
+                    Ansi\foreground(Color\bright_yellow()),
                 ),
             ]),
             Widget\Line::new([
-                Widget\Span::styled('Processes: ', foreground: Color\bright_white()),
-                Widget\Span::styled((string) Iter\count($state->processes), foreground: Color\bright_magenta()),
-                Widget\Span::styled('    History points: ', foreground: Color\bright_white()),
-                Widget\Span::styled((string) Iter\count($state->cpu_history), foreground: Color\bright_cyan()),
+                Widget\Span::styled('Processes: ', Ansi\foreground(Color\bright_white())),
+                Widget\Span::styled((string) Iter\count($state->processes), Ansi\foreground(Color\bright_magenta())),
+                Widget\Span::styled('    History points: ', Ansi\foreground(Color\bright_white())),
+                Widget\Span::styled((string) Iter\count($state->cpu_history), Ansi\foreground(Color\bright_cyan())),
             ]),
         ]),
         $buffer,
@@ -407,26 +405,22 @@ function render_details(Terminal\Rect $main, MonitorState $state, Terminal\Buffe
 }
 
 Async\main(static function (): int {
-    $app = Terminal\Application::create(new MonitorState(), title: 'System Monitor', fps: 60);
+    $app = Terminal\Application::create(new MonitorState(), title: 'System Monitor');
 
     $app->interval(DateTime\Duration::seconds(1), static function (MonitorState $state): void {
-        // Random-walk CPU values
         foreach ($state->cpu_values as $i => $v) {
             $state->cpu_values[$i] = random_walk($v, 0.0, 100.0, 10.0);
         }
 
-        // Random-walk memory
         $state->mem_used = random_walk($state->mem_used, 0.5, $state->mem_total - 0.5, 0.3);
         $state->swap_used = random_walk($state->swap_used, 0.0, $state->swap_total, 0.1);
 
-        // Push average CPU to history (circular buffer, max 120)
         $avg = Math\sum_floats($state->cpu_values) / Iter\count($state->cpu_values);
         $state->cpu_history[] = $avg / 100.0;
         if (Iter\count($state->cpu_history) > 120) {
             $state->cpu_history = Vec\drop($state->cpu_history, 1);
         }
 
-        // Fluctuate process CPU/MEM
         $updated = [];
         foreach ($state->processes as $proc) {
             $updated[] = new Process(
@@ -439,7 +433,6 @@ Async\main(static function (): int {
             );
         }
 
-        // Sort
         $state->processes = Vec\sort($updated, static fn(Process $a, Process $b): int => match (
             $state->view->sort_col
         ) {
@@ -455,13 +448,11 @@ Async\main(static function (): int {
             return;
         }
 
-        // Tab switching
         if ($event->is('tab')) {
             $state->view->active_tab = ($state->view->active_tab + 1) % 2;
             return;
         }
 
-        // Only handle process navigation in Overview tab
         if ($state->view->active_tab !== 0) {
             return;
         }
@@ -529,7 +520,6 @@ Async\main(static function (): int {
     return $app->run(static function (Terminal\Frame $frame, MonitorState $state): void {
         $buffer = $frame->buffer();
 
-        // Top-level: tabs + main + status bar
         [$tabBar, $main, $statusBar] = Layout\vertical($frame, [
             Layout\fixed(1),
             Layout\fill(),
@@ -539,8 +529,8 @@ Async\main(static function (): int {
         Widget\Tabs::new()
             ->titles(['Overview', 'Details'])
             ->highlight($state->view->active_tab)
-            ->activeStyle(foreground: Color\bright_cyan(), style: Style\bold())
-            ->inactiveStyle(foreground: Color\bright_black())
+            ->activeStyle(Ansi\foreground(Color\bright_cyan()), Style\bold())
+            ->inactiveStyle(Ansi\foreground(Color\bright_black()))
             ->render($tabBar, $buffer);
 
         if ($state->view->active_tab === 0) {
@@ -578,12 +568,12 @@ Async\main(static function (): int {
                     (int) $state->mem_total,
                     $sortLabel,
                 ),
-                foreground: Color\bright_black(),
+                Ansi\foreground(Color\bright_black()),
             ),
         ])])->render($statusLeft, $buffer);
 
         Widget\Paragraph::new([Widget\Line::new([
-            Widget\Span::styled($rightText, foreground: Color\bright_black()),
+            Widget\Span::styled($rightText, Ansi\foreground(Color\bright_black())),
         ])])->alignment(Widget\Alignment::Right)->render($statusRight, $buffer);
     });
 });

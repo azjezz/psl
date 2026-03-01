@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Example\Terminal;
 
+use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Async;
@@ -28,8 +29,8 @@ final class DebugState
 function format_event(int $index, string $label, Color\Color $color, string $detail): Widget\Line
 {
     return Widget\Line::new([
-        Widget\Span::styled(Str\format('#%-5d ', $index), foreground: Color\ansi256(245)),
-        Widget\Span::styled(Str\format('%-6s ', $label), foreground: $color, style: Style\bold()),
+        Widget\Span::styled(Str\format('#%-5d ', $index), Ansi\foreground(Color\ansi256(245))),
+        Widget\Span::styled(Str\format('%-6s ', $label), Ansi\foreground($color), Style\bold()),
         Widget\Span::raw($detail),
     ]);
 }
@@ -139,8 +140,8 @@ Async\main(static function (): int {
 
         $block = Widget\Block::new()
             ->title(' Events ')
-            ->titleStyle(foreground: Color\bright_white(), style: Style\bold())
-            ->border(Widget\Border::rounded(color: Color\bright_cyan()))
+            ->titleStyle(Ansi\foreground(Color\bright_white()), Style\bold())
+            ->border(Widget\Border::rounded(Ansi\foreground(Color\bright_cyan())))
             ->padding(right: 2, left: 1);
 
         $inner = $block->innerArea($main);
@@ -157,15 +158,15 @@ Async\main(static function (): int {
                 ->contentLength($totalLines)
                 ->viewportLength($visibleLines)
                 ->position($state->scroll_offset)
-                ->thumbStyle(foreground: Color\bright_cyan())
-                ->trackStyle(foreground: Color\ansi256(238))
+                ->thumbStyle(Ansi\foreground(Color\bright_cyan()))
+                ->trackStyle(Ansi\foreground(Color\ansi256(238)))
                 ->render($scrollbarRect, $buffer);
         }
 
         Widget\Paragraph::new([Widget\Line::new([
             Widget\Span::styled(
                 Str\format(' %d events | Ctrl+C quit', $state->event_count),
-                foreground: Color\bright_black(),
+                Ansi\foreground(Color\bright_black()),
             ),
         ])])->render($statusBar, $buffer);
     });

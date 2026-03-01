@@ -91,18 +91,17 @@ final class Paragraph implements WidgetInterface
 
         $x = $startX;
         foreach ($line->spans as $span) {
-            $len = Str\length($span->content);
-            for ($i = 0; $i < $len; $i++) {
+            $chars = Str\chunk($span->content);
+            foreach ($chars as $char) {
                 if ($x >= $area->right()) {
                     break 2;
                 }
 
-                $char = Str\slice($span->content, $i, 1);
                 $charWidth = Str\width($char);
                 if ($x >= $area->x) {
-                    $buffer->set($x, $y, new Cell($char, $span->foreground, $span->background, $span->modifiers));
+                    $buffer->set($x, $y, new Cell($char, $span->style));
                     for ($w = 1; $w < $charWidth && ($x + $w) < $area->right(); $w++) {
-                        $buffer->set($x + $w, $y, new Cell('', $span->foreground, $span->background, $span->modifiers));
+                        $buffer->set($x + $w, $y, new Cell('', $span->style));
                     }
                 }
 

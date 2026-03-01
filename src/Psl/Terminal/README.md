@@ -4,9 +4,12 @@ The `Terminal` component provides a full-featured TUI (Terminal User Interface) 
 
 It handles the event loop, raw mode, input parsing, diff-based rendering, and provides a library of composable widgets for building interactive terminal applications.
 
-## Usage
+## Quick Start
 
 ```php
+use Psl\Ansi;
+use Psl\Ansi\Color;
+use Psl\Ansi\Style;
 use Psl\Async;
 use Psl\Terminal;
 use Psl\Terminal\Event;
@@ -23,12 +26,11 @@ Async\main(static function (): int {
     });
 
     return $app->run(static function (Terminal\Frame $frame, MyState $state): void {
-        $rect = $frame->rect();
         $buffer = $frame->buffer();
 
         Widget\Paragraph::new([
             Widget\Line::new([Widget\Span::raw('Hello, World!')]),
-        ])->render($rect, $buffer);
+        ])->render($frame->rect(), $buffer);
     });
 });
 ```
@@ -45,17 +47,42 @@ The framework follows an immediate-mode rendering model:
 
 ## Application
 
-`Application` is the entry point. It is generic over a state object `S` that is passed to all callbacks:
+### `Application::create()` — Local Terminal
+
+For local terminal applications using STDIN/STDOUT:
 
 ```php
 $app = Terminal\Application::create(
-    state: new MyState(),       // your application state object
-    title: 'My App',            // window title (optional)
-    fps: 60,                    // target frames per second (default: 60)
-    scrollSmoothing: true,      // filter trackpad scroll micro-reversals (default: true)
-    mouseMotion: false,         // track mouse movement, not just clicks (default: false)
+    state: new MyState(),
+    title: 'My App',
+    tickInterval: DateTime\Duration::milliseconds(16),  // ~60 ticks/s (default: 15ms)
+    scrollSmoothing: true,   // filter trackpad scroll micro-reversals (default: true)
+    mouseMotion: false,      // track mouse movement, not just clicks (default: false)
 );
 ```
+
+This automatically handles raw mode, terminal size detection, SIGWINCH/SIGINT signal handling, and in-band resize notifications (mode 2048).
+
+### `Application::custom()` — Custom I/O
+
+For remote scenarios (e.g. SSH servers) or testing, where you provide your own I/O handles:
+
+```php
+$app = Terminal\Application::custom(
+    state: new MyState(),
+    input: $sshInputStream,
+    output: $sshOutputStream,
+    width: 80,
+    height: 24,
+    title: 'Remote App',
+);
+```
+
+In this mode:
+- Raw mode is **not** managed — the caller is responsible for it
+- Signal handlers (SIGWINCH, SIGINT) are **not** registered
+- Ctrl+C is handled via the input stream parser (`0x03` byte)
+- Use `$app->dispatch(new Event\Resize($cols, $rows))` to inject resize events
 
 ### Event Handling
 
@@ -95,13 +122,25 @@ $app->interval(Duration::milliseconds(100), static function (MyState $state): vo
 });
 ```
 
+### Dispatching Events
+
+Inject events from external sources (e.g. SSH window-change messages):
+
+```php
+// resize the terminal
+$app->dispatch(new Event\Resize($cols, $rows));
+
+// simulate a key press
+$app->dispatch(Event\Key::named('enter'));
+```
+
+Resize events automatically update the internal buffer and frame dimensions before reaching user handlers.
+
 ### Emitting Commands
 
 Queue ANSI commands to be written after the next frame render:
 
 ```php
-use Psl\Ansi;
-
 $app->emit(Ansi\Screen\progress(Ansi\Screen\ProgressState::Normal, 50));
 $app->emit(Ansi\bell());
 ```
@@ -112,10 +151,10 @@ $app->emit(Ansi\bell());
 
 ```php
 $exitCode = $app->run(static function (Terminal\Frame $frame, MyState $state): void {
+    $buffer = $frame->buffer();
+    $rect = $frame->rect();
+
     // render your UI each frame
-    // use $frame->fps() for the smoothed FPS value
-    // use $frame->rect() for the full terminal area
-    // use $frame->buffer() to write cells
 });
 ```
 
@@ -129,7 +168,7 @@ Keyboard input, including printable characters, special keys, and modifier combi
 $event->is('enter');       // named key check
 $event->is('ctrl+c');      // modifier + key
 $event->is('alt+x');       // alt combinations
-$event->is('up');           // arrow keys
+$event->is('up');          // arrow keys
 $event->is('page_down');   // navigation keys
 $event->char;              // printable character or null
 $event->name;              // key name string
@@ -137,12 +176,13 @@ $event->name;              // key name string
 
 ### Mouse
 
-Mouse events with position and modifier state:
+Mouse events with position, button, and modifier state:
 
 ```php
 $event->kind;               // MouseKind enum: Press, Release, Drag, ScrollUp, ScrollDown, Move
-$event->column;             // column position
-$event->row;                // row position
+$event->button;             // MouseButton enum: Left, Middle, Right, None
+$event->column;             // column position (0-based)
+$event->row;                // row position (0-based)
 $event->modifiers->shift(); // true if Shift held
 $event->modifiers->alt();   // true if Alt held
 $event->modifiers->ctrl();  // true if Ctrl held
@@ -204,6 +244,13 @@ All widgets implement `WidgetInterface` with a single method: `render(Rect $area
 
 Widgets use a builder pattern for configuration — methods return `$this` for chaining.
 
+All style methods accept variadic `ControlSequenceIntroducer` arguments. Use `Ansi\foreground()`, `Ansi\background()`, and `Style\*()` functions to build styles:
+
+```php
+->someStyle(Ansi\foreground(Color\red()), Style\bold())
+->someStyle(Ansi\foreground(Color\bright_white()), Ansi\background(Color\blue()))
+```
+
 ### Paragraph
 
 Multi-line text with wrapping, scrolling, and alignment:
@@ -211,7 +258,7 @@ Multi-line text with wrapping, scrolling, and alignment:
 ```php
 Widget\Paragraph::new([
     Widget\Line::new([
-        Widget\Span::styled('Error: ', foreground: Color\red(), style: Style\bold()),
+        Widget\Span::styled('Error: ', Ansi\foreground(Color\red()), Style\bold()),
         Widget\Span::raw('something went wrong'),
     ]),
     Widget\Line::new([Widget\Span::raw('Check the logs for details.')]),
@@ -229,8 +276,8 @@ A container that draws a border and optional title around an inner widget:
 ```php
 $block = Widget\Block::new()
     ->title(' Status ')
-    ->titleStyle(foreground: Color\bright_white(), style: Style\bold())
-    ->border(Widget\Border::rounded(color: Color\bright_cyan()))
+    ->titleStyle(Ansi\foreground(Color\bright_white()), Style\bold())
+    ->border(Widget\Border::rounded(Ansi\foreground(Color\bright_cyan())))
     ->padding(left: 1, right: 1)
     ->margin(top: 1)
     ->background(Color\ansi256(235));
@@ -252,11 +299,12 @@ Widget\Table::new()
     ->headers(['Name', 'Status', 'CPU'])
     ->widths([15, 10, 8])
     ->rows([
-        [Widget\Span::raw('nginx'), Widget\Span::styled('running', foreground: Color\green()), Widget\Span::raw('2.1%')],
-        [Widget\Span::raw('postgres'), Widget\Span::styled('running', foreground: Color\green()), Widget\Span::raw('5.3%')],
+        [Widget\Span::raw('nginx'), Widget\Span::styled('running', Ansi\foreground(Color\green())), Widget\Span::raw('2.1%')],
+        [Widget\Span::raw('postgres'), Widget\Span::styled('running', Ansi\foreground(Color\green())), Widget\Span::raw('5.3%')],
     ])
     ->highlight(0)
-    ->highlightStyle(foreground: Color\bright_white(), background: Color\blue())
+    ->highlightStyle(Ansi\foreground(Color\bright_white()), Ansi\background(Color\blue()))
+    ->headerStyle(Style\bold(), Ansi\foreground(Color\bright_white()))
     ->scroll(0)
     ->render($area, $buffer);
 ```
@@ -270,12 +318,12 @@ Widget\Menu::new([
     Widget\MenuItem::raw('Open File'),
     Widget\MenuItem::raw('Save'),
     Widget\MenuItem::styled([
-        Widget\Span::styled('Quit', foreground: Color\red()),
+        Widget\Span::styled('Quit', Ansi\foreground(Color\red())),
     ]),
 ])
     ->highlight($selectedIndex)
     ->scroll($scrollOffset)
-    ->highlightStyle(foreground: Color\bright_white(), background: Color\blue())
+    ->highlightStyle(Ansi\foreground(Color\bright_white()), Ansi\background(Color\blue()))
     ->render($area, $buffer);
 ```
 
@@ -287,8 +335,8 @@ A horizontal tab bar:
 Widget\Tabs::new()
     ->titles(['Overview', 'Details', 'Logs'])
     ->highlight($activeTab)
-    ->activeStyle(foreground: Color\bright_white(), style: Style\bold())
-    ->inactiveStyle(foreground: Color\bright_black())
+    ->activeStyle(Ansi\foreground(Color\bright_white()), Style\bold())
+    ->inactiveStyle(Ansi\foreground(Color\bright_black()))
     ->render($area, $buffer);
 ```
 
@@ -300,8 +348,9 @@ A horizontal progress bar with label and percentage:
 Widget\Gauge::new()
     ->ratio(0.75)
     ->label('Progress')
-    ->filledStyle(foreground: Color\green())
-    ->emptyStyle(foreground: Color\bright_black())
+    ->filledStyle(Ansi\foreground(Color\green()))
+    ->emptyStyle(Ansi\foreground(Color\bright_black()))
+    ->labelStyle(Style\bold())
     ->render($area, $buffer);
 ```
 
@@ -311,7 +360,7 @@ A single-row data visualization using Unicode block characters:
 
 ```php
 Widget\Sparkline::new($dataPoints)  // list<float>, each 0.0-1.0
-    ->style(foreground: Color\bright_cyan())
+    ->style(Ansi\foreground(Color\bright_cyan()))
     ->render($area, $buffer);
 ```
 
@@ -324,8 +373,8 @@ Widget\BarChart::new()
     ->data([['Mon', 0.8], ['Tue', 0.6], ['Wed', 0.9], ['Thu', 0.4]])
     ->barWidth(3)
     ->barGap(1)
-    ->barStyle(foreground: Color\bright_blue())
-    ->labelStyle(foreground: Color\bright_white())
+    ->barStyle(Ansi\foreground(Color\bright_blue()))
+    ->labelStyle(Ansi\foreground(Color\bright_white()))
     ->render($area, $buffer);
 ```
 
@@ -338,8 +387,8 @@ Widget\Scrollbar::new()
     ->contentLength($totalItems)
     ->viewportLength($visibleItems)
     ->position($scrollOffset)
-    ->thumbStyle(foreground: Color\bright_cyan())
-    ->trackStyle(foreground: Color\ansi256(238))
+    ->thumbStyle(Ansi\foreground(Color\bright_cyan()))
+    ->trackStyle(Ansi\foreground(Color\ansi256(238)))
     ->render($scrollbarArea, $buffer);
 ```
 
@@ -352,9 +401,9 @@ Widget\TextInput::new()
     ->value($currentText)
     ->cursor($cursorPosition)
     ->placeholder('Type here...')
-    ->style(foreground: Color\bright_white())
-    ->cursorStyle(foreground: Color\black(), background: Color\bright_white())
-    ->placeholderStyle(foreground: Color\bright_black())
+    ->style(Ansi\foreground(Color\bright_white()))
+    ->cursorStyle(Ansi\foreground(Color\black()), Ansi\background(Color\bright_white()))
+    ->placeholderStyle(Ansi\foreground(Color\bright_black()))
     ->render($area, $buffer);
 ```
 
@@ -366,8 +415,8 @@ A styled text fragment — the smallest text unit:
 
 ```php
 Widget\Span::raw('plain text');
-Widget\Span::styled('styled text', foreground: Color\red(), style: Style\bold());
-Widget\Span::styled('multi-modifier', foreground: Color\cyan(), modifiers: [Style\bold(), Style\italic()]);
+Widget\Span::styled('bold red', Ansi\foreground(Color\red()), Style\bold());
+Widget\Span::styled('multi', Ansi\foreground(Color\cyan()), Style\bold(), Style\italic());
 ```
 
 ### Line
@@ -376,7 +425,7 @@ A horizontal sequence of spans:
 
 ```php
 Widget\Line::new([
-    Widget\Span::styled('[INFO] ', foreground: Color\blue()),
+    Widget\Span::styled('[INFO] ', Ansi\foreground(Color\blue())),
     Widget\Span::raw('Server started on port 8080'),
 ]);
 ```
@@ -389,27 +438,10 @@ The `Buffer` is a 2D grid of `Cell` objects. Widgets write to it, and `flush()` 
 $buffer = $frame->buffer();
 
 // Direct cell manipulation
-$buffer->set($x, $y, new Terminal\Cell('X', Color\red()));
-$buffer->setString($x, $y, 'Hello', Color\green(), null, [Style\bold()]);
+$buffer->set($x, $y, new Terminal\Cell('X', [Ansi\foreground(Color\red())]));
+$buffer->setString($x, $y, 'Hello', [Ansi\foreground(Color\green()), Style\bold()]);
 
 // Read cells (returns null for out-of-bounds)
 $cell = $buffer->get($x, $y);
 $grapheme = $cell?->grapheme;
 ```
-
-## Style Methods
-
-All widget style methods follow the same signature pattern, accepting individual colors, a single modifier via `$style`, or multiple modifiers via `$modifiers`:
-
-```php
-->someStyle(
-    foreground: Color\bright_white(),
-    background: Color\blue(),
-    style: Style\bold(),                             // single modifier shorthand
-    modifiers: [Style\bold(), Style\underline()],    // multiple modifiers
-)
-```
-
-When both `$style` and `$modifiers` are provided, `$style` is appended to `$modifiers`.
-
----

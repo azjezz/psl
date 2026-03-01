@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\Example\Terminal;
 
+use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Async;
+use Psl\DateTime;
 use Psl\Iter;
 use Psl\Math;
 use Psl\Str;
@@ -85,19 +87,16 @@ function tag_style(Tag $tag): array
 function initial_columns(): array
 {
     return [
-        // To do
         [
             new Card('Fix login bug', [Tag::Bug, Tag::Urgent]),
             new Card('Add unit tests', [Tag::Testing]),
             new Card('Write README', [Tag::Docs]),
             new Card('Rate limiting', [Tag::Feature]),
         ],
-        // In Progress
         [
             new Card('Update API docs', [Tag::Docs]),
             new Card('Refactor DB layer', [Tag::Refactor]),
         ],
-        // Done
         [
             new Card('Deploy v2.0', [Tag::Feature]),
             new Card('Fix typo in docs', [Tag::Docs]),
@@ -154,7 +153,6 @@ function move_card(KanbanState $state, int $from_col, int $to_col): void
     $cardIdx = $state->selected[$from_col];
     $card = $state->columns[$from_col][$cardIdx];
 
-    // Remove from current column
     /** @var non-negative-int $next */
     $next = $cardIdx + 1;
     $state->columns[$from_col] = Vec\concat(
@@ -166,7 +164,6 @@ function move_card(KanbanState $state, int $from_col, int $to_col): void
         Math\maxva(0, Iter\count($state->columns[$from_col]) - 1),
     );
 
-    // Add to target column
     $state->columns[$to_col][] = $card;
     $state->active_col = $to_col;
     $state->selected[$to_col] = Iter\count($state->columns[$to_col]) - 1;
@@ -177,7 +174,6 @@ function handle_normal_key(Event\Key $event, KanbanState $state): void
     $col = $state->active_col;
     $cardCount = Iter\count($state->columns[$col]);
 
-    // Column navigation
     if ($event->is('tab')) {
         $state->active_col = ($state->active_col + 1) % 3;
         return;
@@ -188,7 +184,6 @@ function handle_normal_key(Event\Key $event, KanbanState $state): void
         return;
     }
 
-    // Card navigation
     if ($event->is('up') && $cardCount > 0) {
         if ($state->selected[$col] <= 0) {
             return;
@@ -208,7 +203,6 @@ function handle_normal_key(Event\Key $event, KanbanState $state): void
         }
 
         $state->selected[$col]++;
-        // col_visible_slots is set during render; default to 1 if not yet computed
         $visibleSlots = $state->col_visible_slots[$col] ?? 1;
         if ($state->selected[$col] >= ($state->col_scroll[$col] + $visibleSlots)) {
             $state->col_scroll[$col] = $state->selected[$col] - $visibleSlots + 1;
@@ -217,7 +211,6 @@ function handle_normal_key(Event\Key $event, KanbanState $state): void
         return;
     }
 
-    // Move card to adjacent column
     if ($event->is('right') && $col < 2 && $cardCount > 0) {
         /** @var non-negative-int $targetCol */
         $targetCol = $col + 1;
@@ -231,14 +224,12 @@ function handle_normal_key(Event\Key $event, KanbanState $state): void
         return;
     }
 
-    // New card
     if ($event->char === 'n') {
         $state->input_mode = true;
         $state->input_text = '';
         return;
     }
 
-    // Delete card
     if (($event->char === 'd' || $event->is('delete')) && $cardCount > 0) {
         /** @var non-negative-int $cardIdx */
         $cardIdx = $state->selected[$col];
@@ -254,7 +245,6 @@ function handle_normal_key(Event\Key $event, KanbanState $state): void
         return;
     }
 
-    // Home/End
     if ($event->is('home') && $cardCount > 0) {
         $state->selected[$col] = 0;
         $state->col_scroll[$col] = 0;
@@ -288,8 +278,8 @@ function render_column(
 
     $colBlock = Widget\Block::new()
         ->title(" {$colName} ({$cardCount}) ")
-        ->titleStyle(foreground: $titleFg, style: Style\bold())
-        ->border(Widget\Border::rounded(color: $borderColor))
+        ->titleStyle(Ansi\foreground($titleFg), Style\bold())
+        ->border(Widget\Border::rounded(Ansi\foreground($borderColor)))
         ->padding(left: 1, right: 2);
 
     $colBlock->render($colRect, Widget\Paragraph::new([]), $buffer);
@@ -299,7 +289,7 @@ function render_column(
         return;
     }
 
-    $cardHeight = 4; // 2 border + 2 content
+    $cardHeight = 4;
     $cardGap = 1;
     $slotHeight = $cardHeight + $cardGap;
     $visibleSlots = (int) ($innerArea->height / $slotHeight);
@@ -313,7 +303,6 @@ function render_column(
     $state->col_scroll[$colIdx] = $scrollOffset;
     $state->col_visible_slots[$colIdx] = $visibleSlots;
 
-    // Render visible cards
     for ($slot = 0; $slot < $visibleSlots && ($scrollOffset + $slot) < $cardCount; $slot++) {
         /** @var non-negative-int $cardIdx */
         $cardIdx = $scrollOffset + $slot;
@@ -334,68 +323,67 @@ function render_column(
         $tagSpans = [];
         foreach ($card->tags as $ti => $tag) {
             if ($ti > 0) {
-                $tagSpans[] = Widget\Span::styled(' · ', foreground: Color\ansi256(240));
+                $tagSpans[] = Widget\Span::styled(' · ', Ansi\foreground(Color\ansi256(240)));
             }
 
             [$tagFg] = tag_style($tag);
-            $tagSpans[] = Widget\Span::styled($tag->value, foreground: $tagFg);
+            $tagSpans[] = Widget\Span::styled($tag->value, Ansi\foreground($tagFg));
         }
 
         if ($tagSpans === []) {
             $tagSpans[] = Widget\Span::raw('');
         }
 
-        Widget\Block::new()->border(Widget\Border::rounded(color: $cardBorderColor))->render(
+        Widget\Block::new()->border(Widget\Border::rounded(Ansi\foreground($cardBorderColor)))->render(
             $cardRect,
             Widget\Paragraph::new([
-                Widget\Line::new([Widget\Span::styled($card->title, foreground: $cardTitleFg, style: Style\bold())]),
+                Widget\Line::new([Widget\Span::styled(
+                    $card->title,
+                    ...$cardTitleFg !== null ? [Ansi\foreground($cardTitleFg), Style\bold()] : [Style\bold()],
+                )]),
                 Widget\Line::new($tagSpans),
             ]),
             $buffer,
         );
     }
 
-    // Scrollbar
     if ($cardCount > $visibleSlots) {
         $scrollbarRect = new Terminal\Rect($colRect->right() - 2, $innerArea->y, 1, $innerArea->height);
         Widget\Scrollbar::new()
             ->contentLength($cardCount)
             ->viewportLength($visibleSlots)
             ->position($scrollOffset)
-            ->thumbStyle(foreground: $isActiveCol ? Color\bright_cyan() : Color\ansi256(245))
-            ->trackStyle(foreground: Color\ansi256(238))
+            ->thumbStyle(Ansi\foreground($isActiveCol ? Color\bright_cyan() : Color\ansi256(245)))
+            ->trackStyle(Ansi\foreground(Color\ansi256(238)))
             ->render($scrollbarRect, $buffer);
     }
 
-    // New card input (show at bottom of active column)
     if ($state->input_mode && $isActiveCol) {
         $inputY = $innerArea->y + (Math\minva($cardCount - $scrollOffset, $visibleSlots) * $slotHeight);
         $inputRect = new Terminal\Rect($innerArea->x, $inputY, $innerArea->width, $cardHeight);
 
         if ($inputRect->bottom() <= $innerArea->bottom()) {
-            $inputBlock = Widget\Block::new()->border(Widget\Border::rounded(color: Color\bright_green()));
+            $inputBlock = Widget\Block::new()->border(Widget\Border::rounded(Ansi\foreground(Color\bright_green())));
 
             $inputBlock->render($inputRect, Widget\Paragraph::new([]), $buffer);
             $inputInner = $inputBlock->innerArea($inputRect);
 
-            // First row: TextInput widget
             if ($inputInner->height >= 1) {
                 $inputRow = new Terminal\Rect($inputInner->x, $inputInner->y, $inputInner->width, 1);
                 Widget\TextInput::new()
                     ->value($state->input_text)
                     ->cursor(Str\length($state->input_text))
                     ->placeholder('Card title...')
-                    ->style(foreground: Color\bright_white())
-                    ->cursorStyle(foreground: Color\bright_green())
-                    ->placeholderStyle(foreground: Color\bright_black())
+                    ->style(Ansi\foreground(Color\bright_white()))
+                    ->cursorStyle(Ansi\foreground(Color\bright_green()))
+                    ->placeholderStyle(Ansi\foreground(Color\bright_black()))
                     ->render($inputRow, $buffer);
             }
 
-            // Second row: hint text
             if ($inputInner->height >= 2) {
                 $hintRow = new Terminal\Rect($inputInner->x, $inputInner->y + 1, $inputInner->width, 1);
                 Widget\Paragraph::new([Widget\Line::new([
-                    Widget\Span::styled('Enter: add · Esc: cancel', foreground: Color\bright_black()),
+                    Widget\Span::styled('Enter: add · Esc: cancel', Ansi\foreground(Color\bright_black())),
                 ])])->render($hintRow, $buffer);
             }
         }
@@ -406,7 +394,10 @@ function render_status_bar(Terminal\Rect $statusBar, KanbanState $state, Termina
 {
     if ($state->input_mode) {
         Widget\Paragraph::new([Widget\Line::new([
-            Widget\Span::styled(' Adding new card...  Type a title and press Enter', foreground: Color\bright_green()),
+            Widget\Span::styled(
+                ' Adding new card...  Type a title and press Enter',
+                Ansi\foreground(Color\bright_green()),
+            ),
         ])])->render($statusBar, $buffer);
         return;
     }
@@ -425,16 +416,20 @@ function render_status_bar(Terminal\Rect $statusBar, KanbanState $state, Termina
     }
 
     Widget\Paragraph::new([Widget\Line::new([
-        Widget\Span::styled(" {$totalCards} cards", foreground: Color\bright_black()),
+        Widget\Span::styled(" {$totalCards} cards", Ansi\foreground(Color\bright_black())),
     ])])->render($statusLeft, $buffer);
 
     Widget\Paragraph::new([Widget\Line::new([
-        Widget\Span::styled($rightText, foreground: Color\bright_black()),
+        Widget\Span::styled($rightText, Ansi\foreground(Color\bright_black())),
     ])])->alignment(Widget\Alignment::Right)->render($statusRight, $buffer);
 }
 
 Async\main(static function (): int {
-    $app = Terminal\Application::create(new KanbanState(), title: 'Kanban Board', fps: 240);
+    $app = Terminal\Application::create(
+        new KanbanState(),
+        title: 'Kanban Board',
+        tickInterval: DateTime\Duration::milliseconds(4),
+    );
 
     $app->on(Event\Key::class, static function (Event\Key $event, KanbanState $state) use ($app): void {
         if ($event->is('ctrl+c')) {
@@ -455,7 +450,6 @@ Async\main(static function (): int {
             return;
         }
 
-        // Determine which column the mouse is over using stored column rects
         $col = null;
         foreach ($state->col_rects as $idx => $rect) {
             if (
@@ -488,7 +482,6 @@ Async\main(static function (): int {
             }
 
             $state->col_scroll[$col] = $oldScroll - 1;
-            // Move selection into view
             if ($state->selected[$col] >= ($state->col_scroll[$col] + $visibleSlots)) {
                 $state->selected[$col] = $state->col_scroll[$col] + $visibleSlots - 1;
             }
@@ -498,7 +491,6 @@ Async\main(static function (): int {
             }
 
             $state->col_scroll[$col] = $oldScroll + 1;
-            // Move selection into view
             if ($state->selected[$col] < $state->col_scroll[$col]) {
                 $state->selected[$col] = $state->col_scroll[$col];
             }

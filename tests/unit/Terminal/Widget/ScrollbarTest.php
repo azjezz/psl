@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Terminal\Widget;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Terminal\Buffer;
@@ -64,18 +65,18 @@ final class ScrollbarTest extends TestCase
         $buffer = new Buffer(1, 5);
         $area = new Rect(0, 0, 1, 5);
 
-        $fg = Color\bright_cyan();
+        $fg = Ansi\foreground(Color\bright_cyan());
 
         Scrollbar::new()
             ->contentLength(5)
             ->viewportLength(5)
             ->position(0)
-            ->thumbStyle(foreground: $fg)
+            ->thumbStyle($fg)
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
-        static::assertNotNull($cell->foreground);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testTrackStyleApplied(): void
@@ -83,18 +84,18 @@ final class ScrollbarTest extends TestCase
         $buffer = new Buffer(1, 10);
         $area = new Rect(0, 0, 1, 10);
 
-        $fg = Color\bright_black();
+        $fg = Ansi\foreground(Color\bright_black());
 
         Scrollbar::new()
             ->contentLength(100)
             ->viewportLength(10)
             ->position(0)
-            ->trackStyle(foreground: $fg)
+            ->trackStyle($fg)
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 9);
         static::assertNotNull($cell);
-        static::assertNotNull($cell->foreground);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testEmptyAreaRendersNothing(): void
@@ -136,12 +137,12 @@ final class ScrollbarTest extends TestCase
             ->contentLength(5)
             ->viewportLength(5)
             ->position(0)
-            ->thumbStyle(style: Style\bold())
+            ->thumbStyle(Style\bold())
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
-        static::assertNotEmpty($cell->modifiers);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testTrackStyleModifier(): void
@@ -153,12 +154,12 @@ final class ScrollbarTest extends TestCase
             ->contentLength(100)
             ->viewportLength(10)
             ->position(0)
-            ->trackStyle(style: Style\italic())
+            ->trackStyle(Style\italic())
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 9);
         static::assertNotNull($cell);
-        static::assertNotEmpty($cell->modifiers);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testThumbSizeAndPosition(): void

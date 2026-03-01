@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Terminal;
 
 use Psl\Ansi;
-use Psl\Ansi\Color\Color;
 use Psl\Ansi\ControlSequenceIntroducer;
 use Psl\IO;
 use Psl\Str;
@@ -69,31 +68,28 @@ final class Buffer
     /**
      * Write a styled string into the buffer starting at (x, y).
      *
-     * @param list<ControlSequenceIntroducer> $modifiers
+     * @param list<ControlSequenceIntroducer> $style
      */
-    public function setString(
-        int $x,
-        int $y,
-        string $text,
-        null|Color $fg = null,
-        null|Color $bg = null,
-        array $modifiers = [],
-    ): void {
+    public function setString(int $x, int $y, string $text, array $style = []): void
+    {
         if ($y < 0 || $y >= $this->height) {
             return;
         }
 
-        $codepoints = Str\length($text);
+        $chars = Str\chunk($text);
         $col = $x;
-        for ($i = 0; $i < $codepoints && $col < $this->width; $i++) {
-            $char = Str\slice($text, $i, 1);
+        foreach ($chars as $char) {
+            if ($col >= $this->width) {
+                break;
+            }
+
             $charWidth = Str\width($char);
             if ($col >= 0) {
-                $this->cells[$y][$col] = new Cell($char, $fg, $bg, $modifiers);
+                $this->cells[$y][$col] = new Cell($char, $style);
                 for ($w = 1; $w < $charWidth && ($col + $w) < $this->width; $w++) {
                     /** @var non-negative-int $wideCol */
                     $wideCol = $col + $w;
-                    $this->cells[$y][$wideCol] = new Cell('', $fg, $bg, $modifiers);
+                    $this->cells[$y][$wideCol] = new Cell('', $style);
                 }
             }
 
@@ -136,13 +132,21 @@ final class Buffer
      * Flush the buffer using diff-based rendering.
      *
      * Only cells that changed since the last flush are written.
+     * Consecutive cells skip cursor repositioning, and SGR sequences
+     * are only emitted when the style changes.
      */
     public function flush(IO\WriteHandleInterface $output): void
     {
         $buf = '';
+        $lastX = -2;
+        $lastY = -1;
+        /** @var list<ControlSequenceIntroducer> $lastStyle */
+        $lastStyle = [];
+        $sgrActive = false;
 
         for ($y = 0; $y < $this->height; $y++) {
             for ($x = 0; $x < $this->width; $x++) {
+                /** @var non-negative-int $x */
                 $cell = $this->cells[$y][$x];
                 $prev = $this->previous[$y][$x] ?? null;
 
@@ -150,22 +154,49 @@ final class Buffer
                     continue;
                 }
 
-                $buf .= Ansi\Cursor\move_to($y + 1, $x + 1)->toString();
-                $sequences = [];
-                if ($cell->foreground !== null) {
-                    $sequences[] = Ansi\foreground($cell->foreground);
+                if ($y !== $lastY || $x !== ($lastX + 1)) {
+                    if ($sgrActive) {
+                        $buf .= "\e[0m";
+                        $sgrActive = false;
+                        $lastStyle = [];
+                    }
+
+                    /** @var positive-int $row */
+                    $row = $y + 1;
+                    /** @var positive-int $col */
+                    $col = $x + 1;
+                    $buf .= Ansi\Cursor\move_to($row, $col)->toString();
                 }
 
-                if ($cell->background !== null) {
-                    $sequences[] = Ansi\background($cell->background);
+                $styleChanged = !Cell::styleEqual($cell->style, $lastStyle);
+
+                if ($styleChanged) {
+                    if ($sgrActive) {
+                        $buf .= "\e[0m";
+                    }
+
+                    if ($cell->style !== []) {
+                        $buf .= Ansi\apply($cell->grapheme, ...$cell->style);
+                        $sgrActive = true;
+                    } else {
+                        $buf .= $cell->grapheme;
+                        $sgrActive = false;
+                    }
+
+                    $lastStyle = $cell->style;
+                } elseif ($sgrActive) {
+                    $buf .= Ansi\apply($cell->grapheme, ...$cell->style);
+                } else {
+                    $buf .= $cell->grapheme;
                 }
 
-                foreach ($cell->modifiers as $modifier) {
-                    $sequences[] = $modifier;
-                }
-
-                $buf .= $sequences !== [] ? Ansi\apply($cell->grapheme, ...$sequences) : $cell->grapheme;
+                $lastX = $x;
+                $lastY = $y;
             }
+        }
+
+        if ($sgrActive) {
+            $buf .= "\e[0m";
         }
 
         $this->previous = self::copyGrid($this->cells, $this->width, $this->height);

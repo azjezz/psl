@@ -25,12 +25,13 @@ final class SgrMouseParser
         }
 
         $btn = (int) $parts[0];
-        $col = (int) $parts[1];
-        $row = (int) $parts[2];
+        $col = (int) $parts[1] - 1;
+        $row = (int) $parts[2] - 1;
 
         $kind = self::kindFromButton($btn, $isRelease);
+        $button = self::buttonFromBits($btn, $kind);
 
-        return new Event\Mouse($kind, $col, $row, new Event\MouseModifiers($btn & 0b1_1100));
+        return new Event\Mouse($kind, $col, $row, $button, new Event\MouseModifiers($btn & 0b1_1100));
     }
 
     private static function kindFromButton(int $btn, bool $isRelease): Event\MouseKind
@@ -40,7 +41,6 @@ final class SgrMouseParser
         }
 
         if (($btn & 0b10_0000) !== 0) {
-            // Bit 5 = motion. Bits 0-1 = 0b11 means no button held → Move
             return ($btn & 0b11) === 0b11 ? Event\MouseKind::Move : Event\MouseKind::Drag;
         }
 
@@ -49,5 +49,19 @@ final class SgrMouseParser
         }
 
         return Event\MouseKind::Press;
+    }
+
+    private static function buttonFromBits(int $btn, Event\MouseKind $kind): Event\MouseButton
+    {
+        if ($kind === Event\MouseKind::ScrollUp || $kind === Event\MouseKind::ScrollDown) {
+            return Event\MouseButton::None;
+        }
+
+        return match ($btn & 0b11) {
+            0b00 => Event\MouseButton::Left,
+            0b01 => Event\MouseButton::Middle,
+            0b10 => Event\MouseButton::Right,
+            default => Event\MouseButton::None,
+        };
     }
 }

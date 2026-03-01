@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Terminal\Widget;
 
-use Psl\Ansi\Color\Color;
 use Psl\Ansi\ControlSequenceIntroducer;
 use Psl\Math;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
+use Psl\Vec;
 
 use function array_slice;
 
@@ -36,7 +36,8 @@ final class Sparkline implements WidgetInterface
     /** @var list<float> */
     private array $data;
 
-    private Style $style;
+    /** @var list<ControlSequenceIntroducer> */
+    private array $style = [];
 
     /**
      * @param list<float> $data Data points, each 0.0–1.0.
@@ -44,7 +45,6 @@ final class Sparkline implements WidgetInterface
     private function __construct(array $data)
     {
         $this->data = $data;
-        $this->style = new Style();
     }
 
     /**
@@ -58,20 +58,9 @@ final class Sparkline implements WidgetInterface
     /**
      * Set the style for the sparkline characters.
      */
-    /**
-     * @param list<ControlSequenceIntroducer> $modifiers
-     */
-    public function style(
-        null|Color $foreground = null,
-        null|Color $background = null,
-        null|ControlSequenceIntroducer $style = null,
-        array $modifiers = [],
-    ): self {
-        if ($style !== null) {
-            $modifiers[] = $style;
-        }
-
-        $this->style = new Style($foreground, $background, $modifiers);
+    public function style(ControlSequenceIntroducer ...$style): self
+    {
+        $this->style = Vec\values($style);
 
         return $this;
     }
@@ -103,11 +92,7 @@ final class Sparkline implements WidgetInterface
             $index = Math\clamp((int) Math\round($value * 7.0), 0, 7);
             $char = self::BLOCKS[$index];
 
-            $buffer->set(
-                $x,
-                $y,
-                new Cell($char, $this->style->foreground, $this->style->background, $this->style->modifiers),
-            );
+            $buffer->set($x, $y, new Cell($char, $this->style));
         }
     }
 }

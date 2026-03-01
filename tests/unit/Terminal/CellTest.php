@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Terminal;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Terminal\Cell;
@@ -16,29 +17,25 @@ final class CellTest extends TestCase
         $cell = new Cell();
 
         static::assertSame(' ', $cell->grapheme);
-        static::assertNull($cell->foreground);
-        static::assertNull($cell->background);
-        static::assertSame([], $cell->modifiers);
+        static::assertSame([], $cell->style);
     }
 
     public function testConstructionWithValues(): void
     {
-        $fg = Color\red();
-        $bg = Color\blue();
+        $fg = Ansi\foreground(Color\red());
+        $bg = Ansi\background(Color\blue());
         $bold = Style\bold();
 
-        $cell = new Cell('A', $fg, $bg, [$bold]);
+        $cell = new Cell('A', [$fg, $bg, $bold]);
 
         static::assertSame('A', $cell->grapheme);
-        static::assertSame($fg, $cell->foreground);
-        static::assertSame($bg, $cell->background);
-        static::assertSame([$bold], $cell->modifiers);
+        static::assertSame([$fg, $bg, $bold], $cell->style);
     }
 
     public function testEqualsIdentical(): void
     {
-        $cell1 = new Cell('X', Color\red(), Color\blue());
-        $cell2 = new Cell('X', Color\red(), Color\blue());
+        $cell1 = new Cell('X', [Ansi\foreground(Color\red()), Ansi\background(Color\blue())]);
+        $cell2 = new Cell('X', [Ansi\foreground(Color\red()), Ansi\background(Color\blue())]);
 
         static::assertTrue($cell1->equals($cell2));
     }
@@ -51,10 +48,10 @@ final class CellTest extends TestCase
         static::assertFalse($cell1->equals($cell2));
     }
 
-    public function testEqualsDifferentForeground(): void
+    public function testEqualsDifferentStyle(): void
     {
-        $cell1 = new Cell('A', Color\red());
-        $cell2 = new Cell('A', Color\blue());
+        $cell1 = new Cell('A', [Ansi\foreground(Color\red())]);
+        $cell2 = new Cell('A', [Ansi\foreground(Color\blue())]);
 
         static::assertFalse($cell1->equals($cell2));
     }
@@ -67,24 +64,24 @@ final class CellTest extends TestCase
         static::assertTrue($cell1->equals($cell2));
     }
 
-    public function testEqualsDifferentModifierCount(): void
+    public function testEqualsDifferentStyleCount(): void
     {
         $bold = Style\bold();
 
-        $cell1 = new Cell('A', modifiers: [$bold]);
-        $cell2 = new Cell('A', modifiers: []);
+        $cell1 = new Cell('A', [$bold]);
+        $cell2 = new Cell('A', []);
 
         static::assertFalse($cell1->equals($cell2));
         static::assertFalse($cell2->equals($cell1));
     }
 
-    public function testEqualsMatchingModifiers(): void
+    public function testEqualsMatchingStyle(): void
     {
         $bold = Style\bold();
         $italic = Style\italic();
 
-        $cell1 = new Cell('A', modifiers: [$bold, $italic]);
-        $cell2 = new Cell('A', modifiers: [$bold, $italic]);
+        $cell1 = new Cell('A', [$bold, $italic]);
+        $cell2 = new Cell('A', [$bold, $italic]);
 
         static::assertTrue($cell1->equals($cell2));
     }
@@ -94,27 +91,47 @@ final class CellTest extends TestCase
         $bold = Style\bold();
         $italic = Style\italic();
 
-        $cell1 = new Cell('A', modifiers: [$bold]);
-        $cell2 = new Cell('A', modifiers: [$italic]);
+        $cell1 = new Cell('A', [$bold]);
+        $cell2 = new Cell('A', [$italic]);
 
         static::assertFalse($cell1->equals($cell2));
     }
 
-    public function testEqualsDifferentForegroundNullness(): void
+    public function testEqualsDifferentStyleNullness(): void
     {
-        $cell1 = new Cell('A', Color\red());
+        $cell1 = new Cell('A', [Ansi\foreground(Color\red())]);
         $cell2 = new Cell('A');
 
         static::assertFalse($cell1->equals($cell2));
         static::assertFalse($cell2->equals($cell1));
     }
 
-    public function testEqualsDifferentBackgroundNullness(): void
+    public function testStyleEqualEmptyArrays(): void
     {
-        $cell1 = new Cell('A', null, Color\blue());
-        $cell2 = new Cell('A');
+        static::assertTrue(Cell::styleEqual([], []));
+    }
 
-        static::assertFalse($cell1->equals($cell2));
-        static::assertFalse($cell2->equals($cell1));
+    public function testStyleEqualSameCSIs(): void
+    {
+        $fg = Ansi\foreground(Color\red());
+        $bold = Style\bold();
+
+        static::assertTrue(Cell::styleEqual([$fg, $bold], [$fg, $bold]));
+    }
+
+    public function testStyleEqualDifferentCSIs(): void
+    {
+        $fg = Ansi\foreground(Color\red());
+        $bg = Ansi\background(Color\blue());
+
+        static::assertFalse(Cell::styleEqual([$fg], [$bg]));
+    }
+
+    public function testStyleEqualDifferentLengths(): void
+    {
+        $fg = Ansi\foreground(Color\red());
+
+        static::assertFalse(Cell::styleEqual([$fg], []));
+        static::assertFalse(Cell::styleEqual([], [$fg]));
     }
 }

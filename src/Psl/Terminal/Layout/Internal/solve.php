@@ -64,10 +64,15 @@ function solve(Rect $rect, array $constraints, bool $vertical): array
     $totalAllocated = Math\sum($sizes);
     if ($totalAllocated > $totalSpace) {
         $excess = $totalAllocated - $totalSpace;
-        for ($i = $count - 1; $i >= 0 && $excess > 0; $i--) {
-            $reduction = Math\minva($sizes[$i], $excess);
-            $sizes[$i] -= $reduction;
-            $excess -= $reduction;
+        $shrinkableTotal = $totalAllocated;
+        if ($shrinkableTotal > 0) {
+            $remaining = $excess;
+            for ($i = $count - 1; $i >= 0 && $remaining > 0; $i--) {
+                $share = (int) Math\round(($sizes[$i] / $shrinkableTotal) * $excess);
+                $reduction = Math\minva($sizes[$i], $share, $remaining);
+                $sizes[$i] -= $reduction;
+                $remaining -= $reduction;
+            }
         }
     }
 

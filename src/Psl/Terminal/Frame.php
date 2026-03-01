@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Terminal;
 
+use Psl\DateTime;
+
 /**
  * Represents a render frame, wraps the root Rect (full terminal) and the Buffer.
  *
@@ -11,7 +13,7 @@ namespace Psl\Terminal;
  */
 final class Frame
 {
-    private float $fps = 0.0;
+    private null|DateTime\Timestamp $lastDrawTimestamp = null;
 
     public function __construct(
         private Rect $rect,
@@ -35,14 +37,11 @@ final class Frame
     }
 
     /**
-     * Get the smoothed frames-per-second value for the current render cycle.
-     *
-     * The value is computed by the {@see Application} using an exponential moving average
-     * and updated before each render callback invocation.
+     * Get the monotonic timestamp of the last draw, or null if this is the first frame.
      */
-    public function fps(): float
+    public function getLastDrawTimestamp(): null|DateTime\Timestamp
     {
-        return $this->fps;
+        return $this->lastDrawTimestamp;
     }
 
     /**
@@ -54,12 +53,12 @@ final class Frame
     }
 
     /**
-     * Update the FPS value (used internally by Application).
+     * Update the last draw timestamp (used internally by Application).
      *
      * @internal
      */
-    public function setFps(float $fps): void
+    public function setLastDrawTimestamp(DateTime\Timestamp $timestamp): void
     {
-        $this->fps = $fps;
+        $this->lastDrawTimestamp = $timestamp;
     }
 }

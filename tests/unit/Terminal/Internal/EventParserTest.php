@@ -172,8 +172,9 @@ final class EventParserTest extends TestCase
         static::assertCount(1, $events);
         static::assertInstanceOf(Event\Mouse::class, $events[0]);
         static::assertSame(Event\MouseKind::Press, $events[0]->kind);
-        static::assertSame(10, $events[0]->column);
-        static::assertSame(5, $events[0]->row);
+        static::assertSame(9, $events[0]->column);
+        static::assertSame(4, $events[0]->row);
+        static::assertSame(Event\MouseButton::Left, $events[0]->button);
     }
 
     public function testSgrMouseRelease(): void
@@ -183,6 +184,7 @@ final class EventParserTest extends TestCase
         static::assertCount(1, $events);
         static::assertInstanceOf(Event\Mouse::class, $events[0]);
         static::assertSame(Event\MouseKind::Release, $events[0]->kind);
+        static::assertSame(Event\MouseButton::Left, $events[0]->button);
     }
 
     public function testSgrMouseScrollUp(): void
@@ -192,6 +194,9 @@ final class EventParserTest extends TestCase
         static::assertCount(1, $events);
         static::assertInstanceOf(Event\Mouse::class, $events[0]);
         static::assertSame(Event\MouseKind::ScrollUp, $events[0]->kind);
+        static::assertSame(4, $events[0]->column);
+        static::assertSame(4, $events[0]->row);
+        static::assertSame(Event\MouseButton::None, $events[0]->button);
     }
 
     public function testSgrMouseScrollDown(): void
@@ -201,6 +206,51 @@ final class EventParserTest extends TestCase
         static::assertCount(1, $events);
         static::assertInstanceOf(Event\Mouse::class, $events[0]);
         static::assertSame(Event\MouseKind::ScrollDown, $events[0]->kind);
+        static::assertSame(Event\MouseButton::None, $events[0]->button);
+    }
+
+    public function testSgrMouseMiddleButton(): void
+    {
+        $events = $this->parser->feed("\e[<1;3;2M");
+
+        static::assertCount(1, $events);
+        static::assertInstanceOf(Event\Mouse::class, $events[0]);
+        static::assertSame(Event\MouseKind::Press, $events[0]->kind);
+        static::assertSame(Event\MouseButton::Middle, $events[0]->button);
+        static::assertSame(2, $events[0]->column);
+        static::assertSame(1, $events[0]->row);
+    }
+
+    public function testSgrMouseRightButton(): void
+    {
+        $events = $this->parser->feed("\e[<2;1;1M");
+
+        static::assertCount(1, $events);
+        static::assertInstanceOf(Event\Mouse::class, $events[0]);
+        static::assertSame(Event\MouseKind::Press, $events[0]->kind);
+        static::assertSame(Event\MouseButton::Right, $events[0]->button);
+        static::assertSame(0, $events[0]->column);
+        static::assertSame(0, $events[0]->row);
+    }
+
+    public function testSgrMouseDrag(): void
+    {
+        $events = $this->parser->feed("\e[<32;10;5M");
+
+        static::assertCount(1, $events);
+        static::assertInstanceOf(Event\Mouse::class, $events[0]);
+        static::assertSame(Event\MouseKind::Drag, $events[0]->kind);
+        static::assertSame(Event\MouseButton::Left, $events[0]->button);
+    }
+
+    public function testSgrMouseMove(): void
+    {
+        $events = $this->parser->feed("\e[<35;10;5M");
+
+        static::assertCount(1, $events);
+        static::assertInstanceOf(Event\Mouse::class, $events[0]);
+        static::assertSame(Event\MouseKind::Move, $events[0]->kind);
+        static::assertSame(Event\MouseButton::None, $events[0]->button);
     }
 
     public function testUtf8MultiByte(): void
@@ -248,5 +298,80 @@ final class EventParserTest extends TestCase
         $events = $this->parser->feed('A');
         static::assertCount(1, $events);
         static::assertTrue($events[0]->is('up'));
+    }
+
+    public function testFlushPendingEmitsLoneEscape(): void
+    {
+        $events = $this->parser->feed("\e");
+        static::assertCount(0, $events);
+
+        $flushed = $this->parser->flushPending();
+        static::assertCount(1, $flushed);
+        static::assertInstanceOf(Event\Key::class, $flushed[0]);
+        static::assertTrue($flushed[0]->is('escape'));
+    }
+
+    public function testFlushPendingEmptyWhenNoBuffer(): void
+    {
+        $flushed = $this->parser->flushPending();
+        static::assertCount(0, $flushed);
+    }
+
+    public function testFlushPendingDoesNotFlushIncompleteSequence(): void
+    {
+        $events = $this->parser->feed("\e[");
+        static::assertCount(0, $events);
+
+        $flushed = $this->parser->flushPending();
+        static::assertCount(0, $flushed);
+
+        $events = $this->parser->feed('A');
+        static::assertCount(1, $events);
+        static::assertTrue($events[0]->is('up'));
+    }
+
+    public function testEscFollowedByCsiOnNextFeed(): void
+    {
+        $events = $this->parser->feed("\e");
+        static::assertCount(0, $events);
+
+        $events = $this->parser->feed('[A');
+        static::assertCount(1, $events);
+        static::assertInstanceOf(Event\Key::class, $events[0]);
+        static::assertTrue($events[0]->is('up'));
+    }
+
+    public function testInBandResize(): void
+    {
+        // \e[48;rows;cols;height_px;width_px t
+        $events = $this->parser->feed("\e[48;25;80;600;1200t");
+
+        static::assertCount(1, $events);
+        static::assertInstanceOf(Event\Resize::class, $events[0]);
+        static::assertSame(80, $events[0]->width);
+        static::assertSame(25, $events[0]->height);
+    }
+
+    public function testInBandResizeMinimalParams(): void
+    {
+        // Only rows and cols, no pixel dimensions
+        $events = $this->parser->feed("\e[48;40;120t");
+
+        static::assertCount(1, $events);
+        static::assertInstanceOf(Event\Resize::class, $events[0]);
+        static::assertSame(120, $events[0]->width);
+        static::assertSame(40, $events[0]->height);
+    }
+
+    public function testInBandResizeIncrementalFeed(): void
+    {
+        $events = $this->parser->feed("\e[48;");
+        static::assertCount(0, $events);
+
+        $events = $this->parser->feed('30;100;720;1920t');
+        static::assertCount(1, $events);
+        static::assertInstanceOf(Event\Resize::class, $events[0]);
+        static::assertSame(100, $events[0]->width);
+        static::assertSame(30, $events[0]->height);
     }
 }

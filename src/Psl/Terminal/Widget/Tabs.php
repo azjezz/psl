@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Terminal\Widget;
 
-use Psl\Ansi\Color\Color;
 use Psl\Ansi\ControlSequenceIntroducer;
 use Psl\Str;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
+use Psl\Vec;
 
 /**
  * A horizontal tab bar widget.
@@ -23,14 +23,14 @@ final class Tabs implements WidgetInterface
     private array $titles = [];
 
     private null|int $highlighted = null;
-    private Style $activeStyle;
-    private Style $inactiveStyle;
 
-    private function __construct()
-    {
-        $this->activeStyle = new Style();
-        $this->inactiveStyle = new Style();
-    }
+    /** @var list<ControlSequenceIntroducer> */
+    private array $activeStyle = [];
+
+    /** @var list<ControlSequenceIntroducer> */
+    private array $inactiveStyle = [];
+
+    private function __construct() {}
 
     public static function new(): self
     {
@@ -60,20 +60,9 @@ final class Tabs implements WidgetInterface
     /**
      * Set the style for the active tab.
      */
-    /**
-     * @param list<ControlSequenceIntroducer> $modifiers
-     */
-    public function activeStyle(
-        null|Color $foreground = null,
-        null|Color $background = null,
-        null|ControlSequenceIntroducer $style = null,
-        array $modifiers = [],
-    ): self {
-        if ($style !== null) {
-            $modifiers[] = $style;
-        }
-
-        $this->activeStyle = new Style($foreground, $background, $modifiers);
+    public function activeStyle(ControlSequenceIntroducer ...$style): self
+    {
+        $this->activeStyle = Vec\values($style);
 
         return $this;
     }
@@ -81,20 +70,9 @@ final class Tabs implements WidgetInterface
     /**
      * Set the style for inactive tabs.
      */
-    /**
-     * @param list<ControlSequenceIntroducer> $modifiers
-     */
-    public function inactiveStyle(
-        null|Color $foreground = null,
-        null|Color $background = null,
-        null|ControlSequenceIntroducer $style = null,
-        array $modifiers = [],
-    ): self {
-        if ($style !== null) {
-            $modifiers[] = $style;
-        }
-
-        $this->inactiveStyle = new Style($foreground, $background, $modifiers);
+    public function inactiveStyle(ControlSequenceIntroducer ...$style): self
+    {
+        $this->inactiveStyle = Vec\values($style);
 
         return $this;
     }
@@ -115,11 +93,7 @@ final class Tabs implements WidgetInterface
 
             if ($i > 0) {
                 if ($x < $area->right()) {
-                    $buffer->set(
-                        $x,
-                        $y,
-                        new Cell("\u{2502}", $this->inactiveStyle->foreground, $this->inactiveStyle->background, []),
-                    );
+                    $buffer->set($x, $y, new Cell("\u{2502}", $this->inactiveStyle));
                     $x++;
                 }
             }
@@ -132,14 +106,7 @@ final class Tabs implements WidgetInterface
 
             /** @var non-negative-int $remaining */
             $remaining = $area->right() - $x;
-            $buffer->setString(
-                $x,
-                $y,
-                Str\width_slice($text, 0, $remaining),
-                $style->foreground,
-                $style->background,
-                $style->modifiers,
-            );
+            $buffer->setString($x, $y, Str\width_slice($text, 0, $remaining), $style);
 
             $x += $len;
         }

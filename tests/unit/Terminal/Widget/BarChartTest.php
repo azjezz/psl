@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Terminal\Widget;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Terminal\Buffer;
@@ -96,18 +97,18 @@ final class BarChartTest extends TestCase
         $buffer = new Buffer(3, 3);
         $area = new Rect(0, 0, 3, 3);
 
-        $fg = Color\bright_cyan();
+        $fg = Ansi\foreground(Color\bright_cyan());
 
         BarChart::new()
             ->data([['X', 1.0]])
             ->barWidth(3)
             ->barGap(0)
-            ->barStyle(foreground: $fg)
+            ->barStyle($fg)
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
-        static::assertNotNull($cell->foreground);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testLabelStyleApplied(): void
@@ -115,18 +116,18 @@ final class BarChartTest extends TestCase
         $buffer = new Buffer(3, 3);
         $area = new Rect(0, 0, 3, 3);
 
-        $fg = Color\bright_white();
+        $fg = Ansi\foreground(Color\bright_white());
 
         BarChart::new()
             ->data([['X', 0.5]])
             ->barWidth(3)
             ->barGap(0)
-            ->labelStyle(foreground: $fg)
+            ->labelStyle($fg)
             ->render($area, $buffer);
 
         $cell = $buffer->get(1, 2);
         static::assertNotNull($cell);
-        static::assertNotNull($cell->foreground);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testBarStyleModifierIsApplied(): void
@@ -138,12 +139,12 @@ final class BarChartTest extends TestCase
             ->data([['A', 1.0]])
             ->barWidth(3)
             ->barGap(0)
-            ->barStyle(style: Style\bold())
+            ->barStyle(Style\bold())
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
-        static::assertNotEmpty($cell->modifiers);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testLabelStyleModifierIsApplied(): void
@@ -155,12 +156,12 @@ final class BarChartTest extends TestCase
             ->data([['X', 0.5]])
             ->barWidth(3)
             ->barGap(0)
-            ->labelStyle(style: Style\italic())
+            ->labelStyle(Style\italic())
             ->render($area, $buffer);
 
         $cell = $buffer->get(1, 2);
         static::assertNotNull($cell);
-        static::assertNotEmpty($cell->modifiers);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testRenderWithHeight2(): void

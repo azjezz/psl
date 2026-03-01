@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Terminal\Widget;
 
-use Psl\Ansi\Color\Color;
 use Psl\Ansi\ControlSequenceIntroducer;
 use Psl\Math;
 use Psl\Str;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
+use Psl\Vec;
 
 /**
  * A horizontal progress bar widget.
@@ -21,16 +21,17 @@ final class Gauge implements WidgetInterface
 {
     private float $ratio = 0.0;
     private string $label = '';
-    private Style $filledStyle;
-    private Style $emptyStyle;
-    private Style $labelStyle;
 
-    private function __construct()
-    {
-        $this->filledStyle = new Style();
-        $this->emptyStyle = new Style();
-        $this->labelStyle = new Style();
-    }
+    /** @var list<ControlSequenceIntroducer> */
+    private array $filledStyle = [];
+
+    /** @var list<ControlSequenceIntroducer> */
+    private array $emptyStyle = [];
+
+    /** @var list<ControlSequenceIntroducer> */
+    private array $labelStyle = [];
+
+    private function __construct() {}
 
     public static function new(): self
     {
@@ -58,20 +59,9 @@ final class Gauge implements WidgetInterface
     /**
      * Set the style for the filled portion of the bar.
      */
-    /**
-     * @param list<ControlSequenceIntroducer> $modifiers
-     */
-    public function filledStyle(
-        null|Color $foreground = null,
-        null|Color $background = null,
-        null|ControlSequenceIntroducer $style = null,
-        array $modifiers = [],
-    ): self {
-        if ($style !== null) {
-            $modifiers[] = $style;
-        }
-
-        $this->filledStyle = new Style($foreground, $background, $modifiers);
+    public function filledStyle(ControlSequenceIntroducer ...$style): self
+    {
+        $this->filledStyle = Vec\values($style);
 
         return $this;
     }
@@ -79,20 +69,9 @@ final class Gauge implements WidgetInterface
     /**
      * Set the style for the empty portion of the bar.
      */
-    /**
-     * @param list<ControlSequenceIntroducer> $modifiers
-     */
-    public function emptyStyle(
-        null|Color $foreground = null,
-        null|Color $background = null,
-        null|ControlSequenceIntroducer $style = null,
-        array $modifiers = [],
-    ): self {
-        if ($style !== null) {
-            $modifiers[] = $style;
-        }
-
-        $this->emptyStyle = new Style($foreground, $background, $modifiers);
+    public function emptyStyle(ControlSequenceIntroducer ...$style): self
+    {
+        $this->emptyStyle = Vec\values($style);
 
         return $this;
     }
@@ -100,20 +79,9 @@ final class Gauge implements WidgetInterface
     /**
      * Set the style for the label text.
      */
-    /**
-     * @param list<ControlSequenceIntroducer> $modifiers
-     */
-    public function labelStyle(
-        null|Color $foreground = null,
-        null|Color $background = null,
-        null|ControlSequenceIntroducer $style = null,
-        array $modifiers = [],
-    ): self {
-        if ($style !== null) {
-            $modifiers[] = $style;
-        }
-
-        $this->labelStyle = new Style($foreground, $background, $modifiers);
+    public function labelStyle(ControlSequenceIntroducer ...$style): self
+    {
+        $this->labelStyle = Vec\values($style);
 
         return $this;
     }
@@ -137,14 +105,7 @@ final class Gauge implements WidgetInterface
 
         $x = $area->x;
         if ($labelText !== '') {
-            $buffer->setString(
-                $x,
-                $y,
-                $labelText,
-                $this->labelStyle->foreground,
-                $this->labelStyle->background,
-                $this->labelStyle->modifiers,
-            );
+            $buffer->setString($x, $y, $labelText, $this->labelStyle);
             $x += $labelLen;
         }
 
@@ -156,16 +117,7 @@ final class Gauge implements WidgetInterface
                 break;
             }
 
-            $buffer->set(
-                $x,
-                $y,
-                new Cell(
-                    "\u{2588}",
-                    $this->filledStyle->foreground,
-                    $this->filledStyle->background,
-                    $this->filledStyle->modifiers,
-                ),
-            );
+            $buffer->set($x, $y, new Cell("\u{2588}", $this->filledStyle));
             $x++;
         }
 
@@ -174,28 +126,12 @@ final class Gauge implements WidgetInterface
                 break;
             }
 
-            $buffer->set(
-                $x,
-                $y,
-                new Cell(
-                    "\u{2591}",
-                    $this->emptyStyle->foreground,
-                    $this->emptyStyle->background,
-                    $this->emptyStyle->modifiers,
-                ),
-            );
+            $buffer->set($x, $y, new Cell("\u{2591}", $this->emptyStyle));
             $x++;
         }
 
         if ($x < $area->right()) {
-            $buffer->setString(
-                $x,
-                $y,
-                $pctText,
-                $this->labelStyle->foreground,
-                $this->labelStyle->background,
-                $this->labelStyle->modifiers,
-            );
+            $buffer->setString($x, $y, $pctText, $this->labelStyle);
         }
     }
 }

@@ -4,44 +4,48 @@ declare(strict_types=1);
 
 namespace Psl\Terminal\Widget;
 
-use Psl\Ansi\Color\Color;
+use Psl\Ansi\ControlSequenceIntroducer;
+use Psl\Vec;
 
 /**
  * A value object representing a border configuration.
  *
- * Combines a border style with optional color and per-side control.
+ * Combines a border style with optional styling and per-side control.
  *
  * @immutable
  */
 final readonly class Border
 {
+    /**
+     * @param list<ControlSequenceIntroducer> $style
+     */
     public function __construct(
-        public BorderStyle $style = BorderStyle::Rounded,
-        public null|Color $color = null,
+        public BorderStyle $borderStyle = BorderStyle::Rounded,
+        public array $style = [],
         public bool $top = true,
         public bool $right = true,
         public bool $bottom = true,
         public bool $left = true,
     ) {}
 
-    public static function rounded(null|Color $color = null): self
+    public static function rounded(ControlSequenceIntroducer ...$style): self
     {
-        return new self(BorderStyle::Rounded, $color);
+        return new self(BorderStyle::Rounded, Vec\values($style));
     }
 
-    public static function plain(null|Color $color = null): self
+    public static function plain(ControlSequenceIntroducer ...$style): self
     {
-        return new self(BorderStyle::Plain, $color);
+        return new self(BorderStyle::Plain, Vec\values($style));
     }
 
-    public static function double(null|Color $color = null): self
+    public static function double(ControlSequenceIntroducer ...$style): self
     {
-        return new self(BorderStyle::Double, $color);
+        return new self(BorderStyle::Double, Vec\values($style));
     }
 
-    public static function thick(null|Color $color = null): self
+    public static function thick(ControlSequenceIntroducer ...$style): self
     {
-        return new self(BorderStyle::Thick, $color);
+        return new self(BorderStyle::Thick, Vec\values($style));
     }
 
     /**
@@ -50,6 +54,6 @@ final readonly class Border
      */
     public function characters(): array
     {
-        return $this->style->characters();
+        return $this->borderStyle->characters();
     }
 }

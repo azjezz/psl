@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Terminal\Widget;
 
-use Psl\Ansi\Color\Color;
 use Psl\Ansi\ControlSequenceIntroducer;
 use Psl\Math;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
+use Psl\Vec;
 
 /**
  * A vertical scrollbar widget.
@@ -22,14 +22,14 @@ final class Scrollbar implements WidgetInterface
     private int $contentLength = 0;
     private int $viewportLength = 0;
     private int $position = 0;
-    private Style $thumbStyle;
-    private Style $trackStyle;
 
-    private function __construct()
-    {
-        $this->thumbStyle = new Style();
-        $this->trackStyle = new Style();
-    }
+    /** @var list<ControlSequenceIntroducer> */
+    private array $thumbStyle = [];
+
+    /** @var list<ControlSequenceIntroducer> */
+    private array $trackStyle = [];
+
+    private function __construct() {}
 
     public static function new(): self
     {
@@ -66,20 +66,9 @@ final class Scrollbar implements WidgetInterface
     /**
      * Set the style for the thumb (position indicator).
      */
-    /**
-     * @param list<ControlSequenceIntroducer> $modifiers
-     */
-    public function thumbStyle(
-        null|Color $foreground = null,
-        null|Color $background = null,
-        null|ControlSequenceIntroducer $style = null,
-        array $modifiers = [],
-    ): self {
-        if ($style !== null) {
-            $modifiers[] = $style;
-        }
-
-        $this->thumbStyle = new Style($foreground, $background, $modifiers);
+    public function thumbStyle(ControlSequenceIntroducer ...$style): self
+    {
+        $this->thumbStyle = Vec\values($style);
 
         return $this;
     }
@@ -87,20 +76,9 @@ final class Scrollbar implements WidgetInterface
     /**
      * Set the style for the track background.
      */
-    /**
-     * @param list<ControlSequenceIntroducer> $modifiers
-     */
-    public function trackStyle(
-        null|Color $foreground = null,
-        null|Color $background = null,
-        null|ControlSequenceIntroducer $style = null,
-        array $modifiers = [],
-    ): self {
-        if ($style !== null) {
-            $modifiers[] = $style;
-        }
-
-        $this->trackStyle = new Style($foreground, $background, $modifiers);
+    public function trackStyle(ControlSequenceIntroducer ...$style): self
+    {
+        $this->trackStyle = Vec\values($style);
 
         return $this;
     }
@@ -116,16 +94,7 @@ final class Scrollbar implements WidgetInterface
 
         if ($this->contentLength <= $this->viewportLength || $this->contentLength <= 0) {
             for ($i = 0; $i < $trackHeight; $i++) {
-                $buffer->set(
-                    $x,
-                    $area->y + $i,
-                    new Cell(
-                        "\u{2503}",
-                        $this->thumbStyle->foreground,
-                        $this->thumbStyle->background,
-                        $this->thumbStyle->modifiers,
-                    ),
-                );
+                $buffer->set($x, $area->y + $i, new Cell("\u{2503}", $this->thumbStyle));
             }
 
             return;
@@ -147,7 +116,7 @@ final class Scrollbar implements WidgetInterface
             $style = $isThumb ? $this->thumbStyle : $this->trackStyle;
             $char = $isThumb ? "\u{2503}" : "\u{2502}";
 
-            $buffer->set($x, $area->y + $i, new Cell($char, $style->foreground, $style->background, $style->modifiers));
+            $buffer->set($x, $area->y + $i, new Cell($char, $style));
         }
     }
 }

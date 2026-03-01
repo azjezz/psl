@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Terminal\Widget;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Terminal\Buffer;
@@ -75,13 +76,13 @@ final class SparklineTest extends TestCase
         $buffer = new Buffer(3, 1);
         $area = new Rect(0, 0, 3, 1);
 
-        $fg = Color\bright_cyan();
+        $fg = Ansi\foreground(Color\bright_cyan());
 
-        Sparkline::new([0.5, 0.5, 0.5])->style(foreground: $fg)->render($area, $buffer);
+        Sparkline::new([0.5, 0.5, 0.5])->style($fg)->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
-        static::assertNotNull($cell->foreground);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testStyleModifier(): void
@@ -89,11 +90,11 @@ final class SparklineTest extends TestCase
         $buffer = new Buffer(3, 1);
         $area = new Rect(0, 0, 3, 1);
 
-        Sparkline::new([0.5, 0.5, 0.5])->style(style: Style\bold())->render($area, $buffer);
+        Sparkline::new([0.5, 0.5, 0.5])->style(Style\bold())->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
-        static::assertNotEmpty($cell->modifiers);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testDataExactlyFitsWidth(): void

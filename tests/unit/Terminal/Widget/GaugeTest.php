@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Terminal\Widget;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Terminal\Buffer;
@@ -95,17 +96,17 @@ final class GaugeTest extends TestCase
         $buffer = new Buffer(20, 1);
         $area = new Rect(0, 0, 20, 1);
 
-        $fg = Color\bright_green();
+        $fg = Ansi\foreground(Color\bright_green());
 
         Gauge::new()
             ->ratio(0.5)
-            ->filledStyle(foreground: $fg)
+            ->filledStyle($fg)
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
         static::assertSame("\u{2588}", $cell->grapheme);
-        static::assertNotNull($cell->foreground);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testEmptyStyleApplied(): void
@@ -113,17 +114,17 @@ final class GaugeTest extends TestCase
         $buffer = new Buffer(20, 1);
         $area = new Rect(0, 0, 20, 1);
 
-        $fg = Color\bright_black();
+        $fg = Ansi\foreground(Color\bright_black());
 
         Gauge::new()
             ->ratio(0.0)
-            ->emptyStyle(foreground: $fg)
+            ->emptyStyle($fg)
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
         static::assertSame("\u{2591}", $cell->grapheme);
-        static::assertNotNull($cell->foreground);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testEmptyAreaRendersNothing(): void
@@ -210,8 +211,7 @@ final class GaugeTest extends TestCase
         $cell = $buffer->get(5, 0);
         static::assertNotNull($cell);
         static::assertSame(' ', $cell->grapheme);
-        static::assertNull($cell->foreground);
-        static::assertNull($cell->background);
+        static::assertSame([], $cell->style);
     }
 
     public function testGaugePctRendered(): void
@@ -241,13 +241,13 @@ final class GaugeTest extends TestCase
 
         Gauge::new()
             ->ratio(0.5)
-            ->filledStyle(style: Style\bold())
+            ->filledStyle(Style\bold())
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
         static::assertSame("\u{2588}", $cell->grapheme);
-        static::assertNotEmpty($cell->modifiers);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testGaugeEmptyStyleModifier(): void
@@ -257,13 +257,13 @@ final class GaugeTest extends TestCase
 
         Gauge::new()
             ->ratio(0.0)
-            ->emptyStyle(style: Style\italic())
+            ->emptyStyle(Style\italic())
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
         static::assertSame("\u{2591}", $cell->grapheme);
-        static::assertNotEmpty($cell->modifiers);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testGaugeBarWidthClamped(): void

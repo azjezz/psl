@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Terminal\Widget;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Terminal\Buffer;
@@ -94,7 +95,7 @@ final class TableTest extends TestCase
         $buffer = new Buffer(20, 10);
         $area = new Rect(0, 0, 20, 10);
 
-        $bg = Color\ansi256(236);
+        $bg = Ansi\background(Color\ansi256(236));
 
         Table::new()
             ->headers(['NAME'])
@@ -104,14 +105,13 @@ final class TableTest extends TestCase
                 [Span::raw('Second')],
             ])
             ->highlight(1)
-            ->highlightStyle(foreground: Color\bright_white(), background: $bg, style: Style\bold())
+            ->highlightStyle(Ansi\foreground(Color\bright_white()), $bg, Style\bold())
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 3);
         static::assertNotNull($cell);
         static::assertSame('S', $cell->grapheme);
-        static::assertNotNull($cell->foreground);
-        static::assertNotNull($cell->background);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testScrollSkipsRows(): void
@@ -139,19 +139,19 @@ final class TableTest extends TestCase
         $buffer = new Buffer(20, 5);
         $area = new Rect(0, 0, 20, 5);
 
-        $fg = Color\bright_cyan();
+        $fg = Ansi\foreground(Color\bright_cyan());
 
         Table::new()
             ->headers(['NAME'])
             ->widths([20])
-            ->headerStyle(foreground: $fg, style: Style\bold())
+            ->headerStyle($fg, Style\bold())
             ->rows([])
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
         static::assertSame('N', $cell->grapheme);
-        static::assertNotNull($cell->foreground);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testNoHeadersNoSeparator(): void
@@ -204,12 +204,12 @@ final class TableTest extends TestCase
         $cell = $buffer->get(0, 2);
         static::assertNotNull($cell);
         static::assertSame('F', $cell->grapheme);
-        static::assertNull($cell->background);
+        static::assertSame([], $cell->style);
 
         $cell = $buffer->get(0, 3);
         static::assertNotNull($cell);
         static::assertSame('S', $cell->grapheme);
-        static::assertNull($cell->background);
+        static::assertSame([], $cell->style);
     }
 
     public function testHeaderStyleModifier(): void
@@ -220,13 +220,13 @@ final class TableTest extends TestCase
         Table::new()
             ->headers(['Name', 'Age'])
             ->widths([10, 10])
-            ->headerStyle(style: Style\bold())
+            ->headerStyle(Style\bold())
             ->rows([[Span::raw('Alice'), Span::raw('30')]])
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
-        static::assertNotEmpty($cell->modifiers);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testHighlightStyleModifier(): void
@@ -237,14 +237,14 @@ final class TableTest extends TestCase
         Table::new()
             ->headers(['Name'])
             ->widths([20])
-            ->highlightStyle(style: Style\bold())
+            ->highlightStyle(Style\bold())
             ->highlight(0)
             ->rows([[Span::raw('Alice')]])
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 2);
         static::assertNotNull($cell);
-        static::assertNotEmpty($cell->modifiers);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testEmptyAreaDoesNotCorruptBuffer(): void
@@ -283,7 +283,7 @@ final class TableTest extends TestCase
         $buffer = new Buffer(10, 5);
         $area = new Rect(0, 0, 10, 5);
 
-        $bg = Color\blue();
+        $bg = Ansi\background(Color\blue());
 
         Table::new()
             ->headers(['Name'])
@@ -293,20 +293,20 @@ final class TableTest extends TestCase
                 [Span::raw('Bob')],
             ])
             ->highlight(0)
-            ->highlightStyle(background: $bg)
+            ->highlightStyle($bg)
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 2);
         static::assertNotNull($cell);
-        static::assertSame($bg, $cell->background);
+        static::assertContains($bg, $cell->style);
 
         $cell = $buffer->get(9, 2);
         static::assertNotNull($cell);
-        static::assertSame($bg, $cell->background);
+        static::assertContains($bg, $cell->style);
 
         $unhighlighted = $buffer->get(0, 3);
         static::assertNotNull($unhighlighted);
-        static::assertNull($unhighlighted->background);
+        static::assertSame([], $unhighlighted->style);
     }
 
     public function testHighlightOverridesFg(): void
@@ -314,19 +314,19 @@ final class TableTest extends TestCase
         $buffer = new Buffer(10, 5);
         $area = new Rect(0, 0, 10, 5);
 
-        $green = Color\green();
+        $green = Ansi\foreground(Color\green());
 
         Table::new()
             ->headers(['Name'])
             ->widths([10])
             ->rows([[Span::raw('Alice')]])
             ->highlight(0)
-            ->highlightStyle(foreground: $green)
+            ->highlightStyle($green)
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 2);
         static::assertNotNull($cell);
-        static::assertSame($green, $cell->foreground);
+        static::assertContains($green, $cell->style);
     }
 
     public function testTableScrollClamp(): void

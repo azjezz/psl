@@ -8,11 +8,12 @@ use Closure;
 use Psl\Ansi;
 use Psl\Async;
 use Psl\DateTime;
+use Psl\DateTime\Duration;
 use Psl\IO;
-use Psl\Math;
+use Psl\IO\ReadHandleInterface;
+use Psl\IO\StreamHandleInterface;
+use Psl\IO\WriteHandleInterface;
 use Psl\Terminal\Internal\EventParser;
-use Psl\Terminal\Internal\RawMode;
-use Psl\Terminal\Internal\TerminalSize;
 
 use function is_resource;
 use function substr;
@@ -42,57 +43,107 @@ final class Application
     private int $exitCode = 0;
     private bool $running = false;
     private bool $rendering = false;
-    private null|DateTime\Timestamp $lastFrameTime = null;
-    private float $currentFps = 0.0;
+    private null|Buffer $buffer = null;
+    private null|Frame $frame = null;
+
+    private null|Async\Deferred $stopDeferred = null;
 
     /**
      * @param S $state
+     *
+     * @mago-expect lint:excessive-parameter-list
      */
     private function __construct(
-        private string $title,
-        private int $fps,
-        private object $state,
-        private IO\ReadHandleInterface&IO\StreamHandleInterface $input,
-        private IO\WriteHandleInterface $output,
-        private null|Internal\ScrollSmoothing $scrollSmoothing,
-        private bool $mouseMotion,
+        private readonly string $title,
+        private readonly DateTime\Duration $tickInterval,
+        private readonly object $state,
+        private readonly IO\ReadHandleInterface&IO\StreamHandleInterface $input,
+        private readonly IO\WriteHandleInterface $output,
+        private readonly null|Internal\ScrollSmoothing $scrollSmoothing,
+        private readonly bool $mouseMotion,
+        private readonly RawModeSwitcherInterface $rawModeSwitcher,
+        private readonly WindowSizeProviderInterface $windowSizeProvider,
+        private readonly bool $remote,
     ) {}
 
     /**
-     * Create a new terminal application.
-     *
-     * When no input/output handles are provided, the application uses the local terminal
-     * (STDIN/STDOUT) with raw mode, signal handling, and terminal size detection.
-     *
-     * For remote scenarios (e.g. an SSH server), provide custom input and output handles.
-     * In this mode, raw mode and signal handling are skipped (the remote client manages those).
-     * Dispatch a {@see Event\Resize} event to set the initial terminal size.
+     * Create a local terminal application using STDIN/STDOUT.
      *
      * @template T of object
      *
      * @param T $state Application state object, passed to all callbacks.
-     * @param positive-int $fps Target frames per second for the render loop (default: 60).
-     * @param null|(IO\ReadHandleInterface&IO\StreamHandleInterface) $input
+     * @param DateTime\Duration $tickInterval How often the render tick fires (e.g. Duration::milliseconds(16) for ~60 ticks/s).
      *
      * @return self<T>
      */
     public static function create(
         object $state,
         string $title = '',
-        int $fps = 60,
-        (IO\ReadHandleInterface&IO\StreamHandleInterface)|null $input = null,
-        null|IO\WriteHandleInterface $output = null,
+        null|DateTime\Duration $tickInterval = null,
         bool $scrollSmoothing = true,
         bool $mouseMotion = false,
     ): self {
         return new self(
             $title,
-            $fps,
+            $tickInterval ?? DateTime\Duration::milliseconds(15),
             $state,
-            $input ?? IO\input_handle(),
-            $output ?? IO\output_handle(),
+            IO\input_handle(),
+            IO\output_handle(),
             $scrollSmoothing ? new Internal\ScrollSmoothing() : null,
             $mouseMotion,
+            new LocalRawModeSwitcher(),
+            new LocalWindowSizeProvider(),
+            false,
+        );
+    }
+
+    /**
+     * Create a terminal application with custom I/O handles.
+     *
+     * Use this for remote scenarios (e.g. SSH servers) where you provide
+     * your own input/output streams, or for testing where you want full
+     * control over the terminal environment.
+     *
+     * Raw mode is not managed — the caller is responsible for it.
+     * Signal handlers (SIGWINCH, SIGINT) are not registered; ctrl+c
+     * is handled via the input stream parser instead.
+     *
+     * Use {@see dispatch()} to inject {@see Event\Resize} events whenever
+     * the remote client reports a window size change.
+     *
+     * @template T of object
+     *
+     * @param T $state Application state object, passed to all callbacks.
+     * @param ReadHandleInterface&StreamHandleInterface $input
+     * @param WriteHandleInterface $output
+     * @param int $width Initial terminal width (columns).
+     * @param int $height Initial terminal height (rows).
+     * @param Duration|null $tickInterval How often the render tick fires (e.g. Duration::milliseconds(16) for ~60 ticks/s).
+     *
+     * @return self<T>
+     */
+    public static function custom(
+        object $state,
+        IO\ReadHandleInterface&IO\StreamHandleInterface $input,
+        IO\WriteHandleInterface $output,
+        int $width,
+        int $height,
+        string $title = '',
+        null|DateTime\Duration $tickInterval = null,
+        bool $scrollSmoothing = true,
+        bool $mouseMotion = false,
+    ): self {
+        return new self(
+            $title,
+            $tickInterval ?? DateTime\Duration::milliseconds(15),
+            $state,
+            $input,
+            $output,
+            $scrollSmoothing ? new Internal\ScrollSmoothing() : null,
+            $mouseMotion,
+            new NoopRawModeSwitcher(),
+            new StaticWindowSizeProvider($width, $height),
+            true,
         );
     }
 
@@ -127,6 +178,7 @@ final class Application
     {
         $this->exitCode = $exitCode;
         $this->running = false;
+        $this->stopDeferred?->complete(null);
     }
 
     /**
@@ -159,16 +211,15 @@ final class Application
             throw new Exception\RuntimeException('Input handle must provide an underlying stream resource.');
         }
 
-        $isTty = IO\is_terminal($this->input);
-
-        [$cols, $rows] = $isTty ? TerminalSize::get() : [80, 24];
+        [$cols, $rows] = $this->windowSizeProvider->get();
 
         $buffer = new Buffer($cols, $rows);
-        $rect = Rect::fromSize($cols, $rows);
-        $frame = new Frame($rect, $buffer);
+        $frame = new Frame(Rect::fromSize($cols, $rows), $buffer);
 
-        $rawMode = $isTty ? new RawMode() : null;
-        $rawMode?->enable();
+        $this->buffer = $buffer;
+        $this->frame = $frame;
+
+        $this->rawModeSwitcher->enable();
 
         try {
             $setupSequences = Ansi\Screen\enable_alternate_screen()->toString();
@@ -177,6 +228,7 @@ final class Application
             $setupSequences .= Ansi\Screen\enable_bracketed_paste()->toString();
             $setupSequences .= Ansi\Screen\enable_focus_tracking()->toString();
             $setupSequences .= Ansi\Screen\enable_kitty_keyboard()->toString();
+            $setupSequences .= Ansi\Screen\enable_in_band_resize()->toString();
 
             if ($this->title !== '') {
                 $setupSequences .= Ansi\Screen\title($this->title)->toString();
@@ -197,12 +249,11 @@ final class Application
                 });
             }
 
-            // Register input readable handler
             $inputId = Async\Scheduler::onReadable($stream, function () use ($eventParser): void {
                 try {
                     $data = $this->input->tryRead();
                 } catch (IO\Exception\AlreadyClosedException) {
-                    // Input handle closed (e.g. SSH client disconnected)
+                    // input handle closed (e.g. SSH client disconnected)
                     $this->stop(1);
                     return;
                 }
@@ -213,35 +264,38 @@ final class Application
 
                 $events = $eventParser->feed($data);
                 foreach ($events as $event) {
-                    $this->dispatchEvent($event);
+                    $this->dispatch($event);
                 }
             });
 
             $sigwinchId = null;
-            if ($isTty && defined('SIGWINCH')) {
-                $sigwinchId = Async\Scheduler::onSignal(SIGWINCH, function () use ($frame, $buffer): void {
-                    [$cols, $rows] = TerminalSize::get();
-                    $buffer->resize($cols, $rows);
-                    $frame->setRect(Rect::fromSize($cols, $rows));
-                    $this->dispatchEvent(new Event\Resize($cols, $rows));
+            if (!$this->remote && defined('SIGWINCH')) {
+                $sigwinchId = Async\Scheduler::onSignal(SIGWINCH, function (): void {
+                    [$cols, $rows] = $this->windowSizeProvider->get();
+                    $this->dispatch(new Event\Resize($cols, $rows));
                 });
             }
 
             $sigintId = null;
-            if (defined('SIGINT')) {
+            if (!$this->remote && defined('SIGINT')) {
                 $sigintId = Async\Scheduler::onSignal(SIGINT, function (): void {
-                    $this->dispatchEvent(Event\Key::named('ctrl+c'));
+                    $this->dispatch(Event\Key::named('ctrl+c'));
                 });
             }
 
-            $frameInterval = DateTime\Duration::microseconds(Math\maxva(Math\div(1_000_000, $this->fps), 1));
-            $renderTimerId = Async\Scheduler::repeat($frameInterval, function () use (
+            $renderTimerId = Async\Scheduler::repeat($this->tickInterval, function () use (
                 $callback,
                 $frame,
                 $buffer,
+                $eventParser,
             ): void {
                 if (!$this->running) {
                     return;
+                }
+
+                $pending = $eventParser->flushPending();
+                foreach ($pending as $event) {
+                    $this->dispatch($event);
                 }
 
                 $this->render($callback, $frame, $buffer);
@@ -249,9 +303,9 @@ final class Application
 
             $this->render($callback, $frame, $buffer);
 
-            while ($this->running) {
-                Async\later();
-            }
+            $deferred = new Async\Deferred();
+            $this->stopDeferred = $deferred;
+            $deferred->getAwaitable()->await();
 
             Async\Scheduler::cancel($renderTimerId);
             Async\Scheduler::cancel($inputId);
@@ -267,11 +321,45 @@ final class Application
                 Async\Scheduler::cancel($sigintId);
             }
         } finally {
+            $this->buffer = null;
+            $this->frame = null;
             $this->tryTeardown();
-            $rawMode?->restore();
+            $this->rawModeSwitcher->restore();
         }
 
         return $this->exitCode;
+    }
+
+    /**
+     * Dispatch an event to the application.
+     *
+     * This is useful for injecting events from external sources (e.g. SSH window-change messages).
+     *
+     * Resize events automatically update the internal buffer and frame dimensions.
+     */
+    public function dispatch(Event\Key|Event\Mouse|Event\Paste|Event\Resize|Event\Focus $event): void
+    {
+        if ($event instanceof Event\Resize) {
+            $this->buffer?->resize($event->width, $event->height);
+            $this->frame?->setRect(Rect::fromSize($event->width, $event->height));
+        }
+
+        if ($this->scrollSmoothing !== null && $event instanceof Event\Mouse) {
+            if (!$this->scrollSmoothing->filter($event)) {
+                return;
+            }
+        }
+
+        $class = $event::class;
+        $handlers = $this->eventHandlers[$class] ?? [];
+
+        foreach ($handlers as $handler) {
+            $handler($event, $this->state);
+
+            if (!$this->running) {
+                break;
+            }
+        }
     }
 
     /**
@@ -287,22 +375,9 @@ final class Application
 
         $buffer->clear();
 
-        $now = DateTime\Timestamp::monotonic();
-        if ($this->lastFrameTime !== null) {
-            $delta = $now->since($this->lastFrameTime)->getTotalSeconds();
-            if ($delta > 0.0) {
-                $instantFps = 1.0 / $delta;
-                $this->currentFps = $this->currentFps > 0.0
-                    ? ($this->currentFps * 0.9) + ($instantFps * 0.1)
-                    : $instantFps;
-            }
-        }
-
-        $this->lastFrameTime = $now;
-        $frame->setFps($this->currentFps);
-
         try {
             $callback($frame, $this->state);
+            $frame->setLastDrawTimestamp(DateTime\Timestamp::monotonic());
             $buffer->flush($this->output);
 
             if ($this->pendingCommands !== []) {
@@ -327,7 +402,8 @@ final class Application
     private function tryTeardown(): void
     {
         try {
-            $teardownSequences = Ansi\Screen\disable_kitty_keyboard()->toString();
+            $teardownSequences = Ansi\Screen\disable_in_band_resize()->toString();
+            $teardownSequences .= Ansi\Screen\disable_kitty_keyboard()->toString();
             $teardownSequences .= Ansi\Screen\disable_focus_tracking()->toString();
             $teardownSequences .= Ansi\Screen\disable_bracketed_paste()->toString();
             $teardownSequences .= Ansi\Screen\disable_mouse_tracking($this->mouseMotion)->toString();
@@ -346,26 +422,6 @@ final class Application
             return;
         } catch (IO\Exception\AlreadyClosedException) {
             return;
-        }
-    }
-
-    private function dispatchEvent(Event\Key|Event\Mouse|Event\Paste|Event\Resize|Event\Focus $event): void
-    {
-        if ($this->scrollSmoothing !== null && $event instanceof Event\Mouse) {
-            if (!$this->scrollSmoothing->filter($event)) {
-                return;
-            }
-        }
-
-        $class = $event::class;
-        $handlers = $this->eventHandlers[$class] ?? [];
-
-        foreach ($handlers as $handler) {
-            $handler($event, $this->state);
-
-            if (!$this->running) {
-                break;
-            }
         }
     }
 }

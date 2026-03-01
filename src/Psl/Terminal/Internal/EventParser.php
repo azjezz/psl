@@ -24,6 +24,25 @@ final class EventParser
     private const string PASTE_END = "\e[201~";
 
     /**
+     * Flush any pending incomplete sequences as final events.
+     *
+     * Call this periodically (e.g. on each render tick) to resolve
+     * ambiguous input. A lone ESC byte that hasn't been completed by
+     * subsequent bytes will be emitted as an Escape key event.
+     *
+     * @return list<Event\Key>
+     */
+    public function flushPending(): array
+    {
+        if ($this->buffer === "\e") {
+            $this->buffer = '';
+            return [Event\Key::named('escape')];
+        }
+
+        return [];
+    }
+
+    /**
      * Feed raw bytes from stdin and return parsed events.
      *
      * @return list<Event\Key|Event\Mouse|Event\Paste|Event\Resize|Event\Focus>
@@ -50,9 +69,9 @@ final class EventParser
     /**
      * Parse the next event from the buffer.
      *
-     * @return Event\Key|Event\Mouse|Event\Paste|Event\Focus|null|false null if byte was skipped, false if incomplete
+     * @return Event\Key|Event\Mouse|Event\Paste|Event\Resize|Event\Focus|null|false null if byte was skipped, false if incomplete
      */
-    private function parseNext(): Event\Key|Event\Mouse|Event\Paste|Event\Focus|null|false
+    private function parseNext(): Event\Key|Event\Mouse|Event\Paste|Event\Resize|Event\Focus|null|false
     {
         if ($this->inPaste) {
             return $this->parsePasteContent();
@@ -141,16 +160,11 @@ final class EventParser
     }
 
     /**
-     * @return Event\Key|Event\Mouse|Event\Focus|null|false
+     * @return Event\Key|Event\Mouse|Event\Resize|Event\Focus|null|false
      */
-    private function parseEscapeSequence(): Event\Key|Event\Mouse|Event\Focus|null|false
+    private function parseEscapeSequence(): Event\Key|Event\Mouse|Event\Resize|Event\Focus|null|false
     {
         if (Str\Byte\length($this->buffer) < 2) {
-            if (Str\Byte\length($this->buffer) === 1) {
-                $this->buffer = '';
-                return Event\Key::named('escape');
-            }
-
             return false;
         }
 
@@ -170,9 +184,9 @@ final class EventParser
     }
 
     /**
-     * @return Event\Key|Event\Mouse|Event\Focus|null|false
+     * @return Event\Key|Event\Mouse|Event\Resize|Event\Focus|null|false
      */
-    private function parseCsiSequence(): Event\Key|Event\Mouse|Event\Focus|null|false
+    private function parseCsiSequence(): Event\Key|Event\Mouse|Event\Resize|Event\Focus|null|false
     {
         $len = Str\Byte\length($this->buffer);
 
@@ -197,11 +211,40 @@ final class EventParser
                     return new Event\Focus(false);
                 }
 
+                // In-band resize: \e[48;rows;cols;height_px;width_px t
+                if ($c === 't') {
+                    $resize = self::parseInBandResize($params);
+                    if ($resize !== null) {
+                        return $resize;
+                    }
+                }
+
                 return CsiKeyMap::map($params, $c);
             }
         }
 
         return false;
+    }
+
+    /**
+     * Parse in-band resize notification (mode 2048).
+     *
+     * Format: \e[48;rows;cols;height_px;width_px t
+     */
+    private static function parseInBandResize(string $params): null|Event\Resize
+    {
+        $parts = Str\Byte\split($params, ';');
+        if (count($parts) < 3 || $parts[0] !== '48') {
+            return null;
+        }
+
+        $rows = (int) $parts[1];
+        $cols = (int) $parts[2];
+        if ($cols <= 0 || $rows <= 0) {
+            return null;
+        }
+
+        return new Event\Resize($cols, $rows);
     }
 
     /**

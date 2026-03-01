@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Terminal;
 
 use PHPUnit\Framework\TestCase;
+use Psl\DateTime;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Frame;
 use Psl\Terminal\Rect;
@@ -33,19 +34,20 @@ final class FrameTest extends TestCase
         static::assertSame($newRect, $frame->rect());
     }
 
-    public function testFpsDefaultsToZero(): void
+    public function testLastDrawTimestampDefaultsToNull(): void
     {
         $frame = new Frame(Rect::fromSize(80, 24), new Buffer(80, 24));
 
-        static::assertSame(0.0, $frame->fps());
+        static::assertNull($frame->getLastDrawTimestamp());
     }
 
-    public function testSetFps(): void
+    public function testSetLastDrawTimestamp(): void
     {
         $frame = new Frame(Rect::fromSize(80, 24), new Buffer(80, 24));
 
-        $frame->setFps(59.5);
+        $timestamp = DateTime\Timestamp::monotonic();
+        $frame->setLastDrawTimestamp($timestamp);
 
-        static::assertSame(59.5, $frame->fps());
+        static::assertSame($timestamp, $frame->getLastDrawTimestamp());
     }
 }

@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Psl\Terminal\Widget;
 
+use Psl\Ansi;
 use Psl\Ansi\Color\Color;
 use Psl\Ansi\ControlSequenceIntroducer;
 use Psl\Str;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
+use Psl\Vec;
 
 /**
  * A block widget that draws a border and optional title around an inner widget.
@@ -17,15 +19,17 @@ use Psl\Terminal\Rect;
 final class Block
 {
     private null|string $title = null;
-    private Style $titleStyle;
+
+    /** @var list<ControlSequenceIntroducer> */
+    private array $titleStyle = [];
+    private Alignment $titleAlignment = Alignment::Left;
     private null|Border $border = null;
     private Padding $padding;
     private Padding $margin;
-    private null|Color $background = null;
+    private null|ControlSequenceIntroducer $background = null;
 
     private function __construct()
     {
-        $this->titleStyle = new Style();
         $this->padding = new Padding();
         $this->margin = new Padding();
     }
@@ -35,26 +39,16 @@ final class Block
         return new self();
     }
 
-    public function title(string $title): self
+    public function title(string $title, Alignment $alignment = Alignment::Left): self
     {
         $this->title = $title;
+        $this->titleAlignment = $alignment;
         return $this;
     }
 
-    /**
-     * @param list<ControlSequenceIntroducer> $modifiers
-     */
-    public function titleStyle(
-        null|Color $foreground = null,
-        null|Color $background = null,
-        null|ControlSequenceIntroducer $style = null,
-        array $modifiers = [],
-    ): self {
-        if ($style !== null) {
-            $modifiers[] = $style;
-        }
-
-        $this->titleStyle = new Style($foreground, $background, $modifiers);
+    public function titleStyle(ControlSequenceIntroducer ...$style): self
+    {
+        $this->titleStyle = Vec\values($style);
 
         return $this;
     }
@@ -91,7 +85,7 @@ final class Block
 
     public function background(null|Color $background): self
     {
-        $this->background = $background;
+        $this->background = $background !== null ? Ansi\background($background) : null;
         return $this;
     }
 
@@ -153,15 +147,12 @@ final class Block
             left: $this->margin->left + ($this->border?->left ? 1 : 0),
         );
 
+        $bgCsi = $this->background;
         for ($y = $bgArea->y; $y < $bgArea->bottom(); $y++) {
             for ($x = $bgArea->x; $x < $bgArea->right(); $x++) {
                 $cell = $buffer->get($x, $y);
-                if ($cell !== null && $cell->background === null) {
-                    $buffer->set(
-                        $x,
-                        $y,
-                        new Cell($cell->grapheme, $cell->foreground, $this->background, $cell->modifiers),
-                    );
+                if ($cell !== null) {
+                    $buffer->set($x, $y, new Cell($cell->grapheme, [$bgCsi, ...$cell->style]));
                 }
             }
         }
@@ -175,28 +166,38 @@ final class Block
 
         $border = $this->border;
         [$tl, $tr, $bl, $br, $h, $v] = $border->characters();
-        $fg = $border->color;
+        $style = $border->style;
 
         // Top row
-        self::renderCorner($buffer, $area->x, $area->y, $border->top, $border->left, $tl, $h, $v, $fg);
+        self::renderCorner($buffer, $area->x, $area->y, $border->top, $border->left, $tl, $h, $v, $style);
 
         if ($border->top) {
             for ($x = $area->x + 1; $x < ($area->right() - 1); $x++) {
-                $buffer->set($x, $area->y, new Cell($h, $fg));
+                $buffer->set($x, $area->y, new Cell($h, $style));
             }
         }
 
         if ($area->width > 1) {
-            self::renderCorner($buffer, $area->right() - 1, $area->y, $border->top, $border->right, $tr, $h, $v, $fg);
+            self::renderCorner(
+                $buffer,
+                $area->right() - 1,
+                $area->y,
+                $border->top,
+                $border->right,
+                $tr,
+                $h,
+                $v,
+                $style,
+            );
         }
 
         for ($y = $area->y + 1; $y < ($area->bottom() - 1); $y++) {
             if ($border->left) {
-                $buffer->set($area->x, $y, new Cell($v, $fg));
+                $buffer->set($area->x, $y, new Cell($v, $style));
             }
 
             if ($border->right && $area->width > 1) {
-                $buffer->set($area->right() - 1, $y, new Cell($v, $fg));
+                $buffer->set($area->right() - 1, $y, new Cell($v, $style));
             }
         }
 
@@ -210,12 +211,12 @@ final class Block
                 $bl,
                 $h,
                 $v,
-                $fg,
+                $style,
             );
 
             if ($border->bottom) {
                 for ($x = $area->x + 1; $x < ($area->right() - 1); $x++) {
-                    $buffer->set($x, $area->bottom() - 1, new Cell($h, $fg));
+                    $buffer->set($x, $area->bottom() - 1, new Cell($h, $style));
                 }
             }
 
@@ -229,7 +230,7 @@ final class Block
                     $br,
                     $h,
                     $v,
-                    $fg,
+                    $style,
                 );
             }
         }
@@ -239,6 +240,9 @@ final class Block
         }
     }
 
+    /**
+     * @param list<ControlSequenceIntroducer> $style
+     */
     private static function renderCorner(
         Buffer $buffer,
         int $x,
@@ -248,20 +252,20 @@ final class Block
         string $corner,
         string $h,
         string $v,
-        null|Color $fg,
+        array $style,
     ): void {
         if ($sideH && $sideV) {
-            $buffer->set($x, $y, new Cell($corner, $fg));
+            $buffer->set($x, $y, new Cell($corner, $style));
             return;
         }
 
         if ($sideH) {
-            $buffer->set($x, $y, new Cell($h, $fg));
+            $buffer->set($x, $y, new Cell($h, $style));
             return;
         }
 
         if ($sideV) {
-            $buffer->set($x, $y, new Cell($v, $fg));
+            $buffer->set($x, $y, new Cell($v, $style));
         }
     }
 
@@ -272,19 +276,23 @@ final class Block
         /** @var string $title */
         $title = $this->title;
         $titleText = Str\width($title) > $maxTitleWidth ? Str\width_slice($title, 0, $maxTitleWidth) : $title;
+        $titleDisplayWidth = Str\width($titleText);
 
-        $titleFg = $this->titleStyle->foreground;
-        $titleBg = $this->titleStyle->background;
-        $titleMods = $this->titleStyle->modifiers;
+        $offset = match ($this->titleAlignment) {
+            Alignment::Left => 0,
+            Alignment::Center => (int) (($maxTitleWidth - $titleDisplayWidth) / 2),
+            Alignment::Right => $maxTitleWidth - $titleDisplayWidth,
+        };
 
-        $titleCodepoints = Str\length($titleText);
-        $col = 0;
-        for ($i = 0; $i < $titleCodepoints; $i++) {
-            $char = Str\slice($titleText, $i, 1);
+        $style = $this->titleStyle;
+
+        $chars = Str\chunk($titleText);
+        $col = $offset;
+        foreach ($chars as $char) {
             $charWidth = Str\width($char);
-            $buffer->set($area->x + 1 + $col, $area->y, new Cell($char, $titleFg, $titleBg, $titleMods));
+            $buffer->set($area->x + 1 + $col, $area->y, new Cell($char, $style));
             for ($w = 1; $w < $charWidth; $w++) {
-                $buffer->set($area->x + 1 + $col + $w, $area->y, new Cell('', $titleFg, $titleBg, $titleMods));
+                $buffer->set($area->x + 1 + $col + $w, $area->y, new Cell('', $style));
             }
 
             $col += $charWidth;

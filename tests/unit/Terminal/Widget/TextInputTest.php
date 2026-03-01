@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Terminal\Widget;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Terminal\Buffer;
@@ -37,11 +38,11 @@ final class TextInputTest extends TestCase
         $buffer = new Buffer(20, 1);
         $area = new Rect(0, 0, 20, 1);
 
-        $placeholderFg = Color\bright_black();
+        $placeholderFg = Ansi\foreground(Color\bright_black());
 
         TextInput::new()
             ->placeholder('Type here...')
-            ->placeholderStyle(foreground: $placeholderFg)
+            ->placeholderStyle($placeholderFg)
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
@@ -55,19 +56,19 @@ final class TextInputTest extends TestCase
         $buffer = new Buffer(20, 1);
         $area = new Rect(0, 0, 20, 1);
 
-        $cursorFg = Color\bright_green();
+        $cursorFg = Ansi\foreground(Color\bright_green());
 
         TextInput::new()
             ->value('abcde')
             ->cursor(2)
-            ->cursorStyle(foreground: $cursorFg)
+            ->cursorStyle($cursorFg)
             ->render($area, $buffer);
 
         $cell = $buffer->get(2, 0);
         static::assertNotNull($cell);
         static::assertSame('c', $cell->grapheme);
-        static::assertNotNull($cell->foreground);
-        static::assertNull($buffer->get(0, 0)?->foreground);
+        static::assertNotEmpty($cell->style);
+        static::assertSame([], $buffer->get(0, 0)?->style);
     }
 
     public function testScrollWhenTextExceedsWidth(): void
@@ -102,17 +103,17 @@ final class TextInputTest extends TestCase
         $buffer = new Buffer(10, 1);
         $area = new Rect(0, 0, 10, 1);
 
-        $fg = Color\bright_white();
+        $fg = Ansi\foreground(Color\bright_white());
 
         TextInput::new()
             ->value('hello')
             ->cursor(0)
-            ->style(foreground: $fg)
+            ->style($fg)
             ->render($area, $buffer);
 
         $cell = $buffer->get(1, 0);
         static::assertNotNull($cell);
-        static::assertNotNull($cell->foreground);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testStyleModifier(): void
@@ -123,12 +124,12 @@ final class TextInputTest extends TestCase
         TextInput::new()
             ->value('Hello')
             ->cursor(0)
-            ->style(style: Style\bold())
+            ->style(Style\bold())
             ->render($area, $buffer);
 
         $cell = $buffer->get(1, 0);
         static::assertNotNull($cell);
-        static::assertNotEmpty($cell->modifiers);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testCursorStyleModifier(): void
@@ -139,12 +140,12 @@ final class TextInputTest extends TestCase
         TextInput::new()
             ->value('Hello')
             ->cursor(0)
-            ->cursorStyle(style: Style\bold())
+            ->cursorStyle(Style\bold())
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
-        static::assertNotEmpty($cell->modifiers);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testPlaceholderStyleModifier(): void
@@ -154,12 +155,12 @@ final class TextInputTest extends TestCase
 
         TextInput::new()
             ->placeholder('Type...')
-            ->placeholderStyle(style: Style\italic())
+            ->placeholderStyle(Style\italic())
             ->render($area, $buffer);
 
         $cell = $buffer->get(1, 0);
         static::assertNotNull($cell);
-        static::assertNotEmpty($cell->modifiers);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testCursorClamp(): void
@@ -191,16 +192,16 @@ final class TextInputTest extends TestCase
         $buffer = new Buffer(20, 1);
         $area = new Rect(0, 0, 20, 1);
 
-        $fg = Color\bright_white();
+        $fg = Ansi\foreground(Color\bright_white());
 
         TextInput::new()
             ->placeholder('Type here')
-            ->cursorStyle(foreground: $fg)
+            ->cursorStyle($fg)
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
-        static::assertNotNull($cell->foreground);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testCursorScrollsWithLongInput(): void
@@ -221,17 +222,17 @@ final class TextInputTest extends TestCase
         $buffer = new Buffer(10, 1);
         $area = new Rect(0, 0, 10, 1);
 
-        $fg = Color\red();
+        $fg = Ansi\foreground(Color\red());
 
         TextInput::new()
             ->value('Hello')
             ->cursor(2)
-            ->cursorStyle(foreground: $fg)
+            ->cursorStyle($fg)
             ->render($area, $buffer);
 
         $cell = $buffer->get(2, 0);
         static::assertNotNull($cell);
-        static::assertNotNull($cell->foreground);
+        static::assertNotEmpty($cell->style);
         static::assertSame('l', $cell->grapheme);
     }
 
@@ -246,5 +247,44 @@ final class TextInputTest extends TestCase
             ->render($area, $buffer);
 
         static::assertSame('H', $buffer->get(0, 0)?->grapheme);
+    }
+
+    public function testWideCursorPosition(): void
+    {
+        $buffer = new Buffer(20, 1);
+        $area = new Rect(0, 0, 20, 1);
+
+        $fg = Ansi\foreground(Color\red());
+
+        TextInput::new()
+            ->value("\u{4e16}\u{754c}Hi")
+            ->cursor(2)
+            ->cursorStyle($fg)
+            ->render($area, $buffer);
+
+        static::assertSame("\u{4e16}", $buffer->get(0, 0)?->grapheme);
+        static::assertSame('', $buffer->get(1, 0)?->grapheme);
+        static::assertSame("\u{754c}", $buffer->get(2, 0)?->grapheme);
+        static::assertSame('', $buffer->get(3, 0)?->grapheme);
+
+        $cursorCell = $buffer->get(4, 0);
+        static::assertNotNull($cursorCell);
+        static::assertSame('H', $cursorCell->grapheme);
+        static::assertNotEmpty($cursorCell->style);
+    }
+
+    public function testWideCharScrollOffset(): void
+    {
+        $buffer = new Buffer(5, 1);
+        $area = new Rect(0, 0, 5, 1);
+
+        TextInput::new()
+            ->value("\u{4e16}\u{754c}\u{4f60}\u{597d}")
+            ->cursor(3)
+            ->render($area, $buffer);
+
+        $cursorCell = $buffer->get(4, 0);
+        static::assertNotNull($cursorCell);
+        static::assertSame("\u{597d}", $cursorCell->grapheme);
     }
 }

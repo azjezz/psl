@@ -69,6 +69,9 @@ final class PhpCodeState
     public string $input = '';
     public string $status = 'Ready';
     public bool $busy = false;
+    public float $displayedFps = 60.0;
+    public int $frameCount = 0;
+    public null|DateTime\Timestamp $lastFpsUpdate = null;
     public int $scroll_offset = 0;
     public UiMetrics $ui;
 
@@ -131,23 +134,23 @@ function format_message(Message $message): array
     foreach ($textLines as $i => $textLine) {
         $prefix = $i === 0
             ? match ($message->role) {
-                Role::User => [Widget\Span::styled('You: ', foreground: Color\bright_cyan(), style: Style\bold())],
+                Role::User => [Widget\Span::styled('You: ', Ansi\foreground(Color\bright_cyan()), Style\bold())],
                 Role::Assistant => [Widget\Span::styled(
                     'Assistant: ',
-                    foreground: Color\bright_magenta(),
-                    style: Style\bold(),
+                    Ansi\foreground(Color\bright_magenta()),
+                    Style\bold(),
                 )],
                 Role::Tool => [Widget\Span::styled(
                     "  [{$message->tool}] ",
-                    foreground: Color\bright_yellow(),
-                    style: Style\dim(),
+                    Ansi\foreground(Color\bright_yellow()),
+                    Style\dim(),
                 )],
                 Role::System => [],
             } : [];
 
         $textSpan = match ($message->role) {
-            Role::Tool => Widget\Span::styled($textLine, foreground: Color\bright_black()),
-            Role::System => Widget\Span::styled($textLine, foreground: Color\bright_black(), style: Style\italic()),
+            Role::Tool => Widget\Span::styled($textLine, Ansi\foreground(Color\bright_black())),
+            Role::System => Widget\Span::styled($textLine, Ansi\foreground(Color\bright_black()), Style\italic()),
             default => Widget\Span::raw($textLine),
         };
 
@@ -187,19 +190,16 @@ function handle_autocomplete(Event\Key $event, PhpCodeState $state): bool
         return true;
     }
 
-    // Tab or Enter accepts the selected autocomplete item
     if (($event->is('tab') || $event->is('enter')) && $filtered !== []) {
         /** @var non-negative-int $selected */
         $selected = Math\minva($state->ui->ac_selected, Iter\count($filtered) - 1);
         $state->input = $filtered[$selected][0];
         $state->ui->ac_selected = 0;
-        // If tab was pressed, consume the event; if enter, fall through to submit
         if ($event->is('tab')) {
             return true;
         }
     }
 
-    // Escape dismisses the autocomplete
     if ($event->is('escape')) {
         $state->input = '';
         $state->ui->ac_selected = 0;
@@ -261,7 +261,6 @@ function handle_submit(string $prompt, PhpCodeState $state, Terminal\Application
         return;
     }
 
-    // Regular message — run LLM in background fiber
     $state->status = 'Thinking...';
     $state->busy = true;
     $app->emit(Screen\progress(Screen\ProgressState::Indeterminate));
@@ -322,7 +321,20 @@ function handle_text_editing(Event\Key $event, PhpCodeState $state): void
 function render_frame(Terminal\Frame $frame, PhpCodeState $state, array $spinners): void
 {
     $buffer = $frame->buffer();
-    $fps = $frame->fps();
+    $now = DateTime\Timestamp::monotonic();
+    $state->frameCount++;
+    if ($state->lastFpsUpdate === null) {
+        $state->lastFpsUpdate = $now;
+    } else {
+        $elapsed = $now->since($state->lastFpsUpdate)->getTotalSeconds();
+        if ($elapsed >= 1.0) {
+            $state->displayedFps = $state->frameCount / $elapsed;
+            $state->frameCount = 0;
+            $state->lastFpsUpdate = $now;
+        }
+    }
+
+    $fps = $state->displayedFps;
 
     [$main, $statusBar] = Layout\vertical($frame, [
         Layout\fill(),
@@ -334,7 +346,6 @@ function render_frame(Terminal\Frame $frame, PhpCodeState $state, array $spinner
         Layout\fill(),
     ]);
 
-    // Input height grows with newlines
     $inputLines = Str\contains($state->input, "\n") ? Iter\count(Str\split($state->input, "\n")) : 1;
     $inputHeight = Math\minva($inputLines + 2, 10);
 
@@ -360,13 +371,13 @@ function render_sidebar(Terminal\Rect $area, PhpCodeState $state, Terminal\Buffe
 
     Widget\Block::new()
         ->title(' php-code ')
-        ->titleStyle(foreground: Color\bright_cyan(), style: Style\bold())
+        ->titleStyle(Ansi\foreground(Color\bright_cyan()), Style\bold())
         ->border(Widget\Border::rounded())
         ->render(
             $area,
             Widget\Menu::new($sidebarItems)->highlight($state->ui->sidebar_active)->highlightStyle(
-                foreground: Color\bright_white(),
-                style: Style\double_underline(),
+                Ansi\foreground(Color\bright_white()),
+                Style\double_underline(),
             ),
             $buffer,
         );
@@ -387,8 +398,8 @@ function render_chat(Terminal\Rect $chatArea, PhpCodeState $state, array $spinne
         $idx = $state->ui->spinner_frame % 10;
         $spinner = $spinners[$idx];
         $lines[] = Widget\Line::new([
-            Widget\Span::styled("  {$spinner} ", foreground: Color\bright_yellow(), style: Style\bold()),
-            Widget\Span::styled($state->status, foreground: Color\bright_black(), style: Style\italic()),
+            Widget\Span::styled("  {$spinner} ", Ansi\foreground(Color\bright_yellow()), Style\bold()),
+            Widget\Span::styled($state->status, Ansi\foreground(Color\bright_black()), Style\italic()),
         ]);
     }
 
@@ -401,7 +412,6 @@ function render_chat(Terminal\Rect $chatArea, PhpCodeState $state, array $spinne
     $totalLines = Iter\count($lines);
     $visibleLines = Math\maxva(1, $chatInner->height);
 
-    // Clamp scroll_offset to valid range (don't go negative, don't exceed content)
     $state->scroll_offset = Math\maxva(0, Math\minva($state->scroll_offset, Math\maxva(0, $totalLines - 1)));
 
     $chatBlock->render(
@@ -410,15 +420,14 @@ function render_chat(Terminal\Rect $chatArea, PhpCodeState $state, array $spinne
         $buffer,
     );
 
-    // Scrollbar inside the block, in the right padding gap
     $scrollbarRect = new Terminal\Rect($chatArea->right() - 2, $chatInner->y, 1, $chatInner->height);
 
     Widget\Scrollbar::new()
         ->contentLength($totalLines)
         ->viewportLength($visibleLines)
         ->position($state->scroll_offset)
-        ->thumbStyle(foreground: Color\bright_white())
-        ->trackStyle(foreground: Color\ansi256(238))
+        ->thumbStyle(Ansi\foreground(Color\bright_white()))
+        ->trackStyle(Ansi\foreground(Color\ansi256(238)))
         ->render($scrollbarRect, $buffer);
 }
 
@@ -436,11 +445,11 @@ function render_input(
     $inputWidgetLines = [];
     foreach ($inputLines as $i => $line) {
         $prefix = $i === 0
-            ? [Widget\Span::styled('> ', foreground: Color\bright_cyan(), style: Style\bold())]
-            : [Widget\Span::styled('  ', foreground: Color\bright_cyan())];
+            ? [Widget\Span::styled('> ', Ansi\foreground(Color\bright_cyan()), Style\bold())]
+            : [Widget\Span::styled('  ', Ansi\foreground(Color\bright_cyan()))];
 
         $isLastLine = $i === (Iter\count($inputLines) - 1);
-        $suffix = $isLastLine ? [Widget\Span::styled($cursor, foreground: Color\bright_cyan())] : [];
+        $suffix = $isLastLine ? [Widget\Span::styled($cursor, Ansi\foreground(Color\bright_cyan()))] : [];
 
         $inputWidgetLines[] = Widget\Line::new([...$prefix, Widget\Span::raw($line), ...$suffix]);
     }
@@ -448,13 +457,12 @@ function render_input(
     $inputVisibleHeight = $inputArea->height - 2;
     $inputScroll = Math\maxva(0, Iter\count($inputWidgetLines) - $inputVisibleHeight);
 
-    Widget\Block::new()->border(Widget\Border::rounded(color: $borderColor))->render(
+    Widget\Block::new()->border(Widget\Border::rounded(Ansi\foreground($borderColor)))->render(
         $inputArea,
         Widget\Paragraph::new($inputWidgetLines)->scroll($inputScroll)->wrap(Widget\Wrap::Word),
         $buffer,
     );
 
-    // Autocomplete popup
     if (!Str\starts_with($state->input, '/') || $state->busy) {
         return;
     }
@@ -476,18 +484,18 @@ function render_input(
     $popupRect = new Terminal\Rect($popupX, $popupY, $popupWidth, $popupHeight);
 
     $items = Vec\map($filtered, static fn(array $cmd): Widget\MenuItem => Widget\MenuItem::styled([
-        Widget\Span::styled($cmd[0], foreground: Color\bright_cyan(), style: Style\bold()),
-        Widget\Span::styled(' ' . $cmd[1], foreground: Color\bright_black()),
+        Widget\Span::styled($cmd[0], Ansi\foreground(Color\bright_cyan()), Style\bold()),
+        Widget\Span::styled(' ' . $cmd[1], Ansi\foreground(Color\bright_black())),
     ]));
 
     $selected = Math\minva($state->ui->ac_selected, Iter\count($filtered) - 1);
 
-    Widget\Block::new()->border(Widget\Border::rounded(color: Color\bright_black()))->render(
+    Widget\Block::new()->border(Widget\Border::rounded(Ansi\foreground(Color\bright_black())))->render(
         $popupRect,
         Widget\Menu::new($items)->highlight($selected)->highlightStyle(
-            foreground: Color\bright_white(),
-            background: Color\ansi256(236),
-            style: Style\bold(),
+            Ansi\foreground(Color\bright_white()),
+            Ansi\background(Color\ansi256(236)),
+            Style\bold(),
         ),
         $buffer,
     );
@@ -510,35 +518,35 @@ function render_php_code_status_bar(
     ]);
 
     Widget\Paragraph::new([Widget\Line::new([
-        Widget\Span::styled(' ' . $state->status, foreground: Color\bright_black()),
+        Widget\Span::styled(' ' . $state->status, Ansi\foreground(Color\bright_black())),
     ])])->render($statusLeft, $buffer);
 
     Widget\Paragraph::new([Widget\Line::new([
-        Widget\Span::styled($fpsStr . ' fps', foreground: Color\bright_green()),
-        Widget\Span::styled(" · {$state->ui->token_count} tokens · \${$costStr} ", foreground: Color\bright_black()),
+        Widget\Span::styled($fpsStr . ' fps', Ansi\foreground(Color\bright_green())),
+        Widget\Span::styled(
+            " · {$state->ui->token_count} tokens · \${$costStr} ",
+            Ansi\foreground(Color\bright_black()),
+        ),
     ])])->alignment(Widget\Alignment::Right)->render($statusRight, $buffer);
 }
 
 Async\main(static function (): int {
-    $app = Terminal\Application::create(new PhpCodeState(), title: 'php-code', fps: 120);
+    $app = Terminal\Application::create(new PhpCodeState(), title: 'php-code');
 
     $spinners = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 
-    // Spinner tick
     $app->interval(DateTime\Duration::milliseconds(80), static function (PhpCodeState $state): void {
         if ($state->busy) {
             $state->ui->spinner_frame++;
         }
     });
 
-    // Keyboard events
     $app->on(Event\Key::class, static function (Event\Key $event, PhpCodeState $state) use ($app): void {
         if ($event->is('ctrl+c')) {
             $app->stop();
             return;
         }
 
-        // Scrolling always works
         if ($event->is('ctrl+up') || $event->is('page_up')) {
             $state->scroll_offset = Math\maxva($state->scroll_offset - 3, 0);
             return;
@@ -549,7 +557,6 @@ Async\main(static function (): int {
             return;
         }
 
-        // Autocomplete navigation
         if (Str\starts_with($state->input, '/') && !$state->busy) {
             if (handle_autocomplete($event, $state)) {
                 return;
@@ -561,7 +568,6 @@ Async\main(static function (): int {
             return;
         }
 
-        // Tab cycles sidebar highlight (when not in autocomplete)
         if ($event->is('tab')) {
             $state->ui->sidebar_active = ($state->ui->sidebar_active + 1) % 4;
             return;
@@ -572,7 +578,6 @@ Async\main(static function (): int {
             return;
         }
 
-        // Submit on Enter
         if ($event->is('enter') && Str\trim($state->input) !== '') {
             $prompt = Str\trim($state->input);
             if ($state->busy) {
@@ -584,17 +589,14 @@ Async\main(static function (): int {
             return;
         }
 
-        // Text editing
         handle_text_editing($event, $state);
     });
 
-    // Paste events
     $app->on(Event\Paste::class, static function (Event\Paste $event, PhpCodeState $state): void {
         $state->input .= $event->text;
         $state->ui->ac_selected = 0;
     });
 
-    // Mouse events
     $app->on(Event\Mouse::class, static function (Event\Mouse $event, PhpCodeState $state): void {
         if ($event->kind === Event\MouseKind::ScrollUp) {
             $state->scroll_offset = Math\maxva($state->scroll_offset - 3, 0);

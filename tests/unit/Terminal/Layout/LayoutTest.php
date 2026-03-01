@@ -134,9 +134,11 @@ final class LayoutTest extends TestCase
             Layout\fixed(5),
         ]);
 
-        static::assertSame(5, $a->height);
-        static::assertSame(5, $b->height);
-        static::assertSame(0, $c->height);
+        $total = $a->height + $b->height + $c->height;
+        static::assertSame(10, $total);
+        static::assertGreaterThan(0, $a->height);
+        static::assertGreaterThan(0, $b->height);
+        static::assertGreaterThan(0, $c->height);
     }
 
     public function testHorizontalFixedExceedsTotalSpace(): void
@@ -148,8 +150,21 @@ final class LayoutTest extends TestCase
             Layout\fixed(8),
         ]);
 
-        static::assertSame(8, $a->width);
-        static::assertSame(2, $b->width);
+        static::assertSame(10, $a->width + $b->width);
+        static::assertSame($a->width, $b->width);
+    }
+
+    public function testProportionalOverflowDistribution(): void
+    {
+        $rect = Rect::fromSize(10, 5);
+
+        [$a, $b] = Layout\horizontal($rect, [
+            Layout\fixed(12),
+            Layout\fixed(4),
+        ]);
+
+        static::assertSame(10, $a->width + $b->width);
+        static::assertGreaterThan($b->width, $a->width);
     }
 
     public function testVerticalMinWithFillInner(): void

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\Example\Terminal;
 
+use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Async;
+use Psl\DateTime;
 use Psl\Iter;
 use Psl\Math;
 use Psl\PseudoRandom;
@@ -36,6 +38,9 @@ final class DustState
     /** @var list<Particle> */
     public array $particles = [];
     public int $total_spawned = 0;
+    public float $displayedFps = 0.0;
+    public int $frameCount = 0;
+    public null|DateTime\Timestamp $lastFpsUpdate = null;
 }
 
 /**
@@ -74,15 +79,27 @@ Async\main(static function (): int {
         /** @var non-negative-int $idx */
         $idx = PseudoRandom\int(0, Iter\count(SPARKLE_CHARS) - 1);
         $char = SPARKLE_CHARS[$idx];
-        $state->particles[] = new Particle($event->column - 1, $event->row - 1, 0, $char);
+        $state->particles[] = new Particle($event->column, $event->row, 0, $char);
         $state->total_spawned++;
     });
 
     return $app->run(static function (Terminal\Frame $frame, DustState $state): void {
         $buffer = $frame->buffer();
-        $fps = $frame->fps();
+        $now = DateTime\Timestamp::monotonic();
+        $state->frameCount++;
+        if ($state->lastFpsUpdate === null) {
+            $state->lastFpsUpdate = $now;
+        } else {
+            $elapsed = $now->since($state->lastFpsUpdate)->getTotalSeconds();
+            if ($elapsed >= 1.0) {
+                $state->displayedFps = $state->frameCount / $elapsed;
+                $state->frameCount = 0;
+                $state->lastFpsUpdate = $now;
+            }
+        }
 
-        // Age particles and remove expired ones
+        $fps = $state->displayedFps;
+
         $alive = [];
         foreach ($state->particles as $particle) {
             $particle->age++;
@@ -100,13 +117,12 @@ Async\main(static function (): int {
 
         $block = Widget\Block::new()
             ->title(' Fairy Dust ')
-            ->titleStyle(foreground: Color\bright_magenta(), style: Style\bold())
-            ->border(Widget\Border::rounded(color: Color\ansi256(240)));
+            ->titleStyle(Ansi\foreground(Color\bright_magenta()), Style\bold())
+            ->border(Widget\Border::rounded(Ansi\foreground(Color\ansi256(240))));
 
         $block->render($main, Widget\Paragraph::new([]), $buffer);
         $inner = $block->innerArea($main);
 
-        // Render particles
         foreach ($state->particles as $particle) {
             $px = $particle->x - $inner->x;
             $py = $particle->y - $inner->y;
@@ -115,10 +131,9 @@ Async\main(static function (): int {
             }
 
             $color = particle_color($particle->age);
-            $buffer->set($particle->x, $particle->y, new Terminal\Cell($particle->char, $color));
+            $buffer->set($particle->x, $particle->y, new Terminal\Cell($particle->char, [Ansi\foreground($color)]));
         }
 
-        // Status bar
         $count = Iter\count($state->particles);
         $rightText = 'Move your mouse! | c clear | Ctrl+C quit ';
         $rightLen = Str\width($rightText);
@@ -137,15 +152,15 @@ Async\main(static function (): int {
         };
 
         Widget\Paragraph::new([Widget\Line::new([
-            Widget\Span::styled(' ' . $fpsStr . ' fps', foreground: $fpsColor),
+            Widget\Span::styled(' ' . $fpsStr . ' fps', Ansi\foreground($fpsColor)),
             Widget\Span::styled(
                 Str\format(' · %d particles · %d total', $count, $state->total_spawned),
-                foreground: Color\bright_black(),
+                Ansi\foreground(Color\bright_black()),
             ),
         ])])->render($statusLeft, $buffer);
 
         Widget\Paragraph::new([Widget\Line::new([
-            Widget\Span::styled($rightText, foreground: Color\bright_black()),
+            Widget\Span::styled($rightText, Ansi\foreground(Color\bright_black())),
         ])])->alignment(Widget\Alignment::Right)->render($statusRight, $buffer);
     });
 });

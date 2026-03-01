@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Terminal\Widget;
 
-use Psl\Ansi\Color\Color;
 use Psl\Ansi\ControlSequenceIntroducer;
 use Psl\Math;
 use Psl\Str;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
+use Psl\Vec;
 
 /**
  * A selectable menu widget.
@@ -24,7 +24,9 @@ final class Menu implements WidgetInterface
 
     private null|int $highlighted = null;
     private int $scrollOffset = 0;
-    private Style $highlightStyle;
+
+    /** @var list<ControlSequenceIntroducer> */
+    private array $highlightStyle = [];
 
     /**
      * @param list<MenuItem> $items
@@ -32,7 +34,6 @@ final class Menu implements WidgetInterface
     private function __construct(array $items)
     {
         $this->items = $items;
-        $this->highlightStyle = new Style();
     }
 
     /**
@@ -64,20 +65,9 @@ final class Menu implements WidgetInterface
     /**
      * Set the style for the highlighted item.
      */
-    /**
-     * @param list<ControlSequenceIntroducer> $modifiers
-     */
-    public function highlightStyle(
-        null|Color $foreground = null,
-        null|Color $background = null,
-        null|ControlSequenceIntroducer $style = null,
-        array $modifiers = [],
-    ): self {
-        if ($style !== null) {
-            $modifiers[] = $style;
-        }
-
-        $this->highlightStyle = new Style($foreground, $background, $modifiers);
+    public function highlightStyle(ControlSequenceIntroducer ...$style): self
+    {
+        $this->highlightStyle = Vec\values($style);
 
         return $this;
     }
@@ -105,45 +95,29 @@ final class Menu implements WidgetInterface
 
             $x = $area->x;
             foreach ($item->spans as $span) {
-                $len = Str\length($span->content);
-                for ($j = 0; $j < $len; $j++) {
+                $chars = Str\chunk($span->content);
+                foreach ($chars as $char) {
                     if ($x >= $area->right()) {
                         break 2;
                     }
 
-                    $char = Str\slice($span->content, $j, 1);
                     $charWidth = Str\width($char);
-                    $fg = $span->foreground;
-                    $bg = $span->background;
-                    $mods = $span->modifiers;
-                    if ($isHighlighted) {
-                        $fg = $this->highlightStyle->foreground ?? $fg;
-                        $bg = $this->highlightStyle->background ?? $bg;
-                        $mods = $this->highlightStyle->modifiers !== [] ? $this->highlightStyle->modifiers : $mods;
-                    }
+                    $style = $isHighlighted && $this->highlightStyle !== []
+                        ? [...$span->style, ...$this->highlightStyle]
+                        : $span->style;
 
-                    $buffer->set($x, $y, new Cell($char, $fg, $bg, $mods));
+                    $buffer->set($x, $y, new Cell($char, $style));
                     for ($w = 1; $w < $charWidth && ($x + $w) < $area->right(); $w++) {
-                        $buffer->set($x + $w, $y, new Cell('', $fg, $bg, $mods));
+                        $buffer->set($x + $w, $y, new Cell('', $style));
                     }
 
                     $x += $charWidth;
                 }
             }
 
-            if ($isHighlighted && $this->highlightStyle->background !== null) {
+            if ($isHighlighted && $this->highlightStyle !== []) {
                 while ($x < $area->right()) {
-                    $buffer->set(
-                        $x,
-                        $y,
-                        new Cell(
-                            ' ',
-                            $this->highlightStyle->foreground,
-                            $this->highlightStyle->background,
-                            $this->highlightStyle->modifiers,
-                        ),
-                    );
-
+                    $buffer->set($x, $y, new Cell(' ', $this->highlightStyle));
                     $x++;
                 }
             }

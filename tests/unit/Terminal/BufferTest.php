@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Terminal;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\IO;
@@ -29,7 +30,7 @@ final class BufferTest extends TestCase
 
         static::assertNotNull($cell);
         static::assertSame(' ', $cell->grapheme);
-        static::assertNull($cell->foreground);
+        static::assertSame([], $cell->style);
     }
 
     public function testGetOutOfBoundsReturnsNull(): void
@@ -45,14 +46,15 @@ final class BufferTest extends TestCase
     public function testSetAndGet(): void
     {
         $buffer = new Buffer(10, 5);
-        $cell = new Cell('X', Color\red());
+        $fg = Ansi\foreground(Color\red());
+        $cell = new Cell('X', [$fg]);
 
         $buffer->set(3, 2, $cell);
         $result = $buffer->get(3, 2);
 
         static::assertNotNull($result);
         static::assertSame('X', $result->grapheme);
-        static::assertSame($cell->foreground, $result->foreground);
+        static::assertSame($cell->style, $result->style);
     }
 
     public function testSetOutOfBounds(): void
@@ -71,7 +73,7 @@ final class BufferTest extends TestCase
     public function testSetString(): void
     {
         $buffer = new Buffer(10, 5);
-        $buffer->setString(2, 1, 'Hello', Color\green());
+        $buffer->setString(2, 1, 'Hello', [Ansi\foreground(Color\green())]);
 
         static::assertSame('H', $buffer->get(2, 1)?->grapheme);
         static::assertSame('e', $buffer->get(3, 1)?->grapheme);
@@ -187,9 +189,9 @@ final class BufferTest extends TestCase
     public function testFlushWithForegroundAndBackground(): void
     {
         $buffer = new Buffer(1, 1);
-        $fg = Color\red();
-        $bg = Color\blue();
-        $buffer->set(0, 0, new Cell('X', $fg, $bg));
+        $fg = Ansi\foreground(Color\red());
+        $bg = Ansi\background(Color\blue());
+        $buffer->set(0, 0, new Cell('X', [$fg, $bg]));
 
         $output = new IO\MemoryHandle();
         $buffer->flush($output);
@@ -204,7 +206,7 @@ final class BufferTest extends TestCase
     {
         $buffer = new Buffer(1, 1);
         $bold = Style\bold();
-        $buffer->set(0, 0, new Cell('B', modifiers: [$bold]));
+        $buffer->set(0, 0, new Cell('B', [$bold]));
 
         $output = new IO\MemoryHandle();
         $buffer->flush($output);
@@ -319,14 +321,47 @@ final class BufferTest extends TestCase
 
         $written = $output->getBuffer();
         static::assertStringContainsString("\e[1;1H", $written);
-        static::assertStringContainsString("\e[2;3H", $written);
+        static::assertStringContainsString('A', $written);
+        static::assertStringContainsString('B', $written);
+    }
+
+    public function testFlushCursorBatchingSkipsConsecutive(): void
+    {
+        $buffer = new Buffer(3, 1);
+        $buffer->set(0, 0, new Cell('A'));
+        $buffer->set(1, 0, new Cell('B'));
+        $buffer->set(2, 0, new Cell('C'));
+
+        $output = new IO\MemoryHandle();
+        $buffer->flush($output);
+
+        $written = $output->getBuffer();
+        static::assertSame(1, substr_count($written, "\e[1;1H"));
+        static::assertSame(0, substr_count($written, "\e[1;2H"));
+        static::assertSame(0, substr_count($written, "\e[1;3H"));
+    }
+
+    public function testFlushCursorMoveForNonConsecutive(): void
+    {
+        $buffer = new Buffer(5, 1);
+        $buffer->flush(new IO\MemoryHandle());
+
+        $buffer->set(0, 0, new Cell('X'));
+        $buffer->set(4, 0, new Cell('Y'));
+
+        $output = new IO\MemoryHandle();
+        $buffer->flush($output);
+
+        $written = $output->getBuffer();
+        static::assertStringContainsString("\e[1;1H", $written);
+        static::assertStringContainsString("\e[1;5H", $written);
     }
 
     public function testFlushAppliesModifiersWithoutColors(): void
     {
         $buffer = new Buffer(1, 1);
         $bold = Style\bold();
-        $buffer->set(0, 0, new Cell('X', null, null, [$bold]));
+        $buffer->set(0, 0, new Cell('X', [$bold]));
 
         $output = new IO\MemoryHandle();
         $buffer->flush($output);

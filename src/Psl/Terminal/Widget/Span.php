@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Terminal\Widget;
 
-use Psl\Ansi\Color\Color;
 use Psl\Ansi\ControlSequenceIntroducer;
 use Psl\Str;
+use Psl\Vec;
 
 /**
  * A styled text fragment.
@@ -16,32 +16,19 @@ use Psl\Str;
 final readonly class Span
 {
     /**
-     * @param list<ControlSequenceIntroducer> $modifiers
+     * @param list<ControlSequenceIntroducer> $style
      */
     private function __construct(
         public string $content,
-        public null|Color $foreground,
-        public null|Color $background,
-        public array $modifiers,
+        public array $style,
     ) {}
 
     /**
      * Create a styled span.
-     *
-     * @param list<ControlSequenceIntroducer> $modifiers
      */
-    public static function styled(
-        string $content,
-        null|Color $foreground = null,
-        null|Color $background = null,
-        null|ControlSequenceIntroducer $style = null,
-        array $modifiers = [],
-    ): self {
-        if ($style !== null) {
-            $modifiers[] = $style;
-        }
-
-        return new self($content, $foreground, $background, $modifiers);
+    public static function styled(string $content, ControlSequenceIntroducer ...$style): self
+    {
+        return new self($content, Vec\values($style));
     }
 
     /**
@@ -49,7 +36,7 @@ final readonly class Span
      */
     public static function raw(string $content): self
     {
-        return new self($content, null, null, []);
+        return new self($content, []);
     }
 
     /**
@@ -57,7 +44,7 @@ final readonly class Span
      */
     public function withContent(string $content): self
     {
-        return new self($content, $this->foreground, $this->background, $this->modifiers);
+        return new self($content, $this->style);
     }
 
     /**

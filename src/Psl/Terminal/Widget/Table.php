@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Terminal\Widget;
 
-use Psl\Ansi\Color\Color;
 use Psl\Ansi\ControlSequenceIntroducer;
 use Psl\Math;
 use Psl\Str;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
+use Psl\Vec;
 
 /**
  * A table widget that renders columnar data with headers, a separator, and optional row highlighting.
@@ -29,14 +29,13 @@ final class Table implements WidgetInterface
     private null|int $highlightIndex = null;
     private int $scrollOffset = 0;
 
-    private Style $headerStyle;
-    private Style $highlightStyle;
+    /** @var list<ControlSequenceIntroducer> */
+    private array $headerStyle = [];
 
-    private function __construct()
-    {
-        $this->headerStyle = new Style();
-        $this->highlightStyle = new Style();
-    }
+    /** @var list<ControlSequenceIntroducer> */
+    private array $highlightStyle = [];
+
+    private function __construct() {}
 
     public static function new(): self
     {
@@ -95,20 +94,9 @@ final class Table implements WidgetInterface
     /**
      * Set the style for the header row.
      */
-    /**
-     * @param list<ControlSequenceIntroducer> $modifiers
-     */
-    public function headerStyle(
-        null|Color $foreground = null,
-        null|Color $background = null,
-        null|ControlSequenceIntroducer $style = null,
-        array $modifiers = [],
-    ): self {
-        if ($style !== null) {
-            $modifiers[] = $style;
-        }
-
-        $this->headerStyle = new Style($foreground, $background, $modifiers);
+    public function headerStyle(ControlSequenceIntroducer ...$style): self
+    {
+        $this->headerStyle = Vec\values($style);
 
         return $this;
     }
@@ -116,20 +104,9 @@ final class Table implements WidgetInterface
     /**
      * Set the style for the highlighted row.
      */
-    /**
-     * @param list<ControlSequenceIntroducer> $modifiers
-     */
-    public function highlightStyle(
-        null|Color $foreground = null,
-        null|Color $background = null,
-        null|ControlSequenceIntroducer $style = null,
-        array $modifiers = [],
-    ): self {
-        if ($style !== null) {
-            $modifiers[] = $style;
-        }
-
-        $this->highlightStyle = new Style($foreground, $background, $modifiers);
+    public function highlightStyle(ControlSequenceIntroducer ...$style): self
+    {
+        $this->highlightStyle = Vec\values($style);
 
         return $this;
     }
@@ -149,14 +126,7 @@ final class Table implements WidgetInterface
                 /** @var non-negative-int $colWidth */
                 $colWidth = $this->widths[$col] ?? Str\width($header);
                 $text = Str\pad_right(Str\width_slice($header, 0, $colWidth), $colWidth);
-                $buffer->setString(
-                    $x,
-                    $currentY,
-                    $text,
-                    $this->headerStyle->foreground,
-                    $this->headerStyle->background,
-                    $this->headerStyle->modifiers,
-                );
+                $buffer->setString($x, $currentY, $text, $this->headerStyle);
                 $x += $colWidth;
                 if ($x >= $area->right()) {
                     break;
@@ -168,11 +138,7 @@ final class Table implements WidgetInterface
             // Separator
             if ($currentY < $area->bottom()) {
                 for ($x = $area->x; $x < $area->right(); $x++) {
-                    $buffer->set(
-                        $x,
-                        $currentY,
-                        new Cell("\u{2500}", $this->headerStyle->foreground, $this->headerStyle->background, []),
-                    );
+                    $buffer->set($x, $currentY, new Cell("\u{2500}", $this->headerStyle));
                 }
 
                 $currentY++;
@@ -192,19 +158,10 @@ final class Table implements WidgetInterface
             $row = $this->rows[$rowIdx];
             $isHighlighted = $rowIdx === $this->highlightIndex;
 
-            // Fill entire row with highlight background first
-            if ($isHighlighted && $this->highlightStyle->background !== null) {
+            // Fill entire row with highlight style first
+            if ($isHighlighted && $this->highlightStyle !== []) {
                 for ($x = $area->x; $x < $area->right(); $x++) {
-                    $buffer->set(
-                        $x,
-                        $currentY,
-                        new Cell(
-                            ' ',
-                            $this->highlightStyle->foreground,
-                            $this->highlightStyle->background,
-                            $this->highlightStyle->modifiers,
-                        ),
-                    );
+                    $buffer->set($x, $currentY, new Cell(' ', $this->highlightStyle));
                 }
             }
 
@@ -214,16 +171,11 @@ final class Table implements WidgetInterface
                 $colWidth = $this->widths[$col] ?? Str\width($span->content);
                 $text = Str\pad_right(Str\width_slice($span->content, 0, $colWidth), $colWidth);
 
-                $fg = $span->foreground;
-                $bg = $span->background;
-                $mods = $span->modifiers;
-                if ($isHighlighted) {
-                    $fg = $this->highlightStyle->foreground ?? $fg;
-                    $bg = $this->highlightStyle->background ?? $bg;
-                    $mods = $this->highlightStyle->modifiers !== [] ? $this->highlightStyle->modifiers : $mods;
-                }
+                $style = $isHighlighted && $this->highlightStyle !== []
+                    ? [...$span->style, ...$this->highlightStyle]
+                    : $span->style;
 
-                $buffer->setString($x, $currentY, $text, $fg, $bg, $mods);
+                $buffer->setString($x, $currentY, $text, $style);
                 $x += $colWidth;
                 if ($x >= $area->right()) {
                     break;

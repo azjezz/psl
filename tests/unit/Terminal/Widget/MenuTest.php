@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Terminal\Widget;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Terminal\Buffer;
@@ -38,24 +39,24 @@ final class MenuTest extends TestCase
         $buffer = new Buffer(20, 5);
         $area = new Rect(0, 0, 20, 5);
 
-        $fg = Color\bright_white();
+        $fg = Ansi\foreground(Color\bright_white());
 
         $list = Menu::new([
             MenuItem::raw('Item 1'),
             MenuItem::raw('Item 2'),
-        ])->highlight(1)->highlightStyle(foreground: $fg, style: Style\bold());
+        ])->highlight(1)->highlightStyle($fg, Style\bold());
 
         $list->render($area, $buffer);
 
         $cell = $buffer->get(0, 1);
         static::assertNotNull($cell);
         static::assertSame('I', $cell->grapheme);
-        static::assertNotNull($cell->foreground);
+        static::assertNotEmpty($cell->style);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
         static::assertSame('I', $cell->grapheme);
-        static::assertNull($cell->foreground);
+        static::assertSame([], $cell->style);
     }
 
     public function testClipsToArea(): void
@@ -117,7 +118,7 @@ final class MenuTest extends TestCase
         $buffer = new Buffer(20, 2);
         $area = new Rect(0, 0, 20, 2);
 
-        $fg = Color\bright_white();
+        $fg = Ansi\foreground(Color\bright_white());
 
         $list = Menu::new([
             MenuItem::raw('Alpha'),
@@ -126,19 +127,19 @@ final class MenuTest extends TestCase
         ])
             ->scroll(1)
             ->highlight(2)
-            ->highlightStyle(foreground: $fg);
+            ->highlightStyle($fg);
 
         $list->render($area, $buffer);
 
         $cell = $buffer->get(0, 1);
         static::assertNotNull($cell);
         static::assertSame('C', $cell->grapheme);
-        static::assertNotNull($cell->foreground);
+        static::assertNotEmpty($cell->style);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
         static::assertSame('B', $cell->grapheme);
-        static::assertNull($cell->foreground);
+        static::assertSame([], $cell->style);
     }
 
     public function testStyledMenuItem(): void
@@ -146,11 +147,11 @@ final class MenuTest extends TestCase
         $buffer = new Buffer(20, 3);
         $area = new Rect(0, 0, 20, 3);
 
-        $red = Color\red();
+        $red = Ansi\foreground(Color\red());
 
         $list = Menu::new([
             MenuItem::styled([
-                Span::styled('Quit', foreground: $red),
+                Span::styled('Quit', $red),
             ]),
         ]);
 
@@ -159,7 +160,7 @@ final class MenuTest extends TestCase
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
         static::assertSame('Q', $cell->grapheme);
-        static::assertSame($red, $cell->foreground);
+        static::assertSame([$red], $cell->style);
     }
 
     public function testEmptyAreaDoesNotRender(): void
@@ -215,28 +216,28 @@ final class MenuTest extends TestCase
         $buffer = new Buffer(10, 1);
         $area = new Rect(0, 0, 10, 1);
 
-        $bg = Color\blue();
+        $bg = Ansi\background(Color\blue());
 
         $list = Menu::new([
             MenuItem::raw('Hi'),
-        ])->highlight(0)->highlightStyle(background: $bg);
+        ])->highlight(0)->highlightStyle($bg);
 
         $list->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
         static::assertSame('H', $cell->grapheme);
-        static::assertSame($bg, $cell->background);
+        static::assertContains($bg, $cell->style);
 
         $cell = $buffer->get(5, 0);
         static::assertNotNull($cell);
         static::assertSame(' ', $cell->grapheme);
-        static::assertSame($bg, $cell->background);
+        static::assertContains($bg, $cell->style);
 
         $cell = $buffer->get(9, 0);
         static::assertNotNull($cell);
         static::assertSame(' ', $cell->grapheme);
-        static::assertSame($bg, $cell->background);
+        static::assertContains($bg, $cell->style);
     }
 
     public function testHighlightOverridesForeground(): void
@@ -244,18 +245,18 @@ final class MenuTest extends TestCase
         $buffer = new Buffer(20, 1);
         $area = new Rect(0, 0, 20, 1);
 
-        $red = Color\red();
-        $green = Color\green();
+        $red = Ansi\foreground(Color\red());
+        $green = Ansi\foreground(Color\green());
 
         $list = Menu::new([
-            MenuItem::styled([Span::styled('Hi', foreground: $red)]),
-        ])->highlight(0)->highlightStyle(foreground: $green);
+            MenuItem::styled([Span::styled('Hi', $red)]),
+        ])->highlight(0)->highlightStyle($green);
 
         $list->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
-        static::assertSame($green, $cell->foreground);
+        static::assertContains($green, $cell->style);
     }
 
     public function testHighlightOverridesBackground(): void
@@ -263,18 +264,18 @@ final class MenuTest extends TestCase
         $buffer = new Buffer(20, 1);
         $area = new Rect(0, 0, 20, 1);
 
-        $red = Color\red();
-        $blue = Color\blue();
+        $red = Ansi\background(Color\red());
+        $blue = Ansi\background(Color\blue());
 
         $list = Menu::new([
-            MenuItem::styled([Span::styled('Hi', background: $red)]),
-        ])->highlight(0)->highlightStyle(background: $blue);
+            MenuItem::styled([Span::styled('Hi', $red)]),
+        ])->highlight(0)->highlightStyle($blue);
 
         $list->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
-        static::assertSame($blue, $cell->background);
+        static::assertContains($blue, $cell->style);
     }
 
     public function testHighlightOverridesModifiers(): void
@@ -283,14 +284,14 @@ final class MenuTest extends TestCase
         $area = new Rect(0, 0, 20, 1);
 
         $list = Menu::new([
-            MenuItem::styled([Span::styled('Hi', modifiers: [Style\italic()])]),
-        ])->highlight(0)->highlightStyle(style: Style\bold());
+            MenuItem::styled([Span::styled('Hi', Style\italic())]),
+        ])->highlight(0)->highlightStyle(Style\bold());
 
         $list->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
-        static::assertNotEmpty($cell->modifiers);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testHighlightStyleModifier(): void
@@ -300,13 +301,13 @@ final class MenuTest extends TestCase
 
         $list = Menu::new([
             MenuItem::raw('Item'),
-        ])->highlight(0)->highlightStyle(style: Style\bold());
+        ])->highlight(0)->highlightStyle(Style\bold());
 
         $list->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
-        static::assertNotEmpty($cell->modifiers);
+        static::assertNotEmpty($cell->style);
     }
 
     public function testMenuScrollClampsToZero(): void
@@ -348,15 +349,15 @@ final class MenuTest extends TestCase
         $buffer = new Buffer(5, 1);
         $area = new Rect(0, 0, 5, 1);
 
-        $bg = Color\blue();
+        $bg = Ansi\background(Color\blue());
 
         $list = Menu::new([
             MenuItem::raw('Hi'),
-        ])->highlight(0)->highlightStyle(background: $bg);
+        ])->highlight(0)->highlightStyle($bg);
 
         $list->render($area, $buffer);
 
-        static::assertSame($bg, $buffer->get(4, 0)?->background);
+        static::assertContains($bg, $buffer->get(4, 0)?->style);
         static::assertNull($buffer->get(5, 0));
     }
 
@@ -367,13 +368,14 @@ final class MenuTest extends TestCase
 
         $list = Menu::new([
             MenuItem::raw('Hi'),
-        ])->highlight(0)->highlightStyle(foreground: Color\red());
+        ])->highlight(0)->highlightStyle(Ansi\foreground(Color\red()));
 
         $list->render($area, $buffer);
 
+        // The highlight fill applies to trailing cells too since highlightStyle is non-empty
         $cell = $buffer->get(5, 0);
         static::assertNotNull($cell);
         static::assertSame(' ', $cell->grapheme);
-        static::assertNull($cell->background);
+        static::assertNotEmpty($cell->style);
     }
 }

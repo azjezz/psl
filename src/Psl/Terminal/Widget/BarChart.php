@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Terminal\Widget;
 
-use Psl\Ansi\Color\Color;
 use Psl\Ansi\ControlSequenceIntroducer;
 use Psl\Math;
 use Psl\Str;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
+use Psl\Vec;
 
 /**
  * A vertical bar chart widget using Unicode block characters.
@@ -29,14 +29,13 @@ final class BarChart implements WidgetInterface
     /** @var non-negative-int */
     private int $barGap = 1;
 
-    private Style $barStyle;
-    private Style $labelStyle;
+    /** @var list<ControlSequenceIntroducer> */
+    private array $barStyle = [];
 
-    private function __construct()
-    {
-        $this->barStyle = new Style();
-        $this->labelStyle = new Style();
-    }
+    /** @var list<ControlSequenceIntroducer> */
+    private array $labelStyle = [];
+
+    private function __construct() {}
 
     public static function new(): self
     {
@@ -79,20 +78,9 @@ final class BarChart implements WidgetInterface
     /**
      * Set the style for the bar fill characters.
      */
-    /**
-     * @param list<ControlSequenceIntroducer> $modifiers
-     */
-    public function barStyle(
-        null|Color $foreground = null,
-        null|Color $background = null,
-        null|ControlSequenceIntroducer $style = null,
-        array $modifiers = [],
-    ): self {
-        if ($style !== null) {
-            $modifiers[] = $style;
-        }
-
-        $this->barStyle = new Style($foreground, $background, $modifiers);
+    public function barStyle(ControlSequenceIntroducer ...$style): self
+    {
+        $this->barStyle = Vec\values($style);
 
         return $this;
     }
@@ -100,20 +88,9 @@ final class BarChart implements WidgetInterface
     /**
      * Set the style for the labels below the bars.
      */
-    /**
-     * @param list<ControlSequenceIntroducer> $modifiers
-     */
-    public function labelStyle(
-        null|Color $foreground = null,
-        null|Color $background = null,
-        null|ControlSequenceIntroducer $style = null,
-        array $modifiers = [],
-    ): self {
-        if ($style !== null) {
-            $modifiers[] = $style;
-        }
-
-        $this->labelStyle = new Style($foreground, $background, $modifiers);
+    public function labelStyle(ControlSequenceIntroducer ...$style): self
+    {
+        $this->labelStyle = Vec\values($style);
 
         return $this;
     }
@@ -149,16 +126,7 @@ final class BarChart implements WidgetInterface
                     }
 
                     if ($isFilled) {
-                        $buffer->set(
-                            $x,
-                            $y,
-                            new Cell(
-                                "\u{2588}",
-                                $this->barStyle->foreground,
-                                $this->barStyle->background,
-                                $this->barStyle->modifiers,
-                            ),
-                        );
+                        $buffer->set($x, $y, new Cell("\u{2588}", $this->barStyle));
                     }
                 }
             }
@@ -174,9 +142,7 @@ final class BarChart implements WidgetInterface
                     $labelStartX,
                     $labelY,
                     Str\width_slice($truncatedLabel, 0, $maxLen),
-                    $this->labelStyle->foreground,
-                    $this->labelStyle->background,
-                    $this->labelStyle->modifiers,
+                    $this->labelStyle,
                 );
             }
         }

@@ -15,6 +15,7 @@ final readonly class Mouse
         public MouseKind $kind,
         public int $column,
         public int $row,
+        public MouseButton $button = MouseButton::None,
         public MouseModifiers $modifiers = new MouseModifiers(),
     ) {}
 }

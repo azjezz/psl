@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Terminal\Widget\Internal;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Terminal\Widget\Internal\LineWrapper;
@@ -61,13 +62,13 @@ final class LineWrapperTest extends TestCase
      */
     public function testWordWrapRepeatedTextPreservesCorrectStyles(): void
     {
-        $red = Color\red();
-        $blue = Color\blue();
+        $red = Ansi\foreground(Color\red());
+        $blue = Ansi\foreground(Color\blue());
 
         $lines = [Line::new([
-            Span::styled('hello ', foreground: $red),
-            Span::styled('world ', foreground: $blue),
-            Span::styled('hello', foreground: $red),
+            Span::styled('hello ', $red),
+            Span::styled('world ', $blue),
+            Span::styled('hello', $red),
         ])];
 
         $result = LineWrapper::wrap($lines, Wrap::Word, 6);
@@ -75,13 +76,13 @@ final class LineWrapperTest extends TestCase
         static::assertCount(3, $result);
 
         static::assertSame('hello', $result[0]->spans[0]->content);
-        static::assertSame($red, $result[0]->spans[0]->foreground);
+        static::assertSame([$red], $result[0]->spans[0]->style);
 
         static::assertSame('world', $result[1]->spans[0]->content);
-        static::assertSame($blue, $result[1]->spans[0]->foreground);
+        static::assertSame([$blue], $result[1]->spans[0]->style);
 
         static::assertSame('hello', $result[2]->spans[0]->content);
-        static::assertSame($red, $result[2]->spans[0]->foreground);
+        static::assertSame([$red], $result[2]->spans[0]->style);
     }
 
     /**
@@ -92,7 +93,7 @@ final class LineWrapperTest extends TestCase
         $bold = Style\bold();
         $italic = Style\italic();
 
-        $span = Span::styled('Hello World', modifiers: [$bold, $italic]);
+        $span = Span::styled('Hello World', $bold, $italic);
 
         $lines = [Line::new([$span])];
 
@@ -101,24 +102,24 @@ final class LineWrapperTest extends TestCase
         static::assertCount(2, $result);
 
         static::assertSame('Hello', $result[0]->spans[0]->content);
-        static::assertCount(2, $result[0]->spans[0]->modifiers);
-        static::assertSame($bold, $result[0]->spans[0]->modifiers[0]);
-        static::assertSame($italic, $result[0]->spans[0]->modifiers[1]);
+        static::assertCount(2, $result[0]->spans[0]->style);
+        static::assertSame($bold, $result[0]->spans[0]->style[0]);
+        static::assertSame($italic, $result[0]->spans[0]->style[1]);
 
         static::assertSame('World', $result[1]->spans[0]->content);
-        static::assertCount(2, $result[1]->spans[0]->modifiers);
-        static::assertSame($bold, $result[1]->spans[0]->modifiers[0]);
-        static::assertSame($italic, $result[1]->spans[0]->modifiers[1]);
+        static::assertCount(2, $result[1]->spans[0]->style);
+        static::assertSame($bold, $result[1]->spans[0]->style[0]);
+        static::assertSame($italic, $result[1]->spans[0]->style[1]);
     }
 
     public function testWrapPreservesStylesAcrossSpanBoundaries(): void
     {
-        $red = Color\red();
-        $blue = Color\blue();
+        $red = Ansi\foreground(Color\red());
+        $blue = Ansi\foreground(Color\blue());
 
         $lines = [Line::new([
-            Span::styled('Hello W', foreground: $red),
-            Span::styled('orld Test', foreground: $blue),
+            Span::styled('Hello W', $red),
+            Span::styled('orld Test', $blue),
         ])];
 
         $result = LineWrapper::wrap($lines, Wrap::Word, 12);
@@ -127,23 +128,23 @@ final class LineWrapperTest extends TestCase
 
         static::assertCount(2, $result[0]->spans);
         static::assertSame('Hello W', $result[0]->spans[0]->content);
-        static::assertSame($red, $result[0]->spans[0]->foreground);
+        static::assertSame([$red], $result[0]->spans[0]->style);
         static::assertSame('orld', $result[0]->spans[1]->content);
-        static::assertSame($blue, $result[0]->spans[1]->foreground);
+        static::assertSame([$blue], $result[0]->spans[1]->style);
 
         static::assertCount(1, $result[1]->spans);
         static::assertSame('Test', $result[1]->spans[0]->content);
-        static::assertSame($blue, $result[1]->spans[0]->foreground);
+        static::assertSame([$blue], $result[1]->spans[0]->style);
     }
 
     public function testCharWrapPreservesStyles(): void
     {
-        $red = Color\red();
-        $blue = Color\blue();
+        $red = Ansi\foreground(Color\red());
+        $blue = Ansi\foreground(Color\blue());
 
         $lines = [Line::new([
-            Span::styled('ABC', foreground: $red),
-            Span::styled('DEF', foreground: $blue),
+            Span::styled('ABC', $red),
+            Span::styled('DEF', $blue),
         ])];
 
         $result = LineWrapper::wrap($lines, Wrap::Char, 4);
@@ -152,32 +153,32 @@ final class LineWrapperTest extends TestCase
 
         static::assertCount(2, $result[0]->spans);
         static::assertSame('ABC', $result[0]->spans[0]->content);
-        static::assertSame($red, $result[0]->spans[0]->foreground);
+        static::assertSame([$red], $result[0]->spans[0]->style);
         static::assertSame('D', $result[0]->spans[1]->content);
-        static::assertSame($blue, $result[0]->spans[1]->foreground);
+        static::assertSame([$blue], $result[0]->spans[1]->style);
 
         static::assertCount(1, $result[1]->spans);
         static::assertSame('EF', $result[1]->spans[0]->content);
-        static::assertSame($blue, $result[1]->spans[0]->foreground);
+        static::assertSame([$blue], $result[1]->spans[0]->style);
     }
 
     public function testCharWrapRepeatedText(): void
     {
-        $red = Color\red();
-        $blue = Color\blue();
+        $red = Ansi\foreground(Color\red());
+        $blue = Ansi\foreground(Color\blue());
 
         $lines = [Line::new([
-            Span::styled('AAAA', foreground: $red),
-            Span::styled('AAAA', foreground: $blue),
+            Span::styled('AAAA', $red),
+            Span::styled('AAAA', $blue),
         ])];
 
         $result = LineWrapper::wrap($lines, Wrap::Char, 4);
 
         static::assertCount(2, $result);
         static::assertSame('AAAA', $result[0]->spans[0]->content);
-        static::assertSame($red, $result[0]->spans[0]->foreground);
+        static::assertSame([$red], $result[0]->spans[0]->style);
         static::assertSame('AAAA', $result[1]->spans[0]->content);
-        static::assertSame($blue, $result[1]->spans[0]->foreground);
+        static::assertSame([$blue], $result[1]->spans[0]->style);
     }
 
     public function testZeroWidthReturnsOriginal(): void

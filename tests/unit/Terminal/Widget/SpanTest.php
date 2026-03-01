@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Terminal\Widget;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Terminal\Widget\Span;
@@ -16,27 +17,22 @@ final class SpanTest extends TestCase
         $span = Span::raw('hello');
 
         static::assertSame('hello', $span->content);
-        static::assertNull($span->foreground);
-        static::assertNull($span->background);
-        static::assertSame([], $span->modifiers);
+        static::assertSame([], $span->style);
     }
 
     public function testStyled(): void
     {
-        $span = Span::styled('hello', foreground: Color\red(), style: Style\bold());
+        $span = Span::styled('hello', Ansi\foreground(Color\red()), Style\bold());
 
         static::assertSame('hello', $span->content);
-        static::assertNotNull($span->foreground);
-        static::assertNull($span->background);
-        static::assertCount(1, $span->modifiers);
+        static::assertCount(2, $span->style);
     }
 
     public function testStyledWithBackground(): void
     {
-        $span = Span::styled('test', foreground: Color\red(), background: Color\blue());
+        $span = Span::styled('test', Ansi\foreground(Color\red()), Ansi\background(Color\blue()));
 
-        static::assertNotNull($span->foreground);
-        static::assertNotNull($span->background);
+        static::assertCount(2, $span->style);
     }
 
     public function testWidth(): void
@@ -56,17 +52,15 @@ final class SpanTest extends TestCase
 
     public function testWithContentPreservesAllStyles(): void
     {
-        $fg = Color\red();
-        $bg = Color\blue();
+        $fg = Ansi\foreground(Color\red());
+        $bg = Ansi\background(Color\blue());
         $bold = Style\bold();
-        $span = Span::styled('hello world', foreground: $fg, background: $bg, style: $bold);
+        $span = Span::styled('hello world', $fg, $bg, $bold);
 
         $sliced = $span->withContent('hello');
 
         static::assertSame('hello', $sliced->content);
-        static::assertSame($fg, $sliced->foreground);
-        static::assertSame($bg, $sliced->background);
-        static::assertSame($span->modifiers, $sliced->modifiers);
+        static::assertSame($span->style, $sliced->style);
     }
 
     public function testWithContentOnRawSpan(): void
@@ -76,31 +70,31 @@ final class SpanTest extends TestCase
         $sliced = $span->withContent('hello');
 
         static::assertSame('hello', $sliced->content);
-        static::assertNull($sliced->foreground);
-        static::assertNull($sliced->background);
-        static::assertSame([], $sliced->modifiers);
+        static::assertSame([], $sliced->style);
     }
 
     public function testStyledWithMultipleModifiers(): void
     {
         $bold = Style\bold();
         $italic = Style\italic();
-        $span = Span::styled('hello', foreground: Color\red(), modifiers: [$bold, $italic]);
+        $fg = Ansi\foreground(Color\red());
+        $span = Span::styled('hello', $fg, $bold, $italic);
 
         static::assertSame('hello', $span->content);
-        static::assertCount(2, $span->modifiers);
-        static::assertSame($bold, $span->modifiers[0]);
-        static::assertSame($italic, $span->modifiers[1]);
+        static::assertCount(3, $span->style);
+        static::assertSame($fg, $span->style[0]);
+        static::assertSame($bold, $span->style[1]);
+        static::assertSame($italic, $span->style[2]);
     }
 
-    public function testStyledWithStyleAndModifiersMerged(): void
+    public function testStyledWithModifiersOnly(): void
     {
         $bold = Style\bold();
         $italic = Style\italic();
-        $span = Span::styled('hello', style: $bold, modifiers: [$italic]);
+        $span = Span::styled('hello', $bold, $italic);
 
-        static::assertCount(2, $span->modifiers);
-        static::assertSame($italic, $span->modifiers[0]);
-        static::assertSame($bold, $span->modifiers[1]);
+        static::assertCount(2, $span->style);
+        static::assertSame($bold, $span->style[0]);
+        static::assertSame($italic, $span->style[1]);
     }
 }

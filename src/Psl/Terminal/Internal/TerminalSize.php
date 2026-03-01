@@ -114,30 +114,24 @@ final class TerminalSize
     private static function getWindows(): array
     {
         try {
-            $output = Shell\execute('mode', ['con']);
-            $cols = 80;
-            $rows = 24;
+            $output = Shell\execute('powershell', [
+                '-NoProfile',
+                '-Command',
+                '[Console]::WindowWidth.ToString() + " " + [Console]::WindowHeight.ToString()',
+            ]);
 
-            foreach (Str\split($output, "\n") as $line) {
-                $line = Str\trim($line);
-                if (Str\contains($line, 'Columns')) {
-                    $parts = Str\split($line, ':');
-                    if (Iter\count($parts) === 2) {
-                        $cols = (int) Str\trim($parts[1]);
-                    }
-                }
-
-                if (Str\contains($line, 'Lines')) {
-                    $parts = Str\split($line, ':');
-                    if (Iter\count($parts) === 2) {
-                        $rows = (int) Str\trim($parts[1]);
-                    }
+            $parts = Str\split(Str\trim($output), ' ');
+            if (Iter\count($parts) === 2) {
+                $cols = (int) $parts[0];
+                $rows = (int) $parts[1];
+                if ($cols > 0 && $rows > 0) {
+                    return [$cols, $rows];
                 }
             }
-
-            return [$cols, $rows];
         } catch (Shell\Exception\ExceptionInterface) {
-            return [80, 24];
+            // @mago-expect lint:no-empty-catch-clause - best-effort fallback
         }
+
+        return [80, 24];
     }
 }
