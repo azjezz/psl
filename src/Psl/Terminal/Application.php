@@ -72,7 +72,7 @@ final class Application
      * @template T of object
      *
      * @param T $state Application state object, passed to all callbacks.
-     * @param DateTime\Duration $tickInterval How often the render tick fires (e.g. Duration::milliseconds(16) for ~60 ticks/s).
+     * @param null|DateTime\Duration $tickInterval How often the render tick fires (e.g. Duration::milliseconds(16) for ~60 ticks/s).
      *
      * @return self<T>
      */
@@ -85,7 +85,7 @@ final class Application
     ): self {
         return new self(
             $title,
-            $tickInterval ?? DateTime\Duration::milliseconds(15),
+            $tickInterval ?? DateTime\Duration::milliseconds(16),
             $state,
             IO\input_handle(),
             IO\output_handle(),
@@ -135,7 +135,7 @@ final class Application
     ): self {
         return new self(
             $title,
-            $tickInterval ?? DateTime\Duration::milliseconds(15),
+            $tickInterval ?? DateTime\Duration::milliseconds(16),
             $state,
             $input,
             $output,
