@@ -161,4 +161,81 @@ final class MenuTest extends TestCase
         static::assertSame('Q', $cell->grapheme);
         static::assertSame($red, $cell->foreground);
     }
+
+    public function testEmptyAreaDoesNotRender(): void
+    {
+        $buffer = new Buffer(10, 5);
+        $area = new Rect(0, 0, 0, 0);
+
+        $list = Menu::new([
+            MenuItem::raw('Item 1'),
+        ]);
+
+        $list->render($area, $buffer);
+
+        static::assertSame(' ', $buffer->get(0, 0)?->grapheme);
+    }
+
+    public function testTextClipsToAreaWidth(): void
+    {
+        $buffer = new Buffer(5, 1);
+        $area = new Rect(0, 0, 3, 1);
+
+        $list = Menu::new([
+            MenuItem::raw('ABCDEF'),
+        ]);
+
+        $list->render($area, $buffer);
+
+        static::assertSame('A', $buffer->get(0, 0)?->grapheme);
+        static::assertSame('B', $buffer->get(1, 0)?->grapheme);
+        static::assertSame('C', $buffer->get(2, 0)?->grapheme);
+        static::assertSame(' ', $buffer->get(3, 0)?->grapheme);
+    }
+
+    public function testWideCharacterInMenuItem(): void
+    {
+        $buffer = new Buffer(10, 1);
+        $area = new Rect(0, 0, 10, 1);
+
+        $list = Menu::new([
+            MenuItem::raw('漢字'),
+        ]);
+
+        $list->render($area, $buffer);
+
+        static::assertSame('漢', $buffer->get(0, 0)?->grapheme);
+        static::assertSame('', $buffer->get(1, 0)?->grapheme);
+        static::assertSame('字', $buffer->get(2, 0)?->grapheme);
+        static::assertSame('', $buffer->get(3, 0)?->grapheme);
+    }
+
+    public function testHighlightBackgroundFillsRow(): void
+    {
+        $buffer = new Buffer(10, 1);
+        $area = new Rect(0, 0, 10, 1);
+
+        $bg = Color\blue();
+
+        $list = Menu::new([
+            MenuItem::raw('Hi'),
+        ])->highlight(0)->highlightStyle(background: $bg);
+
+        $list->render($area, $buffer);
+
+        $cell = $buffer->get(0, 0);
+        static::assertNotNull($cell);
+        static::assertSame('H', $cell->grapheme);
+        static::assertSame($bg, $cell->background);
+
+        $cell = $buffer->get(5, 0);
+        static::assertNotNull($cell);
+        static::assertSame(' ', $cell->grapheme);
+        static::assertSame($bg, $cell->background);
+
+        $cell = $buffer->get(9, 0);
+        static::assertNotNull($cell);
+        static::assertSame(' ', $cell->grapheme);
+        static::assertSame($bg, $cell->background);
+    }
 }
