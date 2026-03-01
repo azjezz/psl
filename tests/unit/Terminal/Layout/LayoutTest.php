@@ -124,6 +124,34 @@ final class LayoutTest extends TestCase
         static::assertSame(14, $top->height);
     }
 
+    public function testVerticalFixedExceedsTotalSpace(): void
+    {
+        $rect = Rect::fromSize(80, 10);
+
+        [$a, $b, $c] = Layout\vertical($rect, [
+            Layout\fixed(5),
+            Layout\fixed(5),
+            Layout\fixed(5),
+        ]);
+
+        static::assertSame(5, $a->height);
+        static::assertSame(5, $b->height);
+        static::assertSame(0, $c->height);
+    }
+
+    public function testHorizontalFixedExceedsTotalSpace(): void
+    {
+        $rect = Rect::fromSize(10, 5);
+
+        [$a, $b] = Layout\horizontal($rect, [
+            Layout\fixed(8),
+            Layout\fixed(8),
+        ]);
+
+        static::assertSame(8, $a->width);
+        static::assertSame(2, $b->width);
+    }
+
     public function testVerticalMinWithFillInner(): void
     {
         $rect = Rect::fromSize(80, 24);
