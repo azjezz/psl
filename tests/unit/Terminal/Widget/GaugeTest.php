@@ -223,10 +223,12 @@ final class GaugeTest extends TestCase
 
         $found = false;
         for ($x = 0; $x < 20; $x++) {
-            if ($buffer->get($x, 0)?->grapheme === '%') {
-                $found = true;
-                break;
+            if ($buffer->get($x, 0)?->grapheme !== '%') {
+                continue;
             }
+
+            $found = true;
+            break;
         }
 
         static::assertTrue($found);

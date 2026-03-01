@@ -153,12 +153,14 @@ final class TabsTest extends TestCase
         $tCount = 0;
         $tab2Start = -1;
         for ($x = 0; $x < 20; $x++) {
-            if ($buffer->get($x, 0)?->grapheme === 'T') {
-                $tCount++;
-                if ($tCount === 2) {
-                    $tab2Start = $x;
-                    break;
-                }
+            if ($buffer->get($x, 0)?->grapheme !== 'T') {
+                continue;
+            }
+
+            $tCount++;
+            if ($tCount === 2) {
+                $tab2Start = $x;
+                break;
             }
         }
 

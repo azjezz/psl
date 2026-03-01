@@ -268,9 +268,11 @@ final class ScrollbarTest extends TestCase
 
         $lastThumb = -1;
         for ($i = 0; $i < 10; $i++) {
-            if ($buffer->get(0, $i)?->grapheme === "\u{2503}") {
-                $lastThumb = $i;
+            if ($buffer->get(0, $i)?->grapheme !== "\u{2503}") {
+                continue;
             }
+
+            $lastThumb = $i;
         }
 
         static::assertGreaterThanOrEqual(0, $lastThumb);
