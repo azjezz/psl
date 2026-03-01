@@ -126,4 +126,53 @@ final class ParagraphTest extends TestCase
 
         static::assertSame(' ', $buffer->get(0, 0)?->grapheme);
     }
+
+    public function testCenterAlignment(): void
+    {
+        $buffer = new Buffer(20, 1);
+        $area = new Rect(0, 0, 20, 1);
+
+        $paragraph = Paragraph::new([
+            Line::new([Span::raw('Hi')]),
+        ])->alignment(Alignment::Center);
+
+        $paragraph->render($area, $buffer);
+
+        static::assertSame('H', $buffer->get(9, 0)?->grapheme);
+        static::assertSame('i', $buffer->get(10, 0)?->grapheme);
+    }
+
+    public function testTextClipsToAreaWidth(): void
+    {
+        $buffer = new Buffer(10, 1);
+        $area = new Rect(0, 0, 3, 1);
+
+        $paragraph = Paragraph::new([
+            Line::new([Span::raw('ABCDEF')]),
+        ]);
+
+        $paragraph->render($area, $buffer);
+
+        static::assertSame('A', $buffer->get(0, 0)?->grapheme);
+        static::assertSame('B', $buffer->get(1, 0)?->grapheme);
+        static::assertSame('C', $buffer->get(2, 0)?->grapheme);
+        static::assertSame(' ', $buffer->get(3, 0)?->grapheme);
+    }
+
+    public function testWideCharacterContinuationCell(): void
+    {
+        $buffer = new Buffer(10, 1);
+        $area = new Rect(0, 0, 10, 1);
+
+        $paragraph = Paragraph::new([
+            Line::new([Span::raw('漢字')]),
+        ]);
+
+        $paragraph->render($area, $buffer);
+
+        static::assertSame('漢', $buffer->get(0, 0)?->grapheme);
+        static::assertSame('', $buffer->get(1, 0)?->grapheme);
+        static::assertSame('字', $buffer->get(2, 0)?->grapheme);
+        static::assertSame('', $buffer->get(3, 0)?->grapheme);
+    }
 }
