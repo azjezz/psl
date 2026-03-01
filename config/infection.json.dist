@@ -16,6 +16,7 @@
             "TLS",
             "UDP",
             "Process",
+            "Terminal",
             "Internal",
             "{.*/Internal/.*}"
         ]
