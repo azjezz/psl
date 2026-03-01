@@ -8,8 +8,6 @@ use Psl\Iter;
 use Psl\Process;
 use Psl\Shell;
 use Psl\Str;
-use Psl\Terminal\Exception;
-use Throwable;
 
 use const PHP_OS_FAMILY;
 
@@ -83,7 +81,7 @@ final class TerminalSize
                     }
                 }
             }
-        } catch (Throwable) {
+        } catch (Process\Exception\ExceptionInterface) {
             return null;
         }
 
@@ -103,7 +101,7 @@ final class TerminalSize
             if ($rows > 0 && $cols > 0) {
                 return [$cols, $rows];
             }
-        } catch (Throwable) {
+        } catch (Shell\Exception\ExceptionInterface) {
             return null;
         }
 
@@ -138,7 +136,7 @@ final class TerminalSize
             }
 
             return [$cols, $rows];
-        } catch (Throwable) {
+        } catch (Shell\Exception\ExceptionInterface) {
             return [80, 24];
         }
     }

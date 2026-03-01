@@ -8,7 +8,6 @@ use Psl\OS;
 use Psl\Process;
 use Psl\Str;
 use Psl\Terminal\Exception;
-use Throwable;
 
 /**
  * Manages terminal raw mode (stty raw/cooked).
@@ -84,7 +83,7 @@ final class RawMode
         try {
             self::stty([$arg]);
             return true;
-        } catch (Throwable) {
+        } catch (Process\Exception\ExceptionInterface|Exception\RuntimeException) {
             return false;
         }
     }
@@ -117,13 +116,13 @@ final class RawMode
     {
         try {
             $this->savedState = Str\trim(self::stty(['-g']));
-        } catch (Throwable $e) {
+        } catch (Process\Exception\ExceptionInterface|Exception\RuntimeException $e) {
             throw new Exception\RuntimeException('Failed to save terminal state: ' . $e->getMessage(), previous: $e);
         }
 
         try {
             self::stty(['raw', '-echo']);
-        } catch (Throwable $e) {
+        } catch (Process\Exception\ExceptionInterface|Exception\RuntimeException $e) {
             // Try to restore on failure
             $this->restoreUnix();
             throw new Exception\RuntimeException('Failed to enable raw mode: ' . $e->getMessage(), previous: $e);
@@ -148,7 +147,7 @@ final class RawMode
     {
         try {
             $this->savedState = Str\trim(self::powershell([]));
-        } catch (Throwable $e) {
+        } catch (Process\Exception\ExceptionInterface|Exception\RuntimeException $e) {
             throw new Exception\RuntimeException(
                 'Failed to enable raw mode on Windows: ' . $e->getMessage(),
                 previous: $e,
@@ -164,8 +163,8 @@ final class RawMode
 
         try {
             self::powershell(['-Restore', $this->savedState]);
-        } catch (Throwable) {
-            // Best-effort restore
+        } catch (Process\Exception\ExceptionInterface|Exception\RuntimeException) {
+            // @mago-expect lint:no-empty-catch-clause - best-effort restore
         }
 
         $this->savedState = null;
