@@ -211,4 +211,160 @@ final class TableTest extends TestCase
         static::assertSame('S', $cell->grapheme);
         static::assertNull($cell->background);
     }
+
+    public function testHeaderStyleModifier(): void
+    {
+        $buffer = new Buffer(20, 5);
+        $area = new Rect(0, 0, 20, 5);
+
+        Table::new()
+            ->headers(['Name', 'Age'])
+            ->widths([10, 10])
+            ->headerStyle(style: Style\bold())
+            ->rows([[Span::raw('Alice'), Span::raw('30')]])
+            ->render($area, $buffer);
+
+        $cell = $buffer->get(0, 0);
+        static::assertNotNull($cell);
+        static::assertNotEmpty($cell->modifiers);
+    }
+
+    public function testHighlightStyleModifier(): void
+    {
+        $buffer = new Buffer(20, 5);
+        $area = new Rect(0, 0, 20, 5);
+
+        Table::new()
+            ->headers(['Name'])
+            ->widths([20])
+            ->highlightStyle(style: Style\bold())
+            ->highlight(0)
+            ->rows([[Span::raw('Alice')]])
+            ->render($area, $buffer);
+
+        $cell = $buffer->get(0, 2);
+        static::assertNotNull($cell);
+        static::assertNotEmpty($cell->modifiers);
+    }
+
+    public function testEmptyAreaDoesNotCorruptBuffer(): void
+    {
+        $buffer = new Buffer(10, 5);
+        $buffer->set(0, 0, new \Psl\Terminal\Cell('X'));
+        $area = new Rect(0, 0, 0, 0);
+
+        Table::new()
+            ->headers(['Name'])
+            ->widths([10])
+            ->rows([[Span::raw('Alice')]])
+            ->render($area, $buffer);
+
+        static::assertSame('X', $buffer->get(0, 0)?->grapheme);
+    }
+
+    public function testHeaderAndSeparator(): void
+    {
+        $buffer = new Buffer(20, 5);
+        $area = new Rect(0, 0, 20, 5);
+
+        Table::new()
+            ->headers(['Col1', 'Col2'])
+            ->widths([5, 5])
+            ->rows([[Span::raw('A'), Span::raw('B')]])
+            ->render($area, $buffer);
+
+        static::assertSame('C', $buffer->get(0, 0)?->grapheme);
+        static::assertSame('C', $buffer->get(5, 0)?->grapheme);
+        static::assertSame("\u{2500}", $buffer->get(0, 1)?->grapheme);
+    }
+
+    public function testHighlightBackground(): void
+    {
+        $buffer = new Buffer(10, 5);
+        $area = new Rect(0, 0, 10, 5);
+
+        $bg = Color\blue();
+
+        Table::new()
+            ->headers(['Name'])
+            ->widths([10])
+            ->rows([
+                [Span::raw('Alice')],
+                [Span::raw('Bob')],
+            ])
+            ->highlight(0)
+            ->highlightStyle(background: $bg)
+            ->render($area, $buffer);
+
+        $cell = $buffer->get(0, 2);
+        static::assertNotNull($cell);
+        static::assertSame($bg, $cell->background);
+
+        $cell = $buffer->get(9, 2);
+        static::assertNotNull($cell);
+        static::assertSame($bg, $cell->background);
+
+        $unhighlighted = $buffer->get(0, 3);
+        static::assertNotNull($unhighlighted);
+        static::assertNull($unhighlighted->background);
+    }
+
+    public function testHighlightOverridesFg(): void
+    {
+        $buffer = new Buffer(10, 5);
+        $area = new Rect(0, 0, 10, 5);
+
+        $green = Color\green();
+
+        Table::new()
+            ->headers(['Name'])
+            ->widths([10])
+            ->rows([[Span::raw('Alice')]])
+            ->highlight(0)
+            ->highlightStyle(foreground: $green)
+            ->render($area, $buffer);
+
+        $cell = $buffer->get(0, 2);
+        static::assertNotNull($cell);
+        static::assertSame($green, $cell->foreground);
+    }
+
+    public function testTableScrollClamp(): void
+    {
+        $buffer = new Buffer(10, 5);
+        $area = new Rect(0, 0, 10, 5);
+
+        Table::new()
+            ->headers(['Name'])
+            ->widths([10])
+            ->rows([
+                [Span::raw('Alice')],
+                [Span::raw('Bob')],
+                [Span::raw('Charlie')],
+            ])
+            ->scroll(100)
+            ->render($area, $buffer);
+
+        static::assertSame('A', $buffer->get(0, 2)?->grapheme);
+    }
+
+    public function testRowClipsToBottom(): void
+    {
+        $buffer = new Buffer(10, 4);
+        $area = new Rect(0, 0, 10, 4);
+
+        Table::new()
+            ->headers(['Name'])
+            ->widths([10])
+            ->rows([
+                [Span::raw('Alice')],
+                [Span::raw('Bob')],
+                [Span::raw('Charlie')],
+                [Span::raw('Dave')],
+            ])
+            ->render($area, $buffer);
+
+        static::assertSame('A', $buffer->get(0, 2)?->grapheme);
+        static::assertSame('B', $buffer->get(0, 3)?->grapheme);
+    }
 }

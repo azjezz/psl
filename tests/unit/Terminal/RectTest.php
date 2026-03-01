@@ -88,4 +88,15 @@ final class RectTest extends TestCase
         static::assertFalse($rect->contains(15, 5));
         static::assertFalse($rect->contains(5, 15));
     }
+
+    public function testInnerWithDefaults(): void
+    {
+        $rect = new Rect(0, 0, 10, 5);
+        $inner = $rect->inner();
+
+        static::assertSame(0, $inner->x);
+        static::assertSame(0, $inner->y);
+        static::assertSame(10, $inner->width);
+        static::assertSame(5, $inner->height);
+    }
 }

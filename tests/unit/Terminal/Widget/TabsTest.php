@@ -122,4 +122,98 @@ final class TabsTest extends TestCase
         static::assertSame(' ', $buffer->get(0, 0)?->grapheme);
         static::assertSame('L', $buffer->get(1, 0)?->grapheme);
     }
+
+    public function testActiveStyleModifier(): void
+    {
+        $buffer = new Buffer(20, 1);
+        $area = new Rect(0, 0, 20, 1);
+
+        Tabs::new()
+            ->titles(['Tab1', 'Tab2'])
+            ->highlight(0)
+            ->activeStyle(style: Style\bold())
+            ->render($area, $buffer);
+
+        $cell = $buffer->get(0, 0);
+        static::assertNotNull($cell);
+        static::assertNotEmpty($cell->modifiers);
+    }
+
+    public function testInactiveStyleModifier(): void
+    {
+        $buffer = new Buffer(20, 1);
+        $area = new Rect(0, 0, 20, 1);
+
+        Tabs::new()
+            ->titles(['Tab1', 'Tab2'])
+            ->highlight(0)
+            ->inactiveStyle(style: Style\italic())
+            ->render($area, $buffer);
+
+        $tCount = 0;
+        $tab2Start = -1;
+        for ($x = 0; $x < 20; $x++) {
+            if ($buffer->get($x, 0)?->grapheme === 'T') {
+                $tCount++;
+                if ($tCount === 2) {
+                    $tab2Start = $x;
+                    break;
+                }
+            }
+        }
+
+        static::assertGreaterThanOrEqual(0, $tab2Start);
+        $cell = $buffer->get($tab2Start, 0);
+        static::assertNotNull($cell);
+        static::assertNotEmpty($cell->modifiers);
+    }
+
+    public function testEmptyAreaDoesNotCorruptBuffer(): void
+    {
+        $buffer = new Buffer(10, 1);
+        $buffer->set(0, 0, new \Psl\Terminal\Cell('X'));
+        $area = new Rect(0, 0, 0, 0);
+
+        Tabs::new()->titles(['Tab1'])->render($area, $buffer);
+
+        static::assertSame('X', $buffer->get(0, 0)?->grapheme);
+    }
+
+    public function testEmptyTitlesDoesNotRender(): void
+    {
+        $buffer = new Buffer(10, 1);
+        $area = new Rect(0, 0, 10, 1);
+
+        Tabs::new()->titles([])->render($area, $buffer);
+
+        static::assertSame(' ', $buffer->get(0, 0)?->grapheme);
+    }
+
+    public function testTabsClipToRight(): void
+    {
+        $buffer = new Buffer(5, 1);
+        $area = new Rect(0, 0, 5, 1);
+
+        Tabs::new()->titles(['ABCDEF', 'GHI'])->render($area, $buffer);
+
+        static::assertSame(' ', $buffer->get(0, 0)?->grapheme);
+        static::assertNull($buffer->get(5, 0));
+    }
+
+    public function testTabsSeparator(): void
+    {
+        $buffer = new Buffer(20, 1);
+        $area = new Rect(0, 0, 20, 1);
+
+        Tabs::new()->titles(['AB', 'CD'])->render($area, $buffer);
+
+        static::assertSame(' ', $buffer->get(0, 0)?->grapheme);
+        static::assertSame('A', $buffer->get(1, 0)?->grapheme);
+        static::assertSame('B', $buffer->get(2, 0)?->grapheme);
+        static::assertSame(' ', $buffer->get(3, 0)?->grapheme);
+        static::assertSame("\u{2502}", $buffer->get(4, 0)?->grapheme);
+        static::assertSame(' ', $buffer->get(5, 0)?->grapheme);
+        static::assertSame('C', $buffer->get(6, 0)?->grapheme);
+        static::assertSame('D', $buffer->get(7, 0)?->grapheme);
+    }
 }

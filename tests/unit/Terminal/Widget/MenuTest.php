@@ -238,4 +238,142 @@ final class MenuTest extends TestCase
         static::assertSame(' ', $cell->grapheme);
         static::assertSame($bg, $cell->background);
     }
+
+    public function testHighlightOverridesForeground(): void
+    {
+        $buffer = new Buffer(20, 1);
+        $area = new Rect(0, 0, 20, 1);
+
+        $red = Color\red();
+        $green = Color\green();
+
+        $list = Menu::new([
+            MenuItem::styled([Span::styled('Hi', foreground: $red)]),
+        ])->highlight(0)->highlightStyle(foreground: $green);
+
+        $list->render($area, $buffer);
+
+        $cell = $buffer->get(0, 0);
+        static::assertNotNull($cell);
+        static::assertSame($green, $cell->foreground);
+    }
+
+    public function testHighlightOverridesBackground(): void
+    {
+        $buffer = new Buffer(20, 1);
+        $area = new Rect(0, 0, 20, 1);
+
+        $red = Color\red();
+        $blue = Color\blue();
+
+        $list = Menu::new([
+            MenuItem::styled([Span::styled('Hi', background: $red)]),
+        ])->highlight(0)->highlightStyle(background: $blue);
+
+        $list->render($area, $buffer);
+
+        $cell = $buffer->get(0, 0);
+        static::assertNotNull($cell);
+        static::assertSame($blue, $cell->background);
+    }
+
+    public function testHighlightOverridesModifiers(): void
+    {
+        $buffer = new Buffer(20, 1);
+        $area = new Rect(0, 0, 20, 1);
+
+        $list = Menu::new([
+            MenuItem::styled([Span::styled('Hi', modifiers: [Style\italic()])]),
+        ])->highlight(0)->highlightStyle(style: Style\bold());
+
+        $list->render($area, $buffer);
+
+        $cell = $buffer->get(0, 0);
+        static::assertNotNull($cell);
+        static::assertNotEmpty($cell->modifiers);
+    }
+
+    public function testHighlightStyleModifier(): void
+    {
+        $buffer = new Buffer(20, 1);
+        $area = new Rect(0, 0, 20, 1);
+
+        $list = Menu::new([
+            MenuItem::raw('Item'),
+        ])->highlight(0)->highlightStyle(style: Style\bold());
+
+        $list->render($area, $buffer);
+
+        $cell = $buffer->get(0, 0);
+        static::assertNotNull($cell);
+        static::assertNotEmpty($cell->modifiers);
+    }
+
+    public function testMenuScrollClampsToZero(): void
+    {
+        $buffer = new Buffer(20, 3);
+        $area = new Rect(0, 0, 20, 3);
+
+        $list = Menu::new([
+            MenuItem::raw('Alpha'),
+            MenuItem::raw('Bravo'),
+            MenuItem::raw('Charlie'),
+        ])->scroll(0);
+
+        $list->render($area, $buffer);
+
+        static::assertSame('A', $buffer->get(0, 0)?->grapheme);
+    }
+
+    public function testMenuClipsMultiSpanAtAreaRight(): void
+    {
+        $buffer = new Buffer(10, 2);
+        $area = new Rect(0, 0, 3, 2);
+
+        $list = Menu::new([
+            MenuItem::styled([Span::raw('AB'), Span::raw('CD')]),
+            MenuItem::raw('Second'),
+        ]);
+
+        $list->render($area, $buffer);
+
+        static::assertSame('A', $buffer->get(0, 0)?->grapheme);
+        static::assertSame('B', $buffer->get(1, 0)?->grapheme);
+        static::assertSame('C', $buffer->get(2, 0)?->grapheme);
+        static::assertSame('S', $buffer->get(0, 1)?->grapheme);
+    }
+
+    public function testMenuHighlightFillDoesNotExceedRight(): void
+    {
+        $buffer = new Buffer(5, 1);
+        $area = new Rect(0, 0, 5, 1);
+
+        $bg = Color\blue();
+
+        $list = Menu::new([
+            MenuItem::raw('Hi'),
+        ])->highlight(0)->highlightStyle(background: $bg);
+
+        $list->render($area, $buffer);
+
+        static::assertSame($bg, $buffer->get(4, 0)?->background);
+        static::assertNull($buffer->get(5, 0));
+    }
+
+    public function testHighlightWithoutBackgroundDoesNotFillRow(): void
+    {
+        $buffer = new Buffer(10, 1);
+        $area = new Rect(0, 0, 10, 1);
+
+        $list = Menu::new([
+            MenuItem::raw('Hi'),
+        ])->highlight(0)->highlightStyle(foreground: Color\red());
+
+        $list->render($area, $buffer);
+
+        $cell = $buffer->get(5, 0);
+        static::assertNotNull($cell);
+        static::assertSame(' ', $cell->grapheme);
+        static::assertNull($cell->background);
+    }
 }

@@ -15,6 +15,8 @@ final class ConstraintTest extends TestCase
         $c = Constraint::fill();
 
         static::assertSame(ConstraintKind::Fill, $c->kind);
+        static::assertSame(0, $c->size);
+        static::assertNull($c->inner);
         static::assertTrue($c->isFill());
         static::assertFalse($c->isFixed());
         static::assertFalse($c->isMin());

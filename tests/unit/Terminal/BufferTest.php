@@ -233,4 +233,120 @@ final class BufferTest extends TestCase
         static::assertStringContainsString('A', $redrawWrite);
         static::assertStringContainsString('B', $redrawWrite);
     }
+
+    public function testSetAtExactBoundary(): void
+    {
+        $buffer = new Buffer(5, 3);
+        $cell = new Cell('Z');
+
+        $buffer->set(4, 2, $cell);
+        static::assertSame('Z', $buffer->get(4, 2)?->grapheme);
+
+        $buffer->set(5, 0, $cell);
+        static::assertNull($buffer->get(5, 0));
+
+        $buffer->set(0, 3, $cell);
+        static::assertNull($buffer->get(0, 3));
+    }
+
+    public function testSetStringAtYBoundary(): void
+    {
+        $buffer = new Buffer(10, 3);
+
+        $buffer->setString(0, 2, 'Hi');
+        static::assertSame('H', $buffer->get(0, 2)?->grapheme);
+
+        $buffer->setString(0, 3, 'Bad');
+        static::assertNull($buffer->get(0, 3));
+    }
+
+    public function testSetStringStopsAtWidthBoundary(): void
+    {
+        $buffer = new Buffer(5, 1);
+        $buffer->setString(3, 0, 'ABC');
+
+        static::assertSame('A', $buffer->get(3, 0)?->grapheme);
+        static::assertSame('B', $buffer->get(4, 0)?->grapheme);
+        static::assertNull($buffer->get(5, 0));
+    }
+
+    public function testSetStringWideCharAtBoundary(): void
+    {
+        $buffer = new Buffer(3, 1);
+        $buffer->setString(2, 0, '漢');
+
+        static::assertSame('漢', $buffer->get(2, 0)?->grapheme);
+        static::assertNull($buffer->get(3, 0));
+    }
+
+    public function testFillDoesNotExceedBounds(): void
+    {
+        $buffer = new Buffer(2, 2);
+        $buffer->fill(new Cell('#'));
+
+        static::assertSame('#', $buffer->get(0, 0)?->grapheme);
+        static::assertSame('#', $buffer->get(1, 0)?->grapheme);
+        static::assertSame('#', $buffer->get(0, 1)?->grapheme);
+        static::assertSame('#', $buffer->get(1, 1)?->grapheme);
+        static::assertNull($buffer->get(2, 0));
+        static::assertNull($buffer->get(0, 2));
+    }
+
+    public function testFlushContinuesAfterUnchangedCell(): void
+    {
+        $buffer = new Buffer(3, 1);
+        $buffer->setString(0, 0, 'ABC');
+
+        $output = new IO\MemoryHandle();
+        $buffer->flush($output);
+        $firstLen = Str\Byte\length($output->getBuffer());
+
+        $buffer->set(2, 0, new Cell('Z'));
+        $buffer->flush($output);
+
+        $secondWrite = Str\Byte\slice($output->getBuffer(), $firstLen);
+        static::assertStringContainsString('Z', $secondWrite);
+    }
+
+    public function testFlushCursorPositions(): void
+    {
+        $buffer = new Buffer(3, 2);
+        $buffer->set(0, 0, new Cell('A'));
+        $buffer->set(2, 1, new Cell('B'));
+
+        $output = new IO\MemoryHandle();
+        $buffer->flush($output);
+
+        $written = $output->getBuffer();
+        static::assertStringContainsString("\e[1;1H", $written);
+        static::assertStringContainsString("\e[2;3H", $written);
+    }
+
+    public function testFlushAppliesModifiersWithoutColors(): void
+    {
+        $buffer = new Buffer(1, 1);
+        $bold = Style\bold();
+        $buffer->set(0, 0, new Cell('X', null, null, [$bold]));
+
+        $output = new IO\MemoryHandle();
+        $buffer->flush($output);
+
+        $written = $output->getBuffer();
+        static::assertStringContainsString("\e[0m", $written);
+    }
+
+    public function testFlushWritesNothingWhenUnchangedMultiRow(): void
+    {
+        $buffer = new Buffer(2, 3);
+        $buffer->setString(0, 0, 'AB');
+        $buffer->setString(0, 1, 'CD');
+        $buffer->setString(0, 2, 'EF');
+
+        $output = new IO\MemoryHandle();
+        $buffer->flush($output);
+        $afterFirst = Str\Byte\length($output->getBuffer());
+
+        $buffer->flush($output);
+        static::assertSame($afterFirst, Str\Byte\length($output->getBuffer()));
+    }
 }

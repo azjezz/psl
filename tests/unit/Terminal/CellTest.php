@@ -75,6 +75,7 @@ final class CellTest extends TestCase
         $cell2 = new Cell('A', modifiers: []);
 
         static::assertFalse($cell1->equals($cell2));
+        static::assertFalse($cell2->equals($cell1));
     }
 
     public function testEqualsMatchingModifiers(): void
@@ -97,5 +98,23 @@ final class CellTest extends TestCase
         $cell2 = new Cell('A', modifiers: [$italic]);
 
         static::assertFalse($cell1->equals($cell2));
+    }
+
+    public function testEqualsDifferentForegroundNullness(): void
+    {
+        $cell1 = new Cell('A', Color\red());
+        $cell2 = new Cell('A');
+
+        static::assertFalse($cell1->equals($cell2));
+        static::assertFalse($cell2->equals($cell1));
+    }
+
+    public function testEqualsDifferentBackgroundNullness(): void
+    {
+        $cell1 = new Cell('A', null, Color\blue());
+        $cell2 = new Cell('A');
+
+        static::assertFalse($cell1->equals($cell2));
+        static::assertFalse($cell2->equals($cell1));
     }
 }

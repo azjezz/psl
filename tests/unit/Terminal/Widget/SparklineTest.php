@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\Terminal\Widget;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Ansi\Color;
+use Psl\Ansi\Style;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Rect;
 use Psl\Terminal\Widget\Sparkline;
@@ -81,5 +82,70 @@ final class SparklineTest extends TestCase
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
         static::assertNotNull($cell->foreground);
+    }
+
+    public function testStyleModifier(): void
+    {
+        $buffer = new Buffer(3, 1);
+        $area = new Rect(0, 0, 3, 1);
+
+        Sparkline::new([0.5, 0.5, 0.5])->style(style: Style\bold())->render($area, $buffer);
+
+        $cell = $buffer->get(0, 0);
+        static::assertNotNull($cell);
+        static::assertNotEmpty($cell->modifiers);
+    }
+
+    public function testDataExactlyFitsWidth(): void
+    {
+        $buffer = new Buffer(3, 1);
+        $area = new Rect(0, 0, 3, 1);
+
+        Sparkline::new([0.0, 0.5, 1.0])->render($area, $buffer);
+
+        static::assertSame("\u{2581}", $buffer->get(0, 0)?->grapheme);
+        static::assertSame("\u{2588}", $buffer->get(2, 0)?->grapheme);
+    }
+
+    public function testSparklineClipsToArea(): void
+    {
+        $buffer = new Buffer(5, 1);
+        $area = new Rect(0, 0, 3, 1);
+
+        Sparkline::new([0.0, 0.5, 1.0, 0.5, 0.0])->render($area, $buffer);
+
+        static::assertSame(' ', $buffer->get(3, 0)?->grapheme);
+    }
+
+    public function testScrollClampsToZero(): void
+    {
+        $buffer = new Buffer(5, 1);
+        $area = new Rect(0, 0, 5, 1);
+
+        Sparkline::new([0.0, 1.0])->render($area, $buffer);
+
+        static::assertSame("\u{2581}", $buffer->get(3, 0)?->grapheme);
+        static::assertSame("\u{2588}", $buffer->get(4, 0)?->grapheme);
+    }
+
+    public function testBlockClamp(): void
+    {
+        $buffer = new Buffer(1, 1);
+        $area = new Rect(0, 0, 1, 1);
+
+        Sparkline::new([0.0])->render($area, $buffer);
+
+        static::assertSame("\u{2581}", $buffer->get(0, 0)?->grapheme);
+    }
+
+    public function testEmptyAreaDoesNotCorruptBuffer(): void
+    {
+        $buffer = new Buffer(10, 1);
+        $buffer->set(0, 0, new \Psl\Terminal\Cell('X'));
+        $area = new Rect(0, 0, 0, 0);
+
+        Sparkline::new([0.5, 0.5])->render($area, $buffer);
+
+        static::assertSame('X', $buffer->get(0, 0)?->grapheme);
     }
 }

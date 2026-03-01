@@ -129,7 +129,7 @@ final class BarChartTest extends TestCase
         static::assertNotNull($cell->foreground);
     }
 
-    public function testBarStyleWithModifier(): void
+    public function testBarStyleModifierIsApplied(): void
     {
         $buffer = new Buffer(3, 3);
         $area = new Rect(0, 0, 3, 3);
@@ -138,16 +138,15 @@ final class BarChartTest extends TestCase
             ->data([['A', 1.0]])
             ->barWidth(3)
             ->barGap(0)
-            ->barStyle(foreground: Color\red(), style: Style\bold())
+            ->barStyle(style: Style\bold())
             ->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
-        static::assertSame("\u{2588}", $cell->grapheme);
-        static::assertNotNull($cell->foreground);
+        static::assertNotEmpty($cell->modifiers);
     }
 
-    public function testLabelStyleWithModifier(): void
+    public function testLabelStyleModifierIsApplied(): void
     {
         $buffer = new Buffer(3, 3);
         $area = new Rect(0, 0, 3, 3);
@@ -156,12 +155,117 @@ final class BarChartTest extends TestCase
             ->data([['X', 0.5]])
             ->barWidth(3)
             ->barGap(0)
-            ->labelStyle(foreground: Color\white(), style: Style\bold())
+            ->labelStyle(style: Style\italic())
             ->render($area, $buffer);
 
         $cell = $buffer->get(1, 2);
         static::assertNotNull($cell);
-        static::assertNotNull($cell->foreground);
+        static::assertNotEmpty($cell->modifiers);
+    }
+
+    public function testRenderWithHeight2(): void
+    {
+        $buffer = new Buffer(3, 2);
+        $area = new Rect(0, 0, 3, 2);
+
+        BarChart::new()
+            ->data([['A', 1.0]])
+            ->barWidth(3)
+            ->barGap(0)
+            ->render($area, $buffer);
+
+        static::assertSame("\u{2588}", $buffer->get(0, 0)?->grapheme);
+        static::assertSame('A', $buffer->get(1, 1)?->grapheme);
+    }
+
+    public function testBarHeightIsAreaHeightMinusOne(): void
+    {
+        $buffer = new Buffer(3, 3);
+        $area = new Rect(0, 0, 3, 3);
+
+        BarChart::new()
+            ->data([['A', 1.0]])
+            ->barWidth(3)
+            ->barGap(0)
+            ->render($area, $buffer);
+
+        static::assertSame("\u{2588}", $buffer->get(0, 0)?->grapheme);
+        static::assertSame("\u{2588}", $buffer->get(0, 1)?->grapheme);
+        static::assertSame(' ', $buffer->get(0, 2)?->grapheme);
+    }
+
+    public function testBarStopsAtAreaRight(): void
+    {
+        $buffer = new Buffer(3, 3);
+        $area = new Rect(0, 0, 3, 3);
+
+        BarChart::new()
+            ->data([['A', 1.0], ['B', 1.0]])
+            ->barWidth(3)
+            ->barGap(0)
+            ->render($area, $buffer);
+
+        static::assertSame("\u{2588}", $buffer->get(0, 0)?->grapheme);
+        static::assertSame("\u{2588}", $buffer->get(2, 0)?->grapheme);
+        static::assertSame('A', $buffer->get(1, 2)?->grapheme);
+    }
+
+    public function testLabelCentering(): void
+    {
+        $buffer = new Buffer(5, 3);
+        $area = new Rect(0, 0, 5, 3);
+
+        BarChart::new()
+            ->data([['X', 0.5]])
+            ->barWidth(5)
+            ->barGap(0)
+            ->render($area, $buffer);
+
+        static::assertSame('X', $buffer->get(2, 2)?->grapheme);
+        static::assertSame(' ', $buffer->get(0, 2)?->grapheme);
+        static::assertSame(' ', $buffer->get(4, 2)?->grapheme);
+    }
+
+    public function testEmptyDataWithNonEmptyArea(): void
+    {
+        $buffer = new Buffer(10, 5);
+        $area = new Rect(0, 0, 10, 5);
+
+        BarChart::new()->data([])->render($area, $buffer);
+
+        static::assertSame(' ', $buffer->get(0, 0)?->grapheme);
+        static::assertSame(' ', $buffer->get(5, 2)?->grapheme);
+    }
+
+    public function testBarColumnClipAtRight(): void
+    {
+        $buffer = new Buffer(4, 3);
+        $area = new Rect(0, 0, 4, 3);
+
+        BarChart::new()
+            ->data([['A', 1.0]])
+            ->barWidth(6)
+            ->barGap(0)
+            ->render($area, $buffer);
+
+        static::assertSame("\u{2588}", $buffer->get(3, 0)?->grapheme);
+        static::assertNull($buffer->get(4, 0));
+    }
+
+    public function testLabelClipAtRight(): void
+    {
+        $buffer = new Buffer(3, 3);
+        $area = new Rect(0, 0, 3, 3);
+
+        BarChart::new()
+            ->data([['AB', 1.0]])
+            ->barWidth(3)
+            ->barGap(0)
+            ->render($area, $buffer);
+
+        static::assertSame('A', $buffer->get(0, 2)?->grapheme);
+        static::assertSame('B', $buffer->get(1, 2)?->grapheme);
+        static::assertNull($buffer->get(3, 2));
     }
 
     public function testBarsClipWhenExceedingAreaWidth(): void
@@ -177,21 +281,5 @@ final class BarChartTest extends TestCase
 
         static::assertSame("\u{2588}", $buffer->get(0, 0)?->grapheme);
         static::assertSame("\u{2588}", $buffer->get(4, 0)?->grapheme);
-    }
-
-    public function testBarColumnClipsToAreaRight(): void
-    {
-        $buffer = new Buffer(4, 3);
-        $area = new Rect(0, 0, 4, 3);
-
-        BarChart::new()
-            ->data([['A', 1.0]])
-            ->barWidth(6)
-            ->barGap(0)
-            ->render($area, $buffer);
-
-        static::assertSame("\u{2588}", $buffer->get(0, 0)?->grapheme);
-        static::assertSame("\u{2588}", $buffer->get(3, 0)?->grapheme);
-        static::assertNull($buffer->get(4, 0));
     }
 }

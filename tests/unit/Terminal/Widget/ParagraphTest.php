@@ -175,4 +175,119 @@ final class ParagraphTest extends TestCase
         static::assertSame('字', $buffer->get(2, 0)?->grapheme);
         static::assertSame('', $buffer->get(3, 0)?->grapheme);
     }
+
+    public function testScrollClampsToZero(): void
+    {
+        $buffer = new Buffer(20, 2);
+        $area = new Rect(0, 0, 20, 2);
+
+        $paragraph = Paragraph::new([
+            Line::new([Span::raw('Line 0')]),
+            Line::new([Span::raw('Line 1')]),
+        ])->scroll(0);
+
+        $paragraph->render($area, $buffer);
+
+        static::assertSame('L', $buffer->get(0, 0)?->grapheme);
+        static::assertSame('0', $buffer->get(5, 0)?->grapheme);
+    }
+
+    public function testMaxScrollClamp(): void
+    {
+        $buffer = new Buffer(20, 3);
+        $area = new Rect(0, 0, 20, 3);
+
+        $paragraph = Paragraph::new([
+            Line::new([Span::raw('Line 0')]),
+            Line::new([Span::raw('Line 1')]),
+            Line::new([Span::raw('Line 2')]),
+        ])->scroll(100);
+
+        $paragraph->render($area, $buffer);
+
+        static::assertSame('0', $buffer->get(5, 0)?->grapheme);
+        static::assertSame('1', $buffer->get(5, 1)?->grapheme);
+        static::assertSame('2', $buffer->get(5, 2)?->grapheme);
+    }
+
+    public function testRenderClipsToBottom(): void
+    {
+        $buffer = new Buffer(20, 2);
+        $area = new Rect(0, 0, 20, 2);
+
+        $paragraph = Paragraph::new([
+            Line::new([Span::raw('Line 0')]),
+            Line::new([Span::raw('Line 1')]),
+            Line::new([Span::raw('Line 2')]),
+        ]);
+
+        $paragraph->render($area, $buffer);
+
+        static::assertSame('0', $buffer->get(5, 0)?->grapheme);
+        static::assertSame('1', $buffer->get(5, 1)?->grapheme);
+    }
+
+    public function testRightAlignmentMaxvaClamp(): void
+    {
+        $buffer = new Buffer(5, 1);
+        $area = new Rect(0, 0, 5, 1);
+
+        $paragraph = Paragraph::new([
+            Line::new([Span::raw('ABCDEF')]),
+        ])->alignment(Alignment::Right);
+
+        $paragraph->render($area, $buffer);
+
+        static::assertSame('A', $buffer->get(0, 0)?->grapheme);
+    }
+
+    public function testWideCharContinuationInParagraph(): void
+    {
+        $buffer = new Buffer(10, 1);
+        $area = new Rect(0, 0, 10, 1);
+
+        $paragraph = Paragraph::new([
+            Line::new([Span::raw('漢字')]),
+        ]);
+
+        $paragraph->render($area, $buffer);
+
+        static::assertSame('漢', $buffer->get(0, 0)?->grapheme);
+        static::assertSame('', $buffer->get(1, 0)?->grapheme);
+        static::assertSame('字', $buffer->get(2, 0)?->grapheme);
+        static::assertSame('', $buffer->get(3, 0)?->grapheme);
+        static::assertSame(' ', $buffer->get(4, 0)?->grapheme);
+    }
+
+    public function testEmptyAreaDoesNotCorruptBuffer(): void
+    {
+        $buffer = new Buffer(10, 5);
+        $buffer->set(0, 0, new \Psl\Terminal\Cell('X'));
+        $area = new Rect(0, 0, 0, 0);
+
+        $paragraph = Paragraph::new([
+            Line::new([Span::raw('Test')]),
+        ]);
+
+        $paragraph->render($area, $buffer);
+
+        static::assertSame('X', $buffer->get(0, 0)?->grapheme);
+    }
+
+    public function testTextClipsToAreaRightExact(): void
+    {
+        $buffer = new Buffer(10, 1);
+        $area = new Rect(0, 0, 3, 1);
+
+        $paragraph = Paragraph::new([
+            Line::new([Span::raw('ABCDEF')]),
+        ]);
+
+        $paragraph->render($area, $buffer);
+
+        static::assertSame('A', $buffer->get(0, 0)?->grapheme);
+        static::assertSame('B', $buffer->get(1, 0)?->grapheme);
+        static::assertSame('C', $buffer->get(2, 0)?->grapheme);
+        static::assertSame(' ', $buffer->get(3, 0)?->grapheme);
+    }
 }
