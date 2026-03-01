@@ -66,4 +66,36 @@ final class CellTest extends TestCase
 
         static::assertTrue($cell1->equals($cell2));
     }
+
+    public function testEqualsDifferentModifierCount(): void
+    {
+        $bold = Style\bold();
+
+        $cell1 = new Cell('A', modifiers: [$bold]);
+        $cell2 = new Cell('A', modifiers: []);
+
+        static::assertFalse($cell1->equals($cell2));
+    }
+
+    public function testEqualsMatchingModifiers(): void
+    {
+        $bold = Style\bold();
+        $italic = Style\italic();
+
+        $cell1 = new Cell('A', modifiers: [$bold, $italic]);
+        $cell2 = new Cell('A', modifiers: [$bold, $italic]);
+
+        static::assertTrue($cell1->equals($cell2));
+    }
+
+    public function testEqualsDifferentModifiers(): void
+    {
+        $bold = Style\bold();
+        $italic = Style\italic();
+
+        $cell1 = new Cell('A', modifiers: [$bold]);
+        $cell2 = new Cell('A', modifiers: [$italic]);
+
+        static::assertFalse($cell1->equals($cell2));
+    }
 }

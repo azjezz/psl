@@ -32,4 +32,20 @@ final class FrameTest extends TestCase
 
         static::assertSame($newRect, $frame->rect());
     }
+
+    public function testFpsDefaultsToZero(): void
+    {
+        $frame = new Frame(Rect::fromSize(80, 24), new Buffer(80, 24));
+
+        static::assertSame(0.0, $frame->fps());
+    }
+
+    public function testSetFps(): void
+    {
+        $frame = new Frame(Rect::fromSize(80, 24), new Buffer(80, 24));
+
+        $frame->setFps(59.5);
+
+        static::assertSame(59.5, $frame->fps());
+    }
 }

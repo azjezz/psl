@@ -124,6 +124,19 @@ final class LayoutTest extends TestCase
         static::assertSame(14, $top->height);
     }
 
+    public function testVerticalMinWithFillInner(): void
+    {
+        $rect = Rect::fromSize(80, 24);
+
+        [$top, $bottom] = Layout\vertical($rect, [
+            Layout\fixed(10),
+            Layout\min(5, Layout\fill()),
+        ]);
+
+        static::assertSame(10, $top->height);
+        static::assertSame(14, $bottom->height);
+    }
+
     public function testVerticalMaxWithFillInner(): void
     {
         $rect = Rect::fromSize(80, 24);
