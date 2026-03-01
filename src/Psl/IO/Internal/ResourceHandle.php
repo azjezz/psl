@@ -187,6 +187,24 @@ class ResourceHandle implements
                         return $written;
                     }
 
+                    // Retry while the fd is still making progress before suspending.
+                    // This avoids unnecessary fiber suspension when the fd is ready.
+                    while ('' !== $remaining_bytes) {
+                        $chunk = $this->tryWrite($remaining_bytes);
+                        if ($chunk === 0) {
+                            // fd not ready — must suspend and wait
+                            break;
+                        }
+
+                        $written += $chunk;
+                        $remaining_bytes = substr($remaining_bytes, $chunk);
+                    }
+
+                    /** @var int<0, max> $written */
+                    if ('' === $remaining_bytes) {
+                        return $written;
+                    }
+
                     $suspension = EventLoop::getSuspension();
                     $this->writeSuspension = $suspension;
                     EventLoop::enable($this->writeWatcher);

@@ -113,6 +113,20 @@ final readonly class Color
     }
 
     /**
+     * Returns true if this color has the same kind and values as another color.
+     */
+    public function equals(self $other): bool
+    {
+        return (
+            $this->kind === $other->kind
+            && $this->value === $other->value
+            && $this->red === $other->red
+            && $this->green === $other->green
+            && $this->blue === $other->blue
+        );
+    }
+
+    /**
      * @throws Exception\LogicException If the color is not RGB.
      */
     public function getBlue(): int

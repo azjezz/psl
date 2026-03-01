@@ -34,12 +34,13 @@ $plain = Ansi\strip("\e[1mBold\e[0m"); // "Bold"
 
 ## Design
 
-The component is organized around two sequence types that both implement `CommandInterface`:
+The component is organized around three sequence types that implement `CommandInterface`:
 
 - **`ControlSequenceIntroducer`** (CSI) — sequences starting with `\e[`, used for cursor movement, text styling (SGR), screen erasing, scrolling, and DEC private mode toggling.
 - **`OperatingSystemCommand`** (OSC) — sequences starting with `\e]`, used for setting window titles, hyperlinks, clipboard access, and desktop notifications.
+- **`ControlCharacter`** — single-byte control characters (e.g. BEL `\x07`) that don't fit the CSI or OSC format.
 
-Both are `final readonly` classes with a `toString()` method that produces the raw escape string. Functions in the component return one of these types (or a plain `string` for composed output like `apply()` and `link()`).
+All are `final readonly` classes with a `toString()` method that produces the raw escape string. Functions in the component return one of these types (or a plain `string` for composed output like `apply()` and `link()`).
 
 ## Text Styling
 
@@ -75,6 +76,7 @@ Colors are created through factory functions in the `Color` namespace and passed
 - `strip(string $text): string` — removes all ANSI escape sequences (both CSI and OSC) from text
 - `contains(string $text): bool` — checks whether text contains any ANSI escape sequences
 - `reset()` — returns the SGR reset sequence (`\e[0m`)
+- `bell()` — returns the BEL control character (`\x07`), which triggers an audible or visual alert in most terminals
 
 ## Hyperlinks
 
@@ -141,6 +143,20 @@ Screen\change_directory('/home/user');  // inform terminal of CWD (OSC 7)
 Screen\clipboard('copied text');        // set system clipboard via OSC 52
 ```
 
+### Progress Indicator (OSC 9;4)
+
+Display a progress bar in the terminal's tab or taskbar. Supported by Windows Terminal, ConEmu, Kitty, and Ghostty:
+
+```php
+use Psl\Ansi\Screen;
+
+Screen\progress(Screen\ProgressState::Normal, 50);          // 50% progress
+Screen\progress(Screen\ProgressState::Indeterminate);       // animated spinner
+Screen\progress(Screen\ProgressState::Error, 75);           // error state at 75%
+Screen\progress(Screen\ProgressState::Warning, 90);         // warning state at 90%
+Screen\progress_clear();                                    // remove progress indicator
+```
+
 ### Terminal Modes
 
 These functions toggle DEC private modes — the same mechanism used by `Cursor\hide()`/`show()` for cursor visibility.
@@ -171,6 +187,23 @@ $paste_end = Screen\bracketed_paste_end();     // "\e[201~"
 // ... detect paste boundaries when reading input ...
 
 IO\write(Screen\disable_bracketed_paste()->toString());
+```
+
+**Focus tracking** (`?1004`) — when enabled, the terminal reports focus-in (`\e[I`) and focus-out (`\e[O`) events when the window gains or loses focus:
+
+```php
+IO\write(Screen\enable_focus_tracking()->toString());
+// ... read focus events from stdin ...
+IO\write(Screen\disable_focus_tracking()->toString());
+```
+
+**Kitty keyboard protocol** — pushes enhanced keyboard reporting onto the terminal's mode stack, enabling features like key release events and modifier disambiguation:
+
+```php
+IO\write(Screen\enable_kitty_keyboard()->toString());     // flags=1 (disambiguate)
+IO\write(Screen\enable_kitty_keyboard(3)->toString());    // flags=3 (disambiguate + event types)
+// ... read enhanced key events from stdin ...
+IO\write(Screen\disable_kitty_keyboard()->toString());    // pop from mode stack
 ```
 
 ## Examples

@@ -10,7 +10,9 @@ use Psl\Ansi\ControlSequenceIntroducerKind;
 /**
  * @pure
  */
-function enable_mouse_tracking(): ControlSequenceIntroducer
+function enable_mouse_tracking(bool $motion = false): ControlSequenceIntroducer
 {
-    return new ControlSequenceIntroducer('?1000;?1006', ControlSequenceIntroducerKind::SetMode);
+    $mode = $motion ? '?1003;1006' : '?1000;1006';
+
+    return new ControlSequenceIntroducer($mode, ControlSequenceIntroducerKind::SetMode);
 }

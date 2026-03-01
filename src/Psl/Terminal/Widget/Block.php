@@ -1,0 +1,293 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\Terminal\Widget;
+
+use Psl\Ansi\Color\Color;
+use Psl\Ansi\ControlSequenceIntroducer;
+use Psl\Str;
+use Psl\Terminal\Buffer;
+use Psl\Terminal\Cell;
+use Psl\Terminal\Rect;
+
+/**
+ * A block widget that draws a border and optional title around an inner widget.
+ */
+final class Block
+{
+    private null|string $title = null;
+    private Style $titleStyle;
+    private null|Border $border = null;
+    private Padding $padding;
+    private Padding $margin;
+    private null|Color $background = null;
+
+    private function __construct()
+    {
+        $this->titleStyle = new Style();
+        $this->padding = new Padding();
+        $this->margin = new Padding();
+    }
+
+    public static function new(): self
+    {
+        return new self();
+    }
+
+    public function title(string $title): self
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * @param list<ControlSequenceIntroducer> $modifiers
+     */
+    public function titleStyle(
+        null|Color $foreground = null,
+        null|Color $background = null,
+        null|ControlSequenceIntroducer $style = null,
+        array $modifiers = [],
+    ): self {
+        if ($style !== null) {
+            $modifiers[] = $style;
+        }
+
+        $this->titleStyle = new Style($foreground, $background, $modifiers);
+
+        return $this;
+    }
+
+    public function border(null|Border $border): self
+    {
+        $this->border = $border;
+        return $this;
+    }
+
+    /**
+     * @param non-negative-int $top
+     * @param non-negative-int $right
+     * @param non-negative-int $bottom
+     * @param non-negative-int $left
+     */
+    public function padding(int $top = 0, int $right = 0, int $bottom = 0, int $left = 0): self
+    {
+        $this->padding = new Padding($top, $right, $bottom, $left);
+        return $this;
+    }
+
+    /**
+     * @param non-negative-int $top
+     * @param non-negative-int $right
+     * @param non-negative-int $bottom
+     * @param non-negative-int $left
+     */
+    public function margin(int $top = 0, int $right = 0, int $bottom = 0, int $left = 0): self
+    {
+        $this->margin = new Padding($top, $right, $bottom, $left);
+        return $this;
+    }
+
+    public function background(null|Color $background): self
+    {
+        $this->background = $background;
+        return $this;
+    }
+
+    /**
+     * Render the block with an inner widget.
+     */
+    public function render(Rect $area, WidgetInterface $inner, Buffer $buffer): void
+    {
+        if ($area->isEmpty()) {
+            return;
+        }
+
+        $borderArea = $area->inner(
+            top: $this->margin->top,
+            right: $this->margin->right,
+            bottom: $this->margin->bottom,
+            left: $this->margin->left,
+        );
+
+        if ($borderArea->isEmpty()) {
+            return;
+        }
+
+        $this->renderBorder($borderArea, $buffer);
+
+        $innerArea = $this->innerArea($area);
+        if ($innerArea->isEmpty()) {
+            return;
+        }
+
+        $inner->render($innerArea, $buffer);
+
+        $this->fillBackground($area, $buffer);
+    }
+
+    /**
+     * Calculate the inner area (area minus margin, border, and padding).
+     */
+    public function innerArea(Rect $area): Rect
+    {
+        return $area->inner(
+            top: $this->margin->top + ($this->border?->top ? 1 : 0) + $this->padding->top,
+            right: $this->margin->right + ($this->border?->right ? 1 : 0) + $this->padding->right,
+            bottom: $this->margin->bottom + ($this->border?->bottom ? 1 : 0) + $this->padding->bottom,
+            left: $this->margin->left + ($this->border?->left ? 1 : 0) + $this->padding->left,
+        );
+    }
+
+    private function fillBackground(Rect $area, Buffer $buffer): void
+    {
+        if ($this->background === null) {
+            return;
+        }
+
+        $bgArea = $area->inner(
+            top: $this->margin->top + ($this->border?->top ? 1 : 0),
+            right: $this->margin->right + ($this->border?->right ? 1 : 0),
+            bottom: $this->margin->bottom + ($this->border?->bottom ? 1 : 0),
+            left: $this->margin->left + ($this->border?->left ? 1 : 0),
+        );
+
+        for ($y = $bgArea->y; $y < $bgArea->bottom(); $y++) {
+            for ($x = $bgArea->x; $x < $bgArea->right(); $x++) {
+                $cell = $buffer->get($x, $y);
+                if ($cell !== null && $cell->background === null) {
+                    $buffer->set(
+                        $x,
+                        $y,
+                        new Cell($cell->grapheme, $cell->foreground, $this->background, $cell->modifiers),
+                    );
+                }
+            }
+        }
+    }
+
+    private function renderBorder(Rect $area, Buffer $buffer): void
+    {
+        if ($this->border === null) {
+            return;
+        }
+
+        $border = $this->border;
+        [$tl, $tr, $bl, $br, $h, $v] = $border->characters();
+        $fg = $border->color;
+
+        // Top row
+        self::renderCorner($buffer, $area->x, $area->y, $border->top, $border->left, $tl, $h, $v, $fg);
+
+        if ($border->top) {
+            for ($x = $area->x + 1; $x < ($area->right() - 1); $x++) {
+                $buffer->set($x, $area->y, new Cell($h, $fg));
+            }
+        }
+
+        if ($area->width > 1) {
+            self::renderCorner($buffer, $area->right() - 1, $area->y, $border->top, $border->right, $tr, $h, $v, $fg);
+        }
+
+        for ($y = $area->y + 1; $y < ($area->bottom() - 1); $y++) {
+            if ($border->left) {
+                $buffer->set($area->x, $y, new Cell($v, $fg));
+            }
+
+            if ($border->right && $area->width > 1) {
+                $buffer->set($area->right() - 1, $y, new Cell($v, $fg));
+            }
+        }
+
+        if ($area->height > 1) {
+            self::renderCorner(
+                $buffer,
+                $area->x,
+                $area->bottom() - 1,
+                $border->bottom,
+                $border->left,
+                $bl,
+                $h,
+                $v,
+                $fg,
+            );
+
+            if ($border->bottom) {
+                for ($x = $area->x + 1; $x < ($area->right() - 1); $x++) {
+                    $buffer->set($x, $area->bottom() - 1, new Cell($h, $fg));
+                }
+            }
+
+            if ($area->width > 1) {
+                self::renderCorner(
+                    $buffer,
+                    $area->right() - 1,
+                    $area->bottom() - 1,
+                    $border->bottom,
+                    $border->right,
+                    $br,
+                    $h,
+                    $v,
+                    $fg,
+                );
+            }
+        }
+
+        if ($this->title !== null && $border->top && $area->width > 2) {
+            $this->renderTitle($area, $buffer);
+        }
+    }
+
+    private static function renderCorner(
+        Buffer $buffer,
+        int $x,
+        int $y,
+        bool $sideH,
+        bool $sideV,
+        string $corner,
+        string $h,
+        string $v,
+        null|Color $fg,
+    ): void {
+        if ($sideH && $sideV) {
+            $buffer->set($x, $y, new Cell($corner, $fg));
+            return;
+        }
+
+        if ($sideH) {
+            $buffer->set($x, $y, new Cell($h, $fg));
+            return;
+        }
+
+        if ($sideV) {
+            $buffer->set($x, $y, new Cell($v, $fg));
+        }
+    }
+
+    private function renderTitle(Rect $area, Buffer $buffer): void
+    {
+        /** @var non-negative-int $maxTitleWidth */
+        $maxTitleWidth = $area->width - 2;
+        /** @var string $title */
+        $title = $this->title;
+        $titleText = Str\width($title) > $maxTitleWidth ? Str\width_slice($title, 0, $maxTitleWidth) : $title;
+
+        $titleFg = $this->titleStyle->foreground;
+        $titleBg = $this->titleStyle->background;
+        $titleMods = $this->titleStyle->modifiers;
+
+        $titleCodepoints = Str\length($titleText);
+        $col = 0;
+        for ($i = 0; $i < $titleCodepoints; $i++) {
+            $char = Str\slice($titleText, $i, 1);
+            $charWidth = Str\width($char);
+            $buffer->set($area->x + 1 + $col, $area->y, new Cell($char, $titleFg, $titleBg, $titleMods));
+            for ($w = 1; $w < $charWidth; $w++) {
+                $buffer->set($area->x + 1 + $col + $w, $area->y, new Cell('', $titleFg, $titleBg, $titleMods));
+            }
+
+            $col += $charWidth;
+        }
+    }
+}
