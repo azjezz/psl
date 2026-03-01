@@ -342,6 +342,24 @@ final class ScreenTest extends TestCase
         static::assertSame("\e[<u", $sequence->toString());
     }
 
+    public function testEnableInBandResize(): void
+    {
+        $sequence = Screen\enable_in_band_resize();
+
+        static::assertSame('?2048', $sequence->parameters);
+        static::assertSame(ControlSequenceIntroducerKind::SetMode, $sequence->kind);
+        static::assertSame("\e[?2048h", $sequence->toString());
+    }
+
+    public function testDisableInBandResize(): void
+    {
+        $sequence = Screen\disable_in_band_resize();
+
+        static::assertSame('?2048', $sequence->parameters);
+        static::assertSame(ControlSequenceIntroducerKind::ResetMode, $sequence->kind);
+        static::assertSame("\e[?2048l", $sequence->toString());
+    }
+
     public function testBell(): void
     {
         $bell = Ansi\bell();
