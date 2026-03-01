@@ -6,6 +6,9 @@ namespace Psl\Tests\Unit\Terminal;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Ansi\Color;
+use Psl\Ansi\Style;
+use Psl\IO;
+use Psl\Str;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Cell;
 
@@ -110,5 +113,124 @@ final class BufferTest extends TestCase
         static::assertSame(10, $buffer->getWidth());
         static::assertSame(8, $buffer->getHeight());
         static::assertSame(' ', $buffer->get(0, 0)?->grapheme);
+    }
+
+    public function testSetStringOutOfBoundsY(): void
+    {
+        $buffer = new Buffer(10, 5);
+
+        $buffer->setString(0, -1, 'Hello');
+        $buffer->setString(0, 5, 'Hello');
+
+        static::assertSame(' ', $buffer->get(0, 0)?->grapheme);
+    }
+
+    public function testSetStringWideCharacter(): void
+    {
+        $buffer = new Buffer(10, 1);
+        $buffer->setString(0, 0, '漢字');
+
+        static::assertSame('漢', $buffer->get(0, 0)?->grapheme);
+        static::assertSame('', $buffer->get(1, 0)?->grapheme);
+        static::assertSame('字', $buffer->get(2, 0)?->grapheme);
+        static::assertSame('', $buffer->get(3, 0)?->grapheme);
+    }
+
+    public function testFlushWritesAllCellsOnFirstCall(): void
+    {
+        $buffer = new Buffer(3, 1);
+        $buffer->setString(0, 0, 'Hi');
+
+        $output = new IO\MemoryHandle();
+        $buffer->flush($output);
+
+        $written = $output->getBuffer();
+
+        static::assertStringContainsString('H', $written);
+        static::assertStringContainsString('i', $written);
+    }
+
+    public function testFlushSkipsUnchangedCells(): void
+    {
+        $buffer = new Buffer(3, 1);
+        $buffer->setString(0, 0, 'AB');
+
+        $output = new IO\MemoryHandle();
+
+        $buffer->flush($output);
+        $firstLen = Str\Byte\length($output->getBuffer());
+
+        $buffer->set(0, 0, new Cell('X'));
+        $buffer->flush($output);
+
+        $secondWrite = Str\Byte\slice($output->getBuffer(), $firstLen);
+
+        static::assertStringContainsString('X', $secondWrite);
+        static::assertStringNotContainsString('B', $secondWrite);
+    }
+
+    public function testFlushWritesNothingWhenUnchanged(): void
+    {
+        $buffer = new Buffer(3, 1);
+        $buffer->setString(0, 0, 'AB');
+
+        $output = new IO\MemoryHandle();
+        $buffer->flush($output);
+
+        $afterFirst = Str\Byte\length($output->getBuffer());
+
+        $buffer->flush($output);
+
+        static::assertSame($afterFirst, Str\Byte\length($output->getBuffer()));
+    }
+
+    public function testFlushWithForegroundAndBackground(): void
+    {
+        $buffer = new Buffer(1, 1);
+        $fg = Color\red();
+        $bg = Color\blue();
+        $buffer->set(0, 0, new Cell('X', $fg, $bg));
+
+        $output = new IO\MemoryHandle();
+        $buffer->flush($output);
+
+        $written = $output->getBuffer();
+
+        static::assertStringContainsString('X', $written);
+        static::assertStringContainsString("\e[", $written);
+    }
+
+    public function testFlushWithModifiers(): void
+    {
+        $buffer = new Buffer(1, 1);
+        $bold = Style\bold();
+        $buffer->set(0, 0, new Cell('B', modifiers: [$bold]));
+
+        $output = new IO\MemoryHandle();
+        $buffer->flush($output);
+
+        $written = $output->getBuffer();
+
+        static::assertStringContainsString('B', $written);
+        static::assertStringContainsString("\e[", $written);
+    }
+
+    public function testResizeClearsPreviousForFullRedraw(): void
+    {
+        $buffer = new Buffer(3, 1);
+        $buffer->setString(0, 0, 'AB');
+
+        $output = new IO\MemoryHandle();
+        $buffer->flush($output);
+        $buffer->resize(3, 1);
+        $buffer->setString(0, 0, 'AB');
+
+        $afterResize = Str\Byte\length($output->getBuffer());
+        $buffer->flush($output);
+
+        $redrawWrite = Str\Byte\slice($output->getBuffer(), $afterResize);
+
+        static::assertStringContainsString('A', $redrawWrite);
+        static::assertStringContainsString('B', $redrawWrite);
     }
 }
