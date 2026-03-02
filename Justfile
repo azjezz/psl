@@ -46,6 +46,9 @@ coverage:
 docs:
     php docs/generate.php
 
+docs-serve: docs
+    php -S localhost:8000 -t docs/dist
+
 docs-test:
     php docs/test-examples.php
 
