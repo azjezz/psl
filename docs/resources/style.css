@@ -111,6 +111,29 @@ a:hover {
 #search:focus { background: var(--subtle); }
 #search::placeholder { color: var(--muted); }
 
+#version-select {
+    width: 100%;
+    padding: 0.4rem 0.6rem;
+    border: var(--border);
+    background: var(--bg);
+    color: var(--fg);
+    font-family: inherit;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+#version-select:hover {
+    background: var(--fg);
+    color: var(--bg);
+}
+
 #theme-toggle {
     width: 100%;
     padding: 0.4rem 0.6rem;
@@ -243,6 +266,8 @@ article blockquote {
     background: var(--subtle);
     font-size: 0.85rem;
 }
+
+blockquote p { margin: 0; }
 
 article table {
     width: 100%;

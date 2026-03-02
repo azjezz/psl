@@ -256,7 +256,36 @@ function render() {
     observe_fade_ins();
 }
 
+function init_version_switcher() {
+    const select = document.getElementById("version-select");
+    const option = document.createElement("option");
+    option.value = CURRENT_VERSION;
+    option.textContent = CURRENT_VERSION;
+    option.selected = true;
+    select.appendChild(option);
+
+    fetch("/versions.json")
+        .then((r) => r.ok ? r.json() : Promise.reject())
+        .then((data) => {
+            select.innerHTML = "";
+            for (const version of data.versions) {
+                const opt = document.createElement("option");
+                opt.value = version;
+                opt.textContent = version;
+                opt.selected = version === CURRENT_VERSION;
+                select.appendChild(opt);
+            }
+        })
+        .catch(() => {});
+
+    select.addEventListener("change", () => {
+        const hash = location.hash.slice(1);
+        location.href = "/" + select.value + "/" + (hash ? "#" + hash : "");
+    });
+}
+
 init_theme();
+init_version_switcher();
 build_nav();
 
 document.getElementById("search").addEventListener("input", (e) => filter_nav(e.target.value));

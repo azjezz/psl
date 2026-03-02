@@ -129,6 +129,7 @@ Async\main(static function (): int {
     $template = File\read(RESOURCES_DIR . '/template.html');
 
     $html = Str\replace($template, '{{CSS}}', $css);
+    $html = Str\replace($html, '{{VERSION}}', $gitRef);
     $html = Str\replace($html, '{{DOCS}}', $docsJson);
     $html = Str\replace($html, '{{CATEGORIES}}', $categoriesJson);
     $html = Str\replace($html, '{{TITLES}}', $titlesJson);

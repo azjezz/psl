@@ -22,6 +22,14 @@ The key distinction is between `assert` (strict -- value must already match) and
 
 Your static analyzer fully understands the types provided by this component, but requires a plugin:
 
+- **Mago**: enable `psl` plugin in your `mago.toml`:
+
+```toml
+[analyzer]
+plugins = ["psl"]
+...
+```
+
 - **Psalm**: see [`php-standard-library/psalm-plugin`](https://github.com/php-standard-library/psalm-plugin)
 - **PHPStan**: see [`php-standard-library/phpstan-extension`](https://github.com/php-standard-library/phpstan-extension)
 
