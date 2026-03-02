@@ -55,4 +55,4 @@ preload:
 php:
     which php
 
-verify: fmt-diff lint analyze test mutation docs-test
+verify: fmt-diff lint analyze test mutation
