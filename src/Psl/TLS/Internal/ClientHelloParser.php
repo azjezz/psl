@@ -44,7 +44,7 @@ final class ClientHelloParser
             return null;
         }
 
-        // Handshake Header — offset 5 is safe since $len >= 43
+        // Handshake Header - offset 5 is safe since $len >= 43
         $handshake_type = ord($data[5]);
         if ($handshake_type !== 1) {
             // Not a ClientHello
@@ -95,7 +95,7 @@ final class ClientHelloParser
 
         // Extensions (2-byte length prefix)
         if (($offset + 2) > $len) {
-            // No extensions — valid but no SNI/ALPN
+            // No extensions; valid but no SNI/ALPN
             return ['server_name' => null, 'alpn_protocols' => null];
         }
 

@@ -104,7 +104,7 @@ final class Application
      * your own input/output streams, or for testing where you want full
      * control over the terminal environment.
      *
-     * Raw mode is not managed — the caller is responsible for it.
+     * Raw mode is not managed; the caller is responsible for it.
      * Signal handlers (SIGWINCH, SIGINT) are not registered; ctrl+c
      * is handled via the input stream parser instead.
      *

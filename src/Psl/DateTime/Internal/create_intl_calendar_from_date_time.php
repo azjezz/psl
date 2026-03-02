@@ -13,8 +13,6 @@ use Psl\DateTime\Timezone;
  * @psalm-mutation-free
  *
  * @infection-ignore-all
- *
- * @mago-expect lint:no-else-clause
  */
 function create_intl_calendar_from_date_time(
     Timezone $timezone,

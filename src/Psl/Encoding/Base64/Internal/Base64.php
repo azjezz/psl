@@ -21,8 +21,6 @@ use function unpack;
  * Copyright (c) 2016 - 2022 Paragon Initiative Enterprises
  *
  * @internal
- *
- * @mago-expect lint:no-else-clause
  */
 abstract class Base64
 {

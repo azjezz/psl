@@ -19,8 +19,6 @@ use Throwable;
  * @template T
  *
  * @extends Psl\Promise\PromiseInterface<T>
- *
- * @mago-expect strictness/require-return-type - Adding a return type would break the interface
  */
 interface ResultInterface extends Psl\Promise\PromiseInterface
 {

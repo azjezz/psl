@@ -23,8 +23,6 @@ use function count;
  * @template Tout
  *
  * @see KeyedSemaphore
- *
- * @mago-expect lint:no-else-clause
  */
 final class KeyedSequence
 {

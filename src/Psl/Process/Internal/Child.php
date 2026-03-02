@@ -134,7 +134,7 @@ final class Child implements ChildInterface
         $this->stdin?->close();
         $this->stdin = null;
 
-        // Close stdout/stderr to avoid deadlock — unread data is discarded.
+        // Close stdout/stderr to avoid deadlock; unread data is discarded.
         $this->stdout?->close();
         $this->stdout = null;
         $this->stderr?->close();

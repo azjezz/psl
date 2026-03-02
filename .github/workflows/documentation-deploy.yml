@@ -1,0 +1,137 @@
+name: "documentation deploy"
+
+on:
+  push:
+    branches:
+      - "next"
+    tags:
+      - "*"
+
+permissions:
+  contents: "write"
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    name: "build and deploy"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "checkout"
+        uses: "actions/checkout@v6"
+
+      - name: "installing PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "8.5"
+          ini-values: memory_limit=-1
+          tools: composer:v2
+          extensions: bcmath, mbstring, intl, sodium, json
+
+      - name: "installing just"
+        uses: "extractions/setup-just@v3"
+
+      - name: "installing dependencies"
+        run: just install
+
+      - name: "determine version"
+        id: "version"
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            echo "version=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+            echo "is_tag=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "version=next" >> "$GITHUB_OUTPUT"
+            echo "is_tag=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: "generating documentation"
+        run: just docs
+        env:
+          GITHUB_REF_NAME: "${{ steps.version.outputs.version }}"
+
+      - name: "checkout gh-pages"
+        uses: "actions/checkout@v6"
+        with:
+          ref: "gh-pages"
+          path: "gh-pages"
+        continue-on-error: true
+
+      - name: "initialize gh-pages if needed"
+        run: |
+          if [ ! -d "gh-pages/.git" ]; then
+            mkdir -p gh-pages
+            cd gh-pages
+            git init -b gh-pages
+          fi
+
+      - name: "deploy versioned docs"
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          IS_TAG="${{ steps.version.outputs.is_tag }}"
+
+          mkdir -p "gh-pages/${VERSION}"
+          cp docs/dist/index.html "gh-pages/${VERSION}/index.html"
+
+          rm -rf gh-pages/assets
+          cp -r docs/dist/assets gh-pages/assets
+
+          # Update versions.json
+          cd gh-pages
+          if [ -f versions.json ]; then
+            MANIFEST=$(cat versions.json)
+          else
+            MANIFEST='{"latest":null,"versions":[]}'
+          fi
+
+          MANIFEST=$(echo "$MANIFEST" | php -r '
+            $m = json_decode(file_get_contents("php://stdin"), true);
+            $version = getenv("VERSION");
+            $isTag = getenv("IS_TAG") === "true";
+            if (!in_array($version, $m["versions"], true)) {
+              $m["versions"][] = $version;
+            }
+            if ($isTag) {
+              $m["latest"] = $version;
+            }
+            // Sort: "next" first, then tags in reverse order
+            usort($m["versions"], function($a, $b) {
+              if ($a === "next") return -1;
+              if ($b === "next") return 1;
+              return version_compare($b, $a);
+            });
+            echo json_encode($m, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+          ')
+          echo "$MANIFEST" > versions.json
+
+          # Generate root index.html redirect
+          LATEST=$(echo "$MANIFEST" | php -r '
+            $m = json_decode(file_get_contents("php://stdin"), true);
+            echo $m["latest"] ?? "next";
+          ')
+          cat > index.html <<REDIRECT
+          <!DOCTYPE html>
+          <html>
+          <head><meta http-equiv="refresh" content="0;url=/${LATEST}/"></head>
+          <body>Redirecting to <a href="/${LATEST}/">/${LATEST}/</a></body>
+          </html>
+          REDIRECT
+
+          # Ensure Jekyll is disabled
+          touch .nojekyll
+        env:
+          VERSION: "${{ steps.version.outputs.version }}"
+          IS_TAG: "${{ steps.version.outputs.is_tag }}"
+
+      - name: "commit and push gh-pages"
+        run: |
+          cd gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          git commit -m "deploy: ${{ steps.version.outputs.version }}"
+          git remote set-url origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
+          git push origin gh-pages --force

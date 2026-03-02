@@ -12,22 +12,22 @@ namespace Psl\Ansi\Screen;
 enum ProgressState: int
 {
     /**
-     * Normal progress — displays a standard progress bar.
+     * Normal progress: displays a standard progress bar.
      */
     case Normal = 1;
 
     /**
-     * Error — displays the progress bar in an error state (typically red).
+     * Error: displays the progress bar in an error state (typically red).
      */
     case Error = 2;
 
     /**
-     * Indeterminate — displays an animated progress indicator with no specific percentage.
+     * Indeterminate: displays an animated progress indicator with no specific percentage.
      */
     case Indeterminate = 3;
 
     /**
-     * Warning — displays the progress bar in a warning/paused state (typically yellow).
+     * Warning: displays the progress bar in a warning/paused state (typically yellow).
      */
     case Warning = 4;
 }

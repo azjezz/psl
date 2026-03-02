@@ -44,10 +44,10 @@ coverage:
     php -dmemory_limit=-1 ./vendor/bin/php-coveralls -x var/clover.xml -o var/coveralls-upload.json -v
 
 docs:
-    php docs/documenter.php
+    php docs/generate.php
 
-docs-check:
-    php docs/documenter.php check
+docs-serve: docs
+    php -S localhost:8000 -t docs/dist
 
 preload:
     php src/preload.php
@@ -55,4 +55,4 @@ preload:
 php:
     which php
 
-verify: fmt-diff lint analyze test mutation docs-check
+verify: fmt-diff lint analyze test mutation

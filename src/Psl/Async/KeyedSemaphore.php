@@ -25,8 +25,6 @@ use function count;
  * @template Tk of array-key
  * @template Tin
  * @template Tout
- *
- * @mago-expect lint:no-else-clause
  */
 final class KeyedSemaphore
 {

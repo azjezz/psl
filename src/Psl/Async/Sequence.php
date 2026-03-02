@@ -20,8 +20,6 @@ use function array_slice;
  * @template Tout
  *
  * @see Semaphore
- *
- * @mago-expect lint:no-else-clause
  */
 final class Sequence
 {
