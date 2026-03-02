@@ -65,6 +65,7 @@ jobs:
             mkdir -p gh-pages
             cd gh-pages
             git init -b gh-pages
+            git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
           fi
 
       - name: "deploy versioned docs"
@@ -133,5 +134,6 @@ jobs:
           git add -A
           git diff --cached --quiet && echo "No changes to commit" && exit 0
           git commit -m "deploy: ${{ steps.version.outputs.version }}"
-          git remote set-url origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
-          git push origin gh-pages --force
+          git remote set-url origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" 2>/dev/null \
+            || git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
+          git push origin HEAD:gh-pages --force
