@@ -571,7 +571,6 @@ final class Loader
         'Psl\\Shell\\execute' => 'Psl/Shell/execute.php',
         'Psl\\Shell\\unpack' => 'Psl/Shell/unpack.php',
         'Psl\\Shell\\stream_unpack' => 'Psl/Shell/stream_unpack.php',
-        'Psl\\Shell\\Internal\\escape_argument' => 'Psl/Shell/Internal/escape_argument.php',
         'Psl\\Html\\encode' => 'Psl/Html/encode.php',
         'Psl\\Html\\encode_special_characters' => 'Psl/Html/encode_special_characters.php',
         'Psl\\Html\\decode' => 'Psl/Html/decode.php',
