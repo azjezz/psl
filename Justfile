@@ -49,9 +49,6 @@ docs:
 docs-serve: docs
     php -S localhost:8000 -t docs/dist
 
-docs-test:
-    php docs/test-examples.php
-
 preload:
     php src/preload.php
 
