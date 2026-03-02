@@ -15,9 +15,9 @@ function link(string $text, string $url, ControlSequenceIntroducer ...$styles): 
 {
     foreach ($styles as $style) {
         if ($style->kind !== ControlSequenceIntroducerKind::SelectGraphicRendition) {
-            throw new Exception\InvalidArgumentException('Only SelectGraphicRendition sequences can be applied to text, got '
-            . $style->kind->name
-            . '.');
+            throw new Exception\InvalidArgumentException(
+                'Only SelectGraphicRendition sequences can be applied to text, got ' . $style->kind->name . '.',
+            );
         }
     }
 

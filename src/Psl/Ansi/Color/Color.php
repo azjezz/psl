@@ -35,9 +35,9 @@ final readonly class Color
     public static function ansi256(int $code): self
     {
         if ($code < 0 || $code > 255) {
-            throw new Exception\InvalidArgumentException('Expected an ANSI-256 color code between 0 and 255, got '
-            . $code
-            . '.');
+            throw new Exception\InvalidArgumentException(
+                'Expected an ANSI-256 color code between 0 and 255, got ' . $code . '.',
+            );
         }
 
         return new self(ColorKind::Ansi256, $code, 0, 0, 0);
@@ -55,15 +55,15 @@ final readonly class Color
         }
 
         if ($green < 0 || $green > 255) {
-            throw new Exception\InvalidArgumentException('Expected green component between 0 and 255, got '
-            . $green
-            . '.');
+            throw new Exception\InvalidArgumentException(
+                'Expected green component between 0 and 255, got ' . $green . '.',
+            );
         }
 
         if ($blue < 0 || $blue > 255) {
-            throw new Exception\InvalidArgumentException('Expected blue component between 0 and 255, got '
-            . $blue
-            . '.');
+            throw new Exception\InvalidArgumentException(
+                'Expected blue component between 0 and 255, got ' . $blue . '.',
+            );
         }
 
         return new self(ColorKind::Rgb, 0, $red, $green, $blue);

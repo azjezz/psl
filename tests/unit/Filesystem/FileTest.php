@@ -59,9 +59,9 @@ final class FileTest extends AbstractFilesystemTestCase
         $prefix = Str\join(['a', 'b'], Filesystem\SEPARATOR);
 
         $this->expectException(Filesystem\Exception\InvalidArgumentException::class);
-        $this->expectExceptionMessage('$prefix should not contain a directory separator ( "'
-        . Filesystem\SEPARATOR
-        . '" ).');
+        $this->expectExceptionMessage(
+            '$prefix should not contain a directory separator ( "' . Filesystem\SEPARATOR . '" ).',
+        );
 
         Filesystem\create_temporary_file($this->directory, $prefix);
     }
