@@ -168,6 +168,68 @@ interface DateTimeInterface extends TemporalInterface
     public function withNanoseconds(int $nanoseconds): static;
 
     /**
+     * Returns a new instance representing the start of the same day (00:00:00.000000000).
+     *
+     * @psalm-mutation-free
+     */
+    public function atStartOfDay(): static;
+
+    /**
+     * Returns a new instance representing the end of the same day (23:59:59.999999999).
+     *
+     * @psalm-mutation-free
+     */
+    public function atEndOfDay(): static;
+
+    /**
+     * Returns a new instance representing the start of the current month (1st day at 00:00:00.000000000).
+     *
+     * @psalm-mutation-free
+     */
+    public function atStartOfMonth(): static;
+
+    /**
+     * Returns a new instance representing the end of the current month (last day at 23:59:59.999999999).
+     *
+     * @psalm-mutation-free
+     */
+    public function atEndOfMonth(): static;
+
+    /**
+     * Returns a new instance representing the start of the current year (January 1st at 00:00:00.000000000).
+     *
+     * @psalm-mutation-free
+     */
+    public function atStartOfYear(): static;
+
+    /**
+     * Returns a new instance representing the end of the current year (December 31st at 23:59:59.999999999).
+     *
+     * @psalm-mutation-free
+     */
+    public function atEndOfYear(): static;
+
+    /**
+     * Returns a new instance representing the start of the current ISO week (Monday at 00:00:00.000000000).
+     *
+     * @throws Exception\UnderflowException If the operation results in an arithmetic underflow.
+     * @throws Exception\OverflowException If the operation results in an arithmetic overflow.
+     *
+     * @psalm-mutation-free
+     */
+    public function atStartOfWeek(): static;
+
+    /**
+     * Returns a new instance representing the end of the current ISO week (Sunday at 23:59:59.999999999).
+     *
+     * @throws Exception\UnderflowException If the operation results in an arithmetic underflow.
+     * @throws Exception\OverflowException If the operation results in an arithmetic overflow.
+     *
+     * @psalm-mutation-free
+     */
+    public function atEndOfWeek(): static;
+
+    /**
      * Returns the date (year, month, day).
      *
      * @return array{int, int<1, 12>, int<1, 31>} The date.
@@ -355,6 +417,15 @@ interface DateTimeInterface extends TemporalInterface
     public function getISOWeekNumber(): array;
 
     /**
+     * Returns the day of the year (1–366).
+     *
+     * @return int<1, 366>
+     *
+     * @psalm-mutation-free
+     */
+    public function getDayOfYear(): int;
+
+    /**
      * Gets the weekday of the date.
      *
      * @return Weekday The weekday.
@@ -373,8 +444,7 @@ interface DateTimeInterface extends TemporalInterface
     /**
      * Adds the specified years to this date-time object, returning a new instance with the added years.
      *
-     * @throws Exception\UnderflowException If adding the years results in an arithmetic underflow.
-     * @throws Exception\OverflowException If adding the years results in an arithmetic overflow.
+     * @throws Exception\UnexpectedValueException If adding the years results in an invalid date.
      *
      * @psalm-mutation-free
      */
@@ -383,12 +453,21 @@ interface DateTimeInterface extends TemporalInterface
     /**
      * Adds the specified months to this date-time object, returning a new instance with the added months.
      *
-     * @throws Exception\UnderflowException If adding the months results in an arithmetic underflow.
-     * @throws Exception\OverflowException If adding the months results in an arithmetic overflow.
+     * @throws Exception\UnexpectedValueException If adding the months results in an invalid date.
      *
      * @psalm-mutation-free
      */
     public function plusMonths(int $months): static;
+
+    /**
+     * Adds the specified weeks to this date-time object, returning a new instance with the added weeks.
+     *
+     * @throws Exception\UnderflowException If adding the weeks results in an arithmetic underflow.
+     * @throws Exception\OverflowException If adding the weeks results in an arithmetic overflow.
+     *
+     * @psalm-mutation-free
+     */
+    public function plusWeeks(int $weeks): static;
 
     /**
      * Adds the specified days to this date-time object, returning a new instance with the added days.
@@ -403,8 +482,7 @@ interface DateTimeInterface extends TemporalInterface
     /**
      * Subtracts the specified years from this date-time object, returning a new instance with the subtracted years.
      *
-     * @throws Exception\UnderflowException If subtracting the years results in an arithmetic underflow.
-     * @throws Exception\OverflowException If subtracting the years results in an arithmetic overflow.
+     * @throws Exception\UnexpectedValueException If subtracting the years results in an invalid date.
      *
      * @psalm-mutation-free
      */
@@ -413,12 +491,21 @@ interface DateTimeInterface extends TemporalInterface
     /**
      * Subtracts the specified months from this date-time object, returning a new instance with the subtracted months.
      *
-     * @throws Exception\UnderflowException If subtracting the months results in an arithmetic underflow.
-     * @throws Exception\OverflowException If subtracting the months results in an arithmetic overflow.
+     * @throws Exception\UnexpectedValueException If subtracting the months results in an invalid date.
      *
      * @psalm-mutation-free
      */
     public function minusMonths(int $months): static;
+
+    /**
+     * Subtracts the specified weeks from this date-time object, returning a new instance with the subtracted weeks.
+     *
+     * @throws Exception\UnderflowException If subtracting the weeks results in an arithmetic underflow.
+     * @throws Exception\OverflowException If subtracting the weeks results in an arithmetic overflow.
+     *
+     * @psalm-mutation-free
+     */
+    public function minusWeeks(int $weeks): static;
 
     /**
      * Subtracts the specified days from this date-time object, returning a new instance with the subtracted days.

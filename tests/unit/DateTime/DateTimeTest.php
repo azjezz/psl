@@ -16,6 +16,7 @@ use Psl\DateTime\Exception\UnexpectedValueException;
 use Psl\DateTime\FormatPattern;
 use Psl\DateTime\Meridiem;
 use Psl\DateTime\Month;
+use Psl\DateTime\Period;
 use Psl\DateTime\TimeStyle;
 use Psl\DateTime\Timezone;
 use Psl\DateTime\Weekday;
@@ -166,7 +167,7 @@ final class DateTimeTest extends TestCase
                 0,
             ],
             [
-                'Unexpected seconds value encountered. Provided "59", but the calendar expects "-1". Ensure the seconds are correct and within the 0-59 range.',
+                'Unexpected seconds value encountered. Provided "-1", but the calendar expects "59". Ensure the seconds are correct and within the 0-59 range.',
                 2024,
                 1,
                 1,
@@ -297,8 +298,13 @@ final class DateTimeTest extends TestCase
 
     public function testGetCentury(): void
     {
+        static::assertSame(1, DateTime::fromParts(Timezone::default(), 1, Month::January, 1)->getCentury());
+        static::assertSame(1, DateTime::fromParts(Timezone::default(), 100, Month::January, 1)->getCentury());
+        static::assertSame(2, DateTime::fromParts(Timezone::default(), 101, Month::January, 1)->getCentury());
         static::assertSame(20, DateTime::fromParts(Timezone::default(), 1999, Month::February, 4, 14)->getCentury());
-        static::assertSame(21, DateTime::fromParts(Timezone::default(), 2000, Month::February, 4, 14)->getCentury());
+        static::assertSame(20, DateTime::fromParts(Timezone::default(), 2000, Month::February, 4, 14)->getCentury());
+        static::assertSame(21, DateTime::fromParts(Timezone::default(), 2001, Month::January, 1)->getCentury());
+        static::assertSame(21, DateTime::fromParts(Timezone::default(), 2100, Month::January, 1)->getCentury());
     }
 
     public static function provideTwelveHours(): iterable
@@ -948,5 +954,296 @@ final class DateTimeTest extends TestCase
 
         static::assertSame(2023, $result->getYear());
         static::assertSame(10, $result->getMonth());
+    }
+
+    public function testPlusPeriod(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 1, 31, 12, 0, 0);
+
+        // Adding 1 month to Jan 31 should clamp to Feb 28
+        $result = $dt->plus(Period::months(1));
+
+        static::assertSame(2025, $result->getYear());
+        static::assertSame(2, $result->getMonth());
+        static::assertSame(28, $result->getDay());
+        static::assertSame(12, $result->getHours());
+    }
+
+    public function testPlusPeriodWithDays(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 1, 1, 0, 0, 0);
+
+        $result = $dt->plus(Period::fromParts(1, 2, 15));
+
+        static::assertSame(2026, $result->getYear());
+        static::assertSame(3, $result->getMonth());
+        static::assertSame(16, $result->getDay());
+    }
+
+    public function testMinusPeriod(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 3, 31, 12, 0, 0);
+
+        // Subtracting 1 month from Mar 31 should clamp to Feb 28
+        $result = $dt->minus(Period::months(1));
+
+        static::assertSame(2025, $result->getYear());
+        static::assertSame(2, $result->getMonth());
+        static::assertSame(28, $result->getDay());
+    }
+
+    public function testPlusWeeks(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 1, 1, 12, 0, 0);
+
+        $result = $dt->plusWeeks(2);
+
+        static::assertSame(2025, $result->getYear());
+        static::assertSame(1, $result->getMonth());
+        static::assertSame(15, $result->getDay());
+        static::assertSame(12, $result->getHours());
+    }
+
+    public function testMinusWeeks(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 1, 15, 12, 0, 0);
+
+        $result = $dt->minusWeeks(2);
+
+        static::assertSame(2025, $result->getYear());
+        static::assertSame(1, $result->getMonth());
+        static::assertSame(1, $result->getDay());
+    }
+
+    public function testGetDayOfYear(): void
+    {
+        $jan1 = DateTime::fromParts(Timezone::UTC, 2025, 1, 1);
+        static::assertSame(1, $jan1->getDayOfYear());
+
+        $feb1 = DateTime::fromParts(Timezone::UTC, 2025, 2, 1);
+        static::assertSame(32, $feb1->getDayOfYear());
+
+        $dec31 = DateTime::fromParts(Timezone::UTC, 2025, 12, 31);
+        static::assertSame(365, $dec31->getDayOfYear());
+
+        // Leap year
+        $dec31Leap = DateTime::fromParts(Timezone::UTC, 2024, 12, 31);
+        static::assertSame(366, $dec31Leap->getDayOfYear());
+    }
+
+    public function testAtStartOfDay(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 6, 15, 14, 30, 45, 123_456_789);
+        $start = $dt->atStartOfDay();
+
+        static::assertSame(2025, $start->getYear());
+        static::assertSame(6, $start->getMonth());
+        static::assertSame(15, $start->getDay());
+        static::assertSame(0, $start->getHours());
+        static::assertSame(0, $start->getMinutes());
+        static::assertSame(0, $start->getSeconds());
+        static::assertSame(0, $start->getNanoseconds());
+    }
+
+    public function testAtEndOfDay(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 6, 15, 14, 30, 45, 0);
+        $end = $dt->atEndOfDay();
+
+        static::assertSame(2025, $end->getYear());
+        static::assertSame(6, $end->getMonth());
+        static::assertSame(15, $end->getDay());
+        static::assertSame(23, $end->getHours());
+        static::assertSame(59, $end->getMinutes());
+        static::assertSame(59, $end->getSeconds());
+        static::assertSame(999_999_999, $end->getNanoseconds());
+    }
+
+    public function testAtStartOfMonth(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 6, 15, 14, 30, 45, 123_456_789);
+        $start = $dt->atStartOfMonth();
+
+        static::assertSame(2025, $start->getYear());
+        static::assertSame(6, $start->getMonth());
+        static::assertSame(1, $start->getDay());
+        static::assertSame(0, $start->getHours());
+        static::assertSame(0, $start->getMinutes());
+        static::assertSame(0, $start->getSeconds());
+        static::assertSame(0, $start->getNanoseconds());
+    }
+
+    public function testAtEndOfMonth(): void
+    {
+        // June has 30 days
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 6, 15, 14, 30, 45, 0);
+        $end = $dt->atEndOfMonth();
+
+        static::assertSame(2025, $end->getYear());
+        static::assertSame(6, $end->getMonth());
+        static::assertSame(30, $end->getDay());
+        static::assertSame(23, $end->getHours());
+        static::assertSame(59, $end->getMinutes());
+        static::assertSame(59, $end->getSeconds());
+        static::assertSame(999_999_999, $end->getNanoseconds());
+    }
+
+    public function testAtEndOfMonthFebruary(): void
+    {
+        // Non-leap year: February has 28 days
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 2, 10);
+        $end = $dt->atEndOfMonth();
+
+        static::assertSame(28, $end->getDay());
+
+        // Leap year: February has 29 days
+        $dt = DateTime::fromParts(Timezone::UTC, 2024, 2, 10);
+        $end = $dt->atEndOfMonth();
+
+        static::assertSame(29, $end->getDay());
+    }
+
+    public function testAtEndOfMonthDecember(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 12, 1);
+        $end = $dt->atEndOfMonth();
+
+        static::assertSame(31, $end->getDay());
+        static::assertSame(23, $end->getHours());
+        static::assertSame(59, $end->getMinutes());
+        static::assertSame(59, $end->getSeconds());
+        static::assertSame(999_999_999, $end->getNanoseconds());
+    }
+
+    public function testAtStartOfDayPreservesTimezone(): void
+    {
+        $dt = DateTime::fromParts(Timezone::AmericaNewYork, 2025, 6, 15, 14, 30);
+        $start = $dt->atStartOfDay();
+
+        static::assertSame(Timezone::AmericaNewYork, $start->getTimezone());
+    }
+
+    public function testAtStartOfYear(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2024, 6, 15, 14, 30, 45, 123);
+        $start = $dt->atStartOfYear();
+
+        static::assertSame(2024, $start->getYear());
+        static::assertSame(1, $start->getMonth());
+        static::assertSame(1, $start->getDay());
+        static::assertSame(0, $start->getHours());
+        static::assertSame(0, $start->getMinutes());
+        static::assertSame(0, $start->getSeconds());
+        static::assertSame(0, $start->getNanoseconds());
+    }
+
+    public function testAtEndOfYear(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2024, 6, 15, 14, 30, 45, 123);
+        $end = $dt->atEndOfYear();
+
+        static::assertSame(2024, $end->getYear());
+        static::assertSame(12, $end->getMonth());
+        static::assertSame(31, $end->getDay());
+        static::assertSame(23, $end->getHours());
+        static::assertSame(59, $end->getMinutes());
+        static::assertSame(59, $end->getSeconds());
+        static::assertSame(999_999_999, $end->getNanoseconds());
+    }
+
+    public function testAtStartOfWeekMonday(): void
+    {
+        // 2024-06-10 is a Monday
+        $dt = DateTime::fromParts(Timezone::UTC, 2024, 6, 10, 14, 30);
+        $start = $dt->atStartOfWeek();
+
+        static::assertSame(2024, $start->getYear());
+        static::assertSame(6, $start->getMonth());
+        static::assertSame(10, $start->getDay());
+        static::assertSame(0, $start->getHours());
+    }
+
+    public function testAtStartOfWeekWednesday(): void
+    {
+        // 2024-06-12 is a Wednesday
+        $dt = DateTime::fromParts(Timezone::UTC, 2024, 6, 12, 14, 30);
+        $start = $dt->atStartOfWeek();
+
+        static::assertSame(2024, $start->getYear());
+        static::assertSame(6, $start->getMonth());
+        static::assertSame(10, $start->getDay());
+        static::assertSame(0, $start->getHours());
+    }
+
+    public function testAtStartOfWeekSunday(): void
+    {
+        // 2024-06-16 is a Sunday
+        $dt = DateTime::fromParts(Timezone::UTC, 2024, 6, 16, 14, 30);
+        $start = $dt->atStartOfWeek();
+
+        static::assertSame(2024, $start->getYear());
+        static::assertSame(6, $start->getMonth());
+        static::assertSame(10, $start->getDay());
+        static::assertSame(0, $start->getHours());
+    }
+
+    public function testAtEndOfWeekMonday(): void
+    {
+        // 2024-06-10 is a Monday
+        $dt = DateTime::fromParts(Timezone::UTC, 2024, 6, 10, 14, 30);
+        $end = $dt->atEndOfWeek();
+
+        static::assertSame(2024, $end->getYear());
+        static::assertSame(6, $end->getMonth());
+        static::assertSame(16, $end->getDay());
+        static::assertSame(23, $end->getHours());
+        static::assertSame(59, $end->getMinutes());
+        static::assertSame(59, $end->getSeconds());
+        static::assertSame(999_999_999, $end->getNanoseconds());
+    }
+
+    public function testAtEndOfWeekSunday(): void
+    {
+        // 2024-06-16 is a Sunday
+        $dt = DateTime::fromParts(Timezone::UTC, 2024, 6, 16, 14, 30);
+        $end = $dt->atEndOfWeek();
+
+        static::assertSame(2024, $end->getYear());
+        static::assertSame(6, $end->getMonth());
+        static::assertSame(16, $end->getDay());
+        static::assertSame(23, $end->getHours());
+    }
+
+    public function testPlusZeroPeriodReturnsSelf(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 6, 15, 12, 0, 0);
+
+        $result = $dt->plus(Period::zero());
+
+        static::assertTrue($dt->equals($result));
+    }
+
+    public function testPlusPeriodDaysOnly(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 3, 10, 14, 30, 0);
+
+        $result = $dt->plus(Period::days(5));
+
+        static::assertSame(2025, $result->getYear());
+        static::assertSame(3, $result->getMonth());
+        static::assertSame(15, $result->getDay());
+        static::assertSame(14, $result->getHours());
+        static::assertSame(30, $result->getMinutes());
+    }
+
+    public function testMinusPeriodCausesNegativeMonthWrap(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 3, 15, 12, 0, 0);
+
+        $result = $dt->minus(Period::months(15));
+
+        static::assertSame(2023, $result->getYear());
+        static::assertSame(12, $result->getMonth());
+        static::assertSame(15, $result->getDay());
     }
 }

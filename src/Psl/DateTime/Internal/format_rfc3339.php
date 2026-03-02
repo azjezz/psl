@@ -32,7 +32,7 @@ function format_rfc3339(
     $nanoseconds = $timestamp->getNanoseconds();
 
     // Intl formatter cannot handle nanoseconds and microseconds, do it manually instead.
-    $fraction = Byte\slice((string) $nanoseconds, 0, $seconds_style->value);
+    $fraction = Byte\slice(Byte\pad_left((string) $nanoseconds, 9, '0'), 0, $seconds_style->value);
     if ('' !== $fraction) {
         $fraction = '.' . $fraction;
     }

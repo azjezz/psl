@@ -12,10 +12,12 @@ use Psl\Async;
 use Psl\Comparison\Order;
 use Psl\DateTime\DateTime;
 use Psl\DateTime\Duration;
+use Psl\DateTime\Exception\InvalidArgumentException;
 use Psl\DateTime\Exception\OverflowException;
 use Psl\DateTime\Exception\ParserException;
 use Psl\DateTime\Exception\UnderflowException;
 use Psl\DateTime\FormatPattern;
+use Psl\DateTime\Period;
 use Psl\DateTime\SecondsStyle;
 use Psl\DateTime\Timestamp;
 use Psl\DateTime\Timezone;
@@ -468,20 +470,9 @@ final class TimestampTest extends TestCase
     {
         $timestamp = Timestamp::fromParts(1_711_917_232, 12);
 
-        static::assertSame('2024-03-31T20:33:52.12+00:00', $timestamp->toRfc3339());
+        static::assertSame('2024-03-31T20:33:52.000000012+00:00', $timestamp->toRfc3339());
         static::assertSame('2024-03-31T20:33:52+00:00', $timestamp->toRfc3339(seconds_style: SecondsStyle::Seconds));
-        static::assertSame('2024-03-31T20:33:52.12Z', $timestamp->toRfc3339(use_z: true));
-    }
-
-    public function testToStdlib(): void
-    {
-        $timestamp = Timestamp::fromParts(1_711_917_232, 123_456_000);
-
-        $stdlib = $timestamp->toStdlib();
-
-        static::assertInstanceOf(DateTimeImmutable::class, $stdlib);
-        static::assertSame(1_711_917_232, $stdlib->getTimestamp());
-        static::assertSame('123456', $stdlib->format('u'));
+        static::assertSame('2024-03-31T20:33:52.000000012Z', $timestamp->toRfc3339(use_z: true));
     }
 
     public function testFromStdlib(): void
@@ -492,17 +483,6 @@ final class TimestampTest extends TestCase
 
         static::assertSame($stdlib->getTimestamp(), $timestamp->getSeconds());
         static::assertSame(123_456_000, $timestamp->getNanoseconds());
-    }
-
-    public function testStdlibRoundTrip(): void
-    {
-        $original = Timestamp::fromParts(1_711_917_232, 500_000_000);
-
-        $roundTripped = Timestamp::fromStdlib($original->toStdlib());
-
-        static::assertSame($original->getSeconds(), $roundTripped->getSeconds());
-        // microsecond precision preserved
-        static::assertSame(500_000_000, $roundTripped->getNanoseconds());
     }
 
     public function testFromStdlibMicrosecondCast(): void
@@ -516,43 +496,6 @@ final class TimestampTest extends TestCase
         static::assertSame(1_000, $timestamp->getNanoseconds());
     }
 
-    public function testToStdlibNanosecondDivisionCast(): void
-    {
-        // 1500 nanoseconds / 1000 = 1.5, which should be truncated to 1 microsecond
-        $timestamp = Timestamp::fromParts(1_711_917_232, 1_500);
-
-        $stdlib = $timestamp->toStdlib();
-
-        static::assertSame('000001', $stdlib->format('u'));
-    }
-
-    public function testStdlibMicrosecondPrecisionRoundTrip(): void
-    {
-        $nanosecondValues = [
-            0,
-            1_000, // 1 microsecond
-            123_456_000, // 123456 microseconds
-            500_000_000, // 500000 microseconds
-            999_999_000, // 999999 microseconds
-        ];
-
-        foreach ($nanosecondValues as $nanoseconds) {
-            $original = Timestamp::fromParts(1_711_917_232, $nanoseconds);
-            $roundTripped = Timestamp::fromStdlib($original->toStdlib());
-
-            static::assertSame(
-                $original->getSeconds(),
-                $roundTripped->getSeconds(),
-                "Seconds mismatch for nanoseconds={$nanoseconds}",
-            );
-            static::assertSame(
-                $nanoseconds,
-                $roundTripped->getNanoseconds(),
-                "Nanoseconds precision lost for value {$nanoseconds}",
-            );
-        }
-    }
-
     public function testFromStdlibZeroMicroseconds(): void
     {
         $stdlib = new DateTimeImmutable('2024-06-15 14:30:45.000000', new DateTimeZone('UTC'));
@@ -562,13 +505,71 @@ final class TimestampTest extends TestCase
         static::assertSame(0, $timestamp->getNanoseconds());
     }
 
-    public function testToStdlibEdgeMicroseconds(): void
+    public function testFromMilliseconds(): void
     {
-        // Maximum microsecond value: 999999 microseconds = 999_999_000 nanoseconds
-        $timestamp = Timestamp::fromParts(1_711_917_232, 999_999_000);
-        $stdlib = $timestamp->toStdlib();
+        $ts = Timestamp::fromMilliseconds(1_711_917_232_123);
 
-        static::assertSame('999999', $stdlib->format('u'));
-        static::assertSame(1_711_917_232, $stdlib->getTimestamp());
+        static::assertSame(1_711_917_232, $ts->getSeconds());
+        static::assertSame(123_000_000, $ts->getNanoseconds());
+    }
+
+    public function testFromMillisecondsZero(): void
+    {
+        $ts = Timestamp::fromMilliseconds(0);
+
+        static::assertSame(0, $ts->getSeconds());
+        static::assertSame(0, $ts->getNanoseconds());
+    }
+
+    public function testFromMillisecondsNegative(): void
+    {
+        $ts = Timestamp::fromMilliseconds(-1500);
+
+        static::assertSame(-2, $ts->getSeconds());
+        static::assertSame(500_000_000, $ts->getNanoseconds());
+    }
+
+    public function testFromMicroseconds(): void
+    {
+        $ts = Timestamp::fromMicroseconds(1_711_917_232_123_456);
+
+        static::assertSame(1_711_917_232, $ts->getSeconds());
+        static::assertSame(123_456_000, $ts->getNanoseconds());
+    }
+
+    public function testFromMicrosecondsZero(): void
+    {
+        $ts = Timestamp::fromMicroseconds(0);
+
+        static::assertSame(0, $ts->getSeconds());
+        static::assertSame(0, $ts->getNanoseconds());
+    }
+
+    public function testFromMicrosecondsNegative(): void
+    {
+        $ts = Timestamp::fromMicroseconds(-2_500_000);
+
+        static::assertSame(-3, $ts->getSeconds());
+        static::assertSame(500_000_000, $ts->getNanoseconds());
+    }
+
+    public function testPlusPeriodThrows(): void
+    {
+        $ts = Timestamp::fromParts(1000);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Timestamp only supports Duration');
+
+        $ts->plus(Period::months(1));
+    }
+
+    public function testMinusPeriodThrows(): void
+    {
+        $ts = Timestamp::fromParts(1000);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Timestamp only supports Duration');
+
+        $ts->minus(Period::months(1));
     }
 }

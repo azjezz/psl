@@ -49,8 +49,7 @@
                 "Psl\\DateTime\\DateTime::fromStdlib",
                 "Psl\\DateTime\\DateTime::toStdlib",
                 "Psl\\DateTime\\DateTime::fromIntl",
-                "Psl\\DateTime\\Timestamp::fromStdlib",
-                "Psl\\DateTime\\Timestamp::toStdlib"
+                "Psl\\DateTime\\Timestamp::fromStdlib"
             ]
         },
         "CastString": {

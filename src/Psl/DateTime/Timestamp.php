@@ -5,24 +5,20 @@ declare(strict_types=1);
 namespace Psl\DateTime;
 
 use DateTimeImmutable;
-use DateTimeZone;
 use Override;
 use Psl\Exception\InvariantViolationException;
 use Psl\Interoperability;
 use Psl\Locale\Locale;
 use Psl\Math;
 
-use function sprintf;
-
 /**
  * Represents a precise point in time, with seconds and nanoseconds since the Unix epoch.
  *
  * @immutable
  *
- * @implements Interoperability\ToStdlib<DateTimeImmutable>
  * @implements Interoperability\FromStdlib<DateTimeImmutable>
  */
-final readonly class Timestamp implements TemporalInterface, Interoperability\ToStdlib, Interoperability\FromStdlib
+final readonly class Timestamp implements TemporalInterface, Interoperability\FromStdlib
 {
     use TemporalConvenienceMethodsTrait;
 
@@ -100,6 +96,42 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\To
         [$seconds, $nanoseconds] = Internal\high_resolution_time();
 
         return self::fromParts($seconds, $nanoseconds);
+    }
+
+    /**
+     * Creates a timestamp from milliseconds since the Unix epoch.
+     *
+     * @param int $milliseconds Milliseconds since the epoch. Can be negative for times before the epoch.
+     *
+     * @throws Exception\OverflowException
+     * @throws Exception\UnderflowException
+     *
+     * @pure
+     */
+    public static function fromMilliseconds(int $milliseconds): self
+    {
+        $seconds = Math\div($milliseconds, MILLISECONDS_PER_SECOND);
+        $remainingMs = $milliseconds % MILLISECONDS_PER_SECOND;
+
+        return self::fromParts($seconds, $remainingMs * NANOSECONDS_PER_MILLISECOND);
+    }
+
+    /**
+     * Creates a timestamp from microseconds since the Unix epoch.
+     *
+     * @param int $microseconds Microseconds since the epoch. Can be negative for times before the epoch.
+     *
+     * @throws Exception\OverflowException
+     * @throws Exception\UnderflowException
+     *
+     * @pure
+     */
+    public static function fromMicroseconds(int $microseconds): self
+    {
+        $seconds = Math\div($microseconds, MICROSECONDS_PER_SECOND);
+        $remainingUs = $microseconds % MICROSECONDS_PER_SECOND;
+
+        return self::fromParts($seconds, $remainingUs * NANOSECONDS_PER_MICROSECOND);
     }
 
     /**
@@ -244,40 +276,54 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\To
     /**
      * Adds the specified duration to this timestamp object, returning a new instance with the added duration.
      *
+     * @throws Exception\InvalidArgumentException If the amount is not a Duration.
      * @throws Exception\UnderflowException If adding the duration results in an arithmetic underflow.
      * @throws Exception\OverflowException If adding the duration results in an arithmetic overflow.
      *
      * @psalm-mutation-free
      */
     #[Override]
-    public function plus(Duration $duration): static
+    public function plus(TemporalAmountInterface $amount): static
     {
-        [$h, $m, $s, $ns] = $duration->getParts();
+        if (!$amount instanceof Duration) {
+            throw new Exception\InvalidArgumentException(
+                'Timestamp only supports Duration; use a DateTime for calendar-based arithmetic.',
+            );
+        }
+
+        [$h, $m, $s, $ns] = $amount->getParts();
         $totalSeconds = (SECONDS_PER_MINUTE * $m) + (SECONDS_PER_HOUR * $h) + $s;
         $newSeconds = $this->seconds + $totalSeconds;
         $newNanoseconds = $this->nanoseconds + $ns;
 
-        // No manual normalization required here due to fromRaw handling it
         return self::fromParts($newSeconds, $newNanoseconds);
     }
 
     /**
-     * Subtracts the specified duration from this timestamp object, returning a new instance with the subtracted duration.
+     * Subtracts the specified temporal amount from this timestamp object, returning a new instance.
      *
+     * Only {@see Duration} is supported. For calendar-based arithmetic, use a {@see DateTimeInterface} instead.
+     *
+     * @throws Exception\InvalidArgumentException If the amount is not a Duration.
      * @throws Exception\UnderflowException If subtracting the duration results in an arithmetic underflow.
      * @throws Exception\OverflowException If subtracting the duration results in an arithmetic overflow.
      *
      * @psalm-mutation-free
      */
     #[Override]
-    public function minus(Duration $duration): static
+    public function minus(TemporalAmountInterface $amount): static
     {
-        [$h, $m, $s, $ns] = $duration->getParts();
+        if (!$amount instanceof Duration) {
+            throw new Exception\InvalidArgumentException(
+                'Timestamp only supports Duration; use a DateTime for calendar-based arithmetic.',
+            );
+        }
+
+        [$h, $m, $s, $ns] = $amount->getParts();
         $totalSeconds = (SECONDS_PER_MINUTE * $m) + (SECONDS_PER_HOUR * $h) + $s;
         $newSeconds = $this->seconds - $totalSeconds;
         $newNanoseconds = $this->nanoseconds - $ns;
 
-        // No manual normalization required here due to fromRaw handling it
         return self::fromParts($newSeconds, $newNanoseconds);
     }
 
@@ -299,24 +345,10 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\To
     }
 
     /**
-     * Converts this {@see Timestamp} to a PHP {@see DateTimeImmutable} in UTC.
-     *
-     * Note: nanosecond precision is truncated to microseconds.
-     *
-     * @return DateTimeImmutable
+     * @return array{seconds: int, nanoseconds: int<0, 999999999>}
      *
      * @psalm-mutation-free
      */
-    #[Override]
-    public function toStdlib(): mixed
-    {
-        $microseconds = (int) ($this->nanoseconds / NANOSECONDS_PER_MICROSECOND);
-        $formatted = sprintf('%d.%06d', $this->seconds, $microseconds);
-
-        /** @var DateTimeImmutable */
-        return DateTimeImmutable::createFromFormat('U.u', $formatted, new DateTimeZone('UTC'));
-    }
-
     #[Override]
     public function jsonSerialize(): array
     {

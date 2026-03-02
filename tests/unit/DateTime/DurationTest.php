@@ -31,8 +31,6 @@ final class DurationTest extends TestCase
 
     public function testNamedConstructors(): void
     {
-        static::assertSame(168.0, DateTime\Duration::weeks(1)->getTotalHours());
-        static::assertSame(24.0, DateTime\Duration::days(1)->getTotalHours());
         static::assertSame(1.0, DateTime\Duration::hours(1)->getTotalHours());
         static::assertSame(1.0, DateTime\Duration::minutes(1)->getTotalMinutes());
         static::assertSame(1.0, DateTime\Duration::seconds(1)->getTotalSeconds());
@@ -596,5 +594,141 @@ final class DurationTest extends TestCase
         static::assertSame(20, $result->getMinutes());
         static::assertSame(30, $result->getSeconds());
         static::assertSame(400_000_000, $result->getNanoseconds());
+    }
+
+    /**
+     * @return list<array{int, int, int, int, string}>
+     */
+    public static function provideToIso8601(): array
+    {
+        return [
+            [0, 0, 0, 0, 'PT0S'],
+            [5, 0, 0, 0, 'PT5H'],
+            [0, 30, 0, 0, 'PT30M'],
+            [0, 0, 10, 0, 'PT10S'],
+            [5, 30, 0, 0, 'PT5H30M'],
+            [5, 30, 10, 0, 'PT5H30M10S'],
+            [1, 0, 10, 0, 'PT1H10S'],
+            [0, 0, 10, 500_000_000, 'PT10.5S'],
+            [0, 0, 0, 123_456_789, 'PT0.123456789S'],
+            [0, 0, 0, 100_000_000, 'PT0.1S'],
+            [-1, 0, 0, 0, '-PT1H'],
+            [-5, -30, -10, 0, '-PT5H30M10S'],
+            [0, 0, -10, -500_000_000, '-PT10.5S'],
+        ];
+    }
+
+    #[DataProvider('provideToIso8601')]
+    public function testToIso8601(int $h, int $m, int $s, int $ns, string $expected): void
+    {
+        static::assertSame($expected, DateTime\Duration::fromParts($h, $m, $s, $ns)->toIso8601());
+    }
+
+    /**
+     * @return list<array{string, array{int, int, int, int}}>
+     */
+    public static function provideFromIso8601(): array
+    {
+        return [
+            ['PT0S', [0, 0, 0, 0]],
+            ['PT5H', [5, 0, 0, 0]],
+            ['PT30M', [0, 30, 0, 0]],
+            ['PT10S', [0, 0, 10, 0]],
+            ['PT5H30M', [5, 30, 0, 0]],
+            ['PT5H30M10S', [5, 30, 10, 0]],
+            ['PT1H10S', [1, 0, 10, 0]],
+            ['PT10.5S', [0, 0, 10, 500_000_000]],
+            ['PT0.123456789S', [0, 0, 0, 123_456_789]],
+            ['PT0.1S', [0, 0, 0, 100_000_000]],
+            ['-PT1H', [-1, 0, 0, 0]],
+            ['-PT5H30M10S', [-5, -30, -10, 0]],
+            ['-PT10.5S', [0, 0, -10, -500_000_000]],
+        ];
+    }
+
+    #[DataProvider('provideFromIso8601')]
+    public function testFromIso8601(string $iso, array $expectedParts): void
+    {
+        static::assertSame($expectedParts, DateTime\Duration::fromIso8601($iso)->getParts());
+    }
+
+    public function testFromIso8601RoundTrip(): void
+    {
+        $d = DateTime\Duration::fromParts(5, 30, 10, 500_000_000);
+
+        static::assertTrue($d->equals(DateTime\Duration::fromIso8601($d->toIso8601())));
+    }
+
+    public function testFromIso8601EmptyString(): void
+    {
+        $this->expectException(DateTime\Exception\ParserException::class);
+
+        DateTime\Duration::fromIso8601('');
+    }
+
+    public function testFromIso8601MissingP(): void
+    {
+        $this->expectException(DateTime\Exception\ParserException::class);
+
+        DateTime\Duration::fromIso8601('T5H');
+    }
+
+    public function testFromIso8601MissingT(): void
+    {
+        $this->expectException(DateTime\Exception\ParserException::class);
+
+        DateTime\Duration::fromIso8601('P5H');
+    }
+
+    public function testFromIso8601RejectsDateComponent(): void
+    {
+        $this->expectException(DateTime\Exception\ParserException::class);
+
+        DateTime\Duration::fromIso8601('P1Y');
+    }
+
+    public function testFromIso8601InvalidFormat(): void
+    {
+        $this->expectException(DateTime\Exception\ParserException::class);
+
+        DateTime\Duration::fromIso8601('PTABC');
+    }
+
+    public function testAddToTimestamp(): void
+    {
+        $ts = DateTime\Timestamp::fromParts(1000, 0);
+        $duration = DateTime\Duration::fromParts(1, 30, 0);
+
+        $result = $duration->addTo($ts);
+
+        static::assertSame(1000 + 3600 + 1800, $result->getTimestamp()->getSeconds());
+    }
+
+    public function testAddToDateTime(): void
+    {
+        $dt = DateTime\DateTime::fromParts(DateTime\Timezone::UTC, 2025, 1, 1, 10, 0, 0);
+        $duration = DateTime\Duration::hours(3);
+
+        $result = $duration->addTo($dt);
+
+        static::assertSame(3 * 3600, $result->getTimestamp()->getSeconds() - $dt->getTimestamp()->getSeconds());
+    }
+
+    public function testSubtractFromTimestamp(): void
+    {
+        $ts = DateTime\Timestamp::fromParts(5000, 0);
+        $duration = DateTime\Duration::seconds(500);
+
+        $result = $duration->subtractFrom($ts);
+
+        static::assertSame(4500, $result->getTimestamp()->getSeconds());
+    }
+
+    public function testEqualsWithNonDuration(): void
+    {
+        $duration = DateTime\Duration::hours(1);
+        $period = DateTime\Period::days(1);
+
+        static::assertFalse($duration->equals($period));
     }
 }
