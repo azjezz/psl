@@ -104,7 +104,7 @@ Async\main(static function (): int {
             $slug = Filesystem\get_basename($file, '.md');
             $content = File\read($file);
             $content = namespace\process_markdown($content);
-            $content = Regex\replace($content, '/`(src\/Psl\/[^`]*)`/', '[`$1`](' . $sourceBaseUrl . '$1)');
+            $content = Regex\replace($content, '/`(src\/Psl\/[^`]*)`/', '[$1](' . $sourceBaseUrl . '$1)');
             $docs[$slug] = $content;
             $categorySlugs[] = $slug;
         }

@@ -173,25 +173,6 @@ function build_features() {
 function build_footer() {
     return `
         <div class="page-footer fade-in">
-            <h2>Get Started</h2>
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h3>Install</h3>
-                    <pre class="footer-code"><code>composer require azjezz/psl</code></pre>
-                    <p>Requires PHP &ge;8.4</p>
-                </div>
-                <div class="footer-col">
-                    <h3>Tooling</h3>
-                    <a href="https://github.com/php-standard-library/psalm-plugin">Psalm Plugin</a>
-                    <a href="https://github.com/php-standard-library/phpstan-extension">PHPStan Extension</a>
-                </div>
-                <div class="footer-col">
-                    <h3>Community</h3>
-                    <a href="https://github.com/azjezz/psl/blob/next/CONTRIBUTING.md">Contributing Guide</a>
-                    <a href="https://github.com/azjezz/psl/issues">Report an Issue</a>
-                    <a href="https://github.com/sponsors/azjezz">Sponsor</a>
-                </div>
-            </div>
             <p class="footer-license">MIT License &middot; Made by <a href="https://github.com/azjezz">azjezz</a> and <a href="https://github.com/azjezz/psl/graphs/contributors">contributors</a> &middot; Sponsored by <a href="https://carthage.software">Carthage.Software</a></p>
         </div>
     `;
@@ -205,8 +186,7 @@ function build_front_page() {
             <h1>PSL</h1>
             <p class="tagline">PHP Standard Library</p>
             <div class="install-box">composer require azjezz/psl</div>
-            <p class="hero-description">A consistent, centralized, well-typed set of APIs for PHP programmers. Dozens of components replacing PHP functions and primitives with safer, async-ready alternatives that error predictably.</p>
-            <p class="hero-meta">MIT licensed &middot; Tested &middot; Statically analyzed</p>
+            <p class="hero-description">A standard library for PHP, inspired by <a href="https://github.com/hhvm/hsl">hhvm/hsl</a>. Provides a consistent, centralized, well-typed set of APIs covering async, collections, networking, I/O, cryptography, terminal UI, and more &mdash; replacing PHP functions and primitives with safer, async-ready alternatives that error predictably.</p>
             <div class="hero-links">
                 <a href="https://github.com/azjezz/psl" class="hero-btn">GitHub</a>
                 <a href="https://github.com/sponsors/azjezz" class="hero-btn hero-btn-sponsor">Sponsor</a>

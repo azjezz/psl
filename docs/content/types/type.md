@@ -30,8 +30,8 @@ plugins = ["psl"]
 ...
 ```
 
-- **Psalm**: see [`php-standard-library/psalm-plugin`](https://github.com/php-standard-library/psalm-plugin)
-- **PHPStan**: see [`php-standard-library/phpstan-extension`](https://github.com/php-standard-library/phpstan-extension)
+- **Psalm**: see [php-standard-library/psalm-plugin](https://github.com/php-standard-library/psalm-plugin)
+- **PHPStan**: see [php-standard-library/phpstan-extension](https://github.com/php-standard-library/phpstan-extension)
 
 ## Building Types
 
