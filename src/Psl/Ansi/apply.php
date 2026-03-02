@@ -22,9 +22,9 @@ function apply(string $text, ControlSequenceIntroducer ...$sequences): string
     $parameters = '';
     foreach ($sequences as $i => $sequence) {
         if ($sequence->kind !== ControlSequenceIntroducerKind::SelectGraphicRendition) {
-            throw new Exception\InvalidArgumentException('Only SelectGraphicRendition sequences can be applied to text, got '
-            . $sequence->kind->name
-            . '.');
+            throw new Exception\InvalidArgumentException(
+                'Only SelectGraphicRendition sequences can be applied to text, got ' . $sequence->kind->name . '.',
+            );
         }
 
         $parameters .= ($i > 0 ? ';' : '') . $sequence->parameters;

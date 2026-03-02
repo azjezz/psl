@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "33bea879b34a53fccd93997eed198d71",
+    "content-hash": "61f7e0088a5126171af15de4f1d95410",
     "packages": [
         {
             "name": "revolt/event-loop",
@@ -82,16 +82,16 @@
     "packages-dev": [
         {
             "name": "carthage-software/mago",
-            "version": "1.13.2",
+            "version": "1.13.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/carthage-software/mago.git",
-                "reference": "ed4c07ec6555e2ad2f9890e8c2b1dfb7325cd5a2"
+                "reference": "565646d4b0af5301b923dd0f2735a5a8868f1e90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carthage-software/mago/zipball/ed4c07ec6555e2ad2f9890e8c2b1dfb7325cd5a2",
-                "reference": "ed4c07ec6555e2ad2f9890e8c2b1dfb7325cd5a2",
+                "url": "https://api.github.com/repos/carthage-software/mago/zipball/565646d4b0af5301b923dd0f2735a5a8868f1e90",
+                "reference": "565646d4b0af5301b923dd0f2735a5a8868f1e90",
                 "shasum": ""
             },
             "require": {
@@ -126,7 +126,7 @@
             ],
             "support": {
                 "issues": "https://github.com/carthage-software/mago/issues",
-                "source": "https://github.com/carthage-software/mago/tree/1.13.2"
+                "source": "https://github.com/carthage-software/mago/tree/1.13.3"
             },
             "funding": [
                 {
@@ -134,7 +134,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-27T15:00:23+00:00"
+            "time": "2026-03-02T05:49:03+00:00"
         },
         {
             "name": "colinodell/json5",
