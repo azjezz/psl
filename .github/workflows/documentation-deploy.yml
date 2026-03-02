@@ -72,9 +72,11 @@ jobs:
           VERSION="${{ steps.version.outputs.version }}"
           IS_TAG="${{ steps.version.outputs.is_tag }}"
 
-          # Copy built docs into version subdirectory
-          rm -rf "gh-pages/${VERSION}"
-          cp -r docs/dist "gh-pages/${VERSION}"
+          mkdir -p "gh-pages/${VERSION}"
+          cp docs/dist/index.html "gh-pages/${VERSION}/index.html"
+
+          rm -rf gh-pages/assets
+          cp -r docs/dist/assets gh-pages/assets
 
           # Update versions.json
           cd gh-pages

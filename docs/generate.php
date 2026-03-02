@@ -124,22 +124,25 @@ Async\main(static function (): int {
     $categoriesJson = Str\replace(Json\encode($categories), '/', '\\/');
     $titlesJson = Str\replace(Json\encode($titles), '/', '\\/');
 
-    $css = File\read(RESOURCES_DIR . '/style.css');
-    $js = File\read(RESOURCES_DIR . '/app.js');
     $template = File\read(RESOURCES_DIR . '/template.html');
 
-    $html = Str\replace($template, '{{CSS}}', $css);
-    $html = Str\replace($html, '{{VERSION}}', $gitRef);
+    $html = Str\replace($template, '{{VERSION}}', $gitRef);
     $html = Str\replace($html, '{{DOCS}}', $docsJson);
     $html = Str\replace($html, '{{CATEGORIES}}', $categoriesJson);
     $html = Str\replace($html, '{{TITLES}}', $titlesJson);
-    $html = Str\replace($html, '{{JS}}', $js);
 
     if (!Filesystem\is_directory(OUTPUT_DIR)) {
         Filesystem\create_directory(OUTPUT_DIR);
     }
 
+    $assetsDir = OUTPUT_DIR . '/assets';
+    if (!Filesystem\is_directory($assetsDir)) {
+        Filesystem\create_directory($assetsDir);
+    }
+
     File\write(OUTPUT_FILE, $html, File\WriteMode::Truncate);
+    File\write($assetsDir . '/style.css', File\read(RESOURCES_DIR . '/style.css'), File\WriteMode::Truncate);
+    File\write($assetsDir . '/app.js', File\read(RESOURCES_DIR . '/app.js'), File\WriteMode::Truncate);
 
     IO\write_line('Generated %s (%d components)', OUTPUT_FILE, Iter\count($docs));
 

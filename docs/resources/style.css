@@ -476,7 +476,7 @@ article pre:hover .copy-btn { opacity: 1; }
 .component-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 0;
+    gap: 1rem;
     margin-top: 1.5rem;
 }
 
@@ -502,6 +502,7 @@ article pre:hover .copy-btn { opacity: 1; }
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-bottom: 0.3rem;
+    margin-top: 0;
 }
 
 .component-card p {
