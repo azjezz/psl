@@ -23,6 +23,8 @@ use function unpack;
  * @throws Exception\InvalidArgumentException If $alphabet length is outside the [2^1, 2^56] range.
  *
  * @psalm-external-mutation-free
+ *
+ * @return ($length is 0 ? '' : non-empty-string)
  */
 function string(int $length, null|string $alphabet = null): string
 {

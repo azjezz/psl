@@ -13,8 +13,6 @@ use Psl\Str\Byte;
  * @internal
  *
  * @psalm-mutation-free
- *
- * @mago-expect lint:no-else-clause
  */
 function format_rfc3339(
     Timestamp $timestamp,

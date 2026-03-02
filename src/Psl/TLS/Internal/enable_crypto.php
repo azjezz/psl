@@ -28,7 +28,7 @@ use function stream_socket_enable_crypto;
  */
 function enable_crypto(mixed $stream, int $crypto_method): void
 {
-    // Try the initial handshake — stream is already non-blocking from ResourceHandle
+    // Try the initial handshake; stream is already non-blocking from ResourceHandle
     $result = @stream_socket_enable_crypto($stream, true, $crypto_method);
 
     if (true === $result) {
@@ -39,7 +39,7 @@ function enable_crypto(mixed $stream, int $crypto_method): void
         throw new HandshakeFailedException('TLS handshake failed.');
     }
 
-    // $result === 0, handshake in progress — wait for the event loop
+    // $result === 0, handshake in progress; wait for the event loop
     /** @var Suspension<null> */
     $suspension = EventLoop::getSuspension();
 

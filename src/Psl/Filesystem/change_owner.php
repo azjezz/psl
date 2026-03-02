@@ -17,8 +17,6 @@ use function lchown;
  *
  * @throws Exception\RuntimeException If unable to change the ownership for $node.
  * @throws Exception\NotFoundException If $node does not exist.
- *
- * @mago-expect lint:no-else-clause
  */
 function change_owner(string $node, int $user): void
 {

@@ -18,8 +18,6 @@ use Psl\Str\Byte;
  *
  * @throws Exception\InvalidArgumentException If $number contains an invalid digit in base $from_base
  * @throws Exception\OverflowException In case of an integer overflow
- *
- * @mago-expect lint:no-else-clause
  */
 function from_base(string $number, int $from_base): int
 {

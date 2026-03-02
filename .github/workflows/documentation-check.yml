@@ -26,5 +26,5 @@ jobs:
       - name: "installing dependencies"
         run: just install
 
-      - name: "checking if documentation is up-to-date."
-        run: just docs-check
+      - name: "testing documentation examples"
+        run: just docs-test

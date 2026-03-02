@@ -65,7 +65,7 @@ final class Socket
     /**
      * Connect the socket to a remote address and return a TCP stream.
      *
-     * This consumes the socket — it cannot be reused after calling connect().
+     * This consumes the socket; it cannot be reused after calling connect().
      *
      * @param non-empty-string $host
      * @param int<0, 65535> $port
@@ -88,7 +88,7 @@ final class Socket
     /**
      * Start listening for incoming connections and return a TCP listener.
      *
-     * This consumes the socket — it cannot be reused after calling listen().
+     * This consumes the socket; it cannot be reused after calling listen().
      *
      * @param int<1, max> $backlog Maximum length of the queue of pending connections.
      * @param int<1, max> $idle_connections Maximum number of idle connections to buffer.

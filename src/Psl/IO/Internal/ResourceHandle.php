@@ -35,8 +35,6 @@ use function substr;
  * @internal
  *
  * @codeCoverageIgnore
- *
- * @mago-expect lint:no-else-clause
  */
 class ResourceHandle implements
     IO\ReadHandleInterface,
@@ -192,7 +190,7 @@ class ResourceHandle implements
                     while ('' !== $remaining_bytes) {
                         $chunk = $this->tryWrite($remaining_bytes);
                         if ($chunk === 0) {
-                            // fd not ready — must suspend and wait
+                            // fd not ready; must suspend and wait
                             break;
                         }
 

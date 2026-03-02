@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PSL &mdash; PHP Standard Library</title>
+        <meta name="description" content="PSL is a batteries-included standard library for PHP covering async, collections, networking, I/O, cryptography, terminal UI, and more.">
+        <style>{{CSS}}</style>
+    </head>
+    <body>
+        <button id="hamburger" aria-label="Menu">&#9776;</button>
+        <div id="overlay"></div>
+        <nav id="sidebar">
+            <div class="sidebar-header">
+            <h1>PSL</h1>
+            <p>PHP Standard Library</p>
+            <input type="text" id="search" placeholder="Search... ( / )">
+            <button id="theme-toggle" aria-label="Toggle dark mode">Dark</button>
+            </div>
+            <div id="nav-links"></div>
+        </nav>
+        <main id="content"><article id="rendered"></article></main>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/styles/monokai-sublime.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/highlight.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/languages/php.min.js"></script>
+        <script>
+            const DOCS={{DOCS}};
+            const CATEGORIES={{CATEGORIES}};
+            const TITLES={{TITLES}};
+            {{JS}}
+        </script>
+    </body>
+</html>

@@ -62,8 +62,6 @@ final readonly class Duration implements
      * actual values in the returned instance may differ from the provided ones.
      *
      * @pure
-     *
-     * @mago-expect lint:no-else-clause
      */
     public static function fromParts(int $hours, int $minutes = 0, int $seconds = 0, int $nanoseconds = 0): self
     {

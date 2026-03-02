@@ -1,0 +1,59 @@
+name: "documentation deploy"
+
+on:
+  push:
+    branches:
+      - "next"
+    tags:
+      - "*"
+
+permissions:
+  contents: "read"
+  pages: "write"
+  id-token: "write"
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: "build"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "checkout"
+        uses: "actions/checkout@v6"
+
+      - name: "installing PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "8.5"
+          ini-values: memory_limit=-1
+          tools: composer:v2
+          extensions: bcmath, mbstring, intl, sodium, json
+
+      - name: "installing just"
+        uses: "extractions/setup-just@v3"
+
+      - name: "installing dependencies"
+        run: just install
+
+      - name: "generating documentation"
+        run: just docs
+
+      - name: "uploading artifact"
+        uses: "actions/upload-pages-artifact@v3"
+        with:
+          path: "docs/dist"
+
+  deploy:
+    name: "deploy"
+    needs: "build"
+    runs-on: "ubuntu-latest"
+    environment:
+      name: "github-pages"
+      url: "${{ steps.deployment.outputs.page_url }}"
+    steps:
+      - name: "deploying to GitHub Pages"
+        id: "deployment"
+        uses: "actions/deploy-pages@v4"

@@ -27,8 +27,6 @@ use function is_array;
  * @template T
  *
  * @implements PromiseInterface<T>
- *
- * @mago-expect lint:no-else-clause
  */
 final readonly class Awaitable implements PromiseInterface
 {
@@ -106,11 +104,11 @@ final readonly class Awaitable implements PromiseInterface
     }
 
     /**
-     * @return Awaitable<void>
+     * @return Awaitable<never>
      */
     public static function error(Throwable $throwable): self
     {
-        /** @var State<void> $state */
+        /** @var State<never> $state */
         $state = new State();
         $state->error($throwable);
 

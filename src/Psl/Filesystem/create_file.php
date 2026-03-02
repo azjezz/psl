@@ -20,8 +20,6 @@ use function touch;
  *                              Defaults to the current system time.
  *
  * @throws Exception\RuntimeException If unable to create the file.
- *
- * @mago-expect lint:no-else-clause
  */
 function create_file(string $filename, null|int $time = null, null|int $access_time = null): void
 {

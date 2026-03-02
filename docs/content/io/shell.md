@@ -1,0 +1,34 @@
+# Shell
+
+The `Shell` component provides a single function, `Shell\execute()`, for running external commands and capturing their output. It handles argument escaping, error output management, and proper exception handling for failed commands.
+
+For more advanced process management (streaming I/O, signals, non-blocking operation), see the `Process` component. `Shell` is the simpler choice when you just need to run a command and get the result.
+
+## Basic Usage
+
+@example('io/shell-execute.php')
+
+## Handling Error Output
+
+By default, stderr is discarded. The `ErrorOutputBehavior` enum controls how stderr is handled relative to stdout:
+
+@example('io/shell-error-output.php')
+
+## Timeouts
+
+Pass a `Duration` to limit how long the command can run:
+
+@example('io/shell-timeout.php')
+
+## Error Handling
+
+`execute()` throws specific exceptions depending on what went wrong:
+
+- **`FailedExecutionException`** -- the command exited with a non-zero status. Provides `getCommand()`, `getOutput()`, and `getErrorOutput()` for inspection.
+- **`PossibleAttackException`** -- the command or an argument contains a NULL byte, indicating a potential injection attack.
+- **`TimeoutException`** -- the command exceeded the specified timeout duration.
+- **`RuntimeException`** -- the working directory does not exist, or the process could not be created.
+
+@example('io/shell-error-handling.php')
+
+See `src/Psl/Shell/` for the full API.

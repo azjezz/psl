@@ -1,7 +1,7 @@
 php-version = "8.4"
 
 [source]
-paths = ["src", "tests", "examples"]
+paths = ["src", "tests", "examples", "docs"]
 includes = ["vendor/revolt"]
 excludes = []
 
@@ -31,24 +31,28 @@ no-boolean-flag-parameter = { enabled = false }
 no-error-control-operator = { enabled = false }
 no-redundant-use = { enabled = true }
 no-isset = { enabled = false }
-single-class-per-file = { exclude = ["tests/static-analysis", "examples"] }
-file-name = { exclude = ["examples"] }
+single-class-per-file = { exclude = ["tests/static-analysis", "examples", "docs"] }
+file-name = { exclude = ["examples", "docs"] }
+no-else-clause = { enabled = false }
 
 [analyzer]
 excludes = [
-    # unit tests, and benchmarks are mostly untyped.
-    "tests/unit",
-    "tests/benchmark",
-    # those components are not supported by mago.
-    "tests/static-analysis/Fun",
-    "tests/static-analysis/Option",
-    "tests/static-analysis/Iter",
+  # unit tests, and benchmarks are mostly untyped.
+  "tests/unit",
+  "tests/benchmark",
+  # those components are not supported by mago.
+  "tests/static-analysis/Fun",
+  "tests/static-analysis/Option",
+  "tests/static-analysis/Iter",
 ]
 ignore = [
   { code = "possibly-static-access-on-interface", in = "src/" },
   { code = "duplicate-definition", in = "tests/static-analysis" },
   { code = "unused-method", in = "tests/fixture" },
   { code = "unused-property", in = "tests/fixture" },
+  { code = "unused-statement", in = "docs" },
+  { code = "duplicate-definition", in = "docs" },
+  { code = "redundant-type-comparison", in = "docs" },
 ]
 plugins = ["php-standard-library"]
 strict-list-index-checks = true

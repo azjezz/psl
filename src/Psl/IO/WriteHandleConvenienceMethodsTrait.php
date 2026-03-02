@@ -13,8 +13,6 @@ use function substr;
 
 /**
  * @require-implements WriteHandleInterface
- *
- * @mago-expect lint:no-else-clause
  */
 trait WriteHandleConvenienceMethodsTrait
 {
