@@ -143,6 +143,7 @@ Async\main(static function (): int {
     File\write(OUTPUT_FILE, $html, File\WriteMode::Truncate);
     File\write($assetsDir . '/style.css', File\read(RESOURCES_DIR . '/style.css'), File\WriteMode::Truncate);
     File\write($assetsDir . '/app.js', File\read(RESOURCES_DIR . '/app.js'), File\WriteMode::Truncate);
+    File\write($assetsDir . '/banner.png', File\read(RESOURCES_DIR . '/banner.png'), File\WriteMode::Truncate);
 
     IO\write_line('Generated %s (%d components)', OUTPUT_FILE, Iter\count($docs));
 
