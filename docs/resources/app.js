@@ -186,7 +186,7 @@ function build_front_page() {
             <h1>PSL</h1>
             <p class="tagline">PHP Standard Library</p>
             <div class="install-box">composer require azjezz/psl</div>
-            <p class="hero-description">A standard library for PHP, inspired by <a href="https://github.com/hhvm/hsl">hhvm/hsl</a>. Provides a consistent, centralized, well-typed set of APIs covering async, collections, networking, I/O, cryptography, terminal UI, and more &mdash; replacing PHP functions and primitives with safer, async-ready alternatives that error predictably.</p>
+            <p class="hero-description">A standard library for PHP, inspired by <a href="https://github.com/hhvm/hsl">hhvm/hsl</a>. Provides a consistent, centralized, well-typed set of APIs covering async, collections, networking, I/O, cryptography, terminal UI, and more - replacing PHP functions and primitives with safer, async-ready alternatives that error predictably.</p>
             <div class="hero-links">
                 <a href="https://github.com/azjezz/psl" class="hero-btn">GitHub</a>
                 <a href="https://github.com/sponsors/azjezz" class="hero-btn hero-btn-sponsor">Sponsor</a>
