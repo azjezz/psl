@@ -282,7 +282,7 @@ final readonly class DateTime implements
     }
 
     /**
-     * Parses a date and time string into an instance of {@see Timestamp} using a specific format pattern, with optional customization for timezone and locale.
+     * Parses a date and time string into an instance of {@see DateTime} using a specific format pattern, with optional customization for timezone and locale.
      *
      * This method is specifically designed for cases where a custom format pattern is used to parse the input string.
      *
@@ -304,7 +304,7 @@ final readonly class DateTime implements
      *
      * @throws Exception\RuntimeException If the parsing process fails.
      *
-     * @return static Returns an instance of {@see Timestamp} representing the parsed date and time.
+     * @return static Returns an instance of {@see DateTime} representing the parsed date and time.
      *
      * @see https://unicode-org.github.io/icu/userguide/format_parse/datetime/#datetime-format-syntax
      * @see TemporalInterface::format()
@@ -634,6 +634,9 @@ final readonly class DateTime implements
         );
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     #[Override]
     public function jsonSerialize(): array
     {

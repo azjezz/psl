@@ -15,7 +15,7 @@ $now = DateTime\DateTime::now(DateTime\Timezone::UTC);
 
 // Add or subtract durations from dates
 $later = $now->plus(DateTime\Duration::hours(3));
-$earlier = $now->minus(DateTime\Duration::days(7));
+$earlier = $now->minus(DateTime\Duration::hours(7 * 24));
 
 // Convenience methods
 $tomorrow = $now->plusDays(1);
@@ -34,3 +34,9 @@ $start = DateTime\Timestamp::now();
 $end = DateTime\Timestamp::now();
 $elapsed = $end->since($start); // returns Duration
 IO\write_line('Elapsed: %f seconds', $elapsed->getTotalSeconds());
+
+// ISO 8601 format
+$duration = DateTime\Duration::fromParts(2, 30, 15);
+IO\write_line('ISO 8601: %s', $duration->toIso8601()); // PT2H30M15S
+$parsed = DateTime\Duration::fromIso8601('PT1H45M');
+IO\write_line('Parsed: %s', $parsed->toString());

@@ -173,6 +173,99 @@ trait DateTimeConvenienceMethodsTrait
     }
 
     /**
+     * Returns a new instance representing the start of the same day (00:00:00.000000000).
+     *
+     * @psalm-mutation-free
+     */
+    public function atStartOfDay(): static
+    {
+        return $this->withTime(0, 0, 0, 0);
+    }
+
+    /**
+     * Returns a new instance representing the end of the same day (23:59:59.999999999).
+     *
+     * @psalm-mutation-free
+     */
+    public function atEndOfDay(): static
+    {
+        return $this->withTime(23, 59, 59, 999_999_999);
+    }
+
+    /**
+     * Returns a new instance representing the start of the current month (1st day at 00:00:00.000000000).
+     *
+     * @psalm-mutation-free
+     */
+    public function atStartOfMonth(): static
+    {
+        return $this->withDate($this->getYear(), $this->getMonth(), 1)->withTime(0, 0, 0, 0);
+    }
+
+    /**
+     * Returns a new instance representing the end of the current month (last day at 23:59:59.999999999).
+     *
+     * @psalm-mutation-free
+     */
+    public function atEndOfMonth(): static
+    {
+        $monthEnum = Month::from($this->getMonth());
+        $lastDay = $monthEnum->getDaysForYear($this->getYear());
+
+        return $this->withDate($this->getYear(), $this->getMonth(), $lastDay)->withTime(23, 59, 59, 999_999_999);
+    }
+
+    /**
+     * Returns a new instance representing the start of the current year (January 1st at 00:00:00.000000000).
+     *
+     * @psalm-mutation-free
+     */
+    public function atStartOfYear(): static
+    {
+        return $this->withDate($this->getYear(), 1, 1)->withTime(0, 0, 0, 0);
+    }
+
+    /**
+     * Returns a new instance representing the end of the current year (December 31st at 23:59:59.999999999).
+     *
+     * @psalm-mutation-free
+     */
+    public function atEndOfYear(): static
+    {
+        return $this->withDate($this->getYear(), 12, 31)->withTime(23, 59, 59, 999_999_999);
+    }
+
+    /**
+     * Returns a new instance representing the start of the current ISO week (Monday at 00:00:00.000000000).
+     *
+     * @throws Exception\UnderflowException If the operation results in an arithmetic underflow.
+     * @throws Exception\OverflowException If the operation results in an arithmetic overflow.
+     *
+     * @psalm-mutation-free
+     */
+    public function atStartOfWeek(): static
+    {
+        $daysBack = $this->getWeekday()->value - Weekday::Monday->value;
+
+        return $this->minusDays($daysBack)->atStartOfDay();
+    }
+
+    /**
+     * Returns a new instance representing the end of the current ISO week (Sunday at 23:59:59.999999999).
+     *
+     * @throws Exception\UnderflowException If the operation results in an arithmetic underflow.
+     * @throws Exception\OverflowException If the operation results in an arithmetic overflow.
+     *
+     * @psalm-mutation-free
+     */
+    public function atEndOfWeek(): static
+    {
+        $daysForward = Weekday::Sunday->value - $this->getWeekday()->value;
+
+        return $this->plusDays($daysForward)->atEndOfDay();
+    }
+
+    /**
      * Returns the date (year, month, day).
      *
      * @return array{int, int<1, 12>, int<1, 31>} The date.
@@ -256,7 +349,7 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function getCentury(): int
     {
-        return (int) ($this->getYear() / 100) + 1;
+        return (int) ceil($this->getYear() / 100);
     }
 
     /**
@@ -351,6 +444,19 @@ trait DateTimeConvenienceMethodsTrait
     public function getWeekday(): Weekday
     {
         return Weekday::from((int) $this->format(pattern: 'e', locale: Locale::EnglishUnitedKingdom));
+    }
+
+    /**
+     * Returns the day of the year (1–366).
+     *
+     * @return int<1, 366>
+     *
+     * @psalm-mutation-free
+     */
+    public function getDayOfYear(): int
+    {
+        /** @var int<1, 366> */
+        return (int) $this->format(pattern: 'D', locale: Locale::EnglishUnitedKingdom);
     }
 
     /**
@@ -458,6 +564,32 @@ trait DateTimeConvenienceMethodsTrait
     }
 
     /**
+     * Adds the specified weeks to this date-time object, returning a new instance with the added weeks.
+     *
+     * @throws Exception\UnderflowException If adding the weeks results in an arithmetic underflow.
+     * @throws Exception\OverflowException If adding the weeks results in an arithmetic overflow.
+     *
+     * @psalm-mutation-free
+     */
+    public function plusWeeks(int $weeks): static
+    {
+        return $this->plusDays($weeks * DAYS_PER_WEEK);
+    }
+
+    /**
+     * Subtracts the specified weeks from this date-time object, returning a new instance with the subtracted weeks.
+     *
+     * @throws Exception\UnderflowException If subtracting the weeks results in an arithmetic underflow.
+     * @throws Exception\OverflowException If subtracting the weeks results in an arithmetic overflow.
+     *
+     * @psalm-mutation-free
+     */
+    public function minusWeeks(int $weeks): static
+    {
+        return $this->minusDays($weeks * DAYS_PER_WEEK);
+    }
+
+    /**
      * Adds the specified days to this date-time object, returning a new instance with the added days.
      *
      * @throws Exception\UnderflowException If adding the days results in an arithmetic underflow.
@@ -467,7 +599,7 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function plusDays(int $days): static
     {
-        return $this->plus(Duration::days($days));
+        return static::fromTimestamp($this->getTimestamp()->plusSeconds($days * SECONDS_PER_DAY), $this->getTimezone());
     }
 
     /**
@@ -480,33 +612,108 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function minusDays(int $days): static
     {
-        return $this->minus(Duration::days($days));
+        return static::fromTimestamp(
+            $this->getTimestamp()->minusSeconds($days * SECONDS_PER_DAY),
+            $this->getTimezone(),
+        );
     }
 
     /**
-     * Adds the specified duration to this date-time object, returning a new instance with the added duration.
+     * Adds the specified temporal amount to this date-time object, returning a new instance.
      *
-     * @throws Exception\UnderflowException If adding the duration results in an arithmetic underflow.
-     * @throws Exception\OverflowException If adding the duration results in an arithmetic overflow.
+     * Supports both {@see Duration} (exact time) and {@see Period} (calendar-aware arithmetic,
+     * e.g. adding 1 month to January 31 yields February 28/29).
+     *
+     * @throws Exception\UnderflowException If the operation results in an arithmetic underflow.
+     * @throws Exception\OverflowException If the operation results in an arithmetic overflow.
      *
      * @psalm-mutation-free
      */
-    public function plus(Duration $duration): static
+    public function plus(TemporalAmountInterface $amount): static
     {
-        return static::fromTimestamp($this->getTimestamp()->plus($duration), $this->getTimezone());
+        if ($amount instanceof Duration) {
+            return static::fromTimestamp($this->getTimestamp()->plus($amount), $this->getTimezone());
+        }
+
+        return $this->applyCalendarOffset($amount, 1);
     }
 
     /**
-     * Subtracts the specified duration from this date-time object, returning a new instance with the subtracted duration.
+     * Subtracts the specified temporal amount from this date-time object, returning a new instance.
      *
-     * @throws Exception\UnderflowException If subtracting the duration results in an arithmetic underflow.
-     * @throws Exception\OverflowException If subtracting the duration results in an arithmetic overflow.
+     * Supports both {@see Duration} (exact time) and {@see Period} (calendar-aware arithmetic).
+     *
+     * @throws Exception\UnderflowException If the operation results in an arithmetic underflow.
+     * @throws Exception\OverflowException If the operation results in an arithmetic overflow.
      *
      * @psalm-mutation-free
      */
-    public function minus(Duration $duration): static
+    public function minus(TemporalAmountInterface $amount): static
     {
-        return static::fromTimestamp($this->getTimestamp()->minus($duration), $this->getTimezone());
+        if ($amount instanceof Duration) {
+            return static::fromTimestamp($this->getTimestamp()->minus($amount), $this->getTimezone());
+        }
+
+        return $this->applyCalendarOffset($amount, -1);
+    }
+
+    /**
+     * Applies a calendar-aware offset (Period) in a single pass.
+     *
+     * @param 1|-1 $sign 1 for addition, -1 for subtraction.
+     *
+     * @psalm-mutation-free
+     */
+    private function applyCalendarOffset(Period $period, int $sign): static
+    {
+        $monthsToAdd = $sign * (($period->getYears() * MONTHS_PER_YEAR) + $period->getMonths());
+        $extraSeconds = $sign * ($period->getDays() * SECONDS_PER_DAY);
+
+        $hasMonths = 0 !== $monthsToAdd;
+        $hasOffset = 0 !== $extraSeconds;
+
+        if (!$hasMonths && !$hasOffset) {
+            return $this;
+        }
+
+        $year = $this->getYear();
+        $month = $this->getMonth();
+        $day = $this->getDay();
+        if ($hasMonths) {
+            $totalMonths = ($year * MONTHS_PER_YEAR) + $month - 1 + $monthsToAdd;
+            $year = Math\div($totalMonths, MONTHS_PER_YEAR);
+            $month = $totalMonths % MONTHS_PER_YEAR;
+            if ($month < 0) {
+                $year--;
+                $month += MONTHS_PER_YEAR;
+            }
+
+            $month += 1;
+            $day = Math\minva($day, Month::from($month)->getDaysForYear($year));
+        }
+
+        if ($hasMonths) {
+            $calendar = Internal\create_intl_calendar_from_date_time(
+                $this->getTimezone(),
+                $year,
+                $month,
+                $day,
+                $this->getHours(),
+                $this->getMinutes(),
+                $this->getSeconds(),
+            );
+            $baseSeconds = (int) ($calendar->getTime() / MILLISECONDS_PER_SECOND);
+            $baseNanoseconds = $this->getNanoseconds();
+        } else {
+            $ts = $this->getTimestamp();
+            $baseSeconds = $ts->getSeconds();
+            $baseNanoseconds = $ts->getNanoseconds();
+        }
+
+        return static::fromTimestamp(
+            Timestamp::fromParts($baseSeconds + $extraSeconds, $baseNanoseconds),
+            $this->getTimezone(),
+        );
     }
 
     /**

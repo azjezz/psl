@@ -130,8 +130,8 @@ final class UnexpectedValueException extends Exception\UnexpectedValueException 
     {
         return new self(Str\format(
             'Unexpected seconds value encountered. Provided "%d", but the calendar expects "%d". Ensure the seconds are correct and within the 0-59 range.',
-            $calendar_seconds,
             $provided_seconds,
+            $calendar_seconds,
         ));
     }
 }
