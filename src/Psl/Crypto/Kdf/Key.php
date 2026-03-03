@@ -11,6 +11,8 @@ use SensitiveParameter;
 final readonly class Key
 {
     /**
+     * @param non-empty-string $bytes
+     *
      * @throws Exception\InvalidArgumentException If the key is not exactly {@see KEY_BYTES} bytes.
      */
     public function __construct(

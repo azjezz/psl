@@ -14,6 +14,8 @@ use function str_repeat;
  * HKDF-Extract: Extract a pseudorandom key from input keying material.
  *
  * @see https://tools.ietf.org/html/rfc5869#section-2.2
+ *
+ * @return non-empty-string
  */
 function extract(
     #[SensitiveParameter] string $input_keying_material,
@@ -33,5 +35,6 @@ function extract(
         $salt = str_repeat("\x00", $hashLength);
     }
 
+    /** @var non-empty-string */
     return Hex\decode(Hmac\hash($input_keying_material, $algorithm, $salt));
 }

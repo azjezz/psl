@@ -24,6 +24,7 @@ final readonly class Signer implements SignerInterface
      */
     public function sign(#[SensitiveParameter] string $message): Signature
     {
+        /** @var non-empty-string $raw */
         $raw = Internal\call_sodium(fn() => sodium_crypto_sign_detached($message, $this->secretKey->bytes));
 
         return new Signature($raw);

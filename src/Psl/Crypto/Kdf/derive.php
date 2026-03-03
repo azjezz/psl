@@ -19,6 +19,8 @@ use function sodium_crypto_kdf_derive_from_key;
  * @param int<16, 64>      $length     The desired sub-key length in bytes (16-64).
  *
  * @throws Exception\RuntimeException If the context is not exactly {@see CONTEXT_BYTES} bytes.
+ *
+ * @return non-empty-string
  */
 function derive(#[SensitiveParameter] Key $key, int $sub_key_id, string $context, int $length = 32): string
 {
@@ -26,5 +28,6 @@ function derive(#[SensitiveParameter] Key $key, int $sub_key_id, string $context
         throw new Exception\RuntimeException('KDF context must be exactly ' . namespace\CONTEXT_BYTES . ' bytes.');
     }
 
+    /** @var non-empty-string */
     return Internal\call_sodium(fn() => sodium_crypto_kdf_derive_from_key($length, $sub_key_id, $context, $key->bytes));
 }

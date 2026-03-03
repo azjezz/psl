@@ -18,6 +18,8 @@ use function sodium_memzero;
  * @throws Exception\RuntimeException If the requested length exceeds the maximum.
  *
  * @see https://tools.ietf.org/html/rfc5869
+ *
+ * @return non-empty-string
  */
 function derive(
     #[SensitiveParameter] string $input_keying_material,

@@ -22,6 +22,8 @@ use function sodium_memzero;
  * @throws Exception\RuntimeException If the requested length exceeds the maximum.
  *
  * @see https://tools.ietf.org/html/rfc5869#section-2.3
+ *
+ * @return non-empty-string
  */
 function expand(
     #[SensitiveParameter] string $pseudo_random_key,
@@ -60,5 +62,6 @@ function expand(
     $result = Byte\slice($okm, 0, $length);
     sodium_memzero($okm);
 
+    /** @var non-empty-string */
     return $result;
 }

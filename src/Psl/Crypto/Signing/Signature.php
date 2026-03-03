@@ -14,6 +14,8 @@ use SensitiveParameter;
 final readonly class Signature
 {
     /**
+     * @param non-empty-string $bytes
+     *
      * @throws Exception\InvalidArgumentException If the signature is not exactly {@see SIGNATURE_BYTES} bytes.
      */
     public function __construct(

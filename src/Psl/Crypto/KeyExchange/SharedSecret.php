@@ -11,6 +11,8 @@ use SensitiveParameter;
 final readonly class SharedSecret
 {
     /**
+     * @param non-empty-string $bytes
+     *
      * @throws Exception\InvalidArgumentException If the shared secret is not exactly {@see SHARED_SECRET_BYTES} bytes.
      */
     public function __construct(
