@@ -176,12 +176,12 @@ final class ExecuteTest extends TestCase
         $start = DateTime\Timestamp::monotonic();
 
         try {
-            Shell\execute(PHP_BINARY, ['-dopcache.enable=0', '-r', 'sleep(10);'], timeout: Duration::seconds(2));
+            Shell\execute(PHP_BINARY, ['-dopcache.enable=0', '-r', 'sleep(2);'], timeout: Duration::milliseconds(200));
         } catch (Shell\Exception\TimeoutException $_) {
             $elapsed = DateTime\Timestamp::monotonic()->since($start);
 
             static::assertLessThan(
-                3.0,
+                1.5,
                 $elapsed->getTotalSeconds(),
                 'Process was not killed after timeout — proc_close() likely blocked.',
             );
