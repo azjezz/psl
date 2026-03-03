@@ -9,54 +9,14 @@ use Psl\Async;
 use Psl\TCP;
 use Psl\TLS;
 
-use function extension_loaded;
-
 final class LazyAcceptorTest extends TestCase
 {
-    /**
-     * @var array{cert_file: string, key_file: string}|null
-     */
-    private static null|array $certFiles = null;
-
-    public static function setUpBeforeClass(): void
-    {
-        if (!extension_loaded('openssl')) {
-            static::markTestSkipped('OpenSSL extension is required for TLS tests.');
-        }
-
-        $key = openssl_pkey_new([
-            'private_key_bits' => 2048,
-            'private_key_type' => OPENSSL_KEYTYPE_RSA,
-        ]);
-
-        $csr = openssl_csr_new([
-            'commonName' => 'localhost',
-            'organizationName' => 'PSL Test',
-        ], $key);
-
-        $cert = openssl_csr_sign($csr, null, $key, 1);
-
-        $cert_file = tempnam(sys_get_temp_dir(), 'psl_tls_cert_');
-        $key_file = tempnam(sys_get_temp_dir(), 'psl_tls_key_');
-
-        openssl_x509_export_to_file($cert, $cert_file);
-        openssl_pkey_export_to_file($key, $key_file);
-
-        self::$certFiles = ['cert_file' => $cert_file, 'key_file' => $key_file];
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        if (null !== self::$certFiles) {
-            @unlink(self::$certFiles['cert_file']);
-            @unlink(self::$certFiles['key_file']);
-            self::$certFiles = null;
-        }
-    }
+    private const CERT_FILE = __DIR__ . '/../../fixture/certs/server.crt';
+    private const KEY_FILE = __DIR__ . '/../../fixture/certs/server.key';
 
     public function testLazyAcceptorInspectsClientHelloAndCompletes(): void
     {
-        $cert = TLS\Certificate::create(self::$certFiles['cert_file'], self::$certFiles['key_file']);
+        $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
         $serverConfig = TLS\ServerConfig::create($cert);
 
         $listener = TCP\listen('127.0.0.1', 0);
@@ -97,7 +57,7 @@ final class LazyAcceptorTest extends TestCase
 
     public function testLazyAcceptorWithAlpnProtocols(): void
     {
-        $cert = TLS\Certificate::create(self::$certFiles['cert_file'], self::$certFiles['key_file']);
+        $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
 
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;

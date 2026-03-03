@@ -10,6 +10,10 @@ use Psl\Str;
 
 final class SpliceTest extends TestCase
 {
+    /**
+     * @param non-negative-int $offset
+     * @param non-negative-int|null $length
+     */
     #[DataProvider('provideData')]
     public function testSplice(
         string $expected,

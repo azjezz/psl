@@ -2,7 +2,7 @@ php-version = "8.4"
 
 [source]
 paths = ["src", "tests", "examples", "docs"]
-includes = ["vendor/revolt"]
+includes = ["vendor/revolt", "vendor/phpbench"]
 excludes = []
 
 [formatter]
@@ -37,9 +37,8 @@ no-else-clause = { enabled = false }
 
 [analyzer]
 excludes = [
-  # unit tests, and benchmarks are mostly untyped.
+  # unit tests are mostly untyped.
   "tests/unit",
-  "tests/benchmark",
   # those components are not supported by mago.
   "tests/static-analysis/Fun",
   "tests/static-analysis/Option",

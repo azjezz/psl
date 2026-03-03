@@ -26,7 +26,7 @@ final class ReductionsTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: list<int>, 1: iterable<int>, 2: (function(int, int, int): int)}>
+     * @return iterable<array{0: list<int>, 1: iterable<int>, 2: (Closure(int, int, int): int)}>
      */
     public static function provideData(): iterable
     {

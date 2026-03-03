@@ -10,6 +10,9 @@ use Psl\Str;
 
 final class MetaphoneTest extends TestCase
 {
+    /**
+     * @param non-negative-int $phonemes
+     */
     #[DataProvider('provideData')]
     public function testMetaphone(null|string $expected, string $str, int $phonemes = 0): void
     {
