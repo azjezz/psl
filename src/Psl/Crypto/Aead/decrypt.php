@@ -28,9 +28,12 @@ function decrypt(
 ): string {
     $result = match ($algorithm) {
         Algorithm::Aes256Gcm => (static function () use ($ciphertext, $key, $nonce, $additional_data): string|false {
+            // @codeCoverageIgnoreStart
             if (!sodium_crypto_aead_aes256gcm_is_available()) {
                 throw new Exception\RuntimeException('AES-256-GCM is not available on this platform.');
             }
+
+            // @codeCoverageIgnoreEnd
 
             return Internal\call_sodium(fn() => sodium_crypto_aead_aes256gcm_decrypt(
                 $ciphertext,

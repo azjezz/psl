@@ -132,9 +132,12 @@ final class Context
             $this->iv,
         );
 
+        // @codeCoverageIgnoreStart
         if ($keystream === false) {
             throw new Exception\RuntimeException('AES-CTR keystream generation failed.');
         }
+
+        // @codeCoverageIgnoreEnd
 
         $this->advanceAesCtrIv();
 

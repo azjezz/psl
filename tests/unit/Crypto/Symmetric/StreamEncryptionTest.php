@@ -7,6 +7,7 @@ namespace Psl\Tests\Unit\Crypto\Symmetric;
 use PHPUnit\Framework\TestCase;
 use Psl\Crypto\Exception;
 use Psl\Crypto\Symmetric;
+use Psl\DateTime\Duration;
 use Psl\IO;
 use Psl\SecureRandom;
 use Psl\Str;
@@ -250,12 +251,6 @@ final class StreamEncryptionTest extends TestCase
         static::assertSame($plaintext, $decrypted->readAll());
     }
 
-    /**
-     * Decrypt through a trickle source that returns 1 byte per read().
-     *
-     * This exercises the partial-read recovery path where read() returns
-     * fewer than 4 bytes for the frame length header.
-     */
     public function testDecryptTrickleSourceOneByte(): void
     {
         $key = Symmetric\generate_key();
@@ -279,12 +274,6 @@ final class StreamEncryptionTest extends TestCase
         static::assertSame($plaintext, $decrypted->readAll());
     }
 
-    /**
-     * Decrypt through a trickle source that returns 2 bytes per read().
-     *
-     * The 4-byte frame header will always be split across two reads,
-     * forcing the partial-read recovery to assemble them.
-     */
     public function testDecryptTrickleSourceTwoBytes(): void
     {
         $key = Symmetric\generate_key();
@@ -308,9 +297,6 @@ final class StreamEncryptionTest extends TestCase
         static::assertSame($plaintext, $decrypted->readAll());
     }
 
-    /**
-     * Craft a stream with an oversized frame length to trigger the frame size validation.
-     */
     public function testDecryptInvalidFrameSizeFails(): void
     {
         $key = Symmetric\generate_key();
@@ -334,5 +320,138 @@ final class StreamEncryptionTest extends TestCase
         $this->expectException(Exception\DecryptionException::class);
         $this->expectExceptionMessage('Invalid frame size in stream.');
         $encryptor->copyOpened($corruptedSource, $decrypted);
+    }
+
+    public function testDecryptInvalidChunkSizeZeroFails(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $source = new IO\MemoryHandle('test');
+        $encrypted = new IO\MemoryHandle();
+        $encryptor->copySealed($source, $encrypted);
+
+        $encrypted->seek(0);
+        $data = $encrypted->readAll();
+
+        $corrupted =
+            Byte\slice($data, 0, Symmetric\STREAM_HEADER_BYTES)
+            . pack('V', 0)
+            . Byte\slice($data, Symmetric\STREAM_HEADER_BYTES + 4);
+
+        $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Invalid chunk size in stream header.');
+        $encryptor->copyOpened(new IO\MemoryHandle($corrupted), new IO\MemoryHandle());
+    }
+
+    public function testDecryptTruncatedFrameHeaderFails(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $source = new IO\MemoryHandle('test data for truncation');
+        $encrypted = new IO\MemoryHandle();
+        $encryptor->copySealed($source, $encrypted);
+
+        $encrypted->seek(0);
+        $data = $encrypted->readAll();
+
+        $truncated = Byte\slice($data, 0, Symmetric\STREAM_HEADER_BYTES + 4 + 2);
+
+        $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Stream decryption failed: truncated frame header.');
+        $encryptor->copyOpened(new TrickleReadHandle($truncated, 1), new IO\MemoryHandle());
+    }
+
+    public function testDecryptStreamWithoutFinalTagFails(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $plaintext = Str\repeat('A', 100);
+        $source = new IO\MemoryHandle($plaintext);
+        $encrypted = new IO\MemoryHandle();
+        $encryptor->copySealed($source, $encrypted, 16);
+
+        $encrypted->seek(0);
+        $data = $encrypted->readAll();
+
+        $pos = Symmetric\STREAM_HEADER_BYTES + 4;
+        $lastFrameStart = $pos;
+        while ($pos < Byte\length($data)) {
+            $lastFrameStart = $pos;
+            /** @var int $frameLen */
+            $frameLen = unpack('V', Byte\slice($data, $pos, 4))[1];
+            $pos += 4 + $frameLen;
+        }
+
+        $truncated = Byte\slice($data, 0, $lastFrameStart);
+
+        $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Stream ended without final tag.');
+        $encryptor->copyOpened(new IO\MemoryHandle($truncated), new IO\MemoryHandle());
+    }
+
+    public function testDecryptStreamWithoutFinalTagNonEofSourceFails(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $plaintext = Str\repeat('A', 100);
+        $source = new IO\MemoryHandle($plaintext);
+        $encrypted = new IO\MemoryHandle();
+        $encryptor->copySealed($source, $encrypted, 16);
+
+        $encrypted->seek(0);
+        $data = $encrypted->readAll();
+
+        $pos = Symmetric\STREAM_HEADER_BYTES + 4;
+        $lastFrameStart = $pos;
+        while ($pos < Byte\length($data)) {
+            $lastFrameStart = $pos;
+            /** @var int $frameLen */
+            $frameLen = unpack('V', Byte\slice($data, $pos, 4))[1];
+            $pos += 4 + $frameLen;
+        }
+
+        $truncated = Byte\slice($data, 0, $lastFrameStart);
+
+        $handle = new readonly class($truncated) implements IO\ReadHandleInterface {
+            private IO\MemoryHandle $inner;
+
+            public function __construct(string $data)
+            {
+                $this->inner = new IO\MemoryHandle($data);
+            }
+
+            public function reachedEndOfDataSource(): bool
+            {
+                return false; // never reports EOF
+            }
+
+            public function tryRead(null|int $max_bytes = null): string
+            {
+                return $this->inner->tryRead($max_bytes);
+            }
+
+            public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
+            {
+                return $this->inner->read($max_bytes, $timeout);
+            }
+
+            public function readAll(null|int $max_bytes = null, null|Duration $timeout = null): string
+            {
+                return $this->inner->readAll($max_bytes, $timeout);
+            }
+
+            public function readFixedSize(int $size, null|Duration $timeout = null): string
+            {
+                return $this->inner->readFixedSize($size, $timeout);
+            }
+        };
+
+        $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Stream ended without final tag.');
+        $encryptor->copyOpened($handle, new IO\MemoryHandle());
     }
 }
