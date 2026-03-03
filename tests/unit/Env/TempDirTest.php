@@ -7,10 +7,13 @@ namespace Psl\Tests\Unit\Env;
 use PHPUnit\Framework\TestCase;
 use Psl\Env;
 
+use function realpath;
+use function sys_get_temp_dir;
+
 final class TempDirTest extends TestCase
 {
     public function testTempDir(): void
     {
-        static::assertSame(sys_get_temp_dir(), Env\temp_dir());
+        static::assertSame(realpath(sys_get_temp_dir()), Env\temp_dir());
     }
 }
