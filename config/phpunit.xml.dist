@@ -23,6 +23,13 @@
       <file>../src/Psl/Str/constants.php</file>
       <file>../src/Psl/Math/constants.php</file>
       <file>../src/Psl/Filesystem/constants.php</file>
+      <file>../src/Psl/Crypto/Signing/constants.php</file>
+      <file>../src/Psl/Crypto/KeyExchange/constants.php</file>
+      <file>../src/Psl/Crypto/Kdf/constants.php</file>
+      <file>../src/Psl/Crypto/Asymmetric/constants.php</file>
+      <file>../src/Psl/Crypto/Aead/constants.php</file>
+      <file>../src/Psl/Crypto/Symmetric/constants.php</file>
+      <file>../src/Psl/Crypto/StreamCipher/constants.php</file>
 
       <!-- Things that are not easily tested -->
       <file>../src/Psl/Filesystem/get_group.php</file>

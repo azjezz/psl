@@ -1,0 +1,66 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\Crypto\Hkdf;
+
+use Psl\Crypto\Exception;
+use Psl\Encoding\Hex;
+use Psl\Hash\Hmac;
+use Psl\Str\Byte;
+use SensitiveParameter;
+
+use function chr;
+use function sodium_memzero;
+
+/**
+ * HKDF-Expand: Expand a pseudorandom key to the desired length.
+ *
+ * @param non-empty-string $pseudo_random_key
+ * @param positive-int $length Desired output length in bytes.
+ *
+ * @throws Exception\RuntimeException If the requested length exceeds the maximum.
+ *
+ * @see https://tools.ietf.org/html/rfc5869#section-2.3
+ *
+ * @return non-empty-string
+ */
+function expand(
+    #[SensitiveParameter] string $pseudo_random_key,
+    string $info = '',
+    int $length = 32,
+    Hmac\Algorithm $algorithm = Hmac\Algorithm::Sha256,
+): string {
+    $hashLength = match ($algorithm) {
+        Hmac\Algorithm::Sha384 => 48,
+        Hmac\Algorithm::Sha512 => 64,
+        default => 32,
+    };
+
+    $maxLength = 255 * $hashLength;
+    if ($length > $maxLength) {
+        throw new Exception\RuntimeException('Requested HKDF output length exceeds maximum.');
+    }
+
+    $t = '';
+    $okm = '';
+    $counter = 1;
+
+    while (Byte\length($okm) < $length) {
+        $previous = $t;
+        $t = Hex\decode(Hmac\hash($t . $info . chr($counter), $algorithm, $pseudo_random_key));
+        if ($previous !== '') {
+            sodium_memzero($previous);
+        }
+
+        $okm .= $t;
+        $counter++;
+    }
+
+    sodium_memzero($t);
+    $result = Byte\slice($okm, 0, $length);
+    sodium_memzero($okm);
+
+    /** @var non-empty-string */
+    return $result;
+}

@@ -1,0 +1,148 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\Crypto\Symmetric;
+
+use Psl\Crypto\Exception;
+use Psl\Crypto\Internal;
+use Psl\IO;
+use Psl\Str\Byte;
+use SensitiveParameter;
+
+use function pack;
+use function sodium_crypto_secretstream_xchacha20poly1305_init_pull;
+use function sodium_crypto_secretstream_xchacha20poly1305_init_push;
+use function sodium_crypto_secretstream_xchacha20poly1305_pull;
+use function sodium_crypto_secretstream_xchacha20poly1305_push;
+use function unpack;
+
+use const SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_TAG_FINAL;
+use const SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_TAG_MESSAGE;
+
+final readonly class StreamEncryptor implements StreamEncryptorInterface
+{
+    public function __construct(
+        #[SensitiveParameter]
+        private Key $key,
+    ) {}
+
+    /**
+     * {@inheritDoc}
+     */
+    public function copySealed(
+        IO\ReadHandleInterface $source,
+        IO\WriteHandleInterface $destination,
+        int $chunkSize = 8192,
+    ): void {
+        /** @var array{string, string} $init */
+        $init = Internal\call_sodium(fn() => sodium_crypto_secretstream_xchacha20poly1305_init_push($this->key->bytes));
+        [$state, $header] = $init;
+
+        $destination->writeAll($header);
+        $destination->writeAll(pack('V', $chunkSize));
+
+        while (!$source->reachedEndOfDataSource()) {
+            $chunk = $source->read($chunkSize);
+            if ($chunk === '') {
+                break;
+            }
+
+            $isLast = $source->reachedEndOfDataSource() || Byte\length($chunk) < $chunkSize;
+            $tag = $isLast
+                ? SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_TAG_FINAL
+                : SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_TAG_MESSAGE;
+
+            $encrypted = Internal\call_sodium(static function () use (&$state, $chunk, $tag): string {
+                return sodium_crypto_secretstream_xchacha20poly1305_push($state, $chunk, '', $tag);
+            });
+            $destination->writeAll(pack('V', Byte\length($encrypted)));
+            $destination->writeAll($encrypted);
+
+            if ($isLast) {
+                return;
+            }
+        }
+
+        $encrypted = Internal\call_sodium(static function () use (&$state): string {
+            return sodium_crypto_secretstream_xchacha20poly1305_push(
+                $state,
+                '',
+                '',
+                SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_TAG_FINAL,
+            );
+        });
+        $destination->writeAll(pack('V', Byte\length($encrypted)));
+        $destination->writeAll($encrypted);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function copyOpened(IO\ReadHandleInterface $source, IO\WriteHandleInterface $destination): void
+    {
+        $header = $source->readFixedSize(namespace\STREAM_HEADER_BYTES);
+        $chunkSizeBytes = $source->readFixedSize(4);
+        /** @var int $chunkSize */
+        $chunkSize = unpack('V', $chunkSizeBytes)[1];
+
+        if ($chunkSize < 1 || $chunkSize > namespace\MAX_CHUNK_BYTES) {
+            throw new Exception\DecryptionException('Invalid chunk size in stream header.');
+        }
+
+        $state = Internal\call_sodium(fn() => sodium_crypto_secretstream_xchacha20poly1305_init_pull(
+            $header,
+            $this->key->bytes,
+        ));
+
+        while (!$source->reachedEndOfDataSource()) {
+            $lengthBytes = $source->read(4);
+            if ($lengthBytes === '') {
+                break;
+            }
+
+            if (Byte\length($lengthBytes) < 4) {
+                /** @var positive-int $remaining */
+                $remaining = 4 - Byte\length($lengthBytes);
+                try {
+                    $lengthBytes .= $source->readFixedSize($remaining);
+                } catch (IO\Exception\RuntimeException $e) {
+                    throw new Exception\DecryptionException(
+                        'Stream decryption failed: truncated frame header.',
+                        previous: $e,
+                    );
+                }
+            }
+
+            /** @var positive-int $frameSize */
+            $frameSize = unpack('V', $lengthBytes)[1];
+
+            if ($frameSize > ($chunkSize + namespace\STREAM_TAG_BYTES)) {
+                throw new Exception\DecryptionException('Invalid frame size in stream.');
+            }
+
+            try {
+                $chunk = $source->readFixedSize($frameSize);
+            } catch (IO\Exception\RuntimeException $e) {
+                throw new Exception\DecryptionException('Stream decryption failed: truncated frame.', previous: $e);
+            }
+
+            /** @var array{string, int}|false $result */
+            $result = Internal\call_sodium(static function () use (&$state, $chunk): array|false {
+                return sodium_crypto_secretstream_xchacha20poly1305_pull($state, $chunk);
+            });
+            if ($result === false) {
+                throw new Exception\DecryptionException('Stream decryption failed.');
+            }
+
+            [$plaintext, $tag] = $result;
+            $destination->writeAll($plaintext);
+
+            if ($tag === SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_TAG_FINAL) {
+                return;
+            }
+        }
+
+        throw new Exception\DecryptionException('Stream ended without final tag.');
+    }
+}
