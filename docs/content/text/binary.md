@@ -17,31 +17,31 @@ PHP's `pack()` and `unpack()` rely on single-character format codes (`N`, `v`, `
 
 For encoding or decoding individual values, use the standalone functions. Each function validates its input and throws on error.
 
-@example('other/binary-oneshot.php')
+@example('text/binary-oneshot.php')
 
 ## Writer
 
 The `Writer` is an immutable builder for binary data. Each method returns a new instance with the appended bytes. Use this when you need the result as a string.
 
-@example('other/binary-writer.php')
+@example('text/binary-writer.php')
 
 ## Reader
 
 The `Reader` provides cursor-based sequential reading of binary data from a string. Each read advances the internal cursor.
 
-@example('other/binary-reader.php')
+@example('text/binary-reader.php')
 
 ## Handle-Based IO
 
 `HandleWriter` and `HandleReader` operate directly on `IO\WriteHandleInterface` and `IO\ReadHandleInterface`, writing and reading binary data without buffering entire messages in PHP memory. This is ideal for network protocols over TCP/Unix sockets.
 
-@example('other/binary-handle.php')
+@example('text/binary-handle.php')
 
 ## Length-Prefixed Bytes
 
 All writers and readers support length-prefixed byte strings, a common pattern in binary protocols where the payload length is written before the payload itself. The prefix size determines the maximum payload length.
 
-@example('other/binary-prefixed.php')
+@example('text/binary-prefixed.php')
 
 ## Implementing Custom Writers and Readers
 

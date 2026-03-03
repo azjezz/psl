@@ -25,6 +25,7 @@
 * feat(datetime): add `Period`, `Interval`, `TemporalAmountInterface` - [#595](https://github.com/azjezz/psl/pull/595) by @azjezz
 * feat(io): add `IO\copy()` and `IO\copy_bidirectional()` - [#585](https://github.com/azjezz/psl/pull/585) by @azjezz
 * feat(vec): add `Vec\flatten()` - [#583](https://github.com/azjezz/psl/pull/583) by @azjezz
+* feat: introduce `Crypto` component with symmetric/asymmetric encryption, signing, AEAD, KDF, HKDF, key exchange, and stream ciphers - [#607](https://github.com/azjezz/psl/pull/607) by @azjezz
 
 ### fixes, and improvements
 
