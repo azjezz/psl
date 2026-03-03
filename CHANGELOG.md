@@ -1,5 +1,86 @@
 # Changelog
 
+## Next
+
+### breaking changes
+
+* Dropped PHP 8.3 support; minimum is now PHP 8.4 - [#584](https://github.com/azjezz/psl/pull/584) by @azjezz
+* Migrated to PHPUnit 13 - [#584](https://github.com/azjezz/psl/pull/584) by @azjezz
+* Complete networking stack rewrite (`Network`, `TCP`, `Unix`) - [#585](https://github.com/azjezz/psl/pull/585) by @azjezz
+* `Psl\Shell` internals refactored; dead code removed - [#596](https://github.com/azjezz/psl/pull/596) by @azjezz
+* `Psl\Env\temp_dir()` now always returns a canonicalized path - [#599](https://github.com/azjezz/psl/pull/599) by @azjezz
+
+### features
+
+* feat: introduce `Ansi` component - [#588](https://github.com/azjezz/psl/pull/588) by @azjezz
+* feat: introduce `Terminal` component - [#589](https://github.com/azjezz/psl/pull/589) by @azjezz
+* feat: introduce `Process` component - [#578](https://github.com/azjezz/psl/pull/578) by @azjezz
+* feat: introduce `Binary` component - [#598](https://github.com/azjezz/psl/pull/598) by @azjezz
+* feat: introduce `Interoperability` component - [#582](https://github.com/azjezz/psl/pull/582) by @azjezz
+* feat: introduce `TLS` component - [#585](https://github.com/azjezz/psl/pull/585) by @azjezz
+* feat: introduce `UDP` component - [#585](https://github.com/azjezz/psl/pull/585) by @azjezz
+* feat: introduce `CIDR` component - [#585](https://github.com/azjezz/psl/pull/585) by @azjezz
+* feat: introduce `Socks` component - [#585](https://github.com/azjezz/psl/pull/585) by @azjezz
+* feat(network): connection pooling, retry logic, socket pairs - [#585](https://github.com/azjezz/psl/pull/585) by @azjezz
+* feat(datetime): add `Period`, `Interval`, `TemporalAmountInterface` - [#595](https://github.com/azjezz/psl/pull/595) by @azjezz
+* feat(io): add `IO\copy()` and `IO\copy_bidirectional()` - [#585](https://github.com/azjezz/psl/pull/585) by @azjezz
+* feat(vec): add `Vec\flatten()` - [#583](https://github.com/azjezz/psl/pull/583) by @azjezz
+
+### fixes, and improvements
+
+* fix(vec): strict comparison in `range()` for float precision - [#581](https://github.com/azjezz/psl/pull/581) by @azjezz
+* fix(filesystem): canonicalize temporary directory for `create_temporary_file` - [#580](https://github.com/azjezz/psl/pull/580), [#597](https://github.com/azjezz/psl/pull/597) by @azjezz
+
+### other
+
+* docs: documentation website at https://psl.carthage.software/ - [#592](https://github.com/azjezz/psl/pull/592), [#594](https://github.com/azjezz/psl/pull/594) by @azjezz
+
+## 4.3.0
+
+### features
+
+* feat: introduce `Either` type - [#572](https://github.com/azjezz/psl/pull/572) by @simPod
+* feat(type): add `uuid` type - [#568](https://github.com/azjezz/psl/pull/568) by @gsteel
+
+### fixes, and improvements
+
+* fix(shell): terminate the process on timeout - [#574](https://github.com/azjezz/psl/pull/574) by @azjezz
+* fix(io): correct PHPDoc return type annotation - [#571](https://github.com/azjezz/psl/pull/571) by @mitelg
+* refactor(phpunit): resolve test case naming deprecations - [#573](https://github.com/azjezz/psl/pull/573) by @simPod
+
+## 4.2.1
+
+### fixes, and improvements
+
+* fix(tree): explicit type precedence - [#566](https://github.com/azjezz/psl/pull/566) by @azjezz
+* fix(iter): do not narrow down `seek($offset)` type - [#552](https://github.com/azjezz/psl/pull/552) by @azjezz
+* fix(filesystem): release handles before changing permissions when copying files - [#550](https://github.com/azjezz/psl/pull/550) by @dragosprotung
+* revert(option): revert [#475](https://github.com/azjezz/psl/pull/475) - [#560](https://github.com/azjezz/psl/pull/560) by @devnix
+
+## 4.2.0
+
+### other
+
+* chore: add support for PHP 8.5 - [#549](https://github.com/azjezz/psl/pull/549) by @veewee
+
+## 4.1.0
+
+### features
+
+* feat: add `Graph` component with directed and undirected graph support - [#547](https://github.com/azjezz/psl/pull/547) by @azjezz
+* feat: add `Tree` component for hierarchical data structures - [#546](https://github.com/azjezz/psl/pull/546) by @azjezz
+* feat(type): add reflection-based type functions for class members - [#543](https://github.com/azjezz/psl/pull/543) by @azjezz
+
+### other
+
+* chore: migrate from `make` to `just` - [#544](https://github.com/azjezz/psl/pull/544) by @azjezz
+
+## 4.0.1
+
+### fixes, and improvements
+
+* refactor: remove redundant `@var` tags from constants - [#533](https://github.com/azjezz/psl/pull/533) by @azjezz
+
 ## 4.0.0
 
 ### breaking changes
