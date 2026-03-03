@@ -12,6 +12,7 @@ use Psl\SecureRandom;
 use Psl\Str;
 use Psl\Str\Byte;
 use Psl\Tests\Fixture\SocketLikeReadHandle;
+use Psl\Tests\Fixture\TrickleReadHandle;
 
 final class StreamEncryptionTest extends TestCase
 {
@@ -247,5 +248,91 @@ final class StreamEncryptionTest extends TestCase
 
         $decrypted->seek(0);
         static::assertSame($plaintext, $decrypted->readAll());
+    }
+
+    /**
+     * Decrypt through a trickle source that returns 1 byte per read().
+     *
+     * This exercises the partial-read recovery path where read() returns
+     * fewer than 4 bytes for the frame length header.
+     */
+    public function testDecryptTrickleSourceOneByte(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $plaintext = 'Trickle test with partial frame headers';
+        $source = new IO\MemoryHandle($plaintext);
+        $encrypted = new IO\MemoryHandle();
+
+        $encryptor->copySealed($source, $encrypted, 16);
+
+        $encrypted->seek(0);
+        $ciphertextBytes = $encrypted->readAll();
+
+        $trickleSource = new TrickleReadHandle($ciphertextBytes, 1);
+        $decrypted = new IO\MemoryHandle();
+
+        $encryptor->copyOpened($trickleSource, $decrypted);
+
+        $decrypted->seek(0);
+        static::assertSame($plaintext, $decrypted->readAll());
+    }
+
+    /**
+     * Decrypt through a trickle source that returns 2 bytes per read().
+     *
+     * The 4-byte frame header will always be split across two reads,
+     * forcing the partial-read recovery to assemble them.
+     */
+    public function testDecryptTrickleSourceTwoBytes(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $plaintext = Str\repeat('Y', 500);
+        $source = new IO\MemoryHandle($plaintext);
+        $encrypted = new IO\MemoryHandle();
+
+        $encryptor->copySealed($source, $encrypted, 64);
+
+        $encrypted->seek(0);
+        $ciphertextBytes = $encrypted->readAll();
+
+        $trickleSource = new TrickleReadHandle($ciphertextBytes, 2);
+        $decrypted = new IO\MemoryHandle();
+
+        $encryptor->copyOpened($trickleSource, $decrypted);
+
+        $decrypted->seek(0);
+        static::assertSame($plaintext, $decrypted->readAll());
+    }
+
+    /**
+     * Craft a stream with an oversized frame length to trigger the frame size validation.
+     */
+    public function testDecryptInvalidFrameSizeFails(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $source = new IO\MemoryHandle('test');
+        $encrypted = new IO\MemoryHandle();
+        $encryptor->copySealed($source, $encrypted, 16);
+
+        $encrypted->seek(0);
+        $data = $encrypted->readAll();
+
+        $frameLengthOffset = Symmetric\STREAM_HEADER_BYTES + 4;
+        $oversizedFrame = pack('V', 99_999);
+        $corrupted =
+            Byte\slice($data, 0, $frameLengthOffset) . $oversizedFrame . Byte\slice($data, $frameLengthOffset + 4);
+
+        $corruptedSource = new IO\MemoryHandle($corrupted);
+        $decrypted = new IO\MemoryHandle();
+
+        $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Invalid frame size in stream.');
+        $encryptor->copyOpened($corruptedSource, $decrypted);
     }
 }

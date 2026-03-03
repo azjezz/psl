@@ -184,6 +184,17 @@ final class FunctionsTest extends TestCase
         static::assertSame('data', $plaintext);
     }
 
+    public function testKeyWrongLengthExceptionMessage(): void
+    {
+        try {
+            new Aead\Key('too-short');
+            static::fail('Expected InvalidArgumentException');
+        } catch (Exception\InvalidArgumentException $e) {
+            static::assertStringStartsWith('AEAD key must be exactly ', $e->getMessage());
+            static::assertStringEndsWith(' bytes.', $e->getMessage());
+        }
+    }
+
     public function testLargePlaintext(): void
     {
         $key = Aead\generate_key(Aead\Algorithm::XChaCha20Poly1305);
