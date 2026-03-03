@@ -480,7 +480,7 @@ final class ChildTest extends TestCase
             ->spawn();
 
         try {
-            $child->wait(Duration::milliseconds(500));
+            $child->wait(Duration::milliseconds(200));
             static::fail('Expected TimeoutException');
         } catch (Exception\TimeoutException) {
             static::assertFalse($child->isRunning());
@@ -492,7 +492,7 @@ final class ChildTest extends TestCase
         $output = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo "fast";')
-            ->output(Duration::seconds(5));
+            ->output(Duration::seconds(2));
 
         static::assertSame('fast', $output->stdout);
         static::assertTrue($output->status->isSuccessful());
@@ -503,7 +503,7 @@ final class ChildTest extends TestCase
         $status = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('exit(0);')
-            ->status(Duration::seconds(5));
+            ->status(Duration::seconds(2));
 
         static::assertTrue($status->isSuccessful());
     }
@@ -516,12 +516,12 @@ final class ChildTest extends TestCase
 
         $child = self::phpCommand()
             ->withArgument('-r')
-            ->withArgument('echo "1"; usleep(500000); echo "2"; sleep(10);')
+            ->withArgument('echo "1"; flush(); usleep(50000); echo "2"; flush(); sleep(2);')
             ->spawn();
 
         $stdout = '';
         try {
-            foreach (IO\streaming([1 => $child->getStdout()], Duration::seconds(2)) as $chunk) {
+            foreach (IO\streaming([1 => $child->getStdout()], Duration::milliseconds(500)) as $chunk) {
                 if ('' === $chunk) {
                     continue;
                 }
@@ -546,7 +546,7 @@ final class ChildTest extends TestCase
 
         $child = self::phpCommand()
             ->withArgument('-r')
-            ->withArgument('fwrite(STDOUT, "out"); fwrite(STDERR, "err"); sleep(10);')
+            ->withArgument('fwrite(STDOUT, "out"); fwrite(STDERR, "err"); sleep(2);')
             ->spawn();
 
         $stdout = '';
@@ -555,7 +555,7 @@ final class ChildTest extends TestCase
             foreach (IO\streaming([
                 1 => $child->getStdout(),
                 2 => $child->getStderr(),
-            ], Duration::seconds(2)) as $type => $chunk) {
+            ], Duration::milliseconds(200)) as $type => $chunk) {
                 if ('' === $chunk) {
                     continue;
                 }
@@ -587,12 +587,12 @@ final class ChildTest extends TestCase
 
         $child = self::phpCommand()
             ->withArgument('-r')
-            ->withArgument('echo str_repeat("x", 10000); sleep(60);')
+            ->withArgument('echo str_repeat("x", 10000); sleep(2);')
             ->spawn();
 
         $stdout = '';
         try {
-            foreach (IO\streaming([1 => $child->getStdout()], Duration::seconds(2)) as $chunk) {
+            foreach (IO\streaming([1 => $child->getStdout()], Duration::milliseconds(200)) as $chunk) {
                 if ('' === $chunk) {
                     continue;
                 }
@@ -622,7 +622,7 @@ final class ChildTest extends TestCase
         self::phpCommand()
             ->withArgument('-r')
             ->withArgument('for ($i = 0; $i < 100; $i++) { echo $i; usleep(100000); }')
-            ->output(Duration::milliseconds(500));
+            ->output(Duration::milliseconds(200));
     }
 
     public function testStatusTimeoutWhileChildOutputsAndSleeps(): void
@@ -631,8 +631,8 @@ final class ChildTest extends TestCase
 
         self::phpCommand()
             ->withArgument('-r')
-            ->withArgument('echo str_repeat("x", 10000); sleep(60);')
-            ->status(Duration::milliseconds(500));
+            ->withArgument('echo str_repeat("x", 10000); sleep(2);')
+            ->status(Duration::milliseconds(200));
     }
 
     public function testMultipleChunksBeforeTimeout(): void
@@ -643,12 +643,12 @@ final class ChildTest extends TestCase
 
         $child = self::phpCommand()
             ->withArgument('-r')
-            ->withArgument('for ($i = 1; $i <= 5; $i++) { echo $i; usleep(200000); } sleep(60);')
+            ->withArgument('for ($i = 1; $i <= 5; $i++) { echo $i; } flush(); sleep(2);')
             ->spawn();
 
         $stdout = '';
         try {
-            foreach (IO\streaming([1 => $child->getStdout()], Duration::seconds(3)) as $chunk) {
+            foreach (IO\streaming([1 => $child->getStdout()], Duration::milliseconds(500)) as $chunk) {
                 if ('' === $chunk) {
                     continue;
                 }
@@ -675,11 +675,11 @@ final class ChildTest extends TestCase
 
         $child = self::phpCommand()
             ->withArgument('-r')
-            ->withArgument('echo "partial"; sleep(60);')
+            ->withArgument('echo "partial"; sleep(2);')
             ->spawn();
 
         try {
-            $child->waitWithOutput(Duration::milliseconds(500));
+            $child->waitWithOutput(Duration::milliseconds(200));
             static::fail('Expected TimeoutException');
         } catch (Exception\TimeoutException) {
             static::assertFalse($child->isRunning());
@@ -691,7 +691,7 @@ final class ChildTest extends TestCase
         $run = static function (): void {
             self::phpCommand()
                 ->withArgument('-r')
-                ->withArgument('usleep(500000); echo "done";')
+                ->withArgument('usleep(100000); echo "done";')
                 ->output();
         };
 
@@ -699,7 +699,7 @@ final class ChildTest extends TestCase
         Async\concurrently([$run, $run]);
         $elapsed = DateTime\Timestamp::monotonic()->since($start);
 
-        static::assertLessThan(0.9, $elapsed->getTotalSeconds());
+        static::assertLessThan(0.5, $elapsed->getTotalSeconds());
     }
 
     public function testConcurrentStatus(): void
@@ -707,7 +707,7 @@ final class ChildTest extends TestCase
         $run = static function (): void {
             self::phpCommand()
                 ->withArgument('-r')
-                ->withArgument('usleep(500000);')
+                ->withArgument('usleep(100000);')
                 ->status();
         };
 
@@ -715,7 +715,7 @@ final class ChildTest extends TestCase
         Async\concurrently([$run, $run]);
         $elapsed = DateTime\Timestamp::monotonic()->since($start);
 
-        static::assertLessThan(0.9, $elapsed->getTotalSeconds());
+        static::assertLessThan(0.5, $elapsed->getTotalSeconds());
     }
 
     public function testConcurrentWait(): void
@@ -723,7 +723,7 @@ final class ChildTest extends TestCase
         $run = static function (): void {
             $child = self::phpCommand()
                 ->withArgument('-r')
-                ->withArgument('usleep(500000);')
+                ->withArgument('usleep(100000);')
                 ->withStdout(Stdio::null())
                 ->withStderr(Stdio::null())
                 ->spawn();
@@ -735,6 +735,6 @@ final class ChildTest extends TestCase
         Async\concurrently([$run, $run]);
         $elapsed = DateTime\Timestamp::monotonic()->since($start);
 
-        static::assertLessThan(0.9, $elapsed->getTotalSeconds());
+        static::assertLessThan(0.5, $elapsed->getTotalSeconds());
     }
 }
