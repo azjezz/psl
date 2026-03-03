@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\TCP;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
+use Psl\DateTime\Duration;
 use Psl\TCP;
 
 final class SocketPoolTest extends TestCase
@@ -209,6 +210,163 @@ final class SocketPoolTest extends TestCase
                 $stream->writeAll('custom');
                 $response = $stream->readAll();
                 self::assertSame('ok', $response);
+
+                $pool->close();
+            },
+        ]);
+    }
+
+    public function testCheckoutSkipsDeadIdleConnection(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 0);
+        $port = $listener->getLocalAddress()->port ?? 0;
+
+        Async\concurrently([
+            'server' => static function () use ($listener): void {
+                $conn1 = $listener->accept();
+                $conn1->read();
+                $conn1->writeAll('first-ok');
+                $conn1->close();
+
+                $conn2 = $listener->accept();
+                $conn2->read();
+                $conn2->writeAll('second-ok');
+                $conn2->close();
+
+                $listener->close();
+            },
+            'client' => static function () use ($port): void {
+                $pool = new TCP\SocketPool();
+
+                $stream1 = $pool->checkout('127.0.0.1', $port);
+                $stream1->writeAll('first');
+                $stream1->read();
+                $pool->checkin($stream1);
+
+                $stream1->close();
+
+                $stream2 = $pool->checkout('127.0.0.1', $port);
+                $stream2->writeAll('second');
+                $response = $stream2->readAll();
+                self::assertSame('second-ok', $response);
+
+                $pool->close();
+            },
+        ]);
+    }
+
+    public function testCheckinClosedStreamIsDiscarded(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 0);
+        $port = $listener->getLocalAddress()->port ?? 0;
+
+        Async\concurrently([
+            'server' => static function () use ($listener): void {
+                $conn1 = $listener->accept();
+                $conn1->read();
+                $conn1->writeAll('ok');
+                $conn1->close();
+
+                $conn2 = $listener->accept();
+                $conn2->read();
+                $conn2->writeAll('fresh');
+                $conn2->close();
+
+                $listener->close();
+            },
+            'client' => static function () use ($port): void {
+                $pool = new TCP\SocketPool();
+
+                $stream = $pool->checkout('127.0.0.1', $port);
+                $stream->writeAll('hello');
+                $stream->read();
+
+                $stream->close();
+                $pool->checkin($stream);
+
+                $stream2 = $pool->checkout('127.0.0.1', $port);
+                $stream2->writeAll('new');
+                $response = $stream2->readAll();
+                self::assertSame('fresh', $response);
+
+                $pool->close();
+            },
+        ]);
+    }
+
+    public function testIdleTimeoutClosesConnection(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 0);
+        $port = $listener->getLocalAddress()->port ?? 0;
+
+        Async\concurrently([
+            'server' => static function () use ($listener): void {
+                $conn1 = $listener->accept();
+                $conn1->read();
+                $conn1->writeAll('ok');
+                $conn1->readAll();
+                $conn1->close();
+
+                $conn2 = $listener->accept();
+                $conn2->read();
+                $conn2->writeAll('after-timeout');
+                $conn2->close();
+
+                $listener->close();
+            },
+            'client' => static function () use ($port): void {
+                $pool = new TCP\SocketPool(idleTimeout: Duration::milliseconds(50));
+
+                $stream = $pool->checkout('127.0.0.1', $port);
+                $stream->writeAll('ping');
+                $stream->read();
+                $pool->checkin($stream);
+
+                Async\sleep(Duration::milliseconds(100));
+
+                $stream2 = $pool->checkout('127.0.0.1', $port);
+                $stream2->writeAll('ping2');
+                $response = $stream2->readAll();
+                self::assertSame('after-timeout', $response);
+
+                $pool->close();
+            },
+        ]);
+    }
+
+    public function testClearIdleConnectionRemovesFromPool(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 0);
+        $port = $listener->getLocalAddress()->port ?? 0;
+
+        Async\concurrently([
+            'server' => static function () use ($listener): void {
+                $conn = $listener->accept();
+                $conn->read();
+                $conn->writeAll('ok');
+                $conn->readAll();
+                $conn->close();
+
+                $conn2 = $listener->accept();
+                $conn2->read();
+                $conn2->writeAll('new');
+                $conn2->close();
+
+                $listener->close();
+            },
+            'client' => static function () use ($port): void {
+                $pool = new TCP\SocketPool();
+
+                $stream = $pool->checkout('127.0.0.1', $port);
+                $stream->writeAll('ping');
+                $stream->read();
+                $pool->checkin($stream);
+                $pool->clear($stream);
+
+                $stream2 = $pool->checkout('127.0.0.1', $port);
+                $stream2->writeAll('ping2');
+                $response = $stream2->readAll();
+                self::assertSame('new', $response);
 
                 $pool->close();
             },
