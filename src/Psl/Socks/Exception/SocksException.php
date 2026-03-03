@@ -9,4 +9,4 @@ use Psl\Network\Exception;
 /**
  * Exception thrown when a SOCKS5 protocol operation fails.
  */
-class SocksException extends Exception\RuntimeException {}
+class SocksException extends Exception\RuntimeException implements ExceptionInterface {}

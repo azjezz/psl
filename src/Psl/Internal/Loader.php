@@ -842,6 +842,8 @@ final class Loader
         'Psl\\Terminal\\RawModeSwitcherInterface' => 'Psl/Terminal/RawModeSwitcherInterface.php',
         'Psl\\Terminal\\WindowSizeProviderInterface' => 'Psl/Terminal/WindowSizeProviderInterface.php',
         'Psl\\Terminal\\Widget\\WidgetInterface' => 'Psl/Terminal/Widget/WidgetInterface.php',
+        'Psl\\TLS\\Exception\\ExceptionInterface' => 'Psl/TLS/Exception/ExceptionInterface.php',
+        'Psl\\Socks\\Exception\\ExceptionInterface' => 'Psl/Socks/Exception/ExceptionInterface.php',
     ];
 
     /**
