@@ -19,7 +19,7 @@ final class ErrorCaseTest extends TestCase
         $this->expectException(HandshakeFailedException::class);
 
         $listener = TCP\listen('127.0.0.1', 0);
-        $port = $listener->getLocalAddress()->port;
+        $port = $listener->getLocalAddress()->port ?? 0;
 
         Async\concurrently([
             'server' => static function () use ($listener): void {
@@ -45,7 +45,7 @@ final class ErrorCaseTest extends TestCase
         $this->expectExceptionMessage('Stream resource is not available.');
 
         $listener = TCP\listen('127.0.0.1', 0);
-        $port = $listener->getLocalAddress()->port;
+        $port = $listener->getLocalAddress()->port ?? 0;
 
         Async\concurrently([
             'server' => static function () use ($listener): void {
@@ -71,7 +71,7 @@ final class ErrorCaseTest extends TestCase
         $this->expectExceptionMessage('Stream resource is not available.');
 
         $listener = TCP\listen('127.0.0.1', 0);
-        $port = $listener->getLocalAddress()->port;
+        $port = $listener->getLocalAddress()->port ?? 0;
 
         Async\concurrently([
             'server' => static function () use ($listener): void {

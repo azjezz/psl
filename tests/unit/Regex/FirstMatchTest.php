@@ -13,6 +13,10 @@ use function Psl\Regex\capture_groups;
 
 final class FirstMatchTest extends TestCase
 {
+    /**
+     * @param non-empty-string $pattern
+     * @param TypeInterface<array<array-key, mixed>|null>|null $shape
+     */
     #[DataProvider('provideMatchingData')]
     public function testMatching(
         array $expected,
@@ -24,6 +28,9 @@ final class FirstMatchTest extends TestCase
         static::assertSame($expected, Regex\first_match($subject, $pattern, $shape, $offset));
     }
 
+    /**
+     * @param non-empty-string $pattern
+     */
     #[DataProvider('provideNonMatchingData')]
     public function testNotMatching(string $subject, string $pattern, int $offset = 0): void
     {

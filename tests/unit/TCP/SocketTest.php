@@ -61,7 +61,7 @@ final class SocketTest extends TestCase
     public function testConnectAndCommunicate(): void
     {
         $listener = TCP\listen('127.0.0.1', 0);
-        $port = $listener->getLocalAddress()->port;
+        $port = $listener->getLocalAddress()->port ?? 0;
 
         Async\concurrently([
             'server' => static function () use ($listener): void {
@@ -103,7 +103,7 @@ final class SocketTest extends TestCase
                 $listener->close();
             },
             'client' => static function () use ($address): void {
-                $client = TCP\connect('127.0.0.1', $address->port);
+                $client = TCP\connect('127.0.0.1', $address->port ?? 0);
                 $client->writeAll('ping');
                 $response = $client->readAll();
                 static::assertSame('pong', $response);
@@ -130,7 +130,7 @@ final class SocketTest extends TestCase
     public function testConnectWithTimeout(): void
     {
         $listener = TCP\listen('127.0.0.1', 0);
-        $port = $listener->getLocalAddress()->port;
+        $port = $listener->getLocalAddress()->port ?? 0;
 
         Async\concurrently([
             'server' => static function () use ($listener): void {
@@ -157,7 +157,7 @@ final class SocketTest extends TestCase
     public function testConnectConsumedByConnect(): void
     {
         $listener = TCP\listen('127.0.0.1', 0);
-        $port = $listener->getLocalAddress()->port;
+        $port = $listener->getLocalAddress()->port ?? 0;
 
         $socket = TCP\Socket::createV4();
         $stream = $socket->connect('127.0.0.1', $port);

@@ -37,7 +37,7 @@ final class DurationTest extends TestCase
         static::assertSame(1.0, DateTime\Duration::milliseconds(1)->getTotalMilliseconds());
         static::assertSame(1.0, DateTime\Duration::microseconds(1)->getTotalMicroseconds());
         static::assertSame(1, DateTime\Duration::nanoseconds(1)->getNanoseconds());
-        static::assertSame(0.0, DateTime\Duration::zero(1)->getTotalSeconds());
+        static::assertSame(0.0, DateTime\Duration::zero()->getTotalSeconds());
     }
 
     public static function provideGetTotalHours(): array

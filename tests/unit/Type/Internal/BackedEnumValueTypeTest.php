@@ -18,7 +18,7 @@ use ReflectionProperty;
 class BackedEnumValueTypeTest extends TestCase
 {
     /**
-     * @return list<array{0: class-string<BackedEnum>, 1: bool}
+     * @return list<array{0: class-string<BackedEnum>, 1: bool}>
      */
     public static function enumDataProvider(): array
     {

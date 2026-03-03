@@ -19,7 +19,7 @@ final class RangeTest extends TestCase
     }
 
     /**
-     * @return list<{0: string, 1: string, 2: Range\RangeInterface}>
+     * @return list<array{0: string, 1: string, 2: Range\RangeInterface}>
      */
     public static function provideData(): array
     {

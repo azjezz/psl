@@ -183,6 +183,12 @@ final class NoneTest extends TestCase
         static::assertTrue($y->zipWith($x, static fn(int $a, int $b): int => $a + $b)->isNone());
     }
 
+    /**
+     * @template X
+     * @template Y
+     *
+     * @param Option\Option<array{X, Y}> $option
+     */
     #[DataProvider('provideTestUnzip')]
     public function testUnzip(Option\Option $option): void
     {

@@ -188,6 +188,12 @@ final class SomeTest extends TestCase
         static::assertTrue(Option\some(new Fixture\Point(17, 42))->equals($point));
     }
 
+    /**
+     * @template X
+     * @template Y
+     *
+     * @param Option\Option<array{X, Y}> $option
+     */
     #[DataProvider('provideTestUnzip')]
     public function testUnzip(Option\Option $option, mixed $expectedX, mixed $expectedY): void
     {

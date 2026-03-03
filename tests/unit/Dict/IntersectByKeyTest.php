@@ -11,6 +11,14 @@ use Psl\Vec;
 
 final class IntersectByKeyTest extends TestCase
 {
+    /**
+     * @template Tk as array-key
+     * @template Tv
+     *
+     * @param iterable<Tk, Tv> $first
+     * @param iterable<Tk, Tv> $second
+     * @param iterable<Tk, Tv> ...$rest
+     */
     #[DataProvider('provideData')]
     public function testIntersectByKey(array $expected, iterable $first, iterable $second, iterable ...$rest): void
     {

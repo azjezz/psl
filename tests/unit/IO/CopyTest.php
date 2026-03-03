@@ -73,7 +73,7 @@ final class CopyTest extends TestCase
     public function testCopyTimeout(): void
     {
         $listener = TCP\listen('127.0.0.1', 0);
-        $port = $listener->getLocalAddress()->port;
+        $port = $listener->getLocalAddress()->port ?? 0;
 
         $this->expectException(IO\Exception\TimeoutException::class);
 

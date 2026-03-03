@@ -72,6 +72,7 @@ final class AllTest extends TestCase
 
     public function testAllAwaitablesAreCompletedAtALaterTime(): void
     {
+        /** @var Psl\Ref<string> */
         $ref = new Psl\Ref('');
 
         try {
