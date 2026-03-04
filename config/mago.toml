@@ -49,7 +49,7 @@ ignore = [
   { code = "duplicate-definition", in = "tests/static-analysis" },
   { code = "unused-method", in = "tests/fixture" },
   { code = "unused-property", in = "tests/fixture" },
-  { code = "unused-statement", in = "docs" },
+  { code = "unused-statement", in = ["docs", "tests/benchmark"] },
   { code = "duplicate-definition", in = "docs" },
   { code = "redundant-type-comparison", in = "docs" },
 ]
