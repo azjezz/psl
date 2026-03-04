@@ -8,6 +8,7 @@ use Closure;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Dict;
+use Psl\Iter;
 
 final class SortTest extends TestCase
 {
@@ -42,5 +43,12 @@ final class SortTest extends TestCase
                 ['foo' => 'bar', 'bar' => 'baz'],
             ],
         ];
+    }
+
+    public function testSortWithNonArrayIterable(): void
+    {
+        $iterator = Iter\Iterator::create(['c' => 3, 'a' => 1, 'b' => 2]);
+
+        static::assertSame(['a' => 1, 'b' => 2, 'c' => 3], Dict\sort($iterator));
     }
 }

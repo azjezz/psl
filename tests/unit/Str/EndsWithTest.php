@@ -35,5 +35,7 @@ final class EndsWithTest extends TestCase
     {
         static::assertTrue(Str\ends_with('Hello, World', 'World', Str\Encoding::Iso88591));
         static::assertFalse(Str\ends_with('Hello, World', 'world', Str\Encoding::Iso88591));
+        static::assertTrue(Str\ends_with('Hello', 'Hello', Str\Encoding::Iso88591));
+        static::assertFalse(Str\ends_with('Hi', 'Hello, World', Str\Encoding::Iso88591));
     }
 }

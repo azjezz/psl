@@ -7,6 +7,7 @@ namespace Psl\Tests\Unit\Dict;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Dict;
+use Psl\Iter;
 
 final class SliceTest extends TestCase
 {
@@ -22,5 +23,26 @@ final class SliceTest extends TestCase
     {
         yield [['c' => 3, 'd' => 4], ['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4], 2];
         yield [['b' => 2, 'c' => 3], ['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4], 1, 2];
+    }
+
+    public function testSliceWithNonArrayIterable(): void
+    {
+        $iterator = Iter\Iterator::create(['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4]);
+
+        static::assertSame(['c' => 3, 'd' => 4], Dict\slice($iterator, 2));
+    }
+
+    public function testSliceWithNonArrayIterableAndLength(): void
+    {
+        $iterator = Iter\Iterator::create(['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4]);
+
+        static::assertSame(['b' => 2, 'c' => 3], Dict\slice($iterator, 1, 2));
+    }
+
+    public function testSliceWithNonArrayIterableZeroLength(): void
+    {
+        $iterator = Iter\Iterator::create(['a' => 1, 'b' => 2]);
+
+        static::assertSame([], Dict\slice($iterator, 0, 0));
     }
 }

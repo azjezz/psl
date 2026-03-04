@@ -7,6 +7,7 @@ namespace Psl\Tests\Unit\Vec;
 use Closure;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Psl\Iter;
 use Psl\Vec;
 
 final class FilterTest extends TestCase
@@ -26,5 +27,19 @@ final class FilterTest extends TestCase
         yield [[], ['a', 'b'], static fn(): false => false];
         yield [['a', 'b'], ['a', 'b'], static fn(string $_): bool => true];
         yield [['a'], ['a', 'b'], static fn(string $v): bool => 'b' !== $v];
+    }
+
+    public function testFilterWithNonArrayIterable(): void
+    {
+        $iterator = Iter\Iterator::create([1, 0, 3]);
+
+        static::assertSame([1, 3], Vec\filter($iterator));
+    }
+
+    public function testFilterWithNonArrayIterableAndPredicate(): void
+    {
+        $iterator = Iter\Iterator::create([1, 2, 3]);
+
+        static::assertSame([2, 3], Vec\filter($iterator, static fn(int $v): bool => $v > 1));
     }
 }
