@@ -9,7 +9,7 @@
 ![Coding standards status](https://github.com/azjezz/psl/workflows/coding%20standards/badge.svg)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/4228/badge)](https://bestpractices.coreinfrastructure.org/projects/4228)
 [![Coverage Status](https://coveralls.io/repos/github/azjezz/psl/badge.svg)](https://coveralls.io/github/azjezz/psl)
-[![MSI](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fazjezz%2Fpsl%2F2.0.x)](https://dashboard.stryker-mutator.io/reports/github.com/azjezz/psl/2.0.x)
+[![MSI](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fazjezz%2Fpsl%2Fnext)](https://dashboard.stryker-mutator.io/reports/github.com/azjezz/psl/next)
 [![Total Downloads](https://poser.pugx.org/azjezz/psl/d/total.svg)](https://packagist.org/packages/azjezz/psl)
 [![Latest Stable Version](https://poser.pugx.org/azjezz/psl/v/stable.svg)](https://packagist.org/packages/azjezz/psl)
 [![License](https://poser.pugx.org/azjezz/psl/license.svg)](https://packagist.org/packages/azjezz/psl)

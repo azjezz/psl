@@ -15,6 +15,9 @@ use Psl\DateTime\Duration;
 use Psl\IO;
 use Psl\IO\MemoryHandle;
 
+use function strlen;
+use function substr;
+
 use const PHP_INT_MIN;
 
 final class HandleReaderTest extends TestCase
@@ -394,18 +397,18 @@ final class HandleReaderTest extends TestCase
 
             public function reachedEndOfDataSource(): bool
             {
-                return $this->cursor >= \strlen($this->data);
+                return $this->cursor >= strlen($this->data);
             }
 
             public function tryRead(null|int $max_bytes = null): string
             {
-                if ($this->cursor >= \strlen($this->data)) {
+                if ($this->cursor >= strlen($this->data)) {
                     return '';
                 }
 
-                $max = $max_bytes ?? (\strlen($this->data) - $this->cursor);
-                $result = \substr($this->data, $this->cursor, $max);
-                $this->cursor += \strlen($result);
+                $max = $max_bytes ?? (strlen($this->data) - $this->cursor);
+                $result = substr($this->data, $this->cursor, $max);
+                $this->cursor += strlen($result);
 
                 return $result;
             }
@@ -437,18 +440,18 @@ final class HandleReaderTest extends TestCase
 
             public function reachedEndOfDataSource(): bool
             {
-                return $this->cursor >= \strlen($this->data);
+                return $this->cursor >= strlen($this->data);
             }
 
             public function tryRead(null|int $max_bytes = null): string
             {
-                if ($this->cursor >= \strlen($this->data)) {
+                if ($this->cursor >= strlen($this->data)) {
                     return '';
                 }
 
-                $max = $max_bytes ?? (\strlen($this->data) - $this->cursor);
-                $result = \substr($this->data, $this->cursor, $max);
-                $this->cursor += \strlen($result);
+                $max = $max_bytes ?? (strlen($this->data) - $this->cursor);
+                $result = substr($this->data, $this->cursor, $max);
+                $this->cursor += strlen($result);
 
                 return $result;
             }

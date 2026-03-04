@@ -11,6 +11,8 @@ use Psl\SecureRandom;
 use Psl\Str;
 use Psl\Str\Byte;
 
+use function sodium_crypto_aead_aes256gcm_is_available;
+
 final class FunctionsTest extends TestCase
 {
     public function testXChaCha20Poly1305Roundtrip(): void
@@ -38,7 +40,7 @@ final class FunctionsTest extends TestCase
 
     public function testAes256GcmRoundtrip(): void
     {
-        if (!\sodium_crypto_aead_aes256gcm_is_available()) {
+        if (!sodium_crypto_aead_aes256gcm_is_available()) {
             static::markTestSkipped('AES-256-GCM is not available on this platform.');
         }
 

@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\Terminal\Widget;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Terminal\Buffer;
+use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
 use Psl\Terminal\Widget\Alignment;
 use Psl\Terminal\Widget\Line;
@@ -262,7 +263,7 @@ final class ParagraphTest extends TestCase
     public function testEmptyAreaDoesNotCorruptBuffer(): void
     {
         $buffer = new Buffer(10, 5);
-        $buffer->set(0, 0, new \Psl\Terminal\Cell('X'));
+        $buffer->set(0, 0, new Cell('X'));
         $area = new Rect(0, 0, 0, 0);
 
         $paragraph = Paragraph::new([

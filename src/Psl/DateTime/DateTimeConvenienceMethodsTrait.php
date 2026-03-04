@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\DateTime;
 
+use Override;
 use Psl\Locale\Locale;
 use Psl\Math;
 
@@ -71,6 +72,7 @@ trait DateTimeConvenienceMethodsTrait
      *
      * @psalm-mutation-free
      */
+    #[Override]
     public function convertToTimezone(Timezone $timezone): static
     {
         return static::fromTimestamp($this->getTimestamp(), $timezone);
@@ -740,6 +742,7 @@ trait DateTimeConvenienceMethodsTrait
      *
      * @psalm-mutation-free
      */
+    #[Override]
     public function format(
         null|FormatPattern|string $pattern = null,
         null|Timezone $timezone = null,
@@ -783,6 +786,7 @@ trait DateTimeConvenienceMethodsTrait
      *
      * @psalm-mutation-free
      */
+    #[Override]
     public function toRfc3339(null|SecondsStyle $seconds_style = null, bool $use_z = false): string
     {
         return Internal\format_rfc3339($this->getTimestamp(), $seconds_style, $use_z, $this->getTimezone());
@@ -816,6 +820,7 @@ trait DateTimeConvenienceMethodsTrait
      *
      * @psalm-mutation-free
      */
+    #[Override]
     public function toString(
         null|DateStyle $date_style = null,
         null|TimeStyle $time_style = null,

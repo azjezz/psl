@@ -9,6 +9,9 @@ use Psl\Crypto\Exception;
 use Psl\Crypto\Kdf;
 use Psl\Str\Byte;
 
+use function array_unique;
+use function count;
+
 final class FunctionsTest extends TestCase
 {
     public function testDeriveProducesDeterministicOutput(): void
@@ -131,7 +134,7 @@ final class FunctionsTest extends TestCase
             $subkeys[] = Kdf\derive($key, $i, 'mycontxt');
         }
 
-        static::assertSame(\count($subkeys), \count(\array_unique($subkeys)));
+        static::assertSame(count($subkeys), count(array_unique($subkeys)));
     }
 
     public function testVariousLengths(): void

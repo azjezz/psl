@@ -11,6 +11,8 @@ use Psl\Crypto\Exception;
 use Psl\SecureRandom;
 use Psl\Str;
 
+use function Psl\Str\Byte\length;
+
 final class EncryptorTest extends TestCase
 {
     public function testSealAndOpenRoundtrip(): void
@@ -74,7 +76,7 @@ final class EncryptorTest extends TestCase
 
         $ciphertext = $encryptor->seal('hello');
         $tampered = $ciphertext;
-        $last = \Psl\Str\Byte\length($tampered) - 1;
+        $last = length($tampered) - 1;
         $tampered[$last] = \Psl\Str\Byte\chr(\Psl\Str\Byte\ord($tampered[$last]) ^ 0x01);
 
         $this->expectException(Exception\DecryptionException::class);
