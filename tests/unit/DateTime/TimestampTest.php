@@ -572,4 +572,37 @@ final class TimestampTest extends TestCase
 
         $ts->minus(Period::months(1));
     }
+
+    public function testToPartsReturnsExactlyTwoElements(): void
+    {
+        $ts = Timestamp::fromParts(42, 123);
+        $parts = $ts->toParts();
+
+        static::assertCount(2, $parts);
+        static::assertSame(42, $parts[0]);
+        static::assertSame(123, $parts[1]);
+    }
+
+    public function testSinceWithKnownTimestamps(): void
+    {
+        $a = Timestamp::fromParts(100, 500_000_000);
+        $b = Timestamp::fromParts(50, 200_000_000);
+
+        $duration = $a->since($b);
+
+        static::assertSame(0, $duration->getHours());
+        static::assertSame(0, $duration->getMinutes());
+        static::assertSame(50, $duration->getSeconds());
+        static::assertSame(300_000_000, $duration->getNanoseconds());
+    }
+
+    public function testSinceSubtractsNotAdds(): void
+    {
+        $a = Timestamp::fromParts(200, 0);
+        $b = Timestamp::fromParts(50, 0);
+
+        $duration = $a->since($b);
+
+        static::assertSame(150, (int) $duration->getTotalSeconds());
+    }
 }

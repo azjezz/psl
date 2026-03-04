@@ -53,8 +53,6 @@ final class CopyTest extends TestCase
 
         $data = str_repeat('x', 100_000);
 
-        // Write and copy must run concurrently — the pipe buffer is limited,
-        // so writeAll blocks until the reader drains it.
         Async\concurrently([
             'write' => static function () use ($write, $data): void {
                 $write->writeAll($data);
@@ -92,7 +90,6 @@ final class CopyTest extends TestCase
                     $client = TCP\connect('127.0.0.1', $port);
                     $destination = new IO\MemoryHandle();
 
-                    // Copy with a short timeout — server won't close in time
                     IO\copy($client, $destination, Duration::milliseconds(100));
                 },
             ]);
@@ -113,7 +110,7 @@ final class CopyTest extends TestCase
              * @param Ref<int> $state
              */
             public function __construct(
-                private Ref $state,
+                private readonly Ref $state,
             ) {}
 
             public function read(null|int $max_bytes = null, null|Duration $timeout = null): string

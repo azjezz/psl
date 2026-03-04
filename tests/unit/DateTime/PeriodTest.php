@@ -284,10 +284,10 @@ final class PeriodTest extends TestCase
 
     public function testToIso8601ThrowsOnMixedSigns(): void
     {
-        // Years positive, days negative — cannot represent in ISO 8601
         $p = DateTime\Period::fromParts(1, 0, -5);
 
         $this->expectException(DateTime\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot represent a Period with mixed-sign components in ISO 8601 format.');
 
         $p->toIso8601();
     }
@@ -330,6 +330,7 @@ final class PeriodTest extends TestCase
     public function testFromIso8601EmptyString(): void
     {
         $this->expectException(DateTime\Exception\ParserException::class);
+        $this->expectExceptionMessage('Invalid ISO 8601 period "".');
 
         DateTime\Period::fromIso8601('');
     }
@@ -337,6 +338,7 @@ final class PeriodTest extends TestCase
     public function testFromIso8601MissingP(): void
     {
         $this->expectException(DateTime\Exception\ParserException::class);
+        $this->expectExceptionMessage('Invalid ISO 8601 period "1Y2M".');
 
         DateTime\Period::fromIso8601('1Y2M');
     }
@@ -344,6 +346,7 @@ final class PeriodTest extends TestCase
     public function testFromIso8601RejectsTimeComponent(): void
     {
         $this->expectException(DateTime\Exception\ParserException::class);
+        $this->expectExceptionMessage('contains time components; use Duration::fromIso8601() instead.');
 
         DateTime\Period::fromIso8601('P1YT5H');
     }
@@ -351,6 +354,7 @@ final class PeriodTest extends TestCase
     public function testFromIso8601InvalidFormat(): void
     {
         $this->expectException(DateTime\Exception\ParserException::class);
+        $this->expectExceptionMessage('Invalid ISO 8601 period "PABC".');
 
         DateTime\Period::fromIso8601('PABC');
     }
@@ -390,6 +394,7 @@ final class PeriodTest extends TestCase
         $period = DateTime\Period::months(1);
 
         $this->expectException(DateTime\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot add a Period to a Timestamp');
 
         $period->addTo($ts);
     }
@@ -400,6 +405,7 @@ final class PeriodTest extends TestCase
         $period = DateTime\Period::months(1);
 
         $this->expectException(DateTime\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot subtract a Period from a Timestamp');
 
         $period->subtractFrom($ts);
     }
@@ -534,5 +540,122 @@ final class PeriodTest extends TestCase
         static::assertSame(-1, $period->getYears());
         static::assertSame(-9, $period->getMonths());
         static::assertSame(0, $period->getDays());
+    }
+
+    public function testFromPartsDefaultMonths(): void
+    {
+        $period = DateTime\Period::fromParts(1);
+
+        static::assertSame(1, $period->getYears());
+        static::assertSame(0, $period->getMonths());
+        static::assertSame(0, $period->getDays());
+    }
+
+    public function testBetweenCrossesJanuaryBoundary(): void
+    {
+        $start = DateTime\DateTime::fromParts(DateTime\Timezone::UTC, 2024, 11, 15);
+        $end = DateTime\DateTime::fromParts(DateTime\Timezone::UTC, 2025, 1, 10);
+        $period = DateTime\Period::between($start, $end);
+
+        static::assertSame(0, $period->getYears());
+        static::assertSame(1, $period->getMonths());
+        static::assertSame(26, $period->getDays());
+    }
+
+    public function testEqualsWithSameYearsButDifferentMonths(): void
+    {
+        $a = DateTime\Period::fromParts(1, 2, 3);
+        $b = DateTime\Period::fromParts(1, 5, 3);
+
+        static::assertFalse($a->equals($b));
+    }
+
+    public function testEqualsWithSameYearsAndMonthsButDifferentDays(): void
+    {
+        $a = DateTime\Period::fromParts(1, 2, 3);
+        $b = DateTime\Period::fromParts(1, 2, 5);
+
+        static::assertFalse($a->equals($b));
+    }
+
+    public function testZeroMinusPeriodReturnsInvertedPeriod(): void
+    {
+        $result = DateTime\Period::zero()->minus(DateTime\Period::fromParts(1, 2, 3));
+
+        static::assertSame(-1, $result->getYears());
+        static::assertSame(-2, $result->getMonths());
+        static::assertSame(-3, $result->getDays());
+    }
+
+    public function testToStringZeroMonthsNonZeroDays(): void
+    {
+        $p = DateTime\Period::fromParts(0, 0, 5);
+
+        static::assertSame('5 day(s)', $p->toString());
+    }
+
+    public function testToStringNonZeroMonthsZeroDays(): void
+    {
+        $p = DateTime\Period::fromParts(0, 3, 0);
+
+        static::assertSame('3 month(s)', $p->toString());
+    }
+
+    public function testToStringYearsAndDaysIncludesMonths(): void
+    {
+        $p = DateTime\Period::fromParts(2, 0, 5);
+
+        static::assertSame('2 year(s), 0 month(s), 5 day(s)', $p->toString());
+    }
+
+    public function testToStdlibZeroMonthsNonZeroDays(): void
+    {
+        $period = DateTime\Period::fromParts(0, 0, 5);
+        $interval = $period->toStdlib();
+
+        static::assertSame(0, $interval->y);
+        static::assertSame(0, $interval->m);
+        static::assertSame(5, $interval->d);
+    }
+
+    public function testToStdlibNonZeroMonthsZeroDays(): void
+    {
+        $period = DateTime\Period::fromParts(0, 3, 0);
+        $interval = $period->toStdlib();
+
+        static::assertSame(0, $interval->y);
+        static::assertSame(3, $interval->m);
+        static::assertSame(0, $interval->d);
+    }
+
+    public function testBetweenLeapYearFebruaryToMarch(): void
+    {
+        $start = DateTime\DateTime::fromParts(DateTime\Timezone::UTC, 2024, 2, 29);
+        $end = DateTime\DateTime::fromParts(DateTime\Timezone::UTC, 2025, 3, 1);
+        $period = DateTime\Period::between($start, $end);
+
+        static::assertSame(1, $period->getYears());
+        static::assertSame(0, $period->getMonths());
+        static::assertSame(0, $period->getDays());
+    }
+
+    public function testToStdlibNegativeOneMonth(): void
+    {
+        $period = DateTime\Period::fromParts(0, -1, 5);
+        $interval = $period->toStdlib();
+
+        static::assertSame(0, $interval->y);
+        static::assertSame(-1, $interval->m);
+        static::assertSame(5, $interval->d);
+    }
+
+    public function testToStdlibNegativeOneDay(): void
+    {
+        $period = DateTime\Period::fromParts(0, 3, -1);
+        $interval = $period->toStdlib();
+
+        static::assertSame(0, $interval->y);
+        static::assertSame(3, $interval->m);
+        static::assertSame(-1, $interval->d);
     }
 }

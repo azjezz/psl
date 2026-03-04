@@ -111,10 +111,8 @@ final class SocketPoolTest extends TestCase
                 $stream1->writeAll('conn1');
                 $stream1->read();
 
-                // Clear instead of checkin — removes from pool
                 $pool->clear($stream1);
 
-                // This should create a new connection since pool is empty
                 $stream2 = $pool->checkout('127.0.0.1', $port);
                 $stream2->writeAll('conn2');
                 $response = $stream2->readAll();
@@ -139,13 +137,10 @@ final class SocketPoolTest extends TestCase
             'client' => static function () use ($port): void {
                 $pool = new TCP\SocketPool();
 
-                // Create a stream outside the pool
                 $stream = TCP\connect('127.0.0.1', $port);
 
-                // Checkin a stream that was never checked out — should be silently ignored
                 $pool->checkin($stream);
 
-                // Verify stream is still usable (checkin didn't close it)
                 $resource = $stream->getStream();
                 self::assertNotNull($resource);
 
@@ -167,7 +162,6 @@ final class SocketPoolTest extends TestCase
                 self::assertSame('x', $data);
                 $connection->writeAll('a');
 
-                // Pool will close the connection — read should return empty/EOF
                 $remaining = $connection->readAll();
                 self::assertSame('', $remaining);
                 $connection->close();
@@ -181,7 +175,6 @@ final class SocketPoolTest extends TestCase
                 $stream->read();
                 $pool->checkin($stream);
 
-                // Close pool — should close the idle connection
                 $pool->close();
             },
         ]);
@@ -202,7 +195,6 @@ final class SocketPoolTest extends TestCase
                 $listener->close();
             },
             'client' => static function () use ($port): void {
-                // Use StaticConnector so pool always connects to our test server
                 $connector = new TCP\StaticConnector('127.0.0.1', $port);
                 $pool = new TCP\SocketPool(connector: $connector);
 

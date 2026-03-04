@@ -65,6 +65,57 @@ final class HandleReaderTest extends TestCase
         static::assertSame(0x0201, $reader->u16(Endianness::Little));
     }
 
+    public function testU32PerCallEndianness(): void
+    {
+        $handle = new MemoryHandle("\x01\x02\x03\x04");
+        $reader = new HandleReader($handle, Endianness::Big);
+        static::assertSame(0x0403_0201, $reader->u32(Endianness::Little));
+    }
+
+    public function testU64PerCallEndianness(): void
+    {
+        $handle = new MemoryHandle("\x01\x02\x03\x04\x05\x06\x07\x08");
+        $reader = new HandleReader($handle, Endianness::Big);
+        static::assertSame(0x0807_0605_0403_0201, $reader->u64(Endianness::Little));
+    }
+
+    public function testI16PerCallEndianness(): void
+    {
+        $handle = new MemoryHandle("\x01\x00");
+        $reader = new HandleReader($handle, Endianness::Big);
+        static::assertSame(1, $reader->i16(Endianness::Little));
+    }
+
+    public function testI32PerCallEndianness(): void
+    {
+        $handle = new MemoryHandle("\x01\x00\x00\x00");
+        $reader = new HandleReader($handle, Endianness::Big);
+        static::assertSame(1, $reader->i32(Endianness::Little));
+    }
+
+    public function testI64PerCallEndianness(): void
+    {
+        $handle = new MemoryHandle("\x01\x00\x00\x00\x00\x00\x00\x00");
+        $reader = new HandleReader($handle, Endianness::Big);
+        static::assertSame(1, $reader->i64(Endianness::Little));
+    }
+
+    public function testF32PerCallEndianness(): void
+    {
+        $bytes = \Psl\Binary\encode_f32(1.0, Endianness::Little);
+        $handle = new MemoryHandle($bytes);
+        $reader = new HandleReader($handle, Endianness::Big);
+        static::assertSame(1.0, $reader->f32(Endianness::Little));
+    }
+
+    public function testF64PerCallEndianness(): void
+    {
+        $bytes = \Psl\Binary\encode_f64(1.0, Endianness::Little);
+        $handle = new MemoryHandle($bytes);
+        $reader = new HandleReader($handle, Endianness::Big);
+        static::assertSame(1.0, $reader->f64(Endianness::Little));
+    }
+
     public function testU32(): void
     {
         $handle = new MemoryHandle("\x01\x02\x03\x04");
@@ -136,6 +187,7 @@ final class HandleReaderTest extends TestCase
         $handle = new MemoryHandle('');
         $reader = new HandleReader($handle);
         $this->expectException(Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Expected to read 1 bytes, but the handle reached end of data.');
         $reader->u8();
     }
 
@@ -144,6 +196,7 @@ final class HandleReaderTest extends TestCase
         $handle = new MemoryHandle("\x00");
         $reader = new HandleReader($handle);
         $this->expectException(Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Expected to read 2 bytes, but the handle reached end of data.');
         $reader->u16();
     }
 
@@ -152,6 +205,7 @@ final class HandleReaderTest extends TestCase
         $handle = new MemoryHandle("\x00\x00\x00");
         $reader = new HandleReader($handle);
         $this->expectException(Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Expected to read 4 bytes, but the handle reached end of data.');
         $reader->u32();
     }
 
@@ -160,6 +214,7 @@ final class HandleReaderTest extends TestCase
         $handle = new MemoryHandle("\x00\x00");
         $reader = new HandleReader($handle);
         $this->expectException(Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Expected to read 3 bytes, but the handle reached end of data.');
         $reader->bytes(3);
     }
 
@@ -274,6 +329,7 @@ final class HandleReaderTest extends TestCase
         $reader->skip(100);
 
         $this->expectException(Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Expected to read 1 bytes, but the handle reached end of data.');
         $reader->u8();
     }
 
@@ -377,7 +433,7 @@ final class HandleReaderTest extends TestCase
         $reader = new HandleReader($handle);
 
         $this->expectException(Exception\UnderflowException::class);
-        $this->expectExceptionMessage('Failed to skip');
+        $this->expectExceptionMessage('Failed to skip 5 bytes: the handle reached end of data.');
         $reader->skip(5);
     }
 
@@ -462,6 +518,7 @@ final class HandleReaderTest extends TestCase
         $reader = new HandleReader($handle);
 
         $this->expectException(Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Expected to read 10 bytes, but the handle reached end of data.');
         $reader->skip(10);
     }
 }

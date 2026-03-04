@@ -171,7 +171,6 @@ final class ChildTest extends TestCase
 
         $child->wait();
 
-        // Should not throw — process already exited.
         $child->signal(Signal::Terminate);
 
         static::assertFalse($child->isRunning());

@@ -11,7 +11,11 @@ use Psl\SecureRandom;
 use Psl\Str;
 use Psl\Str\Byte;
 
+use function openssl_encrypt;
 use function sodium_crypto_stream_xchacha20_xor;
+use function str_repeat;
+
+use const OPENSSL_RAW_DATA;
 
 final class ContextTest extends TestCase
 {
@@ -100,6 +104,7 @@ final class ContextTest extends TestCase
         $key = new StreamCipher\Key(SecureRandom\bytes(32));
 
         $this->expectException(Exception\RuntimeException::class);
+        $this->expectExceptionMessage('IV size does not match algorithm requirements.');
         new StreamCipher\Context($key, SecureRandom\bytes(24), StreamCipher\Algorithm::Aes256Ctr);
     }
 
@@ -108,6 +113,7 @@ final class ContextTest extends TestCase
         $key = new StreamCipher\Key(SecureRandom\bytes(32));
 
         $this->expectException(Exception\RuntimeException::class);
+        $this->expectExceptionMessage('IV size does not match algorithm requirements.');
         new StreamCipher\Context($key, SecureRandom\bytes(16), StreamCipher\Algorithm::XChaCha20);
     }
 
@@ -116,6 +122,7 @@ final class ContextTest extends TestCase
         $key = new StreamCipher\Key(SecureRandom\bytes(16));
 
         $this->expectException(Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Key size does not match algorithm requirements.');
         new StreamCipher\Context($key, SecureRandom\bytes(16), StreamCipher\Algorithm::Aes256Ctr);
     }
 
@@ -124,6 +131,7 @@ final class ContextTest extends TestCase
         $key = new StreamCipher\Key(SecureRandom\bytes(32));
 
         $this->expectException(Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Key size does not match algorithm requirements.');
         new StreamCipher\Context($key, SecureRandom\bytes(16), StreamCipher\Algorithm::Aes128Ctr);
     }
 
@@ -289,5 +297,110 @@ final class ContextTest extends TestCase
         $actual .= $ctx->apply(Byte\slice($plaintext, 100, 100));
 
         static::assertSame($expected, $actual);
+    }
+
+    /**
+     * Verify our AES-CTR output matches openssl_encrypt for multi-block data.
+     *
+     * This kills mutations in advanceAesCtrIv() because if the IV increment
+     * is wrong, blocks after the first will produce wrong keystream.
+     */
+    public function testAes256CtrMatchesOpensslForMultipleBlocks(): void
+    {
+        $keyBytes = SecureRandom\bytes(32);
+        $key = new StreamCipher\Key($keyBytes);
+        $iv = SecureRandom\bytes(16);
+
+        // 48 bytes = 3 AES blocks (16 bytes each)
+        $plaintext = str_repeat('X', 48);
+
+        $ctx = new StreamCipher\Context($key, $iv, StreamCipher\Algorithm::Aes256Ctr);
+        $ourOutput = $ctx->apply($plaintext);
+
+        // OpenSSL handles IV increment internally in CTR mode
+        $reference = openssl_encrypt($plaintext, 'aes-256-ctr', $keyBytes, OPENSSL_RAW_DATA, $iv);
+
+        static::assertSame($reference, $ourOutput);
+    }
+
+    public function testAes128CtrMatchesOpensslForMultipleBlocks(): void
+    {
+        $keyBytes = SecureRandom\bytes(16);
+        $key = new StreamCipher\Key($keyBytes);
+        $iv = SecureRandom\bytes(16);
+
+        // 64 bytes = 4 AES blocks
+        $plaintext = str_repeat('Y', 64);
+
+        $ctx = new StreamCipher\Context($key, $iv, StreamCipher\Algorithm::Aes128Ctr);
+        $ourOutput = $ctx->apply($plaintext);
+
+        $reference = openssl_encrypt($plaintext, 'aes-128-ctr', $keyBytes, OPENSSL_RAW_DATA, $iv);
+
+        static::assertSame($reference, $ourOutput);
+    }
+
+    /**
+     * Test with IV near overflow (0xff...ff) to exercise the carry logic
+     * in advanceAesCtrIv's loop over all 16 bytes.
+     */
+    public function testAesCtrIvOverflowCarry(): void
+    {
+        $keyBytes = SecureRandom\bytes(32);
+        $key = new StreamCipher\Key($keyBytes);
+
+        $iv = str_repeat("\x00", 14) . "\x00\xfe";
+
+        $plaintext = str_repeat('Z', 48);
+
+        $ctx = new StreamCipher\Context($key, $iv, StreamCipher\Algorithm::Aes256Ctr);
+        $ourOutput = $ctx->apply($plaintext);
+
+        $reference = openssl_encrypt($plaintext, 'aes-256-ctr', $keyBytes, OPENSSL_RAW_DATA, $iv);
+
+        static::assertSame($reference, $ourOutput);
+    }
+
+    /**
+     * Test with IV at all 0xff to exercise carry propagation across all bytes.
+     */
+    public function testAesCtrIvFullCarryPropagation(): void
+    {
+        $keyBytes = SecureRandom\bytes(32);
+        $key = new StreamCipher\Key($keyBytes);
+
+        $iv = str_repeat("\xff", 16);
+
+        $plaintext = str_repeat('W', 32);
+
+        $ctx = new StreamCipher\Context($key, $iv, StreamCipher\Algorithm::Aes256Ctr);
+        $ourOutput = $ctx->apply($plaintext);
+
+        $reference = openssl_encrypt($plaintext, 'aes-256-ctr', $keyBytes, OPENSSL_RAW_DATA, $iv);
+
+        static::assertSame($reference, $ourOutput);
+    }
+
+    /**
+     * Test chunked encryption across block boundaries matches single-pass openssl.
+     */
+    public function testAesCtrChunkedMatchesOpenssl(): void
+    {
+        $keyBytes = SecureRandom\bytes(32);
+        $key = new StreamCipher\Key($keyBytes);
+        $iv = SecureRandom\bytes(16);
+
+        $plaintext = str_repeat('Q', 80);
+
+        $ctx = new StreamCipher\Context($key, $iv, StreamCipher\Algorithm::Aes256Ctr);
+        $chunked = '';
+        $chunked .= $ctx->apply(Byte\slice($plaintext, 0, 7));
+        $chunked .= $ctx->apply(Byte\slice($plaintext, 7, 25));
+        $chunked .= $ctx->apply(Byte\slice($plaintext, 32, 1));
+        $chunked .= $ctx->apply(Byte\slice($plaintext, 33, 47));
+
+        $reference = openssl_encrypt($plaintext, 'aes-256-ctr', $keyBytes, OPENSSL_RAW_DATA, $iv);
+
+        static::assertSame($reference, $chunked);
     }
 }

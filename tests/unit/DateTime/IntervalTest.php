@@ -41,6 +41,7 @@ final class IntervalTest extends TestCase
         $end = DateTime\Timestamp::fromParts(1000, 0);
 
         $this->expectException(DateTime\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Interval start must be before or at the same time as end.');
 
         DateTime\Interval::between($start, $end);
     }
@@ -212,6 +213,7 @@ final class IntervalTest extends TestCase
     public function testFromRejectsNegativeDuration(): void
     {
         $this->expectException(DateTime\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Interval duration must not be negative.');
 
         DateTime\Interval::from(DateTime\Timestamp::fromParts(1000), DateTime\Duration::seconds(-1));
     }
@@ -340,6 +342,7 @@ final class IntervalTest extends TestCase
         $b = DateTime\Interval::between(DateTime\Timestamp::fromParts(300), DateTime\Timestamp::fromParts(400));
 
         $this->expectException(DateTime\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot merge non-overlapping intervals.');
 
         $a->merge($b);
     }
@@ -385,6 +388,7 @@ final class IntervalTest extends TestCase
     public function testFromIso8601InvalidFormat(): void
     {
         $this->expectException(DateTime\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid ISO 8601 interval format; expected "start/end".');
 
         DateTime\Interval::fromIso8601('invalid');
     }
@@ -392,6 +396,7 @@ final class IntervalTest extends TestCase
     public function testFromIso8601InvalidTimestamp(): void
     {
         $this->expectException(DateTime\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid ISO 8601 interval format; Failed to parse time string');
 
         DateTime\Interval::fromIso8601('not-a-date/also-not-a-date');
     }

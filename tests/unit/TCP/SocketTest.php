@@ -121,7 +121,6 @@ final class SocketTest extends TestCase
         $this->expectException(Network\Exception\RuntimeException::class);
         $this->expectExceptionMessage('Socket has already been consumed');
 
-        // Should throw — socket already consumed by listen()
         $socket->bind('127.0.0.1', 0);
 
         $listener->close();
@@ -143,7 +142,6 @@ final class SocketTest extends TestCase
             },
             'client' => static function () use ($port): void {
                 $socket = TCP\Socket::createV4();
-                // Connect with a generous timeout — should succeed
                 $stream = $socket->connect('127.0.0.1', $port, Duration::seconds(5));
 
                 $stream->writeAll('with-timeout');

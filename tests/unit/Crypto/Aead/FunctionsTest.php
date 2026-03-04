@@ -60,6 +60,7 @@ final class FunctionsTest extends TestCase
         $ciphertext = Aead\encrypt('hello', $key1, $nonce, '', Aead\Algorithm::XChaCha20Poly1305);
 
         $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('AEAD decryption failed.');
         Aead\decrypt($ciphertext, $key2, $nonce, '', Aead\Algorithm::XChaCha20Poly1305);
     }
 
@@ -72,6 +73,7 @@ final class FunctionsTest extends TestCase
         $ciphertext = Aead\encrypt('hello', $key, $nonce1, '', Aead\Algorithm::XChaCha20Poly1305);
 
         $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('AEAD decryption failed.');
         Aead\decrypt($ciphertext, $key, $nonce2, '', Aead\Algorithm::XChaCha20Poly1305);
     }
 
@@ -83,6 +85,7 @@ final class FunctionsTest extends TestCase
         $ciphertext = Aead\encrypt('hello', $key, $nonce, 'correct-ad', Aead\Algorithm::XChaCha20Poly1305);
 
         $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('AEAD decryption failed.');
         Aead\decrypt($ciphertext, $key, $nonce, 'wrong-ad', Aead\Algorithm::XChaCha20Poly1305);
     }
 
@@ -96,6 +99,7 @@ final class FunctionsTest extends TestCase
         $tampered[0] = Byte\chr(Byte\ord($tampered[0]) ^ 0x01);
 
         $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('AEAD decryption failed.');
         Aead\decrypt($tampered, $key, $nonce, '', Aead\Algorithm::XChaCha20Poly1305);
     }
 
@@ -158,6 +162,7 @@ final class FunctionsTest extends TestCase
         $ciphertext = Aead\encrypt('test', $key1, $nonce, '', Aead\Algorithm::ChaCha20Poly1305);
 
         $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('AEAD decryption failed.');
         Aead\decrypt($ciphertext, $key2, $nonce, '', Aead\Algorithm::ChaCha20Poly1305);
     }
 
@@ -186,13 +191,10 @@ final class FunctionsTest extends TestCase
 
     public function testKeyWrongLengthExceptionMessage(): void
     {
-        try {
-            new Aead\Key('too-short');
-            static::fail('Expected InvalidArgumentException');
-        } catch (Exception\InvalidArgumentException $e) {
-            static::assertStringStartsWith('AEAD key must be exactly ', $e->getMessage());
-            static::assertStringEndsWith(' bytes.', $e->getMessage());
-        }
+        $this->expectException(Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('AEAD key must be exactly 32 bytes.');
+
+        new Aead\Key('too-short');
     }
 
     public function testLargePlaintext(): void

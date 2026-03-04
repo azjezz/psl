@@ -166,6 +166,7 @@ final class ColorTest extends TestCase
     public function testAnsi256NegativeThrows(): void
     {
         $this->expectException(Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected an ANSI-256 color code between 0 and 255, got -1.');
 
         Color\ansi256(-1);
     }
@@ -173,6 +174,7 @@ final class ColorTest extends TestCase
     public function testAnsi256OverflowThrows(): void
     {
         $this->expectException(Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected an ANSI-256 color code between 0 and 255, got 256.');
 
         Color\ansi256(256);
     }
@@ -210,6 +212,7 @@ final class ColorTest extends TestCase
     public function testRgbNegativeRedThrows(): void
     {
         $this->expectException(Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected red component between 0 and 255, got -1.');
 
         Color\rgb(-1, 0, 0);
     }
@@ -217,6 +220,7 @@ final class ColorTest extends TestCase
     public function testRgbOverflowGreenThrows(): void
     {
         $this->expectException(Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected green component between 0 and 255, got 256.');
 
         Color\rgb(0, 256, 0);
     }
@@ -254,6 +258,7 @@ final class ColorTest extends TestCase
     public function testHexInvalidThrows(): void
     {
         $this->expectException(Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected a valid hex color string, got "xxyyzz".');
 
         Color\hex('xyz');
     }
@@ -263,6 +268,7 @@ final class ColorTest extends TestCase
         $color = Color\rgb(255, 0, 0);
 
         $this->expectException(Exception\LogicException::class);
+        $this->expectExceptionMessage('Cannot retrieve value from an RGB color.');
 
         $color->getValue();
     }
@@ -272,6 +278,7 @@ final class ColorTest extends TestCase
         $color = Color\red();
 
         $this->expectException(Exception\LogicException::class);
+        $this->expectExceptionMessage('Cannot retrieve red component from a non-RGB color.');
 
         $color->getRed();
     }
@@ -281,6 +288,7 @@ final class ColorTest extends TestCase
         $color = Color\ansi256(196);
 
         $this->expectException(Exception\LogicException::class);
+        $this->expectExceptionMessage('Cannot retrieve green component from a non-RGB color.');
 
         $color->getGreen();
     }
@@ -290,7 +298,149 @@ final class ColorTest extends TestCase
         $color = Color\red();
 
         $this->expectException(Exception\LogicException::class);
+        $this->expectExceptionMessage('Cannot retrieve blue component from a non-RGB color.');
 
         $color->getBlue();
+    }
+
+    public function testRgbNegativeBlueThrows(): void
+    {
+        $this->expectException(Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected blue component between 0 and 255, got -1.');
+
+        Color\rgb(0, 0, -1);
+    }
+
+    public function testRgbOverflowBlueThrows(): void
+    {
+        $this->expectException(Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected blue component between 0 and 255, got 256.');
+
+        Color\rgb(0, 0, 256);
+    }
+
+    public function testRgbOverflowRedThrows(): void
+    {
+        $this->expectException(Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected red component between 0 and 255, got 256.');
+
+        Color\rgb(256, 0, 0);
+    }
+
+    public function testRgbNegativeGreenThrows(): void
+    {
+        $this->expectException(Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected green component between 0 and 255, got -1.');
+
+        Color\rgb(0, -1, 0);
+    }
+
+    public function testRgbComponentsAreExact(): void
+    {
+        $color = Color\rgb(1, 2, 3);
+
+        static::assertSame(1, $color->getRed());
+        static::assertSame(2, $color->getGreen());
+        static::assertSame(3, $color->getBlue());
+    }
+
+    public function testBasicGetValueIsExact(): void
+    {
+        $color = Color\Color::basic(5);
+
+        static::assertSame(5, $color->getValue());
+    }
+
+    public function testAnsi256GetValueIsExact(): void
+    {
+        $color = Color\ansi256(42);
+
+        static::assertSame(42, $color->getValue());
+    }
+
+    public function testGetRedThrowsForAnsi256(): void
+    {
+        $color = Color\ansi256(100);
+
+        $this->expectException(Exception\LogicException::class);
+        $this->expectExceptionMessage('Cannot retrieve red component from a non-RGB color.');
+
+        $color->getRed();
+    }
+
+    public function testGetBlueThrowsForAnsi256(): void
+    {
+        $color = Color\ansi256(100);
+
+        $this->expectException(Exception\LogicException::class);
+        $this->expectExceptionMessage('Cannot retrieve blue component from a non-RGB color.');
+
+        $color->getBlue();
+    }
+
+    public function testGetGreenThrowsForBasic(): void
+    {
+        $color = Color\Color::basic(30);
+
+        $this->expectException(Exception\LogicException::class);
+        $this->expectExceptionMessage('Cannot retrieve green component from a non-RGB color.');
+
+        $color->getGreen();
+    }
+
+    public function testEqualsWithSameRgbColors(): void
+    {
+        $a = Color\rgb(10, 20, 30);
+        $b = Color\rgb(10, 20, 30);
+
+        static::assertTrue($a->equals($b));
+    }
+
+    public function testEqualsWithDifferentRgbColors(): void
+    {
+        $a = Color\rgb(10, 20, 30);
+        $b = Color\rgb(10, 20, 31);
+
+        static::assertFalse($a->equals($b));
+    }
+
+    public function testEqualsWithDifferentKinds(): void
+    {
+        $a = Color\Color::basic(0);
+        $b = Color\rgb(0, 0, 0);
+
+        static::assertFalse($a->equals($b));
+    }
+
+    public function testEqualsWithSameBasicColors(): void
+    {
+        $a = Color\Color::basic(30);
+        $b = Color\Color::basic(30);
+
+        static::assertTrue($a->equals($b));
+    }
+
+    public function testEqualsWithDifferentBasicColors(): void
+    {
+        $a = Color\Color::basic(30);
+        $b = Color\Color::basic(31);
+
+        static::assertFalse($a->equals($b));
+    }
+
+    public function testEqualsWithSameAnsi256Colors(): void
+    {
+        $a = Color\ansi256(42);
+        $b = Color\ansi256(42);
+
+        static::assertTrue($a->equals($b));
+    }
+
+    public function testEqualsWithDifferentAnsi256Colors(): void
+    {
+        $a = Color\ansi256(42);
+        $b = Color\ansi256(43);
+
+        static::assertFalse($a->equals($b));
     }
 }

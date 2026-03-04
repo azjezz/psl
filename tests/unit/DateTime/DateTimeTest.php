@@ -1214,13 +1214,22 @@ final class DateTimeTest extends TestCase
         static::assertSame(23, $end->getHours());
     }
 
-    public function testPlusZeroPeriodReturnsSelf(): void
+    public function testPlusZeroPeriodReturnsSameInstance(): void
     {
         $dt = DateTime::fromParts(Timezone::UTC, 2025, 6, 15, 12, 0, 0);
 
         $result = $dt->plus(Period::zero());
 
-        static::assertTrue($dt->equals($result));
+        static::assertSame($dt, $result);
+    }
+
+    public function testMinusZeroPeriodReturnsSameInstance(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 6, 15, 12, 0, 0);
+
+        $result = $dt->minus(Period::zero());
+
+        static::assertSame($dt, $result);
     }
 
     public function testPlusPeriodDaysOnly(): void
@@ -1244,6 +1253,76 @@ final class DateTimeTest extends TestCase
 
         static::assertSame(2023, $result->getYear());
         static::assertSame(12, $result->getMonth());
+        static::assertSame(15, $result->getDay());
+    }
+
+    public function testPlusPeriodMonthsOnlyNoSeconds(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 3, 15, 10, 30, 0);
+
+        $result = $dt->plus(Period::months(2));
+
+        static::assertSame(2025, $result->getYear());
+        static::assertSame(5, $result->getMonth());
+        static::assertSame(15, $result->getDay());
+        static::assertSame(10, $result->getHours());
+        static::assertSame(30, $result->getMinutes());
+    }
+
+    public function testPlusPeriodDaysOnlyNoMonths(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 3, 15, 10, 30, 0);
+
+        $result = $dt->plus(Period::days(10));
+
+        static::assertSame(2025, $result->getYear());
+        static::assertSame(3, $result->getMonth());
+        static::assertSame(25, $result->getDay());
+        static::assertSame(10, $result->getHours());
+        static::assertSame(30, $result->getMinutes());
+    }
+
+    public function testMinusMonthsCausesMonthToReachZero(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 1, 15, 12, 0, 0);
+
+        $result = $dt->minusMonths(1);
+
+        static::assertSame(2024, $result->getYear());
+        static::assertSame(12, $result->getMonth());
+        static::assertSame(15, $result->getDay());
+    }
+
+    public function testMinusMonthsCausesMonthToReachExactlyZero(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 1, 10, 0, 0, 0);
+
+        $result = $dt->minusMonths(1);
+
+        static::assertSame(2024, $result->getYear());
+        static::assertSame(12, $result->getMonth());
+        static::assertSame(10, $result->getDay());
+    }
+
+    public function testPlusPeriodWithNegativeMonthResult(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2025, 1, 15, 12, 0, 0);
+
+        $result = $dt->minus(Period::months(2));
+
+        static::assertSame(2024, $result->getYear());
+        static::assertSame(11, $result->getMonth());
+        static::assertSame(15, $result->getDay());
+    }
+
+    public function testPlusPeriodExactlyTwelveMonths(): void
+    {
+        $dt = DateTime::fromParts(Timezone::UTC, 2024, 1, 15, 10, 0, 0);
+
+        $result = $dt->plus(Period::months(12));
+
+        static::assertSame(2025, $result->getYear());
+        static::assertSame(1, $result->getMonth());
         static::assertSame(15, $result->getDay());
     }
 }
