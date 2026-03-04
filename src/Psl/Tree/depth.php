@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tree;
 
-use Psl\Math;
+use function max;
 
 /**
  * Returns the maximum depth of the tree.
@@ -44,5 +44,5 @@ function depth(NodeInterface $tree): int
         $child_depths[] = depth($child);
     }
 
-    return 1 + Math\max($child_depths);
+    return 1 + max($child_depths);
 }

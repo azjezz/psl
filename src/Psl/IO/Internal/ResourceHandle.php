@@ -12,7 +12,6 @@ use Psl\IO;
 use Psl\IO\Exception;
 use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
-use Socket as PHPSocket;
 
 use function error_get_last;
 use function fclose;
@@ -29,6 +28,7 @@ use function stream_get_meta_data;
 use function stream_set_blocking;
 use function stream_set_read_buffer;
 use function stream_set_write_buffer;
+use function strpbrk;
 use function substr;
 
 /**
@@ -50,7 +50,7 @@ class ResourceHandle implements
     public const int MAXIMUM_READ_BUFFER_SIZE = 786_432;
 
     /**
-     * @var closed-resource|resource|PHPSocket|null $stream
+     * @var closed-resource|resource|null $stream
      */
     protected mixed $stream;
 
@@ -72,7 +72,7 @@ class ResourceHandle implements
     private bool $reachedEof = false;
 
     /**
-     * @param resource|PHPSocket $stream
+     * @param resource $stream
      */
     public function __construct(
         mixed $stream,
@@ -83,10 +83,8 @@ class ResourceHandle implements
     ) {
         $this->stream = $stream;
 
-        // @mago-expect analysis:possibly-invalid-argument
         stream_set_blocking($stream, false);
 
-        // @mago-expect analysis:possibly-invalid-argument
         $meta = stream_get_meta_data($stream);
         if ($read) {
             $this->useSingleRead = 'udp_socket' === $meta['stream_type'] || 'STDIO' === $meta['stream_type'];
@@ -104,10 +102,8 @@ class ResourceHandle implements
 
             Psl\invariant($readable, 'Handle is not readable.');
 
-            // @mago-expect analysis:possibly-invalid-argument
             stream_set_read_buffer($stream, 0);
 
-            // @mago-expect analysis:possibly-invalid-argument
             $this->readWatcher = EventLoop::onReadable($stream, function (): void {
                 $this->readSuspension?->resume();
             });
@@ -154,19 +150,12 @@ class ResourceHandle implements
         }
 
         if ($write) {
-            $writable =
-                str_contains($meta['mode'], 'x')
-                || str_contains($meta['mode'], 'w')
-                || str_contains($meta['mode'], 'c')
-                || str_contains($meta['mode'], 'a')
-                || str_contains($meta['mode'], '+');
+            $writable = false !== strpbrk($meta['mode'], 'xwca+');
 
             Psl\invariant($writable, 'Handle is not writeable.');
 
-            // @mago-expect analysis:possibly-invalid-argument
             stream_set_write_buffer($stream, 0);
 
-            // @mago-expect analysis:possibly-invalid-argument
             $this->writeWatcher = EventLoop::onWritable($stream, function (): void {
                 $this->writeSuspension?->resume();
             });
@@ -265,7 +254,7 @@ class ResourceHandle implements
             throw new Exception\RuntimeException($error['message'] ?? 'unknown error.');
         }
 
-        return max($result, 0);
+        return $result;
     }
 
     /**
@@ -303,7 +292,7 @@ class ResourceHandle implements
             throw new Exception\RuntimeException($error['message'] ?? 'unknown error.');
         }
 
-        return max($result, 0);
+        return $result;
     }
 
     /**

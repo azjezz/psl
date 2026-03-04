@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Vec;
 
 use Closure;
-use Psl\Iter;
 
 /**
  * Returns a new array in which each value appears exactly once, where the
@@ -22,18 +21,19 @@ use Psl\Iter;
  */
 function unique_by(iterable $iterable, Closure $scalar_func): array
 {
-    /** @var list<Ts> $unique */
-    $unique = [];
-    /** @var list<Tv> $original_values */
-    $original_values = [];
+    /** @var array<array-key, true> $seen */
+    $seen = [];
+    /** @var list<Tv> $result */
+    $result = [];
     foreach ($iterable as $v) {
         $scalar = $scalar_func($v);
+        $key = is_int($scalar) || is_string($scalar) ? $scalar : serialize($scalar);
 
-        if (!Iter\contains($unique, $scalar)) {
-            $unique[] = $scalar;
-            $original_values[] = $v;
+        if (!isset($seen[$key])) {
+            $seen[$key] = true;
+            $result[] = $v;
         }
     }
 
-    return $original_values;
+    return $result;
 }

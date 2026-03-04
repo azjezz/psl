@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
-use Psl\Iter;
+use function array_key_exists;
 
 /**
  * Returns a new dict containing only the keys found in both the input array
@@ -29,7 +29,7 @@ function select_keys(iterable $iterable, iterable $keys): array
 
     $result = [];
     foreach ($keys as $key) {
-        if (!Iter\contains_key($array, $key)) {
+        if (!array_key_exists($key, $array)) {
             continue;
         }
 

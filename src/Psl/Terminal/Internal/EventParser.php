@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Terminal\Internal;
 
-use Psl\Str;
 use Psl\Terminal\Event;
+
+use function explode;
+use function str_starts_with;
+use function strlen;
+use function strpos;
+use function substr;
 
 /**
  * Parses raw stdin bytes into terminal Event objects.
@@ -22,6 +27,8 @@ final class EventParser
 
     private const string PASTE_START = "\e[200~";
     private const string PASTE_END = "\e[201~";
+    private const int PASTE_START_LEN = 6;
+    private const int PASTE_END_LEN = 6;
 
     /**
      * Flush any pending incomplete sequences as final events.
@@ -77,16 +84,13 @@ final class EventParser
             return $this->parsePasteContent();
         }
 
-        if (Str\Byte\starts_with($this->buffer, self::PASTE_START)) {
-            $this->buffer = Str\Byte\slice($this->buffer, Str\Byte\length(self::PASTE_START));
+        if (str_starts_with($this->buffer, self::PASTE_START)) {
+            $this->buffer = substr($this->buffer, self::PASTE_START_LEN);
             $this->inPaste = true;
             return null;
         }
 
-        if (
-            Str\Byte\length(self::PASTE_START) > Str\Byte\length($this->buffer)
-            && Str\Byte\starts_with(self::PASTE_START, $this->buffer)
-        ) {
+        if (self::PASTE_START_LEN > strlen($this->buffer) && str_starts_with(self::PASTE_START, $this->buffer)) {
             return false;
         }
 
@@ -99,15 +103,15 @@ final class EventParser
 
     private function parsePasteContent(): Event\Paste|null|false
     {
-        $endPos = Str\Byte\search($this->buffer, self::PASTE_END);
-        if ($endPos === null) {
+        $endPos = strpos($this->buffer, self::PASTE_END);
+        if ($endPos === false) {
             $this->pasteBuffer .= $this->buffer;
             $this->buffer = '';
             return false;
         }
 
-        $this->pasteBuffer .= Str\Byte\slice($this->buffer, 0, $endPos);
-        $this->buffer = Str\Byte\slice($this->buffer, $endPos + Str\Byte\length(self::PASTE_END));
+        $this->pasteBuffer .= substr($this->buffer, 0, $endPos);
+        $this->buffer = substr($this->buffer, $endPos + self::PASTE_END_LEN);
         $result = new Event\Paste($this->pasteBuffer);
         $this->pasteBuffer = '';
         $this->inPaste = false;
@@ -117,7 +121,7 @@ final class EventParser
     private function parseSingleByte(): null|Event\Key
     {
         $byte = $this->buffer[0];
-        $this->buffer = Str\Byte\slice($this->buffer, 1);
+        $this->buffer = substr($this->buffer, 1);
         $ord = ord($byte);
 
         return match (true) {
@@ -148,13 +152,13 @@ final class EventParser
             default => 0,
         };
 
-        if (Str\Byte\length($this->buffer) < $needed) {
+        if (strlen($this->buffer) < $needed) {
             $this->buffer = $firstByte . $this->buffer;
             return null;
         }
 
-        $char = $firstByte . Str\Byte\slice($this->buffer, 0, $needed);
-        $this->buffer = Str\Byte\slice($this->buffer, $needed);
+        $char = $firstByte . substr($this->buffer, 0, $needed);
+        $this->buffer = substr($this->buffer, $needed);
 
         return Event\Key::char($char);
     }
@@ -164,7 +168,7 @@ final class EventParser
      */
     private function parseEscapeSequence(): Event\Key|Event\Mouse|Event\Resize|Event\Focus|null|false
     {
-        if (Str\Byte\length($this->buffer) < 2) {
+        if (strlen($this->buffer) < 2) {
             return false;
         }
 
@@ -175,11 +179,11 @@ final class EventParser
         }
 
         if (ord($second) >= 0x20 && ord($second) <= 0x7E) {
-            $this->buffer = Str\Byte\slice($this->buffer, 2);
+            $this->buffer = substr($this->buffer, 2);
             return Event\Key::named('alt+' . $second);
         }
 
-        $this->buffer = Str\Byte\slice($this->buffer, 1);
+        $this->buffer = substr($this->buffer, 1);
         return Event\Key::named('escape');
     }
 
@@ -188,7 +192,7 @@ final class EventParser
      */
     private function parseCsiSequence(): Event\Key|Event\Mouse|Event\Resize|Event\Focus|null|false
     {
-        $len = Str\Byte\length($this->buffer);
+        $len = strlen($this->buffer);
 
         for ($i = 2; $i < $len; $i++) {
             $c = $this->buffer[$i];
@@ -200,8 +204,8 @@ final class EventParser
             if ($c >= 'A' && $c <= 'Z' || $c === '~' || $c >= 'a' && $c <= 'z') {
                 /** @var non-negative-int $paramLen */
                 $paramLen = $i - 2;
-                $params = Str\Byte\slice($this->buffer, 2, $paramLen);
-                $this->buffer = Str\Byte\slice($this->buffer, $i + 1);
+                $params = substr($this->buffer, 2, $paramLen);
+                $this->buffer = substr($this->buffer, $i + 1);
 
                 if ($params === '' && $c === 'I') {
                     return new Event\Focus(true);
@@ -233,7 +237,7 @@ final class EventParser
      */
     private static function parseInBandResize(string $params): null|Event\Resize
     {
-        $parts = Str\Byte\split($params, ';');
+        $parts = explode(';', $params);
         if (count($parts) < 3 || $parts[0] !== '48') {
             return null;
         }
@@ -252,16 +256,16 @@ final class EventParser
      */
     private function parseSgrMouse(): Event\Mouse|null|false
     {
-        $len = Str\Byte\length($this->buffer);
+        $len = strlen($this->buffer);
 
         for ($i = 3; $i < $len; $i++) {
             $c = $this->buffer[$i];
             if ($c === 'M' || $c === 'm') {
                 /** @var non-negative-int $paramLen */
                 $paramLen = $i - 3;
-                $params = Str\Byte\slice($this->buffer, 3, $paramLen);
+                $params = substr($this->buffer, 3, $paramLen);
                 $isRelease = $c === 'm';
-                $this->buffer = Str\Byte\slice($this->buffer, $i + 1);
+                $this->buffer = substr($this->buffer, $i + 1);
 
                 return SgrMouseParser::parse($params, $isRelease);
             }

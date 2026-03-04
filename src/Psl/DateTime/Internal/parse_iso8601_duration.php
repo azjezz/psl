@@ -7,7 +7,14 @@ namespace Psl\DateTime\Internal;
 use Psl\DateTime\Exception;
 use Psl\Str;
 
+use function explode;
 use function preg_match;
+use function str_contains;
+use function str_pad;
+use function str_starts_with;
+use function substr;
+
+use const STR_PAD_RIGHT;
 
 /**
  * Parses an ISO 8601 time-based duration string and returns its parts.
@@ -23,15 +30,15 @@ use function preg_match;
 function parse_iso8601_duration(string $value): array
 {
     // Handle optional leading negative sign
-    $negative = Str\starts_with($value, '-');
-    $input = $negative ? Str\slice($value, 1) : $value;
+    $negative = str_starts_with($value, '-');
+    $input = $negative ? substr($value, 1) : $value;
 
     // Time-only format: PT[(\d+)H][(\d+)M][(\d+[.\d+]?)S]
     /** @var array<int, string> $matches */
     $matches = [];
     if (1 !== preg_match('/^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?$/', $input, $matches)) {
         // Check for date component to give a better error message
-        if (Str\starts_with($input, 'P') && !Str\starts_with($input, 'PT')) {
+        if (str_starts_with($input, 'P') && !str_starts_with($input, 'PT')) {
             throw new Exception\ParserException(Str\format(
                 'ISO 8601 duration "%s" contains date components; use Period::fromIso8601() instead.',
                 $value,
@@ -48,11 +55,11 @@ function parse_iso8601_duration(string $value): array
 
     $secStr = $matches[3] ?? '';
     if ('' !== $secStr) {
-        if (Str\contains($secStr, '.')) {
-            $parts = Str\split($secStr, '.');
+        if (str_contains($secStr, '.')) {
+            $parts = explode('.', $secStr);
             $seconds = (int) $parts[0];
-            $frac = Str\pad_right($parts[1], 9, '0');
-            $nanoseconds = (int) Str\slice($frac, 0, 9);
+            $frac = str_pad($parts[1], 9, '0', STR_PAD_RIGHT);
+            $nanoseconds = (int) substr($frac, 0, 9);
         } else {
             $seconds = (int) $secStr;
         }

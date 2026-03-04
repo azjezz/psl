@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use function array_key_last;
+use function is_array;
+
 /**
  * Returns the last key of an iterable, if the iterable is empty, null will be returned.
  *
@@ -16,6 +19,10 @@ namespace Psl\Iter;
  */
 function last_key(iterable $iterable): mixed
 {
+    if (is_array($iterable)) {
+        return array_key_last($iterable);
+    }
+
     $last = null;
     foreach ($iterable as $k => $_) {
         $last = $k;

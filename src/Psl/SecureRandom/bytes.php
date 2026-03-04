@@ -6,8 +6,8 @@ namespace Psl\SecureRandom;
 
 use Exception as PHPException;
 use Psl\Str;
-use Psl\Type;
 
+use function is_string;
 use function random_bytes;
 
 /**
@@ -30,7 +30,7 @@ function bytes(int $length): string
         // @codeCoverageIgnoreStart
     } catch (PHPException $e) {
         $code = $e->getCode();
-        if (Type\string()->matches($code)) {
+        if (is_string($code)) {
             $code = Str\to_int($code) ?? 0;
         }
 

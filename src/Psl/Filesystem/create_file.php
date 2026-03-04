@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl\Filesystem;
 
 use Psl\Internal;
-use Psl\Math;
 use Psl\Str;
 
+use function max;
 use function touch;
 
 /**
@@ -30,7 +30,7 @@ function create_file(string $filename, null|int $time = null, null|int $access_t
     } else {
         $time ??= $access_time;
 
-        $fun = static fn(): bool => touch($filename, $time, Math\maxva($access_time, $time));
+        $fun = static fn(): bool => touch($filename, $time, max($access_time, $time));
     }
 
     namespace\create_directory_for_file($filename);

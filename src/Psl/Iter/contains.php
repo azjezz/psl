@@ -15,12 +15,14 @@ namespace Psl\Iter;
  */
 function contains(iterable $iterable, mixed $value): bool
 {
-    foreach ($iterable as $v) {
-        if ($value !== $v) {
-            continue;
-        }
+    if (is_array($iterable)) {
+        return in_array($value, $iterable, true);
+    }
 
-        return true;
+    foreach ($iterable as $v) {
+        if ($value === $v) {
+            return true;
+        }
     }
 
     return false;

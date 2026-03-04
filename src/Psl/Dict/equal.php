@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
-use Psl\Iter;
+use function array_key_exists;
+use function count;
 
 /**
  * Returns whether the two given dict have the same entries, using strict
@@ -22,16 +23,14 @@ function equal(array $first, array $second): bool
         return true;
     }
 
-    if (Iter\count($first) !== Iter\count($second)) {
+    if (count($first) !== count($second)) {
         return false;
     }
 
     foreach ($first as $k => $v) {
-        if (!(!Iter\contains_key($second, $k) || $second[$k] !== $v)) {
-            continue;
+        if (!array_key_exists($k, $second) || $second[$k] !== $v) {
+            return false;
         }
-
-        return false;
     }
 
     return true;

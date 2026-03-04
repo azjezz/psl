@@ -14,7 +14,15 @@ use function str_replace;
  */
 function replace(string $haystack, string $needle, string $replacement, Encoding $encoding = Encoding::Utf8): string
 {
-    if ('' === $needle || null === search($haystack, $needle, 0, $encoding)) {
+    if ('' === $needle) {
+        return $haystack;
+    }
+
+    if ($encoding === Encoding::Ascii || $encoding === Encoding::Utf8) {
+        return str_replace($needle, $replacement, $haystack);
+    }
+
+    if (null === search($haystack, $needle, 0, $encoding)) {
         return $haystack;
     }
 

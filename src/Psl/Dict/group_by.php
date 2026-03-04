@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Psl\Dict;
 
 use Closure;
-use Psl;
-use Psl\Type;
 
 /**
  * Returns a new array where
@@ -47,13 +45,6 @@ function group_by(iterable $values, Closure $key_func): array
         if (null === $key) {
             continue;
         }
-
-        Psl\invariant(
-            // @mago-expect analysis:redundant-type-comparison
-            Type\array_key()->matches($key),
-            'Expected $key_func to return a value of type array-key, value of type (%s) returned.',
-            gettype($key),
-        );
 
         /** @var Tk $key */
         $result[$key] ??= [];

@@ -33,9 +33,29 @@ final readonly class MapType extends Type\Type
      * @param Type\TypeInterface<Tv> $value_type
      */
     public function __construct(
-        private readonly Type\TypeInterface $key_type,
-        private readonly Type\TypeInterface $value_type,
+        private Type\TypeInterface $key_type,
+        private Type\TypeInterface $value_type,
     ) {}
+
+    /**
+     * @psalm-assert-if-true Collection\MapInterface<Tk, Tv> $value
+     */
+    #[Override]
+    public function matches(mixed $value): bool
+    {
+        if (!is_object($value) || !$value instanceof Collection\MapInterface) {
+            return false;
+        }
+
+        // @mago-expect analysis:mixed-assignment
+        foreach ($value as $k => $v) {
+            if (!$this->key_type->matches($k) || !$this->value_type->matches($v)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     /**
      * @throws CoercionException

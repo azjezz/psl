@@ -35,6 +35,26 @@ final readonly class ContainerType extends Type\Type
     ) {}
 
     /**
+     * @psalm-assert-if-true iterable<Tk, Tv> $value
+     */
+    #[Override]
+    public function matches(mixed $value): bool
+    {
+        if (!is_iterable($value)) {
+            return false;
+        }
+
+        // @mago-expect analysis:mixed-assignment,mixed-assignment
+        foreach ($value as $k => $v) {
+            if (!$this->key_type->matches($k) || !$this->value_type->matches($v)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * @throws CoercionException
      *
      * @return iterable<Tk, Tv>

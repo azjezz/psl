@@ -10,6 +10,8 @@ use Psl\Ansi\Screen;
 use Psl\IO;
 use Psl\Str;
 
+use function array_fill;
+
 /**
  * A 2D grid of {@see Cell} objects representing the terminal screen.
  *
@@ -103,10 +105,10 @@ final class Buffer
      */
     public function fill(Cell $cell): void
     {
+        /** @var array<non-negative-int, Cell> $row */
+        $row = array_fill(0, $this->width, $cell);
         for ($y = 0; $y < $this->height; $y++) {
-            for ($x = 0; $x < $this->width; $x++) {
-                $this->cells[$y][$x] = $cell;
-            }
+            $this->cells[$y] = $row;
         }
     }
 
@@ -213,19 +215,11 @@ final class Buffer
     private static function createGrid(int $width, int $height): array
     {
         $empty = new Cell();
-        /** @var array<non-negative-int, array<non-negative-int, Cell>> $grid */
-        $grid = [];
-        for ($y = 0; $y < $height; $y++) {
-            /** @var array<non-negative-int, Cell> $row */
-            $row = [];
-            for ($x = 0; $x < $width; $x++) {
-                $row[] = $empty;
-            }
+        /** @var array<non-negative-int, Cell> $row */
+        $row = array_fill(0, $width, $empty);
 
-            $grid[] = $row;
-        }
-
-        return $grid;
+        /** @var array<non-negative-int, array<non-negative-int, Cell>> */
+        return array_fill(0, $height, $row);
     }
 
     /**
@@ -238,13 +232,7 @@ final class Buffer
         /** @var array<non-negative-int, array<non-negative-int, Cell>> $copy */
         $copy = [];
         for ($y = 0; $y < $height; $y++) {
-            /** @var array<non-negative-int, Cell> $row */
-            $row = [];
-            for ($x = 0; $x < $width; $x++) {
-                $row[] = $source[$y][$x];
-            }
-
-            $copy[] = $row;
+            $copy[] = $source[$y];
         }
 
         return $copy;

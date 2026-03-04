@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\Encoding\Hex;
 
 use Psl\Encoding\Exception;
-use Psl\Str;
+
+use function strlen;
 
 /**
  * Convert a hexadecimal string into a binary string.
@@ -27,7 +28,7 @@ function decode(string $hexadecimal): string
         );
     }
 
-    $hex_len = Str\length($hexadecimal, Str\Encoding::Ascii8bit);
+    $hex_len = strlen($hexadecimal);
     if (($hex_len & 1) !== 0) {
         throw new Exception\RangeException('Expected an even number of hexadecimal characters.');
     }

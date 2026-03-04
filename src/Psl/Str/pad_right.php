@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
+use function str_pad;
+
+use const STR_PAD_RIGHT;
+
 /**
  * Returns the string padded to the total length by appending the `$pad_string`
  * to the right.
@@ -37,6 +41,19 @@ function pad_right(
     string $pad_string = ' ',
     Encoding $encoding = Encoding::Utf8,
 ): string {
+    if ($encoding === Encoding::Ascii || $encoding === Encoding::Utf8) {
+        if (Byte\length($pad_string) === length($pad_string, $encoding)) {
+            // All characters in pad_string are single-byte, str_pad is safe
+            return str_pad(
+                $string,
+                Byte\length($string) + $total_length - length($string, $encoding),
+                $pad_string,
+                STR_PAD_RIGHT,
+            );
+        }
+    }
+
+    $pad_length = length($pad_string, $encoding);
     do {
         $length = length($string, $encoding);
         $remaining = $total_length - $length;
@@ -44,8 +61,9 @@ function pad_right(
             return $string;
         }
 
-        if ($remaining <= length($pad_string, $encoding)) {
+        if ($remaining <= $pad_length) {
             $pad_string = slice($pad_string, 0, $remaining, $encoding);
+            $pad_length = $remaining;
         }
 
         $string .= $pad_string;

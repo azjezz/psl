@@ -6,6 +6,7 @@ namespace Psl\Dict;
 
 use Closure;
 
+use function is_array;
 use function ksort;
 use function uksort;
 
@@ -25,9 +26,13 @@ use function uksort;
  */
 function sort_by_key(iterable $iterable, null|Closure $comparator = null): array
 {
-    $result = [];
-    foreach ($iterable as $k => $v) {
-        $result[$k] = $v;
+    if (is_array($iterable)) {
+        $result = $iterable;
+    } else {
+        $result = [];
+        foreach ($iterable as $k => $v) {
+            $result[$k] = $v;
+        }
     }
 
     if ($comparator) {

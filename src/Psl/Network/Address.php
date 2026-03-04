@@ -89,11 +89,10 @@ final readonly class Address
      */
     public function toString(): string
     {
-        $address = "{$this->scheme->value}://{$this->host}";
         if (null === $this->port) {
-            return $address;
+            return "{$this->scheme->value}://{$this->host}";
         }
 
-        return "{$address}:{$this->port}";
+        return "{$this->scheme->value}://{$this->host}:{$this->port}";
     }
 }

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Psl\Shell;
 
 use Generator;
-use Psl\Str;
 
+use function strlen;
+use function substr;
 use function unpack as byte_unpack;
 
 /**
@@ -30,11 +31,11 @@ use function unpack as byte_unpack;
 function stream_unpack(string $content): Generator
 {
     while ('' !== $content) {
-        if (Str\Byte\length($content) < 5) {
+        if (strlen($content) < 5) {
             throw new Exception\InvalidArgumentException('$content contains an invalid header value.');
         }
 
-        $headers = byte_unpack('C1type/N1size', Str\Byte\slice($content, 0, 5));
+        $headers = byte_unpack('C1type/N1size', substr($content, 0, 5));
         if (false === $headers) {
             throw new Exception\InvalidArgumentException('$content contains an invalid header value.');
         }
@@ -44,12 +45,12 @@ function stream_unpack(string $content): Generator
         /** @var int<0, max> $size */
         $size = (int) $headers['size'];
 
-        if ($size > (Str\Byte\length($content) - 5)) {
+        if ($size > (strlen($content) - 5)) {
             throw new Exception\InvalidArgumentException('$content contains an invalid header value.');
         }
 
-        $chunk = Str\Byte\slice($content, 5, $size);
-        $content = Str\Byte\slice($content, $size + 5);
+        $chunk = substr($content, 5, $size);
+        $content = substr($content, $size + 5);
 
         if (1 === $type || 2 === $type) {
             yield $type => $chunk;

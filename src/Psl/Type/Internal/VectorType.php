@@ -30,8 +30,28 @@ final readonly class VectorType extends Type\Type
      * @param Type\TypeInterface<T> $value_type
      */
     public function __construct(
-        private readonly Type\TypeInterface $value_type,
+        private Type\TypeInterface $value_type,
     ) {}
+
+    /**
+     * @psalm-assert-if-true Collection\VectorInterface<T> $value
+     */
+    #[Override]
+    public function matches(mixed $value): bool
+    {
+        if (!is_object($value) || !$value instanceof Collection\VectorInterface) {
+            return false;
+        }
+
+        // @mago-expect analysis:mixed-assignment
+        foreach ($value as $v) {
+            if (!$this->value_type->matches($v)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     /**
      * @throws CoercionException

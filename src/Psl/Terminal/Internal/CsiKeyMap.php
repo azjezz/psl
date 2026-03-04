@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Terminal\Internal;
 
-use Psl\Str;
 use Psl\Terminal\Event;
+
+use function explode;
+use function str_contains;
 
 /**
  * Maps CSI escape sequences to key events.
@@ -34,7 +36,7 @@ final class CsiKeyMap
         }
 
         // Kitty keyboard protocol: \e[codepoint u (no modifier)
-        if ($final === 'u' && !Str\Byte\contains($params, ';')) {
+        if ($final === 'u' && !str_contains($params, ';')) {
             return self::mapKittyKey((int) $params, 1);
         }
 
@@ -81,7 +83,7 @@ final class CsiKeyMap
         }
 
         // Modified tilde keys: e.g., "5;5" for Ctrl+PageUp
-        $parts = Str\Byte\split($params, ';');
+        $parts = explode(';', $params);
         if (count($parts) !== 2) {
             return null;
         }
@@ -116,7 +118,7 @@ final class CsiKeyMap
 
     private static function mapModified(string $params, string $final): null|Event\Key
     {
-        $parts = Str\Byte\split($params, ';');
+        $parts = explode(';', $params);
         if (count($parts) !== 2) {
             return null;
         }

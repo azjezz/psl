@@ -8,7 +8,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Dict;
-use Psl\Exception;
 use Psl\Str;
 
 final class GroupByTest extends TestCase
@@ -43,10 +42,7 @@ final class GroupByTest extends TestCase
 
     public function testGroupByThrowsWhenKeyFunReturnsNonArrayKey(): void
     {
-        $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage(
-            'Expected $key_func to return a value of type array-key, value of type (object) returned.',
-        );
+        $this->expectException(\TypeError::class);
 
         Dict\group_by([0, 1, 2, 3, 4, 5], static fn(int $x): Collection\Vector => new Collection\Vector([$x, $x]));
     }

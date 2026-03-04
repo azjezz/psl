@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\DateTime\Internal;
 
-use Psl\Math;
-use Psl\Str;
+use function abs;
+use function rtrim;
+use function str_pad;
+
+use const STR_PAD_LEFT;
 
 /**
  * Formats a time-based duration as an ISO 8601 duration string.
@@ -28,10 +31,10 @@ function format_iso8601_duration(int $hours, int $minutes, int $seconds, int $na
     $negative = $hours < 0 || $minutes < 0 || $seconds < 0 || $nanoseconds < 0;
     $prefix = $negative ? '-PT' : 'PT';
 
-    $hours = Math\abs($hours);
-    $minutes = Math\abs($minutes);
-    $seconds = Math\abs($seconds);
-    $nanoseconds = Math\abs($nanoseconds);
+    $hours = abs($hours);
+    $minutes = abs($minutes);
+    $seconds = abs($seconds);
+    $nanoseconds = abs($nanoseconds);
 
     $result = $prefix;
     if ($hours > 0) {
@@ -45,8 +48,8 @@ function format_iso8601_duration(int $hours, int $minutes, int $seconds, int $na
     if ($seconds > 0 || $nanoseconds > 0) {
         $result .= $seconds;
         if ($nanoseconds > 0) {
-            $frac = Str\pad_left((string) $nanoseconds, 9, '0');
-            $frac = Str\trim_right($frac, '0');
+            $frac = str_pad((string) $nanoseconds, 9, '0', STR_PAD_LEFT);
+            $frac = rtrim($frac, '0');
             $result .= '.' . $frac;
         }
 

@@ -131,7 +131,7 @@ final class Semaphore
      */
     public function hasPendingOperations(): bool
     {
-        return $this->getPendingOperations() > 0;
+        return [] !== $this->pending;
     }
 
     /**

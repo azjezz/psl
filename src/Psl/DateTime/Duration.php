@@ -7,8 +7,14 @@ namespace Psl\DateTime;
 use DateInterval;
 use Override;
 use Psl\Comparison;
-use Psl\Math;
 use Psl\Str;
+
+use function abs;
+use function rtrim;
+use function str_pad;
+use function substr;
+
+use const STR_PAD_LEFT;
 
 /**
  * Defines a representation of a time duration with specific hours, minutes, seconds,
@@ -667,10 +673,10 @@ final readonly class Duration implements TemporalAmountInterface, Comparison\Com
     {
         $decimal_part = '';
         if ($max_decimals > 0) {
-            $decimal_part = (string) Math\abs($this->nanoseconds);
-            $decimal_part = Str\pad_left($decimal_part, 9, '0');
-            $decimal_part = Str\slice($decimal_part, 0, $max_decimals);
-            $decimal_part = Str\trim_right($decimal_part, '0');
+            $decimal_part = (string) abs($this->nanoseconds);
+            $decimal_part = str_pad($decimal_part, 9, '0', STR_PAD_LEFT);
+            $decimal_part = substr($decimal_part, 0, $max_decimals);
+            $decimal_part = rtrim($decimal_part, '0');
         }
 
         if ('' !== $decimal_part) {
@@ -678,7 +684,7 @@ final readonly class Duration implements TemporalAmountInterface, Comparison\Com
         }
 
         $sec_sign = $this->seconds < 0 || $this->nanoseconds < 0 ? '-' : '';
-        $sec = Math\abs($this->seconds);
+        $sec = abs($this->seconds);
 
         $containsHours = 0 !== $this->hours;
         $containsMinutes = 0 !== $this->minutes;

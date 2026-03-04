@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
+use function array_fill;
+
 /**
  * Returns a new vec of size `$size` where all the values are `$value`.
  *
@@ -20,10 +22,5 @@ namespace Psl\Vec;
  */
 function fill(int $size, mixed $value): array
 {
-    $result = [];
-    for ($i = 0; $i < $size; $i++) {
-        $result[] = $value;
-    }
-
-    return $result;
+    return array_fill(0, $size, $value);
 }

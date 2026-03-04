@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
+use function array_chunk;
+use function is_array;
+
 /**
  * Returns a list containing the original list split into chunks of the given
  * size.
@@ -20,18 +23,24 @@ namespace Psl\Vec;
  */
 function chunk(iterable $iterable, int $size): array
 {
-    $result = [];
-    $ii = 0;
-    $chunk_number = -1;
-    foreach ($iterable as $value) {
-        if (($ii % $size) === 0) {
-            $result[] = [];
-            $chunk_number++;
-        }
-
-        $result[$chunk_number][] = $value;
-        $ii++;
+    if (is_array($iterable)) {
+        return array_chunk($iterable, $size);
     }
 
-    return values($result);
+    $result = [];
+    $chunk = [];
+    $ii = 0;
+    foreach ($iterable as $value) {
+        $chunk[] = $value;
+        if ((++$ii % $size) === 0) {
+            $result[] = $chunk;
+            $chunk = [];
+        }
+    }
+
+    if ($chunk !== []) {
+        $result[] = $chunk;
+    }
+
+    return $result;
 }

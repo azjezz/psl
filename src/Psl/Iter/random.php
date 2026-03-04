@@ -28,7 +28,7 @@ function random(iterable $iterable): mixed
         throw new Exception\InvalidArgumentException('Expected a non-empty iterable.');
     }
 
-    $size = namespace\count($values);
+    $size = \count($values);
 
     if (1 === $size) {
         return $values[0];

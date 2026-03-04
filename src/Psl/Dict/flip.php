@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
-use Psl;
-use Psl\Type;
+use function array_flip;
+use function is_array;
 
 /**
  * Flips the keys and values of an iterable.
@@ -26,16 +26,12 @@ use Psl\Type;
  */
 function flip(iterable $iterable): array
 {
+    if (is_array($iterable)) {
+        return array_flip($iterable);
+    }
+
     $result = [];
     foreach ($iterable as $key => $value) {
-        Psl\invariant(
-            // @mago-expect analysis:redundant-type-comparison
-            Type\array_key()->matches($value),
-            'Expected all values to be of type array-key, value of type (%s) provided.',
-            gettype($value),
-        );
-
-        /** @var Tv $value */
         $result[$value] = $key;
     }
 

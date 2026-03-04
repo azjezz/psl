@@ -11,6 +11,8 @@ use Psl\Interoperability;
 use Psl\Locale\Locale;
 use Psl\Math;
 
+use function intdiv;
+
 /**
  * Represents a precise point in time, with seconds and nanoseconds since the Unix epoch.
  *
@@ -60,7 +62,7 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\Fr
             throw new Exception\UnderflowException('Subtracting nanoseconds would cause an underflow.');
         }
 
-        $seconds_adjustment = Math\div($nanoseconds, NANOSECONDS_PER_SECOND);
+        $seconds_adjustment = intdiv($nanoseconds, NANOSECONDS_PER_SECOND);
         $adjusted_seconds = $seconds + $seconds_adjustment;
 
         $adjusted_nanoseconds = $nanoseconds % NANOSECONDS_PER_SECOND;
@@ -110,7 +112,7 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\Fr
      */
     public static function fromMilliseconds(int $milliseconds): self
     {
-        $seconds = Math\div($milliseconds, MILLISECONDS_PER_SECOND);
+        $seconds = intdiv($milliseconds, MILLISECONDS_PER_SECOND);
         $remainingMs = $milliseconds % MILLISECONDS_PER_SECOND;
 
         return self::fromParts($seconds, $remainingMs * NANOSECONDS_PER_MILLISECOND);
@@ -128,7 +130,7 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\Fr
      */
     public static function fromMicroseconds(int $microseconds): self
     {
-        $seconds = Math\div($microseconds, MICROSECONDS_PER_SECOND);
+        $seconds = intdiv($microseconds, MICROSECONDS_PER_SECOND);
         $remainingUs = $microseconds % MICROSECONDS_PER_SECOND;
 
         return self::fromParts($seconds, $remainingUs * NANOSECONDS_PER_MICROSECOND);
