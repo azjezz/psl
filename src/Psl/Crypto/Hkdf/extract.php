@@ -25,7 +25,6 @@ function extract(
     if ($salt === '') {
         /** @var non-negative-int $hashLength */
         $hashLength = match ($algorithm) {
-            Hmac\Algorithm::Sha256 => 32,
             Hmac\Algorithm::Sha384 => 48,
             Hmac\Algorithm::Sha512 => 64,
             default => 32,

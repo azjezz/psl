@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\DateTime;
 
+use Override;
 use Psl\Comparison;
 use Psl\Comparison\Order;
 use Psl\Locale\Locale;
@@ -22,6 +23,7 @@ trait TemporalConvenienceMethodsTrait
      *
      * @psalm-mutation-free
      */
+    #[Override]
     public function compare(mixed $other): Order
     {
         $a = $this->getTimestamp()->toParts();
@@ -39,6 +41,7 @@ trait TemporalConvenienceMethodsTrait
      *
      * @psalm-mutation-free
      */
+    #[Override]
     public function equals(mixed $other): bool
     {
         return $this->atTheSameTime($other);

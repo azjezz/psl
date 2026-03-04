@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Channel\Internal;
 
+use Override;
+
 /**
  * @template T of UnboundedChannelState|BoundedChannelState
  */
@@ -44,6 +46,7 @@ trait ChannelSideTrait
      *
      * @psalm-mutation-free
      */
+    #[Override]
     public function count(): int
     {
         return $this->state->count();

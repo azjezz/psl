@@ -9,6 +9,7 @@ use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Terminal\Buffer;
+use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
 use Psl\Terminal\Widget\Span;
 use Psl\Terminal\Widget\Table;
@@ -250,7 +251,7 @@ final class TableTest extends TestCase
     public function testEmptyAreaDoesNotCorruptBuffer(): void
     {
         $buffer = new Buffer(10, 5);
-        $buffer->set(0, 0, new \Psl\Terminal\Cell('X'));
+        $buffer->set(0, 0, new Cell('X'));
         $area = new Rect(0, 0, 0, 0);
 
         Table::new()

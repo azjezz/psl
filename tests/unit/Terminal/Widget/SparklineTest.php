@@ -9,6 +9,7 @@ use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Terminal\Buffer;
+use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
 use Psl\Terminal\Widget\Sparkline;
 
@@ -142,7 +143,7 @@ final class SparklineTest extends TestCase
     public function testEmptyAreaDoesNotCorruptBuffer(): void
     {
         $buffer = new Buffer(10, 1);
-        $buffer->set(0, 0, new \Psl\Terminal\Cell('X'));
+        $buffer->set(0, 0, new Cell('X'));
         $area = new Rect(0, 0, 0, 0);
 
         Sparkline::new([0.5, 0.5])->render($area, $buffer);
