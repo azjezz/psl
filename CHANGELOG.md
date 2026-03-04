@@ -1,6 +1,6 @@
 # Changelog
 
-## Next
+## 5.0.0
 
 ### breaking changes
 
