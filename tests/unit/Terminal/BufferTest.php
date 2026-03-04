@@ -375,6 +375,73 @@ final class BufferTest extends TestCase
         static::assertStringContainsString("\e[0m", $written);
     }
 
+    public function testFlushSgrResetOnCursorJump(): void
+    {
+        $buffer = new Buffer(5, 1);
+        $bold = Style\bold();
+        $buffer->set(0, 0, new Cell('A', [$bold]));
+        $buffer->set(4, 0, new Cell('B'));
+
+        $output = new IO\MemoryHandle();
+        $buffer->flush($output);
+
+        $written = $output->getBuffer();
+        static::assertStringContainsString('A', $written);
+        static::assertStringContainsString('B', $written);
+        $resetCount = substr_count($written, "\e[0m");
+        static::assertGreaterThanOrEqual(1, $resetCount);
+    }
+
+    public function testFlushStyleChangeResetsOldStyle(): void
+    {
+        $buffer = new Buffer(2, 1);
+        $bold = Style\bold();
+        $fg = Ansi\foreground(Color\red());
+        $buffer->set(0, 0, new Cell('A', [$bold]));
+        $buffer->set(1, 0, new Cell('B', [$fg]));
+
+        $output = new IO\MemoryHandle();
+        $buffer->flush($output);
+
+        $written = $output->getBuffer();
+        static::assertStringContainsString('A', $written);
+        static::assertStringContainsString('B', $written);
+        $resetCount = substr_count($written, "\e[0m");
+        static::assertGreaterThanOrEqual(2, $resetCount);
+    }
+
+    public function testFlushStyledThenUnstyled(): void
+    {
+        $buffer = new Buffer(2, 1);
+        $bold = Style\bold();
+        $buffer->set(0, 0, new Cell('A', [$bold]));
+        $buffer->set(1, 0, new Cell('B'));
+
+        $output = new IO\MemoryHandle();
+        $buffer->flush($output);
+
+        $written = $output->getBuffer();
+        static::assertStringContainsString('A', $written);
+        static::assertStringContainsString('B', $written);
+    }
+
+    public function testFlushConsecutiveSameStyle(): void
+    {
+        $buffer = new Buffer(3, 1);
+        $bold = Style\bold();
+        $buffer->set(0, 0, new Cell('A', [$bold]));
+        $buffer->set(1, 0, new Cell('B', [$bold]));
+        $buffer->set(2, 0, new Cell('C', [$bold]));
+
+        $output = new IO\MemoryHandle();
+        $buffer->flush($output);
+
+        $written = $output->getBuffer();
+        static::assertStringContainsString('A', $written);
+        static::assertStringContainsString('B', $written);
+        static::assertStringContainsString('C', $written);
+    }
+
     public function testFlushWritesNothingWhenUnchangedMultiRow(): void
     {
         $syncOverhead = Str\Byte\length(

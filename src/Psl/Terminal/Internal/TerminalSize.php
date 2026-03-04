@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\Terminal\Internal;
 
-use Psl\Iter;
 use Psl\Process;
 use Psl\Shell;
 use Psl\Str;
+
+use function count;
 
 use const PHP_OS_FAMILY;
 
@@ -73,7 +74,7 @@ final class TerminalSize
 
             if ($output->status->isSuccessful()) {
                 $parts = Str\split(Str\trim($output->stdout), ' ');
-                if (Iter\count($parts) === 2) {
+                if (count($parts) === 2) {
                     $rows = (int) $parts[0];
                     $cols = (int) $parts[1];
                     if ($rows > 0 && $cols > 0) {
@@ -121,7 +122,7 @@ final class TerminalSize
             ]);
 
             $parts = Str\split(Str\trim($output), ' ');
-            if (Iter\count($parts) === 2) {
+            if (count($parts) === 2) {
                 $cols = (int) $parts[0];
                 $rows = (int) $parts[1];
                 if ($cols > 0 && $rows > 0) {

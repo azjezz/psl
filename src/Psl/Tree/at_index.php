@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tree;
 
-use Psl\Vec;
+use function array_slice;
 
 /**
  * Gets the value at the specified index path (list of child indices).
@@ -53,5 +53,5 @@ function at_index(NodeInterface $node, array $index_path): mixed
     }
 
     /** @var T */
-    return at_index($node, Vec\slice($index_path, 1));
+    return at_index($node, array_slice($index_path, 1));
 }

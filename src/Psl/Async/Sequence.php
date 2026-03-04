@@ -9,7 +9,7 @@ use Exception;
 use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
 
-use function array_slice;
+use function array_shift;
 
 /**
  * Run an operation with a limit on number of ongoing asynchronous jobs of 1.
@@ -65,9 +65,8 @@ final class Sequence
         try {
             return ($this->operation)($input);
         } finally {
-            $suspension = $this->pending[0] ?? null;
+            $suspension = array_shift($this->pending);
             if (null !== $suspension) {
-                $this->pending = array_slice($this->pending, 1);
                 $suspension->resume();
             } else {
                 foreach ($this->waits as $suspension) {

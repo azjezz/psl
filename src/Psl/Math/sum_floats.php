@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
+use function array_sum;
+
 /**
  * Returns the sum of all the given numbers.
  *
@@ -13,10 +15,5 @@ namespace Psl\Math;
  */
 function sum_floats(array $numbers): float
 {
-    $result = 0.0;
-    foreach ($numbers as $number) {
-        $result += (float) $number;
-    }
-
-    return $result;
+    return (float) array_sum($numbers);
 }

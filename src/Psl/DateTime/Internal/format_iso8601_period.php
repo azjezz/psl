@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\DateTime\Internal;
 
 use Psl\DateTime\Exception;
-use Psl\Math;
+
+use function abs;
 
 /**
  * Formats a calendar-based period as an ISO 8601 duration string.
@@ -35,9 +36,9 @@ function format_iso8601_period(int $years, int $months, int $days): string
 
     $prefix = $negative ? '-P' : 'P';
 
-    $years = Math\abs($years);
-    $months = Math\abs($months);
-    $days = Math\abs($days);
+    $years = abs($years);
+    $months = abs($months);
+    $days = abs($days);
 
     $result = $prefix;
     if ($years > 0) {

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
+use function array_slice;
+use function is_array;
+
 /**
  * Takes a slice from an iterable.
  *
@@ -26,6 +29,10 @@ namespace Psl\Dict;
  */
 function slice(iterable $iterable, int $start, null|int $length = null): array
 {
+    if (is_array($iterable)) {
+        return array_slice($iterable, $start, $length, true);
+    }
+
     $result = [];
     if (0 === $length) {
         return $result;

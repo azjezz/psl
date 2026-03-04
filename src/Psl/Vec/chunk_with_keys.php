@@ -35,5 +35,6 @@ function chunk_with_keys(iterable $iterable, int $size): array
         $ii++;
     }
 
-    return values($result);
+    /** @var list<array<Tk, Tv>> */
+    return $result;
 }

@@ -18,14 +18,9 @@ namespace Psl\Math;
  */
 function max(array $numbers): null|int|float
 {
-    $max = null;
-    foreach ($numbers as $number) {
-        if (!(null === $max || $number > $max)) {
-            continue;
-        }
-
-        $max = $number;
+    if ([] === $numbers) {
+        return null;
     }
 
-    return $max;
+    return \max($numbers);
 }

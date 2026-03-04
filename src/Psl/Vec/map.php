@@ -29,11 +29,16 @@ use function is_array;
  * @param (Closure(Tv): T) $function
  *
  * @return ($iterable is non-empty-array|non-empty-list ? non-empty-list<T> : list<T>)
+ *
+ * @mago-expect analysis:impossible-type-comparison,impossible-condition - false positive.
  */
 function map(iterable $iterable, Closure $function): array
 {
     if (is_array($iterable)) {
-        return array_values(array_map($function, $iterable));
+        // array_map preserves keys, so if input is a list, output is a list
+        return array_is_list($iterable)
+            ? array_map($function, $iterable)
+            : array_values(array_map($function, $iterable));
     }
 
     $result = [];

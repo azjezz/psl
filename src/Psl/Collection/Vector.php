@@ -13,6 +13,8 @@ use Psl\Vec;
 use function array_key_exists;
 use function array_key_last;
 use function array_keys;
+use function array_search;
+use function array_values;
 use function count;
 
 /**
@@ -34,12 +36,7 @@ final readonly class Vector implements VectorInterface
      */
     public function __construct(array $elements)
     {
-        $list = [];
-        foreach ($elements as $element) {
-            $list[] = $element;
-        }
-
-        $this->elements = $list;
+        $this->elements = array_values($elements);
     }
 
     /**
@@ -286,15 +283,9 @@ final readonly class Vector implements VectorInterface
     #[Override]
     public function linearSearch(mixed $search_value): null|int
     {
-        foreach ($this->elements as $key => $element) {
-            if ($search_value !== $element) {
-                continue;
-            }
+        $key = array_search($search_value, $this->elements, true);
 
-            return $key;
-        }
-
-        return null;
+        return false === $key ? null : $key;
     }
 
     /**

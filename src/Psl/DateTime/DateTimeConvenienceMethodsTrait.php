@@ -6,7 +6,10 @@ namespace Psl\DateTime;
 
 use Override;
 use Psl\Locale\Locale;
-use Psl\Math;
+
+use function abs;
+use function intdiv;
+use function min;
 
 /**
  * @require-implements DateTimeInterface
@@ -512,7 +515,7 @@ trait DateTimeConvenienceMethodsTrait
             return $this->minusMonths(-$months);
         }
 
-        $plus_years = Math\div($months, MONTHS_PER_YEAR);
+        $plus_years = intdiv($months, MONTHS_PER_YEAR);
         $months_left = $months - ($plus_years * MONTHS_PER_YEAR);
         $target_month = $this->getMonth() + $months_left;
 
@@ -526,7 +529,7 @@ trait DateTimeConvenienceMethodsTrait
         return $this->withDate(
             $target_year = $this->getYear() + $plus_years,
             $target_month_enum->value,
-            Math\minva($this->getDay(), $target_month_enum->getDaysForYear($target_year)),
+            min($this->getDay(), $target_month_enum->getDaysForYear($target_year)),
         );
     }
 
@@ -547,13 +550,13 @@ trait DateTimeConvenienceMethodsTrait
             return $this->plusMonths(-$months);
         }
 
-        $minus_years = Math\div($months, MONTHS_PER_YEAR);
+        $minus_years = intdiv($months, MONTHS_PER_YEAR);
         $months_left = $months - ($minus_years * MONTHS_PER_YEAR);
         $target_month = $this->getMonth() - $months_left;
 
         if ($target_month <= 0) {
             $minus_years++;
-            $target_month = MONTHS_PER_YEAR - Math\abs($target_month);
+            $target_month = MONTHS_PER_YEAR - abs($target_month);
         }
 
         $target_month_enum = Month::from($target_month);
@@ -561,7 +564,7 @@ trait DateTimeConvenienceMethodsTrait
         return $this->withDate(
             $target_year = $this->getYear() - $minus_years,
             $target_month_enum->value,
-            Math\minva($this->getDay(), $target_month_enum->getDaysForYear($target_year)),
+            min($this->getDay(), $target_month_enum->getDaysForYear($target_year)),
         );
     }
 
@@ -683,7 +686,7 @@ trait DateTimeConvenienceMethodsTrait
         $day = $this->getDay();
         if ($hasMonths) {
             $totalMonths = ($year * MONTHS_PER_YEAR) + $month - 1 + $monthsToAdd;
-            $year = Math\div($totalMonths, MONTHS_PER_YEAR);
+            $year = intdiv($totalMonths, MONTHS_PER_YEAR);
             $month = $totalMonths % MONTHS_PER_YEAR;
             if ($month < 0) {
                 $year--;
@@ -691,7 +694,7 @@ trait DateTimeConvenienceMethodsTrait
             }
 
             $month += 1;
-            $day = Math\minva($day, Month::from($month)->getDaysForYear($year));
+            $day = min($day, Month::from($month)->getDaysForYear($year));
         }
 
         if ($hasMonths) {

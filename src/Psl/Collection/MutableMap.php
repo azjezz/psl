@@ -9,11 +9,13 @@ use Override;
 use Psl\Dict;
 use Psl\Iter;
 
+use function array_chunk;
 use function array_key_exists;
 use function array_key_first;
 use function array_key_last;
 use function array_keys;
-use function array_slice;
+use function array_map;
+use function array_search;
 use function array_values;
 use function count;
 
@@ -162,15 +164,9 @@ final class MutableMap implements MutableMapInterface
     #[Override]
     public function linearSearch(mixed $search_value): int|string|null
     {
-        foreach ($this->elements as $key => $element) {
-            if ($search_value !== $element) {
-                continue;
-            }
+        $key = array_search($search_value, $this->elements, true);
 
-            return $key;
-        }
-
-        return null;
+        return false === $key ? null : $key;
     }
 
     /**
@@ -448,18 +444,17 @@ final class MutableMap implements MutableMapInterface
     public function zip(array $elements): MutableMap
     {
         $elements = array_values($elements);
+        $count = count($elements);
         /** @var array<Tk, array{0: Tv, 1: Tu}> $result */
         $result = [];
-
+        $i = 0;
         foreach ($this->elements as $k => $v) {
-            $u = $elements[0] ?? null;
-            if (null === $u) {
+            if ($i >= $count) {
                 break;
             }
 
-            $elements = array_slice($elements, 1);
-
-            $result[$k] = [$v, $u];
+            $result[$k] = [$v, $elements[$i]];
+            $i++;
         }
 
         return self::fromArray($result);
@@ -595,28 +590,9 @@ final class MutableMap implements MutableMapInterface
     #[Override]
     public function chunk(int $size): MutableVector
     {
-        return $this
-            ->zip($this->keys()->toArray())
-            ->values()
-            ->chunk($size)
-            ->map(
-                /**
-                 * @param MutableVector<array{0: Tv, 1: Tk}> $vector
-                 *
-                 * @return MutableMap<Tk, Tv>
-                 *
-                 * @pure
-                 */
-                static function (MutableVector $vector): MutableMap {
-                    /** @var array<Tk, Tv> $array */
-                    $array = [];
-                    foreach ($vector as [$v, $k]) {
-                        $array[$k] = $v;
-                    }
+        $chunks = array_map(MutableMap::fromArray(...), array_chunk($this->elements, $size, true));
 
-                    return MutableMap::fromArray($array);
-                },
-            );
+        return MutableVector::fromArray($chunks);
     }
 
     /**

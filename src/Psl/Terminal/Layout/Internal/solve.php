@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Psl\Terminal\Layout\Internal;
 
-use Psl\Iter;
 use Psl\Math;
 use Psl\Terminal\Layout\Constraint;
 use Psl\Terminal\Rect;
-use Psl\Vec;
+
+use function array_fill;
+use function array_map;
+use function array_sum;
+use function count;
 
 /**
  * Solve layout constraints along a single axis.
@@ -27,13 +30,13 @@ function solve(Rect $rect, array $constraints, bool $vertical): array
         return [];
     }
 
-    $count = Iter\count($constraints);
+    $count = count($constraints);
     /** @var list<int> $sizes */
-    $sizes = Vec\fill($count, 0);
-    $rawSizes = Vec\map($constraints, static fn(Constraint $constraint): int => resolve_constraint(
+    $sizes = array_fill(0, $count, 0);
+    $rawSizes = array_map(static fn(Constraint $constraint): int => resolve_constraint(
         $constraint,
         $totalSpace,
-    ));
+    ), $constraints);
 
     $fixedTotal = 0;
     $fillCount = 0;
@@ -61,7 +64,7 @@ function solve(Rect $rect, array $constraints, bool $vertical): array
         $sizes[$i] = $size;
     }
 
-    $totalAllocated = Math\sum($sizes);
+    $totalAllocated = (int) array_sum($sizes);
     if ($totalAllocated > $totalSpace) {
         $excess = $totalAllocated - $totalSpace;
         $shrinkableTotal = $totalAllocated;

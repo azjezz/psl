@@ -27,4 +27,12 @@ final class SqrtTest extends TestCase
             [1,                       1],
         ];
     }
+
+    public function testSqrtThrowsForNegativeNumber(): void
+    {
+        $this->expectException(Math\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$number must be a non-negative number.');
+
+        Math\sqrt(-1.0);
+    }
 }

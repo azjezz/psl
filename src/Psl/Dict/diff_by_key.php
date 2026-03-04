@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl\Dict;
 
 use Psl\Iter;
-use Psl\Vec;
 
 use function array_diff_key;
+use function array_map;
 
 /**
  * Computes the difference of iterables using keys for comparison.
@@ -27,17 +27,5 @@ function diff_by_key(iterable $first, iterable $second, iterable ...$rest): arra
         return [];
     }
 
-    return array_diff_key(
-        from_iterable($first),
-        from_iterable($second),
-        ...Vec\map(
-            $rest,
-            /**
-             * @param iterable<Tk, Tv> $iterable
-             *
-             * @return array<Tk, Tv>
-             */
-            from_iterable(...),
-        ),
-    );
+    return array_diff_key(from_iterable($first), from_iterable($second), ...array_map(from_iterable(...), $rest));
 }

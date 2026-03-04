@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
+use function array_filter;
+use function is_array;
+
 /**
  * Filter out null values from the given iterable.
  *
@@ -20,11 +23,18 @@ namespace Psl\Dict;
  */
 function filter_nulls(iterable $iterable): array
 {
-    return filter(
-        $iterable,
-        /**
-         * @param Tv|null $value
-         */
-        static fn(mixed $value): bool => null !== $value,
-    );
+    if (is_array($iterable)) {
+        return array_filter($iterable, static fn(mixed $value): bool => null !== $value);
+    }
+
+    $result = [];
+    foreach ($iterable as $k => $v) {
+        if (null === $v) {
+            continue;
+        }
+
+        $result[$k] = $v;
+    }
+
+    return $result;
 }

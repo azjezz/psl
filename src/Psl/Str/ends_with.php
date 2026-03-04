@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
+use function str_ends_with;
+
 /**
  * Returns whether the string ends with the given suffix.
  *
@@ -34,6 +36,14 @@ namespace Psl\Str;
  */
 function ends_with(string $string, string $suffix, Encoding $encoding = Encoding::Utf8): bool
 {
+    if ('' === $suffix) {
+        return false;
+    }
+
+    if ($encoding === Encoding::Ascii || $encoding === Encoding::Utf8) {
+        return str_ends_with($string, $suffix);
+    }
+
     if ($suffix === $string) {
         return true;
     }

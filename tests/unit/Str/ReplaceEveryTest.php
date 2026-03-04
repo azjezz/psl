@@ -46,4 +46,13 @@ final class ReplaceEveryTest extends TestCase
             ],
         ];
     }
+
+    public function testReplaceEveryWithNonUtf8Encoding(): void
+    {
+        static::assertSame('Hello, World!', Str\replace_every(
+            'Hello, You!',
+            ['You' => 'World'],
+            Str\Encoding::Iso88591,
+        ));
+    }
 }

@@ -18,4 +18,11 @@ final class FlipTest extends TestCase
 
         static::assertSame(['x' => 'a', 'y' => 'b'], $result);
     }
+
+    public function testFlipWithArray(): void
+    {
+        $result = Dict\flip(['a' => 'x', 'b' => 'y']);
+
+        static::assertSame(['x' => 'a', 'y' => 'b'], $result);
+    }
 }

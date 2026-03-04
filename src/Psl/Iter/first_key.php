@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use function array_key_first;
+use function is_array;
+
 /**
  * Returns the first key of an iterable, if the iterable is empty, null will be returned.
  *
@@ -18,6 +21,10 @@ namespace Psl\Iter;
  */
 function first_key(iterable $iterable): mixed
 {
+    if (is_array($iterable)) {
+        return array_key_first($iterable);
+    }
+
     foreach ($iterable as $k => $_) {
         return $k;
     }

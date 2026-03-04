@@ -18,14 +18,9 @@ namespace Psl\Math;
  */
 function min(array $numbers): null|float|int
 {
-    $min = null;
-    foreach ($numbers as $number) {
-        if (!(null === $min || $number < $min)) {
-            continue;
-        }
-
-        $min = $number;
+    if ([] === $numbers) {
+        return null;
     }
 
-    return $min;
+    return \min($numbers);
 }

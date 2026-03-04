@@ -8,6 +8,10 @@ use Psl\DateTime;
 use Psl\DateTime\Exception;
 use Psl\Str;
 
+use function str_contains;
+use function str_starts_with;
+use function substr;
+
 /**
  * Parses an ISO 8601 date-based period string and returns its parts.
  *
@@ -22,8 +26,8 @@ use Psl\Str;
 function parse_iso8601_period(string $value): array
 {
     // Handle optional leading negative sign
-    $negative = Str\starts_with($value, '-');
-    $input = $negative ? Str\slice($value, 1) : $value;
+    $negative = str_starts_with($value, '-');
+    $input = $negative ? substr($value, 1) : $value;
 
     // Weeks format: P(\d+)W
     /** @var array<int, string> $matches */
@@ -39,7 +43,7 @@ function parse_iso8601_period(string $value): array
     $matches = [];
     if (1 !== preg_match('/^P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)D)?$/', $input, $matches)) {
         // Check for time component to give a better error message
-        if (Str\contains($input, 'T')) {
+        if (str_contains($input, 'T')) {
             throw new Exception\ParserException(Str\format(
                 'ISO 8601 period "%s" contains time components; use Duration::fromIso8601() instead.',
                 $value,

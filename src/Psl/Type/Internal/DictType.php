@@ -10,6 +10,7 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 use Throwable;
 
+use function array_all;
 use function is_array;
 use function is_iterable;
 
@@ -33,6 +34,19 @@ final readonly class DictType extends Type\Type
         private readonly Type\TypeInterface $key_type,
         private readonly Type\TypeInterface $value_type,
     ) {}
+
+    /**
+     * @psalm-assert-if-true array<Tk, Tv> $value
+     */
+    #[Override]
+    public function matches(mixed $value): bool
+    {
+        if (!is_array($value)) {
+            return false;
+        }
+
+        return array_all($value, fn($v, $k) => $this->key_type->matches($k) && $this->value_type->matches($v));
+    }
 
     /**
      * @throws CoercionException

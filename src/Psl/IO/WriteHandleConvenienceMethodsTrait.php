@@ -45,25 +45,23 @@ trait WriteHandleConvenienceMethodsTrait
                 $bytes = substr($bytes, $written);
             } while (0 !== $written && '' !== $bytes);
         } else {
-            /**
-             * @var Psl\Ref<int> $written_ref
-             */
-            $written_ref = new Psl\Ref(0);
+            /** @var int $written */
+            $written = 0;
 
-            $timer = new Psl\Async\OptionalIncrementalTimeout($timeout, static function () use ($written_ref): void {
+            $timer = new Psl\Async\OptionalIncrementalTimeout($timeout, static function () use (&$written): void {
                 // @codeCoverageIgnoreStart
                 throw new Exception\TimeoutException(Str\format(
                     'Reached timeout before %s data could be written.',
-                    0 === $written_ref->value ? 'any' : 'all',
+                    0 === $written ? 'any' : 'all',
                 ));
                 // @codeCoverageIgnoreEnd
             });
 
             do {
-                $written_ref->value = $this->write($bytes, $timer->getRemaining());
+                $written = $this->write($bytes, $timer->getRemaining());
 
-                $bytes = substr($bytes, $written_ref->value);
-            } while (0 !== $written_ref->value && '' !== $bytes);
+                $bytes = substr($bytes, $written);
+            } while (0 !== $written && '' !== $bytes);
         }
 
         if ('' !== $bytes) {

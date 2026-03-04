@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\Vec;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Psl\Iter;
 use Psl\Vec;
 
 final class ConcatTest extends TestCase
@@ -43,5 +44,12 @@ final class ConcatTest extends TestCase
                 [1, 2, 3],
             ],
         ];
+    }
+
+    public function testConcatWithNonArrayIterable(): void
+    {
+        $iterator = Iter\Iterator::create(['x' => 'a', 'y' => 'b']);
+
+        static::assertSame(['c', 'a', 'b'], Vec\concat(['c'], $iterator));
     }
 }

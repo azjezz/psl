@@ -8,6 +8,7 @@ use Closure;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Dict;
+use Psl\Iter;
 use Psl\Str;
 
 final class SortByKeyTest extends TestCase
@@ -32,5 +33,12 @@ final class SortByKeyTest extends TestCase
                 static fn(string $a, string $b): int => Str\ord($a) > Str\ord($b) ? -1 : 1,
             ],
         ];
+    }
+
+    public function testSortByKeyWithNonArrayIterable(): void
+    {
+        $iterator = Iter\Iterator::create(['c' => 3, 'a' => 1, 'b' => 2]);
+
+        static::assertSame(['a' => 1, 'b' => 2, 'c' => 3], Dict\sort_by_key($iterator));
     }
 }

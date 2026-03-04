@@ -9,6 +9,7 @@ use Psl\Process;
 use Psl\Str;
 
 use function pack;
+use function strlen;
 
 /**
  * Execute an external program.
@@ -74,11 +75,11 @@ function execute(
     if (ErrorOutputBehavior::Packed === $error_output_behavior) {
         $result = '';
         if ('' !== $output->stdout) {
-            $result .= pack('C1N1', 1, Str\Byte\length($output->stdout)) . $output->stdout;
+            $result .= pack('C1N1', 1, strlen($output->stdout)) . $output->stdout;
         }
 
         if ('' !== $output->stderr) {
-            $result .= pack('C1N1', 2, Str\Byte\length($output->stderr)) . $output->stderr;
+            $result .= pack('C1N1', 2, strlen($output->stderr)) . $output->stderr;
         }
 
         return $result;

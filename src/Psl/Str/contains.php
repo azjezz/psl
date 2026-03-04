@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
+use function str_contains;
+
 /**
  * Returns whether the 'haystack' string contains the 'needle' string.
  *
@@ -40,6 +42,10 @@ function contains(string $haystack, string $needle, int $offset = 0, Encoding $e
 {
     if ('' === $needle) {
         return Internal\validate_offset($offset, length($haystack, $encoding), true);
+    }
+
+    if (0 === $offset && ($encoding === Encoding::Ascii || $encoding === Encoding::Utf8)) {
+        return str_contains($haystack, $needle);
     }
 
     return null !== search($haystack, $needle, $offset, $encoding);

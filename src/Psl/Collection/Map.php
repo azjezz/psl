@@ -9,11 +9,13 @@ use Override;
 use Psl\Dict;
 use Psl\Iter;
 
+use function array_chunk;
 use function array_key_exists;
 use function array_key_first;
 use function array_key_last;
 use function array_keys;
-use function array_slice;
+use function array_map;
+use function array_search;
 use function array_values;
 use function count;
 
@@ -162,15 +164,9 @@ final readonly class Map implements MapInterface
     #[Override]
     public function linearSearch(mixed $search_value): int|string|null
     {
-        foreach ($this->elements as $key => $element) {
-            if ($search_value !== $element) {
-                continue;
-            }
+        $key = array_search($search_value, $this->elements, true);
 
-            return $key;
-        }
-
-        return null;
+        return false === $key ? null : $key;
     }
 
     /**
@@ -446,17 +442,17 @@ final readonly class Map implements MapInterface
     public function zip(array $elements): Map
     {
         $elements = array_values($elements);
+        $count = count($elements);
         /** @var array<Tk, array{0: Tv, 1: Tu}> $result */
         $result = [];
+        $i = 0;
         foreach ($this->elements as $k => $v) {
-            $u = $elements[0] ?? null;
-            if (null === $u) {
+            if ($i >= $count) {
                 break;
             }
 
-            $elements = array_slice($elements, 1);
-
-            $result[$k] = [$v, $u];
+            $result[$k] = [$v, $elements[$i]];
+            $i++;
         }
 
         return new Map($result);
@@ -590,27 +586,8 @@ final readonly class Map implements MapInterface
     #[Override]
     public function chunk(int $size): Vector
     {
-        return $this
-            ->zip($this->keys()->toArray())
-            ->values()
-            ->chunk($size)
-            ->map(
-                /**
-                 * @param Vector<array{0: Tv, 1: Tk}> $vector
-                 *
-                 * @return Map<Tk, Tv>
-                 *
-                 * @pure
-                 */
-                static function (Vector $vector): Map {
-                    /** @var array<Tk, Tv> $array */
-                    $array = [];
-                    foreach ($vector->toArray() as [$v, $k]) {
-                        $array[$k] = $v;
-                    }
+        $chunks = array_map(static fn(array $chunk): Map => new Map($chunk), array_chunk($this->elements, $size, true));
 
-                    return Map::fromArray($array);
-                },
-            );
+        return Vector::fromArray($chunks);
     }
 }

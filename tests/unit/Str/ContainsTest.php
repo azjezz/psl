@@ -28,4 +28,10 @@ final class ContainsTest extends TestCase
             [true,  'مرحبا بكم',    'بكم',   5],
         ];
     }
+
+    public function testContainsWithNonUtf8Encoding(): void
+    {
+        static::assertTrue(Str\contains('Hello, World', 'World', 0, Str\Encoding::Iso88591));
+        static::assertFalse(Str\contains('Hello, World', 'world', 0, Str\Encoding::Iso88591));
+    }
 }

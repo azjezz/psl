@@ -13,6 +13,7 @@ use Psl\Vec;
 use function array_key_exists;
 use function array_key_last;
 use function array_keys;
+use function array_search;
 use function array_values;
 use function count;
 use function iterator_to_array;
@@ -38,9 +39,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function __construct(array $elements)
     {
-        foreach ($elements as $element) {
-            $this->elements[] = $element;
-        }
+        $this->elements = array_values($elements);
     }
 
     /**
@@ -287,15 +286,9 @@ final class MutableVector implements MutableVectorInterface
     #[Override]
     public function linearSearch(mixed $search_value): null|int
     {
-        foreach ($this->elements as $key => $element) {
-            if ($search_value !== $element) {
-                continue;
-            }
+        $key = array_search($search_value, $this->elements, true);
 
-            return $key;
-        }
-
-        return null;
+        return false === $key ? null : $key;
     }
 
     /**

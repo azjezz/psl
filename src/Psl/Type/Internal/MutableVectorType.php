@@ -34,6 +34,26 @@ final readonly class MutableVectorType extends Type\Type
     ) {}
 
     /**
+     * @psalm-assert-if-true Collection\MutableVectorInterface<T> $value
+     */
+    #[Override]
+    public function matches(mixed $value): bool
+    {
+        if (!is_object($value) || !$value instanceof Collection\MutableVectorInterface) {
+            return false;
+        }
+
+        // @mago-expect analysis:mixed-assignment
+        foreach ($value as $v) {
+            if (!$this->value_type->matches($v)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * @throws CoercionException
      *
      * @return Collection\MutableVectorInterface<T>

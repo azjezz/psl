@@ -25,4 +25,19 @@ final class ReplaceTest extends TestCase
             ['foo',           'foo',         'bar', 'baz'],
         ];
     }
+
+    public function testReplaceWithEmptyNeedle(): void
+    {
+        static::assertSame('Hello', Str\replace('Hello', '', 'World'));
+    }
+
+    public function testReplaceWithNonUtf8Encoding(): void
+    {
+        static::assertSame('Hello, World!', Str\replace('Hello, You!', 'You', 'World', Str\Encoding::Iso88591));
+    }
+
+    public function testReplaceWithNonUtf8EncodingNoMatch(): void
+    {
+        static::assertSame('Hello', Str\replace('Hello', 'xyz', 'World', Str\Encoding::Iso88591));
+    }
 }

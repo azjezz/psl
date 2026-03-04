@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Terminal\Internal;
 
-use Psl\Iter;
-use Psl\Str;
 use Psl\Terminal\Event;
+
+use function count;
+use function explode;
 
 /**
  * Parses SGR mouse protocol parameters into Mouse events.
@@ -19,8 +20,8 @@ final class SgrMouseParser
 
     public static function parse(string $params, bool $isRelease): null|Event\Mouse
     {
-        $parts = Str\Byte\split($params, ';');
-        if (Iter\count($parts) !== 3) {
+        $parts = explode(';', $params);
+        if (count($parts) !== 3) {
             return null;
         }
 

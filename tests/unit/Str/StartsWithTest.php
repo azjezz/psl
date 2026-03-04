@@ -37,4 +37,10 @@ final class StartsWithTest extends TestCase
             [true,  'fôo',          'fô'],
         ];
     }
+
+    public function testStartsWithNonUtf8Encoding(): void
+    {
+        static::assertTrue(Str\starts_with('Hello, World', 'Hello', Str\Encoding::Iso88591));
+        static::assertFalse(Str\starts_with('Hello, World', 'world', Str\Encoding::Iso88591));
+    }
 }

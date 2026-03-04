@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
-use Psl\Iter;
-use Psl\Math;
+use function count;
+use function min;
 
 /**
  * Returns a list where each element is a pair that combines, pairwise,
@@ -37,11 +37,10 @@ use Psl\Math;
 function zip(iterable $first, iterable $second): array
 {
     $one = namespace\values($first);
-
     $two = namespace\values($second);
 
     $result = [];
-    $lesser_count = Math\minva(Iter\count($one), Iter\count($two));
+    $lesser_count = min(count($one), count($two));
     for ($i = 0; $i < $lesser_count; ++$i) {
         $result[] = [$one[$i], $two[$i]];
     }

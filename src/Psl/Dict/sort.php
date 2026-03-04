@@ -7,6 +7,7 @@ namespace Psl\Dict;
 use Closure;
 
 use function asort;
+use function is_array;
 use function uasort;
 
 /**
@@ -25,9 +26,13 @@ use function uasort;
  */
 function sort(iterable $iterable, null|Closure $comparator = null): array
 {
-    $array = [];
-    foreach ($iterable as $k => $v) {
-        $array[$k] = $v;
+    if (is_array($iterable)) {
+        $array = $iterable;
+    } else {
+        $array = [];
+        foreach ($iterable as $k => $v) {
+            $array[$k] = $v;
+        }
     }
 
     if (null !== $comparator) {

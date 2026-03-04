@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
+use function array_slice;
+use function array_values;
+use function is_array;
+
 /**
  * Takes a slice from an iterable.
  *
@@ -25,6 +29,10 @@ namespace Psl\Vec;
  */
 function slice(iterable $iterable, int $start, null|int $length = null): array
 {
+    if (is_array($iterable)) {
+        return array_values(array_slice($iterable, $start, $length));
+    }
+
     $result = [];
     if (0 === $length) {
         return $result;

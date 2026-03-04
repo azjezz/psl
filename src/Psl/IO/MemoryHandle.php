@@ -6,11 +6,12 @@ namespace Psl\IO;
 
 use Override;
 use Psl\DateTime\Duration;
-use Psl\Math;
 
 use function str_repeat;
 use function strlen;
 use function substr;
+
+use const PHP_INT_MAX;
 
 final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, SeekHandleInterface, CloseHandleInterface
 {
@@ -59,7 +60,7 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
         $this->assertHandleIsOpen();
 
         if (null === $max_bytes) {
-            $max_bytes = Math\INT64_MAX;
+            $max_bytes = PHP_INT_MAX;
         }
 
         $length = strlen($this->buffer);
@@ -132,16 +133,23 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
     {
         $this->assertHandleIsOpen();
         $length = strlen($this->buffer);
-        if ($length < $this->offset) {
-            $this->buffer .= str_repeat("\0", $this->offset - $length);
-            $length = $this->offset;
+        $bytes_length = strlen($bytes);
+
+        if ($this->offset >= $length) {
+            // Fast-path: appending at or past end of buffer
+            if ($this->offset > $length) {
+                $this->buffer .= str_repeat("\0", $this->offset - $length);
+            }
+
+            $this->buffer .= $bytes;
+            $this->offset += $bytes_length;
+            return $bytes_length;
         }
 
-        $bytes_length = strlen($bytes);
+        // Overwrite in the middle of the buffer
         $new = substr($this->buffer, 0, $this->offset) . $bytes;
-        if ($this->offset < $length) {
-            $offset = $this->offset + $bytes_length;
-            $offset = $offset > $length ? $length : $offset;
+        $offset = $this->offset + $bytes_length;
+        if ($offset < $length) {
             $new .= substr($this->buffer, $offset);
         }
 
