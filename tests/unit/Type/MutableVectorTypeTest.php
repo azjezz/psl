@@ -202,4 +202,12 @@ final class MutableVectorTypeTest extends TypeTestCase
             static::assertSame($expectedMessage, $e->getMessage());
         }
     }
+
+    public function testMatchesReturnsFalseForInvalidElementType(): void
+    {
+        $type = Type\mutable_vector(Type\int());
+        $vector = new Collection\MutableVector(['not an int']);
+
+        static::assertFalse($type->matches($vector));
+    }
 }

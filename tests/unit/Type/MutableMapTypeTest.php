@@ -222,4 +222,20 @@ final class MutableMapTypeTest extends TypeTestCase
             static::assertSame($expectedMessage, $e->getMessage());
         }
     }
+
+    public function testMatchesReturnsFalseForInvalidValueType(): void
+    {
+        $type = Type\mutable_map(Type\int(), Type\int());
+        $map = new Collection\MutableMap([0 => 'not an int']);
+
+        static::assertFalse($type->matches($map));
+    }
+
+    public function testMatchesReturnsFalseForInvalidKeyType(): void
+    {
+        $type = Type\mutable_map(Type\int(), Type\string());
+        $map = new Collection\MutableMap(['not_int' => 'value']);
+
+        static::assertFalse($type->matches($map));
+    }
 }

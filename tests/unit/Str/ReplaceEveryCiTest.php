@@ -49,4 +49,13 @@ final class ReplaceEveryCiTest extends TestCase
             ],
         ];
     }
+
+    public function testReplaceEveryCiWithNonUtf8Encoding(): void
+    {
+        static::assertSame('Hello, World!', Str\replace_every_ci(
+            'Hello, You!',
+            ['you' => 'World'],
+            Str\Encoding::Iso88591,
+        ));
+    }
 }

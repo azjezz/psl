@@ -202,4 +202,12 @@ final class VectorTypeTest extends TypeTestCase
             static::assertSame($expectedMessage, $e->getMessage());
         }
     }
+
+    public function testMatchesReturnsFalseForInvalidElementType(): void
+    {
+        $type = Type\vector(Type\int());
+        $vector = new Collection\Vector(['not an int']);
+
+        static::assertFalse($type->matches($vector));
+    }
 }

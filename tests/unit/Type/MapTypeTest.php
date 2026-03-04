@@ -205,4 +205,20 @@ final class MapTypeTest extends TypeTestCase
             static::assertSame($expectedMessage, $e->getMessage());
         }
     }
+
+    public function testMatchesReturnsFalseForInvalidValueType(): void
+    {
+        $type = Type\map(Type\int(), Type\int());
+        $map = new Collection\Map([0 => 'not an int']);
+
+        static::assertFalse($type->matches($map));
+    }
+
+    public function testMatchesReturnsFalseForInvalidKeyType(): void
+    {
+        $type = Type\map(Type\int(), Type\string());
+        $map = new Collection\Map(['not_int' => 'value']);
+
+        static::assertFalse($type->matches($map));
+    }
 }

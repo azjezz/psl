@@ -352,4 +352,11 @@ final class ShapeTypeTest extends TypeTestCase
             static::assertSame($expectedMessage, $e->getMessage());
         }
     }
+
+    public function testMatchesReturnsFalseForUnknownFields(): void
+    {
+        $type = Type\shape(['name' => Type\string()]);
+
+        static::assertFalse($type->matches(['name' => 'saif', 'extra' => 123]));
+    }
 }
