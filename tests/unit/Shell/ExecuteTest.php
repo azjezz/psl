@@ -181,9 +181,9 @@ final class ExecuteTest extends TestCase
             $elapsed = DateTime\Timestamp::monotonic()->since($start);
 
             static::assertLessThan(
-                1.5,
+                1.0,
                 $elapsed->getTotalSeconds(),
-                'Process was not killed after timeout — proc_close() likely blocked.',
+                'Process was not killed after timeout; proc_close() likely blocked.',
             );
 
             return;

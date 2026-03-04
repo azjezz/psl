@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Binary;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Binary;
 use Psl\Binary\BufferedReaderInterface;
 use Psl\Binary\Endianness;
 use Psl\Binary\Exception;
@@ -85,6 +86,50 @@ final class ReaderTest extends TestCase
         static::assertSame(0x0201, $reader->u16(Endianness::Little));
     }
 
+    public function testU32PerCallEndianness(): void
+    {
+        $reader = new Reader("\x01\x02\x03\x04", Endianness::Big);
+        static::assertSame(0x0403_0201, $reader->u32(Endianness::Little));
+    }
+
+    public function testU64PerCallEndianness(): void
+    {
+        $reader = new Reader("\x01\x02\x03\x04\x05\x06\x07\x08", Endianness::Big);
+        static::assertSame(0x0807_0605_0403_0201, $reader->u64(Endianness::Little));
+    }
+
+    public function testI16PerCallEndianness(): void
+    {
+        $reader = new Reader("\x01\x00", Endianness::Big);
+        static::assertSame(1, $reader->i16(Endianness::Little));
+    }
+
+    public function testI32PerCallEndianness(): void
+    {
+        $reader = new Reader("\x01\x00\x00\x00", Endianness::Big);
+        static::assertSame(1, $reader->i32(Endianness::Little));
+    }
+
+    public function testI64PerCallEndianness(): void
+    {
+        $reader = new Reader("\x01\x00\x00\x00\x00\x00\x00\x00", Endianness::Big);
+        static::assertSame(1, $reader->i64(Endianness::Little));
+    }
+
+    public function testF32PerCallEndianness(): void
+    {
+        $bytes = Binary\encode_f32(1.0, Endianness::Little);
+        $reader = new Reader($bytes, Endianness::Big);
+        static::assertSame(1.0, $reader->f32(Endianness::Little));
+    }
+
+    public function testF64PerCallEndianness(): void
+    {
+        $bytes = Binary\encode_f64(1.0, Endianness::Little);
+        $reader = new Reader($bytes, Endianness::Big);
+        static::assertSame(1.0, $reader->f64(Endianness::Little));
+    }
+
     public function testU32(): void
     {
         $reader = new Reader("\x01\x02\x03\x04", Endianness::Big);
@@ -146,6 +191,7 @@ final class ReaderTest extends TestCase
     {
         $reader = new Reader('');
         $this->expectException(Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Expected at least 1 bytes, got 0.');
         $reader->u8();
     }
 
@@ -153,6 +199,7 @@ final class ReaderTest extends TestCase
     {
         $reader = new Reader("\x00");
         $this->expectException(Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Expected at least 2 bytes, got 1.');
         $reader->u16();
     }
 
@@ -160,6 +207,7 @@ final class ReaderTest extends TestCase
     {
         $reader = new Reader("\x00\x00\x00");
         $this->expectException(Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Expected at least 4 bytes, got 3.');
         $reader->u32();
     }
 
@@ -167,6 +215,7 @@ final class ReaderTest extends TestCase
     {
         $reader = new Reader("\x00\x00\x00\x00\x00\x00\x00");
         $this->expectException(Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Expected at least 8 bytes, got 7.');
         $reader->u64();
     }
 
@@ -174,6 +223,7 @@ final class ReaderTest extends TestCase
     {
         $reader = new Reader('');
         $this->expectException(Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Expected at least 1 bytes, got 0.');
         $reader->i8();
     }
 
@@ -181,6 +231,7 @@ final class ReaderTest extends TestCase
     {
         $reader = new Reader("\x00");
         $this->expectException(Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Expected at least 2 bytes, got 1.');
         $reader->i16();
     }
 
@@ -188,6 +239,7 @@ final class ReaderTest extends TestCase
     {
         $reader = new Reader("\x00\x00\x00");
         $this->expectException(Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Expected at least 4 bytes, got 3.');
         $reader->i32();
     }
 
@@ -195,6 +247,7 @@ final class ReaderTest extends TestCase
     {
         $reader = new Reader("\x00\x00\x00\x00\x00\x00\x00");
         $this->expectException(Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Expected at least 8 bytes, got 7.');
         $reader->i64();
     }
 
@@ -202,6 +255,7 @@ final class ReaderTest extends TestCase
     {
         $reader = new Reader("\x00\x00\x00");
         $this->expectException(Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Expected at least 4 bytes, got 3.');
         $reader->f32();
     }
 
@@ -209,6 +263,7 @@ final class ReaderTest extends TestCase
     {
         $reader = new Reader("\x00\x00\x00\x00\x00\x00\x00");
         $this->expectException(Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Expected at least 8 bytes, got 7.');
         $reader->f64();
     }
 
@@ -216,6 +271,7 @@ final class ReaderTest extends TestCase
     {
         $reader = new Reader("\x00\x00");
         $this->expectException(Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Expected at least 3 bytes, got 2.');
         $reader->bytes(3);
     }
 
@@ -286,6 +342,7 @@ final class ReaderTest extends TestCase
         static::assertTrue($reader->isConsumed());
 
         $this->expectException(Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Expected at least 1 bytes, got 0.');
         $reader->u8();
     }
 
@@ -316,6 +373,7 @@ final class ReaderTest extends TestCase
     {
         $reader = new Reader("\x01\x02");
         $this->expectException(Exception\UnderflowException::class);
+        $this->expectExceptionMessage('Expected at least 5 bytes, got 2.');
         $reader->skip(5);
     }
 

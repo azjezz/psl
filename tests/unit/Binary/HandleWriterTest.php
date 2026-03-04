@@ -51,6 +51,62 @@ final class HandleWriterTest extends TestCase
         static::assertSame("\x02\x01", $handle->getBuffer());
     }
 
+    public function testU32PerCallEndianness(): void
+    {
+        $handle = new MemoryHandle();
+        $writer = new HandleWriter($handle, Endianness::Big);
+        $writer->u32(0x0102_0304, Endianness::Little);
+        static::assertSame("\x04\x03\x02\x01", $handle->getBuffer());
+    }
+
+    public function testU64PerCallEndianness(): void
+    {
+        $handle = new MemoryHandle();
+        $writer = new HandleWriter($handle, Endianness::Big);
+        $writer->u64(0x0102_0304_0506_0708, Endianness::Little);
+        static::assertSame("\x08\x07\x06\x05\x04\x03\x02\x01", $handle->getBuffer());
+    }
+
+    public function testI16PerCallEndianness(): void
+    {
+        $handle = new MemoryHandle();
+        $writer = new HandleWriter($handle, Endianness::Big);
+        $writer->i16(256, Endianness::Little);
+        static::assertSame("\x00\x01", $handle->getBuffer());
+    }
+
+    public function testI32PerCallEndianness(): void
+    {
+        $handle = new MemoryHandle();
+        $writer = new HandleWriter($handle, Endianness::Big);
+        $writer->i32(1, Endianness::Little);
+        static::assertSame("\x01\x00\x00\x00", $handle->getBuffer());
+    }
+
+    public function testI64PerCallEndianness(): void
+    {
+        $handle = new MemoryHandle();
+        $writer = new HandleWriter($handle, Endianness::Big);
+        $writer->i64(1, Endianness::Little);
+        static::assertSame("\x01\x00\x00\x00\x00\x00\x00\x00", $handle->getBuffer());
+    }
+
+    public function testF32PerCallEndianness(): void
+    {
+        $handle = new MemoryHandle();
+        $writer = new HandleWriter($handle, Endianness::Big);
+        $writer->f32(1.0, Endianness::Little);
+        static::assertSame("\x00\x00\x80\x3F", $handle->getBuffer());
+    }
+
+    public function testF64PerCallEndianness(): void
+    {
+        $handle = new MemoryHandle();
+        $writer = new HandleWriter($handle, Endianness::Big);
+        $writer->f64(1.0, Endianness::Little);
+        static::assertSame("\x00\x00\x00\x00\x00\x00\xF0\x3F", $handle->getBuffer());
+    }
+
     public function testU32(): void
     {
         $handle = new MemoryHandle();

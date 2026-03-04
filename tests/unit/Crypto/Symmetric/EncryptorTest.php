@@ -44,6 +44,7 @@ final class EncryptorTest extends TestCase
         $ciphertext = $encryptor->seal('test', 'correct-ad');
 
         $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Decryption failed.');
         $encryptor->open($ciphertext, 'wrong-ad');
     }
 
@@ -55,6 +56,7 @@ final class EncryptorTest extends TestCase
         $ciphertext = $encryptor->seal('test', 'some-ad');
 
         $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Decryption failed.');
         $encryptor->open($ciphertext);
     }
 
@@ -66,6 +68,7 @@ final class EncryptorTest extends TestCase
         $ciphertext = new Symmetric\Encryptor($key1)->seal('test');
 
         $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Decryption failed.');
         new Symmetric\Encryptor($key2)->open($ciphertext);
     }
 
@@ -75,6 +78,7 @@ final class EncryptorTest extends TestCase
         $encryptor = new Symmetric\Encryptor($key);
 
         $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Ciphertext is too short.');
         $encryptor->open('too-short');
     }
 
@@ -89,6 +93,7 @@ final class EncryptorTest extends TestCase
         $tampered[$last] = Byte\chr(Byte\ord($tampered[$last]) ^ 0x01);
 
         $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Decryption failed.');
         $encryptor->open($tampered);
     }
 
@@ -116,6 +121,7 @@ final class EncryptorTest extends TestCase
         $ciphertext = Symmetric\seal('data', $key, 'correct');
 
         $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Decryption failed.');
         Symmetric\open($ciphertext, $key, 'wrong');
     }
 

@@ -167,9 +167,6 @@ final class ConnectTest extends TestCase
                 $listener->close();
             },
             'client' => static function () use ($port): void {
-                // Use TLS\connect with null config — should use ClientConfig::default()
-                // Since this is a self-signed cert, it will fail verification
-                // This test verifies that the function works with explicit config
                 $config = TLS\ClientConfig::default()
                     ->withPeerVerification(false)
                     ->withAllowSelfSigned(true)

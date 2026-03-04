@@ -121,7 +121,6 @@ final class SocketTest extends TestCase
             $this->expectException(Network\Exception\RuntimeException::class);
             $this->expectExceptionMessage('Socket has already been consumed');
 
-            // Should throw — socket already consumed by listen()
             $socket->bind($path);
 
             $listener->close();
@@ -149,7 +148,6 @@ final class SocketTest extends TestCase
                 },
                 'client' => static function () use ($path): void {
                     $socket = Unix\Socket::create();
-                    // Connect with a generous timeout — should succeed
                     $stream = $socket->connect($path, Duration::seconds(5));
 
                     $stream->writeAll('with-timeout');
@@ -179,7 +177,6 @@ final class SocketTest extends TestCase
             $this->expectException(Network\Exception\RuntimeException::class);
             $this->expectExceptionMessage('Socket has already been consumed');
 
-            // Should throw — socket already consumed by connect()
             $socket->connect($path);
         } finally {
             @unlink($path);

@@ -76,6 +76,57 @@ final class WriterTest extends TestCase
         static::assertSame("\x02\x01", $result->toString());
     }
 
+    public function testU32PerCallEndianness(): void
+    {
+        $writer = new Writer(endianness: Endianness::Big);
+        $result = $writer->u32(0x0102_0304, Endianness::Little);
+        static::assertSame("\x04\x03\x02\x01", $result->toString());
+    }
+
+    public function testU64PerCallEndianness(): void
+    {
+        $writer = new Writer(endianness: Endianness::Big);
+        $result = $writer->u64(0x0102_0304_0506_0708, Endianness::Little);
+        static::assertSame("\x08\x07\x06\x05\x04\x03\x02\x01", $result->toString());
+    }
+
+    public function testI16PerCallEndianness(): void
+    {
+        $writer = new Writer(endianness: Endianness::Big);
+        $result = $writer->i16(256, Endianness::Little);
+        static::assertSame("\x00\x01", $result->toString());
+    }
+
+    public function testI32PerCallEndianness(): void
+    {
+        $writer = new Writer(endianness: Endianness::Big);
+        $result = $writer->i32(1, Endianness::Little);
+        static::assertSame("\x01\x00\x00\x00", $result->toString());
+    }
+
+    public function testI64PerCallEndianness(): void
+    {
+        $writer = new Writer(endianness: Endianness::Big);
+        $result = $writer->i64(1, Endianness::Little);
+        static::assertSame("\x01\x00\x00\x00\x00\x00\x00\x00", $result->toString());
+    }
+
+    public function testF32PerCallEndianness(): void
+    {
+        $writer = new Writer(endianness: Endianness::Big);
+        $result = $writer->f32(1.0, Endianness::Little);
+        // IEEE 754: 1.0f = 0x3F800000, little-endian = "\x00\x00\x80\x3F"
+        static::assertSame("\x00\x00\x80\x3F", $result->toString());
+    }
+
+    public function testF64PerCallEndianness(): void
+    {
+        $writer = new Writer(endianness: Endianness::Big);
+        $result = $writer->f64(1.0, Endianness::Little);
+        // IEEE 754: 1.0 = 0x3FF0000000000000, little-endian = "\x00\x00\x00\x00\x00\x00\xF0\x3F"
+        static::assertSame("\x00\x00\x00\x00\x00\x00\xF0\x3F", $result->toString());
+    }
+
     public function testU32(): void
     {
         $writer = new Writer();

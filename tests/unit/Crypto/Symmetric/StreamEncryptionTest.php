@@ -15,6 +15,11 @@ use Psl\Str\Byte;
 use Psl\Tests\Fixture\SocketLikeReadHandle;
 use Psl\Tests\Fixture\TrickleReadHandle;
 
+use function pack;
+use function unpack;
+
+use const SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_HEADERBYTES;
+
 final class StreamEncryptionTest extends TestCase
 {
     public function testEncryptDecryptRoundtrip(): void
@@ -453,5 +458,448 @@ final class StreamEncryptionTest extends TestCase
         $this->expectException(Exception\DecryptionException::class);
         $this->expectExceptionMessage('Stream ended without final tag.');
         $encryptor->copyOpened($handle, new IO\MemoryHandle());
+    }
+
+    public function testExplicitChunkSizeIsUsed(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $plaintext = Str\repeat('A', 500);
+        $source = new IO\MemoryHandle($plaintext);
+        $encrypted = new IO\MemoryHandle();
+
+        $encryptor->copySealed($source, $encrypted, 64);
+
+        $encrypted->seek(0);
+        $decrypted = new IO\MemoryHandle();
+        $encryptor->copyOpened($encrypted, $decrypted);
+
+        $decrypted->seek(0);
+        static::assertSame($plaintext, $decrypted->readAll());
+    }
+
+    public function testCopyOpenedRejectsZeroChunkSize(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $source = new IO\MemoryHandle('test data');
+        $encrypted = new IO\MemoryHandle();
+        $encryptor->copySealed($source, $encrypted);
+
+        $encrypted->seek(0);
+        $raw = $encrypted->readAll();
+        $headerLen = SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_HEADERBYTES;
+        $tampered = Byte\slice($raw, 0, $headerLen) . "\x00\x00\x00\x00" . Byte\slice($raw, $headerLen + 4);
+
+        $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Invalid chunk size in stream header.');
+        $encryptor->copyOpened(new IO\MemoryHandle($tampered), new IO\MemoryHandle());
+    }
+
+    public function testCopyOpenedRejectsOversizedChunk(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $source = new IO\MemoryHandle('test data');
+        $encrypted = new IO\MemoryHandle();
+        $encryptor->copySealed($source, $encrypted);
+
+        $encrypted->seek(0);
+        $raw = $encrypted->readAll();
+        $headerLen = SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_HEADERBYTES;
+        $tampered = Byte\slice($raw, 0, $headerLen) . "\x01\x00\x00\x01" . Byte\slice($raw, $headerLen + 4);
+
+        $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Invalid chunk size in stream header.');
+        $encryptor->copyOpened(new IO\MemoryHandle($tampered), new IO\MemoryHandle());
+    }
+
+    public function testCopyOpenedRejectsChunkSizeAtBoundaryPlusOne(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $source = new IO\MemoryHandle('test');
+        $encrypted = new IO\MemoryHandle();
+        $encryptor->copySealed($source, $encrypted);
+
+        $encrypted->seek(0);
+        $raw = $encrypted->readAll();
+        $headerLen = SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_HEADERBYTES;
+        $chunkBytes = pack('V', (16 * 1024 * 1024) + 1);
+        $tampered = Byte\slice($raw, 0, $headerLen) . $chunkBytes . Byte\slice($raw, $headerLen + 4);
+
+        $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Invalid chunk size in stream header.');
+        $encryptor->copyOpened(new IO\MemoryHandle($tampered), new IO\MemoryHandle());
+    }
+
+    public function testChunkSizeOneIsValid(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $plaintext = 'small';
+        $source = new IO\MemoryHandle($plaintext);
+        $encrypted = new IO\MemoryHandle();
+
+        $encryptor->copySealed($source, $encrypted, 1);
+
+        $encrypted->seek(0);
+        $decrypted = new IO\MemoryHandle();
+        $encryptor->copyOpened($encrypted, $decrypted);
+
+        $decrypted->seek(0);
+        static::assertSame($plaintext, $decrypted->readAll());
+    }
+
+    public function testIsLastConditionWithExactChunkSize(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $plaintext = Str\repeat('B', 64);
+        $source = new IO\MemoryHandle($plaintext);
+        $encrypted = new IO\MemoryHandle();
+
+        $encryptor->copySealed($source, $encrypted, 64);
+
+        $encrypted->seek(0);
+        $decrypted = new IO\MemoryHandle();
+        $encryptor->copyOpened($encrypted, $decrypted);
+
+        $decrypted->seek(0);
+        static::assertSame($plaintext, $decrypted->readAll());
+    }
+
+    public function testIsLastConditionWithDataSmallerThanChunk(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $plaintext = 'hi';
+        $source = new IO\MemoryHandle($plaintext);
+        $encrypted = new IO\MemoryHandle();
+
+        $encryptor->copySealed($source, $encrypted, 8192);
+
+        $encrypted->seek(0);
+        $decrypted = new IO\MemoryHandle();
+        $encryptor->copyOpened($encrypted, $decrypted);
+
+        $decrypted->seek(0);
+        static::assertSame($plaintext, $decrypted->readAll());
+    }
+
+    public function testDefaultChunkSizeIsExactly8192(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $plaintext = 'test default chunk size';
+        $source = new IO\MemoryHandle($plaintext);
+        $encrypted = new IO\MemoryHandle();
+
+        $encryptor->copySealed($source, $encrypted);
+
+        $encrypted->seek(0);
+        $data = $encrypted->readAll();
+
+        $chunkSizeBytes = Byte\slice($data, Symmetric\STREAM_HEADER_BYTES, 4);
+        /** @var int $storedChunkSize */
+        $storedChunkSize = unpack('V', $chunkSizeBytes)[1];
+        static::assertSame(8192, $storedChunkSize);
+    }
+
+    public function testCopySealedBreaksOnEmptyChunk(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $sourceHandle = new class('more data after empty') implements IO\ReadHandleInterface {
+            private IO\MemoryHandle $inner;
+            private bool $firstRead = true;
+
+            public function __construct(string $data)
+            {
+                $this->inner = new IO\MemoryHandle($data);
+            }
+
+            public function reachedEndOfDataSource(): bool
+            {
+                return false;
+            }
+
+            public function tryRead(null|int $max_bytes = null): string
+            {
+                return $this->doRead($max_bytes);
+            }
+
+            public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
+            {
+                return $this->doRead($max_bytes);
+            }
+
+            public function readAll(null|int $max_bytes = null, null|Duration $timeout = null): string
+            {
+                return $this->inner->readAll($max_bytes, $timeout);
+            }
+
+            public function readFixedSize(int $size, null|Duration $timeout = null): string
+            {
+                return $this->inner->readFixedSize($size, $timeout);
+            }
+
+            private function doRead(null|int $max_bytes): string
+            {
+                if ($this->firstRead) {
+                    $this->firstRead = false;
+                    return '';
+                }
+
+                return $this->inner->read($max_bytes);
+            }
+        };
+
+        $encrypted = new IO\MemoryHandle();
+        $encryptor->copySealed($sourceHandle, $encrypted);
+
+        $encrypted->seek(0);
+        $decrypted = new IO\MemoryHandle();
+        $encryptor->copyOpened($encrypted, $decrypted);
+
+        $decrypted->seek(0);
+        static::assertSame('', $decrypted->readAll());
+    }
+
+    public function testIsLastWithShortChunkButNotEof(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $plaintext = 'short';
+        $sourceHandle = new class($plaintext) implements IO\ReadHandleInterface {
+            private IO\MemoryHandle $inner;
+            private int $readCount = 0;
+
+            public function __construct(string $data)
+            {
+                $this->inner = new IO\MemoryHandle($data);
+            }
+
+            public function reachedEndOfDataSource(): bool
+            {
+                return false;
+            }
+
+            public function tryRead(null|int $max_bytes = null): string
+            {
+                return $this->doRead($max_bytes);
+            }
+
+            public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
+            {
+                return $this->doRead($max_bytes);
+            }
+
+            public function readAll(null|int $max_bytes = null, null|Duration $timeout = null): string
+            {
+                return $this->inner->readAll($max_bytes, $timeout);
+            }
+
+            public function readFixedSize(int $size, null|Duration $timeout = null): string
+            {
+                return $this->inner->readFixedSize($size, $timeout);
+            }
+
+            private function doRead(null|int $max_bytes): string
+            {
+                $this->readCount++;
+                if ($this->readCount === 1) {
+                    return $this->inner->read($max_bytes);
+                }
+
+                return '';
+            }
+        };
+
+        $encrypted = new IO\MemoryHandle();
+        $encryptor->copySealed($sourceHandle, $encrypted, 8192);
+
+        $encrypted->seek(0);
+        $data = $encrypted->readAll();
+
+        $pos = Symmetric\STREAM_HEADER_BYTES + 4; // skip header + chunkSize
+        $frameCount = 0;
+        while ($pos < Byte\length($data)) {
+            /** @var int $frameLen */
+            $frameLen = unpack('V', Byte\slice($data, $pos, 4))[1];
+            $pos += 4 + $frameLen;
+            $frameCount++;
+        }
+
+        static::assertSame(1, $frameCount, 'Expected exactly 1 frame (FINAL) for a short chunk with || operator.');
+
+        $decrypted = new IO\MemoryHandle();
+        $encryptor->copyOpened(new IO\MemoryHandle($data), $decrypted);
+
+        $decrypted->seek(0);
+        static::assertSame($plaintext, $decrypted->readAll());
+    }
+
+    public function testMaxChunkBytesIsAccepted(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $plaintext = 'test max chunk';
+        $source = new IO\MemoryHandle($plaintext);
+        $encrypted = new IO\MemoryHandle();
+
+        $encryptor->copySealed($source, $encrypted, Symmetric\MAX_CHUNK_BYTES);
+
+        $encrypted->seek(0);
+        $data = $encrypted->readAll();
+        $chunkSizeBytes = Byte\slice($data, Symmetric\STREAM_HEADER_BYTES, 4);
+        /** @var int $storedChunkSize */
+        $storedChunkSize = unpack('V', $chunkSizeBytes)[1];
+        static::assertSame(Symmetric\MAX_CHUNK_BYTES, $storedChunkSize);
+
+        $decrypted = new IO\MemoryHandle();
+        $encryptor->copyOpened(new IO\MemoryHandle($data), $decrypted);
+
+        $decrypted->seek(0);
+        static::assertSame($plaintext, $decrypted->readAll());
+    }
+
+    public function testCopyOpenedReadsExactly4BytesForFrameHeader(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $plaintext = Str\repeat('D', 100);
+        $source = new IO\MemoryHandle($plaintext);
+        $encrypted = new IO\MemoryHandle();
+        $encryptor->copySealed($source, $encrypted, 32);
+
+        $encrypted->seek(0);
+        $ciphertextBytes = $encrypted->readAll();
+
+        $trackingHandle = new class($ciphertextBytes) implements IO\ReadHandleInterface {
+            private IO\MemoryHandle $inner;
+            /** @var list<int|null> */
+            public array $readArgs = [];
+
+            public function __construct(string $data)
+            {
+                $this->inner = new IO\MemoryHandle($data);
+            }
+
+            public function reachedEndOfDataSource(): bool
+            {
+                return $this->inner->reachedEndOfDataSource();
+            }
+
+            public function tryRead(null|int $max_bytes = null): string
+            {
+                return $this->inner->tryRead($max_bytes);
+            }
+
+            public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
+            {
+                $this->readArgs[] = $max_bytes;
+                return $this->inner->read($max_bytes, $timeout);
+            }
+
+            public function readAll(null|int $max_bytes = null, null|Duration $timeout = null): string
+            {
+                return $this->inner->readAll($max_bytes, $timeout);
+            }
+
+            public function readFixedSize(int $size, null|Duration $timeout = null): string
+            {
+                return $this->inner->readFixedSize($size, $timeout);
+            }
+        };
+
+        $decrypted = new IO\MemoryHandle();
+        $encryptor->copyOpened($trackingHandle, $decrypted);
+
+        $decrypted->seek(0);
+        static::assertSame($plaintext, $decrypted->readAll());
+
+        $readFours = array_filter($trackingHandle->readArgs, static fn($arg) => $arg === 4);
+        static::assertNotEmpty($readFours, 'Expected at least one read(4) call for frame headers.');
+
+        foreach ($trackingHandle->readArgs as $arg) {
+            if ($arg === null || $arg > 4) {
+                continue;
+            }
+
+            static::assertSame(4, $arg, 'Frame header read should request exactly 4 bytes.');
+        }
+    }
+
+    public function testCopyOpenedSkipsRecoveryWhenFull4BytesRead(): void
+    {
+        $key = Symmetric\generate_key();
+        $encryptor = new Symmetric\StreamEncryptor($key);
+
+        $plaintext = 'exactly four bytes test';
+        $source = new IO\MemoryHandle($plaintext);
+        $encrypted = new IO\MemoryHandle();
+        $encryptor->copySealed($source, $encrypted);
+
+        $encrypted->seek(0);
+        $ciphertextBytes = $encrypted->readAll();
+
+        $strictHandle = new class($ciphertextBytes) implements IO\ReadHandleInterface {
+            private IO\MemoryHandle $inner;
+
+            public function __construct(string $data)
+            {
+                $this->inner = new IO\MemoryHandle($data);
+            }
+
+            public function reachedEndOfDataSource(): bool
+            {
+                return $this->inner->reachedEndOfDataSource();
+            }
+
+            public function tryRead(null|int $max_bytes = null): string
+            {
+                return $this->inner->tryRead($max_bytes);
+            }
+
+            public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
+            {
+                return $this->inner->read($max_bytes, $timeout);
+            }
+
+            public function readAll(null|int $max_bytes = null, null|Duration $timeout = null): string
+            {
+                return $this->inner->readAll($max_bytes, $timeout);
+            }
+
+            public function readFixedSize(int $size, null|Duration $timeout = null): string
+            {
+                if ($size === 0) {
+                    throw new IO\Exception\RuntimeException(
+                        'readFixedSize(0) should never be called: the < 4 check should prevent this.',
+                    );
+                }
+
+                return $this->inner->readFixedSize($size, $timeout);
+            }
+        };
+
+        $decrypted = new IO\MemoryHandle();
+        $encryptor->copyOpened($strictHandle, $decrypted);
+
+        $decrypted->seek(0);
+        static::assertSame($plaintext, $decrypted->readAll());
     }
 }

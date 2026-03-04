@@ -662,6 +662,7 @@ final class DurationTest extends TestCase
     public function testFromIso8601EmptyString(): void
     {
         $this->expectException(DateTime\Exception\ParserException::class);
+        $this->expectExceptionMessage('Invalid ISO 8601 duration "".');
 
         DateTime\Duration::fromIso8601('');
     }
@@ -669,6 +670,7 @@ final class DurationTest extends TestCase
     public function testFromIso8601MissingP(): void
     {
         $this->expectException(DateTime\Exception\ParserException::class);
+        $this->expectExceptionMessage('Invalid ISO 8601 duration "T5H".');
 
         DateTime\Duration::fromIso8601('T5H');
     }
@@ -676,6 +678,7 @@ final class DurationTest extends TestCase
     public function testFromIso8601MissingT(): void
     {
         $this->expectException(DateTime\Exception\ParserException::class);
+        $this->expectExceptionMessage('contains date components; use Period::fromIso8601() instead.');
 
         DateTime\Duration::fromIso8601('P5H');
     }
@@ -683,6 +686,7 @@ final class DurationTest extends TestCase
     public function testFromIso8601RejectsDateComponent(): void
     {
         $this->expectException(DateTime\Exception\ParserException::class);
+        $this->expectExceptionMessage('contains date components; use Period::fromIso8601() instead.');
 
         DateTime\Duration::fromIso8601('P1Y');
     }
@@ -690,6 +694,7 @@ final class DurationTest extends TestCase
     public function testFromIso8601InvalidFormat(): void
     {
         $this->expectException(DateTime\Exception\ParserException::class);
+        $this->expectExceptionMessage('Invalid ISO 8601 duration "PTABC".');
 
         DateTime\Duration::fromIso8601('PTABC');
     }
@@ -730,5 +735,27 @@ final class DurationTest extends TestCase
         $period = DateTime\Period::days(1);
 
         static::assertFalse($duration->equals($period));
+    }
+
+    public function testMicrosecondsZeroParamsDefaultToZero(): void
+    {
+        $d = DateTime\Duration::microseconds(1000);
+
+        static::assertSame(0, $d->getHours());
+        static::assertSame(0, $d->getMinutes());
+        static::assertSame(0, $d->getSeconds());
+        static::assertSame(1_000_000, $d->getNanoseconds());
+    }
+
+    public function testGetPartsReturnsExactlyFourElements(): void
+    {
+        $d = DateTime\Duration::fromParts(1, 2, 3, 4);
+        $parts = $d->getParts();
+
+        static::assertCount(4, $parts);
+        static::assertSame(1, $parts[0]);
+        static::assertSame(2, $parts[1]);
+        static::assertSame(3, $parts[2]);
+        static::assertSame(4, $parts[3]);
     }
 }

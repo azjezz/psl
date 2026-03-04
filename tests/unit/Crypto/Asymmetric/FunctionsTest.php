@@ -31,6 +31,7 @@ final class FunctionsTest extends TestCase
         $sealed = Asymmetric\seal('test', $keyPair1->publicKey);
 
         $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Asymmetric decryption failed.');
         Asymmetric\open($sealed, $keyPair2->secretKey, $keyPair2->publicKey);
     }
 
@@ -55,6 +56,7 @@ final class FunctionsTest extends TestCase
         $ciphertext = Asymmetric\encrypt('secret', $alice->secretKey, $bob->publicKey);
 
         $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Authenticated asymmetric decryption failed.');
         Asymmetric\decrypt($ciphertext, $eve->secretKey, $alice->publicKey);
     }
 
@@ -63,6 +65,7 @@ final class FunctionsTest extends TestCase
         $keyPair = Asymmetric\generate_key_pair();
 
         $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Ciphertext is too short.');
         Asymmetric\decrypt('too-short', $keyPair->secretKey, $keyPair->publicKey);
     }
 
@@ -135,6 +138,7 @@ final class FunctionsTest extends TestCase
         $tampered[$last] = Byte\chr(Byte\ord($tampered[$last]) ^ 0x01);
 
         $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Asymmetric decryption failed.');
         Asymmetric\open($tampered, $keyPair->secretKey, $keyPair->publicKey);
     }
 
@@ -149,6 +153,7 @@ final class FunctionsTest extends TestCase
         $tampered[$last] = Byte\chr(Byte\ord($tampered[$last]) ^ 0x01);
 
         $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Authenticated asymmetric decryption failed.');
         Asymmetric\decrypt($tampered, $bob->secretKey, $alice->publicKey);
     }
 
@@ -197,6 +202,7 @@ final class FunctionsTest extends TestCase
         $ciphertext = Asymmetric\encrypt('test', $alice->secretKey, $bob->publicKey);
 
         $this->expectException(Exception\DecryptionException::class);
+        $this->expectExceptionMessage('Authenticated asymmetric decryption failed.');
         Asymmetric\decrypt($ciphertext, $eve->secretKey, $eve->publicKey);
     }
 }

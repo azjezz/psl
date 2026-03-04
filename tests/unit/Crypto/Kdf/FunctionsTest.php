@@ -46,6 +46,7 @@ final class FunctionsTest extends TestCase
         $key = Kdf\generate_key();
 
         $this->expectException(Exception\RuntimeException::class);
+        $this->expectExceptionMessage('KDF context must be exactly 8 bytes.');
         Kdf\derive($key, 1, 'too-long-context');
     }
 
@@ -54,6 +55,7 @@ final class FunctionsTest extends TestCase
         $key = Kdf\generate_key();
 
         $this->expectException(Exception\RuntimeException::class);
+        $this->expectExceptionMessage('KDF context must be exactly 8 bytes.');
         Kdf\derive($key, 1, 'short');
     }
 
