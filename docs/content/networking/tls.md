@@ -32,6 +32,12 @@ Use `Acceptor` to perform TLS handshakes on incoming streams:
 
 @example('networking/tls-lazy-acceptor.php')
 
+### TLS Connection Pooling
+
+`TLS\TCPConnector` implements `TCP\ConnectorInterface`, which means it can be used with `TCP\SocketPool` to enable connection pooling for TLS connections. This avoids repeated TLS handshakes when making multiple requests to the same host:
+
+@example('networking/tls-pool.php')
+
 ## Examples
 
 ### HTTPS Client with ALPN

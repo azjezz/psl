@@ -1155,6 +1155,7 @@ final class Loader
         'Psl\\TLS\\LazyAcceptor' => 'Psl/TLS/LazyAcceptor.php',
         'Psl\\TLS\\ClientHello' => 'Psl/TLS/ClientHello.php',
         'Psl\\TLS\\Version' => 'Psl/TLS/Version.php',
+        'Psl\\TLS\\TCPConnector' => 'Psl/TLS/TCPConnector.php',
         'Psl\\TLS\\StreamInterface' => 'Psl/TLS/StreamInterface.php',
         'Psl\\TLS\\Internal\\Stream' => 'Psl/TLS/Internal/Stream.php',
         'Psl\\TLS\\Internal\\ClientHelloParser' => 'Psl/TLS/Internal/ClientHelloParser.php',

@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.1.0
+
+### features
+
+* feat(tls): introduce `TLS\TCPConnector` for poolable TLS connections
+* feat(tls): `TLS\StreamInterface` now extends `TCP\StreamInterface`, enabling TLS streams to be used with `TCP\SocketPoolInterface`
+
 ## 5.0.0
 
 ### breaking changes
