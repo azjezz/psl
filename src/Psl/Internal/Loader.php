@@ -902,6 +902,7 @@ final class Loader
         'Psl\\Crypto\\StreamEncryptorInterface' => 'Psl/Crypto/StreamEncryptorInterface.php',
         'Psl\\Crypto\\Symmetric\\EncryptorInterface' => 'Psl/Crypto/Symmetric/EncryptorInterface.php',
         'Psl\\Crypto\\Symmetric\\StreamEncryptorInterface' => 'Psl/Crypto/Symmetric/StreamEncryptorInterface.php',
+        'Psl\\IP\\Exception\\ExceptionInterface' => 'Psl/IP/Exception/ExceptionInterface.php',
     ];
 
     /**
@@ -1285,6 +1286,8 @@ final class Loader
         // @mago-expect lint:no-literal-password - false positive, these are not passwords
         'Psl\\Crypto\\KeyExchange\\SharedSecret' => 'Psl/Crypto/KeyExchange/SharedSecret.php',
         'Psl\\Crypto\\Kdf\\Key' => 'Psl/Crypto/Kdf/Key.php',
+        'Psl\\IP\\Address' => 'Psl/IP/Address.php',
+        'Psl\\IP\\Exception\\InvalidArgumentException' => 'Psl/IP/Exception/InvalidArgumentException.php',
     ];
 
     /**
@@ -1331,6 +1334,7 @@ final class Loader
         'Psl\\Terminal\\Widget\\Wrap' => 'Psl/Terminal/Widget/Wrap.php',
         'Psl\\Crypto\\Aead\\Algorithm' => 'Psl/Crypto/Aead/Algorithm.php',
         'Psl\\Crypto\\StreamCipher\\Algorithm' => 'Psl/Crypto/StreamCipher/Algorithm.php',
+        'Psl\\IP\\Family' => 'Psl/IP/Family.php',
     ];
 
     public const int TYPE_CONSTANTS = 1;

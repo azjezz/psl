@@ -7,6 +7,7 @@ namespace Psl\Tests\Unit\CIDR;
 use PHPUnit\Framework\TestCase;
 use Psl\CIDR\Block;
 use Psl\CIDR\Exception\InvalidArgumentException;
+use Psl\IP\Address;
 
 final class BlockTest extends TestCase
 {
@@ -214,6 +215,51 @@ final class BlockTest extends TestCase
         // Addresses with first bit = 0 should NOT be contained
         static::assertFalse($block->contains('::1'));
         static::assertFalse($block->contains('7fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff'));
+    }
+
+    public function testContainsWithAddressObjectV4(): void
+    {
+        $block = new Block('192.168.1.0/24');
+
+        static::assertTrue($block->contains(Address::v4('192.168.1.100')));
+        static::assertTrue($block->contains(Address::v4('192.168.1.0')));
+        static::assertTrue($block->contains(Address::v4('192.168.1.255')));
+        static::assertFalse($block->contains(Address::v4('192.168.2.1')));
+        static::assertFalse($block->contains(Address::v4('10.0.0.1')));
+    }
+
+    public function testContainsWithAddressObjectV6(): void
+    {
+        $block = new Block('2001:db8::/32');
+
+        static::assertTrue($block->contains(Address::v6('2001:db8::1')));
+        static::assertTrue($block->contains(Address::v6('2001:db8:ffff:ffff:ffff:ffff:ffff:ffff')));
+        static::assertFalse($block->contains(Address::v6('2001:db9::1')));
+    }
+
+    public function testContainsWithAddressObjectSingleHost(): void
+    {
+        $block = new Block('10.20.30.40/32');
+
+        static::assertTrue($block->contains(Address::v4('10.20.30.40')));
+        static::assertFalse($block->contains(Address::v4('10.20.30.41')));
+    }
+
+    public function testContainsWithParsedAddress(): void
+    {
+        $block = new Block('192.168.0.0/16');
+
+        static::assertTrue($block->contains(Address::parse('192.168.1.1')));
+        static::assertTrue($block->contains(Address::parse('192.168.255.255')));
+        static::assertFalse($block->contains(Address::parse('192.169.0.1')));
+    }
+
+    public function testContainsWithAddressObjectFromBytes(): void
+    {
+        $block = new Block('192.168.1.0/24');
+        $address = Address::fromBytes("\xc0\xa8\x01\x64"); // 192.168.1.100
+
+        static::assertTrue($block->contains($address));
     }
 
     public function testIpv6Prefix120CorrectMasking(): void

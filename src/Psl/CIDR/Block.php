@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\CIDR;
 
+use Psl\IP\Address;
+
 use function chr;
 use function count;
 use function ctype_digit;
@@ -91,13 +93,17 @@ final readonly class Block
     /**
      * Check whether the given IP address falls within this CIDR block.
      *
-     * @param non-empty-string $ip IPv4 or IPv6 address to check.
+     * @param non-empty-string|Address $ip IPv4 or IPv6 address to check.
      */
-    public function contains(string $ip): bool
+    public function contains(string|Address $ip): bool
     {
-        $ipBytes = inet_pton($ip);
-        if ($ipBytes === false) {
-            return false;
+        if ($ip instanceof Address) {
+            $ipBytes = $ip->toBytes();
+        } else {
+            $ipBytes = inet_pton($ip);
+            if ($ipBytes === false) {
+                return false;
+            }
         }
 
         // Normalize IPv4 to IPv4-mapped IPv6
