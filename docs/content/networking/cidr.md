@@ -8,6 +8,10 @@ IPv4 addresses are internally normalized to IPv4-mapped IPv6 for unified compari
 
 @example('networking/cidr-usage.php')
 
+`Block::contains()` accepts either a string or an `IP\Address` object:
+
+@example('networking/cidr-address.php')
+
 ## Examples
 
 ### IPv4
