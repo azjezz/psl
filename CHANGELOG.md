@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.2.0
+
+### features
+
+* feat: introduce `IP` component with immutable, binary-backed `Address` value object and `Family` enum
+* feat(cidr): `CIDR\Block::contains()` now accepts `string|IP\Address`
+
 ## 5.1.0
 
 ### features
