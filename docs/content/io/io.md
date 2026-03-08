@@ -41,6 +41,12 @@ In non-CLI SAPIs, `input_handle()` reads from `php://input` and `output_handle()
 
 @example('io/io-reader.php')
 
+## Spool
+
+`IO\spool()` creates a handle that writes to memory until a threshold is reached (default 2MB), then transparently spools to a temporary file on disk. This is useful when buffering data of unknown size without risking excessive memory usage.
+
+@example('io/io-spool.php')
+
 ## Pipes
 
 `IO\pipe()` creates a connected pair of handles: anything written to the write end can be read from the read end.
