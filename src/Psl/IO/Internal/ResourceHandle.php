@@ -90,7 +90,7 @@ class ResourceHandle implements
             $this->useSingleRead = 'udp_socket' === $meta['stream_type'] || 'STDIO' === $meta['stream_type'];
         }
 
-        $blocks = $meta['blocked'] || ($meta['wrapper_type'] ?? '') === 'plainfile';
+        $blocks = ($meta['blocked'] ?? true) || ($meta['wrapper_type'] ?? '') === 'plainfile';
         if ($seek) {
             $seekable = $meta['seekable'];
 

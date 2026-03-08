@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.3.0
+
+### features
+
+* feat(io): introduce `IO\spool()` for memory-backed handles that spill to disk
+
 ## 5.2.0
 
 ### features

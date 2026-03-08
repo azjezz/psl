@@ -666,6 +666,7 @@ final class Loader
         'Psl\\IO\\output_handle' => 'Psl/IO/output_handle.php',
         'Psl\\IO\\error_handle' => 'Psl/IO/error_handle.php',
         'Psl\\IO\\pipe' => 'Psl/IO/pipe.php',
+        'Psl\\IO\\spool' => 'Psl/IO/spool.php',
         'Psl\\Class\\exists' => 'Psl/Class/exists.php',
         'Psl\\Class\\defined' => 'Psl/Class/defined.php',
         'Psl\\Class\\has_constant' => 'Psl/Class/has_constant.php',
