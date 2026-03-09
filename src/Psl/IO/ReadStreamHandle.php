@@ -57,7 +57,7 @@ final class ReadStreamHandle implements StreamHandleInterface, ReadHandleInterfa
     }
 
     /**
-     * @return resource|null
+     * @return resource|object|null
      *
      * @inheritDoc
      */

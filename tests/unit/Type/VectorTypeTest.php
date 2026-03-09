@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Collection;
 use Psl\Collection\VectorInterface;
 use Psl\Dict;
@@ -18,14 +20,14 @@ use RuntimeException;
  */
 final class VectorTypeTest extends TypeTestCase
 {
-    #[\Override]
-    public function getType(): Type\TypeInterface
+    #[Override]
+    public static function getType(): Type\TypeInterface
     {
         return Type\vector(Type\int());
     }
 
-    #[\Override]
-    public function getValidCoercions(): iterable
+    #[Override]
+    public static function getValidCoercions(): iterable
     {
         yield [
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -68,8 +70,8 @@ final class VectorTypeTest extends TypeTestCase
         ];
     }
 
-    #[\Override]
-    public function getInvalidCoercions(): iterable
+    #[Override]
+    public static function getInvalidCoercions(): iterable
     {
         yield [1.0];
         yield [1.23];
@@ -80,10 +82,10 @@ final class VectorTypeTest extends TypeTestCase
         yield [STDIN];
     }
 
-    #[\Override]
-    public function getToStringExamples(): iterable
+    #[Override]
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'Psl\Collection\VectorInterface<int>'];
+        yield [static::getType(), 'Psl\Collection\VectorInterface<int>'];
         yield [Type\vector(Type\string()), 'Psl\Collection\VectorInterface<string>'];
         yield [
             Type\vector(Type\instance_of(Iter\Iterator::class)),
@@ -95,8 +97,8 @@ final class VectorTypeTest extends TypeTestCase
      * @param VectorInterface<mixed>|mixed $a
      * @param VectorInterface<mixed>|mixed $b
      */
-    #[\Override]
-    protected function equals(mixed $a, mixed $b): bool
+    #[Override]
+    protected static function equals(mixed $a, mixed $b): bool
     {
         if (Type\instance_of(VectorInterface::class)->matches($a)) {
             $a = $a->toArray();
@@ -173,9 +175,7 @@ final class VectorTypeTest extends TypeTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideAssertExceptionExpectations
-     */
+    #[DataProvider('provideAssertExceptionExpectations')]
     public function testInvalidAssertionTypeExceptions(
         Type\TypeInterface $type,
         mixed $data,
@@ -189,9 +189,7 @@ final class VectorTypeTest extends TypeTestCase
         }
     }
 
-    /**
-     * @dataProvider provideCoerceExceptionExpectations
-     */
+    #[DataProvider('provideCoerceExceptionExpectations')]
     public function testInvalidCoercionTypeExceptions(
         Type\TypeInterface $type,
         mixed $data,
@@ -203,5 +201,13 @@ final class VectorTypeTest extends TypeTestCase
         } catch (Type\Exception\CoercionException $e) {
             static::assertSame($expectedMessage, $e->getMessage());
         }
+    }
+
+    public function testMatchesReturnsFalseForInvalidElementType(): void
+    {
+        $type = Type\vector(Type\int());
+        $vector = new Collection\Vector(['not an int']);
+
+        static::assertFalse($type->matches($vector));
     }
 }

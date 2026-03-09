@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Channel\Internal;
 
+use Override;
 use Psl\Channel\SenderInterface;
 
 /**
@@ -29,7 +30,7 @@ final class UnboundedSender implements SenderInterface
     /**
      * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function send(mixed $message): void
     {
         $this->state->send($message);
@@ -38,7 +39,7 @@ final class UnboundedSender implements SenderInterface
     /**
      * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function trySend(mixed $message): void
     {
         $this->state->send($message);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Math;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
@@ -11,15 +12,13 @@ final class CosTest extends TestCase
 {
     use FloatAsserts;
 
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testCos(float $expected, float $number): void
     {
         static::assertFloatEquals($expected, Math\cos($number));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

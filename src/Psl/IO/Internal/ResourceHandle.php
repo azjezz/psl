@@ -10,7 +10,6 @@ use Psl\Async;
 use Psl\DateTime\Duration;
 use Psl\IO;
 use Psl\IO\Exception;
-use Psl\Type;
 use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
 
@@ -29,14 +28,13 @@ use function stream_get_meta_data;
 use function stream_set_blocking;
 use function stream_set_read_buffer;
 use function stream_set_write_buffer;
+use function strpbrk;
 use function substr;
 
 /**
  * @internal
  *
  * @codeCoverageIgnore
- *
- * @mago-expect lint:no-else-clause
  */
 class ResourceHandle implements
     IO\ReadHandleInterface,
@@ -83,8 +81,7 @@ class ResourceHandle implements
         bool $seek,
         private readonly bool $close,
     ) {
-        // @mago-expect analysis:redundant-type-comparison
-        $this->stream = Type\resource('stream')->assert($stream);
+        $this->stream = $stream;
 
         stream_set_blocking($stream, false);
 
@@ -93,7 +90,7 @@ class ResourceHandle implements
             $this->useSingleRead = 'udp_socket' === $meta['stream_type'] || 'STDIO' === $meta['stream_type'];
         }
 
-        $blocks = $meta['blocked'] || ($meta['wrapper_type'] ?? '') === 'plainfile';
+        $blocks = ($meta['blocked'] ?? true) || ($meta['wrapper_type'] ?? '') === 'plainfile';
         if ($seek) {
             $seekable = $meta['seekable'];
 
@@ -107,7 +104,7 @@ class ResourceHandle implements
 
             stream_set_read_buffer($stream, 0);
 
-            $this->readWatcher = EventLoop::onReadable($this->stream, function (): void {
+            $this->readWatcher = EventLoop::onReadable($stream, function (): void {
                 $this->readSuspension?->resume();
             });
 
@@ -153,18 +150,13 @@ class ResourceHandle implements
         }
 
         if ($write) {
-            $writable =
-                str_contains($meta['mode'], 'x')
-                || str_contains($meta['mode'], 'w')
-                || str_contains($meta['mode'], 'c')
-                || str_contains($meta['mode'], 'a')
-                || str_contains($meta['mode'], '+');
+            $writable = false !== strpbrk($meta['mode'], 'xwca+');
 
             Psl\invariant($writable, 'Handle is not writeable.');
 
             stream_set_write_buffer($stream, 0);
 
-            $this->writeWatcher = EventLoop::onWritable($this->stream, function (): void {
+            $this->writeWatcher = EventLoop::onWritable($stream, function (): void {
                 $this->writeSuspension?->resume();
             });
 
@@ -179,6 +171,24 @@ class ResourceHandle implements
                     $written = $this->tryWrite($bytes);
                     $remaining_bytes = substr($bytes, $written);
                     if ($blocks || '' === $remaining_bytes) {
+                        return $written;
+                    }
+
+                    // Retry while the fd is still making progress before suspending.
+                    // This avoids unnecessary fiber suspension when the fd is ready.
+                    while ('' !== $remaining_bytes) {
+                        $chunk = $this->tryWrite($remaining_bytes);
+                        if ($chunk === 0) {
+                            // fd not ready; must suspend and wait
+                            break;
+                        }
+
+                        $written += $chunk;
+                        $remaining_bytes = substr($remaining_bytes, $chunk);
+                    }
+
+                    /** @var int<0, max> $written */
+                    if ('' === $remaining_bytes) {
                         return $written;
                     }
 
@@ -244,7 +254,7 @@ class ResourceHandle implements
             throw new Exception\RuntimeException($error['message'] ?? 'unknown error.');
         }
 
-        return max($result, 0);
+        return $result;
     }
 
     /**
@@ -282,7 +292,7 @@ class ResourceHandle implements
             throw new Exception\RuntimeException($error['message'] ?? 'unknown error.');
         }
 
-        return max($result, 0);
+        return $result;
     }
 
     /**
@@ -392,7 +402,7 @@ class ResourceHandle implements
     }
 
     /**
-     * @return resource|null
+     * @return resource|object|null
      *
      * @inheritDoc
      */

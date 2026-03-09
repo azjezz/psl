@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Vec;
 
 use function array_unique;
+use function array_values;
 use function is_array;
 
 /**
@@ -20,7 +21,7 @@ use function is_array;
 function unique_scalar(iterable $iterable): array
 {
     if (is_array($iterable)) {
-        return namespace\values(array_unique($iterable));
+        return array_values(array_unique($iterable));
     }
 
     return unique_by(

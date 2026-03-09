@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\DateTime;
 
+use DateTimeImmutable;
+use DateTimeZone;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
 use Psl\Comparison\Order;
 use Psl\DateTime\DateTime;
 use Psl\DateTime\Duration;
+use Psl\DateTime\Exception\InvalidArgumentException;
 use Psl\DateTime\Exception\OverflowException;
 use Psl\DateTime\Exception\ParserException;
 use Psl\DateTime\Exception\UnderflowException;
 use Psl\DateTime\FormatPattern;
+use Psl\DateTime\Period;
 use Psl\DateTime\SecondsStyle;
 use Psl\DateTime\Timestamp;
 use Psl\DateTime\Timezone;
@@ -151,7 +156,7 @@ final class TimestampTest extends TestCase
         Timestamp::parse('x');
     }
 
-    public function provideFormatParsingData(): iterable
+    public static function provideFormatParsingData(): iterable
     {
         yield [
             1_711_917_897,
@@ -205,9 +210,7 @@ final class TimestampTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideFormatParsingData
-     */
+    #[DataProvider('provideFormatParsingData')]
     public function testFormattingAndPatternParsing(
         int $timestamp,
         string|FormatPattern $pattern,
@@ -252,9 +255,7 @@ final class TimestampTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideCompare
-     */
+    #[DataProvider('provideCompare')]
     public function testCompare(Timestamp $a, Timestamp $b, Order $expected): void
     {
         $opposite = Order::from(-$expected->value);
@@ -469,8 +470,139 @@ final class TimestampTest extends TestCase
     {
         $timestamp = Timestamp::fromParts(1_711_917_232, 12);
 
-        static::assertSame('2024-03-31T20:33:52.12+00:00', $timestamp->toRfc3339());
+        static::assertSame('2024-03-31T20:33:52.000000012+00:00', $timestamp->toRfc3339());
         static::assertSame('2024-03-31T20:33:52+00:00', $timestamp->toRfc3339(seconds_style: SecondsStyle::Seconds));
-        static::assertSame('2024-03-31T20:33:52.12Z', $timestamp->toRfc3339(use_z: true));
+        static::assertSame('2024-03-31T20:33:52.000000012Z', $timestamp->toRfc3339(use_z: true));
+    }
+
+    public function testFromStdlib(): void
+    {
+        $stdlib = new DateTimeImmutable('2024-03-31 20:33:52.123456', new DateTimeZone('UTC'));
+
+        $timestamp = Timestamp::fromStdlib($stdlib);
+
+        static::assertSame($stdlib->getTimestamp(), $timestamp->getSeconds());
+        static::assertSame(123_456_000, $timestamp->getNanoseconds());
+    }
+
+    public function testFromStdlibMicrosecondCast(): void
+    {
+        // Test with a specific microsecond value
+        $stdlib = new DateTimeImmutable('2024-06-15 14:30:45.000001', new DateTimeZone('UTC'));
+
+        $timestamp = Timestamp::fromStdlib($stdlib);
+
+        // 1 microsecond = 1000 nanoseconds
+        static::assertSame(1_000, $timestamp->getNanoseconds());
+    }
+
+    public function testFromStdlibZeroMicroseconds(): void
+    {
+        $stdlib = new DateTimeImmutable('2024-06-15 14:30:45.000000', new DateTimeZone('UTC'));
+
+        $timestamp = Timestamp::fromStdlib($stdlib);
+
+        static::assertSame(0, $timestamp->getNanoseconds());
+    }
+
+    public function testFromMilliseconds(): void
+    {
+        $ts = Timestamp::fromMilliseconds(1_711_917_232_123);
+
+        static::assertSame(1_711_917_232, $ts->getSeconds());
+        static::assertSame(123_000_000, $ts->getNanoseconds());
+    }
+
+    public function testFromMillisecondsZero(): void
+    {
+        $ts = Timestamp::fromMilliseconds(0);
+
+        static::assertSame(0, $ts->getSeconds());
+        static::assertSame(0, $ts->getNanoseconds());
+    }
+
+    public function testFromMillisecondsNegative(): void
+    {
+        $ts = Timestamp::fromMilliseconds(-1500);
+
+        static::assertSame(-2, $ts->getSeconds());
+        static::assertSame(500_000_000, $ts->getNanoseconds());
+    }
+
+    public function testFromMicroseconds(): void
+    {
+        $ts = Timestamp::fromMicroseconds(1_711_917_232_123_456);
+
+        static::assertSame(1_711_917_232, $ts->getSeconds());
+        static::assertSame(123_456_000, $ts->getNanoseconds());
+    }
+
+    public function testFromMicrosecondsZero(): void
+    {
+        $ts = Timestamp::fromMicroseconds(0);
+
+        static::assertSame(0, $ts->getSeconds());
+        static::assertSame(0, $ts->getNanoseconds());
+    }
+
+    public function testFromMicrosecondsNegative(): void
+    {
+        $ts = Timestamp::fromMicroseconds(-2_500_000);
+
+        static::assertSame(-3, $ts->getSeconds());
+        static::assertSame(500_000_000, $ts->getNanoseconds());
+    }
+
+    public function testPlusPeriodThrows(): void
+    {
+        $ts = Timestamp::fromParts(1000);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Timestamp only supports Duration');
+
+        $ts->plus(Period::months(1));
+    }
+
+    public function testMinusPeriodThrows(): void
+    {
+        $ts = Timestamp::fromParts(1000);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Timestamp only supports Duration');
+
+        $ts->minus(Period::months(1));
+    }
+
+    public function testToPartsReturnsExactlyTwoElements(): void
+    {
+        $ts = Timestamp::fromParts(42, 123);
+        $parts = $ts->toParts();
+
+        static::assertCount(2, $parts);
+        static::assertSame(42, $parts[0]);
+        static::assertSame(123, $parts[1]);
+    }
+
+    public function testSinceWithKnownTimestamps(): void
+    {
+        $a = Timestamp::fromParts(100, 500_000_000);
+        $b = Timestamp::fromParts(50, 200_000_000);
+
+        $duration = $a->since($b);
+
+        static::assertSame(0, $duration->getHours());
+        static::assertSame(0, $duration->getMinutes());
+        static::assertSame(50, $duration->getSeconds());
+        static::assertSame(300_000_000, $duration->getNanoseconds());
+    }
+
+    public function testSinceSubtractsNotAdds(): void
+    {
+        $a = Timestamp::fromParts(200, 0);
+        $b = Timestamp::fromParts(50, 0);
+
+        $duration = $a->since($b);
+
+        static::assertSame(150, (int) $duration->getTotalSeconds());
     }
 }

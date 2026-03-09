@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Collection;
 use Psl\Dict;
 use Psl\Str;
@@ -32,16 +33,36 @@ final readonly class MutableMapType extends Type\Type
      * @param Type\TypeInterface<Tv> $value_type
      */
     public function __construct(
-        private readonly Type\TypeInterface $key_type,
-        private readonly Type\TypeInterface $value_type,
+        private Type\TypeInterface $key_type,
+        private Type\TypeInterface $value_type,
     ) {}
+
+    /**
+     * @psalm-assert-if-true Collection\MutableMapInterface<Tk, Tv> $value
+     */
+    #[Override]
+    public function matches(mixed $value): bool
+    {
+        if (!is_object($value) || !$value instanceof Collection\MutableMapInterface) {
+            return false;
+        }
+
+        // @mago-expect analysis:mixed-assignment
+        foreach ($value as $k => $v) {
+            if (!$this->key_type->matches($k) || !$this->value_type->matches($v)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     /**
      * @throws CoercionException
      *
      * @return Collection\MutableMapInterface<Tk, Tv>
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): Collection\MutableMapInterface
     {
         if (is_iterable($value)) {
@@ -108,7 +129,7 @@ final readonly class MutableMapType extends Type\Type
      *
      * @psalm-assert Collection\MutableMapInterface<Tk, Tv> $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): Collection\MutableMapInterface
     {
         if (is_object($value) && $value instanceof Collection\MutableMapInterface) {
@@ -153,7 +174,7 @@ final readonly class MutableMapType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return Str\format(

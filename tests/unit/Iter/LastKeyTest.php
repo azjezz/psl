@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Iter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 use Psl\Vec;
 
 final class LastKeyTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testLastKey(null|int|array $expected, iterable $iterable): void
     {
         $result = Iter\last_key($iterable);
@@ -20,7 +19,7 @@ final class LastKeyTest extends TestCase
         static::assertSame($expected, $result);
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [3, [1, 2, 3, 4]];
         yield [3, Iter\to_iterator([1, 2, 3, 4])];

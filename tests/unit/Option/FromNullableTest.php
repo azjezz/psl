@@ -20,9 +20,11 @@ final class FromNullableTest extends TestCase
         static::assertTrue(Option\from_nullable([])->isSome());
         static::assertTrue(Option\from_nullable(new stdClass())->isSome());
         static::assertTrue(Option\from_nullable(static fn(): string => '')->isSome());
-        static::assertTrue(Option\from_nullable(static function (): iterable {
-            yield 'hello';
-        })->isSome());
+        static::assertTrue(
+            Option\from_nullable(static function (): iterable {
+                yield 'hello';
+            })->isSome(),
+        );
     }
 
     public function testIsNone(): void

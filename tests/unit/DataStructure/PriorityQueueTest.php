@@ -112,4 +112,15 @@ final class PriorityQueueTest extends TestCase
 
         $queue->dequeue();
     }
+
+    public function testPeekOnEmptyQueueReturnsNullExplicitly(): void
+    {
+        $queue = DataStructure\PriorityQueue::default();
+
+        $result = $queue->peek();
+
+        static::assertNull($result);
+        static::assertNull($result);
+        static::assertCount(0, $queue);
+    }
 }

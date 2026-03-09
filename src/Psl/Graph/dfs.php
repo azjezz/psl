@@ -6,6 +6,7 @@ namespace Psl\Graph;
 
 use Psl\DataStructure\Stack;
 
+use function count;
 use function Psl\Graph\Internal\get_node_key;
 
 /**
@@ -60,11 +61,9 @@ function dfs(DirectedGraph|UndirectedGraph $graph, mixed $start): array
         // Push neighbors in reverse order to maintain left-to-right traversal
         $neighborsList = neighbors($graph, $node);
         for ($i = count($neighborsList) - 1; $i >= 0; $i--) {
-            // @mago-expect analysis:mismatched-array-index - we know that $i is always an int within bounds
-            $neighbor = $neighborsList[$i];
-            $neighborKey = get_node_key($neighbor);
+            $neighborKey = get_node_key($neighborsList[$i]);
             if (!isset($visited[$neighborKey])) {
-                $stack->push($neighbor);
+                $stack->push($neighborsList[$i]);
             }
         }
     }

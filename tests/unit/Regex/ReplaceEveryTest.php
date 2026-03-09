@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Regex;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Regex;
 
 final class ReplaceEveryTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testReplaceEvery(string $expected, string $subject, array $replacements): void
     {
         static::assertSame($expected, Regex\replace_every($subject, $replacements));
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [
             'April1,2003',

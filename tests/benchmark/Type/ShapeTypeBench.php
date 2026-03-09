@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Benchmark\Type;
 
 use ArrayIterator;
+use Override;
 use PhpBench\Attributes\Groups;
 use Psl\Type;
 
@@ -17,7 +18,7 @@ final class ShapeTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
-    #[\Override]
+    #[Override]
     public function provideHappyPathCoercion(): array
     {
         return [
@@ -154,7 +155,7 @@ final class ShapeTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
-    #[\Override]
+    #[Override]
     public function provideHappyPathAssertion(): array
     {
         return [
@@ -252,7 +253,7 @@ final class ShapeTypeBench extends GenericTypeBench
     /**
      * {@inheritDoc}
      */
-    #[\Override]
+    #[Override]
     public function provideHappyPathMatches(): array
     {
         // As of now, matches ~= coercion in terms of happy path

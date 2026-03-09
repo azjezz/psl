@@ -25,7 +25,7 @@ final readonly class PositiveIntType extends Type\Type
     /**
      * @psalm-assert-if-true positive-int $value
      */
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         return is_int($value) && $value > 0;
@@ -36,7 +36,7 @@ final readonly class PositiveIntType extends Type\Type
      *
      * @return positive-int
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): int
     {
         if (is_int($value) && $value > 0) {
@@ -82,7 +82,7 @@ final readonly class PositiveIntType extends Type\Type
      *
      * @return positive-int
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): int
     {
         if (is_int($value) && $value > 0) {
@@ -92,7 +92,7 @@ final readonly class PositiveIntType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return 'positive-int';

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Encoding\Base64\Internal;
 
+use Override;
 use Psl\Encoding\Exception;
 use Psl\Regex;
 
@@ -25,7 +26,7 @@ final class Base64DotSlash extends Base64
     /**
      * @pure
      */
-    #[\Override]
+    #[Override]
     protected static function checkRange(string $base64): void
     {
         if (!Regex\matches($base64, '%^[a-zA-Z0-9./]*={0,2}$%')) {
@@ -41,7 +42,7 @@ final class Base64DotSlash extends Base64
      *
      * @pure
      */
-    #[\Override]
+    #[Override]
     protected static function encode6Bits(int $bin): string
     {
         $bin += 0x2e;
@@ -61,7 +62,7 @@ final class Base64DotSlash extends Base64
      *
      * @pure
      */
-    #[\Override]
+    #[Override]
     protected static function decode6Bits(int $base64): int
     {
         $ret = -1;

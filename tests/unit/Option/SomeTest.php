@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Option;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Comparison\Comparable;
 use Psl\Comparison\Equable;
@@ -188,8 +189,12 @@ final class SomeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTestUnzip
+     * @template X
+     * @template Y
+     *
+     * @param Option\Option<array{X, Y}> $option
      */
+    #[DataProvider('provideTestUnzip')]
     public function testUnzip(Option\Option $option, mixed $expectedX, mixed $expectedY): void
     {
         [$x, $y] = $option->unzip();
@@ -198,14 +203,14 @@ final class SomeTest extends TestCase
         static::assertSame($expectedY, $y->unwrap());
     }
 
-    private function provideTestUnzip(): iterable
+    public static function provideTestUnzip(): iterable
     {
         yield [Option\some(null)->zip(Option\some('hi')), null, 'hi'];
         yield [Option\some(1)->zip(Option\some('hi')), 1, 'hi'];
         yield [Option\some([true, false]), true, false];
     }
 
-    private function provideTestUnzipAssertionException(): iterable
+    public static function provideTestUnzipAssertionException(): iterable
     {
         yield [Option\some(null)];
         yield [Option\some(1)];

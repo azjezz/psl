@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str\Byte;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Range;
 use Psl\Str\Byte;
@@ -11,18 +12,16 @@ use Psl\Str\Exception;
 
 final class RangeTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testRange(string $expected, string $string, Range\RangeInterface $range): void
     {
         static::assertSame($expected, Byte\range($string, $range));
     }
 
     /**
-     * @return list<{0: string, 1: string, 2: Range\RangeInterface}>
+     * @return list<array{0: string, 1: string, 2: Range\RangeInterface}>
      */
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             ['', '', Range\between(0, 5, upper_inclusive: true)],

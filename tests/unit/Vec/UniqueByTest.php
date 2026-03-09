@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Vec;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 use Psl\Vec;
 
 final class UniqueByTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testUniqueBy(array $expected, array $array, callable $scalar_fun): void
     {
         static::assertSame($expected, Vec\unique_by($array, $scalar_fun));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

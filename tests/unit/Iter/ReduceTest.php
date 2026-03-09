@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Iter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 
 final class ReduceTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testReduce(
         null|int $expected,
         iterable $iterable,
@@ -21,7 +20,7 @@ final class ReduceTest extends TestCase
         static::assertSame($expected, Iter\reduce($iterable, $function, $initial));
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [null, [], static fn(null $accumulator, int $_v): null => $accumulator, null];
         yield [6, [1, 2, 3], static fn(int $accumulator, int $v): int => $accumulator + $v, 0];

@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Type;
 
 final class BoolTypeTest extends TypeTestCase
 {
-    #[\Override]
-    public function getType(): Type\TypeInterface
+    #[Override]
+    public static function getType(): Type\TypeInterface
     {
         return Type\bool();
     }
 
-    #[\Override]
-    public function getValidCoercions(): iterable
+    #[Override]
+    public static function getValidCoercions(): iterable
     {
         yield [false, false];
         yield [0, false];
@@ -25,8 +26,8 @@ final class BoolTypeTest extends TypeTestCase
         yield ['1', true];
     }
 
-    #[\Override]
-    public function getInvalidCoercions(): iterable
+    #[Override]
+    public static function getInvalidCoercions(): iterable
     {
         yield [null];
         yield ['true'];
@@ -35,10 +36,10 @@ final class BoolTypeTest extends TypeTestCase
         yield [Type\bool()];
     }
 
-    #[\Override]
-    public function getToStringExamples(): iterable
+    #[Override]
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'bool'];
+        yield [static::getType(), 'bool'];
     }
 
     public function testItIsAMemoizedType(): void

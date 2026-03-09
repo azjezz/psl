@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Iter;
 use Psl\Str;
 use Psl\Type;
@@ -39,7 +40,7 @@ final readonly class IterableType extends Type\Type
      *
      * @return iterable<Tk, Tv>
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): iterable
     {
         if (!is_iterable($value)) {
@@ -104,7 +105,7 @@ final readonly class IterableType extends Type\Type
      *
      * @psalm-assert iterable<Tk, Tv> $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): iterable
     {
         if (!is_iterable($value)) {
@@ -151,7 +152,7 @@ final readonly class IterableType extends Type\Type
         });
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return Str\format('iterable<%s, %s>', $this->key_type->toString(), $this->value_type->toString());

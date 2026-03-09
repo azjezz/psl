@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Type;
 
 use DateTimeImmutable;
+use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Str;
 use Psl\Type;
 use RuntimeException;
@@ -13,8 +15,8 @@ final class ConvertedTypeTest extends TypeTestCase
 {
     private const string DATE_FORMAT = 'Y-m-d H:i:s';
 
-    #[\Override]
-    public function getType(): Type\TypeInterface
+    #[Override]
+    public static function getType(): Type\TypeInterface
     {
         return Type\converted(
             Type\string(),
@@ -28,18 +30,18 @@ final class ConvertedTypeTest extends TypeTestCase
         );
     }
 
-    #[\Override]
-    public function getValidCoercions(): iterable
+    #[Override]
+    public static function getValidCoercions(): iterable
     {
         yield ['2023-04-27 08:28:00', DateTimeImmutable::createFromFormat(self::DATE_FORMAT, '2023-04-27 08:28:00')];
         yield [
-            $this->stringable('2023-04-27 08:28:00'),
+            static::stringable('2023-04-27 08:28:00'),
             DateTimeImmutable::createFromFormat(self::DATE_FORMAT, '2023-04-27 08:28:00'),
         ];
     }
 
-    #[\Override]
-    public function getInvalidCoercions(): iterable
+    #[Override]
+    public static function getInvalidCoercions(): iterable
     {
         yield [1];
         yield [false];
@@ -47,15 +49,15 @@ final class ConvertedTypeTest extends TypeTestCase
         yield ['2023-04-27'];
         yield ['2023-04-27 08:26'];
         yield ['27/04/2023'];
-        yield [$this->stringable('2023-04-27')];
+        yield [static::stringable('2023-04-27')];
     }
 
     /**
      * @param DateTimeImmutable|mixed $a
      * @param DateTimeImmutable|mixed $b
      */
-    #[\Override]
-    protected function equals(mixed $a, mixed $b): bool
+    #[Override]
+    protected static function equals(mixed $a, mixed $b): bool
     {
         if (Type\instance_of(DateTimeImmutable::class)->matches($a)) {
             $a = $a->format(self::DATE_FORMAT);
@@ -68,10 +70,10 @@ final class ConvertedTypeTest extends TypeTestCase
         return parent::equals($a, $b);
     }
 
-    #[\Override]
-    public function getToStringExamples(): iterable
+    #[Override]
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), DateTimeImmutable::class];
+        yield [static::getType(), DateTimeImmutable::class];
     }
 
     public static function provideCoerceExceptionExpectations(): iterable
@@ -97,9 +99,7 @@ final class ConvertedTypeTest extends TypeTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideCoerceExceptionExpectations
-     */
+    #[DataProvider('provideCoerceExceptionExpectations')]
     public function testInvalidCoercionTypeExceptions(
         Type\TypeInterface $type,
         mixed $data,

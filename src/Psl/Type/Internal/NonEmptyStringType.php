@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -22,7 +23,7 @@ final readonly class NonEmptyStringType extends Type\Type
     /**
      * @psalm-assert-if-true non-empty-string $value
      */
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         return '' !== $value && is_string($value);
@@ -33,7 +34,7 @@ final readonly class NonEmptyStringType extends Type\Type
      *
      * @return non-empty-string
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): string
     {
         if ('' !== $value && is_string($value)) {
@@ -62,7 +63,7 @@ final readonly class NonEmptyStringType extends Type\Type
      *
      * @psalm-assert non-empty-string $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): string
     {
         if ('' !== $value && is_string($value)) {
@@ -73,7 +74,7 @@ final readonly class NonEmptyStringType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return 'non-empty-string';

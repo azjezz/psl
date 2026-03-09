@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\DateTime;
 
 use JsonSerializable;
+use Override;
 use Psl\Comparison\Comparable;
 use Psl\Comparison\Equable;
 use Psl\Comparison\Order;
@@ -33,7 +34,7 @@ interface TemporalInterface extends Comparable, Equable, JsonSerializable, Strin
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function compare(mixed $other): Order;
 
     /**
@@ -45,7 +46,7 @@ interface TemporalInterface extends Comparable, Equable, JsonSerializable, Strin
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function equals(mixed $other): bool;
 
     /**
@@ -98,24 +99,32 @@ interface TemporalInterface extends Comparable, Equable, JsonSerializable, Strin
     public function betweenTimeExclusive(TemporalInterface $a, TemporalInterface $b): bool;
 
     /**
-     * Adds the specified duration to this temporal object, returning a new instance with the added duration.
+     * Adds the specified temporal amount to this temporal object, returning a new instance.
      *
-     * @throws Exception\UnderflowException If adding the duration results in an arithmetic underflow.
-     * @throws Exception\OverflowException If adding the duration results in an arithmetic overflow.
+     * Not all temporal types support all amounts. For example, {@see Timestamp} only supports
+     * {@see Duration}, while {@see DateTimeInterface} supports both {@see Duration} and {@see Period}.
+     *
+     * @throws Exception\InvalidArgumentException If this temporal does not support the given amount.
+     * @throws Exception\UnderflowException If the operation results in an arithmetic underflow.
+     * @throws Exception\OverflowException If the operation results in an arithmetic overflow.
      *
      * @psalm-mutation-free
      */
-    public function plus(Duration $duration): static;
+    public function plus(TemporalAmountInterface $amount): static;
 
     /**
-     * Subtracts the specified duration from this temporal object, returning a new instance with the subtracted duration.
+     * Subtracts the specified temporal amount from this temporal object, returning a new instance.
      *
-     * @throws Exception\UnderflowException If subtracting the duration results in an arithmetic underflow.
-     * @throws Exception\OverflowException If subtracting the duration results in an arithmetic overflow.
+     * Not all temporal types support all amounts. For example, {@see Timestamp} only supports
+     * {@see Duration}, while {@see DateTimeInterface} supports both {@see Duration} and {@see Period}.
+     *
+     * @throws Exception\InvalidArgumentException If this temporal does not support the given amount.
+     * @throws Exception\UnderflowException If the operation results in an arithmetic underflow.
+     * @throws Exception\OverflowException If the operation results in an arithmetic overflow.
      *
      * @psalm-mutation-free
      */
-    public function minus(Duration $duration): static;
+    public function minus(TemporalAmountInterface $amount): static;
 
     /**
      * Adds the specified hours to this temporal object, returning a new instance with the added hours.
@@ -322,7 +331,7 @@ interface TemporalInterface extends Comparable, Equable, JsonSerializable, Strin
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function __toString(): string;
 
     /**

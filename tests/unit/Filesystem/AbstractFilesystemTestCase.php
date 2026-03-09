@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Filesystem;
 
+use Override;
 use PHPUnit\Framework\TestCase;
 use Psl\Env;
 use Psl\Filesystem;
@@ -18,7 +19,7 @@ abstract class AbstractFilesystemTestCase extends TestCase
     protected string $directory;
     private int $directoryPermissions;
 
-    #[\Override]
+    #[Override]
     protected function setUp(): void
     {
         if (OS\is_windows()) {
@@ -42,9 +43,13 @@ abstract class AbstractFilesystemTestCase extends TestCase
         static::assertTrue(Filesystem\is_directory($this->directory));
     }
 
-    #[\Override]
+    #[Override]
     protected function tearDown(): void
     {
+        if (!isset($this->directory)) {
+            return;
+        }
+
         Filesystem\change_permissions($this->directory, $this->directoryPermissions);
         Filesystem\delete_directory($this->directory, true);
 

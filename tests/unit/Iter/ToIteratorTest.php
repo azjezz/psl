@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Iter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Dict;
 use Psl\Iter;
@@ -12,9 +13,8 @@ final class ToIteratorTest extends TestCase
 {
     /**
      * @param array<array-key, mixed> $array
-     *
-     * @dataProvider provideToIteratorData
      */
+    #[DataProvider('provideToIteratorData')]
     public function testToIterator(array $array): void
     {
         $iterator = Iter\to_iterator($array);
@@ -26,7 +26,7 @@ final class ToIteratorTest extends TestCase
     /**
      * @return iterable<array{0: array<array-key, mixed>}>
      */
-    public function provideToIteratorData(): iterable
+    public static function provideToIteratorData(): iterable
     {
         yield [[1, 2, 3]];
         yield [[null]];

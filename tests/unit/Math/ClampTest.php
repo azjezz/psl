@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Math;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
 final class ClampTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testClamp(int|float $expected, int|float $number, int|float $min, int|float $max): void
     {
         static::assertSame($expected, Math\clamp($number, $min, $max));
@@ -25,7 +24,7 @@ final class ClampTest extends TestCase
         Math\clamp(10, 20, 10);
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

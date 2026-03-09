@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl\Dict;
 
 use Psl\Iter;
-use Psl\Vec;
 
 use function array_intersect_key;
+use function array_map;
 
 /**
  * Computes the intersection of iterables using keys for comparison.
@@ -27,9 +27,5 @@ function intersect_by_key(iterable $first, iterable $second, iterable ...$rest):
         return [];
     }
 
-    return array_intersect_key(
-        namespace\from_iterable($first),
-        namespace\from_iterable($second),
-        ...Vec\map($rest, namespace\from_iterable(...)),
-    );
+    return array_intersect_key(from_iterable($first), from_iterable($second), ...array_map(from_iterable(...), $rest));
 }

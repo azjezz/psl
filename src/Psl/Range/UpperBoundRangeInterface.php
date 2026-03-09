@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Range;
 
+use Override;
+
 /**
  * @psalm-immutable
  */
@@ -16,7 +18,7 @@ interface UpperBoundRangeInterface extends RangeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function withLowerBound(int $lower_bound): UpperBoundRangeInterface&LowerBoundRangeInterface;
 
     /**

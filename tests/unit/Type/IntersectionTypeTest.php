@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Type;
 
 use Iterator;
+use Override;
 use Psl\Collection\CollectionInterface;
 use Psl\Collection\IndexAccessInterface;
 use Psl\Type;
@@ -18,35 +19,35 @@ final class IntersectionTypeTest extends TypeTestCase
         static::assertSame(1, $intersection->coerce('1'));
     }
 
-    #[\Override]
-    public function getType(): Type\TypeInterface
+    #[Override]
+    public static function getType(): Type\TypeInterface
     {
         return Type\intersection(Type\int(), Type\array_key());
     }
 
-    #[\Override]
-    public function getValidCoercions(): iterable
+    #[Override]
+    public static function getValidCoercions(): iterable
     {
         yield [1, 1];
         yield ['1', 1];
         yield ['123', 123];
-        yield [$this->stringable('123'), 123];
-        yield [$this->stringable('000'), 0];
-        yield [$this->stringable('0007'), 7];
+        yield [static::stringable('123'), 123];
+        yield [static::stringable('000'), 0];
+        yield [static::stringable('0007'), 7];
     }
 
-    #[\Override]
-    public function getInvalidCoercions(): iterable
+    #[Override]
+    public static function getInvalidCoercions(): iterable
     {
         yield [null];
         yield [STDIN];
         yield ['hello'];
-        yield [$this->stringable('foo')];
+        yield [static::stringable('foo')];
         yield [new class {}];
     }
 
-    #[\Override]
-    public function getToStringExamples(): iterable
+    #[Override]
+    public static function getToStringExamples(): iterable
     {
         yield [
             Type\intersection(

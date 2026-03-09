@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Html;
 
+use Override;
 use Psl\Default\DefaultInterface;
 
 /**
@@ -96,7 +97,7 @@ enum Encoding: string implements DefaultInterface
      *
      * @return static The UTF-8 encoding instance, representing the default encoding.
      */
-    #[\Override]
+    #[Override]
     public static function default(): static
     {
         return self::Utf8;

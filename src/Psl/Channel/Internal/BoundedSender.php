@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Channel\Internal;
 
+use Override;
 use Psl\Channel\Exception;
 use Psl\Channel\SenderInterface;
 use Revolt\EventLoop;
@@ -34,7 +35,7 @@ final class BoundedSender implements SenderInterface
     /**
      * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function send(mixed $message): void
     {
         if ($this->suspension) {
@@ -61,7 +62,7 @@ final class BoundedSender implements SenderInterface
     /**
      * @inheritDoc
      */
-    #[\Override]
+    #[Override]
     public function trySend(mixed $message): void
     {
         $this->state->send($message);

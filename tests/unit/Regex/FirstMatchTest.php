@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Regex;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Regex;
 use Psl\Type\TypeInterface;
@@ -13,8 +14,10 @@ use function Psl\Regex\capture_groups;
 final class FirstMatchTest extends TestCase
 {
     /**
-     * @dataProvider provideMatchingData
+     * @param non-empty-string $pattern
+     * @param TypeInterface<array<array-key, mixed>|null>|null $shape
      */
+    #[DataProvider('provideMatchingData')]
     public function testMatching(
         array $expected,
         string $subject,
@@ -26,8 +29,9 @@ final class FirstMatchTest extends TestCase
     }
 
     /**
-     * @dataProvider provideNonMatchingData
+     * @param non-empty-string $pattern
      */
+    #[DataProvider('provideNonMatchingData')]
     public function testNotMatching(string $subject, string $pattern, int $offset = 0): void
     {
         static::assertNull(Regex\first_match($subject, $pattern, null, $offset));
@@ -49,7 +53,7 @@ final class FirstMatchTest extends TestCase
         Regex\first_match('hello', '/(hello)/', capture_groups(['doesnotexist']));
     }
 
-    public function provideMatchingData(): iterable
+    public static function provideMatchingData(): iterable
     {
         yield [
             [
@@ -115,7 +119,7 @@ final class FirstMatchTest extends TestCase
         ];
     }
 
-    public function provideNonMatchingData(): iterable
+    public static function provideNonMatchingData(): iterable
     {
         yield ['PHP is the web scripting language of choice.', '/php/'];
         yield ['PHP is the website scripting language of choice.', '/\bweb\b/i'];

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Iter;
 
 use Exception;
+use Generator;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection\MutableVector;
 use Psl\Iter;
@@ -101,13 +102,15 @@ final class IteratorTest extends TestCase
 
     public function testSeekZero(): void
     {
-        $iterator = new Iter\Iterator((static function (): iterable {
-            yield 1;
+        $iterator = new Iter\Iterator(
+            (static function (): iterable {
+                yield 1;
 
-            throw new Exception('nope');
+                throw new Exception('nope');
 
-            yield 2;
-        })());
+                yield 2;
+            })(),
+        );
 
         foreach ($iterator as $k => $v) {
             static::assertSame(0, $k);
@@ -210,6 +213,64 @@ final class IteratorTest extends TestCase
             ],
             $spy->toArray(),
         );
+    }
+
+    public function testCreateWithGeneratorDirectlyWraps(): void
+    {
+        $generator = (static function (): Generator {
+            yield 'a' => 1;
+            yield 'b' => 2;
+            yield 'c' => 3;
+        })();
+
+        $iterator = Iter\Iterator::create($generator);
+
+        static::assertTrue($iterator->valid());
+        static::assertSame('a', $iterator->key());
+        static::assertSame(1, $iterator->current());
+
+        $iterator->next();
+        static::assertSame('b', $iterator->key());
+        static::assertSame(2, $iterator->current());
+
+        $iterator->next();
+        static::assertSame('c', $iterator->key());
+        static::assertSame(3, $iterator->current());
+
+        $iterator->next();
+        static::assertFalse($iterator->valid());
+    }
+
+    public function testSeekWithinGeneratorBackedIteratorReturnsEarly(): void
+    {
+        $iterator = new Iter\Iterator((static fn(): iterable => yield from [10, 20, 30, 40, 50])());
+
+        $iterator->seek(3);
+        static::assertSame(40, $iterator->current());
+
+        $iterator->seek(1);
+        static::assertSame(20, $iterator->current());
+
+        $iterator->seek(1);
+        static::assertSame(20, $iterator->current());
+
+        $iterator->seek(0);
+        static::assertSame(10, $iterator->current());
+    }
+
+    public function testCountReturnsCachedValueAfterIteration(): void
+    {
+        $iterator = Iter\Iterator::create([1, 2, 3, 4, 5]);
+
+        $count1 = $iterator->count();
+        static::assertSame(5, $count1);
+
+        $count2 = $iterator->count();
+        static::assertSame(5, $count2);
+
+        $iterator->rewind();
+        static::assertTrue($iterator->valid());
+        static::assertSame(1, $iterator->current());
     }
 
     public function testRewindingValidGenerator(): void

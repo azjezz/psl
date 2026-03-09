@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\RandomSequence;
 
+use Override;
 use Psl\Default\DefaultInterface;
 use Psl\SecureRandom;
 
@@ -22,7 +23,7 @@ final class SecureSequence implements DefaultInterface, SequenceInterface
     /**
      * @pure
      */
-    #[\Override]
+    #[Override]
     public static function default(): static
     {
         return new self();
@@ -33,7 +34,7 @@ final class SecureSequence implements DefaultInterface, SequenceInterface
      *
      * @psalm-external-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function next(): int
     {
         return SecureRandom\int();

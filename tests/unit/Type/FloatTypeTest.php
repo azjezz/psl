@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Math;
 use Psl\Type;
 
 final class FloatTypeTest extends TypeTestCase
 {
-    #[\Override]
-    public function getType(): Type\TypeInterface
+    #[Override]
+    public static function getType(): Type\TypeInterface
     {
         return Type\float();
     }
 
-    #[\Override]
-    public function getValidCoercions(): iterable
+    #[Override]
+    public static function getValidCoercions(): iterable
     {
         yield [123, 123.0];
         yield ['+0', 0.0];
@@ -24,18 +25,18 @@ final class FloatTypeTest extends TypeTestCase
         yield [0, 0.0];
         yield ['0', 0.0];
         yield ['123', 123.0];
-        yield [$this->stringable('123'), 123.0];
+        yield [static::stringable('123'), 123.0];
         yield ['1e2', 1e2];
-        yield [$this->stringable('1e2'), 1e2];
+        yield [static::stringable('1e2'), 1e2];
         yield ['1.23e45', 1.23e45];
         yield ['1.23e-45', 1.23e-45];
         yield ['1.23e+45', 1.23e+45];
         yield ['.23', .23];
         yield ['3.', 3.0];
-        yield [$this->stringable('1.23'), 1.23];
+        yield [static::stringable('1.23'), 1.23];
         yield [Math\INT64_MAX, (float) Math\INT64_MAX];
         yield [(string) Math\INT64_MAX, (float) Math\INT64_MAX];
-        yield [$this->stringable((string) Math\INT64_MAX), (float) Math\INT64_MAX];
+        yield [static::stringable((string) Math\INT64_MAX), (float) Math\INT64_MAX];
         yield ['9223372036854775808', 9_223_372_036_854_775_808.0];
         yield ['007', 7.0];
         yield ['-0.1', -0.1];
@@ -47,15 +48,15 @@ final class FloatTypeTest extends TypeTestCase
         yield ['-33.e-1', -33.e-1];
     }
 
-    #[\Override]
-    public function getInvalidCoercions(): iterable
+    #[Override]
+    public static function getInvalidCoercions(): iterable
     {
         yield [''];
         yield ['foo'];
         yield [null];
         yield [false];
         yield [new class() {}];
-        yield [$this->stringable('foo')];
+        yield [static::stringable('foo')];
         yield ['0xFF'];
         yield ['1a'];
         yield ['e1'];
@@ -67,10 +68,10 @@ final class FloatTypeTest extends TypeTestCase
         yield [''];
     }
 
-    #[\Override]
-    public function getToStringExamples(): iterable
+    #[Override]
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'float'];
+        yield [static::getType(), 'float'];
     }
 
     public function testItIsAMemoizedType(): void

@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
 final class PadLeftTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testPadLeft(string $expected, string $str, int $total_length, string $pad_string = ' '): void
     {
         static::assertSame($expected, Str\pad_left($str, $total_length, $pad_string));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [' aaay',    'aaay',  5],

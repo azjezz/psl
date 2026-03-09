@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Collection;
 
+use Override;
 use Psl\Collection\Map;
 use Psl\Collection\Vector;
 
@@ -40,7 +41,7 @@ final class MapTest extends AbstractMapTestCase
      *
      * @return Map<Tk, Tv>
      */
-    #[\Override]
+    #[Override]
     protected function create(iterable $items): Map
     {
         return Map::fromArray($items);

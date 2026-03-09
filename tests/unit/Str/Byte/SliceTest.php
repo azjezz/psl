@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str\Byte;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 use Psl\Str\Exception;
 
 final class SliceTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testSlice(string $expected, string $string, int $offset, null|int $length = null): void
     {
         static::assertSame($expected, Byte\slice($string, $offset, $length));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             ['',              '',                                                      0,  0],

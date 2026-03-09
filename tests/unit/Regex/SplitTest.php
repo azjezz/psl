@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Regex;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Regex;
 
 final class SplitTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testSplit(array $expected, string $subject, string $pattern, null|int $limit = null): void
     {
         static::assertSame($expected, Regex\split($subject, $pattern, $limit));
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [
             ['hello'],

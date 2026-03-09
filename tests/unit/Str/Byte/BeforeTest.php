@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str\Byte;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
 final class BeforeTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testAfter(null|string $expected, string $haystack, string $needle, int $offset): void
     {
         static::assertSame($expected, Byte\before($haystack, $needle, $offset));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [null,         '',               '',      0],

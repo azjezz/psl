@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\DateTime;
 
+use DateTimeZone;
+use IntlTimeZone;
+use Override;
+use Psl\Interoperability;
+
 /**
  * Enumerates all supported time zones, including UTC, all tzdata time zones, and all unique UTC offsets.
  *
@@ -18,9 +23,18 @@ namespace Psl\DateTime;
  * and the historical changes in time zone definitions. Time zone identifiers like "America/Los_Angeles" automatically
  * account for these variations correctly across different dates.
  *
+ * @implements Interoperability\ToStdlib<DateTimeZone>
+ * @implements Interoperability\FromStdlib<DateTimeZone>
+ * @implements Interoperability\ToIntl<IntlTimeZone>
+ * @implements Interoperability\FromIntl<IntlTimeZone>
+ *
  * @mago-expect analysis:reference-to-undefined-variable
  */
-enum Timezone: string
+enum Timezone: string implements
+    Interoperability\ToStdlib,
+    Interoperability\FromStdlib,
+    Interoperability\ToIntl,
+    Interoperability\FromIntl
 {
     case UTC = 'UTC';
     case Minus1100 = '-11:00';
@@ -588,5 +602,60 @@ enum Timezone: string
     public function hasTheSameRulesAs(Timezone $other): bool
     {
         return Internal\to_intl_timezone($this)->hasSameRules(Internal\to_intl_timezone($other));
+    }
+
+    /**
+     * Creates a {@see Timezone} from a PHP {@see DateTimeZone}.
+     *
+     * @param DateTimeZone $value
+     *
+     * @psalm-mutation-free
+     */
+    #[Override]
+    public static function fromStdlib(mixed $value): static
+    {
+        return self::from($value->getName());
+    }
+
+    /**
+     * Converts this {@see Timezone} to a PHP {@see DateTimeZone}.
+     *
+     * @return DateTimeZone
+     *
+     * @psalm-mutation-free
+     */
+    #[Override]
+    public function toStdlib(): mixed
+    {
+        return new DateTimeZone($this->value);
+    }
+
+    /**
+     * Creates a {@see Timezone} from an {@see IntlTimeZone}.
+     *
+     * @param IntlTimeZone $value
+     *
+     * @psalm-mutation-free
+     */
+    #[Override]
+    public static function fromIntl(mixed $value): static
+    {
+        /** @var string $id */
+        $id = $value->getID();
+
+        return self::from($id);
+    }
+
+    /**
+     * Converts this {@see Timezone} to an {@see IntlTimeZone}.
+     *
+     * @return IntlTimeZone
+     *
+     * @psalm-mutation-free
+     */
+    #[Override]
+    public function toIntl(): mixed
+    {
+        return Internal\to_intl_timezone($this);
     }
 }

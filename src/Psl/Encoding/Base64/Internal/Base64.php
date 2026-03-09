@@ -6,9 +6,11 @@ namespace Psl\Encoding\Base64\Internal;
 
 use Psl\Encoding\Exception;
 use Psl\Regex;
-use Psl\Str;
 
 use function pack;
+use function rtrim;
+use function strlen;
+use function substr;
 use function unpack;
 
 /**
@@ -21,8 +23,6 @@ use function unpack;
  * Copyright (c) 2016 - 2022 Paragon Initiative Enterprises
  *
  * @internal
- *
- * @mago-expect lint:no-else-clause
  */
 abstract class Base64
 {
@@ -38,11 +38,11 @@ abstract class Base64
     public static function encode(string $binary, bool $padding = true): string
     {
         $dest = '';
-        $binary_length = Str\length($binary, encoding: Str\Encoding::Ascii8bit);
+        $binary_length = strlen($binary);
 
         for ($i = 0; ($i + 3) <= $binary_length; $i += 3) {
             /** @var array<int, int> $chunk */
-            $chunk = unpack('C*', Str\slice($binary, $i, 3, encoding: Str\Encoding::Ascii8bit));
+            $chunk = unpack('C*', substr($binary, $i, 3));
             $byte0 = $chunk[1];
             $byte1 = $chunk[2];
             $byte2 = $chunk[3];
@@ -59,7 +59,7 @@ abstract class Base64
             /**
              * @var array<int, int> $chunk
              */
-            $chunk = unpack('C*', Str\slice($binary, $i, $chunk_size, encoding: Str\Encoding::Ascii8bit));
+            $chunk = unpack('C*', substr($binary, $i, $chunk_size));
             $byte0 = $chunk[1];
             if (($i + 1) < $binary_length) {
                 $byte1 = $chunk[2];
@@ -96,7 +96,7 @@ abstract class Base64
      */
     public static function decode(string $base64, bool $explicit_padding = true): string
     {
-        $base64_length = Str\length($base64, encoding: Str\Encoding::Ascii8bit);
+        $base64_length = strlen($base64);
         if (0 === $base64_length) {
             return '';
         }
@@ -107,14 +107,14 @@ abstract class Base64
             throw new Exception\IncorrectPaddingException('The given base64 string has incorrect padding.');
         }
 
-        $base64 = Str\trim_right($base64, '=');
-        $base64_length = Str\length($base64, encoding: Str\Encoding::Ascii8bit);
+        $base64 = rtrim($base64, '=');
+        $base64_length = strlen($base64);
 
         $err = 0;
         $dest = '';
         for ($i = 0; ($i + 4) <= $base64_length; $i += 4) {
             /** @var array<int, int> $chunk */
-            $chunk = unpack('C*', Str\slice($base64, $i, 4, encoding: Str\Encoding::Ascii8bit));
+            $chunk = unpack('C*', substr($base64, $i, 4));
             $char0 = static::decode6Bits($chunk[1]);
             $char1 = static::decode6Bits($chunk[2]);
             $char2 = static::decode6Bits($chunk[3]);
@@ -133,7 +133,7 @@ abstract class Base64
             /**
              * @var array<int, int> $chunk
              */
-            $chunk = unpack('C*', Str\slice($base64, $i, $chunk_size, encoding: Str\Encoding::Ascii8bit));
+            $chunk = unpack('C*', substr($base64, $i, $chunk_size));
             $char0 = static::decode6Bits($chunk[1]);
             if (($i + 2) < $base64_length) {
                 $char1 = static::decode6Bits($chunk[2]);

@@ -4,24 +4,25 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Type;
 
 final class NullTypeTest extends TypeTestCase
 {
-    #[\Override]
-    public function getType(): Type\TypeInterface
+    #[Override]
+    public static function getType(): Type\TypeInterface
     {
         return Type\null();
     }
 
-    #[\Override]
-    public function getValidCoercions(): iterable
+    #[Override]
+    public static function getValidCoercions(): iterable
     {
         yield [null, null];
     }
 
-    #[\Override]
-    public function getInvalidCoercions(): iterable
+    #[Override]
+    public static function getInvalidCoercions(): iterable
     {
         yield [Type\bool()];
         yield [1];
@@ -34,13 +35,13 @@ final class NullTypeTest extends TypeTestCase
         yield [[null]];
         yield [[]];
         yield [[1, 2, 3]];
-        yield [$this->stringable('')];
+        yield [static::stringable('')];
     }
 
-    #[\Override]
-    public function getToStringExamples(): iterable
+    #[Override]
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'null'];
+        yield [static::getType(), 'null'];
     }
 
     public function testItIsAMemoizedType(): void

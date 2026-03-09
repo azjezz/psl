@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Type;
 
 use Generator;
+use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Collection;
 use Psl\Dict;
 use Psl\Str;
@@ -16,14 +18,14 @@ use stdClass;
 
 final class MixedDictTypeTest extends TypeTestCase
 {
-    #[\Override]
-    public function getType(): Type\TypeInterface
+    #[Override]
+    public static function getType(): Type\TypeInterface
     {
         return Type\mixed_dict();
     }
 
-    #[\Override]
-    public function getValidCoercions(): iterable
+    #[Override]
+    public static function getValidCoercions(): iterable
     {
         yield [
             [],
@@ -38,7 +40,7 @@ final class MixedDictTypeTest extends TypeTestCase
         $object = new stdClass();
         yield [[0, 1, 2, 'foo' => 'bar', [], $object], [0, 1, 2, 'foo' => 'bar', [], $object]];
 
-        $gen = $this->generator();
+        $gen = static::generator();
         yield [$gen, [1, 2, 'asdf' => 'key']];
 
         yield [
@@ -66,15 +68,15 @@ final class MixedDictTypeTest extends TypeTestCase
         yield [$spl, [$object]];
     }
 
-    private function generator(): Generator
+    private static function generator(): Generator
     {
         yield 1;
         yield 2;
         yield 'asdf' => 'key';
     }
 
-    #[\Override]
-    public function getInvalidCoercions(): iterable
+    #[Override]
+    public static function getInvalidCoercions(): iterable
     {
         yield [1];
         yield [new stdClass()];
@@ -83,10 +85,10 @@ final class MixedDictTypeTest extends TypeTestCase
         yield [null];
     }
 
-    #[\Override]
-    public function getToStringExamples(): iterable
+    #[Override]
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'dict<array-key, mixed>'];
+        yield [static::getType(), 'dict<array-key, mixed>'];
     }
 
     public static function provideCoerceExceptionExpectations(): iterable
@@ -130,9 +132,7 @@ final class MixedDictTypeTest extends TypeTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideCoerceExceptionExpectations
-     */
+    #[DataProvider('provideCoerceExceptionExpectations')]
     public function testInvalidCoercionTypeExceptions(
         Type\TypeInterface $type,
         mixed $data,

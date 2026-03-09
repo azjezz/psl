@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Dict;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Dict;
@@ -11,15 +12,13 @@ use Psl\Vec;
 
 final class CountValuesTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testCountValues(array $expected, iterable $iterable): void
     {
         static::assertSame($expected, Dict\count_values($iterable));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

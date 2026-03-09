@@ -42,15 +42,15 @@ function split(string $string, string $delimiter, null|int $limit = null, Encodi
 
     $tail = $string;
     $chunks = [];
+    $delimiter_length = length($delimiter, $encoding);
 
     /**
      * $offset is within bounded.
      */
     $position = search($tail, $delimiter, 0, $encoding);
     while (1 < $limit && null !== $position) {
-        $result = slice($tail, 0, $position, $encoding);
-        $chunks[] = $result;
-        $tail = slice($tail, length($result, $encoding) + length($delimiter, $encoding), null, $encoding);
+        $chunks[] = slice($tail, 0, $position, $encoding);
+        $tail = slice($tail, $position + $delimiter_length, null, $encoding);
 
         $limit--;
         /**

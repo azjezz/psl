@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Range;
 
 use Generator;
+use Override;
 use Psl\Iter;
 
 /**
@@ -67,7 +68,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function contains(int $value): bool
     {
         if ($value < $this->lowerBound) {
@@ -88,7 +89,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function withUpperBound(int $upper_bound, bool $upper_inclusive): BetweenRange
     {
         return new BetweenRange($this->lowerBound, $upper_bound, $upper_inclusive);
@@ -101,7 +102,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function withUpperBoundInclusive(int $upper_bound): BetweenRange
     {
         return new BetweenRange($this->lowerBound, $upper_bound, true);
@@ -114,7 +115,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function withUpperBoundExclusive(int $upper_bound): BetweenRange
     {
         return new BetweenRange($this->lowerBound, $upper_bound, false);
@@ -125,7 +126,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function withoutLowerBound(): ToRange
     {
         return new ToRange($this->upperBound, $this->upperInclusive);
@@ -138,7 +139,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function withLowerBound(int $lower_bound): BetweenRange
     {
         return new static($lower_bound, $this->upperBound, $this->upperInclusive);
@@ -149,7 +150,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function withoutUpperBound(): FromRange
     {
         return new FromRange($this->lowerBound);
@@ -160,7 +161,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function getUpperBound(): int
     {
         return $this->upperBound;
@@ -171,7 +172,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function isUpperInclusive(): bool
     {
         return $this->upperInclusive;
@@ -182,7 +183,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function withUpperInclusive(bool $upper_inclusive): static
     {
         return new static($this->lowerBound, $this->upperBound, $upper_inclusive);
@@ -193,7 +194,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function getLowerBound(): int
     {
         return $this->lowerBound;
@@ -206,7 +207,7 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function getIterator(): Iter\Iterator
     {
         $lower = $this->lowerBound;

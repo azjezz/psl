@@ -17,7 +17,6 @@ use const Psl\DateTime\NANOSECONDS_PER_SECOND;
  *
  * @internal
  *
- * @mago-expect lint:no-else-clause
  * @mago-expect lint:no-shorthand-ternary
  */
 function high_resolution_time(): array

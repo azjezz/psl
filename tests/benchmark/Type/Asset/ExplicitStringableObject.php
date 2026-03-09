@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Benchmark\Type\Asset;
 
+use Override;
 use Stringable;
 
 final class ExplicitStringableObject implements Stringable
 {
-    #[\Override]
+    #[Override]
     public function __toString(): string
     {
         return '123';

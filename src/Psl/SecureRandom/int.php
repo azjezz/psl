@@ -18,6 +18,8 @@ use function random_int;
  * @throws Exception\InvalidArgumentException If $min > $max.
  *
  * @psalm-external-mutation-free
+ *
+ * @return ($min is int<1, max> ? positive-int : ($min is int<0, max> ? non-negative-int : int))
  */
 function int(int $min = Math\INT64_MIN, int $max = Math\INT64_MAX): int
 {

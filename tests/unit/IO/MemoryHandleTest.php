@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\IO;
 
 use Closure;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Psl\DateTime\Duration;
 use Psl\IO;
 use Psl\Str;
 use Psl\Str\Byte;
@@ -14,9 +16,8 @@ final class MemoryHandleTest extends TestCase
 {
     /**
      * @param (Closure(IO\MemoryHandle): mixed) $operation
-     *
-     * @dataProvider provideOperations
      */
+    #[DataProvider('provideOperations')]
     public function testClose(Closure $operation): void
     {
         $handle = new IO\MemoryHandle('hello');
@@ -31,7 +32,7 @@ final class MemoryHandleTest extends TestCase
     /**
      * @return iterable<(Closure(IO\MemoryHandle): mixed)>
      */
-    public function provideOperations(): iterable
+    public static function provideOperations(): iterable
     {
         yield [
             static fn(IO\SeekHandleInterface $handle): null => $handle->seek(5),
@@ -155,5 +156,60 @@ final class MemoryHandleTest extends TestCase
         static::assertSame('derp', $h->readAll());
         $h->seek(0);
         static::assertSame('herpderp', $h->readAll());
+    }
+
+    public function testWriteAllWithTimeout(): void
+    {
+        $h = new IO\MemoryHandle();
+
+        $h->writeAll('hello, world!', Duration::seconds(5));
+
+        static::assertSame('hello, world!', $h->getBuffer());
+    }
+
+    public function testWriteAllEmptyWithTimeout(): void
+    {
+        $h = new IO\MemoryHandle();
+
+        $h->writeAll('', Duration::seconds(5));
+
+        static::assertSame('', $h->getBuffer());
+    }
+
+    public function testReadAllWithTimeout(): void
+    {
+        $h = new IO\MemoryHandle('hello, world!');
+
+        $data = $h->readAll(timeout: Duration::seconds(5));
+
+        static::assertSame('hello, world!', $data);
+    }
+
+    public function testReadAllWithMaxBytesAndTimeout(): void
+    {
+        $h = new IO\MemoryHandle('hello, world!');
+
+        $data = $h->readAll(max_bytes: 5, timeout: Duration::seconds(5));
+
+        static::assertSame('hello', $data);
+    }
+
+    public function testReadFixedSizeWithTimeout(): void
+    {
+        $h = new IO\MemoryHandle('hello, world!');
+
+        $data = $h->readFixedSize(5, Duration::seconds(5));
+
+        static::assertSame('hello', $data);
+    }
+
+    public function testReadFixedSizeInsufficientData(): void
+    {
+        $h = new IO\MemoryHandle('hi');
+
+        $this->expectException(IO\Exception\RuntimeException::class);
+        $this->expectExceptionMessage('3 bytes were requested, but only able to read 2 bytes');
+
+        $h->readFixedSize(3);
     }
 }

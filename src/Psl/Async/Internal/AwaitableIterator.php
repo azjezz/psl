@@ -10,7 +10,6 @@ use Revolt\EventLoop;
 use Throwable;
 
 use function array_shift;
-use function count;
 
 /**
  * The following class was derived from code of Amphp.
@@ -124,8 +123,8 @@ final class AwaitableIterator
             Psl\invariant_violation('Concurrent consume() operations are not supported');
         }
 
-        if (0 === count($this->queue->items)) {
-            if (null !== $this->complete && 0 === count($this->queue->pending)) {
+        if ([] === $this->queue->items) {
+            if (null !== $this->complete && [] === $this->queue->pending) {
                 return $this->complete->await();
             }
 

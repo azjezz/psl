@@ -93,7 +93,7 @@ final class CloseReadWriteStreamHandle implements
     }
 
     /**
-     * @return resource|null
+     * @return resource|object|null
      *
      * @inheritDoc
      */

@@ -1,0 +1,25 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\Binary;
+
+use Psl\Str\Byte;
+
+/**
+ * Decode a signed 8-bit integer from a binary string.
+ *
+ * @throws Exception\UnderflowException If $bytes has fewer than 1 byte.
+ *
+ * @return int<-128, 127>
+ *
+ * @pure
+ */
+function decode_i8(string $bytes): int
+{
+    if (Byte\length($bytes) < 1) {
+        throw new Exception\UnderflowException('Expected at least 1 byte, got ' . Byte\length($bytes) . '.');
+    }
+
+    return unpack('c', $bytes)[1];
+}

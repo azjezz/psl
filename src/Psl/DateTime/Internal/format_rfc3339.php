@@ -7,14 +7,17 @@ namespace Psl\DateTime\Internal;
 use Psl\DateTime\SecondsStyle;
 use Psl\DateTime\Timestamp;
 use Psl\DateTime\Timezone;
-use Psl\Str\Byte;
+
+use function str_pad;
+use function str_replace;
+use function substr;
+
+use const STR_PAD_LEFT;
 
 /**
  * @internal
  *
  * @psalm-mutation-free
- *
- * @mago-expect lint:no-else-clause
  */
 function format_rfc3339(
     Timestamp $timestamp,
@@ -34,7 +37,7 @@ function format_rfc3339(
     $nanoseconds = $timestamp->getNanoseconds();
 
     // Intl formatter cannot handle nanoseconds and microseconds, do it manually instead.
-    $fraction = Byte\slice((string) $nanoseconds, 0, $seconds_style->value);
+    $fraction = substr(str_pad((string) $nanoseconds, 9, '0', STR_PAD_LEFT), 0, $seconds_style->value);
     if ('' !== $fraction) {
         $fraction = '.' . $fraction;
     }
@@ -47,5 +50,6 @@ function format_rfc3339(
     $formatter = namespace\create_intl_date_formatter(pattern: $pattern, timezone: $timezone);
     $rfc_string = $formatter->format($seconds);
 
-    return Byte\replace($rfc_string, '@', $fraction);
+    /** @var string */
+    return str_replace('@', $fraction, $rfc_string);
 }

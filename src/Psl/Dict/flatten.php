@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
+use function array_replace;
+use function is_array;
+
 /**
  * Returns a new dict formed by merging the iterable elements of the
  * given iterable.
@@ -27,6 +30,23 @@ namespace Psl\Dict;
  */
 function flatten(iterable $iterables): array
 {
+    if (is_array($iterables)) {
+        $all_arrays = true;
+        foreach ($iterables as $inner) {
+            if (is_array($inner)) {
+                continue;
+            }
+
+            $all_arrays = false;
+            break;
+        }
+
+        if ($all_arrays) {
+            /** @var array<array<Tk, Tv>> $iterables */
+            return [] === $iterables ? [] : array_replace(...$iterables);
+        }
+    }
+
     $result = [];
     foreach ($iterables as $iterable) {
         foreach ($iterable as $key => $value) {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\File;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Env;
 use Psl\File;
@@ -186,9 +187,8 @@ final class ReadWriteHandleTest extends TestCase
 
     /**
      * @param (callable(File\ReadWriteHandleInterface): mixed) $operation
-     *
-     * @dataProvider provideOperations
      */
+    #[DataProvider('provideOperations')]
     public function testClose(callable $operation): void
     {
         $file = Filesystem\create_temporary_file();
@@ -204,7 +204,7 @@ final class ReadWriteHandleTest extends TestCase
     /**
      * @return iterable<(callable(File\ReadWriteHandleInterface): mixed)>
      */
-    public function provideOperations(): iterable
+    public static function provideOperations(): iterable
     {
         yield [
             static fn(File\HandleInterface $handle): null => $handle->seek(5),

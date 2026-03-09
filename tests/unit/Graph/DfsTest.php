@@ -62,4 +62,18 @@ final class DfsTest extends TestCase
         static::assertContains('B', $result);
         static::assertContains('C', $result);
     }
+
+    public function testDfsSkipsAlreadyVisitedNodeFromStack(): void
+    {
+        $graph = Graph\directed();
+        $graph = Graph\add_edge($graph, 'A', 'B');
+        $graph = Graph\add_edge($graph, 'A', 'C');
+        $graph = Graph\add_edge($graph, 'B', 'C');
+
+        $result = Graph\dfs($graph, 'A');
+        static::assertCount(3, $result);
+        static::assertSame('A', $result[0]);
+        static::assertContains('B', $result);
+        static::assertContains('C', $result);
+    }
 }

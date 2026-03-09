@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str\Byte;
 
+use function array_keys;
+use function array_values;
 use function str_ireplace;
 
 /**
@@ -16,14 +18,5 @@ use function str_ireplace;
  */
 function replace_every_ci(string $haystack, array $replacements): string
 {
-    /** @var list<string> $search */
-    $search = [];
-    /** @var list<string> $replace */
-    $replace = [];
-    foreach ($replacements as $k => $v) {
-        $search[] = $k;
-        $replace[] = $v;
-    }
-
-    return str_ireplace($search, $replace, $haystack);
+    return str_ireplace(array_keys($replacements), array_values($replacements), $haystack);
 }

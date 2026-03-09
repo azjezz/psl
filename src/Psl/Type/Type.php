@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type;
 
+use Override;
 use Psl\Type\Exception\AssertException;
 
 /**
@@ -16,7 +17,7 @@ abstract readonly class Type implements TypeInterface
     /**
      * @psalm-assert-if-true T $value
      */
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         try {
@@ -28,7 +29,7 @@ abstract readonly class Type implements TypeInterface
         }
     }
 
-    #[\Override]
+    #[Override]
     public function isOptional(): bool
     {
         return false;

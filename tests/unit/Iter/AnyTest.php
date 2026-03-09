@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Iter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 
 final class AnyTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testAny(bool $expected, iterable $iterable, callable $predicate): void
     {
         static::assertSame($expected, Iter\any($iterable, $predicate));
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [true, [false, true, true], static fn(bool $value): bool => $value];
         yield [true, [false, true, true], static fn(bool $value): bool => !$value];

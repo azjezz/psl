@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use BackedEnum;
+use Override;
 use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
@@ -26,7 +27,7 @@ final readonly class BackedEnumType extends Type\Type
         private readonly string $enum,
     ) {}
 
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         return $value instanceof $this->enum;
@@ -37,7 +38,7 @@ final readonly class BackedEnumType extends Type\Type
      *
      * @return T
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): BackedEnum
     {
         if ($value instanceof $this->enum) {
@@ -74,7 +75,7 @@ final readonly class BackedEnumType extends Type\Type
      *
      * @psalm-assert T $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): BackedEnum
     {
         if ($value instanceof $this->enum) {
@@ -84,7 +85,7 @@ final readonly class BackedEnumType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return Str\format('backed-enum(%s)', $this->enum);

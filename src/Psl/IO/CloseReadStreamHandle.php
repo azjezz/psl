@@ -66,7 +66,7 @@ final class CloseReadStreamHandle implements CloseHandleInterface, ReadHandleInt
     }
 
     /**
-     * @return resource|null
+     * @return resource|object|null
      *
      * @inheritDoc
      */

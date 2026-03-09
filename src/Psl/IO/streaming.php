@@ -54,6 +54,7 @@ function streaming(iterable $handles, null|Duration $timeout = null): Generator
             throw new Exception\AlreadyClosedException(Str\format('Handle "%s" is already closed.', (string) $index));
         }
 
+        // @mago-expect analysis:possibly-invalid-argument
         $watchers->value[$index] = EventLoop::onReadable($stream, static function (string $watcher) use (
             $index,
             $handle,

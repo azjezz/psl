@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str\Grapheme;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Range;
 use Psl\Str\Exception;
@@ -11,9 +12,7 @@ use Psl\Str\Grapheme;
 
 final class RangeTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testRange(string $expected, string $string, Range\RangeInterface $range): void
     {
         static::assertSame($expected, Grapheme\range($string, $range));
@@ -22,7 +21,7 @@ final class RangeTest extends TestCase
     /**
      * @return list<list{string, string, Range\RangeInterface}>
      */
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             ['', '', Range\between(0, 5, upper_inclusive: true)],

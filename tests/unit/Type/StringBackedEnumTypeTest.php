@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Str;
 use Psl\Tests\Fixture\StringEnum;
 use Psl\Type;
@@ -13,8 +14,8 @@ use Psl\Type;
  */
 final class StringBackedEnumTypeTest extends TypeTestCase
 {
-    #[\Override]
-    public function getType(): Type\TypeInterface
+    #[Override]
+    public static function getType(): Type\TypeInterface
     {
         return Type\backed_enum(StringEnum::class);
     }
@@ -22,11 +23,11 @@ final class StringBackedEnumTypeTest extends TypeTestCase
     /**
      * @return iterable<array{0: mixed, 1: StringEnum}>
      */
-    #[\Override]
-    public function getValidCoercions(): iterable
+    #[Override]
+    public static function getValidCoercions(): iterable
     {
         yield [StringEnum::Foo, StringEnum::Foo];
-        yield [$this->stringable('foo'), StringEnum::Foo];
+        yield [static::stringable('foo'), StringEnum::Foo];
         yield ['foo', StringEnum::Foo];
         yield ['1', StringEnum::Bar];
         yield [1, StringEnum::Bar];
@@ -35,21 +36,21 @@ final class StringBackedEnumTypeTest extends TypeTestCase
     /**
      * @return iterable<array{0: mixed}>
      */
-    #[\Override]
-    public function getInvalidCoercions(): iterable
+    #[Override]
+    public static function getInvalidCoercions(): iterable
     {
         yield [null];
         yield [STDIN];
         yield ['hello'];
-        yield [$this->stringable('bar')];
+        yield [static::stringable('bar')];
         yield [new class {}];
     }
 
     /**
      * @return iterable<array{0: Type\Type<mixed>, 1: string}>
      */
-    #[\Override]
-    public function getToStringExamples(): iterable
+    #[Override]
+    public static function getToStringExamples(): iterable
     {
         yield [Type\backed_enum(StringEnum::class), Str\format('backed-enum(%s)', StringEnum::class)];
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Comparison;
 
 use Generator;
+use Override;
 use PHPUnit\Framework\TestCase;
 use Psl\Comparison\Comparable;
 use Psl\Comparison\Exception\IncomparableException;
@@ -48,7 +49,7 @@ abstract class AbstractComparisonTestCase extends TestCase
                 public readonly int $int,
             ) {}
 
-            #[\Override]
+            #[Override]
             public function compare(mixed $other): Order
             {
                 return Order::from($this->int <=> $other->int);
@@ -64,7 +65,7 @@ abstract class AbstractComparisonTestCase extends TestCase
                 public readonly string $additionalInfo,
             ) {}
 
-            #[\Override]
+            #[Override]
             public function compare(mixed $other): Order
             {
                 throw IncomparableException::fromValues($this->int, $other->int, $this->additionalInfo);

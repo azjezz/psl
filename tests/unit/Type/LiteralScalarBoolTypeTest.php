@@ -4,26 +4,27 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Type;
 
 final class LiteralScalarBoolTypeTest extends TypeTestCase
 {
-    #[\Override]
-    public function getType(): Type\TypeInterface
+    #[Override]
+    public static function getType(): Type\TypeInterface
     {
         return Type\literal_scalar(false);
     }
 
-    #[\Override]
-    public function getValidCoercions(): iterable
+    #[Override]
+    public static function getValidCoercions(): iterable
     {
         yield ['0', false];
         yield [0, false];
         yield [false, false];
     }
 
-    #[\Override]
-    public function getInvalidCoercions(): iterable
+    #[Override]
+    public static function getInvalidCoercions(): iterable
     {
         yield [null];
         yield [true];
@@ -33,10 +34,10 @@ final class LiteralScalarBoolTypeTest extends TypeTestCase
         yield [Type\bool()];
     }
 
-    #[\Override]
-    public function getToStringExamples(): iterable
+    #[Override]
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'false'];
+        yield [static::getType(), 'false'];
         yield [Type\literal_scalar('5'), '"5"'];
         yield [Type\literal_scalar(5.500_0), '5.5'];
         yield [Type\literal_scalar(true), 'true'];

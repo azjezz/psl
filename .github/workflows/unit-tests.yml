@@ -20,6 +20,9 @@ jobs:
           - "macos-latest"
           - "ubuntu-latest"
           - "windows-latest"
+        exclude:
+          - php-version: "8.4"
+            operating-system: "windows-latest"
 
     steps:
       - name: "checkout"

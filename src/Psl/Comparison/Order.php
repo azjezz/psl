@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Comparison;
 
+use Override;
 use Psl\Default\DefaultInterface;
 
 /**
@@ -37,7 +38,7 @@ enum Order: int implements DefaultInterface
      *
      * @pure
      */
-    #[\Override]
+    #[Override]
     public static function default(): static
     {
         return self::Equal;

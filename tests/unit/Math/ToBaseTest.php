@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Math;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
 final class ToBaseTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testFromBase(string $expected, int $value, int $to_base): void
     {
         static::assertSame($expected, Math\to_base($value, $to_base));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

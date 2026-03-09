@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
 final class MetaphoneTest extends TestCase
 {
     /**
-     * @dataProvider provideData
+     * @param non-negative-int $phonemes
      */
+    #[DataProvider('provideData')]
     public function testMetaphone(null|string $expected, string $str, int $phonemes = 0): void
     {
         static::assertSame($expected, Str\metaphone($str, $phonemes));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             ['HL', 'hello'],

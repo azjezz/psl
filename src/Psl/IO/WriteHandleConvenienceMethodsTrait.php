@@ -38,25 +38,31 @@ trait WriteHandleConvenienceMethodsTrait
         }
 
         $original_size = strlen($bytes);
-        /**
-         * @var Psl\Ref<int> $written
-         */
-        $written = new Psl\Ref(0);
 
-        $timer = new Psl\Async\OptionalIncrementalTimeout($timeout, static function () use ($written): void {
-            // @codeCoverageIgnoreStart
-            throw new Exception\TimeoutException(Str\format(
-                'Reached timeout before %s data could be written.',
-                0 === $written->value ? 'any' : 'all',
-            ));
-            // @codeCoverageIgnoreEnd
-        });
+        if (null === $timeout) {
+            do {
+                $written = $this->write($bytes);
+                $bytes = substr($bytes, $written);
+            } while (0 !== $written && '' !== $bytes);
+        } else {
+            /** @var int $written */
+            $written = 0;
 
-        do {
-            $written->value = $this->write($bytes, $timer->getRemaining());
+            $timer = new Psl\Async\OptionalIncrementalTimeout($timeout, static function () use (&$written): void {
+                // @codeCoverageIgnoreStart
+                throw new Exception\TimeoutException(Str\format(
+                    'Reached timeout before %s data could be written.',
+                    0 === $written ? 'any' : 'all',
+                ));
+                // @codeCoverageIgnoreEnd
+            });
 
-            $bytes = substr($bytes, $written->value);
-        } while (0 !== $written->value && '' !== $bytes);
+            do {
+                $written = $this->write($bytes, $timer->getRemaining());
+
+                $bytes = substr($bytes, $written);
+            } while (0 !== $written && '' !== $bytes);
+        }
 
         if ('' !== $bytes) {
             // @codeCoverageIgnoreStart

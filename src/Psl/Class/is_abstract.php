@@ -13,5 +13,5 @@ use ReflectionClass;
  */
 function is_abstract(string $class_name): bool
 {
-    return (new ReflectionClass($class_name))->isAbstract();
+    return new ReflectionClass($class_name)->isAbstract();
 }

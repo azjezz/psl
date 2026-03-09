@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
 final class AfterCiTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testAfter(
         null|string $expected,
         string $haystack,
@@ -22,7 +21,7 @@ final class AfterCiTest extends TestCase
         static::assertSame($expected, Str\after_ci($haystack, $needle, $offset, $encoding));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [null, '', '', 0, Str\Encoding::Utf8],

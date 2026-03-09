@@ -23,14 +23,14 @@ final class ConnectTest extends TestCase
 
         Async\concurrently([
             'server' => static function () use ($sock): void {
-                $server = Unix\Server::create($sock);
-                self::assertSame("unix://{$sock}", $server->getLocalAddress()->toString());
-                $connection = $server->nextConnection();
+                $listener = Unix\listen($sock);
+                self::assertSame("unix://{$sock}", $listener->getLocalAddress()->toString());
+                $connection = $listener->accept();
                 $request = $connection->read();
                 self::assertSame('Hello, World!', $request);
                 $connection->writeAll(Str\reverse($request));
                 $connection->close();
-                $server->close();
+                $listener->close();
             },
             'client' => static function () use ($sock): void {
                 $client = Unix\connect($sock);

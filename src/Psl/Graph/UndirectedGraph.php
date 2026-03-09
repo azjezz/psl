@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Graph;
 
-use Psl\Vec;
-
+use function array_values;
 use function Psl\Graph\Internal\get_node_key;
 
 /**
@@ -42,7 +41,7 @@ final readonly class UndirectedGraph implements GraphInterface
      */
     public function getNodes(): array
     {
-        return Vec\values($this->nodes);
+        return array_values($this->nodes);
     }
 
     /**

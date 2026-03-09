@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
 final class OrdTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testOrd(int $expected, string $value): void
     {
         static::assertSame($expected, Str\ord($value));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [1605, 'م'],

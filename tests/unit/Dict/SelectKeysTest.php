@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Dict;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Dict;
 
 final class SelectKeysTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testSelectKeys(array $result, array $array, array $keys): void
     {
         static::assertSame($result, Dict\select_keys($array, $keys));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

@@ -5,21 +5,20 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Dict;
 
 use Closure;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Dict;
 use Psl\Str;
 
 final class PartitionWithKeyTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testPartition(array $expected, array $array, Closure $predicate): void
     {
         static::assertSame($expected, Dict\partition_with_key($array, $predicate));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

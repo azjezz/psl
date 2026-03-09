@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Str;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -35,7 +36,7 @@ final readonly class IntersectionType extends Type
     /**
      * @psalm-assert-if-true Tl&Tr $value
      */
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         return $this->right_type->matches($value) && $this->left_type->matches($value);
@@ -48,7 +49,7 @@ final readonly class IntersectionType extends Type
      *
      * @mago-expect lint:no-empty-catch-clause
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): mixed
     {
         try {
@@ -83,7 +84,7 @@ final readonly class IntersectionType extends Type
      *
      * @psalm-assert Tl&Tr $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): mixed
     {
         try {
@@ -95,7 +96,7 @@ final readonly class IntersectionType extends Type
         }
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         $left = $this->left_type->toString();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
@@ -34,11 +35,31 @@ final readonly class ContainerType extends Type\Type
     ) {}
 
     /**
+     * @psalm-assert-if-true iterable<Tk, Tv> $value
+     */
+    #[Override]
+    public function matches(mixed $value): bool
+    {
+        if (!is_iterable($value)) {
+            return false;
+        }
+
+        // @mago-expect analysis:mixed-assignment,mixed-assignment
+        foreach ($value as $k => $v) {
+            if (!$this->key_type->matches($k) || !$this->value_type->matches($v)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * @throws CoercionException
      *
      * @return iterable<Tk, Tv>
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): iterable
     {
         if (!is_iterable($value)) {
@@ -99,7 +120,7 @@ final readonly class ContainerType extends Type\Type
      *
      * @psalm-assert iterable<Tk, Tv> $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): iterable
     {
         if (!is_iterable($value)) {
@@ -142,7 +163,7 @@ final readonly class ContainerType extends Type\Type
         return $values;
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return Str\format('container<%s, %s>', $this->key_type->toString(), $this->value_type->toString());

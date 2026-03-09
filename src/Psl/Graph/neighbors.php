@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Graph;
 
-use Psl\Vec;
+use function array_map;
 
 /**
  * Returns all neighbor nodes of a given node.
@@ -30,13 +30,13 @@ function neighbors(DirectedGraph|UndirectedGraph $graph, mixed $node): array
 {
     $edges = $graph->getEdgesFrom($node);
 
-    return Vec\map(
-        $edges,
+    return array_map(
         /**
          * @param Edge<TNode, TWeight> $edge
          *
          * @return TNode
          */
         static fn(Edge $edge): mixed => $edge->to,
+        $edges,
     );
 }

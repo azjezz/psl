@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
-use Psl\Iter;
+use function array_reverse;
+use function array_values;
+use function is_array;
 
 /**
  * Reverse the given iterable.
@@ -21,17 +23,11 @@ use Psl\Iter;
  */
 function reverse(iterable $iterable): array
 {
+    if (is_array($iterable)) {
+        return array_reverse(array_values($iterable));
+    }
+
     $values = namespace\values($iterable);
-    if ([] === $values) {
-        return [];
-    }
 
-    $size = Iter\count($values);
-    $result = [];
-    for ($i = $size - 1; $i >= 0; $i--) {
-        // @mago-expect analysis:mismatched-array-index - we know that $i is always an int within bounds
-        $result[] = $values[$i];
-    }
-
-    return $result;
+    return array_reverse($values);
 }

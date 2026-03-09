@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Dict;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Dict;
 
 final class EqualTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testEqualReturnsTheExpectedValue(bool $expected, array $array, array $other): void
     {
         static::assertSame($expected, Dict\equal($array, $other));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

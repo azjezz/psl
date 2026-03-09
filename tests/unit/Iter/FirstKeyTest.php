@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Iter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Iter;
@@ -11,9 +12,7 @@ use SplDoublyLinkedList;
 
 final class FirstKeyTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testFirstKey(null|int|string $expected, iterable $iterable): void
     {
         $result = Iter\first_key($iterable);
@@ -21,7 +20,7 @@ final class FirstKeyTest extends TestCase
         static::assertSame($expected, $result);
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [null, []];
         yield [null, new SplDoublyLinkedList()];

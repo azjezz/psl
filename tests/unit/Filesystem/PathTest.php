@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Filesystem;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Filesystem;
 
 final class PathTest extends TestCase
 {
-    /**
-     * @dataProvider providePathInformationData
-     */
+    #[DataProvider('providePathInformationData')]
     public function testPathInformation(
         string $path,
         string $directory,
@@ -25,7 +24,7 @@ final class PathTest extends TestCase
         static::assertSame($extension, Filesystem\get_extension($path));
     }
 
-    public function providePathInformationData(): iterable
+    public static function providePathInformationData(): iterable
     {
         yield [
             '/home/azjezz/Projects/psl/src/bootstrap.php',

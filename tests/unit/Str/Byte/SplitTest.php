@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str\Byte;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
 final class SplitTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testSplit(array $expected, string $string, string $delimiter, null|int $length = null): void
     {
         static::assertSame($expected, Byte\split($string, $delimiter, $length));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [[], '', '', 1],

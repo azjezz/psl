@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Dict;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Dict;
+use Psl\Iter;
 
 final class MergeTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testMerge(array $expected, array $array, array ...$arrays): void
     {
         static::assertSame($expected, Dict\merge($array, ...$arrays));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [
@@ -42,5 +42,21 @@ final class MergeTest extends TestCase
                 [2 => 9, 3 => 8],
             ],
         ];
+    }
+
+    public function testMergeWithMixedArrayAndNonArrayRest(): void
+    {
+        $iterator = Iter\Iterator::create(['c' => 'd']);
+        $result = Dict\merge(['a' => 'b'], $iterator);
+
+        static::assertSame(['a' => 'b', 'c' => 'd'], $result);
+    }
+
+    public function testMergeWithNonArrayFirst(): void
+    {
+        $iterator = Iter\Iterator::create(['a' => 'b']);
+        $result = Dict\merge($iterator, ['c' => 'd']);
+
+        static::assertSame(['a' => 'b', 'c' => 'd'], $result);
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Str;
 use Psl\Tests\Fixture\UnitEnum;
 use Psl\Type;
@@ -13,8 +14,8 @@ use Psl\Type;
  */
 final class UnitEnumTypeTest extends TypeTestCase
 {
-    #[\Override]
-    public function getType(): Type\TypeInterface
+    #[Override]
+    public static function getType(): Type\TypeInterface
     {
         return Type\unit_enum(UnitEnum::class);
     }
@@ -22,8 +23,8 @@ final class UnitEnumTypeTest extends TypeTestCase
     /**
      * @return iterable<array{0: mixed, 1: UnitEnum}>
      */
-    #[\Override]
-    public function getValidCoercions(): iterable
+    #[Override]
+    public static function getValidCoercions(): iterable
     {
         yield [UnitEnum::Foo, UnitEnum::Foo];
         yield [UnitEnum::Bar, UnitEnum::Bar];
@@ -33,8 +34,8 @@ final class UnitEnumTypeTest extends TypeTestCase
     /**
      * @return iterable<array{0: mixed}>
      */
-    #[\Override]
-    public function getInvalidCoercions(): iterable
+    #[Override]
+    public static function getInvalidCoercions(): iterable
     {
         // NOTE(azjezz): should we allow coercion of unit enums from case names?
         yield ['Foo'];
@@ -47,15 +48,15 @@ final class UnitEnumTypeTest extends TypeTestCase
         yield [null];
         yield [STDIN];
         yield ['hello'];
-        yield [$this->stringable('bar')];
+        yield [static::stringable('bar')];
         yield [new class {}];
     }
 
     /**
      * @return iterable<array{0: Type\Type<mixed>, 1: string}>
      */
-    #[\Override]
-    public function getToStringExamples(): iterable
+    #[Override]
+    public static function getToStringExamples(): iterable
     {
         yield [Type\unit_enum(UnitEnum::class), Str\format('unit-enum(%s)', UnitEnum::class)];
     }

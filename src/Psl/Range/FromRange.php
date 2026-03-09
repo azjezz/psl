@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Range;
 
 use Generator;
+use Override;
 use Psl\Iter;
 use Psl\Math;
 
@@ -47,7 +48,7 @@ final readonly class FromRange implements LowerBoundRangeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function contains(int $value): bool
     {
         return $value >= $this->lowerBound;
@@ -58,7 +59,7 @@ final readonly class FromRange implements LowerBoundRangeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function withLowerBound(int $lower_bound): FromRange
     {
         return new FromRange($lower_bound);
@@ -71,7 +72,7 @@ final readonly class FromRange implements LowerBoundRangeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function withUpperBound(int $upper_bound, bool $upper_inclusive): BetweenRange
     {
         return new BetweenRange($this->lowerBound, $upper_bound, $upper_inclusive);
@@ -84,7 +85,7 @@ final readonly class FromRange implements LowerBoundRangeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function withUpperBoundInclusive(int $upper_bound): BetweenRange
     {
         return new BetweenRange($this->lowerBound, $upper_bound, true);
@@ -97,7 +98,7 @@ final readonly class FromRange implements LowerBoundRangeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function withUpperBoundExclusive(int $upper_bound): BetweenRange
     {
         return new BetweenRange($this->lowerBound, $upper_bound, false);
@@ -108,7 +109,7 @@ final readonly class FromRange implements LowerBoundRangeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function withoutLowerBound(): FullRange
     {
         return new FullRange();
@@ -119,7 +120,7 @@ final readonly class FromRange implements LowerBoundRangeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function getLowerBound(): int
     {
         return $this->lowerBound;
@@ -132,7 +133,7 @@ final readonly class FromRange implements LowerBoundRangeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function getIterator(): Iter\Iterator
     {
         $bound = $this->lowerBound;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Collection;
 use Psl\Str;
 use Psl\Type;
@@ -29,15 +30,35 @@ final readonly class VectorType extends Type\Type
      * @param Type\TypeInterface<T> $value_type
      */
     public function __construct(
-        private readonly Type\TypeInterface $value_type,
+        private Type\TypeInterface $value_type,
     ) {}
+
+    /**
+     * @psalm-assert-if-true Collection\VectorInterface<T> $value
+     */
+    #[Override]
+    public function matches(mixed $value): bool
+    {
+        if (!is_object($value) || !$value instanceof Collection\VectorInterface) {
+            return false;
+        }
+
+        // @mago-expect analysis:mixed-assignment
+        foreach ($value as $v) {
+            if (!$this->value_type->matches($v)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     /**
      * @throws CoercionException
      *
      * @return Collection\VectorInterface<T>
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): Collection\VectorInterface
     {
         if (is_iterable($value)) {
@@ -90,7 +111,7 @@ final readonly class VectorType extends Type\Type
      *
      * @psalm-assert Collection\VectorInterface<T> $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): Collection\VectorInterface
     {
         if (is_object($value) && $value instanceof Collection\VectorInterface) {
@@ -122,7 +143,7 @@ final readonly class VectorType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return Str\format('%s<%s>', Collection\VectorInterface::class, $this->value_type->toString());

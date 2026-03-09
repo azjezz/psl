@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Collection;
 use Psl\Collection\MapInterface;
 use Psl\Dict;
@@ -18,14 +20,14 @@ use RuntimeException;
  */
 final class MapTypeTest extends TypeTestCase
 {
-    #[\Override]
-    public function getType(): Type\TypeInterface
+    #[Override]
+    public static function getType(): Type\TypeInterface
     {
         return Type\map(Type\int(), Type\int());
     }
 
-    #[\Override]
-    public function getValidCoercions(): iterable
+    #[Override]
+    public static function getValidCoercions(): iterable
     {
         yield [
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -58,8 +60,8 @@ final class MapTypeTest extends TypeTestCase
         ];
     }
 
-    #[\Override]
-    public function getInvalidCoercions(): iterable
+    #[Override]
+    public static function getInvalidCoercions(): iterable
     {
         yield [1.0];
         yield [1.23];
@@ -70,10 +72,10 @@ final class MapTypeTest extends TypeTestCase
         yield [STDIN];
     }
 
-    #[\Override]
-    public function getToStringExamples(): iterable
+    #[Override]
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'Psl\Collection\MapInterface<int, int>'];
+        yield [static::getType(), 'Psl\Collection\MapInterface<int, int>'];
         yield [Type\map(Type\array_key(), Type\int()), 'Psl\Collection\MapInterface<array-key, int>'];
         yield [Type\map(Type\array_key(), Type\string()), 'Psl\Collection\MapInterface<array-key, string>'];
         yield [
@@ -86,8 +88,8 @@ final class MapTypeTest extends TypeTestCase
      * @param MapInterface<array-key, mixed>|mixed $a
      * @param MapInterface<array-key, mixed>|mixed $b
      */
-    #[\Override]
-    protected function equals(mixed $a, mixed $b): bool
+    #[Override]
+    protected static function equals(mixed $a, mixed $b): bool
     {
         if (Type\instance_of(MapInterface::class)->matches($a)) {
             $a = $a->toArray();
@@ -176,9 +178,7 @@ final class MapTypeTest extends TypeTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideAssertExceptionExpectations
-     */
+    #[DataProvider('provideAssertExceptionExpectations')]
     public function testInvalidAssertionTypeExceptions(
         Type\TypeInterface $type,
         mixed $data,
@@ -192,9 +192,7 @@ final class MapTypeTest extends TypeTestCase
         }
     }
 
-    /**
-     * @dataProvider provideCoerceExceptionExpectations
-     */
+    #[DataProvider('provideCoerceExceptionExpectations')]
     public function testInvalidCoercionTypeExceptions(
         Type\TypeInterface $type,
         mixed $data,
@@ -206,5 +204,21 @@ final class MapTypeTest extends TypeTestCase
         } catch (Type\Exception\CoercionException $e) {
             static::assertSame($expectedMessage, $e->getMessage());
         }
+    }
+
+    public function testMatchesReturnsFalseForInvalidValueType(): void
+    {
+        $type = Type\map(Type\int(), Type\int());
+        $map = new Collection\Map([0 => 'not an int']);
+
+        static::assertFalse($type->matches($map));
+    }
+
+    public function testMatchesReturnsFalseForInvalidKeyType(): void
+    {
+        $type = Type\map(Type\int(), Type\string());
+        $map = new Collection\Map(['not_int' => 'value']);
+
+        static::assertFalse($type->matches($map));
     }
 }

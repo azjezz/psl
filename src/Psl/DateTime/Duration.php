@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace Psl\DateTime;
 
-use JsonSerializable;
+use DateInterval;
+use Override;
 use Psl\Comparison;
-use Psl\Math;
 use Psl\Str;
-use Stringable;
+
+use function abs;
+use function rtrim;
+use function str_pad;
+use function substr;
+
+use const STR_PAD_LEFT;
 
 /**
  * Defines a representation of a time duration with specific hours, minutes, seconds,
@@ -23,11 +29,10 @@ use Stringable;
  * For example, Duration::hours(2, -183) normalizes to "-1 hour(s), -3 minute(s)".
  *
  * @implements Comparison\Comparable<Duration>
- * @implements Comparison\Equable<Duration>
  *
  * @immutable
  */
-final readonly class Duration implements Comparison\Comparable, Comparison\Equable, JsonSerializable, Stringable
+final readonly class Duration implements TemporalAmountInterface, Comparison\Comparable
 {
     /**
      * Initializes a new instance of Duration with specified hours, minutes, seconds, and
@@ -53,8 +58,6 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      * actual values in the returned instance may differ from the provided ones.
      *
      * @pure
-     *
-     * @mago-expect lint:no-else-clause
      */
     public static function fromParts(int $hours, int $minutes = 0, int $seconds = 0, int $nanoseconds = 0): self
     {
@@ -78,30 +81,6 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
         $h = (int) ($m / 60);
         $m %= 60;
         return new self($h, $m, $s, $ns);
-    }
-
-    /**
-     * Returns an instance representing the specified number of weeks, in hours.
-     *
-     * For example, `Duration::weeks(1)` is equivalent to `Duration::hours(168)`.
-     *
-     * @pure
-     */
-    public static function weeks(int $weeks): self
-    {
-        return self::fromParts($weeks * HOURS_PER_WEEK);
-    }
-
-    /**
-     * Returns an instance representing the specified number of days, in hours.
-     *
-     * For example, `Duration::days(2)` is equivalent to `Duration::hours(48)`.
-     *
-     * @pure
-     */
-    public static function days(int $days): self
-    {
-        return self::fromParts($days * HOURS_PER_DAY);
     }
 
     /**
@@ -449,7 +428,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function compare(mixed $other): Comparison\Order
     {
         if ($this->hours !== $other->hours) {
@@ -470,13 +449,17 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
     /**
      * Evaluates whether this duration is equivalent to another, considering all time components.
      *
-     * @param Duration $other
+     * @param TemporalAmountInterface $other
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function equals(mixed $other): bool
     {
+        if (!$other instanceof Duration) {
+            return false;
+        }
+
         return $this->compare($other) === Comparison\Order::Equal;
     }
 
@@ -627,6 +610,57 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
     }
 
     /**
+     * Returns an ISO 8601 duration string representing this duration.
+     *
+     * Examples: "PT5H30M", "PT10.5S", "PT0S", "-PT1H30M".
+     * Fractional seconds are used when nanoseconds are present.
+     *
+     * @psalm-mutation-free
+     */
+    public function toIso8601(): string
+    {
+        return Internal\format_iso8601_duration($this->hours, $this->minutes, $this->seconds, $this->nanoseconds);
+    }
+
+    /**
+     * Parses an ISO 8601 duration string into a Duration.
+     *
+     * Accepts formats like "PT5H30M", "PT10.5S", "-PT1H", "PT0S".
+     * Only time components (H, M, S after T) are accepted. Date components (Y, M, D before T)
+     * will cause a {@see Exception\ParserException}.
+     *
+     * @throws Exception\ParserException If the string is not a valid ISO 8601 duration.
+     *
+     * @pure
+     */
+    public static function fromIso8601(string $value): self
+    {
+        [$hours, $minutes, $seconds, $nanoseconds] = Internal\parse_iso8601_duration($value);
+
+        return self::fromParts($hours, $minutes, $seconds, $nanoseconds);
+    }
+
+    /**
+     * Adds this duration to the given temporal, returning the result.
+     *
+     * @psalm-mutation-free
+     */
+    public function addTo(TemporalInterface $temporal): TemporalInterface
+    {
+        return $temporal->plus($this);
+    }
+
+    /**
+     * Subtracts this duration from the given temporal, returning the result.
+     *
+     * @psalm-mutation-free
+     */
+    public function subtractFrom(TemporalInterface $temporal): TemporalInterface
+    {
+        return $temporal->minus($this);
+    }
+
+    /**
      * Returns the time duration as string, useful e.g. for debugging. This is not
      * meant to be a comprehensive way to format time durations for user-facing
      * output.
@@ -639,10 +673,10 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
     {
         $decimal_part = '';
         if ($max_decimals > 0) {
-            $decimal_part = (string) Math\abs($this->nanoseconds);
-            $decimal_part = Str\pad_left($decimal_part, 9, '0');
-            $decimal_part = Str\slice($decimal_part, 0, $max_decimals);
-            $decimal_part = Str\trim_right($decimal_part, '0');
+            $decimal_part = (string) abs($this->nanoseconds);
+            $decimal_part = str_pad($decimal_part, 9, '0', STR_PAD_LEFT);
+            $decimal_part = substr($decimal_part, 0, $max_decimals);
+            $decimal_part = rtrim($decimal_part, '0');
         }
 
         if ('' !== $decimal_part) {
@@ -650,7 +684,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
         }
 
         $sec_sign = $this->seconds < 0 || $this->nanoseconds < 0 ? '-' : '';
-        $sec = Math\abs($this->seconds);
+        $sec = abs($this->seconds);
 
         $containsHours = 0 !== $this->hours;
         $containsMinutes = 0 !== $this->minutes;
@@ -679,10 +713,27 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function __toString(): string
     {
         return $this->toString();
+    }
+
+    /**
+     * Converts this {@see Duration} to a PHP {@see DateInterval}.
+     *
+     * Note: nanosecond precision is truncated to microseconds.
+     *
+     * @return DateInterval
+     *
+     * @psalm-mutation-free
+     */
+    #[Override]
+    public function toStdlib(): DateInterval
+    {
+        $total_seconds = (int) $this->getTotalSeconds();
+
+        return DateInterval::createFromDateString($total_seconds . ' seconds');
     }
 
     /**
@@ -692,7 +743,7 @@ final readonly class Duration implements Comparison\Comparable, Comparison\Equab
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function jsonSerialize(): array
     {
         return [

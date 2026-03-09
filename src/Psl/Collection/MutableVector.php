@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Collection;
 
 use Closure;
+use Override;
 use Psl\Dict;
 use Psl\Iter;
 use Psl\Vec;
@@ -12,6 +13,7 @@ use Psl\Vec;
 use function array_key_exists;
 use function array_key_last;
 use function array_keys;
+use function array_search;
 use function array_values;
 use function count;
 use function iterator_to_array;
@@ -37,9 +39,7 @@ final class MutableVector implements MutableVectorInterface
      */
     public function __construct(array $elements)
     {
-        foreach ($elements as $element) {
-            $this->elements[] = $element;
-        }
+        $this->elements = array_values($elements);
     }
 
     /**
@@ -49,7 +49,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-external-mutation-free
      */
-    #[\Override]
+    #[Override]
     public static function default(): static
     {
         return new self([]);
@@ -95,7 +95,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function first(): mixed
     {
         return $this->elements[0] ?? null;
@@ -109,7 +109,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function last(): mixed
     {
         $key = $this->lastKey();
@@ -125,7 +125,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @return Iter\Iterator<int<0, max>, T>
      */
-    #[\Override]
+    #[Override]
     public function getIterator(): Iter\Iterator
     {
         return Iter\Iterator::create($this->elements);
@@ -136,7 +136,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function isEmpty(): bool
     {
         return [] === $this->elements;
@@ -149,7 +149,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @return int<0, max>
      */
-    #[\Override]
+    #[Override]
     public function count(): int
     {
         return count($this->elements);
@@ -162,7 +162,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function toArray(): array
     {
         return $this->elements;
@@ -175,7 +175,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function jsonSerialize(): array
     {
         return $this->elements;
@@ -192,7 +192,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function at(int|string $k): mixed
     {
         if (!array_key_exists($k, $this->elements)) {
@@ -209,7 +209,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function contains(int|string $k): bool
     {
         return array_key_exists($k, $this->elements);
@@ -222,7 +222,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function containsKey(int|string $k): bool
     {
         return $this->contains($k);
@@ -237,7 +237,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function get(int|string $k): mixed
     {
         return $this->elements[$k] ?? null;
@@ -251,7 +251,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function firstKey(): null|int
     {
         return [] === $this->elements ? null : 0;
@@ -265,7 +265,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function lastKey(): null|int
     {
         return array_key_last($this->elements);
@@ -283,18 +283,12 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function linearSearch(mixed $search_value): null|int
     {
-        foreach ($this->elements as $key => $element) {
-            if ($search_value !== $element) {
-                continue;
-            }
+        $key = array_search($search_value, $this->elements, true);
 
-            return $key;
-        }
-
-        return null;
+        return false === $key ? null : $key;
     }
 
     /**
@@ -316,7 +310,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-external-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function set(int|string $k, mixed $v): MutableVector
     {
         if (!array_key_exists($k, $this->elements)) {
@@ -345,7 +339,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-external-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function setAll(array $elements): MutableVector
     {
         foreach ($elements as $k => $v) {
@@ -374,7 +368,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-external-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function remove(int|string $k): MutableVector
     {
         if ($this->contains($k)) {
@@ -393,7 +387,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-external-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function clear(): MutableVector
     {
         $this->elements = [];
@@ -410,7 +404,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-external-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function add(mixed $v): MutableVector
     {
         $this->elements[] = $v;
@@ -427,7 +421,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-external-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function addAll(iterable $elements): MutableVector
     {
         foreach ($elements as $item) {
@@ -445,7 +439,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function values(): MutableVector
     {
         return MutableVector::fromArray($this->elements);
@@ -458,7 +452,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function keys(): MutableVector
     {
         return MutableVector::fromArray(array_keys($this->elements));
@@ -480,7 +474,7 @@ final class MutableVector implements MutableVectorInterface
      * @return MutableVector<T> A `MutableVector` containing the values after a user-specified condition
      *                          is applied.
      */
-    #[\Override]
+    #[Override]
     public function filter(Closure $fn): MutableVector
     {
         return new MutableVector(Dict\filter($this->elements, $fn));
@@ -503,7 +497,7 @@ final class MutableVector implements MutableVectorInterface
      * @return MutableVector<T> A `MutableVector` containing the values after a user-specified
      *                          condition is applied to the keys and values of the current `MutableVector`.
      */
-    #[\Override]
+    #[Override]
     public function filterWithKey(Closure $fn): MutableVector
     {
         return new MutableVector(Dict\filter_with_key($this->elements, $fn));
@@ -527,7 +521,7 @@ final class MutableVector implements MutableVectorInterface
      * @return MutableVector<Tu> A `MutableVector` containing key/value pairs after a user-specified
      *                           operation is applied.
      */
-    #[\Override]
+    #[Override]
     public function map(Closure $fn): MutableVector
     {
         return new MutableVector(Dict\map($this->elements, $fn));
@@ -552,7 +546,7 @@ final class MutableVector implements MutableVectorInterface
      * @return MutableVector<Tu> A `MutableVector` containing the values after a user-specified
      *                           operation on the current `MutableVector`'s keys and values is applied.
      */
-    #[\Override]
+    #[Override]
     public function mapWithKey(Closure $fn): MutableVector
     {
         return new MutableVector(Dict\map_with_key($this->elements, $fn));
@@ -576,7 +570,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function zip(array $elements): MutableVector
     {
         return MutableVector::fromArray(Vec\zip($this->elements, $elements));
@@ -599,7 +593,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function take(int $n): MutableVector
     {
         return $this->slice(0, $n);
@@ -619,7 +613,7 @@ final class MutableVector implements MutableVectorInterface
      * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
      *                          `MutableVector` up until the callback returns `false`.
      */
-    #[\Override]
+    #[Override]
     public function takeWhile(Closure $fn): MutableVector
     {
         return new MutableVector(Dict\take_while($this->elements, $fn));
@@ -642,7 +636,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function drop(int $n): MutableVector
     {
         return $this->slice($n);
@@ -662,7 +656,7 @@ final class MutableVector implements MutableVectorInterface
      * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
      *                          `MutableVector` starting after the callback returns `true`.
      */
-    #[\Override]
+    #[Override]
     public function dropWhile(Closure $fn): MutableVector
     {
         return new MutableVector(Dict\drop_while($this->elements, $fn));
@@ -689,7 +683,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function slice(int $start, null|int $length = null): MutableVector
     {
         return MutableVector::fromArray(Dict\slice($this->elements, $start, $length));
@@ -709,7 +703,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function chunk(int $size): MutableVector
     {
         return static::fromArray(Vec\map(Vec\chunk($this->toArray(), $size), MutableVector::fromArray(...)));
@@ -728,7 +722,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-assert int<0, max> $offset
      */
-    #[\Override]
+    #[Override]
     public function offsetExists(mixed $offset): bool
     {
         if (!is_int($offset) || $offset < 0) {
@@ -752,7 +746,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @psalm-assert int<0, max> $offset
      */
-    #[\Override]
+    #[Override]
     public function offsetGet(mixed $offset): mixed
     {
         if (!is_int($offset) || $offset < 0) {
@@ -775,7 +769,7 @@ final class MutableVector implements MutableVectorInterface
      * @throws Exception\InvalidOffsetException If the offset is not null or a positive integer.
      * @throws Exception\OutOfBoundsException If the offset is out-of-bounds.
      */
-    #[\Override]
+    #[Override]
     public function offsetSet(mixed $offset, mixed $value): void
     {
         if (null === $offset) {
@@ -804,7 +798,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * @throws Exception\InvalidOffsetException If the offset type is not valid.
      */
-    #[\Override]
+    #[Override]
     public function offsetUnset(mixed $offset): void
     {
         if (!is_int($offset) || $offset < 0) {

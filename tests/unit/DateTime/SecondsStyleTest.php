@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\DateTime;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\DateTime\SecondsStyle;
 use Psl\DateTime\Timestamp;
@@ -12,9 +13,7 @@ final class SecondsStyleTest extends TestCase
 {
     use DateTimeTestTrait;
 
-    /**
-     * @dataProvider provideFromTimestampData
-     */
+    #[DataProvider('provideFromTimestampData')]
     public function testFromTimestamp(SecondsStyle $expectedSecondsStyle, Timestamp $timestamp): void
     {
         static::assertSame($expectedSecondsStyle, SecondsStyle::fromTimestamp($timestamp));

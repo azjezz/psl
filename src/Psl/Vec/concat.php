@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
+use function array_merge;
+use function array_values;
+use function is_array;
+
 /**
  * Returns a new list formed by concatenating the given lists together.
  *
@@ -16,10 +20,18 @@ namespace Psl\Vec;
  */
 function concat(iterable $first, iterable ...$rest): array
 {
+    if (is_array($first) && $rest === []) {
+        return array_values($first);
+    }
+
     $first = values($first);
     foreach ($rest as $arr) {
-        foreach ($arr as $value) {
-            $first[] = $value;
+        if (is_array($arr)) {
+            $first = array_merge($first, array_values($arr));
+        } else {
+            foreach ($arr as $value) {
+                $first[] = $value;
+            }
         }
     }
 

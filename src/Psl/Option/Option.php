@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Option;
 
 use Closure;
+use Override;
 use Psl\Comparison;
 
 /**
@@ -177,9 +178,11 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      * @note:   Arguments passed to `Option::or()` are eagerly evaluated;
      *          if you are passing the result of a function call, it is recommended to use `Option::orElse()`, which is lazily evaluated.
      *
-     * @param Option<T> $option
+     * @template O
      *
-     * @return Option<T>
+     * @param Option<O> $option
+     *
+     * @return Option<T|O>
      *
      * @psalm-mutation-free
      */
@@ -195,9 +198,11 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     /**
      * Returns the option if it contains a value, otherwise calls $closure and returns the result.
      *
-     * @param (Closure(): Option<T>) $closure
+     * @template E
      *
-     * @return Option<T>
+     * @param (Closure(): Option<E>) $closure
+     *
+     * @return Option<T|E>
      */
     public function orElse(Closure $closure): Option
     {
@@ -368,7 +373,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     /**
      * @param Option<T> $other
      */
-    #[\Override]
+    #[Override]
     public function compare(mixed $other): Comparison\Order
     {
         $aIsNone = $this->isNone();
@@ -383,7 +388,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     /**
      * @param Option<T> $other
      */
-    #[\Override]
+    #[Override]
     public function equals(mixed $other): bool
     {
         return Comparison\equal($this, $other);

@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
 final class UppercaseTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testUppercase(string $expected, string $str): void
     {
         static::assertSame($expected, Str\uppercase($str));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             ['HELLO',          'hello'],

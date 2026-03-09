@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Collection;
 use Psl\Iter;
 use Psl\Type;
@@ -13,8 +14,8 @@ use Psl\Type;
  */
 final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
 {
-    #[\Override]
-    public function getType(): Type\TypeInterface
+    #[Override]
+    public static function getType(): Type\TypeInterface
     {
         return Type\shape([
             'name' => Type\string(),
@@ -30,8 +31,8 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
         ], true);
     }
 
-    #[\Override]
-    public function getValidCoercions(): iterable
+    #[Override]
+    public static function getValidCoercions(): iterable
     {
         yield [
             ['name' => 'saif', 'articles' => new Collection\Vector([])],
@@ -113,8 +114,8 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
         ];
     }
 
-    #[\Override]
-    public function getInvalidCoercions(): iterable
+    #[Override]
+    public static function getInvalidCoercions(): iterable
     {
         yield [1.0];
         yield [1.23];
@@ -140,11 +141,11 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
         ]];
     }
 
-    #[\Override]
-    public function getToStringExamples(): iterable
+    #[Override]
+    public static function getToStringExamples(): iterable
     {
         yield [
-            $this->getType(),
+            static::getType(),
             "array{'name': string, 'articles': vec<array{"
                 . "'title': string, "
                 . "'content': string, "
@@ -162,8 +163,8 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
      * @param Collection\VectorInterface<mixed>|mixed $a
      * @param Collection\VectorInterface<mixed>|mixed $b
      */
-    #[\Override]
-    protected function equals(mixed $a, mixed $b): bool
+    #[Override]
+    protected static function equals(mixed $a, mixed $b): bool
     {
         $dict = Type\dict(Type\array_key(), Type\mixed());
         if (!$dict->matches($a) || !$dict->matches($b)) {

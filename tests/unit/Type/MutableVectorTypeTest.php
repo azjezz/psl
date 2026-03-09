@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Collection;
 use Psl\Collection\MutableVectorInterface;
 use Psl\Dict;
@@ -18,14 +20,14 @@ use RuntimeException;
  */
 final class MutableVectorTypeTest extends TypeTestCase
 {
-    #[\Override]
-    public function getType(): Type\TypeInterface
+    #[Override]
+    public static function getType(): Type\TypeInterface
     {
         return Type\mutable_vector(Type\int());
     }
 
-    #[\Override]
-    public function getValidCoercions(): iterable
+    #[Override]
+    public static function getValidCoercions(): iterable
     {
         yield [
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -68,8 +70,8 @@ final class MutableVectorTypeTest extends TypeTestCase
         ];
     }
 
-    #[\Override]
-    public function getInvalidCoercions(): iterable
+    #[Override]
+    public static function getInvalidCoercions(): iterable
     {
         yield [1.0];
         yield [1.23];
@@ -80,10 +82,10 @@ final class MutableVectorTypeTest extends TypeTestCase
         yield [STDIN];
     }
 
-    #[\Override]
-    public function getToStringExamples(): iterable
+    #[Override]
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), 'Psl\Collection\MutableVectorInterface<int>'];
+        yield [static::getType(), 'Psl\Collection\MutableVectorInterface<int>'];
         yield [Type\mutable_vector(Type\string()), 'Psl\Collection\MutableVectorInterface<string>'];
         yield [
             Type\mutable_vector(Type\instance_of(Iter\Iterator::class)),
@@ -95,8 +97,8 @@ final class MutableVectorTypeTest extends TypeTestCase
      * @param MutableVectorInterface<mixed>|mixed $a
      * @param MutableVectorInterface<mixed>|mixed $b
      */
-    #[\Override]
-    protected function equals(mixed $a, mixed $b): bool
+    #[Override]
+    protected static function equals(mixed $a, mixed $b): bool
     {
         if (Type\instance_of(MutableVectorInterface::class)->matches($a)) {
             $a = $a->toArray();
@@ -173,9 +175,7 @@ final class MutableVectorTypeTest extends TypeTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideAssertExceptionExpectations
-     */
+    #[DataProvider('provideAssertExceptionExpectations')]
     public function testInvalidAssertionTypeExceptions(
         Type\TypeInterface $type,
         mixed $data,
@@ -189,9 +189,7 @@ final class MutableVectorTypeTest extends TypeTestCase
         }
     }
 
-    /**
-     * @dataProvider provideCoerceExceptionExpectations
-     */
+    #[DataProvider('provideCoerceExceptionExpectations')]
     public function testInvalidCoercionTypeExceptions(
         Type\TypeInterface $type,
         mixed $data,
@@ -203,5 +201,13 @@ final class MutableVectorTypeTest extends TypeTestCase
         } catch (Type\Exception\CoercionException $e) {
             static::assertSame($expectedMessage, $e->getMessage());
         }
+    }
+
+    public function testMatchesReturnsFalseForInvalidElementType(): void
+    {
+        $type = Type\mutable_vector(Type\int());
+        $vector = new Collection\MutableVector(['not an int']);
+
+        static::assertFalse($type->matches($vector));
     }
 }

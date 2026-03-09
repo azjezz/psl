@@ -1,0 +1,266 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\UDP;
+
+use Override;
+use Psl\DateTime\Duration;
+use Psl\IO;
+use Psl\Network;
+
+use function fclose;
+use function is_resource;
+use function stream_context_create;
+use function stream_set_blocking;
+use function stream_socket_client;
+use function stream_socket_get_name;
+use function stream_socket_recvfrom;
+use function stream_socket_sendto;
+use function stream_socket_server;
+
+use const STREAM_CLIENT_CONNECT;
+use const STREAM_PEEK;
+use const STREAM_SERVER_BIND;
+
+/**
+ * An unconnected UDP socket for sending and receiving datagrams.
+ *
+ * Use {@see sendTo()} and {@see receiveFrom()} to communicate with arbitrary addresses.
+ *
+ * To switch to connected mode, call {@see connect()} which returns a {@see ConnectedSocket}.
+ */
+final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
+{
+    /**
+     * @var resource|closed-resource|null
+     */
+    private mixed $stream;
+
+    /**
+     * @param resource $stream
+     */
+    private function __construct(mixed $stream)
+    {
+        $this->stream = $stream;
+        stream_set_blocking($stream, false);
+    }
+
+    /**
+     * Create a UDP socket bound to the given address.
+     *
+     * @param non-empty-string $host
+     * @param int<0, 65535> $port
+     *
+     * @throws Network\Exception\RuntimeException If failed to create or bind the socket.
+     */
+    public static function bind(
+        string $host = '0.0.0.0',
+        int $port = 0,
+        bool $reuse_address = false,
+        bool $reuse_port = false,
+        bool $broadcast = false,
+    ): self {
+        $context = ['socket' => [
+            'so_reuseaddr' => $reuse_address,
+            'so_reuseport' => $reuse_port,
+            'so_broadcast' => $broadcast,
+        ]];
+
+        $ctx = stream_context_create($context);
+        $errno = 0;
+        $errstr = '';
+        $socket = @stream_socket_server("udp://{$host}:{$port}", $errno, $errstr, STREAM_SERVER_BIND, $ctx);
+
+        if ($socket === false) {
+            throw new Network\Exception\RuntimeException("Failed to bind UDP socket: {$errstr}", (int) $errno);
+        }
+
+        return new self($socket);
+    }
+
+    /**
+     * Connect to a remote address, returning a {@see ConnectedSocket}.
+     *
+     * This socket is closed after connecting. Use the returned {@see ConnectedSocket} for further communication.
+     *
+     * @param non-empty-string $host
+     * @param int<0, 65535> $port
+     *
+     * @throws Network\Exception\RuntimeException If the connect fails.
+     * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
+     */
+    public function connect(string $host, int $port): ConnectedSocket
+    {
+        $old_stream = $this->getResource();
+
+        $local_name = @stream_socket_get_name($old_stream, false);
+        $bindto = $local_name !== false ? $local_name : '0.0.0.0:0';
+
+        fclose($old_stream);
+        $this->stream = null;
+
+        $context = stream_context_create(['socket' => [
+            'bindto' => $bindto,
+        ]]);
+
+        $errno = 0;
+        $errstr = '';
+        $new_stream = @stream_socket_client(
+            "udp://{$host}:{$port}",
+            $errno,
+            $errstr,
+            null,
+            STREAM_CLIENT_CONNECT,
+            $context,
+        );
+
+        if ($new_stream === false) {
+            throw new Network\Exception\RuntimeException("Failed to connect UDP socket to {$host}:{$port}: {$errstr}");
+        }
+
+        return new ConnectedSocket($new_stream, Network\Address::udp($host, $port));
+    }
+
+    /**
+     * Send a datagram to a specific address.
+     *
+     * @return int<0, max> Number of bytes sent.
+     *
+     * @throws Network\Exception\RuntimeException If the send fails.
+     * @throws Network\Exception\InvalidArgumentException If the datagram exceeds the maximum size.
+     * @throws IO\Exception\TimeoutException If the operation times out.
+     * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
+     */
+    public function sendTo(string $data, Network\Address $address, null|Duration $timeout = null): int
+    {
+        Internal\validate_payload_size($data);
+        $stream = $this->getResource();
+
+        $target = "{$address->host}:{$address->port}";
+
+        if ($timeout !== null) {
+            Internal\wait_writable($stream, $timeout);
+        }
+
+        $result = @stream_socket_sendto($stream, $data, 0, $target);
+        if ($result === false || $result === -1) {
+            throw new Network\Exception\RuntimeException('Failed to send UDP datagram.');
+        }
+
+        /** @var int<0, max> */
+        return $result;
+    }
+
+    /**
+     * Receive a datagram and the sender's address.
+     *
+     * @param positive-int $max_bytes
+     *
+     * @return array{string, Network\Address} [data, sender_address]
+     *
+     * @throws Network\Exception\RuntimeException If the receive fails.
+     * @throws IO\Exception\TimeoutException If the operation times out.
+     * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
+     */
+    public function receiveFrom(int $max_bytes, null|Duration $timeout = null): array
+    {
+        $stream = $this->getResource();
+
+        Internal\await_readable($stream, $timeout);
+
+        $address = '';
+        $data = @stream_socket_recvfrom($stream, $max_bytes, 0, $address);
+        if ($data === false) {
+            throw new Network\Exception\RuntimeException('Failed to receive UDP datagram.');
+        }
+
+        return [$data, Internal\parse_address($address)];
+    }
+
+    /**
+     * Peek at an incoming datagram and get the sender's address, without consuming it.
+     *
+     * @param positive-int $max_bytes
+     *
+     * @return array{string, Network\Address} [data, sender_address]
+     *
+     * @throws Network\Exception\RuntimeException If the peek fails.
+     * @throws IO\Exception\TimeoutException If the operation times out.
+     * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
+     */
+    public function peekFrom(int $max_bytes, null|Duration $timeout = null): array
+    {
+        $stream = $this->getResource();
+
+        Internal\await_readable($stream, $timeout);
+
+        $address = '';
+        $data = @stream_socket_recvfrom($stream, $max_bytes, STREAM_PEEK, $address);
+        if ($data === false) {
+            throw new Network\Exception\RuntimeException('Failed to peek UDP datagram.');
+        }
+
+        return [$data, Internal\parse_address($address)];
+    }
+
+    /**
+     * Get the local address this socket is bound to.
+     *
+     * @throws Network\Exception\RuntimeException If unable to retrieve local address.
+     * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
+     */
+    #[Override]
+    public function getLocalAddress(): Network\Address
+    {
+        $stream = $this->getResource();
+        $name = @stream_socket_get_name($stream, false);
+        if ($name === false) {
+            throw new Network\Exception\RuntimeException('Failed to get local address.');
+        }
+
+        return Internal\parse_address($name);
+    }
+
+    /**
+     * @return resource|object|null
+     */
+    #[Override]
+    public function getStream(): mixed
+    {
+        if (!is_resource($this->stream)) {
+            return null;
+        }
+
+        return $this->stream;
+    }
+
+    #[Override]
+    public function close(): void
+    {
+        if (is_resource($this->stream)) {
+            fclose($this->stream);
+        }
+
+        $this->stream = null;
+    }
+
+    public function __destruct()
+    {
+        $this->close();
+    }
+
+    /**
+     * @return resource
+     *
+     * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
+     */
+    private function getResource(): mixed
+    {
+        if (!is_resource($this->stream)) {
+            throw new IO\Exception\AlreadyClosedException('UDP socket has already been closed.');
+        }
+
+        return $this->stream;
+    }
+}

@@ -4,33 +4,34 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
 use Psl\Type;
 
 final class NullableTypeTest extends TypeTestCase
 {
-    #[\Override]
-    public function getType(): Type\TypeInterface
+    #[Override]
+    public static function getType(): Type\TypeInterface
     {
         return Type\nullable(Type\string());
     }
 
-    #[\Override]
-    public function getValidCoercions(): iterable
+    #[Override]
+    public static function getValidCoercions(): iterable
     {
         yield ['hello', 'hello'];
-        yield [$this->stringable('hello'), 'hello'];
+        yield [static::stringable('hello'), 'hello'];
         yield [123, '123'];
         yield [0, '0'];
         yield ['0', '0'];
         yield ['123', '123'];
         yield ['1e23', '1e23'];
-        yield [$this->stringable('123'), '123'];
+        yield [static::stringable('123'), '123'];
         yield [null, null];
         yield ['null', 'null'];
     }
 
-    #[\Override]
-    public function getInvalidCoercions(): iterable
+    #[Override]
+    public static function getInvalidCoercions(): iterable
     {
         yield [1.0];
         yield [1.23];
@@ -42,9 +43,9 @@ final class NullableTypeTest extends TypeTestCase
         yield [STDIN];
     }
 
-    #[\Override]
-    public function getToStringExamples(): iterable
+    #[Override]
+    public static function getToStringExamples(): iterable
     {
-        yield [$this->getType(), '?string'];
+        yield [static::getType(), '?string'];
     }
 }

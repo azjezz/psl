@@ -13,5 +13,5 @@ use ReflectionClass;
  */
 function is_final(string $class_name): bool
 {
-    return (new ReflectionClass($class_name))->isFinal();
+    return new ReflectionClass($class_name)->isFinal();
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Range;
 
 use IteratorAggregate;
+use Override;
 use Psl\Iter;
 use Psl\Math;
 
@@ -22,7 +23,7 @@ interface LowerBoundRangeInterface extends IteratorAggregate, RangeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function withUpperBound(
         int $upper_bound,
         bool $upper_inclusive,
@@ -35,7 +36,7 @@ interface LowerBoundRangeInterface extends IteratorAggregate, RangeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function withUpperBoundInclusive(int $upper_bound): UpperBoundRangeInterface&LowerBoundRangeInterface;
 
     /**
@@ -45,7 +46,7 @@ interface LowerBoundRangeInterface extends IteratorAggregate, RangeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function withUpperBoundExclusive(int $upper_bound): UpperBoundRangeInterface&LowerBoundRangeInterface;
 
     /**
@@ -73,6 +74,6 @@ interface LowerBoundRangeInterface extends IteratorAggregate, RangeInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function getIterator(): Iter\Iterator;
 }

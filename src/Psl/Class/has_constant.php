@@ -13,5 +13,5 @@ use ReflectionClass;
  */
 function has_constant(string $class_name, string $constant_name): bool
 {
-    return (new ReflectionClass($class_name))->hasConstant($constant_name);
+    return new ReflectionClass($class_name)->hasConstant($constant_name);
 }

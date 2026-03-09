@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
+
 /**
  * @extends UnionType<string|bool, int|float>
  *
@@ -19,7 +21,7 @@ final readonly class ScalarType extends UnionType
         parent::__construct(new UnionType(new StringType(), new BoolType()), new NumType());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return 'scalar';

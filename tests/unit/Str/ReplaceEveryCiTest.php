@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
 final class ReplaceEveryCiTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testReplaceEveryCi(string $expected, string $haystack, iterable $replacements): void
     {
         static::assertSame($expected, Str\replace_every_ci($haystack, $replacements));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [
@@ -49,5 +48,23 @@ final class ReplaceEveryCiTest extends TestCase
                 ['bar' => 'baz'],
             ],
         ];
+    }
+
+    public function testReplaceEveryCiWithNonUtf8Encoding(): void
+    {
+        static::assertSame('Hello, World!', Str\replace_every_ci(
+            'Hello, You!',
+            ['you' => 'World'],
+            Str\Encoding::Iso88591,
+        ));
+    }
+
+    public function testReplaceEveryCiWithEmptyNeedleInNonUtf8(): void
+    {
+        static::assertSame('Hello, World!', Str\replace_every_ci(
+            'Hello, You!',
+            ['' => 'SKIP', 'you' => 'World'],
+            Str\Encoding::Iso88591,
+        ));
     }
 }

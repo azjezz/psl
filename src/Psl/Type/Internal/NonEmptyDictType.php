@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
@@ -39,7 +40,7 @@ final readonly class NonEmptyDictType extends Type\Type
      *
      * @return non-empty-array<Tk, Tv>
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): array
     {
         if (is_iterable($value)) {
@@ -105,7 +106,7 @@ final readonly class NonEmptyDictType extends Type\Type
      *
      * @psalm-assert non-empty-array<Tk, Tv> $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): array
     {
         if (is_array($value)) {
@@ -148,7 +149,7 @@ final readonly class NonEmptyDictType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return Str\format('non-empty-dict<%s, %s>', $this->key_type->toString(), $this->value_type->toString());

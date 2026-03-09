@@ -15,12 +15,14 @@ namespace Psl\Iter;
  */
 function contains_key(iterable $iterable, mixed $key): bool
 {
-    foreach ($iterable as $k => $_v) {
-        if ($key !== $k) {
-            continue;
-        }
+    if (is_array($iterable) && (is_int($key) || is_string($key))) {
+        return array_key_exists($key, $iterable);
+    }
 
-        return true;
+    foreach ($iterable as $k => $_v) {
+        if ($key === $k) {
+            return true;
+        }
     }
 
     return false;

@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str\Byte;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str\Byte;
 
 final class CompareCiTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testCompareCi(int $expected, string $str1, string $str2, null|int $length = null): void
     {
         $diff = Byte\compare_ci($str1, $str2, $length);
@@ -31,7 +30,7 @@ final class CompareCiTest extends TestCase
         static::assertGreaterThanOrEqual(1, $diff);
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [0, 'Hello', 'hello'],

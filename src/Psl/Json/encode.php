@@ -33,14 +33,9 @@ function encode(mixed $value, bool $pretty = false, int $flags = 0): string
     }
 
     try {
-        $json = json_encode($value, $flags);
+        /** @var non-empty-string */
+        return json_encode($value, $flags);
     } catch (JsonException $e) {
         throw new Exception\EncodeException(Str\format('%s.', $e->getMessage()), (int) $e->getCode(), $e);
     }
-
-    if (false === $json) {
-        throw new Exception\EncodeException('Unexpected error occurred while encoding JSON.');
-    }
-
-    return $json;
 }

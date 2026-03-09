@@ -42,7 +42,7 @@ namespace Psl\Vec;
  */
 function range(int|float $start, int|float $end, int|float|null $step = null): array
 {
-    if ((float) $start === (float) $end) {
+    if ($start === $end) {
         return [$start];
     }
 

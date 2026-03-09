@@ -4,23 +4,21 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Dict;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Dict;
-use Psl\Exception;
 use Psl\Str;
 
 final class GroupByTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testGroupBy(array $expected, array $values, callable $callable): void
     {
         static::assertSame($expected, Dict\group_by($values, $callable));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [
@@ -44,10 +42,7 @@ final class GroupByTest extends TestCase
 
     public function testGroupByThrowsWhenKeyFunReturnsNonArrayKey(): void
     {
-        $this->expectException(Exception\InvariantViolationException::class);
-        $this->expectExceptionMessage(
-            'Expected $key_func to return a value of type array-key, value of type (object) returned.',
-        );
+        $this->expectException(\TypeError::class);
 
         Dict\group_by([0, 1, 2, 3, 4, 5], static fn(int $x): Collection\Vector => new Collection\Vector([$x, $x]));
     }

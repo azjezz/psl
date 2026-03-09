@@ -387,6 +387,12 @@ abstract class AbstractVectorTestCase extends TestCase
         static::assertNotSame($vector, $rest);
         static::assertCount(1, $rest);
         static::assertSame('bar', $rest->at(0));
+
+        $vector = $this->create(['a', 'b', 'c', 'd']);
+        $rest = $vector->take(2);
+        static::assertInstanceOf($this->vectorClass, $rest);
+        static::assertCount(2, $rest);
+        static::assertSame(['a', 'b'], $rest->toArray());
     }
 
     public function testTakeWhile(): void

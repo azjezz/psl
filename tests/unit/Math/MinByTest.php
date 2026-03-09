@@ -6,6 +6,7 @@ namespace Psl\Tests\Unit\Math;
 
 use Closure;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
 use Psl\Math;
@@ -14,15 +15,13 @@ use Psl\Vec;
 
 final class MinByTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testMinBy(null|int|string|array $expected, array $values, Closure $fun): void
     {
         static::assertSame($expected, Math\min_by($values, $fun));
     }
 
-    public function provideData(): Generator
+    public static function provideData(): Generator
     {
         yield [
             'qux',

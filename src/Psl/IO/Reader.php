@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
+use Override;
 use Psl\Async;
 use Psl\DateTime\Duration;
 use Psl\Str;
@@ -33,7 +34,7 @@ final class Reader implements ReadHandleInterface
      *
      * @mago-expect lint:no-empty-catch-clause
      */
-    #[\Override]
+    #[Override]
     public function reachedEndOfDataSource(): bool
     {
         if ($this->eof) {
@@ -62,7 +63,7 @@ final class Reader implements ReadHandleInterface
     /**
      * {@inheritDoc}
      */
-    #[\Override]
+    #[Override]
     public function readFixedSize(int $size, null|Duration $timeout = null): string
     {
         $timer = new Async\OptionalIncrementalTimeout($timeout, function (): void {
@@ -209,7 +210,7 @@ final class Reader implements ReadHandleInterface
     /**
      * {@inheritDoc}
      */
-    #[\Override]
+    #[Override]
     public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
     {
         if ($this->eof) {
@@ -228,7 +229,7 @@ final class Reader implements ReadHandleInterface
     /**
      * {@inheritDoc}
      */
-    #[\Override]
+    #[Override]
     public function tryRead(null|int $max_bytes = null): string
     {
         if ($this->eof) {

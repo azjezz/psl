@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Collection;
 
 use Closure;
+use Override;
 
 /**
  * @template Tk of array-key
@@ -22,7 +23,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function values(): VectorInterface;
 
     /**
@@ -32,7 +33,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function keys(): VectorInterface;
 
     /**
@@ -51,7 +52,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * @return MapInterface<Tk, Tv> A MapInterface containing the values after a user-specified condition
      *                              is applied.
      */
-    #[\Override]
+    #[Override]
     public function filter(Closure $fn): MapInterface;
 
     /**
@@ -71,7 +72,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * @return MapInterface<Tk, Tv> A `MapInterface` containing the values after a user-specified
      *                              condition is applied to the keys and values of the current `MapInterface`.
      */
-    #[\Override]
+    #[Override]
     public function filterWithKey(Closure $fn): MapInterface;
 
     /**
@@ -123,7 +124,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function first(): mixed;
 
     /**
@@ -134,7 +135,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function firstKey(): int|string|null;
 
     /**
@@ -145,7 +146,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function last(): mixed;
 
     /**
@@ -156,7 +157,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function lastKey(): int|string|null;
 
     /**
@@ -171,7 +172,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function linearSearch(mixed $search_value): int|string|null;
 
     /**
@@ -192,7 +193,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function zip(array $elements): MapInterface;
 
     /**
@@ -212,7 +213,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function take(int $n): MapInterface;
 
     /**
@@ -229,7 +230,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
      *                              `MapInterface` up until the callback returns `false`.
      */
-    #[\Override]
+    #[Override]
     public function takeWhile(Closure $fn): MapInterface;
 
     /**
@@ -249,7 +250,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function drop(int $n): MapInterface;
 
     /**
@@ -266,7 +267,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
      *                              `MapInterface` starting after the callback returns `true`.
      */
-    #[\Override]
+    #[Override]
     public function dropWhile(Closure $fn): MapInterface;
 
     /**
@@ -290,7 +291,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function slice(int $start, null|int $length = null): MapInterface;
 
     /**
@@ -307,6 +308,6 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @psalm-mutation-free
      */
-    #[\Override]
+    #[Override]
     public function chunk(int $size): VectorInterface;
 }

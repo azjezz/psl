@@ -77,7 +77,7 @@ final class FromRangeTest extends TestCase
         foreach ($range as $value) {
             if (null !== $last) {
                 static::assertSame($last + 1, $value);
-            } else { // @mago-expect lint:no-else-clause
+            } else {
                 static::assertSame(10, $value);
             }
 

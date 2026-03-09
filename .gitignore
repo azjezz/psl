@@ -13,9 +13,13 @@
 # php-cs-fixer cache
 /.php_cs.cache
 /.php-cs-fixer.cache
+/.phpbench
 
 # phpunit cache
 /config/.phpunit.result.cache
 
 # mago binary
 mago
+
+# generated documentation site
+/docs/dist/

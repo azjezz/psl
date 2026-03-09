@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Type\Type;
 
 /**
@@ -16,7 +17,7 @@ final readonly class MixedType extends Type
     /**
      * @psalm-assert-if-true mixed $value
      */
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         return true;
@@ -25,7 +26,7 @@ final readonly class MixedType extends Type
     /**
      * @psalm-assert mixed $value
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): mixed
     {
         return $value;
@@ -34,13 +35,13 @@ final readonly class MixedType extends Type
     /**
      * @psalm-assert mixed $value
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): mixed
     {
         return $value;
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         return 'mixed';

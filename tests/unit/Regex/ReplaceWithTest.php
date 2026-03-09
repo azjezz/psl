@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Regex;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Regex;
 
 final class ReplaceWithTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testReplaceWith(
         string $expected,
         string $subject,
@@ -22,7 +21,7 @@ final class ReplaceWithTest extends TestCase
         static::assertSame($expected, Regex\replace_with($subject, $pattern, $callback, $limit));
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [
             'April fools day is 04/01/2003',

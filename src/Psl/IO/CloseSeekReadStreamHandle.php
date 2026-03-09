@@ -92,7 +92,7 @@ final class CloseSeekReadStreamHandle implements
     }
 
     /**
-     * @return resource|null
+     * @return resource|object|null
      *
      * @inheritDoc
      */

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Option;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Comparison\Comparable;
 use Psl\Comparison\Equable;
@@ -183,8 +184,12 @@ final class NoneTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTestUnzip
+     * @template X
+     * @template Y
+     *
+     * @param Option\Option<array{X, Y}> $option
      */
+    #[DataProvider('provideTestUnzip')]
     public function testUnzip(Option\Option $option): void
     {
         [$x, $y] = $option->unzip();
@@ -193,7 +198,7 @@ final class NoneTest extends TestCase
         static::assertTrue($y->isNone());
     }
 
-    private function provideTestUnzip(): iterable
+    public static function provideTestUnzip(): iterable
     {
         yield [Option\none()];
         yield [Option\none()->zip(Option\none())];

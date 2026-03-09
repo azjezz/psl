@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PSL - PHP Standard Library</title>
+        <meta name="description" content="PSL is a batteries-included standard library for PHP covering async, collections, networking, I/O, cryptography, terminal UI, and more.">
+        <meta property="og:title" content="PSL - PHP Standard Library">
+        <meta property="og:description" content="A consistent, centralized, well-typed set of APIs for PHP covering async, collections, networking, I/O, cryptography, terminal UI, and more.">
+        <meta property="og:image" content="https://psl.carthage.software/assets/banner.png">
+        <meta property="og:url" content="https://psl.carthage.software">
+        <meta property="og:type" content="website">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="PSL - PHP Standard Library">
+        <meta name="twitter:description" content="A consistent, centralized, well-typed set of APIs for PHP covering async, collections, networking, I/O, cryptography, terminal UI, and more.">
+        <meta name="twitter:image" content="https://psl.carthage.software/assets/banner.png">
+        <link rel="stylesheet" href="/assets/style.css">
+    </head>
+    <body>
+        <button id="hamburger" aria-label="Menu">&#9776;</button>
+        <div id="overlay"></div>
+        <nav id="sidebar">
+            <div class="sidebar-header">
+            <h1>PSL</h1>
+            <p>PHP Standard Library</p>
+            <input type="text" id="search" placeholder="Search... ( / )">
+            <select id="version-select" aria-label="Version"></select>
+            <button id="theme-toggle" aria-label="Toggle dark mode">Dark</button>
+            </div>
+            <div id="nav-links"></div>
+        </nav>
+        <main id="content"><article id="rendered"></article></main>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/styles/monokai-sublime.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/highlight.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/languages/php.min.js"></script>
+        <script>
+            const CURRENT_VERSION="{{VERSION}}";
+            const DOCS={{DOCS}};
+            const CATEGORIES={{CATEGORIES}};
+            const TITLES={{TITLES}};
+        </script>
+        <script src="/assets/app.js"></script>
+    </body>
+</html>

@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
 final class EndsWithTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testEndsWith(bool $expected, string $haystack, string $suffix): void
     {
         static::assertSame($expected, Str\ends_with($haystack, $suffix));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [true,  'Hello',         'Hello'],
@@ -30,5 +29,13 @@ final class EndsWithTest extends TestCase
             [true,  'azjezz',        'z'],
             [true,  'مرحبا بكم',     'بكم'],
         ];
+    }
+
+    public function testEndsWithNonUtf8Encoding(): void
+    {
+        static::assertTrue(Str\ends_with('Hello, World', 'World', Str\Encoding::Iso88591));
+        static::assertFalse(Str\ends_with('Hello, World', 'world', Str\Encoding::Iso88591));
+        static::assertTrue(Str\ends_with('Hello', 'Hello', Str\Encoding::Iso88591));
+        static::assertFalse(Str\ends_with('Hi', 'Hello, World', Str\Encoding::Iso88591));
     }
 }

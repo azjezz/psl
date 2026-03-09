@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Type;
 
+use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Dict;
 use Psl\Type\Exception\AssertException;
@@ -20,35 +22,35 @@ abstract class TypeTestCase extends TestCase
     /**
      * @return TypeInterface<T>
      */
-    abstract public function getType(): TypeInterface;
+    abstract public static function getType(): TypeInterface;
 
     /**
      * @return iterable<array{0: mixed, 1: T}>
      */
-    abstract public function getValidCoercions(): iterable;
+    abstract public static function getValidCoercions(): iterable;
 
     /**
      * @return iterable<array{0: mixed}>
      */
-    abstract public function getInvalidCoercions(): iterable;
+    abstract public static function getInvalidCoercions(): iterable;
 
     /**
      * @return iterable<array{0: Type<mixed>, 1: string}>
      */
-    abstract public function getToStringExamples(): iterable;
+    abstract public static function getToStringExamples(): iterable;
 
     /**
      * @return list<array{0: T}>
      */
-    public function getValidValues(): array
+    public static function getValidValues(): array
     {
-        $non_unique = $this->getValidCoercions();
+        $non_unique = static::getValidCoercions();
         $non_unique = Dict\map($non_unique, static fn(array $tuple): mixed => $tuple[1]);
 
         $out = [];
         foreach ($non_unique as $v) {
             foreach ($out as $value) {
-                if (!$this->equals($value, $v)) {
+                if (!static::equals($value, $v)) {
                     continue;
                 }
 
@@ -64,13 +66,13 @@ abstract class TypeTestCase extends TestCase
     /**
      * @return list<array{0: mixed}>
      */
-    public function getInvalidValues(): array
+    public static function getInvalidValues(): array
     {
-        $rows = $this->getInvalidCoercions();
+        $rows = static::getInvalidCoercions();
         $rows = Vec\values($rows);
-        foreach ($this->getValidCoercions() as $arr) {
+        foreach (static::getValidCoercions() as $arr) {
             [$value, $v] = $arr;
-            if ($this->equals($v, $value)) {
+            if (static::equals($v, $value)) {
                 continue;
             }
 
@@ -80,73 +82,56 @@ abstract class TypeTestCase extends TestCase
         return $rows;
     }
 
-    /**
-     * @dataProvider getValidValues
-     */
+    #[DataProvider('getValidValues')]
     public function testMatches(mixed $value): void
     {
-        static::assertTrue($this->getType()->matches($value));
+        static::assertTrue(static::getType()->matches($value));
     }
 
-    /**
-     * @dataProvider getInvalidValues
-     */
+    #[DataProvider('getInvalidValues')]
     public function testInvalidMatches(mixed $value): void
     {
-        static::assertFalse($this->getType()->matches($value));
+        static::assertFalse(static::getType()->matches($value));
     }
 
-    /**
-     * @param mixed $value
-     * @param T $expected
-     *
-     * @dataProvider getValidCoercions
-     */
+    #[DataProvider('getValidCoercions')]
     final public function testValidCoercion(mixed $value, mixed $expected): void
     {
-        $actual = $this->getType()->coerce($value);
+        $actual = static::getType()->coerce($value);
 
-        static::assertTrue($this->equals($expected, $actual));
-        static::assertTrue($this->equals($actual, $this->getType()->coerce($actual)));
+        static::assertTrue(static::equals($expected, $actual));
+        static::assertTrue(static::equals($actual, static::getType()->coerce($actual)));
     }
 
-    /**
-     * @dataProvider getInvalidCoercions
-     */
+    #[DataProvider('getInvalidCoercions')]
     public function testInvalidCoercion(mixed $value): void
     {
         $this->expectException(CoercionException::class);
 
         try {
-            $ret = $this->getType()->coerce($value);
+            $ret = static::getType()->coerce($value);
         } catch (CoercionException $e) {
             throw $e;
         }
     }
 
-    /**
-     * @dataProvider getValidValues
-     */
+    #[DataProvider('getValidValues')]
     final public function testValidAssertion(mixed $value): void
     {
-        $out = $this->getType()->assert($value);
+        $out = static::getType()->assert($value);
 
-        static::assertTrue($this->equals($out, $value));
+        static::assertTrue(static::equals($out, $value));
     }
 
-    /**
-     * @dataProvider getInvalidValues
-     */
+    #[DataProvider('getInvalidValues')]
     public function testInvalidAssertion(mixed $value): void
     {
         $this->expectException(AssertException::class);
 
-        $this->getType()->assert($value);
+        static::getType()->assert($value);
     }
 
-    /**
-     * @dataProvider getToStringExamples
-     */
+    #[DataProvider('getToStringExamples')]
     final public function testToString(Type $ts, string $expected): void
     {
         static::assertSame($expected, $ts->toString());
@@ -156,12 +141,12 @@ abstract class TypeTestCase extends TestCase
      * @param T $a
      * @param T $b
      */
-    protected function equals(mixed $a, mixed $b): bool
+    protected static function equals(mixed $a, mixed $b): bool
     {
         return $a === $b;
     }
 
-    protected function stringable(string $value): object
+    protected static function stringable(string $value): object
     {
         return new class($value) {
             private string $value;
@@ -171,7 +156,7 @@ abstract class TypeTestCase extends TestCase
                 $this->value = $value;
             }
 
-            #[\Override]
+            #[Override]
             public function __toString(): string
             {
                 return $this->value;

@@ -80,7 +80,7 @@ final class ReadWriteStreamHandle implements StreamHandleInterface, WriteHandleI
     }
 
     /**
-     * @return resource|null
+     * @return resource|object|null
      *
      * @inheritDoc
      */

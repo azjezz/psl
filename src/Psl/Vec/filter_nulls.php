@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Vec;
 
+use function array_filter;
+use function array_values;
+use function is_array;
+
 /**
  * Filter out null values from the given iterable.
  *
@@ -19,11 +23,18 @@ namespace Psl\Vec;
  */
 function filter_nulls(iterable $iterable): array
 {
-    return filter(
-        $iterable,
-        /**
-         * @param T|null $value
-         */
-        static fn(mixed $value): bool => null !== $value,
-    );
+    if (is_array($iterable)) {
+        return array_values(array_filter($iterable, static fn(mixed $value): bool => null !== $value));
+    }
+
+    $result = [];
+    foreach ($iterable as $v) {
+        if (null === $v) {
+            continue;
+        }
+
+        $result[] = $v;
+    }
+
+    return $result;
 }

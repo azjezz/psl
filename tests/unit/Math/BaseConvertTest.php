@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Math;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
 final class BaseConvertTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testBaseConvert(string $expected, string $value, int $from, int $to): void
     {
         static::assertSame($expected, Math\base_convert($value, $from, $to));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             [

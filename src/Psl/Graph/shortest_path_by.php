@@ -92,13 +92,12 @@ function shortest_path_by(
                 $path = [];
                 $current = $to;
                 while (null !== $current) {
-                    array_unshift($path, $current);
+                    $path[] = $current;
                     $currentKey = get_node_key($current);
                     $current = $parent[$currentKey];
                 }
 
-                /** @var list<TNode> $path */
-                return $path;
+                return array_reverse($path);
             }
 
             foreach (neighbors($graph, $node) as $neighbor) {
@@ -147,13 +146,12 @@ function shortest_path_by(
             $path = [];
             $current = $to;
             while (null !== $current) {
-                array_unshift($path, $current);
+                $path[] = $current;
                 $currentKey = get_node_key($current);
                 $current = $parent[$currentKey];
             }
 
-            /** @var list<TNode> $path */
-            return $path;
+            return array_reverse($path);
         }
 
         foreach ($graph->getEdgesFrom($node) as $edge) {

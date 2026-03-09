@@ -17,8 +17,6 @@ use const PHP_SAPI;
  * POST data, if any.
  *
  * @codeCoverageIgnore
- *
- * @mago-expect lint:no-else-clause
  */
 function input_handle(): CloseHandleInterface&ReadHandleInterface&StreamHandleInterface
 {

@@ -38,7 +38,7 @@ final readonly class PropertyNameOfType extends Type
     #[Override]
     public function matches(mixed $value): bool
     {
-        return is_string($value) && $value !== '' && (new ReflectionClass($this->classname))->hasProperty($value);
+        return is_string($value) && $value !== '' && new ReflectionClass($this->classname)->hasProperty($value);
     }
 
     /**
@@ -49,7 +49,7 @@ final readonly class PropertyNameOfType extends Type
     #[Override]
     public function coerce(mixed $value): string
     {
-        if (is_string($value) && $value !== '' && (new ReflectionClass($this->classname))->hasProperty($value)) {
+        if (is_string($value) && $value !== '' && new ReflectionClass($this->classname)->hasProperty($value)) {
             return $value;
         }
 
@@ -66,7 +66,7 @@ final readonly class PropertyNameOfType extends Type
     #[Override]
     public function assert(mixed $value): string
     {
-        if (is_string($value) && $value !== '' && (new ReflectionClass($this->classname))->hasProperty($value)) {
+        if (is_string($value) && $value !== '' && new ReflectionClass($this->classname)->hasProperty($value)) {
             return $value;
         }
 

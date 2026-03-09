@@ -79,7 +79,7 @@ final class SeekReadStreamHandle implements StreamHandleInterface, ReadHandleInt
     }
 
     /**
-     * @return resource|null
+     * @return resource|object|null
      *
      * @inheritDoc
      */

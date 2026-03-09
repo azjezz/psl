@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use Override;
 use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
@@ -33,7 +34,7 @@ readonly class UnionType extends Type\Type
     /**
      * @psalm-assert-if-true Tl|Tr $value
      */
-    #[\Override]
+    #[Override]
     public function matches(mixed $value): bool
     {
         return $this->left_type->matches($value) || $this->right_type->matches($value);
@@ -46,7 +47,7 @@ readonly class UnionType extends Type\Type
      *
      * @mago-expect lint:no-empty-catch-clause
      */
-    #[\Override]
+    #[Override]
     public function coerce(mixed $value): mixed
     {
         try {
@@ -79,7 +80,7 @@ readonly class UnionType extends Type\Type
      *
      * @mago-expect lint:no-empty-catch-clause
      */
-    #[\Override]
+    #[Override]
     public function assert(mixed $value): mixed
     {
         try {
@@ -97,7 +98,7 @@ readonly class UnionType extends Type\Type
         throw AssertException::withValue($value, $this->toString());
     }
 
-    #[\Override]
+    #[Override]
     public function toString(): string
     {
         $left = $this->left_type->toString();

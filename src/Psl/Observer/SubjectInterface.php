@@ -16,7 +16,7 @@ interface SubjectInterface
     /**
      * Unsubscribe from the given observer.
      *
-     * @psam-param ObserverInterface<static> $observer
+     * @param ObserverInterface<static> $observer
      */
     public function unsubscribe(ObserverInterface $observer): void;
 

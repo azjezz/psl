@@ -22,8 +22,6 @@ use Psl\Str;
  * @throws Exception\InvalidArgumentException If $prefix contains a directory separator.
  *
  * @return non-empty-string The absolute path to the temporary file.
- *
- * @mago-expect lint:no-else-clause
  */
 function create_temporary_file(null|string $directory = null, null|string $prefix = null): string
 {

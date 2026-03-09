@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Type\Internal;
 
 use BackedEnum;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Exception\InvariantViolationException;
 use Psl\Tests\Fixture\IntegerEnum;
@@ -17,7 +18,7 @@ use ReflectionProperty;
 class BackedEnumValueTypeTest extends TestCase
 {
     /**
-     * @return list<array{0: class-string<BackedEnum>, 1: bool}
+     * @return list<array{0: class-string<BackedEnum>, 1: bool}>
      */
     public static function enumDataProvider(): array
     {
@@ -30,10 +31,9 @@ class BackedEnumValueTypeTest extends TestCase
     }
 
     /**
-     * @dataProvider enumDataProvider
-     *
      * @param class-string<BackedEnum> $enum
      */
+    #[DataProvider('enumDataProvider')]
     public function testTheCorrectBackingTypeIsDetected(string $enum, bool $expect): void
     {
         $type = new BackedEnumValueType($enum);

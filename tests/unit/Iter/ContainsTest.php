@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Iter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Iter;
@@ -12,18 +13,16 @@ final class ContainsTest extends TestCase
 {
     /**
      * @template T
-     *
      * @param iterable<T> $iterable
      * @param T $value
-     *
-     * @dataProvider provideData
      */
+    #[DataProvider('provideData')]
     public function testContainsKey(bool $expected, iterable $iterable, null|int|string $value): void
     {
         static::assertSame($expected, Iter\contains($iterable, $value));
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [false, [], 0];
         yield [false, [], 1];
@@ -36,7 +35,7 @@ final class ContainsTest extends TestCase
         yield [false, ['hello' => 'world'], 'hello'];
         yield [true, ['hello' => 'world'], 'world'];
         yield [false, ['hello' => 'world'], 'worlD'];
-        yield [true, [null => null], null];
+        yield [true, ['' => ''], ''];
         yield [false, new Collection\Vector([1, 2]), 0];
         yield [true, new Collection\Vector([1, 2]), 1];
         yield [true, new Collection\Vector([1, 2]), 2];

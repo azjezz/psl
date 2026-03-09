@@ -17,8 +17,6 @@ use const PHP_SAPI;
  * is usually the process STDOUT.
  *
  * @codeCoverageIgnore
- *
- * @mago-expect lint:no-else-clause
  */
 function output_handle(): StreamHandleInterface&WriteHandleInterface&CloseHandleInterface
 {

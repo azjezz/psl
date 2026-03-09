@@ -72,17 +72,27 @@ final readonly class Address
     }
 
     /**
+     * @param non-empty-string $host
+     * @param int<0,65535> $port
+     *
+     * @pure
+     */
+    public static function udp(string $host = self::DEFAULT_HOST, int $port = self::DEFAULT_PORT): self
+    {
+        return new self(SocketScheme::Udp, $host, $port);
+    }
+
+    /**
      * @return non-empty-string
      *
      * @psalm-mutation-free
      */
     public function toString(): string
     {
-        $address = "{$this->scheme->value}://{$this->host}";
         if (null === $this->port) {
-            return $address;
+            return "{$this->scheme->value}://{$this->host}";
         }
 
-        return "{$address}:{$this->port}";
+        return "{$this->scheme->value}://{$this->host}:{$this->port}";
     }
 }

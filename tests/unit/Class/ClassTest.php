@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Class;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Class;
 use Psl\Collection;
@@ -11,9 +12,7 @@ use Psl\Type;
 
 final class ClassTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function test(
         string $classname,
         bool $exists,
@@ -46,7 +45,7 @@ final class ClassTest extends TestCase
         static::assertFalse(Class\has_constant($classname, 'I_AM_NOT_A_CONSTANT'));
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [Collection\Vector::class, true, true, true, false, ['first', 'last'], []];
         yield [Collection\MutableVector::class, true, true, false, false, ['first', 'last'], []];

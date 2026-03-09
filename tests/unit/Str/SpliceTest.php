@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Unit\Str;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Str;
 
 final class SpliceTest extends TestCase
 {
     /**
-     * @dataProvider provideData
+     * @param non-negative-int $offset
+     * @param non-negative-int|null $length
      */
+    #[DataProvider('provideData')]
     public function testSplice(
         string $expected,
         string $string,
@@ -22,7 +25,7 @@ final class SpliceTest extends TestCase
         static::assertSame($expected, Str\splice($string, $replacement, $offset, $length));
     }
 
-    public function provideData(): array
+    public static function provideData(): array
     {
         return [
             ['', '', '', 0, null],
