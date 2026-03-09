@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Vec;
 
 use Closure;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Collection;
 use Psl\Iter;
@@ -12,9 +13,7 @@ use Psl\Vec;
 
 final class FilterNonnullByTest extends TestCase
 {
-    /**
-     * @dataProvider provideData
-     */
+    #[DataProvider('provideData')]
     public function testFilterNonnullBy(array $expected, iterable $iterable, Closure $function): void
     {
         $result = Vec\filter_nonnull_by($iterable, $function);
@@ -22,7 +21,7 @@ final class FilterNonnullByTest extends TestCase
         static::assertSame($expected, $result);
     }
 
-    public function provideData(): iterable
+    public static function provideData(): iterable
     {
         yield [[], [], static fn(int $v): null|int => $v];
         yield [[1, 2, 3], [1, 2, 3], static fn(int $v): null|int => $v];
