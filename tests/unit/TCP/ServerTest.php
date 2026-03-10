@@ -35,6 +35,53 @@ final class ServerTest extends TestCase
         $listener->getLocalAddress();
     }
 
+    public function testListenWithCustomBacklog(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 0, backlog: 128);
+        $address = $listener->getLocalAddress();
+
+        static::assertSame('127.0.0.1', $address->host);
+        static::assertGreaterThan(0, $address->port);
+
+        $client = TCP\connect('127.0.0.1', $address->port);
+        $server = $listener->accept();
+
+        $client->write('ping');
+        static::assertSame('ping', $server->read(4));
+
+        $client->close();
+        $server->close();
+        $listener->close();
+    }
+
+    public function testAcceptMultipleConnections(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 0, no_delay: true, backlog: 64);
+        $address = $listener->getLocalAddress();
+
+        [$server1, $client1, $client2] = Async\concurrently([
+            $listener->accept(...),
+            static fn(): Network\StreamInterface => TCP\connect('127.0.0.1', $address->port),
+            static fn(): Network\StreamInterface => TCP\connect('127.0.0.1', $address->port),
+        ]);
+
+        $server2 = $listener->accept();
+
+        $client1->write('one');
+        $client2->write('two');
+
+        $msg1 = $server1->read(3);
+        $msg2 = $server2->read(3);
+
+        static::assertTrue($msg1 === 'one' && $msg2 === 'two' || $msg1 === 'two' && $msg2 === 'one');
+
+        $client1->close();
+        $client2->close();
+        $server1->close();
+        $server2->close();
+        $listener->close();
+    }
+
     public function testWaitsForPendingOperation(): void
     {
         $listener = TCP\listen('127.0.0.1');
