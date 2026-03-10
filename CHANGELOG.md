@@ -4,7 +4,9 @@
 
 ### features
 
-- feat(dict,vec): add filter_nonnull_by and map_nonnull - [#576](https://github.com/azjezz/psl/pull/576) by @Dima-369
+- feat(dict, vec): add filter_nonnull_by and map_nonnull - [#576](https://github.com/azjezz/psl/pull/576) by @Dima-369
+* feat(tcp): add `backlog` parameter to `TCP\listen()` for configuring the pending connection queue size - [#617](https://github.com/azjezz/psl/pull/617) - by @azjezz
+* feat(tcp): listener now drains the accept backlog in a loop for higher throughput - [#617](https://github.com/azjezz/psl/pull/617) - by @azjezz
 
 ### other
 

@@ -10,9 +10,11 @@ use Psl\Network;
 use Psl\TCP;
 use Revolt\EventLoop;
 
+use function error_clear_last;
 use function error_get_last;
 use function fclose;
 use function is_resource;
+use function str_contains;
 use function stream_socket_accept;
 
 /**
@@ -51,38 +53,42 @@ final class Listener implements TCP\ListenerInterface
         [$receiver, $sender] = Channel\bounded($idleConnections);
 
         $this->receiver = $receiver;
-        $this->watcher = EventLoop::onReadable(
-            $impl,
-            /**
-             * @param resource $resource
-             */
-            static function (string $watcher, mixed $resource) use ($sender): void {
-                try {
+        $this->watcher = EventLoop::onReadable($impl, static function (string $watcher, mixed $resource) use (
+            $sender,
+        ): void {
+            try {
+                while (true) {
+                    error_clear_last();
                     $sock = @stream_socket_accept($resource, timeout: 0.0);
-                    if (false !== $sock) {
+                    if ($sock !== false) {
                         $sender->send([true, new Stream($sock)]);
+                        continue;
+                    }
+
+                    // @codeCoverageIgnoreStart
+                    $err = error_get_last();
+                    if ($err !== null && !str_contains($err['message'], 'Accept failed')) {
+                        // OS error (e.g., EMFILE, ENFILE, ENOBUFS)
+                        $sender->send([
+                            false,
+                            new Network\Exception\RuntimeException(
+                                'Failed to accept incoming connection: ' . $err['message'],
+                                $err['type'],
+                            ),
+                        ]);
 
                         return;
                     }
 
-                    // @codeCoverageIgnoreStart
-                    /** @var array{file: string, line: int, message: string, type: int} $err */
-                    $err = error_get_last();
-                    $sender->send([
-                        false,
-                        new Network\Exception\RuntimeException(
-                            'Failed to accept incoming connection: ' . $err['message'],
-                            $err['type'],
-                        ),
-                    ]);
+                    // No more pending connections (EAGAIN / timeout with no backlog).
+                    break;
                     // @codeCoverageIgnoreEnd
-                } catch (Channel\Exception\ClosedChannelException) {
-                    EventLoop::cancel($watcher);
-
-                    return;
                 }
-            },
-        );
+            } catch (Channel\Exception\ClosedChannelException) {
+                EventLoop::cancel($watcher);
+                return;
+            }
+        });
     }
 
     #[Override]
