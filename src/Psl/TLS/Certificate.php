@@ -39,7 +39,8 @@ final readonly class Certificate
     public static function create(
         string $certificate_file,
         string $key_file,
-        #[SensitiveParameter] null|string $passphrase = null,
+        #[SensitiveParameter]
+        null|string $passphrase = null,
     ): self {
         return new self($certificate_file, $key_file, $passphrase);
     }

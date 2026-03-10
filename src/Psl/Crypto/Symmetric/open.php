@@ -13,8 +13,10 @@ use SensitiveParameter;
  * @throws Exception\DecryptionException If decryption fails.
  */
 function open(
-    #[SensitiveParameter] string $ciphertext,
-    #[SensitiveParameter] Key $key,
+    #[SensitiveParameter]
+    string $ciphertext,
+    #[SensitiveParameter]
+    Key $key,
     string $additional_data = '',
 ): string {
     return new Encryptor($key)->open($ciphertext, $additional_data);

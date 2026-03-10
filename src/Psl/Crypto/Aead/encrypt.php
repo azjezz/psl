@@ -19,9 +19,12 @@ use function sodium_crypto_aead_xchacha20poly1305_ietf_encrypt;
  * @throws Exception\RuntimeException If encryption fails or AES-256-GCM is not available.
  */
 function encrypt(
-    #[SensitiveParameter] string $plaintext,
-    #[SensitiveParameter] Key $key,
-    #[SensitiveParameter] string $nonce,
+    #[SensitiveParameter]
+    string $plaintext,
+    #[SensitiveParameter]
+    Key $key,
+    #[SensitiveParameter]
+    string $nonce,
     string $additional_data,
     Algorithm $algorithm,
 ): string {

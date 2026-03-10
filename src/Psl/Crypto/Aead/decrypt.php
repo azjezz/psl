@@ -20,9 +20,12 @@ use function sodium_crypto_aead_xchacha20poly1305_ietf_decrypt;
  * @throws Exception\RuntimeException If AES-256-GCM is not available.
  */
 function decrypt(
-    #[SensitiveParameter] string $ciphertext,
-    #[SensitiveParameter] Key $key,
-    #[SensitiveParameter] string $nonce,
+    #[SensitiveParameter]
+    string $ciphertext,
+    #[SensitiveParameter]
+    Key $key,
+    #[SensitiveParameter]
+    string $nonce,
     string $additional_data,
     Algorithm $algorithm,
 ): string {

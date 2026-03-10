@@ -16,7 +16,8 @@ use function password_hash;
  * @pure
  */
 function hash(
-    #[SensitiveParameter] string $password,
+    #[SensitiveParameter]
+    string $password,
     Algorithm $algorithm = Algorithm::Default,
     array $options = [],
 ): string {

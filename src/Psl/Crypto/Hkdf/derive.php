@@ -22,7 +22,8 @@ use function sodium_memzero;
  * @return non-empty-string
  */
 function derive(
-    #[SensitiveParameter] string $input_keying_material,
+    #[SensitiveParameter]
+    string $input_keying_material,
     string $salt = '',
     string $info = '',
     int $length = 32,

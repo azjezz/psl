@@ -26,7 +26,8 @@ use function strlen;
 function socks5_authenticate(
     IO\ReadHandleInterface&IO\WriteHandleInterface $stream,
     string $username,
-    #[SensitiveParameter] string $password,
+    #[SensitiveParameter]
+    string $password,
 ): void {
     $usernameLen = strlen($username);
     $passwordLen = strlen($password);

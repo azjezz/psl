@@ -11,8 +11,10 @@ use SensitiveParameter;
  */
 function verify(
     Signature $signature,
-    #[SensitiveParameter] string $message,
-    #[SensitiveParameter] PublicKey $public_key,
+    #[SensitiveParameter]
+    string $message,
+    #[SensitiveParameter]
+    PublicKey $public_key,
 ): bool {
     return new Verifier($public_key)->verify($signature, $message);
 }
