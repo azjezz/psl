@@ -20,10 +20,10 @@
         "revolt/event-loop": "^1.0.8"
     },
     "require-dev": {
-        "phpbench/phpbench": "^1.4.3",
+        "phpbench/phpbench": "^1.5.1",
         "phpunit/phpunit": "^13.0.5",
         "php-coveralls/php-coveralls": "^2.9.1",
-        "carthage-software/mago": "^1.13.3",
+        "carthage-software/mago": "^1.14.0",
         "infection/infection": "^0.32.6"
     },
     "autoload": {

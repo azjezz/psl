@@ -26,7 +26,8 @@ use function sodium_memzero;
  * @return non-empty-string
  */
 function expand(
-    #[SensitiveParameter] string $pseudo_random_key,
+    #[SensitiveParameter]
+    string $pseudo_random_key,
     string $info = '',
     int $length = 32,
     Hmac\Algorithm $algorithm = Hmac\Algorithm::Sha256,

@@ -36,7 +36,8 @@ function socks5_handshake(
     string $host,
     int $port,
     null|string $username,
-    #[SensitiveParameter] null|string $password,
+    #[SensitiveParameter]
+    null|string $password,
 ): void {
     if ($username !== null && $password !== null) {
         // Offer no-auth (0x00) and username/password (0x02)

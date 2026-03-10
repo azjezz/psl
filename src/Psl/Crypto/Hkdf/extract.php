@@ -18,7 +18,8 @@ use function str_repeat;
  * @return non-empty-string
  */
 function extract(
-    #[SensitiveParameter] string $input_keying_material,
+    #[SensitiveParameter]
+    string $input_keying_material,
     string $salt = '',
     Hmac\Algorithm $algorithm = Hmac\Algorithm::Sha256,
 ): string {

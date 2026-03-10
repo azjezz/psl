@@ -15,8 +15,10 @@ use SensitiveParameter;
  * @throws SecureRandom\Exception\InsufficientEntropyException If it was not possible to gather sufficient entropy for nonce generation.
  */
 function seal(
-    #[SensitiveParameter] string $plaintext,
-    #[SensitiveParameter] Key $key,
+    #[SensitiveParameter]
+    string $plaintext,
+    #[SensitiveParameter]
+    Key $key,
     string $additional_data = '',
 ): string {
     return new Encryptor($key)->seal($plaintext, $additional_data);

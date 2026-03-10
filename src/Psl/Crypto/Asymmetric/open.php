@@ -17,9 +17,12 @@ use function sodium_memzero;
  * @throws Exception\DecryptionException If decryption fails.
  */
 function open(
-    #[SensitiveParameter] string $ciphertext,
-    #[SensitiveParameter] SecretKey $secret_key,
-    #[SensitiveParameter] PublicKey $public_key,
+    #[SensitiveParameter]
+    string $ciphertext,
+    #[SensitiveParameter]
+    SecretKey $secret_key,
+    #[SensitiveParameter]
+    PublicKey $public_key,
 ): string {
     $keypair = $secret_key->bytes . $public_key->bytes;
 

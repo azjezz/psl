@@ -18,9 +18,12 @@ use function sodium_memzero;
  * @throws Exception\DecryptionException If decryption fails.
  */
 function decrypt(
-    #[SensitiveParameter] string $ciphertext,
-    #[SensitiveParameter] SecretKey $recipient_secret_key,
-    #[SensitiveParameter] PublicKey $sender_public_key,
+    #[SensitiveParameter]
+    string $ciphertext,
+    #[SensitiveParameter]
+    SecretKey $recipient_secret_key,
+    #[SensitiveParameter]
+    PublicKey $sender_public_key,
 ): string {
     if (Byte\length($ciphertext) < namespace\NONCE_BYTES) {
         throw new Exception\DecryptionException('Ciphertext is too short.');

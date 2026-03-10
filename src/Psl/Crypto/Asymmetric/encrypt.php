@@ -21,9 +21,12 @@ use function sodium_memzero;
  * @throws SecureRandom\Exception\InsufficientEntropyException If it was not possible to gather sufficient entropy for nonce generation.
  */
 function encrypt(
-    #[SensitiveParameter] string $plaintext,
-    #[SensitiveParameter] SecretKey $sender_secret_key,
-    #[SensitiveParameter] PublicKey $recipient_public_key,
+    #[SensitiveParameter]
+    string $plaintext,
+    #[SensitiveParameter]
+    SecretKey $sender_secret_key,
+    #[SensitiveParameter]
+    PublicKey $recipient_public_key,
 ): string {
     $nonce = SecureRandom\bytes(namespace\NONCE_BYTES);
     $key_pair = $sender_secret_key->bytes . $recipient_public_key->bytes;

@@ -1,5 +1,15 @@
 # Changelog
 
+## 5.4.0
+
+### features
+
+- feat(dict,vec): add filter_nonnull_by and map_nonnull - [#576](https://github.com/azjezz/psl/pull/576) by @Dima-369
+
+### other
+
+* chore: update dev dependencies, and re-format the codebase using latest mago version - [#616](https://github.com/azjezz/psl/pull/616) by @azjezz
+
 ## 5.3.0
 
 ### features
