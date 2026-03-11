@@ -124,6 +124,12 @@ final readonly class ShapeType extends Type\Type
             $this->coerceIterable($value);
         }
 
+        foreach ($this->elements_types as $key => $type) {
+            if (!array_key_exists($key, $coerced) && $type instanceof NullishType) {
+                $coerced[$key] = null;
+            }
+        }
+
         /** @var mixed $additionalValue */
         foreach (array_diff_key($value, $this->elements_types) as $key => $additionalValue) {
             $coerced[$key] = $additionalValue;
@@ -178,6 +184,10 @@ final readonly class ShapeType extends Type\Type
                 }
 
                 if ($type->isOptional()) {
+                    if ($type instanceof NullishType) {
+                        $result[$element] = null;
+                    }
+
                     continue;
                 }
 
@@ -237,6 +247,10 @@ final readonly class ShapeType extends Type\Type
                 }
 
                 if ($type->isOptional()) {
+                    if ($type instanceof NullishType) {
+                        $result[$element] = null;
+                    }
+
                     continue;
                 }
 

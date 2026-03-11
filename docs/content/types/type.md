@@ -71,6 +71,7 @@ Use `non_empty_dict()` to require at least one entry.
 
 - **`nullable(TypeInterface $inner)`** -- Allows `null` alongside the inner type
 - **`optional(TypeInterface $inner)`** -- Marks a field as optional within a `shape()` (the key may be absent entirely)
+- **`nullish(TypeInterface $inner)`** -- Combines both: the key may be absent, but defaults to `null` instead of being omitted
 - **`nonnull()`** -- Accepts any value except `null`
 
 @example('types/type-nullability.php')
