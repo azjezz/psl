@@ -41,6 +41,12 @@ In non-CLI SAPIs, `input_handle()` reads from `php://input` and `output_handle()
 
 @example('io/io-reader.php')
 
+### Bounded Reads
+
+`Reader::readUntilBounded()` works like `readUntil()` but enforces a maximum byte limit. If the suffix is not found within `$max_bytes`, an `IO\Exception\OverflowException` is thrown. This prevents unbounded memory consumption when reading from untrusted sources — for example, capping HTTP header lines to a safe size so a malicious client cannot exhaust memory by sending an endless line.
+
+@example('io/io-reader-bounded.php')
+
 ## Spool
 
 `IO\spool()` creates a handle that writes to memory until a threshold is reached (default 2MB), then transparently spools to a temporary file on disk. This is useful when buffering data of unknown size without risking excessive memory usage.

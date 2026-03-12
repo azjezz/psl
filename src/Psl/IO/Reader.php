@@ -208,6 +208,97 @@ final class Reader implements ReadHandleInterface
     }
 
     /**
+     * Read until the specified suffix is seen, with a maximum number of bytes to read.
+     *
+     * The trailing suffix is read (so won't be returned by other calls), but is not
+     * included in the return value.
+     *
+     * This call returns null if the suffix is not seen before EOF.
+     *
+     * @param positive-int $max_bytes Maximum number of bytes to read before throwing OverflowException.
+     *
+     * @throws Exception\AlreadyClosedException If the handle has been already closed.
+     * @throws Exception\RuntimeException If an error occurred during the operation.
+     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
+     * @throws Exception\OverflowException If $max_bytes is exceeded without finding the suffix.
+     */
+    public function readUntilBounded(string $suffix, int $max_bytes, null|Duration $timeout = null): null|string
+    {
+        $buf = $this->buffer;
+        $suffix_len = strlen($suffix);
+        $idx = strpos($buf, $suffix);
+        if (false !== $idx) {
+            if ($idx > $max_bytes) {
+                throw new Exception\OverflowException(Str\format(
+                    'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
+                    $max_bytes,
+                    $suffix,
+                ));
+            }
+
+            $this->buffer = substr($buf, $idx + $suffix_len);
+            return substr($buf, 0, $idx);
+        }
+
+        if (strlen($buf) > $max_bytes) {
+            throw new Exception\OverflowException(Str\format(
+                'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
+                $max_bytes,
+                $suffix,
+            ));
+        }
+
+        $timer = new Async\OptionalIncrementalTimeout($timeout, static function () use ($suffix): void {
+            // @codeCoverageIgnoreStart
+            throw new Exception\TimeoutException(Str\format(
+                "Reached timeout before encountering the suffix (\"%s\").",
+                $suffix,
+            ));
+            // @codeCoverageIgnoreEnd
+        });
+
+        do {
+            $offset = strlen($buf) - $suffix_len + 1;
+            $offset = $offset > 0 ? $offset : 0;
+            $chunk = $this->handle->read(null, $timer->getRemaining());
+            if ('' === $chunk) {
+                $this->buffer = $buf;
+                return null;
+            }
+
+            $buf .= $chunk;
+            $idx = strpos($buf, $suffix, $offset);
+
+            if (false !== $idx) {
+                if ($idx > $max_bytes) {
+                    $this->buffer = $buf;
+                    throw new Exception\OverflowException(Str\format(
+                        'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
+                        $max_bytes,
+                        $suffix,
+                    ));
+                }
+
+                break;
+            }
+
+            if (strlen($buf) > $max_bytes) {
+                $this->buffer = $buf;
+                throw new Exception\OverflowException(Str\format(
+                    'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
+                    $max_bytes,
+                    $suffix,
+                ));
+            }
+        } while (true);
+
+        /** @var int<0, max> $idx*/
+        $this->buffer = substr($buf, $idx + $suffix_len);
+
+        return substr($buf, 0, $idx);
+    }
+
+    /**
      * {@inheritDoc}
      */
     #[Override]

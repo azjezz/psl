@@ -94,6 +94,113 @@ final class ReaderTest extends TestCase
         static::assertSame('', $reader->read());
     }
 
+    public function testReadUntilBoundedFindsPrefix(): void
+    {
+        $handle = new IO\MemoryHandle('hello\r\nworld');
+        $reader = new IO\Reader($handle);
+
+        static::assertSame('hello', $reader->readUntilBounded('\r\n', 100));
+        static::assertSame('world', $reader->read());
+    }
+
+    public function testReadUntilBoundedReturnsNullOnEof(): void
+    {
+        $handle = new IO\MemoryHandle('hello');
+        $reader = new IO\Reader($handle);
+
+        static::assertNull($reader->readUntilBounded('@', 100));
+    }
+
+    public function testReadUntilBoundedThrowsOverflowWhenBufferExceedsMaxBeforeRead(): void
+    {
+        $handle = new IO\MemoryHandle('aaaaaaaaaa\r\n');
+        $reader = new IO\Reader($handle);
+
+        $this->expectException(IO\Exception\OverflowException::class);
+        $this->expectExceptionMessage('Exceeded maximum byte limit (5) before encountering the suffix ("\r\n").');
+
+        $reader->readUntilBounded('\r\n', 5);
+    }
+
+    public function testReadUntilBoundedThrowsOverflowWhenSuffixFoundBeyondMax(): void
+    {
+        $handle = new IO\MemoryHandle('abcdefghij:end');
+        $reader = new IO\Reader($handle);
+
+        $this->expectException(IO\Exception\OverflowException::class);
+        $this->expectExceptionMessage('Exceeded maximum byte limit (3) before encountering the suffix (":end").');
+
+        $reader->readUntilBounded(':end', 3);
+    }
+
+    public function testReadUntilBoundedExactMaxBytes(): void
+    {
+        $handle = new IO\MemoryHandle('abcde:end');
+        $reader = new IO\Reader($handle);
+
+        static::assertSame('abcde', $reader->readUntilBounded(':end', 5));
+    }
+
+    public function testReadUntilBoundedSuffixAtStart(): void
+    {
+        $handle = new IO\MemoryHandle(':endrest');
+        $reader = new IO\Reader($handle);
+
+        static::assertSame('', $reader->readUntilBounded(':end', 10));
+        static::assertSame('rest', $reader->read());
+    }
+
+    public function testReadUntilBoundedMultipleSuffixes(): void
+    {
+        $handle = new IO\MemoryHandle('ab|cd|ef');
+        $reader = new IO\Reader($handle);
+
+        static::assertSame('ab', $reader->readUntilBounded('|', 100));
+        static::assertSame('cd', $reader->readUntilBounded('|', 100));
+        static::assertNull($reader->readUntilBounded('|', 100));
+    }
+
+    public function testReadUntilBoundedPreservesBufferAfterOverflow(): void
+    {
+        $handle = new IO\MemoryHandle('toolongcontent:endfoo');
+        $reader = new IO\Reader($handle);
+
+        try {
+            $reader->readUntilBounded(':end', 3);
+            static::fail('Expected OverflowException');
+        } catch (IO\Exception\OverflowException) {
+            static::addToAssertionCount(1);
+        }
+
+        static::assertSame('toolongcontent:endfoo', $reader->read());
+    }
+
+    public function testReadUntilBoundedSingleByteSuffix(): void
+    {
+        $handle = new IO\MemoryHandle('abc\ndef');
+        $reader = new IO\Reader($handle);
+
+        static::assertSame('abc', $reader->readUntilBounded('\n', 10));
+        static::assertSame('def', $reader->read());
+    }
+
+    public function testReadUntilBoundedEmptyHandle(): void
+    {
+        $handle = new IO\MemoryHandle('');
+        $reader = new IO\Reader($handle);
+
+        static::assertNull($reader->readUntilBounded(':end', 100));
+    }
+
+    public function testReadUntilBoundedMaxBytesExactlyAtSuffix(): void
+    {
+        $handle = new IO\MemoryHandle('abc|rest');
+        $reader = new IO\Reader($handle);
+
+        static::assertSame('abc', $reader->readUntilBounded('|', 3));
+        static::assertSame('rest', $reader->read());
+    }
+
     public function testReadUntilInvalidSuffix(): void
     {
         $handle = new IO\MemoryHandle('hello');

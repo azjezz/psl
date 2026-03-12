@@ -1089,6 +1089,7 @@ final class Loader
         'Psl\\Filesystem\\Exception\\NotReadableException' => 'Psl/Filesystem/Exception/NotReadableException.php',
         'Psl\\IO\\Exception\\AlreadyClosedException' => 'Psl/IO/Exception/AlreadyClosedException.php',
         'Psl\\IO\\Exception\\RuntimeException' => 'Psl/IO/Exception/RuntimeException.php',
+        'Psl\\IO\\Exception\\OverflowException' => 'Psl/IO/Exception/OverflowException.php',
         'Psl\\IO\\Exception\\TimeoutException' => 'Psl/IO/Exception/TimeoutException.php',
         'Psl\\IO\\Internal\\ResourceHandle' => 'Psl/IO/Internal/ResourceHandle.php',
         'Psl\\IO\\Reader' => 'Psl/IO/Reader.php',
