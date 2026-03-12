@@ -359,4 +359,86 @@ final class ShapeTypeTest extends TypeTestCase
 
         static::assertFalse($type->matches(['name' => 'saif', 'extra' => 123]));
     }
+
+    public function testNullishKeyAbsentDefaultsToNull(): void
+    {
+        $type = Type\shape([
+            'name' => Type\string(),
+            'bio' => Type\nullish(Type\string()),
+        ]);
+
+        $result = $type->coerce(['name' => 'saif']);
+
+        static::assertSame(['name' => 'saif', 'bio' => null], $result);
+    }
+
+    public function testNullishKeyAbsentDefaultsToNullViaAssert(): void
+    {
+        $type = Type\shape([
+            'name' => Type\string(),
+            'bio' => Type\nullish(Type\string()),
+        ]);
+
+        $result = $type->assert(['name' => 'saif']);
+
+        static::assertSame(['name' => 'saif', 'bio' => null], $result);
+    }
+
+    public function testNullishKeyPresentWithNull(): void
+    {
+        $type = Type\shape([
+            'name' => Type\string(),
+            'bio' => Type\nullish(Type\string()),
+        ]);
+
+        $result = $type->coerce(['name' => 'saif', 'bio' => null]);
+
+        static::assertSame(['name' => 'saif', 'bio' => null], $result);
+    }
+
+    public function testNullishKeyPresentWithValue(): void
+    {
+        $type = Type\shape([
+            'name' => Type\string(),
+            'bio' => Type\nullish(Type\string()),
+        ]);
+
+        $result = $type->coerce(['name' => 'saif', 'bio' => 'hello']);
+
+        static::assertSame(['name' => 'saif', 'bio' => 'hello'], $result);
+    }
+
+    public function testNullishKeyCoercesValue(): void
+    {
+        $type = Type\shape([
+            'name' => Type\string(),
+            'count' => Type\nullish(Type\string()),
+        ]);
+
+        $result = $type->coerce(['name' => 'saif', 'count' => 123]);
+
+        static::assertSame(['name' => 'saif', 'count' => '123'], $result);
+    }
+
+    public function testNullishKeyAbsentDefaultsToNullViaIterable(): void
+    {
+        $type = Type\shape([
+            'name' => Type\string(),
+            'bio' => Type\nullish(Type\string()),
+        ]);
+
+        $result = $type->coerce(new \ArrayIterator(['name' => 'saif']));
+
+        static::assertSame(['name' => 'saif', 'bio' => null], $result);
+    }
+
+    public function testNullishToString(): void
+    {
+        $type = Type\shape([
+            'name' => Type\string(),
+            'bio' => Type\nullish(Type\string()),
+        ]);
+
+        static::assertSame("array{'name': string, 'bio'?: ?string}", $type->toString());
+    }
 }
