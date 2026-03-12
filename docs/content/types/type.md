@@ -106,6 +106,12 @@ When conversion fails, error messages indicate which stage failed:
 
 > Could not coerce "string" to type "class-string<stdClass>" **at path "coerce_output(string): class-string<stdClass>"**
 
+## JSON Decoding with `json_decoded()`
+
+The `json_decoded()` type transparently handles fields that may contain JSON-encoded strings. If the value already matches the inner type, it passes through; if it's a string, it's JSON-decoded and coerced through the inner type. This is especially useful in shapes where database columns store JSON:
+
+@example('types/type-json-decoded.php')
+
 ## Strict Mode with `always_assert()`
 
 By default, `coerce()` attempts type conversion. Use `always_assert()` to create a type that rejects any value not already matching, even during coercion:
