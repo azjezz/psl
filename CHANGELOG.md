@@ -4,8 +4,10 @@
 
 ### features
 
-- feat(io): added `Reader::readUntilBounded(string $suffix, int $max_bytes, ?Duration $timeout)` method, which reads until a suffix is found, but throws `IO\Exception\OverflowException` if the content exceeds `$max_bytes` before the suffix is encountered.
-- feat(io): added `IO\Exception\OverflowException` exception class.
+- feat(io): added `Reader::readUntilBounded(string $suffix, int $max_bytes, ?Duration $timeout)` method, which reads until a suffix is found, but throws `IO\Exception\OverflowException` if the content exceeds `$max_bytes` before the suffix is encountered - [#620](https://github.com/azjezz/psl/pull/620) - by @azjezz
+- feat(io): added `IO\Exception\OverflowException` exception class - [#620](https://github.com/azjezz/psl/pull/620) - by @azjezz
+- feat(type): add `Type\json_decoded()` type for transparent JSON string coercion - [#619](https://github.com/azjezz/psl/pull/619) by @veewee
+- feat(type): add `Type\nullish()` type for optional-and-nullable shape fields - [#618](https://github.com/azjezz/psl/pull/618) by @veewee
 
 ## 5.4.0
 
