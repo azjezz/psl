@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.5.0
+
+### features
+
+- feat(io): added `Reader::readUntilBounded(string $suffix, int $max_bytes, ?Duration $timeout)` method, which reads until a suffix is found, but throws `IO\Exception\OverflowException` if the content exceeds `$max_bytes` before the suffix is encountered.
+- feat(io): added `IO\Exception\OverflowException` exception class.
+
 ## 5.4.0
 
 ### features
