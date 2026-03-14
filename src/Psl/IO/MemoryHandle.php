@@ -175,6 +175,17 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
     }
 
     /**
+     * @psalm-mutation-free
+     *
+     * @inheritDoc
+     */
+    #[Override]
+    public function isClosed(): bool
+    {
+        return $this->closed;
+    }
+
+    /**
      * @psalm-external-mutation-free
      *
      * @inheritDoc

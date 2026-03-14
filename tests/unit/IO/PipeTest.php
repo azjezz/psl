@@ -140,4 +140,21 @@ final class PipeTest extends TestCase
 
         $b->await();
     }
+
+    public function testIsClosedOnPipeHandles(): void
+    {
+        [$read, $write] = IO\pipe();
+
+        static::assertFalse($read->isClosed());
+        static::assertFalse($write->isClosed());
+
+        $read->close();
+
+        static::assertTrue($read->isClosed());
+        static::assertFalse($write->isClosed());
+
+        $write->close();
+
+        static::assertTrue($write->isClosed());
+    }
 }

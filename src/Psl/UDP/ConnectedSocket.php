@@ -159,6 +159,12 @@ final class ConnectedSocket implements Network\SocketInterface, IO\StreamHandleI
     }
 
     #[Override]
+    public function isClosed(): bool
+    {
+        return !is_resource($this->stream);
+    }
+
+    #[Override]
     public function close(): void
     {
         if (is_resource($this->stream)) {

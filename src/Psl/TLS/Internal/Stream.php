@@ -121,6 +121,12 @@ final class Stream implements TLS\StreamInterface
     }
 
     #[Override]
+    public function isClosed(): bool
+    {
+        return $this->inner->isClosed();
+    }
+
+    #[Override]
     public function close(): void
     {
         // Send TLS close_notify before closing the underlying stream.

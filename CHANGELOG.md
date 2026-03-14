@@ -9,6 +9,7 @@
 - **BC** - Removed `Psl\Network\Exception\TimeoutException` — use `Psl\Async\Exception\CancelledException` instead.
 - **BC** - Removed `Psl\Process\Exception\TimeoutException` — use `Psl\Async\Exception\CancelledException` instead.
 - **BC** - Removed `Psl\Shell\Exception\TimeoutException` — use `Psl\Async\Exception\CancelledException` instead.
+- **BC** - `Psl\IO\CloseHandleInterface` now requires an `isClosed(): bool` method.
 
 ### features
 

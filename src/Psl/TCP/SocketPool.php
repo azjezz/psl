@@ -45,6 +45,8 @@ final class SocketPool implements SocketPoolInterface
 
     private readonly Duration $idleTimeout;
 
+    private bool $closed = false;
+
     public function __construct(
         private readonly ConnectorInterface $connector = new Connector(),
         null|Duration $idleTimeout = null,
@@ -132,8 +134,15 @@ final class SocketPool implements SocketPoolInterface
         $stream->close();
     }
 
+    public function isClosed(): bool
+    {
+        return $this->closed;
+    }
+
     public function close(): void
     {
+        $this->closed = true;
+
         foreach ($this->idle as $entries) {
             foreach ($entries as [$stream, $timerId]) {
                 EventLoop::cancel($timerId);

@@ -7,9 +7,10 @@ The `IO` component provides handle-based I/O abstractions. Instead of reaching f
 Handles are defined as narrow interfaces, each describing a single capability:
 
 - **`ReadHandleInterface`** -- read bytes, check for EOF
+- **`BufferedReadHandleInterface`** -- extends `ReadHandleInterface` with `readByte()`, `readLine()`, `readUntil()`, and `readUntilBounded()`
 - **`WriteHandleInterface`** -- write bytes
 - **`SeekHandleInterface`** -- move the cursor position
-- **`CloseHandleInterface`** -- explicitly close the handle
+- **`CloseHandleInterface`** -- explicitly close the handle, check if closed via `isClosed()`
 
 A concrete handle implements whichever combination applies. For example, a file handle implements all four, while a network socket implements read, write, and close but not seek.
 
@@ -37,7 +38,7 @@ In non-CLI SAPIs, `input_handle()` reads from `php://input` and `output_handle()
 
 ## Reader
 
-`Reader` wraps any `ReadHandleInterface` with buffered, higher-level reading methods:
+`Reader` wraps any `ReadHandleInterface` and implements `BufferedReadHandleInterface`, providing buffered, higher-level reading methods:
 
 @example('io/io-reader.php')
 

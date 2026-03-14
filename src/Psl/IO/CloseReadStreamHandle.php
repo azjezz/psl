@@ -63,6 +63,15 @@ final class CloseReadStreamHandle implements CloseHandleInterface, ReadHandleInt
      * @inheritDoc
      */
     #[Override]
+    public function isClosed(): bool
+    {
+        return $this->handle->isClosed();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
     public function close(): void
     {
         $this->handle->close();
