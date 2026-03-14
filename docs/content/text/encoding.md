@@ -42,4 +42,12 @@ Quoted-printable encoding represents 8-bit data using only printable ASCII chara
 
 Both `encode()` and `encode_line()` accept optional `$max_line_length` (default 76) and `$line_ending` (default `"\r\n"`) parameters.
 
+## Encoded-Word (RFC 2047)
+
+Encoded-word encoding is used in MIME headers (Subject, From, etc.) to represent non-ASCII text. `encode()` automatically selects Q-encoding (for mostly ASCII text) or B-encoding (for mostly non-ASCII text) based on the proportion of non-printable bytes.
+
+@example('text/encoding-encoded-word.php')
+
+`encode()` accepts an optional `$charset` parameter of type `Psl\Str\Encoding` (default `Encoding::Utf8`). `decode()` handles charset conversion automatically, and per RFC 2047 §6.2, whitespace between adjacent encoded-words is removed.
+
 See `src/Psl/Encoding/` for the full API.

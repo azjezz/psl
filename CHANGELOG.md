@@ -35,6 +35,7 @@
 - feat(async): introduce `Psl\Async\TaskGroup` for running closures concurrently and awaiting them all with `defer()` + `awaitAll()`
 - feat(async): introduce `Psl\Async\WaitGroup`, a counter-based synchronization primitive with `add()`, `done()`, and `wait()`
 - feat(encoding): introduce `Psl\Encoding\QuotedPrintable\encode()`, `decode()`, and `encode_line()` for RFC 2045 quoted-printable encoding with configurable line length and line ending
+- feat(encoding): introduce `Psl\Encoding\EncodedWord\encode()` and `decode()` for RFC 2047 encoded-word encoding/decoding in MIME headers (B-encoding and Q-encoding with automatic selection)
 - feat(io): introduce `Psl\IO\BufferedReadHandleInterface`, extending `ReadHandleInterface` with `readByte()`, `readLine()`, `readUntil()`, and `readUntilBounded()`
 - feat(io): `Psl\IO\Reader` now implements `BufferedReadHandleInterface`
 
