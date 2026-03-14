@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 
 /**
  * An interface for a writable Handle.
@@ -32,11 +34,11 @@ interface WriteHandleInterface extends HandleInterface
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If reached timeout before completing the operation.
+     * @throws CancelledException If the cancellation token is cancelled.
      *
      * @return int<0, max> the number of bytes written, which may be less than the length of input string.
      */
-    public function write(string $bytes, null|Duration $timeout = null): int;
+    public function write(string $bytes, CancellationTokenInterface $cancellation = new NullCancellationToken()): int;
 
     /**
      * Write all of the requested data.
@@ -51,7 +53,10 @@ interface WriteHandleInterface extends HandleInterface
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If reached timeout before completing the operation.
+     * @throws CancelledException If the cancellation token is cancelled.
      */
-    public function writeAll(string $bytes, null|Duration $timeout = null): void;
+    public function writeAll(
+        string $bytes,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): void;
 }

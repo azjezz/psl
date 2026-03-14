@@ -43,7 +43,7 @@ It serves as an alternative to `proc_*`, `symfony/process`, and `amphp/process`,
 
 @example('io/process-shell.php')
 
-### Timeouts
+### Cancellation
 
 @example('io/process-timeout.php')
 

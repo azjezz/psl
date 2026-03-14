@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Psl\IO;
 
 use Override;
-use Psl\Async;
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\Str;
 
 use function strlen;
@@ -64,17 +65,10 @@ final class Reader implements ReadHandleInterface
      * {@inheritDoc}
      */
     #[Override]
-    public function readFixedSize(int $size, null|Duration $timeout = null): string
-    {
-        $timer = new Async\OptionalIncrementalTimeout($timeout, function (): void {
-            // @codeCoverageIgnoreStart
-            throw new Exception\TimeoutException(Str\format(
-                'Reached timeout before reading requested amount of data',
-                '' === $this->buffer ? 'any' : 'all',
-            ));
-            // @codeCoverageIgnoreEnd
-        });
-
+    public function readFixedSize(
+        int $size,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): string {
         do {
             $length = strlen($this->buffer);
             if ($length >= $size || $this->eof) {
@@ -83,7 +77,7 @@ final class Reader implements ReadHandleInterface
 
             /** @var positive-int $to_read */
             $to_read = $size - $length;
-            $this->fillBuffer($to_read, $timer->getRemaining());
+            $this->fillBuffer($to_read, $cancellation);
         } while (true);
 
         if ($this->eof) {
@@ -107,12 +101,12 @@ final class Reader implements ReadHandleInterface
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation, or reached end of file.
-     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
+     * @throws CancelledException If the cancellation token is cancelled.
      */
-    public function readByte(null|Duration $timeout = null): string
+    public function readByte(CancellationTokenInterface $cancellation = new NullCancellationToken()): string
     {
         if ('' === $this->buffer && !$this->eof) {
-            $this->fillBuffer(null, $timeout);
+            $this->fillBuffer(null, $cancellation);
         }
 
         if ('' === $this->buffer) {
@@ -134,24 +128,16 @@ final class Reader implements ReadHandleInterface
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
+     * @throws CancelledException If the cancellation token is cancelled.
      */
-    public function readLine(null|Duration $timeout = null): null|string
+    public function readLine(CancellationTokenInterface $cancellation = new NullCancellationToken()): null|string
     {
-        $timer = new Async\OptionalIncrementalTimeout($timeout, static function (): void {
-            // @codeCoverageIgnoreStart
-            throw new Exception\TimeoutException(
-                'Reached timeout before encountering reaching the current line terminator.',
-            );
-            // @codeCoverageIgnoreEnd
-        });
-
-        $line = $this->readUntil(PHP_EOL, $timer->getRemaining());
+        $line = $this->readUntil(PHP_EOL, $cancellation);
         if (null !== $line) {
             return $line;
         }
 
-        $content = $this->read(null, $timer->getRemaining());
+        $content = $this->read(null, $cancellation);
         return '' === $content ? null : $content;
     }
 
@@ -166,10 +152,12 @@ final class Reader implements ReadHandleInterface
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
+     * @throws CancelledException If the cancellation token is cancelled.
      */
-    public function readUntil(string $suffix, null|Duration $timeout = null): null|string
-    {
+    public function readUntil(
+        string $suffix,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): null|string {
         $buf = $this->buffer;
         $idx = strpos($buf, $suffix);
         $suffix_len = strlen($suffix);
@@ -178,21 +166,12 @@ final class Reader implements ReadHandleInterface
             return substr($buf, 0, $idx);
         }
 
-        $timer = new Async\OptionalIncrementalTimeout($timeout, static function () use ($suffix): void {
-            // @codeCoverageIgnoreStart
-            throw new Exception\TimeoutException(Str\format(
-                "Reached timeout before encountering the suffix (\"%s\").",
-                $suffix,
-            ));
-            // @codeCoverageIgnoreEnd
-        });
-
         do {
             // + 1 as it would have been matched in the previous iteration if it
             // fully fit in the chunk
             $offset = strlen($buf) - $suffix_len + 1;
             $offset = $offset > 0 ? $offset : 0;
-            $chunk = $this->handle->read(null, $timer->getRemaining());
+            $chunk = $this->handle->read(null, $cancellation);
             if ('' === $chunk) {
                 $this->buffer = $buf;
                 return null;
@@ -219,11 +198,14 @@ final class Reader implements ReadHandleInterface
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
+     * @throws CancelledException If the cancellation token is cancelled.
      * @throws Exception\OverflowException If $max_bytes is exceeded without finding the suffix.
      */
-    public function readUntilBounded(string $suffix, int $max_bytes, null|Duration $timeout = null): null|string
-    {
+    public function readUntilBounded(
+        string $suffix,
+        int $max_bytes,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): null|string {
         $buf = $this->buffer;
         $suffix_len = strlen($suffix);
         $idx = strpos($buf, $suffix);
@@ -248,19 +230,10 @@ final class Reader implements ReadHandleInterface
             ));
         }
 
-        $timer = new Async\OptionalIncrementalTimeout($timeout, static function () use ($suffix): void {
-            // @codeCoverageIgnoreStart
-            throw new Exception\TimeoutException(Str\format(
-                "Reached timeout before encountering the suffix (\"%s\").",
-                $suffix,
-            ));
-            // @codeCoverageIgnoreEnd
-        });
-
         do {
             $offset = strlen($buf) - $suffix_len + 1;
             $offset = $offset > 0 ? $offset : 0;
-            $chunk = $this->handle->read(null, $timer->getRemaining());
+            $chunk = $this->handle->read(null, $cancellation);
             if ('' === $chunk) {
                 $this->buffer = $buf;
                 return null;
@@ -302,14 +275,16 @@ final class Reader implements ReadHandleInterface
      * {@inheritDoc}
      */
     #[Override]
-    public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
-    {
+    public function read(
+        null|int $max_bytes = null,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): string {
         if ($this->eof) {
             return '';
         }
 
         if ('' === $this->buffer) {
-            $this->fillBuffer(null, $timeout);
+            $this->fillBuffer(null, $cancellation);
         }
 
         // We either have a buffer, or reached EOF; either way, behavior matches
@@ -355,11 +330,11 @@ final class Reader implements ReadHandleInterface
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
+     * @throws CancelledException If the cancellation token is cancelled.
      */
-    private function fillBuffer(null|int $desired_bytes, null|Duration $timeout): void
+    private function fillBuffer(null|int $desired_bytes, CancellationTokenInterface $cancellation): void
     {
-        $chunk = $this->handle->read($desired_bytes, $timeout);
+        $chunk = $this->handle->read($desired_bytes, $cancellation);
         $this->buffer .= $chunk;
         if ('' === $chunk) {
             $this->eof = $this->handle->reachedEndOfDataSource();

@@ -7,6 +7,7 @@ namespace Psl\Tests\Unit\IO;
 use Closure;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Psl\Async;
 use Psl\DateTime\Duration;
 use Psl\IO;
 use Psl\Str;
@@ -162,7 +163,7 @@ final class MemoryHandleTest extends TestCase
     {
         $h = new IO\MemoryHandle();
 
-        $h->writeAll('hello, world!', Duration::seconds(5));
+        $h->writeAll('hello, world!', new Async\TimeoutCancellationToken(Duration::seconds(5)));
 
         static::assertSame('hello, world!', $h->getBuffer());
     }
@@ -171,7 +172,7 @@ final class MemoryHandleTest extends TestCase
     {
         $h = new IO\MemoryHandle();
 
-        $h->writeAll('', Duration::seconds(5));
+        $h->writeAll('', new Async\TimeoutCancellationToken(Duration::seconds(5)));
 
         static::assertSame('', $h->getBuffer());
     }
@@ -180,7 +181,7 @@ final class MemoryHandleTest extends TestCase
     {
         $h = new IO\MemoryHandle('hello, world!');
 
-        $data = $h->readAll(timeout: Duration::seconds(5));
+        $data = $h->readAll(cancellation: new Async\TimeoutCancellationToken(Duration::seconds(5)));
 
         static::assertSame('hello, world!', $data);
     }
@@ -189,7 +190,7 @@ final class MemoryHandleTest extends TestCase
     {
         $h = new IO\MemoryHandle('hello, world!');
 
-        $data = $h->readAll(max_bytes: 5, timeout: Duration::seconds(5));
+        $data = $h->readAll(max_bytes: 5, cancellation: new Async\TimeoutCancellationToken(Duration::seconds(5)));
 
         static::assertSame('hello', $data);
     }
@@ -198,7 +199,7 @@ final class MemoryHandleTest extends TestCase
     {
         $h = new IO\MemoryHandle('hello, world!');
 
-        $data = $h->readFixedSize(5, Duration::seconds(5));
+        $data = $h->readFixedSize(5, new Async\TimeoutCancellationToken(Duration::seconds(5)));
 
         static::assertSame('hello', $data);
     }

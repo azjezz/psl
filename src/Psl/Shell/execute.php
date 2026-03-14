@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Shell;
 
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\Process;
 use Psl\Str;
 
@@ -27,7 +29,7 @@ use function strlen;
  * @throws Exception\FailedExecutionException In case the command resulted in an exit code other than 0.
  * @throws Exception\PossibleAttackException In case the command being run is suspicious ( e.g: contains NULL byte ).
  * @throws Exception\RuntimeException In case $working_directory doesn't exist, or unable to create a new process.
- * @throws Exception\TimeoutException If $timeout is reached before being able to read the process stream.
+ * @throws CancelledException If the operation is cancelled.
  */
 function execute(
     string $command,
@@ -35,7 +37,7 @@ function execute(
     null|string $working_directory = null,
     array $environment = [],
     ErrorOutputBehavior $error_output_behavior = ErrorOutputBehavior::Discard,
-    null|Duration $timeout = null,
+    CancellationTokenInterface $cancellation = new NullCancellationToken(),
 ): string {
     if (Str\contains($command, "\0")) {
         throw new Exception\PossibleAttackException('NULL byte detected.');
@@ -54,9 +56,7 @@ function execute(
     }
 
     try {
-        $output = $cmd->output($timeout);
-    } catch (Process\Exception\TimeoutException $e) {
-        throw new Exception\TimeoutException('reached timeout while the process output is still not readable.', 0, $e);
+        $output = $cmd->output($cancellation);
     } catch (Process\Exception\RuntimeException $e) {
         throw new Exception\RuntimeException($e->getMessage(), 0, $e);
     }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\TCP;
 
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\Network;
 
 /**
@@ -23,9 +25,13 @@ interface SocketPoolInterface
      * @param int<0, 65535> $port
      *
      * @throws Network\Exception\RuntimeException If the connection fails.
-     * @throws Network\Exception\TimeoutException If the operation times out.
+     * @throws CancelledException If the operation was cancelled.
      */
-    public function checkout(string $host, int $port, null|Duration $timeout = null): StreamInterface;
+    public function checkout(
+        string $host,
+        int $port,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): StreamInterface;
 
     /**
      * Return a connection to the pool for reuse.

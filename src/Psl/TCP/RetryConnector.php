@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Psl\TCP;
 
 use Override;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\DateTime\Duration;
 use Psl\Network;
 use Revolt\EventLoop;
@@ -35,8 +37,11 @@ final readonly class RetryConnector implements ConnectorInterface
     }
 
     #[Override]
-    public function connect(string $host, int $port, null|Duration $timeout = null): StreamInterface
-    {
+    public function connect(
+        string $host,
+        int $port,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): StreamInterface {
         $attempts = 0;
         $messages = [];
 
@@ -44,7 +49,7 @@ final readonly class RetryConnector implements ConnectorInterface
             $attempts++;
 
             try {
-                return $this->connector->connect($host, $port, $timeout);
+                return $this->connector->connect($host, $port, $cancellation);
             } catch (Network\Exception\RuntimeException $e) {
                 $messages[] = "Attempt {$attempts}: {$e->getMessage()}";
 

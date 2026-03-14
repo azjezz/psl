@@ -45,6 +45,14 @@ Distribute work across several consumers by sharing the receiver:
 
 @example('async/channel-fan-out.php')
 
+### Cancellation
+
+Both `send()` and `receive()` accept an optional `CancellationTokenInterface`. This is useful when you don't want to wait indefinitely for a message or for space in a bounded channel:
+
+@example('async/channel-cancellation.php')
+
+`trySend()` and `tryReceive()` are non-blocking and don't need cancellation tokens -- they throw immediately if the channel is full or empty.
+
 ## When to Use Channel
 
 - **Decoupling producers and consumers** -- The sender doesn't need to know who processes the messages

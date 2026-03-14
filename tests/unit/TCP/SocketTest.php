@@ -142,7 +142,11 @@ final class SocketTest extends TestCase
             },
             'client' => static function () use ($port): void {
                 $socket = TCP\Socket::createV4();
-                $stream = $socket->connect('127.0.0.1', $port, Duration::seconds(5));
+                $stream = $socket->connect(
+                    '127.0.0.1',
+                    $port,
+                    new Async\TimeoutCancellationToken(Duration::seconds(5)),
+                );
 
                 $stream->writeAll('with-timeout');
                 $response = $stream->readAll();

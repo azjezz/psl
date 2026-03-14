@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\TCP;
 
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\Network;
 
 /**
@@ -16,6 +19,7 @@ interface ListenerInterface extends Network\ListenerInterface
      *
      * @throws Network\Exception\RuntimeException If failed to accept incoming connection.
      * @throws Network\Exception\AlreadyStoppedException If the listener has already been closed.
+     * @throws CancelledException If the cancellation token is cancelled while waiting.
      */
-    public function accept(): StreamInterface;
+    public function accept(CancellationTokenInterface $cancellation = new NullCancellationToken()): StreamInterface;
 }

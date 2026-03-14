@@ -7,6 +7,7 @@ namespace Psl\Async;
 use Closure;
 use Generator;
 use Override;
+use Psl\Async\Exception\CancelledException;
 use Psl\Async\Internal\AwaitableIterator;
 use Psl\Async\Internal\State;
 use Psl\Promise\PromiseInterface;
@@ -245,18 +246,48 @@ final readonly class Awaitable implements PromiseInterface
      *
      * Throws a `Throwable` if the operation fails.
      *
+     * @throws Exception\CancelledException If the cancellation token is cancelled before the operation completes.
+     *
      * @return T
      */
-    public function await(): mixed
+    public function await(CancellationTokenInterface $cancellation = new NullCancellationToken()): mixed
     {
         $suspension = EventLoop::getSuspension();
+
+        $cancellation->throwIfCancelled();
+
+        /** @var bool $resolved */
+        $resolved = false;
+
+        $cancellation_id = $cancellation->subscribe(static function (CancelledException $e) use (
+            $suspension,
+            &$resolved,
+        ): void {
+            if (!$resolved) {
+                $resolved = true;
+                $suspension->throw($e);
+            }
+        });
 
         $this->state->subscribe(
             /**
              * @param null|Throwable $error
              * @param null|T $value
              */
-            static function (null|Throwable $error, mixed $value) use ($suspension): void {
+            static function (null|Throwable $error, mixed $value) use (
+                $suspension,
+                $cancellation,
+                $cancellation_id,
+                &$resolved,
+            ): void {
+                $cancellation->unsubscribe($cancellation_id);
+
+                if ($resolved) {
+                    return;
+                }
+
+                $resolved = true;
+
                 if ($error) {
                     $suspension->throw($error);
                 } else {

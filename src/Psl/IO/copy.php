@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
-use Psl\Async;
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 
 use function strlen;
 
@@ -17,19 +18,18 @@ use function strlen;
  * @return int<0, max> The total number of bytes copied.
  *
  * @throws Exception\RuntimeException If a read or write error occurs.
- * @throws Exception\TimeoutException If the operation times out.
+ * @throws CancelledException If the operation is cancelled.
  */
-function copy(ReadHandleInterface $reader, WriteHandleInterface $writer, null|Duration $timeout = null): int
-{
-    $timer = new Async\OptionalIncrementalTimeout($timeout, static function (): never {
-        throw new Exception\TimeoutException('Copy operation timed out.');
-    });
-
+function copy(
+    ReadHandleInterface $reader,
+    WriteHandleInterface $writer,
+    CancellationTokenInterface $cancellation = new NullCancellationToken(),
+): int {
     $bytes_copied = 0;
     $buffer_size = 8192;
 
     while (true) {
-        $data = $reader->read($buffer_size, $timer->getRemaining());
+        $data = $reader->read($buffer_size, $cancellation);
         if ($data === '') {
             if ($reader->reachedEndOfDataSource()) {
                 break;
@@ -38,7 +38,7 @@ function copy(ReadHandleInterface $reader, WriteHandleInterface $writer, null|Du
             continue;
         }
 
-        $writer->writeAll($data, $timer->getRemaining());
+        $writer->writeAll($data, $cancellation);
         $bytes_copied += strlen($data);
     }
 

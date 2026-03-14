@@ -9,7 +9,9 @@ use Psl\Channel\ChannelInterface;
 use Psl\Channel\Exception;
 use Revolt\EventLoop\Suspension;
 
+use function array_search;
 use function array_shift;
+use function array_splice;
 use function count;
 
 /**
@@ -37,6 +39,17 @@ final class UnboundedChannelState implements ChannelInterface
     public function waitForMessage(Suspension $suspension): void
     {
         $this->waitingForMessage[] = $suspension;
+    }
+
+    /**
+     * @param Suspension<mixed> $suspension
+     */
+    public function removeFromWaitingForMessage(Suspension $suspension): void
+    {
+        $index = array_search($suspension, $this->waitingForMessage, true);
+        if (false !== $index) {
+            array_splice($this->waitingForMessage, $index, 1);
+        }
     }
 
     /**

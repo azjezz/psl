@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Process;
 
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\IO;
 
 interface ChildInterface
@@ -60,9 +62,9 @@ interface ChildInterface
      * If stdout/stderr are piped, their handles are closed before waiting
      * to prevent deadlocks. Use {@see waitWithOutput()} to collect output.
      *
-     * @throws Exception\TimeoutException If the timeout is reached before the process exits.
+     * @throws CancelledException If the operation is cancelled.
      */
-    public function wait(null|Duration $timeout = null): ExitStatus;
+    public function wait(CancellationTokenInterface $cancellation = new NullCancellationToken()): ExitStatus;
 
     /**
      * Waits for the process to exit, collecting all stdout and stderr output.
@@ -70,9 +72,9 @@ interface ChildInterface
      * This method reads stdout and stderr concurrently to avoid deadlocks,
      * then waits for the process to exit.
      *
-     * @throws Exception\TimeoutException If the timeout is reached.
+     * @throws CancelledException If the operation is cancelled.
      */
-    public function waitWithOutput(null|Duration $timeout = null): Output;
+    public function waitWithOutput(CancellationTokenInterface $cancellation = new NullCancellationToken()): Output;
 
     /**
      * Attempts to collect the exit status of the process without blocking.

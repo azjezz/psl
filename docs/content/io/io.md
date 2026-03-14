@@ -43,7 +43,7 @@ In non-CLI SAPIs, `input_handle()` reads from `php://input` and `output_handle()
 
 ### Bounded Reads
 
-`Reader::readUntilBounded()` works like `readUntil()` but enforces a maximum byte limit. If the suffix is not found within `$max_bytes`, an `IO\Exception\OverflowException` is thrown. This prevents unbounded memory consumption when reading from untrusted sources — for example, capping HTTP header lines to a safe size so a malicious client cannot exhaust memory by sending an endless line.
+`Reader::readUntilBounded()` works like `readUntil()` but enforces a maximum byte limit. If the suffix is not found within `$max_bytes`, an `IO\Exception\OverflowException` is thrown. This prevents unbounded memory consumption when reading from untrusted sources -- for example, capping HTTP header lines to a safe size so a malicious client cannot exhaust memory by sending an endless line.
 
 @example('io/io-reader-bounded.php')
 

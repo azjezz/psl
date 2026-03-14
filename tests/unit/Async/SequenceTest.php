@@ -230,4 +230,89 @@ final class SequenceTest extends TestCase
         static::assertTrue($one->isComplete());
         static::assertTrue($two->isComplete());
     }
+
+    public function testWaitForPendingReturnsImmediatelyWhenNotIngoing(): void
+    {
+        $s = new Async\Sequence(static fn(string $input): string => $input);
+
+        $s->waitForPending();
+
+        static::assertFalse($s->hasIngoingOperations());
+    }
+
+    public function testWaitForCancelledWhileWaiting(): void
+    {
+        $sequence = new Async\Sequence(static function (string $input): string {
+            Async\sleep(DateTime\Duration::milliseconds(100));
+
+            return $input;
+        });
+
+        Async\run(static fn(): string => $sequence->waitFor('first'))->ignore();
+
+        $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
+
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        Async\run(static fn(): string => $sequence->waitFor('second', $token))->await();
+    }
+
+    public function testWaitForPendingCancelledWhileWaiting(): void
+    {
+        $sequence = new Async\Sequence(static function (string $input): string {
+            Async\sleep(DateTime\Duration::milliseconds(100));
+
+            return $input;
+        });
+
+        Async\run(static fn(): string => $sequence->waitFor('first'))->ignore();
+
+        $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
+
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        Async\run(static fn(): null => $sequence->waitForPending($token))->await();
+    }
+
+    public function testWaitForWithAlreadyCancelledToken(): void
+    {
+        $sequence = new Async\Sequence(static function (string $input): string {
+            Async\sleep(DateTime\Duration::milliseconds(100));
+
+            return $input;
+        });
+
+        Async\run(static fn(): string => $sequence->waitFor('first'))->ignore();
+
+        $token = new Async\SignalCancellationToken();
+        $token->cancel();
+
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        Async\run(static fn(): string => $sequence->waitFor('second', $token))->await();
+    }
+
+    public function testCancelledWaitForDoesNotAffectOtherOperations(): void
+    {
+        $sequence = new Async\Sequence(static function (string $input): string {
+            Async\sleep(DateTime\Duration::milliseconds(30));
+
+            return $input;
+        });
+
+        $first = Async\run(static fn(): string => $sequence->waitFor('first'));
+
+        $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
+        $second = Async\run(static fn(): string => $sequence->waitFor('second', $token));
+
+        try {
+            $second->await();
+            static::fail('Expected CancelledException');
+        } catch (Async\Exception\CancelledException) {
+            static::addToAssertionCount(1);
+        }
+
+        static::assertSame('first', $first->await());
+        static::assertFalse($sequence->hasPendingOperations());
+    }
 }

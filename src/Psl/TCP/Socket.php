@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\TCP;
 
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\Network;
 use Psl\OS;
 
@@ -71,16 +73,19 @@ final class Socket
      * @param int<0, 65535> $port
      *
      * @throws Network\Exception\RuntimeException If connect fails.
-     * @throws Network\Exception\TimeoutException If the operation times out.
+     * @throws CancelledException If the operation was cancelled.
      */
-    public function connect(string $host, int $port, null|Duration $timeout = null): StreamInterface
-    {
+    public function connect(
+        string $host,
+        int $port,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): StreamInterface {
         $this->ensureNotConsumed();
         $this->consumed = true;
 
         $context = $this->buildContext();
 
-        $stream = Network\Internal\socket_connect("tcp://{$host}:{$port}", $context, $timeout);
+        $stream = Network\Internal\socket_connect("tcp://{$host}:{$port}", $context, $cancellation);
 
         return new Internal\Stream($stream);
     }

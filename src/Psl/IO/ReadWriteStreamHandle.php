@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\IO;
 
 use Override;
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\IO;
 
 /**
@@ -52,9 +53,11 @@ final class ReadWriteStreamHandle implements StreamHandleInterface, WriteHandleI
      * @inheritDoc
      */
     #[Override]
-    public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
-    {
-        return $this->handle->read($max_bytes, $timeout);
+    public function read(
+        null|int $max_bytes = null,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): string {
+        return $this->handle->read($max_bytes, $cancellation);
     }
 
     /**
@@ -74,9 +77,9 @@ final class ReadWriteStreamHandle implements StreamHandleInterface, WriteHandleI
      * @inheritDoc
      */
     #[Override]
-    public function write(string $bytes, null|Duration $timeout = null): int
+    public function write(string $bytes, CancellationTokenInterface $cancellation = new NullCancellationToken()): int
     {
-        return $this->handle->write($bytes, $timeout);
+        return $this->handle->write($bytes, $cancellation);
     }
 
     /**

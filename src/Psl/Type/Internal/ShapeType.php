@@ -125,9 +125,11 @@ final readonly class ShapeType extends Type\Type
         }
 
         foreach ($this->elements_types as $key => $type) {
-            if (!array_key_exists($key, $coerced) && $type instanceof NullishType) {
-                $coerced[$key] = null;
+            if (!(!array_key_exists($key, $coerced) && $type instanceof NullishType)) {
+                continue;
             }
+
+            $coerced[$key] = null;
         }
 
         /** @var mixed $additionalValue */

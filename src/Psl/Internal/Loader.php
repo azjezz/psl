@@ -22,6 +22,8 @@ use function trait_exists;
  * @codeCoverageIgnore
  *
  * @internal
+ *
+ * @mago-expect lint:no-literal-password
  */
 final class Loader
 {
@@ -696,6 +698,7 @@ final class Loader
         'Psl\\Async\\first' => 'Psl/Async/first.php',
         'Psl\\Async\\later' => 'Psl/Async/later.php',
         'Psl\\Async\\sleep' => 'Psl/Async/sleep.php',
+        'Psl\\Async\\Internal\\next_id' => 'Psl/Async/Internal/next_id.php',
         'Psl\\File\\Internal\\open' => 'Psl/File/Internal/open.php',
         'Psl\\File\\open_read_only' => 'Psl/File/open_read_only.php',
         'Psl\\File\\open_write_only' => 'Psl/File/open_write_only.php',
@@ -1069,7 +1072,6 @@ final class Loader
         'Psl\\Shell\\Exception\\FailedExecutionException' => 'Psl/Shell/Exception/FailedExecutionException.php',
         'Psl\\Shell\\Exception\\RuntimeException' => 'Psl/Shell/Exception/RuntimeException.php',
         'Psl\\Shell\\Exception\\PossibleAttackException' => 'Psl/Shell/Exception/PossibleAttackException.php',
-        'Psl\\Shell\\Exception\\TimeoutException' => 'Psl/Shell/Exception/TimeoutException.php',
         'Psl\\Shell\\Exception\\InvalidArgumentException' => 'Psl/Shell/Exception/InvalidArgumentException.php',
         'Psl\\Process\\Command' => 'Psl/Process/Command.php',
         'Psl\\Process\\Stdio' => 'Psl/Process/Stdio.php',
@@ -1078,7 +1080,6 @@ final class Loader
         'Psl\\Process\\Internal\\Child' => 'Psl/Process/Internal/Child.php',
         'Psl\\Process\\Exception\\RuntimeException' => 'Psl/Process/Exception/RuntimeException.php',
         'Psl\\Process\\Exception\\LogicException' => 'Psl/Process/Exception/LogicException.php',
-        'Psl\\Process\\Exception\\TimeoutException' => 'Psl/Process/Exception/TimeoutException.php',
         'Psl\\Process\\Exception\\StartFailedException' => 'Psl/Process/Exception/StartFailedException.php',
         'Psl\\Process\\Exception\\StreamUnavailableException' => 'Psl/Process/Exception/StreamUnavailableException.php',
         'Psl\\Process\\Exception\\InvalidArgumentException' => 'Psl/Process/Exception/InvalidArgumentException.php',
@@ -1094,7 +1095,6 @@ final class Loader
         'Psl\\IO\\Exception\\AlreadyClosedException' => 'Psl/IO/Exception/AlreadyClosedException.php',
         'Psl\\IO\\Exception\\RuntimeException' => 'Psl/IO/Exception/RuntimeException.php',
         'Psl\\IO\\Exception\\OverflowException' => 'Psl/IO/Exception/OverflowException.php',
-        'Psl\\IO\\Exception\\TimeoutException' => 'Psl/IO/Exception/TimeoutException.php',
         'Psl\\IO\\Internal\\ResourceHandle' => 'Psl/IO/Internal/ResourceHandle.php',
         'Psl\\IO\\Reader' => 'Psl/IO/Reader.php',
         'Psl\\IO\\MemoryHandle' => 'Psl/IO/MemoryHandle.php',
@@ -1102,6 +1102,7 @@ final class Loader
         'Psl\\RandomSequence\\MersenneTwisterSequence' => 'Psl/RandomSequence/MersenneTwisterSequence.php',
         'Psl\\RandomSequence\\MersenneTwisterPHPVariantSequence' => 'Psl/RandomSequence/MersenneTwisterPHPVariantSequence.php',
         'Psl\\RandomSequence\\SecureSequence' => 'Psl/RandomSequence/SecureSequence.php',
+        'Psl\\Async\\Exception\\CancelledException' => 'Psl/Async/Exception/CancelledException.php',
         'Psl\\Async\\Exception\\CompositeException' => 'Psl/Async/Exception/CompositeException.php',
         'Psl\\Async\\Exception\\RuntimeException' => 'Psl/Async/Exception/RuntimeException.php',
         'Psl\\Async\\Exception\\TimeoutException' => 'Psl/Async/Exception/TimeoutException.php',
@@ -1110,6 +1111,11 @@ final class Loader
         'Psl\\Async\\Internal\\AwaitableIterator' => 'Psl/Async/Internal/AwaitableIterator.php',
         'Psl\\Async\\Internal\\AwaitableIteratorQueue' => 'Psl/Async/Internal/AwaitableIteratorQueue.php',
         'Psl\\Async\\Internal\\State' => 'Psl/Async/Internal/State.php',
+        'Psl\\Async\\CancellationTokenInterface' => 'Psl/Async/CancellationTokenInterface.php',
+        'Psl\\Async\\NullCancellationToken' => 'Psl/Async/NullCancellationToken.php',
+        'Psl\\Async\\SignalCancellationToken' => 'Psl/Async/SignalCancellationToken.php',
+        'Psl\\Async\\TimeoutCancellationToken' => 'Psl/Async/TimeoutCancellationToken.php',
+        'Psl\\Async\\LinkedCancellationToken' => 'Psl/Async/LinkedCancellationToken.php',
         'Psl\\Async\\Awaitable' => 'Psl/Async/Awaitable.php',
         'Psl\\Async\\Semaphore' => 'Psl/Async/Semaphore.php',
         'Psl\\Async\\KeyedSemaphore' => 'Psl/Async/KeyedSemaphore.php',
@@ -1141,7 +1147,6 @@ final class Loader
         'Psl\\File\\ReadHandle' => 'Psl/File/ReadHandle.php',
         'Psl\\File\\ReadWriteHandle' => 'Psl/File/ReadWriteHandle.php',
         'Psl\\File\\WriteHandle' => 'Psl/File/WriteHandle.php',
-        'Psl\\Network\\Exception\\TimeoutException' => 'Psl/Network/Exception/TimeoutException.php',
         'Psl\\Network\\Exception\\RuntimeException' => 'Psl/Network/Exception/RuntimeException.php',
         'Psl\\Network\\Exception\\AlreadyStoppedException' => 'Psl/Network/Exception/AlreadyStoppedException.php',
         'Psl\\Network\\Exception\\InvalidArgumentException' => 'Psl/Network/Exception/InvalidArgumentException.php',
@@ -1293,7 +1298,6 @@ final class Loader
         'Psl\\Crypto\\KeyExchange\\SecretKey' => 'Psl/Crypto/KeyExchange/SecretKey.php',
         'Psl\\Crypto\\KeyExchange\\PublicKey' => 'Psl/Crypto/KeyExchange/PublicKey.php',
         'Psl\\Crypto\\KeyExchange\\KeyPair' => 'Psl/Crypto/KeyExchange/KeyPair.php',
-        // @mago-expect lint:no-literal-password - false positive, these are not passwords
         'Psl\\Crypto\\KeyExchange\\SharedSecret' => 'Psl/Crypto/KeyExchange/SharedSecret.php',
         'Psl\\Crypto\\Kdf\\Key' => 'Psl/Crypto/Kdf/Key.php',
         'Psl\\IP\\Address' => 'Psl/IP/Address.php',

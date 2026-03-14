@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Binary;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Async;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\Binary\Endianness;
 use Psl\Binary\Exception;
 use Psl\Binary\HandleReader;
 use Psl\Binary\HandleWriter;
 use Psl\Binary\ReaderInterface;
 use Psl\Binary\Writer;
-use Psl\DateTime\Duration;
 use Psl\IO;
 use Psl\IO\MemoryHandle;
 
@@ -417,8 +419,10 @@ final class HandleReaderTest extends TestCase
                 return '';
             }
 
-            public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
-            {
+            public function read(
+                null|int $max_bytes = null,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
                 return '';
             }
 
@@ -469,8 +473,10 @@ final class HandleReaderTest extends TestCase
                 return $result;
             }
 
-            public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
-            {
+            public function read(
+                null|int $max_bytes = null,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
                 return $this->tryRead($max_bytes);
             }
         };
@@ -512,8 +518,10 @@ final class HandleReaderTest extends TestCase
                 return $result;
             }
 
-            public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
-            {
+            public function read(
+                null|int $max_bytes = null,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
                 return $this->tryRead($max_bytes);
             }
         };

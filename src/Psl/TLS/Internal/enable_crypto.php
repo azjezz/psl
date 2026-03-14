@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\TLS\Internal;
 
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\TLS\Exception\HandshakeFailedException;
 use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
@@ -21,13 +24,19 @@ use function stream_socket_enable_crypto;
  * @param int $crypto_method The crypto method bitmask (STREAM_CRYPTO_METHOD_*).
  *
  * @throws HandshakeFailedException If the TLS handshake fails.
+ * @throws CancelledException If the cancellation token is cancelled during the handshake.
  *
  * @internal
  *
  * @codeCoverageIgnore
  */
-function enable_crypto(mixed $stream, int $crypto_method): void
-{
+function enable_crypto(
+    mixed $stream,
+    int $crypto_method,
+    CancellationTokenInterface $cancellation = new NullCancellationToken(),
+): void {
+    $cancellation->throwIfCancelled();
+
     // Try the initial handshake; stream is already non-blocking from ResourceHandle
     $result = @stream_socket_enable_crypto($stream, true, $crypto_method);
 
@@ -69,9 +78,18 @@ function enable_crypto(mixed $stream, int $crypto_method): void
         // $result === 0 means handshake is still in progress, wait for more data
     });
 
+    $cancellation_id = $cancellation->subscribe(static function (CancelledException $e) use (
+        &$watcher,
+        $suspension,
+    ): void {
+        EventLoop::cancel($watcher);
+        $suspension->throw($e);
+    });
+
     try {
         $suspension->suspend();
     } finally {
         EventLoop::cancel($watcher);
+        $cancellation->unsubscribe($cancellation_id);
     }
 }

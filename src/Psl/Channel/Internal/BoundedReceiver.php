@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Psl\Channel\Internal;
 
 use Override;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\Channel\Exception;
 use Psl\Channel\ReceiverInterface;
 use Revolt\EventLoop;
@@ -36,22 +39,46 @@ final class BoundedReceiver implements ReceiverInterface
      * @inheritDoc
      */
     #[Override]
-    public function receive(): mixed
+    public function receive(CancellationTokenInterface $cancellation = new NullCancellationToken()): mixed
     {
         if ($this->suspension) {
+            $cancellation->throwIfCancelled();
+
             $suspension = EventLoop::getSuspension();
             $this->suspension = $suspension;
             $this->state->waitForMessage($suspension);
-            $suspension->suspend();
+
+            $id = $cancellation->subscribe(function (CancelledException $e) use ($suspension): void {
+                $this->state->removeFromWaitingForMessage($suspension);
+                $suspension->throw($e);
+            });
+
+            try {
+                $suspension->suspend();
+            } finally {
+                $cancellation->unsubscribe($id);
+            }
         }
 
         try {
             return $this->state->receive();
         } catch (Exception\EmptyChannelException) {
+            $cancellation->throwIfCancelled();
+
             $suspension = EventLoop::getSuspension();
             $this->suspension = $suspension;
             $this->state->waitForMessage($suspension);
-            $suspension->suspend();
+
+            $id = $cancellation->subscribe(function (CancelledException $e) use ($suspension): void {
+                $this->state->removeFromWaitingForMessage($suspension);
+                $suspension->throw($e);
+            });
+
+            try {
+                $suspension->suspend();
+            } finally {
+                $cancellation->unsubscribe($id);
+            }
 
             return $this->state->receive();
         } finally {

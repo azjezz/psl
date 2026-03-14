@@ -119,7 +119,11 @@ final class SocketTest extends TestCase
             $receiver = UDP\Socket::bind('127.0.0.1', 0);
             $sender = UDP\Socket::bind('127.0.0.1', 0);
 
-            $bytes_sent = $sender->sendTo('timeout-test', $receiver->getLocalAddress(), Duration::seconds(5));
+            $bytes_sent = $sender->sendTo(
+                'timeout-test',
+                $receiver->getLocalAddress(),
+                new Async\TimeoutCancellationToken(Duration::seconds(5)),
+            );
             static::assertSame(12, $bytes_sent);
 
             [$data] = $receiver->receiveFrom(1024);
@@ -132,12 +136,12 @@ final class SocketTest extends TestCase
 
     public function testReceiveFromTimeout(): void
     {
-        $this->expectException(IO\Exception\TimeoutException::class);
+        $this->expectException(Async\Exception\CancelledException::class);
 
         Async\run(static function (): void {
             $socket = UDP\Socket::bind('127.0.0.1', 0);
             try {
-                $socket->receiveFrom(1024, Duration::milliseconds(50));
+                $socket->receiveFrom(1024, new Async\TimeoutCancellationToken(Duration::milliseconds(50)));
             } finally {
                 $socket->close();
             }
@@ -146,12 +150,12 @@ final class SocketTest extends TestCase
 
     public function testPeekFromTimeout(): void
     {
-        $this->expectException(IO\Exception\TimeoutException::class);
+        $this->expectException(Async\Exception\CancelledException::class);
 
         Async\run(static function (): void {
             $socket = UDP\Socket::bind('127.0.0.1', 0);
             try {
-                $socket->peekFrom(1024, Duration::milliseconds(50));
+                $socket->peekFrom(1024, new Async\TimeoutCancellationToken(Duration::milliseconds(50)));
             } finally {
                 $socket->close();
             }
@@ -399,8 +403,7 @@ final class SocketTest extends TestCase
             static::markTestSkipped('stream_socket_pair with STREAM_PF_UNIX not available on Windows');
         }
 
-        $this->expectException(IO\Exception\TimeoutException::class);
-        $this->expectExceptionMessage('send operation timed out');
+        $this->expectException(Async\Exception\CancelledException::class);
 
         Async\run(static function (): void {
             $pair = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
@@ -413,7 +416,7 @@ final class SocketTest extends TestCase
             }
 
             try {
-                UDP\Internal\wait_writable($pair[0], Duration::milliseconds(50));
+                UDP\Internal\wait_writable($pair[0], new Async\TimeoutCancellationToken(Duration::milliseconds(50)));
             } finally {
                 fclose($pair[0]);
                 fclose($pair[1]);

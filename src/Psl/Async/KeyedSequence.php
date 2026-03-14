@@ -6,11 +6,14 @@ namespace Psl\Async;
 
 use Closure;
 use Exception;
+use Psl\Async\Exception\CancelledException;
 use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
 
 use function array_key_exists;
+use function array_search;
 use function array_shift;
+use function array_splice;
 use function count;
 
 /**
@@ -54,16 +57,40 @@ final class KeyedSequence
      * @param Tk $key
      * @param Tin $input
      *
+     * @throws CancelledException If the cancellation token is cancelled while waiting.
+     *
      * @return Tout
      *
      * @see Sequence::cancel()
      */
-    public function waitFor(string|int $key, mixed $input): mixed
-    {
+    public function waitFor(
+        string|int $key,
+        mixed $input,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): mixed {
         if (array_key_exists($key, $this->ingoing)) {
+            $cancellation->throwIfCancelled();
+
             $suspension = EventLoop::getSuspension();
             $this->pending[$key][] = $suspension;
-            $suspension->suspend();
+
+            $id = $cancellation->subscribe(function (CancelledException $e) use ($key, $suspension): void {
+                $index = array_search($suspension, $this->pending[$key] ?? [], true);
+                if (false !== $index) {
+                    array_splice($this->pending[$key], $index, 1);
+                    if ([] === $this->pending[$key]) {
+                        unset($this->pending[$key]);
+                    }
+
+                    $suspension->throw($e);
+                }
+            });
+
+            try {
+                $suspension->suspend();
+            } finally {
+                $cancellation->unsubscribe($id);
+            }
         }
 
         $this->ingoing[$key] = true;
@@ -210,15 +237,38 @@ final class KeyedSequence
      * If the sequence does not have any ingoing operations for the given key, this method will return immediately.
      *
      * @param Tk $key
+     *
+     * @throws CancelledException If the cancellation token is cancelled while waiting.
      */
-    public function waitForPending(string|int $key): void
-    {
+    public function waitForPending(
+        string|int $key,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): void {
         if (!array_key_exists($key, $this->ingoing)) {
             return;
         }
 
+        $cancellation->throwIfCancelled();
+
         $suspension = EventLoop::getSuspension();
         $this->waits[$key][] = $suspension;
-        $suspension->suspend();
+
+        $id = $cancellation->subscribe(function (CancelledException $e) use ($key, $suspension): void {
+            $index = array_search($suspension, $this->waits[$key] ?? [], true);
+            if (false !== $index) {
+                array_splice($this->waits[$key], $index, 1);
+                if ([] === $this->waits[$key]) {
+                    unset($this->waits[$key]);
+                }
+
+                $suspension->throw($e);
+            }
+        });
+
+        try {
+            $suspension->suspend();
+        } finally {
+            $cancellation->unsubscribe($id);
+        }
     }
 }

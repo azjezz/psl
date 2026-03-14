@@ -56,4 +56,16 @@ Use `Acceptor` to perform TLS handshakes on incoming streams:
 
 @example('networking/tls-inspect-state.php')
 
+### Cancellation
+
+All TLS operations that suspend (handshakes) accept a `CancellationTokenInterface`. This allows you to cancel slow or hanging handshakes:
+
+- `Acceptor::accept($stream, $cancellation)` -- cancel server-side handshake
+- `LazyAcceptor::accept($stream, $cancellation)` -- cancel ClientHello peek
+- `ClientHello::complete($config, $cancellation)` -- cancel deferred handshake
+- `Connector::connect($stream, $host, $cancellation)` -- cancel client-side handshake
+- `TLS\connect($host, $port, $config, $cancellation)` -- cancellation propagates through both TCP connect and TLS handshake
+
+@example('networking/tls-cancellation.php')
+
 See `src/Psl/TLS/` for the full API.

@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\File;
 
 use Override;
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\Filesystem;
 use Psl\IO;
 use Psl\Str;
@@ -98,9 +99,11 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Wr
      * @inheritDoc
      */
     #[Override]
-    public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
-    {
-        return $this->readWriteHandle->read($max_bytes, $timeout);
+    public function read(
+        null|int $max_bytes = null,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): string {
+        return $this->readWriteHandle->read($max_bytes, $cancellation);
     }
 
     /**
@@ -120,8 +123,8 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Wr
      * @inheritDoc
      */
     #[Override]
-    public function write(string $bytes, null|Duration $timeout = null): int
+    public function write(string $bytes, CancellationTokenInterface $cancellation = new NullCancellationToken()): int
     {
-        return $this->readWriteHandle->write($bytes, $timeout);
+        return $this->readWriteHandle->write($bytes, $cancellation);
     }
 }

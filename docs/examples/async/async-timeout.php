@@ -8,21 +8,18 @@ use Psl\Async;
 use Psl\DateTime\Duration;
 use Psl\IO;
 
-$deferred = new Async\Deferred();
+$cancellation = new Async\TimeoutCancellationToken(Duration::seconds(1));
 
-// Schedule a timeout after 1 second
-$timeout = Async\Scheduler::delay(Duration::seconds(1), static function () use ($deferred): void {
-    $deferred->error(new Async\Exception\TimeoutException('Task timed out'));
-});
-
-$awaitable = Async\run(static function () use ($deferred, $timeout): void {
+$awaitable = Async\run(static function () use ($cancellation): void {
+    // Simulate a long-running task
     Async\sleep(Duration::seconds(4));
-    Async\Scheduler::cancel($timeout);
-    $deferred->complete(null);
+
+    // Check if the operation was cancelled
+    $cancellation->throwIfCancelled();
 });
 
 try {
-    $deferred->getAwaitable()->await();
-} catch (Async\Exception\TimeoutException) {
+    $awaitable->await();
+} catch (Async\Exception\CancelledException) {
     IO\write_line('Task timed out as expected');
 }

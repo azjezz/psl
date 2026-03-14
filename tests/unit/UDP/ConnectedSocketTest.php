@@ -80,7 +80,7 @@ final class ConnectedSocketTest extends TestCase
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $connected = UDP\connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
 
-            $bytes_sent = $connected->send('timeout-send', Duration::seconds(5));
+            $bytes_sent = $connected->send('timeout-send', new Async\TimeoutCancellationToken(Duration::seconds(5)));
             static::assertSame(12, $bytes_sent);
 
             [$data] = $server->receiveFrom(1024);
@@ -93,13 +93,13 @@ final class ConnectedSocketTest extends TestCase
 
     public function testReceiveTimeout(): void
     {
-        $this->expectException(IO\Exception\TimeoutException::class);
+        $this->expectException(Async\Exception\CancelledException::class);
 
         Async\run(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $connected = UDP\connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
             try {
-                $connected->receive(1024, Duration::milliseconds(50));
+                $connected->receive(1024, new Async\TimeoutCancellationToken(Duration::milliseconds(50)));
             } finally {
                 $connected->close();
                 $server->close();
@@ -258,13 +258,13 @@ final class ConnectedSocketTest extends TestCase
 
     public function testPeekTimeout(): void
     {
-        $this->expectException(IO\Exception\TimeoutException::class);
+        $this->expectException(Async\Exception\CancelledException::class);
 
         Async\run(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $connected = UDP\connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
             try {
-                $connected->peek(1024, Duration::milliseconds(50));
+                $connected->peek(1024, new Async\TimeoutCancellationToken(Duration::milliseconds(50)));
             } finally {
                 $connected->close();
                 $server->close();

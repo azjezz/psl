@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Psl\IO;
 
 use Psl\Async;
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 
 /**
  * Copy data bidirectionally between two handles until both sides reach EOF.
@@ -16,22 +18,18 @@ use Psl\DateTime\Duration;
  * @return array{int<0, max>, int<0, max>} [bytes_a_to_b, bytes_b_to_a]
  *
  * @throws Exception\RuntimeException If a read or write error occurs.
- * @throws Exception\TimeoutException If the operation times out.
+ * @throws CancelledException If the operation is cancelled.
  */
 function copy_bidirectional(
     ReadHandleInterface&WriteHandleInterface $a,
     ReadHandleInterface&WriteHandleInterface $b,
-    null|Duration $timeout = null,
+    CancellationTokenInterface $cancellation = new NullCancellationToken(),
 ): array {
-    $timer = new Async\OptionalIncrementalTimeout($timeout, static function (): never {
-        throw new Exception\TimeoutException('Bidirectional copy operation timed out.');
-    });
-
     /**
      * @var array{int<0, max>, int<0, max>}
      */
     return Async\concurrently([
-        static fn(): int => copy($a, $b, $timer->getRemaining()),
-        static fn(): int => copy($b, $a, $timer->getRemaining()),
+        static fn(): int => copy($a, $b, $cancellation),
+        static fn(): int => copy($b, $a, $cancellation),
     ]);
 }

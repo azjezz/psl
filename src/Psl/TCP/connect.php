@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\TCP;
 
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\Network;
 
 /**
@@ -14,15 +16,19 @@ use Psl\Network;
  * @param int<0, max> $port
  *
  * @throws Network\Exception\RuntimeException If failed to connect to client on the given address.
- * @throws Network\Exception\TimeoutException If $timeout is non-null, and the operation timed-out.
+ * @throws CancelledException If the operation was cancelled.
  */
-function connect(string $host, int $port, bool $no_delay = false, null|Duration $timeout = null): StreamInterface
-{
+function connect(
+    string $host,
+    int $port,
+    bool $no_delay = false,
+    CancellationTokenInterface $cancellation = new NullCancellationToken(),
+): StreamInterface {
     $context = ['socket' => [
         'tcp_nodelay' => $no_delay,
     ]];
 
-    $socket = Network\Internal\socket_connect("tcp://{$host}:{$port}", $context, $timeout);
+    $socket = Network\Internal\socket_connect("tcp://{$host}:{$port}", $context, $cancellation);
 
     return new Internal\Stream($socket);
 }

@@ -6,10 +6,13 @@ namespace Psl\Async;
 
 use Closure;
 use Exception;
+use Psl\Async\Exception\CancelledException;
 use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
 
+use function array_search;
 use function array_shift;
+use function array_splice;
 
 /**
  * Run an operation with a limit on number of ongoing asynchronous jobs of 1.
@@ -47,17 +50,33 @@ final class Sequence
      *
      * @param Tin $input
      *
+     * @throws CancelledException If the cancellation token is cancelled while waiting.
+     *
      * @return Tout
      *
      * @see Sequence::cancel()
      */
-    public function waitFor(mixed $input): mixed
+    public function waitFor(mixed $input, CancellationTokenInterface $cancellation = new NullCancellationToken()): mixed
     {
         if ($this->ingoing) {
+            $cancellation->throwIfCancelled();
+
             $suspension = EventLoop::getSuspension();
             $this->pending[] = $suspension;
 
-            $suspension->suspend();
+            $id = $cancellation->subscribe(function (CancelledException $e) use ($suspension): void {
+                $index = array_search($suspension, $this->pending, true);
+                if (false !== $index) {
+                    array_splice($this->pending, $index, 1);
+                    $suspension->throw($e);
+                }
+            });
+
+            try {
+                $suspension->suspend();
+            } finally {
+                $cancellation->unsubscribe($id);
+            }
         }
 
         $this->ingoing = true;
@@ -129,15 +148,32 @@ final class Sequence
 
     /**
      * Wait for all pending operations to finish execution.
+     *
+     * @throws CancelledException If the cancellation token is cancelled while waiting.
      */
-    public function waitForPending(): void
+    public function waitForPending(CancellationTokenInterface $cancellation = new NullCancellationToken()): void
     {
         if (!$this->ingoing) {
             return;
         }
 
+        $cancellation->throwIfCancelled();
+
         $suspension = EventLoop::getSuspension();
         $this->waits[] = $suspension;
-        $suspension->suspend();
+
+        $id = $cancellation->subscribe(function (CancelledException $e) use ($suspension): void {
+            $index = array_search($suspension, $this->waits, true);
+            if (false !== $index) {
+                array_splice($this->waits, $index, 1);
+                $suspension->throw($e);
+            }
+        });
+
+        try {
+            $suspension->suspend();
+        } finally {
+            $cancellation->unsubscribe($id);
+        }
     }
 }

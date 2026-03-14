@@ -185,10 +185,10 @@ final class ChildTest extends TestCase
             ->withStderr(Stdio::null())
             ->spawn();
 
-        $this->expectException(Exception\TimeoutException::class);
+        $this->expectException(Async\Exception\CancelledException::class);
 
         try {
-            $child->wait(Duration::milliseconds(100));
+            $child->wait(new Async\TimeoutCancellationToken(Duration::milliseconds(100)));
         } finally {
             // Ensure cleanup.
             if ($child->isRunning()) {
@@ -205,29 +205,29 @@ final class ChildTest extends TestCase
             ->withArgument('sleep(60);')
             ->spawn();
 
-        $this->expectException(Exception\TimeoutException::class);
+        $this->expectException(Async\Exception\CancelledException::class);
 
-        $child->waitWithOutput(Duration::milliseconds(100));
+        $child->waitWithOutput(new Async\TimeoutCancellationToken(Duration::milliseconds(100)));
     }
 
     public function testCommandOutputTimeout(): void
     {
-        $this->expectException(Exception\TimeoutException::class);
+        $this->expectException(Async\Exception\CancelledException::class);
 
         self::phpCommand()
             ->withArgument('-r')
             ->withArgument('sleep(60);')
-            ->output(Duration::milliseconds(100));
+            ->output(new Async\TimeoutCancellationToken(Duration::milliseconds(100)));
     }
 
     public function testCommandStatusTimeout(): void
     {
-        $this->expectException(Exception\TimeoutException::class);
+        $this->expectException(Async\Exception\CancelledException::class);
 
         self::phpCommand()
             ->withArgument('-r')
             ->withArgument('sleep(60);')
-            ->status(Duration::milliseconds(100));
+            ->status(new Async\TimeoutCancellationToken(Duration::milliseconds(100)));
     }
 
     public function testTryWaitWhileRunning(): void
@@ -446,9 +446,9 @@ final class ChildTest extends TestCase
             ->spawn();
 
         try {
-            $child->wait(Duration::milliseconds(200));
-            static::fail('Expected TimeoutException');
-        } catch (Exception\TimeoutException) {
+            $child->wait(new Async\TimeoutCancellationToken(Duration::milliseconds(200)));
+            static::fail('Expected CancelledException');
+        } catch (Async\Exception\CancelledException) {
             static::assertFalse($child->isRunning());
         }
     }
@@ -461,9 +461,9 @@ final class ChildTest extends TestCase
             ->spawn();
 
         try {
-            $child->waitWithOutput(Duration::milliseconds(200));
-            static::fail('Expected TimeoutException');
-        } catch (Exception\TimeoutException) {
+            $child->waitWithOutput(new Async\TimeoutCancellationToken(Duration::milliseconds(200)));
+            static::fail('Expected CancelledException');
+        } catch (Async\Exception\CancelledException) {
             static::assertFalse($child->isRunning());
         }
     }
@@ -479,9 +479,9 @@ final class ChildTest extends TestCase
             ->spawn();
 
         try {
-            $child->wait(Duration::milliseconds(200));
-            static::fail('Expected TimeoutException');
-        } catch (Exception\TimeoutException) {
+            $child->wait(new Async\TimeoutCancellationToken(Duration::milliseconds(200)));
+            static::fail('Expected CancelledException');
+        } catch (Async\Exception\CancelledException) {
             static::assertFalse($child->isRunning());
         }
     }
@@ -491,7 +491,7 @@ final class ChildTest extends TestCase
         $output = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo "fast";')
-            ->output(Duration::seconds(2));
+            ->output(new Async\TimeoutCancellationToken(Duration::seconds(2)));
 
         static::assertSame('fast', $output->stdout);
         static::assertTrue($output->status->isSuccessful());
@@ -502,7 +502,7 @@ final class ChildTest extends TestCase
         $status = self::phpCommand()
             ->withArgument('-r')
             ->withArgument('exit(0);')
-            ->status(Duration::seconds(2));
+            ->status(new Async\TimeoutCancellationToken(Duration::seconds(2)));
 
         static::assertTrue($status->isSuccessful());
     }
@@ -520,14 +520,15 @@ final class ChildTest extends TestCase
 
         $stdout = '';
         try {
-            foreach (IO\streaming([1 => $child->getStdout()], Duration::milliseconds(500)) as $chunk) {
+            foreach (IO\streaming([1 =>
+                $child->getStdout()], new Async\TimeoutCancellationToken(Duration::milliseconds(500))) as $chunk) {
                 if ('' === $chunk) {
                     continue;
                 }
 
                 $stdout .= $chunk;
             }
-        } catch (IO\Exception\TimeoutException) {
+        } catch (Async\Exception\CancelledException) {
             // @mago-expect lint:no-empty-catch-clause - Expected
         }
 
@@ -554,7 +555,7 @@ final class ChildTest extends TestCase
             foreach (IO\streaming([
                 1 => $child->getStdout(),
                 2 => $child->getStderr(),
-            ], Duration::milliseconds(200)) as $type => $chunk) {
+            ], new Async\TimeoutCancellationToken(Duration::milliseconds(200))) as $type => $chunk) {
                 if ('' === $chunk) {
                     continue;
                 }
@@ -567,7 +568,7 @@ final class ChildTest extends TestCase
 
                 $stderr .= $chunk;
             }
-        } catch (IO\Exception\TimeoutException) {
+        } catch (Async\Exception\CancelledException) {
             // @mago-expect lint:no-empty-catch-clause - Expected
         }
 
@@ -591,14 +592,15 @@ final class ChildTest extends TestCase
 
         $stdout = '';
         try {
-            foreach (IO\streaming([1 => $child->getStdout()], Duration::milliseconds(200)) as $chunk) {
+            foreach (IO\streaming([1 =>
+                $child->getStdout()], new Async\TimeoutCancellationToken(Duration::milliseconds(200))) as $chunk) {
                 if ('' === $chunk) {
                     continue;
                 }
 
                 $stdout .= $chunk;
             }
-        } catch (IO\Exception\TimeoutException) {
+        } catch (Async\Exception\CancelledException) {
             // @mago-expect lint:no-empty-catch-clause - Expected
         }
 
@@ -616,22 +618,22 @@ final class ChildTest extends TestCase
             );
         }
 
-        $this->expectException(Exception\TimeoutException::class);
+        $this->expectException(Async\Exception\CancelledException::class);
 
         self::phpCommand()
             ->withArgument('-r')
             ->withArgument('for ($i = 0; $i < 100; $i++) { echo $i; usleep(100000); }')
-            ->output(Duration::milliseconds(200));
+            ->output(new Async\TimeoutCancellationToken(Duration::milliseconds(200)));
     }
 
     public function testStatusTimeoutWhileChildOutputsAndSleeps(): void
     {
-        $this->expectException(Exception\TimeoutException::class);
+        $this->expectException(Async\Exception\CancelledException::class);
 
         self::phpCommand()
             ->withArgument('-r')
             ->withArgument('echo str_repeat("x", 10000); sleep(2);')
-            ->status(Duration::milliseconds(200));
+            ->status(new Async\TimeoutCancellationToken(Duration::milliseconds(200)));
     }
 
     public function testMultipleChunksBeforeTimeout(): void
@@ -647,14 +649,15 @@ final class ChildTest extends TestCase
 
         $stdout = '';
         try {
-            foreach (IO\streaming([1 => $child->getStdout()], Duration::milliseconds(500)) as $chunk) {
+            foreach (IO\streaming([1 =>
+                $child->getStdout()], new Async\TimeoutCancellationToken(Duration::milliseconds(500))) as $chunk) {
                 if ('' === $chunk) {
                     continue;
                 }
 
                 $stdout .= $chunk;
             }
-        } catch (IO\Exception\TimeoutException) {
+        } catch (Async\Exception\CancelledException) {
             // @mago-expect lint:no-empty-catch-clause - Expected
         }
 
@@ -678,9 +681,9 @@ final class ChildTest extends TestCase
             ->spawn();
 
         try {
-            $child->waitWithOutput(Duration::milliseconds(200));
-            static::fail('Expected TimeoutException');
-        } catch (Exception\TimeoutException) {
+            $child->waitWithOutput(new Async\TimeoutCancellationToken(Duration::milliseconds(200)));
+            static::fail('Expected CancelledException');
+        } catch (Async\Exception\CancelledException) {
             static::assertFalse($child->isRunning());
         }
     }

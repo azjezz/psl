@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Network\Internal;
 
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\Internal;
 use Psl\Network\Exception;
 use Revolt\EventLoop;
@@ -12,7 +14,6 @@ use Revolt\EventLoop\Suspension;
 
 use function fclose;
 use function is_resource;
-use function max;
 use function stream_context_create;
 use function stream_socket_client;
 
@@ -23,7 +24,7 @@ use const STREAM_CLIENT_CONNECT;
  * @param non-empty-string $uri
  *
  * @throws Exception\RuntimeException If failed to connect to client on the given address.
- * @throws Exception\TimeoutException If $timeout is non-null, and the operation timed-out.
+ * @throws CancelledException If the operation was cancelled.
  *
  * @return resource
  *
@@ -31,13 +32,18 @@ use const STREAM_CLIENT_CONNECT;
  *
  * @codeCoverageIgnore
  */
-function socket_connect(string $uri, array $context = [], null|Duration $timeout = null): mixed
-{
+function socket_connect(
+    string $uri,
+    array $context = [],
+    CancellationTokenInterface $cancellation = new NullCancellationToken(),
+): mixed {
     return Internal\suppress(
         /**
          * @return resource
          */
-        static function () use ($uri, $context, $timeout): mixed {
+        static function () use ($uri, $context, $cancellation): mixed {
+            $cancellation->throwIfCancelled();
+
             $_error_message = null;
             $error_code = null;
 
@@ -59,30 +65,27 @@ function socket_connect(string $uri, array $context = [], null|Duration $timeout
             $suspension = EventLoop::getSuspension();
 
             $write_watcher = '';
-            $timeout_watcher = '';
-            if (null !== $timeout) {
-                $timeout = max($timeout->getTotalSeconds(), 0.0);
-                $timeout_watcher = EventLoop::delay($timeout, static function () use (
-                    $suspension,
-                    &$write_watcher,
-                    $socket,
-                ): void {
-                    EventLoop::cancel($write_watcher);
+            $cancellation_id = $cancellation->subscribe(static function (CancelledException $exception) use (
+                $suspension,
+                &$write_watcher,
+                $socket,
+            ): void {
+                EventLoop::cancel($write_watcher);
 
-                    if (is_resource($socket)) {
-                        fclose($socket);
-                    }
+                if (is_resource($socket)) {
+                    fclose($socket);
+                }
 
-                    $suspension->throw(new Exception\TimeoutException('Connection to socket timed out.'));
-                });
-            }
+                $suspension->throw($exception);
+            });
 
             $write_watcher = EventLoop::onWritable($socket, static function () use (
                 $suspension,
                 $socket,
-                $timeout_watcher,
+                $cancellation,
+                $cancellation_id,
             ): void {
-                EventLoop::cancel($timeout_watcher);
+                $cancellation->unsubscribe($cancellation_id);
 
                 $suspension->resume($socket);
             });
@@ -91,7 +94,7 @@ function socket_connect(string $uri, array $context = [], null|Duration $timeout
                 return $suspension->suspend();
             } finally {
                 EventLoop::cancel($write_watcher);
-                EventLoop::cancel($timeout_watcher);
+                $cancellation->unsubscribe($cancellation_id);
             }
         },
     );

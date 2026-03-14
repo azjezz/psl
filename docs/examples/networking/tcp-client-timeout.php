@@ -20,7 +20,11 @@ Async\concurrently([
     },
     'client' => static function () use ($listener): void {
         $address = $listener->getLocalAddress();
-        $client = TCP\connect($address->host, $address->port ?? 0, timeout: Duration::seconds(5));
+        $client = TCP\connect(
+            $address->host,
+            $address->port ?? 0,
+            cancellation: new Async\TimeoutCancellationToken(Duration::seconds(5)),
+        );
         $client->writeAll("GET / HTTP/1.0\r\nHost: localhost\r\n\r\n");
         $client->shutdown();
         $_response = $client->readAll();

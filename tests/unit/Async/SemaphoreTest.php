@@ -228,4 +228,89 @@ final class SemaphoreTest extends TestCase
         static::assertTrue($one->isComplete());
         static::assertSame('one', $one->await());
     }
+
+    public function testWaitForPendingReturnsImmediatelyWhenNotAtLimit(): void
+    {
+        $semaphore = new Async\Semaphore(1, static fn(string $input): string => $input);
+
+        $semaphore->waitForPending();
+
+        static::assertFalse($semaphore->hasIngoingOperations());
+    }
+
+    public function testWaitForCancelledWhileWaitingForSlot(): void
+    {
+        $semaphore = new Async\Semaphore(1, static function (string $input): string {
+            Async\sleep(DateTime\Duration::milliseconds(100));
+
+            return $input;
+        });
+
+        Async\run(static fn(): string => $semaphore->waitFor('first'))->ignore();
+
+        $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
+
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        Async\run(static fn(): string => $semaphore->waitFor('second', $token))->await();
+    }
+
+    public function testWaitForPendingCancelledWhileWaiting(): void
+    {
+        $semaphore = new Async\Semaphore(1, static function (string $input): string {
+            Async\sleep(DateTime\Duration::milliseconds(100));
+
+            return $input;
+        });
+
+        Async\run(static fn(): string => $semaphore->waitFor('first'))->ignore();
+
+        $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
+
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        Async\run(static fn(): null => $semaphore->waitForPending($token))->await();
+    }
+
+    public function testWaitForWithAlreadyCancelledToken(): void
+    {
+        $semaphore = new Async\Semaphore(1, static function (string $input): string {
+            Async\sleep(DateTime\Duration::milliseconds(100));
+
+            return $input;
+        });
+
+        Async\run(static fn(): string => $semaphore->waitFor('first'))->ignore();
+
+        $token = new Async\SignalCancellationToken();
+        $token->cancel();
+
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        Async\run(static fn(): string => $semaphore->waitFor('second', $token))->await();
+    }
+
+    public function testCancelledWaitForDoesNotAffectOtherOperations(): void
+    {
+        $semaphore = new Async\Semaphore(1, static function (string $input): string {
+            Async\sleep(DateTime\Duration::milliseconds(30));
+
+            return $input;
+        });
+
+        $first = Async\run(static fn(): string => $semaphore->waitFor('first'));
+
+        $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
+        $second = Async\run(static fn(): string => $semaphore->waitFor('second', $token));
+
+        try {
+            $second->await();
+            static::fail('Expected CancelledException');
+        } catch (Async\Exception\CancelledException) {
+            static::addToAssertionCount(1);
+        }
+
+        static::assertSame('first', $first->await());
+        static::assertFalse($semaphore->hasPendingOperations());
+    }
 }

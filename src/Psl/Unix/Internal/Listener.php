@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Psl\Unix\Internal;
 
 use Override;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\Channel;
 use Psl\Network;
 use Psl\Unix;
@@ -86,11 +88,14 @@ final class Listener implements Unix\ListenerInterface
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
-    public function accept(): Unix\StreamInterface
+    public function accept(CancellationTokenInterface $cancellation = new NullCancellationToken()): Unix\StreamInterface
     {
         try {
-            [$success, $result] = $this->receiver->receive();
+            [$success, $result] = $this->receiver->receive($cancellation);
         } catch (Channel\Exception\ClosedChannelException) {
             throw new Network\Exception\AlreadyStoppedException('Server socket has already been stopped.');
         }
@@ -104,6 +109,9 @@ final class Listener implements Unix\ListenerInterface
         throw $result;
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function getLocalAddress(): Network\Address
     {
@@ -114,6 +122,9 @@ final class Listener implements Unix\ListenerInterface
         return Network\Internal\get_sock_name($this->impl);
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function close(): void
     {

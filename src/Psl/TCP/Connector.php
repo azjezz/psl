@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\TCP;
 
 use Override;
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\Default\DefaultInterface;
 
 /**
@@ -27,8 +28,11 @@ final readonly class Connector implements ConnectorInterface, DefaultInterface
     }
 
     #[Override]
-    public function connect(string $host, int $port, null|Duration $timeout = null): StreamInterface
-    {
-        return connect($host, $port, $this->noDelay, $timeout);
+    public function connect(
+        string $host,
+        int $port,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): StreamInterface {
+        return connect($host, $port, $this->noDelay, $cancellation);
     }
 }
