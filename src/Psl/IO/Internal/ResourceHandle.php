@@ -354,6 +354,15 @@ class ResourceHandle implements
      * @inheritDoc
      */
     #[Override]
+    public function isClosed(): bool
+    {
+        return null === $this->stream;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
     public function close(): void
     {
         EventLoop::cancel($this->readWatcher);

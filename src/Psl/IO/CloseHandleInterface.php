@@ -10,6 +10,11 @@ namespace Psl\IO;
 interface CloseHandleInterface extends HandleInterface
 {
     /**
+     * Check whether the handle has been closed.
+     */
+    public function isClosed(): bool;
+
+    /**
      * Close the handle.
      *
      * @throws Exception\RuntimeException If unable to close the handle.

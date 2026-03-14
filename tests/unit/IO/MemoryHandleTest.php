@@ -213,4 +213,20 @@ final class MemoryHandleTest extends TestCase
 
         $h->readFixedSize(3);
     }
+
+    public function testIsClosedReturnsFalseByDefault(): void
+    {
+        $h = new IO\MemoryHandle('hello');
+
+        static::assertFalse($h->isClosed());
+    }
+
+    public function testIsClosedReturnsTrueAfterClose(): void
+    {
+        $h = new IO\MemoryHandle('hello');
+
+        $h->close();
+
+        static::assertTrue($h->isClosed());
+    }
 }

@@ -131,6 +131,15 @@ final class Listener implements TCP\ListenerInterface
      * @inheritDoc
      */
     #[Override]
+    public function isClosed(): bool
+    {
+        return null === $this->impl;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
     public function close(): void
     {
         EventLoop::disable($this->watcher);

@@ -168,6 +168,12 @@ final class Stream implements Unix\StreamInterface
     }
 
     #[Override]
+    public function isClosed(): bool
+    {
+        return $this->handle->isClosed();
+    }
+
+    #[Override]
     public function close(): void
     {
         $this->handle->close();

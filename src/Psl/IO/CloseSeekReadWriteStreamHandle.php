@@ -113,6 +113,15 @@ final class CloseSeekReadWriteStreamHandle implements
      * @inheritDoc
      */
     #[Override]
+    public function isClosed(): bool
+    {
+        return $this->handle->isClosed();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
     public function close(): void
     {
         $this->handle->close();
