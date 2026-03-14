@@ -851,6 +851,7 @@ final class Loader
         'Psl\\IO\\CloseHandleInterface' => 'Psl/IO/CloseHandleInterface.php',
         'Psl\\IO\\HandleInterface' => 'Psl/IO/HandleInterface.php',
         'Psl\\IO\\ReadHandleInterface' => 'Psl/IO/ReadHandleInterface.php',
+        'Psl\\IO\\BufferedReadHandleInterface' => 'Psl/IO/BufferedReadHandleInterface.php',
         'Psl\\IO\\SeekHandleInterface' => 'Psl/IO/SeekHandleInterface.php',
         'Psl\\IO\\WriteHandleInterface' => 'Psl/IO/WriteHandleInterface.php',
         'Psl\\IO\\StreamHandleInterface' => 'Psl/IO/StreamHandleInterface.php',

@@ -16,7 +16,7 @@ use function substr;
 
 use const PHP_EOL;
 
-final class Reader implements ReadHandleInterface
+final class Reader implements BufferedReadHandleInterface
 {
     use ReadHandleConvenienceMethodsTrait;
 

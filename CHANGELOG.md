@@ -30,6 +30,8 @@
 - feat(unix): `Unix\ListenerInterface::accept()` now accepts an optional `CancellationTokenInterface` parameter
 - feat(tls): `TLS\Acceptor::accept()`, `TLS\LazyAcceptor::accept()`, `TLS\ClientHello::complete()`, and `TLS\Connector::connect()` now accept an optional `CancellationTokenInterface` parameter — cancellation propagates through the TLS handshake
 - feat(tls): `TLS\TCPConnector::connect()` and `TLS\connect()` now pass the cancellation token through to the TLS handshake
+- feat(io): introduce `Psl\IO\BufferedReadHandleInterface`, extending `ReadHandleInterface` with `readByte()`, `readLine()`, `readUntil()`, and `readUntilBounded()`
+- feat(io): `Psl\IO\Reader` now implements `BufferedReadHandleInterface`
 
 ### migration guide
 
