@@ -1123,6 +1123,8 @@ final class Loader
         'Psl\\Async\\Sequence' => 'Psl/Async/Sequence.php',
         'Psl\\Async\\KeyedSequence' => 'Psl/Async/KeyedSequence.php',
         'Psl\\Async\\Deferred' => 'Psl/Async/Deferred.php',
+        'Psl\\Async\\TaskGroup' => 'Psl/Async/TaskGroup.php',
+        'Psl\\Async\\WaitGroup' => 'Psl/Async/WaitGroup.php',
         'Psl\\Async\\Scheduler' => 'Psl/Async/Scheduler.php',
         'Psl\\IO\\CloseStreamHandle' => 'Psl/IO/CloseStreamHandle.php',
         'Psl\\IO\\CloseReadStreamHandle' => 'Psl/IO/CloseReadStreamHandle.php',

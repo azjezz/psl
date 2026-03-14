@@ -120,6 +120,22 @@ Like `Sequence`, but applies the sequential constraint per key. Different keys c
 
 Both `waitFor()` and `waitForPending()` accept an optional `CancellationTokenInterface`.
 
+### TaskGroup
+
+`TaskGroup` lets you defer multiple closures for concurrent execution and await them all at once. If any task throws, the exception is propagated after all tasks finish. If multiple tasks throw, a `CompositeException` is raised:
+
+@example('async/async-task-group.php')
+
+`awaitAll()` accepts an optional `CancellationTokenInterface`. The task list is cleared after each `awaitAll()` call, so the group is reusable.
+
+### WaitGroup
+
+`WaitGroup` is a counter-based synchronization primitive inspired by Go's `sync.WaitGroup`. Call `add()` before starting work, `done()` when work completes, and `wait()` to block until the counter reaches zero:
+
+@example('async/async-wait-group.php')
+
+`wait()` accepts an optional `CancellationTokenInterface`. Multiple fibers can wait on the same `WaitGroup` concurrently.
+
 ## Deferred
 
 > **Warning**

@@ -31,6 +31,8 @@
 - feat(unix): `Unix\ListenerInterface::accept()` now accepts an optional `CancellationTokenInterface` parameter
 - feat(tls): `TLS\Acceptor::accept()`, `TLS\LazyAcceptor::accept()`, `TLS\ClientHello::complete()`, and `TLS\Connector::connect()` now accept an optional `CancellationTokenInterface` parameter — cancellation propagates through the TLS handshake
 - feat(tls): `TLS\TCPConnector::connect()` and `TLS\connect()` now pass the cancellation token through to the TLS handshake
+- feat(async): introduce `Psl\Async\TaskGroup` for running closures concurrently and awaiting them all with `defer()` + `awaitAll()`
+- feat(async): introduce `Psl\Async\WaitGroup`, a counter-based synchronization primitive with `add()`, `done()`, and `wait()`
 - feat(io): introduce `Psl\IO\BufferedReadHandleInterface`, extending `ReadHandleInterface` with `readByte()`, `readLine()`, `readUntil()`, and `readUntilBounded()`
 - feat(io): `Psl\IO\Reader` now implements `BufferedReadHandleInterface`
 
