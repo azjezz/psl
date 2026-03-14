@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\File;
 
 use Override;
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\Filesystem;
 use Psl\IO;
 
@@ -67,8 +68,10 @@ final class ReadHandle extends Internal\AbstractHandleWrapper implements ReadHan
      * @inheritDoc
      */
     #[Override]
-    public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
-    {
-        return $this->readHandle->read($max_bytes, $timeout);
+    public function read(
+        null|int $max_bytes = null,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): string {
+        return $this->readHandle->read($max_bytes, $cancellation);
     }
 }

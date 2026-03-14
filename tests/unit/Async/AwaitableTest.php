@@ -215,4 +215,75 @@ final class AwaitableTest extends TestCase
         static::assertSame('olleh', $awaitable->await());
         static::assertSame('hello', $ref->value);
     }
+
+    public function testAwaitWithCancellationTokenCompletes(): void
+    {
+        $awaitable = Async\run(static fn(): string => 'hello');
+        $token = new Async\TimeoutCancellationToken(DateTime\Duration::seconds(5));
+
+        static::assertSame('hello', $awaitable->await($token));
+    }
+
+    public function testAwaitThrowsCancelledExceptionOnTimeout(): void
+    {
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        Async\run(static function (): void {
+            $deferred = new Async\Deferred();
+            $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
+
+            // Keep the loop alive long enough for the timeout to fire
+            Async\run(static function () use ($deferred): void {
+                Async\sleep(DateTime\Duration::seconds(5));
+                $deferred->complete(null);
+            })->ignore();
+
+            $deferred->getAwaitable()->await($token);
+        })->await();
+    }
+
+    public function testAwaitThrowsCancelledExceptionOnSignal(): void
+    {
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        Async\run(static function (): void {
+            $deferred = new Async\Deferred();
+            $token = new Async\SignalCancellationToken();
+
+            Async\run(static function () use ($token): void {
+                Async\sleep(DateTime\Duration::milliseconds(10));
+                $token->cancel();
+            })->ignore();
+
+            $deferred->getAwaitable()->await($token);
+        })->await();
+    }
+
+    public function testAwaitWithAlreadyCancelledToken(): void
+    {
+        $token = new Async\SignalCancellationToken();
+        $token->cancel();
+
+        $awaitable = Awaitable::complete('hello');
+
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        $awaitable->await($token);
+    }
+
+    public function testAwaitUnsubscribesOnCompletion(): void
+    {
+        $result = Async\run(static function (): string {
+            $token = new Async\SignalCancellationToken();
+            $awaitable = Async\run(static fn(): string => 'done');
+
+            $value = $awaitable->await($token);
+
+            static::assertFalse($token->isCancelled());
+
+            return $value;
+        })->await();
+
+        static::assertSame('done', $result);
+    }
 }

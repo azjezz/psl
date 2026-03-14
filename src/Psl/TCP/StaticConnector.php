@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\TCP;
 
 use Override;
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 
 /**
  * A connector that redirects all connections to a fixed host and port.
@@ -27,8 +28,11 @@ final readonly class StaticConnector implements ConnectorInterface
     ) {}
 
     #[Override]
-    public function connect(string $host, int $port, null|Duration $timeout = null): StreamInterface
-    {
-        return $this->connector->connect($this->host, $this->port, $timeout);
+    public function connect(
+        string $host,
+        int $port,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): StreamInterface {
+        return $this->connector->connect($this->host, $this->port, $cancellation);
     }
 }

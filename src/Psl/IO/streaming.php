@@ -6,13 +6,13 @@ namespace Psl\IO;
 
 use Generator;
 use Psl;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\Channel;
-use Psl\DateTime\Duration;
 use Psl\Result;
 use Psl\Str;
 use Revolt\EventLoop;
-
-use function max;
 
 /**
  * Streaming the output of the given read stream handles using a generator.
@@ -34,11 +34,11 @@ use function max;
  *
  * @throws Exception\AlreadyClosedException If one of the handles has been already closed.
  * @throws Exception\RuntimeException If an error occurred during the operation.
- * @throws Exception\TimeoutException If $timeout is reached before being able to read all the handles until the end.
+ * @throws CancelledException If the operation is cancelled.
  *
  * @return Generator<T, string, mixed, null>
  */
-function streaming(iterable $handles, null|Duration $timeout = null): Generator
+function streaming(iterable $handles, CancellationTokenInterface $cancellation = new NullCancellationToken()): Generator
 {
     /**
      * @var Channel\ReceiverInterface<array{0: T|null, 1: Result\ResultInterface<string>}> $receiver
@@ -77,21 +77,14 @@ function streaming(iterable $handles, null|Duration $timeout = null): Generator
         });
     }
 
-    $timeout_watcher = null;
-    if (null !== $timeout) {
-        $timeout = max($timeout->getTotalSeconds(), 0.0);
+    $cancellation_subscription = $cancellation->subscribe(static function (CancelledException $exception) use (
+        $sender,
+    ): void {
+        /** @var Result\ResultInterface<string> $failure */
+        $failure = new Result\Failure($exception);
 
-        $timeout_watcher = EventLoop::delay($timeout, static function () use ($sender): void {
-            /** @var Result\ResultInterface<string> $failure */
-            $failure = new Result\Failure(
-                new Exception\TimeoutException(
-                    'Reached timeout before being able to read all the handles until the end.',
-                ),
-            );
-
-            $sender->send([null, $failure]);
-        });
-    }
+        $sender->send([null, $failure]);
+    });
 
     try {
         while (true) {
@@ -106,9 +99,7 @@ function streaming(iterable $handles, null|Duration $timeout = null): Generator
         // completed.
         return;
     } finally {
-        if (null !== $timeout_watcher) {
-            EventLoop::cancel($timeout_watcher);
-        }
+        $cancellation->unsubscribe($cancellation_subscription);
 
         foreach ($watchers->value as $watcher) {
             EventLoop::cancel($watcher);

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
-use Psl;
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\Str;
 
 use function strlen;
@@ -29,40 +30,22 @@ trait WriteHandleConvenienceMethodsTrait
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If reached timeout before completing the operation.
+     * @throws CancelledException If the cancellation token is cancelled.
      */
-    public function writeAll(string $bytes, null|Duration $timeout = null): void
-    {
+    public function writeAll(
+        string $bytes,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): void {
         if ('' === $bytes) {
             return;
         }
 
         $original_size = strlen($bytes);
 
-        if (null === $timeout) {
-            do {
-                $written = $this->write($bytes);
-                $bytes = substr($bytes, $written);
-            } while (0 !== $written && '' !== $bytes);
-        } else {
-            /** @var int $written */
-            $written = 0;
-
-            $timer = new Psl\Async\OptionalIncrementalTimeout($timeout, static function () use (&$written): void {
-                // @codeCoverageIgnoreStart
-                throw new Exception\TimeoutException(Str\format(
-                    'Reached timeout before %s data could be written.',
-                    0 === $written ? 'any' : 'all',
-                ));
-                // @codeCoverageIgnoreEnd
-            });
-
-            do {
-                $written = $this->write($bytes, $timer->getRemaining());
-
-                $bytes = substr($bytes, $written);
-            } while (0 !== $written && '' !== $bytes);
-        }
+        do {
+            $written = $this->write($bytes, $cancellation);
+            $bytes = substr($bytes, $written);
+        } while (0 !== $written && '' !== $bytes);
 
         if ('' !== $bytes) {
             // @codeCoverageIgnoreStart

@@ -40,12 +40,18 @@ All TCP connectors implement `ConnectorInterface`, making them interchangeable a
 
 @example('networking/tcp-echo-server.php')
 
-### Client with Timeout
+### Client with Cancellation
 
 @example('networking/tcp-client-timeout.php')
 
 ### Retry with Backoff
 
 @example('networking/tcp-retry-backoff.php')
+
+### Cancellable Accept
+
+`ListenerInterface::accept()` accepts a `CancellationTokenInterface`, allowing you to cancel waiting for connections, for example during a graceful shutdown:
+
+@example('networking/tcp-cancellable-accept.php')
 
 See `src/Psl/TCP/` for the full API.

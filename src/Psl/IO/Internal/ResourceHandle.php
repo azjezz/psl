@@ -7,7 +7,6 @@ namespace Psl\IO\Internal;
 use Override;
 use Psl;
 use Psl\Async;
-use Psl\DateTime\Duration;
 use Psl\IO;
 use Psl\IO\Exception;
 use Revolt\EventLoop;
@@ -21,7 +20,6 @@ use function fseek;
 use function ftell;
 use function fwrite;
 use function is_resource;
-use function max;
 use function str_contains;
 use function stream_get_contents;
 use function stream_get_meta_data;
@@ -55,14 +53,14 @@ class ResourceHandle implements
     protected mixed $stream;
 
     /**
-     * @var null|Async\Sequence<array{string, null|Duration}, int<0, max>>
+     * @var null|Async\Sequence<array{string, Async\CancellationTokenInterface}, int<0, max>>
      */
     private null|Async\Sequence $writeSequence = null;
     private null|Suspension $writeSuspension = null;
     private string $writeWatcher = 'invalid';
 
     /**
-     * @var null|Async\Sequence<array{null|int<1, max>, null|Duration}, string>
+     * @var null|Async\Sequence<array{null|int<1, max>, Async\CancellationTokenInterface}, string>
      */
     private null|Async\Sequence $readSequence = null;
     private null|Suspension $readSuspension = null;
@@ -111,27 +109,21 @@ class ResourceHandle implements
 
             $this->readSequence = new Async\Sequence(
                 /**
-                 * @param array{null|int<1, max>, null|Duration} $input
+                 * @param array{null|int<1, max>, Async\CancellationTokenInterface} $input
                  */
                 function (array $input) use ($blocks): string {
-                    [$max_bytes, $timeout] = $input;
+                    [$max_bytes, $cancellation] = $input;
                     $chunk = $this->tryRead($max_bytes);
                     if ('' !== $chunk || $blocks) {
                         return $chunk;
                     }
 
+                    $cancellation->throwIfCancelled();
+
                     $suspension = EventLoop::getSuspension();
                     $this->readSuspension = $suspension;
                     EventLoop::enable($this->readWatcher);
-                    $delay_watcher = null;
-                    if (null !== $timeout) {
-                        $timeout = max($timeout->getTotalSeconds(), 0.0);
-                        $delay_watcher = EventLoop::delay($timeout, static fn(): null => $suspension->throw(
-                            new Exception\TimeoutException('Reached timeout while the handle is still not readable.'),
-                        ));
-
-                        EventLoop::unreference($delay_watcher);
-                    }
+                    $id = $cancellation->subscribe($suspension->throw(...));
 
                     try {
                         $suspension->suspend();
@@ -140,9 +132,7 @@ class ResourceHandle implements
                     } finally {
                         $this->readSuspension = null;
                         EventLoop::disable($this->readWatcher);
-                        if (null !== $delay_watcher) {
-                            EventLoop::cancel($delay_watcher);
-                        }
+                        $cancellation->unsubscribe($id);
                     }
                 },
             );
@@ -163,12 +153,12 @@ class ResourceHandle implements
 
             $this->writeSequence = new Async\Sequence(
                 /**
-                 * @param array{string, null|Duration} $input
+                 * @param array{string, Async\CancellationTokenInterface} $input
                  *
                  * @return int<0, max>
                  */
                 function (array $input) use ($blocks): int {
-                    [$bytes, $timeout] = $input;
+                    [$bytes, $cancellation] = $input;
                     $written = $this->tryWrite($bytes);
                     $remaining_bytes = substr($bytes, $written);
                     if ($blocks || '' === $remaining_bytes) {
@@ -193,18 +183,12 @@ class ResourceHandle implements
                         return $written;
                     }
 
+                    $cancellation->throwIfCancelled();
+
                     $suspension = EventLoop::getSuspension();
                     $this->writeSuspension = $suspension;
                     EventLoop::enable($this->writeWatcher);
-                    $delay_watcher = null;
-                    if (null !== $timeout) {
-                        $timeout = max($timeout->getTotalSeconds(), 0.0);
-                        $delay_watcher = EventLoop::delay($timeout, static fn(): null => $suspension->throw(
-                            new Exception\TimeoutException('Reached timeout while the handle is still not readable.'),
-                        ));
-
-                        EventLoop::unreference($delay_watcher);
-                    }
+                    $id = $cancellation->subscribe($suspension->throw(...));
 
                     try {
                         $suspension->suspend();
@@ -213,9 +197,7 @@ class ResourceHandle implements
                     } finally {
                         $this->writeSuspension = null;
                         EventLoop::disable($this->writeWatcher);
-                        if (null !== $delay_watcher) {
-                            EventLoop::cancel($delay_watcher);
-                        }
+                        $cancellation->unsubscribe($id);
                     }
                 },
             );
@@ -229,11 +211,13 @@ class ResourceHandle implements
      * @inheritDoc
      */
     #[Override]
-    public function write(string $bytes, null|Duration $timeout = null): int
-    {
+    public function write(
+        string $bytes,
+        Async\CancellationTokenInterface $cancellation = new Async\NullCancellationToken(),
+    ): int {
         Psl\invariant(null !== $this->writeSequence, 'The resource handle is not writable.');
 
-        return $this->writeSequence->waitFor([$bytes, $timeout]);
+        return $this->writeSequence->waitFor([$bytes, $cancellation]);
     }
 
     /**
@@ -357,11 +341,13 @@ class ResourceHandle implements
      * @inheritDoc
      */
     #[Override]
-    public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
-    {
+    public function read(
+        null|int $max_bytes = null,
+        Async\CancellationTokenInterface $cancellation = new Async\NullCancellationToken(),
+    ): string {
         Psl\invariant(null !== $this->readSequence, 'The resource handle is not readable.');
 
-        return $this->readSequence->waitFor([$max_bytes, $timeout]);
+        return $this->readSequence->waitFor([$max_bytes, $cancellation]);
     }
 
     /**

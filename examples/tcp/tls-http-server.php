@@ -76,7 +76,7 @@ Async\main(static function (): int {
                 $reader = new IO\Reader($tls);
 
                 while (true) {
-                    $headers = $reader->readUntil("\r\n\r\n", $keepalive_timeout);
+                    $headers = $reader->readUntil("\r\n\r\n", new Async\TimeoutCancellationToken($keepalive_timeout));
                     if ($headers === null) {
                         // @mago-expect lint:excessive-nesting
                         break;
@@ -98,7 +98,7 @@ Async\main(static function (): int {
                         break;
                     }
                 }
-            } catch (IO\Exception\TimeoutException) {
+            } catch (Async\Exception\CancelledException) {
                 // @mago-expect lint:no-empty-catch-clause
                 // Keep-alive timeout — client didn't send next request in time
             } finally {

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Psl\Channel\Internal;
 
 use Override;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\Channel\SenderInterface;
 
 /**
@@ -31,7 +33,7 @@ final class UnboundedSender implements SenderInterface
      * @inheritDoc
      */
     #[Override]
-    public function send(mixed $message): void
+    public function send(mixed $message, CancellationTokenInterface $cancellation = new NullCancellationToken()): void
     {
         $this->state->send($message);
     }

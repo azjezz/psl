@@ -6,6 +6,8 @@ namespace Psl\Process\Internal;
 
 use Override;
 use Psl\Async;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\DateTime\Duration;
 use Psl\IO;
 use Psl\OS;
@@ -14,7 +16,6 @@ use Psl\Process\Exception;
 use Psl\Process\ExitStatus;
 use Psl\Process\Output;
 use Psl\Process\Signal;
-use Revolt\EventLoop;
 
 use function proc_close;
 use function proc_get_status;
@@ -124,7 +125,7 @@ final class Child implements ChildInterface
     }
 
     #[Override]
-    public function wait(null|Duration $timeout = null): ExitStatus
+    public function wait(CancellationTokenInterface $cancellation = new NullCancellationToken()): ExitStatus
     {
         if (null !== $this->exitStatus) {
             return $this->exitStatus;
@@ -140,11 +141,11 @@ final class Child implements ChildInterface
         $this->stderr?->close();
         $this->stderr = null;
 
-        return $this->doWait($timeout);
+        return $this->doWait($cancellation);
     }
 
     #[Override]
-    public function waitWithOutput(null|Duration $timeout = null): Output
+    public function waitWithOutput(CancellationTokenInterface $cancellation = new NullCancellationToken()): Output
     {
         if (null !== $this->exitStatus) {
             return new Output($this->exitStatus, '', '');
@@ -169,7 +170,7 @@ final class Child implements ChildInterface
 
         if ([] !== $handles) {
             try {
-                foreach (IO\streaming($handles, $timeout) as $type => $chunk) {
+                foreach (IO\streaming($handles, $cancellation) as $type => $chunk) {
                     if ('' === $chunk) {
                         continue;
                     }
@@ -181,19 +182,19 @@ final class Child implements ChildInterface
 
                     $stderrContent .= $chunk;
                 }
-            } catch (IO\Exception\TimeoutException $e) {
-                // Kill the process on timeout before closing handles.
+            } catch (Async\Exception\CancelledException $e) {
+                // Kill the process on cancellation before closing handles.
                 $this->kill();
                 $this->closeHandles();
                 $this->close();
 
-                throw new Exception\TimeoutException('Process timed out while reading output.', 0, $e);
+                throw $e;
             }
         }
 
         $this->closeHandles();
 
-        $status = $this->doWait(null);
+        $status = $this->doWait(new NullCancellationToken());
 
         return new Output($status, $stdoutContent, $stderrContent);
     }
@@ -212,29 +213,27 @@ final class Child implements ChildInterface
         return $this->close();
     }
 
-    private function doWait(null|Duration $timeout): ExitStatus
+    private function doWait(CancellationTokenInterface $cancellation): ExitStatus
     {
         if (null !== $this->exitStatus) {
             return $this->exitStatus;
         }
 
-        $timeoutSeconds = null !== $timeout ? $timeout->getTotalSeconds() : null;
-        $timedOut = false;
-        $timeoutWatcher = null;
-
-        if (null !== $timeoutSeconds && $timeoutSeconds > 0) {
-            $timeoutWatcher = EventLoop::delay($timeoutSeconds, static function () use (&$timedOut): void {
-                $timedOut = true;
-            });
-        }
+        /** @var null|Async\Exception\CancelledException $cancelledException */
+        $cancelledException = null;
+        $subscription = $cancellation->subscribe(static function (Async\Exception\CancelledException $exception) use (
+            &$cancelledException,
+        ): void {
+            $cancelledException = $exception;
+        });
 
         try {
             while ($this->isRunning()) {
-                if ($timedOut) {
+                if (null !== $cancelledException) {
                     $this->kill();
                     $this->close();
 
-                    throw new Exception\TimeoutException('Process timed out.');
+                    throw $cancelledException;
                 }
 
                 // Small delay between polls to avoid busy-looping and to give
@@ -244,9 +243,7 @@ final class Child implements ChildInterface
                 Async\sleep(Duration::milliseconds(5));
             }
         } finally {
-            if (null !== $timeoutWatcher) {
-                EventLoop::cancel($timeoutWatcher);
-            }
+            $cancellation->unsubscribe($subscription);
         }
 
         return $this->close();

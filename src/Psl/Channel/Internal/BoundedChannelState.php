@@ -9,7 +9,9 @@ use Psl\Channel\ChannelInterface;
 use Psl\Channel\Exception;
 use Revolt\EventLoop\Suspension;
 
+use function array_search;
 use function array_shift;
+use function array_splice;
 
 /**
  * @template T
@@ -142,6 +144,28 @@ final class BoundedChannelState implements ChannelInterface
     public function isEmpty(): bool
     {
         return !$this->messages;
+    }
+
+    /**
+     * @param Suspension<mixed> $suspension
+     */
+    public function removeFromWaitingForSpace(Suspension $suspension): void
+    {
+        $index = array_search($suspension, $this->waitingForSpace, true);
+        if (false !== $index) {
+            array_splice($this->waitingForSpace, $index, 1);
+        }
+    }
+
+    /**
+     * @param Suspension<mixed> $suspension
+     */
+    public function removeFromWaitingForMessage(Suspension $suspension): void
+    {
+        $index = array_search($suspension, $this->waitingForMessage, true);
+        if (false !== $index) {
+            array_splice($this->waitingForMessage, $index, 1);
+        }
     }
 
     /**

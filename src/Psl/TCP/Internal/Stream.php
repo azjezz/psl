@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\TCP\Internal;
 
 use Override;
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\IO;
 use Psl\IO\Exception;
 use Psl\IO\Internal\ResourceHandle;
@@ -60,9 +61,11 @@ final class Stream implements TCP\StreamInterface
      * @param ?positive-int $max_bytes
      */
     #[Override]
-    public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
-    {
-        return $this->handle->read($max_bytes, $timeout);
+    public function read(
+        null|int $max_bytes = null,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): string {
+        return $this->handle->read($max_bytes, $cancellation);
     }
 
     /**
@@ -78,9 +81,9 @@ final class Stream implements TCP\StreamInterface
      * @return int<0, max>
      */
     #[Override]
-    public function write(string $bytes, null|Duration $timeout = null): int
+    public function write(string $bytes, CancellationTokenInterface $cancellation = new NullCancellationToken()): int
     {
-        return $this->handle->write($bytes, $timeout);
+        return $this->handle->write($bytes, $cancellation);
     }
 
     /**
@@ -118,39 +121,29 @@ final class Stream implements TCP\StreamInterface
      * @param positive-int $max_bytes
      */
     #[Override]
-    public function peek(int $max_bytes, null|Duration $timeout = null): string
+    public function peek(int $max_bytes, CancellationTokenInterface $cancellation = new NullCancellationToken()): string
     {
         $stream = $this->handle->getStream();
         if (!is_resource($stream)) {
             throw new Exception\AlreadyClosedException('Stream handle has already been closed.');
         }
 
-        $suspension = EventLoop::getSuspension();
-        $timeout_watcher = null;
+        $cancellation->throwIfCancelled();
 
-        if ($timeout !== null) {
-            $timeout_watcher = EventLoop::delay($timeout->getTotalSeconds(), static function () use (
-                $suspension,
-            ): void {
-                $suspension->resume(true);
-            });
-        }
+        $suspension = EventLoop::getSuspension();
+
+        $cancellation_id = $cancellation->subscribe($suspension->throw(...));
 
         $read_watcher = EventLoop::onReadable($stream, static function (string $watcher) use ($suspension): void {
             EventLoop::cancel($watcher);
-            $suspension->resume(false);
+            $suspension->resume(null);
         });
 
-        /** @var bool $timed_out */
-        $timed_out = $suspension->suspend();
-        if ($timeout_watcher !== null) {
-            EventLoop::cancel($timeout_watcher);
-        }
-
-        EventLoop::cancel($read_watcher);
-
-        if ($timed_out) {
-            throw new IO\Exception\TimeoutException('Peek operation timed out.');
+        try {
+            $suspension->suspend();
+        } finally {
+            EventLoop::cancel($read_watcher);
+            $cancellation->unsubscribe($cancellation_id);
         }
 
         /** @psalm-suppress MissingThrowsDocblock */

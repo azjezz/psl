@@ -14,7 +14,7 @@ Unix domain sockets provide local inter-process communication without the overhe
 
 @example('networking/unix-echo-server.php')
 
-### Client with Timeout
+### Client with Cancellation
 
 @example('networking/unix-client-timeout.php')
 

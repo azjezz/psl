@@ -301,4 +301,114 @@ final class KeyedSequenceTest extends TestCase
         static::assertFalse($ks->hasPendingOperations('foo'));
         static::assertFalse($ks->hasPendingOperations('bar'));
     }
+
+    public function testWaitForPendingReturnsImmediatelyWhenNotIngoing(): void
+    {
+        $ks = new Async\KeyedSequence(static fn(string $key, string $input): string => $input);
+
+        $ks->waitForPending('key');
+
+        static::assertFalse($ks->hasIngoingOperations('key'));
+    }
+
+    public function testWaitForCancelledWhileWaiting(): void
+    {
+        $ks = new Async\KeyedSequence(static function (string $key, string $input): string {
+            Async\sleep(DateTime\Duration::milliseconds(100));
+
+            return $input;
+        });
+
+        Async\run(static fn(): string => $ks->waitFor('key', 'first'))->ignore();
+
+        $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
+
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        Async\run(static fn(): string => $ks->waitFor('key', 'second', $token))->await();
+    }
+
+    public function testWaitForPendingCancelledWhileWaiting(): void
+    {
+        $ks = new Async\KeyedSequence(static function (string $key, string $input): string {
+            Async\sleep(DateTime\Duration::milliseconds(100));
+
+            return $input;
+        });
+
+        Async\run(static fn(): string => $ks->waitFor('key', 'first'))->ignore();
+
+        $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
+
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        Async\run(static fn(): null => $ks->waitForPending('key', $token))->await();
+    }
+
+    public function testWaitForWithAlreadyCancelledToken(): void
+    {
+        $ks = new Async\KeyedSequence(static function (string $key, string $input): string {
+            Async\sleep(DateTime\Duration::milliseconds(100));
+
+            return $input;
+        });
+
+        Async\run(static fn(): string => $ks->waitFor('key', 'first'))->ignore();
+
+        $token = new Async\SignalCancellationToken();
+        $token->cancel();
+
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        Async\run(static fn(): string => $ks->waitFor('key', 'second', $token))->await();
+    }
+
+    public function testCancelledWaitForDoesNotAffectOtherOperations(): void
+    {
+        $ks = new Async\KeyedSequence(static function (string $key, string $input): string {
+            Async\sleep(DateTime\Duration::milliseconds(30));
+
+            return $input;
+        });
+
+        $first = Async\run(static fn(): string => $ks->waitFor('key', 'first'));
+
+        $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
+        $second = Async\run(static fn(): string => $ks->waitFor('key', 'second', $token));
+
+        try {
+            $second->await();
+            static::fail('Expected CancelledException');
+        } catch (Async\Exception\CancelledException) {
+            static::addToAssertionCount(1);
+        }
+
+        static::assertSame('first', $first->await());
+        static::assertFalse($ks->hasPendingOperations('key'));
+    }
+
+    public function testCancelledWaitForOnOneKeyDoesNotAffectOtherKey(): void
+    {
+        $ks = new Async\KeyedSequence(static function (string $key, string $input): string {
+            Async\sleep(DateTime\Duration::milliseconds(30));
+
+            return $input;
+        });
+
+        Async\run(static fn(): string => $ks->waitFor('a', 'first-a'))->ignore();
+
+        $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
+        $cancelled = Async\run(static fn(): string => $ks->waitFor('a', 'second-a', $token));
+
+        $other = Async\run(static fn(): string => $ks->waitFor('b', 'first-b'));
+
+        try {
+            $cancelled->await();
+            static::fail('Expected CancelledException');
+        } catch (Async\Exception\CancelledException) {
+            static::addToAssertionCount(1);
+        }
+
+        static::assertSame('first-b', $other->await());
+    }
 }

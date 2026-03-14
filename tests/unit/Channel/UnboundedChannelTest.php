@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Channel;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Async;
 use Psl\Channel;
+use Psl\DateTime\Duration;
 
 final class UnboundedChannelTest extends TestCase
 {
@@ -120,5 +122,141 @@ final class UnboundedChannelTest extends TestCase
 
         static::assertFalse($receiver->isEmpty());
         static::assertFalse($sender->isEmpty());
+    }
+
+    public function testSendThrowsForClosedChannel(): void
+    {
+        /** @var Channel\SenderInterface<string> $sender */
+        [$receiver, $sender] = Channel\unbounded();
+
+        $receiver->close();
+
+        $this->expectException(Channel\Exception\ClosedChannelException::class);
+
+        $sender->send('hello');
+    }
+
+    public function testReceiveThrowsForClosedEmptyChannel(): void
+    {
+        /** @var Channel\ReceiverInterface<string> $receiver */
+        [$receiver, $sender] = Channel\unbounded();
+
+        $sender->close();
+
+        $this->expectException(Channel\Exception\ClosedChannelException::class);
+
+        $receiver->receive();
+    }
+
+    public function testTryReceiveThrowsForEmptyChannel(): void
+    {
+        /** @var Channel\ReceiverInterface<string> $receiver */
+        [$receiver, $_] = Channel\unbounded();
+
+        $this->expectException(Channel\Exception\EmptyChannelException::class);
+
+        $receiver->tryReceive();
+    }
+
+    public function testReceiveWaitsWhenChannelIsEmpty(): void
+    {
+        /** @var Channel\ReceiverInterface<string> $receiver */
+        [$receiver, $sender] = Channel\unbounded();
+
+        Async\Scheduler::delay(Duration::milliseconds(1), static fn(): null => $sender->send('hello'));
+
+        static::assertTrue($receiver->isEmpty());
+        static::assertSame('hello', $receiver->receive());
+    }
+
+    public function testReceiveThrowsForLateClosedChannel(): void
+    {
+        /** @var Channel\ReceiverInterface<string> $receiver */
+        [$receiver, $sender] = Channel\unbounded();
+
+        Async\Scheduler::delay(Duration::milliseconds(1), static function () use ($sender): void {
+            $sender->close();
+        });
+
+        $this->expectException(Channel\Exception\ClosedChannelException::class);
+
+        $receiver->receive();
+    }
+
+    public function testReceiveCancelledWhileWaitingForMessage(): void
+    {
+        /** @var Channel\ReceiverInterface<string> $receiver */
+        [$receiver, $sender] = Channel\unbounded();
+
+        $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
+
+        Async\run(static function () use ($sender): void {
+            Async\sleep(Duration::seconds(5));
+            $sender->send('never');
+        })->ignore();
+
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        $receiver->receive($token);
+    }
+
+    public function testReceiveCancelledWhileQueuedBehindPreviousReceive(): void
+    {
+        /** @var Channel\ReceiverInterface<string> $receiver */
+        [$receiver, $sender] = Channel\unbounded();
+
+        $first = Async\run($receiver->receive(...));
+
+        $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
+
+        $second = Async\run(static fn(): string => $receiver->receive($token));
+
+        Async\run(static function () use ($sender): void {
+            Async\sleep(Duration::milliseconds(50));
+            $sender->send('hello');
+        })->ignore();
+
+        try {
+            $second->await();
+            static::fail('Expected CancelledException');
+        } catch (Async\Exception\CancelledException) {
+            static::addToAssertionCount(1);
+        }
+
+        static::assertSame('hello', $first->await());
+    }
+
+    public function testReceiveWithAlreadyCancelledTokenOnEmptyChannel(): void
+    {
+        /** @var Channel\ReceiverInterface<string> $receiver */
+        [$receiver, $sender] = Channel\unbounded();
+
+        $token = new Async\SignalCancellationToken();
+        $token->cancel();
+
+        Async\run(static function () use ($sender): void {
+            Async\sleep(Duration::seconds(5));
+            $sender->send('never');
+        })->ignore();
+
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        $receiver->receive($token);
+    }
+
+    public function testReceiveWaitsForPreviousOperationsWhenChannelIsEmpty(): void
+    {
+        /** @var Channel\ReceiverInterface<string> $receiver */
+        [$receiver, $sender] = Channel\unbounded();
+
+        $one = Async\run($receiver->receive(...));
+        $two = Async\run($receiver->receive(...));
+
+        Async\Scheduler::defer(static fn(): null => $sender->send('foo'));
+        Async\Scheduler::defer(static fn(): null => $sender->send('bar'));
+
+        static::assertSame('bar', $two->await());
+        static::assertTrue($one->isComplete());
+        static::assertSame('foo', $one->await());
     }
 }

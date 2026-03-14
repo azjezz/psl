@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
-use Psl;
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\Str;
 
 use function strlen;
@@ -29,48 +30,19 @@ trait ReadHandleConvenienceMethodsTrait
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
+     * @throws CancelledException If the cancellation token is cancelled.
      */
-    public function readAll(null|int $max_bytes = null, null|Duration $timeout = null): string
-    {
+    public function readAll(
+        null|int $max_bytes = null,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): string {
         $to_read = $max_bytes;
-
-        if (null === $timeout) {
-            $data = '';
-            do {
-                /** @var positive-int|null $chunk_size */
-                $chunk_size = $to_read;
-                $chunk = $this->read($chunk_size);
-                $data .= $chunk;
-                if (null !== $to_read) {
-                    $to_read -= strlen($chunk);
-                }
-            } while ((null === $to_read || $to_read > 0) && !$this->reachedEndOfDataSource());
-
-            return $data;
-        }
-
-        /** @var string $data */
         $data = '';
-        $timer = new Psl\Async\OptionalIncrementalTimeout(
-            $timeout,
-            /**
-             * @throws Exception\TimeoutException
-             */
-            static function () use (&$data): void {
-                // @codeCoverageIgnoreStart
-                throw new Exception\TimeoutException(Str\format(
-                    'Reached timeout before %s data could be read.',
-                    '' === $data ? 'any' : 'all',
-                ));
-                // @codeCoverageIgnoreEnd
-            },
-        );
 
         do {
             /** @var positive-int|null $chunk_size */
             $chunk_size = $to_read;
-            $chunk = $this->read($chunk_size, $timer->getRemaining());
+            $chunk = $this->read($chunk_size, $cancellation);
             $data .= $chunk;
             if (null !== $to_read) {
                 $to_read -= strlen($chunk);
@@ -91,11 +63,13 @@ trait ReadHandleConvenienceMethodsTrait
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
+     * @throws CancelledException If the cancellation token is cancelled.
      */
-    public function readFixedSize(int $size, null|Duration $timeout = null): string
-    {
-        $data = $this->readAll($size, $timeout);
+    public function readFixedSize(
+        int $size,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): string {
+        $data = $this->readAll($size, $cancellation);
         $length = strlen($data);
 
         if ($length !== $size) {

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\TCP;
 
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\DateTime\Duration;
 use Revolt\EventLoop;
 
@@ -50,8 +52,11 @@ final class SocketPool implements SocketPoolInterface
         $this->idleTimeout = $idleTimeout ?? Duration::seconds(10);
     }
 
-    public function checkout(string $host, int $port, null|Duration $timeout = null): StreamInterface
-    {
+    public function checkout(
+        string $host,
+        int $port,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): StreamInterface {
         $key = "{$host}:{$port}";
 
         // Try to reuse an idle connection
@@ -76,7 +81,7 @@ final class SocketPool implements SocketPoolInterface
         }
 
         // No idle connection available, create a new one
-        $stream = $this->connector->connect($host, $port, $timeout);
+        $stream = $this->connector->connect($host, $port, $cancellation);
         $this->checkedOut[spl_object_id($stream)] = $key;
 
         return $stream;

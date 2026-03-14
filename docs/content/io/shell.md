@@ -14,9 +14,9 @@ By default, stderr is discarded. The `ErrorOutputBehavior` enum controls how std
 
 @example('io/shell-error-output.php')
 
-## Timeouts
+## Cancellation
 
-Pass a `Duration` to limit how long the command can run:
+Pass a `CancellationTokenInterface` to cancel a running command. Use `TimeoutCancellationToken` to enforce a time limit:
 
 @example('io/shell-timeout.php')
 
@@ -26,7 +26,7 @@ Pass a `Duration` to limit how long the command can run:
 
 - **`FailedExecutionException`** -- the command exited with a non-zero status. Provides `getCommand()`, `getOutput()`, and `getErrorOutput()` for inspection.
 - **`PossibleAttackException`** -- the command or an argument contains a NULL byte, indicating a potential injection attack.
-- **`TimeoutException`** -- the command exceeded the specified timeout duration.
+- **`CancelledException`** -- the command was cancelled via the cancellation token.
 - **`RuntimeException`** -- the working directory does not exist, or the process could not be created.
 
 @example('io/shell-error-handling.php')

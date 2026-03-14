@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Process;
 
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\Dict;
 use Psl\Env;
 use Psl\Filesystem;
@@ -306,13 +308,13 @@ final readonly class Command
      *
      * @throws Exception\StartFailedException If the process could not be started.
      * @throws Exception\RuntimeException If the working directory does not exist.
-     * @throws Exception\TimeoutException If the timeout is reached.
+     * @throws CancelledException If the operation is cancelled.
      */
-    public function output(null|Duration $timeout = null): Output
+    public function output(CancellationTokenInterface $cancellation = new NullCancellationToken()): Output
     {
         $child = $this->doSpawn(Stdio::null(), Stdio::piped(), Stdio::piped());
 
-        return $child->waitWithOutput($timeout);
+        return $child->waitWithOutput($cancellation);
     }
 
     /**
@@ -320,13 +322,13 @@ final readonly class Command
      *
      * @throws Exception\StartFailedException If the process could not be started.
      * @throws Exception\RuntimeException If the working directory does not exist.
-     * @throws Exception\TimeoutException If the timeout is reached.
+     * @throws CancelledException If the operation is cancelled.
      */
-    public function status(null|Duration $timeout = null): ExitStatus
+    public function status(CancellationTokenInterface $cancellation = new NullCancellationToken()): ExitStatus
     {
         $child = $this->doSpawn(Stdio::null(), Stdio::null(), Stdio::null());
 
-        return $child->wait($timeout);
+        return $child->wait($cancellation);
     }
 
     /**

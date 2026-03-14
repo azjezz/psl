@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\TLS\Internal;
 
 use Override;
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\IO;
 use Psl\Network;
 use Psl\TLS;
@@ -58,9 +59,11 @@ final class Stream implements TLS\StreamInterface
      * @param ?positive-int $max_bytes
      */
     #[Override]
-    public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
-    {
-        return $this->inner->read($max_bytes, $timeout);
+    public function read(
+        null|int $max_bytes = null,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): string {
+        return $this->inner->read($max_bytes, $cancellation);
     }
 
     /**
@@ -76,9 +79,9 @@ final class Stream implements TLS\StreamInterface
      * @return int<0, max>
      */
     #[Override]
-    public function write(string $bytes, null|Duration $timeout = null): int
+    public function write(string $bytes, CancellationTokenInterface $cancellation = new NullCancellationToken()): int
     {
-        return $this->inner->write($bytes, $timeout);
+        return $this->inner->write($bytes, $cancellation);
     }
 
     /**
@@ -106,9 +109,9 @@ final class Stream implements TLS\StreamInterface
      * @param positive-int $max_bytes
      */
     #[Override]
-    public function peek(int $max_bytes, null|Duration $timeout = null): string
+    public function peek(int $max_bytes, CancellationTokenInterface $cancellation = new NullCancellationToken()): string
     {
-        return $this->inner->peek($max_bytes, $timeout);
+        return $this->inner->peek($max_bytes, $cancellation);
     }
 
     #[Override]

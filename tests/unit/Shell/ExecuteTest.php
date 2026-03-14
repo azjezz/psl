@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Shell;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Async;
 use Psl\DateTime;
 use Psl\DateTime\Duration;
 use Psl\Env;
@@ -159,7 +160,7 @@ final class ExecuteTest extends TestCase
         $result = Shell\execute(
             PHP_BINARY,
             ['-dopcache.enable=0', '-r', 'echo "hello";'],
-            timeout: Duration::seconds(5),
+            cancellation: new Async\TimeoutCancellationToken(Duration::seconds(5)),
         );
 
         static::assertSame('hello', $result);
@@ -176,8 +177,12 @@ final class ExecuteTest extends TestCase
         $start = DateTime\Timestamp::monotonic();
 
         try {
-            Shell\execute(PHP_BINARY, ['-dopcache.enable=0', '-r', 'sleep(2);'], timeout: Duration::milliseconds(200));
-        } catch (Shell\Exception\TimeoutException $_) {
+            Shell\execute(
+                PHP_BINARY,
+                ['-dopcache.enable=0', '-r', 'sleep(2);'],
+                cancellation: new Async\TimeoutCancellationToken(Duration::milliseconds(200)),
+            );
+        } catch (Async\Exception\CancelledException $_) {
             $elapsed = DateTime\Timestamp::monotonic()->since($start);
 
             static::assertLessThan(

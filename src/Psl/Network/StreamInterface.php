@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Network;
 
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\IO;
 
 /**
@@ -37,9 +39,12 @@ interface StreamInterface extends
      *
      * @throws IO\Exception\AlreadyClosedException If the stream has already been closed.
      * @throws IO\Exception\RuntimeException If an error occurred during the peek operation.
-     * @throws IO\Exception\TimeoutException If the operation timed out.
+     * @throws CancelledException If the operation was cancelled.
      */
-    public function peek(int $max_bytes, null|Duration $timeout = null): string;
+    public function peek(
+        int $max_bytes,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): string;
 
     /**
      * Shut down the write side of the connection.

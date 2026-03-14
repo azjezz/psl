@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Unix;
 
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\Network;
 
 /**
@@ -13,13 +15,13 @@ use Psl\Network;
  * @param non-empty-string $path
  *
  * @throws Network\Exception\RuntimeException If failed to connect on the given path, or if on Windows.
- * @throws Network\Exception\TimeoutException If $timeout is non-null, and the operation timed-out.
+ * @throws CancelledException If the operation is cancelled.
  */
-function connect(string $path, null|Duration $timeout = null): StreamInterface
+function connect(string $path, CancellationTokenInterface $cancellation = new NullCancellationToken()): StreamInterface
 {
     Internal\assert_not_windows();
 
-    $socket = Network\Internal\socket_connect("unix://{$path}", timeout: $timeout);
+    $socket = Network\Internal\socket_connect("unix://{$path}", cancellation: $cancellation);
 
     return new Internal\Stream($socket);
 }

@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Psl\TLS;
 
 use Override;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\Default\DefaultInterface;
 use Psl\Network;
 use Psl\TLS\Exception\HandshakeFailedException;
@@ -44,9 +47,13 @@ final readonly class Connector implements DefaultInterface
      *
      * @throws HandshakeFailedException If the TLS handshake fails.
      * @throws Network\Exception\RuntimeException If the stream is not available.
+     * @throws CancelledException If the cancellation token is cancelled during the handshake.
      */
-    public function connect(Network\StreamInterface $stream, null|string $server_name = null): StreamInterface
-    {
+    public function connect(
+        Network\StreamInterface $stream,
+        null|string $server_name = null,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): StreamInterface {
         $resource = $stream->getStream();
         if (!is_resource($resource)) {
             throw new Network\Exception\RuntimeException('Stream resource is not available.');
@@ -62,7 +69,7 @@ final readonly class Connector implements DefaultInterface
 
         $crypto_method = Internal\crypto_method($config->minimumVersion, $config->maximumVersion, server: false);
 
-        Internal\enable_crypto($resource, $crypto_method);
+        Internal\enable_crypto($resource, $crypto_method, $cancellation);
 
         $state = Internal\extract_connection_state($resource);
 

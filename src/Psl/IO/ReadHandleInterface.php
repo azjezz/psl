@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 
 /**
  * An `IO\Handle` that is readable.
@@ -56,14 +58,17 @@ interface ReadHandleInterface extends HandleInterface
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
+     * @throws CancelledException If the cancellation token is cancelled.
      *
      * @return string the read data on success, or an empty string if the end of data source is reached.
      *
      * Up to `$max_bytes` may be allocated in a buffer; large values may lead to
      * unnecessarily hitting the request memory limit.
      */
-    public function read(null|int $max_bytes = null, null|Duration $timeout = null): string;
+    public function read(
+        null|int $max_bytes = null,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): string;
 
     /**
      * Read until there is no more data to read.
@@ -79,9 +84,12 @@ interface ReadHandleInterface extends HandleInterface
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
+     * @throws CancelledException If the cancellation token is cancelled.
      */
-    public function readAll(null|int $max_bytes = null, null|Duration $timeout = null): string;
+    public function readAll(
+        null|int $max_bytes = null,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): string;
 
     /**
      * Read a fixed amount of data.
@@ -94,7 +102,10 @@ interface ReadHandleInterface extends HandleInterface
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws Exception\TimeoutException If $timeout is reached before being able to read from the handle.
+     * @throws CancelledException If the cancellation token is cancelled.
      */
-    public function readFixedSize(int $size, null|Duration $timeout = null): string;
+    public function readFixedSize(
+        int $size,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): string;
 }

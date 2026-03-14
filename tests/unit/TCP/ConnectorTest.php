@@ -6,6 +6,8 @@ namespace Psl\Tests\Unit\TCP;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\DateTime\Duration;
 use Psl\Network;
 use Psl\TCP;
@@ -98,14 +100,17 @@ final class ConnectorTest extends TestCase
                 private int &$attempts,
             ) {}
 
-            public function connect(string $host, int $port, null|Duration $timeout = null): TCP\StreamInterface
-            {
+            public function connect(
+                string $host,
+                int $port,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): TCP\StreamInterface {
                 $this->attempts++;
                 if ($this->attempts < 3) {
                     throw new Network\Exception\RuntimeException('Connection failed');
                 }
 
-                return TCP\connect($host, $port, timeout: $timeout);
+                return TCP\connect($host, $port, cancellation: $cancellation);
             }
         };
 
@@ -135,8 +140,11 @@ final class ConnectorTest extends TestCase
     public function testRetryConnectorThrowsAfterMaxAttempts(): void
     {
         $alwaysFails = new class() implements TCP\ConnectorInterface {
-            public function connect(string $host, int $port, null|Duration $timeout = null): TCP\StreamInterface
-            {
+            public function connect(
+                string $host,
+                int $port,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): TCP\StreamInterface {
                 throw new Network\Exception\RuntimeException('Always fails');
             }
         };

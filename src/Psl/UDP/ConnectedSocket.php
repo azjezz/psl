@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Psl\UDP;
 
 use Override;
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\IO;
 use Psl\Network;
 
@@ -50,17 +52,15 @@ final class ConnectedSocket implements Network\SocketInterface, IO\StreamHandleI
      *
      * @throws Network\Exception\RuntimeException If the send fails.
      * @throws Network\Exception\InvalidArgumentException If the datagram exceeds the maximum size.
-     * @throws IO\Exception\TimeoutException If the operation times out.
+     * @throws CancelledException If the operation is cancelled.
      * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
      */
-    public function send(string $data, null|Duration $timeout = null): int
+    public function send(string $data, CancellationTokenInterface $cancellation = new NullCancellationToken()): int
     {
         Internal\validate_payload_size($data);
         $stream = $this->getResource();
 
-        if ($timeout !== null) {
-            Internal\wait_writable($stream, $timeout);
-        }
+        Internal\wait_writable($stream, $cancellation);
 
         $result = @stream_socket_sendto($stream, $data);
         if ($result === false || $result === -1) {
@@ -77,14 +77,16 @@ final class ConnectedSocket implements Network\SocketInterface, IO\StreamHandleI
      * @param positive-int $max_bytes
      *
      * @throws Network\Exception\RuntimeException If the receive fails.
-     * @throws IO\Exception\TimeoutException If the operation times out.
+     * @throws CancelledException If the operation is cancelled.
      * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
      */
-    public function receive(int $max_bytes, null|Duration $timeout = null): string
-    {
+    public function receive(
+        int $max_bytes,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): string {
         $stream = $this->getResource();
 
-        Internal\await_readable($stream, $timeout);
+        Internal\await_readable($stream, $cancellation);
 
         $data = @stream_socket_recvfrom($stream, $max_bytes, 0);
         if ($data === false) {
@@ -100,14 +102,14 @@ final class ConnectedSocket implements Network\SocketInterface, IO\StreamHandleI
      * @param positive-int $max_bytes
      *
      * @throws Network\Exception\RuntimeException If the peek fails.
-     * @throws IO\Exception\TimeoutException If the operation times out.
+     * @throws CancelledException If the operation is cancelled.
      * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
      */
-    public function peek(int $max_bytes, null|Duration $timeout = null): string
+    public function peek(int $max_bytes, CancellationTokenInterface $cancellation = new NullCancellationToken()): string
     {
         $stream = $this->getResource();
 
-        Internal\await_readable($stream, $timeout);
+        Internal\await_readable($stream, $cancellation);
 
         $data = @stream_socket_recvfrom($stream, $max_bytes, STREAM_PEEK);
         if ($data === false) {

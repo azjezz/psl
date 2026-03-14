@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\File;
 
 use Override;
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\Filesystem;
 use Psl\IO;
 use Psl\Str;
@@ -77,8 +78,8 @@ final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteH
      * @inheritDoc
      */
     #[Override]
-    public function write(string $bytes, null|Duration $timeout = null): int
+    public function write(string $bytes, CancellationTokenInterface $cancellation = new NullCancellationToken()): int
     {
-        return $this->writeHandle->write($bytes, $timeout);
+        return $this->writeHandle->write($bytes, $cancellation);
     }
 }

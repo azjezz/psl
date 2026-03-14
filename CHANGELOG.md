@@ -1,5 +1,60 @@
 # Changelog
 
+## 6.0.0
+
+### breaking changes
+
+- **BC** - All `null|Duration $timeout` parameters across IO, Network, TCP, TLS, Unix, UDP, Socks, Process, and Shell components have been replaced with `CancellationTokenInterface $cancellation = new NullCancellationToken()`. This enables both timeout-based and signal-based cancellation of async operations.
+- **BC** - Removed `Psl\IO\Exception\TimeoutException` — use `Psl\Async\Exception\CancelledException` instead.
+- **BC** - Removed `Psl\Network\Exception\TimeoutException` — use `Psl\Async\Exception\CancelledException` instead.
+- **BC** - Removed `Psl\Process\Exception\TimeoutException` — use `Psl\Async\Exception\CancelledException` instead.
+- **BC** - Removed `Psl\Shell\Exception\TimeoutException` — use `Psl\Async\Exception\CancelledException` instead.
+
+### features
+
+- feat(async): introduce `Psl\Async\CancellationTokenInterface` for cancelling async operations
+- feat(async): introduce `Psl\Async\NullCancellationToken` — no-op token used as default parameter value
+- feat(async): introduce `Psl\Async\SignalCancellationToken` — manually triggered cancellation via `cancel(?Throwable $cause)`
+- feat(async): introduce `Psl\Async\TimeoutCancellationToken` — auto-cancels after a `Duration`, replacing the old `Duration $timeout` pattern
+- feat(async): introduce `Psl\Async\LinkedCancellationToken` — cancelled when either of two inner tokens is cancelled, useful for combining a request-scoped token with an operation-specific timeout
+- feat(async): introduce `Psl\Async\Exception\CancelledException` — thrown when a cancellation token is triggered; the cause (e.g., `TimeoutException`) is attached as `$previous`. Use `$e->getToken()` to identify which token triggered the cancellation.
+- feat(async): `Async\sleep()` now accepts an optional `CancellationTokenInterface` parameter, allowing early wake-up on cancellation
+- feat(async): `Awaitable::await()` now accepts an optional `CancellationTokenInterface` parameter
+- feat(async): `Sequence::waitFor()` and `Sequence::waitForPending()` now accept an optional `CancellationTokenInterface` parameter
+- feat(async): `Semaphore::waitFor()` and `Semaphore::waitForPending()` now accept an optional `CancellationTokenInterface` parameter
+- feat(async): `KeyedSequence::waitFor()` and `KeyedSequence::waitForPending()` now accept an optional `CancellationTokenInterface` parameter
+- feat(async): `KeyedSemaphore::waitFor()` and `KeyedSemaphore::waitForPending()` now accept an optional `CancellationTokenInterface` parameter
+- feat(channel): `SenderInterface::send()` and `ReceiverInterface::receive()` now accept an optional `CancellationTokenInterface` parameter
+- feat(network): `ListenerInterface::accept()` now accepts an optional `CancellationTokenInterface` parameter
+- feat(tcp): `TCP\ListenerInterface::accept()` now accepts an optional `CancellationTokenInterface` parameter
+- feat(unix): `Unix\ListenerInterface::accept()` now accepts an optional `CancellationTokenInterface` parameter
+- feat(tls): `TLS\Acceptor::accept()`, `TLS\LazyAcceptor::accept()`, `TLS\ClientHello::complete()`, and `TLS\Connector::connect()` now accept an optional `CancellationTokenInterface` parameter — cancellation propagates through the TLS handshake
+- feat(tls): `TLS\TCPConnector::connect()` and `TLS\connect()` now pass the cancellation token through to the TLS handshake
+
+### migration guide
+
+Replace `Duration` timeout parameters with `TimeoutCancellationToken`:
+
+```php
+// Before (5.x)
+$data = $reader->read(timeout: Duration::seconds(5));
+
+// After (6.0)
+$data = $reader->read(cancellation: new Async\TimeoutCancellationToken(Duration::seconds(5)));
+```
+
+For manual cancellation (e.g., cancel all request IO when a client disconnects):
+
+```php
+$token = new Async\SignalCancellationToken();
+
+// Pass to all request-scoped IO
+$body = $reader->readAll(cancellation: $token);
+
+// Cancel from elsewhere
+$token->cancel();
+```
+
 ## 5.5.0
 
 ### features

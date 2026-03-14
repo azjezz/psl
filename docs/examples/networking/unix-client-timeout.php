@@ -23,7 +23,7 @@ Async\concurrently([
         $listener->close();
     },
     'client' => static function () use ($path): void {
-        $client = Unix\connect($path, Duration::seconds(5));
+        $client = Unix\connect($path, new Async\TimeoutCancellationToken(Duration::seconds(5)));
         $client->writeAll('ping');
         $client->shutdown();
         $response = $client->readAll();

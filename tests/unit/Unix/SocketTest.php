@@ -148,7 +148,7 @@ final class SocketTest extends TestCase
                 },
                 'client' => static function () use ($path): void {
                     $socket = Unix\Socket::create();
-                    $stream = $socket->connect($path, Duration::seconds(5));
+                    $stream = $socket->connect($path, new Async\TimeoutCancellationToken(Duration::seconds(5)));
 
                     $stream->writeAll('with-timeout');
                     $response = $stream->readAll();

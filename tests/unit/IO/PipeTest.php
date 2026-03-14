@@ -97,10 +97,9 @@ final class PipeTest extends TestCase
     {
         [$read, $_write] = IO\pipe();
 
-        $this->expectException(IO\Exception\TimeoutException::class);
-        $this->expectExceptionMessage('Reached timeout while the handle is still not readable.');
+        $this->expectException(Async\Exception\CancelledException::class);
 
-        $read->readAll(timeout: DateTime\Duration::milliseconds(1));
+        $read->readAll(cancellation: new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(1)));
     }
 
     public function testReadOnAlreadyClosedPipe(): void

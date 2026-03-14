@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\Socks;
 
 use Override;
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\TCP;
 use SensitiveParameter;
 
@@ -38,10 +39,13 @@ final readonly class Connector implements TCP\ConnectorInterface
     ) {}
 
     #[Override]
-    public function connect(string $host, int $port, null|Duration $timeout = null): TCP\StreamInterface
-    {
+    public function connect(
+        string $host,
+        int $port,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): TCP\StreamInterface {
         // Connect to the SOCKS5 proxy
-        $stream = $this->connector->connect($this->proxyHost, $this->proxyPort, $timeout);
+        $stream = $this->connector->connect($this->proxyHost, $this->proxyPort, $cancellation);
 
         // Perform the SOCKS5 handshake to tunnel to the target
         Internal\socks5_handshake($stream, $host, $port, $this->username, $this->password);

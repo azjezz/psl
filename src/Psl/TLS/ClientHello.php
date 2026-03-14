@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\TLS;
 
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\Network;
 use Psl\TLS\Exception\HandshakeFailedException;
 
@@ -53,9 +56,12 @@ final readonly class ClientHello
      *
      * @throws HandshakeFailedException If the TLS handshake fails.
      * @throws Network\Exception\RuntimeException If the stream is not available.
+     * @throws CancelledException If the cancellation token is cancelled during the handshake.
      */
-    public function complete(ServerConfig $config): StreamInterface
-    {
+    public function complete(
+        ServerConfig $config,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): StreamInterface {
         $resource = $this->stream->getStream();
         if (!is_resource($resource)) {
             throw new Network\Exception\RuntimeException('Stream resource is not available.');
@@ -66,7 +72,7 @@ final readonly class ClientHello
 
         $crypto_method = Internal\crypto_method($config->minimumVersion, $config->maximumVersion, server: true);
 
-        Internal\enable_crypto($resource, $crypto_method);
+        Internal\enable_crypto($resource, $crypto_method, $cancellation);
 
         $state = Internal\extract_connection_state($resource);
 

@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Psl\Tests\Unit\Crypto\Symmetric;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\Crypto\Exception;
 use Psl\Crypto\Symmetric;
-use Psl\DateTime\Duration;
 use Psl\IO;
 use Psl\SecureRandom;
 use Psl\Str;
@@ -439,19 +440,25 @@ final class StreamEncryptionTest extends TestCase
                 return $this->inner->tryRead($max_bytes);
             }
 
-            public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
-            {
-                return $this->inner->read($max_bytes, $timeout);
+            public function read(
+                null|int $max_bytes = null,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
+                return $this->inner->read($max_bytes, $cancellation);
             }
 
-            public function readAll(null|int $max_bytes = null, null|Duration $timeout = null): string
-            {
-                return $this->inner->readAll($max_bytes, $timeout);
+            public function readAll(
+                null|int $max_bytes = null,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
+                return $this->inner->readAll($max_bytes, $cancellation);
             }
 
-            public function readFixedSize(int $size, null|Duration $timeout = null): string
-            {
-                return $this->inner->readFixedSize($size, $timeout);
+            public function readFixedSize(
+                int $size,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
+                return $this->inner->readFixedSize($size, $cancellation);
             }
         };
 
@@ -638,19 +645,25 @@ final class StreamEncryptionTest extends TestCase
                 return $this->doRead($max_bytes);
             }
 
-            public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
-            {
+            public function read(
+                null|int $max_bytes = null,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
                 return $this->doRead($max_bytes);
             }
 
-            public function readAll(null|int $max_bytes = null, null|Duration $timeout = null): string
-            {
-                return $this->inner->readAll($max_bytes, $timeout);
+            public function readAll(
+                null|int $max_bytes = null,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
+                return $this->inner->readAll($max_bytes, $cancellation);
             }
 
-            public function readFixedSize(int $size, null|Duration $timeout = null): string
-            {
-                return $this->inner->readFixedSize($size, $timeout);
+            public function readFixedSize(
+                int $size,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
+                return $this->inner->readFixedSize($size, $cancellation);
             }
 
             private function doRead(null|int $max_bytes): string
@@ -700,19 +713,25 @@ final class StreamEncryptionTest extends TestCase
                 return $this->doRead($max_bytes);
             }
 
-            public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
-            {
+            public function read(
+                null|int $max_bytes = null,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
                 return $this->doRead($max_bytes);
             }
 
-            public function readAll(null|int $max_bytes = null, null|Duration $timeout = null): string
-            {
-                return $this->inner->readAll($max_bytes, $timeout);
+            public function readAll(
+                null|int $max_bytes = null,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
+                return $this->inner->readAll($max_bytes, $cancellation);
             }
 
-            public function readFixedSize(int $size, null|Duration $timeout = null): string
-            {
-                return $this->inner->readFixedSize($size, $timeout);
+            public function readFixedSize(
+                int $size,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
+                return $this->inner->readFixedSize($size, $cancellation);
             }
 
             private function doRead(null|int $max_bytes): string
@@ -808,20 +827,26 @@ final class StreamEncryptionTest extends TestCase
                 return $this->inner->tryRead($max_bytes);
             }
 
-            public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
-            {
+            public function read(
+                null|int $max_bytes = null,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
                 $this->readArgs[] = $max_bytes;
-                return $this->inner->read($max_bytes, $timeout);
+                return $this->inner->read($max_bytes, $cancellation);
             }
 
-            public function readAll(null|int $max_bytes = null, null|Duration $timeout = null): string
-            {
-                return $this->inner->readAll($max_bytes, $timeout);
+            public function readAll(
+                null|int $max_bytes = null,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
+                return $this->inner->readAll($max_bytes, $cancellation);
             }
 
-            public function readFixedSize(int $size, null|Duration $timeout = null): string
-            {
-                return $this->inner->readFixedSize($size, $timeout);
+            public function readFixedSize(
+                int $size,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
+                return $this->inner->readFixedSize($size, $cancellation);
             }
         };
 
@@ -874,25 +899,31 @@ final class StreamEncryptionTest extends TestCase
                 return $this->inner->tryRead($max_bytes);
             }
 
-            public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
-            {
-                return $this->inner->read($max_bytes, $timeout);
+            public function read(
+                null|int $max_bytes = null,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
+                return $this->inner->read($max_bytes, $cancellation);
             }
 
-            public function readAll(null|int $max_bytes = null, null|Duration $timeout = null): string
-            {
-                return $this->inner->readAll($max_bytes, $timeout);
+            public function readAll(
+                null|int $max_bytes = null,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
+                return $this->inner->readAll($max_bytes, $cancellation);
             }
 
-            public function readFixedSize(int $size, null|Duration $timeout = null): string
-            {
+            public function readFixedSize(
+                int $size,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
                 if ($size === 0) {
                     throw new IO\Exception\RuntimeException(
                         'readFixedSize(0) should never be called: the < 4 check should prevent this.',
                     );
                 }
 
-                return $this->inner->readFixedSize($size, $timeout);
+                return $this->inner->readFixedSize($size, $cancellation);
             }
         };
 

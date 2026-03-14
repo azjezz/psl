@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\IO;
 
 use Override;
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 
 use function str_repeat;
 use function strlen;
@@ -86,8 +87,10 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
      * @inheritDoc
      */
     #[Override]
-    public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
-    {
+    public function read(
+        null|int $max_bytes = null,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): string {
         return $this->tryRead($max_bytes);
     }
 
@@ -129,7 +132,7 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
      * @inheritDoc
      */
     #[Override]
-    public function tryWrite(string $bytes, null|Duration $timeout = null): int
+    public function tryWrite(string $bytes): int
     {
         $this->assertHandleIsOpen();
         $length = strlen($this->buffer);
@@ -166,7 +169,7 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
      * @inheritDoc
      */
     #[Override]
-    public function write(string $bytes, null|Duration $timeout = null): int
+    public function write(string $bytes, CancellationTokenInterface $cancellation = new NullCancellationToken()): int
     {
         return $this->tryWrite($bytes);
     }

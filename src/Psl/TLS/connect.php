@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\TLS;
 
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\Network;
 use Psl\TCP;
 
@@ -17,21 +19,21 @@ use Psl\TCP;
  * @param non-empty-string $host Hostname or IP to connect to.
  * @param int<0, 65535> $port Port to connect to.
  * @param ClientConfig|null $config TLS configuration. Defaults to {@see ClientConfig::default()}.
- * @param Duration|null $timeout Connection timeout.
+ * @param CancellationTokenInterface $cancellation Cancellation token.
  *
  * @throws Network\Exception\RuntimeException If the TCP connection fails.
- * @throws Network\Exception\TimeoutException If the connection times out.
+ * @throws CancelledException If the operation was cancelled.
  * @throws Exception\HandshakeFailedException If the TLS handshake fails.
  */
 function connect(
     string $host,
     int $port,
     null|ClientConfig $config = null,
-    null|Duration $timeout = null,
+    CancellationTokenInterface $cancellation = new NullCancellationToken(),
 ): StreamInterface {
-    $stream = TCP\connect($host, $port, timeout: $timeout);
+    $stream = TCP\connect($host, $port, cancellation: $cancellation);
 
     $connector = new Connector($config ?? ClientConfig::default());
 
-    return $connector->connect($stream, $host);
+    return $connector->connect($stream, $host, cancellation: $cancellation);
 }

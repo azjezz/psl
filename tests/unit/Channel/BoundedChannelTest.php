@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Async;
 use Psl\Channel;
 use Psl\DateTime;
+use Psl\DateTime\Duration;
 
 final class BoundedChannelTest extends TestCase
 {
@@ -335,5 +336,137 @@ final class BoundedChannelTest extends TestCase
         static::assertTrue($one->isComplete());
 
         static::assertSame('foo', $one->await());
+    }
+
+    public function testReceiveCancelledWhileWaitingForMessage(): void
+    {
+        /** @var Channel\ReceiverInterface<string> $receiver */
+        [$receiver, $sender] = Channel\bounded(1);
+
+        $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
+
+        Async\run(static function () use ($sender): void {
+            Async\sleep(Duration::seconds(5));
+            $sender->send('never');
+        })->ignore();
+
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        $receiver->receive($token);
+    }
+
+    public function testSendCancelledWhileWaitingForSpace(): void
+    {
+        /** @var Channel\ReceiverInterface<string> $receiver */
+        [$receiver, $sender] = Channel\bounded(1);
+
+        $sender->send('fills-channel');
+
+        $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
+
+        Async\run(static function () use ($receiver): void {
+            Async\sleep(Duration::seconds(5));
+            $receiver->receive();
+        })->ignore();
+
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        $sender->send('blocked', $token);
+    }
+
+    public function testReceiveCancelledWhileQueuedBehindPreviousReceive(): void
+    {
+        /** @var Channel\ReceiverInterface<string> $receiver */
+        [$receiver, $sender] = Channel\bounded(1);
+
+        $first = Async\run($receiver->receive(...));
+
+        $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
+
+        $second = Async\run(static fn(): string => $receiver->receive($token));
+
+        Async\run(static function () use ($sender): void {
+            Async\sleep(Duration::milliseconds(50));
+            $sender->send('hello');
+        })->ignore();
+
+        try {
+            $second->await();
+            static::fail('Expected CancelledException');
+        } catch (Async\Exception\CancelledException) {
+            static::addToAssertionCount(1);
+        }
+
+        static::assertSame('hello', $first->await());
+    }
+
+    public function testSendCancelledWhileQueuedBehindPreviousSend(): void
+    {
+        /** @var Channel\ReceiverInterface<string> $receiver */
+        [$receiver, $sender] = Channel\bounded(1);
+
+        $sender->send('fills');
+
+        $first = Async\run(static function () use ($sender): void {
+            $sender->send('queued-1');
+        });
+
+        $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
+
+        $second = Async\run(static function () use ($sender, $token): void {
+            $sender->send('queued-2', $token);
+        });
+
+        Async\run(static function () use ($receiver): void {
+            Async\sleep(Duration::milliseconds(50));
+            $receiver->receive();
+            $receiver->receive();
+        })->ignore();
+
+        try {
+            $second->await();
+            static::fail('Expected CancelledException');
+        } catch (Async\Exception\CancelledException) {
+            static::addToAssertionCount(1);
+        }
+
+        $first->await();
+    }
+
+    public function testReceiveWithAlreadyCancelledTokenOnEmptyChannel(): void
+    {
+        /** @var Channel\ReceiverInterface<string> $receiver */
+        [$receiver, $sender] = Channel\bounded(1);
+
+        $token = new Async\SignalCancellationToken();
+        $token->cancel();
+
+        Async\run(static function () use ($sender): void {
+            Async\sleep(Duration::seconds(5));
+            $sender->send('never');
+        })->ignore();
+
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        $receiver->receive($token);
+    }
+
+    public function testSendWithAlreadyCancelledTokenOnFullChannel(): void
+    {
+        [$receiver, $sender] = Channel\bounded(1);
+
+        $sender->send('fills');
+
+        $token = new Async\SignalCancellationToken();
+        $token->cancel();
+
+        Async\run(static function () use ($receiver): void {
+            Async\sleep(Duration::seconds(5));
+            $receiver->receive();
+        })->ignore();
+
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        $sender->send('blocked', $token);
     }
 }

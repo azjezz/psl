@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Psl\TLS;
 
 use Override;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\Default\DefaultInterface;
 use Psl\Network;
 use Psl\TLS\Exception\HandshakeFailedException;
@@ -50,13 +53,18 @@ final class LazyAcceptor implements DefaultInterface
      *
      * @throws Network\Exception\RuntimeException If the stream is not available.
      * @throws HandshakeFailedException If the ClientHello data cannot be read or parsed.
+     * @throws CancelledException If the cancellation token is cancelled while waiting.
      */
-    public function accept(Network\StreamInterface $stream): ClientHello
-    {
+    public function accept(
+        Network\StreamInterface $stream,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): ClientHello {
         $resource = $stream->getStream();
         if (!is_resource($resource)) {
             throw new Network\Exception\RuntimeException('Stream resource is not available.');
         }
+
+        $cancellation->throwIfCancelled();
 
         // Wait for data to be available
         $suspension = EventLoop::getSuspension();
@@ -65,8 +73,20 @@ final class LazyAcceptor implements DefaultInterface
             $suspension->resume(null);
         });
 
-        $suspension->suspend();
-        EventLoop::cancel($watcher);
+        $cancellation_id = $cancellation->subscribe(static function (CancelledException $e) use (
+            &$watcher,
+            $suspension,
+        ): void {
+            EventLoop::cancel($watcher);
+            $suspension->throw($e);
+        });
+
+        try {
+            $suspension->suspend();
+        } finally {
+            EventLoop::cancel($watcher);
+            $cancellation->unsubscribe($cancellation_id);
+        }
 
         // Resource may have been closed by another fiber during suspend.
         // @mago-expect analysis:redundant-type-comparison,impossible-condition

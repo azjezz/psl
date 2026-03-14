@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\IO;
 
 use Override;
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\IO;
 
 /**
@@ -38,9 +39,9 @@ final class CloseWriteStreamHandle implements StreamHandleInterface, WriteHandle
      * {@inheritDoc}
      */
     #[Override]
-    public function write(string $bytes, null|Duration $timeout = null): int
+    public function write(string $bytes, CancellationTokenInterface $cancellation = new NullCancellationToken()): int
     {
-        return $this->handle->write($bytes, $timeout);
+        return $this->handle->write($bytes, $cancellation);
     }
 
     /**

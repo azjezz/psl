@@ -27,7 +27,7 @@ The `Async` component brings concurrency into PHP using [cooperative multitaskin
 
 ### Awaitables
 
-An `Awaitable` is a promise-like object representing a value that may not yet be available. It can be awaited, mapped, chained, and composed.
+An `Awaitable` is a promise-like object representing a value that may not yet be available. It can be awaited, mapped, chained, and composed. The `await()` method accepts an optional `CancellationTokenInterface` to cancel the wait.
 
 @example('async/async-awaitables.php')
 
@@ -80,6 +80,10 @@ Waits for all `Awaitable`s to complete. If multiple fail, throws `CompositeExcep
 
 @example('async/async-sleep.php')
 
+`sleep()` also accepts a `CancellationTokenInterface` to wake early, which is useful for interruptible retry delays:
+
+@example('async/async-sleep-cancellation.php')
+
 `Async\later()` reschedules the current fiber, allowing other pending callbacks to execute.
 
 ## Concurrency Control
@@ -90,7 +94,7 @@ Limits the number of concurrent operations. All operations use the same processi
 
 @example('async/async-semaphore.php')
 
-The semaphore provides methods to inspect state (`getPendingOperations()`, `getIngoingOperations()`, `hasPendingOperations()`) and to cancel pending work.
+The semaphore provides methods to inspect state (`getPendingOperations()`, `getIngoingOperations()`, `hasPendingOperations()`) and to cancel pending work. Both `waitFor()` and `waitForPending()` accept an optional `CancellationTokenInterface`.
 
 ### KeyedSemaphore
 
@@ -98,17 +102,23 @@ Like `Semaphore`, but applies concurrency limits per key. This is useful when yo
 
 @example('async/async-keyed-semaphore.php')
 
+Both `waitFor()` and `waitForPending()` accept an optional `CancellationTokenInterface`.
+
 ### Sequence
 
 A specialized semaphore with a concurrency limit of 1 -- operations run one at a time:
 
 @example('async/async-sequence.php')
 
+Both `waitFor()` and `waitForPending()` accept an optional `CancellationTokenInterface`.
+
 ### KeyedSequence
 
 Like `Sequence`, but applies the sequential constraint per key. Different keys can run concurrently while the same key is serialized:
 
 @example('async/async-keyed-sequence.php')
+
+Both `waitFor()` and `waitForPending()` accept an optional `CancellationTokenInterface`.
 
 ## Deferred
 
@@ -139,14 +149,61 @@ All registration methods return a string identifier that can be used with `cance
 
 See [revolt.run](https://revolt.run/) for more information on the underlying event loop.
 
+## Cancellation
+
+Cancellation tokens allow you to cancel in-flight async operations from external code. Every suspension point in PSL (`await()`, `read()`, `write()`, `waitFor()`, `connect()`, etc.) accepts an optional `CancellationTokenInterface`.
+
+### CancellationTokenInterface
+
+The base interface. Implementations provide:
+
+- `subscribe(Closure $callback): string` -- register a callback invoked on cancellation
+- `unsubscribe(string $id): void` -- remove a callback
+- `isCancelled(): bool` -- check cancellation state
+- `throwIfCancelled(): void` -- throw `CancelledException` if cancelled
+
+### SignalCancellationToken
+
+Manually triggered. Call `cancel()` from any fiber to cancel all subscribed operations:
+
+@example('async/async-cancellation-signal.php')
+
+### TimeoutCancellationToken
+
+Auto-cancels after a duration. Replaces the old `Duration $timeout` pattern:
+
+@example('async/async-cancellation-timeout.php')
+
+### LinkedCancellationToken
+
+Combines two tokens, cancelled when either fires. This is useful for layering a request-scoped token with an operation-specific timeout:
+
+@example('async/async-cancellation-linked.php')
+
+The `CancelledException` thrown by a linked token is forwarded directly from the inner token that fired -- `getToken()` returns the actual token that triggered cancellation (e.g., the `TimeoutCancellationToken` or `SignalCancellationToken`), not the linked wrapper.
+
+### NullCancellationToken
+
+A no-op token that is never cancelled. Used as the default parameter value -- you never need to construct it explicitly.
+
+### Cancelling Semaphore/Sequence Waits
+
+All concurrency primitives accept cancellation tokens. If a token fires while waiting for a slot, the wait is cancelled without affecting other pending operations:
+
+@example('async/async-cancellation-semaphore.php')
+
+### CancelledException
+
+When a token fires, `CancelledException` is thrown. It carries:
+
+- `getPrevious()` -- the cause (e.g., `TimeoutException` for timeout tokens, or a custom exception passed to `SignalCancellationToken::cancel()`)
+- `getToken()` -- the token that triggered the cancellation
+
 ## Error Handling
 
+- **`CancelledException`** -- thrown when a cancellation token is triggered. Use `$e->getToken()` to identify the source and `$e->getPrevious()` for the cause.
 - **`CompositeException`** -- wraps multiple exceptions when several concurrent operations fail. Use `$e->getReasons()` to get all underlying exceptions.
-- **`TimeoutException`** -- thrown when a task exceeds its timeout.
+- **`TimeoutException`** -- used internally as the cause inside `CancelledException` when a `TimeoutCancellationToken` fires.
 - **`UnhandledAwaitableException`** -- thrown by the scheduler when a failed `Awaitable` is never awaited or handled. Use `$awaitable->ignore()` to suppress this.
-
-To implement a timeout, use `Async\Scheduler::delay()` to schedule cancellation:
-
-@example('async/async-timeout.php')
 
 See `src/Psl/Async/` for the full API.

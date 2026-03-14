@@ -6,6 +6,8 @@ namespace Psl\Tests\Unit\IO;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\DateTime\Duration;
 use Psl\IO;
 use Psl\Ref;
@@ -73,7 +75,7 @@ final class CopyTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port ?? 0;
 
-        $this->expectException(IO\Exception\TimeoutException::class);
+        $this->expectException(Async\Exception\CancelledException::class);
 
         try {
             Async\concurrently([
@@ -90,7 +92,7 @@ final class CopyTest extends TestCase
                     $client = TCP\connect('127.0.0.1', $port);
                     $destination = new IO\MemoryHandle();
 
-                    IO\copy($client, $destination, Duration::milliseconds(100));
+                    IO\copy($client, $destination, new Async\TimeoutCancellationToken(Duration::milliseconds(100)));
                 },
             ]);
         } finally {
@@ -113,8 +115,10 @@ final class CopyTest extends TestCase
                 private readonly Ref $state,
             ) {}
 
-            public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
-            {
+            public function read(
+                null|int $max_bytes = null,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
                 $this->state->value++;
                 if ($this->state->value === 1) {
                     // First call: return empty string without setting EOF

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\TLS;
 
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\Network;
 use Psl\TCP;
 
@@ -36,13 +38,16 @@ final readonly class TCPConnector implements TCP\ConnectorInterface
      * @param int<0, 65535> $port
      *
      * @throws Network\Exception\RuntimeException If the TCP connection fails.
-     * @throws Network\Exception\TimeoutException If the connection times out.
+     * @throws CancelledException If the operation was cancelled.
      * @throws Exception\HandshakeFailedException If the TLS handshake fails.
      */
-    public function connect(string $host, int $port, null|Duration $timeout = null): TCP\StreamInterface
-    {
-        $stream = $this->tcpConnector->connect($host, $port, $timeout);
+    public function connect(
+        string $host,
+        int $port,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): TCP\StreamInterface {
+        $stream = $this->tcpConnector->connect($host, $port, $cancellation);
 
-        return $this->tlsConnector->connect($stream, $host);
+        return $this->tlsConnector->connect($stream, $host, $cancellation);
     }
 }

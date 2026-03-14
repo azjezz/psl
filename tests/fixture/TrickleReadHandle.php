@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Tests\Fixture;
 
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\IO;
 use Psl\Math;
 use Psl\Str\Byte;
@@ -40,21 +41,27 @@ final class TrickleReadHandle implements IO\ReadHandleInterface
         return $this->readChunk($max_bytes);
     }
 
-    public function read(null|int $max_bytes = null, null|Duration $timeout = null): string
-    {
+    public function read(
+        null|int $max_bytes = null,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): string {
         return $this->readChunk($max_bytes);
     }
 
-    public function readAll(null|int $max_bytes = null, null|Duration $timeout = null): string
-    {
+    public function readAll(
+        null|int $max_bytes = null,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): string {
         $remaining = Byte\slice($this->buffer, $this->offset);
         $this->offset = Byte\length($this->buffer);
 
         return $remaining;
     }
 
-    public function readFixedSize(int $size, null|Duration $timeout = null): string
-    {
+    public function readFixedSize(
+        int $size,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): string {
         $result = '';
         while (Byte\length($result) < $size) {
             $chunk = $this->readChunk($size - Byte\length($result));

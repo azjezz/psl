@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Psl\UDP;
 
 use Override;
-use Psl\DateTime\Duration;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\IO;
 use Psl\Network;
 
@@ -129,19 +131,20 @@ final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
      *
      * @throws Network\Exception\RuntimeException If the send fails.
      * @throws Network\Exception\InvalidArgumentException If the datagram exceeds the maximum size.
-     * @throws IO\Exception\TimeoutException If the operation times out.
+     * @throws CancelledException If the operation is cancelled.
      * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
      */
-    public function sendTo(string $data, Network\Address $address, null|Duration $timeout = null): int
-    {
+    public function sendTo(
+        string $data,
+        Network\Address $address,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): int {
         Internal\validate_payload_size($data);
         $stream = $this->getResource();
 
         $target = "{$address->host}:{$address->port}";
 
-        if ($timeout !== null) {
-            Internal\wait_writable($stream, $timeout);
-        }
+        Internal\wait_writable($stream, $cancellation);
 
         $result = @stream_socket_sendto($stream, $data, 0, $target);
         if ($result === false || $result === -1) {
@@ -160,14 +163,16 @@ final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
      * @return array{string, Network\Address} [data, sender_address]
      *
      * @throws Network\Exception\RuntimeException If the receive fails.
-     * @throws IO\Exception\TimeoutException If the operation times out.
+     * @throws CancelledException If the operation is cancelled.
      * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
      */
-    public function receiveFrom(int $max_bytes, null|Duration $timeout = null): array
-    {
+    public function receiveFrom(
+        int $max_bytes,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): array {
         $stream = $this->getResource();
 
-        Internal\await_readable($stream, $timeout);
+        Internal\await_readable($stream, $cancellation);
 
         $address = '';
         $data = @stream_socket_recvfrom($stream, $max_bytes, 0, $address);
@@ -186,14 +191,16 @@ final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
      * @return array{string, Network\Address} [data, sender_address]
      *
      * @throws Network\Exception\RuntimeException If the peek fails.
-     * @throws IO\Exception\TimeoutException If the operation times out.
+     * @throws CancelledException If the operation is cancelled.
      * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
      */
-    public function peekFrom(int $max_bytes, null|Duration $timeout = null): array
-    {
+    public function peekFrom(
+        int $max_bytes,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): array {
         $stream = $this->getResource();
 
-        Internal\await_readable($stream, $timeout);
+        Internal\await_readable($stream, $cancellation);
 
         $address = '';
         $data = @stream_socket_recvfrom($stream, $max_bytes, STREAM_PEEK, $address);
