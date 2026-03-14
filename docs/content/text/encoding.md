@@ -34,4 +34,12 @@ Hexadecimal encoding converts each byte into two hex characters. This is useful 
 
 @example('text/encoding-hex.php')
 
+## Quoted-Printable
+
+Quoted-printable encoding represents 8-bit data using only printable ASCII characters, as defined by RFC 2045 §6.7. It is commonly used in email (MIME) to encode content that is mostly ASCII with occasional special characters. Unlike Base64, quoted-printable keeps readable text readable.
+
+@example('text/encoding-quoted-printable.php')
+
+Both `encode()` and `encode_line()` accept optional `$max_line_length` (default 76) and `$line_ending` (default `"\r\n"`) parameters.
+
 See `src/Psl/Encoding/` for the full API.

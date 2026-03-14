@@ -138,34 +138,29 @@ final class WaitGroupTest extends TestCase
 
     public function testCancelledWaitDoesNotAffectOtherWaiters(): void
     {
-        $result = Async\run(static function (): bool {
-            $wg = new Async\WaitGroup();
-            $wg->add();
+        $wg = new Async\WaitGroup();
+        $wg->add();
 
-            $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
+        $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
 
-            $cancelled = Async\run(static function () use ($wg, $token): void {
-                $wg->wait($token);
-            });
+        $cancelled = Async\run(static function () use ($wg, $token): void {
+            $wg->wait($token);
+        });
 
-            $normal = Async\run(static function () use ($wg): void {
-                $wg->wait();
-            });
+        $normal = Async\run(static function () use ($wg): void {
+            $wg->wait();
+        });
 
-            try {
-                $cancelled->await();
-            } catch (Async\Exception\CancelledException) {
-            }
+        try {
+            $cancelled->await();
+        } catch (Async\Exception\CancelledException) {
+            static::addToAssertionCount(1);
+        }
 
-            Async\sleep(Duration::milliseconds(20));
-            $wg->done();
+        Async\sleep(Duration::milliseconds(20));
+        $wg->done();
 
-            $normal->await();
-
-            return true;
-        })->await();
-
-        static::assertTrue($result);
+        $normal->await();
     }
 
     public function testReusable(): void
