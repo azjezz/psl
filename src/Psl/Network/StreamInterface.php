@@ -24,9 +24,6 @@ interface StreamInterface extends
 {
     /**
      * Returns the address of the remote side of the connection.
-     *
-     * @throws IO\Exception\AlreadyClosedException If the stream has already been closed.
-     * @throws Exception\RuntimeException If unable to retrieve peer address.
      */
     public function getPeerAddress(): Address;
 

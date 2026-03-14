@@ -33,13 +33,17 @@ final class Stream implements TCP\StreamInterface
     use IO\ReadHandleConvenienceMethodsTrait;
 
     private ResourceHandle $handle;
+    private readonly Address $localAddress;
+    private readonly Address $peerAddress;
 
     /**
      * @param resource $stream
      */
-    public function __construct(mixed $stream)
+    public function __construct(mixed $stream, null|Address $localAddress = null, null|Address $peerAddress = null)
     {
         $this->handle = new ResourceHandle($stream, read: true, write: true, seek: false, close: true);
+        $this->localAddress = $localAddress ?? Network\Internal\get_sock_name($stream);
+        $this->peerAddress = $peerAddress ?? Network\Internal\get_peer_name($stream);
     }
 
     #[Override]
@@ -98,23 +102,13 @@ final class Stream implements TCP\StreamInterface
     #[Override]
     public function getLocalAddress(): Address
     {
-        $stream = $this->handle->getStream();
-        if (!is_resource($stream)) {
-            throw new Exception\AlreadyClosedException('Stream handle has already been closed.');
-        }
-
-        return Network\Internal\get_sock_name($stream);
+        return $this->localAddress;
     }
 
     #[Override]
     public function getPeerAddress(): Address
     {
-        $stream = $this->handle->getStream();
-        if (!is_resource($stream)) {
-            throw new Exception\AlreadyClosedException('Stream handle has already been closed.');
-        }
-
-        return Network\Internal\get_peer_name($stream);
+        return $this->peerAddress;
     }
 
     /**

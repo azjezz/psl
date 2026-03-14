@@ -27,12 +27,13 @@ final class ServerTest extends TestCase
     public function testGetLocalAddressOnStoppedListener(): void
     {
         $listener = TCP\listen('127.0.0.1');
+        $address = $listener->getLocalAddress();
         $listener->close();
 
-        $this->expectException(AlreadyStoppedException::class);
-        $this->expectExceptionMessage('Server socket has already been stopped.');
-
-        $listener->getLocalAddress();
+        // getLocalAddress() returns the cached address even after the listener is stopped.
+        $addressAfterClose = $listener->getLocalAddress();
+        static::assertSame($address->host, $addressAfterClose->host);
+        static::assertSame($address->port, $addressAfterClose->port);
     }
 
     public function testListenWithCustomBacklog(): void

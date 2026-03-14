@@ -271,7 +271,7 @@ final class SocketTest extends TestCase
             $connected = $socket->connect($server_addr->host, $server_addr->port);
 
             try {
-                $socket->getLocalAddress();
+                $socket->sendTo('data', Network\Address::udp('127.0.0.1', 9999));
             } finally {
                 $connected->close();
                 $server->close();
@@ -304,7 +304,7 @@ final class SocketTest extends TestCase
         Async\run(static function (): void {
             $socket = UDP\Socket::bind('127.0.0.1', 0);
             $socket->close();
-            $socket->getLocalAddress();
+            $socket->sendTo('data', Network\Address::udp('127.0.0.1', 9999));
         })->await();
     }
 

@@ -10,6 +10,7 @@
 - **BC** - Removed `Psl\Process\Exception\TimeoutException` — use `Psl\Async\Exception\CancelledException` instead.
 - **BC** - Removed `Psl\Shell\Exception\TimeoutException` — use `Psl\Async\Exception\CancelledException` instead.
 - **BC** - `Psl\IO\CloseHandleInterface` now requires an `isClosed(): bool` method.
+- **BC** - `Network\SocketInterface::getLocalAddress()` and `Network\StreamInterface::getPeerAddress()` no longer throw exceptions. Addresses are resolved at construction time and cached, making these O(1) property lookups with no syscall.
 
 ### features
 

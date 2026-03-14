@@ -45,8 +45,16 @@ function socket_pair(): array
         },
     );
 
+    if (OS\is_windows()) {
+        return [
+            new TCP\Internal\Stream($sockets[0]),
+            new TCP\Internal\Stream($sockets[1]),
+        ];
+    }
+
+    $local = Address::unix('<anonymous>');
     return [
-        new TCP\Internal\Stream($sockets[0]),
-        new TCP\Internal\Stream($sockets[1]),
+        new TCP\Internal\Stream($sockets[0], $local, $local),
+        new TCP\Internal\Stream($sockets[1], $local, $local),
     ];
 }

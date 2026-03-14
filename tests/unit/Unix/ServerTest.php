@@ -38,12 +38,12 @@ final class ServerTest extends TestCase
 
         $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . '.sock';
         $listener = Unix\listen($sock);
+        $address = $listener->getLocalAddress();
         $listener->close();
 
-        $this->expectException(Exception\AlreadyStoppedException::class);
-        $this->expectExceptionMessage('Server socket has already been stopped.');
-
-        $listener->getLocalAddress();
+        // getLocalAddress() returns the cached address even after the listener is stopped.
+        $addressAfterClose = $listener->getLocalAddress();
+        static::assertSame($address->host, $addressAfterClose->host);
     }
 
     public function testWaitsForPendingOperation(): void

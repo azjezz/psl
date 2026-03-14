@@ -32,6 +32,8 @@ final class ConnectedSocket implements Network\SocketInterface, IO\StreamHandleI
      */
     private mixed $stream;
 
+    private readonly Network\Address $localAddress;
+
     /**
      * @internal Use {@see Socket::connect()} or {@see connect()} to obtain a ConnectedSocket.
      *
@@ -43,6 +45,13 @@ final class ConnectedSocket implements Network\SocketInterface, IO\StreamHandleI
     ) {
         $this->stream = $stream;
         stream_set_blocking($stream, false);
+
+        $name = @stream_socket_get_name($stream, false);
+        if ($name === false) {
+            throw new Network\Exception\RuntimeException('Failed to get local address.');
+        }
+
+        $this->localAddress = Internal\parse_address($name);
     }
 
     /**
@@ -119,22 +128,10 @@ final class ConnectedSocket implements Network\SocketInterface, IO\StreamHandleI
         return $data;
     }
 
-    /**
-     * Get the local address this socket is bound to.
-     *
-     * @throws Network\Exception\RuntimeException If unable to retrieve local address.
-     * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
-     */
     #[Override]
     public function getLocalAddress(): Network\Address
     {
-        $stream = $this->getResource();
-        $name = @stream_socket_get_name($stream, false);
-        if ($name === false) {
-            throw new Network\Exception\RuntimeException('Failed to get local address.');
-        }
-
-        return Internal\parse_address($name);
+        return $this->localAddress;
     }
 
     /**

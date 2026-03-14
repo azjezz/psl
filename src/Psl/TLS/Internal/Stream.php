@@ -29,10 +29,16 @@ final class Stream implements TLS\StreamInterface
     use IO\WriteHandleConvenienceMethodsTrait;
     use IO\ReadHandleConvenienceMethodsTrait;
 
+    private readonly Network\Address $localAddress;
+    private readonly Network\Address $peerAddress;
+
     public function __construct(
         private readonly Network\StreamInterface $inner,
         private readonly TLS\ConnectionState $state,
-    ) {}
+    ) {
+        $this->localAddress = $inner->getLocalAddress();
+        $this->peerAddress = $inner->getPeerAddress();
+    }
 
     #[Override]
     public function getState(): TLS\ConnectionState
@@ -96,13 +102,13 @@ final class Stream implements TLS\StreamInterface
     #[Override]
     public function getLocalAddress(): Network\Address
     {
-        return $this->inner->getLocalAddress();
+        return $this->localAddress;
     }
 
     #[Override]
     public function getPeerAddress(): Network\Address
     {
-        return $this->inner->getPeerAddress();
+        return $this->peerAddress;
     }
 
     /**
