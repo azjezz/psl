@@ -33,13 +33,39 @@ final class Stream implements Unix\StreamInterface
     use IO\ReadHandleConvenienceMethodsTrait;
 
     private ResourceHandle $handle;
+    private readonly Address $localAddress;
+    private readonly Address $peerAddress;
 
     /**
      * @param resource $stream
      */
-    public function __construct(mixed $stream)
+    public function __construct(mixed $stream, null|Address $localAddress = null, null|Address $peerAddress = null)
     {
         $this->handle = new ResourceHandle($stream, read: true, write: true, seek: false, close: true);
+
+        if (null !== $localAddress && null !== $peerAddress) {
+            $this->localAddress = $localAddress;
+            $this->peerAddress = $peerAddress;
+        } else {
+            // Unix sockets: one side may not have a name.
+            // Server-accepted: local = path, peer = unavailable.
+            // Client: local = unavailable, peer = path.
+            try {
+                $local = Network\Internal\get_sock_name($stream);
+            } catch (Network\Exception\RuntimeException) {
+                $local = null;
+            }
+
+            try {
+                $peer = Network\Internal\get_peer_name($stream);
+            } catch (Network\Exception\RuntimeException) {
+                $peer = null;
+            }
+
+            $resolved = $local ?? $peer ?? Address::unix('<anonymous>');
+            $this->localAddress = $localAddress ?? $local ?? $resolved;
+            $this->peerAddress = $peerAddress ?? $peer ?? $resolved;
+        }
     }
 
     #[Override]
@@ -98,23 +124,13 @@ final class Stream implements Unix\StreamInterface
     #[Override]
     public function getLocalAddress(): Address
     {
-        $stream = $this->handle->getStream();
-        if (!is_resource($stream)) {
-            throw new Exception\AlreadyClosedException('Stream handle has already been closed.');
-        }
-
-        return Network\Internal\get_sock_name($stream);
+        return $this->localAddress;
     }
 
     #[Override]
     public function getPeerAddress(): Address
     {
-        $stream = $this->handle->getStream();
-        if (!is_resource($stream)) {
-            throw new Exception\AlreadyClosedException('Stream handle has already been closed.');
-        }
-
-        return Network\Internal\get_peer_name($stream);
+        return $this->peerAddress;
     }
 
     /**

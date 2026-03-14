@@ -38,6 +38,8 @@ final class Listener implements Unix\ListenerInterface
      */
     private Channel\ReceiverInterface $receiver;
 
+    private readonly Network\Address $localAddress;
+
     /**
      * @param resource|object $impl
      * @param int<1, max> $idleConnections
@@ -45,6 +47,8 @@ final class Listener implements Unix\ListenerInterface
     public function __construct(mixed $impl, int $idleConnections = self::DEFAULT_IDLE_CONNECTIONS)
     {
         $this->impl = $impl;
+        // @mago-expect analysis:possibly-invalid-argument - revolt signature is wrong.
+        $this->localAddress = Network\Internal\get_sock_name($impl);
 
         /**
          * @var Channel\ReceiverInterface<array{true, Stream}|array{false, Network\Exception\RuntimeException}> $receiver
@@ -115,11 +119,7 @@ final class Listener implements Unix\ListenerInterface
     #[Override]
     public function getLocalAddress(): Network\Address
     {
-        if (!is_resource($this->impl)) {
-            throw new Network\Exception\AlreadyStoppedException('Server socket has already been stopped.');
-        }
-
-        return Network\Internal\get_sock_name($this->impl);
+        return $this->localAddress;
     }
 
     /**

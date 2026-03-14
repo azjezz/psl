@@ -193,7 +193,7 @@ final class ConnectedSocketTest extends TestCase
             $connected->close();
             $server->close();
 
-            $connected->getLocalAddress();
+            $connected->send('data');
         })->await();
     }
 
