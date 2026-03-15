@@ -108,6 +108,8 @@ final class Loader
         'Psl\\Crypto\\Kdf\\CONTEXT_BYTES' => 'Psl/Crypto/Kdf/constants.php',
         'Psl\\Crypto\\Kdf\\DERIVED_MIN_BYTES' => 'Psl/Crypto/Kdf/constants.php',
         'Psl\\Crypto\\Kdf\\DERIVED_MAX_BYTES' => 'Psl/Crypto/Kdf/constants.php',
+        'Psl\\Encoding\\Base64\\CHUNK_SIZE' => 'Psl/Encoding/Base64/constants.php',
+        'Psl\\Encoding\\Base64\\LINE_ENDING' => 'Psl/Encoding/Base64/constants.php',
     ];
 
     /**
@@ -1082,6 +1084,18 @@ final class Loader
         'Psl\\Hash\\Exception\\ExceptionInterface' => 'Psl/Hash/Exception/ExceptionInterface.php',
         'Psl\\Hash\\Exception\\RuntimeException' => 'Psl/Hash/Exception/RuntimeException.php',
         'Psl\\Hash\\Context' => 'Psl/Hash/Context.php',
+        'Psl\\Encoding\\Base64\\DecodingReadHandle' => 'Psl/Encoding/Base64/DecodingReadHandle.php',
+        'Psl\\Encoding\\Base64\\DecodingWriteHandle' => 'Psl/Encoding/Base64/DecodingWriteHandle.php',
+        'Psl\\Encoding\\Base64\\EncodingReadHandle' => 'Psl/Encoding/Base64/EncodingReadHandle.php',
+        'Psl\\Encoding\\Base64\\EncodingWriteHandle' => 'Psl/Encoding/Base64/EncodingWriteHandle.php',
+        'Psl\\Encoding\\Hex\\DecodingReadHandle' => 'Psl/Encoding/Hex/DecodingReadHandle.php',
+        'Psl\\Encoding\\Hex\\DecodingWriteHandle' => 'Psl/Encoding/Hex/DecodingWriteHandle.php',
+        'Psl\\Encoding\\Hex\\EncodingReadHandle' => 'Psl/Encoding/Hex/EncodingReadHandle.php',
+        'Psl\\Encoding\\Hex\\EncodingWriteHandle' => 'Psl/Encoding/Hex/EncodingWriteHandle.php',
+        'Psl\\Encoding\\QuotedPrintable\\DecodingReadHandle' => 'Psl/Encoding/QuotedPrintable/DecodingReadHandle.php',
+        'Psl\\Encoding\\QuotedPrintable\\DecodingWriteHandle' => 'Psl/Encoding/QuotedPrintable/DecodingWriteHandle.php',
+        'Psl\\Encoding\\QuotedPrintable\\EncodingReadHandle' => 'Psl/Encoding/QuotedPrintable/EncodingReadHandle.php',
+        'Psl\\Encoding\\QuotedPrintable\\EncodingWriteHandle' => 'Psl/Encoding/QuotedPrintable/EncodingWriteHandle.php',
         'Psl\\Encoding\\Exception\\IncorrectPaddingException' => 'Psl/Encoding/Exception/IncorrectPaddingException.php',
         'Psl\\Encoding\\Exception\\RangeException' => 'Psl/Encoding/Exception/RangeException.php',
         'Psl\\Encoding\\Exception\\ParsingException' => 'Psl/Encoding/Exception/ParsingException.php',
