@@ -247,10 +247,7 @@ final class AwaitableTest extends TestCase
             $deferred = new Async\Deferred();
             $token = new Async\SignalCancellationToken();
 
-            Async\run(static function () use ($token): void {
-                Async\sleep(DateTime\Duration::milliseconds(10));
-                $token->cancel();
-            })->ignore();
+            Async\Scheduler::delay(DateTime\Duration::milliseconds(10), static fn(string $_) => $token->cancel());
 
             $deferred->getAwaitable()->await($token);
         })->await();

@@ -10,11 +10,10 @@ use Psl\IO;
 
 $token = new Async\SignalCancellationToken();
 
-// Simulate cancelling after 50ms from another context
-Async\run(static function () use ($token): void {
-    Async\sleep(Duration::milliseconds(50));
-    $token->cancel(new RuntimeException('Client disconnected'));
-})->ignore();
+// Simulate cancelling after 50ms
+Async\Scheduler::delay(Duration::milliseconds(50), static fn() => $token->cancel(
+    new RuntimeException('Client disconnected'),
+));
 
 $deferred = new Async\Deferred();
 

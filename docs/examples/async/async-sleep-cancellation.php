@@ -10,11 +10,8 @@ use Psl\IO;
 
 $token = new Async\SignalCancellationToken();
 
-// Cancel the sleep after 50ms from another fiber
-Async\run(static function () use ($token): void {
-    Async\sleep(Duration::milliseconds(50));
-    $token->cancel();
-})->ignore();
+// Cancel the sleep after 50ms
+Async\Scheduler::delay(Duration::milliseconds(50), static fn(string $_) => $token->cancel());
 
 try {
     // Sleep for 5 seconds, but wake early if the token is cancelled

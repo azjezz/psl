@@ -12,10 +12,7 @@ $listener = TCP\listen('127.0.0.1', 0);
 $token = new Async\SignalCancellationToken();
 
 // Simulate shutdown after 50ms
-Async\run(static function () use ($token): void {
-    Async\sleep(Psl\DateTime\Duration::milliseconds(50));
-    $token->cancel();
-})->ignore();
+Async\Scheduler::delay(Psl\DateTime\Duration::milliseconds(50), static fn(string $_) => $token->cancel());
 
 while (true) {
     try {
