@@ -29,7 +29,11 @@ final class SocketTest extends TestCase
     public function testBindWithOptions(): void
     {
         Async\run(static function (): void {
-            $socket = UDP\Socket::bind('127.0.0.1', 0, false, false, false);
+            $socket = UDP\Socket::bind(
+                '127.0.0.1',
+                0,
+                new UDP\BindConfiguration(reuseAddress: false, reusePort: false, broadcast: false),
+            );
             $address = $socket->getLocalAddress();
             static::assertSame('127.0.0.1', $address->host);
             static::assertGreaterThan(0, $address->port);

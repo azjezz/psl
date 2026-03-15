@@ -10,7 +10,7 @@ use Psl\TCP;
 
 // Create a retry connector with exponential backoff
 $connector = new TCP\RetryConnector(
-    new TCP\Connector(noDelay: true),
+    new TCP\Connector(new TCP\ConnectConfiguration(noDelay: true)),
     maxAttempts: 5,
     backoff: Duration::milliseconds(500),
 );

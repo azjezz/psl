@@ -39,7 +39,7 @@ Async\main(static function (): int {
     ))->withMinimumVersion(TLS\Version::Tls12);
 
     $acceptor = new TLS\Acceptor($tlsConfig);
-    $listener = TCP\listen('127.0.0.1', 3443, idleConnections: 1024);
+    $listener = TCP\listen('127.0.0.1', 3443, new TCP\ListenConfiguration(idleConnections: 1024));
     $keepaliveTimeout = Duration::seconds(5);
 
     /** @var array<int, TCP\StreamInterface> $active */

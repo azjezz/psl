@@ -15,6 +15,11 @@
 - **BC** - `Psl\TLS\ServerConfig` renamed to `Psl\TLS\ServerConfiguration`.
 - **BC** - `Psl\TLS\ClientConfig` renamed to `Psl\TLS\ClientConfiguration`.
 - **BC** - All variables and parameters across the codebase now use `$camelCase` naming instead of `$snake_case`.
+- **BC** - `TCP\listen()`, `TCP\connect()`, `TCP\Socket::listen()`, `TCP\Socket::connect()` now accept configuration objects (`TCP\ListenConfiguration`, `TCP\ConnectConfiguration`) instead of individual parameters for socket options.
+- **BC** - `Unix\listen()` and `Unix\Socket::listen()` now accept `Unix\ListenConfiguration` instead of individual parameters.
+- **BC** - `UDP\Socket::bind()` now accepts `UDP\BindConfiguration` instead of individual parameters.
+- **BC** - `TCP\Socket` setter/getter methods (`setReuseAddress`, `setReusePort`, `setNoDelay`, etc.) have been removed. Use configuration objects instead.
+- **BC** - `TCP\Connector` constructor now accepts `TCP\ConnectConfiguration` instead of `bool $noDelay`.
 
 ### features
 

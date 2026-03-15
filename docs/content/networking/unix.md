@@ -8,6 +8,10 @@ Unix domain sockets provide local inter-process communication without the overhe
 
 @example('networking/unix-echo.php')
 
+## Configuration
+
+`Unix\listen()` accepts a `ListenConfiguration` to control backlog (default 512) and idle connections (default 256).
+
 ## Examples
 
 ### Echo Server

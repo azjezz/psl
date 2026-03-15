@@ -68,14 +68,12 @@ final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
     public static function bind(
         string $host = '0.0.0.0',
         int $port = 0,
-        bool $reuseAddress = false,
-        bool $reusePort = false,
-        bool $broadcast = false,
+        BindConfiguration $configuration = new BindConfiguration(),
     ): self {
         $context = ['socket' => [
-            'so_reuseaddr' => $reuseAddress,
-            'so_reuseport' => $reusePort,
-            'so_broadcast' => $broadcast,
+            'so_reuseaddr' => $configuration->reuseAddress,
+            'so_reuseport' => $configuration->reusePort,
+            'so_broadcast' => $configuration->broadcast,
         ]];
 
         $ctx = stream_context_create($context);

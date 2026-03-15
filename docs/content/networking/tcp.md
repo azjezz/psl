@@ -22,15 +22,18 @@ All TCP connectors implement `ConnectorInterface`, making them interchangeable a
 
 @example('networking/tcp-socket-pool.php')
 
-### Backlog
+### Configuration
 
-`TCP\listen()` accepts a `backlog` parameter (default 512) to configure the OS-level queue of pending connections. A larger backlog helps high-connection-rate servers avoid dropped connections.
+`TCP\listen()` and `TCP\connect()` accept configuration objects that control socket behavior:
+
+- **`ListenConfiguration`** -- noDelay, reuseAddress, reusePort, backlog (default 512), idleConnections (default 256)
+- **`ConnectConfiguration`** -- noDelay
 
 @example('networking/tcp-backlog.php')
 
 ### Low-Level Socket
 
-`Socket` gives you fine-grained control over socket options before connecting or listening. Create a socket, configure it, then consume it:
+`Socket` gives you fine-grained control over socket creation. Create a socket, bind to an address, then pass a configuration to `listen()` or `connect()`:
 
 @example('networking/tcp-low-level-socket.php')
 
