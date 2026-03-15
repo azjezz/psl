@@ -12,7 +12,7 @@ use Psl\TLS;
 // Replace the paths below with actual certificate and key files.
 $listener = TCP\listen('0.0.0.0', 2525);
 $cert = TLS\Certificate::create('/etc/ssl/certs/mail.pem', '/etc/ssl/private/mail.key');
-$acceptor = new TLS\Acceptor(TLS\ServerConfig::create($cert));
+$acceptor = new TLS\Acceptor(TLS\ServerConfiguration::create($cert));
 
 $stream = $listener->accept();
 

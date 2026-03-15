@@ -17,7 +17,7 @@ use function stream_context_set_options;
  * Performs TLS server handshakes on incoming streams.
  *
  * Takes an accepted plain stream and upgrades it to a TLS-encrypted stream
- * using the provided {@see ServerConfig}.
+ * using the provided {@see ServerConfiguration}.
  *
  * Usage:
  *   $acceptor = new Acceptor(ServerConfig::create($certificate));
@@ -29,7 +29,7 @@ use function stream_context_set_options;
 final readonly class Acceptor
 {
     public function __construct(
-        private ServerConfig $config,
+        private ServerConfiguration $serverConfiguration,
     ) {}
 
     /**
@@ -48,12 +48,12 @@ final readonly class Acceptor
             throw new Network\Exception\RuntimeException('Stream resource is not available.');
         }
 
-        $sslContext = Internal\server_ssl_context($this->config);
+        $sslContext = Internal\server_ssl_context($this->serverConfiguration);
         stream_context_set_options($resource, ['ssl' => $sslContext]);
 
         $cryptoMethod = Internal\crypto_method(
-            $this->config->minimumVersion,
-            $this->config->maximumVersion,
+            $this->serverConfiguration->minimumVersion,
+            $this->serverConfiguration->maximumVersion,
             server: true,
         );
 

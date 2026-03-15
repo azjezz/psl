@@ -13,7 +13,7 @@ $certFile = '/etc/ssl/certs/server.pem';
 $keyFile = '/etc/ssl/private/server.key';
 
 $cert = TLS\Certificate::create($certFile, $keyFile);
-$acceptor = new TLS\Acceptor(TLS\ServerConfig::create($cert)->withAlpnProtocols(['h2', 'http/1.1']));
+$acceptor = new TLS\Acceptor(TLS\ServerConfiguration::create($cert)->withAlpnProtocols(['h2', 'http/1.1']));
 
 $listener = TCP\listen('0.0.0.0', 8443);
 

@@ -27,7 +27,7 @@ final class ConnectTest extends TestCase
     public function testTlsClientServer(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
-        $serverConfig = TLS\ServerConfig::create($cert);
+        $serverConfig = TLS\ServerConfiguration::create($cert);
         $acceptor = new TLS\Acceptor($serverConfig);
 
         $listener = TCP\listen('127.0.0.1', 0);
@@ -47,7 +47,7 @@ final class ConnectTest extends TestCase
             'client' => static function () use ($port): void {
                 $stream = TCP\connect('127.0.0.1', $port);
                 $connector = new TLS\Connector(
-                    TLS\ClientConfig::default()->withPeerVerification(false)->withAllowSelfSigned(true),
+                    TLS\ClientConfiguration::default()->withPeerVerification(false)->withAllowSelfSigned(true),
                 );
                 $client = $connector->connect($stream, 'localhost');
 
@@ -68,7 +68,7 @@ final class ConnectTest extends TestCase
     public function testTlsWithMinimumVersion(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
-        $serverConfig = TLS\ServerConfig::create($cert)->withMinimumVersion(TLS\Version::Tls12);
+        $serverConfig = TLS\ServerConfiguration::create($cert)->withMinimumVersion(TLS\Version::Tls12);
         $acceptor = new TLS\Acceptor($serverConfig);
 
         $listener = TCP\listen('127.0.0.1', 0);
@@ -92,7 +92,7 @@ final class ConnectTest extends TestCase
             'client' => static function () use ($port): void {
                 $stream = TCP\connect('127.0.0.1', $port);
                 $connector = new TLS\Connector(
-                    TLS\ClientConfig::default()
+                    TLS\ClientConfiguration::default()
                         ->withPeerVerification(false)
                         ->withAllowSelfSigned(true)
                         ->withMinimumVersion(TLS\Version::Tls12),
@@ -117,7 +117,7 @@ final class ConnectTest extends TestCase
     public function testConvenienceConnect(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
-        $serverConfig = TLS\ServerConfig::create($cert);
+        $serverConfig = TLS\ServerConfiguration::create($cert);
         $acceptor = new TLS\Acceptor($serverConfig);
 
         $listener = TCP\listen('127.0.0.1', 0);
@@ -134,7 +134,7 @@ final class ConnectTest extends TestCase
                 $listener->close();
             },
             'client' => static function () use ($port): void {
-                $config = TLS\ClientConfig::default()->withPeerVerification(false)->withAllowSelfSigned(true);
+                $config = TLS\ClientConfiguration::default()->withPeerVerification(false)->withAllowSelfSigned(true);
 
                 $client = TLS\connect('127.0.0.1', $port, $config);
 
@@ -150,7 +150,7 @@ final class ConnectTest extends TestCase
     public function testConvenienceConnectWithDefaultConfig(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
-        $serverConfig = TLS\ServerConfig::create($cert)->withMinimumVersion(TLS\Version::Tls12);
+        $serverConfig = TLS\ServerConfiguration::create($cert)->withMinimumVersion(TLS\Version::Tls12);
         $acceptor = new TLS\Acceptor($serverConfig);
 
         $listener = TCP\listen('127.0.0.1', 0);
@@ -167,7 +167,7 @@ final class ConnectTest extends TestCase
                 $listener->close();
             },
             'client' => static function () use ($port): void {
-                $config = TLS\ClientConfig::default()
+                $config = TLS\ClientConfiguration::default()
                     ->withPeerVerification(false)
                     ->withAllowSelfSigned(true)
                     ->withMinimumVersion(TLS\Version::Tls12);
@@ -189,7 +189,7 @@ final class ConnectTest extends TestCase
     public function testConnectPreservesConfigPeerNameWhenServerNameProvided(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
-        $serverConfig = TLS\ServerConfig::create($cert);
+        $serverConfig = TLS\ServerConfiguration::create($cert);
 
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
@@ -211,7 +211,7 @@ final class ConnectTest extends TestCase
                 $listener->close();
             },
             'client' => static function () use ($port): void {
-                $config = TLS\ClientConfig::default()
+                $config = TLS\ClientConfiguration::default()
                     ->withPeerVerification(false)
                     ->withAllowSelfSigned(true)
                     ->withPeerName('my-custom-peer');
@@ -231,7 +231,7 @@ final class ConnectTest extends TestCase
     public function testConnectUsesServerNameWhenConfigPeerNameIsNull(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
-        $serverConfig = TLS\ServerConfig::create($cert);
+        $serverConfig = TLS\ServerConfiguration::create($cert);
 
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
@@ -253,7 +253,7 @@ final class ConnectTest extends TestCase
                 $listener->close();
             },
             'client' => static function () use ($port): void {
-                $config = TLS\ClientConfig::default()->withPeerVerification(false)->withAllowSelfSigned(true);
+                $config = TLS\ClientConfiguration::default()->withPeerVerification(false)->withAllowSelfSigned(true);
 
                 static::assertNull($config->peerName);
 
@@ -272,7 +272,7 @@ final class ConnectTest extends TestCase
     public function testConvenienceConnectReturnsTlsStream(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
-        $serverConfig = TLS\ServerConfig::create($cert);
+        $serverConfig = TLS\ServerConfiguration::create($cert);
         $acceptor = new TLS\Acceptor($serverConfig);
 
         $listener = TCP\listen('127.0.0.1', 0);
@@ -287,7 +287,7 @@ final class ConnectTest extends TestCase
                 $listener->close();
             },
             'client' => static function () use ($port): void {
-                $config = TLS\ClientConfig::default()->withPeerVerification(false)->withAllowSelfSigned(true);
+                $config = TLS\ClientConfiguration::default()->withPeerVerification(false)->withAllowSelfSigned(true);
 
                 $client = TLS\connect('127.0.0.1', $port, $config);
 

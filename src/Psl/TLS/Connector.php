@@ -19,7 +19,7 @@ use function stream_context_set_options;
  * Performs TLS client handshakes on existing streams.
  *
  * Takes a plain stream and upgrades it to a TLS-encrypted stream
- * using the provided {@see ClientConfig}.
+ * using the provided {@see ClientConfiguration}.
  *
  * Usage:
  *   $connector = Connector::default();
@@ -28,7 +28,7 @@ use function stream_context_set_options;
 final readonly class Connector implements DefaultInterface
 {
     public function __construct(
-        private ClientConfig $config = new ClientConfig(),
+        private ClientConfiguration $clientConfiguration = new ClientConfiguration(),
     ) {}
 
     /**
@@ -59,15 +59,19 @@ final readonly class Connector implements DefaultInterface
             throw new Network\Exception\RuntimeException('Stream resource is not available.');
         }
 
-        $config = $this->config;
-        if ($serverName !== null && $config->peerName === null) {
-            $config = $config->withPeerName($serverName);
+        $clientConfiguration = $this->clientConfiguration;
+        if ($serverName !== null && $clientConfiguration->peerName === null) {
+            $clientConfiguration = $clientConfiguration->withPeerName($serverName);
         }
 
-        $sslContext = Internal\client_ssl_context($config);
+        $sslContext = Internal\client_ssl_context($clientConfiguration);
         stream_context_set_options($resource, ['ssl' => $sslContext]);
 
-        $cryptoMethod = Internal\crypto_method($config->minimumVersion, $config->maximumVersion, server: false);
+        $cryptoMethod = Internal\crypto_method(
+            $clientConfiguration->minimumVersion,
+            $clientConfiguration->maximumVersion,
+            server: false,
+        );
 
         Internal\enable_crypto($resource, $cryptoMethod, $cancellation);
 

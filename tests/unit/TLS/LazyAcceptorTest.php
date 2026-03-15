@@ -17,7 +17,7 @@ final class LazyAcceptorTest extends TestCase
     public function testLazyAcceptorInspectsClientHelloAndCompletes(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
-        $serverConfig = TLS\ServerConfig::create($cert);
+        $serverConfig = TLS\ServerConfiguration::create($cert);
 
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
@@ -43,7 +43,7 @@ final class LazyAcceptorTest extends TestCase
             'client' => static function () use ($port): void {
                 $stream = TCP\connect('127.0.0.1', $port);
                 $connector = new TLS\Connector(
-                    TLS\ClientConfig::default()->withPeerVerification(false)->withAllowSelfSigned(true),
+                    TLS\ClientConfiguration::default()->withPeerVerification(false)->withAllowSelfSigned(true),
                 );
                 $client = $connector->connect($stream, 'localhost');
 
@@ -73,7 +73,7 @@ final class LazyAcceptorTest extends TestCase
                 static::assertContains('h2', $alpn);
                 static::assertContains('http/1.1', $alpn);
 
-                $config = TLS\ServerConfig::create($cert)->withAlpnProtocols(['h2', 'http/1.1']);
+                $config = TLS\ServerConfiguration::create($cert)->withAlpnProtocols(['h2', 'http/1.1']);
 
                 $tls = $hello->complete($config);
 
@@ -87,7 +87,7 @@ final class LazyAcceptorTest extends TestCase
             'client' => static function () use ($port): void {
                 $stream = TCP\connect('127.0.0.1', $port);
                 $connector = new TLS\Connector(
-                    TLS\ClientConfig::default()
+                    TLS\ClientConfiguration::default()
                         ->withPeerVerification(false)
                         ->withAllowSelfSigned(true)
                         ->withAlpnProtocols(['h2', 'http/1.1']),

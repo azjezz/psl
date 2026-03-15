@@ -18,7 +18,7 @@ use Psl\TCP;
  *
  * @param non-empty-string $host Hostname or IP to connect to.
  * @param int<0, 65535> $port Port to connect to.
- * @param ClientConfig|null $config TLS configuration. Defaults to {@see ClientConfig::default()}.
+ * @param ClientConfiguration|null $clientConfiguration TLS configuration. Defaults to {@see ClientConfiguration::default()}.
  * @param CancellationTokenInterface $cancellation Cancellation token.
  *
  * @throws Network\Exception\RuntimeException If the TCP connection fails.
@@ -28,12 +28,12 @@ use Psl\TCP;
 function connect(
     string $host,
     int $port,
-    null|ClientConfig $config = null,
+    null|ClientConfiguration $clientConfiguration = null,
     CancellationTokenInterface $cancellation = new NullCancellationToken(),
 ): StreamInterface {
     $stream = TCP\connect($host, $port, cancellation: $cancellation);
 
-    $connector = new Connector($config ?? ClientConfig::default());
+    $connector = new Connector($clientConfiguration ?? ClientConfiguration::default());
 
     return $connector->connect($stream, $host, cancellation: $cancellation);
 }

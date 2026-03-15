@@ -11,7 +11,7 @@ use Psl\TLS;
 
 // Create a TLS listener wrapping a TCP listener
 $certificate = new TLS\Certificate('server.pem', 'server.key');
-$listener = new TLS\Listener(TCP\listen('127.0.0.1', 0), TLS\ServerConfig::create($certificate));
+$listener = new TLS\Listener(TCP\listen('127.0.0.1', 0), TLS\ServerConfiguration::create($certificate));
 
 $address = $listener->getLocalAddress();
 IO\write_line('TLS server listening on %s:%d', $address->host, $address->port ?? 0);

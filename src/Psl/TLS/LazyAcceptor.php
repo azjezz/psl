@@ -22,7 +22,7 @@ use const STREAM_PEEK;
  * Lazily accepts TLS connections by peeking at the ClientHello before completing the handshake.
  *
  * Peeks at the raw TLS ClientHello to inspect SNI hostname and ALPN protocols,
- * then lets you choose the appropriate {@see ServerConfig} before completing the handshake.
+ * then lets you choose the appropriate {@see ServerConfiguration} before completing the handshake.
  *
  * Usage:
  *   $lazy = LazyAcceptor::default();

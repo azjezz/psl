@@ -10,7 +10,7 @@ use Psl\TLS;
 // Create a TLS-aware connector that implements TCP\ConnectorInterface
 $connector = new TLS\TCPConnector(
     new TCP\Connector(),
-    new TLS\Connector(TLS\ClientConfig::default()->withPeerVerification(true)),
+    new TLS\Connector(TLS\ClientConfiguration::default()->withPeerVerification(true)),
 );
 
 // Use it with a standard TCP socket pool for connection reuse

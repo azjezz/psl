@@ -15,7 +15,7 @@ Async\main(static function (): int {
     $certFile = __DIR__ . '/certs/server.crt';
     $keyFile = __DIR__ . '/certs/server.key';
 
-    $tlsConfig = TLS\ServerConfig::create(TLS\Certificate::create($certFile, $keyFile));
+    $tlsConfig = TLS\ServerConfiguration::create(TLS\Certificate::create($certFile, $keyFile));
 
     $lazyAcceptor = new TLS\LazyAcceptor();
 
@@ -73,7 +73,7 @@ Async\main(static function (): int {
         'tls_client' => static function (): void {
             // HTTPS request
             $client = TCP\connect('localhost', 8443);
-            $connector = new TLS\Connector(new TLS\ClientConfig(peerVerification: false, allowSelfSigned: true));
+            $connector = new TLS\Connector(new TLS\ClientConfiguration(peerVerification: false, allowSelfSigned: true));
 
             $tls = $connector->connect($client, 'localhost');
             $tls->writeAll("GET / HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n");
