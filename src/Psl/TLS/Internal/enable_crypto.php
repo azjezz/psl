@@ -21,7 +21,7 @@ use function stream_socket_enable_crypto;
  * and retries when the stream becomes readable.
  *
  * @param resource $stream The stream resource to enable TLS on.
- * @param int $crypto_method The crypto method bitmask (STREAM_CRYPTO_METHOD_*).
+ * @param int $cryptoMethod The crypto method bitmask (STREAM_CRYPTO_METHOD_*).
  *
  * @throws HandshakeFailedException If the TLS handshake fails.
  * @throws CancelledException If the cancellation token is cancelled during the handshake.
@@ -32,13 +32,13 @@ use function stream_socket_enable_crypto;
  */
 function enable_crypto(
     mixed $stream,
-    int $crypto_method,
+    int $cryptoMethod,
     CancellationTokenInterface $cancellation = new NullCancellationToken(),
 ): void {
     $cancellation->throwIfCancelled();
 
     // Try the initial handshake; stream is already non-blocking from ResourceHandle
-    $result = @stream_socket_enable_crypto($stream, true, $crypto_method);
+    $result = @stream_socket_enable_crypto($stream, true, $cryptoMethod);
 
     if (true === $result) {
         return;
@@ -57,9 +57,9 @@ function enable_crypto(
         &$watcher,
         $suspension,
         $stream,
-        $crypto_method,
+        $cryptoMethod,
     ): void {
-        $result = @stream_socket_enable_crypto($stream, true, $crypto_method);
+        $result = @stream_socket_enable_crypto($stream, true, $cryptoMethod);
 
         if (true === $result) {
             EventLoop::cancel($watcher);
@@ -78,7 +78,7 @@ function enable_crypto(
         // $result === 0 means handshake is still in progress, wait for more data
     });
 
-    $cancellation_id = $cancellation->subscribe(static function (CancelledException $e) use (
+    $cancellationId = $cancellation->subscribe(static function (CancelledException $e) use (
         &$watcher,
         $suspension,
     ): void {
@@ -90,6 +90,6 @@ function enable_crypto(
         $suspension->suspend();
     } finally {
         EventLoop::cancel($watcher);
-        $cancellation->unsubscribe($cancellation_id);
+        $cancellation->unsubscribe($cancellationId);
     }
 }

@@ -23,8 +23,8 @@ use Psl\Range\UpperBoundRangeInterface;
  *
  * $string = 'Hello, World!';
  *
- * Str\range($string, Range\between(0, 3, upper_inclusive: true)); // 'Hell'
- * Str\range($string, Range\between(0, 3, upper_inclusive: false)); // 'Hel'
+ * Str\range($string, Range\between(0, 3, upperInclusive: true)); // 'Hell'
+ * Str\range($string, Range\between(0, 3, upperInclusive: false)); // 'Hel'
  * Str\range($string, Range\from(3)); // 'lo, World!'
  * Str\range($string, Range\to(3, true)); // 'Hell'
  * Str\range($string, Range\to(3, false)); // 'Hel'

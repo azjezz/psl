@@ -15,7 +15,7 @@ $inputKeyingMaterial = 'raw-shared-secret-from-key-exchange';
 
 // One-step derivation (extract + expand combined)
 $derivedKey = Hkdf\derive(
-    input_keying_material: $inputKeyingMaterial,
+    inputKeyingMaterial: $inputKeyingMaterial,
     salt: 'optional-salt',
     info: 'session-encryption-key',
     length: 32,

@@ -21,21 +21,21 @@ namespace Psl\Str;
  *      Str\chunk('مرحبا', 2)
  *      => Arr('مر', 'حب', 'ا')
  *
- * @param int<1, 65535> $chunk_length maximum length of the chunk
+ * @param int<1, 65535> $chunkLength maximum length of the chunk
  *
- * @return list<non-empty-string> if $chunk_length parameter is specified, the returned array will be broken down
- *                                into chunks with each being $chunk_length in length, otherwise each chunk will be
+ * @return list<non-empty-string> if $chunkLength parameter is specified, the returned array will be broken down
+ *                                into chunks with each being $chunkLength in length, otherwise each chunk will be
  *                                one character in length.
- *                                If the $chunk_length length exceeds the length of string, the entire string is returned
+ *                                If the $chunkLength length exceeds the length of string, the entire string is returned
  *                                as the first (and only) array element.
  *
  * @pure
  */
-function chunk(string $string, int $chunk_length = 1, Encoding $encoding = Encoding::Utf8): array
+function chunk(string $string, int $chunkLength = 1, Encoding $encoding = Encoding::Utf8): array
 {
     if ('' === $string) {
         return [];
     }
 
-    return mb_str_split($string, $chunk_length, $encoding->value);
+    return mb_str_split($string, $chunkLength, $encoding->value);
 }

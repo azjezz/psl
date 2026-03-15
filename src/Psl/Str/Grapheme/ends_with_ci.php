@@ -19,9 +19,9 @@ function ends_with_ci(string $string, string $suffix): bool
         return true;
     }
 
-    $suffix_length = length($suffix);
-    $total_length = length($string);
-    if ($suffix_length > $total_length) {
+    $suffixLength = length($suffix);
+    $totalLength = length($string);
+    if ($suffixLength > $totalLength) {
         return false;
     }
 
@@ -30,5 +30,5 @@ function ends_with_ci(string $string, string $suffix): bool
         return false;
     }
 
-    return ($position + $suffix_length) === $total_length;
+    return ($position + $suffixLength) === $totalLength;
 }

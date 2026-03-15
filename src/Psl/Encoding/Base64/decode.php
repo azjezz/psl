@@ -15,12 +15,12 @@ use Psl\Encoding\Exception;
  *                                  the base64 characters range.
  * @throws Exception\IncorrectPaddingException If the encoded string has an incorrect padding.
  */
-function decode(string $base64, Variant $variant = Variant::Standard, bool $explicit_padding = true): string
+function decode(string $base64, Variant $variant = Variant::Standard, bool $explicitPadding = true): string
 {
     return match ($variant) {
-        Variant::Standard => Internal\Base64::decode($base64, $explicit_padding),
-        Variant::UrlSafe => Internal\Base64UrlSafe::decode($base64, $explicit_padding),
-        Variant::DotSlash => Internal\Base64DotSlash::decode($base64, $explicit_padding),
-        Variant::DotSlashOrdered => Internal\Base64DotSlashOrdered::decode($base64, $explicit_padding),
+        Variant::Standard => Internal\Base64::decode($base64, $explicitPadding),
+        Variant::UrlSafe => Internal\Base64UrlSafe::decode($base64, $explicitPadding),
+        Variant::DotSlash => Internal\Base64DotSlash::decode($base64, $explicitPadding),
+        Variant::DotSlashOrdered => Internal\Base64DotSlashOrdered::decode($base64, $explicitPadding),
     };
 }

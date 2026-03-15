@@ -27,15 +27,15 @@ function get_sock_name(mixed $socket): Network\Address
     /** @var non-empty-string|false $result */
     $result = stream_socket_get_name($socket, false);
     if (false !== $result) {
-        $separator_position = strrpos($result, ':');
-        if (false === $separator_position) {
+        $separatorPosition = strrpos($result, ':');
+        if (false === $separatorPosition) {
             return Network\Address::unix($result);
         }
 
         /** @var non-empty-string $host */
-        $host = substr($result, 0, $separator_position);
+        $host = substr($result, 0, $separatorPosition);
         /** @var int<0, 65535> $port */
-        $port = (int) substr($result, $separator_position + 1);
+        $port = (int) substr($result, $separatorPosition + 1);
 
         return Network\Address::tcp($host, $port);
     }

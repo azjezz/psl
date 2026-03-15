@@ -23,26 +23,26 @@ interface RangeInterface
      *
      * @psalm-mutation-free
      */
-    public function withLowerBound(int $lower_bound): LowerBoundRangeInterface;
+    public function withLowerBound(int $lowerBound): LowerBoundRangeInterface;
 
     /**
      * Combine this range with the given upper bound.
      *
      * @psalm-mutation-free
      */
-    public function withUpperBound(int $upper_bound, bool $upper_inclusive): UpperBoundRangeInterface;
+    public function withUpperBound(int $upperBound, bool $upperInclusive): UpperBoundRangeInterface;
 
     /**
      * Combine this range with the given upper bound, and make it inclusive.
      *
      * @psalm-mutation-free
      */
-    public function withUpperBoundInclusive(int $upper_bound): UpperBoundRangeInterface;
+    public function withUpperBoundInclusive(int $upperBound): UpperBoundRangeInterface;
 
     /**
      * Combine this range with the given upper bound, and make it exclusive.
      *
      * @psalm-mutation-free
      */
-    public function withUpperBoundExclusive(int $upper_bound): UpperBoundRangeInterface;
+    public function withUpperBoundExclusive(int $upperBound): UpperBoundRangeInterface;
 }

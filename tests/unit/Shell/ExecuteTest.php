@@ -102,7 +102,7 @@ final class ExecuteTest extends TestCase
         $result = Shell\execute(
             PHP_BINARY,
             ['-dopcache.enable=0', '-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
-            error_output_behavior: Shell\ErrorOutputBehavior::default(),
+            errorOutputBehavior: Shell\ErrorOutputBehavior::default(),
         );
 
         static::assertSame('hello', $result);
@@ -113,7 +113,7 @@ final class ExecuteTest extends TestCase
         $result = Shell\execute(
             PHP_BINARY,
             ['-dopcache.enable=0', '-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
-            error_output_behavior: Shell\ErrorOutputBehavior::Append,
+            errorOutputBehavior: Shell\ErrorOutputBehavior::Append,
         );
 
         static::assertSame('hello world', $result);
@@ -124,7 +124,7 @@ final class ExecuteTest extends TestCase
         $result = Shell\execute(
             PHP_BINARY,
             ['-dopcache.enable=0', '-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
-            error_output_behavior: Shell\ErrorOutputBehavior::Prepend,
+            errorOutputBehavior: Shell\ErrorOutputBehavior::Prepend,
         );
 
         static::assertSame(' worldhello', $result);
@@ -135,7 +135,7 @@ final class ExecuteTest extends TestCase
         $result = Shell\execute(
             PHP_BINARY,
             ['-dopcache.enable=0', '-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
-            error_output_behavior: Shell\ErrorOutputBehavior::Replace,
+            errorOutputBehavior: Shell\ErrorOutputBehavior::Replace,
         );
 
         static::assertSame(' world', $result);
@@ -146,7 +146,7 @@ final class ExecuteTest extends TestCase
         $result = Shell\execute(
             PHP_BINARY,
             ['-dopcache.enable=0', '-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
-            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+            errorOutputBehavior: Shell\ErrorOutputBehavior::Packed,
         );
 
         [$stdout, $stderr] = Shell\unpack($result);

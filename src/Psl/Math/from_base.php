@@ -8,20 +8,20 @@ use Psl\Str;
 use Psl\Str\Byte;
 
 /**
- * Converts the given string in base `$from_base` to an integer, assuming letters a-z
- * are used for digits when `$from_base` > 10.
+ * Converts the given string in base `$fromBase` to an integer, assuming letters a-z
+ * are used for digits when `$fromBase` > 10.
  *
  * @param non-empty-string $number
- * @param int<2, 36> $from_base
+ * @param int<2, 36> $fromBase
  *
  * @pure
  *
- * @throws Exception\InvalidArgumentException If $number contains an invalid digit in base $from_base
+ * @throws Exception\InvalidArgumentException If $number contains an invalid digit in base $fromBase
  * @throws Exception\OverflowException In case of an integer overflow
  */
-function from_base(string $number, int $from_base): int
+function from_base(string $number, int $fromBase): int
 {
-    $limit = div(INT64_MAX, $from_base);
+    $limit = div(INT64_MAX, $fromBase);
     $result = 0;
     foreach (Byte\chunk($number) as $digit) {
         $oval = Byte\ord($digit);
@@ -36,17 +36,17 @@ function from_base(string $number, int $from_base): int
             $dval = 99;
         }
 
-        if ($from_base < $dval) {
-            throw new Exception\InvalidArgumentException(Str\format('Invalid digit %s in base %d', $digit, $from_base));
+        if ($fromBase < $dval) {
+            throw new Exception\InvalidArgumentException(Str\format('Invalid digit %s in base %d', $digit, $fromBase));
         }
 
         $oldval = $result;
-        $result = ($from_base * $result) + $dval;
+        $result = ($fromBase * $result) + $dval;
         if ($oldval > $limit || $oldval > $result) {
             throw new Exception\OverflowException(Str\format(
                 'Unexpected integer overflow parsing %s from base %d',
                 $number,
-                $from_base,
+                $fromBase,
             ));
         }
     }

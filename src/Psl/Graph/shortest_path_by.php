@@ -37,7 +37,7 @@ use function Psl\Graph\Internal\get_node_key;
  * @param DirectedGraph<TNode, TWeight>|UndirectedGraph<TNode, TWeight> $graph
  * @param TNode $from
  * @param TNode $to
- * @param (Closure(TWeight): int) $weight_converter Function to convert edge weight to int priority
+ * @param (Closure(TWeight): int) $weightConverter Function to convert edge weight to int priority
  *
  * @return list<TNode>|null
  *
@@ -47,7 +47,7 @@ function shortest_path_by(
     DirectedGraph|UndirectedGraph $graph,
     mixed $from,
     mixed $to,
-    Closure $weight_converter,
+    Closure $weightConverter,
 ): null|array {
     if (!$graph->hasNode($from) || !$graph->hasNode($to)) {
         return null;
@@ -160,7 +160,7 @@ function shortest_path_by(
                 continue;
             }
 
-            $weight = $weight_converter($edge->weight ?? 1);
+            $weight = $weightConverter($edge->weight ?? 1);
             $newDist = $distances[$nodeKey] + $weight;
 
             if ($newDist < $distances[$neighborKey]) {

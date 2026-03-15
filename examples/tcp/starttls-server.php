@@ -12,12 +12,12 @@ use Psl\TLS;
 require __DIR__ . '/../../vendor/autoload.php';
 
 Async\main(static function (): int {
-    $cert_file = __DIR__ . '/certs/server.crt';
-    $key_file = __DIR__ . '/certs/server.key';
+    $certFile = __DIR__ . '/certs/server.crt';
+    $keyFile = __DIR__ . '/certs/server.key';
 
-    $tls_config = TLS\ServerConfig::create(TLS\Certificate::create($cert_file, $key_file));
+    $tlsConfig = TLS\ServerConfig::create(TLS\Certificate::create($certFile, $keyFile));
 
-    $acceptor = new TLS\Acceptor($tls_config);
+    $acceptor = new TLS\Acceptor($tlsConfig);
 
     Async\concurrently([
         'server' => static function () use ($acceptor): void {

@@ -83,21 +83,21 @@ final class ConnectedSocket implements Network\SocketInterface, IO\StreamHandleI
     /**
      * Receive a datagram from the connected peer.
      *
-     * @param positive-int $max_bytes
+     * @param positive-int $maxBytes
      *
      * @throws Network\Exception\RuntimeException If the receive fails.
      * @throws CancelledException If the operation is cancelled.
      * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
      */
     public function receive(
-        int $max_bytes,
+        int $maxBytes,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): string {
         $stream = $this->getResource();
 
         Internal\await_readable($stream, $cancellation);
 
-        $data = @stream_socket_recvfrom($stream, $max_bytes, 0);
+        $data = @stream_socket_recvfrom($stream, $maxBytes, 0);
         if ($data === false) {
             throw new Network\Exception\RuntimeException('Failed to receive UDP datagram.');
         }
@@ -108,19 +108,19 @@ final class ConnectedSocket implements Network\SocketInterface, IO\StreamHandleI
     /**
      * Peek at an incoming datagram without consuming it.
      *
-     * @param positive-int $max_bytes
+     * @param positive-int $maxBytes
      *
      * @throws Network\Exception\RuntimeException If the peek fails.
      * @throws CancelledException If the operation is cancelled.
      * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
      */
-    public function peek(int $max_bytes, CancellationTokenInterface $cancellation = new NullCancellationToken()): string
+    public function peek(int $maxBytes, CancellationTokenInterface $cancellation = new NullCancellationToken()): string
     {
         $stream = $this->getResource();
 
         Internal\await_readable($stream, $cancellation);
 
-        $data = @stream_socket_recvfrom($stream, $max_bytes, STREAM_PEEK);
+        $data = @stream_socket_recvfrom($stream, $maxBytes, STREAM_PEEK);
         if ($data === false) {
             throw new Network\Exception\RuntimeException('Failed to peek UDP datagram.');
         }

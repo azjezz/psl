@@ -28,10 +28,10 @@ final readonly class VecType extends Type\Type
     /**
      * @psalm-mutation-free
      *
-     * @param Type\TypeInterface<Tv> $value_type
+     * @param Type\TypeInterface<Tv> $valueType
      */
     public function __construct(
-        private readonly Type\TypeInterface $value_type,
+        private readonly Type\TypeInterface $valueType,
     ) {}
 
     /**
@@ -45,7 +45,7 @@ final readonly class VecType extends Type\Type
         }
 
         foreach ($value as $v) {
-            if ($this->value_type->matches($v)) {
+            if ($this->valueType->matches($v)) {
                 continue;
             }
 
@@ -71,7 +71,7 @@ final readonly class VecType extends Type\Type
          * @var list<Tv> $entries
          */
         $result = [];
-        $value_type = $this->value_type;
+        $valueType = $this->valueType;
         $i = null;
         $v = null;
         /** @var bool $iterating */
@@ -84,7 +84,7 @@ final readonly class VecType extends Type\Type
              */
             foreach ($value as $i => $v) {
                 $iterating = false;
-                $result[] = $value_type->coerce($v);
+                $result[] = $valueType->coerce($v);
                 $iterating = true;
             }
         } catch (Throwable $e) {
@@ -117,14 +117,14 @@ final readonly class VecType extends Type\Type
         }
 
         $result = [];
-        $value_type = $this->value_type;
+        $valueType = $this->valueType;
         $i = null;
         $v = null;
 
         try {
             /** @var Tv $v */
             foreach ($value as $i => $v) {
-                $result[] = $value_type->assert($v);
+                $result[] = $valueType->assert($v);
             }
         } catch (AssertException $e) {
             throw AssertException::withValue($v, $this->toString(), PathExpression::path($i), $e);
@@ -136,6 +136,6 @@ final readonly class VecType extends Type\Type
     #[Override]
     public function toString(): string
     {
-        return 'vec<' . $this->value_type->toString() . '>';
+        return 'vec<' . $this->valueType->toString() . '>';
     }
 }

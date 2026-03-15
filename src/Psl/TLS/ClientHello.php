@@ -67,12 +67,12 @@ final readonly class ClientHello
             throw new Network\Exception\RuntimeException('Stream resource is not available.');
         }
 
-        $ssl_context = Internal\server_ssl_context($config);
-        stream_context_set_options($resource, ['ssl' => $ssl_context]);
+        $sslContext = Internal\server_ssl_context($config);
+        stream_context_set_options($resource, ['ssl' => $sslContext]);
 
-        $crypto_method = Internal\crypto_method($config->minimumVersion, $config->maximumVersion, server: true);
+        $cryptoMethod = Internal\crypto_method($config->minimumVersion, $config->maximumVersion, server: true);
 
-        Internal\enable_crypto($resource, $crypto_method, $cancellation);
+        Internal\enable_crypto($resource, $cryptoMethod, $cancellation);
 
         $state = Internal\extract_connection_state($resource);
 

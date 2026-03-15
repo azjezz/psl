@@ -11,9 +11,9 @@ use Psl\Str\Byte;
 final class PadRightTest extends TestCase
 {
     #[DataProvider('provideData')]
-    public function testPadRight(string $expected, string $str, int $total_length, string $pad_string = ' '): void
+    public function testPadRight(string $expected, string $str, int $totalLength, string $padString = ' '): void
     {
-        static::assertSame($expected, Byte\pad_right($str, $total_length, $pad_string));
+        static::assertSame($expected, Byte\pad_right($str, $totalLength, $padString));
     }
 
     public static function provideData(): array

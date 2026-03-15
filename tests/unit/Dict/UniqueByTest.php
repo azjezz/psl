@@ -12,9 +12,9 @@ use Psl\Str;
 final class UniqueByTest extends TestCase
 {
     #[DataProvider('provideData')]
-    public function testUniqueBy(array $expected, array $array, callable $scalar_fun): void
+    public function testUniqueBy(array $expected, array $array, callable $scalarFun): void
     {
-        static::assertSame($expected, Dict\unique_by($array, $scalar_fun));
+        static::assertSame($expected, Dict\unique_by($array, $scalarFun));
     }
 
     public static function provideData(): array

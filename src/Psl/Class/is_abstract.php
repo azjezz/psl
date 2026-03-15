@@ -9,9 +9,9 @@ use ReflectionClass;
 /**
  * Checks if class is abstract.
  *
- * @param class-string $class_name
+ * @param class-string $className
  */
-function is_abstract(string $class_name): bool
+function is_abstract(string $className): bool
 {
-    return new ReflectionClass($class_name)->isAbstract();
+    return new ReflectionClass($className)->isAbstract();
 }

@@ -9,6 +9,6 @@ use Psl\Encoding\Base64;
 $encoded = Base64\encode('Hello!', padding: false);
 // 'SGVsbG8h' (no trailing '=')
 
-$decoded = Base64\decode($encoded, explicit_padding: false);
+$decoded = Base64\decode($encoded, explicitPadding: false);
 
 // 'Hello!'

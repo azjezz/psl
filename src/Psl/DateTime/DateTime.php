@@ -243,8 +243,8 @@ final readonly class DateTime implements
             throw Exception\UnexpectedValueException::forYear($year, $calendar->get(IntlCalendar::FIELD_YEAR));
         }
 
-        $timestamp_in_seconds = (int) ($calendar->getTime() / (float) MILLISECONDS_PER_SECOND);
-        $timestamp = Timestamp::fromParts($timestamp_in_seconds, $nanoseconds);
+        $timestampInSeconds = (int) ($calendar->getTime() / (float) MILLISECONDS_PER_SECOND);
+        $timestamp = Timestamp::fromParts($timestampInSeconds, $nanoseconds);
 
         return new self($timezone, $timestamp, $year, $month, $day, $hours, $minutes, $seconds, $nanoseconds);
     }
@@ -293,11 +293,11 @@ final readonly class DateTime implements
      * Example usage:
      *
      * ```php
-     * $raw_string = '2023-03-15 12:00:00';
-     * $parsed_datetime = DateTime\DateTime::parse($raw_string, 'yyyy-MM-dd HH:mm:ss', DateTime\Timezone::Utc, Locale\Locale::English);
+     * $rawString = '2023-03-15 12:00:00';
+     * $parsed_datetime = DateTime\DateTime::parse($rawString, 'yyyy-MM-dd HH:mm:ss', DateTime\Timezone::Utc, Locale\Locale::English);
      * ```
      *
-     * @param string $raw_string The date and time string to parse.
+     * @param string $rawString The date and time string to parse.
      * @param null|FormatPattern|string $pattern The custom format pattern for parsing the date and time. If null, uses a default pattern.
      * @param null|Timezone $timezone Optional timezone for parsing. If null, uses the system's default timezone.
      * @param null|Locale $locale Optional locale for parsing. If null, uses the system's default locale.
@@ -312,14 +312,14 @@ final readonly class DateTime implements
      * @psalm-mutation-free
      */
     public static function parse(
-        string $raw_string,
+        string $rawString,
         null|FormatPattern|string $pattern = null,
         null|Timezone $timezone = null,
         null|Locale $locale = null,
     ): static {
         $timezone ??= Timezone::default();
 
-        return self::fromTimestamp(Timestamp::parse($raw_string, $pattern, $timezone, $locale), $timezone);
+        return self::fromTimestamp(Timestamp::parse($rawString, $pattern, $timezone, $locale), $timezone);
     }
 
     /**
@@ -335,14 +335,14 @@ final readonly class DateTime implements
      * Example usage:
      *
      * ```php
-     * $raw_string = "March 15, 2023, 12:00 PM";
+     * $rawString = "March 15, 2023, 12:00 PM";
      *
-     * $datetime = DateTime\DateTime::fromString($raw_string, FormatDateStyle::Long, FormatTimeStyle::Short, DateTime\Timezone::Utc, Locale\Locale::English);
+     * $datetime = DateTime\DateTime::fromString($rawString, FormatDateStyle::Long, FormatTimeStyle::Short, DateTime\Timezone::Utc, Locale\Locale::English);
      * ```
      *
-     * @param string $raw_string The date and time string to parse.
-     * @param null|DateStyle $date_style The style for the date portion of the string. If null, a default style is used.
-     * @param null|TimeStyle $time_style The style for the time portion of the string. If null, a default style is used.
+     * @param string $rawString The date and time string to parse.
+     * @param null|DateStyle $dateStyle The style for the date portion of the string. If null, a default style is used.
+     * @param null|TimeStyle $timeStyle The style for the time portion of the string. If null, a default style is used.
      * @param null|Timezone $timezone Optional timezone for parsing. If null, uses the system's default timezone.
      * @param null|Locale $locale Optional locale for parsing. If null, uses the system's default locale.
      *
@@ -355,16 +355,16 @@ final readonly class DateTime implements
      * @psalm-mutation-free
      */
     public static function fromString(
-        string $raw_string,
-        null|DateStyle $date_style = null,
-        null|TimeStyle $time_style = null,
+        string $rawString,
+        null|DateStyle $dateStyle = null,
+        null|TimeStyle $timeStyle = null,
         null|Timezone $timezone = null,
         null|Locale $locale = null,
     ): static {
         $timezone ??= Timezone::default();
 
         return self::fromTimestamp(
-            Timestamp::fromString($raw_string, $date_style, $time_style, $timezone, $locale),
+            Timestamp::fromString($rawString, $dateStyle, $timeStyle, $timezone, $locale),
             $timezone,
         );
     }
@@ -598,15 +598,15 @@ final readonly class DateTime implements
     #[Override]
     public static function fromIntl(mixed $value): static
     {
-        /** @var IntlTimeZone $intl_tz */
-        $intl_tz = $value->getTimeZone();
-        /** @var string $timezone_id */
-        $timezone_id = $intl_tz->getID();
-        $timezone = Timezone::from($timezone_id);
+        /** @var IntlTimeZone $intlTz */
+        $intlTz = $value->getTimeZone();
+        /** @var string $timezoneId */
+        $timezoneId = $intlTz->getID();
+        $timezone = Timezone::from($timezoneId);
         $millis = $value->getTime();
         $seconds = (int) ($millis / MILLISECONDS_PER_SECOND);
-        $remaining_millis = $millis % MILLISECONDS_PER_SECOND;
-        $nanoseconds = (int) ($remaining_millis * NANOSECONDS_PER_MILLISECOND);
+        $remainingMillis = $millis % MILLISECONDS_PER_SECOND;
+        $nanoseconds = (int) ($remainingMillis * NANOSECONDS_PER_MILLISECOND);
 
         return self::fromTimestamp(Timestamp::fromParts($seconds, $nanoseconds), $timezone);
     }

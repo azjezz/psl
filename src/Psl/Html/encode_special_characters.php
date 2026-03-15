@@ -13,7 +13,7 @@ use const ENT_SUBSTITUTE;
 /**
  * Convert special characters to HTML entities.
  *
- * @param bool $double_encoding If set to false, this function will not
+ * @param bool $doubleEncoding If set to false, this function will not
  *                              encode existing html entities.
  * @param Encoding $encoding defines character set used in conversion.
  *
@@ -23,8 +23,8 @@ use const ENT_SUBSTITUTE;
  */
 function encode_special_characters(
     string $html,
-    bool $double_encoding = true,
+    bool $doubleEncoding = true,
     Encoding $encoding = Encoding::Utf8,
 ): string {
-    return htmlspecialchars($html, ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE, $encoding->value, $double_encoding);
+    return htmlspecialchars($html, ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE, $encoding->value, $doubleEncoding);
 }

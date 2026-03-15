@@ -17,10 +17,10 @@ function ends_with_ci(string $string, string $suffix): bool
         return false;
     }
 
-    $suffix_length = length($suffix);
+    $suffixLength = length($suffix);
 
     return (
-        length($string) >= $suffix_length
-        && 0 === substr_compare($string, $suffix, -$suffix_length, $suffix_length, true)
+        length($string) >= $suffixLength
+        && 0 === substr_compare($string, $suffix, -$suffixLength, $suffixLength, true)
     );
 }

@@ -25,17 +25,17 @@ function return_lowercase_string(): string
     return 'hello';
 }
 
-/** @param non-empty-lowercase-string $_foo */
-function take_non_empty_lowercase_string(string $_foo): void {}
+/** @param non-empty-lowercase-string $_ */
+function take_non_empty_lowercase_string(string $_): void {}
 
-/** @param non-empty-string $_foo */
-function take_non_empty_string(string $_foo): void {}
+/** @param non-empty-string $_ */
+function take_non_empty_string(string $_): void {}
 
-/** @param lowercase-string $_foo */
-function take_lowercase_string(string $_foo): void {}
+/** @param lowercase-string $_ */
+function take_lowercase_string(string $_): void {}
 
-/** @param "hhh" $_x */
-function take_triple_h_string(string $_x): void {}
+/** @param "hhh" $_ */
+function take_triple_h_string(string $_): void {}
 
 /**
  * @throws Psl\Exception\InvariantViolationException

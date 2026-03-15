@@ -38,9 +38,9 @@ abstract class Base64
     public static function encode(string $binary, bool $padding = true): string
     {
         $dest = '';
-        $binary_length = strlen($binary);
+        $binaryLength = strlen($binary);
 
-        for ($i = 0; ($i + 3) <= $binary_length; $i += 3) {
+        for ($i = 0; ($i + 3) <= $binaryLength; $i += 3) {
             /** @var array<int, int> $chunk */
             $chunk = unpack('C*', substr($binary, $i, 3));
             $byte0 = $chunk[1];
@@ -53,15 +53,15 @@ abstract class Base64
                 . static::encode6Bits($byte2 & 63);
         }
 
-        $chunk_size = $binary_length - $i;
+        $chunkSize = $binaryLength - $i;
 
-        if ($chunk_size > 0) {
+        if ($chunkSize > 0) {
             /**
              * @var array<int, int> $chunk
              */
-            $chunk = unpack('C*', substr($binary, $i, $chunk_size));
+            $chunk = unpack('C*', substr($binary, $i, $chunkSize));
             $byte0 = $chunk[1];
-            if (($i + 1) < $binary_length) {
+            if (($i + 1) < $binaryLength) {
                 $byte1 = $chunk[2];
                 $dest .=
                     static::encode6Bits($byte0 >> 2)
@@ -94,25 +94,25 @@ abstract class Base64
      *                                  the base64 characters range.
      * @throws Exception\IncorrectPaddingException If the encoded string has an incorrect padding.
      */
-    public static function decode(string $base64, bool $explicit_padding = true): string
+    public static function decode(string $base64, bool $explicitPadding = true): string
     {
-        $base64_length = strlen($base64);
-        if (0 === $base64_length) {
+        $base64Length = strlen($base64);
+        if (0 === $base64Length) {
             return '';
         }
 
         static::checkRange($base64);
 
-        if ($explicit_padding && ($base64_length % 4) !== 0) {
+        if ($explicitPadding && ($base64Length % 4) !== 0) {
             throw new Exception\IncorrectPaddingException('The given base64 string has incorrect padding.');
         }
 
         $base64 = rtrim($base64, '=');
-        $base64_length = strlen($base64);
+        $base64Length = strlen($base64);
 
         $err = 0;
         $dest = '';
-        for ($i = 0; ($i + 4) <= $base64_length; $i += 4) {
+        for ($i = 0; ($i + 4) <= $base64Length; $i += 4) {
             /** @var array<int, int> $chunk */
             $chunk = unpack('C*', substr($base64, $i, 4));
             $char0 = static::decode6Bits($chunk[1]);
@@ -128,23 +128,23 @@ abstract class Base64
             $err |= ($char0 | $char1 | $char2 | $char3) >> 8;
         }
 
-        $chunk_size = $base64_length - $i;
-        if ($chunk_size > 0) {
+        $chunkSize = $base64Length - $i;
+        if ($chunkSize > 0) {
             /**
              * @var array<int, int> $chunk
              */
-            $chunk = unpack('C*', substr($base64, $i, $chunk_size));
+            $chunk = unpack('C*', substr($base64, $i, $chunkSize));
             $char0 = static::decode6Bits($chunk[1]);
-            if (($i + 2) < $base64_length) {
+            if (($i + 2) < $base64Length) {
                 $char1 = static::decode6Bits($chunk[2]);
                 $char2 = static::decode6Bits($chunk[3]);
                 $dest .= pack('CC', (($char0 << 2) | ($char1 >> 4)) & 0xff, (($char1 << 4) | ($char2 >> 2)) & 0xff);
                 $err |= ($char0 | $char1 | $char2) >> 8;
-            } elseif (($i + 1) < $base64_length) {
+            } elseif (($i + 1) < $base64Length) {
                 $char1 = static::decode6Bits($chunk[2]);
                 $dest .= pack('C', (($char0 << 2) | ($char1 >> 4)) & 0xff);
                 $err |= ($char0 | $char1) >> 8;
-            } elseif ($explicit_padding) {
+            } elseif ($explicitPadding) {
                 $err |= 1;
             }
         }

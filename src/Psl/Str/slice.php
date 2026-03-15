@@ -22,9 +22,9 @@ use function mb_substr;
  */
 function slice(string $string, int $offset, null|int $length = null, Encoding $encoding = Encoding::Utf8): string
 {
-    $string_length = length($string, $encoding);
-    $offset = Internal\validate_offset($offset, $string_length);
-    if (0 === $offset && (null === $length || $string_length <= $length)) {
+    $stringLength = length($string, $encoding);
+    $offset = Internal\validate_offset($offset, $stringLength);
+    if (0 === $offset && (null === $length || $stringLength <= $length)) {
         return $string;
     }
 

@@ -11,22 +11,22 @@ final class InvalidRangeException extends Exception\InvalidArgumentException imp
 {
     public function __construct(
         string $message,
-        private readonly int $lower_bound,
-        private readonly int $upper_bound,
+        private readonly int $lowerBound,
+        private readonly int $upperBound,
     ) {
         parent::__construct($message);
     }
 
-    public static function lowerBoundIsGreaterThanUpperBound(int $lower_bound, int $upper_bound): self
+    public static function lowerBoundIsGreaterThanUpperBound(int $lowerBound, int $upperBound): self
     {
         return new self(
             Str\format(
-                '`$lower_bound` (%d) must be less than or equal to `$upper_bound` (%d).',
-                $lower_bound,
-                $upper_bound,
+                '`$lowerBound` (%d) must be less than or equal to `$upperBound` (%d).',
+                $lowerBound,
+                $upperBound,
             ),
-            $lower_bound,
-            $upper_bound,
+            $lowerBound,
+            $upperBound,
         );
     }
 
@@ -35,7 +35,7 @@ final class InvalidRangeException extends Exception\InvalidArgumentException imp
      */
     public function getLowerBound(): int
     {
-        return $this->lower_bound;
+        return $this->lowerBound;
     }
 
     /**
@@ -43,6 +43,6 @@ final class InvalidRangeException extends Exception\InvalidArgumentException imp
      */
     public function getUpperBound(): int
     {
-        return $this->upper_bound;
+        return $this->upperBound;
     }
 }

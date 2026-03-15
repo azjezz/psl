@@ -19,7 +19,7 @@ final class UnpackTest extends TestCase
         $result = Shell\execute(
             PHP_BINARY,
             ['-dopcache.enable=0', '-r', 'fwrite(STDOUT, "hello"); fwrite(STDERR, " world");'],
-            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+            errorOutputBehavior: Shell\ErrorOutputBehavior::Packed,
         );
 
         [$stdout, $stderr] = Shell\unpack($result);
@@ -33,7 +33,7 @@ final class UnpackTest extends TestCase
         $result = Shell\execute(
             PHP_BINARY,
             ['-dopcache.enable=0', '-r', 'fwrite(STDOUT, "hello");'],
-            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+            errorOutputBehavior: Shell\ErrorOutputBehavior::Packed,
         );
 
         [$stdout, $stderr] = Shell\unpack($result);
@@ -47,7 +47,7 @@ final class UnpackTest extends TestCase
         $result = Shell\execute(
             PHP_BINARY,
             ['-dopcache.enable=0', '-r', 'fwrite(STDERR, "hello");'],
-            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+            errorOutputBehavior: Shell\ErrorOutputBehavior::Packed,
         );
 
         [$stdout, $stderr] = Shell\unpack($result);
@@ -61,7 +61,7 @@ final class UnpackTest extends TestCase
         $result = Shell\execute(
             PHP_BINARY,
             ['-dopcache.enable=0', '-r', 'exit(0);'],
-            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+            errorOutputBehavior: Shell\ErrorOutputBehavior::Packed,
         );
 
         [$stdout, $stderr] = Shell\unpack($result);
@@ -75,7 +75,7 @@ final class UnpackTest extends TestCase
         $result = Shell\execute(
             PHP_BINARY,
             ['-dopcache.enable=0', '-r', 'fwrite(STDERR, "hello");'],
-            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+            errorOutputBehavior: Shell\ErrorOutputBehavior::Packed,
         );
         $result .= ' world!';
 
@@ -90,7 +90,7 @@ final class UnpackTest extends TestCase
         $result = Shell\execute(
             PHP_BINARY,
             ['-dopcache.enable=0', '-r', 'fwrite(STDERR, "hello");'],
-            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+            errorOutputBehavior: Shell\ErrorOutputBehavior::Packed,
         );
         $result .= 'x';
 
@@ -105,7 +105,7 @@ final class UnpackTest extends TestCase
         $result = Shell\execute(
             PHP_BINARY,
             ['-dopcache.enable=0', '-r', 'fwrite(STDERR, "hello");'],
-            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+            errorOutputBehavior: Shell\ErrorOutputBehavior::Packed,
         );
         $result .= "\0\0\0\0\0";
 
@@ -120,7 +120,7 @@ final class UnpackTest extends TestCase
         $result = Shell\execute(
             PHP_BINARY,
             ['-dopcache.enable=0', '-r', 'fwrite(STDERR, "hello");'],
-            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+            errorOutputBehavior: Shell\ErrorOutputBehavior::Packed,
         );
         $result .= Str\slice($result, 0, 7);
 
@@ -135,7 +135,7 @@ final class UnpackTest extends TestCase
         $result = Shell\execute(
             PHP_BINARY,
             ['-dopcache.enable=0', '-r', 'fwrite(STDERR, "hello");'],
-            error_output_behavior: Shell\ErrorOutputBehavior::Packed,
+            errorOutputBehavior: Shell\ErrorOutputBehavior::Packed,
         );
         $result .= pack('C1N1', 3, 1) . 'a';
 

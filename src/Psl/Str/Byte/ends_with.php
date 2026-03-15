@@ -15,7 +15,7 @@ function ends_with(string $string, string $suffix): bool
         return false;
     }
 
-    $suffix_length = length($suffix);
+    $suffixLength = length($suffix);
 
-    return slice($string, -$suffix_length) === $suffix;
+    return slice($string, -$suffixLength) === $suffix;
 }

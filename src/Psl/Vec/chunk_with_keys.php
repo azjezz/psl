@@ -24,14 +24,14 @@ function chunk_with_keys(iterable $iterable, int $size): array
 {
     $result = [];
     $ii = 0;
-    $chunk_number = -1;
+    $chunkNumber = -1;
     foreach ($iterable as $k => $value) {
         if (($ii % $size) === 0) {
-            $chunk_number++;
-            $result[$chunk_number] = [];
+            $chunkNumber++;
+            $result[$chunkNumber] = [];
         }
 
-        $result[$chunk_number][$k] = $value;
+        $result[$chunkNumber][$k] = $value;
         $ii++;
     }
 

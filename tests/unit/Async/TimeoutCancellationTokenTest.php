@@ -128,7 +128,7 @@ final class TimeoutCancellationTokenTest extends TestCase
 
             /** @var bool $called */
             $called = false;
-            $id = $token->subscribe(static function (Async\Exception\CancelledException $_e) use (&$called): void {
+            $id = $token->subscribe(static function (Async\Exception\CancelledException $_) use (&$called): void {
                 $called = true;
             });
 

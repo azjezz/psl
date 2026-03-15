@@ -25,8 +25,8 @@ interface LowerBoundRangeInterface extends IteratorAggregate, RangeInterface
      */
     #[Override]
     public function withUpperBound(
-        int $upper_bound,
-        bool $upper_inclusive,
+        int $upperBound,
+        bool $upperInclusive,
     ): UpperBoundRangeInterface&LowerBoundRangeInterface;
 
     /**
@@ -37,7 +37,7 @@ interface LowerBoundRangeInterface extends IteratorAggregate, RangeInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function withUpperBoundInclusive(int $upper_bound): UpperBoundRangeInterface&LowerBoundRangeInterface;
+    public function withUpperBoundInclusive(int $upperBound): UpperBoundRangeInterface&LowerBoundRangeInterface;
 
     /**
      * {@inheritDoc}
@@ -47,7 +47,7 @@ interface LowerBoundRangeInterface extends IteratorAggregate, RangeInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function withUpperBoundExclusive(int $upper_bound): UpperBoundRangeInterface&LowerBoundRangeInterface;
+    public function withUpperBoundExclusive(int $upperBound): UpperBoundRangeInterface&LowerBoundRangeInterface;
 
     /**
      * Remove the lower bound from the range.

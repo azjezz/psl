@@ -67,15 +67,15 @@ Async\main(
 
         $dots = ['⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷'];
 
-        $bar_chars = ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'];
+        $barChars = ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'];
 
-        $erase_eol = Screen\erase_line(Screen\LineEraseMode::Right)->toString();
+        $eraseEol = Screen\erase_line(Screen\LineEraseMode::Right)->toString();
 
-        $render_banner =
+        $renderBanner =
             /**
              * @param list<string> $banner
              */
-            static function (array $banner, int $offset) use ($rainbow, $erase_eol): string {
+            static function (array $banner, int $offset) use ($rainbow, $eraseEol): string {
                 $out = "\n";
                 foreach ($banner as $row => $line) {
                     $out .= '    ';
@@ -89,7 +89,7 @@ Async\main(
                         $out .= Ansi\apply($char, Style\bold(), Ansi\foreground($rainbow($hue)));
                     }
 
-                    $out .= $erase_eol . "\n";
+                    $out .= $eraseEol . "\n";
                 }
 
                 return $out;
@@ -100,12 +100,12 @@ Async\main(
                 /**
                  * @return Generator<int, string>
                  */
-                static function () use ($banner, $dots, $bar_chars, $rainbow, $render_banner): Generator {
+                static function () use ($banner, $dots, $barChars, $rainbow, $renderBanner): Generator {
                     for ($f = 0; $f < 72; $f++) {
                         $out = Cursor\move_to(1, 1)->toString() . Screen\title('PSL · ANSI Showcase')->toString();
 
                         // Rainbow Banner
-                        $out .= $render_banner($banner, $f * 5);
+                        $out .= $renderBanner($banner, $f * 5);
 
                         // Pulsing Subtitle
                         $v = (int) (155 + (100 * Math\sin(($f * Math\PI) / 36)));
@@ -136,7 +136,7 @@ Async\main(
                             $level = (Math\sin(($b * 0.6) + ($f * 0.18)) * 0.5) + 0.5;
                             $idx = (int) ($level * 7);
                             $hue = (($b * 11) + ($f * 5)) % 360;
-                            $out .= Ansi\apply($bar_chars[$idx], Style\bold(), Ansi\foreground($rainbow($hue)));
+                            $out .= Ansi\apply($barChars[$idx], Style\bold(), Ansi\foreground($rainbow($hue)));
                         }
 
                         $out .= "\n";
@@ -220,20 +220,20 @@ Async\main(
                 . Screen\erase(Screen\EraseMode::FullWithScrollback)->toString(),
         );
 
-        $frame_count = 0;
+        $frameCount = 0;
         $fps = 0;
-        $second_start = DateTime\Timestamp::monotonic();
+        $secondStart = DateTime\Timestamp::monotonic();
         while (true) {
             foreach ($frames as $frame) {
                 IO\write($frame);
 
-                $frame_count++;
+                $frameCount++;
                 $now = DateTime\Timestamp::monotonic();
-                $elapsed = $now->since($second_start);
+                $elapsed = $now->since($secondStart);
                 if ($elapsed->getTotalSeconds() >= 1.0) {
-                    $fps = (int) Math\round($frame_count / $elapsed->getTotalSeconds());
-                    $frame_count = 0;
-                    $second_start = $now;
+                    $fps = (int) Math\round($frameCount / $elapsed->getTotalSeconds());
+                    $frameCount = 0;
+                    $secondStart = $now;
                 }
 
                 IO\write(

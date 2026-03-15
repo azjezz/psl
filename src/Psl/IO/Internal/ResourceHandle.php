@@ -112,8 +112,8 @@ class ResourceHandle implements
                  * @param array{null|int<1, max>, Async\CancellationTokenInterface} $input
                  */
                 function (array $input) use ($blocks): string {
-                    [$max_bytes, $cancellation] = $input;
-                    $chunk = $this->tryRead($max_bytes);
+                    [$maxBytes, $cancellation] = $input;
+                    $chunk = $this->tryRead($maxBytes);
                     if ('' !== $chunk || $blocks) {
                         return $chunk;
                     }
@@ -128,7 +128,7 @@ class ResourceHandle implements
                     try {
                         $suspension->suspend();
 
-                        return $this->tryRead($max_bytes);
+                        return $this->tryRead($maxBytes);
                     } finally {
                         $this->readSuspension = null;
                         EventLoop::disable($this->readWatcher);
@@ -160,26 +160,26 @@ class ResourceHandle implements
                 function (array $input) use ($blocks): int {
                     [$bytes, $cancellation] = $input;
                     $written = $this->tryWrite($bytes);
-                    $remaining_bytes = substr($bytes, $written);
-                    if ($blocks || '' === $remaining_bytes) {
+                    $remainingBytes = substr($bytes, $written);
+                    if ($blocks || '' === $remainingBytes) {
                         return $written;
                     }
 
                     // Retry while the fd is still making progress before suspending.
                     // This avoids unnecessary fiber suspension when the fd is ready.
-                    while ('' !== $remaining_bytes) {
-                        $chunk = $this->tryWrite($remaining_bytes);
+                    while ('' !== $remainingBytes) {
+                        $chunk = $this->tryWrite($remainingBytes);
                         if ($chunk === 0) {
                             // fd not ready; must suspend and wait
                             break;
                         }
 
                         $written += $chunk;
-                        $remaining_bytes = substr($remaining_bytes, $chunk);
+                        $remainingBytes = substr($remainingBytes, $chunk);
                     }
 
                     /** @var int<0, max> $written */
-                    if ('' === $remaining_bytes) {
+                    if ('' === $remainingBytes) {
                         return $written;
                     }
 
@@ -193,7 +193,7 @@ class ResourceHandle implements
                     try {
                         $suspension->suspend();
 
-                        return $written + $this->tryWrite($remaining_bytes);
+                        return $written + $this->tryWrite($remainingBytes);
                     } finally {
                         $this->writeSuspension = null;
                         EventLoop::disable($this->writeWatcher);
@@ -298,27 +298,27 @@ class ResourceHandle implements
     }
 
     /**
-     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     * @param ?positive-int $maxBytes the maximum number of bytes to read
      *
      * @inheritDoc
      */
     #[Override]
-    public function tryRead(null|int $max_bytes = null): string
+    public function tryRead(null|int $maxBytes = null): string
     {
         if (!is_resource($this->stream)) {
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
-        if (null === $max_bytes) {
-            $max_bytes = self::DEFAULT_READ_BUFFER_SIZE;
-        } elseif ($max_bytes > self::MAXIMUM_READ_BUFFER_SIZE) {
-            $max_bytes = self::MAXIMUM_READ_BUFFER_SIZE;
+        if (null === $maxBytes) {
+            $maxBytes = self::DEFAULT_READ_BUFFER_SIZE;
+        } elseif ($maxBytes > self::MAXIMUM_READ_BUFFER_SIZE) {
+            $maxBytes = self::MAXIMUM_READ_BUFFER_SIZE;
         }
 
         if ($this->useSingleRead) {
-            $result = fread($this->stream, $max_bytes);
+            $result = fread($this->stream, $maxBytes);
         } else {
-            $result = stream_get_contents($this->stream, $max_bytes);
+            $result = stream_get_contents($this->stream, $maxBytes);
         }
 
         if (false === $result) {
@@ -336,18 +336,18 @@ class ResourceHandle implements
     }
 
     /**
-     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     * @param ?positive-int $maxBytes the maximum number of bytes to read
      *
      * @inheritDoc
      */
     #[Override]
     public function read(
-        null|int $max_bytes = null,
+        null|int $maxBytes = null,
         Async\CancellationTokenInterface $cancellation = new Async\NullCancellationToken(),
     ): string {
         Psl\invariant(null !== $this->readSequence, 'The resource handle is not readable.');
 
-        return $this->readSequence->waitFor([$max_bytes, $cancellation]);
+        return $this->readSequence->waitFor([$maxBytes, $cancellation]);
     }
 
     /**

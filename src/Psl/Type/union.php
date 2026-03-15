@@ -17,11 +17,11 @@ namespace Psl\Type;
  */
 function union(TypeInterface $first, TypeInterface $second, TypeInterface ...$rest): TypeInterface
 {
-    $accumulated_type = new Internal\UnionType($first, $second);
+    $accumulatedType = new Internal\UnionType($first, $second);
 
     foreach ($rest as $type) {
-        $accumulated_type = new Internal\UnionType($accumulated_type, $type);
+        $accumulatedType = new Internal\UnionType($accumulatedType, $type);
     }
 
-    return $accumulated_type;
+    return $accumulatedType;
 }

@@ -53,23 +53,23 @@ final class Stream implements TLS\StreamInterface
     }
 
     /**
-     * @param ?positive-int $max_bytes
+     * @param ?positive-int $maxBytes
      */
     #[Override]
-    public function tryRead(null|int $max_bytes = null): string
+    public function tryRead(null|int $maxBytes = null): string
     {
-        return $this->inner->tryRead($max_bytes);
+        return $this->inner->tryRead($maxBytes);
     }
 
     /**
-     * @param ?positive-int $max_bytes
+     * @param ?positive-int $maxBytes
      */
     #[Override]
     public function read(
-        null|int $max_bytes = null,
+        null|int $maxBytes = null,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): string {
-        return $this->inner->read($max_bytes, $cancellation);
+        return $this->inner->read($maxBytes, $cancellation);
     }
 
     /**
@@ -112,12 +112,12 @@ final class Stream implements TLS\StreamInterface
     }
 
     /**
-     * @param positive-int $max_bytes
+     * @param positive-int $maxBytes
      */
     #[Override]
-    public function peek(int $max_bytes, CancellationTokenInterface $cancellation = new NullCancellationToken()): string
+    public function peek(int $maxBytes, CancellationTokenInterface $cancellation = new NullCancellationToken()): string
     {
-        return $this->inner->peek($max_bytes, $cancellation);
+        return $this->inner->peek($maxBytes, $cancellation);
     }
 
     #[Override]

@@ -815,15 +815,15 @@ enum Locale: string
      */
     public static function default(): self
     {
-        $full_locale = NativeLocale::getDefault();
-        if (!$full_locale) {
+        $fullLocale = NativeLocale::getDefault();
+        if (!$fullLocale) {
             // Fallback to English if no locale is set or supported.
             return self::English;
         }
 
-        $language = (string) NativeLocale::getPrimaryLanguage($full_locale);
-        $script = (string) NativeLocale::getScript($full_locale);
-        $region = (string) NativeLocale::getRegion($full_locale);
+        $language = (string) NativeLocale::getPrimaryLanguage($fullLocale);
+        $script = (string) NativeLocale::getScript($fullLocale);
+        $region = (string) NativeLocale::getRegion($fullLocale);
 
         $locale = Str\lowercase($language);
         if ($script) {

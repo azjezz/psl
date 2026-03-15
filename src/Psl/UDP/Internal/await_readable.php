@@ -23,7 +23,7 @@ function await_readable(mixed $stream, CancellationTokenInterface $cancellation)
 
     $suspension = EventLoop::getSuspension();
 
-    $read_watcher = EventLoop::onReadable($stream, static function (string $watcher) use ($suspension): void {
+    $readWatcher = EventLoop::onReadable($stream, static function (string $watcher) use ($suspension): void {
         EventLoop::cancel($watcher);
         $suspension->resume();
     });
@@ -33,7 +33,7 @@ function await_readable(mixed $stream, CancellationTokenInterface $cancellation)
     try {
         $suspension->suspend();
     } finally {
-        EventLoop::cancel($read_watcher);
+        EventLoop::cancel($readWatcher);
         $cancellation->unsubscribe($id);
     }
 }

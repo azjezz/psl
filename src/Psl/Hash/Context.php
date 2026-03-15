@@ -41,9 +41,9 @@ final readonly class Context
      */
     public static function forAlgorithm(Algorithm $algorithm): Context
     {
-        $internal_context = hash_init($algorithm->value);
+        $internalContext = hash_init($algorithm->value);
 
-        return new self($internal_context);
+        return new self($internalContext);
     }
 
     /**
@@ -55,9 +55,9 @@ final readonly class Context
      */
     public static function hmac(Hmac\Algorithm $algorithm, string $key): Context
     {
-        $internal_context = hash_init($algorithm->value, HASH_HMAC, $key);
+        $internalContext = hash_init($algorithm->value, HASH_HMAC, $key);
 
-        return new self($internal_context);
+        return new self($internalContext);
     }
 
     /**
@@ -69,16 +69,16 @@ final readonly class Context
      */
     public function update(string $data): Context
     {
-        $internal_context = hash_copy($this->internalContext);
+        $internalContext = hash_copy($this->internalContext);
 
         // @codeCoverageIgnoreStart
-        if (!hash_update($internal_context, $data)) {
+        if (!hash_update($internalContext, $data)) {
             throw new Exception\RuntimeException('Unable to pump data into the active hashing context.');
         }
 
         // @codeCoverageIgnoreEnd
 
-        return new self($internal_context);
+        return new self($internalContext);
     }
 
     /**
@@ -88,8 +88,8 @@ final readonly class Context
      */
     public function finalize(): string
     {
-        $internal_context = hash_copy($this->internalContext);
+        $internalContext = hash_copy($this->internalContext);
 
-        return hash_final($internal_context, false);
+        return hash_final($internalContext, false);
     }
 }

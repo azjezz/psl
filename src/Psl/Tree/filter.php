@@ -39,15 +39,15 @@ function filter(NodeInterface $node, Closure $predicate): null|TreeNode
         return null;
     }
 
-    $filtered_children = [];
+    $filteredChildren = [];
     if ($node instanceof TreeNode) {
         foreach ($node->getChildren() as $child) {
             $filtered = filter($child, $predicate);
             if (null !== $filtered) {
-                $filtered_children[] = $filtered;
+                $filteredChildren[] = $filtered;
             }
         }
     }
 
-    return new TreeNode($node->getValue(), $filtered_children);
+    return new TreeNode($node->getValue(), $filteredChildren);
 }

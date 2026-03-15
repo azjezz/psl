@@ -45,9 +45,9 @@ final readonly class UIntType extends Type\Type
         }
 
         if (is_float($value)) {
-            $integer_value = (int) $value;
-            if ((float) $integer_value === $value && $integer_value >= 0) {
-                return $integer_value;
+            $integerValue = (int) $value;
+            if ((float) $integerValue === $value && $integerValue >= 0) {
+                return $integerValue;
             }
 
             throw CoercionException::withValue($value, $this->toString());

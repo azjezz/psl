@@ -12,7 +12,7 @@ use SensitiveParameter;
  *
  * @throws Exception\RuntimeException If signing fails.
  */
-function sign(#[SensitiveParameter] string $message, #[SensitiveParameter] SecretKey $secret_key): Signature
+function sign(#[SensitiveParameter] string $message, #[SensitiveParameter] SecretKey $secretKey): Signature
 {
-    return new Signer($secret_key)->sign($message);
+    return new Signer($secretKey)->sign($message);
 }

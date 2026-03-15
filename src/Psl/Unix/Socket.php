@@ -75,11 +75,11 @@ final class Socket
      * This consumes the socket; it cannot be reused after calling listen().
      *
      * @param int<1, max> $backlog Maximum length of the queue of pending connections.
-     * @param int<1, max> $idle_connections Maximum number of idle connections to buffer.
+     * @param int<1, max> $idleConnections Maximum number of idle connections to buffer.
      *
      * @throws Network\Exception\RuntimeException If listen fails.
      */
-    public function listen(int $backlog = 128, int $idle_connections = 256): ListenerInterface
+    public function listen(int $backlog = 128, int $idleConnections = 256): ListenerInterface
     {
         $this->ensureNotConsumed();
         $this->consumed = true;
@@ -96,7 +96,7 @@ final class Socket
 
         $stream = Network\Internal\server_listen("unix://{$this->bindPath}", $context);
 
-        return new Internal\Listener($stream, $idle_connections);
+        return new Internal\Listener($stream, $idleConnections);
     }
 
     /**

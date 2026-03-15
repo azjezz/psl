@@ -14,7 +14,7 @@ use function sodium_crypto_box_seal;
  *
  * Only the holder of the corresponding secret key can open the sealed message.
  */
-function seal(#[SensitiveParameter] string $plaintext, #[SensitiveParameter] PublicKey $public_key): string
+function seal(#[SensitiveParameter] string $plaintext, #[SensitiveParameter] PublicKey $publicKey): string
 {
-    return Internal\call_sodium(fn() => sodium_crypto_box_seal($plaintext, $public_key->bytes));
+    return Internal\call_sodium(fn() => sodium_crypto_box_seal($plaintext, $publicKey->bytes));
 }

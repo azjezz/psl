@@ -16,7 +16,7 @@ use function sodium_memzero;
 /**
  * HKDF-Expand: Expand a pseudorandom key to the desired length.
  *
- * @param non-empty-string $pseudo_random_key
+ * @param non-empty-string $pseudoRandomKey
  * @param positive-int $length Desired output length in bytes.
  *
  * @throws Exception\RuntimeException If the requested length exceeds the maximum.
@@ -27,7 +27,7 @@ use function sodium_memzero;
  */
 function expand(
     #[SensitiveParameter]
-    string $pseudo_random_key,
+    string $pseudoRandomKey,
     string $info = '',
     int $length = 32,
     Hmac\Algorithm $algorithm = Hmac\Algorithm::Sha256,
@@ -49,7 +49,7 @@ function expand(
 
     while (Byte\length($okm) < $length) {
         $previous = $t;
-        $t = Hex\decode(Hmac\hash($t . $info . chr($counter), $algorithm, $pseudo_random_key));
+        $t = Hex\decode(Hmac\hash($t . $info . chr($counter), $algorithm, $pseudoRandomKey));
         if ($previous !== '') {
             sodium_memzero($previous);
         }

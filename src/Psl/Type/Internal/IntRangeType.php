@@ -60,9 +60,9 @@ final readonly class IntRangeType extends Type\Type
         }
 
         if (is_float($value)) {
-            $integer_value = (int) $value;
-            if ((float) $integer_value === $value) {
-                return $integer_value;
+            $integerValue = (int) $value;
+            if ((float) $integerValue === $value) {
+                return $integerValue;
             }
         }
 

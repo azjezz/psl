@@ -9,7 +9,7 @@ namespace Psl\Range;
  *
  * @psalm-mutation-free
  */
-function between(int $lower_bound, int $upper_bound, bool $upper_inclusive = false): BetweenRange
+function between(int $lowerBound, int $upperBound, bool $upperInclusive = false): BetweenRange
 {
-    return new BetweenRange($lower_bound, $upper_bound, $upper_inclusive);
+    return new BetweenRange($lowerBound, $upperBound, $upperInclusive);
 }

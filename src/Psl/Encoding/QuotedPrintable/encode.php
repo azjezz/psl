@@ -11,12 +11,12 @@ use function str_replace;
 /**
  * Encode a string using quoted-printable encoding per RFC 2045 §6.7.
  *
- * @param positive-int $max_line_length Maximum encoded line length (default 76 per RFC 2045).
- * @param non-empty-string $line_ending Line ending sequence (default "\r\n" per RFC 2045).
+ * @param positive-int $maxLineLength Maximum encoded line length (default 76 per RFC 2045).
+ * @param non-empty-string $lineEnding Line ending sequence (default "\r\n" per RFC 2045).
  *
  * @link https://datatracker.ietf.org/doc/html/rfc2045#section-6.7
  */
-function encode(string $data, int $max_line_length = 76, string $line_ending = "\r\n"): string
+function encode(string $data, int $maxLineLength = 76, string $lineEnding = "\r\n"): string
 {
     if ($data === '') {
         return '';
@@ -29,8 +29,8 @@ function encode(string $data, int $max_line_length = 76, string $line_ending = "
     $result = [];
 
     foreach ($lines as $line) {
-        $result[] = encode_line($line, $max_line_length, $line_ending);
+        $result[] = encode_line($line, $maxLineLength, $lineEnding);
     }
 
-    return implode($line_ending, $result);
+    return implode($lineEnding, $result);
 }

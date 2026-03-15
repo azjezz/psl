@@ -19,11 +19,11 @@ use function error_reporting;
  */
 function suppress(Closure $fun): mixed
 {
-    $previous_level = error_reporting(0);
+    $previousLevel = error_reporting(0);
 
     try {
         return $fun();
     } finally {
-        error_reporting($previous_level);
+        error_reporting($previousLevel);
     }
 }

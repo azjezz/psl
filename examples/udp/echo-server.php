@@ -34,11 +34,11 @@ Async\main(static function (): int {
             $socket = UDP\Socket::bind('127.0.0.1', 0);
             IO\write_error_line('> client bound to %s', $socket->getLocalAddress()->toString());
 
-            $server_address = Address::udp('127.0.0.1', 9999);
+            $serverAddress = Address::udp('127.0.0.1', 9999);
 
             $messages = ['Hello', 'World', 'UDP!'];
             foreach ($messages as $msg) {
-                $socket->sendTo($msg, $server_address);
+                $socket->sendTo($msg, $serverAddress);
                 IO\write_error_line('> sent: "%s"', $msg);
 
                 [$response, $from] = $socket->receiveFrom(1024);

@@ -9,9 +9,9 @@ use ReflectionClass;
 /**
  * Checks if class is final.
  *
- * @param class-string $class_name
+ * @param class-string $className
  */
-function is_final(string $class_name): bool
+function is_final(string $className): bool
 {
-    return new ReflectionClass($class_name)->isFinal();
+    return new ReflectionClass($className)->isFinal();
 }

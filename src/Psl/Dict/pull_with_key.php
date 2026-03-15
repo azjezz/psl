@@ -8,8 +8,8 @@ use Closure;
 
 /**
  * Returns a dict where:
- *  - values are the result of calling `$value_func` on the original value/key
- *  - keys are the result of calling `$key_func` on the original value/key.
+ *  - values are the result of calling `$valueFunc` on the original value/key
+ *  - keys are the result of calling `$keyFunc` on the original value/key.
  *
  * Example:
  *
@@ -29,16 +29,16 @@ use Closure;
  * @template Tv2
  *
  * @param iterable<Tk1, Tv1> $iterable
- * @param (Closure(Tk1, Tv1): Tv2) $value_func
- * @param (Closure(Tk1, Tv1): Tk2) $key_func
+ * @param (Closure(Tk1, Tv1): Tv2) $valueFunc
+ * @param (Closure(Tk1, Tv1): Tk2) $keyFunc
  *
  * @return array<Tk2, Tv2>
  */
-function pull_with_key(iterable $iterable, Closure $value_func, Closure $key_func): array
+function pull_with_key(iterable $iterable, Closure $valueFunc, Closure $keyFunc): array
 {
     $result = [];
     foreach ($iterable as $key => $value) {
-        $result[$key_func($key, $value)] = $value_func($key, $value);
+        $result[$keyFunc($key, $value)] = $valueFunc($key, $value);
     }
 
     return $result;

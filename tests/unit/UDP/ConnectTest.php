@@ -14,13 +14,13 @@ final class ConnectTest extends TestCase
     {
         Async\run(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
-            $server_addr = $server->getLocalAddress();
+            $serverAddr = $server->getLocalAddress();
 
-            $connected = UDP\connect($server_addr->host, $server_addr->port);
+            $connected = UDP\connect($serverAddr->host, $serverAddr->port);
 
             static::assertInstanceOf(UDP\ConnectedSocket::class, $connected);
-            static::assertSame($server_addr->host, $connected->getPeerAddress()->host);
-            static::assertSame($server_addr->port, $connected->getPeerAddress()->port);
+            static::assertSame($serverAddr->host, $connected->getPeerAddress()->host);
+            static::assertSame($serverAddr->port, $connected->getPeerAddress()->port);
 
             $connected->close();
             $server->close();
@@ -31,9 +31,9 @@ final class ConnectTest extends TestCase
     {
         Async\run(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
-            $server_addr = $server->getLocalAddress();
+            $serverAddr = $server->getLocalAddress();
 
-            $connected = UDP\connect($server_addr->host, $server_addr->port);
+            $connected = UDP\connect($serverAddr->host, $serverAddr->port);
 
             $connected->send('hello');
 

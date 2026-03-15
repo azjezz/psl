@@ -9,9 +9,9 @@ use ReflectionClass;
 /**
  * Checks if method is defined in the given class.
  *
- * @param class-string $class_name
+ * @param class-string $className
  */
-function has_method(string $class_name, string $method_name): bool
+function has_method(string $className, string $methodName): bool
 {
-    return new ReflectionClass($class_name)->hasMethod($method_name);
+    return new ReflectionClass($className)->hasMethod($methodName);
 }

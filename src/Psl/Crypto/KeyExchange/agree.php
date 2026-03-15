@@ -15,10 +15,10 @@ use function sodium_memzero;
  *
  * Returns the shared secret computed from a local secret key and a remote public key.
  */
-function agree(#[SensitiveParameter] SecretKey $secret_key, #[SensitiveParameter] PublicKey $public_key): SharedSecret
+function agree(#[SensitiveParameter] SecretKey $secretKey, #[SensitiveParameter] PublicKey $publicKey): SharedSecret
 {
     /** @var non-empty-string $raw */
-    $raw = Internal\call_sodium(fn() => sodium_crypto_scalarmult($secret_key->bytes, $public_key->bytes));
+    $raw = Internal\call_sodium(fn() => sodium_crypto_scalarmult($secretKey->bytes, $publicKey->bytes));
     $result = new SharedSecret($raw);
     sodium_memzero($raw);
 

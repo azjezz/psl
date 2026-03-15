@@ -69,14 +69,14 @@ final readonly class ClientConfig implements DefaultInterface
     }
 
     /**
-     * @param ?non-empty-string $peer_name SNI hostname for the TLS handshake.
+     * @param ?non-empty-string $peerName SNI hostname for the TLS handshake.
      *
      * @psalm-mutation-free
      */
-    public function withPeerName(null|string $peer_name): self
+    public function withPeerName(null|string $peerName): self
     {
         return new self(
-            $peer_name,
+            $peerName,
             $this->peerVerification,
             $this->peerNameVerification,
             $this->allowSelfSigned,
@@ -175,18 +175,18 @@ final readonly class ClientConfig implements DefaultInterface
     }
 
     /**
-     * @param ?non-empty-string $certificate_authority Path to a CA file.
+     * @param ?non-empty-string $certificateAuthority Path to a CA file.
      *
      * @psalm-mutation-free
      */
-    public function withCertificateAuthority(null|string $certificate_authority): self
+    public function withCertificateAuthority(null|string $certificateAuthority): self
     {
         return new self(
             $this->peerName,
             $this->peerVerification,
             $this->peerNameVerification,
             $this->allowSelfSigned,
-            $certificate_authority,
+            $certificateAuthority,
             $this->certificateAuthorityPath,
             $this->certificate,
             $this->minimumVersion,
@@ -202,11 +202,11 @@ final readonly class ClientConfig implements DefaultInterface
     }
 
     /**
-     * @param ?non-empty-string $certificate_authority_path Path to a CA directory.
+     * @param ?non-empty-string $certificateAuthorityPath Path to a CA directory.
      *
      * @psalm-mutation-free
      */
-    public function withCertificateAuthorityPath(null|string $certificate_authority_path): self
+    public function withCertificateAuthorityPath(null|string $certificateAuthorityPath): self
     {
         return new self(
             $this->peerName,
@@ -214,7 +214,7 @@ final readonly class ClientConfig implements DefaultInterface
             $this->peerNameVerification,
             $this->allowSelfSigned,
             $this->certificateAuthority,
-            $certificate_authority_path,
+            $certificateAuthorityPath,
             $this->certificate,
             $this->minimumVersion,
             $this->maximumVersion,
@@ -256,7 +256,7 @@ final readonly class ClientConfig implements DefaultInterface
     /**
      * @psalm-mutation-free
      */
-    public function withMinimumVersion(null|Version $minimum_version): self
+    public function withMinimumVersion(null|Version $minimumVersion): self
     {
         return new self(
             $this->peerName,
@@ -266,7 +266,7 @@ final readonly class ClientConfig implements DefaultInterface
             $this->certificateAuthority,
             $this->certificateAuthorityPath,
             $this->certificate,
-            $minimum_version,
+            $minimumVersion,
             $this->maximumVersion,
             $this->ciphers,
             $this->securityLevel,
@@ -281,7 +281,7 @@ final readonly class ClientConfig implements DefaultInterface
     /**
      * @psalm-mutation-free
      */
-    public function withMaximumVersion(null|Version $maximum_version): self
+    public function withMaximumVersion(null|Version $maximumVersion): self
     {
         return new self(
             $this->peerName,
@@ -292,7 +292,7 @@ final readonly class ClientConfig implements DefaultInterface
             $this->certificateAuthorityPath,
             $this->certificate,
             $this->minimumVersion,
-            $maximum_version,
+            $maximumVersion,
             $this->ciphers,
             $this->securityLevel,
             $this->alpnProtocols,
@@ -331,11 +331,11 @@ final readonly class ClientConfig implements DefaultInterface
     }
 
     /**
-     * @param int<0, 5> $security_level OpenSSL security level.
+     * @param int<0, 5> $securityLevel OpenSSL security level.
      *
      * @psalm-mutation-free
      */
-    public function withSecurityLevel(int $security_level): self
+    public function withSecurityLevel(int $securityLevel): self
     {
         return new self(
             $this->peerName,
@@ -348,7 +348,7 @@ final readonly class ClientConfig implements DefaultInterface
             $this->minimumVersion,
             $this->maximumVersion,
             $this->ciphers,
-            $security_level,
+            $securityLevel,
             $this->alpnProtocols,
             $this->sessionTickets,
             $this->peerFingerprints,
@@ -358,11 +358,11 @@ final readonly class ClientConfig implements DefaultInterface
     }
 
     /**
-     * @param ?list<non-empty-string> $alpn_protocols ALPN protocol list (e.g. ['h2', 'http/1.1']).
+     * @param ?list<non-empty-string> $alpnProtocols ALPN protocol list (e.g. ['h2', 'http/1.1']).
      *
      * @psalm-mutation-free
      */
-    public function withAlpnProtocols(null|array $alpn_protocols): self
+    public function withAlpnProtocols(null|array $alpnProtocols): self
     {
         return new self(
             $this->peerName,
@@ -376,7 +376,7 @@ final readonly class ClientConfig implements DefaultInterface
             $this->maximumVersion,
             $this->ciphers,
             $this->securityLevel,
-            $alpn_protocols,
+            $alpnProtocols,
             $this->sessionTickets,
             $this->peerFingerprints,
             $this->sniEnabled,

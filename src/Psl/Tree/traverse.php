@@ -64,7 +64,7 @@ function traverse(NodeInterface $tree, Closure $transform): mixed
 {
     $value = $tree->getValue();
 
-    $get_children = static function () use ($tree, $transform): array {
+    $getChildren = static function () use ($tree, $transform): array {
         if (!$tree instanceof TreeNode) {
             return [];
         }
@@ -72,5 +72,5 @@ function traverse(NodeInterface $tree, Closure $transform): mixed
         return Vec\map($tree->getChildren(), static fn(NodeInterface $child): mixed => traverse($child, $transform));
     };
 
-    return $transform($value, $get_children);
+    return $transform($value, $getChildren);
 }

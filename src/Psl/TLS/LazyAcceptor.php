@@ -73,7 +73,7 @@ final class LazyAcceptor implements DefaultInterface
             $suspension->resume(null);
         });
 
-        $cancellation_id = $cancellation->subscribe(static function (CancelledException $e) use (
+        $cancellationId = $cancellation->subscribe(static function (CancelledException $e) use (
             &$watcher,
             $suspension,
         ): void {
@@ -85,7 +85,7 @@ final class LazyAcceptor implements DefaultInterface
             $suspension->suspend();
         } finally {
             EventLoop::cancel($watcher);
-            $cancellation->unsubscribe($cancellation_id);
+            $cancellation->unsubscribe($cancellationId);
         }
 
         // Resource may have been closed by another fiber during suspend.

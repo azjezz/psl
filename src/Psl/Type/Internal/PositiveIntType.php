@@ -65,10 +65,10 @@ final readonly class PositiveIntType extends Type\Type
         }
 
         if (is_float($value)) {
-            $integer_value = (int) $value;
-            $reconstructed = (float) $integer_value;
-            if ($reconstructed === $value && $integer_value > 0) {
-                return $integer_value;
+            $integerValue = (int) $value;
+            $reconstructed = (float) $integerValue;
+            if ($reconstructed === $value && $integerValue > 0) {
+                return $integerValue;
             }
         }
 

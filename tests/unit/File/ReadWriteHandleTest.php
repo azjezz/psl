@@ -70,12 +70,12 @@ final class ReadWriteHandleTest extends TestCase
         $handle = File\open_read_write($file);
         $handle->writeAll('herpderp');
 
-        $file_stream = $handle->getStream();
-        static::assertIsNotClosedResource($file_stream);
+        $fileStream = $handle->getStream();
+        static::assertIsNotClosedResource($fileStream);
 
         $handle->close();
 
-        static::assertIsClosedResource($file_stream);
+        static::assertIsClosedResource($fileStream);
 
         static::assertNull($handle->getStream());
     }
@@ -90,12 +90,12 @@ final class ReadWriteHandleTest extends TestCase
 
     public function testAppendToNonExistingFile(): void
     {
-        $temporary_file = Filesystem\create_temporary_file();
-        Filesystem\delete_file($temporary_file);
+        $temporaryFile = Filesystem\create_temporary_file();
+        Filesystem\delete_file($temporaryFile);
 
-        static::assertFalse(Filesystem\is_file($temporary_file));
+        static::assertFalse(Filesystem\is_file($temporaryFile));
 
-        $handle = File\open_read_write($temporary_file, File\WriteMode::Append);
+        $handle = File\open_read_write($temporaryFile, File\WriteMode::Append);
         $handle->writeAll('hello');
         $handle->seek(0);
 
@@ -105,7 +105,7 @@ final class ReadWriteHandleTest extends TestCase
 
         $handle->close();
 
-        static::assertTrue(Filesystem\is_file($temporary_file));
+        static::assertTrue(Filesystem\is_file($temporaryFile));
     }
 
     public function testAppendToANonWritableFile(): void
@@ -114,13 +114,13 @@ final class ReadWriteHandleTest extends TestCase
             static::markTestSkipped('Permissions are not reliable on windows.');
         }
 
-        $temporary_file = Filesystem\create_temporary_file();
-        Filesystem\change_permissions($temporary_file, 0o555);
+        $temporaryFile = Filesystem\create_temporary_file();
+        Filesystem\change_permissions($temporaryFile, 0o555);
 
         $this->expectException(File\Exception\NotWritableException::class);
-        $this->expectExceptionMessage('File "' . $temporary_file . '" is not writable.');
+        $this->expectExceptionMessage('File "' . $temporaryFile . '" is not writable.');
 
-        new File\ReadWriteHandle($temporary_file, File\WriteMode::Append);
+        new File\ReadWriteHandle($temporaryFile, File\WriteMode::Append);
     }
 
     public function testOpenNonReadableFile(): void
@@ -129,13 +129,13 @@ final class ReadWriteHandleTest extends TestCase
             static::markTestSkipped('Permissions are not reliable on windows.');
         }
 
-        $temporary_file = Filesystem\create_temporary_file();
-        Filesystem\change_permissions($temporary_file, 0o333);
+        $temporaryFile = Filesystem\create_temporary_file();
+        Filesystem\change_permissions($temporaryFile, 0o333);
 
         $this->expectException(File\Exception\NotReadableException::class);
-        $this->expectExceptionMessage('File "' . $temporary_file . '" is not readable.');
+        $this->expectExceptionMessage('File "' . $temporaryFile . '" is not readable.');
 
-        new File\ReadWriteHandle($temporary_file, File\WriteMode::Append);
+        new File\ReadWriteHandle($temporaryFile, File\WriteMode::Append);
     }
 
     public function testThrowsWhenCreatingFile(): void
@@ -144,12 +144,12 @@ final class ReadWriteHandleTest extends TestCase
             static::markTestSkipped('Permissions are not reliable on windows.');
         }
 
-        $temporary_file = Filesystem\create_temporary_file();
-        Filesystem\delete_file($temporary_file);
-        Filesystem\create_directory($temporary_file);
-        Filesystem\change_permissions($temporary_file, 0o555);
+        $temporaryFile = Filesystem\create_temporary_file();
+        Filesystem\delete_file($temporaryFile);
+        Filesystem\create_directory($temporaryFile);
+        Filesystem\change_permissions($temporaryFile, 0o555);
 
-        $file = $temporary_file . Filesystem\SEPARATOR . 'foo';
+        $file = $temporaryFile . Filesystem\SEPARATOR . 'foo';
 
         $this->expectException(File\Exception\NotWritableException::class);
         $this->expectExceptionMessage('File "' . $file . '" is not writable.');
@@ -167,12 +167,12 @@ final class ReadWriteHandleTest extends TestCase
 
     public function testCreateNonExisting(): void
     {
-        $temporary_file = Filesystem\create_temporary_file();
-        Filesystem\delete_file($temporary_file);
+        $temporaryFile = Filesystem\create_temporary_file();
+        Filesystem\delete_file($temporaryFile);
 
-        static::assertFalse(Filesystem\is_file($temporary_file));
+        static::assertFalse(Filesystem\is_file($temporaryFile));
 
-        $handle = File\open_read_write($temporary_file, File\WriteMode::MustCreate);
+        $handle = File\open_read_write($temporaryFile, File\WriteMode::MustCreate);
         $handle->tryWrite('hello');
         $handle->seek(0);
 
@@ -182,7 +182,7 @@ final class ReadWriteHandleTest extends TestCase
 
         $handle->close();
 
-        static::assertTrue(Filesystem\is_file($temporary_file));
+        static::assertTrue(Filesystem\is_file($temporaryFile));
     }
 
     /**

@@ -7,8 +7,8 @@ namespace Psl\Tests\StaticAnalysis\Str;
 use Psl;
 use Psl\Str;
 
-/** @param non-empty-string $_foo */
-function take_non_empty_string(string $_foo): void {}
+/** @param non-empty-string $_ */
+function take_non_empty_string(string $_): void {}
 
 /** @return non-empty-string */
 function return_non_empty_string(): string

@@ -38,19 +38,19 @@ final readonly class Scheduler
     /**
      * Execute a callback when a signal is received.
      *
-     * @param int $signal_number The signal number to monitor.
+     * @param int $signalNumber The signal number to monitor.
      * @param (Closure(string, int): void) $callback The callback to execute.
      *
      * @return non-empty-string A unique identifier that can be used to cancel, enable or disable the callback.
      *
      * @see EventLoop::onSignal()
      */
-    public static function onSignal(int $signal_number, Closure $callback): string
+    public static function onSignal(int $signalNumber, Closure $callback): string
     {
         /**
          * @var non-empty-string
          */
-        return EventLoop::onSignal($signal_number, $callback);
+        return EventLoop::onSignal($signalNumber, $callback);
     }
 
     /**

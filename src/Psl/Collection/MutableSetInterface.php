@@ -220,7 +220,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * As {@see MutableSetInterface} does not have keys, this method returns the value itself.
      *
-     * @param T $search_value The value that will be search for in the current
+     * @param T $searchValue The value that will be search for in the current
      *                        `MutableSetInterface`.
      *
      * @return T|null The value if its found, null otherwise.
@@ -228,7 +228,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * @psalm-mutation-free
      */
     #[Override]
-    public function linearSearch(mixed $search_value): null|int|string;
+    public function linearSearch(mixed $searchValue): null|int|string;
 
     /**
      * Always throws an exception since `Set` can only contain array-key values.

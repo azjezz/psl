@@ -18,12 +18,12 @@ use Closure;
  * @template Ts
  *
  * @param iterable<Tk, Tv> $iterable
- * @param (Closure(Tv): Ts) $scalar_func
+ * @param (Closure(Tv): Ts) $scalarFunc
  * @param (Closure(Ts, Ts): int)|null $comparator
  *
  * @return array<Tk, Tv>
  */
-function sort_by(iterable $iterable, Closure $scalar_func, null|Closure $comparator = null): array
+function sort_by(iterable $iterable, Closure $scalarFunc, null|Closure $comparator = null): array
 {
     $comparator ??=
         /**
@@ -34,7 +34,7 @@ function sort_by(iterable $iterable, Closure $scalar_func, null|Closure $compara
          */
         static fn(mixed $a, mixed $b): int => $a <=> $b;
 
-    $tuple_comparator =
+    $tupleComparator =
         /**
          * @param array{0: Ts, 1: Tv} $a
          * @param array{0: Ts, 1: Tv} $b
@@ -46,10 +46,10 @@ function sort_by(iterable $iterable, Closure $scalar_func, null|Closure $compara
      */
     $tuples = [];
     foreach ($iterable as $k => $v) {
-        $tuples[$k] = [$scalar_func($v), $v];
+        $tuples[$k] = [$scalarFunc($v), $v];
     }
 
-    $sorted = namespace\sort($tuples, $tuple_comparator);
+    $sorted = namespace\sort($tuples, $tupleComparator);
 
     /** @var array<Tk, Tv> $result */
     $result = [];

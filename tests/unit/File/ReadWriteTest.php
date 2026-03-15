@@ -131,15 +131,15 @@ final class ReadWriteTest extends AbstractFilesystemTestCase
             static::markTestSkipped('Permissions are not reliable on windows.');
         }
 
-        $target_directory = Env\temp_dir() . DIRECTORY_SEPARATOR . 'you-shall-not-pass';
-        Filesystem\create_directory($target_directory, 0o000);
+        $targetDirectory = Env\temp_dir() . DIRECTORY_SEPARATOR . 'you-shall-not-pass';
+        Filesystem\create_directory($targetDirectory, 0o000);
 
-        $target_file =
-            $target_directory . DIRECTORY_SEPARATOR . 'fails-on-subdir-creation' . DIRECTORY_SEPARATOR . 'somefile.txt';
+        $targetFile =
+            $targetDirectory . DIRECTORY_SEPARATOR . 'fails-on-subdir-creation' . DIRECTORY_SEPARATOR . 'somefile.txt';
 
         $this->expectException(File\Exception\RuntimeException::class);
-        $this->expectExceptionMessage('Failed to create the directory for file "' . $target_file . '".');
+        $this->expectExceptionMessage('Failed to create the directory for file "' . $targetFile . '".');
 
-        new File\ReadWriteHandle($target_file, File\WriteMode::MustCreate);
+        new File\ReadWriteHandle($targetFile, File\WriteMode::MustCreate);
     }
 }

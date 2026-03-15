@@ -14,15 +14,15 @@ use Closure;
  * @template Tv
  *
  * @param iterable<Tk> $keys
- * @param (Closure(Tk): Tv) $value_func
+ * @param (Closure(Tk): Tv) $valueFunc
  *
  * @return array<Tk, Tv>
  */
-function from_keys(iterable $keys, Closure $value_func): array
+function from_keys(iterable $keys, Closure $valueFunc): array
 {
     $result = [];
     foreach ($keys as $key) {
-        $result[$key] = $value_func($key);
+        $result[$key] = $valueFunc($key);
     }
 
     return $result;

@@ -18,14 +18,14 @@ Async\concurrently([
         $stream->writeAll('hello');
         $stream->shutdown(); // signal EOF to the remote peer
 
-        $_response = $stream->readAll();
+        $_ = $stream->readAll();
 
         // Peek at incoming data without consuming it
         // (only works before data is consumed)
 
         // Inspect addresses
-        $_local = $stream->getLocalAddress();
-        $_remote = $stream->getPeerAddress();
+        $_ = $stream->getLocalAddress();
+        $_ = $stream->getPeerAddress();
 
         $stream->close();
         $listener->close();

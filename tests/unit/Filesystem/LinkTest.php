@@ -51,46 +51,46 @@ final class LinkTest extends AbstractFilesystemTestCase
     public function testSymbolicLinkOverwrite(): void
     {
         $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
-        $symbolic_link = Str\join([$this->directory, 'symbolic_link.txt'], Filesystem\SEPARATOR);
+        $symbolicLink = Str\join([$this->directory, 'symbolic_link.txt'], Filesystem\SEPARATOR);
 
         Filesystem\create_file($file);
-        Filesystem\create_file($symbolic_link);
+        Filesystem\create_file($symbolicLink);
 
-        static::assertFalse(Filesystem\is_symbolic_link($symbolic_link));
+        static::assertFalse(Filesystem\is_symbolic_link($symbolicLink));
 
-        Filesystem\create_symbolic_link($file, $symbolic_link);
+        Filesystem\create_symbolic_link($file, $symbolicLink);
 
-        static::assertTrue(Filesystem\is_symbolic_link($symbolic_link));
-        static::assertSame($file, Filesystem\read_symbolic_link($symbolic_link));
+        static::assertTrue(Filesystem\is_symbolic_link($symbolicLink));
+        static::assertSame($file, Filesystem\read_symbolic_link($symbolicLink));
 
         $file = Str\join([$this->directory, 'foo', 'bar'], Filesystem\SEPARATOR);
-        $symbolic_link = Str\join([$this->directory, 'foo', 'baz'], Filesystem\SEPARATOR);
+        $symbolicLink = Str\join([$this->directory, 'foo', 'baz'], Filesystem\SEPARATOR);
 
         Filesystem\create_file($file);
-        Filesystem\create_directory($symbolic_link);
+        Filesystem\create_directory($symbolicLink);
 
-        static::assertFalse(Filesystem\is_symbolic_link($symbolic_link));
+        static::assertFalse(Filesystem\is_symbolic_link($symbolicLink));
 
-        Filesystem\create_symbolic_link($file, $symbolic_link);
+        Filesystem\create_symbolic_link($file, $symbolicLink);
 
-        static::assertTrue(Filesystem\is_symbolic_link($symbolic_link));
-        static::assertSame($file, Filesystem\read_symbolic_link($symbolic_link));
+        static::assertTrue(Filesystem\is_symbolic_link($symbolicLink));
+        static::assertSame($file, Filesystem\read_symbolic_link($symbolicLink));
     }
 
     public function testSymbolicLinkCreatesDestinationsDirectory(): void
     {
         $directory = Str\join([$this->directory, 'foo'], Filesystem\SEPARATOR);
         $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
-        $symbolic_link = Str\join([$directory, 'symbolic.txt'], Filesystem\SEPARATOR);
+        $symbolicLink = Str\join([$directory, 'symbolic.txt'], Filesystem\SEPARATOR);
 
         static::assertFalse(Filesystem\is_directory($directory));
 
         Filesystem\create_file($file);
-        Filesystem\create_symbolic_link($file, $symbolic_link);
+        Filesystem\create_symbolic_link($file, $symbolicLink);
 
         static::assertTrue(Filesystem\is_directory($directory));
 
-        Filesystem\delete_file($symbolic_link);
+        Filesystem\delete_file($symbolicLink);
     }
 
     public function testHardLink(): void
@@ -170,24 +170,24 @@ final class LinkTest extends AbstractFilesystemTestCase
     public function testHardLinkCreatesDestinationDirectory(): void
     {
         $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
-        $destination_directory = Str\join([$this->directory, 'foo'], Filesystem\SEPARATOR);
-        $hardlink = Str\join([$destination_directory, 'hardlink.txt'], Filesystem\SEPARATOR);
+        $destinationDirectory = Str\join([$this->directory, 'foo'], Filesystem\SEPARATOR);
+        $hardlink = Str\join([$destinationDirectory, 'hardlink.txt'], Filesystem\SEPARATOR);
 
         try {
             Filesystem\create_file($file);
 
-            static::assertFalse(Filesystem\is_directory($destination_directory));
+            static::assertFalse(Filesystem\is_directory($destinationDirectory));
 
             Filesystem\create_hard_link($file, $hardlink);
 
-            static::assertTrue(Filesystem\is_directory($destination_directory));
+            static::assertTrue(Filesystem\is_directory($destinationDirectory));
             static::assertTrue(Filesystem\exists($hardlink));
             static::assertFalse(Filesystem\is_symbolic_link($hardlink));
 
             static::assertSame(Filesystem\get_inode($file), Filesystem\get_inode($hardlink));
         } finally {
             Filesystem\delete_file($hardlink);
-            Filesystem\delete_directory($destination_directory, true);
+            Filesystem\delete_directory($destinationDirectory, true);
             Filesystem\delete_file($file);
         }
     }

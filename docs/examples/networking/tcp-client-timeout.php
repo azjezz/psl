@@ -13,7 +13,7 @@ $listener = TCP\listen('127.0.0.1');
 Async\concurrently([
     'server' => static function () use ($listener): void {
         $connection = $listener->accept();
-        $_request = $connection->readAll();
+        $_ = $connection->readAll();
         $connection->writeAll("HTTP/1.0 200 OK\r\n\r\nHello");
         $connection->close();
         $listener->close();
@@ -27,7 +27,7 @@ Async\concurrently([
         );
         $client->writeAll("GET / HTTP/1.0\r\nHost: localhost\r\n\r\n");
         $client->shutdown();
-        $_response = $client->readAll();
+        $_ = $client->readAll();
         $client->close();
     },
 ]);

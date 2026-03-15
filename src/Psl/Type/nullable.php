@@ -9,11 +9,11 @@ namespace Psl\Type;
  *
  * @template T
  *
- * @param TypeInterface<T> $inner_type
+ * @param TypeInterface<T> $innerType
  *
  * @return TypeInterface<T|null>
  */
-function nullable(TypeInterface $inner_type): TypeInterface
+function nullable(TypeInterface $innerType): TypeInterface
 {
-    return new Internal\NullableType($inner_type);
+    return new Internal\NullableType($innerType);
 }

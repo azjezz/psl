@@ -25,10 +25,10 @@ final readonly class ToRange implements UpperBoundRangeInterface
     /**
      * @psalm-mutation-free
      */
-    public function __construct(int $upper_bound, bool $upper_inclusive = false)
+    public function __construct(int $upperBound, bool $upperInclusive = false)
     {
-        $this->upperBound = $upper_bound;
-        $this->upperInclusive = $upper_inclusive;
+        $this->upperBound = $upperBound;
+        $this->upperInclusive = $upperInclusive;
     }
 
     /**
@@ -54,9 +54,9 @@ final readonly class ToRange implements UpperBoundRangeInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function withLowerBound(int $lower_bound): BetweenRange
+    public function withLowerBound(int $lowerBound): BetweenRange
     {
-        return new BetweenRange($lower_bound, $this->upperBound, $this->upperInclusive);
+        return new BetweenRange($lowerBound, $this->upperBound, $this->upperInclusive);
     }
 
     /**
@@ -76,9 +76,9 @@ final readonly class ToRange implements UpperBoundRangeInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function withUpperBound(int $upper_bound, bool $upper_inclusive): ToRange
+    public function withUpperBound(int $upperBound, bool $upperInclusive): ToRange
     {
-        return new self($upper_bound, $upper_inclusive);
+        return new self($upperBound, $upperInclusive);
     }
 
     /**
@@ -87,9 +87,9 @@ final readonly class ToRange implements UpperBoundRangeInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function withUpperBoundInclusive(int $upper_bound): ToRange
+    public function withUpperBoundInclusive(int $upperBound): ToRange
     {
-        return new self($upper_bound, true);
+        return new self($upperBound, true);
     }
 
     /**
@@ -98,9 +98,9 @@ final readonly class ToRange implements UpperBoundRangeInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function withUpperBoundExclusive(int $upper_bound): ToRange
+    public function withUpperBoundExclusive(int $upperBound): ToRange
     {
-        return new self($upper_bound, false);
+        return new self($upperBound, false);
     }
 
     /**
@@ -131,8 +131,8 @@ final readonly class ToRange implements UpperBoundRangeInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function withUpperInclusive(bool $upper_inclusive): static
+    public function withUpperInclusive(bool $upperInclusive): static
     {
-        return new static($this->upperBound, $upper_inclusive);
+        return new static($this->upperBound, $upperInclusive);
     }
 }

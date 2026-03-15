@@ -17,7 +17,7 @@ function open(
     string $ciphertext,
     #[SensitiveParameter]
     Key $key,
-    string $additional_data = '',
+    string $additionalData = '',
 ): string {
-    return new Encryptor($key)->open($ciphertext, $additional_data);
+    return new Encryptor($key)->open($ciphertext, $additionalData);
 }

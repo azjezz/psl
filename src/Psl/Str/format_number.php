@@ -11,7 +11,7 @@ use function number_format;
  *
  * If `$decimals` is provided, the string will contain that many decimal places.
  *
- * The optional `$decimal_point` and `$thousands_separator` arguments define the
+ * The optional `$decimalPoint` and `$thousandsSeparator` arguments define the
  * strings used for decimals and commas, respectively.
  *
  * @pure
@@ -19,8 +19,8 @@ use function number_format;
 function format_number(
     float $number,
     int $decimals = 0,
-    string $decimal_point = '.',
-    string $thousands_separator = ',',
+    string $decimalPoint = '.',
+    string $thousandsSeparator = ',',
 ): string {
-    return number_format($number, $decimals, $decimal_point, $thousands_separator);
+    return number_format($number, $decimals, $decimalPoint, $thousandsSeparator);
 }

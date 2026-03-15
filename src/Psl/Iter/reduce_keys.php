@@ -26,7 +26,7 @@ use Closure;
 function reduce_keys(iterable $iterable, Closure $function, mixed $initial): mixed
 {
     $accumulator = $initial;
-    foreach ($iterable as $k => $_v) {
+    foreach ($iterable as $k => $_) {
         $accumulator = $function($accumulator, $k);
     }
 

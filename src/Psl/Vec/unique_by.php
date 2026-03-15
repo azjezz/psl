@@ -15,18 +15,18 @@ use Closure;
  * @template Ts
  *
  * @param iterable<Tv> $iterable
- * @param (Closure(Tv): Ts) $scalar_func
+ * @param (Closure(Tv): Ts) $scalarFunc
  *
  * @return list<Tv>
  */
-function unique_by(iterable $iterable, Closure $scalar_func): array
+function unique_by(iterable $iterable, Closure $scalarFunc): array
 {
     /** @var array<array-key, true> $seen */
     $seen = [];
     /** @var list<Tv> $result */
     $result = [];
     foreach ($iterable as $v) {
-        $scalar = $scalar_func($v);
+        $scalar = $scalarFunc($v);
         $key = is_int($scalar) || is_string($scalar) ? $scalar : serialize($scalar);
 
         if (!isset($seen[$key])) {

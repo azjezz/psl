@@ -11,11 +11,11 @@ use Psl\Collection;
  *
  * @template T
  *
- * @param TypeInterface<T> $value_type
+ * @param TypeInterface<T> $valueType
  *
  * @return TypeInterface<Collection\MutableVectorInterface<T>>
  */
-function mutable_vector(TypeInterface $value_type): TypeInterface
+function mutable_vector(TypeInterface $valueType): TypeInterface
 {
-    return new Internal\MutableVectorType($value_type);
+    return new Internal\MutableVectorType($valueType);
 }

@@ -21,14 +21,14 @@ use function set_error_handler;
  */
 function box(Closure $fun): array
 {
-    $last_message = null;
-    set_error_handler(static function (int $_type, string $message) use (&$last_message): void {
-        $last_message = $message;
+    $lastMessage = null;
+    set_error_handler(static function (int $_, string $message) use (&$lastMessage): void {
+        $lastMessage = $message;
     });
 
-    if (null !== $last_message && Str\contains($last_message, '): ')) {
-        $last_message = Str\after(
-            Str\lowercase($last_message),
+    if (null !== $lastMessage && Str\contains($lastMessage, '): ')) {
+        $lastMessage = Str\after(
+            Str\lowercase($lastMessage),
             // how i feel toward PHP error handling:
             '): ',
         );
@@ -37,7 +37,7 @@ function box(Closure $fun): array
     try {
         $value = $fun();
 
-        return [$value, $last_message];
+        return [$value, $lastMessage];
     } finally {
         restore_error_handler();
     }

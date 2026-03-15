@@ -111,7 +111,7 @@ final class TimestampTest extends TestCase
 
     public function testParsingFromPattern(): void
     {
-        $timestamp = Timestamp::parse(raw_string: '2024 091', pattern: FormatPattern::JulianDay);
+        $timestamp = Timestamp::parse(rawString: '2024 091', pattern: FormatPattern::JulianDay);
 
         $datetime = DateTime::fromTimestamp($timestamp, Timezone::UTC);
 
@@ -471,8 +471,8 @@ final class TimestampTest extends TestCase
         $timestamp = Timestamp::fromParts(1_711_917_232, 12);
 
         static::assertSame('2024-03-31T20:33:52.000000012+00:00', $timestamp->toRfc3339());
-        static::assertSame('2024-03-31T20:33:52+00:00', $timestamp->toRfc3339(seconds_style: SecondsStyle::Seconds));
-        static::assertSame('2024-03-31T20:33:52.000000012Z', $timestamp->toRfc3339(use_z: true));
+        static::assertSame('2024-03-31T20:33:52+00:00', $timestamp->toRfc3339(secondsStyle: SecondsStyle::Seconds));
+        static::assertSame('2024-03-31T20:33:52.000000012Z', $timestamp->toRfc3339(useZ: true));
     }
 
     public function testFromStdlib(): void

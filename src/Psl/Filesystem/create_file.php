@@ -16,21 +16,21 @@ use function touch;
  * @param non-empty-string $filename
  * @param int|null $time The touch time as a Unix timestamp.
  *                       Defaults to the current system time.
- * @param int|null $access_time The access time as a Unix timestamp.
+ * @param int|null $accessTime The access time as a Unix timestamp.
  *                              Defaults to the current system time.
  *
  * @throws Exception\RuntimeException If unable to create the file.
  */
-function create_file(string $filename, null|int $time = null, null|int $access_time = null): void
+function create_file(string $filename, null|int $time = null, null|int $accessTime = null): void
 {
-    if (null === $access_time && null === $time) {
+    if (null === $accessTime && null === $time) {
         $fun = static fn(): bool => touch($filename);
-    } elseif (null === $access_time) {
+    } elseif (null === $accessTime) {
         $fun = static fn(): bool => touch($filename, $time);
     } else {
-        $time ??= $access_time;
+        $time ??= $accessTime;
 
-        $fun = static fn(): bool => touch($filename, $time, max($access_time, $time));
+        $fun = static fn(): bool => touch($filename, $time, max($accessTime, $time));
     }
 
     namespace\create_directory_for_file($filename);

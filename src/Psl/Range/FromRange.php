@@ -38,9 +38,9 @@ final readonly class FromRange implements LowerBoundRangeInterface
     /**
      * @psalm-mutation-free
      */
-    public function __construct(int $lower_bound)
+    public function __construct(int $lowerBound)
     {
-        $this->lowerBound = $lower_bound;
+        $this->lowerBound = $lowerBound;
     }
 
     /**
@@ -60,9 +60,9 @@ final readonly class FromRange implements LowerBoundRangeInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function withLowerBound(int $lower_bound): FromRange
+    public function withLowerBound(int $lowerBound): FromRange
     {
-        return new FromRange($lower_bound);
+        return new FromRange($lowerBound);
     }
 
     /**
@@ -73,9 +73,9 @@ final readonly class FromRange implements LowerBoundRangeInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function withUpperBound(int $upper_bound, bool $upper_inclusive): BetweenRange
+    public function withUpperBound(int $upperBound, bool $upperInclusive): BetweenRange
     {
-        return new BetweenRange($this->lowerBound, $upper_bound, $upper_inclusive);
+        return new BetweenRange($this->lowerBound, $upperBound, $upperInclusive);
     }
 
     /**
@@ -86,9 +86,9 @@ final readonly class FromRange implements LowerBoundRangeInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function withUpperBoundInclusive(int $upper_bound): BetweenRange
+    public function withUpperBoundInclusive(int $upperBound): BetweenRange
     {
-        return new BetweenRange($this->lowerBound, $upper_bound, true);
+        return new BetweenRange($this->lowerBound, $upperBound, true);
     }
 
     /**
@@ -99,9 +99,9 @@ final readonly class FromRange implements LowerBoundRangeInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function withUpperBoundExclusive(int $upper_bound): BetweenRange
+    public function withUpperBoundExclusive(int $upperBound): BetweenRange
     {
-        return new BetweenRange($this->lowerBound, $upper_bound, false);
+        return new BetweenRange($this->lowerBound, $upperBound, false);
     }
 
     /**

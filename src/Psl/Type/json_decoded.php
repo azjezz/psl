@@ -9,11 +9,11 @@ namespace Psl\Type;
  *
  * @template T
  *
- * @param TypeInterface<T> $inner_type
+ * @param TypeInterface<T> $innerType
  *
  * @return TypeInterface<T>
  */
-function json_decoded(TypeInterface $inner_type): TypeInterface
+function json_decoded(TypeInterface $innerType): TypeInterface
 {
-    return new Internal\JsonDecodedType($inner_type);
+    return new Internal\JsonDecodedType($innerType);
 }

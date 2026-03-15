@@ -44,33 +44,33 @@ function socket_connect(
         static function () use ($uri, $context, $cancellation): mixed {
             $cancellation->throwIfCancelled();
 
-            $_error_message = null;
-            $error_code = null;
+            $_ = null;
+            $errorCode = null;
 
             $context = stream_context_create($context);
             $socket = @stream_socket_client(
                 $uri,
-                $error_code,
-                $_error_message,
+                $errorCode,
+                $_,
                 null,
                 STREAM_CLIENT_CONNECT | STREAM_CLIENT_ASYNC_CONNECT,
                 $context,
             );
 
-            if (!$socket || $error_code) {
-                throw new Exception\RuntimeException('Failed to connect to client "' . $uri . '".', (int) $error_code);
+            if (!$socket || $errorCode) {
+                throw new Exception\RuntimeException('Failed to connect to client "' . $uri . '".', (int) $errorCode);
             }
 
             /** @var Suspension<resource> */
             $suspension = EventLoop::getSuspension();
 
-            $write_watcher = '';
-            $cancellation_id = $cancellation->subscribe(static function (CancelledException $exception) use (
+            $writeWatcher = '';
+            $cancellationId = $cancellation->subscribe(static function (CancelledException $exception) use (
                 $suspension,
-                &$write_watcher,
+                &$writeWatcher,
                 $socket,
             ): void {
-                EventLoop::cancel($write_watcher);
+                EventLoop::cancel($writeWatcher);
 
                 if (is_resource($socket)) {
                     fclose($socket);
@@ -79,13 +79,13 @@ function socket_connect(
                 $suspension->throw($exception);
             });
 
-            $write_watcher = EventLoop::onWritable($socket, static function () use (
+            $writeWatcher = EventLoop::onWritable($socket, static function () use (
                 $suspension,
                 $socket,
                 $cancellation,
-                $cancellation_id,
+                $cancellationId,
             ): void {
-                $cancellation->unsubscribe($cancellation_id);
+                $cancellation->unsubscribe($cancellationId);
 
                 $suspension->resume($socket);
             });
@@ -93,8 +93,8 @@ function socket_connect(
             try {
                 return $suspension->suspend();
             } finally {
-                EventLoop::cancel($write_watcher);
-                $cancellation->unsubscribe($cancellation_id);
+                EventLoop::cancel($writeWatcher);
+                $cancellation->unsubscribe($cancellationId);
             }
         },
     );

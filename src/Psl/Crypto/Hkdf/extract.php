@@ -19,7 +19,7 @@ use function str_repeat;
  */
 function extract(
     #[SensitiveParameter]
-    string $input_keying_material,
+    string $inputKeyingMaterial,
     string $salt = '',
     Hmac\Algorithm $algorithm = Hmac\Algorithm::Sha256,
 ): string {
@@ -36,5 +36,5 @@ function extract(
     }
 
     /** @var non-empty-string */
-    return Hex\decode(Hmac\hash($input_keying_material, $algorithm, $salt));
+    return Hex\decode(Hmac\hash($inputKeyingMaterial, $algorithm, $salt));
 }

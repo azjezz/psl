@@ -32,12 +32,12 @@ function associate(iterable $keys, iterable $values): array
         $values = Vec\values($values);
     }
 
-    $keys_count = count($keys);
-    if (count($values) !== $keys_count) {
+    $keysCount = count($keys);
+    if (count($values) !== $keysCount) {
         throw new Exception\LogicException('Expected length of $keys and $values to be the same');
     }
 
-    if (0 === $keys_count) {
+    if (0 === $keysCount) {
         return [];
     }
 

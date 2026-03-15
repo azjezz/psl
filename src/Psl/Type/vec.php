@@ -9,11 +9,11 @@ namespace Psl\Type;
  *
  * @template T
  *
- * @param TypeInterface<T> $value_type
+ * @param TypeInterface<T> $valueType
  *
  * @return TypeInterface<list<T>>
  */
-function vec(TypeInterface $value_type): TypeInterface
+function vec(TypeInterface $valueType): TypeInterface
 {
-    return new Internal\VecType($value_type);
+    return new Internal\VecType($valueType);
 }

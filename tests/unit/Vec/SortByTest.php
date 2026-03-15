@@ -13,9 +13,9 @@ use Psl\Vec;
 final class SortByTest extends TestCase
 {
     #[DataProvider('provideData')]
-    public function testSortBy(array $expected, array $array, callable $scalar_fun, null|callable $comp = null): void
+    public function testSortBy(array $expected, array $array, callable $scalarFun, null|callable $comp = null): void
     {
-        static::assertSame($expected, Vec\sort_by($array, $scalar_fun, $comp));
+        static::assertSame($expected, Vec\sort_by($array, $scalarFun, $comp));
     }
 
     public static function provideData(): array
@@ -25,7 +25,7 @@ final class SortByTest extends TestCase
         $c = ['a' => 'foo', 'b' => 'bar', 'c' => 'baz', 'd' => 'qux', 'e' => 'lax'];
         $expected = [$a, $b, $c];
         $array = [$b, $c, $a];
-        $scalar_fun =
+        $scalarFun =
             /**
              * @param array<array-key, string|int> $arr
              *
@@ -37,7 +37,7 @@ final class SortByTest extends TestCase
             [
                 $expected,
                 $array,
-                $scalar_fun,
+                $scalarFun,
             ],
             [
                 ['a', 'b', 'c', 'd'],

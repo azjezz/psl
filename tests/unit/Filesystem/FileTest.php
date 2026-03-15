@@ -83,13 +83,13 @@ final class FileTest extends AbstractFilesystemTestCase
     {
         $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
 
-        $modification_time = time() - 3600;
-        $access_time = time() - 1800;
+        $modificationTime = time() - 3600;
+        $accessTime = time() - 1800;
 
-        Filesystem\create_file($file, $modification_time, $access_time);
+        Filesystem\create_file($file, $modificationTime, $accessTime);
 
-        static::assertSame($modification_time, Filesystem\get_modification_time($file));
-        static::assertSame($access_time, Filesystem\get_access_time($file));
+        static::assertSame($modificationTime, Filesystem\get_modification_time($file));
+        static::assertSame($accessTime, Filesystem\get_access_time($file));
     }
 
     public function testGetModificationTimeOfNonExistingFile(): void
@@ -212,24 +212,24 @@ final class FileTest extends AbstractFilesystemTestCase
     {
         $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
 
-        $access_time = time() - 1800;
+        $accessTime = time() - 1800;
 
-        Filesystem\create_file($file, null, $access_time);
+        Filesystem\create_file($file, null, $accessTime);
 
-        static::assertSame($access_time, Filesystem\get_modification_time($file));
-        static::assertSame($access_time, Filesystem\get_access_time($file));
+        static::assertSame($accessTime, Filesystem\get_modification_time($file));
+        static::assertSame($accessTime, Filesystem\get_access_time($file));
     }
 
     public function testFileModificationTime(): void
     {
         $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
 
-        $modification_time = time() - 3600;
+        $modificationTime = time() - 3600;
 
-        Filesystem\create_file($file, $modification_time);
+        Filesystem\create_file($file, $modificationTime);
 
-        static::assertSame($modification_time, Filesystem\get_modification_time($file));
-        static::assertSame($modification_time, Filesystem\get_access_time($file));
+        static::assertSame($modificationTime, Filesystem\get_modification_time($file));
+        static::assertSame($modificationTime, Filesystem\get_access_time($file));
     }
 
     public function testFileChangeTime(): void

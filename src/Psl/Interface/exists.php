@@ -9,9 +9,9 @@ use function interface_exists;
 /**
  * Checks if the interface with the given name exists.
  *
- * @param string $interface_name
+ * @param string $interfaceName
  */
-function exists(string $interface_name): bool
+function exists(string $interfaceName): bool
 {
-    return interface_exists($interface_name, true);
+    return interface_exists($interfaceName, true);
 }

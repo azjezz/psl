@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Psl\Json;
 
-$_data = Json\decode('{"name":"Alice","age":30}');
+$_ = Json\decode('{"name":"Alice","age":30}');
 // ['name' => 'Alice', 'age' => 30]
 
 // Invalid JSON throws immediately

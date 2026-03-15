@@ -414,13 +414,13 @@ final class HandleReaderTest extends TestCase
                 return true;
             }
 
-            public function tryRead(null|int $max_bytes = null): string
+            public function tryRead(null|int $maxBytes = null): string
             {
                 return '';
             }
 
             public function read(
-                null|int $max_bytes = null,
+                null|int $maxBytes = null,
                 CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): string {
                 return '';
@@ -460,13 +460,13 @@ final class HandleReaderTest extends TestCase
                 return $this->cursor >= strlen($this->data);
             }
 
-            public function tryRead(null|int $max_bytes = null): string
+            public function tryRead(null|int $maxBytes = null): string
             {
                 if ($this->cursor >= strlen($this->data)) {
                     return '';
                 }
 
-                $max = $max_bytes ?? (strlen($this->data) - $this->cursor);
+                $max = $maxBytes ?? (strlen($this->data) - $this->cursor);
                 $result = substr($this->data, $this->cursor, $max);
                 $this->cursor += strlen($result);
 
@@ -474,10 +474,10 @@ final class HandleReaderTest extends TestCase
             }
 
             public function read(
-                null|int $max_bytes = null,
+                null|int $maxBytes = null,
                 CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): string {
-                return $this->tryRead($max_bytes);
+                return $this->tryRead($maxBytes);
             }
         };
 
@@ -505,13 +505,13 @@ final class HandleReaderTest extends TestCase
                 return $this->cursor >= strlen($this->data);
             }
 
-            public function tryRead(null|int $max_bytes = null): string
+            public function tryRead(null|int $maxBytes = null): string
             {
                 if ($this->cursor >= strlen($this->data)) {
                     return '';
                 }
 
-                $max = $max_bytes ?? (strlen($this->data) - $this->cursor);
+                $max = $maxBytes ?? (strlen($this->data) - $this->cursor);
                 $result = substr($this->data, $this->cursor, $max);
                 $this->cursor += strlen($result);
 
@@ -519,10 +519,10 @@ final class HandleReaderTest extends TestCase
             }
 
             public function read(
-                null|int $max_bytes = null,
+                null|int $maxBytes = null,
                 CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): string {
-                return $this->tryRead($max_bytes);
+                return $this->tryRead($maxBytes);
             }
         };
 

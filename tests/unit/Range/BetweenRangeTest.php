@@ -31,13 +31,13 @@ final class BetweenRangeTest extends TestCase
         static::assertFalse($range->contains(Math\INT53_MAX));
         static::assertFalse($range->contains(Math\INT64_MAX));
 
-        $range = Range\between(Math\INT16_MIN, Math\INT16_MAX, upper_inclusive: false);
+        $range = Range\between(Math\INT16_MIN, Math\INT16_MAX, upperInclusive: false);
 
         static::assertFalse($range->contains(Math\INT16_MAX));
         static::assertTrue($range->contains(Math\INT16_MAX - 1));
         static::assertTrue($range->contains(Math\INT16_MIN));
 
-        $range = Range\between(Math\INT16_MIN, Math\INT16_MAX, upper_inclusive: true);
+        $range = Range\between(Math\INT16_MIN, Math\INT16_MAX, upperInclusive: true);
 
         static::assertTrue($range->contains(Math\INT16_MAX));
         static::assertTrue($range->contains(Math\INT16_MAX - 1));
@@ -62,7 +62,7 @@ final class BetweenRangeTest extends TestCase
         static::assertFalse($range->contains(Math\INT53_MAX));
         static::assertFalse($range->contains(Math\INT64_MAX));
 
-        $range = new Range\BetweenRange(Math\INT16_MIN, Math\INT16_MAX, upper_inclusive: true);
+        $range = new Range\BetweenRange(Math\INT16_MIN, Math\INT16_MAX, upperInclusive: true);
 
         static::assertTrue($range->contains(Math\INT16_MAX));
         static::assertTrue($range->contains(Math\INT16_MIN));
@@ -75,11 +75,11 @@ final class BetweenRangeTest extends TestCase
         static::assertSame(Math\INT16_MIN, $range->getLowerBound());
         static::assertSame(Math\INT16_MAX, $range->getUpperBound());
 
-        $range = Range\between(Math\INT16_MIN, Math\INT16_MAX, upper_inclusive: false);
+        $range = Range\between(Math\INT16_MIN, Math\INT16_MAX, upperInclusive: false);
         static::assertSame(Math\INT16_MIN, $range->getLowerBound());
         static::assertSame(Math\INT16_MAX, $range->getUpperBound());
 
-        $range = Range\between(Math\INT16_MIN, Math\INT16_MAX, upper_inclusive: true);
+        $range = Range\between(Math\INT16_MIN, Math\INT16_MAX, upperInclusive: true);
         static::assertSame(Math\INT16_MIN, $range->getLowerBound());
         static::assertSame(Math\INT16_MAX, $range->getUpperBound());
 
@@ -87,33 +87,33 @@ final class BetweenRangeTest extends TestCase
         static::assertSame(Math\INT16_MIN, $range->getLowerBound());
         static::assertSame(Math\INT16_MAX, $range->getUpperBound());
 
-        $range = new Range\BetweenRange(Math\INT16_MIN, Math\INT16_MAX, upper_inclusive: false);
+        $range = new Range\BetweenRange(Math\INT16_MIN, Math\INT16_MAX, upperInclusive: false);
         static::assertSame(Math\INT16_MIN, $range->getLowerBound());
         static::assertSame(Math\INT16_MAX, $range->getUpperBound());
 
-        $range = new Range\BetweenRange(Math\INT16_MIN, Math\INT16_MAX, upper_inclusive: true);
+        $range = new Range\BetweenRange(Math\INT16_MIN, Math\INT16_MAX, upperInclusive: true);
         static::assertSame(Math\INT16_MIN, $range->getLowerBound());
         static::assertSame(Math\INT16_MAX, $range->getUpperBound());
     }
 
     public function testIsInclusive(): void
     {
-        $range = Range\between(0, 100, upper_inclusive: true);
+        $range = Range\between(0, 100, upperInclusive: true);
         static::assertTrue($range->isUpperInclusive());
 
-        $range = Range\between(0, 100, upper_inclusive: false);
+        $range = Range\between(0, 100, upperInclusive: false);
         static::assertFalse($range->isUpperInclusive());
 
         $range = Range\between(0, 100);
         static::assertFalse($range->isUpperInclusive());
 
-        $range = new Range\BetweenRange(0, 100, upper_inclusive: true);
+        $range = new Range\BetweenRange(0, 100, upperInclusive: true);
         static::assertTrue($range->isUpperInclusive());
 
-        $range = new Range\BetweenRange(0, 100, upper_inclusive: false);
+        $range = new Range\BetweenRange(0, 100, upperInclusive: false);
         static::assertFalse($range->isUpperInclusive());
 
-        $range = new Range\BetweenRange(0, 100, upper_inclusive: true);
+        $range = new Range\BetweenRange(0, 100, upperInclusive: true);
         static::assertTrue($range->isUpperInclusive());
 
         $range = new Range\BetweenRange(0, 100);
@@ -170,7 +170,7 @@ final class BetweenRangeTest extends TestCase
 
         static::assertSame($expected, $actual);
 
-        $range = Range\between(1, 10, upper_inclusive: true);
+        $range = Range\between(1, 10, upperInclusive: true);
         $expected = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         $actual = [];
         foreach ($range as $value) {
@@ -188,7 +188,7 @@ final class BetweenRangeTest extends TestCase
 
         static::assertSame($expected, $actual);
 
-        $range = new Range\BetweenRange(1, 10, upper_inclusive: true);
+        $range = new Range\BetweenRange(1, 10, upperInclusive: true);
         $expected = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         $actual = [];
         foreach ($range as $value) {
@@ -201,7 +201,7 @@ final class BetweenRangeTest extends TestCase
     public function testInvalidRange(): void
     {
         $this->expectException(Range\Exception\InvalidRangeException::class);
-        $this->expectExceptionMessage('`$lower_bound` (10) must be less than or equal to `$upper_bound` (5).');
+        $this->expectExceptionMessage('`$lowerBound` (10) must be less than or equal to `$upperBound` (5).');
 
         try {
             Range\between(10, 5);

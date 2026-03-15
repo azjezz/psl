@@ -11,9 +11,9 @@ use Psl\Str\Byte;
 final class WordsTest extends TestCase
 {
     #[DataProvider('provideData')]
-    public function testWords(array $expected, string $string, null|string $extra_chars = null): void
+    public function testWords(array $expected, string $string, null|string $extraChars = null): void
     {
-        static::assertSame($expected, Byte\words($string, $extra_chars));
+        static::assertSame($expected, Byte\words($string, $extraChars));
     }
 
     public static function provideData(): array

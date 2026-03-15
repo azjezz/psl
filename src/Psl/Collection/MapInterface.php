@@ -165,7 +165,7 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * If no element matches the search value, this function returns null.
      *
-     * @param Tv $search_value The value that will be search for in the current
+     * @param Tv $searchValue The value that will be search for in the current
      *                         `MapInterface`.
      *
      * @return Tk|null The key (index) where that value is found; null if it is not found
@@ -173,7 +173,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function linearSearch(mixed $search_value): int|string|null;
+    public function linearSearch(mixed $searchValue): int|string|null;
 
     /**
      * Returns a `MapInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the

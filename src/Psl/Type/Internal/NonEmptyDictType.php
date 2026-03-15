@@ -27,12 +27,12 @@ final readonly class NonEmptyDictType extends Type\Type
     /**
      * @psalm-mutation-free
      *
-     * @param Type\TypeInterface<Tk> $key_type
-     * @param Type\TypeInterface<Tv> $value_type
+     * @param Type\TypeInterface<Tk> $keyType
+     * @param Type\TypeInterface<Tv> $valueType
      */
     public function __construct(
-        private readonly Type\TypeInterface $key_type,
-        private readonly Type\TypeInterface $value_type,
+        private readonly Type\TypeInterface $keyType,
+        private readonly Type\TypeInterface $valueType,
     ) {}
 
     /**
@@ -44,15 +44,15 @@ final readonly class NonEmptyDictType extends Type\Type
     public function coerce(mixed $value): array
     {
         if (is_iterable($value)) {
-            $key_type = $this->key_type;
-            $value_type = $this->value_type;
+            $keyType = $this->keyType;
+            $valueType = $this->valueType;
 
             $result = [];
 
             $k = null;
             $v = null;
             /** @var bool */
-            $trying_key = true;
+            $tryingKey = true;
             /** @var bool */
             $iterating = true;
 
@@ -63,12 +63,12 @@ final readonly class NonEmptyDictType extends Type\Type
                  */
                 foreach ($value as $k => $v) {
                     $iterating = false;
-                    $trying_key = true;
-                    $k_result = $key_type->coerce($k);
-                    $trying_key = false;
-                    $v_result = $value_type->coerce($v);
+                    $tryingKey = true;
+                    $kResult = $keyType->coerce($k);
+                    $tryingKey = false;
+                    $vResult = $valueType->coerce($v);
 
-                    $result[$k_result] = $v_result;
+                    $result[$kResult] = $vResult;
                     $iterating = true;
                 }
             } catch (Throwable $e) {
@@ -79,13 +79,13 @@ final readonly class NonEmptyDictType extends Type\Type
                         PathExpression::iteratorError($k),
                         $e,
                     ),
-                    $trying_key => CoercionException::withValue(
+                    $tryingKey => CoercionException::withValue(
                         $k,
                         $this->toString(),
                         PathExpression::iteratorKey($k),
                         $e,
                     ),
-                    !$trying_key => CoercionException::withValue($v, $this->toString(), PathExpression::path($k), $e),
+                    !$tryingKey => CoercionException::withValue($v, $this->toString(), PathExpression::path($k), $e),
                 };
             }
 
@@ -110,14 +110,14 @@ final readonly class NonEmptyDictType extends Type\Type
     public function assert(mixed $value): array
     {
         if (is_array($value)) {
-            $key_type = $this->key_type;
-            $value_type = $this->value_type;
+            $keyType = $this->keyType;
+            $valueType = $this->valueType;
 
             $result = [];
 
             $k = null;
             $v = null;
-            $trying_key = true;
+            $tryingKey = true;
 
             try {
                 /**
@@ -125,15 +125,15 @@ final readonly class NonEmptyDictType extends Type\Type
                  * @var Tv $v
                  */
                 foreach ($value as $k => $v) {
-                    $trying_key = true;
-                    $k_result = $key_type->assert($k);
-                    $trying_key = false;
-                    $v_result = $value_type->assert($v);
+                    $tryingKey = true;
+                    $kResult = $keyType->assert($k);
+                    $tryingKey = false;
+                    $vResult = $valueType->assert($v);
 
-                    $result[$k_result] = $v_result;
+                    $result[$kResult] = $vResult;
                 }
             } catch (AssertException $e) {
-                throw match ($trying_key) {
+                throw match ($tryingKey) {
                     true => AssertException::withValue($k, $this->toString(), PathExpression::iteratorKey($k), $e),
                     false => AssertException::withValue($v, $this->toString(), PathExpression::path($k), $e),
                 };
@@ -152,6 +152,6 @@ final readonly class NonEmptyDictType extends Type\Type
     #[Override]
     public function toString(): string
     {
-        return Str\format('non-empty-dict<%s, %s>', $this->key_type->toString(), $this->value_type->toString());
+        return Str\format('non-empty-dict<%s, %s>', $this->keyType->toString(), $this->valueType->toString());
     }
 }

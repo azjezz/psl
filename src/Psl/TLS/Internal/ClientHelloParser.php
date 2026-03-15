@@ -38,15 +38,15 @@ final class ClientHelloParser
         }
 
         // TLS Record Header
-        $content_type = ord($data[0]);
-        if ($content_type !== 22) {
+        $contentType = ord($data[0]);
+        if ($contentType !== 22) {
             // Not a Handshake record
             return null;
         }
 
         // Handshake Header - offset 5 is safe since $len >= 43
-        $handshake_type = ord($data[5]);
-        if ($handshake_type !== 1) {
+        $handshakeType = ord($data[5]);
+        if ($handshakeType !== 1) {
             // Not a ClientHello
             return null;
         }
@@ -60,8 +60,8 @@ final class ClientHelloParser
             return null;
         }
 
-        $session_id_len = ord($data[$offset]);
-        $offset += 1 + $session_id_len;
+        $sessionIdLen = ord($data[$offset]);
+        $offset += 1 + $sessionIdLen;
 
         if ($offset > $len) {
             return null;
@@ -74,8 +74,8 @@ final class ClientHelloParser
 
         /** @var array{1: int} $unpacked */
         $unpacked = unpack('n', $data, $offset);
-        $cipher_suites_len = $unpacked[1];
-        $offset += 2 + $cipher_suites_len;
+        $cipherSuitesLen = $unpacked[1];
+        $offset += 2 + $cipherSuitesLen;
 
         if ($offset > $len) {
             return null;
@@ -86,8 +86,8 @@ final class ClientHelloParser
             return null;
         }
 
-        $compression_len = ord($data[$offset]);
-        $offset += 1 + $compression_len;
+        $compressionLen = ord($data[$offset]);
+        $offset += 1 + $compressionLen;
 
         if ($offset > $len) {
             return null;
@@ -101,47 +101,47 @@ final class ClientHelloParser
 
         /** @var array{1: int} $unpacked */
         $unpacked = unpack('n', $data, $offset);
-        $extensions_len = $unpacked[1];
+        $extensionsLen = $unpacked[1];
         $offset += 2;
 
-        $extensions_end = $offset + $extensions_len;
-        if ($extensions_end > $len) {
-            $extensions_end = $len;
+        $extensionsEnd = $offset + $extensionsLen;
+        if ($extensionsEnd > $len) {
+            $extensionsEnd = $len;
         }
 
-        $server_name = null;
-        $alpn_protocols = null;
+        $serverName = null;
+        $alpnProtocols = null;
 
-        while (($offset + 4) <= $extensions_end) {
+        while (($offset + 4) <= $extensionsEnd) {
             /** @var array{1: int, 2: int} $unpacked */
             $unpacked = unpack('n2', $data, $offset);
-            $ext_type = $unpacked[1];
-            $ext_len = $unpacked[2];
+            $extType = $unpacked[1];
+            $extLen = $unpacked[2];
             $offset += 4;
 
-            $ext_end = $offset + $ext_len;
-            if ($ext_end > $extensions_end) {
+            $extEnd = $offset + $extLen;
+            if ($extEnd > $extensionsEnd) {
                 break;
             }
 
-            if ($ext_type === 0 && $server_name === null) {
+            if ($extType === 0 && $serverName === null) {
                 // SNI extension
-                $server_name = self::parseSni($data, $offset, $ext_end);
+                $serverName = self::parseSni($data, $offset, $extEnd);
             }
 
-            if ($ext_type === 16 && $alpn_protocols === null) {
+            if ($extType === 16 && $alpnProtocols === null) {
                 // ALPN extension
-                $alpn_protocols = self::parseAlpn($data, $offset, $ext_end);
+                $alpnProtocols = self::parseAlpn($data, $offset, $extEnd);
             }
 
-            if ($server_name !== null && $alpn_protocols !== null) {
+            if ($serverName !== null && $alpnProtocols !== null) {
                 break;
             }
 
-            $offset = $ext_end;
+            $offset = $extEnd;
         }
 
-        return ['server_name' => $server_name, 'alpn_protocols' => $alpn_protocols];
+        return ['server_name' => $serverName, 'alpn_protocols' => $alpnProtocols];
     }
 
     /**
@@ -159,25 +159,25 @@ final class ClientHelloParser
         $offset += 2; // skip list length
 
         while (($offset + 3) <= $end) {
-            $name_type = ord($data[$offset]);
+            $nameType = ord($data[$offset]);
             $offset += 1;
 
             /** @var array{1: int} $unpacked */
             $unpacked = unpack('n', $data, $offset);
-            $name_len = $unpacked[1];
+            $nameLen = $unpacked[1];
             $offset += 2;
 
-            if (($offset + $name_len) > $end) {
+            if (($offset + $nameLen) > $end) {
                 return null;
             }
 
-            if ($name_type === 0 && $name_len > 0) {
+            if ($nameType === 0 && $nameLen > 0) {
                 // host_name type
                 /** @var non-empty-string */
-                return substr($data, $offset, $name_len);
+                return substr($data, $offset, $nameLen);
             }
 
-            $offset += $name_len;
+            $offset += $nameLen;
         }
 
         return null;
@@ -199,17 +199,17 @@ final class ClientHelloParser
 
         $protocols = [];
         while (($offset + 1) <= $end) {
-            $proto_len = ord($data[$offset]);
+            $protoLen = ord($data[$offset]);
             $offset += 1;
 
-            if (($offset + $proto_len) > $end || $proto_len === 0) {
+            if (($offset + $protoLen) > $end || $protoLen === 0) {
                 break;
             }
 
             /** @var non-empty-string $proto */
-            $proto = substr($data, $offset, $proto_len);
+            $proto = substr($data, $offset, $protoLen);
             $protocols[] = $proto;
-            $offset += $proto_len;
+            $offset += $protoLen;
         }
 
         return $protocols !== [] ? $protocols : null;

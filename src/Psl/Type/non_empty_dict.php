@@ -10,12 +10,12 @@ namespace Psl\Type;
  * @template Tk of array-key
  * @template Tv
  *
- * @param TypeInterface<Tk> $key_type
- * @param TypeInterface<Tv> $value_type
+ * @param TypeInterface<Tk> $keyType
+ * @param TypeInterface<Tv> $valueType
  *
  * @return TypeInterface<non-empty-array<Tk, Tv>>
  */
-function non_empty_dict(TypeInterface $key_type, TypeInterface $value_type): TypeInterface
+function non_empty_dict(TypeInterface $keyType, TypeInterface $valueType): TypeInterface
 {
-    return new Internal\NonEmptyDictType($key_type, $value_type);
+    return new Internal\NonEmptyDictType($keyType, $valueType);
 }

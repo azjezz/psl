@@ -14,7 +14,7 @@ function verify(
     #[SensitiveParameter]
     string $message,
     #[SensitiveParameter]
-    PublicKey $public_key,
+    PublicKey $publicKey,
 ): bool {
-    return new Verifier($public_key)->verify($signature, $message);
+    return new Verifier($publicKey)->verify($signature, $message);
 }

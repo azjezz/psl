@@ -81,8 +81,8 @@ final class SocketTest extends TestCase
             $receiver = UDP\Socket::bind('127.0.0.1', 0);
             $sender = UDP\Socket::bind('127.0.0.1', 0);
 
-            $bytes_sent = $sender->sendTo('test-data', $receiver->getLocalAddress());
-            static::assertSame(9, $bytes_sent);
+            $bytesSent = $sender->sendTo('test-data', $receiver->getLocalAddress());
+            static::assertSame(9, $bytesSent);
 
             [$data] = $receiver->receiveFrom(1024);
             static::assertSame('test-data', $data);
@@ -119,12 +119,12 @@ final class SocketTest extends TestCase
             $receiver = UDP\Socket::bind('127.0.0.1', 0);
             $sender = UDP\Socket::bind('127.0.0.1', 0);
 
-            $bytes_sent = $sender->sendTo(
+            $bytesSent = $sender->sendTo(
                 'timeout-test',
                 $receiver->getLocalAddress(),
                 new Async\TimeoutCancellationToken(Duration::seconds(5)),
             );
-            static::assertSame(12, $bytes_sent);
+            static::assertSame(12, $bytesSent);
 
             [$data] = $receiver->receiveFrom(1024);
             static::assertSame('timeout-test', $data);
@@ -226,18 +226,18 @@ final class SocketTest extends TestCase
         Async\run(static function (): void {
             $socket = UDP\Socket::bind('127.0.0.1', 0);
             $data = str_repeat('x', 65_507);
-            $threw_invalid_argument = false;
+            $threwInvalidArgument = false;
             try {
                 $socket->sendTo($data, Network\Address::udp('127.0.0.1', 9999));
             } catch (Network\Exception\InvalidArgumentException) {
-                $threw_invalid_argument = true;
+                $threwInvalidArgument = true;
             } catch (Network\Exception\RuntimeException) {
                 // @mago-expect lint:no-empty-catch-clause
             } finally {
                 $socket->close();
             }
 
-            static::assertFalse($threw_invalid_argument);
+            static::assertFalse($threwInvalidArgument);
         })->await();
     }
 
@@ -246,13 +246,13 @@ final class SocketTest extends TestCase
         Async\run(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $socket = UDP\Socket::bind('127.0.0.1', 0);
-            $server_addr = $server->getLocalAddress();
+            $serverAddr = $server->getLocalAddress();
 
-            $connected = $socket->connect($server_addr->host, $server_addr->port);
+            $connected = $socket->connect($serverAddr->host, $serverAddr->port);
 
             static::assertInstanceOf(UDP\ConnectedSocket::class, $connected);
-            static::assertSame($server_addr->host, $connected->getPeerAddress()->host);
-            static::assertSame($server_addr->port, $connected->getPeerAddress()->port);
+            static::assertSame($serverAddr->host, $connected->getPeerAddress()->host);
+            static::assertSame($serverAddr->port, $connected->getPeerAddress()->port);
 
             $connected->close();
             $server->close();
@@ -266,9 +266,9 @@ final class SocketTest extends TestCase
         Async\run(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $socket = UDP\Socket::bind('127.0.0.1', 0);
-            $server_addr = $server->getLocalAddress();
+            $serverAddr = $server->getLocalAddress();
 
-            $connected = $socket->connect($server_addr->host, $server_addr->port);
+            $connected = $socket->connect($serverAddr->host, $serverAddr->port);
 
             try {
                 $socket->sendTo('data', Network\Address::udp('127.0.0.1', 9999));

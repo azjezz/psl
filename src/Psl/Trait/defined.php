@@ -9,11 +9,11 @@ use function trait_exists;
 /**
  * Checks if the trait with the given name has already been defined.
  *
- * @param string $trait_name
+ * @param string $traitName
  *
  * @pure
  */
-function defined(string $trait_name): bool
+function defined(string $traitName): bool
 {
-    return trait_exists($trait_name, false);
+    return trait_exists($traitName, false);
 }

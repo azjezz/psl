@@ -32,8 +32,8 @@ function delete_directory(string $directory, bool $recursive = false): void
             namespace\is_symbolic_link(...),
         );
 
-        foreach ($symbolic_links as $symbolic_link) {
-            namespace\delete_file($symbolic_link);
+        foreach ($symbolic_links as $symbolicLink) {
+            namespace\delete_file($symbolicLink);
         }
 
         foreach ($nodes as $node) {

@@ -24,8 +24,8 @@ final class TCPConnectorTest extends TestCase
     public function testTCPConnectorConnectsAndUpgradesToTls(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
-        $server_config = TLS\ServerConfig::create($cert);
-        $acceptor = new TLS\Acceptor($server_config);
+        $serverConfig = TLS\ServerConfig::create($cert);
+        $acceptor = new TLS\Acceptor($serverConfig);
 
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
@@ -61,8 +61,8 @@ final class TCPConnectorTest extends TestCase
     public function testTCPConnectorWorksWithSocketPool(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
-        $server_config = TLS\ServerConfig::create($cert);
-        $acceptor = new TLS\Acceptor($server_config);
+        $serverConfig = TLS\ServerConfig::create($cert);
+        $acceptor = new TLS\Acceptor($serverConfig);
 
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;

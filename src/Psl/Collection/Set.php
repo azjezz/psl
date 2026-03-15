@@ -319,17 +319,17 @@ final readonly class Set implements SetInterface
      *
      * As {@see Set} does not have keys, this method returns the value itself.
      *
-     * @param T $search_value The value that will be search for in the current `Set`.
+     * @param T $searchValue The value that will be search for in the current `Set`.
      *
      * @return T|null The value if its found, null otherwise.
      *
      * @psalm-mutation-free
      */
     #[Override]
-    public function linearSearch(mixed $search_value): null|int|string
+    public function linearSearch(mixed $searchValue): null|int|string
     {
         foreach ($this->elements as $key => $element) {
-            if ($search_value !== $element) {
+            if ($searchValue !== $element) {
                 continue;
             }
 

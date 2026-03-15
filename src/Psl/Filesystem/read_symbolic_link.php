@@ -12,31 +12,31 @@ use function readlink;
 /**
  * Returns the target of a symbolic link.
  *
- * @param non-empty-string $symbolic_link
+ * @param non-empty-string $symbolicLink
  *
- * @throws Exception\NotFoundException If $symbolic_link is not found.
- * @throws Exception\NotSymbolicLinkException If $symbolic_link is not a symbolic link.
- * @throws Exception\RuntimeException If unable to retrieve the target of $symbolic_link.
+ * @throws Exception\NotFoundException If $symbolicLink is not found.
+ * @throws Exception\NotSymbolicLinkException If $symbolicLink is not a symbolic link.
+ * @throws Exception\RuntimeException If unable to retrieve the target of $symbolicLink.
  *
  * @return non-empty-string
  */
-function read_symbolic_link(string $symbolic_link): string
+function read_symbolic_link(string $symbolicLink): string
 {
-    if (!namespace\exists($symbolic_link)) {
-        throw Exception\NotFoundException::forSymbolicLink($symbolic_link);
+    if (!namespace\exists($symbolicLink)) {
+        throw Exception\NotFoundException::forSymbolicLink($symbolicLink);
     }
 
-    if (!namespace\is_symbolic_link($symbolic_link)) {
-        throw Exception\NotSymbolicLinkException::for($symbolic_link);
+    if (!namespace\is_symbolic_link($symbolicLink)) {
+        throw Exception\NotSymbolicLinkException::for($symbolicLink);
     }
 
-    [$result, $message] = Internal\box(static fn(): false|string => readlink($symbolic_link));
+    [$result, $message] = Internal\box(static fn(): false|string => readlink($symbolicLink));
 
     // @codeCoverageIgnoreStart
     if (false === $result) {
         throw new Exception\RuntimeException(Str\format(
             'Failed to retrieve the target of symbolic link "%s": %s',
-            $symbolic_link,
+            $symbolicLink,
             $message ?? 'internal error',
         ));
     }

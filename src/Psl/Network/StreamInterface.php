@@ -28,20 +28,17 @@ interface StreamInterface extends
     public function getPeerAddress(): Address;
 
     /**
-     * Read up to $max_bytes without consuming them from the receive buffer.
+     * Read up to $maxBytes without consuming them from the receive buffer.
      *
      * The data remains in the buffer and will be returned by subsequent read() calls.
      *
-     * @param positive-int $max_bytes
+     * @param positive-int $maxBytes
      *
      * @throws IO\Exception\AlreadyClosedException If the stream has already been closed.
      * @throws IO\Exception\RuntimeException If an error occurred during the peek operation.
      * @throws CancelledException If the operation was cancelled.
      */
-    public function peek(
-        int $max_bytes,
-        CancellationTokenInterface $cancellation = new NullCancellationToken(),
-    ): string;
+    public function peek(int $maxBytes, CancellationTokenInterface $cancellation = new NullCancellationToken()): string;
 
     /**
      * Shut down the write side of the connection.

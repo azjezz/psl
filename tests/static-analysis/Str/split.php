@@ -13,8 +13,8 @@ function return_nonempty_string(): string
     return 'hello';
 }
 
-/** @param non-empty-list<non-empty-string> $_list */
-function take_non_empty_string_list(array $_list): void {}
+/** @param non-empty-list<non-empty-string> $_ */
+function take_non_empty_string_list(array $_): void {}
 
 /** @return non-empty-lowercase-string */
 function return_nonempty_lowercase_string(): string
@@ -22,8 +22,8 @@ function return_nonempty_lowercase_string(): string
     return 'hello';
 }
 
-/** @param non-empty-list<non-empty-lowercase-string> $_list */
-function take_non_empty_lowercase_string_list(array $_list): void {}
+/** @param non-empty-list<non-empty-lowercase-string> $_ */
+function take_non_empty_lowercase_string_list(array $_): void {}
 
 /**
  * @throws Psl\Exception\InvariantViolationException

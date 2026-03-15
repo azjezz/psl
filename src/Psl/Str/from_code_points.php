@@ -17,10 +17,10 @@ namespace Psl\Str;
  *
  * @pure
  */
-function from_code_points(int ...$code_points): string
+function from_code_points(int ...$codePoints): string
 {
     $string = '';
-    foreach ($code_points as $code) {
+    foreach ($codePoints as $code) {
         $code %= 0x20_0000;
 
         if (0x80 > $code) {

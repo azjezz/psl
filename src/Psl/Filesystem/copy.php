@@ -21,8 +21,8 @@ use Psl\Str;
  */
 function copy(string $source, string $destination, bool $overwrite = false): void
 {
-    $destination_exists = namespace\is_file($destination);
-    if (!$overwrite && $destination_exists) {
+    $destinationExists = namespace\is_file($destination);
+    if (!$overwrite && $destinationExists) {
         return;
     }
 
@@ -34,27 +34,27 @@ function copy(string $source, string $destination, bool $overwrite = false): voi
         throw Exception\NotReadableException::forFile($source);
     }
 
-    $source_handle = null;
-    $destination_handle = null;
-    $source_lock = null;
-    $destination_lock = null;
+    $sourceHandle = null;
+    $destinationHandle = null;
+    $sourceLock = null;
+    $destinationLock = null;
     try {
-        $source_handle = File\open_read_only($source);
-        $destination_handle = File\open_write_only(
+        $sourceHandle = File\open_read_only($source);
+        $destinationHandle = File\open_write_only(
             $destination,
-            $destination_exists ? File\WriteMode::Truncate : File\WriteMode::OpenOrCreate,
+            $destinationExists ? File\WriteMode::Truncate : File\WriteMode::OpenOrCreate,
         );
 
-        $source_lock = $source_handle->lock(File\LockType::Shared);
-        $destination_lock = $destination_handle->lock(File\LockType::Exclusive);
+        $sourceLock = $sourceHandle->lock(File\LockType::Shared);
+        $destinationLock = $destinationHandle->lock(File\LockType::Exclusive);
 
         do {
-            $chunk = $source_handle->read();
+            $chunk = $sourceHandle->read();
             if ('' === $chunk) {
                 break;
             }
 
-            $destination_handle->writeAll($chunk);
+            $destinationHandle->writeAll($chunk);
 
             // free memory
             unset($chunk);
@@ -69,10 +69,10 @@ function copy(string $source, string $destination, bool $overwrite = false): voi
         );
     } finally {
         // @codeCoverageIgnoreEnd
-        $source_lock?->release();
-        $destination_lock?->release();
-        $source_handle?->close();
-        $destination_handle?->close();
+        $sourceLock?->release();
+        $destinationLock?->release();
+        $sourceHandle?->close();
+        $destinationHandle?->close();
     }
 
     // preserve executable permission bits

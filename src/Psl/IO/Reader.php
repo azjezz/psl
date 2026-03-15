@@ -73,17 +73,17 @@ final class Reader implements BufferedReadHandleInterface
                 break;
             }
 
-            /** @var positive-int $to_read */
-            $to_read = $size - $length;
-            $this->fillBuffer($to_read, $cancellation);
+            /** @var positive-int $toRead */
+            $toRead = $size - $length;
+            $this->fillBuffer($toRead, $cancellation);
         } while (true);
 
         if ($this->eof) {
             throw new Exception\RuntimeException('Reached end of file before requested size.');
         }
 
-        $buffer_size = strlen($this->buffer);
-        if ($size === $buffer_size) {
+        $bufferSize = strlen($this->buffer);
+        if ($size === $bufferSize) {
             $ret = $this->buffer;
             $this->buffer = '';
             return $ret;
@@ -158,16 +158,16 @@ final class Reader implements BufferedReadHandleInterface
     ): null|string {
         $buf = $this->buffer;
         $idx = strpos($buf, $suffix);
-        $suffix_len = strlen($suffix);
+        $suffixLen = strlen($suffix);
         if (false !== $idx) {
-            $this->buffer = substr($buf, $idx + $suffix_len);
+            $this->buffer = substr($buf, $idx + $suffixLen);
             return substr($buf, 0, $idx);
         }
 
         do {
             // + 1 as it would have been matched in the previous iteration if it
             // fully fit in the chunk
-            $offset = strlen($buf) - $suffix_len + 1;
+            $offset = strlen($buf) - $suffixLen + 1;
             $offset = $offset > 0 ? $offset : 0;
             $chunk = $this->handle->read(null, $cancellation);
             if ('' === $chunk) {
@@ -179,7 +179,7 @@ final class Reader implements BufferedReadHandleInterface
             $idx = strpos($buf, $suffix, $offset);
         } while (false === $idx);
 
-        $this->buffer = substr($buf, $idx + $suffix_len);
+        $this->buffer = substr($buf, $idx + $suffixLen);
 
         return substr($buf, 0, $idx);
     }
@@ -192,44 +192,44 @@ final class Reader implements BufferedReadHandleInterface
      *
      * This call returns null if the suffix is not seen before EOF.
      *
-     * @param positive-int $max_bytes Maximum number of bytes to read before throwing OverflowException.
+     * @param positive-int $maxBytes Maximum number of bytes to read before throwing OverflowException.
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws CancelledException If the cancellation token is cancelled.
-     * @throws Exception\OverflowException If $max_bytes is exceeded without finding the suffix.
+     * @throws Exception\OverflowException If $maxBytes is exceeded without finding the suffix.
      */
     public function readUntilBounded(
         string $suffix,
-        int $max_bytes,
+        int $maxBytes,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): null|string {
         $buf = $this->buffer;
-        $suffix_len = strlen($suffix);
+        $suffixLen = strlen($suffix);
         $idx = strpos($buf, $suffix);
         if (false !== $idx) {
-            if ($idx > $max_bytes) {
+            if ($idx > $maxBytes) {
                 throw new Exception\OverflowException(Str\format(
                     'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
-                    $max_bytes,
+                    $maxBytes,
                     $suffix,
                 ));
             }
 
-            $this->buffer = substr($buf, $idx + $suffix_len);
+            $this->buffer = substr($buf, $idx + $suffixLen);
             return substr($buf, 0, $idx);
         }
 
-        if (strlen($buf) > $max_bytes) {
+        if (strlen($buf) > $maxBytes) {
             throw new Exception\OverflowException(Str\format(
                 'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
-                $max_bytes,
+                $maxBytes,
                 $suffix,
             ));
         }
 
         do {
-            $offset = strlen($buf) - $suffix_len + 1;
+            $offset = strlen($buf) - $suffixLen + 1;
             $offset = $offset > 0 ? $offset : 0;
             $chunk = $this->handle->read(null, $cancellation);
             if ('' === $chunk) {
@@ -241,11 +241,11 @@ final class Reader implements BufferedReadHandleInterface
             $idx = strpos($buf, $suffix, $offset);
 
             if (false !== $idx) {
-                if ($idx > $max_bytes) {
+                if ($idx > $maxBytes) {
                     $this->buffer = $buf;
                     throw new Exception\OverflowException(Str\format(
                         'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
-                        $max_bytes,
+                        $maxBytes,
                         $suffix,
                     ));
                 }
@@ -253,18 +253,18 @@ final class Reader implements BufferedReadHandleInterface
                 break;
             }
 
-            if (strlen($buf) > $max_bytes) {
+            if (strlen($buf) > $maxBytes) {
                 $this->buffer = $buf;
                 throw new Exception\OverflowException(Str\format(
                     'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
-                    $max_bytes,
+                    $maxBytes,
                     $suffix,
                 ));
             }
         } while (true);
 
         /** @var int<0, max> $idx*/
-        $this->buffer = substr($buf, $idx + $suffix_len);
+        $this->buffer = substr($buf, $idx + $suffixLen);
 
         return substr($buf, 0, $idx);
     }
@@ -274,7 +274,7 @@ final class Reader implements BufferedReadHandleInterface
      */
     #[Override]
     public function read(
-        null|int $max_bytes = null,
+        null|int $maxBytes = null,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): string {
         if ($this->eof) {
@@ -287,14 +287,14 @@ final class Reader implements BufferedReadHandleInterface
 
         // We either have a buffer, or reached EOF; either way, behavior matches
         // read, so just delegate
-        return $this->tryRead($max_bytes);
+        return $this->tryRead($maxBytes);
     }
 
     /**
      * {@inheritDoc}
      */
     #[Override]
-    public function tryRead(null|int $max_bytes = null): string
+    public function tryRead(null|int $maxBytes = null): string
     {
         if ($this->eof) {
             return '';
@@ -308,14 +308,14 @@ final class Reader implements BufferedReadHandleInterface
         }
 
         $buffer = $this->buffer;
-        if (null === $max_bytes || $max_bytes >= strlen($buffer)) {
+        if (null === $maxBytes || $maxBytes >= strlen($buffer)) {
             $this->buffer = '';
             return $buffer;
         }
 
-        $this->buffer = substr($buffer, $max_bytes);
+        $this->buffer = substr($buffer, $maxBytes);
 
-        return substr($buffer, 0, $max_bytes);
+        return substr($buffer, 0, $maxBytes);
     }
 
     public function getHandle(): ReadHandleInterface
@@ -324,15 +324,15 @@ final class Reader implements BufferedReadHandleInterface
     }
 
     /**
-     * @param null|positive-int $desired_bytes
+     * @param null|positive-int $desiredBytes
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws CancelledException If the cancellation token is cancelled.
      */
-    private function fillBuffer(null|int $desired_bytes, CancellationTokenInterface $cancellation): void
+    private function fillBuffer(null|int $desiredBytes, CancellationTokenInterface $cancellation): void
     {
-        $chunk = $this->handle->read($desired_bytes, $cancellation);
+        $chunk = $this->handle->read($desiredBytes, $cancellation);
         $this->buffer .= $chunk;
         if ('' === $chunk) {
             $this->eof = $this->handle->reachedEndOfDataSource();

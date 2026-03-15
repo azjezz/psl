@@ -12,13 +12,13 @@ use Psl\Hash;
 final class EqualsTest extends TestCase
 {
     /**
-     * @param non-empty-string $known_string
-     * @param non-empty-string $user_string
+     * @param non-empty-string $knownString
+     * @param non-empty-string $userString
      */
     #[DataProvider('provideEqualsData')]
-    public function testEquals(bool $expected, string $known_string, string $user_string): void
+    public function testEquals(bool $expected, string $knownString, string $userString): void
     {
-        static::assertSame($expected, Hash\equals($known_string, $user_string));
+        static::assertSame($expected, Hash\equals($knownString, $userString));
     }
 
     /**

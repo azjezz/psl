@@ -20,35 +20,35 @@ use function uasort;
  * @template Ts
  *
  * @param iterable<Tv> $iterable
- * @param (Closure(Tv): Ts) $scalar_func
+ * @param (Closure(Tv): Ts) $scalarFunc
  * @param (Closure(Ts, Ts): int)|null $comparator
  *
  * @return list<Tv>
  */
-function sort_by(iterable $iterable, Closure $scalar_func, null|Closure $comparator = null): array
+function sort_by(iterable $iterable, Closure $scalarFunc, null|Closure $comparator = null): array
 {
-    /** @var array<int, Ts> $order_by */
-    $order_by = [];
+    /** @var array<int, Ts> $orderBy */
+    $orderBy = [];
     /** @var array<int, Tv> $values */
-    $original_values = [];
+    $originalValues = [];
 
     $i = 0;
     foreach ($iterable as $v) {
-        $original_values[$i] = $v;
-        $order_by[$i] = $scalar_func($v);
+        $originalValues[$i] = $v;
+        $orderBy[$i] = $scalarFunc($v);
 
         $i++;
     }
 
     if (null !== $comparator) {
-        uasort($order_by, $comparator);
+        uasort($orderBy, $comparator);
     } else {
-        asort($order_by);
+        asort($orderBy);
     }
 
     $result = [];
-    foreach ($order_by as $k => $_) {
-        $result[] = $original_values[$k];
+    foreach ($orderBy as $k => $_) {
+        $result[] = $originalValues[$k];
     }
 
     return $result;

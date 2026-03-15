@@ -12,13 +12,13 @@ use Psl\Trait;
 final class TraitTest extends TestCase
 {
     #[DataProvider('provideData')]
-    public function test(string $trait_name, bool $defined, bool $exists): void
+    public function test(string $traitName, bool $defined, bool $exists): void
     {
-        static::assertSame($defined, Trait\defined($trait_name));
-        static::assertSame($exists, Trait\exists($trait_name));
+        static::assertSame($defined, Trait\defined($traitName));
+        static::assertSame($exists, Trait\exists($traitName));
 
         if ($exists) {
-            static::assertTrue(Trait\defined($trait_name));
+            static::assertTrue(Trait\defined($traitName));
         }
     }
 

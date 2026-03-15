@@ -25,11 +25,11 @@ function encrypt(
     Key $key,
     #[SensitiveParameter]
     string $nonce,
-    string $additional_data,
+    string $additionalData,
     Algorithm $algorithm,
 ): string {
     return match ($algorithm) {
-        Algorithm::Aes256Gcm => (static function () use ($plaintext, $key, $nonce, $additional_data): string {
+        Algorithm::Aes256Gcm => (static function () use ($plaintext, $key, $nonce, $additionalData): string {
             // @codeCoverageIgnoreStart
             if (!sodium_crypto_aead_aes256gcm_is_available()) {
                 throw new Exception\RuntimeException('AES-256-GCM is not available on this platform.');
@@ -39,20 +39,20 @@ function encrypt(
 
             return Internal\call_sodium(fn() => sodium_crypto_aead_aes256gcm_encrypt(
                 $plaintext,
-                $additional_data,
+                $additionalData,
                 $nonce,
                 $key->bytes,
             ));
         })(),
         Algorithm::XChaCha20Poly1305 => Internal\call_sodium(fn() => sodium_crypto_aead_xchacha20poly1305_ietf_encrypt(
             $plaintext,
-            $additional_data,
+            $additionalData,
             $nonce,
             $key->bytes,
         )),
         Algorithm::ChaCha20Poly1305 => Internal\call_sodium(fn() => sodium_crypto_aead_chacha20poly1305_ietf_encrypt(
             $plaintext,
-            $additional_data,
+            $additionalData,
             $nonce,
             $key->bytes,
         )),

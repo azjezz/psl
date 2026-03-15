@@ -48,16 +48,16 @@ final readonly class Acceptor
             throw new Network\Exception\RuntimeException('Stream resource is not available.');
         }
 
-        $ssl_context = Internal\server_ssl_context($this->config);
-        stream_context_set_options($resource, ['ssl' => $ssl_context]);
+        $sslContext = Internal\server_ssl_context($this->config);
+        stream_context_set_options($resource, ['ssl' => $sslContext]);
 
-        $crypto_method = Internal\crypto_method(
+        $cryptoMethod = Internal\crypto_method(
             $this->config->minimumVersion,
             $this->config->maximumVersion,
             server: true,
         );
 
-        Internal\enable_crypto($resource, $crypto_method, $cancellation);
+        Internal\enable_crypto($resource, $cryptoMethod, $cancellation);
 
         $state = Internal\extract_connection_state($resource);
 

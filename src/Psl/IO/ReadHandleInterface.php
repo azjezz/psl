@@ -36,10 +36,10 @@ interface ReadHandleInterface extends HandleInterface
     /**
      * Try to read from the handle immediately, without waiting.
      *
-     * Up to `$max_bytes` may be allocated in a buffer; large values may lead to
+     * Up to `$maxBytes` may be allocated in a buffer; large values may lead to
      * unnecessarily hitting the request memory limit.
      *
-     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     * @param ?positive-int $maxBytes the maximum number of bytes to read
      *
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
@@ -49,12 +49,12 @@ interface ReadHandleInterface extends HandleInterface
      * @see ReadStreamHandleInterface::read()
      * @see ReadStreamHandleInterface::readAll()
      */
-    public function tryRead(null|int $max_bytes = null): string;
+    public function tryRead(null|int $maxBytes = null): string;
 
     /**
      * Read from the handle, waiting for data if necessary.
      *
-     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     * @param ?positive-int $maxBytes the maximum number of bytes to read
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
@@ -62,11 +62,11 @@ interface ReadHandleInterface extends HandleInterface
      *
      * @return string the read data on success, or an empty string if the end of data source is reached.
      *
-     * Up to `$max_bytes` may be allocated in a buffer; large values may lead to
+     * Up to `$maxBytes` may be allocated in a buffer; large values may lead to
      * unnecessarily hitting the request memory limit.
      */
     public function read(
-        null|int $max_bytes = null,
+        null|int $maxBytes = null,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): string;
 
@@ -77,17 +77,17 @@ interface ReadHandleInterface extends HandleInterface
      * or socket which the other end keeps open forever. Set a timeout if you
      * do not want this to happen.
      *
-     * Up to `$max_bytes` may be allocated in a buffer; large values may lead to
+     * Up to `$maxBytes` may be allocated in a buffer; large values may lead to
      * unnecessarily hitting the request memory limit.
      *
-     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     * @param ?positive-int $maxBytes the maximum number of bytes to read
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws CancelledException If the cancellation token is cancelled.
      */
     public function readAll(
-        null|int $max_bytes = null,
+        null|int $maxBytes = null,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): string;
 

@@ -39,10 +39,10 @@ function depth(NodeInterface $tree): int
         return 0;
     }
 
-    $child_depths = [];
+    $childDepths = [];
     foreach ($children as $child) {
-        $child_depths[] = depth($child);
+        $childDepths[] = depth($child);
     }
 
-    return 1 + max($child_depths);
+    return 1 + max($childDepths);
 }

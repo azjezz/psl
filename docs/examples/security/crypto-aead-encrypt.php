@@ -19,7 +19,7 @@ $ciphertext = Aead\encrypt(
     'Sensitive data',
     $key,
     nonce: $nonce,
-    additional_data: 'context-info',
+    additionalData: 'context-info',
     algorithm: $algorithm,
 );
 

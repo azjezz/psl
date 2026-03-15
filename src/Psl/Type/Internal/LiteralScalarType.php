@@ -53,10 +53,10 @@ final readonly class LiteralScalarType extends Type\Type
 
         $stringType = Type\string();
         if ($stringType->matches($this->value)) {
-            $coerced_value = $stringType->coerce($value);
-            if ($expectedScalarValue === $coerced_value) {
-                /** @var T $coerced_value */
-                return $coerced_value;
+            $coercedValue = $stringType->coerce($value);
+            if ($expectedScalarValue === $coercedValue) {
+                /** @var T $coercedValue */
+                return $coercedValue;
             }
 
             throw CoercionException::withValue($value, $this->toString());
@@ -64,10 +64,10 @@ final readonly class LiteralScalarType extends Type\Type
 
         $intType = Type\int();
         if ($intType->matches($this->value)) {
-            $coerced_value = $intType->coerce($value);
-            if ($expectedScalarValue === $coerced_value) {
-                /** @var T $coerced_value */
-                return $coerced_value;
+            $coercedValue = $intType->coerce($value);
+            if ($expectedScalarValue === $coercedValue) {
+                /** @var T $coercedValue */
+                return $coercedValue;
             }
 
             throw CoercionException::withValue($value, $this->toString());
@@ -75,21 +75,21 @@ final readonly class LiteralScalarType extends Type\Type
 
         $floatType = Type\float();
         if ($floatType->matches($this->value)) {
-            $coerced_value = $floatType->coerce($value);
-            if ($expectedScalarValue === $coerced_value) {
-                /** @var T $coerced_value */
-                return $coerced_value;
+            $coercedValue = $floatType->coerce($value);
+            if ($expectedScalarValue === $coercedValue) {
+                /** @var T $coercedValue */
+                return $coercedValue;
             }
 
             throw CoercionException::withValue($value, $this->toString());
         }
 
-        /** @var bool $literal_value */
-        $literal_value = $expectedScalarValue;
-        $coerced_value = Type\bool()->coerce($value);
-        if ($literal_value === $coerced_value) {
-            /** @var T $coerced_value */
-            return $coerced_value;
+        /** @var bool $literalValue */
+        $literalValue = $expectedScalarValue;
+        $coercedValue = Type\bool()->coerce($value);
+        if ($literalValue === $coercedValue) {
+            /** @var T $coercedValue */
+            return $coercedValue;
         }
 
         throw CoercionException::withValue($value, $this->toString());
@@ -125,12 +125,12 @@ final readonly class LiteralScalarType extends Type\Type
         }
 
         if (Type\float()->matches($value)) {
-            $string_representation = Str\trim_right(Str\format('%.14F', $value), '0');
-            if (Str\ends_with($string_representation, '.')) {
-                $string_representation .= '0';
+            $stringRepresentation = Str\trim_right(Str\format('%.14F', $value), '0');
+            if (Str\ends_with($stringRepresentation, '.')) {
+                $stringRepresentation .= '0';
             }
 
-            return $string_representation;
+            return $stringRepresentation;
         }
 
         return $value ? 'true' : 'false';

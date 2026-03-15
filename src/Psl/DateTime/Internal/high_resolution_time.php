@@ -40,24 +40,24 @@ function high_resolution_time(): array
     }
 
     [$seconds_offset, $nanoseconds_offset] = $offset;
-    $high_resolution_time = hrtime();
-    if (false === $high_resolution_time) {
+    $highResolutionTime = hrtime();
+    if (false === $highResolutionTime) {
         throw new Psl\Exception\InvariantViolationException('The system does not provide a monotonic timer.');
     }
 
-    [$seconds, $nanoseconds] = $high_resolution_time;
+    [$seconds, $nanoseconds] = $highResolutionTime;
 
-    $nanoseconds_adjusted = $nanoseconds + $nanoseconds_offset;
-    if ($nanoseconds_adjusted >= NANOSECONDS_PER_SECOND) {
+    $nanosecondsAdjusted = $nanoseconds + $nanoseconds_offset;
+    if ($nanosecondsAdjusted >= NANOSECONDS_PER_SECOND) {
         ++$seconds;
-        $nanoseconds_adjusted -= NANOSECONDS_PER_SECOND;
-    } elseif ($nanoseconds_adjusted < 0) {
+        $nanosecondsAdjusted -= NANOSECONDS_PER_SECOND;
+    } elseif ($nanosecondsAdjusted < 0) {
         --$seconds;
-        $nanoseconds_adjusted += NANOSECONDS_PER_SECOND;
+        $nanosecondsAdjusted += NANOSECONDS_PER_SECOND;
     }
 
     $seconds += $seconds_offset;
-    $nanoseconds = $nanoseconds_adjusted;
+    $nanoseconds = $nanosecondsAdjusted;
 
     return [$seconds, $nanoseconds];
 }

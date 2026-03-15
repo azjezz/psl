@@ -35,8 +35,8 @@ final class SearchWithKeysOptTest extends TestCase
 
     public static function provideDataNone(): iterable
     {
-        yield [[], static fn(int $_k, string $v): bool => 'qux' === $v];
-        yield [Iter\to_iterator([]), static fn(int $_k, string $v): bool => 'qux' === $v];
-        yield [Iter\to_iterator(['foo', 'bar', 'baz']), static fn(int $_k, string $v): bool => 'qux' === $v];
+        yield [[], static fn(int $_, string $v): bool => 'qux' === $v];
+        yield [Iter\to_iterator([]), static fn(int $_, string $v): bool => 'qux' === $v];
+        yield [Iter\to_iterator(['foo', 'bar', 'baz']), static fn(int $_, string $v): bool => 'qux' === $v];
     }
 }

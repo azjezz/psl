@@ -7,11 +7,11 @@ namespace Psl\Tests\StaticAnalysis\Iter;
 use Psl\Iter;
 use Psl\Math;
 
-/** @param positive-int $_foo */
-function take_positive_integer(int $_foo): void {}
+/** @param positive-int $_ */
+function take_positive_integer(int $_): void {}
 
-/** @param 0 $_foo */
-function take_zero(int $_foo): void {}
+/** @param 0 $_ */
+function take_zero(int $_): void {}
 
 /** @return non-empty-list<int> */
 function return_non_empty_list(): array

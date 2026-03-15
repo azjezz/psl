@@ -23,7 +23,7 @@ function wait_writable(mixed $stream, CancellationTokenInterface $cancellation):
 
     $suspension = EventLoop::getSuspension();
 
-    $write_watcher = EventLoop::onWritable($stream, static function (string $watcher) use ($suspension): void {
+    $writeWatcher = EventLoop::onWritable($stream, static function (string $watcher) use ($suspension): void {
         EventLoop::cancel($watcher);
         $suspension->resume();
     });
@@ -33,7 +33,7 @@ function wait_writable(mixed $stream, CancellationTokenInterface $cancellation):
     try {
         $suspension->suspend();
     } finally {
-        EventLoop::cancel($write_watcher);
+        EventLoop::cancel($writeWatcher);
         $cancellation->unsubscribe($id);
     }
 }

@@ -21,9 +21,9 @@ function decrypt(
     #[SensitiveParameter]
     string $ciphertext,
     #[SensitiveParameter]
-    SecretKey $recipient_secret_key,
+    SecretKey $recipientSecretKey,
     #[SensitiveParameter]
-    PublicKey $sender_public_key,
+    PublicKey $senderPublicKey,
 ): string {
     if (Byte\length($ciphertext) < namespace\NONCE_BYTES) {
         throw new Exception\DecryptionException('Ciphertext is too short.');
@@ -31,7 +31,7 @@ function decrypt(
 
     $nonce = Byte\slice($ciphertext, 0, namespace\NONCE_BYTES);
     $encrypted = Byte\slice($ciphertext, namespace\NONCE_BYTES);
-    $keypair = $recipient_secret_key->bytes . $sender_public_key->bytes;
+    $keypair = $recipientSecretKey->bytes . $senderPublicKey->bytes;
 
     try {
         $plaintext = Internal\call_sodium(fn() => sodium_crypto_box_open($encrypted, $nonce, $keypair));

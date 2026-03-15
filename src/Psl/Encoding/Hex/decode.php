@@ -28,8 +28,8 @@ function decode(string $hexadecimal): string
         );
     }
 
-    $hex_len = strlen($hexadecimal);
-    if (($hex_len & 1) !== 0) {
+    $hexLen = strlen($hexadecimal);
+    if (($hexLen & 1) !== 0) {
         throw new Exception\RangeException('Expected an even number of hexadecimal characters.');
     }
 

@@ -116,7 +116,7 @@ final class CopyTest extends TestCase
             ) {}
 
             public function read(
-                null|int $max_bytes = null,
+                null|int $maxBytes = null,
                 CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): string {
                 $this->state->value++;
@@ -135,9 +135,9 @@ final class CopyTest extends TestCase
                 return '';
             }
 
-            public function tryRead(null|int $max_bytes = null): string
+            public function tryRead(null|int $maxBytes = null): string
             {
-                return $this->read($max_bytes);
+                return $this->read($maxBytes);
             }
 
             public function reachedEndOfDataSource(): bool

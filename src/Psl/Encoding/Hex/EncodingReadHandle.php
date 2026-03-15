@@ -41,7 +41,7 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
     /**
      * {@inheritDoc}
      */
-    public function tryRead(null|int $max_bytes = null): string
+    public function tryRead(null|int $maxBytes = null): string
     {
         if ($this->buffer === '' && !$this->eof) {
             $this->fillBuffer();
@@ -51,14 +51,14 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
             return '';
         }
 
-        if (null === $max_bytes || $max_bytes >= strlen($this->buffer)) {
+        if (null === $maxBytes || $maxBytes >= strlen($this->buffer)) {
             $result = $this->buffer;
             $this->buffer = '';
             return $result;
         }
 
-        $result = substr($this->buffer, 0, $max_bytes);
-        $this->buffer = substr($this->buffer, $max_bytes);
+        $result = substr($this->buffer, 0, $maxBytes);
+        $this->buffer = substr($this->buffer, $maxBytes);
         return $result;
     }
 
@@ -66,7 +66,7 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
      * {@inheritDoc}
      */
     public function read(
-        null|int $max_bytes = null,
+        null|int $maxBytes = null,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): string {
         if ($this->eof && $this->buffer === '') {
@@ -81,14 +81,14 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
             return '';
         }
 
-        if (null === $max_bytes || $max_bytes >= strlen($this->buffer)) {
+        if (null === $maxBytes || $maxBytes >= strlen($this->buffer)) {
             $result = $this->buffer;
             $this->buffer = '';
             return $result;
         }
 
-        $result = substr($this->buffer, 0, $max_bytes);
-        $this->buffer = substr($this->buffer, $max_bytes);
+        $result = substr($this->buffer, 0, $maxBytes);
+        $this->buffer = substr($this->buffer, $maxBytes);
         return $result;
     }
 
@@ -141,16 +141,16 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
         string $suffix,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): null|string {
-        $suffix_len = strlen($suffix);
+        $suffixLen = strlen($suffix);
         $idx = strpos($this->buffer, $suffix);
         if ($idx !== false) {
             $result = substr($this->buffer, 0, $idx);
-            $this->buffer = substr($this->buffer, $idx + $suffix_len);
+            $this->buffer = substr($this->buffer, $idx + $suffixLen);
             return $result;
         }
 
         while (!$this->eof) {
-            $offset = strlen($this->buffer) - $suffix_len + 1;
+            $offset = strlen($this->buffer) - $suffixLen + 1;
             $offset = $offset > 0 ? $offset : 0;
 
             $this->fillBuffer($cancellation);
@@ -158,7 +158,7 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
             $idx = strpos($this->buffer, $suffix, $offset);
             if ($idx !== false) {
                 $result = substr($this->buffer, 0, $idx);
-                $this->buffer = substr($this->buffer, $idx + $suffix_len);
+                $this->buffer = substr($this->buffer, $idx + $suffixLen);
                 return $result;
             }
         }
@@ -168,58 +168,58 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
 
     public function readUntilBounded(
         string $suffix,
-        int $max_bytes,
+        int $maxBytes,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): null|string {
-        $suffix_len = strlen($suffix);
+        $suffixLen = strlen($suffix);
         $idx = strpos($this->buffer, $suffix);
         if ($idx !== false) {
-            if ($idx > $max_bytes) {
+            if ($idx > $maxBytes) {
                 throw new IO\Exception\OverflowException(Psl\Str\format(
                     'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
-                    $max_bytes,
+                    $maxBytes,
                     $suffix,
                 ));
             }
 
             $result = substr($this->buffer, 0, $idx);
-            $this->buffer = substr($this->buffer, $idx + $suffix_len);
+            $this->buffer = substr($this->buffer, $idx + $suffixLen);
             return $result;
         }
 
-        if (strlen($this->buffer) > $max_bytes) {
+        if (strlen($this->buffer) > $maxBytes) {
             throw new IO\Exception\OverflowException(Psl\Str\format(
                 'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
-                $max_bytes,
+                $maxBytes,
                 $suffix,
             ));
         }
 
         while (!$this->eof) {
-            $offset = strlen($this->buffer) - $suffix_len + 1;
+            $offset = strlen($this->buffer) - $suffixLen + 1;
             $offset = $offset > 0 ? $offset : 0;
 
             $this->fillBuffer($cancellation);
 
             $idx = strpos($this->buffer, $suffix, $offset);
             if ($idx !== false) {
-                if ($idx > $max_bytes) {
+                if ($idx > $maxBytes) {
                     throw new IO\Exception\OverflowException(Psl\Str\format(
                         'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
-                        $max_bytes,
+                        $maxBytes,
                         $suffix,
                     ));
                 }
 
                 $result = substr($this->buffer, 0, $idx);
-                $this->buffer = substr($this->buffer, $idx + $suffix_len);
+                $this->buffer = substr($this->buffer, $idx + $suffixLen);
                 return $result;
             }
 
-            if (strlen($this->buffer) > $max_bytes) {
+            if (strlen($this->buffer) > $maxBytes) {
                 throw new IO\Exception\OverflowException(Psl\Str\format(
                     'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
-                    $max_bytes,
+                    $maxBytes,
                     $suffix,
                 ));
             }

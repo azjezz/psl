@@ -29,15 +29,15 @@ use function array_slice;
  * @template T
  *
  * @param NodeInterface<T>  $node
- * @param list<int<0, max>> $index_path
+ * @param list<int<0, max>> $indexPath
  *
  * @return T|null null if the index path is invalid
  *
  * @pure
  */
-function at_index(NodeInterface $node, array $index_path): mixed
+function at_index(NodeInterface $node, array $indexPath): mixed
 {
-    if ([] === $index_path) {
+    if ([] === $indexPath) {
         return $node->getValue();
     }
 
@@ -45,7 +45,7 @@ function at_index(NodeInterface $node, array $index_path): mixed
         return null;
     }
 
-    $index = $index_path[0];
+    $index = $indexPath[0];
     $children = $node->getChildren();
     $node = $children[$index] ?? null;
     if (null === $node) {
@@ -53,5 +53,5 @@ function at_index(NodeInterface $node, array $index_path): mixed
     }
 
     /** @var T */
-    return at_index($node, array_slice($index_path, 1));
+    return at_index($node, array_slice($indexPath, 1));
 }

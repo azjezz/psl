@@ -7,7 +7,7 @@ namespace Psl\Range;
 /**
  * @psalm-mutation-free
  */
-function to(int $upper_bound, bool $inclusive = false): ToRange
+function to(int $upperBound, bool $inclusive = false): ToRange
 {
-    return new ToRange($upper_bound, $inclusive);
+    return new ToRange($upperBound, $inclusive);
 }

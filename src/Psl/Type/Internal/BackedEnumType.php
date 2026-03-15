@@ -47,9 +47,9 @@ final readonly class BackedEnumType extends Type\Type
 
         foreach ($this->enum::cases() as $case) {
             if (Type\string()->matches($case->value)) {
-                $string_value = Type\string()->coerce($value);
+                $stringValue = Type\string()->coerce($value);
 
-                if ($string_value === $case->value) {
+                if ($stringValue === $case->value) {
                     /** @var T */
                     return $case;
                 }
@@ -57,9 +57,9 @@ final readonly class BackedEnumType extends Type\Type
                 continue;
             }
 
-            $integer_value = Type\int()->coerce($value);
+            $integerValue = Type\int()->coerce($value);
 
-            if ($integer_value === $case->value) {
+            if ($integerValue === $case->value) {
                 /** @var T */
                 return $case;
             }

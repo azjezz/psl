@@ -30,16 +30,16 @@ final class SocketLikeReadHandle implements IO\ReadHandleInterface
         return false;
     }
 
-    public function tryRead(null|int $max_bytes = null): string
+    public function tryRead(null|int $maxBytes = null): string
     {
-        return $this->readChunk($max_bytes);
+        return $this->readChunk($maxBytes);
     }
 
     public function read(
-        null|int $max_bytes = null,
+        null|int $maxBytes = null,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): string {
-        $chunk = $this->readChunk($max_bytes);
+        $chunk = $this->readChunk($maxBytes);
         if ($chunk === '') {
             throw new Async\Exception\CancelledException($cancellation);
         }
@@ -48,7 +48,7 @@ final class SocketLikeReadHandle implements IO\ReadHandleInterface
     }
 
     public function readAll(
-        null|int $max_bytes = null,
+        null|int $maxBytes = null,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): string {
         $remaining = Byte\slice($this->buffer, $this->offset);
@@ -74,7 +74,7 @@ final class SocketLikeReadHandle implements IO\ReadHandleInterface
         return $result;
     }
 
-    private function readChunk(null|int $max_bytes): string
+    private function readChunk(null|int $maxBytes): string
     {
         $available = Byte\length($this->buffer) - $this->offset;
         if ($available <= 0) {
@@ -82,7 +82,7 @@ final class SocketLikeReadHandle implements IO\ReadHandleInterface
         }
 
         /** @var non-negative-int $toRead */
-        $toRead = $max_bytes !== null ? Math\minva($max_bytes, $available) : $available;
+        $toRead = $maxBytes !== null ? Math\minva($maxBytes, $available) : $available;
         $chunk = Byte\slice($this->buffer, $this->offset, $toRead);
         $this->offset += $toRead;
 

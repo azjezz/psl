@@ -14,46 +14,46 @@ final class CopyTest extends AbstractFilesystemTestCase
 
     public function testCopy(): void
     {
-        $text_file = Str\join([$this->directory, 'hello.txt'], Filesystem\SEPARATOR);
-        $markdown_file = Str\join([$this->directory, 'hello.md'], Filesystem\SEPARATOR);
+        $textFile = Str\join([$this->directory, 'hello.txt'], Filesystem\SEPARATOR);
+        $markdownFile = Str\join([$this->directory, 'hello.md'], Filesystem\SEPARATOR);
 
-        File\write($text_file, 'Hello, World!');
-        Filesystem\copy($text_file, $markdown_file);
+        File\write($textFile, 'Hello, World!');
+        Filesystem\copy($textFile, $markdownFile);
 
-        static::assertSame('Hello, World!', File\read($markdown_file));
+        static::assertSame('Hello, World!', File\read($markdownFile));
     }
 
     public function testCopyOverwrite(): void
     {
-        $text_file = Str\join([$this->directory, 'hello.txt'], Filesystem\SEPARATOR);
-        $markdown_file = Str\join([$this->directory, 'hello.md'], Filesystem\SEPARATOR);
+        $textFile = Str\join([$this->directory, 'hello.txt'], Filesystem\SEPARATOR);
+        $markdownFile = Str\join([$this->directory, 'hello.md'], Filesystem\SEPARATOR);
 
-        File\write($text_file, 'Hello, World!');
-        File\write($markdown_file, '# Hello, World!');
-        Filesystem\copy($text_file, $markdown_file);
+        File\write($textFile, 'Hello, World!');
+        File\write($markdownFile, '# Hello, World!');
+        Filesystem\copy($textFile, $markdownFile);
 
-        static::assertSame('Hello, World!', File\read($text_file));
-        static::assertSame('# Hello, World!', File\read($markdown_file));
+        static::assertSame('Hello, World!', File\read($textFile));
+        static::assertSame('# Hello, World!', File\read($markdownFile));
 
-        Filesystem\copy($text_file, $markdown_file, true);
+        Filesystem\copy($textFile, $markdownFile, true);
 
-        static::assertSame('Hello, World!', File\read($text_file));
-        static::assertSame('Hello, World!', File\read($markdown_file));
+        static::assertSame('Hello, World!', File\read($textFile));
+        static::assertSame('Hello, World!', File\read($markdownFile));
     }
 
     public function testCopyExecutableBits(): void
     {
-        $shell_file = Str\join([$this->directory, 'hello.sh'], Filesystem\SEPARATOR);
+        $shellFile = Str\join([$this->directory, 'hello.sh'], Filesystem\SEPARATOR);
 
-        Filesystem\create_file($shell_file);
-        Filesystem\change_permissions($shell_file, 0o557);
+        Filesystem\create_file($shellFile);
+        Filesystem\change_permissions($shellFile, 0o557);
 
-        static::assertTrue(Filesystem\is_executable($shell_file));
+        static::assertTrue(Filesystem\is_executable($shellFile));
 
-        $shell_file_copy = Str\join([$this->directory, 'hey.sh'], Filesystem\SEPARATOR);
+        $shellFileCopy = Str\join([$this->directory, 'hey.sh'], Filesystem\SEPARATOR);
 
-        Filesystem\copy($shell_file, $shell_file_copy);
+        Filesystem\copy($shellFile, $shellFileCopy);
 
-        static::assertTrue(Filesystem\is_executable($shell_file_copy));
+        static::assertTrue(Filesystem\is_executable($shellFileCopy));
     }
 }

@@ -23,8 +23,8 @@ final class NotFoundException extends InvalidArgumentException
         return new self(Str\format('Directory "%s" is not found.', $directory));
     }
 
-    public static function forSymbolicLink(string $symbolic_link): NotFoundException
+    public static function forSymbolicLink(string $symbolicLink): NotFoundException
     {
-        return new self(Str\format('Symbolic link "%s" is not found.', $symbolic_link));
+        return new self(Str\format('Symbolic link "%s" is not found.', $symbolicLink));
     }
 }

@@ -7,5 +7,5 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Psl\Json;
 use Psl\Result;
 
-$safe_parse = Result\reflect(fn() => Json\decode('{"key":"value"}'));
-$result = $safe_parse(); // ResultInterface, never throws
+$safeParse = Result\reflect(fn() => Json\decode('{"key":"value"}'));
+$result = $safeParse(); // ResultInterface, never throws

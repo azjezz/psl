@@ -48,9 +48,9 @@ function ends_with(string $string, string $suffix, Encoding $encoding = Encoding
         return true;
     }
 
-    $suffix_length = length($suffix, $encoding);
-    $total_length = length($string, $encoding);
-    if ($suffix_length > $total_length) {
+    $suffixLength = length($suffix, $encoding);
+    $totalLength = length($string, $encoding);
+    if ($suffixLength > $totalLength) {
         return false;
     }
 
@@ -59,5 +59,5 @@ function ends_with(string $string, string $suffix, Encoding $encoding = Encoding
         return false;
     }
 
-    return ($position + $suffix_length) === $total_length;
+    return ($position + $suffixLength) === $totalLength;
 }

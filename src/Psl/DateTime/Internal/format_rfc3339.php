@@ -21,35 +21,35 @@ use const STR_PAD_LEFT;
  */
 function format_rfc3339(
     Timestamp $timestamp,
-    null|SecondsStyle $seconds_style = null,
-    bool $use_z = false,
+    null|SecondsStyle $secondsStyle = null,
+    bool $useZ = false,
     null|Timezone $timezone = null,
 ): string {
-    $seconds_style ??= SecondsStyle::fromTimestamp($timestamp);
+    $secondsStyle ??= SecondsStyle::fromTimestamp($timestamp);
 
     if (null === $timezone) {
         $timezone = Timezone::UTC;
-    } elseif ($use_z) {
-        $use_z = Timezone::UTC === $timezone;
+    } elseif ($useZ) {
+        $useZ = Timezone::UTC === $timezone;
     }
 
     $seconds = $timestamp->getSeconds();
     $nanoseconds = $timestamp->getNanoseconds();
 
     // Intl formatter cannot handle nanoseconds and microseconds, do it manually instead.
-    $fraction = substr(str_pad((string) $nanoseconds, 9, '0', STR_PAD_LEFT), 0, $seconds_style->value);
+    $fraction = substr(str_pad((string) $nanoseconds, 9, '0', STR_PAD_LEFT), 0, $secondsStyle->value);
     if ('' !== $fraction) {
         $fraction = '.' . $fraction;
     }
 
-    $pattern = match ($use_z) {
+    $pattern = match ($useZ) {
         true => 'yyyy-MM-dd\'T\'HH:mm:ss@ZZZZZ',
         false => 'yyyy-MM-dd\'T\'HH:mm:ss@xxx',
     };
 
     $formatter = namespace\create_intl_date_formatter(pattern: $pattern, timezone: $timezone);
-    $rfc_string = $formatter->format($seconds);
+    $rfcString = $formatter->format($seconds);
 
     /** @var string */
-    return str_replace('@', $fraction, $rfc_string);
+    return str_replace('@', $fraction, $rfcString);
 }
