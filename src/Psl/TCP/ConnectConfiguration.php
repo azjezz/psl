@@ -24,4 +24,12 @@ final readonly class ConnectConfiguration implements DefaultInterface
     {
         return new self();
     }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function withNoDelay(bool $noDelay): self
+    {
+        return new self($noDelay);
+    }
 }

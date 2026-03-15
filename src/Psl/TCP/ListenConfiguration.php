@@ -32,4 +32,48 @@ final readonly class ListenConfiguration implements DefaultInterface
     {
         return new self();
     }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function withNoDelay(bool $noDelay): self
+    {
+        return new self($noDelay, $this->reuseAddress, $this->reusePort, $this->backlog, $this->idleConnections);
+    }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function withReuseAddress(bool $reuseAddress): self
+    {
+        return new self($this->noDelay, $reuseAddress, $this->reusePort, $this->backlog, $this->idleConnections);
+    }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function withReusePort(bool $reusePort): self
+    {
+        return new self($this->noDelay, $this->reuseAddress, $reusePort, $this->backlog, $this->idleConnections);
+    }
+
+    /**
+     * @param int<1, max> $backlog
+     *
+     * @psalm-mutation-free
+     */
+    public function withBacklog(int $backlog): self
+    {
+        return new self($this->noDelay, $this->reuseAddress, $this->reusePort, $backlog, $this->idleConnections);
+    }
+
+    /**
+     * @param int<1, max> $idleConnections
+     *
+     * @psalm-mutation-free
+     */
+    public function withIdleConnections(int $idleConnections): self
+    {
+        return new self($this->noDelay, $this->reuseAddress, $this->reusePort, $this->backlog, $idleConnections);
+    }
 }

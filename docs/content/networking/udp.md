@@ -25,7 +25,7 @@ You can also create a connected socket directly:
 
 ### Configuration
 
-`UDP\Socket::bind()` accepts a `BindConfiguration` to control address reuse, port reuse, and broadcast.
+`UDP\Socket::bind()` accepts a `BindConfiguration` to control address reuse, port reuse, and broadcast. Configuration objects are immutable with `with*` builder methods.
 
 ## Examples
 

@@ -50,6 +50,9 @@
 - feat(encoding): introduce streaming IO handles for Base64 (`EncodingReadHandle`, `DecodingReadHandle`, `EncodingWriteHandle`, `DecodingWriteHandle`), QuotedPrintable (same 4), and Hex (same 4), bridging `Psl\IO` and `Psl\Encoding` for transparent encode/decode on read/write
 - feat(io): introduce `Psl\IO\BufferedReadHandleInterface`, extending `ReadHandleInterface` with `readByte()`, `readLine()`, `readUntil()`, and `readUntilBounded()`
 - feat(io): `Psl\IO\Reader` now implements `BufferedReadHandleInterface`
+- feat(tcp): introduce `TCP\ListenConfiguration` and `TCP\ConnectConfiguration` with immutable `with*` builder methods
+- feat(unix): introduce `Unix\ListenConfiguration` with immutable `with*` builder methods
+- feat(udp): introduce `UDP\BindConfiguration` with immutable `with*` builder methods
 
 ### migration guide
 
