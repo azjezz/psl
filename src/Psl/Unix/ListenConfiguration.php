@@ -26,4 +26,24 @@ final readonly class ListenConfiguration implements DefaultInterface
     {
         return new self();
     }
+
+    /**
+     * @param int<1, max> $backlog
+     *
+     * @psalm-mutation-free
+     */
+    public function withBacklog(int $backlog): self
+    {
+        return new self($backlog, $this->idleConnections);
+    }
+
+    /**
+     * @param int<1, max> $idleConnections
+     *
+     * @psalm-mutation-free
+     */
+    public function withIdleConnections(int $idleConnections): self
+    {
+        return new self($this->backlog, $idleConnections);
+    }
 }

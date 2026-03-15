@@ -10,7 +10,7 @@ Unix domain sockets provide local inter-process communication without the overhe
 
 ## Configuration
 
-`Unix\listen()` accepts a `ListenConfiguration` to control backlog (default 512) and idle connections (default 256).
+`Unix\listen()` accepts a `ListenConfiguration` to control backlog (default 512) and idle connections (default 256). Configuration objects are immutable with `with*` builder methods.
 
 ## Examples
 

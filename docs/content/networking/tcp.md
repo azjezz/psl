@@ -29,6 +29,10 @@ All TCP connectors implement `ConnectorInterface`, making them interchangeable a
 - **`ListenConfiguration`** -- noDelay, reuseAddress, reusePort, backlog (default 512), idleConnections (default 256)
 - **`ConnectConfiguration`** -- noDelay
 
+All configuration objects are immutable and provide `with*` builder methods for fluent configuration:
+
+@example('networking/tcp-configuration.php')
+
 @example('networking/tcp-backlog.php')
 
 ### Low-Level Socket

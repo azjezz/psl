@@ -28,4 +28,28 @@ final readonly class BindConfiguration implements DefaultInterface
     {
         return new self();
     }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function withReuseAddress(bool $reuseAddress): self
+    {
+        return new self($reuseAddress, $this->reusePort, $this->broadcast);
+    }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function withReusePort(bool $reusePort): self
+    {
+        return new self($this->reuseAddress, $reusePort, $this->broadcast);
+    }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function withBroadcast(bool $broadcast): self
+    {
+        return new self($this->reuseAddress, $this->reusePort, $broadcast);
+    }
 }
