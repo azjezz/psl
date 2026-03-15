@@ -34,7 +34,7 @@ final class KeyedSemaphore
     /**
      * @var array<Tk, int<0, max>>
      */
-    private array $ingoing = [];
+    private array $ongoing = [];
 
     /**
      * @var array<Tk, list<Suspension>>
@@ -58,7 +58,7 @@ final class KeyedSemaphore
     /**
      * Run the operation using the given `$input`.
      *
-     * If the concurrency limit has been reached for the given `$key`, this method will wait until one of the ingoing operations has completed.
+     * If the concurrency limit has been reached for the given `$key`, this method will wait until one of the ongoing operations has completed.
      *
      * @param Tk $key
      * @param Tin $input
@@ -74,8 +74,8 @@ final class KeyedSemaphore
         mixed $input,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): mixed {
-        $this->ingoing[$key] ??= 0;
-        if ($this->ingoing[$key] === $this->concurrencyLimit) {
+        $this->ongoing[$key] ??= 0;
+        if ($this->ongoing[$key] === $this->concurrencyLimit) {
             $cancellation->throwIfCancelled();
 
             $suspension = EventLoop::getSuspension();
@@ -100,7 +100,7 @@ final class KeyedSemaphore
             }
         }
 
-        $this->ingoing[$key]++;
+        $this->ongoing[$key]++;
 
         try {
             return ($this->operation)($key, $input);
@@ -115,7 +115,7 @@ final class KeyedSemaphore
                     $suspension->resume();
                 }
 
-                $this->ingoing[$key]--;
+                $this->ongoing[$key]--;
             } else {
                 foreach ($this->waits[$key] ?? [] as $suspension) {
                     $suspension->resume();
@@ -123,9 +123,9 @@ final class KeyedSemaphore
 
                 unset($this->waits[$key]);
 
-                $this->ingoing[$key]--;
-                if (0 === $this->ingoing[$key]) {
-                    unset($this->ingoing[$key]);
+                $this->ongoing[$key]--;
+                if (0 === $this->ongoing[$key]) {
+                    unset($this->ongoing[$key]);
                 }
             }
         }
@@ -226,7 +226,7 @@ final class KeyedSemaphore
     }
 
     /**
-     * Get the number of ingoing operations for the given key.
+     * Get the number of ongoing operations for the given key.
      *
      * The returned number will always be lower, or equal to the concurrency limit.
      *
@@ -234,43 +234,43 @@ final class KeyedSemaphore
      *
      * @return int<0, max>
      */
-    public function getIngoingOperations(string|int $key): int
+    public function getOngoingOperations(string|int $key): int
     {
-        return $this->ingoing[$key] ?? 0;
+        return $this->ongoing[$key] ?? 0;
     }
 
     /**
-     * Get the number of total ingoing operations.
+     * Get the number of total ongoing operations.
      *
-     * The returned number can be higher than the concurrency limit, as it is the sum of all ingoing operations using different keys.
+     * The returned number can be higher than the concurrency limit, as it is the sum of all ongoing operations using different keys.
      *
      * @return int<0, max>
      */
-    public function getTotalIngoingOperations(): int
+    public function getTotalOngoingOperations(): int
     {
         /** @var int<0, max> */
-        return array_sum($this->ingoing);
+        return array_sum($this->ongoing);
     }
 
     /**
-     * Check if the semaphore has any ingoing operations for the given key.
+     * Check if the semaphore has any ongoing operations for the given key.
      *
-     * If this method returns `true`, it does not mean future calls to `waitFor` will wait, since a semaphore can have multiple ingoing operations
+     * If this method returns `true`, it does not mean future calls to `waitFor` will wait, since a semaphore can have multiple ongoing operations
      * at the same time for the same key.
      *
      * @param Tk $key
      */
-    public function hasIngoingOperations(string|int $key): bool
+    public function hasOngoingOperations(string|int $key): bool
     {
-        return array_key_exists($key, $this->ingoing);
+        return array_key_exists($key, $this->ongoing);
     }
 
     /**
-     * Check if the semaphore has any ingoing operations.
+     * Check if the semaphore has any ongoing operations.
      */
-    public function hasAnyIngoingOperations(): bool
+    public function hasAnyOngoingOperations(): bool
     {
-        return [] !== $this->ingoing;
+        return [] !== $this->ongoing;
     }
 
     /**
@@ -286,7 +286,7 @@ final class KeyedSemaphore
         string|int $key,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): void {
-        if (($this->ingoing[$key] ?? 0) !== $this->concurrencyLimit) {
+        if (($this->ongoing[$key] ?? 0) !== $this->concurrencyLimit) {
             return;
         }
 

@@ -26,7 +26,7 @@ use function array_splice;
  */
 final class Sequence
 {
-    private bool $ingoing = false;
+    private bool $ongoing = false;
 
     /**
      * @var list<Suspension>
@@ -58,7 +58,7 @@ final class Sequence
      */
     public function waitFor(mixed $input, CancellationTokenInterface $cancellation = new NullCancellationToken()): mixed
     {
-        if ($this->ingoing) {
+        if ($this->ongoing) {
             $cancellation->throwIfCancelled();
 
             $suspension = EventLoop::getSuspension();
@@ -79,7 +79,7 @@ final class Sequence
             }
         }
 
-        $this->ingoing = true;
+        $this->ongoing = true;
 
         try {
             return ($this->operation)($input);
@@ -94,7 +94,7 @@ final class Sequence
 
                 $this->waits = [];
 
-                $this->ingoing = false;
+                $this->ongoing = false;
             }
         }
     }
@@ -136,14 +136,14 @@ final class Sequence
     }
 
     /**
-     * Check if the sequence has any ingoing operations.
+     * Check if the sequence has any ongoing operations.
      *
      * If this method returns `true`, it means future calls to `waitFor` will wait.
      * If this method returns `false`, it means future calls to `waitFor` will execute immediately.
      */
-    public function hasIngoingOperations(): bool
+    public function hasOngoingOperations(): bool
     {
-        return $this->ingoing;
+        return $this->ongoing;
     }
 
     /**
@@ -153,7 +153,7 @@ final class Sequence
      */
     public function waitForPending(CancellationTokenInterface $cancellation = new NullCancellationToken()): void
     {
-        if (!$this->ingoing) {
+        if (!$this->ongoing) {
             return;
         }
 

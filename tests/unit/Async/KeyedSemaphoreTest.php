@@ -235,40 +235,40 @@ final class KeyedSemaphoreTest extends TestCase
 
         $one = Async\run(static fn(): string => $ks->waitFor($key, 'one'));
         $two = Async\run(static fn(): string => $ks->waitFor($key, 'two'));
-        static::assertSame(0, $ks->getIngoingOperations($key));
+        static::assertSame(0, $ks->getOngoingOperations($key));
         static::assertSame(0, $ks->getPendingOperations($key));
-        static::assertFalse($ks->hasIngoingOperations($key));
+        static::assertFalse($ks->hasOngoingOperations($key));
         static::assertFalse($ks->hasPendingOperations($key));
-        static::assertSame(0, $ks->getTotalIngoingOperations());
+        static::assertSame(0, $ks->getTotalOngoingOperations());
         static::assertSame(0, $ks->getTotalPendingOperations());
-        static::assertFalse($ks->hasAnyIngoingOperations());
+        static::assertFalse($ks->hasAnyOngoingOperations());
         static::assertFalse($ks->hasAnyPendingOperations());
         Async\later();
-        static::assertSame(1, $ks->getIngoingOperations($key));
+        static::assertSame(1, $ks->getOngoingOperations($key));
         static::assertSame(1, $ks->getPendingOperations($key));
         static::assertTrue($ks->hasPendingOperations($key));
-        static::assertTrue($ks->hasIngoingOperations($key));
-        static::assertSame(1, $ks->getTotalIngoingOperations());
+        static::assertTrue($ks->hasOngoingOperations($key));
+        static::assertSame(1, $ks->getTotalOngoingOperations());
         static::assertSame(1, $ks->getTotalPendingOperations());
         static::assertTrue($ks->hasAnyPendingOperations());
-        static::assertTrue($ks->hasAnyIngoingOperations());
+        static::assertTrue($ks->hasAnyOngoingOperations());
         $one->await();
-        static::assertSame(1, $ks->getIngoingOperations($key));
+        static::assertSame(1, $ks->getOngoingOperations($key));
         static::assertSame(0, $ks->getPendingOperations($key));
-        static::assertTrue($ks->hasIngoingOperations($key));
+        static::assertTrue($ks->hasOngoingOperations($key));
         static::assertFalse($ks->hasPendingOperations($key));
-        static::assertSame(1, $ks->getTotalIngoingOperations());
+        static::assertSame(1, $ks->getTotalOngoingOperations());
         static::assertSame(0, $ks->getTotalPendingOperations());
-        static::assertTrue($ks->hasAnyIngoingOperations());
+        static::assertTrue($ks->hasAnyOngoingOperations());
         static::assertFalse($ks->hasAnyPendingOperations());
         $two->await();
-        static::assertSame(0, $ks->getIngoingOperations($key));
+        static::assertSame(0, $ks->getOngoingOperations($key));
         static::assertSame(0, $ks->getPendingOperations($key));
-        static::assertFalse($ks->hasIngoingOperations($key));
+        static::assertFalse($ks->hasOngoingOperations($key));
         static::assertFalse($ks->hasPendingOperations($key));
-        static::assertSame(0, $ks->getTotalIngoingOperations());
+        static::assertSame(0, $ks->getTotalOngoingOperations());
         static::assertSame(0, $ks->getTotalPendingOperations());
-        static::assertFalse($ks->hasAnyIngoingOperations());
+        static::assertFalse($ks->hasAnyOngoingOperations());
         static::assertFalse($ks->hasAnyPendingOperations());
     }
 
@@ -301,8 +301,8 @@ final class KeyedSemaphoreTest extends TestCase
         });
         static::assertSame(1, $ks->getConcurrencyLimit());
 
-        static::assertFalse($ks->hasIngoingOperations('foo'));
-        static::assertFalse($ks->hasIngoingOperations('bar'));
+        static::assertFalse($ks->hasOngoingOperations('foo'));
+        static::assertFalse($ks->hasOngoingOperations('bar'));
         static::assertFalse($ks->hasPendingOperations('foo'));
         static::assertFalse($ks->hasPendingOperations('bar'));
 
@@ -311,8 +311,8 @@ final class KeyedSemaphoreTest extends TestCase
 
         Async\later();
 
-        static::assertTrue($ks->hasIngoingOperations('foo'));
-        static::assertTrue($ks->hasIngoingOperations('bar'));
+        static::assertTrue($ks->hasOngoingOperations('foo'));
+        static::assertTrue($ks->hasOngoingOperations('bar'));
         static::assertFalse($ks->hasPendingOperations('foo'));
         static::assertFalse($ks->hasPendingOperations('bar'));
 
@@ -321,24 +321,24 @@ final class KeyedSemaphoreTest extends TestCase
 
         Async\later();
 
-        static::assertTrue($ks->hasIngoingOperations('foo'));
-        static::assertTrue($ks->hasIngoingOperations('bar'));
+        static::assertTrue($ks->hasOngoingOperations('foo'));
+        static::assertTrue($ks->hasOngoingOperations('bar'));
         static::assertTrue($ks->hasPendingOperations('foo'));
         static::assertTrue($ks->hasPendingOperations('bar'));
 
         static::assertSame('one', $fooOne->await());
         static::assertSame('one', $barOne->await());
 
-        static::assertTrue($ks->hasIngoingOperations('foo'));
-        static::assertTrue($ks->hasIngoingOperations('bar'));
+        static::assertTrue($ks->hasOngoingOperations('foo'));
+        static::assertTrue($ks->hasOngoingOperations('bar'));
         static::assertFalse($ks->hasPendingOperations('foo'));
         static::assertFalse($ks->hasPendingOperations('bar'));
 
         static::assertSame('two', $fooTwo->await());
         static::assertSame('two', $barTwo->await());
 
-        static::assertFalse($ks->hasIngoingOperations('foo'));
-        static::assertFalse($ks->hasIngoingOperations('bar'));
+        static::assertFalse($ks->hasOngoingOperations('foo'));
+        static::assertFalse($ks->hasOngoingOperations('bar'));
         static::assertFalse($ks->hasPendingOperations('foo'));
         static::assertFalse($ks->hasPendingOperations('bar'));
     }
@@ -349,7 +349,7 @@ final class KeyedSemaphoreTest extends TestCase
 
         $ks->waitForPending('key');
 
-        static::assertFalse($ks->hasIngoingOperations('key'));
+        static::assertFalse($ks->hasOngoingOperations('key'));
     }
 
     public function testWaitForCancelledWhileWaitingForSlot(): void

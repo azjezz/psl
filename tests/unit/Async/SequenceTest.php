@@ -182,19 +182,19 @@ final class SequenceTest extends TestCase
 
         $one = Async\run(static fn(): string => $s->waitFor('one'));
         $two = Async\run(static fn(): string => $s->waitFor('two'));
-        static::assertFalse($s->hasIngoingOperations());
+        static::assertFalse($s->hasOngoingOperations());
         static::assertFalse($s->hasPendingOperations());
         static::assertSame(0, $s->getPendingOperations());
         Async\later();
-        static::assertTrue($s->hasIngoingOperations());
+        static::assertTrue($s->hasOngoingOperations());
         static::assertTrue($s->hasPendingOperations());
         static::assertSame(1, $s->getPendingOperations());
         $one->await();
-        static::assertTrue($s->hasIngoingOperations());
+        static::assertTrue($s->hasOngoingOperations());
         static::assertFalse($s->hasPendingOperations());
         static::assertSame(0, $s->getPendingOperations());
         $two->await();
-        static::assertFalse($s->hasIngoingOperations());
+        static::assertFalse($s->hasOngoingOperations());
         static::assertFalse($s->hasPendingOperations());
         static::assertSame(0, $s->getPendingOperations());
     }
@@ -212,19 +212,19 @@ final class SequenceTest extends TestCase
 
         $one = Async\run(static fn(): string => $s->waitFor('one'));
         $two = Async\run(static fn(): string => $s->waitFor('two'));
-        static::assertFalse($s->hasIngoingOperations());
+        static::assertFalse($s->hasOngoingOperations());
         static::assertFalse($s->hasPendingOperations());
         static::assertSame(0, $s->getPendingOperations());
         static::assertFalse($one->isComplete());
         static::assertFalse($two->isComplete());
         Async\later();
-        static::assertTrue($s->hasIngoingOperations());
+        static::assertTrue($s->hasOngoingOperations());
         static::assertTrue($s->hasPendingOperations());
         static::assertSame(1, $s->getPendingOperations());
         static::assertFalse($one->isComplete());
         static::assertFalse($two->isComplete());
         $s->waitForPending();
-        static::assertFalse($s->hasIngoingOperations());
+        static::assertFalse($s->hasOngoingOperations());
         static::assertFalse($s->hasPendingOperations());
         static::assertSame(0, $s->getPendingOperations());
         static::assertTrue($one->isComplete());
@@ -237,7 +237,7 @@ final class SequenceTest extends TestCase
 
         $s->waitForPending();
 
-        static::assertFalse($s->hasIngoingOperations());
+        static::assertFalse($s->hasOngoingOperations());
     }
 
     public function testWaitForCancelledWhileWaiting(): void
