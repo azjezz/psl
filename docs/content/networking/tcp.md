@@ -61,4 +61,10 @@ All configuration objects are immutable and provide `with*` builder methods for 
 
 @example('networking/tcp-cancellable-accept.php')
 
+### Restricted Listener
+
+`RestrictedListener` wraps any `ListenerInterface` and restricts connections to a set of allowed `IP\Address` and `CIDR\Block` entries. Rejected connections are closed silently.
+
+@example('networking/tcp-restricted-listener.php')
+
 See `src/Psl/TCP/` for the full API.

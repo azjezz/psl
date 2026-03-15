@@ -1202,6 +1202,7 @@ final class Loader
         'Psl\\TCP\\StaticConnector' => 'Psl/TCP/StaticConnector.php',
         'Psl\\TCP\\Internal\\Stream' => 'Psl/TCP/Internal/Stream.php',
         'Psl\\TCP\\Internal\\Listener' => 'Psl/TCP/Internal/Listener.php',
+        'Psl\\TCP\\RestrictedListener' => 'Psl/TCP/RestrictedListener.php',
         'Psl\\TLS\\Certificate' => 'Psl/TLS/Certificate.php',
         'Psl\\TLS\\ClientConfiguration' => 'Psl/TLS/ClientConfiguration.php',
         'Psl\\TLS\\ServerConfiguration' => 'Psl/TLS/ServerConfiguration.php',
