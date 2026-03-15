@@ -14,7 +14,9 @@ Standard Base64 uses `+` and `/`, which conflict with URLs. The `UrlSafe` varian
 
 @example('text/encoding-base64-urlsafe.php')
 
-The `Variant` enum supports `Standard`, `UrlSafe`, `DotSlash`, and `DotSlashOrdered` for specialized use cases.
+The `Variant` enum supports `Standard`, `UrlSafe`, `DotSlash`, `DotSlashOrdered`, and `Mime` for specialized use cases.
+
+The `Mime` variant uses the standard alphabet but wraps output at 76 characters with CRLF line endings per RFC 2045, and strips whitespace on decode.
 
 ### Padding Control
 

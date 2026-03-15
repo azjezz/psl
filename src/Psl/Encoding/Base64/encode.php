@@ -16,5 +16,6 @@ function encode(string $binary, Variant $variant = Variant::Standard, bool $padd
         Variant::UrlSafe => Internal\Base64UrlSafe::encode($binary, $padding),
         Variant::DotSlash => Internal\Base64DotSlash::encode($binary, $padding),
         Variant::DotSlashOrdered => Internal\Base64DotSlashOrdered::encode($binary, $padding),
+        Variant::Mime => Internal\Base64Mime::encode($binary, $padding),
     };
 }

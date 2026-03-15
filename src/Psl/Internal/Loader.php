@@ -988,6 +988,7 @@ final class Loader
         'Psl\\Encoding\\Base64\\Internal\\Base64UrlSafe' => 'Psl/Encoding/Base64/Internal/Base64UrlSafe.php',
         'Psl\\Encoding\\Base64\\Internal\\Base64DotSlash' => 'Psl/Encoding/Base64/Internal/Base64DotSlash.php',
         'Psl\\Encoding\\Base64\\Internal\\Base64DotSlashOrdered' => 'Psl/Encoding/Base64/Internal/Base64DotSlashOrdered.php',
+        'Psl\\Encoding\\Base64\\Internal\\Base64Mime' => 'Psl/Encoding/Base64/Internal/Base64Mime.php',
         'Psl\\Exception\\OverflowException' => 'Psl/Exception/OverflowException.php',
         'Psl\\Exception\\InvalidArgumentException' => 'Psl/Exception/InvalidArgumentException.php',
         'Psl\\Exception\\UnexpectedValueException' => 'Psl/Exception/UnexpectedValueException.php',

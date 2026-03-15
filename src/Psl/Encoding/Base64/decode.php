@@ -22,5 +22,6 @@ function decode(string $base64, Variant $variant = Variant::Standard, bool $expl
         Variant::UrlSafe => Internal\Base64UrlSafe::decode($base64, $explicitPadding),
         Variant::DotSlash => Internal\Base64DotSlash::decode($base64, $explicitPadding),
         Variant::DotSlashOrdered => Internal\Base64DotSlashOrdered::decode($base64, $explicitPadding),
+        Variant::Mime => Internal\Base64Mime::decode($base64, $explicitPadding),
     };
 }

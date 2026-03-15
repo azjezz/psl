@@ -66,6 +66,20 @@ enum Variant implements DefaultInterface
     case DotSlashOrdered;
 
     /**
+     * MIME Base64 encoding per RFC 2045.
+     *
+     * Uses the standard Base64 character set but wraps output at 76 characters
+     * with CRLF ("\r\n") line endings. On decode, all whitespace is stripped
+     * before processing.
+     *
+     * Character set:
+     *
+     *  [A-Z]      [a-z]      [0-9]      +     /
+     *  0x41-0x5a, 0x61-0x7a, 0x30-0x39, 0x2b, 0x2f
+     */
+    case Mime;
+
+    /**
      * Provides the default variant for Base64 encoding.
      *
      * By default, this method returns the `Standard` variant, which is widely used across
