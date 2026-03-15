@@ -55,6 +55,7 @@
 - feat(unix): introduce `Unix\ListenConfiguration` with immutable `with*` builder methods
 - feat(udp): introduce `UDP\BindConfiguration` with immutable `with*` builder methods
 - feat(socks): introduce `Socks\Configuration` with immutable `with*` builder methods for proxy host, port, and credentials
+- feat(tcp): introduce `TCP\RestrictedListener`, wrapping a listener to restrict connections to a set of allowed `IP\Address` and `CIDR\Block` entries
 - fix(tcp): `RetryConnector` backoff sleep now respects cancellation tokens, allowing retry loops to be cancelled during the delay
 
 ### migration guide
