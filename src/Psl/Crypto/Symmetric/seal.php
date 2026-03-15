@@ -19,7 +19,7 @@ function seal(
     string $plaintext,
     #[SensitiveParameter]
     Key $key,
-    string $additional_data = '',
+    string $additionalData = '',
 ): string {
-    return new Encryptor($key)->seal($plaintext, $additional_data);
+    return new Encryptor($key)->seal($plaintext, $additionalData);
 }

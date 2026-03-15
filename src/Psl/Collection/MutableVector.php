@@ -276,7 +276,7 @@ final class MutableVector implements MutableVectorInterface
      *
      * If no element matches the search value, this function returns null.
      *
-     * @param T $search_value The value that will be search for in the current
+     * @param T $searchValue The value that will be search for in the current
      *                        collection.
      *
      * @return int<0, max>|null The key (index) where that value is found; null if it is not found.
@@ -284,9 +284,9 @@ final class MutableVector implements MutableVectorInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function linearSearch(mixed $search_value): null|int
+    public function linearSearch(mixed $searchValue): null|int
     {
-        $key = array_search($search_value, $this->elements, true);
+        $key = array_search($searchValue, $this->elements, true);
 
         return false === $key ? null : $key;
     }

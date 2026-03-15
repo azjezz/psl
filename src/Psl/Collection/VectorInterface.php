@@ -208,7 +208,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      *
      * If no element matches the search value, this function returns null.
      *
-     * @param T $search_value The value that will be search for in the current
+     * @param T $searchValue The value that will be search for in the current
      *                        `VectorInterface`.
      *
      * @return int<0, max>|null The key (index) where that value is found; null if it is not found
@@ -216,7 +216,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function linearSearch(mixed $search_value): null|int;
+    public function linearSearch(mixed $searchValue): null|int;
 
     /**
      * Returns a `VectorInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the

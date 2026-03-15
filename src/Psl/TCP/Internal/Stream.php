@@ -53,23 +53,23 @@ final class Stream implements TCP\StreamInterface
     }
 
     /**
-     * @param ?positive-int $max_bytes
+     * @param ?positive-int $maxBytes
      */
     #[Override]
-    public function tryRead(null|int $max_bytes = null): string
+    public function tryRead(null|int $maxBytes = null): string
     {
-        return $this->handle->tryRead($max_bytes);
+        return $this->handle->tryRead($maxBytes);
     }
 
     /**
-     * @param ?positive-int $max_bytes
+     * @param ?positive-int $maxBytes
      */
     #[Override]
     public function read(
-        null|int $max_bytes = null,
+        null|int $maxBytes = null,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): string {
-        return $this->handle->read($max_bytes, $cancellation);
+        return $this->handle->read($maxBytes, $cancellation);
     }
 
     /**
@@ -112,10 +112,10 @@ final class Stream implements TCP\StreamInterface
     }
 
     /**
-     * @param positive-int $max_bytes
+     * @param positive-int $maxBytes
      */
     #[Override]
-    public function peek(int $max_bytes, CancellationTokenInterface $cancellation = new NullCancellationToken()): string
+    public function peek(int $maxBytes, CancellationTokenInterface $cancellation = new NullCancellationToken()): string
     {
         $stream = $this->handle->getStream();
         if (!is_resource($stream)) {
@@ -126,9 +126,9 @@ final class Stream implements TCP\StreamInterface
 
         $suspension = EventLoop::getSuspension();
 
-        $cancellation_id = $cancellation->subscribe($suspension->throw(...));
+        $cancellationId = $cancellation->subscribe($suspension->throw(...));
 
-        $read_watcher = EventLoop::onReadable($stream, static function (string $watcher) use ($suspension): void {
+        $readWatcher = EventLoop::onReadable($stream, static function (string $watcher) use ($suspension): void {
             EventLoop::cancel($watcher);
             $suspension->resume(null);
         });
@@ -136,12 +136,12 @@ final class Stream implements TCP\StreamInterface
         try {
             $suspension->suspend();
         } finally {
-            EventLoop::cancel($read_watcher);
-            $cancellation->unsubscribe($cancellation_id);
+            EventLoop::cancel($readWatcher);
+            $cancellation->unsubscribe($cancellationId);
         }
 
         /** @psalm-suppress MissingThrowsDocblock */
-        $data = @stream_socket_recvfrom($stream, $max_bytes, STREAM_PEEK);
+        $data = @stream_socket_recvfrom($stream, $maxBytes, STREAM_PEEK);
         if ($data === false) {
             throw new IO\Exception\RuntimeException('Failed to peek data from stream.');
         }

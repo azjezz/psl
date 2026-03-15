@@ -20,11 +20,11 @@ function strip_suffix(string $string, string $suffix, Encoding $encoding = Encod
         return '';
     }
 
-    $suffix_length = length($suffix, $encoding);
-    $string_length = length($string, $encoding);
-    // if $suffix_length is greater than $string_length, return $string as it can't contain $suffix.
-    // if $suffix_length and $string_length are the same, return $string as $suffix is not $string.
-    $length = $string_length - $suffix_length;
+    $suffixLength = length($suffix, $encoding);
+    $stringLength = length($string, $encoding);
+    // if $suffixLength is greater than $stringLength, return $string as it can't contain $suffix.
+    // if $suffixLength and $stringLength are the same, return $string as $suffix is not $string.
+    $length = $stringLength - $suffixLength;
     if ($length < 0) {
         return $string;
     }

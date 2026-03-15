@@ -9,11 +9,11 @@ use function class_exists;
 /**
  * Checks if the class with the given name exists.
  *
- * @param string $class_name
+ * @param string $className
  *
- * @psalm-assert-if-true =class-string $class_name
+ * @psalm-assert-if-true =class-string $className
  */
-function exists(string $class_name): bool
+function exists(string $className): bool
 {
-    return class_exists($class_name, true);
+    return class_exists($className, true);
 }

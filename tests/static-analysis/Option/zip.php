@@ -74,5 +74,5 @@ function test_some_zip_with(): Option\Option
  */
 function test_some_zip_with_2(): Option\Option
 {
-    return Option\some(1)->zipWith(Option\some('2'), static fn(int $_a, string $b): string => $b);
+    return Option\some(1)->zipWith(Option\some('2'), static fn(int $_, string $b): string => $b);
 }

@@ -11,9 +11,9 @@ use Psl\Math;
 final class ToBaseTest extends TestCase
 {
     #[DataProvider('provideData')]
-    public function testFromBase(string $expected, int $value, int $to_base): void
+    public function testFromBase(string $expected, int $value, int $toBase): void
     {
-        static::assertSame($expected, Math\to_base($value, $to_base));
+        static::assertSame($expected, Math\to_base($value, $toBase));
     }
 
     public static function provideData(): array

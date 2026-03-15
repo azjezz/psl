@@ -8,9 +8,9 @@ use Psl;
 use Psl\Type;
 
 /**
- * @param class-string<Psl\Collection\CollectionInterface> $_foo
+ * @param class-string<Psl\Collection\CollectionInterface> $_
  */
-function take_collection_classname(string $_foo): void {}
+function take_collection_classname(string $_): void {}
 
 /**
  * @throws Psl\Type\Exception\AssertException

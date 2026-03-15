@@ -29,21 +29,21 @@ Async\main(static function (): int {
     }
 
     $args = getopt('i:o:t:');
-    $input_file = $args['i'] ?? '/dev/zero';
-    $output_file = $args['o'] ?? '/dev/null';
+    $inputFile = $args['i'] ?? '/dev/zero';
+    $outputFile = $args['o'] ?? '/dev/null';
     $seconds = DateTime\Duration::seconds((int) ($args['t'] ?? 5));
 
     // passing file descriptors requires mapping paths (https://bugs.php.net/bug.php?id=53465)
-    $input_file = Regex\replace($input_file, '(^/dev/fd/)', 'php://fd/');
-    $output_file = Regex\replace($output_file, '(^/dev/fd/)', 'php://fd/');
+    $inputFile = Regex\replace($inputFile, '(^/dev/fd/)', 'php://fd/');
+    $outputFile = Regex\replace($outputFile, '(^/dev/fd/)', 'php://fd/');
 
-    $input = new IO\CloseReadStreamHandle(fopen($input_file, 'rb'));
-    $output = new IO\CloseWriteStreamHandle(fopen($output_file, 'wb'));
+    $input = new IO\CloseReadStreamHandle(fopen($inputFile, 'rb'));
+    $output = new IO\CloseWriteStreamHandle(fopen($outputFile, 'wb'));
 
     IO\write_error_line(
         'piping from %s to %s (for max %d second(s)) ...',
-        $input_file,
-        $output_file,
+        $inputFile,
+        $outputFile,
         $seconds->getTotalSeconds(),
     );
 
@@ -69,9 +69,9 @@ Async\main(static function (): int {
 
     $duration = DateTime\Timestamp::monotonic()->since($start);
     $bytes = $i * 65_536;
-    $bytes_formatted = Math\round((($bytes / 1024) / 1024) / $duration->getTotalSeconds(), 1);
+    $bytesFormatted = Math\round((($bytes / 1024) / 1024) / $duration->getTotalSeconds(), 1);
 
-    IO\write_error_line('read %d byte(s) in %s => %dMiB/s', $bytes, $duration->toString(), $bytes_formatted);
+    IO\write_error_line('read %d byte(s) in %s => %dMiB/s', $bytes, $duration->toString(), $bytesFormatted);
     IO\write_error_line('peak memory usage of %dMiB', Math\round((memory_get_peak_usage(true) / 1024) / 1024, 1));
 
     return 0;

@@ -116,11 +116,11 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
 
-        $would_block = false;
+        $wouldBlock = false;
         $operations = LOCK_NB | ($type === LockType::Exclusive ? LOCK_EX : LOCK_SH);
-        $success = @flock($this->stream, $operations, $would_block);
+        $success = @flock($this->stream, $operations, $wouldBlock);
         // @codeCoverageIgnoreStart
-        if ($would_block) {
+        if ($wouldBlock) {
             throw new File\Exception\AlreadyLockedException();
         }
 

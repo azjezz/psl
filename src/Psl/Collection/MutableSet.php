@@ -319,7 +319,7 @@ final class MutableSet implements MutableSetInterface
      *
      * As {@see MutableSet} does not have keys, this method returns the value itself.
      *
-     * @param T $search_value The value that will be search for in the current
+     * @param T $searchValue The value that will be search for in the current
      *                        `MutableSet`.
      *
      * @return T|null The value if its found, null otherwise.
@@ -327,10 +327,10 @@ final class MutableSet implements MutableSetInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function linearSearch(mixed $search_value): null|int|string
+    public function linearSearch(mixed $searchValue): null|int|string
     {
         foreach ($this->elements as $element) {
-            if ($search_value !== $element) {
+            if ($searchValue !== $element) {
                 continue;
             }
 

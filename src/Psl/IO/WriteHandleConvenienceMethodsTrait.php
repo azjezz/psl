@@ -40,7 +40,7 @@ trait WriteHandleConvenienceMethodsTrait
             return;
         }
 
-        $original_size = strlen($bytes);
+        $originalSize = strlen($bytes);
 
         do {
             $written = $this->write($bytes, $cancellation);
@@ -51,8 +51,8 @@ trait WriteHandleConvenienceMethodsTrait
             // @codeCoverageIgnoreStart
             throw new Exception\RuntimeException(Str\format(
                 'asked to write %d bytes, but only able to write %d bytes',
-                $original_size,
-                $original_size - strlen($bytes),
+                $originalSize,
+                $originalSize - strlen($bytes),
             ));
             // @codeCoverageIgnoreEnd
         }

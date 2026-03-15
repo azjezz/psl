@@ -41,8 +41,8 @@ final class ConnectedSocketTest extends TestCase
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $connected = UDP\connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
 
-            $bytes_sent = $connected->send('connected-data');
-            static::assertSame(14, $bytes_sent);
+            $bytesSent = $connected->send('connected-data');
+            static::assertSame(14, $bytesSent);
 
             [$data] = $server->receiveFrom(1024);
             static::assertSame('connected-data', $data);
@@ -80,8 +80,8 @@ final class ConnectedSocketTest extends TestCase
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $connected = UDP\connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
 
-            $bytes_sent = $connected->send('timeout-send', new Async\TimeoutCancellationToken(Duration::seconds(5)));
-            static::assertSame(12, $bytes_sent);
+            $bytesSent = $connected->send('timeout-send', new Async\TimeoutCancellationToken(Duration::seconds(5)));
+            static::assertSame(12, $bytesSent);
 
             [$data] = $server->receiveFrom(1024);
             static::assertSame('timeout-send', $data);
@@ -128,12 +128,12 @@ final class ConnectedSocketTest extends TestCase
     {
         Async\run(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
-            $server_addr = $server->getLocalAddress();
-            $connected = UDP\connect($server_addr->host, $server_addr->port);
+            $serverAddr = $server->getLocalAddress();
+            $connected = UDP\connect($serverAddr->host, $serverAddr->port);
 
             $peer = $connected->getPeerAddress();
             static::assertSame('127.0.0.1', $peer->host);
-            static::assertSame($server_addr->port, $peer->port);
+            static::assertSame($serverAddr->port, $peer->port);
             static::assertSame(Network\SocketScheme::Udp, $peer->scheme);
 
             $connected->close();

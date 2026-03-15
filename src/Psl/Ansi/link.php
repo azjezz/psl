@@ -21,11 +21,11 @@ function link(string $text, string $url, ControlSequenceIntroducer ...$styles): 
         }
     }
 
-    $osc_open = new OperatingSystemCommand(OperatingSystemCommandKind::Hyperlink, ';' . $url);
-    $osc_close = new OperatingSystemCommand(OperatingSystemCommandKind::Hyperlink, ';');
+    $oscOpen = new OperatingSystemCommand(OperatingSystemCommandKind::Hyperlink, ';' . $url);
+    $oscClose = new OperatingSystemCommand(OperatingSystemCommandKind::Hyperlink, ';');
 
     if ($styles === []) {
-        return $osc_open->toString() . $text . $osc_close->toString();
+        return $oscOpen->toString() . $text . $oscClose->toString();
     }
 
     $parameters = '';
@@ -35,5 +35,5 @@ function link(string $text, string $url, ControlSequenceIntroducer ...$styles): 
 
     $merged = new ControlSequenceIntroducer($parameters, ControlSequenceIntroducerKind::SelectGraphicRendition);
 
-    return $merged->toString() . $osc_open->toString() . $text . $osc_close->toString() . reset()->toString();
+    return $merged->toString() . $oscOpen->toString() . $text . $oscClose->toString() . reset()->toString();
 }

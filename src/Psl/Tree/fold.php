@@ -34,7 +34,7 @@ function fold(NodeInterface $tree, Closure $function): mixed
         return $function($tree->getValue(), []);
     }
 
-    $folded_children = Vec\map($tree->getChildren(), static fn(NodeInterface $child): mixed => fold($child, $function));
+    $foldedChildren = Vec\map($tree->getChildren(), static fn(NodeInterface $child): mixed => fold($child, $function));
 
-    return $function($tree->getValue(), $folded_children);
+    return $function($tree->getValue(), $foldedChildren);
 }

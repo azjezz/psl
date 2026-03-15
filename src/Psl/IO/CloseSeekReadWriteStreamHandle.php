@@ -42,27 +42,27 @@ final class CloseSeekReadWriteStreamHandle implements
     }
 
     /**
-     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     * @param ?positive-int $maxBytes the maximum number of bytes to read
      *
      * @inheritDoc
      */
     #[Override]
-    public function tryRead(null|int $max_bytes = null): string
+    public function tryRead(null|int $maxBytes = null): string
     {
-        return $this->handle->tryRead($max_bytes);
+        return $this->handle->tryRead($maxBytes);
     }
 
     /**
-     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     * @param ?positive-int $maxBytes the maximum number of bytes to read
      *
      * @inheritDoc
      */
     #[Override]
     public function read(
-        null|int $max_bytes = null,
+        null|int $maxBytes = null,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): string {
-        return $this->handle->read($max_bytes, $cancellation);
+        return $this->handle->read($maxBytes, $cancellation);
     }
 
     /**

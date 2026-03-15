@@ -9,9 +9,9 @@ use function trait_exists;
 /**
  * Checks if the trait with the given name exists.
  *
- * @param string $trait_name
+ * @param string $traitName
  */
-function exists(string $trait_name): bool
+function exists(string $traitName): bool
 {
-    return trait_exists($trait_name, true);
+    return trait_exists($traitName, true);
 }

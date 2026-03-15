@@ -50,21 +50,21 @@ function server_ssl_context(TLS\ServerConfig $tls): array
     }
 
     if ([] !== $tls->sniCertificates) {
-        $sni_certs = [];
+        $sniCerts = [];
         foreach ($tls->sniCertificates as $hostname => $certificate) {
-            $sni_ssl = [
+            $sniSsl = [
                 'local_cert' => $certificate->certificateFile,
                 'local_pk' => $certificate->keyFile,
             ];
 
             if (null !== $certificate->passphrase) {
-                $sni_ssl['passphrase'] = $certificate->passphrase;
+                $sniSsl['passphrase'] = $certificate->passphrase;
             }
 
-            $sni_certs[$hostname] = stream_context_create(['ssl' => $sni_ssl]);
+            $sniCerts[$hostname] = stream_context_create(['ssl' => $sniSsl]);
         }
 
-        $ssl['SNI_server_certs'] = $sni_certs;
+        $ssl['SNI_server_certs'] = $sniCerts;
     }
 
     return $ssl;

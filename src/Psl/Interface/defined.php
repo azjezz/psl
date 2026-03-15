@@ -9,11 +9,11 @@ use function interface_exists;
 /**
  * Checks if the interface with the given name has already been defined.
  *
- * @param string $interface_name
+ * @param string $interfaceName
  *
  * @pure
  */
-function defined(string $interface_name): bool
+function defined(string $interfaceName): bool
 {
-    return interface_exists($interface_name, false);
+    return interface_exists($interfaceName, false);
 }

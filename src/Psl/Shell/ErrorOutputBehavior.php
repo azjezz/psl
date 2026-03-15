@@ -22,7 +22,7 @@ enum ErrorOutputBehavior implements DefaultInterface
      *
      * Example:
      *
-     *      $stdout = Shell\execute('cmd', ['arg1', 'arg2'], error_output_behavior: ErrorOutputBehavior::Discard);
+     *      $stdout = Shell\execute('cmd', ['arg1', 'arg2'], errorOutputBehavior: ErrorOutputBehavior::Discard);
      */
     case Discard;
 
@@ -31,7 +31,7 @@ enum ErrorOutputBehavior implements DefaultInterface
      *
      * Example:
      *
-     *      $stdout_followed_by_stderr = Shell\execute('cmd', ['arg1', 'arg2'], error_output_behavior: ErrorOutputBehavior::Append);
+     *      $stdout_followed_by_stderr = Shell\execute('cmd', ['arg1', 'arg2'], errorOutputBehavior: ErrorOutputBehavior::Append);
      */
     case Append;
 
@@ -40,7 +40,7 @@ enum ErrorOutputBehavior implements DefaultInterface
      *
      * Example:
      *
-     *      $stderr_followed_by_stdout = Shell\execute('cmd', ['arg1', 'arg2'], error_output_behavior: ErrorOutputBehavior::Prepend);
+     *      $stderr_followed_by_stdout = Shell\execute('cmd', ['arg1', 'arg2'], errorOutputBehavior: ErrorOutputBehavior::Prepend);
      */
     case Prepend;
 
@@ -49,7 +49,7 @@ enum ErrorOutputBehavior implements DefaultInterface
      *
      * Example:
      *
-     *      $stderr = Shell\execute('cmd', ['arg1', 'arg2'], error_output_behavior: ErrorOutputBehavior::Replace);
+     *      $stderr = Shell\execute('cmd', ['arg1', 'arg2'], errorOutputBehavior: ErrorOutputBehavior::Replace);
      */
     case Replace;
 
@@ -59,7 +59,7 @@ enum ErrorOutputBehavior implements DefaultInterface
      *
      * Example:
      *
-     *      $result = Shell\execute('cmd', ['arg1', 'arg2'], error_output_behavior: ErrorOutputBehavior::Packed);
+     *      $result = Shell\execute('cmd', ['arg1', 'arg2'], errorOutputBehavior: ErrorOutputBehavior::Packed);
      *      [$stdout, $stderr] = Shell\unpack($result);
      *
      * @note The packing format is not guaranteed to be BC, you should always use `Shell\unpack` instead of attempting to unpack the result manually.

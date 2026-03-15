@@ -7,7 +7,7 @@ namespace Psl\Range;
 /**
  * @psalm-mutation-free
  */
-function from(int $lower_bound): FromRange
+function from(int $lowerBound): FromRange
 {
-    return new FromRange($lower_bound);
+    return new FromRange($lowerBound);
 }

@@ -19,4 +19,4 @@ enum TransportMethod implements DefaultInterface
 }
 
 // Obtaining a default instance of TransportMethod
-$transport_method = TransportMethod::default();
+$transportMethod = TransportMethod::default();

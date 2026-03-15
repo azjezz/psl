@@ -184,17 +184,14 @@ final class AwaitableTest extends TestCase
         $awaitable = Async\run(static fn(): string => 'hello');
 
         $awaitable = $awaitable
-            ->then(Str\reverse(...), static fn(Throwable $_exception): never => exit(0))
+            ->then(Str\reverse(...), static fn(Throwable $_): never => exit(0))
             ->then(
                 static fn(string $result): never => throw new InvariantViolationException($result),
-                static fn(Throwable $_exception): never => exit(0),
+                static fn(Throwable $_): never => exit(0),
             )
+            ->then(static fn(mixed $_): never => exit(0), static fn(Throwable $exception): never => throw $exception)
             ->then(
-                static fn(mixed $_result): never => exit(0),
-                static fn(Throwable $exception): never => throw $exception,
-            )
-            ->then(
-                static fn(mixed $_result): never => exit(0),
+                static fn(mixed $_): never => exit(0),
                 static fn(Throwable $exception): string => $exception->getMessage(),
             );
 

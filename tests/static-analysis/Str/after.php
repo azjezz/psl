@@ -7,8 +7,8 @@ namespace Psl\Tests\StaticAnalysis\Str;
 use Psl;
 use Psl\Str;
 
-/** @param lowercase-string $_foo */
-function take_lowercase_string(string $_foo): void {}
+/** @param lowercase-string $_ */
+function take_lowercase_string(string $_): void {}
 
 /** @return lowercase-string */
 function return_lowercase_string(): string

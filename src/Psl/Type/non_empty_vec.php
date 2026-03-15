@@ -9,11 +9,11 @@ namespace Psl\Type;
  *
  * @template T
  *
- * @param TypeInterface<T> $value_type
+ * @param TypeInterface<T> $valueType
  *
  * @return TypeInterface<non-empty-list<T>>
  */
-function non_empty_vec(TypeInterface $value_type): TypeInterface
+function non_empty_vec(TypeInterface $valueType): TypeInterface
 {
-    return new Internal\NonEmptyVecType($value_type);
+    return new Internal\NonEmptyVecType($valueType);
 }

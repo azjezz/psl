@@ -24,8 +24,8 @@ use Psl\Str\Exception;
  *
  * $string = 'Hello, World!';
  *
- * Byte\range($string, Range\between(0, 3, upper_inclusive: true)); // 'Hell'
- * Byte\range($string, Range\between(0, 3, upper_inclusive: false)); // 'Hel'
+ * Byte\range($string, Range\between(0, 3, upperInclusive: true)); // 'Hell'
+ * Byte\range($string, Range\between(0, 3, upperInclusive: false)); // 'Hel'
  * Byte\range($string, Range\from(3)); // 'lo, World!'
  * Byte\range($string, Range\to(3, true)); // 'Hell'
  * Byte\range($string, Range\to(3, false)); // 'Hel'

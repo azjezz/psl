@@ -24,12 +24,12 @@ function strip_suffix(string $string, string $suffix): string
         return '';
     }
 
-    $suffix_length = length($suffix);
-    $string_length = length($string);
+    $suffixLength = length($suffix);
+    $stringLength = length($string);
 
-    // if $suffix_length is greater than $string_length, return $string as it can't contain $suffix.
-    // if $suffix_length and $string_length are the same, return $string as $suffix is not $string.
-    $length = $string_length - $suffix_length;
+    // if $suffixLength is greater than $stringLength, return $string as it can't contain $suffix.
+    // if $suffixLength and $stringLength are the same, return $string as $suffix is not $string.
+    $length = $stringLength - $suffixLength;
     if ($length < 0) {
         return $string;
     }

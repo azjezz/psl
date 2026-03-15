@@ -18,13 +18,13 @@ use function preg_quote;
  *
  * @throws Exception\InvalidArgumentException if $string is not a valid UTF-8 string.
  */
-function trim_right(string $string, null|string $char_mask = null): string
+function trim_right(string $string, null|string $charMask = null): string
 {
-    $char_mask ??= " \t\n\r\0\x0B\x0C\u{A0}\u{FEFF}";
-    $char_mask = preg_quote($char_mask, null);
+    $charMask ??= " \t\n\r\0\x0B\x0C\u{A0}\u{FEFF}";
+    $charMask = preg_quote($charMask, null);
 
     try {
-        return Regex\replace($string, "{[{$char_mask}]++$}uD", '');
+        return Regex\replace($string, "{[{$charMask}]++$}uD", '');
     } catch (Regex\Exception\RuntimeException|Regex\Exception\InvalidPatternException $error) {
         throw new Exception\InvalidArgumentException($error->getMessage(), previous: $error);
     }

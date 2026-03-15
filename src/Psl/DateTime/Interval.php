@@ -202,7 +202,7 @@ final readonly class Interval implements Comparison\Equable, JsonSerializable, S
      */
     public function toIso8601(): string
     {
-        return $this->start->toRfc3339(use_z: true) . '/' . $this->end->toRfc3339(use_z: true);
+        return $this->start->toRfc3339(useZ: true) . '/' . $this->end->toRfc3339(useZ: true);
     }
 
     /**

@@ -26,14 +26,14 @@ function validate_offset(int $offset, int $length, bool $assert = false): int|bo
         return $assert ? true : $offset;
     }
 
-    $original_offset = $offset;
+    $originalOffset = $offset;
 
     if ($offset < 0) {
         $offset += $length;
     }
 
     if ($offset < 0 || $offset > $length) {
-        throw Exception\OutOfBoundsException::for($original_offset);
+        throw Exception\OutOfBoundsException::for($originalOffset);
     }
 
     if (!$assert) {

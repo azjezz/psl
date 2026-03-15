@@ -25,7 +25,7 @@ Async\concurrently([
         $client = Unix\connect($path);
         $client->writeAll('hello');
         $client->shutdown();
-        $_response = $client->readAll();
+        $_ = $client->readAll();
         $client->close();
     },
 ]);

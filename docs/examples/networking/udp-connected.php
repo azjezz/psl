@@ -25,7 +25,7 @@ Async\concurrently([
 
         // $socket is now closed -- only $connected is usable
         $connected->send('hello');
-        $_response = $connected->receive(512);
+        $_ = $connected->receive(512);
         $connected->close();
     },
 ]);

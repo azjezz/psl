@@ -144,29 +144,29 @@ function handle_input_key(Event\Key $event, KanbanState $state): void
 }
 
 /**
- * @param non-negative-int $from_col
- * @param non-negative-int $to_col
+ * @param non-negative-int $fromCol
+ * @param non-negative-int $toCol
  */
-function move_card(KanbanState $state, int $from_col, int $to_col): void
+function move_card(KanbanState $state, int $fromCol, int $toCol): void
 {
     /** @var non-negative-int $cardIdx */
-    $cardIdx = $state->selected[$from_col];
-    $card = $state->columns[$from_col][$cardIdx];
+    $cardIdx = $state->selected[$fromCol];
+    $card = $state->columns[$fromCol][$cardIdx];
 
     /** @var non-negative-int $next */
     $next = $cardIdx + 1;
-    $state->columns[$from_col] = Vec\concat(
-        Vec\slice($state->columns[$from_col], 0, $cardIdx),
-        Vec\slice($state->columns[$from_col], $next),
+    $state->columns[$fromCol] = Vec\concat(
+        Vec\slice($state->columns[$fromCol], 0, $cardIdx),
+        Vec\slice($state->columns[$fromCol], $next),
     );
-    $state->selected[$from_col] = Math\minva(
-        $state->selected[$from_col],
-        Math\maxva(0, Iter\count($state->columns[$from_col]) - 1),
+    $state->selected[$fromCol] = Math\minva(
+        $state->selected[$fromCol],
+        Math\maxva(0, Iter\count($state->columns[$fromCol]) - 1),
     );
 
-    $state->columns[$to_col][] = $card;
-    $state->active_col = $to_col;
-    $state->selected[$to_col] = Iter\count($state->columns[$to_col]) - 1;
+    $state->columns[$toCol][] = $card;
+    $state->active_col = $toCol;
+    $state->selected[$toCol] = Iter\count($state->columns[$toCol]) - 1;
 }
 
 function handle_normal_key(Event\Key $event, KanbanState $state): void

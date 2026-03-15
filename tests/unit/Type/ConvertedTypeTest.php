@@ -87,13 +87,13 @@ final class ConvertedTypeTest extends TypeTestCase
             Type\converted(
                 Type\int(),
                 Type\string(),
-                static fn(int $_i): string => throw new RuntimeException('not possible'),
+                static fn(int $_): string => throw new RuntimeException('not possible'),
             ),
             1,
             'Could not coerce "int" to type "string" at path "convert(int): string": not possible.',
         ];
         yield 'Coerce output error' => [
-            Type\converted(Type\int(), Type\string(), static fn(int $_i): object => new class() {}),
+            Type\converted(Type\int(), Type\string(), static fn(int $_): object => new class() {}),
             1,
             'Could not coerce "class@anonymous" to type "string" at path "coerce_output(class@anonymous): string".',
         ];

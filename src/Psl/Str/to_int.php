@@ -14,10 +14,10 @@ use Psl\Internal;
 function to_int(string $string): null|int
 {
     // Prevent Deprecated: float-string "1e123" is not representable as an int, cast occurred.
-    $int_value = Internal\suppress(static fn(): int => (int) $string);
+    $intValue = Internal\suppress(static fn(): int => (int) $string);
 
-    if ((string) $int_value === $string) {
-        return $int_value;
+    if ((string) $intValue === $string) {
+        return $intValue;
     }
 
     return null;

@@ -18,13 +18,13 @@ final class VersionTest extends TestCase
 {
     public function testGetVersionDetails(): void
     {
-        $version_details = Runtime\get_version_details();
+        $versionDetails = Runtime\get_version_details();
 
-        static::assertCount(4, $version_details);
-        static::assertArrayHasKey('major', $version_details);
-        static::assertArrayHasKey('minor', $version_details);
-        static::assertArrayHasKey('release', $version_details);
-        static::assertArrayHasKey('extra', $version_details);
+        static::assertCount(4, $versionDetails);
+        static::assertArrayHasKey('major', $versionDetails);
+        static::assertArrayHasKey('minor', $versionDetails);
+        static::assertArrayHasKey('release', $versionDetails);
+        static::assertArrayHasKey('extra', $versionDetails);
 
         static::assertSame(
             [
@@ -33,7 +33,7 @@ final class VersionTest extends TestCase
                 'release' => PHP_RELEASE_VERSION,
                 'extra' => PHP_EXTRA_VERSION === '' ? null : PHP_EXTRA_VERSION,
             ],
-            $version_details,
+            $versionDetails,
         );
     }
 

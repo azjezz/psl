@@ -21,7 +21,7 @@ function default_timezone(): Timezone
      *
      * those timezones are not supported by Psl ( aside from UTC ), as they are considered "legacy".
      */
-    $timezone_id = date_default_timezone_get();
+    $timezoneId = date_default_timezone_get();
 
-    return Timezone::tryFrom($timezone_id) ?? Timezone::UTC;
+    return Timezone::tryFrom($timezoneId) ?? Timezone::UTC;
 }

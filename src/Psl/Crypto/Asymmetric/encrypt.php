@@ -24,18 +24,18 @@ function encrypt(
     #[SensitiveParameter]
     string $plaintext,
     #[SensitiveParameter]
-    SecretKey $sender_secret_key,
+    SecretKey $senderSecretKey,
     #[SensitiveParameter]
-    PublicKey $recipient_public_key,
+    PublicKey $recipientPublicKey,
 ): string {
     $nonce = SecureRandom\bytes(namespace\NONCE_BYTES);
-    $key_pair = $sender_secret_key->bytes . $recipient_public_key->bytes;
+    $keyPair = $senderSecretKey->bytes . $recipientPublicKey->bytes;
 
     try {
-        $ciphertext = Internal\call_sodium(fn() => sodium_crypto_box($plaintext, $nonce, $key_pair));
+        $ciphertext = Internal\call_sodium(fn() => sodium_crypto_box($plaintext, $nonce, $keyPair));
 
         return $nonce . $ciphertext;
     } finally {
-        sodium_memzero($key_pair);
+        sodium_memzero($keyPair);
     }
 }

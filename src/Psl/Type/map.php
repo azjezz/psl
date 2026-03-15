@@ -12,12 +12,12 @@ use Psl\Collection;
  * @template Tk of array-key
  * @template Tv
  *
- * @param TypeInterface<Tk> $key_type
- * @param TypeInterface<Tv> $value_type
+ * @param TypeInterface<Tk> $keyType
+ * @param TypeInterface<Tv> $valueType
  *
  * @return TypeInterface<Collection\MapInterface<Tk, Tv>>
  */
-function map(TypeInterface $key_type, TypeInterface $value_type): TypeInterface
+function map(TypeInterface $keyType, TypeInterface $valueType): TypeInterface
 {
-    return new Internal\MapType($key_type, $value_type);
+    return new Internal\MapType($keyType, $valueType);
 }

@@ -68,13 +68,13 @@ final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
     public static function bind(
         string $host = '0.0.0.0',
         int $port = 0,
-        bool $reuse_address = false,
-        bool $reuse_port = false,
+        bool $reuseAddress = false,
+        bool $reusePort = false,
         bool $broadcast = false,
     ): self {
         $context = ['socket' => [
-            'so_reuseaddr' => $reuse_address,
-            'so_reuseport' => $reuse_port,
+            'so_reuseaddr' => $reuseAddress,
+            'so_reuseport' => $reusePort,
             'so_broadcast' => $broadcast,
         ]];
 
@@ -103,12 +103,12 @@ final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
      */
     public function connect(string $host, int $port): ConnectedSocket
     {
-        $old_stream = $this->getResource();
+        $oldStream = $this->getResource();
 
-        $local_name = @stream_socket_get_name($old_stream, false);
-        $bindto = $local_name !== false ? $local_name : '0.0.0.0:0';
+        $localName = @stream_socket_get_name($oldStream, false);
+        $bindto = $localName !== false ? $localName : '0.0.0.0:0';
 
-        fclose($old_stream);
+        fclose($oldStream);
         $this->stream = null;
 
         $context = stream_context_create(['socket' => [
@@ -117,7 +117,7 @@ final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
 
         $errno = 0;
         $errstr = '';
-        $new_stream = @stream_socket_client(
+        $newStream = @stream_socket_client(
             "udp://{$host}:{$port}",
             $errno,
             $errstr,
@@ -126,11 +126,11 @@ final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
             $context,
         );
 
-        if ($new_stream === false) {
+        if ($newStream === false) {
             throw new Network\Exception\RuntimeException("Failed to connect UDP socket to {$host}:{$port}: {$errstr}");
         }
 
-        return new ConnectedSocket($new_stream, Network\Address::udp($host, $port));
+        return new ConnectedSocket($newStream, Network\Address::udp($host, $port));
     }
 
     /**
@@ -167,7 +167,7 @@ final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
     /**
      * Receive a datagram and the sender's address.
      *
-     * @param positive-int $max_bytes
+     * @param positive-int $maxBytes
      *
      * @return array{string, Network\Address} [data, sender_address]
      *
@@ -176,7 +176,7 @@ final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
      * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
      */
     public function receiveFrom(
-        int $max_bytes,
+        int $maxBytes,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): array {
         $stream = $this->getResource();
@@ -184,7 +184,7 @@ final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
         Internal\await_readable($stream, $cancellation);
 
         $address = '';
-        $data = @stream_socket_recvfrom($stream, $max_bytes, 0, $address);
+        $data = @stream_socket_recvfrom($stream, $maxBytes, 0, $address);
         if ($data === false) {
             throw new Network\Exception\RuntimeException('Failed to receive UDP datagram.');
         }
@@ -195,7 +195,7 @@ final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
     /**
      * Peek at an incoming datagram and get the sender's address, without consuming it.
      *
-     * @param positive-int $max_bytes
+     * @param positive-int $maxBytes
      *
      * @return array{string, Network\Address} [data, sender_address]
      *
@@ -204,7 +204,7 @@ final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
      * @throws IO\Exception\AlreadyClosedException If the socket has already been closed.
      */
     public function peekFrom(
-        int $max_bytes,
+        int $maxBytes,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): array {
         $stream = $this->getResource();
@@ -212,7 +212,7 @@ final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
         Internal\await_readable($stream, $cancellation);
 
         $address = '';
-        $data = @stream_socket_recvfrom($stream, $max_bytes, STREAM_PEEK, $address);
+        $data = @stream_socket_recvfrom($stream, $maxBytes, STREAM_PEEK, $address);
         if ($data === false) {
             throw new Network\Exception\RuntimeException('Failed to peek UDP datagram.');
         }

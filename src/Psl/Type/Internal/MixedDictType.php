@@ -35,7 +35,7 @@ final readonly class MixedDictType extends Type\Type
 
         $result = [];
 
-        $key_type = Type\array_key();
+        $keyType = Type\array_key();
         $k = null;
         /** @var bool $iterating */
         $iterating = true;
@@ -47,7 +47,7 @@ final readonly class MixedDictType extends Type\Type
              */
             foreach ($value as $k => $v) {
                 $iterating = false;
-                $result[$key_type->coerce($k)] = $v;
+                $result[$keyType->coerce($k)] = $v;
                 $iterating = true;
             }
         } catch (Throwable $e) {

@@ -25,10 +25,10 @@ function splice(
     null|int $length = null,
     Encoding $encoding = Encoding::Utf8,
 ): string {
-    $total_length = length($string, $encoding);
-    $offset = Internal\validate_offset($offset, $total_length);
+    $totalLength = length($string, $encoding);
+    $offset = Internal\validate_offset($offset, $totalLength);
 
-    if (null === $length || ($offset + $length) >= $total_length) {
+    if (null === $length || ($offset + $length) >= $totalLength) {
         return slice($string, 0, $offset, $encoding) . $replacement;
     }
 

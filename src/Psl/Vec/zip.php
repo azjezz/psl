@@ -40,8 +40,8 @@ function zip(iterable $first, iterable $second): array
     $two = namespace\values($second);
 
     $result = [];
-    $lesser_count = min(count($one), count($two));
-    for ($i = 0; $i < $lesser_count; ++$i) {
+    $lesserCount = min(count($one), count($two));
+    for ($i = 0; $i < $lesserCount; ++$i) {
         $result[] = [$one[$i], $two[$i]];
     }
 

@@ -23,10 +23,10 @@ use Psl\Str;
  */
 function slice(string $string, int $offset, null|int $length = null): string
 {
-    $string_length = length($string);
-    $offset = Str\Internal\validate_offset($offset, $string_length);
+    $stringLength = length($string);
+    $offset = Str\Internal\validate_offset($offset, $stringLength);
 
-    if (0 === $offset && (null === $length || $string_length <= $length)) {
+    if (0 === $offset && (null === $length || $stringLength <= $length)) {
         return $string;
     }
 

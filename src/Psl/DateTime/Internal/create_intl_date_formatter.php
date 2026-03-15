@@ -17,8 +17,8 @@ use Psl\Locale\Locale;
  * @psalm-mutation-free
  */
 function create_intl_date_formatter(
-    null|DateStyle $date_style = null,
-    null|TimeStyle $time_style = null,
+    null|DateStyle $dateStyle = null,
+    null|TimeStyle $timeStyle = null,
     null|FormatPattern|string $pattern = null,
     null|Timezone $timezone = null,
     null|Locale $locale = null,
@@ -27,21 +27,21 @@ function create_intl_date_formatter(
         $pattern = $pattern->value;
     }
 
-    $date_style ??= DateStyle::default();
-    $time_style ??= TimeStyle::default();
+    $dateStyle ??= DateStyle::default();
+    $timeStyle ??= TimeStyle::default();
     $locale ??= Locale::default();
     $timezone ??= Timezone::default();
 
     return new IntlDateFormatter(
         $locale->value,
-        match ($date_style) {
+        match ($dateStyle) {
             DateStyle::None => IntlDateFormatter::NONE,
             DateStyle::Short => IntlDateFormatter::SHORT,
             DateStyle::Medium => IntlDateFormatter::MEDIUM,
             DateStyle::Long => IntlDateFormatter::LONG,
             DateStyle::Full => IntlDateFormatter::FULL,
         },
-        match ($time_style) {
+        match ($timeStyle) {
             TimeStyle::None => IntlDateFormatter::NONE,
             TimeStyle::Short => IntlDateFormatter::SHORT,
             TimeStyle::Medium => IntlDateFormatter::MEDIUM,

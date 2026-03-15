@@ -9,11 +9,11 @@ namespace Psl\Type;
  *
  * @template T
  *
- * @param TypeInterface<T> $inner_type
+ * @param TypeInterface<T> $innerType
  *
  * @return TypeInterface<T>
  */
-function optional(TypeInterface $inner_type): TypeInterface
+function optional(TypeInterface $innerType): TypeInterface
 {
-    return new Internal\OptionalType($inner_type);
+    return new Internal\OptionalType($innerType);
 }

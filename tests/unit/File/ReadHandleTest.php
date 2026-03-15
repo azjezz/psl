@@ -12,8 +12,8 @@ final class ReadHandleTest extends TestCase
 {
     public function testWriting(): void
     {
-        $temporary_file = Filesystem\create_temporary_file();
-        $handle = File\open_write_only($temporary_file);
+        $temporaryFile = Filesystem\create_temporary_file();
+        $handle = File\open_write_only($temporaryFile);
 
         $handle->writeAll('hello');
         static::assertSame(2, $handle->write(', '));
@@ -21,7 +21,7 @@ final class ReadHandleTest extends TestCase
 
         $handle->close();
 
-        $handle = File\open_read_only($temporary_file);
+        $handle = File\open_read_only($temporaryFile);
         $content = $handle->tryRead();
 
         static::assertSame('hello, world!', $content);
@@ -29,19 +29,19 @@ final class ReadHandleTest extends TestCase
 
     public function testNonExisting(): void
     {
-        $temporary_file = Filesystem\create_temporary_file();
-        Filesystem\delete_file($temporary_file);
+        $temporaryFile = Filesystem\create_temporary_file();
+        Filesystem\delete_file($temporaryFile);
 
         $this->expectException(File\Exception\NotFoundException::class);
-        File\open_read_only($temporary_file);
+        File\open_read_only($temporaryFile);
     }
 
     public function testNonFile(): void
     {
-        $temporary_file = Filesystem\create_temporary_file();
-        Filesystem\delete_file($temporary_file);
+        $temporaryFile = Filesystem\create_temporary_file();
+        Filesystem\delete_file($temporaryFile);
 
         $this->expectException(File\Exception\NotFileException::class);
-        File\open_read_only(dirname($temporary_file));
+        File\open_read_only(dirname($temporaryFile));
     }
 }

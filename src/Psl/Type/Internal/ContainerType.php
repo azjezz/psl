@@ -26,12 +26,12 @@ final readonly class ContainerType extends Type\Type
     /**
      * @psalm-mutation-free
      *
-     * @param Type\TypeInterface<Tk> $key_type
-     * @param Type\TypeInterface<Tv> $value_type
+     * @param Type\TypeInterface<Tk> $keyType
+     * @param Type\TypeInterface<Tv> $valueType
      */
     public function __construct(
-        private readonly Type\TypeInterface $key_type,
-        private readonly Type\TypeInterface $value_type,
+        private readonly Type\TypeInterface $keyType,
+        private readonly Type\TypeInterface $valueType,
     ) {}
 
     /**
@@ -46,7 +46,7 @@ final readonly class ContainerType extends Type\Type
 
         // @mago-expect analysis:mixed-assignment,mixed-assignment
         foreach ($value as $k => $v) {
-            if (!$this->key_type->matches($k) || !$this->value_type->matches($v)) {
+            if (!$this->keyType->matches($k) || !$this->valueType->matches($v)) {
                 return false;
             }
         }
@@ -66,18 +66,18 @@ final readonly class ContainerType extends Type\Type
             throw CoercionException::withValue($value, $this->toString());
         }
 
-        /** @var Type\Type<Tk> $key_type */
-        $key_type = $this->key_type;
+        /** @var Type\Type<Tk> $keyType */
+        $keyType = $this->keyType;
         /** @var Type\Type<Tv> $value_type_speec */
-        $value_type = $this->value_type;
+        $valueType = $this->valueType;
 
         /** @var array<Tk, Tv> $values */
         $values = [];
 
         $k = null;
         $v = null;
-        /** @var bool $trying_key */
-        $trying_key = true;
+        /** @var bool $tryingKey */
+        $tryingKey = true;
         /** @var bool $iterating */
         $iterating = true;
 
@@ -88,12 +88,12 @@ final readonly class ContainerType extends Type\Type
              */
             foreach ($value as $k => $v) {
                 $iterating = false;
-                $trying_key = true;
-                $k_result = $key_type->coerce($k);
-                $trying_key = false;
-                $v_result = $value_type->coerce($v);
+                $tryingKey = true;
+                $kResult = $keyType->coerce($k);
+                $tryingKey = false;
+                $vResult = $valueType->coerce($v);
 
-                $values[$k_result] = $v_result;
+                $values[$kResult] = $vResult;
                 $iterating = true;
             }
         } catch (Throwable $e) {
@@ -104,8 +104,8 @@ final readonly class ContainerType extends Type\Type
                     PathExpression::iteratorError($k),
                     $e,
                 ),
-                $trying_key => CoercionException::withValue($k, $this->toString(), PathExpression::iteratorKey($k), $e),
-                !$trying_key => CoercionException::withValue($v, $this->toString(), PathExpression::path($k), $e),
+                $tryingKey => CoercionException::withValue($k, $this->toString(), PathExpression::iteratorKey($k), $e),
+                !$tryingKey => CoercionException::withValue($v, $this->toString(), PathExpression::path($k), $e),
             };
         }
 
@@ -127,17 +127,17 @@ final readonly class ContainerType extends Type\Type
             throw AssertException::withValue($value, $this->toString());
         }
 
-        /** @var Type\Type<Tk> $key_type */
-        $key_type = $this->key_type;
-        /** @var Type\Type<Tv> $value_type */
-        $value_type = $this->value_type;
+        /** @var Type\Type<Tk> $keyType */
+        $keyType = $this->keyType;
+        /** @var Type\Type<Tv> $valueType */
+        $valueType = $this->valueType;
 
         /** @var array<Tk, Tv> $$values */
         $values = [];
 
         $k = null;
         $v = null;
-        $trying_key = true;
+        $tryingKey = true;
 
         try {
             /**
@@ -145,15 +145,15 @@ final readonly class ContainerType extends Type\Type
              * @var Tv $v
              */
             foreach ($value as $k => $v) {
-                $trying_key = true;
-                $k_result = $key_type->assert($k);
-                $trying_key = false;
-                $v_result = $value_type->assert($v);
+                $tryingKey = true;
+                $kResult = $keyType->assert($k);
+                $tryingKey = false;
+                $vResult = $valueType->assert($v);
 
-                $values[$k_result] = $v_result;
+                $values[$kResult] = $vResult;
             }
         } catch (AssertException $e) {
-            throw match ($trying_key) {
+            throw match ($tryingKey) {
                 true => AssertException::withValue($k, $this->toString(), PathExpression::iteratorKey($k), $e),
                 false => AssertException::withValue($v, $this->toString(), PathExpression::path($k), $e),
             };
@@ -166,6 +166,6 @@ final readonly class ContainerType extends Type\Type
     #[Override]
     public function toString(): string
     {
-        return Str\format('container<%s, %s>', $this->key_type->toString(), $this->value_type->toString());
+        return Str\format('container<%s, %s>', $this->keyType->toString(), $this->valueType->toString());
     }
 }

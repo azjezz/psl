@@ -12,15 +12,15 @@ use Psl\TLS;
 require __DIR__ . '/../../vendor/autoload.php';
 
 Async\main(static function (): int {
-    $cert_file = __DIR__ . '/certs/server.crt';
-    $key_file = __DIR__ . '/certs/server.key';
+    $certFile = __DIR__ . '/certs/server.crt';
+    $keyFile = __DIR__ . '/certs/server.key';
 
-    $tls_config = TLS\ServerConfig::create(TLS\Certificate::create($cert_file, $key_file));
+    $tlsConfig = TLS\ServerConfig::create(TLS\Certificate::create($certFile, $keyFile));
 
-    $lazy_acceptor = new TLS\LazyAcceptor();
+    $lazyAcceptor = new TLS\LazyAcceptor();
 
     Async\concurrently([
-        'server' => static function () use ($tls_config, $lazy_acceptor): void {
+        'server' => static function () use ($tlsConfig, $lazyAcceptor): void {
             $listener = TCP\listen('localhost', 8443);
             IO\write_error_line('< server listening on port 8443 (HTTP + HTTPS)');
 
@@ -29,20 +29,20 @@ Async\main(static function (): int {
                 $connection = $listener->accept();
 
                 // Peek first byte to detect TLS ClientHello (starts with 0x16)
-                $first_byte = $connection->peek(1);
+                $firstByte = $connection->peek(1);
 
-                if (ord($first_byte) === 0x16) {
+                if (ord($firstByte) === 0x16) {
                     // TLS connection detected
                     IO\write_error_line('< TLS ClientHello detected, performing handshake...');
 
-                    $hello = $lazy_acceptor->accept($connection);
+                    $hello = $lazyAcceptor->accept($connection);
                     IO\write_error_line(
                         '< SNI: %s, ALPN: %s',
                         $hello->getServerName() ?? '(none)',
                         implode(',', $hello->getAlpnProtocols() ?? ['(none)']),
                     );
 
-                    $tls = $hello->complete($tls_config);
+                    $tls = $hello->complete($tlsConfig);
                     IO\write_error_line('< TLS handshake complete');
 
                     $request = $tls->read();

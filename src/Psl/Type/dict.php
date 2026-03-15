@@ -10,12 +10,12 @@ namespace Psl\Type;
  * @template Tk of array-key
  * @template Tv
  *
- * @param TypeInterface<Tk> $key_type
- * @param TypeInterface<Tv> $value_type
+ * @param TypeInterface<Tk> $keyType
+ * @param TypeInterface<Tv> $valueType
  *
  * @return TypeInterface<array<Tk, Tv>>
  */
-function dict(TypeInterface $key_type, TypeInterface $value_type): TypeInterface
+function dict(TypeInterface $keyType, TypeInterface $valueType): TypeInterface
 {
-    return new Internal\DictType($key_type, $value_type);
+    return new Internal\DictType($keyType, $valueType);
 }

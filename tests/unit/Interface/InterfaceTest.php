@@ -13,10 +13,10 @@ use Psl\Type;
 final class InterfaceTest extends TestCase
 {
     #[DataProvider('provideData')]
-    public function test(string $interface_name, bool $exists): void
+    public function test(string $interfaceName, bool $exists): void
     {
-        static::assertSame($exists, Interface\exists($interface_name));
-        static::assertSame($exists, Interface\defined($interface_name));
+        static::assertSame($exists, Interface\exists($interfaceName));
+        static::assertSame($exists, Interface\defined($interfaceName));
     }
 
     public static function provideData(): iterable

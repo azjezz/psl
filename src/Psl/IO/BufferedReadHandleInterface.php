@@ -62,16 +62,16 @@ interface BufferedReadHandleInterface extends ReadHandleInterface
      *
      * Returns null if the suffix is not seen before EOF.
      *
-     * @param positive-int $max_bytes Maximum number of bytes to read before throwing OverflowException.
+     * @param positive-int $maxBytes Maximum number of bytes to read before throwing OverflowException.
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.
      * @throws CancelledException If the cancellation token is cancelled.
-     * @throws Exception\OverflowException If $max_bytes is exceeded without finding the suffix.
+     * @throws Exception\OverflowException If $maxBytes is exceeded without finding the suffix.
      */
     public function readUntilBounded(
         string $suffix,
-        int $max_bytes,
+        int $maxBytes,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): null|string;
 }

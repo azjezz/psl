@@ -22,32 +22,32 @@ final class WriteHandleTest extends TestCase
 
     public function testAppendToNonExistingFile(): void
     {
-        $temporary_file = Filesystem\create_temporary_file();
-        Filesystem\delete_file($temporary_file);
+        $temporaryFile = Filesystem\create_temporary_file();
+        Filesystem\delete_file($temporaryFile);
 
-        static::assertFalse(Filesystem\is_file($temporary_file));
+        static::assertFalse(Filesystem\is_file($temporaryFile));
 
-        $handle = new File\WriteHandle($temporary_file, File\WriteMode::Append);
+        $handle = new File\WriteHandle($temporaryFile, File\WriteMode::Append);
         $handle->close();
 
-        static::assertTrue(Filesystem\is_file($temporary_file));
+        static::assertTrue(Filesystem\is_file($temporaryFile));
     }
 
     public function testAppendToANonWritableFile(): void
     {
-        $temporary_file = Filesystem\create_temporary_file();
-        Filesystem\change_permissions($temporary_file, 0o555);
+        $temporaryFile = Filesystem\create_temporary_file();
+        Filesystem\change_permissions($temporaryFile, 0o555);
 
         $this->expectException(File\Exception\NotWritableException::class);
         $this->expectExceptionMessage('is not writable.');
 
-        new File\WriteHandle($temporary_file, File\WriteMode::Append);
+        new File\WriteHandle($temporaryFile, File\WriteMode::Append);
     }
 
     public function testWriting(): void
     {
-        $temporary_file = Filesystem\create_temporary_file();
-        $handle = File\open_write_only($temporary_file);
+        $temporaryFile = Filesystem\create_temporary_file();
+        $handle = File\open_write_only($temporaryFile);
 
         $handle->writeAll('hello');
         static::assertSame(2, $handle->write(', '));
@@ -55,7 +55,7 @@ final class WriteHandleTest extends TestCase
 
         $handle->close();
 
-        $handle = File\open_read_only($temporary_file);
+        $handle = File\open_read_only($temporaryFile);
         $content = $handle->readAll();
 
         static::assertSame('hello, world!', $content);
@@ -67,12 +67,12 @@ final class WriteHandleTest extends TestCase
             static::markTestSkipped('Permissions are not reliable on windows.');
         }
 
-        $temporary_file = Filesystem\create_temporary_file();
-        Filesystem\delete_file($temporary_file);
-        Filesystem\create_directory($temporary_file);
-        Filesystem\change_permissions($temporary_file, 0o555);
+        $temporaryFile = Filesystem\create_temporary_file();
+        Filesystem\delete_file($temporaryFile);
+        Filesystem\create_directory($temporaryFile);
+        Filesystem\change_permissions($temporaryFile, 0o555);
 
-        $file = $temporary_file . Filesystem\SEPARATOR . 'foo';
+        $file = $temporaryFile . Filesystem\SEPARATOR . 'foo';
 
         $this->expectException(File\Exception\NotWritableException::class);
         $this->expectExceptionMessage('File "' . $file . '" is not writable.');
@@ -82,15 +82,15 @@ final class WriteHandleTest extends TestCase
 
     public function testCreateNonExisting(): void
     {
-        $temporary_file = Filesystem\create_temporary_file();
-        Filesystem\delete_file($temporary_file);
+        $temporaryFile = Filesystem\create_temporary_file();
+        Filesystem\delete_file($temporaryFile);
 
-        static::assertFalse(Filesystem\is_file($temporary_file));
+        static::assertFalse(Filesystem\is_file($temporaryFile));
 
-        $handle = new File\WriteHandle($temporary_file, File\WriteMode::MustCreate);
+        $handle = new File\WriteHandle($temporaryFile, File\WriteMode::MustCreate);
         $handle->close();
 
-        static::assertTrue(Filesystem\is_file($temporary_file));
+        static::assertTrue(Filesystem\is_file($temporaryFile));
     }
 
     public function testThrowsWhenDirectoryCreationFails(): void
@@ -99,15 +99,15 @@ final class WriteHandleTest extends TestCase
             static::markTestSkipped('Permissions are not reliable on windows.');
         }
 
-        $target_directory = Env\temp_dir() . DIRECTORY_SEPARATOR . 'you-shall-not-pass';
-        Filesystem\create_directory($target_directory, 0o000);
+        $targetDirectory = Env\temp_dir() . DIRECTORY_SEPARATOR . 'you-shall-not-pass';
+        Filesystem\create_directory($targetDirectory, 0o000);
 
-        $target_file =
-            $target_directory . DIRECTORY_SEPARATOR . 'fails-on-subdir-creation' . DIRECTORY_SEPARATOR . 'somefile.txt';
+        $targetFile =
+            $targetDirectory . DIRECTORY_SEPARATOR . 'fails-on-subdir-creation' . DIRECTORY_SEPARATOR . 'somefile.txt';
 
         $this->expectException(File\Exception\RuntimeException::class);
-        $this->expectExceptionMessage('Failed to create the directory for file "' . $target_file . '".');
+        $this->expectExceptionMessage('Failed to create the directory for file "' . $targetFile . '".');
 
-        new File\WriteHandle($target_file, File\WriteMode::MustCreate);
+        new File\WriteHandle($targetFile, File\WriteMode::MustCreate);
     }
 }

@@ -49,19 +49,19 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
     }
 
     /**
-     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     * @param ?positive-int $maxBytes the maximum number of bytes to read
      *
      * @psalm-external-mutation-free
      *
      * @inheritDoc
      */
     #[Override]
-    public function tryRead(null|int $max_bytes = null): string
+    public function tryRead(null|int $maxBytes = null): string
     {
         $this->assertHandleIsOpen();
 
-        if (null === $max_bytes) {
-            $max_bytes = PHP_INT_MAX;
+        if (null === $maxBytes) {
+            $maxBytes = PHP_INT_MAX;
         }
 
         $length = strlen($this->buffer);
@@ -72,7 +72,7 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
         }
 
         $length -= $this->offset;
-        $length = $length > $max_bytes ? $max_bytes : $length;
+        $length = $length > $maxBytes ? $maxBytes : $length;
         $result = substr($this->buffer, $this->offset, $length);
         $this->offset = ($offset = $this->offset + $length) >= 0 ? $offset : 0;
 
@@ -80,7 +80,7 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
     }
 
     /**
-     * @param ?positive-int $max_bytes the maximum number of bytes to read
+     * @param ?positive-int $maxBytes the maximum number of bytes to read
      *
      * @psalm-external-mutation-free
      *
@@ -88,10 +88,10 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
      */
     #[Override]
     public function read(
-        null|int $max_bytes = null,
+        null|int $maxBytes = null,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): string {
-        return $this->tryRead($max_bytes);
+        return $this->tryRead($maxBytes);
     }
 
     /**
@@ -136,7 +136,7 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
     {
         $this->assertHandleIsOpen();
         $length = strlen($this->buffer);
-        $bytes_length = strlen($bytes);
+        $bytesLength = strlen($bytes);
 
         if ($this->offset >= $length) {
             // Fast-path: appending at or past end of buffer
@@ -145,20 +145,20 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
             }
 
             $this->buffer .= $bytes;
-            $this->offset += $bytes_length;
-            return $bytes_length;
+            $this->offset += $bytesLength;
+            return $bytesLength;
         }
 
         // Overwrite in the middle of the buffer
         $new = substr($this->buffer, 0, $this->offset) . $bytes;
-        $offset = $this->offset + $bytes_length;
+        $offset = $this->offset + $bytesLength;
         if ($offset < $length) {
             $new .= substr($this->buffer, $offset);
         }
 
         $this->buffer = $new;
-        $this->offset += $bytes_length;
-        return $bytes_length;
+        $this->offset += $bytesLength;
+        return $bytesLength;
     }
 
     /**

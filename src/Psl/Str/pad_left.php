@@ -9,7 +9,7 @@ use function str_pad;
 use const STR_PAD_LEFT;
 
 /**
- * Returns the string padded to the total length by appending the `$pad_string`
+ * Returns the string padded to the total length by appending the `$padString`
  * to the left.
  *
  * If the length of the input string plus the pad string exceeds the total
@@ -30,42 +30,42 @@ use const STR_PAD_LEFT;
  *      Str\pad_left('مرحبا', 8, 'م')
  *      => Str('ممممرحبا')
  *
- * @param non-empty-string $pad_string
- * @param int<0, max> $total_length
+ * @param non-empty-string $padString
+ * @param int<0, max> $totalLength
  *
  * @pure
  */
 function pad_left(
     string $string,
-    int $total_length,
-    string $pad_string = ' ',
+    int $totalLength,
+    string $padString = ' ',
     Encoding $encoding = Encoding::Utf8,
 ): string {
     if ($encoding === Encoding::Ascii || $encoding === Encoding::Utf8) {
-        if (Byte\length($pad_string) === length($pad_string, $encoding)) {
+        if (Byte\length($padString) === length($padString, $encoding)) {
             // All characters in pad_string are single-byte, str_pad is safe
             return str_pad(
                 $string,
-                Byte\length($string) + $total_length - length($string, $encoding),
-                $pad_string,
+                Byte\length($string) + $totalLength - length($string, $encoding),
+                $padString,
                 STR_PAD_LEFT,
             );
         }
     }
 
-    $pad_length = length($pad_string, $encoding);
+    $padLength = length($padString, $encoding);
     do {
         $length = length($string, $encoding);
-        $remaining = $total_length - $length;
+        $remaining = $totalLength - $length;
         if ($remaining <= 0) {
             return $string;
         }
 
-        if ($remaining <= $pad_length) {
-            $pad_string = slice($pad_string, 0, $remaining, $encoding);
-            $pad_length = $remaining;
+        if ($remaining <= $padLength) {
+            $padString = slice($padString, 0, $remaining, $encoding);
+            $padLength = $remaining;
         }
 
-        $string = $pad_string . $string;
+        $string = $padString . $string;
     } while (true);
 }

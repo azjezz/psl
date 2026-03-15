@@ -15,7 +15,7 @@ final class FailedExecutionException extends RuntimeException
     private string $stdoutContent;
     private string $stderrContent;
 
-    public function __construct(string $command, string $stdout_content, string $stderr_content, int $code)
+    public function __construct(string $command, string $stdoutContent, string $stderrContent, int $code)
     {
         $message = Str\format(<<<MESSAGE
         Shell command "%s" returned an exit code of "%d".
@@ -25,13 +25,13 @@ final class FailedExecutionException extends RuntimeException
 
         STDERR:
             %s
-        MESSAGE, $command, $code, Str\replace($stdout_content, PHP_EOL, PHP_EOL . '    '), Str\replace($stderr_content, PHP_EOL, PHP_EOL . '    '));
+        MESSAGE, $command, $code, Str\replace($stdoutContent, PHP_EOL, PHP_EOL . '    '), Str\replace($stderrContent, PHP_EOL, PHP_EOL . '    '));
 
         parent::__construct($message, $code);
 
         $this->command = $command;
-        $this->stdoutContent = $stdout_content;
-        $this->stderrContent = $stderr_content;
+        $this->stdoutContent = $stdoutContent;
+        $this->stderrContent = $stderrContent;
     }
 
     /**

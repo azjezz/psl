@@ -43,12 +43,12 @@ final class AssertException extends Exception
 
     public static function withValue(
         mixed $value,
-        string $expected_type,
+        string $expectedType,
         null|string $path = null,
         null|Throwable $previous = null,
     ): self {
         $paths = $previous instanceof Exception ? [$path, ...$previous->getPaths()] : [$path];
 
-        return new self(get_debug_type($value), $expected_type, Vec\filter_nulls($paths), $previous);
+        return new self(get_debug_type($value), $expectedType, Vec\filter_nulls($paths), $previous);
     }
 }

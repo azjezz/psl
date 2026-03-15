@@ -22,7 +22,7 @@ final class ShellBench
     #[ParamProviders('providePackedData')]
     public function benchStreamUnpack(array $params): void
     {
-        foreach (stream_unpack($params['content']) as $_type => $_chunk) {
+        foreach (stream_unpack($params['content']) as $_ => $_chunk) {
             // @mago-expect lint:no-empty-loop - consume generator
         }
     }

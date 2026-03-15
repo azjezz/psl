@@ -35,11 +35,11 @@ final class EncodingWriteHandle implements IO\WriteHandleInterface
         $length = strlen($bytes);
         $data = $this->remainder . $bytes;
 
-        $data_length = strlen($data);
-        while ($data_length >= CHUNK_SIZE) {
+        $dataLength = strlen($data);
+        while ($dataLength >= CHUNK_SIZE) {
             $chunk = substr($data, 0, CHUNK_SIZE);
             $data = substr($data, CHUNK_SIZE);
-            $data_length -= CHUNK_SIZE;
+            $dataLength -= CHUNK_SIZE;
 
             $encoded = encode($chunk, $this->variant, $this->padding) . LINE_ENDING;
             $this->handle->writeAll($encoded);

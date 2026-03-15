@@ -665,30 +665,30 @@ final readonly class Duration implements TemporalAmountInterface, Comparison\Com
      * meant to be a comprehensive way to format time durations for user-facing
      * output.
      *
-     * @param int<0, max> $max_decimals
+     * @param int<0, max> $maxDecimals
      *
      * @psalm-mutation-free
      */
-    public function toString(int $max_decimals = 3): string
+    public function toString(int $maxDecimals = 3): string
     {
-        $decimal_part = '';
-        if ($max_decimals > 0) {
-            $decimal_part = (string) abs($this->nanoseconds);
-            $decimal_part = str_pad($decimal_part, 9, '0', STR_PAD_LEFT);
-            $decimal_part = substr($decimal_part, 0, $max_decimals);
-            $decimal_part = rtrim($decimal_part, '0');
+        $decimalPart = '';
+        if ($maxDecimals > 0) {
+            $decimalPart = (string) abs($this->nanoseconds);
+            $decimalPart = str_pad($decimalPart, 9, '0', STR_PAD_LEFT);
+            $decimalPart = substr($decimalPart, 0, $maxDecimals);
+            $decimalPart = rtrim($decimalPart, '0');
         }
 
-        if ('' !== $decimal_part) {
-            $decimal_part = '.' . $decimal_part;
+        if ('' !== $decimalPart) {
+            $decimalPart = '.' . $decimalPart;
         }
 
-        $sec_sign = $this->seconds < 0 || $this->nanoseconds < 0 ? '-' : '';
+        $secSign = $this->seconds < 0 || $this->nanoseconds < 0 ? '-' : '';
         $sec = abs($this->seconds);
 
         $containsHours = 0 !== $this->hours;
         $containsMinutes = 0 !== $this->minutes;
-        $concatenatedSeconds = $sec_sign . (string) $sec . $decimal_part;
+        $concatenatedSeconds = $secSign . (string) $sec . $decimalPart;
         $containsSeconds = '0' !== $concatenatedSeconds;
 
         /** @var list<string> $output */
@@ -731,9 +731,9 @@ final readonly class Duration implements TemporalAmountInterface, Comparison\Com
     #[Override]
     public function toStdlib(): DateInterval
     {
-        $total_seconds = (int) $this->getTotalSeconds();
+        $totalSeconds = (int) $this->getTotalSeconds();
 
-        return DateInterval::createFromDateString($total_seconds . ' seconds');
+        return DateInterval::createFromDateString($totalSeconds . ' seconds');
     }
 
     /**

@@ -14,10 +14,10 @@ final class ConvertEncodingTest extends TestCase
     public function testConvertEncoding(
         null|string $expected,
         string $string,
-        Str\Encoding $from_encoding,
-        Str\Encoding $to_encoding,
+        Str\Encoding $fromEncoding,
+        Str\Encoding $toEncoding,
     ): void {
-        static::assertSame($expected, Str\convert_encoding($string, $from_encoding, $to_encoding));
+        static::assertSame($expected, Str\convert_encoding($string, $fromEncoding, $toEncoding));
     }
 
     public static function provideData(): array

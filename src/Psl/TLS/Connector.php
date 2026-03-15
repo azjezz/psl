@@ -43,7 +43,7 @@ final readonly class Connector implements DefaultInterface
     /**
      * Perform a TLS handshake on the given stream.
      *
-     * @param non-empty-string|null $server_name SNI hostname override. If null, uses the config's peerName.
+     * @param non-empty-string|null $serverName SNI hostname override. If null, uses the config's peerName.
      *
      * @throws HandshakeFailedException If the TLS handshake fails.
      * @throws Network\Exception\RuntimeException If the stream is not available.
@@ -51,7 +51,7 @@ final readonly class Connector implements DefaultInterface
      */
     public function connect(
         Network\StreamInterface $stream,
-        null|string $server_name = null,
+        null|string $serverName = null,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): StreamInterface {
         $resource = $stream->getStream();
@@ -60,16 +60,16 @@ final readonly class Connector implements DefaultInterface
         }
 
         $config = $this->config;
-        if ($server_name !== null && $config->peerName === null) {
-            $config = $config->withPeerName($server_name);
+        if ($serverName !== null && $config->peerName === null) {
+            $config = $config->withPeerName($serverName);
         }
 
-        $ssl_context = Internal\client_ssl_context($config);
-        stream_context_set_options($resource, ['ssl' => $ssl_context]);
+        $sslContext = Internal\client_ssl_context($config);
+        stream_context_set_options($resource, ['ssl' => $sslContext]);
 
-        $crypto_method = Internal\crypto_method($config->minimumVersion, $config->maximumVersion, server: false);
+        $cryptoMethod = Internal\crypto_method($config->minimumVersion, $config->maximumVersion, server: false);
 
-        Internal\enable_crypto($resource, $crypto_method, $cancellation);
+        Internal\enable_crypto($resource, $cryptoMethod, $cancellation);
 
         $state = Internal\extract_connection_state($resource);
 

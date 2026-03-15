@@ -11,14 +11,14 @@ use Psl\Type;
 use stdClass;
 
 /**
- * @param Map&ResultInterface&stdClass&Vector $_value
+ * @param Map&ResultInterface&stdClass&Vector $_
  */
-function takes_valid_intersection(Map&ResultInterface&stdClass&Vector $_value): void {}
+function takes_valid_intersection(Map&ResultInterface&stdClass&Vector $_): void {}
 
 function test(): void
 {
     /** @psalm-suppress MissingThrowsDocblock */
-    $old_school_codec = Type\intersection(
+    $oldSchoolCodec = Type\intersection(
         Type\instance_of(Map::class),
         Type\intersection(
             Type\instance_of(ResultInterface::class),
@@ -27,7 +27,7 @@ function test(): void
     );
 
     /** @psalm-suppress MissingThrowsDocblock */
-    $new_codec = Type\intersection(
+    $newCodec = Type\intersection(
         Type\instance_of(Map::class),
         Type\instance_of(ResultInterface::class),
         Type\instance_of(stdClass::class),
@@ -35,8 +35,8 @@ function test(): void
     );
 
     /** @psalm-suppress MissingThrowsDocblock */
-    takes_valid_intersection($old_school_codec->assert('any'));
+    takes_valid_intersection($oldSchoolCodec->assert('any'));
 
     /** @psalm-suppress MissingThrowsDocblock */
-    takes_valid_intersection($new_codec->assert('any'));
+    takes_valid_intersection($newCodec->assert('any'));
 }

@@ -146,14 +146,14 @@ final class LocaleTest extends TestCase
     #[DataProvider('getAllLocales')]
     public function testItReturnsTheLanguageAndHumanReadableName(Locale $locale): void
     {
-        $display_language = $locale->getDisplayLanguage(Locale::English);
+        $displayLanguage = $locale->getDisplayLanguage(Locale::English);
         $language = $locale->getLanguage();
-        $display_name = $locale->getDisplayName(Locale::English);
+        $displayName = $locale->getDisplayName(Locale::English);
 
-        static::assertNotEmpty($display_language);
+        static::assertNotEmpty($displayLanguage);
         static::assertStringContainsString($language, $locale->value);
 
-        static::assertStringContainsString($display_language, $display_name);
+        static::assertStringContainsString($displayLanguage, $displayName);
         if ($locale->hasRegion()) {
             $region = $locale->getDisplayRegion(Locale::English);
             $region = Str\replace_every($region, [
@@ -161,7 +161,7 @@ final class LocaleTest extends TestCase
                 ')' => ']',
             ]);
 
-            static::assertStringContainsString($region, $display_name);
+            static::assertStringContainsString($region, $displayName);
         }
     }
 

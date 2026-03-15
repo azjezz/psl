@@ -27,8 +27,8 @@ final class ConnectTest extends TestCase
     public function testTlsClientServer(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
-        $server_config = TLS\ServerConfig::create($cert);
-        $acceptor = new TLS\Acceptor($server_config);
+        $serverConfig = TLS\ServerConfig::create($cert);
+        $acceptor = new TLS\Acceptor($serverConfig);
 
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
@@ -68,8 +68,8 @@ final class ConnectTest extends TestCase
     public function testTlsWithMinimumVersion(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
-        $server_config = TLS\ServerConfig::create($cert)->withMinimumVersion(TLS\Version::Tls12);
-        $acceptor = new TLS\Acceptor($server_config);
+        $serverConfig = TLS\ServerConfig::create($cert)->withMinimumVersion(TLS\Version::Tls12);
+        $acceptor = new TLS\Acceptor($serverConfig);
 
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
@@ -117,8 +117,8 @@ final class ConnectTest extends TestCase
     public function testConvenienceConnect(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
-        $server_config = TLS\ServerConfig::create($cert);
-        $acceptor = new TLS\Acceptor($server_config);
+        $serverConfig = TLS\ServerConfig::create($cert);
+        $acceptor = new TLS\Acceptor($serverConfig);
 
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
@@ -150,8 +150,8 @@ final class ConnectTest extends TestCase
     public function testConvenienceConnectWithDefaultConfig(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
-        $server_config = TLS\ServerConfig::create($cert)->withMinimumVersion(TLS\Version::Tls12);
-        $acceptor = new TLS\Acceptor($server_config);
+        $serverConfig = TLS\ServerConfig::create($cert)->withMinimumVersion(TLS\Version::Tls12);
+        $acceptor = new TLS\Acceptor($serverConfig);
 
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
@@ -189,13 +189,13 @@ final class ConnectTest extends TestCase
     public function testConnectPreservesConfigPeerNameWhenServerNameProvided(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
-        $server_config = TLS\ServerConfig::create($cert);
+        $serverConfig = TLS\ServerConfig::create($cert);
 
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
         Async\concurrently([
-            'server' => static function () use ($listener, $server_config): void {
+            'server' => static function () use ($listener, $serverConfig): void {
                 $connection = $listener->accept();
 
                 $lazy = TLS\LazyAcceptor::default();
@@ -203,7 +203,7 @@ final class ConnectTest extends TestCase
 
                 static::assertSame('my-custom-peer', $hello->getServerName());
 
-                $tls = $hello->complete($server_config);
+                $tls = $hello->complete($serverConfig);
                 $data = $tls->read();
                 static::assertSame('peer-name-test', $data);
                 $tls->writeAll('ok');
@@ -231,13 +231,13 @@ final class ConnectTest extends TestCase
     public function testConnectUsesServerNameWhenConfigPeerNameIsNull(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
-        $server_config = TLS\ServerConfig::create($cert);
+        $serverConfig = TLS\ServerConfig::create($cert);
 
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
         Async\concurrently([
-            'server' => static function () use ($listener, $server_config): void {
+            'server' => static function () use ($listener, $serverConfig): void {
                 $connection = $listener->accept();
 
                 $lazy = TLS\LazyAcceptor::default();
@@ -245,7 +245,7 @@ final class ConnectTest extends TestCase
 
                 static::assertSame('localhost', $hello->getServerName());
 
-                $tls = $hello->complete($server_config);
+                $tls = $hello->complete($serverConfig);
                 $data = $tls->read();
                 static::assertSame('server-name-test', $data);
                 $tls->writeAll('ok');
@@ -272,8 +272,8 @@ final class ConnectTest extends TestCase
     public function testConvenienceConnectReturnsTlsStream(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
-        $server_config = TLS\ServerConfig::create($cert);
-        $acceptor = new TLS\Acceptor($server_config);
+        $serverConfig = TLS\ServerConfig::create($cert);
+        $acceptor = new TLS\Acceptor($serverConfig);
 
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;

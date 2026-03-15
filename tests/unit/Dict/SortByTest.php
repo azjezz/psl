@@ -14,9 +14,9 @@ use Psl\Str;
 final class SortByTest extends TestCase
 {
     #[DataProvider('provideData')]
-    public function testSortBy(array $expected, array $array, callable $scalar_fun, null|Closure $comp = null): void
+    public function testSortBy(array $expected, array $array, callable $scalarFun, null|Closure $comp = null): void
     {
-        static::assertSame($expected, Dict\sort_by($array, $scalar_fun, $comp));
+        static::assertSame($expected, Dict\sort_by($array, $scalarFun, $comp));
     }
 
     public static function provideData(): array
@@ -27,7 +27,7 @@ final class SortByTest extends TestCase
 
         $expected = [2 => $a, 0 => $b, 1 => $c];
         $array = [$b, $c, $a];
-        $scalar_fun =
+        $scalarFun =
             /**
              * @param array<array-key, string|int> $array
              *
@@ -39,7 +39,7 @@ final class SortByTest extends TestCase
             [
                 $expected,
                 $array,
-                $scalar_fun,
+                $scalarFun,
             ],
             [
                 [1 => 'a', 2 => 'b', 3 => 'c', 0 => 'd'],

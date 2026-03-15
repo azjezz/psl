@@ -20,7 +20,7 @@ Async\concurrently([
         // Create a connected socket directly
         $socket = UDP\connect($serverAddress->host, $serverAddress->port ?? 0);
         $socket->send('hello');
-        $_response = $socket->receive(512);
+        $_ = $socket->receive(512);
         $socket->close();
     },
 ]);

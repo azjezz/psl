@@ -14,7 +14,7 @@ use function trim as php_trim;
  *
  * @pure
  */
-function trim(string $string, null|string $char_mask = null): string
+function trim(string $string, null|string $charMask = null): string
 {
-    return null === $char_mask ? php_trim($string) : php_trim($string, $char_mask);
+    return null === $charMask ? php_trim($string) : php_trim($string, $charMask);
 }

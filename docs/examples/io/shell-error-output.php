@@ -12,7 +12,7 @@ use Psl\Shell\ErrorOutputBehavior;
 $stdout = Shell\execute(
     'php',
     ['-r', 'echo "out"; fwrite(STDERR, "err");'],
-    error_output_behavior: ErrorOutputBehavior::Discard,
+    errorOutputBehavior: ErrorOutputBehavior::Discard,
 );
 IO\write_line('Discard:  stdout=%s', $stdout);
 
@@ -20,7 +20,7 @@ IO\write_line('Discard:  stdout=%s', $stdout);
 $combined = Shell\execute(
     'php',
     ['-r', 'echo "out"; fwrite(STDERR, "err");'],
-    error_output_behavior: ErrorOutputBehavior::Append,
+    errorOutputBehavior: ErrorOutputBehavior::Append,
 );
 IO\write_line('Append:   %s', $combined);
 
@@ -28,7 +28,7 @@ IO\write_line('Append:   %s', $combined);
 $combined = Shell\execute(
     'php',
     ['-r', 'echo "out"; fwrite(STDERR, "err");'],
-    error_output_behavior: ErrorOutputBehavior::Prepend,
+    errorOutputBehavior: ErrorOutputBehavior::Prepend,
 );
 IO\write_line('Prepend:  %s', $combined);
 
@@ -36,7 +36,7 @@ IO\write_line('Prepend:  %s', $combined);
 $stderr = Shell\execute(
     'php',
     ['-r', 'echo "out"; fwrite(STDERR, "err");'],
-    error_output_behavior: ErrorOutputBehavior::Replace,
+    errorOutputBehavior: ErrorOutputBehavior::Replace,
 );
 IO\write_line('Replace:  %s', $stderr);
 
@@ -44,7 +44,7 @@ IO\write_line('Replace:  %s', $stderr);
 $packed = Shell\execute(
     'php',
     ['-r', 'echo "out"; fwrite(STDERR, "err");'],
-    error_output_behavior: ErrorOutputBehavior::Packed,
+    errorOutputBehavior: ErrorOutputBehavior::Packed,
 );
 [$stdout, $stderr] = Shell\unpack($packed);
 IO\write_line('Packed:   stdout=%s, stderr=%s', $stdout, $stderr);

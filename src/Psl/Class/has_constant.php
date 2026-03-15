@@ -9,9 +9,9 @@ use ReflectionClass;
 /**
  * Checks if constant is defined in the given class.
  *
- * @param class-string $class_name
+ * @param class-string $className
  */
-function has_constant(string $class_name, string $constant_name): bool
+function has_constant(string $className, string $constantName): bool
 {
-    return new ReflectionClass($class_name)->hasConstant($constant_name);
+    return new ReflectionClass($className)->hasConstant($constantName);
 }

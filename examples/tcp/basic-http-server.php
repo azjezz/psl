@@ -27,7 +27,7 @@ const RESPONSE_FORMAT = <<<HTML
 </html>
 HTML;
 
-$listener = TCP\listen('localhost', 3030, idle_connections: 1024);
+$listener = TCP\listen('localhost', 3030, idleConnections: 1024);
 
 Async\Scheduler::onSignal(SIGINT, $listener->close(...));
 

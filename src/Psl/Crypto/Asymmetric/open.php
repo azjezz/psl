@@ -20,11 +20,11 @@ function open(
     #[SensitiveParameter]
     string $ciphertext,
     #[SensitiveParameter]
-    SecretKey $secret_key,
+    SecretKey $secretKey,
     #[SensitiveParameter]
-    PublicKey $public_key,
+    PublicKey $publicKey,
 ): string {
-    $keypair = $secret_key->bytes . $public_key->bytes;
+    $keypair = $secretKey->bytes . $publicKey->bytes;
 
     try {
         $plaintext = Internal\call_sodium(fn() => sodium_crypto_box_seal_open($ciphertext, $keypair));

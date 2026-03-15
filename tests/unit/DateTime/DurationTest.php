@@ -219,11 +219,11 @@ final class DurationTest extends TestCase
     }
 
     #[DataProvider('provideNormalized')]
-    public function testNormalized(int $input_s, int $input_ns, int $normalized_s, int $normalized_ns): void
+    public function testNormalized(int $inputS, int $inputNs, int $normalizedS, int $normalizedNs): void
     {
         static::assertSame(
-            [0, 0, $normalized_s, $normalized_ns],
-            DateTime\Duration::fromParts(0, 0, $input_s, $input_ns)->getParts(),
+            [0, 0, $normalizedS, $normalizedNs],
+            DateTime\Duration::fromParts(0, 0, $inputS, $inputNs)->getParts(),
         );
     }
 
@@ -256,12 +256,12 @@ final class DurationTest extends TestCase
     }
 
     #[DataProvider('providePositiveNegative')]
-    public function testPositiveNegative(int $h, int $m, int $s, int $ns, int $expected_sign): void
+    public function testPositiveNegative(int $h, int $m, int $s, int $ns, int $expectedSign): void
     {
         $t = DateTime\Duration::fromParts($h, $m, $s, $ns);
-        static::assertSame(0 === $expected_sign, $t->isZero());
-        static::assertSame(1 === $expected_sign, $t->isPositive());
-        static::assertSame($expected_sign === -1, $t->isNegative());
+        static::assertSame(0 === $expectedSign, $t->isZero());
+        static::assertSame(1 === $expectedSign, $t->isPositive());
+        static::assertSame($expectedSign === -1, $t->isNegative());
     }
 
     /**
@@ -346,7 +346,7 @@ final class DurationTest extends TestCase
             [0, 42, 0, 0, '42 minute(s)'],
             [0, 0, 42, 0, '42 second(s)'],
             [0, 0, 0, 0, '0 second(s)'],
-            [0, 0, 0, 42, '0 second(s)'], // rounded because default $max_decimals = 3
+            [0, 0, 0, 42, '0 second(s)'], // rounded because default $maxDecimals = 3
             [0, 0, 1, 42, '1 second(s)'],
             [0, 0, 1, 20_000_000, '1.02 second(s)'],
             [1, 2, 0, 0, '1 hour(s), 2 minute(s)'],

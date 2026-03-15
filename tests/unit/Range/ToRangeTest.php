@@ -54,7 +54,7 @@ final class ToRangeTest extends TestCase
         static::assertTrue($range->contains(Math\INT53_MIN));
         static::assertTrue($range->contains(Math\INT64_MIN));
 
-        $range = new Range\ToRange(100, upper_inclusive: true);
+        $range = new Range\ToRange(100, upperInclusive: true);
 
         static::assertTrue($range->contains(100));
         static::assertTrue($range->contains(99));
@@ -74,7 +74,7 @@ final class ToRangeTest extends TestCase
         static::assertFalse($range->contains(Math\UINT16_MAX));
         static::assertFalse($range->contains(Math\UINT32_MAX));
 
-        $range = new Range\ToRange(100, upper_inclusive: false);
+        $range = new Range\ToRange(100, upperInclusive: false);
 
         static::assertFalse($range->contains(100));
         static::assertTrue($range->contains(99));
@@ -108,13 +108,13 @@ final class ToRangeTest extends TestCase
         $range = Range\to(100);
         static::assertFalse($range->isUpperInclusive());
 
-        $range = new Range\ToRange(100, upper_inclusive: true);
+        $range = new Range\ToRange(100, upperInclusive: true);
         static::assertTrue($range->isUpperInclusive());
 
-        $range = new Range\ToRange(100, upper_inclusive: false);
+        $range = new Range\ToRange(100, upperInclusive: false);
         static::assertFalse($range->isUpperInclusive());
 
-        $range = new Range\ToRange(100, upper_inclusive: true);
+        $range = new Range\ToRange(100, upperInclusive: true);
         static::assertTrue($range->isUpperInclusive());
 
         $range = new Range\ToRange(100);

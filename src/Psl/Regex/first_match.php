@@ -14,17 +14,17 @@ use function preg_match;
  * @template T of array|null
  *
  * @param non-empty-string $pattern The pattern to match against.
- * @param ?Type\TypeInterface<T> $capture_groups What shape does the matching items have?
+ * @param ?Type\TypeInterface<T> $captureGroups What shape does the matching items have?
  *
  * @throws Exception\RuntimeException If an internal error accord.
  * @throws Exception\InvalidPatternException If $pattern is invalid.
  *
- * @return ($capture_groups is null ? array<array-key, string> : T)|null
+ * @return ($captureGroups is null ? array<array-key, string> : T)|null
  */
 function first_match(
     string $subject,
     string $pattern,
-    null|Type\TypeInterface $capture_groups = null,
+    null|Type\TypeInterface $captureGroups = null,
     int $offset = 0,
 ): null|array {
     $matching = Internal\call_preg('preg_match', static function () use ($subject, $pattern, $offset): null|array {
@@ -38,10 +38,10 @@ function first_match(
         return null;
     }
 
-    $capture_groups ??= Type\dict(Type\array_key(), Type\string());
+    $captureGroups ??= Type\dict(Type\array_key(), Type\string());
 
     try {
-        return $capture_groups->coerce($matching);
+        return $captureGroups->coerce($matching);
     } catch (Type\Exception\CoercionException $e) {
         throw new Exception\RuntimeException('Invalid capture groups', 0, $e);
     }

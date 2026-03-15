@@ -309,9 +309,9 @@ trait TemporalConvenienceMethodsTrait
      * $rfc_formatted_string_with_milliseconds_and_z = $datetime->toRfc3339(SecondsStyle::Milliseconds, true);
      * ```
      *
-     * @param null|SecondsStyle $seconds_style Optional parameter to specify the seconds formatting style. Automatically
+     * @param null|SecondsStyle $secondsStyle Optional parameter to specify the seconds formatting style. Automatically
      *                                         selected based on precision if null.
-     * @param bool $use_z Determines the representation of UTC timezone. True to use 'Z', false to use the standard offset format.
+     * @param bool $useZ Determines the representation of UTC timezone. True to use 'Z', false to use the standard offset format.
      *
      * @return string The formatted string of the {@see TemporalInterface} instance, adhering to the RFC 3339 and compatible with ISO 8601 formats.
      *
@@ -319,9 +319,9 @@ trait TemporalConvenienceMethodsTrait
      *
      * @psalm-mutation-free
      */
-    public function toRfc3339(null|SecondsStyle $seconds_style = null, bool $use_z = false): string
+    public function toRfc3339(null|SecondsStyle $secondsStyle = null, bool $useZ = false): string
     {
-        return Internal\format_rfc3339($this->getTimestamp(), $seconds_style, $use_z);
+        return Internal\format_rfc3339($this->getTimestamp(), $secondsStyle, $useZ);
     }
 
     /**
@@ -336,11 +336,11 @@ trait TemporalConvenienceMethodsTrait
      * Example usage:
      *
      * ```php
-     * $string_representation = $temporal->toString(FormatDateStyle::Long, FormatTimeStyle::Short, $timezone, $locale);
+     * $stringRepresentation = $temporal->toString(FormatDateStyle::Long, FormatTimeStyle::Short, $timezone, $locale);
      * ```
      *
-     * @param null|DateStyle $date_style Optional style for the date portion of the output. If null, a default style is used.
-     * @param null|TimeStyle $time_style Optional style for the time portion of the output. If null, a default style is used.
+     * @param null|DateStyle $dateStyle Optional style for the date portion of the output. If null, a default style is used.
+     * @param null|TimeStyle $timeStyle Optional style for the time portion of the output. If null, a default style is used.
      * @param null|Timezone $timezone Optional timezone for formatting. If null, uses the system's default timezone.
      * @param null|Locale $locale Optional locale for formatting. If null, uses the system's default locale.
      *
@@ -352,13 +352,13 @@ trait TemporalConvenienceMethodsTrait
      * @psalm-mutation-free
      */
     public function toString(
-        null|DateStyle $date_style = null,
-        null|TimeStyle $time_style = null,
+        null|DateStyle $dateStyle = null,
+        null|TimeStyle $timeStyle = null,
         null|Timezone $timezone = null,
         null|Locale $locale = null,
     ): string {
         $timestamp = $this->getTimestamp();
-        return Internal\create_intl_date_formatter($date_style, $time_style, null, $timezone, $locale)->format(
+        return Internal\create_intl_date_formatter($dateStyle, $timeStyle, null, $timezone, $locale)->format(
             $timestamp->getSeconds() + ($timestamp->getNanoseconds() / NANOSECONDS_PER_SECOND),
         );
     }

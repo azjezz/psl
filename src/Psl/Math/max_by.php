@@ -17,19 +17,19 @@ use Closure;
  * @template T
  *
  * @param iterable<T> $numbers
- * @param (Closure(T): numeric) $numeric_function
+ * @param (Closure(T): numeric) $numericFunction
  *
  * @return T|null
  */
-function max_by(iterable $numbers, Closure $numeric_function): mixed
+function max_by(iterable $numbers, Closure $numericFunction): mixed
 {
     $max = null;
-    $max_num = null;
+    $maxNum = null;
     foreach ($numbers as $value) {
-        $value_num = $numeric_function($value);
-        if (null === $max_num || $value_num >= $max_num) {
+        $valueNum = $numericFunction($value);
+        if (null === $maxNum || $valueNum >= $maxNum) {
             $max = $value;
-            $max_num = $value_num;
+            $maxNum = $valueNum;
         }
     }
 

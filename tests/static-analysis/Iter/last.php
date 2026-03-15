@@ -6,8 +6,8 @@ namespace Psl\Tests\StaticAnalysis\Iter;
 
 use Psl\Iter;
 
-/** @param int $_foo */
-function take_integer(int $_foo): void {}
+/** @param int $_ */
+function take_integer(int $_): void {}
 
 /** @return non-empty-list<int> */
 function return_non_empty_integer_list(): array

@@ -303,8 +303,8 @@ function handle_text_editing(Event\Key $event, PhpCodeState $state): void
 
     if ($event->is('ctrl+w')) {
         $state->input = Str\trim_right($state->input);
-        $last_space = Str\search_last($state->input, ' ');
-        $state->input = $last_space !== null ? Str\slice($state->input, 0, $last_space + 1) : '';
+        $lastSpace = Str\search_last($state->input, ' ');
+        $state->input = $lastSpace !== null ? Str\slice($state->input, 0, $lastSpace + 1) : '';
         $state->ui->ac_selected = 0;
         return;
     }

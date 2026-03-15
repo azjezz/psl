@@ -14,7 +14,7 @@ final class ServerTest extends TestCase
 {
     public function testAcceptOnStoppedListener(): void
     {
-        $listener = TCP\listen('127.0.0.1', 0, no_delay: true, reuse_address: false, reuse_port: false);
+        $listener = TCP\listen('127.0.0.1', 0, noDelay: true, reuseAddress: false, reusePort: false);
 
         $listener->close();
 
@@ -57,7 +57,7 @@ final class ServerTest extends TestCase
 
     public function testAcceptMultipleConnections(): void
     {
-        $listener = TCP\listen('127.0.0.1', 0, no_delay: true, backlog: 64);
+        $listener = TCP\listen('127.0.0.1', 0, noDelay: true, backlog: 64);
         $address = $listener->getLocalAddress();
 
         [$server1, $client1, $client2] = Async\concurrently([
@@ -96,7 +96,7 @@ final class ServerTest extends TestCase
         ]);
 
         static::assertTrue($first->isComplete());
-        $first_connection = $first->await();
+        $firstConnection = $first->await();
 
         $client_two->write('hello');
         $pocket = $second_connection->read(5);
@@ -105,7 +105,7 @@ final class ServerTest extends TestCase
 
         $client_one->close();
         $client_two->close();
-        $first_connection->close();
+        $firstConnection->close();
         $second_connection->close();
 
         $listener->close();

@@ -28,10 +28,10 @@ final readonly class NonEmptyVecType extends Type\Type
     /**
      * @psalm-mutation-free
      *
-     * @param Type\TypeInterface<Tv> $value_type
+     * @param Type\TypeInterface<Tv> $valueType
      */
     public function __construct(
-        private readonly Type\TypeInterface $value_type,
+        private readonly Type\TypeInterface $valueType,
     ) {}
 
     /**
@@ -54,7 +54,7 @@ final readonly class NonEmptyVecType extends Type\Type
                 return false;
             }
 
-            if (!$this->value_type->matches($v)) {
+            if (!$this->valueType->matches($v)) {
                 return false;
             }
 
@@ -73,8 +73,8 @@ final readonly class NonEmptyVecType extends Type\Type
     public function coerce(mixed $value): iterable
     {
         if (is_iterable($value)) {
-            /** @var Type\Type<Tv> $value_type */
-            $value_type = $this->value_type;
+            /** @var Type\Type<Tv> $valueType */
+            $valueType = $this->valueType;
 
             /**
              * @var list<Tv> $entries
@@ -93,7 +93,7 @@ final readonly class NonEmptyVecType extends Type\Type
                  */
                 foreach ($value as $i => $v) {
                     $iterating = false;
-                    $result[] = $value_type->coerce($v);
+                    $result[] = $valueType->coerce($v);
                     $iterating = true;
                 }
             } catch (Throwable $e) {
@@ -132,8 +132,8 @@ final readonly class NonEmptyVecType extends Type\Type
             throw AssertException::withValue($value, $this->toString());
         }
 
-        /** @var Type\Type<Tv> $value_type */
-        $value_type = $this->value_type;
+        /** @var Type\Type<Tv> $valueType */
+        $valueType = $this->valueType;
 
         $result = [];
 
@@ -146,7 +146,7 @@ final readonly class NonEmptyVecType extends Type\Type
              * @var array-key $i
              */
             foreach ($value as $i => $v) {
-                $result[] = $value_type->assert($v);
+                $result[] = $valueType->assert($v);
             }
         } catch (AssertException $e) {
             throw AssertException::withValue($v, $this->toString(), PathExpression::path($i), $e);
@@ -162,6 +162,6 @@ final readonly class NonEmptyVecType extends Type\Type
     #[Override]
     public function toString(): string
     {
-        return Str\format('non-empty-vec<%s>', $this->value_type->toString());
+        return Str\format('non-empty-vec<%s>', $this->valueType->toString());
     }
 }

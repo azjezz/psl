@@ -11,9 +11,9 @@ use Psl\Str;
 final class ChunkTest extends TestCase
 {
     #[DataProvider('provideData')]
-    public function testCapitalize(array $expected, string $value, int $chunk_size = 1): void
+    public function testCapitalize(array $expected, string $value, int $chunkSize = 1): void
     {
-        static::assertSame($expected, Str\chunk($value, $chunk_size));
+        static::assertSame($expected, Str\chunk($value, $chunkSize));
     }
 
     public static function provideData(): array

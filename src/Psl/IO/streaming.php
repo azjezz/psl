@@ -77,7 +77,7 @@ function streaming(iterable $handles, CancellationTokenInterface $cancellation =
         });
     }
 
-    $cancellation_subscription = $cancellation->subscribe(static function (CancelledException $exception) use (
+    $cancellationSubscription = $cancellation->subscribe(static function (CancelledException $exception) use (
         $sender,
     ): void {
         /** @var Result\ResultInterface<string> $failure */
@@ -99,7 +99,7 @@ function streaming(iterable $handles, CancellationTokenInterface $cancellation =
         // completed.
         return;
     } finally {
-        $cancellation->unsubscribe($cancellation_subscription);
+        $cancellation->unsubscribe($cancellationSubscription);
 
         foreach ($watchers->value as $watcher) {
             EventLoop::cancel($watcher);

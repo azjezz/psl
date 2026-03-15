@@ -7,14 +7,14 @@ namespace Psl\Tests\StaticAnalysis\Type;
 use Psl\Type;
 
 /**
- * @param 'PENDING'|'PROCESSING'|'COMPLETED'|'ERROR' $_state
+ * @param 'PENDING'|'PROCESSING'|'COMPLETED'|'ERROR' $_
  */
-function takes_valid_state(string $_state): void {}
+function takes_valid_state(string $_): void {}
 
 function test(): void
 {
     /** @psalm-suppress MissingThrowsDocblock */
-    $old_school_codec = Type\union(
+    $oldSchoolCodec = Type\union(
         Type\literal_scalar('PENDING'),
         Type\union(
             Type\literal_scalar('PROCESSING'),
@@ -23,7 +23,7 @@ function test(): void
     );
 
     /** @psalm-suppress MissingThrowsDocblock */
-    $new_codec = Type\union(
+    $newCodec = Type\union(
         Type\literal_scalar('PENDING'),
         Type\literal_scalar('PROCESSING'),
         Type\literal_scalar('COMPLETED'),
@@ -31,8 +31,8 @@ function test(): void
     );
 
     /** @psalm-suppress MissingThrowsDocblock */
-    takes_valid_state($old_school_codec->assert('any'));
+    takes_valid_state($oldSchoolCodec->assert('any'));
 
     /** @psalm-suppress MissingThrowsDocblock */
-    takes_valid_state($new_codec->assert('any'));
+    takes_valid_state($newCodec->assert('any'));
 }

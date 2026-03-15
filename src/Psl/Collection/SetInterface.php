@@ -217,7 +217,7 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * As {@see SetInterface} does not have keys, this method returns the value itself.
      *
-     * @param T $search_value The value that will be search for in the current
+     * @param T $searchValue The value that will be search for in the current
      *                        `SetInterface`.
      *
      * @return T|null The value if its found, null otherwise.
@@ -225,7 +225,7 @@ interface SetInterface extends AccessibleCollectionInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function linearSearch(mixed $search_value): null|int|string;
+    public function linearSearch(mixed $searchValue): null|int|string;
 
     /**
      * Always throws an exception since `Set` can only contain array-key values.

@@ -30,17 +30,17 @@ const TLS_RESPONSE_FORMAT = <<<HTML
 HTML;
 
 Async\main(static function (): int {
-    $cert_file = __DIR__ . '/certs/server.crt';
-    $key_file = __DIR__ . '/certs/server.key';
+    $certFile = __DIR__ . '/certs/server.crt';
+    $keyFile = __DIR__ . '/certs/server.key';
 
-    $tls_config = TLS\ServerConfig::create(TLS\Certificate::create(
-        $cert_file,
-        $key_file,
+    $tlsConfig = TLS\ServerConfig::create(TLS\Certificate::create(
+        $certFile,
+        $keyFile,
     ))->withMinimumVersion(TLS\Version::Tls12);
 
-    $acceptor = new TLS\Acceptor($tls_config);
-    $listener = TCP\listen('127.0.0.1', 3443, idle_connections: 1024);
-    $keepalive_timeout = Duration::seconds(5);
+    $acceptor = new TLS\Acceptor($tlsConfig);
+    $listener = TCP\listen('127.0.0.1', 3443, idleConnections: 1024);
+    $keepaliveTimeout = Duration::seconds(5);
 
     /** @var array<int, TCP\StreamInterface> $active */
     $active = [];
@@ -67,33 +67,33 @@ Async\main(static function (): int {
             break;
         }
 
-        $connection_id = $id++;
-        $active[$connection_id] = $connection;
+        $connectionId = $id++;
+        $active[$connectionId] = $connection;
 
-        Async\run(static function () use ($connection, $acceptor, $keepalive_timeout, &$active, $connection_id): void {
+        Async\run(static function () use ($connection, $acceptor, $keepaliveTimeout, &$active, $connectionId): void {
             try {
                 $tls = $acceptor->accept($connection);
                 $reader = new IO\Reader($tls);
 
                 while (true) {
-                    $headers = $reader->readUntil("\r\n\r\n", new Async\TimeoutCancellationToken($keepalive_timeout));
+                    $headers = $reader->readUntil("\r\n\r\n", new Async\TimeoutCancellationToken($keepaliveTimeout));
                     if ($headers === null) {
                         // @mago-expect lint:excessive-nesting
                         break;
                     }
 
-                    $keep_alive = Str\Byte\contains_ci($headers, 'connection: keep-alive');
-                    $connection_header = $keep_alive ? 'keep-alive' : 'close';
+                    $keepAlive = Str\Byte\contains_ci($headers, 'connection: keep-alive');
+                    $connectionHeader = $keepAlive ? 'keep-alive' : 'close';
 
                     $body = Str\format(TLS_RESPONSE_FORMAT, Html\encode_special_characters($headers));
                     $tls->writeAll(
-                        "HTTP/1.1 200 OK\r\nConnection: {$connection_header}\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: "
+                        "HTTP/1.1 200 OK\r\nConnection: {$connectionHeader}\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: "
                         . Str\Byte\length($body)
                         . "\r\n\r\n"
                         . $body,
                     );
 
-                    if (!$keep_alive) {
+                    if (!$keepAlive) {
                         // @mago-expect lint:excessive-nesting
                         break;
                     }
@@ -103,7 +103,7 @@ Async\main(static function (): int {
                 // Keep-alive timeout — client didn't send next request in time
             } finally {
                 $connection->close();
-                unset($active[$connection_id]);
+                unset($active[$connectionId]);
             }
         })->catch(
             static fn(Throwable $e): null => (

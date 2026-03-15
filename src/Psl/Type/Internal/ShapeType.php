@@ -42,7 +42,7 @@ final readonly class ShapeType extends Type\Type
      */
     public function __construct(
         private array $elements_types,
-        private bool $allow_unknown_fields = false,
+        private bool $allowUnknownFields = false,
     ) {
         $this->requiredElements = array_filter(
             $elements_types,
@@ -74,8 +74,8 @@ final readonly class ShapeType extends Type\Type
             }
         }
 
-        if (!$this->allow_unknown_fields) {
-            foreach ($value as $k => $_v) {
+        if (!$this->allowUnknownFields) {
+            foreach ($value as $k => $_) {
                 if (!array_key_exists($k, $this->elements_types)) {
                     return false;
                 }
@@ -108,7 +108,7 @@ final readonly class ShapeType extends Type\Type
             return $this->coerceIterable($value);
         }
 
-        if (!$this->allow_unknown_fields && array_keys($value) !== array_keys($this->elements_types)) {
+        if (!$this->allowUnknownFields && array_keys($value) !== array_keys($this->elements_types)) {
             // Fallback to slow implementation - unhappy path
             return $this->coerceIterable($value);
         }
@@ -173,13 +173,13 @@ final readonly class ShapeType extends Type\Type
 
         $result = [];
         $element = null;
-        $element_value_found = false;
+        $elementValueFound = false;
 
         try {
             foreach ($this->elements_types as $element => $type) {
-                $element_value_found = false;
+                $elementValueFound = false;
                 if (array_key_exists($element, $array)) {
-                    $element_value_found = true;
+                    $elementValueFound = true;
                     $result[$element] = $type->coerce($array[$element]);
 
                     continue;
@@ -197,7 +197,7 @@ final readonly class ShapeType extends Type\Type
             }
         } catch (CoercionException $e) {
             throw match (true) {
-                $element_value_found => CoercionException::withValue(
+                $elementValueFound => CoercionException::withValue(
                     null === $element ? null : $array[$element] ?? null,
                     $this->toString(),
                     PathExpression::path($element),
@@ -207,7 +207,7 @@ final readonly class ShapeType extends Type\Type
             };
         }
 
-        if ($this->allow_unknown_fields) {
+        if ($this->allowUnknownFields) {
             foreach ($array as $k => $v) {
                 if (array_key_exists($k, $result)) {
                     continue;
@@ -236,13 +236,13 @@ final readonly class ShapeType extends Type\Type
 
         $result = [];
         $element = null;
-        $element_value_found = false;
+        $elementValueFound = false;
 
         try {
             foreach ($this->elements_types as $element => $type) {
-                $element_value_found = false;
+                $elementValueFound = false;
                 if (array_key_exists($element, $value)) {
-                    $element_value_found = true;
+                    $elementValueFound = true;
                     $result[$element] = $type->assert($value[$element]);
 
                     continue;
@@ -260,7 +260,7 @@ final readonly class ShapeType extends Type\Type
             }
         } catch (AssertException $e) {
             throw match (true) {
-                $element_value_found => AssertException::withValue(
+                $elementValueFound => AssertException::withValue(
                     null === $element ? null : $value[$element] ?? null,
                     $this->toString(),
                     PathExpression::path($element),
@@ -278,7 +278,7 @@ final readonly class ShapeType extends Type\Type
                 continue;
             }
 
-            if ($this->allow_unknown_fields) {
+            if ($this->allowUnknownFields) {
                 $result[$k] = $v;
                 continue;
             }

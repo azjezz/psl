@@ -11,7 +11,7 @@ use function hash_equals;
  *
  * @pure
  */
-function equals(string $known_string, string $user_string): bool
+function equals(string $knownString, string $userString): bool
 {
-    return hash_equals($known_string, $user_string);
+    return hash_equals($knownString, $userString);
 }

@@ -23,17 +23,17 @@ use function sodium_memzero;
  */
 function derive(
     #[SensitiveParameter]
-    string $input_keying_material,
+    string $inputKeyingMaterial,
     string $salt = '',
     string $info = '',
     int $length = 32,
     Hmac\Algorithm $algorithm = Hmac\Algorithm::Sha256,
 ): string {
-    $pseudo_random_key = namespace\extract($input_keying_material, $salt, $algorithm);
+    $pseudoRandomKey = namespace\extract($inputKeyingMaterial, $salt, $algorithm);
 
     try {
-        return namespace\expand($pseudo_random_key, $info, $length, $algorithm);
+        return namespace\expand($pseudoRandomKey, $info, $length, $algorithm);
     } finally {
-        sodium_memzero($pseudo_random_key);
+        sodium_memzero($pseudoRandomKey);
     }
 }

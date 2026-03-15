@@ -105,12 +105,12 @@ final class PeriodTest extends TestCase
     }
 
     #[DataProvider('providePositiveNegative')]
-    public function testPositiveNegative(int $y, int $m, int $d, int $expected_sign): void
+    public function testPositiveNegative(int $y, int $m, int $d, int $expectedSign): void
     {
         $p = DateTime\Period::fromParts($y, $m, $d);
-        static::assertSame(0 === $expected_sign, $p->isZero());
-        static::assertSame(1 === $expected_sign, $p->isPositive());
-        static::assertSame(-1 === $expected_sign, $p->isNegative());
+        static::assertSame(0 === $expectedSign, $p->isZero());
+        static::assertSame(1 === $expectedSign, $p->isPositive());
+        static::assertSame(-1 === $expectedSign, $p->isNegative());
     }
 
     public function testWithers(): void

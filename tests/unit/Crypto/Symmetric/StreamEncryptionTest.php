@@ -435,23 +435,23 @@ final class StreamEncryptionTest extends TestCase
                 return false; // never reports EOF
             }
 
-            public function tryRead(null|int $max_bytes = null): string
+            public function tryRead(null|int $maxBytes = null): string
             {
-                return $this->inner->tryRead($max_bytes);
+                return $this->inner->tryRead($maxBytes);
             }
 
             public function read(
-                null|int $max_bytes = null,
+                null|int $maxBytes = null,
                 CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): string {
-                return $this->inner->read($max_bytes, $cancellation);
+                return $this->inner->read($maxBytes, $cancellation);
             }
 
             public function readAll(
-                null|int $max_bytes = null,
+                null|int $maxBytes = null,
                 CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): string {
-                return $this->inner->readAll($max_bytes, $cancellation);
+                return $this->inner->readAll($maxBytes, $cancellation);
             }
 
             public function readFixedSize(
@@ -640,23 +640,23 @@ final class StreamEncryptionTest extends TestCase
                 return false;
             }
 
-            public function tryRead(null|int $max_bytes = null): string
+            public function tryRead(null|int $maxBytes = null): string
             {
-                return $this->doRead($max_bytes);
+                return $this->doRead($maxBytes);
             }
 
             public function read(
-                null|int $max_bytes = null,
+                null|int $maxBytes = null,
                 CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): string {
-                return $this->doRead($max_bytes);
+                return $this->doRead($maxBytes);
             }
 
             public function readAll(
-                null|int $max_bytes = null,
+                null|int $maxBytes = null,
                 CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): string {
-                return $this->inner->readAll($max_bytes, $cancellation);
+                return $this->inner->readAll($maxBytes, $cancellation);
             }
 
             public function readFixedSize(
@@ -666,14 +666,14 @@ final class StreamEncryptionTest extends TestCase
                 return $this->inner->readFixedSize($size, $cancellation);
             }
 
-            private function doRead(null|int $max_bytes): string
+            private function doRead(null|int $maxBytes): string
             {
                 if ($this->firstRead) {
                     $this->firstRead = false;
                     return '';
                 }
 
-                return $this->inner->read($max_bytes);
+                return $this->inner->read($maxBytes);
             }
         };
 
@@ -708,23 +708,23 @@ final class StreamEncryptionTest extends TestCase
                 return false;
             }
 
-            public function tryRead(null|int $max_bytes = null): string
+            public function tryRead(null|int $maxBytes = null): string
             {
-                return $this->doRead($max_bytes);
+                return $this->doRead($maxBytes);
             }
 
             public function read(
-                null|int $max_bytes = null,
+                null|int $maxBytes = null,
                 CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): string {
-                return $this->doRead($max_bytes);
+                return $this->doRead($maxBytes);
             }
 
             public function readAll(
-                null|int $max_bytes = null,
+                null|int $maxBytes = null,
                 CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): string {
-                return $this->inner->readAll($max_bytes, $cancellation);
+                return $this->inner->readAll($maxBytes, $cancellation);
             }
 
             public function readFixedSize(
@@ -734,11 +734,11 @@ final class StreamEncryptionTest extends TestCase
                 return $this->inner->readFixedSize($size, $cancellation);
             }
 
-            private function doRead(null|int $max_bytes): string
+            private function doRead(null|int $maxBytes): string
             {
                 $this->readCount++;
                 if ($this->readCount === 1) {
-                    return $this->inner->read($max_bytes);
+                    return $this->inner->read($maxBytes);
                 }
 
                 return '';
@@ -822,24 +822,24 @@ final class StreamEncryptionTest extends TestCase
                 return $this->inner->reachedEndOfDataSource();
             }
 
-            public function tryRead(null|int $max_bytes = null): string
+            public function tryRead(null|int $maxBytes = null): string
             {
-                return $this->inner->tryRead($max_bytes);
+                return $this->inner->tryRead($maxBytes);
             }
 
             public function read(
-                null|int $max_bytes = null,
+                null|int $maxBytes = null,
                 CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): string {
-                $this->readArgs[] = $max_bytes;
-                return $this->inner->read($max_bytes, $cancellation);
+                $this->readArgs[] = $maxBytes;
+                return $this->inner->read($maxBytes, $cancellation);
             }
 
             public function readAll(
-                null|int $max_bytes = null,
+                null|int $maxBytes = null,
                 CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): string {
-                return $this->inner->readAll($max_bytes, $cancellation);
+                return $this->inner->readAll($maxBytes, $cancellation);
             }
 
             public function readFixedSize(
@@ -894,23 +894,23 @@ final class StreamEncryptionTest extends TestCase
                 return $this->inner->reachedEndOfDataSource();
             }
 
-            public function tryRead(null|int $max_bytes = null): string
+            public function tryRead(null|int $maxBytes = null): string
             {
-                return $this->inner->tryRead($max_bytes);
+                return $this->inner->tryRead($maxBytes);
             }
 
             public function read(
-                null|int $max_bytes = null,
+                null|int $maxBytes = null,
                 CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): string {
-                return $this->inner->read($max_bytes, $cancellation);
+                return $this->inner->read($maxBytes, $cancellation);
             }
 
             public function readAll(
-                null|int $max_bytes = null,
+                null|int $maxBytes = null,
                 CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): string {
-                return $this->inner->readAll($max_bytes, $cancellation);
+                return $this->inner->readAll($maxBytes, $cancellation);
             }
 
             public function readFixedSize(

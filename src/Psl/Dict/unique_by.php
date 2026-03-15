@@ -16,18 +16,18 @@ use Closure;
  * @template Ts
  *
  * @param iterable<Tk, Tv> $iterable
- * @param (Closure(Tv): Ts) $scalar_func
+ * @param (Closure(Tv): Ts) $scalarFunc
  *
  * @return array<Tk, Tv>
  */
-function unique_by(iterable $iterable, Closure $scalar_func): array
+function unique_by(iterable $iterable, Closure $scalarFunc): array
 {
     /** @var array<array-key, true> $seen */
     $seen = [];
     /** @var array<Tk, Tv> $result */
     $result = [];
     foreach ($iterable as $k => $v) {
-        $scalar = $scalar_func($v);
+        $scalar = $scalarFunc($v);
         $key = is_int($scalar) || is_string($scalar) ? $scalar : serialize($scalar);
 
         if (!isset($seen[$key])) {

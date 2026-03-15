@@ -9,13 +9,13 @@ use function class_exists;
 /**
  * Checks if the class with the given name has already been defined.
  *
- * @param string $class_name
+ * @param string $className
  *
- * @psalm-assert-if-true class-string $class_name
+ * @psalm-assert-if-true class-string $className
  *
  * @pure
  */
-function defined(string $class_name): bool
+function defined(string $className): bool
 {
-    return class_exists($class_name, false);
+    return class_exists($className, false);
 }

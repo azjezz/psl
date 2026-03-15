@@ -41,10 +41,10 @@ function filter_with_key(iterable $iterable, null|Closure $predicate = null): ar
 {
     $predicate ??=
         /**
-         * @param Tk $_k
+         * @param Tk $_
          * @param Tv $v
          */
-        static fn(mixed $_k, mixed $v): bool => (bool) $v;
+        static fn(mixed $_, mixed $v): bool => (bool) $v;
 
     if (is_array($iterable)) {
         return array_values(array_filter(

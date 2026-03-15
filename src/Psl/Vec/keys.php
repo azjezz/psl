@@ -24,7 +24,7 @@ function keys(iterable $iterable): array
     }
 
     $result = [];
-    foreach ($iterable as $k => $_v) {
+    foreach ($iterable as $k => $_) {
         $result[] = $k;
     }
 

@@ -11,9 +11,9 @@ use Psl\Filesystem;
  */
 function current_exec(): string
 {
-    $script_name = $_SERVER['SCRIPT_NAME'];
-    $canonical_script_name = Filesystem\canonicalize($script_name);
-    $executable = $canonical_script_name ?? $script_name;
+    $scriptName = $_SERVER['SCRIPT_NAME'];
+    $canonicalScriptName = Filesystem\canonicalize($scriptName);
+    $executable = $canonicalScriptName ?? $scriptName;
 
     // @codeCoverageIgnoreStart
     if (Filesystem\is_symbolic_link($executable)) {

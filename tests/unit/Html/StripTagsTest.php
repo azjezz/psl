@@ -11,9 +11,9 @@ use Psl\Html;
 final class StripTagsTest extends TestCase
 {
     #[DataProvider('provideData')]
-    public function testEncode(string $expected, string $html, array $allowed_tags): void
+    public function testEncode(string $expected, string $html, array $allowedTags): void
     {
-        static::assertSame($expected, Html\strip_tags($html, $allowed_tags));
+        static::assertSame($expected, Html\strip_tags($html, $allowedTags));
     }
 
     public static function provideData(): iterable

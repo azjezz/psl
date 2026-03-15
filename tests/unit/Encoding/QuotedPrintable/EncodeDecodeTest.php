@@ -198,7 +198,7 @@ final class EncodeDecodeTest extends TestCase
     public function testEncodeCustomMaxLineLength(): void
     {
         $input = str_repeat('A', 50);
-        $encoded = QuotedPrintable\encode($input, max_line_length: 30);
+        $encoded = QuotedPrintable\encode($input, maxLineLength: 30);
 
         $lines = explode("\r\n", $encoded);
         foreach ($lines as $line) {
@@ -211,7 +211,7 @@ final class EncodeDecodeTest extends TestCase
     public function testEncodeCustomLineEnding(): void
     {
         $input = "line1\r\nline2";
-        $encoded = QuotedPrintable\encode($input, line_ending: "\n");
+        $encoded = QuotedPrintable\encode($input, lineEnding: "\n");
 
         static::assertSame("line1\nline2", $encoded);
     }
@@ -219,7 +219,7 @@ final class EncodeDecodeTest extends TestCase
     public function testEncodeCustomLineEndingInSoftBreak(): void
     {
         $input = str_repeat('A', 100);
-        $encoded = QuotedPrintable\encode($input, line_ending: "\n");
+        $encoded = QuotedPrintable\encode($input, lineEnding: "\n");
 
         static::assertStringContainsString("=\n", $encoded);
         static::assertStringNotContainsString("=\r\n", $encoded);
@@ -228,7 +228,7 @@ final class EncodeDecodeTest extends TestCase
     public function testEncodeLineCustomMaxLength(): void
     {
         $input = str_repeat('B', 20);
-        $encoded = QuotedPrintable\encode_line($input, max_line_length: 10);
+        $encoded = QuotedPrintable\encode_line($input, maxLineLength: 10);
 
         $lines = explode("\r\n", $encoded);
         foreach ($lines as $line) {
@@ -239,7 +239,7 @@ final class EncodeDecodeTest extends TestCase
     public function testEncodeLineCustomLineEnding(): void
     {
         $input = str_repeat('C', 100);
-        $encoded = QuotedPrintable\encode_line($input, line_ending: "\n");
+        $encoded = QuotedPrintable\encode_line($input, lineEnding: "\n");
 
         static::assertStringContainsString("=\n", $encoded);
         static::assertStringNotContainsString("=\r\n", $encoded);

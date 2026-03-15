@@ -27,10 +27,10 @@ final readonly class MutableVectorType extends Type\Type
     /**
      * @psalm-mutation-free
      *
-     * @param Type\TypeInterface<T> $value_type
+     * @param Type\TypeInterface<T> $valueType
      */
     public function __construct(
-        private readonly Type\TypeInterface $value_type,
+        private readonly Type\TypeInterface $valueType,
     ) {}
 
     /**
@@ -45,7 +45,7 @@ final readonly class MutableVectorType extends Type\Type
 
         // @mago-expect analysis:mixed-assignment
         foreach ($value as $v) {
-            if (!$this->value_type->matches($v)) {
+            if (!$this->valueType->matches($v)) {
                 return false;
             }
         }
@@ -62,8 +62,8 @@ final readonly class MutableVectorType extends Type\Type
     public function coerce(mixed $value): Collection\MutableVectorInterface
     {
         if (is_iterable($value)) {
-            /** @var Type\Type<T> $value_type */
-            $value_type = $this->value_type;
+            /** @var Type\Type<T> $valueType */
+            $valueType = $this->valueType;
 
             /**
              * @var list<T> $values
@@ -81,7 +81,7 @@ final readonly class MutableVectorType extends Type\Type
                  */
                 foreach ($value as $i => $v) {
                     $iterating = false;
-                    $values[] = $value_type->coerce($v);
+                    $values[] = $valueType->coerce($v);
                     $iterating = true;
                 }
             } catch (Throwable $e) {
@@ -113,8 +113,8 @@ final readonly class MutableVectorType extends Type\Type
     public function assert(mixed $value): Collection\MutableVectorInterface
     {
         if (is_object($value) && $value instanceof Collection\MutableVectorInterface) {
-            /** @var Type\Type<T> $value_type */
-            $value_type = $this->value_type;
+            /** @var Type\Type<T> $valueType */
+            $valueType = $this->valueType;
 
             /**
              * @var list<T> $values
@@ -129,7 +129,7 @@ final readonly class MutableVectorType extends Type\Type
                  * @var T $v
                  */
                 foreach ($value as $i => $v) {
-                    $values[] = $value_type->assert($v);
+                    $values[] = $valueType->assert($v);
                 }
             } catch (AssertException $e) {
                 throw AssertException::withValue($v, $this->toString(), PathExpression::path($i), $e);
@@ -144,6 +144,6 @@ final readonly class MutableVectorType extends Type\Type
     #[Override]
     public function toString(): string
     {
-        return Str\format('%s<%s>', Collection\MutableVectorInterface::class, $this->value_type->toString());
+        return Str\format('%s<%s>', Collection\MutableVectorInterface::class, $this->valueType->toString());
     }
 }

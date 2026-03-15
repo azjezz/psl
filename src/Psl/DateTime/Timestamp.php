@@ -62,16 +62,16 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\Fr
             throw new Exception\UnderflowException('Subtracting nanoseconds would cause an underflow.');
         }
 
-        $seconds_adjustment = intdiv($nanoseconds, NANOSECONDS_PER_SECOND);
-        $adjusted_seconds = $seconds + $seconds_adjustment;
+        $secondsAdjustment = intdiv($nanoseconds, NANOSECONDS_PER_SECOND);
+        $adjustedSeconds = $seconds + $secondsAdjustment;
 
-        $adjusted_nanoseconds = $nanoseconds % NANOSECONDS_PER_SECOND;
-        if ($adjusted_nanoseconds < 0) {
-            --$adjusted_seconds;
-            $adjusted_nanoseconds += NANOSECONDS_PER_SECOND;
+        $adjustedNanoseconds = $nanoseconds % NANOSECONDS_PER_SECOND;
+        if ($adjustedNanoseconds < 0) {
+            --$adjustedSeconds;
+            $adjustedNanoseconds += NANOSECONDS_PER_SECOND;
         }
 
-        return new self($adjusted_seconds, $adjusted_nanoseconds);
+        return new self($adjustedSeconds, $adjustedNanoseconds);
     }
 
     /**
@@ -148,11 +148,11 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\Fr
      * Example usage:
      *
      * ```php
-     * $raw_string = '2023-03-15 12:00:00';
-     * $parsed_timestamp = DateTime\Timestamp::parse($raw_string, 'yyyy-MM-dd HH:mm:ss', DateTime\Timezone::Utc, Locale\Locale::English);
+     * $rawString = '2023-03-15 12:00:00';
+     * $parsed_timestamp = DateTime\Timestamp::parse($rawString, 'yyyy-MM-dd HH:mm:ss', DateTime\Timezone::Utc, Locale\Locale::English);
      * ```
      *
-     * @param string $raw_string The date and time string to parse.
+     * @param string $rawString The date and time string to parse.
      * @param null|FormatPattern|string $pattern The custom format pattern for parsing the date and time. If null, uses a default pattern.
      * @param null|Timezone $timezone Optional timezone for parsing. If null, uses the system's default timezone.
      * @param null|Locale $locale Optional locale for parsing. If null, uses the system's default locale.
@@ -167,13 +167,13 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\Fr
      * @psalm-mutation-free
      */
     public static function parse(
-        string $raw_string,
+        string $rawString,
         null|FormatPattern|string $pattern = null,
         null|Timezone $timezone = null,
         null|Locale $locale = null,
     ): static {
         return self::fromParts(Internal\parse(
-            raw_string: $raw_string,
+            rawString: $rawString,
             pattern: $pattern,
             timezone: $timezone,
             locale: $locale,
@@ -193,14 +193,14 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\Fr
      * Example usage:
      *
      * ```php
-     * $raw_string = "March 15, 2023, 12:00 PM";
+     * $rawString = "March 15, 2023, 12:00 PM";
      *
-     * $timestamp = DateTime\Timestamp::fromString($raw_string, FormatDateStyle::Long, FormatTimeStyle::Short, DateTime\Timezone::Utc, Locale\Locale::English);
+     * $timestamp = DateTime\Timestamp::fromString($rawString, FormatDateStyle::Long, FormatTimeStyle::Short, DateTime\Timezone::Utc, Locale\Locale::English);
      * ```
      *
-     * @param string $raw_string The date and time string to parse.
-     * @param null|DateStyle $date_style The style for the date portion of the string. If null, a default style is used.
-     * @param null|TimeStyle $time_style The style for the time portion of the string. If null, a default style is used.
+     * @param string $rawString The date and time string to parse.
+     * @param null|DateStyle $dateStyle The style for the date portion of the string. If null, a default style is used.
+     * @param null|TimeStyle $timeStyle The style for the time portion of the string. If null, a default style is used.
      * @param null|Timezone $timezone Optional timezone for parsing. If null, uses the system's default timezone.
      * @param null|Locale $locale Optional locale for parsing. If null, uses the system's default locale.
      *
@@ -213,16 +213,16 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\Fr
      * @psalm-mutation-free
      */
     public static function fromString(
-        string $raw_string,
-        null|DateStyle $date_style = null,
-        null|TimeStyle $time_style = null,
+        string $rawString,
+        null|DateStyle $dateStyle = null,
+        null|TimeStyle $timeStyle = null,
         null|Timezone $timezone = null,
         null|Locale $locale = null,
     ): static {
         return self::fromParts(Internal\parse(
-            raw_string: $raw_string,
-            date_style: $date_style,
-            time_style: $time_style,
+            rawString: $rawString,
+            dateStyle: $dateStyle,
+            timeStyle: $timeStyle,
             timezone: $timezone,
             locale: $locale,
         ));

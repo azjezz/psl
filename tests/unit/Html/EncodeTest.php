@@ -11,9 +11,9 @@ use Psl\Html;
 final class EncodeTest extends TestCase
 {
     #[DataProvider('provideData')]
-    public function testEncode(string $expected, string $html, bool $double_encoding, Html\Encoding $encoding): void
+    public function testEncode(string $expected, string $html, bool $doubleEncoding, Html\Encoding $encoding): void
     {
-        static::assertSame($expected, Html\encode($html, $double_encoding, $encoding));
+        static::assertSame($expected, Html\encode($html, $doubleEncoding, $encoding));
     }
 
     public static function provideData(): iterable

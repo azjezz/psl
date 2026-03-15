@@ -31,17 +31,17 @@ use function is_array;
 function flatten(iterable $iterables): array
 {
     if (is_array($iterables)) {
-        $all_arrays = true;
+        $allArrays = true;
         foreach ($iterables as $inner) {
             if (is_array($inner)) {
                 continue;
             }
 
-            $all_arrays = false;
+            $allArrays = false;
             break;
         }
 
-        if ($all_arrays) {
+        if ($allArrays) {
             /** @var array<array<T>> $iterables */
             return [] === $iterables ? [] : array_values(array_merge(...$iterables));
         }

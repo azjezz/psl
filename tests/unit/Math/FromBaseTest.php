@@ -12,9 +12,9 @@ use Psl\Str;
 final class FromBaseTest extends TestCase
 {
     #[DataProvider('provideData')]
-    public function testFromBase(int $expected, string $value, int $from_base): void
+    public function testFromBase(int $expected, string $value, int $fromBase): void
     {
-        static::assertSame($expected, Math\from_base($value, $from_base));
+        static::assertSame($expected, Math\from_base($value, $fromBase));
     }
 
     public static function provideData(): array

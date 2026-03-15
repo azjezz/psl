@@ -19,7 +19,7 @@ function contains_key(iterable $iterable, mixed $key): bool
         return array_key_exists($key, $iterable);
     }
 
-    foreach ($iterable as $k => $_v) {
+    foreach ($iterable as $k => $_) {
         if ($key === $k) {
             return true;
         }

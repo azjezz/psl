@@ -7,7 +7,7 @@ namespace Psl\Tests\StaticAnalysis\Regex;
 use Psl;
 use Psl\Regex;
 
-function take_string(string $_foo): void {}
+function take_string(string $_): void {}
 
 /**
  * @throws Regex\Exception\ExceptionInterface
@@ -19,10 +19,10 @@ function test(): void
     $pattern = '/(php)/i';
 
     $e = Regex\capture_groups([1]);
-    $first_match = Regex\first_match($subject, $pattern, $e);
+    $firstMatch = Regex\first_match($subject, $pattern, $e);
 
-    Psl\invariant(null !== $first_match, 'It matches!');
+    Psl\invariant(null !== $firstMatch, 'It matches!');
 
-    take_string($first_match[0]);
-    take_string($first_match[1]);
+    take_string($firstMatch[0]);
+    take_string($firstMatch[1]);
 }

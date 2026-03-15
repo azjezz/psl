@@ -12,18 +12,18 @@ use function strlen;
  * Encode a single line using quoted-printable encoding.
  *
  * Trailing whitespace is encoded, and soft line breaks are inserted
- * to keep lines within $max_line_length (default 76 per RFC 2045).
+ * to keep lines within $maxLineLength (default 76 per RFC 2045).
  *
- * @param positive-int $max_line_length
- * @param non-empty-string $line_ending
+ * @param positive-int $maxLineLength
+ * @param non-empty-string $lineEnding
  */
-function encode_line(string $line, int $max_line_length = 76, string $line_ending = "\r\n"): string
+function encode_line(string $line, int $maxLineLength = 76, string $lineEnding = "\r\n"): string
 {
     if ($line === '') {
         return '';
     }
 
-    $soft_break = '=' . $line_ending;
+    $softBreak = '=' . $lineEnding;
     $encoded = '';
     $lineLength = 0;
     $len = strlen($line);
@@ -46,8 +46,8 @@ function encode_line(string $line, int $max_line_length = 76, string $line_endin
 
         $charLen = strlen($char);
 
-        if (($lineLength + $charLen) > ($max_line_length - 1)) {
-            $encoded .= $soft_break;
+        if (($lineLength + $charLen) > ($maxLineLength - 1)) {
+            $encoded .= $softBreak;
             $lineLength = 0;
         }
 

@@ -356,19 +356,19 @@ abstract class AbstractSetTestCase extends TestCase
     public function testTakeWhile(): void
     {
         $set = $this->default();
-        $rest = $set->takeWhile(static fn(string $_v): bool => false);
+        $rest = $set->takeWhile(static fn(string $_): bool => false);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(0, $rest);
 
         $set = $this->default();
-        $rest = $set->takeWhile(static fn(string $_v): bool => true);
+        $rest = $set->takeWhile(static fn(string $_): bool => true);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(0, $rest);
 
         $set = $this->createFromList(['bar', 'qux']);
-        $rest = $set->takeWhile(static fn(string $_v): bool => true);
+        $rest = $set->takeWhile(static fn(string $_): bool => true);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(2, $rest);
@@ -414,25 +414,25 @@ abstract class AbstractSetTestCase extends TestCase
     public function testDropWhile(): void
     {
         $set = $this->default();
-        $rest = $set->dropWhile(static fn(string $_v): bool => true);
+        $rest = $set->dropWhile(static fn(string $_): bool => true);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(0, $rest);
 
         $set = $this->default();
-        $rest = $set->dropWhile(static fn(string $_v): bool => false);
+        $rest = $set->dropWhile(static fn(string $_): bool => false);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(0, $rest);
 
         $set = $this->createFromList(['bar', 'qux']);
-        $rest = $set->dropWhile(static fn(string $_v): bool => true);
+        $rest = $set->dropWhile(static fn(string $_): bool => true);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(0, $rest);
 
         $set = $this->createFromList(['bar', 'qux']);
-        $rest = $set->dropWhile(static fn(string $_v): bool => false);
+        $rest = $set->dropWhile(static fn(string $_): bool => false);
         static::assertInstanceOf($this->setClass, $rest);
         static::assertNotSame($set, $rest);
         static::assertCount(2, $rest);

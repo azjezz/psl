@@ -44,11 +44,11 @@ abstract class TypeTestCase extends TestCase
      */
     public static function getValidValues(): array
     {
-        $non_unique = static::getValidCoercions();
-        $non_unique = Dict\map($non_unique, static fn(array $tuple): mixed => $tuple[1]);
+        $nonUnique = static::getValidCoercions();
+        $nonUnique = Dict\map($nonUnique, static fn(array $tuple): mixed => $tuple[1]);
 
         $out = [];
-        foreach ($non_unique as $v) {
+        foreach ($nonUnique as $v) {
             foreach ($out as $value) {
                 if (!static::equals($value, $v)) {
                     continue;

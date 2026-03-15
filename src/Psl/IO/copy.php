@@ -25,11 +25,11 @@ function copy(
     WriteHandleInterface $writer,
     CancellationTokenInterface $cancellation = new NullCancellationToken(),
 ): int {
-    $bytes_copied = 0;
-    $buffer_size = 8192;
+    $bytesCopied = 0;
+    $bufferSize = 8192;
 
     while (true) {
-        $data = $reader->read($buffer_size, $cancellation);
+        $data = $reader->read($bufferSize, $cancellation);
         if ($data === '') {
             if ($reader->reachedEndOfDataSource()) {
                 break;
@@ -39,9 +39,9 @@ function copy(
         }
 
         $writer->writeAll($data, $cancellation);
-        $bytes_copied += strlen($data);
+        $bytesCopied += strlen($data);
     }
 
     /** @var int<0, max> */
-    return $bytes_copied;
+    return $bytesCopied;
 }

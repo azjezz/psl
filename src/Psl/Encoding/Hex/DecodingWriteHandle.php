@@ -35,8 +35,8 @@ final class DecodingWriteHandle implements IO\WriteHandleInterface
 
         $data = $this->remainder . $bytes;
 
-        $data_length = strlen($data);
-        $usable = $data_length - ($data_length % 2);
+        $dataLength = strlen($data);
+        $usable = $dataLength - ($dataLength % 2);
 
         if ($usable > 0) {
             $decoded = decode(substr($data, 0, $usable));

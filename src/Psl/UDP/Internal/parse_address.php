@@ -29,20 +29,20 @@ function parse_address(string $address): Network\Address
 
     // IPv6 bracket notation: [host]:port
     if (str_starts_with($address, '[')) {
-        $close_bracket = strpos($address, ']');
-        if ($close_bracket === false) {
+        $closeBracket = strpos($address, ']');
+        if ($closeBracket === false) {
             return Network\Address::udp($address, 0);
         }
 
-        $host = substr($address, 1, $close_bracket - 1);
+        $host = substr($address, 1, $closeBracket - 1);
         if ($host === '') {
             $host = '::';
         }
 
         // Check for :port after the closing bracket
         $port = 0;
-        if (($close_bracket + 1) < strlen($address) && $address[$close_bracket + 1] === ':') {
-            $port = (int) substr($address, $close_bracket + 2);
+        if (($closeBracket + 1) < strlen($address) && $address[$closeBracket + 1] === ':') {
+            $port = (int) substr($address, $closeBracket + 2);
         }
 
         if ($port < 0 || $port > 65_535) {
@@ -53,13 +53,13 @@ function parse_address(string $address): Network\Address
     }
 
     // IPv4: host:port
-    $last_colon = strrpos($address, ':');
-    if ($last_colon === false) {
+    $lastColon = strrpos($address, ':');
+    if ($lastColon === false) {
         return Network\Address::udp($address, 0);
     }
 
-    $host = substr($address, 0, $last_colon);
-    $port = (int) substr($address, $last_colon + 1);
+    $host = substr($address, 0, $lastColon);
+    $port = (int) substr($address, $lastColon + 1);
 
     $host = $host !== '' ? $host : '0.0.0.0';
     if ($port < 0 || $port > 65_535) {

@@ -259,7 +259,7 @@ final readonly class Awaitable implements PromiseInterface
         /** @var bool $resolved */
         $resolved = false;
 
-        $cancellation_id = $cancellation->subscribe(static function (CancelledException $e) use (
+        $cancellationId = $cancellation->subscribe(static function (CancelledException $e) use (
             $suspension,
             &$resolved,
         ): void {
@@ -277,10 +277,10 @@ final readonly class Awaitable implements PromiseInterface
             static function (null|Throwable $error, mixed $value) use (
                 $suspension,
                 $cancellation,
-                $cancellation_id,
+                $cancellationId,
                 &$resolved,
             ): void {
-                $cancellation->unsubscribe($cancellation_id);
+                $cancellation->unsubscribe($cancellationId);
 
                 if ($resolved) {
                     return;

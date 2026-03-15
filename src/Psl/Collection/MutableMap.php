@@ -154,7 +154,7 @@ final class MutableMap implements MutableMapInterface
      *
      * If no element matches the search value, this function returns null.
      *
-     * @param Tv $search_value The value that will be search for in the current
+     * @param Tv $searchValue The value that will be search for in the current
      *                         collection.
      *
      * @return Tk|null - The key (index) where that value is found; null if it is not found.
@@ -162,9 +162,9 @@ final class MutableMap implements MutableMapInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function linearSearch(mixed $search_value): int|string|null
+    public function linearSearch(mixed $searchValue): int|string|null
     {
-        $key = array_search($search_value, $this->elements, true);
+        $key = array_search($searchValue, $this->elements, true);
 
         return false === $key ? null : $key;
     }

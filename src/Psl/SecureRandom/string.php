@@ -33,36 +33,36 @@ function string(int $length, null|string $alphabet = null): string
     }
 
     $alphabet ??= Str\ALPHABET_ALPHANUMERIC;
-    $alphabet_size = Byte\length($alphabet);
-    $bits = (int) Math\ceil(Math\log($alphabet_size, 2.0));
+    $alphabetSize = Byte\length($alphabet);
+    $bits = (int) Math\ceil(Math\log($alphabetSize, 2.0));
     if ($bits < 1 || $bits > 56) {
         throw new Exception\InvalidArgumentException('$alphabet\'s length must be in [2^1, 2^56]');
     }
 
     $ret = '';
     while ($length > 0) {
-        /** @var int<0, max> $urandom_length */
-        $urandom_length = (int) Math\ceil((float) (2 * $length * $bits) / 8.0);
-        $data = namespace\bytes($urandom_length);
+        /** @var int<0, max> $urandomLength */
+        $urandomLength = (int) Math\ceil((float) (2 * $length * $bits) / 8.0);
+        $data = namespace\bytes($urandomLength);
 
-        $unpacked_data = 0;
-        $unpacked_bits = 0;
-        for ($i = 0; $i < $urandom_length && $length > 0; ++$i) {
+        $unpackedData = 0;
+        $unpackedBits = 0;
+        for ($i = 0; $i < $urandomLength && $length > 0; ++$i) {
             // Unpack 8 bits
             /** @var array<int, int> $v */
             $v = unpack('C', $data[$i]);
-            $unpacked_data = ($unpacked_data << 8) | $v[1];
-            $unpacked_bits += 8;
+            $unpackedData = ($unpackedData << 8) | $v[1];
+            $unpackedBits += 8;
 
             // While we have enough bits to select a character from the alphabet, keep
             // consuming the random data
-            for (; $unpacked_bits >= $bits && $length > 0; $unpacked_bits -= $bits) {
-                $index = $unpacked_data & ((1 << $bits) - 1);
-                $unpacked_data >>= $bits;
+            for (; $unpackedBits >= $bits && $length > 0; $unpackedBits -= $bits) {
+                $index = $unpackedData & ((1 << $bits) - 1);
+                $unpackedData >>= $bits;
                 // Unfortunately, the alphabet size is not necessarily a power of two.
                 // Worst case, it is 2^k + 1, which means we need (k+1) bits and we
                 // have around a 50% chance of missing as k gets larger
-                if ($index < $alphabet_size) {
+                if ($index < $alphabetSize) {
                     $ret .= $alphabet[$index];
                     --$length;
                 }

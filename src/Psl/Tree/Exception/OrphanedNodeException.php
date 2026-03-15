@@ -9,11 +9,11 @@ use Psl\Exception\InvalidArgumentException as PslInvalidArgumentException;
 final class OrphanedNodeException extends PslInvalidArgumentException implements ExceptionInterface
 {
     /**
-     * @param mixed $node_id
-     * @param mixed $parent_id
+     * @param mixed $nodeId
+     * @param mixed $parentId
      */
-    public function __construct(mixed $node_id, mixed $parent_id)
+    public function __construct(mixed $nodeId, mixed $parentId)
     {
-        parent::__construct("Node with id '{$node_id}' references non-existent parent_id '{$parent_id}'.");
+        parent::__construct("Node with id '{$nodeId}' references non-existent parent_id '{$parentId}'.");
     }
 }

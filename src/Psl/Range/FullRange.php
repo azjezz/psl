@@ -36,9 +36,9 @@ final class FullRange implements RangeInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function withLowerBound(int $lower_bound): FromRange
+    public function withLowerBound(int $lowerBound): FromRange
     {
-        return new FromRange($lower_bound);
+        return new FromRange($lowerBound);
     }
 
     /**
@@ -47,9 +47,9 @@ final class FullRange implements RangeInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function withUpperBound(int $upper_bound, bool $upper_inclusive): ToRange
+    public function withUpperBound(int $upperBound, bool $upperInclusive): ToRange
     {
-        return new ToRange($upper_bound, $upper_inclusive);
+        return new ToRange($upperBound, $upperInclusive);
     }
 
     /**
@@ -58,9 +58,9 @@ final class FullRange implements RangeInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function withUpperBoundInclusive(int $upper_bound): ToRange
+    public function withUpperBoundInclusive(int $upperBound): ToRange
     {
-        return new ToRange($upper_bound, true);
+        return new ToRange($upperBound, true);
     }
 
     /**
@@ -69,8 +69,8 @@ final class FullRange implements RangeInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function withUpperBoundExclusive(int $upper_bound): ToRange
+    public function withUpperBoundExclusive(int $upperBound): ToRange
     {
-        return new ToRange($upper_bound, false);
+        return new ToRange($upperBound, false);
     }
 }

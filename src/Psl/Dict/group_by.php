@@ -33,15 +33,15 @@ use Closure;
  * @template Tv
  *
  * @param iterable<Tv> $values
- * @param (Closure(Tv): ?Tk) $key_func
+ * @param (Closure(Tv): ?Tk) $keyFunc
  *
  * @return array<Tk, list<Tv>>
  */
-function group_by(iterable $values, Closure $key_func): array
+function group_by(iterable $values, Closure $keyFunc): array
 {
     $result = [];
     foreach ($values as $value) {
-        $key = $key_func($value);
+        $key = $keyFunc($value);
         if (null === $key) {
             continue;
         }

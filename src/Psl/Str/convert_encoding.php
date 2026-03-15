@@ -11,7 +11,7 @@ use function mb_convert_encoding;
  *
  * @pure
  */
-function convert_encoding(string $string, Encoding $from_encoding, Encoding $to_encoding): string
+function convert_encoding(string $string, Encoding $fromEncoding, Encoding $toEncoding): string
 {
-    return (string) mb_convert_encoding($string, $to_encoding->value, $from_encoding->value);
+    return (string) mb_convert_encoding($string, $toEncoding->value, $fromEncoding->value);
 }

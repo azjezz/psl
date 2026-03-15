@@ -38,7 +38,7 @@ final class PipeTest extends TestCase
 
         $spy = new Psl\Ref('');
 
-        $read_awaitable = Async\run(static function () use ($read, $spy): string {
+        $readAwaitable = Async\run(static function () use ($read, $spy): string {
             $spy->value .= '[read:sleep]';
             Async\sleep(DateTime\Duration::milliseconds(3));
             $spy->value .= '[read:start]';
@@ -59,9 +59,9 @@ final class PipeTest extends TestCase
             $spy->value .= '[write:close]';
         })->await();
 
-        $read_result = $read_awaitable->await();
+        $readResult = $readAwaitable->await();
 
-        static::assertSame('hello', $read_result);
+        static::assertSame('hello', $readResult);
         static::assertSame(
             '[read:sleep][write:sleep][read:start][write:start][write:complete][write:close][read:complete][read:close]',
             $spy->value,

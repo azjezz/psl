@@ -73,11 +73,11 @@ final readonly class ServerConfig
     /**
      * @psalm-mutation-free
      */
-    public function withMinimumVersion(null|Version $minimum_version): self
+    public function withMinimumVersion(null|Version $minimumVersion): self
     {
         return new self(
             $this->certificate,
-            $minimum_version,
+            $minimumVersion,
             $this->maximumVersion,
             $this->ciphers,
             $this->securityLevel,
@@ -92,12 +92,12 @@ final readonly class ServerConfig
     /**
      * @psalm-mutation-free
      */
-    public function withMaximumVersion(null|Version $maximum_version): self
+    public function withMaximumVersion(null|Version $maximumVersion): self
     {
         return new self(
             $this->certificate,
             $this->minimumVersion,
-            $maximum_version,
+            $maximumVersion,
             $this->ciphers,
             $this->securityLevel,
             $this->certificateAuthority,
@@ -130,18 +130,18 @@ final readonly class ServerConfig
     }
 
     /**
-     * @param int<0, 5> $security_level OpenSSL security level.
+     * @param int<0, 5> $securityLevel OpenSSL security level.
      *
      * @psalm-mutation-free
      */
-    public function withSecurityLevel(int $security_level): self
+    public function withSecurityLevel(int $securityLevel): self
     {
         return new self(
             $this->certificate,
             $this->minimumVersion,
             $this->maximumVersion,
             $this->ciphers,
-            $security_level,
+            $securityLevel,
             $this->certificateAuthority,
             $this->certificateAuthorityPath,
             $this->alpnProtocols,
@@ -151,11 +151,11 @@ final readonly class ServerConfig
     }
 
     /**
-     * @param ?non-empty-string $certificate_authority Path to a CA file.
+     * @param ?non-empty-string $certificateAuthority Path to a CA file.
      *
      * @psalm-mutation-free
      */
-    public function withCertificateAuthority(null|string $certificate_authority): self
+    public function withCertificateAuthority(null|string $certificateAuthority): self
     {
         return new self(
             $this->certificate,
@@ -163,7 +163,7 @@ final readonly class ServerConfig
             $this->maximumVersion,
             $this->ciphers,
             $this->securityLevel,
-            $certificate_authority,
+            $certificateAuthority,
             $this->certificateAuthorityPath,
             $this->alpnProtocols,
             $this->sniCertificates,
@@ -172,11 +172,11 @@ final readonly class ServerConfig
     }
 
     /**
-     * @param ?non-empty-string $certificate_authority_path Path to a CA directory.
+     * @param ?non-empty-string $certificateAuthorityPath Path to a CA directory.
      *
      * @psalm-mutation-free
      */
-    public function withCertificateAuthorityPath(null|string $certificate_authority_path): self
+    public function withCertificateAuthorityPath(null|string $certificateAuthorityPath): self
     {
         return new self(
             $this->certificate,
@@ -185,7 +185,7 @@ final readonly class ServerConfig
             $this->ciphers,
             $this->securityLevel,
             $this->certificateAuthority,
-            $certificate_authority_path,
+            $certificateAuthorityPath,
             $this->alpnProtocols,
             $this->sniCertificates,
             $this->sessionTickets,
@@ -193,11 +193,11 @@ final readonly class ServerConfig
     }
 
     /**
-     * @param ?list<non-empty-string> $alpn_protocols ALPN protocol list (e.g. ['h2', 'http/1.1']).
+     * @param ?list<non-empty-string> $alpnProtocols ALPN protocol list (e.g. ['h2', 'http/1.1']).
      *
      * @psalm-mutation-free
      */
-    public function withAlpnProtocols(null|array $alpn_protocols): self
+    public function withAlpnProtocols(null|array $alpnProtocols): self
     {
         return new self(
             $this->certificate,
@@ -207,7 +207,7 @@ final readonly class ServerConfig
             $this->securityLevel,
             $this->certificateAuthority,
             $this->certificateAuthorityPath,
-            $alpn_protocols,
+            $alpnProtocols,
             $this->sniCertificates,
             $this->sessionTickets,
         );
@@ -239,11 +239,11 @@ final readonly class ServerConfig
     }
 
     /**
-     * @param array<non-empty-string, Certificate> $sni_certificates SNI hostname-to-certificate mapping.
+     * @param array<non-empty-string, Certificate> $sniCertificates SNI hostname-to-certificate mapping.
      *
      * @psalm-mutation-free
      */
-    public function withSniCertificates(array $sni_certificates): self
+    public function withSniCertificates(array $sniCertificates): self
     {
         return new self(
             $this->certificate,
@@ -254,7 +254,7 @@ final readonly class ServerConfig
             $this->certificateAuthority,
             $this->certificateAuthorityPath,
             $this->alpnProtocols,
-            $sni_certificates,
+            $sniCertificates,
             $this->sessionTickets,
         );
     }

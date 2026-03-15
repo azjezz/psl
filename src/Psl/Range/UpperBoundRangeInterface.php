@@ -19,7 +19,7 @@ interface UpperBoundRangeInterface extends RangeInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function withLowerBound(int $lower_bound): UpperBoundRangeInterface&LowerBoundRangeInterface;
+    public function withLowerBound(int $lowerBound): UpperBoundRangeInterface&LowerBoundRangeInterface;
 
     /**
      * Remove the upper bound from the range.
@@ -47,5 +47,5 @@ interface UpperBoundRangeInterface extends RangeInterface
      *
      * @psalm-mutation-free
      */
-    public function withUpperInclusive(bool $upper_inclusive): static;
+    public function withUpperInclusive(bool $upperInclusive): static;
 }

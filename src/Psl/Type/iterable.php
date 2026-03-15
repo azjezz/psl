@@ -10,12 +10,12 @@ namespace Psl\Type;
  * @template Tk
  * @template Tv
  *
- * @param TypeInterface<Tk> $key_type
- * @param TypeInterface<Tv> $value_type
+ * @param TypeInterface<Tk> $keyType
+ * @param TypeInterface<Tv> $valueType
  *
  * @return TypeInterface<iterable<Tk, Tv>>
  */
-function iterable(TypeInterface $key_type, TypeInterface $value_type): TypeInterface
+function iterable(TypeInterface $keyType, TypeInterface $valueType): TypeInterface
 {
-    return new Internal\IterableType($key_type, $value_type);
+    return new Internal\IterableType($keyType, $valueType);
 }

@@ -190,7 +190,7 @@ final class MemoryHandleTest extends TestCase
     {
         $h = new IO\MemoryHandle('hello, world!');
 
-        $data = $h->readAll(max_bytes: 5, cancellation: new Async\TimeoutCancellationToken(Duration::seconds(5)));
+        $data = $h->readAll(maxBytes: 5, cancellation: new Async\TimeoutCancellationToken(Duration::seconds(5)));
 
         static::assertSame('hello', $data);
     }

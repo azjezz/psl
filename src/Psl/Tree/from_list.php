@@ -43,9 +43,9 @@ use function count;
  * @template TValue
  *
  * @param non-empty-list<TItem> $items The flat list of items
- * @param Closure(TItem): TId $get_id Function to extract the ID from an item
- * @param Closure(TItem): (TId|null) $get_parent_id Function to extract the parent ID (null for root)
- * @param Closure(TItem): TValue $get_value Function to extract/transform the value to store in the node
+ * @param Closure(TItem): TId $getId Function to extract the ID from an item
+ * @param Closure(TItem): (TId|null) $getParentId Function to extract the parent ID (null for root)
+ * @param Closure(TItem): TValue $getValue Function to extract/transform the value to store in the node
  *
  * @return NodeInterface<TValue>
  *
@@ -55,46 +55,46 @@ use function count;
  *
  * @pure
  */
-function from_list(array $items, Closure $get_id, Closure $get_parent_id, Closure $get_value): NodeInterface
+function from_list(array $items, Closure $getId, Closure $getParentId, Closure $getValue): NodeInterface
 {
     // Group items by parent ID (manual grouping to handle null keys)
-    $by_parent = [];
+    $byParent = [];
     $roots = [];
     foreach ($items as $item) {
-        $parent_id = $get_parent_id($item);
-        if (null === $parent_id) {
+        $parentId = $getParentId($item);
+        if (null === $parentId) {
             $roots[] = $item;
 
             continue;
         }
 
-        $by_parent[$parent_id] ??= [];
-        $by_parent[$parent_id][] = $item;
+        $byParent[$parentId] ??= [];
+        $byParent[$parentId][] = $item;
     }
 
-    $roots_length = count($roots);
-    if ($roots_length !== 1) {
-        if ($roots_length > 1) {
+    $rootsLength = count($roots);
+    if ($rootsLength !== 1) {
+        if ($rootsLength > 1) {
             throw new Exception\MultipleRootNodesException();
         }
 
         throw new Exception\NoRootNodeException();
     }
 
-    $root_item = $roots[0];
+    $rootItem = $roots[0];
 
     // Create a map of id => item for validation
-    $items_by_id = [];
+    $itemsById = [];
     foreach ($items as $item) {
-        $items_by_id[$get_id($item)] = $item;
+        $itemsById[$getId($item)] = $item;
     }
 
     // Validate all parent_id references before building
     foreach ($items as $item) {
-        $parent_id = $get_parent_id($item);
-        if (null !== $parent_id && !isset($items_by_id[$parent_id])) {
-            $item_id = $get_id($item);
-            throw new Exception\OrphanedNodeException($item_id, $parent_id);
+        $parentId = $getParentId($item);
+        if (null !== $parentId && !isset($itemsById[$parentId])) {
+            $itemId = $getId($item);
+            throw new Exception\OrphanedNodeException($itemId, $parentId);
         }
     }
 
@@ -105,19 +105,19 @@ function from_list(array $items, Closure $get_id, Closure $get_parent_id, Closur
          *
          * @returns NodeInterface<TValue>
          */
-        static function (mixed $item) use ($by_parent, $get_id, $get_value, &$build): NodeInterface {
-            $item_id = $get_id($item);
-            $value = $get_value($item);
-            $children_items = $by_parent[$item_id] ?? [];
+        static function (mixed $item) use ($byParent, $getId, $getValue, &$build): NodeInterface {
+            $itemId = $getId($item);
+            $value = $getValue($item);
+            $childrenItems = $byParent[$itemId] ?? [];
 
-            if ([] === $children_items) {
+            if ([] === $childrenItems) {
                 return leaf($value);
             }
 
-            $children = Vec\map($children_items, $build(...));
+            $children = Vec\map($childrenItems, $build(...));
 
             return tree($value, $children);
         };
 
-    return $build($root_item);
+    return $build($rootItem);
 }
