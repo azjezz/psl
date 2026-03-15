@@ -1219,6 +1219,7 @@ final class Loader
         'Psl\\TLS\\Internal\\Stream' => 'Psl/TLS/Internal/Stream.php',
         'Psl\\TLS\\Internal\\ClientHelloParser' => 'Psl/TLS/Internal/ClientHelloParser.php',
         'Psl\\TLS\\Exception\\HandshakeFailedException' => 'Psl/TLS/Exception/HandshakeFailedException.php',
+        'Psl\\Socks\\Configuration' => 'Psl/Socks/Configuration.php',
         'Psl\\Socks\\Connector' => 'Psl/Socks/Connector.php',
         'Psl\\Socks\\Exception\\SocksException' => 'Psl/Socks/Exception/SocksException.php',
         'Psl\\Socks\\Exception\\AuthenticationException' => 'Psl/Socks/Exception/AuthenticationException.php',

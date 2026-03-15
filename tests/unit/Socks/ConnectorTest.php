@@ -20,34 +20,27 @@ final class ConnectorTest extends TestCase
                 $listener = TCP\listen('127.0.0.1', 18_100);
                 $client = $listener->accept();
 
-                // Read client greeting: version + num_methods + methods
                 $greeting = $client->readFixedSize(3);
                 self::assertSame("\x05\x01\x00", $greeting);
 
-                // Reply: no auth required
                 $client->writeAll("\x05\x00");
 
-                // Read connect request: version + cmd + reserved + address_type
                 $header = $client->readFixedSize(4);
-                self::assertSame("\x05", $header[0]); // version
-                self::assertSame("\x01", $header[1]); // CONNECT command
-                self::assertSame("\x00", $header[2]); // reserved
-                self::assertSame("\x03", $header[3]); // domain address type
+                self::assertSame("\x05", $header[0]);
+                self::assertSame("\x01", $header[1]);
+                self::assertSame("\x00", $header[2]);
+                self::assertSame("\x03", $header[3]);
 
-                // Read domain: length byte + domain
                 $domainLen = ord($client->readFixedSize(1));
                 $domain = $client->readFixedSize($domainLen);
                 self::assertSame('target.local', $domain);
 
-                // Read port (2 bytes, network byte order)
                 $portBytes = $client->readFixedSize(2);
                 $port = unpack('n', $portBytes)[1];
                 self::assertSame(8080, $port);
 
-                // Reply: success, bound to 0.0.0.0:0
                 $client->writeAll("\x05\x00\x00\x01\x00\x00\x00\x00\x00\x00");
 
-                // Relay data
                 $data = $client->read();
                 self::assertSame('hello-proxy', $data);
                 $client->writeAll('proxy-reply');
@@ -55,7 +48,7 @@ final class ConnectorTest extends TestCase
                 $listener->close();
             },
             'client' => static function (): void {
-                $connector = new Socks\Connector('127.0.0.1', 18_100);
+                $connector = new Socks\Connector(new TCP\Connector(), new Socks\Configuration('127.0.0.1', 18_100));
                 $stream = $connector->connect('target.local', 8080);
                 $stream->writeAll('hello-proxy');
                 $response = $stream->readAll();
@@ -72,14 +65,11 @@ final class ConnectorTest extends TestCase
                 $listener = TCP\listen('127.0.0.1', 18_101);
                 $client = $listener->accept();
 
-                // Read client greeting: version + num_methods + methods
                 $greeting = $client->readFixedSize(4);
                 self::assertSame("\x05\x02\x00\x02", $greeting);
 
-                // Reply: require username/password auth (method 0x02)
                 $client->writeAll("\x05\x02");
 
-                // Read auth: version + username_len + username + password_len + password
                 $authVersion = $client->readFixedSize(1);
                 self::assertSame("\x01", $authVersion);
 
@@ -91,18 +81,14 @@ final class ConnectorTest extends TestCase
                 $password = $client->readFixedSize($passwordLen);
                 self::assertSame('pass', $password);
 
-                // Auth success
                 $client->writeAll("\x01\x00");
 
-                // Read connect request
                 $header = $client->readFixedSize(4);
-                self::assertSame("\x05\x01\x00\x01", $header); // IPv4
+                self::assertSame("\x05\x01\x00\x01", $header);
 
-                // Read IPv4 address (4 bytes) + port (2 bytes)
-                $addr = $client->readFixedSize(4);
-                $portBytes = $client->readFixedSize(2);
+                $client->readFixedSize(4);
+                $client->readFixedSize(2);
 
-                // Reply: success
                 $client->writeAll("\x05\x00\x00\x01\x00\x00\x00\x00\x00\x00");
 
                 $data = $client->read();
@@ -112,7 +98,10 @@ final class ConnectorTest extends TestCase
                 $listener->close();
             },
             'client' => static function (): void {
-                $connector = new Socks\Connector('127.0.0.1', 18_101, 'user', 'pass');
+                $connector = new Socks\Connector(
+                    new TCP\Connector(),
+                    new Socks\Configuration('127.0.0.1', 18_101, 'user', 'pass'),
+                );
                 $stream = $connector->connect('127.0.0.1', 9999);
                 $stream->writeAll('auth-test');
                 $response = $stream->readAll();
@@ -132,26 +121,24 @@ final class ConnectorTest extends TestCase
                 $listener = TCP\listen('127.0.0.1', 18_102);
                 $client = $listener->accept();
 
-                // Read greeting
                 $client->readFixedSize(4);
-
-                // Require auth
                 $client->writeAll("\x05\x02");
 
-                // Read auth request
-                $authVersion = $client->readFixedSize(1);
+                $client->readFixedSize(1);
                 $usernameLen = ord($client->readFixedSize(1));
                 $client->readFixedSize($usernameLen);
                 $passwordLen = ord($client->readFixedSize(1));
                 $client->readFixedSize($passwordLen);
 
-                // Auth failure
                 $client->writeAll("\x01\x01");
                 $client->close();
                 $listener->close();
             },
             'client' => static function (): void {
-                $connector = new Socks\Connector('127.0.0.1', 18_102, 'bad', 'creds');
+                $connector = new Socks\Connector(
+                    new TCP\Connector(),
+                    new Socks\Configuration('127.0.0.1', 18_102, 'bad', 'creds'),
+                );
                 $connector->connect('example.com', 80);
             },
         ]);
@@ -167,23 +154,20 @@ final class ConnectorTest extends TestCase
                 $listener = TCP\listen('127.0.0.1', 18_103);
                 $client = $listener->accept();
 
-                // Read greeting
                 $client->readFixedSize(3);
-                // No auth
                 $client->writeAll("\x05\x00");
-                // Read connect request (domain)
+
                 $header = $client->readFixedSize(4);
                 $domainLen = ord($client->readFixedSize(1));
                 $client->readFixedSize($domainLen);
                 $client->readFixedSize(2);
 
-                // Reply: connection refused (0x05)
                 $client->writeAll("\x05\x05\x00\x01\x00\x00\x00\x00\x00\x00");
                 $client->close();
                 $listener->close();
             },
             'client' => static function (): void {
-                $connector = new Socks\Connector('127.0.0.1', 18_103);
+                $connector = new Socks\Connector(new TCP\Connector(), new Socks\Configuration('127.0.0.1', 18_103));
                 $connector->connect('unreachable.local', 80);
             },
         ]);
@@ -196,19 +180,15 @@ final class ConnectorTest extends TestCase
                 $listener = TCP\listen('127.0.0.1', 18_104);
                 $client = $listener->accept();
 
-                // Read greeting
                 $client->readFixedSize(3);
                 $client->writeAll("\x05\x00");
 
-                // Read connect request
                 $header = $client->readFixedSize(4);
-                self::assertSame("\x04", $header[3]); // IPv6 address type
+                self::assertSame("\x04", $header[3]);
 
-                // Read IPv6 address (16 bytes) + port (2 bytes)
                 $client->readFixedSize(16);
                 $client->readFixedSize(2);
 
-                // Reply: success
                 $client->writeAll("\x05\x00\x00\x01\x00\x00\x00\x00\x00\x00");
 
                 $data = $client->read();
@@ -218,7 +198,7 @@ final class ConnectorTest extends TestCase
                 $listener->close();
             },
             'client' => static function (): void {
-                $connector = new Socks\Connector('127.0.0.1', 18_104);
+                $connector = new Socks\Connector(new TCP\Connector(), new Socks\Configuration('127.0.0.1', 18_104));
                 $stream = $connector->connect('::1', 8080);
                 $stream->writeAll('ipv6-test');
                 $response = $stream->readAll();
@@ -252,9 +232,8 @@ final class ConnectorTest extends TestCase
                 $listener->close();
             },
             'client' => static function (): void {
-                // Use a StaticConnector to redirect to our mock proxy
                 $innerConnector = new TCP\StaticConnector('127.0.0.1', 18_105);
-                $connector = new Socks\Connector('ignored', 0, connector: $innerConnector);
+                $connector = new Socks\Connector($innerConnector, new Socks\Configuration('ignored', 0));
                 $stream = $connector->connect('target.local', 80);
                 $stream->writeAll('custom-connector');
                 $response = $stream->readAll();
@@ -275,13 +254,12 @@ final class ConnectorTest extends TestCase
                 $client = $listener->accept();
 
                 $client->readFixedSize(3);
-                // Reply: no acceptable method (0xFF)
                 $client->writeAll("\x05\xFF");
                 $client->close();
                 $listener->close();
             },
             'client' => static function (): void {
-                $connector = new Socks\Connector('127.0.0.1', 18_106);
+                $connector = new Socks\Connector(new TCP\Connector(), new Socks\Configuration('127.0.0.1', 18_106));
                 $connector->connect('example.com', 80);
             },
         ]);

@@ -216,7 +216,7 @@ final class ConnectorTest extends TestCase
                 $connector->connect('127.0.0.1', 9999, $token);
             })->await();
         } catch (Async\Exception\CancelledException) {
-            // expected
+            // @mago-expect lint:no-empty-catch-clause - expected
         }
 
         // Should have only attempted once or twice before the backoff was cancelled
