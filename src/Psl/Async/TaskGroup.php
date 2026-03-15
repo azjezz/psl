@@ -80,23 +80,30 @@ final class TaskGroup
     public function awaitAll(CancellationTokenInterface $cancellation = new NullCancellationToken()): void
     {
         if (0 !== $this->pending) {
-            $cancellation->throwIfCancelled();
+            if ($cancellation->cancellable) {
+                $cancellation->throwIfCancelled();
+            }
 
             $suspension = EventLoop::getSuspension();
             $this->waiters[] = $suspension;
 
-            $id = $cancellation->subscribe(function (Exception\CancelledException $e) use ($suspension): void {
-                $index = array_search($suspension, $this->waiters, true);
-                if (false !== $index) {
-                    array_splice($this->waiters, $index, 1);
-                    $suspension->throw($e);
-                }
-            });
+            $id = null;
+            if ($cancellation->cancellable) {
+                $id = $cancellation->subscribe(function (Exception\CancelledException $e) use ($suspension): void {
+                    $index = array_search($suspension, $this->waiters, true);
+                    if (false !== $index) {
+                        array_splice($this->waiters, $index, 1);
+                        $suspension->throw($e);
+                    }
+                });
+            }
 
             try {
                 $suspension->suspend();
             } finally {
-                $cancellation->unsubscribe($id);
+                if (null !== $id) {
+                    $cancellation->unsubscribe($id);
+                }
             }
         }
 

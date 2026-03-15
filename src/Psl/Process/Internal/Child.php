@@ -221,11 +221,14 @@ final class Child implements ChildInterface
 
         /** @var null|Async\Exception\CancelledException $cancelledException */
         $cancelledException = null;
-        $subscription = $cancellation->subscribe(static function (Async\Exception\CancelledException $exception) use (
-            &$cancelledException,
-        ): void {
-            $cancelledException = $exception;
-        });
+        $subscription = null;
+        if ($cancellation->cancellable) {
+            $subscription = $cancellation->subscribe(static function (Async\Exception\CancelledException $exception) use (
+                &$cancelledException,
+            ): void {
+                $cancelledException = $exception;
+            });
+        }
 
         try {
             while ($this->isRunning()) {
@@ -243,7 +246,9 @@ final class Child implements ChildInterface
                 Async\sleep(Duration::milliseconds(5));
             }
         } finally {
-            $cancellation->unsubscribe($subscription);
+            if (null !== $subscription) {
+                $cancellation->unsubscribe($subscription);
+            }
         }
 
         return $this->close();

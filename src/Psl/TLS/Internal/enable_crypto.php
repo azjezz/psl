@@ -35,7 +35,9 @@ function enable_crypto(
     int $cryptoMethod,
     CancellationTokenInterface $cancellation = new NullCancellationToken(),
 ): void {
-    $cancellation->throwIfCancelled();
+    if ($cancellation->cancellable) {
+        $cancellation->throwIfCancelled();
+    }
 
     // Try the initial handshake; stream is already non-blocking from ResourceHandle
     $result = @stream_socket_enable_crypto($stream, true, $cryptoMethod);
@@ -78,18 +80,23 @@ function enable_crypto(
         // $result === 0 means handshake is still in progress, wait for more data
     });
 
-    $cancellationId = $cancellation->subscribe(static function (CancelledException $e) use (
-        &$watcher,
-        $suspension,
-    ): void {
-        EventLoop::cancel($watcher);
-        $suspension->throw($e);
-    });
+    $cancellationId = null;
+    if ($cancellation->cancellable) {
+        $cancellationId = $cancellation->subscribe(static function (CancelledException $e) use (
+            &$watcher,
+            $suspension,
+        ): void {
+            EventLoop::cancel($watcher);
+            $suspension->throw($e);
+        });
+    }
 
     try {
         $suspension->suspend();
     } finally {
         EventLoop::cancel($watcher);
-        $cancellation->unsubscribe($cancellationId);
+        if (null !== $cancellationId) {
+            $cancellation->unsubscribe($cancellationId);
+        }
     }
 }

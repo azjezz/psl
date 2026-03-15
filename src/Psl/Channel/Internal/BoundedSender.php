@@ -42,42 +42,56 @@ final class BoundedSender implements SenderInterface
     public function send(mixed $message, CancellationTokenInterface $cancellation = new NullCancellationToken()): void
     {
         if ($this->suspension) {
-            $cancellation->throwIfCancelled();
+            if ($cancellation->cancellable) {
+                $cancellation->throwIfCancelled();
+            }
 
             $suspension = EventLoop::getSuspension();
             $this->suspension = $suspension;
             $this->state->waitForSpace($suspension);
 
-            $id = $cancellation->subscribe(function (CancelledException $e) use ($suspension): void {
-                $this->state->removeFromWaitingForSpace($suspension);
-                $suspension->throw($e);
-            });
+            $id = null;
+            if ($cancellation->cancellable) {
+                $id = $cancellation->subscribe(function (CancelledException $e) use ($suspension): void {
+                    $this->state->removeFromWaitingForSpace($suspension);
+                    $suspension->throw($e);
+                });
+            }
 
             try {
                 $suspension->suspend();
             } finally {
-                $cancellation->unsubscribe($id);
+                if (null !== $id) {
+                    $cancellation->unsubscribe($id);
+                }
             }
         }
 
         try {
             $this->state->send($message);
         } catch (Exception\FullChannelException) {
-            $cancellation->throwIfCancelled();
+            if ($cancellation->cancellable) {
+                $cancellation->throwIfCancelled();
+            }
 
             $suspension = EventLoop::getSuspension();
             $this->suspension = $suspension;
             $this->state->waitForSpace($suspension);
 
-            $id = $cancellation->subscribe(function (CancelledException $e) use ($suspension): void {
-                $this->state->removeFromWaitingForSpace($suspension);
-                $suspension->throw($e);
-            });
+            $id2 = null;
+            if ($cancellation->cancellable) {
+                $id2 = $cancellation->subscribe(function (CancelledException $e) use ($suspension): void {
+                    $this->state->removeFromWaitingForSpace($suspension);
+                    $suspension->throw($e);
+                });
+            }
 
             try {
                 $suspension->suspend();
             } finally {
-                $cancellation->unsubscribe($id);
+                if (null !== $id2) {
+                    $cancellation->unsubscribe($id2);
+                }
             }
 
             $this->state->send($message);

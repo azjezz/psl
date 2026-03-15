@@ -254,20 +254,25 @@ final readonly class Awaitable implements PromiseInterface
     {
         $suspension = EventLoop::getSuspension();
 
-        $cancellation->throwIfCancelled();
+        if ($cancellation->cancellable) {
+            $cancellation->throwIfCancelled();
+        }
 
         /** @var bool $resolved */
         $resolved = false;
 
-        $cancellationId = $cancellation->subscribe(static function (CancelledException $e) use (
-            $suspension,
-            &$resolved,
-        ): void {
-            if (!$resolved) {
-                $resolved = true;
-                $suspension->throw($e);
-            }
-        });
+        $cancellationId = null;
+        if ($cancellation->cancellable) {
+            $cancellationId = $cancellation->subscribe(static function (CancelledException $e) use (
+                $suspension,
+                &$resolved,
+            ): void {
+                if (!$resolved) {
+                    $resolved = true;
+                    $suspension->throw($e);
+                }
+            });
+        }
 
         $this->state->subscribe(
             /**
@@ -277,10 +282,12 @@ final readonly class Awaitable implements PromiseInterface
             static function (null|Throwable $error, mixed $value) use (
                 $suspension,
                 $cancellation,
-                $cancellationId,
+                &$cancellationId,
                 &$resolved,
             ): void {
-                $cancellation->unsubscribe($cancellationId);
+                if (null !== $cancellationId) {
+                    $cancellation->unsubscribe($cancellationId);
+                }
 
                 if ($resolved) {
                     return;

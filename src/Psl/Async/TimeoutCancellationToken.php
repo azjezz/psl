@@ -14,6 +14,8 @@ use WeakReference;
  */
 final class TimeoutCancellationToken implements CancellationTokenInterface
 {
+    public readonly bool $cancellable;
+
     private bool $cancelled = false;
 
     private null|Exception\CancelledException $exception = null;
@@ -27,6 +29,8 @@ final class TimeoutCancellationToken implements CancellationTokenInterface
 
     public function __construct(Duration $timeout)
     {
+        $this->cancellable = true;
+
         $self = WeakReference::create($this);
 
         $this->watcher = EventLoop::delay(max($timeout->getTotalSeconds(), 0.0), static function () use ($self): void {

@@ -19,6 +19,8 @@ use WeakReference;
  */
 final class LinkedCancellationToken implements CancellationTokenInterface
 {
+    public readonly bool $cancellable;
+
     private bool $cancelled = false;
 
     private null|Exception\CancelledException $exception = null;
@@ -37,6 +39,8 @@ final class LinkedCancellationToken implements CancellationTokenInterface
         private readonly CancellationTokenInterface $first,
         private readonly CancellationTokenInterface $second,
     ) {
+        $this->cancellable = $first->cancellable || $second->cancellable;
+
         $self = WeakReference::create($this);
 
         $handler = static function (Exception\CancelledException $inner) use ($self): void {

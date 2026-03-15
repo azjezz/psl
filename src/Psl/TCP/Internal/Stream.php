@@ -122,11 +122,16 @@ final class Stream implements TCP\StreamInterface
             throw new Exception\AlreadyClosedException('Stream handle has already been closed.');
         }
 
-        $cancellation->throwIfCancelled();
+        if ($cancellation->cancellable) {
+            $cancellation->throwIfCancelled();
+        }
 
         $suspension = EventLoop::getSuspension();
 
-        $cancellationId = $cancellation->subscribe($suspension->throw(...));
+        $cancellationId = null;
+        if ($cancellation->cancellable) {
+            $cancellationId = $cancellation->subscribe($suspension->throw(...));
+        }
 
         $readWatcher = EventLoop::onReadable($stream, static function (string $watcher) use ($suspension): void {
             EventLoop::cancel($watcher);
@@ -137,7 +142,9 @@ final class Stream implements TCP\StreamInterface
             $suspension->suspend();
         } finally {
             EventLoop::cancel($readWatcher);
-            $cancellation->unsubscribe($cancellationId);
+            if (null !== $cancellationId) {
+                $cancellation->unsubscribe($cancellationId);
+            }
         }
 
         /** @psalm-suppress MissingThrowsDocblock */

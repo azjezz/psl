@@ -19,7 +19,9 @@ use Revolt\EventLoop;
  */
 function await_readable(mixed $stream, CancellationTokenInterface $cancellation): void
 {
-    $cancellation->throwIfCancelled();
+    if ($cancellation->cancellable) {
+        $cancellation->throwIfCancelled();
+    }
 
     $suspension = EventLoop::getSuspension();
 
@@ -28,12 +30,17 @@ function await_readable(mixed $stream, CancellationTokenInterface $cancellation)
         $suspension->resume();
     });
 
-    $id = $cancellation->subscribe($suspension->throw(...));
+    $id = null;
+    if ($cancellation->cancellable) {
+        $id = $cancellation->subscribe($suspension->throw(...));
+    }
 
     try {
         $suspension->suspend();
     } finally {
         EventLoop::cancel($readWatcher);
-        $cancellation->unsubscribe($id);
+        if (null !== $id) {
+            $cancellation->unsubscribe($id);
+        }
     }
 }

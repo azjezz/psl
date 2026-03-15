@@ -28,6 +28,8 @@ use function count;
  * @template Tk of array-key
  * @template Tin
  * @template Tout
+ *
+ * @mago-expect lint:excessive-nesting
  */
 final class KeyedSemaphore
 {
@@ -76,27 +78,34 @@ final class KeyedSemaphore
     ): mixed {
         $this->ongoing[$key] ??= 0;
         if ($this->ongoing[$key] === $this->concurrencyLimit) {
-            $cancellation->throwIfCancelled();
+            if ($cancellation->cancellable) {
+                $cancellation->throwIfCancelled();
+            }
 
             $suspension = EventLoop::getSuspension();
             $this->pending[$key][] = $suspension;
 
-            $id = $cancellation->subscribe(function (CancelledException $e) use ($key, $suspension): void {
-                $index = array_search($suspension, $this->pending[$key] ?? [], true);
-                if (false !== $index) {
-                    array_splice($this->pending[$key], $index, 1);
-                    if ([] === $this->pending[$key]) {
-                        unset($this->pending[$key]);
-                    }
+            $id = null;
+            if ($cancellation->cancellable) {
+                $id = $cancellation->subscribe(function (CancelledException $e) use ($key, $suspension): void {
+                    $index = array_search($suspension, $this->pending[$key] ?? [], true);
+                    if (false !== $index) {
+                        array_splice($this->pending[$key], $index, 1);
+                        if ([] === $this->pending[$key]) {
+                            unset($this->pending[$key]);
+                        }
 
-                    $suspension->throw($e);
-                }
-            });
+                        $suspension->throw($e);
+                    }
+                });
+            }
 
             try {
                 $suspension->suspend();
             } finally {
-                $cancellation->unsubscribe($id);
+                if (null !== $id) {
+                    $cancellation->unsubscribe($id);
+                }
             }
         }
 
@@ -290,27 +299,34 @@ final class KeyedSemaphore
             return;
         }
 
-        $cancellation->throwIfCancelled();
+        if ($cancellation->cancellable) {
+            $cancellation->throwIfCancelled();
+        }
 
         $suspension = EventLoop::getSuspension();
         $this->waits[$key][] = $suspension;
 
-        $id = $cancellation->subscribe(function (CancelledException $e) use ($key, $suspension): void {
-            $index = array_search($suspension, $this->waits[$key] ?? [], true);
-            if (false !== $index) {
-                array_splice($this->waits[$key], $index, 1);
-                if ([] === $this->waits[$key]) {
-                    unset($this->waits[$key]);
-                }
+        $id = null;
+        if ($cancellation->cancellable) {
+            $id = $cancellation->subscribe(function (CancelledException $e) use ($key, $suspension): void {
+                $index = array_search($suspension, $this->waits[$key] ?? [], true);
+                if (false !== $index) {
+                    array_splice($this->waits[$key], $index, 1);
+                    if ([] === $this->waits[$key]) {
+                        unset($this->waits[$key]);
+                    }
 
-                $suspension->throw($e);
-            }
-        });
+                    $suspension->throw($e);
+                }
+            });
+        }
 
         try {
             $suspension->suspend();
         } finally {
-            $cancellation->unsubscribe($id);
+            if (null !== $id) {
+                $cancellation->unsubscribe($id);
+            }
         }
     }
 }

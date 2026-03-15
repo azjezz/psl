@@ -68,6 +68,7 @@ class ResourceHandle implements
 
     private bool $useSingleRead = false;
     private bool $reachedEof = false;
+    private bool $blocks;
 
     /**
      * @param resource $stream
@@ -89,7 +90,7 @@ class ResourceHandle implements
         }
 
         // @mago-expect analysis:redundant-null-coalesce,redundant-null-coalesce - FP
-        $blocks = ($meta['blocked'] ?? true) || ($meta['wrapper_type'] ?? '') === 'plainfile';
+        $this->blocks = ($meta['blocked'] ?? true) || ($meta['wrapper_type'] ?? '') === 'plainfile';
         if ($seek) {
             $seekable = $meta['seekable'];
 
@@ -111,29 +112,10 @@ class ResourceHandle implements
                 /**
                  * @param array{null|int<1, max>, Async\CancellationTokenInterface} $input
                  */
-                function (array $input) use ($blocks): string {
+                function (array $input): string {
                     [$maxBytes, $cancellation] = $input;
-                    $chunk = $this->tryRead($maxBytes);
-                    if ('' !== $chunk || $blocks) {
-                        return $chunk;
-                    }
 
-                    $cancellation->throwIfCancelled();
-
-                    $suspension = EventLoop::getSuspension();
-                    $this->readSuspension = $suspension;
-                    EventLoop::enable($this->readWatcher);
-                    $id = $cancellation->subscribe($suspension->throw(...));
-
-                    try {
-                        $suspension->suspend();
-
-                        return $this->tryRead($maxBytes);
-                    } finally {
-                        $this->readSuspension = null;
-                        EventLoop::disable($this->readWatcher);
-                        $cancellation->unsubscribe($id);
-                    }
+                    return $this->doRead($maxBytes, $cancellation);
                 },
             );
 
@@ -157,51 +139,119 @@ class ResourceHandle implements
                  *
                  * @return int<0, max>
                  */
-                function (array $input) use ($blocks): int {
+                function (array $input): int {
                     [$bytes, $cancellation] = $input;
-                    $written = $this->tryWrite($bytes);
-                    $remainingBytes = substr($bytes, $written);
-                    if ($blocks || '' === $remainingBytes) {
-                        return $written;
-                    }
 
-                    // Retry while the fd is still making progress before suspending.
-                    // This avoids unnecessary fiber suspension when the fd is ready.
-                    while ('' !== $remainingBytes) {
-                        $chunk = $this->tryWrite($remainingBytes);
-                        if ($chunk === 0) {
-                            // fd not ready; must suspend and wait
-                            break;
-                        }
-
-                        $written += $chunk;
-                        $remainingBytes = substr($remainingBytes, $chunk);
-                    }
-
-                    /** @var int<0, max> $written */
-                    if ('' === $remainingBytes) {
-                        return $written;
-                    }
-
-                    $cancellation->throwIfCancelled();
-
-                    $suspension = EventLoop::getSuspension();
-                    $this->writeSuspension = $suspension;
-                    EventLoop::enable($this->writeWatcher);
-                    $id = $cancellation->subscribe($suspension->throw(...));
-
-                    try {
-                        $suspension->suspend();
-
-                        return $written + $this->tryWrite($remainingBytes);
-                    } finally {
-                        $this->writeSuspension = null;
-                        EventLoop::disable($this->writeWatcher);
-                        $cancellation->unsubscribe($id);
-                    }
+                    return $this->doWrite($bytes, $cancellation);
                 },
             );
             EventLoop::disable($this->writeWatcher);
+        }
+    }
+
+    /**
+     * @param ?positive-int $maxBytes
+     */
+    private function doRead(null|int $maxBytes, Async\CancellationTokenInterface $cancellation): string
+    {
+        $chunk = $this->tryRead($maxBytes);
+        if ('' !== $chunk || $this->blocks) {
+            return $chunk;
+        }
+
+        $cancellable = $cancellation->cancellable;
+
+        if ($cancellable) {
+            $cancellation->throwIfCancelled();
+        }
+
+        $suspension = EventLoop::getSuspension();
+        $this->readSuspension = $suspension;
+        EventLoop::enable($this->readWatcher);
+
+        if (!$cancellable) {
+            try {
+                $suspension->suspend();
+
+                return $this->tryRead($maxBytes);
+            } finally {
+                $this->readSuspension = null;
+                EventLoop::disable($this->readWatcher);
+            }
+        }
+
+        $id = $cancellation->subscribe($suspension->throw(...));
+
+        try {
+            $suspension->suspend();
+
+            return $this->tryRead($maxBytes);
+        } finally {
+            $this->readSuspension = null;
+            EventLoop::disable($this->readWatcher);
+            $cancellation->unsubscribe($id);
+        }
+    }
+
+    /**
+     * @return int<0, max>
+     */
+    private function doWrite(string $bytes, Async\CancellationTokenInterface $cancellation): int
+    {
+        $written = $this->tryWrite($bytes);
+        $remainingBytes = substr($bytes, $written);
+        if ($this->blocks || '' === $remainingBytes) {
+            return $written;
+        }
+
+        // Retry while the fd is still making progress before suspending.
+        // This avoids unnecessary fiber suspension when the fd is ready.
+        while ('' !== $remainingBytes) {
+            $chunk = $this->tryWrite($remainingBytes);
+            if ($chunk === 0) {
+                break;
+            }
+
+            $written += $chunk;
+            $remainingBytes = substr($remainingBytes, $chunk);
+        }
+
+        /** @var int<0, max> $written */
+        if ('' === $remainingBytes) {
+            return $written;
+        }
+
+        $cancellable = $cancellation->cancellable;
+
+        if ($cancellable) {
+            $cancellation->throwIfCancelled();
+        }
+
+        $suspension = EventLoop::getSuspension();
+        $this->writeSuspension = $suspension;
+        EventLoop::enable($this->writeWatcher);
+
+        if (!$cancellable) {
+            try {
+                $suspension->suspend();
+
+                return $written + $this->tryWrite($remainingBytes);
+            } finally {
+                $this->writeSuspension = null;
+                EventLoop::disable($this->writeWatcher);
+            }
+        }
+
+        $id = $cancellation->subscribe($suspension->throw(...));
+
+        try {
+            $suspension->suspend();
+
+            return $written + $this->tryWrite($remainingBytes);
+        } finally {
+            $this->writeSuspension = null;
+            EventLoop::disable($this->writeWatcher);
+            $cancellation->unsubscribe($id);
         }
     }
 

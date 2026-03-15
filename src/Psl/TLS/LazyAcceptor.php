@@ -64,7 +64,9 @@ final class LazyAcceptor implements DefaultInterface
             throw new Network\Exception\RuntimeException('Stream resource is not available.');
         }
 
-        $cancellation->throwIfCancelled();
+        if ($cancellation->cancellable) {
+            $cancellation->throwIfCancelled();
+        }
 
         // Wait for data to be available
         $suspension = EventLoop::getSuspension();
@@ -73,19 +75,24 @@ final class LazyAcceptor implements DefaultInterface
             $suspension->resume(null);
         });
 
-        $cancellationId = $cancellation->subscribe(static function (CancelledException $e) use (
-            &$watcher,
-            $suspension,
-        ): void {
-            EventLoop::cancel($watcher);
-            $suspension->throw($e);
-        });
+        $cancellationId = null;
+        if ($cancellation->cancellable) {
+            $cancellationId = $cancellation->subscribe(static function (CancelledException $e) use (
+                &$watcher,
+                $suspension,
+            ): void {
+                EventLoop::cancel($watcher);
+                $suspension->throw($e);
+            });
+        }
 
         try {
             $suspension->suspend();
         } finally {
             EventLoop::cancel($watcher);
-            $cancellation->unsubscribe($cancellationId);
+            if (null !== $cancellationId) {
+                $cancellation->unsubscribe($cancellationId);
+            }
         }
 
         // Resource may have been closed by another fiber during suspend.

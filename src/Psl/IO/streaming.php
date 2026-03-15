@@ -77,14 +77,17 @@ function streaming(iterable $handles, CancellationTokenInterface $cancellation =
         });
     }
 
-    $cancellationSubscription = $cancellation->subscribe(static function (CancelledException $exception) use (
-        $sender,
-    ): void {
-        /** @var Result\ResultInterface<string> $failure */
-        $failure = new Result\Failure($exception);
+    $cancellationSubscription = null;
+    if ($cancellation->cancellable) {
+        $cancellationSubscription = $cancellation->subscribe(static function (CancelledException $exception) use (
+            $sender,
+        ): void {
+            /** @var Result\ResultInterface<string> $failure */
+            $failure = new Result\Failure($exception);
 
-        $sender->send([null, $failure]);
-    });
+            $sender->send([null, $failure]);
+        });
+    }
 
     try {
         while (true) {
@@ -99,7 +102,9 @@ function streaming(iterable $handles, CancellationTokenInterface $cancellation =
         // completed.
         return;
     } finally {
-        $cancellation->unsubscribe($cancellationSubscription);
+        if (null !== $cancellationSubscription) {
+            $cancellation->unsubscribe($cancellationSubscription);
+        }
 
         foreach ($watchers->value as $watcher) {
             EventLoop::cancel($watcher);
