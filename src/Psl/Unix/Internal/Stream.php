@@ -144,7 +144,9 @@ final class Stream implements Unix\StreamInterface
             throw new Exception\AlreadyClosedException('Stream handle has already been closed.');
         }
 
-        $cancellation->throwIfCancelled();
+        if ($cancellation->cancellable) {
+            $cancellation->throwIfCancelled();
+        }
 
         $suspension = EventLoop::getSuspension();
         $readWatcher = EventLoop::onReadable($stream, static function (string $watcher) use ($suspension): void {
@@ -152,13 +154,18 @@ final class Stream implements Unix\StreamInterface
             $suspension->resume();
         });
 
-        $id = $cancellation->subscribe($suspension->throw(...));
+        $id = null;
+        if ($cancellation->cancellable) {
+            $id = $cancellation->subscribe($suspension->throw(...));
+        }
 
         try {
             $suspension->suspend();
         } finally {
             EventLoop::cancel($readWatcher);
-            $cancellation->unsubscribe($id);
+            if (null !== $id) {
+                $cancellation->unsubscribe($id);
+            }
         }
 
         $data = @stream_socket_recvfrom($stream, $maxBytes, STREAM_PEEK);

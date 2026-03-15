@@ -5,14 +5,27 @@ declare(strict_types=1);
 namespace Psl\Async;
 
 use Closure;
+use Psl\Default\DefaultInterface;
 
 /**
  * A no-op cancellation token that is never cancelled.
  *
  * Used as the default parameter value for operations that accept a cancellation token.
  */
-final class NullCancellationToken implements CancellationTokenInterface
+final readonly class NullCancellationToken implements CancellationTokenInterface, DefaultInterface
 {
+    public bool $cancellable;
+
+    public function __construct()
+    {
+        $this->cancellable = false;
+    }
+
+    public static function default(): static
+    {
+        return new self();
+    }
+
     /**
      * @inheritDoc
      */

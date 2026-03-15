@@ -62,7 +62,9 @@ final readonly class RetryConnector implements ConnectorInterface
                     );
                 }
 
-                $cancellation->throwIfCancelled();
+                if ($cancellation->cancellable) {
+                    $cancellation->throwIfCancelled();
+                }
 
                 // Exponential backoff: base * multiplier^(attempt-1)
                 $delaySec = $this->backoff->getTotalSeconds() * ($this->backoffMultiplier ** ($attempts - 1));
@@ -72,19 +74,24 @@ final readonly class RetryConnector implements ConnectorInterface
                     $suspension->resume();
                 });
 
-                $id = $cancellation->subscribe(static function (CancelledException $e) use (
-                    $suspension,
-                    $watcher,
-                ): void {
-                    EventLoop::cancel($watcher);
-                    $suspension->throw($e);
-                });
+                $id = null;
+                if ($cancellation->cancellable) {
+                    $id = $cancellation->subscribe(static function (CancelledException $e) use (
+                        $suspension,
+                        $watcher,
+                    ): void {
+                        EventLoop::cancel($watcher);
+                        $suspension->throw($e);
+                    });
+                }
 
                 try {
                     $suspension->suspend();
                 } finally {
                     EventLoop::cancel($watcher);
-                    $cancellation->unsubscribe($id);
+                    if (null !== $id) {
+                        $cancellation->unsubscribe($id);
+                    }
                 }
             }
         }

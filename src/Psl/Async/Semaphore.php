@@ -67,23 +67,30 @@ final class Semaphore
     public function waitFor(mixed $input, CancellationTokenInterface $cancellation = new NullCancellationToken()): mixed
     {
         if ($this->ongoing === $this->concurrencyLimit) {
-            $cancellation->throwIfCancelled();
+            if ($cancellation->cancellable) {
+                $cancellation->throwIfCancelled();
+            }
 
             $suspension = EventLoop::getSuspension();
             $this->pending[] = $suspension;
 
-            $id = $cancellation->subscribe(function (CancelledException $e) use ($suspension): void {
-                $index = array_search($suspension, $this->pending, true);
-                if (false !== $index) {
-                    array_splice($this->pending, $index, 1);
-                    $suspension->throw($e);
-                }
-            });
+            $id = null;
+            if ($cancellation->cancellable) {
+                $id = $cancellation->subscribe(function (CancelledException $e) use ($suspension): void {
+                    $index = array_search($suspension, $this->pending, true);
+                    if (false !== $index) {
+                        array_splice($this->pending, $index, 1);
+                        $suspension->throw($e);
+                    }
+                });
+            }
 
             try {
                 $suspension->suspend();
             } finally {
-                $cancellation->unsubscribe($id);
+                if (null !== $id) {
+                    $cancellation->unsubscribe($id);
+                }
             }
         }
 
@@ -187,23 +194,30 @@ final class Semaphore
             return;
         }
 
-        $cancellation->throwIfCancelled();
+        if ($cancellation->cancellable) {
+            $cancellation->throwIfCancelled();
+        }
 
         $suspension = EventLoop::getSuspension();
         $this->waits[] = $suspension;
 
-        $id = $cancellation->subscribe(function (CancelledException $e) use ($suspension): void {
-            $index = array_search($suspension, $this->waits, true);
-            if (false !== $index) {
-                array_splice($this->waits, $index, 1);
-                $suspension->throw($e);
-            }
-        });
+        $id = null;
+        if ($cancellation->cancellable) {
+            $id = $cancellation->subscribe(function (CancelledException $e) use ($suspension): void {
+                $index = array_search($suspension, $this->waits, true);
+                if (false !== $index) {
+                    array_splice($this->waits, $index, 1);
+                    $suspension->throw($e);
+                }
+            });
+        }
 
         try {
             $suspension->suspend();
         } finally {
-            $cancellation->unsubscribe($id);
+            if (null !== $id) {
+                $cancellation->unsubscribe($id);
+            }
         }
     }
 }

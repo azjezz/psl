@@ -16,6 +16,13 @@ use Closure;
 interface CancellationTokenInterface
 {
     /**
+     * Whether this token can ever be cancelled.
+     *
+     * When false, operations can skip subscribe/unsubscribe overhead entirely.
+     */
+    public bool $cancellable { get; }
+
+    /**
      * Register a callback to be invoked when the token is cancelled.
      *
      * If the token is already cancelled, the callback is invoked immediately.

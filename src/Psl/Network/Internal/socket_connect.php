@@ -42,7 +42,9 @@ function socket_connect(
          * @return resource
          */
         static function () use ($uri, $context, $cancellation): mixed {
-            $cancellation->throwIfCancelled();
+            if ($cancellation->cancellable) {
+                $cancellation->throwIfCancelled();
+            }
 
             $_ = null;
             $errorCode = null;
@@ -65,27 +67,32 @@ function socket_connect(
             $suspension = EventLoop::getSuspension();
 
             $writeWatcher = '';
-            $cancellationId = $cancellation->subscribe(static function (CancelledException $exception) use (
-                $suspension,
-                &$writeWatcher,
-                $socket,
-            ): void {
-                EventLoop::cancel($writeWatcher);
+            $cancellationId = null;
+            if ($cancellation->cancellable) {
+                $cancellationId = $cancellation->subscribe(static function (CancelledException $exception) use (
+                    $suspension,
+                    &$writeWatcher,
+                    $socket,
+                ): void {
+                    EventLoop::cancel($writeWatcher);
 
-                if (is_resource($socket)) {
-                    fclose($socket);
-                }
+                    if (is_resource($socket)) {
+                        fclose($socket);
+                    }
 
-                $suspension->throw($exception);
-            });
+                    $suspension->throw($exception);
+                });
+            }
 
             $writeWatcher = EventLoop::onWritable($socket, static function () use (
                 $suspension,
                 $socket,
                 $cancellation,
-                $cancellationId,
+                &$cancellationId,
             ): void {
-                $cancellation->unsubscribe($cancellationId);
+                if (null !== $cancellationId) {
+                    $cancellation->unsubscribe($cancellationId);
+                }
 
                 $suspension->resume($socket);
             });
@@ -94,7 +101,9 @@ function socket_connect(
                 return $suspension->suspend();
             } finally {
                 EventLoop::cancel($writeWatcher);
-                $cancellation->unsubscribe($cancellationId);
+                if (null !== $cancellationId) {
+                    $cancellation->unsubscribe($cancellationId);
+                }
             }
         },
     );

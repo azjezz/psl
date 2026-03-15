@@ -18,20 +18,30 @@ function sleep(
     DateTime\Duration $duration,
     CancellationTokenInterface $cancellation = new NullCancellationToken(),
 ): void {
-    $cancellation->throwIfCancelled();
+    if ($cancellation->cancellable) {
+        $cancellation->throwIfCancelled();
+    }
 
     $suspension = EventLoop::getSuspension();
     $watcher = EventLoop::delay($duration->getTotalSeconds(), $suspension->resume(...));
 
-    $id = $cancellation->subscribe(static function (Exception\CancelledException $e) use ($suspension, $watcher): void {
-        EventLoop::cancel($watcher);
-        $suspension->throw($e);
-    });
+    $id = null;
+    if ($cancellation->cancellable) {
+        $id = $cancellation->subscribe(static function (Exception\CancelledException $e) use (
+            $suspension,
+            $watcher,
+        ): void {
+            EventLoop::cancel($watcher);
+            $suspension->throw($e);
+        });
+    }
 
     try {
         $suspension->suspend();
     } finally {
         EventLoop::cancel($watcher);
-        $cancellation->unsubscribe($id);
+        if (null !== $id) {
+            $cancellation->unsubscribe($id);
+        }
     }
 }

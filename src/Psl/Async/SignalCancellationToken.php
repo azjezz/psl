@@ -14,6 +14,8 @@ use Exception as RootException;
  */
 final class SignalCancellationToken implements CancellationTokenInterface
 {
+    public readonly bool $cancellable;
+
     private bool $cancelled = false;
 
     private null|Exception\CancelledException $exception = null;
@@ -22,6 +24,11 @@ final class SignalCancellationToken implements CancellationTokenInterface
      * @var array<string, (Closure(Exception\CancelledException): void)>
      */
     private array $callbacks = [];
+
+    public function __construct()
+    {
+        $this->cancellable = true;
+    }
 
     /**
      * Cancel all subscribed operations.
