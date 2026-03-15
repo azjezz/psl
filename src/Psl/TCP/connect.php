@@ -21,11 +21,11 @@ use Psl\Network;
 function connect(
     string $host,
     int $port,
-    bool $noDelay = false,
+    ConnectConfiguration $configuration = new ConnectConfiguration(),
     CancellationTokenInterface $cancellation = new NullCancellationToken(),
 ): StreamInterface {
     $context = ['socket' => [
-        'tcp_nodelay' => $noDelay,
+        'tcp_nodelay' => $configuration->noDelay,
     ]];
 
     $socket = Network\Internal\socket_connect("tcp://{$host}:{$port}", $context, $cancellation);

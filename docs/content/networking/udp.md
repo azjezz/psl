@@ -23,6 +23,10 @@ You can also create a connected socket directly:
 
 @example('networking/udp-connect-shorthand.php')
 
+### Configuration
+
+`UDP\Socket::bind()` accepts a `BindConfiguration` to control address reuse, port reuse, and broadcast.
+
 ## Examples
 
 ### Echo Server

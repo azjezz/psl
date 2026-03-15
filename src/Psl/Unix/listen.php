@@ -10,15 +10,18 @@ use Psl\Network;
  * Create a Unix domain socket listener bound to the given path.
  *
  * @param non-empty-string $path
- * @param int<1, max> $idleConnections Maximum number of idle connections to buffer.
  *
  * @throws Network\Exception\RuntimeException If failed to listen on given path, or if on Windows.
  */
-function listen(string $path, int $idleConnections = 256): ListenerInterface
+function listen(string $path, ListenConfiguration $configuration = new ListenConfiguration()): ListenerInterface
 {
     Internal\assert_not_windows();
 
-    $socket = Network\Internal\server_listen("unix://{$path}");
+    $context = ['socket' => [
+        'backlog' => $configuration->backlog,
+    ]];
 
-    return new Internal\Listener($socket, $idleConnections);
+    $socket = Network\Internal\server_listen("unix://{$path}", $context);
+
+    return new Internal\Listener($socket, $configuration->idleConnections);
 }

@@ -14,7 +14,11 @@ final class ServerTest extends TestCase
 {
     public function testAcceptOnStoppedListener(): void
     {
-        $listener = TCP\listen('127.0.0.1', 0, noDelay: true, reuseAddress: false, reusePort: false);
+        $listener = TCP\listen(
+            '127.0.0.1',
+            0,
+            new TCP\ListenConfiguration(noDelay: true, reuseAddress: false, reusePort: false),
+        );
 
         $listener->close();
 
@@ -38,7 +42,7 @@ final class ServerTest extends TestCase
 
     public function testListenWithCustomBacklog(): void
     {
-        $listener = TCP\listen('127.0.0.1', 0, backlog: 128);
+        $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(backlog: 128));
         $address = $listener->getLocalAddress();
 
         static::assertSame('127.0.0.1', $address->host);
@@ -57,7 +61,7 @@ final class ServerTest extends TestCase
 
     public function testAcceptMultipleConnections(): void
     {
-        $listener = TCP\listen('127.0.0.1', 0, noDelay: true, backlog: 64);
+        $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true, backlog: 64));
         $address = $listener->getLocalAddress();
 
         [$server1, $client1, $client2] = Async\concurrently([

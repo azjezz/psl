@@ -15,7 +15,7 @@ use Psl\Default\DefaultInterface;
 final readonly class Connector implements ConnectorInterface, DefaultInterface
 {
     public function __construct(
-        private bool $noDelay = false,
+        private ConnectConfiguration $configuration = new ConnectConfiguration(),
     ) {}
 
     /**
@@ -33,6 +33,6 @@ final readonly class Connector implements ConnectorInterface, DefaultInterface
         int $port,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): StreamInterface {
-        return connect($host, $port, $this->noDelay, $cancellation);
+        return connect($host, $port, $this->configuration, $cancellation);
     }
 }

@@ -13,27 +13,20 @@ use Psl\OS;
 /**
  * A TCP socket that can be configured before connecting or listening.
  *
- * Create a socket, configure options (reuse address, no delay, etc.),
- * then consume it by calling connect() or listen().
+ * Create a socket, bind to an address, then consume it by calling connect() or listen().
  */
 final class Socket
 {
-    private bool $ipv6;
     private bool $consumed = false;
-
-    private bool $reuseAddress = false;
-    private bool $reusePort = false;
-    private bool $noDelay = false;
 
     /**
      * @var null|array{non-empty-string, int<0, 65535>}
      */
     private null|array $bindAddress = null;
 
-    private function __construct(bool $ipv6)
-    {
-        $this->ipv6 = $ipv6;
-    }
+    private function __construct(
+        private readonly bool $ipv6,
+    ) {}
 
     /**
      * Create a new IPv4 TCP socket.
@@ -78,12 +71,13 @@ final class Socket
     public function connect(
         string $host,
         int $port,
+        ConnectConfiguration $configuration = new ConnectConfiguration(),
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): StreamInterface {
         $this->ensureNotConsumed();
         $this->consumed = true;
 
-        $context = $this->buildContext();
+        $context = $this->buildContext($configuration);
 
         $stream = Network\Internal\socket_connect("tcp://{$host}:{$port}", $context, $cancellation);
 
@@ -95,12 +89,9 @@ final class Socket
      *
      * This consumes the socket; it cannot be reused after calling listen().
      *
-     * @param int<1, max> $backlog Maximum length of the queue of pending connections.
-     * @param int<1, max> $idleConnections Maximum number of idle connections to buffer.
-     *
      * @throws Network\Exception\RuntimeException If listen fails.
      */
-    public function listen(int $backlog = 128, int $idleConnections = 256): ListenerInterface
+    public function listen(ListenConfiguration $configuration = new ListenConfiguration()): ListenerInterface
     {
         $this->ensureNotConsumed();
         $this->consumed = true;
@@ -113,12 +104,12 @@ final class Socket
 
         [$host, $port] = $this->bindAddress;
 
-        $context = $this->buildContext();
-        $context['socket']['backlog'] = $backlog;
+        $context = $this->buildContext($configuration);
+        $context['socket']['backlog'] = $configuration->backlog;
 
         $stream = Network\Internal\server_listen("tcp://{$host}:{$port}", $context);
 
-        return new Internal\Listener($stream, $idleConnections);
+        return new Internal\Listener($stream, $configuration->idleConnections);
     }
 
     /**
@@ -139,57 +130,21 @@ final class Socket
         return Network\Address::tcp($host, $port);
     }
 
-    public function setReuseAddress(bool $enabled): void
-    {
-        $this->ensureNotConsumed();
-
-        $this->reuseAddress = $enabled;
-    }
-
-    public function getReuseAddress(): bool
-    {
-        $this->ensureNotConsumed();
-
-        return $this->reuseAddress;
-    }
-
-    public function setReusePort(bool $enabled): void
-    {
-        $this->ensureNotConsumed();
-
-        $this->reusePort = $enabled;
-    }
-
-    public function getReusePort(): bool
-    {
-        $this->ensureNotConsumed();
-
-        return $this->reusePort;
-    }
-
-    public function setNoDelay(bool $enabled): void
-    {
-        $this->ensureNotConsumed();
-
-        $this->noDelay = $enabled;
-    }
-
-    public function getNoDelay(): bool
-    {
-        $this->ensureNotConsumed();
-
-        return $this->noDelay;
-    }
-
     /**
-     * @return array{socket: array{tcp_nodelay: bool, so_reuseaddr: bool, so_reuseport: bool, ipv6_v6only?: bool, bindto?: string}}
+     * @return array{socket: array<string, mixed>}
      */
-    private function buildContext(): array
+    private function buildContext(ListenConfiguration|ConnectConfiguration $configuration): array
     {
+        if ($configuration instanceof ConnectConfiguration) {
+            return ['socket' => [
+                'tcp_nodelay' => $configuration->noDelay,
+            ]];
+        }
+
         $socket = [
-            'tcp_nodelay' => $this->noDelay,
-            'so_reuseaddr' => OS\is_windows() ? $this->reusePort : $this->reuseAddress,
-            'so_reuseport' => $this->reusePort,
+            'tcp_nodelay' => $configuration->noDelay,
+            'so_reuseaddr' => OS\is_windows() ? $configuration->reusePort : $configuration->reuseAddress,
+            'so_reuseport' => $configuration->reusePort,
         ];
 
         if ($this->ipv6) {

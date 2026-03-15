@@ -8,12 +8,9 @@ use Psl\Async;
 use Psl\TCP\Socket;
 
 $socket = Socket::createV4();
-$socket->setReuseAddress(true);
-$socket->setReusePort(true);
-$socket->setNoDelay(true);
 $socket->bind('127.0.0.1', 0);
 
-$listener = $socket->listen();
+$listener = $socket->listen(new \Psl\TCP\ListenConfiguration(reuseAddress: true, reusePort: true, noDelay: true));
 
 Async\concurrently([
     'server' => static function () use ($listener): void {

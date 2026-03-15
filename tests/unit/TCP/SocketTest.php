@@ -36,26 +36,39 @@ final class SocketTest extends TestCase
         static::assertSame(0, $address->port);
     }
 
-    public function testSetAndGetReuseAddress(): void
+    public function testListenWithConfiguration(): void
     {
         $socket = TCP\Socket::createV4();
+        $socket->bind('127.0.0.1', 0);
+        $listener = $socket->listen(new TCP\ListenConfiguration(noDelay: true, reuseAddress: true, backlog: 64));
 
-        $socket->setReuseAddress(true);
-        static::assertTrue($socket->getReuseAddress());
+        $address = $listener->getLocalAddress();
+        static::assertSame('127.0.0.1', $address->host);
 
-        $socket->setReuseAddress(false);
-        static::assertFalse($socket->getReuseAddress());
+        $listener->close();
     }
 
-    public function testSetAndGetNoDelay(): void
+    public function testConnectWithConfiguration(): void
     {
-        $socket = TCP\Socket::createV4();
+        $listener = TCP\listen('127.0.0.1', 0);
+        $port = $listener->getLocalAddress()->port ?? 0;
 
-        $socket->setNoDelay(true);
-        static::assertTrue($socket->getNoDelay());
+        Async\concurrently([
+            'server' => static function () use ($listener): void {
+                $conn = $listener->accept();
+                $data = $conn->read();
+                static::assertSame('config-hello', $data);
+                $conn->close();
+                $listener->close();
+            },
+            'client' => static function () use ($port): void {
+                $socket = TCP\Socket::createV4();
+                $stream = $socket->connect('127.0.0.1', $port, new TCP\ConnectConfiguration(noDelay: true));
 
-        $socket->setNoDelay(false);
-        static::assertFalse($socket->getNoDelay());
+                $stream->writeAll('config-hello');
+                $stream->close();
+            },
+        ]);
     }
 
     public function testConnectAndCommunicate(): void
@@ -74,8 +87,7 @@ final class SocketTest extends TestCase
             },
             'client' => static function () use ($port): void {
                 $socket = TCP\Socket::createV4();
-                $socket->setNoDelay(true);
-                $stream = $socket->connect('127.0.0.1', $port);
+                $stream = $socket->connect('127.0.0.1', $port, new TCP\ConnectConfiguration(noDelay: true));
 
                 $stream->writeAll('socket-hello');
                 $response = $stream->readAll();
@@ -88,9 +100,8 @@ final class SocketTest extends TestCase
     public function testListenAndAccept(): void
     {
         $socket = TCP\Socket::createV4();
-        $socket->setReuseAddress(true);
         $socket->bind('127.0.0.1', 0);
-        $listener = $socket->listen();
+        $listener = $socket->listen(new TCP\ListenConfiguration(reuseAddress: true));
         $address = $listener->getLocalAddress();
 
         Async\concurrently([
@@ -145,7 +156,7 @@ final class SocketTest extends TestCase
                 $stream = $socket->connect(
                     '127.0.0.1',
                     $port,
-                    new Async\TimeoutCancellationToken(Duration::seconds(5)),
+                    cancellation: new Async\TimeoutCancellationToken(Duration::seconds(5)),
                 );
 
                 $stream->writeAll('with-timeout');
