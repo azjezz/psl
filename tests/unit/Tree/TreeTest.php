@@ -28,4 +28,16 @@ final class TreeTest extends TestCase
         static::assertSame('root', $tree->getValue());
         static::assertCount(2, $tree->getChildren());
     }
+
+    public function testTreeNodeJsonSerialize(): void
+    {
+        $tree = Tree\tree('root', [
+            Tree\leaf('child1'),
+        ]);
+
+        $array = $tree->jsonSerialize();
+
+        static::assertSame('root', $array['value']);
+        static::assertArrayHasKey('children', $array);
+    }
 }

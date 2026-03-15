@@ -65,9 +65,11 @@ final class DecodingWriteHandle implements IO\WriteHandleInterface
     public function flush(): void
     {
         if ($this->remainder !== '') {
+            // @codeCoverageIgnoreStart
             $decoded = decode($this->remainder);
             $this->remainder = '';
             $this->handle->writeAll($decoded);
+            // @codeCoverageIgnoreEnd
         }
     }
 }

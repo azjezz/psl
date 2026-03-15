@@ -312,6 +312,16 @@ final class SocketTest extends TestCase
         })->await();
     }
 
+    public function testIsClosedOnSocket(): void
+    {
+        Async\run(static function (): void {
+            $socket = UDP\Socket::bind('127.0.0.1', 0);
+            static::assertFalse($socket->isClosed());
+            $socket->close();
+            static::assertTrue($socket->isClosed());
+        })->await();
+    }
+
     public function testDoubleCloseDoesNotThrow(): void
     {
         Async\run(static function (): void {

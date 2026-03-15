@@ -9,6 +9,7 @@ use Psl\Async;
 use Psl\DateTime\Duration;
 use Psl\Network;
 use Psl\TCP;
+use Psl\Tests\Fixture\SlowClosingListener;
 
 final class CompositeListenerTest extends TestCase
 {
@@ -171,5 +172,218 @@ final class CompositeListenerTest extends TestCase
                 $stream->close();
             },
         ]);
+    }
+
+    public function testCloseStopsAcceptLoop(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 18_305);
+        $composite = new Network\CompositeListener([$listener]);
+
+        $composite->close();
+
+        $this->expectException(Network\Exception\AlreadyStoppedException::class);
+
+        Async\run(static function () use ($composite): void {
+            $composite->accept();
+        })->await();
+    }
+
+    public function testCloseClosesReceiver(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 18_306);
+        $composite = new Network\CompositeListener([$listener]);
+
+        $composite->close();
+
+        try {
+            Async\run(static function () use ($composite): void {
+                $composite->accept();
+            })->await();
+
+            static::fail('Expected AlreadyStoppedException');
+        } catch (Network\Exception\AlreadyStoppedException) {
+            static::addToAssertionCount(1);
+        }
+    }
+
+    public function testStopTokenCancelsAllLoops(): void
+    {
+        $listener1 = TCP\listen('127.0.0.1', 18_307);
+        $listener2 = TCP\listen('127.0.0.1', 18_308);
+
+        $composite = new Network\CompositeListener([$listener1, $listener2]);
+
+        $composite->close();
+
+        static::assertTrue($listener1->isClosed());
+        static::assertTrue($listener2->isClosed());
+        static::assertTrue($composite->isClosed());
+    }
+
+    public function testAcceptReturnsStream(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 18_309);
+        $composite = new Network\CompositeListener([$listener]);
+
+        Async\concurrently([
+            'server' => static function () use ($composite): void {
+                $stream = $composite->accept();
+
+                $data = $stream->read();
+                static::assertSame('verify-return', $data);
+
+                $stream->close();
+                $composite->close();
+            },
+            'client' => static function (): void {
+                $stream = TCP\connect('127.0.0.1', 18_309);
+                $stream->writeAll('verify-return');
+                $stream->close();
+            },
+        ]);
+    }
+
+    public function testWaitGroupDoneCalledOnListenerClose(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 18_312);
+        $composite = new Network\CompositeListener([$listener]);
+
+        $listener->close();
+
+        $this->expectException(Network\Exception\AlreadyStoppedException::class);
+
+        Async\run(static function () use ($composite): void {
+            $composite->accept();
+        })->await();
+    }
+
+    public function testCloseTwiceDoesNotDoubleCancel(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 0);
+        $composite = new Network\CompositeListener([$listener]);
+
+        $composite->close();
+
+        static::assertTrue($composite->isClosed());
+        static::assertTrue($listener->isClosed());
+
+        $composite->close();
+
+        static::assertTrue($composite->isClosed());
+    }
+
+    public function testSenderClosedAfterAllLoopsEnd(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 18_313);
+        $composite = new Network\CompositeListener([$listener]);
+
+        Async\Scheduler::defer(static function () use ($listener): void {
+            $listener->close();
+        });
+
+        $this->expectException(Network\Exception\AlreadyStoppedException::class);
+
+        Async\run(static function () use ($composite): void {
+            $composite->accept();
+        })->await();
+    }
+
+    public function testStopTokenPreventsAcceptAfterClose(): void
+    {
+        $listener1 = TCP\listen('127.0.0.1', 18_314);
+        $listener2 = TCP\listen('127.0.0.1', 18_315);
+
+        $composite = new Network\CompositeListener([$listener1, $listener2]);
+
+        Async\Scheduler::defer(static function () use ($composite): void {
+            $composite->close();
+        });
+
+        $this->expectException(Network\Exception\AlreadyStoppedException::class);
+
+        Async\run(static function () use ($composite): void {
+            $composite->accept();
+        })->await();
+    }
+
+    public function testReceiverCloseThrowsAlreadyStopped(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 18_316);
+        $composite = new Network\CompositeListener([$listener]);
+
+        $composite->close();
+
+        try {
+            Async\run(static function () use ($composite): void {
+                $composite->accept();
+            })->await();
+
+            static::fail('Expected AlreadyStoppedException');
+        } catch (Network\Exception\AlreadyStoppedException $e) {
+            static::assertSame('All listeners have been stopped.', $e->getMessage());
+        }
+    }
+
+    public function testCloseImmediatelyClosesReceiver(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 0);
+        $composite = new Network\CompositeListener([$listener]);
+
+        $composite->close();
+
+        $threw = false;
+        $token = new Async\TimeoutCancellationToken(Duration::milliseconds(100));
+        try {
+            Async\run(static function () use ($composite, $token): void {
+                $composite->accept($token);
+            })->await();
+        } catch (Network\Exception\AlreadyStoppedException) {
+            $threw = true;
+        } catch (Async\Exception\CancelledException) {
+            // If we get here, receiver wasn't closed immediately
+            static::fail('accept() should throw AlreadyStoppedException immediately, not wait for timeout.');
+        }
+
+        static::assertTrue($threw, 'Expected AlreadyStoppedException from accept() after close().');
+    }
+
+    public function testDoubleCloseDoesNotRepeatSideEffects(): void
+    {
+        $listener = TCP\listen();
+        $composite = new Network\CompositeListener([$listener]);
+
+        $composite->close();
+
+        static::assertTrue($composite->isClosed());
+        static::assertTrue($listener->isClosed());
+
+        $composite->close();
+
+        static::assertTrue($composite->isClosed());
+    }
+
+    public function testStopTokenCancelsAcceptLoopBeforeListenerClose(): void
+    {
+        $slow = new SlowClosingListener();
+        $composite = new Network\CompositeListener([$slow]);
+
+        Async\run(static function () use ($composite): void {
+            Async\later();
+            $composite->close();
+        });
+
+        $threw = false;
+        try {
+            Async\run(static function () use ($composite): void {
+                $token = new Async\TimeoutCancellationToken(Duration::seconds(2));
+                $composite->accept($token);
+            })->await();
+        } catch (Network\Exception\AlreadyStoppedException) {
+            $threw = true;
+        } catch (Async\Exception\CancelledException) {
+            static::fail('Stop token should have cancelled the loop; accept() should not have timed out.');
+        }
+
+        static::assertTrue($threw);
     }
 }

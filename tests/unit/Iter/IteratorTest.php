@@ -68,6 +68,16 @@ final class IteratorTest extends TestCase
         static::assertSame(5, $iterator->count());
     }
 
+    public function testSeekNegativeThrowsOutOfBounds(): void
+    {
+        $iterator = new Iter\Iterator((static fn(): iterable => yield from [1, 2, 3])());
+
+        $this->expectException(Iter\Exception\OutOfBoundsException::class);
+        $this->expectExceptionMessage('Position is out-of-bounds.');
+
+        $iterator->seek(-1);
+    }
+
     public function testSeekThrowsForOutOfBoundIndex(): void
     {
         $iterator = new Iter\Iterator((static fn(): iterable => yield from [1, 2, 3, 4, 5])());

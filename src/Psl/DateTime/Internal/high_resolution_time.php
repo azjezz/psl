@@ -41,6 +41,7 @@ function high_resolution_time(): array
 
     [$seconds_offset, $nanoseconds_offset] = $offset;
     $highResolutionTime = hrtime();
+    // @codeCoverageIgnoreStart
     if (false === $highResolutionTime) {
         throw new Psl\Exception\InvariantViolationException('The system does not provide a monotonic timer.');
     }
@@ -55,6 +56,8 @@ function high_resolution_time(): array
         --$seconds;
         $nanosecondsAdjusted += NANOSECONDS_PER_SECOND;
     }
+
+    // @codeCoverageIgnoreEnd
 
     $seconds += $seconds_offset;
     $nanoseconds = $nanosecondsAdjusted;

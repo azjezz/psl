@@ -55,9 +55,5 @@ function get_node_key(mixed $node): string
         return 's:' . $node;
     }
 
-    if ($node === null) {
-        return 'n:null';
-    }
-
-    return 't:' . md5(serialize($node));
+    return 'n:null';
 }

@@ -27,6 +27,11 @@ class CompareTest extends AbstractComparisonTestCase
         Comparison\compare($a, $b);
     }
 
+    public function testOrderDefault(): void
+    {
+        static::assertSame(Order::Equal, Order::default());
+    }
+
     public function testItCanFailComparingWithAdditionalInfo(): void
     {
         $a = self::createIncomparableWrapper(1, 'Can only compare even numbers');

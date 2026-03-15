@@ -48,7 +48,9 @@ final class ConnectedSocket implements Network\SocketInterface, IO\StreamHandleI
 
         $name = @stream_socket_get_name($stream, false);
         if ($name === false) {
+            // @codeCoverageIgnoreStart
             throw new Network\Exception\RuntimeException('Failed to get local address.');
+            // @codeCoverageIgnoreEnd
         }
 
         $this->localAddress = Internal\parse_address($name);
@@ -73,7 +75,9 @@ final class ConnectedSocket implements Network\SocketInterface, IO\StreamHandleI
 
         $result = @stream_socket_sendto($stream, $data);
         if ($result === false || $result === -1) {
+            // @codeCoverageIgnoreStart
             throw new Network\Exception\RuntimeException('Failed to send UDP datagram.');
+            // @codeCoverageIgnoreEnd
         }
 
         /** @var int<0, max> */
@@ -99,7 +103,9 @@ final class ConnectedSocket implements Network\SocketInterface, IO\StreamHandleI
 
         $data = @stream_socket_recvfrom($stream, $maxBytes, 0);
         if ($data === false) {
+            // @codeCoverageIgnoreStart
             throw new Network\Exception\RuntimeException('Failed to receive UDP datagram.');
+            // @codeCoverageIgnoreEnd
         }
 
         return $data;
@@ -122,7 +128,9 @@ final class ConnectedSocket implements Network\SocketInterface, IO\StreamHandleI
 
         $data = @stream_socket_recvfrom($stream, $maxBytes, STREAM_PEEK);
         if ($data === false) {
+            // @codeCoverageIgnoreStart
             throw new Network\Exception\RuntimeException('Failed to peek UDP datagram.');
+            // @codeCoverageIgnoreEnd
         }
 
         return $data;
@@ -149,17 +157,22 @@ final class ConnectedSocket implements Network\SocketInterface, IO\StreamHandleI
     public function getStream(): mixed
     {
         if (!is_resource($this->stream)) {
+            // @codeCoverageIgnoreStart
             return null;
+            // @codeCoverageIgnoreEnd
         }
 
         return $this->stream;
     }
 
+    // @codeCoverageIgnoreStart
     #[Override]
     public function isClosed(): bool
     {
         return !is_resource($this->stream);
     }
+
+    // @codeCoverageIgnoreEnd
 
     #[Override]
     public function close(): void

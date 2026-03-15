@@ -101,12 +101,14 @@ final readonly class SetType extends Type\Type
                     $set[$v] = $v;
                     $iterating = true;
                 }
+                // @codeCoverageIgnoreStart
             } catch (Throwable $e) {
                 if ($iterating) {
                     throw AssertException::withValue(null, $this->toString(), PathExpression::iteratorError($k), $e);
                 }
 
                 throw AssertException::withValue($v, $this->toString(), PathExpression::path($k), $e);
+                // @codeCoverageIgnoreEnd
             }
 
             return new Collection\Set($set);

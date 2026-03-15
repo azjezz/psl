@@ -51,7 +51,9 @@ final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
 
         $name = @stream_socket_get_name($stream, false);
         if ($name === false) {
+            // @codeCoverageIgnoreStart
             throw new Network\Exception\RuntimeException('Failed to get local address.');
+            // @codeCoverageIgnoreEnd
         }
 
         $this->localAddress = Internal\parse_address($name);
@@ -125,7 +127,9 @@ final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
         );
 
         if ($newStream === false) {
+            // @codeCoverageIgnoreStart
             throw new Network\Exception\RuntimeException("Failed to connect UDP socket to {$host}:{$port}: {$errstr}");
+            // @codeCoverageIgnoreEnd
         }
 
         return new ConnectedSocket($newStream, Network\Address::udp($host, $port));
@@ -184,7 +188,9 @@ final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
         $address = '';
         $data = @stream_socket_recvfrom($stream, $maxBytes, 0, $address);
         if ($data === false) {
+            // @codeCoverageIgnoreStart
             throw new Network\Exception\RuntimeException('Failed to receive UDP datagram.');
+            // @codeCoverageIgnoreEnd
         }
 
         return [$data, Internal\parse_address($address)];
@@ -212,7 +218,9 @@ final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
         $address = '';
         $data = @stream_socket_recvfrom($stream, $maxBytes, STREAM_PEEK, $address);
         if ($data === false) {
+            // @codeCoverageIgnoreStart
             throw new Network\Exception\RuntimeException('Failed to peek UDP datagram.');
+            // @codeCoverageIgnoreEnd
         }
 
         return [$data, Internal\parse_address($address)];

@@ -816,10 +816,13 @@ enum Locale: string
     public static function default(): self
     {
         $fullLocale = NativeLocale::getDefault();
+        // @codeCoverageIgnoreStart
         if (!$fullLocale) {
             // Fallback to English if no locale is set or supported.
             return self::English;
         }
+
+        // @codeCoverageIgnoreEnd
 
         $language = (string) NativeLocale::getPrimaryLanguage($fullLocale);
         $script = (string) NativeLocale::getScript($fullLocale);

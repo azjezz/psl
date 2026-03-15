@@ -15,6 +15,8 @@ final readonly class NumType extends UnionType
 {
     /**
      * @psalm-mutation-free
+     *
+     * @codeCoverageIgnore
      */
     public function __construct()
     {

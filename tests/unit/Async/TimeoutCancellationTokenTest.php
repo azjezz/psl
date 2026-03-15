@@ -138,6 +138,13 @@ final class TimeoutCancellationTokenTest extends TestCase
         static::assertTrue($result);
     }
 
+    public function testCancellableIsTrue(): void
+    {
+        $token = new Async\TimeoutCancellationToken(Duration::seconds(10));
+
+        static::assertTrue($token->cancellable);
+    }
+
     public function testWeakReferenceDroppedBeforeTimeout(): void
     {
         Async\run(static function (): void {

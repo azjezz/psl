@@ -46,6 +46,14 @@ final class ExecuteTest extends TestCase
         Shell\execute('php', ["\0"]);
     }
 
+    public function testItThrowsForNULLByteInCommand(): void
+    {
+        $this->expectException(Shell\Exception\PossibleAttackException::class);
+        $this->expectExceptionMessage('NULL byte detected.');
+
+        Shell\execute("php\0injected");
+    }
+
     public function testEnvironmentIsPassedDownToTheProcess(): void
     {
         static::assertSame('BAR', Shell\execute(PHP_BINARY, ['-dopcache.enable=0', '-r', 'echo getenv("FOO");'], null, [
@@ -153,6 +161,14 @@ final class ExecuteTest extends TestCase
 
         static::assertSame('hello', $stdout);
         static::assertSame(' world', $stderr);
+    }
+
+    public function testStreamUnpackInvalidHeader(): void
+    {
+        $this->expectException(Shell\Exception\InvalidArgumentException::class);
+
+        $generator = Shell\stream_unpack('abc');
+        $generator->current();
     }
 
     public function testTimeoutDoesNotAffectFastCommands(): void

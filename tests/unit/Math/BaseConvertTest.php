@@ -16,6 +16,14 @@ final class BaseConvertTest extends TestCase
         static::assertSame($expected, Math\base_convert($value, $from, $to));
     }
 
+    public function testBaseConvertInvalidDigit(): void
+    {
+        $this->expectException(Math\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid digit');
+
+        Math\base_convert('G', 16, 10);
+    }
+
     public static function provideData(): array
     {
         return [

@@ -166,6 +166,22 @@ final class EncodeDecodeTest extends TestCase
         static::assertSame($plain, EncodedWord\decode($plain));
     }
 
+    public function testDecodeDuplicateEncodedWords(): void
+    {
+        $input = '=?UTF-8?Q?hello?= =?UTF-8?Q?hello?=';
+
+        $decoded = EncodedWord\decode($input);
+
+        static::assertSame('hellohello', $decoded);
+    }
+
+    public function testDecodeWithOverlappingMatches(): void
+    {
+        $input = '=?UTF-8?Q?a?= =?UTF-8?Q?a?=';
+        $decoded = EncodedWord\decode($input);
+        static::assertSame('aa', $decoded);
+    }
+
     public function testEncodeSpaceBecomesUnderscore(): void
     {
         $encoded = EncodedWord\encode("hello world\x80");

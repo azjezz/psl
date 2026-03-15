@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Async;
 use Psl\DateTime\Duration;
 use Psl\Network;
+use Psl\OS;
 use Psl\TCP;
 
 final class SocketTest extends TestCase
@@ -205,6 +206,28 @@ final class SocketTest extends TestCase
         $this->expectExceptionMessage('Socket has not been bound');
 
         $socket->getLocalAddress();
+    }
+
+    public function testCreateV6BindAndListen(): void
+    {
+        if (OS\is_windows()) {
+            static::markTestSkipped('unsupported OS');
+        }
+
+        $socket = TCP\Socket::createV6();
+        $socket->bind('::1', 0);
+
+        try {
+            $listener = $socket->listen(new TCP\ListenConfiguration(noDelay: true, reuseAddress: true));
+        } catch (Network\Exception\RuntimeException) {
+            $this->addToAssertionCount(1);
+            return;
+        }
+
+        $address = $listener->getLocalAddress();
+        static::assertSame('::1', $address->host);
+
+        $listener->close();
     }
 
     public function testListenWithoutBindThrows(): void

@@ -175,6 +175,15 @@ final class UndirectedGraphTest extends TestCase
         static::assertTrue($graph->hasCycle());
     }
 
+    public function testAddDuplicateNodeReturnsSameGraph(): void
+    {
+        $graph = Graph\undirected();
+        $graph = Graph\add_node($graph, 'A');
+        $graph2 = Graph\add_node($graph, 'A');
+
+        static::assertSame($graph, $graph2);
+    }
+
     public function testHasCycleDetectsTriangleCycleRequiringVisitedFlag(): void
     {
         $graph = Graph\undirected();

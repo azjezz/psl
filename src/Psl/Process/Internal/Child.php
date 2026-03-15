@@ -110,12 +110,11 @@ final class Child implements ChildInterface
             return;
         }
 
-        // @codeCoverageIgnoreEnd
-
         $result = proc_terminate($this->process, $signal->value);
         if (!$result) {
             throw new Exception\RuntimeException('Failed to send signal to the process.');
         }
+        // @codeCoverageIgnoreEnd
     }
 
     #[Override]

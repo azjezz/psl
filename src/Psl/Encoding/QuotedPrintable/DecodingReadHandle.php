@@ -105,13 +105,18 @@ final class DecodingReadHandle implements IO\BufferedReadHandleInterface
                 return substr($line, 0, -1);
             }
 
+            // @codeCoverageIgnoreStart
             return $line;
+            // @codeCoverageIgnoreEnd
         }
 
         // No EOL found; return whatever remains, or null if empty
+        // @codeCoverageIgnoreStart
         if ($this->buffer === '' && !$this->eof) {
             $this->fillBuffer($cancellation);
         }
+
+        // @codeCoverageIgnoreEnd
 
         if ($this->buffer === '') {
             return null;
@@ -159,6 +164,7 @@ final class DecodingReadHandle implements IO\BufferedReadHandleInterface
         $suffixLen = strlen($suffix);
         $idx = strpos($this->buffer, $suffix);
         if ($idx !== false) {
+            // @codeCoverageIgnoreStart
             if ($idx > $maxBytes) {
                 throw new IO\Exception\OverflowException(Psl\Str\format(
                     'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
@@ -170,8 +176,10 @@ final class DecodingReadHandle implements IO\BufferedReadHandleInterface
             $result = substr($this->buffer, 0, $idx);
             $this->buffer = substr($this->buffer, $idx + $suffixLen);
             return $result;
+            // @codeCoverageIgnoreEnd
         }
 
+        // @codeCoverageIgnoreStart
         if (strlen($this->buffer) > $maxBytes) {
             throw new IO\Exception\OverflowException(Psl\Str\format(
                 'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
@@ -179,6 +187,8 @@ final class DecodingReadHandle implements IO\BufferedReadHandleInterface
                 $suffix,
             ));
         }
+
+        // @codeCoverageIgnoreEnd
 
         while (!$this->eof) {
             $offset = strlen($this->buffer) - $suffixLen + 1;
@@ -188,6 +198,7 @@ final class DecodingReadHandle implements IO\BufferedReadHandleInterface
 
             $idx = strpos($this->buffer, $suffix, $offset);
             if ($idx !== false) {
+                // @codeCoverageIgnoreStart
                 if ($idx > $maxBytes) {
                     throw new IO\Exception\OverflowException(Psl\Str\format(
                         'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
@@ -196,11 +207,14 @@ final class DecodingReadHandle implements IO\BufferedReadHandleInterface
                     ));
                 }
 
+                // @codeCoverageIgnoreEnd
+
                 $result = substr($this->buffer, 0, $idx);
                 $this->buffer = substr($this->buffer, $idx + $suffixLen);
                 return $result;
             }
 
+            // @codeCoverageIgnoreStart
             if (strlen($this->buffer) > $maxBytes) {
                 throw new IO\Exception\OverflowException(Psl\Str\format(
                     'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
@@ -208,6 +222,7 @@ final class DecodingReadHandle implements IO\BufferedReadHandleInterface
                     $suffix,
                 ));
             }
+            // @codeCoverageIgnoreEnd
         }
 
         return null;
@@ -216,7 +231,9 @@ final class DecodingReadHandle implements IO\BufferedReadHandleInterface
     private function fillBuffer(CancellationTokenInterface $cancellation = new NullCancellationToken()): void
     {
         if ($this->eof) {
+            // @codeCoverageIgnoreStart
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         while (true) {

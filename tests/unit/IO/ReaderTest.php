@@ -302,6 +302,45 @@ final class ReaderTest extends TestCase
         static::assertNull($reader->readLine());
     }
 
+    public function testReadUntilBoundedOverflowInInitialBuffer(): void
+    {
+        $handle = new IO\MemoryHandle('abcdefghij:end rest');
+        $reader = new IO\Reader($handle);
+        $reader->readByte();
+
+        $this->expectException(IO\Exception\OverflowException::class);
+        $reader->readUntilBounded(':end', 3);
+    }
+
+    public function testReadUntilBoundedSuffixFoundBeyondMaxInBuffer(): void
+    {
+        $handle = new IO\MemoryHandle('abcdefghij:end');
+        $reader = new IO\Reader($handle);
+        $reader->readByte();
+
+        $this->expectException(IO\Exception\OverflowException::class);
+        $reader->readUntilBounded(':end', 3);
+    }
+
+    public function testReadUntilBoundedBufferExceedsMaxBeforeLoop(): void
+    {
+        $handle = new IO\MemoryHandle('abcdefghij');
+        $reader = new IO\Reader($handle);
+        $reader->readByte();
+
+        $this->expectException(IO\Exception\OverflowException::class);
+        $reader->readUntilBounded(':end', 3);
+    }
+
+    public function testReadUntilBoundedOverflowDuringFill(): void
+    {
+        $handle = new IO\MemoryHandle(str_repeat('x', 100));
+        $reader = new IO\Reader($handle);
+
+        $this->expectException(IO\Exception\OverflowException::class);
+        $reader->readUntilBounded('NOTFOUND', 10);
+    }
+
     public function testReadLineEmptyLinesCRLF(): void
     {
         $handle = new IO\MemoryHandle("\r\n\r\n");

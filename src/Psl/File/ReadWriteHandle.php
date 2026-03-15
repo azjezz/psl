@@ -58,7 +58,9 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Wr
                 }
 
                 if (!Filesystem\is_readable($directory)) {
+                    // @codeCoverageIgnoreStart
                     throw Exception\NotReadableException::for($file);
+                    // @codeCoverageIgnoreEnd
                 }
             } catch (Filesystem\Exception\RuntimeException $previous) {
                 throw new Exception\RuntimeException(

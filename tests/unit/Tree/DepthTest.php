@@ -42,6 +42,15 @@ final class DepthTest extends TestCase
         static::assertSame(2, $result);
     }
 
+    public function testDepthTreeNodeWithNoChildren(): void
+    {
+        $tree = Tree\tree(1, []);
+
+        $result = Tree\depth($tree);
+
+        static::assertSame(0, $result);
+    }
+
     public function testDepthDeepTree(): void
     {
         $tree = Tree\tree(1, [

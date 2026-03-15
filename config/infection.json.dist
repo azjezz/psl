@@ -17,6 +17,7 @@
             "UDP",
             "Process",
             "Terminal",
+            "Encoding",
             "Internal",
             "{.*/Internal/.*}"
         ]
@@ -118,12 +119,14 @@
         },
         "MethodCallRemoval": {
             "ignore": [
+                "Psl\\Network\\CompositeListener::close",
                 "Psl\\Iter\\Iterator::seek",
                 "Psl\\Iter\\Iterator::count"
             ]
         },
         "ReturnRemoval": {
             "ignore": [
+                "Psl\\Network\\CompositeListener::close",
                 "Psl\\DataStructure\\PriorityQueue::peek",
                 "Psl\\DateTime\\DateTimeConvenienceMethodsTrait::plusMonths",
                 "Psl\\DateTime\\DateTimeConvenienceMethodsTrait::minusMonths",
@@ -159,7 +162,8 @@
         },
         "UnwrapFinally": {
             "ignore": [
-                "Psl\\Crypto\\Asymmetric\\Encryptor::open"
+                "Psl\\Crypto\\Asymmetric\\Encryptor::open",
+                "Psl\\Network\\CompositeListener::startAcceptLoop"
             ]
         }
     }

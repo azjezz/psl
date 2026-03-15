@@ -7,6 +7,7 @@ namespace Psl\Tests\Unit\File;
 use PHPUnit\Framework\TestCase;
 use Psl\File;
 use Psl\Filesystem;
+use Psl\OS;
 
 final class ReadHandleTest extends TestCase
 {
@@ -27,6 +28,15 @@ final class ReadHandleTest extends TestCase
         static::assertSame('hello, world!', $content);
     }
 
+    public function testIsClosed(): void
+    {
+        $handle = File\open_read_only(__FILE__);
+
+        static::assertFalse($handle->isClosed());
+        $handle->close();
+        static::assertTrue($handle->isClosed());
+    }
+
     public function testNonExisting(): void
     {
         $temporaryFile = Filesystem\create_temporary_file();
@@ -34,6 +44,24 @@ final class ReadHandleTest extends TestCase
 
         $this->expectException(File\Exception\NotFoundException::class);
         File\open_read_only($temporaryFile);
+    }
+
+    public function testNotReadable(): void
+    {
+        if (OS\is_windows()) {
+            static::markTestSkipped('File permissions are not enforced on Windows.');
+        }
+
+        $temporaryFile = Filesystem\create_temporary_file();
+        Filesystem\change_permissions($temporaryFile, 0o000);
+
+        try {
+            $this->expectException(File\Exception\NotReadableException::class);
+            File\open_read_only($temporaryFile);
+        } finally {
+            Filesystem\change_permissions($temporaryFile, 0o644);
+            Filesystem\delete_file($temporaryFile);
+        }
     }
 
     public function testNonFile(): void

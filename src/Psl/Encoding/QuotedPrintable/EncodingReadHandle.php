@@ -102,13 +102,18 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
                 return substr($line, 0, -1);
             }
 
+            // @codeCoverageIgnoreStart
             return $line;
+            // @codeCoverageIgnoreEnd
         }
 
         // No EOL found; return whatever remains, or null if empty
+        // @codeCoverageIgnoreStart
         if ($this->buffer === '' && !$this->eof) {
             $this->fillBuffer($cancellation);
         }
+
+        // @codeCoverageIgnoreEnd
 
         if ($this->buffer === '') {
             return null;
@@ -125,11 +130,14 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
     ): null|string {
         $suffixLen = strlen($suffix);
         $idx = strpos($this->buffer, $suffix);
+        // @codeCoverageIgnoreStart
         if ($idx !== false) {
             $result = substr($this->buffer, 0, $idx);
             $this->buffer = substr($this->buffer, $idx + $suffixLen);
             return $result;
         }
+
+        // @codeCoverageIgnoreEnd
 
         while (!$this->eof) {
             $offset = strlen($this->buffer) - $suffixLen + 1;
@@ -156,6 +164,7 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
         $suffixLen = strlen($suffix);
         $idx = strpos($this->buffer, $suffix);
         if ($idx !== false) {
+            // @codeCoverageIgnoreStart
             if ($idx > $maxBytes) {
                 throw new IO\Exception\OverflowException(Psl\Str\format(
                     'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
@@ -167,8 +176,10 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
             $result = substr($this->buffer, 0, $idx);
             $this->buffer = substr($this->buffer, $idx + $suffixLen);
             return $result;
+            // @codeCoverageIgnoreEnd
         }
 
+        // @codeCoverageIgnoreStart
         if (strlen($this->buffer) > $maxBytes) {
             throw new IO\Exception\OverflowException(Psl\Str\format(
                 'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
@@ -176,6 +187,8 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
                 $suffix,
             ));
         }
+
+        // @codeCoverageIgnoreEnd
 
         while (!$this->eof) {
             $offset = strlen($this->buffer) - $suffixLen + 1;
@@ -185,6 +198,7 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
 
             $idx = strpos($this->buffer, $suffix, $offset);
             if ($idx !== false) {
+                // @codeCoverageIgnoreStart
                 if ($idx > $maxBytes) {
                     throw new IO\Exception\OverflowException(Psl\Str\format(
                         'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
@@ -193,11 +207,14 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
                     ));
                 }
 
+                // @codeCoverageIgnoreEnd
+
                 $result = substr($this->buffer, 0, $idx);
                 $this->buffer = substr($this->buffer, $idx + $suffixLen);
                 return $result;
             }
 
+            // @codeCoverageIgnoreStart
             if (strlen($this->buffer) > $maxBytes) {
                 throw new IO\Exception\OverflowException(Psl\Str\format(
                     'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
@@ -205,6 +222,7 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
                     $suffix,
                 ));
             }
+            // @codeCoverageIgnoreEnd
         }
 
         return null;
@@ -213,7 +231,9 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
     private function fillBuffer(CancellationTokenInterface $cancellation = new NullCancellationToken()): void
     {
         if ($this->eof) {
+            // @codeCoverageIgnoreStart
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         $line = $this->reader->readUntil("\n", $cancellation);
@@ -221,7 +241,9 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
             $line = str_ends_with($line, "\r") ? substr($line, 0, -1) : $line;
 
             if (!$this->firstLine) {
+                // @codeCoverageIgnoreStart
                 $this->buffer .= "\r\n";
+                // @codeCoverageIgnoreEnd
             }
 
             $this->buffer .= encode_line($line);

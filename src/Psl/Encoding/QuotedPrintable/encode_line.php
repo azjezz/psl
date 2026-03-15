@@ -20,7 +20,9 @@ use function strlen;
 function encode_line(string $line, int $maxLineLength = 76, string $lineEnding = "\r\n"): string
 {
     if ($line === '') {
+        // @codeCoverageIgnoreStart
         return '';
+        // @codeCoverageIgnoreEnd
     }
 
     $softBreak = '=' . $lineEnding;

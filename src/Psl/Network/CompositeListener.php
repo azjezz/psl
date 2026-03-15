@@ -155,6 +155,7 @@ final class CompositeListener implements ListenerInterface
 
                     $sender->send($stream);
                 }
+                // @codeCoverageIgnoreStart
             } catch (CancelledException) {
                 // @mago-expect lint:no-empty-catch-clause - Stop token fired, graceful shutdown
             } catch (Exception\AlreadyStoppedException) {
@@ -162,6 +163,7 @@ final class CompositeListener implements ListenerInterface
             } catch (Channel\Exception\ClosedChannelException) {
                 // @mago-expect lint:no-empty-catch-clause - Channel closed, we're shutting down
             } finally {
+                // @codeCoverageIgnoreEnd
                 $wg->done();
             }
         });

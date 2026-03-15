@@ -17,8 +17,6 @@ use Psl\Terminal\Widget\Wrap;
  */
 final class LineWrapper
 {
-    private function __construct() {}
-
     /**
      * @param list<Line> $lines
      *

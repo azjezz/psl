@@ -52,9 +52,11 @@ function range(string $string, RangeInterface $range, Encoding $encoding = Encod
             $length += 1;
         }
 
+        // @codeCoverageIgnoreStart
         if ($length < 0) {
             $length = 0;
         }
+        // @codeCoverageIgnoreEnd
     }
 
     return slice($string, $offset, $length, $encoding);

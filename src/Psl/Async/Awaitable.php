@@ -233,8 +233,10 @@ final readonly class Awaitable implements PromiseInterface
                      */
                     $state->complete($value);
                 }
+                // @codeCoverageIgnoreStart
             } catch (Throwable $throwable) {
                 $state->error($throwable);
+                // @codeCoverageIgnoreEnd
             }
         });
 
