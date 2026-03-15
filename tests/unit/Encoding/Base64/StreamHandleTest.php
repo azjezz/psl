@@ -200,9 +200,20 @@ final class StreamHandleTest extends TestCase
         $handle->readByte();
     }
 
-    public function testDecodingReadHandleReadLine(): void
+    public function testDecodingReadHandleReadLineLF(): void
     {
-        $inner = new IO\MemoryHandle(base64_encode('line1' . PHP_EOL . 'line2' . PHP_EOL . 'line3'));
+        $inner = new IO\MemoryHandle(base64_encode("line1\nline2\nline3"));
+        $handle = new Base64\DecodingReadHandle($inner);
+
+        static::assertSame('line1', $handle->readLine());
+        static::assertSame('line2', $handle->readLine());
+        static::assertSame('line3', $handle->readLine());
+        static::assertNull($handle->readLine());
+    }
+
+    public function testDecodingReadHandleReadLineCRLF(): void
+    {
+        $inner = new IO\MemoryHandle(base64_encode("line1\r\nline2\r\nline3"));
         $handle = new Base64\DecodingReadHandle($inner);
 
         static::assertSame('line1', $handle->readLine());

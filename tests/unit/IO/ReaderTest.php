@@ -257,4 +257,58 @@ final class ReaderTest extends TestCase
         static::assertFalse($reader->reachedEndOfDataSource());
         static::assertSame('hello', $reader->readLine());
     }
+
+    public function testReadLineSplitsOnLF(): void
+    {
+        $handle = new IO\MemoryHandle("line1\nline2\nline3");
+        $reader = new IO\Reader($handle);
+
+        static::assertSame('line1', $reader->readLine());
+        static::assertSame('line2', $reader->readLine());
+        static::assertSame('line3', $reader->readLine());
+        static::assertNull($reader->readLine());
+    }
+
+    public function testReadLineStripsCRFromCRLF(): void
+    {
+        $handle = new IO\MemoryHandle("line1\r\nline2\r\nline3");
+        $reader = new IO\Reader($handle);
+
+        static::assertSame('line1', $reader->readLine());
+        static::assertSame('line2', $reader->readLine());
+        static::assertSame('line3', $reader->readLine());
+        static::assertNull($reader->readLine());
+    }
+
+    public function testReadLineMixedLineEndings(): void
+    {
+        $handle = new IO\MemoryHandle("unix\nwindows\r\nunix again\n");
+        $reader = new IO\Reader($handle);
+
+        static::assertSame('unix', $reader->readLine());
+        static::assertSame('windows', $reader->readLine());
+        static::assertSame('unix again', $reader->readLine());
+        static::assertNull($reader->readLine());
+    }
+
+    public function testReadLineEmptyLines(): void
+    {
+        $handle = new IO\MemoryHandle("\n\n\n");
+        $reader = new IO\Reader($handle);
+
+        static::assertSame('', $reader->readLine());
+        static::assertSame('', $reader->readLine());
+        static::assertSame('', $reader->readLine());
+        static::assertNull($reader->readLine());
+    }
+
+    public function testReadLineEmptyLinesCRLF(): void
+    {
+        $handle = new IO\MemoryHandle("\r\n\r\n");
+        $reader = new IO\Reader($handle);
+
+        static::assertSame('', $reader->readLine());
+        static::assertSame('', $reader->readLine());
+        static::assertNull($reader->readLine());
+    }
 }

@@ -13,8 +13,6 @@ use function strlen;
 use function strpos;
 use function substr;
 
-use const PHP_EOL;
-
 /**
  * A read handle that base64-encodes raw binary data from an inner readable handle.
  *
@@ -118,8 +116,12 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
 
     public function readLine(CancellationTokenInterface $cancellation = new NullCancellationToken()): null|string
     {
-        $line = $this->readUntil(PHP_EOL, $cancellation);
+        $line = $this->readUntil("\n", $cancellation);
         if ($line !== null) {
+            if ($line !== '' && $line[-1] === "\r") {
+                return substr($line, 0, -1);
+            }
+
             return $line;
         }
 

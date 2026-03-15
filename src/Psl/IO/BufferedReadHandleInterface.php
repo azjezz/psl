@@ -24,9 +24,12 @@ interface BufferedReadHandleInterface extends ReadHandleInterface
     public function readByte(CancellationTokenInterface $cancellation = new NullCancellationToken()): string;
 
     /**
-     * Read until the current line terminator is found.
+     * Read until a newline ("\n") is found.
      *
-     * Returns null if the end of file is reached before finding the line terminator.
+     * The trailing "\n" is consumed but not included in the return value.
+     * If the line ends with "\r\n", the trailing "\r" is also stripped.
+     *
+     * Returns null if the end of file is reached before finding a newline.
      *
      * @throws Exception\AlreadyClosedException If the handle has been already closed.
      * @throws Exception\RuntimeException If an error occurred during the operation.

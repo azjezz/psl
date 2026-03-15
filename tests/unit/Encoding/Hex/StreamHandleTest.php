@@ -170,9 +170,19 @@ final class StreamHandleTest extends TestCase
         $handle->readByte();
     }
 
-    public function testDecodingReadHandleReadLine(): void
+    public function testDecodingReadHandleReadLineLF(): void
     {
-        $inner = new IO\MemoryHandle(bin2hex('first' . PHP_EOL . 'second'));
+        $inner = new IO\MemoryHandle(bin2hex("first\nsecond"));
+        $handle = new Hex\DecodingReadHandle($inner);
+
+        static::assertSame('first', $handle->readLine());
+        static::assertSame('second', $handle->readLine());
+        static::assertNull($handle->readLine());
+    }
+
+    public function testDecodingReadHandleReadLineCRLF(): void
+    {
+        $inner = new IO\MemoryHandle(bin2hex("first\r\nsecond"));
         $handle = new Hex\DecodingReadHandle($inner);
 
         static::assertSame('first', $handle->readLine());
@@ -273,7 +283,7 @@ final class StreamHandleTest extends TestCase
 
     public function testDecodingReadHandleInterleavedMethods(): void
     {
-        $inner = new IO\MemoryHandle(bin2hex('line1|line2' . PHP_EOL . 'line3'));
+        $inner = new IO\MemoryHandle(bin2hex("line1|line2\nline3"));
         $handle = new Hex\DecodingReadHandle($inner);
 
         static::assertSame('line1', $handle->readUntil('|'));
