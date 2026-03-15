@@ -10,9 +10,8 @@ use Psl\TCP;
 
 // Note: This example requires a running SOCKS5 proxy server.
 $proxy = new Socks\Connector(
-    'proxy.example.com',
-    1080,
-    connector: new TCP\RetryConnector(new TCP\Connector(), maxAttempts: 3, backoff: Duration::seconds(1)),
+    new TCP\RetryConnector(new TCP\Connector(), maxAttempts: 3, backoff: Duration::seconds(1)),
+    new Socks\Configuration('proxy.example.com', 1080),
 );
 
 $stream = $proxy->connect('target.example.com', 80);

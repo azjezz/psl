@@ -20,6 +20,7 @@
 - **BC** - `UDP\Socket::bind()` now accepts `UDP\BindConfiguration` instead of individual parameters.
 - **BC** - `TCP\Socket` setter/getter methods (`setReuseAddress`, `setReusePort`, `setNoDelay`, etc.) have been removed. Use configuration objects instead.
 - **BC** - `TCP\Connector` constructor now accepts `TCP\ConnectConfiguration` instead of `bool $noDelay`.
+- **BC** - `Socks\Connector` constructor changed from `(string $proxyHost, int $proxyPort, ?string $username, ?string $password, ConnectorInterface $connector)` to `(ConnectorInterface $connector, Socks\Configuration $configuration)`.
 
 ### features
 
@@ -53,6 +54,7 @@
 - feat(tcp): introduce `TCP\ListenConfiguration` and `TCP\ConnectConfiguration` with immutable `with*` builder methods
 - feat(unix): introduce `Unix\ListenConfiguration` with immutable `with*` builder methods
 - feat(udp): introduce `UDP\BindConfiguration` with immutable `with*` builder methods
+- feat(socks): introduce `Socks\Configuration` with immutable `with*` builder methods for proxy host, port, and credentials
 - fix(tcp): `RetryConnector` backoff sleep now respects cancellation tokens, allowing retry loops to be cancelled during the delay
 
 ### migration guide

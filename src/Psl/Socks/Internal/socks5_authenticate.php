@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Socks\Internal;
 
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
+use Psl\Async\NullCancellationToken;
 use Psl\IO;
 use Psl\Socks\Exception;
 use SensitiveParameter;
@@ -18,6 +21,7 @@ use function strlen;
  * @param non-empty-string $password
  *
  * @throws Exception\AuthenticationException If authentication fails.
+ * @throws CancelledException If the cancellation token is cancelled.
  *
  * @internal
  *
@@ -28,6 +32,7 @@ function socks5_authenticate(
     string $username,
     #[SensitiveParameter]
     string $password,
+    CancellationTokenInterface $cancellation = new NullCancellationToken(),
 ): void {
     $usernameLen = strlen($username);
     $passwordLen = strlen($password);
@@ -40,11 +45,10 @@ function socks5_authenticate(
         throw new Exception\AuthenticationException('SOCKS5 password exceeds maximum length of 255 bytes.');
     }
 
-    // Sub-negotiation version 1
     $auth = "\x01" . chr($usernameLen) . $username . chr($passwordLen) . $password;
-    $stream->write($auth);
+    $stream->write($auth, $cancellation);
 
-    $response = $stream->readFixedSize(2);
+    $response = $stream->readFixedSize(2, $cancellation);
     if ($response[1] !== "\x00") {
         throw new Exception\AuthenticationException('SOCKS5 authentication failed: invalid credentials.');
     }
