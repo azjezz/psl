@@ -26,6 +26,12 @@ Use `Acceptor` to perform TLS handshakes on incoming streams:
 
 @example('networking/tls-server.php')
 
+### TLS Listener
+
+`TLS\Listener` wraps any `Network\ListenerInterface` and automatically performs TLS handshakes on accepted connections. This is the simplest way to build a TLS server:
+
+@example('networking/tls-listener.php')
+
 ### SNI-Based Virtual Hosting (LazyAcceptor)
 
 `LazyAcceptor` peeks at the TLS ClientHello before completing the handshake. This lets you inspect the client's SNI hostname and choose the appropriate `ServerConfig` dynamically:

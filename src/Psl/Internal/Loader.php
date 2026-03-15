@@ -1206,6 +1206,8 @@ final class Loader
         'Psl\\TLS\\ConnectionState' => 'Psl/TLS/ConnectionState.php',
         'Psl\\TLS\\PeerCertificate' => 'Psl/TLS/PeerCertificate.php',
         'Psl\\TLS\\Connector' => 'Psl/TLS/Connector.php',
+        'Psl\\TLS\\ListenerInterface' => 'Psl/TLS/ListenerInterface.php',
+        'Psl\\TLS\\Listener' => 'Psl/TLS/Listener.php',
         'Psl\\TLS\\Acceptor' => 'Psl/TLS/Acceptor.php',
         'Psl\\TLS\\LazyAcceptor' => 'Psl/TLS/LazyAcceptor.php',
         'Psl\\TLS\\ClientHello' => 'Psl/TLS/ClientHello.php',
