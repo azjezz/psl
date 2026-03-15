@@ -9,7 +9,7 @@ use Psl\TLS;
 use function implode;
 
 /**
- * Build an SSL context options array from {@see TLS\ClientConfig}.
+ * Build an SSL context options array from {@see TLS\ClientConfiguration}.
  *
  * @return array<string, mixed>
  *
@@ -17,54 +17,58 @@ use function implode;
  *
  * @codeCoverageIgnore
  */
-function client_ssl_context(TLS\ClientConfig $tls): array
+function client_ssl_context(TLS\ClientConfiguration $clientConfiguration): array
 {
     $ssl = [
-        'verify_peer' => $tls->peerVerification,
-        'verify_peer_name' => $tls->peerNameVerification ?? $tls->peerVerification,
-        'allow_self_signed' => $tls->allowSelfSigned,
-        'security_level' => $tls->securityLevel,
+        'verify_peer' => $clientConfiguration->peerVerification,
+        'verify_peer_name' => $clientConfiguration->peerNameVerification ?? $clientConfiguration->peerVerification,
+        'allow_self_signed' => $clientConfiguration->allowSelfSigned,
+        'security_level' => $clientConfiguration->securityLevel,
         'capture_peer_cert' => true,
         'capture_peer_cert_chain' => true,
-        'session_tickets' => $tls->sessionTickets,
-        'SNI_enabled' => $tls->sniEnabled,
-        'verify_depth' => $tls->verificationDepth,
+        'session_tickets' => $clientConfiguration->sessionTickets,
+        'SNI_enabled' => $clientConfiguration->sniEnabled,
+        'verify_depth' => $clientConfiguration->verificationDepth,
     ];
 
-    if (null !== $tls->peerName) {
-        $ssl['peer_name'] = $tls->peerName;
+    if (null !== $clientConfiguration->peerName) {
+        $ssl['peer_name'] = $clientConfiguration->peerName;
     }
 
-    if (null !== $tls->certificateAuthority) {
-        $ssl['cafile'] = $tls->certificateAuthority;
+    if (null !== $clientConfiguration->certificateAuthority) {
+        $ssl['cafile'] = $clientConfiguration->certificateAuthority;
     }
 
-    if (null !== $tls->certificateAuthorityPath) {
-        $ssl['capath'] = $tls->certificateAuthorityPath;
+    if (null !== $clientConfiguration->certificateAuthorityPath) {
+        $ssl['capath'] = $clientConfiguration->certificateAuthorityPath;
     }
 
-    if (null !== $tls->certificate) {
-        $ssl['local_cert'] = $tls->certificate->certificateFile;
-        $ssl['local_pk'] = $tls->certificate->keyFile;
-        if (null !== $tls->certificate->passphrase) {
-            $ssl['passphrase'] = $tls->certificate->passphrase;
+    if (null !== $clientConfiguration->certificate) {
+        $ssl['local_cert'] = $clientConfiguration->certificate->certificateFile;
+        $ssl['local_pk'] = $clientConfiguration->certificate->keyFile;
+        if (null !== $clientConfiguration->certificate->passphrase) {
+            $ssl['passphrase'] = $clientConfiguration->certificate->passphrase;
         }
     }
 
-    if (null !== $tls->minimumVersion || null !== $tls->maximumVersion) {
-        $ssl['crypto_method'] = crypto_method($tls->minimumVersion, $tls->maximumVersion, server: false);
+    if (null !== $clientConfiguration->minimumVersion || null !== $clientConfiguration->maximumVersion) {
+        $ssl['crypto_method'] = crypto_method(
+            $clientConfiguration->minimumVersion,
+            $clientConfiguration->maximumVersion,
+            server: false,
+        );
     }
 
-    if (null !== $tls->ciphers) {
-        $ssl['ciphers'] = $tls->ciphers;
+    if (null !== $clientConfiguration->ciphers) {
+        $ssl['ciphers'] = $clientConfiguration->ciphers;
     }
 
-    if (null !== $tls->alpnProtocols) {
-        $ssl['alpn_protocols'] = implode(',', $tls->alpnProtocols);
+    if (null !== $clientConfiguration->alpnProtocols) {
+        $ssl['alpn_protocols'] = implode(',', $clientConfiguration->alpnProtocols);
     }
 
-    if (null !== $tls->peerFingerprints) {
-        $ssl['peer_fingerprint'] = ['sha256' => $tls->peerFingerprints];
+    if (null !== $clientConfiguration->peerFingerprints) {
+        $ssl['peer_fingerprint'] = ['sha256' => $clientConfiguration->peerFingerprints];
     }
 
     return $ssl;

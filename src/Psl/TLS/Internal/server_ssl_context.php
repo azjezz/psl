@@ -10,7 +10,7 @@ use function implode;
 use function stream_context_create;
 
 /**
- * Build an SSL context options array from {@see TLS\ServerConfig}.
+ * Build an SSL context options array from {@see TLS\ServerConfiguration}.
  *
  * @return array<string, mixed>
  *
@@ -18,40 +18,40 @@ use function stream_context_create;
  *
  * @codeCoverageIgnore
  */
-function server_ssl_context(TLS\ServerConfig $tls): array
+function server_ssl_context(TLS\ServerConfiguration $serverConfiguration): array
 {
     $ssl = [
-        'local_cert' => $tls->certificate->certificateFile,
-        'local_pk' => $tls->certificate->keyFile,
-        'security_level' => $tls->securityLevel,
+        'local_cert' => $serverConfiguration->certificate->certificateFile,
+        'local_pk' => $serverConfiguration->certificate->keyFile,
+        'security_level' => $serverConfiguration->securityLevel,
         'capture_peer_cert' => true,
         'capture_peer_cert_chain' => true,
-        'session_tickets' => $tls->sessionTickets,
+        'session_tickets' => $serverConfiguration->sessionTickets,
     ];
 
-    if (null !== $tls->certificate->passphrase) {
-        $ssl['passphrase'] = $tls->certificate->passphrase;
+    if (null !== $serverConfiguration->certificate->passphrase) {
+        $ssl['passphrase'] = $serverConfiguration->certificate->passphrase;
     }
 
-    if (null !== $tls->certificateAuthority) {
-        $ssl['cafile'] = $tls->certificateAuthority;
+    if (null !== $serverConfiguration->certificateAuthority) {
+        $ssl['cafile'] = $serverConfiguration->certificateAuthority;
     }
 
-    if (null !== $tls->certificateAuthorityPath) {
-        $ssl['capath'] = $tls->certificateAuthorityPath;
+    if (null !== $serverConfiguration->certificateAuthorityPath) {
+        $ssl['capath'] = $serverConfiguration->certificateAuthorityPath;
     }
 
-    if (null !== $tls->ciphers) {
-        $ssl['ciphers'] = $tls->ciphers;
+    if (null !== $serverConfiguration->ciphers) {
+        $ssl['ciphers'] = $serverConfiguration->ciphers;
     }
 
-    if (null !== $tls->alpnProtocols) {
-        $ssl['alpn_protocols'] = implode(',', $tls->alpnProtocols);
+    if (null !== $serverConfiguration->alpnProtocols) {
+        $ssl['alpn_protocols'] = implode(',', $serverConfiguration->alpnProtocols);
     }
 
-    if ([] !== $tls->sniCertificates) {
+    if ([] !== $serverConfiguration->sniCertificates) {
         $sniCerts = [];
-        foreach ($tls->sniCertificates as $hostname => $certificate) {
+        foreach ($serverConfiguration->sniCertificates as $hostname => $certificate) {
             $sniSsl = [
                 'local_cert' => $certificate->certificateFile,
                 'local_pk' => $certificate->keyFile,

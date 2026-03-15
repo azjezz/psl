@@ -12,6 +12,9 @@
 - **BC** - `Psl\IO\CloseHandleInterface` now requires an `isClosed(): bool` method.
 - **BC** - `Network\SocketInterface::getLocalAddress()` and `Network\StreamInterface::getPeerAddress()` no longer throw exceptions. Addresses are resolved at construction time and cached, making these O(1) property lookups with no syscall.
 - **BC** - `BufferedReadHandleInterface::readLine()` now always splits on `"\n"` instead of `PHP_EOL`. Trailing `"\r"` is stripped, so both `"\n"` and `"\r\n"` line endings are handled consistently across all platforms. Use `readUntil(PHP_EOL)` for system-dependent behavior.
+- **BC** - `Psl\TLS\ServerConfig` renamed to `Psl\TLS\ServerConfiguration`.
+- **BC** - `Psl\TLS\ClientConfig` renamed to `Psl\TLS\ClientConfiguration`.
+- **BC** - All variables and parameters across the codebase now use `$camelCase` naming instead of `$snake_case`.
 
 ### features
 

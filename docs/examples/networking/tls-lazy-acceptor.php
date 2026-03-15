@@ -13,17 +13,17 @@ $lazy = TLS\LazyAcceptor::default();
 $listener = TCP\listen('0.0.0.0', 8443);
 
 $configs = [
-    'api.example.com' => TLS\ServerConfig::create(TLS\Certificate::create(
+    'api.example.com' => TLS\ServerConfiguration::create(TLS\Certificate::create(
         '/etc/ssl/certs/api.pem',
         '/etc/ssl/private/api.key',
     )),
-    'www.example.com' => TLS\ServerConfig::create(TLS\Certificate::create(
+    'www.example.com' => TLS\ServerConfiguration::create(TLS\Certificate::create(
         '/etc/ssl/certs/www.pem',
         '/etc/ssl/private/www.key',
     )),
 ];
 
-$default = TLS\ServerConfig::create(TLS\Certificate::create(
+$default = TLS\ServerConfiguration::create(TLS\Certificate::create(
     '/etc/ssl/certs/default.pem',
     '/etc/ssl/private/default.key',
 ));

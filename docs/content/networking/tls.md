@@ -16,7 +16,7 @@ The simplest path is `TLS\connect()`, which opens a TCP connection and performs 
 
 @example('networking/tls-upgrade.php')
 
-Configure the client with `ClientConfig`:
+Configure the client with `ClientConfiguration`:
 
 @example('networking/tls-client-config.php')
 
@@ -34,7 +34,7 @@ Use `Acceptor` to perform TLS handshakes on incoming streams:
 
 ### SNI-Based Virtual Hosting (LazyAcceptor)
 
-`LazyAcceptor` peeks at the TLS ClientHello before completing the handshake. This lets you inspect the client's SNI hostname and choose the appropriate `ServerConfig` dynamically:
+`LazyAcceptor` peeks at the TLS ClientHello before completing the handshake. This lets you inspect the client's SNI hostname and choose the appropriate `ServerConfiguration` dynamically:
 
 @example('networking/tls-lazy-acceptor.php')
 

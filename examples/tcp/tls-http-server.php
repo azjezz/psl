@@ -33,7 +33,7 @@ Async\main(static function (): int {
     $certFile = __DIR__ . '/certs/server.crt';
     $keyFile = __DIR__ . '/certs/server.key';
 
-    $tlsConfig = TLS\ServerConfig::create(TLS\Certificate::create(
+    $tlsConfig = TLS\ServerConfiguration::create(TLS\Certificate::create(
         $certFile,
         $keyFile,
     ))->withMinimumVersion(TLS\Version::Tls12);

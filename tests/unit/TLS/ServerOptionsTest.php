@@ -6,7 +6,7 @@ namespace Psl\Tests\Unit\TLS;
 
 use PHPUnit\Framework\TestCase;
 use Psl\TLS\Certificate;
-use Psl\TLS\ServerConfig;
+use Psl\TLS\ServerConfiguration;
 use Psl\TLS\Version;
 
 final class ServerOptionsTest extends TestCase
@@ -19,7 +19,7 @@ final class ServerOptionsTest extends TestCase
     public function testCreate(): void
     {
         $cert = self::certificate();
-        $config = ServerConfig::create($cert);
+        $config = ServerConfiguration::create($cert);
 
         static::assertSame($cert, $config->certificate);
         static::assertNull($config->minimumVersion);
@@ -37,63 +37,63 @@ final class ServerOptionsTest extends TestCase
     {
         $cert1 = self::certificate();
         $cert2 = Certificate::create('/other-cert.pem', '/other-key.pem');
-        $config = ServerConfig::create($cert1)->withCertificate($cert2);
+        $config = ServerConfiguration::create($cert1)->withCertificate($cert2);
 
         static::assertSame($cert2, $config->certificate);
     }
 
     public function testWithMinimumVersion(): void
     {
-        $config = ServerConfig::create(self::certificate())->withMinimumVersion(Version::Tls12);
+        $config = ServerConfiguration::create(self::certificate())->withMinimumVersion(Version::Tls12);
 
         static::assertSame(Version::Tls12, $config->minimumVersion);
     }
 
     public function testWithMaximumVersion(): void
     {
-        $config = ServerConfig::create(self::certificate())->withMaximumVersion(Version::Tls13);
+        $config = ServerConfiguration::create(self::certificate())->withMaximumVersion(Version::Tls13);
 
         static::assertSame(Version::Tls13, $config->maximumVersion);
     }
 
     public function testWithCiphers(): void
     {
-        $config = ServerConfig::create(self::certificate())->withCiphers('ECDHE-RSA-AES128-GCM-SHA256');
+        $config = ServerConfiguration::create(self::certificate())->withCiphers('ECDHE-RSA-AES128-GCM-SHA256');
 
         static::assertSame('ECDHE-RSA-AES128-GCM-SHA256', $config->ciphers);
     }
 
     public function testWithSecurityLevel(): void
     {
-        $config = ServerConfig::create(self::certificate())->withSecurityLevel(4);
+        $config = ServerConfiguration::create(self::certificate())->withSecurityLevel(4);
 
         static::assertSame(4, $config->securityLevel);
     }
 
     public function testWithCertificateAuthority(): void
     {
-        $config = ServerConfig::create(self::certificate())->withCertificateAuthority('/path/to/ca.pem');
+        $config = ServerConfiguration::create(self::certificate())->withCertificateAuthority('/path/to/ca.pem');
 
         static::assertSame('/path/to/ca.pem', $config->certificateAuthority);
     }
 
     public function testWithCertificateAuthorityPath(): void
     {
-        $config = ServerConfig::create(self::certificate())->withCertificateAuthorityPath('/path/to/ca/');
+        $config = ServerConfiguration::create(self::certificate())->withCertificateAuthorityPath('/path/to/ca/');
 
         static::assertSame('/path/to/ca/', $config->certificateAuthorityPath);
     }
 
     public function testWithAlpnProtocols(): void
     {
-        $config = ServerConfig::create(self::certificate())->withAlpnProtocols(['h2', 'http/1.1']);
+        $config = ServerConfiguration::create(self::certificate())->withAlpnProtocols(['h2', 'http/1.1']);
 
         static::assertSame(['h2', 'http/1.1'], $config->alpnProtocols);
     }
 
     public function testWithAlpnProtocolsNull(): void
     {
-        $config = ServerConfig::create(self::certificate())->withAlpnProtocols(['h2'])->withAlpnProtocols(null);
+        $config = ServerConfiguration::create(self::certificate())->withAlpnProtocols(['h2'])->withAlpnProtocols(null);
 
         static::assertNull($config->alpnProtocols);
     }
@@ -101,7 +101,7 @@ final class ServerOptionsTest extends TestCase
     public function testWithSniCertificate(): void
     {
         $cert = Certificate::create('/sni-cert.pem', '/sni-key.pem');
-        $config = ServerConfig::create(self::certificate())->withSniCertificate('example.com', $cert);
+        $config = ServerConfiguration::create(self::certificate())->withSniCertificate('example.com', $cert);
 
         static::assertArrayHasKey('example.com', $config->sniCertificates);
         static::assertSame($cert, $config->sniCertificates['example.com']);
@@ -112,21 +112,21 @@ final class ServerOptionsTest extends TestCase
         $cert1 = Certificate::create('/sni1-cert.pem', '/sni1-key.pem');
         $cert2 = Certificate::create('/sni2-cert.pem', '/sni2-key.pem');
         $sni = ['a.example.com' => $cert1, 'b.example.com' => $cert2];
-        $config = ServerConfig::create(self::certificate())->withSniCertificates($sni);
+        $config = ServerConfiguration::create(self::certificate())->withSniCertificates($sni);
 
         static::assertSame($sni, $config->sniCertificates);
     }
 
     public function testWithSessionTickets(): void
     {
-        $config = ServerConfig::create(self::certificate())->withSessionTickets(false);
+        $config = ServerConfiguration::create(self::certificate())->withSessionTickets(false);
 
         static::assertFalse($config->sessionTickets);
     }
 
     public function testImmutability(): void
     {
-        $original = ServerConfig::create(self::certificate());
+        $original = ServerConfiguration::create(self::certificate());
         $modified = $original->withMinimumVersion(Version::Tls12);
 
         static::assertNull($original->minimumVersion);

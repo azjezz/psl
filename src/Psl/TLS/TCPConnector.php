@@ -32,7 +32,7 @@ final readonly class TCPConnector implements TCP\ConnectorInterface
      *
      * The $host parameter is used both as the TCP connection target and as the
      * TLS Server Name Indication (SNI) value, unless overridden by the
-     * {@see ClientConfig::$peerName} of the TLS connector.
+     * {@see ClientConfiguration::$peerName} of the TLS connector.
      *
      * @param non-empty-string $host
      * @param int<0, 65535> $port

@@ -15,7 +15,7 @@ Async\main(static function (): int {
     $certFile = __DIR__ . '/certs/server.crt';
     $keyFile = __DIR__ . '/certs/server.key';
 
-    $tlsConfig = TLS\ServerConfig::create(TLS\Certificate::create($certFile, $keyFile));
+    $tlsConfig = TLS\ServerConfiguration::create(TLS\Certificate::create($certFile, $keyFile));
 
     $acceptor = new TLS\Acceptor($tlsConfig);
 
@@ -68,7 +68,7 @@ Async\main(static function (): int {
 
             // Upgrade to TLS
             IO\write_error_line('> upgrading to TLS...');
-            $connector = new TLS\Connector(new TLS\ClientConfig(peerVerification: false, allowSelfSigned: true));
+            $connector = new TLS\Connector(new TLS\ClientConfiguration(peerVerification: false, allowSelfSigned: true));
             $tls = $connector->connect($client, 'localhost');
             IO\write_error_line('> TLS handshake complete: %s', $tls->getState()->version->name);
 

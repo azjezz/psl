@@ -11,7 +11,7 @@ namespace Psl\TLS;
  *
  * @psalm-immutable
  */
-final readonly class ServerConfig
+final readonly class ServerConfiguration
 {
     /**
      * @param Certificate $certificate Server certificate (required for TLS servers).

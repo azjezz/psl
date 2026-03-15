@@ -14,7 +14,7 @@ use Psl\Default\DefaultInterface;
  *
  * @psalm-immutable
  */
-final readonly class ClientConfig implements DefaultInterface
+final readonly class ClientConfiguration implements DefaultInterface
 {
     /**
      * @param ?non-empty-string $peerName SNI hostname for the TLS handshake. When null, the connection host is used.

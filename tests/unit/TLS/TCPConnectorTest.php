@@ -24,7 +24,7 @@ final class TCPConnectorTest extends TestCase
     public function testTCPConnectorConnectsAndUpgradesToTls(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
-        $serverConfig = TLS\ServerConfig::create($cert);
+        $serverConfig = TLS\ServerConfiguration::create($cert);
         $acceptor = new TLS\Acceptor($serverConfig);
 
         $listener = TCP\listen('127.0.0.1', 0);
@@ -41,7 +41,7 @@ final class TCPConnectorTest extends TestCase
                 $listener->close();
             },
             'client' => static function () use ($port): void {
-                $config = TLS\ClientConfig::default()->withPeerVerification(false)->withAllowSelfSigned(true);
+                $config = TLS\ClientConfiguration::default()->withPeerVerification(false)->withAllowSelfSigned(true);
 
                 $connector = new TLS\TCPConnector(new TCP\Connector(), new TLS\Connector($config));
 
@@ -61,7 +61,7 @@ final class TCPConnectorTest extends TestCase
     public function testTCPConnectorWorksWithSocketPool(): void
     {
         $cert = TLS\Certificate::create(self::CERT_FILE, self::KEY_FILE);
-        $serverConfig = TLS\ServerConfig::create($cert);
+        $serverConfig = TLS\ServerConfiguration::create($cert);
         $acceptor = new TLS\Acceptor($serverConfig);
 
         $listener = TCP\listen('127.0.0.1', 0);
@@ -78,7 +78,7 @@ final class TCPConnectorTest extends TestCase
                 $listener->close();
             },
             'client' => static function () use ($port): void {
-                $config = TLS\ClientConfig::default()->withPeerVerification(false)->withAllowSelfSigned(true);
+                $config = TLS\ClientConfiguration::default()->withPeerVerification(false)->withAllowSelfSigned(true);
 
                 $pool = new TCP\SocketPool(new TLS\TCPConnector(new TCP\Connector(), new TLS\Connector($config)));
 

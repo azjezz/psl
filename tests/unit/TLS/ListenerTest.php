@@ -87,11 +87,11 @@ final class ListenerTest extends TestCase
         })->await();
     }
 
-    private function createServerConfig(): TLS\ServerConfig
+    private function createServerConfig(): TLS\ServerConfiguration
     {
         $certFile = __DIR__ . '/../../fixture/certs/server.crt';
         $keyFile = __DIR__ . '/../../fixture/certs/server.key';
 
-        return TLS\ServerConfig::create(new TLS\Certificate($certFile, $keyFile));
+        return TLS\ServerConfiguration::create(new TLS\Certificate($certFile, $keyFile));
     }
 }

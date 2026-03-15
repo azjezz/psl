@@ -58,7 +58,7 @@ final class ErrorCaseTest extends TestCase
                 $client = TCP\connect('127.0.0.1', $port);
                 $client->close();
 
-                $connector = new TLS\Connector(new TLS\ClientConfig());
+                $connector = new TLS\Connector(new TLS\ClientConfiguration());
                 // Trying to TLS-connect on a closed stream should throw
                 $connector->connect($client);
             },
@@ -78,7 +78,7 @@ final class ErrorCaseTest extends TestCase
                 $connection = $listener->accept();
                 $connection->close();
 
-                $acceptor = new TLS\Acceptor(TLS\ServerConfig::create(TLS\Certificate::create(
+                $acceptor = new TLS\Acceptor(TLS\ServerConfiguration::create(TLS\Certificate::create(
                     '/dev/null',
                     '/dev/null',
                 )));

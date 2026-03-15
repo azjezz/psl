@@ -26,9 +26,9 @@ final readonly class Listener implements ListenerInterface
 
     public function __construct(
         private Network\ListenerInterface $listener,
-        ServerConfig $config,
+        ServerConfiguration $serverConfiguration,
     ) {
-        $this->acceptor = new Acceptor($config);
+        $this->acceptor = new Acceptor($serverConfiguration);
     }
 
     /**

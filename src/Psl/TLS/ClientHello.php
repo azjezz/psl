@@ -17,7 +17,7 @@ use function stream_context_set_options;
  * Represents a parsed TLS ClientHello, allowing SNI/ALPN inspection before completing the handshake.
  *
  * Obtained from {@see LazyAcceptor::accept()}, this class lets you inspect the client's
- * SNI hostname and ALPN protocols before choosing a {@see ServerConfig} for the handshake.
+ * SNI hostname and ALPN protocols before choosing a {@see ServerConfiguration} for the handshake.
  */
 final readonly class ClientHello
 {
@@ -59,7 +59,7 @@ final readonly class ClientHello
      * @throws CancelledException If the cancellation token is cancelled during the handshake.
      */
     public function complete(
-        ServerConfig $config,
+        ServerConfiguration $serverConfiguration,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): StreamInterface {
         $resource = $this->stream->getStream();
@@ -67,10 +67,14 @@ final readonly class ClientHello
             throw new Network\Exception\RuntimeException('Stream resource is not available.');
         }
 
-        $sslContext = Internal\server_ssl_context($config);
+        $sslContext = Internal\server_ssl_context($serverConfiguration);
         stream_context_set_options($resource, ['ssl' => $sslContext]);
 
-        $cryptoMethod = Internal\crypto_method($config->minimumVersion, $config->maximumVersion, server: true);
+        $cryptoMethod = Internal\crypto_method(
+            $serverConfiguration->minimumVersion,
+            $serverConfiguration->maximumVersion,
+            server: true,
+        );
 
         Internal\enable_crypto($resource, $cryptoMethod, $cancellation);
 
