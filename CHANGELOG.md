@@ -21,6 +21,7 @@
 - **BC** - `TCP\Socket` setter/getter methods (`setReuseAddress`, `setReusePort`, `setNoDelay`, etc.) have been removed. Use configuration objects instead.
 - **BC** - `TCP\Connector` constructor now accepts `TCP\ConnectConfiguration` instead of `bool $noDelay`.
 - **BC** - `Socks\Connector` constructor changed from `(string $proxyHost, int $proxyPort, ?string $username, ?string $password, ConnectorInterface $connector)` to `(ConnectorInterface $connector, Socks\Configuration $configuration)`.
+- **BC** - Renamed `ingoing` to `ongoing` across `Semaphore`, `Sequence`, `KeyedSemaphore`, and `KeyedSequence` (`hasIngoingOperations()` -> `hasOngoingOperations()`, `getIngoingOperations()` -> `getOngoingOperations()`, etc.).
 
 ### features
 

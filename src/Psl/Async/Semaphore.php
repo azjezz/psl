@@ -30,7 +30,7 @@ final class Semaphore
     /**
      * @var int<0, max>
      */
-    private int $ingoing = 0;
+    private int $ongoing = 0;
 
     /**
      * @var list<Suspension>
@@ -54,7 +54,7 @@ final class Semaphore
     /**
      * Run the operation using the given `$input`.
      *
-     * If the concurrency limit has been reached, this method will wait until one of the ingoing operations has completed.
+     * If the concurrency limit has been reached, this method will wait until one of the ongoing operations has completed.
      *
      * @param Tin $input
      *
@@ -66,7 +66,7 @@ final class Semaphore
      */
     public function waitFor(mixed $input, CancellationTokenInterface $cancellation = new NullCancellationToken()): mixed
     {
-        if ($this->ingoing === $this->concurrencyLimit) {
+        if ($this->ongoing === $this->concurrencyLimit) {
             $cancellation->throwIfCancelled();
 
             $suspension = EventLoop::getSuspension();
@@ -87,7 +87,7 @@ final class Semaphore
             }
         }
 
-        $this->ingoing++;
+        $this->ongoing++;
 
         try {
             return ($this->operation)($input);
@@ -103,7 +103,7 @@ final class Semaphore
                 $this->waits = [];
             }
 
-            $this->ingoing--;
+            $this->ongoing--;
         }
     }
 
@@ -154,26 +154,26 @@ final class Semaphore
     }
 
     /**
-     * Get the number of ingoing operations.
+     * Get the number of ongoing operations.
      *
      * The returned number will always be lower, or equal to the concurrency limit.
      *
      * @return int<0, max>
      */
-    public function getIngoingOperations(): int
+    public function getOngoingOperations(): int
     {
-        return $this->ingoing;
+        return $this->ongoing;
     }
 
     /**
-     * Check if the semaphore has any ingoing operations.
+     * Check if the semaphore has any ongoing operations.
      *
-     * If this method returns `true`, it does not mean future calls to `waitFor` will wait, since a semaphore can have multiple ingoing operations
+     * If this method returns `true`, it does not mean future calls to `waitFor` will wait, since a semaphore can have multiple ongoing operations
      * at the same time.
      */
-    public function hasIngoingOperations(): bool
+    public function hasOngoingOperations(): bool
     {
-        return $this->ingoing > 0;
+        return $this->ongoing > 0;
     }
 
     /**
@@ -183,7 +183,7 @@ final class Semaphore
      */
     public function waitForPending(CancellationTokenInterface $cancellation = new NullCancellationToken()): void
     {
-        if ($this->ingoing !== $this->concurrencyLimit) {
+        if ($this->ongoing !== $this->concurrencyLimit) {
             return;
         }
 

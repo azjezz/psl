@@ -189,24 +189,24 @@ final class SemaphoreTest extends TestCase
 
         $one = Async\run(static fn(): string => $semaphore->waitFor('one'));
         $two = Async\run(static fn(): string => $semaphore->waitFor('two'));
-        static::assertSame(0, $semaphore->getIngoingOperations());
+        static::assertSame(0, $semaphore->getOngoingOperations());
         static::assertSame(0, $semaphore->getPendingOperations());
-        static::assertFalse($semaphore->hasIngoingOperations());
+        static::assertFalse($semaphore->hasOngoingOperations());
         static::assertFalse($semaphore->hasPendingOperations());
         Async\later();
-        static::assertSame(1, $semaphore->getIngoingOperations());
+        static::assertSame(1, $semaphore->getOngoingOperations());
         static::assertSame(1, $semaphore->getPendingOperations());
         static::assertTrue($semaphore->hasPendingOperations());
-        static::assertTrue($semaphore->hasIngoingOperations());
+        static::assertTrue($semaphore->hasOngoingOperations());
         $one->await();
-        static::assertSame(1, $semaphore->getIngoingOperations());
+        static::assertSame(1, $semaphore->getOngoingOperations());
         static::assertSame(0, $semaphore->getPendingOperations());
-        static::assertTrue($semaphore->hasIngoingOperations());
+        static::assertTrue($semaphore->hasOngoingOperations());
         static::assertFalse($semaphore->hasPendingOperations());
         $two->await();
-        static::assertSame(0, $semaphore->getIngoingOperations());
+        static::assertSame(0, $semaphore->getOngoingOperations());
         static::assertSame(0, $semaphore->getPendingOperations());
-        static::assertFalse($semaphore->hasIngoingOperations());
+        static::assertFalse($semaphore->hasOngoingOperations());
         static::assertFalse($semaphore->hasPendingOperations());
     }
 
@@ -235,7 +235,7 @@ final class SemaphoreTest extends TestCase
 
         $semaphore->waitForPending();
 
-        static::assertFalse($semaphore->hasIngoingOperations());
+        static::assertFalse($semaphore->hasOngoingOperations());
     }
 
     public function testWaitForCancelledWhileWaitingForSlot(): void

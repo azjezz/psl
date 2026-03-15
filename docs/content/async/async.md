@@ -94,7 +94,7 @@ Limits the number of concurrent operations. All operations use the same processi
 
 @example('async/async-semaphore.php')
 
-The semaphore provides methods to inspect state (`getPendingOperations()`, `getIngoingOperations()`, `hasPendingOperations()`) and to cancel pending work. Both `waitFor()` and `waitForPending()` accept an optional `CancellationTokenInterface`.
+The semaphore provides methods to inspect state (`getPendingOperations()`, `getOngoingOperations()`, `hasPendingOperations()`) and to cancel pending work. Both `waitFor()` and `waitForPending()` accept an optional `CancellationTokenInterface`.
 
 ### KeyedSemaphore
 

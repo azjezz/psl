@@ -32,7 +32,7 @@ final class KeyedSequence
     /**
      * @var array<Tk, bool>
      */
-    private array $ingoing = [];
+    private array $ongoing = [];
 
     /**
      * @var array<Tk, list<Suspension>>
@@ -68,7 +68,7 @@ final class KeyedSequence
         mixed $input,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): mixed {
-        if (array_key_exists($key, $this->ingoing)) {
+        if (array_key_exists($key, $this->ongoing)) {
             $cancellation->throwIfCancelled();
 
             $suspension = EventLoop::getSuspension();
@@ -93,7 +93,7 @@ final class KeyedSequence
             }
         }
 
-        $this->ingoing[$key] = true;
+        $this->ongoing[$key] = true;
 
         try {
             return ($this->operation)($key, $input);
@@ -111,7 +111,7 @@ final class KeyedSequence
                     $suspension->resume();
                 }
 
-                unset($this->waits[$key], $this->ingoing[$key]);
+                unset($this->waits[$key], $this->ongoing[$key]);
             }
         }
     }
@@ -201,40 +201,40 @@ final class KeyedSequence
     }
 
     /**
-     * Check if there's an ingoing operation for the given key.
+     * Check if there's an ongoing operation for the given key.
      *
      * If this method returns `true`, it means the sequence is busy, future calls to `waitFor` will wait.
      * If this method returns `false`, it means the sequence is not busy, future calls to `waitFor` will execute immediately.
      *
      * @param Tk $key
      */
-    public function hasIngoingOperations(string|int $key): bool
+    public function hasOngoingOperations(string|int $key): bool
     {
-        return array_key_exists($key, $this->ingoing);
+        return array_key_exists($key, $this->ongoing);
     }
 
     /**
-     * Check if the sequence has any ingoing operations.
+     * Check if the sequence has any ongoing operations.
      */
-    public function hasAnyIngoingOperations(): bool
+    public function hasAnyOngoingOperations(): bool
     {
-        return [] !== $this->ingoing;
+        return [] !== $this->ongoing;
     }
 
     /**
-     * Get the number of total ingoing operations.
+     * Get the number of total ongoing operations.
      *
      * @return int<0, max>
      */
-    public function getTotalIngoingOperations(): int
+    public function getTotalOngoingOperations(): int
     {
-        return count($this->ingoing);
+        return count($this->ongoing);
     }
 
     /**
      * Wait for all pending operations associated with the given key to finish execution.
      *
-     * If the sequence does not have any ingoing operations for the given key, this method will return immediately.
+     * If the sequence does not have any ongoing operations for the given key, this method will return immediately.
      *
      * @param Tk $key
      *
@@ -244,7 +244,7 @@ final class KeyedSequence
         string|int $key,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): void {
-        if (!array_key_exists($key, $this->ingoing)) {
+        if (!array_key_exists($key, $this->ongoing)) {
             return;
         }
 
