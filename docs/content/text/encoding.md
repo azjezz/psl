@@ -50,4 +50,21 @@ Encoded-word encoding is used in MIME headers (Subject, From, etc.) to represent
 
 `encode()` accepts an optional `$charset` parameter of type `Psl\Str\Encoding` (default `Encoding::Utf8`). `decode()` handles charset conversion automatically, and per RFC 2047 §6.2, whitespace between adjacent encoded-words is removed.
 
+## Streaming IO Handles
+
+Each encoding namespace (Base64, Hex, QuotedPrintable) provides four IO handle decorators that transparently encode or decode data as it flows through:
+
+- **`EncodingReadHandle`** wraps a raw readable handle; read() returns encoded data
+- **`DecodingReadHandle`** wraps an encoded readable handle; read() returns decoded data
+- **`EncodingWriteHandle`** accepts raw data via write(); encodes and writes to the inner handle
+- **`DecodingWriteHandle`** accepts encoded data via write(); decodes and writes to the inner handle
+
+Write handles have a `flush()` method to encode/decode any remaining buffered data.
+
+This bridges `Psl\IO` with `Psl\Encoding`, allowing you to compose encoding into any IO pipeline:
+
+@example('text/encoding-streaming.php')
+
+Read handles also implement `BufferedReadHandleInterface`, providing `readByte()`, `readLine()`, `readUntil()`, and `readUntilBounded()` directly on the decoded/encoded output with zero wrapper overhead.
+
 See `src/Psl/Encoding/` for the full API.
