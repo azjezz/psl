@@ -155,4 +155,95 @@ final class ConnectorTest extends TestCase
         $connector = new TCP\RetryConnector($alwaysFails, maxAttempts: 2, backoff: Duration::milliseconds(10));
         $connector->connect('127.0.0.1', 80);
     }
+
+    public function testRetryConnectorCancelledDuringBackoff(): void
+    {
+        $attempts = 0;
+
+        $alwaysFails = new class($attempts) implements TCP\ConnectorInterface {
+            public function __construct(
+                private int &$attempts,
+            ) {}
+
+            public function connect(
+                string $host,
+                int $port,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): TCP\StreamInterface {
+                $this->attempts++;
+
+                throw new Network\Exception\RuntimeException('Connection failed');
+            }
+        };
+
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        Async\run(static function () use ($alwaysFails, &$attempts): void {
+            $connector = new TCP\RetryConnector($alwaysFails, maxAttempts: 10, backoff: Duration::seconds(5));
+
+            $token = new Async\TimeoutCancellationToken(Duration::milliseconds(50));
+
+            $connector->connect('127.0.0.1', 9999, $token);
+        })->await();
+    }
+
+    public function testRetryConnectorCancelledDuringBackoffStopsRetrying(): void
+    {
+        $attempts = 0;
+
+        $alwaysFails = new class($attempts) implements TCP\ConnectorInterface {
+            public function __construct(
+                private int &$attempts,
+            ) {}
+
+            public function connect(
+                string $host,
+                int $port,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): TCP\StreamInterface {
+                $this->attempts++;
+
+                throw new Network\Exception\RuntimeException('Connection failed');
+            }
+        };
+
+        try {
+            Async\run(static function () use ($alwaysFails): void {
+                $connector = new TCP\RetryConnector($alwaysFails, maxAttempts: 100, backoff: Duration::seconds(5));
+
+                $token = new Async\TimeoutCancellationToken(Duration::milliseconds(50));
+
+                $connector->connect('127.0.0.1', 9999, $token);
+            })->await();
+        } catch (Async\Exception\CancelledException) {
+            // expected
+        }
+
+        // Should have only attempted once or twice before the backoff was cancelled
+        static::assertLessThan(5, $attempts);
+    }
+
+    public function testRetryConnectorAlreadyCancelledToken(): void
+    {
+        $alwaysFails = new class() implements TCP\ConnectorInterface {
+            public function connect(
+                string $host,
+                int $port,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): TCP\StreamInterface {
+                throw new Network\Exception\RuntimeException('Connection failed');
+            }
+        };
+
+        $token = new Async\SignalCancellationToken();
+        $token->cancel();
+
+        $this->expectException(Async\Exception\CancelledException::class);
+
+        Async\run(static function () use ($alwaysFails, $token): void {
+            $connector = new TCP\RetryConnector($alwaysFails, maxAttempts: 10, backoff: Duration::seconds(5));
+
+            $connector->connect('127.0.0.1', 9999, $token);
+        })->await();
+    }
 }

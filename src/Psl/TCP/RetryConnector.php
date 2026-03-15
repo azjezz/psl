@@ -6,6 +6,7 @@ namespace Psl\TCP;
 
 use Override;
 use Psl\Async\CancellationTokenInterface;
+use Psl\Async\Exception\CancelledException;
 use Psl\Async\NullCancellationToken;
 use Psl\DateTime\Duration;
 use Psl\Network;
@@ -61,6 +62,8 @@ final readonly class RetryConnector implements ConnectorInterface
                     );
                 }
 
+                $cancellation->throwIfCancelled();
+
                 // Exponential backoff: base * multiplier^(attempt-1)
                 $delaySec = $this->backoff->getTotalSeconds() * ($this->backoffMultiplier ** ($attempts - 1));
 
@@ -69,10 +72,19 @@ final readonly class RetryConnector implements ConnectorInterface
                     $suspension->resume();
                 });
 
+                $id = $cancellation->subscribe(static function (CancelledException $e) use (
+                    $suspension,
+                    $watcher,
+                ): void {
+                    EventLoop::cancel($watcher);
+                    $suspension->throw($e);
+                });
+
                 try {
                     $suspension->suspend();
                 } finally {
                     EventLoop::cancel($watcher);
+                    $cancellation->unsubscribe($id);
                 }
             }
         }
