@@ -291,4 +291,119 @@ final class StreamHandleTest extends TestCase
         static::assertSame('l', $handle->readByte());
         static::assertSame('ine3', $handle->readAll());
     }
+
+    public function testDecodingReadHandleTryReadExactBuffer(): void
+    {
+        $inner = new IO\MemoryHandle(bin2hex('ABCD'));
+        $handle = new Hex\DecodingReadHandle($inner);
+
+        static::assertSame('ABCD', $handle->tryRead(4));
+        static::assertSame('', $handle->tryRead());
+    }
+
+    public function testDecodingReadHandleReadAfterEof(): void
+    {
+        $inner = new IO\MemoryHandle(bin2hex('X'));
+        $handle = new Hex\DecodingReadHandle($inner);
+
+        static::assertSame('X', $handle->read());
+        static::assertSame('', $handle->read());
+        static::assertTrue($handle->reachedEndOfDataSource());
+    }
+
+    public function testDecodingReadHandleReadByteSingle(): void
+    {
+        $inner = new IO\MemoryHandle(bin2hex('X'));
+        $handle = new Hex\DecodingReadHandle($inner);
+
+        static::assertSame('X', $handle->readByte());
+    }
+
+    public function testDecodingReadHandleReadLineEmpty(): void
+    {
+        $inner = new IO\MemoryHandle(bin2hex("\n\n"));
+        $handle = new Hex\DecodingReadHandle($inner);
+
+        static::assertSame('', $handle->readLine());
+        static::assertSame('', $handle->readLine());
+        static::assertNull($handle->readLine());
+    }
+
+    public function testDecodingReadHandleReadLineCRLFStripped(): void
+    {
+        $inner = new IO\MemoryHandle(bin2hex("a\r\nb"));
+        $handle = new Hex\DecodingReadHandle($inner);
+
+        static::assertSame('a', $handle->readLine());
+        static::assertSame('b', $handle->readLine());
+    }
+
+    public function testDecodingReadHandleReadUntilMultiple(): void
+    {
+        $inner = new IO\MemoryHandle(bin2hex('a|b|c'));
+        $handle = new Hex\DecodingReadHandle($inner);
+
+        static::assertSame('a', $handle->readUntil('|'));
+        static::assertSame('b', $handle->readUntil('|'));
+        static::assertNull($handle->readUntil('|'));
+    }
+
+    public function testDecodingReadHandleReadUntilBoundedExact(): void
+    {
+        $inner = new IO\MemoryHandle(bin2hex('abcde:end'));
+        $handle = new Hex\DecodingReadHandle($inner);
+
+        static::assertSame('abcde', $handle->readUntilBounded(':end', 5));
+    }
+
+    public function testDecodingReadHandleTryReadOnEof(): void
+    {
+        $inner = new IO\MemoryHandle('');
+        $handle = new Hex\DecodingReadHandle($inner);
+
+        static::assertSame('', $handle->tryRead());
+        static::assertTrue($handle->reachedEndOfDataSource());
+    }
+
+    public function testEncodingReadHandleReadAfterEof(): void
+    {
+        $inner = new IO\MemoryHandle('A');
+        $handle = new Hex\EncodingReadHandle($inner);
+
+        $handle->readAll();
+        static::assertSame('', $handle->read());
+        static::assertTrue($handle->reachedEndOfDataSource());
+    }
+
+    public function testEncodingReadHandleReadByteOnEmpty(): void
+    {
+        $inner = new IO\MemoryHandle('');
+        $handle = new Hex\EncodingReadHandle($inner);
+
+        $this->expectException(IO\Exception\RuntimeException::class);
+        $handle->readByte();
+    }
+
+    public function testDecodingWriteHandleOddFlushThrows(): void
+    {
+        $inner = new IO\MemoryHandle();
+        $handle = new Hex\DecodingWriteHandle($inner);
+
+        $handle->write('a');
+
+        $this->expectException(Exception\RangeException::class);
+        $handle->flush();
+    }
+
+    public function testEncodingWriteHandleRoundTrip(): void
+    {
+        $data = "\x00\x01\xff";
+        $encoded = new IO\MemoryHandle();
+        $encoder = new Hex\EncodingWriteHandle($encoded);
+        $encoder->writeAll($data);
+
+        $encoded->seek(0);
+        $decoder = new Hex\DecodingReadHandle($encoded);
+        static::assertSame($data, $decoder->readAll());
+    }
 }

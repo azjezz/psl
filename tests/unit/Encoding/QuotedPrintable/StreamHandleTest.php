@@ -320,4 +320,127 @@ final class StreamHandleTest extends TestCase
 
         $handle->readByte();
     }
+
+    public function testDecodingReadHandleTryReadExactBuffer(): void
+    {
+        $inner = new IO\MemoryHandle('ABCD');
+        $handle = new QuotedPrintable\DecodingReadHandle($inner);
+
+        static::assertSame('ABCD', $handle->tryRead(4));
+        static::assertSame('', $handle->tryRead());
+    }
+
+    public function testDecodingReadHandleReadAfterEof(): void
+    {
+        $inner = new IO\MemoryHandle('X');
+        $handle = new QuotedPrintable\DecodingReadHandle($inner);
+
+        static::assertSame('X', $handle->read());
+        static::assertSame('', $handle->read());
+        static::assertTrue($handle->reachedEndOfDataSource());
+    }
+
+    public function testDecodingReadHandleReadByteSingle(): void
+    {
+        $inner = new IO\MemoryHandle('X');
+        $handle = new QuotedPrintable\DecodingReadHandle($inner);
+
+        static::assertSame('X', $handle->readByte());
+    }
+
+    public function testDecodingReadHandleReadLineMultiple(): void
+    {
+        $inner = new IO\MemoryHandle("abc\r\ndef");
+        $handle = new QuotedPrintable\DecodingReadHandle($inner);
+
+        $first = $handle->readLine();
+        static::assertNotNull($first);
+        static::assertStringContainsString('abc', $first);
+    }
+
+    public function testDecodingReadHandleReadUntilMultiple(): void
+    {
+        $inner = new IO\MemoryHandle('a|b|c');
+        $handle = new QuotedPrintable\DecodingReadHandle($inner);
+
+        static::assertSame('a', $handle->readUntil('|'));
+        static::assertSame('b', $handle->readUntil('|'));
+        static::assertNull($handle->readUntil('|'));
+    }
+
+    public function testDecodingReadHandleReadUntilBoundedExact(): void
+    {
+        $inner = new IO\MemoryHandle('abcde:end');
+        $handle = new QuotedPrintable\DecodingReadHandle($inner);
+
+        static::assertSame('abcde', $handle->readUntilBounded(':end', 5));
+    }
+
+    public function testDecodingReadHandleTryReadOnEof(): void
+    {
+        $inner = new IO\MemoryHandle('');
+        $handle = new QuotedPrintable\DecodingReadHandle($inner);
+
+        static::assertSame('', $handle->tryRead());
+        static::assertTrue($handle->reachedEndOfDataSource());
+    }
+
+    public function testEncodingReadHandleReadAfterEof(): void
+    {
+        $inner = new IO\MemoryHandle('A');
+        $handle = new QuotedPrintable\EncodingReadHandle($inner);
+
+        $handle->readAll();
+        static::assertSame('', $handle->read());
+        static::assertTrue($handle->reachedEndOfDataSource());
+    }
+
+    public function testEncodingReadHandleTryReadExact(): void
+    {
+        $inner = new IO\MemoryHandle('AB');
+        $handle = new QuotedPrintable\EncodingReadHandle($inner);
+
+        static::assertSame('A', $handle->tryRead(1));
+        static::assertSame('B', $handle->tryRead());
+    }
+
+    public function testDecodingWriteHandleFlushEmpty(): void
+    {
+        $inner = new IO\MemoryHandle();
+        $handle = new QuotedPrintable\DecodingWriteHandle($inner);
+
+        $handle->flush();
+
+        $inner->seek(0);
+        static::assertSame('', $inner->readAll());
+    }
+
+    public function testEncodingWriteHandleFlushEmpty(): void
+    {
+        $inner = new IO\MemoryHandle();
+        $handle = new QuotedPrintable\EncodingWriteHandle($inner);
+
+        $handle->flush();
+
+        $inner->seek(0);
+        static::assertSame('', $inner->readAll());
+    }
+
+    public function testDecodingReadHandleReadLineThenNull(): void
+    {
+        $inner = new IO\MemoryHandle('no newline');
+        $handle = new QuotedPrintable\DecodingReadHandle($inner);
+
+        static::assertSame('no newline', $handle->readLine());
+        static::assertNull($handle->readLine());
+    }
+
+    public function testEncodingReadHandleReadLineThenNull(): void
+    {
+        $inner = new IO\MemoryHandle('no newline');
+        $handle = new QuotedPrintable\EncodingReadHandle($inner);
+
+        static::assertSame('no newline', $handle->readLine());
+        static::assertNull($handle->readLine());
+    }
 }
