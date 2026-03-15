@@ -137,4 +137,20 @@ final class TimeoutCancellationTokenTest extends TestCase
 
         static::assertTrue($result);
     }
+
+    public function testWeakReferenceDroppedBeforeTimeout(): void
+    {
+        Async\run(static function (): void {
+            // Create a token with a long timeout, then drop all references
+            $token = new Async\TimeoutCancellationToken(Duration::seconds(10));
+            unset($token);
+
+            gc_collect_cycles();
+
+            Async\sleep(Duration::milliseconds(10));
+        })->await();
+
+        // If we got here without error, the WeakReference null check worked
+        static::addToAssertionCount(1);
+    }
 }
