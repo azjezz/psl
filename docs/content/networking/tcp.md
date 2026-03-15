@@ -67,4 +67,10 @@ All configuration objects are immutable and provide `with*` builder methods for 
 
 @example('networking/tcp-restricted-listener.php')
 
+### Composite Listener
+
+`Network\CompositeListener` accepts connections from multiple listeners concurrently through a single `accept()` call. Each inner listener runs its own accept loop in a separate fiber, and connections are funneled through a shared channel. Closing the composite listener closes all inner listeners.
+
+@example('networking/composite-listener.php')
+
 See `src/Psl/TCP/` for the full API.

@@ -26,10 +26,7 @@ final class SleepTest extends TestCase
         Async\run(static function (): void {
             $token = new Async\SignalCancellationToken();
 
-            Async\run(static function () use ($token): void {
-                Async\sleep(Duration::milliseconds(5));
-                $token->cancel();
-            })->ignore();
+            Async\Scheduler::delay(Duration::milliseconds(5), static fn(string $_) => $token->cancel());
 
             Async\sleep(Duration::seconds(5), $token);
         })->await();

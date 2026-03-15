@@ -1190,6 +1190,7 @@ final class Loader
         'Psl\\Network\\Exception\\AlreadyStoppedException' => 'Psl/Network/Exception/AlreadyStoppedException.php',
         'Psl\\Network\\Exception\\InvalidArgumentException' => 'Psl/Network/Exception/InvalidArgumentException.php',
         'Psl\\Network\\Address' => 'Psl/Network/Address.php',
+        'Psl\\Network\\CompositeListener' => 'Psl/Network/CompositeListener.php',
         'Psl\\CIDR\\Block' => 'Psl/CIDR/Block.php',
         'Psl\\CIDR\\Exception\\ExceptionInterface' => 'Psl/CIDR/Exception/ExceptionInterface.php',
         'Psl\\CIDR\\Exception\\InvalidArgumentException' => 'Psl/CIDR/Exception/InvalidArgumentException.php',
