@@ -53,6 +53,7 @@
 - feat(tcp): introduce `TCP\ListenConfiguration` and `TCP\ConnectConfiguration` with immutable `with*` builder methods
 - feat(unix): introduce `Unix\ListenConfiguration` with immutable `with*` builder methods
 - feat(udp): introduce `UDP\BindConfiguration` with immutable `with*` builder methods
+- fix(tcp): `RetryConnector` backoff sleep now respects cancellation tokens, allowing retry loops to be cancelled during the delay
 
 ### migration guide
 
