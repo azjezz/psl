@@ -11,6 +11,7 @@
 - **BC** - Removed `Psl\Shell\Exception\TimeoutException` — use `Psl\Async\Exception\CancelledException` instead.
 - **BC** - `Psl\IO\CloseHandleInterface` now requires an `isClosed(): bool` method.
 - **BC** - `Network\SocketInterface::getLocalAddress()` and `Network\StreamInterface::getPeerAddress()` no longer throw exceptions. Addresses are resolved at construction time and cached, making these O(1) property lookups with no syscall.
+- **BC** - `BufferedReadHandleInterface::readLine()` now always splits on `"\n"` instead of `PHP_EOL`. Trailing `"\r"` is stripped, so both `"\n"` and `"\r\n"` line endings are handled consistently across all platforms. Use `readUntil(PHP_EOL)` for system-dependent behavior.
 
 ### features
 

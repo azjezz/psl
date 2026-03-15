@@ -14,8 +14,6 @@ use function strlen;
 use function strpos;
 use function substr;
 
-use const PHP_EOL;
-
 final class Reader implements BufferedReadHandleInterface
 {
     use ReadHandleConvenienceMethodsTrait;
@@ -124,16 +122,16 @@ final class Reader implements BufferedReadHandleInterface
     }
 
     /**
-     * @return string|null the read data on success, or null if the end of file is reached before finding the current line terminator.
-     *
-     * @throws Exception\AlreadyClosedException If the handle has been already closed.
-     * @throws Exception\RuntimeException If an error occurred during the operation.
-     * @throws CancelledException If the cancellation token is cancelled.
+     * {@inheritDoc}
      */
     public function readLine(CancellationTokenInterface $cancellation = new NullCancellationToken()): null|string
     {
-        $line = $this->readUntil(PHP_EOL, $cancellation);
+        $line = $this->readUntil("\n", $cancellation);
         if (null !== $line) {
+            if ($line !== '' && $line[-1] === "\r") {
+                return substr($line, 0, -1);
+            }
+
             return $line;
         }
 
