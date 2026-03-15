@@ -7,6 +7,7 @@ namespace Psl\Async;
 use Closure;
 use Psl\DateTime\Duration;
 use Revolt\EventLoop;
+use WeakReference;
 
 /**
  * A cancellation token that automatically cancels after a given duration.
@@ -26,13 +27,20 @@ final class TimeoutCancellationToken implements CancellationTokenInterface
 
     public function __construct(Duration $timeout)
     {
-        $this->watcher = EventLoop::delay(max($timeout->getTotalSeconds(), 0.0), function (): void {
-            $this->cancelled = true;
-            $this->exception = new Exception\CancelledException($this, new Exception\TimeoutException());
+        $self = WeakReference::create($this);
 
-            $exception = $this->exception;
-            $callbacks = $this->callbacks;
-            $this->callbacks = [];
+        $this->watcher = EventLoop::delay(max($timeout->getTotalSeconds(), 0.0), static function () use ($self): void {
+            $token = $self->get();
+            if (null === $token) {
+                return;
+            }
+
+            $token->cancelled = true;
+            $token->exception = new Exception\CancelledException($token, new Exception\TimeoutException());
+
+            $exception = $token->exception;
+            $callbacks = $token->callbacks;
+            $token->callbacks = [];
 
             foreach ($callbacks as $callback) {
                 $callback($exception);

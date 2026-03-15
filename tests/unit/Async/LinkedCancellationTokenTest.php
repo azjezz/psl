@@ -229,4 +229,22 @@ final class LinkedCancellationTokenTest extends TestCase
             $deferred->getAwaitable()->await($linked);
         })->await();
     }
+
+    public function testWeakReferenceDroppedBeforeInnerCancels(): void
+    {
+        $a = new Async\SignalCancellationToken();
+        $b = new Async\SignalCancellationToken();
+
+        $linked = new Async\LinkedCancellationToken($a, $b);
+        unset($linked);
+
+        gc_collect_cycles();
+
+        // Cancel inner token after linked is gone
+        // The handler should see null from WeakReference::get() and no-op
+        $a->cancel();
+
+        // If we got here without error, the WeakReference null check worked
+        static::addToAssertionCount(1);
+    }
 }

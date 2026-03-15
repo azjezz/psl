@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Async;
 
 use Closure;
+use WeakReference;
 
 /**
  * A cancellation token that is cancelled when either of two inner tokens is cancelled.
@@ -36,16 +37,19 @@ final class LinkedCancellationToken implements CancellationTokenInterface
         private readonly CancellationTokenInterface $first,
         private readonly CancellationTokenInterface $second,
     ) {
-        $handler = function (Exception\CancelledException $inner): void {
-            if ($this->cancelled) {
+        $self = WeakReference::create($this);
+
+        $handler = static function (Exception\CancelledException $inner) use ($self): void {
+            $token = $self->get();
+            if (null === $token || $token->cancelled) {
                 return;
             }
 
-            $this->cancelled = true;
-            $this->exception = $inner;
+            $token->cancelled = true;
+            $token->exception = $inner;
 
-            $callbacks = $this->callbacks;
-            $this->callbacks = [];
+            $callbacks = $token->callbacks;
+            $token->callbacks = [];
 
             foreach ($callbacks as $callback) {
                 $callback($inner);
