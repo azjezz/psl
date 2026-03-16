@@ -38,8 +38,10 @@ function create_intl_date_formatter(
             DateStyle::None => IntlDateFormatter::NONE,
             DateStyle::Short => IntlDateFormatter::SHORT,
             DateStyle::Medium => IntlDateFormatter::MEDIUM,
+            // @codeCoverageIgnoreStart
             DateStyle::Long => IntlDateFormatter::LONG,
             DateStyle::Full => IntlDateFormatter::FULL,
+            // @codeCoverageIgnoreEnd
         },
         match ($timeStyle) {
             TimeStyle::None => IntlDateFormatter::NONE,

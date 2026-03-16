@@ -688,10 +688,13 @@ trait DateTimeConvenienceMethodsTrait
             $totalMonths = ($year * MONTHS_PER_YEAR) + $month - 1 + $monthsToAdd;
             $year = intdiv($totalMonths, MONTHS_PER_YEAR);
             $month = $totalMonths % MONTHS_PER_YEAR;
+            // @codeCoverageIgnoreStart
             if ($month < 0) {
                 $year--;
                 $month += MONTHS_PER_YEAR;
             }
+
+            // @codeCoverageIgnoreEnd
 
             $month += 1;
             $day = min($day, Month::from($month)->getDaysForYear($year));

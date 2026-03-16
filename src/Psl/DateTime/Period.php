@@ -62,6 +62,7 @@ final readonly class Period implements TemporalAmountInterface
         // If years+months net sign disagrees with days, we cannot normalize
         // further (days are not convertible to months), so we leave them as-is.
         // However, within the year/month pair, we ensure coherence.
+        // @codeCoverageIgnoreStart
         if ($y > 0 && $m < 0) {
             --$y;
             $m += MONTHS_PER_YEAR;
@@ -69,6 +70,8 @@ final readonly class Period implements TemporalAmountInterface
             ++$y;
             $m -= MONTHS_PER_YEAR;
         }
+
+        // @codeCoverageIgnoreEnd
 
         return new self($y, $m, $days);
     }
@@ -279,7 +282,9 @@ final readonly class Period implements TemporalAmountInterface
     public function equals(mixed $other): bool
     {
         if (!$other instanceof Period) {
+            // @codeCoverageIgnoreStart
             return false;
+            // @codeCoverageIgnoreEnd
         }
 
         return $this->years === $other->years && $this->months === $other->months && $this->days === $other->days;

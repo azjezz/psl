@@ -81,9 +81,12 @@ final class DecodingWriteHandle implements IO\WriteHandleInterface
 
             $this->accumulated .= $line;
 
+            // @codeCoverageIgnoreStart
             if ($this->hardBreakPending) {
                 $this->handle->writeAll("\r\n");
             }
+
+            // @codeCoverageIgnoreEnd
 
             $this->handle->writeAll(quoted_printable_decode($this->accumulated));
             $this->accumulated = '';

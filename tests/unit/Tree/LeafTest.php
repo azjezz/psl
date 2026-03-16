@@ -17,4 +17,13 @@ final class LeafTest extends TestCase
         static::assertSame('value', $leaf->getValue());
         static::assertTrue(Tree\is_leaf($leaf));
     }
+
+    public function testLeafNodeJsonSerialize(): void
+    {
+        $leaf = Tree\leaf('value');
+
+        $array = $leaf->jsonSerialize();
+
+        static::assertSame('value', $array['value']);
+    }
 }

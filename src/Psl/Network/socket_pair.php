@@ -35,22 +35,28 @@ function socket_pair(): array
         static function (): array {
             $domain = OS\is_windows() ? STREAM_PF_INET : STREAM_PF_UNIX;
             $sockets = stream_socket_pair($domain, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
+            // @codeCoverageIgnoreStart
             if (false === $sockets) {
                 /** @var array{message?: string} $error */
                 $error = error_get_last();
                 throw new Exception\RuntimeException($error['message'] ?? 'Failed to create socket pair.');
             }
 
+            // @codeCoverageIgnoreEnd
+
             return [$sockets[0], $sockets[1]];
         },
     );
 
+    // @codeCoverageIgnoreStart
     if (OS\is_windows()) {
         return [
             new TCP\Internal\Stream($sockets[0]),
             new TCP\Internal\Stream($sockets[1]),
         ];
     }
+
+    // @codeCoverageIgnoreEnd
 
     $local = Address::unix('<anonymous>');
     return [

@@ -265,6 +265,24 @@ final class AwaitableTest extends TestCase
         $awaitable->await($token);
     }
 
+    public function testAlwaysWithFailedAwaitable(): void
+    {
+        $called = false;
+        $awaitable = Awaitable::error(new \RuntimeException('fail'));
+        $result = $awaitable->always(static function () use (&$called): void {
+            $called = true;
+        });
+
+        try {
+            $result->await();
+            static::fail('Expected RuntimeException');
+        } catch (\RuntimeException $e) {
+            static::assertSame('fail', $e->getMessage());
+        }
+
+        static::assertTrue($called);
+    }
+
     public function testAwaitUnsubscribesOnCompletion(): void
     {
         $result = Async\run(static function (): string {

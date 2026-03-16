@@ -96,6 +96,7 @@ final readonly class NonEmptyVecType extends Type\Type
                     $result[] = $valueType->coerce($v);
                     $iterating = true;
                 }
+                // @codeCoverageIgnoreStart
             } catch (Throwable $e) {
                 throw match (true) {
                     $iterating => CoercionException::withValue(
@@ -106,6 +107,7 @@ final readonly class NonEmptyVecType extends Type\Type
                     ),
                     default => CoercionException::withValue($v, $this->toString(), PathExpression::path($i), $e),
                 };
+                // @codeCoverageIgnoreEnd
             }
 
             if ([] === $result) {

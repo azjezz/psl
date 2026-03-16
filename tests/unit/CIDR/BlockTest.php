@@ -262,6 +262,14 @@ final class BlockTest extends TestCase
         static::assertTrue($block->contains($address));
     }
 
+    public function testIpv4PrefixTooLargeThrows(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid prefix length');
+
+        new Block('10.0.0.0/33');
+    }
+
     public function testIpv6Prefix120CorrectMasking(): void
     {
         // /120: 15 full 0xFF bytes + no remaining bits, padded to 16 (or 17)

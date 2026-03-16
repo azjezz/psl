@@ -21,6 +21,14 @@ final class WrapTest extends TestCase
         static::assertSame($expected, Str\wrap($str, $width, $break, $cut));
     }
 
+    public function testWrapThrowsWhenWidthZeroAndCut(): void
+    {
+        $this->expectException(Str\Exception\LogicException::class);
+        $this->expectExceptionMessage('Cannot force cut when width is zero.');
+
+        Str\wrap('hello', 0, "\n", true);
+    }
+
     public static function provideData(): array
     {
         return [

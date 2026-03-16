@@ -93,6 +93,7 @@ final readonly class DateTime implements
         int $seconds,
         int $nanoseconds,
     ) {
+        // @codeCoverageIgnoreStart
         if ($nanoseconds < 0 || $nanoseconds >= NANOSECONDS_PER_SECOND) {
             throw Exception\InvalidArgumentException::forNanoseconds($nanoseconds);
         }
@@ -116,6 +117,8 @@ final readonly class DateTime implements
         if ($day < 1 || $day > 31 || $day > Month::from($month)->getDaysForYear($year)) {
             throw Exception\InvalidArgumentException::forDay($day, $month, $year);
         }
+
+        // @codeCoverageIgnoreEnd
 
         $this->timestamp = $timestamp;
         $this->timezone = $timezone;

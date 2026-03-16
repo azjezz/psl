@@ -45,4 +45,19 @@ final class NullCancellationTokenTest extends TestCase
 
         static::assertFalse($token->isCancelled());
     }
+
+    public function testCancellableIsFalse(): void
+    {
+        $token = new Async\NullCancellationToken();
+
+        static::assertFalse($token->cancellable);
+    }
+
+    public function testDefault(): void
+    {
+        $token = Async\NullCancellationToken::default();
+
+        static::assertInstanceOf(Async\NullCancellationToken::class, $token);
+        static::assertFalse($token->cancellable);
+    }
 }

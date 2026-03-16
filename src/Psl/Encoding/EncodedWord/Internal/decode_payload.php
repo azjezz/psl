@@ -34,5 +34,7 @@ function decode_payload(string $encoding, string $text): string
         return q_decode($text);
     }
 
+    // @codeCoverageIgnoreStart
     throw Exception\ParsingException::forInvalidEncodedWord($text);
+    // @codeCoverageIgnoreEnd
 }

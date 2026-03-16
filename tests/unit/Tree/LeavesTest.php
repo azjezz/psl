@@ -44,6 +44,15 @@ final class LeavesTest extends TestCase
         static::assertSame([3, 4, 5, 7], $result);
     }
 
+    public function testLeavesTreeNodeWithNoChildren(): void
+    {
+        $tree = Tree\tree('alone', []);
+
+        $result = Tree\leaves($tree);
+
+        static::assertSame(['alone'], $result);
+    }
+
     public function testLeavesDeepTree(): void
     {
         $tree = Tree\tree('root', [

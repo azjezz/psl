@@ -432,6 +432,18 @@ final class ShapeTypeTest extends TypeTestCase
         static::assertSame(['name' => 'saif', 'bio' => null], $result);
     }
 
+    public function testNullishCoercionFastPath(): void
+    {
+        $type = Type\shape([
+            'name' => Type\string(),
+            'age' => Type\nullish(Type\int()),
+        ], true);
+
+        $result = $type->coerce(['name' => 'test']);
+        static::assertSame('test', $result['name']);
+        static::assertNull($result['age']);
+    }
+
     public function testNullishToString(): void
     {
         $type = Type\shape([

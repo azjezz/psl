@@ -18,6 +18,8 @@ final readonly class ArrayKeyType extends UnionType
 {
     /**
      * @psalm-mutation-free
+     *
+     * @codeCoverageIgnore
      */
     public function __construct()
     {

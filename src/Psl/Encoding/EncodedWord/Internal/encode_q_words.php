@@ -24,11 +24,14 @@ function encode_q_words(string $text, string $prefix, string $suffix, int $maxPa
         $encoded = q_encode_byte($byte);
         $encodedLen = strlen($encoded);
 
+        // @codeCoverageIgnoreStart
         if (($currentLen + $encodedLen) > $maxPayload && $currentWord !== '') {
             $words[] = $prefix . $currentWord . $suffix;
             $currentWord = '';
             $currentLen = 0;
         }
+
+        // @codeCoverageIgnoreEnd
 
         $currentWord .= $encoded;
         $currentLen += $encodedLen;

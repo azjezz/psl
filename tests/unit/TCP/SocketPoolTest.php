@@ -123,6 +123,15 @@ final class SocketPoolTest extends TestCase
         ]);
     }
 
+    public function testIsClosedReflectsState(): void
+    {
+        $pool = new TCP\SocketPool();
+
+        static::assertFalse($pool->isClosed());
+        $pool->close();
+        static::assertTrue($pool->isClosed());
+    }
+
     public function testCheckinUnknownStreamIsIgnored(): void
     {
         $listener = TCP\listen('127.0.0.1', 0);

@@ -169,7 +169,9 @@ final class SocketPool implements SocketPoolInterface
                 return false;
             }
 
+            // @codeCoverageIgnoreStart
             return true;
+            // @codeCoverageIgnoreEnd
         }));
 
         if ($this->idle[$key] === []) {

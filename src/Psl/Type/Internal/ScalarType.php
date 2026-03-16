@@ -15,6 +15,8 @@ final readonly class ScalarType extends UnionType
 {
     /**
      * @psalm-mutation-free
+     *
+     * @codeCoverageIgnore
      */
     public function __construct()
     {

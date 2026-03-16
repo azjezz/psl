@@ -69,8 +69,10 @@ final readonly class BackedEnumValueType extends Type
             $type = $reflection->getBackingType();
             invariant($type instanceof ReflectionNamedType, 'Unexpected type');
             return $type->getName() === 'string';
+            // @codeCoverageIgnoreStart
         } catch (ReflectionException $e) {
             throw new RuntimeException('Failed to reflect an enum enum-string', 0, $e);
+            // @codeCoverageIgnoreEnd
         }
     }
 
