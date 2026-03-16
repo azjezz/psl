@@ -11,6 +11,7 @@ use Psl\Async\Exception\CancelledException;
 use Psl\Async\NullCancellationToken;
 use Psl\Channel;
 use Revolt\EventLoop;
+use Throwable;
 
 use function array_map;
 
@@ -37,7 +38,7 @@ final class CompositeListener implements ListenerInterface
     private readonly array $listeners;
 
     /**
-     * @var Channel\ReceiverInterface<StreamInterface>
+     * @var Channel\ReceiverInterface<StreamInterface|Throwable>
      */
     private readonly Channel\ReceiverInterface $receiver;
 
@@ -54,8 +55,8 @@ final class CompositeListener implements ListenerInterface
         $this->stopToken = new Async\SignalCancellationToken();
 
         /**
-         * @var Channel\ReceiverInterface<StreamInterface> $receiver
-         * @var Channel\SenderInterface<StreamInterface> $sender
+         * @var Channel\ReceiverInterface<StreamInterface|Throwable> $receiver
+         * @var Channel\SenderInterface<StreamInterface|Throwable> $sender
          */
         [$receiver, $sender] = Channel\unbounded();
         $this->receiver = $receiver;
@@ -84,10 +85,16 @@ final class CompositeListener implements ListenerInterface
     public function accept(CancellationTokenInterface $cancellation = new NullCancellationToken()): StreamInterface
     {
         try {
-            return $this->receiver->receive($cancellation);
+            $stream_or_throwable = $this->receiver->receive($cancellation);
         } catch (Channel\Exception\ClosedChannelException) {
             throw new Exception\AlreadyStoppedException('All listeners have been stopped.');
         }
+
+        if ($stream_or_throwable instanceof Throwable) {
+            throw $stream_or_throwable;
+        }
+
+        return $stream_or_throwable;
     }
 
     /**
@@ -139,7 +146,7 @@ final class CompositeListener implements ListenerInterface
     }
 
     /**
-     * @param Channel\SenderInterface<StreamInterface> $sender
+     * @param Channel\SenderInterface<StreamInterface|Throwable> $sender
      */
     private function startAcceptLoop(
         ListenerInterface $listener,
@@ -149,23 +156,26 @@ final class CompositeListener implements ListenerInterface
         $token = $this->stopToken;
 
         EventLoop::defer(static function () use ($listener, $sender, $token, $wg): void {
-            try {
-                while (true) {
+            while (true) {
+                try {
                     $stream = $listener->accept($token);
 
                     $sender->send($stream);
+                } catch (CancelledException) {
+                    // Stop token fired, graceful shutdown
+                    break;
+                } catch (Exception\AlreadyStoppedException) {
+                    // This listener was closed individually
+                    break;
+                } catch (Channel\Exception\ClosedChannelException) {
+                    // Channel closed, we're shutting down
+                    break;
+                } catch (Throwable $throwable) {
+                    $sender->send($throwable);
                 }
-                // @codeCoverageIgnoreStart
-            } catch (CancelledException) {
-                // @mago-expect lint:no-empty-catch-clause - Stop token fired, graceful shutdown
-            } catch (Exception\AlreadyStoppedException) {
-                // @mago-expect lint:no-empty-catch-clause - This listener was closed individually
-            } catch (Channel\Exception\ClosedChannelException) {
-                // @mago-expect lint:no-empty-catch-clause - Channel closed, we're shutting down
-            } finally {
-                // @codeCoverageIgnoreEnd
-                $wg->done();
             }
+
+            $wg->done();
         });
     }
 }
