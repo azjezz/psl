@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Filesystem;
 
 use FilesystemIterator;
-use Psl\Vec;
 
 /**
  * Return a vec of files and directories inside the specified directory.
@@ -32,9 +31,15 @@ function read_directory(string $directory): array
         throw Exception\NotReadableException::forDirectory($directory);
     }
 
-    /** @var list<non-empty-string> */
-    return Vec\values(new FilesystemIterator(
+    $result = [];
+    /** @var non-empty-string $entry */
+    foreach (new FilesystemIterator(
         $directory,
         FilesystemIterator::CURRENT_AS_PATHNAME | FilesystemIterator::SKIP_DOTS,
-    ));
+    ) as $entry) {
+        $result[] = $entry;
+    }
+
+    /** @var list<non-empty-string> */
+    return $result;
 }

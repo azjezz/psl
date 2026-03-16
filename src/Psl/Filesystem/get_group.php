@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem;
 
-use Psl;
-use Psl\Str;
-
+use function error_clear_last;
+use function error_get_last;
 use function filegroup;
+use function sprintf;
 
 /**
  * Get the group of $node.
@@ -23,13 +23,16 @@ function get_group(string $node): int
         throw Exception\NotFoundException::forNode($node);
     }
 
-    [$result, $message] = Psl\Internal\box(static fn(): false|int => filegroup($node));
+    error_clear_last();
+    $result = @filegroup($node);
 
     if (false === $result) {
-        throw new Exception\RuntimeException(Str\format(
+        $error = error_get_last();
+
+        throw new Exception\RuntimeException(sprintf(
             'Failed to retrieve group of file "%s": %s',
             $node,
-            $message ?? 'internal error',
+            $error['message'] ?? 'internal error',
         ));
     }
 

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Psl\Crypto\Asymmetric;
 
 use Psl\Crypto\Exception;
-use Psl\Str\Byte;
 use SensitiveParameter;
+
+use function strlen;
 
 final readonly class SecretKey
 {
@@ -19,7 +20,7 @@ final readonly class SecretKey
         #[SensitiveParameter]
         public string $bytes,
     ) {
-        if (Byte\length($bytes) !== namespace\SECRET_KEY_BYTES) {
+        if (strlen($bytes) !== namespace\SECRET_KEY_BYTES) {
             throw new Exception\InvalidArgumentException(
                 'Asymmetric encryption secret key must be exactly ' . namespace\SECRET_KEY_BYTES . ' bytes.',
             );

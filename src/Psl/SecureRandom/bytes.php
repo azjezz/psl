@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\SecureRandom;
 
 use Exception as PHPException;
-use Psl\Str;
 
 use function is_string;
 use function random_bytes;
@@ -31,7 +30,7 @@ function bytes(int $length): string
     } catch (PHPException $e) {
         $code = $e->getCode();
         if (is_string($code)) {
-            $code = Str\to_int($code) ?? 0;
+            $code = (int) $code;
         }
 
         throw new Exception\InsufficientEntropyException('Unable to gather sufficient entropy.', $code, $e);

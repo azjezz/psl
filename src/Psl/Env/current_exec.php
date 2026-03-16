@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Env;
 
-use Psl\Filesystem;
+use function is_link;
+use function readlink;
+use function realpath;
 
 /**
  * Returns the full filesystem path of the current running executable.
@@ -12,12 +14,13 @@ use Psl\Filesystem;
 function current_exec(): string
 {
     $scriptName = $_SERVER['SCRIPT_NAME'];
-    $canonicalScriptName = Filesystem\canonicalize($scriptName);
-    $executable = $canonicalScriptName ?? $scriptName;
+    $canonicalScriptName = realpath($scriptName);
+    $executable = false !== $canonicalScriptName ? $canonicalScriptName : $scriptName;
 
     // @codeCoverageIgnoreStart
-    if (Filesystem\is_symbolic_link($executable)) {
-        $executable = Filesystem\read_symbolic_link($executable);
+    if (is_link($executable)) {
+        $resolved = readlink($executable);
+        $executable = $resolved === false ? $executable : $resolved;
     }
 
     // @codeCoverageIgnoreEnd

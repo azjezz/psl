@@ -9,8 +9,9 @@ use DateTimeImmutable;
 use JsonSerializable;
 use Override;
 use Psl\Comparison;
-use Psl\Str;
 use Stringable;
+
+use function explode;
 
 /**
  * Represents a time range between two points in time.
@@ -216,7 +217,7 @@ final readonly class Interval implements Comparison\Equable, JsonSerializable, S
      */
     public static function fromIso8601(string $value): self
     {
-        $parts = Str\split($value, '/');
+        $parts = explode('/', $value);
         if (2 !== count($parts)) {
             throw new Exception\InvalidArgumentException('Invalid ISO 8601 interval format; expected "start/end".');
         }

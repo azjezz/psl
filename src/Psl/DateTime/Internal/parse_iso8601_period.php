@@ -6,8 +6,8 @@ namespace Psl\DateTime\Internal;
 
 use Psl\DateTime;
 use Psl\DateTime\Exception;
-use Psl\Str;
 
+use function sprintf;
 use function str_contains;
 use function str_starts_with;
 use function substr;
@@ -44,13 +44,13 @@ function parse_iso8601_period(string $value): array
     if (1 !== preg_match('/^P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)D)?$/', $input, $matches)) {
         // Check for time component to give a better error message
         if (str_contains($input, 'T')) {
-            throw new Exception\ParserException(Str\format(
+            throw new Exception\ParserException(sprintf(
                 'ISO 8601 period "%s" contains time components; use Duration::fromIso8601() instead.',
                 $value,
             ));
         }
 
-        throw new Exception\ParserException(Str\format('Invalid ISO 8601 period "%s".', $value));
+        throw new Exception\ParserException(sprintf('Invalid ISO 8601 period "%s".', $value));
     }
 
     $years = (int) ($matches[1] ?? 0);

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Filesystem;
 
 use Psl\Internal;
-use Psl\Str;
 
+use function sprintf;
 use function symlink;
 
 /**
@@ -45,7 +45,7 @@ function create_symbolic_link(string $source, string $destination): void
     [$result, $error_message] = Internal\box(static fn(): bool => symlink($source, $destination));
     // @codeCoverageIgnoreStart
     if (false === $result) {
-        throw new Exception\RuntimeException(Str\format(
+        throw new Exception\RuntimeException(sprintf(
             'Failed to create symbolic link "%s" from "%s": %s.',
             $destination,
             $source,

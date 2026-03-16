@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Binary;
 
-use Psl\Str\Byte;
+use function strlen;
 
 /**
  * Decode a 64-bit floating point value from a binary string.
@@ -15,8 +15,8 @@ use Psl\Str\Byte;
  */
 function decode_f64(string $bytes, Endianness $endianness = Endianness::Big): float
 {
-    if (Byte\length($bytes) < 8) {
-        throw new Exception\UnderflowException('Expected at least 8 bytes, got ' . Byte\length($bytes) . '.');
+    if (strlen($bytes) < 8) {
+        throw new Exception\UnderflowException('Expected at least 8 bytes, got ' . strlen($bytes) . '.');
     }
 
     return unpack(match ($endianness) {

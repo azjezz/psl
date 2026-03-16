@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Override;
-use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
+
+use function rtrim;
+use function sprintf;
+use function str_ends_with;
 
 /**
  * @template T of string|int|float|bool
@@ -117,16 +120,16 @@ final readonly class LiteralScalarType extends Type\Type
         /** @var int|string|float|bool $value */
         $value = $this->value;
         if (Type\string()->matches($value)) {
-            return Str\format('"%s"', $value);
+            return sprintf('"%s"', $value);
         }
 
         if (Type\int()->matches($value)) {
-            return Str\format('%d', $value);
+            return sprintf('%d', $value);
         }
 
         if (Type\float()->matches($value)) {
-            $stringRepresentation = Str\trim_right(Str\format('%.14F', $value), '0');
-            if (Str\ends_with($stringRepresentation, '.')) {
+            $stringRepresentation = rtrim(sprintf('%.14F', $value), '0');
+            if (str_ends_with($stringRepresentation, '.')) {
                 $stringRepresentation .= '0';
             }
 

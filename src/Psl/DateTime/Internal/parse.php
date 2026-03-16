@@ -10,7 +10,8 @@ use Psl\DateTime\FormatPattern;
 use Psl\DateTime\TimeStyle;
 use Psl\DateTime\Timezone;
 use Psl\Locale\Locale;
-use Psl\Str;
+
+use function sprintf;
 
 /**
  * @internal
@@ -35,7 +36,7 @@ function parse(
         if (null !== $pattern) {
             $formatterPattern = $pattern instanceof FormatPattern ? $pattern->value : $pattern;
 
-            throw new ParserException(Str\format(
+            throw new ParserException(sprintf(
                 'Unable to interpret \'%s\' as a valid date/time using pattern \'%s\'.',
                 $rawString,
                 $formatterPattern,

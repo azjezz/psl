@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem;
 
-use Psl;
-use Psl\File;
-use Psl\IO;
-use Psl\Str;
+use function sprintf;
 
 /**
  * Copy a file from $source to $destination and preserve executable permission bits.
@@ -34,45 +31,13 @@ function copy(string $source, string $destination, bool $overwrite = false): voi
         throw Exception\NotReadableException::forFile($source);
     }
 
-    $sourceHandle = null;
-    $destinationHandle = null;
-    $sourceLock = null;
-    $destinationLock = null;
-    try {
-        $sourceHandle = File\open_read_only($source);
-        $destinationHandle = File\open_write_only(
+    $result = \copy($source, $destination);
+    if (!$result) {
+        throw new Exception\RuntimeException(sprintf(
+            'Failed to copy source file "%s" to destination "%s".',
+            $source,
             $destination,
-            $destinationExists ? File\WriteMode::Truncate : File\WriteMode::OpenOrCreate,
-        );
-
-        $sourceLock = $sourceHandle->lock(File\LockType::Shared);
-        $destinationLock = $destinationHandle->lock(File\LockType::Exclusive);
-
-        do {
-            $chunk = $sourceHandle->read();
-            if ('' === $chunk) {
-                break;
-            }
-
-            $destinationHandle->writeAll($chunk);
-
-            // free memory
-            unset($chunk);
-        } while (true);
-        // @codeCoverageIgnoreStart
-    } catch (
-        IO\Exception\ExceptionInterface|File\Exception\ExceptionInterface|Psl\Exception\InvariantViolationException $exception
-    ) {
-        throw new Exception\RuntimeException(
-            Str\format('Failed to copy source file "%s" to destination "%s".', $source, $destination),
-            previous: $exception,
-        );
-    } finally {
-        // @codeCoverageIgnoreEnd
-        $sourceLock?->release();
-        $destinationLock?->release();
-        $sourceHandle?->close();
-        $destinationHandle?->close();
+        ));
     }
 
     // preserve executable permission bits

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Override;
-use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -13,6 +12,7 @@ use Throwable;
 
 use function is_array;
 use function is_iterable;
+use function sprintf;
 
 /**
  * @template Tv
@@ -164,6 +164,6 @@ final readonly class NonEmptyVecType extends Type\Type
     #[Override]
     public function toString(): string
     {
-        return Str\format('non-empty-vec<%s>', $this->valueType->toString());
+        return sprintf('non-empty-vec<%s>', $this->valueType->toString());
     }
 }

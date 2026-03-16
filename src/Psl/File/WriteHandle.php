@@ -7,9 +7,16 @@ namespace Psl\File;
 use Override;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\NullCancellationToken;
-use Psl\Filesystem;
 use Psl\IO;
-use Psl\Str;
+
+use function dirname;
+use function file_exists;
+use function is_dir;
+use function is_file;
+use function is_writable;
+use function mkdir;
+use function Psl\Internal\suppress;
+use function sprintf;
 
 final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteHandleInterface
 {
@@ -28,8 +35,8 @@ final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteH
      */
     public function __construct(string $file, WriteMode $writeMode = WriteMode::OpenOrCreate)
     {
-        $isFile = Filesystem\is_file($file);
-        if (!$isFile && Filesystem\exists($file)) {
+        $isFile = is_file($file);
+        if (!$isFile && file_exists($file)) {
             throw Exception\NotFileException::for($file);
         }
 
@@ -38,21 +45,24 @@ final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteH
             throw Exception\AlreadyCreatedException::for($file);
         }
 
-        if ($isFile && !Filesystem\is_writable($file)) {
+        if ($isFile && !is_writable($file)) {
             throw Exception\NotWritableException::for($file);
         }
 
         if (!$isFile) {
-            try {
-                $directory = Filesystem\create_directory_for_file($file);
-                if (!Filesystem\is_writable($directory)) {
-                    throw Exception\NotWritableException::for($file);
+            $directory = dirname($file);
+            if (!is_dir($directory)) {
+                $mkdir = suppress(static fn() => mkdir($directory, 0o777, true));
+                if (!$mkdir && !is_dir($directory)) {
+                    throw new Exception\RuntimeException(sprintf(
+                        'Failed to create the directory for file "%s".',
+                        $file,
+                    ));
                 }
-            } catch (Filesystem\Exception\RuntimeException $previous) {
-                throw new Exception\RuntimeException(
-                    Str\format('Failed to create the directory for file "%s".', $file),
-                    previous: $previous,
-                );
+            }
+
+            if (!is_writable($directory)) {
+                throw Exception\NotWritableException::for($file);
             }
         }
 

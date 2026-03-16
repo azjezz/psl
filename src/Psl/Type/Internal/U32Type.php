@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Override;
-use Psl\Math;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -26,7 +25,7 @@ final readonly class U32Type extends Type\Type
     #[Override]
     public function matches(mixed $value): bool
     {
-        return is_int($value) && $value >= 0 && $value <= MATH\UINT32_MAX;
+        return is_int($value) && $value >= 0 && $value <= 4_294_967_295;
     }
 
     /**
@@ -39,7 +38,7 @@ final readonly class U32Type extends Type\Type
     {
         $integer = Type\int()->coerce($value);
 
-        if ($integer >= 0 && $integer <= MATH\UINT32_MAX) {
+        if ($integer >= 0 && $integer <= 4_294_967_295) {
             return $integer;
         }
 
@@ -56,7 +55,7 @@ final readonly class U32Type extends Type\Type
     #[Override]
     public function assert(mixed $value): int
     {
-        if (is_int($value) && $value >= 0 && $value <= MATH\UINT32_MAX) {
+        if (is_int($value) && $value >= 0 && $value <= 4_294_967_295) {
             return $value;
         }
 

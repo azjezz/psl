@@ -9,9 +9,11 @@ use Override;
 use Psl\Exception\InvariantViolationException;
 use Psl\Interoperability;
 use Psl\Locale\Locale;
-use Psl\Math;
 
 use function intdiv;
+
+use const PHP_INT_MAX;
+use const PHP_INT_MIN;
 
 /**
  * Represents a precise point in time, with seconds and nanoseconds since the Unix epoch.
@@ -54,11 +56,11 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\Fr
     public static function fromParts(int $seconds, int $nanoseconds = 0): Timestamp
     {
         // Check for potential overflow or underflow before doing any operation
-        if (Math\INT64_MAX === $seconds && $nanoseconds >= NANOSECONDS_PER_SECOND) {
+        if (PHP_INT_MAX === $seconds && $nanoseconds >= NANOSECONDS_PER_SECOND) {
             throw new Exception\OverflowException('Adding nanoseconds would cause an overflow.');
         }
 
-        if (Math\INT64_MIN === $seconds && $nanoseconds <= -NANOSECONDS_PER_SECOND) {
+        if (PHP_INT_MIN === $seconds && $nanoseconds <= -NANOSECONDS_PER_SECOND) {
             throw new Exception\UnderflowException('Subtracting nanoseconds would cause an underflow.');
         }
 

@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem;
 
-use Psl\Env;
 use Psl\SecureRandom;
-use Psl\Str;
+
+use function realpath;
+use function sprintf;
+use function str_contains;
+use function sys_get_temp_dir;
 
 /**
  * Create a temporary file.
  *
  * @param non-empty-string|null $directory The directory where the temporary file will be created.
- *                                         If none specified, `Env\temp_dir()` will be used to retrieve
- *                                         the system default temporary directory.
+ *                                         If none specified, the system default temporary directory will be used.
  * @param non-empty-string|null $prefix The prefix of the generated temporary filename.
  *
  * @throws Exception\RuntimeException If unable to create the file.
@@ -25,7 +27,12 @@ use Psl\Str;
  */
 function create_temporary_file(null|string $directory = null, null|string $prefix = null): string
 {
-    $directory ??= Env\temp_dir();
+    if (null === $directory) {
+        $dir = sys_get_temp_dir();
+        $canonicalized = realpath($dir);
+        $directory = false !== $canonicalized ? $canonicalized : $dir;
+    }
+
     if (!namespace\exists($directory)) {
         throw Exception\NotFoundException::forDirectory($directory);
     }
@@ -36,8 +43,8 @@ function create_temporary_file(null|string $directory = null, null|string $prefi
 
     $separator = namespace\SEPARATOR;
     if (null !== $prefix) {
-        if (Str\contains($prefix, $separator)) {
-            throw new Exception\InvalidArgumentException(Str\format(
+        if (str_contains($prefix, $separator)) {
+            throw new Exception\InvalidArgumentException(sprintf(
                 '$prefix should not contain a directory separator ( "%s" ).',
                 $separator,
             ));

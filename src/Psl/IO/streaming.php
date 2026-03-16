@@ -11,8 +11,9 @@ use Psl\Async\Exception\CancelledException;
 use Psl\Async\NullCancellationToken;
 use Psl\Channel;
 use Psl\Result;
-use Psl\Str;
 use Revolt\EventLoop;
+
+use function sprintf;
 
 /**
  * Streaming the output of the given read stream handles using a generator.
@@ -51,7 +52,7 @@ function streaming(iterable $handles, CancellationTokenInterface $cancellation =
     foreach ($handles as $index => $handle) {
         $stream = $handle->getStream();
         if (null === $stream) {
-            throw new Exception\AlreadyClosedException(Str\format('Handle "%s" is already closed.', (string) $index));
+            throw new Exception\AlreadyClosedException(sprintf('Handle "%s" is already closed.', (string) $index));
         }
 
         // @mago-expect analysis:possibly-invalid-argument

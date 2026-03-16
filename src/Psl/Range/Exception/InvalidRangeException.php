@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\Range\Exception;
 
 use Psl\Exception;
-use Psl\Str;
+
+use function sprintf;
 
 final class InvalidRangeException extends Exception\InvalidArgumentException implements ExceptionInterface
 {
@@ -20,11 +21,7 @@ final class InvalidRangeException extends Exception\InvalidArgumentException imp
     public static function lowerBoundIsGreaterThanUpperBound(int $lowerBound, int $upperBound): self
     {
         return new self(
-            Str\format(
-                '`$lowerBound` (%d) must be less than or equal to `$upperBound` (%d).',
-                $lowerBound,
-                $upperBound,
-            ),
+            sprintf('`$lowerBound` (%d) must be less than or equal to `$upperBound` (%d).', $lowerBound, $upperBound),
             $lowerBound,
             $upperBound,
         );

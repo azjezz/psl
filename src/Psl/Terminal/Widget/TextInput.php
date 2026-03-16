@@ -10,7 +10,11 @@ use Psl\Str;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
-use Psl\Vec;
+
+use function array_values;
+use function max;
+use function mb_strlen;
+use function mb_substr;
 
 /**
  * A single-line text input widget with cursor visualization and placeholder support.
@@ -54,7 +58,7 @@ final class TextInput implements WidgetInterface
      */
     public function cursor(int $cursor): self
     {
-        $this->cursor = Math\maxva(0, $cursor);
+        $this->cursor = max(0, $cursor);
         return $this;
     }
 
@@ -72,7 +76,7 @@ final class TextInput implements WidgetInterface
      */
     public function style(ControlSequenceIntroducer ...$style): self
     {
-        $this->style = Vec\values($style);
+        $this->style = array_values($style);
 
         return $this;
     }
@@ -82,7 +86,7 @@ final class TextInput implements WidgetInterface
      */
     public function cursorStyle(ControlSequenceIntroducer ...$style): self
     {
-        $this->cursorStyle = Vec\values($style);
+        $this->cursorStyle = array_values($style);
 
         return $this;
     }
@@ -92,7 +96,7 @@ final class TextInput implements WidgetInterface
      */
     public function placeholderStyle(ControlSequenceIntroducer ...$style): self
     {
-        $this->placeholderStyle = Vec\values($style);
+        $this->placeholderStyle = array_values($style);
 
         return $this;
     }
@@ -111,22 +115,22 @@ final class TextInput implements WidgetInterface
             $text = Str\width_slice($this->placeholder, 0, $width);
             $buffer->setString($area->x, $y, $text, $this->placeholderStyle);
 
-            $buffer->set($area->x, $y, new Cell(Str\slice($this->placeholder, 0, 1), $this->cursorStyle));
+            $buffer->set($area->x, $y, new Cell(mb_substr($this->placeholder, 0, 1), $this->cursorStyle));
 
             return;
         }
 
-        $valueLen = Str\length($this->value);
+        $valueLen = mb_strlen($this->value);
         /** @var non-negative-int $cursor */
         $cursor = Math\clamp($this->cursor, 0, $valueLen);
 
-        $widthToCursor = Str\width(Str\slice($this->value, 0, $cursor));
+        $widthToCursor = Str\width(mb_substr($this->value, 0, $cursor));
         $scrollOffset = 0;
         if ($widthToCursor >= $width) {
             for ($offset = 1; $offset <= $cursor; $offset++) {
                 /** @var non-negative-int $len */
                 $len = $cursor - $offset;
-                if (Str\width(Str\slice($this->value, $offset, $len)) < $width) {
+                if (Str\width(mb_substr($this->value, $offset, $len)) < $width) {
                     $scrollOffset = $offset;
                     break;
                 }
@@ -139,9 +143,9 @@ final class TextInput implements WidgetInterface
 
         /** @var non-negative-int $beforeLen */
         $beforeLen = $cursor - $scrollOffset;
-        $cursorX = $area->x + Str\width(Str\slice($this->value, $scrollOffset, $beforeLen));
+        $cursorX = $area->x + Str\width(mb_substr($this->value, $scrollOffset, $beforeLen));
         if ($cursorX < $area->right()) {
-            $cursorChar = $cursor < $valueLen ? Str\slice($this->value, $cursor, 1) : "\u{2588}";
+            $cursorChar = $cursor < $valueLen ? mb_substr($this->value, $cursor, 1) : "\u{2588}";
 
             $buffer->set($cursorX, $y, new Cell($cursorChar, $this->cursorStyle));
         }

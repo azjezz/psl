@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Psl\Filesystem;
 
 use Psl\Internal;
-use Psl\Str;
 
 use function chown;
 use function lchown;
+use function sprintf;
 
 /**
  * Change the owner of $node.
@@ -32,7 +32,7 @@ function change_owner(string $node, int $user): void
 
     [$success, $error] = Internal\box($fun);
     if (!$success) {
-        throw new Exception\RuntimeException(Str\format(
+        throw new Exception\RuntimeException(sprintf(
             'Failed to change owner for node "%s": %s',
             $node,
             $error ?? 'internal error.',

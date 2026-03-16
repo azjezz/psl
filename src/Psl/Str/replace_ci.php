@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl\Regex;
-
+use function error_get_last;
+use function preg_last_error_msg;
 use function preg_quote;
 use function preg_split;
 
@@ -23,23 +23,10 @@ function replace_ci(string $haystack, string $needle, string $replacement, Encod
         return $haystack;
     }
 
-    try {
-        $pieces = Regex\Internal\call_preg(
-            'preg_split',
-            /**
-             * @return list<non-empty-string>
-             */
-            static function () use ($haystack, $needle): array {
-                $result = preg_split('{' . preg_quote($needle, '/') . '}iu', $haystack, -1);
-                if (false === $result) {
-                    $result = [];
-                }
-
-                return $result;
-            },
-        );
-    } catch (Regex\Exception\RuntimeException|Regex\Exception\InvalidPatternException $error) {
-        throw new Exception\InvalidArgumentException($error->getMessage(), previous: $error);
+    $pieces = @preg_split('{' . preg_quote($needle, '/') . '}iu', $haystack, -1);
+    if (false === $pieces) {
+        $error = error_get_last();
+        throw new Exception\InvalidArgumentException($error['message'] ?? preg_last_error_msg());
     }
 
     return namespace\join($pieces, $replacement);

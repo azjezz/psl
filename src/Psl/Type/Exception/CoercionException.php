@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Type\Exception;
 
-use Psl\Str;
 use Psl\Vec;
 use Throwable;
 
 use function get_debug_type;
+use function implode;
+use function sprintf;
 
 final class CoercionException extends Exception
 {
@@ -22,11 +23,11 @@ final class CoercionException extends Exception
         $first = $previous instanceof Exception ? $previous->getFirstFailingActualType() : $actual;
 
         parent::__construct(
-            Str\format(
+            sprintf(
                 'Could not coerce "%s" to type "%s"%s%s.',
                 $first,
                 $target,
-                $paths ? ' at path "' . Str\join($paths, '.') . '"' : '',
+                $paths ? ' at path "' . implode('.', $paths) . '"' : '',
                 $previous && !$previous instanceof self ? ': ' . $previous->getMessage() : '',
             ),
             $actual,

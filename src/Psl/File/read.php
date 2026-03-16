@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\File;
 
 use Psl\IO;
-use Psl\Str;
+
+use function sprintf;
 
 /**
  * Reads entire file into a string.
@@ -35,7 +36,7 @@ function read(string $file, int $offset = 0, null|int $length = null): string
         return $content;
     } catch (IO\Exception\ExceptionInterface $previous) {
         // @codeCoverageIgnoreStart
-        throw new Exception\RuntimeException(Str\format('Failed to read file "%s".', $file), 0, $previous);
+        throw new Exception\RuntimeException(sprintf('Failed to read file "%s".', $file), 0, $previous);
         // @codeCoverageIgnoreEnd
     }
 }

@@ -11,11 +11,11 @@ use Psl\File\Lock;
 use Psl\File\LockType;
 use Psl\IO;
 use Psl\IO\Exception;
-use Psl\Str;
 
 use function error_get_last;
 use function flock;
 use function fseek;
+use function sprintf;
 
 use const LOCK_EX;
 use const LOCK_NB;
@@ -125,7 +125,7 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements
         }
 
         if (!$success) {
-            throw new File\Exception\RuntimeException(Str\format(
+            throw new File\Exception\RuntimeException(sprintf(
                 'Could not acquire %s lock for "%s".',
                 $type === LockType::Exclusive ? 'exclusive' : 'shared',
                 $this->getPath(),
@@ -148,7 +148,7 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements
             }
 
             if (!@flock($this->stream, LOCK_UN)) {
-                throw new File\Exception\RuntimeException(Str\format(
+                throw new File\Exception\RuntimeException(sprintf(
                     'Could not release lock for "%s".',
                     $this->getPath(),
                 ));

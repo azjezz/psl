@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Psl\Locale;
 
 use Locale as NativeLocale;
-use Psl\Str;
+
+use function strtolower;
+use function strtoupper;
+use function ucfirst;
 
 /**
  * Represents a locale identifier.
@@ -828,13 +831,13 @@ enum Locale: string
         $script = (string) NativeLocale::getScript($fullLocale);
         $region = (string) NativeLocale::getRegion($fullLocale);
 
-        $locale = Str\lowercase($language);
+        $locale = strtolower($language);
         if ($script) {
-            $locale .= '_' . Str\capitalize($script);
+            $locale .= '_' . ucfirst($script);
         }
 
         if ($region) {
-            $locale .= '_' . Str\uppercase($region);
+            $locale .= '_' . strtoupper($region);
         }
 
         // Attempt to match the system-configured locale with a supported enum instance,

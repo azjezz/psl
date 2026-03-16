@@ -8,9 +8,10 @@ use Psl\Async\CancellationTokenInterface;
 use Psl\Async\Exception\CancelledException;
 use Psl\Async\NullCancellationToken;
 use Psl\Process;
-use Psl\Str;
 
+use function implode;
 use function pack;
+use function str_contains;
 use function strlen;
 
 /**
@@ -39,12 +40,12 @@ function execute(
     ErrorOutputBehavior $errorOutputBehavior = ErrorOutputBehavior::Discard,
     CancellationTokenInterface $cancellation = new NullCancellationToken(),
 ): string {
-    if (Str\contains($command, "\0")) {
+    if (str_contains($command, "\0")) {
         throw new Exception\PossibleAttackException('NULL byte detected.');
     }
 
     foreach ($arguments as $argument) {
-        if (Str\contains($argument, "\0")) {
+        if (str_contains($argument, "\0")) {
             throw new Exception\PossibleAttackException('NULL byte detected.');
         }
     }
@@ -62,7 +63,7 @@ function execute(
     }
 
     if (!$output->status->isSuccessful()) {
-        $commandline = Str\join([$command, ...$arguments], ' ');
+        $commandline = implode(' ', [$command, ...$arguments]);
 
         throw new Exception\FailedExecutionException(
             $commandline,

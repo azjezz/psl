@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl\Filesystem;
 
 use Psl\Internal;
-use Psl\Str;
 
 use function chmod;
+use function sprintf;
 
 /**
  * Change permission mode of $node.
@@ -27,7 +27,7 @@ function change_permissions(string $node, int $permissions): void
     [$success, $error] = Internal\box(static fn(): bool => chmod($node, $permissions));
     // @codeCoverageIgnoreStart
     if (!$success) {
-        throw new Exception\RuntimeException(Str\format(
+        throw new Exception\RuntimeException(sprintf(
             'Failed to change permissions for file "%s": %s',
             $node,
             $error ?? 'internal error.',

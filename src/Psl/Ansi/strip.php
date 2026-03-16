@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Ansi;
 
-use Psl\Regex;
+use function preg_replace;
 
 /**
  * Strips all ANSI escape sequences from the given text.
@@ -13,5 +13,5 @@ use Psl\Regex;
  */
 function strip(string $text): string
 {
-    return Regex\replace($text, '/\e(?:\[\??[0-9;]*[A-Za-z]|\][^\x07\e]*(?:\e\\\\|\x07))/', '');
+    return preg_replace('/\e(?:\[\??[0-9;]*[A-Za-z]|\][^\x07\e]*(?:\e\\\\|\x07))/', '', $text) ?? $text;
 }

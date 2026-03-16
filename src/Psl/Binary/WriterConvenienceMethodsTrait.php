@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\Binary;
 
 use Override;
-use Psl\Str\Byte;
+
+use function strlen;
 
 /**
  * @require-implements WriterInterface
@@ -18,7 +19,7 @@ trait WriterConvenienceMethodsTrait
     #[Override]
     public function u8PrefixedBytes(string $value): static
     {
-        return $this->u8(Byte\length($value))->bytes($value);
+        return $this->u8(strlen($value))->bytes($value);
     }
 
     /**
@@ -27,7 +28,7 @@ trait WriterConvenienceMethodsTrait
     #[Override]
     public function u16PrefixedBytes(string $value, null|Endianness $endianness = null): static
     {
-        return $this->u16(Byte\length($value), $endianness)->bytes($value);
+        return $this->u16(strlen($value), $endianness)->bytes($value);
     }
 
     /**
@@ -36,7 +37,7 @@ trait WriterConvenienceMethodsTrait
     #[Override]
     public function u32PrefixedBytes(string $value, null|Endianness $endianness = null): static
     {
-        return $this->u32(Byte\length($value), $endianness)->bytes($value);
+        return $this->u32(strlen($value), $endianness)->bytes($value);
     }
 
     /**
@@ -45,6 +46,6 @@ trait WriterConvenienceMethodsTrait
     #[Override]
     public function u64PrefixedBytes(string $value, null|Endianness $endianness = null): static
     {
-        return $this->u64(Byte\length($value), $endianness)->bytes($value);
+        return $this->u64(strlen($value), $endianness)->bytes($value);
     }
 }

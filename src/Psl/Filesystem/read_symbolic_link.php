@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl\Filesystem;
 
 use Psl\Internal;
-use Psl\Str;
 
 use function readlink;
+use function sprintf;
 
 /**
  * Returns the target of a symbolic link.
@@ -34,7 +34,7 @@ function read_symbolic_link(string $symbolicLink): string
 
     // @codeCoverageIgnoreStart
     if (false === $result) {
-        throw new Exception\RuntimeException(Str\format(
+        throw new Exception\RuntimeException(sprintf(
             'Failed to retrieve the target of symbolic link "%s": %s',
             $symbolicLink,
             $message ?? 'internal error',

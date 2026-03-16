@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tree;
 
 use Closure;
-use Psl\Vec;
+
+use function array_map;
 
 /**
  * Applies a mapping function to all values in the tree.
@@ -36,6 +37,6 @@ function map(NodeInterface $node, Closure $function): NodeInterface
 
     return new TreeNode(
         $function($node->getValue()),
-        Vec\map($node->getChildren(), static fn(NodeInterface $child): NodeInterface => map($child, $function)),
+        array_map(static fn(NodeInterface $child): NodeInterface => map($child, $function), $node->getChildren()),
     );
 }

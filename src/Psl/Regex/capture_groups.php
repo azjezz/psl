@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Regex;
 
-use Psl\Dict;
 use Psl\Type;
+
+use function array_unique;
+use function array_values;
 
 /**
  * @param list<array-key> $groups
@@ -14,11 +16,11 @@ use Psl\Type;
  */
 function capture_groups(array $groups): Type\TypeInterface
 {
-    return Type\shape(Dict\from_keys(
-        Dict\unique([0, ...$groups]),
-        /**
-         * @return Type\TypeInterface<string>
-         */
-        Type\string(...),
-    ));
+    $keys = array_values(array_unique([0, ...$groups]));
+    $shape = [];
+    foreach ($keys as $key) {
+        $shape[$key] = Type\string();
+    }
+
+    return Type\shape($shape);
 }

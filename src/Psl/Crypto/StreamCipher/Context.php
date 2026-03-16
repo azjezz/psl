@@ -6,13 +6,16 @@ namespace Psl\Crypto\StreamCipher;
 
 use Psl\Crypto\Exception;
 use Psl\Crypto\Internal;
-use Psl\Math;
-use Psl\Str;
-use Psl\Str\Byte;
 use SensitiveParameter;
 
+use function chr;
+use function min;
 use function openssl_encrypt;
+use function ord;
 use function sodium_crypto_stream_xchacha20_xor_ic;
+use function str_repeat;
+use function strlen;
+use function substr;
 
 use const OPENSSL_RAW_DATA;
 use const OPENSSL_ZERO_PADDING;
@@ -55,7 +58,7 @@ final class Context
             Algorithm::XChaCha20 => namespace\XCHACHA20_KEY_BYTES,
         };
 
-        if (Byte\length($key->bytes) !== $expectedKeySize) {
+        if (strlen($key->bytes) !== $expectedKeySize) {
             throw new Exception\InvalidArgumentException('Key size does not match algorithm requirements.');
         }
 
@@ -64,7 +67,7 @@ final class Context
             Algorithm::XChaCha20 => namespace\XCHACHA20_IV_BYTES,
         };
 
-        if (Byte\length($iv) !== $expectedIvSize) {
+        if (strlen($iv) !== $expectedIvSize) {
             throw new Exception\RuntimeException('IV size does not match algorithm requirements.');
         }
     }
@@ -76,7 +79,7 @@ final class Context
      */
     public function apply(#[SensitiveParameter] string $data): string
     {
-        $needed = Byte\length($data);
+        $needed = strlen($data);
         $result = '';
         $offset = 0;
 
@@ -85,11 +88,11 @@ final class Context
                 $this->keystreamBuffer = $this->generateKeystreamBlock();
             }
 
-            $available = Byte\length($this->keystreamBuffer);
-            $use = Math\minva($needed, $available);
+            $available = strlen($this->keystreamBuffer);
+            $use = min($needed, $available);
 
-            $dataChunk = Byte\slice($data, $offset, $use);
-            $keyChunk = Byte\slice($this->keystreamBuffer, 0, $use);
+            $dataChunk = substr($data, $offset, $use);
+            $keyChunk = substr($this->keystreamBuffer, 0, $use);
 
             /**
              * @mago-expect analysis:invalid-operand,invalid-operand - mago does not like string ^ string
@@ -98,7 +101,7 @@ final class Context
             $xored = $dataChunk ^ $keyChunk;
             $result .= $xored;
 
-            $this->keystreamBuffer = Byte\slice($this->keystreamBuffer, $use);
+            $this->keystreamBuffer = substr($this->keystreamBuffer, $use);
             $offset += $use;
             $needed -= $use;
         }
@@ -123,7 +126,7 @@ final class Context
      */
     private function generateAesCtrBlock(string $cipher): string
     {
-        $zeros = Str\repeat("\x00", $this->blockSize);
+        $zeros = str_repeat("\x00", $this->blockSize);
         $keystream = openssl_encrypt(
             $zeros,
             $cipher,
@@ -150,8 +153,8 @@ final class Context
     private function advanceAesCtrIv(): void
     {
         for ($i = namespace\AES_CTR_IV_BYTES - 1; $i >= 0; $i--) {
-            $val = Byte\ord($this->iv[$i]) + 1;
-            $this->iv[$i] = Byte\chr($val & 0xff);
+            $val = ord($this->iv[$i]) + 1;
+            $this->iv[$i] = chr($val & 0xff);
             if ($val < 256) {
                 break;
             }
@@ -163,7 +166,7 @@ final class Context
      */
     private function generateXChaCha20Block(): string
     {
-        $zeros = Str\repeat("\x00", $this->blockSize);
+        $zeros = str_repeat("\x00", $this->blockSize);
         $keystream = Internal\call_sodium(fn() => sodium_crypto_stream_xchacha20_xor_ic(
             $zeros,
             $this->iv,

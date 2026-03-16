@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Psl\DateTime\Internal;
 
 use Psl\DateTime\Exception;
-use Psl\Str;
 
 use function explode;
 use function preg_match;
+use function sprintf;
 use function str_contains;
 use function str_pad;
 use function str_starts_with;
@@ -39,13 +39,13 @@ function parse_iso8601_duration(string $value): array
     if (1 !== preg_match('/^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?$/', $input, $matches)) {
         // Check for date component to give a better error message
         if (str_starts_with($input, 'P') && !str_starts_with($input, 'PT')) {
-            throw new Exception\ParserException(Str\format(
+            throw new Exception\ParserException(sprintf(
                 'ISO 8601 duration "%s" contains date components; use Period::fromIso8601() instead.',
                 $value,
             ));
         }
 
-        throw new Exception\ParserException(Str\format('Invalid ISO 8601 duration "%s".', $value));
+        throw new Exception\ParserException(sprintf('Invalid ISO 8601 duration "%s".', $value));
     }
 
     $hours = (int) ($matches[1] ?? 0);

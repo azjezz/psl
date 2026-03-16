@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Override;
-use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 use Throwable;
 
 use function is_iterable;
+use function sprintf;
 
 /**
  * @template Tk as array-key
@@ -166,6 +166,6 @@ final readonly class ContainerType extends Type\Type
     #[Override]
     public function toString(): string
     {
-        return Str\format('container<%s, %s>', $this->keyType->toString(), $this->valueType->toString());
+        return sprintf('container<%s, %s>', $this->keyType->toString(), $this->valueType->toString());
     }
 }

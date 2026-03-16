@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Psl\DataStructure;
 
 use Override;
-use Psl\Math;
 
 use function array_keys;
 use function array_shift;
 use function count;
+use function max;
 
 /**
  * @template T
@@ -70,7 +70,7 @@ final class PriorityQueue implements PriorityQueueInterface
         $keys = array_keys($this->queue);
 
         // Retrieve the highest priority.
-        $priority = Math\max($keys) ?? 0;
+        $priority = max($keys);
 
         // Retrieve the list of nodes with the priority `$priority`.
         $nodes = $this->queue[$priority] ?? [];
@@ -115,10 +115,8 @@ final class PriorityQueue implements PriorityQueueInterface
 
         /**
          * retrieve the highest priority.
-         *
-         * @var int
          */
-        $priority = Math\max(array_keys($this->queue));
+        $priority = max(array_keys($this->queue));
         /**
          * retrieve the list of nodes with the priority `$priority`.
          */

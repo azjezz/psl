@@ -149,6 +149,7 @@ final class WaitGroupTest extends TestCase
                 try {
                     $wg->wait($token);
                 } catch (Async\Exception\CancelledException) {
+                    // @mago-expect lint:no-empty-catch-clause - expected :)
                 }
             })->ignore();
 

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl\Filesystem;
 
 use Psl\Internal;
-use Psl\Str;
 
 use function link;
+use function sprintf;
 
 /**
  * Create a hard link for $source.
@@ -48,7 +48,7 @@ function create_hard_link(string $source, string $destination): void
     [$result, $error_message] = Internal\box(static fn(): bool => link($source, $destination));
     // @codeCoverageIgnoreStart
     if (false === $result) {
-        throw new Exception\RuntimeException(Str\format(
+        throw new Exception\RuntimeException(sprintf(
             'Failed to create hard link "%s" from "%s": %s.',
             $destination,
             $source,

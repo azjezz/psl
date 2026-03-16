@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Env;
 
-use Psl\Filesystem;
-
+use function realpath;
 use function sys_get_temp_dir;
 
 /**
@@ -25,5 +24,8 @@ function temp_dir(): string
 {
     $directory = sys_get_temp_dir();
 
-    return Filesystem\canonicalize($directory) ?? $directory;
+    /** @var false|non-empty-string $canonicalized */
+    $canonicalized = realpath($directory);
+
+    return false !== $canonicalized ? $canonicalized : $directory;
 }

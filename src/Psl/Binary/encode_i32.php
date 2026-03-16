@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Binary;
 
-use Psl\Math;
-
 /**
  * Encode a signed 32-bit integer to a binary string.
  *
@@ -15,9 +13,9 @@ use Psl\Math;
  */
 function encode_i32(int $value, Endianness $endianness = Endianness::Big): string
 {
-    if ($value < Math\INT32_MIN || $value > Math\INT32_MAX) {
+    if ($value < -2_147_483_648 || $value > 2_147_483_647) {
         throw new Exception\OverflowException(
-            'Value ' . $value . ' is out of range for i32 (' . Math\INT32_MIN . '..' . Math\INT32_MAX . ').',
+            'Value ' . $value . ' is out of range for i32 (-2147483648..2147483647).',
         );
     }
 

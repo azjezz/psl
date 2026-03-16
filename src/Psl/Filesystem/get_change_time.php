@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem;
 
-use Psl;
-use Psl\Str;
-
+use function error_clear_last;
+use function error_get_last;
 use function filectime;
+use function sprintf;
 
 /**
  * Get the last time the inode of $node was changed
@@ -26,14 +26,17 @@ function get_change_time(string $node): int
         throw Exception\NotFoundException::forNode($node);
     }
 
-    [$result, $message] = Psl\Internal\box(static fn(): false|int => filectime($node));
+    error_clear_last();
+    $result = @filectime($node);
 
     // @codeCoverageIgnoreStart
     if (false === $result) {
-        throw new Exception\RuntimeException(Str\format(
+        $error = error_get_last();
+
+        throw new Exception\RuntimeException(sprintf(
             'Failed to retrieve the change time of "%s": %s',
             $node,
-            $message ?? 'internal error',
+            $error['message'] ?? 'internal error',
         ));
     }
 

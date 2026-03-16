@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
-use Psl\Str;
+use function sprintf;
 
 /**
  * Write all of the requested data to the error output handle.
@@ -22,5 +22,5 @@ use Psl\Str;
  */
 function write_error(string $message, mixed ...$args): void
 {
-    error_handle()?->writeAll(Str\format($message, ...$args));
+    error_handle()?->writeAll(sprintf($message, ...$args));
 }

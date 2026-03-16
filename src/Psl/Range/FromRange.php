@@ -7,7 +7,8 @@ namespace Psl\Range;
 use Generator;
 use Override;
 use Psl\Iter;
-use Psl\Math;
+
+use const PHP_INT_MAX;
 
 /**
  * A `FromRange` is a range that contains all values greater than or equal to the given lower bound.
@@ -147,7 +148,7 @@ final readonly class FromRange implements LowerBoundRangeInterface
                 while (true) {
                     yield $value;
 
-                    if (Math\INT64_MAX === $value) {
+                    if (PHP_INT_MAX === $value) {
                         throw Exception\OverflowException::whileIterating($bound);
                     }
 

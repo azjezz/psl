@@ -6,11 +6,12 @@ namespace Psl\Crypto\Asymmetric;
 
 use Psl\Crypto\Exception;
 use Psl\Crypto\Internal;
-use Psl\Str\Byte;
 use SensitiveParameter;
 
 use function sodium_crypto_box_open;
 use function sodium_memzero;
+use function strlen;
+use function substr;
 
 /**
  * Decrypt a message using authenticated public-key decryption.
@@ -25,12 +26,12 @@ function decrypt(
     #[SensitiveParameter]
     PublicKey $senderPublicKey,
 ): string {
-    if (Byte\length($ciphertext) < namespace\NONCE_BYTES) {
+    if (strlen($ciphertext) < namespace\NONCE_BYTES) {
         throw new Exception\DecryptionException('Ciphertext is too short.');
     }
 
-    $nonce = Byte\slice($ciphertext, 0, namespace\NONCE_BYTES);
-    $encrypted = Byte\slice($ciphertext, namespace\NONCE_BYTES);
+    $nonce = substr($ciphertext, 0, namespace\NONCE_BYTES);
+    $encrypted = substr($ciphertext, namespace\NONCE_BYTES);
     $keypair = $recipientSecretKey->bytes . $senderPublicKey->bytes;
 
     try {

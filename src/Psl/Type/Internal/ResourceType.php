@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Override;
-use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
 use function is_resource;
+use function sprintf;
 
 /**
  * @extends Type\Type<resource>
@@ -79,6 +79,6 @@ final readonly class ResourceType extends Type\Type
             return 'resource';
         }
 
-        return Str\format('resource (%s)', $this->kind);
+        return sprintf('resource (%s)', $this->kind);
     }
 }

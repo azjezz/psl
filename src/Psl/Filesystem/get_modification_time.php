@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl\Filesystem;
 
 use Psl\Internal;
-use Psl\Str;
 
 use function filemtime;
+use function sprintf;
 
 /**
  * Get the last time the content of $node was modified.
@@ -28,7 +28,7 @@ function get_modification_time(string $node): int
     [$result, $message] = Internal\box(static fn(): false|int => filemtime($node));
     // @codeCoverageIgnoreStart
     if (false === $result) {
-        throw new Exception\RuntimeException(Str\format(
+        throw new Exception\RuntimeException(sprintf(
             'Failed to retrieve the modification time of "%s": %s',
             $node,
             $message ?? 'internal error',

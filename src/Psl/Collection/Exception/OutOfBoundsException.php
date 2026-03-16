@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\Collection\Exception;
 
 use Psl\Exception;
-use Psl\Str;
+
+use function sprintf;
 
 final class OutOfBoundsException extends Exception\OutOfBoundsException implements ExceptionInterface
 {
@@ -14,6 +15,6 @@ final class OutOfBoundsException extends Exception\OutOfBoundsException implemen
      */
     public static function for(int|string $offset): OutOfBoundsException
     {
-        return new self(Str\format('Key (%s) was out-of-bounds.', $offset));
+        return new self(sprintf('Key (%s) was out-of-bounds.', $offset));
     }
 }

@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Psl\Internal;
 
 use Closure;
-use Psl\Str;
 
+use function mb_strtolower;
 use function restore_error_handler;
 use function set_error_handler;
+use function str_contains;
+use function strpos;
+use function substr;
 
 /**
  * @template T
@@ -26,12 +29,12 @@ function box(Closure $fun): array
         $lastMessage = $message;
     });
 
-    if (null !== $lastMessage && Str\contains($lastMessage, '): ')) {
-        $lastMessage = Str\after(
-            Str\lowercase($lastMessage),
-            // how i feel toward PHP error handling:
-            '): ',
-        );
+    if (null !== $lastMessage && str_contains($lastMessage, '): ')) {
+        // how i feel toward PHP error handling:
+        $lower = mb_strtolower($lastMessage);
+        /** @var non-negative-int $pos */
+        $pos = strpos($lower, '): ');
+        $lastMessage = substr($lower, $pos + 3);
     }
 
     try {

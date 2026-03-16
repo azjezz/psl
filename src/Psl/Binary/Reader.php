@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Psl\Binary;
 
 use Override;
-use Psl\Str\Byte;
+
+use function strlen;
+use function substr;
 
 /**
  * Mutable cursor-based binary reader.
@@ -31,7 +33,7 @@ final class Reader implements BufferedReaderInterface
         private readonly string $bytes,
         private readonly Endianness $endianness = Endianness::Big,
     ) {
-        $this->length = Byte\length($bytes);
+        $this->length = strlen($bytes);
     }
 
     /**
@@ -185,7 +187,7 @@ final class Reader implements BufferedReaderInterface
             );
         }
 
-        $data = Byte\slice($this->bytes, $this->cursor, $length);
+        $data = substr($this->bytes, $this->cursor, $length);
         $this->cursor += $length;
 
         return $data;

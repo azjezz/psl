@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
-use Psl\Str;
+use function sprintf;
 
 /**
  * @psalm-immutable
@@ -49,7 +49,7 @@ final readonly class PathExpression
      */
     public static function expression(string $expression, mixed $path): string
     {
-        return Str\format($expression, self::path($path));
+        return sprintf($expression, self::path($path));
     }
 
     /**
@@ -92,7 +92,7 @@ final readonly class PathExpression
      */
     public static function coerceInput(mixed $input, string $expectedType): string
     {
-        return Str\format('coerce_input(%s): %s', get_debug_type($input), $expectedType);
+        return sprintf('coerce_input(%s): %s', get_debug_type($input), $expectedType);
     }
 
     /**
@@ -108,7 +108,7 @@ final readonly class PathExpression
      */
     public static function convert(mixed $input, string $expectedType): string
     {
-        return Str\format('convert(%s): %s', get_debug_type($input), $expectedType);
+        return sprintf('convert(%s): %s', get_debug_type($input), $expectedType);
     }
 
     /**
@@ -124,6 +124,6 @@ final readonly class PathExpression
      */
     public static function coerceOutput(mixed $input, string $expectedType): string
     {
-        return Str\format('coerce_output(%s): %s', get_debug_type($input), $expectedType);
+        return sprintf('coerce_output(%s): %s', get_debug_type($input), $expectedType);
     }
 }

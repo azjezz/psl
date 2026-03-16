@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Psl\Crypto\StreamCipher;
 
 use Psl\Crypto\Exception;
-use Psl\Str\Byte;
 use SensitiveParameter;
+
+use function strlen;
 
 final readonly class Key
 {
@@ -17,7 +18,7 @@ final readonly class Key
         #[SensitiveParameter]
         public string $bytes,
     ) {
-        $length = Byte\length($bytes);
+        $length = strlen($bytes);
         if ($length !== namespace\AES_128_KEY_BYTES && $length !== namespace\AES_256_KEY_BYTES) {
             throw new Exception\InvalidArgumentException(
                 'Stream cipher key must be '

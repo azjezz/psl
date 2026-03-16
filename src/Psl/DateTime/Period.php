@@ -7,7 +7,8 @@ namespace Psl\DateTime;
 use DateInterval;
 use Override;
 use Psl\Comparison;
-use Psl\Str;
+
+use function implode;
 
 /**
  * Represents a calendar-based period with years, months, and days.
@@ -450,7 +451,7 @@ final readonly class Period implements TemporalAmountInterface
             $output[] = $this->days . ' day(s)';
         }
 
-        return [] === $output ? '0 day(s)' : Str\join($output, ', ');
+        return [] === $output ? '0 day(s)' : implode(', ', $output);
     }
 
     /**
@@ -491,7 +492,7 @@ final readonly class Period implements TemporalAmountInterface
             $parts[] = '0 days';
         }
 
-        return DateInterval::createFromDateString(Str\join($parts, ' '));
+        return DateInterval::createFromDateString(implode(' ', $parts));
     }
 
     /**

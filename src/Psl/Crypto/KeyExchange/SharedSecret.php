@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Psl\Crypto\KeyExchange;
 
 use Psl\Crypto\Exception;
-use Psl\Str\Byte;
 use SensitiveParameter;
+
+use function strlen;
 
 final readonly class SharedSecret
 {
@@ -19,7 +20,7 @@ final readonly class SharedSecret
         #[SensitiveParameter]
         public string $bytes,
     ) {
-        if (Byte\length($bytes) !== namespace\SHARED_SECRET_BYTES) {
+        if (strlen($bytes) !== namespace\SHARED_SECRET_BYTES) {
             throw new Exception\InvalidArgumentException(
                 'Shared secret must be exactly ' . namespace\SHARED_SECRET_BYTES . ' bytes.',
             );

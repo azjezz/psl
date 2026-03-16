@@ -6,9 +6,9 @@ namespace Psl\File;
 
 use Psl\File;
 use Psl\IO;
-use Psl\Str;
 
 use function clearstatcache;
+use function sprintf;
 
 /**
  * Write $content to $file.
@@ -37,7 +37,7 @@ function write(string $file, string $content, WriteMode $mode = WriteMode::OpenO
         clearstatcache();
     } catch (IO\Exception\ExceptionInterface $previous) {
         // @codeCoverageIgnoreStart
-        throw new Exception\RuntimeException(Str\format('Failed to write to file "%s".', $file), 0, $previous);
+        throw new Exception\RuntimeException(sprintf('Failed to write to file "%s".', $file), 0, $previous);
         // @codeCoverageIgnoreEnd
     }
 }

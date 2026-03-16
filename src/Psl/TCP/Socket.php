@@ -81,7 +81,7 @@ final class Socket
 
         $stream = Network\Internal\socket_connect("tcp://{$host}:{$port}", $context, $cancellation);
 
-        return new Internal\Stream($stream);
+        return new Network\Internal\Stream($stream);
     }
 
     /**

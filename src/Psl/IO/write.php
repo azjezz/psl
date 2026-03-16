@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
-use Psl\Str;
+use function sprintf;
 
 /**
  * Write all of the requested data to the output handle.
@@ -20,5 +20,5 @@ use Psl\Str;
  */
 function write(string $message, mixed ...$args): void
 {
-    output_handle()->writeAll(Str\format($message, ...$args));
+    output_handle()->writeAll(sprintf($message, ...$args));
 }

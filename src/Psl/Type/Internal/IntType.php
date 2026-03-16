@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Override;
-use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -51,14 +50,14 @@ final readonly class IntType extends Type\Type
 
         if (is_string($value) || $value instanceof Stringable) {
             $str = (string) $value;
-            $int = Str\to_int($str);
-            if ($int !== null && $str === (string) $int) {
+            $int = @(int) $str;
+            if ($str === (string) $int) {
                 return $int;
             }
 
             $trimmed = ltrim($str, '0');
-            $int = Str\to_int($trimmed);
-            if ($int !== null && $trimmed === (string) $int) {
+            $int = @(int) $trimmed;
+            if ($trimmed === (string) $int) {
                 return $int;
             }
 

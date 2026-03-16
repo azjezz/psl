@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Regex\Internal;
 
-use Psl\Str;
+use function sprintf;
+use function str_starts_with;
+use function strlen;
+use function substr;
 
 use const PREG_BACKTRACK_LIMIT_ERROR;
 use const PREG_BAD_UTF8_ERROR;
@@ -41,8 +44,9 @@ function get_preg_error(string $function): null|array
     $result = ['message' => $message, 'code' => $code, 'pattern_message' => null];
 
     $error = error_get_last();
-    if (null !== $error && Str\starts_with($error['message'], $function)) {
-        $result['pattern_message'] = Str\strip_prefix($error['message'], Str\format('%s(): ', $function));
+    if (null !== $error && str_starts_with($error['message'], $function)) {
+        $prefix = sprintf('%s(): ', $function);
+        $result['pattern_message'] = substr($error['message'], strlen($prefix));
     }
 
     return $result;

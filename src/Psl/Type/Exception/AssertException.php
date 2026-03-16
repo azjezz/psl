@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Type\Exception;
 
-use Psl\Str;
 use Psl\Vec;
 use Throwable;
 
 use function get_debug_type;
+use function implode;
+use function sprintf;
 
 final class AssertException extends Exception
 {
@@ -22,11 +23,11 @@ final class AssertException extends Exception
         $first = $previous instanceof Exception ? $previous->getFirstFailingActualType() : $actual;
 
         parent::__construct(
-            Str\format(
+            sprintf(
                 'Expected "%s", got "%s"%s.',
                 $expected,
                 $first,
-                $paths ? ' at path "' . Str\join($paths, '.') . '"' : '',
+                $paths ? ' at path "' . implode('.', $paths) . '"' : '',
             ),
             $actual,
             $paths,

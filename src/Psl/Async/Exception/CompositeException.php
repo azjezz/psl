@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Psl\Async\Exception;
 
 use Exception;
-use Psl\Str;
 use Throwable;
 
 use function count;
+use function sprintf;
 
 use const PHP_EOL;
 
@@ -43,7 +43,7 @@ final class CompositeException extends Exception implements ExceptionInterface
      */
     private function generateMessage(array $reasons): string
     {
-        $message = Str\format(
+        $message = sprintf(
             '"Multiple errors encountered (%d); use "%s::getReasons()" to retrieve the array of exceptions thrown:',
             count($reasons),
             self::class,

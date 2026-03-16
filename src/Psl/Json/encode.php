@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl\Json;
 
 use JsonException;
-use Psl\Str;
 
 use function json_encode;
+use function sprintf;
 
 use const JSON_PRESERVE_ZERO_FRACTION;
 use const JSON_PRETTY_PRINT;
@@ -36,6 +36,6 @@ function encode(mixed $value, bool $pretty = false, int $flags = 0): string
         /** @var non-empty-string */
         return json_encode($value, $flags);
     } catch (JsonException $e) {
-        throw new Exception\EncodeException(Str\format('%s.', $e->getMessage()), (int) $e->getCode(), $e);
+        throw new Exception\EncodeException(sprintf('%s.', $e->getMessage()), (int) $e->getCode(), $e);
     }
 }
