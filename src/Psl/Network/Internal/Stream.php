@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Psl\TCP\Internal;
+namespace Psl\Network\Internal;
 
 use Override;
 use Psl\Async\CancellationTokenInterface;
@@ -10,7 +10,6 @@ use Psl\Async\NullCancellationToken;
 use Psl\IO;
 use Psl\IO\Exception;
 use Psl\IO\Internal\ResourceHandle;
-use Psl\Network;
 use Psl\Network\Address;
 use Psl\TCP;
 use Revolt\EventLoop;
@@ -42,8 +41,8 @@ final class Stream implements TCP\StreamInterface
     public function __construct(mixed $stream, null|Address $localAddress = null, null|Address $peerAddress = null)
     {
         $this->handle = new ResourceHandle($stream, read: true, write: true, seek: false, close: true);
-        $this->localAddress = $localAddress ?? Network\Internal\get_sock_name($stream);
-        $this->peerAddress = $peerAddress ?? Network\Internal\get_peer_name($stream);
+        $this->localAddress = $localAddress ?? namespace\get_sock_name($stream);
+        $this->peerAddress = $peerAddress ?? namespace\get_peer_name($stream);
     }
 
     #[Override]

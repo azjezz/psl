@@ -7,7 +7,6 @@ namespace Psl\Type\Internal;
 use Override;
 use Psl\Collection;
 use Psl\Dict;
-use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -15,6 +14,7 @@ use Throwable;
 
 use function is_iterable;
 use function is_object;
+use function sprintf;
 
 /**
  * @template Tk of array-key
@@ -177,7 +177,7 @@ final readonly class MutableMapType extends Type\Type
     #[Override]
     public function toString(): string
     {
-        return Str\format(
+        return sprintf(
             '%s<%s, %s>',
             Collection\MutableMapInterface::class,
             $this->keyType->toString(),

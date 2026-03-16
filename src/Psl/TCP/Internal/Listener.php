@@ -9,6 +9,7 @@ use Psl\Async\CancellationTokenInterface;
 use Psl\Async\NullCancellationToken;
 use Psl\Channel;
 use Psl\Network;
+use Psl\Network\Internal\Stream;
 use Psl\TCP;
 use Revolt\EventLoop;
 

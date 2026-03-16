@@ -7,8 +7,8 @@ namespace Psl\IO;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\Exception\CancelledException;
 use Psl\Async\NullCancellationToken;
-use Psl\Str;
 
+use function sprintf;
 use function strlen;
 use function substr;
 
@@ -49,7 +49,7 @@ trait WriteHandleConvenienceMethodsTrait
 
         if ('' !== $bytes) {
             // @codeCoverageIgnoreStart
-            throw new Exception\RuntimeException(Str\format(
+            throw new Exception\RuntimeException(sprintf(
                 'asked to write %d bytes, but only able to write %d bytes',
                 $originalSize,
                 $originalSize - strlen($bytes),

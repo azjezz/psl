@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Psl\Filesystem;
 
 use Psl\Internal;
-use Psl\Str;
 
 use function chgrp;
 use function lchgrp;
+use function sprintf;
 
 /**
  * Change the group ownership of $node.
@@ -32,7 +32,7 @@ function change_group(string $node, int $group): void
 
     [$success, $error] = Internal\box($fun);
     if (!$success) {
-        throw new Exception\RuntimeException(Str\format(
+        throw new Exception\RuntimeException(sprintf(
             'Failed to change the group for node "%s": %s',
             $node,
             $error ?? 'internal error.',

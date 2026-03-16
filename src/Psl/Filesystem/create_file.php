@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl\Filesystem;
 
 use Psl\Internal;
-use Psl\Str;
 
 use function max;
+use function sprintf;
 use function touch;
 
 /**
@@ -38,7 +38,7 @@ function create_file(string $filename, null|int $time = null, null|int $accessTi
     [$result, $error_message] = Internal\box($fun);
     // @codeCoverageIgnoreStart
     if (false === $result) {
-        throw new Exception\RuntimeException(Str\format(
+        throw new Exception\RuntimeException(sprintf(
             'Failed to create file "%s": %s.',
             $filename,
             $error_message ?? 'internal error',

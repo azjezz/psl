@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem\Exception;
 
-use Psl\Str;
+use function sprintf;
 
 final class NotReadableException extends InvalidArgumentException
 {
     public static function forFile(string $file): NotReadableException
     {
-        return new self(Str\format('File "%s" is not readable.', $file));
+        return new self(sprintf('File "%s" is not readable.', $file));
     }
 
     public static function forDirectory(string $directory): NotReadableException
     {
-        return new self(Str\format('Directory "%s" is not readable.', $directory));
+        return new self(sprintf('Directory "%s" is not readable.', $directory));
     }
 }

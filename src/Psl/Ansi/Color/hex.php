@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace Psl\Ansi\Color;
 
 use Psl\Ansi\Exception;
-use Psl\Regex;
-use Psl\Str;
+
+use function hexdec;
+use function preg_match;
+use function str_starts_with;
+use function strlen;
+use function substr;
 
 /**
  * @throws Exception\InvalidArgumentException If $hex is not a valid hex color string.
@@ -15,19 +19,21 @@ use Psl\Str;
  */
 function hex(string $hex): Color
 {
-    $hex = Str\strip_prefix($hex, '#');
+    if (str_starts_with($hex, '#')) {
+        $hex = substr($hex, 1);
+    }
 
-    if (Str\length($hex) === 3) {
+    if (strlen($hex) === 3) {
         $hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
     }
 
-    if (!Regex\matches($hex, '/^[0-9a-fA-F]{6}$/')) {
+    if (!preg_match('/^[0-9a-fA-F]{6}$/', $hex)) {
         throw new Exception\InvalidArgumentException('Expected a valid hex color string, got "' . $hex . '".');
     }
 
-    $red = (int) hexdec(Str\slice($hex, 0, 2));
-    $green = (int) hexdec(Str\slice($hex, 2, 2));
-    $blue = (int) hexdec(Str\slice($hex, 4, 2));
+    $red = (int) hexdec(substr($hex, 0, 2));
+    $green = (int) hexdec(substr($hex, 2, 2));
+    $blue = (int) hexdec(substr($hex, 4, 2));
 
     return rgb($red, $green, $blue);
 }

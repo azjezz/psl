@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Encoding\Base64;
 
-use Psl;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\NullCancellationToken;
 use Psl\Encoding\Exception;
 use Psl\IO;
 
 use function preg_replace;
+use function sprintf;
 use function strlen;
 use function strpos;
 use function substr;
@@ -184,7 +184,7 @@ final class DecodingReadHandle implements IO\BufferedReadHandleInterface
         if ($idx !== false) {
             // @codeCoverageIgnoreStart
             if ($idx > $maxBytes) {
-                throw new IO\Exception\OverflowException(Psl\Str\format(
+                throw new IO\Exception\OverflowException(sprintf(
                     'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
                     $maxBytes,
                     $suffix,
@@ -199,7 +199,7 @@ final class DecodingReadHandle implements IO\BufferedReadHandleInterface
 
         // @codeCoverageIgnoreStart
         if (strlen($this->buffer) > $maxBytes) {
-            throw new IO\Exception\OverflowException(Psl\Str\format(
+            throw new IO\Exception\OverflowException(sprintf(
                 'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
                 $maxBytes,
                 $suffix,
@@ -218,7 +218,7 @@ final class DecodingReadHandle implements IO\BufferedReadHandleInterface
             if ($idx !== false) {
                 // @codeCoverageIgnoreStart
                 if ($idx > $maxBytes) {
-                    throw new IO\Exception\OverflowException(Psl\Str\format(
+                    throw new IO\Exception\OverflowException(sprintf(
                         'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
                         $maxBytes,
                         $suffix,
@@ -234,7 +234,7 @@ final class DecodingReadHandle implements IO\BufferedReadHandleInterface
 
             // @codeCoverageIgnoreStart
             if (strlen($this->buffer) > $maxBytes) {
-                throw new IO\Exception\OverflowException(Psl\Str\format(
+                throw new IO\Exception\OverflowException(sprintf(
                     'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
                     $maxBytes,
                     $suffix,

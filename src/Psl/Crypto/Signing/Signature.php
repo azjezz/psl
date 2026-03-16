@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Psl\Crypto\Signing;
 
 use Psl\Crypto\Exception;
-use Psl\Str\Byte;
 use SensitiveParameter;
+
+use function strlen;
 
 /**
  * Represents a detached Ed25519 signature.
@@ -22,7 +23,7 @@ final readonly class Signature
         #[SensitiveParameter]
         public string $bytes,
     ) {
-        if (Byte\length($bytes) !== namespace\SIGNATURE_BYTES) {
+        if (strlen($bytes) !== namespace\SIGNATURE_BYTES) {
             throw new Exception\InvalidArgumentException(
                 'Signature must be exactly ' . namespace\SIGNATURE_BYTES . ' bytes.',
             );

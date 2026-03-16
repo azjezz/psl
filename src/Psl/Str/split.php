@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl\Math;
+use const PHP_INT_MAX;
 
 /**
  * Returns an array containing the string split on the given delimiter. The vec
@@ -38,7 +38,7 @@ function split(string $string, string $delimiter, null|int $limit = null, Encodi
         return $result;
     }
 
-    $limit ??= Math\INT64_MAX;
+    $limit ??= PHP_INT_MAX;
 
     $tail = $string;
     $chunks = [];

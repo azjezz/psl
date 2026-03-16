@@ -7,8 +7,8 @@ namespace Psl\IO;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\Exception\CancelledException;
 use Psl\Async\NullCancellationToken;
-use Psl\Str;
 
+use function sprintf;
 use function strlen;
 
 /**
@@ -73,7 +73,7 @@ trait ReadHandleConvenienceMethodsTrait
         $length = strlen($data);
 
         if ($length !== $size) {
-            throw new Exception\RuntimeException(Str\format(
+            throw new Exception\RuntimeException(sprintf(
                 '%d bytes were requested, but only able to read %d bytes',
                 $size,
                 $length,

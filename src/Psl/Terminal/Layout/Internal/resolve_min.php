@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Terminal\Layout\Internal;
 
-use Psl\Math;
 use Psl\Terminal\Layout\Constraint;
+
+use function max;
 
 /**
  * @internal
@@ -19,5 +20,5 @@ function resolve_min(Constraint $constraint, int $totalSpace): int
         return -1;
     }
 
-    return Math\maxva($constraint->size, $innerSize);
+    return max($constraint->size, $innerSize);
 }

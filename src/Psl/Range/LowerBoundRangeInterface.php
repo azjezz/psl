@@ -7,7 +7,6 @@ namespace Psl\Range;
 use IteratorAggregate;
 use Override;
 use Psl\Iter;
-use Psl\Math;
 
 /**
  * @extends IteratorAggregate<int, int>
@@ -68,7 +67,7 @@ interface LowerBoundRangeInterface extends IteratorAggregate, RangeInterface
      *
      * If this range has no upper bound, the iterator will be infinite.
      *
-     * If {@see Math\INT64_MAX} is reached while iterating, {@see Exception\OverflowException} will be thrown.
+     * If `PHP_INT_MAX` is reached while iterating, {@see Exception\OverflowException} will be thrown.
      *
      * @return Iter\Iterator<int, int>
      *

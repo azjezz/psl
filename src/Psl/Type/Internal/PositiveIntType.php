@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Override;
-use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -14,6 +13,7 @@ use Stringable;
 use function is_float;
 use function is_int;
 use function is_string;
+use function ltrim;
 
 /**
  * @extends Type\Type<positive-int>
@@ -45,19 +45,15 @@ final readonly class PositiveIntType extends Type\Type
 
         if (is_string($value) || $value instanceof Stringable) {
             $str = (string) $value;
-            $int = Str\to_int($str);
-            if (null !== $int && $int > 0) {
+            $int = @(int) $str;
+            if ((string) $int === $str && $int > 0) {
                 return $int;
             }
 
-            try {
-                $trimmed = Str\trim_left($str, '0');
-            } catch (Str\Exception\InvalidArgumentException $e) {
-                throw CoercionException::withValue($value, $this->toString());
-            }
+            $trimmed = ltrim($str, '0');
 
-            $int = Str\to_int($trimmed);
-            if (null !== $int && $int > 0) {
+            $int = @(int) $trimmed;
+            if ((string) $int === $trimmed && $int > 0) {
                 return $int;
             }
 

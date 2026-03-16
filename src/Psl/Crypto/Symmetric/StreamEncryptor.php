@@ -7,7 +7,6 @@ namespace Psl\Crypto\Symmetric;
 use Psl\Crypto\Exception;
 use Psl\Crypto\Internal;
 use Psl\IO;
-use Psl\Str\Byte;
 use SensitiveParameter;
 
 use function pack;
@@ -15,6 +14,7 @@ use function sodium_crypto_secretstream_xchacha20poly1305_init_pull;
 use function sodium_crypto_secretstream_xchacha20poly1305_init_push;
 use function sodium_crypto_secretstream_xchacha20poly1305_pull;
 use function sodium_crypto_secretstream_xchacha20poly1305_push;
+use function strlen;
 use function unpack;
 
 use const SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_TAG_FINAL;
@@ -48,7 +48,7 @@ final readonly class StreamEncryptor implements StreamEncryptorInterface
                 break;
             }
 
-            $isLast = $source->reachedEndOfDataSource() || Byte\length($chunk) < $chunkSize;
+            $isLast = $source->reachedEndOfDataSource() || strlen($chunk) < $chunkSize;
             $tag = $isLast
                 ? SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_TAG_FINAL
                 : SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_TAG_MESSAGE;
@@ -56,7 +56,7 @@ final readonly class StreamEncryptor implements StreamEncryptorInterface
             $encrypted = Internal\call_sodium(static function () use (&$state, $chunk, $tag): string {
                 return sodium_crypto_secretstream_xchacha20poly1305_push($state, $chunk, '', $tag);
             });
-            $destination->writeAll(pack('V', Byte\length($encrypted)));
+            $destination->writeAll(pack('V', strlen($encrypted)));
             $destination->writeAll($encrypted);
 
             if ($isLast) {
@@ -72,7 +72,7 @@ final readonly class StreamEncryptor implements StreamEncryptorInterface
                 SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_TAG_FINAL,
             );
         });
-        $destination->writeAll(pack('V', Byte\length($encrypted)));
+        $destination->writeAll(pack('V', strlen($encrypted)));
         $destination->writeAll($encrypted);
     }
 
@@ -101,9 +101,9 @@ final readonly class StreamEncryptor implements StreamEncryptorInterface
                 break;
             }
 
-            if (Byte\length($lengthBytes) < 4) {
+            if (strlen($lengthBytes) < 4) {
                 /** @var positive-int $remaining */
-                $remaining = 4 - Byte\length($lengthBytes);
+                $remaining = 4 - strlen($lengthBytes);
                 try {
                     $lengthBytes .= $source->readFixedSize($remaining);
                 } catch (IO\Exception\RuntimeException $e) {

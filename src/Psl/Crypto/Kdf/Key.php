@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Psl\Crypto\Kdf;
 
 use Psl\Crypto\Exception;
-use Psl\Str\Byte;
 use SensitiveParameter;
+
+use function strlen;
 
 final readonly class Key
 {
@@ -19,7 +20,7 @@ final readonly class Key
         #[SensitiveParameter]
         public string $bytes,
     ) {
-        if (Byte\length($bytes) !== namespace\KEY_BYTES) {
+        if (strlen($bytes) !== namespace\KEY_BYTES) {
             throw new Exception\InvalidArgumentException('KDF key must be exactly ' . namespace\KEY_BYTES . ' bytes.');
         }
     }

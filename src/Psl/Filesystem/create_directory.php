@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl\Filesystem;
 
 use Psl\Internal;
-use Psl\Str;
 
 use function mkdir;
+use function sprintf;
 
 /**
  * Create the directory specified by $directory.
@@ -26,7 +26,7 @@ function create_directory(string $directory, int $permissions = 0o777): void
 
     // @codeCoverageIgnoreStart
     if (false === $result) {
-        throw new Exception\RuntimeException(Str\format(
+        throw new Exception\RuntimeException(sprintf(
             'Failed to create directory "%s": %s.',
             $directory,
             $error_message ?? 'internal error',

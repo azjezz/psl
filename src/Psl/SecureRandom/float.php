@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\SecureRandom;
 
-use Psl\Math;
-
 /**
  * Returns a cryptographically secure random float in the range from 0.0 to 1.0.
  *
@@ -15,7 +13,7 @@ use Psl\Math;
  */
 function float(): float
 {
-    $result = namespace\int(0, Math\INT53_MAX) / Math\INT53_MAX;
+    $result = namespace\int(0, 9_007_199_254_740_992) / 9_007_199_254_740_992;
 
     return (float) $result;
 }

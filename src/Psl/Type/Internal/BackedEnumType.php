@@ -6,10 +6,11 @@ namespace Psl\Type\Internal;
 
 use BackedEnum;
 use Override;
-use Psl\Str;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
+
+use function sprintf;
 
 /**
  * @template T of BackedEnum
@@ -88,6 +89,6 @@ final readonly class BackedEnumType extends Type\Type
     #[Override]
     public function toString(): string
     {
-        return Str\format('backed-enum(%s)', $this->enum);
+        return sprintf('backed-enum(%s)', $this->enum);
     }
 }

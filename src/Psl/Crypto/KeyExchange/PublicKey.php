@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Psl\Crypto\KeyExchange;
 
 use Psl\Crypto\Exception;
-use Psl\Str\Byte;
 use SensitiveParameter;
+
+use function strlen;
 
 final readonly class PublicKey
 {
@@ -19,7 +20,7 @@ final readonly class PublicKey
         #[SensitiveParameter]
         public string $bytes,
     ) {
-        if (Byte\length($bytes) !== namespace\PUBLIC_KEY_BYTES) {
+        if (strlen($bytes) !== namespace\PUBLIC_KEY_BYTES) {
             throw new Exception\InvalidArgumentException(
                 'Key exchange public key must be exactly ' . namespace\PUBLIC_KEY_BYTES . ' bytes.',
             );

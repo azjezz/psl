@@ -10,7 +10,8 @@ use Psl\Str;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
-use Psl\Vec;
+
+use function array_values;
 
 /**
  * A vertical bar chart widget using Unicode block characters.
@@ -80,7 +81,7 @@ final class BarChart implements WidgetInterface
      */
     public function barStyle(ControlSequenceIntroducer ...$style): self
     {
-        $this->barStyle = Vec\values($style);
+        $this->barStyle = array_values($style);
 
         return $this;
     }
@@ -90,7 +91,7 @@ final class BarChart implements WidgetInterface
      */
     public function labelStyle(ControlSequenceIntroducer ...$style): self
     {
-        $this->labelStyle = Vec\values($style);
+        $this->labelStyle = array_values($style);
 
         return $this;
     }

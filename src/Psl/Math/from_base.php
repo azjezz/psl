@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
-use Psl\Str;
-use Psl\Str\Byte;
+use function ord;
+use function sprintf;
+use function str_split;
 
 /**
  * Converts the given string in base `$fromBase` to an integer, assuming letters a-z
@@ -23,8 +24,8 @@ function from_base(string $number, int $fromBase): int
 {
     $limit = div(INT64_MAX, $fromBase);
     $result = 0;
-    foreach (Byte\chunk($number) as $digit) {
-        $oval = Byte\ord($digit);
+    foreach (str_split($number) as $digit) {
+        $oval = ord($digit);
         // Branches sorted by guesstimated frequency of use. */
         if (/* '0' - '9' */ $oval <= 57 && $oval >= 48) {
             $dval = $oval - 48;
@@ -37,13 +38,13 @@ function from_base(string $number, int $fromBase): int
         }
 
         if ($fromBase < $dval) {
-            throw new Exception\InvalidArgumentException(Str\format('Invalid digit %s in base %d', $digit, $fromBase));
+            throw new Exception\InvalidArgumentException(sprintf('Invalid digit %s in base %d', $digit, $fromBase));
         }
 
         $oldval = $result;
         $result = ($fromBase * $result) + $dval;
         if ($oldval > $limit || $oldval > $result) {
-            throw new Exception\OverflowException(Str\format(
+            throw new Exception\OverflowException(sprintf(
                 'Unexpected integer overflow parsing %s from base %d',
                 $number,
                 $fromBase,

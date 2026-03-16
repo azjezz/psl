@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Override;
-use Psl\Str;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 use Psl\Type\Exception\Exception;
 use Psl\Type\Type;
 use Psl\Type\TypeInterface;
+
+use function sprintf;
+use function str_contains;
 
 /**
  * @template Tl
@@ -101,14 +103,14 @@ final readonly class IntersectionType extends Type
     {
         $left = $this->left_type->toString();
         $right = $this->right_type->toString();
-        if (Str\contains($left, '|')) {
-            $left = Str\format('(%s)', $left);
+        if (str_contains($left, '|')) {
+            $left = sprintf('(%s)', $left);
         }
 
-        if (Str\contains($right, '|')) {
-            $right = Str\format('(%s)', $right);
+        if (str_contains($right, '|')) {
+            $right = sprintf('(%s)', $right);
         }
 
-        return Str\format('%s&%s', $left, $right);
+        return sprintf('%s&%s', $left, $right);
     }
 }

@@ -7,9 +7,9 @@ namespace Psl\DateTime;
 use DateInterval;
 use Override;
 use Psl\Comparison;
-use Psl\Str;
 
 use function abs;
+use function implode;
 use function rtrim;
 use function str_pad;
 use function substr;
@@ -705,7 +705,7 @@ final readonly class Duration implements TemporalAmountInterface, Comparison\Com
             $output[] = $concatenatedSeconds . ' second(s)';
         }
 
-        return [] === $output ? '0 second(s)' : Str\join($output, ', ');
+        return [] === $output ? '0 second(s)' : implode(', ', $output);
     }
 
     /**

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Override;
-use Psl\Math;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -25,7 +24,7 @@ final readonly class F32Type extends Type\Type
     #[Override]
     public function matches(mixed $value): bool
     {
-        return is_float($value) && $value >= MATH\FLOAT32_MIN && $value <= MATH\FLOAT32_MAX;
+        return is_float($value) && $value >= -3.402_823_47E+38 && $value <= 3.402_823_47E+38;
     }
 
     /**
@@ -38,7 +37,7 @@ final readonly class F32Type extends Type\Type
     {
         $float = Type\float()->coerce($value);
 
-        if ($float >= MATH\FLOAT32_MIN && $float <= MATH\FLOAT32_MAX) {
+        if ($float >= -3.402_823_47E+38 && $float <= 3.402_823_47E+38) {
             return $float;
         }
 
@@ -55,7 +54,7 @@ final readonly class F32Type extends Type\Type
     #[Override]
     public function assert(mixed $value): float
     {
-        if (is_float($value) && $value >= MATH\FLOAT32_MIN && $value <= MATH\FLOAT32_MAX) {
+        if (is_float($value) && $value >= -3.402_823_47E+38 && $value <= 3.402_823_47E+38) {
             return $value;
         }
 

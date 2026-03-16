@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Binary;
 
-use Psl\Math;
-
 use function is_finite;
 
 /**
@@ -20,7 +18,7 @@ use function is_finite;
  */
 function encode_f32(float $value, Endianness $endianness = Endianness::Big): string
 {
-    if (is_finite($value) && ($value < Math\FLOAT32_MIN || $value > Math\FLOAT32_MAX)) {
+    if (is_finite($value) && ($value < -3.402_823_47E+38 || $value > 3.402_823_47E+38)) {
         throw new Exception\OverflowException('Value ' . $value . ' is out of range for f32.');
     }
 

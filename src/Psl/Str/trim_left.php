@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl\Regex;
-
+use function preg_last_error_msg;
 use function preg_quote;
+use function preg_replace;
 
 /**
  * Returns the given string with whitespace stripped from the left.
@@ -23,9 +23,10 @@ function trim_left(string $string, null|string $charMask = null): string
     $charMask ??= " \t\n\r\0\x0B\x0C\u{A0}\u{FEFF}";
     $charMask = preg_quote($charMask, null);
 
-    try {
-        return Regex\replace($string, "{^[{$charMask}]++}uD", '');
-    } catch (Regex\Exception\RuntimeException|Regex\Exception\InvalidPatternException $error) {
-        throw new Exception\InvalidArgumentException($error->getMessage(), previous: $error);
+    $result = preg_replace("{^[{$charMask}]++}uD", '', $string);
+    if (null === $result) {
+        throw new Exception\InvalidArgumentException(preg_last_error_msg());
     }
+
+    return $result;
 }

@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
-use Psl\Str;
-use Psl\Str\Byte;
-
 use function bcadd;
 use function bccomp;
 use function bcdiv;
 use function bcmod;
 use function bcmul;
 use function bcpow;
+use function sprintf;
+use function str_split;
+use function stripos;
+use function strlen;
+use function substr;
 
 /**
  * Converts the given string in base `$fromBase` to base `$toBase`, assuming
@@ -29,13 +31,14 @@ use function bcpow;
  */
 function base_convert(string $value, int $fromBase, int $toBase): string
 {
-    $fromAlphabet = Byte\slice(Str\ALPHABET_ALPHANUMERIC, 0, $fromBase);
+    $alphanumeric = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $fromAlphabet = substr($alphanumeric, 0, $fromBase);
     $resultDecimal = '0';
-    $placeValue = bcpow((string) $fromBase, (string) (Byte\length($value) - 1));
-    foreach (Byte\chunk($value) as $digit) {
-        $digitNumeric = Byte\search_ci($fromAlphabet, $digit);
-        if (null === $digitNumeric) {
-            throw new Exception\InvalidArgumentException(Str\format('Invalid digit %s in base %d', $digit, $fromBase));
+    $placeValue = bcpow((string) $fromBase, (string) (strlen($value) - 1));
+    foreach (str_split($value) as $digit) {
+        $digitNumeric = stripos($fromAlphabet, $digit);
+        if (false === $digitNumeric) {
+            throw new Exception\InvalidArgumentException(sprintf('Invalid digit %s in base %d', $digit, $fromBase));
         }
 
         $resultDecimal = bcadd($resultDecimal, bcmul((string) $digitNumeric, $placeValue));
@@ -46,7 +49,7 @@ function base_convert(string $value, int $fromBase, int $toBase): string
         return $resultDecimal;
     }
 
-    $toAlphabet = Byte\slice(Str\ALPHABET_ALPHANUMERIC, 0, $toBase);
+    $toAlphabet = substr($alphanumeric, 0, $toBase);
     $result = '';
     do {
         $result = $toAlphabet[(int) bcmod($resultDecimal, (string) $toBase)] . $result;

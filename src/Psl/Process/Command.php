@@ -7,16 +7,16 @@ namespace Psl\Process;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\Exception\CancelledException;
 use Psl\Async\NullCancellationToken;
-use Psl\Dict;
-use Psl\Env;
-use Psl\Filesystem;
 use Psl\IO;
 use Psl\OS;
-use Psl\Str;
 
 use function defined;
+use function getcwd;
+use function getenv;
+use function is_dir;
 use function is_resource;
 use function proc_open;
+use function str_contains;
 
 use const STDERR;
 use const STDIN;
@@ -128,7 +128,7 @@ final readonly class Command
         return new self(
             program: $this->program,
             arguments: $this->arguments,
-            environment: Dict\merge($this->environment, [$name => $value]),
+            environment: [...$this->environment, $name => $value],
             workingDirectory: $this->workingDirectory,
             stdin: $this->stdin,
             stdout: $this->stdout,
@@ -147,7 +147,7 @@ final readonly class Command
         return new self(
             program: $this->program,
             arguments: $this->arguments,
-            environment: Dict\merge($this->environment, $variables),
+            environment: [...$this->environment, ...$variables],
             workingDirectory: $this->workingDirectory,
             stdin: $this->stdin,
             stdout: $this->stdout,
@@ -337,21 +337,22 @@ final readonly class Command
      */
     private function doSpawn(Stdio $stdin, Stdio $stdout, Stdio $stderr): Internal\Child
     {
-        if (Str\contains($this->program, "\0")) {
+        if (str_contains($this->program, "\0")) {
             throw new Exception\RuntimeException('Command line contains NULL bytes.');
         }
 
         foreach ($this->arguments as $argument) {
-            if (Str\contains($argument, "\0")) {
+            if (str_contains($argument, "\0")) {
                 throw new Exception\RuntimeException('Command line contains NULL bytes.');
             }
         }
 
         $command = $this->buildCommand();
 
-        $environment = Dict\merge(Env\get_vars(), $this->environment);
-        $workingDirectory = $this->workingDirectory ?? Env\current_dir();
-        if ('' === $workingDirectory || !Filesystem\is_directory($workingDirectory)) {
+        $environment = [...getenv(), ...$this->environment];
+        $cwd = getcwd();
+        $workingDirectory = $this->workingDirectory ?? ($cwd !== false ? $cwd : '');
+        if ('' === $workingDirectory || !is_dir($workingDirectory)) {
             throw new Exception\RuntimeException('Working directory does not exist.');
         }
 

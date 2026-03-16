@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Binary;
 
-use Psl\Str\Byte;
+use function strlen;
 
 /**
  * Decode an unsigned 64-bit integer from a binary string.
@@ -21,8 +21,8 @@ use Psl\Str\Byte;
  */
 function decode_u64(string $bytes, Endianness $endianness = Endianness::Big): int
 {
-    if (Byte\length($bytes) < 8) {
-        throw new Exception\UnderflowException('Expected at least 8 bytes, got ' . Byte\length($bytes) . '.');
+    if (strlen($bytes) < 8) {
+        throw new Exception\UnderflowException('Expected at least 8 bytes, got ' . strlen($bytes) . '.');
     }
 
     $value = unpack(match ($endianness) {

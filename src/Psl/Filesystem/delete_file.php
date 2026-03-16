@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Filesystem;
 
 use Psl\Internal;
-use Psl\Str;
 
+use function sprintf;
 use function unlink;
 
 /**
@@ -31,7 +31,7 @@ function delete_file(string $file): void
     [$result, $error_message] = Internal\box(static fn(): bool => unlink($file));
     // @codeCoverageIgnoreStart
     if (false === $result) {
-        throw new Exception\RuntimeException(Str\format(
+        throw new Exception\RuntimeException(sprintf(
             'Failed to delete file "%s": %s.',
             $file,
             $error_message ?? 'internal error',

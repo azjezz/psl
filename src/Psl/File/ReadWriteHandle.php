@@ -7,9 +7,17 @@ namespace Psl\File;
 use Override;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\NullCancellationToken;
-use Psl\Filesystem;
 use Psl\IO;
-use Psl\Str;
+
+use function dirname;
+use function file_exists;
+use function is_dir;
+use function is_file;
+use function is_readable;
+use function is_writable;
+use function mkdir;
+use function Psl\Internal\suppress;
+use function sprintf;
 
 final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements WriteHandleInterface, ReadHandleInterface
 {
@@ -30,8 +38,8 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Wr
      */
     public function __construct(string $file, WriteMode $writeMode = WriteMode::OpenOrCreate)
     {
-        $isFile = Filesystem\is_file($file);
-        if (!$isFile && Filesystem\exists($file)) {
+        $isFile = is_file($file);
+        if (!$isFile && file_exists($file)) {
             throw Exception\NotFileException::for($file);
         }
 
@@ -41,32 +49,35 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Wr
         }
 
         if ($isFile) {
-            if (!Filesystem\is_writable($file)) {
+            if (!is_writable($file)) {
                 throw Exception\NotWritableException::for($file);
             }
 
-            if (!Filesystem\is_readable($file)) {
+            if (!is_readable($file)) {
                 throw Exception\NotReadableException::for($file);
             }
         }
 
         if (!$isFile) {
-            try {
-                $directory = Filesystem\create_directory_for_file($file);
-                if (!Filesystem\is_writable($directory)) {
-                    throw Exception\NotWritableException::for($file);
+            $directory = dirname($file);
+            if (!is_dir($directory)) {
+                $mkdir = suppress(static fn() => mkdir($directory, 0o777, true));
+                if (!$mkdir && !is_dir($directory)) {
+                    throw new Exception\RuntimeException(sprintf(
+                        'Failed to create the directory for file "%s".',
+                        $file,
+                    ));
                 }
+            }
 
-                if (!Filesystem\is_readable($directory)) {
-                    // @codeCoverageIgnoreStart
-                    throw Exception\NotReadableException::for($file);
-                    // @codeCoverageIgnoreEnd
-                }
-            } catch (Filesystem\Exception\RuntimeException $previous) {
-                throw new Exception\RuntimeException(
-                    Str\format('Failed to create the directory for file "%s".', $file),
-                    previous: $previous,
-                );
+            if (!is_writable($directory)) {
+                throw Exception\NotWritableException::for($file);
+            }
+
+            if (!is_readable($directory)) {
+                // @codeCoverageIgnoreStart
+                throw Exception\NotReadableException::for($file);
+                // @codeCoverageIgnoreEnd
             }
         }
 

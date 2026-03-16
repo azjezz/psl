@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Network;
 
 use Psl\Internal;
+use Psl\Network;
 use Psl\OS;
-use Psl\TCP;
 
 use function error_get_last;
 use function stream_socket_pair;
@@ -51,8 +51,8 @@ function socket_pair(): array
     // @codeCoverageIgnoreStart
     if (OS\is_windows()) {
         return [
-            new TCP\Internal\Stream($sockets[0]),
-            new TCP\Internal\Stream($sockets[1]),
+            new Network\Internal\Stream($sockets[0]),
+            new Network\Internal\Stream($sockets[1]),
         ];
     }
 
@@ -60,7 +60,7 @@ function socket_pair(): array
 
     $local = Address::unix('<anonymous>');
     return [
-        new TCP\Internal\Stream($sockets[0], $local, $local),
-        new TCP\Internal\Stream($sockets[1], $local, $local),
+        new Network\Internal\Stream($sockets[0], $local, $local),
+        new Network\Internal\Stream($sockets[1], $local, $local),
     ];
 }

@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\DateTime\Exception;
 
 use Psl\Exception;
-use Psl\Str;
+
+use function sprintf;
 
 final class UnexpectedValueException extends Exception\UnexpectedValueException implements ExceptionInterface
 {
@@ -23,7 +24,7 @@ final class UnexpectedValueException extends Exception\UnexpectedValueException 
      */
     public static function forYear(int $providedYear, int $calendarYear): self
     {
-        return new self(Str\format(
+        return new self(sprintf(
             'Unexpected year value encountered. Provided "%d", but the calendar expects "%d". Check the year for accuracy and ensure it\'s within the supported range.',
             $providedYear,
             $calendarYear,
@@ -44,7 +45,7 @@ final class UnexpectedValueException extends Exception\UnexpectedValueException 
      */
     public static function forMonth(int $providedMonth, int $calendarMonth): self
     {
-        return new self(Str\format(
+        return new self(sprintf(
             'Unexpected month value encountered. Provided "%d", but the calendar expects "%d". Ensure the month is within the 1-12 range and matches the specific year context.',
             $providedMonth,
             $calendarMonth,
@@ -65,7 +66,7 @@ final class UnexpectedValueException extends Exception\UnexpectedValueException 
      */
     public static function forDay(int $providedDay, int $calendarDay): self
     {
-        return new self(Str\format(
+        return new self(sprintf(
             'Unexpected day value encountered. Provided "%d", but the calendar expects "%d". Ensure the day is valid for the given month and year, considering variations like leap years.',
             $providedDay,
             $calendarDay,
@@ -86,7 +87,7 @@ final class UnexpectedValueException extends Exception\UnexpectedValueException 
      */
     public static function forHours(int $providedHours, int $calendarHours): self
     {
-        return new self(Str\format(
+        return new self(sprintf(
             'Unexpected hours value encountered. Provided "%d", but the calendar expects "%d". Ensure the hour falls within a 24-hour day.',
             $providedHours,
             $calendarHours,
@@ -107,7 +108,7 @@ final class UnexpectedValueException extends Exception\UnexpectedValueException 
      */
     public static function forMinutes(int $providedMinutes, int $calendarMinutes): self
     {
-        return new self(Str\format(
+        return new self(sprintf(
             'Unexpected minutes value encountered. Provided "%d", but the calendar expects "%d". Check the minutes value for errors and ensure it\'s within the 0-59 range.',
             $providedMinutes,
             $calendarMinutes,
@@ -128,7 +129,7 @@ final class UnexpectedValueException extends Exception\UnexpectedValueException 
      */
     public static function forSeconds(int $providedSeconds, int $calendarSeconds): self
     {
-        return new self(Str\format(
+        return new self(sprintf(
             'Unexpected seconds value encountered. Provided "%d", but the calendar expects "%d". Ensure the seconds are correct and within the 0-59 range.',
             $providedSeconds,
             $calendarSeconds,

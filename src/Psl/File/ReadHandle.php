@@ -7,8 +7,11 @@ namespace Psl\File;
 use Override;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\NullCancellationToken;
-use Psl\Filesystem;
 use Psl\IO;
+
+use function file_exists;
+use function is_file;
+use function is_readable;
 
 final class ReadHandle extends Internal\AbstractHandleWrapper implements ReadHandleInterface
 {
@@ -25,15 +28,15 @@ final class ReadHandle extends Internal\AbstractHandleWrapper implements ReadHan
      */
     public function __construct(string $file)
     {
-        if (!Filesystem\exists($file)) {
+        if (!file_exists($file)) {
             throw Exception\NotFoundException::for($file);
         }
 
-        if (!Filesystem\is_file($file)) {
+        if (!is_file($file)) {
             throw Exception\NotFileException::for($file);
         }
 
-        if (!Filesystem\is_readable($file)) {
+        if (!is_readable($file)) {
             throw Exception\NotReadableException::for($file);
         }
 

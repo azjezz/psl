@@ -7,7 +7,8 @@ namespace Psl\DateTime\Internal;
 use IntlTimeZone;
 use Psl;
 use Psl\DateTime\Timezone;
-use Psl\Str\Byte;
+
+use function str_starts_with;
 
 /**
  * @pure
@@ -17,7 +18,7 @@ use Psl\Str\Byte;
 function to_intl_timezone(Timezone $timezone): IntlTimeZone
 {
     $value = $timezone->value;
-    if (Byte\starts_with($value, '+') || Byte\starts_with($value, '-')) {
+    if (str_starts_with($value, '+') || str_starts_with($value, '-')) {
         $value = 'GMT' . $value;
     }
 

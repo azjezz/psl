@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Binary;
 
-use Psl\Str\Byte;
+use function strlen;
 
 /**
  * Decode an unsigned 8-bit integer from a binary string.
@@ -17,8 +17,8 @@ use Psl\Str\Byte;
  */
 function decode_u8(string $bytes): int
 {
-    if (Byte\length($bytes) < 1) {
-        throw new Exception\UnderflowException('Expected at least 1 byte, got ' . Byte\length($bytes) . '.');
+    if (strlen($bytes) < 1) {
+        throw new Exception\UnderflowException('Expected at least 1 byte, got ' . strlen($bytes) . '.');
     }
 
     return unpack('C', $bytes)[1];

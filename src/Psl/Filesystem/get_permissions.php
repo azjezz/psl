@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem;
 
-use Psl;
-use Psl\Str;
-
+use function error_clear_last;
+use function error_get_last;
 use function fileperms;
+use function sprintf;
 
 /**
  * Get the permissions of $node.
@@ -23,13 +23,17 @@ function get_permissions(string $node): int
         throw Exception\NotFoundException::forNode($node);
     }
 
-    [$result, $message] = Psl\Internal\box(static fn(): int|false => fileperms($node));
+    error_clear_last();
+    $result = @fileperms($node);
+
     // @codeCoverageIgnoreStart
     if (false === $result) {
-        throw new Exception\RuntimeException(Str\format(
+        $error = error_get_last();
+
+        throw new Exception\RuntimeException(sprintf(
             'Failed to retrieve permissions of file "%s": %s',
             $node,
-            $message ?? 'internal error',
+            $error['message'] ?? 'internal error',
         ));
     }
 

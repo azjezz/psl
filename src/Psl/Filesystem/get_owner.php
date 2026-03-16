@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem;
 
-use Psl;
-use Psl\Str;
-
+use function error_clear_last;
+use function error_get_last;
 use function fileowner;
+use function sprintf;
 
 /**
  * Get the owner of $node.
@@ -23,12 +23,16 @@ function get_owner(string $node): int
         throw Exception\NotFoundException::forNode($node);
     }
 
-    [$result, $message] = Psl\Internal\box(static fn(): false|int => fileowner($node));
+    error_clear_last();
+    $result = @fileowner($node);
+
     if (false === $result) {
-        throw new Exception\RuntimeException(Str\format(
+        $error = error_get_last();
+
+        throw new Exception\RuntimeException(sprintf(
             'Failed to retrieve owner of file "%s": %s',
             $node,
-            $message ?? 'internal error',
+            $error['message'] ?? 'internal error',
         ));
     }
 

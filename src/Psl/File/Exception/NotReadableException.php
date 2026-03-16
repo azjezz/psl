@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\File\Exception;
 
-use Psl\Str;
+use function sprintf;
 
 final class NotReadableException extends InvalidArgumentException
 {
     public static function for(string $file): NotReadableException
     {
-        return new self(Str\format('File "%s" is not readable.', $file));
+        return new self(sprintf('File "%s" is not readable.', $file));
     }
 }

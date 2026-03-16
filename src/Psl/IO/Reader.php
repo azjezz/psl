@@ -8,8 +8,8 @@ use Override;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\Exception\CancelledException;
 use Psl\Async\NullCancellationToken;
-use Psl\Str;
 
+use function sprintf;
 use function strlen;
 use function strpos;
 use function substr;
@@ -209,7 +209,7 @@ final class Reader implements BufferedReadHandleInterface
         $idx = strpos($buf, $suffix);
         if (false !== $idx) {
             if ($idx > $maxBytes) {
-                throw new Exception\OverflowException(Str\format(
+                throw new Exception\OverflowException(sprintf(
                     'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
                     $maxBytes,
                     $suffix,
@@ -221,7 +221,7 @@ final class Reader implements BufferedReadHandleInterface
         }
 
         if (strlen($buf) > $maxBytes) {
-            throw new Exception\OverflowException(Str\format(
+            throw new Exception\OverflowException(sprintf(
                 'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
                 $maxBytes,
                 $suffix,
@@ -243,7 +243,7 @@ final class Reader implements BufferedReadHandleInterface
             if (false !== $idx) {
                 if ($idx > $maxBytes) {
                     $this->buffer = $buf;
-                    throw new Exception\OverflowException(Str\format(
+                    throw new Exception\OverflowException(sprintf(
                         'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
                         $maxBytes,
                         $suffix,
@@ -255,7 +255,7 @@ final class Reader implements BufferedReadHandleInterface
 
             if (strlen($buf) > $maxBytes) {
                 $this->buffer = $buf;
-                throw new Exception\OverflowException(Str\format(
+                throw new Exception\OverflowException(sprintf(
                     'Exceeded maximum byte limit (%d) before encountering the suffix ("%s").',
                     $maxBytes,
                     $suffix,

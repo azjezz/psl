@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem\Exception;
 
-use Psl\Str;
+use function sprintf;
 
 final class NotDirectoryException extends InvalidArgumentException
 {
     public static function for(string $path): NotDirectoryException
     {
-        return new self(Str\format('Path "%s" does not point to a directory.', $path));
+        return new self(sprintf('Path "%s" does not point to a directory.', $path));
     }
 }

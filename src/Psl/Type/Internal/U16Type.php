@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Override;
-use Psl\Math;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
 use function is_int;
-use function Psl\Type;
 
 /**
  * @extends Type\Type<int<0, 65535>>
@@ -26,7 +24,7 @@ final readonly class U16Type extends Type\Type
     #[Override]
     public function matches(mixed $value): bool
     {
-        return is_int($value) && $value >= 0 && $value <= MATH\UINT16_MAX;
+        return is_int($value) && $value >= 0 && $value <= 65_535;
     }
 
     /**
@@ -39,7 +37,7 @@ final readonly class U16Type extends Type\Type
     {
         $integer = Type\int()->coerce($value);
 
-        if ($integer >= 0 && $integer <= MATH\UINT16_MAX) {
+        if ($integer >= 0 && $integer <= 65_535) {
             return $integer;
         }
 
@@ -56,7 +54,7 @@ final readonly class U16Type extends Type\Type
     #[Override]
     public function assert(mixed $value): int
     {
-        if (is_int($value) && $value >= 0 && $value <= MATH\UINT16_MAX) {
+        if (is_int($value) && $value >= 0 && $value <= 65_535) {
             return $value;
         }
 

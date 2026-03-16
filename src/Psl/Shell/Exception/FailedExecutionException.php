@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Shell\Exception;
 
-use Psl\Str;
+use function sprintf;
+use function str_replace;
 
 use const PHP_EOL;
 
@@ -17,7 +18,7 @@ final class FailedExecutionException extends RuntimeException
 
     public function __construct(string $command, string $stdoutContent, string $stderrContent, int $code)
     {
-        $message = Str\format(<<<MESSAGE
+        $message = sprintf(<<<MESSAGE
         Shell command "%s" returned an exit code of "%d".
 
         STDOUT:
@@ -25,7 +26,7 @@ final class FailedExecutionException extends RuntimeException
 
         STDERR:
             %s
-        MESSAGE, $command, $code, Str\replace($stdoutContent, PHP_EOL, PHP_EOL . '    '), Str\replace($stderrContent, PHP_EOL, PHP_EOL . '    '));
+        MESSAGE, $command, $code, str_replace(PHP_EOL, PHP_EOL . '    ', $stdoutContent), str_replace(PHP_EOL, PHP_EOL . '    ', $stderrContent));
 
         parent::__construct($message, $code);
 

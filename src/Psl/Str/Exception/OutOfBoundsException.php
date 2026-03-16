@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\Str\Exception;
 
 use Psl\Exception;
-use Psl\Str;
+
+use function sprintf;
 
 /**
  * @mutation-free
@@ -17,6 +18,6 @@ final class OutOfBoundsException extends Exception\OutOfBoundsException implemen
      */
     public static function for(int $offset): OutOfBoundsException
     {
-        return new self(Str\format('Offset (%d) was out-of-bounds.', $offset));
+        return new self(sprintf('Offset (%d) was out-of-bounds.', $offset));
     }
 }

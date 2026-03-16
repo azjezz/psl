@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tree;
 
-use Psl\Vec;
+use function array_map;
 
 /**
  * Creates a tree from a nested array structure.
@@ -64,5 +64,5 @@ function from_array(array $array): TreeNode
      */
     $children = $array['children'] ?? [];
 
-    return new TreeNode($array['value'], Vec\map($children, from_array(...)));
+    return new TreeNode($array['value'], array_map(from_array(...), $children));
 }

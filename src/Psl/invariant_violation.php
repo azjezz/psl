@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl;
 
+use function sprintf;
+
 /**
  * @param int|float|string ...$args
  *
@@ -13,5 +15,5 @@ namespace Psl;
  */
 function invariant_violation(string $message, mixed ...$args): never
 {
-    throw new Exception\InvariantViolationException(Str\format($message, ...$args));
+    throw new Exception\InvariantViolationException(sprintf($message, ...$args));
 }

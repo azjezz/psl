@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Binary;
 
-use Psl\Str\Byte;
+use function strlen;
 
 /**
  * Decode a signed 16-bit integer from a binary string.
@@ -17,8 +17,8 @@ use Psl\Str\Byte;
  */
 function decode_i16(string $bytes, Endianness $endianness = Endianness::Big): int
 {
-    if (Byte\length($bytes) < 2) {
-        throw new Exception\UnderflowException('Expected at least 2 bytes, got ' . Byte\length($bytes) . '.');
+    if (strlen($bytes) < 2) {
+        throw new Exception\UnderflowException('Expected at least 2 bytes, got ' . strlen($bytes) . '.');
     }
 
     $value = unpack(match ($endianness) {

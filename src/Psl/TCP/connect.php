@@ -30,5 +30,5 @@ function connect(
 
     $socket = Network\Internal\socket_connect("tcp://{$host}:{$port}", $context, $cancellation);
 
-    return new Internal\Stream($socket);
+    return new Network\Internal\Stream($socket);
 }

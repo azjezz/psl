@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\Filesystem;
 
 use Psl\Internal;
-use Psl\Str;
+
+use function sprintf;
 
 /**
  * Get the size of $file.
@@ -36,7 +37,7 @@ function file_size(string $file): int
     // @codeCoverageIgnoreStart
     [$size, $message] = Internal\box(static fn(): int|false => filesize($file));
     if (false === $size) {
-        throw new Exception\RuntimeException(Str\format(
+        throw new Exception\RuntimeException(sprintf(
             'Error reading the size of file "%s": %s',
             $file,
             $message ?? 'internal error',

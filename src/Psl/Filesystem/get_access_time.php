@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem;
 
-use Psl;
-use Psl\Str;
-
+use function error_clear_last;
+use function error_get_last;
 use function fileatime;
+use function sprintf;
 
 /**
  * Get last access time of $node.
@@ -23,14 +23,17 @@ function get_access_time(string $node): int
         throw Exception\NotFoundException::forNode($node);
     }
 
-    [$result, $message] = Psl\Internal\box(static fn(): false|int => fileatime($node));
+    error_clear_last();
+    $result = @fileatime($node);
 
     // @codeCoverageIgnoreStart
     if (false === $result) {
-        throw new Exception\RuntimeException(Str\format(
+        $error = error_get_last();
+
+        throw new Exception\RuntimeException(sprintf(
             'Failed to retrieve the access time of "%s": %s',
             $node,
-            $message ?? 'internal error',
+            $error['message'] ?? 'internal error',
         ));
     }
 

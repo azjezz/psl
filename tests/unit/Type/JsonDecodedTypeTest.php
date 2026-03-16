@@ -65,7 +65,7 @@ final class JsonDecodedTypeTest extends TypeTestCase
         yield 'invalid json' => [
             Type\json_decoded(Type\dict(Type\string(), Type\mixed())),
             '{invalid}',
-            'Could not coerce "string" to type "json-decoded<dict<string, mixed>>" at path "coerce_input(string): dict<string, mixed>": Syntax error..',
+            'Could not coerce "string" to type "json-decoded<dict<string, mixed>>" at path "coerce_input(string): dict<string, mixed>": Syntax error.',
         ];
         yield 'decoded value does not match inner type' => [
             Type\json_decoded(Type\vec(Type\int())),

@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\SecureRandom;
 
-use Psl\Math;
-use Psl\Str;
-use Psl\Str\Byte;
-
+use function ceil;
+use function log;
+use function strlen;
 use function unpack;
 
 /**
@@ -32,9 +31,9 @@ function string(int $length, null|string $alphabet = null): string
         return '';
     }
 
-    $alphabet ??= Str\ALPHABET_ALPHANUMERIC;
-    $alphabetSize = Byte\length($alphabet);
-    $bits = (int) Math\ceil(Math\log($alphabetSize, 2.0));
+    $alphabet ??= '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $alphabetSize = strlen($alphabet);
+    $bits = (int) ceil(log($alphabetSize, 2.0));
     if ($bits < 1 || $bits > 56) {
         throw new Exception\InvalidArgumentException('$alphabet\'s length must be in [2^1, 2^56]');
     }
@@ -42,7 +41,7 @@ function string(int $length, null|string $alphabet = null): string
     $ret = '';
     while ($length > 0) {
         /** @var int<0, max> $urandomLength */
-        $urandomLength = (int) Math\ceil((float) (2 * $length * $bits) / 8.0);
+        $urandomLength = (int) ceil((float) (2 * $length * $bits) / 8.0);
         $data = namespace\bytes($urandomLength);
 
         $unpackedData = 0;

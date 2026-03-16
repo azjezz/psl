@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Tree;
 
-use Psl\Vec;
+use function array_map;
 
 /**
  * Converts a tree to a nested array structure.
@@ -60,6 +60,6 @@ function to_array(NodeInterface $tree): array
 
     return [
         'value' => $tree->getValue(),
-        'children' => Vec\map($tree->getChildren(), to_array(...)),
+        'children' => array_map(to_array(...), $tree->getChildren()),
     ];
 }

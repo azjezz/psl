@@ -9,8 +9,10 @@ use function is_dir;
 /**
  * Check whether $node exists and is a directory.
  *
- * @param non-empty-string $node Path, absolute or relative to the current working directory.
- *                               If it is a link, it will be resolved and checked.
+ * @param string $node Path, absolute or relative to the current working directory.
+ *                     If it is a link, it will be resolved and checked.
+ *
+ * @psalm-assert-if-true =non-empty-string $node
  */
 function is_directory(string $node): bool
 {

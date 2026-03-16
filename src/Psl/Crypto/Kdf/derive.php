@@ -6,10 +6,10 @@ namespace Psl\Crypto\Kdf;
 
 use Psl\Crypto\Exception;
 use Psl\Crypto\Internal;
-use Psl\Str\Byte;
 use SensitiveParameter;
 
 use function sodium_crypto_kdf_derive_from_key;
+use function strlen;
 
 /**
  * Derive a sub-key from a master key using sodium KDF.
@@ -24,7 +24,7 @@ use function sodium_crypto_kdf_derive_from_key;
  */
 function derive(#[SensitiveParameter] Key $key, int $subKeyId, string $context, int $length = 32): string
 {
-    if (Byte\length($context) !== namespace\CONTEXT_BYTES) {
+    if (strlen($context) !== namespace\CONTEXT_BYTES) {
         throw new Exception\RuntimeException('KDF context must be exactly ' . namespace\CONTEXT_BYTES . ' bytes.');
     }
 

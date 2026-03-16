@@ -6,9 +6,9 @@ namespace Psl\Comparison\Exception;
 
 use InvalidArgumentException as InvalidArgumentRootException;
 use Psl\Exception\ExceptionInterface;
-use Psl\Str;
 
 use function get_debug_type;
+use function sprintf;
 
 /**
  * Exception thrown when two values are incomparable.
@@ -17,7 +17,7 @@ class IncomparableException extends InvalidArgumentRootException implements Exce
 {
     public static function fromValues(mixed $a, mixed $b, string $additionalInfo = ''): self
     {
-        return new self(Str\format(
+        return new self(sprintf(
             'Unable to compare "%s" with "%s"%s',
             get_debug_type($a),
             get_debug_type($b),

@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tree;
 
 use Closure;
-use Psl\Vec;
+
+use function array_map;
 
 /**
  * Traverses the tree and transforms each node using a custom function.
@@ -69,7 +70,7 @@ function traverse(NodeInterface $tree, Closure $transform): mixed
             return [];
         }
 
-        return Vec\map($tree->getChildren(), static fn(NodeInterface $child): mixed => traverse($child, $transform));
+        return array_map(static fn(NodeInterface $child): mixed => traverse($child, $transform), $tree->getChildren());
     };
 
     return $transform($value, $getChildren);

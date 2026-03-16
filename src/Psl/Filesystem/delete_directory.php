@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Psl\Filesystem;
 
 use Psl\Internal;
-use Psl\Str;
-use Psl\Vec;
 
 use function rmdir;
+use function sprintf;
 
 /**
  * Delete the directory specified by $directory.
@@ -24,19 +23,21 @@ function delete_directory(string $directory, bool $recursive = false): void
 {
     if ($recursive && !namespace\is_symbolic_link($directory)) {
         $nodes = namespace\read_directory($directory);
-        [$symbolic_links, $nodes] = Vec\partition(
-            $nodes,
-            /**
-             * @param non-empty-string $node
-             */
-            namespace\is_symbolic_link(...),
-        );
+        $symbolicLinks = [];
+        $otherNodes = [];
+        foreach ($nodes as $node) {
+            if (namespace\is_symbolic_link($node)) {
+                $symbolicLinks[] = $node;
+            } else {
+                $otherNodes[] = $node;
+            }
+        }
 
-        foreach ($symbolic_links as $symbolicLink) {
+        foreach ($symbolicLinks as $symbolicLink) {
             namespace\delete_file($symbolicLink);
         }
 
-        foreach ($nodes as $node) {
+        foreach ($otherNodes as $node) {
             if (!namespace\is_directory($node)) {
                 namespace\delete_file($node);
             } else {
@@ -57,7 +58,7 @@ function delete_directory(string $directory, bool $recursive = false): void
     [$result, $error_message] = Internal\box(static fn(): bool => rmdir($directory));
     // @codeCoverageIgnoreStart
     if (false === $result) {
-        throw new Exception\RuntimeException(Str\format(
+        throw new Exception\RuntimeException(sprintf(
             'Failed to delete directory "%s": %s.',
             $directory,
             $error_message ?? 'internal error',

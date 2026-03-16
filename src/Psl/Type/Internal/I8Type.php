@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Type\Internal;
 
 use Override;
-use Psl\Math;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -25,7 +24,7 @@ final readonly class I8Type extends Type\Type
     #[Override]
     public function matches(mixed $value): bool
     {
-        return is_int($value) && $value >= Math\INT8_MIN && $value <= Math\INT8_MAX;
+        return is_int($value) && $value >= -128 && $value <= 127;
     }
 
     /**
@@ -38,7 +37,7 @@ final readonly class I8Type extends Type\Type
     {
         $integer = Type\int()->coerce($value);
 
-        if ($integer >= Math\INT8_MIN && $integer <= Math\INT8_MAX) {
+        if ($integer >= -128 && $integer <= 127) {
             return $integer;
         }
 
@@ -55,7 +54,7 @@ final readonly class I8Type extends Type\Type
     #[Override]
     public function assert(mixed $value): int
     {
-        if (is_int($value) && $value >= Math\INT8_MIN && $value <= Math\INT8_MAX) {
+        if (is_int($value) && $value >= -128 && $value <= 127) {
             return $value;
         }
 

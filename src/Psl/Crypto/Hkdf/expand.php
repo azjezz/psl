@@ -7,11 +7,12 @@ namespace Psl\Crypto\Hkdf;
 use Psl\Crypto\Exception;
 use Psl\Encoding\Hex;
 use Psl\Hash\Hmac;
-use Psl\Str\Byte;
 use SensitiveParameter;
 
 use function chr;
 use function sodium_memzero;
+use function strlen;
+use function substr;
 
 /**
  * HKDF-Expand: Expand a pseudorandom key to the desired length.
@@ -47,7 +48,7 @@ function expand(
     $okm = '';
     $counter = 1;
 
-    while (Byte\length($okm) < $length) {
+    while (strlen($okm) < $length) {
         $previous = $t;
         $t = Hex\decode(Hmac\hash($t . $info . chr($counter), $algorithm, $pseudoRandomKey));
         if ($previous !== '') {
@@ -59,7 +60,7 @@ function expand(
     }
 
     sodium_memzero($t);
-    $result = Byte\slice($okm, 0, $length);
+    $result = substr($okm, 0, $length);
     sodium_memzero($okm);
 
     /** @var non-empty-string */

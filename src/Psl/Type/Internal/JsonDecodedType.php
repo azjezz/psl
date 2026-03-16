@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use JsonException;
 use Override;
-use Psl\Json;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 use Throwable;
+
+use function json_decode;
+
+use const JSON_THROW_ON_ERROR;
 
 /**
  * @template T
@@ -47,8 +51,8 @@ final readonly class JsonDecodedType extends Type\Type
 
         try {
             /** @var mixed $decoded */
-            $decoded = Json\decode($value);
-        } catch (Json\Exception\DecodeException $e) {
+            $decoded = json_decode($value, associative: true, flags: JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
             throw CoercionException::withValue(
                 $value,
                 $this->toString(),

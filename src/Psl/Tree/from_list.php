@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Psl\Tree;
 
 use Closure;
-use Psl\Vec;
 
+use function array_map;
 use function count;
 
 /**
@@ -114,7 +114,7 @@ function from_list(array $items, Closure $getId, Closure $getParentId, Closure $
                 return leaf($value);
             }
 
-            $children = Vec\map($childrenItems, $build(...));
+            $children = array_map($build(...), $childrenItems);
 
             return tree($value, $children);
         };
