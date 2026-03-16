@@ -10,8 +10,8 @@ use Psl\Async\NullCancellationToken;
 use Psl\IO;
 use Psl\IO\Exception;
 use Psl\IO\Internal\ResourceHandle;
+use Psl\Network;
 use Psl\Network\Address;
-use Psl\TCP;
 use Revolt\EventLoop;
 
 use function is_resource;
@@ -26,7 +26,7 @@ use const STREAM_SHUT_WR;
  *
  * @codeCoverageIgnore
  */
-final class Stream implements TCP\StreamInterface
+class Stream implements Network\StreamInterface
 {
     use IO\WriteHandleConvenienceMethodsTrait;
     use IO\ReadHandleConvenienceMethodsTrait;
