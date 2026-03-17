@@ -25,7 +25,6 @@ function help_command(): never
     IO\write_error_line(Log\styled(' Commands:', Ansi\foreground(Color\bright_white()), Style\bold()));
     IO\write_error_line(Log\styled('   check                 ', Ansi\foreground(Color\bright_green())) . 'Validate dependencies and detect cycles');
     IO\write_error_line(Log\styled('   split --branch <name> ', Ansi\foreground(Color\bright_green())) . 'Split packages to their repos');
-    IO\write_error_line(Log\styled('   tag <tag>             ', Ansi\foreground(Color\bright_green())) . 'Tag all split repos');
     IO\write_error_line(Log\styled('   release <tag>         ', Ansi\foreground(Color\bright_green())) . 'Split, tag, and create maintenance branch');
     IO\write_error_line(Log\styled('   help                  ', Ansi\foreground(Color\bright_green())) . 'Show this help');
     IO\write_error_line('');
@@ -93,42 +92,6 @@ function split_command(string $root, array $args): never
 /**
  * @param list<string> $args
  */
-function tag_command(string $root, array $args): never
-{
-    $tagName = $args[1] ?? null;
-    if ($tagName === null) {
-        Log\error('tag is required');
-        exit(1);
-    }
-
-    if (!MonolithicRepository::shouldProcess($tagName)) {
-        Log\warn('tag "%s" predates split (< 6.0.0), skipping.', $tagName);
-        exit(0);
-    }
-
-    $branch = MonolithicRepository::branchForTag($tagName);
-
-    IO\write_error_line('');
-    Log\info(
-        'Tagging %s on branch %s',
-        Log\styled($tagName, Ansi\foreground(Color\bright_white()), Style\bold()),
-        Log\styled($branch, Ansi\foreground(Color\bright_white()), Style\bold()),
-    );
-    IO\write_error_line('');
-
-    $monorepo = MonolithicRepository::discover($root);
-    tag($monorepo, new Git($root), $tagName, $branch);
-
-    IO\write_error_line('');
-    Log\success('Tagged %d packages with %s.', count($monorepo->packages), $tagName);
-    IO\write_error_line('');
-
-    exit(0);
-}
-
-/**
- * @param list<string> $args
- */
 function release_command(string $root, array $args): never
 {
     $tagName = $args[1] ?? null;
@@ -159,7 +122,6 @@ function main(): never
     match ($command) {
         'check' => check_command($root),
         'split' => split_command($root, $arguments),
-        'tag' => tag_command($root, $arguments),
         'release' => release_command($root, $arguments),
         default => help_command(),
     };
