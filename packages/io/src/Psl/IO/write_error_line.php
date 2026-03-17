@@ -22,5 +22,5 @@ use function sprintf;
  */
 function write_error_line(string $message, mixed ...$args): void
 {
-    error_handle()?->writeAll(sprintf($message . "\n", ...$args));
+    error_handle()?->writeAll(($args === [] ? $message : sprintf($message, ...$args)) . "\n");
 }
