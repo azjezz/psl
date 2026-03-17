@@ -8,33 +8,33 @@
 >
   <source>
     <include>
-      <directory suffix=".php">../components/*/src</directory>
+      <directory suffix=".php">../packages/*/src</directory>
     </include>
     <exclude>
       <!-- Base Exceptions -->
-      <directory>../components/foundation/src/Exception</directory>
+      <directory>../packages/foundation/src/Exception</directory>
 
       <!-- Constants -->
-      <file>../components/str/src/Str/constants.php</file>
-      <file>../components/math/src/Math/constants.php</file>
-      <file>../components/filesystem/src/Filesystem/constants.php</file>
-      <file>../components/crypto/src/Crypto/Signing/constants.php</file>
-      <file>../components/crypto/src/Crypto/KeyExchange/constants.php</file>
-      <file>../components/crypto/src/Crypto/Kdf/constants.php</file>
-      <file>../components/crypto/src/Crypto/Asymmetric/constants.php</file>
-      <file>../components/crypto/src/Crypto/Aead/constants.php</file>
-      <file>../components/crypto/src/Crypto/Symmetric/constants.php</file>
-      <file>../components/crypto/src/Crypto/StreamCipher/constants.php</file>
+      <file>../packages/str/src/Str/constants.php</file>
+      <file>../packages/math/src/Math/constants.php</file>
+      <file>../packages/filesystem/src/Filesystem/constants.php</file>
+      <file>../packages/crypto/src/Crypto/Signing/constants.php</file>
+      <file>../packages/crypto/src/Crypto/KeyExchange/constants.php</file>
+      <file>../packages/crypto/src/Crypto/Kdf/constants.php</file>
+      <file>../packages/crypto/src/Crypto/Asymmetric/constants.php</file>
+      <file>../packages/crypto/src/Crypto/Aead/constants.php</file>
+      <file>../packages/crypto/src/Crypto/Symmetric/constants.php</file>
+      <file>../packages/crypto/src/Crypto/StreamCipher/constants.php</file>
 
       <!-- Things that are not easily tested -->
-      <file>../components/filesystem/src/Filesystem/get_group.php</file>
-      <file>../components/filesystem/src/Filesystem/change_group.php</file>
-      <file>../components/filesystem/src/Filesystem/get_owner.php</file>
-      <file>../components/filesystem/src/Filesystem/change_owner.php</file>
+      <file>../packages/filesystem/src/Filesystem/get_group.php</file>
+      <file>../packages/filesystem/src/Filesystem/change_group.php</file>
+      <file>../packages/filesystem/src/Filesystem/get_owner.php</file>
+      <file>../packages/filesystem/src/Filesystem/change_owner.php</file>
 
       <!-- Terminal internals require a real terminal -->
-      <directory>../components/terminal/src/Terminal/Internal</directory>
-      <file>../components/terminal/src/Terminal/Application.php</file>
+      <directory>../packages/terminal/src/Terminal/Internal</directory>
+      <file>../packages/terminal/src/Terminal/Application.php</file>
     </exclude>
   </source>
   <php>
@@ -43,7 +43,7 @@
   </php>
   <testsuites>
     <testsuite name="PHP Standard Library">
-      <directory>../components/*/tests/unit</directory>
+      <directory>../packages/*/tests/unit</directory>
     </testsuite>
   </testsuites>
 </phpunit>
