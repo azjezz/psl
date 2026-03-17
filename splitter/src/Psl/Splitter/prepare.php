@@ -1,0 +1,60 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\Splitter;
+
+use Psl\File;
+use Psl\Filesystem;
+use Psl\Json;
+use Psl\Str;
+use Psl\Type;
+
+/**
+ * Prepare the monorepo for the next release by updating branch aliases.
+ *
+ * Updates `extra.branch-alias.dev-next` in all composer.json files
+ * (root + packages) to point to the new version.
+ *
+ * @param non-empty-string $version The target version in "x.y" format (e.g. "6.1")
+ *
+ * @throws File\Exception\ExceptionInterface If a file cannot be read or written.
+ * @throws Json\Exception\DecodeException If a composer.json file contains invalid JSON.
+ */
+function prepare(MonolithicRepository $monorepo, string $version): void
+{
+    $alias = Str\format('dev-next');
+    $target = Str\format('%s.x-dev', $version);
+
+    $files = [
+        $monorepo->rootPath . '/composer.json',
+    ];
+
+    foreach ($monorepo->packages as $package) {
+        $files[] = $package->path . '/composer.json';
+    }
+
+    foreach ($files as $file) {
+        if (!Filesystem\is_file($file)) {
+            continue;
+        }
+
+        $content = File\read($file);
+        $composer = Json\typed($content, Type\shape([
+            'extra' => Type\optional(Type\dict(Type\non_empty_string(), Type\mixed())),
+        ], allowUnknownFields: true));
+
+        $composer['extra'] ??= [];
+        $composer['extra']['branch-alias'] = [$alias => $target];
+
+        $encoded = Json\encode($composer, true);
+        File\write($file, $encoded . "\n", File\WriteMode::Truncate);
+
+        Log\step(
+            Filesystem\get_basename(Filesystem\get_directory($file)) . '/composer.json',
+            '%s -> %s',
+            $alias,
+            $target,
+        );
+    }
+}

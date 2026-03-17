@@ -67,6 +67,9 @@ split-tag tag:
 split-release tag:
     cd splitter && php bin/splitter release {{tag}}
 
+split-prepare version:
+    cd splitter && php bin/splitter prepare {{version}}
+
 install-packages:
     #!/usr/bin/env bash
     set -euo pipefail

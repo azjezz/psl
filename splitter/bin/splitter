@@ -9,10 +9,11 @@ use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Env;
-use Psl\Filesystem\Exception\ExceptionInterface;
+use Psl\File;
 use Psl\Iter;
 use Psl\Filesystem;
 use Psl\IO;
+use Psl\Regex;
 use Psl\Vec;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -28,6 +29,7 @@ function help_command(): never
     IO\write_error_line(Log\styled('   check                 ', Ansi\foreground(Color\bright_green())) . 'Validate dependencies and detect cycles');
     IO\write_error_line(Log\styled('   split --branch <name> ', Ansi\foreground(Color\bright_green())) . 'Split packages to their repos');
     IO\write_error_line(Log\styled('   release <tag>         ', Ansi\foreground(Color\bright_green())) . 'Split, tag, and create maintenance branch');
+    IO\write_error_line(Log\styled('   prepare <x.y>         ', Ansi\foreground(Color\bright_green())) . 'Update branch aliases for next release');
     IO\write_error_line(Log\styled('   help                  ', Ansi\foreground(Color\bright_green())) . 'Show this help');
     IO\write_error_line('');
 
@@ -59,8 +61,8 @@ function check_command(string $root): never
 /**
  * @param list<string> $args
  *
- * @throws ExceptionInterface
-*/
+ * @throws Filesystem\Exception\ExceptionInterface
+ */
 function split_command(string $root, array $args): never
 {
     $branch = null;
@@ -97,6 +99,8 @@ function split_command(string $root, array $args): never
 
 /**
  * @param list<string> $args
+ *
+ * @throws Filesystem\Exception\ExceptionInterface
  */
 function release_command(string $root, array $args): never
 {
@@ -120,7 +124,36 @@ function release_command(string $root, array $args): never
 }
 
 /**
- * @throws ExceptionInterface
+ * @param list<string> $args
+ *
+ * @throws Filesystem\Exception\ExceptionInterface
+ * @throws File\Exception\ExceptionInterface
+ */
+function prepare_command(string $root, array $args): never
+{
+    $version = $args[1] ?? null;
+    if ($version === null || !Regex\matches($version, '/^\d+\.\d+$/')) {
+        Log\error('version in x.y format is required (e.g. 6.1)');
+        exit(1);
+    }
+
+    IO\write_error_line('');
+    Log\info('Preparing for %s...', Log\styled($version, Ansi\foreground(Color\bright_white()), Style\bold()));
+    IO\write_error_line('');
+
+    $monorepo = MonolithicRepository::discover($root);
+    prepare($monorepo, $version);
+
+    IO\write_error_line('');
+    Log\success('Updated %d composer.json files for %s.', count($monorepo->packages) + 1, $version);
+    IO\write_error_line('');
+
+    exit(0);
+}
+
+/**
+ * @throws Filesystem\Exception\ExceptionInterface
+ * @throws File\Exception\ExceptionInterface
  */
 function main(): never
 {
@@ -132,6 +165,7 @@ function main(): never
         'check' => check_command($root),
         'split' => split_command($root, $arguments),
         'release' => release_command($root, $arguments),
+        'prepare' => prepare_command($root, $arguments),
         default => help_command(),
     };
 }
