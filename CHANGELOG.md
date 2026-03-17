@@ -159,7 +159,7 @@ $token->cancel();
 
 ### other
 
-* docs: documentation website at https://psl.carthage.software/ - [#592](https://github.com/php-standard-library/php-standard-library/pull/592), [#594](https://github.com/php-standard-library/php-standard-library/pull/594) by @azjezz
+* docs: documentation website at https://php-standard-library.dev/ - [#592](https://github.com/php-standard-library/php-standard-library/pull/592), [#594](https://github.com/php-standard-library/php-standard-library/pull/594) by @azjezz
 * perf: performed optimizations across multiple components, which benchmarks showing up to 100% improvements in certain cases/functions.
 
 ## 4.3.0

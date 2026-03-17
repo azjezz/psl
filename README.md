@@ -16,7 +16,7 @@
 
 A standard library for PHP, inspired by [hhvm/hsl](https://github.com/hhvm/hsl). PSL provides a consistent, centralized, well-typed set of APIs covering async, collections, networking, I/O, cryptography, terminal UI, and more - replacing PHP functions and primitives with safer, async-ready alternatives that error predictably.
 
-**[Documentation](https://psl.carthage.software)** · **[Sponsor](https://github.com/sponsors/azjezz)**
+**[Documentation](https://php-standard-library.dev)** · **[Sponsor](https://github.com/sponsors/azjezz)**
 
 ## Installation
 
