@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\URI\Internal;
 
-use Psl\Type;
-
+use function array_is_list;
 use function array_key_exists;
 use function dechex;
 use function implode;
@@ -139,11 +138,9 @@ final class TemplateExpander
             return null;
         }
 
-        $isList = Type\vec(Type\mixed())->matches($value);
-
         if ($modifier === '*') {
             $parts = [];
-            if ($isList) {
+            if (array_is_list($value)) {
                 foreach ($value as $item) {
                     $encoded = self::encodeValue($item, $allowReserved);
                     if ($named) {
@@ -165,7 +162,7 @@ final class TemplateExpander
         }
 
         $parts = [];
-        if ($isList) {
+        if (array_is_list($value)) {
             foreach ($value as $item) {
                 $parts[] = self::encodeValue($item, $allowReserved);
             }
