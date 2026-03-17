@@ -6,11 +6,11 @@ namespace Psl\Splitter;
 
 use Psl\File;
 use Psl\Filesystem;
+use Psl\Iter;
 use Psl\Json;
 use Psl\Str;
 use Psl\Type;
 use Psl\Vec;
-use Psl\Iter;
 
 /**
  * Scans the monorepo packages/ directory and builds the package list.
