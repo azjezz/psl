@@ -11,6 +11,9 @@
       <directory suffix=".php">../packages/*/src</directory>
     </include>
     <exclude>
+      <!-- Bootstrap files -->
+      <file>../packages/*/src/Psl/bootstrap.php</file>
+
       <!-- Base Exceptions -->
       <directory>../packages/foundation/src/Exception</directory>
 
