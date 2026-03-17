@@ -139,7 +139,7 @@ final readonly class Git
     {
         $args = Vec\values($args);
 
-        Log\command('git %s', Str\join($args, ' '));
+        Log\command('git ' . Str\join($args, ' '));
 
         return Shell\execute('git', $args, $this->workingDirectory);
     }
