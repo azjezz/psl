@@ -25,5 +25,5 @@ use function vsprintf;
  */
 function format(string $format, mixed ...$args): string
 {
-    return vsprintf($format, $args);
+    return $args === [] ? $format : vsprintf($format, $args);
 }

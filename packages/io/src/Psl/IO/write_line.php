@@ -20,5 +20,5 @@ use function sprintf;
  */
 function write_line(string $message, mixed ...$args): void
 {
-    output_handle()->writeAll(sprintf($message . "\n", ...$args));
+    output_handle()->writeAll(($args === [] ? $message : sprintf($message, ...$args)) . "\n");
 }

@@ -63,6 +63,7 @@
 - feat: introduce `URL` component - strict URL type with scheme and authority validation, default port stripping for known schemes, and URI/IRI conversion
 - feat: introduce `Punycode` component - RFC 3492 Punycode encoding and decoding for internationalized domain names
 - fix(tcp): `RetryConnector` backoff sleep now respects cancellation tokens, allowing retry loops to be cancelled during the delay
+- fix(io, str): `IO\write()`, `IO\write_line()`, `IO\write_error()`, `IO\write_error_line()`, and `Str\format()` no longer pass the message through `sprintf`/`vsprintf` when no arguments are given, preventing format string errors when the message contains `%` characters
 
 ### migration guide
 
