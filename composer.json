@@ -55,6 +55,7 @@
             "Psl\\Interoperability\\": "packages/interoperability/src/Psl/Interoperability/",
             "Psl\\IO\\": "packages/io/src/Psl/IO/",
             "Psl\\IP\\": "packages/ip/src/Psl/IP/",
+            "Psl\\IRI\\": "packages/iri/src/Psl/IRI/",
             "Psl\\Iter\\": "packages/iter/src/Psl/Iter/",
             "Psl\\Json\\": "packages/json/src/Psl/Json/",
             "Psl\\Locale\\": "packages/locale/src/Psl/Locale/",
@@ -84,6 +85,8 @@
             "Psl\\Type\\": "packages/type/src/Psl/Type/",
             "Psl\\UDP\\": "packages/udp/src/Psl/UDP/",
             "Psl\\Unix\\": "packages/unix/src/Psl/Unix/",
+            "Psl\\URI\\": "packages/uri/src/Psl/URI/",
+            "Psl\\URL\\": "packages/url/src/Psl/URL/",
             "Psl\\Vec\\": "packages/vec/src/Psl/Vec/"
         },
         "files": [
@@ -131,6 +134,9 @@
             "packages/type/src/Psl/bootstrap.php",
             "packages/udp/src/Psl/bootstrap.php",
             "packages/unix/src/Psl/bootstrap.php",
+            "packages/uri/src/Psl/bootstrap.php",
+            "packages/url/src/Psl/bootstrap.php",
+            "packages/iri/src/Psl/bootstrap.php",
             "packages/vec/src/Psl/bootstrap.php"
         ]
     },
@@ -174,6 +180,7 @@
             "Psl\\IO\\Tests\\Unit\\": "packages/io/tests/unit/",
             "Psl\\IO\\Tests\\Benchmark\\": "packages/io/tests/benchmark/",
             "Psl\\IP\\Tests\\Unit\\": "packages/ip/tests/unit/",
+            "Psl\\IRI\\Tests\\Unit\\": "packages/iri/tests/unit/",
             "Psl\\Iter\\Tests\\Unit\\": "packages/iter/tests/unit/",
             "Psl\\Iter\\Tests\\Benchmark\\": "packages/iter/tests/benchmark/",
             "Psl\\Iter\\Tests\\StaticAnalysis\\": "packages/iter/tests/static-analysis/",
@@ -220,6 +227,8 @@
             "Psl\\Type\\Tests\\Fixture\\": "packages/type/tests/fixture/",
             "Psl\\UDP\\Tests\\Unit\\": "packages/udp/tests/unit/",
             "Psl\\Unix\\Tests\\Unit\\": "packages/unix/tests/unit/",
+            "Psl\\URI\\Tests\\Unit\\": "packages/uri/tests/unit/",
+            "Psl\\URL\\Tests\\Unit\\": "packages/url/tests/unit/",
             "Psl\\Vec\\Tests\\Unit\\": "packages/vec/tests/unit/",
             "Psl\\Vec\\Tests\\Benchmark\\": "packages/vec/tests/benchmark/"
         }
@@ -267,6 +276,7 @@
         "php-standard-library/interoperability": "self.version",
         "php-standard-library/io": "self.version",
         "php-standard-library/ip": "self.version",
+        "php-standard-library/iri": "self.version",
         "php-standard-library/iter": "self.version",
         "php-standard-library/json": "self.version",
         "php-standard-library/locale": "self.version",
@@ -296,6 +306,8 @@
         "php-standard-library/type": "self.version",
         "php-standard-library/udp": "self.version",
         "php-standard-library/unix": "self.version",
+        "php-standard-library/uri": "self.version",
+        "php-standard-library/url": "self.version",
         "php-standard-library/vec": "self.version"
     },
     "conflict": {

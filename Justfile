@@ -100,4 +100,4 @@ test-packages:
         cd ../..
     done
 
-verify: fmt-diff lint analyze test mutation
+verify: fmt-diff lint analyze split-check test mutation
