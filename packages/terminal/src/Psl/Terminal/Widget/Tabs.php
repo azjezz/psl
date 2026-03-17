@@ -9,7 +9,8 @@ use Psl\Str;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
-use Psl\Vec;
+
+use function array_values;
 
 /**
  * A horizontal tab bar widget.
@@ -62,7 +63,7 @@ final class Tabs implements WidgetInterface
      */
     public function activeStyle(ControlSequenceIntroducer ...$style): self
     {
-        $this->activeStyle = Vec\values($style);
+        $this->activeStyle = array_values($style);
 
         return $this;
     }
@@ -72,7 +73,7 @@ final class Tabs implements WidgetInterface
      */
     public function inactiveStyle(ControlSequenceIntroducer ...$style): self
     {
-        $this->inactiveStyle = Vec\values($style);
+        $this->inactiveStyle = array_values($style);
 
         return $this;
     }

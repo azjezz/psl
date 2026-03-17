@@ -10,7 +10,8 @@ use Psl\Str;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
-use Psl\Vec;
+
+use function array_values;
 
 /**
  * A horizontal progress bar widget.
@@ -61,7 +62,7 @@ final class Gauge implements WidgetInterface
      */
     public function filledStyle(ControlSequenceIntroducer ...$style): self
     {
-        $this->filledStyle = Vec\values($style);
+        $this->filledStyle = array_values($style);
 
         return $this;
     }
@@ -71,7 +72,7 @@ final class Gauge implements WidgetInterface
      */
     public function emptyStyle(ControlSequenceIntroducer ...$style): self
     {
-        $this->emptyStyle = Vec\values($style);
+        $this->emptyStyle = array_values($style);
 
         return $this;
     }
@@ -81,7 +82,7 @@ final class Gauge implements WidgetInterface
      */
     public function labelStyle(ControlSequenceIntroducer ...$style): self
     {
-        $this->labelStyle = Vec\values($style);
+        $this->labelStyle = array_values($style);
 
         return $this;
     }

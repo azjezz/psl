@@ -30,9 +30,7 @@
         "php-standard-library/math": "^6.0",
         "php-standard-library/os": "^6.0",
         "php-standard-library/process": "^6.0",
-        "php-standard-library/shell": "^6.0",
-        "php-standard-library/str": "^6.0",
-        "php-standard-library/vec": "^6.0"
+        "php-standard-library/str": "^6.0"
     },
     "minimum-stability": "dev",
     "autoload": {

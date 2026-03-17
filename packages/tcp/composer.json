@@ -27,10 +27,8 @@
         "php-standard-library/cidr": "^6.0",
         "php-standard-library/date-time": "^6.0",
         "php-standard-library/default": "^6.0",
-        "php-standard-library/io": "^6.0",
         "php-standard-library/ip": "^6.0",
         "php-standard-library/network": "^6.0",
-        "php-standard-library/os": "^6.0",
         "revolt/event-loop": "^1.0.8"
     },
     "minimum-stability": "dev",
@@ -49,6 +47,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^13.0",
+        "php-standard-library/os": "^6.0",
         "php-standard-library/str": "^6.0"
     },
     "autoload-dev": {

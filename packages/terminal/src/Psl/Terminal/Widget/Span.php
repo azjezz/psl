@@ -6,7 +6,8 @@ namespace Psl\Terminal\Widget;
 
 use Psl\Ansi\ControlSequenceIntroducer;
 use Psl\Str;
-use Psl\Vec;
+
+use function array_values;
 
 /**
  * A styled text fragment.
@@ -28,7 +29,7 @@ final readonly class Span
      */
     public static function styled(string $content, ControlSequenceIntroducer ...$style): self
     {
-        return new self($content, Vec\values($style));
+        return new self($content, array_values($style));
     }
 
     /**

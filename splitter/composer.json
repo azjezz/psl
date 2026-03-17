@@ -35,7 +35,8 @@
             "src/Psl/Splitter/split.php",
             "src/Psl/Splitter/tag.php",
             "src/Psl/Splitter/create_maintenance_branch.php",
-            "src/Psl/Splitter/release.php"
+            "src/Psl/Splitter/release.php",
+            "src/Psl/Splitter/verify.php"
         ]
     },
     "bin": [

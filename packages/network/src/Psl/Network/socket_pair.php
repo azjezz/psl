@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Psl\Network;
 
 use Psl\Network;
-use Psl\OS;
 
 use function error_get_last;
 use function stream_socket_pair;
 
+use const PHP_OS_FAMILY;
 use const STREAM_IPPROTO_IP;
 use const STREAM_PF_INET;
 use const STREAM_PF_UNIX;
@@ -32,7 +32,7 @@ function socket_pair(): array
          * @return array{0: resource, 1: resource}
          */
         static function (): array {
-            $domain = OS\is_windows() ? STREAM_PF_INET : STREAM_PF_UNIX;
+            $domain = PHP_OS_FAMILY === 'Windows' ? STREAM_PF_INET : STREAM_PF_UNIX;
             $sockets = stream_socket_pair($domain, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
             // @codeCoverageIgnoreStart
             if (false === $sockets) {
@@ -48,7 +48,7 @@ function socket_pair(): array
     );
 
     // @codeCoverageIgnoreStart
-    if (OS\is_windows()) {
+    if (PHP_OS_FAMILY === 'Windows') {
         return [
             new Network\Internal\Stream($sockets[0]),
             new Network\Internal\Stream($sockets[1]),

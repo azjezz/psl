@@ -26,8 +26,8 @@
         "php-standard-library/channel": "^6.0",
         "php-standard-library/io": "^6.0",
         "php-standard-library/network": "^6.0",
-        "php-standard-library/os": "^6.0",
-        "revolt/event-loop": "^1.0.8"
+        "revolt/event-loop": "^1.0.8",
+        "php-standard-library/default": "^6.0"
     },
     "minimum-stability": "dev",
     "autoload": {
@@ -47,6 +47,7 @@
         "phpunit/phpunit": "^13.0",
         "php-standard-library/date-time": "^6.0",
         "php-standard-library/filesystem": "^6.0",
+        "php-standard-library/os": "^6.0",
         "php-standard-library/str": "^6.0"
     },
     "autoload-dev": {

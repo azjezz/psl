@@ -26,7 +26,6 @@
         "php-standard-library/date-time": "^6.0",
         "php-standard-library/default": "^6.0",
         "php-standard-library/promise": "^6.0",
-        "php-standard-library/str": "^6.0",
         "revolt/event-loop": "^1.0.8"
     },
     "minimum-stability": "dev",
@@ -46,7 +45,8 @@
     "require-dev": {
         "phpunit/phpunit": "^13.0",
         "php-standard-library/dict": "^6.0",
-        "php-standard-library/result": "^6.0"
+        "php-standard-library/result": "^6.0",
+        "php-standard-library/str": "^6.0"
     },
     "autoload-dev": {
         "psr-4": {

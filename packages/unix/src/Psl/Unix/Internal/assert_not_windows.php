@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\Unix\Internal;
 
 use Psl\Network;
-use Psl\OS;
+
+use const PHP_OS_FAMILY;
 
 /**
  * Assert that the current platform is not Windows.
@@ -18,7 +19,7 @@ use Psl\OS;
  */
 function assert_not_windows(): void
 {
-    if (OS\is_windows()) {
+    if (PHP_OS_FAMILY === 'Windows') {
         throw new Network\Exception\RuntimeException('Unix sockets are not supported on Windows platform.');
     }
 }

@@ -9,7 +9,8 @@ use Psl\Math;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
-use Psl\Vec;
+
+use function array_values;
 
 /**
  * A vertical scrollbar widget.
@@ -68,7 +69,7 @@ final class Scrollbar implements WidgetInterface
      */
     public function thumbStyle(ControlSequenceIntroducer ...$style): self
     {
-        $this->thumbStyle = Vec\values($style);
+        $this->thumbStyle = array_values($style);
 
         return $this;
     }
@@ -78,7 +79,7 @@ final class Scrollbar implements WidgetInterface
      */
     public function trackStyle(ControlSequenceIntroducer ...$style): self
     {
-        $this->trackStyle = Vec\values($style);
+        $this->trackStyle = array_values($style);
 
         return $this;
     }

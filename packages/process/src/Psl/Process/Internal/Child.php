@@ -10,7 +10,6 @@ use Psl\Async\CancellationTokenInterface;
 use Psl\Async\NullCancellationToken;
 use Psl\DateTime\Duration;
 use Psl\IO;
-use Psl\OS;
 use Psl\Process\ChildInterface;
 use Psl\Process\Exception;
 use Psl\Process\ExitStatus;
@@ -20,6 +19,8 @@ use Psl\Process\Signal;
 use function proc_close;
 use function proc_get_status;
 use function proc_terminate;
+
+use const PHP_OS_FAMILY;
 
 /**
  * @internal
@@ -103,7 +104,7 @@ final class Child implements ChildInterface
         }
 
         // @codeCoverageIgnoreStart
-        if (OS\is_windows()) {
+        if (PHP_OS_FAMILY === 'Windows') {
             // Windows only supports SIGTERM via proc_terminate which calls TerminateProcess.
             proc_terminate($this->process);
 

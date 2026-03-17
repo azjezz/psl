@@ -7,11 +7,10 @@ namespace Psl\File\Tests\Unit;
 use Psl\Env;
 use Psl\File;
 use Psl\Filesystem;
-use Psl\Filesystem\Tests\Unit\AbstractFilesystemTestCase;
 use Psl\OS;
 use Psl\Str;
 
-final class ReadWriteTest extends AbstractFilesystemTestCase
+final class ReadWriteTest extends AbstractFileTestCase
 {
     protected string $function = 'file';
 

@@ -2,8 +2,8 @@ php-version = "8.4"
 
 [source]
 paths = ["packages", "splitter", "tests", "examples", "docs"]
-includes = ["vendor/revolt", "vendor/phpbench"]
-excludes = ["splitter/vendor"]
+includes = ["vendor/revolt"]
+excludes = ["splitter/vendor", "*/packages/**/vendor/*"]
 
 [formatter]
 null-type-hint = "pipe"

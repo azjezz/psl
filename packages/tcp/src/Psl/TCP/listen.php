@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Psl\TCP;
 
 use Psl\Network;
-use Psl\OS;
+
+use const PHP_OS_FAMILY;
 
 /**
  * Create a TCP listener bound to the given address.
@@ -22,7 +23,7 @@ function listen(
 ): ListenerInterface {
     $socketContext = ['socket' => [
         'ipv6_v6only' => true,
-        'so_reuseaddr' => OS\is_windows() ? $configuration->reusePort : $configuration->reuseAddress,
+        'so_reuseaddr' => PHP_OS_FAMILY === 'Windows' ? $configuration->reusePort : $configuration->reuseAddress,
         'so_reuseport' => $configuration->reusePort,
         'so_broadcast' => false,
         'tcp_nodelay' => $configuration->noDelay,
