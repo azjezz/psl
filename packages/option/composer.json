@@ -1,9 +1,8 @@
 {
     "name": "php-standard-library/option",
     "description": "Option type (Some/None) replacing nullable types with explicit presence semantics",
-    "type": "library",
     "license": "MIT",
-    "homepage": "https://php-standard-library.dev",
+    "type": "library",
     "keywords": [
         "option",
         "some",
@@ -20,10 +19,17 @@
             "homepage": "https://github.com/php-standard-library/php-standard-library/graphs/contributors"
         }
     ],
+    "homepage": "https://php-standard-library.dev",
     "require": {
         "php": "~8.4.0 || ~8.5.0",
-        "php-standard-library/foundation": "^6.0",
-        "php-standard-library/comparison": "^6.0"
+        "php-standard-library/comparison": "^6.0",
+        "php-standard-library/foundation": "^6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^13.0"
+    },
+    "conflict": {
+        "azjezz/psl": "*"
     },
     "minimum-stability": "dev",
     "autoload": {
@@ -34,21 +40,15 @@
             "src/Psl/bootstrap.php"
         ]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Psl\\Option\\Tests\\Fixture\\": "tests/fixture/",
+            "Psl\\Option\\Tests\\Unit\\": "tests/unit/"
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-next": "6.0.x-dev"
         }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^13.0"
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Psl\\Option\\Tests\\Unit\\": "tests/unit/",
-            "Psl\\Option\\Tests\\Fixture\\": "tests/fixture/"
-        }
-    },
-    "conflict": {
-        "azjezz/psl": "*"
     }
 }

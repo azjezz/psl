@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d948e6fc112fe2e414749f75ef06c9e7",
+    "content-hash": "3d2cd10f75cbca23789c799a4e5664f2",
     "packages": [
         {
             "name": "revolt/event-loop",
@@ -5777,11 +5777,11 @@
     "platform": {
         "php": "~8.4.0 || ~8.5.0",
         "ext-bcmath": "*",
+        "ext-intl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "ext-sodium": "*",
-        "ext-intl": "*",
-        "ext-openssl": "*"
+        "ext-openssl": "*",
+        "ext-sodium": "*"
     },
     "platform-dev": {},
     "plugin-api-version": "2.9.0"

@@ -1,9 +1,8 @@
 {
     "name": "php-standard-library/promise",
     "description": "Promise interface for deferred computations - resolved or rejected",
-    "type": "library",
     "license": "MIT",
-    "homepage": "https://php-standard-library.dev",
+    "type": "library",
     "keywords": [
         "promise",
         "async",
@@ -19,8 +18,15 @@
             "homepage": "https://github.com/php-standard-library/php-standard-library/graphs/contributors"
         }
     ],
+    "homepage": "https://php-standard-library.dev",
     "require": {
         "php": "~8.4.0 || ~8.5.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^13.0"
+    },
+    "conflict": {
+        "azjezz/psl": "*"
     },
     "minimum-stability": "dev",
     "autoload": {
@@ -28,20 +34,14 @@
             "Psl\\Promise\\": "src/Psl/Promise/"
         }
     },
-    "extra": {
-        "branch-alias": {
-            "dev-next": "6.0.x-dev"
-        }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^13.0"
-    },
     "autoload-dev": {
         "psr-4": {
             "Psl\\Promise\\Tests\\Unit\\": "tests/unit/"
         }
     },
-    "conflict": {
-        "azjezz/psl": "*"
+    "extra": {
+        "branch-alias": {
+            "dev-next": "6.0.x-dev"
+        }
     }
 }

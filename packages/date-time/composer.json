@@ -1,9 +1,8 @@
 {
     "name": "php-standard-library/date-time",
     "description": "Immutable, timezone-aware date and time types with Duration, Period, and Interval",
-    "type": "library",
     "license": "MIT",
-    "homepage": "https://php-standard-library.dev",
+    "type": "library",
     "keywords": [
         "datetime",
         "immutable",
@@ -20,14 +19,23 @@
             "homepage": "https://github.com/php-standard-library/php-standard-library/graphs/contributors"
         }
     ],
+    "homepage": "https://php-standard-library.dev",
     "require": {
         "php": "~8.4.0 || ~8.5.0",
-        "php-standard-library/foundation": "^6.0",
+        "ext-intl": "*",
         "php-standard-library/comparison": "^6.0",
         "php-standard-library/default": "^6.0",
+        "php-standard-library/foundation": "^6.0",
         "php-standard-library/interoperability": "^6.0",
-        "php-standard-library/locale": "^6.0",
-        "ext-intl": "*"
+        "php-standard-library/locale": "^6.0"
+    },
+    "require-dev": {
+        "php-standard-library/json": "^6.0",
+        "php-standard-library/math": "^6.0",
+        "phpunit/phpunit": "^13.0"
+    },
+    "conflict": {
+        "azjezz/psl": "*"
     },
     "minimum-stability": "dev",
     "autoload": {
@@ -38,22 +46,14 @@
             "src/Psl/bootstrap.php"
         ]
     },
-    "extra": {
-        "branch-alias": {
-            "dev-next": "6.0.x-dev"
-        }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^13.0",
-        "php-standard-library/json": "^6.0",
-        "php-standard-library/math": "^6.0"
-    },
     "autoload-dev": {
         "psr-4": {
             "Psl\\DateTime\\Tests\\Unit\\": "tests/unit/"
         }
     },
-    "conflict": {
-        "azjezz/psl": "*"
+    "extra": {
+        "branch-alias": {
+            "dev-next": "6.0.x-dev"
+        }
     }
 }
