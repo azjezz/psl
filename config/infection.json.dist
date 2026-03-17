@@ -5,20 +5,20 @@
     "initialTestsPhpOptions": "-dopcache.enable=0",
     "source": {
         "directories": [
-            "../src/Psl/"
+            "../packages"
         ],
         "excludes": [
-            "RandomSequence",
-            "Async",
-            "IO",
-            "Unix",
-            "TCP",
-            "TLS",
-            "UDP",
-            "Process",
-            "Terminal",
-            "Encoding",
-            "Internal",
+            "random-sequence",
+            "async",
+            "io",
+            "unix",
+            "tcp",
+            "tls",
+            "udp",
+            "process",
+            "terminal",
+            "encoding",
+            "foundation",
             "{.*/Internal/.*}"
         ]
     },
