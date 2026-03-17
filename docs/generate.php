@@ -32,6 +32,70 @@ const OUTPUT_DIR = DOCUMENTATION_DIR . '/dist';
  */
 const OUTPUT_FILE = OUTPUT_DIR . '/index.html';
 
+/**
+ * Map doc slugs to their Composer package names.
+ * Slugs not in this map don't get an install command.
+ */
+const SLUG_TO_PACKAGE = [
+    'foundation' => 'php-standard-library/foundation',
+    'ansi' => 'php-standard-library/ansi',
+    'async' => 'php-standard-library/async',
+    'binary' => 'php-standard-library/binary',
+    'channel' => 'php-standard-library/channel',
+    'cidr' => 'php-standard-library/cidr',
+    'class' => 'php-standard-library/class',
+    'collection' => 'php-standard-library/collection',
+    'comparison' => 'php-standard-library/comparison',
+    'crypto' => 'php-standard-library/crypto',
+    'data-structure' => 'php-standard-library/data-structure',
+    'date-time' => 'php-standard-library/date-time',
+    'default' => 'php-standard-library/default',
+    'dict' => 'php-standard-library/dict',
+    'either' => 'php-standard-library/either',
+    'encoding' => 'php-standard-library/encoding',
+    'env' => 'php-standard-library/env',
+    'file' => 'php-standard-library/file',
+    'filesystem' => 'php-standard-library/filesystem',
+    'fun' => 'php-standard-library/fun',
+    'graph' => 'php-standard-library/graph',
+    'hash' => 'php-standard-library/hash',
+    'html' => 'php-standard-library/html',
+    'interface' => 'php-standard-library/interface',
+    'interoperability' => 'php-standard-library/interoperability',
+    'io' => 'php-standard-library/io',
+    'ip' => 'php-standard-library/ip',
+    'iter' => 'php-standard-library/iter',
+    'json' => 'php-standard-library/json',
+    'locale' => 'php-standard-library/locale',
+    'math' => 'php-standard-library/math',
+    'network' => 'php-standard-library/network',
+    'observer' => 'php-standard-library/observer',
+    'option' => 'php-standard-library/option',
+    'os' => 'php-standard-library/os',
+    'password' => 'php-standard-library/password',
+    'process' => 'php-standard-library/process',
+    'promise' => 'php-standard-library/promise',
+    'pseudo-random' => 'php-standard-library/pseudo-random',
+    'random-sequence' => 'php-standard-library/random-sequence',
+    'range' => 'php-standard-library/range',
+    'regex' => 'php-standard-library/regex',
+    'result' => 'php-standard-library/result',
+    'runtime' => 'php-standard-library/runtime',
+    'secure-random' => 'php-standard-library/secure-random',
+    'shell' => 'php-standard-library/shell',
+    'socks' => 'php-standard-library/socks',
+    'str' => 'php-standard-library/str',
+    'tcp' => 'php-standard-library/tcp',
+    'terminal' => 'php-standard-library/terminal',
+    'tls' => 'php-standard-library/tls',
+    'trait' => 'php-standard-library/trait',
+    'tree' => 'php-standard-library/tree',
+    'type' => 'php-standard-library/type',
+    'udp' => 'php-standard-library/udp',
+    'unix' => 'php-standard-library/unix',
+    'vec' => 'php-standard-library/vec',
+];
+
 const CATEGORY_DISPLAY_NAMES = [
     'basics' => 'Basics',
     'types' => 'Types & Error Handling',
@@ -123,6 +187,7 @@ Async\main(static function (): int {
     $docsJson = Str\replace(Json\encode($docs), '/', '\\/');
     $categoriesJson = Str\replace(Json\encode($categories), '/', '\\/');
     $titlesJson = Str\replace(Json\encode($titles), '/', '\\/');
+    $packagesJson = Str\replace(Json\encode(SLUG_TO_PACKAGE), '/', '\\/');
 
     $template = File\read(RESOURCES_DIR . '/template.html');
 
@@ -130,6 +195,7 @@ Async\main(static function (): int {
     $html = Str\replace($html, '{{DOCS}}', $docsJson);
     $html = Str\replace($html, '{{CATEGORIES}}', $categoriesJson);
     $html = Str\replace($html, '{{TITLES}}', $titlesJson);
+    $html = Str\replace($html, '{{PACKAGES}}', $packagesJson);
 
     if (!Filesystem\is_directory(OUTPUT_DIR)) {
         Filesystem\create_directory(OUTPUT_DIR);
