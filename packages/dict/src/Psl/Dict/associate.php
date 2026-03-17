@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
-use function array_values;
 use function count;
+use function is_array;
+use function iterator_to_array;
 
 /**
  * Returns a new dict where each element in `$keys` maps to the
@@ -24,11 +25,11 @@ use function count;
 function associate(iterable $keys, iterable $values): array
 {
     if (!is_array($keys)) {
-        $keys = array_values($keys);
+        $keys = iterator_to_array($keys);
     }
 
     if (!is_array($values)) {
-        $values = array_values($values);
+        $values = iterator_to_array($values);
     }
 
     $keysCount = count($keys);
