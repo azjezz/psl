@@ -1,9 +1,8 @@
 {
     "name": "php-standard-library/either",
     "description": "General-purpose disjoint union type (Left/Right) for values with two possible types",
-    "type": "library",
     "license": "MIT",
-    "homepage": "https://php-standard-library.dev",
+    "type": "library",
     "keywords": [
         "either",
         "monad",
@@ -19,12 +18,20 @@
             "homepage": "https://github.com/php-standard-library/php-standard-library/graphs/contributors"
         }
     ],
+    "homepage": "https://php-standard-library.dev",
     "require": {
         "php": "~8.4.0 || ~8.5.0",
-        "php-standard-library/foundation": "^6.0",
         "php-standard-library/comparison": "^6.0",
+        "php-standard-library/foundation": "^6.0",
         "php-standard-library/option": "^6.0",
         "php-standard-library/result": "^6.0"
+    },
+    "require-dev": {
+        "php-standard-library/str": "^6.0",
+        "phpunit/phpunit": "^13.0"
+    },
+    "conflict": {
+        "azjezz/psl": "*"
     },
     "minimum-stability": "dev",
     "autoload": {
@@ -32,21 +39,14 @@
             "Psl\\Either\\": "src/Psl/Either/"
         }
     },
-    "extra": {
-        "branch-alias": {
-            "dev-next": "6.0.x-dev"
-        }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^13.0",
-        "php-standard-library/str": "^6.0"
-    },
     "autoload-dev": {
         "psr-4": {
             "Psl\\Either\\Tests\\Unit\\": "tests/unit/"
         }
     },
-    "conflict": {
-        "azjezz/psl": "*"
+    "extra": {
+        "branch-alias": {
+            "dev-next": "6.0.x-dev"
+        }
     }
 }

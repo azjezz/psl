@@ -1,9 +1,8 @@
 {
     "name": "php-standard-library/tcp",
     "description": "Non-blocking TCP client and server connections with connection pooling and retry",
-    "type": "library",
     "license": "MIT",
-    "homepage": "https://php-standard-library.dev",
+    "type": "library",
     "keywords": [
         "tcp",
         "socket",
@@ -20,6 +19,7 @@
             "homepage": "https://github.com/php-standard-library/php-standard-library/graphs/contributors"
         }
     ],
+    "homepage": "https://php-standard-library.dev",
     "require": {
         "php": "~8.4.0 || ~8.5.0",
         "php-standard-library/async": "^6.0",
@@ -31,6 +31,14 @@
         "php-standard-library/network": "^6.0",
         "revolt/event-loop": "^1.0.8"
     },
+    "require-dev": {
+        "php-standard-library/os": "^6.0",
+        "php-standard-library/str": "^6.0",
+        "phpunit/phpunit": "^13.0"
+    },
+    "conflict": {
+        "azjezz/psl": "*"
+    },
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
@@ -40,23 +48,15 @@
             "src/Psl/bootstrap.php"
         ]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Psl\\TCP\\Tests\\Fixture\\": "tests/fixture/",
+            "Psl\\TCP\\Tests\\Unit\\": "tests/unit/"
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-next": "6.0.x-dev"
         }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^13.0",
-        "php-standard-library/os": "^6.0",
-        "php-standard-library/str": "^6.0"
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Psl\\TCP\\Tests\\Unit\\": "tests/unit/",
-            "Psl\\TCP\\Tests\\Fixture\\": "tests/fixture/"
-        }
-    },
-    "conflict": {
-        "azjezz/psl": "*"
     }
 }

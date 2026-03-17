@@ -1,9 +1,8 @@
 {
     "name": "php-standard-library/file",
     "description": "Typed file handles for reading and writing with write modes and advisory locking",
-    "type": "library",
     "license": "MIT",
-    "homepage": "https://php-standard-library.dev",
+    "type": "library",
     "keywords": [
         "file",
         "io",
@@ -19,11 +18,22 @@
             "homepage": "https://github.com/php-standard-library/php-standard-library/graphs/contributors"
         }
     ],
+    "homepage": "https://php-standard-library.dev",
     "require": {
         "php": "~8.4.0 || ~8.5.0",
-        "php-standard-library/foundation": "^6.0",
         "php-standard-library/async": "^6.0",
+        "php-standard-library/foundation": "^6.0",
         "php-standard-library/io": "^6.0"
+    },
+    "require-dev": {
+        "php-standard-library/env": "^6.0",
+        "php-standard-library/filesystem": "^6.0",
+        "php-standard-library/os": "^6.0",
+        "php-standard-library/str": "^6.0",
+        "phpunit/phpunit": "^13.0"
+    },
+    "conflict": {
+        "azjezz/psl": "*"
     },
     "minimum-stability": "dev",
     "autoload": {
@@ -34,24 +44,14 @@
             "src/Psl/bootstrap.php"
         ]
     },
-    "extra": {
-        "branch-alias": {
-            "dev-next": "6.0.x-dev"
-        }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^13.0",
-        "php-standard-library/env": "^6.0",
-        "php-standard-library/os": "^6.0",
-        "php-standard-library/filesystem": "^6.0",
-        "php-standard-library/str": "^6.0"
-    },
     "autoload-dev": {
         "psr-4": {
             "Psl\\File\\Tests\\Unit\\": "tests/unit/"
         }
     },
-    "conflict": {
-        "azjezz/psl": "*"
+    "extra": {
+        "branch-alias": {
+            "dev-next": "6.0.x-dev"
+        }
     }
 }

@@ -1,9 +1,8 @@
 {
     "name": "php-standard-library/data-structure",
     "description": "Classic data structures: Queue (FIFO), Stack (LIFO), and PriorityQueue",
-    "type": "library",
     "license": "MIT",
-    "homepage": "https://php-standard-library.dev",
+    "type": "library",
     "keywords": [
         "data-structure",
         "queue",
@@ -20,10 +19,17 @@
             "homepage": "https://github.com/php-standard-library/php-standard-library/graphs/contributors"
         }
     ],
+    "homepage": "https://php-standard-library.dev",
     "require": {
         "php": "~8.4.0 || ~8.5.0",
-        "php-standard-library/foundation": "^6.0",
-        "php-standard-library/default": "^6.0"
+        "php-standard-library/default": "^6.0",
+        "php-standard-library/foundation": "^6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^13.0"
+    },
+    "conflict": {
+        "azjezz/psl": "*"
     },
     "minimum-stability": "dev",
     "autoload": {
@@ -31,20 +37,14 @@
             "Psl\\DataStructure\\": "src/Psl/DataStructure/"
         }
     },
-    "extra": {
-        "branch-alias": {
-            "dev-next": "6.0.x-dev"
-        }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^13.0"
-    },
     "autoload-dev": {
         "psr-4": {
             "Psl\\DataStructure\\Tests\\Unit\\": "tests/unit/"
         }
     },
-    "conflict": {
-        "azjezz/psl": "*"
+    "extra": {
+        "branch-alias": {
+            "dev-next": "6.0.x-dev"
+        }
     }
 }

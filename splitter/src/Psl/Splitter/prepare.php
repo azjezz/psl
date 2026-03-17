@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\Splitter;
 
+use Psl\Async;
 use Psl\File;
 use Psl\Filesystem;
 use Psl\Json;
+use Psl\Shell;
 use Psl\Str;
 use Psl\Type;
 
@@ -49,12 +51,34 @@ function prepare(MonolithicRepository $monorepo, string $version): void
 
         $encoded = Json\encode($composer, true);
         File\write($file, $encoded . "\n", File\WriteMode::Truncate);
-
-        Log\step(
-            Filesystem\get_basename(Filesystem\get_directory($file)) . '/composer.json',
-            '%s -> %s',
-            $alias,
-            $target,
-        );
     }
+
+    $semaphore = new Async\Semaphore(
+        10,
+        /** @param non-empty-string $file */
+        static function (string $file) use ($alias, $target): void {
+            if (!Filesystem\is_file($file)) {
+                return;
+            }
+
+            $directory = Filesystem\get_directory($file);
+            $name = Filesystem\get_basename($directory) . '/composer.json';
+            $lockExists = Filesystem\is_file($directory . '/composer.lock');
+
+            Log\step($name, 'updating %s', $lockExists ? 'lock' : 'dependencies');
+            Shell\execute('composer', $lockExists ? ['update', '--lock'] : ['update'], $directory);
+
+            Log\step($name, 'normalizing');
+            Shell\execute('composer', ['normalize'], $directory);
+
+            Log\step($name, '%s -> %s', $alias, $target);
+        },
+    );
+
+    $awaitables = [];
+    foreach ($files as $file) {
+        $awaitables[] = Async\run(static fn() => $semaphore->waitFor($file));
+    }
+
+    Async\all($awaitables);
 }
