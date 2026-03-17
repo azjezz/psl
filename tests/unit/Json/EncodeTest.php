@@ -23,7 +23,7 @@ final class EncodeTest extends TestCase
     public function testPrettyEncode(): void
     {
         $actual = Json\encode([
-            'name' => 'azjezz/psl',
+            'name' => 'php-standard-library/php-standard-library',
             'type' => 'library',
             'description' => 'PHP Standard Library.',
             'keywords' => ['php', 'std', 'stdlib', 'utility', 'psl'],
@@ -32,7 +32,7 @@ final class EncodeTest extends TestCase
 
         $json = Str\replace(<<<JSON
         {
-            "name": "azjezz/psl",
+            "name": "php-standard-library/php-standard-library",
             "type": "library",
             "description": "PHP Standard Library.",
             "keywords": [

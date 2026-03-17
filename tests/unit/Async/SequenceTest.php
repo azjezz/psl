@@ -141,7 +141,7 @@ final class SequenceTest extends TestCase
     }
 
     /**
-     * @link https://github.com/azjezz/psl/issues/327
+     * @link https://github.com/php-standard-library/php-standard-library/issues/327
      */
     public function testBug327(): void
     {

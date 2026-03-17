@@ -4,15 +4,15 @@
 
 # PSL - PHP Standard Library
 
-![Unit tests status](https://github.com/azjezz/psl/workflows/unit%20tests/badge.svg)
-![Static analysis status](https://github.com/azjezz/psl/workflows/static%20analysis/badge.svg)
-![Coding standards status](https://github.com/azjezz/psl/workflows/coding%20standards/badge.svg)
+![Unit tests status](https://github.com/php-standard-library/php-standard-library/workflows/unit%20tests/badge.svg)
+![Static analysis status](https://github.com/php-standard-library/php-standard-library/workflows/static%20analysis/badge.svg)
+![Coding standards status](https://github.com/php-standard-library/php-standard-library/workflows/coding%20standards/badge.svg)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/4228/badge)](https://bestpractices.coreinfrastructure.org/projects/4228)
-[![Coverage Status](https://coveralls.io/repos/github/azjezz/psl/badge.svg)](https://coveralls.io/github/azjezz/psl)
-[![MSI](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fazjezz%2Fpsl%2Fnext)](https://dashboard.stryker-mutator.io/reports/github.com/azjezz/psl/next)
-[![Total Downloads](https://poser.pugx.org/azjezz/psl/d/total.svg)](https://packagist.org/packages/azjezz/psl)
-[![Latest Stable Version](https://poser.pugx.org/azjezz/psl/v/stable.svg)](https://packagist.org/packages/azjezz/psl)
-[![License](https://poser.pugx.org/azjezz/psl/license.svg)](https://packagist.org/packages/azjezz/psl)
+[![Coverage Status](https://coveralls.io/repos/github/php-standard-library/php-standard-library/badge.svg)](https://coveralls.io/github/php-standard-library/php-standard-library)
+[![MSI](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fphp-standard-library%2Fphp-standard-library%2Fnext)](https://dashboard.stryker-mutator.io/reports/github.com/php-standard-library/php-standard-library/next)
+[![Total Downloads](https://poser.pugx.org/php-standard-library/php-standard-library/d/total.svg)](https://packagist.org/packages/php-standard-library/php-standard-library)
+[![Latest Stable Version](https://poser.pugx.org/php-standard-library/php-standard-library/v/stable.svg)](https://packagist.org/packages/php-standard-library/php-standard-library)
+[![License](https://poser.pugx.org/php-standard-library/php-standard-library/license.svg)](https://packagist.org/packages/php-standard-library/php-standard-library)
 
 A standard library for PHP, inspired by [hhvm/hsl](https://github.com/hhvm/hsl). PSL provides a consistent, centralized, well-typed set of APIs covering async, collections, networking, I/O, cryptography, terminal UI, and more - replacing PHP functions and primitives with safer, async-ready alternatives that error predictably.
 
@@ -21,7 +21,7 @@ A standard library for PHP, inspired by [hhvm/hsl](https://github.com/hhvm/hsl).
 ## Installation
 
 ```shell
-composer require azjezz/psl
+composer require php-standard-library/php-standard-library
 ```
 
 Requires PHP 8.4+.

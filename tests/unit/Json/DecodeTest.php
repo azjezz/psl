@@ -12,7 +12,7 @@ final class DecodeTest extends TestCase
     public function testDecode(): void
     {
         $actual = Json\decode('{
-            "name": "azjezz/psl",
+            "name": "php-standard-library/php-standard-library",
             "type": "library",
             "description": "PHP Standard Library.",
             "keywords": ["php", "std", "stdlib", "utility", "psl"],
@@ -21,7 +21,7 @@ final class DecodeTest extends TestCase
 
         static::assertSame(
             [
-                'name' => 'azjezz/psl',
+                'name' => 'php-standard-library/php-standard-library',
                 'type' => 'library',
                 'description' => 'PHP Standard Library.',
                 'keywords' => ['php', 'std', 'stdlib', 'utility', 'psl'],

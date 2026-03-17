@@ -88,22 +88,22 @@ $token->cancel();
 
 ### features
 
-- feat(io): added `Reader::readUntilBounded(string $suffix, int $max_bytes, ?Duration $timeout)` method, which reads until a suffix is found, but throws `IO\Exception\OverflowException` if the content exceeds `$max_bytes` before the suffix is encountered - [#620](https://github.com/azjezz/psl/pull/620) - by @azjezz
-- feat(io): added `IO\Exception\OverflowException` exception class - [#620](https://github.com/azjezz/psl/pull/620) - by @azjezz
-- feat(type): add `Type\json_decoded()` type for transparent JSON string coercion - [#619](https://github.com/azjezz/psl/pull/619) by @veewee
-- feat(type): add `Type\nullish()` type for optional-and-nullable shape fields - [#618](https://github.com/azjezz/psl/pull/618) by @veewee
+- feat(io): added `Reader::readUntilBounded(string $suffix, int $max_bytes, ?Duration $timeout)` method, which reads until a suffix is found, but throws `IO\Exception\OverflowException` if the content exceeds `$max_bytes` before the suffix is encountered - [#620](https://github.com/php-standard-library/php-standard-library/pull/620) - by @azjezz
+- feat(io): added `IO\Exception\OverflowException` exception class - [#620](https://github.com/php-standard-library/php-standard-library/pull/620) - by @azjezz
+- feat(type): add `Type\json_decoded()` type for transparent JSON string coercion - [#619](https://github.com/php-standard-library/php-standard-library/pull/619) by @veewee
+- feat(type): add `Type\nullish()` type for optional-and-nullable shape fields - [#618](https://github.com/php-standard-library/php-standard-library/pull/618) by @veewee
 
 ## 5.4.0
 
 ### features
 
-- feat(dict, vec): add filter_nonnull_by and map_nonnull - [#576](https://github.com/azjezz/psl/pull/576) by @Dima-369
-* feat(tcp): add `backlog` parameter to `TCP\listen()` for configuring the pending connection queue size - [#617](https://github.com/azjezz/psl/pull/617) - by @azjezz
-* feat(tcp): listener now drains the accept backlog in a loop for higher throughput - [#617](https://github.com/azjezz/psl/pull/617) - by @azjezz
+- feat(dict, vec): add filter_nonnull_by and map_nonnull - [#576](https://github.com/php-standard-library/php-standard-library/pull/576) by @Dima-369
+* feat(tcp): add `backlog` parameter to `TCP\listen()` for configuring the pending connection queue size - [#617](https://github.com/php-standard-library/php-standard-library/pull/617) - by @azjezz
+* feat(tcp): listener now drains the accept backlog in a loop for higher throughput - [#617](https://github.com/php-standard-library/php-standard-library/pull/617) - by @azjezz
 
 ### other
 
-* chore: update dev dependencies, and re-format the codebase using latest mago version - [#616](https://github.com/azjezz/psl/pull/616) by @azjezz
+* chore: update dev dependencies, and re-format the codebase using latest mago version - [#616](https://github.com/php-standard-library/php-standard-library/pull/616) by @azjezz
 
 ## 5.3.0
 
@@ -129,165 +129,165 @@ $token->cancel();
 
 ### breaking changes
 
-* Dropped PHP 8.3 support; minimum is now PHP 8.4 - [#584](https://github.com/azjezz/psl/pull/584) by @azjezz
-* Migrated to PHPUnit 13 - [#584](https://github.com/azjezz/psl/pull/584) by @azjezz
-* Complete networking stack rewrite (`Network`, `TCP`, `Unix`) - [#585](https://github.com/azjezz/psl/pull/585) by @azjezz
-* `Psl\Shell` internals refactored; dead code removed - [#596](https://github.com/azjezz/psl/pull/596) by @azjezz
-* `Psl\Env\temp_dir()` now always returns a canonicalized path - [#599](https://github.com/azjezz/psl/pull/599) by @azjezz
+* Dropped PHP 8.3 support; minimum is now PHP 8.4 - [#584](https://github.com/php-standard-library/php-standard-library/pull/584) by @azjezz
+* Migrated to PHPUnit 13 - [#584](https://github.com/php-standard-library/php-standard-library/pull/584) by @azjezz
+* Complete networking stack rewrite (`Network`, `TCP`, `Unix`) - [#585](https://github.com/php-standard-library/php-standard-library/pull/585) by @azjezz
+* `Psl\Shell` internals refactored; dead code removed - [#596](https://github.com/php-standard-library/php-standard-library/pull/596) by @azjezz
+* `Psl\Env\temp_dir()` now always returns a canonicalized path - [#599](https://github.com/php-standard-library/php-standard-library/pull/599) by @azjezz
 
 ### features
 
-* feat: introduce `Ansi` component - [#588](https://github.com/azjezz/psl/pull/588) by @azjezz
-* feat: introduce `Terminal` component - [#589](https://github.com/azjezz/psl/pull/589) by @azjezz
-* feat: introduce `Process` component - [#578](https://github.com/azjezz/psl/pull/578) by @azjezz
-* feat: introduce `Binary` component - [#598](https://github.com/azjezz/psl/pull/598) by @azjezz
-* feat: introduce `Interoperability` component - [#582](https://github.com/azjezz/psl/pull/582) by @azjezz
-* feat: introduce `TLS` component - [#585](https://github.com/azjezz/psl/pull/585) by @azjezz
-* feat: introduce `UDP` component - [#585](https://github.com/azjezz/psl/pull/585) by @azjezz
-* feat: introduce `CIDR` component - [#585](https://github.com/azjezz/psl/pull/585) by @azjezz
-* feat: introduce `Socks` component - [#585](https://github.com/azjezz/psl/pull/585) by @azjezz
-* feat(network): connection pooling, retry logic, socket pairs - [#585](https://github.com/azjezz/psl/pull/585) by @azjezz
-* feat(datetime): add `Period`, `Interval`, `TemporalAmountInterface` - [#595](https://github.com/azjezz/psl/pull/595) by @azjezz
-* feat(io): add `IO\copy()` and `IO\copy_bidirectional()` - [#585](https://github.com/azjezz/psl/pull/585) by @azjezz
-* feat(vec): add `Vec\flatten()` - [#583](https://github.com/azjezz/psl/pull/583) by @azjezz
-* feat: introduce `Crypto` component with symmetric/asymmetric encryption, signing, AEAD, KDF, HKDF, key exchange, and stream ciphers - [#607](https://github.com/azjezz/psl/pull/607) by @azjezz
+* feat: introduce `Ansi` component - [#588](https://github.com/php-standard-library/php-standard-library/pull/588) by @azjezz
+* feat: introduce `Terminal` component - [#589](https://github.com/php-standard-library/php-standard-library/pull/589) by @azjezz
+* feat: introduce `Process` component - [#578](https://github.com/php-standard-library/php-standard-library/pull/578) by @azjezz
+* feat: introduce `Binary` component - [#598](https://github.com/php-standard-library/php-standard-library/pull/598) by @azjezz
+* feat: introduce `Interoperability` component - [#582](https://github.com/php-standard-library/php-standard-library/pull/582) by @azjezz
+* feat: introduce `TLS` component - [#585](https://github.com/php-standard-library/php-standard-library/pull/585) by @azjezz
+* feat: introduce `UDP` component - [#585](https://github.com/php-standard-library/php-standard-library/pull/585) by @azjezz
+* feat: introduce `CIDR` component - [#585](https://github.com/php-standard-library/php-standard-library/pull/585) by @azjezz
+* feat: introduce `Socks` component - [#585](https://github.com/php-standard-library/php-standard-library/pull/585) by @azjezz
+* feat(network): connection pooling, retry logic, socket pairs - [#585](https://github.com/php-standard-library/php-standard-library/pull/585) by @azjezz
+* feat(datetime): add `Period`, `Interval`, `TemporalAmountInterface` - [#595](https://github.com/php-standard-library/php-standard-library/pull/595) by @azjezz
+* feat(io): add `IO\copy()` and `IO\copy_bidirectional()` - [#585](https://github.com/php-standard-library/php-standard-library/pull/585) by @azjezz
+* feat(vec): add `Vec\flatten()` - [#583](https://github.com/php-standard-library/php-standard-library/pull/583) by @azjezz
+* feat: introduce `Crypto` component with symmetric/asymmetric encryption, signing, AEAD, KDF, HKDF, key exchange, and stream ciphers - [#607](https://github.com/php-standard-library/php-standard-library/pull/607) by @azjezz
 
 ### fixes, and improvements
 
-* fix(vec): strict comparison in `range()` for float precision - [#581](https://github.com/azjezz/psl/pull/581) by @azjezz
-* fix(filesystem): canonicalize temporary directory for `create_temporary_file` - [#580](https://github.com/azjezz/psl/pull/580), [#597](https://github.com/azjezz/psl/pull/597) by @azjezz
+* fix(vec): strict comparison in `range()` for float precision - [#581](https://github.com/php-standard-library/php-standard-library/pull/581) by @azjezz
+* fix(filesystem): canonicalize temporary directory for `create_temporary_file` - [#580](https://github.com/php-standard-library/php-standard-library/pull/580), [#597](https://github.com/php-standard-library/php-standard-library/pull/597) by @azjezz
 
 ### other
 
-* docs: documentation website at https://psl.carthage.software/ - [#592](https://github.com/azjezz/psl/pull/592), [#594](https://github.com/azjezz/psl/pull/594) by @azjezz
+* docs: documentation website at https://psl.carthage.software/ - [#592](https://github.com/php-standard-library/php-standard-library/pull/592), [#594](https://github.com/php-standard-library/php-standard-library/pull/594) by @azjezz
 * perf: performed optimizations across multiple components, which benchmarks showing up to 100% improvements in certain cases/functions.
 
 ## 4.3.0
 
 ### features
 
-* feat: introduce `Either` type - [#572](https://github.com/azjezz/psl/pull/572) by @simPod
-* feat(type): add `uuid` type - [#568](https://github.com/azjezz/psl/pull/568) by @gsteel
+* feat: introduce `Either` type - [#572](https://github.com/php-standard-library/php-standard-library/pull/572) by @simPod
+* feat(type): add `uuid` type - [#568](https://github.com/php-standard-library/php-standard-library/pull/568) by @gsteel
 
 ### fixes, and improvements
 
-* fix(shell): terminate the process on timeout - [#574](https://github.com/azjezz/psl/pull/574) by @azjezz
-* fix(io): correct PHPDoc return type annotation - [#571](https://github.com/azjezz/psl/pull/571) by @mitelg
-* refactor(phpunit): resolve test case naming deprecations - [#573](https://github.com/azjezz/psl/pull/573) by @simPod
+* fix(shell): terminate the process on timeout - [#574](https://github.com/php-standard-library/php-standard-library/pull/574) by @azjezz
+* fix(io): correct PHPDoc return type annotation - [#571](https://github.com/php-standard-library/php-standard-library/pull/571) by @mitelg
+* refactor(phpunit): resolve test case naming deprecations - [#573](https://github.com/php-standard-library/php-standard-library/pull/573) by @simPod
 
 ## 4.2.1
 
 ### fixes, and improvements
 
-* fix(tree): explicit type precedence - [#566](https://github.com/azjezz/psl/pull/566) by @azjezz
-* fix(iter): do not narrow down `seek($offset)` type - [#552](https://github.com/azjezz/psl/pull/552) by @azjezz
-* fix(filesystem): release handles before changing permissions when copying files - [#550](https://github.com/azjezz/psl/pull/550) by @dragosprotung
-* revert(option): revert [#475](https://github.com/azjezz/psl/pull/475) - [#560](https://github.com/azjezz/psl/pull/560) by @devnix
+* fix(tree): explicit type precedence - [#566](https://github.com/php-standard-library/php-standard-library/pull/566) by @azjezz
+* fix(iter): do not narrow down `seek($offset)` type - [#552](https://github.com/php-standard-library/php-standard-library/pull/552) by @azjezz
+* fix(filesystem): release handles before changing permissions when copying files - [#550](https://github.com/php-standard-library/php-standard-library/pull/550) by @dragosprotung
+* revert(option): revert [#475](https://github.com/php-standard-library/php-standard-library/pull/475) - [#560](https://github.com/php-standard-library/php-standard-library/pull/560) by @devnix
 
 ## 4.2.0
 
 ### other
 
-* chore: add support for PHP 8.5 - [#549](https://github.com/azjezz/psl/pull/549) by @veewee
+* chore: add support for PHP 8.5 - [#549](https://github.com/php-standard-library/php-standard-library/pull/549) by @veewee
 
 ## 4.1.0
 
 ### features
 
-* feat: add `Graph` component with directed and undirected graph support - [#547](https://github.com/azjezz/psl/pull/547) by @azjezz
-* feat: add `Tree` component for hierarchical data structures - [#546](https://github.com/azjezz/psl/pull/546) by @azjezz
-* feat(type): add reflection-based type functions for class members - [#543](https://github.com/azjezz/psl/pull/543) by @azjezz
+* feat: add `Graph` component with directed and undirected graph support - [#547](https://github.com/php-standard-library/php-standard-library/pull/547) by @azjezz
+* feat: add `Tree` component for hierarchical data structures - [#546](https://github.com/php-standard-library/php-standard-library/pull/546) by @azjezz
+* feat(type): add reflection-based type functions for class members - [#543](https://github.com/php-standard-library/php-standard-library/pull/543) by @azjezz
 
 ### other
 
-* chore: migrate from `make` to `just` - [#544](https://github.com/azjezz/psl/pull/544) by @azjezz
+* chore: migrate from `make` to `just` - [#544](https://github.com/php-standard-library/php-standard-library/pull/544) by @azjezz
 
 ## 4.0.1
 
 ### fixes, and improvements
 
-* refactor: remove redundant `@var` tags from constants - [#533](https://github.com/azjezz/psl/pull/533) by @azjezz
+* refactor: remove redundant `@var` tags from constants - [#533](https://github.com/php-standard-library/php-standard-library/pull/533) by @azjezz
 
 ## 4.0.0
 
 ### breaking changes
 
-* `Psl\Result\wrap()` no longer unwraps nested results - [#531](https://github.com/azjezz/psl/pull/531) by @azjezz
-* `Psl\Collection\Map`, `Psl\Collection\MutableMap`, `Psl\Collection\Set`, and `Psl\Collection\MutableSet` now have a more natural JSON serialization - [#512](https://github.com/azjezz/psl/pull/512) by @josh-rai
-* A large number of intersection interfaces in the `Psl\IO` and `Psl\File` namespaces have been removed to simplify the component's hierarchy - [#518](https://github.com/azjezz/psl/pull/518) by @azjezz
-* `Psl\sequence()` function has been removed - [#519](https://github.com/azjezz/psl/pull/519) by @azjezz
+* `Psl\Result\wrap()` no longer unwraps nested results - [#531](https://github.com/php-standard-library/php-standard-library/pull/531) by @azjezz
+* `Psl\Collection\Map`, `Psl\Collection\MutableMap`, `Psl\Collection\Set`, and `Psl\Collection\MutableSet` now have a more natural JSON serialization - [#512](https://github.com/php-standard-library/php-standard-library/pull/512) by @josh-rai
+* A large number of intersection interfaces in the `Psl\IO` and `Psl\File` namespaces have been removed to simplify the component's hierarchy - [#518](https://github.com/php-standard-library/php-standard-library/pull/518) by @azjezz
+* `Psl\sequence()` function has been removed - [#519](https://github.com/php-standard-library/php-standard-library/pull/519) by @azjezz
 
 ### features
 
-* feat(type): add `container` type - [#513](https://github.com/azjezz/psl/pull/513) by @azjezz
-* feat(type): add `int_range` type - [#510](https://github.com/azjezz/psl/pull/510) by @george-steel
-* feat(type): add `always_assert` type - [#522](https://github.com/azjezz/psl/pull/522) by @azjezz
-* feat(iter): add `search_with_keys_opt` and `search_with_keys` functions - [#490](https://github.com/azjezz/psl/pull/490) by @simon-podlipsky
+* feat(type): add `container` type - [#513](https://github.com/php-standard-library/php-standard-library/pull/513) by @azjezz
+* feat(type): add `int_range` type - [#510](https://github.com/php-standard-library/php-standard-library/pull/510) by @george-steel
+* feat(type): add `always_assert` type - [#522](https://github.com/php-standard-library/php-standard-library/pull/522) by @azjezz
+* feat(iter): add `search_with_keys_opt` and `search_with_keys` functions - [#490](https://github.com/php-standard-library/php-standard-library/pull/490) by @simon-podlipsky
 
 ### fixes, and improvements
 
-* refactor: improve type inference for non-empty lists - [#529](https://github.com/azjezz/psl/pull/529) by @azjezz
-* refactor: improve type inference for `Iter` and `Regex` - [#528](https://github.com/azjezz/psl/pull/528) by @azjezz
+* refactor: improve type inference for non-empty lists - [#529](https://github.com/php-standard-library/php-standard-library/pull/529) by @azjezz
+* refactor: improve type inference for `Iter` and `Regex` - [#528](https://github.com/php-standard-library/php-standard-library/pull/528) by @azjezz
 
 ### other
 
-* chore: migrate from `psalm` to `mago` - [#527](https://github.com/azjezz/psl/pull/527) by @azjezz
-* chore: replace psalm-specific tags by generic tags - [#531](https://github.com/azjezz/psl/pull/531) by @azjezz
+* chore: migrate from `psalm` to `mago` - [#527](https://github.com/php-standard-library/php-standard-library/pull/527) by @azjezz
+* chore: replace psalm-specific tags by generic tags - [#531](https://github.com/php-standard-library/php-standard-library/pull/531) by @azjezz
 
 ## 2.7.0
 
 ### features
 
-* feat(encoding): introduce `Base64\Variant` enum to support encoding/decoding different variants - [#408](https://github.com/azjezz/psl/pull/408) by @Gashmob
+* feat(encoding): introduce `Base64\Variant` enum to support encoding/decoding different variants - [#408](https://github.com/php-standard-library/php-standard-library/pull/408) by @Gashmob
 
 ### fixes, and improvements
 
-* fix(option): return `Option<never>` for `Option::none()` - [#415](https://github.com/azjezz/psl/pull/415) by @devnix
-* fix(str): add invariant to avoid unexpected errors when parsing an invalid UTF8 string - [#410](https://github.com/azjezz/psl/pull/410) by @devnix
+* fix(option): return `Option<never>` for `Option::none()` - [#415](https://github.com/php-standard-library/php-standard-library/pull/415) by @devnix
+* fix(str): add invariant to avoid unexpected errors when parsing an invalid UTF8 string - [#410](https://github.com/php-standard-library/php-standard-library/pull/410) by @devnix
 
 ## 2.6.0
 
 ### features
 
-* feat(type): introduce `Type\converted` function - [#405](https://github.com/azjezz/psl/pull/405) by @veewee
-* feat(type): introduce `Type\numeric_string` function - [#406](https://github.com/azjezz/psl/pull/406) by @veewee
+* feat(type): introduce `Type\converted` function - [#405](https://github.com/php-standard-library/php-standard-library/pull/405) by @veewee
+* feat(type): introduce `Type\numeric_string` function - [#406](https://github.com/php-standard-library/php-standard-library/pull/406) by @veewee
 
 ## 2.5.0
 
 ### features
 
-* feat(result): introduce `Result\try_catch` function - [#403](https://github.com/azjezz/psl/pull/403) by @azjezz
+* feat(result): introduce `Result\try_catch` function - [#403](https://github.com/php-standard-library/php-standard-library/pull/403) by @azjezz
 
 ### fixes, and improvements
 
-* fix(file): improve consistency when creating files for write-mode - [#401](https://github.com/azjezz/psl/pull/401) by @veewee
+* fix(file): improve consistency when creating files for write-mode - [#401](https://github.com/php-standard-library/php-standard-library/pull/401) by @veewee
 
 ## 2.4.1
 
 ### fixes, and improvements
 
-* fix(type): un-deprecate `Psl\Type\positive_int` function - [#400](https://github.com/azjezz/psl/pull/400) by @dragosprotung
+* fix(type): un-deprecate `Psl\Type\positive_int` function - [#400](https://github.com/php-standard-library/php-standard-library/pull/400) by @dragosprotung
 
 ## 2.4.0
 
 ### features
 
-* feat(range): introduced `Psl\Range` component - [#378](https://github.com/azjezz/psl/pull/378) by @azjezz
-* feat(str): introduced `Psl\Str\range`, `Psl\Str\Byte\range`, and `Psl\Str\Grapheme\range` functions - [#385](https://github.com/azjezz/psl/pull/385) by @azjezz
-* feat(type): introduced `Psl\Type\uint` function - [#393](https://github.com/azjezz/psl/pull/393) by @azjezz
-* feat(type): introduced `Psl\Type\i8`, `Psl\Type\i16`, `Psl\Type\i32`, `Psl\Type\i64` functions - [#392](https://github.com/azjezz/psl/pull/392) by @azjezz
-* feat(type): introduced `Psl\Type\u8`, `Psl\Type\u16`, `Psl\Type\u32` functions - [#395](https://github.com/azjezz/psl/pull/395) by @KennedyTedesco
-* feat(type): introduced `Psl\Type\f32`, and `Psl\Type\f64` functions - [#396](https://github.com/azjezz/psl/pull/396) by @KennedyTedesco
-* feat(type): introduced `Psl\Type\nonnull` function - [#392](https://github.com/azjezz/psl/pull/392) by @azjezz
-* feat(option): improve options type declarations and add `andThen` method - [#398](https://github.com/azjezz/psl/pull/398) by @veewee
+* feat(range): introduced `Psl\Range` component - [#378](https://github.com/php-standard-library/php-standard-library/pull/378) by @azjezz
+* feat(str): introduced `Psl\Str\range`, `Psl\Str\Byte\range`, and `Psl\Str\Grapheme\range` functions - [#385](https://github.com/php-standard-library/php-standard-library/pull/385) by @azjezz
+* feat(type): introduced `Psl\Type\uint` function - [#393](https://github.com/php-standard-library/php-standard-library/pull/393) by @azjezz
+* feat(type): introduced `Psl\Type\i8`, `Psl\Type\i16`, `Psl\Type\i32`, `Psl\Type\i64` functions - [#392](https://github.com/php-standard-library/php-standard-library/pull/392) by @azjezz
+* feat(type): introduced `Psl\Type\u8`, `Psl\Type\u16`, `Psl\Type\u32` functions - [#395](https://github.com/php-standard-library/php-standard-library/pull/395) by @KennedyTedesco
+* feat(type): introduced `Psl\Type\f32`, and `Psl\Type\f64` functions - [#396](https://github.com/php-standard-library/php-standard-library/pull/396) by @KennedyTedesco
+* feat(type): introduced `Psl\Type\nonnull` function - [#392](https://github.com/php-standard-library/php-standard-library/pull/392) by @azjezz
+* feat(option): improve options type declarations and add `andThen` method - [#398](https://github.com/php-standard-library/php-standard-library/pull/398) by @veewee
 
 ### fixes, and improvements
 
-* fix(vec/dict): Return might be non-empty-list/non-empty-array for map functions - [#384](https://github.com/azjezz/psl/pull/384) by @dragosprotung
+* fix(vec/dict): Return might be non-empty-list/non-empty-array for map functions - [#384](https://github.com/php-standard-library/php-standard-library/pull/384) by @dragosprotung
 
 ### other
 
-* chore(async): add async component documentation - [#386](https://github.com/azjezz/psl/pull/386) by @azjezz
+* chore(async): add async component documentation - [#386](https://github.com/php-standard-library/php-standard-library/pull/386) by @azjezz
 
 ### deprecations
 
@@ -297,45 +297,45 @@ $token->cancel();
 
 ### fixes, and improvements
 
-* fix(vec): `Vec\reproduce` and `Vec\range` return type is always non-empty-list - [#383](https://github.com/azjezz/psl/pull/383) by @dragosprotung
+* fix(vec): `Vec\reproduce` and `Vec\range` return type is always non-empty-list - [#383](https://github.com/php-standard-library/php-standard-library/pull/383) by @dragosprotung
 
 ### other
 
-* chore: update license copyright year - [#371](https://github.com/azjezz/psl/pull/371) by @azjezz
+* chore: update license copyright year - [#371](https://github.com/php-standard-library/php-standard-library/pull/371) by @azjezz
 
 ## 2.3.0
 
 ### other
 
-* chore: support psalm v5 - [#369](https://github.com/azjezz/psl/pull/369) by @veewee
+* chore: support psalm v5 - [#369](https://github.com/php-standard-library/php-standard-library/pull/369) by @veewee
 
 
 ## 2.2.0
 
 ### features
 
-* feat(option): introduce option component - [#356](https://github.com/azjezz/psl/pull/356) by @azjezz
+* feat(option): introduce option component - [#356](https://github.com/php-standard-library/php-standard-library/pull/356) by @azjezz
 
 ## 2.1.0
 
 ### features
 
-* introduced a new `Psl\Type\unit_enum` function - [@19d1230](https://github.com/azjezz/psl/commit/19d123074546cc3ebfca18ad666f100e7fad0658) by @azjezz
-* introduced a new `Psl\Type\backed_enum` function - [@19d1230](https://github.com/azjezz/psl/commit/19d123074546cc3ebfca18ad666f100e7fad0658) by @azjezz
-* introduced a new `Psl\Type\mixed_vec` function - [#362](https://github.com/azjezz/psl/pull/362) by @BackEndTea
-* introduced a new `Psl\Type\mixed_dict` function - [#362](https://github.com/azjezz/psl/pull/362) by @BackEndTea
+* introduced a new `Psl\Type\unit_enum` function - [@19d1230](https://github.com/php-standard-library/php-standard-library/commit/19d123074546cc3ebfca18ad666f100e7fad0658) by @azjezz
+* introduced a new `Psl\Type\backed_enum` function - [@19d1230](https://github.com/php-standard-library/php-standard-library/commit/19d123074546cc3ebfca18ad666f100e7fad0658) by @azjezz
+* introduced a new `Psl\Type\mixed_vec` function - [#362](https://github.com/php-standard-library/php-standard-library/pull/362) by @BackEndTea
+* introduced a new `Psl\Type\mixed_dict` function - [#362](https://github.com/php-standard-library/php-standard-library/pull/362) by @BackEndTea
 
 ### fixes, and improvements
 
-* improved `Psl\Type\vec` performance - [#364](https://github.com/azjezz/psl/pull/364) by @BackEndTea
-* improved `Psl\Type\float`, and `Psl\Type\num` - [#367](https://github.com/azjezz/psl/pull/367) by @bcremer
+* improved `Psl\Type\vec` performance - [#364](https://github.com/php-standard-library/php-standard-library/pull/364) by @BackEndTea
+* improved `Psl\Type\float`, and `Psl\Type\num` - [#367](https://github.com/php-standard-library/php-standard-library/pull/367) by @bcremer
 
 ### other
 
-* updated `revolt-php/event-loop` to `1.0.0` - [@c7bf866](https://github.com/azjezz/psl/commit/c7bf866a362b9528934a758981da718408ec15d4) by @azjezz
-* introduced scope-able loader - [#361](https://github.com/azjezz/psl/pull/361) by @veewee
-* fixed wrong function names in examples - [#354](https://github.com/azjezz/psl/pull/354) by @jrmajor
-* added reference to PHPStan integration in README.md - [#353](https://github.com/azjezz/psl/pull/353) by @ondrejmirtes
+* updated `revolt-php/event-loop` to `1.0.0` - [@c7bf866](https://github.com/php-standard-library/php-standard-library/commit/c7bf866a362b9528934a758981da718408ec15d4) by @azjezz
+* introduced scope-able loader - [#361](https://github.com/php-standard-library/php-standard-library/pull/361) by @veewee
+* fixed wrong function names in examples - [#354](https://github.com/php-standard-library/php-standard-library/pull/354) by @jrmajor
+* added reference to PHPStan integration in README.md - [#353](https://github.com/php-standard-library/php-standard-library/pull/353) by @ondrejmirtes
 
 ## 2.0.0
 
