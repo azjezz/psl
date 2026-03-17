@@ -35,6 +35,8 @@ const OUTPUT_FILE = OUTPUT_DIR . '/index.html';
 /**
  * Map doc slugs to their Composer package names.
  * Slugs not in this map don't get an install command.
+ *
+ * @mago-expect lint:no-literal-password
  */
 const SLUG_TO_PACKAGE = [
     'foundation' => 'php-standard-library/foundation',
