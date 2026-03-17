@@ -1,0 +1,43 @@
+{
+    "name": "php-standard-library/interoperability",
+    "description": "Interfaces for converting between PSL types and PHP stdlib/intl equivalents",
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://php-standard-library.dev",
+    "keywords": [
+        "interoperability",
+        "conversion"
+    ],
+    "authors": [
+        {
+            "name": "Seifeddine Gmati",
+            "email": "azjezz@carthage.software"
+        },
+        {
+            "name": "Contributors",
+            "homepage": "https://github.com/php-standard-library/php-standard-library/graphs/contributors"
+        }
+    ],
+    "require": {
+        "php": "~8.4.0 || ~8.5.0"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Psl\\Interoperability\\": "src/Psl/Interoperability/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-next": "6.0.x-dev"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^13.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Psl\\Interoperability\\Tests\\Unit\\": "tests/unit/"
+        }
+    }
+}

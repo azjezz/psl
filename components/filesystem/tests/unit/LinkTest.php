@@ -1,0 +1,233 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\Filesystem\Tests\Unit;
+
+use Psl\Filesystem;
+use Psl\Str;
+
+final class LinkTest extends AbstractFilesystemTestCase
+{
+    protected string $function = 'link';
+
+    public function testSymbolicLink(): void
+    {
+        $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
+        $symlink = Str\join([$this->directory, 'symlink.txt'], Filesystem\SEPARATOR);
+
+        Filesystem\create_file($file);
+
+        Filesystem\create_symbolic_link($file, $symlink);
+
+        static::assertTrue(Filesystem\exists($symlink));
+        static::assertTrue(Filesystem\is_symbolic_link($symlink));
+
+        static::assertSame($file, Filesystem\read_symbolic_link($symlink));
+    }
+
+    public function testSymbolicLinkAlreadyExists(): void
+    {
+        $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
+        $symlink = Str\join([$this->directory, 'symlink.txt'], Filesystem\SEPARATOR);
+
+        Filesystem\create_file($file);
+
+        Filesystem\create_symbolic_link($file, $symlink);
+
+        static::assertTrue(Filesystem\exists($symlink));
+        static::assertTrue(Filesystem\is_symbolic_link($symlink));
+
+        static::assertSame($file, Filesystem\read_symbolic_link($symlink));
+
+        Filesystem\create_symbolic_link($file, $symlink);
+
+        static::assertTrue(Filesystem\exists($symlink));
+        static::assertTrue(Filesystem\is_symbolic_link($symlink));
+
+        static::assertSame($file, Filesystem\read_symbolic_link($symlink));
+    }
+
+    public function testSymbolicLinkOverwrite(): void
+    {
+        $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
+        $symbolicLink = Str\join([$this->directory, 'symbolic_link.txt'], Filesystem\SEPARATOR);
+
+        Filesystem\create_file($file);
+        Filesystem\create_file($symbolicLink);
+
+        static::assertFalse(Filesystem\is_symbolic_link($symbolicLink));
+
+        Filesystem\create_symbolic_link($file, $symbolicLink);
+
+        static::assertTrue(Filesystem\is_symbolic_link($symbolicLink));
+        static::assertSame($file, Filesystem\read_symbolic_link($symbolicLink));
+
+        $file = Str\join([$this->directory, 'foo', 'bar'], Filesystem\SEPARATOR);
+        $symbolicLink = Str\join([$this->directory, 'foo', 'baz'], Filesystem\SEPARATOR);
+
+        Filesystem\create_file($file);
+        Filesystem\create_directory($symbolicLink);
+
+        static::assertFalse(Filesystem\is_symbolic_link($symbolicLink));
+
+        Filesystem\create_symbolic_link($file, $symbolicLink);
+
+        static::assertTrue(Filesystem\is_symbolic_link($symbolicLink));
+        static::assertSame($file, Filesystem\read_symbolic_link($symbolicLink));
+    }
+
+    public function testSymbolicLinkCreatesDestinationsDirectory(): void
+    {
+        $directory = Str\join([$this->directory, 'foo'], Filesystem\SEPARATOR);
+        $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
+        $symbolicLink = Str\join([$directory, 'symbolic.txt'], Filesystem\SEPARATOR);
+
+        static::assertFalse(Filesystem\is_directory($directory));
+
+        Filesystem\create_file($file);
+        Filesystem\create_symbolic_link($file, $symbolicLink);
+
+        static::assertTrue(Filesystem\is_directory($directory));
+
+        Filesystem\delete_file($symbolicLink);
+    }
+
+    public function testHardLink(): void
+    {
+        $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
+        $hardlink = Str\join([$this->directory, 'hardlink.txt'], Filesystem\SEPARATOR);
+
+        Filesystem\create_file($file);
+
+        Filesystem\create_hard_link($file, $hardlink);
+
+        static::assertTrue(Filesystem\exists($hardlink));
+        static::assertFalse(Filesystem\is_symbolic_link($hardlink));
+
+        static::assertSame(Filesystem\get_inode($file), Filesystem\get_inode($hardlink));
+    }
+
+    public function testReadSymbolicLinkThrowsIfSourceDoesNotExist(): void
+    {
+        $file = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
+
+        $this->expectException(Filesystem\Exception\NotFoundException::class);
+        $this->expectExceptionMessage('Symbolic link "' . $file . '" is not found.');
+
+        Filesystem\read_symbolic_link($file);
+    }
+
+    public function testReadSymbolicLinkThrowsIfSourceIsNotSymbolicLink(): void
+    {
+        $file = Str\join([$this->directory, 'not-a-link'], Filesystem\SEPARATOR);
+
+        Filesystem\create_file($file);
+
+        $this->expectException(Filesystem\Exception\NotSymbolicLinkException::class);
+        $this->expectExceptionMessage('Path "' . $file . '" does not point to a symbolic link.');
+
+        Filesystem\read_symbolic_link($file);
+    }
+
+    public function testCreateHardLinkThrowsIfSourceDoesntExist(): void
+    {
+        $file = Str\join([$this->directory, 'non-existing'], Filesystem\SEPARATOR);
+
+        $this->expectException(Filesystem\Exception\NotFoundException::class);
+        $this->expectExceptionMessage('File "' . $file . '" is not found.');
+
+        Filesystem\create_hard_link($file, '/foo/bar');
+    }
+
+    public function testCreateHardLinkThrowsIfSourceIsDirectory(): void
+    {
+        $this->expectException(Filesystem\Exception\NotFileException::class);
+        $this->expectExceptionMessage('Path "' . $this->directory . '" does not point to a file.');
+
+        Filesystem\create_hard_link($this->directory, '/foo/bar');
+    }
+
+    public function testHardLinkAlreadyExists(): void
+    {
+        $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
+        $hardlink = Str\join([$this->directory, 'hardlink.txt'], Filesystem\SEPARATOR);
+
+        Filesystem\create_file($file);
+
+        Filesystem\create_hard_link($file, $hardlink);
+
+        static::assertTrue(Filesystem\exists($hardlink));
+        static::assertFalse(Filesystem\is_symbolic_link($hardlink));
+
+        static::assertSame(Filesystem\get_inode($file), Filesystem\get_inode($hardlink));
+
+        Filesystem\create_hard_link($file, $hardlink);
+
+        static::assertSame(Filesystem\get_inode($file), Filesystem\get_inode($hardlink));
+    }
+
+    public function testHardLinkCreatesDestinationDirectory(): void
+    {
+        $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
+        $destinationDirectory = Str\join([$this->directory, 'foo'], Filesystem\SEPARATOR);
+        $hardlink = Str\join([$destinationDirectory, 'hardlink.txt'], Filesystem\SEPARATOR);
+
+        try {
+            Filesystem\create_file($file);
+
+            static::assertFalse(Filesystem\is_directory($destinationDirectory));
+
+            Filesystem\create_hard_link($file, $hardlink);
+
+            static::assertTrue(Filesystem\is_directory($destinationDirectory));
+            static::assertTrue(Filesystem\exists($hardlink));
+            static::assertFalse(Filesystem\is_symbolic_link($hardlink));
+
+            static::assertSame(Filesystem\get_inode($file), Filesystem\get_inode($hardlink));
+        } finally {
+            Filesystem\delete_file($hardlink);
+            Filesystem\delete_directory($destinationDirectory, true);
+            Filesystem\delete_file($file);
+        }
+    }
+
+    public function testHardLinkOverwrite(): void
+    {
+        $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
+        $hardlink = Str\join([$this->directory, 'hardlink.txt'], Filesystem\SEPARATOR);
+
+        Filesystem\create_file($file);
+        Filesystem\create_file($hardlink);
+
+        static::assertNotSame(Filesystem\get_inode($file), Filesystem\get_inode($hardlink));
+
+        Filesystem\create_hard_link($file, $hardlink);
+
+        static::assertSame(Filesystem\get_inode($file), Filesystem\get_inode($hardlink));
+
+        $file = Str\join([$this->directory, 'foo', 'bar'], Filesystem\SEPARATOR);
+        $hardlink = Str\join([$this->directory, 'foo', 'baz'], Filesystem\SEPARATOR);
+
+        Filesystem\create_file($file);
+        Filesystem\create_directory($hardlink);
+
+        static::assertNotSame(Filesystem\get_inode($file), Filesystem\get_inode($hardlink));
+
+        Filesystem\create_hard_link($file, $hardlink);
+
+        static::assertSame(Filesystem\get_inode($file), Filesystem\get_inode($hardlink));
+    }
+
+    public function testHardLinkCreatesDestinationsDirectory(): void
+    {
+        $file = Str\join([$this->directory, 'write.txt'], Filesystem\SEPARATOR);
+        $hardlink = Str\join([$this->directory, 'baz', 'hardlink.txt'], Filesystem\SEPARATOR);
+
+        Filesystem\create_file($file);
+
+        Filesystem\create_hard_link($file, $hardlink);
+
+        static::assertSame(Filesystem\get_inode($file), Filesystem\get_inode($hardlink));
+    }
+}

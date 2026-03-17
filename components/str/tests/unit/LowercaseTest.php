@@ -1,0 +1,39 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\Str\Tests\Unit;
+
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
+use Psl\Str;
+
+final class LowercaseTest extends TestCase
+{
+    #[DataProvider('provideData')]
+    public function testLowercase(string $expected, string $str): void
+    {
+        static::assertSame($expected, Str\lowercase($str));
+    }
+
+    public static function provideData(): array
+    {
+        return [
+            ['hello',          'hello'],
+            ['hello',          'Hello'],
+            ['سيف',            'سيف'],
+            ['1337',           '1337'],
+            ['héllö, wôrld!',  'HÉLLÖ, WÔRLD!'],
+            ['héllö, wôrld!',  'héllö, wôrld!'],
+            ['ß',              'ß'],
+            ['ß',              'ẞ'],
+            ['🤷 🔥',          '🤷 🔥'],
+            ['سيف',            'سيف'],
+            ['1337',           '1337'],
+            ['你好',           '你好'],
+            ['こんにちは世界', 'こんにちは世界'],
+            ['สวัสดี',           'สวัสดี'],
+            ['ؤخى',            'ؤخى'],
+        ];
+    }
+}

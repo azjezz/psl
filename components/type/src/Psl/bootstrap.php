@@ -1,0 +1,86 @@
+<?php
+
+declare(strict_types=1);
+
+(static function (): void {
+    $functions = [
+        'Psl\Type\always_assert' => __DIR__ . '/Type/always_assert.php',
+        'Psl\Type\array_key' => __DIR__ . '/Type/array_key.php',
+        'Psl\Type\backed_enum' => __DIR__ . '/Type/backed_enum.php',
+        'Psl\Type\backed_enum_value' => __DIR__ . '/Type/backed_enum_value.php',
+        'Psl\Type\bool' => __DIR__ . '/Type/bool.php',
+        'Psl\Type\class_string' => __DIR__ . '/Type/class_string.php',
+        'Psl\Type\constant_name_of' => __DIR__ . '/Type/constant_name_of.php',
+        'Psl\Type\container' => __DIR__ . '/Type/container.php',
+        'Psl\Type\converted' => __DIR__ . '/Type/converted.php',
+        'Psl\Type\dict' => __DIR__ . '/Type/dict.php',
+        'Psl\Type\enum_case_of' => __DIR__ . '/Type/enum_case_of.php',
+        'Psl\Type\f32' => __DIR__ . '/Type/f32.php',
+        'Psl\Type\f64' => __DIR__ . '/Type/f64.php',
+        'Psl\Type\float' => __DIR__ . '/Type/float.php',
+        'Psl\Type\i16' => __DIR__ . '/Type/i16.php',
+        'Psl\Type\i32' => __DIR__ . '/Type/i32.php',
+        'Psl\Type\i64' => __DIR__ . '/Type/i64.php',
+        'Psl\Type\i8' => __DIR__ . '/Type/i8.php',
+        'Psl\Type\instance_of' => __DIR__ . '/Type/instance_of.php',
+        'Psl\Type\int' => __DIR__ . '/Type/int.php',
+        'Psl\Type\int_range' => __DIR__ . '/Type/int_range.php',
+        'Psl\Type\intersection' => __DIR__ . '/Type/intersection.php',
+        'Psl\Type\is_nan' => __DIR__ . '/Type/is_nan.php',
+        'Psl\Type\iterable' => __DIR__ . '/Type/iterable.php',
+        'Psl\Type\json_decoded' => __DIR__ . '/Type/json_decoded.php',
+        'Psl\Type\literal_scalar' => __DIR__ . '/Type/literal_scalar.php',
+        'Psl\Type\map' => __DIR__ . '/Type/map.php',
+        'Psl\Type\method_name_of' => __DIR__ . '/Type/method_name_of.php',
+        'Psl\Type\mixed' => __DIR__ . '/Type/mixed.php',
+        'Psl\Type\mixed_dict' => __DIR__ . '/Type/mixed_dict.php',
+        'Psl\Type\mixed_vec' => __DIR__ . '/Type/mixed_vec.php',
+        'Psl\Type\mutable_map' => __DIR__ . '/Type/mutable_map.php',
+        'Psl\Type\mutable_set' => __DIR__ . '/Type/mutable_set.php',
+        'Psl\Type\mutable_vector' => __DIR__ . '/Type/mutable_vector.php',
+        'Psl\Type\non_empty_dict' => __DIR__ . '/Type/non_empty_dict.php',
+        'Psl\Type\non_empty_string' => __DIR__ . '/Type/non_empty_string.php',
+        'Psl\Type\non_empty_vec' => __DIR__ . '/Type/non_empty_vec.php',
+        'Psl\Type\nonnull' => __DIR__ . '/Type/nonnull.php',
+        'Psl\Type\null' => __DIR__ . '/Type/null.php',
+        'Psl\Type\nullable' => __DIR__ . '/Type/nullable.php',
+        'Psl\Type\nullish' => __DIR__ . '/Type/nullish.php',
+        'Psl\Type\num' => __DIR__ . '/Type/num.php',
+        'Psl\Type\numeric_string' => __DIR__ . '/Type/numeric_string.php',
+        'Psl\Type\object' => __DIR__ . '/Type/object.php',
+        'Psl\Type\optional' => __DIR__ . '/Type/optional.php',
+        'Psl\Type\positive_int' => __DIR__ . '/Type/positive_int.php',
+        'Psl\Type\private_constant_name_of' => __DIR__ . '/Type/private_constant_name_of.php',
+        'Psl\Type\private_method_name_of' => __DIR__ . '/Type/private_method_name_of.php',
+        'Psl\Type\private_property_name_of' => __DIR__ . '/Type/private_property_name_of.php',
+        'Psl\Type\property_name_of' => __DIR__ . '/Type/property_name_of.php',
+        'Psl\Type\protected_constant_name_of' => __DIR__ . '/Type/protected_constant_name_of.php',
+        'Psl\Type\protected_method_name_of' => __DIR__ . '/Type/protected_method_name_of.php',
+        'Psl\Type\protected_property_name_of' => __DIR__ . '/Type/protected_property_name_of.php',
+        'Psl\Type\public_constant_name_of' => __DIR__ . '/Type/public_constant_name_of.php',
+        'Psl\Type\public_method_name_of' => __DIR__ . '/Type/public_method_name_of.php',
+        'Psl\Type\public_property_name_of' => __DIR__ . '/Type/public_property_name_of.php',
+        'Psl\Type\resource' => __DIR__ . '/Type/resource.php',
+        'Psl\Type\scalar' => __DIR__ . '/Type/scalar.php',
+        'Psl\Type\set' => __DIR__ . '/Type/set.php',
+        'Psl\Type\shape' => __DIR__ . '/Type/shape.php',
+        'Psl\Type\string' => __DIR__ . '/Type/string.php',
+        'Psl\Type\u16' => __DIR__ . '/Type/u16.php',
+        'Psl\Type\u32' => __DIR__ . '/Type/u32.php',
+        'Psl\Type\u8' => __DIR__ . '/Type/u8.php',
+        'Psl\Type\uint' => __DIR__ . '/Type/uint.php',
+        'Psl\Type\union' => __DIR__ . '/Type/union.php',
+        'Psl\Type\unit_enum' => __DIR__ . '/Type/unit_enum.php',
+        'Psl\Type\uuid' => __DIR__ . '/Type/uuid.php',
+        'Psl\Type\vec' => __DIR__ . '/Type/vec.php',
+        'Psl\Type\vector' => __DIR__ . '/Type/vector.php',
+    ];
+
+    foreach ($functions as $function => $path) {
+        if (function_exists($function)) {
+            continue;
+        }
+
+        require_once $path;
+    }
+})();

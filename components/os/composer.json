@@ -1,0 +1,48 @@
+{
+    "name": "php-standard-library/os",
+    "description": "Type-safe operating system detection via OperatingSystemFamily enum",
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://php-standard-library.dev",
+    "keywords": [
+        "os",
+        "operating-system",
+        "platform"
+    ],
+    "authors": [
+        {
+            "name": "Seifeddine Gmati",
+            "email": "azjezz@carthage.software"
+        },
+        {
+            "name": "Contributors",
+            "homepage": "https://github.com/php-standard-library/php-standard-library/graphs/contributors"
+        }
+    ],
+    "require": {
+        "php": "~8.4.0 || ~8.5.0",
+        "php-standard-library/default": "^6.0"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Psl\\OS\\": "src/Psl/OS/"
+        },
+        "files": [
+            "src/Psl/bootstrap.php"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-next": "6.0.x-dev"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^13.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Psl\\OS\\Tests\\Unit\\": "tests/unit/"
+        }
+    }
+}

@@ -1,0 +1,55 @@
+{
+    "name": "php-standard-library/udp",
+    "description": "Non-blocking API for sending and receiving datagrams over UDP",
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://php-standard-library.dev",
+    "keywords": [
+        "udp",
+        "datagram",
+        "networking",
+        "async"
+    ],
+    "authors": [
+        {
+            "name": "Seifeddine Gmati",
+            "email": "azjezz@carthage.software"
+        },
+        {
+            "name": "Contributors",
+            "homepage": "https://github.com/php-standard-library/php-standard-library/graphs/contributors"
+        }
+    ],
+    "require": {
+        "php": "~8.4.0 || ~8.5.0",
+        "php-standard-library/async": "^6.0",
+        "php-standard-library/default": "^6.0",
+        "php-standard-library/io": "^6.0",
+        "php-standard-library/network": "^6.0",
+        "revolt/event-loop": "^1.0.8"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Psl\\UDP\\": "src/Psl/UDP/"
+        },
+        "files": [
+            "src/Psl/bootstrap.php"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-next": "6.0.x-dev"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^13.0",
+        "php-standard-library/date-time": "^6.0",
+        "php-standard-library/os": "^6.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Psl\\UDP\\Tests\\Unit\\": "tests/unit/"
+        }
+    }
+}

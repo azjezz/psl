@@ -1,0 +1,56 @@
+{
+    "name": "php-standard-library/io",
+    "description": "Handle-based I/O abstractions - composable, testable, and async-ready",
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://php-standard-library.dev",
+    "keywords": [
+        "io",
+        "stream",
+        "handle",
+        "async"
+    ],
+    "authors": [
+        {
+            "name": "Seifeddine Gmati",
+            "email": "azjezz@carthage.software"
+        },
+        {
+            "name": "Contributors",
+            "homepage": "https://github.com/php-standard-library/php-standard-library/graphs/contributors"
+        }
+    ],
+    "require": {
+        "php": "~8.4.0 || ~8.5.0",
+        "php-standard-library/foundation": "^6.0",
+        "php-standard-library/async": "^6.0",
+        "php-standard-library/channel": "^6.0",
+        "php-standard-library/os": "^6.0",
+        "php-standard-library/result": "^6.0",
+        "php-standard-library/str": "^6.0",
+        "revolt/event-loop": "^1.0.8"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Psl\\IO\\": "src/Psl/IO/"
+        },
+        "files": [
+            "src/Psl/bootstrap.php"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-next": "6.0.x-dev"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^13.0",
+        "php-standard-library/date-time": "^6.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Psl\\IO\\Tests\\Unit\\": "tests/unit/"
+        }
+    }
+}
