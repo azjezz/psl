@@ -1,6 +1,6 @@
-# Psl
+# Foundation
 
-The root namespace provides foundational utilities used across all PSL components.
+The `Foundation` package provides the base exceptions, `Ref`, and `invariant()` utilities used across all PSL components.
 
 ## Usage
 

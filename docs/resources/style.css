@@ -362,7 +362,7 @@ article pre code.hljs {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     opacity: 0;
-    transition: opacity 0.15s;
+    transition: opacity 0.4s ease;
 }
 
 article pre:hover .copy-btn {
@@ -441,12 +441,41 @@ article pre:hover .copy-btn {
 
 .install-box {
     display: inline-block;
+    width: 100%;
     background: var(--fg);
     color: var(--bg);
     padding: 0.8rem 2rem;
     border: var(--border);
     font-family: inherit;
     font-size: 0.95rem;
+    margin: 0;
+    text-decoration: none;
+}
+
+.typing-cursor {
+    display: inline-block;
+    width: 0.5em;
+    height: 1.1em;
+    background: var(--bg);
+    vertical-align: text-bottom;
+    margin-left: 1px;
+    animation: blink 0.7s step-end infinite;
+}
+
+.hero-separator {
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+    margin: 0.8rem 0;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+.install-box-wrapper {
+    text-align: center;
+    margin-top: 1.5rem;
     margin-bottom: 1.5rem;
 }
 

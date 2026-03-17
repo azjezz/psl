@@ -185,8 +185,10 @@ function build_front_page() {
         <div class="hero fade-in">
             <h1>PSL</h1>
             <p class="tagline">PHP Standard Library</p>
-            <div class="install-box">composer require php-standard-library/php-standard-library</div>
             <p class="hero-description">A standard library for PHP, inspired by <a href="https://github.com/hhvm/hsl">hhvm/hsl</a>. Provides a consistent, centralized, well-typed set of APIs covering async, collections, networking, I/O, cryptography, terminal UI, and more - replacing PHP functions and primitives with safer, async-ready alternatives that error predictably.</p>
+            <div class="install-box-wrapper"><a id="rotating-install" class="install-box install-box-typing" href="#type">composer require php-standard-library/type<span class="typing-cursor"></span></a></div>
+            <p class="hero-separator">or get everything at once</p>
+            <div class="install-box-wrapper"><div class="install-box">composer require php-standard-library/php-standard-library</div></div>
             <div class="hero-links">
                 <a href="https://github.com/php-standard-library/php-standard-library" class="hero-btn">GitHub</a>
                 <a href="https://github.com/sponsors/azjezz" class="hero-btn hero-btn-sponsor">Sponsor</a>
@@ -214,17 +216,92 @@ function build_front_page() {
     return html;
 }
 
+let _rotatingTimeout = null;
+
+function start_rotating_install() {
+    if (_rotatingTimeout) clearTimeout(_rotatingTimeout);
+
+    const prefix = "composer require php-standard-library/";
+    const slugs = Object.keys(PACKAGES);
+    let index = 0;
+    let phase = "wait";
+
+    function get_suffix() {
+        const pkg = PACKAGES[slugs[index]];
+        return pkg.replace("php-standard-library/", "");
+    }
+
+    function tick() {
+        const el = document.getElementById("rotating-install");
+        if (!el) { _rotatingTimeout = null; return; }
+
+        const cursor = el.querySelector(".typing-cursor");
+        const current = el.textContent;
+        const currentSuffix = current.slice(prefix.length);
+
+        if (phase === "wait") {
+            phase = "delete";
+            _rotatingTimeout = setTimeout(tick, 4000);
+            return;
+        }
+
+        if (phase === "delete") {
+            if (currentSuffix.length > 0) {
+                el.innerHTML = ""; el.append(prefix + currentSuffix.slice(0, -1), cursor);
+                _rotatingTimeout = setTimeout(tick, 30);
+            } else {
+                index = (index + 1) % slugs.length;
+                el.href = "#" + slugs[index];
+                phase = "type";
+                _rotatingTimeout = setTimeout(tick, 100);
+            }
+            return;
+        }
+
+        if (phase === "type") {
+            const target = get_suffix();
+            const typed = currentSuffix.length;
+            if (typed < target.length) {
+                el.innerHTML = ""; el.append(prefix + target.slice(0, typed + 1), cursor);
+                _rotatingTimeout = setTimeout(tick, 50);
+            } else {
+                phase = "wait";
+                _rotatingTimeout = setTimeout(tick, 0);
+            }
+        }
+    }
+
+    phase = "wait";
+    tick();
+}
+
 function render() {
     const hash = location.hash.slice(1) || "";
     const el = document.getElementById("rendered");
 
     if (hash && DOCS[hash]) {
         el.innerHTML = marked.parse(DOCS[hash]);
+
+        const pkg = typeof PACKAGES !== "undefined" ? PACKAGES[hash] : undefined;
+        if (pkg) {
+            const heading = el.querySelector("h1");
+            if (heading) {
+                const wrapper = document.createElement("div");
+                wrapper.className = "install-box-wrapper";
+                const box = document.createElement("div");
+                box.className = "install-box";
+                box.textContent = "composer require " + pkg;
+                wrapper.appendChild(box);
+                heading.after(wrapper);
+            }
+        }
+
         highlight_code(el, "pre code");
         add_copy_buttons(el);
     } else {
         el.innerHTML = build_front_page();
         highlight_code(el, "#features pre code");
+        start_rotating_install();
     }
 
     for (const link of document.querySelectorAll(".nav-link")) {
