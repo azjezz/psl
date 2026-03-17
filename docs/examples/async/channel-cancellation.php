@@ -27,7 +27,7 @@ $first = $receiver->receive($token);
 IO\write_line('Received: %s', $first);
 
 try {
-    // This will be cancelled — no second message within 50ms
+    // This will be cancelled - no second message within 50ms
     $receiver->receive($token);
 } catch (Async\Exception\CancelledException) {
     IO\write_line('Timed out waiting for next message');

@@ -14,7 +14,7 @@ use Psl\URI\URI;
  *
  * @link https://datatracker.ietf.org/doc/html/rfc3987#section-3.1
  *
- * @throws Exception\PunycodeException If Punycode decoding fails for an internationalized host.
+ * @throws \Psl\Punycode\Exception\EncodingException If Punycode decoding fails for an internationalized host.
  */
 function from_uri(URI $uri): IRI
 {

@@ -40,7 +40,7 @@ final readonly class IRI implements Stringable
      *
      * @link https://datatracker.ietf.org/doc/html/rfc3987#section-3.1
      *
-     * @throws Exception\PunycodeException If Punycode encoding fails for an internationalized host.
+     * @throws \Psl\Punycode\Exception\EncodingException If Punycode encoding fails for an internationalized host.
      * @throws Exception\InvalidIRIException If the host contains invalid IDNA labels.
      */
     public function toURI(): URI

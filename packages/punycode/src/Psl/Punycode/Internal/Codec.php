@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Psl\IRI\Internal;
+namespace Psl\Punycode\Internal;
 
-use Psl\IRI\Exception\PunycodeException;
+use Psl\Punycode\Exception\EncodingException;
 
 use function array_merge;
 use function array_slice;
@@ -37,7 +37,7 @@ use function substr;
  *
  * @mago-expect lint:excessive-nesting
  */
-final class Punycode
+final class Codec
 {
     private const int BASE = 36;
     private const int TMIN = 1;
@@ -52,7 +52,7 @@ final class Punycode
      *
      * @link https://datatracker.ietf.org/doc/html/rfc3492#section-6.3
      *
-     * @throws PunycodeException If encoding overflows or the input is invalid.
+     * @throws EncodingException If encoding overflows or the input is invalid.
      */
     public static function encode(string $input): string
     {
@@ -88,7 +88,7 @@ final class Punycode
             $delta += ($m - $n) * ($handled + 1);
 
             if ($delta < 0) {
-                throw PunycodeException::forOverflow();
+                throw EncodingException::forOverflow();
             }
 
             $n = $m;
@@ -127,7 +127,7 @@ final class Punycode
      *
      * @link https://datatracker.ietf.org/doc/html/rfc3492#section-6.2
      *
-     * @throws PunycodeException If the input is malformed or decoding overflows.
+     * @throws EncodingException If the input is malformed or decoding overflows.
      */
     public static function decode(string $input): string
     {
@@ -154,19 +154,19 @@ final class Punycode
 
             for ($k = self::BASE;; $k += self::BASE) {
                 if ($pos >= $encodedLen) {
-                    throw PunycodeException::forBadEncoding($input);
+                    throw EncodingException::forBadEncoding($input);
                 }
 
                 $digit = self::charToDigit($encoded[$pos]);
                 if ($digit === null) {
-                    throw PunycodeException::forInvalidInput('invalid character "' . $encoded[$pos] . '"');
+                    throw EncodingException::forInvalidInput('invalid character "' . $encoded[$pos] . '"');
                 }
 
                 $pos++;
 
                 $i += $digit * $w;
                 if ($i < 0) {
-                    throw PunycodeException::forOverflow();
+                    throw EncodingException::forOverflow();
                 }
 
                 $t = self::threshold($k, $bias);
@@ -176,7 +176,7 @@ final class Punycode
 
                 $w *= self::BASE - $t;
                 if ($w < 0) {
-                    throw PunycodeException::forOverflow();
+                    throw EncodingException::forOverflow();
                 }
             }
 
@@ -215,8 +215,6 @@ final class Punycode
     }
 
     /**
-     * Compute the threshold value for a given step and bias.
-     *
      * @link https://datatracker.ietf.org/doc/html/rfc3492#section-6.1
      */
     private static function threshold(int $k, int $bias): int
@@ -233,8 +231,6 @@ final class Punycode
     }
 
     /**
-     * Convert a digit value to its Punycode character representation.
-     *
      * @link https://datatracker.ietf.org/doc/html/rfc3492#section-5
      */
     private static function digitToChar(int $digit): string
@@ -247,8 +243,6 @@ final class Punycode
     }
 
     /**
-     * Convert a Punycode character to its digit value.
-     *
      * @link https://datatracker.ietf.org/doc/html/rfc3492#section-5
      */
     private static function charToDigit(string $char): null|int
@@ -270,8 +264,6 @@ final class Punycode
     }
 
     /**
-     * Convert a UTF-8 string to a list of Unicode code points.
-     *
      * @return list<int>
      */
     private static function toCodePoints(string $input): array
@@ -287,8 +279,6 @@ final class Punycode
     }
 
     /**
-     * Convert a list of Unicode code points to a UTF-8 string.
-     *
      * @param list<int> $codePoints
      */
     private static function fromCodePoints(array $codePoints): string

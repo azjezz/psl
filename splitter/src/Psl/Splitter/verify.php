@@ -67,6 +67,7 @@ function verify(array $packages): bool
         'Process' => 'process',
         'Promise' => 'promise',
         'PseudoRandom' => 'pseudo-random',
+        'Punycode' => 'punycode',
         'RandomSequence' => 'random-sequence',
         'Range' => 'range',
         'Regex' => 'regex',

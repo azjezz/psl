@@ -26,7 +26,7 @@ All operators are supported: simple `{var}`, reserved `{+var}`, fragment `{#var}
 
 ## Authority & Hosts
 
-The authority component is structured into user info, host, and port. Hosts are typed — either an IP address or a registered name:
+The authority component is structured into user info, host, and port. Hosts are typed - either an IP address or a registered name:
 
 @example('networking/uri-authority.php')
 

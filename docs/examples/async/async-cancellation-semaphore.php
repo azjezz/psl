@@ -20,7 +20,7 @@ Async\run(static function () use ($semaphore): void {
     IO\write_line($result);
 })->ignore();
 
-// Second task must wait — but we cancel it after 50ms
+// Second task must wait - but we cancel it after 50ms
 $token = new Async\TimeoutCancellationToken(Duration::milliseconds(50));
 
 try {

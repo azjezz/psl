@@ -13,7 +13,7 @@ $url = URL\parse('https://example.com:443/path?q=1#frag');
 IO\write_line('%s', $url->scheme);
 // "example.com"
 IO\write_line('%s', $url->authority->host->toString());
-// null — default port stripped
+// null - default port stripped
 IO\write_line('%s', $url->authority->port === null ? 'null' : (string) $url->authority->port);
 // "/path"
 IO\write_line('%s', $url->path);
