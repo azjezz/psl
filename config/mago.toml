@@ -31,14 +31,14 @@ no-boolean-flag-parameter = { enabled = false }
 no-error-control-operator = { enabled = false }
 no-redundant-use = { enabled = true }
 no-isset = { enabled = false }
-single-class-per-file = { exclude = ["components/comparison/tests/", "examples", "docs"] }
+single-class-per-file = { exclude = ["packages/comparison/tests/", "examples", "docs"] }
 file-name = { exclude = ["examples", "docs"] }
 no-else-clause = { enabled = false }
 
 [analyzer]
-excludes = ["*/components/**/tests/*"]
+excludes = ["*/packages/**/tests/*"]
 ignore = [
-  { code = "possibly-static-access-on-interface", in = "components/" },
+  { code = "possibly-static-access-on-interface", in = "packages/" },
   { code = "unused-statement", in = ["docs"] },
   { code = "duplicate-definition", in = "docs" },
   { code = "redundant-type-comparison", in = "docs" },
