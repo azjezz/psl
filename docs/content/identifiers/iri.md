@@ -18,7 +18,7 @@ Convert an IRI to an ASCII-only RFC 3986 URI. International domain names are Pun
 
 ## Converting from URI
 
-Reverse the process — decode a URI back to an IRI with Unicode characters restored:
+Reverse the process - decode a URI back to an IRI with Unicode characters restored:
 
 @example('networking/iri-from-uri.php')
 

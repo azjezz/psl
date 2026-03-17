@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Psl\IRI\Tests\Unit\Internal;
+namespace Psl\Punycode\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Psl\IRI\Exception\PunycodeException;
-use Psl\IRI\Internal\Punycode;
+use Psl\Punycode;
+use Psl\Punycode\Exception\EncodingException;
 
 use function str_repeat;
 
@@ -36,13 +36,13 @@ final class PunycodeTest extends TestCase
     #[DataProvider('encodeProvider')]
     public function testEncode(string $input, string $expected): void
     {
-        static::assertSame($expected, Punycode::encode($input));
+        static::assertSame($expected, Punycode\encode($input));
     }
 
     #[DataProvider('decodeProvider')]
     public function testDecode(string $input, string $expected): void
     {
-        static::assertSame($expected, Punycode::decode($input));
+        static::assertSame($expected, Punycode\decode($input));
     }
 
     public function testDecodeRoundTrip(): void
@@ -50,8 +50,8 @@ final class PunycodeTest extends TestCase
         $inputs = ['münchen', '例え', 'bücher'];
 
         foreach ($inputs as $input) {
-            $encoded = Punycode::encode($input);
-            $decoded = Punycode::decode($encoded);
+            $encoded = Punycode\encode($input);
+            $decoded = Punycode\decode($encoded);
 
             static::assertSame($input, $decoded);
         }
@@ -59,9 +59,9 @@ final class PunycodeTest extends TestCase
 
     public function testDecodeBadInput(): void
     {
-        $this->expectException(PunycodeException::class);
+        $this->expectException(EncodingException::class);
 
-        Punycode::decode('!!!invalid!!!');
+        Punycode\decode('!!!invalid!!!');
     }
 
     /**
@@ -94,40 +94,40 @@ final class PunycodeTest extends TestCase
     #[DataProvider('rfc3492VectorsEncodeProvider')]
     public function testRFC3492VectorEncode(string $input, string $expected): void
     {
-        static::assertSame($expected, Punycode::encode($input));
+        static::assertSame($expected, Punycode\encode($input));
     }
 
     #[DataProvider('rfc3492VectorsDecodeProvider')]
     public function testRFC3492VectorDecode(string $input, string $expected): void
     {
-        static::assertSame($expected, Punycode::decode($input));
+        static::assertSame($expected, Punycode\decode($input));
     }
 
     public function testPureASCIIInputUnchanged(): void
     {
-        static::assertSame('example', Punycode::encode('example'));
+        static::assertSame('example', Punycode\encode('example'));
     }
 
     public function testPureASCIIEncodeDecodeWithDelimiter(): void
     {
-        $encoded = Punycode::encode('abc');
+        $encoded = Punycode\encode('abc');
         static::assertSame('abc', $encoded);
 
         $input = 'abcü';
-        $encoded = Punycode::encode($input);
-        $decoded = Punycode::decode($encoded);
+        $encoded = Punycode\encode($input);
+        $decoded = Punycode\decode($encoded);
         static::assertSame($input, $decoded);
     }
 
     public function testSingleASCIICharacter(): void
     {
-        static::assertSame('a', Punycode::encode('a'));
+        static::assertSame('a', Punycode\encode('a'));
     }
 
     public function testSingleUnicodeCharacter(): void
     {
-        $encoded = Punycode::encode('ü');
-        $decoded = Punycode::decode($encoded);
+        $encoded = Punycode\encode('ü');
+        $decoded = Punycode\decode($encoded);
 
         static::assertSame('ü', $decoded);
     }
@@ -135,27 +135,27 @@ final class PunycodeTest extends TestCase
     public function testVeryLongUnicodeString(): void
     {
         $input = str_repeat('日本', 50);
-        $encoded = Punycode::encode($input);
-        $decoded = Punycode::decode($encoded);
+        $encoded = Punycode\encode($input);
+        $decoded = Punycode\decode($encoded);
 
         static::assertSame($input, $decoded);
     }
 
     public function testEmptyStringEncode(): void
     {
-        static::assertSame('', Punycode::encode(''));
+        static::assertSame('', Punycode\encode(''));
     }
 
     public function testEmptyStringDecode(): void
     {
-        static::assertSame('', Punycode::decode(''));
+        static::assertSame('', Punycode\decode(''));
     }
 
     public function testMixedASCIIAndUnicode(): void
     {
         $input = 'hello世界';
-        $encoded = Punycode::encode($input);
-        $decoded = Punycode::decode($encoded);
+        $encoded = Punycode\encode($input);
+        $decoded = Punycode\decode($encoded);
 
         static::assertSame($input, $decoded);
     }

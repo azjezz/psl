@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\IRI\Internal;
 
 use Psl\IRI\Exception\InvalidIRIException;
-use Psl\IRI\Exception\PunycodeException;
+use Psl\Punycode;
 
 use function explode;
 use function implode;
@@ -45,7 +45,7 @@ final readonly class IDNA
      *
      * @link https://datatracker.ietf.org/doc/html/rfc5891#section-4
      *
-     * @throws PunycodeException If Punycode encoding fails.
+     * @throws Punycode\Exception\EncodingException If Punycode encoding fails.
      * @throws InvalidIRIException If a label is invalid per IDNA rules.
      *
      * @return non-empty-string
@@ -68,7 +68,7 @@ final readonly class IDNA
 
             self::validateLabel($label);
 
-            $encoded = Punycode::encode(mb_strtolower($label));
+            $encoded = Punycode\encode(mb_strtolower($label));
             $asciiLabels[] = self::ACE_PREFIX . $encoded;
         }
 
@@ -86,7 +86,7 @@ final readonly class IDNA
      *
      * @link https://datatracker.ietf.org/doc/html/rfc5891#section-4
      *
-     * @throws PunycodeException If Punycode decoding fails.
+     * @throws Punycode\Exception\EncodingException If Punycode decoding fails.
      *
      * @return non-empty-string
      */
@@ -98,7 +98,7 @@ final readonly class IDNA
         foreach ($labels as $label) {
             if (str_starts_with(strtolower($label), self::ACE_PREFIX)) {
                 $punycode = substr($label, strlen(self::ACE_PREFIX));
-                $unicodeLabels[] = Punycode::decode($punycode);
+                $unicodeLabels[] = Punycode\decode($punycode);
             } else {
                 $unicodeLabels[] = $label;
             }

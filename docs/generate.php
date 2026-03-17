@@ -78,6 +78,7 @@ const SLUG_TO_PACKAGE = [
     'process' => 'php-standard-library/process',
     'promise' => 'php-standard-library/promise',
     'pseudo-random' => 'php-standard-library/pseudo-random',
+    'punycode' => 'php-standard-library/punycode',
     'random-sequence' => 'php-standard-library/random-sequence',
     'range' => 'php-standard-library/range',
     'regex' => 'php-standard-library/regex',

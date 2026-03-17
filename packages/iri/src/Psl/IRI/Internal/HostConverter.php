@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Psl\IRI\Internal;
 
 use Psl\IRI\Exception\InvalidIRIException;
-use Psl\IRI\Exception\PunycodeException;
+use Psl\Punycode;
 use Psl\URI\Authority\HostInterface;
 use Psl\URI\Authority\IPHost;
 use Psl\URI\Authority\RegisteredNameHost;
@@ -30,7 +30,7 @@ final class HostConverter
      *
      * @link https://datatracker.ietf.org/doc/html/rfc3987#section-3.1
      *
-     * @throws PunycodeException If Punycode decoding fails.
+     * @throws Punycode\Exception\EncodingException If Punycode decoding fails.
      */
     public static function convertToUnicode(HostInterface $host): HostInterface
     {
@@ -53,7 +53,7 @@ final class HostConverter
      *
      * @link https://datatracker.ietf.org/doc/html/rfc3987#section-3.1
      *
-     * @throws PunycodeException If Punycode encoding fails.
+     * @throws Punycode\Exception\EncodingException If Punycode encoding fails.
      * @throws InvalidIRIException If the host contains invalid IDNA labels.
      */
     public static function convertToAscii(HostInterface $host): HostInterface

@@ -1,14 +1,15 @@
 {
-    "name": "php-standard-library/iri",
-    "description": "RFC 3987 compliant Internationalized Resource Identifier (IRI) parsing, construction, and manipulation",
+    "name": "php-standard-library/punycode",
+    "description": "RFC 3492 Punycode encoding and decoding for internationalized domain names",
     "type": "library",
     "license": "MIT",
     "homepage": "https://php-standard-library.dev",
     "keywords": [
-        "iri",
-        "rfc3987",
-        "internationalized",
-        "parsing"
+        "punycode",
+        "rfc3492",
+        "idna",
+        "encoding",
+        "internationalization"
     ],
     "authors": [
         {
@@ -22,15 +23,12 @@
     ],
     "require": {
         "php": "~8.4.0 || ~8.5.0",
-        "php-standard-library/foundation": "^6.0",
-        "php-standard-library/uri": "^6.0",
-        "php-standard-library/ip": "^6.0",
-        "php-standard-library/punycode": "^6.0"
+        "php-standard-library/foundation": "^6.0"
     },
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "Psl\\IRI\\": "src/Psl/IRI/"
+            "Psl\\Punycode\\": "src/Psl/Punycode/"
         },
         "files": [
             "src/Psl/bootstrap.php"
@@ -46,7 +44,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Psl\\IRI\\Tests\\Unit\\": "tests/unit/"
+            "Psl\\Punycode\\Tests\\Unit\\": "tests/unit/"
         }
     },
     "conflict": {

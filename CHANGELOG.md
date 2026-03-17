@@ -5,10 +5,10 @@
 ### breaking changes
 
 - **BC** - All `null|Duration $timeout` parameters across IO, Network, TCP, TLS, Unix, UDP, Socks, Process, and Shell components have been replaced with `CancellationTokenInterface $cancellation = new NullCancellationToken()`. This enables both timeout-based and signal-based cancellation of async operations.
-- **BC** - Removed `Psl\IO\Exception\TimeoutException` — use `Psl\Async\Exception\CancelledException` instead.
-- **BC** - Removed `Psl\Network\Exception\TimeoutException` — use `Psl\Async\Exception\CancelledException` instead.
-- **BC** - Removed `Psl\Process\Exception\TimeoutException` — use `Psl\Async\Exception\CancelledException` instead.
-- **BC** - Removed `Psl\Shell\Exception\TimeoutException` — use `Psl\Async\Exception\CancelledException` instead.
+- **BC** - Removed `Psl\IO\Exception\TimeoutException` - use `Psl\Async\Exception\CancelledException` instead.
+- **BC** - Removed `Psl\Network\Exception\TimeoutException` - use `Psl\Async\Exception\CancelledException` instead.
+- **BC** - Removed `Psl\Process\Exception\TimeoutException` - use `Psl\Async\Exception\CancelledException` instead.
+- **BC** - Removed `Psl\Shell\Exception\TimeoutException` - use `Psl\Async\Exception\CancelledException` instead.
 - **BC** - `Psl\IO\CloseHandleInterface` now requires an `isClosed(): bool` method.
 - **BC** - `Network\SocketInterface::getLocalAddress()` and `Network\StreamInterface::getPeerAddress()` no longer throw exceptions. Addresses are resolved at construction time and cached, making these O(1) property lookups with no syscall.
 - **BC** - `BufferedReadHandleInterface::readLine()` now always splits on `"\n"` instead of `PHP_EOL`. Trailing `"\r"` is stripped, so both `"\n"` and `"\r\n"` line endings are handled consistently across all platforms. Use `readUntil(PHP_EOL)` for system-dependent behavior.
@@ -26,11 +26,11 @@
 ### features
 
 - feat(async): introduce `Psl\Async\CancellationTokenInterface` for cancelling async operations
-- feat(async): introduce `Psl\Async\NullCancellationToken` — no-op token used as default parameter value
-- feat(async): introduce `Psl\Async\SignalCancellationToken` — manually triggered cancellation via `cancel(?Throwable $cause)`
-- feat(async): introduce `Psl\Async\TimeoutCancellationToken` — auto-cancels after a `Duration`, replacing the old `Duration $timeout` pattern
-- feat(async): introduce `Psl\Async\LinkedCancellationToken` — cancelled when either of two inner tokens is cancelled, useful for combining a request-scoped token with an operation-specific timeout
-- feat(async): introduce `Psl\Async\Exception\CancelledException` — thrown when a cancellation token is triggered; the cause (e.g., `TimeoutException`) is attached as `$previous`. Use `$e->getToken()` to identify which token triggered the cancellation.
+- feat(async): introduce `Psl\Async\NullCancellationToken` - no-op token used as default parameter value
+- feat(async): introduce `Psl\Async\SignalCancellationToken` - manually triggered cancellation via `cancel(?Throwable $cause)`
+- feat(async): introduce `Psl\Async\TimeoutCancellationToken` - auto-cancels after a `Duration`, replacing the old `Duration $timeout` pattern
+- feat(async): introduce `Psl\Async\LinkedCancellationToken` - cancelled when either of two inner tokens is cancelled, useful for combining a request-scoped token with an operation-specific timeout
+- feat(async): introduce `Psl\Async\Exception\CancelledException` - thrown when a cancellation token is triggered; the cause (e.g., `TimeoutException`) is attached as `$previous`. Use `$e->getToken()` to identify which token triggered the cancellation.
 - feat(async): `Async\sleep()` now accepts an optional `CancellationTokenInterface` parameter, allowing early wake-up on cancellation
 - feat(async): `Awaitable::await()` now accepts an optional `CancellationTokenInterface` parameter
 - feat(async): `Sequence::waitFor()` and `Sequence::waitForPending()` now accept an optional `CancellationTokenInterface` parameter
@@ -41,7 +41,7 @@
 - feat(network): `ListenerInterface::accept()` now accepts an optional `CancellationTokenInterface` parameter
 - feat(tcp): `TCP\ListenerInterface::accept()` now accepts an optional `CancellationTokenInterface` parameter
 - feat(unix): `Unix\ListenerInterface::accept()` now accepts an optional `CancellationTokenInterface` parameter
-- feat(tls): `TLS\Acceptor::accept()`, `TLS\LazyAcceptor::accept()`, `TLS\ClientHello::complete()`, and `TLS\Connector::connect()` now accept an optional `CancellationTokenInterface` parameter — cancellation propagates through the TLS handshake
+- feat(tls): `TLS\Acceptor::accept()`, `TLS\LazyAcceptor::accept()`, `TLS\ClientHello::complete()`, and `TLS\Connector::connect()` now accept an optional `CancellationTokenInterface` parameter - cancellation propagates through the TLS handshake
 - feat(tls): `TLS\TCPConnector::connect()` and `TLS\connect()` now pass the cancellation token through to the TLS handshake
 - feat(async): introduce `Psl\Async\TaskGroup` for running closures concurrently and awaiting them all with `defer()` + `awaitAll()`
 - feat(async): introduce `Psl\Async\WaitGroup`, a counter-based synchronization primitive with `add()`, `done()`, and `wait()`
@@ -58,9 +58,10 @@
 - feat(socks): introduce `Socks\Configuration` with immutable `with*` builder methods for proxy host, port, and credentials
 - feat(tcp): introduce `TCP\RestrictedListener`, wrapping a listener to restrict connections to a set of allowed `IP\Address` and `CIDR\Block` entries
 - feat(network): introduce `Network\CompositeListener`, accepting connections from multiple listeners concurrently through a single `accept()` call
-- feat: introduce `URI` component — RFC 3986 URI parsing, normalization, reference resolution, and RFC 6570 URI Template expansion (Levels 1–4), with RFC 5952 IPv6 canonical form and RFC 6874 zone identifiers
-- feat: introduce `IRI` component — RFC 3987 Internationalized Resource Identifier parsing with Unicode support, RFC 3492 Punycode encoding/decoding, and RFC 5891/5892 IDNA 2008 domain name processing
-- feat: introduce `URL` component — strict URL type with scheme and authority validation, default port stripping for known schemes, and URI/IRI conversion
+- feat: introduce `URI` component - RFC 3986 URI parsing, normalization, reference resolution, and RFC 6570 URI Template expansion (Levels 1–4), with RFC 5952 IPv6 canonical form and RFC 6874 zone identifiers
+- feat: introduce `IRI` component - RFC 3987 Internationalized Resource Identifier parsing with Unicode support, RFC 3492 Punycode encoding/decoding, and RFC 5891/5892 IDNA 2008 domain name processing
+- feat: introduce `URL` component - strict URL type with scheme and authority validation, default port stripping for known schemes, and URI/IRI conversion
+- feat: introduce `Punycode` component - RFC 3492 Punycode encoding and decoding for internationalized domain names
 - fix(tcp): `RetryConnector` backoff sleep now respects cancellation tokens, allowing retry loops to be cancelled during the delay
 
 ### migration guide

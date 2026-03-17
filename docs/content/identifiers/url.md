@@ -4,7 +4,7 @@ The `URL` component provides a strict URL type that guarantees a scheme and auth
 
 ## Parsing
 
-Parse a URL string with strict validation — scheme and authority are required:
+Parse a URL string with strict validation; scheme and authority are required:
 
 @example('networking/url-parsing.php')
 

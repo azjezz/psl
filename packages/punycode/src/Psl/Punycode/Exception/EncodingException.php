@@ -2,20 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Psl\IRI\Exception;
+namespace Psl\Punycode\Exception;
 
 /**
  * Exception thrown when Punycode encoding or decoding fails.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc3492
  */
-final class PunycodeException extends InvalidArgumentException
+final class EncodingException extends InvalidArgumentException
 {
-    private function __construct(string $message)
-    {
-        parent::__construct($message);
-    }
-
     /**
      * Create an exception for integer overflow during Punycode encoding/decoding.
      *
