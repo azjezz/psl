@@ -17,6 +17,7 @@
 
 # phpunit cache
 /config/.phpunit.result.cache
+/packages/*/.phpunit.result.cache
 
 # mago binary
 mago

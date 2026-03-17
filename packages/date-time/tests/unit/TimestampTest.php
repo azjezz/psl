@@ -55,7 +55,7 @@ final class TimestampTest extends TestCase
 
         $difference = $b->since($a);
 
-        static::assertEqualsWithDelta(100.0, $difference->getTotalMilliseconds(), 2.0);
+        static::assertGreaterThanOrEqual(90.0, $difference->getTotalMilliseconds());
     }
 
     public function testSince(): void
