@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\IO;
 
 use Psl;
-use Psl\Internal;
 use Psl\OS;
 
 use function error_get_last;

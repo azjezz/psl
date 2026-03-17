@@ -40,10 +40,6 @@ function dfs(DirectedGraph|UndirectedGraph $graph, mixed $start): array
 
     $visited = [];
     $result = [];
-    /**
-     * @var Stack<TNode> $stack
-     * @mago-expect analysis:redundant-docblock-type
-     */
     $stack = new Stack();
     $stack->push($start);
 

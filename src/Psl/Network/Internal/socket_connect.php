@@ -7,7 +7,6 @@ namespace Psl\Network\Internal;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\Exception\CancelledException;
 use Psl\Async\NullCancellationToken;
-use Psl\Internal;
 use Psl\Network\Exception;
 use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
@@ -37,7 +36,7 @@ function socket_connect(
     array $context = [],
     CancellationTokenInterface $cancellation = new NullCancellationToken(),
 ): mixed {
-    return Internal\suppress(
+    return namespace\suppress(
         /**
          * @return resource
          */

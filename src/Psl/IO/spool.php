@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\IO;
 
 use Psl;
-use Psl\Internal;
 
 use function fopen;
 

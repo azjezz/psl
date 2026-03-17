@@ -39,10 +39,6 @@ function has_path(DirectedGraph|UndirectedGraph $graph, mixed $from, mixed $to):
     }
 
     $visited = [];
-    /**
-     * @var Queue<TNode> $queue
-     * @mago-expect analysis:redundant-docblock-type
-     */
     $queue = new Queue();
     $queue->enqueue($from);
     $visited[get_node_key($from)] = true;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Regex\Internal;
 
 use Closure;
-use Psl\Internal;
 use Psl\Regex\Exception;
 
 /**
@@ -26,8 +25,13 @@ use Psl\Regex\Exception;
 function call_preg(string $function, Closure $closure): mixed
 {
     error_clear_last();
+    $previousLevel = error_reporting(0);
+    try {
+        $result = $closure();
+    } finally {
+        error_reporting($previousLevel);
+    }
 
-    $result = Internal\suppress($closure);
     $error = get_preg_error($function);
     // @codeCoverageIgnoreStart
     if (null !== $error) {

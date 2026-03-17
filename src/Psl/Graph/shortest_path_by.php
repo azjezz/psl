@@ -74,10 +74,6 @@ function shortest_path_by(
         // BFS for unweighted graphs
         $parent = [];
         $visited = [];
-        /**
-         * @var Queue<TNode> $queue
-         * @mago-expect analysis:redundant-docblock-type
-         */
         $queue = new Queue();
         $queue->enqueue($from);
         $fromKey = get_node_key($from);

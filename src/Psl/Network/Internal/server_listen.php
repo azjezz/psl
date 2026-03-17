@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Network\Internal;
 
 use Psl;
-use Psl\Internal;
 
 use function stream_context_create;
 use function stream_socket_server;
@@ -27,7 +26,7 @@ use const STREAM_SERVER_LISTEN;
  */
 function server_listen(string $uri, array $context = []): mixed
 {
-    return Internal\suppress(
+    return namespace\suppress(
         /**
          * @return resource
          */

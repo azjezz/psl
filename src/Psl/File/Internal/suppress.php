@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Psl\Internal;
+namespace Psl\File\Internal;
 
 use Closure;
 
