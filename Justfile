@@ -52,4 +52,19 @@ docs-serve: docs
 php:
     which php
 
+split-install:
+    cd splitter && composer install
+
+split-check:
+    cd splitter && php bin/splitter check
+
+split branch:
+    cd splitter && php bin/splitter split --branch {{branch}}
+
+split-tag tag:
+    cd splitter && php bin/splitter tag {{tag}}
+
+split-release tag:
+    cd splitter && php bin/splitter release {{tag}}
+
 verify: fmt-diff lint analyze test mutation
