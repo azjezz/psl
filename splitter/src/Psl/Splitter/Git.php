@@ -107,6 +107,30 @@ final readonly class Git
     }
 
     /**
+     * Truncate history at the first commit that introduced the given path.
+     *
+     * Uses `git replace --graft` to make that commit a root, so subsequent
+     * operations (like subtree split) don't walk irrelevant history.
+     *
+     * @param non-empty-string $path e.g. "packages/"
+     *
+     * @throws Shell\Exception\FailedExecutionException If a git command fails.
+     */
+    public function truncateHistoryAt(string $path): void
+    {
+        $base = Str\trim($this->run('log', '--reverse', '--format=%H', '--', $path));
+        $first = Str\before($base, "\n") ?? $base;
+
+        if ($first === '') {
+            return;
+        }
+
+        Log\info('Truncating history at %s (first commit with %s)', Str\slice($first, 0, 12), $path);
+
+        $this->run('replace', '--graft', $first);
+    }
+
+    /**
      * Run a git command and return stdout.
      *
      * @throws Shell\Exception\FailedExecutionException If the command exits with a non-zero code.
