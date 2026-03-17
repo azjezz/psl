@@ -1,0 +1,18 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\Splitter\Log;
+
+use Psl\Ansi;
+use Psl\Ansi\Color;
+use Psl\IO;
+use Psl\Str;
+
+/**
+ * Log a shell command to stderr.
+ */
+function command(string $message, string|int|float ...$args): void
+{
+    IO\write_error_line(styled('       $ ', Ansi\foreground(Color\bright_black())) . Str\format($message, ...$args));
+}

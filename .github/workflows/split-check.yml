@@ -1,0 +1,23 @@
+name: Split Check
+
+on:
+  pull_request:
+
+jobs:
+  check:
+    name: Check Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: bcmath, mbstring, intl, sodium, json
+          coverage: none
+
+      - uses: extractions/setup-just@v2
+
+      - run: just install
+      - run: just split-install
+      - run: just split-check

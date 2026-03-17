@@ -1,0 +1,44 @@
+{
+    "name": "php-standard-library/splitter",
+    "description": "Monorepo splitter for PHP Standard Library",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": "~8.4.0 || ~8.5.0",
+        "php-standard-library/php-standard-library": "dev-next"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "..",
+            "options": {
+                "versions": {
+                    "php-standard-library/php-standard-library": "dev-next"
+                }
+            }
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Psl\\Splitter\\": "src/Psl/Splitter/"
+        },
+        "files": [
+            "src/Psl/Splitter/Log/styled.php",
+            "src/Psl/Splitter/Log/info.php",
+            "src/Psl/Splitter/Log/success.php",
+            "src/Psl/Splitter/Log/warn.php",
+            "src/Psl/Splitter/Log/error.php",
+            "src/Psl/Splitter/Log/step.php",
+            "src/Psl/Splitter/Log/command.php",
+            "src/Psl/Splitter/Log/detail.php",
+            "src/Psl/Splitter/check.php",
+            "src/Psl/Splitter/split.php",
+            "src/Psl/Splitter/tag.php",
+            "src/Psl/Splitter/create_maintenance_branch.php",
+            "src/Psl/Splitter/release.php"
+        ]
+    },
+    "bin": [
+        "bin/splitter"
+    ]
+}

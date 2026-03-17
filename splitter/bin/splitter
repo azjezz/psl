@@ -1,0 +1,168 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\Splitter;
+
+use Psl\Ansi;
+use Psl\Ansi\Color;
+use Psl\Ansi\Style;
+use Psl\Env;
+use Psl\Filesystem;
+use Psl\IO;
+use Psl\Vec;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+function help_command(): never
+{
+    IO\write_error_line('');
+    IO\write_error_line(Log\styled(' PSL Splitter ', Ansi\foreground(Color\bright_blue()), Style\bold()));
+    IO\write_error_line('');
+    IO\write_error_line(Log\styled(' Usage: ', Ansi\foreground(Color\bright_white()), Style\bold()) . 'splitter <command> [options]');
+    IO\write_error_line('');
+    IO\write_error_line(Log\styled(' Commands:', Ansi\foreground(Color\bright_white()), Style\bold()));
+    IO\write_error_line(Log\styled('   check                 ', Ansi\foreground(Color\bright_green())) . 'Validate dependencies and detect cycles');
+    IO\write_error_line(Log\styled('   split --branch <name> ', Ansi\foreground(Color\bright_green())) . 'Split packages to their repos');
+    IO\write_error_line(Log\styled('   tag <tag>             ', Ansi\foreground(Color\bright_green())) . 'Tag all split repos');
+    IO\write_error_line(Log\styled('   release <tag>         ', Ansi\foreground(Color\bright_green())) . 'Split, tag, and create maintenance branch');
+    IO\write_error_line(Log\styled('   help                  ', Ansi\foreground(Color\bright_green())) . 'Show this help');
+    IO\write_error_line('');
+
+    exit(1);
+}
+
+function check_command(string $root): never
+{
+    IO\write_error_line('');
+    Log\info('Checking monorepo...');
+    IO\write_error_line('');
+
+    $monorepo = MonolithicRepository::discover($root);
+    $ok = check($monorepo->packages);
+
+    IO\write_error_line('');
+    if ($ok) {
+        Log\success('All good! %d packages, no issues.', count($monorepo->packages));
+    } else {
+        Log\error('Issues found in %d packages.', count($monorepo->packages));
+    }
+    IO\write_error_line('');
+
+    exit($ok ? 0 : 1);
+}
+
+/**
+ * @param list<string> $args
+ */
+function split_command(string $root, array $args): never
+{
+    $branch = null;
+    for ($i = 1; $i < count($args); $i++) {
+        if ($args[$i] === '--branch' && isset($args[$i + 1])) {
+            $branch = $args[$i + 1];
+            break;
+        }
+    }
+
+    if ($branch === null) {
+        Log\error('--branch is required');
+        exit(1);
+    }
+
+    if (!MonolithicRepository::shouldProcess($branch)) {
+        Log\warn('branch "%s" predates split (< 6.0.0), skipping.', $branch);
+        exit(0);
+    }
+
+    IO\write_error_line('');
+    Log\info('Splitting for branch: %s', Log\styled($branch, Ansi\foreground(Color\bright_white()), Style\bold()));
+    IO\write_error_line('');
+
+    $monorepo = MonolithicRepository::discover($root);
+    split($monorepo, new Git($root), $branch);
+
+    IO\write_error_line('');
+    Log\success('Split %d packages to %s.', count($monorepo->packages), $branch);
+    IO\write_error_line('');
+
+    exit(0);
+}
+
+/**
+ * @param list<string> $args
+ */
+function tag_command(string $root, array $args): never
+{
+    $tagName = $args[1] ?? null;
+    if ($tagName === null) {
+        Log\error('tag is required');
+        exit(1);
+    }
+
+    if (!MonolithicRepository::shouldProcess($tagName)) {
+        Log\warn('tag "%s" predates split (< 6.0.0), skipping.', $tagName);
+        exit(0);
+    }
+
+    $branch = MonolithicRepository::branchForTag($tagName);
+
+    IO\write_error_line('');
+    Log\info(
+        'Tagging %s on branch %s',
+        Log\styled($tagName, Ansi\foreground(Color\bright_white()), Style\bold()),
+        Log\styled($branch, Ansi\foreground(Color\bright_white()), Style\bold()),
+    );
+    IO\write_error_line('');
+
+    $monorepo = MonolithicRepository::discover($root);
+    tag($monorepo, new Git($root), $tagName, $branch);
+
+    IO\write_error_line('');
+    Log\success('Tagged %d packages with %s.', count($monorepo->packages), $tagName);
+    IO\write_error_line('');
+
+    exit(0);
+}
+
+/**
+ * @param list<string> $args
+ */
+function release_command(string $root, array $args): never
+{
+    $tagName = $args[1] ?? null;
+    if ($tagName === null) {
+        Log\error('tag is required');
+        exit(1);
+    }
+
+    if (!MonolithicRepository::shouldProcess($tagName)) {
+        Log\warn('tag "%s" predates split (< 6.0.0), skipping.', $tagName);
+        exit(0);
+    }
+
+    $monorepo = MonolithicRepository::discover($root);
+    release($monorepo, new Git($root), $tagName);
+
+    IO\write_error_line('');
+
+    exit(0);
+}
+
+function main(): never
+{
+    $arguments = Vec\slice(Env\args(), 1);
+    $command = $arguments[0] ?? 'help';
+    $root = Filesystem\get_directory(__DIR__, 2);
+
+    match ($command) {
+        'check' => check_command($root),
+        'split' => split_command($root, $arguments),
+        'tag' => tag_command($root, $arguments),
+        'release' => release_command($root, $arguments),
+        default => help_command(),
+    };
+}
+
+main();
