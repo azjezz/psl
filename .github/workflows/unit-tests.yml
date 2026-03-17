@@ -45,9 +45,6 @@ jobs:
           key: "php-${{ matrix.php-version }}"
           restore-keys: "php-${{ matrix.php-version }}"
 
-      - name: "installing just"
-        uses: "extractions/setup-just@v3"
-
       - name: "installing dependencies"
         run: just install
 

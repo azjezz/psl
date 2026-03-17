@@ -1,11 +1,11 @@
-name: Split Check
+name: split check
 
 on:
   pull_request:
 
 jobs:
   check:
-    name: Check Dependencies
+    name: check dependencies
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -26,7 +26,11 @@ function release(MonolithicRepository $monorepo, Git $git, string $releaseTag): 
 
     // Step 1: sync all packages to the source branch
     IO\write_error_line('');
-    Log\info('Syncing packages to branch %s...', Log\styled($branch, Ansi\foreground(Color\bright_white()), Style\bold()));
+    Log\info('Syncing packages to branch %s...', Log\styled(
+        $branch,
+        Ansi\foreground(Color\bright_white()),
+        Style\bold(),
+    ));
     IO\write_error_line('');
 
     split($monorepo, $git, $branch);
