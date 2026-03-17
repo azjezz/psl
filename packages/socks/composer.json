@@ -48,5 +48,8 @@
         "psr-4": {
             "Psl\\Socks\\Tests\\Unit\\": "tests/unit/"
         }
+    },
+    "conflict": {
+        "azjezz/psl": "*"
     }
 }

@@ -54,5 +54,8 @@
             "Psl\\Crypto\\Tests\\Unit\\": "tests/unit/",
             "Psl\\Crypto\\Tests\\Fixture\\": "tests/fixture/"
         }
+    },
+    "conflict": {
+        "azjezz/psl": "*"
     }
 }

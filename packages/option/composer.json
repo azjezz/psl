@@ -47,5 +47,8 @@
             "Psl\\Option\\Tests\\Unit\\": "tests/unit/",
             "Psl\\Option\\Tests\\Fixture\\": "tests/fixture/"
         }
+    },
+    "conflict": {
+        "azjezz/psl": "*"
     }
 }

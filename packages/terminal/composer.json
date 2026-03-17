@@ -53,5 +53,8 @@
         "psr-4": {
             "Psl\\Terminal\\Tests\\Unit\\": "tests/unit/"
         }
+    },
+    "conflict": {
+        "azjezz/psl": "*"
     }
 }
