@@ -220,6 +220,7 @@ let _rotatingTimeout = null;
 
 function start_rotating_install() {
     if (_rotatingTimeout) clearTimeout(_rotatingTimeout);
+    if (typeof PACKAGES === "undefined") return;
 
     const prefix = "composer require php-standard-library/";
     const slugs = Object.keys(PACKAGES);
