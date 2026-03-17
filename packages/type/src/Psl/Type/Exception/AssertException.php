@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Psl\Type\Exception;
 
-use Psl\Vec;
 use Throwable;
 
+use function array_filter;
+use function array_values;
 use function get_debug_type;
 use function implode;
 use function sprintf;
@@ -49,7 +50,9 @@ final class AssertException extends Exception
         null|Throwable $previous = null,
     ): self {
         $paths = $previous instanceof Exception ? [$path, ...$previous->getPaths()] : [$path];
+        /** @var list<string> $paths */
+        $paths = array_values(array_filter($paths, static fn($v) => $v !== null));
 
-        return new self(get_debug_type($value), $expectedType, Vec\filter_nulls($paths), $previous);
+        return new self(get_debug_type($value), $expectedType, $paths, $previous);
     }
 }

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Psl\Encoding\Base64\Internal;
 
 use Psl\Encoding\Exception;
-use Psl\Regex;
 
 use function pack;
+use function preg_match;
 use function rtrim;
 use function strlen;
 use function substr;
@@ -165,7 +165,7 @@ abstract class Base64
      */
     protected static function checkRange(string $base64): void
     {
-        if (!Regex\matches($base64, '%^[a-zA-Z0-9/+]*={0,2}$%')) {
+        if (preg_match('%^[a-zA-Z0-9/+]*={0,2}$%', $base64) !== 1) {
             throw new Exception\RangeException('The given base64 string contains characters outside the base64 range.');
         }
     }

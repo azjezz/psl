@@ -8,7 +8,6 @@ use Psl\Async\CancellationTokenInterface;
 use Psl\Async\Exception\CancelledException;
 use Psl\Async\NullCancellationToken;
 use Psl\IO;
-use Psl\OS;
 
 use function defined;
 use function getcwd;
@@ -18,6 +17,7 @@ use function is_resource;
 use function proc_open;
 use function str_contains;
 
+use const PHP_OS_FAMILY;
 use const STDERR;
 use const STDIN;
 use const STDOUT;
@@ -364,7 +364,7 @@ final readonly class Command
 
         $options = [];
         // @codeCoverageIgnoreStart
-        if (OS\is_windows()) {
+        if (PHP_OS_FAMILY === 'Windows') {
             $options['blocking_pipes'] = false;
 
             if (!$this->shell) {
@@ -435,7 +435,7 @@ final readonly class Command
 
         if ($stdio->isTty()) {
             // @codeCoverageIgnoreStart
-            if (OS\is_windows()) {
+            if (PHP_OS_FAMILY === 'Windows') {
                 throw new Exception\RuntimeException('TTY is not supported on Windows.');
             }
 
@@ -466,7 +466,7 @@ final readonly class Command
 
         // Null mode
         // @codeCoverageIgnoreStart
-        if (OS\is_windows()) {
+        if (PHP_OS_FAMILY === 'Windows') {
             return ['file', 'NUL', $mode];
         }
 

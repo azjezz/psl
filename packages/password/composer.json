@@ -22,7 +22,8 @@
     ],
     "require": {
         "php": "~8.4.0 || ~8.5.0",
-        "ext-sodium": "*"
+        "ext-sodium": "*",
+        "php-standard-library/default": "^6.0"
     },
     "minimum-stability": "dev",
     "autoload": {

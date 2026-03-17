@@ -24,8 +24,7 @@
         "php-standard-library/foundation": "^6.0",
         "php-standard-library/async": "^6.0",
         "php-standard-library/default": "^6.0",
-        "php-standard-library/process": "^6.0",
-        "php-standard-library/str": "^6.0"
+        "php-standard-library/process": "^6.0"
     },
     "minimum-stability": "dev",
     "autoload": {
@@ -46,7 +45,8 @@
         "php-standard-library/date-time": "^6.0",
         "php-standard-library/env": "^6.0",
         "php-standard-library/os": "^6.0",
-        "php-standard-library/secure-random": "^6.0"
+        "php-standard-library/secure-random": "^6.0",
+        "php-standard-library/str": "^6.0"
     },
     "autoload-dev": {
         "psr-4": {

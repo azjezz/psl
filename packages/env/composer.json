@@ -20,8 +20,7 @@
     ],
     "require": {
         "php": "~8.4.0 || ~8.5.0",
-        "php-standard-library/foundation": "^6.0",
-        "php-standard-library/str": "^6.0"
+        "php-standard-library/foundation": "^6.0"
     },
     "minimum-stability": "dev",
     "autoload": {

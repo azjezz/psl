@@ -8,7 +8,8 @@ use Psl\Async\CancellationTokenInterface;
 use Psl\Async\Exception\CancelledException;
 use Psl\Async\NullCancellationToken;
 use Psl\Network;
-use Psl\OS;
+
+use const PHP_OS_FAMILY;
 
 /**
  * A TCP socket that can be configured before connecting or listening.
@@ -143,7 +144,7 @@ final class Socket
 
         $socket = [
             'tcp_nodelay' => $configuration->noDelay,
-            'so_reuseaddr' => OS\is_windows() ? $configuration->reusePort : $configuration->reuseAddress,
+            'so_reuseaddr' => PHP_OS_FAMILY === 'Windows' ? $configuration->reusePort : $configuration->reuseAddress,
             'so_reuseport' => $configuration->reusePort,
         ];
 

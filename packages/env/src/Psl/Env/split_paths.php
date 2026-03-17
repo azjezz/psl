@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Env;
 
-use Psl\Str;
+use function explode;
 
 use const PATH_SEPARATOR;
 
@@ -17,5 +17,5 @@ use const PATH_SEPARATOR;
  */
 function split_paths(string $path): array
 {
-    return Str\split($path, PATH_SEPARATOR);
+    return explode(PATH_SEPARATOR, $path);
 }

@@ -1,0 +1,35 @@
+name: package tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - next
+      - '*.*.x'
+
+jobs:
+  test:
+    name: test packages (${{ matrix.dependency-versions }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dependency-versions: [highest, lowest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: bcmath, mbstring, intl, sodium, json, openssl
+          coverage: none
+
+      - uses: extractions/setup-just@v3
+
+      - if: matrix.dependency-versions == 'highest'
+        run: just install-packages
+
+      - if: matrix.dependency-versions == 'lowest'
+        run: just install-packages-lowest
+
+      - run: just test-packages

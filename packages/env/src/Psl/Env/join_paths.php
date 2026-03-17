@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Env;
 
-use Psl\Str;
+use function implode;
 
 use const PATH_SEPARATOR;
 
@@ -19,5 +19,5 @@ use const PATH_SEPARATOR;
  */
 function join_paths(string ...$paths): string
 {
-    return Str\join($paths, PATH_SEPARATOR);
+    return implode(PATH_SEPARATOR, $paths);
 }

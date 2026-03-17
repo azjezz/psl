@@ -10,7 +10,8 @@ use Psl\Str;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
-use Psl\Vec;
+
+use function array_values;
 
 /**
  * A selectable menu widget.
@@ -67,7 +68,7 @@ final class Menu implements WidgetInterface
      */
     public function highlightStyle(ControlSequenceIntroducer ...$style): self
     {
-        $this->highlightStyle = Vec\values($style);
+        $this->highlightStyle = array_values($style);
 
         return $this;
     }

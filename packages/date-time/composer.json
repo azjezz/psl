@@ -27,7 +27,6 @@
         "php-standard-library/default": "^6.0",
         "php-standard-library/interoperability": "^6.0",
         "php-standard-library/locale": "^6.0",
-        "php-standard-library/str": "^6.0",
         "ext-intl": "*"
     },
     "minimum-stability": "dev",

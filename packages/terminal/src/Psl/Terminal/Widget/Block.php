@@ -11,7 +11,8 @@ use Psl\Str;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
-use Psl\Vec;
+
+use function array_values;
 
 /**
  * A block widget that draws a border and optional title around an inner widget.
@@ -48,7 +49,7 @@ final class Block
 
     public function titleStyle(ControlSequenceIntroducer ...$style): self
     {
-        $this->titleStyle = Vec\values($style);
+        $this->titleStyle = array_values($style);
 
         return $this;
     }

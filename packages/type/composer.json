@@ -24,9 +24,7 @@
         "php": "~8.4.0 || ~8.5.0",
         "php-standard-library/foundation": "^6.0",
         "php-standard-library/collection": "^6.0",
-        "php-standard-library/dict": "^6.0",
         "php-standard-library/iter": "^6.0",
-        "php-standard-library/vec": "^6.0",
         "ext-json": "*"
     },
     "minimum-stability": "dev",

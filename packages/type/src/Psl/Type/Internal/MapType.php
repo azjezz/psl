@@ -6,7 +6,6 @@ namespace Psl\Type\Internal;
 
 use Override;
 use Psl\Collection;
-use Psl\Dict;
 use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
@@ -114,7 +113,13 @@ final readonly class MapType extends Type\Type
                 };
             }
 
-            return new Collection\Map(Dict\from_entries($entries));
+            /** @var array<Tk, Tv> $dict */
+            $dict = [];
+            foreach ($entries as [$k, $v]) {
+                $dict[$k] = $v;
+            }
+
+            return new Collection\Map($dict);
         }
 
         throw CoercionException::withValue($value, $this->toString());
@@ -163,7 +168,13 @@ final readonly class MapType extends Type\Type
                 };
             }
 
-            return new Collection\Map(Dict\from_entries($entries));
+            /** @var array<Tk, Tv> $dict */
+            $dict = [];
+            foreach ($entries as [$k, $v]) {
+                $dict[$k] = $v;
+            }
+
+            return new Collection\Map($dict);
         }
 
         throw AssertException::withValue($value, $this->toString());

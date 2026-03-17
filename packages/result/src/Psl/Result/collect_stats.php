@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Result;
 
-use function Psl\Iter\reduce;
-
 /**
  * @template T
  *
@@ -13,9 +11,10 @@ use function Psl\Iter\reduce;
  */
 function collect_stats(iterable $results): Stats
 {
-    return reduce(
-        $results,
-        static fn(Stats $stats, ResultInterface $result): Stats => $stats->apply($result),
-        new Stats(),
-    );
+    $stats = new Stats();
+    foreach ($results as $result) {
+        $stats = $stats->apply($result);
+    }
+
+    return $stats;
 }

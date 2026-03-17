@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem;
 
-use Psl\SecureRandom;
-
+use function bin2hex;
+use function random_bytes;
 use function realpath;
 use function sprintf;
 use function str_contains;
@@ -53,14 +53,7 @@ function create_temporary_file(null|string $directory = null, null|string $prefi
         $prefix = '';
     }
 
-    try {
-        $filename = $directory . $separator . $prefix . SecureRandom\string(8);
-        // @codeCoverageIgnoreStart
-    } catch (SecureRandom\Exception\InsufficientEntropyException $e) {
-        throw new Exception\RuntimeException('Unable to gather enough entropy to generate filename.', 0, $e);
-    }
-
-    // @codeCoverageIgnoreEnd
+    $filename = $directory . $separator . $prefix . bin2hex(random_bytes(4));
 
     create_file($filename);
 

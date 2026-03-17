@@ -67,4 +67,34 @@ split-tag tag:
 split-release tag:
     cd splitter && php bin/splitter release {{tag}}
 
+install-packages:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    for dir in packages/*/; do
+        comp=$(basename "$dir")
+        cd "$dir"
+        composer update
+        cd ../..
+    done
+
+install-packages-lowest:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    for dir in packages/*/; do
+        comp=$(basename "$dir")
+        cd "$dir"
+        composer update --prefer-lowest --prefer-stable
+        cd ../..
+    done
+
+test-packages:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    for dir in packages/*/; do
+        comp=$(basename "$dir")
+        cd "$dir"
+        vendor/bin/phpunit --no-coverage
+        cd ../..
+    done
+
 verify: fmt-diff lint analyze test mutation

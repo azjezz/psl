@@ -24,9 +24,7 @@
         "php": "~8.4.0 || ~8.5.0",
         "php-standard-library/foundation": "^6.0",
         "php-standard-library/default": "^6.0",
-        "php-standard-library/io": "^6.0",
-        "php-standard-library/math": "^6.0",
-        "php-standard-library/str": "^6.0"
+        "php-standard-library/io": "^6.0"
     },
     "minimum-stability": "dev",
     "autoload": {
@@ -44,7 +42,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^13.0",
-        "php-standard-library/async": "^6.0"
+        "php-standard-library/async": "^6.0",
+        "php-standard-library/math": "^6.0"
     },
     "autoload-dev": {
         "psr-4": {

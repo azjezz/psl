@@ -9,9 +9,9 @@ use Psl\Math;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
-use Psl\Vec;
 
 use function array_slice;
+use function array_values;
 
 /**
  * A sparkline widget that renders data points as Unicode block characters.
@@ -60,7 +60,7 @@ final class Sparkline implements WidgetInterface
      */
     public function style(ControlSequenceIntroducer ...$style): self
     {
-        $this->style = Vec\values($style);
+        $this->style = array_values($style);
 
         return $this;
     }

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Psl\Terminal\Internal;
 
 use Psl\Process;
-use Psl\Shell;
 use Psl\Str;
 
 use function count;
+use function trim;
 
 use const PHP_OS_FAMILY;
 
@@ -97,12 +97,28 @@ final class TerminalSize
     private static function tryTput(): null|array
     {
         try {
-            $cols = (int) Str\trim(Shell\execute('tput', ['cols']));
-            $rows = (int) Str\trim(Shell\execute('tput', ['lines']));
-            if ($rows > 0 && $cols > 0) {
-                return [$cols, $rows];
+            $colsOutput = Process\Command::create('tput')
+                ->withArguments(['cols'])
+                ->withStdout(Process\Stdio::piped())
+                ->withStderr(Process\Stdio::piped())
+                ->spawn()
+                ->waitWithOutput();
+
+            $rowsOutput = Process\Command::create('tput')
+                ->withArguments(['lines'])
+                ->withStdout(Process\Stdio::piped())
+                ->withStderr(Process\Stdio::piped())
+                ->spawn()
+                ->waitWithOutput();
+
+            if ($colsOutput->status->isSuccessful() && $rowsOutput->status->isSuccessful()) {
+                $cols = (int) trim($colsOutput->stdout);
+                $rows = (int) trim($rowsOutput->stdout);
+                if ($rows > 0 && $cols > 0) {
+                    return [$cols, $rows];
+                }
             }
-        } catch (Shell\Exception\ExceptionInterface) {
+        } catch (Process\Exception\ExceptionInterface) {
             return null;
         }
 
@@ -115,21 +131,28 @@ final class TerminalSize
     private static function getWindows(): array
     {
         try {
-            $output = Shell\execute('powershell', [
-                '-NoProfile',
-                '-Command',
-                '[Console]::WindowWidth.ToString() + " " + [Console]::WindowHeight.ToString()',
-            ]);
+            $output = Process\Command::create('powershell')
+                ->withArguments([
+                    '-NoProfile',
+                    '-Command',
+                    '[Console]::WindowWidth.ToString() + " " + [Console]::WindowHeight.ToString()',
+                ])
+                ->withStdout(Process\Stdio::piped())
+                ->withStderr(Process\Stdio::piped())
+                ->spawn()
+                ->waitWithOutput();
 
-            $parts = Str\split(Str\trim($output), ' ');
-            if (count($parts) === 2) {
-                $cols = (int) $parts[0];
-                $rows = (int) $parts[1];
-                if ($cols > 0 && $rows > 0) {
-                    return [$cols, $rows];
+            if ($output->status->isSuccessful()) {
+                $parts = Str\split(Str\trim($output->stdout), ' ');
+                if (count($parts) === 2) {
+                    $cols = (int) $parts[0];
+                    $rows = (int) $parts[1];
+                    if ($cols > 0 && $rows > 0) {
+                        return [$cols, $rows];
+                    }
                 }
             }
-        } catch (Shell\Exception\ExceptionInterface) {
+        } catch (Process\Exception\ExceptionInterface) {
             // @mago-expect lint:no-empty-catch-clause - best-effort fallback
         }
 
