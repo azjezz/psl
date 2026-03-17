@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e41c5268137b882f9bd52c5230ffe71",
+    "content-hash": "92b97dc1e4db25a2d5dcdc266f7b20a5",
     "packages": [
         {
             "name": "revolt/event-loop",
@@ -82,16 +82,16 @@
     "packages-dev": [
         {
             "name": "carthage-software/mago",
-            "version": "1.14.0",
+            "version": "1.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/carthage-software/mago.git",
-                "reference": "197dae097f525914ed7451b3d2fd7432adf104a7"
+                "reference": "00957008352c130f7672bcaab754a278a0a4950b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carthage-software/mago/zipball/197dae097f525914ed7451b3d2fd7432adf104a7",
-                "reference": "197dae097f525914ed7451b3d2fd7432adf104a7",
+                "url": "https://api.github.com/repos/carthage-software/mago/zipball/00957008352c130f7672bcaab754a278a0a4950b",
+                "reference": "00957008352c130f7672bcaab754a278a0a4950b",
                 "shasum": ""
             },
             "require": {
@@ -126,7 +126,7 @@
             ],
             "support": {
                 "issues": "https://github.com/carthage-software/mago/issues",
-                "source": "https://github.com/carthage-software/mago/tree/1.14.0"
+                "source": "https://github.com/carthage-software/mago/tree/1.14.1"
             },
             "funding": [
                 {
@@ -134,7 +134,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-09T20:07:15+00:00"
+            "time": "2026-03-14T00:50:47+00:00"
         },
         {
             "name": "colinodell/json5",
@@ -3449,16 +3449,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "9.0.0",
+            "version": "9.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "bb64d08145b021b67d5f253308a498b73ab0461e"
+                "reference": "e26e9a944bd9d27b3a38a82fc2093d440951bfbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/bb64d08145b021b67d5f253308a498b73ab0461e",
-                "reference": "bb64d08145b021b67d5f253308a498b73ab0461e",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/e26e9a944bd9d27b3a38a82fc2093d440951bfbe",
+                "reference": "e26e9a944bd9d27b3a38a82fc2093d440951bfbe",
                 "shasum": ""
             },
             "require": {
@@ -3501,7 +3501,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/environment/issues",
                 "security": "https://github.com/sebastianbergmann/environment/security/policy",
-                "source": "https://github.com/sebastianbergmann/environment/tree/9.0.0"
+                "source": "https://github.com/sebastianbergmann/environment/tree/9.0.1"
             },
             "funding": [
                 {
@@ -3521,7 +3521,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-02-06T04:43:29+00:00"
+            "time": "2026-03-15T07:13:02+00:00"
         },
         {
             "name": "sebastian/exporter",

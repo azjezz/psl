@@ -173,7 +173,7 @@ function build_features() {
 function build_footer() {
     return `
         <div class="page-footer fade-in">
-            <p class="footer-license">MIT License &middot; Made by <a href="https://github.com/azjezz">azjezz</a> and <a href="https://github.com/azjezz/psl/graphs/contributors">contributors</a> &middot; Sponsored by <a href="https://carthage.software">Carthage.Software</a></p>
+            <p class="footer-license">MIT License &middot; Made by <a href="https://github.com/azjezz">azjezz</a> and <a href="https://github.com/php-standard-library/php-standard-library/graphs/contributors">contributors</a> &middot; Sponsored by <a href="https://carthage.software">Carthage.Software</a></p>
         </div>
     `;
 }
@@ -185,10 +185,10 @@ function build_front_page() {
         <div class="hero fade-in">
             <h1>PSL</h1>
             <p class="tagline">PHP Standard Library</p>
-            <div class="install-box">composer require azjezz/psl</div>
+            <div class="install-box">composer require php-standard-library/php-standard-library</div>
             <p class="hero-description">A standard library for PHP, inspired by <a href="https://github.com/hhvm/hsl">hhvm/hsl</a>. Provides a consistent, centralized, well-typed set of APIs covering async, collections, networking, I/O, cryptography, terminal UI, and more - replacing PHP functions and primitives with safer, async-ready alternatives that error predictably.</p>
             <div class="hero-links">
-                <a href="https://github.com/azjezz/psl" class="hero-btn">GitHub</a>
+                <a href="https://github.com/php-standard-library/php-standard-library" class="hero-btn">GitHub</a>
                 <a href="https://github.com/sponsors/azjezz" class="hero-btn hero-btn-sponsor">Sponsor</a>
             </div>
         </div>

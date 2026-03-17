@@ -17,7 +17,7 @@ final class TypedTest extends TestCase
         /** @var MapInterface $actual */
         $actual = Json\typed(
             '{
-            "name": "azjezz/psl",
+            "name": "php-standard-library/php-standard-library",
             "type": "library",
             "description": "PHP Standard Library.",
             "keywords": ["php", "std", "stdlib", "utility", "psl"],
@@ -28,7 +28,7 @@ final class TypedTest extends TestCase
 
         static::assertInstanceOf(MapInterface::class, $actual);
         static::assertCount(5, $actual);
-        static::assertSame('azjezz/psl', $actual->at('name'));
+        static::assertSame('php-standard-library/php-standard-library', $actual->at('name'));
         static::assertSame('library', $actual->at('type'));
         static::assertSame('PHP Standard Library.', $actual->at('description'));
         static::assertSame('MIT', $actual->at('license'));
@@ -52,7 +52,7 @@ final class TypedTest extends TestCase
         );
 
         Json\typed('{
-            "name": "azjezz/psl",
+            "name": "php-standard-library/php-standard-library",
             "type": "library",
             "description": "PHP Standard Library.",
             "keywords": ["php", "std", "stdlib", "utility", "psl"],

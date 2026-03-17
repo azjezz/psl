@@ -19,7 +19,7 @@ final class RangeTest extends TestCase
     }
 
     /**
-     * @see https://github.com/azjezz/psl/issues/422
+     * @see https://github.com/php-standard-library/php-standard-library/issues/422
      */
     public function testRangeWithLargeIntsBeyondFloatPrecision(): void
     {

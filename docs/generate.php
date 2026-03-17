@@ -94,7 +94,7 @@ function scan_for_files(string $directory, string $extension): array
 Async\main(static function (): int {
     $gitRef = Psl\Env\get_var('GITHUB_REF_NAME') ?? 'next';
 
-    $sourceBaseUrl = 'https://github.com/azjezz/psl/tree/' . $gitRef . '/';
+    $sourceBaseUrl = 'https://github.com/php-standard-library/tree/' . $gitRef . '/';
 
     $docs = [];
     $categories = [];

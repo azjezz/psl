@@ -191,8 +191,8 @@ Async\main(
                         $out .=
                             "\n    "
                             . Ansi\link(
-                                '⟶  github.com/azjezz/psl',
-                                'https://github.com/azjezz/psl',
+                                '⟶  github.com/php-standard-library/php-standard-library',
+                                'https://github.com/php-standard-library/php-standard-library',
                                 Style\bold(),
                                 Style\underline(),
                                 Ansi\foreground($rainbow($lhue)),
