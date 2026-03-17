@@ -50,9 +50,9 @@ final class MouseTest extends TestCase
 
     public function testAllButtons(): void
     {
-        static::assertSame(MouseButton::Left, (new Mouse(MouseKind::Press, 0, 0, MouseButton::Left))->button);
-        static::assertSame(MouseButton::Middle, (new Mouse(MouseKind::Press, 0, 0, MouseButton::Middle))->button);
-        static::assertSame(MouseButton::Right, (new Mouse(MouseKind::Press, 0, 0, MouseButton::Right))->button);
-        static::assertSame(MouseButton::None, (new Mouse(MouseKind::Move, 0, 0, MouseButton::None))->button);
+        static::assertSame(MouseButton::Left, new Mouse(MouseKind::Press, 0, 0, MouseButton::Left)->button);
+        static::assertSame(MouseButton::Middle, new Mouse(MouseKind::Press, 0, 0, MouseButton::Middle)->button);
+        static::assertSame(MouseButton::Right, new Mouse(MouseKind::Press, 0, 0, MouseButton::Right)->button);
+        static::assertSame(MouseButton::None, new Mouse(MouseKind::Move, 0, 0, MouseButton::None)->button);
     }
 }
