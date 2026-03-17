@@ -1,7 +1,7 @@
 php-version = "8.4"
 
 [source]
-paths = ["components", "tests", "examples", "docs"]
+paths = ["packages", "tests", "examples", "docs"]
 includes = ["vendor/revolt", "vendor/phpbench"]
 excludes = []
 

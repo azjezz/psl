@@ -35,7 +35,6 @@ function random(iterable $iterable): mixed
         return $values[0];
     }
 
-    /** @var int<0, max> $i */
     $i = mt_rand(0, $size - 1);
     return $values[$i];
 }
