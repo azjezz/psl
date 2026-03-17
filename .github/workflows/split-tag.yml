@@ -28,7 +28,7 @@ jobs:
           extensions: bcmath, mbstring, intl, sodium, json
           coverage: none
 
-      - uses: extractions/setup-just@v2
+      - uses: extractions/setup-just@v3
 
       - name: configure git
         run: |

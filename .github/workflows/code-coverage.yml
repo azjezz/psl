@@ -22,6 +22,8 @@ jobs:
           tools: composer:v2, cs2pr
           extensions: bcmath, mbstring, intl, sodium, json
 
+      - uses: extractions/setup-just@v3
+
       - name: "installing dependencies"
         run: just install
 
