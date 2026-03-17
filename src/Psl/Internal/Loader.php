@@ -31,9 +31,6 @@ final class Loader
      * @var non-empty-array<non-empty-string, non-empty-string>
      */
     public const array CONSTANTS = [
-        'Psl\\Internal\\ALPHABET_BASE64' => 'Psl/Internal/constants.php',
-        'Psl\\Internal\\ALPHABET_BASE64_URL' => 'Psl/Internal/constants.php',
-        'Psl\\Internal\\CASE_FOLD' => 'Psl/Internal/constants.php',
         'Psl\\Math\\INT64_MAX' => 'Psl/Math/constants.php',
         'Psl\\Math\\INT64_MIN' => 'Psl/Math/constants.php',
         'Psl\\Math\\INT53_MAX' => 'Psl/Math/constants.php',
@@ -58,6 +55,7 @@ final class Loader
         'Psl\\Math\\NAN' => 'Psl/Math/constants.php',
         'Psl\\Str\\ALPHABET' => 'Psl/Str/constants.php',
         'Psl\\Str\\ALPHABET_ALPHANUMERIC' => 'Psl/Str/constants.php',
+        'Psl\\Str\\Internal\\CASE_FOLD' => 'Psl/Str/Internal/constants.php',
         'Psl\\Encoding\\EncodedWord\\MAX_ENCODED_WORD_LENGTH' => 'Psl/Encoding/EncodedWord/constants.php',
         'Psl\\Encoding\\EncodedWord\\Q_ENCODING' => 'Psl/Encoding/EncodedWord/constants.php',
         'Psl\\Encoding\\EncodedWord\\B_ENCODING' => 'Psl/Encoding/EncodedWord/constants.php',
@@ -270,8 +268,10 @@ final class Loader
         'Psl\\Graph\\topological_sort' => 'Psl/Graph/topological_sort.php',
         'Psl\\Graph\\undirected' => 'Psl/Graph/undirected.php',
         'Psl\\Graph\\Internal\\get_node_key' => 'Psl/Graph/Internal/get_node_key.php',
-        'Psl\\Internal\\suppress' => 'Psl/Internal/suppress.php',
-        'Psl\\Internal\\box' => 'Psl/Internal/box.php',
+        'Psl\\File\\Internal\\suppress' => 'Psl/File/Internal/suppress.php',
+        'Psl\\Network\\Internal\\suppress' => 'Psl/Network/Internal/suppress.php',
+        'Psl\\IO\\Internal\\suppress' => 'Psl/IO/Internal/suppress.php',
+        'Psl\\Filesystem\\Internal\\box' => 'Psl/Filesystem/Internal/box.php',
         'Psl\\Str\\Internal\\validate_offset' => 'Psl/Str/Internal/validate_offset.php',
         'Psl\\Iter\\all' => 'Psl/Iter/all.php',
         'Psl\\Iter\\any' => 'Psl/Iter/any.php',

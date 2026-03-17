@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Network;
 
-use Psl\Internal;
 use Psl\Network;
 use Psl\OS;
 

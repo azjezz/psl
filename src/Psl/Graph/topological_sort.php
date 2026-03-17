@@ -52,10 +52,6 @@ function topological_sort(DirectedGraph $graph): null|array
     }
 
     // Start with nodes that have no incoming edges
-    /**
-     * @var Queue<TNode> $queue
-     * @mago-expect analysis:redundant-docblock-type
-     */
     $queue = new Queue();
     foreach ($allNodes as $node) {
         $key = get_node_key($node);

@@ -15,7 +15,6 @@ use function is_dir;
 use function is_file;
 use function is_writable;
 use function mkdir;
-use function Psl\Internal\suppress;
 use function sprintf;
 
 final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteHandleInterface
@@ -52,7 +51,7 @@ final class WriteHandle extends Internal\AbstractHandleWrapper implements WriteH
         if (!$isFile) {
             $directory = dirname($file);
             if (!is_dir($directory)) {
-                $mkdir = suppress(static fn() => mkdir($directory, 0o777, true));
+                $mkdir = Internal\suppress(static fn() => mkdir($directory, 0o777, true));
                 if (!$mkdir && !is_dir($directory)) {
                     throw new Exception\RuntimeException(sprintf(
                         'Failed to create the directory for file "%s".',

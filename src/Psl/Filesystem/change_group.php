@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem;
 
-use Psl\Internal;
-
 use function chgrp;
 use function lchgrp;
 use function sprintf;

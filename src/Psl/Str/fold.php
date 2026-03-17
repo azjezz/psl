@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
-use Psl\Internal;
-
 /**
  * Perform case folding on a string.
  *

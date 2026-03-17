@@ -16,7 +16,6 @@ use function is_file;
 use function is_readable;
 use function is_writable;
 use function mkdir;
-use function Psl\Internal\suppress;
 use function sprintf;
 
 final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements WriteHandleInterface, ReadHandleInterface
@@ -61,7 +60,7 @@ final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements Wr
         if (!$isFile) {
             $directory = dirname($file);
             if (!is_dir($directory)) {
-                $mkdir = suppress(static fn() => mkdir($directory, 0o777, true));
+                $mkdir = Internal\suppress(static fn() => mkdir($directory, 0o777, true));
                 if (!$mkdir && !is_dir($directory)) {
                     throw new Exception\RuntimeException(sprintf(
                         'Failed to create the directory for file "%s".',

@@ -39,10 +39,6 @@ function bfs(DirectedGraph|UndirectedGraph $graph, mixed $start): array
 
     $visited = [];
     $result = [];
-    /**
-     * @var Queue<TNode> $queue
-     * @mago-expect analysis:redundant-docblock-type
-     */
     $queue = new Queue();
     $queue->enqueue($start);
     $visited[get_node_key($start)] = true;
