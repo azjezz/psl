@@ -55,5 +55,8 @@
             "Psl\\TCP\\Tests\\Unit\\": "tests/unit/",
             "Psl\\TCP\\Tests\\Fixture\\": "tests/fixture/"
         }
+    },
+    "conflict": {
+        "azjezz/psl": "*"
     }
 }

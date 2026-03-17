@@ -43,5 +43,8 @@
             "Psl\\Trait\\Tests\\Unit\\": "tests/unit/",
             "Psl\\Trait\\Tests\\Fixture\\": "tests/fixture/"
         }
+    },
+    "conflict": {
+        "azjezz/psl": "*"
     }
 }

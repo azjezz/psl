@@ -297,5 +297,8 @@
         "php-standard-library/udp": "self.version",
         "php-standard-library/unix": "self.version",
         "php-standard-library/vec": "self.version"
+    },
+    "conflict": {
+        "azjezz/psl": "*"
     }
 }

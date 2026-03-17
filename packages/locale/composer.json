@@ -42,5 +42,8 @@
         "psr-4": {
             "Psl\\Locale\\Tests\\Unit\\": "tests/unit/"
         }
+    },
+    "conflict": {
+        "azjezz/psl": "*"
     }
 }

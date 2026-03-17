@@ -51,5 +51,8 @@
         "psr-4": {
             "Psl\\Encoding\\Tests\\Unit\\": "tests/unit/"
         }
+    },
+    "conflict": {
+        "azjezz/psl": "*"
     }
 }

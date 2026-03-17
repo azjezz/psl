@@ -52,5 +52,8 @@
         "psr-4": {
             "Psl\\DateTime\\Tests\\Unit\\": "tests/unit/"
         }
+    },
+    "conflict": {
+        "azjezz/psl": "*"
     }
 }
