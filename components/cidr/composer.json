@@ -1,0 +1,46 @@
+{
+    "name": "php-standard-library/cidr",
+    "description": "Utilities for working with CIDR (Classless Inter-Domain Routing) notation for IPv4 and IPv6",
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://php-standard-library.dev",
+    "keywords": [
+        "cidr",
+        "ip",
+        "networking"
+    ],
+    "authors": [
+        {
+            "name": "Seifeddine Gmati",
+            "email": "azjezz@carthage.software"
+        },
+        {
+            "name": "Contributors",
+            "homepage": "https://github.com/php-standard-library/php-standard-library/graphs/contributors"
+        }
+    ],
+    "require": {
+        "php": "~8.4.0 || ~8.5.0",
+        "php-standard-library/foundation": "^6.0",
+        "php-standard-library/ip": "^6.0"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Psl\\CIDR\\": "src/Psl/CIDR/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-next": "6.0.x-dev"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^13.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Psl\\CIDR\\Tests\\Unit\\": "tests/unit/"
+        }
+    }
+}

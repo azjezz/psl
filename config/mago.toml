@@ -1,7 +1,7 @@
 php-version = "8.4"
 
 [source]
-paths = ["src", "tests", "examples", "docs"]
+paths = ["components", "tests", "examples", "docs"]
 includes = ["vendor/revolt", "vendor/phpbench"]
 excludes = []
 
@@ -31,25 +31,15 @@ no-boolean-flag-parameter = { enabled = false }
 no-error-control-operator = { enabled = false }
 no-redundant-use = { enabled = true }
 no-isset = { enabled = false }
-single-class-per-file = { exclude = ["tests/static-analysis", "examples", "docs"] }
+single-class-per-file = { exclude = ["components/comparison/tests/", "examples", "docs"] }
 file-name = { exclude = ["examples", "docs"] }
 no-else-clause = { enabled = false }
 
 [analyzer]
-excludes = [
-  # unit tests are mostly untyped.
-  "tests/unit",
-  # those components are not supported by mago.
-  "tests/static-analysis/Fun",
-  "tests/static-analysis/Option",
-  "tests/static-analysis/Iter",
-]
+excludes = ["*/components/**/tests/*"]
 ignore = [
-  { code = "possibly-static-access-on-interface", in = "src/" },
-  { code = "duplicate-definition", in = "tests/static-analysis" },
-  { code = "unused-method", in = "tests/fixture" },
-  { code = "unused-property", in = "tests/fixture" },
-  { code = "unused-statement", in = ["docs", "tests/benchmark"] },
+  { code = "possibly-static-access-on-interface", in = "components/" },
+  { code = "unused-statement", in = ["docs"] },
   { code = "duplicate-definition", in = "docs" },
   { code = "redundant-type-comparison", in = "docs" },
 ]

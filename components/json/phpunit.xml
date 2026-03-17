@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+    colors="true"
+    stopOnFailure="false"
+    bootstrap="vendor/autoload.php"
+>
+  <source>
+    <include>
+      <directory suffix=".php">src</directory>
+    </include>
+  </source>
+  <php>
+    <ini name="error_reporting" value="-1" />
+    <ini name="precision" value="16" />
+  </php>
+  <testsuites>
+    <testsuite name="default">
+      <directory>tests/unit</directory>
+    </testsuite>
+  </testsuites>
+</phpunit>

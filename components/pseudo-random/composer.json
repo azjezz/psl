@@ -1,0 +1,49 @@
+{
+    "name": "php-standard-library/pseudo-random",
+    "description": "Fast pseudo-random number generation using Mersenne Twister",
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://php-standard-library.dev",
+    "keywords": [
+        "random",
+        "pseudo-random",
+        "mersenne-twister"
+    ],
+    "authors": [
+        {
+            "name": "Seifeddine Gmati",
+            "email": "azjezz@carthage.software"
+        },
+        {
+            "name": "Contributors",
+            "homepage": "https://github.com/php-standard-library/php-standard-library/graphs/contributors"
+        }
+    ],
+    "require": {
+        "php": "~8.4.0 || ~8.5.0",
+        "php-standard-library/foundation": "^6.0"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Psl\\PseudoRandom\\": "src/Psl/PseudoRandom/"
+        },
+        "files": [
+            "src/Psl/bootstrap.php"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-next": "6.0.x-dev"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^13.0",
+        "php-standard-library/math": "^6.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Psl\\PseudoRandom\\Tests\\Unit\\": "tests/unit/"
+        }
+    }
+}

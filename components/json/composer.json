@@ -1,0 +1,53 @@
+{
+    "name": "php-standard-library/json",
+    "description": "JSON encoding and decoding with typed exceptions and sensible defaults",
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://php-standard-library.dev",
+    "keywords": [
+        "json",
+        "encoding",
+        "decoding"
+    ],
+    "authors": [
+        {
+            "name": "Seifeddine Gmati",
+            "email": "azjezz@carthage.software"
+        },
+        {
+            "name": "Contributors",
+            "homepage": "https://github.com/php-standard-library/php-standard-library/graphs/contributors"
+        }
+    ],
+    "require": {
+        "php": "~8.4.0 || ~8.5.0",
+        "php-standard-library/foundation": "^6.0",
+        "php-standard-library/str": "^6.0",
+        "php-standard-library/type": "^6.0",
+        "ext-json": "*"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Psl\\Json\\": "src/Psl/Json/"
+        },
+        "files": [
+            "src/Psl/bootstrap.php"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-next": "6.0.x-dev"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^13.0",
+        "php-standard-library/collection": "^6.0",
+        "php-standard-library/math": "^6.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Psl\\Json\\Tests\\Unit\\": "tests/unit/"
+        }
+    }
+}

@@ -1,0 +1,56 @@
+{
+    "name": "php-standard-library/shell",
+    "description": "Shell command execution with argument escaping and error output management",
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://php-standard-library.dev",
+    "keywords": [
+        "shell",
+        "command",
+        "execute"
+    ],
+    "authors": [
+        {
+            "name": "Seifeddine Gmati",
+            "email": "azjezz@carthage.software"
+        },
+        {
+            "name": "Contributors",
+            "homepage": "https://github.com/php-standard-library/php-standard-library/graphs/contributors"
+        }
+    ],
+    "require": {
+        "php": "~8.4.0 || ~8.5.0",
+        "php-standard-library/foundation": "^6.0",
+        "php-standard-library/async": "^6.0",
+        "php-standard-library/default": "^6.0",
+        "php-standard-library/process": "^6.0",
+        "php-standard-library/str": "^6.0"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Psl\\Shell\\": "src/Psl/Shell/"
+        },
+        "files": [
+            "src/Psl/bootstrap.php"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-next": "6.0.x-dev"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^13.0",
+        "php-standard-library/date-time": "^6.0",
+        "php-standard-library/env": "^6.0",
+        "php-standard-library/os": "^6.0",
+        "php-standard-library/secure-random": "^6.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Psl\\Shell\\Tests\\Unit\\": "tests/unit/"
+        }
+    }
+}
