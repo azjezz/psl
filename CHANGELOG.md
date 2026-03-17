@@ -58,6 +58,9 @@
 - feat(socks): introduce `Socks\Configuration` with immutable `with*` builder methods for proxy host, port, and credentials
 - feat(tcp): introduce `TCP\RestrictedListener`, wrapping a listener to restrict connections to a set of allowed `IP\Address` and `CIDR\Block` entries
 - feat(network): introduce `Network\CompositeListener`, accepting connections from multiple listeners concurrently through a single `accept()` call
+- feat: introduce `URI` component — RFC 3986 URI parsing, normalization, reference resolution, and RFC 6570 URI Template expansion (Levels 1–4), with RFC 5952 IPv6 canonical form and RFC 6874 zone identifiers
+- feat: introduce `IRI` component — RFC 3987 Internationalized Resource Identifier parsing with Unicode support, RFC 3492 Punycode encoding/decoding, and RFC 5891/5892 IDNA 2008 domain name processing
+- feat: introduce `URL` component — strict URL type with scheme and authority validation, default port stripping for known schemes, and URI/IRI conversion
 - fix(tcp): `RetryConnector` backoff sleep now respects cancellation tokens, allowing retry loops to be cancelled during the delay
 
 ### migration guide

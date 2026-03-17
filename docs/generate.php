@@ -95,6 +95,9 @@ const SLUG_TO_PACKAGE = [
     'type' => 'php-standard-library/type',
     'udp' => 'php-standard-library/udp',
     'unix' => 'php-standard-library/unix',
+    'uri' => 'php-standard-library/uri',
+    'url' => 'php-standard-library/url',
+    'iri' => 'php-standard-library/iri',
     'vec' => 'php-standard-library/vec',
 ];
 
@@ -105,6 +108,7 @@ const CATEGORY_DISPLAY_NAMES = [
     'collections' => 'Collections',
     'text' => 'Text & Encoding',
     'io' => 'I/O',
+    'identifiers' => 'Identifiers',
     'networking' => 'Networking',
     'terminal' => 'Terminal',
     'security' => 'Security',

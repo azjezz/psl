@@ -9,6 +9,7 @@ const CATEGORY_COLORS = {
     "Collections":            "#e9c46a",
     "Text & Encoding":        "#f4a261",
     "I/O":                    "#264653",
+    "Identifiers":            "#3d5a80",
     "Networking":             "#6a4c93",
     "Terminal":               "#1d3557",
     "Security":               "#d62828",
