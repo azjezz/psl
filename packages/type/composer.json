@@ -45,7 +45,9 @@
         "phpunit/phpunit": "^13.0",
         "php-standard-library/math": "^6.0",
         "php-standard-library/result": "^6.0",
-        "php-standard-library/str": "^6.0"
+        "php-standard-library/str": "^6.0",
+        "php-standard-library/vec": "^6.0",
+        "php-standard-library/dict": "^6.0"
     },
     "autoload-dev": {
         "psr-4": {

@@ -187,6 +187,54 @@ function verify(array $packages): bool
 
             $ok = false;
         }
+
+        $testDir = $package->path . '/tests';
+        if (!Filesystem\is_directory($testDir)) {
+            continue;
+        }
+
+        $testDeps = [];
+        $checkTestFiles =
+            /**
+             * @param list<non-empty-string> $files
+             */
+            function (Package $package, array $files) use ($nsToDir, &$testDeps, &$checkTestFiles): void {
+                foreach ($files as $file) {
+                    if (Filesystem\is_directory($file)) {
+                        $checkTestFiles($package, Filesystem\read_directory($file));
+                        continue;
+                    }
+
+                    if (Filesystem\get_extension($file) !== 'php') {
+                        continue;
+                    }
+
+                    $content = File\read($file);
+                    foreach ($nsToDir as $ns => $dir) {
+                        if ($dir === $package->directory) {
+                            continue;
+                        }
+
+                        if (Regex\matches($content, '/Psl\\\\' . $ns . '[\\\\\\s;,)]/')) {
+                            $testDeps[$dir] = true;
+                        }
+                    }
+                }
+            };
+
+        $checkTestFiles($package, Filesystem\read_directory($testDir));
+
+        $allDeclared = Vec\concat($declaredRequire, $declaredDev);
+        $missingFromTestDeps = Dict\diff(Vec\keys($testDeps), $allDeclared);
+        foreach ($missingFromTestDeps as $dep) {
+            Log\error(
+                '%s uses %s in tests, but it is not declared in require or require-dev',
+                $package->name,
+                'php-standard-library/' . $dep,
+            );
+
+            $ok = false;
+        }
     }
 
     return $ok;

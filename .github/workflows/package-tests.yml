@@ -1,7 +1,6 @@
 name: package tests
 
 on:
-  pull_request:
   push:
     branches:
       - next
