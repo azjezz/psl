@@ -3,11 +3,11 @@
     "runner.attributes":      true,
     "runner.bootstrap":       "../vendor/autoload.php",
     "runner.file_pattern":    "*Bench.php",
-    "runner.iterations":      5,
-    "runner.revs":            10,
-    "runner.path":            "../tests/benchmark",
+    "runner.iterations":      2,
+    "runner.revs":            3,
+    "runner.path":            "../packages",
     "runner.retry_threshold": 5,
-    "runner.warmup":          2,
+    "runner.warmup":          1,
     "report.outputs":         {
         "report": {
             "extends": "aggregate"
