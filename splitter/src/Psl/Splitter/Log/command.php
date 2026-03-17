@@ -14,5 +14,7 @@ use Psl\Str;
  */
 function command(string $message, string|int|float ...$args): void
 {
-    IO\write_error_line(styled('       $ ', Ansi\foreground(Color\bright_black())) . Str\format($message, ...$args));
+    $formatted = $args === [] ? $message : Str\format($message, ...$args);
+
+    IO\write_error_line('%s', styled('       $ ', Ansi\foreground(Color\bright_black())) . $formatted);
 }
