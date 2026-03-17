@@ -1,5 +1,7 @@
 marked.setOptions({ gfm: true, breaks: false });
 
+const SHOW_SPLIT = typeof PACKAGES !== "undefined";
+
 const CATEGORY_COLORS = {
     "Basics":                 "#e63946",
     "Types & Error Handling":  "#457b9d",
@@ -186,8 +188,8 @@ function build_front_page() {
             <h1>PSL</h1>
             <p class="tagline">PHP Standard Library</p>
             <p class="hero-description">A standard library for PHP, inspired by <a href="https://github.com/hhvm/hsl">hhvm/hsl</a>. Provides a consistent, centralized, well-typed set of APIs covering async, collections, networking, I/O, cryptography, terminal UI, and more - replacing PHP functions and primitives with safer, async-ready alternatives that error predictably.</p>
-            <div class="install-box-wrapper"><a id="rotating-install" class="install-box install-box-typing" href="#type">composer require php-standard-library/type<span class="typing-cursor"></span></a></div>
-            <p class="hero-separator">or get everything at once</p>
+            ${SHOW_SPLIT ? `<div class="install-box-wrapper"><a id="rotating-install" class="install-box install-box-typing" href="#type">composer require php-standard-library/type<span class="typing-cursor"></span></a></div>
+            <p class="hero-separator">or get everything at once</p>` : ""}
             <div class="install-box-wrapper"><div class="install-box">composer require php-standard-library/php-standard-library</div></div>
             <div class="hero-links">
                 <a href="https://github.com/php-standard-library/php-standard-library" class="hero-btn">GitHub</a>
@@ -283,7 +285,7 @@ function render() {
     if (hash && DOCS[hash]) {
         el.innerHTML = marked.parse(DOCS[hash]);
 
-        const pkg = typeof PACKAGES !== "undefined" ? PACKAGES[hash] : undefined;
+        const pkg = SHOW_SPLIT ? PACKAGES[hash] : undefined;
         if (pkg) {
             const heading = el.querySelector("h1");
             if (heading) {
