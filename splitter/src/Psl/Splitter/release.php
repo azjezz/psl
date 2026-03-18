@@ -24,6 +24,20 @@ function release(MonolithicRepository $monorepo, Git $git, string $releaseTag): 
 {
     $branch = MonolithicRepository::branchForTag($releaseTag);
 
+    // Step 0: for patch releases, ensure the maintenance branch is in sync with the tag
+    if ($branch !== 'next') {
+        IO\write_error_line('');
+        Log\info(
+            'Syncing maintenance branch %s to tag %s...',
+            Log\styled($branch, Ansi\foreground(Color\bright_white()), Style\bold()),
+            Log\styled($releaseTag, Ansi\foreground(Color\bright_white()), Style\bold()),
+        );
+        IO\write_error_line('');
+
+        $git->syncBranch($branch, $releaseTag);
+        Log\success('Branch %s synced to %s.', $branch, $releaseTag);
+    }
+
     // Step 1: sync all packages to the source branch
     IO\write_error_line('');
     Log\info('Syncing packages to branch %s...', Log\styled(

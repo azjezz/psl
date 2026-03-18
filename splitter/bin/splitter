@@ -117,11 +117,14 @@ function release_command(string $root, array $args): never
     }
 
     $monorepo = MonolithicRepository::discover($root);
-    release($monorepo, new Git($root), $tagName);
 
-    IO\write_error_line('');
+    \Psl\Async\main(static function () use ($monorepo, $root, $tagName): int {
+        release($monorepo, new Git($root), $tagName);
 
-    exit(0);
+        IO\write_error_line('');
+
+        return 0;
+    });
 }
 
 /**
