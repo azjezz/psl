@@ -59,7 +59,24 @@ final readonly class Git
     }
 
     /**
-     * Tag a remote repository at the current HEAD of a branch.
+     * List remote refs.
+     *
+     * @param non-empty-string $repoUrl
+     * @param non-empty-string $ref e.g. "refs/heads/next"
+     *
+     * @return string Raw ls-remote output ("sha\tref" or empty if not found).
+     *
+     * @throws Shell\Exception\FailedExecutionException If the git command fails.
+     */
+    public function lsRemote(string $repoUrl, string $ref): string
+    {
+        return $this->run('ls-remote', $repoUrl, $ref);
+    }
+
+    /**
+     * Tag a remote repository at the current HEAD of a branch via git push.
+     *
+     * Prefer using the GitHub API for verified tags when possible.
      *
      * @param non-empty-string $repoUrl
      * @param non-empty-string $tag
@@ -70,12 +87,11 @@ final readonly class Git
      */
     public function tagRemote(string $repoUrl, string $tag, string $branch): void
     {
-        $sha = Str\trim($this->run('ls-remote', $repoUrl, 'refs/heads/' . $branch));
+        $sha = Str\trim($this->lsRemote($repoUrl, 'refs/heads/' . $branch));
         if ($sha === '') {
             throw new RuntimeException(Str\format('Branch "%s" not found on remote "%s"', $branch, $repoUrl));
         }
 
-        // Extract just the SHA (ls-remote returns "sha\trefs/heads/branch")
         $sha = Str\before($sha, "\t") ?? $sha;
 
         $this->run('push', $repoUrl, $sha . ':refs/tags/' . $tag);
@@ -104,6 +120,23 @@ final readonly class Git
     public function pushBranch(string $branch): void
     {
         $this->run('push', 'origin', $branch);
+    }
+
+    /**
+     * Force-update a local branch to point at a given ref and push it.
+     *
+     * Used to sync maintenance branches (e.g. 6.0.x) to a tag before a patch release.
+     *
+     * @param non-empty-string $branch e.g. "6.0.x"
+     * @param non-empty-string $ref e.g. "6.0.1" (tag) or a SHA
+     *
+     * @throws Shell\Exception\FailedExecutionException If a git command fails.
+     */
+    public function syncBranch(string $branch, string $ref): void
+    {
+        $this->run('checkout', $branch);
+        $this->run('reset', '--hard', $ref);
+        $this->run('push', 'origin', $branch, '--force');
     }
 
     /**

@@ -39,3 +39,5 @@ jobs:
       - run: just install
       - run: just split-install
       - run: just split-release ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
