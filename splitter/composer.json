@@ -37,7 +37,11 @@
             "src/Psl/Splitter/create_maintenance_branch.php",
             "src/Psl/Splitter/release.php",
             "src/Psl/Splitter/verify.php",
-            "src/Psl/Splitter/prepare.php"
+            "src/Psl/Splitter/prepare.php",
+            "src/Psl/Splitter/audit.php",
+            "src/Psl/Splitter/Http/request.php",
+            "src/Psl/Splitter/Http/get.php",
+            "src/Psl/Splitter/Http/post.php"
         ]
     },
     "bin": [
