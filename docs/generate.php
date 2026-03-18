@@ -165,7 +165,24 @@ function scan_for_files(string $directory, string $extension): array
 Async\main(static function (): int {
     $gitRef = Psl\Env\get_var('GITHUB_REF_NAME') ?? 'next';
 
-    $sourceBaseUrl = 'https://github.com/php-standard-library/tree/' . $gitRef . '/';
+    $repoBaseUrl = 'https://github.com/php-standard-library/php-standard-library/tree/' . $gitRef . '/';
+
+    $nsToPackageDir = [];
+    foreach (SLUG_TO_PACKAGE as $slug => $package) {
+        $packageDir = Str\after($package, 'php-standard-library/') ?? $slug;
+        $pslDir = DOCUMENTATION_DIR . '/../packages/' . $packageDir . '/src/Psl';
+        if (Filesystem\is_directory($pslDir)) {
+            foreach (Filesystem\read_directory($pslDir) as $entry) {
+                if (!Filesystem\is_directory($entry)) {
+                    continue;
+                }
+
+                $nsToPackageDir[Filesystem\get_basename($entry)] = $packageDir;
+            }
+        }
+    }
+
+    $nsToPackageDir[''] = 'foundation';
 
     $docs = [];
     $categories = [];
@@ -175,7 +192,24 @@ Async\main(static function (): int {
             $slug = Filesystem\get_basename($file, '.md');
             $content = File\read($file);
             $content = namespace\process_markdown($content);
-            $content = Regex\replace($content, '/`(src\/Psl\/[^`]*)`/', '[$1](' . $sourceBaseUrl . '$1)');
+            $content = Regex\replace_with(
+                $content,
+                '/`(src\/Psl\/([^\/`]+)\/[^`]*)`/',
+                static function (array $matches) use ($repoBaseUrl, $nsToPackageDir): string {
+                    $fullPath = $matches[1];
+                    $namespace = $matches[2];
+                    $packageDir = $nsToPackageDir[$namespace] ?? null;
+
+                    if ($packageDir !== null) {
+                        $url = $repoBaseUrl . 'packages/' . $packageDir . '/' . $fullPath;
+                    } else {
+                        $url = $repoBaseUrl . $fullPath;
+                    }
+
+                    return '[' . $fullPath . '](' . $url . ')';
+                },
+            );
+            $content = Regex\replace($content, '/`(src\/Psl\/)`/', '[$1](' . $repoBaseUrl . 'packages/foundation/$1)');
             $docs[$slug] = $content;
             $categorySlugs[] = $slug;
         }
