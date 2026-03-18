@@ -171,14 +171,19 @@ final class Reader implements BufferedReadHandleInterface
             $offset = $offset > 0 ? $offset : 0;
             $chunk = $this->handle->read(null, $cancellation);
             if ('' === $chunk) {
-                $this->buffer = $buf;
-                return null;
+                if ($this->handle->reachedEndOfDataSource()) {
+                    $this->buffer = $buf;
+                    return null;
+                }
+
+                continue;
             }
 
             $buf .= $chunk;
             $idx = strpos($buf, $suffix, $offset);
         } while (false === $idx);
 
+        /** @var non-negative-int $idx */
         $this->buffer = substr($buf, $idx + $suffixLen);
 
         return substr($buf, 0, $idx);
@@ -233,8 +238,12 @@ final class Reader implements BufferedReadHandleInterface
             $offset = $offset > 0 ? $offset : 0;
             $chunk = $this->handle->read(null, $cancellation);
             if ('' === $chunk) {
-                $this->buffer = $buf;
-                return null;
+                if ($this->handle->reachedEndOfDataSource()) {
+                    $this->buffer = $buf;
+                    return null;
+                }
+
+                continue;
             }
 
             $buf .= $chunk;
