@@ -27,6 +27,7 @@
         "phpunit/phpunit": "^13.0.5"
     },
     "replace": {
+        "azjezz/psl": "self.version",
         "php-standard-library/ansi": "self.version",
         "php-standard-library/async": "self.version",
         "php-standard-library/binary": "self.version",
