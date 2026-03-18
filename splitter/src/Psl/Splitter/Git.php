@@ -127,7 +127,7 @@ final readonly class Git
 
         Log\info('Truncating history at %s (first commit with %s)', Str\slice($first, 0, 12), $path);
 
-        $this->run('replace', '--graft', $first);
+        $this->run('replace', '--graft', '--force', $first);
     }
 
     /**
