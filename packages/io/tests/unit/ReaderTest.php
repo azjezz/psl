@@ -350,4 +350,55 @@ final class ReaderTest extends TestCase
         static::assertSame('', $reader->readLine());
         static::assertNull($reader->readLine());
     }
+
+    public function testReadLineWithDelayedHandle(): void
+    {
+        $handle = new DelayedHandle("line1\nline2\nline3");
+        $reader = new IO\Reader($handle);
+
+        static::assertSame('line1', $reader->readLine());
+        static::assertSame('line2', $reader->readLine());
+        static::assertSame('line3', $reader->readLine());
+        static::assertNull($reader->readLine());
+    }
+
+    public function testReadLineWithDelayedHandleCRLF(): void
+    {
+        $handle = new DelayedHandle("HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\r\nhello");
+        $reader = new IO\Reader($handle);
+
+        static::assertSame('HTTP/1.1 200 OK', $reader->readLine());
+        static::assertSame('Content-Length: 5', $reader->readLine());
+        static::assertSame('', $reader->readLine());
+        static::assertSame('hello', $reader->readLine());
+        static::assertNull($reader->readLine());
+    }
+
+    public function testReadLineWithMultipleDelayedReads(): void
+    {
+        $handle = new DelayedHandle("first\nsecond\n", 3);
+        $reader = new IO\Reader($handle);
+
+        static::assertSame('first', $reader->readLine());
+        static::assertSame('second', $reader->readLine());
+        static::assertNull($reader->readLine());
+    }
+
+    public function testReadUntilWithDelayedHandle(): void
+    {
+        $handle = new DelayedHandle("header\r\n\r\nbody");
+        $reader = new IO\Reader($handle);
+
+        static::assertSame('header', $reader->readUntil("\r\n\r\n"));
+        static::assertSame('body', $reader->readAll());
+    }
+
+    public function testReadUntilBoundedWithDelayedHandle(): void
+    {
+        $handle = new DelayedHandle('short:end rest');
+        $reader = new IO\Reader($handle);
+
+        static::assertSame('short', $reader->readUntilBounded(':end', 100));
+        static::assertSame(' rest', $reader->readAll());
+    }
 }
