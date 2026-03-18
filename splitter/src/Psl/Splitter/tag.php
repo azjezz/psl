@@ -48,29 +48,53 @@ function tag(MonolithicRepository $monorepo, Git $git, string $tag, string $bran
         $sha = Str\before($lsRemote, "\t") ?? $lsRemote;
 
         if ($token !== '') {
-            // Use GitHub API for verified tags
             $repo = Str\after($package->name, '/') ?? $package->name;
             $org = Str\before($package->name, '/') ?? 'php-standard-library';
+            $apiBase = Str\format('https://api.github.com/repos/%s/%s', $org, $repo);
 
-            $response = Http\post(
-                Str\format('https://api.github.com/repos/%s/%s/git/refs', $org, $repo),
+            $tagResponse = Http\post(
+                $apiBase . '/git/tags',
                 Json\encode([
-                    'ref' => 'refs/tags/' . $tag,
-                    'sha' => $sha,
+                    'tag' => $tag,
+                    'message' => $tag,
+                    'object' => $sha,
+                    'type' => 'commit',
                 ]),
                 $headers,
             );
 
-            if (!$response->isOk()) {
-                $body = Json\typed($response->body, Type\shape([
+            if (!$tagResponse->isOk()) {
+                $body = Json\typed($tagResponse->body, Type\shape([
                     'message' => Type\string(),
                 ], allowUnknownFields: true));
 
-                Log\error('%s tag failed: %s', $package->name, $body['message']);
+                Log\error('%s tag object failed: %s', $package->name, $body['message']);
+                return;
+            }
+
+            $tagSha = Json\typed($tagResponse->body, Type\shape([
+                'sha' => Type\non_empty_string(),
+            ], allowUnknownFields: true))['sha'];
+
+            $refResponse = Http\post(
+                $apiBase . '/git/refs',
+                Json\encode([
+                    'ref' => 'refs/tags/' . $tag,
+                    'sha' => $tagSha,
+                ]),
+                $headers,
+            );
+
+            if (!$refResponse->isOk()) {
+                $body = Json\typed($refResponse->body, Type\shape([
+                    'message' => Type\string(),
+                ], allowUnknownFields: true));
+
+                Log\error('%s tag ref failed: %s', $package->name, $body['message']);
                 return;
             }
         } else {
-            // Fallback to git push when no token available
+            Log\warn('github token not set, falling back to `git push`');
             $git->tagRemote($repoUrl, $tag, $branch);
         }
 

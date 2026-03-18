@@ -118,13 +118,11 @@ function release_command(string $root, array $args): never
 
     $monorepo = MonolithicRepository::discover($root);
 
-    \Psl\Async\main(static function () use ($monorepo, $root, $tagName): int {
-        release($monorepo, new Git($root), $tagName);
+    release($monorepo, new Git($root), $tagName);
 
-        IO\write_error_line('');
+    IO\write_error_line('');
 
-        return 0;
-    });
+    exit(0);
 }
 
 /**
