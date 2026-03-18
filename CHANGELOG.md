@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.0.1
+
+- fix(io): `Reader::readUntil()` and `Reader::readUntilBounded()` no longer treat empty reads from non-blocking streams as EOF, fixing `readLine()` returning the entire content instead of individual lines when used with non-blocking streams
+- fix(docs): source links now correctly point to `packages/{name}/src/Psl/` instead of the non-existent top-level `src/Psl/` path
+- internal: add `splitter audit` command to verify organization repository settings (wiki, issues, discussions, PRs, tag immutability).
+
 ## 6.0.0
 
 ### breaking changes
