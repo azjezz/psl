@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.1.0
+
+### features
+
+- feat(io): introduce `Psl\IO\BufferedWriteHandleInterface`, extending `WriteHandleInterface` with `flush()` for handles that buffer data internally before writing to an underlying resource
+
 ## 6.0.1
 
 - fix(io): `Reader::readUntil()` and `Reader::readUntilBounded()` no longer treat empty reads from non-blocking streams as EOF, fixing `readLine()` returning the entire content instead of individual lines when used with non-blocking streams

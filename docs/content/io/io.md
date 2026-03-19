@@ -7,12 +7,18 @@ The `IO` component provides handle-based I/O abstractions. Instead of reaching f
 Handles are defined as narrow interfaces, each describing a single capability:
 
 - **`ReadHandleInterface`** -- read bytes, check for EOF
-- **`BufferedReadHandleInterface`** -- extends `ReadHandleInterface` with `readByte()`, `readLine()`, `readUntil()`, and `readUntilBounded()`
 - **`WriteHandleInterface`** -- write bytes
 - **`SeekHandleInterface`** -- move the cursor position
 - **`CloseHandleInterface`** -- explicitly close the handle, check if closed via `isClosed()`
 
-A concrete handle implements whichever combination applies. For example, a file handle implements all four, while a network socket implements read, write, and close but not seek.
+A concrete handle implements whichever combination applies. For example, a file handle implements read, write, seek, and close, while a network socket implements read, write, and close but not seek.
+
+### Buffered Interfaces
+
+Two higher-level interfaces extend the base read and write interfaces for handles that buffer data internally:
+
+- **`BufferedReadHandleInterface`** -- extends `ReadHandleInterface` with `readByte()`, `readLine()`, `readUntil()`, and `readUntilBounded()`. Implemented by `Reader`.
+- **`BufferedWriteHandleInterface`** -- extends `WriteHandleInterface` with `flush()` for explicitly flushing buffered output. Useful for decorators like compression handles that accumulate data before writing.
 
 ## Quick Output
 
