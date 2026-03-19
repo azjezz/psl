@@ -48,6 +48,7 @@ const SLUG_TO_PACKAGE = [
     'class' => 'php-standard-library/class',
     'collection' => 'php-standard-library/collection',
     'comparison' => 'php-standard-library/comparison',
+    'compression' => 'php-standard-library/compression',
     'crypto' => 'php-standard-library/crypto',
     'data-structure' => 'php-standard-library/data-structure',
     'date-time' => 'php-standard-library/date-time',

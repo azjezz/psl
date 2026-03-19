@@ -36,6 +36,7 @@ function verify(array $packages): bool
         'Class' => 'class',
         'Collection' => 'collection',
         'Comparison' => 'comparison',
+        'Compression' => 'compression',
         'Crypto' => 'crypto',
         'DataStructure' => 'data-structure',
         'DateTime' => 'date-time',
