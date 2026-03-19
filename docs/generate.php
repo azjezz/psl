@@ -43,6 +43,7 @@ const SLUG_TO_PACKAGE = [
     'ansi' => 'php-standard-library/ansi',
     'async' => 'php-standard-library/async',
     'binary' => 'php-standard-library/binary',
+    'cache' => 'php-standard-library/cache',
     'channel' => 'php-standard-library/channel',
     'cidr' => 'php-standard-library/cidr',
     'class' => 'php-standard-library/class',

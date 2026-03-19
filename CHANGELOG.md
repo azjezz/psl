@@ -8,6 +8,7 @@
 - feat: introduce `Compression` component with streaming compression/decompression abstractions for IO handles. Provides `CompressorInterface`, `DecompressorInterface`, four handle decorators (`CompressingReadHandle`, `CompressingWriteHandle`, `DecompressingReadHandle`, `DecompressingWriteHandle`), and convenience functions `compress()` and `decompress()`
 - feat: introduce `HPACK` component - RFC 7541 HPACK header compression for HTTP/2
 - feat: introduce `H2` component - HTTP/2 binary framing protocol implementation
+- feat: introduce `Cache` component - async-safe in-memory LRU cache with per-key atomicity via `KeyedSequence`, proactive TTL expiration via event loop
 
 ## 6.0.1
 
