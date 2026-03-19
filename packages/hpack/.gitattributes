@@ -1,0 +1,3 @@
+/tests                          export-ignore
+/.gitattributes                 export-ignore
+/tests/fixture/hpack-test-case  linguist-vendored

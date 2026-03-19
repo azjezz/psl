@@ -50,6 +50,7 @@ function verify(array $packages): bool
         'Fun' => 'fun',
         'Graph' => 'graph',
         'Hash' => 'hash',
+        'HPACK' => 'hpack',
         'Html' => 'html',
         'Interface' => 'interface',
         'Interoperability' => 'interoperability',

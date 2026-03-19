@@ -1,0 +1,63 @@
+{
+  "context" : "request",
+  "cases" : [
+    {
+      "wire" : "8286410b7961686f6f2e636f2e6a7084",
+      "seqno" : 0,
+      "headers" : [
+        {
+          ":method" : "GET"
+        },
+        {
+          ":scheme" : "http"
+        },
+        {
+          ":authority" : "yahoo.co.jp"
+        },
+        {
+          ":path" : "\/"
+        }
+      ],
+      "header_table_size" : null
+    },
+    {
+      "wire" : "8286410f7777772e7961686f6f2e636f2e6a7084",
+      "seqno" : 1,
+      "headers" : [
+        {
+          ":method" : "GET"
+        },
+        {
+          ":scheme" : "http"
+        },
+        {
+          ":authority" : "www.yahoo.co.jp"
+        },
+        {
+          ":path" : "\/"
+        }
+      ],
+      "header_table_size" : null
+    },
+    {
+      "wire" : "828641096b2e79696d672e6a7044262f696d616765732f746f702f7370322f636d6e2f6c6f676f2d6e732d3133303532382e706e67",
+      "seqno" : 2,
+      "headers" : [
+        {
+          ":method" : "GET"
+        },
+        {
+          ":scheme" : "http"
+        },
+        {
+          ":authority" : "k.yimg.jp"
+        },
+        {
+          ":path" : "\/images\/top\/sp2\/cmn\/logo-ns-130528.png"
+        }
+      ],
+      "header_table_size" : null
+    }
+  ],
+  "description" : "Encoded using the HPACK implementation of swift-nio-http2, with static table, dynamic table, and plain-text encoded strings: <https:\/\/github.com\/apple\/swift-nio-http2>"
+}

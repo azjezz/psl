@@ -62,6 +62,7 @@ const SLUG_TO_PACKAGE = [
     'fun' => 'php-standard-library/fun',
     'graph' => 'php-standard-library/graph',
     'hash' => 'php-standard-library/hash',
+    'hpack' => 'php-standard-library/hpack',
     'html' => 'php-standard-library/html',
     'interface' => 'php-standard-library/interface',
     'interoperability' => 'php-standard-library/interoperability',
