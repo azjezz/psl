@@ -1,0 +1,59 @@
+{
+  "context" : "request",
+  "cases" : [
+    {
+      "wire" : "8741882f91d35d055c87a784827a879eb193aac92a136087f3e7cf9f3e7c874086f2b4e5a283ff84f07b2893",
+      "seqno" : 0,
+      "headers" : [
+        {
+          ":scheme" : "https"
+        },
+        {
+          ":authority" : "example.com"
+        },
+        {
+          ":path" : "\/"
+        },
+        {
+          ":method" : "GET"
+        },
+        {
+          "user-agent" : "hpack-test"
+        },
+        {
+          "cookie" : "xxxxxxx1"
+        },
+        {
+          "x-hello" : "world"
+        }
+      ],
+      "header_table_size" : null
+    },
+    {
+      "wire" : "87c18482c06087f3e7cf9f3e7c8b",
+      "seqno" : 1,
+      "headers" : [
+        {
+          ":scheme" : "https"
+        },
+        {
+          ":authority" : "example.com"
+        },
+        {
+          ":path" : "\/"
+        },
+        {
+          ":method" : "GET"
+        },
+        {
+          "user-agent" : "hpack-test"
+        },
+        {
+          "cookie" : "xxxxxxx2"
+        }
+      ],
+      "header_table_size" : null
+    }
+  ],
+  "description" : "Encoded using the HPACK implementation of swift-nio-http2, with static table, dynamic table, and huffman encoded strings: <https:\/\/github.com\/apple\/swift-nio-http2>"
+}

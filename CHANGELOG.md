@@ -6,6 +6,7 @@
 
 - feat(io): introduce `Psl\IO\BufferedWriteHandleInterface`, extending `WriteHandleInterface` with `flush()` for handles that buffer data internally before writing to an underlying resource
 - feat: introduce `Compression` component with streaming compression/decompression abstractions for IO handles. Provides `CompressorInterface`, `DecompressorInterface`, four handle decorators (`CompressingReadHandle`, `CompressingWriteHandle`, `DecompressingReadHandle`, `DecompressingWriteHandle`), and convenience functions `compress()` and `decompress()`
+- feat: introduce `HPACK` component - RFC 7541 HPACK header compression for HTTP/2
 
 ## 6.0.1
 

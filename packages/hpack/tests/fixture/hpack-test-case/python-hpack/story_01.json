@@ -1,0 +1,56 @@
+{
+  "cases": [
+    {
+      "headers": [
+        {
+          ":scheme": "https"
+        },
+        {
+          ":authority": "example.com"
+        },
+        {
+          ":path": "/"
+        },
+        {
+          ":method": "GET"
+        },
+        {
+          "user-agent": "hpack-test"
+        },
+        {
+          "cookie": "xxxxxxx1"
+        },
+        {
+          "x-hello": "world"
+        }
+      ],
+      "seqno": 0,
+      "wire": "8741882f91d35d055c87a784827a879eb193aac92a136087f3e7cf9f3e7c874086f2b4e5a283ff84f07b2893"
+    },
+    {
+      "headers": [
+        {
+          ":scheme": "https"
+        },
+        {
+          ":authority": "example.com"
+        },
+        {
+          ":path": "/"
+        },
+        {
+          ":method": "GET"
+        },
+        {
+          "user-agent": "hpack-test"
+        },
+        {
+          "cookie": "xxxxxxx2"
+        }
+      ],
+      "seqno": 1,
+      "wire": "87c18482c06087f3e7cf9f3e7c8b"
+    }
+  ],
+  "description": "Encoded headers produced by the Python HPACK library, version 2.3.0"
+}
