@@ -69,7 +69,6 @@ final class LocalStoreTest extends TestCase
         $store = new LocalStore();
         $store->delete('nonexistent');
 
-        // No exception - just a no-op
         static::addToAssertionCount(1);
     }
 
@@ -160,10 +159,8 @@ final class LocalStoreTest extends TestCase
 
         static::assertSame('v1', $store->get('key'));
 
-        // Wait for expiration
         Async\sleep(Duration::milliseconds(200));
 
-        // compute again - should call computer since expired
         $value = $store->compute(
             'key',
             static function () use (&$calls): string {
@@ -283,5 +280,292 @@ final class LocalStoreTest extends TestCase
 
         $this->expectException(UnavailableItemException::class);
         $store->get('b');
+    }
+
+    public function testDefaultMaxSizeIsExactly1000(): void
+    {
+        $store = new LocalStore();
+
+        for ($i = 1; $i <= 1000; $i++) {
+            $store->compute('key' . $i, static fn() => $i);
+        }
+
+        static::assertSame(1, $store->get('key1'));
+        static::assertSame(1000, $store->get('key1000'));
+
+        $store->compute('key1001', static fn() => 1001);
+
+        static::assertSame(1001, $store->get('key1001'));
+
+        $this->expectException(UnavailableItemException::class);
+        $store->get('key2');
+    }
+
+    public function testLruOrderIsTrackedOnCacheHit(): void
+    {
+        $store = new LocalStore(maxSize: 3);
+
+        $store->compute('a', static fn(): string => 'A');
+        $store->compute('b', static fn(): string => 'B');
+        $store->compute('c', static fn(): string => 'C');
+
+        $store->compute('a', static fn(): string => 'should not be called');
+
+        $store->compute('d', static fn(): string => 'D');
+
+        static::assertSame('A', $store->get('a'));
+        static::assertSame('C', $store->get('c'));
+        static::assertSame('D', $store->get('d'));
+
+        $this->expectException(UnavailableItemException::class);
+        $store->get('b');
+    }
+
+    public function testHasTtlEntriesActivatesCleanupTimer(): void
+    {
+        $store = new LocalStore(cleanupInterval: Duration::milliseconds(50));
+
+        $store->compute('permanent', static fn(): string => 'stays');
+        $store->compute('expires', static fn(): string => 'goes', Duration::milliseconds(80));
+
+        static::assertSame('goes', $store->get('expires'));
+
+        Async\sleep(Duration::milliseconds(200));
+
+        static::assertSame('stays', $store->get('permanent'));
+
+        $this->expectException(UnavailableItemException::class);
+        $store->get('expires');
+    }
+
+    public function testCleanupTimerIsEnabledAfterTtlEntry(): void
+    {
+        $store = new LocalStore(cleanupInterval: Duration::milliseconds(50));
+
+        $store->compute('short', static fn(): string => 'a', Duration::milliseconds(60));
+        $store->compute('long', static fn(): string => 'b', Duration::milliseconds(300));
+
+        Async\sleep(Duration::milliseconds(150));
+
+        static::assertSame('b', $store->get('long'));
+
+        $this->expectException(UnavailableItemException::class);
+        $store->get('short');
+    }
+
+    public function testCleanupTimerDisablesWhenNoTtlEntriesRemain(): void
+    {
+        $store = new LocalStore(cleanupInterval: Duration::milliseconds(50));
+
+        $store->compute('temp', static fn(): string => 'val', Duration::milliseconds(60));
+
+        Async\sleep(Duration::milliseconds(200));
+
+        $store->compute('permanent', static fn(): string => 'stays');
+
+        Async\sleep(Duration::milliseconds(150));
+        static::assertSame('stays', $store->get('permanent'));
+
+        $store->compute('temp2', static fn(): string => 'val2', Duration::milliseconds(60));
+        static::assertSame('val2', $store->get('temp2'));
+
+        Async\sleep(Duration::milliseconds(200));
+
+        $this->expectException(UnavailableItemException::class);
+        $store->get('temp2');
+    }
+
+    public function testSweepRemovesExpiredEntries(): void
+    {
+        $store = new LocalStore(maxSize: 5, cleanupInterval: Duration::milliseconds(50));
+
+        $store->compute('a', static fn(): string => 'A', Duration::milliseconds(60));
+        $store->compute('b', static fn(): string => 'B', Duration::milliseconds(60));
+        $store->compute('c', static fn(): string => 'C', Duration::milliseconds(60));
+
+        Async\sleep(Duration::milliseconds(200));
+
+        $store->compute('d', static fn(): string => 'D');
+        $store->compute('e', static fn(): string => 'E');
+        $store->compute('f', static fn(): string => 'F');
+        $store->compute('g', static fn(): string => 'G');
+        $store->compute('h', static fn(): string => 'H');
+
+        static::assertSame('D', $store->get('d'));
+        static::assertSame('H', $store->get('h'));
+    }
+
+    public function testTimerStaysActiveWhileTtlEntriesRemain(): void
+    {
+        $store = new LocalStore(cleanupInterval: Duration::milliseconds(50));
+
+        $store->compute('short', static fn(): string => 'A', Duration::milliseconds(60));
+        $store->compute('long', static fn(): string => 'B', Duration::milliseconds(300));
+
+        Async\sleep(Duration::milliseconds(150));
+
+        $caught = false;
+        try {
+            $store->get('short');
+        } catch (UnavailableItemException) {
+            $caught = true;
+        }
+
+        static::assertTrue($caught, 'short-lived entry should have expired');
+
+        static::assertSame('B', $store->get('long'));
+
+        Async\sleep(Duration::milliseconds(250));
+
+        $this->expectException(UnavailableItemException::class);
+        $store->get('long');
+    }
+
+    public function testCustomCleanupIntervalIsRespected(): void
+    {
+        $store = new LocalStore(cleanupInterval: Duration::milliseconds(40));
+
+        $store->compute('key', static fn(): string => 'val', Duration::milliseconds(50));
+
+        Async\sleep(Duration::milliseconds(150));
+
+        $this->expectException(UnavailableItemException::class);
+        $store->get('key');
+    }
+
+    public function testDefaultCleanupIntervalIsThreeSeconds(): void
+    {
+        $store = new LocalStore();
+
+        $store->compute('key', static fn(): string => 'val', Duration::milliseconds(50));
+
+        Async\sleep(Duration::milliseconds(200));
+
+        $this->expectException(UnavailableItemException::class);
+        $store->get('key');
+    }
+
+    public function testGetErrorMessageContainsKey(): void
+    {
+        $store = new LocalStore();
+
+        try {
+            $store->get('my-special-key');
+            static::fail('Expected UnavailableItemException');
+        } catch (UnavailableItemException $e) {
+            static::assertSame('No cache entry for key "my-special-key".', $e->getMessage());
+        }
+    }
+
+    public function testDeleteWaitsForPendingCompute(): void
+    {
+        $store = new LocalStore();
+        $computed = false;
+
+        $results = Async\concurrently([
+            'compute' => static function () use ($store, &$computed): string {
+                return $store->compute('key', static function () use (&$computed): string {
+                    Async\sleep(Duration::milliseconds(50));
+                    $computed = true;
+                    return 'value';
+                });
+            },
+            'delete' => static function () use ($store): void {
+                Async\sleep(Duration::milliseconds(10));
+                $store->delete('key');
+            },
+        ]);
+
+        static::assertTrue($computed);
+
+        $this->expectException(UnavailableItemException::class);
+        $store->get('key');
+    }
+
+    public function testSizeTrackingAfterDelete(): void
+    {
+        $store = new LocalStore(maxSize: 3);
+
+        $store->compute('a', static fn(): string => 'A');
+        $store->compute('b', static fn(): string => 'B');
+        $store->compute('c', static fn(): string => 'C');
+
+        $store->delete('b');
+
+        $store->compute('d', static fn(): string => 'D');
+
+        static::assertSame('A', $store->get('a'));
+        static::assertSame('C', $store->get('c'));
+        static::assertSame('D', $store->get('d'));
+    }
+
+    public function testSweepKeepsUnexpiredAndRemovesExpired(): void
+    {
+        $store = new LocalStore(cleanupInterval: Duration::milliseconds(50));
+
+        $store->compute('expire1', static fn(): string => 'A', Duration::milliseconds(60));
+        $store->compute('expire2', static fn(): string => 'B', Duration::milliseconds(60));
+        $store->compute('keep', static fn(): string => 'C', Duration::milliseconds(500));
+        $store->compute('permanent', static fn(): string => 'D');
+
+        Async\sleep(Duration::milliseconds(200));
+
+        static::assertSame('C', $store->get('keep'));
+        static::assertSame('D', $store->get('permanent'));
+
+        $caught1 = false;
+        try {
+            $store->get('expire1');
+        } catch (UnavailableItemException) {
+            $caught1 = true;
+        }
+
+        static::assertTrue($caught1, 'expire1 should have been swept');
+
+        $caught2 = false;
+        try {
+            $store->get('expire2');
+        } catch (UnavailableItemException) {
+            $caught2 = true;
+        }
+
+        static::assertTrue($caught2, 'expire2 should have been swept');
+    }
+
+    public function testSizeIsCorrectAfterSweepRemovesEntries(): void
+    {
+        $store = new LocalStore(maxSize: 4, cleanupInterval: Duration::milliseconds(50));
+
+        $store->compute('a', static fn(): string => 'A', Duration::milliseconds(60));
+        $store->compute('b', static fn(): string => 'B', Duration::milliseconds(60));
+        $store->compute('c', static fn(): string => 'C', Duration::milliseconds(60));
+        $store->compute('d', static fn(): string => 'D', Duration::milliseconds(60));
+
+        Async\sleep(Duration::milliseconds(200));
+
+        $store->compute('e', static fn(): string => 'E');
+        $store->compute('f', static fn(): string => 'F');
+        $store->compute('g', static fn(): string => 'G');
+        $store->compute('h', static fn(): string => 'H');
+
+        static::assertSame('E', $store->get('e'));
+        static::assertSame('F', $store->get('f'));
+        static::assertSame('G', $store->get('g'));
+        static::assertSame('H', $store->get('h'));
+    }
+
+    public function testDeleteTtlEntryDecrementsSize(): void
+    {
+        $store = new LocalStore(maxSize: 2);
+
+        $store->compute('a', static fn(): string => 'A', Duration::milliseconds(500));
+        $store->compute('b', static fn(): string => 'B');
+
+        $store->delete('a');
+
+        $store->compute('c', static fn(): string => 'C');
+
+        static::assertSame('B', $store->get('b'));
+        static::assertSame('C', $store->get('c'));
     }
 }

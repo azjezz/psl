@@ -241,4 +241,160 @@ final class RateLimiterTest extends TestCase
             static::assertStringContainsString('Rate limit exceeded for frame type', $e->getMessage());
         }
     }
+
+    public function testDefaultDurationsAreExactlyTenSeconds(): void
+    {
+        $limiter = RateLimiter::default();
+        for ($i = 0; $i < 100; $i++) {
+            $limiter->record(FrameType::Settings->value);
+        }
+
+        $caught = false;
+        try {
+            $limiter->record(FrameType::Settings->value);
+        } catch (ProtocolException) {
+            $caught = true;
+        }
+
+        static::assertTrue($caught, 'Settings limit should be exactly 100');
+
+        $limiter2 = RateLimiter::default();
+        for ($i = 0; $i < 50; $i++) {
+            $limiter2->record(FrameType::Ping->value);
+        }
+
+        $caught = false;
+        try {
+            $limiter2->record(FrameType::Ping->value);
+        } catch (ProtocolException) {
+            $caught = true;
+        }
+
+        static::assertTrue($caught, 'Ping limit should be exactly 50');
+
+        $limiter3 = RateLimiter::default();
+        for ($i = 0; $i < 100; $i++) {
+            $limiter3->record(FrameType::RstStream->value);
+        }
+
+        $caught = false;
+        try {
+            $limiter3->record(FrameType::RstStream->value);
+        } catch (ProtocolException) {
+            $caught = true;
+        }
+
+        static::assertTrue($caught, 'RstStream limit should be exactly 100');
+
+        $limiter4 = RateLimiter::default();
+        for ($i = 0; $i < 100; $i++) {
+            $limiter4->record(FrameType::Priority->value);
+        }
+
+        $caught = false;
+        try {
+            $limiter4->record(FrameType::Priority->value);
+        } catch (ProtocolException) {
+            $caught = true;
+        }
+
+        static::assertTrue($caught, 'Priority limit should be exactly 100');
+
+        $limiter5 = RateLimiter::default();
+        for ($i = 0; $i < 100; $i++) {
+            $limiter5->record(RateLimiter::EMPTY_DATA_FRAME);
+        }
+
+        $caught = false;
+        try {
+            $limiter5->record(RateLimiter::EMPTY_DATA_FRAME);
+        } catch (ProtocolException) {
+            $caught = true;
+        }
+
+        static::assertTrue($caught, 'Empty DATA limit should be exactly 100');
+    }
+
+    public function testWindowResetsAtExactBoundary(): void
+    {
+        $limiter = new RateLimiter([
+            FrameType::Ping->value => [2, DateTime\Duration::milliseconds(1)],
+        ]);
+
+        $limiter->record(FrameType::Ping->value);
+        $limiter->record(FrameType::Ping->value);
+
+        usleep(2000); // 2ms to be safe
+
+        $limiter->record(FrameType::Ping->value);
+        $limiter->record(FrameType::Ping->value);
+
+        $this->expectException(ProtocolException::class);
+        $limiter->record(FrameType::Ping->value);
+    }
+
+    public function testCounterResetsToZero(): void
+    {
+        $limiter = new RateLimiter([
+            FrameType::Ping->value => [3, DateTime\Duration::milliseconds(1)],
+        ]);
+
+        $limiter->record(FrameType::Ping->value);
+        $limiter->record(FrameType::Ping->value);
+        $limiter->record(FrameType::Ping->value);
+
+        usleep(2000);
+
+        $limiter->record(FrameType::Ping->value);
+        $limiter->record(FrameType::Ping->value);
+        $limiter->record(FrameType::Ping->value);
+
+        $this->expectException(ProtocolException::class);
+        $limiter->record(FrameType::Ping->value);
+    }
+
+    public function testErrorMessageForSettings(): void
+    {
+        $limiter = new RateLimiter([
+            FrameType::Settings->value => [1, DateTime\Duration::seconds(10)],
+        ]);
+
+        $limiter->record(FrameType::Settings->value);
+
+        try {
+            $limiter->record(FrameType::Settings->value);
+            static::fail('Expected exception');
+        } catch (ProtocolException $e) {
+            static::assertStringContainsString('Rate limit exceeded for frame type', $e->getMessage());
+            static::assertStringContainsString('Settings', $e->getMessage());
+        }
+    }
+
+    public function testErrorMessageForEmptyData(): void
+    {
+        $limiter = new RateLimiter([
+            RateLimiter::EMPTY_DATA_FRAME => [1, DateTime\Duration::seconds(10)],
+        ]);
+
+        $limiter->record(RateLimiter::EMPTY_DATA_FRAME);
+
+        try {
+            $limiter->record(RateLimiter::EMPTY_DATA_FRAME);
+            static::fail('Expected exception');
+        } catch (ProtocolException $e) {
+            static::assertStringContainsString('Rate limit exceeded for empty DATA frames', $e->getMessage());
+        }
+    }
+
+    public function testCounterInitializesToZero(): void
+    {
+        $limiter = new RateLimiter([
+            FrameType::Ping->value => [1, DateTime\Duration::seconds(10)],
+        ]);
+
+        $limiter->record(FrameType::Ping->value);
+
+        $this->expectException(ProtocolException::class);
+        $limiter->record(FrameType::Ping->value);
+    }
 }

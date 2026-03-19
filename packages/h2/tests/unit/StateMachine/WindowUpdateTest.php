@@ -5,16 +5,21 @@ declare(strict_types=1);
 namespace Psl\H2\Tests\Unit\StateMachine;
 
 use PHPUnit\Framework\TestCase;
+use Psl\H2\ErrorCode;
 use Psl\H2\Event\WindowUpdated;
 use Psl\H2\Exception\FrameDecodingException;
 use Psl\H2\Frame;
 use Psl\H2\Frame\FrameType;
+use Psl\H2\Frame\GoAwayFrame;
 use Psl\H2\Frame\HeadersFrame;
 use Psl\H2\Frame\RawFrame;
+use Psl\H2\Frame\RstStreamFrame;
 use Psl\H2\Frame\WindowUpdateFrame;
 use Psl\H2\Internal\StateMachine;
 use Psl\HPACK\Encoder;
 use Psl\HPACK\Header;
+
+use const Psl\H2\MAX_WINDOW_SIZE;
 
 final class WindowUpdateTest extends TestCase
 {
@@ -132,5 +137,52 @@ final class WindowUpdateTest extends TestCase
         static::assertInstanceOf(WindowUpdated::class, $events[0]);
         static::assertSame($streamId, $events[0]->streamId);
         static::assertSame(2000, $events[0]->increment);
+    }
+
+    public function testConnectionLevelWindowOverflowReturnsGoAway(): void
+    {
+        $sm = new StateMachine(false);
+        $sm->initialize();
+
+        $raw = new WindowUpdateFrame(0, MAX_WINDOW_SIZE)->toRaw();
+        [$responseFrames, $events] = $sm->receive($raw);
+
+        static::assertCount(1, $responseFrames);
+        $goaway = GoAwayFrame::fromRaw($responseFrames[0]);
+        static::assertSame(ErrorCode::FlowControlError->value, $goaway->errorCode);
+        static::assertSame([], $events);
+    }
+
+    public function testStreamLevelWindowOverflowReturnsRstStream(): void
+    {
+        $sm = new StateMachine(false);
+        $sm->initialize();
+
+        $encoder = new Encoder();
+        $block = $encoder->encode([
+            new Header(':method', 'GET'),
+            new Header(':scheme', 'https'),
+            new Header(':path', '/'),
+        ]);
+        $sm->receive(new HeadersFrame(1, $block, false, true)->toRaw());
+
+        $raw = new WindowUpdateFrame(1, MAX_WINDOW_SIZE)->toRaw();
+        [$responseFrames, $_] = $sm->receive($raw);
+
+        static::assertCount(1, $responseFrames);
+        $rst = RstStreamFrame::fromRaw($responseFrames[0]);
+        static::assertSame(1, $rst->streamId);
+        static::assertSame(ErrorCode::FlowControlError, $rst->errorCode);
+    }
+
+    public function testConnectionWindowOverflowDoesNotThrow(): void
+    {
+        $sm = new StateMachine(false);
+        $sm->initialize();
+
+        $raw = new WindowUpdateFrame(0, MAX_WINDOW_SIZE)->toRaw();
+        [$responseFrames] = $sm->receive($raw);
+
+        static::assertNotEmpty($responseFrames);
     }
 }
