@@ -31,6 +31,7 @@ function verify(array $packages): bool
         'Ansi' => 'ansi',
         'Async' => 'async',
         'Binary' => 'binary',
+        'Cache' => 'cache',
         'Channel' => 'channel',
         'CIDR' => 'cidr',
         'Class' => 'class',
