@@ -1,0 +1,8 @@
+{
+    "error": [
+        1
+    ],
+    "wire": "000004030000000000AAAAAAAA",
+    "frame": null,
+    "description": "rst_stream frame with invalid stream identifier"
+}

@@ -1,0 +1,8 @@
+{
+    "error": [
+        1
+    ],
+    "wire": "00000405000000000077777777",
+    "frame": null,
+    "description": "push_promise frame with invalid stream identifier"
+}

@@ -1,0 +1,23 @@
+{
+    "error": null,
+    "wire": "00000C040000000000000100002000000300001388",
+    "frame": {
+        "length": 12,
+        "frame_payload": {
+            "settings": [
+                [
+                    1,
+                    8192
+                ],
+                [
+                    3,
+                    5000
+                ]
+            ]
+        },
+        "flags": 0,
+        "stream_identifier": 0,
+        "type": 4
+    },
+    "description": "normal rst stream frame"
+}

@@ -1,0 +1,8 @@
+{
+    "error": [
+        1
+    ],
+    "wire": "000008060100000001AAAAAAAAAAAAAAAA",
+    "frame": null,
+    "description": "ping frame with invalid stream identifier"
+}

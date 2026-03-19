@@ -1,0 +1,16 @@
+{
+    "error": null,
+    "wire": "0000170700000000000000001E00000009687061636B2069732062726F6B656E",
+    "frame": {
+        "length": 23,
+        "frame_payload": {
+            "error_code": 9,
+            "additional_debug_data": "hpack is broken",
+            "last_stream_id": 30
+        },
+        "flags": 0,
+        "stream_identifier": 0,
+        "type": 7
+    },
+    "description": "normal goaway frame"
+}

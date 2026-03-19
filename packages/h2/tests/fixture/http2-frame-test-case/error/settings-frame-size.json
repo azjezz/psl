@@ -1,0 +1,8 @@
+{
+    "error": [
+        6
+    ],
+    "wire": "000008040000000000AAAABBBBBBBBCCCC",
+    "frame": null,
+    "description": "settings frame of an invalid length"
+}

@@ -1,0 +1,8 @@
+{
+    "error": [
+        1
+    ],
+    "wire": "00000401080000000104AAAAAA",
+    "frame": null,
+    "description": "headers frame with invalid amount of padding"
+}

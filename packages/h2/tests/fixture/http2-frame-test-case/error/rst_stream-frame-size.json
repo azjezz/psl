@@ -1,0 +1,8 @@
+{
+    "error": [
+        6
+    ],
+    "wire": "000008030000000002AAAAAAAABBBBBBBB",
+    "frame": null,
+    "description": "rst_stream frame of an invalid length"
+}

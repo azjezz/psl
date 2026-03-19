@@ -1,0 +1,8 @@
+{
+    "error": [
+        6
+    ],
+    "wire": "000004060000000000AAAAAAAA",
+    "frame": null,
+    "description": "ping frame of an invalid length"
+}

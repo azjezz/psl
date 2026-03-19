@@ -1,0 +1,8 @@
+{
+    "error": [
+        6
+    ],
+    "wire": "000006040100000000AAAABBBBBBBB",
+    "frame": null,
+    "description": "settings ack frame of an invalid length"
+}

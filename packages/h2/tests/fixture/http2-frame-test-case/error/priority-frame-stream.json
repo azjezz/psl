@@ -1,0 +1,8 @@
+{
+    "error": [
+        1
+    ],
+    "wire": "000005020000000000AAAAAAAABB",
+    "frame": null,
+    "description": "priority frame with invalid stream identifier"
+}

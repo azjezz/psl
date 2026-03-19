@@ -1,0 +1,9 @@
+{
+    "error": [
+        1,
+        6
+    ],
+    "wire": "00000405080000000104AAAAAA",
+    "frame": null,
+    "description": "push_promise frame with invalid amount of padding"
+}

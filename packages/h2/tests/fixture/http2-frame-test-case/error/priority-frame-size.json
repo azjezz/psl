@@ -1,0 +1,8 @@
+{
+    "error": [
+        6
+    ],
+    "wire": "00000802000000000280000001FFAAAAAA",
+    "frame": null,
+    "description": "priority frame of an invalid length"
+}
