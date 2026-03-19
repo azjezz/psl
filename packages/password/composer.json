@@ -49,7 +49,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-next": "6.0.x-dev"
+            "dev-next": "6.1.x-dev"
         }
     }
 }
