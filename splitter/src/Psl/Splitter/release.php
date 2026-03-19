@@ -7,6 +7,7 @@ namespace Psl\Splitter;
 use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
+use Psl\Async\Exception\CompositeException;
 use Psl\IO;
 use Psl\Shell;
 use RuntimeException;
@@ -19,12 +20,12 @@ use RuntimeException;
  *
  * @throws Shell\Exception\FailedExecutionException If a git operation fails.
  * @throws RuntimeException If a branch is not found on a remote.
+ * @throws CompositeException If splitting, or creating releases fails.
  */
 function release(MonolithicRepository $monorepo, Git $git, string $releaseTag): void
 {
     $branch = MonolithicRepository::branchForTag($releaseTag);
 
-    // Step 0: for patch releases, ensure the maintenance branch is in sync with the tag
     if ($branch !== 'next') {
         IO\write_error_line('');
         Log\info(
@@ -38,7 +39,6 @@ function release(MonolithicRepository $monorepo, Git $git, string $releaseTag): 
         Log\success('Branch %s synced to %s.', $branch, $releaseTag);
     }
 
-    // Step 1: sync all packages to the source branch
     IO\write_error_line('');
     Log\info('Syncing packages to branch %s...', Log\styled(
         $branch,
@@ -52,7 +52,6 @@ function release(MonolithicRepository $monorepo, Git $git, string $releaseTag): 
     IO\write_error_line('');
     Log\success('Synced %d packages to %s.', count($monorepo->packages), $branch);
 
-    // Step 2: tag all split repos
     IO\write_error_line('');
     Log\info(
         'Tagging %s on branch %s...',
@@ -66,7 +65,19 @@ function release(MonolithicRepository $monorepo, Git $git, string $releaseTag): 
     IO\write_error_line('');
     Log\success('Tagged %d packages with %s.', count($monorepo->packages), $releaseTag);
 
-    // Step 3: create maintenance branch if x.y.0
+    IO\write_error_line('');
+    Log\info('Creating releases for %s...', Log\styled(
+        $releaseTag,
+        Ansi\foreground(Color\bright_white()),
+        Style\bold(),
+    ));
+    IO\write_error_line('');
+
+    create_releases($monorepo, $releaseTag);
+
+    IO\write_error_line('');
+    Log\success('Created releases for %s.', $releaseTag);
+
     if (MonolithicRepository::isNewReleaseBranch($releaseTag)) {
         IO\write_error_line('');
         Log\info('Creating maintenance branch...');
