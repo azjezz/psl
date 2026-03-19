@@ -18,7 +18,7 @@ jobs:
           php-version: "8.5"
           ini-values: memory_limit=-1
           tools: composer:v2, cs2pr
-          extensions: bcmath, mbstring, intl, sodium, json
+          extensions: bcmath, mbstring, intl, sodium, json, brotli
 
       - uses: extractions/setup-just@v3
 
