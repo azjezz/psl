@@ -403,4 +403,28 @@ final class ContextTest extends TestCase
 
         static::assertSame($reference, $chunked);
     }
+
+    public function testKeystreamBufferSubstrCorrectness(): void
+    {
+        $keyBytes = SecureRandom\bytes(32);
+        $key = new StreamCipher\Key($keyBytes);
+        $iv = SecureRandom\bytes(16);
+
+        $ctx = new StreamCipher\Context($key, $iv, StreamCipher\Algorithm::Aes256Ctr);
+
+        $result = $ctx->apply('A');
+        static::assertSame(1, Byte\length($result), 'Applying 1 byte should produce exactly 1 byte of output');
+
+        $result2 = $ctx->apply('BC');
+        static::assertSame(2, Byte\length($result2), 'Applying 2 bytes should produce exactly 2 bytes of output');
+
+        // Verify correctness: single-pass vs byte-by-byte should match
+        $ctx2 = new StreamCipher\Context($key, $iv, StreamCipher\Algorithm::Aes256Ctr);
+        $singlePass = $ctx2->apply('ABC');
+        static::assertSame(
+            $singlePass,
+            $result . $result2,
+            'Byte-by-byte encryption must match single-pass encryption',
+        );
+    }
 }

@@ -291,4 +291,46 @@ final class LocaleTest extends TestCase
         $locale = Locale::default();
         static::assertSame(Locale::SerbianLatinSerbia, $locale);
     }
+
+    public function testLanguageIsLowercased(): void
+    {
+        locale_set_default('EN_US');
+        $locale = Locale::default();
+        static::assertSame(Locale::EnglishUnitedStates, $locale);
+
+        locale_set_default('FR_FR');
+        $locale = Locale::default();
+        static::assertSame(Locale::FrenchFrance, $locale);
+    }
+
+    public function testScriptIsUcfirsted(): void
+    {
+        locale_set_default('sr_cyrl');
+        $locale = Locale::default();
+        static::assertSame(Locale::SerbianCyrillic, $locale);
+
+        locale_set_default('sr_latn');
+        $locale = Locale::default();
+        static::assertSame(Locale::SerbianLatin, $locale);
+
+        // Also test with region
+        locale_set_default('sr_cyrl_RS');
+        $locale = Locale::default();
+        static::assertSame(Locale::SerbianCyrillicSerbia, $locale);
+    }
+
+    public function testRegionIsUppercased(): void
+    {
+        locale_set_default('en_us');
+        $locale = Locale::default();
+        static::assertSame(Locale::EnglishUnitedStates, $locale);
+
+        locale_set_default('fr_fr');
+        $locale = Locale::default();
+        static::assertSame(Locale::FrenchFrance, $locale);
+
+        locale_set_default('ar_tn');
+        $locale = Locale::default();
+        static::assertSame(Locale::ArabicTunisia, $locale);
+    }
 }

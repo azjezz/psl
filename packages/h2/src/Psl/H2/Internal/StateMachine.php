@@ -1247,7 +1247,11 @@ final class StateMachine
 
         $streamId = $rawFrame->streamId;
         if ($streamId === 0) {
-            $this->flowController->applyConnectionWindowUpdate($increment);
+            try {
+                $this->flowController->applyConnectionWindowUpdate($increment);
+            } catch (FlowControlException) {
+                return [[new GoAwayFrame(0, ErrorCode::FlowControlError->value, '')->toRaw()], []];
+            }
         } else {
             $stream = $this->streams->get($streamId);
             if ($stream !== null) {

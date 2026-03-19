@@ -784,4 +784,91 @@ final class EncoderTest extends TestCase
         static::assertSame(':status', $decoded[0]->name);
         static::assertSame('200', $decoded[0]->value);
     }
+
+    public function testEncodeWithStatusSizeCalculationExact(): void
+    {
+        $encoder = new Encoder(4096, 42);
+        $result = $encoder->encodeWithStatus('200', []);
+        static::assertNotSame('', $result);
+
+        $encoder2 = new Encoder(4096, 41);
+        $this->expectException(HeaderListSizeException::class);
+        $encoder2->encodeWithStatus('200', []);
+    }
+
+    public function testEncodeWithStatusSizeComparisonStrictGreaterThan(): void
+    {
+        $encoder = new Encoder(4096, 80);
+        $result = $encoder->encodeWithStatus('200', [new Header('x', '12345')]);
+        static::assertNotSame('', $result);
+
+        $encoder2 = new Encoder(4096, 79);
+        $this->expectException(HeaderListSizeException::class);
+        $encoder2->encodeWithStatus('200', [new Header('x', '12345')]);
+    }
+
+    public function testEncodeWithStatusIsNotSensitive(): void
+    {
+        $encoder = new Encoder();
+
+        $encoded = $encoder->encodeWithStatus('200', []);
+
+        static::assertSame(
+            0b1000_0000,
+            ord($encoded[0]) & 0b1000_0000,
+            ':status should be encoded as indexed (non-sensitive), not never-indexed',
+        );
+    }
+
+    public function testEncodeWithStatusAccumulatesTotalSize(): void
+    {
+        $encoder = new Encoder(4096, 150);
+
+        $this->expectException(HeaderListSizeException::class);
+        $encoder->encodeWithStatus('200', [
+            new Header('x-a', str_repeat('a', 20)),
+            new Header('x-b', str_repeat('b', 20)),
+        ]);
+    }
+
+    public function testEncodePendingTableSizeConcatenatesMinAndFinal(): void
+    {
+        $encoder = new Encoder();
+        $decoder = new Decoder();
+
+        $encoder->resize(10);
+        $encoder->resize(200);
+        $decoder->resize(200);
+
+        $encoded = $encoder->encodeWithStatus('200', []);
+
+        $decoded = $decoder->decode($encoded);
+        static::assertCount(1, $decoded);
+        static::assertSame(':status', $decoded[0]->name);
+        static::assertSame('200', $decoded[0]->value);
+
+        static::assertSame(0b0010_0000, ord($encoded[0]) & 0b1110_0000, 'First byte should be a table size update');
+    }
+
+    public function testNeverIndexedUnknownNameUsesLiteralEncoding(): void
+    {
+        $encoder = new Encoder();
+
+        $encoded = $encoder->encode([
+            new Header('x-completely-unknown-header', 'value', true),
+        ]);
+
+        static::assertSame(
+            "\x10",
+            $encoded[0],
+            'Unknown sensitive header name should produce literal never-indexed with zero index (0x10)',
+        );
+
+        $decoder = new Decoder();
+        $decoded = $decoder->decode($encoded);
+        static::assertCount(1, $decoded);
+        static::assertSame('x-completely-unknown-header', $decoded[0]->name);
+        static::assertSame('value', $decoded[0]->value);
+        static::assertTrue($decoded[0]->sensitive);
+    }
 }
