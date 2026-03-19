@@ -1,0 +1,8 @@
+{
+    "error": [
+        1
+    ],
+    "wire": "000001000000000000AA",
+    "frame": null,
+    "description": "data frame with invalid stream identifier"
+}

@@ -1,0 +1,8 @@
+{
+    "error": [
+        1
+    ],
+    "wire": "0000080700000000010000000200000003",
+    "frame": null,
+    "description": "goaway frame with invalid stream identifier"
+}

@@ -1,0 +1,65 @@
+{
+    "name": "php-standard-library/h2",
+    "description": "HTTP/2 binary framing protocol implementation",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "http2",
+        "h2",
+        "rfc7540",
+        "rfc9113",
+        "framing"
+    ],
+    "authors": [
+        {
+            "name": "Seifeddine Gmati",
+            "email": "azjezz@carthage.software"
+        },
+        {
+            "name": "Contributors",
+            "homepage": "https://github.com/php-standard-library/php-standard-library/graphs/contributors"
+        }
+    ],
+    "homepage": "https://php-standard-library.dev",
+    "require": {
+        "php": "~8.4.0 || ~8.5.0",
+        "php-standard-library/default": "^6.0",
+        "php-standard-library/foundation": "^6.0",
+        "php-standard-library/io": "^6.0",
+        "php-standard-library/date-time": "^6.0",
+        "php-standard-library/async": "^6.0",
+        "php-standard-library/hpack": "^6.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^13.0",
+        "php-standard-library/filesystem": "^6.0",
+        "php-standard-library/file": "^6.0",
+        "php-standard-library/type": "^6.0",
+        "php-standard-library/json": "^6.0",
+        "php-standard-library/network": "^6.0",
+        "php-standard-library/binary": "^6.0"
+    },
+    "conflict": {
+        "azjezz/psl": "*"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Psl\\H2\\": "src/Psl/H2/"
+        },
+        "files": [
+            "src/Psl/bootstrap.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Psl\\H2\\Tests\\Unit\\": "tests/unit/",
+            "Psl\\H2\\Tests\\Fixture\\": "tests/fixture/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-next": "6.1.x-dev"
+        }
+    }
+}

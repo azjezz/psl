@@ -1,0 +1,16 @@
+{
+    "error": null,
+    "wire": "0000140008000000020648656C6C6F2C20776F726C6421486F77647921",
+    "frame": {
+        "length": 20,
+        "frame_payload": {
+            "data": "Hello, world!",
+            "padding_length": 6,
+            "padding": "Howdy!"
+        },
+        "flags": 8,
+        "stream_identifier": 2,
+        "type": 0
+    },
+    "description": "normal data frame"
+}

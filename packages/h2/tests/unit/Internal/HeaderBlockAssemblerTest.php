@@ -1,0 +1,152 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\H2\Tests\Unit\Internal;
+
+use PHPUnit\Framework\TestCase;
+use Psl\H2\Exception\ProtocolException;
+use Psl\H2\Internal\HeaderBlockAssembler;
+
+final class HeaderBlockAssemblerTest extends TestCase
+{
+    public function testNotActiveByDefault(): void
+    {
+        $assembler = new HeaderBlockAssembler();
+
+        static::assertFalse($assembler->isActive());
+        static::assertNull($assembler->activeStreamId());
+    }
+
+    public function testStartHeaders(): void
+    {
+        $assembler = new HeaderBlockAssembler();
+        $assembler->startHeaders(1, 'fragment1', false);
+
+        static::assertTrue($assembler->isActive());
+        static::assertSame(1, $assembler->activeStreamId());
+    }
+
+    public function testAppendAndComplete(): void
+    {
+        $assembler = new HeaderBlockAssembler();
+        $assembler->startHeaders(1, 'part1', true);
+        $assembler->append('part2');
+        $assembler->append('part3');
+
+        [$buffer, $endStream, $isPushPromise, $promisedStreamId] = $assembler->complete();
+
+        static::assertSame('part1part2part3', $buffer);
+        static::assertTrue($endStream);
+        static::assertFalse($isPushPromise);
+        static::assertSame(0, $promisedStreamId);
+        static::assertFalse($assembler->isActive());
+    }
+
+    public function testStartPushPromise(): void
+    {
+        $assembler = new HeaderBlockAssembler();
+        $assembler->startPushPromise(1, 2, 'promise');
+        $assembler->append('more');
+
+        [$buffer, $endStream, $isPushPromise, $promisedStreamId] = $assembler->complete();
+
+        static::assertSame('promisemore', $buffer);
+        static::assertFalse($endStream);
+        static::assertTrue($isPushPromise);
+        static::assertSame(2, $promisedStreamId);
+    }
+
+    public function testReset(): void
+    {
+        $assembler = new HeaderBlockAssembler();
+        $assembler->startHeaders(1, 'data', false);
+        $assembler->reset();
+
+        static::assertFalse($assembler->isActive());
+        static::assertNull($assembler->activeStreamId());
+    }
+
+    public function testStartHeadersExceedsMaxBufferSize(): void
+    {
+        $assembler = new HeaderBlockAssembler(10);
+
+        $this->expectException(ProtocolException::class);
+        $this->expectExceptionMessage('Header block size exceeds maximum');
+
+        $assembler->startHeaders(1, 'this-is-too-long-for-buffer', false);
+    }
+
+    public function testStartPushPromiseExceedsMaxBufferSize(): void
+    {
+        $assembler = new HeaderBlockAssembler(10);
+
+        $this->expectException(ProtocolException::class);
+        $this->expectExceptionMessage('Header block size exceeds maximum');
+
+        $assembler->startPushPromise(1, 2, 'this-is-too-long-for-buffer');
+    }
+
+    public function testAppendExceedsMaxBufferSize(): void
+    {
+        $assembler = new HeaderBlockAssembler(20);
+        $assembler->startHeaders(1, 'short', false);
+
+        $this->expectException(ProtocolException::class);
+        $this->expectExceptionMessage('Header block size exceeds maximum');
+
+        $assembler->append('this-makes-it-too-long');
+    }
+
+    public function testBufferSizeExceededResetsAssembler(): void
+    {
+        $assembler = new HeaderBlockAssembler(10);
+
+        try {
+            $assembler->startHeaders(1, 'this-is-too-long-for-buffer', false);
+            static::fail();
+        } catch (ProtocolException) {
+            static::addToAssertionCount(1);
+        }
+
+        static::assertFalse($assembler->isActive());
+        static::assertNull($assembler->activeStreamId());
+    }
+
+    public function testUnlimitedBufferSize(): void
+    {
+        $assembler = new HeaderBlockAssembler(0);
+        $assembler->startHeaders(1, str_repeat('x', 100_000), false);
+
+        static::assertTrue($assembler->isActive());
+    }
+
+    public function testCompleteResetsState(): void
+    {
+        $assembler = new HeaderBlockAssembler();
+        $assembler->startPushPromise(1, 2, 'data');
+
+        [$buffer, $endStream, $isPushPromise, $promisedStreamId] = $assembler->complete();
+
+        static::assertSame('data', $buffer);
+        static::assertFalse($endStream);
+        static::assertTrue($isPushPromise);
+        static::assertSame(2, $promisedStreamId);
+        static::assertFalse($assembler->isActive());
+    }
+
+    public function testStartHeadersClearsPreviousPushPromiseState(): void
+    {
+        $assembler = new HeaderBlockAssembler();
+        $assembler->startPushPromise(1, 2, 'push');
+        $assembler->reset();
+        $assembler->startHeaders(3, 'headers', true);
+
+        [$buffer, $endStream, $isPushPromise, $promisedStreamId] = $assembler->complete();
+
+        static::assertSame('headers', $buffer);
+        static::assertTrue($endStream);
+        static::assertFalse($isPushPromise);
+        static::assertSame(0, $promisedStreamId);
+    }
+}

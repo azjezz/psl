@@ -49,6 +49,7 @@ function verify(array $packages): bool
         'Filesystem' => 'filesystem',
         'Fun' => 'fun',
         'Graph' => 'graph',
+        'H2' => 'h2',
         'Hash' => 'hash',
         'HPACK' => 'hpack',
         'Html' => 'html',

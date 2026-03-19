@@ -1,0 +1,8 @@
+{
+    "error": [
+        1
+    ],
+    "wire": "00000408000000000100000000",
+    "frame": null,
+    "description": "window_update frame with invalid window size increment"
+}

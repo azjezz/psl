@@ -1,0 +1,14 @@
+{
+    "error": null,
+    "wire": "000000090000000032",
+    "frame": {
+        "length": 0,
+        "frame_payload": {
+            "header_block_fragment": ""
+        },
+        "flags": 0,
+        "stream_identifier": 50,
+        "type": 9
+    },
+    "description": "normal continuation frame without header block fragment"
+}

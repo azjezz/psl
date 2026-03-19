@@ -1,0 +1,14 @@
+{
+    "error": null,
+    "wire": "0000080600000000006465616462656566",
+    "frame": {
+        "length": 8,
+        "frame_payload": {
+            "opaque_data": "deadbeef"
+        },
+        "flags": 0,
+        "stream_identifier": 0,
+        "type": 6
+    },
+    "description": "normal ping frame"
+}

@@ -1,0 +1,8 @@
+{
+    "error": [
+        6
+    ],
+    "wire": "00000407000000000000000002",
+    "frame": null,
+    "description": "goaway frame of an invalid length"
+}

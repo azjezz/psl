@@ -1,0 +1,19 @@
+{
+    "error": null,
+    "wire": "00000D010400000001746869732069732064756D6D79",
+    "frame": {
+        "length": 13,
+        "frame_payload": {
+            "stream_dependency": null,
+            "weight": null,
+            "header_block_fragment": "this is dummy",
+            "padding_length": null,
+            "exclusive": null,
+            "padding": null
+        },
+        "flags": 4,
+        "stream_identifier": 1,
+        "type": 1
+    },
+    "description": "normal headers frame"
+}

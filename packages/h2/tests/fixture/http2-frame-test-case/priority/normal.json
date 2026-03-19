@@ -1,0 +1,18 @@
+{
+    "error": null,
+    "wire": "0000050200000000090000000B07",
+    "frame": {
+        "length": 5,
+        "frame_payload": {
+            "stream_dependency": 11,
+            "weight": 8,
+            "exclusive": false,
+            "padding_length": null,
+            "padding": null
+        },
+        "flags": 0,
+        "stream_identifier": 9,
+        "type": 2
+    },
+    "description": "normal priority frame"
+}

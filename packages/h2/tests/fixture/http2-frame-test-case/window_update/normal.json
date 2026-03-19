@@ -1,0 +1,14 @@
+{
+    "error": null,
+    "wire": "000004080000000032000003E8",
+    "frame": {
+        "length": 4,
+        "frame_payload": {
+            "window_size_increment": 1000
+        },
+        "flags": 0,
+        "stream_identifier": 50,
+        "type": 8
+    },
+    "description": "normal window update frame"
+}

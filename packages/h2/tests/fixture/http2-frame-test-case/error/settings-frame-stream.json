@@ -1,0 +1,8 @@
+{
+    "error": [
+        1
+    ],
+    "wire": "000006040000000001AAAABBBBBBBB",
+    "frame": null,
+    "description": "settings frame with invalid stream identifier"
+}

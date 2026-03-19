@@ -1,0 +1,8 @@
+{
+    "error": [
+        6
+    ],
+    "wire": "0000020800000000015566",
+    "frame": null,
+    "description": "window_update frame of an invalid length"
+}

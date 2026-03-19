@@ -1,0 +1,17 @@
+{
+    "error": null,
+    "wire": "000018050C0000000A060000000C746869732069732064756D6D79486F77647921",
+    "frame": {
+        "length": 24,
+        "frame_payload": {
+            "header_block_fragment": "this is dummy",
+            "padding_length": 6,
+            "promised_stream_id": 12,
+            "padding": "Howdy!"
+        },
+        "flags": 12,
+        "stream_identifier": 10,
+        "type": 5
+    },
+    "description": "normal push promise frame"
+}
