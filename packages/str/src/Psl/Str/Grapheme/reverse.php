@@ -16,10 +16,10 @@ use Psl\Str\Exception;
 function reverse(string $string): string
 {
     $reversed = '';
-    $offset = length($string);
+    $offset = namespace\length($string);
 
     while ($offset-- > 0) {
-        $reversed .= slice($string, $offset, 1);
+        $reversed .= namespace\slice($string, $offset, 1);
     }
 
     return $reversed;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\H2\Frame;
 
+use function pack;
 use function strlen;
 
 /**

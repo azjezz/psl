@@ -8,6 +8,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Encoding\QuotedPrintable;
 
+use function explode;
+use function str_repeat;
+use function strlen;
+
 final class EncodeDecodeTest extends TestCase
 {
     public function testEncodeEmptyString(): void

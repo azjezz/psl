@@ -59,5 +59,5 @@ function range(string $string, RangeInterface $range, Encoding $encoding = Encod
         // @codeCoverageIgnoreEnd
     }
 
-    return slice($string, $offset, $length, $encoding);
+    return namespace\slice($string, $offset, $length, $encoding);
 }

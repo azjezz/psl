@@ -23,7 +23,7 @@ use function substr;
  */
 function slice(string $string, int $offset, null|int $length = null): string
 {
-    $offset = Str\Internal\validate_offset($offset, length($string));
+    $offset = Str\Internal\validate_offset($offset, namespace\length($string));
 
     return null === $length ? substr($string, $offset) : substr($string, $offset, $length);
 }

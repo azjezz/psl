@@ -7,6 +7,8 @@ namespace Psl\IO\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Psl\IO;
 
+use function str_repeat;
+
 final class SpoolTest extends TestCase
 {
     public function testReturnsCloseSeekReadWriteStreamHandle(): void

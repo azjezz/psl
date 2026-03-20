@@ -6,6 +6,7 @@ namespace Psl\Graph;
 
 use Psl\DataStructure\Queue;
 
+use function count;
 use function Psl\Graph\Internal\get_node_key;
 
 /**
@@ -34,7 +35,7 @@ use function Psl\Graph\Internal\get_node_key;
  */
 function topological_sort(DirectedGraph $graph): null|array
 {
-    $allNodes = nodes($graph);
+    $allNodes = namespace\nodes($graph);
     $inDegree = [];
 
     // Initialize in-degree for all nodes
@@ -45,7 +46,7 @@ function topological_sort(DirectedGraph $graph): null|array
 
     // Calculate in-degree for each node
     foreach ($allNodes as $node) {
-        foreach (neighbors($graph, $node) as $neighbor) {
+        foreach (namespace\neighbors($graph, $node) as $neighbor) {
             $key = get_node_key($neighbor);
             $inDegree[$key]++;
         }
@@ -66,7 +67,7 @@ function topological_sort(DirectedGraph $graph): null|array
         $result[] = $node;
 
         // Reduce in-degree for all neighbors
-        foreach (neighbors($graph, $node) as $neighbor) {
+        foreach (namespace\neighbors($graph, $node) as $neighbor) {
             $key = get_node_key($neighbor);
             $inDegree[$key]--;
             if ($inDegree[$key] === 0) {

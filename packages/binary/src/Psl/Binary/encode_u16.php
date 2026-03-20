@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Binary;
 
+use function pack;
+
 /**
  * Encode an unsigned 16-bit integer to a binary string.
  *

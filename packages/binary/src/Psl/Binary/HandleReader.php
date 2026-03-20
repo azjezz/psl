@@ -28,7 +28,7 @@ final readonly class HandleReader implements ReaderInterface
     #[Override]
     public function u8(): int
     {
-        return decode_u8($this->consume(1));
+        return namespace\decode_u8($this->consume(1));
     }
 
     /**
@@ -37,7 +37,7 @@ final readonly class HandleReader implements ReaderInterface
     #[Override]
     public function u16(null|Endianness $endianness = null): int
     {
-        return decode_u16($this->consume(2), $endianness ?? $this->endianness);
+        return namespace\decode_u16($this->consume(2), $endianness ?? $this->endianness);
     }
 
     /**
@@ -46,7 +46,7 @@ final readonly class HandleReader implements ReaderInterface
     #[Override]
     public function u32(null|Endianness $endianness = null): int
     {
-        return decode_u32($this->consume(4), $endianness ?? $this->endianness);
+        return namespace\decode_u32($this->consume(4), $endianness ?? $this->endianness);
     }
 
     /**
@@ -55,7 +55,7 @@ final readonly class HandleReader implements ReaderInterface
     #[Override]
     public function u64(null|Endianness $endianness = null): int
     {
-        return decode_u64($this->consume(8), $endianness ?? $this->endianness);
+        return namespace\decode_u64($this->consume(8), $endianness ?? $this->endianness);
     }
 
     /**
@@ -64,7 +64,7 @@ final readonly class HandleReader implements ReaderInterface
     #[Override]
     public function i8(): int
     {
-        return decode_i8($this->consume(1));
+        return namespace\decode_i8($this->consume(1));
     }
 
     /**
@@ -73,7 +73,7 @@ final readonly class HandleReader implements ReaderInterface
     #[Override]
     public function i16(null|Endianness $endianness = null): int
     {
-        return decode_i16($this->consume(2), $endianness ?? $this->endianness);
+        return namespace\decode_i16($this->consume(2), $endianness ?? $this->endianness);
     }
 
     /**
@@ -82,7 +82,7 @@ final readonly class HandleReader implements ReaderInterface
     #[Override]
     public function i32(null|Endianness $endianness = null): int
     {
-        return decode_i32($this->consume(4), $endianness ?? $this->endianness);
+        return namespace\decode_i32($this->consume(4), $endianness ?? $this->endianness);
     }
 
     /**
@@ -91,7 +91,7 @@ final readonly class HandleReader implements ReaderInterface
     #[Override]
     public function i64(null|Endianness $endianness = null): int
     {
-        return decode_i64($this->consume(8), $endianness ?? $this->endianness);
+        return namespace\decode_i64($this->consume(8), $endianness ?? $this->endianness);
     }
 
     /**
@@ -100,7 +100,7 @@ final readonly class HandleReader implements ReaderInterface
     #[Override]
     public function f32(null|Endianness $endianness = null): float
     {
-        return decode_f32($this->consume(4), $endianness ?? $this->endianness);
+        return namespace\decode_f32($this->consume(4), $endianness ?? $this->endianness);
     }
 
     /**
@@ -109,7 +109,7 @@ final readonly class HandleReader implements ReaderInterface
     #[Override]
     public function f64(null|Endianness $endianness = null): float
     {
-        return decode_f64($this->consume(8), $endianness ?? $this->endianness);
+        return namespace\decode_f64($this->consume(8), $endianness ?? $this->endianness);
     }
 
     /**

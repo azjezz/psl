@@ -6,6 +6,7 @@ namespace Psl\Splitter;
 
 use Psl\Async;
 use Psl\Async\Exception\CompositeException;
+use Psl\Iter;
 use Psl\Shell;
 
 /**
@@ -22,7 +23,7 @@ function split(MonolithicRepository $monorepo, Git $git, string $branch): void
 {
     $git->truncateHistoryAt('packages/');
 
-    Log\info('Splitting %d packages (5 concurrent)...', count($monorepo->packages));
+    Log\info('Splitting %d packages (5 concurrent)...', Iter\count($monorepo->packages));
 
     /** @var list<array{Package, non-empty-string}> $splits */
     $splits = [];
@@ -44,7 +45,7 @@ function split(MonolithicRepository $monorepo, Git $git, string $branch): void
 
     Async\all($awaitables);
 
-    Log\info('Pushing %d packages (10 concurrent)...', count($splits));
+    Log\info('Pushing %d packages (10 concurrent)...', Iter\count($splits));
 
     $pushSemaphore = new Async\Semaphore(
         10,

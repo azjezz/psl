@@ -11,6 +11,7 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 use Throwable;
 
+use function is_string;
 use function json_decode;
 
 use const JSON_THROW_ON_ERROR;

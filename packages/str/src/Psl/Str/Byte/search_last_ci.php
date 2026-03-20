@@ -30,7 +30,7 @@ function search_last_ci(string $haystack, string $needle, int $offset = 0): null
         return null;
     }
 
-    $offset = Str\Internal\validate_offset($offset, length($haystack));
+    $offset = Str\Internal\validate_offset($offset, namespace\length($haystack));
 
     return false === ($pos = strripos($haystack, $needle, $offset)) ? null : $pos;
 }

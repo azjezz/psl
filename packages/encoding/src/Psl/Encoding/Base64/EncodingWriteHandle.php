@@ -36,12 +36,12 @@ final class EncodingWriteHandle implements IO\WriteHandleInterface
         $data = $this->remainder . $bytes;
 
         $dataLength = strlen($data);
-        while ($dataLength >= CHUNK_SIZE) {
-            $chunk = substr($data, 0, CHUNK_SIZE);
-            $data = substr($data, CHUNK_SIZE);
-            $dataLength -= CHUNK_SIZE;
+        while ($dataLength >= namespace\CHUNK_SIZE) {
+            $chunk = substr($data, 0, namespace\CHUNK_SIZE);
+            $data = substr($data, namespace\CHUNK_SIZE);
+            $dataLength -= namespace\CHUNK_SIZE;
 
-            $encoded = encode($chunk, $this->variant, $this->padding) . LINE_ENDING;
+            $encoded = namespace\encode($chunk, $this->variant, $this->padding) . namespace\LINE_ENDING;
             $this->handle->writeAll($encoded);
         }
 
@@ -63,7 +63,7 @@ final class EncodingWriteHandle implements IO\WriteHandleInterface
     public function flush(): void
     {
         if ($this->remainder !== '') {
-            $encoded = encode($this->remainder, $this->variant, $this->padding) . LINE_ENDING;
+            $encoded = namespace\encode($this->remainder, $this->variant, $this->padding) . namespace\LINE_ENDING;
             $this->remainder = '';
             $this->handle->writeAll($encoded);
         }

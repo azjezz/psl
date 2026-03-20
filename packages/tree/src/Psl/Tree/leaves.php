@@ -39,7 +39,7 @@ function leaves(NodeInterface $node): array
     $result = [];
     foreach ($children as $child) {
         /** @var T $leaf */
-        foreach (leaves($child) as $leaf) {
+        foreach (namespace\leaves($child) as $leaf) {
             $result[] = $leaf;
         }
     }

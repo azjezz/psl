@@ -12,7 +12,7 @@ namespace Psl\Comparison;
  */
 function greater_or_equal(mixed $a, mixed $b): bool
 {
-    $order = compare($a, $b);
+    $order = namespace\compare($a, $b);
 
     return $order === Order::Equal || $order === Order::Greater;
 }

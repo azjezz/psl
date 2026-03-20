@@ -32,5 +32,5 @@ function apply(string $text, ControlSequenceIntroducer ...$sequences): string
 
     $merged = new ControlSequenceIntroducer($parameters, ControlSequenceIntroducerKind::SelectGraphicRendition);
 
-    return $merged->toString() . $text . reset()->toString();
+    return $merged->toString() . $text . namespace\reset()->toString();
 }

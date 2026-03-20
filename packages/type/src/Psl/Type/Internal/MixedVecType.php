@@ -12,6 +12,7 @@ use Psl\Type\Exception\CoercionException;
 use function array_is_list;
 use function array_values;
 use function is_array;
+use function is_iterable;
 
 /**
  * @extends Type\Type<list<mixed>>

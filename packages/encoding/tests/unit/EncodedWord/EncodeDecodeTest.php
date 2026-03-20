@@ -10,6 +10,10 @@ use Psl\Encoding\EncodedWord;
 use Psl\Encoding\Exception;
 use Psl\Str\Encoding;
 
+use function explode;
+use function str_repeat;
+use function strlen;
+
 final class EncodeDecodeTest extends TestCase
 {
     public function testEncodeEmptyString(): void

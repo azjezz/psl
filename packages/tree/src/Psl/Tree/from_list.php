@@ -111,12 +111,12 @@ function from_list(array $items, Closure $getId, Closure $getParentId, Closure $
             $childrenItems = $byParent[$itemId] ?? [];
 
             if ([] === $childrenItems) {
-                return leaf($value);
+                return namespace\leaf($value);
             }
 
             $children = array_map($build(...), $childrenItems);
 
-            return tree($value, $children);
+            return namespace\tree($value, $children);
         };
 
     return $build($rootItem);

@@ -20,8 +20,8 @@ function strip_suffix(string $string, string $suffix, Encoding $encoding = Encod
         return '';
     }
 
-    $suffixLength = length($suffix, $encoding);
-    $stringLength = length($string, $encoding);
+    $suffixLength = namespace\length($suffix, $encoding);
+    $stringLength = namespace\length($string, $encoding);
     // if $suffixLength is greater than $stringLength, return $string as it can't contain $suffix.
     // if $suffixLength and $stringLength are the same, return $string as $suffix is not $string.
     $length = $stringLength - $suffixLength;
@@ -29,9 +29,9 @@ function strip_suffix(string $string, string $suffix, Encoding $encoding = Encod
         return $string;
     }
 
-    if (!ends_with($string, $suffix, $encoding)) {
+    if (!namespace\ends_with($string, $suffix, $encoding)) {
         return $string;
     }
 
-    return slice($string, 0, $length, $encoding);
+    return namespace\slice($string, 0, $length, $encoding);
 }

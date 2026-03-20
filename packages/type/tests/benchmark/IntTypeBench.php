@@ -10,6 +10,8 @@ use Psl\Type;
 use Psl\Type\Tests\Benchmark\Asset\ExplicitStringableObject;
 use Psl\Type\Tests\Benchmark\Asset\ImplicitStringableObject;
 
+use function array_merge;
+
 /**
  * @extends GenericTypeBench<Type\TypeInterface<int>>
  */

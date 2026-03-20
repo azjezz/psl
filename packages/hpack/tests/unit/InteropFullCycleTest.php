@@ -15,6 +15,7 @@ use Psl\Json;
 use Psl\Type;
 
 use function array_map;
+use function hex2bin;
 use function str_ends_with;
 
 /**

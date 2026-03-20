@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use function array_key_exists;
+use function is_array;
+use function is_int;
+use function is_string;
+
 /**
  * Returns true if the given iterable contains the key.
  *

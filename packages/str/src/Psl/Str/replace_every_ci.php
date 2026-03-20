@@ -27,7 +27,7 @@ function replace_every_ci(string $haystack, array $replacements, Encoding $encod
             continue;
         }
 
-        $haystack = replace_ci($haystack, $needle, $replacement, $encoding);
+        $haystack = namespace\replace_ci($haystack, $needle, $replacement, $encoding);
     }
 
     return $haystack;

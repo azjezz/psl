@@ -63,6 +63,6 @@ function compare_mixed(mixed $a, mixed $b): Order
 
 function test_mixed(): void
 {
-    compare_mixed('a', 1);
-    compare_mixed(new stdClass(), []);
+    namespace\compare_mixed('a', 1);
+    namespace\compare_mixed(new stdClass(), []);
 }

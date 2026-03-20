@@ -9,6 +9,9 @@ use Psl\Encoding\Base64;
 use Psl\Encoding\Exception;
 use Psl\IO;
 
+use function base64_encode;
+use function str_repeat;
+
 final class DecodingReadHandleTest extends TestCase
 {
     public function testTryReadBufferNonEmptyNotEofDoesNotRefill(): void

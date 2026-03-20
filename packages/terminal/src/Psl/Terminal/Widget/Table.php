@@ -12,6 +12,7 @@ use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
 
 use function array_values;
+use function count;
 
 /**
  * A table widget that renders columnar data with headers, a separator, and optional row highlighting.

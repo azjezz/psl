@@ -156,7 +156,7 @@ final class MonitorState
 
     public function __construct()
     {
-        $this->processes = generate_processes();
+        $this->processes = namespace\generate_processes();
         $this->view = new ViewState();
     }
 }
@@ -409,11 +409,11 @@ Async\main(static function (): int {
 
     $app->interval(DateTime\Duration::seconds(1), static function (MonitorState $state): void {
         foreach ($state->cpu_values as $i => $v) {
-            $state->cpu_values[$i] = random_walk($v, 0.0, 100.0, 10.0);
+            $state->cpu_values[$i] = namespace\random_walk($v, 0.0, 100.0, 10.0);
         }
 
-        $state->mem_used = random_walk($state->mem_used, 0.5, $state->mem_total - 0.5, 0.3);
-        $state->swap_used = random_walk($state->swap_used, 0.0, $state->swap_total, 0.1);
+        $state->mem_used = namespace\random_walk($state->mem_used, 0.5, $state->mem_total - 0.5, 0.3);
+        $state->swap_used = namespace\random_walk($state->swap_used, 0.0, $state->swap_total, 0.1);
 
         $avg = Math\sum_floats($state->cpu_values) / Iter\count($state->cpu_values);
         $state->cpu_history[] = $avg / 100.0;
@@ -426,8 +426,8 @@ Async\main(static function (): int {
             $updated[] = new Process(
                 pid: $proc->pid,
                 command: $proc->command,
-                cpu: random_walk($proc->cpu, 0.0, 100.0, 5.0),
-                mem: random_walk($proc->mem, 0.0, 50.0, 2.0),
+                cpu: namespace\random_walk($proc->cpu, 0.0, 100.0, 5.0),
+                mem: namespace\random_walk($proc->mem, 0.0, 50.0, 2.0),
                 status: $proc->status,
                 time: $proc->time,
             );
@@ -534,11 +534,11 @@ Async\main(static function (): int {
             ->render($tabBar, $buffer);
 
         if ($state->view->active_tab === 0) {
-            render_overview($main, $state, $buffer);
+            namespace\render_overview($main, $state, $buffer);
         }
 
         if ($state->view->active_tab === 1) {
-            render_details($main, $state, $buffer);
+            namespace\render_details($main, $state, $buffer);
         }
 
         $sortLabel = match ($state->view->sort_col) {

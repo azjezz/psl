@@ -21,7 +21,7 @@ function encode_q_words(string $text, string $prefix, string $suffix, int $maxPa
 
     for ($i = 0; $i < $len; $i++) {
         $byte = $text[$i];
-        $encoded = q_encode_byte($byte);
+        $encoded = namespace\q_encode_byte($byte);
         $encodedLen = strlen($encoded);
 
         // @codeCoverageIgnoreStart

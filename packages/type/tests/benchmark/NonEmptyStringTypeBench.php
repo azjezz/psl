@@ -11,6 +11,8 @@ use Psl\Type\Tests\Benchmark\Asset\ExplicitStringableObject;
 use Psl\Type\Tests\Benchmark\Asset\ImplicitStringableObject;
 use Psl\Type\TypeInterface;
 
+use function array_merge;
+
 /**
  * @extends GenericTypeBench<TypeInterface<non-empty-string>>
  */

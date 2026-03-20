@@ -63,7 +63,7 @@ function socks5_handshake(
             );
         }
 
-        socks5_authenticate($stream, $username, $password, $cancellation);
+        namespace\socks5_authenticate($stream, $username, $password, $cancellation);
     } elseif ($method !== 0x00) {
         throw new Exception\SocksException("SOCKS5 server selected unsupported authentication method: {$method}.");
     }
@@ -93,7 +93,7 @@ function socks5_handshake(
 
     $reply = ord($response[1]);
     if ($reply !== 0x00) {
-        throw new Exception\SocksException(reply_message($reply));
+        throw new Exception\SocksException(namespace\reply_message($reply));
     }
 
     $addressType = ord($response[3]);

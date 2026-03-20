@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Encoding\Base64;
 use Psl\IO;
 
+use function str_repeat;
 use function strlen;
 
 final class EncodingReadHandleTest extends TestCase

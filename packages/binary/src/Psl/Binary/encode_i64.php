@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Binary;
 
+use function pack;
+
 /**
  * Encode a signed 64-bit integer to a binary string.
  *

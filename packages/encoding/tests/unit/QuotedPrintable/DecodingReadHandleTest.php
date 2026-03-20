@@ -8,6 +8,8 @@ use PHPUnit\Framework\TestCase;
 use Psl\Encoding\QuotedPrintable;
 use Psl\IO;
 
+use function str_repeat;
+
 final class DecodingReadHandleTest extends TestCase
 {
     public function testTryReadBufferNonEmptyNotEofDoesNotRefill(): void

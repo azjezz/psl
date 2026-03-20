@@ -27,11 +27,11 @@ function return_non_falsy_string(): string
  */
 function test(): void
 {
-    take_non_empty_string(Str\uppercase(return_non_empty_string()));
+    namespace\take_non_empty_string(Str\uppercase(namespace\return_non_empty_string()));
 
-    take_non_empty_string(Str\Byte\uppercase(return_non_empty_string()));
+    namespace\take_non_empty_string(Str\Byte\uppercase(namespace\return_non_empty_string()));
 
-    take_non_empty_string(Str\uppercase(return_non_falsy_string()));
+    namespace\take_non_empty_string(Str\uppercase(namespace\return_non_falsy_string()));
 
-    take_non_empty_string(Str\Byte\uppercase(return_non_falsy_string()));
+    namespace\take_non_empty_string(Str\Byte\uppercase(namespace\return_non_falsy_string()));
 }

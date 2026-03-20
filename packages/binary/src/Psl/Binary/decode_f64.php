@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Binary;
 
 use function strlen;
+use function unpack;
 
 /**
  * Decode a 64-bit floating point value from a binary string.

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Encoding\Hex;
 
+use function bin2hex;
+
 /**
  * Convert a binary string into a hexadecimal string.
  *

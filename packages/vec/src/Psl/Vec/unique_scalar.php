@@ -24,7 +24,7 @@ function unique_scalar(iterable $iterable): array
         return array_values(array_unique($iterable));
     }
 
-    return unique_by(
+    return namespace\unique_by(
         $iterable,
         /**
          * @param scalar $v

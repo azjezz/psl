@@ -21,5 +21,9 @@ use function array_map;
  */
 function intersect(iterable $first, iterable $second, iterable ...$rest): array
 {
-    return array_intersect(from_iterable($first), from_iterable($second), ...array_map(from_iterable(...), $rest));
+    return array_intersect(
+        namespace\from_iterable($first),
+        namespace\from_iterable($second),
+        ...array_map(namespace\from_iterable(...), $rest),
+    );
 }

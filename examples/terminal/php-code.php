@@ -178,7 +178,7 @@ function filter_commands(string $input): array
 
 function handle_autocomplete(Event\Key $event, PhpCodeState $state): bool
 {
-    $filtered = filter_commands($state->input);
+    $filtered = namespace\filter_commands($state->input);
 
     if ($event->is('up') && $filtered !== []) {
         $state->ui->ac_selected = ($state->ui->ac_selected - 1 + Iter\count($filtered)) % Iter\count($filtered);
@@ -265,7 +265,7 @@ function handle_submit(string $prompt, PhpCodeState $state, Terminal\Application
     $state->busy = true;
     $app->emit(Screen\progress(Screen\ProgressState::Indeterminate));
     Async\run(static function () use ($prompt, $state, $app): void {
-        $responses = mock_llm_response($prompt);
+        $responses = namespace\mock_llm_response($prompt);
 
         foreach ($responses as $response) {
             $state->messages[] = $response;
@@ -354,10 +354,10 @@ function render_frame(Terminal\Frame $frame, PhpCodeState $state, array $spinner
         Layout\max(10, Layout\fixed($inputHeight)),
     ]);
 
-    render_sidebar($sidebar, $state, $buffer);
-    render_chat($chatArea, $state, $spinners, $buffer);
-    render_input($inputArea, $chatArea, $state, $buffer);
-    render_php_code_status_bar($statusBar, $state, $fps, $buffer);
+    namespace\render_sidebar($sidebar, $state, $buffer);
+    namespace\render_chat($chatArea, $state, $spinners, $buffer);
+    namespace\render_input($inputArea, $chatArea, $state, $buffer);
+    namespace\render_php_code_status_bar($statusBar, $state, $fps, $buffer);
 }
 
 function render_sidebar(Terminal\Rect $area, PhpCodeState $state, Terminal\Buffer $buffer): void
@@ -389,7 +389,7 @@ function render_sidebar(Terminal\Rect $area, PhpCodeState $state, Terminal\Buffe
 function render_chat(Terminal\Rect $chatArea, PhpCodeState $state, array $spinners, Terminal\Buffer $buffer): void
 {
     $lines = Vec\flat_map($state->messages, static fn(Message $msg): array => [
-        ...format_message($msg),
+        ...namespace\format_message($msg),
         Widget\Line::empty(),
     ]);
 
@@ -467,7 +467,7 @@ function render_input(
         return;
     }
 
-    $filtered = filter_commands($state->input);
+    $filtered = namespace\filter_commands($state->input);
     if ($filtered === []) {
         return;
     }
@@ -558,7 +558,7 @@ Async\main(static function (): int {
         }
 
         if (Str\starts_with($state->input, '/') && !$state->busy) {
-            if (handle_autocomplete($event, $state)) {
+            if (namespace\handle_autocomplete($event, $state)) {
                 return;
             }
         }
@@ -585,11 +585,11 @@ Async\main(static function (): int {
                 return;
             }
 
-            handle_submit($prompt, $state, $app);
+            namespace\handle_submit($prompt, $state, $app);
             return;
         }
 
-        handle_text_editing($event, $state);
+        namespace\handle_text_editing($event, $state);
     });
 
     $app->on(Event\Paste::class, static function (Event\Paste $event, PhpCodeState $state): void {
@@ -608,6 +608,6 @@ Async\main(static function (): int {
     });
 
     return $app->run(static function (Terminal\Frame $frame, PhpCodeState $state) use ($spinners): void {
-        render_frame($frame, $state, $spinners);
+        namespace\render_frame($frame, $state, $spinners);
     });
 });

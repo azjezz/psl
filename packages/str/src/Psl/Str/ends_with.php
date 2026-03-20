@@ -48,13 +48,13 @@ function ends_with(string $string, string $suffix, Encoding $encoding = Encoding
         return true;
     }
 
-    $suffixLength = length($suffix, $encoding);
-    $totalLength = length($string, $encoding);
+    $suffixLength = namespace\length($suffix, $encoding);
+    $totalLength = namespace\length($string, $encoding);
     if ($suffixLength > $totalLength) {
         return false;
     }
 
-    $position = search_last($string, $suffix, 0, $encoding);
+    $position = namespace\search_last($string, $suffix, 0, $encoding);
     if (null === $position) {
         return false;
     }

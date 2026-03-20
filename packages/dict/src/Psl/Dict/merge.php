@@ -32,7 +32,7 @@ function merge(iterable $first, iterable ...$rest): array
             /** @var list<iterable<Tk, Tv>> $iterables */
             $iterables = [$first, ...$rest];
 
-            return flatten($iterables);
+            return namespace\flatten($iterables);
         }
 
         /** @var array<array<Tk, Tv>> $rest */
@@ -42,5 +42,5 @@ function merge(iterable $first, iterable ...$rest): array
     /** @var list<iterable<Tk, Tv>> $iterables */
     $iterables = [$first, ...$rest];
 
-    return flatten($iterables);
+    return namespace\flatten($iterables);
 }

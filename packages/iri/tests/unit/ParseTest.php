@@ -11,6 +11,7 @@ use Psl\URI\Authority\IPHost;
 use Psl\URI\Authority\RegisteredNameHost;
 
 use function array_fill;
+use function function_exists;
 use function implode;
 use function mb_strlen;
 

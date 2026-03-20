@@ -15,7 +15,7 @@ function resolve_max(Constraint $constraint, int $totalSpace): int
 {
     /** @var Constraint $inner */
     $inner = $constraint->inner;
-    $innerSize = resolve_constraint($inner, $totalSpace);
+    $innerSize = namespace\resolve_constraint($inner, $totalSpace);
     if ($innerSize === -1) {
         return min($constraint->size, $totalSpace);
     }

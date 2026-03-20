@@ -15,5 +15,5 @@ use Psl\Str\Exception;
  */
 function starts_with_ci(string $string, string $prefix): bool
 {
-    return 0 === search_ci($string, $prefix);
+    return 0 === namespace\search_ci($string, $prefix);
 }

@@ -29,7 +29,7 @@ function encode(string $data, int $maxLineLength = 76, string $lineEnding = "\r\
     $result = [];
 
     foreach ($lines as $line) {
-        $result[] = encode_line($line, $maxLineLength, $lineEnding);
+        $result[] = namespace\encode_line($line, $maxLineLength, $lineEnding);
     }
 
     return implode($lineEnding, $result);

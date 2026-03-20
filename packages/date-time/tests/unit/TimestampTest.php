@@ -24,6 +24,7 @@ use Psl\Locale\Locale;
 use Psl\Math;
 
 use function time;
+use function usleep;
 
 use const Psl\DateTime\NANOSECONDS_PER_SECOND;
 

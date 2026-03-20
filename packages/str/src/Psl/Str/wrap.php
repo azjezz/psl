@@ -33,24 +33,24 @@ function wrap(
         throw new Exception\LogicException('Cannot force cut when width is zero.');
     }
 
-    $stringLength = length($string, $encoding);
-    $breakLength = length($break, $encoding);
+    $stringLength = namespace\length($string, $encoding);
+    $breakLength = namespace\length($break, $encoding);
     $result = '';
     /** @var int<0, max> $lastSpace */
     $lastStart = 0;
     /** @var int<0, max> $lastSpace */
     $lastSpace = 0;
     for ($current = 0; $current < $stringLength; ++$current) {
-        $char = slice($string, $current, 1, $encoding);
+        $char = namespace\slice($string, $current, 1, $encoding);
         $possibleBreak = $char;
         if (1 !== $breakLength) {
-            $possibleBreak = slice($string, $current, $breakLength, $encoding);
+            $possibleBreak = namespace\slice($string, $current, $breakLength, $encoding);
         }
 
         if ($possibleBreak === $break) {
             /** @var int<0, max> $sliceLength */
             $sliceLength = $current - $lastStart + $breakLength;
-            $result .= slice($string, $lastStart, $sliceLength, $encoding);
+            $result .= namespace\slice($string, $lastStart, $sliceLength, $encoding);
             $current += $breakLength - 1;
             $lastSpace = $current + 1;
             $lastStart = $lastSpace;
@@ -60,7 +60,7 @@ function wrap(
         if (' ' === $char) {
             $length = $current - $lastStart;
             if ($length >= $width) {
-                $result .= slice($string, $lastStart, $length, $encoding) . $break;
+                $result .= namespace\slice($string, $lastStart, $length, $encoding) . $break;
                 $lastStart = $current + 1;
             }
 
@@ -70,7 +70,7 @@ function wrap(
 
         $length = $current - $lastStart;
         if ($length >= $width && $cut && $lastStart >= $lastSpace) {
-            $result .= slice($string, $lastStart, $length, $encoding) . $break;
+            $result .= namespace\slice($string, $lastStart, $length, $encoding) . $break;
             $lastSpace = $current;
             $lastStart = $lastSpace;
             continue;
@@ -79,7 +79,7 @@ function wrap(
         if (($current - $lastStart) >= $width && $lastStart < $lastSpace) {
             /** @var int<0, max> $sliceLength */
             $sliceLength = $lastSpace - $lastStart;
-            $result .= slice($string, $lastStart, $sliceLength, $encoding) . $break;
+            $result .= namespace\slice($string, $lastStart, $sliceLength, $encoding) . $break;
             $lastStart = ++$lastSpace;
         }
     }
@@ -88,7 +88,7 @@ function wrap(
         /** @var int<0, max> $sliceLength */
         $sliceLength = $current - $lastStart;
 
-        $result .= slice($string, $lastStart, $sliceLength, $encoding);
+        $result .= namespace\slice($string, $lastStart, $sliceLength, $encoding);
     }
 
     return $result;

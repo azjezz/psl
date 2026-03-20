@@ -52,7 +52,12 @@ Async\main(static function (): int {
             $parts[] = 'char=' . $event->char;
         }
 
-        $state->events[] = format_event($state->event_count, 'Key', Color\bright_cyan(), Str\join($parts, ' '));
+        $state->events[] = namespace\format_event(
+            $state->event_count,
+            'Key',
+            Color\bright_cyan(),
+            Str\join($parts, ' '),
+        );
         $state->scroll_offset = PHP_INT_MAX;
     });
 
@@ -88,7 +93,7 @@ Async\main(static function (): int {
             Event\MouseKind::Move => Color\bright_blue(),
         };
 
-        $state->events[] = format_event($state->event_count, 'Mouse', $color, $detail);
+        $state->events[] = namespace\format_event($state->event_count, 'Mouse', $color, $detail);
         $state->scroll_offset = PHP_INT_MAX;
     });
 
@@ -97,7 +102,7 @@ Async\main(static function (): int {
         $text = $event->text;
         $preview = Str\width($text) > 40 ? Str\width_slice($text, 0, 40) . '...' : $text;
 
-        $state->events[] = format_event(
+        $state->events[] = namespace\format_event(
             $state->event_count,
             'Paste',
             Color\bright_green(),
@@ -109,7 +114,7 @@ Async\main(static function (): int {
     $app->on(Event\Focus::class, static function (Event\Focus $event, DebugState $state): void {
         $state->event_count++;
 
-        $state->events[] = format_event(
+        $state->events[] = namespace\format_event(
             $state->event_count,
             'Focus',
             $event->focused ? Color\bright_green() : Color\bright_red(),
@@ -121,7 +126,7 @@ Async\main(static function (): int {
     $app->on(Event\Resize::class, static function (Event\Resize $event, DebugState $state): void {
         $state->event_count++;
 
-        $state->events[] = format_event(
+        $state->events[] = namespace\format_event(
             $state->event_count,
             'Resize',
             Color\bright_blue(),

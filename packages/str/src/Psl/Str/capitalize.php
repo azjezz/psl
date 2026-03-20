@@ -32,5 +32,8 @@ function capitalize(string $string, Encoding $encoding = Encoding::Utf8): string
         return '';
     }
 
-    return concat(uppercase(slice($string, 0, 1, $encoding), $encoding), slice($string, 1, null, $encoding));
+    return namespace\concat(
+        namespace\uppercase(namespace\slice($string, 0, 1, $encoding), $encoding),
+        namespace\slice($string, 1, null, $encoding),
+    );
 }

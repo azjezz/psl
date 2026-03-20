@@ -13,6 +13,7 @@ use Revolt\EventLoop\Suspension;
 use function array_search;
 use function array_shift;
 use function array_splice;
+use function count;
 
 /**
  * Run an operation with a limit on number of ongoing asynchronous jobs of 1.

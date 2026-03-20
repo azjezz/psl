@@ -70,7 +70,10 @@ function traverse(NodeInterface $tree, Closure $transform): mixed
             return [];
         }
 
-        return array_map(static fn(NodeInterface $child): mixed => traverse($child, $transform), $tree->getChildren());
+        return array_map(static fn(NodeInterface $child): mixed => namespace\traverse(
+            $child,
+            $transform,
+        ), $tree->getChildren());
     };
 
     return $transform($value, $getChildren);

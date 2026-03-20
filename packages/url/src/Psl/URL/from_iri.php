@@ -26,5 +26,5 @@ function from_iri(IRI $iri): URL
         throw InvalidURLException::forInvalidURI($e->getMessage(), $e);
     }
 
-    return from_uri($uri);
+    return namespace\from_uri($uri);
 }

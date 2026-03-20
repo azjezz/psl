@@ -246,7 +246,7 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
                 // @codeCoverageIgnoreEnd
             }
 
-            $this->buffer .= encode_line($line);
+            $this->buffer .= namespace\encode_line($line);
             $this->firstLine = false;
 
             return;
@@ -260,7 +260,7 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
                 $this->buffer .= "\r\n";
             }
 
-            $this->buffer .= encode_line($remaining);
+            $this->buffer .= namespace\encode_line($remaining);
         }
 
         $this->eof = true;

@@ -52,7 +52,7 @@ function client_ssl_context(TLS\ClientConfiguration $clientConfiguration): array
     }
 
     if (null !== $clientConfiguration->minimumVersion || null !== $clientConfiguration->maximumVersion) {
-        $ssl['crypto_method'] = crypto_method(
+        $ssl['crypto_method'] = namespace\crypto_method(
             $clientConfiguration->minimumVersion,
             $clientConfiguration->maximumVersion,
             server: false,

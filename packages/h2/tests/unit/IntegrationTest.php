@@ -18,6 +18,8 @@ use Psl\H2\StreamState;
 use Psl\HPACK\Header;
 use Psl\Network;
 
+use function str_repeat;
+
 /**
  * End-to-end integration tests using socket pairs.
  *

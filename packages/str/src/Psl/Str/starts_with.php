@@ -21,5 +21,5 @@ function starts_with(string $string, string $prefix, Encoding $encoding = Encodi
         return str_starts_with($string, $prefix);
     }
 
-    return 0 === search($string, $prefix, 0, $encoding);
+    return 0 === namespace\search($string, $prefix, 0, $encoding);
 }

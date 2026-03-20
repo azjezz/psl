@@ -42,7 +42,7 @@ function filter(NodeInterface $node, Closure $predicate): null|TreeNode
     $filteredChildren = [];
     if ($node instanceof TreeNode) {
         foreach ($node->getChildren() as $child) {
-            $filtered = filter($child, $predicate);
+            $filtered = namespace\filter($child, $predicate);
             if (null !== $filtered) {
                 $filteredChildren[] = $filtered;
             }

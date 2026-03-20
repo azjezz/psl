@@ -16,6 +16,7 @@ use Psl\Str;
 function info(string $message, string|int|float ...$args): void
 {
     IO\write_error_line(
-        styled('  info ', Ansi\foreground(Color\bright_blue()), Style\bold()) . Str\format($message, ...$args),
+        namespace\styled('  info ', Ansi\foreground(Color\bright_blue()), Style\bold())
+            . Str\format($message, ...$args),
     );
 }

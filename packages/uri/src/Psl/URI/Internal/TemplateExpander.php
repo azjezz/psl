@@ -6,8 +6,11 @@ namespace Psl\URI\Internal;
 
 use function array_is_list;
 use function array_key_exists;
+use function ctype_xdigit;
 use function dechex;
 use function implode;
+use function is_array;
+use function is_string;
 use function mb_substr;
 use function ord;
 use function str_contains;

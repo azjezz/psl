@@ -11,6 +11,7 @@ use Override;
 use SeekableIterator;
 
 use function array_key_exists;
+use function count;
 
 /**
  * @template   Tk

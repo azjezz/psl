@@ -10,6 +10,7 @@ use PhpBench\Attributes\ParamProviders;
 use function pack;
 use function Psl\Shell\stream_unpack;
 use function str_repeat;
+use function strlen;
 
 #[Groups(['shell'])]
 final class ShellBench

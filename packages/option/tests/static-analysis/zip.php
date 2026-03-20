@@ -27,7 +27,7 @@ function test_partial_none_tuple_2(): Option\Option
  */
 function test_partial_none_unzip_1(): array
 {
-    return test_partial_none_tuple_1()->unzip();
+    return namespace\test_partial_none_tuple_1()->unzip();
 }
 
 /**
@@ -43,7 +43,7 @@ function test_some_zip(): Option\Option
  */
 function test_partial_none_unzip_2(): array
 {
-    return test_partial_none_tuple_2()->unzip();
+    return namespace\test_partial_none_tuple_2()->unzip();
 }
 
 /**
@@ -51,7 +51,7 @@ function test_partial_none_unzip_2(): array
  */
 function test_some_unzip(): array
 {
-    return test_some_zip()->unzip();
+    return namespace\test_some_zip()->unzip();
 }
 
 /**

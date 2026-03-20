@@ -17,5 +17,5 @@ function starts_with_ci(string $string, string $prefix): bool
         return false;
     }
 
-    return 0 === strncasecmp($string, $prefix, length($prefix));
+    return 0 === strncasecmp($string, $prefix, namespace\length($prefix));
 }

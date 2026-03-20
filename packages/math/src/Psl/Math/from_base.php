@@ -22,7 +22,7 @@ use function str_split;
  */
 function from_base(string $number, int $fromBase): int
 {
-    $limit = div(INT64_MAX, $fromBase);
+    $limit = namespace\div(INT64_MAX, $fromBase);
     $result = 0;
     foreach (str_split($number) as $digit) {
         $oval = ord($digit);

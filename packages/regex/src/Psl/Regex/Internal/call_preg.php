@@ -7,6 +7,9 @@ namespace Psl\Regex\Internal;
 use Closure;
 use Psl\Regex\Exception;
 
+use function error_clear_last;
+use function error_reporting;
+
 /**
  * @template T
  *
@@ -32,7 +35,7 @@ function call_preg(string $function, Closure $closure): mixed
         error_reporting($previousLevel);
     }
 
-    $error = get_preg_error($function);
+    $error = namespace\get_preg_error($function);
     // @codeCoverageIgnoreStart
     if (null !== $error) {
         if (null !== $error['pattern_message']) {

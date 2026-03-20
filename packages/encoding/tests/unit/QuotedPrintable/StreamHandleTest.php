@@ -8,6 +8,10 @@ use PHPUnit\Framework\TestCase;
 use Psl\Encoding\QuotedPrintable;
 use Psl\IO;
 
+use function explode;
+use function str_repeat;
+use function strlen;
+
 final class StreamHandleTest extends TestCase
 {
     public function testEncodingReadHandlePlainAscii(): void

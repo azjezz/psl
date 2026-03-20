@@ -11,6 +11,8 @@ use Psl\Binary\Endianness;
 use Psl\Binary\Exception;
 use Psl\Math;
 
+use function is_nan;
+
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
 

@@ -11,12 +11,12 @@ namespace Psl\Str;
  */
 function after_last(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::Utf8): null|string
 {
-    $position = search_last($haystack, $needle, $offset, $encoding);
+    $position = namespace\search_last($haystack, $needle, $offset, $encoding);
     if (null === $position) {
         return null;
     }
 
-    $position += length($needle);
+    $position += namespace\length($needle);
 
-    return slice($haystack, $position, null, $encoding);
+    return namespace\slice($haystack, $position, null, $encoding);
 }

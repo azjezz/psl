@@ -9,6 +9,10 @@ use PhpBench\Attributes\ParamProviders;
 use Psl\Encoding\Base64;
 use Psl\Encoding\Hex;
 
+use function base64_encode;
+use function bin2hex;
+use function random_bytes;
+
 #[Groups(['encoding'])]
 final class EncodingBench
 {

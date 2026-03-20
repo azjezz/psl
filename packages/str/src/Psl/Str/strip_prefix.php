@@ -16,9 +16,9 @@ function strip_prefix(string $string, string $prefix, Encoding $encoding = Encod
         return '';
     }
 
-    if ('' === $prefix || '' === $string || !starts_with($string, $prefix, $encoding)) {
+    if ('' === $prefix || '' === $string || !namespace\starts_with($string, $prefix, $encoding)) {
         return $string;
     }
 
-    return slice($string, length($prefix, $encoding), null, $encoding);
+    return namespace\slice($string, namespace\length($prefix, $encoding), null, $encoding);
 }

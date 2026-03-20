@@ -11,6 +11,8 @@ use Psl\HPACK\Exception\HeaderListSizeException;
 use Psl\HPACK\Exception\IntegerOverflowException;
 use Psl\HPACK\Exception\InvalidTableIndexException;
 
+use function hex2bin;
+
 final class DecoderTest extends TestCase
 {
     public function testEmptyBlock(): void

@@ -18,5 +18,5 @@ function post(string $url, string $body = '', array $headers = []): Response
 {
     $headers['content-length'] ??= (string) Byte\length($body);
 
-    return request('POST', $url, $headers, $body);
+    return namespace\request('POST', $url, $headers, $body);
 }

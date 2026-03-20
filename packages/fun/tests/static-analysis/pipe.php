@@ -7,6 +7,7 @@ namespace Psl\Fun\Tests\StaticAnalysis;
 use Psl;
 use Psl\Exception\InvariantViolationException;
 
+use function is_int;
 use function Psl\Fun\pipe;
 
 function test_too_few_argument_dont_matter(): int

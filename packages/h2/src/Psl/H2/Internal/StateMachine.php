@@ -46,6 +46,7 @@ use Psl\HPACK\Exception\ExceptionInterface as HPACKException;
 use Psl\HPACK\Exception\InvalidSizeException;
 use Psl\HPACK\Header;
 
+use function hrtime;
 use function max;
 use function pack;
 use function str_repeat;

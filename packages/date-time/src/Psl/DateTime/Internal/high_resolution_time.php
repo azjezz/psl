@@ -31,7 +31,7 @@ function high_resolution_time(): array
 
         Psl\invariant(null !== $offset, 'The system does not provide a monotonic timer.');
 
-        $time = system_time();
+        $time = namespace\system_time();
 
         $offset = [
             $time[0] - $offset[0],

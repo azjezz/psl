@@ -6,6 +6,8 @@ namespace Psl\Terminal\Internal;
 
 use Psl\Terminal\Event;
 
+use function chr;
+use function count;
 use function explode;
 use function str_contains;
 

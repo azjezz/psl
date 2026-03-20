@@ -7,6 +7,8 @@ namespace Psl\Env\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Psl\Env;
 
+use function getenv;
+
 final class GetVarsTest extends TestCase
 {
     /**

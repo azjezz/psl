@@ -11,6 +11,7 @@ use Override;
 use Psl\Comparison;
 use Stringable;
 
+use function count;
 use function explode;
 
 /**

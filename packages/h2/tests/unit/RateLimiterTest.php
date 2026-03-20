@@ -10,6 +10,8 @@ use Psl\H2\Exception\ProtocolException;
 use Psl\H2\Frame\FrameType;
 use Psl\H2\RateLimiter;
 
+use function usleep;
+
 final class RateLimiterTest extends TestCase
 {
     public function testAllowsFramesWithinLimit(): void

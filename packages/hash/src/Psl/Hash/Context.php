@@ -6,6 +6,7 @@ namespace Psl\Hash;
 
 use HashContext;
 
+use function hash_copy;
 use function hash_final;
 use function hash_init;
 use function hash_update;

@@ -17,6 +17,9 @@ use Psl\H2\Setting;
 use Psl\HPACK\Encoder;
 use Psl\HPACK\Header;
 
+use function count;
+use function str_repeat;
+
 final class SendPushPromiseTest extends TestCase
 {
     private function createServerWithOpenStream(): StateMachine

@@ -19,6 +19,7 @@ use function array_search;
 use function array_slice;
 use function array_values;
 use function count;
+use function iterator_to_array;
 
 use const ARRAY_FILTER_USE_BOTH;
 

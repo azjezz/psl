@@ -30,11 +30,11 @@ function take_non_empty_lowercase_string_list(array $_): void {}
  */
 function test(): void
 {
-    take_non_empty_string_list(Str\split(return_nonempty_string(), 'x'));
+    namespace\take_non_empty_string_list(Str\split(namespace\return_nonempty_string(), 'x'));
 
-    take_non_empty_lowercase_string_list(Str\split(return_nonempty_lowercase_string(), 'x'));
+    namespace\take_non_empty_lowercase_string_list(Str\split(namespace\return_nonempty_lowercase_string(), 'x'));
 
-    take_non_empty_string_list(Str\Byte\split(return_nonempty_string(), 'x'));
+    namespace\take_non_empty_string_list(Str\Byte\split(namespace\return_nonempty_string(), 'x'));
 
-    take_non_empty_lowercase_string_list(Str\Byte\split(return_nonempty_lowercase_string(), 'x'));
+    namespace\take_non_empty_lowercase_string_list(Str\Byte\split(namespace\return_nonempty_lowercase_string(), 'x'));
 }

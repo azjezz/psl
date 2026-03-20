@@ -38,11 +38,11 @@ function add_edge(
 ): DirectedGraph|UndirectedGraph {
     // Ensure both nodes exist
     if (!$graph->hasNode($from)) {
-        $graph = add_node($graph, $from);
+        $graph = namespace\add_node($graph, $from);
     }
 
     if (!$graph->hasNode($to)) {
-        $graph = add_node($graph, $to);
+        $graph = namespace\add_node($graph, $to);
     }
 
     $edge = new Edge($to, $weight);

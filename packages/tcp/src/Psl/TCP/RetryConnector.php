@@ -12,6 +12,8 @@ use Psl\DateTime\Duration;
 use Psl\Network;
 use Revolt\EventLoop;
 
+use function implode;
+
 /**
  * A connector that retries failed connections with exponential backoff.
  *

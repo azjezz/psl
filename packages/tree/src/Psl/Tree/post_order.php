@@ -34,7 +34,7 @@ function post_order(NodeInterface $tree): array
     $result = [];
     foreach ($tree->getChildren() as $child) {
         /** @var T $value */
-        foreach (post_order($child) as $value) {
+        foreach (namespace\post_order($child) as $value) {
             $result[] = $value;
         }
     }

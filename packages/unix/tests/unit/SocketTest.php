@@ -10,6 +10,10 @@ use Psl\DateTime\Duration;
 use Psl\Network;
 use Psl\Unix;
 
+use function getmypid;
+use function sys_get_temp_dir;
+use function unlink;
+
 use const PHP_OS_FAMILY;
 
 final class SocketTest extends TestCase

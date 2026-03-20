@@ -41,5 +41,8 @@ function copy(string $source, string $destination, bool $overwrite = false): voi
     }
 
     // preserve executable permission bits
-    change_permissions($destination, get_permissions($destination) | (get_permissions($source) & 0o111));
+    namespace\change_permissions(
+        $destination,
+        namespace\get_permissions($destination) | (namespace\get_permissions($source) & 0o111),
+    );
 }

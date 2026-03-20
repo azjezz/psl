@@ -11,6 +11,8 @@ use Psl\Network;
 use Psl\TCP;
 use Psl\TCP\Tests\Fixture\SlowClosingListener;
 
+use function sort;
+
 final class CompositeListenerTest extends TestCase
 {
     public function testAcceptsFromMultipleListeners(): void

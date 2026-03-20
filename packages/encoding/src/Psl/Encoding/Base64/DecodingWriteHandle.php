@@ -44,7 +44,7 @@ final class DecodingWriteHandle implements IO\WriteHandleInterface
         $usable = $dataLength - ($dataLength % 4);
 
         if ($usable > 0) {
-            $decoded = decode(substr($data, 0, $usable), $this->variant, $this->padding);
+            $decoded = namespace\decode(substr($data, 0, $usable), $this->variant, $this->padding);
             $this->handle->writeAll($decoded);
             $this->remainder = substr($data, $usable);
         } else {
@@ -70,7 +70,7 @@ final class DecodingWriteHandle implements IO\WriteHandleInterface
     public function flush(): void
     {
         if ($this->remainder !== '') {
-            $decoded = decode($this->remainder, $this->variant, $this->padding);
+            $decoded = namespace\decode($this->remainder, $this->variant, $this->padding);
             $this->remainder = '';
             $this->handle->writeAll($decoded);
         }

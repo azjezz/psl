@@ -33,6 +33,6 @@ final readonly class Connector implements ConnectorInterface, DefaultInterface
         int $port,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): StreamInterface {
-        return connect($host, $port, $this->configuration, $cancellation);
+        return namespace\connect($host, $port, $this->configuration, $cancellation);
     }
 }

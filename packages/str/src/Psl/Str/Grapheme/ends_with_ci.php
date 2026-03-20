@@ -19,13 +19,13 @@ function ends_with_ci(string $string, string $suffix): bool
         return true;
     }
 
-    $suffixLength = length($suffix);
-    $totalLength = length($string);
+    $suffixLength = namespace\length($suffix);
+    $totalLength = namespace\length($string);
     if ($suffixLength > $totalLength) {
         return false;
     }
 
-    $position = search_last_ci($string, $suffix);
+    $position = namespace\search_last_ci($string, $suffix);
     if (null === $position) {
         return false;
     }

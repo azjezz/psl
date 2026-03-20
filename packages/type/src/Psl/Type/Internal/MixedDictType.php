@@ -10,6 +10,9 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 use Throwable;
 
+use function is_array;
+use function is_iterable;
+
 /**
  * @extends Type\Type<array<array-key, mixed>>
  *

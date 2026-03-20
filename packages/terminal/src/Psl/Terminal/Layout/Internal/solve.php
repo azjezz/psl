@@ -33,7 +33,7 @@ function solve(Rect $rect, array $constraints, bool $vertical): array
     $count = count($constraints);
     /** @var list<int> $sizes */
     $sizes = array_fill(0, $count, 0);
-    $rawSizes = array_map(static fn(Constraint $constraint): int => resolve_constraint(
+    $rawSizes = array_map(static fn(Constraint $constraint): int => namespace\resolve_constraint(
         $constraint,
         $totalSpace,
     ), $constraints);

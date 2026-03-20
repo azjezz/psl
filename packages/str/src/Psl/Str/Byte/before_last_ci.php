@@ -13,10 +13,10 @@ use Psl\Str\Exception;
  */
 function before_last_ci(string $haystack, string $needle, int $offset = 0): null|string
 {
-    $length = search_last_ci($haystack, $needle, $offset);
+    $length = namespace\search_last_ci($haystack, $needle, $offset);
     if (null === $length) {
         return null;
     }
 
-    return slice($haystack, 0, $length);
+    return namespace\slice($haystack, 0, $length);
 }

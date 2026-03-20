@@ -6,6 +6,7 @@ namespace Psl\Vec;
 
 use Closure;
 
+use function array_is_list;
 use function array_map;
 use function array_values;
 use function is_array;

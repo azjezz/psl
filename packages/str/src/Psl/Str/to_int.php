@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
+use function error_clear_last;
+use function error_reporting;
+
 /**
  * Returns the given string as an integer, or null if the string isn't numeric.
  *

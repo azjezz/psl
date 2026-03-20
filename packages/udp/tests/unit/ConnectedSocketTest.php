@@ -11,6 +11,8 @@ use Psl\IO;
 use Psl\Network;
 use Psl\UDP;
 
+use function str_repeat;
+
 final class ConnectedSocketTest extends TestCase
 {
     public function testSendAndReceive(): void

@@ -11,6 +11,8 @@ use Psl\IP\Address;
 use Psl\IP\Exception\InvalidArgumentException;
 use Psl\IP\Family;
 
+use function strlen;
+
 final class AddressTest extends TestCase
 {
     public function testV4ParsesValidAddress(): void

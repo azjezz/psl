@@ -8,6 +8,8 @@ use PHPUnit\Framework\TestCase;
 use Psl\Async;
 use Psl\DateTime\Duration;
 
+use function gc_collect_cycles;
+
 final class TimeoutCancellationTokenTest extends TestCase
 {
     public function testIsNotCancelledImmediately(): void

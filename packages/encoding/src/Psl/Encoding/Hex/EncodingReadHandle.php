@@ -262,7 +262,7 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
         }
 
         if ($chunk !== '') {
-            $this->buffer .= encode($chunk);
+            $this->buffer .= namespace\encode($chunk);
         }
     }
 }

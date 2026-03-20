@@ -10,6 +10,12 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 use Stringable;
 
+use function is_float;
+use function is_int;
+use function is_string;
+use function ltrim;
+use function sprintf;
+
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
 

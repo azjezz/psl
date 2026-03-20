@@ -17,5 +17,5 @@ function starts_with(string $string, string $prefix): bool
         return false;
     }
 
-    return 0 === strncmp($string, $prefix, length($prefix));
+    return 0 === strncmp($string, $prefix, namespace\length($prefix));
 }

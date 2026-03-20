@@ -6,6 +6,8 @@ namespace Psl\Encoding\Hex;
 
 use Psl\Encoding\Exception;
 
+use function ctype_xdigit;
+use function hex2bin;
 use function strlen;
 
 /**

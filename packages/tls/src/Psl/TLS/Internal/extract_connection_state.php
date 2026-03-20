@@ -63,7 +63,7 @@ function extract_connection_state(mixed $stream): TLS\ConnectionState
     $sslOptions = $contextOptions['ssl'] ?? [];
 
     $peerCertificate = isset($sslOptions['peer_certificate'])
-        ? parse_peer_certificate($sslOptions['peer_certificate'])
+        ? namespace\parse_peer_certificate($sslOptions['peer_certificate'])
         : null;
 
     $peerCertificateChain = isset($sslOptions['peer_certificate_chain'])

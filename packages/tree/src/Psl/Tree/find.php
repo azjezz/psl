@@ -37,7 +37,7 @@ function find(NodeInterface $tree, Closure $predicate): mixed
 
     foreach ($tree->getChildren() as $child) {
         /** @var T|null $result */
-        $result = find($child, $predicate);
+        $result = namespace\find($child, $predicate);
         if (null !== $result) {
             return $result;
         }

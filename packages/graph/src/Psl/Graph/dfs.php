@@ -55,7 +55,7 @@ function dfs(DirectedGraph|UndirectedGraph $graph, mixed $start): array
         $result[] = $node;
 
         // Push neighbors in reverse order to maintain left-to-right traversal
-        $neighborsList = neighbors($graph, $node);
+        $neighborsList = namespace\neighbors($graph, $node);
         for ($i = count($neighborsList) - 1; $i >= 0; $i--) {
             $neighborKey = get_node_key($neighborsList[$i]);
             if (!isset($visited[$neighborKey])) {

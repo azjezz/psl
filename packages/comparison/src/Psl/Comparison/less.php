@@ -12,5 +12,5 @@ namespace Psl\Comparison;
  */
 function less(mixed $a, mixed $b): bool
 {
-    return compare($a, $b) === Order::Less;
+    return namespace\compare($a, $b) === Order::Less;
 }

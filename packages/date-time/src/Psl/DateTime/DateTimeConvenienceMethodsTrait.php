@@ -8,6 +8,7 @@ use Override;
 use Psl\Locale\Locale;
 
 use function abs;
+use function ceil;
 use function intdiv;
 use function min;
 

@@ -16,6 +16,7 @@ use Psl\SecureRandom;
 use Psl\Str;
 use Psl\Str\Byte;
 
+use function array_filter;
 use function pack;
 use function unpack;
 

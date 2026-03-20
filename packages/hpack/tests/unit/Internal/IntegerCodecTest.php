@@ -9,6 +9,7 @@ use Psl\HPACK\Exception\DecodingException;
 use Psl\HPACK\Exception\IntegerOverflowException;
 use Psl\HPACK\Internal\IntegerCodec;
 
+use function ord;
 use function strlen;
 
 final class IntegerCodecTest extends TestCase

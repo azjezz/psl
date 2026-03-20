@@ -36,7 +36,7 @@ function reduce(NodeInterface $tree, Closure $function, mixed $initial): mixed
     }
 
     foreach ($tree->getChildren() as $child) {
-        $accumulator = reduce($child, $function, $accumulator);
+        $accumulator = namespace\reduce($child, $function, $accumulator);
     }
 
     return $accumulator;

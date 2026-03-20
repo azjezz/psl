@@ -41,12 +41,12 @@ use function str_contains;
 function contains(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::Utf8): bool
 {
     if ('' === $needle) {
-        return Internal\validate_offset($offset, length($haystack, $encoding), true);
+        return Internal\validate_offset($offset, namespace\length($haystack, $encoding), true);
     }
 
     if (0 === $offset && ($encoding === Encoding::Ascii || $encoding === Encoding::Utf8)) {
         return str_contains($haystack, $needle);
     }
 
-    return null !== search($haystack, $needle, $offset, $encoding);
+    return null !== namespace\search($haystack, $needle, $offset, $encoding);
 }

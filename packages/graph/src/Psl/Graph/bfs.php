@@ -47,7 +47,7 @@ function bfs(DirectedGraph|UndirectedGraph $graph, mixed $start): array
         $node = $queue->dequeue();
         $result[] = $node;
 
-        foreach (neighbors($graph, $node) as $neighbor) {
+        foreach (namespace\neighbors($graph, $node) as $neighbor) {
             $key = get_node_key($neighbor);
             if (!isset($visited[$key])) {
                 $visited[$key] = true;

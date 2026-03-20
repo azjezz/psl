@@ -39,8 +39,8 @@ namespace Psl\Str;
 function contains_ci(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::Utf8): bool
 {
     if ('' === $needle) {
-        return Internal\validate_offset($offset, length($haystack, $encoding), true);
+        return Internal\validate_offset($offset, namespace\length($haystack, $encoding), true);
     }
 
-    return null !== search_ci($haystack, $needle, $offset, $encoding);
+    return null !== namespace\search_ci($haystack, $needle, $offset, $encoding);
 }

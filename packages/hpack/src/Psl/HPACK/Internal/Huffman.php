@@ -6,6 +6,8 @@ namespace Psl\HPACK\Internal;
 
 use Psl\HPACK\Exception\DecodingException;
 
+use function array_shift;
+use function chr;
 use function ord;
 use function str_contains;
 use function strlen;

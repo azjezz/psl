@@ -21,7 +21,15 @@ function return_lowercase_string(): string
  */
 function test(): void
 {
-    take_lowercase_string(Str\splice(return_lowercase_string(), return_lowercase_string(), 0));
+    namespace\take_lowercase_string(Str\splice(
+        namespace\return_lowercase_string(),
+        namespace\return_lowercase_string(),
+        0,
+    ));
 
-    take_lowercase_string(Str\Byte\splice(return_lowercase_string(), return_lowercase_string(), 0));
+    namespace\take_lowercase_string(Str\Byte\splice(
+        namespace\return_lowercase_string(),
+        namespace\return_lowercase_string(),
+        0,
+    ));
 }

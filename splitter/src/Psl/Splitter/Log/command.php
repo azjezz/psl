@@ -16,5 +16,5 @@ function command(string $message, string|int|float ...$args): void
 {
     $formatted = $args === [] ? $message : Str\format($message, ...$args);
 
-    IO\write_error_line(styled('       $ ', Ansi\foreground(Color\bright_black())) . $formatted);
+    IO\write_error_line(namespace\styled('       $ ', Ansi\foreground(Color\bright_black())) . $formatted);
 }

@@ -15,5 +15,5 @@ use Psl\Str\Exception;
  */
 function starts_with(string $string, string $prefix): bool
 {
-    return 0 === search($string, $prefix);
+    return 0 === namespace\search($string, $prefix);
 }

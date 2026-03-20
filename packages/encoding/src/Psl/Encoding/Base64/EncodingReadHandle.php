@@ -258,14 +258,14 @@ final class EncodingReadHandle implements IO\BufferedReadHandleInterface
             // @codeCoverageIgnoreEnd
         }
 
-        $chunk = $this->handle->read(CHUNK_SIZE, $cancellation);
+        $chunk = $this->handle->read(namespace\CHUNK_SIZE, $cancellation);
         if ($chunk === '' && $this->handle->reachedEndOfDataSource()) {
             $this->eof = true;
             return;
         }
 
         if ($chunk !== '') {
-            $this->buffer .= encode($chunk, $this->variant, $this->padding) . LINE_ENDING;
+            $this->buffer .= namespace\encode($chunk, $this->variant, $this->padding) . namespace\LINE_ENDING;
         }
     }
 }

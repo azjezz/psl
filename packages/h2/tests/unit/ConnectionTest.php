@@ -41,6 +41,7 @@ use Psl\IO;
 use RuntimeException;
 
 use function count;
+use function pack;
 use function str_repeat;
 use function strlen;
 use function substr;

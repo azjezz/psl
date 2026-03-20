@@ -34,7 +34,7 @@ function pre_order(NodeInterface $tree): array
 
     foreach ($tree->getChildren() as $child) {
         /** @var T $value */
-        foreach (pre_order($child) as $value) {
+        foreach (namespace\pre_order($child) as $value) {
             $result[] = $value;
         }
     }

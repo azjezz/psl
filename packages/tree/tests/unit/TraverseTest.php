@@ -9,6 +9,8 @@ use PHPUnit\Framework\TestCase;
 use Psl\Tree;
 
 use function count;
+use function implode;
+use function strtolower;
 
 final class TraverseTest extends TestCase
 {

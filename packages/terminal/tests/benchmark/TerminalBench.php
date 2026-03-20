@@ -15,6 +15,7 @@ use Psl\Terminal\Layout\Constraint;
 use Psl\Terminal\Rect;
 
 use function Psl\Terminal\Layout\Internal\solve;
+use function str_repeat;
 
 #[Groups(['terminal'])]
 final class TerminalBench

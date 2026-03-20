@@ -35,5 +35,5 @@ function link(string $text, string $url, ControlSequenceIntroducer ...$styles): 
 
     $merged = new ControlSequenceIntroducer($parameters, ControlSequenceIntroducerKind::SelectGraphicRendition);
 
-    return $merged->toString() . $oscOpen->toString() . $text . $oscClose->toString() . reset()->toString();
+    return $merged->toString() . $oscOpen->toString() . $text . $oscClose->toString() . namespace\reset()->toString();
 }

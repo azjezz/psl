@@ -26,7 +26,7 @@ function truncate(
     null|string $trimMarker = null,
     Encoding $encoding = Encoding::Utf8,
 ): string {
-    $offset = Internal\validate_offset($offset, length($string, $encoding));
+    $offset = Internal\validate_offset($offset, namespace\length($string, $encoding));
 
     return mb_strimwidth($string, $offset, $width, $trimMarker ?? '', $encoding->value);
 }

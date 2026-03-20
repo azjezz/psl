@@ -8,6 +8,8 @@ use PHPUnit\Framework\TestCase;
 use Psl\H2\Exception\ProtocolException;
 use Psl\H2\Internal\HeaderBlockAssembler;
 
+use function str_repeat;
+
 final class HeaderBlockAssemblerTest extends TestCase
 {
     public function testNotActiveByDefault(): void

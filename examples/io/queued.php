@@ -10,21 +10,17 @@ use Psl\IO;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-Async\main(static function (): int {
-    [$read, $write] = IO\pipe();
+[$read, $write] = IO\pipe();
 
-    $he = Async\run(static fn(): string => $read->readFixedSize(2));
+$he = Async\run(static fn(): string => $read->readFixedSize(2));
 
-    Async\sleep(Psl\DateTime\Duration::milliseconds(200));
+Async\sleep(Psl\DateTime\Duration::milliseconds(200));
 
-    $write->write('hello');
+$write->write('hello');
 
-    $llo = $read->readFixedSize(3);
+$llo = $read->readFixedSize(3);
 
-    Psl\invariant($he->isComplete(), 'First read should have completed before second one.');
-    Psl\invariant('llo' === $llo, 'First read should have completed before second one.');
+Psl\invariant($he->isComplete(), 'First read should have completed before second one.');
+Psl\invariant('llo' === $llo, 'First read should have completed before second one.');
 
-    IO\write_error_line($he->await() . $llo);
-
-    return 0;
-});
+IO\write_error_line($he->await() . $llo);

@@ -7,6 +7,8 @@ namespace Psl\Graph\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Psl\Graph;
 
+use function array_search;
+
 final class TopologicalSortTest extends TestCase
 {
     public function testTopologicalSortOnEmptyGraph(): void

@@ -41,7 +41,7 @@ function test_generic(mixed $param): Option
  */
 function test_some_generic(): Option
 {
-    return test_generic('some');
+    return namespace\test_generic('some');
 }
 
 /**
@@ -49,7 +49,7 @@ function test_some_generic(): Option
  */
 function test_none_generic(): Option
 {
-    return test_generic(null);
+    return namespace\test_generic(null);
 }
 
 /**
@@ -59,5 +59,5 @@ function test_none_generic(): Option
  */
 function test_all_posibilities_generic(string|null $x): Option
 {
-    return test_generic($x);
+    return namespace\test_generic($x);
 }
