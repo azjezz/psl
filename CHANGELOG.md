@@ -1,5 +1,18 @@
 # Changelog
 
+## 6.1.1
+
+### fixes
+
+- fix(str): `Str\chr()` now throws `OutOfBoundsException` for invalid Unicode code points instead of silently returning an empty string
+- fix(str): `Str\from_code_points()` now validates code points and throws `OutOfBoundsException` for out-of-range values, surrogates, and negative inputs instead of producing invalid UTF-8; implementation now delegates to `Str\chr()` for consistent behavior
+
+### other
+
+- chore(str): clarify `width()`, `truncate()`, and `width_slice()` PHPDoc to explicitly reference `mb_strwidth()`/`mb_strimwidth()` semantics
+- chore: make all function calls explicit across the codebase, eliminating PHP namespace fallback resolution
+- chore(h2): skip timer-sensitive rate limiter test on Windows
+
 ## 6.1.0
 
 ### features
