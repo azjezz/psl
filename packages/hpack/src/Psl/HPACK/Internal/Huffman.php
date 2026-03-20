@@ -656,7 +656,7 @@ final class Huffman
             $state = $nextState;
 
             $lowNibble = $byte & 0x0F;
-            /** @mago-expect analysis:mismatched-array-index */
+            /** @mago-expect analysis:mismatched-array-index,mismatched-array-index */
             [$nextState, $emit] = $table[$state][$lowNibble];
             if ($emit === 256) {
                 throw DecodingException::forEosInHuffmanData();

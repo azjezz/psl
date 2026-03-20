@@ -46,28 +46,15 @@ function audit(MonolithicRepository $monorepo, #[\SensitiveParameter] string $to
 
     Log\info('Auditing %d repositories...', Iter\count($repos));
 
-    /** @var array<non-empty-string, Async\Awaitable<array{Http\Response, Http\Response, Http\Response, Http\Response}>> $awaitables */
-    $awaitables = Dict\from_keys($repos, static fn(string $repo): Async\Awaitable => Async\run(
-        /**
-         * @return array{Http\Response, Http\Response, Http\Response, Http\Response}
-         *
-         * @throws CompositeException
-         */
-        static fn(): array => Type\shape([
-            Type\instance_of(Http\Response::class),
-            Type\instance_of(Http\Response::class),
-            Type\instance_of(Http\Response::class),
-            Type\instance_of(Http\Response::class),
-        ])->assert(Async\concurrently([
-            static fn() => Http\get(Str\format('https://api.github.com/repos/%s/%s', $org, $repo), $headers),
-            static fn() => Http\get(Str\format('https://api.github.com/repos/%s/%s/rulesets', $org, $repo), $headers),
-            static fn() => Http\get(Str\format('https://api.github.com/orgs/%s/rulesets', $org), $headers),
-            static fn() => Http\get(
-                Str\format('https://api.github.com/repos/%s/%s/pulls?state=open&per_page=1', $org, $repo),
-                $headers,
-            ),
-        ])),
-    ));
+    $awaitables = Dict\from_keys($repos, static fn(string $repo): Async\Awaitable => Async\run(static fn(): array => Async\concurrently([
+        static fn() => Http\get(Str\format('https://api.github.com/repos/%s/%s', $org, $repo), $headers),
+        static fn() => Http\get(Str\format('https://api.github.com/repos/%s/%s/rulesets', $org, $repo), $headers),
+        static fn() => Http\get(Str\format('https://api.github.com/orgs/%s/rulesets', $org), $headers),
+        static fn() => Http\get(
+            Str\format('https://api.github.com/repos/%s/%s/pulls?state=open&per_page=1', $org, $repo),
+            $headers,
+        ),
+    ])));
 
     $ok = true;
 

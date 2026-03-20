@@ -25,9 +25,6 @@ function copy_bidirectional(
     ReadHandleInterface&WriteHandleInterface $b,
     CancellationTokenInterface $cancellation = new NullCancellationToken(),
 ): array {
-    /**
-     * @var array{int<0, max>, int<0, max>}
-     */
     return Async\concurrently([
         static fn(): int => copy($a, $b, $cancellation),
         static fn(): int => copy($b, $a, $cancellation),
