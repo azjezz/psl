@@ -7,18 +7,15 @@ namespace Psl\Str;
 use function mb_strimwidth;
 
 /**
- * Get truncated string with specified width.
+ * Truncate a string to the given display width as defined by {@see mb_strimwidth()}.
  *
- * @param int $offset The start position offset. Number of
- *                    characters from the beginning of string. (First character is 0)
- * @param int $width the width of the desired trim
- * @param string|null $trimMarker a string that is added to the end of string
- *                                 when string is truncated
+ * For grapheme-based slicing, use {@see Grapheme\slice()}.
+ *
+ * @param int $offset The start position offset in codepoints (0-indexed).
+ * @param int $width The maximum display width of the result.
+ * @param null|string $trimMarker Appended to the result when the string is truncated.
  *
  * @throws Exception\OutOfBoundsException If the offset is out-of-bounds.
- *
- * @return string The truncated string. If trim_marker is set,
- *                trim_marker is appended to the return value.
  *
  * @pure
  */
