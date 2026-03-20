@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Psl\Str;
 
 /**
- * Create a Multi-byte string from code points.
+ * Create a UTF-8 string from Unicode code points.
+ *
+ * @see chr()
  *
  * Example:
  *
@@ -15,32 +17,15 @@ namespace Psl\Str;
  *      Str\from_code_points(72, 101, 108, 108, 111)
  *      => Str('Hello')
  *
+ * @throws Exception\OutOfBoundsException If a code point is out of the valid Unicode range.
+ *
  * @pure
  */
 function from_code_points(int ...$codePoints): string
 {
     $string = '';
     foreach ($codePoints as $code) {
-        $code %= 0x20_0000;
-
-        if (0x80 > $code) {
-            $string .= Byte\chr($code);
-            continue;
-        }
-
-        if (0x800 > $code) {
-            $string .= Byte\chr(0xC0 | ($code >> 6)) . Byte\chr(0x80 | ($code & 0x3F));
-            continue;
-        }
-
-        if (0x1_0000 > $code) {
-            $string .= Byte\chr(0xE0 | ($code >> 12)) . Byte\chr(0x80 | (($code >> 6) & 0x3F));
-            $string .= Byte\chr(0x80 | ($code & 0x3F));
-            continue;
-        }
-
-        $string .= Byte\chr(0xF0 | ($code >> 18)) . Byte\chr(0x80 | (($code >> 12) & 0x3F));
-        $string .= Byte\chr(0x80 | (($code >> 6) & 0x3F)) . Byte\chr(0x80 | ($code & 0x3F));
+        $string .= namespace\chr($code);
     }
 
     return $string;
