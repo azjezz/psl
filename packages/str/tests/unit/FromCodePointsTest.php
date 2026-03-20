@@ -22,5 +22,42 @@ final class FromCodePointsTest extends TestCase
         static::assertSame('ς', Str\from_code_points(962));
 
         static::assertSame("\u{10001}", Str\from_code_points(65_537));
+
+        static::assertSame("\u{10FFFF}", Str\from_code_points(0x10_FFFF));
+    }
+
+    public function testNegativeCodePointThrows(): void
+    {
+        $this->expectException(Str\Exception\OutOfBoundsException::class);
+
+        Str\from_code_points(-1);
+    }
+
+    public function testSurrogateStartThrows(): void
+    {
+        $this->expectException(Str\Exception\OutOfBoundsException::class);
+
+        Str\from_code_points(0xD800);
+    }
+
+    public function testSurrogateEndThrows(): void
+    {
+        $this->expectException(Str\Exception\OutOfBoundsException::class);
+
+        Str\from_code_points(0xDFFF);
+    }
+
+    public function testAboveUnicodeMaxThrows(): void
+    {
+        $this->expectException(Str\Exception\OutOfBoundsException::class);
+
+        Str\from_code_points(0x11_0000);
+    }
+
+    public function testInvalidCodePointAmongValidOnesThrows(): void
+    {
+        $this->expectException(Str\Exception\OutOfBoundsException::class);
+
+        Str\from_code_points(72, 101, 0xD800, 108, 111);
     }
 }

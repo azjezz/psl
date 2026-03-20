@@ -26,4 +26,25 @@ final class ChrTest extends TestCase
             ['A', 65],
         ];
     }
+
+    public function testNegativeCodePointThrows(): void
+    {
+        $this->expectException(Str\Exception\OutOfBoundsException::class);
+
+        Str\chr(-1);
+    }
+
+    public function testSurrogateThrows(): void
+    {
+        $this->expectException(Str\Exception\OutOfBoundsException::class);
+
+        Str\chr(0xD800);
+    }
+
+    public function testAboveUnicodeMaxThrows(): void
+    {
+        $this->expectException(Str\Exception\OutOfBoundsException::class);
+
+        Str\chr(0x11_0000);
+    }
 }
