@@ -9,6 +9,11 @@ use Psl\Encoding\Base64;
 use Psl\Encoding\Exception;
 use Psl\IO;
 
+use function base64_encode;
+use function str_repeat;
+use function strlen;
+use function substr;
+
 final class StreamHandleTest extends TestCase
 {
     public function testEncodingReadHandle(): void

@@ -17,6 +17,8 @@ use Psl\Process\Exception;
 use Psl\Process\Signal;
 use Psl\Process\Stdio;
 
+use function strlen;
+
 final class ChildTest extends TestCase
 {
     /**

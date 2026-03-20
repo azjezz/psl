@@ -7,6 +7,8 @@ namespace Psl\Tree\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Psl\Tree;
 
+use function array_sum;
+
 final class FoldTest extends TestCase
 {
     public function testFoldPostOrderProcessing(): void

@@ -31,7 +31,7 @@ final class EncodingWriteHandle implements IO\WriteHandleInterface
         $length = strlen($bytes);
 
         if ($length > 0) {
-            $encoded = encode($bytes);
+            $encoded = namespace\encode($bytes);
             $this->handle->writeAll($encoded);
         }
 

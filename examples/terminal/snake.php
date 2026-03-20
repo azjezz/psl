@@ -17,6 +17,8 @@ use Psl\Terminal\Event;
 use Psl\Terminal\Layout;
 use Psl\Terminal\Widget;
 
+use function array_pop;
+
 require __DIR__ . '/../../vendor/autoload.php';
 
 enum Direction
@@ -119,7 +121,7 @@ function reset_game(SnakeState $state, Terminal\Rect $area): void
     $state->score = 0;
     $state->gameOver = false;
     $state->paused = false;
-    $state->food = spawn_food($area, $state->snake);
+    $state->food = namespace\spawn_food($area, $state->snake);
 }
 
 Async\main(static function (): int {
@@ -137,11 +139,11 @@ Async\main(static function (): int {
             return;
         }
 
-        if (!is_opposite($state->nextDirection, $state->direction)) {
+        if (!namespace\is_opposite($state->nextDirection, $state->direction)) {
             $state->direction = $state->nextDirection;
         }
 
-        [$dx, $dy] = direction_offset($state->direction);
+        [$dx, $dy] = namespace\direction_offset($state->direction);
         $head = $state->snake[0];
         $newHead = [$head[0] + $dx, $head[1] + $dy];
 
@@ -180,7 +182,7 @@ Async\main(static function (): int {
             $state->snake = $newSnake;
 
             if ($gameAreaRef !== null) {
-                $state->food = spawn_food($gameAreaRef[0], $state->snake);
+                $state->food = namespace\spawn_food($gameAreaRef[0], $state->snake);
             }
         } else {
             array_pop($newSnake);
@@ -196,7 +198,7 @@ Async\main(static function (): int {
 
         if (($event->char === 'r' || $event->char === 'R') && $state->gameOver) {
             if ($gameAreaRef !== null) {
-                reset_game($state, $gameAreaRef[0]);
+                namespace\reset_game($state, $gameAreaRef[0]);
             }
 
             return;

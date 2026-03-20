@@ -23,7 +23,7 @@ function replace_every(string $haystack, array $replacements, Encoding $encoding
     }
 
     foreach ($replacements as $needle => $replacement) {
-        $haystack = replace($haystack, $needle, $replacement, $encoding);
+        $haystack = namespace\replace($haystack, $needle, $replacement, $encoding);
     }
 
     return $haystack;

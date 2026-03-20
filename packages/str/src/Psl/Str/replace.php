@@ -22,7 +22,7 @@ function replace(string $haystack, string $needle, string $replacement, Encoding
         return str_replace($needle, $replacement, $haystack);
     }
 
-    if (null === search($haystack, $needle, 0, $encoding)) {
+    if (null === namespace\search($haystack, $needle, 0, $encoding)) {
         return $haystack;
     }
 

@@ -9,6 +9,7 @@ use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Async\Exception\CompositeException;
 use Psl\IO;
+use Psl\Iter;
 use Psl\Shell;
 use RuntimeException;
 
@@ -47,10 +48,10 @@ function release(MonolithicRepository $monorepo, Git $git, string $releaseTag): 
     ));
     IO\write_error_line('');
 
-    split($monorepo, $git, $branch);
+    namespace\split($monorepo, $git, $branch);
 
     IO\write_error_line('');
-    Log\success('Synced %d packages to %s.', count($monorepo->packages), $branch);
+    Log\success('Synced %d packages to %s.', Iter\count($monorepo->packages), $branch);
 
     IO\write_error_line('');
     Log\info(
@@ -60,10 +61,10 @@ function release(MonolithicRepository $monorepo, Git $git, string $releaseTag): 
     );
     IO\write_error_line('');
 
-    tag($monorepo, $git, $releaseTag, $branch);
+    namespace\tag($monorepo, $git, $releaseTag, $branch);
 
     IO\write_error_line('');
-    Log\success('Tagged %d packages with %s.', count($monorepo->packages), $releaseTag);
+    Log\success('Tagged %d packages with %s.', Iter\count($monorepo->packages), $releaseTag);
 
     IO\write_error_line('');
     Log\info('Creating releases for %s...', Log\styled(
@@ -73,7 +74,7 @@ function release(MonolithicRepository $monorepo, Git $git, string $releaseTag): 
     ));
     IO\write_error_line('');
 
-    create_releases($monorepo, $releaseTag);
+    namespace\create_releases($monorepo, $releaseTag);
 
     IO\write_error_line('');
     Log\success('Created releases for %s.', $releaseTag);
@@ -83,7 +84,7 @@ function release(MonolithicRepository $monorepo, Git $git, string $releaseTag): 
         Log\info('Creating maintenance branch...');
         IO\write_error_line('');
 
-        create_maintenance_branch($monorepo, $git, $releaseTag);
+        namespace\create_maintenance_branch($monorepo, $git, $releaseTag);
 
         IO\write_error_line('');
         Log\success('Maintenance branch created and synced.');

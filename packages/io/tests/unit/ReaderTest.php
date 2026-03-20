@@ -7,6 +7,9 @@ namespace Psl\IO\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Psl\IO;
 
+use function fopen;
+use function str_repeat;
+
 final class ReaderTest extends TestCase
 {
     public function testReadByteOnAnEmptyBufferFillsTheInternalBufferAndMarksTheReaderAsEOF(): void
@@ -56,6 +59,9 @@ final class ReaderTest extends TestCase
 
         static::assertSame('use Psl', $reader->readUntil('\\'));
         static::assertSame('IO;', $reader->readLine());
+        static::assertSame('', $reader->readLine());
+        static::assertSame('use function fopen;', $reader->readLine());
+        static::assertSame('use function str_repeat;', $reader->readLine());
         static::assertSame('', $reader->readLine());
         static::assertSame('final class', $reader->readFixedSize(11));
 

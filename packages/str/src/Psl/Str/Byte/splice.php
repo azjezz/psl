@@ -24,7 +24,7 @@ use function substr_replace;
  */
 function splice(string $string, string $replacement, int $offset, null|int $length = null): string
 {
-    $offset = Str\Internal\validate_offset($offset, length($string));
+    $offset = Str\Internal\validate_offset($offset, namespace\length($string));
 
     return null === $length
         ? substr_replace($string, $replacement, $offset)

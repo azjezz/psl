@@ -15,10 +15,10 @@ function before_last(
     int $offset = 0,
     Encoding $encoding = Encoding::Utf8,
 ): null|string {
-    $length = search_last($haystack, $needle, $offset, $encoding);
+    $length = namespace\search_last($haystack, $needle, $offset, $encoding);
     if (null === $length) {
         return null;
     }
 
-    return slice($haystack, 0, $length, $encoding);
+    return namespace\slice($haystack, 0, $length, $encoding);
 }

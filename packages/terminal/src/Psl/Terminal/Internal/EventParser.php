@@ -6,7 +6,10 @@ namespace Psl\Terminal\Internal;
 
 use Psl\Terminal\Event;
 
+use function chr;
+use function count;
 use function explode;
+use function ord;
 use function str_starts_with;
 use function strlen;
 use function strpos;

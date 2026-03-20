@@ -39,5 +39,5 @@ function get_peer_name(mixed $socket): Network\Address
         return Network\Address::tcp($host, $port);
     }
 
-    return get_sock_name($socket);
+    return namespace\get_sock_name($socket);
 }

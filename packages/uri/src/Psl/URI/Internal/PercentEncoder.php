@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Psl\URI\Internal;
 
+use function bin2hex;
 use function chr;
 use function intval;
 use function preg_replace_callback;
+use function rawurldecode;
 use function str_contains;
 use function strlen;
 use function strtoupper;

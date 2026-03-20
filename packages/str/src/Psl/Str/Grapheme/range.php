@@ -61,5 +61,5 @@ function range(string $string, RangeInterface $range): string
         // @codeCoverageIgnoreEnd
     }
 
-    return slice($string, $offset, $length);
+    return namespace\slice($string, $offset, $length);
 }

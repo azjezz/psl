@@ -10,6 +10,7 @@ use Psl\Socks;
 use Psl\TCP;
 
 use function ord;
+use function unpack;
 
 final class ConnectorTest extends TestCase
 {

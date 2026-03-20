@@ -16,6 +16,7 @@ use Psl\Str;
 function success(string $message, string|int|float ...$args): void
 {
     IO\write_error_line(
-        styled('  done ', Ansi\foreground(Color\bright_green()), Style\bold()) . Str\format($message, ...$args),
+        namespace\styled('  done ', Ansi\foreground(Color\bright_green()), Style\bold())
+            . Str\format($message, ...$args),
     );
 }

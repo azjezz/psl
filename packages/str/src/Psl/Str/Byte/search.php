@@ -24,7 +24,7 @@ use function strpos;
  */
 function search(string $haystack, string $needle, int $offset = 0): null|int
 {
-    $offset = Str\Internal\validate_offset($offset, length($haystack));
+    $offset = Str\Internal\validate_offset($offset, namespace\length($haystack));
 
     if ('' === $needle) {
         return null;

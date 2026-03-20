@@ -14,6 +14,7 @@ use function ctype_digit;
 use function is_float;
 use function is_int;
 use function is_string;
+use function preg_match;
 
 /**
  * @extends Type\Type<float>

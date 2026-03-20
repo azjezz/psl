@@ -24,8 +24,8 @@ function strip_suffix(string $string, string $suffix): string
         return '';
     }
 
-    $suffixLength = length($suffix);
-    $stringLength = length($string);
+    $suffixLength = namespace\length($suffix);
+    $stringLength = namespace\length($string);
 
     // if $suffixLength is greater than $stringLength, return $string as it can't contain $suffix.
     // if $suffixLength and $stringLength are the same, return $string as $suffix is not $string.
@@ -34,9 +34,9 @@ function strip_suffix(string $string, string $suffix): string
         return $string;
     }
 
-    if (!ends_with($string, $suffix)) {
+    if (!namespace\ends_with($string, $suffix)) {
         return $string;
     }
 
-    return slice($string, 0, $length);
+    return namespace\slice($string, 0, $length);
 }

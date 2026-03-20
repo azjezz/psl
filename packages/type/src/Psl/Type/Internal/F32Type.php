@@ -9,6 +9,7 @@ use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
+use function is_float;
 use function Psl\Type;
 
 /**

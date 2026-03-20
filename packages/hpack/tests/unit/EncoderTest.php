@@ -12,6 +12,7 @@ use Psl\HPACK\Exception\HeaderListSizeException;
 use Psl\HPACK\Exception\InvalidSizeException;
 use Psl\HPACK\Header;
 
+use function hex2bin;
 use function ord;
 use function str_repeat;
 use function strlen;

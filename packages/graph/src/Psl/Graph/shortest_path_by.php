@@ -8,6 +8,7 @@ use Closure;
 use Psl\DataStructure\PriorityQueue;
 use Psl\DataStructure\Queue;
 
+use function array_reverse;
 use function Psl\Graph\Internal\get_node_key;
 
 /**
@@ -59,7 +60,7 @@ function shortest_path_by(
 
     // Check if graph is weighted
     $isWeighted = false;
-    foreach (nodes($graph) as $node) {
+    foreach (namespace\nodes($graph) as $node) {
         foreach ($graph->getEdgesFrom($node) as $edge) {
             if (null === $edge->weight) {
                 continue;
@@ -96,7 +97,7 @@ function shortest_path_by(
                 return array_reverse($path);
             }
 
-            foreach (neighbors($graph, $node) as $neighbor) {
+            foreach (namespace\neighbors($graph, $node) as $neighbor) {
                 $neighborKey = get_node_key($neighbor);
                 if (!isset($visited[$neighborKey])) {
                     $visited[$neighborKey] = true;
@@ -117,7 +118,7 @@ function shortest_path_by(
     /** @var PriorityQueue<array{0: int, 1: TNode}> $pq */
     $pq = new PriorityQueue();
 
-    foreach (nodes($graph) as $node) {
+    foreach (namespace\nodes($graph) as $node) {
         $key = get_node_key($node);
         $distances[$key] = PHP_INT_MAX;
         $parent[$key] = null;

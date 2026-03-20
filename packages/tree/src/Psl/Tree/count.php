@@ -28,7 +28,7 @@ function count(NodeInterface $node): int
     $total = 1;
     if ($node instanceof TreeNode) {
         foreach ($node->getChildren() as $child) {
-            $total += count($child);
+            $total += namespace\count($child);
         }
     }
 

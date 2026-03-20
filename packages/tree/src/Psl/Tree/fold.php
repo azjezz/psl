@@ -35,7 +35,7 @@ function fold(NodeInterface $tree, Closure $function): mixed
         return $function($tree->getValue(), []);
     }
 
-    $foldedChildren = array_map(static fn(NodeInterface $child): mixed => fold(
+    $foldedChildren = array_map(static fn(NodeInterface $child): mixed => namespace\fold(
         $child,
         $function,
     ), $tree->getChildren());

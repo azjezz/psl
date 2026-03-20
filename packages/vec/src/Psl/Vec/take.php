@@ -21,5 +21,5 @@ namespace Psl\Vec;
  */
 function take(iterable $iterable, int $n): array
 {
-    return slice($iterable, 0, $n);
+    return namespace\slice($iterable, 0, $n);
 }

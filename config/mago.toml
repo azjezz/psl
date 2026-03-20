@@ -15,6 +15,7 @@ indent-heredoc = false
 integrations = ["php-unit"]
 
 [linter.rules]
+ambiguous-function-call = { enabled = true }
 cyclomatic-complexity = { threshold = 48 }
 kan-defect = { threshold = 3.5 }
 halstead = { enabled = false }

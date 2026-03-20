@@ -55,7 +55,7 @@ function create_temporary_file(null|string $directory = null, null|string $prefi
 
     $filename = $directory . $separator . $prefix . bin2hex(random_bytes(4));
 
-    create_file($filename);
+    namespace\create_file($filename);
 
     return $filename;
 }

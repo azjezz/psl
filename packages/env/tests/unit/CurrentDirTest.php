@@ -8,6 +8,8 @@ use PHPUnit\Framework\TestCase;
 use Psl\Env;
 use Psl\Exception\InvariantViolationException;
 
+use function getcwd;
+
 final class CurrentDirTest extends TestCase
 {
     public function testCurrentDir(): void

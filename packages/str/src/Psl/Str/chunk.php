@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str;
 
+use function mb_str_split;
+
 /**
  * Returns an array containing the string split into chunks of the given size.
  *

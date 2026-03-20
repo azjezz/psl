@@ -66,7 +66,7 @@ final class State
      */
     public function subscribe(Closure $callback): string
     {
-        $id = next_id();
+        $id = namespace\next_id();
 
         $this->handled = true;
 

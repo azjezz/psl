@@ -16,9 +16,9 @@ use Psl\Str\Exception;
  */
 function strip_prefix(string $string, string $prefix): string
 {
-    if ('' === $prefix || !starts_with($string, $prefix)) {
+    if ('' === $prefix || !namespace\starts_with($string, $prefix)) {
         return $string;
     }
 
-    return slice($string, length($prefix));
+    return namespace\slice($string, namespace\length($prefix));
 }

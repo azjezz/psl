@@ -11,6 +11,8 @@ use Psl\Compression\Tests\Fixture\BrotliCompressor;
 use Psl\Compression\Tests\Fixture\BrotliDecompressor;
 
 use function brotli_uncompress;
+use function str_repeat;
+use function strlen;
 
 #[RequiresPhpExtension('brotli')]
 final class CompressTest extends TestCase

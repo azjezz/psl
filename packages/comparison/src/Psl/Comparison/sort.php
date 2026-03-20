@@ -16,5 +16,5 @@ namespace Psl\Comparison;
  */
 function sort(mixed $a, mixed $b): int
 {
-    return compare($a, $b)->value;
+    return namespace\compare($a, $b)->value;
 }

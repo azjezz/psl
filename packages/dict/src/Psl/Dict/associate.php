@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
+use function array_combine;
 use function count;
 use function is_array;
 use function iterator_to_array;

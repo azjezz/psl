@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Binary;
 
 use function is_finite;
+use function pack;
 
 /**
  * Encode a 32-bit floating point value to a binary string.

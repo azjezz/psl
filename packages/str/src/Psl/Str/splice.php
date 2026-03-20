@@ -25,12 +25,16 @@ function splice(
     null|int $length = null,
     Encoding $encoding = Encoding::Utf8,
 ): string {
-    $totalLength = length($string, $encoding);
+    $totalLength = namespace\length($string, $encoding);
     $offset = Internal\validate_offset($offset, $totalLength);
 
     if (null === $length || ($offset + $length) >= $totalLength) {
-        return slice($string, 0, $offset, $encoding) . $replacement;
+        return namespace\slice($string, 0, $offset, $encoding) . $replacement;
     }
 
-    return slice($string, 0, $offset, $encoding) . $replacement . slice($string, $offset + $length, null, $encoding);
+    return (
+        namespace\slice($string, 0, $offset, $encoding)
+        . $replacement
+        . namespace\slice($string, $offset + $length, null, $encoding)
+    );
 }

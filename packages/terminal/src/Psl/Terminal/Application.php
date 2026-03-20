@@ -15,6 +15,7 @@ use Psl\IO\StreamHandleInterface;
 use Psl\IO\WriteHandleInterface;
 use Psl\Terminal\Internal\EventParser;
 
+use function defined;
 use function is_resource;
 use function substr;
 

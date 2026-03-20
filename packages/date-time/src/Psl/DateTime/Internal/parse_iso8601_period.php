@@ -7,6 +7,7 @@ namespace Psl\DateTime\Internal;
 use Psl\DateTime;
 use Psl\DateTime\Exception;
 
+use function preg_match;
 use function sprintf;
 use function str_contains;
 use function str_starts_with;

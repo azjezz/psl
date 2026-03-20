@@ -35,5 +35,5 @@ namespace Psl\Graph;
  */
 function shortest_path(DirectedGraph|UndirectedGraph $graph, mixed $from, mixed $to): null|array
 {
-    return shortest_path_by($graph, $from, $to, static fn(int $weight): int => $weight);
+    return namespace\shortest_path_by($graph, $from, $to, static fn(int $weight): int => $weight);
 }

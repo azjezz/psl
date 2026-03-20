@@ -6,6 +6,8 @@ namespace Psl\Terminal;
 
 use Psl\Ansi\ControlSequenceIntroducer;
 
+use function count;
+
 /**
  * Represents a single terminal cell containing a grapheme cluster and optional styling.
  *

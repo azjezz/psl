@@ -12,6 +12,12 @@ use Psl\Network;
 use Psl\OS;
 use Psl\UDP;
 
+use function fclose;
+use function fwrite;
+use function str_repeat;
+use function stream_set_blocking;
+use function stream_socket_pair;
+
 final class SocketTest extends TestCase
 {
     public function testBindAndGetLocalAddress(): void

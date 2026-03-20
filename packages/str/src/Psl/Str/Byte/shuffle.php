@@ -13,7 +13,7 @@ use function str_shuffle;
  */
 function shuffle(string $string): string
 {
-    if (length($string) < 1) {
+    if (namespace\length($string) < 1) {
         return $string;
     }
 

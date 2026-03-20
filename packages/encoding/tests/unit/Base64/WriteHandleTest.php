@@ -9,6 +9,9 @@ use Psl\Encoding\Base64;
 use Psl\Encoding\Exception;
 use Psl\IO;
 
+use function str_repeat;
+use function strlen;
+
 final class WriteHandleTest extends TestCase
 {
     public function testDecodingWriteChunkedInputWithRemainder(): void

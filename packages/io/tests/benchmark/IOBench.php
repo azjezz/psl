@@ -8,6 +8,8 @@ use PhpBench\Attributes\Groups;
 use PhpBench\Attributes\ParamProviders;
 use Psl\IO\MemoryHandle;
 
+use function str_repeat;
+
 #[Groups(['io'])]
 final class IOBench
 {

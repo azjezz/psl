@@ -37,6 +37,9 @@ function map(NodeInterface $node, Closure $function): NodeInterface
 
     return new TreeNode(
         $function($node->getValue()),
-        array_map(static fn(NodeInterface $child): NodeInterface => map($child, $function), $node->getChildren()),
+        array_map(static fn(NodeInterface $child): NodeInterface => namespace\map(
+            $child,
+            $function,
+        ), $node->getChildren()),
     );
 }

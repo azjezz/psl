@@ -55,7 +55,7 @@ final class EncodingWriteHandle implements IO\WriteHandleInterface
                 $this->handle->writeAll("\r\n");
             }
 
-            $this->handle->writeAll(encode_line($line));
+            $this->handle->writeAll(namespace\encode_line($line));
             $this->buffer = '';
             $this->firstLine = false;
         }
@@ -72,7 +72,7 @@ final class EncodingWriteHandle implements IO\WriteHandleInterface
                 $this->handle->writeAll("\r\n");
             }
 
-            $this->handle->writeAll(encode_line($line));
+            $this->handle->writeAll(namespace\encode_line($line));
             $this->firstLine = false;
         }
     }

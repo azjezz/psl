@@ -6,6 +6,8 @@ namespace Psl\Str\Grapheme;
 
 use Psl\Str;
 
+use function grapheme_substr;
+
 /**
  * Returns a substring of length `$length` of the given string starting at the
  * `$offset`.
@@ -23,7 +25,7 @@ use Psl\Str;
  */
 function slice(string $string, int $offset, null|int $length = null): string
 {
-    $stringLength = length($string);
+    $stringLength = namespace\length($string);
     $offset = Str\Internal\validate_offset($offset, $stringLength);
 
     if (0 === $offset && (null === $length || $stringLength <= $length)) {

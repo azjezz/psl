@@ -6,6 +6,10 @@ namespace Psl\Vec;
 
 use Closure;
 
+use function is_int;
+use function is_string;
+use function serialize;
+
 /**
  * Returns a new array in which each value appears exactly once, where the
  * value's uniqueness is determined by transforming it to a scalar via the

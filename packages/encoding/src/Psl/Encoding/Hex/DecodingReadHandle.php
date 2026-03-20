@@ -261,7 +261,7 @@ final class DecodingReadHandle implements IO\BufferedReadHandleInterface
             // Decode any remaining bytes.
             if ($this->remainder !== '') {
                 // @codeCoverageIgnoreStart
-                $this->buffer .= decode($this->remainder);
+                $this->buffer .= namespace\decode($this->remainder);
                 $this->remainder = '';
                 // @codeCoverageIgnoreEnd
             }
@@ -276,7 +276,7 @@ final class DecodingReadHandle implements IO\BufferedReadHandleInterface
         $usable = $length - ($length % 2);
 
         if ($usable > 0) {
-            $this->buffer .= decode(substr($data, 0, $usable));
+            $this->buffer .= namespace\decode(substr($data, 0, $usable));
             $this->remainder = substr($data, $usable);
         } else {
             // @codeCoverageIgnoreStart

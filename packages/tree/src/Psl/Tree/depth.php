@@ -41,7 +41,7 @@ function depth(NodeInterface $tree): int
 
     $childDepths = [];
     foreach ($children as $child) {
-        $childDepths[] = depth($child);
+        $childDepths[] = namespace\depth($child);
     }
 
     return 1 + max($childDepths);

@@ -24,7 +24,7 @@ function concat(iterable $first, iterable ...$rest): array
         return array_values($first);
     }
 
-    $first = values($first);
+    $first = namespace\values($first);
     foreach ($rest as $arr) {
         if (is_array($arr)) {
             $first = array_merge($first, array_values($arr));

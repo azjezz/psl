@@ -8,6 +8,10 @@ use PhpBench\Attributes\Groups;
 use Psl\Async;
 use Psl\Channel;
 
+use function fclose;
+use function fopen;
+use function fread;
+
 #[Groups(['channel'])]
 final class CommunicationBench
 {

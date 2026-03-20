@@ -31,8 +31,8 @@ function test(): void
     );
 
     /** @psalm-suppress MissingThrowsDocblock */
-    takes_valid_state($oldSchoolCodec->assert('any'));
+    namespace\takes_valid_state($oldSchoolCodec->assert('any'));
 
     /** @psalm-suppress MissingThrowsDocblock */
-    takes_valid_state($newCodec->assert('any'));
+    namespace\takes_valid_state($newCodec->assert('any'));
 }

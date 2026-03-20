@@ -13,6 +13,8 @@ use Psl\Str;
 use Psl\Terminal\Buffer;
 use Psl\Terminal\Cell;
 
+use function substr_count;
+
 final class BufferTest extends TestCase
 {
     public function testConstruction(): void

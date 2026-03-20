@@ -21,39 +21,39 @@ function return_lowercase_string(): string
  */
 function test(): void
 {
-    $str = Str\after(return_lowercase_string(), 'h');
+    $str = Str\after(namespace\return_lowercase_string(), 'h');
     Psl\invariant(null !== $str, '!');
-    take_lowercase_string($str);
+    namespace\take_lowercase_string($str);
 
-    $str = Str\after_last(return_lowercase_string(), 'h');
+    $str = Str\after_last(namespace\return_lowercase_string(), 'h');
     Psl\invariant(null !== $str, '!');
-    take_lowercase_string($str);
+    namespace\take_lowercase_string($str);
 
-    $str = Str\after_last_ci(return_lowercase_string(), 'h');
+    $str = Str\after_last_ci(namespace\return_lowercase_string(), 'h');
     Psl\invariant(null !== $str, '!');
-    take_lowercase_string($str);
+    namespace\take_lowercase_string($str);
 
-    $str = Str\Byte\after(return_lowercase_string(), 'h');
+    $str = Str\Byte\after(namespace\return_lowercase_string(), 'h');
     Psl\invariant(null !== $str, '!');
-    take_lowercase_string($str);
+    namespace\take_lowercase_string($str);
 
-    $str = Str\Byte\after_last(return_lowercase_string(), 'h');
+    $str = Str\Byte\after_last(namespace\return_lowercase_string(), 'h');
     Psl\invariant(null !== $str, '!');
-    take_lowercase_string($str);
+    namespace\take_lowercase_string($str);
 
-    $str = Str\Byte\after_last_ci(return_lowercase_string(), 'h');
+    $str = Str\Byte\after_last_ci(namespace\return_lowercase_string(), 'h');
     Psl\invariant(null !== $str, '!');
-    take_lowercase_string($str);
+    namespace\take_lowercase_string($str);
 
-    $str = Str\Grapheme\after(return_lowercase_string(), 'h');
+    $str = Str\Grapheme\after(namespace\return_lowercase_string(), 'h');
     Psl\invariant(null !== $str, '!');
-    take_lowercase_string($str);
+    namespace\take_lowercase_string($str);
 
-    $str = Str\Grapheme\after_last(return_lowercase_string(), 'h');
+    $str = Str\Grapheme\after_last(namespace\return_lowercase_string(), 'h');
     Psl\invariant(null !== $str, '!');
-    take_lowercase_string($str);
+    namespace\take_lowercase_string($str);
 
-    $str = Str\Grapheme\after_last_ci(return_lowercase_string(), 'h');
+    $str = Str\Grapheme\after_last_ci(namespace\return_lowercase_string(), 'h');
     Psl\invariant(null !== $str, '!');
-    take_lowercase_string($str);
+    namespace\take_lowercase_string($str);
 }

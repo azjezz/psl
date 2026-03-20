@@ -38,7 +38,7 @@ final readonly class Writer implements BufferedWriterInterface, DefaultInterface
     #[Override]
     public function u8(int $value): static
     {
-        return new self($this->bytes . encode_u8($value), $this->endianness);
+        return new self($this->bytes . namespace\encode_u8($value), $this->endianness);
     }
 
     /**
@@ -47,7 +47,10 @@ final readonly class Writer implements BufferedWriterInterface, DefaultInterface
     #[Override]
     public function u16(int $value, null|Endianness $endianness = null): static
     {
-        return new self($this->bytes . encode_u16($value, $endianness ?? $this->endianness), $this->endianness);
+        return new self(
+            $this->bytes . namespace\encode_u16($value, $endianness ?? $this->endianness),
+            $this->endianness,
+        );
     }
 
     /**
@@ -56,7 +59,10 @@ final readonly class Writer implements BufferedWriterInterface, DefaultInterface
     #[Override]
     public function u32(int $value, null|Endianness $endianness = null): static
     {
-        return new self($this->bytes . encode_u32($value, $endianness ?? $this->endianness), $this->endianness);
+        return new self(
+            $this->bytes . namespace\encode_u32($value, $endianness ?? $this->endianness),
+            $this->endianness,
+        );
     }
 
     /**
@@ -65,7 +71,10 @@ final readonly class Writer implements BufferedWriterInterface, DefaultInterface
     #[Override]
     public function u64(int $value, null|Endianness $endianness = null): static
     {
-        return new self($this->bytes . encode_u64($value, $endianness ?? $this->endianness), $this->endianness);
+        return new self(
+            $this->bytes . namespace\encode_u64($value, $endianness ?? $this->endianness),
+            $this->endianness,
+        );
     }
 
     /**
@@ -74,7 +83,7 @@ final readonly class Writer implements BufferedWriterInterface, DefaultInterface
     #[Override]
     public function i8(int $value): static
     {
-        return new self($this->bytes . encode_i8($value), $this->endianness);
+        return new self($this->bytes . namespace\encode_i8($value), $this->endianness);
     }
 
     /**
@@ -83,7 +92,10 @@ final readonly class Writer implements BufferedWriterInterface, DefaultInterface
     #[Override]
     public function i16(int $value, null|Endianness $endianness = null): static
     {
-        return new self($this->bytes . encode_i16($value, $endianness ?? $this->endianness), $this->endianness);
+        return new self(
+            $this->bytes . namespace\encode_i16($value, $endianness ?? $this->endianness),
+            $this->endianness,
+        );
     }
 
     /**
@@ -92,7 +104,10 @@ final readonly class Writer implements BufferedWriterInterface, DefaultInterface
     #[Override]
     public function i32(int $value, null|Endianness $endianness = null): static
     {
-        return new self($this->bytes . encode_i32($value, $endianness ?? $this->endianness), $this->endianness);
+        return new self(
+            $this->bytes . namespace\encode_i32($value, $endianness ?? $this->endianness),
+            $this->endianness,
+        );
     }
 
     /**
@@ -101,7 +116,10 @@ final readonly class Writer implements BufferedWriterInterface, DefaultInterface
     #[Override]
     public function i64(int $value, null|Endianness $endianness = null): static
     {
-        return new self($this->bytes . encode_i64($value, $endianness ?? $this->endianness), $this->endianness);
+        return new self(
+            $this->bytes . namespace\encode_i64($value, $endianness ?? $this->endianness),
+            $this->endianness,
+        );
     }
 
     /**
@@ -110,7 +128,10 @@ final readonly class Writer implements BufferedWriterInterface, DefaultInterface
     #[Override]
     public function f32(float $value, null|Endianness $endianness = null): static
     {
-        return new self($this->bytes . encode_f32($value, $endianness ?? $this->endianness), $this->endianness);
+        return new self(
+            $this->bytes . namespace\encode_f32($value, $endianness ?? $this->endianness),
+            $this->endianness,
+        );
     }
 
     /**
@@ -119,7 +140,10 @@ final readonly class Writer implements BufferedWriterInterface, DefaultInterface
     #[Override]
     public function f64(float $value, null|Endianness $endianness = null): static
     {
-        return new self($this->bytes . encode_f64($value, $endianness ?? $this->endianness), $this->endianness);
+        return new self(
+            $this->bytes . namespace\encode_f64($value, $endianness ?? $this->endianness),
+            $this->endianness,
+        );
     }
 
     /**

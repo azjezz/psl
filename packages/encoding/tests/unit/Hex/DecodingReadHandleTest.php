@@ -9,6 +9,9 @@ use Psl\Encoding\Exception;
 use Psl\Encoding\Hex;
 use Psl\IO;
 
+use function bin2hex;
+use function str_repeat;
+
 final class DecodingReadHandleTest extends TestCase
 {
     public function testTryReadBufferNonEmptyNotEofDoesNotRefill(): void

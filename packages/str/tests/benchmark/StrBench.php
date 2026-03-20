@@ -9,6 +9,10 @@ use PhpBench\Attributes\ParamProviders;
 use Psl\Str;
 use Psl\Str\Byte;
 
+use function implode;
+use function range;
+use function str_repeat;
+
 #[Groups(['str'])]
 final class StrBench
 {

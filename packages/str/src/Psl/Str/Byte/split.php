@@ -22,8 +22,8 @@ use function explode;
 function split(string $string, string $delimiter, null|int $limit = null): array
 {
     if ('' === $delimiter) {
-        if (null === $limit || $limit >= length($string)) {
-            return chunk($string);
+        if (null === $limit || $limit >= namespace\length($string)) {
+            return namespace\chunk($string);
         }
 
         if (1 === $limit) {
@@ -32,8 +32,8 @@ function split(string $string, string $delimiter, null|int $limit = null): array
 
         $length = $limit - 1;
 
-        $result = chunk(slice($string, 0, $length));
-        $result[] = slice($string, $length);
+        $result = namespace\chunk(namespace\slice($string, 0, $length));
+        $result[] = namespace\slice($string, $length);
 
         return $result;
     }

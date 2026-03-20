@@ -10,6 +10,9 @@ use Psl\Terminal\Buffer;
 use Psl\Terminal\Cell;
 use Psl\Terminal\Rect;
 
+use function array_slice;
+use function count;
+
 /**
  * A paragraph widget that renders lines of styled text with wrapping, scrolling, and alignment.
  */

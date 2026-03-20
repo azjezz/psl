@@ -9,6 +9,8 @@ use Psl\File;
 use Psl\Filesystem;
 use Psl\OS;
 
+use function dirname;
+
 final class ReadHandleTest extends TestCase
 {
     public function testWriting(): void

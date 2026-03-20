@@ -14,5 +14,5 @@ namespace Psl\Splitter\Http;
  */
 function get(string $url, array $headers = []): Response
 {
-    return request('GET', $url, $headers);
+    return namespace\request('GET', $url, $headers);
 }

@@ -9,6 +9,8 @@ use Psl\Async;
 use Psl\DateTime\Duration;
 use RuntimeException;
 
+use function gc_collect_cycles;
+
 final class LinkedCancellationTokenTest extends TestCase
 {
     public function testIsNotCancelledByDefault(): void

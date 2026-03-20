@@ -11,6 +11,8 @@ use Psl\DateTime\Duration;
 use Psl\DateTime\Timestamp;
 use Revolt\EventLoop;
 
+use function array_key_first;
+
 /**
  * In-memory LRU cache store with async-safe per-key atomicity.
  *

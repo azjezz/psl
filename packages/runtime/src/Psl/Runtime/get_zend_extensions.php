@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Runtime;
 
+use function get_loaded_extensions;
+
 /**
  * Returns an list with the names of all Zend extensions compiled and loaded.
  *

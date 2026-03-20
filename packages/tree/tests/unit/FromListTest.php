@@ -7,6 +7,8 @@ namespace Psl\Tree\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Psl\Tree;
 
+use function strtolower;
+
 final class FromListTest extends TestCase
 {
     public function testFromListWithSimpleHierarchy(): void

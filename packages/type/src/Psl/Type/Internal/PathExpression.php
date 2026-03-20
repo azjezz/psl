@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Type\Internal;
 
+use function get_debug_type;
+use function is_bool;
+use function is_scalar;
 use function sprintf;
 
 /**

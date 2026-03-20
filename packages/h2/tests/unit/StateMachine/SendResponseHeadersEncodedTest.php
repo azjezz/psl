@@ -11,6 +11,8 @@ use Psl\H2\Internal\StateMachine;
 use Psl\HPACK\Encoder;
 use Psl\HPACK\Header;
 
+use function ord;
+
 final class SendResponseHeadersEncodedTest extends TestCase
 {
     public function testSendResponseHeadersEncoded(): void

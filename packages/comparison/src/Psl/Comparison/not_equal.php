@@ -12,5 +12,5 @@ namespace Psl\Comparison;
  */
 function not_equal(mixed $a, mixed $b): bool
 {
-    return compare($a, $b) !== Order::Equal;
+    return namespace\compare($a, $b) !== Order::Equal;
 }

@@ -39,7 +39,7 @@ final class DecodingWriteHandle implements IO\WriteHandleInterface
         $usable = $dataLength - ($dataLength % 2);
 
         if ($usable > 0) {
-            $decoded = decode(substr($data, 0, $usable));
+            $decoded = namespace\decode(substr($data, 0, $usable));
             $this->handle->writeAll($decoded);
             $this->remainder = substr($data, $usable);
         } else {
@@ -66,7 +66,7 @@ final class DecodingWriteHandle implements IO\WriteHandleInterface
     {
         if ($this->remainder !== '') {
             // @codeCoverageIgnoreStart
-            $decoded = decode($this->remainder);
+            $decoded = namespace\decode($this->remainder);
             $this->remainder = '';
             $this->handle->writeAll($decoded);
             // @codeCoverageIgnoreEnd

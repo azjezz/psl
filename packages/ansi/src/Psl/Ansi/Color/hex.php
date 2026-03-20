@@ -35,5 +35,5 @@ function hex(string $hex): Color
     $green = (int) hexdec(substr($hex, 2, 2));
     $blue = (int) hexdec(substr($hex, 4, 2));
 
-    return rgb($red, $green, $blue);
+    return namespace\rgb($red, $green, $blue);
 }

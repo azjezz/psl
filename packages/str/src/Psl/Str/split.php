@@ -22,8 +22,8 @@ use const PHP_INT_MAX;
 function split(string $string, string $delimiter, null|int $limit = null, Encoding $encoding = Encoding::Utf8): array
 {
     if ('' === $delimiter) {
-        if (null === $limit || $limit >= length($string, $encoding)) {
-            return chunk($string, 1, $encoding);
+        if (null === $limit || $limit >= namespace\length($string, $encoding)) {
+            return namespace\chunk($string, 1, $encoding);
         }
 
         if (1 === $limit) {
@@ -32,8 +32,8 @@ function split(string $string, string $delimiter, null|int $limit = null, Encodi
 
         $length = $limit - 1;
 
-        $result = chunk(slice($string, 0, $length, $encoding), 1, $encoding);
-        $result[] = slice($string, $length, null, $encoding);
+        $result = namespace\chunk(namespace\slice($string, 0, $length, $encoding), 1, $encoding);
+        $result[] = namespace\slice($string, $length, null, $encoding);
 
         return $result;
     }
@@ -42,21 +42,21 @@ function split(string $string, string $delimiter, null|int $limit = null, Encodi
 
     $tail = $string;
     $chunks = [];
-    $delimiterLength = length($delimiter, $encoding);
+    $delimiterLength = namespace\length($delimiter, $encoding);
 
     /**
      * $offset is within bounded.
      */
-    $position = search($tail, $delimiter, 0, $encoding);
+    $position = namespace\search($tail, $delimiter, 0, $encoding);
     while (1 < $limit && null !== $position) {
-        $chunks[] = slice($tail, 0, $position, $encoding);
-        $tail = slice($tail, $position + $delimiterLength, null, $encoding);
+        $chunks[] = namespace\slice($tail, 0, $position, $encoding);
+        $tail = namespace\slice($tail, $position + $delimiterLength, null, $encoding);
 
         $limit--;
         /**
          * $offset is within bounded.
          */
-        $position = search($tail, $delimiter, encoding: $encoding);
+        $position = namespace\search($tail, $delimiter, encoding: $encoding);
     }
 
     $chunks[] = $tail;

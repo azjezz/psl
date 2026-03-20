@@ -26,7 +26,7 @@ function copy_bidirectional(
     CancellationTokenInterface $cancellation = new NullCancellationToken(),
 ): array {
     return Async\concurrently([
-        static fn(): int => copy($a, $b, $cancellation),
-        static fn(): int => copy($b, $a, $cancellation),
+        static fn(): int => namespace\copy($a, $b, $cancellation),
+        static fn(): int => namespace\copy($b, $a, $cancellation),
     ]);
 }

@@ -22,7 +22,7 @@ function change_owner(string $node, int $user): void
         throw Exception\NotFoundException::forNode($node);
     }
 
-    if (is_symbolic_link($node)) {
+    if (namespace\is_symbolic_link($node)) {
         $fun = static fn(): bool => lchown($node, $user);
     } else {
         $fun = static fn(): bool => chown($node, $user);

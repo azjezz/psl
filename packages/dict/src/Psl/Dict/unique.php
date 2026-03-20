@@ -16,7 +16,7 @@ namespace Psl\Dict;
  */
 function unique(iterable $iterable): array
 {
-    return unique_by(
+    return namespace\unique_by(
         $iterable,
         /**
          * @param Tv $v

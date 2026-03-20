@@ -26,5 +26,5 @@ namespace Psl\Tree;
  */
 function contains(NodeInterface $tree, mixed $value): bool
 {
-    return any($tree, static fn(mixed $v): bool => $v === $value);
+    return namespace\any($tree, static fn(mixed $v): bool => $v === $value);
 }

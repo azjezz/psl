@@ -10,6 +10,8 @@ use Psl\Type\Exception\CoercionException;
 use Psl\Type\Type;
 use ReflectionEnum;
 
+use function is_string;
+
 /**
  * @extends Type<non-empty-string>
  *

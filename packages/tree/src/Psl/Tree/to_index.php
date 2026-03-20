@@ -47,7 +47,7 @@ function to_index(NodeInterface $tree, Closure $predicate): null|array
     }
 
     foreach ($tree->getChildren() as $index => $child) {
-        $childPath = to_index($child, $predicate);
+        $childPath = namespace\to_index($child, $predicate);
         if (null !== $childPath) {
             return [$index, ...$childPath];
         }

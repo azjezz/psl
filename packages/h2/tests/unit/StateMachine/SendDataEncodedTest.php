@@ -12,6 +12,9 @@ use Psl\H2\Internal\StateMachine;
 use Psl\HPACK\Encoder;
 use Psl\HPACK\Header;
 
+use function ord;
+use function strlen;
+
 final class SendDataEncodedTest extends TestCase
 {
     public function testSendDataEncodedReturnsWireBytes(): void

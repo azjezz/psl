@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Psl\Splitter;
 
 use Psl\Async;
-use Psl\Async\Exception\CompositeException;
 use Psl\Dict;
 use Psl\Iter;
 use Psl\Json;
 use Psl\Str;
 use Psl\Type;
 use Psl\Vec;
+use SensitiveParameter;
 
 /**
  * Audit all package repositories in the monorepo.
@@ -29,7 +29,7 @@ use Psl\Vec;
  *
  * @return bool True if all checks pass.
  */
-function audit(MonolithicRepository $monorepo, #[\SensitiveParameter] string $token): bool
+function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $token): bool
 {
     $org = 'php-standard-library';
     $mainRepo = 'php-standard-library';

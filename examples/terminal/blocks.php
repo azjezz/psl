@@ -9,11 +9,13 @@ use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Async;
 use Psl\DateTime;
+use Psl\Iter;
 use Psl\Math;
 use Psl\Terminal;
 use Psl\Terminal\Event;
 use Psl\Terminal\Layout;
 use Psl\Terminal\Widget;
+use Psl\Vec;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
@@ -86,7 +88,7 @@ Async\main(static function (): int {
         $row = $event->row;
 
         if ($event->kind === Event\MouseKind::Press && $event->button === Event\MouseButton::Left) {
-            for ($i = count($state->blocks) - 1; $i >= 0; $i--) {
+            for ($i = Iter\count($state->blocks) - 1; $i >= 0; $i--) {
                 $block = $state->blocks[$i];
                 if (!$block->contains($col, $row)) {
                     continue;
@@ -95,10 +97,9 @@ Async\main(static function (): int {
                 $state->dragOffsetX = $col - $block->x;
                 $state->dragOffsetY = $row - $block->y;
 
-                /** @var list<DragBlock> $picked */
-                $picked = array_splice($state->blocks, $i, 1);
+                $picked = Vec\slice($state->blocks, $i, 1);
                 $state->blocks[] = $picked[0];
-                $state->dragging = count($state->blocks) - 1;
+                $state->dragging = Iter\count($state->blocks) - 1;
                 break;
             }
 
@@ -132,7 +133,7 @@ Async\main(static function (): int {
 
         foreach ($state->blocks as $i => $block) {
             $isDragging = $state->dragging === $i;
-            $color = $block->rainbow ? rainbow_color($phase) : $block->color;
+            $color = $block->rainbow ? namespace\rainbow_color($phase) : $block->color;
 
             $x = Math\clamp($block->x, 0, $main->right() - $block->width);
             $y = Math\clamp($block->y, $main->y, $main->bottom() - $block->height);
@@ -161,13 +162,13 @@ Async\main(static function (): int {
                         $bx === ($w - 1) => $tr,
                         default => $h,
                     };
-                    $c = rainbow_color($phase + ($pos * $colorStep));
+                    $c = namespace\rainbow_color($phase + ($pos * $colorStep));
                     $buffer->set($blockRect->x + $bx, $blockRect->y, new Terminal\Cell($char, [Ansi\foreground($c)]));
                     $pos++;
                 }
 
                 for ($by = 1; $by < ($bh - 1); $by++) {
-                    $c = rainbow_color($phase + ($pos * $colorStep));
+                    $c = namespace\rainbow_color($phase + ($pos * $colorStep));
                     $buffer->set($blockRect->right() - 1, $blockRect->y + $by, new Terminal\Cell($v, [Ansi\foreground(
                         $c,
                     )]));
@@ -180,7 +181,7 @@ Async\main(static function (): int {
                         $bx === 0 => $bl,
                         default => $h,
                     };
-                    $c = rainbow_color($phase + ($pos * $colorStep));
+                    $c = namespace\rainbow_color($phase + ($pos * $colorStep));
                     $buffer->set(
                         $blockRect->x + $bx,
                         $blockRect->bottom() - 1,
@@ -190,20 +191,20 @@ Async\main(static function (): int {
                 }
 
                 for ($by = $bh - 2; $by >= 1; $by--) {
-                    $c = rainbow_color($phase + ($pos * $colorStep));
+                    $c = namespace\rainbow_color($phase + ($pos * $colorStep));
                     $buffer->set($blockRect->x, $blockRect->y + $by, new Terminal\Cell($v, [Ansi\foreground($c)]));
                     $pos++;
                 }
 
                 $titleChars = [' ', 'R', 'a', 'i', 'n', 'b', 'o', 'w', ' '];
-                $titleLen = count($titleChars);
+                $titleLen = Iter\count($titleChars);
                 $titleOffset = (int) (($w - $titleLen) / 2);
                 if ($titleOffset < 1) {
                     $titleOffset = 1;
                 }
 
                 for ($ti = 0; $ti < $titleLen && ($titleOffset + $ti) < ($w - 1); $ti++) {
-                    $c = rainbow_color($phase + (($titleOffset + $ti) * $colorStep));
+                    $c = namespace\rainbow_color($phase + (($titleOffset + $ti) * $colorStep));
                     $buffer->set(
                         $blockRect->x + $titleOffset + $ti,
                         $blockRect->y,

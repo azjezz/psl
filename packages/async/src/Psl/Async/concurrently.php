@@ -22,7 +22,7 @@ function concurrently(iterable $tasks): array
 {
     $awaitables = [];
     foreach ($tasks as $k => $task) {
-        $awaitables[$k] = run($task);
+        $awaitables[$k] = namespace\run($task);
     }
 
     return namespace\all($awaitables);

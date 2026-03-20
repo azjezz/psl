@@ -18,6 +18,6 @@ use Psl\Exception\InvariantViolationException;
 function invariant(bool $fact, string $message, mixed ...$args): void
 {
     if (!$fact) {
-        invariant_violation($message, ...$args);
+        namespace\invariant_violation($message, ...$args);
     }
 }

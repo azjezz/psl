@@ -21,9 +21,9 @@ function return_lowercase_string(): string
  */
 function tests(): void
 {
-    take_lowercase_string(Str\slice(return_lowercase_string(), 3, 5));
+    namespace\take_lowercase_string(Str\slice(namespace\return_lowercase_string(), 3, 5));
 
-    take_lowercase_string(Str\Byte\slice(return_lowercase_string(), 3, 5));
+    namespace\take_lowercase_string(Str\Byte\slice(namespace\return_lowercase_string(), 3, 5));
 
-    take_lowercase_string(Str\Grapheme\slice(return_lowercase_string(), 3, 5));
+    namespace\take_lowercase_string(Str\Grapheme\slice(namespace\return_lowercase_string(), 3, 5));
 }

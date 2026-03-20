@@ -30,7 +30,7 @@ function search_last_ci(
         return null;
     }
 
-    $offset = Internal\validate_offset($offset, length($haystack, $encoding));
+    $offset = Internal\validate_offset($offset, namespace\length($haystack, $encoding));
 
     return false === ($pos = mb_strripos($haystack, $needle, $offset, $encoding->value)) ? null : $pos;
 }

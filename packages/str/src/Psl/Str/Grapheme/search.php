@@ -30,7 +30,7 @@ function search(string $haystack, string $needle, int $offset = 0): null|int
         return null;
     }
 
-    $offset = Str\Internal\validate_offset($offset, length($haystack));
+    $offset = Str\Internal\validate_offset($offset, namespace\length($haystack));
 
     return false === ($pos = grapheme_strpos($haystack, $needle, $offset)) ? null : $pos;
 }

@@ -16,8 +16,8 @@ use Psl\Str;
 function step(string $package, string $action, string|int|float ...$args): void
 {
     IO\write_error_line(
-        styled('    -> ', Ansi\foreground(Color\bright_black()))
-            . styled($package, Ansi\foreground(Color\bright_white()), Style\bold())
-            . styled(' ' . Str\format($action, ...$args), Ansi\foreground(Color\bright_black())),
+        namespace\styled('    -> ', Ansi\foreground(Color\bright_black()))
+            . namespace\styled($package, Ansi\foreground(Color\bright_white()), Style\bold())
+            . namespace\styled(' ' . Str\format($action, ...$args), Ansi\foreground(Color\bright_black())),
     );
 }

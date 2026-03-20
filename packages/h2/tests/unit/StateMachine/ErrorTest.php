@@ -20,6 +20,8 @@ use Psl\H2\Internal\StateMachine;
 use Psl\HPACK\Encoder;
 use Psl\HPACK\Header;
 
+use function pack;
+
 final class ErrorTest extends TestCase
 {
     public function testHeaderBlockInterrupted(): void

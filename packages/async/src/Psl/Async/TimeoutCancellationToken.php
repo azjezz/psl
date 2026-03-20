@@ -9,6 +9,8 @@ use Psl\DateTime\Duration;
 use Revolt\EventLoop;
 use WeakReference;
 
+use function max;
+
 /**
  * A cancellation token that automatically cancels after a given duration.
  */

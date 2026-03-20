@@ -10,6 +10,7 @@ use Psl\Async\NullCancellationToken;
 use Psl\DateTime\Duration;
 use Psl\Network;
 
+use function min;
 use function strlen;
 use function substr;
 

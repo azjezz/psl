@@ -13,5 +13,5 @@ namespace Psl\Str;
  */
 function is_utf8(string $string): bool
 {
-    return null !== detect_encoding($string, [Encoding::Utf8]);
+    return null !== namespace\detect_encoding($string, [Encoding::Utf8]);
 }

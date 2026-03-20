@@ -7,6 +7,7 @@ namespace Psl\URI\Internal;
 use function str_contains;
 use function str_starts_with;
 use function strpos;
+use function strrpos;
 use function strtolower;
 use function substr;
 

@@ -20,7 +20,7 @@ function to_base(int $number, int $base): string
     $alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $result = '';
     do {
-        $quotient = div($number, $base);
+        $quotient = namespace\div($number, $base);
         /** @var int<0, 61> $index */
         $index = $number - ($quotient * $base);
         $result = $alphabet[$index] . $result;

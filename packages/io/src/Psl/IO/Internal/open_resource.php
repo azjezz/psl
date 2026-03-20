@@ -7,6 +7,7 @@ namespace Psl\IO\Internal;
 use Psl;
 
 use function error_get_last;
+use function fopen;
 
 /**
  * @return resource

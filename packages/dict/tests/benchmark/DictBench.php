@@ -9,6 +9,8 @@ use PhpBench\Attributes\ParamProviders;
 use Psl\Dict;
 use Psl\Vec;
 
+use function count;
+
 #[Groups(['dict'])]
 final class DictBench
 {

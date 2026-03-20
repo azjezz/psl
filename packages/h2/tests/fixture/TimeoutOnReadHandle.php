@@ -8,6 +8,7 @@ use Psl\Async\CancellationTokenInterface;
 use Psl\Async\NullCancellationToken;
 use Psl\IO;
 
+use function min;
 use function strlen;
 use function substr;
 

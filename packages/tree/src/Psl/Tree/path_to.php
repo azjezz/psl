@@ -42,7 +42,7 @@ function path_to(NodeInterface $tree, Closure $predicate): null|array
     }
 
     foreach ($tree->getChildren() as $child) {
-        $childPath = path_to($child, $predicate);
+        $childPath = namespace\path_to($child, $predicate);
         if (null !== $childPath) {
             return [$value, ...$childPath];
         }

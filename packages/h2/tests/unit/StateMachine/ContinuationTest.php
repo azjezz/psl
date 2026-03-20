@@ -17,6 +17,11 @@ use Psl\H2\Setting;
 use Psl\HPACK\Encoder;
 use Psl\HPACK\Header;
 
+use function ord;
+use function str_repeat;
+use function strlen;
+use function substr;
+
 final class ContinuationTest extends TestCase
 {
     public function testHeadersWithContinuation(): void

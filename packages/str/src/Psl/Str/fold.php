@@ -19,8 +19,8 @@ namespace Psl\Str;
 function fold(string $string, Encoding $encoding = Encoding::Utf8): string
 {
     foreach (Internal\CASE_FOLD as $k => $v) {
-        $string = replace($string, $k, $v, $encoding);
+        $string = namespace\replace($string, $k, $v, $encoding);
     }
 
-    return lowercase($string, $encoding);
+    return namespace\lowercase($string, $encoding);
 }

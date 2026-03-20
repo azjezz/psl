@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Binary;
 
 use function strlen;
+use function unpack;
 
 /**
  * Decode a signed 16-bit integer from a binary string.

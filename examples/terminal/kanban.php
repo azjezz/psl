@@ -7,7 +7,6 @@ namespace Psl\Example\Terminal;
 use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
-use Psl\Async;
 use Psl\DateTime;
 use Psl\Iter;
 use Psl\Math;
@@ -63,7 +62,7 @@ final class KanbanState
 
     public function __construct()
     {
-        $this->columns = initial_columns();
+        $this->columns = namespace\initial_columns();
     }
 }
 
@@ -214,13 +213,13 @@ function handle_normal_key(Event\Key $event, KanbanState $state): void
     if ($event->is('right') && $col < 2 && $cardCount > 0) {
         /** @var non-negative-int $targetCol */
         $targetCol = $col + 1;
-        move_card($state, $col, $targetCol);
+        namespace\move_card($state, $col, $targetCol);
         return;
     }
 
     if ($event->is('left') && $col > 0 && $cardCount > 0) {
         $targetCol = $col - 1;
-        move_card($state, $col, $targetCol);
+        namespace\move_card($state, $col, $targetCol);
         return;
     }
 
@@ -326,7 +325,7 @@ function render_column(
                 $tagSpans[] = Widget\Span::styled(' · ', Ansi\foreground(Color\ansi256(240)));
             }
 
-            [$tagFg] = tag_style($tag);
+            [$tagFg] = namespace\tag_style($tag);
             $tagSpans[] = Widget\Span::styled($tag->value, Ansi\foreground($tagFg));
         }
 
@@ -424,101 +423,99 @@ function render_status_bar(Terminal\Rect $statusBar, KanbanState $state, Termina
     ])])->alignment(Widget\Alignment::Right)->render($statusRight, $buffer);
 }
 
-Async\main(static function (): int {
-    $app = Terminal\Application::create(
-        new KanbanState(),
-        title: 'Kanban Board',
-        tickInterval: DateTime\Duration::milliseconds(4),
-    );
+$app = Terminal\Application::create(
+    new KanbanState(),
+    title: 'Kanban Board',
+    tickInterval: DateTime\Duration::milliseconds(4),
+);
 
-    $app->on(Event\Key::class, static function (Event\Key $event, KanbanState $state) use ($app): void {
-        if ($event->is('ctrl+c')) {
-            $app->stop();
+$app->on(Event\Key::class, static function (Event\Key $event, KanbanState $state) use ($app): void {
+    if ($event->is('ctrl+c')) {
+        $app->stop();
+        return;
+    }
+
+    if ($state->input_mode) {
+        namespace\handle_input_key($event, $state);
+        return;
+    }
+
+    namespace\handle_normal_key($event, $state);
+});
+
+$app->on(Event\Mouse::class, static function (Event\Mouse $event, KanbanState $state): void {
+    if ($event->kind !== Event\MouseKind::ScrollUp && $event->kind !== Event\MouseKind::ScrollDown) {
+        return;
+    }
+
+    $col = null;
+    foreach ($state->col_rects as $idx => $rect) {
+        if (
+            !(
+                $event->column >= $rect->x
+                && $event->column < $rect->right()
+                && $event->row >= $rect->y
+                && $event->row < $rect->bottom()
+            )
+        ) {
+            continue;
+        }
+
+        $col = $idx;
+        break;
+    }
+
+    if ($col === null) {
+        return;
+    }
+
+    $cardCount = Iter\count($state->columns[$col]);
+    $visibleSlots = $state->col_visible_slots[$col] ?? 1;
+    $maxScroll = Math\maxva(0, $cardCount - $visibleSlots);
+    $oldScroll = $state->col_scroll[$col];
+
+    if ($event->kind === Event\MouseKind::ScrollUp) {
+        if ($oldScroll <= 0) {
             return;
         }
 
-        if ($state->input_mode) {
-            handle_input_key($event, $state);
+        $state->col_scroll[$col] = $oldScroll - 1;
+        if ($state->selected[$col] >= ($state->col_scroll[$col] + $visibleSlots)) {
+            $state->selected[$col] = $state->col_scroll[$col] + $visibleSlots - 1;
+        }
+    } else {
+        if ($oldScroll >= $maxScroll) {
             return;
         }
 
-        handle_normal_key($event, $state);
-    });
-
-    $app->on(Event\Mouse::class, static function (Event\Mouse $event, KanbanState $state): void {
-        if ($event->kind !== Event\MouseKind::ScrollUp && $event->kind !== Event\MouseKind::ScrollDown) {
-            return;
+        $state->col_scroll[$col] = $oldScroll + 1;
+        if ($state->selected[$col] < $state->col_scroll[$col]) {
+            $state->selected[$col] = $state->col_scroll[$col];
         }
+    }
 
-        $col = null;
-        foreach ($state->col_rects as $idx => $rect) {
-            if (
-                !(
-                    $event->column >= $rect->x
-                    && $event->column < $rect->right()
-                    && $event->row >= $rect->y
-                    && $event->row < $rect->bottom()
-                )
-            ) {
-                continue;
-            }
+    $state->active_col = $col;
+});
 
-            $col = $idx;
-            break;
-        }
+$app->run(static function (Terminal\Frame $frame, KanbanState $state): void {
+    $buffer = $frame->buffer();
 
-        if ($col === null) {
-            return;
-        }
+    [$main, $statusBar] = Layout\vertical($frame, [
+        Layout\fill(),
+        Layout\fixed(1),
+    ]);
 
-        $cardCount = Iter\count($state->columns[$col]);
-        $visibleSlots = $state->col_visible_slots[$col] ?? 1;
-        $maxScroll = Math\maxva(0, $cardCount - $visibleSlots);
-        $oldScroll = $state->col_scroll[$col];
+    $colRects = Layout\horizontal($main, [
+        Layout\fill(),
+        Layout\fill(),
+        Layout\fill(),
+    ]);
 
-        if ($event->kind === Event\MouseKind::ScrollUp) {
-            if ($oldScroll <= 0) {
-                return;
-            }
+    $state->col_rects = $colRects;
 
-            $state->col_scroll[$col] = $oldScroll - 1;
-            if ($state->selected[$col] >= ($state->col_scroll[$col] + $visibleSlots)) {
-                $state->selected[$col] = $state->col_scroll[$col] + $visibleSlots - 1;
-            }
-        } else {
-            if ($oldScroll >= $maxScroll) {
-                return;
-            }
+    foreach ($state->columns as $colIdx => $cards) {
+        namespace\render_column($colRects[$colIdx], $cards, $colIdx, $state, $buffer);
+    }
 
-            $state->col_scroll[$col] = $oldScroll + 1;
-            if ($state->selected[$col] < $state->col_scroll[$col]) {
-                $state->selected[$col] = $state->col_scroll[$col];
-            }
-        }
-
-        $state->active_col = $col;
-    });
-
-    return $app->run(static function (Terminal\Frame $frame, KanbanState $state): void {
-        $buffer = $frame->buffer();
-
-        [$main, $statusBar] = Layout\vertical($frame, [
-            Layout\fill(),
-            Layout\fixed(1),
-        ]);
-
-        $colRects = Layout\horizontal($main, [
-            Layout\fill(),
-            Layout\fill(),
-            Layout\fill(),
-        ]);
-
-        $state->col_rects = $colRects;
-
-        foreach ($state->columns as $colIdx => $cards) {
-            render_column($colRects[$colIdx], $cards, $colIdx, $state, $buffer);
-        }
-
-        render_status_bar($statusBar, $state, $buffer);
-    });
+    namespace\render_status_bar($statusBar, $state, $buffer);
 });

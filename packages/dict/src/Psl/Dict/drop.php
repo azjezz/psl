@@ -22,5 +22,5 @@ namespace Psl\Dict;
  */
 function drop(iterable $iterable, int $n): array
 {
-    return slice($iterable, $n);
+    return namespace\slice($iterable, $n);
 }

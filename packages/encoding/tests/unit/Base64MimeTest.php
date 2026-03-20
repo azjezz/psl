@@ -10,6 +10,10 @@ use Psl\Encoding\Base64;
 use Psl\Encoding\Exception;
 use Psl\SecureRandom;
 
+use function explode;
+use function str_repeat;
+use function strlen;
+
 final class Base64MimeTest extends TestCase
 {
     #[DataProvider('provideRandomBytes')]

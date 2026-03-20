@@ -11,6 +11,7 @@ use Psl\Compression\Tests\Fixture\BrotliCompressor;
 use Psl\IO;
 
 use function brotli_uncompress;
+use function str_repeat;
 use function strlen;
 
 #[RequiresPhpExtension('brotli')]

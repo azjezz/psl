@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Binary;
 
+use function pack;
+
 /**
  * Encode a 64-bit floating point value to a binary string.
  *

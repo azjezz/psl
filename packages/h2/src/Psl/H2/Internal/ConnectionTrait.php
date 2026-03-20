@@ -24,6 +24,7 @@ use Throwable;
 
 use function array_filter;
 use function array_values;
+use function min;
 use function ord;
 use function strlen;
 use function substr;

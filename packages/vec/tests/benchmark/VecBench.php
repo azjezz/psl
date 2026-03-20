@@ -9,6 +9,8 @@ use PhpBench\Attributes\Groups;
 use PhpBench\Attributes\ParamProviders;
 use Psl\Vec;
 
+use function count;
+
 #[Groups(['vec'])]
 final class VecBench
 {

@@ -14,10 +14,10 @@ use Psl\Str\Exception;
  */
 function before_last(string $haystack, string $needle, int $offset = 0): null|string
 {
-    $length = search_last($haystack, $needle, $offset);
+    $length = namespace\search_last($haystack, $needle, $offset);
     if (null === $length) {
         return null;
     }
 
-    return slice($haystack, 0, $length);
+    return namespace\slice($haystack, 0, $length);
 }

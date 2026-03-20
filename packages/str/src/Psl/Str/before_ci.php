@@ -11,10 +11,10 @@ namespace Psl\Str;
  */
 function before_ci(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::Utf8): null|string
 {
-    $length = search_ci($haystack, $needle, $offset, $encoding);
+    $length = namespace\search_ci($haystack, $needle, $offset, $encoding);
     if (null === $length) {
         return null;
     }
 
-    return slice($haystack, 0, $length, $encoding);
+    return namespace\slice($haystack, 0, $length, $encoding);
 }

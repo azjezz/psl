@@ -12,6 +12,8 @@ use Psl\DateTime\DateTime;
 use Psl\DateTime\Timestamp;
 use Psl\DateTime\Timezone;
 
+use function date_default_timezone_set;
+
 final class TimezoneTest extends TestCase
 {
     use DateTimeTestTrait;

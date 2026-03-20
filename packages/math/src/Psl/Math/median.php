@@ -27,10 +27,10 @@ function median(array $numbers): float|null
     }
 
     /** @var int<0, max> $middleIndex */
-    $middleIndex = div($count, 2);
+    $middleIndex = namespace\div($count, 2);
     if (0 === ($count % 2)) {
         /** @var int<1, max> $middleIndex */
-        return mean([$numbers[$middleIndex], $numbers[$middleIndex - 1]]);
+        return namespace\mean([$numbers[$middleIndex], $numbers[$middleIndex - 1]]);
     }
 
     return (float) $numbers[$middleIndex];

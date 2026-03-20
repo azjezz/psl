@@ -12,6 +12,7 @@ use Psl\Terminal\Rect;
 
 use function array_slice;
 use function array_values;
+use function count;
 
 /**
  * A sparkline widget that renders data points as Unicode block characters.

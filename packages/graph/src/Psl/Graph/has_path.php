@@ -46,7 +46,7 @@ function has_path(DirectedGraph|UndirectedGraph $graph, mixed $from, mixed $to):
     while ($queue->count() !== 0) {
         $node = $queue->dequeue();
 
-        foreach (neighbors($graph, $node) as $neighbor) {
+        foreach (namespace\neighbors($graph, $node) as $neighbor) {
             if ($neighbor === $to) {
                 return true;
             }

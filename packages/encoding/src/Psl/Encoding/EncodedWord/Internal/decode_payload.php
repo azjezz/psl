@@ -31,7 +31,7 @@ function decode_payload(string $encoding, string $text): string
     }
 
     if ($encoding === EncodedWord\Q_ENCODING) {
-        return q_decode($text);
+        return namespace\q_decode($text);
     }
 
     // @codeCoverageIgnoreStart

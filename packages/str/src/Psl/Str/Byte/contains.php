@@ -21,8 +21,8 @@ use Psl\Str;
 function contains(string $haystack, string $needle, int $offset = 0): bool
 {
     if ('' === $needle) {
-        return Str\Internal\validate_offset($offset, length($haystack), true);
+        return Str\Internal\validate_offset($offset, namespace\length($haystack), true);
     }
 
-    return null !== search($haystack, $needle, $offset);
+    return null !== namespace\search($haystack, $needle, $offset);
 }

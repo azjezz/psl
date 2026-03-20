@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\Example\TCP;
 
-use Psl\Async;
 use Psl\IO;
 use Psl\TCP;
 
@@ -23,10 +22,6 @@ function request(string $method, string $host, string $path): string
     return $response;
 }
 
-Async\main(static function (): int {
-    $response = request('GET', 'example.com', '/');
+$response = namespace\request('GET', 'example.com', '/');
 
-    IO\write_error_line($response);
-
-    return 0;
-});
+IO\write_error_line($response);

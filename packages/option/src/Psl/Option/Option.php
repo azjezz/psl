@@ -169,7 +169,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
             return $other;
         }
 
-        return none();
+        return namespace\none();
     }
 
     /**
@@ -225,7 +225,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     public function filter(Closure $predicate): Option
     {
         if (null !== $this->option) {
-            return $predicate($this->option[0]) ? $this : none();
+            return $predicate($this->option[0]) ? $this : namespace\none();
         }
 
         return $this;
@@ -299,7 +299,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     public function map(Closure $closure): Option
     {
         if (null !== $this->option) {
-            return some($closure($this->option[0]));
+            return namespace\some($closure($this->option[0]));
         }
 
         /** @var Option<Tu> */
@@ -343,10 +343,10 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     public function mapOr(Closure $closure, mixed $default): Option
     {
         if (null !== $this->option) {
-            return some($closure($this->option[0]));
+            return namespace\some($closure($this->option[0]));
         }
 
-        return some($default);
+        return namespace\some($default);
     }
 
     /**
@@ -364,10 +364,10 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     public function mapOrElse(Closure $closure, Closure $default): Option
     {
         if (null !== $this->option) {
-            return some($closure($this->option[0]));
+            return namespace\some($closure($this->option[0]));
         }
 
-        return some($default());
+        return namespace\some($default());
     }
 
     /**
@@ -447,11 +447,11 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     public function unzip(): array
     {
         if (null === $this->option) {
-            return [none(), none()];
+            return [namespace\none(), namespace\none()];
         }
 
         [$a, $b] = $this->option[0];
 
-        return [some($a), some($b)];
+        return [namespace\some($a), namespace\some($b)];
     }
 }

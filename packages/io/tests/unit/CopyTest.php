@@ -12,6 +12,8 @@ use Psl\DateTime\Duration;
 use Psl\IO;
 use Psl\Ref;
 
+use function str_repeat;
+
 final class CopyTest extends TestCase
 {
     public function testCopyFromReaderToWriter(): void

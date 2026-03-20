@@ -42,9 +42,9 @@ function take_triple_h_string(string $_): void {}
  */
 function test(): void
 {
-    take_non_empty_lowercase_string(Str\repeat(return_nonempty_lowercase_string(), 4));
-    take_non_empty_string(Str\repeat(return_nonempty_string(), 4));
-    take_lowercase_string(Str\repeat(return_lowercase_string(), 4));
+    namespace\take_non_empty_lowercase_string(Str\repeat(namespace\return_nonempty_lowercase_string(), 4));
+    namespace\take_non_empty_string(Str\repeat(namespace\return_nonempty_string(), 4));
+    namespace\take_lowercase_string(Str\repeat(namespace\return_lowercase_string(), 4));
 
-    take_triple_h_string(Str\repeat('h', 3));
+    namespace\take_triple_h_string(Str\repeat('h', 3));
 }

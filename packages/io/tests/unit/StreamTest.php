@@ -7,6 +7,16 @@ namespace Psl\IO\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Psl\IO;
 
+use function fclose;
+use function file_exists;
+use function file_get_contents;
+use function file_put_contents;
+use function fopen;
+use function fseek;
+use function sys_get_temp_dir;
+use function tempnam;
+use function unlink;
+
 final class StreamTest extends TestCase
 {
     public function testReadHandle(): void

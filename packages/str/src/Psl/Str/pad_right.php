@@ -42,27 +42,27 @@ function pad_right(
     Encoding $encoding = Encoding::Utf8,
 ): string {
     if ($encoding === Encoding::Ascii || $encoding === Encoding::Utf8) {
-        if (Byte\length($padString) === length($padString, $encoding)) {
+        if (Byte\length($padString) === namespace\length($padString, $encoding)) {
             // All characters in pad_string are single-byte, str_pad is safe
             return str_pad(
                 $string,
-                Byte\length($string) + $totalLength - length($string, $encoding),
+                Byte\length($string) + $totalLength - namespace\length($string, $encoding),
                 $padString,
                 STR_PAD_RIGHT,
             );
         }
     }
 
-    $padLength = length($padString, $encoding);
+    $padLength = namespace\length($padString, $encoding);
     do {
-        $length = length($string, $encoding);
+        $length = namespace\length($string, $encoding);
         $remaining = $totalLength - $length;
         if ($remaining <= 0) {
             return $string;
         }
 
         if ($remaining <= $padLength) {
-            $padString = slice($padString, 0, $remaining, $encoding);
+            $padString = namespace\slice($padString, 0, $remaining, $encoding);
             $padLength = $remaining;
         }
 

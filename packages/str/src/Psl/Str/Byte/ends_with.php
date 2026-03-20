@@ -11,11 +11,11 @@ namespace Psl\Str\Byte;
  */
 function ends_with(string $string, string $suffix): bool
 {
-    if (null === search($string, $suffix)) {
+    if (null === namespace\search($string, $suffix)) {
         return false;
     }
 
-    $suffixLength = length($suffix);
+    $suffixLength = namespace\length($suffix);
 
-    return slice($string, -$suffixLength) === $suffix;
+    return namespace\slice($string, -$suffixLength) === $suffix;
 }

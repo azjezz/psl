@@ -19,7 +19,7 @@ function resolve_constraint(Constraint $constraint, int $totalSpace): int
     return match ($constraint->kind) {
         ConstraintKind::Fill => -1,
         ConstraintKind::Fixed => min($constraint->size, $totalSpace),
-        ConstraintKind::Min => resolve_min($constraint, $totalSpace),
-        ConstraintKind::Max => resolve_max($constraint, $totalSpace),
+        ConstraintKind::Min => namespace\resolve_min($constraint, $totalSpace),
+        ConstraintKind::Max => namespace\resolve_max($constraint, $totalSpace),
     };
 }

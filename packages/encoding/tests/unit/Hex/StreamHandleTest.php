@@ -9,6 +9,9 @@ use Psl\Encoding\Exception;
 use Psl\Encoding\Hex;
 use Psl\IO;
 
+use function bin2hex;
+use function strlen;
+
 final class StreamHandleTest extends TestCase
 {
     public function testEncodingReadHandle(): void

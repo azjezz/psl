@@ -9,6 +9,7 @@ use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
+use function get_resource_type;
 use function is_resource;
 use function sprintf;
 

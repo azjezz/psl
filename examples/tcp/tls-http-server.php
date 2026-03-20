@@ -29,92 +29,86 @@ const TLS_RESPONSE_FORMAT = <<<HTML
 </html>
 HTML;
 
-Async\main(static function (): int {
-    $certFile = __DIR__ . '/certs/server.crt';
-    $keyFile = __DIR__ . '/certs/server.key';
+$certFile = __DIR__ . '/certs/server.crt';
+$keyFile = __DIR__ . '/certs/server.key';
 
-    $tlsConfig = TLS\ServerConfiguration::create(TLS\Certificate::create(
-        $certFile,
-        $keyFile,
-    ))->withMinimumVersion(TLS\Version::Tls12);
+$tlsConfig = TLS\ServerConfiguration::create(TLS\Certificate::create(
+    $certFile,
+    $keyFile,
+))->withMinimumVersion(TLS\Version::Tls12);
 
-    $acceptor = new TLS\Acceptor($tlsConfig);
-    $listener = TCP\listen('127.0.0.1', 3443, new TCP\ListenConfiguration(idleConnections: 1024));
-    $keepaliveTimeout = Duration::seconds(5);
+$acceptor = new TLS\Acceptor($tlsConfig);
+$listener = TCP\listen('127.0.0.1', 3443, new TCP\ListenConfiguration(idleConnections: 1024));
+$keepaliveTimeout = Duration::seconds(5);
 
-    /** @var array<int, TCP\StreamInterface> $active */
-    $active = [];
-    $id = 0;
+/** @var array<int, TCP\StreamInterface> $active */
+$active = [];
+$id = 0;
 
-    Async\Scheduler::onSignal(SIGINT, static function (string $watcher) use ($listener, &$active): void {
-        Async\Scheduler::cancel($watcher);
-        $listener->close();
+Async\Scheduler::onSignal(SIGINT, static function (string $watcher) use ($listener, &$active): void {
+    Async\Scheduler::cancel($watcher);
+    $listener->close();
 
-        foreach ($active as $connection) {
-            $connection->close();
-        }
-
-        $active = [];
-    });
-
-    IO\write_error_line('TLS server is listening on https://127.0.0.1:3443');
-    IO\write_error_line('Click Ctrl+C to stop the server.');
-
-    while (true) {
-        try {
-            $connection = $listener->accept();
-        } catch (Network\Exception\AlreadyStoppedException) {
-            break;
-        }
-
-        $connectionId = $id++;
-        $active[$connectionId] = $connection;
-
-        Async\run(static function () use ($connection, $acceptor, $keepaliveTimeout, &$active, $connectionId): void {
-            try {
-                $tls = $acceptor->accept($connection);
-                $reader = new IO\Reader($tls);
-
-                while (true) {
-                    $headers = $reader->readUntil("\r\n\r\n", new Async\TimeoutCancellationToken($keepaliveTimeout));
-                    if ($headers === null) {
-                        // @mago-expect lint:excessive-nesting
-                        break;
-                    }
-
-                    $keepAlive = Str\Byte\contains_ci($headers, 'connection: keep-alive');
-                    $connectionHeader = $keepAlive ? 'keep-alive' : 'close';
-
-                    $body = Str\format(TLS_RESPONSE_FORMAT, Html\encode_special_characters($headers));
-                    $tls->writeAll(
-                        "HTTP/1.1 200 OK\r\nConnection: {$connectionHeader}\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: "
-                        . Str\Byte\length($body)
-                        . "\r\n\r\n"
-                        . $body,
-                    );
-
-                    if (!$keepAlive) {
-                        // @mago-expect lint:excessive-nesting
-                        break;
-                    }
-                }
-            } catch (Async\Exception\CancelledException) {
-                // @mago-expect lint:no-empty-catch-clause
-                // Keep-alive timeout — client didn't send next request in time
-            } finally {
-                $connection->close();
-                unset($active[$connectionId]);
-            }
-        })->catch(
-            static fn(Throwable $e): null => (
-                // Suppress expected errors during shutdown
-                null
-            ),
-        )->ignore();
+    foreach ($active as $connection) {
+        $connection->close();
     }
 
-    IO\write_error_line('');
-    IO\write_error_line('Goodbye 👋');
-
-    return 0;
+    $active = [];
 });
+
+IO\write_error_line('TLS server is listening on https://127.0.0.1:3443');
+IO\write_error_line('Click Ctrl+C to stop the server.');
+
+while (true) {
+    try {
+        $connection = $listener->accept();
+    } catch (Network\Exception\AlreadyStoppedException) {
+        break;
+    }
+
+    $connectionId = $id++;
+    $active[$connectionId] = $connection;
+
+    Async\run(static function () use ($connection, $acceptor, $keepaliveTimeout, &$active, $connectionId): void {
+        try {
+            $tls = $acceptor->accept($connection);
+            $reader = new IO\Reader($tls);
+
+            while (true) {
+                $headers = $reader->readUntil("\r\n\r\n", new Async\TimeoutCancellationToken($keepaliveTimeout));
+                if ($headers === null) {
+                    break;
+                }
+
+                $keepAlive = Str\Byte\contains_ci($headers, 'connection: keep-alive');
+                $connectionHeader = $keepAlive ? 'keep-alive' : 'close';
+
+                $body = Str\format(TLS_RESPONSE_FORMAT, Html\encode_special_characters($headers));
+                $tls->writeAll(
+                    "HTTP/1.1 200 OK\r\nConnection: {$connectionHeader}\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: "
+                    . Str\Byte\length($body)
+                    . "\r\n\r\n"
+                    . $body,
+                );
+
+                if (!$keepAlive) {
+                    break;
+                }
+            }
+        } catch (Async\Exception\CancelledException) {
+            // @mago-expect lint:no-empty-catch-clause
+            // Keep-alive timeout — client didn't send next request in time
+        } finally {
+            $connection->close();
+            unset($active[$connectionId]);
+        }
+    })->catch(
+        static fn(Throwable $e): null => (
+            // Suppress expected errors during shutdown
+            null
+        ),
+    )->ignore();
+}
+
+IO\write_error_line('');
+IO\write_error_line('Goodbye 👋');

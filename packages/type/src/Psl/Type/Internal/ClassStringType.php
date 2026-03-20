@@ -9,6 +9,9 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 use Psl\Type\Type;
 
+use function is_a;
+use function is_string;
+
 /**
  * @template T as object
  *

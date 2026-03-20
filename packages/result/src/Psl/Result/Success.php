@@ -132,7 +132,7 @@ final readonly class Success implements ResultInterface
     #[Override]
     public function then(Closure $success, Closure $failure): ResultInterface
     {
-        return wrap(fn(): mixed => $success($this->value));
+        return namespace\wrap(fn(): mixed => $success($this->value));
     }
 
     /**
@@ -147,7 +147,7 @@ final readonly class Success implements ResultInterface
     #[Override]
     public function map(Closure $success): ResultInterface
     {
-        return wrap(fn(): mixed => $success($this->value));
+        return namespace\wrap(fn(): mixed => $success($this->value));
     }
 
     /**
@@ -175,7 +175,7 @@ final readonly class Success implements ResultInterface
     #[Override]
     public function always(Closure $always): ResultInterface
     {
-        return wrap(
+        return namespace\wrap(
             /**
              * @return T
              */

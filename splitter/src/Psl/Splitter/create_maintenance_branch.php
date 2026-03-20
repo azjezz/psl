@@ -25,5 +25,5 @@ function create_maintenance_branch(MonolithicRepository $monorepo, Git $git, str
     $git->pushBranch($maintenanceBranch);
 
     // Split to the new branch in all split repos
-    split($monorepo, $git, $maintenanceBranch);
+    namespace\split($monorepo, $git, $maintenanceBranch);
 }

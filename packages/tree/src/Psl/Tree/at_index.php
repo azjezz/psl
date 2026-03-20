@@ -53,5 +53,5 @@ function at_index(NodeInterface $node, array $indexPath): mixed
     }
 
     /** @var T */
-    return at_index($node, array_slice($indexPath, 1));
+    return namespace\at_index($node, array_slice($indexPath, 1));
 }

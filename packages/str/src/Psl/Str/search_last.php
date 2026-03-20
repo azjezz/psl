@@ -26,7 +26,7 @@ function search_last(string $haystack, string $needle, int $offset = 0, Encoding
         return null;
     }
 
-    $offset = Internal\validate_offset($offset, length($haystack, $encoding));
+    $offset = Internal\validate_offset($offset, namespace\length($haystack, $encoding));
 
     return false === ($pos = mb_strrpos($haystack, $needle, $offset, $encoding->value)) ? null : $pos;
 }

@@ -19,6 +19,8 @@ use Psl\H2\Internal\StateMachine;
 use Psl\HPACK\Encoder;
 use Psl\HPACK\Header;
 
+use function pack;
+
 use const Psl\H2\MAX_WINDOW_SIZE;
 
 final class WindowUpdateTest extends TestCase

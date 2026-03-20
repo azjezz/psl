@@ -7,6 +7,16 @@ namespace Psl\File\Tests\Unit;
 use Override;
 use PHPUnit\Framework\TestCase;
 
+use function chmod;
+use function fileperms;
+use function is_dir;
+use function is_link;
+use function mkdir;
+use function realpath;
+use function rmdir;
+use function scandir;
+use function unlink;
+
 /**
  * Base test case that creates and cleans up a temporary directory.
  */

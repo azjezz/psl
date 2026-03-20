@@ -10,6 +10,7 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 use Throwable;
 
+use function array_is_list;
 use function is_array;
 use function is_iterable;
 use function sprintf;

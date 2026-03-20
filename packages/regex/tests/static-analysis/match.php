@@ -23,6 +23,6 @@ function test(): void
 
     Psl\invariant(null !== $firstMatch, 'It matches!');
 
-    take_string($firstMatch[0]);
-    take_string($firstMatch[1]);
+    namespace\take_string($firstMatch[0]);
+    namespace\take_string($firstMatch[1]);
 }

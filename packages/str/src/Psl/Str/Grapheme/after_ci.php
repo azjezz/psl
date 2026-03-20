@@ -14,12 +14,12 @@ use Psl\Str\Exception;
  */
 function after_ci(string $haystack, string $needle, int $offset = 0): null|string
 {
-    $position = search_ci($haystack, $needle, $offset);
+    $position = namespace\search_ci($haystack, $needle, $offset);
     if (null === $position) {
         return null;
     }
 
-    $position += length($needle);
+    $position += namespace\length($needle);
 
-    return slice($haystack, $position);
+    return namespace\slice($haystack, $position);
 }

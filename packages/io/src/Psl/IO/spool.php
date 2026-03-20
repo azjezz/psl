@@ -6,6 +6,7 @@ namespace Psl\IO;
 
 use Psl;
 
+use function error_get_last;
 use function fopen;
 
 /**

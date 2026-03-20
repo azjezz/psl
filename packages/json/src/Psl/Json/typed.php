@@ -20,7 +20,7 @@ use Psl\Type;
 function typed(string $json, Type\TypeInterface $type): mixed
 {
     try {
-        return $type->coerce(decode($json));
+        return $type->coerce(namespace\decode($json));
     } catch (Type\Exception\CoercionException $e) {
         throw new Exception\DecodeException($e->getMessage(), (int) $e->getCode(), $e);
     }

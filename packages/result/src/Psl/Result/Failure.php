@@ -123,7 +123,7 @@ final readonly class Failure implements ResultInterface
     #[Override]
     public function then(Closure $success, Closure $failure): ResultInterface
     {
-        return wrap(fn(): mixed => $failure($this->throwable));
+        return namespace\wrap(fn(): mixed => $failure($this->throwable));
     }
 
     /**
@@ -153,7 +153,7 @@ final readonly class Failure implements ResultInterface
     #[Override]
     public function catch(Closure $failure): ResultInterface
     {
-        return wrap(fn(): mixed => $failure($this->throwable));
+        return namespace\wrap(fn(): mixed => $failure($this->throwable));
     }
 
     /**
@@ -166,7 +166,7 @@ final readonly class Failure implements ResultInterface
     #[Override]
     public function always(Closure $always): ResultInterface
     {
-        return wrap(function () use ($always): never {
+        return namespace\wrap(function () use ($always): never {
             $always();
 
             throw $this->throwable;

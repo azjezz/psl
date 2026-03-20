@@ -35,8 +35,8 @@ function test(): void
     );
 
     /** @psalm-suppress MissingThrowsDocblock */
-    takes_valid_intersection($oldSchoolCodec->assert('any'));
+    namespace\takes_valid_intersection($oldSchoolCodec->assert('any'));
 
     /** @psalm-suppress MissingThrowsDocblock */
-    takes_valid_intersection($newCodec->assert('any'));
+    namespace\takes_valid_intersection($newCodec->assert('any'));
 }

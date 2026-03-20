@@ -17,7 +17,7 @@ use function stream_isatty;
  */
 function is_terminal(null|StreamHandleInterface $handle = null): bool
 {
-    $handle ??= input_handle();
+    $handle ??= namespace\input_handle();
     $stream = $handle->getStream();
 
     return is_resource($stream) && @stream_isatty($stream);

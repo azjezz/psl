@@ -18,6 +18,9 @@ use function array_map;
 use function array_slice;
 use function array_values;
 use function count;
+use function is_int;
+use function is_string;
+use function iterator_to_array;
 
 use const ARRAY_FILTER_USE_KEY;
 

@@ -8,6 +8,8 @@ use PhpBench\Attributes\Groups;
 use PhpBench\Attributes\ParamProviders;
 use Psl\Tree;
 
+use function array_fill;
+
 #[Groups(['tree'])]
 final class TreeBench
 {

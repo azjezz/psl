@@ -24,7 +24,7 @@ use function usort;
  */
 function sort(iterable $iterable, null|Closure $comparator = null): array
 {
-    $array = values($iterable);
+    $array = namespace\values($iterable);
     if (null !== $comparator) {
         usort($array, $comparator);
 

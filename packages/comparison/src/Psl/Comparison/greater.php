@@ -12,5 +12,5 @@ namespace Psl\Comparison;
  */
 function greater(mixed $a, mixed $b): bool
 {
-    return compare($a, $b) === Order::Greater;
+    return namespace\compare($a, $b) === Order::Greater;
 }
