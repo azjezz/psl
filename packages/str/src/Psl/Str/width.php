@@ -7,7 +7,10 @@ namespace Psl\Str;
 use function mb_strwidth;
 
 /**
- * Return width of length.
+ * Return the display width of a string as defined by {@see mb_strwidth()}.
+ *
+ * For codepoint counting, use {@see length()}.
+ * For grapheme cluster counting, use {@see Grapheme\length()}.
  *
  * @pure
  */
