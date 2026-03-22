@@ -336,6 +336,7 @@
     },
     "config": {
         "allow-plugins": {
+            "carthage-software/mago": true,
             "infection/extension-installer": true
         }
     },
