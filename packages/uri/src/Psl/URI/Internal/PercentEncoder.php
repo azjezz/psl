@@ -84,7 +84,6 @@ final class PercentEncoder
                 return '%' . strtoupper($hex);
             },
             $input,
-        )
-        ?? $input;
+        ) ?? $input;
     }
 }

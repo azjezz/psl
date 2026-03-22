@@ -63,6 +63,7 @@ function verify(array $packages): bool
         'Json' => 'json',
         'Locale' => 'locale',
         'MIME' => 'mime',
+        'Message' => 'message',
         'Math' => 'math',
         'Network' => 'network',
         'Observer' => 'observer',

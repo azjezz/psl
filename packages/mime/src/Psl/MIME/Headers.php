@@ -117,6 +117,41 @@ final readonly class Headers implements Countable, IteratorAggregate, Stringable
     }
 
     /**
+     * Return a new Headers instance with the given header appended.
+     */
+    public function with(string $name, string $value): self
+    {
+        return new self([...$this->pairs, [$name, strtolower($name), $value]]);
+    }
+
+    /**
+     * Return a new Headers instance with all occurrences of the given header removed (case-insensitive).
+     */
+    public function without(string $name): self
+    {
+        $lower = strtolower($name);
+        $filtered = [];
+        foreach ($this->pairs as $pair) {
+            if ($pair[1] === $lower) {
+                continue;
+            }
+
+            $filtered[] = $pair;
+        }
+
+        return new self($filtered);
+    }
+
+    /**
+     * Return a new Headers instance with all occurrences of the given header
+     * replaced by a single new value. If the header does not exist, it is appended.
+     */
+    public function replace(string $name, string $value): self
+    {
+        return $this->without($name)->with($name, $value);
+    }
+
+    /**
      * Get all header pairs with their original casing.
      *
      * @return list<array{string, string}> Pairs of (original-name, value).

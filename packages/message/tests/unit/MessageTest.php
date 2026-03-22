@@ -1,0 +1,325 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\Message\Tests\Unit;
+
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
+use Psl\IO;
+use Psl\Message\Message;
+use Psl\MIME\Headers;
+use Psl\MIME\Part;
+
+final class MessageTest extends TestCase
+{
+    #[Test]
+    public function constructFromHeaders(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['From',       'alice@example.com'],
+            ['To',         'bob@example.com'],
+            ['Subject',    'Hello'],
+            ['Date',       'Mon, 01 Jan 2024 12:00:00 +0000'],
+            ['Message-ID', '<msg-001@example.com>'],
+        ]), new Part\Text(new IO\MemoryHandle('Hello, Bob!')));
+
+        self::assertNotNull($message->from);
+        self::assertCount(1, $message->from);
+        self::assertSame('alice@example.com', $message->from?->mailboxes()[0]?->address);
+
+        self::assertNotNull($message->to);
+        self::assertSame('bob@example.com', $message->to?->mailboxes()[0]?->address);
+
+        self::assertSame('Hello', $message->subject);
+
+        self::assertNotNull($message->messageId);
+        self::assertSame('msg-001@example.com', $message->messageId->id);
+
+        self::assertNotNull($message->date);
+    }
+
+    #[Test]
+    public function missingHeadersYieldNull(): void
+    {
+        $message = new Message(Headers::fromPairs([]));
+
+        self::assertNull($message->from);
+        self::assertNull($message->sender);
+        self::assertNull($message->to);
+        self::assertNull($message->cc);
+        self::assertNull($message->bcc);
+        self::assertNull($message->replyTo);
+        self::assertNull($message->date);
+        self::assertNull($message->messageId);
+        self::assertNull($message->subject);
+        self::assertSame([], $message->references);
+        self::assertSame([], $message->inReplyTo);
+    }
+
+    #[Test]
+    public function parseSender(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['Sender', 'admin@example.com'],
+        ]));
+
+        self::assertNotNull($message->sender);
+        self::assertSame('admin@example.com', $message->sender->address);
+    }
+
+    #[Test]
+    public function parseCcAndBcc(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['Cc',  'cc1@example.com, cc2@example.com'],
+            ['Bcc', 'bcc@example.com'],
+        ]));
+
+        self::assertNotNull($message->cc);
+        self::assertCount(2, $message->cc);
+
+        self::assertNotNull($message->bcc);
+        self::assertCount(1, $message->bcc);
+    }
+
+    #[Test]
+    public function parseReplyTo(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['Reply-To', 'reply@example.com'],
+        ]));
+
+        self::assertNotNull($message->replyTo);
+        self::assertSame('reply@example.com', $message->replyTo->mailboxes()[0]->address);
+    }
+
+    #[Test]
+    public function parseEncodedSubject(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['Subject', '=?utf-8?B?SGVsbG8gV29ybGQ=?='],
+        ]));
+
+        self::assertSame('Hello World', $message->subject);
+    }
+
+    #[Test]
+    public function parseReferences(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['References', '<ref1@example.com> <ref2@example.com>'],
+        ]));
+
+        $refs = $message->references;
+        self::assertCount(2, $refs);
+        self::assertSame('ref1@example.com', $refs[0]->id);
+        self::assertSame('ref2@example.com', $refs[1]->id);
+    }
+
+    #[Test]
+    public function parseInReplyTo(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['In-Reply-To', '<parent@example.com>'],
+        ]));
+
+        $inReplyTo = $message->inReplyTo;
+        self::assertCount(1, $inReplyTo);
+        self::assertSame('parent@example.com', $inReplyTo[0]->id);
+    }
+
+    #[Test]
+    public function malformedDateReturnsNull(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['Date', 'not a date'],
+        ]));
+
+        self::assertNull($message->date);
+    }
+
+    #[Test]
+    public function malformedAddressReturnsNull(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['From', 'not-an-address'],
+        ]));
+
+        self::assertNull($message->from);
+    }
+
+    #[Test]
+    public function headersPropertyReturnsOriginalHeaders(): void
+    {
+        $headers = Headers::fromPairs([
+            ['X-Custom', 'value'],
+        ]);
+
+        $message = new Message($headers);
+
+        self::assertSame('value', $message->headers->get('X-Custom'));
+    }
+
+    #[Test]
+    public function malformedMessageIdReturnsNull(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['Message-ID', ''],
+        ]));
+
+        self::assertNull($message->messageId);
+    }
+
+    #[Test]
+    public function malformedSenderReturnsNull(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['Sender', 'not-valid'],
+        ]));
+
+        self::assertNull($message->sender);
+    }
+
+    #[Test]
+    public function emptyFromReturnsNull(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['From', ''],
+        ]));
+
+        self::assertNull($message->from);
+    }
+
+    #[Test]
+    public function emptySenderReturnsNull(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['Sender', ''],
+        ]));
+
+        self::assertNull($message->sender);
+    }
+
+    #[Test]
+    public function emptyDateReturnsNull(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['Date', ''],
+        ]));
+
+        self::assertNull($message->date);
+    }
+
+    #[Test]
+    public function emptyMessageIdReturnsNull(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['Message-ID', '  '],
+        ]));
+
+        self::assertNull($message->messageId);
+    }
+
+    #[Test]
+    public function emptyReferencesReturnsEmpty(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['References', ''],
+        ]));
+
+        self::assertSame([], $message->references);
+    }
+
+    #[Test]
+    public function emptyInReplyToReturnsEmpty(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['In-Reply-To', ''],
+        ]));
+
+        self::assertSame([], $message->inReplyTo);
+    }
+
+    #[Test]
+    public function referencesWithNoAngleBracketsReturnsEmpty(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['References', 'no-brackets-here'],
+        ]));
+
+        self::assertSame([], $message->references);
+    }
+
+    #[Test]
+    public function referencesSkipsMalformedIds(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['References', '<valid@example.com> <> <also-valid@example.com>'],
+        ]));
+
+        self::assertCount(2, $message->references);
+        self::assertSame('valid@example.com', $message->references[0]->id);
+        self::assertSame('also-valid@example.com', $message->references[1]->id);
+    }
+
+    #[Test]
+    public function plainSubjectNotEncoded(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['Subject', 'Plain ASCII subject'],
+        ]));
+
+        self::assertSame('Plain ASCII subject', $message->subject);
+    }
+
+    #[Test]
+    public function nullSubjectReturnsNull(): void
+    {
+        $message = new Message(Headers::fromPairs([]));
+
+        self::assertNull($message->subject);
+    }
+
+    #[Test]
+    public function dateWithWhitespaceIsTrimmed(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['Date', '  Mon, 01 Jan 2024 12:00:00 +0000  '],
+        ]));
+
+        self::assertNotNull($message->date);
+    }
+
+    #[Test]
+    public function multipleInReplyTo(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['In-Reply-To', '<a@example.com> <b@example.com>'],
+        ]));
+
+        self::assertCount(2, $message->inReplyTo);
+        self::assertSame('a@example.com', $message->inReplyTo[0]->id);
+        self::assertSame('b@example.com', $message->inReplyTo[1]->id);
+    }
+
+    #[Test]
+    public function emptyAddressListReturnsNull(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['To', ',,,'],
+        ]));
+
+        self::assertNull($message->to);
+    }
+
+    #[Test]
+    public function malformedEncodedSubjectReturnsRawValue(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['Subject', '=?utf-8?B?!!!invalid-base64!!!?='],
+        ]));
+
+        self::assertSame('=?utf-8?B?!!!invalid-base64!!!?=', $message->subject);
+    }
+}

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Psl\MIME;
+namespace Psl\Message;
 
-use Psl\MIME\Exception\ContentIdParsingException;
+use Psl\Message\Exception\ParsingException;
 use Psl\MIME\Exception\EntropyException;
 use Random\RandomException;
 use Stringable;
@@ -18,45 +18,42 @@ use function substr;
 use function trim;
 
 /**
- * Content-ID value per RFC 2392.
+ * Represents a Message-ID value per RFC 5322 section 3.6.4.
  *
- * Represents a Content-ID for referencing MIME parts. Supports the `cid:` URI scheme.
+ * Stores the bare identifier (without angle brackets) and provides serialization
+ * to the angle-bracket form (`<id@domain>`) required by message headers.
  *
- * @link https://datatracker.ietf.org/doc/html/rfc2392
+ * @link https://datatracker.ietf.org/doc/html/rfc5322#section-3.6.4
  *
  * @api
  */
-final readonly class ContentId implements Stringable
+final readonly class MessageId implements Stringable
 {
     /**
-     * The bare ID without angle brackets (e.g. "part1@example.com").
+     * The bare ID without angle brackets (e.g. "unique-id@example.com").
      *
      * @var non-empty-string
      */
     public string $id;
 
     /**
-     * @throws ContentIdParsingException If the ID is empty.
+     * @param non-empty-string $id
      *
-     * @psalm-assert =non-empty-string $id
+     * @throws ParsingException If the ID is empty.
      */
     public function __construct(string $id)
     {
-        if ($id === '') {
-            throw ContentIdParsingException::forInvalidContentId($id);
+        if ($id === '') { // @mago-expect analysis:redundant-comparison,impossible-condition - runtime check
+            throw ParsingException::forInvalidMessageId($id);
         }
 
         $this->id = $id;
     }
 
     /**
-     * Generate a new globally unique Content-ID using cryptographically secure random bytes.
+     * Generate a unique Message-ID.
      *
-     * The generated ID has the form "{32-hex-chars}@{domain}".
-     *
-     * @param string $domain The domain portion of the Content-ID (after the "@").
-     *
-     * @throws EntropyException If the system cannot provide sufficient random bytes.
+     * @throws EntropyException If the system cannot generate secure random bytes.
      */
     public static function generate(string $domain = 'php-standard-library.dev'): self
     {
@@ -70,30 +67,31 @@ final readonly class ContentId implements Stringable
     }
 
     /**
-     * Parse a Content-ID value.
+     * Parse a Message-ID value.
      *
      * Accepts:
      * - `<id@domain>` (angle-bracket form, standard in headers)
      * - `id@domain` (bare form)
-     * - `cid:id@domain` (URI form per RFC 2392)
      *
-     * @throws ContentIdParsingException If the input is empty or malformed.
-     *
-     * @psalm-assert =non-empty-string $input
+     * @throws ParsingException If the input is empty or malformed.
      */
     public static function parse(string $input): self
     {
         $input = trim($input);
 
-        if (str_starts_with($input, 'cid:')) {
-            return new self(substr($input, 4));
+        if ($input === '') {
+            throw ParsingException::forInvalidMessageId($input);
         }
 
         if (str_starts_with($input, '<') && str_ends_with($input, '>')) {
             /** @var non-negative-int $innerLen */
             $innerLen = strlen($input) - 2;
+            $inner = substr($input, 1, $innerLen);
+            if ($inner === '') {
+                throw ParsingException::forInvalidMessageId($input);
+            }
 
-            return new self(substr($input, 1, $innerLen));
+            return new self($inner);
         }
 
         return new self($input);
@@ -107,16 +105,6 @@ final readonly class ContentId implements Stringable
     public function toString(): string
     {
         return '<' . $this->id . '>';
-    }
-
-    /**
-     * Serialize as a `cid:` URI per RFC 2392.
-     *
-     * @return non-empty-string
-     */
-    public function toCidUri(): string
-    {
-        return 'cid:' . $this->id;
     }
 
     /**
