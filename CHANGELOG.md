@@ -15,6 +15,14 @@
   - Content sniffing from bytes and seekable handles (`Sniff\from_string`, `Sniff\from_handle`)
   - S/MIME signing, verification, encryption, and decryption (`SMIME\Signer`, `SMIME\Verifier`, `SMIME\Encryptor`, `SMIME\Decryptor`) per RFC 5652, RFC 8551
   - DKIM message signing with RSA-SHA256 and Ed25519-SHA256 (`DKIM\Signer`) per RFC 6376, RFC 8301, RFC 8463
+- feat: introduce `Message` component - RFC 5322 internet message construction, parsing, and serialization
+  - Typed header fields with fluent `with*()` methods (`Message`) per RFC 5322
+  - Address methods accept `string|Mailbox|AddressList` for convenience
+  - Message body as `PartInterface` from the MIME component per RFC 2045
+  - Streaming `serialize()` and `parse()` accepting string or `ReadHandleInterface`
+  - Reply, reply-all, and forward with automatic threading headers (In-Reply-To, References) per RFC 5322
+  - SMTP envelope derivation (`Envelope`) per RFC 5321
+  - RFC 5322 address parsing: `Mailbox`, `Group`, `AddressList` with RFC 2047 encoded-word support
 
 ## 6.1.1
 
