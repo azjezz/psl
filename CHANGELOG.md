@@ -1,5 +1,21 @@
 # Changelog
 
+## 6.2.0
+
+### features
+
+- feat: introduce `MIME` component - comprehensive MIME toolkit implementing RFC 2045-2049 and related standards
+  - Media type parsing, validation, and content negotiation (`MediaType`, `MediaRange`, `MediaPreferences`) per RFC 2045, RFC 6838, RFC 9110
+  - MIME part construction with automatic transfer encoding (`Part\Text`, `Part\Data`) per RFC 2045
+  - Streaming multipart body construction and parsing (`MultiPart\Composite`, `MultiPart\Alternative`, `MultiPart\Related`, `MultiPart\Form`, `MultiPart\Parser`) per RFC 2046, RFC 2387, RFC 7578
+  - Immutable header collection with RFC 5322 line folding (`Headers`)
+  - Content-Disposition parsing with safe filename extraction (`ContentDisposition`) per RFC 2183
+  - Content-ID parsing, generation, and `cid:` URI support (`ContentId`) per RFC 2392
+  - RFC 2231 parameter encoding/decoding with continuations and charset conversion (`Parameters`)
+  - Content sniffing from bytes and seekable handles (`Sniff\from_string`, `Sniff\from_handle`)
+  - S/MIME signing, verification, encryption, and decryption (`SMIME\Signer`, `SMIME\Verifier`, `SMIME\Encryptor`, `SMIME\Decryptor`) per RFC 5652, RFC 8551
+  - DKIM message signing with RSA-SHA256 and Ed25519-SHA256 (`DKIM\Signer`) per RFC 6376, RFC 8301, RFC 8463
+
 ## 6.1.1
 
 ### fixes

@@ -11,6 +11,7 @@ const CATEGORY_COLORS = {
     "I/O":                    "#264653",
     "Identifiers":            "#3d5a80",
     "Networking":             "#6a4c93",
+    "Protocols":              "#0891b2",
     "Terminal":               "#1d3557",
     "Security":               "#d62828",
     "System":                 "#606c38",
