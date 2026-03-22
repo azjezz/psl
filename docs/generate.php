@@ -91,6 +91,7 @@ const SLUG_TO_PACKAGE = [
     'result' => 'php-standard-library/result',
     'runtime' => 'php-standard-library/runtime',
     'secure-random' => 'php-standard-library/secure-random',
+    'smtp' => 'php-standard-library/smtp',
     'shell' => 'php-standard-library/shell',
     'socks' => 'php-standard-library/socks',
     'str' => 'php-standard-library/str',

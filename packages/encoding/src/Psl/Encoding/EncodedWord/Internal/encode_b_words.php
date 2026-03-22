@@ -29,5 +29,5 @@ function encode_b_words(string $text, string $prefix, string $suffix, int $maxPa
         $offset += strlen($chunk);
     }
 
-    return implode("\r\n ", $words);
+    return implode(' ', $words);
 }

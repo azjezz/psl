@@ -26,7 +26,7 @@ final class BuilderTest extends TestCase
             ->withFrom(AddressList::parse('alice@example.com'))
             ->withTo(AddressList::parse('bob@example.com'))
             ->withSubject('Hello')
-            ->withBody(new Part\Text(new IO\MemoryHandle('Plain text body')));
+            ->withContent(new Part\Text(new IO\MemoryHandle('Plain text body')));
 
         self::assertSame('Hello', $message->subject);
         self::assertNotNull($message->from);
@@ -37,7 +37,7 @@ final class BuilderTest extends TestCase
     #[Test]
     public function buildHtmlOnly(): void
     {
-        $message = new Message\Message()->withBody(new Part\Text(new IO\MemoryHandle('<p>HTML body</p>'), 'html'));
+        $message = new Message\Message()->withContent(new Part\Text(new IO\MemoryHandle('<p>HTML body</p>'), 'html'));
 
         self::assertSame('text/html', $message->content->mediaType->essence());
     }
@@ -57,7 +57,7 @@ final class BuilderTest extends TestCase
             ->withDate($date)
             ->withMessageId(new MessageId('msg-001@example.com'))
             ->withSubject('Test')
-            ->withBody(new Part\Text(new IO\MemoryHandle('body')));
+            ->withContent(new Part\Text(new IO\MemoryHandle('body')));
 
         self::assertSame('alice@example.com', $message->headers->get('From'));
         self::assertSame('sender@example.com', $message->headers->get('Sender'));
@@ -74,7 +74,7 @@ final class BuilderTest extends TestCase
     public function buildWithExtraHeaders(): void
     {
         $message = new Message\Message()
-            ->withBody(new Part\Text(new IO\MemoryHandle('body')))
+            ->withContent(new Part\Text(new IO\MemoryHandle('body')))
             ->withHeader('X-Custom', 'value1')
             ->withHeader('X-Another', 'value2');
 
@@ -86,7 +86,7 @@ final class BuilderTest extends TestCase
     public function buildWithGeneratedMessageId(): void
     {
         $message = new Message\Message()
-            ->withBody(new Part\Text(new IO\MemoryHandle('body')))
+            ->withContent(new Part\Text(new IO\MemoryHandle('body')))
             ->withGeneratedMessageId();
 
         self::assertNotNull($message->messageId);
@@ -99,7 +99,7 @@ final class BuilderTest extends TestCase
         $body = new Part\Text(new IO\MemoryHandle('text'));
 
         $message1 = new Message\Message();
-        $message2 = $message1->withBody($body);
+        $message2 = $message1->withContent($body);
         $message3 = $message2->withSubject('subject');
 
         self::assertNull($message1->subject);
@@ -114,7 +114,7 @@ final class BuilderTest extends TestCase
     {
         $message = new Message\Message()
             ->withSubject("J\u{00F6}hn")
-            ->withBody(new Part\Text(new IO\MemoryHandle('body')));
+            ->withContent(new Part\Text(new IO\MemoryHandle('body')));
 
         $rawSubject = $message->headers->get('Subject') ?? '';
         self::assertStringContainsString('=?', $rawSubject);
@@ -129,7 +129,7 @@ final class BuilderTest extends TestCase
             ->withFrom(AddressList::parse('alice@example.com'))
             ->withTo(AddressList::parse('bob@example.com'))
             ->withSubject('Round trip')
-            ->withBody(new Part\Text(new IO\MemoryHandle('Hello')));
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
 
         $serialized = Message\serialize($message)->readAll();
         $reparsed = Message\parse($serialized);
@@ -148,7 +148,7 @@ final class BuilderTest extends TestCase
         $ref2 = new MessageId('ref2@example.com');
 
         $message = new Message\Message()
-            ->withBody(new Part\Text(new IO\MemoryHandle('body')))
+            ->withContent(new Part\Text(new IO\MemoryHandle('body')))
             ->withReferences([$ref1, $ref2]);
 
         self::assertCount(2, $message->references);
@@ -165,7 +165,7 @@ final class BuilderTest extends TestCase
         $parent = new MessageId('parent@example.com');
 
         $message = new Message\Message()
-            ->withBody(new Part\Text(new IO\MemoryHandle('body')))
+            ->withContent(new Part\Text(new IO\MemoryHandle('body')))
             ->withInReplyTo([$parent]);
 
         self::assertCount(1, $message->inReplyTo);
@@ -186,7 +186,7 @@ final class BuilderTest extends TestCase
             ->withFrom(AddressList::parse('alice@example.com'))
             ->withTo(AddressList::parse('bob@example.com'))
             ->withSubject('Re: Thread')
-            ->withBody(new Part\Text(new IO\MemoryHandle('My reply')))
+            ->withContent(new Part\Text(new IO\MemoryHandle('My reply')))
             ->withReferences([$ref1, $ref2])
             ->withInReplyTo([$parent]);
 
@@ -204,7 +204,7 @@ final class BuilderTest extends TestCase
     public function emptyReferencesNotEmitted(): void
     {
         $message = new Message\Message()
-            ->withBody(new Part\Text(new IO\MemoryHandle('body')))
+            ->withContent(new Part\Text(new IO\MemoryHandle('body')))
             ->withReferences([])
             ->withInReplyTo([]);
 
@@ -218,7 +218,7 @@ final class BuilderTest extends TestCase
     public function referencesImmutability(): void
     {
         $ref = new MessageId('ref@example.com');
-        $builder1 = new Message\Message()->withBody(new Part\Text(new IO\MemoryHandle('body')));
+        $builder1 = new Message\Message()->withContent(new Part\Text(new IO\MemoryHandle('body')));
         $builder2 = $builder1->withReferences([$ref]);
 
         self::assertSame([], $builder1->references);
@@ -229,7 +229,7 @@ final class BuilderTest extends TestCase
     public function inReplyToImmutability(): void
     {
         $id = new MessageId('parent@example.com');
-        $builder1 = new Message\Message()->withBody(new Part\Text(new IO\MemoryHandle('body')));
+        $builder1 = new Message\Message()->withContent(new Part\Text(new IO\MemoryHandle('body')));
         $builder2 = $builder1->withInReplyTo([$id]);
 
         self::assertSame([], $builder1->inReplyTo);
@@ -249,7 +249,7 @@ final class BuilderTest extends TestCase
     public function buildWithGeneratedMessageIdCustomDomain(): void
     {
         $message = new Message\Message()
-            ->withBody(new Part\Text(new IO\MemoryHandle('body')))
+            ->withContent(new Part\Text(new IO\MemoryHandle('body')))
             ->withGeneratedMessageId('example.com');
 
         self::assertNotNull($message->messageId);
@@ -440,7 +440,7 @@ final class BuilderTest extends TestCase
         ]), new Part\Text(new IO\MemoryHandle('Original')));
 
         $me = new Mailbox('bob', 'example.com');
-        $reply = Message\Message::reply($original, $me)->withBody(new Part\Text(new IO\MemoryHandle('Thanks!')));
+        $reply = Message\Message::reply($original, $me)->withContent(new Part\Text(new IO\MemoryHandle('Thanks!')));
 
         self::assertSame('Re: Hello', $reply->subject);
         self::assertCount(1, $reply->inReplyTo);
@@ -538,7 +538,7 @@ final class BuilderTest extends TestCase
             ->withBcc('dave@example.com')
             ->withSender('noreply@example.com')
             ->withReplyTo('support@example.com')
-            ->withBody(new Part\Text(new IO\MemoryHandle('body')));
+            ->withContent(new Part\Text(new IO\MemoryHandle('body')));
 
         self::assertSame('alice@example.com', $message->from->mailboxes()[0]->address);
         self::assertSame('bob@example.com', $message->to->mailboxes()[0]->address);
@@ -729,11 +729,11 @@ final class BuilderTest extends TestCase
     #[Test]
     public function withBodyReplacesContent(): void
     {
-        $message = new Message\Message()->withBody(new Part\Text(new IO\MemoryHandle('first')));
+        $message = new Message\Message()->withContent(new Part\Text(new IO\MemoryHandle('first')));
 
         self::assertSame('text/plain', $message->content->mediaType->essence());
 
-        $message = $message->withBody(new Part\Text(new IO\MemoryHandle('<h1>Hi</h1>'), 'html'));
+        $message = $message->withContent(new Part\Text(new IO\MemoryHandle('<h1>Hi</h1>'), 'html'));
 
         self::assertSame('text/html', $message->content->mediaType->essence());
     }

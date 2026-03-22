@@ -447,10 +447,10 @@ final class Message implements MessageInterface
     /**
      * Return a new message with the given MIME part as the body.
      */
-    public function withBody(PartInterface $body): self
+    public function withContent(PartInterface $content): self
     {
         $message = clone $this;
-        $message->content = $body;
+        $message->content = $content;
 
         return $message;
     }

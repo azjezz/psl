@@ -29,4 +29,4 @@ $message = new Message\Message()
     ->withFrom('alice@example.com')
     ->withTo('bob@example.com')
     ->withSubject('Report attached')
-    ->withBody($mixed);
+    ->withContent($mixed);

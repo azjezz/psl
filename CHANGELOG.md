@@ -23,6 +23,31 @@
   - Reply, reply-all, and forward with automatic threading headers (In-Reply-To, References) per RFC 5322
   - SMTP envelope derivation (`Envelope`) per RFC 5321
   - RFC 5322 address parsing: `Mailbox`, `Group`, `AddressList` with RFC 2047 encoded-word support
+- feat: introduce `SMTP` component - RFC 5321 SMTP client with connection pooling, TLS, and authentication
+  - Low-level `Connection` implementing `Network\StreamInterface` for protocol-level SMTP operations
+  - High-level `Transport` managing the full SMTP lifecycle: connect, EHLO/HELO, STARTTLS, AUTH, send, RSET
+  - Connection pooling with automatic reuse across multiple sends via `TCP\SocketPool`
+  - Implicit TLS (port 465) and STARTTLS upgrade (RFC 3207) with automatic detection
+  - EHLO with HELO fallback per RFC 5321
+  - SMTP pipelining (RFC 2920) for reduced round-trips
+  - BDAT chunking (RFC 3030) to avoid dot-stuffing overhead on large messages
+  - Enhanced status codes (RFC 3463) with structured `EnhancedStatusCode` parsing
+  - DSN delivery status notifications (RFC 3461) via `SendConfiguration`
+  - REQUIRETLS (RFC 8689) for end-to-end TLS enforcement
+  - MT-PRIORITY (RFC 6710) message priority with STANAG 4406 levels
+  - DELIVERBY (RFC 2852) delivery deadline specification
+  - FUTURERELEASE (RFC 4865) deferred delivery via `Duration` or `DateTimeInterface`
+  - BINARYMIME (RFC 3030), 8BITMIME (RFC 6152), SMTPUTF8 (RFC 6531) capability negotiation
+  - Punycode IDN encoding for internationalized domain names in addresses
+  - Partial recipient success with `DeliveryReport` for per-recipient rejection tracking
+  - CRLF and null byte injection protection via `PossibleAttackException`
+  - Five authentication mechanisms: PLAIN (RFC 4616), LOGIN, XOAUTH2, CRAM-MD5 (RFC 2195), SCRAM-SHA-256 (RFC 7677)
+  - Immutable `TransportConfiguration` and `SendConfiguration` with fluent `with*()` builders
+  - Configurable pipelining, chunking, chunk size, and partial success behavior
+
+### fixes
+
+- fix(encoding): RFC 2047 encoded-word encoder no longer embeds CRLF line folding in the encoded output; line folding is now the responsibility of the header serializer, fixing header/body separation issues in serialized messages
 
 ## 6.1.1
 

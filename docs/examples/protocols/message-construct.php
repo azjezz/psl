@@ -15,7 +15,7 @@ $message = new Message\Message()
     ->withSubject('Hello from PSL')
     ->withDate(Psl\DateTime\DateTime::now())
     ->withGeneratedMessageId()
-    ->withBody(new Part\Text(new IO\MemoryHandle('Hello, World!')));
+    ->withContent(new Part\Text(new IO\MemoryHandle('Hello, World!')));
 
 $message->from; // AddressList
 $message->to; // AddressList

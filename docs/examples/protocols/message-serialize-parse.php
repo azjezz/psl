@@ -12,7 +12,7 @@ $message = new Message\Message()
     ->withFrom('alice@example.com')
     ->withTo('bob@example.com')
     ->withSubject('Round trip')
-    ->withBody(new Part\Text(new IO\MemoryHandle('Hello!')));
+    ->withContent(new Part\Text(new IO\MemoryHandle('Hello!')));
 
 // Serialize to a streaming handle (headers + body)
 $handle = Message\serialize($message);
