@@ -75,6 +75,7 @@ const SLUG_TO_PACKAGE = [
     'locale' => 'php-standard-library/locale',
     'math' => 'php-standard-library/math',
     'mime' => 'php-standard-library/mime',
+    'message' => 'php-standard-library/message',
     'network' => 'php-standard-library/network',
     'observer' => 'php-standard-library/observer',
     'option' => 'php-standard-library/option',

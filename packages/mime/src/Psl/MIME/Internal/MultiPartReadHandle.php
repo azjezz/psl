@@ -75,6 +75,11 @@ final class MultiPartReadHandle implements IO\ReadHandleInterface
     private bool $firstPart = true;
 
     /**
+     * Cached body handle for the current part, to avoid recreating on each read.
+     */
+    private null|IO\ReadHandleInterface $currentBody = null;
+
+    /**
      * @param non-empty-string $boundary
      * @param list<PartInterface> $parts
      */
@@ -180,14 +185,12 @@ final class MultiPartReadHandle implements IO\ReadHandleInterface
      */
     private function readBodyTry(null|int $maxBytes): string
     {
-        $part = $this->parts[$this->partIndex];
-        $body = $part->body();
+        $this->currentBody ??= $this->parts[$this->partIndex]->body();
 
-        $chunk = $body->tryRead($maxBytes);
+        $chunk = $this->currentBody->tryRead($maxBytes);
 
-        if ($chunk === '' && $body->reachedEndOfDataSource()) {
+        if ($chunk === '' && $this->currentBody->reachedEndOfDataSource()) {
             $this->advancePart();
-            // Don't recurse into tryRead - return empty, caller will call again
             return '';
         }
 
@@ -202,14 +205,13 @@ final class MultiPartReadHandle implements IO\ReadHandleInterface
      */
     private function readBody(null|int $maxBytes, CancellationTokenInterface $cancellation): string
     {
-        $part = $this->parts[$this->partIndex];
-        $body = $part->body();
+        $this->currentBody ??= $this->parts[$this->partIndex]->body();
+        $body = $this->currentBody;
 
         $chunk = $body->read($maxBytes, $cancellation);
 
         if ($chunk === '' && $body->reachedEndOfDataSource()) {
             $this->advancePart();
-            // Return empty - next read() call will emit the next boundary or closing
             return '';
         }
 
@@ -221,6 +223,7 @@ final class MultiPartReadHandle implements IO\ReadHandleInterface
      */
     private function advancePart(): void
     {
+        $this->currentBody = null;
         $this->partIndex++;
 
         if ($this->partIndex >= count($this->parts)) {

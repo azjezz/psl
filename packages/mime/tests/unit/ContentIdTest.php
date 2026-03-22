@@ -30,8 +30,8 @@ final class ContentIdTest extends TestCase
     {
         $id = ContentId::generate();
 
-        static::assertStringContainsString('@Psl.local', $id->id);
-        static::assertSame(32 + 1 + 9, Byte\length($id->id));
+        static::assertStringContainsString('@php-standard-library.dev', $id->id);
+        static::assertSame(32 + 1 + 24, Byte\length($id->id));
     }
 
     public function testGenerateCustomDomain(): void
@@ -156,7 +156,7 @@ final class ContentIdTest extends TestCase
     {
         $id = ContentId::generate();
 
-        static::assertMatchesRegularExpression('/^[0-9a-f]{32}@Psl\.local$/', $id->id);
+        static::assertMatchesRegularExpression('/^[0-9a-f]{32}@php-standard-library\.dev$/', $id->id);
     }
 
     public function testToStringAngleBrackets(): void
