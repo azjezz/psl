@@ -7,7 +7,6 @@ namespace Tests\Unit\Message;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psl\Message\Address\Mailbox;
-use Psl\Message\Body;
 use Psl\Message\Envelope;
 use Psl\Message\Exception\InvalidArgumentException;
 use Psl\Message\Exception\RuntimeException;
@@ -54,7 +53,7 @@ final class EnvelopeTest extends TestCase
         $message = new Message(Headers::fromPairs([
             ['From', 'alice@example.com'],
             ['To',   'bob@example.com'],
-        ]), new Body());
+        ]));
 
         $envelope = Envelope::fromMessage($message);
 
@@ -71,7 +70,7 @@ final class EnvelopeTest extends TestCase
             ['To',   'bob@example.com'],
             ['Cc',   'cc@example.com'],
             ['Bcc',  'bcc@example.com'],
-        ]), new Body());
+        ]));
 
         $envelope = Envelope::fromMessage($message);
 
@@ -88,7 +87,7 @@ final class EnvelopeTest extends TestCase
             ['From',   'alice@example.com'],
             ['Sender', 'admin@example.com'],
             ['To',     'bob@example.com'],
-        ]), new Body());
+        ]));
 
         $envelope = Envelope::fromMessage($message);
 
@@ -101,7 +100,7 @@ final class EnvelopeTest extends TestCase
         $message = new Message(Headers::fromPairs([
             ['From', 'alice@example.com'],
             ['To',   'bob@example.com'],
-        ]), new Body());
+        ]));
 
         $envelope = Envelope::fromMessage($message);
 
@@ -113,7 +112,7 @@ final class EnvelopeTest extends TestCase
     {
         $message = new Message(Headers::fromPairs([
             ['To', 'bob@example.com'],
-        ]), new Body());
+        ]));
 
         $envelope = Envelope::fromMessage($message);
 
@@ -127,7 +126,7 @@ final class EnvelopeTest extends TestCase
 
         $message = new Message(Headers::fromPairs([
             ['From', 'alice@example.com'],
-        ]), new Body());
+        ]));
 
         Envelope::fromMessage($message);
     }
@@ -137,7 +136,7 @@ final class EnvelopeTest extends TestCase
     {
         $message = new Message(Headers::fromPairs([
             ['To', 'Team: alice@example.com, bob@example.com;'],
-        ]), new Body());
+        ]));
 
         $envelope = Envelope::fromMessage($message);
 
