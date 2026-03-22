@@ -22,9 +22,9 @@
     "homepage": "https://php-standard-library.dev",
     "require": {
         "php": "~8.4.0 || ~8.5.0",
-        "php-standard-library/foundation": "^6.0",
         "php-standard-library/async": "^6.0",
         "php-standard-library/date-time": "^6.0",
+        "php-standard-library/foundation": "^6.0",
         "revolt/event-loop": "^1.0.8"
     },
     "require-dev": {
@@ -49,7 +49,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-next": "6.1.x-dev"
+            "dev-next": "6.2.x-dev"
         }
     }
 }

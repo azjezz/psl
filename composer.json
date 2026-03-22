@@ -63,8 +63,8 @@
         "php-standard-library/iter": "self.version",
         "php-standard-library/json": "self.version",
         "php-standard-library/locale": "self.version",
-        "php-standard-library/mime": "self.version",
         "php-standard-library/math": "self.version",
+        "php-standard-library/mime": "self.version",
         "php-standard-library/network": "self.version",
         "php-standard-library/observer": "self.version",
         "php-standard-library/option": "self.version",
@@ -108,8 +108,8 @@
             "Psl\\Ansi\\": "packages/ansi/src/Psl/Ansi/",
             "Psl\\Async\\": "packages/async/src/Psl/Async/",
             "Psl\\Binary\\": "packages/binary/src/Psl/Binary/",
-            "Psl\\Cache\\": "packages/cache/src/Psl/Cache/",
             "Psl\\CIDR\\": "packages/cidr/src/Psl/CIDR/",
+            "Psl\\Cache\\": "packages/cache/src/Psl/Cache/",
             "Psl\\Channel\\": "packages/channel/src/Psl/Channel/",
             "Psl\\Class\\": "packages/class/src/Psl/Class/",
             "Psl\\Collection\\": "packages/collection/src/Psl/Collection/",
@@ -234,8 +234,8 @@
             "Psl\\Async\\Tests\\Benchmark\\": "packages/async/tests/benchmark/",
             "Psl\\Async\\Tests\\Unit\\": "packages/async/tests/unit/",
             "Psl\\Binary\\Tests\\Unit\\": "packages/binary/tests/unit/",
-            "Psl\\Cache\\Tests\\Unit\\": "packages/cache/tests/unit/",
             "Psl\\CIDR\\Tests\\Unit\\": "packages/cidr/tests/unit/",
+            "Psl\\Cache\\Tests\\Unit\\": "packages/cache/tests/unit/",
             "Psl\\Channel\\Tests\\Benchmark\\": "packages/channel/tests/benchmark/",
             "Psl\\Channel\\Tests\\Unit\\": "packages/channel/tests/unit/",
             "Psl\\Class\\Tests\\Unit\\": "packages/class/tests/unit/",
@@ -263,8 +263,8 @@
             "Psl\\Fun\\Tests\\Unit\\": "packages/fun/tests/unit/",
             "Psl\\Graph\\Tests\\Benchmark\\": "packages/graph/tests/benchmark/",
             "Psl\\Graph\\Tests\\Unit\\": "packages/graph/tests/unit/",
-            "Psl\\H2\\Tests\\Unit\\": "packages/h2/tests/unit/",
             "Psl\\H2\\Tests\\Fixture\\": "packages/h2/tests/fixture/",
+            "Psl\\H2\\Tests\\Unit\\": "packages/h2/tests/unit/",
             "Psl\\HPACK\\Tests\\Unit\\": "packages/hpack/tests/unit/",
             "Psl\\Hash\\Tests\\Unit\\": "packages/hash/tests/unit/",
             "Psl\\Html\\Tests\\Unit\\": "packages/html/tests/unit/",
@@ -338,7 +338,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-next": "6.1.x-dev"
+            "dev-next": "6.2.x-dev"
         }
     }
 }
