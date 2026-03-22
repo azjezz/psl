@@ -39,7 +39,8 @@
     "autoload": {
         "psr-4": {
             "Psl\\Message\\": "src/Psl/Message/"
-        }
+        },
+        "files": ["src/Psl/bootstrap.php"]
     },
     "autoload-dev": {
         "psr-4": {
