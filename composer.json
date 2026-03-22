@@ -21,10 +21,10 @@
     },
     "require-dev": {
         "ext-brotli": "*",
-        "carthage-software/mago": "^1.15.2",
+        "carthage-software/mago": "^1.15.3",
         "infection/infection": "^0.32.6",
         "php-coveralls/php-coveralls": "^2.9.1",
-        "phpbench/phpbench": "^1.5.1",
+        "phpbench/phpbench": "^1.6.0",
         "phpunit/phpunit": "^13.0.5"
     },
     "replace": {
@@ -332,7 +332,6 @@
     },
     "config": {
         "allow-plugins": {
-            "carthage-software/mago": true,
             "infection/extension-installer": true
         }
     },
