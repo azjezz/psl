@@ -24,7 +24,7 @@ final class SerializeTest extends TestCase
             ->withFrom(Message\Address\AddressList::parse('alice@example.com'))
             ->withTo(Message\Address\AddressList::parse('bob@example.com'))
             ->withSubject('Hello')
-            ->withBody(new Part\Text(new IO\MemoryHandle('Hello, Bob!')));
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello, Bob!')));
 
         $result = Message\serialize($message)->readAll();
 
@@ -53,7 +53,7 @@ final class SerializeTest extends TestCase
             ->withFrom(Message\Address\AddressList::parse('alice@example.com'))
             ->withTo(Message\Address\AddressList::parse('bob@example.com'))
             ->withSubject('Hello')
-            ->withBody(new Part\Text(new IO\MemoryHandle('Body here')));
+            ->withContent(new Part\Text(new IO\MemoryHandle('Body here')));
 
         $serialized = Message\serialize($message)->readAll();
         $reparsed = Message\parse($serialized);
@@ -68,7 +68,7 @@ final class SerializeTest extends TestCase
         $longSubject = str_repeat('word ', 20);
         $message = new Message\Message()
             ->withSubject($longSubject)
-            ->withBody(new Part\Text(new IO\MemoryHandle('')));
+            ->withContent(new Part\Text(new IO\MemoryHandle('')));
 
         $result = Message\serialize($message)->readAll();
 

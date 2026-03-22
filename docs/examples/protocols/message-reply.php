@@ -16,7 +16,7 @@ $original = Message\parse(
 $me = Mailbox::parse('bob@example.com');
 
 // Reply sets To from original From, prefixes subject, sets threading headers
-$reply = Message\Message::reply($original, $me)->withBody(new Part\Text(new IO\MemoryHandle('Thanks Alice!')));
+$reply = Message\Message::reply($original, $me)->withContent(new Part\Text(new IO\MemoryHandle('Thanks Alice!')));
 
 $reply->subject; // "Re: Hello"
 $reply->inReplyTo; // [MessageId("msg-001@example.com")]

@@ -41,5 +41,5 @@ function encode_q_words(string $text, string $prefix, string $suffix, int $maxPa
         $words[] = $prefix . $currentWord . $suffix;
     }
 
-    return implode("\r\n ", $words);
+    return implode(' ', $words);
 }

@@ -80,6 +80,7 @@ function verify(array $packages): bool
         'Result' => 'result',
         'Runtime' => 'runtime',
         'SecureRandom' => 'secure-random',
+        'SMTP' => 'smtp',
         'Shell' => 'shell',
         'Socks' => 'socks',
         'Str' => 'str',

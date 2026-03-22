@@ -153,13 +153,13 @@ final class EncodeDecodeTest extends TestCase
         yield 'long non-ascii' => [str_repeat("\xC3\xA9", 50)];
     }
 
-    public function testEncodedWordLineLengthLimit(): void
+    public function testEncodedWordTokenLengthLimit(): void
     {
         $encoded = EncodedWord\encode(str_repeat("\xC3\xA9", 50));
 
-        $lines = explode("\r\n ", $encoded);
-        foreach ($lines as $line) {
-            static::assertLessThanOrEqual(75, strlen($line));
+        $words = explode(' ', $encoded);
+        foreach ($words as $word) {
+            static::assertLessThanOrEqual(75, strlen($word));
         }
     }
 

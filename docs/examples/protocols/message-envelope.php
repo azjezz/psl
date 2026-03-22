@@ -14,7 +14,7 @@ $message = new Message\Message()
     ->withTo('bob@example.com')
     ->withCc('carol@example.com')
     ->withBcc('dave@example.com')
-    ->withBody(new Part\Text(new IO\MemoryHandle('Hello')));
+    ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
 
 // Derive SMTP envelope from message headers
 $envelope = Envelope::fromMessage($message);
