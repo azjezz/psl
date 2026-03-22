@@ -6,19 +6,19 @@ The `HPACK` component implements RFC 7541 header compression for HTTP/2. It prov
 
 Both encoder and decoder are stateful - they maintain a dynamic table that evolves across multiple calls within the same HTTP/2 connection. Each connection should use its own instances.
 
-@example('networking/hpack-encode-decode.php')
+@example('protocols/hpack-encode-decode.php')
 
 ## Sensitive Headers
 
 Headers marked as sensitive (e.g. authorization, cookies) are encoded with the "never indexed" representation, preventing intermediary proxies from caching them in their dynamic tables.
 
-@example('networking/hpack-sensitive.php')
+@example('protocols/hpack-sensitive.php')
 
 ## Response Encoding
 
 `encodeWithStatus()` is a convenience method for HTTP/2 response encoding. It prepends the `:status` pseudo-header and benefits from static table indexing for common status codes.
 
-@example('networking/hpack-response.php')
+@example('protocols/hpack-response.php')
 
 ## Table Management
 
