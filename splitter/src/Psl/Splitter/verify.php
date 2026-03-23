@@ -24,7 +24,6 @@ use function Psl\Internal\package_namespace_map;
  *
  * @param list<Package> $packages
  *
- * @mago-expect lint:no-literal-password - Not really a password.
  * @mago-expect lint:excessive-nesting - :(
  */
 function verify(array $packages): bool

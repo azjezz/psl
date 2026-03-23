@@ -10,6 +10,8 @@ namespace Psl\Internal;
  * Used by the splitter's verify command and by `bin/psl detect-packages`.
  *
  * @return array<non-empty-string, non-empty-string>
+ *
+ * @mago-expect lint:no-literal-password - Not really a password.
  */
 function package_namespace_map(): array
 {
