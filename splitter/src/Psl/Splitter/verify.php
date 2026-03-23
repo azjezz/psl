@@ -40,6 +40,8 @@ function verify(array $packages): bool
         'Compression' => 'compression',
         'Crypto' => 'crypto',
         'DataStructure' => 'data-structure',
+        'DNS' => 'dns',
+        'DNSSEC' => 'dnssec',
         'DateTime' => 'date-time',
         'Default' => 'default',
         'Dict' => 'dict',

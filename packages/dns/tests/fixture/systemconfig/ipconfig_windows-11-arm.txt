@@ -1,0 +1,43 @@
+
+Windows IP Configuration
+
+   Host Name . . . . . . . . . . . . : runnervmsa53x
+   Primary Dns Suffix  . . . . . . . : 
+   Node Type . . . . . . . . . . . . : Hybrid
+   IP Routing Enabled. . . . . . . . : No
+   WINS Proxy Enabled. . . . . . . . : No
+   DNS Suffix Search List. . . . . . : j5mr0bnfrynupdysqxapqgvyhd.cx.internal.cloudapp.net
+
+Ethernet adapter Ethernet 5:
+
+   Connection-specific DNS Suffix  . : j5mr0bnfrynupdysqxapqgvyhd.cx.internal.cloudapp.net
+   Description . . . . . . . . . . . : Microsoft Hyper-V Network Adapter #3
+   Physical Address. . . . . . . . . : 7C-1E-52-A7-B4-5E
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+   Link-local IPv6 Address . . . . . : fe80::bcc5:b974:2c86:a63a%16(Preferred) 
+   IPv4 Address. . . . . . . . . . . : 10.1.0.150(Preferred) 
+   Subnet Mask . . . . . . . . . . . : 255.255.240.0
+   Lease Obtained. . . . . . . . . . : Monday, March 23, 2026 3:49:33 AM
+   Lease Expires . . . . . . . . . . : Thursday, April 29, 2162 11:41:16 AM
+   Default Gateway . . . . . . . . . : 10.1.0.1
+   DHCP Server . . . . . . . . . . . : 168.63.129.16
+   DHCPv6 IAID . . . . . . . . . . . : 276569682
+   DHCPv6 Client DUID. . . . . . . . : 00-01-01-00-31-1B-85-D6-00-22-48-1E-B2-6B
+   DNS Servers . . . . . . . . . . . : 168.63.129.16
+   NetBIOS over Tcpip. . . . . . . . : Enabled
+
+Ethernet adapter vEthernet (Default Switch):
+
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Hyper-V Virtual Ethernet Adapter
+   Physical Address. . . . . . . . . : 00-15-5D-78-9F-BC
+   DHCP Enabled. . . . . . . . . . . : No
+   Autoconfiguration Enabled . . . . : Yes
+   Link-local IPv6 Address . . . . . : fe80::eb:2be2:a48e:305%13(Preferred) 
+   IPv4 Address. . . . . . . . . . . : 172.18.48.1(Preferred) 
+   Subnet Mask . . . . . . . . . . . : 255.255.240.0
+   Default Gateway . . . . . . . . . : 
+   DHCPv6 IAID . . . . . . . . . . . : 218109277
+   DHCPv6 Client DUID. . . . . . . . : 00-01-01-00-31-1B-85-D6-00-22-48-1E-B2-6B
+   NetBIOS over Tcpip. . . . . . . . : Enabled

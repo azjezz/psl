@@ -1,0 +1,28 @@
+
+Windows IP Configuration
+
+   Host Name . . . . . . . . . . . . : runnervmixnmc
+   Primary Dns Suffix  . . . . . . . : 
+   Node Type . . . . . . . . . . . . : Hybrid
+   IP Routing Enabled. . . . . . . . : No
+   WINS Proxy Enabled. . . . . . . . : No
+   DNS Suffix Search List. . . . . . : s11inifsmdwebl4xefzoyahvzd.phxx.internal.cloudapp.net
+
+Ethernet adapter Ethernet 3:
+
+   Connection-specific DNS Suffix  . : s11inifsmdwebl4xefzoyahvzd.phxx.internal.cloudapp.net
+   Description . . . . . . . . . . . : Microsoft Hyper-V Network Adapter #3
+   Physical Address. . . . . . . . . : 7C-ED-8D-7E-36-A6
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+   Link-local IPv6 Address . . . . . : fe80::f822:8bac:6f6b:ee38%14(Preferred) 
+   IPv4 Address. . . . . . . . . . . : 10.1.0.106(Preferred) 
+   Subnet Mask . . . . . . . . . . . : 255.255.240.0
+   Lease Obtained. . . . . . . . . . : Monday, March 23, 2026 4:41:18 AM
+   Lease Expires . . . . . . . . . . : Thursday, April 29, 2162 11:41:17 AM
+   Default Gateway . . . . . . . . . : 10.1.0.1
+   DHCP Server . . . . . . . . . . . : 168.63.129.16
+   DHCPv6 IAID . . . . . . . . . . . : 243068301
+   DHCPv6 Client DUID. . . . . . . . : 00-01-00-01-31-37-0C-D1-00-0D-3A-54-B9-F5
+   DNS Servers . . . . . . . . . . . : 168.63.129.16
+   NetBIOS over Tcpip. . . . . . . . : Enabled

@@ -1,0 +1,115 @@
+# DNS
+
+The `DNS` component provides async DNS resolution with connection pooling, EDNS0, system configuration detection, hosts file support, and search domain expansion. All resolvers are non-blocking and composable via the decorator pattern.
+
+## Basic Usage
+
+`SystemResolver` mirrors your operating system's DNS behavior. It can be used as a default parameter value since it requires no arguments.
+
+@example('protocols/dns-basic.php')
+
+## Resolver Types
+
+Resolvers can be composed for different strategies: direct UDP/TCP, fallback on truncation, racing multiple nameservers, or DNS-over-TLS.
+
+@example('protocols/dns-resolvers.php')
+
+## Record Types
+
+Over 20 DNS record types are supported. Responses provide typed access via `getAnswerRecords()` and `getFirstAnswerRecord()`.
+
+@example('protocols/dns-records.php')
+
+## Caching
+
+`CachedResolver` wraps any resolver with TTL-aware caching. Cache TTL is derived from the minimum record TTL in each response.
+
+@example('protocols/dns-caching.php')
+
+## Split-Horizon DNS
+
+`SplitHorizonResolver` routes queries to different resolvers based on the domain name. Domain matching is suffix-based on domain boundaries.
+
+@example('protocols/dns-split-horizon.php')
+
+## Search Domains
+
+`SearchDomainResolver` expands short names by appending search domains. Names with sufficient dots (configurable via `$numberOfDots`) are queried as-is.
+
+@example('protocols/dns-search-domains.php')
+
+## System Configuration
+
+Load your OS DNS settings and hosts file directly. Both use async process execution for non-blocking reads.
+
+@example('protocols/dns-system.php')
+
+## EDNS0 Options
+
+Pass EDNS0 options to any query for features like DNS cookies, client subnet hints, padding, and NSID.
+
+@example('protocols/dns-edns.php')
+
+## Kitchen Sink
+
+Compose static entries, hosts file, search domains, split-horizon routing, multiple racing nameservers with DNS-over-TLS, TCP fallback, and caching into a single resolver that uses every feature.
+
+@example('protocols/dns-kitchen-sink.php')
+
+## Supported Record Types
+
+| Type | RFC | Description |
+|------|-----|-------------|
+| A | RFC 1035 | IPv4 address |
+| AAAA | RFC 3596 | IPv6 address |
+| NS | RFC 1035 | Authoritative nameserver |
+| CNAME | RFC 1035 | Canonical name alias |
+| MX | RFC 1035 | Mail exchange |
+| TXT | RFC 1035 | Text records (SPF, DKIM, etc.) |
+| SRV | RFC 2782 | Service location |
+| SOA | RFC 1035 | Start of authority |
+| PTR | RFC 1035 | Reverse lookup pointer |
+| CAA | RFC 8659 | Certificate authority authorization |
+| SSHFP | RFC 4255 | SSH fingerprint |
+| TLSA | RFC 6698 | TLS certificate association (DANE) |
+| SVCB | RFC 9460 | Service binding |
+| HTTPS | RFC 9460 | HTTPS service binding |
+| LOC | RFC 1876 | Geographic location |
+| NAPTR | RFC 3403 | Naming authority pointer |
+| DS | RFC 4034 | DNSSEC delegation signer |
+| DNSKEY | RFC 4034 | DNSSEC public key |
+| RRSIG | RFC 4034 | DNSSEC signature |
+| NSEC | RFC 4034 | DNSSEC authenticated denial |
+| NSEC3 | RFC 5155 | DNSSEC hashed denial |
+
+## System Configuration Sources
+
+| OS | Source | Method |
+|----|--------|--------|
+| Linux/FreeBSD | `/etc/resolv.conf` | `cat` via Process |
+| macOS | `scutil --dns` | Process (includes split DNS, custom ports) |
+| Windows | `ipconfig /all` | Process |
+| All platforms | hosts file | Process |
+
+## RFC Compliance
+
+| RFC | Coverage |
+|-----|----------|
+| RFC 1035 | DNS wire format, A, NS, CNAME, MX, TXT, SOA, PTR records |
+| RFC 2782 | SRV records |
+| RFC 3403 | NAPTR records |
+| RFC 3596 | AAAA records |
+| RFC 4034 | DNSSEC record types (DS, DNSKEY, RRSIG, NSEC) |
+| RFC 4255 | SSHFP records |
+| RFC 5155 | NSEC3 and NSEC3PARAM records |
+| RFC 6698 | TLSA records (DANE) |
+| RFC 6891 | EDNS0 (OPT record, extended RCODE, UDP payload size) |
+| RFC 7858 | DNS-over-TLS via TLS client configuration |
+| RFC 7871 | EDNS Client Subnet option |
+| RFC 7873 | DNS Cookies option |
+| RFC 7830 | EDNS TCP Keepalive option |
+| RFC 8467 | EDNS Padding option |
+| RFC 8659 | CAA records |
+| RFC 9460 | SVCB and HTTPS records |
+
+See `src/Psl/DNS/` for the full API.

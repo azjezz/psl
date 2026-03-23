@@ -1,0 +1,20 @@
+<?php
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/../../../vendor/autoload.php';
+
+use Psl\DNS;
+use Psl\DNS\Record\RecordType;
+use Psl\DNSSEC;
+
+// Create a DNSSEC-validating resolver
+$inner = new DNS\SystemResolver(dnssec: true);
+$trustChain = new DNSSEC\TrustChainResolver($inner);
+$resolver = new DNSSEC\SecureResolver($inner, $trustChain);
+
+// Queries are validated: signatures, trust chain, NSEC proofs
+$response = $resolver->query('example.com', RecordType::A);
+
+// Throws SignatureFailedException, BrokenTrustChainException,
+// InvalidProofException, or UnsignedResponseException on failure

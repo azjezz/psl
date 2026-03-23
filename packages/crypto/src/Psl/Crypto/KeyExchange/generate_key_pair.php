@@ -16,7 +16,6 @@ use function sodium_crypto_box_publickey_from_secretkey;
  */
 function generate_key_pair(): KeyPair
 {
-    /** @var non-empty-string $secretKeyBytes */
     $secretKeyBytes = SecureRandom\bytes(namespace\SECRET_KEY_BYTES);
     /** @var non-empty-string $publicKeyBytes */
     $publicKeyBytes = Internal\call_sodium(fn() => sodium_crypto_box_publickey_from_secretkey($secretKeyBytes));

@@ -1,0 +1,70 @@
+DNS configuration
+
+resolver #1
+  nameserver[0] : 1.1.1.1
+  flags    : Request A records
+  reach    : 0x00000002 (Reachable)
+
+resolver #2
+  domain   : local
+  options  : mdns
+  timeout  : 5
+  flags    : Request A records
+  reach    : 0x00000000 (Not Reachable)
+  order    : 300000
+
+resolver #3
+  domain   : 254.169.in-addr.arpa
+  options  : mdns
+  timeout  : 5
+  flags    : Request A records
+  reach    : 0x00000000 (Not Reachable)
+  order    : 300200
+
+resolver #4
+  domain   : 8.e.f.ip6.arpa
+  options  : mdns
+  timeout  : 5
+  flags    : Request A records
+  reach    : 0x00000000 (Not Reachable)
+  order    : 300400
+
+resolver #5
+  domain   : 9.e.f.ip6.arpa
+  options  : mdns
+  timeout  : 5
+  flags    : Request A records
+  reach    : 0x00000000 (Not Reachable)
+  order    : 300600
+
+resolver #6
+  domain   : a.e.f.ip6.arpa
+  options  : mdns
+  timeout  : 5
+  flags    : Request A records
+  reach    : 0x00000000 (Not Reachable)
+  order    : 300800
+
+resolver #7
+  domain   : b.e.f.ip6.arpa
+  options  : mdns
+  timeout  : 5
+  flags    : Request A records
+  reach    : 0x00000000 (Not Reachable)
+  order    : 301000
+
+resolver #8
+  domain   : test
+  search domain[0] : test
+  nameserver[0] : 127.0.0.1
+  port     : 2053
+  flags    : Request A records, Request AAAA records
+  reach    : 0x00030002 (Reachable,Local Address,Directly Reachable Address)
+
+DNS configuration (for scoped queries)
+
+resolver #1
+  nameserver[0] : 1.1.1.1
+  if_index : 14 (en0)
+  flags    : Scoped, Request A records
+  reach    : 0x00000002 (Reachable)
