@@ -1,0 +1,167 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Psl\File;
+use Psl\Filesystem;
+use Psl\IO;
+use Psl\Json;
+use Psl\Regex;
+use Psl\Str;
+use Psl\Type;
+use Psl\Vec;
+
+use function Psl\Internal\package_namespace_map;
+
+require (static function (): string {
+    if (isset($GLOBALS['_composer_autoload_path'])) {
+        return $GLOBALS['_composer_autoload_path'];
+    }
+
+    $path = __DIR__ . '/../vendor/autoload.php';
+    if (file_exists($path)) {
+        return $path;
+    }
+
+    fwrite(STDERR, "Could not find Composer autoloader.\n");
+    exit(1);
+})();
+
+/**
+ * @param list<string> $arguments
+ */
+function detect_packages_command(array $arguments): never
+{
+    $composer = false;
+    $path = null;
+
+    foreach ($arguments as $arg) {
+        if ($arg === '--composer') {
+            $composer = true;
+        } elseif (!Str\starts_with($arg, '-')) {
+            $path = $arg;
+        }
+    }
+
+    if ($path === null) {
+        IO\write_error_line('Usage: psl detect-packages <path> [--composer]');
+        exit(1);
+    }
+
+    if (!Filesystem\is_directory($path)) {
+        IO\write_error_line('Error: "%s" is not a directory.', $path);
+        exit(1);
+    }
+
+    $nsToDir = package_namespace_map();
+
+    /** @var array<string, true> $used */
+    $used = [];
+
+    $scan = static function (string $directory) use ($nsToDir, &$used, &$scan): void {
+        foreach (Filesystem\read_directory($directory) as $entry) {
+            if (Filesystem\is_directory($entry)) {
+                $scan($entry);
+                continue;
+            }
+
+            if (Filesystem\get_extension($entry) !== 'php') {
+                continue;
+            }
+
+            $content = File\read($entry);
+            foreach ($nsToDir as $ns => $dir) {
+                if (Regex\matches($content, '/Psl\\\\' . $ns . '[\\\\\\s;,)]/')) {
+                    $used[$dir] = true;
+                }
+            }
+        }
+    };
+
+    $scan($path);
+
+    if ($used !== []) {
+        $used['foundation'] = true;
+    }
+
+    $slugs = Vec\sort(Vec\keys($used));
+
+    if ($composer) {
+        $constraint = resolve_version_constraint();
+
+        /** @var array<string, string> $require */
+        $require = [];
+        foreach ($slugs as $slug) {
+            $require['php-standard-library/' . $slug] = $constraint;
+        }
+
+        IO\write_line(Json\encode($require, pretty: true));
+        exit(0);
+    }
+
+    if ($slugs === []) {
+        IO\write_line('No PSL packages detected in %s.', $path);
+        exit(0);
+    }
+
+    IO\write_line('Detected PSL packages used in %s:', $path);
+    IO\write_line('');
+    foreach ($slugs as $slug) {
+        IO\write_line('  php-standard-library/%s', $slug);
+    }
+    IO\write_line('');
+    IO\write_line('Run with --composer to get a JSON snippet for composer.json require.');
+
+    exit(0);
+}
+
+/**
+ * Resolve a version constraint from the installed PSL package version.
+ *
+ * Reads the monorepo's composer.json branch-alias to derive the major version.
+ */
+function resolve_version_constraint(): string
+{
+    $path = __DIR__ . '/../composer.json';
+    $composer = Json\typed(
+        File\read($path),
+        Type\shape([
+            'extra' => Type\nullish(Type\shape([
+                'branch-alias' => Type\nullish(Type\dict(Type\string(), Type\string())),
+            ])),
+        ]),
+    );
+
+    foreach ($composer['extra']['branch-alias'] ?? [] as $alias) {
+        $match = Regex\first_match($alias, '/^(\d+\.\d+)/');
+        if ($match !== null) {
+            return '^' . $match[1];
+        }
+    }
+
+    return '*';
+}
+
+function help_command(): never
+{
+    IO\write_error_line('');
+    IO\write_error_line('Usage: psl <command> [options]');
+    IO\write_error_line('');
+    IO\write_error_line('Commands:');
+    IO\write_error_line('  detect-packages <path> [--composer]  Detect PSL packages used in a directory');
+    IO\write_error_line('  help                                 Show this help');
+    IO\write_error_line('');
+
+    exit(1);
+}
+
+(static function (): never {
+    $arguments = Vec\slice($GLOBALS['argv'], 1);
+    $command = $arguments[0] ?? 'help';
+
+    match ($command) {
+        'detect-packages' => detect_packages_command(Vec\slice($arguments, 1)),
+        default => help_command(),
+    };
+})();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 (static function (): void {
     $functions = [
+        'Psl\Internal\package_namespace_map' => __DIR__ . '/Internal/package_namespace_map.php',
         'Psl\invariant' => __DIR__ . '/invariant.php',
         'Psl\invariant_violation' => __DIR__ . '/invariant_violation.php',
     ];
