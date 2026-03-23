@@ -44,6 +44,29 @@
   - Five authentication mechanisms: PLAIN (RFC 4616), LOGIN, XOAUTH2, CRAM-MD5 (RFC 2195), SCRAM-SHA-256 (RFC 7677)
   - Immutable `TransportConfiguration` and `SendConfiguration` with fluent `with*()` builders
   - Configurable pipelining, chunking, chunk size, and partial success behavior
+- feat: introduce `DNS` component - async DNS resolution with full protocol support
+  - `SystemResolver` mirrors OS DNS behavior, usable as a default parameter value
+  - UDP and pooled TCP resolvers with automatic TCP fallback on truncation
+  - DNS-over-TLS (DoT) via TLS client configuration on `TCPResolver`
+  - `RacingResolver` races multiple nameservers concurrently for fastest response
+  - `SplitHorizonResolver` routes queries by domain name for split-horizon DNS
+  - `SearchDomainResolver` expands short names using search domain lists
+  - `HostsFileResolver` checks the OS hosts file before network queries
+  - `CachedResolver` decorator with TTL-aware caching via `Cache\StoreInterface`
+  - `StaticResolver` for hardcoded records in tests and development
+  - Cross-platform system configuration loading (Linux, macOS, Windows) via async process execution
+  - EDNS0 support: DNS cookies, client subnet, padding, NSID, TCP keepalive, key tag, extended DNS error
+  - 20+ record types: A, AAAA, NS, CNAME, MX, TXT, SRV, SOA, PTR, CAA, SSHFP, TLSA, SVCB, HTTPS, LOC, NAPTR, DS, DNSKEY, RRSIG, NSEC, NSEC3
+  - DNS name validation with null byte and label length enforcement
+  - `ResponseCode` helper methods: `isSuccess()`, `isError()`, `isServerError()`, `isNameError()`
+- feat: introduce `DNSSEC` component - full DNSSEC validation chain
+  - `SecureResolver` validates RRSIG signatures on every response
+  - `TrustChainResolver` walks DS/DNSKEY chain from root to target zone
+  - `CachedTrustChainResolver` caches trust chain results for performance
+  - `StaticTrustChainResolver` for offline/air-gapped environments
+  - NSEC and NSEC3 authenticated denial of existence proof validation
+  - 7 signature algorithms: RSA/SHA-1, RSA/SHA-256, RSA/SHA-512, ECDSA P-256, ECDSA P-384, Ed25519, Ed448
+  - 4 specific validation exceptions: `SignatureFailedException`, `BrokenTrustChainException`, `InvalidProofException`, `UnsignedResponseException`
 
 ### fixes
 

@@ -17,6 +17,8 @@ use function random_bytes;
  * @throws Exception\InsufficientEntropyException If it was not possible to gather sufficient entropy.
  *
  * @psalm-external-mutation-free
+ *
+ * @return ($length is int<1, max> ? non-empty-string : string)
  */
 function bytes(int $length): string
 {

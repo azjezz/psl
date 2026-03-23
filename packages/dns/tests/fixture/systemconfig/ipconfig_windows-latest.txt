@@ -1,0 +1,43 @@
+
+Windows IP Configuration
+
+   Host Name . . . . . . . . . . . . : runnervmkjq7x
+   Primary Dns Suffix  . . . . . . . : 
+   Node Type . . . . . . . . . . . . : Hybrid
+   IP Routing Enabled. . . . . . . . : No
+   WINS Proxy Enabled. . . . . . . . : No
+   DNS Suffix Search List. . . . . . : rlbmnw52lfyudayxnemt0qcpaf.gx.internal.cloudapp.net
+
+Ethernet adapter Ethernet 3:
+
+   Connection-specific DNS Suffix  . : rlbmnw52lfyudayxnemt0qcpaf.gx.internal.cloudapp.net
+   Description . . . . . . . . . . . : Microsoft Hyper-V Network Adapter #3
+   Physical Address. . . . . . . . . : 00-0D-3A-93-FB-22
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+   Link-local IPv6 Address . . . . . : fe80::c8f4:3cca:d171:7aa5%14(Preferred) 
+   IPv4 Address. . . . . . . . . . . : 10.1.0.11(Preferred) 
+   Subnet Mask . . . . . . . . . . . : 255.255.240.0
+   Lease Obtained. . . . . . . . . . : Monday, March 23, 2026 5:03:13 AM
+   Lease Expires . . . . . . . . . . : Thursday, April 29, 2162 11:41:18 AM
+   Default Gateway . . . . . . . . . : 10.1.0.1
+   DHCP Server . . . . . . . . . . . : 168.63.129.16
+   DHCPv6 IAID . . . . . . . . . . . : 234884410
+   DHCPv6 Client DUID. . . . . . . . : 00-01-01-00-31-37-FF-C4-7C-1E-52-7E-02-35
+   DNS Servers . . . . . . . . . . . : 168.63.129.16
+   NetBIOS over Tcpip. . . . . . . . : Enabled
+
+Ethernet adapter vEthernet (nat):
+
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Hyper-V Virtual Ethernet Adapter
+   Physical Address. . . . . . . . . : 00-15-5D-C9-6D-DA
+   DHCP Enabled. . . . . . . . . . . : No
+   Autoconfiguration Enabled . . . . : Yes
+   Link-local IPv6 Address . . . . . : fe80::b55e:9103:e62a:60a4%11(Preferred) 
+   IPv4 Address. . . . . . . . . . . : 172.31.48.1(Preferred) 
+   Subnet Mask . . . . . . . . . . . : 255.255.240.0
+   Default Gateway . . . . . . . . . : 
+   DHCPv6 IAID . . . . . . . . . . . : 184554845
+   DHCPv6 Client DUID. . . . . . . . : 00-01-01-00-31-37-FF-C4-7C-1E-52-7E-02-35
+   NetBIOS over Tcpip. . . . . . . . : Enabled
