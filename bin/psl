@@ -3,6 +3,7 @@
 
 declare(strict_types=1);
 
+use Psl\Env;
 use Psl\File;
 use Psl\Filesystem;
 use Psl\IO;
@@ -157,7 +158,7 @@ function help_command(): never
 }
 
 (static function (): never {
-    $arguments = Vec\slice($GLOBALS['argv'], 1);
+    $arguments = Vec\slice(Env\args(), 1);
     $command = $arguments[0] ?? 'help';
 
     match ($command) {
