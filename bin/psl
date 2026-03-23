@@ -106,7 +106,8 @@ function detect_packages_command(array $arguments): never
 
             $content = File\read($entry);
             foreach ($nsToDir as $ns => $dir) {
-                if (Regex\matches($content, '/Psl\\\\' . $ns . '[\\\\\\s;,)]/')) {
+                $escapedNs = Str\replace($ns, '\\', '\\\\');
+                if (Regex\matches($content, '/Psl\\\\' . $escapedNs . '[\\\\\\s;,)]/')) {
                     $found[$dir] = true;
                 }
             }
