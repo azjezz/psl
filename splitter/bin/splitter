@@ -31,6 +31,7 @@ function help_command(): never
     IO\write_error_line(Log\styled('   release <tag>         ', Ansi\foreground(Color\bright_green())) . 'Split, tag, and create maintenance branch');
     IO\write_error_line(Log\styled('   prepare <x.y>         ', Ansi\foreground(Color\bright_green())) . 'Update branch aliases for next release');
     IO\write_error_line(Log\styled('   audit                 ', Ansi\foreground(Color\bright_green())) . 'Audit org repositories (requires GITHUB_TOKEN)');
+    IO\write_error_line(Log\styled('   fix                   ', Ansi\foreground(Color\bright_green())) . 'Fix auditable issues on org repositories (requires GITHUB_TOKEN)');
     IO\write_error_line(Log\styled('   help                  ', Ansi\foreground(Color\bright_green())) . 'Show this help');
     IO\write_error_line('');
 
@@ -184,6 +185,37 @@ function audit_command(string $root): never
     exit($ok ? 0 : 1);
 }
 
+/**
+ * @throws Filesystem\Exception\ExceptionInterface
+ */
+function fix_command(string $root): never
+{
+    $token = Env\get_var('GITHUB_TOKEN');
+    if ($token === null) {
+        Log\error('GITHUB_TOKEN environment variable is required');
+        exit(1);
+    }
+
+    $monorepo = MonolithicRepository::discover($root);
+
+    IO\write_error_line('');
+    Log\info('Fixing organization repositories...');
+    IO\write_error_line('');
+
+    $ok = fix($monorepo, $token);
+
+    IO\write_error_line('');
+    if ($ok) {
+        Log\success('All repositories fixed.');
+    } else {
+        Log\error('Some fixes failed.');
+    }
+
+    IO\write_error_line('');
+
+    exit($ok ? 0 : 1);
+}
+
 function main(): never
 {
     $arguments = Vec\slice(Env\args(), 1);
@@ -196,6 +228,7 @@ function main(): never
         'release' => release_command($root, $arguments),
         'prepare' => prepare_command($root, $arguments),
         'audit' => audit_command($root),
+        'fix' => fix_command($root),
         default => help_command(),
     };
 }
