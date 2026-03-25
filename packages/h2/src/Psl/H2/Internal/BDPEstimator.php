@@ -7,6 +7,8 @@ namespace Psl\H2\Internal;
 use function max;
 use function min;
 
+use const Psl\H2\DEFAULT_INITIAL_WINDOW_SIZE;
+
 /**
  * Estimates Bandwidth-Delay Product (BDP) to dynamically size H2 receive windows.
  *
@@ -57,6 +59,27 @@ final class BDPEstimator
         private readonly int $maxReceiveWindowSize,
     ) {
         $this->targetConnectionWindow = $initialWindowSize;
+    }
+
+    /**
+     * Return the initial connection-level WINDOW_UPDATE increment needed to
+     * bring the connection receive window from the RFC default (65535) up to
+     * {@see $initialWindowSize}.
+     *
+     * The connection-level window always starts at 65535 regardless of
+     * SETTINGS_INITIAL_WINDOW_SIZE (which only affects stream-level windows).
+     * Without this initial bump, the server cannot send more than 65535 bytes
+     * total across all streams before receiving a WINDOW_UPDATE, causing
+     * flow-control stalls under concurrent load.
+     *
+     * @return int<0, max> The increment to send, or 0 if no bump is needed.
+     */
+    public function getInitialConnectionWindowIncrement(): int
+    {
+        $increment = $this->initialWindowSize - DEFAULT_INITIAL_WINDOW_SIZE;
+
+        /** @var int<0, max> */
+        return max(0, $increment);
     }
 
     /**

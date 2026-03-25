@@ -7,9 +7,13 @@ namespace Psl\Splitter;
 use Psl\Async;
 use Psl\Async\Exception\CompositeException;
 use Psl\Env;
+use Psl\HTTP\Client;
+use Psl\HTTP\Message;
+use Psl\IO;
 use Psl\Json;
 use Psl\Str;
 use Psl\Type;
+use Psl\URL;
 
 /**
  * Create GitHub releases for all split repos and the main repo.
@@ -21,7 +25,7 @@ use Psl\Type;
  *
  * @throws CompositeException If creating releases fails.
  */
-function create_releases(MonolithicRepository $monorepo, string $tag): void
+function create_releases(Client\Client $httpClient, MonolithicRepository $monorepo, string $tag): void
 {
     $token = Env\get_var('GITHUB_TOKEN') ?? '';
     if ($token === '') {
@@ -30,12 +34,12 @@ function create_releases(MonolithicRepository $monorepo, string $tag): void
     }
 
     $org = 'php-standard-library';
-    $headers = [
-        'authorization' => 'Bearer ' . $token,
-        'accept' => 'application/vnd.github+json',
-        'x-github-api-version' => '2022-11-28',
-        'content-type' => 'application/json',
-    ];
+    $headers = Message\FieldMap::from([
+        ['authorization', 'Bearer ' . $token],
+        ['accept', 'application/vnd.github+json'],
+        ['x-github-api-version', '2022-11-28'],
+        ['content-type', 'application/json'],
+    ]);
 
     $errorType = Type\shape([
         'message' => Type\string(),
@@ -46,25 +50,27 @@ function create_releases(MonolithicRepository $monorepo, string $tag): void
         $tag,
         $headers,
         $errorType,
+        $httpClient,
     ): void {
         $repo = Str\after($package->name, '/') ?? $package->name;
-        $apiBase = Str\format('https://api.github.com/repos/%s/%s', $org, $repo);
         $mainRelease = Str\format('https://github.com/%s/%s/releases/tag/%s', $org, $org, $tag);
 
-        $response = Http\post(
-            $apiBase . '/releases',
-            Json\encode([
+        $transaction = $httpClient->send(new Message\Request(
+            method: Message\METHOD_POST,
+            url: URL\parse(Str\format('https://api.github.com/repos/%s/%s/releases', $org, $repo)),
+            headers: $headers,
+            body: new IO\MemoryHandle(Json\encode([
                 'tag_name' => $tag,
                 'name' => $tag,
                 'body' => Str\format('See the [main repository release](%s) for details.', $mainRelease),
                 'draft' => false,
                 'prerelease' => false,
-            ]),
-            $headers,
-        );
+            ])),
+        ));
 
-        if (!$response->isOk()) {
-            $body = Json\typed($response->body, $errorType);
+        if ($transaction->response->status !== Message\STATUS_OK) {
+            $content = $transaction->response->body?->readAll() ?? '';
+            $body = Json\typed($content, $errorType);
             Log\error('%s release failed: %s', $package->name, $body['message']);
             return;
         }
@@ -80,20 +86,22 @@ function create_releases(MonolithicRepository $monorepo, string $tag): void
     Async\all($awaitables);
 
     // Create release for the main repo
-    $response = Http\post(
-        Str\format('https://api.github.com/repos/%s/%s/releases', $org, $org),
-        Json\encode([
+    $transaction = $httpClient->send(new Message\Request(
+        method: Message\METHOD_POST,
+        url: URL\parse(Str\format('https://api.github.com/repos/%s/%s/releases', $org, $org)),
+        headers: $headers,
+        body: new IO\MemoryHandle(Json\encode([
             'tag_name' => $tag,
             'name' => $tag,
             'body' => '',
             'draft' => false,
             'prerelease' => false,
-        ]),
-        $headers,
-    );
+        ])),
+    ));
 
-    if (!$response->isOk()) {
-        $body = Json\typed($response->body, $errorType);
+    if ($transaction->response->status !== Message\STATUS_OK) {
+        $content = $transaction->response->body?->readAll() ?? '';
+        $body = Json\typed($content, $errorType);
         Log\error('main repo release failed: %s', $body['message']);
         return;
     }

@@ -55,6 +55,8 @@ function verify(array $packages): bool
         'H2' => 'h2',
         'Hash' => 'hash',
         'HPACK' => 'hpack',
+        'HTTP\\Client' => 'http-client',
+        'HTTP\\Message' => 'http-message',
         'Html' => 'html',
         'Interface' => 'interface',
         'Interoperability' => 'interoperability',
@@ -162,7 +164,8 @@ function verify(array $packages): bool
                             continue;
                         }
 
-                        if (Regex\matches($content, '/Psl\\\\' . $ns . '[\\\\\\s;,)]/')) {
+                        $escapedNs = Str\replace($ns, '\\', '\\\\');
+                        if (Regex\matches($content, '/Psl\\\\' . $escapedNs . '[\\\\\\s;,)]/')) {
                             $srcDeps[$dir] = true;
                         }
                     }
@@ -228,7 +231,8 @@ function verify(array $packages): bool
                             continue;
                         }
 
-                        if (Regex\matches($content, '/Psl\\\\' . $ns . '[\\\\\\s;,)]/')) {
+                        $escapedNs = Str\replace($ns, '\\', '\\\\');
+                        if (Regex\matches($content, '/Psl\\\\' . $escapedNs . '[\\\\\\s;,)]/')) {
                             $testDeps[$dir] = true;
                         }
                     }

@@ -6,10 +6,13 @@ namespace Psl\Splitter;
 
 use Psl\Async;
 use Psl\Dict;
+use Psl\HTTP\Client;
+use Psl\HTTP\Message;
 use Psl\Iter;
 use Psl\Json;
 use Psl\Str;
 use Psl\Type;
+use Psl\URL;
 use Psl\Vec;
 use SensitiveParameter;
 
@@ -34,11 +37,14 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
     $org = 'php-standard-library';
     $mainRepo = 'php-standard-library';
 
-    $headers = [
-        'authorization' => 'Bearer ' . $token,
-        'accept' => 'application/vnd.github+json',
-        'x-github-api-version' => '2022-11-28',
-    ];
+    $httpClient = new Client\Client();
+
+    $headers = Message\FieldMap::from([
+        ['authorization', 'Bearer ' . $token],
+        ['accept', 'application/vnd.github+json'],
+        ['x-github-api-version', '2022-11-28'],
+        ['User-Agent', $org],
+    ]);
 
     // Build repo list from monorepo packages + the main repo
     $repos = Vec\map($monorepo->packages, static fn(Package $p): string => Str\after($p->name, $org . '/') ?? $p->name);
@@ -47,13 +53,26 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
     Log\info('Auditing %d repositories...', Iter\count($repos));
 
     $awaitables = Dict\from_keys($repos, static fn(string $repo): Async\Awaitable => Async\run(static fn(): array => Async\concurrently([
-        static fn() => Http\get(Str\format('https://api.github.com/repos/%s/%s', $org, $repo), $headers),
-        static fn() => Http\get(Str\format('https://api.github.com/repos/%s/%s/rulesets', $org, $repo), $headers),
-        static fn() => Http\get(Str\format('https://api.github.com/orgs/%s/rulesets', $org), $headers),
-        static fn() => Http\get(
-            Str\format('https://api.github.com/repos/%s/%s/pulls?state=open&per_page=1', $org, $repo),
-            $headers,
-        ),
+        static fn() => $httpClient->send(new Message\Request(
+            method: Message\METHOD_GET,
+            url: URL\parse(Str\format('https://api.github.com/repos/%s/%s', $org, $repo)),
+            headers: $headers,
+        )),
+        static fn() => $httpClient->send(new Message\Request(
+            method: Message\METHOD_GET,
+            url: URL\parse(Str\format('https://api.github.com/repos/%s/%s/rulesets', $org, $repo)),
+            headers: $headers,
+        )),
+        static fn() => $httpClient->send(new Message\Request(
+            method: Message\METHOD_GET,
+            url: URL\parse(Str\format('https://api.github.com/orgs/%s/rulesets', $org)),
+            headers: $headers,
+        )),
+        static fn() => $httpClient->send(new Message\Request(
+            method: Message\METHOD_GET,
+            url: URL\parse(Str\format('https://api.github.com/repos/%s/%s/pulls?state=open&per_page=1', $org, $repo)),
+            headers: $headers,
+        )),
     ])));
 
     $ok = true;
@@ -73,20 +92,20 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
     ], allowUnknownFields: true));
 
     foreach ($awaitables as $repo => $awaitable) {
-        [$settingsResponse, $repoRulesetsResponse, $orgRulesetsResponse, $prResponse] = $awaitable->await();
+        [$settingsTx, $repoRulesetsTx, $orgRulesetsTx, $prTx] = $awaitable->await();
 
         $isMain = $repo === $mainRepo;
         $full = $org . '/' . $repo;
 
-        if (!$settingsResponse->isOk()) {
-            Log\error('%s returned %d', $full, $settingsResponse->status);
+        if ($settingsTx->response->status !== Message\STATUS_OK) {
+            Log\error('%s returned %d', $full, $settingsTx->response->status);
             $ok = false;
             continue;
         } else {
             Log\step('auditing', $full);
         }
 
-        $settings = Json\typed($settingsResponse->body, $settingsType);
+        $settings = Json\typed($settingsTx->response->body?->readAll() ?? '', $settingsType);
 
         // Wiki: disabled everywhere
         if ($settings['has_wiki']) {
@@ -112,9 +131,9 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
                 Log\info('%s has discussions disabled', $full);
             }
 
-            if ($prResponse->isOk()) {
+            if ($prTx->response->status === Message\STATUS_OK) {
                 $ok = false;
-                $prs = Json\typed($prResponse->body, $prType);
+                $prs = Json\typed($prTx->response->body?->readAll() ?? '', $prType);
                 if ($prs !== []) {
                     Log\error('%s has open pull request(s) (sub-package)', $full);
                 } else {
@@ -125,14 +144,13 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
             }
         }
 
-        // Check for tag immutability ruleset (repo-level or org-level)
         $hasTagProtection = false;
-        foreach ([$repoRulesetsResponse, $orgRulesetsResponse] as $rulesetsResponse) {
-            if (!$rulesetsResponse->isOk()) {
+        foreach ([$repoRulesetsTx, $orgRulesetsTx] as $rulesetsTx) {
+            if ($rulesetsTx->response->status !== Message\STATUS_OK) {
                 continue;
             }
 
-            $rulesets = Json\typed($rulesetsResponse->body, $rulesetType);
+            $rulesets = Json\typed($rulesetsTx->response->body?->readAll() ?? '', $rulesetType);
             foreach ($rulesets as $ruleset) {
                 $name = Str\lowercase($ruleset['name']);
                 if (Str\contains($name, 'tag') || Str\contains($name, 'immutable')) {

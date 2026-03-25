@@ -28,6 +28,25 @@ jobs:
       - name: "checkout"
         uses: "actions/checkout@v6"
 
+      - name: "start httpbun"
+        if: matrix.operating-system == 'ubuntu-latest'
+        run: |
+          docker run -d -p 3090:80 sharat87/httpbun --endpoint-bytes-size-limit 100000000
+          timeout 30 bash -c 'until curl -sf http://localhost:3090/get > /dev/null; do sleep 1; done'
+
+      - name: "start microsocks"
+        if: matrix.operating-system == 'ubuntu-latest'
+        run: |
+          docker run -d --network host vimagick/microsocks
+          timeout 10 bash -c 'until nc -z 127.0.0.1 1080; do sleep 1; done'
+
+      - name: "start tinyproxy"
+        if: matrix.operating-system == 'ubuntu-latest'
+        run: |
+          printf 'Port 8888\nListen 0.0.0.0\nTimeout 600\nAllow 0.0.0.0/0\n' > /tmp/tinyproxy.conf
+          docker run -d --network host -v /tmp/tinyproxy.conf:/etc/tinyproxy/tinyproxy.conf vimagick/tinyproxy
+          timeout 10 bash -c 'until nc -z 127.0.0.1 8888; do sleep 1; done'
+
       - name: "installing PHP"
         uses: "shivammathur/setup-php@v2"
         with:
@@ -52,3 +71,8 @@ jobs:
 
       - name: "running unit tests"
         run: just test
+        env:
+          HTTPBUN_URL: ${{ matrix.operating-system == 'ubuntu-latest' && 'http://localhost:3090' || '' }}
+          SOCKS_PROXY_HOST: ${{ matrix.operating-system == 'ubuntu-latest' && '127.0.0.1' || '' }}
+          SOCKS_PROXY_PORT: ${{ matrix.operating-system == 'ubuntu-latest' && '1080' || '' }}
+          HTTP_TUNNEL_URL: ${{ matrix.operating-system == 'ubuntu-latest' && 'http://127.0.0.1:8888' || '' }}

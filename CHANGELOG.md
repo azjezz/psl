@@ -67,10 +67,53 @@
   - NSEC and NSEC3 authenticated denial of existence proof validation
   - 7 signature algorithms: RSA/SHA-1, RSA/SHA-256, RSA/SHA-512, ECDSA P-256, ECDSA P-384, Ed25519, Ed448
   - 4 specific validation exceptions: `SignatureFailedException`, `BrokenTrustChainException`, `InvalidProofException`, `UnsignedResponseException`
+- feat: introduce `HTTP Message` component - version-agnostic HTTP message abstractions
+  - `Request` and `Response` immutable value objects with streaming body (`ReadHandleInterface`)
+  - `FieldMap` ordered, case-insensitive header field collection with lazy index
+  - `ProtocolVersion` enum covering HTTP/1.0, HTTP/1.1, HTTP/2, and HTTP/3
+  - Trailers modelled as `Async\Awaitable<FieldMap>` for HTTP/2 and chunked HTTP/1.1
+  - HTTP status code and method constants per RFC 9110
+  - `reason_phrase()` function for HTTP/1.x status line serialization
+  - Fluent `with*()` mutation methods on both Request and Response
+  - `Transaction` groups the final response with informational (1xx) responses and server push exchanges
+  - `Exchange` represents a pushed request/response pair for HTTP/2 server push
+- feat: introduce `HTTP Client` component - async HTTP/1.1 and HTTP/2 client with connection pooling
+  - `Client` with automatic protocol negotiation via ALPN (HTTP/2 preferred, HTTP/1.1 fallback)
+  - `PooledConnector` with HTTP/1.x idle connection reuse and HTTP/2 session sharing across concurrent requests
+  - HTTP/2 multiplexing with event-driven stream dispatch via `H2Multiplexer` and per-stream `H2Stream` state
+  - Transparent reconnection on connection failure (GOAWAY, TCP reset) via pool-backed reconnect closures
+  - `RedirectClient` decorator following 301/302/303/307/308 redirects with method rewriting per RFC 9110, cross-origin credential stripping, and auto-referrer
+  - `RetryClient` decorator with configurable exponential backoff and jitter for transport-level failures
+  - `SendConfiguration` for per-request overrides (body size limits, TLS, protocol versions, tunnel) merged with `ClientConfiguration` defaults
+  - `DeniedDestinationsMiddleware` for SSRF protection against private IP ranges (RFC 1918, RFC 4193, loopback, link-local)
+  - Connection-level middleware via `HandlerInterface` / `MiddlewareInterface` chain with access to peer address and TLS state
+  - SOCKS5 proxy support via `ClientConfiguration::$proxy` using `Psl\Socks\Connector`
+  - HTTP CONNECT tunnel support via `ClientConfiguration::$tunnel` with TLS and proxy authentication
+  - `noTunneling` host bypass rules (exact match, domain suffix, wildcard)
+  - H2 flow control with BDP auto-tuning for dynamic receive window sizing
+  - Lazy, pull-based response body reading via `ResponseBodyHandle` implementing `ReadHandleInterface`
+  - 104 integration tests against httpbun covering methods, redirects, auth, caching, cookies, concurrency, and streaming
+- feat(h2): introduce unified `Configuration` replacing deprecated `ClientConfiguration` and `ServerConfiguration`
+  - Both `ClientConnection` and `ServerConnection` now accept `Configuration` in addition to their legacy config types
+  - `ClientConnection` now supports BDP auto-tuning when using `Configuration` with `maxReceiveWindowSize` set
 
 ### fixes
 
+- fix(h2): separate `maxConcurrent` (peer's limit on our streams) from `peerMaxConcurrent` (our limit on peer's streams) in `StreamTable`, preventing the client's own SETTINGS from limiting its outgoing streams
+- fix(h2): `BDPEstimator` now produces an initial connection-level WINDOW_UPDATE during `initialize()` to bring the receive window from the RFC default (65535) up to `initialWindowSize`, preventing flow-control stalls when many concurrent streams receive data simultaneously
+- fix(h2): `notifyWindowWaiters()` now copies the waiter list before iterating and properly removes satisfied waiters, preventing iteration corruption and memory leaks
+- fix(io): `ResourceHandle` readable/writable callbacks now null out the suspension reference before calling `resume()`, preventing "Must call suspend() before calling throw()" errors during handle destruction
+- fix(io): `ResourceHandle::doRead()` and `doWrite()` cancellation subscriptions now null out the suspension reference before throwing, preventing double-wake when cancellation and close race during PHP shutdown
 - fix(encoding): RFC 2047 encoded-word encoder no longer embeds CRLF line folding in the encoded output; line folding is now the responsibility of the header serializer, fixing header/body separation issues in serialized messages
+
+### deprecations
+
+- deprecated(h2): `ClientConfiguration` — use `Configuration` instead
+- deprecated(h2): `ServerConfiguration` — use `Configuration` instead
+
+### ci
+
+- ci: add httpbun service to unit-tests, code-coverage, mutation-tests, and package-tests workflows for HTTP client integration testing
 
 ## 6.1.1
 

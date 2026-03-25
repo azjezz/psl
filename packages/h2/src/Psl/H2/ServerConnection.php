@@ -20,6 +20,8 @@ use function substr;
  * Server-side HTTP/2 connection over a read/write stream.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113
+ *
+ * @mago-expect analysis:deprecated-class
  */
 final class ServerConnection implements ServerConnectionInterface
 {
@@ -35,21 +37,24 @@ final class ServerConnection implements ServerConnectionInterface
      */
     public function __construct(
         private readonly IO\ReadHandleInterface&IO\WriteHandleInterface $handle,
-        ServerConfiguration $configuration = new ServerConfiguration(),
+        ServerConfiguration|Configuration $configuration = new ServerConfiguration(),
         null|IO\Reader $reader = null,
     ) {
         $this->role = Role::Server;
         $this->writeBufferThreshold = $configuration->writeBufferThreshold;
         $this->reader = $reader ?? new IO\Reader($handle);
+
+        $maxReceiveWindowSize = $configuration->maxReceiveWindowSize;
+
         $this->stateMachine = new StateMachine(
             false,
             $configuration->settings,
             $configuration->rateLimiter,
             $configuration->maxHeaderBlockSize,
-            $configuration->maxReceiveWindowSize !== null
+            $maxReceiveWindowSize !== null
                 ? new BDPEstimator(
                     $configuration->settings[Setting::InitialWindowSize->value] ?? DEFAULT_INITIAL_WINDOW_SIZE,
-                    $configuration->maxReceiveWindowSize,
+                    $maxReceiveWindowSize,
                 )
                 : null,
         );

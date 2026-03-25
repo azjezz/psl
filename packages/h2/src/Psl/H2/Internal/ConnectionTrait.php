@@ -198,7 +198,8 @@ trait ConnectionTrait
             $this->waitForSendWindow($streamId, 1, $cancellation);
 
             $window = $this->stateMachine->availableSendWindow($streamId);
-            $chunkSize = min($remaining, $window);
+            $maxFrameSize = $this->stateMachine->getRemoteMaxFrameSize();
+            $chunkSize = min($remaining, $window, $maxFrameSize);
             $isLast = $chunkSize === $remaining;
 
             $chunk = substr($data, $offset, $chunkSize);
@@ -378,7 +379,9 @@ trait ConnectionTrait
     private function notifyWindowWaiters(int $streamId): void
     {
         if ($this->stateMachine->shutdown) {
-            foreach ($this->windowWaiters as $waiters) {
+            $allWaiters = $this->windowWaiters;
+            $this->windowWaiters = [];
+            foreach ($allWaiters as $waiters) {
                 foreach ($waiters as [$bytes, $suspension]) {
                     $suspension->throw(ConnectionException::forConnectionClosed());
                 }
@@ -389,12 +392,21 @@ trait ConnectionTrait
 
         if ($streamId === 0) {
             foreach ($this->windowWaiters as $sid => $waiters) {
-                foreach ($waiters as [$bytes, $suspension]) {
+                $remaining = [];
+                foreach ($waiters as $waiter) {
+                    [$bytes, $suspension] = $waiter;
                     if ($this->stateMachine->availableSendWindow($sid) < $bytes) {
+                        $remaining[] = $waiter;
                         continue;
                     }
 
                     $suspension->resume();
+                }
+
+                if ($remaining === []) {
+                    unset($this->windowWaiters[$sid]);
+                } else {
+                    $this->windowWaiters[$sid] = $remaining;
                 }
             }
 
@@ -405,12 +417,21 @@ trait ConnectionTrait
             return;
         }
 
-        foreach ($this->windowWaiters[$streamId] as [$bytes, $suspension]) {
+        $remaining = [];
+        foreach ($this->windowWaiters[$streamId] as $waiter) {
+            [$bytes, $suspension] = $waiter;
             if ($this->stateMachine->availableSendWindow($streamId) < $bytes) {
+                $remaining[] = $waiter;
                 continue;
             }
 
             $suspension->resume();
+        }
+
+        if ($remaining === []) {
+            unset($this->windowWaiters[$streamId]);
+        } else {
+            $this->windowWaiters[$streamId] = $remaining;
         }
     }
 

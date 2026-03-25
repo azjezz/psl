@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb052db0f46003b13fb94ddf5c1a536d",
+    "content-hash": "a847b34d6835610c5559f8f117bc3670",
     "packages": [
         {
             "name": "revolt/event-loop",
@@ -1874,16 +1874,16 @@
         },
         {
             "name": "phpbench/phpbench",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpbench/phpbench.git",
-                "reference": "fdeb35d0d277dd6b9e795df6cbbec9218f3b143e"
+                "reference": "661c8c6abbc7734986cf7bc6062c237fbb450461"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpbench/phpbench/zipball/fdeb35d0d277dd6b9e795df6cbbec9218f3b143e",
-                "reference": "fdeb35d0d277dd6b9e795df6cbbec9218f3b143e",
+                "url": "https://api.github.com/repos/phpbench/phpbench/zipball/661c8c6abbc7734986cf7bc6062c237fbb450461",
+                "reference": "661c8c6abbc7734986cf7bc6062c237fbb450461",
                 "shasum": ""
             },
             "require": {
@@ -1961,7 +1961,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpbench/phpbench/issues",
-                "source": "https://github.com/phpbench/phpbench/tree/1.6.0"
+                "source": "https://github.com/phpbench/phpbench/tree/1.6.1"
             },
             "funding": [
                 {
@@ -1969,7 +1969,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-21T18:08:17+00:00"
+            "time": "2026-03-22T10:27:20+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -3449,16 +3449,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "9.0.1",
+            "version": "9.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "e26e9a944bd9d27b3a38a82fc2093d440951bfbe"
+                "reference": "c4a2dc54b1a24e13ef1839cbb5947b967cbae853"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/e26e9a944bd9d27b3a38a82fc2093d440951bfbe",
-                "reference": "e26e9a944bd9d27b3a38a82fc2093d440951bfbe",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/c4a2dc54b1a24e13ef1839cbb5947b967cbae853",
+                "reference": "c4a2dc54b1a24e13ef1839cbb5947b967cbae853",
                 "shasum": ""
             },
             "require": {
@@ -3473,7 +3473,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "9.0-dev"
+                    "dev-main": "9.1-dev"
                 }
             },
             "autoload": {
@@ -3501,7 +3501,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/environment/issues",
                 "security": "https://github.com/sebastianbergmann/environment/security/policy",
-                "source": "https://github.com/sebastianbergmann/environment/tree/9.0.1"
+                "source": "https://github.com/sebastianbergmann/environment/tree/9.1.0"
             },
             "funding": [
                 {
@@ -3521,7 +3521,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-03-15T07:13:02+00:00"
+            "time": "2026-03-22T06:31:50+00:00"
         },
         {
             "name": "sebastian/exporter",

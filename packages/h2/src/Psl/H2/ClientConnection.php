@@ -15,6 +15,8 @@ use Psl\IO;
  * Client-side HTTP/2 connection over a read/write stream.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113
+ *
+ * @mago-expect analysis:deprecated-class
  */
 final class ClientConnection implements ClientConnectionInterface
 {
@@ -30,17 +32,26 @@ final class ClientConnection implements ClientConnectionInterface
      */
     public function __construct(
         private readonly IO\ReadHandleInterface&IO\WriteHandleInterface $handle,
-        ClientConfiguration $configuration = new ClientConfiguration(),
+        ClientConfiguration|Configuration $configuration = new ClientConfiguration(),
         null|IO\Reader $reader = null,
     ) {
         $this->role = Role::Client;
         $this->writeBufferThreshold = $configuration->writeBufferThreshold;
         $this->reader = $reader ?? new IO\Reader($handle);
+
+        $maxReceiveWindowSize = $configuration instanceof Configuration ? $configuration->maxReceiveWindowSize : null;
+
         $this->stateMachine = new StateMachine(
             true,
             $configuration->settings,
             $configuration->rateLimiter,
             $configuration->maxHeaderBlockSize,
+            $maxReceiveWindowSize !== null
+                ? new Internal\BDPEstimator(
+                    $configuration->settings[Setting::InitialWindowSize->value] ?? DEFAULT_INITIAL_WINDOW_SIZE,
+                    $maxReceiveWindowSize,
+                )
+                : null,
         );
     }
 

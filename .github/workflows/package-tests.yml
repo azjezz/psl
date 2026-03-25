@@ -10,12 +10,29 @@ jobs:
   test:
     name: test packages (${{ matrix.dependency-versions }})
     runs-on: ubuntu-latest
+
     strategy:
       fail-fast: false
       matrix:
         dependency-versions: [highest, lowest]
     steps:
       - uses: actions/checkout@v6
+
+      - name: "start httpbun"
+        run: |
+          docker run -d -p 3090:80 sharat87/httpbun --endpoint-bytes-size-limit 100000000
+          timeout 30 bash -c 'until curl -sf http://localhost:3090/get > /dev/null; do sleep 1; done'
+
+      - name: "start microsocks"
+        run: |
+          docker run -d --network host vimagick/microsocks
+          timeout 10 bash -c 'until nc -z 127.0.0.1 1080; do sleep 1; done'
+
+      - name: "start tinyproxy"
+        run: |
+          printf 'Port 8888\nListen 0.0.0.0\nTimeout 600\nAllow 0.0.0.0/0\n' > /tmp/tinyproxy.conf
+          docker run -d --network host -v /tmp/tinyproxy.conf:/etc/tinyproxy/tinyproxy.conf vimagick/tinyproxy
+          timeout 10 bash -c 'until nc -z 127.0.0.1 8888; do sleep 1; done'
 
       - uses: shivammathur/setup-php@v2
         with:
@@ -32,3 +49,8 @@ jobs:
         run: just install-packages-lowest
 
       - run: just test-packages
+        env:
+          HTTPBUN_URL: "http://localhost:3090"
+          SOCKS_PROXY_HOST: "127.0.0.1"
+          SOCKS_PROXY_PORT: "1080"
+          HTTP_TUNNEL_URL: "http://127.0.0.1:8888"

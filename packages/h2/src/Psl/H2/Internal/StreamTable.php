@@ -28,9 +28,14 @@ final class StreamTable
     private int $activeCount = 0;
 
     /**
-     * Maximum number of concurrent streams allowed by the remote peer.
+     * Maximum concurrent streams WE can initiate (set by the peer's SETTINGS).
      */
     private int $maxConcurrent;
+
+    /**
+     * Maximum concurrent streams the PEER can initiate (set by our local SETTINGS).
+     */
+    private int $peerMaxConcurrent;
 
     /**
      * Initial send window size for newly created streams.
@@ -46,10 +51,12 @@ final class StreamTable
         int $maxConcurrent = PHP_INT_MAX,
         int $initialSendWindow = DEFAULT_INITIAL_WINDOW_SIZE,
         int $initialReceiveWindow = DEFAULT_INITIAL_WINDOW_SIZE,
+        int $peerMaxConcurrent = PHP_INT_MAX,
     ) {
         $this->maxConcurrent = $maxConcurrent;
         $this->initialSendWindow = $initialSendWindow;
         $this->initialReceiveWindow = $initialReceiveWindow;
+        $this->peerMaxConcurrent = $peerMaxConcurrent;
     }
 
     /**
@@ -185,11 +192,11 @@ final class StreamTable
     }
 
     /**
-     * Whether the active stream count is below the maximum concurrent limit.
+     * Whether we can accept a new peer-initiated stream.
      */
-    public function canAcceptNewStream(): bool
+    public function canAcceptPeerStream(): bool
     {
-        return $this->activeCount < $this->maxConcurrent;
+        return $this->activeCount < $this->peerMaxConcurrent;
     }
 
     /**
