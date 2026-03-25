@@ -22,10 +22,14 @@ final readonly class MonolithicRepository
     /**
      * @param non-empty-string $rootPath Absolute path to the monorepo root
      * @param list<Package> $packages
+     * @param string $rootDescription Root composer.json description
+     * @param list<non-empty-string> $rootKeywords Root composer.json keywords
      */
     private function __construct(
         public string $rootPath,
         public array $packages,
+        public string $rootDescription = '',
+        public array $rootKeywords = [],
     ) {}
 
     /**
@@ -56,6 +60,8 @@ final readonly class MonolithicRepository
                 File\read($composerPath),
                 Type\shape([
                     'name' => Type\non_empty_string(),
+                    'description' => Type\optional(Type\string()),
+                    'keywords' => Type\optional(Type\vec(Type\non_empty_string())),
                     'require' => Type\dict(Type\non_empty_string(), Type\non_empty_string()),
                 ], allowUnknownFields: true),
             );
@@ -75,10 +81,20 @@ final readonly class MonolithicRepository
                 directory: Filesystem\get_basename($dir),
                 path: $dir,
                 dependencies: $dependencies,
+                description: $composerJson['description'] ?? '',
+                keywords: $composerJson['keywords'] ?? [],
             );
         }
 
-        return new self($rootPath, $packages);
+        $rootComposer = Json\typed(
+            File\read($rootPath . '/composer.json'),
+            Type\shape([
+                'description' => Type\optional(Type\string()),
+                'keywords' => Type\optional(Type\vec(Type\non_empty_string())),
+            ], allowUnknownFields: true),
+        );
+
+        return new self($rootPath, $packages, $rootComposer['description'] ?? '', $rootComposer['keywords'] ?? []);
     }
 
     /**

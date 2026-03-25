@@ -6,6 +6,8 @@ namespace Psl\Splitter;
 
 use Psl\Async;
 use Psl\Dict;
+use Psl\File;
+use Psl\Filesystem;
 use Psl\HTTP\Client;
 use Psl\HTTP\Message;
 use Psl\Iter;
@@ -22,9 +24,13 @@ use SensitiveParameter;
  * Derives the repo list from the monorepo's packages (not from the GitHub org).
  *
  * Checks:
+ * - Description matches composer.json
+ * - Homepage is set to the project website
+ * - Topics (keywords) are present
  * - Wiki is disabled everywhere
  * - Issues are disabled on sub-packages
  * - Discussions are disabled on sub-packages
+ * - Pull requests are disabled on sub-packages
  * - No open PRs on sub-packages
  * - Tag immutability rulesets exist
  *
@@ -36,6 +42,7 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
 {
     $org = 'php-standard-library';
     $mainRepo = 'php-standard-library';
+    $expectedHomepage = 'https://php-standard-library.dev';
 
     $httpClient = new Client\Client();
 
@@ -46,11 +53,22 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
         ['User-Agent', $org],
     ]);
 
-    // Build repo list from monorepo packages + the main repo
     $repos = Vec\map($monorepo->packages, static fn(Package $p): string => Str\after($p->name, $org . '/') ?? $p->name);
     $repos[] = $mainRepo;
 
+    $packagesBySlug = [];
+    foreach ($monorepo->packages as $package) {
+        $slug = Str\after($package->name, $org . '/') ?? $package->name;
+        $packagesBySlug[$slug] = $package;
+    }
+
     Log\info('Auditing %d repositories...', Iter\count($repos));
+
+    $orgRulesetsTx = $httpClient->send(new Message\Request(
+        method: Message\METHOD_GET,
+        url: URL\parse(Str\format('https://api.github.com/orgs/%s/rulesets', $org)),
+        headers: $headers,
+    ));
 
     $awaitables = Dict\from_keys($repos, static fn(string $repo): Async\Awaitable => Async\run(static fn(): array => Async\concurrently([
         static fn() => $httpClient->send(new Message\Request(
@@ -65,11 +83,6 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
         )),
         static fn() => $httpClient->send(new Message\Request(
             method: Message\METHOD_GET,
-            url: URL\parse(Str\format('https://api.github.com/orgs/%s/rulesets', $org)),
-            headers: $headers,
-        )),
-        static fn() => $httpClient->send(new Message\Request(
-            method: Message\METHOD_GET,
             url: URL\parse(Str\format('https://api.github.com/repos/%s/%s/pulls?state=open&per_page=1', $org, $repo)),
             headers: $headers,
         )),
@@ -78,6 +91,9 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
     $ok = true;
 
     $settingsType = Type\shape([
+        'description' => Type\nullable(Type\string()),
+        'homepage' => Type\nullable(Type\string()),
+        'topics' => Type\vec(Type\string()),
         'has_issues' => Type\bool(),
         'has_wiki' => Type\bool(),
         'has_discussions' => Type\bool(),
@@ -92,7 +108,7 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
     ], allowUnknownFields: true));
 
     foreach ($awaitables as $repo => $awaitable) {
-        [$settingsTx, $repoRulesetsTx, $orgRulesetsTx, $prTx] = $awaitable->await();
+        [$settingsTx, $repoRulesetsTx, $prTx] = $awaitable->await();
 
         $isMain = $repo === $mainRepo;
         $full = $org . '/' . $repo;
@@ -107,7 +123,55 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
 
         $settings = Json\typed($settingsTx->response->body?->readAll() ?? '', $settingsType);
 
-        // Wiki: disabled everywhere
+        $expectedDescription = $isMain ? $monorepo->rootDescription : $packagesBySlug[$repo]->description;
+        if ($expectedDescription !== '' && ($settings['description'] ?? '') !== $expectedDescription) {
+            Log\error(
+                '%s description mismatch: "%s" (expected "%s")',
+                $full,
+                $settings['description'] ?? '(none)',
+                $expectedDescription,
+            );
+            $ok = false;
+        } else {
+            Log\info('%s description ok', $full);
+        }
+
+        if (!$isMain && $expectedDescription !== '') {
+            $package = $packagesBySlug[$repo] ?? null;
+            $readmePath = ($package->path ?? '') . '/README.md';
+            if (Filesystem\is_file($readmePath)) {
+                $readmeContent = File\read($readmePath);
+                if (!Str\contains($readmeContent, $expectedDescription)) {
+                    Log\error('%s README.md does not contain composer.json description', $full);
+                    $ok = false;
+                } else {
+                    Log\info('%s README.md description ok', $full);
+                }
+            } else {
+                Log\error('%s README.md not found', $full);
+                $ok = false;
+            }
+        }
+
+        if (($settings['homepage'] ?? '') !== $expectedHomepage) {
+            Log\error(
+                '%s homepage is "%s" (expected "%s")',
+                $full,
+                $settings['homepage'] ?? '(none)',
+                $expectedHomepage,
+            );
+            $ok = false;
+        } else {
+            Log\info('%s homepage ok', $full);
+        }
+
+        if ($settings['topics'] === []) {
+            Log\error('%s has no topics', $full);
+            $ok = false;
+        } else {
+            Log\info('%s has %d topic(s)', $full, Iter\count($settings['topics']));
+        }
+
         if ($settings['has_wiki']) {
             Log\error('%s has wiki enabled', $full);
             $ok = false;
@@ -115,7 +179,6 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
             Log\info('%s has wiki disabled', $full);
         }
 
-        // Sub-packages only
         if (!$isMain) {
             if ($settings['has_issues']) {
                 Log\error('%s has issues enabled (sub-package)', $full);

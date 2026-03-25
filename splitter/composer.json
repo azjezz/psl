@@ -39,7 +39,8 @@
             "src/Psl/Splitter/release.php",
             "src/Psl/Splitter/verify.php",
             "src/Psl/Splitter/prepare.php",
-            "src/Psl/Splitter/audit.php"
+            "src/Psl/Splitter/audit.php",
+            "src/Psl/Splitter/fix.php"
         ]
     },
     "bin": [
