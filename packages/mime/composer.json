@@ -1,6 +1,6 @@
 {
     "name": "php-standard-library/mime",
-    "description": "MIME type detection and mapping",
+    "description": "MIME media types, multipart body construction, content sniffing, S/MIME cryptography, and DKIM signing",
     "license": "MIT",
     "type": "library",
     "keywords": [
