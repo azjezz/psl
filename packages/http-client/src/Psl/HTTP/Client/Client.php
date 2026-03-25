@@ -102,6 +102,11 @@ final class Client implements ClientInterface
         SendConfiguration $configuration = new SendConfiguration(),
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): Transaction {
+        if ($request->body !== null && ($request->method === 'HEAD' || $request->method === 'TRACE')) {
+            throw Exception\RequestException::forInvalidRequest($request->method
+            . ' requests must not include a body.');
+        }
+
         $configuration = $this->configuration->withOverrides($configuration);
 
         $url = $this->resolveUrl($request, $configuration);

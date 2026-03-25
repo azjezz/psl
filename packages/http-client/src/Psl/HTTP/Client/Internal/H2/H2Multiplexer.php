@@ -67,6 +67,7 @@ final class H2Multiplexer
         unset($this->streams[$streamId]);
 
         if ($this->streams === [] && $this->fiberRunning) {
+            $this->fiberRunning = false;
             $this->fiberCancellation->cancel();
             $this->fiberCancellation = new SignalCancellationToken();
         }

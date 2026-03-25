@@ -99,4 +99,51 @@ final class ResolveUrlTest extends TestCase
         static::assertSame('key=val', $result->query);
         static::assertSame('frag', $result->fragment);
     }
+
+    public function testProtocolRelativeReference(): void
+    {
+        $base = URL\parse('https://example.com/old/path');
+
+        $result = resolve_url('//other.com/new/path', $base);
+
+        static::assertSame('https', $result->scheme);
+        static::assertSame('other.com', $result->authority->host->toString());
+        static::assertSame('/new/path', $result->path);
+    }
+
+    public function testProtocolRelativeReferenceInheritsScheme(): void
+    {
+        $base = URL\parse('http://example.com/page');
+
+        $result = resolve_url('//cdn.example.com/asset.js', $base);
+
+        static::assertSame('http', $result->scheme);
+        static::assertSame('cdn.example.com', $result->authority->host->toString());
+        static::assertSame('/asset.js', $result->path);
+    }
+
+    public function testProtocolRelativeReferenceWithPort(): void
+    {
+        $base = URL\parse('https://example.com/page');
+
+        $result = resolve_url('//other.com:8080/path', $base);
+
+        static::assertSame('https', $result->scheme);
+        static::assertSame('other.com', $result->authority->host->toString());
+        static::assertSame(8080, $result->authority->port);
+        static::assertSame('/path', $result->path);
+    }
+
+    public function testProtocolRelativeReferenceWithQueryAndFragment(): void
+    {
+        $base = URL\parse('https://example.com/page');
+
+        $result = resolve_url('//other.com/path?q=1#frag', $base);
+
+        static::assertSame('https', $result->scheme);
+        static::assertSame('other.com', $result->authority->host->toString());
+        static::assertSame('/path', $result->path);
+        static::assertSame('q=1', $result->query);
+        static::assertSame('frag', $result->fragment);
+    }
 }

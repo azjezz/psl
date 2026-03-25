@@ -289,4 +289,92 @@ final class RetryClientTest extends TestCase
 
         static::assertLessThan(50, $elapsed);
     }
+
+    public function testSeekableBodyIsRewoundOnRetry(): void
+    {
+        $bodies = [];
+        $inner = new class($bodies) implements ClientInterface {
+            public int $attempts = 0;
+
+            /** @param list<string> $bodies */
+            public function __construct(
+                private array &$bodies,
+            ) {}
+
+            #[Override]
+            public function send(
+                Request $request,
+                SendConfiguration $configuration = new SendConfiguration(),
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): Transaction {
+                $this->attempts++;
+                $this->bodies[] = $request->body?->readAll() ?? '';
+
+                if ($this->attempts <= 1) {
+                    throw new RuntimeException('connection refused');
+                }
+
+                return new Transaction([], null, new Response(status: 200, headers: FieldMap::default()));
+            }
+        };
+
+        $body = new IO\MemoryHandle('hello world');
+        $request = new Request(method: 'PUT', url: URL\parse('http://example.com/'), body: $body);
+
+        $client = new RetryClient($inner, maxAttempts: 3, backoff: Duration::milliseconds(1));
+        $tx = $client->send($request);
+
+        static::assertSame(200, $tx->response->status);
+        static::assertSame(2, $inner->attempts);
+        static::assertSame('hello world', $bodies[0]);
+        static::assertSame('hello world', $bodies[1]);
+    }
+
+    public function testNonSeekableBodyFailsFast(): void
+    {
+        $inner = self::alwaysFailClient();
+        $client = new RetryClient($inner, maxAttempts: 3, backoff: Duration::milliseconds(1));
+
+        $body = new class() implements IO\ReadHandleInterface {
+            use IO\ReadHandleConvenienceMethodsTrait;
+
+            public function tryRead(null|int $maxBytes = null): string
+            {
+                return '';
+            }
+
+            public function read(
+                null|int $maxBytes = null,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
+                return '';
+            }
+
+            public function reachedEndOfDataSource(): bool
+            {
+                return true;
+            }
+        };
+
+        $request = new Request(method: 'PUT', url: URL\parse('http://example.com/'), body: $body);
+
+        $this->expectException(RuntimeException::class);
+
+        try {
+            $client->send($request);
+        } finally {
+            static::assertSame(1, $inner->attempts);
+        }
+    }
+
+    public function testNoBodyRetriesNormally(): void
+    {
+        $inner = self::failThenSucceedClient(2);
+        $client = new RetryClient($inner, maxAttempts: 3, backoff: Duration::milliseconds(1));
+
+        $tx = $client->send(self::request('GET'));
+
+        static::assertSame(200, $tx->response->status);
+        static::assertSame(3, $inner->attempts);
+    }
 }

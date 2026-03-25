@@ -20,6 +20,7 @@ use Psl\HTTP\Message\ProtocolVersion;
 use Psl\HTTP\Message\Request;
 use Psl\HTTP\Message\Response;
 use Psl\HTTP\Message\Transaction;
+use Psl\IO;
 use Psl\Network;
 use Psl\Network\Exception\RuntimeException;
 use Psl\TLS\ConnectionState;
@@ -275,6 +276,51 @@ final class ClientTest extends TestCase
         static::assertArrayHasKey('request', (array) $capture);
         $request = $capture['request'];
         static::assertSame(['my-custom-agent'], $request->headers->getAll('user-agent'));
+    }
+
+    public function testHeadRequestWithBodyThrows(): void
+    {
+        $client = new Client(
+            connector: $this->createStub(ConnectorInterface::class),
+            configuration: new ClientConfiguration(),
+        );
+
+        $this->expectException(RequestException::class);
+        $this->expectExceptionMessage('HEAD requests must not include a body.');
+
+        $client->send(new Request(
+            method: 'HEAD',
+            url: parse('http://example.com/'),
+            body: new IO\MemoryHandle('data'),
+        ));
+    }
+
+    public function testTraceRequestWithBodyThrows(): void
+    {
+        $client = new Client(
+            connector: $this->createStub(ConnectorInterface::class),
+            configuration: new ClientConfiguration(),
+        );
+
+        $this->expectException(RequestException::class);
+        $this->expectExceptionMessage('TRACE requests must not include a body.');
+
+        $client->send(new Request(
+            method: 'TRACE',
+            url: parse('http://example.com/'),
+            body: new IO\MemoryHandle('data'),
+        ));
+    }
+
+    public function testHeadRequestWithoutBodySucceeds(): void
+    {
+        $capture = new ArrayObject();
+        $connector = $this->createCapturingConnector($capture);
+
+        $client = new Client(connector: $connector, configuration: new ClientConfiguration());
+        $tx = $client->send(new Request(method: 'HEAD', url: parse('http://example.com/')));
+
+        static::assertSame(200, $tx->response->status);
     }
 
     private function createCapturingConnector(ArrayObject $capture): ConnectorInterface

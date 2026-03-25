@@ -11,32 +11,37 @@ use Psl\IO;
 
 /**
  * Decorating body handle that releases an HTTP/1.x connection back to the pool
- * when the response body is fully consumed.
+ * when the response body is fully consumed or the handle is closed.
  *
  * This prevents premature connection reuse: the underlying TCP/TLS stream stays
  * checked out of the pool until the consumer has read the entire response body.
  * The release callback is invoked exactly once, either when {@see read()},
  * {@see tryRead()}, or {@see reachedEndOfDataSource()} detects that the inner
- * handle has reached EOF.
+ * handle has reached EOF, or when {@see close()} is called explicitly (or via GC).
  *
  * @internal
  *
  * @see H1\H1Connection Creates this wrapper when keep-alive and pool release are both active.
  */
-final class PoolReleasingBodyHandle implements IO\ReadHandleInterface
+final class PoolReleasingBodyHandle implements IO\ReadHandleInterface, IO\CloseHandleInterface
 {
     use IO\ReadHandleConvenienceMethodsTrait;
 
-    private bool $released = false;
+    private bool $closed = false;
 
     /**
      * @param IO\ReadHandleInterface $inner The inner body handle to read from.
-     * @param Closure(): void $onComplete Called exactly once when the body is fully consumed.
+     * @param Closure(): void $onComplete Called exactly once when the body is fully consumed or the handle is closed.
      */
     public function __construct(
         private readonly IO\ReadHandleInterface $inner,
         private readonly Closure $onComplete,
     ) {}
+
+    public function __destruct()
+    {
+        $this->close();
+    }
 
     /**
      * Return available data from the inner handle without blocking.
@@ -47,8 +52,12 @@ final class PoolReleasingBodyHandle implements IO\ReadHandleInterface
      */
     public function tryRead(null|int $maxBytes = null): string
     {
+        if ($this->closed) {
+            return '';
+        }
+
         $data = $this->inner->tryRead($maxBytes);
-        $this->releaseIfDone();
+        $this->closeIfDone();
 
         return $data;
     }
@@ -62,8 +71,12 @@ final class PoolReleasingBodyHandle implements IO\ReadHandleInterface
         null|int $maxBytes = null,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): string {
+        if ($this->closed) {
+            return '';
+        }
+
         $data = $this->inner->read($maxBytes, $cancellation);
-        $this->releaseIfDone();
+        $this->closeIfDone();
 
         return $data;
     }
@@ -75,32 +88,43 @@ final class PoolReleasingBodyHandle implements IO\ReadHandleInterface
      */
     public function reachedEndOfDataSource(): bool
     {
+        if ($this->closed) {
+            return true;
+        }
+
         $eof = $this->inner->reachedEndOfDataSource();
         if ($eof) {
-            $this->release();
+            $this->close();
         }
 
         return $eof;
     }
 
-    /**
-     * Check if the inner handle has reached EOF and release if so.
-     */
-    private function releaseIfDone(): void
+    public function isClosed(): bool
     {
-        if ($this->inner->reachedEndOfDataSource()) {
-            $this->release();
+        return $this->closed;
+    }
+
+    public function close(): void
+    {
+        if (!$this->closed) {
+            $this->closed = true;
+
+            if ($this->inner instanceof IO\CloseHandleInterface) {
+                $this->inner->close();
+            }
+
+            ($this->onComplete)();
         }
     }
 
     /**
-     * Invoke the release callback exactly once.
+     * Check if the inner handle has reached EOF and close if so.
      */
-    private function release(): void
+    private function closeIfDone(): void
     {
-        if (!$this->released) {
-            $this->released = true;
-            ($this->onComplete)();
+        if ($this->inner->reachedEndOfDataSource()) {
+            $this->close();
         }
     }
 }

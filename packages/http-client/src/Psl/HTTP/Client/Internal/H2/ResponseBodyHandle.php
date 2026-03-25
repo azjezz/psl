@@ -23,7 +23,7 @@ use function strlen;
  *
  * @internal
  */
-final class ResponseBodyHandle implements IO\ReadHandleInterface
+final class ResponseBodyHandle implements IO\ReadHandleInterface, IO\CloseHandleInterface
 {
     use IO\ReadHandleConvenienceMethodsTrait;
 
@@ -34,7 +34,7 @@ final class ResponseBodyHandle implements IO\ReadHandleInterface
     /** @var non-negative-int */
     private int $bytesReceived = 0;
 
-    private bool $unregistered = false;
+    private bool $closed = false;
 
     /**
      * @param positive-int $streamId
@@ -48,10 +48,7 @@ final class ResponseBodyHandle implements IO\ReadHandleInterface
 
     public function __destruct()
     {
-        if (!$this->unregistered) {
-            $this->unregistered = true;
-            $this->multiplexer->unregister($this->streamId);
-        }
+        $this->close();
     }
 
     public function getTrailers(): null|FieldMap
@@ -97,7 +94,7 @@ final class ResponseBodyHandle implements IO\ReadHandleInterface
         }
 
         if ($this->stream->isBodyComplete()) {
-            $this->markDone();
+            $this->close();
         }
 
         return $data;
@@ -110,10 +107,15 @@ final class ResponseBodyHandle implements IO\ReadHandleInterface
         return $this->stream->isBodyComplete();
     }
 
-    private function markDone(): void
+    public function isClosed(): bool
     {
-        if (!$this->unregistered) {
-            $this->unregistered = true;
+        return $this->closed;
+    }
+
+    public function close(): void
+    {
+        if (!$this->closed) {
+            $this->closed = true;
             $this->multiplexer->unregister($this->streamId);
         }
     }
@@ -125,7 +127,7 @@ final class ResponseBodyHandle implements IO\ReadHandleInterface
             'H2 stream error: ' . $cause->getMessage(),
             previous: $cause,
         );
-        $this->markDone();
+        $this->close();
     }
 
     /**
