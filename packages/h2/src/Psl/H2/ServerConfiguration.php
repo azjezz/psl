@@ -10,7 +10,11 @@ use Psl\Default\DefaultInterface;
 /**
  * Configuration for a server-side HTTP/2 connection.
  *
+ * @deprecated Use {@see Configuration} instead.
+ *
  * @see ServerConnection
+ *
+ * @mago-expect analysis:deprecated-class
  */
 final readonly class ServerConfiguration implements DefaultInterface
 {

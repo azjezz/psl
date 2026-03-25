@@ -6,9 +6,13 @@ namespace Psl\Splitter;
 
 use Psl\Async;
 use Psl\Env;
+use Psl\HTTP\Client;
+use Psl\HTTP\Message;
+use Psl\IO;
 use Psl\Json;
 use Psl\Str;
 use Psl\Type;
+use Psl\URL;
 
 /**
  * Tag all split repos at the HEAD of a branch using the GitHub API.
@@ -18,23 +22,24 @@ use Psl\Type;
  * @param non-empty-string $tag The tag name (e.g. "6.0.0")
  * @param non-empty-string $branch The branch whose HEAD to tag (e.g. "next", "6.0.x")
  */
-function tag(MonolithicRepository $monorepo, Git $git, string $tag, string $branch): void
+function tag(Client\Client $httpClient, MonolithicRepository $monorepo, Git $git, string $tag, string $branch): void
 {
     $token = Env\get_var('GITHUB_TOKEN') ?? '';
 
-    $headers = [
-        'authorization' => 'Bearer ' . $token,
-        'accept' => 'application/vnd.github+json',
-        'x-github-api-version' => '2022-11-28',
-        'content-type' => 'application/json',
-    ];
+    $headers = Message\FieldMap::from([
+        ['authorization', 'Bearer ' . $token],
+        ['accept', 'application/vnd.github+json'],
+        ['x-github-api-version', '2022-11-28'],
+        ['content-type', 'application/json'],
+    ]);
 
-    $semaphore = new Async\Semaphore(10, static function (Package $package) use (
+    $semaphore = new Async\Semaphore(20, static function (Package $package) use (
         $git,
         $tag,
         $branch,
         $token,
         $headers,
+        $httpClient,
     ): void {
         $repoUrl = $package->repositoryUrl();
 
@@ -50,21 +55,21 @@ function tag(MonolithicRepository $monorepo, Git $git, string $tag, string $bran
         if ($token !== '') {
             $repo = Str\after($package->name, '/') ?? $package->name;
             $org = Str\before($package->name, '/') ?? 'php-standard-library';
-            $apiBase = Str\format('https://api.github.com/repos/%s/%s', $org, $repo);
-
-            $tagResponse = Http\post(
-                $apiBase . '/git/tags',
-                Json\encode([
+            $transaction = $httpClient->send(new Message\Request(
+                method: Message\METHOD_POST,
+                url: URL\parse(Str\format('https://api.github.com/repos/%s/%s/git/tags', $org, $repo)),
+                headers: $headers,
+                body: new IO\MemoryHandle(Json\encode([
                     'tag' => $tag,
                     'message' => $tag,
                     'object' => $sha,
                     'type' => 'commit',
-                ]),
-                $headers,
-            );
+                ])),
+            ));
 
-            if (!$tagResponse->isOk()) {
-                $body = Json\typed($tagResponse->body, Type\shape([
+            $content = $transaction->response->body?->readAll() ?? '';
+            if ($transaction->response->status !== Message\STATUS_OK) {
+                $body = Json\typed($content, Type\shape([
                     'message' => Type\string(),
                 ], allowUnknownFields: true));
 
@@ -72,21 +77,23 @@ function tag(MonolithicRepository $monorepo, Git $git, string $tag, string $bran
                 return;
             }
 
-            $tagSha = Json\typed($tagResponse->body, Type\shape([
+            $tagSha = Json\typed($content, Type\shape([
                 'sha' => Type\non_empty_string(),
             ], allowUnknownFields: true))['sha'];
 
-            $refResponse = Http\post(
-                $apiBase . '/git/refs',
-                Json\encode([
+            $transaction = $httpClient->send(new Message\Request(
+                method: Message\METHOD_POST,
+                url: URL\parse(Str\format('https://api.github.com/repos/%s/%s/git/refs', $org, $repo)),
+                headers: $headers,
+                body: new IO\MemoryHandle(Json\encode([
                     'ref' => 'refs/tags/' . $tag,
                     'sha' => $tagSha,
-                ]),
-                $headers,
-            );
+                ])),
+            ));
 
-            if (!$refResponse->isOk()) {
-                $body = Json\typed($refResponse->body, Type\shape([
+            if ($transaction->response->status !== Message\STATUS_OK) {
+                $content = $transaction->response->body?->readAll() ?? '';
+                $body = Json\typed($content, Type\shape([
                     'message' => Type\string(),
                 ], allowUnknownFields: true));
 

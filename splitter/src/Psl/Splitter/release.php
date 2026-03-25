@@ -8,6 +8,7 @@ use Psl\Ansi;
 use Psl\Ansi\Color;
 use Psl\Ansi\Style;
 use Psl\Async\Exception\CompositeException;
+use Psl\HTTP\Client;
 use Psl\IO;
 use Psl\Iter;
 use Psl\Shell;
@@ -61,7 +62,9 @@ function release(MonolithicRepository $monorepo, Git $git, string $releaseTag): 
     );
     IO\write_error_line('');
 
-    namespace\tag($monorepo, $git, $releaseTag, $branch);
+    $client = new Client\Client();
+
+    namespace\tag($client, $monorepo, $git, $releaseTag, $branch);
 
     IO\write_error_line('');
     Log\success('Tagged %d packages with %s.', Iter\count($monorepo->packages), $releaseTag);
@@ -74,7 +77,7 @@ function release(MonolithicRepository $monorepo, Git $git, string $releaseTag): 
     ));
     IO\write_error_line('');
 
-    namespace\create_releases($monorepo, $releaseTag);
+    namespace\create_releases($client, $monorepo, $releaseTag);
 
     IO\write_error_line('');
     Log\success('Created releases for %s.', $releaseTag);

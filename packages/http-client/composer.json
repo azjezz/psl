@@ -1,0 +1,67 @@
+{
+    "name": "php-standard-library/http-client",
+    "description": "Async HTTP client with connection pooling, HTTP/2, and DNS resolution",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "http",
+        "client",
+        "async",
+        "http2"
+    ],
+    "authors": [
+        {
+            "name": "Seifeddine Gmati",
+            "email": "azjezz@carthage.software"
+        },
+        {
+            "name": "Contributors",
+            "homepage": "https://github.com/php-standard-library/php-standard-library/graphs/contributors"
+        }
+    ],
+    "homepage": "https://php-standard-library.dev",
+    "require": {
+        "php": "~8.4.0 || ~8.5.0",
+        "php-standard-library/foundation": "^6.0",
+        "php-standard-library/http-message": "^6.2",
+        "php-standard-library/async": "^6.0",
+        "php-standard-library/io": "^6.0",
+        "php-standard-library/network": "^6.0",
+        "php-standard-library/cidr": "^6.0",
+        "php-standard-library/ip": "^6.0",
+        "php-standard-library/tls": "^6.0",
+        "php-standard-library/socks": "^6.0",
+        "php-standard-library/tcp": "^6.0",
+        "php-standard-library/unix": "^6.0",
+        "php-standard-library/url": "^6.0",
+        "php-standard-library/h2": "^6.0",
+        "php-standard-library/hpack": "^6.0",
+        "php-standard-library/date-time": "^6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^13.0",
+        "php-standard-library/str": "^6.0"
+    },
+    "conflict": {
+        "azjezz/psl": "*"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Psl\\HTTP\\Client\\": "src/Psl/HTTP/Client/"
+        },
+        "files": ["src/Psl/bootstrap.php"]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Psl\\HTTP\\Client\\Tests\\Unit\\": "tests/unit/",
+            "Psl\\HTTP\\Client\\Tests\\Fixture\\": "tests/fixture/",
+            "Psl\\HTTP\\Client\\Tests\\Integration\\": "tests/integration/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-next": "6.2.x-dev"
+        }
+    }
+}

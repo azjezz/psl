@@ -105,7 +105,9 @@ class ResourceHandle implements
             stream_set_read_buffer($stream, 0);
 
             $this->readWatcher = EventLoop::onReadable($stream, function (): void {
-                $this->readSuspension?->resume();
+                $suspension = $this->readSuspension;
+                $this->readSuspension = null;
+                $suspension?->resume();
             });
 
             $this->readSequence = new Async\Sequence(
@@ -130,7 +132,9 @@ class ResourceHandle implements
             stream_set_write_buffer($stream, 0);
 
             $this->writeWatcher = EventLoop::onWritable($stream, function (): void {
-                $this->writeSuspension?->resume();
+                $suspension = $this->writeSuspension;
+                $this->writeSuspension = null;
+                $suspension?->resume();
             });
 
             $this->writeSequence = new Async\Sequence(
@@ -180,7 +184,11 @@ class ResourceHandle implements
             }
         }
 
-        $id = $cancellation->subscribe($suspension->throw(...));
+        $id = $cancellation->subscribe(function (Async\Exception\CancelledException $e): void {
+            $suspension = $this->readSuspension;
+            $this->readSuspension = null;
+            $suspension?->throw($e);
+        });
 
         try {
             $suspension->suspend();
@@ -242,7 +250,11 @@ class ResourceHandle implements
             }
         }
 
-        $id = $cancellation->subscribe($suspension->throw(...));
+        $id = $cancellation->subscribe(function (Async\Exception\CancelledException $e): void {
+            $suspension = $this->writeSuspension;
+            $this->writeSuspension = null;
+            $suspension?->throw($e);
+        });
 
         try {
             $suspension->suspend();

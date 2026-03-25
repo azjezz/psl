@@ -111,17 +111,17 @@ final class StreamTableTest extends TestCase
         static::assertSame(0, $table->activeCount());
     }
 
-    public function testCanAcceptNewStream(): void
+    public function testCanAcceptPeerStream(): void
     {
-        $table = new StreamTable(2);
+        $table = new StreamTable(peerMaxConcurrent: 2);
 
-        static::assertTrue($table->canAcceptNewStream());
+        static::assertTrue($table->canAcceptPeerStream());
 
         $table->open(1);
-        static::assertTrue($table->canAcceptNewStream());
+        static::assertTrue($table->canAcceptPeerStream());
 
         $table->open(3);
-        static::assertFalse($table->canAcceptNewStream());
+        static::assertFalse($table->canAcceptPeerStream());
     }
 
     public function testIncrementActive(): void
@@ -139,14 +139,22 @@ final class StreamTableTest extends TestCase
 
     public function testSetMaxConcurrent(): void
     {
-        $table = new StreamTable(1);
+        $table = new StreamTable(maxConcurrent: 1);
         $table->open(1);
 
-        static::assertFalse($table->canAcceptNewStream());
+        $this->expectException(FlowControlException::class);
+        $table->open(3);
+    }
+
+    public function testSetMaxConcurrentIncrease(): void
+    {
+        $table = new StreamTable(maxConcurrent: 1);
+        $table->open(1);
 
         $table->setMaxConcurrent(5);
 
-        static::assertTrue($table->canAcceptNewStream());
+        $entry = $table->open(3);
+        static::assertSame(StreamState::Open, $entry->state);
     }
 
     public function testSetInitialSendWindow(): void

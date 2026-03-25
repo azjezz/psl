@@ -10,7 +10,11 @@ use Psl\Default\DefaultInterface;
 /**
  * Configuration for a client-side HTTP/2 connection.
  *
+ * @deprecated Use {@see Configuration} instead, which supports BDP auto-tuning.
+ *
  * @see ClientConnection
+ *
+ * @mago-expect analysis:deprecated-class
  */
 final readonly class ClientConfiguration implements DefaultInterface
 {

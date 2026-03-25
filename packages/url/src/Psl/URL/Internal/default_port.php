@@ -9,7 +9,7 @@ namespace Psl\URL\Internal;
  *
  * Returns null for unknown schemes.
  *
- * @return null|int<0, 65535>
+ * @return null|int<1, 65535>
  *
  * @internal
  */

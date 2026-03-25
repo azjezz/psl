@@ -77,46 +77,74 @@ use const Psl\H2\MAX_WINDOW_SIZE;
  */
 final class StateMachine
 {
-    /** @var SettingsRegistry Local and remote HTTP/2 settings. */
+    /**
+     * @var SettingsRegistry Local and remote HTTP/2 settings.
+     */
     private SettingsRegistry $settings;
 
-    /** @var StreamTable Registry of active streams. */
+    /**
+     * @var StreamTable Registry of active streams.
+     */
     private StreamTable $streams;
 
-    /** @var FlowController Connection and stream flow control windows. */
+    /**
+     * @var FlowController Connection and stream flow control windows.
+     */
     private FlowController $flowController;
 
-    /** @var HeaderBlockAssembler Reassembles CONTINUATION frames into complete header blocks. */
+    /**
+     * @var HeaderBlockAssembler Reassembles CONTINUATION frames into complete header blocks.
+     */
     private HeaderBlockAssembler $assembler;
 
-    /** @var bool Whether a header block is currently being assembled across CONTINUATION frames. */
+    /**
+     * @var bool Whether a header block is currently being assembled across CONTINUATION frames.
+     */
     private bool $assembling = false;
-    /** @var bool Whether the header block being assembled is trailing headers. */
+
+    /**
+     * @var bool Whether the header block being assembled is trailing headers.
+     */
     private bool $assemblingTrailing = false;
 
-    /** @var Encoder HPACK encoder for outgoing headers. */
+    /**
+     * @var Encoder HPACK encoder for outgoing headers.
+     */
     private Encoder $hpackEncoder;
 
-    /** @var Decoder HPACK decoder for incoming headers. */
+    /**
+     * @var Decoder HPACK decoder for incoming headers.
+     */
     private Decoder $hpackDecoder;
 
-    /** @var null|RateLimiter Optional rate limiter for incoming frames. */
+    /**
+     * @var null|RateLimiter Optional rate limiter for incoming frames.
+     */
     private null|RateLimiter $rateLimiter;
 
-    /** @var int Maximum frame payload size we accept from the remote peer. */
+    /**
+     * @var int<0, max> Maximum frame payload size we accept from the remote peer.
+     */
     private int $localMaxFrameSize;
 
-    /** @var int Maximum frame payload size the remote peer accepts from us. */
+    /**
+     * @var int<0, max> Maximum frame payload size the remote peer accepts from us.
+     */
     private int $remoteMaxFrameSize;
+
     /**
      * @var int<1, max>
      */
     private int $nextStreamIdentifier;
 
-    /** @var int<0, max> Highest local stream ID actually opened (not just reserved). */
+    /**
+     * @var int<0, max> Highest local stream ID actually opened (not just reserved).
+     */
     private int $lastLocalStreamId = 0;
 
-    /** @var int<0, max> */
+    /**
+     * @var int<0, max>
+     */
     private int $lastPeerStreamId = 0;
 
     /**
@@ -142,7 +170,12 @@ final class StateMachine
         $this->settings = new SettingsRegistry($localSettings);
         $localMaxConcurrent = $this->settings->localValue(Setting::MaxConcurrentStreams);
         $localInitialWindow = $this->settings->localValue(Setting::InitialWindowSize);
-        $this->streams = new StreamTable($localMaxConcurrent, DEFAULT_INITIAL_WINDOW_SIZE, $localInitialWindow);
+        $this->streams = new StreamTable(
+            PHP_INT_MAX,
+            DEFAULT_INITIAL_WINDOW_SIZE,
+            $localInitialWindow,
+            $localMaxConcurrent,
+        );
         $this->flowController = new FlowController();
         $this->assembler = new HeaderBlockAssembler($maxHeaderBlockSize);
         $this->rateLimiter = $rateLimiter;
@@ -163,8 +196,17 @@ final class StateMachine
     public function initialize(): array
     {
         $overrides = $this->settings->localOverrides();
+        $frames = [new SettingsFrame($overrides, false)->toRaw()];
 
-        return [new SettingsFrame($overrides, false)->toRaw()];
+        if ($this->isClient && $this->bdpEstimator !== null) {
+            $increment = $this->bdpEstimator->getInitialConnectionWindowIncrement();
+            if ($increment > 0) {
+                $frames[] = new RawFrame(FrameType::WindowUpdate->value, 0, 0, pack('N', $increment));
+                $this->flowController->applyConnectionReceiveWindowUpdate($increment);
+            }
+        }
+
+        return $frames;
     }
 
     /**
@@ -714,6 +756,16 @@ final class StateMachine
     }
 
     /**
+     * Get the maximum DATA frame payload size the peer will accept.
+     *
+     * @return int<0, max> Maximum frame payload size in bytes.
+     */
+    public function getRemoteMaxFrameSize(): int
+    {
+        return $this->remoteMaxFrameSize;
+    }
+
+    /**
      * Get the available flow control send window for a stream.
      *
      * Returns the minimum of the stream-level and connection-level send windows.
@@ -991,7 +1043,7 @@ final class StateMachine
                 );
             }
 
-            if (!$this->streams->canAcceptNewStream()) {
+            if (!$this->streams->canAcceptPeerStream()) {
                 return [[new RstStreamFrame($frame->streamId, ErrorCode::RefusedStream)->toRaw()], []];
             }
 
