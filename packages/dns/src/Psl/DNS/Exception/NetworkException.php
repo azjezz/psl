@@ -13,7 +13,7 @@ use Throwable;
  */
 final class NetworkException extends RuntimeException
 {
-    private function __construct(string $message, Throwable $previous)
+    private function __construct(string $message, null|Throwable $previous)
     {
         parent::__construct($message, $previous);
     }
@@ -29,7 +29,7 @@ final class NetworkException extends RuntimeException
     /**
      * Create an exception for a failed DNS query over a given transport protocol.
      */
-    public static function forQueryFailed(string $protocol, string $detail, Throwable $previous): self
+    public static function forQueryFailed(string $protocol, string $detail, null|Throwable $previous = null): self
     {
         return new self('DNS ' . $protocol . ' query failed: ' . $detail . '.', $previous);
     }

@@ -1,0 +1,287 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\DNS\Tests\Unit;
+
+use Closure;
+use PHPUnit\Framework\TestCase;
+use Psl\Async;
+use Psl\Binary\Reader;
+use Psl\Binary\Writer;
+use Psl\DateTime\Duration;
+use Psl\DNS\Exception\NetworkException;
+use Psl\DNS\Exception\ProtocolException;
+use Psl\DNS\HTTPSResolver;
+use Psl\DNS\Record\ARecord;
+use Psl\DNS\Record\RecordType;
+use Psl\DNS\ResponseCode;
+use Psl\IO;
+use Psl\Str;
+use Psl\TCP;
+
+/**
+ * @mago-expect lint:excessive-nesting
+ */
+final class HTTPSResolverTest extends TestCase
+{
+    public function testQueryReturnsARecord(): void
+    {
+        [$port, $serverFuture] = self::startDoHServer(static function (string $dnsQuery): string {
+            $id = new Reader($dnsQuery)->u16();
+
+            $answerName = "\x07example\x03com\x00";
+
+            return new Writer()
+                ->u16($id)
+                ->u16(0x8180) // response, recursion desired + available
+                ->u16(0) // qdcount
+                ->u16(1) // ancount
+                ->u16(0) // nscount
+                ->u16(0) // arcount
+                ->bytes($answerName)
+                ->u16(1) // A
+                ->u16(1) // IN
+                ->u32(300) // TTL
+                ->u16(4) // rdlength
+                ->u8(93)
+                ->u8(184)
+                ->u8(216)
+                ->u8(34) // 93.184.216.34
+                ->toString();
+        });
+
+        try {
+            $resolver = new HTTPSResolver("http://127.0.0.1:{$port}/dns-query");
+            $response = $resolver->query('example.com', RecordType::A);
+
+            static::assertSame(ResponseCode::NoError, $response->code);
+            static::assertCount(1, $response->answers);
+            static::assertInstanceOf(ARecord::class, $response->answers[0]);
+            static::assertSame('93.184.216.34', $response->answers[0]->address->toString());
+        } finally {
+            $serverFuture->await();
+        }
+    }
+
+    public function testRequestIncludesContentLength(): void
+    {
+        $receivedContentLength = null;
+
+        [$port, $serverFuture] = self::startDoHServer(static function (string $dnsQuery) use (
+            &$receivedContentLength,
+        ): string {
+            $id = new Reader($dnsQuery)->u16();
+
+            $answerName = "\x07example\x03com\x00";
+
+            return new Writer()
+                ->u16($id)
+                ->u16(0x8180)
+                ->u16(0)
+                ->u16(1)
+                ->u16(0)
+                ->u16(0)
+                ->bytes($answerName)
+                ->u16(1)
+                ->u16(1)
+                ->u32(300)
+                ->u16(4)
+                ->u8(10)
+                ->u8(0)
+                ->u8(0)
+                ->u8(1)
+                ->toString();
+        }, headerCapture: $receivedContentLength);
+
+        try {
+            $resolver = new HTTPSResolver("http://127.0.0.1:{$port}/dns-query");
+            $resolver->query('example.com', RecordType::A);
+
+            static::assertNotNull($receivedContentLength, 'content-length header must be present');
+            static::assertGreaterThan(0, $receivedContentLength, 'content-length must be > 0');
+        } finally {
+            $serverFuture->await();
+        }
+    }
+
+    public function testNon200ResponseThrowsNetworkException(): void
+    {
+        [$port, $serverFuture] = self::startDoHServer(
+            handler: null,
+            statusCode: 503,
+            statusText: 'Service Unavailable',
+        );
+
+        try {
+            $resolver = new HTTPSResolver("http://127.0.0.1:{$port}/dns-query");
+
+            $this->expectException(NetworkException::class);
+            $this->expectExceptionMessageMatches('/HTTP 503/');
+            $resolver->query('example.com', RecordType::A);
+        } finally {
+            $serverFuture->await();
+        }
+    }
+
+    public function testIdMismatchThrowsProtocolException(): void
+    {
+        [$port, $serverFuture] = self::startDoHServer(static function (string $dnsQuery): string {
+            $id = new Reader($dnsQuery)->u16();
+            $wrongId = ($id + 1) & 0xFFFF;
+
+            $answerName = "\x07example\x03com\x00";
+
+            return new Writer()
+                ->u16($wrongId)
+                ->u16(0x8180)
+                ->u16(0)
+                ->u16(1)
+                ->u16(0)
+                ->u16(0)
+                ->bytes($answerName)
+                ->u16(1)
+                ->u16(1)
+                ->u32(300)
+                ->u16(4)
+                ->u8(10)
+                ->u8(0)
+                ->u8(0)
+                ->u8(1)
+                ->toString();
+        });
+
+        try {
+            $resolver = new HTTPSResolver("http://127.0.0.1:{$port}/dns-query");
+
+            $this->expectException(ProtocolException::class);
+            $this->expectExceptionMessageMatches('/does not match query ID/');
+            $resolver->query('example.com', RecordType::A);
+        } finally {
+            $serverFuture->await();
+        }
+    }
+
+    public function testConcurrentQueries(): void
+    {
+        $requestCount = 0;
+
+        [$port, $serverFuture] = self::startDoHServer(static function (string $dnsQuery) use (&$requestCount): string {
+            $requestCount++;
+            $id = new Reader($dnsQuery)->u16();
+
+            $answerName = "\x07example\x03com\x00";
+
+            return new Writer()
+                ->u16($id)
+                ->u16(0x8180)
+                ->u16(0)
+                ->u16(1)
+                ->u16(0)
+                ->u16(0)
+                ->bytes($answerName)
+                ->u16(1)
+                ->u16(1)
+                ->u32(300)
+                ->u16(4)
+                ->u8(10)
+                ->u8(0)
+                ->u8(0)
+                ->u8((int) ($requestCount & 0xFF))
+                ->toString();
+        }, maxRequests: 3);
+
+        try {
+            $resolver = new HTTPSResolver("http://127.0.0.1:{$port}/dns-query");
+
+            $results = Async\concurrently([
+                static fn() => $resolver->query('example.com', RecordType::A),
+                static fn() => $resolver->query('example.com', RecordType::A),
+                static fn() => $resolver->query('example.com', RecordType::A),
+            ]);
+
+            static::assertCount(3, $results);
+            foreach ($results as $response) {
+                static::assertSame(ResponseCode::NoError, $response->code);
+                static::assertCount(1, $response->answers);
+                static::assertInstanceOf(ARecord::class, $response->answers[0]);
+            }
+        } finally {
+            $serverFuture->await();
+        }
+    }
+
+    /**
+     * Start a minimal HTTP/1.1 server that accepts DNS-over-HTTPS POST requests.
+     *
+     * @param null|(Closure(string): string) $handler Receives raw DNS query bytes, returns raw DNS response bytes. Null = no body.
+     * @param int $statusCode HTTP status code to return.
+     * @param string $statusText HTTP status text.
+     * @param int $maxRequests Number of requests to handle before stopping.
+     *
+     * @return array{int<0, 65535>, Async\Awaitable<void>}
+     */
+    private static function startDoHServer(
+        null|Closure $handler = null,
+        int $statusCode = 200,
+        string $statusText = 'OK',
+        int $maxRequests = 1,
+        null|int &$headerCapture = null,
+    ): array {
+        $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
+
+        /** @var int<0, 65535> $port */
+        $port = $listener->getLocalAddress()->port;
+
+        $future = Async\run(static function () use (
+            $listener,
+            $handler,
+            $statusCode,
+            $statusText,
+            $maxRequests,
+            &$headerCapture,
+        ): void {
+            try {
+                for ($i = 0; $i < $maxRequests; $i++) {
+                    $conn = $listener->accept(new Async\TimeoutCancellationToken(Duration::seconds(5)));
+                    $reader = new IO\Reader($conn);
+
+                    $contentLength = 0;
+                    while (true) {
+                        $line = $reader->readLine();
+                        if ($line === null || $line === '') {
+                            break;
+                        }
+
+                        if (Str\Byte\starts_with_ci($line, 'content-length:')) {
+                            $contentLength = (int) Str\Byte\trim(Str\Byte\after($line, ':') ?? '');
+                            $headerCapture = $contentLength;
+                        }
+                    }
+
+                    $body = $reader->readFixedSize($contentLength);
+                    if ($handler !== null && $statusCode === 200) {
+                        $responseBody = $handler($body);
+                        $headers =
+                            "HTTP/1.1 200 OK\r\nContent-Type: application/dns-message\r\nContent-Length: "
+                            . Str\Byte\length($responseBody)
+                            . "\r\nConnection: close\r\n\r\n";
+                        $conn->writeAll($headers . $responseBody);
+                    } else {
+                        $conn->writeAll(
+                            "HTTP/1.1 {$statusCode} {$statusText}\r\nContent-Length: 0\r\nConnection: close\r\n\r\n",
+                        );
+                    }
+
+                    $conn->close();
+                }
+            } catch (IO\Exception\ExceptionInterface|Async\Exception\CancelledException) {
+                // @mago-expect lint:no-empty-catch-clause
+            } finally {
+                $listener->close();
+            }
+        });
+
+        return [$port, $future];
+    }
+}

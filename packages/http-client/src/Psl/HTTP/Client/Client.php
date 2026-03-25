@@ -42,8 +42,8 @@ use function Psl\HTTP\Client\Internal\resolve_url;
  * ## Retry on connection failure
  *
  * The client has built-in single-retry behavior for transport-level failures. If the
- * initial exchange fails with a {@see \Psl\Network\Exception\RuntimeException} or
- * {@see \Psl\IO\Exception\RuntimeException} (e.g., a stale pooled connection was
+ * initial exchange fails with a {@see Network\Exception\RuntimeException} or
+ * {@see IO\Exception\RuntimeException} (e.g., a stale pooled connection was
  * reset by the server), the client automatically establishes a new connection and
  * retries the exchange exactly once. This handles the common case of idle connections
  * being closed by the server or an intermediate proxy.

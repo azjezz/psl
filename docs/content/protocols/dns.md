@@ -1,6 +1,6 @@
 # DNS
 
-The `DNS` component provides async DNS resolution with connection pooling, EDNS0, system configuration detection, hosts file support, and search domain expansion. All resolvers are non-blocking and composable via the decorator pattern.
+The `DNS` component provides async DNS resolution with connection pooling, EDNS0, DNS-over-TLS, DNS-over-HTTPS, system configuration detection, hosts file support, and search domain expansion. All resolvers are non-blocking and composable via the decorator pattern.
 
 ## Basic Usage
 
@@ -10,7 +10,7 @@ The `DNS` component provides async DNS resolution with connection pooling, EDNS0
 
 ## Resolver Types
 
-Resolvers can be composed for different strategies: direct UDP/TCP, fallback on truncation, racing multiple nameservers, or DNS-over-TLS.
+Resolvers can be composed for different strategies: direct UDP/TCP, fallback on truncation, racing multiple nameservers, DNS-over-TLS, or DNS-over-HTTPS.
 
 @example('protocols/dns-resolvers.php')
 
@@ -50,9 +50,15 @@ Pass EDNS0 options to any query for features like DNS cookies, client subnet hin
 
 @example('protocols/dns-edns.php')
 
+## DNS-over-HTTPS
+
+`HTTPSResolver` sends queries over HTTPS (RFC 8484) using the HTTP client. HTTP/2 multiplexing allows concurrent queries to share a single connection. Pass your own `ClientInterface` to share connection pools across resolvers.
+
+@example('protocols/dns-doh.php')
+
 ## Kitchen Sink
 
-Compose static entries, hosts file, search domains, split-horizon routing, multiple racing nameservers with DNS-over-TLS, TCP fallback, and caching into a single resolver that uses every feature.
+Compose static entries, hosts file, search domains, split-horizon routing, multiple racing nameservers with DNS-over-TLS or DNS-over-HTTPS, TCP fallback, and caching into a single resolver that uses every feature.
 
 @example('protocols/dns-kitchen-sink.php')
 
@@ -105,6 +111,7 @@ Compose static entries, hosts file, search domains, split-horizon routing, multi
 | RFC 6698 | TLSA records (DANE) |
 | RFC 6891 | EDNS0 (OPT record, extended RCODE, UDP payload size) |
 | RFC 7858 | DNS-over-TLS via TLS client configuration |
+| RFC 8484 | DNS-over-HTTPS via HTTP client |
 | RFC 7871 | EDNS Client Subnet option |
 | RFC 7873 | DNS Cookies option |
 | RFC 7830 | EDNS TCP Keepalive option |

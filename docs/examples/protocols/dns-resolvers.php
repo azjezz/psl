@@ -16,6 +16,9 @@ $tcp = new DNS\TCPResolver('8.8.8.8');
 // DNS-over-TLS (port 853)
 $dot = new DNS\TCPResolver('8.8.8.8', port: 853, tlsClientConfiguration: new TLS\ClientConfiguration());
 
+// DNS-over-HTTPS (RFC 8484)
+$doh = new DNS\HTTPSResolver('https://1.1.1.1/dns-query');
+
 // UDP with automatic TCP fallback on truncated responses
 $fallback = new DNS\FallbackResolver([$udp, $tcp]);
 
