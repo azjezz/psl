@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\HTTP\Client\Tests\Unit;
 
+use ArrayObject;
 use PHPUnit\Framework\TestCase;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\NullCancellationToken;
@@ -14,10 +15,14 @@ use Psl\HTTP\Client\Connection\ConnectorInterface;
 use Psl\HTTP\Client\Exception\ProtocolException;
 use Psl\HTTP\Client\Exception\RequestException;
 use Psl\HTTP\Client\SendConfiguration;
+use Psl\HTTP\Message\FieldMap;
 use Psl\HTTP\Message\ProtocolVersion;
 use Psl\HTTP\Message\Request;
+use Psl\HTTP\Message\Response;
+use Psl\HTTP\Message\Transaction;
 use Psl\Network;
 use Psl\Network\Exception\RuntimeException;
+use Psl\TLS\ConnectionState;
 
 use function Psl\HTTP\Client\Internal\resolve_protocol_versions;
 use function Psl\URL\parse;
@@ -222,5 +227,102 @@ final class ClientTest extends TestCase
 
         $this->expectException(RequestException::class);
         $client->send($request);
+    }
+
+    public function testDefaultUserAgentIsInjected(): void
+    {
+        $capture = new ArrayObject();
+        $connector = $this->createCapturingConnector($capture);
+
+        $client = new Client(connector: $connector, configuration: new ClientConfiguration());
+        $client->send(new Request(method: 'GET', url: parse('http://example.com/')));
+
+        static::assertArrayHasKey('request', (array) $capture);
+        $request = $capture['request'];
+        static::assertTrue($request->headers->has('user-agent'));
+        static::assertSame('php-standard-library/http-client', $request->headers->get('user-agent'));
+    }
+
+    public function testCustomUserAgentIsNotOverridden(): void
+    {
+        $capture = new ArrayObject();
+        $connector = $this->createCapturingConnector($capture);
+
+        $client = new Client(connector: $connector, configuration: new ClientConfiguration());
+        $client->send(new Request(
+            method: 'GET',
+            url: parse('http://example.com/'),
+            headers: FieldMap::from([['user-agent', 'my-custom-agent']]),
+        ));
+
+        static::assertArrayHasKey('request', (array) $capture);
+        $request = $capture['request'];
+        static::assertSame('my-custom-agent', $request->headers->get('user-agent'));
+    }
+
+    public function testCustomUserAgentIsNotOverridden2(): void
+    {
+        $capture = new ArrayObject();
+        $connector = $this->createCapturingConnector($capture);
+
+        $client = new Client(connector: $connector, configuration: new ClientConfiguration());
+        $client->send(new Request(
+            method: 'GET',
+            url: parse('http://example.com/'),
+            headers: FieldMap::from([['User-Agent', 'my-custom-agent']]),
+        ));
+
+        static::assertArrayHasKey('request', (array) $capture);
+        $request = $capture['request'];
+        static::assertSame(['my-custom-agent'], $request->headers->getAll('user-agent'));
+    }
+
+    private function createCapturingConnector(ArrayObject $capture): ConnectorInterface
+    {
+        return new class($capture) implements ConnectorInterface {
+            public function __construct(
+                private readonly ArrayObject $capture,
+            ) {}
+
+            public function connect(
+                Request $request,
+                ClientConfiguration $configuration,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): ConnectionInterface {
+                return new class($this->capture) implements ConnectionInterface {
+                    public Network\Address $localAddress {
+                        get => Network\Address::tcp();
+                    }
+                    public Network\Address $peerAddress {
+                        get => Network\Address::tcp();
+                    }
+                    public null|ConnectionState $tlsState {
+                        get => null;
+                    }
+
+                    public function __construct(
+                        private readonly ArrayObject $capture,
+                    ) {}
+
+                    public function exchange(
+                        Request $request,
+                        ClientConfiguration $configuration,
+                        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+                    ): Transaction {
+                        $this->capture['request'] = $request;
+
+                        return new Transaction(
+                            [],
+                            null,
+                            new Response(
+                                status: 200,
+                                protocolVersion: ProtocolVersion::V11,
+                                headers: FieldMap::from([]),
+                            ),
+                        );
+                    }
+                };
+            }
+        };
     }
 }

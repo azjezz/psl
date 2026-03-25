@@ -43,6 +43,10 @@ final readonly class ExchangeHandler implements HandlerInterface
         ClientConfiguration $configuration,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): Transaction {
+        if (!$request->headers->has('user-agent')) {
+            $request = $request->withHeaders($request->headers->with('user-agent', 'php-standard-library/http-client'));
+        }
+
         return $connection->exchange($request, $configuration, $cancellation);
     }
 }
