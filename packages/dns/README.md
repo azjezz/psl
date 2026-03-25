@@ -1,6 +1,6 @@
 # PHP Standard Library - DNS
 
-Async DNS resolver with connection pooling, EDNS0, DNS-over-TLS, and cross-platform system configuration.
+Async DNS resolver with connection pooling, EDNS0, DNS-over-TLS, DNS-over-HTTPS, and cross-platform system configuration.
 
 ---
 

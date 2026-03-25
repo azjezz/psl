@@ -57,6 +57,7 @@
   - Cross-platform system configuration loading (Linux, macOS, Windows) via async process execution
   - EDNS0 support: DNS cookies, client subnet, padding, NSID, TCP keepalive, key tag, extended DNS error
   - 20+ record types: A, AAAA, NS, CNAME, MX, TXT, SRV, SOA, PTR, CAA, SSHFP, TLSA, SVCB, HTTPS, LOC, NAPTR, DS, DNSKEY, RRSIG, NSEC, NSEC3
+  - DNS-over-HTTPS (DoH) via `HTTPSResolver` using the HTTP client (RFC 8484)
   - DNS name validation with null byte and label length enforcement
   - `ResponseCode` helper methods: `isSuccess()`, `isError()`, `isServerError()`, `isNameError()`
 - feat: introduce `DNSSEC` component - full DNSSEC validation chain

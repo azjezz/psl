@@ -13,4 +13,4 @@ use Psl\Exception;
  * by the HTTP client extend this class, making it possible to catch any client
  * error with a single catch clause.
  */
-class RuntimeException extends Exception\RuntimeException {}
+class RuntimeException extends Exception\RuntimeException implements ExceptionInterface {}
