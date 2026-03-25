@@ -31,6 +31,13 @@ use function unlink;
  */
 final class UnixSocketTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (\PHP_OS_FAMILY === 'Windows') {
+            static::markTestSkipped('Unix sockets are not supported on Windows.');
+        }
+    }
+
     /**
      * @return non-empty-string
      */
