@@ -14,8 +14,9 @@ use function substr;
 /**
  * Resolve a URI reference against a base URL per RFC 3986 Section 5.2.2.
  *
- * Handles three forms of URI reference:
+ * Handles four forms of URI reference:
  * - Absolute URI (contains "://"): parsed independently, base URL ignored.
+ * - Protocol-relative (starts with "//"): inherits scheme from base URL, new authority and path.
  * - Absolute path (starts with "/"): path is resolved with dot-segment removal.
  * - Relative path (e.g., "path", "../path"): merged with the base path then
  *   dot-segments are removed.
@@ -41,6 +42,11 @@ function resolve_url(string $reference, URL\URL $baseUrl): URL\URL
 {
     if (str_contains($reference, '://')) {
         return URL\parse($reference);
+    }
+
+    // Protocol-relative reference (//authority/path): inherit scheme from base URL.
+    if (str_starts_with($reference, '//')) {
+        return URL\parse($baseUrl->scheme . ':' . $reference);
     }
 
     $fragment = null;

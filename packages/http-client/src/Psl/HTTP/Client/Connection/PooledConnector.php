@@ -29,6 +29,7 @@ use Psl\Unix;
 use Throwable;
 
 use function array_key_exists;
+use function array_key_first;
 use function array_pop;
 use function array_shift;
 use function count;
@@ -96,18 +97,33 @@ use function Psl\HTTP\Client\Internal\should_tunnel;
  * @link https://datatracker.ietf.org/doc/html/rfc7301 TLS ALPN Extension
  *
  * @api
+ *
+ * @mago-expect lint:kan-defect
+ * @mago-expect lint:cyclomatic-complexity
  */
 final class PooledConnector implements ConnectorInterface
 {
     private TCP\ConnectorInterface $tcpConnector;
 
     /**
-     * Maximum number of idle HTTP/1.x connections retained per origin.
-     *
-     * When the idle pool for an origin reaches this limit, the oldest idle
-     * connections are evicted (closed) to make room for newly released ones.
+     * Default maximum total idle HTTP/1.x connections across all origins.
      */
-    private const int MAX_IDLE_CONNECTIONS = 32;
+    private const int DEFAULT_MAX_IDLE_CONNECTIONS = 256;
+
+    /**
+     * Default maximum idle HTTP/1.x connections retained per origin.
+     */
+    private const int DEFAULT_MAX_IDLE_CONNECTIONS_PER_HOST = 32;
+
+    /**
+     * Maximum total idle HTTP/1.x connections across all origins.
+     */
+    private int $maxIdleConnections;
+
+    /**
+     * Maximum idle HTTP/1.x connections per origin.
+     */
+    private int $maxIdleConnectionsPerHost;
 
     /**
      * Idle HTTP/1.x streams available for reuse, keyed by origin string.
@@ -140,9 +156,39 @@ final class PooledConnector implements ConnectorInterface
      */
     private array $pendingConnections = [];
 
-    public function __construct(null|TCP\ConnectorInterface $tcpConnector = null)
-    {
+    /**
+     * @param null|TCP\ConnectorInterface $tcpConnector TCP connector; a default is created if null.
+     * @param int $maxIdleConnections Maximum total idle H1 connections across all origins.
+     * @param int $maxIdleConnectionsPerHost Maximum idle H1 connections per origin.
+     */
+    public function __construct(
+        null|TCP\ConnectorInterface $tcpConnector = null,
+        int $maxIdleConnections = self::DEFAULT_MAX_IDLE_CONNECTIONS,
+        int $maxIdleConnectionsPerHost = self::DEFAULT_MAX_IDLE_CONNECTIONS_PER_HOST,
+    ) {
         $this->tcpConnector = $tcpConnector ?? new TCP\Connector(new TCP\ConnectConfiguration(noDelay: true));
+        $this->maxIdleConnections = $maxIdleConnections;
+        $this->maxIdleConnectionsPerHost = $maxIdleConnectionsPerHost;
+    }
+
+    /**
+     * Close all idle connections and shut down H2 sessions.
+     */
+    public function __destruct()
+    {
+        foreach ($this->h1Idle as $streams) {
+            foreach ($streams as $stream) {
+                $stream->close();
+            }
+        }
+
+        $this->h1Idle = [];
+
+        foreach ($this->h2Sessions as [$session]) {
+            $session->markClosed();
+        }
+
+        $this->h2Sessions = [];
     }
 
     /**
@@ -198,6 +244,8 @@ final class PooledConnector implements ConnectorInterface
 
         $origin = Origin::fromUrl($url);
         $key = $origin->toString();
+
+        $this->pruneClosedH2Sessions();
 
         if (array_key_exists($key, $this->h2Sessions)) {
             [$session, $local, $peer, $tls] = $this->h2Sessions[$key];
@@ -424,9 +472,35 @@ final class PooledConnector implements ConnectorInterface
         $peer = $stream->getPeerAddress();
         $tls = $stream instanceof TLS\StreamInterface ? $stream->getState() : null;
 
+        $this->pruneClosedH2Sessions();
+        while (count($this->h2Sessions) >= $this->maxIdleConnections) {
+            $oldestKey = array_key_first($this->h2Sessions);
+            if ($oldestKey === null) {
+                break;
+            }
+
+            [$oldSession] = $this->h2Sessions[$oldestKey];
+            $oldSession->markClosed();
+            unset($this->h2Sessions[$oldestKey]);
+        }
+
         $this->h2Sessions[$key] = [$session, $local, $peer, $tls];
 
         return new H2Connection($session, $local, $peer, $tls, $this->h2Reconnect(...));
+    }
+
+    /**
+     * Remove all closed H2 sessions from the pool.
+     */
+    private function pruneClosedH2Sessions(): void
+    {
+        foreach ($this->h2Sessions as $key => [$session]) {
+            if (!$session->isClosed()) {
+                continue;
+            }
+
+            unset($this->h2Sessions[$key]);
+        }
     }
 
     /**
@@ -460,15 +534,52 @@ final class PooledConnector implements ConnectorInterface
                 return;
             }
 
-            // Evict oldest idle connections when over the cap.
             $this->h1Idle[$key] ??= [];
-            while (count($this->h1Idle[$key]) >= self::MAX_IDLE_CONNECTIONS) {
+            while (count($this->h1Idle[$key]) >= $this->maxIdleConnectionsPerHost) {
                 $evicted = array_shift($this->h1Idle[$key]);
                 $evicted?->close();
             }
 
             $this->h1Idle[$key][] = $stream;
+
+            $this->evictExcessIdleConnections();
         };
+    }
+
+    /**
+     * Evict the oldest idle H1 connections globally until the total is within
+     * {@see $maxIdleConnections}. Iterates origins in insertion order and
+     * removes the oldest (first) connection from each until under the limit.
+     */
+    private function evictExcessIdleConnections(): void
+    {
+        $total = 0;
+        foreach ($this->h1Idle as $streams) {
+            $total += count($streams);
+        }
+
+        while ($total > $this->maxIdleConnections) {
+            foreach ($this->h1Idle as $originKey => $streams) {
+                if ($streams === []) {
+                    unset($this->h1Idle[$originKey]);
+                    continue;
+                }
+
+                $evicted = array_shift($this->h1Idle[$originKey]);
+                $evicted?->close();
+
+                if ($this->h1Idle[$originKey] === []) {
+                    unset($this->h1Idle[$originKey]);
+                }
+
+                $total--;
+                break;
+            }
+
+            if ($this->h1Idle === []) {
+                break;
+            }
+        }
     }
 
     /**
@@ -487,9 +598,17 @@ final class PooledConnector implements ConnectorInterface
                 unset($this->h1Idle[$key]);
             }
 
-            if (!$stream->isClosed()) {
-                return $stream;
+            if ($stream->isClosed()) {
+                continue;
             }
+
+            $probe = $stream->tryRead(1);
+            if ($probe !== '' || $stream->reachedEndOfDataSource()) {
+                $stream->close();
+                continue;
+            }
+
+            return $stream;
         }
 
         return null;

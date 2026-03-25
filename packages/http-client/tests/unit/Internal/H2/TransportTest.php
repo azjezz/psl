@@ -1239,4 +1239,212 @@ final class TransportTest extends TestCase
             }
         }
     }
+
+    public function testTimeoutOnHungServerDoesNotDeadlock(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
+        $address = $listener->getLocalAddress();
+
+        $serverFuture = Async\run(static function () use ($listener): void {
+            try {
+                $conn = $listener->accept();
+                $server = new H2\ServerConnection($conn);
+                $server->readClientPreface();
+                $server->initialize();
+
+                while ($server->isConnected()) {
+                    try {
+                        $server->readEvent(new TimeoutCancellationToken(Duration::seconds(5)));
+                    } catch (CancelledException) {
+                        break;
+                    }
+                }
+            } catch (
+                IO\Exception\ExceptionInterface|Network\Exception\ExceptionInterface|H2\Exception\ExceptionInterface|HPACK\Exception\ExceptionInterface
+            ) {
+                // @mago-expect lint:no-empty-catch-clause
+            }
+        });
+
+        try {
+            $connector = new TCP\Connector(new TCP\ConnectConfiguration(noDelay: true));
+            /** @var int<0, 65535> $port */
+            $port = $address->port;
+            $stream = $connector->connect('127.0.0.1', $port, new TimeoutCancellationToken(Duration::seconds(5)));
+
+            $session = new H2Session($stream, new H2ClientConfiguration());
+            $connection = new H2Connection($session, $stream->getLocalAddress(), $stream->getPeerAddress(), null);
+
+            $url = URL\parse('http://127.0.0.1/');
+            $request = new Request(method: 'GET', url: $url, requestTarget: '/');
+            $config = new ClientConfiguration();
+
+            $threw = false;
+            try {
+                $connection->exchange($request, $config, new TimeoutCancellationToken(Duration::milliseconds(300)));
+            } catch (CancelledException) {
+                $threw = true;
+            }
+
+            static::assertTrue($threw, 'Expected CancelledException on timeout');
+        } finally {
+            $listener->close();
+            try {
+                $serverFuture->await();
+            } catch (Throwable) {
+                // @mago-expect lint:no-empty-catch-clause
+            }
+        }
+    }
+
+    public function testConcurrentTimeoutsOnHungServerDoNotDeadlock(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
+        $address = $listener->getLocalAddress();
+
+        $serverFuture = Async\run(static function () use ($listener): void {
+            try {
+                $conn = $listener->accept();
+                $server = new H2\ServerConnection($conn);
+                $server->readClientPreface();
+                $server->initialize();
+
+                while ($server->isConnected()) {
+                    try {
+                        $server->readEvent(new TimeoutCancellationToken(Duration::seconds(5)));
+                    } catch (CancelledException) {
+                        break;
+                    }
+                }
+            } catch (
+                IO\Exception\ExceptionInterface|Network\Exception\ExceptionInterface|H2\Exception\ExceptionInterface|HPACK\Exception\ExceptionInterface
+            ) {
+                // @mago-expect lint:no-empty-catch-clause
+            }
+        });
+
+        try {
+            $connector = new TCP\Connector(new TCP\ConnectConfiguration(noDelay: true));
+            /** @var int<0, 65535> $port */
+            $port = $address->port;
+            $stream = $connector->connect('127.0.0.1', $port, new TimeoutCancellationToken(Duration::seconds(5)));
+
+            $session = new H2Session($stream, new H2ClientConfiguration());
+            $connection = new H2Connection($session, $stream->getLocalAddress(), $stream->getPeerAddress(), null);
+
+            $url = URL\parse('http://127.0.0.1/');
+            $config = new ClientConfiguration();
+
+            $tasks = [];
+            for ($i = 0; $i < 5; $i++) {
+                $delay = 100 + ($i * 50);
+                $tasks[] = static function () use ($connection, $url, $config, $delay): bool {
+                    try {
+                        $connection->exchange(
+                            new Request(method: 'GET', url: $url, requestTarget: '/'),
+                            $config,
+                            new TimeoutCancellationToken(Duration::milliseconds($delay)),
+                        );
+                        return false;
+                    } catch (CancelledException) {
+                        return true;
+                    }
+                };
+            }
+
+            $results = Async\concurrently($tasks);
+
+            foreach ($results as $i => $cancelled) {
+                static::assertTrue($cancelled, "Request {$i} should have been cancelled");
+            }
+        } finally {
+            $listener->close();
+            try {
+                $serverFuture->await();
+            } catch (Throwable) {
+                // @mago-expect lint:no-empty-catch-clause
+            }
+        }
+    }
+
+    public function testConnectionUsableAfterTimeout(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
+        $address = $listener->getLocalAddress();
+
+        $serverFuture = Async\run(static function () use ($listener): void {
+            try {
+                $conn = $listener->accept();
+                $server = new H2\ServerConnection($conn);
+                $server->readClientPreface();
+                $server->initialize();
+
+                $requestCount = 0;
+                while ($server->isConnected()) {
+                    try {
+                        $events = $server->readEvent(new TimeoutCancellationToken(Duration::seconds(5)));
+                    } catch (CancelledException) {
+                        break;
+                    }
+
+                    foreach ($events as $event) {
+                        if (!$event instanceof H2\Event\HeadersReceived) {
+                            continue;
+                        }
+
+                        $requestCount++;
+                        if ($requestCount <= 1) {
+                            continue;
+                        }
+
+                        $server->sendHeaders($event->streamId, [
+                            new HPACK\Header(':status', '200'),
+                            new HPACK\Header('content-length', '2'),
+                        ]);
+                        $server->sendData($event->streamId, 'ok', endStream: true);
+                    }
+                }
+            } catch (
+                IO\Exception\ExceptionInterface|Network\Exception\ExceptionInterface|H2\Exception\ExceptionInterface|HPACK\Exception\ExceptionInterface
+            ) {
+                // @mago-expect lint:no-empty-catch-clause
+            }
+        });
+
+        try {
+            $connector = new TCP\Connector(new TCP\ConnectConfiguration(noDelay: true));
+            /** @var int<0, 65535> $port */
+            $port = $address->port;
+            $stream = $connector->connect('127.0.0.1', $port, new TimeoutCancellationToken(Duration::seconds(5)));
+
+            $session = new H2Session($stream, new H2ClientConfiguration());
+            $connection = new H2Connection($session, $stream->getLocalAddress(), $stream->getPeerAddress(), null);
+
+            $url = URL\parse('http://127.0.0.1/');
+            $config = new ClientConfiguration();
+            $request = new Request(method: 'GET', url: $url, requestTarget: '/');
+
+            $threw = false;
+            try {
+                $connection->exchange($request, $config, new TimeoutCancellationToken(Duration::milliseconds(200)));
+            } catch (CancelledException) {
+                $threw = true;
+            }
+
+            static::assertTrue($threw, 'First request should have timed out');
+
+            $tx = $connection->exchange($request, $config, new TimeoutCancellationToken(Duration::seconds(5)));
+
+            static::assertSame(200, $tx->response->status);
+            $body = $tx->response->body?->readAll() ?? '';
+            static::assertSame('ok', $body);
+        } finally {
+            $listener->close();
+            try {
+                $serverFuture->await();
+            } catch (Throwable) {
+                // @mago-expect lint:no-empty-catch-clause
+            }
+        }
+    }
 }

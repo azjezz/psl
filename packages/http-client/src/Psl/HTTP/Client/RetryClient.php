@@ -57,6 +57,20 @@ use Psl\Network;
  * 1 initial request + 2 retries. If all attempts fail, the exception from the last
  * attempt is propagated.
  *
+ * ## Request body handling
+ *
+ * When a request has a body, retry behavior depends on whether the body is seekable:
+ *
+ * - **Seekable body** ({@see IO\SeekHandleInterface}): the body position is recorded
+ *   before the first attempt via {@see IO\SeekHandleInterface::tell()}, and rewound
+ *   via {@see IO\SeekHandleInterface::seek()} before each retry. This covers
+ *   {@see IO\MemoryHandle}, file handles, and any other seekable stream.
+ * - **Non-seekable body**: the request is NOT retried, even for idempotent methods.
+ *   The body may have been partially or fully consumed by the first attempt, so
+ *   retrying would send an incomplete or empty body. The exception from the first
+ *   attempt propagates immediately.
+ * - **No body** ({@see null}): retries proceed normally (nothing to rewind).
+ *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-9.2.2 Idempotent Methods
  *
  * @api
@@ -111,6 +125,10 @@ final readonly class RetryClient implements ClientInterface
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): Transaction {
         $attempt = 0;
+        $body = $request->body;
+        $hasBody = $body !== null;
+        $seekable = $body instanceof IO\SeekHandleInterface;
+        $bodyOffset = $seekable ? $body->tell() : 0;
 
         while (true) {
             $attempt++;
@@ -124,6 +142,15 @@ final readonly class RetryClient implements ClientInterface
 
                 if (!(self::IDEMPOTENT_METHODS[$request->method] ?? false)) {
                     throw $e;
+                }
+
+                if ($hasBody && !$seekable) {
+                    throw $e;
+                }
+
+                if ($seekable) {
+                    /** @var IO\SeekHandleInterface $body */
+                    $body->seek($bodyOffset);
                 }
 
                 $delayMs = (int) (

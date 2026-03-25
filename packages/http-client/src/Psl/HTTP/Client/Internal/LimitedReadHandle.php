@@ -33,7 +33,7 @@ use function strlen;
  * @see ResponseReader::buildBody() Wraps body handles when a max size is configured.
  * @see ResponseBodyHandle Uses its own size enforcement for H2.
  */
-final class LimitedReadHandle implements IO\ReadHandleInterface
+final class LimitedReadHandle implements IO\ReadHandleInterface, IO\CloseHandleInterface
 {
     use IO\ReadHandleConvenienceMethodsTrait;
 
@@ -41,6 +41,8 @@ final class LimitedReadHandle implements IO\ReadHandleInterface
     private int $bytesRead = 0;
 
     private bool $limitReached = false;
+
+    private bool $closed = false;
 
     /**
      * @param IO\ReadHandleInterface $inner The inner body handle to read from.
@@ -50,6 +52,11 @@ final class LimitedReadHandle implements IO\ReadHandleInterface
         private readonly IO\ReadHandleInterface $inner,
         private readonly int $limit,
     ) {}
+
+    public function __destruct()
+    {
+        $this->close();
+    }
 
     /**
      * @throws Exception\RuntimeException If an error occurred during the operation.
@@ -105,6 +112,22 @@ final class LimitedReadHandle implements IO\ReadHandleInterface
         }
 
         return $this->inner->reachedEndOfDataSource();
+    }
+
+    public function isClosed(): bool
+    {
+        return $this->closed;
+    }
+
+    public function close(): void
+    {
+        if (!$this->closed) {
+            $this->closed = true;
+
+            if ($this->inner instanceof IO\CloseHandleInterface) {
+                $this->inner->close();
+            }
+        }
     }
 
     /**

@@ -11,9 +11,11 @@ use Psl\DateTime\Duration;
 use Psl\HTTP\Client\Client;
 use Psl\HTTP\Client\ClientConfiguration;
 use Psl\HTTP\Client\Connection\PooledConnector;
+use Psl\HTTP\Client\Exception\ProtocolException;
 use Psl\HTTP\Message\ProtocolVersion;
 use Psl\HTTP\Message\Request;
 use Psl\IO;
+use Psl\IO\Exception\RuntimeException;
 use Psl\Network;
 use Psl\TCP;
 
@@ -262,12 +264,12 @@ final class PooledConnectorH1Test extends TestCase
         $threw = false;
         try {
             $client->send(new Request(method: 'GET', url: $url));
-        } catch (Network\Exception\RuntimeException) {
+        } catch (Network\Exception\RuntimeException|ProtocolException) {
             $threw = true;
-        } catch (\Psl\HTTP\Client\Exception\ProtocolException) {
+        } catch (RuntimeException) {
             $threw = true;
         }
 
-        static::assertTrue($threw, 'Expected either ProtocolException or Network\\RuntimeException');
+        static::assertTrue($threw, 'Expected a connection or protocol error');
     }
 }
