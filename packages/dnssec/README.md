@@ -1,6 +1,6 @@
 # PHP Standard Library - DNSSEC
 
-DNSSEC validation for DNS responses.
+DNSSEC validation with full trust chain verification, RRSIG signatures, and NSEC/NSEC3 proofs.
 
 ---
 

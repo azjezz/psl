@@ -1,6 +1,6 @@
 # PHP Standard Library - MIME
 
-MIME type detection and mapping.
+MIME media types, multipart body construction, content sniffing, S/MIME cryptography, and DKIM signing.
 
 ---
 

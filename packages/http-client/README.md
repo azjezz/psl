@@ -1,6 +1,6 @@
 # PHP Standard Library - HTTP Client
 
-Async HTTP client with connection pooling, HTTP/2, and DNS resolution.
+Async HTTP client with connection pooling, HTTP/2 multiplexing, middleware, and composable decorators for redirects and retries.
 
 ---
 
