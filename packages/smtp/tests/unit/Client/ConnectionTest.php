@@ -16,8 +16,17 @@ use Psl\Str\Byte;
 use Psl\TCP;
 use Psl\TLS\Connector;
 
+use const PHP_OS_FAMILY;
+
 final class ConnectionTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (PHP_OS_FAMILY === 'Windows') {
+            static::markTestSkipped('SMTP connection tests are not supported on Windows.');
+        }
+    }
+
     public function testReadGreeting(): void
     {
         [$connection, $serverStream] = $this->createPair();

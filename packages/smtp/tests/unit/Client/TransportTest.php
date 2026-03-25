@@ -28,11 +28,20 @@ use Psl\TCP;
 
 use function base64_decode;
 
+use const PHP_OS_FAMILY;
+
 /**
  * @mago-expect lint:kan-defect
  */
 final class TransportTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (PHP_OS_FAMILY === 'Windows') {
+            static::markTestSkipped('SMTP transport tests are not supported on Windows.');
+        }
+    }
+
     public function testSendOverPlainConnection(): void
     {
         $server = TCP\listen('127.0.0.1', 0);
