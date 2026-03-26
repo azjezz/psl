@@ -1291,7 +1291,6 @@ final class StateMachine
             throw FrameDecodingException::forInvalidPayload('WINDOW_UPDATE', 'payload must be exactly 4 bytes');
         }
 
-        /** @var int<0, 2147483647> $increment */
         $increment = unpack('N', $rawFrame->payload, 0)[1] & 0x7FFF_FFFF;
 
         if ($increment === 0) {

@@ -205,7 +205,6 @@ final class EventParser
             }
 
             if ($c >= 'A' && $c <= 'Z' || $c === '~' || $c >= 'a' && $c <= 'z') {
-                /** @var non-negative-int $paramLen */
                 $paramLen = $i - 2;
                 $params = substr($this->buffer, 2, $paramLen);
                 $this->buffer = substr($this->buffer, $i + 1);
@@ -264,7 +263,6 @@ final class EventParser
         for ($i = 3; $i < $len; $i++) {
             $c = $this->buffer[$i];
             if ($c === 'M' || $c === 'm') {
-                /** @var non-negative-int $paramLen */
                 $paramLen = $i - 3;
                 $params = substr($this->buffer, 3, $paramLen);
                 $isRelease = $c === 'm';

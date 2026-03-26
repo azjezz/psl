@@ -188,7 +188,6 @@ $frames = Iter\rewindable(
                     . "\n";
 
                 // Spinner
-                // @mago-expect analysis:mismatched-array-index
                 $out .= "\n    " . Ansi\apply($dots[$f % 8], Style\bold(), Ansi\foreground($rainbow(($f * 15) % 360)));
                 $out .= ' ' . Ansi\apply('rendering...', Style\dim(), Ansi\foreground(Color\white())) . "\n";
 

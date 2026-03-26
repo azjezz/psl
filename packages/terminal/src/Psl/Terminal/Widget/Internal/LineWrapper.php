@@ -86,14 +86,12 @@ final class LineWrapper
                 continue;
             }
 
-            /** @var non-negative-int $lineStartPos */
             $lines[] = self::rebuildLine($lineStartPos, Str\length($currentLine), $spans);
             $lineStartPos += Str\length($currentLine) + 1; // +1 for the space
             $currentLine = $word;
         }
 
         if ($currentLine !== '') {
-            /** @var non-negative-int $lineStartPos */
             $lines[] = self::rebuildLine($lineStartPos, Str\length($currentLine), $spans);
         }
 
@@ -114,7 +112,6 @@ final class LineWrapper
         while ($pos < $length) {
             /** @var non-negative-int $safeMaxWidth */
             $safeMaxWidth = $maxWidth;
-            /** @var non-negative-int $pos */
             $chunk = Str\width_slice($fullText, $pos, $safeMaxWidth);
             $chunkLen = Str\length($chunk);
             if ($chunkLen === 0) {

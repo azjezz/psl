@@ -73,7 +73,6 @@ final class Reader implements BufferedReadHandleInterface
                 break;
             }
 
-            /** @var positive-int $toRead */
             $toRead = $size - $length;
             $this->fillBuffer($toRead, $cancellation);
         } while (true);
