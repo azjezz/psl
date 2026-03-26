@@ -973,12 +973,11 @@ final class MutationCoverageTest extends TestCase
     public function testWindowUpdateZeroIncrementErrorMessageContainsZero(): void
     {
         $raw = new RawFrame(FrameType::WindowUpdate->value, 0x00, 1, pack('N', 0));
-        try {
-            WindowUpdateFrame::fromRaw($raw);
-            static::fail('Expected FrameDecodingException');
-        } catch (FrameDecodingException $e) {
-            static::assertStringContainsString('got 0', $e->getMessage());
-        }
+
+        $this->expectException(FrameDecodingException::class);
+        $this->expectExceptionMessage('got 0');
+
+        WindowUpdateFrame::fromRaw($raw);
     }
 
     public function testHeadersFramePriorityWithPaddedOffsetSubtraction(): void
@@ -1041,5 +1040,183 @@ final class MutationCoverageTest extends TestCase
         $this->expectException(FrameDecodingException::class);
         $this->expectExceptionMessage('missing promised stream ID');
         PushPromiseFrame::fromRaw($raw);
+    }
+
+    public function testAltSvcOriginLengthZeroUsesEmptyStringPath(): void
+    {
+        $payload = pack('n', 0) . 'h2=":443"';
+        $raw = new RawFrame(FrameType::AltSvc->value, 0, 0, $payload);
+        $parsed = AltSvcFrame::fromRaw($raw);
+        static::assertSame('', $parsed->origin);
+        static::assertSame('h2=":443"', $parsed->fieldValue);
+    }
+
+    public function testAltSvcOriginLengthZeroProducesEmptyNotSubstrResult(): void
+    {
+        $raw = new RawFrame(FrameType::AltSvc->value, 0, 0, pack('n', 0));
+        $parsed = AltSvcFrame::fromRaw($raw);
+        static::assertSame('', $parsed->origin);
+        static::assertIsString($parsed->origin);
+        static::assertSame(0, strlen($parsed->origin));
+    }
+
+    public function testAltSvcOriginLengthOneUsesSubstrNotEmpty(): void
+    {
+        $raw = new RawFrame(FrameType::AltSvc->value, 0, 0, pack('n', 1) . 'X' . 'val');
+        $parsed = AltSvcFrame::fromRaw($raw);
+        static::assertSame('X', $parsed->origin);
+        static::assertSame('val', $parsed->fieldValue);
+    }
+
+    public function testDataFramePadLengthEqualPayloadLengthIsRejected(): void
+    {
+        $raw = new RawFrame(FrameType::Data->value, 0x08, 1, chr(1));
+        $this->expectException(FrameDecodingException::class);
+        DataFrame::fromRaw($raw);
+    }
+
+    public function testDataFramePadLengthOneMoreThanPayloadFails(): void
+    {
+        $raw = new RawFrame(FrameType::Data->value, 0x08, 1, chr(3) . 'ab');
+        $this->expectException(FrameDecodingException::class);
+        DataFrame::fromRaw($raw);
+    }
+
+    public function testDataFramePadLengthOneLessThanPayloadSucceeds(): void
+    {
+        $raw = new RawFrame(FrameType::Data->value, 0x08, 1, chr(1) . 'ab');
+        $parsed = DataFrame::fromRaw($raw);
+        static::assertSame('a', $parsed->data);
+    }
+
+    public function testDataFrameThrowOnInvalidPaddingProducesException(): void
+    {
+        $raw = new RawFrame(FrameType::Data->value, 0x08, 1, chr(200));
+
+        $this->expectException(FrameDecodingException::class);
+        $this->expectExceptionMessage('padding');
+
+        DataFrame::fromRaw($raw);
+    }
+
+    public function testDataFrameExactBoundaryPadEqualsPayloadLengthMinusOne(): void
+    {
+        $raw = new RawFrame(FrameType::Data->value, 0x08, 1, chr(2) . 'ab');
+        $parsed = DataFrame::fromRaw($raw);
+        static::assertSame('', $parsed->data);
+    }
+
+    public function testDataFramePadLengthZeroSucceeds(): void
+    {
+        $raw = new RawFrame(FrameType::Data->value, 0x08, 1, chr(0) . 'data');
+        $parsed = DataFrame::fromRaw($raw);
+        static::assertSame('data', $parsed->data);
+    }
+
+    public function testHeadersFramePriorityMinusOffsetDetectsShortPayload(): void
+    {
+        $raw = new RawFrame(FrameType::Headers->value, 0x28, 1, chr(0) . 'abcd');
+        $this->expectException(FrameDecodingException::class);
+        $this->expectExceptionMessage('missing priority data');
+        HeadersFrame::fromRaw($raw);
+    }
+
+    public function testHeadersFramePriorityMinusOffsetWithPadOffset(): void
+    {
+        $padLength = 0;
+        $payload = chr($padLength) . pack('NC', 0, 0) . 'hdr';
+        $raw = new RawFrame(FrameType::Headers->value, 0x2C, 1, $payload);
+        $parsed = HeadersFrame::fromRaw($raw);
+        static::assertSame('hdr', $parsed->headerBlockFragment);
+    }
+
+    public function testHeadersFramePriorityWithLargePadAndOffset(): void
+    {
+        $padLength = 2;
+        $payload = chr($padLength) . pack('NC', 1, 0) . 'xyz' . str_repeat("\x00", $padLength);
+        $raw = new RawFrame(FrameType::Headers->value, 0x2C, 1, $payload);
+        $parsed = HeadersFrame::fromRaw($raw);
+        static::assertSame(1, $parsed->streamDependency);
+        static::assertSame('xyz', $parsed->headerBlockFragment);
+    }
+
+    public function testHeadersFrameEndStreamFlagOrPreservesOtherFlags(): void
+    {
+        $frame = new HeadersFrame(1, 'h', true, true, 0, 16, false);
+        $raw = $frame->toRaw();
+        static::assertSame(0x01 | 0x04 | 0x20, $raw->flags);
+        static::assertNotSame(0x01, $raw->flags);
+    }
+
+    public function testHeadersFrameEndStreamFlagIsOredNotAssigned(): void
+    {
+        $frame = new HeadersFrame(1, 'h', true, false);
+        $raw = $frame->toRaw();
+        static::assertSame(0x01, $raw->flags);
+
+        $frame2 = new HeadersFrame(1, 'h', true, true);
+        $raw2 = $frame2->toRaw();
+        static::assertSame(0x05, $raw2->flags);
+    }
+
+    public function testHeadersFrameOnlyEndStreamNoOtherFlags(): void
+    {
+        $frame = new HeadersFrame(1, 'x', true, false);
+        $raw = $frame->toRaw();
+        static::assertSame(0x01, $raw->flags);
+    }
+
+    public function testHeadersFramePayloadAppendNotAssignForPriority(): void
+    {
+        $frame = new HeadersFrame(1, 'DATA', true, true, 0, 16, false);
+        $raw = $frame->toRaw();
+        static::assertGreaterThan(4, strlen($raw->payload));
+        static::assertSame('DATA', substr($raw->payload, 5));
+    }
+
+    public function testHeadersFramePriorityPayloadIsPrependedToFragment(): void
+    {
+        $frame = new HeadersFrame(1, 'XYZ', false, true, 10, 64, false);
+        $raw = $frame->toRaw();
+        $parsed = HeadersFrame::fromRaw($raw);
+        static::assertSame('XYZ', $parsed->headerBlockFragment);
+        static::assertSame(10, $parsed->streamDependency);
+        static::assertSame(64, $parsed->weight);
+    }
+
+    public function testHeadersFrameNoPriorityPayloadIsJustFragment(): void
+    {
+        $frame = new HeadersFrame(1, 'FRAG', false, true);
+        $raw = $frame->toRaw();
+        static::assertSame('FRAG', $raw->payload);
+    }
+
+    public function testPushPromiseMinusNotPlusForPadLengthCheck(): void
+    {
+        $padLength = 3;
+        $payload = chr($padLength) . 'ab';
+        $raw = new RawFrame(FrameType::PushPromise->value, 0x0C, 1, $payload);
+        $this->expectException(FrameDecodingException::class);
+        $this->expectExceptionMessage('missing promised stream ID');
+        PushPromiseFrame::fromRaw($raw);
+    }
+
+    public function testPushPromisePaddedLargerPadLengthFails(): void
+    {
+        $padLength = 10;
+        $payload = chr($padLength) . pack('N', 2) . 'h';
+        $raw = new RawFrame(FrameType::PushPromise->value, 0x0C, 1, $payload);
+        $this->expectException(FrameDecodingException::class);
+        PushPromiseFrame::fromRaw($raw);
+    }
+
+    public function testPushPromisePaddedZeroPadSucceeds(): void
+    {
+        $padLength = 0;
+        $payload = chr($padLength) . pack('N', 5) . 'frag';
+        $raw = new RawFrame(FrameType::PushPromise->value, 0x0C, 1, $payload);
+        $parsed = PushPromiseFrame::fromRaw($raw);
+        static::assertSame(5, $parsed->promisedStreamId);
+        static::assertSame('frag', $parsed->headerBlockFragment);
     }
 }

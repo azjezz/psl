@@ -39,15 +39,15 @@ final class SequenceTest extends TestCase
         Async\run(static fn(): null => $sequence->waitFor([
             'time' => DateTime\Duration::milliseconds(3),
             'value' => 'a',
-        ]));
+        ]))->ignore();
         Async\run(static fn(): null => $sequence->waitFor([
             'time' => DateTime\Duration::milliseconds(4),
             'value' => 'b',
-        ]));
+        ]))->ignore();
         Async\run(static fn(): null => $sequence->waitFor([
             'time' => DateTime\Duration::milliseconds(5),
             'value' => 'c',
-        ]));
+        ]))->ignore();
         $last = Async\run(static fn(): null => $sequence->waitFor([
             'time' => null,
             'value' => 'd',

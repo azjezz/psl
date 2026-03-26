@@ -78,22 +78,20 @@ final class OptionalIncrementalTimeoutTest extends TestCase
 
     public function testExpiredTimeoutInvokesHandler(): void
     {
-        Async\run(static function (): void {
-            $called = false;
+        $called = false;
 
-            $timer = new Async\OptionalIncrementalTimeout(Duration::milliseconds(1), static function () use (
-                &$called,
-            ): null {
-                $called = true;
+        $timer = new Async\OptionalIncrementalTimeout(Duration::milliseconds(1), static function () use (
+            &$called,
+        ): null {
+            $called = true;
 
-                return null;
-            });
+            return null;
+        });
 
-            Async\sleep(Duration::milliseconds(10));
+        Async\sleep(Duration::milliseconds(10));
 
-            $timer->getRemaining();
+        $timer->getRemaining();
 
-            static::assertTrue($called);
-        })->await();
+        static::assertTrue($called);
     }
 }

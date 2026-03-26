@@ -42,15 +42,15 @@ final class KeyedSemaphoreTest extends TestCase
         Async\run(static fn(): null => $ks->waitFor('operation', [
             'time' => DateTime\Duration::milliseconds(3),
             'value' => 'a',
-        ]));
+        ]))->ignore();
         Async\run(static fn(): null => $ks->waitFor('operation', [
             'time' => DateTime\Duration::milliseconds(4),
             'value' => 'b',
-        ]));
+        ]))->ignore();
         Async\run(static fn(): null => $ks->waitFor('operation', [
             'time' => DateTime\Duration::milliseconds(5),
             'value' => 'c',
-        ]));
+        ]))->ignore();
         $last = Async\run(static fn(): null => $ks->waitFor('operation', [
             'time' => null,
             'value' => 'd',
@@ -78,11 +78,11 @@ final class KeyedSemaphoreTest extends TestCase
         Async\run(static fn(): null => $ks->waitFor('key', [
             'time' => DateTime\Duration::milliseconds(3),
             'value' => 'a',
-        ]));
+        ]))->ignore();
         Async\run(static fn(): null => $ks->waitFor('key', [
             'time' => DateTime\Duration::milliseconds(4),
             'value' => 'b',
-        ]));
+        ]))->ignore();
         $beforeLast = Async\run(static fn(): null => $ks->waitFor('key', [
             'time' => DateTime\Duration::milliseconds(5),
             'value' => 'c',
@@ -90,7 +90,7 @@ final class KeyedSemaphoreTest extends TestCase
         Async\run(static fn(): null => $ks->waitFor('key', [
             'time' => null,
             'value' => 'd',
-        ]));
+        ]))->ignore();
 
         $beforeLast->await();
 
@@ -132,7 +132,7 @@ final class KeyedSemaphoreTest extends TestCase
             Async\sleep(DateTime\Duration::milliseconds(2));
         });
 
-        Async\run(static fn(): null => $semaphore->waitFor('x', 'hello'));
+        Async\run(static fn(): null => $semaphore->waitFor('x', 'hello'))->ignore();
         $awaitable = Async\run(static fn(): null => $semaphore->waitFor('x', 'world'));
 
         Async\sleep(DateTime\Duration::milliseconds(1));

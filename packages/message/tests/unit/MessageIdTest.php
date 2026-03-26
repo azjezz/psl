@@ -168,26 +168,65 @@ final class MessageIdTest extends TestCase
     #[Test]
     public function parseEmptyStringThrowsAndDoesNotProceed(): void
     {
-        $caught = false;
-        try {
-            MessageId::parse('');
-        } catch (ParsingException) {
-            $caught = true;
-        }
+        $this->expectException(ParsingException::class);
 
-        static::assertTrue($caught);
+        MessageId::parse('');
     }
 
     #[Test]
     public function parseEmptyAngleBracketsThrowsAndDoesNotReturn(): void
     {
-        $caught = false;
-        try {
-            MessageId::parse('<>');
-        } catch (ParsingException) {
-            $caught = true;
-        }
+        $this->expectException(ParsingException::class);
 
-        static::assertTrue($caught);
+        MessageId::parse('<>');
+    }
+
+    #[Test]
+    public function parseEmptyStringThrowsBeforeReachingBracketLogic(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        MessageId::parse('');
+    }
+
+    #[Test]
+    public function parseWhitespaceOnlyThrowsAfterTrim(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        MessageId::parse('   ');
+    }
+
+    #[Test]
+    public function parseEmptyStringDoesNotReturnValue(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        MessageId::parse('');
+    }
+
+    #[Test]
+    public function parseEmptyAngleBracketsThrowsNotReturnsEmptyId(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        MessageId::parse('<>');
+    }
+
+    #[Test]
+    public function parseTabOnlyInputThrowsException(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        MessageId::parse("\t");
+    }
+
+    #[Test]
+    public function parseEmptyAngleBracketsExceptionMessageContainsInput(): void
+    {
+        $this->expectException(ParsingException::class);
+        $this->expectExceptionMessage('<>');
+
+        MessageId::parse('<>');
     }
 }

@@ -341,4 +341,71 @@ final class ParseTest extends TestCase
         static::assertInstanceOf(RegisteredNameHost::class, $authority->host);
         static::assertSame('例え.jp', $authority->host->name);
     }
+
+    public function testIPv4HostReturnedAsIs(): void
+    {
+        $iri = IRI\parse('http://192.168.1.1/path');
+
+        $authority = $iri->authority;
+        static::assertNotNull($authority);
+        static::assertInstanceOf(IPHost::class, $authority->host);
+        static::assertSame('192.168.1.1', $authority->host->address->toString());
+    }
+
+    public function testIPv6HostReturnedAsIs(): void
+    {
+        $iri = IRI\parse('http://[::1]/path');
+
+        $authority = $iri->authority;
+        static::assertNotNull($authority);
+        static::assertInstanceOf(IPHost::class, $authority->host);
+        static::assertSame('::1', $authority->host->address->toString());
+    }
+
+    public function testIPv6WithZoneId(): void
+    {
+        $iri = IRI\parse('http://[fe80::1%25eth0]/path');
+
+        $authority = $iri->authority;
+        static::assertNotNull($authority);
+        static::assertInstanceOf(IPHost::class, $authority->host);
+        static::assertSame('fe80::1', $authority->host->address->toString());
+        static::assertSame('eth0', $authority->host->zone);
+    }
+
+    public function testInvalidBracketedHostFallsToRegisteredName(): void
+    {
+        $iri = IRI\parse('http://[not-an-ip]/path');
+
+        $authority = $iri->authority;
+        static::assertNotNull($authority);
+        static::assertInstanceOf(RegisteredNameHost::class, $authority->host);
+        static::assertSame('[not-an-ip]', $authority->host->name);
+    }
+
+    public function testInvalidSchemeThrows(): void
+    {
+        $this->expectException(InvalidIRIException::class);
+
+        IRI\parse('1bad-scheme://example.com');
+    }
+
+    public function testRegexFailureReturnsEmptyIRI(): void
+    {
+        $iri = IRI\parse('');
+
+        static::assertNull($iri->scheme);
+        static::assertNull($iri->authority);
+        static::assertSame('', $iri->path);
+    }
+
+    public function testIPv4LikeButInvalidFallsToRegisteredName(): void
+    {
+        $iri = IRI\parse('http://999.999.999.999/path');
+
+        $authority = $iri->authority;
+        static::assertNotNull($authority);
+        static::assertInstanceOf(RegisteredNameHost::class, $authority->host);
+        static::assertSame('999.999.999.999', $authority->host->name);
+    }
 }

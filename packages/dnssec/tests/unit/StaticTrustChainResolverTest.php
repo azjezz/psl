@@ -156,4 +156,38 @@ final class StaticTrustChainResolverTest extends TestCase
         static::assertSame(TrustChainStatus::Insecure, $r2->status);
         static::assertSame(TrustChainStatus::Bogus, $r3->status, 'Non-configured zone should be Bogus');
     }
+
+    public function testInsecureZoneWithSingleEntryReturnsInsecure(): void
+    {
+        $resolver = new StaticTrustChainResolver([], ['test.example.com']);
+
+        $result = $resolver->resolve('test.example.com');
+
+        static::assertSame(TrustChainStatus::Insecure, $result->status);
+        static::assertNull($result->failure);
+    }
+
+    public function testInsecureZoneReturnsEmptyKeys(): void
+    {
+        $resolver = new StaticTrustChainResolver([], ['zone.test']);
+
+        $result = $resolver->resolve('zone.test');
+
+        static::assertSame(TrustChainStatus::Insecure, $result->status);
+        static::assertSame([], $result->keys);
+    }
+
+    public function testInsecureZoneStoredValueAllowsIssetDetection(): void
+    {
+        $key = new DNSKEYRecord('other.com', Duration::zero(), 257, 3, Algorithm::RSASHA256, 'key');
+        $resolver = new StaticTrustChainResolver(['other.com' => [$key]], ['insecure.com']);
+
+        $insecureResult = $resolver->resolve('insecure.com');
+        $secureResult = $resolver->resolve('other.com');
+        $bogusResult = $resolver->resolve('missing.com');
+
+        static::assertSame(TrustChainStatus::Insecure, $insecureResult->status);
+        static::assertSame(TrustChainStatus::Secure, $secureResult->status);
+        static::assertSame(TrustChainStatus::Bogus, $bogusResult->status);
+    }
 }

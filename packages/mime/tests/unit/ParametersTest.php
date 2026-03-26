@@ -10,6 +10,8 @@ use Psl\MIME\Exception\InvalidMediaTypeComponentException;
 use Psl\MIME\Exception\ParameterParsingException;
 use Psl\MIME\Parameters;
 
+use function strlen;
+
 final class ParametersTest extends TestCase
 {
     public function testParseSimple(): void
@@ -359,5 +361,87 @@ final class ParametersTest extends TestCase
         Parameters::fromPairs([
             ["\x01a", 'value'],
         ]);
+    }
+
+    public function testToStringEmptyPairsReturnsEmptyAndDoesNotFallThrough(): void
+    {
+        $params = Parameters::fromPairs([]);
+
+        $result = $params->toString();
+
+        static::assertSame('', $result);
+        static::assertSame(0, strlen($result));
+    }
+
+    public function testToStringEmptyVsNonEmptyAreDifferent(): void
+    {
+        $empty = Parameters::fromPairs([]);
+        $nonEmpty = Parameters::fromPairs([['a', 'b']]);
+
+        static::assertSame('', $empty->toString());
+        static::assertNotSame('', $nonEmpty->toString());
+        static::assertNotSame($empty->toString(), $nonEmpty->toString());
+    }
+
+    public function testToStringReturnTypeForEmptyPairs(): void
+    {
+        $params = Parameters::default();
+        $result = $params->toString();
+
+        static::assertSame('', $result);
+        static::assertEmpty($result);
+    }
+
+    public function testIsTokenWithControlCharAtIndex0(): void
+    {
+        $params = Parameters::fromPairs([
+            ['key', "\x00rest"],
+        ]);
+
+        static::assertStringContainsString('"', $params->toString());
+    }
+
+    public function testIsTokenIteratesFromZeroIndex(): void
+    {
+        $params = Parameters::fromPairs([
+            ['key', "ab\x01cd"],
+        ]);
+
+        $result = $params->toString();
+        static::assertStringContainsString('"', $result);
+    }
+
+    public function testIsTokenAllPrintableAsciiNoQuotes(): void
+    {
+        $params = Parameters::fromPairs([
+            ['key', 'simple'],
+        ]);
+
+        static::assertSame('; key=simple', $params->toString());
+        static::assertStringNotContainsString('"', $params->toString());
+    }
+
+    public function testValidateParameterNameIteratesFromZeroIndex(): void
+    {
+        $this->expectException(InvalidMediaTypeComponentException::class);
+
+        Parameters::fromPairs([
+            ["\x00valid", 'value'],
+        ]);
+    }
+
+    public function testValidateParameterNameWithControlCharInMiddle(): void
+    {
+        $this->expectException(InvalidMediaTypeComponentException::class);
+
+        Parameters::fromPairs([
+            ["ab\x01cd", 'value'],
+        ]);
+    }
+
+    public function testValidateParameterNameSingleValidCharAccepted(): void
+    {
+        $params = Parameters::fromPairs([['x', 'v']]);
+        static::assertSame('v', $params->get('x'));
     }
 }

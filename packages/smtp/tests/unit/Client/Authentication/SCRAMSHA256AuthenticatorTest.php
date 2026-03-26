@@ -20,6 +20,9 @@ use function hash_pbkdf2;
 use function preg_match;
 use function random_bytes;
 
+/**
+ * @mago-expect lint:kan-defect
+ */
 final class SCRAMSHA256AuthenticatorTest extends TestCase
 {
     public function testMechanism(): void
@@ -312,6 +315,203 @@ final class SCRAMSHA256AuthenticatorTest extends TestCase
 
         $connection->close();
         $serverStream->close();
+    }
+
+    public function testMalformedServerFirstMessage(): void
+    {
+        [$connection, $serverStream] = $this->createPair('SCRAM-SHA-256');
+
+        $future = Async\run(static function () use ($serverStream): void {
+            $command = '';
+            while (!Byte\contains($command, "\r\n")) {
+                $command .= $serverStream->read();
+            }
+
+            $serverStream->writeAll('334 ' . base64_encode('garbage') . "\r\n");
+        });
+
+        $auth = new SCRAMSHA256Authenticator('user', 'pass');
+
+        $this->expectException(AuthenticationException::class);
+        $this->expectExceptionMessage('Malformed server-first-message');
+
+        try {
+            $auth->authenticate($connection);
+        } finally {
+            $connection->close();
+            $serverStream->close();
+            $future->await();
+        }
+    }
+
+    public function testServerNonceMismatch(): void
+    {
+        [$connection, $serverStream] = $this->createPair('SCRAM-SHA-256');
+
+        $salt = random_bytes(16);
+
+        $future = Async\run(static function () use ($serverStream, $salt): void {
+            $command = '';
+            while (!Byte\contains($command, "\r\n")) {
+                $command .= $serverStream->read();
+            }
+
+            $serverFirstMessage = 'r=wrongnonce,s=' . base64_encode($salt) . ',i=4096';
+            $serverStream->writeAll('334 ' . base64_encode($serverFirstMessage) . "\r\n");
+        });
+
+        $auth = new SCRAMSHA256Authenticator('user', 'pass');
+
+        $this->expectException(AuthenticationException::class);
+        $this->expectExceptionMessage('Server nonce does not start with client nonce');
+
+        try {
+            $auth->authenticate($connection);
+        } finally {
+            $connection->close();
+            $serverStream->close();
+            $future->await();
+        }
+    }
+
+    public function testInvalidSaltEncoding(): void
+    {
+        [$connection, $serverStream] = $this->createPair('SCRAM-SHA-256');
+
+        $future = Async\run(static function () use ($serverStream): void {
+            $command = '';
+            while (!Byte\contains($command, "\r\n")) {
+                $command .= $serverStream->read();
+            }
+
+            $parts = Byte\split(Byte\trim($command), ' ', 3);
+            $clientFirstMessage = base64_decode($parts[2], true);
+            $clientFirstBare = Byte\slice($clientFirstMessage, 3);
+            preg_match('/r=([^,]+)/', $clientFirstBare, $matches);
+            $clientNonce = $matches[1];
+
+            $serverFirstMessage = 'r=' . $clientNonce . 'ext,s=!!!invalid!!!,i=4096';
+            $serverStream->writeAll('334 ' . base64_encode($serverFirstMessage) . "\r\n");
+        });
+
+        $auth = new SCRAMSHA256Authenticator('user', 'pass');
+
+        $this->expectException(AuthenticationException::class);
+        $this->expectExceptionMessage('Invalid salt encoding');
+
+        try {
+            $auth->authenticate($connection);
+        } finally {
+            $connection->close();
+            $serverStream->close();
+            $future->await();
+        }
+    }
+
+    public function testInvalidIterationCount(): void
+    {
+        [$connection, $serverStream] = $this->createPair('SCRAM-SHA-256');
+
+        $salt = random_bytes(16);
+
+        $future = Async\run(static function () use ($serverStream, $salt): void {
+            $command = '';
+            while (!Byte\contains($command, "\r\n")) {
+                $command .= $serverStream->read();
+            }
+
+            $parts = Byte\split(Byte\trim($command), ' ', 3);
+            $clientFirstMessage = base64_decode($parts[2], true);
+            $clientFirstBare = Byte\slice($clientFirstMessage, 3);
+            preg_match('/r=([^,]+)/', $clientFirstBare, $matches);
+            $clientNonce = $matches[1];
+
+            $serverFirstMessage = 'r=' . $clientNonce . 'ext,s=' . base64_encode($salt) . ',i=0';
+            $serverStream->writeAll('334 ' . base64_encode($serverFirstMessage) . "\r\n");
+        });
+
+        $auth = new SCRAMSHA256Authenticator('user', 'pass');
+
+        $this->expectException(AuthenticationException::class);
+        $this->expectExceptionMessage('Invalid iteration count');
+
+        try {
+            $auth->authenticate($connection);
+        } finally {
+            $connection->close();
+            $serverStream->close();
+            $future->await();
+        }
+    }
+
+    public function testServerVerificationFailed(): void
+    {
+        [$connection, $serverStream] = $this->createPair('SCRAM-SHA-256');
+
+        $salt = random_bytes(16);
+
+        $future = Async\run(static function () use ($serverStream, $salt): void {
+            $command = '';
+            while (!Byte\contains($command, "\r\n")) {
+                $command .= $serverStream->read();
+            }
+
+            $parts = Byte\split(Byte\trim($command), ' ', 3);
+            $clientFirstMessage = base64_decode($parts[2], true);
+            $clientFirstBare = Byte\slice($clientFirstMessage, 3);
+            preg_match('/r=([^,]+)/', $clientFirstBare, $matches);
+            $clientNonce = $matches[1];
+
+            $serverNonce = $clientNonce . 'ext';
+            $serverFirstMessage = 'r=' . $serverNonce . ',s=' . base64_encode($salt) . ',i=4096';
+            $serverStream->writeAll('334 ' . base64_encode($serverFirstMessage) . "\r\n");
+
+            $clientFinal = '';
+            while (!Byte\contains($clientFinal, "\r\n")) {
+                $clientFinal .= $serverStream->read();
+            }
+
+            $serverStream->writeAll('235 ' . base64_encode('v=' . base64_encode('wrong-signature')) . "\r\n");
+        });
+
+        $auth = new SCRAMSHA256Authenticator('user', 'pass');
+
+        $this->expectException(AuthenticationException::class);
+        $this->expectExceptionMessage('Server verification failed');
+
+        try {
+            $auth->authenticate($connection);
+        } finally {
+            $connection->close();
+            $serverStream->close();
+            $future->await();
+        }
+    }
+
+    public function testInvalidBase64InServerFirst(): void
+    {
+        [$connection, $serverStream] = $this->createPair('SCRAM-SHA-256');
+
+        $future = Async\run(static function () use ($serverStream): void {
+            $command = '';
+            while (!Byte\contains($command, "\r\n")) {
+                $command .= $serverStream->read();
+            }
+
+            $serverStream->writeAll("334 !!!not-base64!!!\r\n");
+        });
+
+        $auth = new SCRAMSHA256Authenticator('user', 'pass');
+
+        $this->expectException(AuthenticationException::class);
+
+        try {
+            $auth->authenticate($connection);
+        } finally {
+            $connection->close();
+            $serverStream->close();
+            $future->await();
+        }
     }
 
     /**

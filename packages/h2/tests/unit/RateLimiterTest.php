@@ -9,6 +9,7 @@ use Psl\DateTime;
 use Psl\H2\Exception\ProtocolException;
 use Psl\H2\Frame\FrameType;
 use Psl\H2\RateLimiter;
+use ReflectionProperty;
 
 use function usleep;
 
@@ -234,87 +235,66 @@ final class RateLimiterTest extends TestCase
             FrameType::Ping->value => [1, DateTime\Duration::seconds(10)],
         ]);
 
-        try {
-            $limiter->record(FrameType::Ping->value);
-            $limiter->record(FrameType::Ping->value);
-            static::fail('Expected ProtocolException');
-        } catch (ProtocolException $e) {
-            static::assertStringContainsString('Ping', $e->getMessage());
-            static::assertStringContainsString('Rate limit exceeded for frame type', $e->getMessage());
-        }
+        $this->expectException(ProtocolException::class);
+        $this->expectExceptionMessage('Rate limit exceeded for frame type');
+
+        $limiter->record(FrameType::Ping->value);
+        $limiter->record(FrameType::Ping->value);
     }
 
-    public function testDefaultDurationsAreExactlyTenSeconds(): void
+    public function testDefaultSettingsLimitIsExactly100(): void
     {
         $limiter = RateLimiter::default();
         for ($i = 0; $i < 100; $i++) {
             $limiter->record(FrameType::Settings->value);
         }
 
-        $caught = false;
-        try {
-            $limiter->record(FrameType::Settings->value);
-        } catch (ProtocolException) {
-            $caught = true;
-        }
+        $this->expectException(ProtocolException::class);
+        $limiter->record(FrameType::Settings->value);
+    }
 
-        static::assertTrue($caught, 'Settings limit should be exactly 100');
-
-        $limiter2 = RateLimiter::default();
+    public function testDefaultPingLimitIsExactly50(): void
+    {
+        $limiter = RateLimiter::default();
         for ($i = 0; $i < 50; $i++) {
-            $limiter2->record(FrameType::Ping->value);
+            $limiter->record(FrameType::Ping->value);
         }
 
-        $caught = false;
-        try {
-            $limiter2->record(FrameType::Ping->value);
-        } catch (ProtocolException) {
-            $caught = true;
-        }
+        $this->expectException(ProtocolException::class);
+        $limiter->record(FrameType::Ping->value);
+    }
 
-        static::assertTrue($caught, 'Ping limit should be exactly 50');
-
-        $limiter3 = RateLimiter::default();
+    public function testDefaultRstStreamLimitIsExactly100(): void
+    {
+        $limiter = RateLimiter::default();
         for ($i = 0; $i < 100; $i++) {
-            $limiter3->record(FrameType::RstStream->value);
+            $limiter->record(FrameType::RstStream->value);
         }
 
-        $caught = false;
-        try {
-            $limiter3->record(FrameType::RstStream->value);
-        } catch (ProtocolException) {
-            $caught = true;
-        }
+        $this->expectException(ProtocolException::class);
+        $limiter->record(FrameType::RstStream->value);
+    }
 
-        static::assertTrue($caught, 'RstStream limit should be exactly 100');
-
-        $limiter4 = RateLimiter::default();
+    public function testDefaultPriorityLimitIsExactly100(): void
+    {
+        $limiter = RateLimiter::default();
         for ($i = 0; $i < 100; $i++) {
-            $limiter4->record(FrameType::Priority->value);
+            $limiter->record(FrameType::Priority->value);
         }
 
-        $caught = false;
-        try {
-            $limiter4->record(FrameType::Priority->value);
-        } catch (ProtocolException) {
-            $caught = true;
-        }
+        $this->expectException(ProtocolException::class);
+        $limiter->record(FrameType::Priority->value);
+    }
 
-        static::assertTrue($caught, 'Priority limit should be exactly 100');
-
-        $limiter5 = RateLimiter::default();
+    public function testDefaultEmptyDataLimitIsExactly100(): void
+    {
+        $limiter = RateLimiter::default();
         for ($i = 0; $i < 100; $i++) {
-            $limiter5->record(RateLimiter::EMPTY_DATA_FRAME);
+            $limiter->record(RateLimiter::EMPTY_DATA_FRAME);
         }
 
-        $caught = false;
-        try {
-            $limiter5->record(RateLimiter::EMPTY_DATA_FRAME);
-        } catch (ProtocolException) {
-            $caught = true;
-        }
-
-        static::assertTrue($caught, 'Empty DATA limit should be exactly 100');
+        $this->expectException(ProtocolException::class);
+        $limiter->record(RateLimiter::EMPTY_DATA_FRAME);
     }
 
     public function testWindowResetsAtExactBoundary(): void
@@ -367,13 +347,10 @@ final class RateLimiterTest extends TestCase
 
         $limiter->record(FrameType::Settings->value);
 
-        try {
-            $limiter->record(FrameType::Settings->value);
-            static::fail('Expected exception');
-        } catch (ProtocolException $e) {
-            static::assertStringContainsString('Rate limit exceeded for frame type', $e->getMessage());
-            static::assertStringContainsString('Settings', $e->getMessage());
-        }
+        $this->expectException(ProtocolException::class);
+        $this->expectExceptionMessage('Rate limit exceeded for frame type');
+
+        $limiter->record(FrameType::Settings->value);
     }
 
     public function testErrorMessageForEmptyData(): void
@@ -384,12 +361,10 @@ final class RateLimiterTest extends TestCase
 
         $limiter->record(RateLimiter::EMPTY_DATA_FRAME);
 
-        try {
-            $limiter->record(RateLimiter::EMPTY_DATA_FRAME);
-            static::fail('Expected exception');
-        } catch (ProtocolException $e) {
-            static::assertStringContainsString('Rate limit exceeded for empty DATA frames', $e->getMessage());
-        }
+        $this->expectException(ProtocolException::class);
+        $this->expectExceptionMessage('Rate limit exceeded for empty DATA frames');
+
+        $limiter->record(RateLimiter::EMPTY_DATA_FRAME);
     }
 
     public function testCounterInitializesToZero(): void
@@ -414,14 +389,8 @@ final class RateLimiterTest extends TestCase
             $limiter->record(FrameType::Settings->value);
         }
 
-        $caught = false;
-        try {
-            $limiter->record(FrameType::Settings->value);
-        } catch (ProtocolException) {
-            $caught = true;
-        }
-
-        static::assertTrue($caught);
+        $this->expectException(ProtocolException::class);
+        $limiter->record(FrameType::Settings->value);
     }
 
     public function testDefaultPingDurationIsExactly10Seconds(): void
@@ -434,14 +403,8 @@ final class RateLimiterTest extends TestCase
             $limiter->record(FrameType::Ping->value);
         }
 
-        $caught = false;
-        try {
-            $limiter->record(FrameType::Ping->value);
-        } catch (ProtocolException) {
-            $caught = true;
-        }
-
-        static::assertTrue($caught);
+        $this->expectException(ProtocolException::class);
+        $limiter->record(FrameType::Ping->value);
     }
 
     public function testDefaultRstStreamDurationIsExactly10Seconds(): void
@@ -454,14 +417,8 @@ final class RateLimiterTest extends TestCase
             $limiter->record(FrameType::RstStream->value);
         }
 
-        $caught = false;
-        try {
-            $limiter->record(FrameType::RstStream->value);
-        } catch (ProtocolException) {
-            $caught = true;
-        }
-
-        static::assertTrue($caught);
+        $this->expectException(ProtocolException::class);
+        $limiter->record(FrameType::RstStream->value);
     }
 
     public function testDefaultPriorityDurationIsExactly10Seconds(): void
@@ -474,14 +431,8 @@ final class RateLimiterTest extends TestCase
             $limiter->record(FrameType::Priority->value);
         }
 
-        $caught = false;
-        try {
-            $limiter->record(FrameType::Priority->value);
-        } catch (ProtocolException) {
-            $caught = true;
-        }
-
-        static::assertTrue($caught);
+        $this->expectException(ProtocolException::class);
+        $limiter->record(FrameType::Priority->value);
     }
 
     public function testDefaultEmptyDataDurationIsExactly10Seconds(): void
@@ -494,14 +445,8 @@ final class RateLimiterTest extends TestCase
             $limiter->record(RateLimiter::EMPTY_DATA_FRAME);
         }
 
-        $caught = false;
-        try {
-            $limiter->record(RateLimiter::EMPTY_DATA_FRAME);
-        } catch (ProtocolException) {
-            $caught = true;
-        }
-
-        static::assertTrue($caught);
+        $this->expectException(ProtocolException::class);
+        $limiter->record(RateLimiter::EMPTY_DATA_FRAME);
     }
 
     public function testWindowResetsAtExactDuration(): void
@@ -533,12 +478,10 @@ final class RateLimiterTest extends TestCase
 
         $limiter->record(0xb);
 
-        try {
-            $limiter->record(0xb);
-            static::fail('Expected ProtocolException');
-        } catch (ProtocolException $e) {
-            static::assertStringContainsString('0x0b', $e->getMessage());
-        }
+        $this->expectException(ProtocolException::class);
+        $this->expectExceptionMessage('0x0b');
+
+        $limiter->record(0xb);
     }
 
     public function testErrorMessageContainsFrameTypePrefix(): void
@@ -549,12 +492,10 @@ final class RateLimiterTest extends TestCase
 
         $limiter->record(FrameType::Ping->value);
 
-        try {
-            $limiter->record(FrameType::Ping->value);
-            static::fail('Expected ProtocolException');
-        } catch (ProtocolException $e) {
-            static::assertStringContainsString('Rate limit exceeded for frame type Ping', $e->getMessage());
-        }
+        $this->expectException(ProtocolException::class);
+        $this->expectExceptionMessage('Rate limit exceeded for frame type Ping');
+
+        $limiter->record(FrameType::Ping->value);
     }
 
     public function testWindowResetUsesGreaterThanOrEqual(): void
@@ -576,5 +517,62 @@ final class RateLimiterTest extends TestCase
         $limiter->record(FrameType::Ping->value);
 
         static::assertTrue(true);
+    }
+
+    public function testDefaultWindowDurationsAreExactly10SecondsForEachFrameType(): void
+    {
+        $limiter = RateLimiter::default();
+        $limits = new ReflectionProperty(RateLimiter::class, 'limits')->getValue($limiter);
+
+        $expectedKeys = [
+            FrameType::Settings->value,
+            FrameType::Ping->value,
+            FrameType::RstStream->value,
+            FrameType::Priority->value,
+            RateLimiter::EMPTY_DATA_FRAME,
+        ];
+
+        foreach ($expectedKeys as $key) {
+            $duration = $limits[$key][1];
+            static::assertSame(
+                10.0,
+                $duration->getTotalSeconds(),
+                'Duration for key ' . $key . ' should be exactly 10 seconds',
+            );
+            static::assertNotSame(
+                9.0,
+                $duration->getTotalSeconds(),
+                'Duration for key ' . $key . ' should not be 9 seconds',
+            );
+            static::assertNotSame(
+                11.0,
+                $duration->getTotalSeconds(),
+                'Duration for key ' . $key . ' should not be 11 seconds',
+            );
+        }
+    }
+
+    public function testWindowResetAllowsFullCountAndEnforcesLimitAgain(): void
+    {
+        if (PHP_OS_FAMILY === 'Windows') {
+            static::markTestSkipped('usleep() resolution on Windows is too coarse for this test.');
+        }
+
+        $limiter = new RateLimiter([
+            FrameType::Ping->value => [3, DateTime\Duration::milliseconds(1)],
+        ]);
+
+        $limiter->record(FrameType::Ping->value);
+        $limiter->record(FrameType::Ping->value);
+        $limiter->record(FrameType::Ping->value);
+
+        usleep(5000);
+
+        $limiter->record(FrameType::Ping->value);
+        $limiter->record(FrameType::Ping->value);
+        $limiter->record(FrameType::Ping->value);
+
+        $this->expectException(ProtocolException::class);
+        $limiter->record(FrameType::Ping->value);
     }
 }

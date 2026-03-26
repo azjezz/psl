@@ -13,6 +13,7 @@ use Psl\MIME\MultiPart\Parser;
 use Psl\Str;
 
 use function iterator_to_array;
+use function strpos;
 
 final class ParserTest extends TestCase
 {
@@ -649,13 +650,11 @@ final class ParserTest extends TestCase
         $content = Str\repeat('A', 200);
         $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
 
-        try {
-            $parser = new Parser('boundary', maxPartSize: 100);
-            iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
-            static::fail('Expected exception');
-        } catch (MultiPartException $e) {
-            static::assertStringContainsString('part body exceeds maximum size of 100 bytes', $e->getMessage());
-        }
+        $this->expectException(MultiPartException::class);
+        $this->expectExceptionMessageMatches('/part body exceeds maximum size of 100 bytes/');
+
+        $parser = new Parser('boundary', maxPartSize: 100);
+        iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
     }
 
     public function testLargeBodyStreamedCorrectly(): void
@@ -722,30 +721,23 @@ final class ParserTest extends TestCase
         $content = Str\repeat('A', 10_000);
         $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
 
-        try {
-            $parser = new Parser('boundary', maxPartSize: 5_000);
-            iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
-            static::fail('Expected exception');
-        } catch (MultiPartException $e) {
-            static::assertStringContainsString('part body exceeds maximum size of', $e->getMessage());
-            static::assertStringContainsString('5000', $e->getMessage());
-            static::assertStringContainsString('bytes', $e->getMessage());
-        }
+        $this->expectException(MultiPartException::class);
+        $this->expectExceptionMessageMatches('/part body exceeds maximum size of.*5000.*bytes/');
+
+        $parser = new Parser('boundary', maxPartSize: 5_000);
+        iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
     }
 
     public function testMaxPartSizeErrorMessageFormat(): void
     {
-        try {
-            $content = Str\repeat('Z', 300);
-            $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+        $content = Str\repeat('Z', 300);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
 
-            $parser = new Parser('boundary', maxPartSize: 100);
-            iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
-            static::fail('Expected exception');
-        } catch (MultiPartException $e) {
-            $message = $e->getMessage();
-            static::assertSame('Malformed multipart body: part body exceeds maximum size of 100 bytes.', $message);
-        }
+        $this->expectException(MultiPartException::class);
+        $this->expectExceptionMessage('Malformed multipart body: part body exceeds maximum size of 100 bytes.');
+
+        $parser = new Parser('boundary', maxPartSize: 100);
+        iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
     }
 
     public function testBodyWithContentBeforeBoundary(): void
@@ -815,5 +807,779 @@ final class ParserTest extends TestCase
         static::assertSame('Preserved', $parts[0]->body->readAll());
         static::assertSame('keep-me', $parts[0]->headers->get('x-custom'));
         static::assertNull($parts[0]->headers->get('content-transfer-encoding'));
+    }
+
+    public function testMaxPartSizeThrowsWithCorrectMessage(): void
+    {
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n" . Str\repeat('A', 600) . "\r\n--boundary--\r\n";
+
+        $this->expectException(MultiPartException::class);
+        $this->expectExceptionMessageMatches('/part body exceeds maximum size of.*500.*bytes/');
+
+        $parser = new Parser('boundary', maxPartSize: 500);
+        iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+    }
+
+    public function testMaxPartSizeThrowsMessageFormat(): void
+    {
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n" . Str\repeat('B', 200) . "\r\n--boundary--\r\n";
+
+        $this->expectException(MultiPartException::class);
+        $this->expectExceptionMessageMatches('/part body exceeds maximum size of 50 bytes/');
+
+        $parser = new Parser('boundary', maxPartSize: 50);
+        iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+    }
+
+    public function testMaxPartSizeExceptionMessageContainsSizeBeforeBytes(): void
+    {
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n" . Str\repeat('C', 300) . "\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', maxPartSize: 100);
+
+        try {
+            iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+            static::fail('Expected MultiPartException');
+        } catch (MultiPartException $e) {
+            $msg = $e->getMessage();
+            $sizePos = strpos($msg, '100');
+            $bytesPos = strpos($msg, 'bytes');
+            static::assertNotFalse($sizePos);
+            static::assertNotFalse($bytesPos);
+            static::assertGreaterThan($sizePos, $bytesPos);
+        }
+    }
+
+    public function testMissingClosingDelimiterFlushesBuffer(): void
+    {
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\nSome content here";
+
+        $this->expectException(MultiPartException::class);
+        $this->expectExceptionMessageMatches('/missing closing delimiter/');
+
+        $parser = new Parser('boundary');
+        iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+    }
+
+    public function testMissingClosingDelimiterWithBufferContentStillThrows(): void
+    {
+        $content = Str\repeat('data', 100);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n" . $content;
+
+        $this->expectException(MultiPartException::class);
+        $this->expectExceptionMessageMatches('/missing closing delimiter/');
+
+        $parser = new Parser('boundary');
+        iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+    }
+
+    public function testMissingClosingDelimiterFlushesBufferedContentToSpool(): void
+    {
+        $content = 'partial-data-without-close';
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n" . $content;
+
+        $this->expectException(MultiPartException::class);
+        $this->expectExceptionMessageMatches('/missing closing delimiter/');
+
+        $parser = new Parser('boundary');
+        $generator = $parser->parse(new IO\MemoryHandle($body));
+        iterator_to_array($generator);
+    }
+
+    public function testMaxPartSizeEnforcedViaThrow(): void
+    {
+        $content = Str\repeat('Z', 2000);
+        $body = "--boundary\r\nContent-Type: application/octet-stream\r\n\r\n" . $content . "\r\n--boundary--\r\n";
+
+        $this->expectException(MultiPartException::class);
+
+        $parser = new Parser('boundary', maxPartSize: 1000);
+        iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+    }
+
+    public function testMaxPartSizeLargeContentThrowsWithDetails(): void
+    {
+        $content = Str\repeat('X', 5000);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n" . $content . "\r\n--boundary--\r\n";
+
+        $this->expectException(MultiPartException::class);
+        $this->expectExceptionMessageMatches('/2048/');
+
+        $parser = new Parser('boundary', maxPartSize: 2048);
+        iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+    }
+
+    public function testDefaultSpoolThresholdValue(): void
+    {
+        $content = Str\repeat('Y', 2_097_152);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(1, $parts);
+        static::assertSame(2_097_152, Str\Byte\length($parts[0]->body->readAll()));
+    }
+
+    public function testCustomSpoolThresholdSmallValue(): void
+    {
+        $content = Str\repeat('Z', 1000);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', spoolThreshold: 100);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(1, $parts);
+        static::assertSame($content, $parts[0]->body->readAll());
+    }
+
+    public function testSpoolThresholdZeroForcesImmediateDisk(): void
+    {
+        $content = Str\repeat('A', 500);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', spoolThreshold: 0);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(1, $parts);
+        static::assertSame($content, $parts[0]->body->readAll());
+    }
+
+    public function testDefaultMaxPartsAllowsManyParts(): void
+    {
+        $body = '';
+        for ($i = 0; $i < 10; $i++) {
+            $body .= "--boundary\r\nContent-Type: text/plain\r\n\r\nPart{$i}\r\n";
+        }
+
+        $body .= "--boundary--\r\n";
+
+        $parser = new Parser('boundary');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(10, $parts);
+    }
+
+    public function testMaxPartsOneAllowsExactlyOnePart(): void
+    {
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\nOnly\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', maxParts: 1);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(1, $parts);
+        static::assertSame('Only', $parts[0]->body->readAll());
+    }
+
+    public function testMaxPartsOneWithTwoPartsThrows(): void
+    {
+        $this->expectException(MultiPartException::class);
+
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\nFirst\r\n--boundary\r\nContent-Type: text/plain\r\n\r\nSecond\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', maxParts: 1);
+        iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+    }
+
+    public function testDefaultMaxPartSizeAllowsLargeContent(): void
+    {
+        $content = Str\repeat('W', 50_000);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(1, $parts);
+        static::assertSame(50_000, Str\Byte\length($parts[0]->body->readAll()));
+    }
+
+    public function testMaxPartSizeOneThrowsForAnyContent(): void
+    {
+        $this->expectException(MultiPartException::class);
+
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\nAB\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', maxPartSize: 1);
+        iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+    }
+
+    public function testMaxPartSizeOneAllowsSingleByte(): void
+    {
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\nA\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', maxPartSize: 1);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(1, $parts);
+        static::assertSame('A', $parts[0]->body->readAll());
+    }
+
+    public function testNoBoundaryInBodyThrowsException(): void
+    {
+        $parser = new Parser('myboundary');
+        $this->expectException(MultiPartException::class);
+        $this->expectExceptionMessage('boundary not found');
+        iterator_to_array($parser->parse(new IO\MemoryHandle('just some text without any boundary')));
+    }
+
+    public function testNoBoundaryReturnsZeroParts(): void
+    {
+        $this->expectException(MultiPartException::class);
+        $this->expectExceptionMessageMatches('/boundary not found/');
+
+        $parser = new Parser('unique-boundary');
+        iterator_to_array($parser->parse(new IO\MemoryHandle('')));
+    }
+
+    public function testNoBoundaryThrowsNotSilentlyIgnored(): void
+    {
+        $this->expectException(MultiPartException::class);
+
+        $parser = new Parser('missing');
+        iterator_to_array($parser->parse(new IO\MemoryHandle('random data with no boundaries anywhere')));
+    }
+
+    public function testCloseDelimiterProducesExactPartCount(): void
+    {
+        $body = "--bd\r\nContent-Type: text/plain\r\n\r\nA\r\n--bd\r\nContent-Type: text/plain\r\n\r\nB\r\n--bd--\r\n--bd\r\nContent-Type: text/plain\r\n\r\nC\r\n--bd--\r\n";
+
+        $parser = new Parser('bd');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(2, $parts);
+    }
+
+    public function testCloseDelimiterIgnoresTrailingParts(): void
+    {
+        $body = "--bd\r\nContent-Type: text/plain\r\n\r\nOnly\r\n--bd--\r\n--bd\r\nContent-Type: text/plain\r\n\r\nExtra\r\n--bd--\r\n";
+
+        $parser = new Parser('bd');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(1, $parts);
+        static::assertSame('Only', $parts[0]->body->readAll());
+    }
+
+    public function testCloseDelimiterDoesNotYieldPartsAfterClose(): void
+    {
+        $body = "--b\r\nContent-Type: text/plain\r\n\r\nX\r\n--b\r\nContent-Type: text/plain\r\n\r\nY\r\n--b\r\nContent-Type: text/plain\r\n\r\nZ\r\n--b--\r\n--b\r\nContent-Type: text/plain\r\n\r\nW\r\n--b--\r\n";
+
+        $parser = new Parser('b');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(3, $parts);
+        static::assertSame('X', $parts[0]->body->readAll());
+        static::assertSame('Y', $parts[1]->body->readAll());
+        static::assertSame('Z', $parts[2]->body->readAll());
+    }
+
+    public function testEmptyHeaderSectionYieldsDefaultContentType(): void
+    {
+        $body = "--boundary\r\n\r\nsome body\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(1, $parts);
+        static::assertSame('some body', $parts[0]->body->readAll());
+        static::assertSame('text/plain', $parts[0]->mediaType->essence());
+    }
+
+    public function testEmptyHeaderSectionReturnsPartWithEmptyHeaders(): void
+    {
+        $body = "--boundary\r\n\r\nthe body\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertNull($parts[0]->headers->get('content-type'));
+    }
+
+    public function testEmptyHeaderSectionDoesNotThrow(): void
+    {
+        $body = "--boundary\r\n\r\ncontent\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(1, $parts);
+    }
+
+    public function testCRLFInHeaderSectionNormalizedToLF(): void
+    {
+        $body = "--boundary\r\nX-One: alpha\r\nX-Two: beta\r\n\r\ndata\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertSame('alpha', $parts[0]->headers->get('x-one'));
+        static::assertSame('beta', $parts[0]->headers->get('x-two'));
+    }
+
+    public function testPureLFHeaderSectionParsedCorrectly(): void
+    {
+        $body = "--boundary\nX-One: gamma\nX-Two: delta\n\ndata\n--boundary--\n";
+
+        $parser = new Parser('boundary');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertSame('gamma', $parts[0]->headers->get('x-one'));
+        static::assertSame('delta', $parts[0]->headers->get('x-two'));
+    }
+
+    public function testMixedLineEndingsInHeaderSection(): void
+    {
+        $body = "--boundary\r\nX-Header: crlfval\r\n\r\nbody\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertSame('crlfval', $parts[0]->headers->get('x-header'));
+    }
+
+    public function testHeaderNameWithSpacesIsTrimmed(): void
+    {
+        $body = "--boundary\r\n  X-Spaced  : trimvalue\r\n\r\nBody\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(1, $parts);
+        static::assertSame('trimvalue', $parts[0]->headers->get('x-spaced'));
+    }
+
+    public function testHeaderNameTrimmedWithMultipleParts(): void
+    {
+        $body = "--boundary\r\n X-A : val1\r\n\r\nBody1\r\n--boundary\r\n X-B : val2\r\n\r\nBody2\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertSame('val1', $parts[0]->headers->get('x-a'));
+        static::assertSame('val2', $parts[1]->headers->get('x-b'));
+    }
+
+    public function testHeaderNameTrimmedNotAffectingValue(): void
+    {
+        $body = "--boundary\r\n  Content-Type  :text/html\r\n\r\n<p>hi</p>\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertSame('text/html', $parts[0]->mediaType->essence());
+    }
+
+    public function testTransferEncodingHeaderNameCaseInsensitive(): void
+    {
+        $encoded = Base64\encode('MbTest');
+        $body = "--boundary\r\nContent-Type: text/plain\r\nContent-Transfer-ENCODING: base64\r\n\r\n{$encoded}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', decodeTransferEncoding: true);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertSame('MbTest', $parts[0]->body->readAll());
+    }
+
+    public function testTransferEncodingHeaderAllUpperCase(): void
+    {
+        $encoded = Base64\encode('UPPER');
+        $body = "--boundary\r\nContent-Type: text/plain\r\nCONTENT-TRANSFER-ENCODING: base64\r\n\r\n{$encoded}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', decodeTransferEncoding: true);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertSame('UPPER', $parts[0]->body->readAll());
+    }
+
+    public function testTransferEncodingHeaderMixedCase(): void
+    {
+        $encoded = Base64\encode('Mixed');
+        $body = "--boundary\r\nContent-Type: text/plain\r\nCoNtEnT-tRaNsFeR-eNcOdInG: base64\r\n\r\n{$encoded}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', decodeTransferEncoding: true);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertSame('Mixed', $parts[0]->body->readAll());
+    }
+
+    public function testTransferEncodingValueWithSurroundingWhitespace(): void
+    {
+        $encoded = Base64\encode('TrimVal');
+        $body = "--boundary\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding:   base64   \r\n\r\n{$encoded}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', decodeTransferEncoding: true);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertSame('TrimVal', $parts[0]->body->readAll());
+    }
+
+    public function testTransferEncodingValueWithTabAndSpace(): void
+    {
+        $encoded = Base64\encode('TabSpace');
+        $body = "--boundary\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: \tbase64\t \r\n\r\n{$encoded}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', decodeTransferEncoding: true);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertSame('TabSpace', $parts[0]->body->readAll());
+    }
+
+    public function testTransferEncodingValueTrimmedForQuotedPrintable(): void
+    {
+        $body = "--boundary\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding:  quoted-printable  \r\n\r\nHello=20World\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', decodeTransferEncoding: true);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertSame('Hello World', $parts[0]->body->readAll());
+    }
+
+    public function testTransferEncodingValueMbLowercased(): void
+    {
+        $encoded = Base64\encode('MbLower');
+        $body = "--boundary\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: BASE64\r\n\r\n{$encoded}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', decodeTransferEncoding: true);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertSame('MbLower', $parts[0]->body->readAll());
+    }
+
+    public function testTransferEncodingValueQuotedPrintableMixedCase(): void
+    {
+        $body = "--boundary\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: QUOTED-PRINTABLE\r\n\r\nHello=20World\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', decodeTransferEncoding: true);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertSame('Hello World', $parts[0]->body->readAll());
+    }
+
+    public function testTransferEncodingMixedCaseValue(): void
+    {
+        $encoded = Base64\encode('CaseMix');
+        $body = "--boundary\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: BaSe64\r\n\r\n{$encoded}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', decodeTransferEncoding: true);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertSame('CaseMix', $parts[0]->body->readAll());
+    }
+
+    public function testBodyContentStartsExactlyAfterHeaders(): void
+    {
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\nPREFIX-content-SUFFIX\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        $result = $parts[0]->body->readAll();
+        static::assertSame('PREFIX-content-SUFFIX', $result);
+        static::assertStringStartsWith('PREFIX', $result);
+        static::assertStringEndsWith('SUFFIX', $result);
+    }
+
+    public function testBodyContentNotTruncatedAtStart(): void
+    {
+        $content = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        $result = $parts[0]->body->readAll();
+        static::assertSame($content, $result);
+        static::assertSame(26, Str\Byte\length($result));
+    }
+
+    public function testBodyContentPreservedWithSpecialChars(): void
+    {
+        $content = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertSame($content, $parts[0]->body->readAll());
+    }
+
+    public function testBodyNotIncludingDelimiter(): void
+    {
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\nMyBody\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        $result = $parts[0]->body->readAll();
+        static::assertSame('MyBody', $result);
+        static::assertStringNotContainsString('boundary', $result);
+    }
+
+    public function testBufferConcatenationWithLargeBody(): void
+    {
+        $content = Str\repeat('ABCD', 5000);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', spoolThreshold: 256);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        $result = $parts[0]->body->readAll();
+        static::assertSame($content, $result);
+        static::assertSame(20_000, Str\Byte\length($result));
+    }
+
+    public function testBufferConcatenationOrderPreserved(): void
+    {
+        $content = '';
+        for ($i = 0; $i < 1000; $i++) {
+            $content .= \str_pad((string) $i, 10, '0', STR_PAD_LEFT);
+        }
+
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', spoolThreshold: 256);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertSame($content, $parts[0]->body->readAll());
+    }
+
+    public function testTailSizeWithShortDelimiter(): void
+    {
+        $body = "--ab\r\nContent-Type: text/plain\r\n\r\nBody\r\n--ab--\r\n";
+
+        $parser = new Parser('ab');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(1, $parts);
+        static::assertSame('Body', $parts[0]->body->readAll());
+    }
+
+    public function testTailSizeWithLongDelimiter(): void
+    {
+        $longBoundary = Str\repeat('x', 70);
+        $body = "--{$longBoundary}\r\nContent-Type: text/plain\r\n\r\nLongBoundaryBody\r\n--{$longBoundary}--\r\n";
+
+        $parser = new Parser($longBoundary);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(1, $parts);
+        static::assertSame('LongBoundaryBody', $parts[0]->body->readAll());
+    }
+
+    public function testTailSizeWithMultipleParts(): void
+    {
+        $body = "--bd\r\nContent-Type: text/plain\r\n\r\nPart1Content\r\n--bd\r\nContent-Type: text/plain\r\n\r\nPart2Content\r\n--bd--\r\n";
+
+        $parser = new Parser('bd');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(2, $parts);
+        static::assertSame('Part1Content', $parts[0]->body->readAll());
+        static::assertSame('Part2Content', $parts[1]->body->readAll());
+    }
+
+    public function testMaxPartSizeWrittenAccumulation(): void
+    {
+        $content = Str\repeat('A', 100) . Str\repeat('B', 100) . Str\repeat('C', 100);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', maxPartSize: 300);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(1, $parts);
+        static::assertSame($content, $parts[0]->body->readAll());
+    }
+
+    public function testMaxPartSizeWrittenAccumulationExceedsLimit(): void
+    {
+        $content = Str\repeat('A', 100) . Str\repeat('B', 100) . Str\repeat('C', 101);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $this->expectException(MultiPartException::class);
+        $parser = new Parser('boundary', maxPartSize: 300);
+        iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+    }
+
+    public function testMaxPartSizeAccumulatesAcrossChunks(): void
+    {
+        $content = Str\repeat('X', 20_000);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $this->expectException(MultiPartException::class);
+        $parser = new Parser('boundary', maxPartSize: 10_000);
+        iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+    }
+
+    public function testSafeLenWriteFlushesPartialBuffer(): void
+    {
+        $content = Str\repeat('Y', 30_000);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', spoolThreshold: 256);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(1, $parts);
+        static::assertSame(30_000, Str\Byte\length($parts[0]->body->readAll()));
+    }
+
+    public function testSafeLenWithTinyContent(): void
+    {
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\nA\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(1, $parts);
+        static::assertSame('A', $parts[0]->body->readAll());
+    }
+
+    public function testSafeLenGuardWithMaxPartSize(): void
+    {
+        $content = Str\repeat('Q', 15_000);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', maxPartSize: 15_000, spoolThreshold: 256);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(1, $parts);
+        static::assertSame($content, $parts[0]->body->readAll());
+    }
+
+    public function testMaxPartSizeExactByteBoundary(): void
+    {
+        $content = Str\repeat('W', 500);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', maxPartSize: 500);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(1, $parts);
+        static::assertSame($content, $parts[0]->body->readAll());
+    }
+
+    public function testMaxPartSizeOneByteOverThrows(): void
+    {
+        $content = Str\repeat('W', 501);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $this->expectException(MultiPartException::class);
+        $parser = new Parser('boundary', maxPartSize: 500);
+        iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+    }
+
+    public function testMaxPartSizeEnforcedPerPartNotGlobal(): void
+    {
+        $content1 = Str\repeat('A', 100);
+        $content2 = Str\repeat('B', 100);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content1}\r\n--boundary\r\nContent-Type: text/plain\r\n\r\n{$content2}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', maxPartSize: 100);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(2, $parts);
+        static::assertSame($content1, $parts[0]->body->readAll());
+        static::assertSame($content2, $parts[1]->body->readAll());
+    }
+
+    public function testMaxPartSizeLargeBodyThrowsCorrectMessage(): void
+    {
+        $content = Str\repeat('A', 20_000);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $this->expectException(MultiPartException::class);
+        $this->expectExceptionMessageMatches('/5000.*bytes/');
+
+        $parser = new Parser('boundary', maxPartSize: 5_000, spoolThreshold: 256);
+        iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+    }
+
+    public function testMaxPartSizeLargeBodyWithSmallSpoolThrows(): void
+    {
+        $content = Str\repeat('M', 30_000);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $this->expectException(MultiPartException::class);
+        $parser = new Parser('boundary', maxPartSize: 10_000, spoolThreshold: 64);
+        iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+    }
+
+    public function testMaxPartSizeMultiplePartsSecondExceedsLimit(): void
+    {
+        $content1 = Str\repeat('A', 50);
+        $content2 = Str\repeat('B', 200);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content1}\r\n--boundary\r\nContent-Type: text/plain\r\n\r\n{$content2}\r\n--boundary--\r\n";
+
+        $this->expectException(MultiPartException::class);
+        $parser = new Parser('boundary', maxPartSize: 100);
+        iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+    }
+
+    public function testBodyEndChunkWrittenTracked(): void
+    {
+        $content = Str\repeat('Z', 99);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', maxPartSize: 99);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertSame($content, $parts[0]->body->readAll());
+    }
+
+    public function testBodyEndChunkAccumulatesWithStreamedBytes(): void
+    {
+        $content = Str\repeat('D', 20_000);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', maxPartSize: 20_000, spoolThreshold: 256);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertSame(20_000, Str\Byte\length($parts[0]->body->readAll()));
+    }
+
+    public function testBodyEndChunkOverflowThrowsWhenPreviouslyWritten(): void
+    {
+        $content = Str\repeat('E', 20_001);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $this->expectException(MultiPartException::class);
+        $parser = new Parser('boundary', maxPartSize: 20_000, spoolThreshold: 256);
+        iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+    }
+
+    public function testThreePartsAllBodiesCorrect(): void
+    {
+        $body = "--d\r\nContent-Type: text/plain\r\n\r\nFirst\r\n--d\r\nContent-Type: text/plain\r\n\r\nSecond\r\n--d\r\nContent-Type: text/plain\r\n\r\nThird\r\n--d--\r\n";
+
+        $parser = new Parser('d');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(3, $parts);
+        static::assertSame('First', $parts[0]->body->readAll());
+        static::assertSame('Second', $parts[1]->body->readAll());
+        static::assertSame('Third', $parts[2]->body->readAll());
+    }
+
+    public function testLargeBodyWithSmallSpoolPreservesContent(): void
+    {
+        $content = Str\repeat('G', 40_000);
+        $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary', spoolThreshold: 64);
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertSame($content, $parts[0]->body->readAll());
+    }
+
+    public function testPreambleSkippedBeforeBoundary(): void
+    {
+        $body = "This preamble should be skipped entirely\r\n--boundary\r\nContent-Type: text/plain\r\n\r\nActual\r\n--boundary--\r\n";
+
+        $parser = new Parser('boundary');
+        $parts = iterator_to_array($parser->parse(new IO\MemoryHandle($body)));
+
+        static::assertCount(1, $parts);
+        $result = $parts[0]->body->readAll();
+        static::assertSame('Actual', $result);
+        static::assertStringNotContainsString('preamble', $result);
     }
 }

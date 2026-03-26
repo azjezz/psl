@@ -13,6 +13,7 @@ use Psl\DateTime\Duration;
 use Psl\DateTime\Timestamp;
 use Psl\DNS\DNSSEC\Algorithm;
 use Psl\DNS\Internal\Encoder;
+use Psl\DNS\Internal\TypeBitmap;
 use Psl\DNS\Record\ARecord;
 use Psl\DNS\Record\DNSKEYRecord;
 use Psl\DNS\Record\NSECRecord;
@@ -25,6 +26,8 @@ use Psl\DNS\Response;
 use Psl\DNS\ResponseCode;
 use Psl\DNSSEC\ChainFailure;
 use Psl\DNSSEC\Exception\BrokenTrustChainException;
+use Psl\DNSSEC\Exception\InvalidProofException;
+use Psl\DNSSEC\Exception\SignatureFailedException;
 use Psl\DNSSEC\Internal\KeyTag;
 use Psl\DNSSEC\SecureResolver;
 use Psl\DNSSEC\TrustChainResolverInterface;
@@ -34,10 +37,14 @@ use Psl\IP\Address;
 use Psl\Str\Byte;
 use RuntimeException;
 
+use function array_filter;
+use function count;
+use function explode;
 use function is_string;
 use function openssl_pkey_get_details;
 use function openssl_pkey_new;
 use function openssl_sign;
+use function Psl\Str\Byte\length;
 
 use const OPENSSL_ALGO_SHA256;
 use const OPENSSL_KEYTYPE_RSA;
@@ -541,8 +548,8 @@ final class SecureResolverAdditionalTest extends TestCase
     ): string {
         $signerWire = Encoder::encodeName($signer);
 
-        $labels = \count(\array_filter(
-            \explode('.', Byte\lowercase($nsec->name)),
+        $labels = count(array_filter(
+            explode('.', Byte\lowercase($nsec->name)),
             static fn(string $l): bool => $l !== '',
         ));
 
@@ -558,16 +565,14 @@ final class SecureResolverAdditionalTest extends TestCase
             ->toString();
 
         $ownerWire = Encoder::encodeName(Byte\lowercase($nsec->name));
-        $rdata =
-            Encoder::encodeName(Byte\lowercase($nsec->nextDomainName))
-            . \Psl\DNS\Internal\TypeBitmap::encode($nsec->types);
+        $rdata = Encoder::encodeName(Byte\lowercase($nsec->nextDomainName)) . TypeBitmap::encode($nsec->types);
 
         $canonicalRr = new Writer()
             ->bytes($ownerWire)
             ->u16(RecordType::NSEC->value)
             ->u16(1)
             ->u32(3600)
-            ->u16(Byte\length($rdata))
+            ->u16(length($rdata))
             ->bytes($rdata)
             ->toString();
 
@@ -599,13 +604,491 @@ final class SecureResolverAdditionalTest extends TestCase
 
         $exponent = $details['rsa']['e'];
         $modulus = $details['rsa']['n'];
-        $expLen = Byte\length($exponent);
+        $expLen = length($exponent);
 
         if ($expLen < 256) {
             return [$key, Byte\chr($expLen) . $exponent . $modulus];
         }
 
         return [$key, "\x00" . Byte\chr(($expLen >> 8) & 0xFF) . Byte\chr($expLen & 0xFF) . $exponent . $modulus];
+    }
+
+    public function testPositiveResponseWithNoRrsigAndSecureChainThrowsInvalidProof(): void
+    {
+        $answers = [
+            new ARecord('secure.example.com', Duration::seconds(300), Address::v4('1.2.3.4')),
+        ];
+
+        $rfc3110Key = self::generateRsaRfc3110Key();
+        $dnskey = new DNSKEYRecord(
+            'secure.example.com',
+            Duration::seconds(3600),
+            257,
+            3,
+            Algorithm::RSASHA256,
+            $rfc3110Key,
+        );
+
+        $inner = self::createMockResolver($answers);
+        $trustChain = new readonly class($dnskey) implements TrustChainResolverInterface {
+            public function __construct(
+                private DNSKEYRecord $key,
+            ) {}
+
+            public function resolve(
+                string $zone,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): TrustChainResult {
+                return new TrustChainResult(TrustChainStatus::Secure, [$this->key]);
+            }
+        };
+        $resolver = new SecureResolver($inner, $trustChain);
+
+        $this->expectException(InvalidProofException::class);
+        $this->expectExceptionMessage('No RRSIG records found');
+
+        $resolver->query('secure.example.com', RecordType::A);
+    }
+
+    public function testThrowForRrsigIsNotSilentlySwallowed(): void
+    {
+        $answers = [
+            new ARecord('test.example.com', Duration::seconds(300), Address::v4('1.2.3.4')),
+        ];
+
+        $rfc3110Key = self::generateRsaRfc3110Key();
+        $dnskey = new DNSKEYRecord(
+            'test.example.com',
+            Duration::seconds(3600),
+            257,
+            3,
+            Algorithm::RSASHA256,
+            $rfc3110Key,
+        );
+
+        $inner = self::createMockResolver($answers);
+        $trustChain = new readonly class($dnskey) implements TrustChainResolverInterface {
+            public function __construct(
+                private DNSKEYRecord $key,
+            ) {}
+
+            public function resolve(
+                string $zone,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): TrustChainResult {
+                return new TrustChainResult(TrustChainStatus::Secure, [$this->key]);
+            }
+        };
+        $resolver = new SecureResolver($inner, $trustChain);
+
+        $this->expectException(InvalidProofException::class);
+
+        $resolver->query('test.example.com', RecordType::A);
+    }
+
+    public function testMissingRrsigExceptionIsThrown(): void
+    {
+        $answers = [
+            new ARecord('example.com', Duration::seconds(300), Address::v4('5.6.7.8')),
+        ];
+
+        $rfc3110Key = self::generateRsaRfc3110Key();
+        $dnskey = new DNSKEYRecord('example.com', Duration::seconds(3600), 257, 3, Algorithm::RSASHA256, $rfc3110Key);
+
+        $inner = self::createMockResolver($answers);
+        $trustChain = self::createMockTrustChainResolver(['example.com' => [$dnskey]]);
+        $resolver = new SecureResolver($inner, $trustChain);
+
+        $this->expectException(InvalidProofException::class);
+        $this->expectExceptionMessageMatches('/example\.com/');
+
+        $resolver->query('example.com', RecordType::A);
+    }
+
+    public function testNegativeResponseWithNsecRrsigCallsVerifyRrsigs(): void
+    {
+        [$privateKey, $rfc3110Key] = self::generateRsaKeyPair();
+        $dnskey = new DNSKEYRecord('example.com', Duration::seconds(3600), 257, 3, Algorithm::RSASHA256, $rfc3110Key);
+        $keyTag = KeyTag::compute($dnskey);
+
+        $nsec = new NSECRecord('example.com', Duration::seconds(3600), 'mail.example.com', [
+            RecordType::A,
+            RecordType::SOA,
+            RecordType::RRSIG,
+            RecordType::NSEC,
+        ]);
+
+        $now = Timestamp::now()->getSeconds();
+        $expiration = $now + 86_400;
+        $inception = $now - 86_400;
+
+        $rrsig = new RRSIGRecord(
+            'example.com',
+            Duration::seconds(3600),
+            RecordType::NSEC,
+            Algorithm::RSASHA256,
+            2,
+            3600,
+            $expiration,
+            $inception,
+            $keyTag,
+            'example.com',
+            'bad-signature',
+        );
+
+        $inner = new class($nsec, $rrsig) implements ResolverInterface {
+            use ResolverConvenienceMethodsTrait;
+
+            public function __construct(
+                private readonly NSECRecord $nsec,
+                private readonly RRSIGRecord $rrsig,
+            ) {}
+
+            public function query(
+                string $name,
+                RecordType $type,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+                array $ednsOptions = [],
+            ): Response {
+                return new Response(1, ResponseCode::NoError, [], [$this->nsec, $this->rrsig], []);
+            }
+        };
+
+        $trustChain = self::createMockTrustChainResolver(['example.com' => [$dnskey]]);
+        $resolver = new SecureResolver($inner, $trustChain);
+
+        $this->expectException(SignatureFailedException::class);
+
+        $resolver->query('example.com', RecordType::AAAA);
+    }
+
+    public function testNxdomainNsecProofIsValidated(): void
+    {
+        [$privateKey, $rfc3110Key] = self::generateRsaKeyPair();
+        $dnskey = new DNSKEYRecord('example.com', Duration::seconds(3600), 257, 3, Algorithm::RSASHA256, $rfc3110Key);
+        $keyTag = KeyTag::compute($dnskey);
+
+        $nsec = new NSECRecord(
+            'zzz.example.com',
+            Duration::seconds(3600),
+            'zzzz.example.com',
+            [RecordType::A, RecordType::RRSIG, RecordType::NSEC],
+        );
+
+        $now = Timestamp::now()->getSeconds();
+        $expiration = $now + 86_400;
+        $inception = $now - 86_400;
+
+        $nsecSignedData = self::buildNsecSignedData($nsec, $keyTag, 'example.com', $expiration, $inception);
+        $nsecSignature = null;
+        openssl_sign($nsecSignedData, $nsecSignature, $privateKey, OPENSSL_ALGO_SHA256);
+
+        $rrsig = new RRSIGRecord(
+            'zzz.example.com',
+            Duration::seconds(3600),
+            RecordType::NSEC,
+            Algorithm::RSASHA256,
+            3,
+            3600,
+            $expiration,
+            $inception,
+            $keyTag,
+            'example.com',
+            $nsecSignature,
+        );
+
+        $inner = new class($nsec, $rrsig) implements ResolverInterface {
+            use ResolverConvenienceMethodsTrait;
+
+            public function __construct(
+                private readonly NSECRecord $nsec,
+                private readonly RRSIGRecord $rrsig,
+            ) {}
+
+            public function query(
+                string $name,
+                RecordType $type,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+                array $ednsOptions = [],
+            ): Response {
+                return new Response(1, ResponseCode::NonExistentDomain, [], [$this->nsec, $this->rrsig], []);
+            }
+        };
+
+        $trustChain = self::createMockTrustChainResolver(['example.com' => [$dnskey]]);
+        $resolver = new SecureResolver($inner, $trustChain);
+
+        $this->expectException(InvalidProofException::class);
+
+        $resolver->query('alpha.example.com', RecordType::A);
+    }
+
+    public function testNodataNsecProofIsValidated(): void
+    {
+        [$privateKey, $rfc3110Key] = self::generateRsaKeyPair();
+        $dnskey = new DNSKEYRecord('example.com', Duration::seconds(3600), 257, 3, Algorithm::RSASHA256, $rfc3110Key);
+        $keyTag = KeyTag::compute($dnskey);
+
+        $nsec = new NSECRecord('example.com', Duration::seconds(3600), 'mail.example.com', [
+            RecordType::A,
+            RecordType::AAAA,
+            RecordType::SOA,
+            RecordType::RRSIG,
+            RecordType::NSEC,
+        ]);
+
+        $now = Timestamp::now()->getSeconds();
+        $expiration = $now + 86_400;
+        $inception = $now - 86_400;
+
+        $nsecSignedData = self::buildNsecSignedData($nsec, $keyTag, 'example.com', $expiration, $inception);
+        $nsecSignature = null;
+        openssl_sign($nsecSignedData, $nsecSignature, $privateKey, OPENSSL_ALGO_SHA256);
+
+        $rrsig = new RRSIGRecord(
+            'example.com',
+            Duration::seconds(3600),
+            RecordType::NSEC,
+            Algorithm::RSASHA256,
+            2,
+            3600,
+            $expiration,
+            $inception,
+            $keyTag,
+            'example.com',
+            $nsecSignature,
+        );
+
+        $inner = new class($nsec, $rrsig) implements ResolverInterface {
+            use ResolverConvenienceMethodsTrait;
+
+            public function __construct(
+                private readonly NSECRecord $nsec,
+                private readonly RRSIGRecord $rrsig,
+            ) {}
+
+            public function query(
+                string $name,
+                RecordType $type,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+                array $ednsOptions = [],
+            ): Response {
+                return new Response(1, ResponseCode::NoError, [], [$this->nsec, $this->rrsig], []);
+            }
+        };
+
+        $trustChain = self::createMockTrustChainResolver(['example.com' => [$dnskey]]);
+        $resolver = new SecureResolver($inner, $trustChain);
+
+        $this->expectException(InvalidProofException::class);
+
+        $resolver->query('example.com', RecordType::AAAA);
+    }
+
+    public function testVerifyRrsigsMatchesMixedCaseRecordAndRrsigNames(): void
+    {
+        [$privateKey, $rfc3110Key] = self::generateRsaKeyPair();
+        $dnskey = new DNSKEYRecord('example.com', Duration::seconds(3600), 257, 3, Algorithm::RSASHA256, $rfc3110Key);
+        $keyTag = KeyTag::compute($dnskey);
+
+        $aRecord = new ARecord('Example.COM', Duration::seconds(300), Address::v4('1.2.3.4'));
+
+        $now = Timestamp::now()->getSeconds();
+        $expiration = $now + 86_400;
+        $inception = $now - 86_400;
+
+        $signerWire = Encoder::encodeName('example.com');
+        $rrsigPrefix = new Writer()
+            ->u16(RecordType::A->value)
+            ->u8(8)
+            ->u8(2)
+            ->u32(300)
+            ->u32($expiration)
+            ->u32($inception)
+            ->u16($keyTag)
+            ->bytes($signerWire)
+            ->toString();
+
+        $ownerWire = Encoder::encodeName('example.com');
+        $rdataWriter = new Writer();
+        foreach (\Psl\Str\Byte\split($aRecord->address->toString(), '.') as $part) {
+            $rdataWriter = $rdataWriter->u8((int) $part);
+        }
+
+        $rdata = $rdataWriter->toString();
+        $canonicalRr = new Writer()
+            ->bytes($ownerWire)
+            ->u16(RecordType::A->value)
+            ->u16(1)
+            ->u32(300)
+            ->u16(length($rdata))
+            ->bytes($rdata)
+            ->toString();
+
+        $signedData = $rrsigPrefix . $canonicalRr;
+        $signature = null;
+        openssl_sign($signedData, $signature, $privateKey, OPENSSL_ALGO_SHA256);
+
+        $rrsig = new RRSIGRecord(
+            'EXAMPLE.com',
+            Duration::seconds(3600),
+            RecordType::A,
+            Algorithm::RSASHA256,
+            2,
+            300,
+            $expiration,
+            $inception,
+            $keyTag,
+            'example.com',
+            $signature,
+        );
+
+        $inner = self::createMockResolver([$aRecord, $rrsig]);
+        $trustChain = self::createMockTrustChainResolver(['example.com' => [$dnskey]]);
+        $resolver = new SecureResolver($inner, $trustChain);
+
+        $response = $resolver->query('example.com', RecordType::A);
+
+        static::assertSame(ResponseCode::NoError, $response->code);
+        static::assertCount(2, $response->answers);
+    }
+
+    public function testVerifyRrsigsOrConditionSkipsOnKeyTagMismatch(): void
+    {
+        $rfc3110Key = self::generateRsaRfc3110Key();
+        $dnskey = new DNSKEYRecord('example.com', Duration::seconds(3600), 257, 3, Algorithm::RSASHA256, $rfc3110Key);
+        $keyTag = KeyTag::compute($dnskey);
+        $aRecord = new ARecord('example.com', Duration::seconds(300), Address::v4('1.2.3.4'));
+
+        $now = Timestamp::now()->getSeconds();
+        $rrsig = new RRSIGRecord(
+            'example.com',
+            Duration::seconds(3600),
+            RecordType::A,
+            Algorithm::RSASHA256,
+            2,
+            300,
+            $now + 86_400,
+            $now - 86_400,
+            ($keyTag + 1) & 0xFFFF,
+            'example.com',
+            'dummy-sig',
+        );
+
+        $inner = self::createMockResolver([$aRecord, $rrsig]);
+        $trustChain = self::createMockTrustChainResolver(['example.com' => [$dnskey]]);
+        $resolver = new SecureResolver($inner, $trustChain);
+
+        $this->expectException(SignatureFailedException::class);
+        $resolver->query('example.com', RecordType::A);
+    }
+
+    public function testVerifyRrsigsOrConditionSkipsOnAlgorithmMismatch(): void
+    {
+        $rfc3110Key = self::generateRsaRfc3110Key();
+        $dnskey = new DNSKEYRecord('example.com', Duration::seconds(3600), 257, 3, Algorithm::RSASHA256, $rfc3110Key);
+        $keyTag = KeyTag::compute($dnskey);
+        $aRecord = new ARecord('example.com', Duration::seconds(300), Address::v4('1.2.3.4'));
+
+        $now = Timestamp::now()->getSeconds();
+        $rrsig = new RRSIGRecord(
+            'example.com',
+            Duration::seconds(3600),
+            RecordType::A,
+            Algorithm::RSASHA512,
+            2,
+            300,
+            $now + 86_400,
+            $now - 86_400,
+            $keyTag,
+            'example.com',
+            'dummy-sig',
+        );
+
+        $inner = self::createMockResolver([$aRecord, $rrsig]);
+        $trustChain = self::createMockTrustChainResolver(['example.com' => [$dnskey]]);
+        $resolver = new SecureResolver($inner, $trustChain);
+
+        $this->expectException(SignatureFailedException::class);
+        $resolver->query('example.com', RecordType::A);
+    }
+
+    public function testVerifyRrsigsBreaksOnSuccessfulVerification(): void
+    {
+        [$privateKey, $rfc3110Key] = self::generateRsaKeyPair();
+        $dnskey = new DNSKEYRecord('example.com', Duration::seconds(3600), 257, 3, Algorithm::RSASHA256, $rfc3110Key);
+        $keyTag = KeyTag::compute($dnskey);
+
+        [, $otherKey] = self::generateRsaKeyPair();
+        $otherDnskey = new DNSKEYRecord(
+            'example.com',
+            Duration::seconds(3600),
+            257,
+            3,
+            Algorithm::RSASHA256,
+            $otherKey,
+        );
+
+        $aRecord = new ARecord('example.com', Duration::seconds(300), Address::v4('1.2.3.4'));
+
+        $now = Timestamp::now()->getSeconds();
+        $expiration = $now + 86_400;
+        $inception = $now - 86_400;
+
+        $signerWire = Encoder::encodeName('example.com');
+        $rrsigPrefix = new Writer()
+            ->u16(RecordType::A->value)
+            ->u8(8)
+            ->u8(2)
+            ->u32(300)
+            ->u32($expiration)
+            ->u32($inception)
+            ->u16($keyTag)
+            ->bytes($signerWire)
+            ->toString();
+
+        $ownerWire = Encoder::encodeName('example.com');
+        $rdataWriter = new Writer();
+        foreach (\Psl\Str\Byte\split($aRecord->address->toString(), '.') as $part) {
+            $rdataWriter = $rdataWriter->u8((int) $part);
+        }
+
+        $rdata = $rdataWriter->toString();
+        $canonicalRr = new Writer()
+            ->bytes($ownerWire)
+            ->u16(RecordType::A->value)
+            ->u16(1)
+            ->u32(300)
+            ->u16(length($rdata))
+            ->bytes($rdata)
+            ->toString();
+
+        $signedData = $rrsigPrefix . $canonicalRr;
+        $signature = null;
+        openssl_sign($signedData, $signature, $privateKey, OPENSSL_ALGO_SHA256);
+
+        $rrsig = new RRSIGRecord(
+            'example.com',
+            Duration::seconds(3600),
+            RecordType::A,
+            Algorithm::RSASHA256,
+            2,
+            300,
+            $expiration,
+            $inception,
+            $keyTag,
+            'example.com',
+            $signature,
+        );
+
+        $inner = self::createMockResolver([$aRecord, $rrsig]);
+        $trustChain = self::createMockTrustChainResolver(['example.com' => [$otherDnskey, $dnskey]]);
+        $resolver = new SecureResolver($inner, $trustChain);
+
+        $response = $resolver->query('example.com', RecordType::A);
+
+        static::assertSame(ResponseCode::NoError, $response->code);
+        static::assertCount(2, $response->answers);
     }
 
     private static function generateRsaRfc3110Key(): string

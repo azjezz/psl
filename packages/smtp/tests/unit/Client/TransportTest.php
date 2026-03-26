@@ -52,7 +52,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -102,6 +102,7 @@ final class TransportTest extends TestCase
             ->withContent(new Part\Text(new IO\MemoryHandle('Hello World')));
 
         $transport->send($envelope, $message);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -113,7 +114,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -171,6 +172,7 @@ final class TransportTest extends TestCase
             ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
 
         $transport->send($envelope, $message);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -184,7 +186,7 @@ final class TransportTest extends TestCase
 
         $ehloCount = 0;
 
-        Async\run(static function () use ($server, &$ehloCount): void {
+        $future = Async\run(static function () use ($server, &$ehloCount): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -241,6 +243,7 @@ final class TransportTest extends TestCase
             $transport->send($envelope, $message);
         }
 
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -272,7 +275,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("554 Service unavailable\r\n");
             $client->close();
@@ -300,6 +303,7 @@ final class TransportTest extends TestCase
         try {
             $transport->send($envelope, $message);
         } finally {
+            $future->await();
             $transport->close();
             $server->close();
         }
@@ -310,7 +314,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
 
@@ -341,6 +345,7 @@ final class TransportTest extends TestCase
         try {
             $transport->send($envelope, $message);
         } finally {
+            $future->await();
             $transport->close();
             $server->close();
         }
@@ -353,7 +358,7 @@ final class TransportTest extends TestCase
 
         $connectCount = 0;
 
-        Async\run(static function () use ($server, &$connectCount): void {
+        $future = Async\run(static function () use ($server, &$connectCount): void {
             for ($i = 0; $i < 2; $i++) {
                 $client = $server->accept();
                 $connectCount++;
@@ -401,6 +406,7 @@ final class TransportTest extends TestCase
             $this->addToAssertionCount(1);
         }
 
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -414,7 +420,7 @@ final class TransportTest extends TestCase
 
         $connectCount = 0;
 
-        Async\run(static function () use ($server, &$connectCount): void {
+        $future = Async\run(static function () use ($server, &$connectCount): void {
             for ($i = 0; $i < 2; $i++) {
                 $client = $server->accept();
                 $connectCount++;
@@ -461,6 +467,7 @@ final class TransportTest extends TestCase
             $this->addToAssertionCount(1);
         }
 
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -472,7 +479,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("GARBAGE\r\n");
             $client->close();
@@ -500,6 +507,7 @@ final class TransportTest extends TestCase
         try {
             $transport->send($envelope, $message);
         } finally {
+            $future->await();
             $transport->close();
             $server->close();
         }
@@ -510,7 +518,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
             $client->close();
         });
@@ -537,6 +545,7 @@ final class TransportTest extends TestCase
         try {
             $transport->send($envelope, $message);
         } finally {
+            $future->await();
             $transport->close();
             $server->close();
         }
@@ -547,7 +556,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -601,6 +610,7 @@ final class TransportTest extends TestCase
             ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
 
         $transport->send($envelope, $message);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -612,7 +622,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -663,6 +673,7 @@ final class TransportTest extends TestCase
 
         $config = new SendConfiguration(dsnReturn: 'FULL', dsnNotify: 'SUCCESS');
         $transport->send($envelope, $message, $config);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -674,7 +685,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -735,6 +746,7 @@ final class TransportTest extends TestCase
             ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
 
         $transport->send($envelope, $message);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -746,7 +758,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -781,6 +793,7 @@ final class TransportTest extends TestCase
         try {
             $transport->send($envelope, $message);
         } finally {
+            $future->await();
             $transport->close();
             $server->close();
         }
@@ -791,7 +804,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -829,6 +842,7 @@ final class TransportTest extends TestCase
         try {
             $transport->send($envelope, $message);
         } finally {
+            $future->await();
             $transport->close();
             $server->close();
         }
@@ -839,7 +853,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -880,6 +894,7 @@ final class TransportTest extends TestCase
         try {
             $transport->send($envelope, $message);
         } finally {
+            $future->await();
             $transport->close();
             $server->close();
         }
@@ -890,7 +905,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -938,6 +953,7 @@ final class TransportTest extends TestCase
         try {
             $transport->send($envelope, $message);
         } finally {
+            $future->await();
             $transport->close();
             $server->close();
         }
@@ -948,7 +964,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com SMTP\r\n");
@@ -1001,6 +1017,7 @@ final class TransportTest extends TestCase
             ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
 
         $transport->send($envelope, $message);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -1012,7 +1029,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1061,6 +1078,7 @@ final class TransportTest extends TestCase
             ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
 
         $transport->send($envelope, $message);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -1072,7 +1090,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1124,6 +1142,7 @@ final class TransportTest extends TestCase
 
         $config = new SendConfiguration(dsnReturn: 'HDRS', dsnEnvelopeId: 'msg-001', dsnNotify: 'FAILURE,DELAY');
         $transport->send($envelope, $message, $config);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -1135,7 +1154,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1182,6 +1201,7 @@ final class TransportTest extends TestCase
             ->withContent(new Part\Text(new IO\MemoryHandle('Bounce message')));
 
         $transport->send($envelope, $message);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -1193,7 +1213,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1236,6 +1256,7 @@ final class TransportTest extends TestCase
         try {
             $transport->send($envelope, $message);
         } finally {
+            $future->await();
             $transport->close();
             $server->close();
         }
@@ -1246,7 +1267,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1289,6 +1310,7 @@ final class TransportTest extends TestCase
         try {
             $transport->send($envelope, $message);
         } finally {
+            $future->await();
             $transport->close();
             $server->close();
         }
@@ -1299,7 +1321,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1350,6 +1372,7 @@ final class TransportTest extends TestCase
         try {
             $transport->send($envelope, $message);
         } finally {
+            $future->await();
             $transport->close();
             $server->close();
         }
@@ -1360,7 +1383,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1417,6 +1440,7 @@ final class TransportTest extends TestCase
             ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
 
         $transport->send($envelope, $message);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -1439,7 +1463,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1491,6 +1515,7 @@ final class TransportTest extends TestCase
 
         $config = new SendConfiguration();
         $transport->send($envelope, $message, $config);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -1502,7 +1527,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com SMTP\r\n");
@@ -1537,6 +1562,7 @@ final class TransportTest extends TestCase
         try {
             $transport->send($envelope, $message);
         } finally {
+            $future->await();
             $transport->close();
             $server->close();
         }
@@ -1547,7 +1573,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -1577,6 +1603,7 @@ final class TransportTest extends TestCase
         try {
             $transport->send($envelope, $message);
         } finally {
+            $future->await();
             $transport->close();
             $server->close();
         }
@@ -1587,7 +1614,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -1625,6 +1652,7 @@ final class TransportTest extends TestCase
             ->withContent(new Part\Text(new IO\MemoryHandle('Bounce message')));
 
         $transport->send($envelope, $message);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -1636,7 +1664,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -1668,6 +1696,7 @@ final class TransportTest extends TestCase
         try {
             $transport->send($envelope, $message);
         } finally {
+            $future->await();
             $transport->close();
             $server->close();
         }
@@ -1678,7 +1707,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -1716,6 +1745,7 @@ final class TransportTest extends TestCase
         try {
             $transport->send($envelope, $message);
         } finally {
+            $future->await();
             $transport->close();
             $server->close();
         }
@@ -1726,7 +1756,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -1774,6 +1804,7 @@ final class TransportTest extends TestCase
 
         static::assertCount(1, $report->rejectedRecipients);
 
+        $future->await();
         $transport->close();
         $server->close();
     }
@@ -1783,7 +1814,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -1825,6 +1856,7 @@ final class TransportTest extends TestCase
         try {
             $transport->send($envelope, $message);
         } finally {
+            $future->await();
             $transport->close();
             $server->close();
         }
@@ -1835,7 +1867,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1884,6 +1916,7 @@ final class TransportTest extends TestCase
             ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
 
         $transport->send($envelope, $message);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -1895,7 +1928,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1944,6 +1977,7 @@ final class TransportTest extends TestCase
             ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
 
         $transport->send($envelope, $message);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -1955,7 +1989,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2006,6 +2040,7 @@ final class TransportTest extends TestCase
 
         $config = new SendConfiguration(dsnReturn: 'FULL');
         $transport->send($envelope, $message, $config);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -2017,7 +2052,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2067,6 +2102,7 @@ final class TransportTest extends TestCase
 
         $config = new SendConfiguration(requireTls: true);
         $transport->send($envelope, $message, $config);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -2078,7 +2114,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2128,6 +2164,7 @@ final class TransportTest extends TestCase
 
         $config = new SendConfiguration(requireTls: false);
         $transport->send($envelope, $message, $config);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -2139,7 +2176,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2189,6 +2226,7 @@ final class TransportTest extends TestCase
 
         $config = new SendConfiguration(requireTls: true);
         $transport->send($envelope, $message, $config);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -2200,7 +2238,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2250,6 +2288,7 @@ final class TransportTest extends TestCase
 
         $config = new SendConfiguration(priority: Priority::Normal);
         $transport->send($envelope, $message, $config);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -2261,7 +2300,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2311,6 +2350,7 @@ final class TransportTest extends TestCase
 
         $config = new SendConfiguration(priority: null);
         $transport->send($envelope, $message, $config);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -2322,7 +2362,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2372,6 +2412,7 @@ final class TransportTest extends TestCase
 
         $config = new SendConfiguration(priority: Priority::Urgent);
         $transport->send($envelope, $message, $config);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -2383,7 +2424,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2434,6 +2475,7 @@ final class TransportTest extends TestCase
 
         $config = new SendConfiguration(deliverBy: new DeliverBy(Duration::hours(1), DeliverByMode::Return));
         $transport->send($envelope, $message, $config);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -2445,7 +2487,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2495,6 +2537,7 @@ final class TransportTest extends TestCase
 
         $config = new SendConfiguration(deliverBy: null);
         $transport->send($envelope, $message, $config);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -2506,7 +2549,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2556,6 +2599,7 @@ final class TransportTest extends TestCase
 
         $config = new SendConfiguration(deliverBy: new DeliverBy(Duration::hours(1)));
         $transport->send($envelope, $message, $config);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -2567,7 +2611,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2617,6 +2661,7 @@ final class TransportTest extends TestCase
 
         $config = new SendConfiguration(futureRelease: Duration::hours(2));
         $transport->send($envelope, $message, $config);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -2628,7 +2673,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2679,6 +2724,7 @@ final class TransportTest extends TestCase
 
         $config = new SendConfiguration(futureRelease: null);
         $transport->send($envelope, $message, $config);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -2690,7 +2736,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2740,6 +2786,7 @@ final class TransportTest extends TestCase
 
         $config = new SendConfiguration(futureRelease: Duration::hours(1));
         $transport->send($envelope, $message, $config);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -2751,7 +2798,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2801,6 +2848,7 @@ final class TransportTest extends TestCase
             ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
 
         $transport->send($envelope, $message);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -2812,7 +2860,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2863,6 +2911,7 @@ final class TransportTest extends TestCase
 
         $config = new SendConfiguration(dsnNotify: 'SUCCESS');
         $transport->send($envelope, $message, $config);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -2952,7 +3001,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com SMTP\r\n");
@@ -2982,12 +3031,13 @@ final class TransportTest extends TestCase
             ->withSubject('Test')
             ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
 
+        $this->expectException(ProtocolException::class);
+        $this->expectExceptionMessageMatches('/250/');
+
         try {
             $transport->send($envelope, $message);
-            static::fail('Expected ProtocolException');
-        } catch (ProtocolException $e) {
-            static::assertStringContainsString('250', $e->getMessage());
         } finally {
+            $future->await();
             $transport->close();
             $server->close();
         }
@@ -2998,7 +3048,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -3047,6 +3097,7 @@ final class TransportTest extends TestCase
             ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
 
         $transport->send($envelope, $message);
+        $future->await();
         $transport->close();
         $server->close();
 
@@ -3058,7 +3109,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        $future = Async\run(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com SMTP\r\n");
@@ -3093,9 +3144,1335 @@ final class TransportTest extends TestCase
         try {
             $transport->send($envelope, $message);
         } finally {
+            $future->await();
             $transport->close();
             $server->close();
         }
+    }
+
+    public function testPipeliningSenderRejectedActuallyThrows(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250-mail.example.com\r\n250 PIPELINING\r\n");
+            $pipelined = '';
+            $commandCount = 0;
+            while ($commandCount < 3) {
+                $pipelined .= $client->read();
+                $commandCount = Iter\count(Byte\split($pipelined, "\r\n")) - 1;
+            }
+
+            $client->writeAll("553 Sender not allowed\r\n");
+            $client->writeAll("503 Bad sequence\r\n");
+            $client->writeAll("503 Bad sequence\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('bad', 'example.com');
+        $recipient = new Mailbox('recipient', 'example.com');
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('Test')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $this->expectException(TransmissionException::class);
+        $this->expectExceptionMessageMatches('/bad@example\.com/');
+
+        try {
+            $transport->send($envelope, $message);
+        } finally {
+            $future->await();
+            $transport->close();
+            $server->close();
+        }
+    }
+
+    public function testPipeliningSenderRejectedExceptionContainsSenderAddress(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250-mail.example.com\r\n250 PIPELINING\r\n");
+            $pipelined = '';
+            $commandCount = 0;
+            while ($commandCount < 3) {
+                $pipelined .= $client->read();
+                $commandCount = Iter\count(Byte\split($pipelined, "\r\n")) - 1;
+            }
+
+            $client->writeAll("550 Sender rejected\r\n");
+            $client->writeAll("503 Bad sequence\r\n");
+            $client->writeAll("503 Bad sequence\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('someone', 'test.org');
+        $recipient = new Mailbox('recipient', 'example.com');
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('Test')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Content')));
+        $this->expectException(TransmissionException::class);
+        $this->expectExceptionMessageMatches('/someone@test\.org/');
+
+        try {
+            $transport->send($envelope, $message);
+        } finally {
+            $future->await();
+            $transport->close();
+            $server->close();
+        }
+    }
+
+    public function testPipelineNullSenderRejectedUsesAngleBrackets(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250-mail.example.com\r\n250 PIPELINING\r\n");
+            $pipelined = '';
+            $commandCount = 0;
+            while ($commandCount < 3) {
+                $pipelined .= $client->read();
+                $commandCount = Iter\count(Byte\split($pipelined, "\r\n")) - 1;
+            }
+
+            $client->writeAll("550 Sender rejected\r\n");
+            $client->writeAll("503 Bad sequence\r\n");
+            $client->writeAll("503 Bad sequence\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $recipient = new Mailbox('recipient', 'example.com');
+        $envelope = new Envelope(null, [$recipient]);
+        $message = new Message()
+            ->withTo($recipient)
+            ->withSubject('Bounce')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Bounce message')));
+        $this->expectException(TransmissionException::class);
+        $this->expectExceptionMessageMatches('/<>/');
+
+        try {
+            $transport->send($envelope, $message);
+        } finally {
+            $future->await();
+            $transport->close();
+            $server->close();
+        }
+    }
+
+    public function testPipelineRecipientRejectedThrowsContainsAddress(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250-mail.example.com\r\n250 PIPELINING\r\n");
+            $pipelined = '';
+            $commandCount = 0;
+            while ($commandCount < 3) {
+                $pipelined .= $client->read();
+                $commandCount = Iter\count(Byte\split($pipelined, "\r\n")) - 1;
+            }
+
+            $client->writeAll("250 OK\r\n");
+            $client->writeAll("550 User unknown\r\n");
+            $client->writeAll("503 Bad sequence\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $recipient = new Mailbox('baduser', 'example.com');
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('Test')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $this->expectException(TransmissionException::class);
+        $this->expectExceptionMessageMatches('/baduser@example\.com/');
+
+        try {
+            $transport->send($envelope, $message);
+        } finally {
+            $future->await();
+            $transport->close();
+            $server->close();
+        }
+    }
+
+    public function testPartialSuccessWithOneAcceptedDoesNotThrow(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 mail.example.com\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("550 User unknown\r\n");
+            self::readCommand($client);
+            $client->writeAll("550 User unknown\r\n");
+            self::readCommand($client);
+            $client->writeAll("354 Go ahead\r\n");
+            $data = '';
+            while (!Byte\contains($data, "\r\n.\r\n")) {
+                $data .= $client->read();
+            }
+
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+            allowPartialSuccess: true,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $recipients = [
+            new Mailbox('good', 'example.com'),
+            new Mailbox('bad1', 'example.com'),
+            new Mailbox('bad2', 'example.com'),
+        ];
+        $envelope = new Envelope($sender, $recipients);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo(...$recipients)
+            ->withSubject('Test')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $report = $transport->send($envelope, $message);
+        static::assertCount(2, $report->rejectedRecipients);
+        $future->await();
+        $transport->close();
+        $server->close();
+    }
+
+    public function testPartialSuccessReportContainsRecipientMailbox(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 mail.example.com\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("550 User unknown\r\n");
+            self::readCommand($client);
+            $client->writeAll("354 Go ahead\r\n");
+            $data = '';
+            while (!Byte\contains($data, "\r\n.\r\n")) {
+                $data .= $client->read();
+            }
+
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+            allowPartialSuccess: true,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $goodRecipient = new Mailbox('good', 'example.com');
+        $badRecipient = new Mailbox('rejected', 'example.com');
+        $envelope = new Envelope($sender, [$goodRecipient, $badRecipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($goodRecipient, $badRecipient)
+            ->withSubject('Test')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $report = $transport->send($envelope, $message);
+        static::assertCount(1, $report->rejectedRecipients);
+        static::assertSame('rejected@example.com', $report->rejectedRecipients[0][0]->address);
+        $future->await();
+        $transport->close();
+        $server->close();
+    }
+
+    public function testNonPipelineSenderRejectedThrowsWithAddress(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 mail.example.com\r\n");
+            self::readCommand($client);
+            $client->writeAll("550 Sender rejected\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('blocked', 'test.org');
+        $recipient = new Mailbox('recipient', 'example.com');
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('Test')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $this->expectException(TransmissionException::class);
+        $this->expectExceptionMessageMatches('/blocked@test\.org/');
+
+        try {
+            $transport->send($envelope, $message);
+        } finally {
+            $future->await();
+            $transport->close();
+            $server->close();
+        }
+    }
+
+    public function testNonPipelineNullSenderRejectedUsesEmptyPath(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 mail.example.com\r\n");
+            self::readCommand($client);
+            $client->writeAll("550 Sender rejected\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $recipient = new Mailbox('recipient', 'example.com');
+        $envelope = new Envelope(null, [$recipient]);
+        $message = new Message()
+            ->withTo($recipient)
+            ->withSubject('Bounce')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Bounce message')));
+        $this->expectException(TransmissionException::class);
+        $this->expectExceptionMessageMatches('/<>/');
+
+        try {
+            $transport->send($envelope, $message);
+        } finally {
+            $future->await();
+            $transport->close();
+            $server->close();
+        }
+    }
+
+    public function testNonPipelinePartialSuccessReportIncludesMailbox(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 mail.example.com\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("550 User unknown\r\n");
+            self::readCommand($client);
+            $client->writeAll("354 Go ahead\r\n");
+            $data = '';
+            while (!Byte\contains($data, "\r\n.\r\n")) {
+                $data .= $client->read();
+            }
+
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+            allowPartialSuccess: true,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $goodRecipient = new Mailbox('good', 'example.com');
+        $badRecipient = new Mailbox('baduser', 'example.com');
+        $envelope = new Envelope($sender, [$goodRecipient, $badRecipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($goodRecipient, $badRecipient)
+            ->withSubject('Test')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $report = $transport->send($envelope, $message);
+        static::assertCount(1, $report->rejectedRecipients);
+        static::assertSame('baduser@example.com', $report->rejectedRecipients[0][0]->address);
+        static::assertInstanceOf(Mailbox::class, $report->rejectedRecipients[0][0]);
+        $future->await();
+        $transport->close();
+        $server->close();
+    }
+
+    public function testRsetFailureClearsPool(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $connectCount = 0;
+        $future = Async\run(static function () use ($server, &$connectCount): void {
+            for ($i = 0; $i < 2; $i++) {
+                $client = $server->accept();
+                $connectCount++;
+                $client->writeAll("220 mail.example.com ESMTP\r\n");
+                self::readCommand($client);
+                $client->writeAll("250 mail.example.com\r\n");
+                self::readCommand($client);
+                $client->writeAll("250 OK\r\n");
+                self::readCommand($client);
+                $client->writeAll("250 OK\r\n");
+                self::readCommand($client);
+                $client->writeAll("354 Go ahead\r\n");
+                $data = '';
+                while (!Byte\contains($data, "\r\n.\r\n")) {
+                    $data .= $client->read();
+                }
+
+                $client->writeAll("250 OK\r\n");
+                self::readCommand($client);
+                if ($i === 0) {
+                    $client->writeAll("421 Service unavailable\r\n");
+                } else {
+                    $client->writeAll("250 OK\r\n");
+                }
+
+                $client->close();
+            }
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $recipient = new Mailbox('recipient', 'example.com');
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('Test')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        try {
+            $transport->send($envelope, $message);
+            static::fail('Expected ProtocolException');
+        } catch (ProtocolException) {
+            $this->addToAssertionCount(1);
+        }
+
+        $message2 = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('Test 2')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello 2')));
+        $transport->send($envelope, $message2);
+        $future->await();
+        $transport->close();
+        $server->close();
+        static::assertSame(2, $connectCount);
+    }
+
+    public function testChunkingNotUsedWhenServerDoesNotAdvertise(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 mail.example.com\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            $dataCmd = self::readCommand($client);
+            static::assertStringContainsString('DATA', $dataCmd);
+            $client->writeAll("354 Go ahead\r\n");
+            $data = '';
+            while (!Byte\contains($data, "\r\n.\r\n")) {
+                $data .= $client->read();
+            }
+
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+            chunking: true,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $recipient = new Mailbox('recipient', 'example.com');
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('Test')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $transport->send($envelope, $message);
+        $future->await();
+        $transport->close();
+        $server->close();
+        $this->addToAssertionCount(1);
+    }
+
+    public function testPipelinePartialSuccessReportHasTwoElements(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250-mail.example.com\r\n250 PIPELINING\r\n");
+            $pipelined = '';
+            $commandCount = 0;
+            while ($commandCount < 4) {
+                $pipelined .= $client->read();
+                $commandCount = Iter\count(Byte\split($pipelined, "\r\n")) - 1;
+            }
+
+            $client->writeAll("250 OK\r\n");
+            $client->writeAll("250 OK\r\n");
+            $client->writeAll("550 User unknown\r\n");
+            $client->writeAll("354 Go ahead\r\n");
+            $data = '';
+            while (!Byte\contains($data, "\r\n.\r\n")) {
+                $data .= $client->read();
+            }
+
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+            allowPartialSuccess: true,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $goodRecipient = new Mailbox('good', 'example.com');
+        $badRecipient = new Mailbox('rejected', 'example.com');
+        $envelope = new Envelope($sender, [$goodRecipient, $badRecipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($goodRecipient, $badRecipient)
+            ->withSubject('Test')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $report = $transport->send($envelope, $message);
+        static::assertCount(1, $report->rejectedRecipients);
+        static::assertInstanceOf(Mailbox::class, $report->rejectedRecipients[0][0]);
+        static::assertSame('rejected@example.com', $report->rejectedRecipients[0][0]->address);
+        static::assertCount(2, $report->rejectedRecipients[0]);
+        $future->await();
+        $transport->close();
+        $server->close();
+    }
+
+    public function testRsetFailureWithSpecificCodeThrowsProtocolException(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 mail.example.com\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("354 Go ahead\r\n");
+            $data = '';
+            while (!Byte\contains($data, "\r\n.\r\n")) {
+                $data .= $client->read();
+            }
+
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("500 Syntax error\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $recipient = new Mailbox('recipient', 'example.com');
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('Test')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $this->expectException(ProtocolException::class);
+        $this->expectExceptionMessageMatches('/250/');
+
+        try {
+            $transport->send($envelope, $message);
+        } finally {
+            $future->await();
+            $transport->close();
+            $server->close();
+        }
+    }
+
+    public function testClosePoolAndResetInitialized(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+
+        $connectCount = 0;
+
+        $future = Async\run(static function () use ($server, &$connectCount): void {
+            for ($i = 0; $i < 2; $i++) {
+                $client = $server->accept();
+                $connectCount++;
+                $client->writeAll("220 mail.example.com ESMTP\r\n");
+                self::readCommand($client);
+                $client->writeAll("250 mail.example.com\r\n");
+                self::readCommand($client);
+                $client->writeAll("250 OK\r\n");
+                self::readCommand($client);
+                $client->writeAll("250 OK\r\n");
+                self::readCommand($client);
+                $client->writeAll("354 Go ahead\r\n");
+                $data = '';
+                while (!Byte\contains($data, "\r\n.\r\n")) {
+                    $data .= $client->read();
+                }
+
+                $client->writeAll("250 OK\r\n");
+                self::readCommand($client);
+                $client->writeAll("250 OK\r\n");
+                $client->close();
+            }
+        });
+
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $recipient = new Mailbox('recipient', 'example.com');
+
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('Test 1')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $transport->send($envelope, $message);
+        $transport->close();
+
+        $envelope2 = new Envelope($sender, [$recipient]);
+        $message2 = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('Test 2')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello again')));
+        $transport->send($envelope2, $message2);
+        $future->await();
+        $transport->close();
+        $server->close();
+
+        static::assertSame(2, $connectCount);
+    }
+
+    public function testCloseResetsEhloState(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+
+        $ehloCount = 0;
+
+        $future = Async\run(static function () use ($server, &$ehloCount): void {
+            for ($i = 0; $i < 2; $i++) {
+                $client = $server->accept();
+                $client->writeAll("220 mail.example.com ESMTP\r\n");
+                $cmd = self::readCommand($client);
+                if (Byte\contains($cmd, 'EHLO')) {
+                    $ehloCount++;
+                }
+
+                $client->writeAll("250 mail.example.com\r\n");
+                self::readCommand($client);
+                $client->writeAll("250 OK\r\n");
+                self::readCommand($client);
+                $client->writeAll("250 OK\r\n");
+                self::readCommand($client);
+                $client->writeAll("354 Go ahead\r\n");
+                $data = '';
+                while (!Byte\contains($data, "\r\n.\r\n")) {
+                    $data .= $client->read();
+                }
+
+                $client->writeAll("250 OK\r\n");
+                self::readCommand($client);
+                $client->writeAll("250 OK\r\n");
+                $client->close();
+            }
+        });
+
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $recipient = new Mailbox('recipient', 'example.com');
+
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('Test')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $transport->send($envelope, $message);
+        $transport->close();
+
+        $envelope2 = new Envelope($sender, [$recipient]);
+        $message2 = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('Test 2')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $transport->send($envelope2, $message2);
+        $future->await();
+        $transport->close();
+        $server->close();
+
+        static::assertSame(2, $ehloCount);
+    }
+
+    public function testEightBitAndSmtpUtf8BothAppended(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250-mail.example.com\r\n250-8BITMIME\r\n250 SMTPUTF8\r\n");
+            $mailFrom = self::readCommand($client);
+            static::assertStringContainsString(' BODY=8BITMIME SMTPUTF8', $mailFrom);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("354 Go ahead\r\n");
+            $data = '';
+            while (!Byte\contains($data, "\r\n.\r\n")) {
+                $data .= $client->read();
+            }
+
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $recipient = new Mailbox('recipient', 'example.com');
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('Both Ext')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $transport->send($envelope, $message);
+        $future->await();
+        $transport->close();
+        $server->close();
+        $this->addToAssertionCount(1);
+    }
+
+    public function testRequireTlsAppendedAfterEightBit(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250-mail.example.com\r\n250-8BITMIME\r\n250 REQUIRETLS\r\n");
+            $mailFrom = self::readCommand($client);
+            static::assertStringContainsString(' BODY=8BITMIME REQUIRETLS', $mailFrom);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("354 Go ahead\r\n");
+            $data = '';
+            while (!Byte\contains($data, "\r\n.\r\n")) {
+                $data .= $client->read();
+            }
+
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $recipient = new Mailbox('recipient', 'example.com');
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('8BIT+REQTLS')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $config = new SendConfiguration(requireTls: true);
+        $transport->send($envelope, $message, $config);
+        $future->await();
+        $transport->close();
+        $server->close();
+        $this->addToAssertionCount(1);
+    }
+
+    public function testPriorityAppendedAfterRequireTls(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250-mail.example.com\r\n250-8BITMIME\r\n250-REQUIRETLS\r\n250 MT-PRIORITY\r\n");
+            $mailFrom = self::readCommand($client);
+            static::assertStringContainsString(' BODY=8BITMIME REQUIRETLS MT-PRIORITY=4', $mailFrom);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("354 Go ahead\r\n");
+            $data = '';
+            while (!Byte\contains($data, "\r\n.\r\n")) {
+                $data .= $client->read();
+            }
+
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $recipient = new Mailbox('recipient', 'example.com');
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('PRI+REQTLS')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $config = new SendConfiguration(requireTls: true, priority: Priority::Urgent);
+        $transport->send($envelope, $message, $config);
+        $future->await();
+        $transport->close();
+        $server->close();
+        $this->addToAssertionCount(1);
+    }
+
+    public function testDeliverByExactSeconds(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250-mail.example.com\r\n250 DELIVERBY\r\n");
+            $mailFrom = self::readCommand($client);
+            static::assertMatchesRegularExpression('/ BY=3600;R/', $mailFrom);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("354 Go ahead\r\n");
+            $data = '';
+            while (!Byte\contains($data, "\r\n.\r\n")) {
+                $data .= $client->read();
+            }
+
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $recipient = new Mailbox('recipient', 'example.com');
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('BY Exact')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $config = new SendConfiguration(deliverBy: new DeliverBy(Duration::hours(1), DeliverByMode::Return));
+        $transport->send($envelope, $message, $config);
+        $future->await();
+        $transport->close();
+        $server->close();
+        $this->addToAssertionCount(1);
+    }
+
+    public function testDeliverByAppendedToOtherParams(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250-mail.example.com\r\n250-8BITMIME\r\n250 DELIVERBY\r\n");
+            $mailFrom = self::readCommand($client);
+            static::assertStringContainsString('BODY=8BITMIME', $mailFrom);
+            static::assertStringContainsString(' BY=3600;R', $mailFrom);
+            $paramsPart = Byte\after($mailFrom, '>');
+            static::assertNotNull($paramsPart);
+            $trimmed = Byte\trim($paramsPart);
+            static::assertStringStartsWith('BODY=8BITMIME', $trimmed);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("354 Go ahead\r\n");
+            $data = '';
+            while (!Byte\contains($data, "\r\n.\r\n")) {
+                $data .= $client->read();
+            }
+
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $recipient = new Mailbox('recipient', 'example.com');
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('BY+8BIT')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $config = new SendConfiguration(deliverBy: new DeliverBy(Duration::hours(1), DeliverByMode::Return));
+        $transport->send($envelope, $message, $config);
+        $future->await();
+        $transport->close();
+        $server->close();
+        $this->addToAssertionCount(1);
+    }
+
+    public function testHoldForExactSeconds(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250-mail.example.com\r\n250 FUTURERELEASE\r\n");
+            $mailFrom = self::readCommand($client);
+            static::assertMatchesRegularExpression('/ HOLDFOR=7200\r?\n/', $mailFrom);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("354 Go ahead\r\n");
+            $data = '';
+            while (!Byte\contains($data, "\r\n.\r\n")) {
+                $data .= $client->read();
+            }
+
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $recipient = new Mailbox('recipient', 'example.com');
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('HOLDFOR Exact')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $config = new SendConfiguration(futureRelease: Duration::hours(2));
+        $transport->send($envelope, $message, $config);
+        $future->await();
+        $transport->close();
+        $server->close();
+        $this->addToAssertionCount(1);
+    }
+
+    public function testHoldForAppendedToOtherParams(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250-mail.example.com\r\n250-8BITMIME\r\n250 FUTURERELEASE\r\n");
+            $mailFrom = self::readCommand($client);
+            static::assertStringContainsString('BODY=8BITMIME', $mailFrom);
+            static::assertStringContainsString(' HOLDFOR=7200', $mailFrom);
+            $paramsPart = Byte\after($mailFrom, '>');
+            static::assertNotNull($paramsPart);
+            $trimmed = Byte\trim($paramsPart);
+            static::assertStringStartsWith('BODY=8BITMIME', $trimmed);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("354 Go ahead\r\n");
+            $data = '';
+            while (!Byte\contains($data, "\r\n.\r\n")) {
+                $data .= $client->read();
+            }
+
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $recipient = new Mailbox('recipient', 'example.com');
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('HOLDFOR+8BIT')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $config = new SendConfiguration(futureRelease: Duration::hours(2));
+        $transport->send($envelope, $message, $config);
+        $future->await();
+        $transport->close();
+        $server->close();
+        $this->addToAssertionCount(1);
+    }
+
+    public function testAllExtensionsConcatenated(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll(
+                "250-mail.example.com\r\n250-8BITMIME\r\n250-SMTPUTF8\r\n250-REQUIRETLS\r\n250-MT-PRIORITY\r\n250 DELIVERBY\r\n",
+            );
+            $mailFrom = self::readCommand($client);
+            $paramsPart = Byte\after($mailFrom, '>');
+            static::assertNotNull($paramsPart);
+            $trimmed = Byte\trim($paramsPart);
+            $bodyPos = Byte\search($trimmed, 'BODY=8BITMIME');
+            $utf8Pos = Byte\search($trimmed, 'SMTPUTF8');
+            $reqTlsPos = Byte\search($trimmed, 'REQUIRETLS');
+            $priorityPos = Byte\search($trimmed, 'MT-PRIORITY=');
+            $byPos = Byte\search($trimmed, 'BY=');
+            static::assertNotNull($bodyPos);
+            static::assertNotNull($utf8Pos);
+            static::assertNotNull($reqTlsPos);
+            static::assertNotNull($priorityPos);
+            static::assertNotNull($byPos);
+            static::assertLessThan($utf8Pos, $bodyPos);
+            static::assertLessThan($reqTlsPos, $utf8Pos);
+            static::assertLessThan($priorityPos, $reqTlsPos);
+            static::assertLessThan($byPos, $priorityPos);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("354 Go ahead\r\n");
+            $data = '';
+            while (!Byte\contains($data, "\r\n.\r\n")) {
+                $data .= $client->read();
+            }
+
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $recipient = new Mailbox('recipient', 'example.com');
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('All Params')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $config = new SendConfiguration(
+            requireTls: true,
+            priority: Priority::NonUrgent,
+            deliverBy: new DeliverBy(Duration::hours(1), DeliverByMode::Return),
+        );
+        $transport->send($envelope, $message, $config);
+        $future->await();
+        $transport->close();
+        $server->close();
+        $this->addToAssertionCount(1);
+    }
+
+    public function testAddressWithMultipleAtSigns(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 mail.example.com\r\n");
+            $mailFrom = self::readCommand($client);
+            static::assertStringContainsString('FROM:<"user@name"@example.com>', $mailFrom);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("354 Go ahead\r\n");
+            $data = '';
+            while (!Byte\contains($data, "\r\n.\r\n")) {
+                $data .= $client->read();
+            }
+
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('"user@name"', 'example.com');
+        $recipient = new Mailbox('recipient', 'example.com');
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('MultiAt')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $transport->send($envelope, $message);
+        $future->await();
+        $transport->close();
+        $server->close();
+        $this->addToAssertionCount(1);
+    }
+
+    public function testCancelledConnectionWrappedAsTimeout(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            try {
+                $client = $server->accept();
+                $client->close();
+            } catch (\Throwable $e) {
+                unset($e);
+            }
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $recipient = new Mailbox('recipient', 'example.com');
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('Test')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $token = new Async\TimeoutCancellationToken(Duration::nanoseconds(1));
+        Async\sleep(Duration::milliseconds(5));
+        try {
+            $transport->send($envelope, $message, cancellation: $token);
+            static::fail('Expected exception');
+        } catch (Async\Exception\CancelledException) {
+            static::fail('CancelledException should be wrapped');
+        } catch (ExceptionInterface) {
+            $this->addToAssertionCount(1);
+        } finally {
+            $transport->close();
+            $server->close();
+            $future->await();
+        }
+    }
+
+    public function testDeliverByNotifyMode(): void
+    {
+        $server = TCP\listen('127.0.0.1', 0);
+        $address = $server->getLocalAddress();
+        $future = Async\run(static function () use ($server): void {
+            $client = $server->accept();
+            $client->writeAll("220 mail.example.com ESMTP\r\n");
+            self::readCommand($client);
+            $client->writeAll("250-mail.example.com\r\n250 DELIVERBY\r\n");
+            $mailFrom = self::readCommand($client);
+            static::assertMatchesRegularExpression('/ BY=7200;N/', $mailFrom);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("354 Go ahead\r\n");
+            $data = '';
+            while (!Byte\contains($data, "\r\n.\r\n")) {
+                $data .= $client->read();
+            }
+
+            $client->writeAll("250 OK\r\n");
+            self::readCommand($client);
+            $client->writeAll("250 OK\r\n");
+            $client->close();
+        });
+        $configuration = new TransportConfiguration(
+            host: $address->host,
+            port: $address->port,
+            security: Security::None,
+        );
+        $transport = new Transport($configuration);
+        $sender = new Mailbox('sender', 'example.com');
+        $recipient = new Mailbox('recipient', 'example.com');
+        $envelope = new Envelope($sender, [$recipient]);
+        $message = new Message()
+            ->withFrom($sender)
+            ->withTo($recipient)
+            ->withSubject('BY Notify')
+            ->withContent(new Part\Text(new IO\MemoryHandle('Hello')));
+        $config = new SendConfiguration(deliverBy: new DeliverBy(Duration::hours(2), DeliverByMode::Notify));
+        $transport->send($envelope, $message, $config);
+        $future->await();
+        $transport->close();
+        $server->close();
+        $this->addToAssertionCount(1);
     }
 
     private static function readCommand(Network\StreamInterface $stream): string

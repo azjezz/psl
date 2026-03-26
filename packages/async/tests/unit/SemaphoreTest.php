@@ -36,15 +36,15 @@ final class SemaphoreTest extends TestCase
         Async\run(static fn(): null => $semaphore->waitFor([
             'time' => DateTime\Duration::milliseconds(3),
             'value' => 'a',
-        ]));
+        ]))->ignore();
         Async\run(static fn(): null => $semaphore->waitFor([
             'time' => DateTime\Duration::milliseconds(4),
             'value' => 'b',
-        ]));
+        ]))->ignore();
         Async\run(static fn(): null => $semaphore->waitFor([
             'time' => DateTime\Duration::milliseconds(5),
             'value' => 'c',
-        ]));
+        ]))->ignore();
         $last = Async\run(static fn(): null => $semaphore->waitFor([
             'time' => null,
             'value' => 'd',
@@ -72,11 +72,11 @@ final class SemaphoreTest extends TestCase
         Async\run(static fn(): null => $semaphore->waitFor([
             'time' => Datetime\Duration::milliseconds(3),
             'value' => 'a',
-        ]));
+        ]))->ignore();
         Async\run(static fn(): null => $semaphore->waitFor([
             'time' => Datetime\Duration::milliseconds(4),
             'value' => 'b',
-        ]));
+        ]))->ignore();
         $beforeLast = Async\run(static fn(): null => $semaphore->waitFor([
             'time' => Datetime\Duration::milliseconds(5),
             'value' => 'c',
@@ -84,7 +84,7 @@ final class SemaphoreTest extends TestCase
         Async\run(static fn(): null => $semaphore->waitFor([
             'time' => null,
             'value' => 'd',
-        ]));
+        ]))->ignore();
 
         $beforeLast->await();
 
@@ -126,7 +126,7 @@ final class SemaphoreTest extends TestCase
             Async\sleep(Datetime\Duration::milliseconds(2));
         });
 
-        Async\run(static fn(): null => $semaphore->waitFor('hello'));
+        Async\run(static fn(): null => $semaphore->waitFor('hello'))->ignore();
         $awaitable = Async\run(static fn(): null => $semaphore->waitFor('world'));
 
         Async\sleep(Datetime\Duration::milliseconds(1));

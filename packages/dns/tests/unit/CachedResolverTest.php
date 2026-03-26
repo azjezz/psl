@@ -22,6 +22,9 @@ use Psl\DNS\ResponseCode;
 use Psl\DNS\StaticResolver;
 use Psl\IP\Address;
 
+use function md5;
+use function serialize;
+
 final class CachedResolverTest extends TestCase
 {
     public function testCachesSuccessfulResponse(): void
@@ -664,9 +667,784 @@ final class CachedResolverTest extends TestCase
         static::assertCount(1, $r1->authority);
     }
 
+    public function testExtractMinTtlDefaultIs60WhenNoRecords(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(static fn(): Response => new Response(0, ResponseCode::NoError, [], [], []));
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('empty.example.com', RecordType::A);
+
+        static::assertCount(1, $updateCalls);
+        static::assertSame(60, (int) $updateCalls[0]['ttl']->getTotalSeconds());
+    }
+
+    public function testExtractMinTtlDefaultValueIsNotLessThan60(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(static fn(): Response => new Response(0, ResponseCode::NoError, [], [], []));
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('empty.example.com', RecordType::A);
+
+        static::assertCount(1, $updateCalls);
+        static::assertGreaterThanOrEqual(60, (int) $updateCalls[0]['ttl']->getTotalSeconds());
+        static::assertLessThanOrEqual(60, (int) $updateCalls[0]['ttl']->getTotalSeconds());
+    }
+
+    public function testExtractMinTtlDefaultValueIsNotGreaterThan60(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(0, ResponseCode::NonExistentDomain, [], [], []),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('nx.example.com', RecordType::A);
+
+        static::assertCount(1, $updateCalls);
+        static::assertSame(60, (int) $updateCalls[0]['ttl']->getTotalSeconds());
+    }
+
+    public function testAuthorityTtlIsUsedWhenNoAnswersPresent(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(
+                0,
+                ResponseCode::NonExistentDomain,
+                [],
+                [
+                    new NSRecord('example.com', Duration::seconds(45), 'ns1.example.com'),
+                    new NSRecord('example.com', Duration::seconds(90), 'ns2.example.com'),
+                ],
+                [],
+            ),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('nx.example.com', RecordType::A);
+
+        static::assertCount(1, $updateCalls);
+        static::assertSame(45, (int) $updateCalls[0]['ttl']->getTotalSeconds());
+    }
+
+    public function testAuthorityTtlSetsHasRecordsFlagCorrectly(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(
+                0,
+                ResponseCode::NonExistentDomain,
+                [],
+                [
+                    new NSRecord('example.com', Duration::seconds(200), 'ns1.example.com'),
+                ],
+                [],
+            ),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('nx.example.com', RecordType::A);
+
+        static::assertCount(1, $updateCalls);
+        static::assertSame(200, (int) $updateCalls[0]['ttl']->getTotalSeconds());
+    }
+
+    public function testAuthorityNotUsedWhenAnswersExist(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(
+                0,
+                ResponseCode::NoError,
+                [
+                    new ARecord('example.com', Duration::seconds(100), Address::v4('10.0.0.1')),
+                ],
+                [
+                    new NSRecord('example.com', Duration::seconds(5), 'ns1.example.com'),
+                ],
+                [],
+            ),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('example.com', RecordType::A);
+
+        static::assertCount(1, $updateCalls);
+        static::assertSame(100, (int) $updateCalls[0]['ttl']->getTotalSeconds());
+    }
+
+    public function testMultipleAuthorityRecordsUsesMinimumTtl(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(
+                0,
+                ResponseCode::NonExistentDomain,
+                [],
+                [
+                    new NSRecord('example.com', Duration::seconds(500), 'ns1.example.com'),
+                    new NSRecord('example.com', Duration::seconds(120), 'ns2.example.com'),
+                    new NSRecord('example.com', Duration::seconds(300), 'ns3.example.com'),
+                ],
+                [],
+            ),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('nx.example.com', RecordType::A);
+
+        static::assertCount(1, $updateCalls);
+        static::assertSame(120, (int) $updateCalls[0]['ttl']->getTotalSeconds());
+    }
+
+    public function testNoErrorResponseTriggersTtlExtraction(): void
+    {
+        $callCount = 0;
+        $inner = self::countingResolver(static function () use (&$callCount): Response {
+            $callCount++;
+            return new Response(
+                0,
+                ResponseCode::NoError,
+                [new ARecord('ok.example.com', Duration::seconds(60), Address::v4('10.0.0.1'))],
+                [],
+                [],
+            );
+        });
+
+        $cache = new LocalStore();
+        $resolver = new CachedResolver($inner, $cache);
+
+        $resolver->query('ok.example.com', RecordType::A);
+        $resolver->query('ok.example.com', RecordType::A);
+        $resolver->query('ok.example.com', RecordType::A);
+
+        static::assertSame(1, $callCount);
+    }
+
+    public function testNxdomainResponseTriggersTtlExtraction(): void
+    {
+        $callCount = 0;
+        $inner = self::countingResolver(static function () use (&$callCount): Response {
+            $callCount++;
+            return new Response(
+                0,
+                ResponseCode::NonExistentDomain,
+                [],
+                [new NSRecord('example.com', Duration::seconds(60), 'ns1.example.com')],
+                [],
+            );
+        });
+
+        $cache = new LocalStore();
+        $resolver = new CachedResolver($inner, $cache);
+
+        $resolver->query('nx2.example.com', RecordType::A);
+        $resolver->query('nx2.example.com', RecordType::A);
+        $resolver->query('nx2.example.com', RecordType::A);
+
+        static::assertSame(1, $callCount);
+    }
+
+    public function testServerFailureDoesNotTriggerTtlUpdate(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(0, ResponseCode::ServerFailure, [], [], []),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('sf.example.com', RecordType::A);
+
+        static::assertCount(0, $updateCalls);
+    }
+
+    public function testFormatErrorDoesNotTriggerTtlUpdate(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(0, ResponseCode::FormatError, [], [], []),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('ferr.example.com', RecordType::A);
+
+        static::assertCount(0, $updateCalls);
+    }
+
+    public function testRefusedDoesNotTriggerTtlUpdate(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(0, ResponseCode::ServerRefused, [], [], []),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('refused.example.com', RecordType::A);
+
+        static::assertCount(0, $updateCalls);
+    }
+
+    public function testNoErrorTriggersUpdateButServerFailureDoesNot(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(
+                0,
+                ResponseCode::NoError,
+                [new ARecord('ok.test', Duration::seconds(300), Address::v4('10.0.0.1'))],
+                [],
+                [],
+            ),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('ok.test', RecordType::A);
+
+        static::assertCount(1, $updateCalls);
+    }
+
+    public function testNxdomainTriggersUpdateWithAuthorityTtl(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(
+                0,
+                ResponseCode::NonExistentDomain,
+                [],
+                [new NSRecord('example.com', Duration::seconds(180), 'ns1.example.com')],
+                [],
+            ),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('nx.test', RecordType::A);
+
+        static::assertCount(1, $updateCalls);
+        static::assertSame(180, (int) $updateCalls[0]['ttl']->getTotalSeconds());
+    }
+
+    public function testZeroTtlAnswerRecordDoesNotTriggerUpdate(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(
+                0,
+                ResponseCode::NoError,
+                [new ARecord('zero.example.com', Duration::zero(), Address::v4('10.0.0.1'))],
+                [],
+                [],
+            ),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('zero.example.com', RecordType::A);
+
+        static::assertCount(0, $updateCalls);
+    }
+
+    public function testZeroTtlAuthorityRecordDoesNotTriggerUpdate(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(
+                0,
+                ResponseCode::NonExistentDomain,
+                [],
+                [new NSRecord('example.com', Duration::zero(), 'ns1.example.com')],
+                [],
+            ),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('zero-auth.example.com', RecordType::A);
+
+        static::assertCount(0, $updateCalls);
+    }
+
+    public function testPositiveTtlCachesResponseForSubsequentCalls(): void
+    {
+        $callCount = 0;
+        $inner = self::countingResolver(static function () use (&$callCount): Response {
+            $callCount++;
+            return new Response(
+                0,
+                ResponseCode::NoError,
+                [new ARecord('cached.example.com', Duration::seconds(600), Address::v4('10.0.0.2'))],
+                [],
+                [],
+            );
+        });
+
+        $cache = new LocalStore();
+        $resolver = new CachedResolver($inner, $cache);
+
+        $r1 = $resolver->query('cached.example.com', RecordType::A);
+        $r2 = $resolver->query('cached.example.com', RecordType::A);
+        $r3 = $resolver->query('cached.example.com', RecordType::A);
+
+        static::assertSame(1, $callCount);
+        static::assertSame($r1->code, $r2->code);
+        static::assertSame($r1->code, $r3->code);
+        static::assertCount(1, $r1->answers);
+        static::assertCount(1, $r2->answers);
+        static::assertCount(1, $r3->answers);
+    }
+
+    public function testCacheKeyColonSeparatorPreventsAmbiguity(): void
+    {
+        $callCount = 0;
+        $inner = self::countingResolver(static function () use (&$callCount): Response {
+            $callCount++;
+            return new Response(
+                0,
+                ResponseCode::NoError,
+                [new ARecord('test.com', Duration::seconds(300), Address::v4('10.0.0.1'))],
+                [],
+                [],
+            );
+        });
+
+        $cache = new LocalStore();
+        $resolver = new CachedResolver($inner, $cache);
+
+        $resolver->query('abc', RecordType::A);
+        $resolver->query('abc', RecordType::AAAA);
+        $resolver->query('abc', RecordType::MX);
+
+        static::assertSame(3, $callCount);
+    }
+
+    public function testEdnsOptionsAppendSeparatorAndHashToKey(): void
+    {
+        $callCount = 0;
+        $inner = self::countingResolver(static function () use (&$callCount): Response {
+            $callCount++;
+            return new Response(
+                0,
+                ResponseCode::NoError,
+                [new ARecord('edns.example.com', Duration::seconds(300), Address::v4('10.0.0.1'))],
+                [],
+                [],
+            );
+        });
+
+        $cache = new LocalStore();
+        $resolver = new CachedResolver($inner, $cache);
+
+        $resolver->query('edns.example.com', RecordType::A, ednsOptions: []);
+        static::assertSame(1, $callCount);
+
+        $resolver->query('edns.example.com', RecordType::A, ednsOptions: [new EDNS\NSIDOption()]);
+        static::assertSame(2, $callCount);
+
+        $resolver->query('edns.example.com', RecordType::A, ednsOptions: [new EDNS\NSIDOption()]);
+        static::assertSame(2, $callCount);
+    }
+
+    public function testEmptyEdnsOptionsDoNotModifyKey(): void
+    {
+        $callCount = 0;
+        $inner = self::countingResolver(static function () use (&$callCount): Response {
+            $callCount++;
+            return new Response(
+                0,
+                ResponseCode::NoError,
+                [new ARecord('example.com', Duration::seconds(300), Address::v4('10.0.0.1'))],
+                [],
+                [],
+            );
+        });
+
+        $cache = new LocalStore();
+        $resolver = new CachedResolver($inner, $cache);
+
+        $resolver->query('example.com', RecordType::A, ednsOptions: []);
+        $resolver->query('example.com', RecordType::A);
+
+        static::assertSame(1, $callCount);
+    }
+
+    public function testDifferentEdnsOptionsCreateDifferentKeys(): void
+    {
+        $callCount = 0;
+        $inner = self::countingResolver(static function () use (&$callCount): Response {
+            $callCount++;
+            return new Response(
+                0,
+                ResponseCode::NoError,
+                [new ARecord('example.com', Duration::seconds(300), Address::v4('10.0.0.1'))],
+                [],
+                [],
+            );
+        });
+
+        $cache = new LocalStore();
+        $resolver = new CachedResolver($inner, $cache);
+
+        $resolver->query('example.com', RecordType::A, ednsOptions: [new EDNS\NSIDOption()]);
+        $resolver->query('example.com', RecordType::A, ednsOptions: [new EDNS\NSIDOption('server1')]);
+
+        static::assertSame(2, $callCount);
+    }
+
+    public function testExtractMinTtlAnswerRecordsPresentDoNotFallToAuthority(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(
+                0,
+                ResponseCode::NoError,
+                [
+                    new ARecord('example.com', Duration::seconds(100), Address::v4('10.0.0.1')),
+                    new ARecord('example.com', Duration::seconds(200), Address::v4('10.0.0.2')),
+                ],
+                [
+                    new NSRecord('example.com', Duration::seconds(5), 'ns1.example.com'),
+                ],
+                [],
+            ),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('example.com', RecordType::A);
+
+        static::assertCount(1, $updateCalls);
+        static::assertSame(100, (int) $updateCalls[0]['ttl']->getTotalSeconds());
+    }
+
+    public function testComputeCalledWith24HourTtl(): void
+    {
+        $computeTtls = [];
+        $store = self::createComputeTrackingCacheStore($computeTtls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(
+                0,
+                ResponseCode::NoError,
+                [new ARecord('example.com', Duration::seconds(300), Address::v4('10.0.0.1'))],
+                [],
+                [],
+            ),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('example.com', RecordType::A);
+
+        static::assertCount(1, $computeTtls);
+        static::assertNotNull($computeTtls[0]);
+        static::assertSame(86_400, (int) $computeTtls[0]->getTotalSeconds());
+    }
+
+    public function testComputeFallbackTtlIsExactly24Hours(): void
+    {
+        $computeTtls = [];
+        $store = self::createComputeTrackingCacheStore($computeTtls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(0, ResponseCode::ServerFailure, [], [], []),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('sf.example.com', RecordType::A);
+
+        static::assertCount(1, $computeTtls);
+        static::assertNotNull($computeTtls[0]);
+        static::assertSame(24 * 3600, (int) $computeTtls[0]->getTotalSeconds());
+    }
+
+    public function testComputeTtlIs24HoursNotMoreOrLess(): void
+    {
+        $computeTtls = [];
+        $store = self::createComputeTrackingCacheStore($computeTtls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(
+                0,
+                ResponseCode::NoError,
+                [new ARecord('example.com', Duration::seconds(120), Address::v4('10.0.0.1'))],
+                [],
+                [],
+            ),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('example.com', RecordType::A);
+
+        static::assertCount(1, $computeTtls);
+        static::assertNotNull($computeTtls[0]);
+        static::assertGreaterThanOrEqual(86_400, (int) $computeTtls[0]->getTotalSeconds());
+        static::assertLessThanOrEqual(86_400, (int) $computeTtls[0]->getTotalSeconds());
+    }
+
+    public function testUpdateIsCalledWhenTtlValueIsNotNull(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(
+                0,
+                ResponseCode::NoError,
+                [new ARecord('example.com', Duration::seconds(120), Address::v4('10.0.0.1'))],
+                [],
+                [],
+            ),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('example.com', RecordType::A);
+
+        static::assertCount(1, $updateCalls);
+        static::assertNotNull($updateCalls[0]['ttl']);
+        static::assertSame(120, (int) $updateCalls[0]['ttl']->getTotalSeconds());
+    }
+
+    public function testUpdateNotCalledWhenTtlValueIsNull(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(0, ResponseCode::ServerFailure, [], [], []),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('sf.example.com', RecordType::A);
+
+        static::assertCount(0, $updateCalls);
+    }
+
+    public function testCacheKeyIsLowercaseWithColonSeparator(): void
+    {
+        $callCount = 0;
+        $inner = self::countingResolver(static function () use (&$callCount): Response {
+            $callCount++;
+            return new Response(
+                0,
+                ResponseCode::NoError,
+                [new ARecord('case.example.com', Duration::seconds(300), Address::v4('10.0.0.1'))],
+                [],
+                [],
+            );
+        });
+
+        $cache = new LocalStore();
+        $resolver = new CachedResolver($inner, $cache);
+
+        $resolver->query('CASE.EXAMPLE.COM', RecordType::A);
+        $resolver->query('case.example.com', RecordType::A);
+        $resolver->query('Case.Example.Com', RecordType::A);
+
+        static::assertSame(1, $callCount);
+    }
+
+    public function testBothNoErrorAndNxdomainTriggerUpdateButOtherCodesDont(): void
+    {
+        $noErrUpdates = [];
+        $storeNoErr = self::createTrackingUpdateCacheStore($noErrUpdates);
+        $innerNoErr = self::countingResolver(
+            static fn(): Response => new Response(
+                0,
+                ResponseCode::NoError,
+                [new ARecord('ok.test', Duration::seconds(300), Address::v4('10.0.0.1'))],
+                [],
+                [],
+            ),
+        );
+        $resolverNoErr = new CachedResolver($innerNoErr, $storeNoErr);
+        $resolverNoErr->query('ok.test', RecordType::A);
+        static::assertCount(1, $noErrUpdates);
+
+        $nxUpdates = [];
+        $storeNx = self::createTrackingUpdateCacheStore($nxUpdates);
+        $innerNx = self::countingResolver(
+            static fn(): Response => new Response(
+                0,
+                ResponseCode::NonExistentDomain,
+                [],
+                [new NSRecord('test', Duration::seconds(60), 'ns1.test')],
+                [],
+            ),
+        );
+        $resolverNx = new CachedResolver($innerNx, $storeNx);
+        $resolverNx->query('nx.test', RecordType::A);
+        static::assertCount(1, $nxUpdates);
+
+        $sfUpdates = [];
+        $storeSf = self::createTrackingUpdateCacheStore($sfUpdates);
+        $innerSf = self::countingResolver(
+            static fn(): Response => new Response(0, ResponseCode::ServerFailure, [], [], []),
+        );
+        $resolverSf = new CachedResolver($innerSf, $storeSf);
+        $resolverSf->query('sf.test', RecordType::A);
+        static::assertCount(0, $sfUpdates);
+    }
+
+    public function testUpdateKeyMatchesComputeKey(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(
+                0,
+                ResponseCode::NoError,
+                [new ARecord('verify-key.example.com', Duration::seconds(300), Address::v4('10.0.0.1'))],
+                [],
+                [],
+            ),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('verify-key.example.com', RecordType::A);
+
+        static::assertCount(1, $updateCalls);
+        static::assertSame('verify-key.example.com:1', $updateCalls[0]['key']);
+    }
+
+    public function testUpdateKeyWithEdnsContainsHashSuffix(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(
+                0,
+                ResponseCode::NoError,
+                [new ARecord('edns-key.example.com', Duration::seconds(300), Address::v4('10.0.0.1'))],
+                [],
+                [],
+            ),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $option = new EDNS\NSIDOption();
+        $resolver->query('edns-key.example.com', RecordType::A, ednsOptions: [$option]);
+
+        static::assertCount(1, $updateCalls);
+        $key = $updateCalls[0]['key'];
+        static::assertStringStartsWith('edns-key.example.com:1:', $key);
+        static::assertSame('edns-key.example.com:1:' . md5(serialize([$option])), $key);
+    }
+
+    public function testNotImplementedDoesNotTriggerUpdate(): void
+    {
+        $updateCalls = [];
+        $store = self::createTrackingUpdateCacheStore($updateCalls);
+
+        $inner = self::countingResolver(
+            static fn(): Response => new Response(0, ResponseCode::NotImplemented, [], [], []),
+        );
+
+        $resolver = new CachedResolver($inner, $store);
+        $resolver->query('notimp.example.com', RecordType::A);
+
+        static::assertCount(0, $updateCalls);
+    }
+
     /**
-     * Helper: creates a resolver that counts calls and delegates to a callback.
-     *
+     * @param list<array{key: string, ttl: Duration|null}> $updateCalls
+     */
+    private static function createTrackingUpdateCacheStore(array &$updateCalls): \Psl\Cache\StoreInterface
+    {
+        return new class($updateCalls) implements \Psl\Cache\StoreInterface {
+            /** @var list<array{key: string, ttl: Duration|null}> */
+            private array $calls;
+
+            /** @param list<array{key: string, ttl: Duration|null}> $calls */
+            public function __construct(array &$calls)
+            {
+                $this->calls = &$calls;
+            }
+
+            public function get(string $key): mixed
+            {
+                throw new \Psl\Cache\Exception\UnavailableItemException($key);
+            }
+
+            public function compute(string $key, \Closure $computer, null|Duration $ttl = null): mixed
+            {
+                return $computer();
+            }
+
+            public function update(string $key, \Closure $computer, null|Duration $ttl = null): mixed
+            {
+                $this->calls[] = ['key' => $key, 'ttl' => $ttl];
+                return $computer(null);
+            }
+
+            public function delete(string $key): void {}
+        };
+    }
+
+    /**
+     * @param list<Duration|null> $computeTtls
+     */
+    private static function createComputeTrackingCacheStore(array &$computeTtls): \Psl\Cache\StoreInterface
+    {
+        return new class($computeTtls) implements \Psl\Cache\StoreInterface {
+            /** @var list<Duration|null> */
+            private array $ttls;
+
+            /** @param list<Duration|null> $ttls */
+            public function __construct(array &$ttls)
+            {
+                $this->ttls = &$ttls;
+            }
+
+            public function get(string $key): mixed
+            {
+                throw new \Psl\Cache\Exception\UnavailableItemException($key);
+            }
+
+            public function compute(string $key, \Closure $computer, null|Duration $ttl = null): mixed
+            {
+                $this->ttls[] = $ttl;
+                return $computer();
+            }
+
+            public function update(string $key, \Closure $computer, null|Duration $ttl = null): mixed
+            {
+                return $computer(null);
+            }
+
+            public function delete(string $key): void {}
+        };
+    }
+
+    /**
      * @param \Closure(): Response $handler
      */
     private static function countingResolver(\Closure $handler): object
