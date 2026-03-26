@@ -210,7 +210,6 @@ final class KeyedSemaphore
             $count += count($suspensions);
         }
 
-        /** @var int<0, max> */
         return $count;
     }
 

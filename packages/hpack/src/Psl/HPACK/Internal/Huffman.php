@@ -641,7 +641,6 @@ final class Huffman
             $highNibble = ($byte >> 4) & 0x0F;
             /** @mago-expect analysis:mismatched-array-index */
             $stateTransitions = $table[$state];
-            /** @mago-expect analysis:mismatched-array-index */
             [$nextState, $emit] = $stateTransitions[$highNibble];
             if ($emit === 256) {
                 throw DecodingException::forEosInHuffmanData();
@@ -658,7 +657,7 @@ final class Huffman
             $state = $nextState;
 
             $lowNibble = $byte & 0x0F;
-            /** @mago-expect analysis:mismatched-array-index,mismatched-array-index */
+            /** @mago-expect analysis:mismatched-array-index */
             [$nextState, $emit] = $table[$state][$lowNibble];
             if ($emit === 256) {
                 throw DecodingException::forEosInHuffmanData();

@@ -224,7 +224,6 @@ class ResourceHandle implements
             $remainingBytes = substr($remainingBytes, $chunk);
         }
 
-        /** @var int<0, max> $written */
         if ('' === $remainingBytes) {
             return $written;
         }

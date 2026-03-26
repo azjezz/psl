@@ -78,7 +78,6 @@ final class BDPEstimator
     {
         $increment = $this->initialWindowSize - DEFAULT_INITIAL_WINDOW_SIZE;
 
-        /** @var int<0, max> */
         return max(0, $increment);
     }
 

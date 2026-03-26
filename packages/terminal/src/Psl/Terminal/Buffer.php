@@ -149,7 +149,6 @@ final class Buffer
 
         for ($y = 0; $y < $this->height; $y++) {
             for ($x = 0; $x < $this->width; $x++) {
-                /** @var non-negative-int $x */
                 $cell = $this->cells[$y][$x];
                 $prev = $this->previous[$y][$x] ?? null;
 
@@ -164,9 +163,7 @@ final class Buffer
                         $lastStyle = [];
                     }
 
-                    /** @var positive-int $row */
                     $row = $y + 1;
-                    /** @var positive-int $col */
                     $col = $x + 1;
                     $buf .= Ansi\Cursor\move_to($row, $col)->toString();
                 }

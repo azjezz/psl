@@ -136,6 +136,7 @@ final readonly class Address implements Stringable, Comparable, Equable
      */
     public function compare(mixed $other): Order
     {
+        // @mago-expect analysis:impossible-condition - runtime check.
         if (!$other instanceof self) {
             // @mago-expect analysis:no-value - runtime check.
             throw IncomparableException::fromValues($this, $other);
@@ -149,6 +150,7 @@ final readonly class Address implements Stringable, Comparable, Equable
      */
     public function equals(mixed $other): bool
     {
+        // @mago-expect analysis:impossible-condition - runtime check.
         if (!$other instanceof self) {
             return false;
         }

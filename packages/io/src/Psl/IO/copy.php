@@ -42,6 +42,5 @@ function copy(
         $bytesCopied += strlen($data);
     }
 
-    /** @var int<0, max> */
     return $bytesCopied;
 }

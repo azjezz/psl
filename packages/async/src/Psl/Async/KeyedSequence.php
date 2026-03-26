@@ -185,7 +185,6 @@ final class KeyedSequence
             $count += count($suspensions);
         }
 
-        /** @var int<0, max> */
         return $count;
     }
 

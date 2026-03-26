@@ -32,6 +32,5 @@ function count(NodeInterface $node): int
         }
     }
 
-    /** @var int<1, max> */
     return $total;
 }
