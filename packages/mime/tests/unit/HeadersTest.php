@@ -6,12 +6,14 @@ namespace Psl\MIME\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Iter;
+use Psl\MIME\Exception\InvalidArgumentException;
 use Psl\MIME\Headers;
 use Psl\Str;
 use Psl\Str\Byte;
 use Psl\Vec;
 use Stringable;
 
+use function str_replace;
 use function substr_count;
 
 final class HeadersTest extends TestCase
@@ -447,7 +449,7 @@ final class HeadersTest extends TestCase
     {
         $headers = Headers::fromPairs([['X-Test', 'value']]);
 
-        $this->expectException(\Psl\MIME\Exception\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $headers->toFoldedString(100, 50);
     }
@@ -456,7 +458,7 @@ final class HeadersTest extends TestCase
     {
         $headers = Headers::fromPairs([['X-Test', 'value']]);
 
-        $this->expectException(\Psl\MIME\Exception\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $headers->toFoldedString(0, 998);
     }
@@ -465,8 +467,349 @@ final class HeadersTest extends TestCase
     {
         $headers = Headers::fromPairs([['X-Test', 'value']]);
 
-        $this->expectException(\Psl\MIME\Exception\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $headers->toFoldedString(78, 0);
+    }
+
+    public function testWithoutIsCaseInsensitive(): void
+    {
+        $headers = Headers::fromPairs([
+            ['Content-Type', 'text/html'],
+            ['Accept',       'application/json'],
+        ]);
+
+        $result = $headers->without('CONTENT-TYPE');
+
+        static::assertSame(1, $result->count());
+        static::assertNull($result->get('Content-Type'));
+        static::assertSame('application/json', $result->get('Accept'));
+    }
+
+    public function testWithoutComparesCorrectTupleIndex(): void
+    {
+        $headers = Headers::fromPairs([
+            ['Content-Type', 'text/html'],
+            ['X-Header',     'value'],
+        ]);
+
+        $result = $headers->without('Content-Type');
+
+        static::assertSame(1, $result->count());
+        static::assertSame('value', $result->get('X-Header'));
+    }
+
+    public function testFoldedStringSoftLimitOneDoesNotThrow(): void
+    {
+        $headers = Headers::fromPairs([['X', 'v']]);
+
+        $folded = $headers->toFoldedString(1, 1);
+        static::assertNotEmpty($folded);
+    }
+
+    public function testFoldedStringHardLimitOneDoesNotThrow(): void
+    {
+        $headers = Headers::fromPairs([['X', 'v']]);
+
+        $folded = $headers->toFoldedString(1, 1);
+        static::assertNotEmpty($folded);
+    }
+
+    public function testFoldedStringEqualLimitsDoNotThrow(): void
+    {
+        $headers = Headers::fromPairs([['X', 'v']]);
+
+        $folded = $headers->toFoldedString(50, 50);
+        static::assertNotEmpty($folded);
+    }
+
+    public function testFoldedStringExactSoftLimitIsNotFolded(): void
+    {
+        $headers = Headers::fromPairs([['X', 'abcdefg']]);
+
+        $folded = $headers->toFoldedString(10, 998);
+
+        static::assertSame("X: abcdefg\r\n", $folded);
+    }
+
+    public function testFoldedStringShortLineReturnsDirectly(): void
+    {
+        $headers = Headers::fromPairs([['X', 'short']]);
+
+        $folded = $headers->toFoldedString(78, 998);
+
+        static::assertSame("X: short\r\n", $folded);
+    }
+
+    public function testFoldedStringEmptyValueToken(): void
+    {
+        $longName = Str\repeat('X', 80);
+        $headers = Headers::fromPairs([[$longName, '']]);
+
+        $folded = $headers->toFoldedString(78, 998);
+
+        static::assertStringContainsString($longName . ': ', $folded);
+    }
+
+    public function testFoldedStringSkipsEmptyTokensFromSplit(): void
+    {
+        $value = 'word1  word2  word3';
+        $headers = Headers::fromPairs([['Subject', $value]]);
+
+        $folded = $headers->toFoldedString(20, 998);
+
+        static::assertStringContainsString('word1', $folded);
+        static::assertStringContainsString('word2', $folded);
+        static::assertStringContainsString('word3', $folded);
+    }
+
+    public function testFoldedStringAccountsForSpaceBetweenTokens(): void
+    {
+        $headers = Headers::fromPairs([['Subject', 'aaaa bbbbb ccccc']]);
+
+        $folded = $headers->toFoldedString(20, 998);
+
+        static::assertStringContainsString("\r\n ", $folded);
+        static::assertStringContainsString('aaaa', $folded);
+        static::assertStringContainsString('bbbbb', $folded);
+        static::assertStringContainsString('ccccc', $folded);
+    }
+
+    public function testFoldedStringFoldsAtSoftLimitBoundary(): void
+    {
+        $headers = Headers::fromPairs([['X', 'aaa bbb ccc ddd']]);
+
+        $folded = $headers->toFoldedString(15, 998);
+
+        static::assertStringContainsString("\r\n ", $folded);
+        static::assertStringContainsString('ddd', $folded);
+    }
+
+    public function testFoldedStringTokenExceedingHardLimitIsSplit(): void
+    {
+        $longToken = Str\repeat('x', 50);
+        $headers = Headers::fromPairs([['X', 'short ' . $longToken]]);
+
+        $folded = $headers->toFoldedString(10, 20);
+        $lines = Byte\split($folded, "\r\n");
+
+        foreach ($lines as $line) {
+            if ($line === '') {
+                continue;
+            }
+
+            static::assertLessThanOrEqual(20, Byte\length($line));
+        }
+    }
+
+    public function testFoldedStringChunkSizeIsHardLimitMinusOne(): void
+    {
+        $longToken = Str\repeat('a', 30);
+        $headers = Headers::fromPairs([['X', 'y ' . $longToken]]);
+
+        $folded = $headers->toFoldedString(5, 10);
+        $lines = Byte\split($folded, "\r\n");
+
+        foreach ($lines as $line) {
+            if ($line === '') {
+                continue;
+            }
+
+            static::assertLessThanOrEqual(10, Byte\length($line));
+        }
+    }
+
+    public function testFoldedStringChunksAllAppendedWithFolding(): void
+    {
+        $longToken = Str\repeat('x', 100);
+        $headers = Headers::fromPairs([['X', 'a ' . $longToken]]);
+
+        $folded = $headers->toFoldedString(5, 30);
+
+        $unfolded = str_replace("\r\n ", '', $folded);
+        static::assertStringContainsString($longToken, $unfolded);
+    }
+
+    public function testFoldedStringCurrentLenTrackedAfterChunking(): void
+    {
+        $longToken = Str\repeat('x', 50);
+        $headers = Headers::fromPairs([['X', 'a ' . $longToken . ' end']]);
+
+        $folded = $headers->toFoldedString(5, 20);
+
+        static::assertStringContainsString('end', $folded);
+
+        $lines = Byte\split($folded, "\r\n");
+        foreach ($lines as $line) {
+            if ($line === '') {
+                continue;
+            }
+
+            static::assertLessThanOrEqual(20, Byte\length($line));
+        }
+    }
+
+    public function testFoldedStringFoldedTokenStartsOnNewLine(): void
+    {
+        $headers = Headers::fromPairs([['Subject', 'word1 word2 word3 word4 word5']]);
+
+        $folded = $headers->toFoldedString(20, 998);
+
+        static::assertStringContainsString("\r\n ", $folded);
+
+        static::assertStringContainsString('word1', $folded);
+        static::assertStringContainsString('word5', $folded);
+    }
+
+    public function testFoldedStringCurrentLenIncrementedCorrectly(): void
+    {
+        $headers = Headers::fromPairs([['X', 'aaa bbb ccc ddd eee fff']]);
+
+        $folded = $headers->toFoldedString(25, 998);
+
+        static::assertStringContainsString("\r\n ", $folded);
+
+        $lines = Byte\split($folded, "\r\n");
+        static::assertStringContainsString('eee', $lines[0]);
+    }
+
+    public function testToFoldedStringExactSoftLimitLengthNotFolded(): void
+    {
+        $headers = Headers::fromPairs([
+            ['X', Str\repeat('a', 50) . ' ' . Str\repeat('b', 24)],
+        ]);
+
+        $folded = $headers->toFoldedString(78, 998);
+        $line = Byte\strip_suffix($folded, "\r\n");
+
+        static::assertSame(78, Byte\length($line));
+        static::assertStringNotContainsString("\r\n ", $folded);
+    }
+
+    public function testToFoldedStringExactSoftLimitPlusOneIsFolded(): void
+    {
+        $headers = Headers::fromPairs([
+            ['X', Str\repeat('a', 50) . ' ' . Str\repeat('b', 25)],
+        ]);
+
+        $folded = $headers->toFoldedString(78, 998);
+
+        static::assertStringContainsString("\r\n ", $folded);
+    }
+
+    public function testToFoldedStringEmptyTokensSkipped(): void
+    {
+        $headers = Headers::fromPairs([['Subject', 'word1  word2  word3']]);
+
+        $folded = $headers->toFoldedString(20, 998);
+
+        static::assertStringContainsString('word1', $folded);
+        static::assertStringContainsString('word2', $folded);
+        static::assertStringContainsString('word3', $folded);
+    }
+
+    public function testToFoldedStringEmptyValueAllWhitespace(): void
+    {
+        $longName = Str\repeat('X', 80);
+        $headers = Headers::fromPairs([[$longName, '   ']]);
+
+        $folded = $headers->toFoldedString(78, 998);
+
+        static::assertStringContainsString($longName, $folded);
+        static::assertStringEndsWith("\r\n", $folded);
+    }
+
+    public function testToFoldedStringFoldedLineStartsWithSpace(): void
+    {
+        $headers = Headers::fromPairs([['Subject', 'word1 word2 word3 word4 word5 word6']]);
+
+        $folded = $headers->toFoldedString(25, 998);
+        $lines = Byte\split($folded, "\r\n");
+
+        foreach ($lines as $idx => $line) {
+            if ($idx === 0 || $line === '') {
+                continue;
+            }
+
+            static::assertStringStartsWith(' ', $line);
+        }
+    }
+
+    public function testToFoldedStringChunkedTokenCurrentLenAccuracy(): void
+    {
+        $longToken = Str\repeat('a', 60);
+        $headers = Headers::fromPairs([['X', 'y ' . $longToken . ' end']]);
+
+        $folded = $headers->toFoldedString(5, 20);
+
+        $lines = Byte\split($folded, "\r\n");
+        foreach ($lines as $line) {
+            if ($line === '') {
+                continue;
+            }
+
+            static::assertLessThanOrEqual(20, Byte\length($line));
+        }
+    }
+
+    public function testToFoldedStringNeededCalculation(): void
+    {
+        $headers = Headers::fromPairs([['X', 'aaa bbbbb']]);
+
+        $folded = $headers->toFoldedString(10, 998);
+
+        static::assertStringContainsString('aaa', $folded);
+        static::assertStringContainsString('bbbbb', $folded);
+    }
+
+    public function testToFoldedStringHardLimitChunkOffset(): void
+    {
+        $longToken = Str\repeat('x', 40);
+        $headers = Headers::fromPairs([['X', 'a ' . $longToken . ' b']]);
+
+        $folded = $headers->toFoldedString(5, 15);
+
+        $unfolded = str_replace("\r\n ", '', $folded);
+        static::assertStringContainsString($longToken, $unfolded);
+        static::assertStringContainsString('b', $unfolded);
+
+        $lines = Byte\split($folded, "\r\n");
+        foreach ($lines as $line) {
+            if ($line === '') {
+                continue;
+            }
+
+            static::assertLessThanOrEqual(15, Byte\length($line));
+        }
+    }
+
+    public function testToFoldedStringFoldedTokenPrefixedWithCRLFSpace(): void
+    {
+        $headers = Headers::fromPairs([['X', 'short longertokenthatexceeds']]);
+
+        $folded = $headers->toFoldedString(15, 998);
+
+        static::assertStringContainsString("\r\n longertokenthatexceeds", $folded);
+    }
+
+    public function testToFoldedStringCurrentLenAfterFoldAccurate(): void
+    {
+        $headers = Headers::fromPairs([['X', 'aaa bbbbbbbbbbbbbbb cc']]);
+
+        $folded = $headers->toFoldedString(15, 998);
+
+        $lines = Byte\split($folded, "\r\n");
+        foreach ($lines as $line) {
+            if ($line === '') {
+                continue;
+            }
+
+            static::assertLessThanOrEqual(998, Byte\length($line));
+        }
+
+        $unfolded = str_replace("\r\n ", ' ', $folded);
+        static::assertStringContainsString('aaa', $unfolded);
+        static::assertStringContainsString('bbbbbbbbbbbbbbb', $unfolded);
+        static::assertStringContainsString('cc', $unfolded);
     }
 }

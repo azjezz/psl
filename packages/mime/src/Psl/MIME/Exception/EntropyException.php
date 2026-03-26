@@ -13,6 +13,8 @@ use Throwable;
  * and the underlying CSPRNG fails.
  *
  * @api
+ *
+ * @codeCoverageIgnore
  */
 final class EntropyException extends RuntimeException
 {

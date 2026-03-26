@@ -498,4 +498,148 @@ final class RedirectClientTest extends TestCase
 
         static::assertTrue($body->reachedEndOfDataSource());
     }
+
+    public function testDefaultMaxRedirectsIsExactly10(): void
+    {
+        $responses = [];
+        for ($i = 0; $i < 10; $i++) {
+            $responses[] = self::redirect(302, 'http://example.com/r' . $i);
+        }
+
+        $responses[] = self::ok();
+
+        $inner = self::fakeClient(...$responses);
+        $client = new RedirectClient($inner);
+        $tx = $client->send(self::request());
+
+        static::assertSame(200, $tx->response->status);
+    }
+
+    public function testDefaultMaxRedirectsExceededAt11(): void
+    {
+        $responses = [];
+        for ($i = 0; $i < 11; $i++) {
+            $responses[] = self::redirect(302, 'http://example.com/r' . $i);
+        }
+
+        $responses[] = self::ok();
+
+        $inner = self::fakeClient(...$responses);
+        $client = new RedirectClient($inner);
+
+        $this->expectException(TooManyRedirectsException::class);
+        $client->send(self::request());
+    }
+
+    public function testDefaultAutoReferrerIsTrue(): void
+    {
+        $inner = self::fakeClient(self::redirect(302, 'http://example.com/new'), self::ok());
+        $client = new RedirectClient($inner);
+        $client->send(self::request('GET', 'http://example.com/old'));
+
+        static::assertNotNull($inner->requests[1]->headers->get('referer'));
+        static::assertSame('http://example.com/old', $inner->requests[1]->headers->get('referer'));
+    }
+
+    public function testEmptyLocationReturnsTransaction(): void
+    {
+        $response = new Response(status: 302, headers: FieldMap::from([['location', '']]));
+        $inner = self::fakeClient($response);
+        $client = new RedirectClient($inner);
+        $tx = $client->send(self::request());
+
+        static::assertSame(302, $tx->response->status);
+    }
+
+    public function testMaxRedirectsBoundary(): void
+    {
+        $responses = [];
+        for ($i = 0; $i < 5; $i++) {
+            $responses[] = self::redirect(302, 'http://example.com/r' . $i);
+        }
+
+        $responses[] = self::ok();
+
+        $inner = self::fakeClient(...$responses);
+        $client = new RedirectClient($inner, maxRedirects: 5);
+        $tx = $client->send(self::request());
+
+        static::assertSame(200, $tx->response->status);
+    }
+
+    public function testInvalidLocationErrorMessageFormat(): void
+    {
+        $invalidUrl = 'ht tp://bad url';
+        $response = new Response(status: 302, headers: FieldMap::from([['location', $invalidUrl]]));
+        $inner = self::fakeClient($response);
+        $client = new RedirectClient($inner);
+
+        try {
+            $client->send(self::request());
+            static::fail('Expected ProtocolException');
+        } catch (ProtocolException $e) {
+            static::assertStringContainsString('Invalid redirect URL: ', $e->getMessage());
+            static::assertStringContainsString($invalidUrl, $e->getMessage());
+        }
+    }
+
+    public function testSameOriginWithMixedCaseScheme(): void
+    {
+        $inner = self::fakeClient(self::redirect(302, 'HTTP://example.com/new'), self::ok());
+        $client = new RedirectClient($inner, autoReferrer: false);
+        $request = self::request('GET', 'http://example.com/', FieldMap::from([
+            ['authorization', 'Bearer secret'],
+        ]));
+        $client->send($request);
+
+        static::assertSame('Bearer secret', $inner->requests[1]->headers->get('authorization'));
+    }
+
+    public function testSameOriginWithMixedCaseHost(): void
+    {
+        $inner = self::fakeClient(self::redirect(302, 'http://EXAMPLE.COM/new'), self::ok());
+        $client = new RedirectClient($inner, autoReferrer: false);
+        $request = self::request('GET', 'http://example.com/', FieldMap::from([
+            ['authorization', 'Bearer secret'],
+        ]));
+        $client->send($request);
+
+        static::assertSame('Bearer secret', $inner->requests[1]->headers->get('authorization'));
+    }
+
+    public function testCrossOriginDifferentSchemeStripsCredentials(): void
+    {
+        $inner = self::fakeClient(self::redirect(302, 'https://example.com/new'), self::ok());
+        $client = new RedirectClient($inner, autoReferrer: false);
+        $request = self::request('GET', 'http://example.com/', FieldMap::from([
+            ['authorization', 'Bearer secret'],
+        ]));
+        $client->send($request);
+
+        static::assertNull($inner->requests[1]->headers->get('authorization'));
+    }
+
+    public function testSameOriginWithExplicitDefaultPort(): void
+    {
+        $inner = self::fakeClient(self::redirect(302, 'http://example.com:80/new'), self::ok());
+        $client = new RedirectClient($inner, autoReferrer: false);
+        $request = self::request('GET', 'http://example.com/', FieldMap::from([
+            ['authorization', 'Bearer secret'],
+        ]));
+        $client->send($request);
+
+        static::assertSame('Bearer secret', $inner->requests[1]->headers->get('authorization'));
+    }
+
+    public function testCrossOriginWithDifferentPort(): void
+    {
+        $inner = self::fakeClient(self::redirect(302, 'http://example.com:8080/new'), self::ok());
+        $client = new RedirectClient($inner, autoReferrer: false);
+        $request = self::request('GET', 'http://example.com/', FieldMap::from([
+            ['authorization', 'Bearer secret'],
+        ]));
+        $client->send($request);
+
+        static::assertNull($inner->requests[1]->headers->get('authorization'));
+    }
 }

@@ -12,33 +12,36 @@
       <directory suffix=".php">../packages/*/src</directory>
     </include>
     <exclude>
-      <!-- Bootstrap files -->
-      <file>../packages/*/src/Psl/bootstrap.php</file>
+      <!-- Bootstrap files (function loaders, not logic) -->
+      <directory suffix="bootstrap.php">../packages</directory>
 
       <!-- Base Exceptions -->
-      <directory>../packages/foundation/src/Exception</directory>
+      <directory>../packages/foundation/src/Psl/Exception</directory>
 
       <!-- Constants -->
-      <file>../packages/str/src/Str/constants.php</file>
-      <file>../packages/math/src/Math/constants.php</file>
-      <file>../packages/filesystem/src/Filesystem/constants.php</file>
-      <file>../packages/crypto/src/Crypto/Signing/constants.php</file>
-      <file>../packages/crypto/src/Crypto/KeyExchange/constants.php</file>
-      <file>../packages/crypto/src/Crypto/Kdf/constants.php</file>
-      <file>../packages/crypto/src/Crypto/Asymmetric/constants.php</file>
-      <file>../packages/crypto/src/Crypto/Aead/constants.php</file>
-      <file>../packages/crypto/src/Crypto/Symmetric/constants.php</file>
-      <file>../packages/crypto/src/Crypto/StreamCipher/constants.php</file>
+      <file>../packages/http-message/src/Psl/HTTP/Message/constants.php</file>
+      <file>../packages/mime/src/Psl/MIME/Sniff/Internal/constants.php</file>
+      <file>../packages/str/src/Psl/Str/constants.php</file>
+      <file>../packages/str/src/Psl/Str/Internal/constants.php</file>
+      <file>../packages/math/src/Psl/Math/constants.php</file>
+      <file>../packages/filesystem/src/Psl/Filesystem/constants.php</file>
+      <file>../packages/crypto/src/Psl/Crypto/Signing/constants.php</file>
+      <file>../packages/crypto/src/Psl/Crypto/KeyExchange/constants.php</file>
+      <file>../packages/crypto/src/Psl/Crypto/Kdf/constants.php</file>
+      <file>../packages/crypto/src/Psl/Crypto/Asymmetric/constants.php</file>
+      <file>../packages/crypto/src/Psl/Crypto/Aead/constants.php</file>
+      <file>../packages/crypto/src/Psl/Crypto/Symmetric/constants.php</file>
+      <file>../packages/crypto/src/Psl/Crypto/StreamCipher/constants.php</file>
 
       <!-- Things that are not easily tested -->
-      <file>../packages/filesystem/src/Filesystem/get_group.php</file>
-      <file>../packages/filesystem/src/Filesystem/change_group.php</file>
-      <file>../packages/filesystem/src/Filesystem/get_owner.php</file>
-      <file>../packages/filesystem/src/Filesystem/change_owner.php</file>
+      <file>../packages/filesystem/src/Psl/Filesystem/get_group.php</file>
+      <file>../packages/filesystem/src/Psl/Filesystem/change_group.php</file>
+      <file>../packages/filesystem/src/Psl/Filesystem/get_owner.php</file>
+      <file>../packages/filesystem/src/Psl/Filesystem/change_owner.php</file>
 
       <!-- Terminal internals require a real terminal -->
-      <directory>../packages/terminal/src/Terminal/Internal</directory>
-      <file>../packages/terminal/src/Terminal/Application.php</file>
+      <directory>../packages/terminal/src/Psl/Terminal/Internal</directory>
+      <file>../packages/terminal/src/Psl/Terminal/Application.php</file>
     </exclude>
   </source>
   <php>

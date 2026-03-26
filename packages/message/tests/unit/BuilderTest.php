@@ -737,4 +737,178 @@ final class BuilderTest extends TestCase
 
         self::assertSame('text/html', $message->content->mediaType->essence());
     }
+
+    #[Test]
+    public function replyAllPrefersReplyToOverFrom(): void
+    {
+        $original = new Message\Message(Headers::fromPairs([
+            ['From',     'alice@example.com'],
+            ['Reply-To', 'reply-list@example.com'],
+            ['To',       'bob@example.com'],
+            ['Subject',  'Discussion'],
+        ]), new Part\Text(new IO\MemoryHandle('Hi')));
+
+        $me = new Mailbox('bob', 'example.com');
+        $reply = Message\Message::replyAll($original, $me);
+
+        static::assertNotNull($reply->to);
+        static::assertSame('reply-list@example.com', $reply->to->mailboxes()[0]->address);
+    }
+
+    #[Test]
+    public function withFromIsImmutable(): void
+    {
+        $original = new Message\Message();
+        $modified = $original->withFrom('alice@example.com');
+
+        static::assertNull($original->from);
+        static::assertNotNull($modified->from);
+        static::assertNotSame($original, $modified);
+    }
+
+    #[Test]
+    public function withSenderIsImmutable(): void
+    {
+        $original = new Message\Message();
+        $modified = $original->withSender('admin@example.com');
+
+        static::assertNull($original->sender);
+        static::assertNotNull($modified->sender);
+        static::assertNotSame($original, $modified);
+    }
+
+    #[Test]
+    public function withToIsImmutable(): void
+    {
+        $original = new Message\Message();
+        $modified = $original->withTo('bob@example.com');
+
+        static::assertNull($original->to);
+        static::assertNotNull($modified->to);
+        static::assertNotSame($original, $modified);
+    }
+
+    #[Test]
+    public function withCcIsImmutable(): void
+    {
+        $original = new Message\Message();
+        $modified = $original->withCc('cc@example.com');
+
+        static::assertNull($original->cc);
+        static::assertNotNull($modified->cc);
+        static::assertNotSame($original, $modified);
+    }
+
+    #[Test]
+    public function withBccIsImmutable(): void
+    {
+        $original = new Message\Message();
+        $modified = $original->withBcc('bcc@example.com');
+
+        static::assertNull($original->bcc);
+        static::assertNotNull($modified->bcc);
+        static::assertNotSame($original, $modified);
+    }
+
+    #[Test]
+    public function withReplyToIsImmutable(): void
+    {
+        $original = new Message\Message();
+        $modified = $original->withReplyTo('reply@example.com');
+
+        static::assertNull($original->replyTo);
+        static::assertNotNull($modified->replyTo);
+        static::assertNotSame($original, $modified);
+    }
+
+    #[Test]
+    public function withDateIsImmutable(): void
+    {
+        $date = DateTime\DateTime::parse('Mon, 01 Jan 2024 12:00:00 +0000', DateTime\FormatPattern::Rfc2822);
+        $original = new Message\Message();
+        $modified = $original->withDate($date);
+
+        static::assertNull($original->date);
+        static::assertNotNull($modified->date);
+        static::assertNotSame($original, $modified);
+    }
+
+    #[Test]
+    public function withMessageIdIsImmutable(): void
+    {
+        $original = new Message\Message();
+        $modified = $original->withMessageId(new MessageId('test@example.com'));
+
+        static::assertNull($original->messageId);
+        static::assertNotNull($modified->messageId);
+        static::assertNotSame($original, $modified);
+    }
+
+    #[Test]
+    public function withHeaderIsImmutable(): void
+    {
+        $original = new Message\Message();
+        $modified = $original->withHeader('X-Test', 'value');
+
+        static::assertNull($original->headers->get('X-Test'));
+        static::assertSame('value', $modified->headers->get('X-Test'));
+        static::assertNotSame($original, $modified);
+    }
+
+    #[Test]
+    public function withReferencesSerializesIds(): void
+    {
+        $ref1 = new MessageId('ref1@example.com');
+        $ref2 = new MessageId('ref2@example.com');
+
+        $message = new Message\Message()->withReferences([$ref1, $ref2]);
+
+        $rawReferences = $message->headers->get('References');
+        static::assertSame('<ref1@example.com> <ref2@example.com>', $rawReferences);
+    }
+
+    #[Test]
+    public function withInReplyToSerializesIds(): void
+    {
+        $parent = new MessageId('parent@example.com');
+
+        $message = new Message\Message()->withInReplyTo([$parent]);
+
+        $rawInReplyTo = $message->headers->get('In-Reply-To');
+        static::assertSame('<parent@example.com>', $rawInReplyTo);
+    }
+
+    #[Test]
+    public function prefixSubjectDoesNotMatchPartialPrefix(): void
+    {
+        $original = new Message\Message(Headers::fromPairs([
+            ['From',    'alice@example.com'],
+            ['Subject', 'React component discussion'],
+        ]), new Part\Text(new IO\MemoryHandle('Hi')));
+
+        $me = new Mailbox('bob', 'example.com');
+        $reply = Message\Message::reply($original, $me);
+
+        static::assertSame('Re: React component discussion', $reply->subject);
+    }
+
+    #[Test]
+    public function parseDateWithWhitespaceTrimmed(): void
+    {
+        $message = new Message\Message(Headers::fromPairs([
+            ['Date', '  Mon, 01 Jan 2024 12:00:00 +0000  '],
+        ]));
+
+        static::assertNotNull($message->date);
+    }
+
+    #[Test]
+    public function parseReferencesWithNoAngleBracketsReturnsEmpty(): void
+    {
+        $message = new Message\Message(Headers::fromPairs([
+            ['References', 'no-angle-brackets-here'],
+        ]));
+
+        static::assertSame([], $message->references);
+    }
 }

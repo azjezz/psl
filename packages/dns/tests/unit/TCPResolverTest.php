@@ -16,6 +16,7 @@ use Psl\DNS\ResponseCode;
 use Psl\DNS\TCPResolver;
 use Psl\Str;
 use Psl\TCP;
+use ReflectionClass;
 
 final class TCPResolverTest extends TestCase
 {
@@ -157,5 +158,35 @@ final class TCPResolverTest extends TestCase
         } catch (ProtocolException $e) {
             static::assertStringContainsString('does not match query ID', $e->getMessage());
         }
+    }
+
+    public function testDefaultPortIs53(): void
+    {
+        $resolver = new TCPResolver(host: '127.0.0.1');
+
+        $reflection = new ReflectionClass($resolver);
+        $port = $reflection->getProperty('port')->getValue($resolver);
+
+        static::assertSame(53, $port);
+    }
+
+    public function testDefaultDnssecIsFalse(): void
+    {
+        $resolver = new TCPResolver(host: '127.0.0.1');
+
+        $reflection = new ReflectionClass($resolver);
+        $dnssec = $reflection->getProperty('dnssec')->getValue($resolver);
+
+        static::assertFalse($dnssec);
+    }
+
+    public function testCustomDnssecIsRespected(): void
+    {
+        $resolver = new TCPResolver(host: '127.0.0.1', dnssec: true);
+
+        $reflection = new ReflectionClass($resolver);
+        $dnssec = $reflection->getProperty('dnssec')->getValue($resolver);
+
+        static::assertTrue($dnssec);
     }
 }

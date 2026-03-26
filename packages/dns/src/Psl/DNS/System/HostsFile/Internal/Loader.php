@@ -16,6 +16,8 @@ use const DIRECTORY_SEPARATOR;
  * Loads the system hosts file from the OS-specific path.
  *
  * @internal
+ *
+ * @codeCoverageIgnore
  */
 final class Loader
 {

@@ -6,6 +6,7 @@ namespace Psl\MIME\Tests\Unit\Internal;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Psl\MIME\Exception\ParameterParsingException;
 use Psl\MIME\Exception\ParsingException;
 use Psl\MIME\Internal\MediaTypeParser;
 use Psl\Str;
@@ -363,5 +364,177 @@ final class MediaTypeParserTest extends TestCase
 
         static::assertSame(Str\repeat('a', 127), $type);
         static::assertSame('html', $subtype);
+    }
+
+    public function testParseParametersTrailingGarbageThrows(): void
+    {
+        $this->expectException(ParameterParsingException::class);
+
+        MediaTypeParser::parseParameters('charset=utf-8 GARBAGE');
+    }
+
+    public function testParameterMissingEqualsThrows(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        MediaTypeParser::parse('text/plain; charset');
+    }
+
+    public function testUnterminatedQuotedStringThrows(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        MediaTypeParser::parse('text/plain; filename="unterminated');
+    }
+
+    public function testQuotedStringTrailingBackslashThrows(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        MediaTypeParser::parse('text/plain; filename="trailing\\');
+    }
+
+    public function testTrailingContentAfterParametersThrows(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        MediaTypeParser::parse('text/plain; charset=utf-8 EXTRA');
+    }
+
+    public function testRfc2231MissingSecondQuoteThrows(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        MediaTypeParser::parse("text/plain; filename*=utf-8'noquote");
+    }
+
+    public function testRfc2231CharsetAscii(): void
+    {
+        [$type, $subtype, $params] = MediaTypeParser::parse("text/plain; filename*=us-ascii''hello%20world");
+
+        static::assertSame([['filename', 'hello world']], $params);
+    }
+
+    public function testRfc2231CharsetLatin1(): void
+    {
+        $latin1Value = "\xe9";
+        $encoded = rawurlencode($latin1Value);
+        [$type, $subtype, $params] = MediaTypeParser::parse("text/plain; filename*=latin1''" . $encoded);
+
+        static::assertSame("\xC3\xA9", $params[0][1]);
+    }
+
+    public function testRfc2231CharsetWindows1252(): void
+    {
+        $win1252Value = "\x93test\x94";
+        $encoded = rawurlencode($win1252Value);
+        [$type, $subtype, $params] = MediaTypeParser::parse("text/plain; filename*=windows-1252''" . $encoded);
+
+        static::assertNotEmpty($params[0][1]);
+    }
+
+    public function testRfc2231CharsetShiftJis(): void
+    {
+        $sjisValue = "\x83\x65\x83\x58\x83\x67";
+        $encoded = rawurlencode($sjisValue);
+        [$type, $subtype, $params] = MediaTypeParser::parse("text/plain; filename*=shift_jis''" . $encoded);
+
+        static::assertNotEmpty($params[0][1]);
+    }
+
+    public function testRfc2231CharsetEucKr(): void
+    {
+        $eucKrValue = "\xc7\xd1\xb1\xdb";
+        $encoded = rawurlencode($eucKrValue);
+        [$type, $subtype, $params] = MediaTypeParser::parse("text/plain; filename*=euc-kr''" . $encoded);
+
+        static::assertNotEmpty($params[0][1]);
+    }
+
+    public function testRfc2231CharsetBig5(): void
+    {
+        $big5Value = "\xa4\xa4\xa4\xe5";
+        $encoded = rawurlencode($big5Value);
+        [$type, $subtype, $params] = MediaTypeParser::parse("text/plain; filename*=big5''" . $encoded);
+
+        static::assertNotEmpty($params[0][1]);
+    }
+
+    public function testRfc2231CharsetKoi8r(): void
+    {
+        $koi8rValue = "\xd4\xc5\xd3\xd4";
+        $encoded = rawurlencode($koi8rValue);
+        [$type, $subtype, $params] = MediaTypeParser::parse("text/plain; filename*=koi8-r''" . $encoded);
+
+        static::assertNotEmpty($params[0][1]);
+    }
+
+    public function testRfc2231CharsetUtf7(): void
+    {
+        [$type, $subtype, $params] = MediaTypeParser::parse("text/plain; filename*=utf-7''Hello");
+
+        static::assertSame('Hello', $params[0][1]);
+    }
+
+    public function testRfc2231CharsetUtf16(): void
+    {
+        $utf16Value = "\xFE\xFF\x00\x48\x00\x69";
+        $encoded = rawurlencode($utf16Value);
+        [$type, $subtype, $params] = MediaTypeParser::parse("text/plain; filename*=utf-16''" . $encoded);
+
+        static::assertNotEmpty($params[0][1]);
+    }
+
+    public function testRfc2231CharsetIso88592(): void
+    {
+        $latin2Value = "\xe8";
+        $encoded = rawurlencode($latin2Value);
+        [$type, $subtype, $params] = MediaTypeParser::parse("text/plain; filename*=iso-8859-2''" . $encoded);
+
+        static::assertNotEmpty($params[0][1]);
+    }
+
+    public function testRfc2231CharsetGb18030(): void
+    {
+        $gbValue = "\xc4\xe3\xba\xc3";
+        $encoded = rawurlencode($gbValue);
+        [$type, $subtype, $params] = MediaTypeParser::parse("text/plain; filename*=gb18030''" . $encoded);
+
+        static::assertNotEmpty($params[0][1]);
+    }
+
+    public function testRfc2231EmptyCharsetPassesThrough(): void
+    {
+        [$type, $subtype, $params] = MediaTypeParser::parse("text/plain; filename*=''hello%20world");
+
+        static::assertSame('hello world', $params[0][1]);
+    }
+
+    public function testRfc2231Utf8CharsetPassesThrough(): void
+    {
+        [$type, $subtype, $params] = MediaTypeParser::parse("text/plain; filename*=utf-8''caf%C3%A9");
+
+        static::assertSame("caf\xC3\xA9", $params[0][1]);
+    }
+
+    public function testRfc2231Utf8AliasCharsetPassesThrough(): void
+    {
+        [$type, $subtype, $params] = MediaTypeParser::parse("text/plain; filename*=utf8''caf%C3%A9");
+
+        static::assertSame("caf\xC3\xA9", $params[0][1]);
+    }
+
+    public function testParseParametersMissingEqualsThrows(): void
+    {
+        $this->expectException(ParameterParsingException::class);
+
+        MediaTypeParser::parseParameters('charset');
+    }
+
+    public function testQuotedStringOpeningNotQuoteThrows(): void
+    {
+        $this->expectException(ParameterParsingException::class);
+
+        MediaTypeParser::parseParameters('; name=; broken');
     }
 }

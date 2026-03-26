@@ -62,9 +62,12 @@ final readonly class ContentId implements Stringable
     {
         try {
             $unique = bin2hex(random_bytes(16));
+            // @codeCoverageIgnoreStart
         } catch (RandomException $e) {
             throw EntropyException::forInsufficientEntropy($e);
         }
+
+        // @codeCoverageIgnoreEnd
 
         return new self($unique . '@' . $domain);
     }

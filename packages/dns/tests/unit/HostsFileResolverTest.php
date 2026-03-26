@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\NullCancellationToken;
 use Psl\DNS\HostsFileResolver;
+use Psl\DNS\Record\AAAARecord;
 use Psl\DNS\Record\ARecord;
 use Psl\DNS\Record\RecordType;
 use Psl\DNS\ResolverInterface;
@@ -161,6 +162,114 @@ final class HostsFileResolverTest extends TestCase
         static::assertSame(55, $response->id);
     }
 
+    public function testNonAOrAAAADelegatesToInnerForAllNonAddressTypes(): void
+    {
+        $hostsFile = new HostsFile([
+            'mail.local' => [Address::parse('10.0.0.1')],
+        ]);
+
+        $inner = self::taggedResolver(88);
+        $resolver = new HostsFileResolver($inner, $hostsFile);
+
+        foreach ([RecordType::MX, RecordType::NS, RecordType::CNAME, RecordType::TXT, RecordType::SRV] as $type) {
+            $response = $resolver->query('mail.local', $type);
+            static::assertSame(88, $response->id, 'Type ' . $type->name . ' should delegate to inner');
+        }
+    }
+
+    public function testAQueryWithMatchReturnsHostsFileResponseNotInner(): void
+    {
+        $hostsFile = new HostsFile([
+            'db.local' => [Address::parse('192.168.1.1')],
+        ]);
+
+        $inner = self::taggedResolver(42);
+        $resolver = new HostsFileResolver($inner, $hostsFile);
+
+        $response = $resolver->query('db.local', RecordType::A);
+
+        static::assertSame(0, $response->id);
+        static::assertSame(ResponseCode::NoError, $response->code);
+        static::assertCount(1, $response->answers);
+    }
+
+    public function testEmptyHostsLookupDelegatesToInner(): void
+    {
+        $hostsFile = new HostsFile([
+            'other.local' => [Address::parse('10.0.0.1')],
+        ]);
+
+        $inner = self::taggedResolver(33);
+        $resolver = new HostsFileResolver($inner, $hostsFile);
+
+        $response = $resolver->query('notfound.local', RecordType::A);
+
+        static::assertSame(33, $response->id, 'Empty lookup should delegate to inner resolver');
+    }
+
+    public function testSyntheticARecordHas24HourTtl(): void
+    {
+        $hostsFile = new HostsFile([
+            'db.local' => [Address::parse('192.168.1.50')],
+        ]);
+
+        $inner = self::neverCalledResolver();
+        $resolver = new HostsFileResolver($inner, $hostsFile);
+
+        $response = $resolver->query('db.local', RecordType::A);
+
+        static::assertCount(1, $response->answers);
+        $record = $response->answers[0];
+        static::assertInstanceOf(ARecord::class, $record);
+        static::assertSame(24 * 3600.0, $record->duration->getTotalSeconds());
+    }
+
+    public function testSyntheticAAAARecordHas24HourTtl(): void
+    {
+        $hostsFile = new HostsFile([
+            'localhost' => [Address::parse('::1')],
+        ]);
+
+        $inner = self::neverCalledResolver();
+        $resolver = new HostsFileResolver($inner, $hostsFile);
+
+        $response = $resolver->query('localhost', RecordType::AAAA);
+
+        static::assertCount(1, $response->answers);
+        $record = $response->answers[0];
+        static::assertInstanceOf(AAAARecord::class, $record);
+        static::assertSame(24 * 3600.0, $record->duration->getTotalSeconds());
+    }
+
+    public function testSyntheticResponseHasIdZero(): void
+    {
+        $hostsFile = new HostsFile([
+            'db.local' => [Address::parse('10.0.0.1')],
+        ]);
+
+        $inner = self::neverCalledResolver();
+        $resolver = new HostsFileResolver($inner, $hostsFile);
+
+        $response = $resolver->query('db.local', RecordType::A);
+
+        static::assertSame(0, $response->id);
+    }
+
+    public function testSyntheticResponseHasEmptyAuthorityAndAdditional(): void
+    {
+        $hostsFile = new HostsFile([
+            'db.local' => [Address::parse('10.0.0.1')],
+        ]);
+
+        $inner = self::neverCalledResolver();
+        $resolver = new HostsFileResolver($inner, $hostsFile);
+
+        $response = $resolver->query('db.local', RecordType::A);
+
+        static::assertSame([], $response->authority);
+        static::assertSame([], $response->additional);
+    }
+
     private static function neverCalledResolver(): ResolverInterface
     {
         return new class implements ResolverInterface {
@@ -181,6 +290,44 @@ final class HostsFileResolverTest extends TestCase
                 throw new RuntimeException('Inner resolver should not have been called');
             }
         };
+    }
+
+    public function testNonAAndNonAAAADelegatesEvenIfHostsFileHasMatches(): void
+    {
+        $hostsFile = new HostsFile([
+            'db.local' => [Address::parse('10.0.0.1'), Address::parse('::1')],
+        ]);
+
+        $inner = self::taggedResolver(66);
+        $resolver = new HostsFileResolver($inner, $hostsFile);
+
+        $response = $resolver->query('db.local', RecordType::SOA);
+
+        static::assertSame(66, $response->id);
+    }
+
+    public function testEmptyAddressLookupDelegatesToInnerForAQuery(): void
+    {
+        $hostsFile = new HostsFile([]);
+
+        $inner = self::taggedResolver(44);
+        $resolver = new HostsFileResolver($inner, $hostsFile);
+
+        $response = $resolver->query('unknown.local', RecordType::A);
+
+        static::assertSame(44, $response->id);
+    }
+
+    public function testEmptyAddressLookupDelegatesToInnerForAAAAQuery(): void
+    {
+        $hostsFile = new HostsFile([]);
+
+        $inner = self::taggedResolver(45);
+        $resolver = new HostsFileResolver($inner, $hostsFile);
+
+        $response = $resolver->query('unknown.local', RecordType::AAAA);
+
+        static::assertSame(45, $response->id);
     }
 
     private static function taggedResolver(int $id): ResolverInterface

@@ -333,4 +333,40 @@ final class LocaleTest extends TestCase
         $locale = Locale::default();
         static::assertSame(Locale::ArabicTunisia, $locale);
     }
+
+    public function testLanguageLowercaseIsRequired(): void
+    {
+        locale_set_default('EN_US');
+        static::assertSame(Locale::EnglishUnitedStates, Locale::default());
+
+        locale_set_default('FR');
+        static::assertSame(Locale::French, Locale::default());
+    }
+
+    public function testScriptUcfirstIsRequired(): void
+    {
+        locale_set_default('sr_cyrl_RS');
+        static::assertSame(Locale::SerbianCyrillicSerbia, Locale::default());
+
+        locale_set_default('sr_CYRL');
+        static::assertSame(Locale::SerbianCyrillic, Locale::default());
+
+        locale_set_default('sr_LATN_RS');
+        static::assertSame(Locale::SerbianLatinSerbia, Locale::default());
+    }
+
+    public function testRegionUppercaseIsRequired(): void
+    {
+        locale_set_default('en_us');
+        static::assertSame(Locale::EnglishUnitedStates, Locale::default());
+
+        locale_set_default('fr_fr');
+        static::assertSame(Locale::FrenchFrance, Locale::default());
+
+        locale_set_default('ar_tn');
+        static::assertSame(Locale::ArabicTunisia, Locale::default());
+
+        locale_set_default('de_de');
+        static::assertSame(Locale::GermanGermany, Locale::default());
+    }
 }

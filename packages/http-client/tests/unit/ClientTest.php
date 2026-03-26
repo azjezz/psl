@@ -376,4 +376,20 @@ final class ClientTest extends TestCase
             }
         };
     }
+
+    public function testInvalidRequestTargetWithBaseUrlThrowsWithPreviousException(): void
+    {
+        $connector = $this->createStub(ConnectorInterface::class);
+        $config = new ClientConfiguration(baseUrl: parse('http://example.com/'));
+        $client = new Client(connector: $connector, configuration: $config);
+
+        $request = new Request(method: 'GET', url: null, requestTarget: 'bad://[invalid url');
+
+        try {
+            $client->send($request);
+            static::fail('Expected RequestException');
+        } catch (RequestException $e) {
+            static::assertNotNull($e->getPrevious());
+        }
+    }
 }

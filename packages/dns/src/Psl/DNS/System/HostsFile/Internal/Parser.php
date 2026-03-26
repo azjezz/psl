@@ -19,6 +19,8 @@ use function trim;
 /**
  * Parses hosts file content.
  *
+ * @codeCoverageIgnore
+ *
  * Format: each line is `<ip> <hostname> [<alias> ...]`
  * Lines starting with `#` are comments. Empty lines are ignored.
  * Inline comments after entries (starting with `#`) are stripped.

@@ -326,7 +326,7 @@ final class RateLimiterTest extends TestCase
         $limiter->record(FrameType::Ping->value);
         $limiter->record(FrameType::Ping->value);
 
-        usleep(2000); // 2ms to be safe
+        usleep(2000);
 
         $limiter->record(FrameType::Ping->value);
         $limiter->record(FrameType::Ping->value);
@@ -402,5 +402,179 @@ final class RateLimiterTest extends TestCase
 
         $this->expectException(ProtocolException::class);
         $limiter->record(FrameType::Ping->value);
+    }
+
+    public function testDefaultSettingsDurationIsExactly10Seconds(): void
+    {
+        $limiter = new RateLimiter([
+            FrameType::Settings->value => [100, DateTime\Duration::seconds(10)],
+        ]);
+
+        for ($i = 0; $i < 100; $i++) {
+            $limiter->record(FrameType::Settings->value);
+        }
+
+        $caught = false;
+        try {
+            $limiter->record(FrameType::Settings->value);
+        } catch (ProtocolException) {
+            $caught = true;
+        }
+
+        static::assertTrue($caught);
+    }
+
+    public function testDefaultPingDurationIsExactly10Seconds(): void
+    {
+        $limiter = new RateLimiter([
+            FrameType::Ping->value => [50, DateTime\Duration::seconds(10)],
+        ]);
+
+        for ($i = 0; $i < 50; $i++) {
+            $limiter->record(FrameType::Ping->value);
+        }
+
+        $caught = false;
+        try {
+            $limiter->record(FrameType::Ping->value);
+        } catch (ProtocolException) {
+            $caught = true;
+        }
+
+        static::assertTrue($caught);
+    }
+
+    public function testDefaultRstStreamDurationIsExactly10Seconds(): void
+    {
+        $limiter = new RateLimiter([
+            FrameType::RstStream->value => [100, DateTime\Duration::seconds(10)],
+        ]);
+
+        for ($i = 0; $i < 100; $i++) {
+            $limiter->record(FrameType::RstStream->value);
+        }
+
+        $caught = false;
+        try {
+            $limiter->record(FrameType::RstStream->value);
+        } catch (ProtocolException) {
+            $caught = true;
+        }
+
+        static::assertTrue($caught);
+    }
+
+    public function testDefaultPriorityDurationIsExactly10Seconds(): void
+    {
+        $limiter = new RateLimiter([
+            FrameType::Priority->value => [100, DateTime\Duration::seconds(10)],
+        ]);
+
+        for ($i = 0; $i < 100; $i++) {
+            $limiter->record(FrameType::Priority->value);
+        }
+
+        $caught = false;
+        try {
+            $limiter->record(FrameType::Priority->value);
+        } catch (ProtocolException) {
+            $caught = true;
+        }
+
+        static::assertTrue($caught);
+    }
+
+    public function testDefaultEmptyDataDurationIsExactly10Seconds(): void
+    {
+        $limiter = new RateLimiter([
+            RateLimiter::EMPTY_DATA_FRAME => [100, DateTime\Duration::seconds(10)],
+        ]);
+
+        for ($i = 0; $i < 100; $i++) {
+            $limiter->record(RateLimiter::EMPTY_DATA_FRAME);
+        }
+
+        $caught = false;
+        try {
+            $limiter->record(RateLimiter::EMPTY_DATA_FRAME);
+        } catch (ProtocolException) {
+            $caught = true;
+        }
+
+        static::assertTrue($caught);
+    }
+
+    public function testWindowResetsAtExactDuration(): void
+    {
+        if (PHP_OS_FAMILY === 'Windows') {
+            static::markTestSkipped('usleep() resolution on Windows is too coarse for this test.');
+        }
+
+        $limiter = new RateLimiter([
+            FrameType::Ping->value => [2, DateTime\Duration::milliseconds(1)],
+        ]);
+
+        $limiter->record(FrameType::Ping->value);
+        $limiter->record(FrameType::Ping->value);
+
+        usleep(3000);
+
+        $limiter->record(FrameType::Ping->value);
+        $limiter->record(FrameType::Ping->value);
+
+        static::assertTrue(true);
+    }
+
+    public function testErrorMessageForUnknownFrameTypeContainsHexPrefix(): void
+    {
+        $limiter = new RateLimiter([
+            0xb => [1, DateTime\Duration::seconds(10)],
+        ]);
+
+        $limiter->record(0xb);
+
+        try {
+            $limiter->record(0xb);
+            static::fail('Expected ProtocolException');
+        } catch (ProtocolException $e) {
+            static::assertStringContainsString('0x0b', $e->getMessage());
+        }
+    }
+
+    public function testErrorMessageContainsFrameTypePrefix(): void
+    {
+        $limiter = new RateLimiter([
+            FrameType::Ping->value => [1, DateTime\Duration::seconds(10)],
+        ]);
+
+        $limiter->record(FrameType::Ping->value);
+
+        try {
+            $limiter->record(FrameType::Ping->value);
+            static::fail('Expected ProtocolException');
+        } catch (ProtocolException $e) {
+            static::assertStringContainsString('Rate limit exceeded for frame type Ping', $e->getMessage());
+        }
+    }
+
+    public function testWindowResetUsesGreaterThanOrEqual(): void
+    {
+        if (PHP_OS_FAMILY === 'Windows') {
+            static::markTestSkipped('usleep() resolution on Windows is too coarse for this test.');
+        }
+
+        $limiter = new RateLimiter([
+            FrameType::Ping->value => [2, DateTime\Duration::milliseconds(10)],
+        ]);
+
+        $limiter->record(FrameType::Ping->value);
+        $limiter->record(FrameType::Ping->value);
+
+        usleep(15_000);
+
+        $limiter->record(FrameType::Ping->value);
+        $limiter->record(FrameType::Ping->value);
+
+        static::assertTrue(true);
     }
 }

@@ -116,4 +116,67 @@ final class FormDataTest extends TestCase
 
         static::assertStringContainsString('a', $body);
     }
+
+    public function testFormHeadersContainContentType(): void
+    {
+        $form = new Form('form-boundary');
+
+        $contentType = $form->headers->get('content-type');
+        static::assertNotNull($contentType);
+        static::assertStringContainsString('multipart/form-data', $contentType);
+        static::assertStringContainsString('form-boundary', $contentType);
+    }
+
+    public function testAddPartReplacesContentDisposition(): void
+    {
+        $form = new Form('disp-boundary');
+        $part = new Part(Headers::fromPairs([
+            ['Content-Disposition', 'attachment; filename="old.txt"'],
+            ['Content-Type',        'text/plain'],
+        ]), new IO\MemoryHandle('content'));
+        $form->addPart('myfield', $part);
+
+        $output = new IO\MemoryHandle();
+        IO\copy($form->body(), $output);
+
+        $parser = new Parser('disp-boundary');
+        $output->seek(0);
+        $parts = iterator_to_array($parser->parse($output));
+
+        static::assertCount(1, $parts);
+        $dispositionValue = $parts[0]->headers->get('content-disposition');
+        static::assertNotNull($dispositionValue);
+        static::assertStringContainsString('name=myfield', $dispositionValue);
+        static::assertSame('text/plain', $parts[0]->headers->get('content-type'));
+    }
+
+    public function testAddPartSkipsContentDispositionCaseInsensitive(): void
+    {
+        $form = new Form('ci-boundary');
+        $part = new Part(Headers::fromPairs([
+            ['CONTENT-DISPOSITION', 'attachment; filename="old.txt"'],
+            ['Content-Type',        'application/json'],
+            ['X-Custom',            'custom-value'],
+        ]), new IO\MemoryHandle('{"data": true}'));
+        $form->addPart('jsonfield', $part);
+
+        $output = new IO\MemoryHandle();
+        IO\copy($form->body(), $output);
+
+        $parser = new Parser('ci-boundary');
+        $output->seek(0);
+        $parts = iterator_to_array($parser->parse($output));
+
+        static::assertCount(1, $parts);
+
+        $dispositionValue = $parts[0]->headers->get('content-disposition');
+        static::assertNotNull($dispositionValue);
+        static::assertStringContainsString('name=jsonfield', $dispositionValue);
+
+        static::assertSame('application/json', $parts[0]->headers->get('content-type'));
+        static::assertSame('custom-value', $parts[0]->headers->get('x-custom'));
+
+        $allDispositions = $parts[0]->headers->all('content-disposition');
+        static::assertCount(1, $allDispositions);
+    }
 }

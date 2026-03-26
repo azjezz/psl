@@ -872,4 +872,83 @@ final class EncoderTest extends TestCase
         static::assertSame('value', $decoded[0]->value);
         static::assertTrue($decoded[0]->sensitive);
     }
+
+    public function testResizeTwiceEmitsBothTableSizeUpdates(): void
+    {
+        $encoder = new Encoder();
+        $decoder = new Decoder();
+
+        $encoder->resize(0);
+        $encoder->resize(1024);
+
+        $encoded = $encoder->encode([
+            new Header(':method', 'GET'),
+        ]);
+
+        $decoded = $decoder->decode($encoded);
+        static::assertCount(1, $decoded);
+        static::assertSame(':method', $decoded[0]->name);
+        static::assertSame('GET', $decoded[0]->value);
+
+        static::assertGreaterThan(1, strlen($encoded));
+    }
+
+    public function testSensitiveHeaderWithKnownNameUsesIndex(): void
+    {
+        $encoder = new Encoder();
+        $decoder = new Decoder();
+
+        $encoded = $encoder->encode([
+            new Header(':authority', 'example.com', true),
+        ]);
+
+        $decoded = $decoder->decode($encoded);
+        static::assertCount(1, $decoded);
+        static::assertSame(':authority', $decoded[0]->name);
+        static::assertSame('example.com', $decoded[0]->value);
+        static::assertTrue($decoded[0]->sensitive);
+
+        static::assertNotSame("\x10", $encoded[0]);
+        static::assertSame(0b0001_0000, ord($encoded[0]) & 0b1111_0000);
+    }
+
+    public function testResizeMinAppendedNotAssigned(): void
+    {
+        $encoder = new Encoder();
+        $decoder = new Decoder();
+
+        $encoder->resize(10);
+        $encoder->resize(200);
+        $decoder->resize(200);
+
+        $encoded = $encoder->encode([new Header(':method', 'GET')]);
+
+        static::assertSame(0b0010_0000, ord($encoded[0]) & 0b1110_0000);
+
+        $decoded = $decoder->decode($encoded);
+        static::assertCount(1, $decoded);
+        static::assertSame(':method', $decoded[0]->name);
+        static::assertSame('GET', $decoded[0]->value);
+
+        $minValue = ord($encoded[0]) & 0b0001_1111;
+        static::assertSame(10, $minValue);
+    }
+
+    public function testNeverIndexedNameIndexStartsAtZero(): void
+    {
+        $encoder = new Encoder();
+        $decoder = new Decoder();
+
+        $encoded = $encoder->encode([
+            new Header('x-unknown-header-987654', 'secret', true),
+        ]);
+
+        static::assertSame("\x10", $encoded[0]);
+
+        $decoded = $decoder->decode($encoded);
+        static::assertCount(1, $decoded);
+        static::assertSame('x-unknown-header-987654', $decoded[0]->name);
+        static::assertSame('secret', $decoded[0]->value);
+        static::assertTrue($decoded[0]->sensitive);
+    }
 }

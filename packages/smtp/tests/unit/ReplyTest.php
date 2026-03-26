@@ -434,4 +434,67 @@ final class ReplyTest extends TestCase
 
         static::assertInstanceOf(\Stringable::class, $response);
     }
+
+    public function testIsSyntaxCategoryCode199IsNotSyntax(): void
+    {
+        $response = new Reply(199, null, 'Test');
+
+        static::assertFalse($response->isSyntaxCategory());
+    }
+
+    public function testIsSyntaxCategoryCode209IsSyntax(): void
+    {
+        $response = new Reply(209, null, 'Test');
+
+        static::assertTrue($response->isSyntaxCategory());
+    }
+
+    public function testIsInformationCategoryCode519IsInformation(): void
+    {
+        $response = new Reply(519, null, 'Test');
+
+        static::assertTrue($response->isInformationCategory());
+    }
+
+    public function testIsInformationCategoryCode219IsInformation(): void
+    {
+        $response = new Reply(219, null, 'Test');
+
+        static::assertTrue($response->isInformationCategory());
+    }
+
+    public function testIsConnectionsCategoryCode529IsConnections(): void
+    {
+        $response = new Reply(529, null, 'Test');
+
+        static::assertTrue($response->isConnectionsCategory());
+    }
+
+    public function testIsConnectionsCategoryCode229IsConnections(): void
+    {
+        $response = new Reply(229, null, 'Test');
+
+        static::assertTrue($response->isConnectionsCategory());
+    }
+
+    public function testIsUnspecifiedCategoryCode249IsUnspecified(): void
+    {
+        $response = new Reply(249, null, 'Test');
+
+        static::assertTrue($response->isUnspecifiedCategory());
+    }
+
+    public function testIsUnspecifiedCategoryCode249WithDivMutation(): void
+    {
+        $response = new Reply(249, null, 'Test');
+
+        static::assertTrue($response->isUnspecifiedCategory());
+    }
+
+    public function testIsMailSystemCategoryCode559IsMailSystem(): void
+    {
+        $response = new Reply(559, null, 'Test');
+
+        static::assertTrue($response->isMailSystemCategory());
+    }
 }

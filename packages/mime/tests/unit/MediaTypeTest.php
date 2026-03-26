@@ -279,4 +279,125 @@ final class MediaTypeTest extends TestCase
 
         new MediaType('text', 'pl@in');
     }
+
+    public function testExtractTreeDotAtStart(): void
+    {
+        $type = new MediaType('application', 'json');
+
+        static::assertSame('', $type->tree);
+
+        $type2 = new MediaType('application', 'foo.bar');
+        static::assertSame('', $type2->tree);
+    }
+
+    public function testExtractTreePrefixLogic(): void
+    {
+        $type = new MediaType('application', 'vnd.example');
+        static::assertSame('vnd', $type->tree);
+
+        $type2 = new MediaType('application', 'prs.example');
+        static::assertSame('prs', $type2->tree);
+
+        $type3 = new MediaType('application', 'x.example');
+        static::assertSame('x', $type3->tree);
+
+        $type4 = new MediaType('application', 'other.example');
+        static::assertSame('', $type4->tree);
+    }
+
+    public function testValidateComponentFirstCharacter(): void
+    {
+        $type = new MediaType('a', 'b');
+        static::assertSame('a', $type->type);
+        static::assertSame('b', $type->subtype);
+    }
+
+    public function testFromExtensionCaseInsensitive(): void
+    {
+        $lower = MediaType::fromExtension('json');
+        $upper = MediaType::fromExtension('JSON');
+        $mixed = MediaType::fromExtension('Json');
+
+        static::assertNotNull($lower);
+        static::assertNotNull($upper);
+        static::assertNotNull($mixed);
+
+        static::assertSame($lower->essence(), $upper->essence());
+        static::assertSame($lower->essence(), $mixed->essence());
+    }
+
+    public function testFromExtensionUnknownReturnsNull(): void
+    {
+        $result = MediaType::fromExtension('zzz_unknown_ext');
+
+        static::assertNull($result);
+    }
+
+    public function testFromExtensionReturnsCorrectType(): void
+    {
+        $result = MediaType::fromExtension('html');
+
+        static::assertNotNull($result);
+        static::assertSame('text', $result->type);
+        static::assertSame('html', $result->subtype);
+    }
+
+    public function testSuffixSingleCharAfterPlus(): void
+    {
+        $type = new MediaType('application', 'vnd+x');
+
+        static::assertSame('x', $type->suffix);
+    }
+
+    public function testSuffixTwoCharSubtypeWithPlus(): void
+    {
+        $type = new MediaType('application', 'a+b');
+
+        static::assertSame('b', $type->suffix);
+    }
+
+    public function testSuffixPlusInMiddleReturnsCorrectSuffix(): void
+    {
+        $type = new MediaType('application', 'soap+xml');
+
+        static::assertSame('xml', $type->suffix);
+    }
+
+    public function testFromExtensionMultibyteCharacterHandled(): void
+    {
+        $result = MediaType::fromExtension("\xC3\xA9");
+
+        static::assertNull($result);
+    }
+
+    public function testExtractSuffixTrailingPlusReturnsEmpty(): void
+    {
+        $type = new MediaType('application', 'vnd.test+');
+
+        static::assertSame('', $type->suffix);
+    }
+
+    public function testExtractSuffixTrailingPlusMutationMinusToPlus(): void
+    {
+        $type = new MediaType('application', 'a+b');
+        static::assertSame('b', $type->suffix);
+
+        $type2 = new MediaType('application', 'vnd.api+json');
+        static::assertSame('json', $type2->suffix);
+    }
+
+    public function testExtractSuffixDecrementMutation(): void
+    {
+        $type = new MediaType('application', 'vnd.api+json');
+
+        static::assertSame('json', $type->suffix);
+        static::assertNotSame('', $type->suffix);
+    }
+
+    public function testValidateComponentStartsAtZero(): void
+    {
+        $this->expectException(InvalidMediaTypeComponentException::class);
+
+        new MediaType('@test', 'html');
+    }
 }

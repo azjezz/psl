@@ -87,6 +87,36 @@ final class ListenerTest extends TestCase
         })->await();
     }
 
+    public function testAcceptCompletesHandshakeAndExchangesData(): void
+    {
+        $tcpListener = TCP\listen('127.0.0.1', 0);
+        $listener = new TLS\Listener($tcpListener, $this->createServerConfig());
+        $port = $listener->getLocalAddress()->port;
+
+        Async\concurrently([
+            'server' => static function () use ($listener): void {
+                $tls = $listener->accept();
+                static::assertInstanceOf(TLS\StreamInterface::class, $tls);
+
+                $data = $tls->read();
+                static::assertSame('listener-test', $data);
+                $tls->writeAll('listener-ok');
+                $tls->close();
+                $listener->close();
+            },
+            'client' => static function () use ($port): void {
+                $config = TLS\ClientConfiguration::default()->withPeerVerification(false)->withAllowSelfSigned(true);
+
+                $client = TLS\connect('127.0.0.1', $port, $config);
+
+                $client->writeAll('listener-test');
+                $response = $client->readAll();
+                static::assertSame('listener-ok', $response);
+                $client->close();
+            },
+        ]);
+    }
+
     private function createServerConfig(): TLS\ServerConfiguration
     {
         $certFile = __DIR__ . '/../../fixture/certs/server.crt';

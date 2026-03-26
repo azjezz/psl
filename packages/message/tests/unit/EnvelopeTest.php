@@ -144,4 +144,20 @@ final class EnvelopeTest extends TestCase
         self::assertSame('alice@example.com', $envelope->recipients[0]->address);
         self::assertSame('bob@example.com', $envelope->recipients[1]->address);
     }
+
+    #[Test]
+    public function fromMessageWithNullToAndBccCollectsFromCcAndBcc(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['From', 'alice@example.com'],
+            ['Cc',   'cc@example.com'],
+            ['Bcc',  'bcc@example.com'],
+        ]));
+
+        $envelope = Envelope::fromMessage($message);
+
+        static::assertCount(2, $envelope->recipients);
+        static::assertSame('cc@example.com', $envelope->recipients[0]->address);
+        static::assertSame('bcc@example.com', $envelope->recipients[1]->address);
+    }
 }

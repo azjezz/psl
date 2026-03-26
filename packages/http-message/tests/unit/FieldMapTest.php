@@ -292,4 +292,30 @@ final class FieldMapTest extends TestCase
 
         static::assertCount(3, $map);
     }
+
+    public function testWithoutCaseInsensitiveNameParameter(): void
+    {
+        $map = FieldMap::from([
+            ['content-type', 'text/html'],
+            ['accept',       'text/plain'],
+        ]);
+
+        $modified = $map->without('Content-Type');
+
+        static::assertNull($modified->get('content-type'));
+        static::assertSame('text/plain', $modified->get('accept'));
+    }
+
+    public function testWithoutUpperCaseNameRemovesLowerCaseField(): void
+    {
+        $map = FieldMap::from([
+            ['X-Custom', 'value'],
+            ['Accept',   'text/html'],
+        ]);
+
+        $modified = $map->without('X-CUSTOM');
+
+        static::assertNull($modified->get('x-custom'));
+        static::assertSame('text/html', $modified->get('accept'));
+    }
 }
