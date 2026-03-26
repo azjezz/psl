@@ -29,9 +29,11 @@ final class PoolReleasingBodyHandle implements IO\ReadHandleInterface, IO\CloseH
 
     private bool $closed = false;
 
+    private bool $fullyConsumed = false;
+
     /**
      * @param IO\ReadHandleInterface $inner The inner body handle to read from.
-     * @param Closure(): void $onComplete Called exactly once when the body is fully consumed or the handle is closed.
+     * @param Closure(bool): void $onComplete Called exactly once with true if the body was fully consumed (safe to reuse), or false if the body was discarded (connection tainted).
      */
     public function __construct(
         private readonly IO\ReadHandleInterface $inner,
@@ -94,6 +96,7 @@ final class PoolReleasingBodyHandle implements IO\ReadHandleInterface, IO\CloseH
 
         $eof = $this->inner->reachedEndOfDataSource();
         if ($eof) {
+            $this->fullyConsumed = true;
             $this->close();
         }
 
@@ -114,7 +117,7 @@ final class PoolReleasingBodyHandle implements IO\ReadHandleInterface, IO\CloseH
                 $this->inner->close();
             }
 
-            ($this->onComplete)();
+            ($this->onComplete)($this->fullyConsumed);
         }
     }
 
@@ -124,6 +127,7 @@ final class PoolReleasingBodyHandle implements IO\ReadHandleInterface, IO\CloseH
     private function closeIfDone(): void
     {
         if ($this->inner->reachedEndOfDataSource()) {
+            $this->fullyConsumed = true;
             $this->close();
         }
     }

@@ -429,6 +429,11 @@ final class TransportTest extends TestCase
 
         $body = $transaction->response->body;
         static::assertNotNull($body);
+        static::assertNotInstanceOf(PoolReleasingBodyHandle::class, $body);
+
+        $transaction = $connection->finalize($transaction);
+        $body = $transaction->response->body;
+        static::assertNotNull($body);
         static::assertInstanceOf(PoolReleasingBodyHandle::class, $body);
 
         static::assertSame('hello', $body->readAll());

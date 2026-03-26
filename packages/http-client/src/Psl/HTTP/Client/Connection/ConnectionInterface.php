@@ -125,4 +125,19 @@ interface ConnectionInterface
         ClientConfiguration $configuration,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): Transaction;
+
+    /**
+     * Prepare a completed transaction for return to the caller.
+     *
+     * For HTTP/1.x connections with pool release callbacks, this wraps the
+     * response body so the connection is returned to the pool when the body
+     * is consumed. For other connection types, this returns the transaction
+     * as-is.
+     *
+     * This MUST only be called once on the final transaction returned to
+     * the user. Middleware that calls {@see exchange()} multiple times for
+     * multi-step protocols (e.g., NTLM) should NOT call this on intermediate
+     * responses.
+     */
+    public function finalize(Transaction $transaction): Transaction;
 }
