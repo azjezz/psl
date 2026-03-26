@@ -299,25 +299,17 @@ final class ContextTest extends TestCase
         static::assertSame($expected, $actual);
     }
 
-    /**
-     * Verify our AES-CTR output matches openssl_encrypt for multi-block data.
-     *
-     * This kills mutations in advanceAesCtrIv() because if the IV increment
-     * is wrong, blocks after the first will produce wrong keystream.
-     */
     public function testAes256CtrMatchesOpensslForMultipleBlocks(): void
     {
         $keyBytes = SecureRandom\bytes(32);
         $key = new StreamCipher\Key($keyBytes);
         $iv = SecureRandom\bytes(16);
 
-        // 48 bytes = 3 AES blocks (16 bytes each)
         $plaintext = str_repeat('X', 48);
 
         $ctx = new StreamCipher\Context($key, $iv, StreamCipher\Algorithm::Aes256Ctr);
         $ourOutput = $ctx->apply($plaintext);
 
-        // OpenSSL handles IV increment internally in CTR mode
         $reference = openssl_encrypt($plaintext, 'aes-256-ctr', $keyBytes, OPENSSL_RAW_DATA, $iv);
 
         static::assertSame($reference, $ourOutput);
@@ -329,7 +321,6 @@ final class ContextTest extends TestCase
         $key = new StreamCipher\Key($keyBytes);
         $iv = SecureRandom\bytes(16);
 
-        // 64 bytes = 4 AES blocks
         $plaintext = str_repeat('Y', 64);
 
         $ctx = new StreamCipher\Context($key, $iv, StreamCipher\Algorithm::Aes128Ctr);
@@ -340,10 +331,6 @@ final class ContextTest extends TestCase
         static::assertSame($reference, $ourOutput);
     }
 
-    /**
-     * Test with IV near overflow (0xff...ff) to exercise the carry logic
-     * in advanceAesCtrIv's loop over all 16 bytes.
-     */
     public function testAesCtrIvOverflowCarry(): void
     {
         $keyBytes = SecureRandom\bytes(32);
@@ -361,9 +348,6 @@ final class ContextTest extends TestCase
         static::assertSame($reference, $ourOutput);
     }
 
-    /**
-     * Test with IV at all 0xff to exercise carry propagation across all bytes.
-     */
     public function testAesCtrIvFullCarryPropagation(): void
     {
         $keyBytes = SecureRandom\bytes(32);
@@ -381,9 +365,6 @@ final class ContextTest extends TestCase
         static::assertSame($reference, $ourOutput);
     }
 
-    /**
-     * Test chunked encryption across block boundaries matches single-pass openssl.
-     */
     public function testAesCtrChunkedMatchesOpenssl(): void
     {
         $keyBytes = SecureRandom\bytes(32);
@@ -418,7 +399,6 @@ final class ContextTest extends TestCase
         $result2 = $ctx->apply('BC');
         static::assertSame(2, Byte\length($result2), 'Applying 2 bytes should produce exactly 2 bytes of output');
 
-        // Verify correctness: single-pass vs byte-by-byte should match
         $ctx2 = new StreamCipher\Context($key, $iv, StreamCipher\Algorithm::Aes256Ctr);
         $singlePass = $ctx2->apply('ABC');
         static::assertSame(
@@ -426,5 +406,82 @@ final class ContextTest extends TestCase
             $result . $result2,
             'Byte-by-byte encryption must match single-pass encryption',
         );
+    }
+
+    public function testPartialBufferUsageOnlyConsumesNeededBytes(): void
+    {
+        $keyBytes = SecureRandom\bytes(32);
+        $key = new StreamCipher\Key($keyBytes);
+        $iv = SecureRandom\bytes(16);
+
+        $encCtx = new StreamCipher\Context($key, $iv, StreamCipher\Algorithm::Aes256Ctr);
+        $enc1 = $encCtx->apply('A');
+        $enc2 = $encCtx->apply('B');
+
+        $decCtx = new StreamCipher\Context($key, $iv, StreamCipher\Algorithm::Aes256Ctr);
+        $dec1 = $decCtx->apply($enc1);
+        $dec2 = $decCtx->apply($enc2);
+
+        static::assertSame('A', $dec1);
+        static::assertSame('B', $dec2);
+    }
+
+    public function testKeystreamSubstrProducesCorrectXorForSmallChunks(): void
+    {
+        $keyBytes = SecureRandom\bytes(32);
+        $key = new StreamCipher\Key($keyBytes);
+        $iv = SecureRandom\bytes(16);
+
+        $singleCtx = new StreamCipher\Context($key, $iv, StreamCipher\Algorithm::Aes256Ctr);
+        $singleResult = $singleCtx->apply('ABCDE');
+
+        $chunkedCtx = new StreamCipher\Context($key, $iv, StreamCipher\Algorithm::Aes256Ctr);
+        $chunkedResult = '';
+        $chunkedResult .= $chunkedCtx->apply('A');
+        $chunkedResult .= $chunkedCtx->apply('B');
+        $chunkedResult .= $chunkedCtx->apply('C');
+        $chunkedResult .= $chunkedCtx->apply('D');
+        $chunkedResult .= $chunkedCtx->apply('E');
+
+        static::assertSame($singleResult, $chunkedResult);
+    }
+
+    public function testSubstrKeystreamBufferWorksWithXChaCha20SmallChunks(): void
+    {
+        $keyBytes = SecureRandom\bytes(32);
+        $key = new StreamCipher\Key($keyBytes);
+        $iv = SecureRandom\bytes(24);
+
+        $expected = sodium_crypto_stream_xchacha20_xor('ABCDEFGHIJ', $iv, $keyBytes);
+
+        $ctx = new StreamCipher\Context($key, $iv, StreamCipher\Algorithm::XChaCha20);
+        $actual = '';
+        $actual .= $ctx->apply('A');
+        $actual .= $ctx->apply('BC');
+        $actual .= $ctx->apply('DEFG');
+        $actual .= $ctx->apply('HIJ');
+
+        static::assertSame($expected, $actual);
+    }
+
+    public function testBufferSubstrRoundtripWithMismatchedChunkSizes(): void
+    {
+        $key = new StreamCipher\Key(SecureRandom\bytes(32));
+        $iv = SecureRandom\bytes(16);
+
+        $plaintext = 'The quick brown fox jumps over the lazy dog';
+
+        $encCtx = new StreamCipher\Context($key, $iv, StreamCipher\Algorithm::Aes256Ctr);
+        $encrypted = '';
+        $encrypted .= $encCtx->apply(Byte\slice($plaintext, 0, 3));
+        $encrypted .= $encCtx->apply(Byte\slice($plaintext, 3, 1));
+        $encrypted .= $encCtx->apply(Byte\slice($plaintext, 4, 10));
+        $encrypted .= $encCtx->apply(Byte\slice($plaintext, 14, 2));
+        $encrypted .= $encCtx->apply(Byte\slice($plaintext, 16));
+
+        $decCtx = new StreamCipher\Context($key, $iv, StreamCipher\Algorithm::Aes256Ctr);
+        $decrypted = $decCtx->apply($encrypted);
+
+        static::assertSame($plaintext, $decrypted);
     }
 }

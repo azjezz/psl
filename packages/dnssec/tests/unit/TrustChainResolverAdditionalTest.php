@@ -523,6 +523,453 @@ final class TrustChainResolverAdditionalTest extends TestCase
         static::assertCount(1, $result->keys);
     }
 
+    /** @mago-expect lint:no-empty-catch-clause */
+    public function testResolveAppendsDotToZoneNameForDsQuery(): void
+    {
+        [$rootPrivateKey, $rootRfc3110Key, $rootDnskey, $rootKeyTag, $anchor, $rootRrsig] = self::buildValidRoot();
+
+        $queriedNames = [];
+        $queriedTypes = [];
+
+        $inner = new class($rootDnskey, $rootRrsig, $queriedNames, $queriedTypes) implements ResolverInterface {
+            use ResolverConvenienceMethodsTrait;
+
+            private array $names;
+            private array $types;
+
+            public function __construct(
+                private readonly DNSKEYRecord $rootDnskey,
+                private readonly RRSIGRecord $rootRrsig,
+                array &$names,
+                array &$types,
+            ) {
+                $this->names = &$names;
+                $this->types = &$types;
+            }
+
+            public function query(
+                string $name,
+                RecordType $type,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+                array $ednsOptions = [],
+            ): Response {
+                $this->names[] = $name;
+                $this->types[] = $type;
+
+                // @mago-expect lint:no-shorthand-ternary
+                $normalizedName = rtrim($name, '.') ?: '.';
+                if ($normalizedName === '.' && $type === RecordType::DNSKEY) {
+                    return new Response(1, ResponseCode::NoError, [$this->rootDnskey, $this->rootRrsig], [], []);
+                }
+
+                return new Response(1, ResponseCode::NoError, [], [], []);
+            }
+        };
+
+        try {
+            $resolver = new TrustChainResolver($inner, $anchor);
+            $resolver->resolve('com');
+        } catch (\Throwable) {
+        }
+
+        $dsQueryIdx = null;
+        foreach ($queriedTypes as $i => $type) {
+            if ($type !== RecordType::DS) {
+                continue;
+            }
+
+            $dsQueryIdx = $i;
+            break;
+        }
+
+        static::assertNotNull($dsQueryIdx);
+        static::assertSame('com.', $queriedNames[$dsQueryIdx]);
+    }
+
+    /** @mago-expect lint:no-empty-catch-clause */
+    public function testResolveDoesNotDoubleDotForFqdnZone(): void
+    {
+        [$rootPrivateKey, $rootRfc3110Key, $rootDnskey, $rootKeyTag, $anchor, $rootRrsig] = self::buildValidRoot();
+
+        $queriedNames = [];
+        $queriedTypes = [];
+
+        $inner = new class($rootDnskey, $rootRrsig, $queriedNames, $queriedTypes) implements ResolverInterface {
+            use ResolverConvenienceMethodsTrait;
+
+            private array $names;
+            private array $types;
+
+            public function __construct(
+                private readonly DNSKEYRecord $rootDnskey,
+                private readonly RRSIGRecord $rootRrsig,
+                array &$names,
+                array &$types,
+            ) {
+                $this->names = &$names;
+                $this->types = &$types;
+            }
+
+            public function query(
+                string $name,
+                RecordType $type,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+                array $ednsOptions = [],
+            ): Response {
+                $this->names[] = $name;
+                $this->types[] = $type;
+
+                // @mago-expect lint:no-shorthand-ternary
+                $normalizedName = rtrim($name, '.') ?: '.';
+                if ($normalizedName === '.' && $type === RecordType::DNSKEY) {
+                    return new Response(1, ResponseCode::NoError, [$this->rootDnskey, $this->rootRrsig], [], []);
+                }
+
+                return new Response(1, ResponseCode::NoError, [], [], []);
+            }
+        };
+
+        try {
+            $resolver = new TrustChainResolver($inner, $anchor);
+            $resolver->resolve('com.');
+        } catch (\Throwable) {
+        }
+
+        foreach ($queriedNames as $name) {
+            static::assertStringNotContainsString('..', $name);
+        }
+    }
+
+    /** @mago-expect lint:no-empty-catch-clause */
+    public function testResolveDsQueryNameEndsWithDotForNonFqdn(): void
+    {
+        [$rootPrivateKey, $rootRfc3110Key, $rootDnskey, $rootKeyTag, $anchor, $rootRrsig] = self::buildValidRoot();
+
+        $queriedNames = [];
+        $queriedTypes = [];
+
+        $inner = new class($rootDnskey, $rootRrsig, $queriedNames, $queriedTypes) implements ResolverInterface {
+            use ResolverConvenienceMethodsTrait;
+
+            private array $names;
+            private array $types;
+
+            public function __construct(
+                private readonly DNSKEYRecord $rootDnskey,
+                private readonly RRSIGRecord $rootRrsig,
+                array &$names,
+                array &$types,
+            ) {
+                $this->names = &$names;
+                $this->types = &$types;
+            }
+
+            public function query(
+                string $name,
+                RecordType $type,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+                array $ednsOptions = [],
+            ): Response {
+                $this->names[] = $name;
+                $this->types[] = $type;
+
+                // @mago-expect lint:no-shorthand-ternary
+                $normalizedName = rtrim($name, '.') ?: '.';
+                if ($normalizedName === '.' && $type === RecordType::DNSKEY) {
+                    return new Response(1, ResponseCode::NoError, [$this->rootDnskey, $this->rootRrsig], [], []);
+                }
+
+                return new Response(1, ResponseCode::NoError, [], [], []);
+            }
+        };
+
+        try {
+            $resolver = new TrustChainResolver($inner, $anchor);
+            $resolver->resolve('example.com');
+        } catch (\Throwable) {
+        }
+
+        $dsNames = [];
+        foreach ($queriedTypes as $i => $type) {
+            if ($type !== RecordType::DS) {
+                continue;
+            }
+
+            $dsNames[] = $queriedNames[$i];
+        }
+
+        static::assertNotEmpty($dsNames);
+        foreach ($dsNames as $name) {
+            static::assertStringEndsWith('.', $name);
+        }
+    }
+
+    public function testResolveChildZoneReturnsBogusWhenParentKeysEmpty(): void
+    {
+        [$rootPrivateKey, $rootRfc3110Key, $rootDnskey, $rootKeyTag, $anchor, $rootRrsig] = self::buildValidRoot();
+
+        [, $childRfc3110Key] = self::generateRsaKeyPair();
+        $childDnskey = new DNSKEYRecord('com', Duration::seconds(3600), 257, 3, Algorithm::RSASHA256, $childRfc3110Key);
+        $childKeyTag = KeyTag::compute($childDnskey);
+
+        $dsRecord = self::buildDsRecord('com', $childDnskey, $childKeyTag);
+
+        $now = Timestamp::now()->getSeconds();
+        $dsRrsig = new RRSIGRecord(
+            'com.',
+            Duration::seconds(3600),
+            RecordType::DS,
+            Algorithm::RSASHA256,
+            1,
+            3600,
+            $now + 86_400,
+            $now - 86_400,
+            99_999,
+            'unknown-parent.',
+            'dummy-signature',
+        );
+
+        $inner = self::createFullChainResolver(rootDnskey: $rootDnskey, rootRrsig: $rootRrsig, dsAnswers: ['com' => [
+            $dsRecord,
+            $dsRrsig,
+        ]]);
+
+        $resolver = new TrustChainResolver($inner, $anchor);
+        $result = $resolver->resolve('com');
+
+        static::assertSame(TrustChainStatus::Bogus, $result->status);
+        static::assertNotNull($result->failure);
+        static::assertSame(ChainFailure::ChainBroken, $result->failure);
+    }
+
+    public function testResolveReturnsBogusNotNullWhenDsMismatch(): void
+    {
+        [$rootPrivateKey, $rootRfc3110Key, $rootDnskey, $rootKeyTag, $anchor, $rootRrsig] = self::buildValidRoot();
+
+        [, $childRfc3110Key] = self::generateRsaKeyPair();
+        $childDnskey = new DNSKEYRecord('com', Duration::seconds(3600), 257, 3, Algorithm::RSASHA256, $childRfc3110Key);
+        $childKeyTag = KeyTag::compute($childDnskey);
+
+        $dsRecord = new DSRecord(
+            'com.',
+            Duration::seconds(3600),
+            $childKeyTag,
+            Algorithm::RSASHA256,
+            DigestAlgorithm::SHA256,
+            'deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
+        );
+
+        $now = Timestamp::now()->getSeconds();
+        $expiration = $now + 86_400;
+        $inception = $now - 86_400;
+
+        $dsSignedData = self::buildDsSignedData([$dsRecord], $rootKeyTag, $expiration, $inception, '', 1, 3600);
+        $dsSignature = null;
+        openssl_sign($dsSignedData, $dsSignature, $rootPrivateKey, OPENSSL_ALGO_SHA256);
+
+        $dsRrsig = new RRSIGRecord(
+            'com.',
+            Duration::seconds(3600),
+            RecordType::DS,
+            Algorithm::RSASHA256,
+            1,
+            3600,
+            $expiration,
+            $inception,
+            $rootKeyTag,
+            '',
+            $dsSignature,
+        );
+
+        $childDnskeyRrsig = new RRSIGRecord(
+            'com.',
+            Duration::seconds(3600),
+            RecordType::DNSKEY,
+            Algorithm::RSASHA256,
+            1,
+            3600,
+            $expiration,
+            $inception,
+            $childKeyTag,
+            'com',
+            'dummy',
+        );
+
+        $inner = self::createFullChainResolver(
+            rootDnskey: $rootDnskey,
+            rootRrsig: $rootRrsig,
+            dsAnswers: ['com' => [$dsRecord, $dsRrsig]],
+            childDnskeys: ['com' => [$childDnskey]],
+            childRrsigs: ['com' => $childDnskeyRrsig],
+        );
+
+        $resolver = new TrustChainResolver($inner, $anchor);
+        $result = $resolver->resolve('com');
+
+        static::assertSame(TrustChainStatus::Bogus, $result->status);
+        static::assertSame(ChainFailure::ChainBroken, $result->failure);
+        static::assertSame([], $result->keys);
+    }
+
+    public function testResolveValidatedKeysAreFilteredToDnskeyType(): void
+    {
+        [$rootPrivateKey, $rootRfc3110Key, $rootDnskey, $rootKeyTag, $anchor, $rootRrsig] = self::buildValidRoot();
+
+        $inner = self::createFullChainResolver(rootDnskey: $rootDnskey, rootRrsig: $rootRrsig);
+        $resolver = new TrustChainResolver($inner, $anchor);
+        $result = $resolver->resolve('.');
+
+        static::assertSame(TrustChainStatus::Secure, $result->status);
+        foreach ($result->keys as $key) {
+            static::assertInstanceOf(DNSKEYRecord::class, $key);
+        }
+    }
+
+    public function testResolveValidatedKeysAreReindexed(): void
+    {
+        [$rootPrivateKey, $rootRfc3110Key, $rootDnskey, $rootKeyTag, $anchor, $rootRrsig] = self::buildValidRoot();
+
+        $inner = self::createFullChainResolver(rootDnskey: $rootDnskey, rootRrsig: $rootRrsig);
+        $resolver = new TrustChainResolver($inner, $anchor);
+        $result = $resolver->resolve('.');
+
+        static::assertSame(TrustChainStatus::Secure, $result->status);
+        $keys = $result->keys;
+        $expectedIndex = 0;
+        foreach ($keys as $index => $key) {
+            static::assertSame($expectedIndex, $index);
+            $expectedIndex++;
+        }
+    }
+
+    public function testResolveParentZoneFromRrsigSignerNotEmpty(): void
+    {
+        [$rootPrivateKey, $rootRfc3110Key, $rootDnskey, $rootKeyTag, $anchor, $rootRrsig] = self::buildValidRoot();
+
+        [, $childRfc3110Key] = self::generateRsaKeyPair();
+        $childDnskey = new DNSKEYRecord('com', Duration::seconds(3600), 257, 3, Algorithm::RSASHA256, $childRfc3110Key);
+        $childKeyTag = KeyTag::compute($childDnskey);
+
+        $dsRecord = self::buildDsRecord('com', $childDnskey, $childKeyTag);
+
+        $now = Timestamp::now()->getSeconds();
+        $expiration = $now + 86_400;
+        $inception = $now - 86_400;
+
+        $dsSignedData = self::buildDsSignedData([$dsRecord], $rootKeyTag, $expiration, $inception, '', 1, 3600);
+        $dsSignature = null;
+        openssl_sign($dsSignedData, $dsSignature, $rootPrivateKey, OPENSSL_ALGO_SHA256);
+
+        $dsRrsigWithDotSigner = new RRSIGRecord(
+            'com.',
+            Duration::seconds(3600),
+            RecordType::DS,
+            Algorithm::RSASHA256,
+            1,
+            3600,
+            $expiration,
+            $inception,
+            $rootKeyTag,
+            '.',
+            $dsSignature,
+        );
+
+        $inner = self::createFullChainResolver(rootDnskey: $rootDnskey, rootRrsig: $rootRrsig, dsAnswers: ['com' => [
+            $dsRecord,
+            $dsRrsigWithDotSigner,
+        ]]);
+
+        $resolver = new TrustChainResolver($inner, $anchor);
+        $result = $resolver->resolve('com');
+
+        static::assertNotNull($result);
+        static::assertSame(TrustChainStatus::Bogus, $result->status);
+    }
+
+    public function testResolveParentZoneWithEmptySignerUsesRoot(): void
+    {
+        [$rootPrivateKey, $rootRfc3110Key, $rootDnskey, $rootKeyTag, $anchor, $rootRrsig] = self::buildValidRoot();
+
+        [, $childRfc3110Key] = self::generateRsaKeyPair();
+        $childDnskey = new DNSKEYRecord('com', Duration::seconds(3600), 257, 3, Algorithm::RSASHA256, $childRfc3110Key);
+        $childKeyTag = KeyTag::compute($childDnskey);
+
+        $dsRecord = self::buildDsRecord('com', $childDnskey, $childKeyTag);
+
+        $now = Timestamp::now()->getSeconds();
+        $expiration = $now + 86_400;
+        $inception = $now - 86_400;
+
+        $dsSignedData = self::buildDsSignedData([$dsRecord], $rootKeyTag, $expiration, $inception, '', 1, 3600);
+        $dsSignature = null;
+        openssl_sign($dsSignedData, $dsSignature, $rootPrivateKey, OPENSSL_ALGO_SHA256);
+
+        $dsRrsig = new RRSIGRecord(
+            'com.',
+            Duration::seconds(3600),
+            RecordType::DS,
+            Algorithm::RSASHA256,
+            1,
+            3600,
+            $expiration,
+            $inception,
+            $rootKeyTag,
+            '',
+            $dsSignature,
+        );
+
+        $inner = self::createFullChainResolver(
+            rootDnskey: $rootDnskey,
+            rootRrsig: $rootRrsig,
+            dsAnswers: ['com' => [$dsRecord, $dsRrsig]],
+            childDnskeys: ['com' => []],
+        );
+
+        $resolver = new TrustChainResolver($inner, $anchor);
+        $result = $resolver->resolve('com');
+
+        static::assertNotNull($result);
+        static::assertSame(TrustChainStatus::Bogus, $result->status);
+        static::assertSame(ChainFailure::MissingDnskey, $result->failure);
+    }
+
+    public function testResolveParentZoneWithNonRootNonEmptySigner(): void
+    {
+        [$rootPrivateKey, $rootRfc3110Key, $rootDnskey, $rootKeyTag, $anchor, $rootRrsig] = self::buildValidRoot();
+
+        [, $childRfc3110Key] = self::generateRsaKeyPair();
+        $childDnskey = new DNSKEYRecord('com', Duration::seconds(3600), 257, 3, Algorithm::RSASHA256, $childRfc3110Key);
+        $childKeyTag = KeyTag::compute($childDnskey);
+
+        $dsRecord = self::buildDsRecord('com', $childDnskey, $childKeyTag);
+
+        $now = Timestamp::now()->getSeconds();
+        $dsRrsig = new RRSIGRecord(
+            'com.',
+            Duration::seconds(3600),
+            RecordType::DS,
+            Algorithm::RSASHA256,
+            1,
+            3600,
+            $now + 86_400,
+            $now - 86_400,
+            $rootKeyTag,
+            'nonexistent-parent.',
+            'dummy',
+        );
+
+        $inner = self::createFullChainResolver(rootDnskey: $rootDnskey, rootRrsig: $rootRrsig, dsAnswers: ['com' => [
+            $dsRecord,
+            $dsRrsig,
+        ]]);
+
+        $resolver = new TrustChainResolver($inner, $anchor);
+        $result = $resolver->resolve('com');
+
+        static::assertSame(TrustChainStatus::Bogus, $result->status);
+        static::assertSame(ChainFailure::ChainBroken, $result->failure);
+    }
+
     /**
      * @return array{OpenSSLAsymmetricKey, string, DNSKEYRecord, int, TrustAnchor, RRSIGRecord}
      */

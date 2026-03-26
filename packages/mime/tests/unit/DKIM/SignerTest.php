@@ -819,7 +819,7 @@ final class SignerTest extends TestCase
         static::assertSame("x-test:val\r\n", $result);
 
         $colonPos = strpos($result, ':');
-        static::assertSame(6, $colonPos); // "x-test" is 6 chars
+        static::assertSame(6, $colonPos);
         static::assertSame('x-test', substr($result, 0, $colonPos));
     }
 
@@ -1164,6 +1164,301 @@ final class SignerTest extends TestCase
         static::assertTrue(str_starts_with($signed, 'DKIM-Signature:'));
         $b = self::extractTag($signed, 'b');
         static::assertNotEmpty($b);
+    }
+
+    public function testHeaderCanonDataAccumulatesAcrossAllHeaders(): void
+    {
+        $config = new SigningConfiguration('example.com', 'default', headerCanonicalization: Canonicalization::Relaxed);
+        $signer = $this->createSigner($config);
+
+        $oneHeader = "From: sender@example.com\r\n\r\nBody";
+        $twoHeaders = "From: sender@example.com\r\nTo: rcpt@example.com\r\n\r\nBody";
+        $threeHeaders = "From: sender@example.com\r\nTo: rcpt@example.com\r\nSubject: Test\r\n\r\nBody";
+
+        $sig1 = self::extractTag($signer->sign($oneHeader), 'b');
+        $sig2 = self::extractTag($signer->sign($twoHeaders), 'b');
+        $sig3 = self::extractTag($signer->sign($threeHeaders), 'b');
+
+        static::assertNotSame($sig1, $sig2);
+        static::assertNotSame($sig2, $sig3);
+        static::assertNotSame($sig1, $sig3);
+    }
+
+    public function testHeaderCanonDataUsesAppendNotAssign(): void
+    {
+        $config = new SigningConfiguration('example.com', 'default', headerCanonicalization: Canonicalization::Relaxed);
+
+        $message = "From: sender@example.com\r\nTo: rcpt@example.com\r\nSubject: Test\r\nDate: Thu, 01 Jan 2026 00:00:00 +0000\r\n\r\nBody";
+
+        $signer = $this->createSigner($config);
+        $signed = $signer->sign($message);
+
+        $dkimPart = substr($signed, 0, strpos($signed, "\r\nFrom:") ?: strlen($signed));
+        static::assertStringContainsString('from', $dkimPart);
+        static::assertStringContainsString('to', $dkimPart);
+        static::assertStringContainsString('subject', $dkimPart);
+        static::assertStringContainsString('date', $dkimPart);
+
+        $b = self::extractTag($signed, 'b');
+        static::assertNotEmpty($b);
+    }
+
+    public function testSignatureChangesWhenHeadersAdded(): void
+    {
+        $config = new SigningConfiguration('example.com', 'default', headerCanonicalization: Canonicalization::Relaxed);
+        $signer = $this->createSigner($config);
+
+        $msg1 = "From: sender@example.com\r\n\r\nBody";
+        $msg2 = "From: sender@example.com\r\nX-Extra: val\r\n\r\nBody";
+
+        $b1 = self::extractTag($signer->sign($msg1), 'b');
+        $b2 = self::extractTag($signer->sign($msg2), 'b');
+
+        static::assertNotSame($b1, $b2);
+    }
+
+    public function testDkimHeaderCanonDataRtrimRemovesTrailingCRLF(): void
+    {
+        $config = new SigningConfiguration('example.com', 'default', headerCanonicalization: Canonicalization::Relaxed);
+        $message = "From: sender@example.com\r\n\r\nBody";
+
+        $signer = $this->createSigner($config);
+        $signed = $signer->sign($message);
+
+        static::assertTrue(str_starts_with($signed, 'DKIM-Signature:'));
+        $bh = self::extractTag($signed, 'bh');
+        static::assertNotEmpty($bh);
+    }
+
+    public function testDkimHeaderCanonDataWithRtrimProducesValidSignature(): void
+    {
+        $config = new SigningConfiguration('example.com', 'default', headerCanonicalization: Canonicalization::Relaxed);
+        $message = "From: sender@example.com\r\nTo: rcpt@example.com\r\n\r\nBody";
+        $signer = $this->createSigner($config);
+
+        $signed1 = $signer->sign($message);
+        $signed2 = $signer->sign($message);
+
+        static::assertTrue(str_starts_with($signed1, 'DKIM-Signature:'));
+        static::assertTrue(str_starts_with($signed2, 'DKIM-Signature:'));
+        $bh1 = self::extractTag($signed1, 'bh');
+        $bh2 = self::extractTag($signed2, 'bh');
+        static::assertSame($bh1, $bh2);
+    }
+
+    public function testDkimHeaderCanonDataAppendNotReplace(): void
+    {
+        $config = new SigningConfiguration('example.com', 'default', headerCanonicalization: Canonicalization::Relaxed);
+        $message = "From: sender@example.com\r\nTo: rcpt@example.com\r\nSubject: Test\r\n\r\nBody";
+        $signer = $this->createSigner($config);
+
+        $signed = $signer->sign($message);
+        $b = self::extractTag($signed, 'b');
+        static::assertNotEmpty($b);
+
+        $singleHeaderMsg = "From: sender@example.com\r\n\r\nBody";
+        $signedSingle = $signer->sign($singleHeaderMsg);
+        $bSingle = self::extractTag($signedSingle, 'b');
+
+        static::assertNotSame($b, $bSingle);
+    }
+
+    public function testSignatureChunkSplitAt73NotOtherValues(): void
+    {
+        $message = "From: sender@example.com\r\nTo: a@b.com\r\nSubject: Test subject line\r\n\r\nBody content here";
+        $signer = $this->createSigner();
+
+        $signed = $signer->sign($message);
+
+        $bPos = strpos($signed, '; b=');
+        static::assertNotFalse($bPos);
+
+        $afterB = substr($signed, $bPos + 4);
+        $headerEnd = strpos($afterB, "\r\nFrom:");
+        $sigBlock = $headerEnd !== false ? substr($afterB, 0, $headerEnd) : $afterB;
+
+        $sigLines = explode("\r\n ", $sigBlock);
+        foreach ($sigLines as $line) {
+            $trimmed = trim($line);
+            if ($trimmed === '') {
+                continue;
+            }
+
+            static::assertLessThanOrEqual(73, strlen($trimmed));
+        }
+    }
+
+    public function testSignatureBlockBase64LineLengthIs73(): void
+    {
+        $message = "From: sender@example.com\r\nTo: recipient@example.com\r\nSubject: Testing signature line length\r\n\r\nThis is the body of the message";
+        $signer = $this->createSigner();
+
+        $signed = $signer->sign($message);
+
+        $bPos = strpos($signed, '; b=');
+        static::assertNotFalse($bPos);
+        $afterB = substr($signed, $bPos + 4);
+        $endPos = strpos($afterB, "\r\nFrom:");
+        $sigBlock = $endPos !== false ? substr($afterB, 0, $endPos) : $afterB;
+        $lines = explode("\r\n ", $sigBlock);
+
+        $nonEmptyLines = [];
+        foreach ($lines as $line) {
+            $t = trim($line);
+            if ($t !== '') {
+                $nonEmptyLines[] = $t;
+            }
+        }
+
+        static::assertNotEmpty($nonEmptyLines);
+        $lastIdx = \count($nonEmptyLines) - 1;
+        foreach ($nonEmptyLines as $idx => $line) {
+            if ($idx === $lastIdx) {
+                continue;
+            }
+
+            static::assertSame(73, strlen($line), 'Non-final signature line should be exactly 73 chars');
+        }
+    }
+
+    public function testHashBodyExactMaxLengthUsesStrictGreaterThan(): void
+    {
+        $method = new ReflectionMethod(Signer::class, 'hashBody');
+
+        [$hashExact, $lenExact] = $method->invoke(null, 'AB', Canonicalization::Simple, 4);
+
+        $fullCanon = "AB\r\n";
+        $expected = hash('sha256', $fullCanon, true);
+        static::assertSame($expected, $hashExact);
+        static::assertSame(4, $lenExact);
+
+        [$hashOver, $lenOver] = $method->invoke(null, 'ABC', Canonicalization::Simple, 4);
+        static::assertSame(4, $lenOver);
+        $truncated = hash('sha256', "ABC\r", true);
+        static::assertSame($truncated, $hashOver);
+    }
+
+    public function testHashBodyMaxLengthBoundaryNotTruncatedWhenEqual(): void
+    {
+        $method = new ReflectionMethod(Signer::class, 'hashBody');
+
+        [$hash, $len] = $method->invoke(null, 'XY', Canonicalization::Simple, 4);
+        static::assertSame(4, $len);
+        $expected = hash('sha256', "XY\r\n", true);
+        static::assertSame($expected, $hash);
+    }
+
+    public function testHashBodyMaxLengthBoundaryTruncatedWhenOneOver(): void
+    {
+        $method = new ReflectionMethod(Signer::class, 'hashBody');
+
+        [$hash5, $len5] = $method->invoke(null, 'XYZ', Canonicalization::Simple, 4);
+        static::assertSame(4, $len5);
+
+        [$hash4, $len4] = $method->invoke(null, 'XY', Canonicalization::Simple, 4);
+        static::assertSame(4, $len4);
+
+        static::assertNotSame($hash4, $hash5);
+    }
+
+    public function testCanonicalizeBodyEmptyReturnsExactlyCRLF(): void
+    {
+        $method = new ReflectionMethod(Signer::class, 'canonicalizeBody');
+
+        $simpleResult = $method->invoke(null, '', Canonicalization::Simple);
+        static::assertSame("\r\n", $simpleResult);
+        static::assertSame(2, strlen($simpleResult));
+
+        $relaxedResult = $method->invoke(null, '', Canonicalization::Relaxed);
+        static::assertSame("\r\n", $relaxedResult);
+    }
+
+    public function testCanonicalizeBodyEmptyReturnValueIsUsed(): void
+    {
+        $method = new ReflectionMethod(Signer::class, 'canonicalizeBody');
+
+        $result = $method->invoke(null, '', Canonicalization::Simple);
+        static::assertNotEmpty($result);
+        static::assertSame("\r\n", $result);
+    }
+
+    public function testCanonicalizeBodyEmptyHashDiffersFromEmptyString(): void
+    {
+        $method = new ReflectionMethod(Signer::class, 'hashBody');
+
+        [$hash, $len] = $method->invoke(null, '', Canonicalization::Simple, 0);
+
+        $emptyHash = hash('sha256', '', true);
+        $crlfHash = hash('sha256', "\r\n", true);
+
+        static::assertNotSame($emptyHash, $hash);
+        static::assertSame($crlfHash, $hash);
+        static::assertSame(2, $len);
+    }
+
+    public function testSignWithPassphraseNullUsesEmptyString(): void
+    {
+        $signer = new Signer(Certificates::DKIM_RSA_KEY, new SigningConfiguration('example.com', 'default'), null);
+        $message = "From: sender@example.com\r\n\r\nBody";
+
+        $signed = $signer->sign($message);
+
+        static::assertTrue(str_starts_with($signed, 'DKIM-Signature:'));
+    }
+
+    public function testSignWithExplicitEmptyPassphraseMatchesNullPassphrase(): void
+    {
+        $signerNull = new Signer(Certificates::DKIM_RSA_KEY, new SigningConfiguration('example.com', 'default'), null);
+        $signerEmpty = new Signer(Certificates::DKIM_RSA_KEY, new SigningConfiguration('example.com', 'default'), '');
+
+        $message = "From: sender@example.com\r\n\r\nBody";
+
+        $signedNull = $signerNull->sign($message);
+        $signedEmpty = $signerEmpty->sign($message);
+
+        $bhNull = self::extractTag($signedNull, 'bh');
+        $bhEmpty = self::extractTag($signedEmpty, 'bh');
+        static::assertSame($bhNull, $bhEmpty);
+    }
+
+    public function testSignWithPassphraseFallbackCoalesceOrder(): void
+    {
+        $signer = new Signer(Certificates::DKIM_RSA_KEY, new SigningConfiguration('example.com', 'default'));
+        $message = "From: sender@example.com\r\n\r\nBody";
+
+        $signed = $signer->sign($message);
+        static::assertTrue(str_starts_with($signed, 'DKIM-Signature:'));
+        $b = self::extractTag($signed, 'b');
+        static::assertNotEmpty($b);
+    }
+
+    public function testSignInvalidKeyThrowsDKIMException(): void
+    {
+        $signer = new Signer('completely-invalid-key', new SigningConfiguration('example.com', 'default'));
+
+        $this->expectException(DKIMException::class);
+        $this->expectExceptionMessage('unable to load RSA private key');
+
+        $signer->sign("From: a@b.com\r\n\r\nBody");
+    }
+
+    public function testSignInvalidKeyResultCheckUsesOr(): void
+    {
+        $signer = new Signer('bad-key', new SigningConfiguration('example.com', 'default'));
+
+        $this->expectException(DKIMException::class);
+        $this->expectExceptionMessage('unable to load RSA private key');
+
+        $signer->sign("From: a@b.com\r\n\r\nBody");
+    }
+
+    public function testSignInvalidKeyAlwaysThrows(): void
+    {
+        $signer = new Signer('not-a-key', new SigningConfiguration('example.com', 'default'));
+
+        $this->expectException(DKIMException::class);
+
+        $signer->sign("From: a@b.com\r\n\r\nBody");
     }
 
     private static function extractTag(string $header, string $tag): string

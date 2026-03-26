@@ -22,6 +22,10 @@ use Psl\IO;
 use Psl\Network\Exception\RuntimeException;
 use Psl\URL;
 
+use function abs;
+
+use const PHP_OS_FAMILY;
+
 final class RetryClientTest extends TestCase
 {
     /** @param non-empty-uppercase-string $method */
@@ -469,5 +473,260 @@ final class RetryClientTest extends TestCase
 
         static::assertGreaterThanOrEqual(250, $elapsed);
         static::assertLessThan(550, $elapsed);
+    }
+
+    public function testDefaultBackoffMultiplierIs2NotHigher(): void
+    {
+        if (PHP_OS_FAMILY !== 'Linux') {
+            static::markTestSkipped('Timing-sensitive test, only reliable on Linux CI.');
+        }
+
+        $inner = self::failThenSucceedClient(2);
+        $client = new RetryClient($inner, maxAttempts: 3, backoff: Duration::milliseconds(50));
+
+        $start = Timestamp::monotonic();
+        $client->send(self::request());
+        $elapsed = Timestamp::monotonic()->since($start)->getTotalMilliseconds();
+
+        static::assertGreaterThanOrEqual(120, $elapsed);
+        static::assertLessThan(350, $elapsed);
+    }
+
+    public function testDefaultBackoffMultiplierIsExactly2(): void
+    {
+        if (PHP_OS_FAMILY !== 'Linux') {
+            static::markTestSkipped('Timing-sensitive test, only reliable on Linux CI.');
+        }
+
+        $inner = self::failThenSucceedClient(2);
+        $explicitMultiplier2 = new RetryClient(
+            $inner,
+            maxAttempts: 3,
+            backoff: Duration::milliseconds(50),
+            backoffMultiplier: 2,
+        );
+
+        $start1 = Timestamp::monotonic();
+        $explicitMultiplier2->send(self::request());
+        $elapsed1 = Timestamp::monotonic()->since($start1)->getTotalMilliseconds();
+
+        $inner2 = self::failThenSucceedClient(2);
+        $defaultMultiplier = new RetryClient($inner2, maxAttempts: 3, backoff: Duration::milliseconds(50));
+
+        $start2 = Timestamp::monotonic();
+        $defaultMultiplier->send(self::request());
+        $elapsed2 = Timestamp::monotonic()->since($start2)->getTotalMilliseconds();
+
+        static::assertLessThan(50, abs($elapsed1 - $elapsed2));
+    }
+
+    public function testDefaultBackoffMultiplierMatchesExplicit2(): void
+    {
+        if (PHP_OS_FAMILY !== 'Linux') {
+            static::markTestSkipped('Timing-sensitive test, only reliable on Linux CI.');
+        }
+
+        $inner = self::failThenSucceedClient(3);
+        $client = new RetryClient($inner, maxAttempts: 4, backoff: Duration::milliseconds(30));
+
+        $start = Timestamp::monotonic();
+        $client->send(self::request());
+        $elapsed = Timestamp::monotonic()->since($start)->getTotalMilliseconds();
+
+        static::assertGreaterThanOrEqual(180, $elapsed);
+        static::assertLessThan(450, $elapsed);
+    }
+
+    public function testDefaultBackoffIsExactly100ms(): void
+    {
+        if (PHP_OS_FAMILY !== 'Linux') {
+            static::markTestSkipped('Timing-sensitive test, only reliable on Linux CI.');
+        }
+
+        $inner = self::failThenSucceedClient(1);
+        $client = new RetryClient($inner, maxAttempts: 2, backoffMultiplier: 1);
+
+        $start = Timestamp::monotonic();
+        $client->send(self::request());
+        $elapsed = Timestamp::monotonic()->since($start)->getTotalMilliseconds();
+
+        static::assertGreaterThanOrEqual(90, $elapsed);
+        static::assertLessThan(150, $elapsed);
+    }
+
+    public function testDefaultBackoffIsNot99msOr101ms(): void
+    {
+        if (PHP_OS_FAMILY !== 'Linux') {
+            static::markTestSkipped('Timing-sensitive test, only reliable on Linux CI.');
+        }
+
+        $inner1 = self::failThenSucceedClient(1);
+        $explicit99 = new RetryClient(
+            $inner1,
+            maxAttempts: 2,
+            backoff: Duration::milliseconds(99),
+            backoffMultiplier: 1,
+        );
+
+        $start1 = Timestamp::monotonic();
+        $explicit99->send(self::request());
+        $elapsed99 = Timestamp::monotonic()->since($start1)->getTotalMilliseconds();
+
+        $inner2 = self::failThenSucceedClient(1);
+        $explicit100 = new RetryClient(
+            $inner2,
+            maxAttempts: 2,
+            backoff: Duration::milliseconds(100),
+            backoffMultiplier: 1,
+        );
+
+        $start2 = Timestamp::monotonic();
+        $explicit100->send(self::request());
+        $elapsed100 = Timestamp::monotonic()->since($start2)->getTotalMilliseconds();
+
+        $inner3 = self::failThenSucceedClient(1);
+        $defaultBackoff = new RetryClient($inner3, maxAttempts: 2, backoffMultiplier: 1);
+
+        $start3 = Timestamp::monotonic();
+        $defaultBackoff->send(self::request());
+        $elapsedDefault = Timestamp::monotonic()->since($start3)->getTotalMilliseconds();
+
+        static::assertGreaterThanOrEqual(90, $elapsedDefault);
+        static::assertLessThan(150, $elapsedDefault);
+
+        static::assertGreaterThanOrEqual(90, $elapsed100);
+    }
+
+    public function testSeekableBodyIsRewoundToOriginalOffsetZero(): void
+    {
+        $seekOffsets = [];
+        $inner = new class($seekOffsets) implements ClientInterface {
+            public int $attempts = 0;
+
+            public function __construct(
+                private array &$seekOffsets,
+            ) {}
+
+            #[Override]
+            public function send(
+                Request $request,
+                SendConfiguration $configuration = new SendConfiguration(),
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): Transaction {
+                $this->attempts++;
+
+                if ($request->body instanceof IO\SeekHandleInterface) {
+                    $this->seekOffsets[] = $request->body->tell();
+                }
+
+                $request->body?->readAll();
+
+                if ($this->attempts <= 1) {
+                    throw new RuntimeException('connection refused');
+                }
+
+                return new Transaction([], null, new Response(status: 200, headers: FieldMap::default()));
+            }
+        };
+
+        $body = new IO\MemoryHandle('test body');
+        $request = new Request(method: 'PUT', url: URL\parse('http://example.com/'), body: $body);
+
+        $client = new RetryClient($inner, maxAttempts: 3, backoff: Duration::milliseconds(1));
+        $tx = $client->send($request);
+
+        static::assertSame(200, $tx->response->status);
+        static::assertSame(2, $inner->attempts);
+        static::assertSame(0, $seekOffsets[0]);
+        static::assertSame(0, $seekOffsets[1]);
+    }
+
+    public function testSeekableBodyRewoundToInitialTellPosition(): void
+    {
+        $seekOffsets = [];
+        $inner = new class($seekOffsets) implements ClientInterface {
+            public int $attempts = 0;
+
+            public function __construct(
+                private array &$seekOffsets,
+            ) {}
+
+            #[Override]
+            public function send(
+                Request $request,
+                SendConfiguration $configuration = new SendConfiguration(),
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): Transaction {
+                $this->attempts++;
+
+                if ($request->body instanceof IO\SeekHandleInterface) {
+                    $this->seekOffsets[] = $request->body->tell();
+                }
+
+                $request->body?->readAll();
+
+                if ($this->attempts <= 1) {
+                    throw new RuntimeException('connection refused');
+                }
+
+                return new Transaction([], null, new Response(status: 200, headers: FieldMap::default()));
+            }
+        };
+
+        $body = new IO\MemoryHandle('hello world');
+        $body->seek(5);
+        $request = new Request(method: 'GET', url: URL\parse('http://example.com/'), body: $body);
+
+        $client = new RetryClient($inner, maxAttempts: 3, backoff: Duration::milliseconds(1));
+        $tx = $client->send($request);
+
+        static::assertSame(200, $tx->response->status);
+        static::assertSame(2, $inner->attempts);
+        static::assertSame(5, $seekOffsets[0]);
+        static::assertSame(5, $seekOffsets[1]);
+    }
+
+    public function testSeekableBodyOffsetIsZeroForNewHandle(): void
+    {
+        $seekValues = [];
+        $inner = new class($seekValues) implements ClientInterface {
+            public int $attempts = 0;
+
+            public function __construct(
+                private array &$seekValues,
+            ) {}
+
+            #[Override]
+            public function send(
+                Request $request,
+                SendConfiguration $configuration = new SendConfiguration(),
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): Transaction {
+                $this->attempts++;
+
+                if ($request->body instanceof IO\SeekHandleInterface) {
+                    $this->seekValues[] = $request->body->tell();
+                    $request->body->readAll();
+                }
+
+                if ($this->attempts <= 2) {
+                    throw new RuntimeException('connection refused');
+                }
+
+                return new Transaction([], null, new Response(status: 200, headers: FieldMap::default()));
+            }
+        };
+
+        $body = new IO\MemoryHandle('data');
+        $request = new Request(method: 'DELETE', url: URL\parse('http://example.com/resource'), body: $body);
+
+        $client = new RetryClient($inner, maxAttempts: 3, backoff: Duration::milliseconds(1));
+        $tx = $client->send($request);
+
+        static::assertSame(200, $tx->response->status);
+        static::assertSame(3, $inner->attempts);
+        static::assertSame(0, $seekValues[0]);
+        static::assertSame(0, $seekValues[1]);
+        static::assertSame(0, $seekValues[2]);
     }
 }

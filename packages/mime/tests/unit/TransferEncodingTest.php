@@ -233,4 +233,99 @@ final class TransferEncodingTest extends TestCase
         $content = Str\repeat('x', 998);
         static::assertSame(TransferEncoding::SevenBit, TransferEncoding::detect($content));
     }
+
+    public function testDetectEmptyReturnsSevenBitNotOtherEncoding(): void
+    {
+        $result = TransferEncoding::detect('');
+        static::assertSame(TransferEncoding::SevenBit, $result);
+        static::assertNotSame(TransferEncoding::Binary, $result);
+        static::assertNotSame(TransferEncoding::EightBit, $result);
+    }
+
+    public function testDetectEmptyStringDoesNotThrow(): void
+    {
+        $result = TransferEncoding::detect('');
+        static::assertInstanceOf(TransferEncoding::class, $result);
+        static::assertSame('7bit', $result->value);
+    }
+
+    public function testDetectEmptyStringReturnsExactSevenBitInstance(): void
+    {
+        static::assertSame(TransferEncoding::SevenBit, TransferEncoding::detect(''));
+        static::assertTrue(TransferEncoding::detect('') === TransferEncoding::SevenBit);
+    }
+
+    public function testDetectSingleByteProcessedCorrectly(): void
+    {
+        static::assertSame(TransferEncoding::SevenBit, TransferEncoding::detect('X'));
+        static::assertSame(TransferEncoding::Base64, TransferEncoding::detect("\x00"));
+        static::assertSame(TransferEncoding::SevenBit, TransferEncoding::detect("\t"));
+    }
+
+    public function testDetectSubstrExtractsSingleByte(): void
+    {
+        $content = Str\repeat('a', 10) . "\xC3\xA9";
+        $result = TransferEncoding::detect($content);
+        static::assertSame(TransferEncoding::QuotedPrintable, $result);
+    }
+
+    public function testDetectSingleHighByteIsBase64DueToRatio(): void
+    {
+        static::assertSame(TransferEncoding::Base64, TransferEncoding::detect("\x80"));
+        static::assertSame(TransferEncoding::Base64, TransferEncoding::detect("\xFF"));
+    }
+
+    public function testDetectZeroHighBytesWithLineLengthExactly998(): void
+    {
+        $content = Str\repeat('a', 998);
+        static::assertSame(TransferEncoding::SevenBit, TransferEncoding::detect($content));
+    }
+
+    public function testDetectZeroHighBytesNonZeroHighByteBoundary(): void
+    {
+        $content = Str\repeat('a', 997) . "\x80";
+        static::assertSame(TransferEncoding::QuotedPrintable, TransferEncoding::detect($content));
+    }
+
+    public function testDetectAllAsciiNoHighBytesWithShortLines(): void
+    {
+        $content = Str\repeat('a', 50) . "\n" . Str\repeat('b', 50);
+        static::assertSame(TransferEncoding::SevenBit, TransferEncoding::detect($content));
+    }
+
+    public function testDetectHighBytesOnlyLineWithin998(): void
+    {
+        $content = Str\repeat('a', 900) . "\x80\x81\x82";
+        $result = TransferEncoding::detect($content);
+        static::assertSame(TransferEncoding::QuotedPrintable, $result);
+    }
+
+    public function testDetectHighBytesAbove30PercentReturnsBase64(): void
+    {
+        $content = "aaa\x80\x81\x82\x83";
+        $result = TransferEncoding::detect($content);
+        static::assertSame(TransferEncoding::Base64, $result);
+    }
+
+    public function testDetectPureAsciiLineLengthExactly999IsQuotedPrintable(): void
+    {
+        $content = Str\repeat('a', 999);
+        static::assertSame(TransferEncoding::QuotedPrintable, TransferEncoding::detect($content));
+    }
+
+    public function testDetectPureAsciiLineLengthExactly998IsSevenBitNotQP(): void
+    {
+        $content = Str\repeat('a', 998);
+        $result = TransferEncoding::detect($content);
+        static::assertSame(TransferEncoding::SevenBit, $result);
+        static::assertNotSame(TransferEncoding::QuotedPrintable, $result);
+    }
+
+    public function testDetectHighBytesGreaterThanZeroCondition(): void
+    {
+        $content = Str\repeat('a', 990) . "\xC0";
+        $result = TransferEncoding::detect($content);
+        static::assertSame(TransferEncoding::QuotedPrintable, $result);
+        static::assertNotSame(TransferEncoding::SevenBit, $result);
+    }
 }

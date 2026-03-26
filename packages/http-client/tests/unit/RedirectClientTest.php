@@ -21,6 +21,7 @@ use Psl\IO;
 use Psl\URL;
 
 use function array_values;
+use function str_repeat;
 
 final class RedirectClientTest extends TestCase
 {
@@ -574,13 +575,10 @@ final class RedirectClientTest extends TestCase
         $inner = self::fakeClient($response);
         $client = new RedirectClient($inner);
 
-        try {
-            $client->send(self::request());
-            static::fail('Expected ProtocolException');
-        } catch (ProtocolException $e) {
-            static::assertStringContainsString('Invalid redirect URL: ', $e->getMessage());
-            static::assertStringContainsString($invalidUrl, $e->getMessage());
-        }
+        $this->expectException(ProtocolException::class);
+        $this->expectExceptionMessage('Invalid redirect URL: ' . $invalidUrl);
+
+        $client->send(self::request());
     }
 
     public function testSameOriginWithMixedCaseScheme(): void
@@ -641,5 +639,328 @@ final class RedirectClientTest extends TestCase
         $client->send($request);
 
         static::assertNull($inner->requests[1]->headers->get('authorization'));
+    }
+
+    public function testInvalidLocationErrorMessageContainsPrefixBeforeUrl(): void
+    {
+        $invalidUrl = 'ht tp://bad url';
+        $response = new Response(status: 302, headers: FieldMap::from([['location', $invalidUrl]]));
+        $inner = self::fakeClient($response);
+        $client = new RedirectClient($inner);
+
+        $this->expectException(ProtocolException::class);
+        $this->expectExceptionMessage('Invalid redirect URL: ' . $invalidUrl);
+
+        $client->send(self::request());
+    }
+
+    public function testInvalidLocationErrorMessageEndsWithUrl(): void
+    {
+        $invalidUrl = 'ht tp://bad url';
+        $response = new Response(status: 302, headers: FieldMap::from([['location', $invalidUrl]]));
+        $inner = self::fakeClient($response);
+        $client = new RedirectClient($inner);
+
+        $this->expectException(ProtocolException::class);
+        $this->expectExceptionMessage($invalidUrl);
+
+        $client->send(self::request());
+    }
+
+    public function testInvalidLocationErrorMessageExactFormat(): void
+    {
+        $invalidUrl = 'ht tp://bad url';
+        $response = new Response(status: 302, headers: FieldMap::from([['location', $invalidUrl]]));
+        $inner = self::fakeClient($response);
+        $client = new RedirectClient($inner);
+
+        $this->expectException(ProtocolException::class);
+        $this->expectExceptionMessage('Malformed HTTP response: Invalid redirect URL: ' . $invalidUrl);
+
+        $client->send(self::request());
+    }
+
+    public function testIsSameOriginCaseInsensitiveSchemeFromLeft(): void
+    {
+        $inner = self::fakeClient(self::redirect(302, 'HTTP://example.com/new'), self::ok());
+        $client = new RedirectClient($inner, autoReferrer: false);
+        $request = self::request('GET', 'http://example.com/', FieldMap::from([
+            ['authorization', 'Bearer token'],
+        ]));
+        $client->send($request);
+
+        static::assertSame('Bearer token', $inner->requests[1]->headers->get('authorization'));
+    }
+
+    public function testIsSameOriginCaseInsensitiveSchemeFromRight(): void
+    {
+        $inner = self::fakeClient(self::redirect(302, 'http://example.com/new'), self::ok());
+        $client = new RedirectClient($inner, autoReferrer: false);
+        $request = self::request('GET', 'HTTP://example.com/', FieldMap::from([
+            ['authorization', 'Bearer token'],
+        ]));
+        $client->send($request);
+
+        static::assertSame('Bearer token', $inner->requests[1]->headers->get('authorization'));
+    }
+
+    public function testIsSameOriginReturnsFalseOnDifferentScheme(): void
+    {
+        $inner = self::fakeClient(self::redirect(302, 'https://example.com/new'), self::ok());
+        $client = new RedirectClient($inner, autoReferrer: false);
+        $request = self::request('GET', 'http://example.com/', FieldMap::from([
+            ['authorization', 'Bearer token'],
+        ]));
+        $client->send($request);
+
+        static::assertNull($inner->requests[1]->headers->get('authorization'));
+    }
+
+    public function testIsSameOriginCaseInsensitiveHostFromLeft(): void
+    {
+        $inner = self::fakeClient(self::redirect(302, 'http://EXAMPLE.COM/new'), self::ok());
+        $client = new RedirectClient($inner, autoReferrer: false);
+        $request = self::request('GET', 'http://example.com/', FieldMap::from([
+            ['authorization', 'Bearer token'],
+        ]));
+        $client->send($request);
+
+        static::assertSame('Bearer token', $inner->requests[1]->headers->get('authorization'));
+    }
+
+    public function testIsSameOriginCaseInsensitiveHostFromRight(): void
+    {
+        $inner = self::fakeClient(self::redirect(302, 'http://example.com/new'), self::ok());
+        $client = new RedirectClient($inner, autoReferrer: false);
+        $request = self::request('GET', 'http://EXAMPLE.COM/', FieldMap::from([
+            ['authorization', 'Bearer token'],
+        ]));
+        $client->send($request);
+
+        static::assertSame('Bearer token', $inner->requests[1]->headers->get('authorization'));
+    }
+
+    public function testIsSameOriginDifferentHostStripsCredentials(): void
+    {
+        $inner = self::fakeClient(self::redirect(302, 'http://other.com/new'), self::ok());
+        $client = new RedirectClient($inner, autoReferrer: false);
+        $request = self::request('GET', 'http://example.com/', FieldMap::from([
+            ['authorization', 'Bearer token'],
+        ]));
+        $client->send($request);
+
+        static::assertNull($inner->requests[1]->headers->get('authorization'));
+    }
+
+    public function testIsSameOriginPortCoalesceUsesExplicitPortFirst(): void
+    {
+        $inner = self::fakeClient(self::redirect(302, 'http://example.com/new'), self::ok());
+        $client = new RedirectClient($inner, autoReferrer: false);
+        $request = self::request('GET', 'http://example.com:80/', FieldMap::from([
+            ['authorization', 'Bearer token'],
+        ]));
+        $client->send($request);
+
+        static::assertSame('Bearer token', $inner->requests[1]->headers->get('authorization'));
+    }
+
+    public function testIsSameOriginExplicitPortOverridesDefault(): void
+    {
+        $inner = self::fakeClient(self::redirect(302, 'http://example.com:8080/new'), self::ok());
+        $client = new RedirectClient($inner, autoReferrer: false);
+        $request = self::request('GET', 'http://example.com/path', FieldMap::from([
+            ['authorization', 'Bearer token'],
+        ]));
+        $client->send($request);
+
+        static::assertNull($inner->requests[1]->headers->get('authorization'));
+    }
+
+    public function testIsSameOriginBothExplicitDefaultPorts(): void
+    {
+        $inner = self::fakeClient(self::redirect(302, 'https://example.com:443/new'), self::ok());
+        $client = new RedirectClient($inner, autoReferrer: false);
+        $request = self::request('GET', 'https://example.com/', FieldMap::from([
+            ['authorization', 'Bearer token'],
+        ]));
+        $client->send($request);
+
+        static::assertSame('Bearer token', $inner->requests[1]->headers->get('authorization'));
+    }
+
+    public function testDiscardBodyDrainsFullContent(): void
+    {
+        $content = str_repeat('x', 20_000);
+        $body = new IO\MemoryHandle($content);
+        $redirectResponse = new Response(
+            status: 302,
+            headers: FieldMap::from([['location', 'http://example.com/new']]),
+            body: $body,
+        );
+        $inner = self::fakeClient($redirectResponse, self::ok());
+        $client = new RedirectClient($inner);
+
+        $client->send(self::request());
+
+        static::assertTrue($body->reachedEndOfDataSource());
+    }
+
+    public function testDiscardBodyHandlesSmallBodies(): void
+    {
+        $body = new IO\MemoryHandle('tiny');
+        $redirectResponse = new Response(
+            status: 302,
+            headers: FieldMap::from([['location', 'http://example.com/new']]),
+            body: $body,
+        );
+        $inner = self::fakeClient($redirectResponse, self::ok());
+        $client = new RedirectClient($inner);
+
+        $client->send(self::request());
+
+        static::assertTrue($body->reachedEndOfDataSource());
+    }
+
+    public function testDiscardBodyHandlesEmptyBody(): void
+    {
+        $body = new IO\MemoryHandle('');
+        $redirectResponse = new Response(
+            status: 302,
+            headers: FieldMap::from([['location', 'http://example.com/new']]),
+            body: $body,
+        );
+        $inner = self::fakeClient($redirectResponse, self::ok());
+        $client = new RedirectClient($inner);
+
+        $tx = $client->send(self::request());
+
+        static::assertSame(200, $tx->response->status);
+    }
+
+    public function testIsSameOriginMixedCaseBothSchemeAndHost(): void
+    {
+        $inner = self::fakeClient(self::redirect(302, 'HTTP://EXAMPLE.COM/new'), self::ok());
+        $client = new RedirectClient($inner, autoReferrer: false);
+        $request = self::request('GET', 'http://example.com/', FieldMap::from([
+            ['authorization', 'Bearer token'],
+            ['cookie',        'session=abc'],
+        ]));
+        $client->send($request);
+
+        static::assertSame('Bearer token', $inner->requests[1]->headers->get('authorization'));
+        static::assertSame('session=abc', $inner->requests[1]->headers->get('cookie'));
+    }
+
+    public function testDiscardBodyExitsOnEmptyRead(): void
+    {
+        $body = new class() implements IO\ReadHandleInterface {
+            use IO\ReadHandleConvenienceMethodsTrait;
+
+            private int $state = 0;
+            public int $readCount = 0;
+
+            public function tryRead(null|int $maxBytes = null): string
+            {
+                return $this->read($maxBytes);
+            }
+
+            public function read(
+                null|int $maxBytes = null,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
+                $this->readCount++;
+                if ($this->state === 0) {
+                    $this->state = 1;
+                    return 'chunk1';
+                }
+
+                if ($this->state === 1) {
+                    $this->state = 2;
+                    return '';
+                }
+
+                $this->state = 3;
+                return 'chunk2';
+            }
+
+            public function reachedEndOfDataSource(): bool
+            {
+                return $this->state >= 3;
+            }
+        };
+
+        $redirectResponse = new Response(
+            status: 302,
+            headers: FieldMap::from([['location', 'http://example.com/new']]),
+            body: $body,
+        );
+        $inner = self::fakeClient($redirectResponse, self::ok());
+        $client = new RedirectClient($inner);
+
+        $client->send(self::request());
+
+        static::assertSame(2, $body->readCount);
+    }
+
+    public function testDiscardBodyStopsAtEmptyChunkNotEof(): void
+    {
+        $body = new class() implements IO\ReadHandleInterface {
+            use IO\ReadHandleConvenienceMethodsTrait;
+
+            private int $callCount = 0;
+            /** @var list<string> */
+            private array $data = ['data1', '', 'data2'];
+            /** @var list<string> */
+            public array $reads = [];
+
+            public function tryRead(null|int $maxBytes = null): string
+            {
+                return $this->read($maxBytes);
+            }
+
+            public function read(
+                null|int $maxBytes = null,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): string {
+                $result = $this->data[$this->callCount] ?? '';
+                $this->reads[] = $result;
+                $this->callCount++;
+                return $result;
+            }
+
+            public function reachedEndOfDataSource(): bool
+            {
+                return $this->callCount >= 3;
+            }
+        };
+
+        $redirectResponse = new Response(
+            status: 302,
+            headers: FieldMap::from([['location', 'http://example.com/new']]),
+            body: $body,
+        );
+        $inner = self::fakeClient($redirectResponse, self::ok());
+        $client = new RedirectClient($inner);
+
+        $client->send(self::request());
+
+        static::assertSame(['data1', ''], $body->reads);
+    }
+
+    public function testDiscardBodyHandlesExactlyChunkSizedContent(): void
+    {
+        $content = str_repeat('a', 8192);
+        $body = new IO\MemoryHandle($content);
+        $redirectResponse = new Response(
+            status: 302,
+            headers: FieldMap::from([['location', 'http://example.com/new']]),
+            body: $body,
+        );
+        $inner = self::fakeClient($redirectResponse, self::ok());
+        $client = new RedirectClient($inner);
+
+        $client->send(self::request());
+
+        static::assertTrue($body->reachedEndOfDataSource());
     }
 }

@@ -376,6 +376,110 @@ final class CachedTrustChainResolverTest extends TestCase
         static::assertNotSame($insecureTtl, $bogusTtl);
     }
 
+    public function testComputeMaxTtlIsExactly24Hours(): void
+    {
+        $computeTtls = [];
+
+        $inner = new class() implements TrustChainResolverInterface {
+            public function resolve(
+                string $zone,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): TrustChainResult {
+                return new TrustChainResult(TrustChainStatus::Secure, []);
+            }
+        };
+
+        $store = self::createComputeTtlTrackingStore($computeTtls);
+        $resolver = new CachedTrustChainResolver($inner, $store);
+
+        $resolver->resolve('example.com');
+
+        static::assertCount(1, $computeTtls);
+        static::assertNotNull($computeTtls[0]);
+        static::assertSame(24 * 3600, (int) $computeTtls[0]->getTotalSeconds());
+    }
+
+    public function testComputeMaxTtlIsNot23Hours(): void
+    {
+        $computeTtls = [];
+
+        $inner = new class() implements TrustChainResolverInterface {
+            public function resolve(
+                string $zone,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): TrustChainResult {
+                return new TrustChainResult(TrustChainStatus::Insecure, []);
+            }
+        };
+
+        $store = self::createComputeTtlTrackingStore($computeTtls);
+        $resolver = new CachedTrustChainResolver($inner, $store);
+
+        $resolver->resolve('example.com');
+
+        static::assertCount(1, $computeTtls);
+        static::assertNotNull($computeTtls[0]);
+        static::assertNotSame(23 * 3600, (int) $computeTtls[0]->getTotalSeconds());
+    }
+
+    public function testComputeMaxTtlIsNot25Hours(): void
+    {
+        $computeTtls = [];
+
+        $inner = new class() implements TrustChainResolverInterface {
+            public function resolve(
+                string $zone,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): TrustChainResult {
+                return new TrustChainResult(TrustChainStatus::Bogus, [], ChainFailure::MissingDnskey);
+            }
+        };
+
+        $store = self::createComputeTtlTrackingStore($computeTtls);
+        $resolver = new CachedTrustChainResolver($inner, $store);
+
+        $resolver->resolve('broken.com');
+
+        static::assertCount(1, $computeTtls);
+        static::assertNotNull($computeTtls[0]);
+        static::assertNotSame(25 * 3600, (int) $computeTtls[0]->getTotalSeconds());
+    }
+
+    /**
+     * @param list<Duration|null> $computeTtls
+     */
+    private static function createComputeTtlTrackingStore(array &$computeTtls): StoreInterface
+    {
+        return new class($computeTtls) implements StoreInterface {
+            /** @var list<Duration|null> */
+            private array $ttls;
+
+            /** @param list<Duration|null> $ttls */
+            public function __construct(array &$ttls)
+            {
+                $this->ttls = &$ttls;
+            }
+
+            public function get(string $key): mixed
+            {
+                throw new \Psl\Cache\Exception\UnavailableItemException($key);
+            }
+
+            public function compute(string $key, Closure $computer, null|Duration $ttl = null): mixed
+            {
+                $this->ttls[] = $ttl;
+                return $computer();
+            }
+
+            public function update(string $key, Closure $computer, null|Duration $ttl = null): mixed
+            {
+                return $computer(null);
+            }
+
+            public function delete(string $key): void {}
+        };
+    }
+
     /**
      * @param array<string, TrustChainResult> $preloaded
      */

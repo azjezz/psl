@@ -400,4 +400,115 @@ final class MediaTypeTest extends TestCase
 
         new MediaType('@test', 'html');
     }
+
+    public function testFromExtensionMultibyteUpperCase(): void
+    {
+        $lower = MediaType::fromExtension('json');
+        $upper = MediaType::fromExtension('JSON');
+
+        static::assertNotNull($lower);
+        static::assertNotNull($upper);
+        static::assertSame($lower->essence(), $upper->essence());
+    }
+
+    public function testFromExtensionMixedCase(): void
+    {
+        $result = MediaType::fromExtension('Html');
+
+        static::assertNotNull($result);
+        static::assertSame('text/html', $result->essence());
+    }
+
+    public function testFromExtensionAllUpperCase(): void
+    {
+        $result = MediaType::fromExtension('CSS');
+
+        static::assertNotNull($result);
+        static::assertSame('text', $result->type);
+    }
+
+    public function testExtractSuffixTrailingPlusReturnsEmptyString(): void
+    {
+        $type = new MediaType('application', 'vnd.test+');
+
+        static::assertSame('', $type->suffix);
+    }
+
+    public function testExtractSuffixSingleCharSuffix(): void
+    {
+        $type = new MediaType('application', 'a+b');
+
+        static::assertSame('b', $type->suffix);
+    }
+
+    public function testExtractSuffixLongerSuffix(): void
+    {
+        $type = new MediaType('application', 'vnd.api+json');
+
+        static::assertSame('json', $type->suffix);
+    }
+
+    public function testExtractSuffixNoPlus(): void
+    {
+        $type = new MediaType('text', 'plain');
+
+        static::assertSame('', $type->suffix);
+    }
+
+    public function testExtractSuffixPlusAtEnd(): void
+    {
+        $type = new MediaType('application', 'test+');
+
+        static::assertSame('', $type->suffix);
+    }
+
+    public function testExtractSuffixPlusAtEndNotExtracted(): void
+    {
+        $type = new MediaType('application', 'xml+');
+
+        static::assertSame('', $type->suffix);
+    }
+
+    public function testExtractTreeDotAtPositionZeroReturnsEmpty(): void
+    {
+        $type = new MediaType('application', 'json');
+
+        static::assertSame('', $type->tree);
+    }
+
+    public function testExtractTreeDotAtFirstPositionNotExtracted(): void
+    {
+        $type = new MediaType('application', 'foo.bar');
+
+        static::assertSame('', $type->tree);
+    }
+
+    public function testExtractTreeVndPrefix(): void
+    {
+        $type = new MediaType('application', 'vnd.example.test');
+
+        static::assertSame('vnd', $type->tree);
+    }
+
+    public function testValidateComponentRejectsInvalidFirstCharInType(): void
+    {
+        $this->expectException(InvalidMediaTypeComponentException::class);
+
+        new MediaType('~test', 'html');
+    }
+
+    public function testValidateComponentRejectsInvalidFirstCharInSubtype(): void
+    {
+        $this->expectException(InvalidMediaTypeComponentException::class);
+
+        new MediaType('text', '~html');
+    }
+
+    public function testValidateComponentAcceptsSingleCharType(): void
+    {
+        $type = new MediaType('a', 'b');
+
+        static::assertSame('a', $type->type);
+        static::assertSame('b', $type->subtype);
+    }
 }

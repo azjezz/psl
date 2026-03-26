@@ -13,6 +13,8 @@ use Psl\OS;
 use Psl\SecureRandom;
 use Psl\Shell;
 
+use function pack;
+
 final class ExecuteTest extends TestCase
 {
     public function testExecute(): void
@@ -168,6 +170,26 @@ final class ExecuteTest extends TestCase
         $this->expectException(Shell\Exception\InvalidArgumentException::class);
 
         $generator = Shell\stream_unpack('abc');
+        $generator->current();
+    }
+
+    public function testStreamUnpackInvalidType(): void
+    {
+        $this->expectException(Shell\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$content contains an invalid header value.');
+
+        $content = pack('C1N1', 3, 1) . 'a';
+        $generator = Shell\stream_unpack($content);
+        $generator->current();
+    }
+
+    public function testStreamUnpackSizeExceedsContent(): void
+    {
+        $this->expectException(Shell\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$content contains an invalid header value.');
+
+        $content = pack('C1N1', 1, 100) . 'short';
+        $generator = Shell\stream_unpack($content);
         $generator->current();
     }
 

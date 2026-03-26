@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\HTTP\Client\ClientConfiguration;
 use Psl\HTTP\Client\H2ClientConfiguration;
 use Psl\HTTP\Message\ProtocolVersion;
+use Psl\Socks;
 use Psl\TLS;
 use Psl\URL;
 
@@ -79,13 +80,86 @@ final class ClientConfigurationTest extends TestCase
         static::assertNull($config->unixSocket);
     }
 
+    public function testWithProxy(): void
+    {
+        $config = new ClientConfiguration();
+        $proxy = new Socks\Configuration('127.0.0.1', 1080);
+        $new = $config->withProxy($proxy);
+
+        static::assertSame($proxy, $new->proxy);
+        static::assertNull($config->proxy);
+    }
+
+    public function testWithProxyNull(): void
+    {
+        $proxy = new Socks\Configuration('127.0.0.1', 1080);
+        $config = new ClientConfiguration(proxy: $proxy);
+        $new = $config->withProxy(null);
+
+        static::assertSame($proxy, $config->proxy);
+        static::assertNull($new->proxy);
+    }
+
+    public function testWithTunnel(): void
+    {
+        $config = new ClientConfiguration();
+        $new = $config->withTunnel('http://proxy:8080');
+
+        static::assertSame('http://proxy:8080', $new->tunnel);
+        static::assertNull($config->tunnel);
+    }
+
+    public function testWithTunnelNull(): void
+    {
+        $config = new ClientConfiguration(tunnel: 'http://proxy:8080');
+        $new = $config->withTunnel(null);
+
+        static::assertSame('http://proxy:8080', $config->tunnel);
+        static::assertNull($new->tunnel);
+    }
+
+    public function testWithNoTunneling(): void
+    {
+        $config = new ClientConfiguration();
+        $new = $config->withNoTunneling(['localhost', '*.internal']);
+
+        static::assertSame(['localhost', '*.internal'], $new->noTunneling);
+        static::assertSame([], $config->noTunneling);
+    }
+
+    public function testWithProxyPreservesOtherFields(): void
+    {
+        $config = new ClientConfiguration(tunnel: 'http://proxy:8080', noTunneling: ['localhost']);
+        $proxy = new Socks\Configuration('127.0.0.1', 1080);
+        $new = $config->withProxy($proxy);
+
+        static::assertSame($proxy, $new->proxy);
+        static::assertSame('http://proxy:8080', $new->tunnel);
+        static::assertSame(['localhost'], $new->noTunneling);
+    }
+
+    public function testWithTunnelPreservesOtherFields(): void
+    {
+        $proxy = new Socks\Configuration('127.0.0.1', 1080);
+        $config = new ClientConfiguration(proxy: $proxy, noTunneling: ['localhost']);
+        $new = $config->withTunnel('http://other:9090');
+
+        static::assertSame('http://other:9090', $new->tunnel);
+        static::assertSame($proxy, $new->proxy);
+        static::assertSame(['localhost'], $new->noTunneling);
+    }
+
     public function testWithChaining(): void
     {
         $config = new ClientConfiguration()
             ->withMaxResponseBodySize(1_000_000)
-            ->withProtocolVersions([ProtocolVersion::V11]);
+            ->withProtocolVersions([ProtocolVersion::V11])
+            ->withTunnel('http://proxy:8080')
+            ->withNoTunneling(['localhost']);
 
         static::assertSame(1_000_000, $config->maxResponseBodySize);
         static::assertSame([ProtocolVersion::V11], $config->protocolVersions);
+        static::assertSame('http://proxy:8080', $config->tunnel);
+        static::assertSame(['localhost'], $config->noTunneling);
     }
 }

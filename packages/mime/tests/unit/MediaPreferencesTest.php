@@ -684,4 +684,361 @@ final class MediaPreferencesTest extends TestCase
         static::assertNotNull($result);
         static::assertSame('text/html', $result->essence());
     }
+
+    public function testParseTrimmedInputNotEmpty(): void
+    {
+        $prefs = MediaPreferences::parse('  text/html  ');
+
+        static::assertCount(1, $prefs->ranges);
+        static::assertSame('text/html', $prefs->ranges[0]->essence());
+    }
+
+    public function testParseLeadingWhitespaceIsTrimmed(): void
+    {
+        $prefs = MediaPreferences::parse("\t text/html");
+
+        static::assertCount(1, $prefs->ranges);
+        static::assertSame('text/html', $prefs->ranges[0]->essence());
+    }
+
+    public function testParseTrailingWhitespaceIsTrimmed(): void
+    {
+        $prefs = MediaPreferences::parse("text/html \t ");
+
+        static::assertCount(1, $prefs->ranges);
+        static::assertSame('text/html', $prefs->ranges[0]->essence());
+    }
+
+    public function testParseEmptyReturnsEmptyRanges(): void
+    {
+        $prefs = MediaPreferences::parse('');
+
+        static::assertSame([], $prefs->ranges);
+        static::assertSame(0, $prefs->count());
+    }
+
+    public function testParseEmptyReturnsSerializableResult(): void
+    {
+        $prefs = MediaPreferences::parse('');
+
+        static::assertSame('', $prefs->toString());
+        static::assertSame('', (string) $prefs);
+    }
+
+    public function testParseEmptyReturnsIterableResult(): void
+    {
+        $prefs = MediaPreferences::parse('');
+
+        $collected = [];
+        foreach ($prefs as $range) {
+            $collected[] = $range;
+        }
+
+        static::assertSame([], $collected);
+    }
+
+    public function testParseTrimsEachRangePartWithSpaces(): void
+    {
+        $prefs = MediaPreferences::parse('  text/html  ,  application/json  ');
+
+        static::assertCount(2, $prefs->ranges);
+        $essences = array_map(static fn(MediaRange $r): string => $r->essence(), $prefs->ranges);
+        static::assertContains('text/html', $essences);
+        static::assertContains('application/json', $essences);
+    }
+
+    public function testParseTrimsTabsInRangeParts(): void
+    {
+        $prefs = MediaPreferences::parse("\ttext/html\t,\tapplication/json\t");
+
+        static::assertCount(2, $prefs->ranges);
+        $essences = array_map(static fn(MediaRange $r): string => $r->essence(), $prefs->ranges);
+        static::assertContains('text/html', $essences);
+        static::assertContains('application/json', $essences);
+    }
+
+    public function testParseTrailingCommaWithWhitespace(): void
+    {
+        $prefs = MediaPreferences::parse('text/html,  ');
+
+        static::assertCount(1, $prefs->ranges);
+        static::assertSame('text/html', $prefs->ranges[0]->essence());
+    }
+
+    public function testBestForSearchesBeyondFirstMatch(): void
+    {
+        $lowWeight = new MediaRange('*', '*', weight: 0.1);
+        $highWeight = new MediaRange('text', 'html', weight: 0.9);
+        $prefs = MediaPreferences::from($lowWeight, $highWeight);
+
+        $type = new MediaType('text', 'html');
+        $best = $prefs->bestFor($type);
+
+        static::assertNotNull($best);
+        static::assertSame('text/html', $best->essence());
+        static::assertSame(0.9, $best->weight);
+    }
+
+    public function testBestForWithThreeMatchingRangesPicksHighestWeight(): void
+    {
+        $prefs = MediaPreferences::from(
+            new MediaRange('*', '*', weight: 0.1),
+            new MediaRange('text', '*', weight: 0.5),
+            new MediaRange('text', 'html', weight: 0.9),
+        );
+
+        $type = new MediaType('text', 'html');
+        $best = $prefs->bestFor($type);
+
+        static::assertNotNull($best);
+        static::assertSame(0.9, $best->weight);
+        static::assertSame('text/html', $best->essence());
+    }
+
+    public function testBestForDoesNotBreakOnFirstNull(): void
+    {
+        $prefs = MediaPreferences::from(
+            new MediaRange('*', '*', weight: 0.2),
+            new MediaRange('text', 'html', weight: 0.8),
+        );
+
+        $type = new MediaType('text', 'html');
+        $best = $prefs->bestFor($type);
+
+        static::assertNotNull($best);
+        static::assertSame('text/html', $best->essence());
+    }
+
+    public function testBestForSpecificityStrictlyGreaterNotEqual(): void
+    {
+        $range1 = new MediaRange('text', 'html', weight: 0.7);
+        $range2 = new MediaRange('text', 'plain', weight: 0.7);
+
+        $prefs = MediaPreferences::from($range1, $range2);
+
+        $type = new MediaType('text', 'html');
+        $best = $prefs->bestFor($type);
+
+        static::assertNotNull($best);
+        static::assertSame('text/html', $best->essence());
+    }
+
+    public function testBestForEqualSpecificityEqualWeightKeepsFirst(): void
+    {
+        $prefs = MediaPreferences::from(
+            new MediaRange('text', '*', weight: 0.5),
+            new MediaRange('text', '*', weight: 0.5),
+        );
+
+        $type = new MediaType('text', 'html');
+        $best = $prefs->bestFor($type);
+
+        static::assertNotNull($best);
+        static::assertSame('text/*', $best->essence());
+    }
+
+    public function testBestForThreeRangesSameWeightDifferentSpecificity(): void
+    {
+        $prefs = MediaPreferences::from(
+            new MediaRange('*', '*', weight: 0.5),
+            new MediaRange('text', '*', weight: 0.5),
+            new MediaRange('text', 'html', weight: 0.5),
+        );
+
+        $type = new MediaType('text', 'html');
+        $best = $prefs->bestFor($type);
+
+        static::assertNotNull($best);
+        static::assertSame('text/html', $best->essence());
+    }
+
+    public function testNegotiateInitialWeightBelowAllPositive(): void
+    {
+        $prefs = MediaPreferences::parse('*/*;q=0.001');
+
+        $available = [new MediaType('text', 'html')];
+        $result = $prefs->negotiate($available);
+
+        static::assertNotNull($result);
+        static::assertSame('text/html', $result->essence());
+    }
+
+    public function testNegotiateSmallPositiveWeightDoesNotLoseToDefault(): void
+    {
+        $prefs = MediaPreferences::parse('text/html;q=0.001');
+
+        $available = [new MediaType('text', 'html')];
+        $result = $prefs->negotiate($available);
+
+        static::assertNotNull($result);
+    }
+
+    public function testNegotiateMultipleItemsWithVerySmallWeight(): void
+    {
+        $prefs = MediaPreferences::parse('text/html;q=0.001, application/json;q=0.002');
+
+        $available = [
+            new MediaType('text', 'html'),
+            new MediaType('application', 'json'),
+        ];
+
+        $result = $prefs->negotiate($available);
+
+        static::assertNotNull($result);
+        static::assertSame('application/json', $result->essence());
+    }
+
+    public function testNegotiateSpecificityInitialValueIsZero(): void
+    {
+        $prefs = MediaPreferences::parse('*/*;q=0.5');
+
+        $available = [new MediaType('text', 'html')];
+        $result = $prefs->negotiate($available);
+
+        static::assertNotNull($result);
+        static::assertSame('text/html', $result->essence());
+    }
+
+    public function testNegotiateSpecificityTiebreakBetweenWildcardAndExact(): void
+    {
+        $prefs = MediaPreferences::parse('*/*;q=0.5, text/html;q=0.5');
+
+        $available = [new MediaType('text', 'html')];
+        $result = $prefs->negotiate($available);
+
+        static::assertNotNull($result);
+        static::assertSame('text/html', $result->essence());
+    }
+
+    public function testNegotiateSpecificityTiebreakWithThreeMatches(): void
+    {
+        $prefs = MediaPreferences::parse('*/*;q=0.3, text/*;q=0.3, text/html;q=0.3');
+
+        $available = [new MediaType('text', 'html')];
+        $result = $prefs->negotiate($available);
+
+        static::assertNotNull($result);
+        static::assertSame('text/html', $result->essence());
+    }
+
+    public function testToStringUsesMediaRangeToStringMethod(): void
+    {
+        $prefs = MediaPreferences::parse('text/html; charset=utf-8');
+
+        $result = $prefs->toString();
+
+        static::assertSame('text/html; charset=utf-8', $result);
+    }
+
+    public function testToStringWithMultipleRangesUsesCommaJoin(): void
+    {
+        $prefs = MediaPreferences::parse('text/html, application/json');
+
+        $result = $prefs->toString();
+
+        static::assertSame('text/html, application/json', $result);
+    }
+
+    public function testToStringWithWeightedRangesFormatsCorrectly(): void
+    {
+        $prefs = MediaPreferences::parse('text/html, application/json;q=0.5');
+
+        $result = $prefs->toString();
+
+        static::assertSame('text/html, application/json; q=0.5', $result);
+    }
+
+    public function testMostSpecificMatchStrictGreaterThanNotEqual(): void
+    {
+        $prefs = MediaPreferences::from(
+            new MediaRange('text', 'html', weight: 0.1),
+            new MediaRange('text', 'html', weight: 0.1),
+        );
+
+        $type = new MediaType('text', 'html');
+        $best = $prefs->bestFor($type);
+
+        static::assertNotNull($best);
+        static::assertSame('text/html', $best->essence());
+    }
+
+    public function testMostSpecificMatchReturnsBestNotLast(): void
+    {
+        $prefs = MediaPreferences::from(
+            new MediaRange('text', 'html', weight: 0.3),
+            new MediaRange('text', '*', weight: 0.3),
+            new MediaRange('*', '*', weight: 0.3),
+        );
+
+        $type = new MediaType('text', 'html');
+        $best = $prefs->bestFor($type);
+
+        static::assertNotNull($best);
+        static::assertSame('text/html', $best->essence());
+    }
+
+    public function testMostSpecificMatchDoesNotUpgradeOnEqualSpecificity(): void
+    {
+        $prefs = MediaPreferences::parse('text/*;q=0.5, text/*;q=0.5');
+
+        $available = [new MediaType('text', 'html')];
+        $result = $prefs->negotiate($available);
+
+        static::assertNotNull($result);
+    }
+
+    public function testSplitRangesFirstCharQuoteHandled(): void
+    {
+        $input = 'text/html; param="a,b"';
+        $prefs = MediaPreferences::parse($input);
+
+        static::assertCount(1, $prefs->ranges);
+        static::assertSame('a,b', $prefs->ranges[0]->parameters->get('param'));
+    }
+
+    public function testSplitRangesQuoteAtIndexZero(): void
+    {
+        $prefs = MediaPreferences::parse('text/html; boundary="x,y", application/json');
+
+        static::assertCount(2, $prefs->ranges);
+    }
+
+    public function testSplitRangesEscapedQuoteInsideQuotedValue(): void
+    {
+        $prefs = MediaPreferences::parse('text/html; p="a\\"b,c", application/json');
+
+        static::assertCount(2, $prefs->ranges);
+        static::assertSame('application/json', $prefs->ranges[1]->essence());
+    }
+
+    public function testFromPreservesAllRanges(): void
+    {
+        $r1 = new MediaRange('text', 'html', weight: 0.9);
+        $r2 = new MediaRange('application', 'json', weight: 0.8);
+        $r3 = new MediaRange('text', 'plain', weight: 0.7);
+
+        $prefs = MediaPreferences::from($r1, $r2, $r3);
+
+        static::assertCount(3, $prefs->ranges);
+    }
+
+    public function testFromSortsByWeight(): void
+    {
+        $r1 = new MediaRange('text', 'html', weight: 0.5);
+        $r2 = new MediaRange('application', 'json', weight: 0.9);
+
+        $prefs = MediaPreferences::from($r1, $r2);
+
+        static::assertSame('application/json', $prefs->ranges[0]->essence());
+        static::assertSame('text/html', $prefs->ranges[1]->essence());
+    }
+
+    public function testFromWithSingleRange(): void
+    {
+        $r = new MediaRange('text', 'html');
+        $prefs = MediaPreferences::from($r);
+
+        static::assertCount(1, $prefs->ranges);
+        static::assertSame('text/html', $prefs->ranges[0]->essence());
+    }
 }

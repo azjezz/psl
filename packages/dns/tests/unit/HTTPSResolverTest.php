@@ -7,6 +7,8 @@ namespace Psl\DNS\Tests\Unit;
 use Closure;
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\Binary\Reader;
 use Psl\Binary\Writer;
 use Psl\DateTime\Duration;
@@ -16,10 +18,16 @@ use Psl\DNS\HTTPSResolver;
 use Psl\DNS\Record\ARecord;
 use Psl\DNS\Record\RecordType;
 use Psl\DNS\ResponseCode;
+use Psl\HTTP\Client\Client;
+use Psl\HTTP\Client\ClientInterface;
+use Psl\HTTP\Client\SendConfiguration;
+use Psl\HTTP\Message\Request;
+use Psl\HTTP\Message\Transaction;
 use Psl\IO;
 use Psl\Str;
 use Psl\TCP;
 use ReflectionClass;
+use RuntimeException;
 
 /**
  * @mago-expect lint:excessive-nesting
@@ -239,7 +247,71 @@ final class HTTPSResolverTest extends TestCase
         $reflection = new ReflectionClass($resolver);
         $client = $reflection->getProperty('client')->getValue($resolver);
 
-        static::assertInstanceOf(\Psl\HTTP\Client\Client::class, $client);
+        static::assertInstanceOf(Client::class, $client);
+    }
+
+    public function testCustomClientPropertyIsStored(): void
+    {
+        $customClient = new Client();
+        $resolver = new HTTPSResolver('https://1.1.1.1/dns-query', $customClient);
+
+        $reflection = new ReflectionClass($resolver);
+        $client = $reflection->getProperty('client')->getValue($resolver);
+
+        static::assertSame($customClient, $client);
+    }
+
+    public function testCustomClientIsNotReplacedByDefault(): void
+    {
+        $marker = new class implements ClientInterface {
+            public function send(
+                Request $request,
+                SendConfiguration $configuration = new SendConfiguration(),
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): Transaction {
+                throw new RuntimeException('should not be called');
+            }
+        };
+
+        $resolver = new HTTPSResolver('https://1.1.1.1/dns-query', $marker);
+
+        $reflection = new ReflectionClass($resolver);
+        $client = $reflection->getProperty('client')->getValue($resolver);
+
+        static::assertSame($marker, $client);
+        static::assertNotInstanceOf(Client::class, $client);
+    }
+
+    public function testNullClientDoesNotOverrideExplicitClient(): void
+    {
+        $client1 = new Client();
+        $client2 = new Client();
+
+        $resolver1 = new HTTPSResolver('https://1.1.1.1/dns-query', $client1);
+        $resolver2 = new HTTPSResolver('https://1.1.1.1/dns-query', $client2);
+
+        $reflection = new ReflectionClass($resolver1);
+
+        $stored1 = $reflection->getProperty('client')->getValue($resolver1);
+        $stored2 = $reflection->getProperty('client')->getValue($resolver2);
+
+        static::assertSame($client1, $stored1);
+        static::assertSame($client2, $stored2);
+        static::assertNotSame($stored1, $stored2);
+    }
+
+    public function testEmptyBodyResponseThrows(): void
+    {
+        [$port, $serverFuture] = self::startDoHServerWithEmptyBody();
+
+        try {
+            $resolver = new HTTPSResolver("http://127.0.0.1:{$port}/dns-query");
+
+            $this->expectException(ProtocolException::class);
+            $resolver->query('example.com', RecordType::A);
+        } finally {
+            $serverFuture->await();
+        }
     }
 
     public function testRequestIncludesContentTypeHeader(): void
@@ -281,8 +353,6 @@ final class HTTPSResolverTest extends TestCase
     }
 
     /**
-     * Start a minimal HTTP/1.1 server that captures Content-Type.
-     *
      * @param Closure(string): string $handler
      *
      * @return array{int<0, 65535>, Async\Awaitable<void>}
@@ -335,12 +405,7 @@ final class HTTPSResolverTest extends TestCase
     }
 
     /**
-     * Start a minimal HTTP/1.1 server that accepts DNS-over-HTTPS POST requests.
-     *
-     * @param null|(Closure(string): string) $handler Receives raw DNS query bytes, returns raw DNS response bytes. Null = no body.
-     * @param int $statusCode HTTP status code to return.
-     * @param string $statusText HTTP status text.
-     * @param int $maxRequests Number of requests to handle before stopping.
+     * @param null|(Closure(string): string) $handler
      *
      * @return array{int<0, 65535>, Async\Awaitable<void>}
      */
@@ -398,6 +463,46 @@ final class HTTPSResolverTest extends TestCase
 
                     $conn->close();
                 }
+            } catch (IO\Exception\ExceptionInterface|Async\Exception\CancelledException) {
+                // @mago-expect lint:no-empty-catch-clause
+            } finally {
+                $listener->close();
+            }
+        });
+
+        return [$port, $future];
+    }
+
+    /**
+     * @return array{int<0, 65535>, Async\Awaitable<void>}
+     */
+    private static function startDoHServerWithEmptyBody(): array
+    {
+        $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
+
+        /** @var int<0, 65535> $port */
+        $port = $listener->getLocalAddress()->port;
+
+        $future = Async\run(static function () use ($listener): void {
+            try {
+                $conn = $listener->accept(new Async\TimeoutCancellationToken(Duration::seconds(5)));
+                $reader = new IO\Reader($conn);
+
+                $contentLength = 0;
+                while (true) {
+                    $line = $reader->readLine();
+                    if ($line === null || $line === '') {
+                        break;
+                    }
+
+                    if (Str\Byte\starts_with_ci($line, 'content-length:')) {
+                        $contentLength = (int) Str\Byte\trim(Str\Byte\after($line, ':') ?? '');
+                    }
+                }
+
+                $reader->readFixedSize($contentLength);
+                $conn->writeAll("HTTP/1.1 200 OK\r\nContent-Length: 0\r\nConnection: close\r\n\r\n");
+                $conn->close();
             } catch (IO\Exception\ExceptionInterface|Async\Exception\CancelledException) {
                 // @mago-expect lint:no-empty-catch-clause
             } finally {

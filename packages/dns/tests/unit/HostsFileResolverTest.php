@@ -318,6 +318,47 @@ final class HostsFileResolverTest extends TestCase
         static::assertSame(44, $response->id);
     }
 
+    public function testEmptyLookupReturnsInnerResponseNotNull(): void
+    {
+        $hostsFile = new HostsFile([]);
+
+        $inner = self::taggedResolver(101);
+        $resolver = new HostsFileResolver($inner, $hostsFile);
+
+        $response = $resolver->query('missing.local', RecordType::A);
+
+        static::assertNotNull($response);
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame(101, $response->id);
+    }
+
+    public function testEmptyLookupDelegatesForAQueryWithSpecificResponse(): void
+    {
+        $hostsFile = new HostsFile([
+            'other.local' => [Address::parse('10.0.0.1')],
+        ]);
+
+        $inner = self::taggedResolver(202);
+        $resolver = new HostsFileResolver($inner, $hostsFile);
+
+        $response = $resolver->query('notfound.local', RecordType::A);
+
+        static::assertSame(202, $response->id);
+        static::assertSame(ResponseCode::NoError, $response->code);
+    }
+
+    public function testEmptyLookupReturnsDifferentIdThanHostsResponse(): void
+    {
+        $hostsFile = new HostsFile([]);
+
+        $inner = self::taggedResolver(999);
+        $resolver = new HostsFileResolver($inner, $hostsFile);
+
+        $response = $resolver->query('missing.local', RecordType::AAAA);
+
+        static::assertSame(999, $response->id);
+    }
+
     public function testEmptyAddressLookupDelegatesToInnerForAAAAQuery(): void
     {
         $hostsFile = new HostsFile([]);

@@ -399,4 +399,135 @@ final class MessageTest extends TestCase
 
         static::assertSame([], $message->references);
     }
+
+    #[Test]
+    public function withInReplyToHeaderContainsAngleBracketsFromToString(): void
+    {
+        $id = \Psl\Message\MessageId::parse('<reply-id@example.com>');
+        $message = new Message()->withInReplyTo([$id]);
+
+        $header = $message->headers->get('In-Reply-To');
+        static::assertSame('<reply-id@example.com>', $header);
+    }
+
+    #[Test]
+    public function withInReplyToMultipleIdsJoinedWithAngleBrackets(): void
+    {
+        $id1 = \Psl\Message\MessageId::parse('<first@example.com>');
+        $id2 = \Psl\Message\MessageId::parse('<second@example.com>');
+        $message = new Message()->withInReplyTo([$id1, $id2]);
+
+        $header = $message->headers->get('In-Reply-To');
+        static::assertSame('<first@example.com> <second@example.com>', $header);
+    }
+
+    #[Test]
+    public function withInReplyToUsesToStringNotRawId(): void
+    {
+        $id = \Psl\Message\MessageId::parse('bare@example.com');
+        $message = new Message()->withInReplyTo([$id]);
+
+        $header = $message->headers->get('In-Reply-To');
+        static::assertNotSame('bare@example.com', $header);
+        static::assertSame('<bare@example.com>', $header);
+    }
+
+    #[Test]
+    public function dateWithLeadingWhitespaceOnlyIsParsedViaTrim(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['Date', '  Mon, 01 Jan 2024 12:00:00 +0000'],
+        ]));
+
+        static::assertNotNull($message->date);
+    }
+
+    #[Test]
+    public function dateWithTrailingWhitespaceOnlyIsParsedViaTrim(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['Date', 'Mon, 01 Jan 2024 12:00:00 +0000  '],
+        ]));
+
+        static::assertNotNull($message->date);
+    }
+
+    #[Test]
+    public function dateWithTabWhitespaceIsTrimmed(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['Date', "\tMon, 01 Jan 2024 12:00:00 +0000\t"],
+        ]));
+
+        static::assertNotNull($message->date);
+    }
+
+    #[Test]
+    public function parseMessageIdListWithNoMatchesReturnsEmptyNotNull(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['References', 'no-angle-brackets-at-all'],
+        ]));
+
+        $refs = $message->references;
+        static::assertIsArray($refs);
+        static::assertCount(0, $refs);
+    }
+
+    #[Test]
+    public function parseMessageIdListWithEmptyBracketsResultIsArray(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['In-Reply-To', 'completely-plain-text'],
+        ]));
+
+        static::assertSame([], $message->inReplyTo);
+    }
+
+    #[Test]
+    public function parseMessageIdListNoAngleBracketsIsEmptyArrayType(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['References', 'abc def ghi'],
+        ]));
+
+        $result = $message->references;
+        static::assertSame([], $result);
+        static::assertNotNull($result);
+    }
+
+    #[Test]
+    public function withReferencesHeaderUsesToStringForEachId(): void
+    {
+        $id1 = \Psl\Message\MessageId::parse('<ref-a@example.com>');
+        $id2 = \Psl\Message\MessageId::parse('<ref-b@example.com>');
+        $message = new Message()->withReferences([$id1, $id2]);
+
+        $header = $message->headers->get('References');
+        static::assertSame('<ref-a@example.com> <ref-b@example.com>', $header);
+    }
+
+    #[Test]
+    public function withReferencesHeaderContainsAngleBrackets(): void
+    {
+        $id = \Psl\Message\MessageId::parse('bare-id@example.com');
+        $message = new Message()->withReferences([$id]);
+
+        $header = $message->headers->get('References');
+        static::assertNotNull($header);
+        static::assertSame('<bare-id@example.com>', $header);
+    }
+
+    #[Test]
+    public function withReferencesSingleIdProducesCorrectHeader(): void
+    {
+        $id = \Psl\Message\MessageId::parse('<single@example.com>');
+        $message = new Message()->withReferences([$id]);
+
+        $header = $message->headers->get('References');
+        static::assertNotNull($header);
+        static::assertStringStartsWith('<', $header);
+        static::assertStringEndsWith('>', $header);
+        static::assertSame('<single@example.com>', $header);
+    }
 }

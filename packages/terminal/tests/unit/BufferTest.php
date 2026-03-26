@@ -444,6 +444,29 @@ final class BufferTest extends TestCase
         static::assertStringContainsString('C', $written);
     }
 
+    public function testFlushSgrResetOnNonConsecutiveCellAfterStyled(): void
+    {
+        $buffer = new Buffer(5, 2);
+        $bold = Style\bold();
+        $buffer->set(0, 0, new Cell('A', [$bold]));
+        $buffer->set(4, 0, new Cell('B'));
+
+        $output = new IO\MemoryHandle();
+        $buffer->flush($output);
+
+        $buffer->set(0, 0, new Cell('X', [$bold]));
+        $buffer->set(4, 1, new Cell('Y'));
+
+        $output = new IO\MemoryHandle();
+        $buffer->flush($output);
+
+        $written = $output->getBuffer();
+        static::assertStringContainsString('X', $written);
+        static::assertStringContainsString('Y', $written);
+        $resetPos = Str\Byte\search($written, "\e[0m");
+        static::assertNotNull($resetPos);
+    }
+
     public function testFlushWritesNothingWhenUnchangedMultiRow(): void
     {
         $syncOverhead = Str\Byte\length(

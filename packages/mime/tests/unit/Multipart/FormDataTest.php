@@ -179,4 +179,75 @@ final class FormDataTest extends TestCase
         $allDispositions = $parts[0]->headers->all('content-disposition');
         static::assertCount(1, $allDispositions);
     }
+
+    public function testAddPartSkipsMixedCaseContentDisposition(): void
+    {
+        $form = new Form('mc-boundary');
+        $part = new Part(Headers::fromPairs([
+            ['Content-DISPOSITION', 'attachment; filename="test.txt"'],
+            ['X-Extra',             'extra-value'],
+        ]), new IO\MemoryHandle('hello'));
+        $form->addPart('field', $part);
+
+        $output = new IO\MemoryHandle();
+        IO\copy($form->body(), $output);
+
+        $parser = new Parser('mc-boundary');
+        $output->seek(0);
+        $parts = iterator_to_array($parser->parse($output));
+
+        static::assertCount(1, $parts);
+
+        $allDispositions = $parts[0]->headers->all('content-disposition');
+        static::assertCount(1, $allDispositions);
+
+        static::assertSame('extra-value', $parts[0]->headers->get('x-extra'));
+    }
+
+    public function testAddPartSkipsContentDispositionVariousCase(): void
+    {
+        $form = new Form('vc-boundary');
+        $part = new Part(Headers::fromPairs([
+            ['content-disposition', 'inline'],
+            ['Content-Type',        'text/plain'],
+        ]), new IO\MemoryHandle('data'));
+        $form->addPart('f', $part);
+
+        $output = new IO\MemoryHandle();
+        IO\copy($form->body(), $output);
+
+        $parser = new Parser('vc-boundary');
+        $output->seek(0);
+        $parts = iterator_to_array($parser->parse($output));
+
+        static::assertCount(1, $parts);
+
+        $allDispositions = $parts[0]->headers->all('content-disposition');
+        static::assertCount(1, $allDispositions);
+
+        $dispositionValue = $parts[0]->headers->get('content-disposition');
+        static::assertNotNull($dispositionValue);
+        static::assertStringContainsString('name=f', $dispositionValue);
+    }
+
+    public function testAddPartWithUnicodeHeaderName(): void
+    {
+        $form = new Form('uc-boundary');
+        $part = new Part(Headers::fromPairs([
+            ['CONTENT-DISPOSITION', 'attachment'],
+            ['Content-Type',        'application/octet-stream'],
+        ]), new IO\MemoryHandle('binary'));
+        $form->addPart('upload', $part);
+
+        $output = new IO\MemoryHandle();
+        IO\copy($form->body(), $output);
+
+        $parser = new Parser('uc-boundary');
+        $output->seek(0);
+        $parts = iterator_to_array($parser->parse($output));
+
+        static::assertCount(1, $parts);
+        $allDispositions = $parts[0]->headers->all('content-disposition');
+        static::assertCount(1, $allDispositions);
+    }
 }

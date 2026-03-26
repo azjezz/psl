@@ -521,6 +521,22 @@ final class DateTimeTest extends TestCase
         static::assertSame('2024-02-04T14:00:00+00:00', $datetime->toRfc3339());
     }
 
+    public function testToRfc3339UseZWithUtcTimezone(): void
+    {
+        $datetime = DateTime::fromParts(Timezone::UTC, 2024, Month::February, 4, 14, 0, 0, 0);
+
+        static::assertSame('2024-02-04T14:00:00Z', $datetime->toRfc3339(useZ: true));
+    }
+
+    public function testToRfc3339UseZWithNonUtcTimezone(): void
+    {
+        $datetime = DateTime::fromParts(Timezone::EuropeParis, 2024, Month::February, 4, 14, 0, 0, 0);
+
+        $result = $datetime->toRfc3339(useZ: true);
+        static::assertStringContainsString('+01:00', $result);
+        static::assertStringNotContainsString('Z', $result);
+    }
+
     public function testEqualIncludingTimezone(): void
     {
         $datetime1 = DateTime::fromParts(Timezone::UTC, 2024, Month::February, 4, 14, 0, 0, 0);

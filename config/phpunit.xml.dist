@@ -19,6 +19,7 @@
       <directory>../packages/foundation/src/Psl/Exception</directory>
 
       <!-- Constants -->
+      <file>../packages/h2/src/Psl/H2/constants.php</file>
       <file>../packages/http-message/src/Psl/HTTP/Message/constants.php</file>
       <file>../packages/mime/src/Psl/MIME/Sniff/Internal/constants.php</file>
       <file>../packages/str/src/Psl/Str/constants.php</file>
