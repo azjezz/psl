@@ -367,6 +367,11 @@ final class ClientTest extends TestCase
                             ),
                         );
                     }
+
+                    public function finalize(Transaction $transaction): Transaction
+                    {
+                        return $transaction;
+                    }
                 };
             }
         };

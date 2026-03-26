@@ -103,25 +103,44 @@ final class H1Connection implements ConnectionInterface
 
         $this->keepAlive = $keepAlive;
 
-        if ($keepAlive && $this->onRelease !== null) {
-            $body = $transaction->response->body;
-            $stream = $this->stream;
-            if ($body === null || $body->reachedEndOfDataSource()) {
-                ($this->onRelease)($stream);
-            } else {
-                $onRelease = $this->onRelease;
-                $wrappedBody = new PoolReleasingBodyHandle($body, static function () use ($onRelease, $stream): void {
-                    $onRelease($stream);
-                });
+        return $transaction;
+    }
 
-                $transaction = new Transaction(
-                    $transaction->informational,
-                    $transaction->pushed,
-                    $transaction->response->withBody($wrappedBody),
-                );
-            }
+    /**
+     * {@inheritDoc}
+     */
+    #[Override]
+    public function finalize(Transaction $transaction): Transaction
+    {
+        if (!$this->keepAlive || $this->onRelease === null) {
+            return $transaction;
         }
 
-        return $transaction;
+        $body = $transaction->response->body;
+        $stream = $this->stream;
+
+        if ($body === null || $body->reachedEndOfDataSource()) {
+            ($this->onRelease)($stream);
+
+            return $transaction;
+        }
+
+        $onRelease = $this->onRelease;
+        $wrappedBody = new PoolReleasingBodyHandle($body, static function (bool $fullyConsumed) use (
+            $onRelease,
+            $stream,
+        ): void {
+            if ($fullyConsumed) {
+                $onRelease($stream);
+            } else {
+                $stream->close();
+            }
+        });
+
+        return new Transaction(
+            $transaction->informational,
+            $transaction->pushed,
+            $transaction->response->withBody($wrappedBody),
+        );
     }
 }

@@ -84,6 +84,15 @@ final readonly class H2Connection implements ConnectionInterface
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    #[Override]
+    public function finalize(Transaction $transaction): Transaction
+    {
+        return $transaction;
+    }
+
     private function reconnectAndExchange(
         Request $request,
         ClientConfiguration $configuration,

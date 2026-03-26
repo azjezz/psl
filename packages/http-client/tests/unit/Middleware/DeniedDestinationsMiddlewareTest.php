@@ -51,6 +51,11 @@ final class DeniedDestinationsMiddlewareTest extends TestCase
                     new Response(status: 200, headers: new FieldMap(), body: new IO\MemoryHandle('ok')),
                 );
             }
+
+            public function finalize(Transaction $transaction): Transaction
+            {
+                return $transaction;
+            }
         };
     }
 

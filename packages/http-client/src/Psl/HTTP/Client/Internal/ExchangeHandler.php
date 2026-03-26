@@ -47,6 +47,8 @@ final readonly class ExchangeHandler implements HandlerInterface
             $request = $request->withHeaders($request->headers->with('user-agent', 'php-standard-library/http-client'));
         }
 
-        return $connection->exchange($request, $configuration, $cancellation);
+        $transaction = $connection->exchange($request, $configuration, $cancellation);
+
+        return $connection->finalize($transaction);
     }
 }

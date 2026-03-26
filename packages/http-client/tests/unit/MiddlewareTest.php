@@ -63,6 +63,11 @@ final class MiddlewareTest extends TestCase
                             new Response(status: 200, headers: new FieldMap(), body: new IO\MemoryHandle('ok')),
                         );
                     }
+
+                    public function finalize(Transaction $transaction): Transaction
+                    {
+                        return $transaction;
+                    }
                 };
             }
         };
@@ -97,6 +102,11 @@ final class MiddlewareTest extends TestCase
                             null,
                             new Response(status: 200, headers: new FieldMap(), body: new IO\MemoryHandle('ok')),
                         );
+                    }
+
+                    public function finalize(Transaction $transaction): Transaction
+                    {
+                        return $transaction;
                     }
                 };
             }
@@ -246,6 +256,11 @@ final class MiddlewareTest extends TestCase
                     ): Transaction {
                         $this->exchangeCalled = true;
                         throw new \LogicException('should not be called');
+                    }
+
+                    public function finalize(Transaction $transaction): Transaction
+                    {
+                        return $transaction;
                     }
                 };
             }
