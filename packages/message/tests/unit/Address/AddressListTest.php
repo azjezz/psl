@@ -324,4 +324,357 @@ final class AddressListTest extends TestCase
 
         self::assertCount(0, $merged);
     }
+
+    #[Test]
+    public function parseQuotedDisplayNameWithEscapedBackslash(): void
+    {
+        $list = AddressList::parse('"O\\"Brien\\\\" <john@example.com>, alice@example.com');
+
+        static::assertCount(2, $list);
+        static::assertInstanceOf(Mailbox::class, $list->addresses[0]);
+        static::assertInstanceOf(Mailbox::class, $list->addresses[1]);
+        static::assertSame('john@example.com', $list->addresses[0]->address);
+        static::assertSame('alice@example.com', $list->addresses[1]->address);
+    }
+
+    #[Test]
+    public function parseUnclosedQuoteDoesNotAccessOutOfBounds(): void
+    {
+        $list = AddressList::parse('"unclosed, bob@example.com');
+
+        static::assertCount(1, $list);
+    }
+
+    #[Test]
+    public function parseAngleBracketDepthTracking(): void
+    {
+        $list = AddressList::parse('Alice <alice@example.com>, >bob@example.com');
+
+        static::assertCount(2, $list);
+        static::assertInstanceOf(Mailbox::class, $list->addresses[0]);
+        static::assertSame('alice@example.com', $list->addresses[0]->address);
+    }
+
+    #[Test]
+    public function parseMultipleGroupsThenMailbox(): void
+    {
+        $list = AddressList::parse('Team: alice@example.com; , Ops: bob@example.com; , carol@example.com');
+
+        static::assertCount(3, $list);
+        static::assertInstanceOf(Group::class, $list->addresses[0]);
+        static::assertInstanceOf(Group::class, $list->addresses[1]);
+        static::assertInstanceOf(Mailbox::class, $list->addresses[2]);
+        static::assertSame('carol@example.com', $list->addresses[2]->address);
+    }
+
+    #[Test]
+    public function parseTrailingWhitespaceNotAddedAsSegment(): void
+    {
+        $list = AddressList::parse('alice@example.com,   ');
+
+        static::assertCount(1, $list);
+        static::assertInstanceOf(Mailbox::class, $list->addresses[0]);
+        static::assertSame('alice@example.com', $list->addresses[0]->address);
+    }
+
+    #[Test]
+    public function ofWithNamedArguments(): void
+    {
+        $a = new Mailbox('alice', 'example.com');
+        $b = new Mailbox('bob', 'example.com');
+        $list = AddressList::of($a, $b);
+
+        static::assertCount(2, $list);
+        static::assertSame($a, $list->addresses[0]);
+        static::assertSame($b, $list->addresses[1]);
+    }
+
+    #[Test]
+    public function parseWhitespaceOnlyInput(): void
+    {
+        $list = AddressList::parse('   ');
+
+        static::assertCount(0, $list);
+    }
+
+    #[Test]
+    public function parseLeadingTrailingWhitespace(): void
+    {
+        $list = AddressList::parse('  alice@example.com  ');
+
+        static::assertCount(1, $list);
+        static::assertInstanceOf(Mailbox::class, $list->addresses[0]);
+        static::assertSame('alice@example.com', $list->addresses[0]->address);
+    }
+
+    #[Test]
+    public function parseEmptyReturnsEmptyList(): void
+    {
+        $list = AddressList::parse('');
+
+        static::assertCount(0, $list);
+        static::assertSame([], $list->addresses);
+    }
+
+    #[Test]
+    public function parseGroupWithTrailingWhitespaceBeforeSemicolon(): void
+    {
+        $list = AddressList::parse('Team: alice@example.com ;');
+
+        static::assertCount(1, $list);
+        static::assertInstanceOf(Group::class, $list->addresses[0]);
+        static::assertSame('Team', $list->addresses[0]->displayName);
+    }
+
+    #[Test]
+    public function parseColonWithoutSemicolonIsMailbox(): void
+    {
+        $list = AddressList::parse('just-semicolon@example.com;');
+
+        static::assertCount(1, $list);
+    }
+
+    #[Test]
+    public function excludeCaseInsensitiveOnExcludeAddress(): void
+    {
+        $list = AddressList::of(new Mailbox('Alice', 'Example.COM'), new Mailbox('bob', 'example.com'));
+
+        $filtered = $list->exclude(new Mailbox('ALICE', 'EXAMPLE.COM'));
+
+        static::assertCount(1, $filtered);
+        static::assertInstanceOf(Mailbox::class, $filtered->addresses[0]);
+        static::assertSame('bob@example.com', $filtered->addresses[0]->address);
+    }
+
+    #[Test]
+    public function excludeCaseInsensitiveInGroupFilter(): void
+    {
+        $group = new Group('Team', [
+            new Mailbox('Alice', 'Example.COM'),
+            new Mailbox('bob', 'example.com'),
+        ]);
+        $list = new AddressList([$group]);
+
+        $filtered = $list->exclude(new Mailbox('alice', 'example.com'));
+
+        static::assertCount(1, $filtered);
+        static::assertInstanceOf(Group::class, $filtered->addresses[0]);
+        static::assertCount(1, $filtered->addresses[0]->mailboxes);
+        static::assertSame('bob@example.com', $filtered->addresses[0]->mailboxes[0]->address);
+    }
+
+    #[Test]
+    public function excludeFromGroupPreservesListKeys(): void
+    {
+        $group = new Group('Team', [
+            new Mailbox('alice', 'example.com'),
+            new Mailbox('bob', 'example.com'),
+            new Mailbox('carol', 'example.com'),
+        ]);
+        $list = new AddressList([$group]);
+
+        $filtered = $list->exclude(new Mailbox('bob', 'example.com'));
+
+        static::assertCount(1, $filtered);
+        static::assertInstanceOf(Group::class, $filtered->addresses[0]);
+        static::assertCount(2, $filtered->addresses[0]->mailboxes);
+        static::assertSame('alice@example.com', $filtered->addresses[0]->mailboxes[0]->address);
+        static::assertSame('carol@example.com', $filtered->addresses[0]->mailboxes[1]->address);
+    }
+
+    #[Test]
+    public function toStringUsesAddressToString(): void
+    {
+        $list = AddressList::of(new Mailbox('alice', 'example.com', 'Alice'), new Mailbox('bob', 'example.com'));
+
+        $result = $list->toString();
+
+        static::assertSame('Alice <alice@example.com>, bob@example.com', $result);
+    }
+
+    #[Test]
+    public function parseQuotedStringWithPrecedingContent(): void
+    {
+        $list = AddressList::parse('prefix"quoted"suffix <addr@example.com>');
+
+        static::assertCount(1, $list);
+    }
+
+    #[Test]
+    public function parseQuotedDisplayNamePreservesEscapedChars(): void
+    {
+        $list = AddressList::parse('"John \\"Doe\\"" <john@example.com>');
+
+        static::assertCount(1, $list);
+        static::assertInstanceOf(Mailbox::class, $list->addresses[0]);
+        static::assertSame('john@example.com', $list->addresses[0]->address);
+    }
+
+    #[Test]
+    public function parseQuotedStringWithMultipleEscapedChars(): void
+    {
+        $input = '"A\\\\B\\,C" <user@example.com>, other@example.com';
+        $list = AddressList::parse($input);
+
+        static::assertCount(2, $list);
+        static::assertInstanceOf(Mailbox::class, $list->addresses[0]);
+        static::assertSame('user@example.com', $list->addresses[0]->address);
+        static::assertInstanceOf(Mailbox::class, $list->addresses[1]);
+        static::assertSame('other@example.com', $list->addresses[1]->address);
+    }
+
+    #[Test]
+    public function parseQuotedStringEscapeAtEndOfInput(): void
+    {
+        $input = '"test\\\\" <user@example.com>';
+        $list = AddressList::parse($input);
+
+        static::assertCount(1, $list);
+        static::assertInstanceOf(Mailbox::class, $list->addresses[0]);
+        static::assertSame('user@example.com', $list->addresses[0]->address);
+    }
+
+    #[Test]
+    public function splitAddressesCommaInsideQuotedStringNotSplit(): void
+    {
+        $list = AddressList::parse('"Doe, Jr." <john@example.com>, bob@example.com');
+
+        static::assertCount(2, $list);
+        static::assertSame('Doe, Jr.', $list->addresses[0]->displayName);
+        static::assertSame('bob@example.com', $list->addresses[1]->address);
+    }
+
+    #[Test]
+    public function parseDoubleEscapedBackslashInQuotedName(): void
+    {
+        $input = '"test\\\\" <a@b.com>, c@d.com';
+        $list = AddressList::parse($input);
+
+        static::assertCount(2, $list);
+        static::assertInstanceOf(Mailbox::class, $list->addresses[0]);
+        static::assertSame('a@b.com', $list->addresses[0]->address);
+        static::assertInstanceOf(Mailbox::class, $list->addresses[1]);
+        static::assertSame('c@d.com', $list->addresses[1]->address);
+    }
+
+    #[Test]
+    public function parseTrimmedInputBeforeEmptyCheck(): void
+    {
+        $list = AddressList::parse('  ');
+
+        static::assertCount(0, $list);
+        static::assertSame([], $list->addresses);
+    }
+
+    #[Test]
+    public function parseEmptyInputReturnsEmptyListNotNull(): void
+    {
+        $list = AddressList::parse('');
+
+        static::assertCount(0, $list);
+        static::assertSame('', $list->toString());
+    }
+
+    #[Test]
+    public function parseGroupDetectionUsesTrimmedSegment(): void
+    {
+        $list = AddressList::parse('Team: alice@example.com ;');
+
+        static::assertCount(1, $list);
+        static::assertInstanceOf(Group::class, $list->addresses[0]);
+    }
+
+    #[Test]
+    public function toStringCallsAddressToStringMethod(): void
+    {
+        $group = new Group('Team', [new Mailbox('alice', 'example.com')]);
+        $list = new AddressList([$group, new Mailbox('bob', 'example.com')]);
+
+        $result = $list->toString();
+
+        static::assertSame('Team: alice@example.com;, bob@example.com', $result);
+    }
+
+    #[Test]
+    public function splitAddressesQuotedStringAppendsNotReplaces(): void
+    {
+        $input = 'prefix"quoted" <addr@example.com>';
+        $list = AddressList::parse($input);
+
+        static::assertCount(1, $list);
+        static::assertInstanceOf(Mailbox::class, $list->addresses[0]);
+        static::assertSame('addr@example.com', $list->addresses[0]->address);
+    }
+
+    #[Test]
+    public function splitAddressesEscapedCharInQuotedStringPreserved(): void
+    {
+        $input = '"test\\@value" <user@example.com>, other@example.com';
+        $list = AddressList::parse($input);
+
+        static::assertCount(2, $list);
+        static::assertInstanceOf(Mailbox::class, $list->addresses[0]);
+        static::assertSame('user@example.com', $list->addresses[0]->address);
+    }
+
+    #[Test]
+    public function splitAddressesClosingAngleBracketDecreasesDepth(): void
+    {
+        $input = '<alice@example.com>, bob@example.com';
+        $list = AddressList::parse($input);
+
+        static::assertCount(2, $list);
+    }
+
+    #[Test]
+    public function splitAddressesClosingAngleBracketIgnoredAtDepthZero(): void
+    {
+        $input = '>alice@example.com, bob@example.com';
+        $list = AddressList::parse($input);
+
+        static::assertCount(2, $list);
+    }
+
+    #[Test]
+    public function splitAddressesTrimmedCurrentBeforeSegmentAdd(): void
+    {
+        $input = 'alice@example.com, bob@example.com   ';
+        $list = AddressList::parse($input);
+
+        static::assertCount(2, $list);
+    }
+
+    #[Test]
+    public function splitAddressesTrailingWhitespaceOnlySegmentNotAdded(): void
+    {
+        $input = 'alice@example.com,    ';
+        $list = AddressList::parse($input);
+
+        static::assertCount(1, $list);
+    }
+
+    #[Test]
+    public function parseQuotedEscapeCharIsBackslashFollowedByNextChar(): void
+    {
+        $input = '"A\\BC" <user@example.com>';
+        $list = AddressList::parse($input);
+
+        static::assertCount(1, $list);
+        static::assertInstanceOf(Mailbox::class, $list->addresses[0]);
+        static::assertSame('user@example.com', $list->addresses[0]->address);
+        static::assertSame('A\\BC', $list->addresses[0]->displayName);
+    }
+
+    #[Test]
+    public function parseQuotedEscapedCharPositionCorrect(): void
+    {
+        $input = '"te\\st" <user@example.com>, other@example.com';
+        $list = AddressList::parse($input);
+
+        static::assertCount(2, $list);
+        static::assertInstanceOf(Mailbox::class, $list->addresses[0]);
+        static::assertSame('user@example.com', $list->addresses[0]->address);
+        static::assertInstanceOf(Mailbox::class, $list->addresses[1]);
+        static::assertSame('other@example.com', $list->addresses[1]->address);
+    }
 }

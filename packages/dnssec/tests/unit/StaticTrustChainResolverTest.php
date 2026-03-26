@@ -143,4 +143,17 @@ final class StaticTrustChainResolverTest extends TestCase
         static::assertSame(TrustChainStatus::Insecure, $result->status);
         static::assertSame([], $result->keys);
     }
+
+    public function testInsecureZoneIsRecognizedCorrectly(): void
+    {
+        $resolver = new StaticTrustChainResolver([], ['zone1.example.com', 'zone2.example.com']);
+
+        $r1 = $resolver->resolve('zone1.example.com');
+        $r2 = $resolver->resolve('zone2.example.com');
+        $r3 = $resolver->resolve('zone3.example.com');
+
+        static::assertSame(TrustChainStatus::Insecure, $r1->status);
+        static::assertSame(TrustChainStatus::Insecure, $r2->status);
+        static::assertSame(TrustChainStatus::Bogus, $r3->status, 'Non-configured zone should be Bogus');
+    }
 }

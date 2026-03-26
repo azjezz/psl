@@ -292,4 +292,72 @@ final class ParametersTest extends TestCase
 
         static::assertStringContainsString('"', $params->toString());
     }
+
+    public function testToStringEmptyReturnsEmptyString(): void
+    {
+        $params = Parameters::fromPairs([]);
+        $result = $params->toString();
+        static::assertSame('', $result);
+        static::assertNotNull($result);
+    }
+
+    public function testSingleCharTokenValueNotQuoted(): void
+    {
+        $params = Parameters::fromPairs([['a', 'x']]);
+        static::assertSame('; a=x', $params->toString());
+    }
+
+    public function testSingleCharParameterNameAccepted(): void
+    {
+        $params = Parameters::fromPairs([['a', 'value']]);
+        static::assertSame('value', $params->get('a'));
+    }
+
+    public function testParameterNameStartingWithSpaceThrows(): void
+    {
+        $this->expectException(InvalidMediaTypeComponentException::class);
+
+        Parameters::fromPairs([
+            [' name', 'value'],
+        ]);
+    }
+
+    public function testToStringEmptyPairsReturnsEmptyStringNotNull(): void
+    {
+        $params = Parameters::default();
+
+        $result = $params->toString();
+
+        static::assertSame('', $result);
+        static::assertIsString($result);
+    }
+
+    public function testToStringWithPairsReturnsNonEmpty(): void
+    {
+        $params = Parameters::fromPairs([['charset', 'utf-8']]);
+
+        $result = $params->toString();
+
+        static::assertNotSame('', $result);
+        static::assertSame('; charset=utf-8', $result);
+    }
+
+    public function testIsTokenChecksFirstCharacter(): void
+    {
+        $params = Parameters::fromPairs([
+            ['name', "\x01value"],
+        ]);
+
+        $result = $params->toString();
+        static::assertStringContainsString('"', $result);
+    }
+
+    public function testValidateParameterNameChecksFirstCharacter(): void
+    {
+        $this->expectException(InvalidMediaTypeComponentException::class);
+
+        Parameters::fromPairs([
+            ["\x01a", 'value'],
+        ]);
+    }
 }

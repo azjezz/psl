@@ -348,4 +348,271 @@ final class MailboxTest extends TestCase
         self::assertSame('"user@host"', $mailbox->localPart);
         self::assertSame('example.com', $mailbox->domain);
     }
+
+    #[Test]
+    public function parseWhitespaceOnlyThrows(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        Mailbox::parse('   ');
+    }
+
+    #[Test]
+    public function parseEmptyStringThrowsParsingException(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        Mailbox::parse('');
+    }
+
+    #[Test]
+    public function parseCommentOnlyThrowsAfterTrim(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        Mailbox::parse(' (just a comment) ');
+    }
+
+    #[Test]
+    public function parseOnlyCommentResultsInException(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        Mailbox::parse('(comment)');
+    }
+
+    #[Test]
+    public function toStringEscapesQuotesInDisplayName(): void
+    {
+        $mailbox = new Mailbox('user', 'example.com', 'John "JD" Doe');
+
+        $result = $mailbox->toString();
+
+        static::assertStringContainsString('John \\"JD\\" Doe', $result);
+        static::assertStringContainsString('<user@example.com>', $result);
+    }
+
+    #[Test]
+    public function parseBackslashEscapeInCommentAndOutside(): void
+    {
+        $mailbox = Mailbox::parse('john@example.com (has \\) paren)');
+
+        static::assertSame('john@example.com', $mailbox->address);
+        static::assertSame('has ) paren', $mailbox->comment);
+    }
+
+    #[Test]
+    public function parseEscapedCharOutsideCommentPreserved(): void
+    {
+        $mailbox = Mailbox::parse('john\\@extra@example.com');
+
+        static::assertSame('example.com', $mailbox->domain);
+    }
+
+    #[Test]
+    public function parseQuotedStringInsideCommentNotTreatedAsQuote(): void
+    {
+        $mailbox = Mailbox::parse('john@example.com (has "quote" inside)');
+
+        static::assertSame('john@example.com', $mailbox->address);
+        static::assertSame('has "quote" inside', $mailbox->comment);
+    }
+
+    #[Test]
+    public function parseQuotedDisplayNameWithCommentAfter(): void
+    {
+        $mailbox = Mailbox::parse('"Doe, John" <john@example.com> (a comment)');
+
+        static::assertSame('Doe, John', $mailbox->displayName);
+        static::assertSame('john@example.com', $mailbox->address);
+        static::assertSame('a comment', $mailbox->comment);
+    }
+
+    #[Test]
+    public function parseUnmatchedClosingParenDoesNotCrash(): void
+    {
+        $mailbox = Mailbox::parse('john)@example.com');
+
+        static::assertSame('john)', $mailbox->localPart);
+        static::assertSame('example.com', $mailbox->domain);
+    }
+
+    #[Test]
+    public function parseMultipleCommentsKeepsFirst(): void
+    {
+        $mailbox = Mailbox::parse('john@example.com (first) (second)');
+
+        static::assertSame('john@example.com', $mailbox->address);
+        static::assertSame('first', $mailbox->comment);
+    }
+
+    #[Test]
+    public function parseDisplayNameStartsWithQuoteButNotEnds(): void
+    {
+        $mailbox = Mailbox::parse('"John <john@example.com>');
+
+        static::assertSame('john@example.com', $mailbox->address);
+    }
+
+    #[Test]
+    public function parseEmptyQuotedDisplayName(): void
+    {
+        $mailbox = Mailbox::parse('"" <john@example.com>');
+
+        static::assertSame('john@example.com', $mailbox->address);
+        static::assertSame('', $mailbox->displayName);
+    }
+
+    #[Test]
+    public function parseQuotedDisplayNameUnescapesQuotes(): void
+    {
+        $mailbox = Mailbox::parse('"O\\"Brien" <john@example.com>');
+
+        static::assertSame('O"Brien', $mailbox->displayName);
+        static::assertSame('john@example.com', $mailbox->address);
+    }
+
+    #[Test]
+    public function parseAddrSpecWithWhitespace(): void
+    {
+        $mailbox = Mailbox::parse('  john@example.com  ');
+
+        static::assertSame('john', $mailbox->localPart);
+        static::assertSame('example.com', $mailbox->domain);
+    }
+
+    #[Test]
+    public function parseAtSignAtPosition0Throws(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        Mailbox::parse('@example.com');
+    }
+
+    #[Test]
+    public function parseAtSignAtLastPositionThrows(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        Mailbox::parse('user@');
+    }
+
+    #[Test]
+    public function parseNoAtSignThrowsWithLogicalOr(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        Mailbox::parse('natsign');
+    }
+
+    #[Test]
+    public function parseMinimalValidAddress(): void
+    {
+        $mailbox = Mailbox::parse('a@b');
+
+        static::assertSame('a', $mailbox->localPart);
+        static::assertSame('b', $mailbox->domain);
+    }
+
+    #[Test]
+    public function parseInputWithLeadingAndTrailingWhitespace(): void
+    {
+        $mailbox = Mailbox::parse("  \t user@example.com \t ");
+
+        static::assertSame('user', $mailbox->localPart);
+        static::assertSame('example.com', $mailbox->domain);
+    }
+
+    #[Test]
+    public function parseWhitespaceOnlyInputThrowsViaTrim(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        Mailbox::parse("\t  \t");
+    }
+
+    #[Test]
+    public function parseCommentOnlyLeavesEmptyAfterSecondTrim(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        Mailbox::parse('  (only comment)  ');
+    }
+
+    #[Test]
+    public function parseEscapedCharInCommentPreserved(): void
+    {
+        $mailbox = Mailbox::parse('user@example.com (has \\x inside)');
+
+        static::assertSame('user@example.com', $mailbox->address);
+        static::assertSame('has x inside', $mailbox->comment);
+    }
+
+    #[Test]
+    public function parseEscapedCharOutsideCommentPreservesBackslash(): void
+    {
+        $mailbox = Mailbox::parse("john\\@@example.com");
+
+        static::assertSame('example.com', $mailbox->domain);
+        static::assertStringContainsString('\\@', $mailbox->localPart);
+    }
+
+    #[Test]
+    public function parseQuotedStringWithCommentParenInside(): void
+    {
+        $mailbox = Mailbox::parse('"user(name)" <test@example.com>');
+
+        static::assertSame('user(name)', $mailbox->displayName);
+        static::assertSame('test@example.com', $mailbox->address);
+    }
+
+    #[Test]
+    public function parseDisplayNameStartingWithQuoteNoEndQuote(): void
+    {
+        $mailbox = Mailbox::parse('"start <user@example.com>');
+
+        static::assertSame('user@example.com', $mailbox->address);
+    }
+
+    #[Test]
+    public function parseDisplayNameEndingWithQuote(): void
+    {
+        $mailbox = Mailbox::parse('end" <user@example.com>');
+
+        static::assertSame('user@example.com', $mailbox->address);
+    }
+
+    #[Test]
+    public function parseAddrSpecWithSurroundingWhitespace(): void
+    {
+        $mailbox = Mailbox::parse('<  user@example.com  >');
+
+        static::assertSame('user', $mailbox->localPart);
+        static::assertSame('example.com', $mailbox->domain);
+    }
+
+    #[Test]
+    public function parseTwoCharAddress(): void
+    {
+        $mailbox = Mailbox::parse('a@b');
+
+        static::assertSame('a', $mailbox->localPart);
+        static::assertSame('b', $mailbox->domain);
+    }
+
+    #[Test]
+    public function parseAtPositionZeroInAddrSpecThrows(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        Mailbox::parse('<@domain>');
+    }
+
+    #[Test]
+    public function parseAtLastPositionInAddrSpecThrows(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        Mailbox::parse('<user@>');
+    }
 }

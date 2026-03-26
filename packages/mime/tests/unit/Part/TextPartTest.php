@@ -79,4 +79,34 @@ final class TextPartTest extends TestCase
 
         static::assertSame("SGVsbG8=\r\n", $part->body()->readAll());
     }
+
+    public function testEightBitEncodingPassthrough(): void
+    {
+        $content = "Hello with high bytes: \xC3\xA9";
+        $part = new Text(new IO\MemoryHandle($content), encoding: TransferEncoding::EightBit);
+
+        static::assertSame($content, $part->body()->readAll());
+        static::assertSame(TransferEncoding::EightBit, $part->encoding);
+    }
+
+    public function testBinaryEncodingPassthrough(): void
+    {
+        $content = "Binary \x00\x01\x02 data";
+        $part = new Text(new IO\MemoryHandle($content), encoding: TransferEncoding::Binary);
+
+        static::assertSame($content, $part->body()->readAll());
+        static::assertSame(TransferEncoding::Binary, $part->encoding);
+    }
+
+    public function testEightBitEncodingHeader(): void
+    {
+        $part = new Text(new IO\MemoryHandle('Hello'), encoding: TransferEncoding::EightBit);
+
+        $headerMap = [];
+        foreach ($part->headers->pairs() as [$name, $value]) {
+            $headerMap[$name] = $value;
+        }
+
+        static::assertSame('8bit', $headerMap['Content-Transfer-Encoding']);
+    }
 }

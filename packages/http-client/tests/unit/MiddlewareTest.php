@@ -294,4 +294,49 @@ final class MiddlewareTest extends TestCase
         static::assertSame(403, $transaction->response->status);
         static::assertFalse($exchangeCalled);
     }
+
+    public function testMiddlewareExecutionOrderMatters(): void
+    {
+        $capturedRequest = new Request(method: 'GET', url: parse('http://example.com/'));
+
+        $first = new class() implements MiddlewareInterface {
+            public function process(
+                ConnectionInterface $connection,
+                Request $request,
+                ClientConfiguration $configuration,
+                HandlerInterface $handler,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): Transaction {
+                $request = $request->withHeader('X-Order', 'first');
+
+                return $handler->handle($connection, $request, $configuration, $cancellation);
+            }
+        };
+
+        $second = new class() implements MiddlewareInterface {
+            public function process(
+                ConnectionInterface $connection,
+                Request $request,
+                ClientConfiguration $configuration,
+                HandlerInterface $handler,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): Transaction {
+                $request = $request->withHeader('X-Order', 'second');
+
+                return $handler->handle($connection, $request, $configuration, $cancellation);
+            }
+        };
+
+        $connector = self::createCapturingConnector($capturedRequest);
+        $client = new Client(
+            connector: $connector,
+            configuration: new ClientConfiguration(),
+            middleware: [$first, $second],
+        );
+
+        $request = new Request(method: 'GET', url: parse('http://example.com/'));
+        $client->send($request);
+
+        static::assertSame('second', $capturedRequest->headers->get('X-Order'));
+    }
 }

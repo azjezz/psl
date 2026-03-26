@@ -35,6 +35,8 @@ final readonly class Settings
      * - Windows: `ipconfig /all`
      *
      * @throws Exception\SystemException If the system configuration cannot be loaded.
+     *
+     * @codeCoverageIgnore
      */
     public static function load(): self
     {

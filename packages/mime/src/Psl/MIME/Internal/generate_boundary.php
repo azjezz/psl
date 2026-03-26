@@ -22,7 +22,9 @@ function generate_boundary(): string
     try {
         /** @var non-empty-string */
         return new Randomizer()->getBytesFromString('abcdefghijklmnopqrstuvwxyz0123456789', 24);
+        // @codeCoverageIgnoreStart
     } catch (RandomException $e) {
         throw EntropyException::forInsufficientEntropy($e);
     }
+    // @codeCoverageIgnoreEnd
 }

@@ -34,6 +34,8 @@ final readonly class HostsFile
      * - Windows: `%SystemRoot%\system32\drivers\etc\hosts`
      *
      * @throws Exception\SystemException If the hosts file cannot be read.
+     *
+     * @codeCoverageIgnore
      */
     public static function load(): self
     {

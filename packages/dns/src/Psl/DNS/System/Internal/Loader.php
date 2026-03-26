@@ -16,6 +16,8 @@ use const PHP_OS_FAMILY;
  * All methods use {@see Process\Command} for non-blocking execution.
  *
  * @internal
+ *
+ * @codeCoverageIgnore
  */
 final class Loader
 {

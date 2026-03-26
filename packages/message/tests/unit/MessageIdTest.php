@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
 use Psl\Message\Exception\ParsingException;
 use Psl\Message\MessageId;
 
+use function strlen;
+use function strpos;
+
 final class MessageIdTest extends TestCase
 {
     #[Test]
@@ -116,5 +119,75 @@ final class MessageIdTest extends TestCase
         $id = MessageId::parse('local-only');
 
         self::assertSame('local-only', $id->id);
+    }
+
+    #[Test]
+    public function generateProducesCorrectLength(): void
+    {
+        $id = MessageId::generate('example.com');
+
+        $atPos = \strpos($id->id, '@');
+        static::assertNotFalse($atPos);
+
+        $hexPart = \substr($id->id, 0, $atPos);
+        static::assertSame(32, strlen($hexPart), 'The hex portion should be exactly 32 characters (16 bytes)');
+    }
+
+    #[Test]
+    public function parseEmptyStringThrowsException(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        MessageId::parse('');
+    }
+
+    #[Test]
+    public function parseOnlyEndAngleBracketIsNotStripped(): void
+    {
+        $id = MessageId::parse('unique@example.com>');
+
+        static::assertSame('unique@example.com>', $id->id);
+    }
+
+    #[Test]
+    public function parseOnlyStartAngleBracketIsNotStripped(): void
+    {
+        $id = MessageId::parse('<unique@example.com');
+
+        static::assertSame('<unique@example.com', $id->id);
+    }
+
+    #[Test]
+    public function parseEmptyAngleBracketsThrowsException(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        MessageId::parse('<>');
+    }
+
+    #[Test]
+    public function parseEmptyStringThrowsAndDoesNotProceed(): void
+    {
+        $caught = false;
+        try {
+            MessageId::parse('');
+        } catch (ParsingException) {
+            $caught = true;
+        }
+
+        static::assertTrue($caught);
+    }
+
+    #[Test]
+    public function parseEmptyAngleBracketsThrowsAndDoesNotReturn(): void
+    {
+        $caught = false;
+        try {
+            MessageId::parse('<>');
+        } catch (ParsingException) {
+            $caught = true;
+        }
+
+        static::assertTrue($caught);
     }
 }

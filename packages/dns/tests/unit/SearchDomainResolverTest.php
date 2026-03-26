@@ -158,6 +158,111 @@ final class SearchDomainResolverTest extends TestCase
         static::assertSame(4, $inner->queryCount);
     }
 
+    public function testDefaultNdotsIsOne(): void
+    {
+        $inner = self::trackingResolver([
+            'host.com' => ResponseCode::NoError,
+        ]);
+
+        $resolver = new SearchDomainResolver($inner, ['example.com']);
+
+        $resolver->query('host.com', RecordType::A);
+
+        static::assertSame(
+            'host.com',
+            $inner->lastQueried,
+            'Name with 1 dot should skip expansion with default ndots=1',
+        );
+        static::assertSame(1, $inner->queryCount);
+    }
+
+    public function testFullyQualifiedNameSkipsEvenWithSearchDomains(): void
+    {
+        $inner = self::trackingResolver([
+            'host.example.com' => ResponseCode::NoError,
+        ]);
+
+        $resolver = new SearchDomainResolver($inner, ['other.com']);
+
+        $resolver->query('host.example.com', RecordType::A);
+
+        static::assertSame('host.example.com', $inner->lastQueried);
+        static::assertSame(
+            1,
+            $inner->queryCount,
+            'Fully qualified name should not be expanded even with search domains',
+        );
+    }
+
+    public function testFullyQualifiedNameReturnsDirectResult(): void
+    {
+        $inner = self::trackingResolver([
+            'host.example.com' => ResponseCode::NoError,
+        ]);
+
+        $resolver = new SearchDomainResolver($inner, ['search.com']);
+
+        $response = $resolver->query('host.example.com', RecordType::A);
+
+        static::assertSame(ResponseCode::NoError, $response->code);
+        static::assertSame(1, $inner->queryCount);
+    }
+
+    public function testTrailingDotIsFullyQualified(): void
+    {
+        $inner = self::trackingResolver([
+            'a.' => ResponseCode::NoError,
+        ]);
+
+        $resolver = new SearchDomainResolver($inner, ['example.com']);
+
+        $resolver->query('a.', RecordType::A);
+
+        static::assertSame('a.', $inner->lastQueried, 'Trailing dot name must not be expanded');
+        static::assertSame(1, $inner->queryCount);
+    }
+
+    public function testTrailingDotWithZeroDotsStillFullyQualified(): void
+    {
+        $inner = self::trackingResolver([
+            'host.' => ResponseCode::NoError,
+        ]);
+
+        $resolver = new SearchDomainResolver($inner, ['example.com'], numberOfDots: 5);
+
+        $resolver->query('host.', RecordType::A);
+
+        static::assertSame('host.', $inner->lastQueried);
+        static::assertSame(1, $inner->queryCount);
+    }
+
+    public function testExactlyNdotsDotsIsFullyQualified(): void
+    {
+        $inner = self::trackingResolver([
+            'a.b.c' => ResponseCode::NoError,
+        ]);
+
+        $resolver = new SearchDomainResolver($inner, ['example.com'], numberOfDots: 2);
+
+        $resolver->query('a.b.c', RecordType::A);
+
+        static::assertSame('a.b.c', $inner->lastQueried, 'Exactly ndots dots should be fully qualified (>= not >)');
+        static::assertSame(1, $inner->queryCount);
+    }
+
+    public function testFewerThanNdotsDotsIsNotFullyQualified(): void
+    {
+        $inner = self::trackingResolver([
+            'a.b.example.com' => ResponseCode::NoError,
+        ]);
+
+        $resolver = new SearchDomainResolver($inner, ['example.com'], numberOfDots: 2);
+
+        $resolver->query('a.b', RecordType::A);
+
+        static::assertSame('a.b.example.com', $inner->firstQueried);
+    }
+
     /**
      * @param array<string, ResponseCode> $responses
      */

@@ -495,4 +495,167 @@ final class MediaRangeTest extends TestCase
 
         static::assertSame(0.123, $range->weight);
     }
+
+    public function testParseUppercaseQIsRecognized(): void
+    {
+        $range = MediaRange::parse('text/html; Q=0.7');
+
+        static::assertSame(0.7, $range->weight);
+        static::assertNull($range->parameters->get('q'));
+        static::assertNull($range->parameters->get('Q'));
+    }
+
+    public function testParseInvalidWeightThrows(): void
+    {
+        $this->expectException(InvalidMediaTypeComponentException::class);
+
+        MediaRange::parse('text/html;q=abc');
+    }
+
+    public function testParseWeightRoundedToThreeDecimals(): void
+    {
+        $range = MediaRange::parse('text/html;q=0.1235');
+
+        static::assertSame(0.124, $range->weight);
+    }
+
+    public function testParseQParamContinuesProcessing(): void
+    {
+        $range = MediaRange::parse('text/html;q=0.8;level=1');
+
+        static::assertSame(0.8, $range->weight);
+        static::assertSame('1', $range->parameters->get('level'));
+    }
+
+    public function testTypeExactly127CharsIsValid(): void
+    {
+        $type = Str\repeat('a', 127);
+        $range = new MediaRange($type, 'html');
+
+        static::assertSame($type, $range->type);
+    }
+
+    public function testType128CharsIsRejected(): void
+    {
+        $this->expectException(InvalidMediaTypeComponentException::class);
+
+        new MediaRange(Str\repeat('a', 128), 'html');
+    }
+
+    public function testFirstCharOfTypeIsValidated(): void
+    {
+        $this->expectException(InvalidMediaTypeComponentException::class);
+
+        new MediaRange('@text', 'html');
+    }
+
+    public function testIsValidWeightCastsToFloat(): void
+    {
+        $range = MediaRange::parse('text/html;q=0.5');
+
+        static::assertSame(0.5, $range->weight);
+    }
+
+    public function testWeightExactlyOneIsValidViaIsValidWeight(): void
+    {
+        $range = MediaRange::parse('text/html;q=1.0');
+
+        static::assertSame(1.0, $range->weight);
+    }
+
+    public function testWeightAboveOneIsRejectedViaIsValidWeight(): void
+    {
+        $this->expectException(InvalidMediaTypeComponentException::class);
+
+        MediaRange::parse('text/html;q=1.1');
+    }
+
+    public function testWeightNegativeIsRejected(): void
+    {
+        $this->expectException(InvalidMediaTypeComponentException::class);
+
+        MediaRange::parse('text/html;q=-0.5');
+    }
+
+    public function testFormatWeightThreeDecimalPrecision(): void
+    {
+        $range = new MediaRange('text', 'html', null, 0.001);
+
+        $str = $range->toString();
+        static::assertStringContainsString('q=0.001', $str);
+    }
+
+    public function testFormatWeightPreservesThirdDecimalPlace(): void
+    {
+        $range = new MediaRange('text', 'html', null, 0.123);
+
+        $str = $range->toString();
+        static::assertStringContainsString('q=0.123', $str);
+    }
+
+    public function testFormatWeightStripsTrailingZerosCorrectly(): void
+    {
+        $range = new MediaRange('text', 'html', null, 0.5);
+
+        $str = $range->toString();
+        static::assertStringContainsString('q=0.5', $str);
+        static::assertStringNotContainsString('q=0.500', $str);
+        static::assertStringNotContainsString('q=0.50', $str);
+    }
+
+    public function testParseUppercaseQExtractsWeightCaseInsensitive(): void
+    {
+        $range = MediaRange::parse('text/html;Q=0.8');
+
+        static::assertSame(0.8, $range->weight);
+        static::assertNull($range->parameters->get('q'));
+        static::assertNull($range->parameters->get('Q'));
+    }
+
+    public function testParseInvalidWeightThrowsWithCorrectMessage(): void
+    {
+        try {
+            MediaRange::parse('text/html;q=abc');
+            static::fail('Expected exception');
+        } catch (InvalidMediaTypeComponentException $e) {
+            static::assertStringContainsString('0', $e->getMessage());
+        }
+    }
+
+    public function testValidateComponentStartsAtIndexZero(): void
+    {
+        $this->expectException(InvalidMediaTypeComponentException::class);
+
+        new MediaRange('@a', 'html');
+    }
+
+    public function testIsValidWeightRejectsAboveOne(): void
+    {
+        $this->expectException(InvalidMediaTypeComponentException::class);
+
+        MediaRange::parse('text/html;q=2.0');
+    }
+
+    public function testIsValidWeightRejectsBelowZero(): void
+    {
+        $this->expectException(InvalidMediaTypeComponentException::class);
+
+        MediaRange::parse('text/html;q=-1.0');
+    }
+
+    public function testFormatWeightUsesThreeDecimalPlaces(): void
+    {
+        $range = new MediaRange('text', 'html', null, 0.1);
+        $str = $range->toString();
+
+        static::assertSame('text/html; q=0.1', $str);
+        static::assertStringNotContainsString('q=0.1000', $str);
+    }
+
+    public function testIsValidWeightAndOperator(): void
+    {
+        $this->expectException(InvalidMediaTypeComponentException::class);
+
+        MediaRange::parse('text/html;q=5.0');
+    }
 }

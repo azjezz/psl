@@ -472,4 +472,15 @@ final class SMIMETest extends TestCase
             }
         }
     }
+
+    public function testVerifyDefaultChainCheckIsTrue(): void
+    {
+        $signer = new Signer(Certificates::CA_SIGNED_CERT, Certificates::CA_SIGNED_KEY);
+        $signed = $signer->sign('Default chain check');
+
+        $verifier = new Verifier();
+
+        $this->expectException(CMSException::class);
+        $verifier->verify($signed);
+    }
 }

@@ -476,6 +476,46 @@ final class SniffTest extends TestCase
         static::assertSame('audio/mpeg', $type->essence());
     }
 
+    public function testFromStringMp3FrameMaskedE2(): void
+    {
+        $mp3 = "\xff\xe2\x90\x00" . Str\repeat("\x00", 100);
+        $type = Sniff\from_string($mp3);
+
+        static::assertSame('audio/mpeg', $type->essence());
+    }
+
+    public function testFromStringMp3FrameMaskedE3(): void
+    {
+        $mp3 = "\xff\xe3\x90\x00" . Str\repeat("\x00", 100);
+        $type = Sniff\from_string($mp3);
+
+        static::assertSame('audio/mpeg', $type->essence());
+    }
+
+    public function testFromStringMp3FrameMaskedEA(): void
+    {
+        $mp3 = "\xff\xea\x90\x00" . Str\repeat("\x00", 100);
+        $type = Sniff\from_string($mp3);
+
+        static::assertSame('audio/mpeg', $type->essence());
+    }
+
+    public function testFromStringMp3FrameMaskedEB(): void
+    {
+        $mp3 = "\xff\xeb\x90\x00" . Str\repeat("\x00", 100);
+        $type = Sniff\from_string($mp3);
+
+        static::assertSame('audio/mpeg', $type->essence());
+    }
+
+    public function testFromStringMp3FrameMaskedMismatch(): void
+    {
+        $data = "\xff\xc2\x00\x00" . Str\repeat("\x00", 100);
+        $type = Sniff\from_string($data);
+
+        static::assertSame('application/octet-stream', $type->essence());
+    }
+
     public function testFromStringZipVariant0506(): void
     {
         $zip = "PK\x05\x06" . Str\repeat("\x00", 100);

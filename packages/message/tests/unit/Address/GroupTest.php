@@ -148,4 +148,128 @@ final class GroupTest extends TestCase
 
         self::assertSame($group->toString(), (string) $group);
     }
+
+    #[Test]
+    public function parseWithLeadingWhitespace(): void
+    {
+        $group = Group::parse('  Team: alice@example.com;  ');
+
+        static::assertSame('Team', $group->displayName);
+        static::assertCount(1, $group->mailboxes);
+    }
+
+    #[Test]
+    public function parseColonAtStartThrows(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        Group::parse(':alice@example.com;');
+    }
+
+    #[Test]
+    public function parseNoColonThrowsException(): void
+    {
+        $this->expectException(ParsingException::class);
+
+        Group::parse('no-colon-here');
+    }
+
+    #[Test]
+    public function parseWithTrailingWhitespaceBeforeSemicolon(): void
+    {
+        $group = Group::parse('Team: alice@example.com;   ');
+
+        static::assertSame('Team', $group->displayName);
+        static::assertCount(1, $group->mailboxes);
+    }
+
+    #[Test]
+    public function parseWithSpacesAroundMailboxList(): void
+    {
+        $group = Group::parse('Empty:   ;');
+
+        static::assertSame('Empty', $group->displayName);
+        static::assertSame([], $group->mailboxes);
+    }
+
+    #[Test]
+    public function parseEmptyMailboxListReturnsGroupWithNoMailboxes(): void
+    {
+        $group = Group::parse('Undisclosed:;');
+
+        static::assertSame('Undisclosed', $group->displayName);
+        static::assertSame([], $group->mailboxes);
+    }
+
+    #[Test]
+    public function toStringProducesCorrectFormat(): void
+    {
+        $group = new Group('Team', [
+            new Mailbox('alice', 'example.com'),
+            new Mailbox('bob', 'example.com'),
+        ]);
+
+        $result = $group->toString();
+
+        static::assertSame('Team: alice@example.com, bob@example.com;', $result);
+    }
+
+    #[Test]
+    public function parseTrimmedInputRequired(): void
+    {
+        $group = Group::parse('  Team: alice@example.com;  ');
+
+        static::assertSame('Team', $group->displayName);
+        static::assertCount(1, $group->mailboxes);
+        static::assertSame('alice@example.com', $group->mailboxes[0]->address);
+    }
+
+    #[Test]
+    public function parseSemicolonCheckUsesTrimmedInput(): void
+    {
+        $group = Group::parse('Team: alice@example.com;   ');
+
+        static::assertSame('Team', $group->displayName);
+        static::assertCount(1, $group->mailboxes);
+    }
+
+    #[Test]
+    public function parseMailboxListIsTrimmed(): void
+    {
+        $group = Group::parse('Team:   alice@example.com   ;');
+
+        static::assertSame('Team', $group->displayName);
+        static::assertCount(1, $group->mailboxes);
+        static::assertSame('alice@example.com', $group->mailboxes[0]->address);
+    }
+
+    #[Test]
+    public function parseEmptyMailboxListReturnsNoMailboxes(): void
+    {
+        $group = Group::parse('Empty:;');
+
+        static::assertSame('Empty', $group->displayName);
+        static::assertSame([], $group->mailboxes);
+    }
+
+    #[Test]
+    public function parseWhitespaceOnlyMailboxListReturnsNoMailboxes(): void
+    {
+        $group = Group::parse('Empty:   ;');
+
+        static::assertSame('Empty', $group->displayName);
+        static::assertSame([], $group->mailboxes);
+    }
+
+    #[Test]
+    public function toStringUsesMailboxToStringMethod(): void
+    {
+        $group = new Group('Team', [
+            new Mailbox('alice', 'example.com', 'Alice'),
+        ]);
+
+        $result = $group->toString();
+
+        static::assertSame('Team: Alice <alice@example.com>;', $result);
+    }
 }

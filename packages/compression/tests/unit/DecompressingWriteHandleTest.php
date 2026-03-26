@@ -10,6 +10,8 @@ use Psl\Compression\CompressingReadHandle;
 use Psl\Compression\DecompressingWriteHandle;
 use Psl\Compression\Tests\Fixture\BrotliCompressor;
 use Psl\Compression\Tests\Fixture\BrotliDecompressor;
+use Psl\Compression\Tests\Fixture\NullDecompressor;
+use Psl\Compression\Tests\Fixture\PartialWriteHandle;
 use Psl\IO;
 
 use function str_repeat;
@@ -128,6 +130,97 @@ final class DecompressingWriteHandleTest extends TestCase
         $output->seek(0);
 
         static::assertSame($original, $output->readAll());
+    }
+
+    public function testDrainTryWithEmptyBuffer(): void
+    {
+        $output = new IO\MemoryHandle();
+        $writer = new DecompressingWriteHandle($output, new NullDecompressor());
+
+        $written = $writer->tryWrite('');
+
+        static::assertSame(0, $written);
+        $output->seek(0);
+        static::assertSame('', $output->readAll());
+    }
+
+    public function testDrainTryWithNonEmptyBuffer(): void
+    {
+        $output = new IO\MemoryHandle();
+        $writer = new DecompressingWriteHandle($output, new NullDecompressor());
+
+        $writer->tryWrite('hello');
+
+        $output->seek(0);
+
+        static::assertSame('hello', $output->readAll());
+    }
+
+    public function testDrainTryWithPartialInnerWrite(): void
+    {
+        $output = new PartialWriteHandle(maxBytesPerWrite: 3);
+        $writer = new DecompressingWriteHandle($output, new NullDecompressor());
+
+        $writer->tryWrite('hello');
+
+        static::assertSame('hel', $output->getBuffer());
+    }
+
+    public function testDrainWithEmptyBuffer(): void
+    {
+        $output = new IO\MemoryHandle();
+        $writer = new DecompressingWriteHandle($output, new NullDecompressor());
+
+        $written = $writer->write('');
+
+        static::assertSame(0, $written);
+        $output->seek(0);
+        static::assertSame('', $output->readAll());
+    }
+
+    public function testDrainWithNonEmptyBuffer(): void
+    {
+        $output = new IO\MemoryHandle();
+        $writer = new DecompressingWriteHandle($output, new NullDecompressor());
+
+        $writer->write('hello');
+
+        $output->seek(0);
+
+        static::assertSame('hello', $output->readAll());
+    }
+
+    public function testDrainWithPartialInnerWrite(): void
+    {
+        $output = new PartialWriteHandle(maxBytesPerWrite: 3);
+        $writer = new DecompressingWriteHandle($output, new NullDecompressor());
+
+        $writer->write('hello');
+
+        static::assertSame('hel', $output->getBuffer());
+    }
+
+    public function testDrainAllWithNonEmptyBuffer(): void
+    {
+        $output = new PartialWriteHandle(maxBytesPerWrite: 2);
+        $writer = new DecompressingWriteHandle($output, new NullDecompressor());
+
+        $writer->tryWrite('hello world');
+        $writer->flush();
+
+        static::assertSame('hello world', $output->getBuffer());
+    }
+
+    public function testDrainAllWithEmptyBuffer(): void
+    {
+        $output = new IO\MemoryHandle();
+        $writer = new DecompressingWriteHandle($output, new NullDecompressor());
+
+        $writer->flush();
+
+        $output->seek(0);
+
+        static::assertSame('', $output->readAll());
     }
 
     private function compress(string $data): string

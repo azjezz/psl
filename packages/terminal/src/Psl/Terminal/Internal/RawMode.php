@@ -13,6 +13,8 @@ use Psl\Terminal\Exception;
  * Manages terminal raw mode (stty raw/cooked).
  *
  * @internal
+ *
+ * @codeCoverageIgnore
  */
 final class RawMode
 {

@@ -142,4 +142,95 @@ final class TransferEncodingTest extends TestCase
     {
         static::assertSame(TransferEncoding::SevenBit, TransferEncoding::detect(''));
     }
+
+    public function testDetectEmptyReturnsSevenBitNotNull(): void
+    {
+        $result = TransferEncoding::detect('');
+        static::assertSame(TransferEncoding::SevenBit, $result);
+    }
+
+    public function testDetectMultipleLinesAscii(): void
+    {
+        $content = "line1\nline2\nline3\nline4";
+        static::assertSame(TransferEncoding::SevenBit, TransferEncoding::detect($content));
+    }
+
+    public function testDetectContentWithCarriageReturns(): void
+    {
+        $content = "line1\r\nline2\r\nline3";
+        static::assertSame(TransferEncoding::SevenBit, TransferEncoding::detect($content));
+    }
+
+    public function testDetectByte127IsNotHighByte(): void
+    {
+        $content = "Hello\x7FWorld";
+        static::assertSame(TransferEncoding::SevenBit, TransferEncoding::detect($content));
+    }
+
+    public function testDetectPureAsciiShortLineIsSevenBit(): void
+    {
+        $content = 'Hello, this is purely ASCII text with no high bytes.';
+        static::assertSame(TransferEncoding::SevenBit, TransferEncoding::detect($content));
+    }
+
+    public function testDetectHighBytesAtExactThirtyPercent(): void
+    {
+        $content = 'aaaaaaa' . "\xC0\xC1\xC2";
+        static::assertSame(TransferEncoding::QuotedPrintable, TransferEncoding::detect($content));
+    }
+
+    public function testDetectAsciiExactly998CharsIsSevenBit(): void
+    {
+        $content = Str\repeat('a', 998);
+        static::assertSame(TransferEncoding::SevenBit, TransferEncoding::detect($content));
+    }
+
+    public function testDetectAscii999CharsIsQuotedPrintable(): void
+    {
+        $content = Str\repeat('a', 999);
+        static::assertSame(TransferEncoding::QuotedPrintable, TransferEncoding::detect($content));
+    }
+
+    public function testDetectEmptyReturnsSevenBitValue(): void
+    {
+        $result = TransferEncoding::detect('');
+        static::assertSame('7bit', $result->value);
+        static::assertNotSame(TransferEncoding::Base64, $result);
+        static::assertNotSame(TransferEncoding::QuotedPrintable, $result);
+        static::assertNotSame(TransferEncoding::EightBit, $result);
+        static::assertNotSame(TransferEncoding::Binary, $result);
+    }
+
+    public function testDetectMultipleLinesProcessesAllLines(): void
+    {
+        $content = Str\repeat('a', 100) . "\n" . Str\repeat('b', 1000);
+        static::assertSame(TransferEncoding::QuotedPrintable, TransferEncoding::detect($content));
+    }
+
+    public function testDetectCRIsSkippedInLineLength(): void
+    {
+        $content = "abc\r\n" . Str\repeat('d', 1000);
+        static::assertSame(TransferEncoding::QuotedPrintable, TransferEncoding::detect($content));
+    }
+
+    public function testDetectZeroHighBytesWithExactLineLimit(): void
+    {
+        $content = Str\repeat('a', 998);
+        $result = TransferEncoding::detect($content);
+        static::assertSame(TransferEncoding::SevenBit, $result);
+    }
+
+    public function testDetectZeroHighBytesAtExactLineLimitBoundary(): void
+    {
+        $sevenBit = TransferEncoding::detect(Str\repeat('a', 998));
+        $qp = TransferEncoding::detect(Str\repeat('a', 999));
+        static::assertSame(TransferEncoding::SevenBit, $sevenBit);
+        static::assertSame(TransferEncoding::QuotedPrintable, $qp);
+    }
+
+    public function testDetectHighBytesZeroAndLineLengthExactly998IsSevenBit(): void
+    {
+        $content = Str\repeat('x', 998);
+        static::assertSame(TransferEncoding::SevenBit, TransferEncoding::detect($content));
+    }
 }

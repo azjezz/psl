@@ -377,4 +377,97 @@ final class RetryClientTest extends TestCase
         static::assertSame(200, $tx->response->status);
         static::assertSame(3, $inner->attempts);
     }
+
+    public function testDefaultMaxAttemptsIsExactly3(): void
+    {
+        $inner = self::failThenSucceedClient(2);
+        $client = new RetryClient($inner, backoff: Duration::milliseconds(1));
+
+        $tx = $client->send(self::request());
+
+        static::assertSame(200, $tx->response->status);
+        static::assertSame(3, $inner->attempts);
+    }
+
+    public function testDefaultMaxAttemptsExceededAt4Failures(): void
+    {
+        $inner = self::alwaysFailClient();
+        $client = new RetryClient($inner, backoff: Duration::milliseconds(1));
+
+        $this->expectException(RuntimeException::class);
+
+        try {
+            $client->send(self::request());
+        } finally {
+            static::assertSame(3, $inner->attempts);
+        }
+    }
+
+    public function testDefaultBackoffMultiplierIs2(): void
+    {
+        $inner = self::failThenSucceedClient(2);
+        $client = new RetryClient($inner, maxAttempts: 3, backoff: Duration::milliseconds(50));
+
+        $start = Timestamp::monotonic();
+        $client->send(self::request());
+        $elapsed = Timestamp::monotonic()->since($start)->getTotalMilliseconds();
+
+        static::assertGreaterThanOrEqual(120, $elapsed);
+    }
+
+    public function testDefaultBackoffIs100ms(): void
+    {
+        $inner = self::failThenSucceedClient(1);
+        $client = new RetryClient($inner, maxAttempts: 2, backoffMultiplier: 1);
+
+        $start = Timestamp::monotonic();
+        $client->send(self::request());
+        $elapsed = Timestamp::monotonic()->since($start)->getTotalMilliseconds();
+
+        static::assertGreaterThanOrEqual(80, $elapsed);
+    }
+
+    public function testRetriesOnIoRuntimeException(): void
+    {
+        $inner = new class() implements ClientInterface {
+            public int $attempts = 0;
+
+            #[Override]
+            public function send(
+                Request $request,
+                SendConfiguration $configuration = new SendConfiguration(),
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): Transaction {
+                $this->attempts++;
+                if ($this->attempts <= 1) {
+                    throw new IO\Exception\RuntimeException('broken pipe');
+                }
+
+                return new Transaction(
+                    [],
+                    null,
+                    new Response(status: 200, headers: FieldMap::default(), body: new IO\MemoryHandle('ok')),
+                );
+            }
+        };
+
+        $client = new RetryClient($inner, maxAttempts: 3, backoff: Duration::milliseconds(1));
+        $tx = $client->send(self::request());
+
+        static::assertSame(200, $tx->response->status);
+        static::assertSame(2, $inner->attempts);
+    }
+
+    public function testBackoffFormulaUsesAttemptMinusOne(): void
+    {
+        $inner = self::failThenSucceedClient(2);
+        $client = new RetryClient($inner, maxAttempts: 3, backoff: Duration::milliseconds(100), backoffMultiplier: 2);
+
+        $start = Timestamp::monotonic();
+        $client->send(self::request());
+        $elapsed = Timestamp::monotonic()->since($start)->getTotalMilliseconds();
+
+        static::assertGreaterThanOrEqual(250, $elapsed);
+        static::assertLessThan(550, $elapsed);
+    }
 }

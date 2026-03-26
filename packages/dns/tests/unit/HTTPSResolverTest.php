@@ -19,6 +19,7 @@ use Psl\DNS\ResponseCode;
 use Psl\IO;
 use Psl\Str;
 use Psl\TCP;
+use ReflectionClass;
 
 /**
  * @mago-expect lint:excessive-nesting
@@ -209,6 +210,128 @@ final class HTTPSResolverTest extends TestCase
         } finally {
             $serverFuture->await();
         }
+    }
+
+    public function testDefaultDnssecIsFalse(): void
+    {
+        $resolver = new HTTPSResolver('https://1.1.1.1/dns-query');
+
+        $reflection = new ReflectionClass($resolver);
+        $dnssec = $reflection->getProperty('dnssec')->getValue($resolver);
+
+        static::assertFalse($dnssec);
+    }
+
+    public function testCustomDnssecIsRespected(): void
+    {
+        $resolver = new HTTPSResolver('https://1.1.1.1/dns-query', dnssec: true);
+
+        $reflection = new ReflectionClass($resolver);
+        $dnssec = $reflection->getProperty('dnssec')->getValue($resolver);
+
+        static::assertTrue($dnssec);
+    }
+
+    public function testNullClientCreatesDefault(): void
+    {
+        $resolver = new HTTPSResolver('https://1.1.1.1/dns-query');
+
+        $reflection = new ReflectionClass($resolver);
+        $client = $reflection->getProperty('client')->getValue($resolver);
+
+        static::assertInstanceOf(\Psl\HTTP\Client\Client::class, $client);
+    }
+
+    public function testRequestIncludesContentTypeHeader(): void
+    {
+        $receivedContentType = null;
+
+        [$port, $serverFuture] = self::startDoHServerWithContentTypeCapture(static function (string $dnsQuery): string {
+            $id = new Reader($dnsQuery)->u16();
+
+            $answerName = "\x07example\x03com\x00";
+
+            return new Writer()
+                ->u16($id)
+                ->u16(0x8180)
+                ->u16(0)
+                ->u16(1)
+                ->u16(0)
+                ->u16(0)
+                ->bytes($answerName)
+                ->u16(1)
+                ->u16(1)
+                ->u32(300)
+                ->u16(4)
+                ->u8(10)
+                ->u8(0)
+                ->u8(0)
+                ->u8(1)
+                ->toString();
+        }, $receivedContentType);
+
+        try {
+            $resolver = new HTTPSResolver("http://127.0.0.1:{$port}/dns-query");
+            $resolver->query('example.com', RecordType::A);
+
+            static::assertSame('application/dns-message', $receivedContentType);
+        } finally {
+            $serverFuture->await();
+        }
+    }
+
+    /**
+     * Start a minimal HTTP/1.1 server that captures Content-Type.
+     *
+     * @param Closure(string): string $handler
+     *
+     * @return array{int<0, 65535>, Async\Awaitable<void>}
+     */
+    private static function startDoHServerWithContentTypeCapture(
+        Closure $handler,
+        null|string &$contentTypeCapture = null,
+    ): array {
+        $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
+        /** @var int<0, 65535> $port */
+        $port = $listener->getLocalAddress()->port;
+
+        $future = Async\run(static function () use ($listener, $handler, &$contentTypeCapture): void {
+            try {
+                $conn = $listener->accept(new Async\TimeoutCancellationToken(Duration::seconds(5)));
+                $reader = new IO\Reader($conn);
+
+                $contentLength = 0;
+                while (true) {
+                    $line = $reader->readLine();
+                    if ($line === null || $line === '') {
+                        break;
+                    }
+
+                    if (Str\Byte\starts_with_ci($line, 'content-type:')) {
+                        $contentTypeCapture = Str\Byte\trim(Str\Byte\after($line, ':') ?? '');
+                    }
+
+                    if (Str\Byte\starts_with_ci($line, 'content-length:')) {
+                        $contentLength = (int) Str\Byte\trim(Str\Byte\after($line, ':') ?? '');
+                    }
+                }
+
+                $body = $reader->readFixedSize($contentLength);
+                $responseBody = $handler($body);
+                $headers =
+                    "HTTP/1.1 200 OK\r\nContent-Type: application/dns-message\r\nContent-Length: "
+                    . Str\Byte\length($responseBody)
+                    . "\r\nConnection: close\r\n\r\n";
+                $conn->writeAll($headers . $responseBody);
+                $conn->close();
+            } catch (IO\Exception\ExceptionInterface|Async\Exception\CancelledException) {
+                // @mago-expect lint:no-empty-catch-clause
+            } finally {
+                $listener->close();
+            }
+        });
+
+        return [$port, $future];
     }
 
     /**

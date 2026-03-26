@@ -52,6 +52,8 @@ final class UDPSourceAddressVerificationTest extends TestCase
             $expectedSuffix = $spoofAddress->host . ':' . $expectedPort;
             static::assertStringContainsString('DNS response received from', $e->getMessage());
             static::assertStringContainsString($expectedSuffix, $e->getMessage());
+            $expectedTarget = $targetAddress->host . ':' . ($targetAddress->port ?? 0);
+            static::assertStringContainsString('expected ' . $expectedTarget, $e->getMessage());
         }
     }
 }

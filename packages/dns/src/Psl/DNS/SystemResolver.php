@@ -28,6 +28,8 @@ use function count;
  *     function fetch(string $url, ResolverInterface $resolver = new SystemResolver()): Response
  *
  * @api
+ *
+ * @codeCoverageIgnore
  */
 final class SystemResolver implements ResolverInterface, DefaultInterface
 {

@@ -8,6 +8,8 @@ use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\TestCase;
 use Psl\Compression\CompressingWriteHandle;
 use Psl\Compression\Tests\Fixture\BrotliCompressor;
+use Psl\Compression\Tests\Fixture\NullCompressor;
+use Psl\Compression\Tests\Fixture\PartialWriteHandle;
 use Psl\IO;
 
 use function brotli_uncompress;
@@ -117,5 +119,72 @@ final class CompressingWriteHandleTest extends TestCase
 
         static::assertLessThan(strlen($original), strlen($compressed));
         static::assertSame($original, brotli_uncompress($compressed));
+    }
+
+    public function testDrainTryWritesBufferToInnerHandle(): void
+    {
+        $output = new IO\MemoryHandle();
+        $writer = new CompressingWriteHandle($output, new NullCompressor());
+
+        $writer->tryWrite('hello');
+
+        $output->seek(0);
+
+        static::assertSame('hello', $output->readAll());
+    }
+
+    public function testDrainTryWithPartialInnerWrite(): void
+    {
+        $output = new PartialWriteHandle(maxBytesPerWrite: 3);
+        $writer = new CompressingWriteHandle($output, new NullCompressor());
+
+        $writer->tryWrite('hello');
+
+        static::assertSame('hel', $output->getBuffer());
+    }
+
+    public function testDrainWritesBufferToInnerHandle(): void
+    {
+        $output = new IO\MemoryHandle();
+        $writer = new CompressingWriteHandle($output, new NullCompressor());
+
+        $writer->write('hello');
+
+        $output->seek(0);
+
+        static::assertSame('hello', $output->readAll());
+    }
+
+    public function testDrainWithPartialInnerWrite(): void
+    {
+        $output = new PartialWriteHandle(maxBytesPerWrite: 3);
+        $writer = new CompressingWriteHandle($output, new NullCompressor());
+
+        $writer->write('hello');
+
+        static::assertSame('hel', $output->getBuffer());
+    }
+
+    public function testDrainAllWithEmptyBuffer(): void
+    {
+        $output = new IO\MemoryHandle();
+        $writer = new CompressingWriteHandle($output, new NullCompressor());
+
+        $writer->flush();
+
+        $output->seek(0);
+
+        static::assertSame('', $output->readAll());
+    }
+
+    public function testDrainAllFlushesEntireBuffer(): void
+    {
+        $output = new PartialWriteHandle(maxBytesPerWrite: 2);
+        $writer = new CompressingWriteHandle($output, new NullCompressor());
+
+        $writer->tryWrite('hello world');
+        $writer->flush();
+
+        static::assertSame('hello world', $output->getBuffer());
     }
 }

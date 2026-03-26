@@ -322,4 +322,81 @@ final class MessageTest extends TestCase
 
         self::assertSame('=?utf-8?B?!!!invalid-base64!!!?=', $message->subject);
     }
+
+    #[Test]
+    public function withReferencesStoresAngleBracketForm(): void
+    {
+        $id1 = \Psl\Message\MessageId::parse('<ref1@example.com>');
+        $id2 = \Psl\Message\MessageId::parse('<ref2@example.com>');
+        $message = new Message();
+        $message = $message->withReferences([$id1, $id2]);
+
+        static::assertCount(2, $message->references);
+        static::assertSame('ref1@example.com', $message->references[0]->id);
+        static::assertSame('ref2@example.com', $message->references[1]->id);
+        $refHeader = $message->headers->get('References');
+        static::assertNotNull($refHeader);
+        static::assertStringContainsString('<ref1@example.com>', $refHeader);
+        static::assertStringContainsString('<ref2@example.com>', $refHeader);
+    }
+
+    #[Test]
+    public function withInReplyToStoresAngleBracketForm(): void
+    {
+        $id1 = \Psl\Message\MessageId::parse('<parent@example.com>');
+        $id2 = \Psl\Message\MessageId::parse('<other@example.com>');
+        $message = new Message();
+        $message = $message->withInReplyTo([$id1, $id2]);
+
+        static::assertCount(2, $message->inReplyTo);
+        static::assertSame('parent@example.com', $message->inReplyTo[0]->id);
+        $header = $message->headers->get('In-Reply-To');
+        static::assertNotNull($header);
+        static::assertStringContainsString('<parent@example.com>', $header);
+        static::assertStringContainsString('<other@example.com>', $header);
+    }
+
+    #[Test]
+    public function withReferencesEmptyRemovesHeader(): void
+    {
+        $id = \Psl\Message\MessageId::parse('<ref@example.com>');
+        $message = new Message();
+        $message = $message->withReferences([$id]);
+        static::assertNotNull($message->headers->get('References'));
+
+        $message = $message->withReferences([]);
+        static::assertNull($message->headers->get('References'));
+    }
+
+    #[Test]
+    public function withInReplyToEmptyRemovesHeader(): void
+    {
+        $id = \Psl\Message\MessageId::parse('<reply@example.com>');
+        $message = new Message();
+        $message = $message->withInReplyTo([$id]);
+        static::assertNotNull($message->headers->get('In-Reply-To'));
+
+        $message = $message->withInReplyTo([]);
+        static::assertNull($message->headers->get('In-Reply-To'));
+    }
+
+    #[Test]
+    public function dateWithWhitespaceIsParsedCorrectly(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['Date', '   Mon, 01 Jan 2024 12:00:00 +0000   '],
+        ]));
+
+        static::assertNotNull($message->date);
+    }
+
+    #[Test]
+    public function referencesWithNoAngleBracketsReturnsEmptyArray(): void
+    {
+        $message = new Message(Headers::fromPairs([
+            ['References', 'plain-text-no-brackets'],
+        ]));
+
+        static::assertSame([], $message->references);
+    }
 }

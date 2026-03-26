@@ -166,6 +166,17 @@ final class MixedBuilderTest extends TestCase
         static::assertSame('<p>html version</p>', $altParts[1]->body->readAll());
     }
 
+    public function testCompositeHeadersContainContentType(): void
+    {
+        $body = new Part(Headers::default(), new IO\MemoryHandle(''));
+        $builder = new Composite($body, 'ct-boundary');
+
+        $contentType = $builder->headers->get('content-type');
+        static::assertNotNull($contentType);
+        static::assertStringContainsString('multipart/mixed', $contentType);
+        static::assertStringContainsString('ct-boundary', $contentType);
+    }
+
     public function testRoundTrip(): void
     {
         $body = new Part(Headers::fromPairs([[

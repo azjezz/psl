@@ -16,6 +16,8 @@ use const PHP_OS_FAMILY;
  * Query terminal dimensions.
  *
  * @internal
+ *
+ * @codeCoverageIgnore
  */
 final class TerminalSize
 {
