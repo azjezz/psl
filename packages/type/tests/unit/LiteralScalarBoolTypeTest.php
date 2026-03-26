@@ -21,6 +21,9 @@ final class LiteralScalarBoolTypeTest extends TypeTestCase
         yield ['0', false];
         yield [0, false];
         yield [false, false];
+        yield ['false', false];
+        yield ['False', false];
+        yield ['FALSE', false];
     }
 
     #[Override]
@@ -29,7 +32,8 @@ final class LiteralScalarBoolTypeTest extends TypeTestCase
         yield [null];
         yield [true];
         yield ['true'];
-        yield ['false'];
+        yield ['True'];
+        yield ['TRUE'];
         yield [1.2];
         yield [Type\bool()];
     }

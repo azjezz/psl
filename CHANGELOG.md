@@ -4,6 +4,7 @@
 
 ### features
 
+- feat(type): support `'true'`/`'false'` string literals in `Type\bool()` coercion - [#735](https://github.com/php-standard-library/php-standard-library/pull/735) by @verweto
 - feat: introduce `MIME` component - comprehensive MIME toolkit implementing RFC 2045-2049 and related standards
   - Media type parsing, validation, and content negotiation (`MediaType`, `MediaRange`, `MediaPreferences`) per RFC 2045, RFC 6838, RFC 9110
   - MIME part construction with automatic transfer encoding (`Part\Text`, `Part\Data`) per RFC 2045

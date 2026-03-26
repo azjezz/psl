@@ -10,6 +10,8 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
 use function is_bool;
+use function is_string;
+use function mb_strtolower;
 
 /**
  * @extends Type\Type<bool>
@@ -43,6 +45,17 @@ final readonly class BoolType extends Type\Type
 
         if (1 === $value || '1' === $value) {
             return true;
+        }
+
+        if (is_string($value)) {
+            $lower = mb_strtolower($value);
+            if ('true' === $lower) {
+                return true;
+            }
+
+            if ('false' === $lower) {
+                return false;
+            }
         }
 
         throw CoercionException::withValue($value, $this->toString());

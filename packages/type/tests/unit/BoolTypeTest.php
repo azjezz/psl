@@ -21,17 +21,21 @@ final class BoolTypeTest extends TypeTestCase
         yield [false, false];
         yield [0, false];
         yield ['0', false];
+        yield ['false', false];
+        yield ['False', false];
+        yield ['FALSE', false];
         yield [true, true];
         yield [1, true];
         yield ['1', true];
+        yield ['true', true];
+        yield ['True', true];
+        yield ['TRUE', true];
     }
 
     #[Override]
     public static function getInvalidCoercions(): iterable
     {
         yield [null];
-        yield ['true'];
-        yield ['false'];
         yield [1.2];
         yield [Type\bool()];
     }
