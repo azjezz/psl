@@ -239,4 +239,31 @@ final class SocketTest extends TestCase
 
         $socket->listen();
     }
+
+    public function testConnectWithBindToConfiguration(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 0);
+        $port = $listener->getLocalAddress()->port ?? 0;
+
+        Async\concurrently([
+            'server' => static function () use ($listener): void {
+                $conn = $listener->accept();
+                $data = $conn->read();
+                static::assertSame('bindto-hello', $data);
+                $conn->close();
+                $listener->close();
+            },
+            'client' => static function () use ($port): void {
+                $socket = TCP\Socket::createV4();
+                $stream = $socket->connect('127.0.0.1', $port, new TCP\ConnectConfiguration(bindTo: '127.0.0.1:0'));
+
+                $local = $stream->getLocalAddress();
+                static::assertSame('127.0.0.1', $local->host);
+                static::assertGreaterThan(0, $local->port);
+
+                $stream->writeAll('bindto-hello');
+                $stream->close();
+            },
+        ]);
+    }
 }

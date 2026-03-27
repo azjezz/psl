@@ -9,12 +9,13 @@ use Psl\Async;
 use Psl\Async\TimeoutCancellationToken;
 use Psl\DateTime\Duration;
 use Psl\HTTP\Client\ClientConfiguration;
+use Psl\HTTP\Client\Connection\Origin;
 use Psl\HTTP\Client\Connection\PooledConnector;
-use Psl\HTTP\Client\Exception\ProtocolException;
+use Psl\HTTP\Client\Internal\H1\H1Connection;
+use Psl\HTTP\Client\ProxyConfiguration;
 use Psl\HTTP\Message\ProtocolVersion;
 use Psl\HTTP\Message\Request;
 use Psl\IO;
-use Psl\IO\Reader;
 use Psl\Network;
 use Psl\TCP;
 
@@ -22,13 +23,7 @@ use function Psl\URL\parse;
 
 final class PooledConnectorTunnelTest extends TestCase
 {
-    /**
-     * Verify that PooledConnector sends an HTTP CONNECT request to the tunnel
-     * server when a tunnel address is configured. We intentionally fail the
-     * tunnel handshake (respond 403) so the connector raises a ProtocolException
-     * — the goal is only to confirm that the CONNECT line was sent correctly.
-     */
-    public function testTcpConnectionSendsConnectToTunnel(): void
+    public function testHttpTargetUsesForwardProxyNotConnect(): void
     {
         $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
         $address = $listener->getLocalAddress();
@@ -36,24 +31,10 @@ final class PooledConnectorTunnelTest extends TestCase
         /** @var int<0, 65535> $tunnelPort */
         $tunnelPort = $address->port;
 
-        $receivedConnectLine = null;
-
-        $tunnelFuture = Async\run(static function () use ($listener, &$receivedConnectLine): void {
+        $tunnelFuture = Async\run(static function () use ($listener): void {
             try {
                 $conn = $listener->accept(new TimeoutCancellationToken(Duration::seconds(5)));
-                $reader = new Reader($conn);
-
-                while (true) {
-                    $line = $reader->readLine();
-                    if ($line === null || $line === '') {
-                        break;
-                    }
-
-                    $receivedConnectLine ??= $line;
-                }
-
-                // Respond with 403 so the connector aborts cleanly
-                $conn->writeAll("HTTP/1.1 403 Forbidden\r\nContent-Length: 0\r\n\r\n");
+                $conn->close();
             } catch (IO\Exception\ExceptionInterface|Network\Exception\ExceptionInterface) {
                 // @mago-expect lint:no-empty-catch-clause
             }
@@ -63,23 +44,19 @@ final class PooledConnectorTunnelTest extends TestCase
             $connector = new PooledConnector();
             $configuration = new ClientConfiguration(
                 protocolVersions: [ProtocolVersion::V11],
-                tunnel: "http://127.0.0.1:{$tunnelPort}",
+                proxyConfiguration: new ProxyConfiguration(parse("http://127.0.0.1:{$tunnelPort}")),
             );
 
             $request = new Request(method: 'GET', url: parse('http://target.example.com:8080/'));
-
-            try {
-                $connector->connect($request, $configuration, new TimeoutCancellationToken(Duration::seconds(5)));
-                static::fail('Expected ProtocolException for 403 tunnel response');
-            } catch (ProtocolException) {
-                static::addToAssertionCount(1);
-            }
-
-            static::assertSame(
-                'CONNECT target.example.com:8080 HTTP/1.1',
-                $receivedConnectLine,
-                'The tunnel server should have received a CONNECT request for the target host:port',
+            $connection = $connector->connect(
+                Origin::fromUrl($request->url),
+                $request,
+                $configuration,
+                new TimeoutCancellationToken(Duration::seconds(5)),
             );
+
+            static::assertInstanceOf(H1Connection::class, $connection);
+            static::assertTrue($connection->isForwardProxy);
         } finally {
             $listener->close();
             try {
@@ -90,10 +67,6 @@ final class PooledConnectorTunnelTest extends TestCase
         }
     }
 
-    /**
-     * Verify that when the target host appears in the noTunneling list, the
-     * connection is made directly without going through the tunnel.
-     */
     public function testTunnelBypassForNoTunnelingHost(): void
     {
         // Start a tunnel server that should NOT receive any connection.
@@ -140,13 +113,16 @@ final class PooledConnectorTunnelTest extends TestCase
             $connector = new PooledConnector();
             $configuration = new ClientConfiguration(
                 protocolVersions: [ProtocolVersion::V11],
-                tunnel: "http://127.0.0.1:{$tunnelPort}",
-                noTunneling: ['127.0.0.1'],
+                proxyConfiguration: new ProxyConfiguration(
+                    parse("http://127.0.0.1:{$tunnelPort}"),
+                    skipProxyFor: ['127.0.0.1'],
+                ),
             );
 
             $request = new Request(method: 'GET', url: parse("http://127.0.0.1:{$targetPort}/"));
 
             $connection = $connector->connect(
+                Origin::fromUrl($request->url),
                 $request,
                 $configuration,
                 new TimeoutCancellationToken(Duration::seconds(5)),
@@ -175,40 +151,22 @@ final class PooledConnectorTunnelTest extends TestCase
 
         static::assertFalse(
             $tunnelWasContacted,
-            'The tunnel server should NOT have been contacted when the host is in the noTunneling list',
+            'The tunnel server should NOT have been contacted when the host is in the skipProxyFor list',
         );
     }
 
-    /**
-     * Verify that a host NOT in the noTunneling list still goes through the
-     * tunnel even when noTunneling is configured for other hosts.
-     */
-    public function testTunnelUsedForNonBypassedHost(): void
+    public function testForwardProxyUsedForNonBypassedHost(): void
     {
-        $tunnelListener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
-        $tunnelAddress = $tunnelListener->getLocalAddress();
+        $proxyListener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
+        $proxyAddress = $proxyListener->getLocalAddress();
 
-        /** @var int<0, 65535> $tunnelPort */
-        $tunnelPort = $tunnelAddress->port;
+        /** @var int<0, 65535> $proxyPort */
+        $proxyPort = $proxyAddress->port;
 
-        $receivedConnectLine = null;
-
-        $tunnelFuture = Async\run(static function () use ($tunnelListener, &$receivedConnectLine): void {
+        $tunnelFuture = Async\run(static function () use ($proxyListener): void {
             try {
-                $conn = $tunnelListener->accept(new TimeoutCancellationToken(Duration::seconds(5)));
-                $reader = new Reader($conn);
-
-                while (true) {
-                    $line = $reader->readLine();
-                    if ($line === null || $line === '') {
-                        break;
-                    }
-
-                    $receivedConnectLine ??= $line;
-                }
-
-                // Respond with 502 to abort cleanly
-                $conn->writeAll("HTTP/1.1 502 Bad Gateway\r\nContent-Length: 0\r\n\r\n");
+                $conn = $proxyListener->accept(new TimeoutCancellationToken(Duration::seconds(5)));
+                $conn->close();
             } catch (IO\Exception\ExceptionInterface|Network\Exception\ExceptionInterface) {
                 // @mago-expect lint:no-empty-catch-clause
             }
@@ -216,30 +174,26 @@ final class PooledConnectorTunnelTest extends TestCase
 
         try {
             $connector = new PooledConnector();
-            // noTunneling contains 'other.host' — target.example.com is NOT bypassed,
-            // so the connection MUST go through the tunnel.
             $configuration = new ClientConfiguration(
                 protocolVersions: [ProtocolVersion::V11],
-                tunnel: "http://127.0.0.1:{$tunnelPort}",
-                noTunneling: ['other.host'],
+                proxyConfiguration: new ProxyConfiguration(
+                    parse("http://127.0.0.1:{$proxyPort}"),
+                    skipProxyFor: ['other.host'],
+                ),
             );
 
             $request = new Request(method: 'GET', url: parse('http://target.example.com:9090/'));
-
-            try {
-                $connector->connect($request, $configuration, new TimeoutCancellationToken(Duration::seconds(5)));
-                static::fail('Expected ProtocolException for 502 tunnel response');
-            } catch (ProtocolException) {
-                static::addToAssertionCount(1);
-            }
-
-            static::assertSame(
-                'CONNECT target.example.com:9090 HTTP/1.1',
-                $receivedConnectLine,
-                'The tunnel server should have received a CONNECT request because target.example.com is not in noTunneling',
+            $connection = $connector->connect(
+                Origin::fromUrl($request->url),
+                $request,
+                $configuration,
+                new TimeoutCancellationToken(Duration::seconds(5)),
             );
+
+            static::assertInstanceOf(H1Connection::class, $connection);
+            static::assertTrue($connection->isForwardProxy);
         } finally {
-            $tunnelListener->close();
+            $proxyListener->close();
             try {
                 $tunnelFuture->await();
             } catch (IO\Exception\ExceptionInterface|Network\Exception\ExceptionInterface) {

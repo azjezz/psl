@@ -352,4 +352,98 @@ final class ParseTest extends TestCase
         static::assertSame('Query=1', $url->query);
         static::assertSame('Frag', $url->fragment);
     }
+
+    public function testBareIPv6NoPort(): void
+    {
+        $url = URL\parse('http://::1/path');
+
+        static::assertSame('http', $url->scheme);
+        static::assertInstanceOf(IPHost::class, $url->authority->host);
+        static::assertSame('::1', $url->authority->host->address->toString());
+        static::assertNull($url->authority->port);
+        static::assertSame('/path', $url->path);
+    }
+
+    public function testBareIPv6FullAddress(): void
+    {
+        $url = URL\parse('http://2001:db8::1/path');
+
+        static::assertSame('http', $url->scheme);
+        static::assertInstanceOf(IPHost::class, $url->authority->host);
+        static::assertSame('2001:db8::1', $url->authority->host->address->toString());
+        static::assertNull($url->authority->port);
+    }
+
+    public function testBareIPv6Loopback(): void
+    {
+        $url = URL\parse('https://::1/');
+
+        static::assertInstanceOf(IPHost::class, $url->authority->host);
+        static::assertSame('::1', $url->authority->host->address->toString());
+        static::assertNull($url->authority->port);
+    }
+
+    public function testBareIPv6MappedIPv4(): void
+    {
+        $url = URL\parse('http://::ffff:192.168.1.1/path');
+
+        static::assertInstanceOf(IPHost::class, $url->authority->host);
+        static::assertSame('::ffff:192.168.1.1', $url->authority->host->address->toString());
+        static::assertNull($url->authority->port);
+    }
+
+    public function testBracketedIPv6WithPort(): void
+    {
+        $url = URL\parse('http://[::1]:8080/path');
+
+        static::assertInstanceOf(IPHost::class, $url->authority->host);
+        static::assertSame('::1', $url->authority->host->address->toString());
+        static::assertSame(8080, $url->authority->port);
+        static::assertSame('/path', $url->path);
+    }
+
+    public function testBracketedIPv6WithoutPort(): void
+    {
+        $url = URL\parse('http://[::1]/path');
+
+        static::assertInstanceOf(IPHost::class, $url->authority->host);
+        static::assertSame('::1', $url->authority->host->address->toString());
+        static::assertNull($url->authority->port);
+    }
+
+    public function testBracketedIPv6WithZoneId(): void
+    {
+        $url = URL\parse('http://[fe80::1%25eth0]:9090/path');
+
+        static::assertInstanceOf(IPHost::class, $url->authority->host);
+        static::assertSame('fe80::1', $url->authority->host->address->toString());
+        static::assertSame('eth0', $url->authority->host->zone);
+        static::assertSame(9090, $url->authority->port);
+    }
+
+    public function testBareIPv6AmbiguousWithPortParsesAsIPv6(): void
+    {
+        $url = URL\parse('http://::1:8080/path');
+
+        static::assertInstanceOf(IPHost::class, $url->authority->host);
+        static::assertNull($url->authority->port);
+    }
+
+    public function testIPv4StillWorks(): void
+    {
+        $url = URL\parse('http://127.0.0.1:8080/path');
+
+        static::assertInstanceOf(IPHost::class, $url->authority->host);
+        static::assertSame('127.0.0.1', $url->authority->host->address->toString());
+        static::assertSame(8080, $url->authority->port);
+    }
+
+    public function testRegularHostnameWithPortStillWorks(): void
+    {
+        $url = URL\parse('http://example.com:443/path');
+
+        static::assertInstanceOf(RegisteredNameHost::class, $url->authority->host);
+        static::assertSame('example.com', $url->authority->host->name);
+        static::assertSame(443, $url->authority->port);
+    }
 }

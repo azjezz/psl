@@ -20,6 +20,7 @@ use function strlen;
 use function strpos;
 use function strrpos;
 use function substr;
+use function substr_count;
 
 /**
  * RFC 3986 URI parser with eager normalization.
@@ -179,6 +180,22 @@ final class Parser
     {
         if (str_starts_with($hostPort, '[')) {
             return self::parseIPLiteral($hostPort);
+        }
+
+        // Detect bare IPv6 addresses (multiple colons indicate IPv6, not host:port).
+        // Per RFC 3986 Section 3.2.2, IPv6 addresses MUST be enclosed in brackets
+        // in URIs. However, we handle bare IPv6 gracefully to avoid silent
+        // misparsing (e.g., "::1" being split into host=":" and port=1).
+        $colonCount = substr_count($hostPort, ':');
+        if ($colonCount > 1) {
+            try {
+                /** @var non-empty-string $hostPort */
+                $address = Address::parse($hostPort);
+
+                return [new IPHost($address), null];
+            } catch (IP\Exception\InvalidArgumentException) {
+                // @mago-expect lint:no-empty-catch-clause - not a valid IPv6, fall through to normal host:port parsing
+            }
         }
 
         $port = null;

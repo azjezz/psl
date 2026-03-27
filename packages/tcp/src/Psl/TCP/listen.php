@@ -30,6 +30,10 @@ function listen(
         'backlog' => $configuration->backlog,
     ]];
 
+    if (null !== $configuration->bindTo) {
+        $socketContext['socket']['bindto'] = $configuration->bindTo;
+    }
+
     $socket = Network\Internal\server_listen("tcp://{$host}:{$port}", $socketContext);
 
     return new Internal\Listener($socket, $configuration->idleConnections);

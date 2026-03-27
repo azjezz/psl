@@ -7,8 +7,11 @@ namespace Psl\HTTP\Client;
 use Override;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\Exception\CancelledException;
+use Psl\Async\LinkedCancellationToken;
 use Psl\Async\NullCancellationToken;
+use Psl\Async\TimeoutCancellationToken;
 use Psl\HTTP\Client\Connection\ConnectorInterface;
+use Psl\HTTP\Client\Connection\Origin;
 use Psl\HTTP\Client\Connection\PooledConnector;
 use Psl\HTTP\Client\Handler\HandlerInterface;
 use Psl\HTTP\Client\Internal\ExchangeHandler;
@@ -94,6 +97,30 @@ final class Client implements ClientInterface
     }
 
     /**
+     * Send an HTTP request through the middleware chain and return the transaction.
+     *
+     * The send flow proceeds through the following stages:
+     *
+     * 1. **Validate**: Reject TRACE requests that include a body, per RFC 9110 Section 9.3.8.
+     * 2. **Extract callback**: Extract the {@see SendConfiguration::$onConnection} callback
+     *    before merging, as it is not part of {@see ClientConfiguration}.
+     * 3. **Merge configuration**: Merge per-request {@see SendConfiguration} overrides into
+     *    the client's default {@see ClientConfiguration} via {@see ClientConfiguration::withOverrides()}.
+     * 4. **Resolve URL**: Resolve the effective request URL from the request itself or from
+     *    the configuration's base URL. If neither is available, throw {@see Exception\RequestException}.
+     * 5. **Connect**: Obtain a connection from the {@see Connection\ConnectorInterface}.
+     * 6. **On-connection callback**: Invoke the {@see SendConfiguration::$onConnection} callback,
+     *    if provided, with the connection metadata.
+     * 7. **Exchange**: Delegate to the handler chain (middleware stack + terminal exchange handler)
+     *    to perform the HTTP exchange on the established connection.
+     *
+     * @throws Exception\RequestException If the request is invalid (e.g., TRACE with body, or no URL resolvable).
+     * @throws Exception\ProtocolException If the server sends a malformed or unparseable HTTP response.
+     * @throws Exception\RuntimeException If the request fails due to a client-level error (e.g., denied destination).
+     * @throws IO\Exception\RuntimeException If an I/O error occurs during the exchange.
+     * @throws Network\Exception\RuntimeException If a transport-level error occurs (e.g., connection refused, DNS failure).
+     * @throws CancelledException If the cancellation token fires during any stage.
+     *
      * @inheritDoc
      */
     #[Override]
@@ -102,11 +129,12 @@ final class Client implements ClientInterface
         SendConfiguration $configuration = new SendConfiguration(),
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): Transaction {
-        if ($request->body !== null && ($request->method === 'HEAD' || $request->method === 'TRACE')) {
-            throw Exception\RequestException::forInvalidRequest($request->method
-            . ' requests must not include a body.');
+        if ($request->body !== null && $request->method === 'TRACE') {
+            throw Exception\RequestException::forInvalidRequest('TRACE requests must not include a body.');
         }
 
+        $onConnection = $configuration->onConnection;
+        $connectionTimeout = $configuration->connectionTimeout;
         $configuration = $this->configuration->withOverrides($configuration);
 
         $url = $this->resolveUrl($request, $configuration);
@@ -114,7 +142,20 @@ final class Client implements ClientInterface
             $request = $request->withUrl($url);
         }
 
-        $connection = $this->connector->connect($request, $configuration, $cancellation);
+        $origin = Origin::fromUrl($url);
+        $connectCancellation = $cancellation;
+        if ($connectionTimeout !== null) {
+            $connectCancellation = new LinkedCancellationToken(
+                $cancellation,
+                new TimeoutCancellationToken($connectionTimeout),
+            );
+        }
+
+        $connection = $this->connector->connect($origin, $request, $configuration, $connectCancellation);
+
+        if ($onConnection !== null) {
+            $onConnection($connection->metadata);
+        }
 
         return $this->handler->handle($connection, $request, $configuration, $cancellation);
     }

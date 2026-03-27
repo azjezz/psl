@@ -13,6 +13,7 @@ use Psl\DateTime\Duration;
 use Psl\H2;
 use Psl\HPACK;
 use Psl\HTTP\Client\ClientConfiguration;
+use Psl\HTTP\Client\Connection\ConnectionMetadata;
 use Psl\HTTP\Client\Exception;
 use Psl\HTTP\Client\Exception\ProtocolException;
 use Psl\HTTP\Client\Exception\RequestException;
@@ -23,6 +24,7 @@ use Psl\HTTP\Client\Internal\H2\ResponseBodyHandle;
 use Psl\HTTP\Message\FieldMap;
 use Psl\HTTP\Message\ProtocolVersion;
 use Psl\HTTP\Message\Request;
+use Psl\HTTP\Message\Response;
 use Psl\HTTP\Message\Transaction;
 use Psl\IO;
 use Psl\Network;
@@ -153,7 +155,10 @@ final class TransportTest extends TestCase
 
             $h2Config = new H2ClientConfiguration();
             $h2Session = new H2Session($stream, $h2Config);
-            $h2Connection = new H2Connection($h2Session, $stream->getLocalAddress(), $stream->getPeerAddress(), null);
+            $h2Connection = new H2Connection(
+                $h2Session,
+                new ConnectionMetadata($stream->getLocalAddress(), $stream->getPeerAddress(), null),
+            );
 
             $tx = $h2Connection->exchange($request, $config);
 
@@ -302,6 +307,171 @@ final class TransportTest extends TestCase
         static::assertSame(100, $tx->informational[0]->status);
         static::assertSame(102, $tx->informational[1]->status);
         static::assertSame('yes', $tx->response->headers->get('x-done'));
+    }
+
+    public function testInformationalCallbackFiredForSingleResponse(): void
+    {
+        $received = [];
+        [, $tx] = self::exchangeWithServer(
+            static function (H2\ServerConnectionInterface $server, H2\Event\HeadersReceived $event): void {
+                $server->sendHeadersWithStatus($event->streamId, '103', [
+                    new HPACK\Header('link', '</style.css>; rel=preload'),
+                ]);
+                $server->sendHeadersWithStatus($event->streamId, '200', [], endStream: true);
+            },
+            config: new ClientConfiguration(onInformationalResponse: static function (Response $r) use (
+                &$received,
+            ): void {
+                $received[] = $r->status;
+            }),
+        );
+
+        static::assertSame([103], $received);
+        static::assertCount(1, $tx->informational);
+        static::assertSame(103, $tx->informational[0]->status);
+    }
+
+    public function testInformationalCallbackFiredForMultipleResponses(): void
+    {
+        $received = [];
+        [, $tx] = self::exchangeWithServer(
+            static function (H2\ServerConnectionInterface $server, H2\Event\HeadersReceived $event): void {
+                $server->sendHeadersWithStatus($event->streamId, '100', []);
+                $server->sendHeadersWithStatus($event->streamId, '103', [
+                    new HPACK\Header('link', '</a>'),
+                ]);
+                $server->sendHeadersWithStatus($event->streamId, '200', [], endStream: true);
+            },
+            config: new ClientConfiguration(onInformationalResponse: static function (Response $r) use (
+                &$received,
+            ): void {
+                $received[] = $r->status;
+            }),
+        );
+
+        static::assertSame([100, 103], $received);
+        static::assertCount(2, $tx->informational);
+    }
+
+    public function testInformationalCallbackNullDoesNotBreak(): void
+    {
+        [, $tx] = self::exchangeWithServer(static function (
+            H2\ServerConnectionInterface $server,
+            H2\Event\HeadersReceived $event,
+        ): void {
+            $server->sendHeadersWithStatus($event->streamId, '100', []);
+            $server->sendHeadersWithStatus($event->streamId, '200', [], endStream: true);
+        }, config: new ClientConfiguration(onInformationalResponse: null));
+
+        static::assertCount(1, $tx->informational);
+        static::assertSame(200, $tx->response->status);
+    }
+
+    public function testMultiplexedInformationalCallbacksAreIsolated(): void
+    {
+        $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
+        $address = $listener->getLocalAddress();
+
+        $serverFuture = Async\run(static function () use ($listener): void {
+            try {
+                $conn = $listener->accept();
+                $server = new H2\ServerConnection($conn);
+                $server->readClientPreface();
+                $server->initialize();
+
+                /** @var array<int, bool> $handledStreams */
+                $handledStreams = [];
+
+                while ($server->isConnected()) {
+                    try {
+                        $events = $server->readEvent(new TimeoutCancellationToken(Duration::seconds(5)));
+                    } catch (CancelledException) {
+                        break;
+                    }
+
+                    foreach ($events as $event) {
+                        if (
+                            !($event instanceof H2\Event\HeadersReceived && !isset($handledStreams[$event->streamId]))
+                        ) {
+                            continue;
+                        }
+
+                        $handledStreams[$event->streamId] = true;
+                        Async\Scheduler::defer(static function () use ($server, $event): void {
+                            $server->sendHeadersWithStatus($event->streamId, '103', [
+                                new HPACK\Header('x-stream', (string) $event->streamId),
+                            ]);
+                            Async\sleep(Duration::milliseconds(50));
+                            $server->sendHeadersWithStatus(
+                                $event->streamId,
+                                '200',
+                                [
+                                    new HPACK\Header('x-stream', (string) $event->streamId),
+                                ],
+                                endStream: true,
+                            );
+                        });
+                    }
+                }
+            } catch (
+                IO\Exception\ExceptionInterface|Network\Exception\ExceptionInterface|H2\Exception\ExceptionInterface|HPACK\Exception\ExceptionInterface
+            ) {
+                // @mago-expect lint:no-empty-catch-clause
+            }
+        });
+
+        try {
+            $connector = new TCP\Connector(new TCP\ConnectConfiguration(noDelay: true));
+            /** @var int<0, 65535> $port */
+            $port = $address->port;
+            $stream = $connector->connect('127.0.0.1', $port, new TimeoutCancellationToken(Duration::seconds(5)));
+
+            $h2Session = new H2Session($stream, new H2ClientConfiguration());
+
+            $url = URL\parse('http://127.0.0.1/');
+            $request1 = new Request(method: 'GET', url: $url, requestTarget: '/a');
+            $request2 = new Request(method: 'GET', url: $url, requestTarget: '/b');
+
+            $received1 = [];
+            $config1 = new ClientConfiguration(onInformationalResponse: static function (Response $r) use (
+                &$received1,
+            ): void {
+                $received1[] = $r->headers->get('x-stream');
+            });
+
+            $received2 = [];
+            $config2 = new ClientConfiguration(onInformationalResponse: static function (Response $r) use (
+                &$received2,
+            ): void {
+                $received2[] = $r->headers->get('x-stream');
+            });
+
+            $metadata = new ConnectionMetadata($stream->getLocalAddress(), $stream->getPeerAddress(), null);
+
+            $conn1 = new H2Connection($h2Session, $metadata);
+            $conn2 = new H2Connection($h2Session, $metadata);
+
+            [$tx1, $tx2] = Async\concurrently([
+                static fn() => $conn1->exchange($request1, $config1),
+                static fn() => $conn2->exchange($request2, $config2),
+            ]);
+
+            static::assertCount(1, $received1);
+            static::assertCount(1, $received2);
+            static::assertNotSame($received1[0], $received2[0]);
+
+            static::assertCount(1, $tx1->informational);
+            static::assertCount(1, $tx2->informational);
+            static::assertSame(200, $tx1->response->status);
+            static::assertSame(200, $tx2->response->status);
+        } finally {
+            $listener->close();
+            try {
+                $serverFuture->await();
+            } catch (Throwable) {
+                // @mago-expect lint:no-empty-catch-clause
+            }
+        }
     }
 
     public function testResponseWithTrailers(): void
@@ -975,14 +1145,15 @@ final class TransportTest extends TestCase
             ) use ($connector, $portB, $h2Config): H2Connection {
                 $streamB = $connector->connect('127.0.0.1', $portB, new TimeoutCancellationToken(Duration::seconds(5)));
                 $sessionB = new H2Session($streamB, $h2Config);
-                return new H2Connection($sessionB, $streamB->getLocalAddress(), $streamB->getPeerAddress(), null);
+                return new H2Connection(
+                    $sessionB,
+                    new ConnectionMetadata($streamB->getLocalAddress(), $streamB->getPeerAddress(), null),
+                );
             };
 
             $h2Connection = new H2Connection(
                 $h2Session,
-                $streamA->getLocalAddress(),
-                $streamA->getPeerAddress(),
-                null,
+                new ConnectionMetadata($streamA->getLocalAddress(), $streamA->getPeerAddress(), null),
                 $reconnect,
             );
 
@@ -1105,14 +1276,15 @@ final class TransportTest extends TestCase
             ) use ($connector, $portB, $h2Config): H2Connection {
                 $streamB = $connector->connect('127.0.0.1', $portB, new TimeoutCancellationToken(Duration::seconds(5)));
                 $sessionB = new H2Session($streamB, $h2Config);
-                return new H2Connection($sessionB, $streamB->getLocalAddress(), $streamB->getPeerAddress(), null);
+                return new H2Connection(
+                    $sessionB,
+                    new ConnectionMetadata($streamB->getLocalAddress(), $streamB->getPeerAddress(), null),
+                );
             };
 
             $h2Connection = new H2Connection(
                 $h2Session,
-                $streamA->getLocalAddress(),
-                $streamA->getPeerAddress(),
-                null,
+                new ConnectionMetadata($streamA->getLocalAddress(), $streamA->getPeerAddress(), null),
                 $reconnect,
             );
 
@@ -1148,9 +1320,11 @@ final class TransportTest extends TestCase
         try {
             $h2Connection = new H2Connection(
                 $session,
-                Network\Address::tcp('127.0.0.1', 0),
-                Network\Address::tcp('127.0.0.1', 0),
-                null,
+                new ConnectionMetadata(
+                    Network\Address::tcp('127.0.0.1', 0),
+                    Network\Address::tcp('127.0.0.1', 0),
+                    null,
+                ),
                 null,
             );
 
@@ -1216,7 +1390,10 @@ final class TransportTest extends TestCase
 
             $h2Config = new H2ClientConfiguration();
             $h2Session = new H2Session($stream, $h2Config);
-            $h2Connection = new H2Connection($h2Session, $stream->getLocalAddress(), $stream->getPeerAddress(), null);
+            $h2Connection = new H2Connection(
+                $h2Session,
+                new ConnectionMetadata($stream->getLocalAddress(), $stream->getPeerAddress(), null),
+            );
 
             $url = URL\parse('http://127.0.0.1/');
             $request = new Request(method: 'GET', url: $url, requestTarget: '/');
@@ -1273,20 +1450,21 @@ final class TransportTest extends TestCase
             $stream = $connector->connect('127.0.0.1', $port, new TimeoutCancellationToken(Duration::seconds(5)));
 
             $session = new H2Session($stream, new H2ClientConfiguration());
-            $connection = new H2Connection($session, $stream->getLocalAddress(), $stream->getPeerAddress(), null);
+            $connection = new H2Connection(
+                $session,
+                new ConnectionMetadata($stream->getLocalAddress(), $stream->getPeerAddress(), null),
+            );
 
             $url = URL\parse('http://127.0.0.1/');
             $request = new Request(method: 'GET', url: $url, requestTarget: '/');
             $config = new ClientConfiguration();
 
-            $threw = false;
             try {
                 $connection->exchange($request, $config, new TimeoutCancellationToken(Duration::milliseconds(300)));
+                static::fail('Expected CancelledException on timeout');
             } catch (CancelledException) {
-                $threw = true;
+                static::addToAssertionCount(1);
             }
-
-            static::assertTrue($threw, 'Expected CancelledException on timeout');
         } finally {
             $listener->close();
             try {
@@ -1330,7 +1508,10 @@ final class TransportTest extends TestCase
             $stream = $connector->connect('127.0.0.1', $port, new TimeoutCancellationToken(Duration::seconds(5)));
 
             $session = new H2Session($stream, new H2ClientConfiguration());
-            $connection = new H2Connection($session, $stream->getLocalAddress(), $stream->getPeerAddress(), null);
+            $connection = new H2Connection(
+                $session,
+                new ConnectionMetadata($stream->getLocalAddress(), $stream->getPeerAddress(), null),
+            );
 
             $url = URL\parse('http://127.0.0.1/');
             $config = new ClientConfiguration();
@@ -1418,20 +1599,21 @@ final class TransportTest extends TestCase
             $stream = $connector->connect('127.0.0.1', $port, new TimeoutCancellationToken(Duration::seconds(5)));
 
             $session = new H2Session($stream, new H2ClientConfiguration());
-            $connection = new H2Connection($session, $stream->getLocalAddress(), $stream->getPeerAddress(), null);
+            $connection = new H2Connection(
+                $session,
+                new ConnectionMetadata($stream->getLocalAddress(), $stream->getPeerAddress(), null),
+            );
 
             $url = URL\parse('http://127.0.0.1/');
             $config = new ClientConfiguration();
             $request = new Request(method: 'GET', url: $url, requestTarget: '/');
 
-            $threw = false;
             try {
                 $connection->exchange($request, $config, new TimeoutCancellationToken(Duration::milliseconds(200)));
+                static::fail('First request should have timed out');
             } catch (CancelledException) {
-                $threw = true;
+                static::addToAssertionCount(1);
             }
-
-            static::assertTrue($threw, 'First request should have timed out');
 
             $tx = $connection->exchange($request, $config, new TimeoutCancellationToken(Duration::seconds(5)));
 

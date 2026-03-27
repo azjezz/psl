@@ -8,10 +8,15 @@ use Psl\HTTP\Client;
 use Psl\HTTP\Message;
 use Psl\URL;
 
-$configuration = new Client\ClientConfiguration(tunnel: 'http://proxy.example.com:8080', noTunneling: [
-    'localhost',
-    '.internal.example.com',
-]);
+$configuration = new Client\ClientConfiguration(
+    proxyConfiguration: new Client\ProxyConfiguration(
+        URL\parse('http://proxy.example.com:8080'),
+        skipProxyFor: [
+            'localhost',
+            '.internal.example.com',
+        ],
+    ),
+);
 
 $client = new Client\Client(configuration: $configuration);
 

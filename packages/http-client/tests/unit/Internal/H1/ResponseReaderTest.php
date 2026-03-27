@@ -8,14 +8,17 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
 use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\Async\TimeoutCancellationToken;
 use Psl\DateTime\Duration;
 use Psl\DateTime\Timestamp;
+use Psl\HTTP\Client\ClientConfiguration;
 use Psl\HTTP\Client\Exception\ProtocolException;
 use Psl\HTTP\Client\Internal\H1\ResponseReader;
 use Psl\HTTP\Client\Tests\Fixture\H1\FakeStream;
 use Psl\HTTP\Client\Tests\Fixture\H1\SlowDripStream;
 use Psl\HTTP\Message\ProtocolVersion;
+use Psl\HTTP\Message\Response;
 use Psl\IO;
 
 use function str_repeat;
@@ -228,7 +231,7 @@ final class ResponseReaderTest extends TestCase
         $raw = "HTTP/1.1 100 Continue\r\n\r\nHTTP/1.1 200 OK\r\ncontent-length: 4\r\n\r\ndone";
         [$informational, $response, $_] = ResponseReader::readWithInformational(
             self::reader($raw),
-            8192,
+            new ClientConfiguration(),
             self::timeout(),
             false,
         );
@@ -246,7 +249,7 @@ final class ResponseReaderTest extends TestCase
         $raw = "HTTP/1.1 100 Continue\r\n\r\nHTTP/1.1 102 Processing\r\n\r\nHTTP/1.1 200 OK\r\ncontent-length: 2\r\n\r\nok";
         [$informational, $response, $_] = ResponseReader::readWithInformational(
             self::reader($raw),
-            8192,
+            new ClientConfiguration(),
             self::timeout(),
             false,
         );
@@ -306,16 +309,15 @@ final class ResponseReaderTest extends TestCase
 
         $start = Timestamp::monotonic();
 
-        $threw = false;
         try {
             ResponseReader::read($reader, 8192, new TimeoutCancellationToken(Duration::milliseconds(300)), false);
+            static::fail('Expected CancelledException');
         } catch (Async\Exception\CancelledException) {
-            $threw = true;
+            static::addToAssertionCount(1);
         }
 
         $elapsed = Timestamp::monotonic()->since($start)->getTotalMilliseconds();
 
-        static::assertTrue($threw);
         static::assertLessThan(1000, $elapsed);
     }
 
@@ -328,21 +330,20 @@ final class ResponseReaderTest extends TestCase
 
         $start = Timestamp::monotonic();
 
-        $threw = false;
         try {
             ResponseReader::readWithInformational(
                 $reader,
-                8192,
+                new ClientConfiguration(),
                 new TimeoutCancellationToken(Duration::milliseconds(400)),
                 false,
             );
+            static::fail('Expected CancelledException');
         } catch (Async\Exception\CancelledException) {
-            $threw = true;
+            static::addToAssertionCount(1);
         }
 
         $elapsed = Timestamp::monotonic()->since($start)->getTotalMilliseconds();
 
-        static::assertTrue($threw);
         static::assertLessThan(1500, $elapsed);
     }
 
@@ -397,6 +398,73 @@ final class ResponseReaderTest extends TestCase
         $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage('exceeds maximum allowed size');
         $body->readAll();
+    }
+
+    public function testOnInformationalResponseCallbackInvoked(): void
+    {
+        $raw = "HTTP/1.1 103 Early Hints\r\nLink: </style.css>; rel=preload\r\n\r\nHTTP/1.1 200 OK\r\ncontent-length: 2\r\n\r\nok";
+        $reader = new IO\Reader(new IO\MemoryHandle($raw));
+
+        $received = [];
+        $config = new ClientConfiguration(onInformationalResponse: static function (Response $r) use (
+            &$received,
+        ): void {
+            $received[] = $r->status;
+        });
+
+        [$informational, $response] = ResponseReader::readWithInformational(
+            $reader,
+            $config,
+            new NullCancellationToken(),
+            false,
+        );
+
+        static::assertSame([103], $received);
+        static::assertCount(1, $informational);
+        static::assertSame(103, $informational[0]->status);
+        static::assertSame(200, $response->status);
+    }
+
+    public function testOnInformationalResponseCallbackMultiple(): void
+    {
+        $raw = "HTTP/1.1 100 Continue\r\n\r\nHTTP/1.1 103 Early Hints\r\nLink: </a>\r\n\r\nHTTP/1.1 200 OK\r\ncontent-length: 0\r\n\r\n";
+        $reader = new IO\Reader(new IO\MemoryHandle($raw));
+
+        $received = [];
+        $config = new ClientConfiguration(onInformationalResponse: static function (Response $r) use (
+            &$received,
+        ): void {
+            $received[] = $r->status;
+        });
+
+        [$informational, $response] = ResponseReader::readWithInformational(
+            $reader,
+            $config,
+            new NullCancellationToken(),
+            false,
+        );
+
+        static::assertSame([100, 103], $received);
+        static::assertCount(2, $informational);
+        static::assertSame(200, $response->status);
+    }
+
+    public function testOnInformationalResponseCallbackNullDoesNotThrow(): void
+    {
+        $raw = "HTTP/1.1 103 Early Hints\r\nLink: </a>\r\n\r\nHTTP/1.1 200 OK\r\ncontent-length: 0\r\n\r\n";
+        $reader = new IO\Reader(new IO\MemoryHandle($raw));
+
+        $config = new ClientConfiguration();
+
+        [$informational, $response] = ResponseReader::readWithInformational(
+            $reader,
+            $config,
+            new NullCancellationToken(),
+            false,
+        );
+
+        static::assertCount(1, $informational);
+        static::assertSame(200, $response->status);
     }
 
     /**

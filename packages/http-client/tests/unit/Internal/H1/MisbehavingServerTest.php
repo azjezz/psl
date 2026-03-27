@@ -8,6 +8,8 @@ use PHPUnit\Framework\TestCase;
 use Psl\Async;
 use Psl\Async\TimeoutCancellationToken;
 use Psl\DateTime\Duration;
+use Psl\HTTP\Client\ClientConfiguration;
+use Psl\HTTP\Client\Connection\ConnectionMetadata;
 use Psl\HTTP\Client\Exception\ProtocolException;
 use Psl\HTTP\Client\Internal\H1\H1Connection;
 use Psl\HTTP\Client\Internal\H1\Transport;
@@ -69,14 +71,16 @@ final class MisbehavingServerTest extends TestCase
             /** @var int<0, 65535> $port */
             $port = $address->port;
             $stream = $connector->connect('127.0.0.1', $port, new TimeoutCancellationToken(Duration::seconds(5)));
-            $connection = new H1Connection($stream);
+            $connection = new H1Connection(
+                $stream,
+                new ConnectionMetadata(Network\Address::tcp(), Network\Address::tcp()),
+            );
 
-            /** @var positive-int $maxHeaderSize */
             return Transport::exchange(
                 $connection,
                 $request,
                 $request->url ?? $url,
-                $maxHeaderSize,
+                new ClientConfiguration(maxResponseHeaderSize: $maxHeaderSize),
                 cancellation: new TimeoutCancellationToken(Duration::seconds(5)),
             );
         } finally {
@@ -186,8 +190,11 @@ final class MisbehavingServerTest extends TestCase
 
         $body = $transaction->response->body;
         static::assertNotNull($body);
-        $data = $body->readAll();
-        static::assertSame('hello', $data);
+
+        $this->expectException(\Psl\HTTP\Client\Exception\ProtocolException::class);
+        $this->expectExceptionMessage('Connection closed during chunked transfer');
+
+        $body->readAll();
     }
 
     public function testServerSendsContentLengthThenClosesEarly(): void
@@ -201,8 +208,11 @@ final class MisbehavingServerTest extends TestCase
 
         $body = $transaction->response->body;
         static::assertNotNull($body);
-        $data = $body->readAll();
-        static::assertSame('short', $data);
+
+        $this->expectException(\Psl\HTTP\Client\Exception\ProtocolException::class);
+        $this->expectExceptionMessage('Connection closed with');
+
+        $body->readAll();
     }
 
     public function testServerSendsBinaryBody(): void

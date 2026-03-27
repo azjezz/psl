@@ -91,7 +91,7 @@ final class SocksProxyTest extends TestCase
     {
         return new Client(
             connector: new PooledConnector(),
-            configuration: new ClientConfiguration(proxy: $this->proxyConfig),
+            configuration: new ClientConfiguration(socksConfiguration: $this->proxyConfig),
         );
     }
 }

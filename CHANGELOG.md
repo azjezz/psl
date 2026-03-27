@@ -4,8 +4,9 @@
 
 ### features
 
+- feat(io): add `IO\IterableReadHandle` - a streaming `ReadHandleInterface` that lazily consumes an `iterable<string>` without buffering the entire content in memory
 - feat(type): support `'true'`/`'false'` string literals in `Type\bool()` coercion - [#735](https://github.com/php-standard-library/php-standard-library/pull/735) by @verweto
-- feat: introduce `MIME` component - comprehensive MIME toolkit implementing RFC 2045-2049 and related standards
+- feat(mime): introduce `MIME` component - comprehensive MIME toolkit implementing RFC 2045-2049 and related standards
   - Media type parsing, validation, and content negotiation (`MediaType`, `MediaRange`, `MediaPreferences`) per RFC 2045, RFC 6838, RFC 9110
   - MIME part construction with automatic transfer encoding (`Part\Text`, `Part\Data`) per RFC 2045
   - Streaming multipart body construction and parsing (`MultiPart\Composite`, `MultiPart\Alternative`, `MultiPart\Related`, `MultiPart\Form`, `MultiPart\Parser`) per RFC 2046, RFC 2387, RFC 7578
@@ -16,7 +17,7 @@
   - Content sniffing from bytes and seekable handles (`Sniff\from_string`, `Sniff\from_handle`)
   - S/MIME signing, verification, encryption, and decryption (`SMIME\Signer`, `SMIME\Verifier`, `SMIME\Encryptor`, `SMIME\Decryptor`) per RFC 5652, RFC 8551
   - DKIM message signing with RSA-SHA256 and Ed25519-SHA256 (`DKIM\Signer`) per RFC 6376, RFC 8301, RFC 8463
-- feat: introduce `Message` component - RFC 5322 internet message construction, parsing, and serialization
+- feat(message): introduce `Message` component - RFC 5322 internet message construction, parsing, and serialization
   - Typed header fields with fluent `with*()` methods (`Message`) per RFC 5322
   - Address methods accept `string|Mailbox|AddressList` for convenience
   - Message body as `PartInterface` from the MIME component per RFC 2045
@@ -24,7 +25,7 @@
   - Reply, reply-all, and forward with automatic threading headers (In-Reply-To, References) per RFC 5322
   - SMTP envelope derivation (`Envelope`) per RFC 5321
   - RFC 5322 address parsing: `Mailbox`, `Group`, `AddressList` with RFC 2047 encoded-word support
-- feat: introduce `SMTP` component - RFC 5321 SMTP client with connection pooling, TLS, and authentication
+- feat(smtp): introduce `SMTP` component - RFC 5321 SMTP client with connection pooling, TLS, and authentication
   - Low-level `Connection` implementing `Network\StreamInterface` for protocol-level SMTP operations
   - High-level `Transport` managing the full SMTP lifecycle: connect, EHLO/HELO, STARTTLS, AUTH, send, RSET
   - Connection pooling with automatic reuse across multiple sends via `TCP\SocketPool`
@@ -45,7 +46,7 @@
   - Five authentication mechanisms: PLAIN (RFC 4616), LOGIN, XOAUTH2, CRAM-MD5 (RFC 2195), SCRAM-SHA-256 (RFC 7677)
   - Immutable `TransportConfiguration` and `SendConfiguration` with fluent `with*()` builders
   - Configurable pipelining, chunking, chunk size, and partial success behavior
-- feat: introduce `DNS` component - async DNS resolution with full protocol support
+- feat(dns): introduce `DNS` component - async DNS resolution with full protocol support
   - `SystemResolver` mirrors OS DNS behavior, usable as a default parameter value
   - UDP and pooled TCP resolvers with automatic TCP fallback on truncation
   - DNS-over-TLS (DoT) via TLS client configuration on `TCPResolver`
@@ -61,7 +62,7 @@
   - DNS-over-HTTPS (DoH) via `HTTPSResolver` using the HTTP client (RFC 8484)
   - DNS name validation with null byte and label length enforcement
   - `ResponseCode` helper methods: `isSuccess()`, `isError()`, `isServerError()`, `isNameError()`
-- feat: introduce `DNSSEC` component - full DNSSEC validation chain
+- feat(dnssec): introduce `DNSSEC` component - full DNSSEC validation chain
   - `SecureResolver` validates RRSIG signatures on every response
   - `TrustChainResolver` walks DS/DNSKEY chain from root to target zone
   - `CachedTrustChainResolver` caches trust chain results for performance
@@ -69,7 +70,7 @@
   - NSEC and NSEC3 authenticated denial of existence proof validation
   - 7 signature algorithms: RSA/SHA-1, RSA/SHA-256, RSA/SHA-512, ECDSA P-256, ECDSA P-384, Ed25519, Ed448
   - 4 specific validation exceptions: `SignatureFailedException`, `BrokenTrustChainException`, `InvalidProofException`, `UnsignedResponseException`
-- feat: introduce `HTTP Message` component - version-agnostic HTTP message abstractions
+- feat(http-message): introduce `HTTP Message` component - version-agnostic HTTP message abstractions
   - `Request` and `Response` immutable value objects with streaming body (`ReadHandleInterface`)
   - `FieldMap` ordered, case-insensitive header field collection with lazy index
   - `ProtocolVersion` enum covering HTTP/1.0, HTTP/1.1, HTTP/2, and HTTP/3
@@ -79,7 +80,7 @@
   - Fluent `with*()` mutation methods on both Request and Response
   - `Transaction` groups the final response with informational (1xx) responses and server push exchanges
   - `Exchange` represents a pushed request/response pair for HTTP/2 server push
-- feat: introduce `HTTP Client` component - async HTTP/1.1 and HTTP/2 client with connection pooling
+- feat(http-client): introduce `HTTP Client` component - async HTTP/1.1 and HTTP/2 client with connection pooling
   - `Client` with automatic protocol negotiation via ALPN (HTTP/2 preferred, HTTP/1.1 fallback)
   - `PooledConnector` with HTTP/1.x idle connection reuse and HTTP/2 session sharing across concurrent requests
   - HTTP/2 multiplexing with event-driven stream dispatch via `H2Multiplexer` and per-stream `H2Stream` state
@@ -98,9 +99,14 @@
 - feat(h2): introduce unified `Configuration` replacing deprecated `ClientConfiguration` and `ServerConfiguration`
   - Both `ClientConnection` and `ServerConnection` now accept `Configuration` in addition to their legacy config types
   - `ClientConnection` now supports BDP auto-tuning when using `Configuration` with `maxReceiveWindowSize` set
+- feat(tcp): add `bindTo` option to `ConnectConfiguration` for binding to a specific local address before connecting
+- feat(tcp): add `bindTo` option to `ListenConfiguration` for binding to a specific local address before listening
+- feat(tcp): add `withBindTo()` fluent builder method to both `ConnectConfiguration` and `ListenConfiguration`
+- feat(tcp): `connect()` now respects `ConnectConfiguration::$bindTo` by setting the `socket.bindto` stream context option
 
 ### fixes
 
+- fix(uri): bare IPv6 addresses (e.g., `http://::1/path`) are now correctly parsed as `IPHost` instead of being misparsed as a registered name with a numeric port
 - fix(h2): separate `maxConcurrent` (peer's limit on our streams) from `peerMaxConcurrent` (our limit on peer's streams) in `StreamTable`, preventing the client's own SETTINGS from limiting its outgoing streams
 - fix(h2): `BDPEstimator` now produces an initial connection-level WINDOW_UPDATE during `initialize()` to bring the receive window from the RFC default (65535) up to `initialWindowSize`, preventing flow-control stalls when many concurrent streams receive data simultaneously
 - fix(h2): `notifyWindowWaiters()` now copies the waiter list before iterating and properly removes satisfied waiters, preventing iteration corruption and memory leaks
@@ -110,12 +116,13 @@
 
 ### deprecations
 
-- deprecated(h2): `ClientConfiguration` — use `Configuration` instead
-- deprecated(h2): `ServerConfiguration` — use `Configuration` instead
+- deprecated(tcp): `Socket` class -- use `ConnectConfiguration::$bindTo` or `ListenConfiguration::$bindTo` instead. Will be removed in PSL 7.0.
+- deprecated(h2): `ClientConfiguration` -- use `Configuration` instead. Will be removed in PSL 7.0.
+- deprecated(h2): `ServerConfiguration` -- use `Configuration` instead. Will be removed in PSL 7.0.
 
 ### ci
 
-- ci: add httpbun service to unit-tests, code-coverage, mutation-tests, and package-tests workflows for HTTP client integration testing
+- ci: add httpbun, microsocks, and tinyproxy services to unit-tests, code-coverage, mutation-tests, and package-tests workflows for HTTP client integration testing
 
 ## 6.1.1
 

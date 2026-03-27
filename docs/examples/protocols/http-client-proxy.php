@@ -9,7 +9,7 @@ use Psl\HTTP\Message;
 use Psl\Socks;
 use Psl\URL;
 
-$configuration = new Client\ClientConfiguration(proxy: new Socks\Configuration(
+$configuration = new Client\ClientConfiguration(socksConfiguration: new Socks\Configuration(
     proxyHost: 'proxy.example.com',
     proxyPort: 1080,
     username: 'user',

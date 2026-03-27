@@ -261,15 +261,11 @@ final class PooledConnectorH1Test extends TestCase
         // detect the closed stream and try to open a new connection,
         // which fails because the server is no longer listening
         // (Network\RuntimeException). Either outcome is acceptable.
-        $threw = false;
         try {
             $client->send(new Request(method: 'GET', url: $url));
-        } catch (Network\Exception\RuntimeException|ProtocolException) {
-            $threw = true;
-        } catch (RuntimeException) {
-            $threw = true;
+            static::fail('Expected a connection or protocol error');
+        } catch (Network\Exception\RuntimeException|ProtocolException|RuntimeException) {
+            static::addToAssertionCount(1);
         }
-
-        static::assertTrue($threw, 'Expected a connection or protocol error');
     }
 }

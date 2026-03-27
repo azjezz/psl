@@ -8,28 +8,28 @@ use function ltrim;
 use function str_ends_with;
 
 /**
- * Determine whether a host should be tunneled or bypassed.
+ * Determine whether a host should use the HTTP proxy or bypass it.
  *
- * Checks the host against a list of no-tunneling rules. Rules support:
+ * Checks the host against a list of bypass rules. Rules support:
  * - Wildcard: "*" matches all hosts (bypass everything).
  * - Exact match: "localhost" matches exactly "localhost".
  * - Domain suffix: ".example.com" or "example.com" matches any subdomain
  *   (e.g., "api.example.com", "sub.deep.example.com").
  *
  * @param non-empty-string $host The hostname to check.
- * @param list<non-empty-string> $noTunneling The no-tunneling rules.
+ * @param list<non-empty-string> $skipProxyFor The proxy bypass rules.
  *
- * @return bool True if the host should be tunneled, false if it should bypass.
+ * @return bool True if the host should use the proxy, false if it should bypass.
  *
  * @internal
  */
-function should_tunnel(string $host, array $noTunneling): bool
+function should_tunnel(string $host, array $skipProxyFor): bool
 {
-    if ($noTunneling === []) {
+    if ($skipProxyFor === []) {
         return true;
     }
 
-    foreach ($noTunneling as $rule) {
+    foreach ($skipProxyFor as $rule) {
         if ($rule === '*') {
             return false;
         }

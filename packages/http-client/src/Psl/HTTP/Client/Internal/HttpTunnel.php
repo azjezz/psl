@@ -7,14 +7,13 @@ namespace Psl\HTTP\Client\Internal;
 use Psl\Async;
 use Psl\Async\CancellationTokenInterface;
 use Psl\HTTP\Client\Exception\ProtocolException;
+use Psl\HTTP\Client\ProxyConfiguration;
 use Psl\IO;
 use Psl\Network;
 use Psl\TCP;
 use Psl\TLS\ClientConfiguration;
 use Psl\TLS\Connector;
-use Psl\URL;
 
-use function base64_encode;
 use function preg_match;
 
 /**
@@ -34,49 +33,40 @@ final class HttpTunnel
     private function __construct() {}
 
     /**
-     * Open a CONNECT tunnel to the target through the given tunnel proxy.
+     * Open a CONNECT tunnel to the target through the given HTTP proxy.
      *
-     * @param non-empty-string $tunnelAddress The tunnel proxy address (e.g., "http://proxy:8080").
      * @param non-empty-string $targetHost The target hostname to tunnel to.
      * @param int<1, 65535> $targetPort The target port to tunnel to.
      *
-     * @throws Network\Exception\RuntimeException If the TCP connection to the tunnel proxy fails.
-     * @throws ProtocolException If the tunnel proxy returns a non-2xx response.
+     * @throws Network\Exception\RuntimeException If the TCP connection to the HTTP proxy fails.
+     * @throws ProtocolException If the HTTP proxy returns a non-2xx response.
      * @throws IO\Exception\RuntimeException If an I/O error occurs during the handshake.
      * @throws Async\Exception\CancelledException If the cancellation token fires.
      */
     public static function connect(
         TCP\ConnectorInterface $tcpConnector,
-        string $tunnelAddress,
+        ProxyConfiguration $proxy,
         string $targetHost,
         int $targetPort,
         CancellationTokenInterface $cancellation,
         ClientConfiguration $tlsConfiguration,
     ): TCP\StreamInterface {
-        try {
-            $parsed = URL\parse($tunnelAddress);
-        } catch (URL\Exception\InvalidURLException $e) {
-            throw ProtocolException::forMalformedResponse('Invalid tunnel address: ' . $tunnelAddress);
-        }
-
-        $tunnelHost = $parsed->authority->host->toString();
-        $tunnelPort = $parsed->authority->port ?? ($parsed->scheme === 'https' ? 443 : 80);
-        $tunnelTls = $parsed->scheme === 'https';
+        $tunnelHost = $proxy->url->authority->host->toString();
+        $tunnelPort = $proxy->url->authority->port ?? ($proxy->url->scheme === 'https' ? 443 : 80);
+        $tunnelTls = $proxy->url->scheme === 'https';
 
         $stream = $tcpConnector->connect($tunnelHost, $tunnelPort, $cancellation);
 
         if ($tunnelTls) {
             $tlsConnector = new Connector($tlsConfiguration);
-            $stream = $tlsConnector->connect($stream, $tunnelHost, $cancellation);
+            $stream = $tlsConnector->connect($stream, $proxy->sni ?? $tunnelHost, $cancellation);
         }
 
         $authority = $targetHost . ':' . $targetPort;
         $connectRequest = "CONNECT {$authority} HTTP/1.1\r\nHost: {$authority}\r\n";
 
-        $userInfo = $parsed->authority->userInfo;
-        if ($userInfo !== null) {
-            $encoded = base64_encode($userInfo);
-            $connectRequest .= "Proxy-Authorization: Basic {$encoded}\r\n";
+        if ($proxy->authorization !== null) {
+            $connectRequest .= "Proxy-Authorization: {$proxy->authorization}\r\n";
         }
 
         $connectRequest .= "\r\n";

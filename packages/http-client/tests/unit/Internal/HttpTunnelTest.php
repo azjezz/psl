@@ -10,11 +10,14 @@ use Psl\Async\TimeoutCancellationToken;
 use Psl\DateTime\Duration;
 use Psl\HTTP\Client\Exception\ProtocolException;
 use Psl\HTTP\Client\Internal\HttpTunnel;
+use Psl\HTTP\Client\ProxyConfiguration;
 use Psl\IO;
 use Psl\IO\Reader;
 use Psl\Network;
 use Psl\TCP;
 use Psl\TLS;
+
+use function Psl\URL\parse;
 
 final class HttpTunnelTest extends TestCase
 {
@@ -61,7 +64,7 @@ final class HttpTunnelTest extends TestCase
             $port = $address->port;
             $stream = HttpTunnel::connect(
                 $connector,
-                "http://127.0.0.1:{$port}",
+                new ProxyConfiguration(parse("http://127.0.0.1:{$port}")),
                 'example.com',
                 443,
                 $cancellation,
@@ -124,7 +127,7 @@ final class HttpTunnelTest extends TestCase
             $port = $address->port;
             $stream = HttpTunnel::connect(
                 $connector,
-                "http://user:pass@127.0.0.1:{$port}",
+                new ProxyConfiguration(parse("http://127.0.0.1:{$port}"), authorization: 'Basic dXNlcjpwYXNz'),
                 'example.com',
                 443,
                 $cancellation,
@@ -179,7 +182,14 @@ final class HttpTunnelTest extends TestCase
             $this->expectException(ProtocolException::class);
             $this->expectExceptionMessageMatches('/403/');
 
-            HttpTunnel::connect($connector, "http://127.0.0.1:{$port}", 'example.com', 443, $cancellation, $tlsConfig);
+            HttpTunnel::connect(
+                $connector,
+                new ProxyConfiguration(parse("http://127.0.0.1:{$port}")),
+                'example.com',
+                443,
+                $cancellation,
+                $tlsConfig,
+            );
         } finally {
             $listener->close();
             try {
@@ -224,7 +234,14 @@ final class HttpTunnelTest extends TestCase
 
             $this->expectException(ProtocolException::class);
 
-            HttpTunnel::connect($connector, "http://127.0.0.1:{$port}", 'example.com', 443, $cancellation, $tlsConfig);
+            HttpTunnel::connect(
+                $connector,
+                new ProxyConfiguration(parse("http://127.0.0.1:{$port}")),
+                'example.com',
+                443,
+                $cancellation,
+                $tlsConfig,
+            );
         } finally {
             $listener->close();
             try {
@@ -270,7 +287,14 @@ final class HttpTunnelTest extends TestCase
 
             $this->expectException(ProtocolException::class);
 
-            HttpTunnel::connect($connector, "http://127.0.0.1:{$port}", 'example.com', 443, $cancellation, $tlsConfig);
+            HttpTunnel::connect(
+                $connector,
+                new ProxyConfiguration(parse("http://127.0.0.1:{$port}")),
+                'example.com',
+                443,
+                $cancellation,
+                $tlsConfig,
+            );
         } finally {
             $listener->close();
             try {

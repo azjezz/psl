@@ -13,27 +13,64 @@ use Psl\HTTP\Client\Exception\ProtocolException;
 use Psl\HTTP\Client\Exception\RuntimeException;
 
 /**
- * H2 event dispatcher with a background read fiber.
+ * Background frame reader and per-stream event dispatcher for HTTP/2 connections.
  *
- * Reads H2 frames in a tight loop and dispatches events directly to per-stream
- * {@see H2Stream} objects. The read fiber runs `while (true)` and exits only
- * when cancelled (no more streams) or the connection dies.
+ * Runs a dedicated read fiber that reads H2 frames in a tight loop from the
+ * underlying {@see ClientConnectionInterface} and dispatches events directly to
+ * the registered {@see H2Stream} objects. The read fiber is started lazily when
+ * the first stream is registered and cancelled automatically when the last
+ * stream is unregistered, keeping the fiber alive only while there are active
+ * consumers.
+ *
+ * The multiplexer handles the following event types:
+ * - {@see Event\HeadersReceived}: routed to the target stream for response or trailer handling.
+ * - {@see Event\DataReceived}: routed to the target stream's body buffer.
+ * - {@see Event\StreamReset}: fails the target stream with a protocol exception (RST_STREAM).
+ * - {@see Event\StreamClosed}: removes the stream from the registry.
+ * - {@see Event\GoAwayReceived}: marks the session closed and fails streams above the last-stream-id.
+ *
+ * Fiber safety: the read fiber runs concurrently with the exchange fibers that
+ * call {@see H2Stream::readBody()}. Synchronization between the read fiber and
+ * consumer fibers happens through {@see H2Stream}'s suspension mechanism.
  *
  * @internal
+ *
+ * @see H2Session Owns this multiplexer and manages stream concurrency.
+ * @see H2Stream Per-stream state container that receives dispatched events.
+ * @see StreamExchange Registers streams and sends request frames.
+ *
+ * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.8 GOAWAY Frame
  */
 final class H2Multiplexer
 {
     /**
+     * Map of active stream ID to its {@see H2Stream} state container.
+     *
      * @var array<int, H2Stream>
      */
     private array $streams = [];
 
+    /**
+     * Whether the background read fiber is currently running.
+     */
     private bool $fiberRunning = false;
 
+    /**
+     * Cancellation token used to stop the background read fiber when no streams remain.
+     */
     private SignalCancellationToken $fiberCancellation;
 
+    /**
+     * The last-stream-id from the most recent GOAWAY frame, or -1 if none received.
+     *
+     * Streams with IDs above this value are rejected in {@see register()}.
+     */
     private int $goAwayLastStreamId = -1;
 
+    /**
+     * @param ClientConnectionInterface $connection The H2 client connection to read frames from.
+     * @param H2Session $session The session to mark as closed on GOAWAY or fatal error.
+     */
     public function __construct(
         private readonly ClientConnectionInterface $connection,
         private readonly H2Session $session,
@@ -42,9 +79,15 @@ final class H2Multiplexer
     }
 
     /**
-     * Register a stream for event dispatch. Starts the read fiber if not running.
+     * Register a stream for event dispatch and start the read fiber if needed.
      *
-     * @throws RuntimeException If the stream ID exceeds the GOAWAY last-stream-id.
+     * The stream is added to the active stream registry so that incoming events
+     * for this stream ID are routed to it. If no read fiber is currently running,
+     * one is started via {@see startReadFiber()}.
+     *
+     * @param H2Stream $stream The stream to register. Its stream ID must not exceed the GOAWAY last-stream-id.
+     *
+     * @throws RuntimeException If the stream ID exceeds the GOAWAY last-stream-id (the server will not process it).
      */
     public function register(H2Stream $stream): void
     {
@@ -60,7 +103,13 @@ final class H2Multiplexer
     }
 
     /**
-     * Unregister a stream. Stops the read fiber if no streams remain.
+     * Unregister a stream and stop the read fiber if no streams remain.
+     *
+     * Called when a stream exchange completes (successfully or with error), or
+     * when the {@see ResponseBodyHandle} is closed. If this was the last active
+     * stream, the read fiber is cancelled to avoid spinning on an idle connection.
+     *
+     * @param int $streamId The stream ID to unregister.
      */
     public function unregister(int $streamId): void
     {
@@ -73,6 +122,15 @@ final class H2Multiplexer
         }
     }
 
+    /**
+     * Start the background read fiber that reads H2 events in a loop.
+     *
+     * The fiber is deferred onto the event loop via {@see Async\Scheduler::defer()}
+     * so it runs concurrently with exchange fibers. It reads events from the H2
+     * connection and dispatches them to per-stream consumers. The fiber exits when:
+     * - The cancellation token fires (all streams unregistered).
+     * - An exception occurs (session is marked closed and all streams are failed).
+     */
     private function startReadFiber(): void
     {
         $this->fiberRunning = true;
@@ -106,6 +164,15 @@ final class H2Multiplexer
         });
     }
 
+    /**
+     * Route an H2 event to the appropriate stream or handle connection-level events.
+     *
+     * GOAWAY events are handled at the connection level. All other events are
+     * routed to the registered stream by stream ID. Events for unknown or
+     * already-unregistered streams are silently discarded.
+     *
+     * @param Event\EventInterface $event The H2 event to dispatch.
+     */
     private function dispatch(Event\EventInterface $event): void
     {
         if ($event instanceof Event\GoAwayReceived) {
@@ -147,6 +214,16 @@ final class H2Multiplexer
         }
     }
 
+    /**
+     * Handle a GOAWAY frame from the server (RFC 9113 Section 6.8).
+     *
+     * Marks the session as closed. If the error code is not NoError, all active
+     * streams are failed immediately. For graceful shutdown (NoError), only
+     * streams with IDs above the last-stream-id are failed, since the server
+     * guarantees it will not process those streams.
+     *
+     * @param Event\GoAwayReceived $event The GOAWAY event containing the error code and last-stream-id.
+     */
     private function handleGoAway(Event\GoAwayReceived $event): void
     {
         $this->session->markClosed();

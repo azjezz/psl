@@ -97,10 +97,22 @@ final readonly class RedirectClient implements ClientInterface
      * non-redirect transaction. If the response is not a redirect, it is returned
      * immediately.
      *
+     * For each redirect hop, the following processing occurs:
+     *
+     * 1. The redirect response body is fully drained to allow connection reuse.
+     * 2. The Location header is resolved against the current request URL.
+     * 3. For 301, 302, and 303 responses with non-GET/HEAD methods, the method is
+     *    rewritten to GET and the body and body-related headers are removed.
+     * 4. For cross-origin redirects, sensitive headers (Authorization, Cookie,
+     *    Proxy-Authorization) are stripped.
+     * 5. If {@see $autoReferrer} is enabled, the Referer header is set to the previous
+     *    request URL (suppressed when redirecting from HTTPS to HTTP).
+     *
      * Redirect responses with a missing, empty, or ambiguous Location header
      * (multiple values) are returned as-is without following.
      *
      * @throws Exception\TooManyRedirectsException If the number of redirects exceeds the configured maximum.
+     * @throws Exception\ProtocolException If a Location header value cannot be resolved to a valid URL.
      *
      * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.4 Redirections
      *

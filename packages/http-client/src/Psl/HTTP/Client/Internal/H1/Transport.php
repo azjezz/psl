@@ -7,6 +7,7 @@ namespace Psl\HTTP\Client\Internal\H1;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\Exception\CancelledException;
 use Psl\Async\NullCancellationToken;
+use Psl\HTTP\Client\ClientConfiguration;
 use Psl\HTTP\Client\Exception;
 use Psl\HTTP\Client\Exception\ProtocolException;
 use Psl\HTTP\Message;
@@ -50,8 +51,7 @@ final class Transport
      * @param H1Connection $connection The connection to exchange on.
      * @param Request $request The request to send.
      * @param URL $url The resolved request URL.
-     * @param positive-int $maxHeaderSize Maximum allowed response header size in bytes.
-     * @param int $maxResponseBodySize Maximum allowed response body size (0 = unlimited).
+     * @param ClientConfiguration $configuration Client configuration governing transport behavior.
      * @param CancellationTokenInterface $cancellation Token to cancel the exchange.
      *
      * @return array{Transaction, bool} The transaction and whether the connection can be reused (keep-alive).
@@ -65,10 +65,21 @@ final class Transport
         H1Connection $connection,
         Request $request,
         URL $url,
-        int $maxHeaderSize,
-        int $maxResponseBodySize = 0,
+        ClientConfiguration $configuration,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): array {
+        if ($connection->isForwardProxy) {
+            $absoluteTarget = $url->toString();
+            $request = $request->withRequestTarget($absoluteTarget);
+
+            if ($connection->proxyAuthorization !== null && !$request->headers->has('proxy-authorization')) {
+                $request = $request->withHeaders($request->headers->with(
+                    'proxy-authorization',
+                    $connection->proxyAuthorization,
+                ));
+            }
+        }
+
         $hasExpect = false;
         $expect = $request->headers->get('expect');
         if ($expect !== null && strtolower($expect) === '100-continue') {
@@ -115,7 +126,11 @@ final class Transport
                     cancellation: $cancellation,
                 );
 
-                $interimLine = $connection->reader->readUntilBounded("\r\n", $maxHeaderSize, $cancellation);
+                $interimLine = $connection->reader->readUntilBounded(
+                    "\r\n",
+                    $configuration->maxResponseHeaderSize,
+                    $cancellation,
+                );
                 if ($interimLine !== null && str_starts_with($interimLine, 'HTTP/1.1 100')) {
                     $connection->reader->readUntil("\r\n", $cancellation);
 
@@ -132,11 +147,10 @@ final class Transport
             $isHead = $request->method === Message\METHOD_HEAD;
             [$informationalResponses, $response, $keepAlive] = ResponseReader::readWithInformational(
                 $connection->reader,
-                $maxHeaderSize,
+                $configuration,
                 $cancellation,
                 $isHead,
                 $preReadStatusLine,
-                $maxResponseBodySize,
             );
 
             $transaction = new Transaction($informationalResponses, null, $response);

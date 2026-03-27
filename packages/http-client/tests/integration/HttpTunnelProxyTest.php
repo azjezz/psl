@@ -9,6 +9,7 @@ use Psl\Async;
 use Psl\HTTP\Client\Client;
 use Psl\HTTP\Client\ClientConfiguration;
 use Psl\HTTP\Client\Connection\PooledConnector;
+use Psl\HTTP\Client\ProxyConfiguration;
 use Psl\HTTP\Message\Request;
 use Psl\IO\MemoryHandle;
 use Psl\URL;
@@ -109,11 +110,13 @@ final class HttpTunnelProxyTest extends TestCase
         static::assertSame(200, $tx->response->status);
     }
 
-    private function createClient(array $noTunneling = []): Client
+    private function createClient(array $skipProxyFor = []): Client
     {
         return new Client(
             connector: new PooledConnector(),
-            configuration: new ClientConfiguration(tunnel: $this->tunnelUrl, noTunneling: $noTunneling),
+            configuration: new ClientConfiguration(
+                proxyConfiguration: new ProxyConfiguration(URL\parse($this->tunnelUrl), skipProxyFor: $skipProxyFor),
+            ),
         );
     }
 }

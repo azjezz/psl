@@ -6,12 +6,15 @@ namespace Psl\HTTP\Client\Tests\Unit\Internal\H1;
 
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
+use Psl\HTTP\Client\ClientConfiguration;
+use Psl\HTTP\Client\Connection\ConnectionMetadata;
 use Psl\HTTP\Client\Internal\H1\H1Connection;
 use Psl\HTTP\Client\Internal\H1\Transport;
 use Psl\HTTP\Client\Tests\Fixture\H1\FakeStream;
 use Psl\HTTP\Message\FieldMap;
 use Psl\HTTP\Message\Request;
 use Psl\IO;
+use Psl\Network;
 use Psl\URL;
 
 use function strlen;
@@ -37,9 +40,9 @@ final class ExpectContinueBugTest extends TestCase
         );
 
         $stream = new FakeStream("HTTP/1.1 100 Continue\r\n\r\nHTTP/1.1 200 OK\r\ncontent-length: 2\r\n\r\nok");
-        $connection = new H1Connection($stream);
+        $connection = new H1Connection($stream, new ConnectionMetadata(Network\Address::tcp(), Network\Address::tcp()));
 
-        Transport::exchange($connection, $request, $url, 8192);
+        Transport::exchange($connection, $request, $url, new ClientConfiguration());
 
         static::assertStringContainsString(
             'x-checksum: abc123',
@@ -64,9 +67,9 @@ final class ExpectContinueBugTest extends TestCase
         );
 
         $stream = new FakeStream("HTTP/1.1 100 Continue\r\n\r\nHTTP/1.1 200 OK\r\ncontent-length: 2\r\n\r\nok");
-        $connection = new H1Connection($stream);
+        $connection = new H1Connection($stream, new ConnectionMetadata(Network\Address::tcp(), Network\Address::tcp()));
 
-        Transport::exchange($connection, $request, $url, 8192);
+        Transport::exchange($connection, $request, $url, new ClientConfiguration());
 
         static::assertStringContainsString(
             'transfer-encoding: chunked',
@@ -91,9 +94,9 @@ final class ExpectContinueBugTest extends TestCase
         );
 
         $stream = new FakeStream("HTTP/1.1 100 Continue\r\n\r\nHTTP/1.1 200 OK\r\ncontent-length: 2\r\n\r\nok");
-        $connection = new H1Connection($stream);
+        $connection = new H1Connection($stream, new ConnectionMetadata(Network\Address::tcp(), Network\Address::tcp()));
 
-        Transport::exchange($connection, $request, $url, 8192);
+        Transport::exchange($connection, $request, $url, new ClientConfiguration());
 
         $written = $stream->written;
 
@@ -123,9 +126,9 @@ final class ExpectContinueBugTest extends TestCase
         );
 
         $stream = new FakeStream("HTTP/1.1 100 Continue\r\n\r\nHTTP/1.1 200 OK\r\ncontent-length: 2\r\n\r\nok");
-        $connection = new H1Connection($stream);
+        $connection = new H1Connection($stream, new ConnectionMetadata(Network\Address::tcp(), Network\Address::tcp()));
 
-        [$tx, $_] = Transport::exchange($connection, $request, $url, 8192);
+        [$tx, $_] = Transport::exchange($connection, $request, $url, new ClientConfiguration());
 
         static::assertSame(200, $tx->response->status);
 

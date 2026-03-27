@@ -28,9 +28,9 @@ use Psl\Network;
  *
  * Retries are triggered only by transport-level exceptions:
  *
- * - {@see \Psl\Network\Exception\RuntimeException}: connection refused, DNS failure,
+ * - {@see Network\Exception\RuntimeException}: connection refused, DNS failure,
  *   connect timeout, connection reset.
- * - {@see \Psl\IO\Exception\RuntimeException}: read/write failure on the underlying
+ * - {@see IO\Exception\RuntimeException}: read/write failure on the underlying
  *   socket (e.g., broken pipe, unexpected EOF).
  *
  * All other exceptions propagate immediately without retry, including:
@@ -38,7 +38,7 @@ use Psl\Network;
  * - {@see Exception\RequestException}: invalid request (no URL).
  * - {@see Exception\ProtocolException}: malformed server response.
  * - {@see Exception\TooManyRedirectsException}: redirect limit exceeded.
- * - {@see \Psl\Async\Exception\CancelledException}: cancellation token fired.
+ * - {@see Async\Exception\CancelledException}: cancellation token fired.
  *
  * ## Backoff strategy
  *
@@ -109,10 +109,29 @@ final readonly class RetryClient implements ClientInterface
      * Send an HTTP request, retrying on transport-level failure for idempotent methods.
      *
      * Delegates the request to the inner client. If the inner client throws a
-     * transport-level exception and the request method is idempotent, the request
-     * is retried after an exponential backoff delay. If the method is not idempotent
-     * or all retry attempts are exhausted, the exception from the last attempt is
-     * propagated.
+     * {@see Network\Exception\RuntimeException} or {@see IO\Exception\RuntimeException}
+     * and the request method is idempotent (GET, HEAD, PUT, DELETE, OPTIONS, TRACE),
+     * the request is retried after an exponential backoff delay. The exception from
+     * the last attempt is propagated if all retry attempts are exhausted.
+     *
+     * A retry is skipped immediately (and the exception propagated) when any of
+     * the following conditions hold:
+     *
+     * - The maximum number of attempts has been reached.
+     * - The request method is not idempotent (e.g., POST, PATCH).
+     * - The request has a non-seekable body, since the body stream may have been
+     *   partially consumed and cannot be rewound.
+     *
+     * For requests with a seekable body ({@see IO\SeekHandleInterface}), the body
+     * position is recorded before the first attempt and rewound before each retry
+     * to ensure the complete body is re-sent.
+     *
+     * The backoff delay between attempts follows the formula:
+     * `backoff * multiplier^(attempt - 1)`. The backoff sleep respects the
+     * cancellation token, so cancelled requests do not wait for the delay to expire.
+     *
+     * @throws Network\Exception\RuntimeException If all retry attempts fail with a transport-level error.
+     * @throws IO\Exception\RuntimeException If all retry attempts fail with an I/O error.
      *
      * @link https://datatracker.ietf.org/doc/html/rfc9110#section-9.2.2 Idempotent Methods
      *

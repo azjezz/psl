@@ -56,6 +56,22 @@ Pass EDNS0 options to any query for features like DNS cookies, client subnet hin
 
 @example('protocols/dns-doh.php')
 
+## Blocking System Resolver
+
+`BlockingSystemResolver` wraps PHP's built-in `dns_get_record()` for synchronous DNS resolution with zero overhead. No event loop, no fibers, no connection pooling. Useful as a lightweight fallback behind a `StaticResolver`, or in environments where async DNS is unnecessary.
+
+Supports A, AAAA, CNAME, MX, NS, PTR, SOA, SRV, TXT, CAA, and NAPTR record types. EDNS0 options are ignored. Queries for unsupported types return NXDOMAIN.
+
+@example('protocols/dns-blocking.php')
+
+## HTTP Client Integration
+
+`DNS\HTTP\Connector` is a connector decorator that resolves hostnames via any DNS resolver before delegating to an inner HTTP client connector. This enables fully async DNS resolution, DNS-over-TLS, DNS-over-HTTPS, DNSSEC validation, or custom resolution strategies for all HTTP requests.
+
+When the origin host is already an IP address, no DNS query is performed. For HTTPS connections, the original hostname is preserved for TLS SNI so certificate validation works correctly even though the TCP connection targets the resolved IP.
+
+@example('protocols/dns-http-connector.php')
+
 ## Kitchen Sink
 
 Compose static entries, hosts file, search domains, split-horizon routing, multiple racing nameservers with DNS-over-TLS or DNS-over-HTTPS, TCP fallback, and caching into a single resolver that uses every feature.

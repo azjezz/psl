@@ -28,8 +28,8 @@ use Psl\IP;
  *
  * After the connection is established (DNS resolved, TCP connected, TLS handshake
  * complete), this middleware extracts the peer IP address from
- * {@see ConnectionInterface::$peerAddress}. It then checks this address against the
- * denied list, which can contain:
+ * {@see ConnectionInterface::$metadata} via the peer address. It then checks this
+ * address against the denied list, which can contain:
  *
  * - **Individual IP addresses** ({@see IP\Address}): Exact match against the peer IP.
  * - **CIDR blocks** ({@see CIDR\Block}): Range match; the peer IP is checked for
@@ -52,7 +52,7 @@ use Psl\IP;
  *
  * ## Preset: private network ranges
  *
- * The {@see privateNetworkRanges()} factory method returns a preconfigured instance
+ * The {@see forPrivateNetworkRanges()} factory method returns a preconfigured instance
  * that blocks all private, loopback, link-local, and unspecified addresses for both
  * IPv4 and IPv6, including their IPv4-mapped IPv6 equivalents. This is suitable for
  * any application that fetches user-supplied URLs.
@@ -123,12 +123,22 @@ final readonly class DeniedDestinationsMiddleware implements MiddlewareInterface
     /**
      * Check the connection's peer address against the deny list and delegate to the next handler.
      *
-     * Extracts the peer IP address from the established connection and checks it against
-     * every entry in the deny list. If a match is found, a {@see RuntimeException} is thrown
-     * before the HTTP exchange takes place. If the deny list is empty or no match is found,
-     * the request is delegated to the next handler in the chain.
+     * Extracts the peer IP address from {@see ConnectionInterface::$metadata} and checks
+     * it against every entry in the deny list. The check is performed in order; the first
+     * matching entry causes the middleware to throw immediately, before any HTTP exchange
+     * takes place. If the deny list is empty or no entry matches, the request is delegated
+     * to the next handler in the chain via {@see HandlerInterface::handle()}.
+     *
+     * For individual {@see IP\Address} entries, an exact equality check is performed.
+     * For {@see CIDR\Block} entries, a containment check determines whether the peer
+     * IP falls within the CIDR range.
+     *
+     * When a destination is denied, the thrown {@see RuntimeException} carries a message
+     * in the format: "Connection to {ip} is denied by client configuration."
      *
      * @inheritDoc
+     *
+     * @throws RuntimeException If the peer IP address matches any entry in the deny list.
      */
     #[Override]
     public function process(
@@ -138,7 +148,7 @@ final readonly class DeniedDestinationsMiddleware implements MiddlewareInterface
         HandlerInterface $handler,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): Transaction {
-        $peerHost = $connection->peerAddress->host;
+        $peerHost = $connection->metadata->peerAddress->host;
 
         if ($this->denied !== []) {
             $address = IP\Address::parse($peerHost);

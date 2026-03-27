@@ -10,6 +10,7 @@ use Psl\Async\NullCancellationToken;
 use Psl\CIDR;
 use Psl\HTTP\Client\ClientConfiguration;
 use Psl\HTTP\Client\Connection\ConnectionInterface;
+use Psl\HTTP\Client\Connection\ConnectionMetadata;
 use Psl\HTTP\Client\Exception\RuntimeException;
 use Psl\HTTP\Client\Handler\HandlerInterface;
 use Psl\HTTP\Client\Middleware\DeniedDestinationsMiddleware;
@@ -21,7 +22,6 @@ use Psl\IO;
 use Psl\IP;
 use Psl\Network;
 use Psl\Network\Address;
-use Psl\TLS;
 
 use function Psl\URL\parse;
 
@@ -30,14 +30,14 @@ final class DeniedDestinationsMiddlewareTest extends TestCase
     private static function createConnection(string $peerHost): ConnectionInterface
     {
         return new class($peerHost, 80) implements ConnectionInterface {
-            public Network\Address $localAddress;
-            public Network\Address $peerAddress;
-            public null|TLS\ConnectionState $tlsState = null;
+            public ConnectionMetadata $metadata;
 
             public function __construct(string $peerHost, int $peerPort)
             {
-                $this->localAddress = Address::tcp('127.0.0.1', 12_345);
-                $this->peerAddress = Address::tcp($peerHost, $peerPort);
+                $this->metadata = new ConnectionMetadata(
+                    Address::tcp('127.0.0.1', 12_345),
+                    Address::tcp($peerHost, $peerPort),
+                );
             }
 
             public function exchange(

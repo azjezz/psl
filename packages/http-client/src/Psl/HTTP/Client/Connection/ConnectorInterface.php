@@ -86,25 +86,32 @@ use Psl\TLS\Exception\HandshakeFailedException;
 interface ConnectorInterface
 {
     /**
-     * Establish a connection to the server identified by the request URL.
+     * Establish a connection to the server identified by the given origin.
+     *
+     * The origin specifies where to connect (scheme, host, port). The host
+     * may be a hostname or an already-resolved IP address (e.g., when a
+     * DNS-resolving connector decorator has pre-resolved the hostname).
      *
      * The connection process involves multiple stages, each of which may fail
      * independently:
      *
      * 1. **Protocol resolution**: Determine the effective protocol version(s) from
      *    the request and configuration (see class-level documentation).
-     * 2. **DNS resolution**: Resolve the hostname from the request URL to one or
-     *    more IP addresses. The default implementation delegates to the OS;
-     *    custom implementations may use async resolvers.
-     * 3. **TCP connection**: Connect to the resolved address and port, subject
-     *    to the configuration's connect timeout.
-     * 4. **TLS handshake** (HTTPS only): Perform the TLS handshake using
+     * 2. **TCP connection**: Connect to the origin host and port.
+     * 3. **TLS handshake** (HTTPS only): Perform the TLS handshake using
      *    {@see ClientConfiguration::$tlsConfiguration}. ALPN negotiation
      *    during this stage selects between HTTP/1.1 and HTTP/2.
-     * 5. **Protocol initialization**: For HTTP/2, send the connection preface
+     * 4. **Protocol initialization**: For HTTP/2, send the connection preface
      *    and exchange SETTINGS frames.
      *
      * The cancellation token is respected throughout all stages.
+     *
+     * @param Origin $origin The target origin (scheme, host, port) to connect to.
+     * @param Request $request The HTTP request for protocol version resolution.
+     * @param ClientConfiguration $configuration Client configuration governing protocol preferences, TLS settings, proxy configuration, and Unix socket path.
+     * @param CancellationTokenInterface $cancellation Token to cancel the connection attempt at any stage.
+     *
+     * @return ConnectionInterface A protocol-aware connection ready for an HTTP exchange.
      *
      * @throws RuntimeException If the TCP connection fails.
      * @throws HandshakeFailedException If the TLS handshake fails.
@@ -112,6 +119,7 @@ interface ConnectorInterface
      * @throws CancelledException If the cancellation token fires during any stage.
      */
     public function connect(
+        Origin $origin,
         Request $request,
         ClientConfiguration $configuration,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),

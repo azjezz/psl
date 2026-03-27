@@ -7,7 +7,10 @@ namespace Psl\HTTP\Client\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Psl\HTTP\Client\ClientConfiguration;
 use Psl\HTTP\Client\H2ClientConfiguration;
+use Psl\HTTP\Client\ProxyConfiguration;
+use Psl\HTTP\Client\SendConfiguration;
 use Psl\HTTP\Message\ProtocolVersion;
+use Psl\HTTP\Message\Response;
 use Psl\Socks;
 use Psl\TLS;
 use Psl\URL;
@@ -56,10 +59,10 @@ final class ClientConfigurationTest extends TestCase
     {
         $config = new ClientConfiguration();
         $h2 = new H2ClientConfiguration(maxConcurrentStreams: 50);
-        $new = $config->withH2($h2);
+        $new = $config->withH2ClientConfiguration($h2);
 
-        static::assertSame($h2, $new->h2);
-        static::assertSame(100, $config->h2->maxConcurrentStreams);
+        static::assertSame($h2, $new->h2ClientConfiguration);
+        static::assertSame(100, $config->h2ClientConfiguration->maxConcurrentStreams);
     }
 
     public function testWithProtocolVersions(): void
@@ -84,82 +87,143 @@ final class ClientConfigurationTest extends TestCase
     {
         $config = new ClientConfiguration();
         $proxy = new Socks\Configuration('127.0.0.1', 1080);
-        $new = $config->withProxy($proxy);
+        $new = $config->withSocksConfiguration($proxy);
 
-        static::assertSame($proxy, $new->proxy);
-        static::assertNull($config->proxy);
+        static::assertSame($proxy, $new->socksConfiguration);
+        static::assertNull($config->socksConfiguration);
     }
 
     public function testWithProxyNull(): void
     {
         $proxy = new Socks\Configuration('127.0.0.1', 1080);
-        $config = new ClientConfiguration(proxy: $proxy);
-        $new = $config->withProxy(null);
+        $config = new ClientConfiguration(socksConfiguration: $proxy);
+        $new = $config->withSocksConfiguration(null);
 
-        static::assertSame($proxy, $config->proxy);
-        static::assertNull($new->proxy);
+        static::assertSame($proxy, $config->socksConfiguration);
+        static::assertNull($new->socksConfiguration);
     }
 
-    public function testWithTunnel(): void
+    public function testWithHttpProxy(): void
     {
         $config = new ClientConfiguration();
-        $new = $config->withTunnel('http://proxy:8080');
+        $proxy = new ProxyConfiguration(URL\parse('http://proxy:8080'));
+        $new = $config->withProxyConfiguration($proxy);
 
-        static::assertSame('http://proxy:8080', $new->tunnel);
-        static::assertNull($config->tunnel);
+        static::assertSame($proxy, $new->proxyConfiguration);
+        static::assertNull($config->proxyConfiguration);
     }
 
-    public function testWithTunnelNull(): void
+    public function testWithHttpProxyNull(): void
     {
-        $config = new ClientConfiguration(tunnel: 'http://proxy:8080');
-        $new = $config->withTunnel(null);
+        $proxy = new ProxyConfiguration(URL\parse('http://proxy:8080'));
+        $config = new ClientConfiguration(proxyConfiguration: $proxy);
+        $new = $config->withProxyConfiguration(null);
 
-        static::assertSame('http://proxy:8080', $config->tunnel);
-        static::assertNull($new->tunnel);
+        static::assertSame($proxy, $config->proxyConfiguration);
+        static::assertNull($new->proxyConfiguration);
     }
 
-    public function testWithNoTunneling(): void
+    public function testWithSocksPreservesProxy(): void
     {
-        $config = new ClientConfiguration();
-        $new = $config->withNoTunneling(['localhost', '*.internal']);
+        $httpProxy = new ProxyConfiguration(URL\parse('http://proxy:8080'), skipProxyFor: ['localhost']);
+        $config = new ClientConfiguration(proxyConfiguration: $httpProxy);
+        $socksProxy = new Socks\Configuration('127.0.0.1', 1080);
+        $new = $config->withSocksConfiguration($socksProxy);
 
-        static::assertSame(['localhost', '*.internal'], $new->noTunneling);
-        static::assertSame([], $config->noTunneling);
+        static::assertSame($socksProxy, $new->socksConfiguration);
+        static::assertSame($httpProxy, $new->proxyConfiguration);
     }
 
-    public function testWithProxyPreservesOtherFields(): void
+    public function testWithProxyPreservesSocks(): void
     {
-        $config = new ClientConfiguration(tunnel: 'http://proxy:8080', noTunneling: ['localhost']);
-        $proxy = new Socks\Configuration('127.0.0.1', 1080);
-        $new = $config->withProxy($proxy);
+        $socksProxy = new Socks\Configuration('127.0.0.1', 1080);
+        $config = new ClientConfiguration(socksConfiguration: $socksProxy);
+        $httpProxy = new ProxyConfiguration(URL\parse('http://other:9090'));
+        $new = $config->withProxyConfiguration($httpProxy);
 
-        static::assertSame($proxy, $new->proxy);
-        static::assertSame('http://proxy:8080', $new->tunnel);
-        static::assertSame(['localhost'], $new->noTunneling);
-    }
-
-    public function testWithTunnelPreservesOtherFields(): void
-    {
-        $proxy = new Socks\Configuration('127.0.0.1', 1080);
-        $config = new ClientConfiguration(proxy: $proxy, noTunneling: ['localhost']);
-        $new = $config->withTunnel('http://other:9090');
-
-        static::assertSame('http://other:9090', $new->tunnel);
-        static::assertSame($proxy, $new->proxy);
-        static::assertSame(['localhost'], $new->noTunneling);
+        static::assertSame($httpProxy, $new->proxyConfiguration);
+        static::assertSame($socksProxy, $new->socksConfiguration);
     }
 
     public function testWithChaining(): void
     {
+        $proxy = new ProxyConfiguration(URL\parse('http://proxy:8080'), skipProxyFor: ['localhost']);
         $config = new ClientConfiguration()
             ->withMaxResponseBodySize(1_000_000)
             ->withProtocolVersions([ProtocolVersion::V11])
-            ->withTunnel('http://proxy:8080')
-            ->withNoTunneling(['localhost']);
+            ->withProxyConfiguration($proxy);
 
         static::assertSame(1_000_000, $config->maxResponseBodySize);
         static::assertSame([ProtocolVersion::V11], $config->protocolVersions);
-        static::assertSame('http://proxy:8080', $config->tunnel);
-        static::assertSame(['localhost'], $config->noTunneling);
+        static::assertSame($proxy, $config->proxyConfiguration);
+    }
+
+    public function testOnInformationalResponseDefault(): void
+    {
+        $config = new ClientConfiguration();
+
+        static::assertNull($config->onInformationalResponse);
+    }
+
+    public function testOnInformationalResponseSet(): void
+    {
+        $cb = static function (Response $r): void {};
+        $config = new ClientConfiguration(onInformationalResponse: $cb);
+
+        static::assertSame($cb, $config->onInformationalResponse);
+    }
+
+    public function testWithOverridesMergesNeitherSet(): void
+    {
+        $config = new ClientConfiguration();
+        $merged = $config->withOverrides(new SendConfiguration());
+
+        static::assertNull($merged->onInformationalResponse);
+    }
+
+    public function testWithOverridesMergesOnlyClientSet(): void
+    {
+        $called = false;
+        $cb = static function (Response $r) use (&$called): void {
+            $called = true;
+        };
+        $config = new ClientConfiguration(onInformationalResponse: $cb);
+        $merged = $config->withOverrides(new SendConfiguration());
+
+        static::assertNotNull($merged->onInformationalResponse);
+        ($merged->onInformationalResponse)(new Response(status: 100));
+        static::assertTrue($called);
+    }
+
+    public function testWithOverridesMergesOnlySendSet(): void
+    {
+        $called = false;
+        $cb = static function (Response $r) use (&$called): void {
+            $called = true;
+        };
+        $config = new ClientConfiguration();
+        $merged = $config->withOverrides(new SendConfiguration(onInformationalResponse: $cb));
+
+        static::assertNotNull($merged->onInformationalResponse);
+        ($merged->onInformationalResponse)(new Response(status: 100));
+        static::assertTrue($called);
+    }
+
+    public function testWithOverridesMergesBothSet(): void
+    {
+        $order = [];
+        $clientCb = static function (Response $r) use (&$order): void {
+            $order[] = 'client';
+        };
+        $sendCb = static function (Response $r) use (&$order): void {
+            $order[] = 'send';
+        };
+
+        $config = new ClientConfiguration(onInformationalResponse: $clientCb);
+        $merged = $config->withOverrides(new SendConfiguration(onInformationalResponse: $sendCb));
+
+        static::assertNotNull($merged->onInformationalResponse);
+        ($merged->onInformationalResponse)(new Response(status: 100));
+        static::assertSame(['client', 'send'], $order);
     }
 }

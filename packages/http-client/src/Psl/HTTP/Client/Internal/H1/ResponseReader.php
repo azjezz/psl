@@ -7,6 +7,7 @@ namespace Psl\HTTP\Client\Internal\H1;
 use Psl\Async;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\Exception\CancelledException;
+use Psl\HTTP\Client\ClientConfiguration;
 use Psl\HTTP\Client\Exception\ProtocolException;
 use Psl\HTTP\Client\Internal\LimitedReadHandle;
 use Psl\HTTP\Message\FieldMap;
@@ -188,12 +189,15 @@ final class ResponseReader
      * All intermediate 1xx responses are collected and returned alongside the
      * final response (RFC 9110 Section 15.2).
      *
+     * If {@see ClientConfiguration::$onInformationalResponse} is set, it is
+     * invoked for each 1xx response as it arrives, in addition to collecting
+     * them in the returned list.
+     *
      * @param IO\Reader $reader Buffered reader wrapping the connection stream.
-     * @param positive-int $maxHeaderSize Maximum allowed total header size in bytes.
+     * @param ClientConfiguration $configuration Client configuration with header size limits and informational callback.
      * @param CancellationTokenInterface $cancellation Token to cancel read operations.
      * @param bool $isHead Whether this is a HEAD request (no body expected).
      * @param null|string $preReadStatusLine A status line already read (e.g., from Expect handling).
-     * @param int $maxResponseBodySize Maximum allowed body size (0 = unlimited).
      *
      * @return array{list<Response>, Response, bool} Informational responses, final response, and keep-alive.
      *
@@ -203,11 +207,10 @@ final class ResponseReader
      */
     public static function readWithInformational(
         IO\Reader $reader,
-        int $maxHeaderSize,
+        ClientConfiguration $configuration,
         CancellationTokenInterface $cancellation,
         bool $isHead,
         null|string $preReadStatusLine = null,
-        int $maxResponseBodySize = 0,
     ): array {
         /** @var list<Response> $informational */
         $informational = [];
@@ -219,15 +222,19 @@ final class ResponseReader
 
             [$response, $keepAlive] = self::read(
                 $reader,
-                $maxHeaderSize,
+                $configuration->maxResponseHeaderSize,
                 $cancellation,
                 $isHead,
                 $statusLine,
-                $maxResponseBodySize,
+                $configuration->maxResponseBodySize,
             );
 
             if ($response->status >= 200) {
                 return [$informational, $response, $keepAlive];
+            }
+
+            if ($configuration->onInformationalResponse !== null) {
+                ($configuration->onInformationalResponse)($response);
             }
 
             $informational[] = $response;

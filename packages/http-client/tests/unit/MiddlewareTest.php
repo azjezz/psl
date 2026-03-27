@@ -10,7 +10,9 @@ use Psl\Async\NullCancellationToken;
 use Psl\HTTP\Client\Client;
 use Psl\HTTP\Client\ClientConfiguration;
 use Psl\HTTP\Client\Connection\ConnectionInterface;
+use Psl\HTTP\Client\Connection\ConnectionMetadata;
 use Psl\HTTP\Client\Connection\ConnectorInterface;
+use Psl\HTTP\Client\Connection\Origin;
 use Psl\HTTP\Client\Handler\HandlerInterface;
 use Psl\HTTP\Client\Middleware\MiddlewareInterface;
 use Psl\HTTP\Message\FieldMap;
@@ -20,7 +22,6 @@ use Psl\HTTP\Message\Transaction;
 use Psl\IO;
 use Psl\Network;
 use Psl\Network\Address;
-use Psl\TLS;
 
 use function Psl\URL\parse;
 
@@ -34,20 +35,21 @@ final class MiddlewareTest extends TestCase
             ) {}
 
             public function connect(
+                Origin $origin,
                 Request $request,
                 ClientConfiguration $configuration,
                 CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): ConnectionInterface {
                 return new class($this->captured) implements ConnectionInterface {
-                    public Network\Address $localAddress;
-                    public Network\Address $peerAddress;
-                    public null|TLS\ConnectionState $tlsState = null;
+                    public ConnectionMetadata $metadata;
 
                     public function __construct(
                         private Request &$captured,
                     ) {
-                        $this->localAddress = Address::tcp('127.0.0.1', 12_345);
-                        $this->peerAddress = Address::tcp('93.184.216.34', 80);
+                        $this->metadata = new ConnectionMetadata(
+                            Address::tcp('127.0.0.1', 12_345),
+                            Address::tcp('93.184.216.34', 80),
+                        );
                     }
 
                     public function exchange(
@@ -77,19 +79,20 @@ final class MiddlewareTest extends TestCase
     {
         return new class() implements ConnectorInterface {
             public function connect(
+                Origin $origin,
                 Request $request,
                 ClientConfiguration $configuration,
                 CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): ConnectionInterface {
                 return new class() implements ConnectionInterface {
-                    public Network\Address $localAddress;
-                    public Network\Address $peerAddress;
-                    public null|TLS\ConnectionState $tlsState = null;
+                    public ConnectionMetadata $metadata;
 
                     public function __construct()
                     {
-                        $this->localAddress = Address::tcp('127.0.0.1', 12_345);
-                        $this->peerAddress = Address::tcp('93.184.216.34', 80);
+                        $this->metadata = new ConnectionMetadata(
+                            Address::tcp('127.0.0.1', 12_345),
+                            Address::tcp('93.184.216.34', 80),
+                        );
                     }
 
                     public function exchange(
@@ -233,20 +236,21 @@ final class MiddlewareTest extends TestCase
             ) {}
 
             public function connect(
+                Origin $origin,
                 Request $request,
                 ClientConfiguration $configuration,
                 CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): ConnectionInterface {
                 return new class($this->exchangeCalled) implements ConnectionInterface {
-                    public Network\Address $localAddress;
-                    public Network\Address $peerAddress;
-                    public null|TLS\ConnectionState $tlsState = null;
+                    public ConnectionMetadata $metadata;
 
                     public function __construct(
                         private bool &$exchangeCalled,
                     ) {
-                        $this->localAddress = Address::tcp('127.0.0.1', 12_345);
-                        $this->peerAddress = Address::tcp('93.184.216.34', 80);
+                        $this->metadata = new ConnectionMetadata(
+                            Address::tcp('127.0.0.1', 12_345),
+                            Address::tcp('93.184.216.34', 80),
+                        );
                     }
 
                     public function exchange(

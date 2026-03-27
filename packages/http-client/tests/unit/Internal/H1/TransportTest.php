@@ -6,6 +6,7 @@ namespace Psl\HTTP\Client\Tests\Unit\Internal\H1;
 
 use PHPUnit\Framework\TestCase;
 use Psl\HTTP\Client\ClientConfiguration;
+use Psl\HTTP\Client\Connection\ConnectionMetadata;
 use Psl\HTTP\Client\Exception\ProtocolException;
 use Psl\HTTP\Client\Exception\RequestException;
 use Psl\HTTP\Client\Internal\H1\H1Connection;
@@ -49,10 +50,14 @@ final class TransportTest extends TestCase
         }
 
         $stream = new FakeStream($serverResponse);
-        $connection = new H1Connection($stream);
+        $connection = new H1Connection($stream, new ConnectionMetadata(Network\Address::tcp(), Network\Address::tcp()));
 
-        /** @var positive-int $maxHeaderSize */
-        return Transport::exchange($connection, $request, $request->url ?? $url, $maxHeaderSize);
+        return Transport::exchange(
+            $connection,
+            $request,
+            $request->url ?? $url,
+            new ClientConfiguration(maxResponseHeaderSize: $maxHeaderSize),
+        );
     }
 
     public function testNormalResponse(): void
@@ -404,7 +409,7 @@ final class TransportTest extends TestCase
     public function testExchangeWithoutUrlThrowsRequestException(): void
     {
         $stream = new FakeStream("HTTP/1.1 200 OK\r\ncontent-length: 2\r\n\r\nok");
-        $connection = new H1Connection($stream);
+        $connection = new H1Connection($stream, new ConnectionMetadata(Network\Address::tcp(), Network\Address::tcp()));
 
         $request = new Request(method: 'GET', url: null, requestTarget: '/');
 
@@ -416,9 +421,13 @@ final class TransportTest extends TestCase
     {
         $released = false;
         $stream = new FakeStream("HTTP/1.1 200 OK\r\ncontent-length: 5\r\n\r\nhello");
-        $connection = new H1Connection($stream, static function (Network\StreamInterface $s) use (&$released): void {
-            $released = true;
-        });
+        $connection = new H1Connection(
+            $stream,
+            new ConnectionMetadata(Network\Address::tcp(), Network\Address::tcp()),
+            static function (Network\StreamInterface $s) use (&$released): void {
+                $released = true;
+            },
+        );
 
         $url = URL\parse('http://127.0.0.1:8080/');
         $request = new Request(method: 'GET', url: $url, requestTarget: '/', headers: FieldMap::from([
