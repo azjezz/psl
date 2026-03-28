@@ -13,7 +13,7 @@ use function file_exists;
 use function is_file;
 use function is_readable;
 
-final class ReadHandle extends Internal\AbstractHandleWrapper implements ReadHandleInterface
+final readonly class ReadHandle extends Internal\AbstractHandleWrapper implements ReadHandleInterface
 {
     use IO\ReadHandleConvenienceMethodsTrait;
 

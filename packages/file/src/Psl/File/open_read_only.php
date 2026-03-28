@@ -13,7 +13,7 @@ namespace Psl\File;
  * @throws Exception\NotFileException If $file points to a non-file node on the filesystem.
  * @throws Exception\NotReadableException If $file exists, and is non-readable.
  */
-function open_read_only(string $file): ReadHandleInterface
+function open_read_only(string $file): ReadHandle
 {
     return new ReadHandle($file);
 }

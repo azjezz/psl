@@ -18,7 +18,9 @@ use function is_writable;
 use function mkdir;
 use function sprintf;
 
-final class ReadWriteHandle extends Internal\AbstractHandleWrapper implements WriteHandleInterface, ReadHandleInterface
+final readonly class ReadWriteHandle extends Internal\AbstractHandleWrapper implements
+    WriteHandleInterface,
+    ReadHandleInterface
 {
     use IO\ReadHandleConvenienceMethodsTrait;
     use IO\WriteHandleConvenienceMethodsTrait;

@@ -42,7 +42,7 @@ interface HandleInterface extends IO\StreamHandleInterface, IO\SeekHandleInterfa
      * $lock->release();
      * ```
      */
-    public function lock(LockType $type): Lock;
+    public function lock(LockType $type /** , Async\CancellationTokenInterface $cancellation = new Async\NullCancellationToken() */): Lock;
 
     /**
      * Immediately get a shared or exclusive lock on a file, or throw.
