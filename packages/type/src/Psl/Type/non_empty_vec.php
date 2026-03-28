@@ -12,6 +12,8 @@ namespace Psl\Type;
  * @param TypeInterface<T> $valueType
  *
  * @return TypeInterface<non-empty-list<T>>
+ *
+ * @api
  */
 function non_empty_vec(TypeInterface $valueType): TypeInterface
 {

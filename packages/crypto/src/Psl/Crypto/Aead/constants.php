@@ -12,5 +12,7 @@ use const SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES;
  * All supported AEAD algorithms use a 32-byte key.
  *
  * @var positive-int
+ *
+ * @api
  */
 const KEY_BYTES = SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES;

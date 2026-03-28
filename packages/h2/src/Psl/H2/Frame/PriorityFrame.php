@@ -16,6 +16,8 @@ use function unpack;
  * Specifies the sender-advised priority of a stream (deprecated in RFC 9113).
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.3
+ *
+ * @api
  */
 final readonly class PriorityFrame implements FrameInterface
 {

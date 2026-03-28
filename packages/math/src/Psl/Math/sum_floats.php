@@ -12,6 +12,8 @@ use function array_sum;
  * @param list<int|float> $numbers
  *
  * @pure
+ *
+ * @api
  */
 function sum_floats(array $numbers): float
 {

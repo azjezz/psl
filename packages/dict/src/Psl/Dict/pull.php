@@ -33,6 +33,8 @@ use Closure;
  * @param (Closure(Tv1): Tk2) $keyFunc
  *
  * @return array<Tk2, Tv2>
+ *
+ * @api
  */
 function pull(iterable $iterable, Closure $valueFunc, Closure $keyFunc): array
 {

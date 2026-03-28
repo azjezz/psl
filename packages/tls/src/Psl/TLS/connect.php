@@ -24,6 +24,8 @@ use Psl\TCP;
  * @throws Network\Exception\RuntimeException If the TCP connection fails.
  * @throws CancelledException If the operation was cancelled.
  * @throws Exception\HandshakeFailedException If the TLS handshake fails.
+ *
+ * @api
  */
 function connect(
     string $host,

@@ -6,4 +6,7 @@ namespace Psl\Socks\Exception;
 
 use Psl;
 
+/**
+ * @api
+ */
 interface ExceptionInterface extends Psl\Exception\ExceptionInterface {}

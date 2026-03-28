@@ -12,6 +12,8 @@ use Psl\URI\Internal\Resolver;
  * @throws Exception\InvalidURIException If the resolved URI components are invalid.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc3986#section-5
+ *
+ * @api
  */
 function resolve(URI $base, URI $reference): URI
 {

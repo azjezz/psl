@@ -24,6 +24,8 @@ namespace Psl\Tree;
  * @return list<T>
  *
  * @pure
+ *
+ * @api
  */
 function leaves(NodeInterface $node): array
 {

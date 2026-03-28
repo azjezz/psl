@@ -20,6 +20,8 @@ use function is_array;
  * @return array<Tk, Tv>
  *
  * @no-named-arguments
+ *
+ * @api
  */
 function merge(iterable $first, iterable ...$rest): array
 {

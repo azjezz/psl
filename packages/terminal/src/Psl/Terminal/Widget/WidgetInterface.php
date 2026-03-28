@@ -9,6 +9,8 @@ use Psl\Terminal\Rect;
 
 /**
  * A widget that can render itself into a rectangular region of a buffer.
+ *
+ * @api
  */
 interface WidgetInterface
 {

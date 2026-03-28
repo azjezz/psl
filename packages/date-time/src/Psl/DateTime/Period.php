@@ -27,6 +27,8 @@ use function implode;
  * "1 month" vs "30 days" is ambiguous without a reference date.
  *
  * @immutable
+ *
+ * @api
  */
 final readonly class Period implements TemporalAmountInterface
 {

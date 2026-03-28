@@ -21,6 +21,8 @@ use function strpos;
  * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
  *
  * @return null|int<0, max>
+ *
+ * @api
  */
 function search(string $haystack, string $needle, int $offset = 0): null|int
 {

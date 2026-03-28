@@ -20,6 +20,8 @@ use function substr;
  *
  * Reads lines from the inner handle, joins soft-break continuations (lines ending with `=`),
  * and decodes complete logical lines via {@see quoted_printable_decode()}.
+ *
+ * @api
  */
 final class DecodingReadHandle implements IO\BufferedReadHandleInterface
 {

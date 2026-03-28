@@ -28,6 +28,8 @@ use function array_map;
  * @param (Closure(T): Tu) $function
  *
  * @return NodeInterface<Tu>
+ *
+ * @api
  */
 function map(NodeInterface $node, Closure $function): NodeInterface
 {

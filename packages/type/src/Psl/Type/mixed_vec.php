@@ -8,6 +8,8 @@ namespace Psl\Type;
  * @pure
  *
  * @return TypeInterface<list<mixed>>
+ *
+ * @api
  */
 function mixed_vec(): TypeInterface
 {

@@ -16,6 +16,8 @@ namespace Psl\Type;
  * @param TypeInterface<TRest> ...$rest
  *
  * @return TypeInterface<TFirst&TSecond&TRest>
+ *
+ * @api
  */
 function intersection(TypeInterface $first, TypeInterface $second, TypeInterface ...$rest): TypeInterface
 {

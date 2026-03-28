@@ -16,6 +16,8 @@ use function substr;
 /**
  * A write handle that accepts base64-encoded bytes, strips whitespace,
  * buffers until 4-byte groups are available, decodes and writes to the inner handle.
+ *
+ * @api
  */
 final class DecodingWriteHandle implements IO\WriteHandleInterface
 {

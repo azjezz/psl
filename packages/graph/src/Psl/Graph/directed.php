@@ -19,6 +19,8 @@ namespace Psl\Graph;
  * @return DirectedGraph<TNode, TWeight>
  *
  * @pure
+ *
+ * @api
  */
 function directed(): DirectedGraph
 {

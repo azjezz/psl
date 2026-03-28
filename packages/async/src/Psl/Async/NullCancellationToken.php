@@ -11,6 +11,8 @@ use Psl\Default\DefaultInterface;
  * A no-op cancellation token that is never cancelled.
  *
  * Used as the default parameter value for operations that accept a cancellation token.
+ *
+ * @api
  */
 final readonly class NullCancellationToken implements CancellationTokenInterface, DefaultInterface
 {

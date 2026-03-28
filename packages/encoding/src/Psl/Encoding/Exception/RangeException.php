@@ -6,4 +6,7 @@ namespace Psl\Encoding\Exception;
 
 use Psl\Exception;
 
+/**
+ * @api
+ */
 final class RangeException extends Exception\RangeException implements ExceptionInterface {}

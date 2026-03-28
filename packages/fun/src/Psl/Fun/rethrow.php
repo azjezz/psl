@@ -13,6 +13,8 @@ use Exception;
  * @return (Closure(Exception): never)
  *
  * @pure
+ *
+ * @api
  */
 function rethrow(): Closure
 {

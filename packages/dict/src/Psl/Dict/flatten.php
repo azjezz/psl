@@ -27,6 +27,8 @@ use function is_array;
  * @param iterable<iterable<Tk, Tv>> $iterables
  *
  * @return array<Tk, Tv>
+ *
+ * @api
  */
 function flatten(iterable $iterables): array
 {

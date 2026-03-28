@@ -13,6 +13,8 @@ use Psl\Default\DefaultInterface;
  * Each method returns a new Writer instance with the appended bytes.
  *
  * @psalm-immutable
+ *
+ * @api
  */
 final readonly class Writer implements BufferedWriterInterface, DefaultInterface
 {

@@ -10,6 +10,8 @@ use function sodium_crypto_aead_xchacha20poly1305_ietf_keygen;
 
 /**
  * Generate a new random symmetric encryption key.
+ *
+ * @api
  */
 function generate_key(): Key
 {

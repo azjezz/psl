@@ -16,6 +16,8 @@ use function preg_split;
  * @pure
  *
  * @throws Exception\InvalidArgumentException if $needle is not a valid UTF-8 string.
+ *
+ * @api
  */
 function replace_ci(string $haystack, string $needle, string $replacement, Encoding $encoding = Encoding::Utf8): string
 {

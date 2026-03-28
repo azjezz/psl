@@ -21,6 +21,8 @@ use Closure;
  * @param Ts $initial
  *
  * @return Ts
+ *
+ * @api
  */
 function reduce(iterable $iterable, Closure $function, mixed $initial): mixed
 {

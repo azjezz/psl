@@ -8,5 +8,7 @@ use Psl\Exception;
 
 /**
  * @mutation-free
+ *
+ * @api
  */
 final class InvalidArgumentException extends Exception\InvalidArgumentException implements ExceptionInterface {}

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Process;
 
+/**
+ * @api
+ */
 enum Signal: int
 {
     case Hangup = 1;

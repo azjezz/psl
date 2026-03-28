@@ -18,6 +18,8 @@ use Psl\Str;
  *
  * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
  * @throws Str\Exception\InvalidArgumentException If $haystack is not made of grapheme clusters.
+ *
+ * @api
  */
 function contains(string $haystack, string $needle, int $offset = 0): bool
 {

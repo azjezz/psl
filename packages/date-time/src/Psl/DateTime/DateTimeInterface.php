@@ -7,6 +7,9 @@ namespace Psl\DateTime;
 use Override;
 use Psl\Locale\Locale;
 
+/**
+ * @api
+ */
 interface DateTimeInterface extends TemporalInterface
 {
     /**

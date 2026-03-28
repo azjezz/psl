@@ -60,6 +60,8 @@ use function array_map;
  * @return TResult
  *
  * @pure
+ *
+ * @api
  */
 function traverse(NodeInterface $tree, Closure $transform): mixed
 {

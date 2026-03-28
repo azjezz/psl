@@ -25,6 +25,8 @@ use function stream_context_set_options;
  *       $stream = $listener->accept();
  *       $tls = $acceptor->accept($stream);
  *   }
+ *
+ * @api
  */
 final readonly class Acceptor
 {

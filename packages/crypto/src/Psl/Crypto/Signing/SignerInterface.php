@@ -7,6 +7,9 @@ namespace Psl\Crypto\Signing;
 use Psl\Crypto\Exception;
 use SensitiveParameter;
 
+/**
+ * @api
+ */
 interface SignerInterface
 {
     /**

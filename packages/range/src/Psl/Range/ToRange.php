@@ -16,6 +16,8 @@ use Override;
  * @see UpperBoundRangeInterface::isUpperInclusive()
  *
  * @psalm-immutable
+ *
+ * @api
  */
 final readonly class ToRange implements UpperBoundRangeInterface
 {

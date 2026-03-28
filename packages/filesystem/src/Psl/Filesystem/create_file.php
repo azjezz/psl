@@ -18,6 +18,8 @@ use function touch;
  *                              Defaults to the current system time.
  *
  * @throws Exception\RuntimeException If unable to create the file.
+ *
+ * @api
  */
 function create_file(string $filename, null|int $time = null, null|int $accessTime = null): void
 {

@@ -20,6 +20,8 @@ use const PASSWORD_DEFAULT;
  * It includes support for widely used algorithms like Bcrypt, Argon2i,  and Argon2id,
  * and allows for the default algorithm to be used, which is subject to change with
  * future PHP versions to ensure the use of strong, up-to-date cryptographic standards.
+ *
+ * @api
  */
 enum Algorithm: string implements DefaultInterface
 {

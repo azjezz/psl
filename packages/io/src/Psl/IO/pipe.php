@@ -22,6 +22,8 @@ use const STREAM_SOCK_STREAM;
  *  CloseHandleInterface&ReadHandleInterface&StreamHandleInterface,
  *  CloseHandleInterface&WriteHandleInterface&StreamHandleInterface,
  * }
+ *
+ * @api
  */
 function pipe(): array
 {

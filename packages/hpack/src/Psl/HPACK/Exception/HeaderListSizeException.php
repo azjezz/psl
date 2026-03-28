@@ -6,6 +6,8 @@ namespace Psl\HPACK\Exception;
 
 /**
  * Exception thrown when the encoded header list size exceeds the configured limit.
+ *
+ * @api
  */
 final class HeaderListSizeException extends OverflowException
 {

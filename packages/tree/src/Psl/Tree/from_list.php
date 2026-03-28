@@ -54,6 +54,8 @@ use function count;
  * @throws Exception\OrphanedNodeException if parent_id references non-existent item
  *
  * @pure
+ *
+ * @api
  */
 function from_list(array $items, Closure $getId, Closure $getParentId, Closure $getValue): NodeInterface
 {

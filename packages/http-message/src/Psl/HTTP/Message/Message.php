@@ -40,6 +40,8 @@ use Psl\IO;
  * @link https://datatracker.ietf.org/doc/html/rfc9114#section-4.1 HTTP/3 HTTP Message Exchanges
  *
  * @inheritors Request|Response
+ *
+ * @api
  */
 abstract readonly class Message
 {

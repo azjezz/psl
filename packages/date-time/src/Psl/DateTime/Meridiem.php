@@ -10,6 +10,8 @@ namespace Psl\DateTime;
  * This enum distinguishes between the ante meridiem (AM) period, before midday,
  * and the post meridiem (PM) period, after midday. It provides a type-safe way to represent
  * and work with these two divisions of the day.
+ *
+ * @api
  */
 enum Meridiem: string
 {

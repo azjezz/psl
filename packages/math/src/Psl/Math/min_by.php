@@ -20,6 +20,8 @@ use Closure;
  * @param (Closure(T): numeric) $numericFunction
  *
  * @return T|null
+ *
+ * @api
  */
 function min_by(iterable $numbers, Closure $numericFunction): mixed
 {

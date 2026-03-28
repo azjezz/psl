@@ -6,4 +6,7 @@ namespace Psl\Async\Exception;
 
 use Psl\Exception;
 
+/**
+ * @api
+ */
 final class InvalidArgumentException extends Exception\InvalidArgumentException implements ExceptionInterface {}

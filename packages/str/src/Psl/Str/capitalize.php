@@ -25,6 +25,8 @@ namespace Psl\Str;
  *      => Str('1337)
  *
  * @pure
+ *
+ * @api
  */
 function capitalize(string $string, Encoding $encoding = Encoding::Utf8): string
 {

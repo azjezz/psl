@@ -14,6 +14,8 @@ use Psl\Collection;
  * @param TypeInterface<T> $type
  *
  * @return TypeInterface<Collection\SetInterface<T>>
+ *
+ * @api
  */
 function set(TypeInterface $type): TypeInterface
 {

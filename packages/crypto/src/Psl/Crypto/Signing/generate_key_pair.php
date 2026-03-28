@@ -13,6 +13,8 @@ use function sodium_memzero;
 
 /**
  * Generate a new Ed25519 signing key pair.
+ *
+ * @api
  */
 function generate_key_pair(): KeyPair
 {

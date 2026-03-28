@@ -12,6 +12,8 @@ use Psl\Punycode\Internal\Codec;
  * @link https://datatracker.ietf.org/doc/html/rfc3492#section-6.3
  *
  * @throws Exception\EncodingException If encoding overflows or the input is invalid.
+ *
+ * @api
  */
 function encode(string $input): string
 {

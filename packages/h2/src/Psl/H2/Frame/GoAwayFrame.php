@@ -18,6 +18,8 @@ use function unpack;
  * Streams up to lastStreamId may still complete; higher-numbered streams were not processed.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.8
+ *
+ * @api
  */
 final readonly class GoAwayFrame implements FrameInterface
 {

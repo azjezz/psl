@@ -13,6 +13,8 @@ namespace Psl\Compression;
  * Compression is inherently stateful. A single compressor instance MUST NOT
  * be used concurrently across multiple fibers or streams. Each concurrent
  * compression stream requires its own instance.
+ *
+ * @api
  */
 interface CompressorInterface
 {

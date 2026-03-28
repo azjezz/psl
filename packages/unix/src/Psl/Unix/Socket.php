@@ -11,6 +11,8 @@ use Psl\Network;
 
 /**
  * A Unix domain socket that can be configured before connecting or listening.
+ *
+ * @api
  */
 final class Socket
 {

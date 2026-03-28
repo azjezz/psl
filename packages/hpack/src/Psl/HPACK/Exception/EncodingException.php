@@ -6,6 +6,8 @@ namespace Psl\HPACK\Exception;
 
 /**
  * Exception thrown when HPACK encoding fails.
+ *
+ * @api
  */
 final class EncodingException extends RuntimeException
 {

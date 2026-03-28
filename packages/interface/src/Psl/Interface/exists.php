@@ -10,6 +10,8 @@ use function interface_exists;
  * Checks if the interface with the given name exists.
  *
  * @param string $interfaceName
+ *
+ * @api
  */
 function exists(string $interfaceName): bool
 {

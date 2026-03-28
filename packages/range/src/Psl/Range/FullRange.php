@@ -14,6 +14,8 @@ use Override;
  * @see RangeInterface::contains()
  *
  * @psalm-immutable
+ *
+ * @api
  */
 final class FullRange implements RangeInterface
 {

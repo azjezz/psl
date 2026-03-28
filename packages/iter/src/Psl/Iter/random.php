@@ -19,6 +19,8 @@ use function mt_rand;
  * @throws Exception\InvalidArgumentException If $iterable is empty.
  *
  * @return T
+ *
+ * @api
  */
 function random(iterable $iterable): mixed
 {

@@ -17,6 +17,8 @@ use Revolt\EventLoop\Suspension;
  * @template T
  *
  * @implements SenderInterface<T>
+ *
+ * @internal
  */
 final class BoundedSender implements SenderInterface
 {

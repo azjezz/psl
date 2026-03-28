@@ -7,6 +7,9 @@ namespace Psl\Type\Exception;
 use Psl\Exception\RuntimeException;
 use Throwable;
 
+/**
+ * @api
+ */
 abstract class Exception extends RuntimeException implements ExceptionInterface
 {
     private string $actual;

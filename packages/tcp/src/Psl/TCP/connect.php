@@ -17,6 +17,8 @@ use Psl\Network;
  *
  * @throws Network\Exception\RuntimeException If failed to connect to client on the given address.
  * @throws CancelledException If the operation was cancelled.
+ *
+ * @api
  */
 function connect(
     string $host,

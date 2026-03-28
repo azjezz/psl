@@ -14,6 +14,8 @@ use const PATH_SEPARATOR;
  * @return list<string>
  *
  * @pure
+ *
+ * @api
  */
 function split_paths(string $path): array
 {

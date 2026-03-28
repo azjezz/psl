@@ -24,6 +24,8 @@ use function stream_context_set_options;
  * Usage:
  *   $connector = Connector::default();
  *   $tls = $connector->connect(TCP\connect('example.com', 443), 'example.com');
+ *
+ * @api
  */
 final readonly class Connector implements DefaultInterface
 {

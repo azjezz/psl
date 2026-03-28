@@ -12,6 +12,8 @@ use function strtolower;
  * @return lowercase-string
  *
  * @pure
+ *
+ * @api
  */
 function lowercase(string $string): string
 {

@@ -10,6 +10,8 @@ namespace Psl\URI\Authority;
  * A registered name is a DNS hostname or any other non-IP host identifier.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc3986#section-3.2.2
+ *
+ * @api
  */
 final readonly class RegisteredNameHost implements HostInterface
 {

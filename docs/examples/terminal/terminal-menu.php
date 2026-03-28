@@ -18,7 +18,7 @@ final class MenuState
 
 $app = Terminal\Application::create(new MenuState(), title: 'Menu Demo');
 
-$app->on(Event\Key::class, static function (Event\Key $event, MenuState $state) use ($app): void {
+$app->on(Event\Key::class, static function (Event\Key $event, MenuState $_state) use ($app): void {
     if ($event->is('ctrl+c')) {
         $app->stop();
     }

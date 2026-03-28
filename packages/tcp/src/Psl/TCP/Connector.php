@@ -11,6 +11,8 @@ use Psl\Default\DefaultInterface;
 
 /**
  * Default TCP connector that establishes direct connections.
+ *
+ * @api
  */
 final readonly class Connector implements ConnectorInterface, DefaultInterface
 {

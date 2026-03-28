@@ -9,6 +9,8 @@ use Throwable;
 
 /**
  * @inheritors InvalidTableIndexException|InvalidSizeException
+ *
+ * @api
  */
 class InvalidArgumentException extends Exception\InvalidArgumentException implements ExceptionInterface
 {

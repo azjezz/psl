@@ -9,6 +9,9 @@ use Psl\Exception;
 
 use function sprintf;
 
+/**
+ * @api
+ */
 final class InvalidArgumentException extends Exception\InvalidArgumentException implements ExceptionInterface
 {
     /**

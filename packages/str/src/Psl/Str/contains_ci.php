@@ -35,6 +35,8 @@ namespace Psl\Str;
  * @pure
  *
  * @throws Exception\OutOfBoundsException If the $offset is out-of-bounds.
+ *
+ * @api
  */
 function contains_ci(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::Utf8): bool
 {

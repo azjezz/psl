@@ -8,6 +8,8 @@ use Stringable;
 
 /**
  * @mutation-free
+ *
+ * @api
  */
 interface CommandInterface extends Stringable
 {

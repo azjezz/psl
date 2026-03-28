@@ -10,6 +10,8 @@ use ReflectionClass;
  * Checks if class is abstract.
  *
  * @param class-string $className
+ *
+ * @api
  */
 function is_abstract(string $className): bool
 {

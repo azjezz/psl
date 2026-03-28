@@ -16,6 +16,8 @@ use function count;
  *
  * @param array<Tk, Tv> $first
  * @param array<Tk, Tv> $second
+ *
+ * @api
  */
 function equal(array $first, array $second): bool
 {

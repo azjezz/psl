@@ -18,6 +18,8 @@ use Psl\IO;
  * Defines the common framing operations shared by both client and server endpoints.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113
+ *
+ * @api
  */
 interface ConnectionInterface
 {

@@ -20,6 +20,8 @@ use function preg_match;
  * @throws Exception\InvalidPatternException If $pattern is invalid.
  *
  * @return ($captureGroups is null ? array<array-key, string> : T)|null
+ *
+ * @api
  */
 function first_match(
     string $subject,

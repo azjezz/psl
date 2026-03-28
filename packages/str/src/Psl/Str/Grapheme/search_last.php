@@ -24,6 +24,8 @@ use function grapheme_strrpos;
  * @throws Str\Exception\InvalidArgumentException If $haystack is not made of grapheme clusters.
  *
  * @return null|int<0, max>
+ *
+ * @api
  */
 function search_last(string $haystack, string $needle, int $offset = 0): null|int
 {

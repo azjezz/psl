@@ -39,6 +39,8 @@ use Psl\Str\Exception;
  * @throws Exception\InvalidArgumentException If $string is not made of grapheme clusters.
  *
  * @pure
+ *
+ * @api
  */
 function range(string $string, RangeInterface $range): string
 {

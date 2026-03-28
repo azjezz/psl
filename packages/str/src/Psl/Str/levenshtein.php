@@ -25,6 +25,8 @@ use function levenshtein as php_levenshtien;
  *             is longer than the limit of 255 characters
  *
  * @pure
+ *
+ * @api
  */
 function levenshtein(
     string $source,

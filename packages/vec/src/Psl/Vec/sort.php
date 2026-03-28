@@ -21,6 +21,8 @@ use function usort;
  * @param (Closure(T, T): int)|null $comparator
  *
  * @return list<T>
+ *
+ * @api
  */
 function sort(iterable $iterable, null|Closure $comparator = null): array
 {

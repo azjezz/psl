@@ -24,6 +24,8 @@ use function count;
  *
  * @template Tin
  * @template Tout
+ *
+ * @api
  */
 final class Semaphore
 {

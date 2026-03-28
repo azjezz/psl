@@ -15,6 +15,8 @@ use function sprintf;
  *
  * @throws Exception\RuntimeException If unable to change the mode for the given $node.
  * @throws Exception\NotFoundException If $node does not exist.
+ *
+ * @api
  */
 function change_permissions(string $node, int $permissions): void
 {

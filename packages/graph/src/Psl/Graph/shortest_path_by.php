@@ -43,6 +43,8 @@ use function Psl\Graph\Internal\get_node_key;
  * @return list<TNode>|null
  *
  * @pure
+ *
+ * @api
  */
 function shortest_path_by(
     DirectedGraph|UndirectedGraph $graph,

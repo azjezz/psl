@@ -23,6 +23,8 @@ use function substr;
  * Terminal application managing the event loop, raw mode, and rendering lifecycle.
  *
  * @template S of object
+ *
+ * @api
  */
 final class Application
 {

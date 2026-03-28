@@ -32,6 +32,8 @@ use const ARRAY_FILTER_USE_KEY;
  * @param (Closure(Tk): bool)|null $predicate
  *
  * @return array<Tk, Tv>
+ *
+ * @api
  */
 function filter_keys(iterable $iterable, null|Closure $predicate = null): array
 {

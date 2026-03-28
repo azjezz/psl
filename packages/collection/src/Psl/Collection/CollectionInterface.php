@@ -20,6 +20,8 @@ use Psl\Default\DefaultInterface;
  * @template Tv
  *
  * @extends IteratorAggregate<Tk, Tv>
+ *
+ * @api
  */
 interface CollectionInterface extends Countable, DefaultInterface, IteratorAggregate, JsonSerializable
 {

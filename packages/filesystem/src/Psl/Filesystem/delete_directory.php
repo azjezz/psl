@@ -16,6 +16,8 @@ use function sprintf;
  * @throws Exception\NotFoundException If $directory is not found.
  * @throws Exception\NotDirectoryException If $directory is not a directory.
  * @throws Exception\NotReadableException If $recursive is true, and $directory is not readable.
+ *
+ * @api
  */
 function delete_directory(string $directory, bool $recursive = false): void
 {

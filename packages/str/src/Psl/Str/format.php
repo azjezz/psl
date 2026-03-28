@@ -22,6 +22,8 @@ use function vsprintf;
  * @pure
  *
  * @return string a string produced according to the $format string.
+ *
+ * @api
  */
 function format(string $format, mixed ...$args): string
 {

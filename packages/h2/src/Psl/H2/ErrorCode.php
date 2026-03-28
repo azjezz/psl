@@ -15,6 +15,8 @@ use Psl\H2\Frame\FrameType;
  * behavior; they MAY be treated as equivalent to INTERNAL_ERROR.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-7
+ *
+ * @api
  */
 enum ErrorCode: int
 {

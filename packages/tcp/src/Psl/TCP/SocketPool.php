@@ -28,6 +28,8 @@ use function spl_object_id;
  *   // ... use stream ...
  *   $pool->checkin($stream);  // return for reuse
  *   $stream2 = $pool->checkout('example.com', 80); // reuses the same connection
+ *
+ * @api
  */
 final class SocketPool implements SocketPoolInterface
 {

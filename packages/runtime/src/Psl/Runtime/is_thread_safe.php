@@ -10,6 +10,8 @@ use const PHP_ZTS;
  * Return true if PHP was built with ZTS enabled.
  *
  * @pure
+ *
+ * @api
  */
 function is_thread_safe(): bool
 {

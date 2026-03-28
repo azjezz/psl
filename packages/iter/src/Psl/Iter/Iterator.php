@@ -18,6 +18,8 @@ use function count;
  * @template   Tv
  *
  * @implements SeekableIterator<Tk, Tv>
+ *
+ * @api
  */
 final class Iterator implements Countable, SeekableIterator
 {

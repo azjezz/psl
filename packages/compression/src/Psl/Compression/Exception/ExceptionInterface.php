@@ -8,5 +8,7 @@ use Psl\Exception;
 
 /**
  * Marker interface for all Compression component exceptions.
+ *
+ * @api
  */
 interface ExceptionInterface extends Exception\ExceptionInterface {}

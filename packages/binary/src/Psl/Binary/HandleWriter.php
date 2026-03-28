@@ -12,6 +12,8 @@ use Psl\IO;
  *
  * Each write method encodes the value and immediately writes it to the
  * underlying handle, avoiding buffering in PHP memory.
+ *
+ * @api
  */
 final readonly class HandleWriter implements WriterInterface
 {

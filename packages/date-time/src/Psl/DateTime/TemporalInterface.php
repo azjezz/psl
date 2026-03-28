@@ -17,6 +17,8 @@ use Stringable;
  *
  * @template-extends Comparable<TemporalInterface>
  * @template-extends Equable<TemporalInterface>
+ *
+ * @api
  */
 interface TemporalInterface extends Comparable, Equable, JsonSerializable, Stringable
 {

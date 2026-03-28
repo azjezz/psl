@@ -17,6 +17,8 @@ use Closure;
  * @param (Closure(Tk): Tv) $valueFunc
  *
  * @return array<Tk, Tv>
+ *
+ * @api
  */
 function from_keys(iterable $keys, Closure $valueFunc): array
 {

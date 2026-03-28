@@ -9,6 +9,9 @@ use Psl\Crypto\Exception;
 use Psl\SecureRandom;
 use SensitiveParameter;
 
+/**
+ * @api
+ */
 interface EncryptorInterface extends Crypto\EncryptorInterface
 {
     /**

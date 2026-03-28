@@ -29,6 +29,8 @@ use Psl\Interoperability;
  * @implements Interoperability\FromIntl<IntlTimeZone>
  *
  * @mago-expect analysis:reference-to-undefined-variable
+ *
+ * @api
  */
 enum Timezone: string implements
     Interoperability\ToStdlib,

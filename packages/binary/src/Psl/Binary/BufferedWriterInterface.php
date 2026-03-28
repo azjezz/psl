@@ -11,6 +11,8 @@ use Stringable;
  *
  * Extends {@see WriterInterface} with the ability to retrieve the accumulated
  * binary string.
+ *
+ * @api
  */
 interface BufferedWriterInterface extends WriterInterface, Stringable
 {

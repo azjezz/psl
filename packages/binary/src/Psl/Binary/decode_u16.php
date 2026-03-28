@@ -15,6 +15,8 @@ use function unpack;
  * @return int<0, 65535>
  *
  * @pure
+ *
+ * @api
  */
 function decode_u16(string $bytes, Endianness $endianness = Endianness::Big): int
 {

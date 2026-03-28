@@ -14,6 +14,8 @@ use function array_values;
  * Combines a border style with optional styling and per-side control.
  *
  * @immutable
+ *
+ * @api
  */
 final readonly class Border
 {

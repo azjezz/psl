@@ -6,6 +6,8 @@ namespace Psl\Terminal;
 
 /**
  * Manages switching a terminal between raw and cooked mode.
+ *
+ * @api
  */
 interface RawModeSwitcherInterface
 {

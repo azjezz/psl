@@ -9,6 +9,8 @@ use Throwable;
 
 /**
  * @mago-expect lint:sensitive-parameter
+ *
+ * @api
  */
 final class CancelledException extends RuntimeException
 {

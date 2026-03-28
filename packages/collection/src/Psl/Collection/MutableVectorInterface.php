@@ -12,6 +12,8 @@ use Override;
  *
  * @extends VectorInterface<T>
  * @extends MutableAccessibleCollectionInterface<int<0, max>, T>
+ *
+ * @api
  */
 interface MutableVectorInterface extends MutableAccessibleCollectionInterface, VectorInterface
 {

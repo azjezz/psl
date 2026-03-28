@@ -7,6 +7,8 @@ namespace Psl\H2\Exception;
 /**
  * Thrown when an operation is attempted on an HTTP/2 connection that
  * is no longer usable.
+ *
+ * @api
  */
 final class ConnectionException extends RuntimeException
 {

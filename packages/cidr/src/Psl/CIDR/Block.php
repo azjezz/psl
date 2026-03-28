@@ -29,6 +29,8 @@ use function strlen;
  * @psalm-immutable
  *
  * @mago-expect analysis:invalid-operand - bitwise on strings is okay.
+ *
+ * @api
  */
 final readonly class Block
 {

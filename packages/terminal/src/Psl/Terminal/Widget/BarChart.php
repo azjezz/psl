@@ -18,6 +18,8 @@ use function array_values;
  *
  * Each bar is drawn vertically with a label at the bottom.
  * Values are expected in the range 0.0–1.0.
+ *
+ * @api
  */
 final class BarChart implements WidgetInterface
 {

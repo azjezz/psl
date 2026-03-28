@@ -11,6 +11,8 @@ use Override;
  * @template T
  *
  * @extends AccessibleCollectionInterface<int<0, max>, T>
+ *
+ * @api
  */
 interface VectorInterface extends AccessibleCollectionInterface
 {

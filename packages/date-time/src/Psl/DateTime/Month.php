@@ -11,6 +11,8 @@ namespace Psl\DateTime;
  * get the previous and next month, as well as determining the number of days in a month for a given year,
  * considering leap years. Each case in the enum corresponds to a month, represented by an integer
  * starting with January as 1 through December as 12.
+ *
+ * @api
  */
 enum Month: int
 {

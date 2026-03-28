@@ -17,6 +17,8 @@ use function unpack;
  * Notifies the peer of a stream the server intends to initiate.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.6
+ *
+ * @api
  */
 final readonly class PushPromiseFrame implements FrameInterface
 {

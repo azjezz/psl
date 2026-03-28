@@ -15,13 +15,13 @@ final class TextState {}
 
 $app = Terminal\Application::create(new TextState(), title: 'Text Primitives Demo');
 
-$app->on(Event\Key::class, static function (Event\Key $event, TextState $state) use ($app): void {
+$app->on(Event\Key::class, static function (Event\Key $event, TextState $_state) use ($app): void {
     if ($event->is('ctrl+c')) {
         $app->stop();
     }
 });
 
-$app->run(static function (Terminal\Frame $frame, TextState $state): void {
+$app->run(static function (Terminal\Frame $frame, TextState $_state): void {
     // Span -- a styled text fragment (the smallest text unit)
     $plain = Widget\Span::raw('plain text');
     $boldRed = Widget\Span::styled('bold red', Ansi\foreground(Color\red()), Style\bold());

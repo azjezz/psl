@@ -8,6 +8,8 @@ use Psl\IO;
 
 /**
  * Describes what to do with a standard I/O stream for a child process.
+ *
+ * @api
  */
 final readonly class Stdio
 {

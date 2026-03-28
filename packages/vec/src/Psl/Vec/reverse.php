@@ -20,6 +20,8 @@ use function is_array;
  * @param iterable<T> $iterable The iterable to reverse.
  *
  * @return list<T>
+ *
+ * @api
  */
 function reverse(iterable $iterable): array
 {

@@ -20,6 +20,8 @@ use Throwable;
  * @see wrap()
  *
  * @pure
+ *
+ * @api
  */
 function reflect(Closure $task): Closure
 {

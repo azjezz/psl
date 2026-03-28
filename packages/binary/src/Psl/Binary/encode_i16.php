@@ -12,6 +12,8 @@ use function pack;
  * @throws Exception\OverflowException If $value is out of range.
  *
  * @pure
+ *
+ * @api
  */
 function encode_i16(int $value, Endianness $endianness = Endianness::Big): string
 {

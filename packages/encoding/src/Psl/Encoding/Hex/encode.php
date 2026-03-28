@@ -14,6 +14,8 @@ use function bin2hex;
  *  0x30-0x39, 0x61-0x66
  *
  * @pure
+ *
+ * @api
  */
 function encode(string $binary): string
 {

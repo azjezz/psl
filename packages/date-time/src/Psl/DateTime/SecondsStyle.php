@@ -9,6 +9,8 @@ namespace Psl\DateTime;
  * so exhaustive matching in external code is not recommended.
  *
  * @see TemporalInterface::toRfc3339()
+ *
+ * @api
  */
 enum SecondsStyle: int
 {

@@ -10,6 +10,8 @@ use Psl\Ansi\Exception;
  * @throws Exception\InvalidArgumentException If $code is not in the range 0-255.
  *
  * @pure
+ *
+ * @api
  */
 function ansi256(int $code): Color
 {

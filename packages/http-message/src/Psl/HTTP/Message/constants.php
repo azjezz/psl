@@ -15,6 +15,8 @@ namespace Psl\HTTP\Message;
  * @var int<100, 100>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.2.1
+ *
+ * @api
  */
 const STATUS_CONTINUE = 100;
 
@@ -29,6 +31,8 @@ const STATUS_CONTINUE = 100;
  * @var int<101, 101>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.2.2
+ *
+ * @api
  */
 const STATUS_SWITCHING_PROTOCOLS = 101;
 
@@ -42,6 +46,8 @@ const STATUS_SWITCHING_PROTOCOLS = 101;
  * @var int<102, 102>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc2518#section-10.1
+ *
+ * @api
  */
 const STATUS_PROCESSING = 102;
 
@@ -55,6 +61,8 @@ const STATUS_PROCESSING = 102;
  * @var int<103, 103>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc8297
+ *
+ * @api
  */
 const STATUS_EARLY_HINTS = 103;
 
@@ -68,6 +76,8 @@ const STATUS_EARLY_HINTS = 103;
  * @var int<200, 200>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.3.1
+ *
+ * @api
  */
 const STATUS_OK = 200;
 
@@ -81,6 +91,8 @@ const STATUS_OK = 200;
  * @var int<201, 201>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.3.2
+ *
+ * @api
  */
 const STATUS_CREATED = 201;
 
@@ -95,6 +107,8 @@ const STATUS_CREATED = 201;
  * @var int<202, 202>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.3.3
+ *
+ * @api
  */
 const STATUS_ACCEPTED = 202;
 
@@ -108,6 +122,8 @@ const STATUS_ACCEPTED = 202;
  * @var int<203, 203>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.3.4
+ *
+ * @api
  */
 const STATUS_NON_AUTHORITATIVE_INFORMATION = 203;
 
@@ -121,6 +137,8 @@ const STATUS_NON_AUTHORITATIVE_INFORMATION = 203;
  * @var int<204, 204>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.3.5
+ *
+ * @api
  */
 const STATUS_NO_CONTENT = 204;
 
@@ -134,6 +152,8 @@ const STATUS_NO_CONTENT = 204;
  * @var int<205, 205>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.3.6
+ *
+ * @api
  */
 const STATUS_RESET_CONTENT = 205;
 
@@ -147,6 +167,8 @@ const STATUS_RESET_CONTENT = 205;
  * @var int<206, 206>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.3.7
+ *
+ * @api
  */
 const STATUS_PARTIAL_CONTENT = 206;
 
@@ -159,6 +181,8 @@ const STATUS_PARTIAL_CONTENT = 206;
  * @var int<207, 207>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc4918#section-11.1
+ *
+ * @api
  */
 const STATUS_MULTI_STATUS = 207;
 
@@ -172,6 +196,8 @@ const STATUS_MULTI_STATUS = 207;
  * @var int<208, 208>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc5842#section-7.1
+ *
+ * @api
  */
 const STATUS_ALREADY_REPORTED = 208;
 
@@ -186,6 +212,8 @@ const STATUS_ALREADY_REPORTED = 208;
  * @var int<226, 226>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc3229#section-10.4.1
+ *
+ * @api
  */
 const STATUS_IM_USED = 226;
 
@@ -199,6 +227,8 @@ const STATUS_IM_USED = 226;
  * @var int<300, 300>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.4.1
+ *
+ * @api
  */
 const STATUS_MULTIPLE_CHOICES = 300;
 
@@ -212,6 +242,8 @@ const STATUS_MULTIPLE_CHOICES = 300;
  * @var int<301, 301>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.4.2
+ *
+ * @api
  */
 const STATUS_MOVED_PERMANENTLY = 301;
 
@@ -225,6 +257,8 @@ const STATUS_MOVED_PERMANENTLY = 301;
  * @var int<302, 302>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.4.3
+ *
+ * @api
  */
 const STATUS_FOUND = 302;
 
@@ -239,6 +273,8 @@ const STATUS_FOUND = 302;
  * @var int<303, 303>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.4.4
+ *
+ * @api
  */
 const STATUS_SEE_OTHER = 303;
 
@@ -254,6 +290,8 @@ const STATUS_SEE_OTHER = 303;
  * @var int<304, 304>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.4.5
+ *
+ * @api
  */
 const STATUS_NOT_MODIFIED = 304;
 
@@ -269,6 +307,8 @@ const STATUS_NOT_MODIFIED = 304;
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.4.6
  *
  * @deprecated This status code is deprecated due to security concerns.
+ *
+ * @api
  */
 const STATUS_USE_PROXY = 305;
 
@@ -283,6 +323,8 @@ const STATUS_USE_PROXY = 305;
  * @var int<307, 307>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.4.8
+ *
+ * @api
  */
 const STATUS_TEMPORARY_REDIRECT = 307;
 
@@ -297,6 +339,8 @@ const STATUS_TEMPORARY_REDIRECT = 307;
  * @var int<308, 308>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.4.9
+ *
+ * @api
  */
 const STATUS_PERMANENT_REDIRECT = 308;
 
@@ -311,6 +355,8 @@ const STATUS_PERMANENT_REDIRECT = 308;
  * @var int<400, 400>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.1
+ *
+ * @api
  */
 const STATUS_BAD_REQUEST = 400;
 
@@ -325,6 +371,8 @@ const STATUS_BAD_REQUEST = 400;
  * @var int<401, 401>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.2
+ *
+ * @api
  */
 const STATUS_UNAUTHORIZED = 401;
 
@@ -338,6 +386,8 @@ const STATUS_UNAUTHORIZED = 401;
  * @var int<402, 402>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.3
+ *
+ * @api
  */
 const STATUS_PAYMENT_REQUIRED = 402;
 
@@ -351,6 +401,8 @@ const STATUS_PAYMENT_REQUIRED = 402;
  * @var int<403, 403>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.4
+ *
+ * @api
  */
 const STATUS_FORBIDDEN = 403;
 
@@ -363,6 +415,8 @@ const STATUS_FORBIDDEN = 403;
  * @var int<404, 404>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.5
+ *
+ * @api
  */
 const STATUS_NOT_FOUND = 404;
 
@@ -377,6 +431,8 @@ const STATUS_NOT_FOUND = 404;
  * @var int<405, 405>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.6
+ *
+ * @api
  */
 const STATUS_METHOD_NOT_ALLOWED = 405;
 
@@ -391,6 +447,8 @@ const STATUS_METHOD_NOT_ALLOWED = 405;
  * @var int<406, 406>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.7
+ *
+ * @api
  */
 const STATUS_NOT_ACCEPTABLE = 406;
 
@@ -404,6 +462,8 @@ const STATUS_NOT_ACCEPTABLE = 406;
  * @var int<407, 407>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.8
+ *
+ * @api
  */
 const STATUS_PROXY_AUTHENTICATION_REQUIRED = 407;
 
@@ -417,6 +477,8 @@ const STATUS_PROXY_AUTHENTICATION_REQUIRED = 407;
  * @var int<408, 408>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.9
+ *
+ * @api
  */
 const STATUS_REQUEST_TIMEOUT = 408;
 
@@ -431,6 +493,8 @@ const STATUS_REQUEST_TIMEOUT = 408;
  * @var int<409, 409>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.10
+ *
+ * @api
  */
 const STATUS_CONFLICT = 409;
 
@@ -445,6 +509,8 @@ const STATUS_CONFLICT = 409;
  * @var int<410, 410>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.11
+ *
+ * @api
  */
 const STATUS_GONE = 410;
 
@@ -457,6 +523,8 @@ const STATUS_GONE = 410;
  * @var int<411, 411>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.12
+ *
+ * @api
  */
 const STATUS_LENGTH_REQUIRED = 411;
 
@@ -470,6 +538,8 @@ const STATUS_LENGTH_REQUIRED = 411;
  * @var int<412, 412>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.13
+ *
+ * @api
  */
 const STATUS_PRECONDITION_FAILED = 412;
 
@@ -483,6 +553,8 @@ const STATUS_PRECONDITION_FAILED = 412;
  * @var int<413, 413>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.14
+ *
+ * @api
  */
 const STATUS_CONTENT_TOO_LARGE = 413;
 
@@ -495,6 +567,8 @@ const STATUS_CONTENT_TOO_LARGE = 413;
  * @var int<414, 414>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.15
+ *
+ * @api
  */
 const STATUS_URI_TOO_LONG = 414;
 
@@ -508,6 +582,8 @@ const STATUS_URI_TOO_LONG = 414;
  * @var int<415, 415>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.16
+ *
+ * @api
  */
 const STATUS_UNSUPPORTED_MEDIA_TYPE = 415;
 
@@ -521,6 +597,8 @@ const STATUS_UNSUPPORTED_MEDIA_TYPE = 415;
  * @var int<416, 416>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.17
+ *
+ * @api
  */
 const STATUS_RANGE_NOT_SATISFIABLE = 416;
 
@@ -533,6 +611,8 @@ const STATUS_RANGE_NOT_SATISFIABLE = 416;
  * @var int<417, 417>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.18
+ *
+ * @api
  */
 const STATUS_EXPECTATION_FAILED = 417;
 
@@ -547,6 +627,8 @@ const STATUS_EXPECTATION_FAILED = 417;
  * @var int<418, 418>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc2324#section-2.3.2
+ *
+ * @api
  */
 const STATUS_IM_A_TEAPOT = 418;
 
@@ -562,6 +644,8 @@ const STATUS_IM_A_TEAPOT = 418;
  * @var int<421, 421>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.20
+ *
+ * @api
  */
 const STATUS_MISDIRECTED_REQUEST = 421;
 
@@ -576,6 +660,8 @@ const STATUS_MISDIRECTED_REQUEST = 421;
  * @var int<422, 422>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.21
+ *
+ * @api
  */
 const STATUS_UNPROCESSABLE_CONTENT = 422;
 
@@ -588,6 +674,8 @@ const STATUS_UNPROCESSABLE_CONTENT = 422;
  * @var int<423, 423>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc4918#section-11.3
+ *
+ * @api
  */
 const STATUS_LOCKED = 423;
 
@@ -601,6 +689,8 @@ const STATUS_LOCKED = 423;
  * @var int<424, 424>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc4918#section-11.4
+ *
+ * @api
  */
 const STATUS_FAILED_DEPENDENCY = 424;
 
@@ -614,6 +704,8 @@ const STATUS_FAILED_DEPENDENCY = 424;
  * @var int<425, 425>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc8470
+ *
+ * @api
  */
 const STATUS_TOO_EARLY = 425;
 
@@ -628,6 +720,8 @@ const STATUS_TOO_EARLY = 425;
  * @var int<426, 426>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.5.22
+ *
+ * @api
  */
 const STATUS_UPGRADE_REQUIRED = 426;
 
@@ -642,6 +736,8 @@ const STATUS_UPGRADE_REQUIRED = 426;
  * @var int<428, 428>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc6585#section-3
+ *
+ * @api
  */
 const STATUS_PRECONDITION_REQUIRED = 428;
 
@@ -655,6 +751,8 @@ const STATUS_PRECONDITION_REQUIRED = 428;
  * @var int<429, 429>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc6585#section-4
+ *
+ * @api
  */
 const STATUS_TOO_MANY_REQUESTS = 429;
 
@@ -668,6 +766,8 @@ const STATUS_TOO_MANY_REQUESTS = 429;
  * @var int<431, 431>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc6585#section-5
+ *
+ * @api
  */
 const STATUS_REQUEST_HEADER_FIELDS_TOO_LARGE = 431;
 
@@ -681,6 +781,8 @@ const STATUS_REQUEST_HEADER_FIELDS_TOO_LARGE = 431;
  * @var int<451, 451>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc7725
+ *
+ * @api
  */
 const STATUS_UNAVAILABLE_FOR_LEGAL_REASONS = 451;
 
@@ -694,6 +796,8 @@ const STATUS_UNAVAILABLE_FOR_LEGAL_REASONS = 451;
  * @var int<500, 500>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.6.1
+ *
+ * @api
  */
 const STATUS_INTERNAL_SERVER_ERROR = 500;
 
@@ -707,6 +811,8 @@ const STATUS_INTERNAL_SERVER_ERROR = 500;
  * @var int<501, 501>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.6.2
+ *
+ * @api
  */
 const STATUS_NOT_IMPLEMENTED = 501;
 
@@ -720,6 +826,8 @@ const STATUS_NOT_IMPLEMENTED = 501;
  * @var int<502, 502>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.6.3
+ *
+ * @api
  */
 const STATUS_BAD_GATEWAY = 502;
 
@@ -733,6 +841,8 @@ const STATUS_BAD_GATEWAY = 502;
  * @var int<503, 503>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.6.4
+ *
+ * @api
  */
 const STATUS_SERVICE_UNAVAILABLE = 503;
 
@@ -746,6 +856,8 @@ const STATUS_SERVICE_UNAVAILABLE = 503;
  * @var int<504, 504>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.6.5
+ *
+ * @api
  */
 const STATUS_GATEWAY_TIMEOUT = 504;
 
@@ -758,6 +870,8 @@ const STATUS_GATEWAY_TIMEOUT = 504;
  * @var int<505, 505>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-15.6.6
+ *
+ * @api
  */
 const STATUS_HTTP_VERSION_NOT_SUPPORTED = 505;
 
@@ -772,6 +886,8 @@ const STATUS_HTTP_VERSION_NOT_SUPPORTED = 505;
  * @var int<506, 506>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc2295#section-8.1
+ *
+ * @api
  */
 const STATUS_VARIANT_ALSO_NEGOTIATES = 506;
 
@@ -785,6 +901,8 @@ const STATUS_VARIANT_ALSO_NEGOTIATES = 506;
  * @var int<507, 507>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc4918#section-11.5
+ *
+ * @api
  */
 const STATUS_INSUFFICIENT_STORAGE = 507;
 
@@ -798,6 +916,8 @@ const STATUS_INSUFFICIENT_STORAGE = 507;
  * @var int<508, 508>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc5842#section-7.2
+ *
+ * @api
  */
 const STATUS_LOOP_DETECTED = 508;
 
@@ -812,6 +932,8 @@ const STATUS_LOOP_DETECTED = 508;
  * @link https://datatracker.ietf.org/doc/html/rfc2774#section-7
  *
  * @deprecated This status code is obsoleted by RFC 9110.
+ *
+ * @api
  */
 const STATUS_NOT_EXTENDED = 510;
 
@@ -825,6 +947,8 @@ const STATUS_NOT_EXTENDED = 510;
  * @var int<511, 511>
  *
  * @link https://datatracker.ietf.org/doc/html/rfc6585#section-6
+ *
+ * @api
  */
 const STATUS_NETWORK_AUTHENTICATION_REQUIRED = 511;
 
@@ -838,6 +962,8 @@ const STATUS_NETWORK_AUTHENTICATION_REQUIRED = 511;
  * @var non-empty-uppercase-string
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-9.3.1
+ *
+ * @api
  */
 const METHOD_GET = 'GET';
 
@@ -851,6 +977,8 @@ const METHOD_GET = 'GET';
  * @var non-empty-uppercase-string
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-9.3.2
+ *
+ * @api
  */
 const METHOD_HEAD = 'HEAD';
 
@@ -865,6 +993,8 @@ const METHOD_HEAD = 'HEAD';
  * @var non-empty-uppercase-string
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-9.3.3
+ *
+ * @api
  */
 const METHOD_POST = 'POST';
 
@@ -878,6 +1008,8 @@ const METHOD_POST = 'POST';
  * @var non-empty-uppercase-string
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-9.3.4
+ *
+ * @api
  */
 const METHOD_PUT = 'PUT';
 
@@ -890,6 +1022,8 @@ const METHOD_PUT = 'PUT';
  * @var non-empty-uppercase-string
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-9.3.5
+ *
+ * @api
  */
 const METHOD_DELETE = 'DELETE';
 
@@ -904,6 +1038,8 @@ const METHOD_DELETE = 'DELETE';
  * @var non-empty-uppercase-string
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-9.3.6
+ *
+ * @api
  */
 const METHOD_CONNECT = 'CONNECT';
 
@@ -917,6 +1053,8 @@ const METHOD_CONNECT = 'CONNECT';
  * @var non-empty-uppercase-string
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-9.3.7
+ *
+ * @api
  */
 const METHOD_OPTIONS = 'OPTIONS';
 
@@ -930,6 +1068,8 @@ const METHOD_OPTIONS = 'OPTIONS';
  * @var non-empty-uppercase-string
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-9.3.8
+ *
+ * @api
  */
 const METHOD_TRACE = 'TRACE';
 
@@ -943,6 +1083,8 @@ const METHOD_TRACE = 'TRACE';
  * @var non-empty-uppercase-string
  *
  * @link https://datatracker.ietf.org/doc/html/rfc5789
+ *
+ * @api
  */
 const METHOD_PATCH = 'PATCH';
 
@@ -956,6 +1098,8 @@ const METHOD_PATCH = 'PATCH';
  * @var non-empty-uppercase-string
  *
  * @link https://datatracker.ietf.org/doc/html/rfc4918#section-9.8
+ *
+ * @api
  */
 const METHOD_COPY = 'COPY';
 
@@ -970,6 +1114,8 @@ const METHOD_COPY = 'COPY';
  * @var non-empty-uppercase-string
  *
  * @link https://datatracker.ietf.org/doc/html/rfc4918#section-9.9
+ *
+ * @api
  */
 const METHOD_MOVE = 'MOVE';
 
@@ -983,6 +1129,8 @@ const METHOD_MOVE = 'MOVE';
  * @var non-empty-uppercase-string
  *
  * @link https://datatracker.ietf.org/doc/html/rfc4918#section-9.10
+ *
+ * @api
  */
 const METHOD_LOCK = 'LOCK';
 
@@ -996,6 +1144,8 @@ const METHOD_LOCK = 'LOCK';
  * @var non-empty-uppercase-string
  *
  * @link https://datatracker.ietf.org/doc/html/rfc4918#section-9.11
+ *
+ * @api
  */
 const METHOD_UNLOCK = 'UNLOCK';
 
@@ -1009,6 +1159,8 @@ const METHOD_UNLOCK = 'UNLOCK';
  * @var non-empty-uppercase-string
  *
  * @link https://datatracker.ietf.org/doc/html/rfc3253#section-3.6
+ *
+ * @api
  */
 const METHOD_REPORT = 'REPORT';
 
@@ -1021,6 +1173,8 @@ const METHOD_REPORT = 'REPORT';
  * @var non-empty-uppercase-string
  *
  * @link https://datatracker.ietf.org/doc/html/rfc3253#section-11.2
+ *
+ * @api
  */
 const METHOD_MERGE = 'MERGE';
 
@@ -1033,6 +1187,8 @@ const METHOD_MERGE = 'MERGE';
  * @var non-empty-uppercase-string
  *
  * @link https://datatracker.ietf.org/doc/html/rfc5323
+ *
+ * @api
  */
 const METHOD_SEARCH = 'SEARCH';
 
@@ -1046,6 +1202,8 @@ const METHOD_SEARCH = 'SEARCH';
  * @var non-empty-uppercase-string
  *
  * @link https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-safe-method-w-body
+ *
+ * @api
  */
 const METHOD_QUERY = 'QUERY';
 
@@ -1057,5 +1215,7 @@ const METHOD_QUERY = 'QUERY';
  * RFC but widely supported in CDN and reverse proxy configurations.
  *
  * @var non-empty-uppercase-string
+ *
+ * @api
  */
 const METHOD_PURGE = 'PURGE';

@@ -15,6 +15,8 @@ use function str_replace;
  * @param array<string, string> $replacements
  *
  * @pure
+ *
+ * @api
  */
 function replace_every(string $haystack, array $replacements): string
 {

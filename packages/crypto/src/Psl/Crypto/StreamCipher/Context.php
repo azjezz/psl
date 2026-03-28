@@ -25,6 +25,8 @@ use const OPENSSL_ZERO_PADDING;
  *
  * This solves the partial-block problem by buffering unused keystream bytes
  * so that subsequent calls continue correctly from where the previous one left off.
+ *
+ * @api
  */
 final class Context
 {

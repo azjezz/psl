@@ -8,5 +8,7 @@ use Psl\Exception;
 
 /**
  * @mutation-free
+ *
+ * @api
  */
 final class LogicException extends Exception\LogicException implements ExceptionInterface {}

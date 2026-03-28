@@ -16,6 +16,8 @@ use FilesystemIterator;
  * @throws Exception\NotReadableException If $directory is not readable.
  *
  * @return list<non-empty-string>
+ *
+ * @api
  */
 function read_directory(string $directory): array
 {

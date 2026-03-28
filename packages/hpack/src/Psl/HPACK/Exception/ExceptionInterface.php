@@ -8,5 +8,7 @@ use Psl\Exception;
 
 /**
  * Marker interface for all HPACK exceptions.
+ *
+ * @api
  */
 interface ExceptionInterface extends Exception\ExceptionInterface {}

@@ -14,6 +14,8 @@ use function strlen;
  * A write handle that accepts raw binary data, hex-encodes it, and writes to the inner handle.
  *
  * No buffering is needed since any chunk of binary data can be independently hex-encoded.
+ *
+ * @api
  */
 final class EncodingWriteHandle implements IO\WriteHandleInterface
 {

@@ -22,6 +22,8 @@ use Closure;
  * @param (Closure(Ts, Ts): int)|null $comparator
  *
  * @return array<Tk, Tv>
+ *
+ * @api
  */
 function sort_by(iterable $iterable, Closure $scalarFunc, null|Closure $comparator = null): array
 {

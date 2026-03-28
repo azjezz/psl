@@ -9,6 +9,8 @@ use Throwable;
 
 /**
  * @inheritors DecodingException|EncodingException
+ *
+ * @api
  */
 class RuntimeException extends Exception\RuntimeException implements ExceptionInterface
 {

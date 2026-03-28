@@ -12,6 +12,8 @@ use function class_exists;
  * @param string $className
  *
  * @psalm-assert-if-true =class-string $className
+ *
+ * @api
  */
 function exists(string $className): bool
 {

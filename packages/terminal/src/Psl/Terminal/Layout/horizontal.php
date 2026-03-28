@@ -14,6 +14,8 @@ use Psl\Terminal\Rect;
  * @param list<Constraint> $constraints The sizing constraints for each strip.
  *
  * @return list<Rect> The resulting rects, one per constraint.
+ *
+ * @api
  */
 function horizontal(Frame|Rect $area, array $constraints): array
 {

@@ -14,6 +14,8 @@ use function pathinfo;
  * @return non-empty-string|null The $node extensions, or null if none.
  *
  * @pure
+ *
+ * @api
  */
 function get_extension(string $node): null|string
 {

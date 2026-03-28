@@ -33,6 +33,8 @@ use function str_ends_with;
  *      => Bool(false)
  *
  * @pure
+ *
+ * @api
  */
 function ends_with(string $string, string $suffix, Encoding $encoding = Encoding::Utf8): bool
 {

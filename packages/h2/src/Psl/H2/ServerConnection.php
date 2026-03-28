@@ -22,6 +22,8 @@ use function substr;
  * @link https://datatracker.ietf.org/doc/html/rfc9113
  *
  * @mago-expect analysis:deprecated-class
+ *
+ * @api
  */
 final class ServerConnection implements ServerConnectionInterface
 {

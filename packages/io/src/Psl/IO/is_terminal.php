@@ -14,6 +14,8 @@ use function stream_isatty;
  * If no handle is provided, it defaults to checking the standard input stream.
  *
  * @return bool True if the stream is a terminal device, false otherwise.
+ *
+ * @api
  */
 function is_terminal(null|StreamHandleInterface $handle = null): bool
 {

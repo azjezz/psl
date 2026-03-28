@@ -17,6 +17,8 @@ use Override;
  *
  * @extends CollectionInterface<Tk, Tv>
  * @extends IndexAccessInterface<Tk, Tv>
+ *
+ * @api
  */
 interface AccessibleCollectionInterface extends CollectionInterface, IndexAccessInterface
 {

@@ -35,6 +35,8 @@ use Closure;
  * @param (Closure(Tv): Tk2) $function
  *
  * @return array<Tk2, Tv>
+ *
+ * @api
  */
 function reindex(iterable $iterable, Closure $function): array
 {

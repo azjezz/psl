@@ -11,6 +11,8 @@ namespace Psl\Graph;
  * @template TWeight
  *
  * @inheritors DirectedGraph|UndirectedGraph
+ *
+ * @api
  */
 interface GraphInterface
 {

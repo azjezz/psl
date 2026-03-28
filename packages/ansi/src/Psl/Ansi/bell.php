@@ -8,6 +8,8 @@ namespace Psl\Ansi;
  * Returns the BEL (bell/alert) control character.
  *
  * @pure
+ *
+ * @api
  */
 function bell(): ControlCharacter
 {

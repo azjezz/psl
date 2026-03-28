@@ -14,6 +14,9 @@ use function substr;
 
 use const PHP_INT_MAX;
 
+/**
+ * @api
+ */
 final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, SeekHandleInterface, CloseHandleInterface
 {
     use WriteHandleConvenienceMethodsTrait;

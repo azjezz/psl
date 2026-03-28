@@ -17,6 +17,8 @@ use Psl\URL\Exception\InvalidURLException;
  * @link https://www.rfc-editor.org/rfc/rfc3986#appendix-B RFC 3986 Appendix B - Parsing a URI Reference
  *
  * @throws InvalidURLException If the input is not a valid URL.
+ *
+ * @api
  */
 function parse(string $input): URL
 {

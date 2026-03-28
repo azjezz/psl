@@ -10,6 +10,8 @@ use function asin as php_asin;
  * Returns the arc sine of the given number.
  *
  * @pure
+ *
+ * @api
  */
 function asin(float $number): float
 {

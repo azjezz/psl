@@ -8,8 +8,8 @@ use Psl\Fun;
 
 $classify = Fun\when(
     static fn(int $n): bool => $n >= 18,
-    static fn(int $n): string => 'adult',
-    static fn(int $n): string => 'minor',
+    static fn(int $_n): string => 'adult',
+    static fn(int $_n): string => 'minor',
 );
 
 $classify(21); // 'adult'

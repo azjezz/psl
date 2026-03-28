@@ -16,6 +16,8 @@ use Psl\Collection;
  * @param TypeInterface<Tv> $valueType
  *
  * @return TypeInterface<Collection\MutableMapInterface<Tk, Tv>>
+ *
+ * @api
  */
 function mutable_map(TypeInterface $keyType, TypeInterface $valueType): TypeInterface
 {

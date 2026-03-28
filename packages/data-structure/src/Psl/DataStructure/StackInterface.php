@@ -13,6 +13,8 @@ use Override;
  * @template T
  *
  * @see https://en.wikipedia.org/wiki/Stack_(abstract_data_type)
+ *
+ * @api
  */
 interface StackInterface extends Countable
 {

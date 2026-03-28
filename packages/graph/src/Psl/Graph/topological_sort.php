@@ -32,6 +32,8 @@ use function Psl\Graph\Internal\get_node_key;
  * @return list<TNode>|null null if graph contains a cycle
  *
  * @pure
+ *
+ * @api
  */
 function topological_sort(DirectedGraph $graph): null|array
 {

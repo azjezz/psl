@@ -6,6 +6,9 @@ namespace Psl\Tree\Exception;
 
 use Psl\Exception\InvalidArgumentException as PslInvalidArgumentException;
 
+/**
+ * @api
+ */
 final class OrphanedNodeException extends PslInvalidArgumentException implements ExceptionInterface
 {
     /**

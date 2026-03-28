@@ -17,6 +17,8 @@ use function array_values;
  *
  * Renders tab titles in a single row: ` Tab1 │ Tab2 │ Tab3 `
  * The selected tab is rendered with the active style, others with the inactive style.
+ *
+ * @api
  */
 final class Tabs implements WidgetInterface
 {

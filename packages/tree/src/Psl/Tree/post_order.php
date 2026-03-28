@@ -24,6 +24,8 @@ namespace Psl\Tree;
  * @return list<T>
  *
  * @pure
+ *
+ * @api
  */
 function post_order(NodeInterface $tree): array
 {

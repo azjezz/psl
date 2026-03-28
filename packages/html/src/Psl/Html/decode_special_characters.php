@@ -14,6 +14,8 @@ use const ENT_SUBSTITUTE;
  * Convert special HTML entities back to characters.
  *
  * @pure
+ *
+ * @api
  */
 function decode_special_characters(string $html): string
 {

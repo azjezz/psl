@@ -16,6 +16,8 @@ use Psl\DateTime\Duration;
  *
  * This guarantee is only provided within the current process. Concurrent
  * access from separate processes is not atomic.
+ *
+ * @api
  */
 interface StoreInterface
 {

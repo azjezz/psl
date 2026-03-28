@@ -23,6 +23,8 @@ use function is_array;
  * @param iterable<Tk, Tv> $iterable
  *
  * @return array<Tv, Tk>
+ *
+ * @api
  */
 function flip(iterable $iterable): array
 {

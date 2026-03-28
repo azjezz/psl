@@ -18,6 +18,8 @@ use Psl\H2\ErrorCode;
  * information useful for logging, but its contents are opaque to the protocol.
  *
  * @see https://www.rfc-editor.org/rfc/rfc9113#section-6.8 RFC 9113 Section 6.8 - GOAWAY
+ *
+ * @api
  */
 final readonly class GoAwayReceived implements EventInterface
 {

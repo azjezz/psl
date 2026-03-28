@@ -8,6 +8,8 @@ use SensitiveParameter;
 
 /**
  * Configuration for SOCKS5 proxy connections.
+ *
+ * @api
  */
 final readonly class Configuration
 {

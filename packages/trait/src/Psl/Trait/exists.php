@@ -10,6 +10,8 @@ use function trait_exists;
  * Checks if the trait with the given name exists.
  *
  * @param string $traitName
+ *
+ * @api
  */
 function exists(string $traitName): bool
 {

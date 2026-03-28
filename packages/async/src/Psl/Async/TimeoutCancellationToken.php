@@ -13,6 +13,8 @@ use function max;
 
 /**
  * A cancellation token that automatically cancels after a given duration.
+ *
+ * @api
  */
 final class TimeoutCancellationToken implements CancellationTokenInterface
 {

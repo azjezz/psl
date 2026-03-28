@@ -6,4 +6,7 @@ namespace Psl\Filesystem\Exception;
 
 use Psl\Exception;
 
+/**
+ * @api
+ */
 class InvalidArgumentException extends Exception\InvalidArgumentException implements ExceptionInterface {}

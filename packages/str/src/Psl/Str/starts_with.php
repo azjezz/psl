@@ -10,6 +10,8 @@ use function str_starts_with;
  * Returns whether the string starts with the given prefix.
  *
  * @pure
+ *
+ * @api
  */
 function starts_with(string $string, string $prefix, Encoding $encoding = Encoding::Utf8): bool
 {

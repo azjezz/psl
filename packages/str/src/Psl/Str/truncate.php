@@ -18,6 +18,8 @@ use function mb_strimwidth;
  * @throws Exception\OutOfBoundsException If the offset is out-of-bounds.
  *
  * @pure
+ *
+ * @api
  */
 function truncate(
     string $string,

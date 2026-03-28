@@ -6,6 +6,8 @@ namespace Psl\Ansi\Color;
 
 /**
  * @pure
+ *
+ * @api
  */
 function bright_blue(): Color
 {

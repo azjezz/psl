@@ -14,6 +14,8 @@ namespace Psl\Math;
  * @return T
  *
  * @pure
+ *
+ * @api
  */
 function abs(int|float $number): int|float
 {

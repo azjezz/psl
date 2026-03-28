@@ -10,6 +10,8 @@ namespace Psl\TLS;
  * Used with {@see Acceptor} and {@see LazyAcceptor}.
  *
  * @psalm-immutable
+ *
+ * @api
  */
 final readonly class ServerConfiguration
 {

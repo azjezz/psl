@@ -11,6 +11,8 @@ use function is_file as php_is_file;
  *
  * @param non-empty-string $node Path, absolute or relative to the current working directory.
  *                               If it is a link, it will be resolved and checked.
+ *
+ * @api
  */
 function is_file(string $node): bool
 {

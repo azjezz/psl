@@ -12,6 +12,8 @@ use function get_loaded_extensions;
  * @return non-empty-list<non-empty-string>
  *
  * @psalm-mutation-free
+ *
+ * @api
  */
 function get_extensions(): array
 {

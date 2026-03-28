@@ -18,6 +18,8 @@ use const JSON_THROW_ON_ERROR;
  * @throws Exception\DecodeException If an error occurred.
  *
  * @pure
+ *
+ * @api
  */
 function decode(string $json, bool $assoc = true): mixed
 {

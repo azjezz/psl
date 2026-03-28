@@ -15,6 +15,8 @@ use Revolt\EventLoop;
  * @param (Closure(): int)|(Closure(): Awaitable<int>)|(Closure(): never)|(Closure(): Awaitable<never>) $closure
  *
  * @codeCoverageIgnore
+ *
+ * @api
  */
 function main(Closure $closure): never
 {

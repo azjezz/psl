@@ -10,6 +10,8 @@ namespace Psl\Type;
  * @param class-string $enumname
  *
  * @return TypeInterface<non-empty-string>
+ *
+ * @api
  */
 function enum_case_of(string $enumname): TypeInterface
 {

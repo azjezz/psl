@@ -41,6 +41,8 @@ use function array_map;
  * @return TreeNode<T>
  *
  * @pure
+ *
+ * @api
  */
 function from_array(array $array): TreeNode
 {

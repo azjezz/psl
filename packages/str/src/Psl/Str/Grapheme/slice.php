@@ -22,6 +22,8 @@ use function grapheme_substr;
  *
  * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
  * @throws Str\Exception\InvalidArgumentException If $string is not made of grapheme clusters.
+ *
+ * @api
  */
 function slice(string $string, int $offset, null|int $length = null): string
 {

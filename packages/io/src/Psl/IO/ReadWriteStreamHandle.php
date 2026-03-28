@@ -11,6 +11,8 @@ use Psl\IO;
 
 /**
  * @codeCoverageIgnore
+ *
+ * @api
  */
 final class ReadWriteStreamHandle implements StreamHandleInterface, WriteHandleInterface, ReadHandleInterface
 {

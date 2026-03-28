@@ -34,6 +34,8 @@ use const STR_PAD_LEFT;
  * @param int<0, max> $totalLength
  *
  * @pure
+ *
+ * @api
  */
 function pad_left(
     string $string,

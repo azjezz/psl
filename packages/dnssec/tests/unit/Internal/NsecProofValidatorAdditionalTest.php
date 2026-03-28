@@ -29,7 +29,7 @@ final class NsecProofValidatorAdditionalTest extends TestCase
         $this->expectException(InvalidProofException::class);
         $this->expectExceptionMessage('No NSEC record covers the query name');
 
-        NSECProofValidator::validateNxdomain('beta.example.com', RecordType::A, [$nsec]);
+        NSECProofValidator::validateNxdomain('beta.example.com', [$nsec]);
     }
 
     public function testNsecNxdomainThrowsWhenWildcardExists(): void
@@ -51,7 +51,7 @@ final class NsecProofValidatorAdditionalTest extends TestCase
         $this->expectException(InvalidProofException::class);
         $this->expectExceptionMessage('Wildcard');
 
-        NSECProofValidator::validateNxdomain('beta.example.com', RecordType::A, [$nsec1, $nsecWildcard]);
+        NSECProofValidator::validateNxdomain('beta.example.com', [$nsec1, $nsecWildcard]);
     }
 
     public function testNsecNxdomainThrowsWhenWildcardNotCovered(): void
@@ -66,7 +66,7 @@ final class NsecProofValidatorAdditionalTest extends TestCase
         $this->expectException(InvalidProofException::class);
         $this->expectExceptionMessage('No NSEC record covers the wildcard');
 
-        NSECProofValidator::validateNxdomain('beta.example.com', RecordType::A, [$nsec]);
+        NSECProofValidator::validateNxdomain('beta.example.com', [$nsec]);
     }
 
     public function testDsNonExistenceWithNsecProof(): void
@@ -244,7 +244,7 @@ final class NsecProofValidatorAdditionalTest extends TestCase
         $this->expectException(InvalidProofException::class);
         $this->expectExceptionMessage('inconsistent');
 
-        NSECProofValidator::validateNxdomain('test.example.com', RecordType::A, [$nsec1, $nsec2]);
+        NSECProofValidator::validateNxdomain('test.example.com', [$nsec1, $nsec2]);
     }
 
     public function testNsec3NodataWithInconsistentParametersThrows(): void
@@ -312,7 +312,7 @@ final class NsecProofValidatorAdditionalTest extends TestCase
         $this->expectException(InvalidProofException::class);
         $this->expectExceptionMessage('No closest encloser');
 
-        NSECProofValidator::validateNxdomain('nonexistent.example.com', RecordType::A, [$nsec3]);
+        NSECProofValidator::validateNxdomain('nonexistent.example.com', [$nsec3]);
     }
 
     public function testNsec3NxdomainThrowsWhenWildcardNotCovered(): void
@@ -349,7 +349,7 @@ final class NsecProofValidatorAdditionalTest extends TestCase
         $this->expectException(InvalidProofException::class);
         $this->expectExceptionMessage('wildcard');
 
-        NSECProofValidator::validateNxdomain('nonexistent.example.com', RecordType::A, [$nsec3Ce, $nsec3Nc]);
+        NSECProofValidator::validateNxdomain('nonexistent.example.com', [$nsec3Ce, $nsec3Nc]);
     }
 
     public function testNsec3NxdomainWithOptOutReturnsEarly(): void
@@ -382,7 +382,7 @@ final class NsecProofValidatorAdditionalTest extends TestCase
 
         $nsec3Nc = self::coveringNsec3WithOptOut($ncHash, $algorithm, $iterations, $salt);
 
-        NSECProofValidator::validateNxdomain('nonexistent.example.com', RecordType::A, [$nsec3Ce, $nsec3Nc]);
+        NSECProofValidator::validateNxdomain('nonexistent.example.com', [$nsec3Ce, $nsec3Nc]);
 
         static::assertTrue(true);
     }

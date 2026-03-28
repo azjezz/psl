@@ -17,6 +17,8 @@ use Psl\IP\Address;
  * @link https://datatracker.ietf.org/doc/html/rfc3986#section-3.2.2
  * @link https://datatracker.ietf.org/doc/html/rfc5952
  * @link https://datatracker.ietf.org/doc/html/rfc6874
+ *
+ * @api
  */
 final readonly class IPHost implements HostInterface
 {

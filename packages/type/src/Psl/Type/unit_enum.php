@@ -14,6 +14,8 @@ use UnitEnum;
  * @param class-string<T> $enum
  *
  * @return TypeInterface<T>
+ *
+ * @api
  */
 function unit_enum(string $enum): TypeInterface
 {

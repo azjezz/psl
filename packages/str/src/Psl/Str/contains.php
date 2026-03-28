@@ -37,6 +37,8 @@ use function str_contains;
  * @pure
  *
  * @throws Exception\OutOfBoundsException If the $offset is out-of-bounds.
+ *
+ * @api
  */
 function contains(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::Utf8): bool
 {

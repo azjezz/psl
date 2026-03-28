@@ -29,6 +29,8 @@ use function array_map;
  * Access individual listeners via the array you passed to the constructor.
  *
  * @param non-empty-list<ListenerInterface> $listeners
+ *
+ * @api
  */
 final class CompositeListener implements ListenerInterface
 {

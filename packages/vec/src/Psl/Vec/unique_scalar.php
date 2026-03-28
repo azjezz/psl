@@ -17,6 +17,8 @@ use function is_array;
  * @param iterable<Tv> $iterable
  *
  * @return list<Tv>
+ *
+ * @api
  */
 function unique_scalar(iterable $iterable): array
 {

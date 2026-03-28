@@ -12,6 +12,8 @@ use Override;
  * @template Tv
  *
  * @extends AccessibleCollectionInterface<Tk, Tv>
+ *
+ * @api
  */
 interface MapInterface extends AccessibleCollectionInterface
 {

@@ -10,6 +10,8 @@ use function array_reverse;
  * Returns the given string reversed.
  *
  * @pure
+ *
+ * @api
  */
 function reverse(string $string, Encoding $encoding = Encoding::Utf8): string
 {

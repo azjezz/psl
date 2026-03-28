@@ -10,6 +10,8 @@ use function exp as php_exp;
  * Returns the exponential of the given number.
  *
  * @pure
+ *
+ * @api
  */
 function exp(float $number): float
 {

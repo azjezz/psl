@@ -17,6 +17,8 @@ namespace Psl\Default;
  *
  * Implementing classes are expected to provide a static `default()` method, which
  * returns a new instance of the class itself, initialized to a default state.
+ *
+ * @api
  */
 interface DefaultInterface
 {

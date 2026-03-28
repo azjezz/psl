@@ -17,6 +17,8 @@ use function sodium_crypto_aead_xchacha20poly1305_ietf_encrypt;
  * Encrypt a plaintext message using AEAD with an explicit nonce.
  *
  * @throws Exception\RuntimeException If encryption fails or AES-256-GCM is not available.
+ *
+ * @api
  */
 function encrypt(
     #[SensitiveParameter]

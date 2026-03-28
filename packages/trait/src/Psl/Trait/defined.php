@@ -12,6 +12,8 @@ use function trait_exists;
  * @param string $traitName
  *
  * @pure
+ *
+ * @api
  */
 function defined(string $traitName): bool
 {

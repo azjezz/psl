@@ -18,6 +18,8 @@ namespace Psl\Math;
  * @return T
  *
  * @pure
+ *
+ * @api
  */
 function clamp(int|float $number, int|float $min, int|float $max): int|float
 {

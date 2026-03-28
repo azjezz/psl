@@ -12,6 +12,9 @@ use function sprintf;
 
 use const PHP_EOL;
 
+/**
+ * @api
+ */
 final class CompositeException extends Exception implements ExceptionInterface
 {
     /**

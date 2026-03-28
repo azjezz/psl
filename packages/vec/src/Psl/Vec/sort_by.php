@@ -24,6 +24,8 @@ use function uasort;
  * @param (Closure(Ts, Ts): int)|null $comparator
  *
  * @return list<Tv>
+ *
+ * @api
  */
 function sort_by(iterable $iterable, Closure $scalarFunc, null|Closure $comparator = null): array
 {

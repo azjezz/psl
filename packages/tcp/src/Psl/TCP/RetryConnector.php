@@ -19,6 +19,8 @@ use function implode;
  *
  * Wraps any {@see ConnectorInterface} and automatically retries on failure.
  * The delay between attempts grows exponentially: backoff * multiplier^attempt.
+ *
+ * @api
  */
 final readonly class RetryConnector implements ConnectorInterface
 {

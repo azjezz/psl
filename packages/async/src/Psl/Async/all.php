@@ -17,6 +17,8 @@ use Throwable;
  * @throws Exception\CompositeException If multiple awaitables failed at once.
  *
  * @return array<Tk, Tv> an array containing the results, preserving the original awaitables order.
+ *
+ * @api
  */
 function all(iterable $awaitables): array
 {

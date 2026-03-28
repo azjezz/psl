@@ -10,6 +10,8 @@ namespace Psl\Type;
  * @mago-expect analysis:impure-static-variable - The $instance is always the same and is considered pure.
  *
  * @return TypeInterface<non-empty-string>
+ *
+ * @api
  */
 function non_empty_string(): TypeInterface
 {

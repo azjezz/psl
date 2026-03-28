@@ -14,6 +14,8 @@ use Psl\Ansi\ControlSequenceIntroducerKind;
  * @see https://sw.kovidgoyal.net/kitty/keyboard-protocol/
  *
  * @pure
+ *
+ * @api
  */
 function disable_kitty_keyboard(): ControlSequenceIntroducer
 {

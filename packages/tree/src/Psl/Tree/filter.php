@@ -32,6 +32,8 @@ use Closure;
  * @param (Closure(T): bool) $predicate
  *
  * @return TreeNode<T>|null null if root doesn't match predicate
+ *
+ * @api
  */
 function filter(NodeInterface $node, Closure $predicate): null|TreeNode
 {

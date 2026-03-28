@@ -34,6 +34,8 @@ use function array_slice;
  * @return T|null null if the index path is invalid
  *
  * @pure
+ *
+ * @api
  */
 function at_index(NodeInterface $node, array $indexPath): mixed
 {

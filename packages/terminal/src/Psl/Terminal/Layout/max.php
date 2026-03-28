@@ -8,6 +8,8 @@ namespace Psl\Terminal\Layout;
  * Create a maximum-size constraint wrapping another constraint.
  *
  * @pure
+ *
+ * @api
  */
 function max(int $max, Constraint $constraint): Constraint
 {

@@ -27,6 +27,8 @@ use Psl\Ansi\ControlSequenceIntroducerKind;
  * @see https://sw.kovidgoyal.net/kitty/keyboard-protocol/
  *
  * @pure
+ *
+ * @api
  */
 function enable_kitty_keyboard(int $flags = 1): ControlSequenceIntroducer
 {

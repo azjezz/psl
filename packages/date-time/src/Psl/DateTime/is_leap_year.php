@@ -13,6 +13,8 @@ namespace Psl\DateTime;
  * @return bool True if the year is a leap year, false otherwise.
  *
  * @pure
+ *
+ * @api
  */
 function is_leap_year(int $year): bool
 {

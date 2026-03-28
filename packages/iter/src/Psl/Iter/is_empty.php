@@ -16,6 +16,8 @@ use function is_array;
  * @return ($iterable is non-empty-array|non-empty-list ? false : true)
  *
  * @psalm-assert-if-true empty $iterable
+ *
+ * @api
  */
 function is_empty(iterable $iterable): bool
 {

@@ -18,6 +18,8 @@ use function Psl\invariant_violation;
  * Use {@see add()} to increment the counter before starting work,
  * {@see done()} to decrement it when work completes, and
  * {@see wait()} to block until the counter reaches zero.
+ *
+ * @api
  */
 final class WaitGroup
 {

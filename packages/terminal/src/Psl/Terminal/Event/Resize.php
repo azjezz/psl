@@ -8,6 +8,8 @@ namespace Psl\Terminal\Event;
  * Represents a terminal resize event.
  *
  * @immutable
+ *
+ * @api
  */
 final readonly class Resize
 {

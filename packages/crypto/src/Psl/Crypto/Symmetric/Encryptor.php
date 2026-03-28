@@ -14,6 +14,9 @@ use function sodium_crypto_aead_xchacha20poly1305_ietf_encrypt;
 use function strlen;
 use function substr;
 
+/**
+ * @api
+ */
 final readonly class Encryptor implements EncryptorInterface
 {
     public function __construct(

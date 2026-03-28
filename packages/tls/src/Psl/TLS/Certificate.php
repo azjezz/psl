@@ -10,6 +10,8 @@ use SensitiveParameter;
  * Represents a TLS certificate configuration.
  *
  * @psalm-immutable
+ *
+ * @api
  */
 final readonly class Certificate
 {

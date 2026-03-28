@@ -19,6 +19,8 @@ use Psl\URI\Internal\TemplateParser;
  * @throws InvalidTemplateException If the template syntax is invalid.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc6570
+ *
+ * @api
  */
 function parse(string $template): Template
 {

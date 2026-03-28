@@ -6,6 +6,8 @@ namespace Psl\Ansi\Screen;
 
 /**
  * @pure
+ *
+ * @api
  */
 function bracketed_paste_end(): string
 {

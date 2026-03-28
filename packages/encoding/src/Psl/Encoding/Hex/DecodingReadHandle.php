@@ -20,6 +20,8 @@ use function substr;
  * Reads chunks from the inner handle and decodes complete 2-byte hex pairs.
  * Buffers any odd trailing character for the next read.
  * On EOF, throws if there is an incomplete hex pair remaining.
+ *
+ * @api
  */
 final class DecodingReadHandle implements IO\BufferedReadHandleInterface
 {

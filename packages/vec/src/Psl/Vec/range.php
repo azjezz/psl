@@ -39,6 +39,8 @@ namespace Psl\Vec;
  * @return non-empty-list<T>
  *
  * @pure
+ *
+ * @api
  */
 function range(int|float $start, int|float $end, int|float|null $step = null): array
 {

@@ -15,6 +15,8 @@ use function number_format;
  * strings used for decimals and commas, respectively.
  *
  * @pure
+ *
+ * @api
  */
 function format_number(
     float $number,

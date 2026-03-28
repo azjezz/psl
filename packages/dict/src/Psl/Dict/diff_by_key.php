@@ -18,6 +18,8 @@ use function array_map;
  * @param iterable<Tk, mixed> ...$rest
  *
  * @return array<Tk, Tv>
+ *
+ * @api
  */
 function diff_by_key(iterable $first, iterable $second, iterable ...$rest): array
 {

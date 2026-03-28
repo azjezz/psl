@@ -17,6 +17,8 @@ use function sprintf;
  * @throws Exception\RuntimeException If unable to retrieve the target of $symbolicLink.
  *
  * @return non-empty-string
+ *
+ * @api
  */
 function read_symbolic_link(string $symbolicLink): string
 {

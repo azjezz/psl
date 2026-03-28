@@ -24,6 +24,8 @@ use Closure;
  * @param (Closure(T): bool) $predicate
  *
  * @return T|null
+ *
+ * @api
  */
 function search(iterable $iterable, Closure $predicate): mixed
 {

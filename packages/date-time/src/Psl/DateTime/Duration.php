@@ -31,6 +31,8 @@ use const STR_PAD_LEFT;
  * @implements Comparison\Comparable<Duration>
  *
  * @immutable
+ *
+ * @api
  */
 final readonly class Duration implements TemporalAmountInterface, Comparison\Comparable
 {

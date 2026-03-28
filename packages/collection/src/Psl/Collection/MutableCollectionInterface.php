@@ -19,6 +19,8 @@ use Override;
  * @template Tv
  *
  * @extends CollectionInterface<Tk, Tv>
+ *
+ * @api
  */
 interface MutableCollectionInterface extends CollectionInterface
 {

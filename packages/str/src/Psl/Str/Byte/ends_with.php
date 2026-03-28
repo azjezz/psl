@@ -8,6 +8,8 @@ namespace Psl\Str\Byte;
  * Returns whether the string ends with the given suffix.
  *
  * @pure
+ *
+ * @api
  */
 function ends_with(string $string, string $suffix): bool
 {

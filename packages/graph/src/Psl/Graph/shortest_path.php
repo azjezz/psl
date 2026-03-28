@@ -32,6 +32,8 @@ namespace Psl\Graph;
  * @return list<TNode>|null
  *
  * @pure
+ *
+ * @api
  */
 function shortest_path(DirectedGraph|UndirectedGraph $graph, mixed $from, mixed $to): null|array
 {

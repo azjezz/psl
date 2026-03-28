@@ -15,6 +15,8 @@ use Psl\Default\DefaultInterface;
  * @see ServerConnection
  *
  * @mago-expect analysis:deprecated-class
+ *
+ * @api
  */
 final readonly class ServerConfiguration implements DefaultInterface
 {

@@ -20,6 +20,8 @@ use function dirname;
  * @return non-empty-string
  *
  * @pure
+ *
+ * @api
  */
 function get_directory(string $node, int $levels = 1): string
 {

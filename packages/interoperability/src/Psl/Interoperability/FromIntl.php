@@ -6,6 +6,8 @@ namespace Psl\Interoperability;
 
 /**
  * @template T
+ *
+ * @api
  */
 interface FromIntl
 {

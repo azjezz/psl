@@ -22,6 +22,8 @@ use function unpack;
  * @return array{RawFrame, int} The decoded frame and the byte offset immediately after the frame.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-4.1
+ *
+ * @api
  */
 function decode(string $data, int $offset = 0): array
 {

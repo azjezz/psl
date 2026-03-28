@@ -22,6 +22,8 @@ use function str_repeat;
  * @param int<0, max> $multiplier
  *
  * @pure
+ *
+ * @api
  */
 function repeat(string $string, int $multiplier): string
 {

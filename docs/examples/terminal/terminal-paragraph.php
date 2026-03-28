@@ -15,13 +15,13 @@ final class ParagraphState {}
 
 $app = Terminal\Application::create(new ParagraphState(), title: 'Paragraph Demo');
 
-$app->on(Event\Key::class, static function (Event\Key $event, ParagraphState $state) use ($app): void {
+$app->on(Event\Key::class, static function (Event\Key $event, ParagraphState $_state) use ($app): void {
     if ($event->is('ctrl+c')) {
         $app->stop();
     }
 });
 
-$app->run(static function (Terminal\Frame $frame, ParagraphState $state): void {
+$app->run(static function (Terminal\Frame $frame, ParagraphState $_state): void {
     Widget\Paragraph::new([
         Widget\Line::new([
             Widget\Span::styled('Error: ', Ansi\foreground(Color\red()), Style\bold()),

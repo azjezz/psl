@@ -14,6 +14,8 @@ use function fopen;
  * then transparently spools to a temporary file on disk.
  *
  * @param int<0, max> $maxMemory The maximum number of bytes to keep in memory (default 2MB).
+ *
+ * @api
  */
 function spool(int $maxMemory = 2_097_152): CloseSeekReadWriteStreamHandle
 {

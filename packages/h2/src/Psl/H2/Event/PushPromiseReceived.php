@@ -23,6 +23,8 @@ use Psl\HPACK\Header;
  * SETTINGS_ENABLE_PUSH to 0.
  *
  * @see https://www.rfc-editor.org/rfc/rfc9113#section-6.6 RFC 9113 Section 6.6 - PUSH_PROMISE
+ *
+ * @api
  */
 final readonly class PushPromiseReceived implements EventInterface
 {

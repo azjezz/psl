@@ -13,6 +13,8 @@ namespace Psl\Compression;
  * Decompression is inherently stateful. A single decompressor instance MUST NOT
  * be used concurrently across multiple fibers or streams. Each concurrent
  * decompression stream requires its own instance.
+ *
+ * @api
  */
 interface DecompressorInterface
 {

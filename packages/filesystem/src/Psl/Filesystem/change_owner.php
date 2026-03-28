@@ -15,6 +15,8 @@ use function sprintf;
  *
  * @throws Exception\RuntimeException If unable to change the ownership for $node.
  * @throws Exception\NotFoundException If $node does not exist.
+ *
+ * @api
  */
 function change_owner(string $node, int $user): void
 {

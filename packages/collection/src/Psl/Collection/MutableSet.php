@@ -28,6 +28,8 @@ use const ARRAY_FILTER_USE_KEY;
  * @template T of array-key
  *
  * @implements MutableSetInterface<T>
+ *
+ * @api
  */
 final class MutableSet implements MutableSetInterface
 {

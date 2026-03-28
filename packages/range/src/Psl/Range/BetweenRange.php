@@ -40,6 +40,8 @@ use Psl\Iter;
  * @see UpperBoundRangeInterface::isUpperInclusive()
  *
  * @psalm-immutable
+ *
+ * @api
  */
 final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoundRangeInterface
 {

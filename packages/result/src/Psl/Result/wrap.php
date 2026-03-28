@@ -16,6 +16,8 @@ use Throwable;
  * @param (Closure(): T) $closure
  *
  * @return ResultInterface<T>
+ *
+ * @api
  */
 function wrap(Closure $closure): ResultInterface
 {

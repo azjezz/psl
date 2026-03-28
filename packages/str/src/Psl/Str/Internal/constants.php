@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Str\Internal;
 
+/**
+ * @internal
+ */
 const CASE_FOLD = [
     'µ' => 'μ',
     'ſ' => 's',

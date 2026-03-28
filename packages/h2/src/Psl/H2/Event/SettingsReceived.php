@@ -18,6 +18,8 @@ namespace Psl\H2\Event;
  * automatically sent in response to non-ACK frames.
  *
  * @see https://www.rfc-editor.org/rfc/rfc9113#section-6.5 RFC 9113 Section 6.5 - SETTINGS
+ *
+ * @api
  */
 final readonly class SettingsReceived implements EventInterface
 {

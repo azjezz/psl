@@ -24,6 +24,8 @@ use function unpack;
  * @psalm-external-mutation-free
  *
  * @return ($length is 0 ? '' : non-empty-string)
+ *
+ * @api
  */
 function string(int $length, null|string $alphabet = null): string
 {

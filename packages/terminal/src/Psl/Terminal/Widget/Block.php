@@ -16,6 +16,8 @@ use function array_values;
 
 /**
  * A block widget that draws a border and optional title around an inner widget.
+ *
+ * @api
  */
 final class Block
 {

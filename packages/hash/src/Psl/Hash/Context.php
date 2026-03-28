@@ -25,6 +25,8 @@ use const HASH_HMAC;
  *      => Str("5c6ffbdd40d9556b73a21e63c3e0e904")
  *
  * @psalm-immutable
+ *
+ * @api
  */
 final readonly class Context
 {

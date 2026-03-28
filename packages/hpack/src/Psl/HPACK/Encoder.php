@@ -24,6 +24,8 @@ use function strlen;
  * should use its own Encoder instance.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc7541
+ *
+ * @api
  */
 final class Encoder
 {

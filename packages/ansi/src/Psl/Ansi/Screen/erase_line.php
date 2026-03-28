@@ -9,6 +9,8 @@ use Psl\Ansi\ControlSequenceIntroducerKind;
 
 /**
  * @pure
+ *
+ * @api
  */
 function erase_line(LineEraseMode $mode = LineEraseMode::Right): ControlSequenceIntroducer
 {

@@ -8,6 +8,9 @@ use Psl\Exception;
 
 use function sprintf;
 
+/**
+ * @api
+ */
 final class OverflowException extends Exception\OverflowException implements ExceptionInterface
 {
     public static function whileIterating(int $lowerBound): static

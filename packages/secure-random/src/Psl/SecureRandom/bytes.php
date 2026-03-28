@@ -19,6 +19,8 @@ use function random_bytes;
  * @psalm-external-mutation-free
  *
  * @return ($length is int<1, max> ? non-empty-string : string)
+ *
+ * @api
  */
 function bytes(int $length): string
 {

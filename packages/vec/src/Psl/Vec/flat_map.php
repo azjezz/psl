@@ -14,6 +14,8 @@ use Closure;
  * @param (Closure(Tv): iterable<Ts>) $mapper
  *
  * @return list<Ts>
+ *
+ * @api
  */
 function flat_map(iterable $iterable, Closure $mapper): array
 {

@@ -9,6 +9,9 @@ use function str_replace;
 
 use const PHP_EOL;
 
+/**
+ * @api
+ */
 final class FailedExecutionException extends RuntimeException
 {
     private string $command;

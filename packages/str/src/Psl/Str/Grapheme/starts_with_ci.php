@@ -12,6 +12,8 @@ use Psl\Str\Exception;
  * @throws Exception\InvalidArgumentException If $string is not made of grapheme clusters.
  *
  * @pure
+ *
+ * @api
  */
 function starts_with_ci(string $string, string $prefix): bool
 {

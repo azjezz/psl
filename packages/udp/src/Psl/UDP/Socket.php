@@ -31,6 +31,8 @@ use const STREAM_SERVER_BIND;
  * Use {@see sendTo()} and {@see receiveFrom()} to communicate with arbitrary addresses.
  *
  * To switch to connected mode, call {@see connect()} which returns a {@see ConnectedSocket}.
+ *
+ * @api
  */
 final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
 {

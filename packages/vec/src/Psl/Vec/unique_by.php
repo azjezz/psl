@@ -22,6 +22,8 @@ use function serialize;
  * @param (Closure(Tv): Ts) $scalarFunc
  *
  * @return list<Tv>
+ *
+ * @api
  */
 function unique_by(iterable $iterable, Closure $scalarFunc): array
 {

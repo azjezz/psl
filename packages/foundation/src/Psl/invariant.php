@@ -14,6 +14,8 @@ use Psl\Exception\InvariantViolationException;
  * @pure
  *
  * @throws InvariantViolationException
+ *
+ * @api
  */
 function invariant(bool $fact, string $message, mixed ...$args): void
 {

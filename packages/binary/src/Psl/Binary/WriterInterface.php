@@ -8,6 +8,8 @@ namespace Psl\Binary;
  * Interface for binary data writers.
  *
  * Each write method returns the writer instance for chaining.
+ *
+ * @api
  */
 interface WriterInterface
 {

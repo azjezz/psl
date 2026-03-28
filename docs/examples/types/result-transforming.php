@@ -10,7 +10,7 @@ use Psl\Str;
 
 $lines = Result\wrap(fn() => File\read(__FILE__))
     ->map(fn(string $content) => Str\split($content, "\n"))
-    ->catch(fn(Throwable $e) => []);
+    ->catch(fn(Throwable $_e) => []);
 
 // Success: maps content to lines
 // Failure: recovers with empty array

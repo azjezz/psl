@@ -27,6 +27,8 @@ use Psl\Option\Option;
  * @param (Closure(TKey, TValue): bool) $predicate
  *
  * @return Option<TValue>
+ *
+ * @api
  */
 function search_with_keys_opt(iterable $iterable, Closure $predicate): Option
 {

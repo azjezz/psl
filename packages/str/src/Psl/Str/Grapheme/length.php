@@ -16,6 +16,8 @@ use function grapheme_strlen;
  * @return int<0, max>
  *
  * @pure
+ *
+ * @api
  */
 function length(string $string): int
 {

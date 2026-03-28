@@ -15,6 +15,8 @@ use function str_ireplace;
  * @param array<string, string> $replacements
  *
  * @pure
+ *
+ * @api
  */
 function replace_every_ci(string $haystack, array $replacements, Encoding $encoding = Encoding::Utf8): string
 {

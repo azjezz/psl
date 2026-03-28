@@ -11,6 +11,8 @@ use Psl\Str\Exception;
  * @throws Exception\InvalidArgumentException If $haystack is not made of grapheme clusters.
  *
  * @pure
+ *
+ * @api
  */
 function before_ci(string $haystack, string $needle, int $offset = 0): null|string
 {

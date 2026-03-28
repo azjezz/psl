@@ -6,6 +6,8 @@ namespace Psl\Observer;
 
 /**
  * @template T of SubjectInterface
+ *
+ * @api
  */
 interface ObserverInterface
 {

@@ -8,6 +8,8 @@ use Override;
 
 /**
  * A PRNG Based on the PHP variant of Mersenne Twister Algorithm.
+ *
+ * @api
  */
 final class MersenneTwisterPHPVariantSequence implements SequenceInterface
 {

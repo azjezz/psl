@@ -16,6 +16,8 @@ use const PATHINFO_FILENAME;
  * @return non-empty-string
  *
  * @pure
+ *
+ * @api
  */
 function get_filename(string $node): string
 {

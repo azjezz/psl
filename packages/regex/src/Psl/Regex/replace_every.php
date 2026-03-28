@@ -20,6 +20,8 @@ use function preg_replace;
  * @throws Exception\RuntimeException In case of an unexpected error.
  *
  * @pure
+ *
+ * @api
  */
 function replace_every(string $haystack, array $replacements, null|int $limit = null): string
 {

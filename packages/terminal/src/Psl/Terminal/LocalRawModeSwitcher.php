@@ -6,6 +6,8 @@ namespace Psl\Terminal;
 
 /**
  * Raw mode switcher for local terminals using stty/PowerShell.
+ *
+ * @api
  */
 final readonly class LocalRawModeSwitcher implements RawModeSwitcherInterface
 {

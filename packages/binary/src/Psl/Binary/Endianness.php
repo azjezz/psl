@@ -9,6 +9,8 @@ use Psl\Default\DefaultInterface;
 
 /**
  * Byte order for multi-byte binary encoding and decoding.
+ *
+ * @api
  */
 enum Endianness implements DefaultInterface
 {

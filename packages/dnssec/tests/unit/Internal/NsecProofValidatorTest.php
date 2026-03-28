@@ -33,7 +33,7 @@ final class NsecProofValidatorTest extends TestCase
             RecordType::NSEC,
         ]);
 
-        NSECProofValidator::validateNxdomain('beta.example.com', RecordType::A, [$nsec1, $nsec2]);
+        NSECProofValidator::validateNxdomain('beta.example.com', [$nsec1, $nsec2]);
 
         static::assertTrue(true);
     }
@@ -110,7 +110,7 @@ final class NsecProofValidatorTest extends TestCase
         $nsec3Nc = self::coveringNsec3($ncHash, $algorithm, $iterations, $salt);
         $nsec3Wc = self::coveringNsec3($wcHash, $algorithm, $iterations, $salt);
 
-        NSECProofValidator::validateNxdomain('nonexistent.example.com', RecordType::A, [$nsec3Ce, $nsec3Nc, $nsec3Wc]);
+        NSECProofValidator::validateNxdomain('nonexistent.example.com', [$nsec3Ce, $nsec3Nc, $nsec3Wc]);
 
         static::assertTrue(true);
     }
@@ -186,7 +186,7 @@ final class NsecProofValidatorTest extends TestCase
         $this->expectException(InvalidProofException::class);
         $this->expectExceptionMessage('No NSEC3 record covers the next closer');
 
-        NSECProofValidator::validateNxdomain('nonexistent.example.com', RecordType::A, [$nsec3Ce]);
+        NSECProofValidator::validateNxdomain('nonexistent.example.com', [$nsec3Ce]);
     }
 
     public function testNsecNxdomainWrapAround(): void
@@ -205,7 +205,7 @@ final class NsecProofValidatorTest extends TestCase
             [RecordType::SOA, RecordType::RRSIG, RecordType::NSEC],
         );
 
-        NSECProofValidator::validateNxdomain('zzz.example.com', RecordType::A, [$nsecWrap, $nsecWildcard]);
+        NSECProofValidator::validateNxdomain('zzz.example.com', [$nsecWrap, $nsecWildcard]);
 
         static::assertTrue(true);
     }
@@ -215,7 +215,7 @@ final class NsecProofValidatorTest extends TestCase
         $this->expectException(InvalidProofException::class);
         $this->expectExceptionMessage('No NSEC or NSEC3 records found');
 
-        NSECProofValidator::validateNxdomain('example.com', RecordType::A, []);
+        NSECProofValidator::validateNxdomain('example.com', []);
     }
 
     public function testNoNsecRecordsForNodataThrows(): void

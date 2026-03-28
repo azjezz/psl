@@ -23,6 +23,8 @@ use function uksort;
  * @param (Closure(Tk, Tk): int)|null $comparator
  *
  * @return array<Tk, Tv>
+ *
+ * @api
  */
 function sort_by_key(iterable $iterable, null|Closure $comparator = null): array
 {

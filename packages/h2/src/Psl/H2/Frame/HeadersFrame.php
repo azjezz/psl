@@ -19,6 +19,8 @@ use function unpack;
  * If END_HEADERS is not set, one or more CONTINUATION frames must follow.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.2
+ *
+ * @api
  */
 final readonly class HeadersFrame implements FrameInterface
 {

@@ -16,6 +16,8 @@ namespace Psl\H2\Event;
  *
  * @see https://www.rfc-editor.org/rfc/rfc9113#section-6.9 RFC 9113 Section 6.9 - WINDOW_UPDATE
  * @see https://www.rfc-editor.org/rfc/rfc9113#section-5.2 RFC 9113 Section 5.2 - Flow Control
+ *
+ * @api
  */
 final readonly class WindowUpdated implements EventInterface
 {

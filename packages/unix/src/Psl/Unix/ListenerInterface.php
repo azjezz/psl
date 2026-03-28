@@ -11,6 +11,8 @@ use Psl\Network;
 
 /**
  * A Unix domain socket listener that accepts incoming connections.
+ *
+ * @api
  */
 interface ListenerInterface extends Network\ListenerInterface
 {

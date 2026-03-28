@@ -14,6 +14,8 @@ namespace Psl\Type;
  * @param TypeInterface<T> ...$rest
  *
  * @return TypeInterface<T>
+ *
+ * @api
  */
 function union(TypeInterface $first, TypeInterface $second, TypeInterface ...$rest): TypeInterface
 {

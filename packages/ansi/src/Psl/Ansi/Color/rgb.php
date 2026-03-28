@@ -10,6 +10,8 @@ use Psl\Ansi\Exception;
  * @throws Exception\InvalidArgumentException If any component is not in the range 0-255.
  *
  * @pure
+ *
+ * @api
  */
 function rgb(int $red, int $green, int $blue): Color
 {

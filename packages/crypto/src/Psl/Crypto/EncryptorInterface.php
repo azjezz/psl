@@ -6,6 +6,9 @@ namespace Psl\Crypto;
 
 use SensitiveParameter;
 
+/**
+ * @api
+ */
 interface EncryptorInterface
 {
     /**

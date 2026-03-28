@@ -24,6 +24,8 @@ use const STREAM_PEEK;
  * A connected UDP socket for communicating with a single peer.
  *
  * Obtained via {@see Socket::connect()} or {@see connect()}.
+ *
+ * @api
  */
 final class ConnectedSocket implements Network\SocketInterface, IO\StreamHandleInterface
 {

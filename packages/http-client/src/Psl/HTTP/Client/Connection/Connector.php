@@ -73,6 +73,8 @@ use function Psl\HTTP\Client\Internal\should_tunnel;
  * @link https://datatracker.ietf.org/doc/html/rfc7301 TLS ALPN Extension
  *
  * @see PooledConnector For connection reuse and pooling.
+ *
+ * @api
  */
 final readonly class Connector implements ConnectorInterface
 {

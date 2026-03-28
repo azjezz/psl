@@ -12,6 +12,8 @@ use JsonSerializable;
  * @template T
  *
  * @psalm-inheritors LeafNode|TreeNode
+ *
+ * @api
  */
 interface NodeInterface extends JsonSerializable
 {

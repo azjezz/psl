@@ -13,6 +13,8 @@ use Psl\Comparison;
  *
  * @implements Comparison\Comparable<Option<T>>
  * @implements Comparison\Equable<Option<T>>
+ *
+ * @api
  */
 final readonly class Option implements Comparison\Comparable, Comparison\Equable
 {

@@ -36,6 +36,8 @@ use Closure;
  * @param (Closure(Tv): ?Tk) $keyFunc
  *
  * @return array<Tk, list<Tv>>
+ *
+ * @api
  */
 function group_by(iterable $values, Closure $keyFunc): array
 {

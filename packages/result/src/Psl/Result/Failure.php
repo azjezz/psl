@@ -15,6 +15,8 @@ use Throwable;
  * @template    Te of Throwable
  *
  * @implements  ResultInterface<T>
+ *
+ * @api
  */
 final readonly class Failure implements ResultInterface
 {

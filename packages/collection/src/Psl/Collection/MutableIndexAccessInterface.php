@@ -12,6 +12,8 @@ namespace Psl\Collection;
  * @template Tv
  *
  * @extends IndexAccessInterface<Tk, Tv>
+ *
+ * @api
  */
 interface MutableIndexAccessInterface extends IndexAccessInterface
 {

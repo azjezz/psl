@@ -9,6 +9,8 @@ use Psl\Channel;
 
 /**
  * This exception is throw when calling {@see Channel\ReceiverInterface::tryReceive()} on an empty channel.
+ *
+ * @api
  */
 final class EmptyChannelException extends OutOfBoundsException implements ExceptionInterface
 {

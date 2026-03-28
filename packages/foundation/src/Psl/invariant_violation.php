@@ -12,6 +12,8 @@ use function sprintf;
  * @throws Exception\InvariantViolationException
  *
  * @pure
+ *
+ * @api
  */
 function invariant_violation(string $message, mixed ...$args): never
 {

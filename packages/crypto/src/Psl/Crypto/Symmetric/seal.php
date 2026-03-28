@@ -13,6 +13,8 @@ use SensitiveParameter;
  *
  * @throws Exception\RuntimeException If encryption fails.
  * @throws SecureRandom\Exception\InsufficientEntropyException If it was not possible to gather sufficient entropy for nonce generation.
+ *
+ * @api
  */
 function seal(
     #[SensitiveParameter]

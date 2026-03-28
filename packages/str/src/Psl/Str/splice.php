@@ -17,6 +17,8 @@ namespace Psl\Str;
  * @pure
  *
  * @throws Exception\OutOfBoundsException If the $offset is out-of-bounds.
+ *
+ * @api
  */
 function splice(
     string $string,

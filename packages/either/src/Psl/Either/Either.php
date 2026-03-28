@@ -20,6 +20,8 @@ use Psl\Option;
  *
  * @extends Comparison\Comparable<Either<TLeft, TRight>>
  * @extends Comparison\Equable<Either<TLeft, TRight>>
+ *
+ * @api
  */
 interface Either extends Comparison\Comparable, Comparison\Equable
 {

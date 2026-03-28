@@ -21,6 +21,8 @@ use function chr;
  *
  * Use {@see self::EMPTY_DATA_FRAME} to limit empty DATA frames (zero-length
  * DATA without the END_STREAM flag), which are a common denial-of-service vector.
+ *
+ * @api
  */
 final class RateLimiter implements DefaultInterface
 {

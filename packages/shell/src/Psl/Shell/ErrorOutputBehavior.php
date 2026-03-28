@@ -14,6 +14,8 @@ use Psl\Default\DefaultInterface;
  * standard output (stdout) when executing shell commands via the Shell component. Each case
  * offers a different strategy for managing or combining stderr and stdout, allowing for flexible
  * error output handling based on specific requirements of the execution context.
+ *
+ * @api
  */
 enum ErrorOutputBehavior implements DefaultInterface
 {

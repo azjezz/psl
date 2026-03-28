@@ -6,6 +6,8 @@ namespace Psl\HPACK\Exception;
 
 /**
  * Exception thrown when a negative size value is provided for table or header list configuration.
+ *
+ * @api
  */
 final class InvalidSizeException extends InvalidArgumentException
 {

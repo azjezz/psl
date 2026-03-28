@@ -82,6 +82,8 @@ use Psl\TLS\Exception\HandshakeFailedException;
  * @link https://datatracker.ietf.org/doc/html/rfc9110#section-3.3 Connections and Transport
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-3.4 HTTP/2 Prior Knowledge
  * @link https://datatracker.ietf.org/doc/html/rfc7301 TLS ALPN Extension
+ *
+ * @api
  */
 interface ConnectorInterface
 {

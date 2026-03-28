@@ -15,6 +15,8 @@ namespace Psl\H2\Event;
  * with the stream may be released.
  *
  * @see https://www.rfc-editor.org/rfc/rfc9113#section-5.1 RFC 9113 Section 5.1 - Stream States
+ *
+ * @api
  */
 final readonly class StreamClosed implements EventInterface
 {

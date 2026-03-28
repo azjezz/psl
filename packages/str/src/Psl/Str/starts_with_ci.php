@@ -8,6 +8,8 @@ namespace Psl\Str;
  * Returns whether the string starts with the given prefix (case-insensitive).
  *
  * @pure
+ *
+ * @api
  */
 function starts_with_ci(string $string, string $prefix, Encoding $encoding = Encoding::Utf8): bool
 {

@@ -19,6 +19,8 @@ use function mb_strripos;
  * @throws Exception\OutOfBoundsException If the $offset is out-of-bounds.
  *
  * @return null|int<0, max>
+ *
+ * @api
  */
 function search_last_ci(
     string $haystack,

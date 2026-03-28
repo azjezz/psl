@@ -6,6 +6,9 @@ namespace Psl\File;
 
 use Closure;
 
+/**
+ * @api
+ */
 final class Lock
 {
     private bool $released = false;

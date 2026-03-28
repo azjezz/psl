@@ -27,6 +27,8 @@ use function is_array;
  * @param iterable<iterable<T>> $iterables
  *
  * @return list<T>
+ *
+ * @api
  */
 function flatten(iterable $iterables): array
 {

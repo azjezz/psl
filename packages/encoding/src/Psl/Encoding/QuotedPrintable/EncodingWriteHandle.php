@@ -18,6 +18,8 @@ use function substr;
  *
  * Buffers input until complete lines (terminated by \n) are available,
  * encodes each line via {@see encode_line()}, and writes to the inner handle with "\r\n" line endings.
+ *
+ * @api
  */
 final class EncodingWriteHandle implements IO\WriteHandleInterface
 {

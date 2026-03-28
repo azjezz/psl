@@ -14,6 +14,8 @@ use Psl\Network;
  *
  * Implementations can provide different connection strategies such as
  * direct connection, retry with backoff, proxy tunneling, or static routing.
+ *
+ * @api
  */
 interface ConnectorInterface
 {

@@ -26,6 +26,8 @@ use Closure;
  * @param Ta $initial
  *
  * @return Ta
+ *
+ * @api
  */
 function reduce(NodeInterface $tree, Closure $function, mixed $initial): mixed
 {

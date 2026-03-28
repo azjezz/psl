@@ -11,6 +11,8 @@ use Psl\Type\Exception\AssertException;
  * @template-covariant T
  *
  * @implements TypeInterface<T>
+ *
+ * @api
  */
 abstract readonly class Type implements TypeInterface
 {

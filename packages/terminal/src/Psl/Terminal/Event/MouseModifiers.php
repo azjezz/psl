@@ -8,6 +8,8 @@ namespace Psl\Terminal\Event;
  * Mouse modifier keys extracted from SGR mouse protocol.
  *
  * @immutable
+ *
+ * @api
  */
 final readonly class MouseModifiers
 {

@@ -13,6 +13,8 @@ use Psl\Default\DefaultInterface;
  * This enum defines a comprehensive list of character encodings supported for various string manipulation
  * and processing tasks. It includes encodings from multiple languages and regions, ensuring wide-ranging
  * internationalization support across different platforms and systems.
+ *
+ * @api
  */
 enum Encoding: string implements DefaultInterface
 {

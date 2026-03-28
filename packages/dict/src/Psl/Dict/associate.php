@@ -22,6 +22,8 @@ use function iterator_to_array;
  * @throws Exception\LogicException If $keys and $values have different length.
  *
  * @return array<Tk, Tv>
+ *
+ * @api
  */
 function associate(iterable $keys, iterable $values): array
 {

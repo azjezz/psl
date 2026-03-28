@@ -24,6 +24,8 @@ use function count;
  * @template Tout
  *
  * @see Semaphore
+ *
+ * @api
  */
 final class Sequence
 {

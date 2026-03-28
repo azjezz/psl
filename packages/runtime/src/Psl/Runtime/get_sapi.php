@@ -12,6 +12,8 @@ use const PHP_SAPI;
  * @return non-empty-string
  *
  * @pure
+ *
+ * @api
  */
 function get_sapi(): string
 {

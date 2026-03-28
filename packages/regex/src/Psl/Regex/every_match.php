@@ -20,6 +20,8 @@ use function preg_match_all;
  * @throws Exception\InvalidPatternException If $pattern is invalid.
  *
  * @return ($captureGroups is null ? list<array<array-key, string>> : list<T>)|null
+ *
+ * @api
  */
 function every_match(
     string $subject,

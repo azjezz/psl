@@ -16,6 +16,8 @@ use Psl\Network;
  *
  * @throws Network\Exception\RuntimeException If failed to connect on the given path, or if on Windows.
  * @throws CancelledException If the operation is cancelled.
+ *
+ * @api
  */
 function connect(string $path, CancellationTokenInterface $cancellation = new NullCancellationToken()): StreamInterface
 {

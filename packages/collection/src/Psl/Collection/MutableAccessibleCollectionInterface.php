@@ -20,6 +20,8 @@ use Override;
  * @extends MutableCollectionInterface<Tk, Tv>
  * @extends MutableIndexAccessInterface<Tk, Tv>
  * @extends ArrayAccess<Tk, Tv>
+ *
+ * @api
  */
 interface MutableAccessibleCollectionInterface extends
     AccessibleCollectionInterface,

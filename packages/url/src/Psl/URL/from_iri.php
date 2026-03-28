@@ -17,6 +17,8 @@ use Psl\URL\Exception\InvalidURLException;
  * @link https://www.rfc-editor.org/rfc/rfc3987#section-3.1 RFC 3987 Section 3.1 - Mapping of IRIs to URIs
  *
  * @throws InvalidURLException If the IRI cannot be converted or the resulting URI does not meet URL constraints.
+ *
+ * @api
  */
 function from_iri(IRI $iri): URL
 {

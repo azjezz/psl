@@ -16,6 +16,8 @@ use Psl\Type;
  * @throws Exception\DecodeException If an error occurred.
  *
  * @return T
+ *
+ * @api
  */
 function typed(string $json, Type\TypeInterface $type): mixed
 {

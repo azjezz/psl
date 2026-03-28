@@ -18,6 +18,9 @@ use function is_writable;
 use function mkdir;
 use function sprintf;
 
+/**
+ * @api
+ */
 final readonly class ReadWriteHandle extends Internal\AbstractHandleWrapper implements
     WriteHandleInterface,
     ReadHandleInterface

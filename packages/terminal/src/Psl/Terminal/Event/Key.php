@@ -10,6 +10,8 @@ use Psl\Str;
  * Represents a keyboard event.
  *
  * @immutable
+ *
+ * @api
  */
 final readonly class Key
 {

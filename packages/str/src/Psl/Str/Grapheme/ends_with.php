@@ -12,6 +12,8 @@ use Psl\Str\Exception;
  * @pure
  *
  * @throws Exception\InvalidArgumentException If $string is not made of grapheme clusters.
+ *
+ * @api
  */
 function ends_with(string $string, string $suffix): bool
 {

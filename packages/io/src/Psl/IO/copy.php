@@ -21,6 +21,8 @@ use Psl\Async\NullCancellationToken;
  *
  * @throws Exception\RuntimeException If a read or write error occurs.
  * @throws CancelledException If the operation is cancelled.
+ *
+ * @api
  */
 function copy(
     ReadHandleInterface $reader,

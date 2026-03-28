@@ -10,6 +10,8 @@ namespace Psl\Option;
  * @return Option<never>
  *
  * @pure
+ *
+ * @api
  */
 function none(): Option
 {

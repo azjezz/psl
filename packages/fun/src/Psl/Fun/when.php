@@ -20,6 +20,8 @@ use Closure;
  * @return (Closure(Ti): To)
  *
  * @pure
+ *
+ * @api
  */
 function when(Closure $condition, Closure $then, Closure $else): Closure
 {

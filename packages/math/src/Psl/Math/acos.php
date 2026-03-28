@@ -10,6 +10,8 @@ use function acos as php_acos;
  * Returns the arc cosine of the given number.
  *
  * @pure
+ *
+ * @api
  */
 function acos(float $number): float
 {

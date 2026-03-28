@@ -10,6 +10,8 @@ namespace Psl\Str;
  * @return bool true if the given string is UTF-8 encoded, false otherwise.
  *
  * @pure
+ *
+ * @api
  */
 function is_utf8(string $string): bool
 {

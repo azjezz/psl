@@ -28,6 +28,8 @@ use function count;
  * @see KeyedSemaphore
  *
  * @mago-expect lint:excessive-nesting
+ *
+ * @api
  */
 final class KeyedSequence
 {

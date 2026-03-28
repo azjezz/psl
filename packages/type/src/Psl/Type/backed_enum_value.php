@@ -19,6 +19,8 @@ use Psl\Exception\RuntimeException;
  * @throws InvariantViolationException If the given value is not class-string<BackedEnum>.
  *
  * @return TypeInterface<value-of<T>>
+ *
+ * @api
  */
 function backed_enum_value(string $enum): TypeInterface
 {

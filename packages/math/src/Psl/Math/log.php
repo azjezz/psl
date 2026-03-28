@@ -12,6 +12,8 @@ use function log as php_log;
  * @pure
  *
  * @throws Exception\InvalidArgumentException If $number or $base are negative, or $base is equal to 1.0.
+ *
+ * @api
  */
 function log(float $number, null|float $base = null): float
 {

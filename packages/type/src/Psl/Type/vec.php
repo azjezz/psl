@@ -12,6 +12,8 @@ namespace Psl\Type;
  * @param TypeInterface<T> $valueType
  *
  * @return TypeInterface<list<T>>
+ *
+ * @api
  */
 function vec(TypeInterface $valueType): TypeInterface
 {

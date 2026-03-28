@@ -17,6 +17,8 @@ use Throwable;
  * Copyright (c) 2015-2021 Amphp ( https://amphp.org )
  *
  * @template T
+ *
+ * @api
  */
 final readonly class Deferred
 {

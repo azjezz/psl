@@ -18,6 +18,8 @@ use const ENT_QUOTES;
  * @psalm-taint-escape html
  *
  * @pure
+ *
+ * @api
  */
 function encode(string $html, bool $doubleEncoding = true, Encoding $encoding = Encoding::Utf8): string
 {

@@ -8,6 +8,8 @@ namespace Psl\Compression;
  * Compress a string in one shot.
  *
  * @throws Exception\RuntimeException If the compression operation fails.
+ *
+ * @api
  */
 function compress(string $data, CompressorInterface $compressor): string
 {

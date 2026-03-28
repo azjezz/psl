@@ -10,6 +10,8 @@ use function pack;
  * Encode a signed 64-bit integer to a binary string.
  *
  * @pure
+ *
+ * @api
  */
 function encode_i64(int $value, Endianness $endianness = Endianness::Big): string
 {

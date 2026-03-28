@@ -17,6 +17,8 @@ use Stringable;
  *
  * @link https://www.rfc-editor.org/rfc/rfc3986#section-3 RFC 3986 Section 3 - Syntax Components
  * @link https://url.spec.whatwg.org/ WHATWG URL Standard
+ *
+ * @api
  */
 final readonly class URL implements Stringable
 {

@@ -14,6 +14,8 @@ use function strlen;
  * by the payload bytes, as defined by the HTTP/2 frame format.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-4.1
+ *
+ * @api
  */
 function encode(RawFrame $frame): string
 {

@@ -11,6 +11,8 @@ namespace Psl\DateTime;
  * get the previous and next day. Each case in the enum corresponds to a day,
  * represented by an integer according to the ISO-8601 standard, starting with
  * Monday as 1 through Sunday as 7.
+ *
+ * @api
  */
 enum Weekday: int
 {

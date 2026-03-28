@@ -11,6 +11,8 @@ use Throwable;
  * Exception thrown when an invalid argument is provided to the URL component.
  *
  * @inheritors InvalidURLException
+ *
+ * @api
  */
 class InvalidArgumentException extends Exception\InvalidArgumentException implements ExceptionInterface
 {

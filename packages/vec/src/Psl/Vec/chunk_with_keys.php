@@ -19,6 +19,8 @@ namespace Psl\Vec;
  * @param positive-int $size The size of each chunk
  *
  * @return list<array<Tk, Tv>>
+ *
+ * @api
  */
 function chunk_with_keys(iterable $iterable, int $size): array
 {

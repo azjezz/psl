@@ -17,6 +17,8 @@ use const PHP_SAPI;
  * is usually the process STDOUT.
  *
  * @codeCoverageIgnore
+ *
+ * @api
  */
 function output_handle(): StreamHandleInterface&WriteHandleInterface&CloseHandleInterface
 {

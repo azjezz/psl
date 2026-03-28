@@ -15,6 +15,8 @@ use function count;
 
 /**
  * A paragraph widget that renders lines of styled text with wrapping, scrolling, and alignment.
+ *
+ * @api
  */
 final class Paragraph implements WidgetInterface
 {

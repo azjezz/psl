@@ -15,6 +15,8 @@ use function str_replace;
  * @param non-empty-string $lineEnding Line ending sequence (default "\r\n" per RFC 2045).
  *
  * @link https://datatracker.ietf.org/doc/html/rfc2045#section-6.7
+ *
+ * @api
  */
 function encode(string $data, int $maxLineLength = 76, string $lineEnding = "\r\n"): string
 {

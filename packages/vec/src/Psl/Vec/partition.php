@@ -16,6 +16,8 @@ use Closure;
  * @param (Closure(T): bool) $predicate
  *
  * @return array{0: list<T>, 1: list<T>}
+ *
+ * @api
  */
 function partition(iterable $iterable, Closure $predicate): array
 {

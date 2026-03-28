@@ -14,6 +14,8 @@ use function sodium_memzero;
  * Perform X25519 Diffie-Hellman key agreement.
  *
  * Returns the shared secret computed from a local secret key and a remote public key.
+ *
+ * @api
  */
 function agree(#[SensitiveParameter] SecretKey $secretKey, #[SensitiveParameter] PublicKey $publicKey): SharedSecret
 {

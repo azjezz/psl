@@ -8,6 +8,8 @@ namespace Psl\Punycode\Exception;
  * Exception thrown when Punycode encoding or decoding fails.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc3492
+ *
+ * @api
  */
 final class EncodingException extends InvalidArgumentException
 {

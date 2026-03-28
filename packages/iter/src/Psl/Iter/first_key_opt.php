@@ -18,6 +18,8 @@ use Psl\Option\Option;
  * @return Option<Tk>
  *
  * @mago-expect lint:loop-does-not-iterate
+ *
+ * @api
  */
 function first_key_opt(iterable $iterable): Option
 {

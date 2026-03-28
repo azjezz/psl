@@ -13,6 +13,8 @@ namespace Psl\Type;
  * @param array<Tk, TypeInterface<Tv>> $elements
  *
  * @return TypeInterface<array<Tk, Tv>>
+ *
+ * @api
  */
 function shape(array $elements, bool $allowUnknownFields = false): TypeInterface
 {

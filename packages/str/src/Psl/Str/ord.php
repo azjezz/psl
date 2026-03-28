@@ -18,6 +18,8 @@ use function mb_ord;
  *      => Int(1604)
  *
  * @pure
+ *
+ * @api
  */
 function ord(string $character, Encoding $encoding = Encoding::Utf8): int
 {

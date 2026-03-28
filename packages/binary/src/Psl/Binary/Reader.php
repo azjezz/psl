@@ -14,6 +14,8 @@ use function substr;
  *
  * Each read method advances the internal cursor. All methods throw
  * {@see Exception\UnderflowException} if insufficient data remains.
+ *
+ * @api
  */
 final class Reader implements BufferedReaderInterface
 {

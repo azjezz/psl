@@ -8,6 +8,8 @@ namespace Psl\Env;
  * Returns the arguments which this program was started with (normally passed via the command line).
  *
  * @return list<string>
+ *
+ * @api
  */
 function args(): array
 {

@@ -10,6 +10,8 @@ use ReflectionClass;
  * Checks if constant is defined in the given class.
  *
  * @param class-string $className
+ *
+ * @api
  */
 function has_constant(string $className, string $constantName): bool
 {

@@ -40,7 +40,7 @@ final class NSECProofValidator
      * @throws InvalidProofException If the NSEC3 proof is invalid.
      * @throws InvalidProofException If the NSEC3 parameters are invalid.
      */
-    public static function validateNxdomain(string $queryName, RecordType $queryKind, array $authorityRecords): void
+    public static function validateNxdomain(string $queryName, array $authorityRecords): void
     {
         $nsecRecords = self::filterNsec($authorityRecords);
         $nsec3Records = self::filterNsec3($authorityRecords);

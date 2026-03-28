@@ -19,6 +19,8 @@ use Throwable;
  * @template T
  *
  * @extends Psl\Promise\PromiseInterface<T>
+ *
+ * @api
  */
 interface ResultInterface extends Psl\Promise\PromiseInterface
 {

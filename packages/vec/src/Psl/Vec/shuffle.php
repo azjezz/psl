@@ -22,6 +22,8 @@ use function shuffle as php_shuffle;
  * @param iterable<T> $iterable
  *
  * @return list<T> the shuffled items as a list.
+ *
+ * @api
  */
 function shuffle(iterable $iterable): array
 {

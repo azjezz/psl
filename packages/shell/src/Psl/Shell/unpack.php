@@ -12,6 +12,8 @@ namespace Psl\Shell;
  * @throws Exception\InvalidArgumentException If $content is invalid.
  *
  * @return array{0: string, 1: string} - A tuple, containing the standard output content as it's first element, followed by the standard error output content.
+ *
+ * @api
  */
 function unpack(string $content): array
 {

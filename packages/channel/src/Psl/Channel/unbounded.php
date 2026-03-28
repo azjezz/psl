@@ -12,6 +12,8 @@ namespace Psl\Channel;
  * @template T
  *
  * @return array{ReceiverInterface<T>, SenderInterface<T>}
+ *
+ * @api
  */
 function unbounded(): array
 {

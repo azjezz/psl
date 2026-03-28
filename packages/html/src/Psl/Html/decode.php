@@ -14,6 +14,8 @@ use const ENT_QUOTES;
  * @param Encoding $encoding defines character set used in conversion.
  *
  * @pure
+ *
+ * @api
  */
 function decode(string $html, Encoding $encoding = Encoding::Utf8): string
 {

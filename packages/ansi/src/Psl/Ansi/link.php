@@ -10,6 +10,8 @@ namespace Psl\Ansi;
  * @throws Exception\InvalidArgumentException If any style is not an SGR sequence.
  *
  * @pure
+ *
+ * @api
  */
 function link(string $text, string $url, ControlSequenceIntroducer ...$styles): string
 {

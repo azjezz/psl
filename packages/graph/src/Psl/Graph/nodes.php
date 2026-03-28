@@ -22,6 +22,8 @@ namespace Psl\Graph;
  * @return list<TNode>
  *
  * @pure
+ *
+ * @api
  */
 function nodes(GraphInterface $graph): array
 {

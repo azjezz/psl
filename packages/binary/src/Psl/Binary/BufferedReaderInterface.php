@@ -8,6 +8,8 @@ namespace Psl\Binary;
  * Interface for binary data readers that operate on a buffered byte string.
  *
  * Extends {@see ReaderInterface} with cursor tracking methods.
+ *
+ * @api
  */
 interface BufferedReaderInterface extends ReaderInterface
 {

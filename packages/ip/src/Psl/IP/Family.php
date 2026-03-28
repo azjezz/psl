@@ -8,6 +8,8 @@ use Psl\IP\Exception\InvalidArgumentException;
 
 /**
  * IP address family, with values representing the byte size of the address.
+ *
+ * @api
  */
 enum Family: int
 {

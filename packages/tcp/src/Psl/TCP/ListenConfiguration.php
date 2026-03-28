@@ -9,6 +9,8 @@ use Psl\Default\DefaultInterface;
 
 /**
  * Configuration for TCP listen operations.
+ *
+ * @api
  */
 final readonly class ListenConfiguration implements DefaultInterface
 {

@@ -15,6 +15,8 @@ namespace Psl\Iter;
  * @return Iterator<Tk, Tv>
  *
  * @see Iterator
+ *
+ * @api
  */
 function to_iterator(iterable $iterable): Iterator
 {

@@ -13,6 +13,8 @@ namespace Psl\HPACK;
  * adding them to their dynamic tables.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc7541#section-6
+ *
+ * @api
  */
 final readonly class Header
 {

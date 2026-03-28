@@ -15,6 +15,8 @@ use function max;
  * @template T
  *
  * @implements PriorityQueueInterface<T>
+ *
+ * @api
  */
 final class PriorityQueue implements PriorityQueueInterface
 {

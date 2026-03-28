@@ -17,6 +17,8 @@ use Revolt\EventLoop\Suspension;
  * @template T
  *
  * @implements ReceiverInterface<T>
+ *
+ * @internal
  */
 final class BoundedReceiver implements ReceiverInterface
 {

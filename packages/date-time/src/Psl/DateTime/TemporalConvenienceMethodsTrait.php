@@ -13,6 +13,8 @@ use Psl\Locale\Locale;
  * @require-implements TemporalInterface
  *
  * @psalm-immutable
+ *
+ * @api
  */
 trait TemporalConvenienceMethodsTrait
 {

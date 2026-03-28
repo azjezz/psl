@@ -23,6 +23,8 @@ use function explode;
  * @implements Comparison\Equable<Interval>
  *
  * @immutable
+ *
+ * @api
  */
 final readonly class Interval implements Comparison\Equable, JsonSerializable, Stringable
 {

@@ -16,6 +16,8 @@ use function unpack;
  * Terminates a stream immediately.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.4
+ *
+ * @api
  */
 final readonly class RstStreamFrame implements FrameInterface
 {

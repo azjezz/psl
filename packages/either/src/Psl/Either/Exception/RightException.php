@@ -6,4 +6,7 @@ namespace Psl\Either\Exception;
 
 use Psl\Exception\UnderflowException;
 
+/**
+ * @api
+ */
 final class RightException extends UnderflowException implements ExceptionInterface {}

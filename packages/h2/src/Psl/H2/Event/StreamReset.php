@@ -18,6 +18,8 @@ use Psl\H2\ErrorCode;
  * values include CANCEL, REFUSED_STREAM, and INTERNAL_ERROR.
  *
  * @see https://www.rfc-editor.org/rfc/rfc9113#section-6.4 RFC 9113 Section 6.4 - RST_STREAM
+ *
+ * @api
  */
 final readonly class StreamReset implements EventInterface
 {

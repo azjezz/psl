@@ -12,6 +12,8 @@ use const PHP_VERSION_ID;
  * @return positive-int
  *
  * @pure
+ *
+ * @api
  */
 function get_version_id(): int
 {

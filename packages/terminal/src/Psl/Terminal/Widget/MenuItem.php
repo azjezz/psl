@@ -8,6 +8,8 @@ namespace Psl\Terminal\Widget;
  * A single entry in a menu widget.
  *
  * @immutable
+ *
+ * @api
  */
 final readonly class MenuItem
 {

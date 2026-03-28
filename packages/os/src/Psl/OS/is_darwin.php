@@ -10,6 +10,8 @@ use const PHP_OS_FAMILY;
  * Return whether PHP was built for Darwin OS family.
  *
  * @pure
+ *
+ * @api
  */
 function is_darwin(): bool
 {

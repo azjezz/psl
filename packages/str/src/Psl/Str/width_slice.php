@@ -17,6 +17,8 @@ use function mb_strimwidth;
  * @param int<0, max> $width Maximum display width of the result.
  *
  * @pure
+ *
+ * @api
  */
 function width_slice(string $string, int $offset, int $width, Encoding $encoding = Encoding::Utf8): string
 {

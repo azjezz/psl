@@ -14,6 +14,8 @@ namespace Psl\Type;
  * @param TypeInterface<Tv> $valueType
  *
  * @return TypeInterface<iterable<Tk, Tv>>
+ *
+ * @api
  */
 function iterable(TypeInterface $keyType, TypeInterface $valueType): TypeInterface
 {

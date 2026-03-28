@@ -9,6 +9,8 @@ namespace Psl\Str\Byte;
  * it doesn't end with the suffix.
  *
  * @pure
+ *
+ * @api
  */
 function strip_suffix(string $string, string $suffix): string
 {

@@ -10,6 +10,8 @@ use Psl\IO;
  * Base interface for all network sockets.
  *
  * Provides access to the local address and close functionality.
+ *
+ * @api
  */
 interface SocketInterface extends IO\CloseHandleInterface
 {

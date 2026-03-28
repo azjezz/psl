@@ -18,6 +18,8 @@ use Stringable;
  * converted to a standard URI via {@see IRI::toURI()}.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc3987
+ *
+ * @api
  */
 final readonly class IRI implements Stringable
 {

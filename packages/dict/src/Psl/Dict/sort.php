@@ -23,6 +23,8 @@ use function uasort;
  * @param (Closure(Tv, Tv): int)|null $comparator
  *
  * @return array<Tk, Tv>
+ *
+ * @api
  */
 function sort(iterable $iterable, null|Closure $comparator = null): array
 {

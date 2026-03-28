@@ -6,6 +6,8 @@ namespace Psl\IO;
 
 /**
  * A handle that can have its' position changed.
+ *
+ * @api
  */
 interface SeekHandleInterface extends HandleInterface
 {

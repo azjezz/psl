@@ -12,6 +12,8 @@ use function file_exists;
  * @param string $node Path, absolute or relative to the current working directory.
  *
  * @psalm-assert-if-true =non-empty-string $node
+ *
+ * @api
  */
 function exists(string $node): bool
 {

@@ -17,6 +17,8 @@ use function wordwrap;
  * @return string the given string wrapped at the specified column
  *
  * @pure
+ *
+ * @api
  */
 function wrap(string $string, int $width = 75, string $break = "\n", bool $cut = false): string
 {

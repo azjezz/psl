@@ -23,6 +23,8 @@ use function mb_strlen;
  * @return int<0, max>
  *
  * @pure
+ *
+ * @api
  */
 function length(string $string, Encoding $encoding = Encoding::Utf8): int
 {

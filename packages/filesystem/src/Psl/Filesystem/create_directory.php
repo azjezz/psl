@@ -13,6 +13,8 @@ use function sprintf;
  * @param non-empty-string $directory
  *
  * @throws Exception\RuntimeException If unable to create the directory.
+ *
+ * @api
  */
 function create_directory(string $directory, int $permissions = 0o777): void
 {

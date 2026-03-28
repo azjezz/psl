@@ -16,6 +16,8 @@ use function count;
  * @return ($numbers is non-empty-list ? float : null)
  *
  * @pure
+ *
+ * @api
  */
 function mean(array $numbers): float|null
 {

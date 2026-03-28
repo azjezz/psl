@@ -6,6 +6,9 @@ namespace Psl\File;
 
 use Psl\IO;
 
+/**
+ * @api
+ */
 interface HandleInterface extends IO\StreamHandleInterface, IO\SeekHandleInterface, IO\CloseHandleInterface
 {
     /**

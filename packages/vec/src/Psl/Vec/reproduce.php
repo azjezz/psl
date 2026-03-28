@@ -20,6 +20,8 @@ use Closure;
  * @param (Closure(int): T) $factory
  *
  * @return non-empty-list<T>
+ *
+ * @api
  */
 function reproduce(int $size, Closure $factory): array
 {

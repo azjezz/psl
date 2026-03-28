@@ -20,6 +20,8 @@ use Psl\H2\Frame\FrameType;
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-3.4
  *
  * @var string
+ *
+ * @api
  */
 const CONNECTION_PREFACE = "PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n";
 
@@ -38,6 +40,8 @@ const CONNECTION_PREFACE = "PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n";
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-4.1
  *
  * @var int
+ *
+ * @api
  */
 const FRAME_HEADER_SIZE = 9;
 
@@ -52,6 +56,8 @@ const FRAME_HEADER_SIZE = 9;
  * Value: 65,535 octets (2^16 - 1).
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.9.2
+ *
+ * @api
  */
 const DEFAULT_INITIAL_WINDOW_SIZE = 65_535;
 
@@ -65,6 +71,8 @@ const DEFAULT_INITIAL_WINDOW_SIZE = 65_535;
  * Value: 16,384 octets (2^14).
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.5.2
+ *
+ * @api
  */
 const DEFAULT_MAX_FRAME_SIZE = 16_384;
 
@@ -79,6 +87,8 @@ const DEFAULT_MAX_FRAME_SIZE = 16_384;
  * Value: 16,777,215 octets (2^24 - 1).
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.5.2
+ *
+ * @api
  */
 const MAX_FRAME_SIZE_UPPER_BOUND = 16_777_215;
 
@@ -94,6 +104,8 @@ const MAX_FRAME_SIZE_UPPER_BOUND = 16_777_215;
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.5.2
  * @link https://datatracker.ietf.org/doc/html/rfc7541#section-4.2
+ *
+ * @api
  */
 const DEFAULT_HEADER_TABLE_SIZE = 4_096;
 
@@ -111,6 +123,8 @@ const DEFAULT_HEADER_TABLE_SIZE = 4_096;
  * Value: 2,147,483,647 (2^31 - 1).
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.5.2
+ *
+ * @api
  */
 const DEFAULT_MAX_CONCURRENT_STREAMS = 2_147_483_647;
 
@@ -129,6 +143,8 @@ const DEFAULT_MAX_CONCURRENT_STREAMS = 2_147_483_647;
  * Value: PHP_INT_MAX (platform-dependent; typically 2^63 - 1 on 64-bit systems).
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.5.2
+ *
+ * @api
  */
 const DEFAULT_MAX_HEADER_LIST_SIZE = PHP_INT_MAX;
 
@@ -145,6 +161,8 @@ const DEFAULT_MAX_HEADER_LIST_SIZE = PHP_INT_MAX;
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.9
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.9.1
+ *
+ * @api
  */
 const MAX_WINDOW_SIZE = 2_147_483_647;
 
@@ -160,5 +178,7 @@ const MAX_WINDOW_SIZE = 2_147_483_647;
  * Value: 2,147,483,647 (0x7FFFFFFF, 2^31 - 1).
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-5.1.1
+ *
+ * @api
  */
 const MAX_STREAM_ID = 0x7FFF_FFFF;

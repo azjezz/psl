@@ -20,6 +20,8 @@ namespace Psl\Str;
  * @throws Exception\OutOfBoundsException If a code point is out of the valid Unicode range.
  *
  * @pure
+ *
+ * @api
  */
 function from_code_points(int ...$codePoints): string
 {

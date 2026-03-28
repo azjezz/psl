@@ -10,6 +10,8 @@ use function str_shuffle;
  * Randomly shuffles a string.
  *
  * @pure
+ *
+ * @api
  */
 function shuffle(string $string): string
 {

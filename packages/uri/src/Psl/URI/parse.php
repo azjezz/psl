@@ -19,6 +19,8 @@ use Psl\URI\Internal\Parser;
  * @throws Exception\InvalidURIException If the input is not a valid RFC 3986 URI.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc3986
+ *
+ * @api
  */
 function parse(string $input): URI
 {

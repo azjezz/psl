@@ -20,6 +20,8 @@ use function is_array;
  * @param positive-int $size
  *
  * @return list<list<T>>
+ *
+ * @api
  */
 function chunk(iterable $iterable, int $size): array
 {

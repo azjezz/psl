@@ -6,4 +6,7 @@ namespace Psl\File;
 
 use Psl\IO;
 
+/**
+ * @api
+ */
 interface ReadHandleInterface extends HandleInterface, IO\ReadHandleInterface {}

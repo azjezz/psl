@@ -13,6 +13,8 @@ use function array_values;
  * A styled text fragment.
  *
  * @immutable
+ *
+ * @api
  */
 final readonly class Span
 {

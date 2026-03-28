@@ -12,6 +12,8 @@ use Psl\Network;
  * @param non-empty-string $path
  *
  * @throws Network\Exception\RuntimeException If failed to listen on given path, or if on Windows.
+ *
+ * @api
  */
 function listen(string $path, ListenConfiguration $configuration = new ListenConfiguration()): ListenerInterface
 {

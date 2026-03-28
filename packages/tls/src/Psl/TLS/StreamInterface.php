@@ -8,6 +8,8 @@ use Psl\TCP;
 
 /**
  * A TLS-encrypted network stream with access to TLS connection state.
+ *
+ * @api
  */
 interface StreamInterface extends TCP\StreamInterface
 {

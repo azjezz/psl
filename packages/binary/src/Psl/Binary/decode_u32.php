@@ -15,6 +15,8 @@ use function unpack;
  * @return int<0, 4294967295>
  *
  * @pure
+ *
+ * @api
  */
 function decode_u32(string $bytes, Endianness $endianness = Endianness::Big): int
 {

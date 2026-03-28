@@ -18,6 +18,8 @@ use function substr;
  *
  * Reads {@see CHUNK_SIZE} (57) byte chunks from the inner handle, encodes each to base64,
  * and appends {@see LINE_ENDING} after each encoded chunk.
+ *
+ * @api
  */
 final class EncodingReadHandle implements IO\BufferedReadHandleInterface
 {

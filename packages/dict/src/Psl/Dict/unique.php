@@ -13,6 +13,8 @@ namespace Psl\Dict;
  * @param iterable<Tk, Tv> $iterable
  *
  * @return array<Tk, Tv>
+ *
+ * @api
  */
 function unique(iterable $iterable): array
 {

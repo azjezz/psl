@@ -16,6 +16,8 @@ use function min;
  * @require-implements DateTimeInterface
  *
  * @psalm-immutable
+ *
+ * @api
  */
 trait DateTimeConvenienceMethodsTrait
 {

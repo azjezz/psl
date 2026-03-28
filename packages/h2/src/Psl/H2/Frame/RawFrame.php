@@ -11,6 +11,8 @@ namespace Psl\H2\Frame;
  * before any type-specific parsing.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-4.1
+ *
+ * @api
  */
 final readonly class RawFrame
 {

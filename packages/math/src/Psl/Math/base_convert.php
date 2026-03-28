@@ -28,6 +28,8 @@ use function substr;
  * @pure
  *
  * @throws Exception\InvalidArgumentException If the given value is invalid.
+ *
+ * @api
  */
 function base_convert(string $value, int $fromBase, int $toBase): string
 {

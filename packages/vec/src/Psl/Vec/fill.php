@@ -19,6 +19,8 @@ use function array_fill;
  * @return list<T>
  *
  * @pure
+ *
+ * @api
  */
 function fill(int $size, mixed $value): array
 {

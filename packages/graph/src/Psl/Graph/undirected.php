@@ -19,6 +19,8 @@ namespace Psl\Graph;
  * @return UndirectedGraph<TNode, TWeight>
  *
  * @pure
+ *
+ * @api
  */
 function undirected(): UndirectedGraph
 {

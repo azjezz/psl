@@ -10,6 +10,8 @@ use Psl\Exception;
  * Base exception for invalid arguments in the Punycode component.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc3492
+ *
+ * @api
  */
 abstract class InvalidArgumentException extends Exception\InvalidArgumentException implements ExceptionInterface
 {

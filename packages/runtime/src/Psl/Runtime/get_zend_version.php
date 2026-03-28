@@ -12,6 +12,8 @@ use function zend_version;
  * @return non-empty-string
  *
  * @pure
+ *
+ * @api
  */
 function get_zend_version(): string
 {

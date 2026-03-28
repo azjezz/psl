@@ -26,6 +26,8 @@ use Psl\DataStructure\Queue;
  * @return list<T>
  *
  * @pure
+ *
+ * @api
  */
 function level_order(NodeInterface $rootNode): array
 {

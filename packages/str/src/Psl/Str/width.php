@@ -13,6 +13,8 @@ use function mb_strwidth;
  * For grapheme cluster counting, use {@see Grapheme\length()}.
  *
  * @pure
+ *
+ * @api
  */
 function width(string $string, Encoding $encoding = Encoding::Utf8): int
 {

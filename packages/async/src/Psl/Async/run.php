@@ -16,6 +16,8 @@ use Throwable;
  * @param (Closure(): T) $closure
  *
  * @return Awaitable<T>
+ *
+ * @api
  */
 function run(Closure $closure): Awaitable
 {

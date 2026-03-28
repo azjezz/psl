@@ -9,6 +9,9 @@ use Psl\Async\Exception\CancelledException;
 use Psl\Async\NullCancellationToken;
 use Psl\IO;
 
+/**
+ * @api
+ */
 interface ChildInterface
 {
     /**

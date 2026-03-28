@@ -15,6 +15,8 @@ use function strncmp;
  *                                 or null to compare the whole string
  *
  * @pure
+ *
+ * @api
  */
 function compare(string $string, string $other, null|int $length = null): int
 {

@@ -9,6 +9,8 @@ namespace Psl\Binary;
  *
  * Each read method consumes data and advances the reader. All methods throw
  * {@see Exception\UnderflowException} if insufficient data remains.
+ *
+ * @api
  */
 interface ReaderInterface
 {

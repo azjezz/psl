@@ -41,6 +41,7 @@ These guidelines exist not to annoy you, but to keep the code base clean, unifie
 - Arguments should be as general as possible. For example, for `array` functions, prefer `iterable` inputs where practical, falling back to `array` when needed.
 - Return types should be as specific as possible
 - All files should contain `declare(strict_types=1);`
+- All public symbols (classes, interfaces, traits, enums, functions, constants) must have either `@api` or `@internal` in their PHPDoc block. Symbols in `*\Internal\*` namespaces use `@internal`; all others use `@api`. This is enforced by Mago's `require-api-or-internal` rule.
 
 ### Consistency Rules
 

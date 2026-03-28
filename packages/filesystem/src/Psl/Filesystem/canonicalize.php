@@ -11,6 +11,8 @@ use function realpath;
  * The resulting path will have no symbolic links, '/./' or '/../' components.
  *
  * @return non-empty-string|null
+ *
+ * @api
  */
 function canonicalize(string $path): null|string
 {

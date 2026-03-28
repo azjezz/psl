@@ -13,6 +13,8 @@ namespace Psl\Comparison;
  * This method can be used as a sorter callback function for Comparable items.
  *
  * Vec\sort($list, Comparable\sort(...))
+ *
+ * @api
  */
 function sort(mixed $a, mixed $b): int
 {

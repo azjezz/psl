@@ -10,6 +10,8 @@ use function strtoupper;
  * Returns the string with all alphabetic characters converted to uppercase.
  *
  * @pure
+ *
+ * @api
  */
 function uppercase(string $string): string
 {

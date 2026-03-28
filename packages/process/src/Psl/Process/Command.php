@@ -22,6 +22,9 @@ use const STDERR;
 use const STDIN;
 use const STDOUT;
 
+/**
+ * @api
+ */
 final readonly class Command
 {
     /**

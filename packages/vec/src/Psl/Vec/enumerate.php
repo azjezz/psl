@@ -13,6 +13,8 @@ namespace Psl\Vec;
  * @param iterable<Tk, Tv> $iterable
  *
  * @return list<array{0: Tk, 1: Tv}>
+ *
+ * @api
  */
 function enumerate(iterable $iterable): array
 {

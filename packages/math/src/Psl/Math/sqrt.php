@@ -12,6 +12,8 @@ use function sqrt as php_sqrt;
  * @pure
  *
  * @throws Exception\InvalidArgumentException If $number is negative.
+ *
+ * @api
  */
 function sqrt(float $number): float
 {

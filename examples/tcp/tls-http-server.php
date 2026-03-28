@@ -103,7 +103,7 @@ while (true) {
             unset($active[$connectionId]);
         }
     })->catch(
-        static fn(Throwable $e): null => (
+        static fn(Throwable $_e): null => (
             // Suppress expected errors during shutdown
             null
         ),

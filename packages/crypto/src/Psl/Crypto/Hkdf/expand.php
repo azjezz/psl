@@ -25,6 +25,8 @@ use function substr;
  * @see https://tools.ietf.org/html/rfc5869#section-2.3
  *
  * @return non-empty-string
+ *
+ * @api
  */
 function expand(
     #[SensitiveParameter]

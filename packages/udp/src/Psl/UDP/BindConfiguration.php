@@ -9,6 +9,8 @@ use Psl\Default\DefaultInterface;
 
 /**
  * Configuration for UDP socket bind operations.
+ *
+ * @api
  */
 final readonly class BindConfiguration implements DefaultInterface
 {

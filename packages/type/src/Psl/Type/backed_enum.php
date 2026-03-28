@@ -14,6 +14,8 @@ use BackedEnum;
  * @param class-string<T> $enum
  *
  * @return TypeInterface<T>
+ *
+ * @api
  */
 function backed_enum(string $enum): TypeInterface
 {

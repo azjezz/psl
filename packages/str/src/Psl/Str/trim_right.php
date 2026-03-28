@@ -17,6 +17,8 @@ use function preg_replace;
  * @pure
  *
  * @throws Exception\InvalidArgumentException if $string is not a valid UTF-8 string.
+ *
+ * @api
  */
 function trim_right(string $string, null|string $charMask = null): string
 {

@@ -15,6 +15,8 @@ namespace Psl\Math;
  * @return ($numbers is non-empty-list<T> ? T : T|null)
  *
  * @pure
+ *
+ * @api
  */
 function max(array $numbers): null|int|float
 {

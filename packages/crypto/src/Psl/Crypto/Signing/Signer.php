@@ -11,6 +11,8 @@ use function sodium_crypto_sign_detached;
 
 /**
  * Computes Ed25519 detached signatures using a secret key.
+ *
+ * @api
  */
 final readonly class Signer implements SignerInterface
 {

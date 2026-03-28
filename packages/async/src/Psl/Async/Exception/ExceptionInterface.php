@@ -6,4 +6,7 @@ namespace Psl\Async\Exception;
 
 use Psl\Exception;
 
+/**
+ * @api
+ */
 interface ExceptionInterface extends Exception\ExceptionInterface {}

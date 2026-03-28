@@ -18,5 +18,7 @@ namespace Psl\H2\Event;
  * @see https://www.rfc-editor.org/rfc/rfc9113 RFC 9113 - HTTP/2
  *
  * @psalm-inheritors DataReceived|GoAwayReceived|HeadersReceived|PingReceived|PushPromiseReceived|SettingsReceived|StreamClosed|StreamReset|WindowUpdated|PriorityUpdateReceived|AltSvcReceived|OriginReceived
+ *
+ * @api
  */
 interface EventInterface {}

@@ -15,6 +15,8 @@ use Psl;
  * @template    T
  *
  * @implements  ResultInterface<T>
+ *
+ * @api
  */
 final readonly class Success implements ResultInterface
 {

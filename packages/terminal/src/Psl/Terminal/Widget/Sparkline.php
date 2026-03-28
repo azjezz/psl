@@ -19,6 +19,8 @@ use function count;
  *
  * Uses ▁▂▃▄▅▆▇█ to represent values from 0.0 to 1.0.
  * Data is right-aligned: when fewer points than width, new data appears at the right edge.
+ *
+ * @api
  */
 final class Sparkline implements WidgetInterface
 {

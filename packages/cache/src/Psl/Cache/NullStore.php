@@ -14,6 +14,8 @@ use Psl\DateTime\Duration;
  * Every call to {@see compute()} invokes the computer. Every call to
  * {@see get()} throws. Useful for testing, development, or disabling
  * caching without changing calling code.
+ *
+ * @api
  */
 final class NullStore implements StoreInterface
 {

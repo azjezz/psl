@@ -13,6 +13,8 @@ use Throwable;
  * @link https://datatracker.ietf.org/doc/html/rfc3987
  *
  * @inheritors InvalidIRIException
+ *
+ * @api
  */
 class InvalidArgumentException extends Exception\InvalidArgumentException implements ExceptionInterface
 {

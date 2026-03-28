@@ -14,6 +14,8 @@ use function getcwd;
  * @throws Psl\Exception\InvariantViolationException If unable to retrieve the current working directory.
  *
  * @return non-empty-string
+ *
+ * @api
  */
 function current_dir(): string
 {

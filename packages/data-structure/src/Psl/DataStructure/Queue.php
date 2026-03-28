@@ -15,6 +15,8 @@ use function count;
  * @template T
  *
  * @implements QueueInterface<T>
+ *
+ * @api
  */
 final class Queue implements QueueInterface
 {

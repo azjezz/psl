@@ -6,6 +6,9 @@ namespace Psl\Filesystem\Exception;
 
 use function sprintf;
 
+/**
+ * @api
+ */
 final class NotReadableException extends InvalidArgumentException
 {
     public static function forFile(string $file): NotReadableException

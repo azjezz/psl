@@ -17,6 +17,8 @@ use function array_values;
  * A horizontal progress bar widget.
  *
  * Renders a single-row gauge: `label [████░░░░] XX%`
+ *
+ * @api
  */
 final class Gauge implements WidgetInterface
 {

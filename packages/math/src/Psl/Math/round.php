@@ -15,6 +15,8 @@ use function round as php_round;
  * For example, a precision of 1 rounds to the nearest tenth whereas a precision of -1 rounds to the nearst nearest.
  *
  * @pure
+ *
+ * @api
  */
 function round(float $number, int $precision = 0): float
 {

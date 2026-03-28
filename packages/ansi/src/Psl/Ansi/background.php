@@ -8,6 +8,8 @@ namespace Psl\Ansi;
  * Returns an SGR sequence for the given background color.
  *
  * @pure
+ *
+ * @api
  */
 function background(Color\Color $color): ControlSequenceIntroducer
 {

@@ -13,6 +13,8 @@ use function sodium_memzero;
 
 /**
  * Generate a new X25519 key pair for asymmetric encryption.
+ *
+ * @api
  */
 function generate_key_pair(): KeyPair
 {

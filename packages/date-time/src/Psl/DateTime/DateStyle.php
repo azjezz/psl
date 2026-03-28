@@ -20,6 +20,8 @@ use Psl\Default\DefaultInterface;
  * - Full: Full format that provides the most detail, often including the full day and month names, and the year in full (e.g., Friday, January 31, 2020).
  *
  * The default format style is Medium.
+ *
+ * @api
  */
 enum DateStyle implements DefaultInterface
 {

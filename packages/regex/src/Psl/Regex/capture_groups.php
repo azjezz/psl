@@ -13,6 +13,8 @@ use function array_values;
  * @param list<array-key> $groups
  *
  * @return Type\TypeInterface<array<array-key, string>>
+ *
+ * @api
  */
 function capture_groups(array $groups): Type\TypeInterface
 {

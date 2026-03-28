@@ -10,6 +10,8 @@ use function strlen;
 
 /**
  * Maximum IPv4 UDP payload size (65535 - 20 IP header - 8 UDP header).
+ *
+ * @internal
  */
 const MAX_DATAGRAM_SIZE = 65_507;
 

@@ -8,6 +8,8 @@ use Psl\Comparison\Exception\IncomparableException;
 
 /**
  * @template T
+ *
+ * @api
  */
 interface Comparable
 {

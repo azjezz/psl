@@ -27,6 +27,8 @@ use function unpack as byte_unpack;
  *          Shell\execute('php', ['-r', 'fwrite(STDOUT, "a"); fwrite(STDERR, "b"); fwrite(STDOUT, "c");'], null, [], ErrorOutputBehavior::Packed),
  *      );
  *      => Generator(1 => "a", 2 => "b", 1 => "c")
+ *
+ * @api
  */
 function stream_unpack(string $content): Generator
 {

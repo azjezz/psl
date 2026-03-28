@@ -13,6 +13,8 @@ use Psl\Channel\SenderInterface;
  * @template T
  *
  * @implements SenderInterface<T>
+ *
+ * @internal
  */
 final class UnboundedSender implements SenderInterface
 {

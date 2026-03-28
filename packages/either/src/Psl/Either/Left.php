@@ -16,6 +16,8 @@ use Psl\Option;
  * @template TLeft
  *
  * @implements Either<TLeft, never>
+ *
+ * @api
  */
 final readonly class Left implements Either
 {

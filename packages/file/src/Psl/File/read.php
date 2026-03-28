@@ -22,6 +22,8 @@ use function sprintf;
  * @throws Exception\NotReadableException If $file exists, and is non-readable.
  * @throws Exception\RuntimeException In case of an error.
  * @throws Async\Exception\CancelledException If the operation is cancelled.
+ *
+ * @api
  */
 function read(
     string $file,

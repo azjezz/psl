@@ -14,6 +14,8 @@ namespace Psl\Async;
  * @return T
  *
  * @see Awaitable::await()
+ *
+ * @api
  */
 function await(Awaitable $awaitable): mixed
 {

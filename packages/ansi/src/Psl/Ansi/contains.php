@@ -10,6 +10,8 @@ use function preg_match;
  * Checks whether the given text contains any ANSI escape sequences.
  *
  * @pure
+ *
+ * @api
  */
 function contains(string $text): bool
 {

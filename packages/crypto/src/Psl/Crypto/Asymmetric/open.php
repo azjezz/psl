@@ -15,6 +15,8 @@ use function sodium_memzero;
  * Open a sealed message using the recipient's key pair.
  *
  * @throws Exception\DecryptionException If decryption fails.
+ *
+ * @api
  */
 function open(
     #[SensitiveParameter]

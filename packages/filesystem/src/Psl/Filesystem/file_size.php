@@ -18,6 +18,8 @@ use function sprintf;
  * @throws Exception\NotFoundException If $file is not found.
  *
  * @return int<0, max>
+ *
+ * @api
  */
 function file_size(string $file): int
 {

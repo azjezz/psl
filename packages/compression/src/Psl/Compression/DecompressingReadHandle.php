@@ -19,6 +19,8 @@ use function substr;
  * Wraps a compressed data handle and returns decompressed output on read.
  * Reads chunks from the inner handle, decompresses each via the given
  * decompressor, and buffers the result.
+ *
+ * @api
  */
 final class DecompressingReadHandle implements IO\ReadHandleInterface
 {

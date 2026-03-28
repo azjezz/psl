@@ -48,6 +48,8 @@ use function array_map;
  * }
  *
  * @pure
+ *
+ * @api
  */
 function to_array(NodeInterface $tree): array
 {

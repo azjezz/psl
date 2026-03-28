@@ -209,7 +209,7 @@ final readonly class SecureResolver implements ResolverInterface
         }
 
         if ($response->code === ResponseCode::NonExistentDomain) {
-            NSECProofValidator::validateNxdomain($queryName, $queryKind, $response->authority);
+            NSECProofValidator::validateNxdomain($queryName, $response->authority);
         } else {
             NSECProofValidator::validateNodata($queryName, $queryKind, $response->authority);
         }
